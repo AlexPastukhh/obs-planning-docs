@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OBS Local Planning Dashboard Viewer
 // @namespace    https://github.com/AlexPastukhh/obs/planning-dashboard
-// @version      0.4.7
+// @version      0.4.9
 // @description  Local-first read-only planning dashboard with offline snapshot cache, pending sessions, and reviewed batch export.
 // @author       OBS planning-system
 // @match        https://chatgpt.com/*
@@ -35,7 +35,7 @@
     indexText: '',
     files: {},
     groups: {},
-    activeTab: 'index',
+    activeTab: 'day',
     rawMode: false,
     settingsOpen: false,
     loading: false,
@@ -1908,9 +1908,6 @@ Dashboard: ${file.path}`
     const summaryTable = summarySubsection ? parseFirstTable(summarySubsection.lines) : null;
     const values = tableToKeyValue(summaryTable);
 
-    const supportAverage = extractSupportMetric(documentModel, /Support Score:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i);
-    const supportPenalty = extractSupportMetric(documentModel, /Support Penalty:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i);
-
     const workPointsText = pickKeyValue(values, ['Work Points']);
     const incomingDebt = carryoverDebtValue(documentModel, values);
     const pendingSessions = activePendingSessions(file);
@@ -1925,9 +1922,7 @@ Dashboard: ${file.path}`
       ['Net Work Score', pickKeyValue(values, ['Net Work Score']), 'good'],
       ['Incoming Debt', incomingDebt, 'violet'],
       ['Net After Debt', pickKeyValue(values, ['Net score after carryover', 'Net after debt']), 'warn'],
-      ['Current-Day Score', pickKeyValue(values, ['Current-day score', 'Remaining current-day score']), 'warn'],
-      ['Support Avg', supportAverage, 'violet'],
-      ['Support Penalty', supportPenalty, supportPenalty && supportPenalty !== '0' ? 'bad' : 'good']
+      ['Current-Day Score', pickKeyValue(values, ['Current-day score', 'Remaining current-day score']), 'warn']
     ].filter(([, value]) => value);
 
     if (!cards.length) return null;
@@ -2238,51 +2233,56 @@ Dashboard: ${file.path}`
     return wrapper;
   }
 
-  function supportSectionDetails(source, label, summaryText) {
-    if (!source) return null;
-    const details = el('details', { class: 'obs-pd-block-details' });
-    const summary = el('summary', { class: 'obs-pd-compact-row' });
-    summary.appendChild(el('div', { class: 'obs-pd-compact-label', text: label }));
-    summary.appendChild(el('div', { class: 'obs-pd-section-meta', text: summaryText }));
-    summary.appendChild(el('span', { class: 'obs-pd-disclosure-button', text: 'Show' }));
-    details.appendChild(summary);
-    const body = el('div', { class: 'obs-pd-disclosure-body' });
-    body.appendChild(renderMarkdownLines(source.lines));
-    details.appendChild(body);
-    return details;
+  function strictNumericCell(value) {
+    const normalized = cleanCell(value).replace(',', '.');
+    if (!/^[+-]?(?:\d+(?:\.\d+)?|\.\d+)$/.test(normalized)) return null;
+    const number = Number(normalized);
+    return Number.isFinite(number) ? number : null;
+  }
+
+  function supportScoreRows(source) {
+    const table = source ? parseFirstTable(source.lines) : null;
+    if (!table) return [];
+
+    return table.rows.map((row, index) => {
+      const score = strictNumericCell(exactRowValue(row, table, ['Mark', 'Score', 'Support Score']));
+      if (score === null) return null;
+      return {
+        number: exactRowValue(row, table, ['#']) || String(index + 1),
+        category: exactRowValue(row, table, ['Category', 'Type']) || 'not provided',
+        score,
+        reason: exactRowValue(row, table, ['Reason', 'Note']) || ''
+      };
+    }).filter(Boolean);
   }
 
   function renderSupportSection(documentModel) {
-    const supportFacts = findSection(documentModel, 'support facts') || findSubsection(documentModel, 'support facts');
     const supportMarks = findSubsection(documentModel, 'support marks') || findSection(documentModel, 'support marks');
-    const supportPenalty = findSubsection(documentModel, 'support penalty');
-    const supportInterpretation = findSubsection(documentModel, 'support interpretation');
-    const supportFactsUsed = findSubsection(documentModel, 'support facts used');
-    if (!supportFacts && !supportMarks && !supportPenalty && !supportInterpretation && !supportFactsUsed) return null;
+    if (!supportMarks) return null;
 
-    const factsCount = countMeaningfulRows(supportFacts ? parseFirstTable(supportFacts.lines) : null);
-    const marksCount = countMeaningfulRows(supportMarks ? parseFirstTable(supportMarks.lines) : null);
-    const supportAverage = extractSupportMetric(documentModel, /Support Score:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i) || 'not calculated';
-    const penaltyValue = extractSupportMetric(documentModel, /Support Penalty:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i) || 'not calculated';
+    const scores = supportScoreRows(supportMarks);
+    const explicitAverage = extractSupportMetric(documentModel, /Support Score:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i);
+    const average = scores.length
+      ? formatNumber(scores.reduce((sum, item) => sum + item.score, 0) / scores.length)
+      : providedMetricValue(explicitAverage) || 'not calculated';
 
     const wrapper = document.createDocumentFragment();
     wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Support' }));
     const panel = el('div', { class: 'obs-pd-section-panel' });
     const bar = el('div', { class: 'obs-pd-section-bar' });
     bar.appendChild(el('div', { class: 'obs-pd-section-name', text: 'Support' }));
-    bar.appendChild(el('div', { class: 'obs-pd-section-meta', text: `Facts: ${factsCount} · Marks: ${marksCount} · Avg: ${supportAverage} · Penalty: ${penaltyValue}` }));
+    bar.appendChild(compactValue(`Average: ${average}`, scores.length ? 'violet' : 'neutral'));
+    bar.appendChild(el('div', { class: 'obs-pd-section-meta', text: `${scores.length} score(s)` }));
     panel.appendChild(bar);
 
-    const facts = supportSectionDetails(supportFacts, 'Support Facts', `${factsCount} record(s)`);
-    if (facts) panel.appendChild(facts);
-    const marks = supportSectionDetails(supportMarks, 'Support Marks / Review', `${marksCount} mark(s) · ${supportAverage}`);
-    if (marks) panel.appendChild(marks);
-    const penalty = supportSectionDetails(supportPenalty, 'Support Penalty', penaltyValue);
-    if (penalty) panel.appendChild(penalty);
-    const interpretation = supportSectionDetails(supportInterpretation, 'Support Interpretation', 'details');
-    if (interpretation) panel.appendChild(interpretation);
-    const used = supportSectionDetails(supportFactsUsed, 'Support Facts Used', 'details');
-    if (used) panel.appendChild(used);
+    if (scores.length) {
+      panel.appendChild(renderTable({
+        headers: ['#', 'Category', 'Score', 'Reason'],
+        rows: scores.map((item) => [item.number, item.category, formatNumber(item.score), item.reason])
+      }));
+    } else {
+      panel.appendChild(el('div', { class: 'obs-pd-empty-state', text: 'No support scores recorded.' }));
+    }
 
     wrapper.appendChild(panel);
     return wrapper;
@@ -2695,11 +2695,18 @@ Check:
     window.open(buildLocalUrl(file.path), '_blank', 'noopener,noreferrer');
   }
 
+  function preferredOpenTab() {
+    return state.files.day || state.files.sessionDay ? 'day' : 'index';
+  }
+
   async function setDashboardOpen(open) {
     const panel = document.querySelector('#obs-planning-dashboard-panel');
     if (!panel) return;
     panel.setAttribute('data-open', String(Boolean(open)));
-    if (open && !state.indexText) await refresh();
+    if (!open) return;
+    if (!state.indexText) await refresh();
+    state.activeTab = preferredOpenTab();
+    render();
   }
 
   async function toggleDashboardPanel() {

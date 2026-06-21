@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Planning Pattern Capture v0.4.3
+// @name         Planning Pattern Capture v0.4.4
 // @namespace    planning-pattern-capture
-// @version      0.4.3
+// @version      0.4.4
 // @description  ChatGPT-only capture panel with D/F scoring, one-click session timer milestones, finished-session outbox, and reviewed batch sync
 // @match        *://chatgpt.com/*
 // @match        *://*.chatgpt.com/*
@@ -45,7 +45,7 @@
   const BASE_TOTAL_SCORE = 3.5;
   const BASE_DIM_SCORE = BASE_TOTAL_SCORE / 2;
   const DF_STEP = 0.1;
-  const SETTINGS_VERSION = "0.4.3";
+  const SETTINGS_VERSION = "0.4.4";
   const TIMER_SCHEMA = "planning-pattern-session-timer-v1";
   const TIMER_TOTAL_MS = 30 * 60 * 1000;
   const TIMER_MILESTONES = [
@@ -54,10 +54,15 @@
     { minutes: 30, label: "30m end", title: "30 минут прошло", text: "Сегмент завершён: оцени D/F и зафиксируй результат через Finish." },
   ];
 
+  const CAPTURE_DOCK_RIGHT = 18;
+  const CAPTURE_DOCK_COLLAPSED_BOTTOM = 158;
+  const CAPTURE_DOCK_EXPANDED_BOTTOM = 18;
+
   const DEFAULT_SETTINGS = {
     scriptVersion: SETTINGS_VERSION,
-    collapsed: false,
+    collapsed: true,
     hidden: false,
+    docked: true,
     x: 80,
     y: 120,
     width: 410,
@@ -385,7 +390,7 @@
 
   function forceShowPanel() {
     panelHiddenForPage = false;
-    settings = normalizeSettings({ ...DEFAULT_SETTINGS, collapsed: false });
+    settings = normalizeSettings({ ...DEFAULT_SETTINGS, collapsed: false, docked: true });
     save(KEY_SETTINGS, settings);
     refresh();
     toast("PPC shown/reset");
@@ -398,6 +403,7 @@
     merged.width = clampNumber(merged.width, 280, Math.max(280, window.innerWidth - 12), DEFAULT_SETTINGS.width);
     merged.height = clampNumber(merged.height, 260, Math.max(260, window.innerHeight - 12), DEFAULT_SETTINGS.height);
     merged.collapsed = Boolean(merged.collapsed);
+    merged.docked = Boolean(merged.docked);
     merged.hidden = false;
     merged.timerSoundEnabled = merged.timerSoundEnabled !== false;
     merged.timerVolume = clampNumber(merged.timerVolume, 0, 1, DEFAULT_SETTINGS.timerVolume);
@@ -538,9 +544,21 @@
 
   function loadSettings() {
     const current = load(KEY_SETTINGS, null);
-    return current
-      ? { ...DEFAULT_SETTINGS, ...current, hidden: false, scriptVersion: SETTINGS_VERSION }
-      : { ...DEFAULT_SETTINGS };
+    if (!current) return { ...DEFAULT_SETTINGS };
+
+    const hasDockSetting = typeof current.docked === "boolean";
+    const legacyDefaultPosition = Number(current.x) === 80 && Number(current.y) === 120;
+    const migrated = {
+      ...DEFAULT_SETTINGS,
+      ...current,
+      hidden: false,
+      scriptVersion: SETTINGS_VERSION,
+    };
+
+    // Preserve manually moved panels. Only the untouched legacy default is migrated into the shared launcher stack.
+    if (!hasDockSetting) migrated.docked = legacyDefaultPosition;
+    if (!hasDockSetting && legacyDefaultPosition) migrated.collapsed = true;
+    return migrated;
   }
 
   function save(key, value) {
@@ -1181,7 +1199,8 @@
   }
 
   function resetPanelPosition() {
-    settings = { ...DEFAULT_SETTINGS, collapsed: false };
+    settings = { ...DEFAULT_SETTINGS, collapsed: true, docked: true };
+    panelHiddenForPage = false;
     saveAll();
     refresh();
   }
@@ -1508,8 +1527,17 @@
       if (resizeObserver) { resizeObserver.disconnect(); resizeObserver = null; }
       settings = normalizeSettings(settings);
       root.innerHTML = "";
-      root.style.left = `${settings.x}px`;
-      root.style.top = `${settings.y}px`;
+      if (settings.docked) {
+        root.style.left = "auto";
+        root.style.top = "auto";
+        root.style.right = `${CAPTURE_DOCK_RIGHT}px`;
+        root.style.bottom = `${settings.collapsed ? CAPTURE_DOCK_COLLAPSED_BOTTOM : CAPTURE_DOCK_EXPANDED_BOTTOM}px`;
+      } else {
+        root.style.right = "auto";
+        root.style.bottom = "auto";
+        root.style.left = `${settings.x}px`;
+        root.style.top = `${settings.y}px`;
+      }
       root.style.display = panelHiddenForPage ? "none" : "block";
       if (panelHiddenForPage) return;
       if (settings.collapsed) {
@@ -2211,6 +2239,14 @@
       if (e.button !== 0) return;
       dragging = true; moved = false;
       startX = e.clientX; startY = e.clientY;
+      if (settings.docked) {
+        const rect = root.getBoundingClientRect();
+        settings.docked = false;
+        settings.x = Math.round(rect.left);
+        settings.y = Math.round(rect.top);
+        root.style.right = "auto";
+        root.style.bottom = "auto";
+      }
       originX = settings.x; originY = settings.y;
       nextX = originX; nextY = originY;
       root.style.willChange = "transform";

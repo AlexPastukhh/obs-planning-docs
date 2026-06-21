@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.4.7
+Doc version: v0.4.9
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -11,11 +11,13 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   reusable command projection only; command meaning stays in owner documentation.
 
 planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
-  read-only local-first dashboard projection; reads repo Markdown through localhost,
-  keeps a source-bound IndexedDB snapshot, displays pending local sessions and exports reviewed JSON.
+  read-only local-first dashboard projection; opens on the active Day by default,
+  reads repo Markdown through localhost, keeps a source-bound IndexedDB snapshot,
+  displays pending local sessions and exports reviewed JSON.
 
 planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
-  local D/F pattern capture, one-click 10/20/30-minute session timer, sound/system notifications,
+  local D/F pattern capture, docked launcher above Planning/Commands by default,
+  one-click 10/20/30-minute session timer, sound/system notifications,
   and one-click finished-session capture into the shared pending outbox.
 ```
 
@@ -96,13 +98,17 @@ Formatted operational-day UI contract:
 - Repository and local pending/conflict sessions are rendered in one session list.
 - Local sessions remain visible even when the repository Finished Sessions table has zero rows.
 - Pending session Time, Progress Signal and Result are available in collapsed row details.
-- Penalty rules, support details, carryover breakdown, final summary and extended operational sections are collapsed by default.
-- Support Facts and Support Marks / Review are rendered independently; one never suppresses the other.
+- Penalty rules, carryover breakdown, final summary and extended operational sections are collapsed by default.
+- Support compact view shows the live average and every numeric Support Mark row (`Category`, `Score`, `Reason`).
+- Support average and Support Penalty are not duplicated in Session Overview; Support metrics appear only in the dedicated Support block.
+- Support facts, penalty, interpretation and facts-used remain source data available through Raw/Open instead of cluttering the compact view.
 - Carryover / Debt exposes Incoming debt and Net after debt in the compact view before details are expanded.
 - Empty placeholders such as `not provided` do not block a real Carryover amount from being shown.
 - Dedicated Support sections are excluded from More operational details to avoid duplicate rendering.
 - A local outbox/path mismatch is shown as a diagnostic warning instead of silently hiding local records.
 - Finished-session display resolves Session, row number, Goal(s), score and D/F columns by exact header names; Markdown table parsing preserves escaped `\|` characters inside cells.
+- Planning button and `Alt+F3` open the active Day tab; Index is the fallback only when no Day source is available.
+- Default launcher stack is Capture above Planning above Commands; dragging preserves a custom Capture position and Reset UI restores the docked stack.
 ```
 
 Live Markdown reads intentionally bypass the browser/Tampermonkey HTTP cache:
