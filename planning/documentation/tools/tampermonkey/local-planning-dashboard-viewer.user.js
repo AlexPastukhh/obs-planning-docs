@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OBS Local Planning Dashboard Viewer
 // @namespace    https://github.com/AlexPastukhh/obs/planning-dashboard
-// @version      0.4.5
+// @version      0.4.7
 // @description  Local-first read-only planning dashboard with offline snapshot cache, pending sessions, and reviewed batch export.
 // @author       OBS planning-system
 // @match        https://chatgpt.com/*
@@ -478,7 +478,7 @@
     .obs-pd-session-head,
     .obs-pd-session-summary {
       display: grid;
-      grid-template-columns: 28px 72px 76px 108px minmax(160px, 1fr);
+      grid-template-columns: 28px 72px 76px 108px minmax(160px, 1fr) 112px;
       gap: 8px;
       align-items: center;
     }
@@ -671,6 +671,160 @@
     .obs-pd-runtime-pill { background: #17243a; color: #bfdbfe; }
     .obs-pd-pending-pill { background: rgba(180, 83, 9, .32); color: #fde68a; border: 1px solid rgba(251, 191, 36, .4); }
     .obs-pd-session-record[data-pending="true"] { background: rgba(120, 53, 15, .18); }
+    .obs-pd-session-record[data-conflict="true"] { background: rgba(127, 29, 29, .2); }
+
+    .obs-pd-section-panel {
+      overflow: hidden;
+      margin-bottom: 10px;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 11px;
+      background: rgba(15, 28, 48, .92);
+    }
+
+    .obs-pd-section-bar,
+    .obs-pd-compact-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      padding: 9px 10px;
+    }
+
+    .obs-pd-section-bar {
+      border-bottom: 1px solid rgba(148, 163, 184, .14);
+      background: rgba(9, 20, 36, .82);
+    }
+
+    .obs-pd-section-name,
+    .obs-pd-compact-label {
+      color: #e8f1ff;
+      font-weight: 760;
+    }
+
+    .obs-pd-section-meta {
+      min-width: 0;
+      margin-left: auto;
+      color: #9fb3ca;
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .obs-pd-compact-row {
+      min-height: 42px;
+      border-bottom: 1px solid rgba(148, 163, 184, .12);
+    }
+
+    .obs-pd-compact-row:last-child {
+      border-bottom: 0;
+    }
+
+    .obs-pd-compact-value {
+      margin-left: auto;
+      color: #bfdbfe;
+      font-size: 16px;
+      font-weight: 760;
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .obs-pd-compact-value[data-tone="good"] { color: #86efac; }
+    .obs-pd-compact-value[data-tone="bad"] { color: #fca5a5; }
+    .obs-pd-compact-value[data-tone="warn"] { color: #fcd34d; }
+    .obs-pd-compact-value[data-tone="violet"] { color: #c4b5fd; }
+
+    .obs-pd-inline-details,
+    .obs-pd-block-details {
+      min-width: 0;
+    }
+
+    .obs-pd-inline-details[open] {
+      flex-basis: 100%;
+      width: 100%;
+    }
+
+    .obs-pd-block-details > summary .obs-pd-disclosure-button {
+      margin-left: auto;
+    }
+
+    .obs-pd-inline-details > summary,
+    .obs-pd-block-details > summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .obs-pd-inline-details > summary::-webkit-details-marker,
+    .obs-pd-block-details > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .obs-pd-disclosure-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(148, 163, 184, .34);
+      border-radius: 7px;
+      padding: 5px 8px;
+      background: #18263a;
+      color: #edf4ff;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    details[open] > .obs-pd-disclosure-button {
+      background: #243750;
+      border-color: rgba(147, 197, 253, .56);
+    }
+
+    .obs-pd-disclosure-body {
+      padding: 9px 10px 10px;
+      border-top: 1px solid rgba(148, 163, 184, .13);
+      background: rgba(7, 17, 31, .62);
+    }
+
+    .obs-pd-empty-state {
+      padding: 10px;
+      color: #91a3ba;
+      font-style: italic;
+    }
+
+    .obs-pd-section-warning {
+      margin-bottom: 9px;
+      padding: 9px 10px;
+      border: 1px solid rgba(251, 191, 36, .4);
+      border-radius: 9px;
+      background: rgba(120, 53, 15, .2);
+      color: #fde68a;
+      white-space: pre-wrap;
+    }
+
+    .obs-pd-status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      border: 1px solid rgba(148, 163, 184, .3);
+      border-radius: 999px;
+      padding: 3px 7px;
+      background: #17243a;
+      color: #cbd8e9;
+      font-size: 10px;
+      font-weight: 760;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .obs-pd-status-pill[data-kind="pending"] {
+      border-color: rgba(251, 191, 36, .4);
+      background: rgba(180, 83, 9, .32);
+      color: #fde68a;
+    }
+
+    .obs-pd-status-pill[data-kind="conflict"] {
+      border-color: rgba(248, 113, 113, .45);
+      background: rgba(127, 29, 29, .38);
+      color: #fecaca;
+    }
 
     @media (max-width: 980px) {
       #obs-planning-dashboard-panel {
@@ -692,7 +846,7 @@
 
       .obs-pd-session-head,
       .obs-pd-session-summary {
-        grid-template-columns: 24px 60px 60px 92px minmax(110px, 1fr);
+        grid-template-columns: 24px 60px 60px 92px minmax(110px, 1fr) 98px;
       }
 
       .obs-pd-session-details {
@@ -719,7 +873,20 @@
       }
 
       .obs-pd-session-summary {
-        grid-template-columns: 22px 50px 54px 72px minmax(0, 1fr);
+        grid-template-columns: 22px 48px 50px 68px minmax(0, 1fr) 82px;
+      }
+
+      .obs-pd-section-bar,
+      .obs-pd-compact-row {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .obs-pd-section-meta,
+      .obs-pd-compact-value {
+        margin-left: 0;
+        flex-basis: 100%;
+        text-align: left;
       }
     }
   `);
@@ -842,6 +1009,24 @@
   function visibleLocalSessions(file) {
     const day = pendingDayForFile(file);
     return day ? day.sessions.filter((session) => session.status !== 'synced') : [];
+  }
+
+
+  function localOutboxDiagnostic(file) {
+    if (!file?.path) return null;
+    const date = dateFromOperationalPath(file.path);
+    const day = readOutbox().days?.[date];
+    if (!day || !Array.isArray(day.sessions) || !day.sessions.some((session) => session.status !== 'synced')) return null;
+    if (day.operationalPath === file.path) return null;
+    const count = day.sessions.filter((session) => session.status !== 'synced').length;
+    return {
+      count,
+      expectedPath: day.operationalPath || 'not provided',
+      actualPath: file.path,
+      message: `${count} local session(s) exist for ${date}, but their operationalPath does not match the active Dashboard file.
+Outbox: ${day.operationalPath || 'not provided'}
+Dashboard: ${file.path}`
+    };
   }
 
   function parseNumber(value) {
@@ -1292,7 +1477,26 @@
 
   function splitTableRow(line) {
     const normalized = String(line || '').trim().replace(/^\|/, '').replace(/\|$/, '');
-    return normalized.split('|').map(cleanCell);
+    const cells = [];
+    let current = '';
+
+    for (let index = 0; index < normalized.length; index += 1) {
+      const char = normalized[index];
+      if (char === '\\' && normalized[index + 1] === '|') {
+        current += '|';
+        index += 1;
+        continue;
+      }
+      if (char === '|') {
+        cells.push(cleanCell(current));
+        current = '';
+        continue;
+      }
+      current += char;
+    }
+
+    cells.push(cleanCell(current));
+    return cells;
   }
 
   function isTableSeparator(line) {
@@ -1674,6 +1878,19 @@
     return '';
   }
 
+  function providedMetricValue(value) {
+    const cleaned = cleanCell(value);
+    return OPTIONAL_EMPTY_VALUES.has(cleaned.toLowerCase()) ? '' : cleaned;
+  }
+
+  function carryoverDebtValue(documentModel, summaryValues) {
+    const carryoverSection = findSection(documentModel, 'carryover');
+    const carryoverValues = tableToKeyValue(carryoverSection ? parseFirstTable(carryoverSection.lines) : null);
+    return providedMetricValue(pickKeyValue(summaryValues, ['Previous-day carryover debt', 'Incoming debt']))
+      || providedMetricValue(pickKeyValue(carryoverValues, ['Carryover amount']))
+      || 'not provided';
+  }
+
   function scoreCard(label, value, tone) {
     const card = el('div', { class: 'obs-pd-score-card', 'data-tone': tone || 'neutral' });
     card.appendChild(el('div', { class: 'obs-pd-score-label', text: label }));
@@ -1695,6 +1912,7 @@
     const supportPenalty = extractSupportMetric(documentModel, /Support Penalty:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i);
 
     const workPointsText = pickKeyValue(values, ['Work Points']);
+    const incomingDebt = carryoverDebtValue(documentModel, values);
     const pendingSessions = activePendingSessions(file);
     const pendingPoints = pendingSessions.reduce((sum, session) => sum + parseNumber(session.points), 0);
     const cards = [
@@ -1705,7 +1923,7 @@
       ] : []),
       ['Penalties', pickKeyValue(values, ['Penalties', 'Penalties / planned carryover']), 'bad'],
       ['Net Work Score', pickKeyValue(values, ['Net Work Score']), 'good'],
-      ['Incoming Debt', pickKeyValue(values, ['Previous-day carryover debt', 'Incoming debt']), 'violet'],
+      ['Incoming Debt', incomingDebt, 'violet'],
       ['Net After Debt', pickKeyValue(values, ['Net score after carryover', 'Net after debt']), 'warn'],
       ['Current-Day Score', pickKeyValue(values, ['Current-day score', 'Remaining current-day score']), 'warn'],
       ['Support Avg', supportAverage, 'violet'],
@@ -1732,8 +1950,8 @@
   }
 
   function compactSessionName(row, table) {
-    const number = rowValue(row, table, ['#', 'Session #']);
-    const sessionText = rowValue(row, table, ['Session']);
+    const number = exactRowValue(row, table, ['#', 'Session #']);
+    const sessionText = exactRowValue(row, table, ['Session']);
     const explicitId = sessionText.match(/\bS\d+\b/i)?.[0];
     if (explicitId) return explicitId.toUpperCase();
     if (number) return `S${number}`;
@@ -1741,7 +1959,7 @@
   }
 
   function sessionGoalsValue(row, table) {
-    return rowValue(row, table, [
+    return exactRowValue(row, table, [
       'Goal(s)', 'Goals', 'Goal', 'Worked On (Goals)', 'Worked On',
       'Related Goals', 'Goal Maps', 'Target'
     ]);
@@ -1763,145 +1981,392 @@
     return wrapper;
   }
 
+  function isMeaningfulDataRow(row) {
+    return row.some((value, index) => {
+      const cleaned = cleanCell(value);
+      if (!cleaned) return false;
+      if (index === 0 && /^\d+$/.test(cleaned)) return false;
+      return true;
+    });
+  }
+
+  function countMeaningfulRows(table) {
+    if (!table) return 0;
+    return table.rows.filter(isMeaningfulDataRow).length;
+  }
+
+  function linesOutsideFirstTable(lines) {
+    const source = [...(lines || [])];
+    const table = parseFirstTable(source);
+    if (!table) return source;
+    return [...source.slice(0, table.start), ...source.slice(table.end)];
+  }
+
+  function splitRulesLines(lines) {
+    const source = trimBlankLines(lines || []);
+    const ruleIndex = source.findIndex((line) => normalizeHeading(line.replace(/:\s*$/, '')) === 'rules');
+    if (ruleIndex < 0) return { bodyLines: source, ruleLines: [] };
+    return {
+      bodyLines: trimBlankLines(source.slice(0, ruleIndex)),
+      ruleLines: trimBlankLines(source.slice(ruleIndex + 1))
+    };
+  }
+
+  function disclosureButton(label, bodyNode, className = 'obs-pd-inline-details') {
+    const details = el('details', { class: className });
+    details.appendChild(el('summary', { class: 'obs-pd-disclosure-button', text: label }));
+    if (bodyNode) {
+      const body = el('div', { class: 'obs-pd-disclosure-body' });
+      body.appendChild(bodyNode);
+      details.appendChild(body);
+    }
+    return details;
+  }
+
+  function rulesDisclosure(ruleLines, label = 'Show rules') {
+    if (!trimBlankLines(ruleLines || []).length) return null;
+    return disclosureButton(label, renderMarkdownLines(ruleLines));
+  }
+
+  function statusPill(text, kind) {
+    return el('span', { class: 'obs-pd-status-pill', 'data-kind': kind || 'repository', text });
+  }
+
+  function compactValue(value, tone) {
+    return el('div', { class: 'obs-pd-compact-value', 'data-tone': tone || 'neutral', text: value || 'not provided' });
+  }
+
+  function sessionSectionHeader(panel, repoCount, localSessions, ruleLines) {
+    const pendingCount = localSessions.filter((session) => session.status === 'pending').length;
+    const conflictCount = localSessions.filter((session) => session.status === 'conflict').length;
+    const bar = el('div', { class: 'obs-pd-section-bar' });
+    bar.appendChild(el('div', { class: 'obs-pd-section-name', text: 'Sessions' }));
+    if (pendingCount) bar.appendChild(statusPill(`${pendingCount} pending`, 'pending'));
+    if (conflictCount) bar.appendChild(statusPill(`${conflictCount} conflict`, 'conflict'));
+    bar.appendChild(el('div', { class: 'obs-pd-section-meta', text: `Repository: ${repoCount} · Local: ${localSessions.length}` }));
+    const rules = rulesDisclosure(ruleLines);
+    if (rules) bar.appendChild(rules);
+    panel.appendChild(bar);
+  }
+
+  function appendDetailItem(grid, label, value) {
+    const cleaned = cleanCell(value);
+    if (!cleaned) return;
+    const item = el('div', { class: 'obs-pd-detail-item' });
+    item.appendChild(el('div', { class: 'obs-pd-detail-label', text: label }));
+    item.appendChild(el('div', { class: 'obs-pd-detail-value', text: cleaned }));
+    grid.appendChild(item);
+  }
+
+  function appendRepositorySession(panel, row, table, goalAliases) {
+    const sessionId = compactSessionName(row, table);
+    const score = exactRowValue(row, table, ['Points', 'Score', 'Total']);
+    const df = sessionDfForDisplay(exactRowValue(row, table, ['D/F', 'D / F', 'D/F/K/P']));
+    const goals = sessionGoalsValue(row, table);
+
+    const detailArea = el('div', { class: 'obs-pd-session-details' });
+    const goalChips = renderGoalChips(goals);
+    if (goalChips) detailArea.appendChild(goalChips);
+
+    const grid = el('div', { class: 'obs-pd-detail-grid' });
+    const preferredFields = [
+      ['Time', ['Time']],
+      ['Result', ['Result', 'Result (short)']],
+      ['Progress Signal', ['Progress Signal']]
+    ];
+
+    const usedIndexes = new Set();
+    const markUsedIndex = (aliases) => {
+      const index = exactHeaderIndex(table, aliases);
+      if (index >= 0) usedIndexes.add(index);
+    };
+
+    [
+      ['#', 'Session #'],
+      ['Session'],
+      ['Points', 'Score', 'Total'],
+      ['D/F', 'D / F', 'D/F/K/P'],
+      goalAliases,
+      ['Base'],
+      ['Adj', 'Adjustment']
+    ].forEach(markUsedIndex);
+
+    preferredFields.forEach(([label, aliases]) => {
+      const index = exactHeaderIndex(table, aliases);
+      if (index < 0) return;
+      usedIndexes.add(index);
+      appendDetailItem(grid, label, row[index]);
+    });
+
+    table.headers.forEach((header, index) => {
+      if (usedIndexes.has(index) || !cleanCell(row[index])) return;
+      appendDetailItem(grid, header, row[index]);
+    });
+
+    if (grid.childNodes.length) detailArea.appendChild(grid);
+    const hasDetails = Boolean(goalChips || grid.childNodes.length);
+    const record = hasDetails
+      ? el('details', { class: 'obs-pd-session-record' })
+      : el('div', { class: 'obs-pd-session-record obs-pd-session-record-static' });
+    const summary = hasDetails
+      ? el('summary', { class: 'obs-pd-session-summary' })
+      : el('div', { class: 'obs-pd-session-summary' });
+
+    summary.appendChild(el('div', { class: 'obs-pd-chevron', text: hasDetails ? '›' : '' }));
+    summary.appendChild(el('div', { class: 'obs-pd-session-id', text: sessionId || 'session' }));
+    summary.appendChild(el('div', { class: 'obs-pd-session-score', text: score || '—' }));
+    summary.appendChild(el('div', { class: 'obs-pd-detail-value', text: df || '—' }));
+    summary.appendChild(el('div', { class: 'obs-pd-session-worked', text: goals.replace(/\n/g, ' · ') || 'No goals recorded' }));
+    summary.appendChild(statusPill('Repository', 'repository'));
+    record.appendChild(summary);
+    if (hasDetails) record.appendChild(detailArea);
+    panel.appendChild(record);
+  }
+
+  function appendLocalSession(panel, session) {
+    const detailArea = el('div', { class: 'obs-pd-session-details' });
+    const goalChips = renderGoalChips(session.goals);
+    if (goalChips) detailArea.appendChild(goalChips);
+
+    const grid = el('div', { class: 'obs-pd-detail-grid' });
+    appendDetailItem(grid, 'Time', session.time);
+    appendDetailItem(grid, 'Progress Signal', session.progressSignal);
+    appendDetailItem(grid, 'Result', session.result);
+    appendDetailItem(grid, 'Expected Row', session.expectedRowNumber);
+    if (grid.childNodes.length) detailArea.appendChild(grid);
+
+    const hasDetails = Boolean(goalChips || grid.childNodes.length);
+    const kind = session.status === 'conflict' ? 'conflict' : 'pending';
+    const record = hasDetails
+      ? el('details', { class: 'obs-pd-session-record', 'data-pending': 'true', 'data-conflict': session.status === 'conflict' ? 'true' : null })
+      : el('div', { class: 'obs-pd-session-record obs-pd-session-record-static', 'data-pending': 'true', 'data-conflict': session.status === 'conflict' ? 'true' : null });
+    const summary = hasDetails
+      ? el('summary', { class: 'obs-pd-session-summary' })
+      : el('div', { class: 'obs-pd-session-summary' });
+
+    summary.appendChild(el('div', { class: 'obs-pd-chevron', text: hasDetails ? '›' : '' }));
+    summary.appendChild(el('div', { class: 'obs-pd-session-id', text: session.session || 'local' }));
+    summary.appendChild(el('div', { class: 'obs-pd-session-score', text: formatNumber(session.points) }));
+    summary.appendChild(el('div', { class: 'obs-pd-detail-value', text: `D ${formatNumber(session.d)} / F ${formatNumber(session.f)}` }));
+    summary.appendChild(el('div', { class: 'obs-pd-session-worked', text: cleanCell(session.goals) || 'No goals recorded' }));
+    summary.appendChild(statusPill(session.status === 'conflict' ? 'Conflict local' : 'Pending local', kind));
+    record.appendChild(summary);
+    if (hasDetails) record.appendChild(detailArea);
+    panel.appendChild(record);
+  }
+
   function renderSessionList(documentModel, file) {
     const sessionsSection = findSection(documentModel, 'finished sessions') || findSection(documentModel, 'sessions');
-    if (!sessionsSection) return null;
+    const table = sessionsSection ? parseFirstTable(sessionsSection.lines) : null;
+    const repoRows = table?.rows || [];
+    const localSessions = visibleLocalSessions(file);
+    if (!sessionsSection && !localSessions.length) return null;
 
-    const table = parseFirstTable(sessionsSection.lines);
+    const outsideTable = sessionsSection ? linesOutsideFirstTable(sessionsSection.lines) : [];
+    const { bodyLines, ruleLines } = splitRulesLines(outsideTable);
     const wrapper = document.createDocumentFragment();
     wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Finished Sessions' }));
 
-    if (!table || !table.rows.length) {
-      const card = el('div', { class: 'obs-pd-card' });
-      card.appendChild(renderMarkdownLines(sessionsSection.lines));
-      wrapper.appendChild(card);
-      return wrapper;
-    }
-
-    const goalAliases = [
-      'Goal(s)', 'Goals', 'Goal', 'Worked On (Goals)', 'Worked On',
-      'Related Goals', 'Goal Maps', 'Target'
-    ];
-    const ignoredHeaderNames = new Set([
-      '#', 'Session #', 'Session', 'Points', 'Score', 'Total',
-      'D/F', 'D / F', 'D/F/K/P',
-      ...goalAliases,
-      'Base', 'Adj', 'Adjustment'
-    ].map(normalizeHeading));
-
     const panel = el('div', { class: 'obs-pd-session-panel' });
+    sessionSectionHeader(panel, repoRows.length, localSessions, ruleLines);
     panel.appendChild(el('div', { class: 'obs-pd-session-head' }, [
       el('div', { text: '' }),
       el('div', { text: 'Session' }),
       el('div', { text: 'Score' }),
       el('div', { text: 'D / F' }),
-      el('div', { text: 'Goal(s)' })
+      el('div', { text: 'Goal(s)' }),
+      el('div', { text: 'Status' })
     ]));
 
-    table.rows.forEach((row) => {
-      const sessionId = compactSessionName(row, table);
-      const score = rowValue(row, table, ['Points', 'Score', 'Total']);
-      const df = sessionDfForDisplay(rowValue(row, table, ['D/F', 'D / F', 'D/F/K/P']));
-      const goals = sessionGoalsValue(row, table);
+    const goalAliases = [
+      'Goal(s)', 'Goals', 'Goal', 'Worked On (Goals)', 'Worked On',
+      'Related Goals', 'Goal Maps', 'Target'
+    ];
 
-      const detailArea = el('div', { class: 'obs-pd-session-details' });
-      const goalChips = renderGoalChips(goals);
-      if (goalChips) detailArea.appendChild(goalChips);
+    repoRows.forEach((row) => appendRepositorySession(panel, row, table, goalAliases));
+    localSessions.forEach((session) => appendLocalSession(panel, session));
 
-      const grid = el('div', { class: 'obs-pd-detail-grid' });
-      const preferredFields = [
-        ['Time', ['Time']],
-        ['Result', ['Result', 'Result (short)']],
-        ['Progress Signal', ['Progress Signal']]
-      ];
+    if (!repoRows.length && !localSessions.length) {
+      panel.appendChild(el('div', { class: 'obs-pd-empty-state', text: 'No repository or local sessions.' }));
+    } else if (!repoRows.length && localSessions.length) {
+      panel.appendChild(el('div', { class: 'obs-pd-empty-state', text: 'No repository sessions yet. Local pending/conflict sessions are shown above.' }));
+    }
 
-      const usedIndexes = new Set();
-      const markUsedIndex = (aliases) => {
-        const index = normalizedHeaderIndex(table, aliases);
-        if (index >= 0) usedIndexes.add(index);
-      };
-
-      [
-        ['#', 'Session #'],
-        ['Session'],
-        ['Points', 'Score', 'Total'],
-        ['D/F', 'D / F', 'D/F/K/P'],
-        goalAliases,
-        ['Base'],
-        ['Adj', 'Adjustment']
-      ].forEach(markUsedIndex);
-
-      preferredFields.forEach(([label, aliases]) => {
-        const index = normalizedHeaderIndex(table, aliases);
-        if (index < 0 || !cleanCell(row[index])) return;
-        usedIndexes.add(index);
-        const item = el('div', { class: 'obs-pd-detail-item' });
-        item.appendChild(el('div', { class: 'obs-pd-detail-label', text: label }));
-        item.appendChild(el('div', { class: 'obs-pd-detail-value', text: cleanCell(row[index]) }));
-        grid.appendChild(item);
-      });
-
-      table.headers.forEach((header, index) => {
-        if (usedIndexes.has(index)) return;
-        if (ignoredHeaderNames.has(normalizeHeading(header))) return;
-        if (!cleanCell(row[index])) return;
-        const item = el('div', { class: 'obs-pd-detail-item' });
-        item.appendChild(el('div', { class: 'obs-pd-detail-label', text: header }));
-        item.appendChild(el('div', { class: 'obs-pd-detail-value', text: cleanCell(row[index]) }));
-        grid.appendChild(item);
-      });
-
-      if (grid.childNodes.length) detailArea.appendChild(grid);
-      const hasDetails = Boolean(goalChips || grid.childNodes.length);
-      const record = hasDetails
-        ? el('details', { class: 'obs-pd-session-record' })
-        : el('div', { class: 'obs-pd-session-record obs-pd-session-record-static' });
-      const summary = hasDetails
-        ? el('summary', { class: 'obs-pd-session-summary' })
-        : el('div', { class: 'obs-pd-session-summary' });
-
-      summary.appendChild(el('div', { class: 'obs-pd-chevron', text: hasDetails ? '›' : '' }));
-      summary.appendChild(el('div', { class: 'obs-pd-session-id', text: sessionId }));
-      summary.appendChild(el('div', { class: 'obs-pd-session-score', text: score }));
-      summary.appendChild(el('div', { class: 'obs-pd-detail-value', text: df }));
-      summary.appendChild(el('div', { class: 'obs-pd-session-worked', text: goals.replace(/\n/g, ' · ') }));
-      record.appendChild(summary);
-
-      if (hasDetails) record.appendChild(detailArea);
-      panel.appendChild(record);
-    });
-
-    const pendingSessions = visibleLocalSessions(file);
-    pendingSessions.forEach((session) => {
-      const record = el('div', { class: 'obs-pd-session-record obs-pd-session-record-static', 'data-pending': 'true' });
-      const summary = el('div', { class: 'obs-pd-session-summary' });
-      const worked = el('div', { class: 'obs-pd-session-worked' });
-      worked.appendChild(el('span', { class: 'obs-pd-pending-pill', text: session.status === 'conflict' ? 'Conflict local' : 'Pending local' }));
-      if (session.goals) worked.appendChild(document.createTextNode(` ${session.goals}`));
-      summary.appendChild(el('div', { class: 'obs-pd-chevron', text: '' }));
-      summary.appendChild(el('div', { class: 'obs-pd-session-id', text: session.session || 'local' }));
-      summary.appendChild(el('div', { class: 'obs-pd-session-score', text: formatNumber(session.points) }));
-      summary.appendChild(el('div', { class: 'obs-pd-detail-value', text: `D ${formatNumber(session.d)} / F ${formatNumber(session.f)}` }));
-      summary.appendChild(worked);
-      record.appendChild(summary);
-      panel.appendChild(record);
-    });
+    if (bodyLines.length) {
+      const info = disclosureButton('Show section notes', renderMarkdownLines(bodyLines), 'obs-pd-block-details');
+      const body = el('div', { class: 'obs-pd-disclosure-body' });
+      body.appendChild(info);
+      panel.appendChild(body);
+    }
 
     wrapper.appendChild(panel);
     return wrapper;
   }
 
-  function renderNamedSessionSection(documentModel, query, displayTitle) {
-    const section = findSection(documentModel, query);
-    const subsection = findSubsection(documentModel, query);
-    const source = subsection || section;
-    if (!source) return null;
+  function renderPenaltySection(documentModel) {
+    const section = findSection(documentModel, 'penalty events');
+    if (!section) return null;
+    const table = parseFirstTable(section.lines);
+    const outsideTable = linesOutsideFirstTable(section.lines);
+    const { bodyLines, ruleLines } = splitRulesLines(outsideTable);
+    const meaningfulRows = table ? table.rows.filter(isMeaningfulDataRow) : [];
+    const totalPenalty = meaningfulRows.reduce((sum, row) => sum + parseNumber(exactRowValue(row, table, ['Total penalty'])), 0);
 
     const wrapper = document.createDocumentFragment();
-    wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: displayTitle }));
-    const card = el('div', { class: 'obs-pd-card' });
-    card.appendChild(renderMarkdownLines(source.lines));
-    wrapper.appendChild(card);
+    wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Penalty Events' }));
+    const panel = el('div', { class: 'obs-pd-section-panel' });
+    const bar = el('div', { class: 'obs-pd-section-bar' });
+    bar.appendChild(el('div', { class: 'obs-pd-section-name', text: 'Penalty Events' }));
+    bar.appendChild(el('div', { class: 'obs-pd-section-meta', text: `${meaningfulRows.length} event(s) · ${formatNumber(totalPenalty)} pts` }));
+    const rules = rulesDisclosure(ruleLines);
+    if (rules) bar.appendChild(rules);
+    panel.appendChild(bar);
+
+    if (meaningfulRows.length) {
+      panel.appendChild(renderTable({ ...table, rows: meaningfulRows }));
+    } else {
+      panel.appendChild(el('div', { class: 'obs-pd-empty-state', text: 'No penalty events.' }));
+    }
+
+    if (bodyLines.length) {
+      const body = el('div', { class: 'obs-pd-disclosure-body' });
+      body.appendChild(renderMarkdownLines(bodyLines));
+      panel.appendChild(body);
+    }
+
+    wrapper.appendChild(panel);
+    return wrapper;
+  }
+
+  function supportSectionDetails(source, label, summaryText) {
+    if (!source) return null;
+    const details = el('details', { class: 'obs-pd-block-details' });
+    const summary = el('summary', { class: 'obs-pd-compact-row' });
+    summary.appendChild(el('div', { class: 'obs-pd-compact-label', text: label }));
+    summary.appendChild(el('div', { class: 'obs-pd-section-meta', text: summaryText }));
+    summary.appendChild(el('span', { class: 'obs-pd-disclosure-button', text: 'Show' }));
+    details.appendChild(summary);
+    const body = el('div', { class: 'obs-pd-disclosure-body' });
+    body.appendChild(renderMarkdownLines(source.lines));
+    details.appendChild(body);
+    return details;
+  }
+
+  function renderSupportSection(documentModel) {
+    const supportFacts = findSection(documentModel, 'support facts') || findSubsection(documentModel, 'support facts');
+    const supportMarks = findSubsection(documentModel, 'support marks') || findSection(documentModel, 'support marks');
+    const supportPenalty = findSubsection(documentModel, 'support penalty');
+    const supportInterpretation = findSubsection(documentModel, 'support interpretation');
+    const supportFactsUsed = findSubsection(documentModel, 'support facts used');
+    if (!supportFacts && !supportMarks && !supportPenalty && !supportInterpretation && !supportFactsUsed) return null;
+
+    const factsCount = countMeaningfulRows(supportFacts ? parseFirstTable(supportFacts.lines) : null);
+    const marksCount = countMeaningfulRows(supportMarks ? parseFirstTable(supportMarks.lines) : null);
+    const supportAverage = extractSupportMetric(documentModel, /Support Score:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i) || 'not calculated';
+    const penaltyValue = extractSupportMetric(documentModel, /Support Penalty:\s*(?:\*\*)?([^*\n]+?)(?:\*\*)?(?=\n|$)/i) || 'not calculated';
+
+    const wrapper = document.createDocumentFragment();
+    wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Support' }));
+    const panel = el('div', { class: 'obs-pd-section-panel' });
+    const bar = el('div', { class: 'obs-pd-section-bar' });
+    bar.appendChild(el('div', { class: 'obs-pd-section-name', text: 'Support' }));
+    bar.appendChild(el('div', { class: 'obs-pd-section-meta', text: `Facts: ${factsCount} · Marks: ${marksCount} · Avg: ${supportAverage} · Penalty: ${penaltyValue}` }));
+    panel.appendChild(bar);
+
+    const facts = supportSectionDetails(supportFacts, 'Support Facts', `${factsCount} record(s)`);
+    if (facts) panel.appendChild(facts);
+    const marks = supportSectionDetails(supportMarks, 'Support Marks / Review', `${marksCount} mark(s) · ${supportAverage}`);
+    if (marks) panel.appendChild(marks);
+    const penalty = supportSectionDetails(supportPenalty, 'Support Penalty', penaltyValue);
+    if (penalty) panel.appendChild(penalty);
+    const interpretation = supportSectionDetails(supportInterpretation, 'Support Interpretation', 'details');
+    if (interpretation) panel.appendChild(interpretation);
+    const used = supportSectionDetails(supportFactsUsed, 'Support Facts Used', 'details');
+    if (used) panel.appendChild(used);
+
+    wrapper.appendChild(panel);
+    return wrapper;
+  }
+
+  function renderCarryoverSection(documentModel) {
+    const section = findSection(documentModel, 'carryover');
+    if (!section) return null;
+    const summarySubsection = findSubsection(documentModel, 'work score summary');
+    const summaryValues = tableToKeyValue(summarySubsection ? parseFirstTable(summarySubsection.lines) : null);
+    const incomingDebt = carryoverDebtValue(documentModel, summaryValues);
+    const netAfterDebt = providedMetricValue(pickKeyValue(summaryValues, ['Net score after carryover', 'Net after debt'])) || 'not calculated';
+
+    const wrapper = document.createDocumentFragment();
+    wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Carryover / Debt' }));
+    const panel = el('div', { class: 'obs-pd-section-panel' });
+    const incoming = el('div', { class: 'obs-pd-compact-row' });
+    incoming.appendChild(el('div', { class: 'obs-pd-compact-label', text: 'Incoming debt' }));
+    incoming.appendChild(compactValue(incomingDebt, 'violet'));
+    const details = disclosureButton('Show details', renderMarkdownLines(section.lines));
+    incoming.appendChild(details);
+    panel.appendChild(incoming);
+    const net = el('div', { class: 'obs-pd-compact-row' });
+    net.appendChild(el('div', { class: 'obs-pd-compact-label', text: 'Net after debt' }));
+    net.appendChild(compactValue(netAfterDebt, 'warn'));
+    panel.appendChild(net);
+    wrapper.appendChild(panel);
+    return wrapper;
+  }
+
+  function renderFinalSummarySection(documentModel) {
+    const section = findSection(documentModel, 'final day summary');
+    if (!section) return null;
+    const values = tableToKeyValue(parseFirstTable(section.lines));
+    const finalScore = pickKeyValue(values, ['Final Day Score']) || 'not calculated';
+    const status = section.lines.map((line) => line.match(/^Status:\s*(.+?)\s*$/i)?.[1]).find(Boolean)
+      || pickKeyValue(values, ['Work Score'])
+      || 'not closed';
+
+    const wrapper = document.createDocumentFragment();
+    wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Final Day Summary' }));
+    const panel = el('div', { class: 'obs-pd-section-panel' });
+    const row = el('div', { class: 'obs-pd-compact-row' });
+    row.appendChild(el('div', { class: 'obs-pd-compact-label', text: 'Final day score' }));
+    row.appendChild(compactValue(finalScore, finalScore === 'not calculated' ? 'warn' : 'good'));
+    row.appendChild(el('div', { class: 'obs-pd-section-meta', text: `Status: ${status}` }));
+    row.appendChild(disclosureButton('Show full summary', renderMarkdownLines(section.lines)));
+    panel.appendChild(row);
+    wrapper.appendChild(panel);
+    return wrapper;
+  }
+
+  function renderMoreOperationalDetails(documentModel) {
+    const excludedTitles = [
+      'finished sessions', 'penalty events', 'support facts', 'support review',
+      'final day summary', 'carryover'
+    ];
+    const dedicatedSupportSubsections = [
+      'support marks', 'support penalty', 'support interpretation', 'support facts used'
+    ];
+    const sections = documentModel.sections.filter((section) => {
+      const title = normalizeHeading(section.title);
+      const excludedByTitle = excludedTitles.some((query) => title.includes(normalizeHeading(query)));
+      const excludedBySupportSubsection = section.subsections.some((subsection) => {
+        const subsectionTitle = normalizeHeading(subsection.title);
+        return dedicatedSupportSubsections.some((query) => subsectionTitle.includes(normalizeHeading(query)));
+      });
+      return !excludedByTitle && !excludedBySupportSubsection;
+    });
+    if (!sections.length) return null;
+
+    const wrapper = document.createDocumentFragment();
+    wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'More operational details' }));
+    const panel = el('div', { class: 'obs-pd-section-panel' });
+    const details = el('details', { class: 'obs-pd-block-details' });
+    const summary = el('summary', { class: 'obs-pd-compact-row' });
+    summary.appendChild(el('div', { class: 'obs-pd-compact-label', text: sections.map((section) => section.title).join(' · ') }));
+    summary.appendChild(el('span', { class: 'obs-pd-disclosure-button', text: 'Show' }));
+    details.appendChild(summary);
+    const body = el('div', { class: 'obs-pd-disclosure-body' });
+    sections.forEach((section) => body.appendChild(renderGenericSection(section)));
+    details.appendChild(body);
+    panel.appendChild(details);
+    wrapper.appendChild(panel);
     return wrapper;
   }
 
@@ -1917,27 +2382,29 @@
     const model = parseMarkdownDocument(file.text);
     wrapper.appendChild(renderDocumentHeader(model));
 
+    const diagnostic = localOutboxDiagnostic(file);
+    if (diagnostic) wrapper.appendChild(el('div', { class: 'obs-pd-section-warning', text: diagnostic.message }));
+
     const overview = renderSessionOverview(model, file);
     if (overview) wrapper.appendChild(overview);
 
     const sessions = renderSessionList(model, file);
     if (sessions) wrapper.appendChild(sessions);
 
-    const penalties = renderNamedSessionSection(model, 'penalty events', 'Penalty Events');
+    const penalties = renderPenaltySection(model);
     if (penalties) wrapper.appendChild(penalties);
 
-    const supportMarks = renderNamedSessionSection(model, 'support marks', 'Support');
-    if (supportMarks) wrapper.appendChild(supportMarks);
-    else {
-      const supportFacts = renderNamedSessionSection(model, 'support facts', 'Support Facts');
-      if (supportFacts) wrapper.appendChild(supportFacts);
-    }
+    const support = renderSupportSection(model);
+    if (support) wrapper.appendChild(support);
 
-    const carryover = renderNamedSessionSection(model, 'carryover', 'Carryover / Debt');
+    const carryover = renderCarryoverSection(model);
     if (carryover) wrapper.appendChild(carryover);
 
-    const finalSummary = renderNamedSessionSection(model, 'final day summary', 'Final Day Summary');
+    const finalSummary = renderFinalSummarySection(model);
     if (finalSummary) wrapper.appendChild(finalSummary);
+
+    const more = renderMoreOperationalDetails(model);
+    if (more) wrapper.appendChild(more);
 
     return wrapper;
   }

@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.4.3
+Doc version: v0.4.7
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -89,6 +89,21 @@ http://127.0.0.1:8765/planning/dashboard/index.md
 ```
 
 A successful live load remains usable even if snapshot writing fails. When the index request fails, the viewer uses only a compatible snapshot and labels it `Offline cache`.
+
+Formatted operational-day UI contract:
+
+```text
+- Repository and local pending/conflict sessions are rendered in one session list.
+- Local sessions remain visible even when the repository Finished Sessions table has zero rows.
+- Pending session Time, Progress Signal and Result are available in collapsed row details.
+- Penalty rules, support details, carryover breakdown, final summary and extended operational sections are collapsed by default.
+- Support Facts and Support Marks / Review are rendered independently; one never suppresses the other.
+- Carryover / Debt exposes Incoming debt and Net after debt in the compact view before details are expanded.
+- Empty placeholders such as `not provided` do not block a real Carryover amount from being shown.
+- Dedicated Support sections are excluded from More operational details to avoid duplicate rendering.
+- A local outbox/path mismatch is shown as a diagnostic warning instead of silently hiding local records.
+- Finished-session display resolves Session, row number, Goal(s), score and D/F columns by exact header names; Markdown table parsing preserves escaped `\|` characters inside cells.
+```
 
 Live Markdown reads intentionally bypass the browser/Tampermonkey HTTP cache:
 
