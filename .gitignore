@@ -1,0 +1,44 @@
+﻿# Images and attachments
+**/attachments/
+**/attachment/
+**/images/
+**/image/
+**/assets/
+**/media/
+
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.bmp
+*.ico
+
+# Documents and media not needed in the lightweight docs repo
+*.pdf
+*.html
+*.canvas
+
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+*.mp3
+*.wav
+*.ogg
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Transfer/review artifacts
+*.diff
+*.patch
+
+# Local application/system files
+.obsidian/
+.DS_Store
+Thumbs.db
