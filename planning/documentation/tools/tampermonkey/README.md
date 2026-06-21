@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.4.9
+Doc version: v0.5.0
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -11,12 +11,13 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   reusable command projection only; command meaning stays in owner documentation.
 
 planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
-  read-only local-first dashboard projection; opens on the active Day by default,
-  reads repo Markdown through localhost, keeps a source-bound IndexedDB snapshot,
-  displays pending local sessions and exports reviewed JSON.
+  read-only local-first dashboard projection; opens on Day -> Plan by default,
+  separates Plan / Sessions / Summary into Day subtabs, reads repo Markdown through localhost,
+  keeps a source-bound IndexedDB snapshot, displays pending local sessions and exports reviewed JSON.
 
 planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
-  local D/F pattern capture, docked launcher above Planning/Commands by default,
+  local D/F pattern capture with a docked launcher above Planning/Commands,
+  a centered draggable/resizable work panel, Alt+F1 toggle,
   one-click 10/20/30-minute session timer, sound/system notifications,
   and one-click finished-session capture into the shared pending outbox.
 ```
@@ -108,7 +109,12 @@ Formatted operational-day UI contract:
 - A local outbox/path mismatch is shown as a diagnostic warning instead of silently hiding local records.
 - Finished-session display resolves Session, row number, Goal(s), score and D/F columns by exact header names; Markdown table parsing preserves escaped `\|` characters inside cells.
 - Planning button and `Alt+F3` open the active Day tab; Index is the fallback only when no Day source is available.
-- Default launcher stack is Capture above Planning above Commands; dragging preserves a custom Capture position and Reset UI restores the docked stack.
+- Day uses internal `Plan / Sessions / Summary` subtabs. Every new Dashboard open starts at `Day -> Plan`.
+- `Plan` owns planning-day content plus compact work/session metrics; `Sessions` owns session overview, finished/pending/conflict rows and penalties; `Summary` owns Support, carryover, final summary and extended operational details.
+- Default launcher stack is Capture above Planning above Commands.
+- Capture launcher stays in the corner while closed; click or `Alt+F1` opens a centered work panel.
+- The open Capture panel remains draggable and resizable. Width/height persist; every new open recenters the panel. Close/Escape returns the launcher without clearing capture, timer or pending state.
+- Hotkeys: `Alt+F1` Capture, `Alt+F2` Commands, `Alt+F3` Planning.
 ```
 
 Live Markdown reads intentionally bypass the browser/Tampermonkey HTTP cache:

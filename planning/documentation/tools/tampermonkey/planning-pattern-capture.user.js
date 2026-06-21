@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Planning Pattern Capture v0.4.4
+// @name         Planning Pattern Capture v0.4.5
 // @namespace    planning-pattern-capture
-// @version      0.4.4
+// @version      0.4.5
 // @description  ChatGPT-only capture panel with D/F scoring, one-click session timer milestones, finished-session outbox, and reviewed batch sync
 // @match        *://chatgpt.com/*
 // @match        *://*.chatgpt.com/*
@@ -45,7 +45,7 @@
   const BASE_TOTAL_SCORE = 3.5;
   const BASE_DIM_SCORE = BASE_TOTAL_SCORE / 2;
   const DF_STEP = 0.1;
-  const SETTINGS_VERSION = "0.4.4";
+  const SETTINGS_VERSION = "0.4.5";
   const TIMER_SCHEMA = "planning-pattern-session-timer-v1";
   const TIMER_TOTAL_MS = 30 * 60 * 1000;
   const TIMER_MILESTONES = [
@@ -56,13 +56,12 @@
 
   const CAPTURE_DOCK_RIGHT = 18;
   const CAPTURE_DOCK_COLLAPSED_BOTTOM = 158;
-  const CAPTURE_DOCK_EXPANDED_BOTTOM = 18;
+  const CAPTURE_VIEWPORT_MARGIN = 12;
 
   const DEFAULT_SETTINGS = {
     scriptVersion: SETTINGS_VERSION,
     collapsed: true,
     hidden: false,
-    docked: true,
     x: 80,
     y: 120,
     width: 410,
@@ -309,6 +308,7 @@
   let didDragExpanded = false;
   let resizeObserver = null;
   let resizeSaveTimer = null;
+  let openPanelPosition = null;
 
   // Migrate the old persistent close state: closing is page-local from v0.4.2 onward.
   save(KEY_SETTINGS, settings);
@@ -345,6 +345,20 @@
     if (event.repeat) return;
     const key = String(event.key || '');
 
+    if (event.altKey && !event.ctrlKey && !event.metaKey && key === 'F1') {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleCapturePanel();
+      return;
+    }
+
+    if (key === 'Escape' && !settings.collapsed) {
+      event.preventDefault();
+      event.stopPropagation();
+      closeCapturePanel();
+      return;
+    }
+
     if (event.ctrlKey && event.altKey && key.toLowerCase() === 'p') {
       event.preventDefault();
       event.stopPropagation();
@@ -352,10 +366,50 @@
     }
   }
 
-  function hidePanel() {
-    if (panelHiddenForPage) return;
-    panelHiddenForPage = true;
+  function centeredOpenPanelPosition() {
+    settings = normalizeSettings(settings);
+    const width = Math.min(settings.width, Math.max(280, window.innerWidth - CAPTURE_VIEWPORT_MARGIN * 2));
+    const height = Math.min(settings.height, Math.max(260, window.innerHeight - CAPTURE_VIEWPORT_MARGIN * 2));
+    return {
+      x: Math.max(CAPTURE_VIEWPORT_MARGIN, Math.round((window.innerWidth - width) / 2)),
+      y: Math.max(CAPTURE_VIEWPORT_MARGIN, Math.round((window.innerHeight - height) / 2))
+    };
+  }
+
+  function clampOpenPanelPosition(position) {
+    const fallback = centeredOpenPanelPosition();
+    if (!position) return fallback;
+    const maxX = Math.max(CAPTURE_VIEWPORT_MARGIN, window.innerWidth - settings.width - CAPTURE_VIEWPORT_MARGIN);
+    const maxY = Math.max(CAPTURE_VIEWPORT_MARGIN, window.innerHeight - settings.height - CAPTURE_VIEWPORT_MARGIN);
+    return {
+      x: Math.min(Math.max(CAPTURE_VIEWPORT_MARGIN, Number(position.x) || fallback.x), maxX),
+      y: Math.min(Math.max(CAPTURE_VIEWPORT_MARGIN, Number(position.y) || fallback.y), maxY)
+    };
+  }
+
+  function openCapturePanel() {
+    panelHiddenForPage = false;
+    settings.collapsed = false;
+    openPanelPosition = centeredOpenPanelPosition();
+    save(KEY_SETTINGS, settings);
     refresh();
+  }
+
+  function closeCapturePanel() {
+    panelHiddenForPage = false;
+    settings.collapsed = true;
+    openPanelPosition = null;
+    save(KEY_SETTINGS, settings);
+    refresh();
+  }
+
+  function toggleCapturePanel() {
+    if (settings.collapsed || panelHiddenForPage) openCapturePanel();
+    else closeCapturePanel();
+  }
+
+  function hidePanel() {
+    closeCapturePanel();
   }
 
   function waitForBodyAndRender() {
@@ -390,7 +444,8 @@
 
   function forceShowPanel() {
     panelHiddenForPage = false;
-    settings = normalizeSettings({ ...DEFAULT_SETTINGS, collapsed: false, docked: true });
+    settings = normalizeSettings({ ...DEFAULT_SETTINGS, collapsed: false });
+    openPanelPosition = centeredOpenPanelPosition();
     save(KEY_SETTINGS, settings);
     refresh();
     toast("PPC shown/reset");
@@ -403,7 +458,6 @@
     merged.width = clampNumber(merged.width, 280, Math.max(280, window.innerWidth - 12), DEFAULT_SETTINGS.width);
     merged.height = clampNumber(merged.height, 260, Math.max(260, window.innerHeight - 12), DEFAULT_SETTINGS.height);
     merged.collapsed = Boolean(merged.collapsed);
-    merged.docked = Boolean(merged.docked);
     merged.hidden = false;
     merged.timerSoundEnabled = merged.timerSoundEnabled !== false;
     merged.timerVolume = clampNumber(merged.timerVolume, 0, 1, DEFAULT_SETTINGS.timerVolume);
@@ -545,20 +599,12 @@
   function loadSettings() {
     const current = load(KEY_SETTINGS, null);
     if (!current) return { ...DEFAULT_SETTINGS };
-
-    const hasDockSetting = typeof current.docked === "boolean";
-    const legacyDefaultPosition = Number(current.x) === 80 && Number(current.y) === 120;
-    const migrated = {
+    return {
       ...DEFAULT_SETTINGS,
       ...current,
       hidden: false,
-      scriptVersion: SETTINGS_VERSION,
+      scriptVersion: SETTINGS_VERSION
     };
-
-    // Preserve manually moved panels. Only the untouched legacy default is migrated into the shared launcher stack.
-    if (!hasDockSetting) migrated.docked = legacyDefaultPosition;
-    if (!hasDockSetting && legacyDefaultPosition) migrated.collapsed = true;
-    return migrated;
   }
 
   function save(key, value) {
@@ -1199,8 +1245,9 @@
   }
 
   function resetPanelPosition() {
-    settings = { ...DEFAULT_SETTINGS, collapsed: true, docked: true };
+    settings = { ...DEFAULT_SETTINGS, collapsed: true };
     panelHiddenForPage = false;
+    openPanelPosition = null;
     saveAll();
     refresh();
   }
@@ -1527,16 +1574,17 @@
       if (resizeObserver) { resizeObserver.disconnect(); resizeObserver = null; }
       settings = normalizeSettings(settings);
       root.innerHTML = "";
-      if (settings.docked) {
+      if (settings.collapsed) {
         root.style.left = "auto";
         root.style.top = "auto";
         root.style.right = `${CAPTURE_DOCK_RIGHT}px`;
-        root.style.bottom = `${settings.collapsed ? CAPTURE_DOCK_COLLAPSED_BOTTOM : CAPTURE_DOCK_EXPANDED_BOTTOM}px`;
+        root.style.bottom = `${CAPTURE_DOCK_COLLAPSED_BOTTOM}px`;
       } else {
+        openPanelPosition = clampOpenPanelPosition(openPanelPosition);
         root.style.right = "auto";
         root.style.bottom = "auto";
-        root.style.left = `${settings.x}px`;
-        root.style.top = `${settings.y}px`;
+        root.style.left = `${openPanelPosition.x}px`;
+        root.style.top = `${openPanelPosition.y}px`;
       }
       root.style.display = panelHiddenForPage ? "none" : "block";
       if (panelHiddenForPage) return;
@@ -1576,16 +1624,12 @@
     const el = document.createElement("div");
     el.className = "ppc-collapsed";
     el.textContent = collapsedCaptureLabel();
-    el.title = "Click to expand. Drag to move.";
+    el.title = "Open Capture · Alt+F1";
     el.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      if (didDragCollapsed) { didDragCollapsed = false; return; }
-      settings.collapsed = false;
-      saveAll();
-      refresh();
+      openCapturePanel();
     });
-    makeDraggable(el, true);
     root.appendChild(el);
   }
 
@@ -1610,8 +1654,8 @@
     const controls = document.createElement("div");
     controls.className = "ppc-header-controls";
     controls.append(
-      button("−", "ppc-mini", () => { settings.collapsed = true; saveAll(); refresh(); }),
-      button("×", "ppc-mini", hidePanel)
+      button("−", "ppc-mini", closeCapturePanel),
+      button("×", "ppc-mini", closeCapturePanel)
     );
 
     header.addEventListener("click", (e) => {
@@ -1619,9 +1663,7 @@
       if (didDragExpanded) { didDragExpanded = false; return; }
       e.preventDefault();
       e.stopPropagation();
-      settings.collapsed = true;
-      saveAll();
-      refresh();
+      closeCapturePanel();
     });
 
     header.append(headerTitle, headerHint, controls);
@@ -2236,19 +2278,17 @@
     let startX = 0, startY = 0, originX = 0, originY = 0, nextX = 0, nextY = 0;
     let dragging = false, moved = false, rafId = null;
     handle.addEventListener("mousedown", (e) => {
-      if (e.button !== 0) return;
-      dragging = true; moved = false;
-      startX = e.clientX; startY = e.clientY;
-      if (settings.docked) {
-        const rect = root.getBoundingClientRect();
-        settings.docked = false;
-        settings.x = Math.round(rect.left);
-        settings.y = Math.round(rect.top);
-        root.style.right = "auto";
-        root.style.bottom = "auto";
-      }
-      originX = settings.x; originY = settings.y;
-      nextX = originX; nextY = originY;
+      if (e.button !== 0 || isCollapsed) return;
+      const rect = root.getBoundingClientRect();
+      dragging = true;
+      moved = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      originX = Math.round(rect.left);
+      originY = Math.round(rect.top);
+      nextX = originX;
+      nextY = originY;
+      openPanelPosition = { x: originX, y: originY };
       root.style.willChange = "transform";
       root.style.left = `${originX}px`;
       root.style.top = `${originY}px`;
@@ -2262,8 +2302,10 @@
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
       if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
-      nextX = Math.max(0, originX + dx);
-      nextY = Math.max(0, originY + dy);
+      const maxX = Math.max(CAPTURE_VIEWPORT_MARGIN, window.innerWidth - settings.width - CAPTURE_VIEWPORT_MARGIN);
+      const maxY = Math.max(CAPTURE_VIEWPORT_MARGIN, window.innerHeight - settings.height - CAPTURE_VIEWPORT_MARGIN);
+      nextX = Math.min(Math.max(CAPTURE_VIEWPORT_MARGIN, originX + dx), maxX);
+      nextY = Math.min(Math.max(CAPTURE_VIEWPORT_MARGIN, originY + dy), maxY);
       if (rafId === null) rafId = requestAnimationFrame(applyDragTransform);
     }
     function applyDragTransform() {
@@ -2274,17 +2316,12 @@
     function onUp() {
       dragging = false;
       if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
-      settings.x = nextX; settings.y = nextY;
-      root.style.left = `${settings.x}px`;
-      root.style.top = `${settings.y}px`;
+      openPanelPosition = { x: nextX, y: nextY };
+      root.style.left = `${nextX}px`;
+      root.style.top = `${nextY}px`;
       root.style.transform = "";
       root.style.willChange = "";
-      saveAll();
-      if (isCollapsed && moved) {
-        didDragCollapsed = true;
-        setTimeout(() => { didDragCollapsed = false; }, 0);
-      }
-      if (!isCollapsed && moved) {
+      if (moved) {
         didDragExpanded = true;
         setTimeout(() => { didDragExpanded = false; }, 0);
       }
@@ -2330,8 +2367,8 @@
       .ppc-timer-start { background: #14532d; color: #dcfce7; border-color: #22c55e; font-weight: 800; }
       .ppc-timer-pause { background: #713f12; color: #fef3c7; border-color: #f59e0b; font-weight: 800; }
       .ppc-timer-notice { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; padding: 7px; border: 1px solid rgba(248,113,113,0.38); border-radius: 8px; background: rgba(127,29,29,0.35); color: #fee2e2; font-size: 11px; line-height: 1.35; }
-      .ppc-collapsed { background: #1f2937; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 8px 10px; cursor: move; user-select: none; box-shadow: 0 8px 24px rgba(0,0,0,0.25); text-align: center; white-space: nowrap; }
-      .ppc-collapsed::after { content: "  click"; opacity: 0.45; font-size: 10px; }
+      .ppc-collapsed { background: #1f2937; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 8px 10px; cursor: pointer; user-select: none; box-shadow: 0 8px 24px rgba(0,0,0,0.25); text-align: center; white-space: nowrap; }
+      .ppc-collapsed::after { content: "  Alt+F1"; opacity: 0.45; font-size: 10px; }
       .ppc-panel { background: #111827; border: 1px solid rgba(255,255,255,0.22); border-radius: 12px; overflow: hidden; box-shadow: 0 16px 40px rgba(0,0,0,0.35); max-width: calc(100vw - 12px); max-height: calc(100vh - 12px); min-width: 280px; min-height: 260px; display: flex; flex-direction: column; position: relative; resize: both; }
       .ppc-panel::after { content: ""; position: absolute; right: 5px; bottom: 5px; width: 12px; height: 12px; border-right: 2px solid rgba(255,255,255,0.35); border-bottom: 2px solid rgba(255,255,255,0.35); pointer-events: none; }
       .ppc-header { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; background: #1f2937; padding: 7px 8px; cursor: move; user-select: none; font-weight: 700; flex: 0 0 auto; min-width: 0; }

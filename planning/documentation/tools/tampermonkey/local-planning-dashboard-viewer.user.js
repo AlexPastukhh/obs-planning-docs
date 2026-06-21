@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OBS Local Planning Dashboard Viewer
 // @namespace    https://github.com/AlexPastukhh/obs/planning-dashboard
-// @version      0.4.9
+// @version      0.5.0
 // @description  Local-first read-only planning dashboard with offline snapshot cache, pending sessions, and reviewed batch export.
 // @author       OBS planning-system
 // @match        https://chatgpt.com/*
@@ -36,6 +36,7 @@
     files: {},
     groups: {},
     activeTab: 'day',
+    daySubtab: 'plan',
     rawMode: false,
     settingsOpen: false,
     loading: false,
@@ -679,6 +680,45 @@
       border: 1px solid rgba(148, 163, 184, .22);
       border-radius: 11px;
       background: rgba(15, 28, 48, .92);
+    }
+
+    .obs-pd-day-subtabs {
+      display: flex;
+      gap: 7px;
+      margin-bottom: 10px;
+      padding: 7px;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 11px;
+      background: rgba(15, 28, 48, .92);
+    }
+
+    .obs-pd-day-subtab {
+      min-width: 92px;
+      padding: 7px 14px;
+      border: 1px solid rgba(148, 163, 184, .28);
+      border-radius: 8px;
+      background: #101b2d;
+      color: #cbd8e9;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 720;
+    }
+
+    .obs-pd-day-subtab:hover,
+    .obs-pd-day-subtab:focus-visible {
+      outline: none;
+      background: #243750;
+      border-color: rgba(147, 197, 253, .56);
+    }
+
+    .obs-pd-day-subtab[data-active="true"] {
+      background: #1d4ed8;
+      border-color: #60a5fa;
+      color: white;
+    }
+
+    .obs-pd-day-content {
+      min-width: 0;
     }
 
     .obs-pd-section-bar,
@@ -1944,6 +1984,29 @@ Dashboard: ${file.path}`
       .filter(Boolean);
   }
 
+
+  function renderPlanningDayMetrics(file) {
+    if (!file || file.error) return null;
+    const documentModel = parseMarkdownDocument(file.text);
+    const summarySubsection = findSubsection(documentModel, 'work score summary');
+    const values = tableToKeyValue(summarySubsection ? parseFirstTable(summarySubsection.lines) : null);
+    const sessionsSection = findSection(documentModel, 'finished sessions') || findSection(documentModel, 'sessions');
+    const sessionTable = sessionsSection ? parseFirstTable(sessionsSection.lines) : null;
+    const repositoryCount = countMeaningfulRows(sessionTable);
+    const localSessions = visibleLocalSessions(file);
+    const pendingSessions = localSessions.filter((session) => session.status === 'pending');
+    const pendingPoints = pendingSessions.reduce((sum, session) => sum + parseNumber(session.points), 0);
+    const cards = [
+      ['Work Points', pickKeyValue(values, ['Work Points']) || '0', 'neutral'],
+      ['Pending Points', pendingSessions.length ? formatNumber(pendingPoints) : '0', pendingSessions.length ? 'warn' : 'neutral'],
+      ['Net Work Score', pickKeyValue(values, ['Net Work Score']) || '0', 'good'],
+      ['Sessions', String(repositoryCount + localSessions.length), 'violet']
+    ];
+    const grid = el('div', { class: 'obs-pd-score-grid' });
+    cards.forEach(([label, value, tone]) => grid.appendChild(scoreCard(label, value, tone)));
+    return grid;
+  }
+
   function compactSessionName(row, table) {
     const number = exactRowValue(row, table, ['#', 'Session #']);
     const sessionText = exactRowValue(row, table, ['Session']);
@@ -2426,6 +2489,118 @@ Dashboard: ${file.path}`
     body.appendChild(renderFormattedDocument(file.path, file.text, label));
   }
 
+  function renderPlanningDayTab(day, sessionDay) {
+    const wrapper = el('div', { class: 'obs-pd-day-content' });
+    if (!day) {
+      const metrics = renderPlanningDayMetrics(sessionDay);
+      if (metrics) wrapper.appendChild(metrics);
+      wrapper.appendChild(el('div', { class: 'obs-pd-note', text: 'No active planning day is linked.' }));
+      return wrapper;
+    }
+    if (day.error) {
+      wrapper.appendChild(sourceBar(day.path, 'Planning Day'));
+      wrapper.appendChild(el('div', { class: 'obs-pd-error', text: day.error }));
+      return wrapper;
+    }
+
+    wrapper.appendChild(sourceBar(day.path, 'Planning Day'));
+    const model = parseMarkdownDocument(day.text);
+    wrapper.appendChild(renderDocumentHeader(model));
+    const metrics = renderPlanningDayMetrics(sessionDay);
+    if (metrics) wrapper.appendChild(metrics);
+
+    if (trimBlankLines(model.preamble).length) {
+      const preambleCard = el('div', { class: 'obs-pd-card' });
+      preambleCard.appendChild(renderMarkdownLines(model.preamble));
+      wrapper.appendChild(preambleCard);
+    }
+
+    if (!model.sections.length) {
+      wrapper.appendChild(el('div', { class: 'obs-pd-note', text: 'Known planning sections were not found. Use Raw mode to inspect the source.' }));
+      return wrapper;
+    }
+
+    model.sections.forEach((section) => wrapper.appendChild(renderGenericSection(section)));
+    return wrapper;
+  }
+
+  function operationalDayModel(wrapper, file) {
+    if (!file) {
+      wrapper.appendChild(el('div', { class: 'obs-pd-note', text:
+        'No operational session day is linked.\n\nAdd a real matching path as active_session_day in planning/dashboard/index.md when the detailed file exists. D/F, support, penalties and debt are not inferred from the planning file.'
+      }));
+      return null;
+    }
+    wrapper.appendChild(sourceBar(file.path, 'Operational Session Day'));
+    if (file.error) {
+      wrapper.appendChild(el('div', { class: 'obs-pd-error', text: `Could not load session day:\n${file.path}\n\n${file.error}` }));
+      return null;
+    }
+    const model = parseMarkdownDocument(file.text);
+    wrapper.appendChild(renderDocumentHeader(model));
+    const diagnostic = localOutboxDiagnostic(file);
+    if (diagnostic) wrapper.appendChild(el('div', { class: 'obs-pd-section-warning', text: diagnostic.message }));
+    return model;
+  }
+
+  function renderDaySessionsTab(sessionDay) {
+    const wrapper = el('div', { class: 'obs-pd-day-content' });
+    const model = operationalDayModel(wrapper, sessionDay);
+    if (!model) return wrapper;
+
+    const overview = renderSessionOverview(model, sessionDay);
+    if (overview) wrapper.appendChild(overview);
+    const sessions = renderSessionList(model, sessionDay);
+    if (sessions) wrapper.appendChild(sessions);
+    const penalties = renderPenaltySection(model);
+    if (penalties) wrapper.appendChild(penalties);
+    if (!overview && !sessions && !penalties) {
+      wrapper.appendChild(el('div', { class: 'obs-pd-note', text: 'No session data is available.' }));
+    }
+    return wrapper;
+  }
+
+  function renderDaySummaryTab(sessionDay) {
+    const wrapper = el('div', { class: 'obs-pd-day-content' });
+    const model = operationalDayModel(wrapper, sessionDay);
+    if (!model) return wrapper;
+
+    const support = renderSupportSection(model);
+    if (support) wrapper.appendChild(support);
+    const carryover = renderCarryoverSection(model);
+    if (carryover) wrapper.appendChild(carryover);
+    const finalSummary = renderFinalSummarySection(model);
+    if (finalSummary) wrapper.appendChild(finalSummary);
+    const more = renderMoreOperationalDetails(model);
+    if (more) wrapper.appendChild(more);
+    if (!support && !carryover && !finalSummary && !more) {
+      wrapper.appendChild(el('div', { class: 'obs-pd-note', text: 'No summary data is available.' }));
+    }
+    return wrapper;
+  }
+
+  function renderDaySubtabs(body) {
+    const definitions = [
+      ['plan', 'Plan'],
+      ['sessions', 'Sessions'],
+      ['summary', 'Summary']
+    ];
+    if (!definitions.some(([key]) => key === state.daySubtab)) state.daySubtab = 'plan';
+    const tabs = el('div', { class: 'obs-pd-day-subtabs' });
+    definitions.forEach(([key, label]) => {
+      tabs.appendChild(el('button', {
+        class: 'obs-pd-day-subtab',
+        'data-active': String(state.daySubtab === key),
+        text: label,
+        onclick: () => {
+          state.daySubtab = key;
+          render();
+        }
+      }));
+    });
+    body.appendChild(tabs);
+  }
+
   function renderDayComposite(body) {
     const day = state.files.day;
     const sessionDay = state.files.sessionDay;
@@ -2437,32 +2612,16 @@ Dashboard: ${file.path}`
       return;
     }
 
-    const layout = el('div', { class: 'obs-pd-two-column' });
-    const planningPane = el('div', { class: 'obs-pd-pane' });
-    const sessionPane = el('div', { class: 'obs-pd-pane' });
-
-    if (day) {
-      if (day.error) {
-        planningPane.appendChild(sourceBar(day.path, 'Planning Day'));
-        planningPane.appendChild(el('div', { class: 'obs-pd-error', text: day.error }));
-      } else {
-        planningPane.appendChild(renderFormattedDocument(day.path, day.text, 'Planning Day'));
-      }
-    } else {
-      planningPane.appendChild(el('div', { class: 'obs-pd-note', text: 'No active planning day is linked.' }));
+    renderDaySubtabs(body);
+    if (state.daySubtab === 'sessions') {
+      body.appendChild(renderDaySessionsTab(sessionDay));
+      return;
     }
-
-    if (sessionDay) {
-      sessionPane.appendChild(renderSessionLedger(sessionDay));
-    } else {
-      sessionPane.appendChild(el('div', { class: 'obs-pd-note', text:
-        'No operational session day is linked.\n\nAdd a real matching path as active_session_day in planning/dashboard/index.md when the detailed file exists. D/F, support, penalties and debt are not inferred from the planning file.'
-      }));
+    if (state.daySubtab === 'summary') {
+      body.appendChild(renderDaySummaryTab(sessionDay));
+      return;
     }
-
-    layout.appendChild(planningPane);
-    layout.appendChild(sessionPane);
-    body.appendChild(layout);
+    body.appendChild(renderPlanningDayTab(day, sessionDay));
   }
 
   async function loadOptional(path) {
@@ -2591,7 +2750,11 @@ Check:
   }
 
   function currentPrimaryFile() {
-    if (state.activeTab === 'day') return state.files.day || state.files.sessionDay || null;
+    if (state.activeTab === 'day') {
+      return state.daySubtab === 'plan'
+        ? (state.files.day || state.files.sessionDay || null)
+        : (state.files.sessionDay || state.files.day || null);
+    }
     const group = state.groups[state.activeTab];
     if (group?.length) return group[0];
     return state.files[state.activeTab] || null;
@@ -2621,6 +2784,7 @@ Check:
         text: label,
         onclick: () => {
           state.activeTab = key;
+          if (key === 'day') state.daySubtab = 'plan';
           render();
         }
       }));
@@ -2706,6 +2870,7 @@ Check:
     if (!open) return;
     if (!state.indexText) await refresh();
     state.activeTab = preferredOpenTab();
+    state.daySubtab = 'plan';
     render();
   }
 
