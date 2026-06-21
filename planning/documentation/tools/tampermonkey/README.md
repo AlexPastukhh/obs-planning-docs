@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.5.0
+Doc version: v0.6.2
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -9,16 +9,19 @@ Scope: tracked Tampermonkey scripts used by the OBS planning system, including r
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   reusable command projection only; command meaning stays in owner documentation.
+  Its floating launcher hides while Dashboard is open; Alt+F2 and Tools -> Commands remain available.
 
 planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
   read-only local-first dashboard projection; opens on Day -> Plan by default,
-  separates Plan / Sessions / Summary into Day subtabs, reads repo Markdown through localhost,
+  uses a compact planning-first shell with Plan / Sessions / Summary subtabs,
+  moves diagnostics, exports, Raw, settings and local sync into a closed-by-default Tools drawer,
   keeps a source-bound IndexedDB snapshot, displays pending local sessions and exports reviewed JSON.
 
 planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   local D/F pattern capture with a docked launcher above Planning/Commands,
-  a centered draggable/resizable work panel, Alt+F1 toggle,
-  one-click 10/20/30-minute session timer, sound/system notifications,
+  a centered draggable/resizable work panel and Alt+F1 toggle.
+  Its floating launcher hides while Dashboard is open; Alt+F1 and Tools -> Capture remain available.
+  It also provides the one-click 10/20/30-minute session timer, sound/system notifications,
   and one-click finished-session capture into the shared pending outbox.
 ```
 
@@ -96,24 +99,37 @@ A successful live load remains usable even if snapshot writing fails. When the i
 Formatted operational-day UI contract:
 
 ```text
+- Every new Dashboard open starts at `Day -> Plan`; Index is fallback only when no Day source exists.
+- Dashboard uses a compact header and compact global navigation so planning content appears without initial scrolling on a short viewport.
+- The long offline/cache error line is removed from the planning surface and remains available in Tools -> Status & diagnostics.
+- A compact Live / Offline / No data badge remains visible in the Dashboard title and exposes snapshot/error detail through its tooltip.
+- Day identity, status, source path and the primary always-visible Open action are rendered in one compact row.
+- Day keeps `Plan / Sessions / Summary` subtabs.
+- Plan primary metrics are only Work Points, Net Work Score and Sessions.
+- Pending Points and Preview Work Points are secondary local-sync data, never primary Plan or Session Overview cards.
+- Local sync is available in Tools and as one collapsed technical block inside Sessions.
+- Current Target Scenario remains open by default and preserves every source line.
+- Plan Core remains open by default and preserves the exact Minimum / Base / Desired / Max or Very Wide structure.
+- Scenario cards show a short source-derived preview while collapsed, hide that preview while expanded, and expose the complete original content without duplicated preview lines.
+- Scope Units and Acceptance Criteria are collapsed by default with counts; expansion shows their full original table/list.
 - Repository and local pending/conflict sessions are rendered in one session list.
 - Local sessions remain visible even when the repository Finished Sessions table has zero rows.
-- Pending session Time, Progress Signal and Result are available in collapsed row details.
-- Penalty rules, carryover breakdown, final summary and extended operational sections are collapsed by default.
+- Pending session Time, Progress Signal and Result remain available in row details.
+- Penalty rules, carryover breakdown, final summary and extended operational sections remain collapsed by default.
 - Support compact view shows the live average and every numeric Support Mark row (`Category`, `Score`, `Reason`).
-- Support average and Support Penalty are not duplicated in Session Overview; Support metrics appear only in the dedicated Support block.
-- Support facts, penalty, interpretation and facts-used remain source data available through Raw/Open instead of cluttering the compact view.
-- Carryover / Debt exposes Incoming debt and Net after debt in the compact view before details are expanded.
-- Empty placeholders such as `not provided` do not block a real Carryover amount from being shown.
-- Dedicated Support sections are excluded from More operational details to avoid duplicate rendering.
-- A local outbox/path mismatch is shown as a diagnostic warning instead of silently hiding local records.
-- Finished-session display resolves Session, row number, Goal(s), score and D/F columns by exact header names; Markdown table parsing preserves escaped `\|` characters inside cells.
-- Planning button and `Alt+F3` open the active Day tab; Index is the fallback only when no Day source is available.
-- Day uses internal `Plan / Sessions / Summary` subtabs. Every new Dashboard open starts at `Day -> Plan`.
-- `Plan` owns planning-day content plus compact work/session metrics; `Sessions` owns session overview, finished/pending/conflict rows and penalties; `Summary` owns Support, carryover, final summary and extended operational details.
-- Default launcher stack is Capture above Planning above Commands.
-- Capture launcher stays in the corner while closed; click or `Alt+F1` opens a centered work panel.
-- The open Capture panel remains draggable and resizable. Width/height persist; every new open recenters the panel. Close/Escape returns the launcher without clearing capture, timer or pending state.
+- Support average and Support Penalty are not duplicated in Session Overview.
+- Support facts, penalty, interpretation and facts-used remain source data available through Raw/Open.
+- Carryover / Debt exposes Incoming debt and Net after debt before details are expanded.
+- Empty placeholders such as `not provided` do not block a real Carryover amount.
+- Dedicated Support sections are excluded from More operational details.
+- A local outbox/path mismatch is shown as a diagnostic warning.
+- Finished-session display resolves exact headers and Markdown table parsing preserves escaped `\|` characters.
+- Tools is closed by default, removed from pointer and keyboard interaction while closed, and owns diagnostics, source paths, local sync, exports, Raw, settings, Capture and Commands.
+- Plan / Sessions / Summary preserve separate scroll positions while the current Dashboard instance remains open; every new Dashboard open resets to Day -> Plan at the top.
+- Day subtabs expose tab roles, selected state and Left/Right Arrow keyboard switching; Tools exposes expanded/hidden state and returns focus to its trigger when closed.
+- Floating Capture and Commands launchers hide while Dashboard is open and return when Dashboard closes.
+- Capture remains available through Alt+F1 or Tools -> Capture; Commands through Alt+F2 or Tools -> Commands.
+- Capture opens centered, remains draggable/resizable, persists width/height and recenters on each new open.
 - Hotkeys: `Alt+F1` Capture, `Alt+F2` Commands, `Alt+F3` Planning.
 ```
 
@@ -194,14 +210,16 @@ Timer rules:
 ## 8. Keyboard controls
 
 ```text
+Alt+F1  open/close Planning Pattern Capture.
 Alt+F2  open/close Command Palette.
 Alt+F3  open/close Planning Dashboard.
-Escape  close an open Command Palette or Planning Dashboard without clearing state.
+Escape  close Tools first, then the active Dashboard/Capture/Command panel without clearing state.
 Ctrl+Alt+P  emergency show/reset for Pattern Capture.
 ```
 
-Command Palette owns Alt+F2; Pattern Capture does not consume that shortcut.
-Pattern Capture does not consume Escape or Alt+F2. Its close button hides the panel only for the current page lifetime, so a reload shows it again. Ctrl+Alt+P remains the explicit emergency show/reset path. Legacy persistent hidden state is cleared by v0.4.2.
+Command Palette owns Alt+F2, Pattern Capture owns Alt+F1 and Planning Dashboard owns Alt+F3.
+While Dashboard is open, the floating Capture and Commands launchers are hidden to avoid covering planning content; the hotkeys and Tools drawer actions still work.
+Ctrl+Alt+P remains the explicit emergency show/reset path. Legacy persistent hidden state is cleared by v0.4.2.
 Its Date field is a native `YYYY-MM-DD` date input stored in `planningPatternCapture:v2:active`. Finish requires this Capture date to match the published Dashboard session date. Changing the date switches the visible Capture events and pending count to that day; it does not silently move an existing timer to another date.
 Its Session field supports `S1`, `S2`, `S3` and later positive integer labels. Valid input is stored immediately without rebuilding the panel, so the first click on `Finish`, `Auto`, or a D/F action is not lost. `Enter` validates and refreshes the score view. `Auto` restores the next label derived from the repository row boundary plus pending records.
 

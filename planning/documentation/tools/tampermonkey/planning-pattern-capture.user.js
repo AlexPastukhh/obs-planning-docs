@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Planning Pattern Capture v0.4.5
+// @name         Planning Pattern Capture v0.4.6
 // @namespace    planning-pattern-capture
-// @version      0.4.5
+// @version      0.4.6
 // @description  ChatGPT-only capture panel with D/F scoring, one-click session timer milestones, finished-session outbox, and reviewed batch sync
 // @match        *://chatgpt.com/*
 // @match        *://*.chatgpt.com/*
@@ -45,7 +45,7 @@
   const BASE_TOTAL_SCORE = 3.5;
   const BASE_DIM_SCORE = BASE_TOTAL_SCORE / 2;
   const DF_STEP = 0.1;
-  const SETTINGS_VERSION = "0.4.5";
+  const SETTINGS_VERSION = "0.4.6";
   const TIMER_SCHEMA = "planning-pattern-session-timer-v1";
   const TIMER_TOTAL_MS = 30 * 60 * 1000;
   const TIMER_MILESTONES = [
@@ -302,6 +302,7 @@
   let timerTicker = null;
   let timerAudioContext = null;
   let panelHiddenForPage = false;
+  let dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === "true";
   let workflowPinned = false;
   let root = null;
   let didDragCollapsed = false;
@@ -324,6 +325,14 @@
   window.addEventListener("obs-planning-session-context-updated", () => {
     alignActiveSessionWithContext();
     refresh();
+  });
+
+  window.addEventListener("obs-planning-dashboard-visibility", (event) => {
+    dashboardOpen = Boolean(event?.detail?.open);
+    refresh();
+  });
+  window.addEventListener("obs-planning-capture-toggle", () => {
+    toggleCapturePanel();
   });
 
   function boot() {
@@ -1586,8 +1595,9 @@
         root.style.left = `${openPanelPosition.x}px`;
         root.style.top = `${openPanelPosition.y}px`;
       }
-      root.style.display = panelHiddenForPage ? "none" : "block";
-      if (panelHiddenForPage) return;
+      const hideLauncherForDashboard = dashboardOpen && settings.collapsed;
+      root.style.display = panelHiddenForPage || hideLauncherForDashboard ? "none" : "block";
+      if (panelHiddenForPage || hideLauncherForDashboard) return;
       if (settings.collapsed) {
         root.style.width = "170px";
         root.style.height = "auto";

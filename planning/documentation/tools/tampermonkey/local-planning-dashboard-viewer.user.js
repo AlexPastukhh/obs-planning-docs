@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OBS Local Planning Dashboard Viewer
 // @namespace    https://github.com/AlexPastukhh/obs/planning-dashboard
-// @version      0.5.0
+// @version      0.6.2
 // @description  Local-first read-only planning dashboard with offline snapshot cache, pending sessions, and reviewed batch export.
 // @author       OBS planning-system
 // @match        https://chatgpt.com/*
@@ -39,6 +39,17 @@
     daySubtab: 'plan',
     rawMode: false,
     settingsOpen: false,
+    toolsOpen: false,
+    planCoreOpen: true,
+    currentTargetOpen: true,
+    scopeUnitsOpen: false,
+    acceptanceCriteriaOpen: false,
+    expandedScenarios: {},
+    dayScrollTops: {
+      plan: 0,
+      sessions: 0,
+      summary: 0
+    },
     loading: false,
     sourceMode: 'none',
     snapshotSavedAt: null,
@@ -108,11 +119,35 @@
     }
 
     .obs-pd-title-sub {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
+      margin-top: 2px;
+      border-radius: 999px;
+      padding: 2px 7px;
+      background: rgba(30, 41, 59, .9);
       color: #94a3b8;
-      font-size: 11px;
+      font-size: 10px;
+      font-weight: 720;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .obs-pd-title-sub[data-mode="live"] {
+      background: rgba(6, 78, 59, .68);
+      color: #a7f3d0;
+    }
+
+    .obs-pd-title-sub[data-mode="offline-cache"] {
+      background: rgba(120, 53, 15, .66);
+      color: #fde68a;
+    }
+
+    .obs-pd-title-sub[data-mode="none"] {
+      background: rgba(127, 29, 29, .58);
+      color: #fecaca;
     }
 
     .obs-pd-btn {
@@ -929,6 +964,142 @@
         text-align: left;
       }
     }
+
+    /* v0.6.0 compact planning workspace */
+    #obs-planning-dashboard-panel { inset: 8px; border-radius: 12px; }
+    .obs-pd-header { min-height: 42px; gap: 6px; padding: 5px 8px; }
+    .obs-pd-title-main { font-size: 13px; }
+    .obs-pd-title-sub { font-size: 10px; }
+    .obs-pd-btn { padding: 5px 8px; border-radius: 7px; }
+    .obs-pd-tabs {
+      min-height: 34px; gap: 4px; padding: 4px 8px; white-space: nowrap;
+    }
+    .obs-pd-tab { padding: 4px 8px; font-size: 12px; }
+    .obs-pd-body { padding: 8px; }
+    .obs-pd-day-subtabs { gap: 4px; margin-bottom: 7px; padding: 4px; }
+    .obs-pd-day-subtab { min-width: 78px; padding: 5px 10px; font-size: 12px; }
+    .obs-pd-document-header { margin-bottom: 7px; padding: 8px 10px; }
+    .obs-pd-document-header h1 { display: inline; margin: 0; font-size: 16px; }
+    .obs-pd-score-grid {
+      grid-template-columns: repeat(3, minmax(110px, 1fr));
+      gap: 6px; margin-bottom: 7px;
+    }
+    .obs-pd-score-card { padding: 6px 8px; }
+    .obs-pd-score-value { margin-top: 1px; font-size: 17px; }
+    .obs-pd-section-title { margin: 8px 0 5px; }
+    .obs-pd-card, .obs-pd-scenario-card { padding: 8px; margin-bottom: 7px; }
+    .obs-pd-grid { gap: 7px; margin-bottom: 7px; }
+    .obs-pd-runtime-status { display: none; }
+
+    .obs-pd-compact-day-header {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 7px; padding: 8px 10px;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 10px; background: rgba(15, 28, 48, .92);
+    }
+    .obs-pd-compact-day-title { color: #f8fafc; font-size: 16px; font-weight: 780; }
+    .obs-pd-compact-day-path {
+      min-width: 100px; flex: 1; color: #9fb6d4;
+      font: 11px/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    .obs-pd-plan-disclosure {
+      margin-bottom: 7px; overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 10px; background: rgba(15, 28, 48, .92);
+    }
+    .obs-pd-plan-summary {
+      display: flex; align-items: center; gap: 8px; min-height: 36px;
+      padding: 7px 9px; cursor: pointer; list-style: none;
+      color: #dbeafe; font-weight: 760;
+    }
+    .obs-pd-plan-summary::-webkit-details-marker { display: none; }
+    .obs-pd-plan-summary::before {
+      content: "›"; color: #93c5fd; font-size: 18px;
+      transform: rotate(0deg); transition: transform .12s ease;
+    }
+    .obs-pd-plan-disclosure[open] > .obs-pd-plan-summary::before { transform: rotate(90deg); }
+    .obs-pd-plan-meta { margin-left: auto; color: #94a3b8; font-size: 10px; font-weight: 600; }
+    .obs-pd-plan-body { padding: 0 9px 9px; border-top: 1px solid rgba(148, 163, 184, .12); }
+    .obs-pd-plan-body .obs-pd-code { padding: 6px; font-size: 11px; }
+
+    .obs-pd-scenario-disclosure {
+      min-width: 0; overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, .2);
+      border-radius: 9px; background: rgba(9, 20, 36, .72);
+    }
+    .obs-pd-scenario-disclosure > summary {
+      display: flex; align-items: flex-start; gap: 7px; min-height: 38px;
+      padding: 7px 8px; cursor: pointer; list-style: none;
+      color: #c7ddff; font-weight: 720;
+    }
+    .obs-pd-scenario-disclosure > summary::-webkit-details-marker { display: none; }
+    .obs-pd-scenario-disclosure > summary::after {
+      content: "Expand"; flex: 0 0 auto; margin-left: auto; color: #93c5fd; font-size: 10px;
+    }
+    .obs-pd-scenario-disclosure[open] > summary::after { content: "Collapse"; }
+    .obs-pd-scenario-summary-copy { min-width: 0; flex: 1; }
+    .obs-pd-scenario-title { color: #c7ddff; font-weight: 720; }
+    .obs-pd-scenario-preview {
+      margin-top: 4px; color: #aebed1; font-size: 11px; font-weight: 500; white-space: pre-line;
+    }
+    .obs-pd-scenario-disclosure[open] > summary .obs-pd-scenario-preview { display: none; }
+    .obs-pd-scenario-full { padding: 8px; border-top: 1px solid rgba(148, 163, 184, .12); }
+
+    .obs-pd-tools {
+      position: absolute; top: 0; right: 0; bottom: 0; z-index: 6;
+      width: min(340px, calc(100vw - 28px)); display: flex; flex-direction: column;
+      padding: 10px; background: #0b1525;
+      border-left: 1px solid rgba(148, 163, 184, .28);
+      box-shadow: -18px 0 50px rgba(0,0,0,.38);
+      transform: translateX(105%); overflow: auto;
+      visibility: hidden; pointer-events: none;
+      transition: transform .16s ease, visibility 0s linear .16s;
+    }
+    .obs-pd-tools[data-open="true"] {
+      transform: translateX(0); visibility: visible; pointer-events: auto;
+      transition-delay: 0s;
+    }
+    .obs-pd-tools-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .obs-pd-tools-head h2 { margin: 0 auto 0 0; font-size: 15px; }
+    .obs-pd-tools-section {
+      margin-bottom: 8px; padding: 8px;
+      border: 1px solid rgba(148, 163, 184, .2);
+      border-radius: 9px; background: rgba(15, 28, 48, .86);
+    }
+    .obs-pd-tools-section h3 { margin: 0 0 6px; font-size: 12px; color: #bfdbfe; }
+    .obs-pd-tools-row {
+      display: flex; align-items: flex-start; gap: 8px; margin: 5px 0;
+      color: #cbd8e9; font-size: 11px; overflow-wrap: anywhere;
+    }
+    .obs-pd-tools-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .obs-pd-tools-indicator {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; border-radius: 999px;
+      background: rgba(180, 83, 9, .35); color: #fde68a; font-size: 10px; font-weight: 800;
+    }
+
+    @media (max-height: 780px) {
+      .obs-pd-header { min-height: 36px; padding: 3px 6px; }
+      .obs-pd-title-main { font-size: 12px; }
+      .obs-pd-title-sub { font-size: 9px; }
+      .obs-pd-btn { padding: 4px 7px; font-size: 11px; }
+      .obs-pd-tabs { min-height: 30px; padding: 3px 6px; }
+      .obs-pd-tab { padding: 3px 7px; font-size: 11px; }
+      .obs-pd-body { padding: 6px; }
+      .obs-pd-day-subtabs { margin-bottom: 5px; padding: 3px; }
+      .obs-pd-day-subtab { min-width: 68px; padding: 4px 8px; }
+      .obs-pd-compact-day-header { margin-bottom: 5px; padding: 6px 8px; }
+      .obs-pd-score-card { padding: 5px 7px; }
+      .obs-pd-score-value { font-size: 15px; }
+      .obs-pd-plan-summary { min-height: 32px; padding: 5px 7px; }
+    }
+    @media (max-width: 760px) {
+      .obs-pd-score-grid { grid-template-columns: repeat(3, minmax(96px, 1fr)); overflow-x: auto; }
+      .obs-pd-grid { grid-template-columns: 1fr; }
+    }
+
   `);
 
   function el(tag, attrs = {}, children = []) {
@@ -1309,10 +1480,17 @@ Dashboard: ${file.path}`
   function updateHeaderStatus() {
     const node = document.querySelector('#obs-planning-dashboard-source-status');
     if (!node) return;
-    const label = state.sourceMode === 'live' ? 'Live localhost'
-      : state.sourceMode === 'offline-cache' ? 'Offline cache'
-      : 'No data';
-    node.textContent = state.snapshotSavedAt ? `${label} · ${new Date(state.snapshotSavedAt).toLocaleString()}` : label;
+    const label = state.sourceMode === 'live' ? '● Live'
+      : state.sourceMode === 'offline-cache' ? '● Offline'
+      : '● No data';
+    const snapshot = state.snapshotSavedAt ? new Date(state.snapshotSavedAt).toLocaleString() : 'not available';
+    node.setAttribute('data-mode', state.sourceMode || 'none');
+    node.textContent = label;
+    node.title = [
+      `Mode: ${state.sourceMode || 'none'}`,
+      `Snapshot: ${snapshot}`,
+      state.lastLoadError ? `Last error: ${state.lastLoadError}` : ''
+    ].filter(Boolean).join('\n');
   }
 
   function currentPendingExport() {
@@ -1758,26 +1936,111 @@ Dashboard: ${file.path}`
     return 'other';
   }
 
+  function isPlanningContentLine(line) {
+    const text = String(line || '').trim();
+    return Boolean(text)
+      && !/^```/.test(text)
+      && !/^USER INPUT:?$/i.test(text)
+      && !/^AI ASSUMPTIONS(?:\s*\/\s*SUGGESTIONS)?:?$/i.test(text)
+      && !/^\|?\s*:?-+/.test(text);
+  }
+
+  function meaningfulLineCount(lines) {
+    return trimBlankLines(lines).filter(isPlanningContentLine).length;
+  }
+
+  function firstMeaningfulLines(lines, limit = 2) {
+    return trimBlankLines(lines)
+      .map((line) => line.replace(/^\s*[-*]\s+/, '').trim())
+      .filter(isPlanningContentLine)
+      .slice(0, limit);
+  }
+
+  function planDisclosure(section, key, defaultOpen, bodyFactory, metaText) {
+    const details = el('details', { class: 'obs-pd-plan-disclosure' });
+    details.open = state[key] ?? defaultOpen;
+    const summary = el('summary', { class: 'obs-pd-plan-summary' });
+    summary.appendChild(el('span', { text: section.title }));
+    if (metaText) summary.appendChild(el('span', { class: 'obs-pd-plan-meta', text: metaText }));
+    details.appendChild(summary);
+    const body = el('div', { class: 'obs-pd-plan-body' });
+    body.appendChild(bodyFactory());
+    details.appendChild(body);
+    details.addEventListener('toggle', () => { state[key] = details.open; });
+    return details;
+  }
+
   function renderPlanCore(section) {
-    const wrapper = document.createDocumentFragment();
-    wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: section.title }));
+    const itemCount = section.subsections.reduce((sum, subsection) => sum + meaningfulLineCount(subsection.lines), 0);
+    return planDisclosure(section, 'planCoreOpen', true, () => {
+      const fragment = document.createDocumentFragment();
+      if (trimBlankLines(section.lines).length) fragment.appendChild(renderMarkdownLines(section.lines));
+      const grid = el('div', { class: 'obs-pd-grid' });
+      section.subsections.forEach((subsection) => {
+        const kind = scenarioKind(subsection.title);
+        const details = el('details', { class: 'obs-pd-scenario-disclosure', 'data-scenario': kind });
+        details.open = Boolean(state.expandedScenarios[kind]);
+        const previewLines = firstMeaningfulLines(subsection.lines, 2);
+        const summary = el('summary');
+        const summaryCopy = el('div', { class: 'obs-pd-scenario-summary-copy' });
+        summaryCopy.appendChild(el('div', { class: 'obs-pd-scenario-title', text: subsection.title }));
+        summaryCopy.appendChild(el('div', {
+          class: 'obs-pd-scenario-preview',
+          text: previewLines.join('\n') || 'not provided'
+        }));
+        summary.appendChild(summaryCopy);
+        details.appendChild(summary);
+        const full = el('div', { class: 'obs-pd-scenario-full' });
+        full.appendChild(renderMarkdownLines(subsection.lines));
+        details.appendChild(full);
+        details.addEventListener('toggle', () => { state.expandedScenarios[kind] = details.open; });
+        grid.appendChild(details);
+      });
+      if (section.subsections.length) fragment.appendChild(grid);
+      return fragment;
+    }, `${section.subsections.length} levels · ${itemCount} source line(s)`);
+  }
 
-    if (trimBlankLines(section.lines).length) {
-      const intro = el('div', { class: 'obs-pd-card' });
-      intro.appendChild(renderMarkdownLines(section.lines));
-      wrapper.appendChild(intro);
-    }
-
-    const grid = el('div', { class: 'obs-pd-grid' });
+  function renderSectionBodyOnly(section) {
+    const fragment = document.createDocumentFragment();
+    if (trimBlankLines(section.lines).length) fragment.appendChild(renderMarkdownLines(section.lines));
     section.subsections.forEach((subsection) => {
-      const card = el('div', { class: 'obs-pd-scenario-card', 'data-scenario': scenarioKind(subsection.title) });
-      card.appendChild(el('h3', { text: subsection.title }));
-      card.appendChild(renderMarkdownLines(subsection.lines));
-      grid.appendChild(card);
+      fragment.appendChild(el('h3', { text: subsection.title }));
+      fragment.appendChild(renderMarkdownLines(subsection.lines));
     });
+    if (!trimBlankLines(section.lines).length && !section.subsections.length) {
+      fragment.appendChild(el('div', { class: 'obs-pd-empty', text: 'not provided' }));
+    }
+    return fragment;
+  }
 
-    if (section.subsections.length) wrapper.appendChild(grid);
-    return wrapper;
+  function renderPlanningSection(section) {
+    const normalized = normalizeHeading(section.title);
+    if (normalized.includes('plan core')) return renderPlanCore(section);
+    if (normalized.includes('current target scenario')) {
+      const sourceLineCount = meaningfulLineCount(section.lines)
+        + section.subsections.reduce((sum, subsection) => sum + meaningfulLineCount(subsection.lines), 0);
+      return planDisclosure(section, 'currentTargetOpen', true, () => {
+        const fragment = document.createDocumentFragment();
+        if (trimBlankLines(section.lines).length) fragment.appendChild(renderMarkdownLines(section.lines));
+        section.subsections.forEach((subsection) => {
+          fragment.appendChild(el('h3', { text: subsection.title }));
+          fragment.appendChild(renderMarkdownLines(subsection.lines));
+        });
+        return fragment;
+      }, `${sourceLineCount} source line(s)`);
+    }
+    if (normalized.includes('scope unit')) {
+      const table = parseFirstTable(section.lines);
+      const count = table ? countMeaningfulRows(table) : meaningfulLineCount(section.lines);
+      return planDisclosure(section, 'scopeUnitsOpen', false, () => renderSectionBodyOnly(section), `${count} unit(s)`);
+    }
+    if (normalized.includes('acceptance criteria')) {
+      const table = parseFirstTable(section.lines);
+      const count = table ? countMeaningfulRows(table) : meaningfulLineCount(section.lines);
+      return planDisclosure(section, 'acceptanceCriteriaOpen', false, () => renderSectionBodyOnly(section), `${count} criteria`);
+    }
+    return planDisclosure(section, `plan:${normalized}`, false, () => renderSectionBodyOnly(section), '');
   }
 
   function renderLinksSection(section) {
@@ -1950,14 +2213,8 @@ Dashboard: ${file.path}`
 
     const workPointsText = pickKeyValue(values, ['Work Points']);
     const incomingDebt = carryoverDebtValue(documentModel, values);
-    const pendingSessions = activePendingSessions(file);
-    const pendingPoints = pendingSessions.reduce((sum, session) => sum + parseNumber(session.points), 0);
     const cards = [
       ['Work Points', workPointsText, 'neutral'],
-      ...(pendingSessions.length ? [
-        ['Pending Points', formatNumber(pendingPoints), 'warn'],
-        ['Preview Work Points', formatNumber(parseNumber(workPointsText) + pendingPoints), 'good']
-      ] : []),
       ['Penalties', pickKeyValue(values, ['Penalties', 'Penalties / planned carryover']), 'bad'],
       ['Net Work Score', pickKeyValue(values, ['Net Work Score']), 'good'],
       ['Incoming Debt', incomingDebt, 'violet'],
@@ -1994,11 +2251,8 @@ Dashboard: ${file.path}`
     const sessionTable = sessionsSection ? parseFirstTable(sessionsSection.lines) : null;
     const repositoryCount = countMeaningfulRows(sessionTable);
     const localSessions = visibleLocalSessions(file);
-    const pendingSessions = localSessions.filter((session) => session.status === 'pending');
-    const pendingPoints = pendingSessions.reduce((sum, session) => sum + parseNumber(session.points), 0);
     const cards = [
       ['Work Points', pickKeyValue(values, ['Work Points']) || '0', 'neutral'],
-      ['Pending Points', pendingSessions.length ? formatNumber(pendingPoints) : '0', pendingSessions.length ? 'warn' : 'neutral'],
       ['Net Work Score', pickKeyValue(values, ['Net Work Score']) || '0', 'good'],
       ['Sessions', String(repositoryCount + localSessions.length), 'violet']
     ];
@@ -2489,6 +2743,57 @@ Dashboard: ${file.path}`
     body.appendChild(renderFormattedDocument(file.path, file.text, label));
   }
 
+  function setAllPlanDisclosures(open) {
+    state.currentTargetOpen = open;
+    state.planCoreOpen = open;
+    state.scopeUnitsOpen = open;
+    state.acceptanceCriteriaOpen = open;
+    state.expandedScenarios = {
+      minimum: open,
+      base: open,
+      desired: open,
+      max: open,
+      other: open
+    };
+    render();
+  }
+
+  function allPlanDisclosuresOpen() {
+    return state.currentTargetOpen
+      && state.planCoreOpen
+      && state.scopeUnitsOpen
+      && state.acceptanceCriteriaOpen
+      && ['minimum', 'base', 'desired', 'max'].every((key) => Boolean(state.expandedScenarios[key]));
+  }
+
+  function renderCompactDayHeader(model, file) {
+    const header = el('div', { class: 'obs-pd-compact-day-header' });
+    header.appendChild(el('div', { class: 'obs-pd-compact-day-title', text: model.title || 'Planning Day' }));
+    const status = metadataValue(model, 'Status');
+    if (status) header.appendChild(el('span', { class: 'obs-pd-badge', 'data-kind': 'status', text: status }));
+    header.appendChild(el('div', {
+      class: 'obs-pd-compact-day-path',
+      text: file?.path || 'not provided',
+      title: file?.path || 'not provided'
+    }));
+    if (state.daySubtab === 'plan') {
+      const allOpen = allPlanDisclosuresOpen();
+      header.appendChild(el('button', {
+        class: 'obs-pd-btn',
+        text: allOpen ? 'Collapse all' : 'Expand all',
+        onclick: () => setAllPlanDisclosures(!allOpen)
+      }));
+    }
+    if (file?.path) {
+      header.appendChild(el('button', {
+        class: 'obs-pd-btn',
+        text: 'Open',
+        onclick: () => window.open(buildLocalUrl(file.path), '_blank', 'noopener,noreferrer')
+      }));
+    }
+    return header;
+  }
+
   function renderPlanningDayTab(day, sessionDay) {
     const wrapper = el('div', { class: 'obs-pd-day-content' });
     if (!day) {
@@ -2498,21 +2803,22 @@ Dashboard: ${file.path}`
       return wrapper;
     }
     if (day.error) {
-      wrapper.appendChild(sourceBar(day.path, 'Planning Day'));
       wrapper.appendChild(el('div', { class: 'obs-pd-error', text: day.error }));
       return wrapper;
     }
 
-    wrapper.appendChild(sourceBar(day.path, 'Planning Day'));
     const model = parseMarkdownDocument(day.text);
-    wrapper.appendChild(renderDocumentHeader(model));
+    wrapper.appendChild(renderCompactDayHeader(model, day));
     const metrics = renderPlanningDayMetrics(sessionDay);
     if (metrics) wrapper.appendChild(metrics);
 
     if (trimBlankLines(model.preamble).length) {
-      const preambleCard = el('div', { class: 'obs-pd-card' });
-      preambleCard.appendChild(renderMarkdownLines(model.preamble));
-      wrapper.appendChild(preambleCard);
+      const preamble = el('details', { class: 'obs-pd-plan-disclosure' });
+      preamble.appendChild(el('summary', { class: 'obs-pd-plan-summary', text: 'Planning metadata / notes' }));
+      const preambleBody = el('div', { class: 'obs-pd-plan-body' });
+      preambleBody.appendChild(renderMarkdownLines(model.preamble));
+      preamble.appendChild(preambleBody);
+      wrapper.appendChild(preamble);
     }
 
     if (!model.sections.length) {
@@ -2520,7 +2826,7 @@ Dashboard: ${file.path}`
       return wrapper;
     }
 
-    model.sections.forEach((section) => wrapper.appendChild(renderGenericSection(section)));
+    model.sections.forEach((section) => wrapper.appendChild(renderPlanningSection(section)));
     return wrapper;
   }
 
@@ -2531,16 +2837,31 @@ Dashboard: ${file.path}`
       }));
       return null;
     }
-    wrapper.appendChild(sourceBar(file.path, 'Operational Session Day'));
     if (file.error) {
       wrapper.appendChild(el('div', { class: 'obs-pd-error', text: `Could not load session day:\n${file.path}\n\n${file.error}` }));
       return null;
     }
     const model = parseMarkdownDocument(file.text);
-    wrapper.appendChild(renderDocumentHeader(model));
+    wrapper.appendChild(renderCompactDayHeader(model, file));
     const diagnostic = localOutboxDiagnostic(file);
     if (diagnostic) wrapper.appendChild(el('div', { class: 'obs-pd-section-warning', text: diagnostic.message }));
     return model;
+  }
+
+  function renderLocalSyncDisclosure(file) {
+    const stats = localSyncStats();
+    if (!stats.pendingCount && !stats.conflictCount) return null;
+    const details = el('details', { class: 'obs-pd-plan-disclosure' });
+    const summary = el('summary', { class: 'obs-pd-plan-summary' });
+    summary.appendChild(el('span', { text: `Local sync · ${stats.pendingCount} pending · ${stats.conflictCount} conflict(s)` }));
+    summary.appendChild(el('span', { class: 'obs-pd-plan-meta', text: 'technical details' }));
+    details.appendChild(summary);
+    const body = el('div', { class: 'obs-pd-plan-body' });
+    body.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Pending points: ${formatNumber(stats.pendingPoints)}` }));
+    body.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Preview work points: ${formatNumber(stats.previewWorkPoints)}` }));
+    body.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Operational path: ${stats.operationalPath}` }));
+    details.appendChild(body);
+    return details;
   }
 
   function renderDaySessionsTab(sessionDay) {
@@ -2550,6 +2871,8 @@ Dashboard: ${file.path}`
 
     const overview = renderSessionOverview(model, sessionDay);
     if (overview) wrapper.appendChild(overview);
+    const localSync = renderLocalSyncDisclosure(sessionDay);
+    if (localSync) wrapper.appendChild(localSync);
     const sessions = renderSessionList(model, sessionDay);
     if (sessions) wrapper.appendChild(sessions);
     const penalties = renderPenaltySection(model);
@@ -2579,22 +2902,55 @@ Dashboard: ${file.path}`
     return wrapper;
   }
 
+  const DAY_SUBTABS = [
+    ['plan', 'Plan'],
+    ['sessions', 'Sessions'],
+    ['summary', 'Summary']
+  ];
+
+  function rememberCurrentDayScroll() {
+    const body = document.querySelector('#obs-planning-dashboard-body');
+    if (!body || !state.dayScrollTops) return;
+    state.dayScrollTops[state.daySubtab] = body.scrollTop;
+  }
+
+  function restoreCurrentDayScroll(focusTab = false) {
+    window.requestAnimationFrame(() => {
+      const body = document.querySelector('#obs-planning-dashboard-body');
+      if (body) body.scrollTop = state.dayScrollTops?.[state.daySubtab] || 0;
+      if (focusTab) {
+        document.querySelector(`.obs-pd-day-subtab[data-day-subtab="${state.daySubtab}"]`)?.focus();
+      }
+    });
+  }
+
+  function switchDaySubtab(nextKey, focusTab = false) {
+    if (!DAY_SUBTABS.some(([key]) => key === nextKey) || nextKey === state.daySubtab) return;
+    rememberCurrentDayScroll();
+    state.daySubtab = nextKey;
+    render();
+    restoreCurrentDayScroll(focusTab);
+  }
+
   function renderDaySubtabs(body) {
-    const definitions = [
-      ['plan', 'Plan'],
-      ['sessions', 'Sessions'],
-      ['summary', 'Summary']
-    ];
-    if (!definitions.some(([key]) => key === state.daySubtab)) state.daySubtab = 'plan';
-    const tabs = el('div', { class: 'obs-pd-day-subtabs' });
-    definitions.forEach(([key, label]) => {
+    if (!DAY_SUBTABS.some(([key]) => key === state.daySubtab)) state.daySubtab = 'plan';
+    const tabs = el('div', { class: 'obs-pd-day-subtabs', role: 'tablist', 'aria-label': 'Day views' });
+    DAY_SUBTABS.forEach(([key, label], index) => {
       tabs.appendChild(el('button', {
         class: 'obs-pd-day-subtab',
+        role: 'tab',
+        'data-day-subtab': key,
         'data-active': String(state.daySubtab === key),
+        'aria-selected': String(state.daySubtab === key),
+        tabindex: state.daySubtab === key ? '0' : '-1',
         text: label,
-        onclick: () => {
-          state.daySubtab = key;
-          render();
+        onclick: () => switchDaySubtab(key),
+        onkeydown: (event) => {
+          if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+          event.preventDefault();
+          const direction = event.key === 'ArrowRight' ? 1 : -1;
+          const nextIndex = (index + direction + DAY_SUBTABS.length) % DAY_SUBTABS.length;
+          switchDaySubtab(DAY_SUBTABS[nextIndex][0], true);
         }
       }));
     });
@@ -2731,6 +3087,121 @@ Check:
     }
   }
 
+  function localSyncStats() {
+    const file = state.files.sessionDay;
+    const date = dateFromOperationalPath(file?.path);
+    const day = date ? readOutbox().days?.[date] : null;
+    const sessions = Array.isArray(day?.sessions) ? day.sessions : [];
+    const pending = sessions.filter((session) => session.status === 'pending');
+    const conflicts = sessions.filter((session) => session.status === 'conflict');
+    const pendingPoints = pending.reduce((sum, session) => sum + parseNumber(session.points), 0);
+    const summarySubsection = file && !file.error ? findSubsection(parseMarkdownDocument(file.text), 'work score summary') : null;
+    const values = tableToKeyValue(summarySubsection ? parseFirstTable(summarySubsection.lines) : null);
+    const workPoints = parseNumber(pickKeyValue(values, ['Work Points']));
+    return {
+      pendingCount: pending.length,
+      conflictCount: conflicts.length,
+      pendingPoints,
+      previewWorkPoints: workPoints + pendingPoints,
+      operationalPath: day?.operationalPath || file?.path || 'not provided',
+      activePath: file?.path || 'not provided',
+      pathMatch: !day?.operationalPath || !file?.path || day.operationalPath === file.path
+    };
+  }
+
+  function toolsButton(label, onclick) {
+    return el('button', { class: 'obs-pd-btn', text: label, onclick });
+  }
+
+  function renderTools() {
+    const drawer = document.querySelector('#obs-planning-dashboard-tools');
+    const toolsButtonNode = document.querySelector('#obs-planning-dashboard-tools-button');
+    if (!drawer) return;
+    drawer.setAttribute('data-open', String(state.toolsOpen));
+    drawer.setAttribute('aria-hidden', String(!state.toolsOpen));
+    drawer.toggleAttribute('inert', !state.toolsOpen);
+    const stats = localSyncStats();
+    if (toolsButtonNode) {
+      toolsButtonNode.setAttribute('aria-expanded', String(state.toolsOpen));
+      toolsButtonNode.textContent = stats.pendingCount || stats.conflictCount
+        ? `Tools ${stats.pendingCount + stats.conflictCount}`
+        : 'Tools';
+    }
+    drawer.innerHTML = '';
+
+    const head = el('div', { class: 'obs-pd-tools-head' });
+    head.appendChild(el('h2', { id: 'obs-planning-dashboard-tools-title', text: 'Tools' }));
+    head.appendChild(el('button', {
+      class: 'obs-pd-btn',
+      text: '×',
+      'aria-label': 'Close Tools',
+      onclick: () => {
+        state.toolsOpen = false;
+        renderTools();
+        toolsButtonNode?.focus();
+      }
+    }));
+    drawer.appendChild(head);
+
+    const statusSection = el('section', { class: 'obs-pd-tools-section' });
+    statusSection.appendChild(el('h3', { text: 'Status & diagnostics' }));
+    const modeLabel = state.sourceMode === 'live' ? 'Live localhost'
+      : state.sourceMode === 'offline-cache' ? 'Offline cache'
+      : 'No data';
+    const snapshot = state.snapshotSavedAt ? new Date(state.snapshotSavedAt).toLocaleString() : 'not available';
+    statusSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Mode: ${modeLabel}` }));
+    statusSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Snapshot: ${snapshot}` }));
+    statusSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Base URL: ${state.baseUrl}` }));
+    statusSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Index: ${state.indexPath}` }));
+    if (state.lastLoadError) statusSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Last error: ${state.lastLoadError}` }));
+    drawer.appendChild(statusSection);
+
+    const sourceSection = el('section', { class: 'obs-pd-tools-section' });
+    sourceSection.appendChild(el('h3', { text: 'Source & file' }));
+    sourceSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Planning: ${state.files.day?.path || 'not provided'}` }));
+    sourceSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Operational: ${state.files.sessionDay?.path || 'not provided'}` }));
+    sourceSection.appendChild(el('div', { class: 'obs-pd-tools-actions' }, [
+      toolsButton('Open current', openCurrentSource),
+      toolsButton('Refresh', refresh)
+    ]));
+    drawer.appendChild(sourceSection);
+
+    const syncSection = el('section', { class: 'obs-pd-tools-section' });
+    syncSection.appendChild(el('h3', { text: 'Local sync' }));
+    syncSection.appendChild(el('div', { class: 'obs-pd-tools-row' }, [
+      el('span', { text: `Pending sessions: ${stats.pendingCount}` }),
+      ...(stats.pendingCount ? [el('span', { class: 'obs-pd-tools-indicator', text: String(stats.pendingCount) })] : [])
+    ]));
+    syncSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Pending points: ${formatNumber(stats.pendingPoints)}` }));
+    syncSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Preview work points: ${formatNumber(stats.previewWorkPoints)}` }));
+    syncSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Conflicts: ${stats.conflictCount}` }));
+    syncSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Outbox path: ${stats.operationalPath}` }));
+    if (!stats.pathMatch) {
+      syncSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Active path mismatch: ${stats.activePath}` }));
+    }
+    drawer.appendChild(syncSection);
+
+    const actions = el('section', { class: 'obs-pd-tools-section' });
+    actions.appendChild(el('h3', { text: 'Actions' }));
+    actions.appendChild(el('div', { class: 'obs-pd-tools-actions' }, [
+      toolsButton('Copy AI prompt', copyUpdatePrompt),
+      toolsButton('Copy pending', copyPendingJson),
+      toolsButton('Download pending', downloadPendingJson),
+      toolsButton(state.rawMode ? 'Formatted' : 'Raw', () => { state.rawMode = !state.rawMode; state.toolsOpen = false; render(); }),
+      toolsButton('Settings', () => { state.settingsOpen = !state.settingsOpen; state.toolsOpen = false; render(); }),
+      toolsButton('Capture', () => { state.toolsOpen = false; renderTools(); window.dispatchEvent(new CustomEvent('obs-planning-capture-toggle')); }),
+      toolsButton('Commands', () => { state.toolsOpen = false; renderTools(); window.dispatchEvent(new CustomEvent('obs-planning-commands-toggle')); })
+    ]));
+    drawer.appendChild(actions);
+  }
+
+  function dispatchDashboardVisibility(open) {
+    document.documentElement.dataset.obsPlanningDashboardOpen = open ? 'true' : 'false';
+    try {
+      window.dispatchEvent(new CustomEvent('obs-planning-dashboard-visibility', { detail: { open: Boolean(open) } }));
+    } catch {}
+  }
+
   function tabDefinitions() {
     return [
       ['index', 'Index', 'file'],
@@ -2769,8 +3240,8 @@ Check:
 
     tabs.innerHTML = '';
     body.innerHTML = '';
-    body.appendChild(runtimeStatusNode());
     updateHeaderStatus();
+    renderTools();
     if (modeButton) modeButton.textContent = state.rawMode ? 'Formatted' : 'Raw';
     if (settings) settings.setAttribute('data-open', String(state.settingsOpen));
 
@@ -2866,12 +3337,21 @@ Check:
   async function setDashboardOpen(open) {
     const panel = document.querySelector('#obs-planning-dashboard-panel');
     if (!panel) return;
-    panel.setAttribute('data-open', String(Boolean(open)));
-    if (!open) return;
+    const nextOpen = Boolean(open);
+    panel.setAttribute('data-open', String(nextOpen));
+    dispatchDashboardVisibility(nextOpen);
+    if (!nextOpen) {
+      state.toolsOpen = false;
+      return;
+    }
+    state.toolsOpen = false;
     if (!state.indexText) await refresh();
     state.activeTab = preferredOpenTab();
     state.daySubtab = 'plan';
+    state.dayScrollTops = { plan: 0, sessions: 0, summary: 0 };
     render();
+    const body = document.querySelector('#obs-planning-dashboard-body');
+    if (body) body.scrollTop = 0;
   }
 
   async function toggleDashboardPanel() {
@@ -2882,7 +3362,11 @@ Check:
 
   function closeDashboardPanel() {
     const panel = document.querySelector('#obs-planning-dashboard-panel');
-    if (panel?.getAttribute('data-open') === 'true') panel.setAttribute('data-open', 'false');
+    if (panel?.getAttribute('data-open') === 'true') {
+      panel.setAttribute('data-open', 'false');
+      state.toolsOpen = false;
+      dispatchDashboardVisibility(false);
+    }
   }
 
   function handleDashboardShortcut(event) {
@@ -2899,7 +3383,13 @@ Check:
       if (panel?.getAttribute('data-open') === 'true') {
         event.preventDefault();
         event.stopPropagation();
-        closeDashboardPanel();
+        if (state.toolsOpen) {
+          state.toolsOpen = false;
+          renderTools();
+          document.querySelector('#obs-planning-dashboard-tools-button')?.focus();
+        } else {
+          closeDashboardPanel();
+        }
       }
     }
   }
@@ -2918,25 +3408,20 @@ Check:
     const header = el('div', { class: 'obs-pd-header' }, [
       title,
       el('button', { class: 'obs-pd-btn', text: 'Refresh', onclick: refresh }),
-      el('button', { class: 'obs-pd-btn', text: 'Open', onclick: openCurrentSource }),
-      el('button', { class: 'obs-pd-btn', text: 'Copy AI prompt', onclick: copyUpdatePrompt }),
-      el('button', { class: 'obs-pd-btn', text: 'Copy pending', onclick: copyPendingJson }),
-      el('button', { class: 'obs-pd-btn', text: 'Download pending', onclick: downloadPendingJson }),
       el('button', {
-        id: 'obs-planning-dashboard-mode',
+        id: 'obs-planning-dashboard-tools-button',
         class: 'obs-pd-btn',
-        text: 'Raw',
+        text: 'Tools',
+        'aria-controls': 'obs-planning-dashboard-tools',
+        'aria-expanded': 'false',
         onclick: () => {
-          state.rawMode = !state.rawMode;
-          render();
-        }
-      }),
-      el('button', {
-        class: 'obs-pd-btn',
-        text: '⚙',
-        onclick: () => {
-          state.settingsOpen = !state.settingsOpen;
-          render();
+          state.toolsOpen = !state.toolsOpen;
+          renderTools();
+          if (state.toolsOpen) {
+            window.requestAnimationFrame(() => {
+              document.querySelector('#obs-planning-dashboard-tools button')?.focus();
+            });
+          }
         }
       }),
       el('button', { class: 'obs-pd-btn', text: '×', onclick: closeDashboardPanel })
@@ -2967,6 +3452,14 @@ Check:
     panel.appendChild(settings);
     panel.appendChild(el('div', { id: 'obs-planning-dashboard-tabs', class: 'obs-pd-tabs' }));
     panel.appendChild(el('div', { id: 'obs-planning-dashboard-body', class: 'obs-pd-body' }));
+    panel.appendChild(el('aside', {
+      id: 'obs-planning-dashboard-tools',
+      class: 'obs-pd-tools',
+      'data-open': 'false',
+      'aria-hidden': 'true',
+      inert: '',
+      'aria-labelledby': 'obs-planning-dashboard-tools-title'
+    }));
 
     openButton.addEventListener('click', toggleDashboardPanel);
 

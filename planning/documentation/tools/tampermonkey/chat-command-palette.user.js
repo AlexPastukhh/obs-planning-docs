@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.6.4-projection-contract
+// @version      0.6.5-projection-contract
 // @description  Reusable projection-only draggable command helper for inserting structured command prompt bodies into ChatGPT.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -274,6 +274,7 @@ TM-OBS-REUSE source sync:
   const root = host.attachShadow({ mode: 'open' });
   const savedPosition = readSavedPosition();
   let isOpen = false;
+  let dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === 'true';
   let left = savedPosition.left ?? Math.max(12, window.innerWidth - 420);
   let top = savedPosition.top ?? Math.max(12, window.innerHeight - 620);
 
@@ -408,7 +409,7 @@ TM-OBS-REUSE source sync:
   function setOpen(nextOpen) {
     isOpen = Boolean(nextOpen);
     panel.dataset.open = String(isOpen);
-    launcher.style.display = isOpen ? 'none' : 'block';
+    launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
     if (isOpen) {
       keepPanelInViewport();
       renderCommands(searchInput.value);
@@ -690,6 +691,12 @@ TM-OBS-REUSE source sync:
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
+
+  window.addEventListener('obs-planning-dashboard-visibility', (event) => {
+    dashboardOpen = Boolean(event?.detail?.open);
+    launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
+  });
+  window.addEventListener('obs-planning-commands-toggle', () => setOpen(!isOpen));
 
   launcher.addEventListener('click', () => setOpen(true));
   closeButton.addEventListener('click', () => setOpen(false));
