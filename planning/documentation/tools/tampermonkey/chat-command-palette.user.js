@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.6.5-projection-contract
+// @version      0.6.6-projection-contract
 // @description  Reusable projection-only draggable command helper for inserting structured command prompt bodies into ChatGPT.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -275,6 +275,7 @@ TM-OBS-REUSE source sync:
   const savedPosition = readSavedPosition();
   let isOpen = false;
   let dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === 'true';
+  let lastCommandsToggleToken = document.documentElement.dataset.obsPlanningCommandsToggle || '';
   let left = savedPosition.left ?? Math.max(12, window.innerWidth - 420);
   let top = savedPosition.top ?? Math.max(12, window.innerHeight - 620);
 
@@ -692,11 +693,38 @@ TM-OBS-REUSE source sync:
     return Math.min(Math.max(value, min), max);
   }
 
+  function syncDashboardVisibilityFromDom() {
+    dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === 'true';
+    launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
+  }
+
+  function consumeCommandsToggle(token) {
+    const nextToken = String(token || '');
+    if (!nextToken || nextToken === lastCommandsToggleToken) return;
+    lastCommandsToggleToken = nextToken;
+    setOpen(!isOpen);
+  }
+
   window.addEventListener('obs-planning-dashboard-visibility', (event) => {
     dashboardOpen = Boolean(event?.detail?.open);
     launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
   });
-  window.addEventListener('obs-planning-commands-toggle', () => setOpen(!isOpen));
+  window.addEventListener('obs-planning-commands-toggle', (event) => {
+    consumeCommandsToggle(event?.detail?.token || document.documentElement.dataset.obsPlanningCommandsToggle);
+  });
+
+  const planningDomObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.attributeName === 'data-obs-planning-dashboard-open') syncDashboardVisibilityFromDom();
+      if (mutation.attributeName === 'data-obs-planning-commands-toggle') {
+        consumeCommandsToggle(document.documentElement.dataset.obsPlanningCommandsToggle);
+      }
+    }
+  });
+  planningDomObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-obs-planning-dashboard-open', 'data-obs-planning-commands-toggle']
+  });
 
   launcher.addEventListener('click', () => setOpen(true));
   closeButton.addEventListener('click', () => setOpen(false));

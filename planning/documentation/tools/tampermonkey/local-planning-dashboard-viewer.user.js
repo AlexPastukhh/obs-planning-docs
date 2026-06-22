@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Local Planning Dashboard Viewer
 // @namespace    https://github.com/AlexPastukhh/obs/planning-dashboard
-// @version      0.6.2
-// @description  Local-first read-only planning dashboard with offline snapshot cache, pending sessions, and reviewed batch export.
+// @version      0.7.3
+// @description  Local-first planning dashboard with repository projection, local execution notes, pending-session score, and local Goal Maps.
 // @author       OBS planning-system
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -24,6 +24,8 @@
   const OPTIONAL_EMPTY_VALUES = new Set(['', '-', 'none', 'null', 'not provided', 'n/a']);
   const OUTBOX_KEY = 'obsPlanning:sessionOutbox:v1';
   const CONTEXT_KEY = 'obsPlanning:sessionContext:v1';
+  const LOCAL_PLAN_KEY = 'obsPlanning:localDayPlan:v1';
+  const LOCAL_PLAN_SCHEMA = 'obs-local-day-plan-v1';
   const CACHE_DB_NAME = 'obsPlanningCache';
   const CACHE_DB_VERSION = 1;
   const CACHE_STORE = 'snapshots';
@@ -45,6 +47,7 @@
     scopeUnitsOpen: false,
     acceptanceCriteriaOpen: false,
     expandedScenarios: {},
+    activeLocalGoalMapId: null,
     dayScrollTops: {
       plan: 0,
       sessions: 0,
@@ -965,7 +968,7 @@
       }
     }
 
-    /* v0.6.0 compact planning workspace */
+    /* v0.7.0 local planning workspace */
     #obs-planning-dashboard-panel { inset: 8px; border-radius: 12px; }
     .obs-pd-header { min-height: 42px; gap: 6px; padding: 5px 8px; }
     .obs-pd-title-main { font-size: 13px; }
@@ -1078,6 +1081,163 @@
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 18px; height: 18px; border-radius: 999px;
       background: rgba(180, 83, 9, .35); color: #fde68a; font-size: 10px; font-weight: 800;
+    }
+
+    .obs-pd-score-meta {
+      margin-top: 2px; color: #8fa5c2; font-size: 10px; line-height: 1.25;
+    }
+
+    .obs-pd-plan-workspace {
+      display: grid; grid-template-columns: minmax(300px, .9fr) minmax(0, 1.35fr);
+      gap: 8px; align-items: start; margin-bottom: 8px;
+    }
+    .obs-pd-workspace-column {
+      min-width: 0; padding: 8px;
+      border: 1px solid rgba(148, 163, 184, .22);
+      border-radius: 10px; background: rgba(15, 28, 48, .92);
+    }
+    .obs-pd-workspace-head {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 7px;
+    }
+    .obs-pd-workspace-head h2 { margin: 0; font-size: 14px; color: #e5efff; }
+    .obs-pd-local-only {
+      margin-left: auto; color: #a7f3d0; font-size: 9px; font-weight: 760;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .obs-pd-workspace-hint {
+      width: 100%; color: #8fa5c2; font-size: 10px; line-height: 1.35;
+    }
+
+    .obs-pd-plan-level {
+      --level-color: #64748b;
+      margin-bottom: 7px; overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, .18);
+      border-left: 4px solid var(--level-color);
+      border-radius: 9px; background: rgba(8, 18, 32, .72);
+    }
+    .obs-pd-plan-level[data-level="minimum"] { --level-color: #fb7185; }
+    .obs-pd-plan-level[data-level="base"] { --level-color: #60a5fa; }
+    .obs-pd-plan-level[data-level="desired"] { --level-color: #c084fc; }
+    .obs-pd-plan-level[data-level="max"] { --level-color: #fbbf24; }
+    .obs-pd-plan-level[data-level="acceptance"] { --level-color: #2dd4bf; }
+    .obs-pd-plan-level[data-level="done"] { --level-color: #34d399; }
+    .obs-pd-plan-level-head {
+      display: flex; align-items: center; gap: 7px; padding: 7px 8px;
+      border-bottom: 1px solid rgba(148, 163, 184, .12);
+    }
+    .obs-pd-plan-level-head h3 { margin: 0; font-size: 12px; color: #dbeafe; }
+    .obs-pd-level-badge {
+      border-radius: 999px; padding: 2px 6px;
+      background: color-mix(in srgb, var(--level-color) 24%, transparent);
+      color: var(--level-color); font-size: 9px; font-weight: 800;
+    }
+    .obs-pd-plan-items { display: grid; gap: 5px; padding: 6px; }
+    .obs-pd-plan-item {
+      border: 1px solid rgba(148, 163, 184, .15);
+      border-radius: 8px; background: rgba(15, 23, 42, .72);
+    }
+    .obs-pd-plan-item-main {
+      display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: start; gap: 7px; padding: 7px;
+    }
+    .obs-pd-plan-check { margin-top: 2px; accent-color: var(--level-color); }
+    .obs-pd-plan-item-copy { min-width: 0; }
+    .obs-pd-plan-item-id { color: var(--level-color); font-size: 10px; font-weight: 800; }
+    .obs-pd-plan-item-text { color: #e5edf8; font-size: 12px; line-height: 1.35; }
+    .obs-pd-plan-item[data-done="true"] .obs-pd-plan-item-text {
+      color: #9fb2ca; text-decoration: line-through;
+    }
+    .obs-pd-plan-item-source { margin-top: 2px; color: #7186a2; font-size: 9px; }
+    .obs-pd-plan-item-details { border-top: 1px solid rgba(148, 163, 184, .12); }
+    .obs-pd-plan-item-details > summary {
+      padding: 5px 7px; cursor: pointer; color: #9fb6d4; font-size: 10px;
+    }
+    .obs-pd-plan-item-editor { display: grid; gap: 6px; padding: 0 7px 7px; }
+    .obs-pd-field-label { display: block; color: #9fb6d4; font-size: 10px; }
+    .obs-pd-local-textarea,
+    .obs-pd-local-select,
+    .obs-pd-local-time {
+      width: 100%; min-width: 0; margin-top: 3px;
+      border: 1px solid rgba(148, 163, 184, .28); border-radius: 7px;
+      background: #050d1a; color: #e8f1ff; padding: 6px 7px; font: inherit;
+    }
+    .obs-pd-local-textarea { min-height: 62px; resize: vertical; font-size: 11px; }
+    .obs-pd-local-time { padding: 4px 5px; font-size: 10px; }
+    .obs-pd-local-select { padding: 5px 6px; font-size: 10px; }
+    .obs-pd-local-textarea[data-saved="true"],
+    .obs-pd-local-time[data-saved="true"],
+    .obs-pd-local-select[data-saved="true"] { border-color: rgba(52, 211, 153, .7); }
+    .obs-pd-local-textarea[data-save-error="true"] { border-color: rgba(248, 113, 113, .85); }
+    .obs-pd-item-actions { display: flex; flex-wrap: wrap; gap: 5px; }
+    .obs-pd-item-actions .obs-pd-btn { padding: 4px 6px; font-size: 10px; }
+    .obs-pd-linked-material {
+      padding: 7px; border: 1px solid rgba(45, 212, 191, .2);
+      border-radius: 7px; background: rgba(8, 47, 50, .34);
+    }
+    .obs-pd-linked-material h4 { margin: 0 0 5px; color: #99f6e4; font-size: 10px; }
+    .obs-pd-linked-material-list { display: grid; gap: 4px; }
+    .obs-pd-linked-material-item { color: #c8d8e8; font-size: 10px; line-height: 1.35; }
+    .obs-pd-legacy-material {
+      margin-top: 7px; overflow: hidden;
+      border: 1px dashed rgba(148, 163, 184, .28);
+      border-radius: 9px; background: rgba(9, 18, 31, .62);
+    }
+    .obs-pd-legacy-material > summary {
+      padding: 7px 8px; cursor: pointer; color: #aebed1; font-size: 10px;
+    }
+    .obs-pd-legacy-material-body { display: grid; gap: 6px; padding: 0 8px 8px; }
+    .obs-pd-legacy-entry {
+      display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(150px, .7fr);
+      align-items: start; gap: 6px; padding: 6px;
+      border: 1px solid rgba(148, 163, 184, .14); border-radius: 7px;
+      background: rgba(15, 23, 42, .66);
+    }
+    .obs-pd-legacy-entry-copy { color: #c8d8e8; font-size: 10px; line-height: 1.35; }
+    .obs-pd-legacy-entry-source { margin-top: 2px; color: #7186a2; font-size: 9px; }
+
+    .obs-pd-scope-unit {
+      --level-color: #64748b;
+      margin-bottom: 6px; padding: 7px;
+      border: 1px solid rgba(148, 163, 184, .17);
+      border-left: 4px solid var(--level-color);
+      border-radius: 8px; background: rgba(8, 18, 32, .72);
+    }
+    .obs-pd-scope-unit[data-level="minimum"] { --level-color: #fb7185; }
+    .obs-pd-scope-unit[data-level="base"] { --level-color: #60a5fa; }
+    .obs-pd-scope-unit[data-level="desired"] { --level-color: #c084fc; }
+    .obs-pd-scope-unit[data-level="max"] { --level-color: #fbbf24; }
+    .obs-pd-scope-unit[data-level="acceptance"] { --level-color: #2dd4bf; }
+    .obs-pd-scope-title-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+    .obs-pd-scope-title { min-width: 0; flex: 1; color: #e5edf8; font-size: 12px; font-weight: 760; }
+    .obs-pd-scope-status { color: #9fb6d4; font-size: 9px; }
+    .obs-pd-scope-source { color: #8fa5c2; font-size: 10px; line-height: 1.35; }
+    .obs-pd-deadline-grid {
+      display: grid; grid-template-columns: repeat(4, minmax(64px, 1fr));
+      gap: 4px; margin-top: 6px;
+    }
+    .obs-pd-deadline-grid .obs-pd-field-label { font-size: 9px; }
+    .obs-pd-scope-source-details { margin-top: 6px; }
+    .obs-pd-scope-source-details > summary { cursor: pointer; color: #8fa5c2; font-size: 9px; }
+    .obs-pd-scope-source-grid { display: grid; gap: 3px; margin-top: 5px; color: #9fb6d4; font-size: 10px; }
+    .obs-pd-day-note { margin-top: 8px; padding-top: 7px; border-top: 1px solid rgba(148, 163, 184, .12); }
+
+    .obs-pd-local-goal-map {
+      margin-bottom: 8px; overflow: hidden;
+      border: 1px solid rgba(45, 212, 191, .28); border-radius: 10px;
+      background: rgba(7, 29, 38, .78);
+    }
+    .obs-pd-local-goal-map > summary {
+      display: flex; align-items: center; gap: 7px; padding: 8px 9px;
+      cursor: pointer; color: #ccfbf1; font-weight: 760;
+    }
+    .obs-pd-goal-map-body { display: grid; gap: 7px; padding: 0 9px 9px; }
+    .obs-pd-goal-map-meta { color: #8fa5c2; font-size: 10px; overflow-wrap: anywhere; }
+    .obs-pd-goal-map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .obs-pd-goal-map-grid .obs-pd-field-label[data-wide="true"] { grid-column: 1 / -1; }
+
+    @media (max-width: 980px) {
+      .obs-pd-plan-workspace { grid-template-columns: 1fr; }
     }
 
     @media (max-height: 780px) {
@@ -1198,6 +1358,137 @@
     return value && value.schema === 'obs-session-outbox-v1' && typeof value.days === 'object'
       ? value
       : { schema: 'obs-session-outbox-v1', days: {} };
+  }
+
+  function emptyLocalPlanningStore() {
+    return {
+      schema: LOCAL_PLAN_SCHEMA,
+      updatedAt: null,
+      days: {},
+      goalMaps: {}
+    };
+  }
+
+  function readLocalPlanningStore() {
+    const value = readSharedJson(LOCAL_PLAN_KEY, emptyLocalPlanningStore());
+    if (!value || value.schema !== LOCAL_PLAN_SCHEMA || typeof value.days !== 'object') {
+      return emptyLocalPlanningStore();
+    }
+    if (!value.goalMaps || typeof value.goalMaps !== 'object') value.goalMaps = {};
+    return value;
+  }
+
+  function writeLocalPlanningStore(store) {
+    store.schema = LOCAL_PLAN_SCHEMA;
+    store.updatedAt = new Date().toISOString();
+    return writeSharedJson(LOCAL_PLAN_KEY, store);
+  }
+
+  function stableHash(value) {
+    let hash = 2166136261;
+    for (const char of String(value || '')) {
+      hash ^= char.charCodeAt(0);
+      hash = Math.imul(hash, 16777619);
+    }
+    return (hash >>> 0).toString(36);
+  }
+
+  function planningDayIdentity(file = state.files.day) {
+    const path = String(file?.path || '').trim();
+    const date = path.match(/(\d{4}-\d{2}-\d{2})\.md(?:$|[?#])/)?.[1]
+      || parseMarkdownDocument(file?.text || '').title.match(/(\d{4}-\d{2}-\d{2})/)?.[1]
+      || 'undated';
+    return {
+      date,
+      path,
+      key: `${date}::${path || 'no-path'}`
+    };
+  }
+
+  function ensureLocalDayState(store, file = state.files.day) {
+    const identity = planningDayIdentity(file);
+    if (!store.days[identity.key]) {
+      store.days[identity.key] = {
+        key: identity.key,
+        date: identity.date,
+        planningPath: identity.path,
+        dayNote: '',
+        scopeUnits: {},
+        planItems: {},
+        legacyLinks: {},
+        goalMapIds: [],
+        updatedAt: null
+      };
+    }
+    const day = store.days[identity.key];
+    if (!day.scopeUnits || typeof day.scopeUnits !== 'object') day.scopeUnits = {};
+    if (!day.planItems || typeof day.planItems !== 'object') day.planItems = {};
+    if (!day.legacyLinks || typeof day.legacyLinks !== 'object') day.legacyLinks = {};
+    if (!Array.isArray(day.goalMapIds)) day.goalMapIds = [];
+    day.date = identity.date;
+    day.planningPath = identity.path;
+    return day;
+  }
+
+  function readLocalDayState(file = state.files.day) {
+    const store = readLocalPlanningStore();
+    const identity = planningDayIdentity(file);
+    return store.days[identity.key] || {
+      key: identity.key,
+      date: identity.date,
+      planningPath: identity.path,
+      dayNote: '',
+      scopeUnits: {},
+      planItems: {},
+      legacyLinks: {},
+      goalMapIds: []
+    };
+  }
+
+  function updateLocalDayState(file, updater) {
+    const store = readLocalPlanningStore();
+    const day = ensureLocalDayState(store, file);
+    updater(day, store);
+    day.updatedAt = new Date().toISOString();
+    if (!writeLocalPlanningStore(store)) {
+      throw new Error('Could not save local planning state.');
+    }
+    return day;
+  }
+
+  function bindDebouncedLocalInput(node, save, delay = 350) {
+    let timer = null;
+    node.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        try {
+          save(node.value);
+          node.dataset.saved = 'true';
+          setTimeout(() => { delete node.dataset.saved; }, 900);
+        } catch (error) {
+          console.warn('OBS local planning save failed', error);
+          node.dataset.saveError = 'true';
+        }
+      }, delay);
+    });
+    node.addEventListener('change', () => {
+      clearTimeout(timer);
+      try {
+        save(node.value);
+        node.dataset.saved = 'true';
+        setTimeout(() => { delete node.dataset.saved; }, 900);
+      } catch (error) {
+        console.warn('OBS local planning save failed', error);
+        node.dataset.saveError = 'true';
+      }
+    });
+    return node;
+  }
+
+  function localGoalMaps() {
+    return Object.values(readLocalPlanningStore().goalMaps || {})
+      .filter((map) => map && map.id)
+      .sort((a, b) => String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || '')));
   }
 
   function dateFromOperationalPath(path) {
@@ -1927,6 +2218,13 @@ Dashboard: ${file.path}`
     return header;
   }
 
+  const PLAN_LEVEL_DEFINITIONS = [
+    ['minimum', 'Minimum', 'M'],
+    ['base', 'Base', 'B'],
+    ['desired', 'Desired', 'D'],
+    ['max', 'Max / Very Wide', 'X']
+  ];
+
   function scenarioKind(title) {
     const normalized = normalizeHeading(title);
     if (normalized.includes('minimum')) return 'minimum';
@@ -1942,18 +2240,42 @@ Dashboard: ${file.path}`
       && !/^```/.test(text)
       && !/^USER INPUT:?$/i.test(text)
       && !/^AI ASSUMPTIONS(?:\s*\/\s*SUGGESTIONS)?:?$/i.test(text)
-      && !/^\|?\s*:?-+/.test(text);
+      && !/^\|?\s*:?-+/.test(text)
+      && !OPTIONAL_EMPTY_VALUES.has(text.toLowerCase());
   }
 
   function meaningfulLineCount(lines) {
     return trimBlankLines(lines).filter(isPlanningContentLine).length;
   }
 
-  function firstMeaningfulLines(lines, limit = 2) {
-    return trimBlankLines(lines)
-      .map((line) => line.replace(/^\s*[-*]\s+/, '').trim())
-      .filter(isPlanningContentLine)
-      .slice(0, limit);
+  function planningItemsFromLines(lines) {
+    const items = [];
+    let source = 'source';
+    let inFence = false;
+    for (const rawLine of lines || []) {
+      const text = String(rawLine || '').trim();
+      if (/^USER INPUT:?$/i.test(text)) {
+        source = 'user';
+        continue;
+      }
+      if (/^AI ASSUMPTIONS(?:\s*\/\s*SUGGESTIONS)?:?$/i.test(text)) {
+        source = 'ai';
+        continue;
+      }
+      if (/^```/.test(text)) {
+        inFence = !inFence;
+        continue;
+      }
+      if (!text || OPTIONAL_EMPTY_VALUES.has(text.toLowerCase())) continue;
+      if (/^\|/.test(text) || /^:?-{3,}/.test(text)) continue;
+      const bullet = text.match(/^[-*]\s+(.+?)\s*$/)?.[1];
+      if (bullet) {
+        items.push({ text: bullet, source });
+      } else if (inFence && !/:\s*$/.test(text)) {
+        items.push({ text, source });
+      }
+    }
+    return items;
   }
 
   function planDisclosure(section, key, defaultOpen, bodyFactory, metaText) {
@@ -1971,34 +2293,23 @@ Dashboard: ${file.path}`
   }
 
   function renderPlanCore(section) {
-    const itemCount = section.subsections.reduce((sum, subsection) => sum + meaningfulLineCount(subsection.lines), 0);
     return planDisclosure(section, 'planCoreOpen', true, () => {
       const fragment = document.createDocumentFragment();
       if (trimBlankLines(section.lines).length) fragment.appendChild(renderMarkdownLines(section.lines));
-      const grid = el('div', { class: 'obs-pd-grid' });
       section.subsections.forEach((subsection) => {
-        const kind = scenarioKind(subsection.title);
-        const details = el('details', { class: 'obs-pd-scenario-disclosure', 'data-scenario': kind });
-        details.open = Boolean(state.expandedScenarios[kind]);
-        const previewLines = firstMeaningfulLines(subsection.lines, 2);
-        const summary = el('summary');
-        const summaryCopy = el('div', { class: 'obs-pd-scenario-summary-copy' });
-        summaryCopy.appendChild(el('div', { class: 'obs-pd-scenario-title', text: subsection.title }));
-        summaryCopy.appendChild(el('div', {
-          class: 'obs-pd-scenario-preview',
-          text: previewLines.join('\n') || 'not provided'
-        }));
-        summary.appendChild(summaryCopy);
-        details.appendChild(summary);
-        const full = el('div', { class: 'obs-pd-scenario-full' });
-        full.appendChild(renderMarkdownLines(subsection.lines));
-        details.appendChild(full);
-        details.addEventListener('toggle', () => { state.expandedScenarios[kind] = details.open; });
-        grid.appendChild(details);
+        const level = scenarioKind(subsection.title);
+        const block = el('section', { class: 'obs-pd-plan-level', 'data-level': level });
+        block.appendChild(el('div', { class: 'obs-pd-plan-level-head' }, [
+          el('span', { class: 'obs-pd-level-badge', text: level.toUpperCase() }),
+          el('h3', { text: subsection.title })
+        ]));
+        const body = el('div', { class: 'obs-pd-plan-items' });
+        body.appendChild(renderMarkdownLines(subsection.lines));
+        block.appendChild(body);
+        fragment.appendChild(block);
       });
-      if (section.subsections.length) fragment.appendChild(grid);
       return fragment;
-    }, `${section.subsections.length} levels · ${itemCount} source line(s)`);
+    }, `${section.subsections.length} levels`);
   }
 
   function renderSectionBodyOnly(section) {
@@ -2014,9 +2325,743 @@ Dashboard: ${file.path}`
     return fragment;
   }
 
+  function normalizedPlanItemText(text) {
+    return String(text || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function parsePlanItemIdentity(text, fallbackId) {
+    const originalText = String(text || '').trim();
+    const match = originalText.match(/^\s*(?:\[\s*)?([MBDX]\d+)(?:\s*\])?\s*(?:[:.)\-–—]\s*)?(.+)$/i);
+    if (match?.[2]?.trim()) {
+      return {
+        id: match[1].toUpperCase(),
+        text: match[2].trim(),
+        explicitId: true,
+        originalText
+      };
+    }
+    return {
+      id: fallbackId,
+      text: originalText,
+      explicitId: false,
+      originalText
+    };
+  }
+
+  function planItemKey(item) {
+    if (item.explicitId) return `plan:${item.level}:id:${item.id.toUpperCase()}`;
+    return `plan:${item.level}:text:${stableHash(normalizedPlanItemText(item.text))}`;
+  }
+
+  function planItemLegacyKeys(item) {
+    const aliases = [
+      `${item.kind}:${item.fallbackId || item.id}:${stableHash(item.originalText || item.text)}`
+    ];
+    if (item.explicitId) aliases.push(`plan:${item.level}:${item.id}`);
+    return [...new Set(aliases.filter(Boolean))];
+  }
+
+  function localPlanItemRecord(localDay, item) {
+    const items = localDay?.planItems || {};
+    if (items[item.key]) return { key: item.key, value: items[item.key] };
+    for (const alias of item.legacyKeys || []) {
+      if (items[alias]) return { key: alias, value: items[alias] };
+    }
+    if (item.explicitId) {
+      const matches = Object.entries(items).filter(([, value]) => (
+        value?.sourceItemExplicitId === true
+        && value?.sourceItemId === item.id
+        && value?.sourceLevel === item.level
+      ));
+      if (matches.length === 1) return { key: matches[0][0], value: matches[0][1] };
+    }
+    return { key: null, value: {} };
+  }
+
+
+  function normalizedScopeUnitText(text) {
+    return String(text || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function parseScopeUnitIdentity(row, table, index) {
+    const rawUnit = cleanCell(exactRowValue(row, table, ['Unit'])) || `Scope Unit ${index + 1}`;
+    const separateId = cleanCell(exactRowValue(row, table, ['ID']));
+    const idPattern = /^[A-Z][A-Z0-9_-]*\d+$/i;
+    const prefixed = rawUnit.match(/^\s*(?:\[\s*)?([A-Z][A-Z0-9_-]*\d+)(?:\s*\])?\s*(?:(?:[:.)\-–—])\s*(.*))?$/i);
+
+    let authoredId = '';
+    let unitText = rawUnit;
+    if (separateId && idPattern.test(separateId)) {
+      authoredId = separateId.toUpperCase();
+      unitText = rawUnit && rawUnit.toUpperCase() !== authoredId ? rawUnit : authoredId;
+    } else if (prefixed && idPattern.test(prefixed[1])) {
+      authoredId = prefixed[1].toUpperCase();
+      unitText = String(prefixed[2] || prefixed[1]).trim();
+    }
+
+    const fallbackId = `SU${index + 1}`;
+    const explicitId = Boolean(authoredId);
+    const id = authoredId || fallbackId;
+    const textValue = unitText || rawUnit || fallbackId;
+    const key = explicitId
+      ? `scope:id:${id}`
+      : `scope:text:${stableHash(normalizedScopeUnitText(textValue))}`;
+
+    return {
+      id,
+      fallbackId,
+      explicitId,
+      text: textValue,
+      originalUnit: rawUnit,
+      key,
+      legacyKeys: []
+    };
+  }
+
+  function scopeUnitLegacyKeys(unit, row, table, index) {
+    const rawUnit = exactRowValue(row, table, ['Unit', 'ID']);
+    const windowValue = exactRowValue(row, table, ['Window']);
+    const goals = exactRowValue(row, table, ['Goal(s)', 'Goals', 'Goal', 'Target']);
+    const aliases = [
+      `SU${index + 1}:${stableHash(`${rawUnit}|${windowValue}|${goals}`)}`
+    ];
+    if (unit.explicitId) aliases.push(`scope:${unit.id}`);
+    return [...new Set(aliases.filter(Boolean))];
+  }
+
+  function localScopeUnitRecord(localDay, unit) {
+    const units = localDay?.scopeUnits || {};
+    if (units[unit.key]) return { key: unit.key, value: units[unit.key] };
+    for (const alias of unit.legacyKeys || []) {
+      if (units[alias]) return { key: alias, value: units[alias] };
+    }
+    if (unit.explicitId) {
+      const matches = Object.entries(units).filter(([, value]) => (
+        value?.sourceUnitExplicitId === true
+        && value?.sourceUnitId === unit.id
+      ));
+      if (matches.length === 1) return { key: matches[0][0], value: matches[0][1] };
+    }
+    return { key: null, value: {} };
+  }
+
+  function legacyMaterialKey(kind, id, text) {
+    return `legacy:${kind}:${String(id || 'item').toUpperCase()}:${stableHash(normalizedPlanItemText(text))}`;
+  }
+
+  function collectPlanWorkspaceModel(documentModel) {
+    const levels = Object.fromEntries(PLAN_LEVEL_DEFINITIONS.map(([key, label, prefix]) => [key, { key, label, prefix, items: [] }]));
+    const planCore = findSection(documentModel, 'plan core');
+    if (planCore) {
+      for (const subsection of planCore.subsections) {
+        const level = scenarioKind(subsection.title);
+        if (!levels[level]) continue;
+        planningItemsFromLines(subsection.lines).forEach((sourceItem, index) => {
+          const fallbackId = `${levels[level].prefix}${index + 1}`;
+          const identity = parsePlanItemIdentity(sourceItem.text, fallbackId);
+          const entry = {
+            kind: 'plan',
+            id: identity.id,
+            fallbackId,
+            explicitId: identity.explicitId,
+            originalText: identity.originalText,
+            level,
+            text: identity.text,
+            source: sourceItem.source,
+            sourceDone: false
+          };
+          entry.key = planItemKey(entry);
+          entry.legacyKeys = planItemLegacyKeys(entry);
+          levels[level].items.push(entry);
+        });
+      }
+    }
+
+    const legacyAcceptance = [];
+    const acceptanceSection = findSection(documentModel, 'acceptance criteria');
+    const acceptanceTable = acceptanceSection ? parseFirstTable(acceptanceSection.lines) : null;
+    (acceptanceTable?.rows || []).filter(isMeaningfulDataRow).forEach((row, index) => {
+      const id = cleanCell(exactRowValue(row, acceptanceTable, ['AC', 'ID'])) || `AC${index + 1}`;
+      const criterion = cleanCell(exactRowValue(row, acceptanceTable, ['Criterion', 'Criteria', 'Goal']));
+      const verifiable = cleanCell(exactRowValue(row, acceptanceTable, ['Verifiable Result', 'Result', 'Expected Result']));
+      const status = cleanCell(exactRowValue(row, acceptanceTable, ['Status']));
+      const text = verifiable && !OPTIONAL_EMPTY_VALUES.has(verifiable.toLowerCase()) ? verifiable : criterion;
+      if (!text || OPTIONAL_EMPTY_VALUES.has(text.toLowerCase())) return;
+      legacyAcceptance.push({
+        kind: 'acceptance',
+        id,
+        text,
+        source: criterion && criterion !== text ? criterion : 'repository Acceptance Criteria',
+        sourceDone: /^(done|complete|completed|passed|met|yes)$/i.test(status),
+        key: legacyMaterialKey('acceptance', id, text)
+      });
+    });
+
+    const legacyEvidence = [];
+    const doneSection = findSection(documentModel, 'done / evidence') || findSection(documentModel, 'done evidence');
+    planningItemsFromLines(doneSection?.lines || []).forEach((sourceItem, index) => {
+      const id = `E${index + 1}`;
+      legacyEvidence.push({
+        kind: 'evidence',
+        id,
+        text: sourceItem.text,
+        source: 'repository Done / Evidence',
+        sourceDone: true,
+        key: legacyMaterialKey('evidence', id, sourceItem.text)
+      });
+    });
+
+    const scopeSection = findSection(documentModel, 'scope units');
+    const scopeTable = scopeSection ? parseFirstTable(scopeSection.lines) : null;
+    const scopeRows = (scopeTable?.rows || []).filter(isMeaningfulDataRow);
+    const scopeUnits = scopeRows.map((row, index) => {
+      const identity = parseScopeUnitIdentity(row, scopeTable, index);
+      identity.legacyKeys = scopeUnitLegacyKeys(identity, row, scopeTable, index);
+      return { row, index, identity };
+    });
+    const generatedIdentityCounts = new Map();
+    scopeUnits.forEach(({ identity }) => {
+      if (identity.explicitId) return;
+      generatedIdentityCounts.set(identity.key, (generatedIdentityCounts.get(identity.key) || 0) + 1);
+    });
+    scopeUnits.forEach(({ identity }) => {
+      identity.ambiguous = !identity.explicitId && (generatedIdentityCounts.get(identity.key) || 0) > 1;
+    });
+    const targetItems = PLAN_LEVEL_DEFINITIONS.flatMap(([key]) => levels[key].items);
+
+    return {
+      levels,
+      legacyAcceptance,
+      legacyEvidence,
+      targetItems,
+      scopeSection,
+      scopeTable,
+      scopeRows,
+      scopeUnits
+    };
+  }
+
+  function resolveLinkedPlanItem(targetItems, link) {
+    if (!link) return null;
+    const exact = targetItems.find((item) => (
+      item.key === link.targetItemKey
+      || (item.legacyKeys || []).includes(link.targetItemKey)
+    ));
+    if (exact) return exact;
+    if (link.targetItemExplicitId === true) {
+      return targetItems.find((item) => (
+        item.explicitId
+        && item.id === link.targetItemId
+        && item.level === link.targetItemLevel
+      )) || null;
+    }
+    return null;
+  }
+
+  function legacyMaterialForPlanItem(workspace, localDay, item) {
+    const linked = (entry) => {
+      const link = localDay?.legacyLinks?.[entry.key];
+      const target = resolveLinkedPlanItem(workspace.targetItems, link);
+      return target?.key === item.key;
+    };
+    return {
+      acceptance: workspace.legacyAcceptance.filter(linked),
+      evidence: workspace.legacyEvidence.filter(linked)
+    };
+  }
+
+  function updateLegacyMaterialLink(file, entry, target) {
+    updateLocalDayState(file, (day) => {
+      if (!day.legacyLinks || typeof day.legacyLinks !== 'object') day.legacyLinks = {};
+      if (!target) {
+        delete day.legacyLinks[entry.key];
+        return;
+      }
+      day.legacyLinks[entry.key] = {
+        targetItemKey: target.key,
+        targetItemId: target.id,
+        targetItemLevel: target.level,
+        targetItemExplicitId: Boolean(target.explicitId),
+        updatedAt: new Date().toISOString()
+      };
+    });
+  }
+
+  function updateLocalPlanItem(file, item, patch) {
+    updateLocalDayState(file, (day) => {
+      const record = localPlanItemRecord(day, item);
+      day.planItems[item.key] = {
+        ...(record.value || {}),
+        ...patch,
+        sourceItemId: item.id,
+        sourceLevel: item.level,
+        sourceItemExplicitId: Boolean(item.explicitId),
+        sourceText: item.text,
+        sourceTextHash: stableHash(normalizedPlanItemText(item.text)),
+        updatedAt: new Date().toISOString()
+      };
+      if (record.key && record.key !== item.key) delete day.planItems[record.key];
+    });
+  }
+
+  function localGoalMapForItem(file, item) {
+    const store = readLocalPlanningStore();
+    const day = store.days[planningDayIdentity(file).key];
+    const record = localPlanItemRecord(day, item);
+    const goalMapId = record.value?.goalMapId;
+    return goalMapId ? store.goalMaps?.[goalMapId] || null : null;
+  }
+
+  function ensureLocalGoalMap(file, item) {
+    const store = readLocalPlanningStore();
+    const day = ensureLocalDayState(store, file);
+    const record = localPlanItemRecord(day, item);
+    const itemState = record.value || {};
+    let map = itemState.goalMapId ? store.goalMaps[itemState.goalMapId] : null;
+    if (!map) {
+      const identity = planningDayIdentity(file);
+      const id = `GM-${identity.date}-${item.id}-${stableHash(`${identity.path}:${item.key}`).slice(0, 6)}`;
+      const now = new Date().toISOString();
+      map = {
+        id,
+        title: `Goal Map — ${item.id}`,
+        goal: item.text,
+        sourceDay: identity.date,
+        sourcePath: identity.path,
+        sourceItemId: item.id,
+        sourceItemKey: item.key,
+        sourceLevel: item.level,
+        sourceItemExplicitId: Boolean(item.explicitId),
+        status: 'local draft',
+        why: '',
+        success: '',
+        currentState: '',
+        unknowns: '',
+        approaches: '',
+        steps: '',
+        checks: '',
+        risks: '',
+        resultsEvidence: '',
+        createdAt: now,
+        updatedAt: now
+      };
+      store.goalMaps[id] = map;
+      day.planItems[item.key] = {
+        ...itemState,
+        goalMapId: id,
+        sourceItemId: item.id,
+        sourceLevel: item.level,
+        sourceItemExplicitId: Boolean(item.explicitId),
+        sourceText: item.text,
+        sourceTextHash: stableHash(normalizedPlanItemText(item.text)),
+        updatedAt: now
+      };
+      if (record.key && record.key !== item.key) delete day.planItems[record.key];
+      if (!day.goalMapIds.includes(id)) day.goalMapIds.push(id);
+      day.updatedAt = now;
+      if (!writeLocalPlanningStore(store)) {
+        throw new Error('Could not save the new local Goal Map.');
+      }
+    } else {
+      const now = new Date().toISOString();
+      const sourceChanged = map.sourceItemKey !== item.key
+        || map.sourceItemId !== item.id
+        || map.sourceLevel !== item.level
+        || map.sourceItemExplicitId !== Boolean(item.explicitId);
+      const recordNeedsMigration = record.key && record.key !== item.key;
+      if (sourceChanged || recordNeedsMigration) {
+        map = {
+          ...map,
+          title: `Goal Map — ${item.id}`,
+          sourceItemId: item.id,
+          sourceItemKey: item.key,
+          sourceLevel: item.level,
+          sourceItemExplicitId: Boolean(item.explicitId),
+          updatedAt: now
+        };
+        store.goalMaps[map.id] = map;
+        day.planItems[item.key] = {
+          ...itemState,
+          goalMapId: map.id,
+          sourceItemId: item.id,
+          sourceLevel: item.level,
+          sourceItemExplicitId: Boolean(item.explicitId),
+          sourceText: item.text,
+          sourceTextHash: stableHash(normalizedPlanItemText(item.text)),
+          updatedAt: now
+        };
+        if (recordNeedsMigration) delete day.planItems[record.key];
+        day.updatedAt = now;
+        if (!writeLocalPlanningStore(store)) {
+          throw new Error('Could not update the local Goal Map source identity.');
+        }
+      }
+    }
+    state.activeLocalGoalMapId = map.id;
+    state.activeTab = 'goalMaps';
+    render();
+    window.requestAnimationFrame(() => {
+      document.querySelector(`[data-local-goal-map-id="${map.id}"]`)?.scrollIntoView({ block: 'start' });
+    });
+    return map;
+  }
+
+  function renderLinkedRepositoryMaterial(attached) {
+    if (!attached.acceptance.length && !attached.evidence.length) return null;
+    const block = el('section', { class: 'obs-pd-linked-material' });
+    if (attached.acceptance.length) {
+      block.appendChild(el('h4', { text: 'Linked repository acceptance' }));
+      const list = el('div', { class: 'obs-pd-linked-material-list' });
+      attached.acceptance.forEach((entry) => list.appendChild(el('div', {
+        class: 'obs-pd-linked-material-item',
+        text: `${entry.id}: ${entry.text}`
+      })));
+      block.appendChild(list);
+    }
+    if (attached.evidence.length) {
+      block.appendChild(el('h4', { text: 'Repository evidence' }));
+      const list = el('div', { class: 'obs-pd-linked-material-list' });
+      attached.evidence.forEach((entry) => list.appendChild(el('div', {
+        class: 'obs-pd-linked-material-item',
+        text: `${entry.id}: ${entry.text}`
+      })));
+      block.appendChild(list);
+    }
+    return block;
+  }
+
+  function renderPlanItem(file, item, localDay, workspace) {
+    const local = localPlanItemRecord(localDay, item).value || {};
+    const attached = legacyMaterialForPlanItem(workspace, localDay, item);
+    const repositoryDone = item.sourceDone
+      || attached.evidence.length > 0
+      || attached.acceptance.some((entry) => entry.sourceDone);
+    const done = repositoryDone || Boolean(local.done);
+    const card = el('article', {
+      class: 'obs-pd-plan-item',
+      'data-level': item.level,
+      'data-plan-item-key': item.key,
+      'data-plan-item-explicit-id': String(Boolean(item.explicitId)),
+      'data-done': String(done)
+    });
+    const main = el('div', { class: 'obs-pd-plan-item-main' });
+    const checkbox = el('input', {
+      class: 'obs-pd-plan-check',
+      type: 'checkbox',
+      'aria-label': `Mark ${item.id} complete`
+    });
+    checkbox.checked = done;
+    checkbox.disabled = repositoryDone;
+    checkbox.addEventListener('change', () => {
+      updateLocalPlanItem(file, item, { done: checkbox.checked });
+      card.dataset.done = String(checkbox.checked);
+    });
+    main.appendChild(checkbox);
+
+    const copy = el('div', { class: 'obs-pd-plan-item-copy' });
+    copy.appendChild(el('div', { class: 'obs-pd-plan-item-id', text: `${item.id} · ${item.level}` }));
+    copy.appendChild(el('div', { class: 'obs-pd-plan-item-text', text: item.text }));
+    if (item.source) copy.appendChild(el('div', { class: 'obs-pd-plan-item-source', text: item.source }));
+    main.appendChild(copy);
+    if (repositoryDone) main.appendChild(el('span', { class: 'obs-pd-status-pill', 'data-kind': 'repository', text: 'done from source' }));
+    card.appendChild(main);
+
+    const details = el('details', { class: 'obs-pd-plan-item-details' });
+    const linkedMap = localGoalMapForItem(file, item);
+    const sourceMeta = [
+      attached.acceptance.length ? `${attached.acceptance.length} acceptance` : '',
+      attached.evidence.length ? `${attached.evidence.length} evidence` : ''
+    ].filter(Boolean).join(' · ');
+    details.appendChild(el('summary', {
+      text: [
+        'Note · Evidence',
+        sourceMeta,
+        linkedMap ? `Goal Map ${linkedMap.id}` : 'Goal Map'
+      ].filter(Boolean).join(' · ')
+    }));
+    const editor = el('div', { class: 'obs-pd-plan-item-editor' });
+
+    const linkedMaterial = renderLinkedRepositoryMaterial(attached);
+    if (linkedMaterial) editor.appendChild(linkedMaterial);
+
+    const note = el('textarea', {
+      class: 'obs-pd-local-textarea',
+      placeholder: 'Local note for this plan item…',
+      'aria-label': `Local note for ${item.id}`
+    });
+    note.value = local.note || '';
+    bindDebouncedLocalInput(note, (value) => updateLocalPlanItem(file, item, { note: value }));
+    editor.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Local note · local only' }, [note]));
+
+    const evidence = el('textarea', {
+      class: 'obs-pd-local-textarea',
+      placeholder: 'Evidence, links, session IDs or result notes…',
+      'aria-label': `Evidence for ${item.id}`
+    });
+    evidence.value = local.evidence || '';
+    bindDebouncedLocalInput(evidence, (value) => updateLocalPlanItem(file, item, { evidence: value }));
+    editor.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Local evidence · local only' }, [evidence]));
+
+    const actions = el('div', { class: 'obs-pd-item-actions' });
+    actions.appendChild(el('button', {
+      class: 'obs-pd-btn',
+      text: linkedMap ? 'Open Goal Map' : 'Expand to Goal Map',
+      onclick: () => {
+        try {
+          ensureLocalGoalMap(file, item);
+        } catch (error) {
+          console.warn('OBS Goal Map create/open failed', error);
+          alert(error?.message || 'Could not create the local Goal Map.');
+        }
+      }
+    }));
+    if (linkedMap) actions.appendChild(el('span', { class: 'obs-pd-plan-item-source', text: `${linkedMap.id} · ${linkedMap.status || 'local draft'}` }));
+    editor.appendChild(actions);
+    details.appendChild(editor);
+    card.appendChild(details);
+    return card;
+  }
+
+  function renderPlanLevel(file, level, localDay, workspace) {
+    const block = el('section', { class: 'obs-pd-plan-level', 'data-level': level.key });
+    block.appendChild(el('div', { class: 'obs-pd-plan-level-head' }, [
+      el('span', { class: 'obs-pd-level-badge', text: level.prefix }),
+      el('h3', { text: level.label }),
+      el('span', { class: 'obs-pd-plan-meta', text: `${level.items.length} item(s)` })
+    ]));
+    const items = el('div', { class: 'obs-pd-plan-items' });
+    if (!level.items.length) items.appendChild(el('div', { class: 'obs-pd-empty', text: 'not provided' }));
+    level.items.forEach((item) => items.appendChild(renderPlanItem(file, item, localDay, workspace)));
+    block.appendChild(items);
+    return block;
+  }
+
+  function updateLocalScopeUnit(file, unit, patch) {
+    if (unit.ambiguous) {
+      throw new Error('Duplicate unlabelled Scope Unit names require explicit stable IDs before local planning can be saved safely.');
+    }
+    updateLocalDayState(file, (day) => {
+      const record = localScopeUnitRecord(day, unit);
+      day.scopeUnits[unit.key] = {
+        ...(record.value || {}),
+        ...patch,
+        sourceUnitId: unit.id,
+        sourceUnitExplicitId: Boolean(unit.explicitId),
+        sourceUnitText: unit.text,
+        sourceUnitTextHash: stableHash(normalizedScopeUnitText(unit.text)),
+        updatedAt: new Date().toISOString()
+      };
+      if (record.key && record.key !== unit.key) delete day.scopeUnits[record.key];
+    });
+  }
+
+  function resolveScopeTarget(workspace, local) {
+    if (!local) return null;
+    const exact = workspace.targetItems.find((item) => (
+      item.key === local.targetItemKey
+      || (item.legacyKeys || []).includes(local.targetItemKey)
+    ));
+    if (exact) return exact;
+    if (local.targetItemExplicitId === true) {
+      return workspace.targetItems.find((item) => (
+        item.explicitId
+        && item.id === local.targetItemId
+        && item.level === local.targetItemLevel
+      )) || null;
+    }
+    return null;
+  }
+
+  function renderScopeUnit(file, workspace, row, index, localDay, unit) {
+    const table = workspace.scopeTable;
+    const record = localScopeUnitRecord(localDay, unit);
+    const local = record.value || {};
+    const target = resolveScopeTarget(workspace, local);
+    const level = target?.level || 'unassigned';
+    const unitName = unit.explicitId && normalizedScopeUnitText(unit.text) !== normalizedScopeUnitText(unit.id)
+      ? `${unit.id} · ${unit.text}`
+      : unit.text;
+    const status = cleanCell(exactRowValue(row, table, ['Status'])) || 'not provided';
+    const goals = cleanCell(exactRowValue(row, table, ['Goal(s)', 'Goals', 'Goal', 'Target']));
+    const windowValue = cleanCell(exactRowValue(row, table, ['Window']));
+    const required = cleanCell(exactRowValue(row, table, ['Required by end', 'Required', 'Result']));
+
+    const card = el('article', {
+      class: 'obs-pd-scope-unit',
+      'data-level': level,
+      'data-scope-unit-key': unit.key,
+      'data-scope-unit-explicit-id': String(Boolean(unit.explicitId)),
+      'data-scope-unit-ambiguous': String(Boolean(unit.ambiguous))
+    });
+    const titleRow = el('div', { class: 'obs-pd-scope-title-row' });
+    titleRow.appendChild(el('div', { class: 'obs-pd-scope-title', text: unitName }));
+    titleRow.appendChild(el('span', { class: 'obs-pd-level-badge', text: target ? `${target.id} · ${target.level}` : 'unassigned' }));
+    titleRow.appendChild(el('span', { class: 'obs-pd-scope-status', text: status }));
+    card.appendChild(titleRow);
+    if (goals) card.appendChild(el('div', { class: 'obs-pd-scope-source', text: goals }));
+    if (windowValue) card.appendChild(el('div', { class: 'obs-pd-scope-source', text: `Window: ${windowValue}` }));
+    if (unit.ambiguous) {
+      card.appendChild(el('div', {
+        class: 'obs-pd-section-warning',
+        text: 'Duplicate unlabelled Scope Unit name. Add an explicit stable ID such as SU1: ... before saving local deadlines, links or notes.'
+      }));
+    }
+
+    const targetSelect = el('select', { class: 'obs-pd-local-select', 'aria-label': `Target plan item for ${unitName}` });
+    targetSelect.appendChild(el('option', { value: '', text: 'Unassigned plan item' }));
+    workspace.targetItems.forEach((item) => {
+      targetSelect.appendChild(el('option', { value: item.key, text: `[${item.id}] ${item.text}` }));
+    });
+    targetSelect.value = target?.key || '';
+    targetSelect.disabled = Boolean(unit.ambiguous);
+    targetSelect.addEventListener('change', () => {
+      const nextTarget = workspace.targetItems.find((item) => item.key === targetSelect.value) || null;
+      updateLocalScopeUnit(file, unit, {
+        targetItemKey: nextTarget?.key || '',
+        targetItemId: nextTarget?.id || '',
+        targetItemLevel: nextTarget?.level || '',
+        targetItemExplicitId: Boolean(nextTarget?.explicitId)
+      });
+      render();
+    });
+    card.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Linked Plan Core item · local only' }, [targetSelect]));
+
+    const deadlines = el('div', { class: 'obs-pd-deadline-grid' });
+    [
+      ['maxTime', 'Max'],
+      ['desiredTime', 'Desired'],
+      ['baseTime', 'Base'],
+      ['minimumTime', 'Minimum']
+    ].forEach(([field, label]) => {
+      const input = el('input', { class: 'obs-pd-local-time', type: 'time', 'aria-label': `${label} target for ${unitName}` });
+      input.value = local[field] || '';
+      input.disabled = Boolean(unit.ambiguous);
+      bindDebouncedLocalInput(input, (value) => updateLocalScopeUnit(file, unit, { [field]: value }), 0);
+      deadlines.appendChild(el('label', { class: 'obs-pd-field-label', text: label }, [input]));
+    });
+    card.appendChild(deadlines);
+
+    const note = el('textarea', {
+      class: 'obs-pd-local-textarea',
+      placeholder: unit.ambiguous ? 'Add an explicit stable Scope Unit ID before saving a local note.' : 'Local note for this scope unit…',
+      'aria-label': `Local note for ${unitName}`
+    });
+    note.value = local.note || '';
+    note.disabled = Boolean(unit.ambiguous);
+    bindDebouncedLocalInput(note, (value) => updateLocalScopeUnit(file, unit, { note: value }));
+    card.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Unit note · local only' }, [note]));
+
+    const sourceDetails = el('details', { class: 'obs-pd-scope-source-details' });
+    sourceDetails.appendChild(el('summary', { text: 'Repository source details' }));
+    const sourceGrid = el('div', { class: 'obs-pd-scope-source-grid' });
+    table.headers.forEach((header, cellIndex) => {
+      const value = cleanCell(row[cellIndex]);
+      if (value) sourceGrid.appendChild(el('div', { text: `${header}: ${value}` }));
+    });
+    if (required && !table.headers.some((header) => normalizeHeading(header).includes('required'))) {
+      sourceGrid.appendChild(el('div', { text: `Required by end: ${required}` }));
+    }
+    sourceDetails.appendChild(sourceGrid);
+    card.appendChild(sourceDetails);
+    return card;
+  }
+
+  function renderLegacyMaterialLinker(file, workspace, localDay) {
+    const entries = [...workspace.legacyAcceptance, ...workspace.legacyEvidence];
+    if (!entries.length) return null;
+    const assigned = new Map(entries.map((entry) => [
+      entry.key,
+      resolveLinkedPlanItem(workspace.targetItems, localDay.legacyLinks?.[entry.key])
+    ]));
+    const unassignedAcceptance = workspace.legacyAcceptance.filter((entry) => !assigned.get(entry.key)).length;
+    const unassignedEvidence = workspace.legacyEvidence.filter((entry) => !assigned.get(entry.key)).length;
+
+    const details = el('details', { class: 'obs-pd-legacy-material' });
+    details.appendChild(el('summary', {
+      text: `Repository material links · ${unassignedAcceptance} unassigned acceptance · ${unassignedEvidence} unassigned evidence`
+    }));
+    const body = el('div', { class: 'obs-pd-legacy-material-body' });
+    body.appendChild(el('div', {
+      class: 'obs-pd-workspace-hint',
+      text: 'Legacy Acceptance Criteria and Done / Evidence are not duplicated as plan items. Link a source row to a Plan Core item only when the relationship is explicit.'
+    }));
+
+    entries.forEach((entry) => {
+      const row = el('div', { class: 'obs-pd-legacy-entry' });
+      row.appendChild(el('span', {
+        class: 'obs-pd-level-badge',
+        text: entry.kind === 'acceptance' ? entry.id : 'EVIDENCE'
+      }));
+      const copy = el('div');
+      copy.appendChild(el('div', { class: 'obs-pd-legacy-entry-copy', text: entry.text }));
+      copy.appendChild(el('div', { class: 'obs-pd-legacy-entry-source', text: entry.source || entry.kind }));
+      row.appendChild(copy);
+
+      const select = el('select', {
+        class: 'obs-pd-local-select',
+        'aria-label': `Linked Plan Core item for ${entry.id}`
+      });
+      select.appendChild(el('option', { value: '', text: 'Leave unassigned' }));
+      workspace.targetItems.forEach((item) => {
+        select.appendChild(el('option', { value: item.key, text: `[${item.id}] ${item.text}` }));
+      });
+      select.value = assigned.get(entry.key)?.key || '';
+      select.disabled = !workspace.targetItems.length;
+      select.addEventListener('change', () => {
+        const target = workspace.targetItems.find((item) => item.key === select.value) || null;
+        updateLegacyMaterialLink(file, entry, target);
+        render();
+      });
+      row.appendChild(select);
+      body.appendChild(row);
+    });
+
+    details.appendChild(body);
+    return details;
+  }
+
+  function renderPlanWorkspace(documentModel, file) {
+    const workspace = collectPlanWorkspaceModel(documentModel);
+    const localDay = readLocalDayState(file);
+    const wrapper = el('div', { class: 'obs-pd-plan-workspace' });
+
+    const left = el('section', { class: 'obs-pd-workspace-column' });
+    left.appendChild(el('div', { class: 'obs-pd-workspace-head' }, [
+      el('h2', { text: 'Scope Units / Local Execution' }),
+      el('span', { class: 'obs-pd-local-only', text: 'local planning' }),
+      el('div', { class: 'obs-pd-workspace-hint', text: 'Link units to Plan Core items, set optional Max / Desired / Base / Minimum time targets, and keep day-specific notes locally.' })
+    ]));
+    if (!workspace.scopeRows.length) {
+      left.appendChild(el('div', { class: 'obs-pd-empty', text: 'No repository Scope Units.' }));
+    }
+    workspace.scopeUnits.forEach(({ row, index, identity }) => left.appendChild(renderScopeUnit(file, workspace, row, index, localDay, identity)));
+    const dayNote = el('textarea', {
+      class: 'obs-pd-local-textarea',
+      placeholder: 'Local planning notes for this day…',
+      'aria-label': 'Local day planning notes'
+    });
+    dayNote.value = localDay.dayNote || '';
+    bindDebouncedLocalInput(dayNote, (value) => updateLocalDayState(file, (day) => { day.dayNote = value; }));
+    left.appendChild(el('div', { class: 'obs-pd-day-note' }, [
+      el('label', { class: 'obs-pd-field-label', text: 'Day planning notes · local only' }, [dayNote])
+    ]));
+    wrapper.appendChild(left);
+
+    const right = el('section', { class: 'obs-pd-workspace-column' });
+    right.appendChild(el('div', { class: 'obs-pd-workspace-head' }, [
+      el('h2', { text: 'Plan Core — Acceptance Criteria' }),
+      el('div', { class: 'obs-pd-workspace-hint', text: 'Write each Plan Core item as a verifiable accepted result. Local completion, notes, evidence and detailed Goal Maps stay attached to that item.' })
+    ]));
+    PLAN_LEVEL_DEFINITIONS.forEach(([key]) => right.appendChild(renderPlanLevel(file, workspace.levels[key], localDay, workspace)));
+
+    const legacyLinker = renderLegacyMaterialLinker(file, workspace, localDay);
+    if (legacyLinker) right.appendChild(legacyLinker);
+    wrapper.appendChild(right);
+    return wrapper;
+  }
+
   function renderPlanningSection(section) {
     const normalized = normalizeHeading(section.title);
-    if (normalized.includes('plan core')) return renderPlanCore(section);
     if (normalized.includes('current target scenario')) {
       const sourceLineCount = meaningfulLineCount(section.lines)
         + section.subsections.reduce((sum, subsection) => sum + meaningfulLineCount(subsection.lines), 0);
@@ -2030,16 +3075,14 @@ Dashboard: ${file.path}`
         return fragment;
       }, `${sourceLineCount} source line(s)`);
     }
-    if (normalized.includes('scope unit')) {
-      const table = parseFirstTable(section.lines);
-      const count = table ? countMeaningfulRows(table) : meaningfulLineCount(section.lines);
-      return planDisclosure(section, 'scopeUnitsOpen', false, () => renderSectionBodyOnly(section), `${count} unit(s)`);
-    }
-    if (normalized.includes('acceptance criteria')) {
-      const table = parseFirstTable(section.lines);
-      const count = table ? countMeaningfulRows(table) : meaningfulLineCount(section.lines);
-      return planDisclosure(section, 'acceptanceCriteriaOpen', false, () => renderSectionBodyOnly(section), `${count} criteria`);
-    }
+    if (
+      normalized.includes('plan core')
+      || normalized.includes('scope unit')
+      || normalized.includes('acceptance criteria')
+      || normalized.includes('done / evidence')
+      || normalized.includes('done evidence')
+      || normalized.includes('still needed')
+    ) return null;
     return planDisclosure(section, `plan:${normalized}`, false, () => renderSectionBodyOnly(section), '');
   }
 
@@ -2194,11 +3237,32 @@ Dashboard: ${file.path}`
       || 'not provided';
   }
 
-  function scoreCard(label, value, tone) {
+  function scoreCard(label, value, tone, meta = '') {
     const card = el('div', { class: 'obs-pd-score-card', 'data-tone': tone || 'neutral' });
     card.appendChild(el('div', { class: 'obs-pd-score-label', text: label }));
     card.appendChild(el('div', { class: 'obs-pd-score-value', text: value || '—' }));
+    if (meta) card.appendChild(el('div', { class: 'obs-pd-score-meta', text: meta }));
     return card;
+  }
+
+  function displayedScoreSummary(documentModel, file) {
+    const summarySubsection = findSubsection(documentModel, 'work score summary');
+    const summaryTable = summarySubsection ? parseFirstTable(summarySubsection.lines) : null;
+    const values = tableToKeyValue(summaryTable);
+    const pendingSessions = activePendingSessions(file);
+    const pendingPoints = pendingSessions.reduce((sum, session) => sum + parseNumber(session.points), 0);
+    const repositoryWorkPoints = parseNumber(pickKeyValue(values, ['Work Points']));
+    const repositoryNetScore = parseNumber(pickKeyValue(values, ['Net Work Score']));
+    return {
+      values,
+      pendingSessions,
+      pendingCount: pendingSessions.length,
+      pendingPoints,
+      repositoryWorkPoints,
+      repositoryNetScore,
+      displayedWorkPoints: repositoryWorkPoints + pendingPoints,
+      displayedNetScore: repositoryNetScore + pendingPoints
+    };
   }
 
   function extractSupportMetric(documentModel, pattern) {
@@ -2207,27 +3271,30 @@ Dashboard: ${file.path}`
   }
 
   function renderSessionOverview(documentModel, file) {
-    const summarySubsection = findSubsection(documentModel, 'work score summary');
-    const summaryTable = summarySubsection ? parseFirstTable(summarySubsection.lines) : null;
-    const values = tableToKeyValue(summaryTable);
-
-    const workPointsText = pickKeyValue(values, ['Work Points']);
+    const score = displayedScoreSummary(documentModel, file);
+    const values = score.values;
     const incomingDebt = carryoverDebtValue(documentModel, values);
+    const pendingMeta = score.pendingCount
+      ? `repo ${formatNumber(score.repositoryWorkPoints)} + ${score.pendingCount} pending sync (${formatNumber(score.pendingPoints)})`
+      : '';
+    const netMeta = score.pendingCount
+      ? `includes ${score.pendingCount} completed local session(s)`
+      : '';
     const cards = [
-      ['Work Points', workPointsText, 'neutral'],
-      ['Penalties', pickKeyValue(values, ['Penalties', 'Penalties / planned carryover']), 'bad'],
-      ['Net Work Score', pickKeyValue(values, ['Net Work Score']), 'good'],
-      ['Incoming Debt', incomingDebt, 'violet'],
-      ['Net After Debt', pickKeyValue(values, ['Net score after carryover', 'Net after debt']), 'warn'],
-      ['Current-Day Score', pickKeyValue(values, ['Current-day score', 'Remaining current-day score']), 'warn']
-    ].filter(([, value]) => value);
+      ['Work Points', formatNumber(score.displayedWorkPoints), 'neutral', pendingMeta],
+      ['Penalties', pickKeyValue(values, ['Penalties', 'Penalties / planned carryover']), 'bad', ''],
+      ['Net Work Score', formatNumber(score.displayedNetScore), 'good', netMeta],
+      ['Incoming Debt', incomingDebt, 'violet', ''],
+      ['Net After Debt', pickKeyValue(values, ['Net score after carryover', 'Net after debt']), 'warn', 'repository value'],
+      ['Current-Day Score', pickKeyValue(values, ['Current-day score', 'Remaining current-day score']), 'warn', 'repository value']
+    ].filter(([, value]) => value !== '' && value !== null && value !== undefined);
 
     if (!cards.length) return null;
 
     const wrapper = document.createDocumentFragment();
     wrapper.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Session Overview' }));
     const grid = el('div', { class: 'obs-pd-score-grid' });
-    cards.forEach(([label, value, tone]) => grid.appendChild(scoreCard(label, value, tone)));
+    cards.forEach(([label, value, tone, meta]) => grid.appendChild(scoreCard(label, value, tone, meta)));
     wrapper.appendChild(grid);
     return wrapper;
   }
@@ -2245,19 +3312,21 @@ Dashboard: ${file.path}`
   function renderPlanningDayMetrics(file) {
     if (!file || file.error) return null;
     const documentModel = parseMarkdownDocument(file.text);
-    const summarySubsection = findSubsection(documentModel, 'work score summary');
-    const values = tableToKeyValue(summarySubsection ? parseFirstTable(summarySubsection.lines) : null);
+    const score = displayedScoreSummary(documentModel, file);
     const sessionsSection = findSection(documentModel, 'finished sessions') || findSection(documentModel, 'sessions');
     const sessionTable = sessionsSection ? parseFirstTable(sessionsSection.lines) : null;
     const repositoryCount = countMeaningfulRows(sessionTable);
     const localSessions = visibleLocalSessions(file);
+    const pendingMeta = score.pendingCount
+      ? `repo ${formatNumber(score.repositoryWorkPoints)} + ${score.pendingCount} pending sync (${formatNumber(score.pendingPoints)})`
+      : '';
     const cards = [
-      ['Work Points', pickKeyValue(values, ['Work Points']) || '0', 'neutral'],
-      ['Net Work Score', pickKeyValue(values, ['Net Work Score']) || '0', 'good'],
-      ['Sessions', String(repositoryCount + localSessions.length), 'violet']
+      ['Work Points', formatNumber(score.displayedWorkPoints), 'neutral', pendingMeta],
+      ['Net Work Score', formatNumber(score.displayedNetScore), 'good', score.pendingCount ? 'completed local sessions included' : ''],
+      ['Sessions', String(repositoryCount + localSessions.length), 'violet', score.pendingCount ? `${score.pendingCount} pending sync` : '']
     ];
     const grid = el('div', { class: 'obs-pd-score-grid' });
-    cards.forEach(([label, value, tone]) => grid.appendChild(scoreCard(label, value, tone)));
+    cards.forEach(([label, value, tone, meta]) => grid.appendChild(scoreCard(label, value, tone, meta)));
     return grid;
   }
 
@@ -2743,29 +3812,6 @@ Dashboard: ${file.path}`
     body.appendChild(renderFormattedDocument(file.path, file.text, label));
   }
 
-  function setAllPlanDisclosures(open) {
-    state.currentTargetOpen = open;
-    state.planCoreOpen = open;
-    state.scopeUnitsOpen = open;
-    state.acceptanceCriteriaOpen = open;
-    state.expandedScenarios = {
-      minimum: open,
-      base: open,
-      desired: open,
-      max: open,
-      other: open
-    };
-    render();
-  }
-
-  function allPlanDisclosuresOpen() {
-    return state.currentTargetOpen
-      && state.planCoreOpen
-      && state.scopeUnitsOpen
-      && state.acceptanceCriteriaOpen
-      && ['minimum', 'base', 'desired', 'max'].every((key) => Boolean(state.expandedScenarios[key]));
-  }
-
   function renderCompactDayHeader(model, file) {
     const header = el('div', { class: 'obs-pd-compact-day-header' });
     header.appendChild(el('div', { class: 'obs-pd-compact-day-title', text: model.title || 'Planning Day' }));
@@ -2776,14 +3822,6 @@ Dashboard: ${file.path}`
       text: file?.path || 'not provided',
       title: file?.path || 'not provided'
     }));
-    if (state.daySubtab === 'plan') {
-      const allOpen = allPlanDisclosuresOpen();
-      header.appendChild(el('button', {
-        class: 'obs-pd-btn',
-        text: allOpen ? 'Collapse all' : 'Expand all',
-        onclick: () => setAllPlanDisclosures(!allOpen)
-      }));
-    }
     if (file?.path) {
       header.appendChild(el('button', {
         class: 'obs-pd-btn',
@@ -2826,7 +3864,19 @@ Dashboard: ${file.path}`
       return wrapper;
     }
 
-    model.sections.forEach((section) => wrapper.appendChild(renderPlanningSection(section)));
+    const currentTarget = model.sections.find((section) => normalizeHeading(section.title).includes('current target scenario'));
+    if (currentTarget) {
+      const renderedTarget = renderPlanningSection(currentTarget);
+      if (renderedTarget) wrapper.appendChild(renderedTarget);
+    }
+
+    wrapper.appendChild(renderPlanWorkspace(model, day));
+
+    model.sections.forEach((section) => {
+      if (section === currentTarget) return;
+      const rendered = renderPlanningSection(section);
+      if (rendered) wrapper.appendChild(rendered);
+    });
     return wrapper;
   }
 
@@ -3181,6 +4231,25 @@ Check:
     }
     drawer.appendChild(syncSection);
 
+    const localPlanSection = el('section', { class: 'obs-pd-tools-section' });
+    localPlanSection.appendChild(el('h3', { text: 'Local day planning' }));
+    const localPayload = currentLocalPlanningExport();
+    const localDay = localPayload?.day;
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Day: ${localDay?.date || planningDayIdentity(state.files.day).date}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Scope unit plans: ${Object.keys(localDay?.scopeUnits || {}).length}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Plan item notes/status: ${Object.keys(localDay?.planItems || {}).length}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Local Goal Maps: ${(localPayload?.goalMaps || []).length}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-actions' }, [
+      toolsButton('Copy local plan', copyLocalPlanningJson),
+      toolsButton('Download local plan', downloadLocalPlanningJson),
+      toolsButton('Open Goal Maps', () => {
+        state.toolsOpen = false;
+        state.activeTab = 'goalMaps';
+        render();
+      })
+    ]));
+    drawer.appendChild(localPlanSection);
+
     const actions = el('section', { class: 'obs-pd-tools-section' });
     actions.appendChild(el('h3', { text: 'Actions' }));
     actions.appendChild(el('div', { class: 'obs-pd-tools-actions' }, [
@@ -3189,8 +4258,16 @@ Check:
       toolsButton('Download pending', downloadPendingJson),
       toolsButton(state.rawMode ? 'Formatted' : 'Raw', () => { state.rawMode = !state.rawMode; state.toolsOpen = false; render(); }),
       toolsButton('Settings', () => { state.settingsOpen = !state.settingsOpen; state.toolsOpen = false; render(); }),
-      toolsButton('Capture', () => { state.toolsOpen = false; renderTools(); window.dispatchEvent(new CustomEvent('obs-planning-capture-toggle')); }),
-      toolsButton('Commands', () => { state.toolsOpen = false; renderTools(); window.dispatchEvent(new CustomEvent('obs-planning-commands-toggle')); })
+      toolsButton('Capture', () => {
+        state.toolsOpen = false;
+        renderTools();
+        dispatchScriptToggle('obsPlanningCaptureToggle', 'obs-planning-capture-toggle');
+      }),
+      toolsButton('Commands', () => {
+        state.toolsOpen = false;
+        renderTools();
+        dispatchScriptToggle('obsPlanningCommandsToggle', 'obs-planning-commands-toggle');
+      })
     ]));
     drawer.appendChild(actions);
   }
@@ -3200,6 +4277,190 @@ Check:
     try {
       window.dispatchEvent(new CustomEvent('obs-planning-dashboard-visibility', { detail: { open: Boolean(open) } }));
     } catch {}
+  }
+
+
+  function dispatchScriptToggle(datasetKey, eventName) {
+    const token = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    document.documentElement.dataset[datasetKey] = token;
+    try { window.dispatchEvent(new CustomEvent(eventName, { detail: { token } })); } catch {}
+  }
+
+  function updateLocalGoalMap(goalMapId, patch) {
+    const store = readLocalPlanningStore();
+    const current = store.goalMaps?.[goalMapId];
+    if (!current) return null;
+    store.goalMaps[goalMapId] = { ...current, ...patch, updatedAt: new Date().toISOString() };
+    if (!writeLocalPlanningStore(store)) {
+      throw new Error('Could not save the local Goal Map.');
+    }
+    return store.goalMaps[goalMapId];
+  }
+
+  function localGoalMapMarkdown(map) {
+    const section = (title, value) => `\n## ${title}\n\n${String(value || 'not provided').trim() || 'not provided'}\n`;
+    return [
+      `# ${map.title || `Goal Map — ${map.sourceItemId || map.id}`}`,
+      '',
+      `Status: ${map.status || 'local draft'}`,
+      `Source Day: ${map.sourceDay || 'not provided'}`,
+      `Source Path: ${map.sourcePath || 'not provided'}`,
+      `Source Item: ${map.sourceItemId || 'not provided'}`,
+      `Source Level: ${map.sourceLevel || 'not provided'}`,
+      section('Goal', map.goal),
+      section('Why', map.why),
+      section('Success', map.success),
+      section('Current State', map.currentState),
+      section('Unknowns', map.unknowns),
+      section('Approaches', map.approaches),
+      section('Steps', map.steps),
+      section('Checks', map.checks),
+      section('Risks / Constraints', map.risks),
+      section('Results / Evidence', map.resultsEvidence)
+    ].join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+  }
+
+  function deleteLocalGoalMap(goalMapId) {
+    const store = readLocalPlanningStore();
+    const map = store.goalMaps?.[goalMapId];
+    if (!map || !confirm(`Delete local Goal Map ${goalMapId}? Repository files are not affected.`)) return;
+    delete store.goalMaps[goalMapId];
+    Object.values(store.days || {}).forEach((day) => {
+      day.goalMapIds = (day.goalMapIds || []).filter((id) => id !== goalMapId);
+      Object.values(day.planItems || {}).forEach((item) => {
+        if (item.goalMapId === goalMapId) delete item.goalMapId;
+      });
+    });
+    if (!writeLocalPlanningStore(store)) {
+      throw new Error('Could not delete the local Goal Map.');
+    }
+    if (state.activeLocalGoalMapId === goalMapId) state.activeLocalGoalMapId = null;
+    render();
+  }
+
+  function renderLocalGoalMaps(body) {
+    const maps = localGoalMaps();
+    const heading = el('div', { class: 'obs-pd-workspace-head' }, [
+      el('h2', { text: 'Local Goal Maps' }),
+      el('span', { class: 'obs-pd-local-only', text: 'local only' }),
+      el('div', { class: 'obs-pd-workspace-hint', text: 'Detailed local planning created from a Plan Core item. Nothing is written to the repository automatically.' })
+    ]);
+    body.appendChild(heading);
+    if (!maps.length) {
+      body.appendChild(el('div', { class: 'obs-pd-note', text: 'No local Goal Maps yet. Use “Expand to Goal Map” on a plan item.' }));
+      return;
+    }
+
+    const fieldDefinitions = [
+      ['goal', 'Goal', true],
+      ['why', 'Why', false],
+      ['success', 'Success', false],
+      ['currentState', 'Current State', false],
+      ['unknowns', 'Unknowns', false],
+      ['approaches', 'Approaches', false],
+      ['steps', 'Steps', true],
+      ['checks', 'Checks', false],
+      ['risks', 'Risks / Constraints', false],
+      ['resultsEvidence', 'Results / Evidence', true]
+    ];
+
+    maps.forEach((map) => {
+      const details = el('details', {
+        class: 'obs-pd-local-goal-map',
+        'data-local-goal-map-id': map.id
+      });
+      details.open = state.activeLocalGoalMapId === map.id;
+      details.addEventListener('toggle', () => {
+        if (details.open) state.activeLocalGoalMapId = map.id;
+      });
+      details.appendChild(el('summary', { text: `${map.id} · ${map.goal || map.title || 'Goal Map'}` }));
+      const mapBody = el('div', { class: 'obs-pd-goal-map-body' });
+      mapBody.appendChild(el('div', {
+        class: 'obs-pd-goal-map-meta',
+        text: `${map.status || 'local draft'} · ${map.sourceDay || 'undated'} · ${map.sourceItemId || 'item'} · ${map.sourceLevel || 'unassigned'}\n${map.sourcePath || ''}`
+      }));
+
+      const status = el('select', { class: 'obs-pd-local-select', 'aria-label': `Status for ${map.id}` });
+      ['local draft', 'active', 'resolved'].forEach((value) => status.appendChild(el('option', { value, text: value })));
+      status.value = map.status || 'local draft';
+      status.addEventListener('change', () => {
+        try {
+          updateLocalGoalMap(map.id, { status: status.value });
+        } catch (error) {
+          console.warn('OBS Goal Map status save failed', error);
+          status.value = map.status || 'local draft';
+          alert(error?.message || 'Could not save the local Goal Map status.');
+        }
+      });
+      mapBody.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Status' }, [status]));
+
+      const grid = el('div', { class: 'obs-pd-goal-map-grid' });
+      fieldDefinitions.forEach(([field, label, wide]) => {
+        const input = el('textarea', {
+          class: 'obs-pd-local-textarea',
+          placeholder: `${label}…`,
+          'aria-label': `${label} for ${map.id}`
+        });
+        input.value = map[field] || '';
+        bindDebouncedLocalInput(input, (value) => updateLocalGoalMap(map.id, { [field]: value }));
+        grid.appendChild(el('label', { class: 'obs-pd-field-label', 'data-wide': String(Boolean(wide)), text: label }, [input]));
+      });
+      mapBody.appendChild(grid);
+
+      const actions = el('div', { class: 'obs-pd-item-actions' });
+      actions.appendChild(el('button', {
+        class: 'obs-pd-btn',
+        text: 'Copy as Markdown',
+        onclick: () => copyText(localGoalMapMarkdown(readLocalPlanningStore().goalMaps[map.id] || map))
+      }));
+      actions.appendChild(el('button', {
+        class: 'obs-pd-btn',
+        text: 'Delete local draft',
+        onclick: () => {
+          try {
+            deleteLocalGoalMap(map.id);
+          } catch (error) {
+            console.warn('OBS Goal Map delete failed', error);
+            alert(error?.message || 'Could not delete the local Goal Map.');
+          }
+        }
+      }));
+      mapBody.appendChild(actions);
+      details.appendChild(mapBody);
+      body.appendChild(details);
+    });
+  }
+
+  function currentLocalPlanningExport() {
+    const store = readLocalPlanningStore();
+    const identity = planningDayIdentity(state.files.day);
+    const day = store.days[identity.key];
+    if (!day) return null;
+    const goalMaps = (day.goalMapIds || []).map((id) => store.goalMaps[id]).filter(Boolean);
+    return {
+      schema: LOCAL_PLAN_SCHEMA,
+      exportedAt: new Date().toISOString(),
+      day,
+      goalMaps
+    };
+  }
+
+  function copyLocalPlanningJson() {
+    const payload = currentLocalPlanningExport();
+    if (!payload) return alert('No local planning data for the active day.');
+    copyText(JSON.stringify(payload, null, 2));
+  }
+
+  function downloadLocalPlanningJson() {
+    const payload = currentLocalPlanningExport();
+    if (!payload) return alert('No local planning data for the active day.');
+    const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `obs-local-day-plan-${payload.day.date || 'undated'}.json`;
+    anchor.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   function tabDefinitions() {
@@ -3214,7 +4475,10 @@ Check:
       ['deferredWork', 'Deferred Work', 'file'],
       ['deferredIdeas', 'Deferred Ideas', 'file']
     ].filter(([key, , kind]) => {
-      if (kind === 'group') return (state.groups[key] || []).length > 0;
+      if (kind === 'group') {
+        if (key === 'goalMaps') return (state.groups[key] || []).length > 0 || localGoalMaps().length > 0;
+        return (state.groups[key] || []).length > 0;
+      }
       if (kind === 'day') return Boolean(state.files.day || state.files.sessionDay);
       return Boolean(state.files[key]);
     });
@@ -3267,6 +4531,14 @@ Check:
     }
 
     const group = state.groups[state.activeTab];
+    if (state.activeTab === 'goalMaps') {
+      renderLocalGoalMaps(body);
+      if (group?.length) {
+        body.appendChild(el('div', { class: 'obs-pd-section-title', text: 'Repository Goal Maps' }));
+        group.forEach((file, index) => renderLoadedFile(body, file, `Repository Goal Map ${index + 1}`));
+      }
+      return;
+    }
     if (group) {
       if (!group.length) body.appendChild(el('div', { class: 'obs-pd-note', text: 'No files loaded for this group.' }));
       group.forEach((file, index) => renderLoadedFile(body, file, `Goal Map ${index + 1}`));

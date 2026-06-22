@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Planning Pattern Capture v0.4.6
+// @name         Planning Pattern Capture v0.4.7
 // @namespace    planning-pattern-capture
-// @version      0.4.6
+// @version      0.4.7
 // @description  ChatGPT-only capture panel with D/F scoring, one-click session timer milestones, finished-session outbox, and reviewed batch sync
 // @match        *://chatgpt.com/*
 // @match        *://*.chatgpt.com/*
@@ -45,7 +45,7 @@
   const BASE_TOTAL_SCORE = 3.5;
   const BASE_DIM_SCORE = BASE_TOTAL_SCORE / 2;
   const DF_STEP = 0.1;
-  const SETTINGS_VERSION = "0.4.6";
+  const SETTINGS_VERSION = "0.4.7";
   const TIMER_SCHEMA = "planning-pattern-session-timer-v1";
   const TIMER_TOTAL_MS = 30 * 60 * 1000;
   const TIMER_MILESTONES = [
@@ -303,6 +303,7 @@
   let timerAudioContext = null;
   let panelHiddenForPage = false;
   let dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === "true";
+  let lastCaptureToggleToken = document.documentElement.dataset.obsPlanningCaptureToggle || "";
   let workflowPinned = false;
   let root = null;
   let didDragCollapsed = false;
@@ -327,12 +328,39 @@
     refresh();
   });
 
+  function syncDashboardVisibilityFromDom() {
+    const nextOpen = document.documentElement.dataset.obsPlanningDashboardOpen === "true";
+    if (nextOpen === dashboardOpen) return;
+    dashboardOpen = nextOpen;
+    refresh();
+  }
+
+  function consumeCaptureToggle(token) {
+    const nextToken = String(token || "");
+    if (!nextToken || nextToken === lastCaptureToggleToken) return;
+    lastCaptureToggleToken = nextToken;
+    toggleCapturePanel();
+  }
+
   window.addEventListener("obs-planning-dashboard-visibility", (event) => {
     dashboardOpen = Boolean(event?.detail?.open);
     refresh();
   });
-  window.addEventListener("obs-planning-capture-toggle", () => {
-    toggleCapturePanel();
+  window.addEventListener("obs-planning-capture-toggle", (event) => {
+    consumeCaptureToggle(event?.detail?.token || document.documentElement.dataset.obsPlanningCaptureToggle);
+  });
+
+  const planningDomObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.attributeName === "data-obs-planning-dashboard-open") syncDashboardVisibilityFromDom();
+      if (mutation.attributeName === "data-obs-planning-capture-toggle") {
+        consumeCaptureToggle(document.documentElement.dataset.obsPlanningCaptureToggle);
+      }
+    }
+  });
+  planningDomObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-obs-planning-dashboard-open", "data-obs-planning-capture-toggle"]
   });
 
   function boot() {

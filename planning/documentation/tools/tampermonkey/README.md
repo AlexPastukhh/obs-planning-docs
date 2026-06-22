@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.6.2
+Doc version: v0.7.3
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -12,10 +12,12 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   Its floating launcher hides while Dashboard is open; Alt+F2 and Tools -> Commands remain available.
 
 planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
-  read-only local-first dashboard projection; opens on Day -> Plan by default,
+  repository-read-only, local-editable dashboard projection; opens on Day -> Plan by default,
   uses a compact planning-first shell with Plan / Sessions / Summary subtabs,
+  combines Scope Units with vertical Plan Core / Acceptance planning,
+  stores local deadlines, notes, completion/evidence and detailed local Goal Maps,
   moves diagnostics, exports, Raw, settings and local sync into a closed-by-default Tools drawer,
-  keeps a source-bound IndexedDB snapshot, displays pending local sessions and exports reviewed JSON.
+  keeps a source-bound IndexedDB snapshot, displays completed pending-sync sessions and exports reviewed JSON.
 
 planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   local D/F pattern capture with a docked launcher above Planning/Commands,
@@ -58,6 +60,7 @@ Pattern Capture private GM storage:
 Shared page localStorage:
   obsPlanning:sessionContext:v1
   obsPlanning:sessionOutbox:v1
+  obsPlanning:localDayPlan:v1
 
 Dashboard IndexedDB:
   database: obsPlanningCache
@@ -70,7 +73,8 @@ Rules:
 ```text
 - Raw Capture events, timer state and UI state remain in GM storage.
 - Only completed pending sessions are written to the shared outbox.
-- Dashboard snapshot and pending outbox remain separate.
+- Dashboard snapshot, pending outbox and local day planning remain separate.
+- Local day planning stores optional Scope Unit deadlines, unit/day/item notes, local completion/evidence and local Goal Map drafts; it never writes repository files automatically.
 - Cached snapshots are accepted only for the current normalized Base URL and Index path.
 - Transient refresh and _obs_cache_bust parameters are excluded from Index identity so manual cache-bypass cleanup does not orphan the compatible snapshot.
 - Legacy snapshots recompute source identity from their stored Base URL and Index path when those fields exist, instead of trusting an older pre-normalized sourceKey.
@@ -105,13 +109,28 @@ Formatted operational-day UI contract:
 - A compact Live / Offline / No data badge remains visible in the Dashboard title and exposes snapshot/error detail through its tooltip.
 - Day identity, status, source path and the primary always-visible Open action are rendered in one compact row.
 - Day keeps `Plan / Sessions / Summary` subtabs.
-- Plan primary metrics are only Work Points, Net Work Score and Sessions.
-- Pending Points and Preview Work Points are secondary local-sync data, never primary Plan or Session Overview cards.
+- Plan primary metrics are Work Points, Net Work Score and Sessions.
+- Completed local status=pending sessions already contribute to displayed Work Points and Net Work Score; pending means pending repository sync, not unfinished work.
+- Conflict sessions remain visible but are not added to displayed score until resolved.
+- Local sync count remains secondary metadata rather than a separate primary score card.
 - Local sync is available in Tools and as one collapsed technical block inside Sessions.
 - Current Target Scenario remains open by default and preserves every source line.
-- Plan Core remains open by default and preserves the exact Minimum / Base / Desired / Max or Very Wide structure.
-- Scenario cards show a short source-derived preview while collapsed, hide that preview while expanded, and expose the complete original content without duplicated preview lines.
-- Scope Units and Acceptance Criteria are collapsed by default with counts; expansion shows their full original table/list.
+- Plan uses a two-column execution workspace: Scope Units / Local Execution on the left and vertical Plan Core — Acceptance Criteria on the right; narrow viewports stack the columns.
+- Minimum / Base / Desired / Max remain ordered top-to-bottom and are color-linked to locally assigned Scope Units.
+- Legacy standalone Acceptance Criteria and Done / Evidence never become duplicate active plan items. They stay in one closed repository-material linker until the user explicitly attaches them to a Plan Core item.
+- Linked legacy Acceptance text is shown inside the target item as repository acceptance; linked Done / Evidence marks that target item complete and is shown inside it as repository evidence. Unlinked source material stays visible only in the closed linker.
+- Still Needed is not rendered because unchecked Plan Core items already represent remaining work.
+- Each plan item supports local completion, a short local note, local evidence and an optional “Expand to Goal Map” action.
+- Explicit stable IDs such as M1, B2, D1 and X1 are preferred in Markdown. When they are absent, the Dashboard uses only a level + normalized-text fingerprint for identity; auto-number labels are display positions and never act as a fallback identity.
+- Plan-item state, Scope Unit links, repository-material links and Goal Map source links resolve exact keys first. ID-based fallback is allowed only for explicitly authored stable IDs, so inserting a new unlabelled item above an existing item does not move notes, completion, evidence or links to the new position.
+- Existing v0.7.0/v0.7.1 text-fingerprint aliases remain readable; unmatched local records stay unassigned rather than being guessed onto another item.
+- Scope Units use an explicitly authored Unit ID such as `S1`, `H1` or `SU1: Name` when present; otherwise identity is based only on normalized Unit text. Row position, Window, Goal(s) and Status never define local identity.
+- Existing v0.7.0-v0.7.2 row-content keys remain readable while the repository row is unchanged and migrate to the stable key on the next local edit. Unmatched old records remain unassigned rather than moving to another unit.
+- Duplicate unlabelled Scope Unit names are treated as ambiguous: local links, deadlines and notes are disabled until explicit stable IDs are added.
+- Each Scope Unit supports a local link to a plan item, optional Max / Desired / Base / Minimum HH:mm targets and a local unit note.
+- One local day-planning note is available under Scope Units.
+- Local Goal Maps provide detailed fields for goal, why, success, current state, unknowns, approaches, steps, checks, risks and results/evidence; they are local drafts until explicitly copied/exported.
+- Goal Map create/update/delete operations verify localStorage persistence and surface a save error instead of reporting a false successful save.
 - Repository and local pending/conflict sessions are rendered in one session list.
 - Local sessions remain visible even when the repository Finished Sessions table has zero rows.
 - Pending session Time, Progress Signal and Result remain available in row details.
@@ -127,7 +146,7 @@ Formatted operational-day UI contract:
 - Tools is closed by default, removed from pointer and keyboard interaction while closed, and owns diagnostics, source paths, local sync, exports, Raw, settings, Capture and Commands.
 - Plan / Sessions / Summary preserve separate scroll positions while the current Dashboard instance remains open; every new Dashboard open resets to Day -> Plan at the top.
 - Day subtabs expose tab roles, selected state and Left/Right Arrow keyboard switching; Tools exposes expanded/hidden state and returns focus to its trigger when closed.
-- Floating Capture and Commands launchers hide while Dashboard is open and return when Dashboard closes.
+- Floating Capture and Commands launchers hide while Dashboard is open and return when Dashboard closes; shared DOM attributes plus MutationObserver provide a sandbox-resistant fallback to CustomEvent coordination.
 - Capture remains available through Alt+F1 or Tools -> Capture; Commands through Alt+F2 or Tools -> Commands.
 - Capture opens centered, remains draggable/resizable, persists width/height and recenters on each new open.
 - Hotkeys: `Alt+F1` Capture, `Alt+F2` Commands, `Alt+F3` Planning.
@@ -154,11 +173,12 @@ Live Markdown reads intentionally bypass the browser/Tampermonkey HTTP cache:
 5. Press Finish.
 6. Capture stores one pending session, preserves its session label and advances to the next session ID.
 7. Dashboard displays repository sessions plus pending/conflict local sessions.
-8. Pending totals include only status=pending records; conflicts are shown separately and block export/Finish.
-9. At the end of the day, press Copy pending or Download pending.
-10. Paste/upload the JSON for one reviewed replacement archive.
-11. Apply the archive and refresh localhost.
-12. Reconciliation requires the exact row count and complete ordered appended sequence.
+8. A completed status=pending local session immediately contributes to displayed Work Points and Net Work Score; reconciliation removes it from the local contribution after the exact repository row is detected.
+9. Conflicts are shown separately, are excluded from displayed score, and block export/Finish.
+10. At the end of the day, press Copy pending or Download pending.
+11. Paste/upload the JSON for one reviewed replacement archive.
+12. Apply the archive and refresh localhost.
+13. Reconciliation requires the exact row count and complete ordered appended sequence.
 ```
 
 `Copy End` remains as a manual fallback and does not write the shared outbox.
@@ -257,7 +277,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 ## 11. Safety checks
 
 ```text
-- Dashboard remains read-only toward the repo.
+- Dashboard remains read-only toward the repo; local planning edits stay in browser localStorage until explicitly copied or downloaded.
 - Live localhost Markdown requests bypass HTTP cache; IndexedDB snapshot fallback remains separate and explicit.
 - Pattern Capture requires a published operational path and SHA-256 before Finish.
 - Capture Date must be a valid YYYY-MM-DD value matching the published Dashboard session date before Finish.
