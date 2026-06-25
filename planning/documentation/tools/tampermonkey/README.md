@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.7.3
+Doc version: v0.8.2
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -14,8 +14,9 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
   repository-read-only, local-editable dashboard projection; opens on Day -> Plan by default,
   uses a compact planning-first shell with Plan / Sessions / Summary subtabs,
-  combines Scope Units with vertical Plan Core / Acceptance planning,
-  stores local deadlines, notes, completion/evidence and detailed local Goal Maps,
+  keeps repository Plan Core visible while allowing multiple local plan items,
+  separates numbered-session planning from direct clock-time planning per item,
+  stores local sessions, assignments, notes, completion/evidence and detailed local Goal Maps,
   moves diagnostics, exports, Raw, settings and local sync into a closed-by-default Tools drawer,
   keeps a source-bound IndexedDB snapshot, displays completed pending-sync sessions and exports reviewed JSON.
 
@@ -74,7 +75,7 @@ Rules:
 - Raw Capture events, timer state and UI state remain in GM storage.
 - Only completed pending sessions are written to the shared outbox.
 - Dashboard snapshot, pending outbox and local day planning remain separate.
-- Local day planning stores optional Scope Unit deadlines, unit/day/item notes, local completion/evidence and local Goal Map drafts; it never writes repository files automatically.
+- Local day planning stores local plan-item definitions, numbered sessions, per-item session-or-time assignments, optional Scope Unit notes/deadlines, completion/evidence and local Goal Map drafts; it never writes repository files automatically.
 - Cached snapshots are accepted only for the current normalized Base URL and Index path.
 - Transient refresh and _obs_cache_bust parameters are excluded from Index identity so manual cache-bypass cleanup does not orphan the compatible snapshot.
 - Legacy snapshots recompute source identity from their stored Base URL and Index path when those fields exist, instead of trusting an older pre-normalized sourceKey.
@@ -115,12 +116,17 @@ Formatted operational-day UI contract:
 - Local sync count remains secondary metadata rather than a separate primary score card.
 - Local sync is available in Tools and as one collapsed technical block inside Sessions.
 - Current Target Scenario remains open by default and preserves every source line.
-- Plan uses a two-column execution workspace: Scope Units / Local Execution on the left and vertical Plan Core — Acceptance Criteria on the right; narrow viewports stack the columns.
+- Plan keeps the existing two-column workspace: Local Execution Planner on the left and Plan Items / Plan Core on the right; narrow viewports stack the columns.
 - Minimum / Base / Desired / Max remain ordered top-to-bottom and are color-linked to locally assigned Scope Units.
+- Every Plan Core level has `+ Add local item`; local items can be created repeatedly, edited, deleted, completed, annotated and expanded into Goal Maps without changing repository Markdown.
+- Each plan item independently chooses exactly one local execution route: a numbered session (`S1`, `S2`...) or a direct start/end clock range. Switching routes clears incompatible hidden assignment fields, and v0.8.0/v0.8.1 local records are normalized once on load.
+- Session Planning and Time Planning are rendered as separate blocks at the same time, so session-assigned items and direct-time items are not visually conflated. Direct time ranges are saved through an explicit Apply time action so entering the start value does not replace the editor before the end value is entered.
+- One numbered session may contain several plan items; deleting the session clears the complete assignment state so linked items become fully unassigned instead of being deleted.
+- Repository Scope Units remain available in one collapsed secondary source block and do not replace the editable local session/time plan.
 - Legacy standalone Acceptance Criteria and Done / Evidence never become duplicate active plan items. They stay in one closed repository-material linker until the user explicitly attaches them to a Plan Core item.
 - Linked legacy Acceptance text is shown inside the target item as repository acceptance; linked Done / Evidence marks that target item complete and is shown inside it as repository evidence. Unlinked source material stays visible only in the closed linker.
 - Still Needed is not rendered because unchecked Plan Core items already represent remaining work.
-- Each plan item supports local completion, a short local note, local evidence and an optional “Expand to Goal Map” action.
+- Each plan item supports local completion, a short local note, local evidence, a Session-or-Time assignment and an optional “Expand to Goal Map” action.
 - Explicit stable IDs such as M1, B2, D1 and X1 are preferred in Markdown. When they are absent, the Dashboard uses only a level + normalized-text fingerprint for identity; auto-number labels are display positions and never act as a fallback identity.
 - Plan-item state, Scope Unit links, repository-material links and Goal Map source links resolve exact keys first. ID-based fallback is allowed only for explicitly authored stable IDs, so inserting a new unlabelled item above an existing item does not move notes, completion, evidence or links to the new position.
 - Existing v0.7.0/v0.7.1 text-fingerprint aliases remain readable; unmatched local records stay unassigned rather than being guessed onto another item.
@@ -128,9 +134,10 @@ Formatted operational-day UI contract:
 - Existing v0.7.0-v0.7.2 row-content keys remain readable while the repository row is unchanged and migrate to the stable key on the next local edit. Unmatched old records remain unassigned rather than moving to another unit.
 - Duplicate unlabelled Scope Unit names are treated as ambiguous: local links, deadlines and notes are disabled until explicit stable IDs are added.
 - Each Scope Unit supports a local link to a plan item, optional Max / Desired / Base / Minimum HH:mm targets and a local unit note.
-- One local day-planning note is available under Scope Units.
+- One local day-planning note is available under the local execution planner.
 - Local Goal Maps provide detailed fields for goal, why, success, current state, unknowns, approaches, steps, checks, risks and results/evidence; they are local drafts until explicitly copied/exported.
 - Goal Map create/update/delete operations verify localStorage persistence and surface a save error instead of reporting a false successful save.
+- Assignment migration removes stale session IDs, stale time fields, missing-session links and incomplete/invalid time ranges; unassigned items retain no hidden execution route.
 - Repository and local pending/conflict sessions are rendered in one session list.
 - Local sessions remain visible even when the repository Finished Sessions table has zero rows.
 - Pending session Time, Progress Signal and Result remain available in row details.

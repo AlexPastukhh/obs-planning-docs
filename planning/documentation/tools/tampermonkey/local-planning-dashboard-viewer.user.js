@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Local Planning Dashboard Viewer
 // @namespace    https://github.com/AlexPastukhh/obs/planning-dashboard
-// @version      0.7.3
-// @description  Local-first planning dashboard with repository projection, local execution notes, pending-session score, and local Goal Maps.
+// @version      0.8.2
+// @description  Local-first planning dashboard with normalized exclusive session-or-time planning, pending-session score, and Goal Maps.
 // @author       OBS planning-system
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -26,6 +26,8 @@
   const CONTEXT_KEY = 'obsPlanning:sessionContext:v1';
   const LOCAL_PLAN_KEY = 'obsPlanning:localDayPlan:v1';
   const LOCAL_PLAN_SCHEMA = 'obs-local-day-plan-v1';
+  let localPlanningAssignmentMigrationDone = false;
+  let localPlanningAssignmentMigrationFallback = null;
   const CACHE_DB_NAME = 'obsPlanningCache';
   const CACHE_DB_VERSION = 1;
   const CACHE_STORE = 'snapshots';
@@ -1171,6 +1173,62 @@
     .obs-pd-local-textarea[data-save-error="true"] { border-color: rgba(248, 113, 113, .85); }
     .obs-pd-item-actions { display: flex; flex-wrap: wrap; gap: 5px; }
     .obs-pd-item-actions .obs-pd-btn { padding: 4px 6px; font-size: 10px; }
+    .obs-pd-plan-mode {
+      display: grid; grid-template-columns: minmax(150px, .65fr) minmax(0, 1.35fr);
+      gap: 7px; align-items: end; margin-bottom: 8px; padding: 8px;
+      border: 1px solid rgba(96, 165, 250, .24); border-radius: 9px;
+      background: rgba(8, 25, 48, .76);
+    }
+    .obs-pd-plan-mode-copy { color: #9fb6d4; font-size: 10px; line-height: 1.35; }
+    .obs-pd-local-planner {
+      display: grid; gap: 7px; margin-bottom: 8px;
+      padding: 8px; border: 1px solid rgba(96, 165, 250, .2);
+      border-radius: 9px; background: rgba(8, 18, 32, .72);
+    }
+    .obs-pd-local-planner-head {
+      display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+    }
+    .obs-pd-local-planner-head h3 { margin: 0; color: #dbeafe; font-size: 12px; }
+    .obs-pd-local-planner-head .obs-pd-btn { margin-left: auto; }
+    .obs-pd-local-session {
+      padding: 7px; border: 1px solid rgba(148, 163, 184, .17);
+      border-left: 4px solid #60a5fa; border-radius: 8px;
+      background: rgba(15, 23, 42, .74);
+    }
+    .obs-pd-local-session-head {
+      display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 7px; align-items: center;
+    }
+    .obs-pd-session-label {
+      min-width: 34px; text-align: center; padding: 4px 6px; border-radius: 7px;
+      background: rgba(37, 99, 235, .32); color: #bfdbfe; font-weight: 820;
+    }
+    .obs-pd-session-linked { margin-top: 5px; color: #9fb6d4; font-size: 10px; line-height: 1.35; }
+    .obs-pd-session-linked strong { color: #dbeafe; }
+    .obs-pd-time-plan-list { display: grid; gap: 5px; }
+    .obs-pd-time-plan-row {
+      display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 7px;
+      padding: 6px 7px; border: 1px solid rgba(148, 163, 184, .15);
+      border-radius: 7px; background: rgba(15, 23, 42, .68);
+    }
+    .obs-pd-time-plan-time { color: #93c5fd; font-weight: 760; font-size: 10px; }
+    .obs-pd-time-plan-item { color: #dbeafe; font-size: 10px; }
+    .obs-pd-assignment {
+      display: grid; gap: 6px; padding: 7px;
+      border: 1px solid rgba(96, 165, 250, .18); border-radius: 7px;
+      background: rgba(8, 25, 48, .48);
+    }
+    .obs-pd-assignment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .obs-pd-assignment-pill {
+      align-self: start; border-radius: 999px; padding: 2px 6px;
+      background: rgba(37, 99, 235, .24); color: #bfdbfe;
+      font-size: 9px; font-weight: 800;
+    }
+    .obs-pd-local-item-badge {
+      border-radius: 999px; padding: 2px 6px; background: rgba(52, 211, 153, .18);
+      color: #a7f3d0; font-size: 9px; font-weight: 800;
+    }
+    .obs-pd-repository-scope { margin-top: 8px; }
     .obs-pd-linked-material {
       padding: 7px; border: 1px solid rgba(45, 212, 191, .2);
       border-radius: 7px; background: rgba(8, 47, 50, .34);
@@ -1238,6 +1296,7 @@
 
     @media (max-width: 980px) {
       .obs-pd-plan-workspace { grid-template-columns: 1fr; }
+      .obs-pd-plan-mode { grid-template-columns: 1fr; }
     }
 
     @media (max-height: 780px) {
@@ -1370,18 +1429,121 @@
   }
 
   function readLocalPlanningStore() {
-    const value = readSharedJson(LOCAL_PLAN_KEY, emptyLocalPlanningStore());
+    const value = localPlanningAssignmentMigrationFallback
+      || readSharedJson(LOCAL_PLAN_KEY, emptyLocalPlanningStore());
     if (!value || value.schema !== LOCAL_PLAN_SCHEMA || typeof value.days !== 'object') {
       return emptyLocalPlanningStore();
     }
     if (!value.goalMaps || typeof value.goalMaps !== 'object') value.goalMaps = {};
+    if (!localPlanningAssignmentMigrationDone) {
+      const changed = normalizeLocalPlanningStoreAssignments(value);
+      localPlanningAssignmentMigrationDone = true;
+      if (changed && !writeLocalPlanningStore(value)) {
+        localPlanningAssignmentMigrationFallback = value;
+        console.warn('OBS local planning assignment migration could not be persisted.');
+      }
+    }
     return value;
   }
 
   function writeLocalPlanningStore(store) {
     store.schema = LOCAL_PLAN_SCHEMA;
     store.updatedAt = new Date().toISOString();
-    return writeSharedJson(LOCAL_PLAN_KEY, store);
+    const saved = writeSharedJson(LOCAL_PLAN_KEY, store);
+    if (saved) localPlanningAssignmentMigrationFallback = null;
+    return saved;
+  }
+
+  function isValidClockTime(value) {
+    return /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(String(value || ''));
+  }
+
+  function clearExecutionAssignment(item) {
+    let changed = false;
+    for (const [key, value] of [
+      ['executionMode', ''],
+      ['sessionId', ''],
+      ['timeStart', ''],
+      ['timeEnd', '']
+    ]) {
+      if (item[key] !== value) {
+        item[key] = value;
+        changed = true;
+      }
+    }
+    return changed;
+  }
+
+  function normalizeExecutionAssignment(item, localSessions = {}) {
+    if (!item || typeof item !== 'object') return false;
+    const mode = String(item.executionMode || '');
+    let changed = false;
+
+    if (mode === 'sessions') {
+      const sessionId = String(item.sessionId || '');
+      if (item.timeStart !== '') {
+        item.timeStart = '';
+        changed = true;
+      }
+      if (item.timeEnd !== '') {
+        item.timeEnd = '';
+        changed = true;
+      }
+      if (!sessionId || !localSessions?.[sessionId]) {
+        changed = clearExecutionAssignment(item) || changed;
+      } else if (item.sessionId !== sessionId) {
+        item.sessionId = sessionId;
+        changed = true;
+      }
+      return changed;
+    }
+
+    if (mode === 'hours') {
+      const timeStart = String(item.timeStart || '');
+      const timeEnd = String(item.timeEnd || '');
+      if (item.sessionId !== '') {
+        item.sessionId = '';
+        changed = true;
+      }
+      if (!isValidClockTime(timeStart) || !isValidClockTime(timeEnd) || timeEnd <= timeStart) {
+        changed = clearExecutionAssignment(item) || changed;
+      } else {
+        if (item.timeStart !== timeStart) {
+          item.timeStart = timeStart;
+          changed = true;
+        }
+        if (item.timeEnd !== timeEnd) {
+          item.timeEnd = timeEnd;
+          changed = true;
+        }
+      }
+      return changed;
+    }
+
+    return clearExecutionAssignment(item);
+  }
+
+  function normalizeLocalPlanningStoreAssignments(store) {
+    let changed = false;
+    const now = new Date().toISOString();
+    for (const day of Object.values(store?.days || {})) {
+      if (!day || typeof day !== 'object') continue;
+      if (Object.prototype.hasOwnProperty.call(day, 'planningMode')) {
+        delete day.planningMode;
+        changed = true;
+      }
+      const sessions = day.localSessions && typeof day.localSessions === 'object'
+        ? day.localSessions
+        : {};
+      for (const item of Object.values(day.planItems || {})) {
+        if (normalizeExecutionAssignment(item, sessions)) {
+          item.updatedAt = now;
+          day.updatedAt = now;
+          changed = true;
+        }
+      }
+    }
+    return changed;
   }
 
   function stableHash(value) {
@@ -1413,6 +1575,8 @@
         date: identity.date,
         planningPath: identity.path,
         dayNote: '',
+        localPlanItems: {},
+        localSessions: {},
         scopeUnits: {},
         planItems: {},
         legacyLinks: {},
@@ -1421,6 +1585,8 @@
       };
     }
     const day = store.days[identity.key];
+    if (!day.localPlanItems || typeof day.localPlanItems !== 'object') day.localPlanItems = {};
+    if (!day.localSessions || typeof day.localSessions !== 'object') day.localSessions = {};
     if (!day.scopeUnits || typeof day.scopeUnits !== 'object') day.scopeUnits = {};
     if (!day.planItems || typeof day.planItems !== 'object') day.planItems = {};
     if (!day.legacyLinks || typeof day.legacyLinks !== 'object') day.legacyLinks = {};
@@ -1438,6 +1604,8 @@
       date: identity.date,
       planningPath: identity.path,
       dayNote: '',
+      localPlanItems: {},
+      localSessions: {},
       scopeUnits: {},
       planItems: {},
       legacyLinks: {},
@@ -2379,6 +2547,149 @@ Dashboard: ${file.path}`
   }
 
 
+  function createLocalEntityId(prefix) {
+    const randomId = globalThis.crypto?.randomUUID?.()
+      || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+    return `${prefix}-${randomId}`;
+  }
+
+  function planLevelPrefix(level) {
+    return PLAN_LEVEL_DEFINITIONS.find(([key]) => key === level)?.[2] || 'L';
+  }
+
+  function nextLocalPlanItemLabel(day, level) {
+    const prefix = `${planLevelPrefix(level)}L`;
+    const used = new Set(Object.values(day.localPlanItems || {}).map((item) => String(item?.label || '').toUpperCase()));
+    let number = 1;
+    while (used.has(`${prefix}${number}`.toUpperCase())) number += 1;
+    return `${prefix}${number}`;
+  }
+
+  function createLocalPlanItem(file, level) {
+    const text = String(prompt(`New ${level} plan item`, '') || '').trim();
+    if (!text) return null;
+    let created = null;
+    updateLocalDayState(file, (day) => {
+      const id = createLocalEntityId('plan');
+      const now = new Date().toISOString();
+      created = {
+        id,
+        label: nextLocalPlanItemLabel(day, level),
+        level,
+        text,
+        order: Object.keys(day.localPlanItems || {}).length + 1,
+        createdAt: now,
+        updatedAt: now
+      };
+      day.localPlanItems[id] = created;
+    });
+    render();
+    return created;
+  }
+
+  function updateLocalPlanDefinition(file, item, patch) {
+    if (!item.localId) return;
+    updateLocalDayState(file, (day) => {
+      const current = day.localPlanItems[item.localId];
+      if (!current) throw new Error('Local plan item no longer exists.');
+      day.localPlanItems[item.localId] = { ...current, ...patch, updatedAt: new Date().toISOString() };
+    });
+  }
+
+  function editLocalPlanItem(file, item) {
+    const text = String(prompt(`Edit ${item.id}`, item.text) || '').trim();
+    if (!text || text === item.text) return;
+    updateLocalPlanDefinition(file, item, { text });
+    render();
+  }
+
+  function deleteLocalPlanItem(file, item) {
+    if (!item.localId || !confirm(`Delete local plan item ${item.id}? Linked Goal Maps are kept as local drafts.`)) return;
+    updateLocalDayState(file, (day) => {
+      delete day.localPlanItems[item.localId];
+      delete day.planItems[item.key];
+      Object.values(day.scopeUnits || {}).forEach((unit) => {
+        if (unit.targetItemKey === item.key) {
+          unit.targetItemKey = '';
+          unit.targetItemId = '';
+          unit.targetItemLevel = '';
+          unit.targetItemExplicitId = false;
+        }
+      });
+      Object.values(day.legacyLinks || {}).forEach((link) => {
+        if (link.targetItemKey === item.key) {
+          link.targetItemKey = '';
+          link.targetItemId = '';
+          link.targetItemLevel = '';
+          link.targetItemExplicitId = false;
+        }
+      });
+    });
+    render();
+  }
+
+  function sortedLocalSessions(localDay) {
+    return Object.values(localDay?.localSessions || {})
+      .filter((session) => session && session.id)
+      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0) || String(a.label || '').localeCompare(String(b.label || '')));
+  }
+
+  function nextLocalSessionLabel(day) {
+    const used = new Set(Object.values(day.localSessions || {}).map((session) => String(session?.label || '').toUpperCase()));
+    let number = 1;
+    while (used.has(`S${number}`)) number += 1;
+    return `S${number}`;
+  }
+
+  function createLocalSession(file) {
+    let created = null;
+    updateLocalDayState(file, (day) => {
+      const id = createLocalEntityId('session');
+      const label = nextLocalSessionLabel(day);
+      const now = new Date().toISOString();
+      created = {
+        id,
+        label,
+        title: `Session ${label}`,
+        expectedResult: '',
+        note: '',
+        order: Object.keys(day.localSessions || {}).length + 1,
+        createdAt: now,
+        updatedAt: now
+      };
+      day.localSessions[id] = created;
+    });
+    render();
+    return created;
+  }
+
+  function updateLocalSession(file, sessionId, patch) {
+    updateLocalDayState(file, (day) => {
+      const current = day.localSessions?.[sessionId];
+      if (!current) throw new Error('Local session no longer exists.');
+      day.localSessions[sessionId] = { ...current, ...patch, updatedAt: new Date().toISOString() };
+    });
+  }
+
+  function deleteLocalSession(file, sessionId) {
+    const session = readLocalDayState(file).localSessions?.[sessionId];
+    if (!session || !confirm(`Delete ${session.label}? Plan items assigned to it will become unassigned.`)) return;
+    updateLocalDayState(file, (day) => {
+      delete day.localSessions[sessionId];
+      const now = new Date().toISOString();
+      Object.values(day.planItems || {}).forEach((item) => {
+        if (item.executionMode === 'sessions' && item.sessionId === sessionId) {
+          item.executionMode = '';
+          item.sessionId = '';
+          item.timeStart = '';
+          item.timeEnd = '';
+          item.updatedAt = now;
+        }
+      });
+    });
+    render();
+  }
+
   function normalizedScopeUnitText(text) {
     return String(text || '').trim().toLowerCase().replace(/\s+/g, ' ');
   }
@@ -2449,7 +2760,7 @@ Dashboard: ${file.path}`
     return `legacy:${kind}:${String(id || 'item').toUpperCase()}:${stableHash(normalizedPlanItemText(text))}`;
   }
 
-  function collectPlanWorkspaceModel(documentModel) {
+  function collectPlanWorkspaceModel(documentModel, localDay = {}) {
     const levels = Object.fromEntries(PLAN_LEVEL_DEFINITIONS.map(([key, label, prefix]) => [key, { key, label, prefix, items: [] }]));
     const planCore = findSection(documentModel, 'plan core');
     if (planCore) {
@@ -2527,6 +2838,29 @@ Dashboard: ${file.path}`
     scopeUnits.forEach(({ identity }) => {
       identity.ambiguous = !identity.explicitId && (generatedIdentityCounts.get(identity.key) || 0) > 1;
     });
+
+    Object.values(localDay.localPlanItems || {})
+      .filter((item) => item && levels[item.level] && String(item.text || '').trim())
+      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0) || String(a.label || '').localeCompare(String(b.label || '')))
+      .forEach((definition) => {
+        const entry = {
+          kind: 'local',
+          localId: definition.id,
+          local: true,
+          id: definition.label || `${planLevelPrefix(definition.level)}L`,
+          fallbackId: definition.label || `${planLevelPrefix(definition.level)}L`,
+          explicitId: false,
+          originalText: definition.text,
+          level: definition.level,
+          text: definition.text,
+          source: 'local plan item',
+          sourceDone: false,
+          key: `local-plan:${definition.id}`,
+          legacyKeys: []
+        };
+        levels[definition.level].items.push(entry);
+      });
+
     const targetItems = PLAN_LEVEL_DEFINITIONS.flatMap(([key]) => levels[key].items);
 
     return {
@@ -2730,6 +3064,125 @@ Dashboard: ${file.path}`
     return block;
   }
 
+  function planAssignmentSummary(localDay, workspace, item) {
+    const local = localPlanItemRecord(localDay, item).value || {};
+    if (local.executionMode === 'sessions' && local.sessionId) {
+      const session = localDay.localSessions?.[local.sessionId];
+      return session ? session.label : 'missing session';
+    }
+    if (local.executionMode === 'hours' && (local.timeStart || local.timeEnd)) {
+      return `${local.timeStart || '…'}–${local.timeEnd || '…'}`;
+    }
+    return '';
+  }
+
+  function renderPlanAssignmentEditor(file, item, localDay, workspace) {
+    const local = localPlanItemRecord(localDay, item).value || {};
+    const mode = ['sessions', 'hours'].includes(local.executionMode) ? local.executionMode : '';
+    const block = el('section', { class: 'obs-pd-assignment' });
+    const modeSelect = el('select', { class: 'obs-pd-local-select', 'aria-label': `Planning type for ${item.id}` });
+    modeSelect.appendChild(el('option', { value: '', text: 'Not assigned' }));
+    modeSelect.appendChild(el('option', { value: 'sessions', text: 'Session number · S1, S2…' }));
+    modeSelect.appendChild(el('option', { value: 'hours', text: 'Time · clock range' }));
+    modeSelect.value = mode;
+    modeSelect.addEventListener('change', () => {
+      const nextMode = modeSelect.value;
+      const patch = { executionMode: nextMode };
+      if (nextMode === 'sessions') {
+        patch.timeStart = '';
+        patch.timeEnd = '';
+      } else if (nextMode === 'hours') {
+        patch.sessionId = '';
+      } else {
+        patch.sessionId = '';
+        patch.timeStart = '';
+        patch.timeEnd = '';
+      }
+      updateLocalPlanItem(file, item, patch);
+      render();
+    });
+    block.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Plan this item by · local only' }, [modeSelect]));
+
+    if (mode === 'sessions') {
+      const sessions = sortedLocalSessions(localDay);
+      const row = el('div', { class: 'obs-pd-assignment-grid' });
+      const select = el('select', { class: 'obs-pd-local-select', 'aria-label': `Session for ${item.id}` });
+      select.appendChild(el('option', { value: '', text: 'Choose session number' }));
+      sessions.forEach((session) => select.appendChild(el('option', {
+        value: session.id,
+        text: `${session.label} · ${session.title || `Session ${session.label}`}`
+      })));
+      select.value = sessions.some((session) => session.id === local.sessionId) ? local.sessionId : '';
+      select.addEventListener('change', () => {
+        updateLocalPlanItem(file, item, {
+          executionMode: 'sessions',
+          sessionId: select.value,
+          timeStart: '',
+          timeEnd: ''
+        });
+        render();
+      });
+      row.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Session' }, [select]));
+      row.appendChild(el('button', { class: 'obs-pd-btn', text: '+ Add session', onclick: () => createLocalSession(file) }));
+      block.appendChild(row);
+      if (!sessions.length) block.appendChild(el('div', { class: 'obs-pd-workspace-hint', text: 'Create S1, S2… and assign this item to one numbered session.' }));
+      return block;
+    }
+
+    if (mode === 'hours') {
+      const row = el('div', { class: 'obs-pd-assignment-grid' });
+      const start = el('input', { class: 'obs-pd-local-time', type: 'time', 'aria-label': `Start time for ${item.id}` });
+      const end = el('input', { class: 'obs-pd-local-time', type: 'time', 'aria-label': `End time for ${item.id}` });
+      start.value = local.timeStart || '';
+      end.value = local.timeEnd || '';
+      row.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Start time' }, [start]));
+      row.appendChild(el('label', { class: 'obs-pd-field-label', text: 'End time' }, [end]));
+      block.appendChild(row);
+      block.appendChild(el('div', { class: 'obs-pd-item-actions' }, [
+        el('button', {
+          class: 'obs-pd-btn',
+          text: 'Apply time',
+          onclick: () => {
+            const timeStart = start.value;
+            const timeEnd = end.value;
+            if (!timeStart || !timeEnd) {
+              alert('Choose both start and end time.');
+              return;
+            }
+            if (timeEnd <= timeStart) {
+              alert('End time must be later than start time.');
+              return;
+            }
+            updateLocalPlanItem(file, item, {
+              executionMode: 'hours',
+              sessionId: '',
+              timeStart,
+              timeEnd
+            });
+            render();
+          }
+        }),
+        el('button', {
+          class: 'obs-pd-btn',
+          text: 'Clear time',
+          onclick: () => {
+            updateLocalPlanItem(file, item, {
+              executionMode: '',
+              sessionId: '',
+              timeStart: '',
+              timeEnd: ''
+            });
+            render();
+          }
+        })
+      ]));
+      return block;
+    }
+
+    block.appendChild(el('div', { class: 'obs-pd-workspace-hint', text: 'Choose whether this item is planned on a numbered session or directly on time.' }));
+    return block;
+  }
+
   function renderPlanItem(file, item, localDay, workspace) {
     const local = localPlanItemRecord(localDay, item).value || {};
     const attached = legacyMaterialForPlanItem(workspace, localDay, item);
@@ -2763,7 +3216,10 @@ Dashboard: ${file.path}`
     copy.appendChild(el('div', { class: 'obs-pd-plan-item-text', text: item.text }));
     if (item.source) copy.appendChild(el('div', { class: 'obs-pd-plan-item-source', text: item.source }));
     main.appendChild(copy);
-    if (repositoryDone) main.appendChild(el('span', { class: 'obs-pd-status-pill', 'data-kind': 'repository', text: 'done from source' }));
+    const assignmentSummary = planAssignmentSummary(localDay, workspace, item);
+    if (assignmentSummary) main.appendChild(el('span', { class: 'obs-pd-assignment-pill', text: assignmentSummary }));
+    else if (item.local) main.appendChild(el('span', { class: 'obs-pd-local-item-badge', text: 'local' }));
+    else if (repositoryDone) main.appendChild(el('span', { class: 'obs-pd-status-pill', 'data-kind': 'repository', text: 'done from source' }));
     card.appendChild(main);
 
     const details = el('details', { class: 'obs-pd-plan-item-details' });
@@ -2774,7 +3230,7 @@ Dashboard: ${file.path}`
     ].filter(Boolean).join(' · ');
     details.appendChild(el('summary', {
       text: [
-        'Note · Evidence',
+        'Planning · Note · Evidence',
         sourceMeta,
         linkedMap ? `Goal Map ${linkedMap.id}` : 'Goal Map'
       ].filter(Boolean).join(' · ')
@@ -2783,6 +3239,8 @@ Dashboard: ${file.path}`
 
     const linkedMaterial = renderLinkedRepositoryMaterial(attached);
     if (linkedMaterial) editor.appendChild(linkedMaterial);
+
+    editor.appendChild(renderPlanAssignmentEditor(file, item, localDay, workspace));
 
     const note = el('textarea', {
       class: 'obs-pd-local-textarea',
@@ -2815,6 +3273,10 @@ Dashboard: ${file.path}`
         }
       }
     }));
+    if (item.local) {
+      actions.appendChild(el('button', { class: 'obs-pd-btn', text: 'Edit item', onclick: () => editLocalPlanItem(file, item) }));
+      actions.appendChild(el('button', { class: 'obs-pd-btn', text: 'Delete item', onclick: () => deleteLocalPlanItem(file, item) }));
+    }
     if (linkedMap) actions.appendChild(el('span', { class: 'obs-pd-plan-item-source', text: `${linkedMap.id} · ${linkedMap.status || 'local draft'}` }));
     editor.appendChild(actions);
     details.appendChild(editor);
@@ -2824,11 +3286,17 @@ Dashboard: ${file.path}`
 
   function renderPlanLevel(file, level, localDay, workspace) {
     const block = el('section', { class: 'obs-pd-plan-level', 'data-level': level.key });
-    block.appendChild(el('div', { class: 'obs-pd-plan-level-head' }, [
+    const head = el('div', { class: 'obs-pd-plan-level-head' }, [
       el('span', { class: 'obs-pd-level-badge', text: level.prefix }),
       el('h3', { text: level.label }),
       el('span', { class: 'obs-pd-plan-meta', text: `${level.items.length} item(s)` })
-    ]));
+    ]);
+    head.appendChild(el('button', {
+      class: 'obs-pd-btn',
+      text: '+ Add local item',
+      onclick: () => createLocalPlanItem(file, level.key)
+    }));
+    block.appendChild(head);
     const items = el('div', { class: 'obs-pd-plan-items' });
     if (!level.items.length) items.appendChild(el('div', { class: 'obs-pd-empty', text: 'not provided' }));
     level.items.forEach((item) => items.appendChild(renderPlanItem(file, item, localDay, workspace)));
@@ -3020,21 +3488,101 @@ Dashboard: ${file.path}`
     return details;
   }
 
+  function renderPlanningModeControl(file, localDay, workspace) {
+    const wrapper = el('section', { class: 'obs-pd-plan-mode' });
+    wrapper.appendChild(el('div', { class: 'obs-pd-field-label', text: 'Two separate local planning routes' }));
+    wrapper.appendChild(el('div', {
+      class: 'obs-pd-plan-mode-copy',
+      text: 'Each Plan Item chooses its own route: assign it to a numbered session (S1, S2…) or directly to a clock-time range. Session Planning and Time Planning are displayed separately below.'
+    }));
+    return wrapper;
+  }
+
+  function renderSessionPlanner(file, workspace, localDay) {
+    const planner = el('section', { class: 'obs-pd-local-planner' });
+    const head = el('div', { class: 'obs-pd-local-planner-head' }, [
+      el('h3', { text: 'Session Planning' }),
+      el('span', { class: 'obs-pd-local-only', text: 'local only' })
+    ]);
+    head.appendChild(el('button', { class: 'obs-pd-btn', text: '+ Add session', onclick: () => createLocalSession(file) }));
+    planner.appendChild(head);
+    const sessions = sortedLocalSessions(localDay);
+    if (!sessions.length) planner.appendChild(el('div', { class: 'obs-pd-empty', text: 'No local sessions. Add S1, then assign one or several plan items to it.' }));
+    sessions.forEach((session) => {
+      const card = el('article', { class: 'obs-pd-local-session', 'data-local-session-id': session.id });
+      const title = el('input', { class: 'obs-pd-local-select', value: session.title || `Session ${session.label}`, 'aria-label': `Title for ${session.label}` });
+      bindDebouncedLocalInput(title, (value) => updateLocalSession(file, session.id, { title: value }));
+      card.appendChild(el('div', { class: 'obs-pd-local-session-head' }, [
+        el('span', { class: 'obs-pd-session-label', text: session.label }),
+        title,
+        el('button', { class: 'obs-pd-btn', text: 'Delete', onclick: () => deleteLocalSession(file, session.id) })
+      ]));
+      const linked = workspace.targetItems.filter((item) => localPlanItemRecord(localDay, item).value?.executionMode === 'sessions' && localPlanItemRecord(localDay, item).value?.sessionId === session.id);
+      card.appendChild(el('div', {
+        class: 'obs-pd-session-linked',
+        text: linked.length
+          ? `Linked items: ${linked.map((item) => `${item.id} ${item.text}`).join(' · ')}`
+          : 'Linked items: none'
+      }));
+      const result = el('textarea', { class: 'obs-pd-local-textarea', placeholder: 'Expected result of this session…', 'aria-label': `Expected result for ${session.label}` });
+      result.value = session.expectedResult || '';
+      bindDebouncedLocalInput(result, (value) => updateLocalSession(file, session.id, { expectedResult: value }));
+      const details = el('details', { class: 'obs-pd-scope-source-details' });
+      details.appendChild(el('summary', { text: 'Session result and notes' }));
+      details.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Expected result' }, [result]));
+      const note = el('textarea', { class: 'obs-pd-local-textarea', placeholder: 'Session note…', 'aria-label': `Note for ${session.label}` });
+      note.value = session.note || '';
+      bindDebouncedLocalInput(note, (value) => updateLocalSession(file, session.id, { note: value }));
+      details.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Session note' }, [note]));
+      card.appendChild(details);
+      planner.appendChild(card);
+    });
+    return planner;
+  }
+
+  function renderTimePlanner(workspace, localDay) {
+    const planner = el('section', { class: 'obs-pd-local-planner' });
+    planner.appendChild(el('div', { class: 'obs-pd-local-planner-head' }, [
+      el('h3', { text: 'Time Planning' }),
+      el('span', { class: 'obs-pd-local-only', text: 'local only' })
+    ]));
+    const rows = workspace.targetItems
+      .map((item) => ({ item, local: localPlanItemRecord(localDay, item).value || {} }))
+      .filter(({ local }) => local.executionMode === 'hours' && (local.timeStart || local.timeEnd))
+      .sort((a, b) => String(a.local.timeStart || '99:99').localeCompare(String(b.local.timeStart || '99:99')));
+    if (!rows.length) {
+      planner.appendChild(el('div', { class: 'obs-pd-empty', text: 'No timed items. Open a Plan Core item and set its start/end time.' }));
+      return planner;
+    }
+    const list = el('div', { class: 'obs-pd-time-plan-list' });
+    rows.forEach(({ item, local }) => list.appendChild(el('div', { class: 'obs-pd-time-plan-row' }, [
+      el('div', { class: 'obs-pd-time-plan-time', text: `${local.timeStart || '…'}–${local.timeEnd || '…'}` }),
+      el('div', { class: 'obs-pd-time-plan-item', text: `${item.id} · ${item.text}` })
+    ])));
+    planner.appendChild(list);
+    return planner;
+  }
+
+  function renderLocalExecutionPlanner(file, workspace, localDay) {
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(renderPlanningModeControl(file, localDay, workspace));
+    fragment.appendChild(renderSessionPlanner(file, workspace, localDay));
+    fragment.appendChild(renderTimePlanner(workspace, localDay));
+    return fragment;
+  }
+
   function renderPlanWorkspace(documentModel, file) {
-    const workspace = collectPlanWorkspaceModel(documentModel);
     const localDay = readLocalDayState(file);
+    const workspace = collectPlanWorkspaceModel(documentModel, localDay);
     const wrapper = el('div', { class: 'obs-pd-plan-workspace' });
 
     const left = el('section', { class: 'obs-pd-workspace-column' });
     left.appendChild(el('div', { class: 'obs-pd-workspace-head' }, [
-      el('h2', { text: 'Scope Units / Local Execution' }),
+      el('h2', { text: 'Local Execution Planner' }),
       el('span', { class: 'obs-pd-local-only', text: 'local planning' }),
-      el('div', { class: 'obs-pd-workspace-hint', text: 'Link units to Plan Core items, set optional Max / Desired / Base / Minimum time targets, and keep day-specific notes locally.' })
+      el('div', { class: 'obs-pd-workspace-hint', text: 'Assign each Plan Item either to a numbered session (S1, S2…) or directly to a clock-time range. The two plans stay visibly separated.' })
     ]));
-    if (!workspace.scopeRows.length) {
-      left.appendChild(el('div', { class: 'obs-pd-empty', text: 'No repository Scope Units.' }));
-    }
-    workspace.scopeUnits.forEach(({ row, index, identity }) => left.appendChild(renderScopeUnit(file, workspace, row, index, localDay, identity)));
+    left.appendChild(renderLocalExecutionPlanner(file, workspace, localDay));
     const dayNote = el('textarea', {
       class: 'obs-pd-local-textarea',
       placeholder: 'Local planning notes for this day…',
@@ -3045,12 +3593,22 @@ Dashboard: ${file.path}`
     left.appendChild(el('div', { class: 'obs-pd-day-note' }, [
       el('label', { class: 'obs-pd-field-label', text: 'Day planning notes · local only' }, [dayNote])
     ]));
+
+    if (workspace.scopeUnits.length) {
+      const repositoryScope = el('details', { class: 'obs-pd-legacy-material obs-pd-repository-scope' });
+      repositoryScope.appendChild(el('summary', { text: `Repository Scope Units · ${workspace.scopeUnits.length}` }));
+      const repositoryBody = el('div', { class: 'obs-pd-legacy-material-body' });
+      repositoryBody.appendChild(el('div', { class: 'obs-pd-workspace-hint', text: 'Source projection kept for compatibility. Local session/time planning above is the editable working plan.' }));
+      workspace.scopeUnits.forEach(({ row, index, identity }) => repositoryBody.appendChild(renderScopeUnit(file, workspace, row, index, localDay, identity)));
+      repositoryScope.appendChild(repositoryBody);
+      left.appendChild(repositoryScope);
+    }
     wrapper.appendChild(left);
 
     const right = el('section', { class: 'obs-pd-workspace-column' });
     right.appendChild(el('div', { class: 'obs-pd-workspace-head' }, [
-      el('h2', { text: 'Plan Core — Acceptance Criteria' }),
-      el('div', { class: 'obs-pd-workspace-hint', text: 'Write each Plan Core item as a verifiable accepted result. Local completion, notes, evidence and detailed Goal Maps stay attached to that item.' })
+      el('h2', { text: 'Plan Items / Plan Core' }),
+      el('div', { class: 'obs-pd-workspace-hint', text: 'Repository items stay visible. Add as many local items as needed, then choose Session or Time separately for each item.' })
     ]));
     PLAN_LEVEL_DEFINITIONS.forEach(([key]) => right.appendChild(renderPlanLevel(file, workspace.levels[key], localDay, workspace)));
 
@@ -4236,7 +4794,12 @@ Check:
     const localPayload = currentLocalPlanningExport();
     const localDay = localPayload?.day;
     localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Day: ${localDay?.date || planningDayIdentity(state.files.day).date}` }));
-    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Scope unit plans: ${Object.keys(localDay?.scopeUnits || {}).length}` }));
+    const localStates = Object.values(localDay?.planItems || {});
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Session-planned items: ${localStates.filter((item) => item?.executionMode === 'sessions').length}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Time-planned items: ${localStates.filter((item) => item?.executionMode === 'hours').length}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Local plan items: ${Object.keys(localDay?.localPlanItems || {}).length}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Local sessions: ${Object.keys(localDay?.localSessions || {}).length}` }));
+    localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Repository Scope Unit plans: ${Object.keys(localDay?.scopeUnits || {}).length}` }));
     localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Plan item notes/status: ${Object.keys(localDay?.planItems || {}).length}` }));
     localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-row', text: `Local Goal Maps: ${(localPayload?.goalMaps || []).length}` }));
     localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-actions' }, [
