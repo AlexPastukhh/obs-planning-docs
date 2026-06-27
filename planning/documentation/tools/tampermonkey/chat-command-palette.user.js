@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.7.0-projection-contract
-// @description  Reusable projection-only draggable command helper for inserting structured command prompt bodies into ChatGPT.
+// @version      0.8.0
+// @description  Reusable projection-only draggable command helper with adaptive and forced-full route reading.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -23,6 +23,8 @@ TM-OBS-REUSE source sync:
     - Command semantics remain owned by the project root use-case map and linked owner workflow/template/area files.
     - The command set below is trimmed to accepted OBS root UCM routes.
     - This helper performs UI projection and composer insertion only; it does not write to the repo or call external services.
+    - The default command button keeps adaptive route reading.
+    - The Full button forces a fresh read of the command's complete required route for that invocation.
 
   Implementation note:
     - Multiline command bodies are assembled with Array.join("\n") so the userscript remains valid JavaScript.
@@ -30,6 +32,21 @@ TM-OBS-REUSE source sync:
 
 (function () {
   'use strict';
+
+  const INSTANCE_DISPOSE_KEY = '__obsCommandHelperDisposeV1';
+  const previousDispose = window[INSTANCE_DISPOSE_KEY];
+  if (typeof previousDispose === 'function') {
+    try {
+      previousDispose();
+    } catch (error) {
+      // A stale previous instance must not block a clean mount.
+    }
+  }
+
+  const ROUTE_READ_MODE = Object.freeze({
+    ADAPTIVE: 'adaptive',
+    FORCE_FULL: 'force-full'
+  });
 
   const COMMAND_DEFINITIONS = [
     {
@@ -171,7 +188,36 @@ TM-OBS-REUSE source sync:
     }
   ];
 
-  function buildCommandBody(definition) {
+  function getRouteReadBlock(mode) {
+    if (mode === ROUTE_READ_MODE.FORCE_FULL) {
+      return [
+        'source_of_truth:',
+        '  Start from `planning/planning-use-case-map.md`.',
+        '  Follow the complete required route for this command.',
+        '',
+        'route_read_rule:',
+        '  Full route reading is required for this invocation.',
+        '  Read the relevant command entry in `planning/planning-use-case-map.md`.',
+        '  Then read every owner, workflow, template and example file required by that command route for complete understanding.',
+        '  Do this even if the command was previously used in this chat.',
+        '  Do not execute the command from memory or from this compact prompt alone.',
+        '  Do not expand into unrelated repository files outside the command route.'
+      ];
+    }
+
+    return [
+      'source_of_truth:',
+      '  Start from `planning/planning-use-case-map.md`.',
+      '  Then read the owner / linked files for this command route.',
+      '',
+      'route_read_rule:',
+      '  If you have not read this command route and its linked owner/example files in this chat, read them before answering.',
+      '  If you have read them but do not remember the required behavior, boundaries or key points, reread from `planning/planning-use-case-map.md` before answering.',
+      '  Do not rely only on this prompt when command behavior is uncertain.'
+    ];
+  }
+
+  function buildCommandBody(definition, routeReadMode) {
     return [
       '[PLANNING_COMMAND]',
       'Read this whole command body before answering.',
@@ -186,14 +232,7 @@ TM-OBS-REUSE source sync:
       'command_family:',
       `  ${definition.family}`,
       '',
-      'source_of_truth:',
-      '  Start from `planning/planning-use-case-map.md`.',
-      '  Then read the owner / linked files for this command route.',
-      '',
-      'route_read_rule:',
-      '  If you have not read this command route and its linked owner/example files in this chat, read them before answering.',
-      '  If you have read them but do not remember the required behavior, boundaries or key points, reread from `planning/planning-use-case-map.md` before answering.',
-      '  Do not rely only on this prompt when command behavior is uncertain.',
+      ...getRouteReadBlock(routeReadMode),
       '',
       'key_reminders:',
       ...definition.reminders.map((item) => `  - ${item}`),
@@ -207,7 +246,8 @@ TM-OBS-REUSE source sync:
 
   const COMMANDS = COMMAND_DEFINITIONS.map((definition) => ({
     ...definition,
-    body: buildCommandBody(definition)
+    adaptiveBody: buildCommandBody(definition, ROUTE_READ_MODE.ADAPTIVE),
+    fullRouteBody: buildCommandBody(definition, ROUTE_READ_MODE.FORCE_FULL)
   }));
 
   const HOST_ID = 'obs-command-helper-host';
@@ -224,8 +264,9 @@ TM-OBS-REUSE source sync:
   let isOpen = false;
   let dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === 'true';
   let lastCommandsToggleToken = document.documentElement.dataset.obsPlanningCommandsToggle || '';
-  let left = savedPosition.left ?? Math.max(12, window.innerWidth - 420);
+  let left = savedPosition.left ?? Math.max(12, window.innerWidth - 470);
   let top = savedPosition.top ?? Math.max(12, window.innerHeight - 620);
+  let statusTimerId = null;
 
   root.innerHTML = `
     <style>
@@ -250,7 +291,7 @@ TM-OBS-REUSE source sync:
         left: ${left}px;
         top: ${top}px;
         z-index: 2147483647;
-        width: min(410px, calc(100vw - 24px));
+        width: min(460px, calc(100vw - 24px));
         max-height: min(76vh, 760px);
         display: none;
         flex-direction: column;
@@ -285,9 +326,15 @@ TM-OBS-REUSE source sync:
         font: inherit;
         cursor: pointer;
       }
-      button:hover, button:focus-visible { background: #243750; outline: none; }
+      button:hover, button:focus-visible {
+        background: #243750;
+        outline: none;
+      }
       .close { width: 30px; height: 30px; }
-      .search-wrap { padding: 9px; border-bottom: 1px solid rgba(148, 163, 184, .16); }
+      .search-wrap {
+        padding: 9px;
+        border-bottom: 1px solid rgba(148, 163, 184, .16);
+      }
       .search {
         width: 100%;
         border: 1px solid rgba(148, 163, 184, .3);
@@ -309,7 +356,7 @@ TM-OBS-REUSE source sync:
       .row {
         width: 100%;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 1fr) auto auto;
         align-items: stretch;
         gap: 7px;
         margin: 3px 0;
@@ -319,9 +366,29 @@ TM-OBS-REUSE source sync:
         padding: 8px;
         text-align: left;
       }
-      .row-label { display: block; font-weight: 750; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .row-meta { display: block; color: #94a3b8; font-size: 11px; }
-      .copy { padding: 5px 7px; align-self: stretch; }
+      .row-label {
+        display: block;
+        font-weight: 750;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .row-meta {
+        display: block;
+        color: #94a3b8;
+        font-size: 11px;
+      }
+      .full-route {
+        min-width: 54px;
+        padding: 5px 8px;
+        align-self: stretch;
+        border-color: rgba(96, 165, 250, .5);
+        color: #bfdbfe;
+      }
+      .copy {
+        padding: 5px 7px;
+        align-self: stretch;
+      }
       .status {
         margin: 0 8px 8px;
         padding: 8px;
@@ -330,14 +397,18 @@ TM-OBS-REUSE source sync:
         color: #bfdbfe;
         white-space: pre-wrap;
       }
-      .empty { padding: 18px; color: #94a3b8; text-align: center; }
+      .empty {
+        padding: 18px;
+        color: #94a3b8;
+        text-align: center;
+      }
     </style>
     <button class="launcher" type="button">Commands</button>
     <section class="panel" data-open="false" aria-label="OBS command helper">
       <div class="header">
         <div class="title">
           <div class="title-main">OBS Command Helper</div>
-          <div class="title-sub">Click a row to insert. Drag this header to move.</div>
+          <div class="title-sub">Command = adaptive read. Full = forced complete route read.</div>
         </div>
         <button class="close" type="button" title="Close">×</button>
       </div>
@@ -359,6 +430,7 @@ TM-OBS-REUSE source sync:
     isOpen = Boolean(nextOpen);
     panel.dataset.open = String(isOpen);
     launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
+
     if (isOpen) {
       keepPanelInViewport();
       renderCommands(searchInput.value);
@@ -387,11 +459,19 @@ TM-OBS-REUSE source sync:
   function renderCommands(query) {
     const normalizedQuery = String(query || '').trim().toLowerCase();
     const filtered = COMMANDS.filter((command) => {
-      const haystack = [command.label, command.englishName, command.description, command.group].join(' ').toLowerCase();
+      const haystack = [
+        command.label,
+        command.englishName,
+        command.description,
+        command.group,
+        'full route adaptive'
+      ].join(' ').toLowerCase();
+
       return !normalizedQuery || haystack.includes(normalizedQuery);
     });
 
     body.textContent = '';
+
     if (!filtered.length) {
       const empty = document.createElement('div');
       empty.className = 'empty';
@@ -416,33 +496,53 @@ TM-OBS-REUSE source sync:
         const insertButton = document.createElement('button');
         insertButton.type = 'button';
         insertButton.className = 'insert';
-        insertButton.title = 'Insert command body into ChatGPT';
+        insertButton.title = 'Insert command body with adaptive route reading';
 
         const label = document.createElement('span');
         label.className = 'row-label';
         label.textContent = `${command.englishName} · ${command.label}`;
+
         const meta = document.createElement('span');
         meta.className = 'row-meta';
         meta.textContent = command.description;
         insertButton.append(label, meta);
 
+        const fullRouteButton = document.createElement('button');
+        fullRouteButton.type = 'button';
+        fullRouteButton.className = 'full-route';
+        fullRouteButton.textContent = 'Full';
+        fullRouteButton.title = 'Insert the same command and force a fresh read of its complete required route';
+
         const copyButton = document.createElement('button');
         copyButton.type = 'button';
         copyButton.className = 'copy';
         copyButton.textContent = 'Copy';
-        copyButton.title = 'Copy command body';
+        copyButton.title = 'Copy the adaptive command body';
 
         insertButton.addEventListener('click', () => {
-          const inserted = insertIntoComposer(command.body);
-          showStatus(inserted ? `Inserted: ${command.label}` : 'Composer was not found. Click the ChatGPT input and try again.');
+          const inserted = insertIntoComposer(command.adaptiveBody);
+          showStatus(
+            inserted
+              ? `Inserted: ${command.label} · adaptive route read`
+              : 'Composer was not found. Click the ChatGPT input and try again.'
+          );
+        });
+
+        fullRouteButton.addEventListener('click', () => {
+          const inserted = insertIntoComposer(command.fullRouteBody);
+          showStatus(
+            inserted
+              ? `Inserted: ${command.label} · forced full route read`
+              : 'Composer was not found. Click the ChatGPT input and try again.'
+          );
         });
 
         copyButton.addEventListener('click', async () => {
-          const copied = await copyText(command.body);
-          showStatus(copied ? `Copied: ${command.label}` : 'Clipboard copy failed.');
+          const copied = await copyText(command.adaptiveBody);
+          showStatus(copied ? `Copied: ${command.label} · adaptive route read` : 'Clipboard copy failed.');
         });
 
-        row.append(insertButton, copyButton);
+        row.append(insertButton, fullRouteButton, copyButton);
         body.appendChild(row);
       });
     });
@@ -458,13 +558,17 @@ TM-OBS-REUSE source sync:
     ];
 
     const candidates = [];
+
     for (const selector of selectors) {
       document.querySelectorAll(selector).forEach((element) => {
         if (candidates.includes(element)) return;
+
         const rect = element.getBoundingClientRect();
         const style = window.getComputedStyle(element);
+
         if (rect.width <= 0 || rect.height <= 0) return;
         if (style.display === 'none' || style.visibility === 'hidden') return;
+
         candidates.push(element);
       });
     }
@@ -478,21 +582,27 @@ TM-OBS-REUSE source sync:
     if (!composer) return false;
 
     composer.focus();
-    const existingText = getComposerText(composer).trim();
-    const textToInsert = existingText ? `\n\n${commandBody}` : commandBody;
+    const currentText = getComposerText(composer);
+    const hasExistingText = currentText.trim().length > 0;
+    const textToInsert = hasExistingText ? `\n\n${commandBody}` : commandBody;
 
     if (composer instanceof HTMLTextAreaElement || composer instanceof HTMLInputElement) {
-      const nextValue = existingText ? `${getComposerText(composer)}\n\n${commandBody}` : commandBody;
-      const prototype = composer instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      const nextValue = hasExistingText ? `${currentText}\n\n${commandBody}` : commandBody;
+      const prototype = composer instanceof HTMLTextAreaElement
+        ? HTMLTextAreaElement.prototype
+        : HTMLInputElement.prototype;
       const setter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
+
       if (setter) setter.call(composer, nextValue);
       else composer.value = nextValue;
+
       dispatchInputEvents(composer, textToInsert);
       return true;
     }
 
     moveCaretToEnd(composer);
     let inserted = false;
+
     try {
       inserted = document.execCommand('insertText', false, textToInsert);
     } catch (error) {
@@ -500,7 +610,7 @@ TM-OBS-REUSE source sync:
     }
 
     if (!inserted) {
-      const nextValue = existingText ? `${getComposerText(composer)}\n\n${commandBody}` : commandBody;
+      const nextValue = hasExistingText ? `${currentText}\n\n${commandBody}` : commandBody;
       composer.textContent = nextValue;
       dispatchInputEvents(composer, textToInsert);
     }
@@ -511,6 +621,7 @@ TM-OBS-REUSE source sync:
   function moveCaretToEnd(element) {
     const selection = window.getSelection();
     if (!selection) return;
+
     const range = document.createRange();
     range.selectNodeContents(element);
     range.collapse(false);
@@ -522,6 +633,7 @@ TM-OBS-REUSE source sync:
     if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
       return element.value || '';
     }
+
     return element.innerText || element.textContent || '';
   }
 
@@ -536,6 +648,7 @@ TM-OBS-REUSE source sync:
     } catch (error) {
       element.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
     }
+
     element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
@@ -550,27 +663,45 @@ TM-OBS-REUSE source sync:
       textarea.style.opacity = '0';
       document.body.appendChild(textarea);
       textarea.select();
-      const copied = document.execCommand('copy');
-      textarea.remove();
+
+      let copied = false;
+      try {
+        copied = document.execCommand('copy');
+      } finally {
+        textarea.remove();
+      }
+
       return copied;
     }
   }
 
   function showStatus(message) {
     root.querySelector('.status')?.remove();
+
+    if (statusTimerId !== null) {
+      window.clearTimeout(statusTimerId);
+      statusTimerId = null;
+    }
+
     const status = document.createElement('div');
     status.className = 'status';
     status.textContent = message;
     panel.appendChild(status);
-    window.setTimeout(() => status.remove(), 3500);
+
+    statusTimerId = window.setTimeout(() => {
+      status.remove();
+      statusTimerId = null;
+    }, 3500);
   }
 
   function keepPanelInViewport() {
     const rect = panel.getBoundingClientRect();
-    const width = rect.width || 410;
+    const width = rect.width || 460;
     const height = rect.height || 560;
+
     left = clamp(left, 8, Math.max(8, window.innerWidth - width - 8));
     top = clamp(top, 8, Math.max(8, window.innerHeight - height - 8));
+
     panel.style.left = `${left}px`;
     panel.style.top = `${top}px`;
   }
@@ -582,39 +713,60 @@ TM-OBS-REUSE source sync:
     let startLeft = 0;
     let startTop = 0;
 
-    header.addEventListener('pointerdown', (event) => {
+    function handlePointerDown(event) {
       if (event.button !== 0 || event.target === closeButton) return;
+
       pointerId = event.pointerId;
       startX = event.clientX;
       startY = event.clientY;
+
       const rect = panel.getBoundingClientRect();
       startLeft = rect.left;
       startTop = rect.top;
+
       header.setPointerCapture(pointerId);
       event.preventDefault();
-    });
+    }
 
-    header.addEventListener('pointermove', (event) => {
+    function handlePointerMove(event) {
       if (pointerId !== event.pointerId) return;
-      const width = panel.offsetWidth || 410;
+
+      const width = panel.offsetWidth || 460;
       const height = panel.offsetHeight || 560;
+
       left = clamp(startLeft + event.clientX - startX, 8, Math.max(8, window.innerWidth - width - 8));
       top = clamp(startTop + event.clientY - startY, 8, Math.max(8, window.innerHeight - height - 8));
+
       panel.style.left = `${left}px`;
       panel.style.top = `${top}px`;
       event.preventDefault();
-    });
+    }
 
-    const finishDrag = (event) => {
+    function finishDrag(event) {
       if (pointerId === null) return;
-      try { header.releasePointerCapture(pointerId); } catch (error) { /* ignore */ }
+
+      try {
+        header.releasePointerCapture(pointerId);
+      } catch (error) {
+        // Ignore a pointer that the browser already released.
+      }
+
       pointerId = null;
       savePosition(left, top);
       event.preventDefault();
-    };
+    }
 
+    header.addEventListener('pointerdown', handlePointerDown);
+    header.addEventListener('pointermove', handlePointerMove);
     header.addEventListener('pointerup', finishDrag);
     header.addEventListener('pointercancel', finishDrag);
+
+    return function disableDragging() {
+      header.removeEventListener('pointerdown', handlePointerDown);
+      header.removeEventListener('pointermove', handlePointerMove);
+      header.removeEventListener('pointerup', finishDrag);
+      header.removeEventListener('pointercancel', finishDrag);
+    };
   }
 
   function readSavedPosition() {
@@ -631,7 +783,10 @@ TM-OBS-REUSE source sync:
 
   function savePosition(nextLeft, nextTop) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ left: nextLeft, top: nextTop }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        left: nextLeft,
+        top: nextTop
+      }));
     } catch (error) {
       // Position persistence is optional.
     }
@@ -649,37 +804,94 @@ TM-OBS-REUSE source sync:
   function consumeCommandsToggle(token) {
     const nextToken = String(token || '');
     if (!nextToken || nextToken === lastCommandsToggleToken) return;
+
     lastCommandsToggleToken = nextToken;
     setOpen(!isOpen);
   }
 
-  window.addEventListener('obs-planning-dashboard-visibility', (event) => {
+  function handleDashboardVisibility(event) {
     dashboardOpen = Boolean(event?.detail?.open);
     launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
-  });
-  window.addEventListener('obs-planning-commands-toggle', (event) => {
-    consumeCommandsToggle(event?.detail?.token || document.documentElement.dataset.obsPlanningCommandsToggle);
-  });
+  }
+
+  function handleCommandsToggle(event) {
+    consumeCommandsToggle(
+      event?.detail?.token || document.documentElement.dataset.obsPlanningCommandsToggle
+    );
+  }
+
+  function handleLauncherClick() {
+    setOpen(true);
+  }
+
+  function handleCloseClick() {
+    setOpen(false);
+  }
+
+  function handleSearchInput() {
+    renderCommands(searchInput.value);
+  }
+
+  function handleWindowResize() {
+    keepPanelInViewport();
+  }
 
   const planningDomObserver = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
-      if (mutation.attributeName === 'data-obs-planning-dashboard-open') syncDashboardVisibilityFromDom();
+      if (mutation.attributeName === 'data-obs-planning-dashboard-open') {
+        syncDashboardVisibilityFromDom();
+      }
+
       if (mutation.attributeName === 'data-obs-planning-commands-toggle') {
         consumeCommandsToggle(document.documentElement.dataset.obsPlanningCommandsToggle);
       }
     }
   });
+
   planningDomObserver.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ['data-obs-planning-dashboard-open', 'data-obs-planning-commands-toggle']
+    attributeFilter: [
+      'data-obs-planning-dashboard-open',
+      'data-obs-planning-commands-toggle'
+    ]
   });
 
-  launcher.addEventListener('click', () => setOpen(true));
-  closeButton.addEventListener('click', () => setOpen(false));
-  searchInput.addEventListener('input', () => renderCommands(searchInput.value));
-  window.addEventListener('resize', keepPanelInViewport);
+  window.addEventListener('obs-planning-dashboard-visibility', handleDashboardVisibility);
+  window.addEventListener('obs-planning-commands-toggle', handleCommandsToggle);
+  launcher.addEventListener('click', handleLauncherClick);
+  closeButton.addEventListener('click', handleCloseClick);
+  searchInput.addEventListener('input', handleSearchInput);
+  window.addEventListener('resize', handleWindowResize);
   window.addEventListener('keydown', handleGlobalShortcut, true);
 
-  enableDragging();
+  const disableDragging = enableDragging();
+
+  function dispose() {
+    if (statusTimerId !== null) {
+      window.clearTimeout(statusTimerId);
+      statusTimerId = null;
+    }
+
+    planningDomObserver.disconnect();
+    disableDragging();
+
+    window.removeEventListener('obs-planning-dashboard-visibility', handleDashboardVisibility);
+    window.removeEventListener('obs-planning-commands-toggle', handleCommandsToggle);
+    window.removeEventListener('resize', handleWindowResize);
+    window.removeEventListener('keydown', handleGlobalShortcut, true);
+
+    launcher.removeEventListener('click', handleLauncherClick);
+    closeButton.removeEventListener('click', handleCloseClick);
+    searchInput.removeEventListener('input', handleSearchInput);
+
+    host.remove();
+
+    if (window[INSTANCE_DISPOSE_KEY] === dispose) {
+      delete window[INSTANCE_DISPOSE_KEY];
+    }
+  }
+
+  window[INSTANCE_DISPOSE_KEY] = dispose;
+
   renderCommands('');
 })();

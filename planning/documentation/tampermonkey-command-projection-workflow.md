@@ -1,7 +1,7 @@
 # Tampermonkey Command Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.3.1-obs-cleanup
+Doc version: v0.4.0-dual-route-read
 Scope: reusable rules for projecting accepted project command routes into the reusable Tampermonkey/ChatGPT command helper UI.
 
 ## 1. Core Rule
@@ -19,6 +19,8 @@ Projection implementation:
   planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
+The root UCM owns command routing and points to the files needed for full understanding. It does not need to encode which read mode the user chose for one particular palette insertion.
+
 ## 2. Before Adding A Command To Helper
 
 Check:
@@ -29,9 +31,10 @@ Check:
 3. Permission boundary is explicit.
 4. Inserted body points back to the root UCM and owner docs.
 5. Button label uses <englishName> · <label>.
+6. Adaptive and forced-full variants are generated from the same command definition.
 ```
 
-## 3. Inserted Body Contract
+## 3. Shared Inserted Body Contract
 
 Use a project-neutral marker, not an Enman-specific marker.
 
@@ -49,14 +52,7 @@ english_name:
 command_family:
   `<alias 1>` / `<alias 2>` / `<English alias>`
 
-source_of_truth:
-  Start from `planning/planning-use-case-map.md`.
-  Then read the owner / linked files for this command route.
-
-route_read_rule:
-  If you have not read this command route and its linked owner/example files in this chat, read them before answering.
-  If you have read them but do not remember the required behavior, boundaries or key points, reread from `planning/planning-use-case-map.md` before answering.
-  Do not rely only on this prompt when command behavior is uncertain.
+<route read block selected by the palette action>
 
 key_reminders:
   - <command-specific reminder>
@@ -70,7 +66,75 @@ user_target:
 [/PLANNING_COMMAND]
 ```
 
-## 4. Placement
+Command meaning, aliases, reminders and target stay identical between read variants. Only the source/read block changes.
+
+## 4. Adaptive Route-Read Variant
+
+The normal command button keeps the existing adaptive behavior.
+
+```text
+source_of_truth:
+  Start from `planning/planning-use-case-map.md`.
+  Then read the owner / linked files for this command route.
+
+route_read_rule:
+  If you have not read this command route and its linked owner/example files in this chat, read them before answering.
+  If you have read them but do not remember the required behavior, boundaries or key points, reread from `planning/planning-use-case-map.md` before answering.
+  Do not rely only on this prompt when command behavior is uncertain.
+```
+
+This variant leaves the freshness decision to the chat. Recently verified command context may be reused when behavior, boundaries and key points remain clear.
+
+## 5. Forced Full Route-Read Variant
+
+A separate `Full` action inserts the same command with an explicit fresh-read requirement.
+
+```text
+source_of_truth:
+  Start from `planning/planning-use-case-map.md`.
+  Follow the complete required route for this command.
+
+route_read_rule:
+  Full route reading is required for this invocation.
+  Read the relevant command entry in `planning/planning-use-case-map.md`.
+  Then read every owner, workflow, template and example file required by that command route for complete understanding.
+  Do this even if the command was previously used in this chat.
+  Do not execute the command from memory or from this compact prompt alone.
+  Do not expand into unrelated repository files outside the command route.
+```
+
+`Full` means the complete required path of that command, not a broad read of the entire repository.
+
+There is no separate UCM-only mode. There are currently only two insertion modes:
+
+```text
+normal command button:
+  adaptive route read
+
+Full button:
+  forced complete required route read
+```
+
+Command-specific refinements remain out of scope until a real need is identified.
+
+## 6. UI Contract
+
+Each command row uses sibling controls:
+
+```text
+<englishName> · <label>:
+  insert adaptive command body
+
+Full:
+  insert forced-full command body
+
+Copy:
+  copy adaptive command body
+```
+
+Do not nest buttons inside another button. Do not duplicate the whole command definition to create the second variant.
+
+## 7. Placement
 
 The reusable full helper lives at:
 
@@ -80,11 +144,14 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 
 Do not create a tracked local `tools/tampermonkey/` copy by default.
 
-## 5. Do Not
+## 8. Do Not
 
 ```text
 - Do not add helper commands without UCM routes.
 - Do not make the userscript a command source of truth.
+- Do not put per-invocation read-mode policy into the root UCM.
+- Do not create separate command-definition copies for adaptive and forced-full variants.
 - Do not keep competing tracked helper copies by default.
-- Do not silently change command meaning while adding UI labels.
+- Do not silently change command meaning while adding UI controls.
+- Do not treat Full as permission to read unrelated repository files.
 ```

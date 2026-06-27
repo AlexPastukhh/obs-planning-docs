@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.9.1
+Doc version: v0.9.2
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -262,15 +262,22 @@ Its Session field supports `S1`, `S2`, `S3` and later positive integer labels. V
 The reusable Command Palette provides:
 
 - an explicit projection-only boundary: the root UCM and linked owner files remain command authority;
-- separate sibling controls for command insertion and copying, avoiding nested interactive elements;
+- separate sibling controls for adaptive insertion, forced-full route insertion and copying, avoiding nested interactive elements;
+- one shared command definition for both insertion variants, so command semantics and reminders cannot drift;
 
 ```text
 - draggable helper panel;
 - command search/list;
-- one-click insertion into the ChatGPT prompt editor;
+- normal command control inserts the adaptive route-read body;
+- Full inserts the same command with mandatory fresh reading of the complete required command route;
+- Copy copies the adaptive route-read body;
+- Full is limited to UCM and owner/workflow/template/example files required by that command route;
+- Full does not authorize reading unrelated repository files;
 - button labels rendered as <englishName> · <label>;
 - complete command bodies with command, english_name, command_family,
   source_of_truth, route_read_rule, key_reminders and user_target;
+- no separate UCM-only mode;
+- no command-specific refinement buttons until a concrete need is approved;
 - no repo writes, network calls, commits or pushes.
 ```
 
@@ -285,7 +292,8 @@ Before enabling or adapting the reusable helper for another project, verify:
 4. source_of_truth points to the target project's real route/owner docs.
 5. @name and @namespace change only for an intentional fork or rebrand.
 6. The helper remains projection-only.
-7. No second tracked project-local command-helper copy is created by default.
+7. Adaptive and forced-full bodies are generated from the same command definition.
+8. No second tracked project-local command-helper copy is created by default.
 ```
 
 ## 11. Safety checks
@@ -305,5 +313,6 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
 - Do not treat Command Palette as command authority.
 - Do not add project-only command semantics without a UCM route.
+- Do not use Full to expand reading beyond the command's required route.
 - Do not use any helper to write to the repo or perform external network calls.
 ```
