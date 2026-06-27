@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.1.0
+Doc version: v0.2.1-runtime-contract
 Scope: OBS repository planning entry point, local routing, and source-of-truth pointers built on the reusable documentation layer copied under `planning/documentation/`.
 
 ## 1. Purpose
@@ -57,8 +57,8 @@ If root planning files exist:
 2. planning/planning-use-case-map.md
 3. planning/workflow-activation-map.md
 4. planning/root-source-sync-register.md
-5. Relevant area docs under planning/areas/
-6. Relevant reusable workflow docs under planning/documentation/
+5. Relevant command owner docs under planning/areas/ or planning/documentation/
+6. Dashboard userscript/runtime help, JSON import/export and repo round-trip contract when the task concerns local planning data
 ```
 
 If root planning files are missing or being bootstrapped:
@@ -75,7 +75,7 @@ After root files exist, starter kits are not runtime routers.
 
 | Area | Path | Purpose |
 |---|---|---|
-| Planning system | `planning/areas/planning-system/` | Scenario planning workspace, minimum/base/desired/max, acceptance criteria, idea inbox/evaluation, planning commands. |
+| Planning runtime | `planning/areas/planning-system/` | Minimal technical index and the operational `конец` workflow. Dashboard planning rules and field help live in the Dashboard userscript/UI. |
 | Conspects | `planning/areas/conspects/` | Conspect review/repetition planning and local knowledge-work application. |
 
 ## 5. Tampermonkey Helper

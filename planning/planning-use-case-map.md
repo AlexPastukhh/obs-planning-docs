@@ -1,8 +1,8 @@
 # OBS Planning Use-Case Map
 
 Status: active project-specific root command router
-Doc version: v0.1.2-obs-cleanup
-Scope: concrete OBS command routing, based on the reusable documentation layer and OBS planning-system area docs.
+Doc version: v0.2.1-runtime-contract
+Scope: concrete OBS command routing. Dashboard planning is performed in the Dashboard UI and is not exposed as a command family.
 
 ## 1. Authority Model
 
@@ -15,7 +15,20 @@ Tampermonkey is projection only.
 
 Do not use `planning/documentation/field-kits/root-use-case-map-field-kit.md` as a runtime router after this file exists.
 
-## 2. Common Commands
+## 2. Explicit-Input Rule For Planning Responses
+
+For `план файл-обновление`, `планируй` and planning parts of `положняк`:
+
+```text
+- Treat only explicit user statements and checked source facts as confirmed.
+- Do not silently turn an unanswered decision into a user decision.
+- When an important planning detail is missing, show a compact question table ordered by impact and uncertainty.
+- Each unanswered question may include one conservative fallback instruction.
+- A displayed fallback is temporary for the current output and can be overridden by the user.
+- A fallback never authorizes commit, push, deletion, destructive action, unrelated files, scope expansion, invented deadlines or invented acceptance criteria.
+```
+
+## 3. Common Commands
 
 | Command / trigger | Meaning | Active-context behavior | Traversal/read mode | Sources / owner files | Expected output |
 |---|---|---|---|---|---|
@@ -30,17 +43,15 @@ Do not use `planning/documentation/field-kits/root-use-case-map-field-kit.md` as
 | `создай команду`, `create command`, `new command` | Plan or create a command route by rules/template. | Ask which command if target command is unclear. | Targeted/full by command scope. | This UCM, `planning/documentation/command-creation-workflow.md`, examples index and Tampermonkey projection workflow when in scope. | Command family/type/owner/UCM row/example/projection plan. Does not edit/create archive unless separately requested. |
 | `начни параллельную работу`, `start parallel work`, `parallel workspace` | Start or plan one staging-only parallel workspace. | Ask scope if no concrete agent/workstream target. | Targeted/full by workspace scope. | This UCM, `planning/documentation/parallel-work/README.md`, `planning/documentation/parallel-work/parallel-workflow.md`, workspace template. | Parallel workspace plan/package when requested. Do not edit canonical docs directly; do not create aggregate sync until a sync-candidate workspace exists. |
 
-## 3. OBS Planning-System Commands
+## 4. OBS Operational Command
 
 | Command / trigger | Meaning | Active-context behavior | Traversal/read mode | Sources / owner files | Expected output |
 |---|---|---|---|---|---|
-| `план сценария`, `scenario plan`, `workspace plan`, `шаблон планирования` | Create or update a Scenario Planning Workspace from user-provided input. | Fill only explicit user input unless the user asks to apply workflow or add suggestions. | Targeted read of planning-system owner docs. | `planning/areas/planning-system/README.md`, `planning/areas/planning-system/scenario-planning-workspace-workflow.md`, `planning/areas/planning-system/scenario-planning-workspace-template.md`. | Workspace with Current Target Scenario, Plan Core, Acceptance Criteria, Ideas Inbox, Idea Evaluation. Empty/unknown fields use `not provided`. |
-| `оцени идею`, `idea eval`, `оценка идеи` | Evaluate an idea against minimum/base/desired/max and base-protection risks. | Use the provided idea and current workspace if supplied. | Targeted read of planning-system workflow/template. | `planning/areas/planning-system/scenario-planning-workspace-workflow.md`. | Idea Evaluation card. AI assumptions/suggestions must be separated from user input. |
-| `AC план`, `acceptance plan`, `критерии готовности` | Convert explicit user goals into Acceptance Criteria. | Do not invent criteria beyond user input unless asked for suggestions. | Targeted read of planning-system workflow/template. | `planning/areas/planning-system/scenario-planning-workspace-template.md`. | AC table with criterion, verifiable result and status. Missing verifiable result is `not provided`. |
-| `команды планирования`, `planning commands` | Review or propose commands for the planning-system area. | Use command-creation workflow before treating a command as accepted. | Targeted/full by command impact. | This UCM, `planning/documentation/command-creation-workflow.md`, `planning/areas/planning-system/README.md`. | Proposed command family/type/owner/UCM rows. No Tampermonkey projection unless explicitly in scope. |
 | `конец`, `конец сессии`, `end session` | Add exactly one completed normal session to the existing active operational day. | Read `planning/dashboard/index.md`; require an existing `active_session_day`; require matching `active_day` and operational dates; ask only for missing final D/F/Points. | Targeted: index → active operational day → end-session workflow → Day File Template → Real Reward Work Loop Workflow. | `planning/areas/planning-system/end-session-command-workflow.md`, `planning/dashboard/index.md`, `-Planning/Templates/Day File Template.md`, `-Planning/Workflows/Real Reward Work Loop Workflow.md`. | When inputs and checks pass, produce a full replacement archive containing only the active operational-day file plus apply/diff commands. User pastes diff before commit. Do not commit or push. |
 
-## 4. Tampermonkey Projection Rule
+Dashboard planning itself is not a UCM command. Day/week/month/period/year/goal planning is entered in the Dashboard manually or transported through its single-version JSON import/export, generated repo Markdown round-trip and sync prompt.
+
+## 5. Tampermonkey Projection Rule
 
 If a command is projected into Tampermonkey, use:
 
@@ -61,7 +72,7 @@ Projection requirements:
 - button label is <englishName> · <label>.
 ```
 
-## 5. Source Notes
+## 6. Source Notes
 
 Sources:
   Format/process:
@@ -69,6 +80,6 @@ Sources:
     - `planning/documentation/command-creation-workflow.md`
     - `planning/documentation/reviewable-agent-output-and-commands-workflow.md`
   Content:
-    - User request to transfer reusable documentation layer into OBS and start planning workspace commands/templates.
+    - User-confirmed operational commands and Dashboard runtime boundaries.
   Not checked:
     - Full existing OBS vault taxonomy beyond GitHub spot checks.

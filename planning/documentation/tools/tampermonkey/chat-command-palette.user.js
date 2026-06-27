@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.6.6-projection-contract
+// @version      0.7.0-projection-contract
 // @description  Reusable projection-only draggable command helper for inserting structured command prompt bodies into ChatGPT.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -34,7 +34,7 @@ TM-OBS-REUSE source sync:
   const COMMAND_DEFINITIONS = [
     {
       id: 'replacement_archive.create',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'давай архив',
       description: 'output package',
       englishName: 'give arch',
@@ -51,7 +51,7 @@ TM-OBS-REUSE source sync:
     },
     {
       id: 'archive_source.use',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'арх',
       description: 'archive source',
       englishName: 'added arch',
@@ -66,13 +66,15 @@ TM-OBS-REUSE source sync:
     },
     {
       id: 'file_update.plan',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'план файл-обновление',
       description: 'file plan',
       englishName: 'plan file update',
       family: '`план файл-обновление` / `спланируй обновление файлов` / `спланируй архив`',
       reminders: [
         'Plan file/docs/code/archive update only.',
+        'Treat only explicit user statements and checked source facts as confirmed.',
+        'For important unknowns, show prioritized questions with one conservative fallback instruction.',
         'End with `План файл-обновление` in planned mode.',
         'Do not edit files.',
         'Do not create archive unless separately requested.'
@@ -81,7 +83,7 @@ TM-OBS-REUSE source sync:
     },
     {
       id: 'critical_review.apply',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'крит',
       description: 'critical review',
       englishName: 'crit',
@@ -95,7 +97,7 @@ TM-OBS-REUSE source sync:
     },
     {
       id: 'context_recheck.apply',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'обс',
       description: 'context recheck',
       englishName: 'chat rech',
@@ -109,7 +111,7 @@ TM-OBS-REUSE source sync:
     },
     {
       id: 'current_state.report',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'положняк',
       description: 'current state',
       englishName: 'polozh',
@@ -117,19 +119,22 @@ TM-OBS-REUSE source sync:
       reminders: [
         'Report current repo/chat/planning state.',
         'Separate known, local, unknown and not checked.',
+        'Do not present an unstated future plan as confirmed; show important open questions and conservative fallbacks.',
         'Do not edit or archive unless separately requested.'
       ],
       target: '<state target>'
     },
     {
       id: 'plan.now',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'планируй',
       description: 'plan now',
       englishName: 'plan now',
       family: '`планируй` / `распланируй` / `plan`',
       reminders: [
         'Plan the next concrete step now.',
+        'Treat only explicit user statements and checked source facts as confirmed.',
+        'For important unknowns, show prioritized questions with one conservative fallback instruction.',
         'State scope, boundary, evidence and next action.',
         'Do not edit files or create archive unless separately requested.'
       ],
@@ -137,7 +142,7 @@ TM-OBS-REUSE source sync:
     },
     {
       id: 'command.create',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'создай команду',
       description: 'new command',
       englishName: 'create command',
@@ -152,7 +157,7 @@ TM-OBS-REUSE source sync:
     },
     {
       id: 'parallel_workspace.start',
-      group: 'MVP-1',
+      group: 'Commands',
       label: 'начни параллельную работу',
       description: 'parallel workspace',
       englishName: 'start parallel work',
@@ -163,63 +168,6 @@ TM-OBS-REUSE source sync:
         'Do not create aggregate sync until a sync-candidate workspace exists.'
       ],
       target: '<parallel agent/workstream target>'
-    },
-    {
-      id: 'scenario_plan.workspace',
-      group: 'MVP-2',
-      label: 'план сценария',
-      description: 'scenario workspace',
-      englishName: 'scenario plan',
-      family: '`план сценария` / `scenario plan` / `workspace plan` / `шаблон планирования`',
-      reminders: [
-        'Use OBS planning-system owner docs.',
-        'Fill only explicit user input by default.',
-        'Unknown fields are `not provided`.',
-        'AI assumptions/suggestions must be separate.'
-      ],
-      target: '<scenario target and provided inputs>'
-    },
-    {
-      id: 'idea.evaluate',
-      group: 'MVP-2',
-      label: 'оцени идею',
-      description: 'idea eval',
-      englishName: 'idea eval',
-      family: '`оцени идею` / `idea eval` / `оценка идеи`',
-      reminders: [
-        'Evaluate the provided idea against Minimum/Base/Desired/Max.',
-        'Do not promote idea to Plan Core automatically.',
-        'Use `not provided` when evidence is missing.'
-      ],
-      target: '<idea to evaluate>'
-    },
-    {
-      id: 'acceptance.plan',
-      group: 'MVP-2',
-      label: 'AC план',
-      description: 'acceptance criteria',
-      englishName: 'acceptance plan',
-      family: '`AC план` / `acceptance plan` / `критерии готовности`',
-      reminders: [
-        'Convert explicit user goals into Acceptance Criteria.',
-        'Do not invent criteria unless user asks for suggestions.',
-        'AC must have a verifiable result or `not provided`.'
-      ],
-      target: '<goals to convert into AC>'
-    },
-    {
-      id: 'planning_commands.review',
-      group: 'MVP-2',
-      label: 'команды планирования',
-      description: 'planning commands',
-      englishName: 'planning commands',
-      family: '`команды планирования` / `planning commands`',
-      reminders: [
-        'Use command-creation workflow before treating a command as accepted.',
-        'No Tampermonkey projection unless explicitly in scope.',
-        'Do not edit files/create archive unless separately requested.'
-      ],
-      target: '<planning command target>'
     }
   ];
 
@@ -452,7 +400,7 @@ TM-OBS-REUSE source sync:
       return;
     }
 
-    ['MVP-1', 'MVP-2'].forEach((groupName) => {
+    ['Commands'].forEach((groupName) => {
       const commands = filtered.filter((command) => command.group === groupName);
       if (!commands.length) return;
 

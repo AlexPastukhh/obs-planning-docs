@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Local Planning Dashboard Viewer
 // @namespace    https://github.com/AlexPastukhh/obs/planning-dashboard
-// @version      0.8.2
-// @description  Local-first planning dashboard with normalized exclusive session-or-time planning, pending-session score, and Goal Maps.
+// @version      0.9.1
+// @description  Self-describing local-first planning dashboard with one JSON/import/repo round-trip schema, session-or-time planning, pending-session score, and Goal Maps.
 // @author       OBS planning-system
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -25,7 +25,45 @@
   const OUTBOX_KEY = 'obsPlanning:sessionOutbox:v1';
   const CONTEXT_KEY = 'obsPlanning:sessionContext:v1';
   const LOCAL_PLAN_KEY = 'obsPlanning:localDayPlan:v1';
-  const LOCAL_PLAN_SCHEMA = 'obs-local-day-plan-v1';
+  const PLANNING_SCHEMA_VERSION = 1;
+  const PLAN_LEVELS = ['minimum', 'base', 'desired', 'max'];
+  const PLAN_LEVEL_HELP = Object.freeze({
+    minimum: 'Smallest acceptable result that prevents collapse or loss of control.',
+    base: 'Stable positive result that should remain protected when wider work is attempted.',
+    desired: 'Normal target result for this scope when work goes as intended.',
+    max: 'Optional wider result; it must not silently replace or break Base.'
+  });
+  const PLANNING_SCOPE_DEFINITIONS = Object.freeze([
+    ['year', 'Year', 'Long direction and allocation across months; it does not own day/session detail.'],
+    ['period', 'Period', 'A thematic window spanning one or more calendar scopes; it does not replace Month.'],
+    ['month', 'Month', 'Calendar-month direction and allocation across weeks.'],
+    ['week', 'Week', 'Weekly direction and allocation across days.'],
+    ['day', 'Day', 'Concrete daily plan. Each item uses either a numbered session or a direct clock range.'],
+    ['goal', 'Goal', 'A result-oriented map that can span dates and links back to relevant scopes/evidence.']
+  ]);
+  const PLANNING_MODEL_FIELDS = Object.freeze({
+    store: ['schemaVersion', 'updatedAt', 'days', 'goalMaps'],
+    day: ['key', 'date', 'planningPath', 'dayNote', 'localPlanItems', 'localSessions', 'scopeUnits', 'planItems', 'legacyLinks', 'goalMapIds', 'updatedAt'],
+    localPlanItem: ['id', 'label', 'level', 'text', 'order', 'createdAt', 'updatedAt'],
+    localSession: ['id', 'label', 'title', 'expectedResult', 'note', 'order', 'createdAt', 'updatedAt'],
+    planItemState: ['executionMode', 'sessionId', 'timeStart', 'timeEnd', 'done', 'note', 'evidence', 'goalMapId', 'sourceItemId', 'sourceLevel', 'sourceItemExplicitId', 'sourceText', 'sourceTextHash', 'updatedAt'],
+    scopeUnitState: ['targetItemKey', 'targetItemId', 'targetItemLevel', 'targetItemExplicitId', 'maxTime', 'desiredTime', 'baseTime', 'minimumTime', 'note', 'sourceUnitId', 'sourceUnitExplicitId', 'sourceUnitText', 'sourceUnitTextHash', 'updatedAt'],
+    goalMap: ['id', 'title', 'status', 'sourceDay', 'sourcePath', 'sourceItemId', 'sourceItemKey', 'sourceLevel', 'sourceItemExplicitId', 'goal', 'why', 'success', 'currentState', 'unknowns', 'approaches', 'steps', 'checks', 'risks', 'resultsEvidence', 'createdAt', 'updatedAt']
+  });
+  const REPOSITORY_DATA_BEGIN = '<!-- OBS-PLANNING-DATA:BEGIN -->';
+  const REPOSITORY_DATA_END = '<!-- OBS-PLANNING-DATA:END -->';
+  const GOAL_MAP_FIELD_DEFINITIONS = [
+    ['goal', 'Goal', 'The concrete result or change this map is about.', true],
+    ['why', 'Why', 'Why the result matters or what problem it solves.', false],
+    ['success', 'Success', 'What observable state means the goal is successful.', false],
+    ['currentState', 'Current State', 'What is true now, before the next steps.', false],
+    ['unknowns', 'Unknowns', 'Important missing facts or decisions that still need clarification.', false],
+    ['approaches', 'Approaches', 'Possible ways to reach the goal; alternatives may remain open.', false],
+    ['steps', 'Steps', 'The current ordered or grouped actions.', true],
+    ['checks', 'Checks', 'How progress or completion will be checked.', false],
+    ['risks', 'Risks / Constraints', 'Known risks, limits, dependencies or blockers.', false],
+    ['resultsEvidence', 'Results / Evidence', 'Completed results, links, observations or other evidence.', true]
+  ];
   let localPlanningAssignmentMigrationDone = false;
   let localPlanningAssignmentMigrationFallback = null;
   const CACHE_DB_NAME = 'obsPlanningCache';
@@ -1157,6 +1195,7 @@
     }
     .obs-pd-plan-item-editor { display: grid; gap: 6px; padding: 0 7px 7px; }
     .obs-pd-field-label { display: block; color: #9fb6d4; font-size: 10px; }
+    .obs-pd-field-help { display: block; margin: 2px 0 4px; color: #7186a3; font-size: 9px; line-height: 1.3; font-weight: 400; }
     .obs-pd-local-textarea,
     .obs-pd-local-select,
     .obs-pd-local-time {
@@ -1419,9 +1458,53 @@
       : { schema: 'obs-session-outbox-v1', days: {} };
   }
 
+  function planningContract() {
+    return {
+      schemaVersion: PLANNING_SCHEMA_VERSION,
+      concepts: ['scope', 'planItems', 'sessions', 'timeAssignments', 'notes', 'completion', 'evidence', 'goalMaps', 'links'],
+      storageKey: LOCAL_PLAN_KEY,
+      sourceBoundary: {
+        localBrowserState: 'editable draft using this schema',
+        exportJson: 'portable representation using this schema',
+        repositoryMarkdown: 'durable reviewed representation using this schema and the embedded round-trip marker',
+        automaticRepositoryWrites: false
+      },
+      scopes: PLANNING_SCOPE_DEFINITIONS.map(([key, label, help]) => ({ key, label, help })),
+      planLevels: PLAN_LEVELS.map((key) => ({ key, help: PLAN_LEVEL_HELP[key] })),
+      modelFields: Object.fromEntries(Object.entries(PLANNING_MODEL_FIELDS).map(([key, fields]) => [key, [...fields]])),
+      dayPlanning: {
+        levels: [...PLAN_LEVELS],
+        itemRule: 'Each plan item belongs to one level and may use exactly one execution route.',
+        executionRoutes: {
+          sessions: 'Assign the item to one numbered local session. One session may contain several items.',
+          hours: 'Assign the item directly to one explicit start/end clock range.',
+          unassigned: 'Keep the item without a hidden route when neither route is selected.'
+        },
+        completion: 'Local completion, note and evidence remain local until reviewed synchronization.'
+      },
+      goalMap: {
+        fields: GOAL_MAP_FIELD_DEFINITIONS.map(([key, label, help]) => ({ key, label, help })),
+        markdownHeadings: GOAL_MAP_FIELD_DEFINITIONS.map(([, label]) => label)
+      },
+      repositoryRoundTrip: {
+        markerBegin: REPOSITORY_DATA_BEGIN,
+        markerEnd: REPOSITORY_DATA_END,
+        serializer: 'Dashboard-generated Day and Goal Markdown embed the same schema payload.',
+        parser: 'Import repo Markdown reads the embedded payload back into the same local model.'
+      },
+      syncRules: [
+        'Use only explicit user data, exported local data and checked repository source facts.',
+        'Do not invent goals, deadlines, completion, evidence or acceptance criteria.',
+        'Update the smallest relevant repository file and preserve unrelated content.',
+        'Keep planning-day and operational session-day responsibilities separate.',
+        'Do not commit or push; return reviewable replacements and diff instructions when an archive is requested.'
+      ]
+    };
+  }
+
   function emptyLocalPlanningStore() {
     return {
-      schema: LOCAL_PLAN_SCHEMA,
+      schemaVersion: PLANNING_SCHEMA_VERSION,
       updatedAt: null,
       days: {},
       goalMaps: {}
@@ -1431,23 +1514,34 @@
   function readLocalPlanningStore() {
     const value = localPlanningAssignmentMigrationFallback
       || readSharedJson(LOCAL_PLAN_KEY, emptyLocalPlanningStore());
-    if (!value || value.schema !== LOCAL_PLAN_SCHEMA || typeof value.days !== 'object') {
+    const isCurrent = value?.schemaVersion === PLANNING_SCHEMA_VERSION;
+    const isLegacy = value?.schema === 'obs-local-day-plan-v1';
+    if (!value || (!isCurrent && !isLegacy) || typeof value.days !== 'object') {
       return emptyLocalPlanningStore();
+    }
+    let schemaChanged = false;
+    if (isLegacy) {
+      delete value.schema;
+      value.schemaVersion = PLANNING_SCHEMA_VERSION;
+      schemaChanged = true;
     }
     if (!value.goalMaps || typeof value.goalMaps !== 'object') value.goalMaps = {};
     if (!localPlanningAssignmentMigrationDone) {
-      const changed = normalizeLocalPlanningStoreAssignments(value);
+      const changed = normalizeLocalPlanningStoreAssignments(value) || schemaChanged;
       localPlanningAssignmentMigrationDone = true;
       if (changed && !writeLocalPlanningStore(value)) {
         localPlanningAssignmentMigrationFallback = value;
-        console.warn('OBS local planning assignment migration could not be persisted.');
+        console.warn('OBS local planning schema/assignment migration could not be persisted.');
       }
+    } else if (schemaChanged && !writeLocalPlanningStore(value)) {
+      localPlanningAssignmentMigrationFallback = value;
     }
     return value;
   }
 
   function writeLocalPlanningStore(store) {
-    store.schema = LOCAL_PLAN_SCHEMA;
+    store.schemaVersion = PLANNING_SCHEMA_VERSION;
+    delete store.schema;
     store.updatedAt = new Date().toISOString();
     const saved = writeSharedJson(LOCAL_PLAN_KEY, store);
     if (saved) localPlanningAssignmentMigrationFallback = null;
@@ -2036,6 +2130,7 @@ Dashboard: ${file.path}`
       previousYear: normalizeOptionalPath(parseScalar(block, 'previous_year')),
       year: normalizeOptionalPath(parseScalar(block, 'active_year')),
       period: normalizeOptionalPath(parseScalar(block, 'active_period')),
+      month: normalizeOptionalPath(parseScalar(block, 'active_month')),
       week: normalizeOptionalPath(parseScalar(block, 'active_week')),
       day: normalizeOptionalPath(parseScalar(block, 'active_day')),
       sessionDay: normalizeOptionalPath(parseScalar(block, 'active_session_day')),
@@ -3297,6 +3392,7 @@ Dashboard: ${file.path}`
       onclick: () => createLocalPlanItem(file, level.key)
     }));
     block.appendChild(head);
+    block.appendChild(el('div', { class: 'obs-pd-workspace-hint', text: PLAN_LEVEL_HELP[level.key] || '' }));
     const items = el('div', { class: 'obs-pd-plan-items' });
     if (!level.items.length) items.appendChild(el('div', { class: 'obs-pd-empty', text: 'not provided' }));
     level.items.forEach((item) => items.appendChild(renderPlanItem(file, item, localDay, workspace)));
@@ -4627,6 +4723,7 @@ Dashboard: ${file.path}`
           previousYear: paths.previousYear,
           year: paths.year,
           period: paths.period,
+          month: paths.month,
           week: paths.week,
           day: paths.day,
           sessionDay: paths.sessionDay,
@@ -4751,6 +4848,29 @@ Check:
     }));
     drawer.appendChild(head);
 
+    const guideSection = el('section', { class: 'obs-pd-tools-section' });
+    guideSection.appendChild(el('h3', { text: 'Planning guide' }));
+    [
+      'Repository Markdown is durable source of truth; Dashboard edits are local drafts until reviewed sync.',
+      'One schema version is used for local storage, JSON export/import and Dashboard-generated repo Markdown.',
+      'Each item uses exactly one route: a numbered session or a direct clock range.',
+      'One numbered session may contain several items.',
+      'JSON import replaces only the imported local day draft and merges explicitly included Goal Maps after confirmation.',
+      'Dashboard-generated repo Markdown contains a round-trip data marker and can be imported back without guessing.',
+      'Use Copy sync prompt or exported JSON for ChatGPT-assisted repository synchronization.'
+    ].forEach((text) => guideSection.appendChild(el('div', { class: 'obs-pd-tools-row', text })));
+    guideSection.appendChild(el('h3', { text: 'Plan levels' }));
+    PLAN_LEVELS.forEach((key) => guideSection.appendChild(el('div', {
+      class: 'obs-pd-tools-row',
+      text: `${key === 'max' ? 'Max / Very Wide' : key[0].toUpperCase() + key.slice(1)}: ${PLAN_LEVEL_HELP[key]}`
+    })));
+    guideSection.appendChild(el('h3', { text: 'Scopes' }));
+    PLANNING_SCOPE_DEFINITIONS.forEach(([, label, help]) => guideSection.appendChild(el('div', {
+      class: 'obs-pd-tools-row',
+      text: `${label}: ${help}`
+    })));
+    drawer.appendChild(guideSection);
+
     const statusSection = el('section', { class: 'obs-pd-tools-section' });
     statusSection.appendChild(el('h3', { text: 'Status & diagnostics' }));
     const modeLabel = state.sourceMode === 'live' ? 'Live localhost'
@@ -4805,6 +4925,9 @@ Check:
     localPlanSection.appendChild(el('div', { class: 'obs-pd-tools-actions' }, [
       toolsButton('Copy local plan', copyLocalPlanningJson),
       toolsButton('Download local plan', downloadLocalPlanningJson),
+      toolsButton('Import local plan', importLocalPlanningJson),
+      toolsButton('Copy repo Markdown', copyCurrentDayRepositoryMarkdown),
+      toolsButton('Import repo Markdown', importRepositoryPlanningMarkdown),
       toolsButton('Open Goal Maps', () => {
         state.toolsOpen = false;
         state.activeTab = 'goalMaps';
@@ -4816,7 +4939,7 @@ Check:
     const actions = el('section', { class: 'obs-pd-tools-section' });
     actions.appendChild(el('h3', { text: 'Actions' }));
     actions.appendChild(el('div', { class: 'obs-pd-tools-actions' }, [
-      toolsButton('Copy AI prompt', copyUpdatePrompt),
+      toolsButton('Copy sync prompt', copyUpdatePrompt),
       toolsButton('Copy pending', copyPendingJson),
       toolsButton('Download pending', downloadPendingJson),
       toolsButton(state.rawMode ? 'Formatted' : 'Raw', () => { state.rawMode = !state.rawMode; state.toolsOpen = false; render(); }),
@@ -4860,27 +4983,266 @@ Check:
     return store.goalMaps[goalMapId];
   }
 
-  function localGoalMapMarkdown(map) {
-    const section = (title, value) => `\n## ${title}\n\n${String(value || 'not provided').trim() || 'not provided'}\n`;
+  function clonePlanningValue(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function planningRepositoryEnvelope(kind, data) {
+    return {
+      schemaVersion: PLANNING_SCHEMA_VERSION,
+      kind,
+      generatedAt: new Date().toISOString(),
+      data: clonePlanningValue(data)
+    };
+  }
+
+  function repositoryDataBlock(payload) {
     return [
-      `# ${map.title || `Goal Map — ${map.sourceItemId || map.id}`}`,
+      REPOSITORY_DATA_BEGIN,
+      '```json',
+      JSON.stringify(payload, null, 2),
+      '```',
+      REPOSITORY_DATA_END
+    ].join('\n');
+  }
+
+  function markdownValue(value) {
+    const text = String(value || '').trim();
+    return text || 'not provided';
+  }
+
+  function indentedMarkdown(value, prefix = '  ') {
+    return markdownValue(value).split(/\r?\n/).map((line) => `${prefix}${line}`).join('\n');
+  }
+
+  function executionSummary(itemState) {
+    if (itemState?.executionMode === 'sessions') return `session:${itemState.sessionId || 'not provided'}`;
+    if (itemState?.executionMode === 'hours') return `time:${itemState.timeStart || '??:??'}-${itemState.timeEnd || '??:??'}`;
+    return 'unassigned';
+  }
+
+  function serializeDayPlanningMarkdown(day, goalMaps = []) {
+    const safeDay = clonePlanningValue(day || {});
+    const safeMaps = clonePlanningValue(goalMaps || []);
+    const payload = planningRepositoryEnvelope('day', { day: safeDay, goalMaps: safeMaps });
+    const lines = [
+      `# Planning Day — ${safeDay.date || 'undated'}`,
       '',
-      `Status: ${map.status || 'local draft'}`,
-      `Source Day: ${map.sourceDay || 'not provided'}`,
-      `Source Path: ${map.sourcePath || 'not provided'}`,
-      `Source Item: ${map.sourceItemId || 'not provided'}`,
-      `Source Level: ${map.sourceLevel || 'not provided'}`,
-      section('Goal', map.goal),
-      section('Why', map.why),
-      section('Success', map.success),
-      section('Current State', map.currentState),
-      section('Unknowns', map.unknowns),
-      section('Approaches', map.approaches),
-      section('Steps', map.steps),
-      section('Checks', map.checks),
-      section('Risks / Constraints', map.risks),
-      section('Results / Evidence', map.resultsEvidence)
+      'Status: local draft export',
+      `Planning-Schema-Version: ${PLANNING_SCHEMA_VERSION}`,
+      'Scope-Type: day',
+      `Scope-Anchor: ${safeDay.date || 'undated'}`,
+      '',
+      repositoryDataBlock(payload),
+      '',
+      '## Planning Note',
+      '',
+      markdownValue(safeDay.dayNote),
+      '',
+      '## Plan Core'
+    ];
+
+    const localItems = Object.values(safeDay.localPlanItems || {})
+      .filter((item) => item && item.id && PLAN_LEVELS.includes(item.level))
+      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+    const localKeys = new Set(localItems.map((item) => `local-plan:${item.id}`));
+    const repositoryItems = Object.entries(safeDay.planItems || {})
+      .filter(([key, item]) => !localKeys.has(key) && item?.sourceText && PLAN_LEVELS.includes(item.sourceLevel))
+      .map(([key, item]) => ({
+        id: item.sourceItemId || key,
+        label: item.sourceItemId || key,
+        level: item.sourceLevel,
+        text: item.sourceText,
+        stateKey: key,
+        order: Number.MAX_SAFE_INTEGER
+      }));
+
+    for (const level of PLAN_LEVELS) {
+      const label = level === 'max' ? 'Max / Very Wide' : level[0].toUpperCase() + level.slice(1);
+      lines.push('', `### ${label}`, '', `> ${PLAN_LEVEL_HELP[level]}`);
+      const levelItems = [
+        ...localItems.filter((item) => item.level === level).map((item) => ({ ...item, stateKey: `local-plan:${item.id}` })),
+        ...repositoryItems.filter((item) => item.level === level)
+      ];
+      if (!levelItems.length) {
+        lines.push('', 'not provided');
+        continue;
+      }
+      for (const item of levelItems) {
+        const itemState = safeDay.planItems?.[item.stateKey] || {};
+        lines.push('', `- [${itemState.done ? 'x' : ' '}] ${item.label || item.id}: ${markdownValue(item.text)}`);
+        lines.push(`  - execution: ${executionSummary(itemState)}`);
+        if (String(itemState.note || '').trim()) lines.push('  - note:', indentedMarkdown(itemState.note, '    '));
+        if (String(itemState.evidence || '').trim()) lines.push('  - evidence:', indentedMarkdown(itemState.evidence, '    '));
+      }
+    }
+
+    lines.push('', '## Numbered Sessions', '');
+    const sessions = Object.values(safeDay.localSessions || {})
+      .filter((session) => session?.id)
+      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+    if (!sessions.length) lines.push('not provided');
+    for (const session of sessions) {
+      lines.push(`- ${session.label || session.id}: ${markdownValue(session.title)}`);
+      if (String(session.expectedResult || '').trim()) lines.push('  - expected result:', indentedMarkdown(session.expectedResult, '    '));
+      if (String(session.note || '').trim()) lines.push('  - note:', indentedMarkdown(session.note, '    '));
+    }
+
+    lines.push('', '## Scope Unit Local State', '');
+    const units = Object.values(safeDay.scopeUnits || {});
+    if (!units.length) lines.push('not provided');
+    for (const unit of units) {
+      lines.push(`- ${unit.sourceUnitId || 'unit'}: ${markdownValue(unit.sourceUnitText)}`);
+      if (unit.targetItemId) lines.push(`  - target item: ${unit.targetItemId}`);
+      for (const key of ['minimumTime', 'baseTime', 'desiredTime', 'maxTime']) {
+        if (unit[key]) lines.push(`  - ${key}: ${unit[key]}`);
+      }
+      if (String(unit.note || '').trim()) lines.push('  - note:', indentedMarkdown(unit.note, '    '));
+    }
+
+    lines.push('', '## Goal Maps', '');
+    if (!safeMaps.length) lines.push('not provided');
+    for (const map of safeMaps) lines.push(`- ${map.id}: ${map.goal || map.title || 'Goal Map'}`);
+    return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+  }
+
+  function serializeGoalMapMarkdown(map) {
+    const safeMap = clonePlanningValue(map || {});
+    const payload = planningRepositoryEnvelope('goal-map', { goalMap: safeMap });
+    const section = (title, value) => `\n## ${title}\n\n${markdownValue(value)}\n`;
+    return [
+      `# ${safeMap.title || `Goal Map — ${safeMap.sourceItemId || safeMap.id || 'untitled'}`}`,
+      '',
+      `Status: ${safeMap.status || 'local draft'}`,
+      `Planning-Schema-Version: ${PLANNING_SCHEMA_VERSION}`,
+      'Scope-Type: goal',
+      `Scope-Anchor: ${safeMap.id || 'not provided'}`,
+      `Source Day: ${safeMap.sourceDay || 'not provided'}`,
+      `Source Path: ${safeMap.sourcePath || 'not provided'}`,
+      `Source Item: ${safeMap.sourceItemId || 'not provided'}`,
+      `Source Level: ${safeMap.sourceLevel || 'not provided'}`,
+      '',
+      repositoryDataBlock(payload),
+      ...GOAL_MAP_FIELD_DEFINITIONS.map(([field, label]) => section(label, safeMap[field]))
     ].join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+  }
+
+  function localGoalMapMarkdown(map) {
+    return serializeGoalMapMarkdown(map);
+  }
+
+  function parsePlanningRepositoryDocument(markdown) {
+    const text = String(markdown || '');
+    const begin = text.indexOf(REPOSITORY_DATA_BEGIN);
+    const end = text.indexOf(REPOSITORY_DATA_END);
+    if (begin < 0 || end <= begin) {
+      throw new Error('Repository Markdown does not contain the Dashboard round-trip marker.');
+    }
+    const marked = text.slice(begin + REPOSITORY_DATA_BEGIN.length, end);
+    const match = marked.match(/```json\s*([\s\S]*?)\s*```/i);
+    if (!match) throw new Error('Repository planning marker does not contain JSON.');
+    const payload = JSON.parse(match[1]);
+    if (payload?.schemaVersion !== PLANNING_SCHEMA_VERSION) {
+      throw new Error(`Unsupported planning schema version: ${payload?.schemaVersion ?? 'missing'}.`);
+    }
+    if (!['day', 'goal-map'].includes(payload.kind) || !payload.data || typeof payload.data !== 'object') {
+      throw new Error('Unsupported repository planning payload kind.');
+    }
+    return payload;
+  }
+
+  function normalizePlanningImportPayload(raw) {
+    if (!raw || typeof raw !== 'object') throw new Error('Planning import must be a JSON object.');
+    const legacy = raw.schema === 'obs-local-day-plan-v1';
+    const version = raw.schemaVersion ?? raw.contract?.schemaVersion ?? (legacy ? PLANNING_SCHEMA_VERSION : null);
+    if (version !== PLANNING_SCHEMA_VERSION) {
+      throw new Error(`Unsupported planning schema version: ${version ?? 'missing'}.`);
+    }
+    if (raw.kind === 'day') {
+      if (!raw.data?.day || typeof raw.data.day !== 'object') throw new Error('Day repository payload is missing day data.');
+      return { day: clonePlanningValue(raw.data.day), goalMaps: clonePlanningValue(raw.data.goalMaps || []) };
+    }
+    if (raw.kind === 'goal-map') {
+      if (!raw.data?.goalMap || typeof raw.data.goalMap !== 'object') throw new Error('Goal Map repository payload is missing map data.');
+      return { day: null, goalMaps: [clonePlanningValue(raw.data.goalMap)] };
+    }
+    if (raw.day && typeof raw.day === 'object') {
+      return { day: clonePlanningValue(raw.day), goalMaps: clonePlanningValue(raw.goalMaps || []) };
+    }
+    if (Array.isArray(raw.goalMaps)) {
+      return { day: null, goalMaps: clonePlanningValue(raw.goalMaps) };
+    }
+    throw new Error('Planning payload contains neither a day nor Goal Maps.');
+  }
+
+  function normalizeImportedDay(day) {
+    const normalized = clonePlanningValue(day || {});
+    for (const field of ['localPlanItems', 'localSessions', 'scopeUnits', 'planItems', 'legacyLinks']) {
+      if (!normalized[field] || typeof normalized[field] !== 'object' || Array.isArray(normalized[field])) normalized[field] = {};
+    }
+    if (!Array.isArray(normalized.goalMapIds)) normalized.goalMapIds = [];
+    normalized.date = String(normalized.date || 'undated');
+    normalized.planningPath = String(normalized.planningPath || '');
+    normalized.key = String(normalized.key || `${normalized.date}::${normalized.planningPath || 'no-path'}`);
+    normalizeLocalPlanningStoreAssignments({ days: { [normalized.key]: normalized } });
+    return normalized;
+  }
+
+  function applyPlanningImport(raw, sourceLabel) {
+    const imported = normalizePlanningImportPayload(raw);
+    const maps = (imported.goalMaps || []).filter((map) => map && typeof map === 'object' && map.id);
+    const dayLabel = imported.day?.date || 'no day';
+    if (!confirm(`Import planning data from ${sourceLabel}?\nDay: ${dayLabel}\nGoal Maps: ${maps.length}\n\nThe imported local day draft will replace the draft with the same key.`)) return false;
+    const store = readLocalPlanningStore();
+    if (imported.day) {
+      const day = normalizeImportedDay(imported.day);
+      const activeIdentity = planningDayIdentity(state.files.day);
+      if (day.date === activeIdentity.date && (!day.planningPath || day.planningPath === activeIdentity.path)) {
+        day.planningPath = activeIdentity.path;
+        day.key = activeIdentity.key;
+      }
+      store.days[day.key] = day;
+    }
+    for (const map of maps) store.goalMaps[map.id] = map;
+    if (!writeLocalPlanningStore(store)) throw new Error('Could not persist imported planning data.');
+    render();
+    alert(`Planning import completed. Day: ${dayLabel}. Goal Maps: ${maps.length}.`);
+    return true;
+  }
+
+  function choosePlanningFile(accept, handler) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = accept;
+    input.style.display = 'none';
+    document.body.appendChild(input);
+    input.addEventListener('change', async () => {
+      const file = input.files?.[0];
+      try {
+        if (!file) return;
+        await handler(await file.text(), file.name);
+      } catch (error) {
+        console.warn('OBS planning import failed', error);
+        alert(error?.message || 'Planning import failed.');
+      } finally {
+        input.remove();
+      }
+    }, { once: true });
+    input.click();
+  }
+
+  function importLocalPlanningJson() {
+    choosePlanningFile('.json,application/json', async (text, name) => applyPlanningImport(JSON.parse(text), name));
+  }
+
+  function importRepositoryPlanningMarkdown() {
+    choosePlanningFile('.md,.markdown,text/markdown,text/plain', async (text, name) => applyPlanningImport(parsePlanningRepositoryDocument(text), name));
+  }
+
+  function copyCurrentDayRepositoryMarkdown() {
+    const payload = currentLocalPlanningExport();
+    if (!payload) return alert('No local planning data for the active day.');
+    copyText(payload.repositoryDocuments.planningDay.markdown);
   }
 
   function deleteLocalGoalMap(goalMapId) {
@@ -4914,19 +5276,6 @@ Check:
       return;
     }
 
-    const fieldDefinitions = [
-      ['goal', 'Goal', true],
-      ['why', 'Why', false],
-      ['success', 'Success', false],
-      ['currentState', 'Current State', false],
-      ['unknowns', 'Unknowns', false],
-      ['approaches', 'Approaches', false],
-      ['steps', 'Steps', true],
-      ['checks', 'Checks', false],
-      ['risks', 'Risks / Constraints', false],
-      ['resultsEvidence', 'Results / Evidence', true]
-    ];
-
     maps.forEach((map) => {
       const details = el('details', {
         class: 'obs-pd-local-goal-map',
@@ -4958,7 +5307,7 @@ Check:
       mapBody.appendChild(el('label', { class: 'obs-pd-field-label', text: 'Status' }, [status]));
 
       const grid = el('div', { class: 'obs-pd-goal-map-grid' });
-      fieldDefinitions.forEach(([field, label, wide]) => {
+      GOAL_MAP_FIELD_DEFINITIONS.forEach(([field, label, help, wide]) => {
         const input = el('textarea', {
           class: 'obs-pd-local-textarea',
           placeholder: `${label}…`,
@@ -4966,14 +5315,17 @@ Check:
         });
         input.value = map[field] || '';
         bindDebouncedLocalInput(input, (value) => updateLocalGoalMap(map.id, { [field]: value }));
-        grid.appendChild(el('label', { class: 'obs-pd-field-label', 'data-wide': String(Boolean(wide)), text: label }, [input]));
+        grid.appendChild(el('label', { class: 'obs-pd-field-label', 'data-wide': String(Boolean(wide)), text: label }, [
+          el('span', { class: 'obs-pd-field-help', text: help }),
+          input
+        ]));
       });
       mapBody.appendChild(grid);
 
       const actions = el('div', { class: 'obs-pd-item-actions' });
       actions.appendChild(el('button', {
         class: 'obs-pd-btn',
-        text: 'Copy as Markdown',
+        text: 'Copy repo Markdown',
         onclick: () => copyText(localGoalMapMarkdown(readLocalPlanningStore().goalMaps[map.id] || map))
       }));
       actions.appendChild(el('button', {
@@ -5001,10 +5353,28 @@ Check:
     if (!day) return null;
     const goalMaps = (day.goalMapIds || []).map((id) => store.goalMaps[id]).filter(Boolean);
     return {
-      schema: LOCAL_PLAN_SCHEMA,
+      schemaVersion: PLANNING_SCHEMA_VERSION,
+      kind: 'planning-export',
+      contract: planningContract(),
       exportedAt: new Date().toISOString(),
-      day,
-      goalMaps
+      repositoryTargets: {
+        planningDay: day.planningPath || null,
+        operationalDay: state.files.sessionDay?.path || null,
+        goalMaps: goalMaps.map((map) => ({ id: map.id, sourcePath: map.sourcePath || null }))
+      },
+      day: clonePlanningValue(day),
+      goalMaps: clonePlanningValue(goalMaps),
+      repositoryDocuments: {
+        planningDay: {
+          path: day.planningPath || null,
+          markdown: serializeDayPlanningMarkdown(day, goalMaps)
+        },
+        goalMaps: goalMaps.map((map) => ({
+          id: map.id,
+          path: map.sourcePath || null,
+          markdown: serializeGoalMapMarkdown(map)
+        }))
+      }
     };
   }
 
@@ -5032,6 +5402,7 @@ Check:
       ['previousYear', 'Previous Year', 'file'],
       ['year', 'Year', 'file'],
       ['period', 'Period', 'file'],
+      ['month', 'Month', 'file'],
       ['week', 'Week', 'file'],
       ['day', 'Day', 'day'],
       ['goalMaps', 'Goal Maps', 'group'],
@@ -5130,33 +5501,51 @@ Check:
 
   function copyUpdatePrompt() {
     const current = activeFileOrGroupText();
-    if (!current) return;
-
-    const dayRule = state.activeTab === 'day'
-      ? [
-          'The planning-day file and operational session-day file have separate ownership.',
-          'Do not copy or invent D/F, support, penalties or debt inside the planning-day file.',
-          'Preserve every referenced goal when a session worked on several goals.'
-        ]
-      : [];
+    const localPayload = currentLocalPlanningExport();
+    const localGoalPayload = state.activeTab === 'goalMaps'
+      ? {
+          schemaVersion: PLANNING_SCHEMA_VERSION,
+          kind: 'planning-export',
+          contract: planningContract(),
+          goalMaps: clonePlanningValue(localGoalMaps()),
+          repositoryDocuments: {
+            goalMaps: localGoalMaps().map((map) => ({ id: map.id, path: map.sourcePath || null, markdown: serializeGoalMapMarkdown(map) }))
+          }
+        }
+      : null;
+    const payload = localGoalPayload || localPayload;
+    if (!current && !payload) return;
 
     const prompt = [
-      '[PLANNING_DASHBOARD_UPDATE]',
-      'Update the supplied local planning source content using its owner templates and workflows.',
-      'Preserve source-of-truth boundaries.',
-      'Do not invent user facts.',
-      'Use not provided for unknown planning fields.',
-      'Mark unclear work explicitly instead of treating it as progress.',
-      ...dayRule,
+      '[PLANNING_DASHBOARD_SYNC]',
+      'Prepare a reviewable repository synchronization from the supplied Dashboard data.',
+      'The embedded contract is authoritative for this Dashboard payload; do not require external planning templates or planning commands.',
+      'Use only explicit local data and checked repository source facts.',
+      'Do not invent goals, deadlines, completion, evidence or acceptance criteria.',
+      'Preserve unrelated repository content and update only the smallest relevant files.',
+      'Keep planning-day data separate from operational D/F/Points/session-ledger data.',
+      'Do not commit or push.',
       '',
-      'current_content:',
-      '```markdown',
-      current,
+      'dashboard_contract:',
+      '```json',
+      JSON.stringify(planningContract(), null, 2),
       '```',
-      '[/PLANNING_DASHBOARD_UPDATE]'
+      '',
+      'local_planning_json:',
+      '```json',
+      JSON.stringify(payload || null, null, 2),
+      '```',
+      '',
+      'current_repository_content:',
+      '```markdown',
+      current || 'not supplied',
+      '```',
+      '',
+      'Return the changed file list, full replacement content for each changed file, checks, and the next review action.',
+      '[/PLANNING_DASHBOARD_SYNC]'
     ].join('\n');
 
-    navigator.clipboard.writeText(prompt).catch(() => {});
+    copyText(prompt);
   }
 
   function openCurrentSource() {

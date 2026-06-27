@@ -491,7 +491,7 @@ Dashboard Index: planning/dashboard/index.md
 Dashboard Viewer: planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
 Pattern Capture: local Tampermonkey userscript; canonical repository path not yet created
 End Session Workflow: planning/areas/planning-system/end-session-command-workflow.md
-Goal Map Template: planning/areas/planning-system/local-goal-map-template.md
+Dashboard Planning Contract / JSON / Repo Markdown Round-Trip: planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
 Operational Day Template: -Planning/Templates/Day File Template.md
 Deferred Work: planning/dashboard/backlog/deferred-work.md
 Deferred Ideas: planning/dashboard/backlog/deferred-ideas.md

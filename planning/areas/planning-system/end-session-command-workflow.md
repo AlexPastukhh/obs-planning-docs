@@ -1,7 +1,7 @@
 # End Session Command Workflow
 
 Status: active OBS area workflow
-Doc version: v0.1.0
+Doc version: v0.1.1-runtime-cleanup
 Scope: exact behavior of `конец` / `конец сессии` / `end session` for adding one normal Finished Session to an existing active operational day.
 
 ## 1. Purpose
@@ -27,9 +27,6 @@ This workflow does not commit or push.
 ```text
 Root command route:
   planning/planning-use-case-map.md
-
-Local command index:
-  planning/areas/planning-system/planning-commands.md
 
 Active source registry:
   planning/dashboard/index.md

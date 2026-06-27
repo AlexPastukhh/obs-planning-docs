@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.8.2
+Doc version: v0.9.1
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -12,13 +12,14 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   Its floating launcher hides while Dashboard is open; Alt+F2 and Tools -> Commands remain available.
 
 planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
-  repository-read-only, local-editable dashboard projection; opens on Day -> Plan by default,
+  repository-read-only, local-editable and self-describing dashboard runtime; opens on Day -> Plan by default,
   uses a compact planning-first shell with Plan / Sessions / Summary subtabs,
   keeps repository Plan Core visible while allowing multiple local plan items,
   separates numbered-session planning from direct clock-time planning per item,
   stores local sessions, assignments, notes, completion/evidence and detailed local Goal Maps,
+  embeds one schema version in UI help, local storage, JSON export/import, Dashboard-generated repo Markdown and the self-contained repo-sync prompt,
   moves diagnostics, exports, Raw, settings and local sync into a closed-by-default Tools drawer,
-  keeps a source-bound IndexedDB snapshot, displays completed pending-sync sessions and exports reviewed JSON.
+  keeps a source-bound IndexedDB snapshot, displays completed pending-sync sessions, imports/exports reviewed JSON and round-trips Dashboard-generated repo Markdown.
 
 planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   local D/F pattern capture with a docked launcher above Planning/Commands,
@@ -38,6 +39,7 @@ Tampermonkey scripts are browser-side capture/projection tools.
 They do not write repo files, run git, commit or push.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
 Tampermonkey command projection does not define command meaning.
+Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by UCM commands.
 ```
 
 Command semantics must come from:
@@ -76,6 +78,11 @@ Rules:
 - Only completed pending sessions are written to the shared outbox.
 - Dashboard snapshot, pending outbox and local day planning remain separate.
 - Local day planning stores local plan-item definitions, numbered sessions, per-item session-or-time assignments, optional Scope Unit notes/deadlines, completion/evidence and local Goal Map drafts; it never writes repository files automatically.
+- Local planning JSON exports/imports use `PLANNING_SCHEMA_VERSION = 1`; legacy `obs-local-day-plan-v1` state is migrated in place on read.
+- The same contract lists actual day/item/session/assignment/note/completion/evidence/Goal Map fields and scope/level help.
+- Dashboard-generated Day and Goal Markdown embed a round-trip JSON marker; Import repo Markdown reads that representation back without guessing.
+- Local planning JSON exports include field help, repository targets, generated repository documents and sync boundaries.
+- Copy sync prompt is self-contained and must not depend on deleted scenario/workspace/idea/AC planning templates.
 - Cached snapshots are accepted only for the current normalized Base URL and Index path.
 - Transient refresh and _obs_cache_bust parameters are excluded from Index identity so manual cache-bypass cleanup does not orphan the compatible snapshot.
 - Legacy snapshots recompute source identity from their stored Base URL and Index path when those fields exist, instead of trusting an older pre-normalized sourceKey.

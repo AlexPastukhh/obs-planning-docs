@@ -1,7 +1,7 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v0.1.0-obs-cleanup
+Doc version: v0.2.1-runtime-contract
 Scope: reusable documentation architecture, update workflows, command creation, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
 
 ## 1. Purpose
@@ -126,8 +126,8 @@ For normal OBS planning/documentation work after root files exist, start from:
 2. planning/planning-use-case-map.md
 3. planning/workflow-activation-map.md
 4. planning/root-source-sync-register.md
-5. relevant planning/areas/... docs
-6. relevant planning/documentation/... owner workflows/templates
+5. relevant command owner docs
+6. Dashboard userscript/runtime help for local planning data
 ```
 
 ## 5. Task Read Orders
@@ -156,15 +156,6 @@ For broad documentation updates:
 8. planning/documentation/documentation-update-plan-workflow.md, for plan-first broad changes
 9. planning/documentation/documentation-update-workflow.md, for approved edits
 10. other owner workflows/templates named by the route or task
-```
-
-For scenario planning workspace work:
-
-```text
-1. planning/planning-use-case-map.md
-2. planning/areas/planning-system/README.md
-3. planning/areas/planning-system/scenario-planning-workspace-workflow.md
-4. planning/areas/planning-system/scenario-planning-workspace-template.md
 ```
 
 For conspect work:

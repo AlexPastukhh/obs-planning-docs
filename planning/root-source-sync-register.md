@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v0.1.0
+Doc version: v0.2.1-runtime-contract
 Scope: register root planning files and local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -25,7 +25,7 @@ Scope: register root planning files and local area ownership for OBS planning in
 
 | Path | Role |
 |---|---|
-| `planning/areas/planning-system/` | Scenario planning workspace and commands. |
+| `planning/areas/planning-system/` | Minimal runtime index plus the operational end-session command owner. Dashboard planning schema/help, JSON import/export and repo Markdown round-trip live in the userscript. |
 | `planning/areas/conspects/` | Conspect planning/repetition area. |
 
 ## 4. Not Checked
