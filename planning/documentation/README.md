@@ -1,8 +1,8 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v0.2.1-runtime-contract
-Scope: reusable documentation architecture, update workflows, command creation, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
+Doc version: v0.2.2-application-planning-family
+Scope: reusable documentation architecture, application-planning guidance, update workflows, command creation, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
 
 ## 1. Purpose
 
@@ -82,6 +82,18 @@ planning/documentation/parallel-work/parallel-workflow.md
 planning/documentation/parallel-work/parallel-sync-workflow.md
 planning/documentation/parallel-work/PARALLEL-WORKSPACE-TEMPLATE.md
 planning/documentation/parallel-work/PARALLEL-SYNC-PLAN-TEMPLATE.md
+```
+
+
+Reusable application-planning family:
+
+```text
+planning/documentation/application-planning/README.md
+planning/documentation/application-planning/application-planning-responsibility-map.md
+planning/documentation/application-planning/application-planning-principles.md
+planning/documentation/application-planning/application-planning-drafting-workflow.md
+planning/documentation/application-planning/templates/
+planning/documentation/application-planning/drafts/
 ```
 
 Reusable full Tampermonkey helper/tool:
@@ -173,6 +185,18 @@ For parallel-agent workspace or aggregate sync work:
 2. planning/documentation/parallel-work/parallel-workflow.md, for one staging workspace
 3. planning/documentation/parallel-work/parallel-sync-workflow.md, for aggregate sync from sync-candidate workspaces
 4. relevant templates under planning/documentation/parallel-work/
+```
+
+
+For application discovery, Product Legend, solution overview or prototype planning:
+
+```text
+1. planning/documentation/application-planning/README.md
+2. planning/documentation/application-planning/application-planning-responsibility-map.md
+3. planning/documentation/application-planning/application-planning-principles.md
+4. planning/documentation/application-planning/application-planning-drafting-workflow.md
+5. the relevant template under planning/documentation/application-planning/templates/
+6. the corresponding draft skeleton or project-local draft
 ```
 
 ## 6. Do Not
