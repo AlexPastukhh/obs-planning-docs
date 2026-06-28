@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.8.0
-// @description  Reusable projection-only draggable command helper with adaptive and forced-full route reading.
+// @version      0.9.1-owner-read-refinement
+// @description  Reusable projection-only command helper with adaptive/full route reading and compact owner-read refinements.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -25,6 +25,7 @@ TM-OBS-REUSE source sync:
     - This helper performs UI projection and composer insertion only; it does not write to the repo or call external services.
     - The default command button keeps adaptive route reading.
     - The Full button forces a fresh read of the command's complete required route for that invocation.
+    - Optional refinement buttons only list owner docs to reread; they do not duplicate owner rules.
 
   Implementation note:
     - Multiline command bodies are assembled with Array.join("\n") so the userscript remains valid JavaScript.
@@ -64,7 +65,19 @@ TM-OBS-REUSE source sync:
         'Ask user to paste diff before commit.',
         'Do not commit or push.'
       ],
-      target: '<what archive/package should include>'
+      target: '<what archive/package should include>',
+      refinements: [
+        {
+          id: 'archive_command_format',
+          label: 'Cmd fmt',
+          description: 'reread archive command-format docs',
+          readRequired: [
+            'planning/documentation/reviewable-agent-output-and-commands-workflow.md',
+            'planning/documentation/documentation-update-workflow.md'
+          ],
+          instruction: 'Reread these files and apply their archive command-format rules to the current answer.'
+        }
+      ]
     },
     {
       id: 'archive_source.use',
@@ -244,10 +257,33 @@ TM-OBS-REUSE source sync:
     ].join('\n');
   }
 
+  function buildCommandRefinementBody(definition, refinement) {
+    return [
+      '[PLANNING_COMMAND_REFINEMENT]',
+      'command:',
+      `  ${definition.label}`,
+      '',
+      'refinement:',
+      `  ${refinement.id}`,
+      '',
+      'read_required:',
+      ...refinement.readRequired.map((path) => `  - \`${path}\``),
+      '',
+      'instruction:',
+      `  ${refinement.instruction}`,
+      '',
+      '[/PLANNING_COMMAND_REFINEMENT]'
+    ].join('\n');
+  }
+
   const COMMANDS = COMMAND_DEFINITIONS.map((definition) => ({
     ...definition,
     adaptiveBody: buildCommandBody(definition, ROUTE_READ_MODE.ADAPTIVE),
-    fullRouteBody: buildCommandBody(definition, ROUTE_READ_MODE.FORCE_FULL)
+    fullRouteBody: buildCommandBody(definition, ROUTE_READ_MODE.FORCE_FULL),
+    refinementBodies: (definition.refinements || []).map((refinement) => ({
+      ...refinement,
+      body: buildCommandRefinementBody(definition, refinement)
+    }))
   }));
 
   const HOST_ID = 'obs-command-helper-host';
@@ -356,10 +392,17 @@ TM-OBS-REUSE source sync:
       .row {
         width: 100%;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto auto;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: stretch;
         gap: 7px;
         margin: 3px 0;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: stretch;
+        gap: 7px;
       }
       .insert {
         min-width: 0;
@@ -385,6 +428,13 @@ TM-OBS-REUSE source sync:
         border-color: rgba(96, 165, 250, .5);
         color: #bfdbfe;
       }
+      .refinement {
+        min-width: 64px;
+        padding: 5px 8px;
+        align-self: stretch;
+        border-color: rgba(167, 139, 250, .5);
+        color: #ddd6fe;
+      }
       .copy {
         padding: 5px 7px;
         align-self: stretch;
@@ -408,7 +458,7 @@ TM-OBS-REUSE source sync:
       <div class="header">
         <div class="title">
           <div class="title-main">OBS Command Helper</div>
-          <div class="title-sub">Command = adaptive read. Full = forced complete route read.</div>
+          <div class="title-sub">Command = adaptive. Full = full route. Cmd fmt = reread format docs.</div>
         </div>
         <button class="close" type="button" title="Close">×</button>
       </div>
@@ -464,7 +514,13 @@ TM-OBS-REUSE source sync:
         command.englishName,
         command.description,
         command.group,
-        'full route adaptive'
+        'full route adaptive',
+        ...(command.refinementBodies || []).flatMap((refinement) => [
+          refinement.label,
+          refinement.description,
+          refinement.id,
+          ...refinement.readRequired
+        ])
       ].join(' ').toLowerCase();
 
       return !normalizedQuery || haystack.includes(normalizedQuery);
@@ -513,6 +569,25 @@ TM-OBS-REUSE source sync:
         fullRouteButton.textContent = 'Full';
         fullRouteButton.title = 'Insert the same command and force a fresh read of its complete required route';
 
+        const refinementButtons = (command.refinementBodies || []).map((refinement) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'refinement';
+          button.textContent = refinement.label;
+          button.title = refinement.description;
+
+          button.addEventListener('click', () => {
+            const inserted = insertIntoComposer(refinement.body);
+            showStatus(
+              inserted
+                ? `Inserted refinement: ${command.label} · ${refinement.label}`
+                : 'Composer was not found. Click the ChatGPT input and try again.'
+            );
+          });
+
+          return button;
+        });
+
         const copyButton = document.createElement('button');
         copyButton.type = 'button';
         copyButton.className = 'copy';
@@ -542,7 +617,11 @@ TM-OBS-REUSE source sync:
           showStatus(copied ? `Copied: ${command.label} · adaptive route read` : 'Clipboard copy failed.');
         });
 
-        row.append(insertButton, fullRouteButton, copyButton);
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        actions.append(fullRouteButton, ...refinementButtons, copyButton);
+
+        row.append(insertButton, actions);
         body.appendChild(row);
       });
     });

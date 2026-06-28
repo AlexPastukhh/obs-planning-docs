@@ -1,7 +1,7 @@
 # Tampermonkey Command Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.4.0-dual-route-read
+Doc version: v0.5.0-owner-read-refinement
 Scope: reusable rules for projecting accepted project command routes into the reusable Tampermonkey/ChatGPT command helper UI.
 
 ## 1. Core Rule
@@ -32,6 +32,7 @@ Check:
 4. Inserted body points back to the root UCM and owner docs.
 5. Button label uses <englishName> · <label>.
 6. Adaptive and forced-full variants are generated from the same command definition.
+7. A command-specific refinement, when present, only points to owner docs to reread.
 ```
 
 ## 3. Shared Inserted Body Contract
@@ -115,7 +116,14 @@ Full button:
   forced complete required route read
 ```
 
-Command-specific refinements remain out of scope until a real need is identified.
+Command-specific refinements remain out of scope until a concrete need and owner-doc paths are approved.
+
+The approved `давай архив` format refinement only asks the chat to reread:
+
+```text
+planning/documentation/reviewable-agent-output-and-commands-workflow.md
+planning/documentation/documentation-update-workflow.md
+```
 
 ## 6. UI Contract
 
@@ -128,13 +136,40 @@ Each command row uses sibling controls:
 Full:
   insert forced-full command body
 
+Cmd fmt:
+  for `давай архив` only, insert a request to reread the archive command-format owner docs
+
 Copy:
   copy adaptive command body
 ```
 
 Do not nest buttons inside another button. Do not duplicate the whole command definition to create the second variant.
 
-## 7. Placement
+## 7. Owner-Read Refinement Contract
+
+A refinement button must stay compact and only point to the documentation that should be reread.
+
+```text
+[PLANNING_COMMAND_REFINEMENT]
+command:
+  давай архив
+
+refinement:
+  archive_command_format
+
+read_required:
+  - `planning/documentation/reviewable-agent-output-and-commands-workflow.md`
+  - `planning/documentation/documentation-update-workflow.md`
+
+instruction:
+  Reread these files and apply their archive command-format rules to the current answer.
+
+[/PLANNING_COMMAND_REFINEMENT]
+```
+
+Do not duplicate the owner rules inside the userscript or refinement body.
+
+## 8. Placement
 
 The reusable full helper lives at:
 
@@ -144,13 +179,14 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 
 Do not create a tracked local `tools/tampermonkey/` copy by default.
 
-## 8. Do Not
+## 9. Do Not
 
 ```text
 - Do not add helper commands without UCM routes.
 - Do not make the userscript a command source of truth.
 - Do not put per-invocation read-mode policy into the root UCM.
 - Do not create separate command-definition copies for adaptive and forced-full variants.
+- Do not put archive formatting rules into the refinement body; only list the owner docs to reread.
 - Do not keep competing tracked helper copies by default.
 - Do not silently change command meaning while adding UI controls.
 - Do not treat Full as permission to read unrelated repository files.

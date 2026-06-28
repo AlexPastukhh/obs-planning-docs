@@ -1,7 +1,7 @@
 # Reviewable Agent Output And Commands Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.2.0-obs-cleanup
+Doc version: v0.2.1-archive-command-format-route
 Scope: answer levels, reviewable outputs and response-level command behavior for projects using the reusable documentation layer.
 
 ## 1. Answer Levels
@@ -62,6 +62,8 @@ Boundary:
 - User applies locally and pastes diff.
 - Assistant reviews diff and says commit OK or do not commit.
 - Do not push unless explicitly instructed.
+- For the PowerShell presentation format of archive apply/diff commands, also read
+  `planning/documentation/documentation-update-workflow.md`.
 ```
 
 ## 5. Do Not

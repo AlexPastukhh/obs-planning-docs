@@ -1,7 +1,7 @@
 # Documentation Update Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.2.0-obs-cleanup
+Doc version: v0.2.1-one-enter-command-shape
 Scope: safe process for applying approved documentation updates in a project that uses `planning/documentation/`.
 
 ## 1. Purpose
@@ -43,6 +43,20 @@ When producing a replacement archive:
 - use git add -N for new files before diff capture;
 - copy diff with git diff -- <paths> | Set-Clipboard;
 - request pasted diff before commit.
+```
+
+PowerShell command presentation:
+
+```text
+- Present each runnable PowerShell stage as one `& { ... }` command block that the user can execute with one Enter.
+- Do not split one dependent stage across several command blocks.
+- Keep post-review commit/push in a separate one-enter command block.
+```
+
+Shape example, not runnable as-is:
+
+```powershell
+& { Set-Location "C:\path\to\repo"; <complete commands for this stage> }
 ```
 
 ## 5. Do Not
