@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.9.4
+Doc version: v0.9.5-archive-format-validation
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -284,7 +284,7 @@ The reusable Command Palette provides:
 - command search/list;
 - normal command control inserts the adaptive route-read body;
 - Full inserts the same command with mandatory fresh reading of the complete required command route;
-- `Cmd fmt` appears only for `давай архив` and asks the chat to reread the two archive command-format owner docs;
+- `Cmd fmt` appears only for `давай архив`; it asks the chat to reread the route plus archive command-format owners, validate every user-facing PowerShell Git command in the current answer and rewrite any non-compliant command;
 - Copy copies the adaptive route-read body;
 - Full is limited to UCM and owner/workflow/template/example files required by that command route;
 - Full does not authorize reading unrelated repository files;
@@ -293,8 +293,10 @@ The reusable Command Palette provides:
   source_of_truth, route_read_rule, key_reminders and user_target;
 - no separate UCM-only mode;
 - the approved `Cmd fmt` refinement lists only:
+  `planning/planning-use-case-map.md`,
   `planning/documentation/reviewable-agent-output-and-commands-workflow.md` and
   `planning/documentation/documentation-update-workflow.md`;
+- the refinement body states the validation action but does not duplicate the one-line, non-interactive or no-pager owner rules;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
 - no repo writes, network calls, commits or pushes.
 ```
@@ -311,7 +313,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 5. @name and @namespace change only for an intentional fork or rebrand.
 6. The helper remains projection-only.
 7. Adaptive and forced-full bodies are generated from the same command definition.
-8. Refinements contain owner-doc paths, not duplicated owner logic.
+8. Refinements contain route/owner paths and the requested validation action, not duplicated owner logic.
 9. No second tracked project-local command-helper copy is created by default.
 ```
 

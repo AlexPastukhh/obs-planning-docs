@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.9.1-owner-read-refinement
+// @version      0.9.2-archive-format-validation
 // @description  Reusable projection-only command helper with adaptive/full route reading and compact owner-read refinements.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -72,10 +72,11 @@ TM-OBS-REUSE source sync:
           label: 'Cmd fmt',
           description: 'reread archive command-format docs',
           readRequired: [
+            'planning/planning-use-case-map.md',
             'planning/documentation/reviewable-agent-output-and-commands-workflow.md',
             'planning/documentation/documentation-update-workflow.md'
           ],
-          instruction: 'Reread these files and apply their archive command-format rules to the current answer.'
+          instruction: 'Reread these files, validate every user-facing PowerShell Git command in the current answer against their archive command-format rules, and rewrite any non-compliant command.'
         }
       ]
     },

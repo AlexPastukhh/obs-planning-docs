@@ -1,7 +1,7 @@
 # Tampermonkey Command Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.5.0-owner-read-refinement
+Doc version: v0.6.0-archive-format-validation
 Scope: reusable rules for projecting accepted project command routes into the reusable Tampermonkey/ChatGPT command helper UI.
 
 ## 1. Core Rule
@@ -32,7 +32,7 @@ Check:
 4. Inserted body points back to the root UCM and owner docs.
 5. Button label uses <englishName> · <label>.
 6. Adaptive and forced-full variants are generated from the same command definition.
-7. A command-specific refinement, when present, only points to owner docs to reread.
+7. A command-specific refinement, when present, only points to route/owner docs to reread and states the validation action.
 ```
 
 ## 3. Shared Inserted Body Contract
@@ -116,14 +116,17 @@ Full button:
   forced complete required route read
 ```
 
-Command-specific refinements remain out of scope until a concrete need and owner-doc paths are approved.
+Command-specific refinements remain out of scope until a concrete need and route/owner paths are approved.
 
-The approved `давай архив` format refinement only asks the chat to reread:
+The approved `давай архив` format refinement asks the chat to reread:
 
 ```text
+planning/planning-use-case-map.md
 planning/documentation/reviewable-agent-output-and-commands-workflow.md
 planning/documentation/documentation-update-workflow.md
 ```
+
+It then requires validation and replacement of every non-compliant user-facing PowerShell Git command in the current answer. The formatting rules remain in the owner workflows rather than in the refinement body.
 
 ## 6. UI Contract
 
@@ -137,7 +140,9 @@ Full:
   insert forced-full command body
 
 Cmd fmt:
-  for `давай архив` only, insert a request to reread the archive command-format owner docs
+  for `давай архив` only, reread the route and archive command-format owners,
+  validate every PowerShell Git command in the current answer
+  and rewrite any non-compliant command
 
 Copy:
   copy adaptive command body
@@ -147,7 +152,7 @@ Do not nest buttons inside another button. Do not duplicate the whole command de
 
 ## 7. Owner-Read Refinement Contract
 
-A refinement button must stay compact and only point to the documentation that should be reread.
+A refinement button must stay compact and point to the route/owner documentation that should be reread. It may state the validation action, but it must not duplicate the owner rules.
 
 ```text
 [PLANNING_COMMAND_REFINEMENT]
@@ -158,11 +163,12 @@ refinement:
   archive_command_format
 
 read_required:
+  - `planning/planning-use-case-map.md`
   - `planning/documentation/reviewable-agent-output-and-commands-workflow.md`
   - `planning/documentation/documentation-update-workflow.md`
 
 instruction:
-  Reread these files and apply their archive command-format rules to the current answer.
+  Reread these files, validate every user-facing PowerShell Git command in the current answer against their archive command-format rules, and rewrite any non-compliant command.
 
 [/PLANNING_COMMAND_REFINEMENT]
 ```
@@ -186,7 +192,7 @@ Do not create a tracked local `tools/tampermonkey/` copy by default.
 - Do not make the userscript a command source of truth.
 - Do not put per-invocation read-mode policy into the root UCM.
 - Do not create separate command-definition copies for adaptive and forced-full variants.
-- Do not put archive formatting rules into the refinement body; only list the owner docs to reread.
+- Do not put archive formatting rules into the refinement body; only list route/owner docs and the requested validation action.
 - Do not keep competing tracked helper copies by default.
 - Do not silently change command meaning while adding UI controls.
 - Do not treat Full as permission to read unrelated repository files.

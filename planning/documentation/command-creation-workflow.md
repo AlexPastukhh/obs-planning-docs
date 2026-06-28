@@ -1,8 +1,8 @@
 # Command Creation Workflow
 
 Status: active reusable documentation-layer command creation workflow
-Doc version: v0.3.0
-Scope: rules-based workflow for creating or changing command routes, owner semantics, examples and optional Tampermonkey projections in any project using the reusable documentation layer
+Doc version: v0.4.0-user-command-runtime-contract
+Scope: rules-based workflow for creating or changing command routes, owner semantics, examples, user-facing PowerShell Git output and optional Tampermonkey projections in any project using the reusable documentation layer
 
 ## 1. Purpose
 
@@ -28,8 +28,11 @@ Existing rows in a concrete project root use-case map are useful examples, but t
 Primary route owner:
   planning/planning-use-case-map.md
 
-Reusable command/answer behavior:
+Reusable command/answer behavior and PowerShell Git runtime contract:
   planning/documentation/reviewable-agent-output-and-commands-workflow.md
+
+Documentation archive/apply specialization:
+  planning/documentation/documentation-update-workflow.md
 
 Use-case map workflow and exact shape:
   planning/documentation/use-case-map-workflow.md
@@ -82,21 +85,28 @@ Do not treat this as a visual table only. Each field is a rule slot.
    - Make active-context behavior explicit.
    - Keep any English command name as display/readability metadata, not authority.
 
-4. Decide example coverage.
+4. Validate user-facing PowerShell Git output.
+   - Determine whether the command may emit a runnable PowerShell Git stage.
+   - Apply the shared runtime contract from reviewable-agent-output-and-commands-workflow.md.
+   - Require one physical & { ... } line, one paste, one Enter, non-interactive execution and git --no-pager.
+   - Link documentation-update-workflow.md when archive/apply/diff specialization is relevant.
+   - Do not duplicate the full runtime contract in the UCM row, example or Tampermonkey projection.
+
+5. Decide example coverage.
    - If the command changes a non-trivial output mode or workflow, update examples index.
    - Add a concrete example only when it demonstrates a stable workflow/output and does not copy owner logic.
 
-5. Decide Goal Map/workstream impact.
+6. Decide Goal Map/workstream impact.
    - If the command belongs to an active long-running workstream, update the relevant living Goal Map.
    - Do not rewrite unrelated workstream maps.
 
-6. Decide Tampermonkey projection separately.
+7. Decide Tampermonkey projection separately.
    - Add or update Tampermonkey profile only when explicitly in scope.
    - Projection must follow planning/documentation/tampermonkey-command-projection-workflow.md.
    - The reusable full helper lives at planning/documentation/tools/tampermonkey/chat-command-palette.user.js.
    - The inserted body must include command, english_name, command_family, source_of_truth, route_read_rule, key_reminders and user_target.
 
-7. Record the applied documentation action.
+8. Record the applied documentation action.
    - Append main action log after real changed files are known.
    - Do not log planned or local-only work as applied.
 ```
@@ -124,6 +134,8 @@ Do not recreate a tracked project-local helper folder by default while the reusa
 - Do not make Tampermonkey the source of truth.
 - Do not point reusable command creation rules at a project-specific workstream as reusable authority.
 - Do not put permission boundaries only in examples.
+- Do not create a command whose user-facing PowerShell Git output bypasses the shared one-line, non-interactive and no-pager contract.
+- Do not duplicate the full PowerShell Git runtime contract inside UCM rows, examples or helper projections.
 - Do not edit files, create archives, commit or push from the command-creation command alone.
 - Do not start unrelated command expansion while adding one command.
 - Do not create placeholder parallel workspaces or sync plans while adding command routes.
@@ -144,6 +156,9 @@ Owner semantics:
 
 UCM row plan:
   ...
+
+PowerShell Git runtime contract:
+  applies / not applicable
 
 Example coverage:
   ...
