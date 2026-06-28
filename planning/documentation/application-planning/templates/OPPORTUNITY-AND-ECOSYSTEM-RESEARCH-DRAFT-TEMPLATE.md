@@ -2,19 +2,25 @@
 
 Status: provisional reusable template
 
+## Inputs From Current Workflow Analysis
+
+| Workflow step / problem unit | Needed outcome | Current workaround | Research focus |
+|---|---|---|---|
+| not provided | not provided | not provided | not provided |
+
 ## Purpose
 
 ```text
 not provided
 ```
 
-## Problem Under Consideration
+## Problem Summary
 
 ```text
 not provided
 ```
 
-## Current Workflow
+## Current Workflow Summary
 
 ```text
 not provided

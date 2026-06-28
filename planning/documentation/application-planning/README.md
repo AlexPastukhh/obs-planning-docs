@@ -1,26 +1,27 @@
 # Application Planning Documentation Index
 
 Status: provisional reusable documentation-family index
-Scope: pre-detailed application planning from opportunity research through Product Legend, core value scenarios, solution overview and prototype learning.
+Scope: pre-detailed application planning from current-workflow analysis through ecosystem research, Product Legend, core value scenarios, solution overview and prototype learning.
 
 ## 1. Purpose
 
-This folder defines a reusable planning process for deciding whether an application should be created, what makes it worth testing, which scenarios express its core value, which implementation directions are plausible and what should be learned through prototypes before detailed planning.
+This folder defines a reusable planning process for understanding the current workflow before deciding whether an application should be created, what makes it worth testing, which scenarios express its core value, which implementation directions are plausible and what should be learned through prototypes before detailed planning.
 
 The intended progression is:
 
 ```text
-opportunity and ecosystem research
+current workflow and problem analysis
+  → opportunity and ecosystem research
   → Product Legend
   → core value scenarios
   → solution overview
   → prototype plan
   → prototype result
-  → updated Legend/scenarios/overview
+  → updated workflow analysis/research/Legend/scenarios/overview
   → detailed scenario/domain/slice planning
 ```
 
-The process is iterative. A prototype result may send planning back to any earlier artifact.
+The process is iterative. Later research or prototype evidence may send planning back to any earlier artifact.
 
 ## 2. Read Order
 
@@ -41,6 +42,7 @@ application-planning-principles.md
 application-planning-drafting-workflow.md
 
 templates/
+  CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
   OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md
   PRODUCT-LEGEND-DRAFT-TEMPLATE.md
   SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md
@@ -48,6 +50,7 @@ templates/
   PROTOTYPE-RESULT-TEMPLATE.md
 
 drafts/
+  current-workflow-and-problem-analysis.md
   opportunity-and-ecosystem-research.md
   product-legend.md
   solution-overview.md
@@ -72,6 +75,14 @@ templates
 drafts
   are empty working instances and do not own reusable rules;
 
+current workflow analysis
+  owns the present activity, workflow steps, problem situations
+  and provisional problem units;
+
+opportunity research
+  owns external alternatives and ways to keep, simplify, remove,
+  integrate, automate or build after the current workflow is understood;
+
 scenario templates and scenario drafts
   remain separate and are used after Product Legend produces candidate value scenarios.
 ```
@@ -80,7 +91,7 @@ Concrete product state should normally live in a project area or another explici
 
 ## 5. Current Deliberate Exclusions
 
-This first documentation batch does not define:
+This documentation family does not yet define:
 
 ```text
 - artifact version-control rules;
@@ -90,6 +101,7 @@ This first documentation batch does not define:
 - command routes;
 - automatic research or source verification;
 - a mandatory architecture such as standalone, extension or shared core;
+- a fixed universal problem taxonomy;
 - detailed scenario/domain/slice planning.
 ```
 
@@ -111,6 +123,8 @@ Add a working example after the first complete real planning cycle stabilizes th
 
 ```text
 - Do not treat AI suggestions as confirmed user requirements.
+- Do not start from a proposed product before the current workflow is understood.
+- Do not treat preliminary problem units as complete or final before the workflow pass is reviewed.
 - Do not force a build decision before alternatives and uncertainty are visible.
 - Do not turn Product Legend into a feature list or architecture document.
 - Do not perform detailed planning before the core value and major risks are understood well enough.

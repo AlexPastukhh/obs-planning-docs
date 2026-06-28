@@ -5,13 +5,18 @@ Scope: stable guidance for planning an application before detailed scenario, dom
 
 ## 1. Purpose
 
-Application planning should reduce the risk of thoroughly designing the wrong product or the wrong implementation direction.
+Application planning should reduce the risk of thoroughly designing the wrong product, solving only a visible symptom or preserving an unnecessarily complicated workflow.
 
 The process should answer, in order:
 
 ```text
-Is there a real problem worth addressing?
-Do existing solutions or workflows already solve it?
+What does the user actually do now?
+Why does each current step exist?
+Which parts are useful, satisfactory, inconvenient, risky or unnecessary?
+Which concrete problem situations occur inside the workflow?
+How should preliminary problem units be refined after the complete workflow is visible?
+Can the workflow be kept, simplified, removed, integrated or automated before building?
+Do existing solutions or workflows already solve the remaining problems?
 Should the idea be integrated into an existing environment?
 Why might the solution remain useful in the future?
 What core user scenarios express the reason to build it?
@@ -44,15 +49,116 @@ Decision:
 
 AI must not silently promote an inference, criticism or idea into a confirmed requirement.
 
-## 3. Opportunity And Ecosystem Research
+## 3. Current Workflow And Problem Analysis
 
-Before deciding to build, examine:
+Before researching products or proposing a solution, describe the current activity as an end-to-end workflow.
+
+The analysis should include all meaningful steps, not only steps related to a solution already imagined.
+
+For each workflow step, identify:
 
 ```text
-- the problem and current workflow;
+- trigger;
+- purpose;
+- current actions;
+- inputs and outputs;
+- tools and environments;
+- dependencies on prior information or decisions;
+- current strengths and convenient parts;
+- concrete problem situations;
+- current workarounds;
+- frequency when known;
+- cost or risk of error;
+- candidate change;
+- important unknowns.
+```
+
+The analysis should make it possible to decide whether a step should be:
+
+```text
+keep:
+  the current method is adequate;
+
+simplify:
+  reduce instructions, handoffs or repeated work;
+
+remove:
+  the step is unnecessary after workflow redesign;
+
+integrate:
+  use an existing product or platform;
+
+automate:
+  use scripts, CLI, AI or deterministic tooling;
+
+build:
+  create a new capability only when the remaining gap justifies it.
+```
+
+### Problem situations before problem taxonomy
+
+Start from observable situations inside workflow steps.
+
+Describe separately:
+
+```text
+situation:
+  what the user experiences;
+
+possible cause:
+  why the situation may occur;
+
+consequence:
+  what extra work or uncertainty follows;
+
+risk:
+  what may go wrong;
+
+workaround:
+  how the user currently compensates.
+```
+
+Do not begin with a fixed taxonomy and force observations into it.
+
+### Preliminary problem units
+
+Problem units are intermediate planning objects used to group repeated or related problem situations.
+
+They are provisional until the complete workflow pass is reviewed.
+
+After the workflow is visible, problem units may be:
+
+```text
+added;
+split;
+merged;
+renamed;
+reclassified;
+linked to more workflow steps;
+rejected as symptoms of another problem.
+```
+
+Maintain two views:
+
+```text
+workflow-step view:
+  which problems occur in each step;
+
+problem-unit view:
+  in which steps the same problem appears.
+```
+
+A preliminary problem unit is not yet a product requirement.
+
+## 4. Opportunity And Ecosystem Research
+
+After the current workflow is understood, examine:
+
+```text
 - direct ready-made solutions;
 - alternative workflows that avoid a new product;
 - adjacent products and platforms;
+- solutions for individual workflow steps or problem units;
 - integration, extension and build options;
 - future changes that could strengthen or invalidate the need.
 ```
@@ -60,6 +166,9 @@ Before deciding to build, examine:
 A valid result may be:
 
 ```text
+keep the current step;
+simplify the workflow;
+remove a step;
 build;
 integrate;
 extend an existing product;
@@ -71,7 +180,7 @@ stop because a new solution is unnecessary.
 
 Research should not be written as advocacy for the preferred idea. Alternatives and reasons not to build must remain visible.
 
-## 4. Product Legend
+## 5. Product Legend
 
 The Product Legend is a compact causal and value model, not marketing copy.
 
@@ -91,7 +200,7 @@ how useful success would be observed.
 
 The Legend should remain smaller and more stable than the full scenario set.
 
-## 5. Deriving Core Value Scenarios
+## 6. Deriving Core Value Scenarios
 
 Core value scenarios are derived from the Legend statements that explain why the product is needed.
 
@@ -112,7 +221,7 @@ A polished file explorer, settings screen or workspace creator may be necessary,
 
 Full scenarios should be created through the existing scenario-draft principles and template rather than being fully defined inside the Product Legend.
 
-## 6. Solution Overview
+## 7. Solution Overview
 
 The solution overview is a broad feasibility and option map before detailed architecture.
 
@@ -171,7 +280,7 @@ This does not require microservices or several products at the start. A safe fir
 
 The main risk is premature generalization. Do not design a universal platform before the first closed workflow is proven.
 
-## 7. Prototype Purpose
+## 8. Prototype Purpose
 
 A prototype exists to produce decision-relevant learning, not merely to demonstrate progress.
 
@@ -189,7 +298,7 @@ decision affected;
 whether the code is throwaway or evolutionary.
 ```
 
-## 8. Prototype Types
+## 9. Prototype Types
 
 The taxonomy is pragmatic rather than a single universal standard. A prototype may fit more than one type.
 
@@ -237,7 +346,7 @@ evolutionary:
 
 The intended fate of the code should be chosen before implementation.
 
-## 9. General Prototype Principles
+## 10. General Prototype Principles
 
 ```text
 - Start from the uncertainty, not from a desired feature.
@@ -253,33 +362,38 @@ The intended fate of the code should be chosen before implementation.
 - End with a decision gate: proceed, change direction, run another experiment, defer or stop.
 ```
 
-## 10. Iterative Artifact Chain
+## 11. Iterative Artifact Chain
 
 ```text
-research evidence and observations
+current workflow observations
+  → workflow steps and problem situations
+  → preliminary problem units
+  → refined problem units and rationalization candidates
+  → opportunity research evidence
   → Product Legend
   → core value scenarios
   → solution overview
   → prototype hypothesis
   → prototype result
-  → revised Legend, scenarios and overview
+  → revised workflow analysis, research, Legend, scenarios and overview
 ```
 
 Downstream artifacts should expose contradictions with upstream assumptions rather than silently working around them.
 
-## 11. AI-Assisted Planning Principles
+## 12. AI-Assisted Planning Principles
 
 ```text
-- The user supplies product understanding, observations and decisions.
+- The user supplies workflow understanding, product observations and decisions.
 - AI structures material according to the principles and templates.
 - AI asks important questions and prioritizes blockers.
 - AI provides critical remarks and alternatives separately from requirements.
+- AI may propose problem units but must keep them provisional until the workflow is reviewed.
 - Answers and decisions remain in the artifact set.
 - Unknown sections remain `not provided` or explicitly unresolved.
 - For a small active artifact family, returning the full current draft set is preferred so context is not lost.
 ```
 
-## 12. Current Exclusions
+## 13. Current Exclusions
 
 This principles file does not define:
 
@@ -292,11 +406,16 @@ This principles file does not define:
 - detailed production architecture.
 ```
 
-## 13. Success Criteria
+## 14. Success Criteria
 
 The planning process is useful when:
 
 ```text
+- the current workflow is understandable before a product is proposed;
+- useful existing steps are preserved rather than rebuilt;
+- unnecessary or overly complex steps can be removed or simplified;
+- problem units trace back to concrete workflow situations;
+- problem units can be revised after the complete workflow is visible;
 - an unnecessary build can be rejected or redirected early;
 - the Product Legend explains the reason to test the idea;
 - core value scenarios trace back to that reason;
