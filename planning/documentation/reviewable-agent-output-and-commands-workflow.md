@@ -1,7 +1,7 @@
 # Reviewable Agent Output And Commands Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.3.0-user-command-runtime-contract
+Doc version: v0.5.0-auto-finalization-after-review
 Scope: answer levels, reviewable outputs, response-level command behavior and the shared runtime contract for user-facing PowerShell Git commands.
 
 ## 1. Answer Levels
@@ -53,7 +53,16 @@ This contract applies to every runnable PowerShell Git stage supplied to the use
 - Do not require another Enter, q, confirmation, Read-Host, a pause, language-layout switching or any other planned keyboard input.
 - Use git --no-pager for every Git command that can invoke a pager.
 - Do not rely on the user's Git pager configuration.
-- Keep logically separate stages, such as apply/diff and post-review commit/push, in separate one-line command blocks.
+- Keep the apply/diff review stage separate from the post-review repository-finalization stage.
+- The archive request authorizes the reviewed finalization flow, but it never authorizes commit or push before the pasted diff is approved.
+- After the user pastes the diff, review it immediately.
+- If the diff is approved, include the repository-finalization command in the same response without asking for another confirmation or requiring a separate `commit and push` instruction.
+- The finalization command must be one physical `& { ... }` line containing both `git commit` and `git push`.
+- Check the commit exit code before running push.
+- Check the push exit code before reporting finalization success.
+- In the normal reviewed flow, do not provide a commit-only command followed by a planned push-only command.
+- If the diff is not approved, do not provide a finalization command.
+- A push-only recovery command is allowed only when the intended commit already exists and its original push was skipped or failed.
 ```
 
 When command output is intended for transfer to chat, capture it once, copy the captured value to the clipboard and print only a short completion message unless full console output was explicitly requested.
@@ -76,11 +85,13 @@ Boundary:
 ## 5. Archive Output Boundary
 
 ```text
-- Creating an archive does not approve commit.
+- Creating an archive does not approve commit or push before diff review.
 - User applies locally and pastes diff.
-- Assistant reviews diff and says commit OK or do not commit.
-- Do not push unless explicitly instructed.
-- For the PowerShell presentation format of archive apply/diff commands, also read
+- Assistant reviews the pasted diff.
+- If the diff is approved, the assistant immediately supplies one combined commit-and-push command in the same response.
+- No additional user confirmation is required after an approved diff.
+- If the diff is rejected or incomplete, the assistant withholds the finalization command and explains what must be corrected.
+- For the PowerShell presentation format of archive apply/diff and finalization commands, also read
   `planning/documentation/documentation-update-workflow.md`.
 ```
 
@@ -90,7 +101,9 @@ Boundary:
 - Do not pretend to have checked files not checked.
 - Do not treat examples/helper scripts as authority.
 - Do not omit apply/diff commands when giving an archive.
-- Do not commit or push from a command body alone.
+- Do not commit or push before the pasted diff is reviewed and approved.
+- Do not ask for a redundant post-review confirmation when the diff is already approved.
+- Do not split a normal approved repository-finalization stage into a commit-only command and a planned push-only command.
 - Do not provide a user-facing PowerShell Git stage that can stop in an interactive pager.
 - Do not print transferable full output to the console after it was already copied to the clipboard unless explicitly requested.
 ```

@@ -1,7 +1,7 @@
 # Documentation Update Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.3.0-one-line-no-pager
+Doc version: v0.5.0-auto-finalization-after-review
 Scope: safe process for applying approved documentation updates in a project that uses `planning/documentation/`.
 
 ## 1. Purpose
@@ -66,7 +66,15 @@ PowerShell command presentation:
 - The running stage must not request q, another Enter, confirmation or other keyboard input.
 - Use git --no-pager for every Git command that can invoke a pager.
 - Do not split one dependent stage across several command blocks.
-- Keep post-review commit and push in separate one-line command blocks.
+- Keep the apply/diff stage separate from post-review repository finalization.
+- After the user pastes the diff, review it immediately.
+- If the diff is approved, provide the combined repository-finalization command in the same response.
+- Do not ask the user for another confirmation and do not require a separate `commit and push` instruction.
+- Put `git commit` and `git push` in the same one-line `& { ... }` block.
+- Run push only after commit succeeds, and report success only after push succeeds.
+- Do not emit a normal commit-only stage followed by a planned push-only stage.
+- If the diff is rejected or incomplete, do not provide the finalization command.
+- Use a separate push-only recovery stage only when the intended commit already exists and its original push was skipped or failed.
 ```
 
 Shape example, not runnable as-is:
@@ -76,6 +84,14 @@ Shape example, not runnable as-is:
 ```
 
 If there are no new files, use an empty `$NewPaths` array or omit the conditional `git add -N` section.
+
+Post-review repository-finalization shape, not runnable as-is:
+
+```powershell
+& { Set-Location "C:\path\to\repo"; git commit -m "<message>"; if ($LASTEXITCODE -ne 0) { throw "git commit failed" }; git push origin <branch>; if ($LASTEXITCODE -ne 0) { throw "git push failed; commit remains local" }; Write-Host "Commit created and pushed." }
+```
+
+This combined finalization command is supplied immediately after diff approval. The user does not need to send another confirmation or a separate `commit and push` instruction.
 
 ## 5. Do Not
 
@@ -88,4 +104,8 @@ If there are no new files, use an empty `$NewPaths` array or omit the conditiona
 - Do not invoke plain git diff, git log, git show or another pager-capable Git command in a user-facing stage.
 - Do not run the same diff once for clipboard transfer and again for console display.
 - Do not print the full diff after copying it unless the user explicitly requested console output.
+- Do not ask for another confirmation after an approved pasted diff.
+- Do not withhold the combined commit-and-push command after approving the diff.
+- Do not provide a normal post-review commit-only command.
+- Do not run push after a failed commit.
 ```
