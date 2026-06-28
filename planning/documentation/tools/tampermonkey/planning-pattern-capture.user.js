@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Planning Pattern Capture v0.4.7
+// @name         Planning Pattern Capture v0.4.8
 // @namespace    planning-pattern-capture
-// @version      0.4.7
+// @version      0.4.8
 // @description  ChatGPT-only capture panel with D/F scoring, one-click session timer milestones, finished-session outbox, and reviewed batch sync
 // @match        *://chatgpt.com/*
 // @match        *://*.chatgpt.com/*
@@ -27,7 +27,10 @@
   const KEY_SETTINGS = "planningPatternCapture:v2:settings";
   const KEY_ACTIVE = "planningPatternCapture:v2:active";
   const KEY_EVENTS = "planningPatternCapture:v2:events";
-  const KEY_TIMER = "planningPatternCapture:v2:timer";
+  const KEY_TIMER_LEGACY = "planningPatternCapture:v2:timer";
+  const KEY_TIMER = "planningPatternCapture:v3:timer";
+  const KEY_TIMER_MIGRATION_CLAIM = "planningPatternCapture:v3:timerMigration";
+  const KEY_TIMER_NOTIFICATION_CLAIM = "planningPatternCapture:v3:timerNotification";
 
   // Shared page-origin storage used by both Pattern Capture and Dashboard Viewer.
   const OUTBOX_KEY = "obsPlanning:sessionOutbox:v1";
@@ -45,9 +48,15 @@
   const BASE_TOTAL_SCORE = 3.5;
   const BASE_DIM_SCORE = BASE_TOTAL_SCORE / 2;
   const DF_STEP = 0.1;
-  const SETTINGS_VERSION = "0.4.7";
-  const TIMER_SCHEMA = "planning-pattern-session-timer-v1";
+  const SETTINGS_VERSION = "0.4.8";
+  const LEGACY_TIMER_SCHEMA = "planning-pattern-session-timer-v1";
+  const TIMER_SCHEMA = "planning-pattern-session-timer-v2";
   const TIMER_TOTAL_MS = 30 * 60 * 1000;
+  const TIMER_MIGRATION_CLAIM_MS = 1800;
+  const TIMER_MIGRATION_SETTLE_MS = 320;
+  const TIMER_NOTIFICATION_CLAIM_MS = 2500;
+  const TIMER_NOTIFICATION_SETTLE_MS = 120;
+  const INSTANCE_ID = `ppc_${Date.now()}_${Math.random().toString(16).slice(2, 10)}`;
   const TIMER_MILESTONES = [
     { minutes: 10, label: "10m focus", title: "10 минут прошло", text: "Проверь направление и фокус: работа всё ещё двигает цель сессии?" },
     { minutes: 20, label: "20m focus", title: "20 минут прошло", text: "Последние 10 минут: верни максимум D/F и доведи видимый результат." },
@@ -298,9 +307,10 @@
   let settings = normalizeSettings(loadSettings());
   let active = normalizeActive(loadWithMigration(KEY_ACTIVE, KEY_ACTIVE_V1, DEFAULT_ACTIVE));
   let events = loadEventsFromStorage();
-  let timer = normalizeTimer(load(KEY_TIMER, emptyTimer()));
+  let timer = loadCanonicalTimer();
   let timerTicker = null;
   let timerAudioContext = null;
+  let timerMilestoneTask = null;
   let panelHiddenForPage = false;
   let dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === "true";
   let lastCaptureToggleToken = document.documentElement.dataset.obsPlanningCaptureToggle || "";
@@ -314,19 +324,30 @@
 
   // Migrate the old persistent close state: closing is page-local from v0.4.2 onward.
   save(KEY_SETTINGS, settings);
+  initializeCaptureRuntime();
 
-  alignActiveSessionWithContext();
-  boot();
-  setupStorageListeners();
-  startTimerTicker();
-  window.addEventListener("focus", () => { processTimerMilestones(); updateTimerUi(); });
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) { processTimerMilestones(); updateTimerUi(); }
-  });
-  window.addEventListener("obs-planning-session-context-updated", () => {
+  async function initializeCaptureRuntime() {
+    try {
+      timer = await ensureCanonicalTimerMigration();
+    } catch (err) {
+      console.warn("Planning Pattern Capture timer migration coordination failed", err);
+      timer = loadCanonicalTimer();
+    }
+
     alignActiveSessionWithContext();
-    refresh();
-  });
+    boot();
+    setupStorageListeners();
+    startTimerTicker();
+    window.addEventListener("focus", handleTimerWake);
+    window.addEventListener("pageshow", handleTimerWake);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) handleTimerWake();
+    });
+    window.addEventListener("obs-planning-session-context-updated", () => {
+      alignActiveSessionWithContext();
+      refresh();
+    });
+  }
 
   function syncDashboardVisibilityFromDom() {
     const nextOpen = document.documentElement.dataset.obsPlanningDashboardOpen === "true";
@@ -535,9 +556,29 @@
     return text;
   }
 
+  function legacyEmptyTimer() {
+    return {
+      schema: LEGACY_TIMER_SCHEMA,
+      status: "idle",
+      date: "",
+      session: "",
+      startedAt: null,
+      runStartedAt: null,
+      elapsedMs: 0,
+      pausedAt: null,
+      expiredAt: null,
+      notifiedMinutes: [],
+      lastNotice: null,
+    };
+  }
+
   function emptyTimer() {
     return {
       schema: TIMER_SCHEMA,
+      timerId: "",
+      revision: 0,
+      updatedAt: null,
+      writerId: "",
       status: "idle",
       date: "",
       session: "",
@@ -555,6 +596,10 @@
     if (!value || value.schema !== TIMER_SCHEMA) return emptyTimer();
     const validStatuses = new Set(["idle", "running", "paused", "expired"]);
     const normalized = { ...emptyTimer(), ...value };
+    normalized.timerId = String(normalized.timerId || "");
+    normalized.revision = Math.max(0, Number.isFinite(Number(normalized.revision)) ? Number(normalized.revision) : 0);
+    normalized.updatedAt = normalized.updatedAt == null || !Number.isFinite(Number(normalized.updatedAt)) ? null : Number(normalized.updatedAt);
+    normalized.writerId = String(normalized.writerId || "");
     normalized.status = validStatuses.has(normalized.status) ? normalized.status : "idle";
     normalized.date = String(normalized.date || "");
     normalized.session = normalizeSessionName(normalized.session) || "";
@@ -572,7 +617,221 @@
       normalized.runStartedAt = Date.now();
     }
     if (normalized.status !== "running") normalized.runStartedAt = null;
+    if (normalized.status === "idle") {
+      normalized.timerId = "";
+      normalized.date = "";
+      normalized.session = "";
+    }
     return normalized;
+  }
+
+  function normalizeLegacyTimer(value) {
+    if (!value || value.schema !== LEGACY_TIMER_SCHEMA) return legacyEmptyTimer();
+    const validStatuses = new Set(["idle", "running", "paused", "expired"]);
+    const normalized = { ...legacyEmptyTimer(), ...value };
+    normalized.status = validStatuses.has(normalized.status) ? normalized.status : "idle";
+    normalized.date = String(normalized.date || "");
+    normalized.session = normalizeSessionName(normalized.session) || "";
+    normalized.startedAt = normalized.startedAt == null || !Number.isFinite(Number(normalized.startedAt)) ? null : Number(normalized.startedAt);
+    normalized.runStartedAt = normalized.runStartedAt == null || !Number.isFinite(Number(normalized.runStartedAt)) ? null : Number(normalized.runStartedAt);
+    normalized.elapsedMs = clampNumber(normalized.elapsedMs, 0, TIMER_TOTAL_MS, 0);
+    normalized.pausedAt = normalized.pausedAt == null || !Number.isFinite(Number(normalized.pausedAt)) ? null : Number(normalized.pausedAt);
+    normalized.expiredAt = normalized.expiredAt == null || !Number.isFinite(Number(normalized.expiredAt)) ? null : Number(normalized.expiredAt);
+    normalized.notifiedMinutes = Array.from(new Set(
+      (Array.isArray(normalized.notifiedMinutes) ? normalized.notifiedMinutes : [])
+        .map(Number)
+        .filter((minutes) => TIMER_MILESTONES.some((milestone) => milestone.minutes === minutes))
+    )).sort((a, b) => a - b);
+    if (normalized.status !== "running") normalized.runStartedAt = null;
+    return normalized;
+  }
+
+  function createTimerId() {
+    return `timer_${Date.now()}_${Math.random().toString(16).slice(2, 10)}`;
+  }
+
+  function silenceLegacyTimerIfNeeded() {
+    const raw = load(KEY_TIMER_LEGACY, undefined);
+    if (raw === undefined) return;
+    if (normalizeLegacyTimer(raw).status !== "idle") save(KEY_TIMER_LEGACY, legacyEmptyTimer());
+  }
+
+  function legacyTimerMigrationCandidate(legacy, now = Date.now()) {
+    if (!legacy || legacy.status === "idle") {
+      return normalizeTimer({
+        ...emptyTimer(),
+        revision: 1,
+        updatedAt: now,
+        writerId: INSTANCE_ID,
+      });
+    }
+
+    return normalizeTimer({
+      ...emptyTimer(),
+      ...legacy,
+      schema: TIMER_SCHEMA,
+      timerId: createTimerId(),
+      revision: 1,
+      updatedAt: now,
+      writerId: INSTANCE_ID,
+    });
+  }
+
+  function loadCanonicalTimer() {
+    const current = load(KEY_TIMER, undefined);
+    if (current !== undefined) {
+      silenceLegacyTimerIfNeeded();
+      return normalizeTimer(current);
+    }
+
+    // Read-only startup fallback. Canonical migration is coordinated before the UI boots.
+    const legacy = normalizeLegacyTimer(load(KEY_TIMER_LEGACY, undefined));
+    return legacyTimerMigrationCandidate(legacy);
+  }
+
+  async function ensureCanonicalTimerMigration() {
+    const existing = load(KEY_TIMER, undefined);
+    if (existing !== undefined) {
+      silenceLegacyTimerIfNeeded();
+      return normalizeTimer(existing);
+    }
+
+    for (let attempt = 0; attempt < 8; attempt += 1) {
+      const current = load(KEY_TIMER, undefined);
+      if (current !== undefined) {
+        silenceLegacyTimerIfNeeded();
+        return normalizeTimer(current);
+      }
+
+      const now = Date.now();
+      const token = `${INSTANCE_ID}_${now}_${Math.random().toString(16).slice(2, 8)}`;
+      const claim = {
+        ownerId: INSTANCE_ID,
+        token,
+        claimedAt: now,
+        expiresAt: now + TIMER_MIGRATION_CLAIM_MS,
+      };
+      save(KEY_TIMER_MIGRATION_CLAIM, claim);
+
+      await sleep(TIMER_MIGRATION_SETTLE_MS + Math.floor(Math.random() * TIMER_MIGRATION_SETTLE_MS));
+      const winner = load(KEY_TIMER_MIGRATION_CLAIM, null);
+
+      if (winner && winner.ownerId === INSTANCE_ID && winner.token === token) {
+        // Recheck after election. A different startup winner may already have created V3.
+        const canonicalBeforeWrite = load(KEY_TIMER, undefined);
+        if (canonicalBeforeWrite !== undefined) {
+          silenceLegacyTimerIfNeeded();
+          return normalizeTimer(canonicalBeforeWrite);
+        }
+
+        const legacyRaw = load(KEY_TIMER_LEGACY, undefined);
+        const legacy = normalizeLegacyTimer(legacyRaw);
+        const migrated = legacyTimerMigrationCandidate(legacy);
+
+        // Final guard after reading V2: never let an idle/stale migration candidate
+        // replace a V3 timer created by another tab while this winner was preparing.
+        const canonicalImmediatelyBeforeWrite = load(KEY_TIMER, undefined);
+        if (canonicalImmediatelyBeforeWrite !== undefined) {
+          if (legacyRaw !== undefined) save(KEY_TIMER_LEGACY, legacyEmptyTimer());
+          return normalizeTimer(canonicalImmediatelyBeforeWrite);
+        }
+
+        save(KEY_TIMER, migrated);
+        const canonicalAfterWrite = normalizeTimer(load(KEY_TIMER, migrated));
+        if (legacyRaw !== undefined) save(KEY_TIMER_LEGACY, legacyEmptyTimer());
+        return canonicalAfterWrite;
+      }
+
+      const waitUntil = Math.min(
+        Date.now() + TIMER_MIGRATION_CLAIM_MS,
+        Math.max(Date.now() + 80, Number(winner?.expiresAt || 0) + 40)
+      );
+      await sleep(Math.max(80, waitUntil - Date.now()));
+    }
+
+    const finalCanonical = load(KEY_TIMER, undefined);
+    if (finalCanonical !== undefined) return normalizeTimer(finalCanonical);
+    throw new Error("Could not elect one V3 timer migration writer");
+  }
+
+  function syncTimerFromStorage() {
+    timer = loadCanonicalTimer();
+    return timer;
+  }
+
+  function timerNoticeAt(value) {
+    const parsed = Date.parse(value?.lastNotice?.at || "");
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function stampCanonicalTimer(next, current, options = {}) {
+    const stamped = normalizeTimer({
+      ...next,
+      schema: TIMER_SCHEMA,
+      revision: Math.max(0, Number(current?.revision || 0)) + 1,
+      updatedAt: Date.now(),
+      writerId: INSTANCE_ID,
+    });
+
+    if (current?.timerId && stamped.timerId === current.timerId) {
+      stamped.notifiedMinutes = Array.from(new Set([
+        ...(current.notifiedMinutes || []),
+        ...(stamped.notifiedMinutes || []),
+      ])).sort((a, b) => a - b);
+      if (!options.allowNoticeClear && timerNoticeAt(current) > timerNoticeAt(stamped)) stamped.lastNotice = current.lastNotice;
+    }
+    return stamped;
+  }
+
+  function replaceCanonicalTimer(next, options = {}) {
+    const current = loadCanonicalTimer();
+    const expectedTimerId = String(options.expectedTimerId ?? "");
+    const expectedRevision = options.expectedRevision;
+
+    if (current.timerId !== expectedTimerId) {
+      timer = current;
+      return false;
+    }
+    if (expectedRevision !== undefined && expectedRevision !== null && current.revision !== Number(expectedRevision)) {
+      timer = current;
+      return false;
+    }
+
+    const stamped = stampCanonicalTimer(next, current);
+    save(KEY_TIMER, stamped);
+    timer = normalizeTimer(load(KEY_TIMER, stamped));
+    return timer.writerId === INSTANCE_ID && timer.revision === stamped.revision;
+  }
+
+  function commitCanonicalTimer(next, options = {}) {
+    const current = loadCanonicalTimer();
+    const expectedTimerId = String(options.expectedTimerId || "");
+    const normalizedNext = normalizeTimer(next);
+
+    if (expectedTimerId && current.timerId !== expectedTimerId) {
+      timer = current;
+      return false;
+    }
+    if (!options.allowClear && current.timerId && normalizedNext.timerId !== current.timerId) {
+      timer = current;
+      return false;
+    }
+
+    const expectedRevision = options.expectedRevision;
+    if (expectedRevision !== undefined && expectedRevision !== null && current.revision !== Number(expectedRevision)) {
+      timer = current;
+      return false;
+    }
+
+    const stamped = stampCanonicalTimer(normalizedNext, current, options);
+    save(KEY_TIMER, stamped);
+    timer = normalizeTimer(load(KEY_TIMER, stamped));
+    return timer.writerId === INSTANCE_ID && timer.revision === stamped.revision;
+  }
+
+  function clearCanonicalTimer(expectedTimerId) {
+    if (!expectedTimerId) return false;
+    return commitCanonicalTimer(emptyTimer(), { expectedTimerId, allowClear: true });
   }
 
   function normalizeSessionName(value) {
@@ -659,9 +918,20 @@
     save(KEY_EVENTS, events);
   }
 
-  function saveTimer() {
+  function saveTimer(options = {}) {
     timer = normalizeTimer(timer);
-    save(KEY_TIMER, timer);
+    if (options.replace === true) {
+      return replaceCanonicalTimer(timer, {
+        expectedTimerId: options.expectedTimerId ?? "",
+        expectedRevision: options.expectedRevision,
+      });
+    }
+    return commitCanonicalTimer(timer, {
+      expectedTimerId: options.expectedTimerId || timer.timerId,
+      expectedRevision: options.expectedRevision ?? timer.revision,
+      allowClear: options.allowClear === true,
+      allowNoticeClear: options.allowNoticeClear === true,
+    });
   }
 
   function readSharedJson(key, fallback) {
@@ -876,7 +1146,7 @@
     settings = normalizeSettings(loadWithMigration(KEY_SETTINGS, KEY_SETTINGS_V1, DEFAULT_SETTINGS));
     active = normalizeActive(loadWithMigration(KEY_ACTIVE, KEY_ACTIVE_V1, DEFAULT_ACTIVE));
     events = loadEventsFromStorage();
-    timer = normalizeTimer(load(KEY_TIMER, emptyTimer()));
+    syncTimerFromStorage();
     processTimerMilestones();
     refresh();
     if (showToast) toast("Synced from storage");
@@ -897,9 +1167,18 @@
     GM_addValueChangeListener(KEY_TIMER, function (_name, _oldValue, newValue, remote) {
       if (!remote) return;
       timer = normalizeTimer(newValue);
-      processTimerMilestones();
       refresh();
     });
+    GM_addValueChangeListener(KEY_TIMER_LEGACY, function (_name, _oldValue, newValue, remote) {
+      if (!remote) return;
+      if (normalizeLegacyTimer(newValue).status !== "idle") save(KEY_TIMER_LEGACY, legacyEmptyTimer());
+    });
+  }
+
+  function handleTimerWake() {
+    syncTimerFromStorage();
+    processTimerMilestones();
+    updateTimerUi();
   }
 
   function timerElapsedMs(now = Date.now()) {
@@ -934,9 +1213,12 @@
   }
 
   function startSessionTimer() {
+    syncTimerFromStorage();
     if (!captureDateForAction()) return;
     const sessionName = sessionNameForAction();
     if (!sessionName) return;
+    const expectedTimerId = timer.timerId;
+    const expectedRevision = timer.revision;
 
     if (timer.status === "running" || timer.status === "paused") {
       const owner = `${timer.date || "unknown"} ${timer.session || "session"}`;
@@ -946,13 +1228,19 @@
     const now = Date.now();
     timer = normalizeTimer({
       ...emptyTimer(),
+      timerId: createTimerId(),
       status: "running",
       date: active.date,
       session: sessionName,
       startedAt: now,
       runStartedAt: now,
     });
-    saveTimer();
+    if (!saveTimer({ replace: true, expectedTimerId, expectedRevision })) {
+      syncTimerFromStorage();
+      alert("Timer changed in another tab. Current timer was preserved.");
+      refresh();
+      return;
+    }
     primeTimerAudio();
     playTimerSound("start");
     refresh();
@@ -960,7 +1248,9 @@
   }
 
   function pauseSessionTimer() {
+    syncTimerFromStorage();
     if (timer.status !== "running") return;
+    const expectedTimerId = timer.timerId;
     const now = Date.now();
     timer = normalizeTimer({
       ...timer,
@@ -969,13 +1259,19 @@
       runStartedAt: null,
       pausedAt: now,
     });
-    saveTimer();
+    if (!saveTimer({ expectedTimerId })) {
+      refresh();
+      toast("Timer changed in another tab");
+      return;
+    }
     refresh();
     toast(`Paused ${timer.session}`);
   }
 
   function resumeSessionTimer() {
+    syncTimerFromStorage();
     if (timer.status !== "paused") return;
+    const expectedTimerId = timer.timerId;
     if (!timerBelongsTo()) {
       const owner = `${timer.date || "unknown"} ${timer.session || "session"}`;
       if (!confirm(`Resume timer for ${owner} while Capture is on ${active.date} ${active.session}?`)) return;
@@ -986,14 +1282,20 @@
       runStartedAt: Date.now(),
       pausedAt: null,
     });
-    saveTimer();
+    if (!saveTimer({ expectedTimerId })) {
+      refresh();
+      toast("Timer changed in another tab");
+      return;
+    }
     primeTimerAudio();
     refresh();
     toast(`Resumed ${timer.session}`);
   }
 
   function adjustTimerRemaining(minutes) {
+    syncTimerFromStorage();
     if (timer.status === "idle") return;
+    const expectedTimerId = timer.timerId;
 
     const remainingDeltaMs = Number(minutes) * 60 * 1000;
     if (!Number.isFinite(remainingDeltaMs) || remainingDeltaMs === 0) return;
@@ -1018,36 +1320,71 @@
       expiredAt: nextStatus === "expired" ? timer.expiredAt : null,
     });
 
-    saveTimer();
+    if (!saveTimer({ expectedTimerId })) {
+      refresh();
+      toast("Timer changed in another tab");
+      return;
+    }
     primeTimerAudio();
-    const milestoneHandled = processTimerMilestones({ allowPaused: true });
-    if (!milestoneHandled) refresh();
+    processTimerMilestones({ allowPaused: true }).then((milestoneHandled) => {
+      if (!milestoneHandled) refresh();
+    });
     toast(`${minutes > 0 ? "+" : "−"}${Math.abs(minutes)} min remaining · ${timer.session}`);
   }
 
   function stopSessionTimer(options = {}) {
+    syncTimerFromStorage();
     if (timer.status === "idle") return;
     if (options.confirm !== false && !confirm(`Stop and clear the timer for ${timer.date} ${timer.session}?`)) return;
     const stoppedSession = timer.session;
-    timer = emptyTimer();
-    saveTimer();
+    const expectedTimerId = timer.timerId;
+    if (!clearCanonicalTimer(expectedTimerId)) {
+      refresh();
+      toast("Timer changed in another tab; current timer was preserved");
+      return;
+    }
     refresh();
     if (options.toast !== false) toast(`Timer stopped${stoppedSession ? ` · ${stoppedSession}` : ""}`);
   }
 
   function restartSessionTimer() {
+    syncTimerFromStorage();
+    if (!captureDateForAction()) return;
+    const sessionName = sessionNameForAction();
+    if (!sessionName) return;
+    const expectedTimerId = timer.timerId;
+    const expectedRevision = timer.revision;
     if (timer.status === "running" || timer.status === "paused") {
-      if (!confirm(`Restart the 30-minute timer for ${active.date} ${active.session}?`)) return;
+      if (!confirm(`Restart the 30-minute timer for ${active.date} ${sessionName}?`)) return;
     }
-    timer = emptyTimer();
-    saveTimer();
-    startSessionTimer();
+    const now = Date.now();
+    timer = normalizeTimer({
+      ...emptyTimer(),
+      timerId: createTimerId(),
+      status: "running",
+      date: active.date,
+      session: sessionName,
+      startedAt: now,
+      runStartedAt: now,
+    });
+    if (!saveTimer({ replace: true, expectedTimerId, expectedRevision })) {
+      syncTimerFromStorage();
+      alert("Timer changed in another tab. Current timer was preserved.");
+      refresh();
+      return;
+    }
+    primeTimerAudio();
+    playTimerSound("start");
+    refresh();
+    toast(`Restarted ${sessionName} · checks at 10/20/30m`);
   }
 
   function dismissTimerNotice() {
+    syncTimerFromStorage();
     if (!timer.lastNotice) return;
+    const expectedTimerId = timer.timerId;
     timer = normalizeTimer({ ...timer, lastNotice: null });
-    saveTimer();
+    saveTimer({ expectedTimerId, allowNoticeClear: true });
     refresh();
   }
 
@@ -1122,8 +1459,8 @@
     refresh();
   }
 
-  function showTimerNotification(milestone) {
-    const title = `${milestone.title} · ${timer.session || "session"}`;
+  function showTimerNotification(milestone, timerSnapshot = timer) {
+    const title = `${milestone.title} · ${timerSnapshot.session || "session"}`;
     const text = milestone.text;
     const onClick = () => revealCaptureForTimer();
 
@@ -1146,10 +1483,57 @@
     }
   }
 
+  function sleep(ms) {
+    return new Promise((resolve) => window.setTimeout(resolve, ms));
+  }
+
+  async function claimTimerNotification(timerId, minutes) {
+    const now = Date.now();
+    const existing = load(KEY_TIMER_NOTIFICATION_CLAIM, null);
+    if (
+      existing &&
+      existing.timerId === timerId &&
+      Number(existing.minutes) === Number(minutes) &&
+      Number(existing.expiresAt || 0) > now &&
+      existing.ownerId !== INSTANCE_ID
+    ) return null;
+
+    const token = `${INSTANCE_ID}_${now}_${Math.random().toString(16).slice(2, 8)}`;
+    const claim = {
+      timerId,
+      minutes: Number(minutes),
+      ownerId: INSTANCE_ID,
+      token,
+      claimedAt: now,
+      expiresAt: now + TIMER_NOTIFICATION_CLAIM_MS,
+    };
+    save(KEY_TIMER_NOTIFICATION_CLAIM, claim);
+
+    await sleep(TIMER_NOTIFICATION_SETTLE_MS + Math.floor(Math.random() * TIMER_NOTIFICATION_SETTLE_MS));
+    const winner = load(KEY_TIMER_NOTIFICATION_CLAIM, null);
+    return winner && winner.ownerId === INSTANCE_ID && winner.token === token ? claim : null;
+  }
+
   function processTimerMilestones(options = {}) {
+    if (timerMilestoneTask) return timerMilestoneTask;
+    timerMilestoneTask = processTimerMilestonesInternal(options)
+      .catch((err) => {
+        console.warn("Planning Pattern Capture milestone processing failed", err);
+        return false;
+      })
+      .finally(() => { timerMilestoneTask = null; });
+    return timerMilestoneTask;
+  }
+
+  async function processTimerMilestonesInternal(options = {}) {
+    syncTimerFromStorage();
     const allowPaused = options.allowPaused === true;
-    const processable = timer.status === "running" || (allowPaused && timer.status === "paused");
-    if (!processable) return false;
+    const missingNotifications = TIMER_MILESTONES.some((milestone) => !timer.notifiedMinutes.includes(milestone.minutes));
+    const processable =
+      timer.status === "running" ||
+      (allowPaused && timer.status === "paused") ||
+      (timer.status === "expired" && missingNotifications);
+    if (!processable || !timer.timerId) return false;
 
     const elapsed = timerElapsedMs();
     const alreadyNotified = new Set(timer.notifiedMinutes);
@@ -1158,10 +1542,11 @@
     );
     const reachedEnd = elapsed >= TIMER_TOTAL_MS;
     const now = Date.now();
+    const expectedTimerId = timer.timerId;
 
     if (!due.length) {
-      if (!reachedEnd) return false;
-      timer = normalizeTimer({
+      if (!reachedEnd || timer.status === "expired") return false;
+      const next = normalizeTimer({
         ...timer,
         status: "expired",
         elapsedMs: TIMER_TOTAL_MS,
@@ -1169,37 +1554,64 @@
         pausedAt: null,
         expiredAt: timer.expiredAt || now,
       });
-      saveTimer();
-      refresh();
-      return true;
+      const saved = commitCanonicalTimer(next, { expectedTimerId, expectedRevision: timer.revision });
+      if (saved) refresh();
+      return saved;
     }
 
-    const latest = due[due.length - 1];
-    timer = normalizeTimer({
+    const latestCandidate = due[due.length - 1];
+    const claim = await claimTimerNotification(expectedTimerId, latestCandidate.minutes);
+    if (!claim) {
+      syncTimerFromStorage();
+      return false;
+    }
+
+    syncTimerFromStorage();
+    if (timer.timerId !== expectedTimerId || timer.notifiedMinutes.includes(latestCandidate.minutes)) return false;
+
+    const currentElapsed = timerElapsedMs();
+    const currentDue = TIMER_MILESTONES.filter((milestone) =>
+      currentElapsed >= milestone.minutes * 60 * 1000 && !timer.notifiedMinutes.includes(milestone.minutes)
+    );
+    if (!currentDue.length) return false;
+
+    const latest = currentDue[currentDue.length - 1];
+    const currentReachedEnd = currentElapsed >= TIMER_TOTAL_MS;
+    const expectedRevision = timer.revision;
+    const notificationTimer = normalizeTimer({
       ...timer,
-      status: reachedEnd ? "expired" : timer.status,
-      elapsedMs: reachedEnd ? TIMER_TOTAL_MS : timer.elapsedMs,
-      runStartedAt: reachedEnd ? null : timer.runStartedAt,
-      pausedAt: reachedEnd ? null : timer.pausedAt,
-      expiredAt: reachedEnd ? now : timer.expiredAt,
-      notifiedMinutes: Array.from(new Set([...timer.notifiedMinutes, ...due.map((milestone) => milestone.minutes)])),
-      lastNotice: { minutes: latest.minutes, at: new Date(now).toISOString(), text: latest.text },
+      status: currentReachedEnd ? "expired" : timer.status,
+      elapsedMs: currentReachedEnd ? TIMER_TOTAL_MS : timer.elapsedMs,
+      runStartedAt: currentReachedEnd ? null : timer.runStartedAt,
+      pausedAt: currentReachedEnd ? null : timer.pausedAt,
+      expiredAt: currentReachedEnd ? (timer.expiredAt || Date.now()) : timer.expiredAt,
+      notifiedMinutes: Array.from(new Set([
+        ...timer.notifiedMinutes,
+        ...currentDue.map((milestone) => milestone.minutes),
+      ])),
+      lastNotice: { minutes: latest.minutes, at: new Date().toISOString(), text: latest.text },
     });
-    saveTimer();
+
+    if (!commitCanonicalTimer(notificationTimer, { expectedTimerId, expectedRevision })) return false;
+    const canonicalAfterWrite = loadCanonicalTimer();
+    if (canonicalAfterWrite.timerId !== expectedTimerId || !canonicalAfterWrite.notifiedMinutes.includes(latest.minutes)) return false;
+
+    timer = canonicalAfterWrite;
     playTimerSound(String(latest.minutes));
-    showTimerNotification(latest);
+    showTimerNotification(latest, canonicalAfterWrite);
     refresh();
-    toast(`${latest.minutes}m · ${timer.session}`);
+    toast(`${latest.minutes}m · ${canonicalAfterWrite.session}`);
     return true;
   }
 
   function startTimerTicker() {
     if (timerTicker) clearInterval(timerTicker);
     timerTicker = setInterval(() => {
+      syncTimerFromStorage();
       processTimerMilestones();
       updateTimerUi();
     }, 500);
-    processTimerMilestones();
+    handleTimerWake();
   }
 
   function currentDateEvents() {
@@ -1472,7 +1884,9 @@
     if (duplicate && !confirm(`${sessionName} already exists in the pending batch. Store another record with the same session label?`)) return;
 
     const s = scoreForSession(sessionName);
+    syncTimerFromStorage();
     const matchingTimerActive = timerBelongsTo(active.date, sessionName) && (timer.status === "running" || timer.status === "paused");
+    const matchingTimerId = matchingTimerActive ? timer.timerId : "";
     const timerSummary = matchingTimerActive
       ? `\nTimer ${timer.status} at ${formatTimerClock(timerElapsedMs())}; it will stop after Finish.`
       : "";
@@ -1533,10 +1947,7 @@
       note: "stored in obsPlanning:sessionOutbox:v1",
     });
 
-    if (timerBelongsTo(active.date, sessionName)) {
-      timer = emptyTimer();
-      saveTimer();
-    }
+    if (matchingTimerId) clearCanonicalTimer(matchingTimerId);
 
     active = normalizeActive({
       ...active,

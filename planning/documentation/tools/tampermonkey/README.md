@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.9.3
+Doc version: v0.9.4
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -58,6 +58,11 @@ Pattern Capture private GM storage:
   planningPatternCapture:v2:settings
   planningPatternCapture:v2:active
   planningPatternCapture:v2:events
+  planningPatternCapture:v3:timer
+  planningPatternCapture:v3:timerMigration
+  planningPatternCapture:v3:timerNotification
+
+Legacy timer migration/suppression only:
   planningPatternCapture:v2:timer
 
 Shared page localStorage:
@@ -75,6 +80,11 @@ Rules:
 
 ```text
 - Raw Capture events, timer state and UI state remain in GM storage.
+- `planningPatternCapture:v3:timer` is the one canonical timer shared by updated Capture instances across ChatGPT tabs.
+- The old `planningPatternCapture:v2:timer` key is read once for migration and then neutralized so older tabs cannot replace the current timer.
+- Updated tabs elect one startup migration writer through `planningPatternCapture:v3:timerMigration`; the Capture UI and timer actions start only after that election resolves.
+- The elected writer rechecks V3 both before and after reading V2, immediately before writing, and all other tabs accept the actual V3 winner; an idle migration candidate cannot replace an active timer created during migration.
+- Start and Restart capture the canonical `timerId` and revision before confirmation and replace only if both are still current, so a stale confirmation cannot overwrite a newer timer from another tab.
 - Only completed pending sessions are written to the shared outbox.
 - Dashboard snapshot, pending outbox and local day planning remain separate.
 - Local day planning stores local plan-item definitions, numbered sessions, per-item session-or-time assignments, optional Scope Unit notes/deadlines, completion/evidence and local Goal Map drafts; it never writes repository files automatically.
@@ -218,13 +228,16 @@ Timer rules:
 ```text
 - Timer source of truth is elapsed real time from stored timestamps, not decrementing interval ticks.
 - Timer state survives panel collapse, page reload and temporary background throttling.
+- Every wake, foreground event, ticker pass and timer action rereads the canonical V3 timer before processing.
+- Each active timer has a `timerId`, revision, update timestamp and writer ID; a stale tab cannot save over a different newer timer identity.
 - The 500 ms display ticker updates only timer text nodes; it does not rebuild buttons while the user is clicking them.
-- Timer persistence uses the dedicated timer writer; unrelated UI/event saves do not overwrite timer state.
+- Timer persistence uses the dedicated guarded timer writer; unrelated UI/event saves do not overwrite timer state.
 - Manual −1/+1 minute adjustments preserve reached milestone history, so moving backward and crossing the same point again does not duplicate its alarm.
 - Adding time after expiry reopens the clock without rearming the already-sent 30-minute alarm.
 - Start replaces another running/paused timer only after confirmation.
 - A date/session mismatch is shown explicitly; a timer is never silently transferred to another session.
 - If several milestones become due while the page is suspended, earlier due milestones are marked reached and the latest due notification is emitted to avoid an alarm burst.
+- A short shared notification claim elects one Capture instance per milestone, so multiple open tabs produce one system notification and one milestone sound.
 - Sound can be toggled and tested from the timer controls.
 - Browser autoplay rules may require the Start or Test button to prime Web Audio after a page reload.
 - Timer expiration does not create a pending session, score or repository change.
@@ -236,8 +249,9 @@ Timer rules:
 1. Open the tracked .user.js file.
 2. Copy the complete source into its matching Tampermonkey script.
 3. Save in Tampermonkey.
-4. Reload ChatGPT.
-5. Use https://chatgpt.com for the shared V1 localStorage origin.
+4. Save the userscript, then reload or close every already-open ChatGPT tab once so no old Capture instance remains active.
+5. Reopen ChatGPT and verify that all tabs show the same current timer.
+6. Use https://chatgpt.com for the shared V1 localStorage origin.
 ```
 
 
@@ -309,6 +323,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Pattern Capture requires a published operational path and SHA-256 before Finish.
 - Capture Date must be a valid YYYY-MM-DD value matching the published Dashboard session date before Finish.
 - Pattern Capture owns the session timer; Dashboard may only mirror it in a future read-only projection.
+- The canonical timer and notification claim remain in private GM storage and are shared across updated Capture instances.
 - Timer completion never calls Finish or writes the shared outbox automatically.
 - Manual session labels are separate from the expected sequential Markdown row number.
 - A changed source hash blocks extending an existing pending batch.
