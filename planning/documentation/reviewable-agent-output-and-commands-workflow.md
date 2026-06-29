@@ -1,8 +1,8 @@
 # Reviewable Agent Output And Commands Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.6.0-archive-source-selection
-Scope: answer levels, reviewable outputs, response-level command behavior, replacement-package source selection and the shared runtime contract for user-facing PowerShell Git commands.
+Doc version: v0.7.0-returned-file-revision
+Scope: answer levels, reviewable outputs, response-level command behavior, returned user-edited file revision, replacement-package source selection and the shared runtime contract for user-facing PowerShell Git commands.
 
 ## 1. Answer Levels
 
@@ -27,6 +27,10 @@ Use Level 2 or Level 3 for non-trivial file/docs/code/archive changes.
 
 обс / recheck context:
   recheck prior chat/context/sources before continuing.
+
+обн / upd / revise returned files:
+  review same-message user-edited returned Markdown/docs/planning files,
+  merge same-message clarifications and return complete revised versions.
 
 план файл-обновление / plan file update:
   produce file update plan; do not edit unless separately asked.
@@ -124,7 +128,53 @@ Resolve the source before creating a replacement archive.
 
 A same-message archive is current for the invocation because the user selected it together with the package command. The mandatory local-base verification remains an independent safety check.
 
-## 6. Archive Output Boundary
+## 6. Returned User-Edited Files
+
+Use this workflow when the user returns one or more changed files with `обн` or `upd`.
+
+Default scope:
+
+```text
+- Markdown documentation;
+- planning drafts;
+- other text documentation artifacts with a clearly matching prior version.
+```
+
+Code and executable configuration require a separate explicit code/update task unless the active route already owns them.
+
+Source and revision rules:
+
+```text
+1. Treat each file attached in the same message as the latest user-edited working version.
+2. Read every returned file completely before revising it.
+3. Compare with a clearly matching prior version when one is available.
+4. Identify what the user added, removed, reordered or reworded.
+5. Treat those edits as explicit new input and revision intent.
+6. Do not automatically treat every edited statement as a confirmed fact,
+   accepted decision or requirement.
+7. Preserve deliberate user edits unless they conflict with:
+   - an explicit reusable rule;
+   - a checked source fact;
+   - another explicit clarification in the same message;
+   - an ownership or safety boundary.
+8. Do not silently restore text that the user removed from the older version.
+9. Merge additional clarifications from the same message into the new version.
+10. Evaluate consistency, evidence status, artifact ownership and relationships
+    with other affected drafts.
+11. Improve Markdown presentation when useful:
+    headings, spacing, tables, grouping, ordering and scanability.
+12. Do not require the user to spend time polishing visual formatting.
+13. Update related files only when the returned changes or chat clarification
+    actually affects them.
+14. Return complete revised files, not isolated replacement fragments.
+15. Briefly state significant adjustments, conflicts and unresolved questions.
+```
+
+If no prior version is available, revise from the returned file and same-message clarification, and state that historical comparison was unavailable.
+
+This command is response-only by default. It does not authorize repository edits, archive creation, commit or push.
+
+## 7. Archive Output Boundary
 
 ```text
 - Creating an archive does not approve commit or push before diff review.
@@ -145,7 +195,7 @@ A same-message archive is current for the invocation because the user selected i
 - For archive apply/diff and finalization command formatting, also read `planning/documentation/documentation-update-workflow.md`.
 ```
 
-## 7. Do Not
+## 8. Do Not
 
 ```text
 - Do not pretend to have checked files not checked.
@@ -160,4 +210,7 @@ A same-message archive is current for the invocation because the user selected i
 - Do not split a normal approved repository-finalization stage into a commit-only command and a planned push-only command.
 - Do not provide a user-facing PowerShell Git stage that can stop in an interactive pager.
 - Do not print transferable full output to the console after it was already copied to the clipboard unless explicitly requested.
+- Do not treat user formatting effort as a prerequisite for revising returned Markdown/docs.
+- Do not silently restore removed content from a prior version.
+- Do not apply `обн` / `upd` to code without an explicit code/update route.
 ```

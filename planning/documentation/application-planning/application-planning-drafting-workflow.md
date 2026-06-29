@@ -25,6 +25,7 @@ The user may provide:
 - rough user ideas for possible improvement;
 - known products or integrations;
 - later-stage research, Legend, scenario, solution or prototype material;
+- user-edited returned drafts;
 - answers to earlier questions;
 - corrections and decisions.
 ```
@@ -79,20 +80,49 @@ Do not convert an unknown, feeling, suspected risk or user idea into a confirmed
 2. Identify which artifacts own the new material.
 3. Preserve unchanged confirmed content.
 4. Apply explicit corrections and answers.
-5. During first-stage capture, reconstruct the current sequence from complete or fragmented input.
-6. Attach strengths, experiences, problems, risks, workarounds, ideas and unknowns to current steps or cross-step records.
-7. Preserve the difference between experienced situations and suspected risks.
-8. Record user ideas without evaluating or accepting them during the first stage.
-9. Use descriptive problem groupings only when they help preserve relationships in the source material.
-10. Mark unresolved or missing information as `not provided`.
-11. Add prioritized questions only for information that materially improves the current artifact.
-12. Move evaluation, improvement targets, alternatives and future-workflow design to later-stage owners.
-13. Record user answers and decisions in the affected artifacts.
-14. Check whether downstream artifacts conflict with corrected upstream material.
-15. Return the full current draft set while the artifact family remains small and this remains useful.
+5. If the user returns edited drafts with `обн` or `upd`,
+   treat them as the latest user-edited working inputs and compare them
+   with clearly matching prior versions when available.
+6. During first-stage capture, reconstruct the current sequence from complete or fragmented input.
+7. Attach strengths, experiences, problems, risks, workarounds, ideas and unknowns to current steps or cross-step records.
+8. Preserve the difference between experienced situations and suspected risks.
+9. Record user ideas without evaluating or accepting them during the first stage.
+10. Use descriptive problem groupings only when they help preserve relationships in the source material.
+11. Mark unresolved or missing information as `not provided`.
+12. Add prioritized questions only for information that materially improves the current artifact.
+13. Move evaluation, improvement targets, alternatives and future-workflow design to later-stage owners.
+14. Record user answers and decisions in the affected artifacts.
+15. Check whether downstream artifacts conflict with corrected upstream material.
+16. Return the full current draft set while the artifact family remains small and this remains useful.
 ```
 
 The workflow is not append-only. When the user corrects an earlier statement, correct the current draft rather than retaining both versions as equally valid.
+
+## 4A. Returned User-Edited Drafts
+
+When the user returns one or more application-planning drafts with `обн` or `upd`:
+
+```text
+- treat each same-message returned draft as the latest user-edited working input;
+- read the complete returned file before revising it;
+- compare with the clearly matching prior draft when available;
+- identify deliberate additions, deletions, reordering and rewording;
+- preserve deliberate user edits unless they conflict with an explicit rule,
+  checked source fact, same-message clarification or artifact ownership boundary;
+- do not silently restore text removed by the user;
+- merge same-message clarifications into the relevant returned drafts;
+- keep confirmed facts, suggestions, risks, ideas, questions and decisions distinguishable;
+- evaluate whether the edit affects related drafts in the small artifact family;
+- update only the related drafts that are actually affected;
+- normalize headings, spacing, tables, grouping, ordering and scanability when useful;
+- do not require the user to polish Markdown presentation;
+- return complete revised files rather than isolated replacement fragments;
+- summarize significant structural adjustments and unresolved conflicts separately.
+```
+
+A user edit is explicit revision input, but it does not automatically make every edited claim a confirmed fact, accepted requirement or final decision.
+
+If the prior draft is unavailable, use the returned draft and same-message clarification as the current source and state that a historical comparison was not performed.
 
 ## 5. Full Draft-Set Mode
 
@@ -302,6 +332,9 @@ Before returning drafts:
 - Workflow steps include their purposes, not only actions.
 - Current facts, experiences, experienced problems, suspected risks, workarounds, ideas and unknowns remain distinguishable.
 - The first-stage draft does not contain improvement targets or future-workflow decisions.
+- Returned user-edited drafts preserve deliberate edits and do not silently restore removed content.
+- Same-message clarifications are reflected in the new complete draft versions.
+- Markdown presentation is normalized when useful without changing user intent.
 - Questions, corrections, answers and decisions are preserved.
 - The affected artifact uses its template.
 - Upstream and downstream artifacts do not silently contradict each other.
