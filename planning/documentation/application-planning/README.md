@@ -29,9 +29,11 @@ The process is iterative. Later evidence may revise later-stage artifacts and ma
 1. application-planning-responsibility-map.md
 2. application-planning-principles.md
 3. application-planning-drafting-workflow.md
-4. the relevant template under templates/
-5. the corresponding draft skeleton under drafts/ or a project-local copy
+4. the relevant recommended template under templates/, when useful
+5. the corresponding working draft under drafts/ or a project-local copy
 ```
+
+A template is a recommended representation, not the only valid representation. A compact or free-form Markdown draft is valid when it preserves the required semantic core, remains understandable and respects the artifact boundary.
 
 ## 3. Files
 
@@ -64,16 +66,19 @@ The files under `drafts/` are working instances. They may be empty starters or f
 
 ```text
 principles
-  own stable reusable rules;
+  own stable reusable rules and the required semantic core;
 
 workflow
-  owns the repeated user + AI drafting process;
+  owns the repeated user + AI drafting process,
+  format selection and progressive expansion;
 
 templates
-  own the provisional exact shape of each artifact;
+  own recommended reusable representations and optional expansion shapes,
+  not one mandatory universal layout;
 
 drafts
-  are working instances and do not own reusable rules;
+  are working instances and may use compact, expanded, specialized
+  or free Markdown representations while preserving the semantic core;
 
 current workflow analysis
   owns the present activity, workflow steps, user experience,
@@ -89,7 +94,32 @@ scenario templates and scenario drafts
   remain separate and are used after Product Legend produces candidate value scenarios.
 ```
 
-A filled draft under `drafts/` owns only its entered working content. Stable reusable rules remain in principles, workflow and templates.
+A filled draft under `drafts/` owns only its entered working content. Stable reusable rules remain in principles and workflow; templates provide useful starting and expansion forms.
+
+## 4A. Minimal-To-Complex Representation
+
+Application-planning artifacts use progressive disclosure:
+
+```text
+required semantic core
+  → simplest readable working representation
+  → optional local expansion when information becomes crowded
+  → specialized or alternative representation when the current form no longer works
+```
+
+Default behavior:
+
+```text
+- Start with the smallest representation that is clear, useful and maintainable.
+- Keep related information together where possible.
+- Prefer headings and short categorized blocks over tables or large sections containing one item.
+- Add structure only when it improves thinking, scanning, traceability or repeated editing.
+- Keep a simple high-level layer even after detailed drill-down is added.
+- Treat detailed sections as expansion behind a high-level abstraction, not as a replacement for it.
+- Permit free Markdown output when a fixed template would reduce clarity.
+```
+
+This direction is compatible with a future application in which required semantic fields become objects and one underlying record can be rendered as compact Markdown, expanded Markdown, cards, tables, diagrams or drill-down detail views. This documentation does not yet define the application data contract.
 
 ## 5. Current Deliberate Exclusions
 
@@ -104,7 +134,9 @@ This documentation family does not yet define:
 - automatic research or source verification;
 - a mandatory architecture such as standalone, extension or shared core;
 - a fixed universal problem taxonomy;
-- detailed scenario/domain/slice planning.
+- detailed scenario/domain/slice planning;
+- a complete application object model or rendering contract;
+- a mandatory template-selection engine.
 ```
 
 Those topics may be designed separately after the basic planning artifacts and workflow are exercised.
@@ -114,6 +146,8 @@ Those topics may be designed separately after the basic planning artifacts and w
 Reusable example coverage is `deferred`.
 
 The filled current-workflow draft is active working material, not a reusable example or a source of stable methodology rules.
+
+Additional compact, expanded and specialized template examples may be added after repeated use shows stable needs. Future variants should not become mandatory merely because they exist.
 
 ## 7. Do Not
 
@@ -126,4 +160,8 @@ The filled current-workflow draft is active working material, not a reusable exa
 - Do not turn Product Legend into a feature list or architecture document.
 - Do not perform detailed planning before the core value and major risks are understood well enough.
 - Do not create local responsibility maps inside templates/ or drafts/ unless their internal ownership becomes genuinely ambiguous.
+- Do not require every draft to use one fixed layout.
+- Do not start with the most complex known template.
+- Do not add tables, files or sections only to hold one small item.
+- Do not remove the high-level representation when detailed drill-down is introduced.
 ```

@@ -51,6 +51,61 @@ Decision:
 
 AI must not silently promote an inference, criticism or idea into a confirmed requirement.
 
+## 2A. Minimal-To-Complex Artifact Design
+
+Application-planning artifacts should grow from the smallest useful representation toward more complex forms only when the current amount or shape of information makes that necessary.
+
+The stable design layers are:
+
+```text
+required semantic core:
+  the meaning that must remain available regardless of layout;
+
+recommended initial representation:
+  the simplest compact form that is clear, useful and maintainable;
+
+optional expansion:
+  local drill-down, repeated records, tables, linked details or additional views
+  introduced only when they improve thinking, scanning, traceability or editing;
+
+alternative representation:
+  a specialized template or free Markdown arrangement used when the default
+  representation no longer fits the material.
+```
+
+Rules:
+
+```text
+- There is no single universally correct Markdown template.
+- Start with the simplest working representation rather than the most complete known template.
+- Keep related information together where possible.
+- Prefer compact prose, headings and categorized blocks over many tables or separate sections.
+- Do not create a large section or file only to contain one small item.
+- Omit empty categories instead of filling them with noise.
+- Preserve the user's wording, meaning and intuitive grouping before attempting abstraction.
+- Categorize user input before summarizing or restructuring it aggressively.
+- Add structure progressively when the current representation becomes crowded or hard to think with.
+- Keep the high-level representation after detailed drill-down is introduced.
+- Treat detailed views as content behind an abstraction, not as a replacement for the abstraction.
+- Permit compact, expanded, specialized and free Markdown representations when they preserve the semantic core and artifact boundary.
+- A template is a recommended representation and expansion guide, not automatically a mandatory schema.
+```
+
+When designing the initial representation, anticipate likely growth:
+
+```text
+- what information may accumulate;
+- whether the current arrangement will remain readable;
+- which parts may need stable IDs or repeated records;
+- where drill-down may later be attached;
+- whether a table, diagram, linked detail or alternate template may eventually help;
+- which semantic fields should remain stable if an application later turns them into objects.
+```
+
+Anticipating growth does not justify starting with the future complex form.
+
+A future application may represent the same semantic material through compact Markdown, expanded Markdown, cards, tables, diagrams, links and drill-down detail views. This principles file records that direction but does not define a JSON contract, object schema, rendering engine or mandatory application architecture.
+
 ## 3. Current Workflow And User-Experience Capture
 
 Before researching products, defining improvements or proposing a solution, capture the current activity as an end-to-end workflow and a current user-experience record.
@@ -73,22 +128,34 @@ The user may provide a complete algorithm, fragmented memories, complaints, posi
 For each meaningful current workflow step, capture when available:
 
 ```text
-- stable step ID;
-- trigger and purpose;
-- current actions;
-- inputs and outputs;
-- tools and environments;
-- dependencies on prior information or decisions;
+Required high-level semantic core:
+- stable step ID and name;
+- what currently happens;
+- why the step currently exists;
+- user experience and comments associated with the step.
+
+Current-state categories when present:
 - current strengths and satisfactory parts;
 - user experience and feelings;
 - experienced problem situations;
 - suspected problems or risks;
 - current workarounds;
-- exceptions and current alternative paths;
-- frequency and current impact when known;
 - existing user ideas associated with the step;
 - important unknowns.
+
+Optional detail when useful:
+- trigger;
+- current actions;
+- inputs and outputs;
+- tools and environments;
+- dependencies on prior information or decisions;
+- exceptions and current alternative paths;
+- frequency and current impact.
 ```
+
+The default first-stage representation should present the complete high-level workflow through step headings and prose, with a `User Experience And Comments` block inside each step. The block should contain only applicable categorized subheadings such as strengths, difficulties, experienced problems, risks, workarounds, thoughts, existing ideas and unknowns.
+
+Detailed step analysis is optional expansion. It should be added for selected steps only when the high-level step becomes too crowded, contains several internal activities or requires repeated structured records. It must not replace the simple high-level step description.
 
 The first stage must not formulate:
 
@@ -149,7 +216,9 @@ cross-step view:
   which current experiences or problem situations recur across steps.
 ```
 
-Use stable IDs for current-state records so corrections, repeated experiences and cross-step relationships remain unambiguous.
+The workflow-step view is the default high-level view. Cross-step records are optional expansion when repetition or relationships would otherwise become hard to understand.
+
+Use stable IDs for current-state records when corrections, repeated experiences and cross-step relationships require unambiguous references. Do not introduce an ID or table for every single sentence by default.
 
 ## 4. Opportunity And Ecosystem Research
 
@@ -394,12 +463,16 @@ Downstream artifacts should expose contradictions with upstream assumptions rath
 ```text
 - The user supplies current experience in whatever level of structure is available; the user is not required to diagnose the problem or design the solution.
 - AI reconstructs and structures current-state material without converting it into improvement targets.
-- AI structures later-stage material according to the principles and templates.
+- AI preserves user wording and intuitive grouping where possible, then categorizes the material.
+- AI starts from the simplest useful representation and expands only when the current form becomes difficult to think with or maintain.
+- AI does not create tables, files or large sections only to hold one small item.
+- AI keeps a simple high-level view when detailed drill-down is added.
+- AI structures later-stage material according to the principles and appropriate representations.
 - AI asks important questions and prioritizes blockers.
 - AI provides critical remarks and alternatives separately from requirements.
 - AI may create descriptive cross-step problem groupings, but must not turn them into root-cause conclusions or improvement targets during the first stage.
 - Answers and decisions remain in the artifact set.
-- Unknown sections remain `not provided` or explicitly unresolved.
+- Unknown material remains `not provided` or explicitly unresolved where a visible placeholder is useful; empty optional headings may be omitted.
 - For a small active artifact family, returning the full current draft set is preferred so context is not lost.
 ```
 
@@ -413,7 +486,10 @@ This principles file does not define:
 - source links, dependency propagation or stale-review rules;
 - JSON import/export contracts;
 - command aliases or runtime routing;
-- detailed production architecture.
+- detailed production architecture;
+- the future application object schema;
+- automatic conversion between every representation;
+- mandatory template-selection logic.
 ```
 
 ## 14. Success Criteria
@@ -423,6 +499,8 @@ The planning process is useful when:
 ```text
 - the current workflow and user experience are understandable before improvements or a product are proposed;
 - the first-stage record distinguishes current facts, strengths, experiences, experienced problems, suspected risks, workarounds, existing ideas and unknowns;
+- the initial draft is compact enough to think with and does not require unnecessary structure;
+- detailed information can be added without losing the high-level workflow view;
 - later improvement targets trace back to stable current-state references;
 - useful existing steps can later be preserved rather than rebuilt;
 - unnecessary or overly complex steps can later be removed or simplified;
@@ -432,5 +510,6 @@ The planning process is useful when:
 - major solution options and uncertainties are visible;
 - prototypes produce evidence tied to decisions;
 - detailed planning begins with fewer hidden assumptions;
-- AI assistance remains reviewable and does not become the source of user requirements.
+- AI assistance remains reviewable and does not become the source of user requirements;
+- a different Markdown representation can be used without losing the required semantic core.
 ```
