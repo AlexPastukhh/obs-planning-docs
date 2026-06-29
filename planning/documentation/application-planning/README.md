@@ -1,7 +1,7 @@
 # Application Planning Documentation Index
 
 Status: provisional reusable documentation-family index
-Scope: pre-detailed application planning from current-workflow analysis through ecosystem research, Product Legend, core value scenarios, solution overview and prototype learning.
+Scope: pre-detailed application planning from current-workflow and user-experience capture through ecosystem research, Product Legend, core value scenarios, solution overview and prototype learning.
 
 ## 1. Purpose
 
@@ -10,18 +10,18 @@ This folder defines a reusable planning process for understanding the current wo
 The intended progression is:
 
 ```text
-current workflow and problem analysis
+current workflow and user-experience capture
   → opportunity and ecosystem research
   → Product Legend
   → core value scenarios
   → solution overview
   → prototype plan
   → prototype result
-  → updated workflow analysis/research/Legend/scenarios/overview
+  → updated research/Legend/scenarios/overview
   → detailed scenario/domain/slice planning
 ```
 
-The process is iterative. Later research or prototype evidence may send planning back to any earlier artifact.
+The process is iterative. Later evidence may revise later-stage artifacts and may correct the current-state record only when it reveals that the recorded current workflow was incomplete or inaccurate.
 
 ## 2. Read Order
 
@@ -58,7 +58,7 @@ drafts/
   prototype-result.md
 ```
 
-The files under `drafts/` are deliberately empty starter skeletons. They do not contain accepted requirements for a concrete product.
+The files under `drafts/` are working instances. They may be empty starters or filled drafts, but they never own reusable rules.
 
 ## 4. Responsibility Boundary
 
@@ -73,21 +73,23 @@ templates
   own the provisional exact shape of each artifact;
 
 drafts
-  are empty working instances and do not own reusable rules;
+  are working instances and do not own reusable rules;
 
 current workflow analysis
-  owns the present activity, workflow steps, problem situations
-  and provisional problem units;
+  owns the present activity, workflow steps, user experience,
+  current strengths, problem situations, workarounds, existing user ideas
+  and unresolved current-state information;
 
 opportunity research
-  owns external alternatives and ways to keep, simplify, remove,
-  integrate, automate or build after the current workflow is understood;
+  owns formulated improvement targets, external alternatives and ways
+  to keep, simplify, remove, integrate, automate or build after the
+  current workflow is understood;
 
 scenario templates and scenario drafts
   remain separate and are used after Product Legend produces candidate value scenarios.
 ```
 
-Concrete product state should normally live in a project area or another explicit project-local location. The starter drafts here exist only to make the workflow immediately usable and reviewable.
+A filled draft under `drafts/` owns only its entered working content. Stable reusable rules remain in principles, workflow and templates.
 
 ## 5. Current Deliberate Exclusions
 
@@ -109,22 +111,17 @@ Those topics may be designed separately after the basic planning artifacts and w
 
 ## 6. Example Coverage
 
-Example coverage is `deferred`.
+Reusable example coverage is `deferred`.
 
-Reason:
-
-```text
-The templates are intentionally provisional,
-and the user requested empty draft skeletons rather than a filled example.
-Add a working example after the first complete real planning cycle stabilizes the shapes.
-```
+The filled current-workflow draft is active working material, not a reusable example or a source of stable methodology rules.
 
 ## 7. Do Not
 
 ```text
 - Do not treat AI suggestions as confirmed user requirements.
-- Do not start from a proposed product before the current workflow is understood.
-- Do not treat preliminary problem units as complete or final before the workflow pass is reviewed.
+- Do not require the user to know the problem, desired improvement or solution before the current workflow is captured.
+- Do not formulate improvement targets or future workflow changes inside the current-workflow capture stage.
+- Do not treat descriptive problem groupings as a final problem taxonomy.
 - Do not force a build decision before alternatives and uncertainty are visible.
 - Do not turn Product Legend into a feature list or architecture document.
 - Do not perform detailed planning before the core value and major risks are understood well enough.

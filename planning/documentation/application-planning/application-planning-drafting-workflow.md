@@ -1,144 +1,167 @@
 # Application Planning Drafting Workflow
 
 Status: provisional reusable workflow
-Scope: iterative user + AI drafting of current-workflow analysis, opportunity research, Product Legend, solution overview, prototype plan and prototype result artifacts.
+Scope: iterative user + AI drafting of current-workflow capture, opportunity research, Product Legend, solution overview, prototype plan and prototype result artifacts.
 
 ## 1. Purpose
 
-Use this workflow when a user provides fragmented workflow descriptions, ideas, observations, concerns, answers or prototype findings and wants them converted into reviewable application-planning drafts.
+Use this workflow when a user provides workflow descriptions, experiences, ideas, observations, concerns, answers or prototype findings and wants them converted into reviewable application-planning drafts.
+
+This file owns the repeated drafting process. Stable stage boundaries and planning invariants remain in `application-planning-principles.md`.
 
 ## 2. Inputs
 
 The user may provide:
 
 ```text
-- current workflow steps;
-- reasons for individual steps;
+- a complete current algorithm;
+- fragmented or out-of-order workflow descriptions;
+- reasons for individual current steps;
 - current strengths and convenient parts;
-- concrete problem situations;
+- feelings, uncertainty and cognitive burden;
+- concrete experienced problem situations;
+- suspected risks that have not yet occurred;
 - current workarounds;
-- preliminary problem groups;
-- rough ideas;
+- rough user ideas for possible improvement;
 - known products or integrations;
-- reasons to build or not build;
-- Product Legend fragments;
-- scenario candidates;
-- implementation options;
-- prototype ideas;
-- results and observations;
+- later-stage research, Legend, scenario, solution or prototype material;
 - answers to earlier questions;
 - corrections and decisions.
 ```
 
+Do not require the user to know the root problem, desired improvement or future solution before first-stage drafting begins.
+
 ## 3. Classification Before Writing
 
-For each input fragment, classify it as one of:
+For each input fragment, classify both its evidence status and its artifact role.
+
+Evidence status:
 
 ```text
 confirmed user statement;
 checked source fact;
 inference requiring confirmation;
 open question;
-critical remark;
-related idea;
 explicit answer;
 explicit decision.
 ```
 
-Do not convert an unknown into a plausible requirement simply to fill a template section.
+First-stage role when applicable:
+
+```text
+current workflow fact;
+current strength;
+user experience;
+experienced problem situation;
+suspected problem or risk;
+current workaround;
+existing user idea;
+unknown.
+```
+
+Later-stage role when applicable:
+
+```text
+critical remark;
+related idea;
+research finding;
+improvement target;
+solution option;
+prototype evidence.
+```
+
+Do not convert an unknown, feeling, suspected risk or user idea into a confirmed requirement simply to fill a template section.
 
 ## 4. Iterative Update Algorithm
 
 ```text
 1. Read the current complete draft set and the new user input.
-2. Identify which artifacts are affected.
+2. Identify which artifacts own the new material.
 3. Preserve unchanged confirmed content.
 4. Apply explicit corrections and answers.
-5. Move content to the artifact that owns it.
-6. Structure current activity as workflow steps before finalizing problem groups.
-7. Derive problem situations from concrete steps.
-8. Treat problem units as provisional and refine them after the workflow pass.
-9. Mark unresolved or missing information as `not provided`.
-10. Add prioritized questions for important unknowns.
-11. Add critical remarks for structural or feasibility problems.
-12. Add related ideas separately from accepted content.
+5. During first-stage capture, reconstruct the current sequence from complete or fragmented input.
+6. Attach strengths, experiences, problems, risks, workarounds, ideas and unknowns to current steps or cross-step records.
+7. Preserve the difference between experienced situations and suspected risks.
+8. Record user ideas without evaluating or accepting them during the first stage.
+9. Use descriptive problem groupings only when they help preserve relationships in the source material.
+10. Mark unresolved or missing information as `not provided`.
+11. Add prioritized questions only for information that materially improves the current artifact.
+12. Move evaluation, improvement targets, alternatives and future-workflow design to later-stage owners.
 13. Record user answers and decisions in the affected artifacts.
-14. Check whether downstream artifacts now conflict with upstream changes.
-15. Return the full current draft set while the artifact family remains small.
+14. Check whether downstream artifacts conflict with corrected upstream material.
+15. Return the full current draft set while the artifact family remains small and this remains useful.
 ```
 
-The workflow is not append-only. When the user corrects an earlier statement, the current draft should be corrected rather than retaining both as equally valid requirements.
+The workflow is not append-only. When the user corrects an earlier statement, correct the current draft rather than retaining both versions as equally valid.
 
 ## 5. Full Draft-Set Mode
 
 Default during early use:
 
 ```text
-Return the full current versions of:
-- current workflow and problem analysis;
-- opportunity and ecosystem research;
-- Product Legend;
-- solution overview;
-- prototype plan;
-- prototype result.
+Return the full current versions of the affected small artifact family when doing so reduces context loss.
 ```
-
-This reduces accidental loss of questions, criticism, answers and decisions across chat turns.
 
 A future application may support partial updates and structured import, but that behavior is out of scope here.
 
-## 6. Workflow-Step Drafting
+## 6. Current-Workflow Capture
 
-For each meaningful workflow step, capture:
+The user may begin from any mixture of:
 
 ```text
-- trigger;
-- purpose;
+- a workflow without a known problem;
+- discomfort without a known cause;
+- known experienced failures;
+- theoretical concerns;
+- positive experience with a workflow that mostly works;
+- one or more already imagined solution ideas;
+- a precise and detailed current process;
+- fragmented memories supplied over several messages.
+```
+
+Treat these as ordinary input conditions. Do not create separate formal modes or demand a different result from each condition.
+
+For each meaningful current workflow step, capture when available:
+
+```text
+- stable ID and name;
+- trigger and purpose;
 - current actions;
 - inputs and outputs;
 - tools and environments;
 - dependencies;
 - current strengths;
-- problem situations;
-- workarounds;
-- frequency when known;
-- cost or risk of error;
-- candidate change;
+- user experience and feelings;
+- experienced problem situations;
+- suspected problems or risks;
+- current workarounds;
+- exceptions and alternative current paths;
+- frequency and current impact when known;
+- existing user ideas related to the step;
 - unknowns.
 ```
 
-Do not describe only the steps related to a proposed product. Include satisfactory and apparently normal steps so they can also be kept, simplified, replaced or removed deliberately.
+Include satisfactory and apparently ordinary steps. Do not describe only the parts related to a product idea.
 
-## 7. Problem-Unit Refinement
+## 7. Descriptive Cross-Step Grouping
 
-Start from problem situations attached to workflow steps.
+Start from records attached to current workflow steps.
 
-A preliminary problem unit should identify:
-
-```text
-- an observable situation;
-- affected workflow steps;
-- a possible cause;
-- consequence;
-- risk;
-- current workaround;
-- provisional category;
-- current status.
-```
-
-After the end-to-end workflow is visible, review whether problem units should be:
+A descriptive problem grouping may identify:
 
 ```text
-added;
-split;
-merged;
-renamed;
-reclassified;
-linked to more steps;
-rejected as symptoms.
+- repeated observable situations;
+- affected current workflow steps;
+- experienced consequences;
+- current workarounds;
+- user-provided explanations or hypotheses;
+- evidence status;
+- unresolved questions.
 ```
 
-Do not treat the first problem list as complete.
+A grouping may be added, split, merged, renamed or removed to represent the current material more accurately.
+
+Do not use first-stage grouping to decide root cause, needed improvement, target workflow or product requirement.
 
 ## 8. Questions
 
@@ -151,7 +174,7 @@ Recommended fields:
 | ID | Stable local question identifier inside the draft. |
 | Question | The unresolved issue. |
 | Priority | Relative importance. |
-| Blocking | Whether progress depends on the answer. |
+| Blocking | Whether completing the current artifact depends on the answer. |
 | Status | `open`, `answered`, `deferred` or another explicitly chosen value. |
 | Answer | User-confirmed answer when available. |
 
@@ -161,25 +184,23 @@ Ask only questions that materially improve the artifact or prevent an unsafe ass
 
 ### Critical remarks
 
-Use for:
+During first-stage drafting, use critical remarks only for problems in the record itself, such as:
 
 ```text
-- contradictions;
-- unsupported conclusions;
-- unclear value;
+- contradictory descriptions of the current workflow;
 - incomplete workflow boundaries;
-- premature problem taxonomy;
-- scope inflation;
-- feasibility risk;
-- premature architecture;
-- prototype design that cannot answer its hypothesis.
+- an unsupported statement presented as a current fact;
+- current and future workflows being mixed together;
+- an idea being written as though it were already implemented.
 ```
+
+Later-stage critical remarks may address value, feasibility, architecture or prototype design.
 
 ### Related ideas
 
-Use for optional directions, improvements or alternatives that are not accepted requirements.
+During the first stage, store user-provided ideas as existing user ideas with their source context. Do not evaluate them there.
 
-Do not hide a critical concern inside a neutral idea list.
+AI-proposed alternatives belong to later-stage artifacts unless the user explicitly asks only to record them as unassessed material.
 
 ## 10. Answers And Decisions
 
@@ -188,22 +209,22 @@ Answer:
   resolves or narrows a question.
 
 Decision:
-  selects a direction or rule.
+  selects a drafting boundary, terminology or later-stage direction.
 ```
 
 A decision should include its current rationale when provided. AI may suggest a decision but must label it as a suggestion until the user accepts it.
 
 ## 11. Stage Progression
 
-### Current workflow analysis → opportunity research
+### Current workflow capture → opportunity research
 
-Proceed when the end-to-end workflow, step purposes, current strengths, major problem situations and provisional problem units are visible enough to research alternatives.
+Proceed when the current end-to-end workflow, user experience, current strengths, experienced problem situations, suspected risks, workarounds, existing user ideas and important unknowns are visible enough for later analysis.
 
-The problem-unit list may still change during or after research.
+The first stage does not need a validated root cause, desired improvement or selected solution.
 
 ### Opportunity research → Product Legend
 
-Proceed when alternatives, reasons to keep or change the workflow and reasons to test a new solution are sufficiently visible.
+Proceed when improvement targets, alternatives, reasons to preserve or change the workflow and reasons to test a new solution are sufficiently visible.
 
 ### Product Legend → core value scenarios
 
@@ -219,7 +240,9 @@ Select a prototype when an uncertainty could materially change product direction
 
 ### Prototype result → planning revision
 
-Update the workflow analysis, research, Legend, scenario candidates, solution overview and next prototype decisions from observed evidence.
+Update research, Legend, scenario candidates, solution overview and next prototype decisions from observed evidence.
+
+Correct the current-workflow record only when evidence shows that the recorded present workflow was inaccurate or when an intentional new current-state revision is being created.
 
 ## 12. Prototype Drafting Checks
 
@@ -242,12 +265,13 @@ Before accepting a prototype plan, check:
 
 ```text
 Current workflow analysis:
-  what the user does now, why each step exists,
-  where problem situations occur and how preliminary problem units are refined.
+  the current activity, step purposes, user experience, strengths,
+  experienced problems, suspected risks, workarounds, existing user ideas
+  and unresolved current-state information.
 
 Opportunity research:
-  which current or alternative solutions may keep, simplify,
-  remove, integrate, automate or replace workflow parts.
+  formulated improvement targets linked to current-state references,
+  existing and alternative solutions, workflow rationalizations and comparisons.
 
 Product Legend:
   the compact causal/value model.
@@ -274,10 +298,11 @@ Before returning drafts:
 ```text
 - Confirmed user content is distinguishable from AI suggestions.
 - No required-looking statement was invented to fill a blank.
+- The first-stage draft does not require the user to know the problem or solution.
 - Workflow steps include their purposes, not only actions.
-- Problem situations trace to concrete workflow steps.
-- Problem units remain provisional until reviewed across the workflow.
-- Questions, criticism, ideas, answers and decisions are preserved.
+- Current facts, experiences, experienced problems, suspected risks, workarounds, ideas and unknowns remain distinguishable.
+- The first-stage draft does not contain improvement targets or future-workflow decisions.
+- Questions, corrections, answers and decisions are preserved.
 - The affected artifact uses its template.
 - Upstream and downstream artifacts do not silently contradict each other.
 - Prototype results state evidence and limitations.

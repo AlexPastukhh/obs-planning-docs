@@ -12,9 +12,11 @@ The process should answer, in order:
 ```text
 What does the user actually do now?
 Why does each current step exist?
-Which parts are useful, satisfactory, inconvenient, risky or unnecessary?
-Which concrete problem situations occur inside the workflow?
-How should preliminary problem units be refined after the complete workflow is visible?
+What does the user experience at each step?
+Which parts are useful or satisfactory?
+Which concrete problem situations, suspected risks, workarounds, existing ideas and unknowns are present?
+Which current-state observations should later stages investigate?
+What should be improved, preserved or left unchanged?
 Can the workflow be kept, simplified, removed, integrated or automated before building?
 Do existing solutions or workflows already solve the remaining problems?
 Should the idea be integrated into an existing environment?
@@ -49,119 +51,124 @@ Decision:
 
 AI must not silently promote an inference, criticism or idea into a confirmed requirement.
 
-## 3. Current Workflow And Problem Analysis
+## 3. Current Workflow And User-Experience Capture
 
-Before researching products or proposing a solution, describe the current activity as an end-to-end workflow.
+Before researching products, defining improvements or proposing a solution, capture the current activity as an end-to-end workflow and a current user-experience record.
 
-The analysis should include all meaningful steps, not only steps related to a solution already imagined.
+The first stage is descriptive. It records what exists now and what the user currently understands, experiences, fears, works around or imagines.
 
-For each workflow step, identify:
+The user is not required to begin with:
 
 ```text
-- trigger;
-- purpose;
+- a clearly formulated problem;
+- a root-cause explanation;
+- a desired improvement;
+- a product concept;
+- a complete workflow description;
+- confidence that anything should change.
+```
+
+The user may provide a complete algorithm, fragmented memories, complaints, positive experiences, suspected risks, examples, uncertainties or already imagined ideas. These are valid forms of first-stage input, not separate planning modes.
+
+For each meaningful current workflow step, capture when available:
+
+```text
+- stable step ID;
+- trigger and purpose;
 - current actions;
 - inputs and outputs;
 - tools and environments;
 - dependencies on prior information or decisions;
-- current strengths and convenient parts;
-- concrete problem situations;
+- current strengths and satisfactory parts;
+- user experience and feelings;
+- experienced problem situations;
+- suspected problems or risks;
 - current workarounds;
-- frequency when known;
-- cost or risk of error;
-- candidate change;
+- exceptions and current alternative paths;
+- frequency and current impact when known;
+- existing user ideas associated with the step;
 - important unknowns.
 ```
 
-The analysis should make it possible to decide whether a step should be:
+The first stage must not formulate:
 
 ```text
-keep:
-  the current method is adequate;
-
-simplify:
-  reduce instructions, handoffs or repeated work;
-
-remove:
-  the step is unnecessary after workflow redesign;
-
-integrate:
-  use an existing product or platform;
-
-automate:
-  use scripts, CLI, AI or deterministic tooling;
-
-build:
-  create a new capability only when the remaining gap justifies it.
+- improvement targets;
+- desired future outcomes;
+- candidate changes to workflow steps;
+- keep / simplify / remove / integrate / automate / build decisions;
+- target workflows;
+- accepted product requirements;
+- solution comparisons.
 ```
 
-### Problem situations before problem taxonomy
+### Current-state evidence types
 
-Start from observable situations inside workflow steps.
-
-Describe separately:
+Keep these forms distinct:
 
 ```text
-situation:
-  what the user experiences;
+current workflow fact:
+  what the user currently does or a checked fact about the current environment;
 
-possible cause:
-  why the situation may occur;
+current strength:
+  what already works well or feels satisfactory;
 
-consequence:
-  what extra work or uncertainty follows;
+user experience:
+  how the workflow feels to the user, including confidence, friction,
+  cognitive load, uncertainty and fear of losing information;
 
-risk:
-  what may go wrong;
+experienced problem situation:
+  a concrete undesirable situation that has actually occurred;
 
-workaround:
-  how the user currently compensates.
+suspected problem or risk:
+  a possible weakness or future failure that is not yet confirmed;
+
+current workaround:
+  what the user currently does to compensate;
+
+existing user idea:
+  an idea already supplied by the user and recorded without evaluation;
+
+unknown:
+  information the user has not provided or does not know.
 ```
 
-Do not begin with a fixed taxonomy and force observations into it.
+### Descriptive problem groupings
 
-### Preliminary problem units
+Problem situations may be grouped under provisional IDs when this helps preserve relationships across steps.
 
-Problem units are intermediate planning objects used to group repeated or related problem situations.
+Such a grouping is descriptive only. It may be added, split, merged, renamed or removed to represent the user material more accurately, but it is not a root-cause conclusion, an improvement target or a product requirement.
 
-They are provisional until the complete workflow pass is reviewed.
-
-After the workflow is visible, problem units may be:
-
-```text
-added;
-split;
-merged;
-renamed;
-reclassified;
-linked to more workflow steps;
-rejected as symptoms of another problem.
-```
-
-Maintain two views:
+Maintain both views when useful:
 
 ```text
 workflow-step view:
-  which problems occur in each step;
+  what happens and what is experienced at each current step;
 
-problem-unit view:
-  in which steps the same problem appears.
+cross-step view:
+  which current experiences or problem situations recur across steps.
 ```
 
-A preliminary problem unit is not yet a product requirement.
+Use stable IDs for current-state records so corrections, repeated experiences and cross-step relationships remain unambiguous.
 
 ## 4. Opportunity And Ecosystem Research
 
-After the current workflow is understood, examine:
+After the current workflow and user experience are captured, later analysis may formulate provisional improvement targets by referencing specific current-state IDs.
+
+Only at this stage should planning examine:
 
 ```text
+- which current observations may justify change;
+- which useful current behavior must be preserved;
 - direct ready-made solutions;
 - alternative workflows that avoid a new product;
 - adjacent products and platforms;
-- solutions for individual workflow steps or problem units;
+- solutions for individual workflow steps or cross-step problem situations;
 - integration, extension and build options;
 - future changes that could strengthen or invalidate the need.
 ```
+
+A comparison should keep explicit traceability to the current-state record.
 
 A valid result may be:
 
@@ -365,29 +372,32 @@ The intended fate of the code should be chosen before implementation.
 ## 11. Iterative Artifact Chain
 
 ```text
-current workflow observations
-  → workflow steps and problem situations
-  → preliminary problem units
-  → refined problem units and rationalization candidates
-  → opportunity research evidence
+current user input
+  → current workflow steps and user-experience records
+  → experienced problems, suspected risks, workarounds, ideas and unknowns
+  → later-stage improvement targets linked to current-state IDs
+  → opportunity research evidence and alternatives
   → Product Legend
   → core value scenarios
   → solution overview
   → prototype hypothesis
   → prototype result
-  → revised workflow analysis, research, Legend, scenarios and overview
+  → revised research, Legend, scenarios and overview
 ```
+
+The current-state artifact is corrected when new information shows that the recorded present workflow was incomplete or inaccurate. It is not silently rewritten to resemble a proposed future workflow.
 
 Downstream artifacts should expose contradictions with upstream assumptions rather than silently working around them.
 
 ## 12. AI-Assisted Planning Principles
 
 ```text
-- The user supplies workflow understanding, product observations and decisions.
-- AI structures material according to the principles and templates.
+- The user supplies current experience in whatever level of structure is available; the user is not required to diagnose the problem or design the solution.
+- AI reconstructs and structures current-state material without converting it into improvement targets.
+- AI structures later-stage material according to the principles and templates.
 - AI asks important questions and prioritizes blockers.
 - AI provides critical remarks and alternatives separately from requirements.
-- AI may propose problem units but must keep them provisional until the workflow is reviewed.
+- AI may create descriptive cross-step problem groupings, but must not turn them into root-cause conclusions or improvement targets during the first stage.
 - Answers and decisions remain in the artifact set.
 - Unknown sections remain `not provided` or explicitly unresolved.
 - For a small active artifact family, returning the full current draft set is preferred so context is not lost.
@@ -411,11 +421,11 @@ This principles file does not define:
 The planning process is useful when:
 
 ```text
-- the current workflow is understandable before a product is proposed;
-- useful existing steps are preserved rather than rebuilt;
-- unnecessary or overly complex steps can be removed or simplified;
-- problem units trace back to concrete workflow situations;
-- problem units can be revised after the complete workflow is visible;
+- the current workflow and user experience are understandable before improvements or a product are proposed;
+- the first-stage record distinguishes current facts, strengths, experiences, experienced problems, suspected risks, workarounds, existing ideas and unknowns;
+- later improvement targets trace back to stable current-state references;
+- useful existing steps can later be preserved rather than rebuilt;
+- unnecessary or overly complex steps can later be removed or simplified;
 - an unnecessary build can be rejected or redirected early;
 - the Product Legend explains the reason to test the idea;
 - core value scenarios trace back to that reason;

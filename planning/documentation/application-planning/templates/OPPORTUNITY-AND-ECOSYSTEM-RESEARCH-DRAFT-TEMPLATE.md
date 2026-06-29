@@ -2,11 +2,11 @@
 
 Status: provisional reusable template
 
-## Inputs From Current Workflow Analysis
+## Referenced Current-State Material
 
-| Workflow step / problem unit | Needed outcome | Current workaround | Research focus |
+| Reference | Type | Current description | Source status |
 |---|---|---|---|
-| not provided | not provided | not provided | not provided |
+| not provided | workflow step / user experience / problem situation / suspected risk / workaround / existing idea / unknown | not provided | user-reported / checked / suspected / unknown |
 
 ## Purpose
 
@@ -14,13 +14,13 @@ Status: provisional reusable template
 not provided
 ```
 
+## Formulated Improvement Targets
+
+| ID | Improvement target | Why it may matter | Current-state references | Status |
+|---|---|---|---|---|
+| not provided | not provided | not provided | not provided | provisional / validated / rejected / deferred |
+
 ## Problem Summary
-
-```text
-not provided
-```
-
-## Current Workflow Summary
 
 ```text
 not provided
@@ -55,6 +55,12 @@ not provided
 | Option | What would be created | What would be reused | Advantages | Risks |
 |---|---|---|---|---|
 | not provided | not provided | not provided | not provided | not provided |
+
+## Current-Workflow Comparison
+
+| Candidate / finding | Current-state references | Expected effect on the current workflow | Current strengths preserved | New cost / risk | Status |
+|---|---|---|---|---|---|
+| not provided | not provided | not provided | not provided | not provided | open |
 
 ## Future Relevance
 

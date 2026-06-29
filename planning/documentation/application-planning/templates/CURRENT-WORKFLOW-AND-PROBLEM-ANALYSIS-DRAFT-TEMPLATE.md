@@ -8,7 +8,7 @@ Status: provisional reusable template
 not provided
 ```
 
-## Workflow Scope
+## Capture Scope
 
 ### Included
 
@@ -22,15 +22,23 @@ not provided
 not provided
 ```
 
+## User Starting Context
+
+| Field | Current statement |
+|---|---|
+| What the user currently understands | not provided |
+| What the user is unsure about | not provided |
+| Existing ideas already mentioned | not provided |
+
 ## Actors And Working Environment
 
-| Actor / environment | Role | Current tools | Unknowns |
+| Actor / environment | Current role | Current tools | Unknowns |
 |---|---|---|---|
 | not provided | not provided | not provided | not provided |
 
 ## Workflow Start And End
 
-| Boundary | Description |
+| Boundary | Current description |
 |---|---|
 | Start | not provided |
 | End | not provided |
@@ -43,7 +51,7 @@ not provided
 
 ## Workflow Step Index
 
-| ID | Step | Trigger | Purpose | Previous / next step |
+| ID | Current step | Trigger | Purpose | Previous / next step |
 |---|---|---|---|---|
 | not provided | not provided | not provided | not provided | not provided |
 
@@ -97,35 +105,41 @@ not provided
 not provided
 ```
 
-#### Problem Situations
+#### User Experience And Feelings
 
-| ID | Observable situation | Possible cause | Consequence | Risk |
+```text
+not provided
+```
+
+#### Experienced Problem Situations
+
+| ID | Current situation | Context / trigger | Experienced consequence | Current response / workaround | Evidence status |
+|---|---|---|---|---|---|
+| not provided | not provided | not provided | not provided | not provided | user-reported / checked / not provided |
+
+#### Suspected Problems Or Risks
+
+| ID | Concern | Why the user suspects it | Has it occurred? | Current evidence status |
 |---|---|---|---|---|
-| not provided | not provided | not provided | not provided | not provided |
+| not provided | not provided | not provided | not provided | suspected / unknown |
 
-#### Current Workarounds
-
-```text
-not provided
-```
-
-#### Frequency
+#### Exceptions And Current Alternative Paths
 
 ```text
 not provided
 ```
 
-#### Cost Or Risk Of Error
+#### Frequency And Current Impact
 
 ```text
 not provided
 ```
 
-#### Candidate Change
+#### Existing User Ideas Related To This Step
 
-```text
-keep / simplify / remove / integrate / automate / build / not provided
-```
+| Idea ID | User idea | What led to it | What the user thinks it may affect | User doubts | Evaluation status |
+|---|---|---|---|---|---|
+| not provided | not provided | not provided | not provided | not provided | recorded, not evaluated |
 
 #### Unknowns
 
@@ -133,71 +147,53 @@ keep / simplify / remove / integrate / automate / build / not provided
 not provided
 ```
 
-## Preliminary Problem Units
+## Cross-Step User Experience
 
-| ID | Title | Observable situation | Affected workflow steps | Possible cause | Consequence | Risk | Current workaround | Category | Status |
-|---|---|---|---|---|---|---|---|---|---|
-| not provided | not provided | not provided | not provided | not provided | not provided | not provided | not provided | not provided | provisional |
+| ID | Experience / concern | Affected current steps | Current description | Evidence status |
+|---|---|---|---|---|
+| not provided | not provided | not provided | not provided | not provided |
 
-## Problem Cross-References
+## Descriptive Problem Groupings
 
-| Problem unit | Workflow step | Local problem situation | Relation |
-|---|---|---|---|
-| not provided | not provided | not provided | not provided |
-
-## Problem-Unit Refinement
-
-| Candidate action | Problem units | Reason | Status |
-|---|---|---|---|
-| add / split / merge / rename / reclassify / reject / not provided | not provided | not provided | open |
+| ID | Current description | Related situations | Affected current steps | Current workarounds | Status |
+|---|---|---|---|---|---|
+| not provided | not provided | not provided | not provided | descriptive only |
 
 ## Current Strengths
 
-| Workflow area | What already works well | Keep / reconsider |
+| Current workflow area | What already works well | User evidence / comment |
 |---|---|---|
 | not provided | not provided | not provided |
 
 ## Existing Satisfactory Solutions
 
-| Workflow step / need | Current solution | Why it may already be sufficient | Unknowns |
+| Current step / need | Existing solution | Why it currently helps | Remaining uncertainty |
 |---|---|---|---|
 | not provided | not provided | not provided | not provided |
 
-## Potentially Unnecessary Steps
+## Existing User Ideas
 
-| Step | Why it may be unnecessary | Condition for removal |
-|---|---|---|
-| not provided | not provided | not provided |
+| ID | User idea | Related current steps / experiences | User expectation | User doubts | Status |
+|---|---|---|---|---|---|
+| not provided | not provided | not provided | not provided | not provided | recorded, not evaluated |
 
-## Candidate Workflow Rationalizations
+## User Uncertainties
 
-| ID | Affected steps | Proposed change | Expected benefit | Risk / unknown |
-|---|---|---|---|---|
-| not provided | not provided | not provided | not provided | not provided |
-
-## Inputs For Opportunity Research
-
-| Workflow step / problem unit | Needed outcome | Current workaround | Research focus |
-|---|---|---|---|
-| not provided | not provided | not provided | not provided |
-
-## Questions
-
-| ID | Question | Priority | Blocking | Status | Answer |
-|---|---|---:|---:|---|---|
-| not provided | not provided | not provided | not provided | open | not provided |
-
-## Critical Remarks
-
-| ID | Remark | Why it matters | Status |
+| ID | User uncertainty | Related current material | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | open |
 
-## Related Ideas
+## Missing Information And Questions
 
-| ID | Idea | Relation | Status |
+| ID | Question | Priority | Blocking for first-stage completeness | Status | Answer |
+|---|---|---:|---:|---|---|
+| not provided | not provided | not provided | not provided | open | not provided |
+
+## Critical Remarks About The Record
+
+| ID | Record issue | Why it matters | Status |
 |---|---|---|---|
-| not provided | not provided | not provided | undecided |
+| not provided | not provided | not provided | open |
 
 ## User Answers
 
@@ -205,7 +201,7 @@ not provided
 not provided
 ```
 
-## Decisions
+## Decisions About Scope Or Terminology
 
 | ID | Decision | Rationale | Status |
 |---|---|---|---|
