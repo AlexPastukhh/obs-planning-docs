@@ -1,7 +1,7 @@
 # Use-Case Map Workflow
 
-Status: active reusable documentation-layer workflow  
-Doc version: v0.1.0
+Status: active reusable documentation-layer workflow
+Doc version: v0.2.0-command-english-name
 Scope: how to create, update and maintain use-case maps as reusable routing artifacts across systems
 
 ## 1. Purpose
@@ -63,6 +63,7 @@ It answers:
 
 ```text
 - User says X.
+- If this is a command family, what is its one canonical English name?
 - What task type is this?
 - Does active context matter?
 - How broad should traversal be?
@@ -120,6 +121,7 @@ Update an existing map when:
 ```text
 - a new recurring user action appears;
 - a command alias is accepted;
+- a command family needs a canonical English name or that name changes;
 - expected output changes;
 - required reads or owner workflows change;
 - permission boundaries change;
@@ -134,16 +136,17 @@ Do not update a use-case map just because an implementation detail changed. Upda
 Before adding or changing a row:
 
 ```text
-1. Identify the concrete user phrasing or command.
-2. Decide whether this is a continuation command, primary use case or detailed trace.
-3. Identify active-context behavior.
-4. Decide traversal depth and read source mode.
-5. Identify activated workflows/templates.
-6. Identify required reads.
-7. Identify the source of obligation.
-8. Write the expected output.
-9. Write the permission boundary.
-10. Check that the row links to owner files instead of copying their logic.
+1. Identify the canonical user phrasing and aliases.
+2. For a command family, choose one required canonical English name distinct from aliases.
+3. Decide whether this is a continuation command, command route, primary use case or detailed trace.
+4. Identify active-context behavior.
+5. Decide traversal depth and read source mode.
+6. Identify activated workflows/templates.
+7. Identify required reads.
+8. Identify the source of obligation.
+9. Write the expected output.
+10. Write the permission boundary.
+11. Check that the row links to owner files instead of copying their logic.
 ```
 
 For broad changes, explain why the map itself needs the update and why the owner workflow/template is not the only file changed.
@@ -209,17 +212,22 @@ Permission rules copied from another owner file.
 
 For repeated or continuation commands, keep the row focused on active-context behavior.
 
-A continuation row should explain:
+Every command family must also record one canonical English display name in the concrete root UCM. The English name is not an alias list and does not own behavior.
+
+A continuation or command row should explain:
 
 ```text
+- canonical command and aliases;
+- one canonical English name;
 - how it behaves when active context exists;
 - how it behaves when no active context exists;
 - traversal depth;
 - read source mode;
-- expected output.
+- expected output;
+- permission boundary.
 ```
 
-Do not make command aliases silently change permissions, source requirements or repository state.
+Do not make command aliases or English-name changes silently alter permissions, source requirements or repository state.
 
 ## 10. Cross-System Reuse Rule
 
@@ -268,6 +276,7 @@ Before finalizing a use-case-map change, check:
 
 ```text
 - each new/changed row has a concrete user trigger;
+- each command family has one canonical English name distinct from aliases;
 - active-context behavior is clear when relevant;
 - required reads are not broader than needed;
 - owner workflows/templates are linked, not copied;
@@ -284,6 +293,8 @@ Before finalizing a use-case-map change, check:
 - Do not copy template bodies into use-case rows.
 - Do not duplicate responsibility-map ownership tables inside a use-case map.
 - Do not hide permission-changing behavior inside expected output text.
+- Do not make a command English name optional when the route is a command family.
+- Do not let an English alias silently become the canonical display name without a route update.
 - Do not add ad hoc source-version metadata to use-case rows before source/version governance is ready.
 - Do not make a concrete project map the source of truth for reusable use-case-map maintenance rules.
 ```

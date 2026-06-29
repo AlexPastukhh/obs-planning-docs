@@ -1,8 +1,8 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v0.2.2-application-planning-family
-Scope: reusable documentation architecture, application-planning guidance, update workflows, command creation, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
+Doc version: v0.4.0-command-planning-source-selection
+Scope: reusable documentation architecture, application-planning guidance, update workflows, command planning, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
 
 ## 1. Purpose
 
@@ -28,7 +28,7 @@ planning/areas/
 
 ```text
 planning/documentation/ = reusable process layer
-planning/planning-use-case-map.md = OBS runtime command router
+planning/planning-use-case-map.md = OBS runtime command router and canonical English-name owner
 planning/areas/ = OBS local applications of reusable processes
 ```
 
@@ -45,6 +45,7 @@ Core reusable documentation files:
 ```text
 planning/documentation/planning-docs-architecture-principles.md
 planning/documentation/documentation-responsibility-map.md
+planning/documentation/documentation-principles-read-workflow.md
 planning/documentation/documentation-update-workflow.md
 planning/documentation/documentation-update-plan-workflow.md
 planning/documentation/documentation-responsibility-zone-review-workflow.md
@@ -83,7 +84,6 @@ planning/documentation/parallel-work/parallel-sync-workflow.md
 planning/documentation/parallel-work/PARALLEL-WORKSPACE-TEMPLATE.md
 planning/documentation/parallel-work/PARALLEL-SYNC-PLAN-TEMPLATE.md
 ```
-
 
 Reusable application-planning family:
 
@@ -138,8 +138,9 @@ For normal OBS planning/documentation work after root files exist, start from:
 2. planning/planning-use-case-map.md
 3. planning/workflow-activation-map.md
 4. planning/root-source-sync-register.md
-5. relevant command owner docs
-6. Dashboard userscript/runtime help for local planning data
+5. relevant command and area owner docs
+6. relevant planning/documentation/... owner workflows/templates
+7. Dashboard userscript/runtime help when local planning data is in scope
 ```
 
 ## 5. Task Read Orders
@@ -148,26 +149,64 @@ For root use-case map or command-routing work:
 
 ```text
 1. planning/planning-use-case-map.md
-2. planning/documentation/field-kits/root-use-case-map-field-kit.md, only for route shape / seed-row guidance
-3. planning/documentation/use-case-map-workflow.md
-4. planning/documentation/USE-CASE-MAP-TEMPLATE.md
-5. planning/documentation/command-creation-workflow.md, when a command route is created or changed
-6. planning/documentation/tampermonkey-command-projection-workflow.md, when helper projection is in scope
+2. planning/documentation/documentation-principles-read-workflow.md
+3. planning/documentation/planning-docs-architecture-principles.md
+4. planning/documentation/documentation-responsibility-map.md
+5. planning/documentation/field-kits/root-use-case-map-field-kit.md, only for route shape / seed-row guidance
+6. planning/documentation/use-case-map-workflow.md
+7. planning/documentation/USE-CASE-MAP-TEMPLATE.md
+8. planning/documentation/command-creation-workflow.md, when a command route is planned or changed
+9. planning/documentation/example-coverage-workflow.md and examples index when coverage is relevant
+10. planning/documentation/tampermonkey-command-projection-workflow.md, only when helper projection is separately in scope
 ```
 
-For broad documentation updates:
+For documentation-principles preflight and broad documentation updates:
 
 ```text
-1. planning/README.md
-2. planning/planning-use-case-map.md
+1. planning/planning-use-case-map.md
+2. planning/README.md
 3. planning/workflow-activation-map.md
 4. planning/root-source-sync-register.md
 5. planning/documentation/README.md
-6. planning/documentation/planning-docs-architecture-principles.md
-7. planning/documentation/documentation-responsibility-map.md
-8. planning/documentation/documentation-update-plan-workflow.md, for plan-first broad changes
-9. planning/documentation/documentation-update-workflow.md, for approved edits
-10. other owner workflows/templates named by the route or task
+6. planning/documentation/documentation-principles-read-workflow.md
+7. planning/documentation/planning-docs-architecture-principles.md
+8. planning/documentation/documentation-responsibility-map.md
+9. planning/documentation/documentation-update-plan-workflow.md, for plan-first broad changes
+10. planning/documentation/documentation-update-workflow.md, for approved edits
+11. planning/documentation/documentation-responsibility-zone-review-workflow.md, when ownership/classification is non-trivial
+12. other owner workflows/templates named by the route or task
+```
+
+Use a full preflight when the route has not been read in the current chat, is not remembered, or documentation ownership/boundaries are uncertain. Use a targeted refresh only after a current full pass.
+
+For replacement archive/package work:
+
+```text
+1. planning/planning-use-case-map.md
+2. planning/documentation/reviewable-agent-output-and-commands-workflow.md
+3. relevant package workflow, such as planning/documentation/documentation-update-workflow.md
+4. relevant owner docs and target files
+5. relevant example only when the route requires example confirmation
+```
+
+For scenario planning workspace work:
+
+```text
+1. planning/planning-use-case-map.md
+2. planning/areas/planning-system/README.md
+3. planning/areas/planning-system/scenario-planning-workspace-workflow.md
+4. planning/areas/planning-system/scenario-planning-workspace-template.md
+```
+
+For application discovery, Product Legend, solution overview or prototype planning:
+
+```text
+1. planning/documentation/application-planning/README.md
+2. planning/documentation/application-planning/application-planning-responsibility-map.md
+3. planning/documentation/application-planning/application-planning-principles.md
+4. planning/documentation/application-planning/application-planning-drafting-workflow.md
+5. the relevant template under planning/documentation/application-planning/templates/
+6. the corresponding draft skeleton or project-local draft
 ```
 
 For conspect work:
@@ -187,18 +226,6 @@ For parallel-agent workspace or aggregate sync work:
 4. relevant templates under planning/documentation/parallel-work/
 ```
 
-
-For application discovery, Product Legend, solution overview or prototype planning:
-
-```text
-1. planning/documentation/application-planning/README.md
-2. planning/documentation/application-planning/application-planning-responsibility-map.md
-3. planning/documentation/application-planning/application-planning-principles.md
-4. planning/documentation/application-planning/application-planning-drafting-workflow.md
-5. the relevant template under planning/documentation/application-planning/templates/
-6. the corresponding draft skeleton or project-local draft
-```
-
 ## 6. Do Not
 
 ```text
@@ -209,11 +236,8 @@ For application discovery, Product Legend, solution overview or prototype planni
 - Do not treat field kits as runtime routers after root files exist.
 - Do not treat parallel-work workspace copies as canonical documentation.
 - Do not create aggregate sync before at least one workspace is a sync-candidate.
-- Do not keep a second tracked project-local tools/tampermonkey copy by default.
+- Do not keep a second tracked project-local Tampermonkey helper while reusable-only placement is active.
 - Do not treat any Tampermonkey userscript as command authority.
 - Do not leave reusable Tampermonkey projection rules only in local tools or workstream files.
+- Do not keep a deprecated prompt as a competing owner after its workflow has been renamed.
 ```
-
-## 7. Portability Note
-
-This folder may be copied to another project as a reusable process layer. The target project should then create its own root use-case map and project-specific root/register files from field kits. Do not blindly copy another project's root files as active configuration.

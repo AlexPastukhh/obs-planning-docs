@@ -1,6 +1,7 @@
 # Portable Starter Kit
 
-Status: active one-time portable adaptation guide  
+Status: active one-time portable adaptation guide
+Doc version: v0.2.0-documentation-preflight
 Scope: how to copy and adapt this reusable documentation layer into a new project or documentation domain
 
 ## 1. When To Read This File
@@ -24,6 +25,7 @@ Copy the reusable documentation layer core:
 planning/documentation/README.md
 planning/documentation/planning-docs-architecture-principles.md
 planning/documentation/documentation-responsibility-map.md
+planning/documentation/documentation-principles-read-workflow.md
 planning/documentation/documentation-update-workflow.md
 planning/documentation/documentation-update-plan-workflow.md
 planning/documentation/documentation-responsibility-zone-review-workflow.md
@@ -56,6 +58,8 @@ Copy generic examples:
 
 ```text
 planning/documentation/examples/README.md
+planning/documentation/examples/PLAN-COMMAND-VALID-EXECUTION-EXAMPLE.md
+planning/documentation/examples/ARCHIVE-SOURCE-VS-OUTPUT-PACKAGE-EXAMPLE.md
 planning/documentation/examples/STATUS-RECONCILIATION-SCENARIO-PROJECT-EXAMPLE.md
 planning/documentation/examples/SHARED-VISIBILITY-SCENARIO-PROJECT-EXAMPLE.md
 planning/documentation/examples/SOURCE-USAGE-CASCADE-GENERIC-EXAMPLE.md
@@ -154,13 +158,14 @@ Before considering the copied layer ready:
 ```text
 1. Replace project names and project-specific paths.
 2. Create the root use-case map for the new project.
-3. Create root project profiles/maps from field kits.
-4. Decide which generic examples remain useful.
-5. Keep or replace project-specific examples.
-6. Create a fresh project action log if needed.
-7. Do not copy migration or legacy folders as active documentation.
-8. If helper UI commands are needed, use planning/documentation/tools/tampermonkey/ as the reusable helper source and keep Tampermonkey projection rules inside planning/documentation/.
-9. Confirm README read order points to the new project's root files.
+3. Give every command family one canonical English display name in that root UCM.
+4. Create root project profiles/maps from field kits.
+5. Decide which generic examples remain useful.
+6. Keep or replace project-specific examples.
+7. Create a fresh project action log if needed.
+8. Do not copy migration or legacy folders as active documentation.
+9. If helper UI commands are needed, use planning/documentation/tools/tampermonkey/ as the reusable helper source and keep Tampermonkey projection rules inside planning/documentation/.
+10. Confirm README read order points to the new project's root files.
 ```
 
 ## 9. Stop Condition
@@ -186,4 +191,4 @@ The reusable full helper is tracked inside:
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-Do not create a second tracked project-local helper copy by default. A copied project may install/adapt the userscript in Tampermonkey, but command semantics still come from the project root UCM and owner workflows.
+Do not create a second tracked project-local helper copy by default. A copied project may install/adapt the userscript in Tampermonkey, but command semantics and canonical English names still come from the project root UCM and owner workflows.
