@@ -1,7 +1,7 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v0.4.0-command-planning-source-selection
+Doc version: v0.5.0-command-planning-projection
 Scope: reusable documentation architecture, application-planning guidance, update workflows, command planning, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
 
 ## 1. Purpose
@@ -52,7 +52,7 @@ planning/documentation/documentation-responsibility-zone-review-workflow.md
 planning/documentation/use-case-map-workflow.md
 planning/documentation/USE-CASE-MAP-TEMPLATE.md
 planning/documentation/reviewable-agent-output-and-commands-workflow.md
-planning/documentation/command-creation-workflow.md
+planning/documentation/command-planning-workflow.md
 planning/documentation/tampermonkey-command-projection-workflow.md
 planning/documentation/example-coverage-workflow.md
 planning/documentation/file-update-overview-workflow.md
@@ -155,7 +155,7 @@ For root use-case map or command-routing work:
 5. planning/documentation/field-kits/root-use-case-map-field-kit.md, only for route shape / seed-row guidance
 6. planning/documentation/use-case-map-workflow.md
 7. planning/documentation/USE-CASE-MAP-TEMPLATE.md
-8. planning/documentation/command-creation-workflow.md, when a command route is planned or changed
+8. planning/documentation/command-planning-workflow.md, when a command route is planned or changed
 9. planning/documentation/example-coverage-workflow.md and examples index when coverage is relevant
 10. planning/documentation/tampermonkey-command-projection-workflow.md, only when helper projection is separately in scope
 ```

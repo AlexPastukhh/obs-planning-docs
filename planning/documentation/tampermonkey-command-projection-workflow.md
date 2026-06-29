@@ -1,7 +1,7 @@
 # Tampermonkey Command Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.7.0-command-planning-archive-validation
+Doc version: v0.8.0-standalone-doc-principles-command
 Scope: reusable rules for projecting accepted project command routes and owner-read refinements into the reusable Tampermonkey/ChatGPT command helper UI.
 
 ## 1. Core Rule
@@ -123,10 +123,6 @@ Each command row uses sibling controls:
 Full:
   insert forced-full command body
 
-Docs:
-  only for command routes that require the documentation-principles preflight;
-  insert the approved owner-read refinement
-
 Cmd fmt:
   for `давай архив` only;
   reread the route and archive command-format/source-selection owners,
@@ -138,8 +134,6 @@ Copy:
 ```
 
 Do not nest buttons inside another button. Do not duplicate the whole command definition to create another read variant.
-
-The current documentation approves `Docs` for `спланируй команду`; userscript implementation remains a separate file-update batch.
 
 ## 7. Owner-Read Refinement Contract
 
@@ -166,28 +160,43 @@ instruction:
 
 Do not duplicate owner rules inside the userscript or refinement body.
 
-### Documentation principles refinement
+### Standalone documentation-principles command
 
-Approved for `спланируй команду`:
+Project the accepted UCM route as its own command profile:
 
 ```text
-[PLANNING_COMMAND_REFINEMENT]
+id:
+  documentation_principles.read
+
+command:
+  прочитай принципы документации
+
+englishName:
+  read documentation principles
+
+commandFamily:
+  `прочитай принципы документации` / `прочти принципы документации` / `принципы документации` / `read documentation principles` / `documentation principles` / `docs principles`
+```
+
+The row uses the normal adaptive, `Full` and `Copy` controls. Do not add a separate `Docs` refinement to `спланируй команду`; the standalone command already owns that user-facing route, while the plan-command owner still requires the preflight internally.
+
+### Canonical plan-command projection
+
+```text
+id:
+  command.plan
+
 command:
   спланируй команду
 
-refinement:
-  documentation_principles
+englishName:
+  plan command
 
-read_required:
-  - `planning/documentation/documentation-principles-read-workflow.md`
-
-instruction:
-  Reread this workflow, follow its complete required documentation preflight for the active command-planning task, and preserve the plan-only permission boundary.
-
-[/PLANNING_COMMAND_REFINEMENT]
+commandFamily:
+  `спланируй команду` / `plan command`
 ```
 
-The workflow itself expands to architecture, responsibility, update-plan/update and task-specific owners. The refinement does not copy that list.
+Do not retain creation-wording IDs, labels or aliases after the root UCM removes them.
 
 ### Archive command-format refinement
 
@@ -260,5 +269,6 @@ Do not create a tracked local `tools/tampermonkey/` copy by default.
 - Do not keep competing tracked helper copies by default.
 - Do not silently change command meaning while adding UI controls.
 - Do not treat Full as permission to read unrelated repository files.
-- Do not treat Docs as permission to edit files or create an archive.
+- Do not recreate a `Docs` refinement when the standalone documentation-principles command is projected.
+- Do not retain removed creation-wording IDs, labels or aliases for `спланируй команду`.
 ```

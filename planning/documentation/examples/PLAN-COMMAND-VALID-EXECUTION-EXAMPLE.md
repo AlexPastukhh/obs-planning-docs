@@ -1,7 +1,7 @@
 # Plan Command Valid Execution Example
 
 Status: supporting reusable example
-Doc version: v0.3.0-command-planning-preflight
+Doc version: v0.4.0-canonical-plan-command
 Scope: demonstrates safe plan-only command-route planning after the documentation-principles preflight.
 
 ## Demonstrated Route
@@ -19,8 +19,6 @@ Composition:
   + command-specific owner reads
 ```
 
-Legacy aliases such as `создай команду` and `create command` do not authorize implementation.
-
 ## Required Reads
 
 ```text
@@ -28,7 +26,7 @@ planning/planning-use-case-map.md
 planning/documentation/documentation-principles-read-workflow.md
 planning/documentation/file-update-overview-workflow.md
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
-planning/documentation/command-creation-workflow.md
+planning/documentation/command-planning-workflow.md
 planning/documentation/use-case-map-workflow.md
 planning/documentation/USE-CASE-MAP-TEMPLATE.md
 planning/documentation/example-coverage-workflow.md
@@ -67,7 +65,7 @@ Final block:
 
 ```text
 planning/documentation/documentation-principles-read-workflow.md
-planning/documentation/command-creation-workflow.md
+planning/documentation/command-planning-workflow.md
 planning/documentation/file-update-overview-workflow.md
 ```
 

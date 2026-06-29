@@ -1,7 +1,7 @@
 # Documentation Layer Examples Index
 
 Status: active reusable examples index
-Doc version: v0.3.1-command-and-archive-examples
+Doc version: v0.4.0-canonical-plan-command
 Scope: navigation for reusable examples and project-specific demonstration examples.
 
 ## 1. Rule
@@ -21,7 +21,7 @@ planning/areas/*
 
 | Example | Type | Owner | Status |
 |---|---|---|---|
-| `PLAN-COMMAND-VALID-EXECUTION-EXAMPLE.md` | Command-planning execution | `command-creation-workflow.md`, `documentation-principles-read-workflow.md` | current |
+| `PLAN-COMMAND-VALID-EXECUTION-EXAMPLE.md` | Command-planning execution | `command-planning-workflow.md`, `documentation-principles-read-workflow.md` | current |
 | `ARCHIVE-SOURCE-VS-OUTPUT-PACKAGE-EXAMPLE.md` | Archive read-source vs output-package source selection | `reviewable-agent-output-and-commands-workflow.md`, root UCM | current |
 | `PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md` | File-update planning | `file-update-overview-workflow.md` | current |
 | `CRITICAL-REVIEW-COMMAND-EXAMPLE.md` | Critical review | root UCM and reviewable-output owner | current |

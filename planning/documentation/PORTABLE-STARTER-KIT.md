@@ -1,7 +1,7 @@
 # Portable Starter Kit
 
 Status: active one-time portable adaptation guide
-Doc version: v0.2.0-documentation-preflight
+Doc version: v0.3.0-command-planning-owner
 Scope: how to copy and adapt this reusable documentation layer into a new project or documentation domain
 
 ## 1. When To Read This File
@@ -35,7 +35,7 @@ planning/documentation/example-coverage-workflow.md
 planning/documentation/file-update-overview-workflow.md
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
 planning/documentation/reviewable-agent-output-and-commands-workflow.md
-planning/documentation/command-creation-workflow.md
+planning/documentation/command-planning-workflow.md
 planning/documentation/tampermonkey-command-projection-workflow.md
 planning/documentation/parallel-work/
 planning/documentation/PORTABLE-STARTER-KIT.md

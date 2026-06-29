@@ -1,7 +1,7 @@
 # Documentation Principles Read Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.1.0
+Doc version: v0.2.0-command-planning-owner
 Scope: full or targeted documentation architecture, ownership and update preflight before planning or changing documentation.
 
 ## 1. Purpose
@@ -84,7 +84,7 @@ Read:
 ```text
 planning/documentation/file-update-overview-workflow.md
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
-planning/documentation/command-creation-workflow.md
+planning/documentation/command-planning-workflow.md
 planning/documentation/use-case-map-workflow.md
 planning/documentation/USE-CASE-MAP-TEMPLATE.md
 planning/documentation/example-coverage-workflow.md

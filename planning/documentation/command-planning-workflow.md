@@ -1,14 +1,8 @@
 # Command Planning Workflow
 
 Status: active reusable documentation-layer command planning workflow
-Doc version: v0.5.0-plan-only-runtime-contract
+Doc version: v0.6.0-canonical-plan-command
 Scope: rules-based planning for new or changed command routes, canonical English names, owner semantics, examples, user-facing PowerShell Git output and optional Tampermonkey projection in projects using the reusable documentation layer.
-
-The file path is retained for compatibility:
-
-```text
-planning/documentation/command-creation-workflow.md
-```
 
 ## 1. Purpose
 
@@ -17,15 +11,9 @@ Use this workflow for the command family:
 ```text
 спланируй команду
 plan command
-создай команду
-создай новую команду
-добавь команду
-create command
-new command
-add command
 ```
 
-`спланируй команду` is the canonical command. All other phrases are aliases and remain plan-only. Wording such as `create command` does not authorize file creation, editing, archive creation, commit or push.
+`спланируй команду` is the canonical command and `plan command` is its canonical English trigger/name. This route is plan-only and does not authorize file creation, editing, archive creation, commit or push.
 
 A command route must be planned from current principles, owner workflows and templates, not by copying a previous row blindly.
 
@@ -232,7 +220,7 @@ Next action:
 - Do not create a command only by copying a similar UCM row.
 - Do not make Tampermonkey or an example the source of truth.
 - Do not make the canonical English name optional.
-- Do not treat `создай команду`, `create command` or another alias as implementation permission.
+- Do not treat `спланируй команду` or `plan command` as implementation permission.
 - Do not create a command whose user-facing PowerShell Git output bypasses the shared one-line, non-interactive and no-pager contract.
 - Do not duplicate the full PowerShell Git runtime contract inside UCM rows, examples or helper projections.
 - Do not edit or create files from this command family.

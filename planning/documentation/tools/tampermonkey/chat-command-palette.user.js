@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.9.2-archive-format-validation
-// @description  Reusable projection-only command helper with adaptive/full route reading and compact owner-read refinements.
+// @version      0.10.0-command-planning-projection
+// @description  Reusable projection-only command helper with canonical command names, adaptive/full route reading and compact owner-read refinements.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -55,10 +55,15 @@ TM-OBS-REUSE source sync:
       group: 'Commands',
       label: 'давай архив',
       description: 'output package',
-      englishName: 'give arch',
-      family: '`давай архив` / `собери архив` / `replacement package`',
+      englishName: 'build replacement archive',
+      family: '`давай архив` / `собери архив` / `give arch` / `replacement package`',
       reminders: [
         'Output-package mode, not archive read-source mode.',
+        'An earlier-message archive is not current automatically.',
+        'A source archive attached with this command is current for this invocation.',
+        'Otherwise use fully readable current repository files.',
+        'Request a fresh archive only when size/tool limits prevent reliable reading.',
+        'The apply stage must still verify exact local base blobs before changes.',
         'Produce a full replacement archive.',
         'Give apply/diff commands in chat.',
         'Use git add -N for new files before diff capture.',
@@ -85,11 +90,12 @@ TM-OBS-REUSE source sync:
       group: 'Commands',
       label: 'арх',
       description: 'archive source',
-      englishName: 'added arch',
-      family: '`арх` / `из архива` / `use archive`',
+      englishName: 'use archive',
+      family: '`арх` / `из архива` / `added arch` / `use archive`',
       reminders: [
         'Read-source mode, not output-package mode.',
-        'Use provided/latest archive as source snapshot.',
+        'Use only the archive explicitly selected for this invocation.',
+        'Do not silently treat an earlier-message archive as current.',
         'Do not create replacement archive unless separately requested.',
         'State archive freshness/source limits when relevant.'
       ],
@@ -101,7 +107,7 @@ TM-OBS-REUSE source sync:
       label: 'план файл-обновление',
       description: 'file plan',
       englishName: 'plan file update',
-      family: '`план файл-обновление` / `спланируй обновление файлов` / `спланируй архив`',
+      family: '`план файл-обновление` / `спланируй обновление файлов` / `спланируй архив` / `plan file update` / `archive plan`',
       reminders: [
         'Plan file/docs/code/archive update only.',
         'Treat only explicit user statements and checked source facts as confirmed.',
@@ -117,8 +123,8 @@ TM-OBS-REUSE source sync:
       group: 'Commands',
       label: 'крит',
       description: 'critical review',
-      englishName: 'crit',
-      family: '`крит` / `критически оцени` / `critical review`',
+      englishName: 'critical review',
+      family: '`крит` / `crit` / `critical review`',
       reminders: [
         'Treat target as hypothesis, not accepted truth.',
         'Give honest verdict with risks and assumptions.',
@@ -131,8 +137,8 @@ TM-OBS-REUSE source sync:
       group: 'Commands',
       label: 'обс',
       description: 'context recheck',
-      englishName: 'chat rech',
-      family: '`обс` / `перепроверь обсуждение` / `context recheck`',
+      englishName: 'recheck context',
+      family: '`обс` / `chat rech` / `recheck`',
       reminders: [
         'Re-check relevant prior discussion.',
         'Preserve accepted decisions and constraints.',
@@ -145,8 +151,8 @@ TM-OBS-REUSE source sync:
       group: 'Commands',
       label: 'положняк',
       description: 'current state',
-      englishName: 'polozh',
-      family: '`положняк` / `текущий положняк` / `current state`',
+      englishName: 'current state',
+      family: '`положняк` / `polozh` / `current state`',
       reminders: [
         'Report current repo/chat/planning state.',
         'Separate known, local, unknown and not checked.',
@@ -161,7 +167,7 @@ TM-OBS-REUSE source sync:
       label: 'планируй',
       description: 'plan now',
       englishName: 'plan now',
-      family: '`планируй` / `распланируй` / `plan`',
+      family: '`планируй` / `plan now`',
       reminders: [
         'Plan the next concrete step now.',
         'Treat only explicit user statements and checked source facts as confirmed.',
@@ -172,19 +178,36 @@ TM-OBS-REUSE source sync:
       target: '<what should be planned>'
     },
     {
-      id: 'command.create',
+      id: 'documentation_principles.read',
       group: 'Commands',
-      label: 'создай команду',
-      description: 'new command',
-      englishName: 'create command',
-      family: '`создай команду` / `создай новую команду` / `добавь команду` / `new command` / `create command`',
+      label: 'прочитай принципы документации',
+      description: 'documentation preflight',
+      englishName: 'read documentation principles',
+      family: '`прочитай принципы документации` / `прочти принципы документации` / `принципы документации` / `read documentation principles` / `documentation principles` / `docs principles`',
       reminders: [
-        'Create command semantics in UCM/owner docs first.',
-        'Tampermonkey is projection, not source of truth.',
-        'Define family, type, owner files, output and permission boundary.',
-        'Do not edit/create archive unless separately requested.'
+        'Read-only documentation architecture, ownership and update preflight.',
+        'Use full mode when the route has not been read, is not remembered, or ownership/boundaries are uncertain.',
+        'Use targeted refresh only after a current full pass.',
+        'Report Checked, Not checked, Authority/layer, Correct owner zone, Required route read and Boundaries.',
+        'Do not edit files, create an archive, commit or push.'
       ],
-      target: '<what command should be created or planned>'
+      target: '<documentation task or owner question>'
+    },
+    {
+      id: 'command.plan',
+      group: 'Commands',
+      label: 'спланируй команду',
+      description: 'plan command',
+      englishName: 'plan command',
+      family: '`спланируй команду` / `plan command`',
+      reminders: [
+        'Plan a command route only.',
+        'Run the documentation-principles preflight.',
+        'Produce a file-update plan and read command-specific owners.',
+        'Tampermonkey is projection, not source of truth.',
+        'Do not edit files, create an archive, commit or push.'
+      ],
+      target: '<what command route should be planned>'
     },
     {
       id: 'parallel_workspace.start',
@@ -192,7 +215,7 @@ TM-OBS-REUSE source sync:
       label: 'начни параллельную работу',
       description: 'parallel workspace',
       englishName: 'start parallel work',
-      family: '`начни параллельную работу` / `старт параллельной работы` / `parallel workspace` / `start parallel workflow`',
+      family: '`начни параллельную работу` / `start parallel work` / `parallel workspace`',
       reminders: [
         'Start one staging-only workspace only for a concrete target.',
         'Do not edit shared canonical docs directly from workspace phase.',

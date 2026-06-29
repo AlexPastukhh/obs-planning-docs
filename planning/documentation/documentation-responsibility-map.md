@@ -1,7 +1,7 @@
 # Documentation Responsibility Map
 
 Status: active reusable documentation-layer responsibility map
-Doc version: v0.4.0-documentation-preflight
+Doc version: v0.5.0-command-planning-owner
 Scope: routes reusable documentation-layer information and preflight processes to the correct owner file inside `planning/documentation/`.
 
 ## 1. Purpose
@@ -39,7 +39,7 @@ planning/README.md
 | Responsibility-zone review | `documentation-responsibility-zone-review-workflow.md` | How to classify existing text into owner zones. |
 | Use-case-map workflow | `use-case-map-workflow.md` | How to create/update concrete UCMs. |
 | Use-case-map template | `USE-CASE-MAP-TEMPLATE.md` | Exact reusable UCM and command-route shapes. |
-| Command planning | `command-creation-workflow.md` | Plan-only workflow for command routes, required English names and projection decisions. |
+| Command planning | `command-planning-workflow.md` | Plan-only workflow for command routes, required English names and projection decisions. |
 | Reviewable answer/output commands | `reviewable-agent-output-and-commands-workflow.md` | Answer levels, response-level commands, archive source selection and package review boundary. |
 | File update overview process | `file-update-overview-workflow.md` | When/how to produce file update overview and report selected package source. |
 | File update overview shape | `FILE-UPDATE-OVERVIEW-TEMPLATE.md` | Exact Markdown block shape. |

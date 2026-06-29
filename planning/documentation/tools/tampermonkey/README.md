@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.9.5-archive-format-validation
+Doc version: v0.10.0-command-planning-projection
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -46,7 +46,7 @@ Command semantics must come from:
 
 ```text
 planning/planning-use-case-map.md
-planning/documentation/command-creation-workflow.md
+planning/documentation/command-planning-workflow.md
 planning/documentation/tampermonkey-command-projection-workflow.md
 other linked command owner workflows/examples
 ```
@@ -278,6 +278,9 @@ The reusable Command Palette provides:
 - an explicit projection-only boundary: the root UCM and linked owner files remain command authority;
 - separate sibling controls for adaptive insertion, forced-full route insertion, approved owner-read refinements and copying, avoiding nested interactive elements;
 - one shared command definition for both insertion variants, so command semantics and reminders cannot drift;
+- a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
+- a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
+- no creation-wording command IDs, labels or aliases for the plan-command route;
 
 ```text
 - draggable helper panel;
@@ -297,6 +300,7 @@ The reusable Command Palette provides:
   `planning/documentation/reviewable-agent-output-and-commands-workflow.md` and
   `planning/documentation/documentation-update-workflow.md`;
 - the refinement body states the validation action but does not duplicate the one-line, non-interactive or no-pager owner rules;
+- no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
 - no repo writes, network calls, commits or pushes.
 ```
@@ -314,7 +318,9 @@ Before enabling or adapting the reusable helper for another project, verify:
 6. The helper remains projection-only.
 7. Adaptive and forced-full bodies are generated from the same command definition.
 8. Refinements contain route/owner paths and the requested validation action, not duplicated owner logic.
-9. No second tracked project-local command-helper copy is created by default.
+9. Standalone command rows use the exact canonical label and English name from the root UCM.
+10. Removed aliases and internal IDs are not retained for compatibility unless the root UCM still accepts them.
+11. No second tracked project-local command-helper copy is created by default.
 ```
 
 ## 11. Safety checks
@@ -336,6 +342,8 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not treat Command Palette as command authority.
 - Do not add project-only command semantics without a UCM route.
 - Do not duplicate archive command-format rules inside the helper refinement body.
+- Do not add a `Docs` refinement when the standalone documentation-principles command exists.
+- Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
 - Do not use any helper to write to the repo or perform external network calls.
 ```
