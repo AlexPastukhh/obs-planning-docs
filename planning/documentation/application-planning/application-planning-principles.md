@@ -1,515 +1,419 @@
-# Application Planning Principles
+# Solution And Workflow Planning Principles
 
 Status: provisional reusable principles
-Scope: stable guidance for planning an application before detailed scenario, domain and slice design.
+Doc version: v0.6.0-draft-tree-methodology
+Scope: stable guidance for planning candidate workflows and solutions before optional detailed implementation planning.
 
 ## 1. Purpose
 
-Application planning should reduce the risk of thoroughly designing the wrong product, solving only a visible symptom or preserving an unnecessarily complicated workflow.
-
-The process should answer, in order:
+Planning should reduce the risk of:
 
 ```text
-What does the user actually do now?
-Why does each current step exist?
-What does the user experience at each step?
-Which parts are useful or satisfactory?
-Which concrete problem situations, suspected risks, workarounds, existing ideas and unknowns are present?
-Which current-state observations should later stages investigate?
-What should be improved, preserved or left unchanged?
-Can the workflow be kept, simplified, removed, integrated or automated before building?
-Do existing solutions or workflows already solve the remaining problems?
-Should the idea be integrated into an existing environment?
-Why might the solution remain useful in the future?
-What core user scenarios express the reason to build it?
-What broad implementation directions are plausible?
-Which uncertainties should be tested before detailed planning?
-What did the prototypes teach us?
+- solving the wrong problem;
+- preserving an unnecessary workflow;
+- accepting the first idea too early;
+- losing important user-reported context;
+- designing details before the valuable behavior is understood;
+- creating documentation complexity that does not improve thinking.
 ```
+
+The method is an orientation toward a useful result, not a rigid ceremony.
 
 ## 2. Evidence Boundary
 
+Keep these statuses distinct:
+
 ```text
-Confirmed:
-  explicit user statements and checked source facts.
+confirmed:
+  explicit user statement or checked source fact;
 
-Inference:
-  a reasoned interpretation that still requires confirmation.
+inference:
+  reasoned interpretation requiring confirmation;
 
-Question:
-  an important unknown that should remain visible.
+question:
+  important unknown;
 
-Critical remark:
-  a structural, logical, economic or technical concern.
+critical remark:
+  structural, logical, economic or technical concern;
 
-Related idea:
-  a possible improvement or alternative, not a requirement.
+related idea:
+  possible improvement or alternative;
 
-Decision:
-  an explicit accepted choice with its current rationale.
+decision candidate:
+  option under consideration;
+
+decision:
+  explicit accepted choice with rationale;
+
+evidence:
+  observation produced by a test, prototype or checked source.
 ```
 
-AI must not silently promote an inference, criticism or idea into a confirmed requirement.
+AI must not silently promote an idea, risk, inference or unanswered fallback into a confirmed fact or final requirement.
 
-## 2A. Minimal-To-Complex Artifact Design
+## 3. Convenience-First Input
 
-Application-planning artifacts should grow from the smallest useful representation toward more complex forms only when the current amount or shape of information makes that necessary.
-
-The stable design layers are:
+The user may provide any mixture of:
 
 ```text
-required semantic core:
-  the meaning that must remain available regardless of layout;
+workflow facts;
+out-of-order steps;
+problems;
+strengths;
+feelings;
+risks;
+workarounds;
+ideas;
+alternatives;
+questions;
+corrections;
+decisions;
+prototype findings;
+implementation thoughts.
+```
 
-recommended initial representation:
-  the simplest compact form that is clear, useful and maintainable;
+The user is not required to identify the correct category, artifact or insertion point.
 
-optional expansion:
-  local drill-down, repeated records, tables, linked details or additional views
-  introduced only when they improve thinking, scanning, traceability or editing;
+AI should infer from context:
 
-alternative representation:
-  a specialized template or free Markdown arrangement used when the default
-  representation no longer fits the material.
+```text
+- evidence status;
+- information category;
+- affected artifact;
+- affected workflow step or position between steps;
+- whether the input adds, corrects, replaces, splits or links material;
+- whether a question is safer than an immediate assertion.
+```
+
+The user may correct the interpretation.
+
+## 4. Proposed Information Units Review
+
+For non-trivial free-form input, expose a compact interpretation review when it helps prevent silent misclassification.
+
+Recommended fields:
+
+| Field | Meaning |
+|---|---|
+| Unit ID | Local ID for the new input fragment |
+| Interpreted statement | AI's understanding |
+| Evidence status | User statement / checked fact / inference / question / decision candidate |
+| Category | Workflow fact / problem / risk / workaround / idea / criterion / decision / test / other |
+| Target artifact | Reality Capture / root draft / functional workflow / branch / detail / prototype |
+| Target location | Existing step / between steps / draft-level section / new candidate section |
+| Proposed action | Add / update / replace / split / link / ask / no change |
+| Confidence or question | Important ambiguity |
+
+AI may return the updated draft in the same response rather than requiring a separate approval ceremony.
+
+If the user does not correct the interpretation, it becomes the accepted working classification and placement for the current draft. The original evidence status remains unchanged.
+
+A later correction updates the current draft; do not preserve both interpretations as equally valid.
+
+## 5. Minimal-To-Complex Artifact Design
+
+Start with the smallest representation that is clear, useful and maintainable.
+
+```text
+required semantic core
+  → compact working representation
+  → local expansion
+  → linked detail, table, diagram or specialized view when justified
 ```
 
 Rules:
 
 ```text
-- There is no single universally correct Markdown template.
-- Start with the simplest working representation rather than the most complete known template.
-- Keep related information together where possible.
-- Prefer compact prose, headings and categorized blocks over many tables or separate sections.
-- Do not create a large section or file only to contain one small item.
-- Omit empty categories instead of filling them with noise.
-- Preserve the user's wording, meaning and intuitive grouping before attempting abstraction.
-- Categorize user input before summarizing or restructuring it aggressively.
-- Add structure progressively when the current representation becomes crowded or hard to think with.
-- Keep the high-level representation after detailed drill-down is introduced.
-- Treat detailed views as content behind an abstraction, not as a replacement for the abstraction.
-- Permit compact, expanded, specialized and free Markdown representations when they preserve the semantic core and artifact boundary.
-- A template is a recommended representation and expansion guide, not automatically a mandatory schema.
+- Keep related information together.
+- Omit empty optional sections.
+- Prefer headings and short blocks before large tables.
+- Add stable IDs only where references or repeated updates need them.
+- Preserve user wording and intuitive grouping before abstraction.
+- Keep the high-level view after adding detail.
+- Apply progressive complexity to files and folders, not only headings.
+- A template is a recommended representation, not a universal schema.
 ```
 
-When designing the initial representation, anticipate likely growth:
+Anticipating future growth does not justify starting with the future complex form.
+
+## 6. Current Reality Capture
+
+The first artifact is descriptive.
+
+It records:
 
 ```text
-- what information may accumulate;
-- whether the current arrangement will remain readable;
-- which parts may need stable IDs or repeated records;
-- where drill-down may later be attached;
-- whether a table, diagram, linked detail or alternate template may eventually help;
-- which semantic fields should remain stable if an application later turns them into objects.
-```
-
-Anticipating growth does not justify starting with the future complex form.
-
-A future application may represent the same semantic material through compact Markdown, expanded Markdown, cards, tables, diagrams, links and drill-down detail views. This principles file records that direction but does not define a JSON contract, object schema, rendering engine or mandatory application architecture.
-
-## 3. Current Workflow And User-Experience Capture
-
-Before researching products, defining improvements or proposing a solution, capture the current activity as an end-to-end workflow and a current user-experience record.
-
-The first stage is descriptive. It records what exists now and what the user currently understands, experiences, fears, works around or imagines.
-
-The user is not required to begin with:
-
-```text
-- a clearly formulated problem;
-- a root-cause explanation;
-- a desired improvement;
-- a product concept;
-- a complete workflow description;
-- confidence that anything should change.
-```
-
-The user may provide a complete algorithm, fragmented memories, complaints, positive experiences, suspected risks, examples, uncertainties or already imagined ideas. These are valid forms of first-stage input, not separate planning modes.
-
-For each meaningful current workflow step, capture when available:
-
-```text
-Required high-level semantic core:
-- stable step ID and name;
+- current workflow and sequence;
 - what currently happens;
-- why the step currently exists;
-- user experience and comments associated with the step.
-
-Current-state categories when present:
-- current strengths and satisfactory parts;
-- user experience and feelings;
-- experienced problem situations;
-- suspected problems or risks;
-- current workarounds;
-- existing user ideas associated with the step;
-- important unknowns.
-
-Optional detail when useful:
-- trigger;
-- current actions;
-- inputs and outputs;
-- tools and environments;
-- dependencies on prior information or decisions;
-- exceptions and current alternative paths;
-- frequency and current impact.
+- current intended explanation for a step;
+- user experience;
+- strengths;
+- experienced problems;
+- suspected risks;
+- workarounds;
+- existing ideas;
+- unknowns and contradictions.
 ```
 
-The default first-stage representation should present the complete high-level workflow through step headings and prose, with a `User Experience And Comments` block inside each step. The block should contain only applicable categorized subheadings such as strengths, difficulties, experienced problems, risks, workarounds, thoughts, existing ideas and unknowns.
+The user may begin with fragments, complaints, examples, positive experiences or imagined ideas.
 
-Detailed step analysis is optional expansion. It should be added for selected steps only when the high-level step becomes too crowded, contains several internal activities or requires repeated structured records. It must not replace the simple high-level step description.
+Current intended purpose is not automatically a validated underlying need.
 
-The first stage must not formulate:
+The capture must not formulate:
 
 ```text
-- improvement targets;
-- desired future outcomes;
-- candidate changes to workflow steps;
-- keep / simplify / remove / integrate / automate / build decisions;
-- target workflows;
-- accepted product requirements;
-- solution comparisons.
+- accepted future outcomes;
+- accepted acceptance criteria;
+- target workflow;
+- solution comparison;
+- build decision;
+- architecture.
 ```
 
-### Current-state evidence types
+Categorization is allowed. Evaluation is deferred.
 
-Keep these forms distinct:
+## 7. Planning Draft
+
+After enough current reality is visible, create a Planning Draft for one candidate end-to-end way to achieve a result.
+
+Its semantic core may include:
 
 ```text
-current workflow fact:
-  what the user currently does or a checked fact about the current environment;
-
-current strength:
-  what already works well or feels satisfactory;
-
-user experience:
-  how the workflow feels to the user, including confidence, friction,
-  cognitive load, uncertainty and fear of losing information;
-
-experienced problem situation:
-  a concrete undesirable situation that has actually occurred;
-
-suspected problem or risk:
-  a possible weakness or future failure that is not yet confirmed;
-
-current workaround:
-  what the user currently does to compensate;
-
-existing user idea:
-  an idea already supplied by the user and recorded without evaluation;
-
-unknown:
-  information the user has not provided or does not know.
+- source-reality references;
+- what needs to be achieved;
+- acceptance criteria and status;
+- boundaries and non-goals;
+- planning steps;
+- problems, risks and assumptions;
+- existing solutions and alternative workflows;
+- decisions;
+- tests and evidence;
+- branches;
+- current conclusion and next action.
 ```
 
-### Descriptive problem groupings
+A simple plan may omit most optional sections.
 
-Problem situations may be grouped under provisional IDs when this helps preserve relationships across steps.
+## 8. Desired Result And Acceptance Criteria
 
-Such a grouping is descriptive only. It may be added, split, merged, renamed or removed to represent the user material more accurately, but it is not a root-cause conclusion, an improvement target or a product requirement.
-
-Maintain both views when useful:
+A desired result or criterion may be:
 
 ```text
-workflow-step view:
-  what happens and what is experienced at each current step;
-
-cross-step view:
-  which current experiences or problem situations recur across steps.
+candidate;
+confirmed;
+needs evidence;
+rejected;
+superseded.
 ```
 
-The workflow-step view is the default high-level view. Cross-step records are optional expansion when repetition or relationships would otherwise become hard to understand.
+Do not invent a final criterion to fill a template.
 
-Use stable IDs for current-state records when corrections, repeated experiences and cross-step relationships require unambiguous references. Do not introduce an ID or table for every single sentence by default.
+Criteria should attach to validated outcomes, not automatically to every current step.
 
-## 4. Opportunity And Ecosystem Research
+Different interpretations of the desired result may remain candidates or become branches when independent planning is justified.
 
-After the current workflow and user experience are captured, later analysis may formulate provisional improvement targets by referencing specific current-state IDs.
+## 9. Application Root And Functional Workflows
 
-Only at this stage should planning examine:
+When one candidate application contains several valuable behavior lines, use one application-level root draft to coordinate them.
+
+The root owns:
 
 ```text
-- which current observations may justify change;
-- which useful current behavior must be preserved;
-- direct ready-made solutions;
-- alternative workflows that avoid a new product;
-- adjacent products and platforms;
-- solutions for individual workflow steps or cross-step problem situations;
-- integration, extension and build options;
-- future changes that could strengthen or invalidate the need.
+application identity;
+shared outcomes and criteria;
+workflow inventory;
+cross-workflow dependencies;
+shared concepts and constraints;
+actual solution branches;
+coordination and selection.
 ```
 
-A comparison should keep explicit traceability to the current-state record.
+A Functional Workflow Draft owns one independently understandable and testable behavior line.
 
-A valid result may be:
+It resembles a possible future slice, but at the early planning stage it does not fix implementation architecture.
+
+Create a separate workflow file only when the behavior has independent outcome, analysis, review or test value.
+
+Functional workflows are siblings inside one solution. They are not competing branches.
+
+## 10. Solution Branching
+
+A branch is created only when independently planning more than one alternative is useful.
+
+Before branching, the parent should record:
 
 ```text
-keep the current step;
-simplify the workflow;
-remove a step;
-build;
-integrate;
-extend an existing product;
-use a workflow or scripts;
-defer;
-run a prototype first;
-stop because a new solution is unnecessary.
+- decision point;
+- why separate analysis is justified;
+- why one option cannot yet be selected;
+- why another cannot yet be rejected;
+- assumptions;
+- evidence required;
+- selection criteria;
+- rejection criteria;
+- cost of maintaining the branch.
 ```
 
-Research should not be written as advocacy for the preferred idea. Alternatives and reasons not to build must remain visible.
+The parent owns comparison.
 
-## 5. Product Legend
+Each branch should be logically readable as a complete end-to-end option, even when physical storage uses inherited or linked content.
 
-The Product Legend is a compact causal and value model, not marketing copy.
+Nested branches are allowed.
 
-It should explain:
+## 11. Upstream Revision And Parallel Branches
+
+Later analysis may reveal that material before a divergence point must change.
+
+Possible responses:
 
 ```text
-who has the problem;
-what happens today;
-why the current situation is insufficient;
-why existing alternatives do not fully solve it;
-what fundamental change the application proposes;
-what useful loop the application enables;
-why the idea is worth testing;
-what it explicitly does not promise;
-how useful success would be observed.
+- update the parent and affected descendants;
+- create a new parent version;
+- keep a snapshot branch;
+- create an independent parallel branch;
+- discard the proposed upstream change.
 ```
 
-The Legend should remain smaller and more stable than the full scenario set.
+The method records the consequence. It does not require one application-specific versioning implementation.
 
-## 6. Deriving Core Value Scenarios
+## 12. Details And File Creation
 
-Core value scenarios are derived from the Legend statements that explain why the product is needed.
+Keep information together by default.
 
-Classify scenarios as:
+Create a separate detail artifact when it has independent value because it:
 
 ```text
-core value scenario:
-  directly demonstrates the proposed value;
-
-supporting scenario:
-  enables a value scenario but does not prove the idea by itself;
-
-future scenario:
-  expands the product but is not needed for the current value test.
+- is large enough to impair the parent;
+- has its own lifecycle or review;
+- is reused;
+- is opened independently;
+- changes at a different rate;
+- needs focused testing or research.
 ```
 
-A polished file explorer, settings screen or workspace creator may be necessary, but it does not prove value unless it participates in the core value loop.
+The parent keeps a useful summary and entry point.
 
-Full scenarios should be created through the existing scenario-draft principles and template rather than being fully defined inside the Product Legend.
+## 13. Implementation Thoughts
 
-## 7. Solution Overview
-
-The solution overview is a broad feasibility and option map before detailed architecture.
-
-It should compare plausible approaches such as:
+Early planning may include:
 
 ```text
-standalone application;
-extension inside an existing platform;
-shared narrow core with one primary client;
-CLI or scripts;
-integration with an existing product;
-no-build workflow.
+Implementation Thoughts / Future Implementation Notes
 ```
 
-It should identify:
+Keep each note near the workflow step, capability or model question it affects.
+
+Record its status:
 
 ```text
-required capabilities;
-reusable existing capabilities;
-system boundaries;
-major components;
-integration constraints;
-technical unknowns;
-major risks;
-rough relative effort;
-prototype candidates.
+explicit user idea;
+AI suggestion;
+open alternative;
+needs prototype;
+accepted direction;
+rejected direction.
 ```
 
-No approach is accepted merely because it appears in the overview.
+An implementation thought is not an architecture decision merely because it is technically plausible.
 
-### Shared core with clients
+Concrete object models, class boundaries, storage and serialization belong in project-specific drafts, not reusable principles.
 
-A `core + extension/standalone clients` direction means that domain rules and state transitions are separated from UI-specific code.
+## 14. Tests And Prototypes
 
-A narrow core may own:
+Start from uncertainty, not from a desired feature.
 
-```text
-identities;
-references;
-dependency-state rules;
-review transitions;
-context assembly;
-deterministic counts.
-```
-
-A client may own:
-
-```text
-VS Code tree views and commands;
-standalone screens;
-editor integration;
-platform-specific Git and filesystem adapters.
-```
-
-This does not require microservices or several products at the start. A safe first form is one application using a small internal library.
-
-The main risk is premature generalization. Do not design a universal platform before the first closed workflow is proven.
-
-## 8. Prototype Purpose
-
-A prototype exists to produce decision-relevant learning, not merely to demonstrate progress.
-
-Each prototype should state:
+A prototype should state:
 
 ```text
 hypothesis;
-question being tested;
+question;
 reason to test now;
 minimum sufficient setup;
-evidence to collect;
-success, failure and inconclusive criteria;
+evidence;
+success criteria;
+failure criteria;
+inconclusive criteria;
 timebox;
 decision affected;
-whether the code is throwaway or evolutionary.
+code fate.
 ```
 
-## 9. Prototype Types
-
-The taxonomy is pragmatic rather than a single universal standard. A prototype may fit more than one type.
-
-### Workflow / UX prototype
-
-Tests whether a user understands and can perform a workflow. It may use static or simulated behavior.
-
-### Technical spike
-
-A short investigation of a technical unknown, such as object identity, parsing, diff mapping or platform API behavior.
-
-### Integration prototype
-
-Tests whether a selected environment, such as VS Code, GitHub or a local filesystem, can support the required workflow.
-
-### Value prototype
-
-Tests whether the mechanism produces meaningful benefit in realistic work, not only whether it can be implemented.
-
-### Horizontal prototype
-
-Covers many screens or functions shallowly to test structure and navigation.
-
-### Vertical prototype / steel thread
-
-Implements one narrow scenario through the relevant layers and is especially useful for proving a core value loop.
-
-### Proof of concept
-
-Shows that a specific idea or mechanism is feasible.
-
-### Pilot
-
-Uses an almost-real solution in a limited real environment, such as one repository or one user.
-
-### Throwaway and evolutionary prototypes
+Useful types include:
 
 ```text
-throwaway:
-  code is created to obtain knowledge and is not a production foundation;
-
-evolutionary:
-  code may become part of the product and therefore needs deliberate boundaries and tests.
+workflow/UX prototype;
+technical spike;
+integration prototype;
+value prototype;
+horizontal prototype;
+vertical/steel-thread prototype;
+proof of concept;
+pilot.
 ```
 
-The intended fate of the code should be chosen before implementation.
+A prototype may be embedded or stored separately.
 
-## 10. General Prototype Principles
+Observed evidence updates affected criteria, assumptions, decisions, workflows and branches.
+
+## 15. Dynamic Revision
+
+Planning is not append-only.
+
+When corrected or new evidence arrives:
 
 ```text
-- Start from the uncertainty, not from a desired feature.
-- Test the highest-risk assumption early.
-- Use the lowest fidelity that can answer the question.
-- Do not combine unrelated hypotheses without a reason.
-- Define success, failure and inconclusive outcomes before execution.
-- Timebox the experiment.
-- Use realistic data where realism changes the result.
-- Distinguish a working demo from production readiness.
-- Preserve the learning, not only the code.
-- Treat negative results as useful evidence.
-- End with a decision gate: proceed, change direction, run another experiment, defer or stop.
+- update the current truth;
+- preserve deliberate user edits;
+- revisit affected downstream artifacts;
+- revisit upstream assumptions when necessary;
+- change representation when it no longer works;
+- keep the high-level entry point.
 ```
 
-## 11. Iterative Artifact Chain
+Detailed implementation planning may return the process to an earlier draft or another branch.
+
+## 16. Structured Source And AI Explanation
+
+The structured draft is the canonical working source.
+
+AI may generate:
 
 ```text
-current user input
-  → current workflow steps and user-experience records
-  → experienced problems, suspected risks, workarounds, ideas and unknowns
-  → later-stage improvement targets linked to current-state IDs
-  → opportunity research evidence and alternatives
-  → Product Legend
-  → core value scenarios
-  → solution overview
-  → prototype hypothesis
-  → prototype result
-  → revised research, Legend, scenarios and overview
+overview;
+deep explanation;
+resume-context explanation;
+selected-section explanation.
 ```
 
-The current-state artifact is corrected when new information shows that the recorded present workflow was incomplete or inaccurate. It is not silently rewritten to resemble a proposed future workflow.
+The explanation is a reading view derived from the structured source. It should not become a separately maintained truth.
 
-Downstream artifacts should expose contradictions with upstream assumptions rather than silently working around them.
+## 17. Entry Into Detailed Planning
 
-## 12. AI-Assisted Planning Principles
+Detailed scenario/domain/slice/implementation planning becomes useful when enough of the following are stable:
 
 ```text
-- The user supplies current experience in whatever level of structure is available; the user is not required to diagnose the problem or design the solution.
-- AI reconstructs and structures current-state material without converting it into improvement targets.
-- AI preserves user wording and intuitive grouping where possible, then categorizes the material.
-- AI starts from the simplest useful representation and expands only when the current form becomes difficult to think with or maintain.
-- AI does not create tables, files or large sections only to hold one small item.
-- AI keeps a simple high-level view when detailed drill-down is added.
-- AI structures later-stage material according to the principles and appropriate representations.
-- AI asks important questions and prioritizes blockers.
-- AI provides critical remarks and alternatives separately from requirements.
-- AI may create descriptive cross-step problem groupings, but must not turn them into root-cause conclusions or improvement targets during the first stage.
-- Answers and decisions remain in the artifact set.
-- Unknown material remains `not provided` or explicitly unresolved where a visible placeholder is useful; empty optional headings may be omitted.
-- For a small active artifact family, returning the full current draft set is preferred so context is not lost.
+- desired outcome;
+- acceptance criteria;
+- selected candidate workflow;
+- valuable functional workflows;
+- major constraints and integrations;
+- critical assumptions and evidence;
+- remaining known risks.
 ```
 
-## 13. Current Exclusions
+This is a judgment boundary, not a rigid gate.
 
-This principles file does not define:
-
-```text
-- file or artifact version-control mechanics;
-- action logging;
-- source links, dependency propagation or stale-review rules;
-- JSON import/export contracts;
-- command aliases or runtime routing;
-- detailed production architecture;
-- the future application object schema;
-- automatic conversion between every representation;
-- mandatory template-selection logic.
-```
-
-## 14. Success Criteria
-
-The planning process is useful when:
+## 18. Do Not
 
 ```text
-- the current workflow and user experience are understandable before improvements or a product are proposed;
-- the first-stage record distinguishes current facts, strengths, experiences, experienced problems, suspected risks, workarounds, existing ideas and unknowns;
-- the initial draft is compact enough to think with and does not require unnecessary structure;
-- detailed information can be added without losing the high-level workflow view;
-- later improvement targets trace back to stable current-state references;
-- useful existing steps can later be preserved rather than rebuilt;
-- unnecessary or overly complex steps can later be removed or simplified;
-- an unnecessary build can be rejected or redirected early;
-- the Product Legend explains the reason to test the idea;
-- core value scenarios trace back to that reason;
-- major solution options and uncertainties are visible;
-- prototypes produce evidence tied to decisions;
-- detailed planning begins with fewer hidden assumptions;
-- AI assistance remains reviewable and does not become the source of user requirements;
-- a different Markdown representation can be used without losing the required semantic core.
+- Do not require template-ordered user input.
+- Do not treat silence as evidence-status promotion.
+- Do not evaluate solution ideas inside Reality Capture.
+- Do not create a branch for every option.
+- Do not treat functional workflows as branches.
+- Do not create an empty artifact family in advance.
+- Do not make optional detail mandatory.
+- Do not turn implementation thoughts into architecture automatically.
+- Do not put a concrete application schema in reusable methodology.
+- Do not make AI explanation a second canonical source.
 ```

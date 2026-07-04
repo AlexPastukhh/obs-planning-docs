@@ -1,177 +1,250 @@
-# Application Planning Responsibility Map
+# Solution And Workflow Planning Responsibility Map
 
 Status: provisional reusable responsibility map
+Doc version: v0.6.1-folder-responsibility-map
 Scope: ownership of files and subfolders inside `planning/documentation/application-planning/`.
 
 ## 1. Purpose
 
-Use this file to decide where application-planning information belongs inside this folder.
+Use this file after the parent documentation responsibility map has routed reusable solution/workflow-planning information into this folder.
 
 It answers:
 
 ```text
-Which file owns a stable principle?
+Which file inside application-planning owns a stable principle?
 Which file owns the repeated drafting process?
-Which file owns the required semantic core?
-Which template owns a recommended representation or expansion form?
-What belongs only in a working draft?
+Which template owns a recommended representation?
+What is only a migration source?
+What belongs outside this reusable folder?
 ```
 
-It does not own concrete project command routing or detailed product state.
-
-## 2. Owner Table
-
-| Information type | Owner | Notes |
-|---|---|---|
-| Folder purpose and read order | `README.md` | Navigation and compact family overview only. |
-| Stable application-planning principles | `application-planning-principles.md` | Invariants, stage boundaries, required semantic core and minimal-to-complex representation rules. |
-| Repeated user + AI drafting process | `application-planning-drafting-workflow.md` | Input handling, classification, current-workflow reconstruction, format selection, progressive expansion, questions, iterative updates and stage transitions. |
-| Current workflow/user-experience recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Compact default shape plus optional drill-down and alternative representation guidance. |
-| Opportunity/ecosystem recommended representation | `templates/OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md` | Provisional sections for later improvement targets, alternatives and comparative research. |
-| Product Legend recommended representation | `templates/PRODUCT-LEGEND-DRAFT-TEMPLATE.md` | Provisional sections for the causal/value model. |
-| Solution overview recommended representation | `templates/SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md` | Provisional sections for implementation options, risks and rough effort. |
-| Prototype plan recommended representation | `templates/PROTOTYPE-PLAN-TEMPLATE.md` | Provisional hypothesis and experiment-plan representation. |
-| Prototype result recommended representation | `templates/PROTOTYPE-RESULT-TEMPLATE.md` | Provisional evidence and decision-record representation. |
-| Working instances | `drafts/` | Empty or filled working drafts. They own only entered content and may use compact, expanded, specialized or free Markdown representations. |
-
-## 3. Artifact Responsibility
-
-### Current Workflow And Problem Analysis
+Relationship to the parent map:
 
 ```text
+planning/documentation/documentation-responsibility-map.md:
+  routes information into the application-planning responsibility zone;
+
+this file:
+  routes information between files and subfolders inside that zone;
+
+README.md:
+  owns family navigation and read order.
+```
+
+It does not own project command routing or concrete product state.
+
+## 2. Internal Owner Table
+
+| Information type | Internal owner | Notes |
+|---|---|---|
+| Family purpose, lifecycle and read order | `README.md` | Navigation and compact family overview. |
+| Stable planning principles | `application-planning-principles.md` | Invariants, evidence boundaries and artifact responsibilities. |
+| Repeated user + AI drafting process | `application-planning-drafting-workflow.md` | Classification, updates, branching, representation and evidence feedback. |
+| Current Reality Capture recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Temporary legacy filename; active semantic role is Reality Capture. |
+| General root/branch Planning Draft representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | One candidate end-to-end plan. |
+| Functional Workflow Draft representation | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` | One independently understandable and testable behavior line. |
+| Prototype setup | `templates/PROTOTYPE-PLAN-TEMPLATE.md` | Optional experiment artifact. |
+| Prototype evidence | `templates/PROTOTYPE-RESULT-TEMPLATE.md` | Optional evidence artifact. |
+| Legacy opportunity-research representation | `templates/OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md` | Deprecated transition aid; not an active methodology owner. |
+| Legacy Product Legend representation | `templates/PRODUCT-LEGEND-DRAFT-TEMPLATE.md` | Deprecated transition aid; not an active methodology owner. |
+| Legacy solution-overview representation | `templates/SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md` | Deprecated transition aid; not an active methodology owner. |
+| Existing concrete draft migration sources | `drafts/` | Existing material to migrate deliberately; do not create new concrete product state here. |
+
+## 3. Artifact Responsibilities
+
+### Current Reality Capture
+
 Owns:
-- the current end-to-end activity;
-- why each current workflow step exists;
+
+```text
 - current actions and sequence;
-- current inputs, outputs, tools and dependencies when useful;
-- current strengths and satisfactory parts;
-- user experience and feelings;
+- current explanations and decisions as reported;
+- user experience;
+- current strengths;
 - experienced problem situations;
-- suspected problems or risks;
-- current workarounds and exceptions;
-- existing user ideas recorded without evaluation;
-- descriptive cross-step problem groupings when useful;
-- current unknowns and missing information.
+- suspected risks;
+- current workarounds;
+- existing user ideas without evaluation;
+- current unknowns and contradictions.
+```
 
 Does not own:
-- formulated improvement targets;
-- desired future outcomes;
-- candidate changes to workflow steps;
-- workflow rationalization decisions;
-- external market conclusions;
-- accepted product requirements;
-- target workflows;
-- detailed solution architecture.
-```
-
-Its required semantic core is independent of one Markdown layout. The initial representation should normally keep the high-level workflow, step purpose and categorized user experience together. Detailed step records are optional drill-down.
-
-### Opportunity And Ecosystem Research
 
 ```text
-Owns:
-- improvement targets formulated from references to the current-state artifact;
-- ready-made and adjacent solutions;
-- alternative workflows;
-- keep, simplify, remove, integrate, automate and build comparisons;
-- integration, extension and build options;
-- future relevance;
-- research findings and current opportunity conclusion.
-
-Uses stable references to the workflow analysis rather than recreating it in full.
+- validated underlying need;
+- target workflow;
+- accepted acceptance criteria;
+- alternative comparison;
+- build decision;
+- solution architecture.
 ```
 
-## 4. Subfolder Responsibility
+### Planning Draft
+
+Owns:
+
+```text
+- what may need to be achieved;
+- acceptance criteria and status;
+- planning steps;
+- existing solutions and alternatives;
+- questions, problems, risks and assumptions;
+- decisions;
+- tests and evidence;
+- branches and current conclusion.
+```
+
+### Application Root Planning Draft
+
+Owns shared application-level information:
+
+```text
+- application identity;
+- shared outcomes and criteria;
+- functional-workflow inventory;
+- cross-workflow dependencies and conflicts;
+- shared concepts, constraints and non-goals;
+- coordination of actual competing branches.
+```
+
+It should link to child workflow drafts instead of duplicating their full content.
+
+### Functional Workflow Draft
+
+Owns one valuable behavior line:
+
+```text
+- user outcome;
+- trigger and preconditions;
+- end-to-end steps;
+- local criteria;
+- local questions, risks and decisions;
+- local tests and evidence;
+- relationships to other workflows;
+- local implementation thoughts.
+```
+
+It is not automatically a scenario implementation slice and is not a solution branch.
+
+### Branch Planning Draft
+
+Owns one candidate alternative after an explicit divergence decision.
+
+The parent Planning Draft owns:
+
+```text
+- why branching is justified;
+- why options cannot yet be selected or rejected;
+- selection/rejection criteria;
+- branch inventory;
+- comparison and final decision.
+```
+
+### Detail Artifact
+
+Owns only detail extracted from a parent section. The parent keeps a useful summary, relationship and entry point.
+
+### Prototype Plan And Result
+
+The plan owns experiment setup. The result owns observed evidence. The related planning draft owns the revised criterion, assumption, workflow status or decision.
+
+## 4. Subfolder Responsibilities
 
 ### `templates/`
 
-```text
-Owns reusable recommended artifact representations.
-A template may define required semantic fields, headings, tables,
-compact forms, optional expansion blocks and placeholder language.
-A template is not automatically the only valid representation.
-It must not contain accepted state for a concrete product.
-```
+Owns reusable recommended representations.
 
-A future template variant should be added only after repeated use shows that it solves a real representation problem. The existence of an expanded or specialized template does not change the compact default.
+```text
+- Active templates may define semantic fields and optional expansion points.
+- A template is not automatically the only valid representation.
+- Templates must not contain accepted state for a concrete product.
+- Deprecated templates remain migration aids only.
+```
 
 ### `drafts/`
 
+Contains existing migration-source drafts.
+
 ```text
-Contains working instances created from a template or another valid representation.
-A draft may be empty or filled.
-A draft may use compact, expanded, specialized or free Markdown.
-It must preserve the artifact's required semantic core and evidence boundaries.
-A filled draft owns only its current entered content.
-The folder does not own reusable rules and does not require its own responsibility map in the current small structure.
+- Existing non-empty content must be migrated deliberately.
+- The folder does not own reusable rules.
+- Do not create new concrete product/workflow drafts here.
+- New concrete state belongs in a project-local area.
 ```
 
-## 5. Representation Responsibility
+## 5. Reusable vs Project-Specific Boundary
+
+```text
+Reusable principles, workflow and templates:
+  planning/documentation/application-planning/
+
+Concrete captures, root plans, functional workflows, branches,
+details, prototype state and application-specific object models:
+  planning/areas/<area>/ or another project-local owner
+```
+
+A generated explanation is a reading view and owns no canonical information.
+
+## 6. Representation Responsibility
 
 ```text
 Principles:
-  own why minimal-to-complex growth and semantic-core stability matter.
+  own why the semantic core and progressive complexity matter.
 
 Drafting workflow:
-  owns how AI chooses the simplest useful representation,
-  detects overload and expands or changes the representation.
+  owns how AI classifies input, selects representation and updates artifacts.
 
-Template:
-  owns one recommended initial form and documented optional expansion points.
+Templates:
+  own recommended forms and optional expansion points.
 
-Draft:
-  owns the current concrete arrangement chosen for the entered material.
+Concrete project-local drafts:
+  own entered state and current arrangement.
 
-Future application:
-  may render the same semantic records in multiple views,
-  but its object/schema contract is not defined here.
+Generated explanation:
+  owns no canonical information.
 ```
 
-A high-level representation should remain available after detailed expansion. Detailed content may be colocated, nested, linked or moved to a separate artifact when scale requires it.
-
-## 6. Conflict Rules
+## 7. Conflict Rules
 
 ```text
-- Principles win for stable reusable planning rules and required semantic core.
-- Workflow wins for repeated user + AI process behavior and format-selection behavior.
-- A template wins for its documented recommended representation, not for all possible valid representations.
-- A concrete draft owns only its current entered content and chosen arrangement.
-- Current workflow analysis wins for descriptions of present activity and current user experience.
-- Opportunity research wins for improvement targets, checked external alternatives and comparative findings.
-- Scenario planning owners win for full scenario-draft structure after value scenarios are identified.
-- Project root UCM wins for concrete command routing.
+- The parent documentation responsibility map wins for routing into this folder.
+- This map wins for placement between files and subfolders inside this folder.
+- README.md wins for family navigation and read order.
+- Principles win for stable planning invariants.
+- Drafting workflow wins for repeated user + AI process.
+- A template wins only for its recommended shape.
+- Current Reality Capture wins for descriptions of present reality.
+- Parent Planning Draft wins for branch creation and comparison.
+- Functional Workflow Draft wins for its local behavior line.
+- Prototype Result wins for observed evidence; the planning draft owns the revised decision.
+- Project root UCM wins for command routing.
+- Project-area owners win for concrete local placement and state.
 ```
 
-When a draft is clear and preserves the semantic core but differs from the recommended template, do not mechanically reshape it. Change representation only when the user asks or when the current form materially impairs understanding or maintenance.
+## 8. Placement Checks
 
-## 7. Placement Checks
-
-Before adding information, ask:
+Before adding information inside this folder, ask:
 
 ```text
-1. Is this a stable principle, a repeated workflow rule, a semantic field,
-   a recommended representation or current draft content?
-2. Is it current-state material or later-stage evaluation and research?
-3. Would placing it here duplicate another owner?
-4. Is it reusable, or should it remain working draft content?
-5. Does the information belong to detailed scenario/domain/slice planning instead?
-6. Is a new file genuinely necessary, or can an existing owner hold it?
-7. Can the information remain in the compact high-level representation?
-8. Has the current representation become too crowded to think with or scan?
-9. Would an optional drill-down, a specialized template or free Markdown be clearer?
+1. Is it a reusable principle, repeated process, recommended form or migration source?
+2. Is it current reality or future planning?
+3. Is it application-level coordination, one functional workflow, a competing branch or extracted detail?
+4. Does the information belong in this reusable folder or a project-local area?
+5. Is evidence status preserved?
+6. Does an existing internal owner already hold the rule?
+7. Is a separate file independently useful?
+8. Can the information remain in a compact high-level view?
 ```
 
-## 8. Do Not
+## 9. Do Not
 
 ```text
-- Do not create a responsibility map in every subfolder mechanically.
-- Do not place current product decisions in principles or templates.
+- Do not duplicate this internal owner table in the parent documentation responsibility map.
 - Do not make working drafts sources of reusable rules.
-- Do not formulate improvement targets inside the current-workflow artifact.
-- Do not treat descriptive problem groupings as a final root-cause taxonomy.
-- Do not duplicate the full workflow inside opportunity research.
-- Do not add versioning, logging or source-dependency control to this family until separately designed.
-- Do not define templates as mandatory universal layouts.
-- Do not make detailed drill-down replace the high-level workflow view.
-- Do not create a separate template or file only because one additional field appeared.
+- Do not place concrete object/schema decisions in reusable principles.
+- Do not mix solution branches with functional workflows.
+- Do not create one file per small item.
+- Do not use deprecated stage templates as competing owners.
+- Do not create new concrete product state under drafts/.
+- Do not make generated explanations canonical.
 ```

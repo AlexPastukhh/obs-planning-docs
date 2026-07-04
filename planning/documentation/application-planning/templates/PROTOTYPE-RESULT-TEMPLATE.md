@@ -1,11 +1,19 @@
 # Prototype Result Template
 
-Status: provisional reusable template
+Status: provisional reusable recommended template
+Doc version: v0.2.1-draft-tree-additive
 
 ## Related Prototype Plan
 
 ```text
 not provided
+```
+
+
+## Related Planning Artifact
+
+```text
+root draft / functional workflow / branch / criterion / assumption / decision / not provided
 ```
 
 ## Hypothesis
@@ -61,6 +69,26 @@ supported / rejected / inconclusive / not provided
 ```text
 not provided
 ```
+
+## General Planning Impact
+
+| Affected item | Previous status | New status / proposed update | Evidence |
+|---|---|---|---|
+| criterion / assumption / decision / step / workflow / branch | not provided | not provided | not provided |
+
+## Upstream Impact
+
+```text
+not provided
+```
+
+## Branch Impact
+
+```text
+select / reject / keep / create branch / no change / not provided
+```
+
+## Legacy Stage Impact — Optional Transition Compatibility
 
 ## Impact On Product Legend
 

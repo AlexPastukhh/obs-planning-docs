@@ -1,8 +1,26 @@
 # Product Legend Draft Template
 
-Status: provisional reusable template
+Status: deprecated transition template; legacy body retained for migration
+Active replacement: `PLANNING-DRAFT-TEMPLATE.md`
 
-## Primary User
+## Transition Rule
+
+Do not create a new artifact from this template. Existing non-empty drafts may keep using it until their useful semantics are mapped and reviewed. The complete legacy body remains below so migration does not erase fields before validation.
+
+## Migration Mapping
+
+| Legacy section | Active owner |
+|---|---|
+| Primary user / current situation | Draft identity and source context |
+| Main problem / insufficiency | Desired result, validated problems and questions |
+| Existing alternatives | Existing solutions and alternative workflows |
+| Fundamental change / value loop | Candidate workflow and key scenarios |
+| Expected value / success signals | Acceptance criteria and evidence |
+| Assumptions / risks / non-goals | Assumptions, risks and boundaries |
+| Candidate scenarios | Key scenarios / Functional Workflow Draft candidates |
+
+## Legacy Template Body
+
 
 ```text
 not provided

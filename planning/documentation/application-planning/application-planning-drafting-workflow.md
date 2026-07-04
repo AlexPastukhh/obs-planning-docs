@@ -1,467 +1,332 @@
-# Application Planning Drafting Workflow
+# Solution And Workflow Planning Drafting Workflow
 
 Status: provisional reusable workflow
-Scope: iterative user + AI drafting of current-workflow capture, opportunity research, Product Legend, solution overview, prototype plan and prototype result artifacts.
+Doc version: v0.6.0-draft-tree-methodology
+Scope: repeated user + AI process for Current Reality Capture, Planning Drafts, Functional Workflow Drafts, branches, details and prototypes.
 
-## 1. Purpose
+Stable invariants belong in:
 
-Use this workflow when a user provides workflow descriptions, experiences, ideas, observations, concerns, answers or prototype findings and wants them converted into reviewable application-planning drafts.
+```text
+application-planning-principles.md
+```
 
-This file owns the repeated drafting process. Stable stage boundaries, required semantic cores and planning invariants remain in `application-planning-principles.md`.
-
-## 2. Inputs
+## 1. Inputs
 
 The user may provide:
 
 ```text
-- a complete current algorithm;
-- fragmented or out-of-order workflow descriptions;
-- reasons for individual current steps;
-- current strengths and convenient parts;
-- feelings, uncertainty and cognitive burden;
-- concrete experienced problem situations;
-- suspected risks that have not yet occurred;
-- current workarounds;
-- rough user ideas for possible improvement;
-- known products or integrations;
-- later-stage research, Legend, scenario, solution or prototype material;
-- user-edited returned drafts;
-- answers to earlier questions;
-- corrections and decisions.
+- complete or fragmented workflow descriptions;
+- facts and checked sources;
+- strengths and satisfactory parts;
+- feelings and cognitive burden;
+- experienced problems;
+- suspected risks;
+- workarounds;
+- existing ideas;
+- alternatives;
+- questions;
+- decisions and corrections;
+- returned user-edited drafts;
+- prototype evidence;
+- implementation thoughts.
 ```
 
-Do not require the user to know the root problem, desired improvement or future solution before first-stage drafting begins.
+Do not require the user to know the artifact type or correct insertion point.
 
-## 3. Classification Before Writing
+## 2. Classify Before Writing
 
-For each input fragment, classify both its evidence status and its artifact role.
+For each meaningful fragment, classify:
 
-Evidence status:
+### Evidence status
 
 ```text
 confirmed user statement;
 checked source fact;
-inference requiring confirmation;
+inference;
 open question;
-explicit answer;
-explicit decision.
+decision candidate;
+explicit decision;
+prototype/test evidence.
 ```
 
-First-stage role when applicable:
+### Information role
 
 ```text
 current workflow fact;
-current strength;
+strength;
 user experience;
-experienced problem situation;
-suspected problem or risk;
-current workaround;
-existing user idea;
-unknown.
+experienced problem;
+suspected risk;
+workaround;
+existing idea;
+desired result candidate;
+acceptance-criterion candidate;
+alternative;
+decision;
+implementation thought;
+test/prototype material.
 ```
 
-Later-stage role when applicable:
+### Artifact role
 
 ```text
-critical remark;
-related idea;
-research finding;
-improvement target;
-solution option;
-prototype evidence.
+Current Reality Capture;
+root Planning Draft;
+Application Root Draft;
+Functional Workflow Draft;
+solution branch;
+detail artifact;
+Prototype Plan;
+Prototype Result.
 ```
 
-Do not convert an unknown, feeling, suspected risk or user idea into a confirmed requirement simply to fill a template section.
+## 3. Proposed Information Units Review
 
-## 3A. Representation Selection And Progressive Expansion
+For non-trivial free-form input, expose the planned interpretation when it improves review.
 
-Choose representation after classifying the material, not before.
+Recommended compact table:
 
-Default sequence:
+| Unit | Interpreted statement | Evidence | Category | Target | Location/action | Ambiguity |
+|---|---|---|---|---|---|---|
+
+The AI may also return complete updated drafts in the same response.
+
+If the user does not correct the interpretation, use it as the working classification and placement. Preserve the evidence status.
+
+## 4. Representation Selection
 
 ```text
-1. Identify the artifact's required semantic core.
-2. Preserve the user's wording, order and intuitive relationships where possible.
-3. Create the smallest representation that is clear, useful and maintainable.
-4. Keep related information together and categorize it locally.
-5. Omit empty optional headings.
-6. Observe whether the current representation remains easy to scan and think with.
-7. Expand only the crowded or structurally complex parts.
-8. Change to a specialized or free Markdown representation only when local expansion is not enough.
-9. Preserve a simple high-level layer after adding detail.
+1. Identify the semantic core.
+2. Preserve user wording and relationships.
+3. Choose the smallest useful representation.
+4. Keep related information together.
+5. Omit empty headings.
+6. Expand only crowded or repeated parts.
+7. Use linked detail or specialized representation only when local expansion is insufficient.
+8. Keep a high-level entry point.
 ```
 
-Compact default rules:
+Tables are useful for repeated homogeneous records, not for every sentence.
+
+## 5. Iterative Update Algorithm
 
 ```text
-- Prefer prose and headings over tables for the initial artifact.
-- Do not create a separate large section for one small item.
-- Do not introduce a table until several records share fields and the table improves scanning.
-- Do not split related user comments across distant sections unless scale requires it.
-- Keep experience, ideas, risks and other current comments near the workflow step they describe.
-- Use only applicable category headings.
-- Preserve the original meaning before improving visual structure or terminology.
-- Categorize rather than aggressively summarize when summarization could remove nuance.
+1. Read affected current drafts and new input.
+2. Identify owners, evidence status and target locations.
+3. Preserve unchanged confirmed content.
+4. Apply explicit corrections and answers.
+5. Preserve deliberate user wording, order and grouping.
+6. Create or show the information-unit interpretation review when useful.
+7. Update the smallest affected artifact set.
+8. Check upstream and downstream relationships.
+9. Keep ideas, risks, facts, decisions and evidence distinct.
+10. Reconsider representation when it has become difficult to scan or maintain.
+11. Return complete affected files for review.
+12. Record unresolved conflicts and prioritized questions.
 ```
 
-Expansion signals include:
+The workflow is not append-only. Replace an incorrect current interpretation.
+
+## 6. Returned User-Edited Drafts
+
+When the user returns files with `обн` or `upd`:
 
 ```text
-- one step contains several internal activities or branches;
-- one category contains many independent records;
-- repeated records need stable IDs or shared fields;
-- cross-step relationships are difficult to see;
-- the compact view becomes visually crowded;
-- the user must search across the file to understand one step;
-- a diagram, table, linked detail or alternate representation is clearly easier to work with.
+- read every returned file completely;
+- treat it as the latest user-edited working version;
+- compare with the clearly matching prior version when available;
+- preserve deliberate additions, removals, reordering and wording;
+- do not restore removed text silently;
+- merge same-message clarifications;
+- improve presentation only when useful;
+- do not force a larger template;
+- update related files only when actually affected;
+- return complete revised files.
 ```
 
-Possible expansion forms:
+A user edit does not automatically confirm every claim.
+
+## 7. Current Reality Capture
+
+Reconstruct the current workflow from any order of input.
+
+For each meaningful step, capture when available:
 
 ```text
-- a detailed subsection attached to one high-level step;
-- repeated-record lists or tables;
-- cross-step observations;
-- a linked detail artifact;
-- a specialized template;
-- free Markdown;
-- future application cards, diagrams or drill-down views.
+stable ID and name;
+what happens;
+current intended explanation;
+user experience and comments.
 ```
 
-Do not replace the high-level workflow with the detailed expansion. The high-level step remains the stable abstraction and entry point.
-
-Several template variants may be designed after repeated use reveals stable needs. Their existence does not make them mandatory and does not change the compact default.
-
-## 4. Iterative Update Algorithm
+Local categories may include:
 
 ```text
-1. Read the current complete draft set and the new user input.
-2. Identify which artifacts own the new material.
-3. Identify the required semantic core and the current representation used by each affected artifact.
-4. Preserve unchanged confirmed content.
-5. Apply explicit corrections and answers.
-6. If the user returns edited drafts with `обн` or `upd`,
-   treat them as the latest user-edited working inputs and compare them
-   with clearly matching prior versions when available.
-7. Preserve deliberate wording, order and local grouping unless a clear conflict or usability problem requires a change.
-8. During first-stage capture, reconstruct the current sequence from complete or fragmented input.
-9. Attach strengths, experiences, problems, risks, workarounds, ideas and unknowns to current steps or cross-step records.
-10. Start with the simplest readable representation.
-11. Expand only the steps or record groups that have become difficult to think with, scan or maintain.
-12. Preserve the difference between experienced situations and suspected risks.
-13. Record user ideas without evaluating or accepting them during the first stage.
-14. Use descriptive problem groupings only when they help preserve relationships in the source material.
-15. Mark unresolved or missing information as `not provided` when a visible placeholder is useful; omit empty optional sections otherwise.
-16. Add prioritized questions only for information that materially improves the current artifact.
-17. Move evaluation, improvement targets, alternatives and future-workflow design to later-stage owners.
-18. Record user answers and decisions in the affected artifacts.
-19. Check whether downstream artifacts conflict with corrected upstream material.
-20. Return the full current versions of the affected small artifact family when this reduces context loss.
+strengths;
+friction;
+experienced problems;
+risks/doubts;
+workarounds;
+thoughts/observations;
+existing ideas;
+unknowns.
 ```
 
-The workflow is not append-only. When the user corrects an earlier statement, correct the current draft rather than retaining both versions as equally valid.
+Keep comments near their step. Use cross-step groupings only when repetition or relationships require them.
 
-A representation is also not append-only. Collapse, regroup or replace a representation when it no longer works, but preserve the semantic core, user intent, evidence status and high-level entry points.
+Do not evaluate future solutions here.
 
-## 4A. Returned User-Edited Drafts
+## 8. Create Or Update The Root Planning Draft
 
-When the user returns one or more application-planning drafts with `обн` or `upd`:
+When enough current reality exists:
 
 ```text
-- treat each same-message returned draft as the latest user-edited working input;
-- read the complete returned file before revising it;
-- compare with the clearly matching prior draft when available;
-- identify deliberate additions, deletions, reordering and rewording;
-- preserve deliberate user edits unless they conflict with an explicit rule,
-  checked source fact, same-message clarification or artifact ownership boundary;
-- do not silently restore text removed by the user;
-- merge same-message clarifications into the relevant returned drafts;
-- keep confirmed facts, suggestions, risks, ideas, questions and decisions distinguishable;
-- evaluate whether the edit affects related drafts in the small artifact family;
-- update only the related drafts that are actually affected;
-- treat imperfect visual formatting as acceptable input;
-- preserve user wording and intuitive organization before normalizing presentation;
-- improve headings, spacing, tables, grouping, ordering and scanability only when useful;
-- do not replace the user's compact structure with a more complex template merely because one exists;
-- do not require the user to polish Markdown presentation;
-- return complete revised files rather than isolated replacement fragments;
-- summarize significant structural adjustments and unresolved conflicts separately.
+1. Reference the relevant capture material.
+2. Formulate candidate desired result.
+3. Add acceptance criteria with explicit status.
+4. Record boundaries and non-goals.
+5. Plan the candidate workflow linearly while one line is sufficient.
+6. Record questions, problems, risks, assumptions and alternatives.
+7. Identify tests/prototypes from uncertainty.
+8. Record current conclusion and next action.
 ```
 
-A user edit is explicit revision input, but it does not automatically make every edited claim a confirmed fact, accepted requirement or final decision.
+Do not require all sections before the draft becomes useful.
 
-If the prior draft is unavailable, use the returned draft and same-message clarification as the current source and state that a historical comparison was not performed.
+## 9. Application Root And Functional Workflows
 
-## 5. Full Draft-Set Mode
-
-Default during early use:
+When the candidate solution is an application with several behavior lines:
 
 ```text
-Return the full current versions of the affected small artifact family when doing so reduces context loss.
+1. Keep shared app information in the root draft.
+2. Identify valuable functional workflows.
+3. Keep a compact workflow inventory with summaries and links.
+4. Record cross-workflow dependencies and conflicts in the root.
+5. Create a separate Functional Workflow Draft only when independent analysis/testing justifies it.
+6. Keep local questions, risks, tests and implementation thoughts in the child workflow.
 ```
 
-A future application may support partial updates and structured import, but that behavior is out of scope here.
+Do not call functional workflows solution branches.
 
-## 6. Current-Workflow Capture
+## 10. Branch Gate
 
-The user may begin from any mixture of:
+Before creating a competing branch, ask:
 
 ```text
-- a workflow without a known problem;
-- discomfort without a known cause;
-- known experienced failures;
-- theoretical concerns;
-- positive experience with a workflow that mostly works;
-- one or more already imagined solution ideas;
-- a precise and detailed current process;
-- fragmented memories supplied over several messages.
+- Is there a real decision point?
+- Do alternatives change the end-to-end plan enough to need independent work?
+- Is separate testing or comparison useful?
+- Why can no option be selected or rejected yet?
+- What evidence would stop the branch?
 ```
 
-Treat these as ordinary input conditions. Do not create separate formal modes or demand a different result from each condition.
+If the answer is weak, keep alternatives in the current draft.
 
-### Initial compact form
-
-The initial current-workflow artifact should normally describe the complete workflow directly through high-level step headings.
-
-For each meaningful current workflow step, capture:
+When branching is justified:
 
 ```text
-- stable ID and name;
-- what happens;
-- reason or purpose;
-- user experience and comments.
+1. Record the divergence decision in the parent.
+2. Record selection/rejection criteria.
+3. Create branch drafts.
+4. Keep parent comparison current.
+5. Aggregate only useful status, problem, test and evidence information.
 ```
 
-Inside `User Experience And Comments`, use only applicable local categories:
+Counts support navigation; they do not determine the winner automatically.
+
+## 11. Details And Extraction
+
+Extract a detail when the parent has become hard to use or the detail has an independent lifecycle.
+
+The parent should retain:
 
 ```text
-- strengths / what works;
-- difficulties / friction;
-- experienced problems;
-- risks / doubts;
-- current workarounds;
-- thoughts / observations;
-- existing user ideas;
-- unknowns.
+summary;
+key points/results;
+relationship;
+link or stable reference.
 ```
 
-Keep the user's comments close to the step they describe. Preserve meaning and intuition before attempting abstraction.
+Do not create a detail file for one small item.
 
-Include satisfactory and apparently ordinary steps. Do not describe only the parts related to a product idea.
+## 12. Implementation Thoughts
 
-### Optional detailed expansion
+Store future implementation notes next to the related behavior step or model question.
 
-For a selected step, capture the following only when the compact form has become insufficient:
+Recommended fields when several notes accumulate:
+
+| ID | Thought | Source | Status | Related step/decision | Test needed |
+|---|---|---|---|---|---|
+
+Do not accept a class model, storage idea or UI control merely because it is written.
+
+## 13. Prototype Drafting
+
+A prototype may be embedded or separate.
+
+Create a separate plan/result artifact when:
 
 ```text
-- trigger;
-- current actions;
-- inputs and outputs;
-- tools and environments;
-- dependencies;
-- exceptions and alternative current paths;
-- frequency and current impact;
-- repeated structured experience records;
-- stable IDs for records that require cross-reference.
+- the experiment is independently reviewed;
+- setup/evidence is substantial;
+- several decisions depend on it;
+- it has its own execution lifecycle.
 ```
 
-The detailed expansion supplements the compact step and does not replace it.
-
-## 7. Descriptive Cross-Step Grouping
-
-Start from records attached to current workflow steps.
-
-A descriptive problem grouping may identify:
+After the result:
 
 ```text
-- repeated observable situations;
-- affected current workflow steps;
-- experienced consequences;
-- current workarounds;
-- user-provided explanations or hypotheses;
-- evidence status;
-- unresolved questions.
+1. Record observed evidence.
+2. Compare with success/failure/inconclusive criteria.
+3. Update affected assumptions and acceptance criteria.
+4. Update workflow/branch status.
+5. Record the new decision or next experiment.
+6. Revisit upstream material when necessary.
 ```
 
-A grouping may be added, split, merged, renamed or removed to represent the current material more accurately.
-
-Do not use first-stage grouping to decide root cause, needed improvement, target workflow or product requirement.
-
-Cross-step groupings are optional. Add them only when repetition or relationships are harder to understand inside the step view.
-
-## 8. Questions
-
-Questions are part of the planning artifact, not temporary chat commentary.
-
-Recommended semantic fields:
-
-| Field | Meaning |
-|---|---|
-| ID | Stable local question identifier inside the draft. |
-| Question | The unresolved issue. |
-| Priority | Relative importance. |
-| Blocking | Whether completing the current artifact depends on the answer. |
-| Status | `open`, `answered`, `deferred` or another explicitly chosen value. |
-| Answer | User-confirmed answer when available. |
-
-These fields may be represented as a small table, headings or compact labeled lines. Use the form that is easiest to read for the current number of questions.
+## 14. Questions
 
 Ask only questions that materially improve the artifact or prevent an unsafe assumption.
 
-## 9. Critical Remarks And Related Ideas
+Recommended fields:
 
-### Critical remarks
+| Field | Meaning |
+|---|---|
+| ID | Stable local identifier |
+| Question | Unknown |
+| Priority | Relative impact |
+| Blocking | Whether current work depends on it |
+| Status | open / answered / deferred |
+| Answer | User-confirmed answer |
 
-During first-stage drafting, use critical remarks only for problems in the record itself, such as:
+Use compact prose when a table would be heavier.
 
-```text
-- contradictory descriptions of the current workflow;
-- incomplete workflow boundaries;
-- an unsupported statement presented as a current fact;
-- current and future workflows being mixed together;
-- an idea being written as though it were already implemented.
-```
-
-Later-stage critical remarks may address value, feasibility, architecture or prototype design.
-
-### Related ideas
-
-During the first stage, store user-provided ideas as existing user ideas with their source context. Do not evaluate them there.
-
-AI-proposed alternatives belong to later-stage artifacts unless the user explicitly asks only to record them as unassessed material.
-
-## 10. Answers And Decisions
-
-```text
-Answer:
-  resolves or narrows a question.
-
-Decision:
-  selects a drafting boundary, terminology or later-stage direction.
-```
-
-A decision should include its current rationale when provided. AI may suggest a decision but must label it as a suggestion until the user accepts it.
-
-Answers and decisions may remain next to the related question or statement when that is clearer than a separate section.
-
-## 11. Stage Progression
-
-### Current workflow capture → opportunity research
-
-Proceed when the current end-to-end workflow, user experience, current strengths, experienced problem situations, suspected risks, workarounds, existing user ideas and important unknowns are visible enough for later analysis.
-
-The first stage does not need a validated root cause, desired improvement or selected solution.
-
-### Opportunity research → Product Legend
-
-Proceed when improvement targets, alternatives, reasons to preserve or change the workflow and reasons to test a new solution are sufficiently visible.
-
-### Product Legend → core value scenarios
-
-Extract scenario candidates only from the causal/value claims that make the product worth testing. Use the scenario-draft workflow for full scenarios.
-
-### Core scenarios → solution overview
-
-Identify broad implementation directions, reusable capabilities, risks and unknowns. Do not jump directly to detailed architecture.
-
-### Solution overview → prototype plan
-
-Select a prototype when an uncertainty could materially change product direction, workflow or architecture.
-
-### Prototype result → planning revision
-
-Update research, Legend, scenario candidates, solution overview and next prototype decisions from observed evidence.
-
-Correct the current-workflow record only when evidence shows that the recorded present workflow was inaccurate or when an intentional new current-state revision is being created.
-
-## 12. Prototype Drafting Checks
-
-Before accepting a prototype plan, check:
-
-```text
-- Is the hypothesis explicit?
-- Is the question decision-relevant?
-- Is the highest-risk assumption being tested?
-- Is the prototype type appropriate?
-- Is the fidelity no higher than necessary?
-- Are real and simulated parts stated?
-- Are success, failure and inconclusive criteria defined?
-- Is there a timebox?
-- Is the code fate stated?
-- Is the affected decision named?
-```
-
-## 13. Artifact Ownership
-
-```text
-Current workflow analysis:
-  the current activity, step purposes, user experience, strengths,
-  experienced problems, suspected risks, workarounds, existing user ideas
-  and unresolved current-state information.
-
-Opportunity research:
-  formulated improvement targets linked to current-state references,
-  existing and alternative solutions, workflow rationalizations and comparisons.
-
-Product Legend:
-  the compact causal/value model.
-
-Scenario drafts:
-  observable user situations and system behavior.
-
-Solution overview:
-  broad implementation options and uncertainties.
-
-Prototype plan:
-  how a hypothesis will be tested.
-
-Prototype result:
-  what was observed and what decision follows.
-```
-
-Do not duplicate the full workflow inside opportunity research, a full scenario inside the Legend or a full architecture inside the solution overview.
-
-Representation choices do not change artifact ownership.
-
-## 14. Output Quality Checks
+## 15. Output Quality Checks
 
 Before returning drafts:
 
 ```text
-- Confirmed user content is distinguishable from AI suggestions.
-- No required-looking statement was invented to fill a blank.
-- The first-stage draft does not require the user to know the problem or solution.
-- The representation preserves the artifact's required semantic core.
-- The representation starts as simply as the current material allows.
-- Workflow steps include what happens, their purposes and local user experience/comments.
-- Current facts, experiences, experienced problems, suspected risks, workarounds, ideas and unknowns remain distinguishable.
-- The first-stage draft does not contain improvement targets or future-workflow decisions.
-- Empty optional categories and one-item tables are avoided.
-- Detailed expansion appears only where the compact view is insufficient.
-- The high-level view remains available after expansion.
-- Returned user-edited drafts preserve deliberate edits and do not silently restore removed content.
-- Same-message clarifications are reflected in the new complete draft versions.
-- Markdown presentation is normalized only when useful and without changing user intent.
-- Questions, corrections, answers and decisions are preserved.
-- The affected artifact uses an appropriate representation; exact template conformity is not required when another valid form is clearer.
-- Upstream and downstream artifacts do not silently contradict each other.
-- Prototype results state evidence and limitations.
-- Current exclusions are respected.
+- Explicit user statements and checked facts are distinguishable.
+- AI interpretation is visible where ambiguity matters.
+- Reality Capture remains descriptive.
+- Desired results and criteria have status.
+- Functional workflows and solution branches are not mixed.
+- Implementation thoughts remain non-final unless accepted.
+- Details exist only when useful.
+- Tests target uncertainty.
+- Evidence updates related decisions.
+- The representation remains simple enough to think with.
+- Complete affected files are returned.
 ```
 
-## 15. Current Exclusions
-
-Do not add during this initial workflow:
+## 16. Do Not
 
 ```text
-- artifact version history;
-- action logs;
-- source/dependency propagation;
-- JSON contracts;
-- automatic source verification;
-- command routing;
-- commit or delivery behavior;
-- a complete application object model;
-- automatic conversion between every representation;
-- a mandatory template-selection engine.
+- Do not require the user to fill a template manually.
+- Do not promote an inference to confirmed content.
+- Do not create a branch from every alternative.
+- Do not create child workflow files mechanically.
+- Do not duplicate full child drafts in the app root.
+- Do not make implementation notes architecture decisions.
+- Do not make a generated explanation canonical.
 ```

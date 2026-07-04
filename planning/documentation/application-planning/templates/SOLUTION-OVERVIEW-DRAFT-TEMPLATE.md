@@ -1,8 +1,27 @@
 # Solution Overview Draft Template
 
-Status: provisional reusable template
+Status: deprecated transition template; legacy body retained for migration
+Active replacement: `PLANNING-DRAFT-TEMPLATE.md` and `FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md`
 
-## Inputs From Legend And Scenarios
+## Transition Rule
+
+Do not create a new artifact from this template. Existing non-empty drafts may keep using it until their useful semantics are mapped and reviewed. The complete legacy body remains below so migration does not erase fields before validation.
+
+## Migration Mapping
+
+| Legacy section | Active owner |
+|---|---|
+| Required capabilities | Acceptance criteria / functional workflow inventory |
+| Candidate approaches | Alternatives or solution branches |
+| Reusable capabilities / integrations | Existing solutions and shared integrations |
+| System boundary | Boundaries and non-goals |
+| Components / technical unknowns | Implementation thoughts, questions and prototypes |
+| Risks / complexity | Risks and alternative comparison |
+| Prototype candidates | Tests and prototypes |
+| Current comparison | Branch analysis / current conclusion |
+
+## Legacy Template Body
+
 
 ```text
 not provided

@@ -1,7 +1,7 @@
 # Reviewable Agent Output And Commands Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.7.0-returned-file-revision
+Doc version: v0.8.0-utf8-diff-transfer
 Scope: answer levels, reviewable outputs, response-level command behavior, returned user-edited file revision, replacement-package source selection and the shared runtime contract for user-facing PowerShell Git commands.
 
 ## 1. Answer Levels
@@ -70,6 +70,21 @@ This contract applies to every runnable PowerShell Git stage supplied to the use
 ```
 
 When command output is intended for transfer to chat, capture it once, copy the captured value to the clipboard and print only a short completion message unless full console output was explicitly requested.
+
+### UTF-8-Safe Git Output Transfer
+
+On Windows PowerShell, do not rely on native-command pipeline decoding for transferable Git output. It may mojibake UTF-8 text even when repository files are correct.
+
+Use this pattern:
+
+```text
+1. Ask Git to write the diff directly to a temporary file with `--output=<path>`.
+2. Check the Git exit code.
+3. Read the file explicitly as UTF-8.
+4. Copy that one captured string to the clipboard.
+5. Remove the temporary file.
+6. Do not run the diff a second time for console display.
+```
 
 ## 4. Source Reporting
 
@@ -185,6 +200,7 @@ This command is response-only by default. It does not authorize repository edits
 - Use git add -N for new files before unstaged diff capture.
 - Capture the diff exactly once with git --no-pager diff.
 - Check the Git exit code before using the captured value.
+- Write transferable diff bytes directly to a temporary file and read that file explicitly as UTF-8.
 - Copy the captured diff with Set-Clipboard.
 - Do not print the full diff to the console by default.
 - User applies locally and pastes the diff.
@@ -209,6 +225,7 @@ This command is response-only by default. It does not authorize repository edits
 - Do not ask for a redundant post-review confirmation when the diff is already approved.
 - Do not split a normal approved repository-finalization stage into a commit-only command and a planned push-only command.
 - Do not provide a user-facing PowerShell Git stage that can stop in an interactive pager.
+- Do not decode transferable Git output through a native PowerShell pipeline when UTF-8 content may be present.
 - Do not print transferable full output to the console after it was already copied to the clipboard unless explicitly requested.
 - Do not treat user formatting effort as a prerequisite for revising returned Markdown/docs.
 - Do not silently restore removed content from a prior version.

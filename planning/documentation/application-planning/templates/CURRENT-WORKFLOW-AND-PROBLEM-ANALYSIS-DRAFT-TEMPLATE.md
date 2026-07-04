@@ -1,213 +1,151 @@
-# Current Workflow And Problem Analysis Draft Template
+# Current Reality Capture Draft Template
 
 Status: provisional reusable recommended template
-Purpose: compact initial representation for current workflow and user-experience capture, with optional progressive expansion.
+Path note: the legacy filename is retained temporarily during semantic migration.
+Purpose: compact capture of current user-reported reality before evaluation or future-solution planning.
 
-## 1. How To Use This Template
+## 1. Use
 
-Start with the compact form. Keep related information together and use only headings that contain meaningful material.
+Start with the smallest form that makes the current workflow understandable.
+
+Required semantic core:
 
 ```text
-Required semantic core:
-- purpose and capture boundary;
-- understandable current workflow sequence;
-- stable step IDs and names;
-- what happens at each step;
-- why each step exists;
-- user experience and comments for each step;
-- current strengths, experienced problems, suspected risks,
-  workarounds, existing user ideas and unknowns when present;
-- current descriptive conclusion;
-- important questions.
-
-Recommended initial presentation:
-- prose and headings rather than a table;
-- all high-level steps in one continuous overview;
-- categorized experience inside each step;
-- no empty sections;
-- no separate large section for one small item.
-
-Optional expansion:
-- detailed records for selected steps;
-- cross-step records;
-- tables only for repeated structured items;
-- separate linked detail artifacts when one document becomes too crowded.
+- capture purpose and boundary;
+- current workflow sequence;
+- what happens at each meaningful step;
+- current intended explanation for the step;
+- user experience and comments;
+- strengths, experienced problems, suspected risks,
+  workarounds, existing ideas and unknowns when present;
+- important record questions.
 ```
 
-This is a recommended starting representation, not the only valid form. A free or specialized Markdown structure is valid when it preserves the required semantic core, remains readable and respects the first-stage boundary.
+Do not formulate target outcomes, accepted criteria, solution comparison or architecture.
 
-## 2. Purpose And Capture Boundary
+## 2. Purpose And Boundary
 
 ### Purpose
 
-<Why the current workflow is being captured.>
+<Why the current reality is being captured.>
 
 ### Included
 
-<What current activity is included.>
+<Current activity included.>
 
 ### Excluded
 
-<What is outside this capture. Omit when no exclusion is needed.>
+<Current activity outside the capture, when useful.>
 
 ### Start And End
 
-**Start:** <Where the current workflow begins.>
+**Start:** <current starting point>
 
-**End:** <Where the current workflow ends.>
+**End:** <current ending point>
 
-## 3. Current Workflow Overview
+## 3. Current Workflow
 
-Describe the complete current workflow directly through its steps. Do not add a separate step-index table by default.
-
-### WF-01 — <Current step name>
+### WF-01 — <step name>
 
 #### What Happens
 
-<Describe the current step as closely as possible to the user's original meaning and level of detail.>
+<Current actions and observable situation.>
 
-#### Reason / Purpose
+#### Current Intended Explanation
 
-<Why this step currently exists or what it is trying to accomplish.>
+<Why the user currently believes this step exists or what it currently attempts to accomplish. Do not validate the underlying need here.>
 
 #### User Experience And Comments
 
-Use only the applicable subheadings below. Preserve the user's original wording or close meaning. Categorize before attempting to summarize or reinterpret.
+Use only categories with meaningful content.
 
 ##### Strengths / What Works
 
-<What already works, feels useful, convenient or satisfactory.>
+<current satisfactory behavior>
 
-##### Difficulties / Friction
+##### Friction / Difficulties
 
-<What is inconvenient, effortful, confusing or cognitively heavy.>
+<effort, confusion or cognitive burden>
 
 ##### Experienced Problems
 
-<Concrete undesirable situations that have actually happened.>
+<undesirable situations that actually occurred>
 
 ##### Risks / Doubts
 
-<Suspected weaknesses, fears, theoretical concerns or uncertain future failures.>
+<suspected or theoretical failures>
 
 ##### Current Workarounds
 
-<What the user currently does to compensate.>
+<what currently compensates>
 
 ##### Thoughts / Observations
 
-<Current comments, intuitions, explanations or hypotheses supplied by the user.>
+<current interpretation or comment>
 
 ##### Existing Ideas
 
-<User-provided ideas recorded without evaluation or acceptance.>
+<user-provided ideas recorded without evaluation>
 
 ##### Unknowns
 
-<Important information that is missing or not known.>
+<missing or uncertain current-state information>
 
 ---
 
-### WF-02 — <Current step name>
+### WF-02 — <step name>
 
-#### What Happens
-
-<Current description.>
-
-#### Reason / Purpose
-
-<Current reason or purpose.>
-
-#### User Experience And Comments
-
-<Use only the applicable categorized subheadings from WF-01.>
-
-Repeat the compact step block until the high-level end-to-end workflow is understandable.
+<Repeat the compact step form.>
 
 ## 4. Cross-Step Observations — Optional
 
-Add this section only when an experience, problem, risk, workaround, idea or unknown genuinely affects several steps and repeating it inside every step would reduce clarity.
+Add only when repetition across steps is harder to understand locally.
 
-### CX-01 — <Cross-step observation name>
+### CX-01 — <name>
 
-**Affected steps:** <stable step IDs>
+**Affected steps:** <IDs>
 
-**Current description:** <what recurs across the workflow>
+**Category:** <strength / experience / experienced problem / risk / workaround / idea / unknown>
 
-**Category:** <strength / experience / experienced problem / suspected risk / workaround / existing idea / unknown>
+**Current description:** <what recurs>
 
 **Evidence status:** <user-reported / checked / inferred / unknown>
 
-Do not use this section to formulate improvement targets or a final root-cause taxonomy.
+Do not use this section as a final root-cause taxonomy.
 
 ## 5. Detailed Step Expansion — Optional
 
-Do not create detailed step sections by default. Add one only when the compact step has become too crowded, contains several internal paths, needs repeated structured records or is difficult to reason about.
+Keep the compact step above.
 
-Keep the compact step in Section 3. The detailed record is drill-down behind that high-level abstraction.
+### Detail For WF-XX — <name>
 
-### Detail For WF-XX — <Step name>
+**Trigger:** <current trigger>
 
-#### Trigger
+**Actions:**
 
-<What starts the step.>
+1. <action>
 
-#### Current Actions
+**Inputs:** <when useful>
 
-1. <Current action>
-2. <Current action>
+**Outputs:** <when useful>
 
-#### Inputs
+**Tools/environments:** <when useful>
 
-<Current inputs, when useful.>
+**Dependencies:** <when useful>
 
-#### Outputs
+**Exceptions/current alternatives:** <when useful>
 
-<Current outputs, when useful.>
+**Frequency/current impact:** <when known>
 
-#### Tools And Environments
-
-<Current tools and environments, when useful.>
-
-#### Dependencies
-
-<Information, decisions or previous steps this depends on.>
-
-#### Exceptions And Alternative Current Paths
-
-<Current exceptions or alternatives.>
-
-#### Frequency And Current Impact
-
-<Frequency, cost, consequence or impact when known.>
-
-#### Structured Experience Records
-
-Use prose by default. Introduce a small table only when several records share the same fields and the table is easier to scan than repeated headings.
-
-Possible repeated-record fields:
-
-```text
-stable ID;
-category;
-current situation or comment;
-context / trigger;
-experienced consequence;
-current response / workaround;
-evidence status;
-related steps;
-unknowns.
-```
+Use stable records or tables only when several items share fields.
 
 ## 6. Current Descriptive Conclusion
 
-<Concise description of the current workflow and current user experience. Do not formulate improvement targets, candidate changes, target workflow or product requirements.>
+<Describe current workflow and experience without proposing a future solution.>
 
 ## 7. Questions
 
-Ask only questions that materially improve the current-state record or prevent an unsafe assumption.
-
-### Q-01 — <Question>
+### Q-01 — <question>
 
 **Priority:** <high / medium / low>
 
@@ -215,61 +153,32 @@ Ask only questions that materially improve the current-state record or prevent a
 
 **Status:** <open / answered / deferred>
 
-**Answer:** <user-confirmed answer when available>
+**Answer:** <confirmed answer when available>
 
-## 8. Record Issues, Answers And Scope Decisions — Optional
+## 8. Record Issues — Optional
 
-Use only when needed.
-
-### Critical Remarks About The Record
-
-<Record contradictions, unsupported current-state claims, mixed current/future descriptions or incomplete boundaries.>
-
-### User Answers
-
-<Answers not already placed next to their questions.>
-
-### Decisions About Scope Or Terminology
-
-<Record explicit accepted drafting-boundary or terminology decisions with rationale.>
-
-## 9. Representation Growth Guide
-
-Keep the compact form when:
+Capture:
 
 ```text
-- the workflow is understandable in one pass;
-- each step has a manageable amount of categorized experience;
-- repeated records are rare;
-- navigation within the file is easy;
-- the user can think with the document without hunting across sections.
+contradictions;
+unsupported current-state claims;
+mixed current/future descriptions;
+incomplete boundaries;
+classification uncertainty.
 ```
 
-Add local drill-down when:
+## 9. Representation Growth
+
+Keep the compact form while it remains easy to understand.
+
+Expand only when:
 
 ```text
-- one step contains several internal activities or branches;
-- one category contains many separate records;
-- stable references are needed for repeated situations;
-- a table becomes clearer than repeated prose;
-- the compact step remains useful but cannot hold all detail comfortably.
+- one step contains several internal activities;
+- repeated records need stable IDs;
+- cross-step relationships are hidden;
+- the user must hunt across the file;
+- linked detail or another view is clearly easier.
 ```
 
-Use a specialized or substantially different representation when:
-
-```text
-- the information type no longer fits the compact step model;
-- the current structure obscures important relationships;
-- several views of the same semantic records are needed;
-- a diagram, cards, linked details or free Markdown is more intuitive.
-```
-
-Even after expansion or representation change:
-
-```text
-- preserve the required semantic core;
-- retain a simple high-level workflow view;
-- do not silently lose user wording, meaning or evidence status;
-- do not make optional detail mandatory for every step;
-- do not treat the existence of another template as a requirement to migrate.
-```
+Preserve the high-level workflow after expansion.

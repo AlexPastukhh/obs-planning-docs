@@ -1,8 +1,8 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v0.5.0-command-planning-projection
-Scope: reusable documentation architecture, application-planning guidance, update workflows, command planning, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
+Doc version: v0.6.0-solution-planning-route
+Scope: reusable documentation architecture, solution/workflow-planning guidance, update workflows, command planning, field kits, examples, parallel-work staging, Tampermonkey command projection and reusable helper/tool files copied into the OBS planning layer.
 
 ## 1. Purpose
 
@@ -85,16 +85,23 @@ planning/documentation/parallel-work/PARALLEL-WORKSPACE-TEMPLATE.md
 planning/documentation/parallel-work/PARALLEL-SYNC-PLAN-TEMPLATE.md
 ```
 
-Reusable application-planning family:
+Reusable solution/workflow-planning family (folder path retained during semantic migration):
 
 ```text
 planning/documentation/application-planning/README.md
 planning/documentation/application-planning/application-planning-responsibility-map.md
 planning/documentation/application-planning/application-planning-principles.md
 planning/documentation/application-planning/application-planning-drafting-workflow.md
-planning/documentation/application-planning/templates/
-planning/documentation/application-planning/drafts/
+planning/documentation/application-planning/templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
+planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md
+planning/documentation/application-planning/templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md
+planning/documentation/application-planning/templates/PROTOTYPE-PLAN-TEMPLATE.md
+planning/documentation/application-planning/templates/PROTOTYPE-RESULT-TEMPLATE.md
 ```
+
+The legacy Current Workflow template filename is retained temporarily; its semantic role is Current Reality Capture. Existing files under `application-planning/drafts/` are migration sources. New concrete captures, plans, functional workflows and branches belong in a project-local area.
+
+Legacy opportunity, Product Legend and solution-overview templates remain transition aids until migration checks confirm that their useful semantics are preserved.
 
 Reusable full Tampermonkey helper/tool:
 
@@ -198,15 +205,15 @@ For scenario planning workspace work:
 4. planning/areas/planning-system/scenario-planning-workspace-template.md
 ```
 
-For application discovery, Product Legend, solution overview or prototype planning:
+For current-reality capture, solution/workflow planning, functional-workflow planning, branch planning or prototype planning:
 
 ```text
 1. planning/documentation/application-planning/README.md
 2. planning/documentation/application-planning/application-planning-responsibility-map.md
 3. planning/documentation/application-planning/application-planning-principles.md
 4. planning/documentation/application-planning/application-planning-drafting-workflow.md
-5. the relevant template under planning/documentation/application-planning/templates/
-6. the corresponding draft skeleton or project-local draft
+5. the relevant recommended template under planning/documentation/application-planning/templates/, when useful
+6. the project-local Current Reality Capture, Planning Draft, Functional Workflow Draft, branch or prototype artifact
 ```
 
 For conspect work:
@@ -240,4 +247,6 @@ For parallel-agent workspace or aggregate sync work:
 - Do not treat any Tampermonkey userscript as command authority.
 - Do not leave reusable Tampermonkey projection rules only in local tools or workstream files.
 - Do not keep a deprecated prompt as a competing owner after its workflow has been renamed.
+- Do not treat deprecated application-planning stage templates as active methodology owners.
+- Do not create new concrete product/workflow drafts inside the reusable family after project-local placement exists.
 ```

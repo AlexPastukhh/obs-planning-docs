@@ -1,41 +1,61 @@
-# Application Planning Documentation Index
+# Solution And Workflow Planning Documentation Index
 
 Status: provisional reusable documentation-family index
-Scope: pre-detailed application planning from current-workflow and user-experience capture through ecosystem research, Product Legend, core value scenarios, solution overview and prototype learning.
+Doc version: v0.6.0-draft-tree-methodology
+Scope: reusable planning from current-reality capture through candidate workflows, functional behavior lines, alternatives, tests, prototypes and selection before optional detailed implementation planning.
+
+The folder path remains `application-planning/` during the semantic migration. The methodology itself is not limited to applications.
 
 ## 1. Purpose
 
-This folder defines a reusable planning process for understanding the current workflow before deciding whether an application should be created, what makes it worth testing, which scenarios express its core value, which implementation directions are plausible and what should be learned through prototypes before detailed planning.
+This family helps convert free-form user input into reviewable planning artifacts without requiring the user to follow a strict ceremony.
 
-The intended progression is:
+It can plan:
 
 ```text
-current workflow and user-experience capture
-  → opportunity and ecosystem research
-  → Product Legend
-  → core value scenarios
-  → solution overview
-  → prototype plan
-  → prototype result
-  → updated research/Legend/scenarios/overview
-  → detailed scenario/domain/slice planning
+- a changed workflow;
+- use of an existing tool;
+- scripts or automation;
+- an integration;
+- an application;
+- an organizational process;
+- no change;
+- several candidate end-to-end variants.
 ```
 
-The process is iterative. Later evidence may revise later-stage artifacts and may correct the current-state record only when it reveals that the recorded current workflow was incomplete or inaccurate.
+The methodology guides the result. It does not require one fixed input order or one universal Markdown layout.
 
-## 2. Read Order
+## 2. Lifecycle
+
+```text
+free-form user input
+  → AI interpretation and information-unit review
+  → Current Reality Capture
+  → root Planning Draft
+  → linear planning while one path is sufficient
+  → optional Functional Workflow Drafts for separate behavior lines
+  → optional solution branches for competing alternatives
+  → tests, prototypes and evidence-driven revision
+  → selected workflow or several accepted variants
+  → optional detailed scenario/domain/slice/implementation planning
+  → return to earlier drafts when later evidence requires revision
+```
+
+Opportunity research, Product Legend and Solution Overview are no longer mandatory sequential artifacts. Their useful semantics belong inside the Planning Draft and related functional-workflow or prototype artifacts.
+
+## 3. Read Order
 
 ```text
 1. application-planning-responsibility-map.md
 2. application-planning-principles.md
 3. application-planning-drafting-workflow.md
 4. the relevant recommended template under templates/, when useful
-5. the corresponding working draft under drafts/ or a project-local copy
+5. the project-local working draft
 ```
 
-A template is a recommended representation, not the only valid representation. A compact or free-form Markdown draft is valid when it preserves the required semantic core, remains understandable and respects the artifact boundary.
+Templates are recommended representations, not mandatory schemas.
 
-## 3. Files
+## 4. Active Files
 
 ```text
 README.md
@@ -45,123 +65,162 @@ application-planning-drafting-workflow.md
 
 templates/
   CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
-  OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md
-  PRODUCT-LEGEND-DRAFT-TEMPLATE.md
-  SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md
+  PLANNING-DRAFT-TEMPLATE.md
+  FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md
   PROTOTYPE-PLAN-TEMPLATE.md
   PROTOTYPE-RESULT-TEMPLATE.md
-
-drafts/
-  current-workflow-and-problem-analysis.md
-  opportunity-and-ecosystem-research.md
-  product-legend.md
-  solution-overview.md
-  prototype-plan.md
-  prototype-result.md
 ```
 
-The files under `drafts/` are working instances. They may be empty starters or filled drafts, but they never own reusable rules.
+The current-workflow template path is retained temporarily, but its semantic role is Current Reality Capture.
 
-## 4. Responsibility Boundary
+Legacy transition templates remain temporarily under `templates/` with deprecated status:
 
 ```text
-principles
-  own stable reusable rules and the required semantic core;
-
-workflow
-  owns the repeated user + AI drafting process,
-  format selection and progressive expansion;
-
-templates
-  own recommended reusable representations and optional expansion shapes,
-  not one mandatory universal layout;
-
-drafts
-  are working instances and may use compact, expanded, specialized
-  or free Markdown representations while preserving the semantic core;
-
-current workflow analysis
-  owns the present activity, workflow steps, user experience,
-  current strengths, problem situations, workarounds, existing user ideas
-  and unresolved current-state information;
-
-opportunity research
-  owns formulated improvement targets, external alternatives and ways
-  to keep, simplify, remove, integrate, automate or build after the
-  current workflow is understood;
-
-scenario templates and scenario drafts
-  remain separate and are used after Product Legend produces candidate value scenarios.
+OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md
+PRODUCT-LEGEND-DRAFT-TEMPLATE.md
+SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md
 ```
 
-A filled draft under `drafts/` owns only its entered working content. Stable reusable rules remain in principles and workflow; templates provide useful starting and expansion forms.
+Existing files under `drafts/` are migration sources only. New concrete product/workflow state should be stored in a project-local area outside `planning/documentation/`.
 
-## 4A. Minimal-To-Complex Representation
+## 5. Artifact Family
 
-Application-planning artifacts use progressive disclosure:
+### Current Reality Capture
+
+Owns current user-reported reality:
+
+```text
+current workflow;
+current explanations;
+user experience;
+strengths;
+experienced problems;
+suspected risks;
+workarounds;
+existing ideas;
+unknowns;
+contradictions.
+```
+
+It does not own target outcomes, accepted criteria, solution comparison or architecture.
+
+### Planning Draft
+
+Owns one candidate end-to-end way to achieve a result:
+
+```text
+desired result;
+acceptance criteria and their status;
+planning steps;
+problems, risks and assumptions;
+existing solutions and alternatives;
+decisions;
+tests and evidence;
+branches;
+current conclusion.
+```
+
+### Application Root Planning Draft
+
+When the target is an application with several valuable behavior lines, the root draft owns:
+
+```text
+application identity;
+shared outcomes and criteria;
+functional-workflow inventory;
+cross-workflow relationships;
+shared concepts and constraints;
+actual solution branches;
+coordination and selection.
+```
+
+### Functional Workflow Draft
+
+Owns one independently understandable and testable behavior line inside the same candidate application or solution.
+
+A functional workflow is not a competing solution branch.
+
+### Branch Planning Draft
+
+Owns a candidate continuation created because competing alternatives require independent planning or testing.
+
+The parent draft owns the reason for branching and the comparison.
+
+### Detail Artifact
+
+Owns extracted detail only when independent use, review, reuse or scale justifies a separate artifact.
+
+### Prototype Artifacts
+
+Own experiment setup and evidence when an independent file is useful. Small prototypes may remain embedded in their planning draft.
+
+## 6. Progressive Representation
 
 ```text
 required semantic core
-  → simplest readable working representation
-  → optional local expansion when information becomes crowded
-  → specialized or alternative representation when the current form no longer works
+  → simplest readable representation
+  → local expansion
+  → linked detail or specialized representation when justified
 ```
 
-Default behavior:
+Apply progressive complexity to:
 
 ```text
-- Start with the smallest representation that is clear, useful and maintainable.
-- Keep related information together where possible.
-- Prefer headings and short categorized blocks over tables or large sections containing one item.
-- Add structure only when it improves thinking, scanning, traceability or repeated editing.
-- Keep a simple high-level layer even after detailed drill-down is added.
-- Treat detailed sections as expansion behind a high-level abstraction, not as a replacement for it.
-- Permit free Markdown output when a fixed template would reduce clarity.
+headings;
+tables;
+files;
+folders;
+branches;
+detail artifacts;
+diagrams;
+navigation.
 ```
 
-This direction is compatible with a future application in which required semantic fields become objects and one underlying record can be rendered as compact Markdown, expanded Markdown, cards, tables, diagrams or drill-down detail views. This documentation does not yet define the application data contract.
+Keep a simple high-level representation after adding detail.
 
-## 5. Current Deliberate Exclusions
+## 7. Structured Source And Explanation
 
-This documentation family does not yet define:
+The structured draft is the source of truth.
+
+An AI-generated explanation may provide:
 
 ```text
-- artifact version-control rules;
-- activity logging;
-- source/dependency governance between planning files;
-- JSON contracts;
-- command routes;
-- automatic research or source verification;
-- a mandatory architecture such as standalone, extension or shared core;
-- a fixed universal problem taxonomy;
-- detailed scenario/domain/slice planning;
-- a complete application object model or rendering contract;
-- a mandatory template-selection engine.
+overview;
+deep explanation;
+resume context;
+explanation of one selected section.
 ```
 
-Those topics may be designed separately after the basic planning artifacts and workflow are exercised.
+It is a generated reading view, not a second independently edited truth.
 
-## 6. Example Coverage
+## 8. Current Deliberate Exclusions
 
-Reusable example coverage is `deferred`.
-
-The filled current-workflow draft is active working material, not a reusable example or a source of stable methodology rules.
-
-Additional compact, expanded and specialized template examples may be added after repeated use shows stable needs. Future variants should not become mandatory merely because they exist.
-
-## 7. Do Not
+This reusable family does not define:
 
 ```text
-- Do not treat AI suggestions as confirmed user requirements.
-- Do not require the user to know the problem, desired improvement or solution before the current workflow is captured.
-- Do not formulate improvement targets or future workflow changes inside the current-workflow capture stage.
-- Do not treat descriptive problem groupings as a final problem taxonomy.
-- Do not force a build decision before alternatives and uncertainty are visible.
-- Do not turn Product Legend into a feature list or architecture document.
-- Do not perform detailed planning before the core value and major risks are understood well enough.
-- Do not create local responsibility maps inside templates/ or drafts/ unless their internal ownership becomes genuinely ambiguous.
-- Do not require every draft to use one fixed layout.
-- Do not start with the most complex known template.
-- Do not add tables, files or sections only to hold one small item.
-- Do not remove the high-level representation when detailed drill-down is introduced.
+- a concrete application object model;
+- storage or serialization architecture;
+- a mandatory client platform;
+- project-specific command routes;
+- unrestricted AI filesystem access;
+- detailed implementation plans;
+- one universal problem taxonomy;
+- a mandatory branch or file count.
+```
+
+Concrete schema and implementation thoughts belong in project-specific drafts.
+
+## 9. Do Not
+
+```text
+- Do not require the user to provide information in template order.
+- Do not treat AI classification as infallible.
+- Do not promote an idea, inference or risk into a confirmed fact.
+- Do not evaluate future solutions inside Current Reality Capture.
+- Do not create a branch for every idea.
+- Do not treat every functional workflow as a competing branch.
+- Do not make implementation thoughts architecture decisions automatically.
+- Do not keep concrete project state as reusable methodology.
+- Do not create empty files or folders only because a template exists.
+- Do not remove high-level views after adding detail.
 ```

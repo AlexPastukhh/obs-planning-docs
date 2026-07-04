@@ -1,6 +1,7 @@
 # Prototype Plan Template
 
-Status: provisional reusable template
+Status: provisional reusable recommended template
+Doc version: v0.2.1-draft-tree-additive
 
 ## Prototype Identity
 
@@ -9,6 +10,12 @@ Status: provisional reusable template
 | ID | not provided |
 | Title | not provided |
 | Related artifact/decision | not provided |
+| Related criterion/assumption/workflow/branch | not provided |
+| Artifact mode | embedded / separate / not provided |
+| Status | proposed / ready / running / completed / cancelled / not provided |
+
+
+A small prototype may remain embedded in its Planning Draft. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
 
 ## Hypothesis
 
@@ -101,6 +108,26 @@ not provided
 ```
 
 ## Decision Affected
+
+```text
+not provided
+```
+
+## Expected Draft-Tree Impact
+
+### If Supported
+
+```text
+not provided
+```
+
+### If Rejected
+
+```text
+not provided
+```
+
+### If Inconclusive
 
 ```text
 not provided

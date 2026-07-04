@@ -1,7 +1,7 @@
 # File Update Overview Template
 
 Status: active reusable output template
-Doc version: v0.4.0-command-and-source-metadata
+Doc version: v0.5.0-ordered-update-steps
 Scope: exact reusable Markdown structure for `План файл-обновление`.
 
 Use with:
@@ -19,36 +19,72 @@ planning/documentation/file-update-overview-workflow.md
 
 ### Command metadata
 
-Include this section only when the update concerns a command route.
+Include only when a command route is in scope.
 
 | Field | Value |
 |---|---|
 | Canonical command | `<command>` |
-| English name | `<required canonical English display name>` |
+| English name | `<canonical English display name>` |
 | Permission mode | `<plan-only / package / other explicit mode>` |
 
-### Change group: <logical group>
+### Target
 
-| Change | File | R | Что | Почему |
+<What repository/documentation state this update should produce.>
+
+### Checked sources
+
+- `<source actually checked>`
+
+### Update Step <ID> — <name>
+
+**Objective:** <what this step accomplishes>
+
+**Input state / dependencies:** <required prior state or earlier steps>
+
+**Expected resulting state:** <state after this step passes>
+
+| Change | File | R | Что меняется на этом шаге | Почему на этом шаге |
 |---|---|---|---|---|
-| New | `<path>` | <file responsibility> | <what is added/planned> | <why> |
-| Updated | `<path>` | <file responsibility> | <what changes/planned> | <why> |
-| Renamed | `<old path>` → `<new path>` | <file responsibility> | <what moves/changes> | <why> |
-| Deleted | `<path>` | <former responsibility> | <what is removed> | <why safe> |
+| New | `<path>` | <responsibility> | <complete planned addition> | <reason> |
+| Updated | `<path>` | <responsibility> | <complete planned change> | <reason> |
+| Renamed | `<old>` → `<new>` | <responsibility> | <move/change> | <why now> |
+| Deleted | `<path>` | <former responsibility> | <removal> | <why safe now> |
 
-### Boundaries
+**Step boundaries:**
+
+- <not changed or deferred in this step>
+
+**Checks / exit criteria:**
+
+- <check>
+
+**Next dependent step:** <next step or none>
+
+### Update Step <next ID> — <name>
+
+<Repeat only when another ordered step is useful.>
+
+### Aggregate file matrix — Optional
+
+| File | Steps | Final planned state | Responsibility | Remaining check |
+|---|---|---|---|---|
+| `<path>` | `<step IDs>` | `<new/updated/renamed/deleted>` | <R> | <check/none> |
+
+### Global boundaries
 
 | Type | File / artifact | R | Почему |
 |---|---|---|---|
-| Not changed | `<path>` | <responsibility> | <why excluded> |
-| Not created | `<path>` | <future responsibility> | <why not created> |
+| Not changed | `<path>` | <responsibility> | <reason> |
+| Not created | `<path>` | <future responsibility> | <reason> |
 
-### Проверка
+### Source and delivery check
+
+Use archive rows only when package/source classification is relevant.
 
 | Check | Result |
 |---|---|
 | Selected source snapshot | <current repository / same-message archive / unresolved / not applicable> |
-| Source identity | <repo ref / archive filename + hash/ref / not available / not applicable> |
+| Source identity | <repo ref / archive identity / unavailable / not applicable> |
 | Earlier-message archive reused automatically | <no / not applicable> |
 | Fresh source archive required | <yes/no/not applicable + reason> |
 | Delivery/source safety | <repo-readable / archive-current / blocked / not applicable> |
@@ -68,8 +104,10 @@ Include this section only when the update concerns a command route.
 ```text
 - Use normal Markdown in chat output, not an outer code fence.
 - Keep table cells short.
+- Ordered steps are primary when dependencies or migration order matter.
+- A one-step update may use one step only.
+- The aggregate matrix is optional and derived from step tables.
 - Omit Command metadata for non-command updates.
-- Use source rows only when source/package classification is relevant.
-- Use this block only for file/change/update/archive context.
-- Do not use it as a generic conclusion.
+- Omit package/source rows when not relevant.
+- Do not use this block as a generic conclusion.
 ```

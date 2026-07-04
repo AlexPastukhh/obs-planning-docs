@@ -1,7 +1,7 @@
 # Documentation Update Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.6.0-source-selection-auto-finalization
+Doc version: v0.7.0-utf8-diff-transfer
 Scope: safe process for applying approved documentation updates in a project that uses `planning/documentation/`.
 
 ## 1. Purpose
@@ -52,15 +52,19 @@ When producing a replacement archive:
 - include replacement-files/<repo-relative-path>;
 - include MANIFEST.md and APPLY.md;
 - record the selected source snapshot and available identity in MANIFEST.md;
-- record exact base and result Git blobs for every changed path;
+- record exact HEAD base, working-tree base and result Git blobs for every changed path when they differ;
 - give PowerShell apply/diff commands in chat;
+- make the runnable package command extract the downloaded archive when extraction is required;
 - validate every update/delete path against HEAD and working-tree content before changing any file;
 - validate every add path is absent from HEAD and the working tree;
 - abort before copying/deleting when any precondition differs;
 - use git add -N for new files before unstaged diff capture;
 - capture the diff exactly once with git --no-pager diff;
-- check the Git exit code before using the captured value;
+- write the diff directly to a temporary file;
+- check the Git exit code before reading the file;
+- read the temporary file explicitly as UTF-8;
 - copy the captured diff with Set-Clipboard;
+- remove the temporary file;
 - do not print the full diff to the console by default;
 - print only a short completion message;
 - request pasted diff before commit.
@@ -88,10 +92,10 @@ When producing a replacement archive:
 - Use a separate push-only recovery stage only when the intended commit already exists and its original push was skipped or failed.
 ```
 
-Apply/diff shape example, not runnable as-is:
+UTF-8-safe apply/diff shape example, not runnable as-is:
 
 ```powershell
-& { Set-Location "C:\path\to\repo"; $Paths = @("<path1>","<path2>"); $NewPaths = @("<new-path>"); if ($NewPaths.Count -gt 0) { git add -N -- $NewPaths; if ($LASTEXITCODE -ne 0) { throw "git add -N failed" } }; git --no-pager diff --check -- $Paths; if ($LASTEXITCODE -ne 0) { throw "git diff --check failed" }; $Diff = git --no-pager diff -- $Paths | Out-String; if ($LASTEXITCODE -ne 0) { throw "git diff failed" }; if ([string]::IsNullOrWhiteSpace($Diff)) { throw "No diff found" }; Set-Clipboard -Value $Diff; Write-Host "Diff copied to clipboard. Paste it into the chat before commit." }
+& { Set-Location "C:\path\to\repo"; $Paths = @("<path1>","<path2>"); $NewPaths = @("<new-path>"); if ($NewPaths.Count -gt 0) { git add -N -- $NewPaths; if ($LASTEXITCODE -ne 0) { throw "git add -N failed" } }; git --no-pager diff --check -- $Paths; if ($LASTEXITCODE -ne 0) { throw "git diff --check failed" }; $DiffFile = [System.IO.Path]::GetTempFileName(); try { git --no-pager diff --no-color --output=$DiffFile -- $Paths; if ($LASTEXITCODE -ne 0) { throw "git diff failed" }; $Diff = [System.IO.File]::ReadAllText($DiffFile, [System.Text.UTF8Encoding]::new($false)); if ([string]::IsNullOrWhiteSpace($Diff)) { throw "No diff found" }; Set-Clipboard -Value $Diff } finally { Remove-Item -LiteralPath $DiffFile -Force -ErrorAction SilentlyContinue }; Write-Host "Diff copied to clipboard. Paste it into the chat before commit." }
 ```
 
 If there are no new files, use an empty `$NewPaths` array or omit the conditional `git add -N` section.
@@ -115,6 +119,7 @@ This combined finalization command is supplied immediately after diff approval. 
 - Do not duplicate archive source-selection rules from the generic owner.
 - Do not bypass manifest base checks when local HEAD differs.
 - Do not invoke plain git diff, git log, git show or another pager-capable Git command in a user-facing stage.
+- Do not pipe transferable Git diff text through native PowerShell decoding when UTF-8 content may be present.
 - Do not run the same diff once for clipboard transfer and again for console display.
 - Do not print the full diff after copying it unless the user explicitly requested console output.
 - Do not ask for another confirmation after an approved pasted diff.

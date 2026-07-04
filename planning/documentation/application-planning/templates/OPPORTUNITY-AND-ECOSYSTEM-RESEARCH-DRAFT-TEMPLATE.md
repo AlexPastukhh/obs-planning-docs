@@ -1,8 +1,26 @@
 # Opportunity And Ecosystem Research Draft Template
 
-Status: provisional reusable template
+Status: deprecated transition template; legacy body retained for migration
+Active replacement: `PLANNING-DRAFT-TEMPLATE.md`
 
-## Referenced Current-State Material
+## Transition Rule
+
+Do not create a new artifact from this template. Existing non-empty drafts may keep using it until their useful semantics are mapped and reviewed. The complete legacy body remains below so migration does not erase fields before validation.
+
+## Migration Mapping
+
+| Legacy section | Active owner |
+|---|---|
+| Referenced current-state material | Source reality references |
+| Improvement targets | Desired result / acceptance criteria / questions |
+| Existing and adjacent solutions | Existing solutions and alternative workflows |
+| Integration/build/extend options | Candidate workflow, alternatives or branches |
+| Future relevance and assumptions | Risks, assumptions and reconsider conditions |
+| Research notes | Evidence / checked-source records |
+| Current conclusion | Current conclusion |
+
+## Legacy Template Body
+
 
 | Reference | Type | Current description | Source status |
 |---|---|---|---|
