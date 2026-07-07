@@ -1,7 +1,7 @@
 # File Update Overview Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.5.0-ordered-update-steps
+Doc version: v0.6.0-step-actions-and-file-tables
 Scope: how to produce the final `План файл-обновление` block for non-trivial file, documentation, code or replacement-package work.
 
 Use with:
@@ -21,6 +21,8 @@ A file-update overview should make the planned repository transition understanda
 ```text
 current state
   → ordered update steps
+  → explicit actions inside each step
+  → per-step affected-file tables
   → checked resulting state
 ```
 
@@ -35,6 +37,7 @@ A non-trivial plan includes:
 - command metadata when a command route is in scope;
 - target and checked sources;
 - ordered update steps;
+- numbered actions inside each non-trivial step;
 - files changed by each step;
 - per-file responsibility, change and reason;
 - dependencies and expected resulting state;
@@ -56,6 +59,7 @@ Objective
 Input state / preconditions
 Dependencies on earlier steps
 Expected resulting state
+Numbered actions
 Files changed in this step
 Per-file responsibility
 What changes
@@ -65,10 +69,39 @@ Checks / exit criteria
 Next dependent step
 ```
 
-Recommended step-level table:
+### Actions And Per-Step File Tables
+
+The two representations have different responsibilities:
+
+```text
+Actions:
+  state what must be done and in what order;
+
+Per-step file table:
+  state which files are affected by the step,
+  each file's responsibility, what changes and why.
+```
+
+Use a numbered action list for concrete operations. Keep actions short enough to scan.
+
+Use the existing file-change table inside the same step:
 
 | Change | File | R | What changes in this step | Why in this step |
 |---|---|---|---|---|
+
+The action list and file table must agree. Do not maintain them as competing plans.
+
+An action may:
+
+```text
+- update one or several files;
+- create a new artifact;
+- perform a review or migration check without changing a file;
+- gate a later cleanup or rename;
+- explicitly defer work.
+```
+
+When useful, a file-table cell may cite action numbers, but action IDs are optional.
 
 One file may appear in several planning steps when different logical actions affect it. During implementation, coordinate the final replacement for that path so the package contains one complete intended result.
 
@@ -86,9 +119,9 @@ It may summarize:
 - unresolved checks.
 ```
 
-The matrix is derived from the ordered steps. It is not a separately maintained source of truth.
+The matrix is derived from the ordered steps and their per-step file tables. It is not a separately maintained source of truth.
 
-For small updates, one step and one table may be sufficient.
+For small updates, one step, one action list and one file table may be sufficient.
 
 ## 5. Planned-Mode Boundary
 
@@ -143,7 +176,10 @@ Before finalizing the overview:
 
 ```text
 - Every planned file belongs to at least one update step.
+- Every non-trivial step has a numbered action list.
 - Every step has an objective and resulting state.
+- Action order is understandable without inferring it from table row order.
+- Actions and per-step file rows describe the same intended transition.
 - Dependencies and cleanup gates are visible.
 - Per-file reasons are stated in the context of the step.
 - Aggregate rows, when present, match the step tables.
@@ -155,6 +191,8 @@ Before finalizing the overview:
 
 ```text
 - Do not hide file-change risks in prose only.
+- Do not hide the action sequence only inside a file table.
+- Do not duplicate the same plan in unsynchronized action and file lists.
 - Do not use unordered change groups when order materially affects safety.
 - Do not maintain an aggregate matrix as a competing owner.
 - Do not treat a plan as approval to edit, create, rename, delete, archive, commit or push.

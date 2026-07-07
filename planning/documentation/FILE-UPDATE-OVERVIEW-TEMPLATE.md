@@ -1,7 +1,7 @@
 # File Update Overview Template
 
 Status: active reusable output template
-Doc version: v0.5.0-ordered-update-steps
+Doc version: v0.6.0-step-actions-and-file-tables
 Scope: exact reusable Markdown structure for `План файл-обновление`.
 
 Use with:
@@ -42,6 +42,14 @@ Include only when a command route is in scope.
 **Input state / dependencies:** <required prior state or earlier steps>
 
 **Expected resulting state:** <state after this step passes>
+
+#### Actions
+
+1. <first concrete action>
+2. <next concrete action>
+3. <review, migration gate or explicit deferral when applicable>
+
+#### Files changed in this step
 
 | Change | File | R | Что меняется на этом шаге | Почему на этом шаге |
 |---|---|---|---|---|
@@ -105,7 +113,13 @@ Use archive rows only when package/source classification is relevant.
 - Use normal Markdown in chat output, not an outer code fence.
 - Keep table cells short.
 - Ordered steps are primary when dependencies or migration order matter.
+- Numbered Actions state what is done and in what order.
+- The per-step file table retains the old changed-file view:
+  path, responsibility, change and reason for that step.
+- Do not force the reader to infer the action sequence from table row order.
+- Keep Actions and file-table rows synchronized without duplicating every sentence.
 - A one-step update may use one step only.
+- A small step may use one action and one file row.
 - The aggregate matrix is optional and derived from step tables.
 - Omit Command metadata for non-command updates.
 - Omit package/source rows when not relevant.
