@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Documentation Index
 
 Status: provisional reusable documentation-family index
-Doc version: v0.6.0-draft-tree-methodology
+Doc version: v0.6.1-terminology-draft
 Scope: reusable planning from current-reality capture through candidate workflows, functional behavior lines, alternatives, tests, prototypes and selection before optional detailed implementation planning.
 
 The folder path remains `application-planning/` during the semantic migration. The methodology itself is not limited to applications.
@@ -47,19 +47,23 @@ Opportunity research, Product Legend and Solution Overview are no longer mandato
 
 ```text
 1. application-planning-responsibility-map.md
-2. application-planning-principles.md
-3. application-planning-drafting-workflow.md
-4. the relevant recommended template under templates/, when useful
-5. the project-local working draft
+2. terminology-and-planning-items.md
+3. application-planning-principles.md
+4. application-planning-drafting-workflow.md
+5. the relevant recommended template under templates/, when useful
+6. the project-local working draft
 ```
 
 Templates are recommended representations, not mandatory schemas.
+
+The terminology draft defines working names and boundaries used by later planning artifacts. When a source-linked planning item in the terminology draft explicitly corrects older wording, treat the item-level correction as the current working terminology until the family is revised further.
 
 ## 4. Active Files
 
 ```text
 README.md
 application-planning-responsibility-map.md
+terminology-and-planning-items.md
 application-planning-principles.md
 application-planning-drafting-workflow.md
 
@@ -84,6 +88,33 @@ SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md
 Existing files under `drafts/` are migration sources only. New concrete product/workflow state should be stored in a project-local area outside `planning/documentation/`.
 
 ## 5. Artifact Family
+
+### Shared Terminology And Planning Items
+
+Owns working names and distinctions used across the family, especially:
+
+```text
+Planning Draft / AlgoWorkflow Draft;
+Problem Draft alias;
+Result Workflow;
+Current Workflow / Old Workflow;
+Action Workflow;
+InformationItem;
+Planning Item;
+Source Excerpt;
+Source Anchor;
+Source of Truth;
+Hardwritten Region;
+Object-backed Region;
+Snapshot;
+Live Reference;
+Transclusion;
+Chat Workspace;
+Review Gate;
+Review Status.
+```
+
+The terminology draft is a reviewable reusable working draft. It does not finalize concrete project schema, storage architecture or application object models.
 
 ### Current Reality Capture
 
@@ -119,6 +150,8 @@ tests and evidence;
 branches;
 current conclusion.
 ```
+
+The current terminology draft records a working clarification that Planning Draft and Problem Draft were often being used for the same central pre-scenario planning artifact. Future methodology updates may revise this section after terminology review.
 
 ### Application Root Planning Draft
 

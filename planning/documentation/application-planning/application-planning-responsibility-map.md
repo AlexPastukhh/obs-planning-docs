@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Responsibility Map
 
 Status: provisional reusable responsibility map
-Doc version: v0.6.1-folder-responsibility-map
+Doc version: v0.6.2-terminology-owner
 Scope: ownership of files and subfolders inside `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -38,6 +38,7 @@ It does not own project command routing or concrete product state.
 | Information type | Internal owner | Notes |
 |---|---|---|
 | Family purpose, lifecycle and read order | `README.md` | Navigation and compact family overview. |
+| Working terminology for planning artifacts, items, sources, regions, navigation, review and chat workspace | `terminology-and-planning-items.md` | Reviewable terminology draft. Current item-level corrections win over older naming prose until later revision. |
 | Stable planning principles | `application-planning-principles.md` | Invariants, evidence boundaries and artifact responsibilities. |
 | Repeated user + AI drafting process | `application-planning-drafting-workflow.md` | Classification, updates, branching, representation and evidence feedback. |
 | Current Reality Capture recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Temporary legacy filename; active semantic role is Reality Capture. |
@@ -51,6 +52,53 @@ It does not own project command routing or concrete product state.
 | Existing concrete draft migration sources | `drafts/` | Existing material to migrate deliberately; do not create new concrete product state here. |
 
 ## 3. Artifact Responsibilities
+
+### Shared Terminology And Planning Items
+
+Owns working definitions and distinctions for:
+
+```text
+- Planning Draft / AlgoWorkflow Draft;
+- Problem Draft alias;
+- Result Workflow;
+- Current Workflow / Old Workflow;
+- Action Workflow;
+- Goal Map;
+- InformationItem;
+- Planning Item;
+- Note;
+- Source Excerpt;
+- Source Anchor;
+- Provenance;
+- Origin;
+- Source of Truth;
+- Markdown File;
+- App Memory;
+- Hardwritten Region;
+- Object-backed Region;
+- Proposed Object Region;
+- Snapshot;
+- Materialized View;
+- Live Reference;
+- Transclusion;
+- Marker / Tag / Wrapper;
+- Workspace / Chat Workspace;
+- Conversation History;
+- Action Log;
+- Documentation Status;
+- Review Gate / Review Object / Review Status;
+- File Update Plan / Update Step / Replacement Archive.
+```
+
+Does not own:
+
+```text
+- concrete project schema;
+- storage implementation;
+- wrapper syntax finalization;
+- application object model;
+- accepted project state.
+```
 
 ### Current Reality Capture
 
@@ -93,6 +141,8 @@ Owns:
 - tests and evidence;
 - branches and current conclusion.
 ```
+
+The terminology draft currently clarifies that Planning Draft and Problem Draft were often used for the same central pre-scenario artifact. Treat that as a working terminology correction until the principles and templates are deliberately revised.
 
 ### Application Root Planning Draft
 
@@ -175,7 +225,7 @@ Contains existing migration-source drafts.
 ## 5. Reusable vs Project-Specific Boundary
 
 ```text
-Reusable principles, workflow and templates:
+Reusable principles, terminology, workflow and templates:
   planning/documentation/application-planning/
 
 Concrete captures, root plans, functional workflows, branches,
@@ -188,6 +238,9 @@ A generated explanation is a reading view and owns no canonical information.
 ## 6. Representation Responsibility
 
 ```text
+Terminology:
+  owns working names and conceptual distinctions.
+
 Principles:
   own why the semantic core and progressive complexity matter.
 
@@ -210,6 +263,7 @@ Generated explanation:
 - The parent documentation responsibility map wins for routing into this folder.
 - This map wins for placement between files and subfolders inside this folder.
 - README.md wins for family navigation and read order.
+- terminology-and-planning-items.md wins for working terminology and naming distinctions.
 - Principles win for stable planning invariants.
 - Drafting workflow wins for repeated user + AI process.
 - A template wins only for its recommended shape.
@@ -226,7 +280,7 @@ Generated explanation:
 Before adding information inside this folder, ask:
 
 ```text
-1. Is it a reusable principle, repeated process, recommended form or migration source?
+1. Is it reusable terminology, a reusable principle, repeated process, recommended form or migration source?
 2. Is it current reality or future planning?
 3. Is it application-level coordination, one functional workflow, a competing branch or extracted detail?
 4. Does the information belong in this reusable folder or a project-local area?
@@ -247,4 +301,5 @@ Before adding information inside this folder, ask:
 - Do not use deprecated stage templates as competing owners.
 - Do not create new concrete product state under drafts/.
 - Do not make generated explanations canonical.
+- Do not finalize project-specific schema or storage architecture in the terminology draft.
 ```
