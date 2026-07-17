@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: provisional reusable workflow
-Doc version: v0.7.0-source-linked-review
+Doc version: v0.8.1-planning-item-reconciliation
 Scope: repeated user + AI process for Current Reality Capture, Planning Drafts, Functional Workflow Drafts, branches, details and prototypes.
 
 Stable invariants belong in:
@@ -217,6 +217,92 @@ Review status is recorded after review. It is not the review object.
 ```
 
 The workflow is not append-only. Replace an incorrect current interpretation.
+
+## 7A. Planning Item Reconciliation
+
+Use this process when selected working, local or unprocessed Planning Items must be reconciled with relevant current repository documentation before further planning or repository work.
+
+Work directly with the selected Planning Items. Reconciliation is a review process, not a new persisted planning object. Concrete command names, aliases and project permission routing remain in the project root use-case map.
+
+### Select the item source
+
+Use, in priority order:
+
+```text
+1. the item set explicitly named by the user;
+2. an item file attached in the same message;
+3. the clearly active item set in the current conversation;
+4. another local or earlier source only when the user explicitly selects it.
+```
+
+If the source is missing or ambiguous, ask which item set or file should be reconciled. Do not silently treat an older local file or attachment as current.
+
+### Targeted repository traversal
+
+For the selected items, inspect only the relevant current sources:
+
+```text
+existing Planning Items;
+principles;
+workflows;
+terminology;
+Full Pictures or root drafts;
+decisions and open questions;
+canonical owner files;
+available source-linked items or excerpts behind a relevant rule;
+dependent documentation that may become inaccurate if the new meaning is accepted.
+```
+
+A repository statement proves what the current documentation says; it does not automatically prove that the statement is still correct. Likewise, new user input does not silently replace current meaning when the relation is unresolved.
+
+### Relation review
+
+Use the smallest useful relation vocabulary:
+
+```text
+Already Covered;
+Supports;
+Extends;
+Clarifies;
+Corrects;
+Conflicts;
+Replaces;
+Different Scope;
+New Meaning.
+```
+
+Use normal explanatory text when one label is not sufficient.
+
+### Required output
+
+Return a compact review object such as:
+
+| Item | Existing meaning / owner | Relation | Proposed item effect | Documentation impact | Choice required |
+|---|---|---|---|---|---|
+
+Also report:
+
+```text
+checked sources;
+relevant not-checked sources;
+existing solutions to the same problem;
+duplicates or cross-item conflicts;
+explicit old → new semantic effects;
+proposed item/documentation actions;
+unresolved choices;
+readiness for a later File Update Plan.
+```
+
+The review may propose creating, merging, extending, correcting, linking or leaving an item unchanged. It must not update the item register or repository files automatically.
+
+When a project exposes this process as a read-only command, preserve this permission boundary:
+
+```text
+- no file edits;
+- no item-register replacement;
+- no archive creation;
+- no commit or push.
+```
 
 ## 8. Literal Files And InformationItem References
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.10.0-command-planning-projection
+// @version      0.11.1-planning-item-reconciliation-command
 // @description  Reusable projection-only command helper with canonical command names, adaptive/full route reading and compact owner-read refinements.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -100,6 +100,21 @@ TM-OBS-REUSE source sync:
         'State archive freshness/source limits when relevant.'
       ],
       target: '<what should be checked from archive>'
+    },
+    {
+      id: 'planning_items.reconcile',
+      group: 'Commands',
+      label: 'сверь айтемы',
+      description: 'item/docs reconciliation',
+      englishName: 'reconcile planning items',
+      family: '`сверь айтемы` / `сверь айтемы с документацией` / `проверь айтемы по репозиторию` / `reconcile planning items` / `reconcile items`',
+      reminders: [
+        'Reconcile the selected working, local or unprocessed Planning Items with relevant current repository documentation.',
+        'Read canonical owners and available source-linked origins behind relevant principles or workflows.',
+        'Show existing coverage, same-problem solutions, conflicts and explicit old-to-new semantic effects.',
+        'Do not edit files, update item registers, create an archive, commit or push.'
+      ],
+      target: '<which items or item source should be reconciled>'
     },
     {
       id: 'file_update.plan',
