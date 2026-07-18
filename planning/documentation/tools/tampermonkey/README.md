@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.12.0-complete-change-picture-reconciliation
+Doc version: v0.13.0-canonical-item-set-transition
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -280,7 +280,7 @@ The reusable Command Palette provides:
 - one shared command definition for both insertion variants, so command semantics and reminders cannot drift;
 - a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
 - a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
-- a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route selects and reviews the complete primary picture changed by the items;
+- a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route reviews each complete primary picture and its current → actions → resulting canonical item-set transition;
 - no creation-wording command IDs, labels or aliases for the plan-command route;
 
 ```text
@@ -302,7 +302,7 @@ The reusable Command Palette provides:
   `planning/documentation/documentation-update-workflow.md`;
 - the refinement body states the validation action but does not duplicate the one-line, non-interactive or no-pager owner rules;
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
-- `reconcile planning items` inserts a read-only complete-picture reconciliation body: choose the affected workflow, active draft/Full Picture, functional workflow, branch, detail, model or other coherent primary object; review it before and after; then check supporting and cross-picture consistency;
+- `reconcile planning items` inserts a read-only complete-picture plus item-set reconciliation body: choose each affected workflow, active draft/Full Picture, functional workflow, branch, detail, model or other coherent primary object; review it before and after; show the current canonical item set, proposed actions for incoming meanings and resulting set; then check supporting and cross-picture consistency;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
 - no repo writes, network calls, commits or pushes.
 ```
@@ -343,7 +343,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
 - Do not treat Command Palette as command authority.
 - Do not add project-only command semantics without a UCM route.
-- Do not let the Planning Item reconciliation projection reduce review to isolated item rows or changed fragments, or edit item registers or repository files.
+- Do not let the Planning Item reconciliation projection reduce review to isolated item rows, assume one incoming item equals one resulting canonical item, hide rename/merge/split/remove effects, or edit item registers or repository files.
 - Do not duplicate archive command-format rules inside the helper refinement body.
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.

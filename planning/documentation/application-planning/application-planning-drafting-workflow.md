@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: provisional reusable workflow
-Doc version: v0.9.0-complete-change-picture-reconciliation
+Doc version: v0.10.0-canonical-item-set-transition
 Scope: repeated user + AI process for Current Reality Capture, Planning Drafts, Functional Workflow Drafts, branches, details and prototypes.
 
 Stable invariants belong in:
@@ -331,6 +331,82 @@ New Meaning.
 
 Use normal explanatory text when one label is not sufficient.
 
+Relation and action are separate:
+
+```text
+relation:
+  how an incoming meaning compares with current canonical meaning;
+
+action:
+  what should happen to the canonical item set if that meaning is accepted.
+```
+
+### Build the canonical item-set transition
+
+For each primary complete picture, identify:
+
+```text
+current canonical item set or current owner meanings;
+incoming items and meanings from the selected source;
+proposed action for each incoming meaning;
+resulting canonical item set after the proposed actions.
+```
+
+An incoming Planning Item is an input to reconciliation. It is not automatically a new canonical item. The resulting set may contain fewer, the same number or more items than the incoming set.
+
+Use a short semantic item name as the primary readable label. Keep the technical item ID as secondary traceability when one exists. When the current title no longer represents the resulting meaning, propose an explicit old name → new name transition instead of hiding the rename.
+
+Use the smallest useful action vocabulary:
+
+```text
+Keep;
+Update Content;
+Rename;
+Update And Rename;
+Add;
+Merge Into Existing;
+Merge Several;
+Split;
+Move / Re-home;
+Link;
+Defer;
+Supersede;
+Remove / Reject.
+```
+
+Normal explanatory text may refine an action when a label alone is not sufficient.
+
+For every proposed action, show:
+
+```text
+incoming semantic name and source ID when available;
+current canonical target or explicit absence of one;
+relation to current meaning;
+proposed action;
+resulting canonical item name;
+content added, corrected, preserved or removed;
+why this action produces a more coherent item set;
+identity, owner and history/provenance effect;
+unresolved user choice.
+```
+
+Identity and history rules:
+
+```text
+- Update Content normally preserves the current item identity and name.
+- Rename normally preserves identity when the underlying semantic responsibility remains the same.
+- Update And Rename shows both the content transition and old name → new name.
+- Merge shows which meanings/items are absorbed and which resulting identity remains or is proposed.
+- Split is justified only by independent purpose, owner, lifecycle, review or work-target needs; show old → resulting item mapping.
+- Move / Re-home preserves meaning while changing the owning complete picture or canonical owner; do not leave duplicate active ownership behind.
+- Defer keeps the meaning visible without promoting it into the active canonical set.
+- Supersede removes an item from the active set while preserving its historical mapping to the replacing meaning.
+- Remove / Reject removes the item from the proposed active set but does not erase source excerpts, provenance or the reason for rejection.
+- Add is used only when the meaning remains independently useful after checking current items, owners, merge candidates and scope.
+```
+
+If no explicit canonical item register exists for a picture, reconstruct the current set from its canonical owner meanings and state that boundary. Do not invent acceptance or stable IDs merely to complete the table.
+
 ### Consistency review
 
 Check each proposed complete picture for:
@@ -346,22 +422,32 @@ no silent deletion, narrowing, replacement, supersession or movement of active m
 consistency with supporting principles, terminology and templates;
 consistency with upstream, downstream and neighbouring pictures;
 open questions that remain questions rather than hidden decisions;
-simplicity proportional to the actual risk and scope.
+simplicity proportional to the actual risk and scope;
+no duplicate resulting items after Add or Merge;
+renamed items whose names match their resulting responsibility;
+splits justified by independent semantic or lifecycle boundaries;
+moves that leave one clear active owner;
+removed or superseded meanings whose provenance and replacement effect remain explicit;
+current and resulting item sets that account for every incoming meaning.
 ```
 
-When several primary pictures change, also show whether their outputs, inputs, decisions, terminology and ownership remain mutually compatible.
+When several primary pictures change, also show whether their outputs, inputs, decisions, terminology, ownership and resulting canonical item sets remain mutually compatible.
 
 ### Required output
 
 Use a complete-picture review such as:
 
-| Primary complete picture | Selected items | Current picture | Proposed picture | Changed / preserved parts | Supporting consistency sources | Conflicts / choices | Verdict |
+| Primary complete picture | Incoming meanings | Current picture | Proposed picture | Changed / preserved parts | Supporting consistency sources | Conflicts / choices | Verdict |
 |---|---|---|---|---|---|---|---|
 
-An additional item map may be useful, but it does not replace the complete-picture review:
+For each primary picture, also show the canonical item-set transition. Start with a compact current-set list, then use an Item Change Plan such as:
 
-| Item | Affected primary picture(s) | Relation | Proposed effect | Choice required |
-|---|---|---|---|---|
+| Incoming meaning | Source ID | Current canonical target | Relation | Proposed action | Resulting item name | Content effect | Why | Identity / owner / history effect | Choice required |
+|---|---|---|---|---|---|---|---|---|---|
+
+Finish that picture with the proposed resulting canonical item set. Use short semantic names as the main labels and IDs only as secondary references.
+
+The item transition does not replace the complete-picture review. The complete picture explains whether the workflow, draft or model remains coherent; the item transition explains which canonical meanings should remain after reconciliation.
 
 Also report:
 
@@ -372,13 +458,17 @@ why each primary picture was selected;
 existing solutions to the same problem;
 duplicates or cross-item conflicts;
 explicit old → new semantic effects;
+current canonical item set for each primary picture;
+proposed action and reason for every incoming meaning;
+resulting canonical item set for each primary picture;
+identity, rename, merge, split, move, supersession and removal effects;
 internal and cross-picture consistency findings;
 proposed item/documentation actions;
 unresolved choices;
 readiness for a later File Update Plan.
 ```
 
-The review may propose creating, merging, extending, correcting, linking or leaving an item unchanged. It must not update the item register or repository files automatically.
+The review may propose keeping, updating, renaming, adding, merging, splitting, moving, linking, deferring, superseding, removing or rejecting item meaning. It must not update the item register or repository files automatically.
 
 When a project exposes this process as a read-only command, preserve this permission boundary:
 

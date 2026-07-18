@@ -1,7 +1,7 @@
 # OBS Workflow Activation Map
 
 Status: active project-specific root planning router
-Doc version: v0.6.0-complete-change-picture-reconciliation
+Doc version: v0.7.0-canonical-item-set-transition
 Scope: decide which reusable workflow / local area docs to read before answering or editing in OBS planning work.
 
 ## 1. Default Rule
@@ -17,7 +17,7 @@ Start from root UCM, then read owner docs for the route.
 | Command behavior / accepted command | `planning/planning-use-case-map.md` | Owner workflow/doc named in route | Root UCM owns concrete routing and canonical English names. |
 | Read documentation principles | `planning/planning-use-case-map.md` | `planning/documentation/documentation-principles-read-workflow.md`, then the root/documentation/task-specific owners required by that workflow | Read-only preflight. No edits, archive, commit or push. |
 | Plan command | `planning/planning-use-case-map.md` | `planning/documentation/documentation-principles-read-workflow.md`, file-update overview workflow/template, `planning/documentation/command-planning-workflow.md`, use-case-map workflow/template and example coverage owners | `спланируй команду` / `plan command` is plan-only. Tampermonkey projection uses the same canonical names and does not authorize implementation. |
-| Planning Item reconciliation | `planning/planning-use-case-map.md` | `planning/documentation/application-planning/application-planning-drafting-workflow.md`, the selected item source, complete current owners of the primary changed picture, relevant supporting owners and available source-linked origins | `сверь айтемы` / `reconcile planning items` is read-only. Choose the complete primary picture from what the items actually change, show it before and after, then check supporting and cross-picture consistency; do not edit files or item registers. |
+| Planning Item reconciliation | `planning/planning-use-case-map.md` | `planning/documentation/application-planning/application-planning-drafting-workflow.md`, the selected item source, complete current owners of each primary changed picture, current canonical item owners, relevant supporting owners and available source-linked origins | `сверь айтемы` / `reconcile planning items` is read-only. For each primary picture, show the complete before/after picture and the canonical item-set transition: current set → item actions → resulting set. Use semantic names first and IDs second; do not assume one incoming item becomes one canonical item; do not edit files or item registers. |
 | Tampermonkey command helper/profile/body | `planning/planning-use-case-map.md` | `planning/documentation/tampermonkey-command-projection-workflow.md`, `planning/documentation/tools/tampermonkey/README.md` | Command helper is projection only; copy the canonical English name from the root UCM. |
 | Dashboard planning data / sync | `planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js` | Dashboard Help, exported JSON and current repository source | Dashboard runtime owns its single schema/help, JSON import/export and repo Markdown round-trip. No Dashboard-planning UCM command is required. |
 | Replacement archive / package | `planning/planning-use-case-map.md` | `planning/documentation/reviewable-agent-output-and-commands-workflow.md`, relevant package workflow, owner docs and target files | Resolve source selection and local-base verification first. Output full replacement archive, not patches/snippets. |

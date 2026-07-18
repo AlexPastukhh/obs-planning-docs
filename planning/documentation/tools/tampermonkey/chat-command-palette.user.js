@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.12.0-complete-change-picture-reconciliation
+// @version      0.13.0-canonical-item-set-transition
 // @description  Reusable projection-only command helper with canonical command names, adaptive/full route reading and compact owner-read refinements.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -105,15 +105,17 @@ TM-OBS-REUSE source sync:
       id: 'planning_items.reconcile',
       group: 'Commands',
       label: 'сверь айтемы',
-      description: 'complete-picture reconciliation',
+      description: 'complete-picture + item-set reconciliation',
       englishName: 'reconcile planning items',
       family: '`сверь айтемы` / `сверь айтемы с документацией` / `проверь айтемы по репозиторию` / `reconcile planning items` / `reconcile items`',
       reminders: [
         'Reconcile the selected working, local or unprocessed Planning Items with relevant current repository documentation.',
         'Choose the primary complete picture from what the items actually change: usually a whole workflow, or an active Planning Draft/Full Picture, Functional Workflow, branch, detail, model or other coherent object.',
         'Review each primary picture before and after the proposed change; show changed and preserved parts, purpose, boundaries, conflicts and unresolved choices.',
+        'For each primary picture, show the current canonical item set, incoming meanings with short semantic names and IDs only as secondary traceability, proposed item actions, and the resulting canonical item set.',
+        'Do not assume one incoming item becomes one new canonical item: it may keep or update an existing item, rename it, add, merge, split, move, link, defer, supersede, remove or reject meaning.',
         'Use principles, terminology, templates, canonical owners, source-linked origins and dependent artifacts as supporting consistency sources unless one is itself the primary changed object.',
-        'When several primary pictures change, review each separately and then check cross-picture consistency.',
+        'When several primary pictures change, review each separately and then check cross-picture and resulting-item-set consistency.',
         'Do not edit files, update item registers, create an archive, commit or push.'
       ],
       target: '<which items or item source should be reconciled>'
