@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: provisional reusable workflow
-Doc version: v0.8.1-planning-item-reconciliation
+Doc version: v0.9.0-complete-change-picture-reconciliation
 Scope: repeated user + AI process for Current Reality Capture, Planning Drafts, Functional Workflow Drafts, branches, details and prototypes.
 
 Stable invariants belong in:
@@ -237,27 +237,85 @@ Use, in priority order:
 
 If the source is missing or ambiguous, ask which item set or file should be reconciled. Do not silently treat an older local file or attachment as current.
 
-### Targeted repository traversal
+### Select the primary complete picture
 
-For the selected items, inspect only the relevant current sources:
+For each selected item or coherent item change set, identify the complete current picture whose meaning, behavior or plan would change if the item were accepted.
+
+The primary review object is that complete picture, not the item row, changed paragraph, isolated step or target file alone.
+
+Choose it from what the items actually change:
+
+```text
+process order, inputs, outputs, decisions or review gates:
+  the complete affected workflow;
+
+an active living plan, application direction or coordinated desired reality:
+  the complete active Planning Draft, Application Root Draft or Full Picture;
+
+one independently understandable behavior line:
+  the complete Functional Workflow Draft;
+
+a competing end-to-end alternative:
+  the complete solution branch;
+
+an independently meaningful extracted part:
+  the complete detail artifact;
+
+object identity, relationships, statuses or shared behavior semantics:
+  the coherent model/concept picture plus the workflows or drafts that use it;
+
+another coherent artifact family:
+  the smallest complete picture that preserves its purpose, boundaries and relationships.
+```
+
+Principles, terminology, templates, canonical owners and dependent artifacts are supporting consistency sources unless one of them is itself the primary object being changed.
+
+When a principle, term or template is the primary changed object, still inspect the complete workflows and living drafts whose behavior or representation would change under it.
+
+If one item set changes several primary pictures, create a separate before/after review for each picture and then perform a cross-picture consistency review. Do not collapse several different workflows or drafts into one vague aggregate.
+
+### Read the current picture and supporting sources
+
+Read each primary picture completely enough to preserve its semantic whole. Then inspect only the relevant supporting sources:
 
 ```text
 existing Planning Items;
 principles;
 workflows;
 terminology;
+templates;
 Full Pictures or root drafts;
+functional workflows, branches and details;
 decisions and open questions;
 canonical owner files;
 available source-linked items or excerpts behind a relevant rule;
+upstream inputs, downstream outputs and neighbouring workflows;
 dependent documentation that may become inaccurate if the new meaning is accepted.
 ```
 
 A repository statement proves what the current documentation says; it does not automatically prove that the statement is still correct. Likewise, new user input does not silently replace current meaning when the relation is unresolved.
 
+### Build the before and after pictures
+
+For every primary picture, show:
+
+```text
+identity, purpose and boundary;
+complete current picture before the selected items;
+complete proposed picture after the selected items;
+added, changed, moved, replaced, removed and preserved parts;
+inputs, outputs, objects, statuses, decisions, review gates and relationships when relevant;
+which selected items cause each change;
+supporting principles, terminology, templates, owners and source origins;
+internal conflicts and unresolved choices;
+effects on upstream, downstream and neighbouring pictures.
+```
+
+`Complete picture` means a semantically sufficient whole that allows the user to judge whether the workflow, draft or model still works. It does not require dumping irrelevant unchanged text, but unchanged purpose, boundaries and key relationships must remain visible.
+
 ### Relation review
 
-Use the smallest useful relation vocabulary:
+Use the smallest useful relation vocabulary for item effects and old-to-new meanings:
 
 ```text
 Already Covered;
@@ -273,21 +331,48 @@ New Meaning.
 
 Use normal explanatory text when one label is not sufficient.
 
+### Consistency review
+
+Check each proposed complete picture for:
+
+```text
+internal sequence and logical integrity;
+compatible inputs and outputs;
+preserved or explicitly changed purpose and boundaries;
+consistent object identities, roles, statuses and relations;
+review gates with clear review objects;
+no duplicate workflow step, entity or owner created without need;
+no silent deletion, narrowing, replacement, supersession or movement of active meaning;
+consistency with supporting principles, terminology and templates;
+consistency with upstream, downstream and neighbouring pictures;
+open questions that remain questions rather than hidden decisions;
+simplicity proportional to the actual risk and scope.
+```
+
+When several primary pictures change, also show whether their outputs, inputs, decisions, terminology and ownership remain mutually compatible.
+
 ### Required output
 
-Return a compact review object such as:
+Use a complete-picture review such as:
 
-| Item | Existing meaning / owner | Relation | Proposed item effect | Documentation impact | Choice required |
-|---|---|---|---|---|---|
+| Primary complete picture | Selected items | Current picture | Proposed picture | Changed / preserved parts | Supporting consistency sources | Conflicts / choices | Verdict |
+|---|---|---|---|---|---|---|---|
+
+An additional item map may be useful, but it does not replace the complete-picture review:
+
+| Item | Affected primary picture(s) | Relation | Proposed effect | Choice required |
+|---|---|---|---|---|
 
 Also report:
 
 ```text
 checked sources;
 relevant not-checked sources;
+why each primary picture was selected;
 existing solutions to the same problem;
 duplicates or cross-item conflicts;
 explicit old → new semantic effects;
+internal and cross-picture consistency findings;
 proposed item/documentation actions;
 unresolved choices;
 readiness for a later File Update Plan.
