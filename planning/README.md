@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.2.1-runtime-contract
+Doc version: v0.3.0-documentation-workbench-area
 Scope: OBS repository planning entry point, local routing, and source-of-truth pointers built on the reusable documentation layer copied under `planning/documentation/`.
 
 ## 1. Purpose
@@ -36,6 +36,7 @@ OBS root routing:
 OBS local areas:
   planning/areas/planning-system/
   planning/areas/conspects/
+  planning/areas/documentation-workbench/
 ```
 
 Rules:
@@ -77,6 +78,16 @@ After root files exist, starter kits are not runtime routers.
 |---|---|---|
 | Planning runtime | `planning/areas/planning-system/` | Minimal technical index and the operational `конец` workflow. Dashboard planning rules and field help live in the Dashboard userscript/UI. |
 | Conspects | `planning/areas/conspects/` | Conspect review/repetition planning and local knowledge-work application. |
+| Documentation Workbench | `planning/areas/documentation-workbench/` | Project-local Application Root Draft, complete working Planning Item register and coordination of Documentation Workbench complete pictures. |
+
+Documentation Workbench read order:
+
+```text
+planning/areas/documentation-workbench/README.md
+  → planning/areas/documentation-workbench/full-picture.md
+  → targeted sections of planning/areas/documentation-workbench/planning-item-register.md
+  → relevant reusable owners under planning/documentation/application-planning/
+```
 
 ## 5. Tampermonkey Helper
 

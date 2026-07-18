@@ -1,7 +1,7 @@
 # OBS Workflow Activation Map
 
 Status: active project-specific root planning router
-Doc version: v0.7.0-canonical-item-set-transition
+Doc version: v0.8.0-documentation-workbench-area
 Scope: decide which reusable workflow / local area docs to read before answering or editing in OBS planning work.
 
 ## 1. Default Rule
@@ -22,6 +22,7 @@ Start from root UCM, then read owner docs for the route.
 | Dashboard planning data / sync | `planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js` | Dashboard Help, exported JSON and current repository source | Dashboard runtime owns its single schema/help, JSON import/export and repo Markdown round-trip. No Dashboard-planning UCM command is required. |
 | Replacement archive / package | `planning/planning-use-case-map.md` | `planning/documentation/reviewable-agent-output-and-commands-workflow.md`, relevant package workflow, owner docs and target files | Resolve source selection and local-base verification first. Output full replacement archive, not patches/snippets. |
 | Documentation update | `planning/documentation/README.md` | `planning/documentation/documentation-principles-read-workflow.md`, then `documentation-update-workflow.md` or `documentation-update-plan-workflow.md` | Plan-first for broad docs updates. |
+| Documentation Workbench planning | `planning/areas/documentation-workbench/README.md` | `planning/areas/documentation-workbench/full-picture.md`, targeted sections of `planning/areas/documentation-workbench/planning-item-register.md`, then relevant owners under `planning/documentation/application-planning/` | The area owns project-local product/planning state. The reusable family owns method, terminology, principles and repeated workflow. Reconciliation proposals do not change the register until accepted and applied explicitly. |
 | Conspects | `planning/areas/conspects/README.md` | local conspect docs when created | Conspects area is local application, not reusable rule source. |
 | Parallel work | `planning/documentation/parallel-work/parallel-workflow.md` | workspace template | Staging only; no aggregate sync before sync-candidate. |
 
