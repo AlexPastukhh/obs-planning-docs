@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: provisional reusable workflow
-Doc version: v0.10.0-canonical-item-set-transition
+Doc version: v0.11.0-traceable-item-transformation-review
 Scope: repeated user + AI process for Current Reality Capture, Planning Drafts, Functional Workflow Drafts, branches, details and prototypes.
 
 Stable invariants belong in:
@@ -407,6 +407,49 @@ Identity and history rules:
 
 If no explicit canonical item register exists for a picture, reconstruct the current set from its canonical owner meanings and state that boundary. Do not invent acceptance or stable IDs merely to complete the table.
 
+### Preserve the complete item transformation
+
+For every non-trivial item transformation, show the source meanings before presenting the result. Do not collapse the current item, incoming expansion/correction and resulting item into one resulting paraphrase.
+
+Use one small transformation block per coherent change. A block normally shows:
+
+```text
+current/original canonical item or items;
+incoming, extending, correcting or replacing item/meaning;
+resulting canonical item or items.
+```
+
+Use the following table shape when it is useful:
+
+| Role | Semantic name | ID / source | Owner / status | Core meaning | Relation / contribution | Action / change effect | Identity / history effect | Choice |
+|---|---|---|---|---|---|---|---|---|
+| Current | <current item name> | <ID> | <owner/status> | <independently understandable current meaning> | <merge/update target or —> | <what is preserved/changed> | <current identity> | <choice or —> |
+| Incoming | <incoming item/meaning> | <ID/source> | <working source/status> | <independently understandable incoming meaning> | <Extends/Corrects/Replaces/etc.> | <what it adds/corrects/removes> | <survives/absorbed/moved/etc.> | <choice or —> |
+| Resulting | <resulting item name> | <result ID> | <result owner/status> | <complete resulting meaning> | <derived from named Current/Incoming rows> | <resulting semantic effect> | <surviving/new identity and mappings> | <choice or —> |
+
+Use `—` where a column does not apply. The table is not limited to three rows:
+
+```text
+Merge Several:
+  several Current and/or Incoming rows, then the Resulting row or rows;
+
+Split:
+  one or more Current rows, the incoming reason/correction, then several Resulting rows;
+
+Add:
+  Current may be `no existing canonical item`, followed by Incoming and Resulting;
+
+Remove / Reject:
+  show the Current item, the incoming evidence/reason and a Resulting row that states removal from the active set while preserving provenance;
+
+Move / Re-home:
+  show the original owner and the resulting owner separately.
+```
+
+Each Current and Incoming row must contain enough core meaning to understand that source independently. Each Resulting row must identify which source rows it derives from. Preserve every source ID and semantic name involved in update, rename, merge, split, replacement, supersession, movement or removal.
+
+A compact single-row item map is sufficient only for a truly simple Keep, Link or non-overlapping Add. An aggregate matrix may summarize all transformations, but it is derived from the small transformation blocks and must not replace them.
+
 ### Consistency review
 
 Check each proposed complete picture for:
@@ -428,7 +471,10 @@ renamed items whose names match their resulting responsibility;
 splits justified by independent semantic or lifecycle boundaries;
 moves that leave one clear active owner;
 removed or superseded meanings whose provenance and replacement effect remain explicit;
-current and resulting item sets that account for every incoming meaning.
+current and resulting item sets that account for every incoming meaning;
+every Current and Incoming source item shown separately before the result for non-trivial transformations;
+resulting rows that identify all source rows they derive from;
+no merge, split, rename, move, supersession, removal or correction hidden only inside an aggregate summary.
 ```
 
 When several primary pictures change, also show whether their outputs, inputs, decisions, terminology, ownership and resulting canonical item sets remain mutually compatible.
@@ -440,14 +486,11 @@ Use a complete-picture review such as:
 | Primary complete picture | Incoming meanings | Current picture | Proposed picture | Changed / preserved parts | Supporting consistency sources | Conflicts / choices | Verdict |
 |---|---|---|---|---|---|---|---|
 
-For each primary picture, also show the canonical item-set transition. Start with a compact current-set list, then use an Item Change Plan such as:
+For each primary picture, also show the canonical item-set transition. Start with a compact current-set list. Then show one small Item Transformation Block for every non-trivial change, with the original/current item or items, each incoming/expanding/correcting meaning and the resulting item or items visible separately. Add rows when several sources or results participate and use `—` where a field does not apply.
 
-| Incoming meaning | Source ID | Current canonical target | Relation | Proposed action | Resulting item name | Content effect | Why | Identity / owner / history effect | Choice required |
-|---|---|---|---|---|---|---|---|---|---|
+A compact aggregate Item Change Plan may follow, but it is derived from the transformation blocks and does not replace them. Finish that picture with the proposed resulting canonical item set. Use short semantic names as the main labels and IDs only as secondary references.
 
-Finish that picture with the proposed resulting canonical item set. Use short semantic names as the main labels and IDs only as secondary references.
-
-The item transition does not replace the complete-picture review. The complete picture explains whether the workflow, draft or model remains coherent; the item transition explains which canonical meanings should remain after reconciliation.
+The item transition does not replace the complete-picture review. The complete picture explains whether the workflow, draft or model remains coherent; the transformation blocks explain what each source meaning was, what the incoming meaning contributes and how the resulting canonical meaning is derived.
 
 Also report:
 
@@ -462,6 +505,8 @@ current canonical item set for each primary picture;
 proposed action and reason for every incoming meaning;
 resulting canonical item set for each primary picture;
 identity, rename, merge, split, move, supersession and removal effects;
+separate original/current, incoming and resulting rows for every non-trivial item transformation;
+source-to-result mappings for every transformation;
 internal and cross-picture consistency findings;
 proposed item/documentation actions;
 unresolved choices;
