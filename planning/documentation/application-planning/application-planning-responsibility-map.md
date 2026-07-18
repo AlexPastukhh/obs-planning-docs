@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Responsibility Map
 
 Status: provisional reusable responsibility map
-Doc version: v0.6.2-terminology-owner
+Doc version: v0.7.0-end-to-end-picture-and-item-validation-owners
 Scope: ownership of files and subfolders inside `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -38,9 +38,9 @@ It does not own project command routing or concrete product state.
 | Information type | Internal owner | Notes |
 |---|---|---|
 | Family purpose, lifecycle and read order | `README.md` | Navigation and compact family overview. |
-| Working terminology for planning artifacts, items, sources, regions, navigation, review and chat workspace | `terminology-and-planning-items.md` | Reviewable terminology draft. Current item-level corrections win over older naming prose until later revision. |
-| Stable planning principles | `application-planning-principles.md` | Invariants, evidence boundaries and artifact responsibilities. |
-| Repeated user + AI drafting process | `application-planning-drafting-workflow.md` | Classification, updates, branching, representation and evidence feedback. |
+| Working terminology for planning artifacts, End-To-End Complete Pictures, primary review objects, supporting artifacts, item validation context, sources, navigation, review and chat workspace | `terminology-and-planning-items.md` | Reviewable terminology draft. Current item-level corrections win over older naming prose until later revision. |
+| Stable planning principles | `application-planning-principles.md` | Evidence boundaries, no-parallel-CP integrity, proportional item-validation signals and artifact responsibilities. |
+| Repeated user + AI drafting and item-reconciliation process | `application-planning-drafting-workflow.md` | Classification, trigger/result picture validation, item transformations, prototype/risk follow-up and evidence feedback. |
 | Current Reality Capture recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Temporary legacy filename; active semantic role is Reality Capture. |
 | General root/branch Planning Draft representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | One candidate end-to-end plan. |
 | Functional Workflow Draft representation | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` | One independently understandable and testable behavior line. |
@@ -64,8 +64,13 @@ Owns working definitions and distinctions for:
 - Current Workflow / Old Workflow;
 - Action Workflow;
 - Goal Map;
+- End-To-End Complete Picture;
+- Primary Review Object;
+- Supporting Artifact;
 - InformationItem;
 - Planning Item;
+- Item Validation Context;
+- Prototype / Test Candidate;
 - Note;
 - Source Excerpt;
 - Source Anchor;
@@ -137,6 +142,7 @@ Owns:
 - planning steps;
 - existing solutions and alternatives;
 - questions, problems, risks and assumptions;
+- proportional hypothesis/risk/key-situation/prototype-test context on Planning Items;
 - decisions;
 - tests and evidence;
 - branches and current conclusion.
@@ -174,7 +180,7 @@ Owns one valuable behavior line:
 - local implementation thoughts.
 ```
 
-It is not automatically a scenario implementation slice and is not a solution branch.
+It is not automatically a scenario implementation slice, a solution branch or an End-To-End Complete Picture. If sibling behavior files divide one mandatory trigger-to-result cycle, the parent workflow remains the Complete Picture and the children are supporting slices.
 
 ### Branch Planning Draft
 
@@ -196,7 +202,7 @@ Owns only detail extracted from a parent section. The parent keeps a useful summ
 
 ### Prototype Plan And Result
 
-The plan owns experiment setup. The result owns observed evidence. The related planning draft owns the revised criterion, assumption, workflow status or decision.
+A Planning Item may own a compact prototype/test candidate and the decision it affects. The separate plan owns substantial experiment setup; the result owns observed evidence. The related item and planning draft own revised hypotheses, risks, criteria, workflow status and decisions.
 
 ## 4. Subfolder Responsibilities
 
@@ -239,13 +245,13 @@ A generated explanation is a reading view and owns no canonical information.
 
 ```text
 Terminology:
-  owns working names and conceptual distinctions.
+  owns working names and conceptual distinctions, including Complete Picture and Item Validation Context.
 
 Principles:
-  own why the semantic core and progressive complexity matter.
+  own no-parallel-CP integrity, evidence boundaries and proportional validation-signal invariants.
 
 Drafting workflow:
-  owns how AI classifies input, selects representation and updates artifacts.
+  owns how AI classifies input, validates trigger-to-result picture boundaries, transforms items and reports prototype/risk follow-up.
 
 Templates:
   own recommended forms and optional expansion points.
@@ -282,12 +288,14 @@ Before adding information inside this folder, ask:
 ```text
 1. Is it reusable terminology, a reusable principle, repeated process, recommended form or migration source?
 2. Is it current reality or future planning?
-3. Is it application-level coordination, one functional workflow, a competing branch or extracted detail?
-4. Does the information belong in this reusable folder or a project-local area?
-5. Is evidence status preserved?
-6. Does an existing internal owner already hold the rule?
-7. Is a separate file independently useful?
-8. Can the information remain in a compact high-level view?
+3. Is it one independently traversable trigger-to-result Complete Picture, application-level coordination, a supporting functional workflow/model/view, a competing branch or extracted detail?
+4. Would a proposed peer picture hide a mandatory stage required by another picture?
+5. Does the information belong in this reusable folder or a project-local area?
+6. Is evidence status preserved?
+7. Does a relevant Planning Item need hypothesis/risk/key-situation/prototype-test context?
+8. Does an existing internal owner already hold the rule?
+9. Is a separate file independently useful?
+10. Can the information remain in a compact high-level view?
 ```
 
 ## 9. Do Not
@@ -302,4 +310,6 @@ Before adding information inside this folder, ask:
 - Do not create new concrete product state under drafts/.
 - Do not make generated explanations canonical.
 - Do not finalize project-specific schema or storage architecture in the terminology draft.
+- Do not classify thematic supporting slices as peer Complete Pictures when one mandatory workflow crosses them.
+- Do not make Item Validation Context a mandatory reusable schema.
 ```

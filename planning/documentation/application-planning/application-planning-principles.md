@@ -1,45 +1,42 @@
 # Solution And Workflow Planning Principles
 
 Status: provisional reusable principles
-Doc version: v0.7.0-source-linked-review
-Scope: stable guidance for planning candidate workflows and solutions before optional detailed implementation planning.
+Doc version: v0.9.0-end-to-end-picture-and-item-validation
+Scope: stable guidance for source-linked Planning Items, end-to-end Complete Pictures, supporting artifacts, Planning Drafts, concern review, alternatives, tests and evidence-driven revision before optional detailed implementation planning.
 
 ## 1. Purpose
 
 Planning should reduce the risk of:
 
 ```text
-- solving the wrong problem;
-- preserving an unnecessary workflow;
-- accepting the first idea too early;
-- losing important user-reported context;
-- losing the source wording behind an item or decision;
-- reviewing the wrong thing at the wrong time;
-- designing details before the valuable behavior is understood;
-- creating documentation complexity that does not improve thinking.
+solving the wrong problem;
+losing user meaning or source wording;
+accepting the first idea too early;
+reviewing the wrong object;
+forcing detail or artifacts before they help;
+compressing away required meaning;
+treating suggestions as decisions;
+creating documentation complexity that does not improve thinking.
 ```
 
 The method is an orientation toward a useful result, not a rigid ceremony.
 
 ## 2. Evidence Boundary
 
-Keep these statuses distinct:
+Keep these states distinct:
 
 ```text
 confirmed:
   explicit user statement or checked source fact;
 
 inference:
-  reasoned interpretation requiring confirmation;
+  reasoned interpretation requiring review;
 
 question:
   important unknown;
 
-critical remark:
-  structural, logical, economic or technical concern;
-
-related idea:
-  possible improvement or alternative;
+concern suggestion:
+  possible direction of attention for one target;
 
 decision candidate:
   option under consideration;
@@ -48,402 +45,385 @@ decision:
   explicit accepted choice with rationale;
 
 evidence:
-  observation produced by a test, prototype or checked source.
+  observation from a test, prototype or checked source.
 ```
 
-AI must not silently promote an idea, risk, inference or unanswered fallback into a confirmed fact or final requirement.
+Silence, a template field, an AI proposal or a preset must not silently promote meaning.
 
 ## 3. Source-Linked Traceability
 
-Important planning claims should stay connected to the source material that caused them.
+Important planning claims remain linked to the source material that caused them.
 
-Use source-linked traceability when a statement may affect:
+Preserve original wording when it is evidence for an item, correction, decision or uncertainty. A normalized interpretation may be added but must not erase the source.
 
-```text
-- desired result;
-- acceptance criteria;
-- review decisions;
-- file-update scope;
-- workflow or branch selection;
-- future implementation direction;
-- deletion, rename or cleanup;
-- reusable principle changes.
-```
-
-A source may be:
+Group repeated support:
 
 ```text
-- original user wording;
-- checked repository text;
-- a returned draft;
-- a prototype result;
-- a diff;
-- an imported file or source excerpt.
+one Planning Item
+  ← several Source Excerpts;
+
+one Source Excerpt
+  → several Planning Items.
 ```
-
-Preserve original user wording when it is evidence for a planning item, correction, decision or uncertainty. A normalized interpretation may be added, but it should not erase the source wording that makes the interpretation reviewable.
-
-Repeated support should be grouped: one planning item may have several source excerpts, and one excerpt may support several items.
-
-Source-linked items are reviewed raw material. They do not automatically become final documentation, confirmed requirements or accepted decisions.
 
 ## 4. Convenience-First Input
 
-The user may provide any mixture of:
+The user may provide facts, fragments, feelings, problems, risks, ideas, alternatives, questions, corrections, decisions, examples, prototype findings and implementation thoughts in any order.
+
+The user is not responsible for knowing the correct category, artifact, concern, relation or insertion point.
+
+AI may propose classification and placement, but ambiguity that materially affects the result remains visible and reviewable.
+
+## 5. Purposeful Planning Items
+
+A reviewed Planning Item should make visible, when relevant:
 
 ```text
-workflow facts;
-out-of-order steps;
-problems;
-strengths;
-feelings;
-risks;
-workarounds;
-ideas;
-alternatives;
-questions;
-corrections;
-decisions;
-prototype findings;
-implementation thoughts.
+what it states;
+why it exists;
+what larger result/direction it belongs to;
+its role and evidence status;
+important relations;
+whether it is requirement, support or implementation thought;
+important ambiguity.
 ```
 
-The user is not required to identify the correct category, artifact or insertion point.
+Do not create an item for every source fragment. Do not leave independently meaningful work hidden only inside synthesis prose.
 
-AI should infer from context:
+## 6. Planning Items May Have Different Scales
+
+A Planning Item may represent a local requirement, a decision, a workstream or an initiative.
+
+Apply relations and concerns at the scale that owns the meaning:
 
 ```text
-- evidence status;
-- information category;
-- affected artifact;
-- affected workflow step or position between steps;
-- whether the input adds, corrects, replaces, splits or links material;
-- whether a question is safer than an immediate assertion.
+application longevity
+  → initiative/application-level item;
+
+local button wording
+  → local item, without inheriting every initiative concern.
 ```
 
-The user may correct the interpretation.
+Do not force all planning into requirement-sized records.
 
-## 5. Proposed Information Units Review
+## 7. Semantic Completeness
 
-For non-trivial free-form input, expose a compact interpretation review when it helps prevent silent misclassification.
+A Planning Item has no arbitrary word, paragraph, line or screen-length limit.
 
-Recommended fields:
+Its Canonical Item Body includes every detail required for correct understanding and reuse, including examples, distinctions, exceptions, rationale, acceptance detail, dependencies and relevant source context.
 
-| Field | Meaning |
-|---|---|
-| Unit ID | Local ID for the new input fragment |
-| Interpreted statement | AI's understanding |
-| Source excerpt / anchor | Original wording or checked-source reference when it matters |
-| Evidence status | User statement / checked fact / inference / question / decision candidate |
-| Category | Workflow fact / problem / risk / workaround / idea / criterion / decision / test / other |
-| Target artifact | Reality Capture / root draft / functional workflow / branch / detail / prototype |
-| Target location | Existing step / between steps / draft-level section / new candidate section |
-| Proposed action | Add / update / replace / split / link / ask / no change |
-| Confidence or question | Important ambiguity |
+Compact IDs, titles, summaries and collapsed UI views are navigation layers only.
 
-AI may return the updated draft in the same response rather than requiring a separate approval ceremony.
+### Semantic Splitting
 
-If the user does not correct the interpretation, it becomes the accepted working classification and placement for the current draft. The original evidence status remains unchanged.
+Split an item when parts have independent meaning, owner, lifecycle/status, review, acceptance, reuse, decisions, actions or work targets.
 
-A later correction updates the current draft; do not preserve both interpretations as equally valid.
+Do not split only because the item is long.
 
-## 6. Review Object Discipline
+Simplicity-first means the smallest sufficient structure, not the shortest possible text.
 
-Before expensive, confusing or irreversible work, identify the review object that prevents the relevant risk.
+## 8. Item-Backed Full Picture
 
-Review concepts must remain distinct:
+The Full Picture / Planning Draft is a high-level synthesis built from reviewed Planning Items.
+
+It may combine:
+
+```text
+linked item blocks;
+summaries;
+groupings;
+ordinary explanatory prose;
+links to independent detail.
+```
+
+Important meaning introduced outside an item should either:
+
+```text
+link to a supporting item;
+be marked as inference;
+or become a new item candidate.
+```
+
+The Full Picture does not replace canonical item bodies. Items remain inspectable independently.
+
+## 9. Two-Pass Planning
+
+Use two different depths of review.
+
+```text
+During item creation:
+  lightweight purpose, necessity, role, relation
+  and obvious concern check.
+
+After a first Full Picture exists:
+  systematic review of items, item groups
+  and the whole picture.
+```
+
+The second pass may reveal missing items, duplicates, alternatives, broader concerns or unnecessary work.
+
+## 10. Planning Lens And Concern Lifecycle
+
+Keep the lifecycle distinct:
+
+```text
+Planning Lens
+  → optional Concern Definition match
+  → Concern Suggestion for one target
+  → applicability review
+  → optional Applied Concern
+  → optional Concern Work Target
+  → result returned to item and Full Picture.
+```
+
+A lens check may end with `not applicable` or `already covered` without creating an Applied Concern.
+
+## 11. Presets Recommend, They Do Not Mandate
+
+A Concern Preset recommends possible attention.
+
+It does not automatically:
+
+```text
+make every concern applicable;
+create mandatory document sections;
+create Applied Concerns;
+create deeper-work artifacts;
+declare the target incomplete.
+```
+
+Several independent presets may be considered together.
+
+If several sources suggest the same Concern Definition for one target, review it once and preserve all source links.
+
+Nested preset inheritance is not assumed until explicitly designed.
+
+## 12. Correct Concern Scale
+
+Apply a concern to the smallest target that truly owns the uncertainty, but not below its real scope.
+
+A file-type preset may propose concerns for a file; an initiative/domain preset may propose concerns for a large Planning Item.
+
+Do not copy a parent-level concern into every child item merely because they are related.
+
+## 13. Concern Definitions Are Reusable; Applications Are Separate
+
+One Concern Definition may be reused across many targets.
+
+Each target-specific Applied Concern keeps its own:
+
+```text
+status;
+summary;
+sources;
+coverage relation;
+work target;
+result.
+```
+
+Do not merge target-specific results into the reusable definition.
+
+## 14. No Premature Deep-Work Materialization
+
+A suggested or applied concern does not require a separate object or file immediately.
+
+Create a Concern Work Target only when independent depth, lifecycle, review, reuse, research or testing justifies it.
+
+The parent target retains a useful summary, relationship and entry point.
+
+## 15. Structure, Attention, Presentation And Validation Are Separate
+
+```text
+Document Template:
+  recommended document shape;
+
+Concern Preset:
+  recommended directions of attention;
+
+View Preset:
+  display/filter configuration over existing records;
+
+Validation Rule:
+  checked condition.
+```
+
+One concept may participate in several mechanisms, but the roles remain explicit.
+
+## 16. Review Object Discipline
+
+Keep distinct:
 
 ```text
 Review Gate:
-  stage where review happens;
+  where review happens;
 
 Review Object:
-  concrete thing being reviewed;
+  what is reviewed;
 
 Review Status:
-  state/result after review.
+  result/state after review.
 ```
 
-The review object may be:
+Pick the smallest review object that catches the current risk. Possible objects include item sets, source mappings, concern suggestions, Applied Concerns, draft sections, generated files, archives, diffs and prototype results.
+
+## 16A. End-To-End Complete Picture Integrity
+
+A Complete Picture is a workflow integrity boundary, not a thematic folder, model or capability label.
 
 ```text
-- source-linked item table;
-- source excerpt mapping;
-- Current Reality Capture section;
-- Planning Draft section;
-- Result Workflow map;
-- Action Workflow or File Update Plan;
-- generated literal file;
-- replacement archive or diff;
-- architecture/conventions checklist;
-- object-creation proposal;
-- implementation thought or prototype result.
-```
-
-A status such as `reviewed`, `accepted`, `needs changes`, `documented` or `superseded` is not the review object.
-
-Pick the smallest review object that can catch the specific risk. Do not require a heavy review artifact when a compact source-linked item list or draft section is sufficient.
-
-## 7. Minimal-To-Complex Artifact Design
-
-Start with the smallest representation that is clear, useful and maintainable.
-
-```text
-required semantic core
-  → compact working representation
-  → local expansion
-  → linked detail, table, diagram or specialized view when justified
+trigger / accepted input
+  → mandatory stages
+  → decisions, branches, loops and review gates
+  → understandable result or explicit unresolved end state
 ```
 
 Rules:
 
 ```text
-- Keep related information together.
-- Omit empty optional sections.
-- Prefer headings and short blocks before large tables.
-- Add stable IDs only where references or repeated updates need them.
-- Preserve user wording and intuitive grouping before abstraction.
-- Keep the high-level view after adding detail.
-- Apply progressive complexity to files and folders, not only headings.
-- A template is a recommended representation, not a universal schema.
+- A Complete Picture must be independently traversable from trigger to result.
+- A peer Complete Picture must not own a missing mandatory stage required to finish the basic cycle.
+- When start, mandatory middle and completion were split by topic, combine them into one end-to-end picture.
+- Keep models, terminology, views, root summaries, capability slices and shared infrastructure as supporting artifacts unless they have an independent trigger-to-result lifecycle.
+- A supporting artifact may still be the Primary Review Object for its own local change; affected end-to-end workflows remain consistency checks.
+- Several Complete Pictures are valid only when each has its own trigger, result and independently understandable lifecycle.
+- Optional integrations and explicit upstream/downstream handoffs do not by themselves make pictures parallel fragments.
 ```
 
-Anticipating future growth does not justify starting with the future complex form.
+The Application Root / Full Picture coordinates shared identity, constraints, item relationships and workflow inventory. It is not automatically a child Complete Picture.
 
-## 8. Navigation And Roadmap Quality
+## 16B. Planning Item Validation Signals
 
-Navigation and high-level roadmap visibility are planning quality, not only UI polish.
+Planning Items should preserve uncertainty that matters for later evidence and decisions.
 
-A useful planning artifact should help the reader see:
+When proportional to the item, keep near it:
 
 ```text
-- the desired reality or result;
-- the high-level road toward it;
-- the current local point;
-- the parent plan or workflow it belongs to;
-- previous/current/next points when relevant;
-- dependencies and review gates;
-- source-linked reasons for important items.
+hypothesis / assumption;
+risk or key situation;
+prototype / test candidate;
+evidence needed;
+success / failure / inconclusive interpretation;
+affected decision;
+priority / blocking status.
 ```
 
-A local plan or file-update step should not become understandable only as an isolated table. It should preserve enough parent context to show why the step matters.
-
-Key points are useful when they explain both the local content and its role in the larger plan.
-
-## 9. Current Reality Capture
-
-The first artifact is descriptive.
-
-It records:
+Rules:
 
 ```text
-- current workflow and sequence;
-- what currently happens;
-- current intended explanation for a step;
-- user experience;
-- strengths;
-- experienced problems;
-- suspected risks;
-- workarounds;
-- existing ideas;
-- unknowns and contradictions.
+- Do not fill validation fields mechanically or require them on every item.
+- A hypothesis is not a confirmed requirement.
+- A risk is not evidence that failure already occurs.
+- A prototype/test candidate is not a build decision or accepted architecture.
+- Prefer a concrete risky or key situation over a vague instruction to test the feature.
+- Preserve relevant validation signals through update, rename, merge, split and move operations.
+- When evidence resolves or corrects a signal, update the item, concern and every affected criterion, workflow or decision.
+- Create a separate prototype artifact only when setup, evidence, review or execution has an independent lifecycle.
 ```
 
-The user may begin with fragments, complaints, examples, positive experiences or imagined ideas.
+## 17. Minimal-To-Complex Artifact Design
 
-Current intended purpose is not automatically a validated underlying need.
-
-The capture must not formulate:
+Start with the smallest representation that is clear, useful and maintainable:
 
 ```text
-- accepted future outcomes;
-- accepted acceptance criteria;
-- target workflow;
-- solution comparison;
-- build decision;
-- architecture.
+semantic core
+  → compact working representation
+  → local expansion
+  → linked detail or specialized view when justified.
 ```
 
-Categorization is allowed. Evaluation is deferred.
-
-## 10. Planning Draft
-
-After enough current reality is visible, create a Planning Draft for one candidate end-to-end way to achieve a result.
-
-Its semantic core may include:
+Rules:
 
 ```text
-- source-reality references;
-- source-linked planning items when they help review;
-- current/old workflow when relevant;
-- desired/result workflow;
-- action workflow or roadmap;
-- what needs to be achieved;
-- acceptance criteria and status;
-- boundaries and non-goals;
-- planning steps;
-- problems, risks and assumptions;
-- existing solutions and alternative workflows;
-- decisions;
-- tests and evidence;
-- branches;
-- current conclusion and next action.
+keep related information together;
+omit empty optional sections;
+prefer simple headings/blocks before large tables;
+add stable identity where references or repeated updates need it;
+keep the high-level entry point after adding detail;
+apply progressive complexity to files and folders too;
+do not create an artifact family in advance.
 ```
 
-A simple plan may omit most optional sections.
+## 18. Current Reality Capture
 
-## 11. Living Plan Growth And Reconstruction
+Current Reality Capture is descriptive. It may record current workflow, explanations, user experience, strengths, actual problems, suspected risks, workarounds, existing ideas, unknowns and contradictions.
 
-Prefer growing the living plan from the beginning when feasible. Early source-linked items, draft sections and review objects reduce the chance that a correct AI interpretation disappears in chat.
+It must not silently formulate accepted future outcomes, architecture or a build decision.
 
-This preference is not absolute. When the plan did not grow from the beginning, reconstruction from reviewed source-linked items is valid.
+## 19. Planning Draft
 
-During reconstruction:
+After enough source/current context exists, create an item-backed Planning Draft for one current planning direction.
+
+Its optional semantic core may include:
 
 ```text
-- preserve original source excerpts when available;
-- keep evidence status visible;
-- mark register-derived or indirect items when raw source is missing;
-- do not pretend reconstructed material was accepted earlier than it was;
-- ask prioritized questions only for important gaps.
+desired result;
+acceptance criteria and status;
+boundaries and non-goals;
+current/result/action workflows;
+Planning Items and relationships;
+concern coverage;
+existing solutions and alternatives;
+decisions;
+tests and evidence;
+branches;
+current conclusion and next action.
 ```
 
-## 12. Desired Result And Acceptance Criteria
+Omit sections that do not improve the current work.
 
-A desired result or criterion may be:
+## 20. Application Root And Functional Workflows
+
+When one application contains several independently valuable behavior lines, use one root draft to coordinate shared meaning.
+
+Create a separate Functional Workflow Draft only when it has independent outcome, analysis, review or testing value. It is not automatically an End-To-End Complete Picture.
+
+When several sibling behavior files together contain one mandatory trigger-to-result cycle, the parent must still own the complete end-to-end workflow and the children remain supporting slices.
+
+Functional workflows are siblings within one solution; they are not competing branches.
+
+## 21. Solution Branching
+
+Create a branch only when alternatives require independent planning or testing.
+
+The parent records:
 
 ```text
-candidate;
-confirmed;
-needs evidence;
-rejected;
-superseded.
+decision point;
+reason for separate analysis;
+selection/rejection criteria;
+assumptions and required evidence;
+branch inventory;
+comparison and final decision.
 ```
 
-Do not invent a final criterion to fill a template.
-
-Criteria should attach to validated outcomes, not automatically to every current step.
-
-Different interpretations of the desired result may remain candidates or become branches when independent planning is justified.
-
-## 13. Application Root And Functional Workflows
-
-When one candidate application contains several valuable behavior lines, use one application-level root draft to coordinate them.
-
-The root owns:
-
-```text
-application identity;
-shared outcomes and criteria;
-workflow inventory;
-cross-workflow dependencies;
-shared concepts and constraints;
-actual solution branches;
-coordination and selection.
-```
-
-A Functional Workflow Draft owns one independently understandable and testable behavior line.
-
-It resembles a possible future slice, but at the early planning stage it does not fix implementation architecture.
-
-Create a separate workflow file only when the behavior has independent outcome, analysis, review or test value.
-
-Functional workflows are siblings inside one solution. They are not competing branches.
-
-## 14. Solution Branching
-
-A branch is created only when independently planning more than one alternative is useful.
-
-Before branching, the parent should record:
-
-```text
-- decision point;
-- why separate analysis is justified;
-- why one option cannot yet be selected;
-- why another cannot yet be rejected;
-- assumptions;
-- evidence required;
-- selection criteria;
-- rejection criteria;
-- cost of maintaining the branch.
-```
-
-The parent owns comparison.
-
-Each branch should be logically readable as a complete end-to-end option, even when physical storage uses inherited or linked content.
-
-Nested branches are allowed.
-
-## 15. Upstream Revision And Parallel Branches
-
-Later analysis may reveal that material before a divergence point must change.
-
-Possible responses:
-
-```text
-- update the parent and affected descendants;
-- create a new parent version;
-- keep a snapshot branch;
-- create an independent parallel branch;
-- discard the proposed upstream change.
-```
-
-The method records the consequence. It does not require one application-specific versioning implementation.
-
-## 16. Details And File Creation
+## 22. Details And File Creation
 
 Keep information together by default.
 
-Create a separate detail artifact when it has independent value because it:
+Create a separate detail artifact when it has independent value or the parent has become hard to use. File length alone is not a sufficient reason; use actual readability, lifecycle, ownership, review and tool behavior.
+
+## 23. Literal Files And Managed References
+
+Reusable methodology may distinguish:
 
 ```text
-- is large enough to impair the parent;
-- has its own lifecycle or review;
-- is reused;
-- is opened independently;
-- changes at a different rate;
-- needs focused testing or research.
+embedded content;
+reference-only link;
+ordinary unlinked text.
 ```
 
-The parent keeps a useful summary and entry point.
+Choose by readability, review and source-of-truth needs.
 
-## 17. InformationItem References And Literal Files
+Do not choose final wrapper syntax here. AI-generated markers or proposed regions do not create canonical object state without review.
 
-Reusable methodology may describe reference modes, but it must not choose concrete app storage, wrapper syntax or UI controls.
+## 24. Implementation Thoughts
 
-When a Planning Item or InformationItem is referenced from a literal file, three reusable representation choices exist:
+Record early implementation thoughts near the behavior, model question or concern they affect.
 
-```text
-embedded content:
-  app-readable reference plus wrapped/materialized literal content;
-
-reference-only:
-  app-readable reference without duplicate literal content;
-
-no link:
-  ordinary text when a managed reference would add more burden than clarity.
-```
-
-Use embedded content when a literal file must be readable and reviewable without resolving app state.
-
-Use reference-only when duplicating the item would make the file harder for humans or AI to read, or when an app-expanded view is the intended review surface.
-
-Do not silently create canonical object state from AI-generated wrappers, tags or proposed regions. A proposed object-backed region requires explicit user confirmation before it becomes canonical app state.
-
-## 18. Implementation Thoughts
-
-Early planning may include:
+Keep their status explicit:
 
 ```text
-Implementation Thoughts / Future Implementation Notes
-```
-
-Keep each note near the workflow step, capability or model question it affects.
-
-Record its status:
-
-```text
-explicit user idea;
+user idea;
 AI suggestion;
 open alternative;
 needs prototype;
@@ -451,111 +431,102 @@ accepted direction;
 rejected direction.
 ```
 
-An implementation thought is not an architecture decision merely because it is technically plausible.
+Technical plausibility alone does not make an architecture decision.
 
-Concrete object models, class boundaries, storage and serialization belong in project-specific drafts, not reusable principles.
+## 25. Tests And Prototypes
 
-## 19. Tests And Prototypes
+Start from uncertainty and the decision affected, not from a desired feature.
 
-Start from uncertainty, not from a desired feature.
-
-A prototype should state:
+A prototype or test should state, proportionally:
 
 ```text
-hypothesis;
-question;
+hypothesis or question;
+risk/key situation;
 reason to test now;
 minimum sufficient setup;
-evidence;
+evidence to observe;
 success criteria;
 failure criteria;
 inconclusive criteria;
-timebox;
-decision affected;
-code fate.
+affected decision;
+code/artifact fate when relevant.
 ```
 
-Useful types include:
+A prototype may remain embedded or become separate when it has independent lifecycle, setup, evidence or dependent decisions.
 
-```text
-workflow/UX prototype;
-technical spike;
-integration prototype;
-value prototype;
-horizontal prototype;
-vertical/steel-thread prototype;
-proof of concept;
-pilot.
-```
+Observed evidence updates affected items, concerns, criteria, workflows, branches and decisions.
 
-A prototype may be embedded or stored separately.
-
-Observed evidence updates affected criteria, assumptions, decisions, workflows and branches.
-
-## 20. Dynamic Revision
+## 26. Dynamic Revision
 
 Planning is not append-only.
 
 When corrected or new evidence arrives:
 
 ```text
-- update the current truth;
-- preserve deliberate user edits;
-- revisit affected downstream artifacts;
-- revisit upstream assumptions when necessary;
-- change representation when it no longer works;
-- keep the high-level entry point.
+update current truth;
+preserve deliberate user wording;
+revisit affected items and concerns;
+revisit upstream/downstream artifacts;
+change representation when it no longer works;
+keep a high-level entry point.
 ```
 
-Detailed implementation planning may return the process to an earlier draft or another branch.
+## 27. Results Return To The Planning Picture
 
-## 21. Structured Source And AI Explanation
+Deep analysis, research and prototype work must not remain isolated.
 
-The structured draft is the canonical working source.
-
-AI may generate:
+Accepted results update:
 
 ```text
-overview;
-deep explanation;
-resume-context explanation;
-selected-section explanation.
+the Applied Concern;
+the owning Planning Item;
+the Full Picture when shared understanding changes;
+related Decisions and Actions.
 ```
 
-The explanation is a reading view derived from the structured source. It should not become a separately maintained truth.
+## 28. Structured Source And AI Explanation
 
-## 22. Entry Into Detailed Planning
+Canonical working sources are structured drafts, canonical Planning Items and other explicitly owned artifacts.
+
+AI responses may provide reading views and proposed deltas. They do not become canonical documentation automatically.
+
+## 29. Entry Into Detailed Implementation Planning
 
 Detailed scenario/domain/slice/implementation planning becomes useful when enough of the following are stable:
 
 ```text
-- desired outcome;
-- acceptance criteria;
-- selected candidate workflow;
-- valuable functional workflows;
-- major constraints and integrations;
-- critical assumptions and evidence;
-- remaining known risks.
+desired outcome;
+criteria;
+selected candidate workflow;
+valuable functional workflows;
+major constraints/integrations;
+critical assumptions/evidence;
+remaining known risks.
 ```
 
 This is a judgment boundary, not a rigid gate.
 
-## 23. Do Not
+## 30. Do Not
 
 ```text
-- Do not require template-ordered user input.
-- Do not treat silence as evidence-status promotion.
-- Do not evaluate solution ideas inside Reality Capture.
-- Do not lose source wording when it is the evidence for an item.
-- Do not treat source-linked items as automatic final documentation.
-- Do not confuse Review Object with Review Status.
+- Do not require template-ordered input.
+- Do not treat silence as evidence promotion.
+- Do not lose source wording that supports meaning.
+- Do not treat every source fragment as an item.
+- Do not treat every item as a final requirement.
+- Do not compress an item until examples or distinctions are lost.
+- Do not split an item only because it is long.
+- Do not treat Concern Suggestions as Applied Concerns.
+- Do not make preset concerns mandatory.
+- Do not create concern work files mechanically.
+- Do not confuse Review Object and Review Status.
 - Do not create a branch for every option.
 - Do not treat functional workflows as branches.
-- Do not create an empty artifact family in advance.
-- Do not make optional detail mandatory.
+- Do not create empty files/folders in advance.
 - Do not turn implementation thoughts into architecture automatically.
-- Do not put a concrete application schema in reusable methodology.
+- Do not put concrete application schema/storage decisions in reusable methodology.
 - Do not choose exact wrapper syntax in reusable principles.
-- Do not silently create canonical object state from AI-generated wrappers/tags.
 - Do not make AI explanation a second canonical source.
+- Do not split one mandatory trigger-to-result workflow into peer Complete Pictures by topic.
+- Do not turn an item hypothesis, risk or prototype candidate into a confirmed requirement or architecture decision.
 ```

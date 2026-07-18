@@ -1,1073 +1,728 @@
 # Terminology And Planning Items
 
 Status: provisional reusable terminology draft / needs review
-Doc version: v0.1.0
+Doc version: v0.3.0-end-to-end-picture-and-item-validation
 Language: Russian working draft
-Scope: shared terminology for source-linked planning, documentation workspace, workflow/algo planning, navigation, review, Markdown/object bridge and chat workspace.
+Scope: shared terminology for source-linked planning, Planning Items, end-to-end Complete Pictures, supporting artifacts, concern review, documentation workspace, navigation, Markdown/object bridge, chat workspace and file updates.
 
-## 0. Purpose
+## 0. Purpose And Authority
 
-This file defines working terms so future planning drafts, documentation files, app features and file-update plans can use the same words consistently.
-
-Current rule:
+This file owns working names and conceptual distinctions used by reusable planning methodology and project-local drafts.
 
 ```text
-When a source-linked Planning Item conflicts with older prose,
-the item-level correction wins until reviewed otherwise.
+When a source-linked Planning Item explicitly corrects older prose,
+the reviewed item-level correction wins until the reusable family is revised.
 ```
 
-This terminology is not final architecture. It is a reviewable reusable draft.
+This file does not finalize concrete project schema, storage architecture, wrapper syntax or UI controls.
 
-## 1. Main correction from latest clarification
+## 1. Core Planning Artifacts
 
-Earlier wording separated `Problem Draft`, `Planning Draft`, `Direction Draft` and `Result Workflow` too strongly.
+### 1.1 Planning Draft
 
-The latest clarification changes the center of the terminology:
+**Status:** primary user-facing term.
 
-```text
-Problem Draft and Planning Draft were mostly referring to the same thing:
-the main draft used before detailed scenarios are created,
-for planning a problem, solution, workflow, algorithm or future reality.
-```
-
-The draft is not only for applications. It can be used for:
-
-```text
-- planning a solution to a problem;
-- planning a desired workflow;
-- planning an algorithm;
-- planning documentation behavior;
-- planning an app feature;
-- planning how reality should work after changes;
-- coordinating later detailed scenarios, files and implementation plans.
-```
-
-Therefore the central term should not be only `Problem Draft`.
-
-## 2. Proposed central term
-
-### 2.1 Planning Draft / AlgoWorkflow Draft
-
-Working user-facing term:
-
-```text
-Planning Draft
-```
-
-Working precise/technical candidate:
-
-```text
-AlgoWorkflow Draft
-```
-
-Russian working names:
-
-```text
-планнинг-драфт
-алго-воркфлоу драфт
-```
-
-Alternative names:
-
-```text
-Problem Draft
-Workflow Draft
-Algo Draft
-Direction Draft
-```
-
-### 2.2 Definition
-
-```text
-Planning Draft / AlgoWorkflow Draft — главный pre-scenario planning draft for one problem, goal, direction or desired reality.
-It is used before detailed scenarios are created.
-It helps plan what reality/workflow/algorithm should become, why, through which major parts,
-what old/current workflow exists, what questions remain, and how local plans relate to the whole.
-```
-
-### 2.3 Why this term
-
-The latest clarification emphasized:
-
-```text
-мы планируем то как должна быть реальность, какой нам нужен алгоритм или workflow
-```
-
-Therefore the term should point to:
-
-```text
-- desired reality;
-- workflow;
-- algorithm;
-- problem-solving structure;
-- pre-scenario planning.
-```
-
-`Planning Draft` is likely the best user-facing umbrella.
-`AlgoWorkflow Draft` is a candidate precise subtype/name if the documentation needs a less generic term.
-
-### 2.4 Important note
-
-`AlgoWorkflow Draft` is not an implementation algorithm only.
+Planning Draft is the main pre-detailed-planning artifact for one problem, goal, desired reality, workflow, algorithm or solution direction.
 
 It may contain:
 
 ```text
-- problem/goal framing;
-- current/old workflow;
+- source-reality references;
+- reviewed Planning Items;
 - desired/result workflow;
-- action workflow;
-- questions;
-- alternatives;
-- key points;
-- source-linked planning items;
-- local update plans;
-- navigation anchors;
-- future detailed scenario candidates.
+- current/old workflow;
+- action workflow or roadmap;
+- criteria and boundaries;
+- questions and concern coverage;
+- alternatives and branches;
+- decisions;
+- tests and evidence;
+- current conclusion.
 ```
 
-## 3. Central draft terms
+`Problem Draft`, `Workflow Draft` and `Algo Draft` may be contextual aliases. Do not make them competing canonical artifact types without a real semantic difference.
 
-### 3.1 Planning Draft
+### 1.2 Full Picture
 
-Status: accepted broad/user-facing candidate
-
-Definition:
+Full Picture is the high-level current synthesis of a Planning Draft.
 
 ```text
-Planning Draft — broad name for a draft used to plan a problem, goal, workflow, algorithm or desired reality before detailed scenarios and implementation plans.
+Planning Items:
+  canonical planning bricks;
+
+Full Picture:
+  readable organization and synthesis of those bricks.
 ```
 
-Relationship:
+The Full Picture may combine item links, summaries, groupings and explanatory prose. It must not introduce important unsupported meaning silently.
+
+### 1.3 Application Root Planning Draft
+
+A Planning Draft that coordinates several valuable behavior lines of one candidate application.
+
+It owns:
 
 ```text
-Planning Draft ~= Problem Draft in the current discussion.
-Planning Draft may be implemented/defined more precisely as an AlgoWorkflow Draft.
+application identity;
+shared outcomes and criteria;
+functional-workflow inventory;
+cross-workflow relationships;
+shared concepts, constraints and non-goals;
+actual competing solution branches;
+coordination and selection.
 ```
 
-Recommendation:
+### 1.4 Functional Workflow Draft
+
+One independently understandable and testable behavior line inside the same application or solution.
+
+It is not automatically:
 
 ```text
-Use `Planning Draft` as the primary user-facing term.
-Use `AlgoWorkflow Draft` only if the methodology needs a distinct precise term.
+- a solution branch;
+- a detailed scenario;
+- an implementation slice;
+- an End-To-End Complete Picture.
 ```
 
-### 3.2 Problem Draft
+When several Functional Workflow Drafts together contain one mandatory trigger-to-result cycle, the parent must preserve the complete end-to-end workflow and the children remain supporting slices.
 
-Status: alias, not canonical
+### 1.5 Branch Planning Draft
 
-Definition:
+One independently planned alternative created after a real divergence decision. The parent Planning Draft owns the reason for branching, comparison and final selection/rejection.
+
+### 1.6 Detail Artifact
+
+A linked artifact that owns independently useful detail. Create it only when the detail has its own lifecycle, review, reuse, opening pattern, change rate, research or testing value.
+
+### 1.7 End-To-End Complete Picture
+
+**Status:** accepted reusable planning distinction.
+
+One independently traversable workflow picture that:
 
 ```text
-Problem Draft — alias for Planning Draft when the starting point is a problem or pain.
+starts from a trigger or accepted input;
+shows every mandatory stage;
+shows decisions, branches, loops and review gates;
+reaches an understandable result or explicit unresolved end state;
+does not require a peer Complete Picture to supply a missing mandatory stage.
 ```
 
-Boundary:
+A thematic capability slice is not a Complete Picture merely because it is coherent. If one peer owns the start, another the mandatory middle and another the required completion, they are fragments of one workflow.
+
+Several Complete Pictures are valid only when each has its own trigger, result and independently traversable lifecycle.
+
+### 1.8 Primary Review Object
+
+The smallest semantically complete artifact or workflow whose before/after state must be reviewed to catch the current risk.
+
+For workflow changes this is normally an End-To-End Complete Picture. For terminology, model or representation changes it may be the non-workflow owner itself, while affected end-to-end workflows remain required consistency checks.
+
+### 1.9 Supporting Artifact
+
+A model, view, terminology owner, template, root summary, capability/detail artifact or shared-infrastructure owner that explains or enables a workflow without replacing its trigger-to-result continuity.
+
+A Supporting Artifact may be the Primary Review Object for its own local change. It is not automatically a parallel Complete Picture.
+
+## 2. Workflow Terms
+
+### Result Workflow
+
+The useful desired future behavior or reality inside a Planning Draft.
+
+### Current Workflow / Old Workflow
+
+The way work currently happens. `Old Workflow` is useful when the current or previous process is explicitly being replaced.
+
+### Action Workflow
+
+The route from current state toward the desired Result Workflow.
+
+It may include:
 
 ```text
-Do not use Problem Draft as the only canonical term,
-because the same artifact may start from a goal, opportunity, desired workflow or algorithm.
+ordered actions;
+dependencies;
+review gates;
+current/completed/next points;
+file-update plans.
 ```
 
-### 3.3 Direction Draft
-
-Status: deprioritized candidate
-
-Earlier guess:
-
-```text
-Direction Draft — draft for a direction of work.
-```
-
-Correction:
-
-```text
-This name is less accurate than Planning Draft / AlgoWorkflow Draft,
-because the user emphasizes planning the desired workflow/algorithm/reality, not merely a work direction.
-```
-
-Use only if:
-
-```text
-we need to describe a branch/direction that is one part of a larger Planning Draft.
-```
-
-### 3.4 Workflow Draft
-
-Status: candidate alias
-
-Definition:
-
-```text
-Workflow Draft — a Planning Draft focused on a workflow.
-```
-
-Risk:
-
-```text
-It may be confused with Result Workflow or Action Workflow.
-```
-
-Use carefully.
-
-### 3.5 Algo Draft
-
-Status: candidate alias
-
-Definition:
-
-```text
-Algo Draft — a Planning Draft focused on the algorithm/logic of how reality should work.
-```
-
-Risk:
-
-```text
-It may sound too technical or implementation-focused.
-```
-
-Use carefully.
-
-## 4. Workflow terms
-
-### 4.1 Result Workflow
-
-Status: accepted as part/goal inside the Planning Draft
-
-Definition:
-
-```text
-Result Workflow — the desired useful workflow inside the Planning Draft.
-It describes the reality/user scenario we want to make possible.
-```
-
-Latest correction:
-
-```text
-Result Workflow is close to the central draft,
-but it is better treated as one major part/goal inside the larger Planning Draft / AlgoWorkflow Draft.
-```
-
-Example:
-
-```text
-A user opens a planning documentation file and can navigate:
-- current section;
-- parent planning draft;
-- previous/current/next points;
-- attached source-linked items;
-- key points;
-- dependencies;
-- source excerpts.
-```
-
-Not the same as:
-
-```text
-Action Workflow — how we get there.
-Current/Old Workflow — what exists now and may need improvement.
-```
-
-### 4.2 Current Workflow
-
-Status: accepted
-
-Definition:
-
-```text
-Current Workflow — the way work currently happens, if it already exists in some form.
-```
-
-Purpose:
-
-```text
-It is analyzed as one possible section of the Planning Draft.
-It can reveal problems, patterns, constraints and improvement ideas.
-```
-
-### 4.3 Old Workflow
-
-Status: accepted alias in improvement contexts
-
-Definition:
-
-```text
-Old Workflow — previous/current workflow that is being replaced or improved.
-```
-
-Relationship:
-
-```text
-Old Workflow can be the same as Current Workflow
-when the current process is the thing to improve.
-```
-
-Use when:
-
-```text
-there is a before/after comparison.
-```
-
-### 4.4 Action Workflow
-
-Status: accepted
-
-Definition:
-
-```text
-Action Workflow — the planned path for getting from current state to the desired Result Workflow.
-It is a navigable action goal map.
-```
-
-It includes:
-
-```text
-- ordered actions;
-- dependencies;
-- review gates;
-- current/completed/next points;
-- checks whether steps are still needed;
-- file-update plans when repository files must change.
-```
-
-Important:
-
-```text
 Action Workflow is not the Result Workflow.
-It is the route to create/define/document/implement the Result Workflow.
-```
 
-### 4.5 Goal Map
+### Goal Map
 
-Status: accepted supporting term
+A structured map of a goal, subgoals, steps, dependencies and checks.
 
-Definition:
+### Detailed Scenario
 
-```text
-Goal Map — a structured map of a goal, subgoals, steps, dependencies and checks.
-```
+A later, more concrete behavior artifact created when the Planning Draft is sufficiently clear.
 
-Usage:
+## 3. Planning Item Terms
 
-```text
-- for analyzing the desired Result Workflow;
-- for analyzing the Action Workflow path;
-- for deciding whether a step is worth doing.
-```
+### 3.1 InformationItem
 
-### 4.6 Detailed Scenario
+General information unit in app memory. It may represent a note, source excerpt, question, answer, decision, Planning Item, action entry, linkable content or another reusable unit.
 
-Status: accepted later artifact
+### 3.2 Planning Item
 
-Definition:
+An addressable planning unit used to preserve, review, relate and reuse one coherent planning meaning.
+
+A Planning Item may represent work at different scales:
 
 ```text
-Detailed Scenario — a more concrete scenario created after the Planning Draft has clarified enough.
+Goal;
+Initiative;
+Workstream;
+Requirement;
+Acceptance Criterion;
+Supporting Idea;
+Implementation Idea;
+Question;
+Risk;
+Assumption;
+Evidence;
+Prototype Need;
+Decision;
+Action.
 ```
 
-Relationship:
+A Planning Item is not automatically:
 
 ```text
-Planning Draft / AlgoWorkflow Draft comes before Detailed Scenarios.
+- final documentation;
+- a confirmed requirement;
+- a decision;
+- a small or short record.
 ```
 
-Example:
+Its role, evidence status and relationships determine how it is used.
+
+When it improves later review or evidence gathering, a Planning Item may also preserve optional Item Validation Context. Do not add it mechanically or treat it as a universal schema.
+
+### 3.3 Planning Item Identity
+
+Recommended compact identity:
 
 ```text
-The Planning Draft says we need a workflow for importing object-backed regions from Markdown.
-A Detailed Scenario later specifies the exact user flow:
-open file -> scan tags -> review proposed object -> confirm -> object created.
-```
-
-## 5. Navigation terms
-
-### 5.1 Navigation
-
-Status: accepted
-
-Definition:
-
-```text
-Navigation — app-supported ability to move through and understand files, draft sections,
-parent/child plans, previous/current/next points, attached items, dependencies and source anchors.
-```
-
-Important correction:
-
-```text
-Navigation is not only inside the currently selected file.
-It should also show relevant points from outer/parent files.
-```
-
-### 5.2 Selected File Navigation
-
-Definition:
-
-```text
-Selected File Navigation — navigation through headings and points of the file currently open in the app.
-```
-
-### 5.3 Parent Draft Navigation
-
-Definition:
-
-```text
-Parent Draft Navigation — navigation that shows where the current file/section/update plan sits inside the larger Planning Draft / AlgoWorkflow Draft.
-```
-
-### 5.4 Roadmap Navigation
-
-Definition:
-
-```text
-Roadmap Navigation — navigation over the full route:
-previous points, current point, planned next points, dependencies and status.
-```
-
-### 5.5 Attached Item
-
-Definition:
-
-```text
-Attached Item — InformationItem / Planning Item linked to a heading, section, file, draft, chat turn or action step.
-```
-
-Use:
-
-```text
-A heading can show attached questions, source excerpts, key points, decisions, notes or related items.
-```
-
-### 5.6 Key Point
-
-Definition:
-
-```text
-Key Point — short statement attached to a section/point that explains both:
-1. what the point says;
-2. what role it plays in the whole Planning Draft / roadmap.
-```
-
-Template:
-
-```text
-Key point:
-  content summary
-  role in parent plan
-  why this matters now
-  previous/next relation
-```
-
-## 6. Item / object terms
-
-### 6.1 InformationItem
-
-Status: accepted broad data-model term
-
-Definition:
-
-```text
-InformationItem — general information unit in app memory.
-It can be a note, source excerpt, idea, question, answer, decision, planning item,
-action-log entry, linkable object-backed content or reusable content.
-```
-
-### 6.2 Planning Item
-
-Status: accepted subtype/category
-
-Definition:
-
-```text
-Planning Item — InformationItem extracted or created during planning,
-used as raw material for Planning Drafts, workflows, file updates and future decisions.
-```
-
-Important:
-
-```text
-Planning Items are reviewed raw material.
-They are not automatically final documentation.
-```
-
-### 6.3 Note
-
-Status: UX term
-
-Definition:
-
-```text
-Note — user-facing form of InformationItem,
-often used for comments, questions, links, ideas, reminders or observations.
-```
-
-### 6.4 Object
-
-Status: technical term, use carefully
-
-Definition:
-
-```text
-Object — structured app-memory entity with ID, metadata, content and relations.
-```
-
-Rule:
-
-```text
-Do not use `Object` alone when a more precise term exists.
-Prefer:
-- InformationItem;
-- object-backed region;
-- app-memory object;
-- source object.
-```
-
-### 6.5 Object-backed Content
-
-Definition:
-
-```text
-Object-backed Content — text/content whose source of truth is an app object or InformationItem,
-even if a copy of it appears inside a Markdown file.
-```
-
-## 7. Source / evidence terms
-
-### 7.1 Source Excerpt
-
-Definition:
-
-```text
-Source Excerpt — literal fragment of user text, assistant text, repository file, draft or imported file
-that supports an item or decision.
-```
-
-Rule:
-
-```text
-One Planning Item may have multiple Source Excerpts.
-One Source Excerpt may support multiple Planning Items.
-```
-
-### 7.2 Source Anchor
-
-Definition:
-
-```text
-Source Anchor — address of the Source Excerpt:
-chat turn, file path, heading, line range, object ID, selection range or imported fragment ID.
-```
-
-### 7.3 Provenance
-
-Definition:
-
-```text
-Provenance — the full origin story of an item/content:
-source excerpts, anchors, chat turns, transformations, review decisions and related artifacts.
-```
-
-### 7.4 Origin
-
-Status: cautious technical term
-
-Definition:
-
-```text
-Origin — creation or attachment context where an item/object first belonged.
+stable numeric ID
++ short semantic code name
++ optional display title/summary
 ```
 
 Example:
 
 ```text
-Planning Item PI-12 originated in Chat Workspace “Documentation Workbench planning”, turn 8.
+ITEM-120 / SEMANTICALLY-COMPLETE-ITEM
 ```
 
-Not the same as:
+Compact identity supports navigation. It does not replace the Canonical Item Body.
+
+### 3.4 Canonical Item Body
+
+The complete authoritative description of one Planning Item.
+
+It may contain as much text as required to preserve:
 
 ```text
-Source of Truth
+statement;
+purpose/rationale;
+examples and counterexamples;
+important distinctions;
+exceptions and edge cases;
+acceptance detail;
+dependencies and relations;
+consequences;
+source context;
+unresolved ambiguity.
 ```
 
-### 7.5 Source of Truth
+There is no arbitrary word, paragraph, line or screen-length limit.
 
-Definition:
+### 3.5 Semantic Item Split
+
+Split an item when parts have independent meaning, ownership, lifecycle/status, review, acceptance, reuse, decisions, actions or work targets.
+
+Do not split only because the item is long or contains several necessary examples.
+
+### 3.6 Planning Direction
+
+A larger target, outcome or direction to which an item belongs. It may be another Planning Item, a Planning Draft, a file or another stable target.
+
+### 3.7 Item Kind And Item Scale
+
+`Item Kind` describes semantic role. `Item Scale` is an optional candidate for distinguishing local, workstream and initiative scope when kind alone is insufficient.
+
+Exact vocabularies remain open for simplification through usage.
+
+### 3.8 Item Relations
+
+Candidate relations include:
 
 ```text
-Source of Truth — authoritative owner for a specific content unit or region.
+part of;
+contains;
+belongs to direction;
+supports;
+refines;
+defines acceptance for;
+implements;
+tests;
+provides evidence for;
+depends on;
+alternative to;
+contradicts;
+supersedes;
+derived from.
 ```
 
-Rule:
+Relations form a typed graph; a strict tree is not required.
+
+### 3.9 Attached Item
+
+A Planning Item or InformationItem linked to a heading, section, file, draft, chat fragment or action step.
+
+### 3.10 Key Point
+
+A compact statement that explains:
 
 ```text
-Source of Truth is per content/region, not global.
+what the local point says;
+what role it plays in the parent plan;
+why it matters;
+relevant previous/next relationships.
 ```
 
-Examples:
+### 3.11 Item Validation Context
+
+Optional planning information preserved with a Planning Item when uncertainty, risk or a key situation matters:
 
 ```text
-- a Markdown section can be source of truth for hardwritten text;
-- an InformationItem can be source of truth for object-backed content;
-- a chat turn can be source evidence, but not necessarily final source of truth.
+hypothesis / assumption;
+risk or key situation;
+prototype / test candidate;
+evidence needed;
+success / failure / inconclusive interpretation;
+affected decision;
+priority / blocking status.
 ```
 
-## 8. Markdown / app-memory bridge terms
-
-### 8.1 Markdown File
-
-Definition:
+It is proportional, not mandatory. Empty fields are omitted.
 
 ```text
-Markdown File — real repository documentation file, readable by humans and AI without the app.
+hypothesis
+  ≠ confirmed requirement;
+
+risk
+  ≠ proven failure;
+
+prototype / test candidate
+  ≠ architecture or build decision.
 ```
 
-Rule:
+### 3.12 Prototype / Test Candidate
+
+A concrete uncertain, risky or key situation that may need minimum sufficient execution or observation before an affected item, workflow, criterion or implementation direction can be accepted confidently.
+
+The candidate may remain embedded in its Planning Item. Create a separate Prototype Plan only when the experiment has independent setup, evidence, review or execution lifecycle.
+
+## 4. Concern And Planning-Deepening Terms
+
+### 4.1 Planning Lens
+
+A reusable perspective used to inspect planning, such as necessity, acceptance, alternatives, evidence, risks, prototype need or future relevance.
+
+Using a lens does not automatically create a stored concern.
+
+### 4.2 Concern Definition
+
+A reusable named question or direction of attention.
+
+Example:
 
 ```text
-Markdown files remain first-class documentation.
-The app adds links, metadata, navigation and source-of-truth handling around them.
+CONCERN / FUTURE-RELEVANCE
+
+Will this solution remain useful,
+and what conditions could invalidate the need?
 ```
 
-### 8.2 App Memory
+### 4.3 Concern Preset
 
-Definition:
+A recommended set of Concern Definitions for a target kind, item kind, file type, task or domain.
+
+Several independent presets may be considered together. Nested preset inheritance remains an open design question.
+
+A preset recommends attention. It does not:
 
 ```text
-App Memory — application storage for InformationItems, objects, relations, dependencies,
-review statuses, chat workspaces and source-of-truth metadata.
+- make every concern applicable;
+- create mandatory file sections;
+- create an Applied Concern automatically;
+- create a deep-work artifact automatically;
+- declare the target incomplete automatically.
 ```
 
-### 8.3 Hardwritten Region
+### 4.4 Concern Suggestion
 
-Definition:
+One Concern Definition proposed for one target by a preset, a rule, an AI interpretation or manual user selection.
+
+A Concern Suggestion is not yet an Applied Concern.
+
+Possible review dispositions include:
 
 ```text
-Hardwritten Region — region of a Markdown file where the Markdown file itself is source of truth.
+Pending Review;
+Apply;
+Not Applicable;
+Already Covered;
+Covered At Parent Level;
+Covered At Full-Picture Level;
+Review Deferred.
 ```
 
-### 8.4 Object-backed Region
+The exact stored vocabulary remains open.
 
-Definition:
+### 4.5 Applied Concern
+
+One reviewed Concern Definition applied to one concrete target.
+
+It owns target-specific state, such as:
 
 ```text
-Object-backed Region — region of a Markdown file where the visible text is materialized from an app object or InformationItem.
+current summary;
+status;
+source presets/manual source;
+coverage relationship;
+optional work target;
+result.
 ```
 
-### 8.5 Proposed Object Region
-
-Definition:
+Candidate statuses include:
 
 ```text
-Proposed Object Region — region in a file, often AI-generated, that asks the app to create a new object after user confirmation.
+Open;
+Deferred;
+Needs Separate Work;
+Resolved.
 ```
 
-### 8.6 Snapshot
+Different targets have different Applied Concerns even when they reuse the same Concern Definition.
 
-Definition:
+### 4.6 Concern Work Target
+
+A Reference Object, Documentation File or stable File Location used for independently useful deeper work on an Applied Concern.
+
+Create it only when a separate lifecycle, review, reuse, research or testing surface is justified.
+
+### 4.7 Concern Source
+
+The preset, file-type recommendation, item-kind rule, AI proposal or manual action that proposed/applied the concern.
+
+Concern Sources are provenance. They are not evidence supporting the concern's conclusion.
+
+### 4.8 Concern Deduplication
+
+For one target and one Concern Definition:
 
 ```text
-Snapshot — textual copy of object/item/draft state captured at a particular time.
+several suggesting sources
+  → one reviewed suggestion/application
+  → all contributing source links preserved
 ```
 
-Warning:
+Similar but non-identical Concern Definitions require review rather than automatic merging.
+
+## 5. Guidance Mechanisms
+
+### Document Template
+
+Recommended shape of a document. It may define headings, fields and optional expansion points.
+
+### Concern Preset
+
+Recommended directions of attention. It does not define document shape.
+
+### View Preset
+
+Saved configuration for displaying already existing related objects or records.
+
+It does not create objects, apply concerns or change canonical content.
+
+### Validation Rule
+
+A condition checked against an artifact or state.
+
+It is not automatically a concern or a template section.
+
+### Example
+
+A demonstration of possible content or behavior. It owns no rule.
+
+## 6. Source And Evidence Terms
+
+### Source Excerpt
+
+Literal fragment of user text, assistant text, repository file, draft, imported file or other source supporting an item, concern or decision.
+
+One item may have several excerpts; one excerpt may support several items.
+
+### Source Anchor
+
+Address of a Source Excerpt: chat turn, file path, heading, line range, object ID, selection range or imported fragment ID.
+
+### Provenance
+
+Origin and transformation history of content: excerpts, anchors, chat turns, review decisions and related artifacts.
+
+### Origin
+
+Creation or first-attachment context of an item/object. It is not the same as Source of Truth.
+
+### Source of Truth
+
+Authoritative owner for one content unit or region. Source of Truth is per content/region, not globally one system.
+
+## 7. Markdown And App-Memory Terms
+
+### Markdown File
+
+Real repository documentation readable by humans and AI without the app.
+
+### App Memory
+
+Application storage/index for items, objects, relations, dependencies, review state, workspaces and source-of-truth metadata.
+
+### Hardwritten Region
+
+Markdown region whose canonical content is owned by the Markdown file.
+
+### Object-backed Region
+
+Markdown region whose visible text is materialized from an app object or InformationItem.
+
+### Proposed Object Region
+
+Region that proposes new canonical object state and requires explicit review before creation.
+
+### Snapshot
+
+Captured textual state at one time. It may become stale.
+
+### Materialized View
+
+Generated readable representation of app memory or object-backed content.
+
+### Live Reference
+
+Reference that resolves to current target content.
+
+### Transclusion
+
+Insertion of referenced content into another file, draft or app view while preserving its source relationship.
+
+### Marker / Tag / Wrapper
+
+Machine-readable Markdown indications. Reusable methodology defines concepts but not final syntax.
+
+## 8. Reference And Navigation Terms
+
+### Reference Object
+
+Preferred user-facing term in the Documentation Workbench project for independently managed and reusable documentation content.
+
+This is project-influenced working terminology; reusable methodology does not mandate one concrete class/storage model.
+
+### Reference Target
+
+The addressable target of a reference, such as:
 
 ```text
-Snapshot may become stale if the live object changes.
+Reference Object;
+Documentation File;
+stable File Location.
 ```
 
-### 8.7 Materialized View
+Target identity and relation meaning are separate.
 
-Definition:
+### Navigation
+
+Ability to move through and understand files, sections, parent plans, related items, dependencies and source anchors.
+
+### Selected File Navigation
+
+Navigation inside the currently open file.
+
+### Parent Draft Navigation
+
+Navigation showing where the current file, section or work target belongs in a larger Planning Draft.
+
+### Roadmap Navigation
+
+Navigation through previous, current and next points, dependencies and status.
+
+## 9. Workspace And Chat Terms
+
+### Workspace
+
+Bounded working context containing relevant history, items, drafts, files, objects and review state.
+
+### Chat Workspace
+
+Workspace whose primary current boundary is one chat. Multi-chat workspace remains a future option.
+
+### Conversation History
+
+Immutable stored sequence of user and assistant turns.
+
+### Turn
+
+One user message and, when present, the assistant response following it.
+
+### Raw Note (`RN`)
+
+Literal user-created annotation attached to the nearest preceding semantic fragment. It is not interpreted, promoted or rewritten automatically.
+
+### Deferred Attention Marker (`DAM`)
+
+Literal user-created marker that something may need future attention. It is not itself a question, reminder or Applied Concern.
+
+### Action Log
+
+Structured record of actions actually performed or operational changes actually made.
+
+A decision, proposal or future next step does not become an Action Log Entry merely because it was discussed. It may be linked as rationale when useful.
+
+### Documentation Status
+
+State describing whether source/chat material has been documented, needs documentation, is not worth documenting, is superseded or remains unresolved.
+
+### Answer Change Set
+
+Structured delta associated with an AI response. Confirmed minimum:
 
 ```text
-Materialized View — generated readable representation of app memory or object-backed content in Markdown.
+Added Action Log Entries;
+Added Planning Items.
 ```
 
-### 8.8 Live Reference
+Mere references to existing items/actions are not additions.
 
-Definition:
+### Template-Linked AI Response
+
+Stored historical AI response shaped by a response template and containing resolvable links to important referenced targets.
+
+The response is not canonical documentation automatically. Historical targets may become stale; no automatic repair or version pinning is assumed.
+
+## 10. Review Terms
+
+### Review Gate
+
+Stage where review occurs.
+
+### Review Object
+
+Concrete thing being reviewed.
+
+### Review Status
+
+State/result recorded after review.
+
+Do not confuse these three concepts.
+
+Review objects may include:
 
 ```text
-Live Reference — reference from a file, app view or section to current content of an object/item.
+source-linked item set;
+source excerpt mapping;
+draft section;
+workflow draft;
+concern suggestion set;
+Applied Concern;
+generated file;
+object-creation proposal;
+replacement archive;
+repository diff;
+prototype result.
 ```
 
-### 8.9 Transclusion
-
-Definition:
+### Draft Review / File Review / Commit Diff Review
 
 ```text
-Transclusion — insertion of InformationItem/Object content into another file, draft or app view,
-usually while preserving a link to source of truth.
+Draft Review:
+  meaning-level review;
+
+File Review:
+  review of literal file content;
+
+Commit Diff Review:
+  review of repository transition before commit.
 ```
 
-Types:
+## 11. File Update And Archive Terms
 
-```text
-live transclusion
-snapshot transclusion
-hybrid transclusion
-```
+### File Update Plan
 
-### 8.10 Marker
+Ordered plan for changing repository files. It is part of an Action Workflow when repository changes are required.
 
-Definition:
+### Update Step
 
-```text
-Marker — machine-readable indication inside Markdown.
-```
+One ordered step inside a File Update Plan.
 
-### 8.11 Tag
+### Replacement Archive
 
-Definition:
+Package containing complete replacement files, source/base metadata and apply instructions.
 
-```text
-Tag — small marker that classifies a region, item or object.
-```
+### Archive Apply Assistant
 
-### 8.12 Wrapper
+Deferred tooling direction for applying a verified package, opening diff review and supporting recovery. It is not current methodology behavior.
 
-Definition:
-
-```text
-Wrapper — start/end marker block around a Markdown region that tells the app how to interpret it.
-```
-
-Example concept:
-
-```markdown
-<!-- app-region:start type="proposed-object" id="PI-014" -->
-content
-<!-- app-region:end -->
-```
-
-## 9. Workspace / chat terms
-
-### 9.1 Workspace
-
-Definition:
-
-```text
-Workspace — bounded working context that stores conversation history,
-items, action log, related drafts, files, objects and review states.
-```
-
-### 9.2 Chat Workspace
-
-Definition:
-
-```text
-Chat Workspace — workspace whose primary boundary is one chat.
-```
-
-Current working model:
-
-```text
-one chat = one workspace
-```
-
-Future option:
-
-```text
-one workspace may include several chats.
-```
-
-### 9.3 Conversation History
-
-Definition:
-
-```text
-Conversation History — full stored sequence of user and assistant turns.
-```
-
-### 9.4 Turn
-
-Definition:
-
-```text
-Turn — one user message plus, optionally, the assistant response that followed it.
-```
-
-### 9.5 Action Log
-
-Definition:
-
-```text
-Action Log — structured interpretation of Conversation History focused on actions,
-decisions, next steps, completed work and operational changes.
-```
-
-Difference:
-
-```text
-Conversation History = full evidence.
-Action Log = operational interpretation.
-```
-
-### 9.6 Documentation Status
-
-Definition:
-
-```text
-Documentation Status — state showing whether a conversation item/idea/action has been documented,
-needs documentation, is not worth documenting, is superseded or remains unresolved.
-```
-
-## 10. Review terms
-
-### 10.1 Review Gate
-
-Definition:
-
-```text
-Review Gate — stage where a specific review object is checked before moving forward.
-```
-
-### 10.2 Review Object
-
-Definition:
-
-```text
-Review Object — what the user is reviewing at that gate.
-```
-
-Examples:
-
-```text
-source-linked items
-draft section
-workflow draft
-generated file
-object creation proposal
-commit diff
-```
-
-### 10.3 Review Status
-
-Definition:
-
-```text
-Review Status — state of review for an item, draft, file, commit, object proposal or chat turn.
-```
-
-Candidate values:
-
-```text
-raw
-needs-review
-reviewed-understood
-reviewed-needs-changes
-accepted
-documented
-not-worth-documenting
-committed
-commit-diff-reviewed
-rolled-back
-superseded
-```
-
-### 10.4 Draft Review
-
-Definition:
-
-```text
-Draft Review — meaning-level review of a draft or section before commit/diff review.
-```
-
-### 10.5 File Review
-
-Definition:
-
-```text
-File Review — review of literal generated or changed file content.
-```
-
-### 10.6 Commit Diff Review
-
-Definition:
-
-```text
-Commit Diff Review — review of repository transition after commit snapshot,
-or before commit in manual fallback flow.
-```
-
-## 11. File-update and archive terms
-
-### 11.1 File Update Plan
-
-Definition:
-
-```text
-File Update Plan — ordered plan for changing repository files.
-```
-
-It includes:
-
-```text
-- steps;
-- actions;
-- affected files;
-- boundaries;
-- checks;
-- resulting state.
-```
-
-Relationship:
-
-```text
-File Update Plan is part of Action Workflow when repository files need to change.
-It is not the whole Action Workflow.
-```
-
-### 11.2 Update Step
-
-Definition:
-
-```text
-Update Step — one step inside a File Update Plan.
-```
-
-### 11.3 Replacement Archive
-
-Definition:
-
-```text
-Replacement Archive — package containing generated/replacement files and apply instructions.
-```
-
-### 11.4 Archive Apply Assistant
-
-Definition:
-
-```text
-Archive Apply Assistant — future tool/app feature that reads archive metadata,
-applies files, creates commit snapshot, opens diff review and supports rollback.
-```
-
-Status:
-
-```text
-deferred tooling direction
-```
-
-## 12. Terms to avoid or qualify
-
-### 12.1 Avoid `workflow` alone
-
-Use:
-
-```text
-Current Workflow
-Old Workflow
-Result Workflow
-Action Workflow
-Review Workflow
-Import Workflow
-Export Workflow
-File Update Workflow
-```
-
-### 12.2 Avoid `draft` alone
-
-Use:
-
-```text
-Planning Draft
-AlgoWorkflow Draft
-Result Workflow section
-Action Workflow section
-Terminology Draft
-File Update Plan
-```
-
-### 12.3 Avoid `source` alone
-
-Use:
-
-```text
-Source Excerpt
-Source Anchor
-Source of Truth
-Source File
-Source Turn
-Provenance
-Origin
-```
-
-### 12.4 Avoid `object` alone
-
-Use:
-
-```text
-InformationItem
-App-memory object
-Object-backed Region
-Proposed Object Region
-```
-
-## 13. Current recommended canonical set
+## 12. Current Recommended Canonical Set
 
 | Concept | Recommended term | Notes |
 |---|---|---|
-| Main pre-scenario planning artifact | Planning Draft / AlgoWorkflow Draft | Keep both until reviewed |
-| Problem-started planning artifact | Problem Draft | Alias |
-| Work branch | Direction | Not main draft term |
-| Desired useful future behavior | Result Workflow | Section/part of Planning Draft |
-| Existing behavior to analyze | Current Workflow / Old Workflow | Current if active, Old if being replaced |
-| Path to get desired workflow | Action Workflow | Navigable goal-map plan |
-| Concrete repository change plan | File Update Plan | Existing command route |
-| General app-memory info unit | InformationItem | Broad data term |
-| Planning raw material | Planning Item | Subtype/category |
-| Literal support text | Source Excerpt | Can be multiple per item |
-| Address of support text | Source Anchor | Path/turn/section/range |
+| Main pre-detailed-planning artifact | Planning Draft | `Problem Draft` is contextual alias |
+| High-level synthesis | Full Picture | Item-backed view of current planning |
+| Desired behavior | Result Workflow | Part of a Planning Draft |
+| Existing behavior | Current Workflow / Old Workflow | Use Old when replacement contrast matters |
+| Route to desired behavior | Action Workflow | May contain File Update Plans |
+| Addressable planning unit | Planning Item | May represent different roles and scales; may carry optional validation context |
+| Complete item meaning | Canonical Item Body | No arbitrary size limit |
+| One independently traversable trigger-to-result workflow | End-To-End Complete Picture | No mandatory stage may be delegated to a peer CP |
+| Artifact reviewed to catch the current risk | Primary Review Object | May be workflow or non-workflow owner |
+| Model/view/term/detail that supports workflow continuity | Supporting Artifact | Not automatically a Complete Picture |
+| Optional hypothesis/risk/test information on an item | Item Validation Context | Proportional, not a universal schema |
+| Concrete uncertain or risky situation to execute/observe | Prototype / Test Candidate | May remain embedded until independent lifecycle is justified |
+| Planning perspective | Planning Lens | May produce no stored concern |
+| Reusable question/direction | Concern Definition | Shared definition |
+| Recommended concern set | Concern Preset | Suggestions, not mandates |
+| Proposed target concern | Concern Suggestion | Not yet applied |
+| Target-specific concern state | Applied Concern | Reviewed application |
+| Separate deeper-work target | Concern Work Target | Only when justified |
+| Recommended file shape | Document Template | Not a concern preset |
+| Saved object projection | View Preset | Display only |
+| Checked condition | Validation Rule | Not a template section by default |
+| General app-memory unit | InformationItem | Broad data term |
+| Literal support text | Source Excerpt | Source-linked evidence |
+| Address of support | Source Anchor | Path/turn/section/range |
 | Authoritative owner | Source of Truth | Per content/region |
-| Real doc file | Markdown File | First-class docs |
-| File-owned region | Hardwritten Region | Markdown is source of truth |
-| Object-owned region | Object-backed Region | Object/item is source of truth |
-| Captured text state | Snapshot | May be stale |
-| Current linked content | Live Reference | Resolved through app |
-| Inserted linked content | Transclusion | live/snapshot/hybrid |
-| One chat working context | Chat Workspace | current model |
-| Full chat record | Conversation History | evidence |
-| Structured actions from chat | Action Log | interpretation |
-| Review stage | Review Gate | has review object |
-| Review state | Review Status | tracked by app |
+| Real documentation file | Markdown File | First-class documentation |
+| File-owned region | Hardwritten Region | Markdown-owned |
+| Object-owned region | Object-backed Region | Object/item-owned |
+| Full chat record | Conversation History | Historical evidence |
+| Performed operational change record | Action Log | Not a future-task list |
+| Review stage / object / result | Review Gate / Review Object / Review Status | Keep distinct |
 
-## 14. Open naming questions
+## 13. Open Terminology Questions
 
-| ID | Question | Current fallback |
+| ID | Question | Conservative fallback |
 |---|---|---|
-| TQ-01 | Is `AlgoWorkflow Draft` too artificial? | Use `Planning Draft` in user-facing text and define it as algo/workflow planning draft. |
-| TQ-02 | Should `Problem Draft` remain visible? | Keep as alias when planning starts from a problem. |
-| TQ-03 | Should `Result Workflow` be renamed `Desired Workflow`? | Keep `Result Workflow` for now because it contrasts with `Current Workflow` and `Action Workflow`. |
-| TQ-04 | Should `Action Workflow` be renamed `Action Goal Map`? | Keep Action Workflow; describe it as navigable goal map. |
-| TQ-05 | Should `InformationItem` be called `InfoItem` in UI? | Use InformationItem in docs; UI can show Info Item later. |
-| TQ-06 | Should wrapper/tag syntax be chosen now? | No. Define concepts first, syntax later. |
-
-## 15. Suggested next step
-
-Review the central naming choice:
-
-```text
-Planning Draft / AlgoWorkflow Draft
-```
-
-If accepted, later drafts should use:
-
-```text
-Planning Draft
-  as user-facing broad term;
-
-AlgoWorkflow Draft
-  as precise technical/definition term if needed;
-
-Problem Draft
-  as alias only.
-```
-
-This keeps the intended meaning:
-
-```text
-the draft used for planning a problem/solution/workflow/algorithm before detailed scenarios
-```
-
-while avoiding the trap that everything must start as a “problem”.
+| TQ-01 | Is `AlgoWorkflow Draft` useful as a separate term? | Use `Planning Draft` in user-facing text. |
+| TQ-02 | Should `Problem Draft` remain visible? | Keep as contextual alias only. |
+| TQ-03 | Should Result Workflow be called Desired Workflow? | Keep Result Workflow for contrast with Current and Action Workflow. |
+| TQ-04 | Is separate `Item Scale` useful? | Use kind and typed relations until scale improves filtering/applicability. |
+| TQ-05 | Which concern suggestion/status values are canonical stored states? | Keep suggestion dispositions separate from Applied Concern statuses. |
+| TQ-06 | May one Concern Preset include another? | Allow several independent presets; do not assume inheritance. |
+| TQ-07 | Should reviewed-out suggestions persist? | Preserve the review decision when repetition would create noise; define invalidation later. |
+| TQ-08 | Should final wrapper/tag syntax be chosen here? | No; define concepts first and prototype syntax later. |

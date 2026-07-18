@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: provisional reusable workflow
-Doc version: v0.11.0-traceable-item-transformation-review
+Doc version: v0.12.0-end-to-end-picture-and-item-validation
 Scope: repeated user + AI process for Current Reality Capture, Planning Drafts, Functional Workflow Drafts, branches, details and prototypes.
 
 Stable invariants belong in:
@@ -117,8 +117,16 @@ For each candidate item, keep when available:
 - affected artifact;
 - proposed placement;
 - proposed action;
-- important ambiguity.
+- important ambiguity;
+- hypothesis / assumption when material;
+- risk or key situation when material;
+- prototype / test candidate;
+- evidence needed;
+- affected decision;
+- priority / blocking status.
 ```
+
+Do not fill validation fields mechanically. Keep them when they preserve uncertainty or a risky/key situation that would otherwise disappear during item normalization.
 
 Preserve original wording when it is evidence. Do not replace it with a cleaner paraphrase unless the original remains available through a source excerpt or source anchor.
 
@@ -237,46 +245,63 @@ Use, in priority order:
 
 If the source is missing or ambiguous, ask which item set or file should be reconciled. Do not silently treat an older local file or attachment as current.
 
-### Select the primary complete picture
+### Select the primary end-to-end Complete Picture or non-workflow review object
 
-For each selected item or coherent item change set, identify the complete current picture whose meaning, behavior or plan would change if the item were accepted.
+For each selected item or coherent item change set, first identify what must be reviewed to understand the real before/after effect.
 
-The primary review object is that complete picture, not the item row, changed paragraph, isolated step or target file alone.
+#### Workflow candidate test
 
-Choose it from what the items actually change:
+When process order, inputs, outputs, decisions, review gates or user behavior change, reconstruct candidate workflows before accepting existing picture boundaries:
 
 ```text
-process order, inputs, outputs, decisions or review gates:
-  the complete affected workflow;
+1. identify trigger / accepted input;
+2. identify preconditions;
+3. trace every mandatory stage;
+4. expose decisions, branches, loops and review gates;
+5. identify failure/risk paths;
+6. identify the understandable result or explicit unresolved end state;
+7. ask whether a peer picture owns any missing mandatory stage.
+```
 
-an active living plan, application direction or coordinated desired reality:
-  the complete active Planning Draft, Application Root Draft or Full Picture;
+If a peer picture is required to supply a mandatory middle or completion, the split is invalid. Combine the mandatory slices into one End-To-End Complete Picture or reclassify them as supporting artifacts.
 
-one independently understandable behavior line:
-  the complete Functional Workflow Draft;
+A genuinely separate Complete Picture must have its own trigger, result and independently traversable lifecycle. Optional integrations, explicit handoffs and shared infrastructure may connect separate pictures without making either incomplete.
 
-a competing end-to-end alternative:
-  the complete solution branch;
+#### Non-workflow primary review objects
+
+Use a non-workflow primary review object when the selected items primarily change:
+
+```text
+an active living plan or coordinated desired reality:
+  the complete Planning Draft, Application Root Draft or Full Picture;
+
+object identity, relations, statuses or shared semantics:
+  the coherent model/concept owner;
+
+terminology or a stable principle:
+  the complete terminology/principle owner;
 
 an independently meaningful extracted part:
   the complete detail artifact;
 
-object identity, relationships, statuses or shared behavior semantics:
-  the coherent model/concept picture plus the workflows or drafts that use it;
+a competing end-to-end alternative:
+  the complete solution branch;
 
 another coherent artifact family:
-  the smallest complete picture that preserves its purpose, boundaries and relationships.
+  the smallest complete review object that preserves purpose, boundaries and relationships.
 ```
 
-Principles, terminology, templates, canonical owners and dependent artifacts are supporting consistency sources unless one of them is itself the primary object being changed.
+A model, view, terminology owner, root summary, template, capability slice or detail may be the primary review object for its own change. It is not automatically a parallel Complete Picture. Inspect the end-to-end workflows whose behavior or representation depends on it.
 
-When a principle, term or template is the primary changed object, still inspect the complete workflows and living drafts whose behavior or representation would change under it.
+#### Multiple-picture rule
 
-If one item set changes several primary pictures, create a separate before/after review for each picture and then perform a cross-picture consistency review. Do not collapse several different workflows or drafts into one vague aggregate.
+Review several Complete Pictures separately only when each passes the independent trigger-to-result test. Then perform cross-workflow consistency review.
+
+Do not preserve an existing CP split merely because files or headings already use separate labels. Do not collapse genuinely independent workflows into one vague aggregate.
 
 ### Read the current picture and supporting sources
 
-Read each primary picture completely enough to preserve its semantic whole. Then inspect only the relevant supporting sources:
+Read each selected end-to-end picture or non-workflow primary review object completely enough to preserve its semantic whole. Then inspect only the relevant supporting sources:
 
 ```text
 existing Planning Items;
@@ -297,21 +322,25 @@ A repository statement proves what the current documentation says; it does not a
 
 ### Build the before and after pictures
 
-For every primary picture, show:
+For every selected End-To-End Complete Picture or non-workflow primary review object, show:
 
 ```text
 identity, purpose and boundary;
+trigger / accepted inputs and preconditions for workflow pictures;
 complete current picture before the selected items;
 complete proposed picture after the selected items;
+mandatory stages, branches, loops, review gates and result/end state;
+failure paths, risky/key situations and prototype-relevant situations;
 added, changed, moved, replaced, removed and preserved parts;
-inputs, outputs, objects, statuses, decisions, review gates and relationships when relevant;
+objects, statuses, decisions and relationships when relevant;
 which selected items cause each change;
-supporting principles, terminology, templates, owners and source origins;
+supporting models, views, terminology, templates, owners and source origins;
+why each supporting artifact is not a parallel mandatory Complete Picture;
 internal conflicts and unresolved choices;
-effects on upstream, downstream and neighbouring pictures.
+effects on genuine upstream/downstream or independently traversable neighbouring workflows.
 ```
 
-`Complete picture` means a semantically sufficient whole that allows the user to judge whether the workflow, draft or model still works. It does not require dumping irrelevant unchanged text, but unchanged purpose, boundaries and key relationships must remain visible.
+For workflows, `Complete Picture` means an independently traversable trigger-to-result whole. It does not require dumping irrelevant unchanged text, but mandatory continuity, purpose, boundaries, branches/loops, review gates and key relationships must remain visible. For models, terminology and other non-workflow owners, use `primary review object` rather than granting them parallel CP status.
 
 ### Relation review
 
@@ -343,7 +372,7 @@ action:
 
 ### Build the canonical item-set transition
 
-For each primary complete picture, identify:
+For each end-to-end Complete Picture or affected non-workflow primary review object, identify:
 
 ```text
 current canonical item set or current owner meanings;
@@ -398,7 +427,7 @@ Identity and history rules:
 - Update And Rename shows both the content transition and old name → new name.
 - Merge shows which meanings/items are absorbed and which resulting identity remains or is proposed.
 - Split is justified only by independent purpose, owner, lifecycle, review or work-target needs; show old → resulting item mapping.
-- Move / Re-home preserves meaning while changing the owning complete picture or canonical owner; do not leave duplicate active ownership behind.
+- Move / Re-home preserves meaning while changing the owning workflow/review object or canonical owner; do not leave duplicate active ownership behind.
 - Defer keeps the meaning visible without promoting it into the active canonical set.
 - Supersede removes an item from the active set while preserving its historical mapping to the replacing meaning.
 - Remove / Reject removes the item from the proposed active set but does not erase source excerpts, provenance or the reason for rejection.
@@ -450,11 +479,31 @@ Each Current and Incoming row must contain enough core meaning to understand tha
 
 A compact single-row item map is sufficient only for a truly simple Keep, Link or non-overlapping Add. An aggregate matrix may summarize all transformations, but it is derived from the small transformation blocks and must not replace them.
 
-### Consistency review
+#### Preserve validation context
 
-Check each proposed complete picture for:
+When a Current or Incoming item contains a hypothesis, risk, key situation, prototype/test candidate, evidence need or affected decision, the Resulting row must show whether that signal is:
 
 ```text
+preserved;
+corrected;
+merged;
+split;
+moved / re-homed;
+resolved by evidence;
+rejected;
+or still open.
+```
+
+A merge or rename must not silently lose a test obligation. A reconciliation review may propose a prototype/test candidate and the evidence it should produce; it does not create a Prototype Plan, choose architecture or claim the hypothesis is true.
+
+### Consistency review
+
+Check each proposed End-To-End Complete Picture or non-workflow primary review object for:
+
+```text
+end-to-end integrity from trigger to result for every claimed Complete Picture;
+no mandatory workflow stage delegated to a peer Complete Picture;
+correct classification of models, views, terminology, root summaries and capability slices as supporting artifacts when they lack an independent lifecycle;
 internal sequence and logical integrity;
 compatible inputs and outputs;
 preserved or explicitly changed purpose and boundaries;
@@ -474,40 +523,54 @@ removed or superseded meanings whose provenance and replacement effect remain ex
 current and resulting item sets that account for every incoming meaning;
 every Current and Incoming source item shown separately before the result for non-trivial transformations;
 resulting rows that identify all source rows they derive from;
-no merge, split, rename, move, supersession, removal or correction hidden only inside an aggregate summary.
+no merge, split, rename, move, supersession, removal or correction hidden only inside an aggregate summary;
+relevant hypothesis, risk and prototype/test signals preserved or explicitly resolved.
 ```
 
-When several primary pictures change, also show whether their outputs, inputs, decisions, terminology, ownership and resulting canonical item sets remain mutually compatible.
+When several genuinely independent Complete Pictures change, also show whether their outputs, inputs, decisions, terminology, ownership and resulting canonical item sets remain mutually compatible.
 
 ### Required output
 
-Use a complete-picture review such as:
+Start with a Complete Picture integrity review:
 
-| Primary complete picture | Incoming meanings | Current picture | Proposed picture | Changed / preserved parts | Supporting consistency sources | Conflicts / choices | Verdict |
-|---|---|---|---|---|---|---|---|
+| Candidate workflow / review object | Trigger and result | Mandatory continuity | Supporting artifacts | Parallel-fragment finding | Verdict |
+|---|---|---|---|---|---|
 
-For each primary picture, also show the canonical item-set transition. Start with a compact current-set list. Then show one small Item Transformation Block for every non-trivial change, with the original/current item or items, each incoming/expanding/correcting meaning and the resulting item or items visible separately. Add rows when several sources or results participate and use `—` where a field does not apply.
+For every genuinely independent workflow, show the complete trigger-to-result before/after picture. For every non-workflow primary review object, show its complete before/after meaning and the workflows affected by it.
 
-A compact aggregate Item Change Plan may follow, but it is derived from the transformation blocks and does not replace them. Finish that picture with the proposed resulting canonical item set. Use short semantic names as the main labels and IDs only as secondary references.
+For each selected workflow/review object, also show the canonical item-set transition. Start with a compact current-set list. Then show one small Item Transformation Block for every non-trivial change, with original/current item(s), every incoming/expanding/correcting meaning and resulting item(s) visible separately. Add rows when several sources or results participate and use `—` where a field does not apply.
 
-The item transition does not replace the complete-picture review. The complete picture explains whether the workflow, draft or model remains coherent; the transformation blocks explain what each source meaning was, what the incoming meaning contributes and how the resulting canonical meaning is derived.
+A compact aggregate Item Change Plan may follow, but it is derived from the transformation blocks and does not replace them. Finish with the proposed resulting canonical item set. Use short semantic names as the main labels and IDs only as secondary references.
+
+The item transition does not replace the Complete Picture or primary-review-object review. The workflow picture proves trigger-to-result coherence; the non-workflow review object proves its local model/term/representation coherence; the transformation blocks explain how every resulting canonical meaning is derived.
+
+When relevant, finish with a compact prototype/risk follow-up:
+
+| Resulting item | Hypothesis / risk | Key situation | Prototype/test candidate | Evidence needed | Decision affected | Priority |
+|---|---|---|---|---|---|---|
+
+Omit this table when no material validation signals exist.
 
 Also report:
 
 ```text
 checked sources;
 relevant not-checked sources;
-why each primary picture was selected;
+why each claimed Complete Picture passes or fails the trigger-to-result integrity test;
+which non-workflow artifacts are primary review objects or supporting artifacts;
+invalid parallel-picture findings and proposed combine/reclassify effects;
 existing solutions to the same problem;
 duplicates or cross-item conflicts;
 explicit old → new semantic effects;
-current canonical item set for each primary picture;
+current canonical item set for each selected workflow/review object;
 proposed action and reason for every incoming meaning;
-resulting canonical item set for each primary picture;
+resulting canonical item set for each selected workflow/review object;
 identity, rename, merge, split, move, supersession and removal effects;
 separate original/current, incoming and resulting rows for every non-trivial item transformation;
 source-to-result mappings for every transformation;
-internal and cross-picture consistency findings;
+internal and cross-workflow consistency findings;
+relevant hypothesis/risk/key-situation/prototype-test preservation effects;
+compact prototype/risk follow-up when useful;
 proposed item/documentation actions;
 unresolved choices;
 readiness for a later File Update Plan.
@@ -738,6 +801,10 @@ Before returning drafts:
 - Desired results and criteria have status.
 - Result Workflow and Action Workflow are distinguishable.
 - Functional workflows and solution branches are not mixed.
+- Claimed Complete Pictures are independently traversable from trigger to result.
+- Mandatory stages are not hidden in parallel peer pictures.
+- Supporting models/views/terminology are not mislabeled as Complete Pictures.
+- Relevant item validation signals survive transformations.
 - Implementation thoughts remain non-final unless accepted.
 - Details exist only when useful.
 - Tests target uncertainty.
@@ -762,4 +829,7 @@ Before returning drafts:
 - Do not choose exact wrapper syntax in this reusable workflow.
 - Do not silently create canonical object state from AI-generated wrappers/tags.
 - Do not make a generated explanation canonical.
+- Do not preserve a thematic peer-CP split when one mandatory workflow crosses it.
+- Do not make validation context mandatory on every Planning Item.
+- Do not turn a hypothesis, risk or prototype candidate into a confirmed requirement or architecture decision.
 ```

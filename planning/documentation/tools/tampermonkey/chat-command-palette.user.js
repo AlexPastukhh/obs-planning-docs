@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reusable Chat Command Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.14.0-traceable-item-transformations
-// @description  Reusable projection-only command helper with canonical command names, adaptive/full route reading and compact owner-read refinements.
+// @version      0.15.0-end-to-end-complete-picture-reconciliation
+// @description  Reusable projection-only command helper with canonical command names, end-to-end item reconciliation and adaptive/full route reading.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -105,18 +105,20 @@ TM-OBS-REUSE source sync:
       id: 'planning_items.reconcile',
       group: 'Commands',
       label: 'сверь айтемы',
-      description: 'complete-picture + traceable item transformations',
+      description: 'end-to-end Complete Picture + traceable item transformations',
       englishName: 'reconcile planning items',
       family: '`сверь айтемы` / `сверь айтемы с документацией` / `проверь айтемы по репозиторию` / `reconcile planning items` / `reconcile items`',
       reminders: [
         'Reconcile the selected working, local or unprocessed Planning Items with relevant current repository documentation.',
-        'Choose the primary complete picture from what the items actually change: usually a whole workflow, or an active Planning Draft/Full Picture, Functional Workflow, branch, detail, model or other coherent object.',
-        'Review each primary picture before and after the proposed change; show changed and preserved parts, purpose, boundaries, conflicts and unresolved choices.',
-        'For each primary picture, show the current canonical item set, incoming meanings with short semantic names and IDs only as secondary traceability, proposed item actions, and the resulting canonical item set.',
-        'For every non-trivial item transformation, show the original/current item or items, each incoming/expanding/correcting item or meaning, and the resulting item or items separately in one small transformation table; add rows as needed, use — where a field does not apply, and do not show only the result.',
-        'Do not assume one incoming item becomes one new canonical item: it may keep or update an existing item, rename it, add, merge, split, move, link, defer, supersede, remove or reject meaning.',
-        'Use principles, terminology, templates, canonical owners, source-linked origins and dependent artifacts as supporting consistency sources unless one is itself the primary changed object.',
-        'When several primary pictures change, review each separately and then check cross-picture and resulting-item-set consistency.',
+        'Select one end-to-end Complete Picture for each genuinely independent workflow: trace trigger, preconditions, mandatory stages, branches/loops, review gates and result/end state.',
+        'Do not split one mandatory workflow into parallel peer Complete Pictures. If a peer owns a missing mandatory stage, combine the slices or reclassify them as supporting artifacts.',
+        'Treat models, views, terminology, root summaries and capability/detail slices as supporting or non-workflow primary review objects unless they have an independent trigger-to-result lifecycle.',
+        'Review several Complete Pictures separately only when each is independently traversable; then check cross-workflow and resulting-item-set consistency.',
+        'Show the complete before/after workflow or review object, including changed and preserved parts, purpose, boundaries, conflicts and unresolved choices.',
+        'For each selected workflow/review object, show the current canonical item set, incoming meanings with semantic names and IDs only as secondary traceability, proposed actions and the resulting canonical item set.',
+        'For every non-trivial transformation, show original/current item(s), every incoming/expanding/correcting meaning and resulting item(s) separately in one small variable-row table; use — where a field does not apply and do not show only the result.',
+        'Do not assume one incoming item becomes one new canonical item: it may keep, update, rename, add, merge, split, move, link, defer, supersede, remove or reject meaning.',
+        'Preserve relevant hypothesis, risk, key-situation and prototype/test context through item transformations; report a compact prototype/risk follow-up without creating a prototype or accepting architecture.',
         'Do not edit files, update item registers, create an archive, commit or push.'
       ],
       target: '<which items or item source should be reconciled>'

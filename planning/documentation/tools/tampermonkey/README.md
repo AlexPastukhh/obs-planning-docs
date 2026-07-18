@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.14.0-traceable-item-transformations
+Doc version: v0.15.0-end-to-end-complete-picture-reconciliation
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -280,7 +280,7 @@ The reusable Command Palette provides:
 - one shared command definition for both insertion variants, so command semantics and reminders cannot drift;
 - a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
 - a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
-- a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route reviews each complete primary picture, its current → actions → resulting canonical item-set transition and the original → incoming → resulting chain for every non-trivial item transformation;
+- a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route validates one trigger-to-result Complete Picture per independent workflow, rejects mandatory parallel-picture fragmentation, classifies supporting artifacts and preserves the original → incoming → resulting chain plus relevant item-validation signals;
 - no creation-wording command IDs, labels or aliases for the plan-command route;
 
 ```text
@@ -302,7 +302,7 @@ The reusable Command Palette provides:
   `planning/documentation/documentation-update-workflow.md`;
 - the refinement body states the validation action but does not duplicate the one-line, non-interactive or no-pager owner rules;
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
-- `reconcile planning items` inserts a read-only complete-picture plus item-set reconciliation body: choose each affected workflow, active draft/Full Picture, functional workflow, branch, detail, model or other coherent primary object; review it before and after; show the current canonical item set; for every non-trivial transformation show original/current, incoming/expanding/correcting and resulting items separately in a small variable-row table; then show the resulting set and check supporting and cross-picture consistency;
+- `reconcile planning items` inserts a read-only end-to-end Complete Picture plus item-set reconciliation body: trace trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer slices when one mandatory workflow crosses them; treat models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
 - no repo writes, network calls, commits or pushes.
 ```
@@ -343,7 +343,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
 - Do not treat Command Palette as command authority.
 - Do not add project-only command semantics without a UCM route.
-- Do not let the Planning Item reconciliation projection reduce review to isolated item rows, assume one incoming item equals one resulting canonical item, show only the result of a non-trivial transformation, hide any original/incoming/absorbed item or rename/merge/split/move/supersede/remove effect, or edit item registers or repository files.
+- Do not let the Planning Item reconciliation projection reduce review to isolated item rows, preserve a thematic peer-CP split when one mandatory workflow crosses it, label supporting models/views as Complete Pictures without independent lifecycle, assume one incoming item equals one result, hide Current/Incoming/Resulting meanings or lose relevant validation signals, or edit item registers or repository files.
 - Do not duplicate archive command-format rules inside the helper refinement body.
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
