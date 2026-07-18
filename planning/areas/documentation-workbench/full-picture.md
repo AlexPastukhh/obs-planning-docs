@@ -1,8 +1,8 @@
 # Documentation Workbench Full Picture
 
-Status: active working Application Root Planning Draft / incomplete / item-backed / reconciliation in progress
-Doc version: v0.2.0-cp2-review
-Scope: complete application-level planning picture for Documentation Workbench. Detailed working item meanings remain in [`planning-item-register.md`](planning-item-register.md).
+Status: active Application Root Full Picture / item-backed / structural reconciliation applied / implementation incomplete
+Doc version: v0.3.0-documentation-reference-workflow
+Scope: application-level identity, workflow inventory, shared invariants and coordination for Documentation Workbench. Complete item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
 
@@ -18,220 +18,137 @@ Documentation Workbench
 
 planning
   → is one supported workflow inside the broader workbench,
-    not the entire identity of the application.
+    not the entire product identity.
 ```
 
-This file coordinates the product-level picture. It does not define reusable planning methodology, final implementation architecture or runtime truth.
+This Application Root coordinates product boundaries and accepted/provisional workflow owners. It is not itself a child Complete Picture and does not define runtime truth.
 
-## 2. Current Repository Picture
+## 2. Canonical Source And Counts
+
+- [`planning-item-register.md`](planning-item-register.md) — complete source-linked item owner;
+- active items: **48**;
+- old methodology/application items audited: **110 / 110**;
+- old-item dispositions: **15 active / 36 merged-split-updated / 4 deferred / 4 unresolved / 51 reusable-non-product**;
+- unresolved legacy rows: **4**;
+- open questions: **27**;
+- source migration provenance SHA-256: `abfcfc6ad0d9e8ff2516ec7e5d572e50c5524661cca94fdbebc0646d8fc7f8ce`.
+
+Accepted absorbed identities:
 
 ```text
-Reusable application-planning methodology exists.
-Root planning routing exists.
-A complete local v0.9.2 item source exists.
-
-Before this area bootstrap:
-  no project-local Documentation Workbench owner existed in planning/areas/;
-  no repository Application Root Full Picture coordinated the product;
-  the 50 working items were not stored in their intended local area.
+ITEM-25B → ITEM-23B
+ITEM-102 → ITEM-91
 ```
 
-## 3. Working Source And Reconciliation Boundary
+The register retains their complete historical meanings and source links.
 
-Canonical working source for this draft:
+## 3. Product Boundary
 
-- [`planning-item-register.md`](planning-item-register.md);
-- 50 active working items;
-- complete 110-row old-item audit;
-- four unresolved legacy rows;
-- 26 open questions;
-- source migration SHA-256 `abfcfc6ad0d9e8ff2516ec7e5d572e50c5524661cca94fdbebc0646d8fc7f8ce`.
+Current product-level items:
 
-`Canonical active` currently means canonical inside the working v0.9.2 register. It does not mean that every proposed merge, rename, split, move or supersession from reconciliation has been accepted.
-
-```text
-current working register: 50 active items
-proposed reconciliation result: review material only
-current project-local register: preserves all 50 identities and bodies
-```
-
-## 4. Primary Complete Picture Inventory
-
-| ID | Primary complete picture | Current status in this draft |
+| Semantic item | ID / code | Meaning |
 |---|---|---|
-| CP-1 | Documentation Workbench Full Picture And Product Boundary | Expanded in CP-1A. Current four working meanings remain unchanged. |
-| CP-2 | Reference Object Model And Lifecycle | Expanded in CP-2A. Complete model and six transformations are proposed; the canonical item-set transition is not applied. |
-| CP-3 | Managed References And Dependency Review | Compact coordinated picture. Reconciled transformations are not applied. |
-| CP-4 | Import, Authoring And Repository Round Trip | Compact coordinated picture. Reconciled transformations are not applied. |
-| CP-5 | Chat, AI Responses And Work-State Trace | Compact coordinated picture. Reconciled transformations are not applied. |
-| CP-6 | Planning Items, Full Picture And Deepening | Reusable method has evolved; product-local item transformations are not applied. |
-| CP-7 | IDE Navigation And Related-Object Views | Compact coordinated picture. Reconciled transformations are not applied. |
-
-## 5. CP-1 — Documentation Workbench Full Picture And Product Boundary
-
-### 5.1 Purpose And Boundary
-
-CP-1 defines what the application is, what it must preserve, why an early useful version matters and which implementation ideas remain provisional.
-
-It does not own the detailed Reference Object model, dependency-review workflow, import pipeline, chat history model, concern workflow or view system. Those belong to CP-2 through CP-7.
-
-### 5.2 Current Working Items
-
-| Semantic item | ID / code | Working meaning |
-|---|---|---|
-| **Documentation-Layer Overlay** | `ITEM-28B / DOC-LAYER-OVERLAY` | The application is an overlay over the real documentation layer, not a planning-only application. |
-| **Dependency Files Retirement** | `ITEM-85 / DEPENDENCY-FILES-RETIRE` | Files used only for manual dependency bookkeeping should become optional only after equivalent application behavior exists. |
-| **Implementation Idea Boundary** | `ITEM-99 / IMPLEMENTATION-IDEA-BOUNDARY` | Git, storage, wrappers, browser capture and concrete UI mechanisms are implementation directions, not automatically accepted requirements or architecture. |
-| **Early Infrastructure MVP** | `ITEM-100 / EARLY-INFRA-MVP` | An early useful MVP matters because the workbench is infrastructure for later effective documentation and AI work. |
-
-The complete bodies, evidence and acceptance notes remain in the register.
-
-### 5.3 Before Picture
-
-```text
-reusable methodology
-  → can plan applications and workflows;
-
-Markdown/documentation
-  → remains first-class in reusable terminology;
-
-Documentation Workbench product state
-  → has no registered project-local owner;
-
-implementation ideas
-  → exist in the working source but are not accepted architecture;
-
-manual dependency bookkeeping
-  → may still be required because replacement behavior does not yet exist.
-```
-
-### 5.4 Proposed Complete Picture
+| Documentation-Layer Overlay | `ITEM-28B / DOC-LAYER-OVERLAY` | Application is an overlay over real documentation, not a planning-only product. |
+| Dependency Files Retirement | `ITEM-85 / DEPENDENCY-FILES-RETIRE` | Dependency-only files become optional only after equivalent behavior exists. |
+| Implementation Idea Boundary | `ITEM-99 / IMPLEMENTATION-IDEA-BOUNDARY` | Git/storage/wrapper/UI directions are not automatically accepted architecture. |
+| Early Infrastructure MVP | `ITEM-100 / EARLY-INFRA-MVP` | An early useful MVP matters because the workbench supports later documentation/AI work. |
 
 ```text
 Documentation Workbench
-  → project-local application direction over real documentation;
-  → supports planning, documentation authoring, managed references,
-    dependency review, navigation, history and AI work;
-  → preserves complete Markdown files as durable reviewable artifacts;
-  → may reduce dependency-only bookkeeping only after replacement behavior is proven;
-  → prioritizes a useful infrastructure MVP;
-  → keeps shell, storage, wrapper and UI choices provisional until separately reviewed.
+  → works over real first-class Markdown;
+  → supports planning, authoring, managed references, dependency review,
+    navigation, history and AI-oriented transfer;
+  → preserves literal repository review/diff boundaries;
+  → keeps implementation architecture provisional.
 ```
 
-### 5.5 Changed And Preserved Parts
+## 4. Owner Inventory
 
-| Part | Current → proposed effect |
+| Type | Owner | Status |
+|---|---|---|
+| Application Root | This file | Active product coordinator |
+| Accepted Complete Picture | [`Documentation And Reference Object End-To-End Workflow`](documentation-and-reference-object-end-to-end-workflow.md) | Accepted and expanded |
+| Supporting model | [`Reference Object Model And Lifecycle`](reference-object-model-and-lifecycle.md) | Active model and accepted transition history |
+| Provisional thematic slice | Chat, AI Responses And Work-State Trace | Not yet validated as an independent end-to-end Complete Picture |
+| Provisional thematic slice | Planning Items, Full Picture And Deepening | Not yet validated as an independent end-to-end Complete Picture |
+
+A Complete Picture must be followable from trigger to result without a parallel Complete Picture supplying missing mandatory stages.
+
+## 5. Documentation And Reference Object End-To-End Workflow
+
+**Primary owner:** [`documentation-and-reference-object-end-to-end-workflow.md`](documentation-and-reference-object-end-to-end-workflow.md)
+
+```text
+select/load repository, file, folder or Markdown
+  → parse ordinary text, object definitions, fields and references
+  → propose/confirm missing Reference Objects
+  → establish identity, canonical state and optional home
+  → configure flexible fields and category contracts
+  → author objects/documents and place managed references
+  → round-trip complete Markdown
+  → detect dependency impact
+  → review/refresh/remove affected references
+  → navigate state, home, occurrences and review targets
+  → reach diff-ready result or explicit Pending Review state.
+```
+
+### Active item groups
+
+| Phase | Items |
 |---|---|
-| Product owner | Absent project-local owner → registered area with README, Full Picture and item register. |
-| Product identity | Fragmented working meanings → one coordinated application-level picture. |
-| Markdown/documentation boundary | Preserved: real documentation remains first-class and independently reviewable. |
-| Planning scope | Preserved/clarified: planning is supported, but the product is not limited to planning. |
-| Dependency bookkeeping | Preserved until equivalent behavior exists; retirement remains conditional. |
-| MVP priority | Added as an explicit product-level planning concern, not an implementation commitment. |
-| Implementation architecture | Preserved as unresolved; no shell, storage, schema or marker syntax is selected. |
+| Scope, parsing, creation | `ITEM-34B`, `ITEM-32B`, `ITEM-31B`, `ITEM-22B`, `ITEM-87` |
+| Identity, state, home | `ITEM-86`, `ITEM-23B`, `ITEM-108`, `ITEM-91` |
+| Shape and contracts | `ITEM-103`, `ITEM-106`, `ITEM-97` |
+| Authoring and references | `ITEM-93`, `ITEM-90`, `ITEM-114`, `ITEM-101`, `ITEM-88`, `ITEM-73`, `ITEM-83`, `ITEM-105` |
+| Impact and review | `ITEM-29B`, `ITEM-89`, `ITEM-16B` |
+| Navigation and views | `ITEM-35B`, `ITEM-111`, `ITEM-118`, `ITEM-95`, `ITEM-104`, `ITEM-96` |
+| Optional output | `ITEM-107` |
 
-### 5.6 Unresolved Choices
+Total: **30 active items**.
 
-- What smallest behavior set makes the early MVP genuinely useful?
-- Which existing dependency-only files qualify for later retirement, and what replacement checks are required?
-- Which application shell and storage options deserve prototype evidence?
-- Which CP should be expanded immediately after the area bootstrap?
+`ITEM-94 / AI-ITEM-IMPORT` remains active upstream and supplies reviewed/proposed Planning Items to the workflow boundary.
 
-Conservative current rule: preserve existing documentation and dependency bookkeeping until a separately reviewed replacement exists.
+### Key invariants
 
-## 6. CP-2 — Reference Object Model And Lifecycle
+- canonical state always has an explicit owner;
+- Markdown definition location and semantic home are separate;
+- parsed/generated content requires confirmation before canonical creation;
+- arbitrary fields are recognized by form; category contracts define expectations;
+- linked content is read-only at use sites;
+- source changes preserve old approved materialization until review;
+- navigation/views operate across stages rather than form a parallel workflow;
+- unresolved conflicts remain visible.
 
-**Detailed owner:** [`reference-object-model-and-lifecycle.md`](reference-object-model-and-lifecycle.md)
+## 6. Historical Structural Mapping
 
-**Purpose:** define independently managed reusable documentation meaning, identity, confirmation-gated creation, extraction, canonical state, optional home, durability modes and flexible fields.
+| Former label | Accepted placement |
+|---|---|
+| `CP-1` | The Application Root product boundary in this file; no longer treated as a child Complete Picture. |
+| `CP-2` | Supporting Reference Object model plus creation/state/home/shape phases of the accepted workflow. |
+| `CP-3` | Reference placement, dependency invalidation and review phases. |
+| `CP-4` | Scope loading, parsing, authoring, round trip and optional AI-expanded copy phases; `ITEM-94` moved upstream. |
+| `CP-7` | Cross-step navigation and related-object views; `ITEM-114` re-homed to target resolution. |
 
-Current working set — unchanged in the register:
+Former labels are history, not current peer-owner IDs.
 
-```text
-Reference Object Term (ITEM-86)
-Item To Object (ITEM-22B)
-Object Extraction (ITEM-87)
-Markdown Primary Truth (ITEM-23B)
-Hybrid App Memory (ITEM-25B)
-In-File Home Object (ITEM-91)
-Homeless General Object (ITEM-102)
-Temporary App-Only Object (ITEM-108)
-Flexible Object Shape (ITEM-103)
-Optional Field Contract (ITEM-106)
-```
+## 7. Supporting Reference Object Model
 
-Proposed resulting set — review material only:
+[`reference-object-model-and-lifecycle.md`](reference-object-model-and-lifecycle.md) owns:
 
-```text
-Reference Object Terminology (proposed ITEM-86)
-Planning Item Canonicalization (proposed ITEM-22B; name provisional)
-Reference Object Extraction (proposed ITEM-87)
-Hybrid Source-of-Truth Model (proposed ITEM-23B)
-Optional Reference Object Home (proposed ITEM-91)
-Flexible Object Shape And Fields (proposed ITEM-103)
-```
+- terminology and identity distinctions;
+- canonical-state modes;
+- definition location versus optional home;
+- temporary app-only durability debt;
+- flexible object shape;
+- Object Category Field Contracts;
+- six accepted transformation blocks;
+- active model transition `10 → 8`.
 
-Key boundaries:
+It does not duplicate the end-to-end workflow.
 
-- Reference Object identity, canonical state, optional Markdown definition location, optional parent/home and materialized occurrence are separate concepts.
-- Markdown-backed state is the normal durable mode.
-- App Memory is normally auxiliary; temporary app-only canonical state remains explicit deferred storage debt.
-- RN/DAM never become Planning Items or Reference Objects automatically.
-- Object bodies remain unrestricted and text-first; recognized semantic fields remain optional.
-- Exact marker syntax, database/storage engine and UI architecture are not selected.
+## 8. Provisional Slice — Chat, AI Responses And Work-State Trace
 
-Open choices include the final English object term, the final `ITEM-22B` name, merge-surviving identities, app-only durability and minimal parser mechanics.
-
-Status: the complete model and six Current / Incoming / Resulting transformation blocks are prepared in the detailed owner. No rename, merge or absorbed identity is applied to `planning-item-register.md`.
-
-## 7. CP-3 — Managed References And Dependency Review
-
-**Purpose:** define full/bare managed references, field-level links, dependency edges, stale review and readable marker behavior.
-
-Current working items:
-
-```text
-Read-Only Linked Content (ITEM-90)
-Field-Level References (ITEM-101)
-Reference Mode Parity (ITEM-88)
-Full Or Bare Link (ITEM-73)
-Reviewed Reference Refresh (ITEM-89)
-Dependency Graph (ITEM-29B)
-Stale Reference Queue (ITEM-16B)
-Object Wrapper Contract (ITEM-83)
-Quiet Markdown Markers (ITEM-105)
-```
-
-Related cross-picture item: General Reference Targets (`ITEM-114`) currently remains in the working register under navigation-related items until a move is explicitly accepted.
-
-Key boundary: source changes do not silently rewrite or erase previously approved dependent material. Historical AI-response links are not automatically identical to live maintenance dependencies.
-
-Status: transformations are proposed only.
-
-## 8. CP-4 — Import, Authoring And Repository Round Trip
-
-**Purpose:** read mixed Markdown and repository scopes, confirm proposed objects/items, author documents and return complete files through literal-file and Git-diff review.
-
-Current working items:
-
-```text
-Confirmed Object Discovery (ITEM-31B)
-Mixed Markdown Round Trip (ITEM-32B)
-Repo File/Folder Round Trip (ITEM-34B)
-Document Authoring (ITEM-93)
-AI Item Import (ITEM-94)
-AI Expanded Copy (ITEM-107)
-```
-
-Key boundary: AI-expanded copies and reconstructed App Memory are working views; they do not silently replace canonical Markdown or create unconfirmed objects.
-
-Status: transformations are proposed only.
-
-## 9. CP-5 — Chat, AI Responses And Work-State Trace
-
-**Purpose:** preserve immutable chat evidence, user raw annotations, template-linked responses, completed-action capture and answer-context change records.
-
-Current working items:
+Current items:
 
 ```text
 Chat History Ledger (ITEM-11B)
@@ -242,17 +159,15 @@ User Raw Annotations (ITEM-115)
 Template-Linked AI Response (ITEM-116)
 ```
 
-Related unresolved legacy rows: `ITEM-36A` and `ITEM-53`.
+Related unresolved legacy rows: `ITEM-36A`, `ITEM-53`.
 
-Key boundary: conversation history is evidence; Action Log is an operational interpretation of completed work, not a copy of all turns or a future-task list. Raw user annotations do not become Planning Items automatically.
+Boundary: conversation history is evidence; Action Log records completed actions; RN/DAM are literal user annotations; historical links do not automatically enter live dependency-review queues.
 
-Status: transformations and terminology corrections are proposed only.
+Status: coherent thematic material, but not yet accepted as an independently traversable Complete Picture.
 
-## 10. CP-6 — Planning Items, Full Picture And Deepening
+## 9. Provisional Slice — Planning Items, Full Picture And Deepening
 
-**Purpose:** coordinate durable Planning Items, item-backed Full Pictures, concern suggestions/application, linked deepening and repository semantic reconciliation.
-
-Current working items:
+Current items:
 
 ```text
 Semantic Item Key (ITEM-110)
@@ -262,79 +177,54 @@ Item Role And Relation Model (ITEM-112)
 Planning Deepening Link (ITEM-113)
 Concern Preset System (ITEM-119)
 Semantically Complete Item (ITEM-120)
+AI Item Import (ITEM-94) — upstream adapter into Documentation/Reference Object workflow
 ```
 
 Related unresolved legacy row: `ITEM-51`.
 
-Key boundary: the reusable reconciliation workflow may propose item transformations, but the project-local register changes only after explicit review of Current, Incoming and Resulting meanings.
+Boundary: reusable methodology and project-local application behavior remain distinct; Planning Items and concern work must later be reviewed as a complete trigger-to-result workflow rather than accepted by thematic grouping alone.
 
-Status: command/method support exists; product-local transformation proposals are not applied.
+Status: provisional slice pending structural reconciliation.
 
-## 11. CP-7 — IDE Navigation And Related-Object Views
-
-**Purpose:** keep file/object/view context in IDE-like navigation and display configurable file/folder relations without confusing display presets with concern application.
-
-Current working items:
-
-```text
-IDE Tab Navigation (ITEM-35B)
-General Reference Targets (ITEM-114)
-Home Relation Vocabulary (ITEM-111)
-Configurable Related-Object Views (ITEM-118)
-Home Relation View (ITEM-95)
-Definition/Home Jump (ITEM-104)
-Folder Dependency View (ITEM-96)
-File-Type Guidance Assignments (ITEM-97)
-```
-
-Related unresolved legacy row: `ITEM-52B`.
-
-Key boundary: View Presets display existing state; Concern Presets suggest attention; Document Templates recommend shape; Validation Rules check conditions.
-
-Status: transformations are proposed only.
-
-## 12. Cross-Picture Invariants
+## 10. Shared Invariants
 
 ```text
 - Real Markdown/documentation remains first-class and reviewable without the app.
 - App Memory does not silently become the global Source of Truth.
-- Reference Object canonical state, optional Markdown definition location and optional parent/home remain separate model concepts.
-- Proposed/imported meaning does not become a canonical item or object without confirmation.
-- Full Picture summaries do not replace complete Planning Item bodies.
-- Managed reference semantics, navigation views and concern suggestions retain separate owners.
+- Canonical state, definition location, semantic home and occurrences remain distinct.
+- Proposed/imported meaning does not become canonical without confirmation.
+- Full Picture/workflow summaries do not replace complete Planning Item bodies.
+- Managed reference modes, target relations, view projections and concern suggestions keep distinct semantics.
 - Historical evidence is not silently rewritten to match current state.
+- Views expose existing state rather than create semantic truth.
 - Implementation directions remain non-final until explicitly selected.
 - Planning documentation does not prove that runtime/code behavior exists.
 ```
 
-## 13. Open Cross-Picture Work
+## 11. Open Cross-Workflow Work
 
-The register retains 26 open questions and four unresolved legacy rows. This draft does not answer them through fallback assumptions.
+High-impact unresolved groups:
 
-High-impact unresolved groups include:
-
-- final Reference Object/home/source-of-truth model;
-- marker and reference syntax;
-- app-only object durability and AI-readable representation;
-- dependency review severity and grouping;
-- workspace/chat and status terminology;
-- Planning Item role/relation vocabulary;
-- concern preset composition, persistence and applicability states;
-- relation-view direction, recursion and user-saved presets;
+- final English Reference Object terminology;
+- marker, field and reference syntax;
+- app-only durability and AI-readable representation;
+- category-contract composition and enforcement;
+- dependency-review severity/grouping and relation-view recursion/counts;
+- Chat/Action/RN/DAM workflow boundary;
+- Planning Item and concern workflow structure;
 - application shell, storage and measured repository limits.
 
-## 14. Planned Growth Order
+No fallback in this Full Picture resolves these questions silently.
+
+## 12. Growth Order
 
 ```text
-1. Bootstrap the area and preserve the complete 50-item working source.  ✓ CP-1A
-2. Expand CP-2 and prepare its traceable transformation review.  ← this CP-2A update
-3. Apply only explicitly accepted CP-2 item transformations and recalculate active counts.
-4. Expand CP-3 Managed References And Dependency Review.
-5. Expand CP-4 Import, Authoring And Repository Round Trip.
-6. Expand CP-5 Chat, AI Responses And Work-State Trace.
-7. Apply product-local CP-6 item transformations only after explicit block-by-block approval.
-8. Expand CP-7 IDE Navigation And Related-Object Views.
-9. Create child workflow/detail/prototype files only when independent ownership is justified.
+1. Area bootstrap and 50-item source preservation.                         ✓
+2. Reference Object model review.                                         ✓
+3. Correct end-to-end Documentation/Reference Object workflow
+   and accepted 50 → 48 item transition.                                  ✓ this update
+4. Review Chat/AI/Work-State against the end-to-end Complete Picture rule.
+5. Review Planning/Full Picture/Deepening against the same rule.
+6. Expand only validated workflows/models.
+7. Plan syntax prototypes and implementation architecture separately.
 ```
-
-The order may change when a dependency or user priority makes another complete picture the safer next review object.

@@ -1,6 +1,6 @@
-# Documentation Workbench Planning Item Register — v0.9.2 consolidated
+# Documentation Workbench Planning Item Register — accepted end-to-end workflow transition
 
-Status: active project-local working source-linked register / reconciliation proposals not yet applied
+Status: active project-local source-linked register / accepted Documentation And Reference Object workflow transition applied
 
 Repository owner:
 
@@ -14,16 +14,16 @@ Migrated from:
 - source SHA-256 `abfcfc6ad0d9e8ff2516ec7e5d572e50c5524661cca94fdbebc0646d8fc7f8ce`;
 - uploaded `full-source-linked-planning-items-register-v0.6 (1)(1).md`;
 - the current documentation-family review;
-- user clarifications `SRC-N1`–`SRC-N83`;
+- user clarifications `SRC-N1`–`SRC-N86`;
 - the v0.9 consolidated application register and linked current-picture artifact.
 
 Counts:
 
-- canonical active uncovered/partially covered bricks: **50**;
+- canonical active uncovered/partially covered bricks: **48**;
 - old methodology/app register items audited: **110 / 110**;
 - old-item dispositions:
-  - active canonical: **16**;
-  - merged/split/updated: **35**;
+  - active canonical: **15**;
+  - merged/split/updated: **36**;
   - deferred implementation: **4**;
   - unresolved/not reconfirmed: **4**;
   - reusable or non-product owner: **51**.
@@ -32,30 +32,32 @@ Working-canonical boundary:
 
 ```text
 canonical active in this file
-  = the current working source-linked item set;
-  ≠ a final user-approved resulting item set after reconciliation.
+  = the current accepted source-linked item set after applied transformations;
+  ≠ a finished product specification or automatic approval of future transformations.
 ```
 
 Reconciliation status:
 
 ```text
-- The 50-item set is preserved by this repository migration.
-- Complete-picture and canonical item-set reconciliation has produced review proposals.
-- Proposed renames, merges, splits, moves, supersessions and removals are not applied here.
-- Apply an item transformation only after its Current, Incoming and Resulting meanings are explicitly reviewed and accepted.
-- Preserve absorbed/replaced source IDs and provenance in the later transformation history.
+- Documentation And Reference Object End-To-End Workflow is accepted as the primary trigger-to-result picture.
+- The former CP-2/CP-3/CP-4/CP-7 split is retained only as structural history.
+- Explicitly accepted item transformations are applied in this register.
+- ITEM-25B maps to ITEM-23B; ITEM-102 maps to ITEM-91.
+- Absorbed item bodies, source IDs and provenance remain in Accepted Transformation History.
+- Future transformations still require visible Current / Incoming / Resulting review and explicit acceptance.
 ```
 
-Coverage-snapshot note:
+Migration and coverage note:
 
-- Content from `## 0. Purpose` onward is preserved from the pre-bootstrap v0.9.2 source snapshot.
-- Statements such as `the project lacks a project-local root draft` and item-level `Current coverage` fields describe that source snapshot.
-- This CP-1A migration resolves only the missing repository owner by creating this area and [`full-picture.md`](full-picture.md).
-- Later accepted reconciliations must update affected coverage fields explicitly; this migration does not silently rewrite item bodies.
+- The source migration SHA identifies the pre-bootstrap v0.9.2 provenance; it is not the hash of this evolved register.
+- Unchanged item bodies may retain coverage language describing the pre-bootstrap source snapshot.
+- Items affected by the accepted Documentation/Reference Object transition have updated coverage, dispositions and workflow placement.
+- The Application Root, end-to-end workflow and supporting model now exist in this area.
+- No unrelated item meaning is silently rewritten by this transition.
 
 ## 0. Purpose
 
-This file owns the current source-linked backlog of application/documentation-workbench meaning that is absent from, only partially reflected in, or explicitly requires correction in the current documentation.
+This file owns the current source-linked Documentation Workbench item set: accepted active meanings, unresolved work, complete source excerpts and explicit transformation history.
 
 The file also guarantees brick integrity:
 
@@ -112,7 +114,7 @@ No older item is silently deleted. A duplicate is merged into a canonical brick;
     split only when parts have independent meaning, ownership, lifecycle, review, reuse or decisions—not merely because the text is long.
 13. Three older active items (`ITEM-31B`, `ITEM-32B`, `ITEM-93`) now include explicit explanations matching the rest of the register.
 14. Prototype implementation, React/Tauri/Electron/Tampermonkey and application-shell choices remain outside this update.
-15. The active brick count remains 50; the complete 110-row old-item audit remains intact.
+15. The active brick count was 50 in the source snapshot; the accepted end-to-end transition reduces the current active set to 48 while preserving the complete 110-row old-item audit.
 16. No separate `Planning Item Candidate` entity/state is introduced:
     - a Planning Item is formed or updated directly;
     - during creation/update, perform a targeted check of relevant current documentation, principles, workflows and existing items when repository context is available;
@@ -129,6 +131,10 @@ No older item is silently deleted. A duplicate is merged into a canonical brick;
     - which canonical owners and dependent files are affected;
     - which unresolved conflicts require a user choice.
 20. No active meaning may be silently removed, narrowed, replaced or moved. The semantic old → new change must be visible before the literal file update and later remain reviewable in the Git diff/history.
+21. A Complete Picture is a trigger-to-result workflow, not a thematic capability slice. Former CP-2/CP-3/CP-4/CP-7 are re-homed into one Documentation And Reference Object End-To-End Workflow plus a supporting Reference Object model.
+22. The accepted item transition absorbs only `ITEM-25B → ITEM-23B` and `ITEM-102 → ITEM-91`; `ITEM-108` and `ITEM-106` remain active independent meanings.
+23. Object fields are not globally fixed: the application recognizes any correctly represented field, while category-specific contracts/presets describe expected fields and applicability conditions.
+24. `ITEM-94 / AI-ITEM-IMPORT` remains active upstream; `ITEM-114 / GENERAL-REFERENCE-TARGETS` belongs to the shared reference-target phase rather than navigation-only ownership.
 
 ## 2. Item identity rule
 
@@ -145,42 +151,17 @@ ITEM-110 / SEMANTIC-ITEM-KEY
 
 ## 3. Current coverage conclusion
 
-The reusable documentation already defines many concepts—InformationItem, Planning Item, Planning Draft, App Memory, Chat Workspace, Conversation History, Action Log, Object-backed Region, wrappers and review statuses—but it does not yet own the complete application behavior.
+The project-local area now has:
 
-Notably:
+- an Application Root Full Picture;
+- one accepted Documentation And Reference Object End-To-End Workflow;
+- a supporting Reference Object model with accepted transformation history;
+- a 48-item active source-linked register;
+- provisional Chat/AI/Work-State and Planning/Deepening slices awaiting the same end-to-end workflow review.
 
-- reusable methodology supports item-based planning and deeper review, but it does not yet distinguish Concern Suggestion from target-specific Applied Concern;
-- multiple presets may be jointly evaluated, but nested preset composition/inheritance is still unresolved;
-- file categories define template and view guidance, but not independently assignable concern presets and validation rules;
-- current item guidance still risks encouraging artificial brevity because short IDs/code names are not explicitly separated from an unrestricted full canonical body;
-- reusable methodology already supports building a living plan from reviewed items, but the application picture still requires explicit concern review at item, initiative and file scales;
-- current file views define home/incoming/outgoing object relations and configurable projections, but need explicit suggestion/applied-concern views;
-- current Reference Object behavior does not yet define ordinary file/file-location targets;
-- current chat history does not yet own user-only `RN/DAM` annotations;
-- current AI integration does not yet define a template-linked response document with resolvable app navigation;
-- reusable item/documentation workflows do not yet make repository semantic reconciliation explicit on user request and mandatory before every File Update Plan;
-- current update-planning guidance does not yet require an explicit old → new meaning review before literal repository changes.
+The accepted workflow covers repository/file/folder loading, mixed-Markdown parsing, confirmation-gated object creation, canonical state and optional home, arbitrary fields and category contracts, authoring, managed references, round trip, dependency review, navigation and optional AI-expanded copy.
 
-The current project still lacks a single project-local root draft that connects:
-
-- documentation-layer import and authoring;
-- Full Picture / Planning Draft composition from sufficiently complete reviewed items;
-- Reference Objects and reference modes;
-- concern definitions, presets, suggestions, applications and deeper work targets;
-- document templates, view presets and validation rules as separate mechanisms;
-- dependency invalidation;
-- general object/file/location references;
-- configurable related-object, concern-suggestion and applied-concern views;
-- purposeful Planning Item formation and planning-deepening links;
-- user raw annotations;
-- IDE-like tabs/navigation;
-- AI item import;
-- Chat History and answer-linked Action Log/Item deltas;
-- template-linked AI response documents;
-- AI-expanded copy;
-- Git/diff handoff.
-
-The mechanism by which AI receives current documentation plus app-only entities remains deliberately unresolved. Prototype implementation and application-shell choices also remain a separate planning pass.
+Reusable methodology still needs later synchronization for accepted project-local terminology/model corrections. The final English Reference Object term, exact Markdown syntax, category-contract composition, app-only durability, AI current-state transport and runtime/application-shell architecture remain unresolved.
 
 ## 4. Source bank
 
@@ -713,6 +694,26 @@ Planning Direction всегда быть отдельным Ссылочным �
 я бы не делал никаких отдельных сущностей по типу кандидата, а при создании новго айтема проверял бы доки и существующие принципы и айтемы от которых они пошли по той логике что я уже описал и делал бы это эксплицитно при запросе пользователя, и обязательно перед выдачей плана обновления файлов
 ```
 
+### SRC-N84
+
+```text
+вроде было описано что 1 обьект может содержать разные поля, поля не фиксированы, но могут быть созданы пресеты для категорий обьектов по типу присетов для айтема. приложение распознает то что оно видит , любое поле может быть распознано если корректна форма обьекта, а ожидание какиех то определенных полей делается по контракту категории обьекта, т е можно сделать ограничение по типу - только эта категория или только если присутствует эта категория, если такое ограничение где то уместно.
+```
+
+### SRC-N85
+
+```text
+cp это что то , по чему можно пройтись от начала и до конца шаг за шагом без возмоности того что где то есть параллельная cp , т е то что у нас есть проблема сейчас говорит о некорректной cp
+```
+
+### SRC-N86
+
+```text
+все так. давай план
+```
+
+Context: explicit acceptance of the immediately preceding corrected end-to-end Complete Picture and item-transition reconciliation.
+
 ## 5. Canonical active items
 
 ## A. Product boundary and core purpose
@@ -802,246 +803,226 @@ Planning Direction всегда быть отдельным Ссылочным �
 ## C. Reference Object identity, ownership and storage
 
 <a id="item-86"></a>
-### ITEM-86 / REFERENCE-OBJECT-TERM — «Ссылочный объект» — предпочтительный русскоязычный user-facing термин для отдельно управляемого и переиспользуемого фрагмента документации.
+### ITEM-86 / REFERENCE-OBJECT-TERM — Reference Object Term: «Ссылочный объект» is the confirmed Russian user-facing term for independently managed documentation meaning.
 
-- Kind: terminology correction
-- Evidence status: **direct user correction**
-- Current coverage: **Частично: текущая терминология использует InformationItem, Object-backed Content и Object-backed Region, но не имеет одного понятного пользовательского имени для самого переиспользуемого объекта.**
-- Disposition: Новый terminology item. Английское имя `Reference Object` остаётся working candidate до подтверждения.
-- Required documentation action: Обновить terminology: отделить сам ссылочный объект от его home, materialized occurrence и object-backed region.
-- Owner candidate: terminology-and-planning-items.md + project-local terminology
+- Semantic name: **Reference Object Term**.
+- Kind: terminology and model distinction.
+- Evidence status: **direct user correction + accepted reconciliation**.
+- Current coverage: **Covered by the accepted supporting model and end-to-end workflow; reusable English terminology remains provisional.**
+- Disposition: **Update content; keep current semantic name and technical code.**
+- Required documentation action:
+  - preserve `Ссылочный объект` as the preferred Russian term;
+  - keep `Reference Object` as a working English term until separately accepted;
+  - distinguish object identity from canonical state, Markdown definition location, optional parent/home, object-backed region and materialized occurrence;
+  - use the term consistently across creation, reference, review and navigation phases.
+- Accepted workflow placement: identity, state and home phase of `documentation-and-reference-object-end-to-end-workflow.md`.
+- Owner: `reference-object-model-and-lifecycle.md` + end-to-end workflow terminology.
 - Direct source excerpts:
-  - SRC-N4:
-    ```text
-    в файлах что в док слое - те части ифны которые нужны в качестве отдельной сущности для какой либо цели(перенести в отдельный файл или просто в приложении отдельно поработать, без перенесения в док слое в отдельный файл, создать ссылку, чтобы в др файле была эта инфа точно в таком же виде и иметь сигнал при изменении что нужно проверить зависимости) - являются ссылочными обьектами.
-    ```
-  - SRC-N6:
-    ```text
-    в приложении работа может вестись с нераскрытыми ссылочными обьектами - когда только указано что вот тут такой то обьект, и с раскрытыми - когда видно содержание ссыл оббьекта(нужно найти в файле с терминологией, как я там назвал то что тут называю ссылочным обьектом и поменять, т к ссылочный обьект кажется чем то более понятным) .
-    ```
-- Explanation: Object-backed Region описывает участок файла, а не обязательно сам объект. Пользователь явно просит более понятный термин для объекта.
+  - SRC-N4;
+  - SRC-N6;
+  - SRC-N85;
+  - SRC-N86.
+- Explanation: A region or occurrence is a representation/use of the object, not the object identity itself.
 
 <a id="item-22b"></a>
-### ITEM-22B / ITEM-TO-OBJECT — Reviewed/imported Planning Items may become Reference Objects after confirmation; user raw annotations never become items or objects automatically.
+### ITEM-22B / ITEM-TO-OBJECT — Planning Item To Reference Object: a reviewed Planning Item may become a Reference Object only through explicit confirmation.
 
-- Kind: item-to-object lifecycle
-- Evidence status: **direct user clarification**
-- Current coverage: **Отсутствует; raw annotation boundary requires correction.**
-- Disposition: Обновить существующий `ITEM-22B`.
+- Semantic name: **Planning Item To Reference Object**.
+- Former semantic name: **Item To Object**.
+- Kind: confirmation-gated item-to-object lifecycle.
+- Evidence status: **direct user clarification + accepted reconciliation**.
+- Current coverage: **Covered in the accepted end-to-end workflow and supporting model.**
+- Disposition: **Update And Rename semantic meaning; preserve `ITEM-22B / ITEM-TO-OBJECT`.**
 - Required documentation action:
-  - reviewed/imported item → proposed managed object → user confirmation → created Reference Object;
-  - preserve item ID, interpreted statement and source-linked planning content when present;
-  - `RN` and `DAM` remain literal user annotations, not Planning Items, requirements or Reference Objects;
-  - conversion of an `RN/DAM` requires a separate user-requested interpretation/review;
-  - after conversion or merge, retain a link to the original raw annotation;
-  - generic Reference Objects do not require provenance/source-excerpt fields.
-- Owner candidate: AI item ingestion workflow + Reference Object lifecycle
+  - reviewed/imported Planning Item → proposed Reference Object → user confirmation → created object;
+  - preserve Planning Item identity, interpreted statement and source-linked planning content;
+  - keep the Planning Item/source relation reviewable after object creation;
+  - `RN` and `DAM` remain literal user annotations, not Planning Items or Reference Objects;
+  - conversion of `RN/DAM` requires separate user-requested interpretation/review;
+  - generic Reference Objects do not require planning provenance/source fields;
+  - linking to an already compatible object remains a duplicate-resolution question rather than confirmed core behavior.
+- Accepted workflow placement: object-creation entry path.
+- Owner: end-to-end workflow creation phase + supporting model.
 - Direct source excerpts:
-  - SRC-N14
-  - SRC-N16
-  - SRC-N25
-  - SRC-N42
-  - SRC-N63
-  - SRC-N66
-  - SRC-N67
-- Explanation: The application preserves raw meaning without silently promoting every annotation into canonical planning state.
+  - SRC-N14;
+  - SRC-N16;
+  - SRC-N25;
+  - SRC-N42;
+  - SRC-N63;
+  - SRC-N66;
+  - SRC-N67;
+  - SRC-N86.
+- Explanation: Confirmation preserves user control without erasing the upstream Planning Item or silently promoting raw annotations.
 
 <a id="item-87"></a>
-### ITEM-87 / OBJECT-EXTRACTION — Произвольный фрагмент документации может быть выделен в Ссылочный объект, когда независимое управление даёт практическую ценность.
+### ITEM-87 / OBJECT-EXTRACTION — Reference Object Extraction: an existing documentation fragment may become a Reference Object when independent management has practical value and the user confirms it.
 
-- Kind: object extraction criteria for existing document content
-- Evidence status: **direct user statement**
-- Current coverage: **Отсутствует.**
-- Disposition: Сохранить новый item, но ограничить его произвольными фрагментами документации. Он не ограничивает ITEM-22B: imported source-linked items становятся объектами всегда.
-- Required documentation action: Зафиксировать критерии выделения существующего текста: отдельная работа без нового файла, точное повторное использование, collapse/expand, единый Source of Truth, dependency tracking или независимый review/lifecycle.
-- Owner candidate: Reference Object lifecycle workflow
+- Semantic name: **Reference Object Extraction**.
+- Former semantic name: **Object Extraction**.
+- Kind: confirmation-gated extraction from existing documentation.
+- Evidence status: **direct user statement + accepted reconciliation**.
+- Current coverage: **Covered in the accepted end-to-end workflow and supporting model.**
+- Disposition: **Update And Rename semantic meaning; preserve `ITEM-87 / OBJECT-EXTRACTION`.**
+- Required documentation action:
+  - propose a semantic boundary and stable identity;
+  - require user confirmation before canonical object creation;
+  - support independent work without forcing a new file;
+  - support exact reuse, collapse/expand, one canonical state, dependency tracking and independent review/lifecycle;
+  - never extract merely because a fragment is long.
+- Accepted workflow placement: object-creation entry path.
+- Owner: end-to-end workflow creation phase + supporting model.
 - Direct source excerpts:
-  - SRC-N4:
-    ```text
-    в файлах что в док слое - те части ифны которые нужны в качестве отдельной сущности для какой либо цели(перенести в отдельный файл или просто в приложении отдельно поработать, без перенесения в док слое в отдельный файл, создать ссылку, чтобы в др файле была эта инфа точно в таком же виде и иметь сигнал при изменении что нужно проверить зависимости) - являются ссылочными обьектами.
-    ```
-  - SRC-N5:
-    ```text
-    это нужно для того чтобы приложение могло их таковыми воспринять чтобы свернуть весь текст этог ссылочного обьекта для удобства(в приложении) или чтобы создать такой обьект если приложение не нашло его(таким образом можно с помощью ии создать файл с сылочными обьектами, которые считает приложение и при соглассии пользователя создаст)
-    ```
-- Explanation: Существующий документ не обязан автоматически дробиться на объекты. Но imported source-linked items имеют отдельное подтверждённое правило и становятся объектами для дальнейшей ссылочной работы.
+  - SRC-N4;
+  - SRC-N5;
+  - SRC-N85;
+  - SRC-N86.
+- Explanation: Extraction is based on semantic/work lifecycle value, not automatic document fragmentation.
 
 <a id="item-23b"></a>
-### ITEM-23B / MARKDOWN-PRIMARY-TRUTH — Documentation/Markdown is the primary Source of Truth for document-backed objects; temporary app-only general objects are an explicit exception.
+### ITEM-23B / MARKDOWN-PRIMARY-TRUTH — Hybrid Source-of-Truth Model: Markdown owns normal document-backed canonical state while App Memory remains auxiliary.
 
-- Kind: source-of-truth / product boundary
-- Evidence status: **direct user statement**
-- Current coverage: **Частично reflected only by broad Markdown-first rules.**
-- Disposition: Уточнить старый `ITEM-23B`.
+- Semantic name: **Hybrid Source-of-Truth Model**.
+- Former semantic name: **Markdown Primary Truth**.
+- Kind: canonical-state ownership and App Memory boundary.
+- Evidence status: **direct user statements + accepted merge of `ITEM-25B`**.
+- Current coverage: **Covered in the accepted supporting model and end-to-end workflow.**
+- Disposition: **Merge `ITEM-25B` into this item; update and rename semantic meaning; preserve `ITEM-23B / MARKDOWN-PRIMARY-TRUTH`.**
 - Required documentation action:
-  - document-backed state is owned by canonical Markdown definition location;
-  - canonical definition location is distinct from optional parent/home;
-  - App Memory is normally auxiliary;
-  - general objects without parent/home may temporarily be stored canonically in the app;
-  - keep this exception visible as deferred storage debt.
-- Owner candidate: terminology + Application Root Planning Draft
+  - Markdown owns canonical editable state for Markdown-backed objects;
+  - canonical-state owner, Markdown definition location and optional parent/home are distinct concepts;
+  - Markdown-backed App Memory is parsed/indexed auxiliary state and can be rebuilt;
+  - temporary app-only canonical ownership is an explicit exception, not a global replacement for documentation;
+  - the independent persistence/recovery/migration debt of that exception remains owned by `ITEM-108`;
+  - preserve complete files as durable review/diff artifacts.
+- Accepted workflow placement: identity, canonical state and home phase.
+- Owner: supporting Reference Object model + end-to-end workflow.
 - Direct source excerpts:
-  - SRC-N23
-  - SRC-N33
-  - SRC-N39
-  - SRC-N40
-- Explanation: Two durability modes currently coexist: Markdown-backed canonical objects and temporary app-only general objects.
-
-<a id="item-25b"></a>
-### ITEM-25B / HYBRID-APP-MEMORY — App Memory is normally an auxiliary parsed/indexed model, but temporarily owns canonical state for app-only general objects.
-
-- Kind: app-memory boundary
-- Evidence status: **direct user clarification**
-- Current coverage: **Needs correction.**
-- Disposition: Уточнить `ITEM-25B`.
-- Required documentation action:
-  - Markdown-backed state can be rebuilt from documentation;
-  - app-only general objects cannot be rebuilt from Markdown;
-  - distinguish cache/index from temporary app-owned canonical state;
-  - later plan export, backup and migration.
-- Owner candidate: import/refresh + storage boundary
-- Direct source excerpts:
-  - SRC-N7
-  - SRC-N23
-  - SRC-N39
-- Explanation: The app remains auxiliary except for a deliberate temporary object class.
+  - SRC-N7;
+  - SRC-N23;
+  - SRC-N33;
+  - SRC-N39;
+  - SRC-N40;
+  - SRC-N85;
+  - SRC-N86.
+- Absorbed historical identity: `ITEM-25B / HYBRID-APP-MEMORY`.
+- Explanation: The normal durable owner and the auxiliary in-app model form one source-of-truth responsibility; temporary app-only durability remains separate work.
 
 <a id="item-91"></a>
-### ITEM-91 / IN-FILE-HOME-OBJECT — Ссылочный объект может логически принадлежать месту внутри большого файла и при этом редактироваться в отдельном объектном окне без создания отдельного Markdown-файла.
+### ITEM-91 / IN-FILE-HOME-OBJECT — Optional Reference Object Home: a Reference Object may have an in-file semantic home or no parent/home at all.
 
-- Kind: object/document relationship + UX direction
-- Evidence status: **direct user statement**
-- Current coverage: **Отсутствует.**
-- Disposition: Новый item. Отдельное окно — явная UX-идея, но не обязательная финальная UI architecture.
-- Required documentation action: Поддержать independent object work surface при сохранении home binding к файлу/секции.
-- Owner candidate: Reference Object editing workflow
-- Direct source excerpts:
-  - SRC-N4:
-    ```text
-    в файлах что в док слое - те части ифны которые нужны в качестве отдельной сущности для какой либо цели(перенести в отдельный файл или просто в приложении отдельно поработать, без перенесения в док слое в отдельный файл, создать ссылку, чтобы в др файле была эта инфа точно в таком же виде и иметь сигнал при изменении что нужно проверить зависимости) - являются ссылочными обьектами.
-    ```
-  - SRC-N10:
-    ```text
-    приложение позволяет создать файлы в документационном слое и изменять их и ссылочные обьекты в этих файлах вставляются целиком, хотя внутри приложения я мог их не раскрывать - т к эти обьекты большие и работать с ними в отдельном окне , как с классом в программировании, а в файле эта ссылка на большой класс(ссылочный обьект т е ) нужно логически т к обьект содержит необх информацию и мне нужен ИСТОЧНИК ПРАВДЫ .
-    ```
-  - SRC-N18:
-    ```text
-    работа ведется файлами и с сылочными обьектами для которых этот файл родной/либо не родной(в этот файл была помещена ссылка на ссылочный обьект созданный и "прописанный "(как место прописки,город и тд) в другом файле или месте в том же файле, если файл большой или если пользователь так решил), но также есть место в котором показаны все ссылочные обьекты для которых этот файл родной, для которых была создана ссылка в этом файле, а родной другой(лучше всего воспринимать как исходящие и входящие), сколько на этот файл ссылаются др файлов.
-    ```
-- Explanation: Объектность должна уменьшать необходимость физически дробить документационный слой на множество файлов.
-
-<a id="item-102"></a>
-### ITEM-102 / HOMELESS-GENERAL-OBJECT — Ссылочный объект может быть общим объектом без parent/home relation.
-
-- Kind: domain model / navigation
-- Evidence status: **direct user statement**
-- Current coverage: **Отсутствует.**
-- Disposition: Уточнить новый item.
+- Semantic name: **Optional Reference Object Home**.
+- Former semantic name: **In-File Home Object**.
+- Kind: optional semantic-home relationship and independent work surface.
+- Evidence status: **direct user statements + accepted merge of `ITEM-102`**.
+- Current coverage: **Covered in the accepted supporting model and end-to-end workflow.**
+- Disposition: **Merge `ITEM-102` into this item; update and rename semantic meaning; preserve `ITEM-91 / IN-FILE-HOME-OBJECT`.**
 - Required documentation action:
-  - parent/home is optional;
-  - a general object can exist without semantic parent context;
-  - absence of home is not the withdrawn file-scoped “undefined object” category;
-  - identity and editable canonical state still exist, temporarily in the app when no Markdown location is assigned.
-- Owner candidate: terminology + object model workflow
+  - parent/home is optional semantic context;
+  - an object may belong to a file/location and still be edited through an independent object surface;
+  - an object may exist without parent/home while retaining identity and canonical state;
+  - canonical-state owner and Markdown definition location remain separate from home;
+  - lack of home is not the withdrawn file-scoped undefined-object category;
+  - `Go To Home` is available only when home exists.
+- Accepted workflow placement: identity, canonical state and home phase; reused by navigation.
+- Owner: supporting Reference Object model + end-to-end workflow.
 - Direct source excerpts:
-  - SRC-N33
-  - SRC-N39
-  - SRC-N40
-- Explanation: `home` is semantic context, not a prerequisite for existence.
+  - SRC-N4;
+  - SRC-N10;
+  - SRC-N18;
+  - SRC-N33;
+  - SRC-N39;
+  - SRC-N40;
+  - SRC-N85;
+  - SRC-N86.
+- Absorbed historical identity: `ITEM-102 / HOMELESS-GENERAL-OBJECT`.
+- Explanation: Home describes semantic belonging; it is neither proof of existence nor storage authority.
 
 <a id="item-108"></a>
-### ITEM-108 / TEMP-APP-ONLY-OBJECT — До выбора долговечной Markdown-модели общий объект без parent/home может храниться только в приложении.
+### ITEM-108 / TEMP-APP-ONLY-OBJECT — Temporary App-Only Object remains a separate durability, recovery and migration work target.
 
-- Kind: temporary storage decision / deferred architecture
-- Evidence status: **direct user decision with explicit deferral**
-- Current coverage: **Отсутствует and intentionally differs from the normal Markdown-first model.**
-- Disposition: Новый item.
+- Semantic name: **Temporary App-Only Object**.
+- Kind: temporary canonical-state exception / deferred durability architecture.
+- Evidence status: **direct user decision with explicit deferral + accepted reconciliation**.
+- Current coverage: **Represented in the supporting model and workflow as explicit debt; durability behavior remains unresolved.**
+- Disposition: **Keep active and update; do not absorb into `ITEM-23B`.**
 - Required documentation action:
-  - define app-only general-object state;
-  - mark it as temporary, not a final invariant;
+  - application may temporarily own canonical state when no Markdown definition location exists;
+  - mark this as temporary rather than a final global invariant;
   - distinguish it from App Memory reconstructed from Markdown;
-  - later decide export, backup, migration and Markdown conversion.
-- Owner candidate: Application Root Planning Draft + storage implementation planning
+  - plan persistence, backup/export, recovery, AI-readable representation and later Markdown conversion;
+  - preserve stable identity through a later canonical-state migration.
+- Accepted workflow placement: identity/state phase and failure/durability boundary.
+- Owner: supporting model + later storage/durability planning.
 - Direct source excerpts:
-  - SRC-N39
-- Explanation: The immediate workflow is resolved, but durability/recovery remains deferred.
+  - SRC-N39;
+  - SRC-N85;
+  - SRC-N86.
+- Explanation: The exception is acknowledged by the hybrid model, but its independent failure/recovery lifecycle justifies a separate active item.
 
 <a id="item-103"></a>
-### ITEM-103 / FLEXIBLE-OBJECT-SHAPE — Object shape is flexible/anonymous: usually one main text field plus optional fields rather than a fixed class schema.
+### ITEM-103 / FLEXIBLE-OBJECT-SHAPE — Flexible Object Shape supports an unrestricted text-first body and arbitrary correctly represented fields.
 
-- Kind: object representation
-- Evidence status: **direct user statement**
-- Current coverage: **Отсутствует.**
-- Disposition: Уточнить новый item.
+- Semantic name: **Flexible Object Shape**.
+- Kind: object content/field representation model.
+- Evidence status: **direct user statements + accepted correction**.
+- Current coverage: **Covered by the supporting model and end-to-end workflow; exact Markdown syntax remains open.**
+- Disposition: **Update content; keep active and separate from category contracts.**
 - Required documentation action:
-  - document-backed object form and values are represented in Markdown;
-  - one main text field is the common case;
-  - additional user-defined fields are allowed;
-  - generic objects do not require provenance/source-excerpt fields;
+  - object form is flexible/anonymous rather than one fixed class schema;
+  - one unrestricted main text body is the common case;
+  - users may add arbitrary fields;
+  - application recognizes any field whose object/field representation is syntactically valid;
   - category/type/status may each contain multiple values;
-  - common fields are governed by an optional standard contract/template.
-- Owner candidate: object model + Markdown serialization workflow
+  - generic objects do not require planning provenance/source fields;
+  - exact marker and parser mechanics remain prototype work.
+- Accepted workflow placement: shape and category-contract phase; parser recognition also supports parsing/round trip.
+- Owner: supporting model + end-to-end workflow.
 - Direct source excerpts:
-  - SRC-N35
-  - SRC-N36
-  - SRC-N42
-  - SRC-N43
-- Explanation: Parser conventions are needed, but documents should not become rigid typed records.
+  - SRC-N27;
+  - SRC-N35;
+  - SRC-N36;
+  - SRC-N42;
+  - SRC-N43;
+  - SRC-N84;
+  - SRC-N86.
+- Explanation: Generic recognition is based on valid representation; expectations for particular fields belong to applicable category contracts.
 
 <a id="item-106"></a>
-### ITEM-106 / OPTIONAL-FIELD-CONTRACT — Standard object fields form a removable template/parsing contract for item, concern and relation metadata without constraining the full text body.
+### ITEM-106 / OPTIONAL-FIELD-CONTRACT — Object Category Field Contracts define reusable category-specific field expectations and applicability conditions.
 
-- Kind: extensible field contract
-- Evidence status: **direct user clarification**
-- Current coverage: **Absent as a concern-aware and unrestricted-body contract.**
-- Disposition: Expand the existing item.
+- Semantic name: **Object Category Field Contracts**.
+- Former semantic name: **Optional Field Contract**.
+- Kind: category contract/preset and field-expectation model.
+- Evidence status: **direct user clarification + accepted correction**.
+- Current coverage: **Covered at model level; contract combination, precedence and severity remain open.**
+- Disposition: **Update And Rename semantic meaning; preserve `ITEM-106 / OPTIONAL-FIELD-CONTRACT`; do not merge into `ITEM-103`.**
 - Required documentation action:
-  - define a small standard vocabulary the app recognizes when present;
-  - permit omission/removal of optional semantic fields;
-  - allow multiple values for category, type and status;
-  - do not hardcode planning provenance into every object;
-  - distinguish required parser/identity mechanics from optional semantic fields;
-  - candidate planning-item fields:
-    - `Planning Direction`;
-    - `Item Kind`;
-    - `Item Scale`;
-    - `Related Requirements`;
-    - `Item Relations`;
-    - `Planning Deepening`;
-    - `Raw Notes`;
-    - `Deferred Attention`;
-  - candidate concern-definition/preset fields:
-    - `Concern Definition`;
-    - `Included Concern Definitions`;
-    - `Applicability Guidance`;
-    - `Recommended Target Kinds`;
-  - candidate target/application fields:
-    - `Recommended Concern Presets`;
-    - `Concern Suggestions`;
-    - `Applied Concerns`;
-    - `Applied Concern Status`;
-    - `Concern Work Target`;
-    - `Concern Sources`;
-  - `Concern Sources` records which presets/file-type assignments/item-kind rules/manual actions suggested or applied the concern;
-  - evidence/source fields, when used, describe what supports an analysis and are not the same as Concern Sources;
-  - candidate item presentation fields:
-    - concise display title/summary;
-    - unrestricted full canonical body;
-  - the full body may contain as much text, examples, exceptions and explanation as required by `ITEM-120`;
-  - field values may reference a Reference Object, Documentation File or File Location through `ITEM-114`;
-  - these names are a recommended contract, not a mandatory class schema;
-  - Concern Suggestion and Applied Concern are separate states/records even if both are rendered compactly inside a target;
-  - an Applied Concern may begin as a compact application record and later gain a separate work target when its lifecycle requires it.
-- Owner candidate: object model + parser contract
+  - category contract/preset describes fields expected for objects to which it applies;
+  - applicability may require one category or a combination such as category A only when category B is present;
+  - contracts may recommend, warn or explicitly restrict only when that behavior is declared;
+  - unknown additional fields remain allowed by default;
+  - several category/type/status values and several applicable contracts may coexist;
+  - preserve all applicable contracts when conflict-resolution rules are unresolved;
+  - Planning Item, concern and relation field names are category-contract examples; their semantics remain with their respective owners;
+  - distinguish required identity/parser mechanics from category-specific semantic expectations;
+  - exact serialization remains prototype work.
+- Candidate contract examples:
+  - Planning Item: `Planning Direction`, `Item Kind`, `Item Scale`, relations, deepening and raw/deferred fields;
+  - Concern definitions/presets/applications: definitions, included definitions, applicability, sources and target-specific statuses;
+  - general object metadata: category/type/status, parent/home and relations.
+- Accepted workflow placement: shape and category-contract phase; filtered views may consume recognized fields.
+- Owner: supporting model + category-contract management inside the end-to-end workflow.
 - Direct source excerpts:
-  - SRC-N42
-  - SRC-N43
-  - SRC-N60
-  - SRC-N61
-  - SRC-N65
-  - SRC-N79
-  - SRC-N81
-- Explanation: Structured metadata improves filtering and linking, while suggestions, applications and the unrestricted main body keep distinct semantics.
+  - SRC-N42;
+  - SRC-N43;
+  - SRC-N60;
+  - SRC-N61;
+  - SRC-N65;
+  - SRC-N79;
+  - SRC-N81;
+  - SRC-N84;
+  - SRC-N86.
+- Explanation: The parser may read arbitrary valid fields; the contract says what a category expects rather than defining one universal fixed object schema.
 
 ## D. Reference representation, dependency and review
 
@@ -1054,6 +1035,7 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Disposition: Расширить существующий ITEM-90.
 - Required documentation action: Любая попытка изменить linked content должна вести к canonical object/home. В месте использования разрешены только удаление/замена ссылки либо редактирование собственных окружающих данных.
 - Owner candidate: document/object editing workflow
+- Accepted workflow placement: authoring and references phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N11:
     ```text
@@ -1081,6 +1063,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - fields may also contain ordinary Documentation File or File Location links under `ITEM-114`;
   - a navigation-only file link is not automatically a dependency edge and does not automatically use full-text/bare object semantics.
 - Owner candidate: object model + dependency workflow
+- Accepted workflow placement: authoring and references phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N27
   - SRC-N28
@@ -1105,6 +1088,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - full/bare is persisted Markdown choice;
   - choose bare when document content does not need immediate AI-visible duplication.
 - Owner candidate: Reference Object UI + document representation workflow
+- Accepted workflow placement: authoring and references phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N6
   - SRC-N31
@@ -1125,6 +1109,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - both are allowed in documents and object fields;
   - bare is suitable when immediate AI-visible content is unnecessary.
 - Owner candidate: Markdown/reference representation workflow
+- Accepted workflow placement: authoring and references phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N10
   - SRC-N31
@@ -1146,6 +1131,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - close through `approve and refresh` or `remove/replace reference`;
   - invalidate again on later changes.
 - Owner candidate: Dependency Graph And Impact Review workflow
+- Accepted workflow placement: change impact and review phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N2
   - SRC-N26
@@ -1163,6 +1149,7 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Disposition: Расширить ITEM-29B.
 - Required documentation action: Хранить typed edges минимум для `file/region → object` и `object.field → object`, показывать incoming/outgoing relations и propagating review-needed state.
 - Owner candidate: Reference Object model + dependency workflow
+- Accepted workflow placement: change impact and review phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N2:
     ```text
@@ -1183,6 +1170,7 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Disposition: Расширить ITEM-16B.
 - Required documentation action: Определить visible warning, filters/counts, affected-source diff/context и допустимые закрывающие действия.
 - Owner candidate: Dependency Review UI
+- Accepted workflow placement: change impact and review phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N26:
     ```text
@@ -1208,6 +1196,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - markers must not dominate the visible Markdown;
   - syntax should be prototyped against human reading, AI reading and reliable round trip.
 - Owner candidate: Markdown bridge workflow + prototype
+- Accepted workflow placement: authoring and references phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-G3
   - SRC-G4
@@ -1229,6 +1218,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - application parsing must still recover object identity, fields, boundaries, role and reference mode;
   - exact syntax remains a prototype/implementation decision.
 - Owner candidate: Markdown bridge workflow + prototype plan
+- Accepted workflow placement: authoring and references phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N35:
     ```text
@@ -1250,6 +1240,7 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Disposition: Расширить ITEM-31B за пределы UI-created objects.
 - Required documentation action: Parse known identities, detect missing definitions, show proposed object/fields/source, resolve duplicate/conflict, confirm creation and write canonical Markdown home.
 - Owner candidate: Object Discovery And Confirmation workflow
+- Accepted workflow placement: scope, parsing and creation phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N5:
     ```text
@@ -1274,6 +1265,7 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Disposition: Расширить ITEM-32B.
 - Required documentation action: Preserve ordinary text, identity, boundaries, mode, canonical/non-canonical role, fields and exact user formatting through parse/edit/write round trip.
 - Owner candidate: Mixed Document Parsing And Authoring workflow
+- Accepted workflow placement: scope, parsing and creation phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N7:
     ```text
@@ -1294,6 +1286,7 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Disposition: Расширить существующий ITEM-34B. Не утверждать, что обязателен Git API: свежий текст может означать чтение локального working tree.
 - Required documentation action: Описать import scopes, refresh, materialization/export и conflict detection.
 - Owner candidate: repository/file round-trip workflow
+- Accepted workflow placement: scope, parsing and creation phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N7:
     ```text
@@ -1318,6 +1311,7 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Disposition: Обновить новый item.
 - Required documentation action: File editor должен позволять выбрать reference mode; linked content остаётся read-only, а обычный окружающий текст — редактируемым.
 - Owner candidate: document authoring workflow
+- Accepted workflow placement: authoring and references phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N10:
     ```text
@@ -1345,7 +1339,8 @@ Planning Direction всегда быть отдельным Ссылочным �
   - allow optional parent/home assignment and reference placement;
   - allow a general object to remain temporarily app-only;
   - never import user `RN/DAM` as reviewed items automatically.
-- Owner candidate: AI Item Ingestion workflow
+- Owner candidate: upstream AI/Planning Item workflow
+- Accepted workflow placement: upstream adapter; confirmed/reviewed Planning Items enter the Documentation/Reference Object workflow through `ITEM-22B` or `ITEM-31B`.
 - Direct source excerpts:
   - SRC-N16
   - SRC-N25
@@ -1371,6 +1366,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - identify missing/unresolved objects explicitly;
   - do not treat this item as the complete mechanism for supplying all application state to AI.
 - Owner candidate: AI-expanded copy/export workflow
+- Accepted workflow placement: optional AI-expanded output phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N44
 - Older support:
@@ -2032,6 +2028,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - support ordinary back/forward/recent navigation where useful;
   - exact tab persistence and layout remain implementation planning.
 - Owner candidate: IDE-Like Navigation workflow
+- Accepted workflow placement: cross-step navigation and views phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N53
   - SRC-N61
@@ -2068,6 +2065,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - a navigation-only file link does not create dependency invalidation by default;
   - unresolved/ambiguous targets must be visible rather than silently guessed.
 - Owner candidate: General Reference And Navigation workflow
+- Accepted workflow placement: authoring and references / target resolution phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N61
   - SRC-N72
@@ -2093,6 +2091,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - display relation role and target/home location to prevent ambiguity;
   - keep exact Russian UI labels reviewable until accepted.
 - Owner candidate: terminology + File Relation View workflow
+- Accepted workflow placement: cross-step navigation and views phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N50
   - SRC-N51
@@ -2148,6 +2147,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - opening a result uses IDE-like tabs under `ITEM-35B`;
   - direct versus transitive relationship expansion remains an open design question; every view must make its relation scope explicit.
 - Owner candidate: Related Object And Concern Views workflow
+- Accepted workflow placement: cross-step navigation and views phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N78
   - SRC-N79
@@ -2174,6 +2174,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - expose these relation groups as selectable scopes in configurable related-object views;
   - do not force every category preset to show all three relation groups.
 - Owner candidate: File Relation View workflow
+- Accepted workflow placement: cross-step navigation and views phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Full source context:
   - SRC-N18
   - SRC-N32
@@ -2203,6 +2204,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - for app-only general object without home, keep object/canonical-state navigation and hide/disable home action;
   - support opening targets in another IDE-like tab.
 - Owner candidate: Object Navigation + IDE Tab Navigation
+- Accepted workflow placement: cross-step navigation and views phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N34
   - SRC-N40
@@ -2227,6 +2229,7 @@ Planning Direction всегда быть отдельным Ссылочным �
   - show counts with drill-down to concrete files, objects and occurrences;
   - avoid silently including unrelated transitive objects unless the chosen view explicitly requests them.
 - Owner candidate: dependency navigation workflow
+- Accepted workflow placement: cross-step navigation and views phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N19
   - SRC-N78
@@ -2265,11 +2268,45 @@ Planning Direction всегда быть отдельным Ссылочным �
     - Alternatives And Branches;
   - exact first template/preset/rule catalogue remains a documentation audit task.
 - Owner candidate: file category and guidance-assignment workflow
+- Accepted workflow placement: shape and category contracts phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
   - SRC-N20
   - SRC-N78
   - SRC-N79
 - Explanation: File type is an assignment point; each guidance mechanism retains its own semantics, lifecycle and application behavior.
+
+## 5A. Accepted Transformation History
+
+The following identities are no longer active items, but their full former responsibility and source mapping remain reviewable.
+
+<a id="item-25b"></a>
+### ITEM-25B / HYBRID-APP-MEMORY — Absorbed historical item
+
+- Status: **absorbed after accepted reconciliation; not active**.
+- Former semantic name: **Hybrid App Memory**.
+- Surviving item: [`ITEM-23B / MARKDOWN-PRIMARY-TRUTH`](#item-23b), semantic name **Hybrid Source-of-Truth Model**.
+- Preserved former meaning:
+  - Markdown-backed state can be rebuilt from documentation;
+  - app-only objects cannot be rebuilt from Markdown;
+  - cache/index state differs from temporary app-owned canonical state;
+  - export, backup and migration require later planning.
+- Direct source excerpts preserved: `SRC-N7`, `SRC-N23`, `SRC-N39`.
+- Transformation: normal Markdown/App-Memory ownership distinction merged into `ITEM-23B`; independent temporary durability debt remains active as `ITEM-108`.
+
+<a id="item-102"></a>
+### ITEM-102 / HOMELESS-GENERAL-OBJECT — Absorbed historical item
+
+- Status: **absorbed after accepted reconciliation; not active**.
+- Former semantic name: **Homeless General Object**.
+- Surviving item: [`ITEM-91 / IN-FILE-HOME-OBJECT`](#item-91), semantic name **Optional Reference Object Home**.
+- Preserved former meaning:
+  - parent/home is optional;
+  - a general Reference Object can exist without semantic parent context;
+  - absence of home is not the withdrawn undefined-object category;
+  - identity and editable canonical state still exist;
+  - home remains distinct from canonical-state owner and definition location.
+- Direct source excerpts preserved: `SRC-N33`, `SRC-N39`, `SRC-N40`.
+- Transformation: home-present and home-absent states now belong to one optional-home responsibility under `ITEM-91`.
 
 ## 6. Non-item planning concerns and withdrawn candidates
 
@@ -2278,7 +2315,6 @@ Planning Direction всегда быть отдельным Ссылочным �
 - Status: **open planning concern; not an accepted standalone product requirement**
 - Related active items:
   - `ITEM-23B / MARKDOWN-PRIMARY-TRUTH`;
-  - `ITEM-25B / HYBRID-APP-MEMORY`;
   - `ITEM-34B / REPO-FILE-FOLDER-ROUNDTRIP`;
   - `ITEM-107 / AI-EXPANDED-COPY`;
   - `ITEM-11B / CHAT-HISTORY-LEDGER`;
@@ -2366,7 +2402,7 @@ Reading rule:
 | `ITEM-23B` | App stores source-of-truth metadata per file region/object. | active canonical brick | ITEM-23B / MARKDOWN-PRIMARY-TRUTH |
 | `ITEM-24` | Object-canonical-everything is deferred; real Markdown remains first-class. | merged / split / updated | ITEM-23B / ITEM-28B |
 | `ITEM-25A` | Markdown should remain AI-readable context. | merged / split / updated | ITEM-105 / ITEM-107 |
-| `ITEM-25B` | Structured JSON/object storage may support snapshots/imports. | active canonical brick | ITEM-25B / HYBRID-APP-MEMORY |
+| `ITEM-25B` | Structured JSON/object storage may support snapshots/imports. | merged / split / updated | absorbed into ITEM-23B / HYBRID SOURCE-OF-TRUTH MODEL; temporary durability remains ITEM-108 |
 | `ITEM-26` | Archive assistant is future convenience, not raw-stage default. | deferred implementation | Archive Apply Assistant |
 | `ITEM-27` | Terminology needs an early owner. | reusable or non-product owner | existing reusable methodology; do not duplicate in app picture |
 | `ITEM-28A` | Real Markdown files remain first-class documentation. | merged / split / updated | ITEM-28B |
@@ -2445,8 +2481,8 @@ Reading rule:
 
 ```text
 110 old items
-= 16 active
-+ 35 merged/split
+= 15 active
++ 36 merged/split
 + 4 deferred
 + 4 unresolved
 + 51 reusable/non-product
@@ -2779,6 +2815,25 @@ If persisted, define invalidation/review behavior when:
 - the source preset changes;
 - a parent/full-picture coverage claim becomes stale.
 
+### Q-46 — Object Category Contract Composition And Enforcement
+
+Confirmed:
+
+```text
+- any correctly represented field may be recognized;
+- category contracts/presets define expected fields for applicable object categories;
+- additional fields are allowed by default;
+- a hard restriction exists only when an applicable contract states it explicitly.
+```
+
+Open:
+
+- how several applicable contracts combine;
+- precedence and conflict handling;
+- advisory warning versus review issue versus blocking validation;
+- contract inclusion/inheritance and cycle prevention;
+- invalidation/review when a category or contract changes.
+
 ### Q-19 — Minimal Markdown syntax
 
 Prototype visually quiet forms for canonical objects, fields, full/bare object references, general file/location links, home metadata and field-level references.
@@ -2853,46 +2908,36 @@ For each element record:
 
 An element such as `Risks` may legitimately have several explicit roles; the audit separates those roles instead of forcing one interpretation.
 
-### Package 4 — project-local Application Root Planning Draft
+### Package 4 — project-local Application Root and accepted workflow ownership
 
-Create one root draft that owns:
+Current state:
 
-- product identity and non-goals;
-- workflow inventory;
-- shared data/relationship model;
-- item scale, semantic completeness and relations;
-- concern catalogue/preset/suggestion/application model;
-- raw annotation boundary;
-- UI/navigation model;
-- configurable related-object and concern views;
-- AI response integration;
-- accepted requirements versus implementation thoughts;
-- open AI knowledge/source synchronization concern;
-- prototype planning as a later separate pass.
+- the Application Root Full Picture exists;
+- Documentation And Reference Object End-To-End Workflow is the accepted primary Complete Picture;
+- Reference Object Model And Lifecycle is a supporting model;
+- Chat/AI/Work-State and Planning/Deepening remain provisional slices pending end-to-end review;
+- accepted requirements and implementation thoughts remain distinct;
+- AI knowledge/source synchronization and runtime architecture remain open concerns.
 
-### Package 5 — functional workflows
+### Package 5 — end-to-end workflow structure
 
-At minimum:
+Accepted primary workflow:
 
-1. Documentation Import And Refresh.
-2. AI Item Import And Object Confirmation.
-3. Purposeful And Semantically Complete Planning Item Formation, including targeted repository comparison and explicit review when requested.
-4. Concern Catalogue And Preset Management.
-5. Concern Suggestion And Applicability Review.
-6. Applied Concern And Planning Deepening.
-7. Full-Picture Sweep.
-8. User Raw Annotation Capture.
-9. Configurable Related-Object And Concern Views.
-10. File-Type Guidance Assignment.
-11. File/Object Authoring.
-12. Reference Placement And General Targets.
-13. Dependency Invalidation And Review.
-14. IDE-Like Tab Navigation.
-15. Chat History And Answer Change Sets.
-16. Action Log Capture.
-17. Template-Linked AI Response.
-18. AI-Expanded Copy.
-19. Repository Semantic Reconciliation, explicit old → new meaning review and Git/Diff Handoff.
+1. Documentation And Reference Object End-To-End Workflow:
+   - scope loading and mixed-Markdown parsing;
+   - object discovery/confirmation and creation paths;
+   - identity/state/home and field/category-contract model;
+   - authoring, managed references and round trip;
+   - dependency invalidation/review;
+   - cross-step navigation/views;
+   - optional AI-expanded copy.
+
+Provisional workflows still requiring complete trigger-to-result review:
+
+2. Chat, AI Responses And Work-State Trace.
+3. Planning Items, Full Picture And Deepening, including upstream AI Item Import.
+
+Supporting/reusable processes remain separately owned where their independent lifecycle justifies it, including repository semantic reconciliation and literal Git/diff handoff.
 
 ### Package 6 — syntax and representation planning
 
@@ -2901,7 +2946,7 @@ Plan before prototyping:
 - compact item identity plus unrestricted body representation;
 - concern definition/preset/suggestion/application serialization;
 - suggestion-review and Applied Concern status vocabularies;
-- optional field contract;
+- arbitrary field representation plus Object Category Field Contract serialization;
 - object/file/file-location link syntax;
 - file relation and concern views;
 - response templates and required-link validation;
@@ -2914,7 +2959,7 @@ Prototype implementation and shell/technology selection remain explicitly outsid
 
 The uploaded old register sometimes preserved only normalized rows or indirect source support. Such old evidence remains marked through its old-item disposition.
 
-Fresh `SRC-N46`–`SRC-N83` preserve direct user wording and take precedence when they correct prior interpretations.
+Fresh `SRC-N46`–`SRC-N86` preserve direct user wording and take precedence when they correct prior interpretations.
 
 In particular:
 
@@ -2930,4 +2975,7 @@ In particular:
 - no separate `Planning Item Candidate` entity is introduced by this revision;
 - targeted repository comparison occurs during item creation/update, is shown explicitly on user request and becomes a complete mandatory review before every File Update Plan;
 - semantic corrections/replacements must be shown as existing → new meaning before literal repository changes;
+- a Complete Picture is an end-to-end workflow rather than a peer thematic slice;
+- object fields are generically recognizable while category contracts define expectations;
+- accepted absorbed identities remain fully traceable;
 - prototype implementation and technology choices remain outside the accepted items in this version.
