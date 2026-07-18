@@ -1,7 +1,7 @@
 # Documentation Workbench Full Picture
 
 Status: active working Application Root Planning Draft / incomplete / item-backed / reconciliation in progress
-Doc version: v0.1.0-cp1-bootstrap
+Doc version: v0.2.0-cp2-review
 Scope: complete application-level planning picture for Documentation Workbench. Detailed working item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
@@ -52,15 +52,15 @@ Canonical working source for this draft:
 ```text
 current working register: 50 active items
 proposed reconciliation result: review material only
-this bootstrap: preserves all 50 identities and bodies
+current project-local register: preserves all 50 identities and bodies
 ```
 
 ## 4. Primary Complete Picture Inventory
 
 | ID | Primary complete picture | Current status in this draft |
 |---|---|---|
-| CP-1 | Documentation Workbench Full Picture And Product Boundary | Expanded in this update. Current four working meanings remain unchanged. |
-| CP-2 | Reference Object Model And Lifecycle | Compact coordinated picture. Reconciled transformations are not applied. |
+| CP-1 | Documentation Workbench Full Picture And Product Boundary | Expanded in CP-1A. Current four working meanings remain unchanged. |
+| CP-2 | Reference Object Model And Lifecycle | Expanded in CP-2A. Complete model and six transformations are proposed; the canonical item-set transition is not applied. |
 | CP-3 | Managed References And Dependency Review | Compact coordinated picture. Reconciled transformations are not applied. |
 | CP-4 | Import, Authoring And Repository Round Trip | Compact coordinated picture. Reconciled transformations are not applied. |
 | CP-5 | Chat, AI Responses And Work-State Trace | Compact coordinated picture. Reconciled transformations are not applied. |
@@ -141,9 +141,11 @@ Conservative current rule: preserve existing documentation and dependency bookke
 
 ## 6. CP-2 — Reference Object Model And Lifecycle
 
-**Purpose:** define independently managed reusable documentation meaning, identity, extraction, home and canonical storage behavior.
+**Detailed owner:** [`reference-object-model-and-lifecycle.md`](reference-object-model-and-lifecycle.md)
 
-Current working items:
+**Purpose:** define independently managed reusable documentation meaning, identity, confirmation-gated creation, extraction, canonical state, optional home, durability modes and flexible fields.
+
+Current working set — unchanged in the register:
 
 ```text
 Reference Object Term (ITEM-86)
@@ -158,9 +160,29 @@ Flexible Object Shape (ITEM-103)
 Optional Field Contract (ITEM-106)
 ```
 
-Key boundary: document-backed state remains Markdown-primary; an app-only canonical object is an explicit temporary exception, not a general replacement for documentation files.
+Proposed resulting set — review material only:
 
-Status: complete-picture reconciliation exists as review material, but no merge, rename or absorbed identity is applied here.
+```text
+Reference Object Terminology (proposed ITEM-86)
+Planning Item Canonicalization (proposed ITEM-22B; name provisional)
+Reference Object Extraction (proposed ITEM-87)
+Hybrid Source-of-Truth Model (proposed ITEM-23B)
+Optional Reference Object Home (proposed ITEM-91)
+Flexible Object Shape And Fields (proposed ITEM-103)
+```
+
+Key boundaries:
+
+- Reference Object identity, canonical state, optional Markdown definition location, optional parent/home and materialized occurrence are separate concepts.
+- Markdown-backed state is the normal durable mode.
+- App Memory is normally auxiliary; temporary app-only canonical state remains explicit deferred storage debt.
+- RN/DAM never become Planning Items or Reference Objects automatically.
+- Object bodies remain unrestricted and text-first; recognized semantic fields remain optional.
+- Exact marker syntax, database/storage engine and UI architecture are not selected.
+
+Open choices include the final English object term, the final `ITEM-22B` name, merge-surviving identities, app-only durability and minimal parser mechanics.
+
+Status: the complete model and six Current / Incoming / Resulting transformation blocks are prepared in the detailed owner. No rename, merge or absorbed identity is applied to `planning-item-register.md`.
 
 ## 7. CP-3 — Managed References And Dependency Review
 
@@ -276,6 +298,7 @@ Status: transformations are proposed only.
 ```text
 - Real Markdown/documentation remains first-class and reviewable without the app.
 - App Memory does not silently become the global Source of Truth.
+- Reference Object canonical state, optional Markdown definition location and optional parent/home remain separate model concepts.
 - Proposed/imported meaning does not become a canonical item or object without confirmation.
 - Full Picture summaries do not replace complete Planning Item bodies.
 - Managed reference semantics, navigation views and concern suggestions retain separate owners.
@@ -303,14 +326,15 @@ High-impact unresolved groups include:
 ## 14. Planned Growth Order
 
 ```text
-1. Bootstrap the area and preserve the complete 50-item working source.  ← this update
-2. Expand and reconcile CP-2 Reference Object Model And Lifecycle.
-3. Expand CP-3 Managed References And Dependency Review.
-4. Expand CP-4 Import, Authoring And Repository Round Trip.
-5. Expand CP-5 Chat, AI Responses And Work-State Trace.
-6. Apply product-local CP-6 item transformations only after explicit block-by-block approval.
-7. Expand CP-7 IDE Navigation And Related-Object Views.
-8. Create child workflow/detail/prototype files only when independent ownership is justified.
+1. Bootstrap the area and preserve the complete 50-item working source.  ✓ CP-1A
+2. Expand CP-2 and prepare its traceable transformation review.  ← this CP-2A update
+3. Apply only explicitly accepted CP-2 item transformations and recalculate active counts.
+4. Expand CP-3 Managed References And Dependency Review.
+5. Expand CP-4 Import, Authoring And Repository Round Trip.
+6. Expand CP-5 Chat, AI Responses And Work-State Trace.
+7. Apply product-local CP-6 item transformations only after explicit block-by-block approval.
+8. Expand CP-7 IDE Navigation And Related-Object Views.
+9. Create child workflow/detail/prototype files only when independent ownership is justified.
 ```
 
 The order may change when a dependency or user priority makes another complete picture the safer next review object.

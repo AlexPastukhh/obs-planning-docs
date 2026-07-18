@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area
-Doc version: v0.1.0-area-bootstrap
+Doc version: v0.2.0-cp2-review
 Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -23,6 +23,7 @@ Documentation Workbench planning area
 |---|---|
 | [`README.md`](README.md) | Area entry, ownership map, read order and update discipline. |
 | [`full-picture.md`](full-picture.md) | Item-backed Application Root Planning Draft and coordination of the seven Primary Complete Pictures. |
+| [`reference-object-model-and-lifecycle.md`](reference-object-model-and-lifecycle.md) | Complete CP-2 Reference Object model and six traceable transformation proposals. |
 | [`planning-item-register.md`](planning-item-register.md) | Complete active working source-linked item meanings, source bank, old-item audit and open questions. |
 
 Supporting reusable owners:
@@ -43,6 +44,9 @@ Planning Item body, source excerpts, audit disposition and open questions:
 Application identity, complete-picture synthesis, workflow inventory and cross-picture coordination:
   full-picture.md
 
+Reference Object identity, lifecycle, durability modes and proposed CP-2 item transition:
+  reference-object-model-and-lifecycle.md
+
 Reusable planning behavior, terminology and principles:
   planning/documentation/application-planning/
 
@@ -59,9 +63,18 @@ For Documentation Workbench planning:
 ```text
 1. README.md
 2. full-picture.md
-3. only the relevant sections/items in planning-item-register.md
-4. relevant reusable application-planning owners
-5. source excerpts and old-item audit rows when a reconciliation decision depends on them
+3. the affected Primary Complete Picture owner when one exists
+4. only the relevant sections/items in planning-item-register.md
+5. relevant reusable application-planning owners
+6. source excerpts and old-item audit rows when a reconciliation decision depends on them
+```
+
+For CP-2 Reference Object work, the targeted read order is:
+
+```text
+full-picture.md#6-cp-2--reference-object-model-and-lifecycle
+  → reference-object-model-and-lifecycle.md
+  → affected items and sources in planning-item-register.md
 ```
 
 For a full item reconciliation, read the complete affected Primary Complete Picture and every Current, Incoming and Resulting item participating in a proposed transformation.
@@ -98,8 +111,9 @@ Create a separate Functional Workflow, branch, detail, model or prototype artifa
 ## 7. Current State
 
 ```text
-- The complete v0.9.2 working register is migrated without applying proposed merges, renames, splits, moves or supersessions.
+- The complete v0.9.2 working register remains unchanged; proposed merges, renames and absorbed identities are not applied.
 - CP-1 is expanded in the Full Picture.
-- CP-2 through CP-7 remain compact coordinated pictures awaiting separate updates.
-- No Documentation Workbench runtime, application shell, storage architecture or marker syntax is selected by this area bootstrap.
+- CP-2 is expanded in `reference-object-model-and-lifecycle.md` with six traceable transformation proposals awaiting explicit acceptance.
+- CP-3 through CP-7 remain compact coordinated pictures awaiting separate updates.
+- No Documentation Workbench runtime, application shell, storage architecture or marker syntax is selected by CP-2A.
 ```
