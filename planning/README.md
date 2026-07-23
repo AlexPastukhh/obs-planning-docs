@@ -1,121 +1,106 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.5.0-planning-item-full-picture-workflow
-Scope: OBS repository planning entry point, local routing and source-of-truth pointers built on the reusable documentation layer copied under `planning/documentation/`.
+Doc version: v0.6.0-semantic-registries
+Scope: OBS repository planning entry point, semantic Direction orientation, concrete command routing, task activation and source/owner pointers built on the reusable documentation layer.
 
 ## 1. Purpose
 
-This root file is the project-specific entry point for planning work in the OBS repository.
-
-The reusable process layer lives in:
-
 ```text
-planning/documentation/
+planning/README.md
+  → root orientation;
+
+planning/direction-registry.md
+  → broad semantic Directions and local registry routes;
+
+planning/planning-use-case-map.md
+  → concrete executable command routes;
+
+planning/workflow-activation-map.md
+  → task/use-case activation;
+
+planning/root-source-sync-register.md
+  → root/local owner inventory;
+
+planning/planning-input-conventions.md
+  → project-readable planning input conventions.
 ```
 
-OBS-specific applications live in:
+Reusable process owners: `planning/documentation/`.
 
-```text
-planning/areas/
-```
-
-Do not put reusable rules into local area docs when the rule belongs to `planning/documentation/`.
+Project-local applications: `planning/areas/`.
 
 ## 2. Source-Of-Truth Split
 
 ```text
-Reusable process rules:
+Reusable workflows/principles/terminology/templates:
   planning/documentation/
 
-OBS root command routing:
+Root semantic Direction orientation:
+  planning/direction-registry.md
+
+Local semantic Direction/Use-Case entries:
+  planning/documentation/<family>/*-registry.md
+  planning/areas/<area>/*-registry.md
+
+Root command routing and canonical English names:
   planning/planning-use-case-map.md
 
-OBS root workflow/task activation:
+Task/use-case activation routing:
   planning/workflow-activation-map.md
 
-OBS root source/owner register:
+Project input conventions:
+  planning/planning-input-conventions.md
+
+Root owner/source register:
   planning/root-source-sync-register.md
 
-OBS local areas:
-  planning/areas/planning-system/
-  planning/areas/conspects/
-  planning/areas/documentation-workbench/
+Concrete local planning state:
+  planning/areas/
 ```
 
-Rules:
+Registries own semantic entries; the UCM owns commands and permissions; workflows own repeated behavior; templates own recommended shape; area owners own concrete state; root files reference rather than copy; examples and Tampermonkey are not authority.
 
-```text
-- `planning/documentation/` owns reusable documentation workflows, planning method,
-  command creation, templates, field kits, parallel work and reusable helper rules.
-- `planning/planning-use-case-map.md` owns concrete command routing and canonical English names.
-- Area docs own project-local application state and accepted product workflows.
-- Root files route and register owners; they do not copy complete owner algorithms.
-- Examples demonstrate behavior; they do not own rules.
-- Tampermonkey helper is projection only, not command authority.
-```
-
-A separate root Direction Registry and local semantic Use-Case Registries are planned in a later batch. They are not claimed as current owners yet.
-
-## 3. Read Order For New Chats
-
-If root planning files exist:
+## 3. New-Chat Orientation Read Order
 
 ```text
 1. planning/README.md
-2. planning/planning-use-case-map.md
-3. planning/workflow-activation-map.md
-4. planning/root-source-sync-register.md
-5. relevant command/task owner docs under planning/areas/ or planning/documentation/
-6. relevant item/source register when semantic reconciliation depends on it
-7. Dashboard userscript/runtime help, JSON import/export and repo round-trip contract
-   when the task concerns local planning data
+2. planning/direction-registry.md
+3. relevant local/reusable Direction Registry
+4. relevant Use-Case Registry
+5. complete owner workflow/area
+6. planning/planning-use-case-map.md when a command is involved
+7. planning/workflow-activation-map.md for activation details
+8. planning/root-source-sync-register.md for owner/source status
+9. planning/planning-input-conventions.md when source markers/settings matter
+10. targeted item/source register when reconciliation depends on it.
 ```
 
-If root planning files are missing or being bootstrapped:
+For command-first input, read the root UCM immediately after this file and follow its owner route.
 
-```text
-1. planning/documentation/PORTABLE-STARTER-KIT.md
-2. planning/documentation/field-kits/root-use-case-map-field-kit.md
-3. other field kits as needed
-```
-
-After root files exist, starter kits are not runtime routers.
+Bootstrap files are used only when root files do not exist.
 
 ## 4. Local Areas
 
 | Area | Path | Purpose |
 |---|---|---|
-| Planning runtime | `planning/areas/planning-system/` | Minimal technical index and the operational `конец` workflow. Dashboard planning rules and field help live in the Dashboard userscript/UI. |
-| Conspects | `planning/areas/conspects/` | Conspect review/repetition planning and local knowledge-work application. |
-| Documentation Workbench | `planning/areas/documentation-workbench/` | Project-local Application Root, accepted Documentation/Reference Object and Planning Item/Full Picture workflows, supporting models and the complete source-linked Planning Item register. |
+| Planning runtime | `planning/areas/planning-system/` | Minimal technical index and operational `конец` workflow. Dashboard runtime owns planning schema/help and sync. |
+| Conspects | `planning/areas/conspects/` | Conspect review/repetition planning. |
+| Documentation Workbench | `planning/areas/documentation-workbench/` | Application Root, accepted workflows, supporting model, local registries and source-linked item register. |
 
-Documentation Workbench read order:
+Documentation Workbench route:
 
 ```text
 planning/areas/documentation-workbench/README.md
-  → planning/areas/documentation-workbench/full-picture.md
-  → affected end-to-end workflow owner
-  → affected supporting model
-  → targeted sections of planning/areas/documentation-workbench/planning-item-register.md
-  → relevant reusable owners under planning/documentation/application-planning/
+  → direction-registry.md
+  → use-case-registry.md
+  → full-picture.md
+  → selected workflow/model owner
+  → targeted planning-item-register.md items/sources
+  → relevant reusable owners.
 ```
 
-Planning Item/Full Picture target owner:
-
-```text
-planning/areas/documentation-workbench/
-  complete-pictures/planning-items-and-full-picture/full-picture.md
-```
-
-Documentation/Reference Object target owner:
-
-```text
-planning/areas/documentation-workbench/
-  documentation-and-reference-object-end-to-end-workflow.md
-```
-
-## 5. Current Documentation Workbench Structural State
+## 5. Current Documentation Workbench State
 
 ```text
 Application Root:
@@ -128,22 +113,26 @@ Accepted Complete Pictures:
 Supporting model:
   Reference Object Model And Lifecycle
 
-Canonical item/source register:
-  51 active Planning Items
+Local semantic registries:
+  direction-registry.md
+  use-case-registry.md
+
+Canonical register:
+  51 active Planning Items.
 ```
 
-The two Complete Pictures have an explicit handoff. Planning Item formation/review does not duplicate document/reference authoring; document/reference authoring does not repeat already completed application-native item confirmation.
+Chat/AI/Work-State remains provisional.
 
-Chat/AI/Work-State remains provisional pending the same end-to-end review criterion.
+## 6. Planning Item Formation Entry
 
-## 6. Tampermonkey Helper
+Semantic use case: `Form Planning Items From Discussion`.
 
-The full reusable helper lives inside the reusable documentation layer:
+Reusable owner: `planning/documentation/application-planning/planning-item-formation-workflow.md`.
 
-```text
-planning/documentation/tools/tampermonkey/chat-command-palette.user.js
-```
+Input conventions: `planning/planning-input-conventions.md`.
 
-Do not create a tracked local `tools/tampermonkey/` copy by default. If a project intentionally forks the reusable helper, document the fork reason and keep the fork clearly project-local.
+There is no root UCM command yet because the canonical Russian command, English name and aliases are unresolved.
 
-The helper already projects accepted commands such as `сверь айтемы`. Direction/Use-Case/Orientation surfaces and the item-formation command remain later batches.
+## 7. Tampermonkey Helper
+
+Current helper projects accepted commands only. Batch 5 adds Orientation, Directions, Use Cases and Commands surfaces from root documentation, registries and the UCM. The helper remains projection-only.

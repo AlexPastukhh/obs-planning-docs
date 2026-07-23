@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Principles
 
 Status: provisional reusable principles
-Doc version: v0.10.0-planning-item-formation-sync
+Doc version: v0.11.0-semantic-registries-linked
 Scope: stable guidance for source-linked Planning Items, end-to-end Complete Pictures, supporting artifacts, Planning Drafts, concern review, alternatives, tests and evidence-driven revision before optional detailed implementation planning.
 
 ## 1. Purpose
@@ -374,7 +374,7 @@ Do not turn every mandatory internal step of a coherent workflow into a peer use
 
 When a solution introduces an auxiliary layer—documentation system, framework, planning tool, automation or codebase tooling—treat that layer proportionally as a user-facing solution with its own use-case inventory.
 
-Exact Direction and Use-Case registries are separate registry-owner work; these principles define only the stable topology boundary.
+Exact Direction and Use-Case entries belong in the dedicated registry hierarchy. These principles define the stable topology boundary; `direction-and-use-case-registry-workflow.md` owns registry process and templates.
 
 ## 16D. Concern And Item Observability
 

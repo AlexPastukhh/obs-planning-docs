@@ -1,7 +1,7 @@
 # Planning Docs Architecture Principles
 
 Status: active reusable architecture principles
-Doc version: v0.4.0-command-registry-formation-boundaries
+Doc version: v0.5.0-semantic-registries-active
 Scope: stable reusable invariants for projects that use `planning/documentation/` as a portable process layer.
 
 ## 1. Layer Boundary
@@ -16,7 +16,7 @@ planning/README.md
 planning/planning-use-case-map.md
   = concrete project command route map/UCM;
 
-future project Direction/Use-Case registries
+project Direction/Use-Case registries
   = semantic navigation and owner routes;
 
 planning/areas/
@@ -29,7 +29,7 @@ Reusable docs do not own concrete project state, schedules, implementation statu
 
 ```text
 - One project root UCM owns command routing/canonical English names.
-- Semantic registries, when present, own Direction/Use-Case entries.
+- Semantic registries own Direction/Use-Case entries.
 - Workflow files own repeated process.
 - Terminology files own conceptual distinctions.
 - Principles own stable invariants.
@@ -139,7 +139,7 @@ When copied to another project:
 - do not copy another project's local state as active configuration;
 - keep portable Planning Item review available;
 - adapt command profiles only to accepted routes;
-- create semantic registries only when the target project adopts them.
+- create/adapt semantic registries when the target project adopts them.
 
 ## 8. Progressive Ownership
 

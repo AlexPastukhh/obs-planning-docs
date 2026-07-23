@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Documentation Index
 
 Status: provisional reusable documentation-family index
-Doc version: v0.9.0-planning-item-formation-sync
+Doc version: v0.10.0-semantic-registries
 Scope: reusable planning from selected source through full-message Planning Item formation, end-to-end workflow pictures, an item-backed Planning Draft, concern review, alternatives, tests, prototypes and evidence-driven revision.
 
 The folder path remains `application-planning/` during the semantic migration. The methodology itself is not limited to applications.
@@ -59,10 +59,12 @@ Opportunity research, Product Legend and Solution Overview are not mandatory seq
    when source material must become reviewed Planning Items
 5. templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
    when exact item review output is needed
-6. application-planning-drafting-workflow.md
+6. direction-registry.md and use-case-registry.md
+   when semantic Direction/Use-Case context is needed
+7. application-planning-drafting-workflow.md
    for broader planning, Complete Picture work and item reconciliation
-7. the relevant recommended template under templates/, when useful
-8. the project-local working draft, Full Picture and item register
+8. the relevant recommended template under templates/, when useful
+9. the project-local working draft, Full Picture and item register
 ```
 
 Templates are recommended representations, not mandatory schemas. Concern presets recommend attention, not file shape. Project-local state remains outside `planning/documentation/`.
@@ -76,6 +78,8 @@ terminology-and-planning-items.md
 application-planning-principles.md
 planning-item-formation-workflow.md
 application-planning-drafting-workflow.md
+direction-registry.md
+use-case-registry.md
 
 templates/
   CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
@@ -225,7 +229,7 @@ This reusable family does not define:
 - exact Markdown wrapper syntax;
 - a mandatory client platform;
 - project-specific command routes or command names;
-- semantic Direction/Use-Case registries before their dedicated registry workflow exists;
+- project-specific command names or runtime implementation inferred from semantic registry entries;
 - unrestricted AI filesystem access;
 - detailed implementation plans;
 - one universal concern catalogue;

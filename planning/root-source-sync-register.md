@@ -1,97 +1,64 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v0.6.0-planning-item-full-picture-workflow
-Scope: register root planning files and local area ownership for OBS planning infrastructure.
+Doc version: v0.7.0-semantic-registries
+Scope: register root planning files, reusable owners and local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
 
 | File | Role | Source |
 |---|---|---|
-| `planning/README.md` | Root planning entry point | OBS local root file created from reusable docs model. |
-| `planning/planning-use-case-map.md` | Concrete OBS command router | Created from `planning/documentation/field-kits/root-use-case-map-field-kit.md`. |
-| `planning/workflow-activation-map.md` | Workflow/task activation router | OBS local root file. |
-| `planning/root-source-sync-register.md` | Root source/owner register | OBS local root file. |
-
-Planned but not yet created:
-
-```text
-planning/direction-registry.md
-planning/planning-input-conventions.md
-```
-
-Their future roles belong to later accepted batches and are not claimed by current files.
+| `planning/README.md` | Root planning orientation | OBS project-local root owner. |
+| `planning/direction-registry.md` | Root semantic Direction Registry and local registry references | Accepted Direction/Use-Case reconciliation. |
+| `planning/planning-use-case-map.md` | Concrete OBS command router | Root UCM created from reusable field-kit model. |
+| `planning/workflow-activation-map.md` | Task/Direction/Use-Case activation router | OBS root owner. |
+| `planning/root-source-sync-register.md` | Root source/owner register | OBS root owner. |
+| `planning/planning-input-conventions.md` | Project-readable planning input conventions | Accepted `it(` / `)it` delimiter meaning. |
 
 ## 2. Reusable Layer
 
 | Path | Role |
 |---|---|
-| `planning/documentation/` | Copied reusable documentation/process layer. |
-| `planning/documentation/application-planning/` | Reusable solution/workflow planning terminology, principles, drafting workflow and templates. |
-| `planning/documentation/field-kits/` | Bootstrap kits for creating root/project-specific files. |
-| `planning/documentation/tools/tampermonkey/` | Reusable full Tampermonkey helper and docs. |
-
-Planned reusable additions:
-
-```text
-planning/documentation/application-planning/planning-item-formation-workflow.md
-planning/documentation/application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
-Direction/Use-Case registry workflow and templates
-```
+| `planning/documentation/` | Reusable documentation/process layer. |
+| `planning/documentation/direction-and-use-case-registry-workflow.md` | Registry hierarchy, topology, activation and ownership. |
+| `planning/documentation/DIRECTION-REGISTRY-TEMPLATE.md` | Direction Registry shape. |
+| `planning/documentation/USE-CASE-REGISTRY-TEMPLATE.md` | Use-Case Registry shape. |
+| `planning/documentation/application-planning/` | Reusable planning terminology, principles, formation, drafting, registries and templates. |
+| `planning/documentation/application-planning/direction-registry.md` | Reusable planning Direction entries. |
+| `planning/documentation/application-planning/use-case-registry.md` | Reusable planning Use-Case entries. |
+| `planning/documentation/field-kits/` | Bootstrap/setup guidance only. |
+| `planning/documentation/tools/tampermonkey/` | Helper implementation; projection only. |
 
 ## 3. Local Areas
 
 | Path | Role |
 |---|---|
-| `planning/areas/planning-system/` | Minimal runtime index plus the operational end-session command owner. Dashboard schema/help, JSON import/export and repo round trip live in the userscript. |
+| `planning/areas/planning-system/` | Minimal runtime index and operational end-session owner. |
 | `planning/areas/conspects/` | Conspect planning/repetition area. |
-| `planning/areas/documentation-workbench/` | Project-local Documentation Workbench area. Owns its Application Root, accepted end-to-end Complete Pictures, supporting models and complete source-linked Planning Item register. |
+| `planning/areas/documentation-workbench/` | Application Root, accepted Complete Pictures, supporting model, local registries and item register. |
 
-## 4. Documentation Workbench Area Files
+## 4. Documentation Workbench Files
 
-| File | Role | Source |
-|---|---|---|
-| `planning/areas/documentation-workbench/README.md` | Area entry, ownership and read/update order | Current project-local responsibility split and accepted Complete Picture criterion. |
-| `planning/areas/documentation-workbench/full-picture.md` | Application Root Full Picture / product and workflow coordinator | Built from the source-linked register, accepted structural reconciliations and current project-local owners. |
-| `planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md` | Accepted trigger-to-result Documentation And Reference Object Complete Picture | Built from former CP-2/CP-3/CP-4/CP-7 meanings, 30 active items and explicit acceptance. |
-| `planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md` | Accepted trigger-to-result Planning Item And Full Picture Complete Picture | Built from the accepted recent-chat reconciliation, 11 direct active items and the explicit downstream handoff. |
-| `planning/areas/documentation-workbench/reference-object-model-and-lifecycle.md` | Supporting Reference Object model and accepted transformation history | Built from the former ten-item model, accepted eight-item result and later managed-Planning-Item boundary correction. |
-| `planning/areas/documentation-workbench/planning-item-register.md` | Complete active source-linked item register and transformation history | Migrated from the v0.9.2 source, evolved through the accepted Documentation/Reference transition and accepted recent-chat reconciliation. Current active count: 51. |
+| File | Role |
+|---|---|
+| `planning/areas/documentation-workbench/README.md` | Area entry/read/update discipline. |
+| `planning/areas/documentation-workbench/direction-registry.md` | Local product/planning Directions. |
+| `planning/areas/documentation-workbench/use-case-registry.md` | Accepted local workflows/capabilities and provisional candidates. |
+| `planning/areas/documentation-workbench/full-picture.md` | Application Root Full Picture. |
+| `planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md` | Accepted Documentation/Reference Object workflow. |
+| `planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md` | Accepted Planning Item/Full Picture workflow. |
+| `planning/areas/documentation-workbench/reference-object-model-and-lifecycle.md` | Supporting model. |
+| `planning/areas/documentation-workbench/planning-item-register.md` | Complete source-linked register; 51 active items. |
 
-## 5. Current Accepted Structural State
-
-```text
-Application Root
-  → planning/areas/documentation-workbench/full-picture.md;
-
-accepted Complete Picture A
-  → Documentation And Reference Object End-To-End Workflow;
-
-accepted Complete Picture B
-  → Planning Item And Full Picture End-To-End Workflow;
-
-supporting model
-  → Reference Object Model And Lifecycle;
-
-canonical item/source register
-  → 51 active Planning Items;
-
-former CP-2/CP-3/CP-4/CP-7
-  → historical mappings, not current peer owners;
-
-remaining provisional slice
-  → Chat/AI/Work-State.
-```
-
-Explicit cross-workflow handoff:
+## 5. Current Structural State
 
 ```text
-application-native confirmed Planning Item
-  → already a managed Reference Object
-  → downstream workflow assigns/materializes durable owner/location/home/references;
-
-portable reviewed item
-  → remains portable or enters proposal/confirmation before managed creation.
+root Direction Registry → planning/direction-registry.md;
+reusable planning registries → application-planning/direction-registry.md + use-case-registry.md;
+Documentation Workbench registries → direction-registry.md + use-case-registry.md;
+accepted local Complete Pictures → Documentation/Reference + Planning Item/Full Picture;
+supporting model → Reference Object Model And Lifecycle;
+canonical register → 51 active Planning Items.
 ```
 
 ## 6. Accepted Item Mappings
@@ -104,23 +71,23 @@ active register:
   50 → 48 through Documentation/Reference reconciliation
   48 → 51 through accepted recent-chat reconciliation
 
-new active product identities:
+new active identities:
   ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER
   ITEM-122 / TYPED-SOURCE-CONTRIBUTIONS
   ITEM-123 / CONFIGURABLE-APPLICATION-SETTINGS
 ```
 
-`ITEM-22B / ITEM-TO-OBJECT` remains the stable technical identity and is semantically updated to own the Planning Item/managed Reference Object boundary.
+`ITEM-22B / ITEM-TO-OBJECT` remains the stable Planning Item/managed Reference Object boundary identity.
 
-## 7. Not Checked / Not Implemented
+## 7. Remaining Work
 
 ```text
-- Existing OBS vault note taxonomy was not fully audited in this batch.
-- Existing conspect folder names/content were not imported into planning/areas/conspects/.
-- Documentation Workbench runtime/code behavior was not audited or implemented.
-- Exact structured-response syntax, Markdown marker syntax, app-only durability
-  and runtime architecture remain unresolved.
-- Reusable Planning Item Formation docs, Direction/Use-Case registries,
-  project input conventions and Tampermonkey semantic surfaces remain later batches.
-- Prototype-Depth Scenario/Domain/Slice methodology remains a separate task.
+- exact item-formation command names and UCM route;
+- Tampermonkey Orientation/Directions/Use Cases projection;
+- whole-repository terminology/owner/link/projection audit;
+- Chat/AI/Work-State trigger-to-result review;
+- Prototype-Depth Scenario/Domain/Slice methodology;
+- runtime/storage/parser/Markdown-reference architecture.
 ```
+
+Runtime/code behavior was not audited or implemented by these documentation batches.

@@ -1,7 +1,7 @@
 # Documentation Workbench Full Picture
 
-Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable Planning Item method synchronized / implementation incomplete
-Doc version: v0.5.0-reusable-formation-synchronized
+Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable method and semantic registries synchronized / implementation incomplete
+Doc version: v0.6.0-semantic-registries
 Scope: application-level identity, workflow inventory, shared invariants and coordination for Documentation Workbench. Complete item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
@@ -70,6 +70,17 @@ Documentation Workbench
 | Provisional thematic slice | Chat, AI Responses And Work-State Trace | Not yet validated as an independent end-to-end Complete Picture |
 
 A Complete Picture must be followable from trigger to result without another peer supplying missing mandatory stages. An explicit handoff between independently traversable workflows is allowed.
+
+## 4A. Semantic Registry Route
+
+```text
+planning/direction-registry.md
+  → direction-registry.md
+  → use-case-registry.md
+  → selected complete workflow/model/item owner.
+```
+
+The registries provide semantic navigation and owner routes. They do not replace this Full Picture, workflow bodies, the item register or command permissions.
 
 ## 5. Documentation And Reference Object End-To-End Workflow
 
@@ -321,7 +332,6 @@ High-impact unresolved groups:
 - dependency-review severity/grouping and relation-view recursion/counts;
 - Chat/Action/RN/DAM end-to-end workflow boundary;
 - exact structured-response/source-anchor syntax;
-- Direction and Use-Case registries;
 - canonical item-formation command name;
 - application shell, storage and measured repository limits;
 - Prototype-Depth Scenario/Domain/Slice methodology.
@@ -336,8 +346,8 @@ No fallback in this Full Picture resolves these questions silently.
 3. Documentation/Reference Object end-to-end workflow.                  ✓
 4. Accepted recent-chat item reconciliation and 48 → 51 register.       ✓
 5. Planning Item/Full Picture end-to-end workflow.                       ✓
-6. Synchronize reusable formation/terminology/principles/templates.     ✓ this update
-7. Add Direction/Use-Case registries and project input conventions.
+6. Synchronize reusable formation/terminology/principles/templates.     ✓
+7. Add Direction/Use-Case registries and project input conventions.       ✓ this update
 8. Name and add the item-formation command.
 9. Add multi-surface helper projection.
 10. Run whole-repository consistency validation.

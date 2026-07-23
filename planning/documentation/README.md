@@ -1,7 +1,7 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v0.7.0-planning-item-formation-owner
+Doc version: v0.8.0-semantic-registry-owners
 Scope: reusable documentation architecture, solution/workflow planning, Planning Item formation, update workflows, command planning, field kits, examples, parallel-work staging, Tampermonkey projection and reusable helper/tool files copied into the OBS planning layer.
 
 ## 1. Purpose
@@ -31,7 +31,7 @@ planning/documentation/
 planning/planning-use-case-map.md
   → concrete project command routes and canonical English names;
 
-future semantic Direction/Use-Case registries
+semantic Direction/Use-Case registries
   → semantic work/use-case identities and owner routes;
 
 planning/areas/
@@ -58,6 +58,9 @@ documentation-update-plan-workflow.md
 documentation-responsibility-zone-review-workflow.md
 use-case-map-workflow.md
 USE-CASE-MAP-TEMPLATE.md
+direction-and-use-case-registry-workflow.md
+DIRECTION-REGISTRY-TEMPLATE.md
+USE-CASE-REGISTRY-TEMPLATE.md
 reviewable-agent-output-and-commands-workflow.md
 command-planning-workflow.md
 tampermonkey-command-projection-workflow.md
@@ -103,6 +106,8 @@ application-planning/terminology-and-planning-items.md
 application-planning/application-planning-principles.md
 application-planning/planning-item-formation-workflow.md
 application-planning/application-planning-drafting-workflow.md
+application-planning/direction-registry.md
+application-planning/use-case-registry.md
 
 application-planning/templates/
   CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
@@ -174,7 +179,7 @@ example-coverage-workflow.md when example fit matters
 tampermonkey-command-projection-workflow.md only when projection is in scope
 ```
 
-The root UCM is a command route map. It is not the future semantic Direction/Use-Case Registry.
+The root UCM is a command route map. It is not the semantic Direction/Use-Case Registry.
 
 ### Documentation Preflight / Broad Update
 
@@ -270,15 +275,18 @@ parallel-work/parallel-sync-workflow.md when sync candidates exist
 relevant templates
 ```
 
-## 6. Planned But Not Present In This Batch
+## 6. Semantic Registry Owners
 
 ```text
 direction-and-use-case-registry-workflow.md
 DIRECTION-REGISTRY-TEMPLATE.md
 USE-CASE-REGISTRY-TEMPLATE.md
+
+application-planning/direction-registry.md
+application-planning/use-case-registry.md
 ```
 
-These are Batch 4 owners. Do not pretend they already exist.
+Concrete root/local registries remain outside the reusable root as project-specific owners.
 
 ## 7. Do Not
 

@@ -1,7 +1,7 @@
 # Use-Case Map Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.3.0-command-route-map-boundary
+Doc version: v0.4.0-registry-owner-links
 Scope: creation and maintenance of concrete project route maps/UCMs for commands and user-visible actions, with explicit separation from semantic Direction and Use-Case Registries.
 
 ## 1. Naming Boundary
@@ -106,7 +106,7 @@ When long algorithmic instructions appear, link/create a workflow owner.
 
 When exact shape is needed, link a template.
 
-When semantic Direction/use-case identity is needed, use the registry workflow/templates after they exist.
+When semantic Direction/use-case identity is needed, use the active registry workflow/templates.
 
 ## 6. Command vs Use-Case Activation Semantics
 
@@ -146,7 +146,7 @@ The first action may belong to the user, AI or another tool.
 
 A use-case activation does not automatically execute the entire workflow.
 
-Exact semantic registry owners are created in a later batch.
+Semantic registry owners are `direction-and-use-case-registry-workflow.md`, `DIRECTION-REGISTRY-TEMPLATE.md` and `USE-CASE-REGISTRY-TEMPLATE.md`.
 
 ## 7. When To Create Or Update A UCM
 
@@ -194,7 +194,7 @@ application-planning/planning-item-formation-workflow.md
 application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
 ```
 
-The semantic capability may exist before a project command.
+The semantic capability and registry entry may exist before a project command.
 
 A later UCM row should also read project input conventions and project-local item owners.
 
@@ -276,7 +276,7 @@ When adding/changing a route or reusable route owner:
 - update responsibility map when a new owner exists;
 - consider example coverage;
 - consider Tampermonkey only when projection is separately in scope;
-- do not claim future registries exist before their batch;
+- synchronize related semantic registry references when they exist;
 - preserve project action-log requirements when an owner exists.
 
 ## 15. Checks

@@ -1,7 +1,7 @@
 # Planning Item And Full Picture End-To-End Workflow
 
 Status: active accepted project-local Complete Picture / item-backed / reusable-method synchronized
-Doc version: v0.2.0-reusable-formation-synchronized
+Doc version: v0.3.0-semantic-registries-and-input-conventions
 Scope: trigger-to-result product workflow for preserving source meaning, forming and reviewing Planning Items, maintaining an item-backed Full Picture, applying concerns proportionally, deepening justified work and handing accepted meaning to durable documentation.
 
 ## 1. Purpose
@@ -41,6 +41,14 @@ Reusable planning methodology remains under:
 
 ```text
 planning/documentation/application-planning/
+```
+
+Semantic registry/input owners:
+
+```text
+planning/documentation/application-planning/direction-registry.md
+planning/documentation/application-planning/use-case-registry.md
+planning/planning-input-conventions.md
 ```
 
 Reusable source-to-item behavior is synchronized through `planning/documentation/application-planning/planning-item-formation-workflow.md` and `templates/PLANNING-ITEM-REVIEW-TEMPLATE.md`. The broader reusable drafting workflow remains the owner for reconciliation, Full Picture work, concerns, branches, tests and evidence revision.
@@ -631,7 +639,7 @@ terminology/principles/drafting/responsibility/navigation/template updates
 
 Next work:
 
-1. add Direction and Use-Case registries plus project-readable input conventions;
+1. Direction and Use-Case registries plus project-readable input conventions; ✓
 2. select the exact item-formation command name and add its UCM route;
 3. project Orientation, Directions, Use Cases and Commands in Tampermonkey;
 4. run the whole-repository terminology/owner/link/projection audit;

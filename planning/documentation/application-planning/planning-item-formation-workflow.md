@@ -1,7 +1,7 @@
 # Planning Item Formation Workflow
 
 Status: active reusable workflow / project command route not yet named
-Doc version: v0.1.0-full-message-two-mode-formation
+Doc version: v0.2.0-input-conventions-linked
 Scope: reusable source-to-review process for forming, correcting and accepting semantically complete Planning Items from free-form or structured input without conflating formation with later repository reconciliation or documentation editing.
 
 ## 1. Purpose
@@ -50,7 +50,7 @@ Use project-readable input conventions when the project defines them, for exampl
 planning/planning-input-conventions.md
 ```
 
-That file is planned separately. A delimiter or marker may help select a semantic boundary; it does not create an accepted Planning Item or a separate Candidate entity.
+Projects that adopt the convention own it in `planning/planning-input-conventions.md`. A delimiter or marker may help select a semantic boundary; it does not create an accepted Planning Item or a separate Candidate entity.
 
 ## 3. Trigger And Inputs
 

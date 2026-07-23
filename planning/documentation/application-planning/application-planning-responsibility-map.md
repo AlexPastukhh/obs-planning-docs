@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Responsibility Map
 
 Status: active reusable responsibility map
-Doc version: v0.8.0-planning-item-formation-owners
+Doc version: v0.9.0-semantic-registry-owners
 Scope: ownership of files and subfolders inside `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -32,7 +32,7 @@ Family navigation:
 README.md
 ```
 
-This map does not own project command routing, semantic registry entries or concrete product state.
+This map routes reusable-family semantic registry entries but does not own project command routing or concrete product state.
 
 ## 2. Internal Owner Table
 
@@ -44,6 +44,8 @@ This map does not own project command routing, semantic registry entries or conc
 | Source-to-Planning-Item formation and acceptance | `planning-item-formation-workflow.md` | Full-message review, accumulating meanings, owner checks, transformations, portable/application-native delivery. |
 | Exact Planning Item review representation | `templates/PLANNING-ITEM-REVIEW-TEMPLATE.md` | Recommended full item/source/transformation review shape. |
 | Broader drafting, Full Picture work and item reconciliation | `application-planning-drafting-workflow.md` | Current Reality, Planning Drafts, Complete Pictures, reconciliation, concerns, branches, tests and evidence revision. |
+| Reusable planning Directions | `direction-registry.md` | Complete `Plan A Solution Or Workflow` and profile-limited detailed SDS Direction entries. |
+| Reusable planning Use Cases | `use-case-registry.md` | Complete semantic use-case entries and command relationships. |
 | Current Reality recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Legacy filename; active role is Current Reality Capture. |
 | Root/branch Planning Draft representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | Item-backed synthesis and candidate end-to-end plan. |
 | Functional Workflow Draft representation | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` | Independently useful/testable behavior line. |
@@ -79,7 +81,7 @@ project-local area
 project root UCM
   → concrete command names/routes/permissions;
 
-future semantic registries
+direction-registry.md / use-case-registry.md
   → Direction and Use-Case identities/routes.
 ```
 
@@ -235,6 +237,6 @@ Before adding information here, ask:
 - Do not treat templates as mandatory schemas.
 - Do not treat generated explanations as canonical automatically.
 - Do not finalize project-specific storage/wrapper architecture here.
-- Do not create Direction/Use-Case registry files in this batch.
+- Do not duplicate registry entries in README, workflows or the root UCM.
 - Do not route project commands here.
 ```

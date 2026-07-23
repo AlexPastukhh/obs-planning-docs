@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area
-Doc version: v0.5.0-reusable-formation-synchronized
+Doc version: v0.6.0-semantic-registries
 Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -23,6 +23,8 @@ Documentation Workbench planning area
 | File | Responsibility |
 |---|---|
 | [`README.md`](README.md) | Area entry, ownership map, read order and update discipline. |
+| [`direction-registry.md`](direction-registry.md) | Local product/planning Directions and root relationships. |
+| [`use-case-registry.md`](use-case-registry.md) | Accepted local workflow/capability entries and provisional candidates. |
 | [`full-picture.md`](full-picture.md) | Application Root Full Picture, accepted workflow inventory, shared invariants and provisional slices. |
 | [`documentation-and-reference-object-end-to-end-workflow.md`](documentation-and-reference-object-end-to-end-workflow.md) | Accepted trigger-to-result Documentation And Reference Object workflow. |
 | [`complete-pictures/planning-items-and-full-picture/full-picture.md`](complete-pictures/planning-items-and-full-picture/full-picture.md) | Accepted trigger-to-result Planning Item And Full Picture workflow. |
@@ -116,12 +118,13 @@ For Documentation Workbench planning:
 
 ```text
 1. README.md
-2. full-picture.md
-3. affected end-to-end workflow owner
-4. affected supporting model when model details are involved
-5. relevant items in planning-item-register.md
-6. relevant reusable application-planning owners
-7. source messages and old-item audit rows when reconciliation depends on them
+2. direction-registry.md and use-case-registry.md
+3. full-picture.md
+4. affected end-to-end workflow owner
+5. affected supporting model when model details are involved
+6. relevant items in planning-item-register.md
+7. relevant reusable application-planning owners
+8. source messages and old-item audit rows when reconciliation depends on them
 ```
 
 Targeted Documentation/Reference Object read order:
@@ -199,6 +202,7 @@ Do not create one file per item, capability, question or UI surface.
 - Managed application-native Planning Items are Reference Objects from creation.
 - Portable Markdown item review remains a supported fallback/interoperability mode.
 - Reusable Planning Item Formation workflow and exact review template are synchronized.
+- Local Direction and Use-Case Registries are active and linked from the root registry.
 - Chat/AI/Work-State remains a provisional thematic slice pending end-to-end review.
 - Prototype-Depth Scenario/Domain/Slice methodology is deferred to a separate task.
 - No runtime, application shell, storage architecture or exact Markdown marker syntax is selected.

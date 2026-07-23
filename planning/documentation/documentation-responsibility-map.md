@@ -1,7 +1,7 @@
 # Documentation Responsibility Map
 
 Status: active reusable documentation-layer responsibility map
-Doc version: v0.7.0-planning-item-formation-routing
+Doc version: v0.8.0-semantic-registry-routing
 Scope: routes reusable documentation-layer information and preflight processes to the correct immediate owner or responsibility zone inside `planning/documentation/`.
 
 ## 1. Purpose
@@ -31,7 +31,7 @@ Concrete project entry:
 planning/README.md
 ```
 
-Future semantic Direction/Use-Case registries are separate from the command UCM and will receive their own reusable workflow/templates.
+Semantic Direction/Use-Case registries are separate from the command UCM. Their reusable workflow/templates are active owners.
 
 ## 2. Owner Table
 
@@ -43,6 +43,9 @@ Future semantic Direction/Use-Case registries are separate from the command UCM 
 | Documentation update plan | `documentation-update-plan-workflow.md` | Plan-first broad updates. |
 | Responsibility-zone review | `documentation-responsibility-zone-review-workflow.md` | Classification of existing text/owners. |
 | Project route-map/UCM maintenance | `use-case-map-workflow.md` | Command/action routing, not semantic registry ownership. |
+| Direction/Use-Case registry methodology | `direction-and-use-case-registry-workflow.md` | Semantic hierarchy, topology, activation and owner routes. |
+| Direction Registry shape | `DIRECTION-REGISTRY-TEMPLATE.md` | Exact recommended registry representation. |
+| Use-Case Registry shape | `USE-CASE-REGISTRY-TEMPLATE.md` | Exact recommended registry representation. |
 | UCM template | `USE-CASE-MAP-TEMPLATE.md` | Exact route-map shape. |
 | Command planning | `command-planning-workflow.md` | Plan-only command names/routes/projection decisions. |
 | Reviewable outputs/packages | `reviewable-agent-output-and-commands-workflow.md` | Answer/package/source-selection boundaries. |
@@ -99,7 +102,7 @@ future Use-Case Registry
 
 Do not add semantic registry bodies to the UCM.
 
-Batch 4 will create the reusable registry workflow/templates and concrete registries.
+The reusable registry workflow/templates are active. Concrete project registries remain project-specific owners.
 
 ## 6. Placement Checks
 
@@ -126,7 +129,7 @@ Batch 4 will create the reusable registry workflow/templates and concrete regist
 - Workflow files win for repeated process.
 - Templates win for recommended shape only.
 - Project root UCM wins for commands/canonical English names.
-- Future semantic registries win for Direction/Use-Case entries.
+- Semantic registries win for Direction/Use-Case entries.
 - Project areas win for concrete state.
 - Examples/helper scripts do not override owners.
 ```
@@ -142,5 +145,5 @@ Batch 4 will create the reusable registry workflow/templates and concrete regist
 - Do not reference absent project-specific support files as if present.
 - Do not put app-specific storage/schema decisions in reusable principles.
 - Do not treat generated explanations as canonical automatically.
-- Do not create Direction/Use-Case registry files before their dedicated batch.
+- Do not copy complete local registry entries into root/reference owners.
 ```
