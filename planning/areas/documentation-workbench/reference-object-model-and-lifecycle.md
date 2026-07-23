@@ -1,7 +1,7 @@
 # Reference Object Model And Lifecycle
 
-Status: active supporting Reference Object model / managed Planning Item boundary synchronized
-Doc version: v0.3.0-managed-planning-item-boundary
+Status: active supporting Reference Object model / managed Planning Item and first-class Note boundaries synchronized
+Doc version: v0.4.0-first-class-notes
 Scope: supporting model for Reference Object identity, creation, canonical state, optional home, durability, flexible fields and accepted transformation history. Trigger-to-result behavior belongs to the accepted end-to-end workflow owners.
 
 ## 1. Responsibility
@@ -37,14 +37,16 @@ The former `CP-2` label is historical structure only. This model is not a peer e
 | Temporary App-Only Object | `ITEM-108 / TEMP-APP-ONLY-OBJECT` | Independent temporary durability/recovery/migration debt. |
 | Optional Reference Object Home | `ITEM-91 / IN-FILE-HOME-OBJECT` | Optional semantic home, in-file home and home-less objects, separate from state ownership. |
 | Flexible Object Shape | `ITEM-103 / FLEXIBLE-OBJECT-SHAPE` | Text-first unrestricted body and arbitrary correctly represented fields. |
-| Object Category Field Contracts | `ITEM-106 / OPTIONAL-FIELD-CONTRACT` | Category-specific expected fields, presets and applicability conditions. |
+| Object Category Field Contracts | `ITEM-106 / OPTIONAL-FIELD-CONTRACT` | Category-specific expected fields, presets, applicability conditions and explicit typed-member restrictions. |
+| First-Class Named Notes | `ITEM-124 / FIRST-CLASS-NAMED-NOTES` | Named or untitled standalone/object-linked Note Reference Objects and note-specific views. |
 
 ```text
 former active model set: 10
-accepted active model set: 8
+accepted active model set: 9
 whole register:
   50 → 48 through earlier model/workflow reconciliation
   48 → 51 through accepted recent-chat additions
+  51 → 53 through named Notes and linked implementation-idea additions
 
 absorbed historical identities:
   ITEM-25B → ITEM-23B
@@ -208,6 +210,42 @@ Conservative current rule:
 - hard restriction requires an explicit contract rule;
 - contract composition, precedence, conflict handling and inheritance remain open.
 
+## 10A. First-Class Named Notes
+
+```text
+Note
+  = a Reference Object whose categories include `Note`;
+  → may have an optional user-visible title;
+  → may exist without a semantic home or target;
+  → may have an explicit `note for` relation to a selected Reference Object;
+  → remains an independently editable object, not a field of the target.
+```
+
+First-class actions:
+
+```text
+Create Standalone Note;
+Add Note To Object;
+Give/Rename Note Title;
+Open Note;
+View All Notes;
+View Notes For Selected Object.
+```
+
+The initial guaranteed target cardinality is zero for a standalone Note and one initial target for `Add Note To Object`. Multi-target Note behavior remains open.
+
+The `note for` relation is association/navigation by default and does not create dependency invalidation unless separately accepted.
+
+`Notes` may be implemented as a category-backed projection over Reference Objects. That is recorded as `ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION`, a Working / Needs Prototype Implementation Idea rather than accepted storage architecture.
+
+Conservative projection behavior:
+
+```text
+object appears in Notes only while categories contains Note;
+removing the category removes it from the projection;
+the Reference Object itself is not deleted.
+```
+
 ## 11. Cross-Workflow Interfaces
 
 | Interface | Model output |
@@ -218,7 +256,7 @@ Conservative current rule:
 | Authoring | canonical edit owner, flexible body and fields |
 | References | stable target identity and occurrence role |
 | Dependency review | typed source/target relation and changed canonical state |
-| Navigation | object, item, canonical state, definition location, optional home and occurrences |
+| Navigation | object, item, Note views, canonical state, definition location, optional home and occurrences |
 | Full Picture synthesis | linked managed Planning Items/child pictures without duplicate canonical bodies |
 
 ## 12. Accepted Transformation History
@@ -327,7 +365,8 @@ The accepted transitions preserve:
 - unrestricted text-first bodies;
 - arbitrary fields and multiple categories;
 - category-specific field expectations;
-- no mandatory generic planning provenance fields.
+- no mandatory generic planning provenance fields;
+- Note is a category-backed Reference Object capability, not a separate incompatible storage entity.
 
 ## 15. Open Questions
 
@@ -337,7 +376,10 @@ The accepted transitions preserve:
 - app-only persistence, backup, recovery and migration;
 - category-contract composition, precedence, validation severity and inheritance;
 - minimal required identity/parser mechanics;
-- exact Markdown syntax.
+- exact Markdown syntax;
+- whether a later Note category contract should make titles mandatory;
+- multi-target Note behavior;
+- category-removal enforcement beyond projection disappearance.
 
 ## 16. Next Gate
 

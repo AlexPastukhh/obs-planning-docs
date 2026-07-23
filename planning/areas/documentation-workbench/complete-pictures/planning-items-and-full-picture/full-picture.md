@@ -1,7 +1,7 @@
 # Planning Item And Full Picture End-To-End Workflow
 
 Status: active accepted project-local Complete Picture / item-backed / reusable-method, semantic-registry and helper-projection synchronization audited
-Doc version: v0.4.0-whole-repository-audit
+Doc version: v0.5.0-implementation-ideas-and-form-items
 Scope: trigger-to-result product workflow for preserving source meaning, forming and reviewing Planning Items, maintaining an item-backed Full Picture, applying concerns proportionally, deepening justified work and handing accepted meaning to durable documentation.
 
 ## 1. Purpose
@@ -15,7 +15,7 @@ free-form or structured user input
   → review new/update/merge/split/reject effects
   → explicit user acceptance
   → portable or application-native delivery mode
-  → maintain item identity, role, relations and work state
+  → maintain item identity, role, relations, Implementation Ideas and work state
   → assemble/update an item-backed Full Picture
   → suggest and review concerns proportionally
   → create separate deep work only when justified
@@ -175,7 +175,10 @@ ITEM-23B / ITEM-108 / ITEM-91:
   canonical state, app-only durability and optional home;
 
 ITEM-123:
-  configurable application settings and project-readable conventions.
+  configurable application settings and project-readable conventions;
+
+ITEM-125:
+  Working / Needs Prototype implementation idea linked to Note capability; not a direct mandatory workflow stage.
 ```
 
 ## 8. Phase Map
@@ -257,6 +260,8 @@ During formation or update:
 This targeted check does not create a separate persisted candidate entity.
 
 Items: `ITEM-98`, `ITEM-112`.
+
+Implementation Ideas are preserved as references to separate Planning Items whose kind is `Implementation Idea`. Linking does not accept architecture or implementation. A linked idea may retain `Working`, `Needs Prototype`, accepted or rejected status independently of its target.
 
 ## 12. Step 4 — Review Item Transformations
 
@@ -614,7 +619,6 @@ This workflow does not own:
 
 ## 28. Open Questions
 
-- exact canonical item-formation command name;
 - exact structured-response and source-anchor representation;
 - persistence/recovery of temporary app-only Planning Items;
 - final common Planning Item and concern statuses;
@@ -640,8 +644,8 @@ terminology/principles/drafting/responsibility/navigation/template updates
 Next work:
 
 1. Direction and Use-Case registries plus project-readable input conventions; ✓
-2. select the exact item-formation command name and add its UCM route;
-3. project Orientation, Directions, Use Cases and Commands in Tampermonkey;
-4. run the whole-repository terminology/owner/link/projection audit;
+2. project the accepted `сформируй айтемы / form items` UCM route; ✓
+3. project Orientation, Directions, Use Cases and Commands in Tampermonkey; ✓
+4. run the whole-repository terminology/owner/link/projection audit; ✓
 5. plan Prototype-Depth Scenario/Domain/Slice methodology separately;
 6. plan runtime architecture only after explicit review.

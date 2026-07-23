@@ -1,7 +1,7 @@
 # OBS Root Direction Registry
 
 Status: active project-specific root semantic Direction Registry
-Doc version: v0.2.0-helper-projected
+Doc version: v0.3.0-form-items-command
 Scope: OBS root orientation across broad semantic work Directions and references to complete reusable-family/project-local registries.
 
 ## 1. Authority
@@ -134,20 +134,17 @@ Related command router:
 planning/planning-use-case-map.md
 ```
 
-Existing command-related semantic Use Case:
+Accepted command-related semantic Use Cases:
 
 ```text
 Reconcile Planning Items
-  ↔ `сверь айтемы`
-```
+  ↔ `сверь айтемы`;
 
-Accepted semantic capability without a command route yet:
-
-```text
 Form Planning Items From Discussion
+  ↔ `сформируй айтемы` / `form items`.
 ```
 
-The item-formation command is not added until its canonical Russian command, canonical English name and aliases are explicitly selected.
+Both commands remain bounded by their root UCM permissions.
 
 ## 7A. Helper Projection
 
@@ -176,7 +173,7 @@ do not expand into unrelated Direction families.
 
 Direction activation establishes context only. It does not execute commands or grant repository permissions.
 
-The helper projects `Form Planning Items From Discussion` under Use Cases only and redirects `Reconcile Planning Items` to the existing command route.
+The helper redirects both `Form Planning Items From Discussion` and `Reconcile Planning Items` from Use Cases to their accepted command routes.
 
 ## 8. Orientation Read Order
 
@@ -194,7 +191,6 @@ The helper projects `Form Planning Items From Discussion` under Use Cases only a
 
 | Decision | Status | Conservative fallback |
 |---|---|---|
-| Item-formation command names | unresolved | Keep semantic use case active; do not add UCM/helper profile. |
 | Coordinate Parallel Work as a root Direction | not accepted | Keep parallel-work workflow discoverable without root promotion. |
 | Chat/AI/Work-State as an accepted local Use Case | provisional | Keep as candidate until trigger-to-result review. |
 | Prototype-depth SDS method | deferred | Keep profile-limited entries and avoid invented methodology. |

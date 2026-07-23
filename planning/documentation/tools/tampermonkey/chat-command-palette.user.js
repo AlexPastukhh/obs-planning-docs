@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.16.1-semantic-planning-surfaces-preserved
+// @version      0.17.1-form-items-responsive-insertion
 // @description  Projection-only Orientation, Directions, Use Cases and Commands helper with Adaptive/Full owner reading.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -115,15 +115,8 @@
   {
     "id": "UC-AP-FORM-ITEMS",
     "label": "Form Planning Items From Discussion",
-    "description": "full-message item formation",
-    "sources": [
-      "planning/documentation/application-planning/use-case-registry.md",
-      "planning/documentation/application-planning/planning-item-formation-workflow.md",
-      "planning/documentation/application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md",
-      "planning/planning-input-conventions.md"
-    ],
-    "instruction": "Establish Planning Item formation context. Preserve complete source messages, accumulating meaning, typed contributions and portable/application-native boundaries. This is not a command and grants no repository permission.",
-    "target": "<source/discussion to form items from>"
+    "description": "open accepted form-items command",
+    "commandId": "planning_items.form"
   },
   {
     "id": "UC-AP-FULL-PICTURE",
@@ -308,6 +301,23 @@
         'Do not edit files, update item registers, create an archive, commit or push.'
       ],
       target: '<which items or item source should be reconciled>'
+    },
+    {
+      id: 'planning_items.form',
+      group: 'Commands',
+      label: 'сформируй айтемы',
+      description: 'full-message Planning Item formation',
+      englishName: 'form items',
+      family: '`сформируй айтемы` / `form items`',
+      reminders: [
+        'Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.',
+        'Preserve complete source messages, accumulating item meanings and typed Source Contributions.',
+        'Perform a proportional current-owner check and show Current, Incoming and Resulting meanings for non-trivial transformations.',
+        'Preserve optional relation-backed Implementation Ideas as separate Planning Items rather than copied text.',
+        'Explicit review remains required.',
+        'Do not edit repository files, create an archive, commit or push.'
+      ],
+      target: '<source/discussion to form items from>'
     },
     {
       id: 'file_update.plan',
@@ -605,6 +615,7 @@
   let lastToggleToken = document.documentElement.dataset.obsPlanningCommandsToggle || '';
   let statusTimer = null;
   let focusCommandId = null;
+  let insertionInProgress = false;
 
   root.innerHTML = `
     <style>
@@ -642,6 +653,7 @@
         background: #17243a; color: #f8fafc; cursor: pointer;
       }
       button:hover, button:focus-visible { background: #243750; outline: none; }
+      button:disabled { opacity: .55; cursor: wait; }
       .close { width: 30px; height: 30px; }
       .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 7px; border-bottom: 1px solid rgba(148,163,184,.16); }
       .tab { padding: 7px 4px; font-size: 11px; }
@@ -759,14 +771,14 @@
         actions.append(open);
       } else {
         main.title = 'Insert Adaptive body';
-        main.addEventListener('click', () => insertAndReport(entry.adaptiveBody, `Inserted: ${entry.label} · Adaptive`));
+        main.addEventListener('click', () => insertAndReport(entry.adaptiveBody, `Inserted: ${entry.label} · Adaptive`, entry.id));
 
         const full = document.createElement('button');
         full.type = 'button';
         full.className = 'full';
         full.textContent = 'Full';
         full.title = 'Insert Full body';
-        full.addEventListener('click', () => insertAndReport(entry.fullBody, `Inserted: ${entry.label} · Full`));
+        full.addEventListener('click', () => insertAndReport(entry.fullBody, `Inserted: ${entry.label} · Full`, entry.id));
         actions.append(full);
 
         if (activeSurface === SURFACES.COMMANDS) {
@@ -776,7 +788,7 @@
             button.className = 'refinement';
             button.textContent = refinement.label;
             button.title = refinement.description;
-            button.addEventListener('click', () => insertAndReport(refinement.body, `Inserted refinement: ${entry.label} · ${refinement.label}`));
+            button.addEventListener('click', () => insertAndReport(refinement.body, `Inserted refinement: ${entry.label} · ${refinement.label}`, `${entry.id}:${refinement.id}`));
             actions.append(button);
           }
         }
@@ -803,35 +815,75 @@
     });
   }
 
-  function insertAndReport(text, success) {
-    showStatus(insertIntoComposer(text) ? success : 'Composer was not found. Click the ChatGPT input and try again.');
+  function nextAnimationFrame() {
+    return new Promise((resolve) => window.requestAnimationFrame(() => resolve()));
+  }
+
+  function setInsertionBusy(busy) {
+    insertionInProgress = busy;
+    root.querySelectorAll('.insert, .full, .refinement, .open-command').forEach((button) => {
+      button.disabled = busy;
+    });
+  }
+
+  async function insertAndReport(text, success, commandId = null) {
+    if (insertionInProgress) {
+      showStatus('Insertion is already in progress.');
+      return;
+    }
+
+    setInsertionBusy(true);
+    try {
+      await nextAnimationFrame();
+      const result = insertIntoComposer(text, commandId);
+      if (result.ok) {
+        showStatus(success);
+        return;
+      }
+
+      const copied = await copyText(text);
+      showStatus(copied
+        ? `Direct insertion failed (${result.reason}). Copied to clipboard — paste manually.`
+        : `Direct insertion failed (${result.reason}) and clipboard copy also failed.`);
+    } finally {
+      setInsertionBusy(false);
+    }
+  }
+
+  function isVisibleComposer(element) {
+    if (!element) return false;
+    return element.getClientRects().length > 0 && !element.hasAttribute('disabled');
   }
 
   function findComposer() {
-    const selectors = [
+    const exactSelectors = [
       '#prompt-textarea[contenteditable="true"]',
       '[data-testid="composer-textarea"][contenteditable="true"]',
-      'textarea[data-testid="composer-textarea"]',
+      'textarea[data-testid="composer-textarea"]'
+    ];
+
+    for (const selector of exactSelectors) {
+      const element = document.querySelector(selector);
+      if (isVisibleComposer(element)) return { element, selector, fallback: false };
+    }
+
+    const fallbackSelectors = [
       'textarea[placeholder]',
       '[contenteditable="true"][role="textbox"]'
     ];
-    const candidates = [];
-    for (const selector of selectors) {
-      document.querySelectorAll(selector).forEach((element) => {
-        if (candidates.includes(element)) return;
-        const rect = element.getBoundingClientRect();
-        const style = window.getComputedStyle(element);
-        if (rect.width <= 0 || rect.height <= 0 || style.display === 'none' || style.visibility === 'hidden') return;
-        candidates.push(element);
-      });
+
+    for (const selector of fallbackSelectors) {
+      for (const element of document.querySelectorAll(selector)) {
+        if (isVisibleComposer(element)) return { element, selector, fallback: true };
+      }
     }
-    candidates.sort((a, b) => b.getBoundingClientRect().bottom - a.getBoundingClientRect().bottom);
-    return candidates[0] || null;
+
+    return { element: null, selector: null, fallback: true };
   }
 
   function getComposerText(element) {
     if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) return element.value || '';
-    return element.innerText || element.textContent || '';
+    return element.textContent || '';
   }
 
   function moveCaretToEnd(element) {
@@ -844,40 +896,93 @@
     selection.addRange(range);
   }
 
-  function dispatchInputEvents(element, data) {
+  function dispatchInputEvent(element, data) {
     try {
       element.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true, inputType: 'insertText', data }));
     } catch (error) {
       element.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
     }
-    element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
 
-  function insertIntoComposer(text) {
-    const composer = findComposer();
-    if (!composer) return false;
-    composer.focus();
-    const current = getComposerText(composer);
-    const hasText = current.trim().length > 0;
-    const addition = hasText ? `\n\n${text}` : text;
+  function insertIntoComposer(text, commandId = null) {
+    const startedAt = performance.now();
+    const found = findComposer();
+    const foundAt = performance.now();
+    const composer = found.element;
 
-    if (composer instanceof HTMLTextAreaElement || composer instanceof HTMLInputElement) {
-      const next = hasText ? `${current}\n\n${text}` : text;
-      const proto = composer instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
-      const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set;
-      if (setter) setter.call(composer, next); else composer.value = next;
-      dispatchInputEvents(composer, addition);
-      return true;
+    if (!composer) {
+      console.debug('[OBS Planning Helper insertion]', {
+        commandId,
+        ok: false,
+        reason: 'composer-not-found',
+        findMs: Number((foundAt - startedAt).toFixed(2)),
+        bodyLength: text.length
+      });
+      return { ok: false, reason: 'composer-not-found' };
     }
 
-    moveCaretToEnd(composer);
-    let inserted = false;
-    try { inserted = document.execCommand('insertText', false, addition); } catch (error) { inserted = false; }
-    if (!inserted) {
-      composer.textContent = hasText ? `${current}\n\n${text}` : text;
-      dispatchInputEvents(composer, addition);
+    try {
+      composer.focus();
+      const current = getComposerText(composer);
+      const readAt = performance.now();
+      const hasText = current.trim().length > 0;
+      const addition = hasText ? `\n\n${text}` : text;
+
+      if (composer instanceof HTMLTextAreaElement || composer instanceof HTMLInputElement) {
+        const next = hasText ? `${current}\n\n${text}` : text;
+        const proto = composer instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+        const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set;
+        if (setter) setter.call(composer, next); else composer.value = next;
+        dispatchInputEvent(composer, addition);
+      } else {
+        moveCaretToEnd(composer);
+        let inserted = false;
+        try { inserted = document.execCommand('insertText', false, addition); } catch (error) { inserted = false; }
+        if (!inserted) {
+          const rejectedAt = performance.now();
+          console.debug('[OBS Planning Helper insertion]', {
+            commandId,
+            ok: false,
+            reason: 'contenteditable-insert-rejected',
+            selector: found.selector,
+            fallbackSelector: found.fallback,
+            draftLength: current.length,
+            bodyLength: text.length,
+            findMs: Number((foundAt - startedAt).toFixed(2)),
+            readMs: Number((readAt - foundAt).toFixed(2)),
+            insertMs: Number((rejectedAt - readAt).toFixed(2)),
+            totalMs: Number((rejectedAt - startedAt).toFixed(2))
+          });
+          return { ok: false, reason: 'contenteditable-insert-rejected' };
+        }
+      }
+
+      const finishedAt = performance.now();
+      console.debug('[OBS Planning Helper insertion]', {
+        commandId,
+        ok: true,
+        selector: found.selector,
+        fallbackSelector: found.fallback,
+        draftLength: current.length,
+        bodyLength: text.length,
+        findMs: Number((foundAt - startedAt).toFixed(2)),
+        readMs: Number((readAt - foundAt).toFixed(2)),
+        insertMs: Number((finishedAt - readAt).toFixed(2)),
+        totalMs: Number((finishedAt - startedAt).toFixed(2))
+      });
+      return { ok: true };
+    } catch (error) {
+      const failedAt = performance.now();
+      console.debug('[OBS Planning Helper insertion]', {
+        commandId,
+        ok: false,
+        reason: error instanceof Error ? error.message : String(error),
+        selector: found.selector,
+        bodyLength: text.length,
+        totalMs: Number((failedAt - startedAt).toFixed(2))
+      });
+      return { ok: false, reason: 'composer-mutation-failed' };
     }
-    return true;
   }
 
   async function copyText(text) {

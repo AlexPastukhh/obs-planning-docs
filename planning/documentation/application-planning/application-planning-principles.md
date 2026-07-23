@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Principles
 
 Status: provisional reusable principles
-Doc version: v0.11.0-semantic-registries-linked
+Doc version: v0.12.0-implementation-idea-links
 Scope: stable guidance for source-linked Planning Items, end-to-end Complete Pictures, supporting artifacts, Planning Drafts, concern review, alternatives, tests and evidence-driven revision before optional detailed implementation planning.
 
 ## 1. Purpose
@@ -509,6 +509,8 @@ rejected direction.
 ```
 
 Technical plausibility alone does not make an architecture decision.
+
+When an implementation thought is independently reusable or reviewable, represent it as a separate Planning Item of kind `Implementation Idea` and link it through the target item’s optional `Implementation Ideas` projection. The link preserves visibility; it does not accept the idea.
 
 ## 25. Tests And Prototypes
 

@@ -1,7 +1,7 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.9.0-orientation-direction-use-case-command-surfaces
+Doc version: v1.0.0-form-items-and-nonblocking-insertion
 Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries, command routes and owner-read refinements into the Tampermonkey/ChatGPT planning helper UI.
 
 ## 1. Core Rule
@@ -353,6 +353,9 @@ Current application:
 Reconcile Planning Items
   → Open Commands / `сверь айтемы`;
 
+Form Planning Items From Discussion
+  → Open Commands / `сформируй айтемы`;
+
 Planning Item And Full Picture End-To-End Workflow
   → remains a broader Use Case;
   → `сверь айтемы` covers only reconciliation.
@@ -360,9 +363,14 @@ Planning Item And Full Picture End-To-End Workflow
 
 ## 9E. Item-Formation Boundary
 
-`Form Planning Items From Discussion` is projected under Use Cases only.
+`Form Planning Items From Discussion` is linked to the accepted root UCM command:
 
-Do not add a Commands entry until the root UCM contains an explicitly accepted canonical Russian command, canonical English name and aliases.
+```text
+сформируй айтемы
+English name: form items
+```
+
+The Use Cases surface uses **Open Commands** rather than inserting a duplicate execution-like prompt.
 
 ## 9F. Initial Semantic Inventory
 
@@ -379,7 +387,7 @@ Use Cases:
 
 ```text
 UC-AP-REALITY
-UC-AP-FORM-ITEMS
+UC-AP-FORM-ITEMS → Commands redirect
 UC-AP-FULL-PICTURE
 UC-AP-RECONCILE → Commands redirect
 UC-AP-RESEARCH
@@ -419,6 +427,39 @@ command refinement:
 ```
 
 Preserve the draggable panel, `Alt+F2`, Dashboard toggle/launcher coordination, composer insertion, clipboard fallback and single-instance behavior.
+
+## 9H. Non-Reentrant Composer Insertion
+
+A command click must remain responsive and produce at most one insertion.
+
+Normal path:
+
+```text
+exact ChatGPT composer selector
+  → one animation-frame yield
+  → one direct insertion attempt
+  → success status;
+```
+
+Fallback path:
+
+```text
+exact selector unavailable or insertion fails
+  → copy the command body once
+  → report manual-paste fallback
+  → do not retry composer mutation in a loop.
+```
+
+Required invariants:
+
+- exact selectors are tried before broad compatibility selectors;
+- broad fallback does not sort candidates through repeated layout reads;
+- `textContent` or native input value is preferred over `innerText` for reading current draft state;
+- one shared busy lock disables insertion controls during mutation;
+- rapid double clicks cannot duplicate the body;
+- timing diagnostics record command ID, selector path, draft/body length and find/read/insert durations in the console;
+- diagnostics remain local and perform no external network call;
+- a static fix is not considered live resolution until browser testing confirms the reported freeze is gone.
 
 ## 10. Placement
 

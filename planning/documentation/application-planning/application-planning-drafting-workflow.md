@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: active reusable workflow / Planning Item formation delegated
-Doc version: v0.13.0-formation-owner-sync
+Doc version: v0.14.0-implementation-idea-preservation
 Scope: repeated user + AI process for Current Reality Capture, item-backed Planning Drafts and Full Pictures, Complete Picture integrity, Planning Item reconciliation, concerns, branches, details, prototypes and evidence-driven revision.
 
 Stable invariants:
@@ -43,7 +43,7 @@ It also owns the reusable read-only Planning Item reconciliation algorithm.
 
 It does not own:
 
-- the exact item-formation command name;
+- concrete project command names, aliases and permission routing;
 - exact source-to-item review shape;
 - project-local item storage;
 - semantic Direction/Use-Case registries;
@@ -154,7 +154,7 @@ The drafting workflow receives:
 
 - accepted or clearly proposed complete item meanings;
 - source/provenance relations;
-- item roles and relations;
+- item roles and relations, including optional relation-backed Implementation Ideas;
 - transformation history;
 - unresolved choices;
 - portable/application-native delivery state.
@@ -348,6 +348,22 @@ New Meaning.
 ```
 
 Relation and action are separate.
+
+
+Implementation Ideas are also relation-backed:
+
+```text
+Target item field/projection
+  → references only Planning Items of kind Implementation Idea;
+
+idea relation
+  → implements / proposes implementation for the target;
+
+linking
+  ≠ accepting architecture or implementation.
+```
+
+Preserve the idea’s own status and complete body through update, merge, split, re-home and Full Picture handoff.
 
 ### 8.6 Canonical Item-Set Transition
 

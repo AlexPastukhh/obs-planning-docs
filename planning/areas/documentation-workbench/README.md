@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area
-Doc version: v0.8.0-whole-repository-audit
+Doc version: v0.9.0-notes-and-implementation-ideas
 Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -214,12 +214,14 @@ The helper is projection only. It does not become a local owner and no tracked p
 ## 8. Current State
 
 ```text
-- The active register contains 51 items.
+- The active register contains 53 items.
 - ITEM-25B is absorbed into ITEM-23B; ITEM-102 is absorbed into ITEM-91; both remain traceable.
 - Documentation And Reference Object End-To-End Workflow is accepted.
 - Planning Item And Full Picture End-To-End Workflow is accepted.
 - Reference Object Model And Lifecycle is an active supporting model, not a parallel workflow.
 - Managed application-native Planning Items are Reference Objects from creation.
+- First-Class Named Notes are Reference Objects of category `Note`, may be standalone or linked to a selected object, and have dedicated views.
+- Planning Items may expose relation-backed `Implementation Ideas` that reference separate implementation-idea items.
 - Portable Markdown item review remains a supported fallback/interoperability mode.
 - Reusable Planning Item Formation workflow and exact review template are synchronized.
 - Local Direction and Use-Case Registries are active and linked from the root registry.

@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.16.0-semantic-planning-surfaces
+Doc version: v0.17.1-form-items-and-responsive-insertion
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable Orientation/Direction/Use-Case/Command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -374,7 +374,7 @@ Projected Use Cases:
 
 ```text
 Understand Current Workflow And Reality
-Form Planning Items From Discussion
+Form Planning Items From Discussion → Commands
 Build Or Review An Item-Backed Full Picture
 Reconcile Planning Items → Commands
 Research Existing Solutions And Alternative Workflows
@@ -387,9 +387,42 @@ Planning Item And Full Picture End-To-End Workflow
 Structured User Message Composer
 ```
 
-`Form Planning Items From Discussion` is context-only until an exact UCM command is accepted.
+`Form Planning Items From Discussion` opens the accepted `сформируй айтемы / form items` command.
 
 Chat/AI/Work-State remains provisional and is not projected as accepted.
+
+## 9B. Responsive Command Insertion And Diagnostics
+
+The helper uses:
+
+```text
+exact composer lookup first;
+one in-progress insertion lock;
+one animation-frame yield before mutation;
+local timing diagnostics;
+clipboard fallback instead of mutation retries.
+```
+
+Browser verification matrix:
+
+```text
+short chat + empty draft;
+long chat + empty draft;
+short chat + large draft;
+long chat + large draft;
+Adaptive and Full commands;
+rapid double click;
+navigation between chats before insertion.
+```
+
+Acceptance:
+
+- one click inserts at most one body;
+- opening Commands never mutates the composer;
+- normal exact-selector path performs no global candidate sort;
+- failure copies once and reports the fallback;
+- console timing identifies the selector and expensive phase;
+- no external network or repository-write behavior is introduced.
 
 ## 10. Command Palette adaptation rule
 
@@ -427,7 +460,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
 - Do not treat the Planning Helper as Orientation, Direction, Use-Case or command authority.
 - Do not let Direction/Use-Case activation execute commands or grant permissions.
-- Do not add an item-formation command before its UCM route exists.
+- Project the item-formation command only from its accepted UCM route and exact English name.
 - Do not add project-only command semantics without a UCM route.
 - Do not let the Planning Item reconciliation projection reduce review to isolated item rows, preserve a thematic peer-CP split when one mandatory workflow crosses it, label supporting models/views as Complete Pictures without independent lifecycle, assume one incoming item equals one result, hide Current/Incoming/Resulting meanings or lose relevant validation signals, or edit item registers or repository files.
 - Do not duplicate archive command-format rules inside the helper refinement body.

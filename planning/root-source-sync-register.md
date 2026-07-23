@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v0.9.0-whole-repository-planning-owner-audit
+Doc version: v1.0.0-form-items-notes-helper-insertion
 Scope: register root planning files, reusable owners and local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -48,7 +48,7 @@ Scope: register root planning files, reusable owners and local area ownership fo
 | `planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md` | Accepted Documentation/Reference Object workflow. |
 | `planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md` | Accepted Planning Item/Full Picture workflow. |
 | `planning/areas/documentation-workbench/reference-object-model-and-lifecycle.md` | Supporting model. |
-| `planning/areas/documentation-workbench/planning-item-register.md` | Complete source-linked register; 51 active items. |
+| `planning/areas/documentation-workbench/planning-item-register.md` | Complete source-linked register; 53 active items. |
 
 ## 5. Current Structural State
 
@@ -58,7 +58,7 @@ reusable planning registries → application-planning/direction-registry.md + us
 Documentation Workbench registries → direction-registry.md + use-case-registry.md;
 accepted local Complete Pictures → Documentation/Reference + Planning Item/Full Picture;
 supporting model → Reference Object Model And Lifecycle;
-canonical register → 51 active Planning Items.
+canonical register → 53 active Planning Items.
 ```
 
 ## 6. Accepted Item Mappings
@@ -70,11 +70,14 @@ ITEM-102 → ITEM-91
 active register:
   50 → 48 through Documentation/Reference reconciliation
   48 → 51 through accepted recent-chat reconciliation
+  51 → 53 through First-Class Named Notes and Category-Backed Notes Projection
 
 new active identities:
   ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER
   ITEM-122 / TYPED-SOURCE-CONTRIBUTIONS
   ITEM-123 / CONFIGURABLE-APPLICATION-SETTINGS
+  ITEM-124 / FIRST-CLASS-NAMED-NOTES
+  ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION
 ```
 
 `ITEM-22B / ITEM-TO-OBJECT` remains the stable Planning Item/managed Reference Object boundary identity.
@@ -103,7 +106,7 @@ Boundaries:
 - the helper does not own semantic entries, commands or permissions;
 - Adaptive and Full share one definition;
 - command-related Use Cases do not duplicate command execution;
-- no item-formation command exists before exact UCM naming;
+- item-formation command is projected only from the accepted root UCM route;
 - Chat/AI/Work-State remains provisional;
 - the helper performs no repository write, Git or external network behavior.
 
@@ -158,10 +161,33 @@ Tampermonkey:
 
 Corrections were limited to stale Batch 4/5/6 transition/status statements. No semantic identities, item counts, command routes or runtime architecture were changed.
 
+## 6C. Accepted Form Items, Notes And Helper-Insertion Update
+
+```text
+root UCM:
+  сформируй айтемы / form items added;
+
+Planning Items:
+  51 → 53;
+  ITEM-124 / FIRST-CLASS-NAMED-NOTES;
+  ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION;
+  ITEM-99 / ITEM-106 / ITEM-112 updated;
+
+Documentation/Reference workflow:
+  direct active set 30 → 31 through ITEM-124;
+
+Tampermonkey:
+  projected UCM command count 11 → 12;
+  Form Planning Items redirects to Commands;
+  command insertion gains exact-first lookup, one-click locking,
+  timing diagnostics and clipboard fallback.
+```
+
+`ITEM-125` remains a Working / Needs Prototype implementation idea. This update does not accept storage architecture, multi-target Note behavior or dependency semantics for Note relations.
+
 ## 7. Remaining Work
 
 ```text
-- exact item-formation command names and UCM route;
 - Chat/AI/Work-State trigger-to-result review;
 - Prototype-Depth Scenario/Domain/Slice methodology;
 - runtime/storage/parser/Markdown-reference architecture.

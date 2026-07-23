@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.7.0-semantic-helper-projection
+Doc version: v0.8.0-form-items-notes
 Scope: OBS repository planning entry point, semantic Direction orientation, concrete command routing, task activation and source/owner pointers built on the reusable documentation layer.
 
 ## 1. Purpose
@@ -118,7 +118,7 @@ Local semantic registries:
   use-case-registry.md
 
 Canonical register:
-  51 active Planning Items.
+  53 active Planning Items.
 ```
 
 Chat/AI/Work-State remains provisional.
@@ -131,7 +131,14 @@ Reusable owner: `planning/documentation/application-planning/planning-item-forma
 
 Input conventions: `planning/planning-input-conventions.md`.
 
-There is no root UCM command yet because the canonical Russian command, English name and aliases are unresolved.
+Active root UCM command:
+
+```text
+сформируй айтемы
+English name: form items
+```
+
+The command forms complete reviewable Planning Items and remains read-only toward repository files.
 
 ## 7. Tampermonkey Planning Helper
 
@@ -157,4 +164,4 @@ The helper performs composer insertion/copy only. It does not write repository f
 
 `Reconcile Planning Items` redirects to the existing `сверь айтемы` command instead of creating a duplicate execution action.
 
-`Form Planning Items From Discussion` is projected under Use Cases only. No command profile exists until its canonical Russian command, canonical English name and aliases are explicitly accepted.
+`Form Planning Items From Discussion` redirects to the accepted `сформируй айтемы / form items` command profile.

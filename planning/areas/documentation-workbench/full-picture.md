@@ -1,7 +1,7 @@
 # Documentation Workbench Full Picture
 
 Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable method, semantic registries and helper projection synchronized / planning-owner consistency audited / implementation incomplete
-Doc version: v0.8.0-whole-repository-audit
+Doc version: v0.9.0-notes-and-implementation-ideas
 Scope: application-level identity, workflow inventory, shared invariants and coordination for Documentation Workbench. Complete item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
@@ -26,7 +26,7 @@ This Application Root coordinates product boundaries, accepted Complete Pictures
 ## 2. Canonical Source And Counts
 
 - [`planning-item-register.md`](planning-item-register.md) — complete source-linked item owner;
-- active items: **51**;
+- active items: **53**;
 - old methodology/application items audited: **110 / 110**;
 - accepted new active product identities:
   - `ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER`;
@@ -64,7 +64,7 @@ Documentation Workbench
 | Type | Owner | Status |
 |---|---|---|
 | Application Root | This file | Active product coordinator |
-| Accepted Complete Picture | [`Documentation And Reference Object End-To-End Workflow`](documentation-and-reference-object-end-to-end-workflow.md) | Accepted, 30 direct active items |
+| Accepted Complete Picture | [`Documentation And Reference Object End-To-End Workflow`](documentation-and-reference-object-end-to-end-workflow.md) | Accepted, 31 direct active items |
 | Accepted Complete Picture | [`Planning Item And Full Picture End-To-End Workflow`](complete-pictures/planning-items-and-full-picture/full-picture.md) | Accepted, 11 direct active items |
 | Supporting model | [`Reference Object Model And Lifecycle`](reference-object-model-and-lifecycle.md) | Active model and accepted transition history |
 | Provisional thematic slice | Chat, AI Responses And Work-State Trace | Not yet validated as an independent end-to-end Complete Picture |
@@ -122,6 +122,7 @@ select/load repository, file, folder or Markdown
   → resolve one of the accepted entry paths
   → establish identity, canonical state and optional home
   → configure flexible fields and category contracts
+  → create standalone or object-linked named Notes when requested
   → author objects/documents and place managed references
   → round-trip complete Markdown
   → detect dependency impact
@@ -147,14 +148,19 @@ existing documentation fragment
   → extraction proposal and confirmation;
 
 parsed proposed-object definition
-  → discovery/conflict review and confirmation.
+  → discovery/conflict review and confirmation;
+
+standalone or object-linked Note
+  → create a Reference Object of category `Note`
+  → optionally assign a title
+  → optionally create one initial `note for` relation.
 ```
 
 ### Active item groups
 
 | Phase | Items |
 |---|---|
-| Scope, parsing, creation | `ITEM-34B`, `ITEM-32B`, `ITEM-31B`, `ITEM-22B`, `ITEM-87` |
+| Scope, parsing, creation | `ITEM-34B`, `ITEM-32B`, `ITEM-31B`, `ITEM-22B`, `ITEM-87`, `ITEM-124` |
 | Identity, state, home | `ITEM-86`, `ITEM-23B`, `ITEM-108`, `ITEM-91` |
 | Shape and contracts | `ITEM-103`, `ITEM-106`, `ITEM-97` |
 | Authoring and references | `ITEM-93`, `ITEM-90`, `ITEM-114`, `ITEM-101`, `ITEM-88`, `ITEM-73`, `ITEM-83`, `ITEM-105` |
@@ -162,7 +168,7 @@ parsed proposed-object definition
 | Navigation and views | `ITEM-35B`, `ITEM-111`, `ITEM-118`, `ITEM-95`, `ITEM-104`, `ITEM-96` |
 | Optional output | `ITEM-107` |
 
-Total: **30 active items**.
+Total: **31 active items**.
 
 `ITEM-94 / AI-ITEM-IMPORT` belongs to the upstream Planning Item/Full Picture workflow and supplies confirmed managed items to this workflow boundary.
 
@@ -173,6 +179,8 @@ Total: **30 active items**.
 - managed application-native Planning Items are Reference Objects from creation;
 - portable reviewed meanings still require confirmation before managed object creation;
 - arbitrary fields are recognized by form; category contracts define expectations;
+- Note is a first-class Reference Object category, not an object field;
+- `note for` is an association/navigation relation unless later accepted as a dependency relation;
 - linked content is read-only at use sites;
 - source changes preserve old approved materialization until review;
 - navigation/views operate across stages rather than form a parallel workflow;
@@ -241,6 +249,7 @@ ITEM-123:
 - full source messages remain available;
 - the full accumulating meaning is not replaced by a shorter lossy review copy;
 - one semantic Planning Item entity spans working and documented states;
+- optional `Implementation Ideas` reference separate Planning Items of kind Implementation Idea and do not accept them automatically;
 - portable Markdown mode remains supported;
 - application-native confirmed items become managed Planning Item Reference Objects immediately;
 - Full Picture synthesis traces to items and may reference child Full Pictures in their own homes;
@@ -362,7 +371,6 @@ High-impact unresolved groups:
 - dependency-review severity/grouping and relation-view recursion/counts;
 - Chat/Action/RN/DAM end-to-end workflow boundary;
 - exact structured-response/source-anchor syntax;
-- canonical item-formation command name;
 - application shell, storage and measured repository limits;
 - Prototype-Depth Scenario/Domain/Slice methodology.
 
@@ -375,12 +383,13 @@ No fallback in this Full Picture resolves these questions silently.
 2. Reference Object model review.                                       ✓
 3. Documentation/Reference Object end-to-end workflow.                  ✓
 4. Accepted recent-chat item reconciliation and 48 → 51 register.       ✓
+4A. Named Notes and Implementation Ideas transition, 51 → 53.            ✓ this update
 5. Planning Item/Full Picture end-to-end workflow.                       ✓
 6. Synchronize reusable formation/terminology/principles/templates.     ✓
 7. Add Direction/Use-Case registries and project input conventions.     ✓
 8. Add multi-surface helper projection.                                 ✓
-9. Run whole-repository planning-owner consistency validation.          ✓ this update
-10. Name/add the item-formation command after explicit naming.
+9. Run whole-repository planning-owner consistency validation.          ✓
+10. Name/add the item-formation command after explicit naming.            ✓ this update
 11. Review Chat/AI/Work-State against the Complete Picture rule.
 12. Plan prototype-depth methodology and runtime architecture separately.
 ```

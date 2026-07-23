@@ -1,7 +1,7 @@
 # Planning Item Formation Workflow
 
-Status: active reusable workflow / project command route not yet named
-Doc version: v0.2.0-input-conventions-linked
+Status: active reusable workflow / projected by project command `сформируй айтемы`
+Doc version: v0.3.0-form-items-and-implementation-ideas
 Scope: reusable source-to-review process for forming, correcting and accepting semantically complete Planning Items from free-form or structured input without conflating formation with later repository reconciliation or documentation editing.
 
 ## 1. Purpose
@@ -31,6 +31,17 @@ This workflow does not own:
 - runtime detection of application-native availability.
 
 Project root UCM owns concrete commands. Project-local areas own accepted item state.
+
+
+Current OBS command projection:
+
+```text
+canonical command: сформируй айтемы
+canonical English name: form items
+authority: planning/planning-use-case-map.md
+```
+
+The reusable workflow still does not own project command naming or permissions.
 
 ## 2. Authority And Supporting Owners
 
@@ -238,6 +249,7 @@ Preserve when relevant:
 - exceptions and edge cases;
 - criteria;
 - dependencies and relations;
+- optional relation-backed Implementation Ideas that point to separate Planning Items of kind Implementation Idea;
 - consequences;
 - ambiguity;
 - hypothesis/risk/key situation;
@@ -279,6 +291,22 @@ New Meaning.
 ```
 
 Relation describes semantic comparison. Action describes the proposed canonical effect.
+
+### Step 4A — Preserve Implementation Ideas
+
+When an implementation thought has independent planning meaning, keep it as a separate Planning Item with `Item Kind = Implementation Idea` and link it to the affected Planning Item.
+
+```text
+Target Planning Item
+  field/projection: Implementation Ideas
+    → references separate Implementation Idea items;
+
+Implementation Idea
+  typed relation: implements / proposes implementation for
+    → target Planning Item.
+```
+
+The field contains references, not copied bodies or arbitrary text. Linking an idea does not accept architecture, schedule implementation or convert the idea into a requirement.
 
 ### Step 5 — Propose Item Actions
 
@@ -505,8 +533,9 @@ A complete formation response may contain:
 5. typed source contributions;
 6. transformation blocks;
 7. resulting portable ledger or application-native structured proposal;
-8. unresolved choices and checked/not-checked owners;
-9. explicit statement that repository files were not edited unless a separate command authorized it.
+8. optional relation-backed Implementation Ideas with their independent statuses;
+9. unresolved choices and checked/not-checked owners;
+10. explicit statement that repository files were not edited unless a separate command authorized it.
 
 ## 15. Failure And Conflict Paths
 

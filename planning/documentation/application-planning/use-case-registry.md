@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Use-Case Registry
 
 Status: active reusable-family semantic Use-Case Registry
-Doc version: v0.1.0-initial-planning-use-cases
+Doc version: v0.2.0-form-items-command
 Scope: complete semantic Use-Case entries for reusable solution/workflow planning.
 
 Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
@@ -11,7 +11,7 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 | Use-Case ID | Semantic name | Status | Direction | Main owner | Related command |
 |---|---|---|---|---|---|
 | `UC-AP-REALITY` | Understand Current Workflow And Reality | active | `DIR-PLAN-SOLUTION` | `application-planning-drafting-workflow.md` | none |
-| `UC-AP-FORM-ITEMS` | Form Planning Items From Discussion | active | `DIR-PLAN-SOLUTION` | `planning-item-formation-workflow.md` | none yet |
+| `UC-AP-FORM-ITEMS` | Form Planning Items From Discussion | active | `DIR-PLAN-SOLUTION` | `planning-item-formation-workflow.md` | `сформируй айтемы` |
 | `UC-AP-FULL-PICTURE` | Build Or Review An Item-Backed Full Picture | active | `DIR-PLAN-SOLUTION` | `application-planning-drafting-workflow.md` | none |
 | `UC-AP-RECONCILE` | Reconcile Planning Items | active | `DIR-PLAN-SOLUTION` | `application-planning-drafting-workflow.md` | `сверь айтемы` |
 | `UC-AP-RESEARCH` | Research Existing Solutions And Alternative Workflows | provisional supported | `DIR-PLAN-SOLUTION` | current Planning Draft / checked sources | none |
@@ -53,9 +53,15 @@ planning/planning-input-conventions.md
 relevant current project-local item owners.
 ```
 
-**Command relationship:** no UCM route yet; canonical Russian command, English name and aliases remain unresolved.
+**Command:**
 
-Activation establishes formation context; it does not authorize repository edits.
+```text
+сформируй айтемы
+English name: form items
+authority: planning/planning-use-case-map.md
+```
+
+The command forms and presents reviewable items. It does not authorize repository edits, archive creation, commit or push.
 
 ## 4. `UC-AP-FULL-PICTURE` — Build Or Review An Item-Backed Full Picture
 

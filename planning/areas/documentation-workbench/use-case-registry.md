@@ -1,7 +1,7 @@
 # Documentation Workbench Use-Case Registry
 
 Status: active project-local semantic Use-Case Registry
-Doc version: v0.1.0-initial-workbench-use-cases
+Doc version: v0.2.0-first-class-notes
 Scope: independently useful Documentation Workbench workflow/capability entries and explicit provisional candidates.
 
 Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
@@ -18,7 +18,7 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 
 **Trigger/input:** repository/documentation selection or accepted meaning requiring durable owner/location/reference authoring.
 
-**Result:** reviewable real Markdown/object/reference state with dependency review, navigation and diff-ready output, or explicit unresolved/deferred state.
+**Result:** reviewable real Markdown/object/reference state, including standalone or object-linked named Notes and Note views, with dependency review, navigation and diff-ready output, or explicit unresolved/deferred state.
 
 **Owner route:**
 
@@ -30,6 +30,8 @@ affected planning-item-register.md items/sources.
 ```
 
 Already managed application-native Planning Items do not repeat object-creation confirmation.
+
+First-Class Named Notes remain inside this accepted workflow; they do not create a separate peer Use Case or Complete Picture.
 
 ## 3. `UC-DW-ITEM-FULL-PICTURE` — Planning Item And Full Picture End-To-End Workflow
 

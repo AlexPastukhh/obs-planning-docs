@@ -1,7 +1,7 @@
 # Terminology And Planning Items
 
 Status: provisional reusable terminology draft / needs review
-Doc version: v0.4.0-planning-item-formation-sync
+Doc version: v0.5.0-implementation-ideas-field
 Language: Russian working draft
 Scope: shared terminology for source-linked planning, Planning Items, end-to-end Complete Pictures, supporting artifacts, concern review, documentation workspace, navigation, Markdown/object bridge, chat workspace and file updates.
 
@@ -343,6 +343,37 @@ derived from.
 ```
 
 Relations form a typed graph; a strict tree is not required.
+
+### 3.8A Implementation Ideas Field
+
+A Planning Item may expose an optional multi-value `Implementation Ideas` field/projection.
+
+```text
+Implementation Ideas
+  → references separate Planning Items
+    where Item Kind = Implementation Idea.
+```
+
+The canonical complete body remains on each referenced Implementation Idea item. The target field is a typed relation projection, not duplicated text and not a second owner.
+
+Recommended relation:
+
+```text
+Implementation Idea
+  -- implements / proposes implementation for -->
+Target Planning Item
+```
+
+Invariant:
+
+```text
+for every member in PlanningItem.ImplementationIdeas:
+  member is a Planning Item;
+  member.ItemKind == Implementation Idea;
+  an explicit typed relation to the target exists.
+```
+
+A linked idea remains a possible implementation direction. It is not automatically a requirement, accepted architecture, scheduled slice or successful prototype.
 
 ### 3.9 Attached Item
 

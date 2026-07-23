@@ -1,7 +1,7 @@
 # OBS Workflow Activation Map
 
 Status: active project-specific root planning/task router
-Doc version: v0.11.0-helper-surface-activation
+Doc version: v0.12.0-form-items-command
 Scope: decide which semantic registry, reusable workflow and project-local owner to read before answering or editing in OBS planning work.
 
 ## 1. Default Rule
@@ -30,7 +30,7 @@ Registry activation does not grant repository permissions.
 | Activate/select Direction | `planning/direction-registry.md` | Complete local Direction entry, child Use-Case Registry and owner route | Use Adaptive/Full semantics. |
 | Activate/select Use Case | Relevant `use-case-registry.md` | Complete selected workflow/template/area and required current sources | Establish context/result/next actor; no command permission. |
 | Command behavior | `planning/planning-use-case-map.md` | Owner named in route | UCM owns trigger, English name, output and permissions. |
-| Planning Item formation context | Application-planning Use-Case Registry | Formation workflow, review template, input conventions, selected source and current item owners | Use case exists; no UCM command yet. |
+| Planning Item formation / `сформируй айтемы` | Root UCM | Application-planning Use-Case Registry, formation workflow, review template, input conventions, selected source and current item owners | `form items`; reviewable output only, no repository edit. |
 | Planning Item reconciliation | Root UCM | Application-planning registry, drafting workflow, selected items and complete owners | `сверь айтемы` remains read-only. |
 | Item-backed Full Picture | Application-planning Use-Case Registry | Drafting workflow, Planning Draft template and current local owners | Full Picture does not replace item bodies. |
 | Planning Item / Full Picture product workflow | Documentation Workbench Use-Case Registry | Local Full Picture, accepted workflow, register, model and downstream workflow | Reusable method and registries synchronized. |

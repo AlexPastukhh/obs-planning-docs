@@ -1,7 +1,7 @@
 # Documentation And Reference Object End-To-End Workflow
 
-Status: active accepted project-local Complete Picture / managed-Planning-Item boundary synchronized / implementation not selected
-Doc version: v0.2.0-managed-planning-item-entry
+Status: active accepted project-local Complete Picture / managed-Planning-Item and first-class-Note boundaries synchronized / implementation not selected
+Doc version: v0.3.0-first-class-notes
 Scope: trigger-to-result workflow for loading documentation, resolving accepted object-entry paths, authoring managed content, round-tripping Markdown, reviewing dependency impact and navigating the resulting state.
 
 ## 1. Purpose
@@ -55,7 +55,7 @@ The workflow starts when the user works with at least one of:
 
 Upstream source interpretation, Planning Item formation, Full Picture synthesis and concern/deepening loops belong to the Planning Item/Full Picture workflow.
 
-`ITEM-94 / AI-ITEM-IMPORT` supplies reviewed proposals and confirmed managed Planning Items to this boundary. It is not one of this workflow's 30 direct active items.
+`ITEM-94 / AI-ITEM-IMPORT` supplies reviewed proposals and confirmed managed Planning Items to this boundary. It is not one of this workflow's 31 direct active items.
 
 ## 4. End Conditions
 
@@ -120,7 +120,7 @@ Portable reviewed items and existing fragments still use confirmation-gated crea
 
 | Phase | Purpose | Active items |
 |---|---|---|
-| Scope, parsing and creation | Load documentation, preserve mixed Markdown, resolve entry path and confirm object creation when identity does not already exist. | `ITEM-34B`, `ITEM-32B`, `ITEM-31B`, `ITEM-22B`, `ITEM-87` |
+| Scope, parsing and creation | Load documentation, preserve mixed Markdown, resolve entry path, confirm object creation when identity does not already exist, and provide first-class Note entry actions. | `ITEM-34B`, `ITEM-32B`, `ITEM-31B`, `ITEM-22B`, `ITEM-87`, `ITEM-124` |
 | Identity, state and home | Establish identity, canonical-state ownership, temporary app-only exception and optional home. | `ITEM-86`, `ITEM-23B`, `ITEM-108`, `ITEM-91` |
 | Shape and category contracts | Support arbitrary fields plus category-specific expectations and file-type guidance. | `ITEM-103`, `ITEM-106`, `ITEM-97` |
 | Authoring and references | Edit canonical content, resolve targets and create readable full/bare managed references. | `ITEM-93`, `ITEM-90`, `ITEM-114`, `ITEM-101`, `ITEM-88`, `ITEM-73`, `ITEM-83`, `ITEM-105` |
@@ -128,7 +128,7 @@ Portable reviewed items and existing fragments still use confirmation-gated crea
 | Navigation and views | Preserve context and expose object/file/home/occurrence relationships throughout the cycle. | `ITEM-35B`, `ITEM-111`, `ITEM-118`, `ITEM-95`, `ITEM-104`, `ITEM-96` |
 | Optional AI output | Produce a non-mutating expanded transfer copy. | `ITEM-107` |
 
-Total direct active items: **30**.
+Total direct active items: **31**.
 
 ## 7. Step 1 — Select And Load Scope
 
@@ -243,6 +243,25 @@ missing/proposed identity
 
 Items: `ITEM-22B`, `ITEM-87`, `ITEM-31B`.
 
+
+### E. First-class Note
+
+```text
+Create Standalone Note
+  → create a Reference Object with category `Note`
+  → accept optional title and text body
+  → no target relation is required;
+
+Add Note To Object
+  → create a Reference Object with category `Note`
+  → accept optional title and text body
+  → create one explicit `note for` relation to the selected object.
+```
+
+A Note remains a separate object. It is never represented merely as an arbitrary field on the selected target.
+
+Item: `ITEM-124`.
+
 ## 11. Step 5 — Establish Identity, State And Optional Home
 
 Every object has:
@@ -301,6 +320,9 @@ Conservative current behavior:
 
 Planning Item fields and states are category-specific planning meaning, not mandatory fields on every Reference Object.
 
+
+The Note category contract may recommend `Title` and recognizes the object as eligible for Note-specific views. A typed Notes collection/projection may accept only objects whose categories include `Note`; this is an explicit restriction of that projection, not a global parser restriction.
+
 Items: `ITEM-103`, `ITEM-106`; analogous file-level assignments remain in `ITEM-97`.
 
 ## 13. Step 7 — Author Canonical Objects And Documents
@@ -327,7 +349,7 @@ Supported target identities:
 - Documentation File;
 - stable File Location.
 
-Target answers where a link resolves; relation answers why it exists. Navigation-only file links do not create dependency invalidation by default.
+Target answers where a link resolves; relation answers why it exists. Navigation-only file links and `note for` associations do not create dependency invalidation by default.
 
 Reference Object representation modes:
 
@@ -408,6 +430,7 @@ The user can:
 - filter existing objects/records without creating semantic truth;
 - return to the original context;
 - open the upstream Planning Item and Full Picture when the object came from planning.
+- open All Notes and Notes For Selected Object as category/relation-filtered projections;
 
 Items: `ITEM-35B`, `ITEM-111`, `ITEM-118`, `ITEM-95`, `ITEM-104`, `ITEM-96`.
 
@@ -447,6 +470,7 @@ Item: `ITEM-107`.
 | Proposed object | detected; awaiting confirmation; confirmed; rejected; conflict |
 | Managed Planning Item input | already managed; portable/not managed; conflict/ambiguous |
 | Reference Object | Markdown-backed; temporary app-only |
+| Note Reference Object | standalone; linked by `note for`; titled; untitled |
 | Parent/home | assigned; absent |
 | Definition location | assigned; absent only for app-only state |
 | Managed occurrence | full-text; bare |
@@ -504,11 +528,14 @@ Historical AI-response links may use the same target-resolution/navigation infra
 - direct versus transitive relation expansion;
 - headline count for Outgoing Uses;
 - current-state transport for AI;
-- exact application shell and storage architecture.
+- exact application shell and storage architecture;
+- whether Note titles become mandatory;
+- multi-target Note behavior;
+- exact category-removal enforcement for Notes projection.
 
 ## 26. Acceptance And Next Gate
 
-This workflow structure and its 30-item phase map remain accepted. This update accepts the corrected handoff from the Planning Item/Full Picture workflow:
+This workflow structure and its 31-item phase map remain accepted. This update accepts the corrected handoff from the Planning Item/Full Picture workflow:
 
 ```text
 managed application-native Planning Item

@@ -1,7 +1,7 @@
 # Planning Item Review Template
 
 Status: active reusable recommended template
-Doc version: v0.1.0-full-message-two-mode-review
+Doc version: v0.2.0-implementation-ideas
 Purpose: exact reusable review shape for proposed new, updated, merged, split, re-homed, superseded, rejected or deferred Planning Items.
 
 Use only sections that improve the current review. Do not shorten the complete item meaning merely to fit this template.
@@ -126,6 +126,16 @@ Does not imply:
 | Relation | Target | Meaning |
 |---|---|---|
 | <typed relation> | <target> | <why> |
+
+#### Implementation Ideas — Optional
+
+Use only when separate implementation-idea items exist.
+
+| Implementation Idea | Item kind/status | Typed relation | Meaning for this target |
+|---|---|---|---|
+| <item reference> | Implementation Idea / <status> | implements / proposes implementation for | <scope and non-implications> |
+
+The table contains references to complete item owners. Do not copy shortened idea bodies into the target item and do not imply acceptance merely because an idea is linked.
 
 #### Validation Context — Optional
 

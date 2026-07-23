@@ -1,6 +1,6 @@
 # Documentation Workbench Planning Item Register — accepted Planning Item / Full Picture workflow transition
 
-Status: active project-local source-linked register / accepted Documentation And Reference Object transition + accepted recent-chat reconciliation + accepted Planning Item/Full Picture workflow applied
+Status: active project-local source-linked register / accepted Documentation And Reference Object, Planning Item/Full Picture, Form Items, Named Notes and Implementation Ideas transitions applied
 
 Repository owner:
 
@@ -19,7 +19,7 @@ Migrated from:
 
 Counts:
 
-- canonical active uncovered/partially covered bricks: **51**;
+- canonical active uncovered/partially covered bricks: **53**;
 - old methodology/app register items audited: **110 / 110**;
 - old-item dispositions:
   - active canonical: **15**;
@@ -117,7 +117,7 @@ No older item is silently deleted. A duplicate is merged into a canonical brick;
     split only when parts have independent meaning, ownership, lifecycle, review, reuse or decisions—not merely because the text is long.
 13. Three older active items (`ITEM-31B`, `ITEM-32B`, `ITEM-93`) now include explicit explanations matching the rest of the register.
 14. Prototype implementation, React/Tauri/Electron/Tampermonkey and application-shell choices remain outside this update.
-15. The active brick count was 50 in the source snapshot; the Documentation/Reference transition reduced it to 48, and the accepted recent-chat reconciliation added three independent product meanings for a current total of 51 while preserving the complete 110-row old-item audit.
+15. The active brick count was 50 in the source snapshot; the Documentation/Reference transition reduced it to 48, the accepted recent-chat reconciliation added three meanings for 51, and the accepted named-Notes transition adds two meanings for a current total of 53 while preserving the complete 110-row old-item audit.
 16. No separate `Planning Item Candidate` entity/state is introduced:
     - a Planning Item is formed or updated directly;
     - during creation/update, perform a targeted check of relevant current documentation, principles, workflows and existing items when repository context is available;
@@ -166,7 +166,7 @@ The project-local area now has:
 - an accepted Documentation And Reference Object End-To-End Workflow;
 - an accepted Planning Item And Full Picture End-To-End Workflow;
 - a supporting Reference Object model with accepted transformation history;
-- a 51-item active source-linked register;
+- a 53-item active source-linked register;
 - one remaining provisional Chat/AI/Work-State thematic slice.
 
 The Documentation/Reference workflow covers repository/file/folder loading, mixed-Markdown parsing, accepted entry paths, canonical state and optional home, arbitrary fields and category contracts, authoring, managed references, round trip, dependency review, navigation and optional AI-expanded copy.
@@ -726,6 +726,23 @@ cp это что то , по чему можно пройтись от нача�
 
 Context: explicit acceptance of the immediately preceding corrected end-to-end Complete Picture and item-transition reconciliation.
 
+
+### SRC-N87
+
+```text
+пусть команда будет сформируй айтемы form items, также надо добавить возможность добавлять заметку к какому то ссылочному обьекту, т е наверное должна быть коллекция тупо заметок(наверное просто коллекция обьектов с категорией заметка чтобы придерживаться унификации. доменная логика сохранит инвариант что эта коллекция состоит только из заметок или обьектов у которых есть такая категория(проверка при добавлении)) и чтобы можно было давать назания заметкам. это по сути и так можно делать технически будет, но как будто надо чтобы заметки были зараанее доступны для добавления ко всем обьектам именно в качестве заметок а не каких то обьектов - полей. ну и чтобы можно было просто заметку создать не к какому обьекту а впринципе ,ну и чтобы был функционал по типу увидеть заметки и тд базовый для них.
+```
+
+Context: direct command-name decision plus first-class named Note capability and a proposed category-backed implementation direction.
+
+### SRC-N88
+
+```text
+у нас есть айтем который относится к идее имплементации, я думаю что у планнинг айтемов должно быть поле идей имплементации, если еще нет.  также есть проблема что по какой то причине окно чата гпт подвисает когда я нажимаю на кнопку команды в тамперманки, надо рповерить есть ли обьективны едля этого причины, баги и тд
+```
+
+Context: direct request for a Planning Item `Implementation Ideas` field and a reported Tampermonkey command-click freeze requiring objective investigation.
+
 ## 5. Canonical active items
 
 ## A. Product boundary and core purpose
@@ -785,9 +802,13 @@ Context: explicit acceptance of the immediately preceding corrected end-to-end C
 
 - Kind: evidence / implementation boundary
 - Evidence status: **direct user instruction**
-- Current coverage: **Reusable principle есть; app-local implementation-thought register отсутствует.**
-- Disposition: Новый app-local item, поддерживающий существующий ITEM-82 boundary.
-- Required documentation action: Хранить для механизмов status: user idea, working direction, needs prototype, accepted, rejected.
+- Current coverage: **Reusable principle and app-local boundary exist; relation-backed visibility from target Planning Items is now accepted.**
+- Disposition: **Keep active and update content.**
+- Required documentation action:
+  - keep mechanism status visible: user idea, working direction, needs prototype, accepted, rejected;
+  - a linked Implementation Idea remains non-binding until separately accepted;
+  - membership in a target item’s `Implementation Ideas` field does not turn the idea into a requirement, accepted architecture, scheduled slice or successful prototype;
+  - preserve the idea as a separate complete Planning Item rather than copying a shortened body into the target.
 - Owner candidate: Application Root Planning Draft / implementation thoughts
 - Direct source excerpts:
   - SRC-N13:
@@ -795,6 +816,9 @@ Context: explicit acceptance of the immediately preceding corrected end-to-end C
     вообще при планировании и при выделении каких то айтемов мы отделяем идеи тех реализации от фактической реализации т к тех реализация это не требование, и она выводится после планирования по сути, но есть еще и планирование реализации когда ты пишешь идеи реаизации и вообще оценивание как можно что то реализовать. тут реализация не на 100 проц очевидна, но уже примерно ясна, и именно так стоит воспр такие идеи что тут описаны, но это пиложение также нужно как можно быстрее сделать,чтобы нормально можно было работать с ии
     ```
 - Explanation: Функциональная цель уже достаточно ясна, но способ реализации должен пройти отдельное планирование.
+
+- Full supporting user message — SRC-N88:
+  > **у нас есть айтем который относится к идее имплементации, я думаю что у планнинг айтемов должно быть поле идей имплементации, если еще нет.**  также есть проблема что по какой то причине окно чата гпт подвисает когда я нажимаю на кнопку команды в тамперманки, надо рповерить есть ли обьективны едля этого причины, баги и тд
 
 <a id="item-100"></a>
 ### ITEM-100 / EARLY-INFRA-MVP — Нужен ранний полезный MVP, потому что приложение является инфраструктурой для дальнейшей нормальной работы с ИИ.
@@ -1030,6 +1054,8 @@ Context: explicit acceptance of the immediately preceding corrected end-to-end C
   - several category/type/status values and several applicable contracts may coexist;
   - preserve all applicable contracts when conflict-resolution rules are unresolved;
   - Planning Item, concern and relation field names are category-contract examples; their semantics remain with their respective owners;
+  - the Planning Item contract may expose `Implementation Ideas` and restrict members to Planning Items with `Item Kind = Implementation Idea`;
+  - the Note contract/projection may restrict members to Reference Objects whose categories include `Note`;
   - distinguish required identity/parser mechanics from category-specific semantic expectations;
   - exact serialization remains prototype work.
 - Candidate contract examples:
@@ -1049,6 +1075,12 @@ Context: explicit acceptance of the immediately preceding corrected end-to-end C
   - SRC-N84;
   - SRC-N86.
 - Explanation: The parser may read arbitrary valid fields; the contract says what a category expects rather than defining one universal fixed object schema.
+
+- Full supporting user messages:
+  - SRC-N87:
+    > пусть команда будет сформируй айтемы form items, также надо добавить возможность добавлять заметку к какому то ссылочному обьекту, **т е наверное должна быть коллекция тупо заметок(наверное просто коллекция обьектов с категорией заметка чтобы придерживаться унификации. доменная логика сохранит инвариант что эта коллекция состоит только из заметок или обьектов у которых есть такая категория(проверка при добавлении))** и чтобы можно было давать назания заметкам. это по сути и так можно делать технически будет, но как будто надо чтобы заметки были зараанее доступны для добавления ко всем обьектам именно в качестве заметок а не каких то обьектов - полей. ну и чтобы можно было просто заметку создать не к какому обьекту а впринципе ,ну и чтобы был функционал по типу увидеть заметки и тд базовый для них.
+  - SRC-N88:
+    > **у нас есть айтем который относится к идее имплементации, я думаю что у планнинг айтемов должно быть поле идей имплементации, если еще нет.**  также есть проблема что по какой то причине окно чата гпт подвисает когда я нажимаю на кнопку команды в тамперманки, надо рповерить есть ли обьективны едля этого причины, баги и тд
 
 ## D. Reference representation, dependency and review
 
@@ -1802,6 +1834,9 @@ The route must expose both modes; the portable mode remains a fallback until del
     - Decision;
   - a large task such as `Develop Documentation Workbench` may be one initiative-level Planning Item;
   - smaller items may belong to, support, refine or implement that initiative;
+  - every Planning Item may expose an optional multi-value `Implementation Ideas` field/projection;
+  - every field member must be a separate Planning Item with `Item Kind = Implementation Idea` and an explicit typed relation to the target;
+  - the target field references complete idea owners and never copies shortened idea bodies;
   - candidate relations include:
     - `part of`;
     - `contains`;
@@ -1839,6 +1874,9 @@ The route must expose both modes; the portable mode remains a fallback until del
 - Older support:
   - reusable `ITEM-17`, `ITEM-21`, `ITEM-38`, `ITEM-39`, `ITEM-47`, `ITEM-52A`.
 - Explanation: The same item model can represent a local requirement or an initiative without losing scale, relations or sufficient detail.
+
+- Full supporting user message — SRC-N88:
+  > **у нас есть айтем который относится к идее имплементации, я думаю что у планнинг айтемов должно быть поле идей имплементации, если еще нет.**  также есть проблема что по какой то причине окно чата гпт подвисает когда я нажимаю на кнопку команды в тамперманки, надо рповерить есть ли обьективны едля этого причины, баги и тд
 
 #### Accepted recent-chat reconciliation expansion
 
@@ -2147,6 +2185,66 @@ At planning stages that precede later Full Picture reconciliation, the detailed 
 - Owner: future application settings/configuration workflow + planned `planning/planning-input-conventions.md` projection.
 - Source provenance: accepted recent-chat review set, especially `CHAT-PI-024` and `CHAT-PI-025`; complete source messages are preserved in the imported source appendix below.
 - Explanation: Configurability keeps conventions evolvable while preserving a reviewable documentation contract for AI and repository workflows.
+
+
+<a id="item-124"></a>
+### ITEM-124 / FIRST-CLASS-NAMED-NOTES — Documentation Workbench provides named or untitled Notes as first-class Reference Objects that may exist independently or be linked to a selected Reference Object.
+
+- Semantic name: **First-Class Named Notes**.
+- Kind: requirement / product capability.
+- Evidence status: **direct user statement + accepted implementation instruction through the active archive route**.
+- Current coverage: **Generic Reference Objects, categories, relations and configurable views exist; first-class Note actions and Note-specific views were not previously explicit.**
+- Disposition: **New active item.**
+- Required documentation action:
+  - Note is a Reference Object whose categories include `Note`;
+  - Note has stable identity, normal text-first content and an optional user-visible title;
+  - `Create Standalone Note` requires no target object;
+  - `Add Note To Object` creates a separate Note and one explicit initial `note for` relation to the selected Reference Object;
+  - Note is never reduced to an arbitrary field of the selected object;
+  - support Give/Rename Note Title, Open Note, View All Notes and View Notes For Selected Object;
+  - title is optional in the accepted first version;
+  - guaranteed target cardinality is zero for standalone creation and one initial target for Add Note To Object;
+  - multi-target Note behavior remains open;
+  - `note for` is association/navigation by default and does not create dependency invalidation without a separate decision;
+  - Note uses the same canonical-state, optional-home, durability, authoring and reference rules as other Reference Objects.
+- Accepted workflow placement: creation, category-contract, relation and navigation/view stages of `documentation-and-reference-object-end-to-end-workflow.md`.
+- Owner: `reference-object-model-and-lifecycle.md` + Documentation/Reference workflow.
+- Related active items: `ITEM-91`, `ITEM-103`, `ITEM-106`, `ITEM-114`, `ITEM-118`.
+- Implementation Ideas: `ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION`.
+- Full supporting user message — SRC-N87:
+  > пусть команда будет сформируй айтемы form items, **также надо добавить возможность добавлять заметку к какому то ссылочному обьекту**, т е наверное должна быть коллекция тупо заметок(наверное просто коллекция обьектов с категорией заметка чтобы придерживаться унификации. доменная логика сохранит инвариант что эта коллекция состоит только из заметок или обьектов у которых есть такая категория(проверка при добавлении)) **и чтобы можно было давать назания заметкам.** это по сути и так можно делать технически будет, но как будто **надо чтобы заметки были зараанее доступны для добавления ко всем обьектам именно в качестве заметок а не каких то обьектов - полей. ну и чтобы можно было просто заметку создать не к какому обьекту а впринципе ,ну и чтобы был функционал по типу увидеть заметки и тд базовый для них.**
+- Explanation: The technical object model was already flexible enough, but the product must expose Note as an intentional user capability rather than forcing users to simulate it through generic fields.
+
+<a id="item-125"></a>
+### ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION — A Notes collection/view may be implemented as a typed projection over Reference Objects whose categories include `Note`.
+
+- Semantic name: **Category-Backed Notes Projection**.
+- Kind: **Implementation Idea**.
+- Evidence status: **direct user implementation idea + accepted as Working / Needs Prototype, not accepted architecture**.
+- Current coverage: **Category filtering and field contracts exist; exact collection/runtime implementation was unresolved.**
+- Disposition: **New active implementation-idea item linked to `ITEM-124`.**
+- Required documentation action:
+  - proposed implementation shape:
+    ```text
+    Reference Object store
+      → filter categories contains Note
+      → expose Notes projection;
+    ```
+  - invariant for explicit collection addition:
+    ```text
+    for every object in Notes:
+      object.categories contains Note;
+    ```
+  - adding a non-Note object is rejected or requires explicit categorization first;
+  - one object appearing in All Notes, Notes For Selected Object and a generic related-object view remains one Reference Object, not copied state;
+  - conservative category-removal fallback: the object disappears from the Notes projection but is not deleted;
+  - exact persistence/indexing, projection caching and multi-target behavior require prototype/runtime planning;
+  - linking this idea through `ITEM-124.Implementation Ideas` does not select the architecture.
+- Relation: `implements / proposes implementation for → ITEM-124`.
+- Status: **Working / Needs Prototype**.
+- Full supporting user message — SRC-N87:
+  > пусть команда будет сформируй айтемы form items, также надо добавить возможность добавлять заметку к какому то ссылочному обьекту, **т е наверное должна быть коллекция тупо заметок(наверное просто коллекция обьектов с категорией заметка чтобы придерживаться унификации. доменная логика сохранит инвариант что эта коллекция состоит только из заметок или обьектов у которых есть такая категория(проверка при добавлении))** и чтобы можно было давать назания заметкам. это по сути и так можно делать технически будет, но как будто надо чтобы заметки были зараанее доступны для добавления ко всем обьектам именно в качестве заметок а не каких то обьектов - полей. ну и чтобы можно было просто заметку создать не к какому обьекту а впринципе ,ну и чтобы был функционал по типу увидеть заметки и тд базовый для них.
+- Explanation: The idea preserves model unification and an enforceable typed-member boundary while remaining explicitly non-final.
 
 ## G. IDE-like navigation and file/folder views
 
@@ -4274,6 +4372,97 @@ portable path:
 - Portable Markdown mode remains supported.
 - `Source Idea` is not introduced.
 - Prototype-Depth Scenario/Domain/Slice methodology remains a separate next task.
-- Direction/Use-Case registries and Tampermonkey semantic surfaces are now synchronized; only the exact item-formation command naming/UCM route remains deferred.
+- At this transition point, Direction/Use-Case registries and Tampermonkey semantic surfaces were synchronized while the exact item-formation command remained deferred; the later accepted transition below closes it.
 - Chat/AI/Work-State remains provisional.
 - No new `ITEM-*` identity is created by this workflow-placement transition.
+
+# Accepted Form Items, Notes, Implementation Ideas And Helper-Insertion Transition — 2026-07-24
+
+## Decision
+
+The active reconciliation and file-update plan are accepted for implementation through the subsequent `давай архив` command.
+
+```text
+command:
+  сформируй айтемы / form items;
+
+updated items:
+  ITEM-99 / IMPLEMENTATION-IDEA-BOUNDARY;
+  ITEM-106 / OPTIONAL-FIELD-CONTRACT;
+  ITEM-112 / ITEM-ROLE-RELATION-MODEL;
+
+new items:
+  ITEM-124 / FIRST-CLASS-NAMED-NOTES;
+  ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION;
+
+re-homed tooling defect:
+  Tampermonkey command insertion correction;
+  no Documentation Workbench product ITEM-*.
+```
+
+## Item transformation — Implementation Ideas
+
+| Role | Semantic name | ID / source | Owner / status | Complete core meaning | Relation / contribution | Action / effect | Identity / history effect | Choice |
+|---|---|---|---|---|---|---|---|---|
+| Current | Implementation Idea Boundary | `ITEM-99` | active register item | Implementation directions remain separate from requirements and accepted architecture, with explicit evidence/decision status. | Existing boundary owner | Preserve and expand the non-implication rule for linked ideas. | Stable identity survives. | — |
+| Current | Object Category Field Contracts | `ITEM-106` | active register item | Applicable category contracts may describe expected fields and explicit restrictions without limiting all parser-recognized fields globally. | Existing field-contract owner | Add a typed-member rule for the Planning Item `Implementation Ideas` field. | Stable identity survives. | — |
+| Current | Item Role And Relation Model | `ITEM-112` | active register item | Planning Items have semantic kinds and typed graph relations including `Implementation Idea` and `implements`, but no explicit target-side field was defined. | Main relation-model owner | Add an optional relation-backed `Implementation Ideas` projection. | Stable identity survives. | — |
+| Incoming | Planning Item Implementation Ideas Field | `SRC-N88` | accepted user meaning | A Planning Item should visibly expose its related implementation-idea items through a dedicated field when such ideas exist. | Extends `ITEM-99`, `ITEM-106`, `ITEM-112` | Integrate into the three surviving owners; do not create a duplicate field-owner item. | Source contribution maps to all three updated identities. | accepted through archive route |
+| Resulting | Implementation Idea Boundary | `ITEM-99` | active updated item | A linked idea stays non-binding until separately accepted and does not become a requirement, architecture, scheduled slice or successful prototype merely by being linked. | Result of current boundary + `SRC-N88` | Update Content | Identity retained; source added. | — |
+| Resulting | Object Category Field Contracts | `ITEM-106` | active updated item | The Planning Item contract may restrict each `Implementation Ideas` member to a Planning Item whose kind is `Implementation Idea`. | Result of current contract + `SRC-N88` | Update Content | Identity retained; source added. | — |
+| Resulting | Item Role And Relation Model | `ITEM-112` | active updated item | A Planning Item may expose zero or more references to separate Implementation Idea items; each reference is backed by an explicit typed relation and never copies the canonical idea body. | Result of current model + `SRC-N88` | Update Content | Identity retained; source added. | — |
+
+## Item transformation — First-Class Notes
+
+| Role | Semantic name | ID / source | Owner / status | Complete core meaning | Relation / contribution | Action / effect | Identity / history effect | Choice |
+|---|---|---|---|---|---|---|---|---|
+| Current | Flexible Reference Object And Related-View Foundation | `ITEM-91`, `ITEM-103`, `ITEM-106`, `ITEM-114`, `ITEM-118` | active supporting items | Reference Objects may be home-less, have flexible fields/categories and typed relations, and appear in category/relation-filtered views; Note-specific product actions were not explicit. | Current supporting foundation | Preserve; link as supporting items rather than merge. | All current identities survive unchanged except the explicit `ITEM-106` contract expansion above. | — |
+| Incoming | First-Class Named Notes | `SRC-N87` | accepted user requirement | Notes must be intentionally available as standalone or object-linked named/untitled objects with basic create, open and view behavior, rather than simulated as arbitrary fields. | New Meaning | Add independent product capability. | New identity required because no current item owns the complete Note capability. | accepted through archive route |
+| Incoming | Category-Backed Notes Projection | `SRC-N87` | accepted as implementation idea | A Notes collection/view may be a projection of Reference Objects carrying category `Note`, with category-membership validation when adding. | Implementation idea for the new capability | Add separately because technical validation/status can evolve independently. | New implementation-idea identity linked to the capability. | Working / Needs Prototype |
+| Resulting | First-Class Named Notes | `ITEM-124` | new active requirement | Note is a first-class Reference Object with optional title, standalone or one-initial-target creation, `note for` association and Note-specific views. | Built from `SRC-N87` plus current object/view foundations | Add | New stable identity and full source contribution. | — |
+| Resulting | Category-Backed Notes Projection | `ITEM-125` | new active Implementation Idea | Notes may be exposed as a typed category-backed projection; removing category `Note` removes projection membership but not the object. Runtime/indexing and multi-target choices remain unaccepted. | `implements / proposes implementation for → ITEM-124` | Add | New stable identity; remains non-final and prototype-dependent. | — |
+
+## Non-item route and tooling effects
+
+| Role | Semantic name | ID / source | Owner / status | Complete core meaning | Relation / contribution | Action / effect | Identity / history effect | Choice |
+|---|---|---|---|---|---|---|---|---|
+| Current | Form Planning Items From Discussion | `UC-AP-FORM-ITEMS` | active Use Case without command | Reusable source-to-item behavior already exists, but the concrete root command route was deferred pending exact names. | Current semantic capability | Preserve Use-Case identity. | No Planning Item identity effect. | — |
+| Incoming | Form Items command naming | `SRC-N87` | accepted decision | Canonical Russian command is `сформируй айтемы`; canonical English name is `form items`; no additional aliases are accepted. | Completes command-route decision | Add UCM route and helper projection. | Use-Case identity survives; no new `ITEM-*`. | accepted |
+| Resulting | Form Planning Items From Discussion | `UC-AP-FORM-ITEMS` | active Use Case + UCM command | The same Use Case is executable through the read-only `сформируй айтемы / form items` route and redirects from Use Cases to Commands in the helper. | Current capability + accepted naming | Update command relationship | No Planning Item identity effect. | — |
+| Current | Tampermonkey command insertion | reusable helper owners | active tool behavior | Command click performs synchronous composer resolution and insertion without a one-click lock or timing evidence. | Current tooling behavior | Correct in existing owners. | No Documentation Workbench product item. | — |
+| Incoming | Reported ChatGPT freeze | `SRC-N88` | reported defect, runtime cause unproven | ChatGPT visibly hangs for the user when a command button is pressed; static review found avoidable synchronous DOM/editor risks but no proven infinite loop. | Corrects tooling reliability expectations | Re-home to reusable Tampermonkey owners; instrument and reduce risks. | Source remains traceable without creating a product `ITEM-*`. | live verification required |
+| Resulting | Non-Reentrant Measured Command Insertion | reusable helper owners | static correction implemented / live result pending | Exact-first composer lookup, insertion lock, one-frame yield, compact timing diagnostics and one clipboard fallback replace broad repeated mutation behavior. | Result of current tool behavior + `SRC-N88` | Update tooling owners and userscript | No product item; defect is not marked resolved before browser testing. | — |
+
+## Active-count effect
+
+```text
+before this transition: 51 active items
+new independent active items: 2
+  ITEM-124
+  ITEM-125
+result after this transition: 53 active items
+```
+
+No prior active item is removed. `ITEM-125` is active as a Working / Needs Prototype Implementation Idea, not as accepted runtime architecture.
+
+## Resulting relation
+
+```text
+ITEM-124
+  Implementation Ideas
+    → ITEM-125;
+
+ITEM-125
+  implements / proposes implementation for
+    → ITEM-124.
+```
+
+## Preserved boundaries
+
+- Note remains a Reference Object category, not a separate incompatible storage entity.
+- Note title is optional.
+- Standalone and one-initial-target creation are accepted; multi-target behavior remains open.
+- `note for` is association/navigation by default.
+- Category-backed Notes projection remains an implementation idea requiring live/runtime validation.
+- Tampermonkey freeze is not considered resolved until browser testing passes.
+- No storage/database/application-shell architecture is selected.
