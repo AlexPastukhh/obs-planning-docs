@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v0.8.0-tampermonkey-semantic-surfaces
+Doc version: v0.9.0-whole-repository-planning-owner-audit
 Scope: register root planning files, reusable owners and local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -107,14 +107,64 @@ Boundaries:
 - Chat/AI/Work-State remains provisional;
 - the helper performs no repository write, Git or external network behavior.
 
+## 6B. Batch 6 Planning-Owner Consistency Audit
+
+Checked current owners and references:
+
+```text
+33 current Batch 1–5 root/reusable/local owner files;
+planning/planning-use-case-map.md;
+planning/documentation/reviewable-agent-output-and-commands-workflow.md;
+planning/documentation/documentation-update-workflow.md;
+planning/documentation/profiles/scenario-domain-slice-docs-profile.md;
+planning/documentation/profiles/scenario-domain-slice-use-case-field-kit.md.
+```
+
+Validation result:
+
+```text
+terminology:
+  retired InformationItem / Origin wording appears only in explicit
+  retirement rules, negative boundaries, transformation history
+  or preserved source messages;
+
+entities:
+  no active Source Idea or Planning Item Candidate entity;
+
+ownership:
+  registries own semantic entries;
+  UCM owns executable commands and canonical English names;
+  workflows own repeated behavior;
+  project-local files own concrete state;
+  Tampermonkey owns projection only;
+
+links:
+  45 Markdown links in the checked current owner set resolved;
+  all 20 userscript owner/source paths resolved in the checked
+  owner set or through direct current-main verification;
+
+Planning Items:
+  51 active items preserved;
+  ITEM-121 / ITEM-122 / ITEM-123 preserved;
+  portable/application-native and managed-item boundaries preserved;
+
+Tampermonkey:
+  JavaScript syntax check passed;
+  one Orientation, four Directions, twelve Use Cases
+  and eleven projected UCM commands;
+  projected command English names match the root UCM;
+  no external network, repository-write, commit or push behavior.
+```
+
+Corrections were limited to stale Batch 4/5/6 transition/status statements. No semantic identities, item counts, command routes or runtime architecture were changed.
+
 ## 7. Remaining Work
 
 ```text
 - exact item-formation command names and UCM route;
-- whole-repository terminology/owner/link/projection audit;
 - Chat/AI/Work-State trigger-to-result review;
 - Prototype-Depth Scenario/Domain/Slice methodology;
 - runtime/storage/parser/Markdown-reference architecture.
 ```
 
-Runtime/code behavior was not audited or implemented by these documentation batches.
+Runtime implementation outside the Tampermonkey planning-helper syntax/projection boundary was not audited or implemented by these documentation batches.

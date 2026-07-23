@@ -1,7 +1,7 @@
 # Planning Item And Full Picture End-To-End Workflow
 
-Status: active accepted project-local Complete Picture / item-backed / reusable-method synchronized
-Doc version: v0.3.0-semantic-registries-and-input-conventions
+Status: active accepted project-local Complete Picture / item-backed / reusable-method, semantic-registry and helper-projection synchronization audited
+Doc version: v0.4.0-whole-repository-audit
 Scope: trigger-to-result product workflow for preserving source meaning, forming and reviewing Planning Items, maintaining an item-backed Full Picture, applying concerns proportionally, deepening justified work and handing accepted meaning to durable documentation.
 
 ## 1. Purpose
@@ -589,8 +589,8 @@ This workflow does not own:
 - final app storage/database architecture;
 - exact structured-response machine syntax;
 - implementation of parser/runtime mode detection;
-- root Direction/Use-Case registries before Batch 4;
-- Tampermonkey multi-surface projection before Batch 5;
+- root/local Direction and Use-Case Registry ownership, which remains outside this workflow body;
+- Tampermonkey planning-surface projection, which remains a derived helper layer rather than workflow authority;
 - Prototype-Depth Scenario/Domain/Slice methodology;
 - commit or push.
 

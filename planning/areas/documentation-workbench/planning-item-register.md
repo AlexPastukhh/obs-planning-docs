@@ -4274,6 +4274,6 @@ portable path:
 - Portable Markdown mode remains supported.
 - `Source Idea` is not introduced.
 - Prototype-Depth Scenario/Domain/Slice methodology remains a separate next task.
-- Direction/Use-Case registries, item-formation command and Tampermonkey semantic surfaces remain later batches.
+- Direction/Use-Case registries and Tampermonkey semantic surfaces are now synchronized; only the exact item-formation command naming/UCM route remains deferred.
 - Chat/AI/Work-State remains provisional.
 - No new `ITEM-*` identity is created by this workflow-placement transition.

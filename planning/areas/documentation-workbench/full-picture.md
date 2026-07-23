@@ -1,7 +1,7 @@
 # Documentation Workbench Full Picture
 
-Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable method, semantic registries and helper projection synchronized / implementation incomplete
-Doc version: v0.7.0-helper-projection-synchronized
+Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable method, semantic registries and helper projection synchronized / planning-owner consistency audited / implementation incomplete
+Doc version: v0.8.0-whole-repository-audit
 Scope: application-level identity, workflow inventory, shared invariants and coordination for Documentation Workbench. Complete item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
@@ -378,8 +378,8 @@ No fallback in this Full Picture resolves these questions silently.
 5. Planning Item/Full Picture end-to-end workflow.                       ✓
 6. Synchronize reusable formation/terminology/principles/templates.     ✓
 7. Add Direction/Use-Case registries and project input conventions.     ✓
-8. Add multi-surface helper projection.                                  ✓ this update
-9. Run whole-repository consistency validation.
+8. Add multi-surface helper projection.                                 ✓
+9. Run whole-repository planning-owner consistency validation.          ✓ this update
 10. Name/add the item-formation command after explicit naming.
 11. Review Chat/AI/Work-State against the Complete Picture rule.
 12. Plan prototype-depth methodology and runtime architecture separately.

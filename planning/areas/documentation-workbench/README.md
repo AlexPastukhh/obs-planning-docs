@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area
-Doc version: v0.7.0-helper-projected-registries
+Doc version: v0.8.0-whole-repository-audit
 Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -224,6 +224,7 @@ The helper is projection only. It does not become a local owner and no tracked p
 - Reusable Planning Item Formation workflow and exact review template are synchronized.
 - Local Direction and Use-Case Registries are active and linked from the root registry.
 - Orientation/Direction/Use-Case/Command helper projection is synchronized without changing local ownership.
+- The Batch 6 planning-owner terminology, ownership, link and projection audit is complete; only stale transition/status text required correction.
 - Chat/AI/Work-State remains a provisional thematic slice pending end-to-end review.
 - Prototype-Depth Scenario/Domain/Slice methodology is deferred to a separate task.
 - No runtime, application shell, storage architecture or exact Markdown marker syntax is selected.
