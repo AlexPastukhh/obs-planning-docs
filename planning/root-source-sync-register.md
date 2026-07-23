@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v0.7.0-semantic-registries
+Doc version: v0.8.0-tampermonkey-semantic-surfaces
 Scope: register root planning files, reusable owners and local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -79,11 +79,38 @@ new active identities:
 
 `ITEM-22B / ITEM-TO-OBJECT` remains the stable Planning Item/managed Reference Object boundary identity.
 
+## 6A. Tampermonkey Projection
+
+Owners:
+
+```text
+planning/documentation/tampermonkey-command-projection-workflow.md
+planning/documentation/tools/tampermonkey/README.md
+planning/documentation/tools/tampermonkey/chat-command-palette.user.js
+```
+
+Accepted surfaces:
+
+```text
+Orientation → planning/README.md + planning/direction-registry.md;
+Directions  → accepted Direction Registries;
+Use Cases   → accepted/provisional-supported Use-Case Registries;
+Commands    → planning/planning-use-case-map.md.
+```
+
+Boundaries:
+
+- the helper does not own semantic entries, commands or permissions;
+- Adaptive and Full share one definition;
+- command-related Use Cases do not duplicate command execution;
+- no item-formation command exists before exact UCM naming;
+- Chat/AI/Work-State remains provisional;
+- the helper performs no repository write, Git or external network behavior.
+
 ## 7. Remaining Work
 
 ```text
 - exact item-formation command names and UCM route;
-- Tampermonkey Orientation/Directions/Use Cases projection;
 - whole-repository terminology/owner/link/projection audit;
 - Chat/AI/Work-State trigger-to-result review;
 - Prototype-Depth Scenario/Domain/Slice methodology;

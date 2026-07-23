@@ -1,7 +1,7 @@
 # Documentation Workbench Full Picture
 
-Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable method and semantic registries synchronized / implementation incomplete
-Doc version: v0.6.0-semantic-registries
+Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable method, semantic registries and helper projection synchronized / implementation incomplete
+Doc version: v0.7.0-helper-projection-synchronized
 Scope: application-level identity, workflow inventory, shared invariants and coordination for Documentation Workbench. Complete item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
@@ -81,6 +81,36 @@ planning/direction-registry.md
 ```
 
 The registries provide semantic navigation and owner routes. They do not replace this Full Picture, workflow bodies, the item register or command permissions.
+
+## 4B. Helper Projection Route
+
+```text
+Tampermonkey Orientation
+  → planning/README.md + planning/direction-registry.md;
+
+Tampermonkey Directions
+  → root/local Direction Registries;
+
+Tampermonkey Use Cases
+  → reusable-family/local Use-Case Registries;
+
+Tampermonkey Commands
+  → planning/planning-use-case-map.md.
+```
+
+Documentation Workbench projections:
+
+```text
+Direction:
+  Develop And Maintain Documentation Workbench;
+
+Use Cases:
+  Documentation And Reference Object End-To-End Workflow;
+  Planning Item And Full Picture End-To-End Workflow;
+  Structured User Message Composer.
+```
+
+The helper performs composer insertion/copy only and does not replace this Full Picture, workflow bodies, the register or permission owners.
 
 ## 5. Documentation And Reference Object End-To-End Workflow
 
@@ -347,10 +377,10 @@ No fallback in this Full Picture resolves these questions silently.
 4. Accepted recent-chat item reconciliation and 48 → 51 register.       ✓
 5. Planning Item/Full Picture end-to-end workflow.                       ✓
 6. Synchronize reusable formation/terminology/principles/templates.     ✓
-7. Add Direction/Use-Case registries and project input conventions.       ✓ this update
-8. Name and add the item-formation command.
-9. Add multi-surface helper projection.
-10. Run whole-repository consistency validation.
+7. Add Direction/Use-Case registries and project input conventions.     ✓
+8. Add multi-surface helper projection.                                  ✓ this update
+9. Run whole-repository consistency validation.
+10. Name/add the item-formation command after explicit naming.
 11. Review Chat/AI/Work-State against the Complete Picture rule.
 12. Plan prototype-depth methodology and runtime architecture separately.
 ```

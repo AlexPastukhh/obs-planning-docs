@@ -1,15 +1,17 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.15.0-end-to-end-complete-picture-reconciliation
-Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable command projection and project planning runtime tools.
+Doc version: v0.16.0-semantic-planning-surfaces
+Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable Orientation/Direction/Use-Case/Command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
 
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
-  reusable command projection only; command meaning stays in owner documentation.
-  Its floating launcher hides while Dashboard is open; Alt+F2 and Tools -> Commands remain available.
+  reusable Orientation / Directions / Use Cases / Commands projection;
+  semantic and command meaning stays in owner documentation;
+  its floating Planning launcher hides while Dashboard is open;
+  Alt+F2 and Tools -> Commands remain available.
 
 planning/documentation/tools/tampermonkey/local-planning-dashboard-viewer.user.js
   repository-read-only, local-editable and self-describing dashboard runtime; opens on Day -> Plan by default,
@@ -42,13 +44,26 @@ Tampermonkey command projection does not define command meaning.
 Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by UCM commands.
 ```
 
-Command semantics must come from:
+Planning-helper semantics must come from:
 
 ```text
-planning/planning-use-case-map.md
-planning/documentation/command-planning-workflow.md
-planning/documentation/tampermonkey-command-projection-workflow.md
-other linked command owner workflows/examples
+Orientation:
+  planning/README.md
+  planning/direction-registry.md
+
+Directions:
+  root/local Direction Registries
+
+Use Cases:
+  reusable-family/local Use-Case Registries
+
+Commands:
+  planning/planning-use-case-map.md
+  planning/documentation/command-planning-workflow.md
+
+Projection behavior:
+  planning/documentation/tampermonkey-command-projection-workflow.md
+  other linked owner workflows/templates/areas
 ```
 
 ## 3. Storage boundary
@@ -307,6 +322,75 @@ The reusable Command Palette provides:
 - no repo writes, network calls, commits or pushes.
 ```
 
+## 9A. Orientation / Directions / Use Cases / Commands
+
+The reusable planning helper has four tabs:
+
+```text
+Orientation
+Directions
+Use Cases
+Commands
+```
+
+Authority:
+
+```text
+Orientation → root documentation;
+Directions  → Direction Registries;
+Use Cases   → Use-Case Registries;
+Commands    → root UCM.
+```
+
+Controls:
+
+```text
+main row:
+  Adaptive insert;
+
+Full:
+  mandatory complete entry/owner reread;
+
+Copy:
+  Adaptive body copy;
+
+Open Commands:
+  redirect a command-related Use Case without duplicate execution;
+
+Cmd fmt:
+  `давай архив` only.
+```
+
+Projected Directions:
+
+```text
+Plan A Solution Or Workflow
+Perform Detailed Scenario/Domain/Slice Planning
+Maintain Documentation, Use Cases And Commands
+Develop And Maintain Documentation Workbench
+```
+
+Projected Use Cases:
+
+```text
+Understand Current Workflow And Reality
+Form Planning Items From Discussion
+Build Or Review An Item-Backed Full Picture
+Reconcile Planning Items → Commands
+Research Existing Solutions And Alternative Workflows
+Draft Detailed Scenario
+Draft Or Review Domain
+Plan Implementation Slice
+Review Scenario/Domain/Slice Consistency
+Documentation And Reference Object End-To-End Workflow
+Planning Item And Full Picture End-To-End Workflow
+Structured User Message Composer
+```
+
+`Form Planning Items From Discussion` is context-only until an exact UCM command is accepted.
+
+Chat/AI/Work-State remains provisional and is not projected as accepted.
+
 ## 10. Command Palette adaptation rule
 
 Before enabling or adapting the reusable helper for another project, verify:
@@ -341,7 +425,9 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Event IDs identify browser records only; Finished Sessions Markdown does not store them.
 - Duplicate protection uses source SHA-256, source row boundary, exact resulting row count and ordered appended sequence.
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
-- Do not treat Command Palette as command authority.
+- Do not treat the Planning Helper as Orientation, Direction, Use-Case or command authority.
+- Do not let Direction/Use-Case activation execute commands or grant permissions.
+- Do not add an item-formation command before its UCM route exists.
 - Do not add project-only command semantics without a UCM route.
 - Do not let the Planning Item reconciliation projection reduce review to isolated item rows, preserve a thematic peer-CP split when one mandatory workflow crosses it, label supporting models/views as Complete Pictures without independent lifecycle, assume one incoming item equals one result, hide Current/Incoming/Resulting meanings or lose relevant validation signals, or edit item registers or repository files.
 - Do not duplicate archive command-format rules inside the helper refinement body.

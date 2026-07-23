@@ -1,7 +1,7 @@
 # OBS Root Direction Registry
 
 Status: active project-specific root semantic Direction Registry
-Doc version: v0.1.0-initial-direction-hierarchy
+Doc version: v0.2.0-helper-projected
 Scope: OBS root orientation across broad semantic work Directions and references to complete reusable-family/project-local registries.
 
 ## 1. Authority
@@ -148,6 +148,35 @@ Form Planning Items From Discussion
 ```
 
 The item-formation command is not added until its canonical Russian command, canonical English name and aliases are explicitly selected.
+
+## 7A. Helper Projection
+
+The Tampermonkey **Directions** surface projects the four accepted entries in this registry:
+
+```text
+DIR-PLAN-SOLUTION
+DIR-DETAILED-SDS
+DIR-MAINTAIN-DOCS-ROUTES
+DIR-DOCUMENTATION-WORKBENCH
+```
+
+Adaptive:
+
+```text
+reuse clearly current context;
+reread the selected registry entry and owner route when uncertain.
+```
+
+Full:
+
+```text
+always reread the complete selected entry and relevant owner route;
+do not expand into unrelated Direction families.
+```
+
+Direction activation establishes context only. It does not execute commands or grant repository permissions.
+
+The helper projects `Form Planning Items From Discussion` under Use Cases only and redirects `Reconcile Planning Items` to the existing command route.
 
 ## 8. Orientation Read Order
 

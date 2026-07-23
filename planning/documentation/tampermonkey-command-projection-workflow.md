@@ -1,14 +1,24 @@
-# Tampermonkey Command Projection Workflow
+# Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.8.0-standalone-doc-principles-command
-Scope: reusable rules for projecting accepted project command routes and owner-read refinements into the reusable Tampermonkey/ChatGPT command helper UI.
+Doc version: v0.9.0-orientation-direction-use-case-command-surfaces
+Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries, command routes and owner-read refinements into the Tampermonkey/ChatGPT planning helper UI.
 
 ## 1. Core Rule
 
 Tampermonkey is projection only.
 
 ```text
+Orientation authority:
+  planning/README.md
+  planning/direction-registry.md
+
+Direction authority:
+  root/local Direction Registries
+
+Use-Case authority:
+  reusable-family/local Use-Case Registries
+
 Command routing and canonical English name authority:
   planning/planning-use-case-map.md
 
@@ -248,6 +258,168 @@ The apply stage must still verify exact local base blobs before changes.
 
 The full source-selection algorithm remains in `reviewable-agent-output-and-commands-workflow.md`.
 
+## 9A. Four Planning Surfaces
+
+```text
+Orientation:
+  explain planning architecture and select context;
+
+Directions:
+  project broad semantic Directions, topology and owner routes;
+
+Use Cases:
+  project independently useful supported capabilities;
+
+Commands:
+  project accepted UCM routes and immediate execution permissions.
+```
+
+Only Commands request immediate execution.
+
+## 9B. Shared Semantic Body Contract
+
+Orientation:
+
+```text
+[PLANNING_ORIENTATION]
+orientation_id:
+  <ID>
+
+orientation:
+  <name>
+
+mode:
+  adaptive / full
+
+source_of_truth:
+  - `<root owner>`
+
+read_rule:
+  <adaptive/full>
+
+instruction:
+  <context-selection instruction>
+
+user_target:
+  <placeholder>
+[/PLANNING_ORIENTATION]
+```
+
+Directions and Use Cases use the corresponding markers:
+
+```text
+[PLANNING_DIRECTION] ... [/PLANNING_DIRECTION]
+[PLANNING_USE_CASE] ... [/PLANNING_USE_CASE]
+```
+
+Each body identifies the registry entry and complete owner route.
+
+## 9C. Shared Adaptive / Full Semantics
+
+Adaptive:
+
+```text
+reuse current remembered context only while clearly sufficient;
+reread entry/owner when not read, forgotten, uncertain,
+possibly changed or explicitly requested.
+```
+
+Full:
+
+```text
+always reread the complete selected entry and relevant owner route;
+read relevant parent/root entry when needed;
+do not expand into unrelated repository families;
+do not expand permissions.
+```
+
+One semantic definition generates both variants.
+
+## 9D. Duplicate Use-Case / Command Boundary
+
+```text
+command is the practical entry point:
+  Use Cases surface shows Open Commands;
+  no duplicate execution-like prompt;
+
+command covers only one stage of a broader use case:
+  retain the broader Use Case context entry;
+  state the limited command relationship.
+```
+
+Current application:
+
+```text
+Reconcile Planning Items
+  → Open Commands / `сверь айтемы`;
+
+Planning Item And Full Picture End-To-End Workflow
+  → remains a broader Use Case;
+  → `сверь айтемы` covers only reconciliation.
+```
+
+## 9E. Item-Formation Boundary
+
+`Form Planning Items From Discussion` is projected under Use Cases only.
+
+Do not add a Commands entry until the root UCM contains an explicitly accepted canonical Russian command, canonical English name and aliases.
+
+## 9F. Initial Semantic Inventory
+
+Directions:
+
+```text
+DIR-PLAN-SOLUTION
+DIR-DETAILED-SDS
+DIR-MAINTAIN-DOCS-ROUTES
+DIR-DOCUMENTATION-WORKBENCH
+```
+
+Use Cases:
+
+```text
+UC-AP-REALITY
+UC-AP-FORM-ITEMS
+UC-AP-FULL-PICTURE
+UC-AP-RECONCILE → Commands redirect
+UC-AP-RESEARCH
+UC-AP-SCENARIO
+UC-AP-DOMAIN
+UC-AP-SLICE
+UC-AP-SDS-CONSISTENCY
+UC-DW-DOC-REF
+UC-DW-ITEM-FULL-PICTURE
+UC-DW-STRUCTURED-MESSAGE
+```
+
+Chat/AI/Work-State remains provisional and is not projected as accepted.
+
+## 9G. Multi-Surface UI Contract
+
+```text
+tabs:
+  Orientation;
+  Directions;
+  Use Cases;
+  Commands;
+
+search:
+  current surface only;
+
+entry controls:
+  main button = Adaptive insert;
+  Full = Full insert;
+  Copy = Adaptive copy;
+
+command-related Use Case:
+  Open Commands;
+
+command refinement:
+  Cmd fmt for `давай архив`.
+```
+
+Preserve the draggable panel, `Alt+F2`, Dashboard toggle/launcher coordination, composer insertion, clipboard fallback and single-instance behavior.
+
 ## 10. Placement
 
 The reusable full helper lives at:
@@ -262,6 +434,9 @@ Do not create a tracked local `tools/tampermonkey/` copy by default.
 
 ```text
 - Do not add helper commands without UCM routes.
+- Do not make Orientation, Direction or Use-Case activation execute a command or grant permissions.
+- Do not duplicate a command-related Use Case as an execution action.
+- Do not project provisional Chat/AI/Work-State as accepted.
 - Do not make the userscript a command or English-name source of truth.
 - Do not put per-invocation read-mode policy into the root UCM.
 - Do not create separate command-definition copies for adaptive, full or refinement variants.

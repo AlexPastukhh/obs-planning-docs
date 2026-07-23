@@ -1,7 +1,7 @@
 # OBS Workflow Activation Map
 
 Status: active project-specific root planning/task router
-Doc version: v0.10.0-semantic-registry-activation
+Doc version: v0.11.0-helper-surface-activation
 Scope: decide which semantic registry, reusable workflow and project-local owner to read before answering or editing in OBS planning work.
 
 ## 1. Default Rule
@@ -40,7 +40,7 @@ Registry activation does not grant repository permissions.
 | Maintain registries | Root Direction Registry | Registry workflow/templates, affected registries and navigation owners | UCM changes only for executable commands. |
 | Plan command | Root UCM | Documentation preflight, command workflow, UCM owner/template and related registry entry | Plan-only; helper decision separate. |
 | Replacement archive | Root UCM | Reviewable-output workflow, documentation-update workflow, relevant owners/targets | Full replacements, exact base validation, one-line apply/diff command. |
-| Tampermonkey helper | UCM for commands; registries for semantic surfaces | Projection workflow and helper owners | Projection only; Batch 5 adds semantic surfaces. |
+| Tampermonkey helper | `planning/README.md` for Orientation; registries for Directions/Use Cases; UCM for Commands | Projection workflow, tools README and userscript | Projection only; Adaptive/Full changes read depth, not permissions. |
 | Documentation update | `planning/documentation/README.md` | Documentation preflight and update workflows | Plan-first for broad changes. |
 | Documentation Workbench planning | Local registries | Area README, Full Picture, affected owner and targeted sources | Local concrete state. |
 | Conspects | `planning/areas/conspects/README.md` | Local owners | Local application. |
@@ -54,6 +54,31 @@ root UCM → executable triggers, output and permissions;
 reusable workflow → repeated method;
 project-local owner → accepted concrete state;
 Tampermonkey → projection only.
+```
+
+## 3A. Helper-Surface Behavior
+
+```text
+Orientation:
+  explain architecture and help select context;
+
+Direction:
+  explain topology/optionality and relevant Use Cases;
+
+Use Case:
+  explain trigger/input, result, current stage and next actor/action;
+
+Command:
+  request immediate execution only under the UCM route;
+
+Adaptive:
+  reuse context only while clearly sufficient;
+
+Full:
+  reread the complete selected entry/route without expanding permissions;
+
+Open Commands:
+  redirect a command-related Use Case instead of creating duplicate execution.
 ```
 
 ## 4. Evidence Boundary

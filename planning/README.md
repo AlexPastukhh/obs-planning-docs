@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.6.0-semantic-registries
+Doc version: v0.7.0-semantic-helper-projection
 Scope: OBS repository planning entry point, semantic Direction orientation, concrete command routing, task activation and source/owner pointers built on the reusable documentation layer.
 
 ## 1. Purpose
@@ -133,6 +133,28 @@ Input conventions: `planning/planning-input-conventions.md`.
 
 There is no root UCM command yet because the canonical Russian command, English name and aliases are unresolved.
 
-## 7. Tampermonkey Helper
+## 7. Tampermonkey Planning Helper
 
-Current helper projects accepted commands only. Batch 5 adds Orientation, Directions, Use Cases and Commands surfaces from root documentation, registries and the UCM. The helper remains projection-only.
+Current helper surfaces:
+
+```text
+Orientation
+Directions
+Use Cases
+Commands
+```
+
+Authority:
+
+```text
+Orientation → planning/README.md + planning/direction-registry.md;
+Directions  → root/local Direction Registries;
+Use Cases   → reusable-family/local Use-Case Registries;
+Commands    → planning/planning-use-case-map.md.
+```
+
+The helper performs composer insertion/copy only. It does not write repository files, call Git or grant permissions.
+
+`Reconcile Planning Items` redirects to the existing `сверь айтемы` command instead of creating a duplicate execution action.
+
+`Form Planning Items From Discussion` is projected under Use Cases only. No command profile exists until its canonical Russian command, canonical English name and aliases are explicitly accepted.

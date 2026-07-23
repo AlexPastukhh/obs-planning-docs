@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area
-Doc version: v0.6.0-semantic-registries
+Doc version: v0.7.0-helper-projected-registries
 Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -191,6 +191,26 @@ existing accepted owner
 
 Do not create one file per item, capability, question or UI surface.
 
+## 7A. Helper Projection
+
+The reusable Tampermonkey helper projects:
+
+```text
+Direction:
+  Develop And Maintain Documentation Workbench;
+
+Use Cases:
+  Documentation And Reference Object End-To-End Workflow;
+  Planning Item And Full Picture End-To-End Workflow;
+  Structured User Message Composer.
+```
+
+`Reconcile Planning Items` remains an application-planning Use Case linked to the existing `сверь айтемы` command.
+
+Chat/AI/Work-State remains provisional and is not projected as an accepted Use Case.
+
+The helper is projection only. It does not become a local owner and no tracked project-local helper fork is created.
+
 ## 8. Current State
 
 ```text
@@ -203,6 +223,7 @@ Do not create one file per item, capability, question or UI surface.
 - Portable Markdown item review remains a supported fallback/interoperability mode.
 - Reusable Planning Item Formation workflow and exact review template are synchronized.
 - Local Direction and Use-Case Registries are active and linked from the root registry.
+- Orientation/Direction/Use-Case/Command helper projection is synchronized without changing local ownership.
 - Chat/AI/Work-State remains a provisional thematic slice pending end-to-end review.
 - Prototype-Depth Scenario/Domain/Slice methodology is deferred to a separate task.
 - No runtime, application shell, storage architecture or exact Markdown marker syntax is selected.

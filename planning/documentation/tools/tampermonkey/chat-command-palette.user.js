@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Reusable Chat Command Helper
+// @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.15.0-end-to-end-complete-picture-reconciliation
-// @description  Reusable projection-only command helper with canonical command names, end-to-end item reconciliation and adaptive/full route reading.
+// @version      0.16.1-semantic-planning-surfaces-preserved
+// @description  Projection-only Orientation, Directions, Use Cases and Commands helper with Adaptive/Full owner reading.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -10,45 +10,231 @@
 // @grant        none
 // ==/UserScript==
 
-/*
-TM-OBS-REUSE source sync:
-  Source-of-truth:
-    - planning/planning-use-case-map.md
-    - planning/documentation/tampermonkey-command-projection-workflow.md
-    - planning/documentation/tools/tampermonkey/README.md
-
-  Boundary:
-    - This userscript is a reusable documentation-layer helper projection.
-    - It is not command source of truth.
-    - Command semantics remain owned by the project root use-case map and linked owner workflow/template/area files.
-    - The command set below is trimmed to accepted OBS root UCM routes.
-    - This helper performs UI projection and composer insertion only; it does not write to the repo or call external services.
-    - The default command button keeps adaptive route reading.
-    - The Full button forces a fresh read of the command's complete required route for that invocation.
-    - Optional refinement buttons only list owner docs to reread; they do not duplicate owner rules.
-
-  Implementation note:
-    - Multiline command bodies are assembled with Array.join("\n") so the userscript remains valid JavaScript.
-*/
-
 (function () {
   'use strict';
 
-  const INSTANCE_DISPOSE_KEY = '__obsCommandHelperDisposeV1';
-  const previousDispose = window[INSTANCE_DISPOSE_KEY];
-  if (typeof previousDispose === 'function') {
-    try {
-      previousDispose();
-    } catch (error) {
-      // A stale previous instance must not block a clean mount.
+  const INSTANCE_DISPOSE_KEY = '__obsPlanningHelperDisposeV2';
+  const LEGACY_DISPOSE_KEYS = ['__obsCommandHelperDisposeV1'];
+
+  for (const key of [INSTANCE_DISPOSE_KEY, ...LEGACY_DISPOSE_KEYS]) {
+    const previousDispose = window[key];
+    if (typeof previousDispose === 'function') {
+      try {
+        previousDispose();
+      } catch (error) {
+        // A stale previous instance must not block a clean mount.
+      }
     }
   }
 
-  const ROUTE_READ_MODE = Object.freeze({
-    ADAPTIVE: 'adaptive',
-    FORCE_FULL: 'force-full'
+  const MODE = Object.freeze({ ADAPTIVE: 'adaptive', FULL: 'full' });
+  const SURFACES = Object.freeze({
+    ORIENTATION: 'Orientation',
+    DIRECTIONS: 'Directions',
+    USE_CASES: 'Use Cases',
+    COMMANDS: 'Commands'
   });
 
+  const ORIENTATION_DEFINITIONS = [
+  {
+    "id": "OBS-PLANNING-ORIENTATION",
+    "label": "OBS Planning Orientation",
+    "description": "architecture and context selection",
+    "sources": [
+      "planning/README.md",
+      "planning/direction-registry.md"
+    ],
+    "instruction": "Explain the current planning architecture, distinguish Directions, Use Cases and Commands, and help select the relevant context. Do not execute unrelated commands.",
+    "target": "<what planning context should be oriented>"
+  }
+];
+  const DIRECTION_DEFINITIONS = [
+  {
+    "id": "DIR-PLAN-SOLUTION",
+    "label": "Plan A Solution Or Workflow",
+    "description": "solution/workflow planning",
+    "sources": [
+      "planning/direction-registry.md",
+      "planning/documentation/application-planning/direction-registry.md",
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Establish this Direction as current context. Explain optional topology and the relevant Use Cases. Do not execute every branch automatically.",
+    "target": "<solution or workflow target>"
+  },
+  {
+    "id": "DIR-DETAILED-SDS",
+    "label": "Perform Detailed Scenario/Domain/Slice Planning",
+    "description": "profile-limited detailed planning",
+    "sources": [
+      "planning/direction-registry.md",
+      "planning/documentation/application-planning/direction-registry.md",
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/profiles/scenario-domain-slice-docs-profile.md"
+    ],
+    "instruction": "Establish this profile-limited Direction. Explain Scenario/Domain/Slice topology and current owner boundaries. Do not invent prototype-depth methodology.",
+    "target": "<scenario/domain/slice target>"
+  },
+  {
+    "id": "DIR-MAINTAIN-DOCS-ROUTES",
+    "label": "Maintain Documentation, Use Cases And Commands",
+    "description": "documentation and routing",
+    "sources": [
+      "planning/direction-registry.md",
+      "planning/documentation/direction-and-use-case-registry-workflow.md",
+      "planning/planning-use-case-map.md"
+    ],
+    "instruction": "Establish documentation/registry/command maintenance context and keep registries, UCM, workflows, templates and projection authority distinct.",
+    "target": "<documentation or routing target>"
+  },
+  {
+    "id": "DIR-DOCUMENTATION-WORKBENCH",
+    "label": "Develop And Maintain Documentation Workbench",
+    "description": "project-local product direction",
+    "sources": [
+      "planning/direction-registry.md",
+      "planning/areas/documentation-workbench/direction-registry.md",
+      "planning/areas/documentation-workbench/use-case-registry.md",
+      "planning/areas/documentation-workbench/full-picture.md"
+    ],
+    "instruction": "Establish the Documentation Workbench Direction, accepted Complete Pictures, supporting model and provisional boundaries. Do not claim runtime implementation.",
+    "target": "<Documentation Workbench target>"
+  }
+];
+  const USE_CASE_DEFINITIONS = [
+  {
+    "id": "UC-AP-REALITY",
+    "label": "Understand Current Workflow And Reality",
+    "description": "current reality capture",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/application-planning/application-planning-drafting-workflow.md"
+    ],
+    "instruction": "Establish descriptive current-reality context. Reconstruct actors, triggers, sequence, strengths, problems, risks, workarounds and unknowns without accepting future architecture.",
+    "target": "<current workflow/reality target>"
+  },
+  {
+    "id": "UC-AP-FORM-ITEMS",
+    "label": "Form Planning Items From Discussion",
+    "description": "full-message item formation",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/application-planning/planning-item-formation-workflow.md",
+      "planning/documentation/application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md",
+      "planning/planning-input-conventions.md"
+    ],
+    "instruction": "Establish Planning Item formation context. Preserve complete source messages, accumulating meaning, typed contributions and portable/application-native boundaries. This is not a command and grants no repository permission.",
+    "target": "<source/discussion to form items from>"
+  },
+  {
+    "id": "UC-AP-FULL-PICTURE",
+    "label": "Build Or Review An Item-Backed Full Picture",
+    "description": "item-backed synthesis",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/application-planning/application-planning-drafting-workflow.md",
+      "planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md"
+    ],
+    "instruction": "Establish item-backed Full Picture context. Preserve canonical item ownership and trace significant statements to items/source/inference/question.",
+    "target": "<Full Picture target>"
+  },
+  {
+    "id": "UC-AP-RECONCILE",
+    "label": "Reconcile Planning Items",
+    "description": "open existing command",
+    "commandId": "planning_items.reconcile"
+  },
+  {
+    "id": "UC-AP-RESEARCH",
+    "label": "Research Existing Solutions And Alternative Workflows",
+    "description": "provisional proportional research",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/application-planning/application-planning-drafting-workflow.md"
+    ],
+    "instruction": "Establish provisional proportional research context. Compare checked options, coverage, strengths, limitations and disposition without creating an oversized specialized methodology.",
+    "target": "<solutions or alternative workflows to research>"
+  },
+  {
+    "id": "UC-AP-SCENARIO",
+    "label": "Draft Detailed Scenario",
+    "description": "profile-limited scenario",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/profiles/scenario-domain-slice-docs-profile.md"
+    ],
+    "instruction": "Establish detailed Scenario context using current profile and project-specific owners. Do not invent a new project command or prototype-depth method.",
+    "target": "<scenario target>"
+  },
+  {
+    "id": "UC-AP-DOMAIN",
+    "label": "Draft Or Review Domain",
+    "description": "profile-limited domain",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/profiles/scenario-domain-slice-docs-profile.md"
+    ],
+    "instruction": "Establish Domain review context for conceptual model, language and boundaries using current owners.",
+    "target": "<domain target>"
+  },
+  {
+    "id": "UC-AP-SLICE",
+    "label": "Plan Implementation Slice",
+    "description": "profile-limited slice",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/profiles/scenario-domain-slice-docs-profile.md"
+    ],
+    "instruction": "Establish Implementation Slice context for one separately deliverable/checkable increment aligned with accepted scenario/domain meaning.",
+    "target": "<slice target>"
+  },
+  {
+    "id": "UC-AP-SDS-CONSISTENCY",
+    "label": "Review Scenario/Domain/Slice Consistency",
+    "description": "cross-artifact consistency",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md",
+      "planning/documentation/profiles/scenario-domain-slice-docs-profile.md"
+    ],
+    "instruction": "Establish cross-artifact consistency review context and expose required upstream/downstream corrections.",
+    "target": "<scenario/domain/slice artifacts>"
+  },
+  {
+    "id": "UC-DW-DOC-REF",
+    "label": "Documentation And Reference Object End-To-End Workflow",
+    "description": "accepted Documentation Workbench Complete Picture",
+    "sources": [
+      "planning/areas/documentation-workbench/use-case-registry.md",
+      "planning/areas/documentation-workbench/full-picture.md",
+      "planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md"
+    ],
+    "instruction": "Establish this accepted trigger-to-result workflow. Preserve the managed Planning Item boundary and do not repeat object creation for an already managed item.",
+    "target": "<documentation/reference-object target>"
+  },
+  {
+    "id": "UC-DW-ITEM-FULL-PICTURE",
+    "label": "Planning Item And Full Picture End-To-End Workflow",
+    "description": "accepted Documentation Workbench Complete Picture",
+    "sources": [
+      "planning/areas/documentation-workbench/use-case-registry.md",
+      "planning/areas/documentation-workbench/full-picture.md",
+      "planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md"
+    ],
+    "instruction": "Establish the full Planning Item/Full Picture workflow. Treat `сверь айтемы` as one reconciliation stage rather than the whole use case.",
+    "target": "<Planning Item/Full Picture target>"
+  },
+  {
+    "id": "UC-DW-STRUCTURED-MESSAGE",
+    "label": "Structured User Message Composer",
+    "description": "supporting input capability",
+    "sources": [
+      "planning/areas/documentation-workbench/use-case-registry.md",
+      "planning/areas/documentation-workbench/planning-item-register.md",
+      "planning/planning-input-conventions.md"
+    ],
+    "instruction": "Establish structured-message composition context while preserving literal wording and free-form input. Do not make every fragment a Planning Item.",
+    "target": "<message/composition target>"
+  }
+];
   const COMMAND_DEFINITIONS = [
     {
       id: 'replacement_archive.create',
@@ -247,8 +433,59 @@ TM-OBS-REUSE source sync:
     }
   ];
 
-  function getRouteReadBlock(mode) {
-    if (mode === ROUTE_READ_MODE.FORCE_FULL) {
+  function readRule(mode, kind) {
+    if (mode === MODE.FULL) {
+      return [
+        `Full ${kind} reading is required for this invocation.`,
+        'Read every listed source and the complete relevant owner route even if it was read earlier in this chat.',
+        'Read the relevant parent/root entry when needed.',
+        'Do not expand into unrelated repository families.',
+        'Full changes read depth only; it does not expand permissions.'
+      ];
+    }
+    return [
+      `Use current remembered ${kind} context only while it is clearly sufficient.`,
+      'Read the listed source and owner route when it was not read in this chat, is forgotten/uncertain, may have changed, or verification is requested.',
+      'Do not rely on this compact prompt when ownership, status or boundaries are uncertain.'
+    ];
+  }
+
+  function buildSemanticBody(kind, definition, mode) {
+    const tag = kind === 'orientation'
+      ? 'PLANNING_ORIENTATION'
+      : kind === 'direction'
+        ? 'PLANNING_DIRECTION'
+        : 'PLANNING_USE_CASE';
+    const nameKey = kind === 'orientation' ? 'orientation' : kind === 'direction' ? 'direction' : 'use_case';
+    const idKey = `${kind}_id`;
+    return [
+      `[${tag}]`,
+      `${idKey}:`,
+      `  ${definition.id}`,
+      '',
+      `${nameKey}:`,
+      `  ${definition.label}`,
+      '',
+      'mode:',
+      `  ${mode}`,
+      '',
+      'source_of_truth:',
+      ...definition.sources.map((source) => `  - \`${source}\``),
+      '',
+      'read_rule:',
+      ...readRule(mode, kind).map((line) => `  ${line}`),
+      '',
+      'instruction:',
+      `  ${definition.instruction}`,
+      '',
+      'user_target:',
+      `  ${definition.target}`,
+      `[/${tag}]`
+    ].join('\n');
+  }
+
+  function commandReadBlock(mode) {
+    if (mode === MODE.FULL) {
       return [
         'source_of_truth:',
         '  Start from `planning/planning-use-case-map.md`.',
@@ -256,27 +493,24 @@ TM-OBS-REUSE source sync:
         '',
         'route_read_rule:',
         '  Full route reading is required for this invocation.',
-        '  Read the relevant command entry in `planning/planning-use-case-map.md`.',
-        '  Then read every owner, workflow, template and example file required by that command route for complete understanding.',
+        '  Read the relevant UCM entry and every required owner/workflow/template/example.',
         '  Do this even if the command was previously used in this chat.',
-        '  Do not execute the command from memory or from this compact prompt alone.',
-        '  Do not expand into unrelated repository files outside the command route.'
+        '  Do not expand into unrelated repository files.',
+        '  Full does not expand permissions.'
       ];
     }
-
     return [
       'source_of_truth:',
       '  Start from `planning/planning-use-case-map.md`.',
-      '  Then read the owner / linked files for this command route.',
+      '  Then read the linked owner files for this command route.',
       '',
       'route_read_rule:',
-      '  If you have not read this command route and its linked owner/example files in this chat, read them before answering.',
-      '  If you have read them but do not remember the required behavior, boundaries or key points, reread from `planning/planning-use-case-map.md` before answering.',
-      '  Do not rely only on this prompt when command behavior is uncertain.'
+      '  Read or reread the route when it is not current, remembered or certain.',
+      '  Do not rely only on this compact prompt when command behavior is uncertain.'
     ];
   }
 
-  function buildCommandBody(definition, routeReadMode) {
+  function buildCommandBody(definition, mode) {
     return [
       '[PLANNING_COMMAND]',
       'Read this whole command body before answering.',
@@ -291,7 +525,7 @@ TM-OBS-REUSE source sync:
       'command_family:',
       `  ${definition.family}`,
       '',
-      ...getRouteReadBlock(routeReadMode),
+      ...commandReadBlock(mode),
       '',
       'key_reminders:',
       ...definition.reminders.map((item) => `  - ${item}`),
@@ -303,7 +537,7 @@ TM-OBS-REUSE source sync:
     ].join('\n');
   }
 
-  function buildCommandRefinementBody(definition, refinement) {
+  function buildRefinementBody(definition, refinement) {
     return [
       '[PLANNING_COMMAND_REFINEMENT]',
       'command:',
@@ -322,195 +556,124 @@ TM-OBS-REUSE source sync:
     ].join('\n');
   }
 
-  const COMMANDS = COMMAND_DEFINITIONS.map((definition) => ({
+  const semanticEntries = {
+    [SURFACES.ORIENTATION]: ORIENTATION_DEFINITIONS.map((definition) => ({
+      ...definition,
+      adaptiveBody: buildSemanticBody('orientation', definition, MODE.ADAPTIVE),
+      fullBody: buildSemanticBody('orientation', definition, MODE.FULL)
+    })),
+    [SURFACES.DIRECTIONS]: DIRECTION_DEFINITIONS.map((definition) => ({
+      ...definition,
+      adaptiveBody: buildSemanticBody('direction', definition, MODE.ADAPTIVE),
+      fullBody: buildSemanticBody('direction', definition, MODE.FULL)
+    })),
+    [SURFACES.USE_CASES]: USE_CASE_DEFINITIONS.map((definition) => definition.commandId
+      ? { ...definition }
+      : {
+          ...definition,
+          adaptiveBody: buildSemanticBody('use_case', definition, MODE.ADAPTIVE),
+          fullBody: buildSemanticBody('use_case', definition, MODE.FULL)
+        })
+  };
+
+  const commandEntries = COMMAND_DEFINITIONS.map((definition) => ({
     ...definition,
-    adaptiveBody: buildCommandBody(definition, ROUTE_READ_MODE.ADAPTIVE),
-    fullRouteBody: buildCommandBody(definition, ROUTE_READ_MODE.FORCE_FULL),
+    adaptiveBody: buildCommandBody(definition, MODE.ADAPTIVE),
+    fullBody: buildCommandBody(definition, MODE.FULL),
     refinementBodies: (definition.refinements || []).map((refinement) => ({
       ...refinement,
-      body: buildCommandRefinementBody(definition, refinement)
+      body: buildRefinementBody(definition, refinement)
     }))
   }));
 
-  const HOST_ID = 'obs-command-helper-host';
-  const STORAGE_KEY = 'obs-command-helper-position-v1';
-  const existing = document.getElementById(HOST_ID);
-  if (existing) existing.remove();
+  const HOST_ID = 'obs-planning-helper-host';
+  const STORAGE_KEY = 'obs-planning-helper-position-v2';
+  document.getElementById(HOST_ID)?.remove();
+  document.getElementById('obs-command-helper-host')?.remove();
 
   const host = document.createElement('div');
   host.id = HOST_ID;
   document.documentElement.appendChild(host);
-
   const root = host.attachShadow({ mode: 'open' });
-  const savedPosition = readSavedPosition();
+
+  const saved = readSavedPosition();
+  let left = saved.left ?? Math.max(12, window.innerWidth - 510);
+  let top = saved.top ?? Math.max(12, window.innerHeight - 700);
+  let activeSurface = SURFACES.ORIENTATION;
   let isOpen = false;
   let dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === 'true';
-  let lastCommandsToggleToken = document.documentElement.dataset.obsPlanningCommandsToggle || '';
-  let left = savedPosition.left ?? Math.max(12, window.innerWidth - 470);
-  let top = savedPosition.top ?? Math.max(12, window.innerHeight - 620);
-  let statusTimerId = null;
+  let lastToggleToken = document.documentElement.dataset.obsPlanningCommandsToggle || '';
+  let statusTimer = null;
+  let focusCommandId = null;
 
   root.innerHTML = `
     <style>
       :host { all: initial; }
       * { box-sizing: border-box; }
+      button, input { font: inherit; }
       .launcher {
-        position: fixed;
-        right: 18px;
-        bottom: 22px;
-        z-index: 2147483647;
-        border: 1px solid rgba(148, 163, 184, .42);
-        border-radius: 999px;
-        padding: 9px 13px;
-        background: #111827;
-        color: #f8fafc;
-        font: 700 12px/1 system-ui, sans-serif;
-        cursor: pointer;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+        position: fixed; right: 18px; bottom: 22px; z-index: 2147483647;
+        border: 1px solid rgba(148,163,184,.42); border-radius: 999px;
+        padding: 9px 13px; background: #111827; color: #f8fafc;
+        font: 700 12px/1 system-ui,sans-serif; cursor: pointer;
+        box-shadow: 0 8px 24px rgba(0,0,0,.35);
       }
       .panel {
-        position: fixed;
-        left: ${left}px;
-        top: ${top}px;
-        z-index: 2147483647;
-        width: min(460px, calc(100vw - 24px));
-        max-height: min(76vh, 760px);
-        display: none;
-        flex-direction: column;
-        overflow: hidden;
-        border: 1px solid rgba(148, 163, 184, .35);
-        border-radius: 14px;
-        background: #0b1220;
-        color: #f8fafc;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
-        font: 13px/1.4 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        position: fixed; left: ${left}px; top: ${top}px; z-index: 2147483647;
+        width: min(500px, calc(100vw - 24px)); max-height: min(82vh, 820px);
+        display: none; flex-direction: column; overflow: hidden;
+        border: 1px solid rgba(148,163,184,.35); border-radius: 14px;
+        background: #0b1220; color: #f8fafc;
+        box-shadow: 0 20px 60px rgba(0,0,0,.5);
+        font: 13px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       }
       .panel[data-open="true"] { display: flex; }
       .header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px;
-        background: #111b2e;
-        border-bottom: 1px solid rgba(148, 163, 184, .2);
-        cursor: grab;
-        user-select: none;
+        display: flex; align-items: center; gap: 8px; padding: 10px;
+        background: #111b2e; border-bottom: 1px solid rgba(148,163,184,.2);
+        cursor: grab; user-select: none;
       }
       .header:active { cursor: grabbing; }
       .title { flex: 1; min-width: 0; }
       .title-main { font-weight: 800; }
       .title-sub { color: #94a3b8; font-size: 11px; }
       button {
-        border: 1px solid rgba(148, 163, 184, .3);
-        border-radius: 8px;
-        background: #17243a;
-        color: #f8fafc;
-        font: inherit;
-        cursor: pointer;
+        border: 1px solid rgba(148,163,184,.3); border-radius: 8px;
+        background: #17243a; color: #f8fafc; cursor: pointer;
       }
-      button:hover, button:focus-visible {
-        background: #243750;
-        outline: none;
-      }
+      button:hover, button:focus-visible { background: #243750; outline: none; }
       .close { width: 30px; height: 30px; }
-      .search-wrap {
-        padding: 9px;
-        border-bottom: 1px solid rgba(148, 163, 184, .16);
-      }
-      .search {
-        width: 100%;
-        border: 1px solid rgba(148, 163, 184, .3);
-        border-radius: 8px;
-        padding: 8px 9px;
-        background: #020817;
-        color: #f8fafc;
-        font: inherit;
-      }
+      .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 7px; border-bottom: 1px solid rgba(148,163,184,.16); }
+      .tab { padding: 7px 4px; font-size: 11px; }
+      .tab[aria-selected="true"] { background: #1d4ed8; border-color: #60a5fa; }
+      .search-wrap { padding: 8px; border-bottom: 1px solid rgba(148,163,184,.16); }
+      .search { width: 100%; padding: 8px 9px; border: 1px solid rgba(148,163,184,.3); border-radius: 8px; background: #020817; color: #f8fafc; }
       .body { overflow: auto; padding: 8px; }
-      .group-title {
-        padding: 7px 6px 4px;
-        color: #94a3b8;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-      }
-      .row {
-        width: 100%;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: stretch;
-        gap: 7px;
-        margin: 3px 0;
-      }
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        align-items: stretch;
-        gap: 7px;
-      }
-      .insert {
-        min-width: 0;
-        padding: 8px;
-        text-align: left;
-      }
-      .row-label {
-        display: block;
-        font-weight: 750;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .row-meta {
-        display: block;
-        color: #94a3b8;
-        font-size: 11px;
-      }
-      .full-route {
-        min-width: 54px;
-        padding: 5px 8px;
-        align-self: stretch;
-        border-color: rgba(96, 165, 250, .5);
-        color: #bfdbfe;
-      }
-      .refinement {
-        min-width: 64px;
-        padding: 5px 8px;
-        align-self: stretch;
-        border-color: rgba(167, 139, 250, .5);
-        color: #ddd6fe;
-      }
-      .copy {
-        padding: 5px 7px;
-        align-self: stretch;
-      }
-      .status {
-        margin: 0 8px 8px;
-        padding: 8px;
-        border-radius: 8px;
-        background: rgba(37, 99, 235, .18);
-        color: #bfdbfe;
-        white-space: pre-wrap;
-      }
-      .empty {
-        padding: 18px;
-        color: #94a3b8;
-        text-align: center;
-      }
+      .row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 7px; margin: 4px 0; }
+      .insert { min-width: 0; padding: 8px; text-align: left; }
+      .row-label { display: block; font-weight: 750; overflow: hidden; text-overflow: ellipsis; }
+      .row-meta { display: block; color: #94a3b8; font-size: 11px; }
+      .actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+      .full, .refinement, .copy, .open-command { padding: 5px 8px; }
+      .full { color: #bfdbfe; border-color: rgba(96,165,250,.5); }
+      .refinement { color: #ddd6fe; border-color: rgba(167,139,250,.5); }
+      .open-command { color: #bbf7d0; border-color: rgba(74,222,128,.5); }
+      .status { margin: 0 8px 8px; padding: 8px; border-radius: 8px; background: rgba(37,99,235,.18); color: #bfdbfe; white-space: pre-wrap; }
+      .empty { padding: 18px; color: #94a3b8; text-align: center; }
     </style>
-    <button class="launcher" type="button">Commands</button>
-    <section class="panel" data-open="false" aria-label="OBS command helper">
+    <button class="launcher" type="button">Planning</button>
+    <section class="panel" data-open="false" aria-label="OBS planning helper">
       <div class="header">
         <div class="title">
-          <div class="title-main">OBS Command Helper</div>
-          <div class="title-sub">Command = adaptive. Full = full route. Cmd fmt = reread format docs.</div>
+          <div class="title-main">OBS Planning Helper</div>
+          <div class="title-sub">Adaptive · Full · Copy. Commands keep UCM permissions.</div>
         </div>
         <button class="close" type="button" title="Close">×</button>
       </div>
-      <div class="search-wrap">
-        <input class="search" type="search" placeholder="Search commands…" autocomplete="off">
+      <div class="tabs" role="tablist">
+        ${Object.values(SURFACES).map((surface) => `<button class="tab" type="button" role="tab" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}
       </div>
+      <div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…" autocomplete="off"></div>
       <div class="body"></div>
     </section>
   `;
@@ -521,156 +684,127 @@ TM-OBS-REUSE source sync:
   const closeButton = root.querySelector('.close');
   const searchInput = root.querySelector('.search');
   const body = root.querySelector('.body');
+  const tabButtons = [...root.querySelectorAll('.tab')];
 
-  function setOpen(nextOpen) {
-    isOpen = Boolean(nextOpen);
+  function entriesForSurface(surface) {
+    return surface === SURFACES.COMMANDS ? commandEntries : semanticEntries[surface] || [];
+  }
+
+  function switchSurface(surface, commandId = null) {
+    activeSurface = surface;
+    focusCommandId = commandId;
+    searchInput.value = '';
+    tabButtons.forEach((button) => button.setAttribute('aria-selected', String(button.dataset.surface === surface)));
+    renderEntries('');
+  }
+
+  function setOpen(next) {
+    isOpen = Boolean(next);
     panel.dataset.open = String(isOpen);
     launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
-
     if (isOpen) {
       keepPanelInViewport();
-      renderCommands(searchInput.value);
+      switchSurface(activeSurface);
       window.setTimeout(() => searchInput.focus(), 0);
     }
   }
 
-  function handleGlobalShortcut(event) {
-    if (event.repeat) return;
-    const key = String(event.key || '');
-
-    if (event.altKey && !event.ctrlKey && !event.metaKey && key === 'F2') {
-      event.preventDefault();
-      event.stopPropagation();
-      setOpen(!isOpen);
-      return;
-    }
-
-    if (key === 'Escape' && isOpen) {
-      event.preventDefault();
-      event.stopPropagation();
-      setOpen(false);
-    }
-  }
-
-  function renderCommands(query) {
-    const normalizedQuery = String(query || '').trim().toLowerCase();
-    const filtered = COMMANDS.filter((command) => {
-      const haystack = [
-        command.label,
-        command.englishName,
-        command.description,
-        command.group,
-        'full route adaptive',
-        ...(command.refinementBodies || []).flatMap((refinement) => [
-          refinement.label,
-          refinement.description,
-          refinement.id,
-          ...refinement.readRequired
-        ])
-      ].join(' ').toLowerCase();
-
-      return !normalizedQuery || haystack.includes(normalizedQuery);
+  function renderEntries(query) {
+    const normalized = String(query || '').trim().toLowerCase();
+    const entries = entriesForSurface(activeSurface).filter((entry) => {
+      const parts = [entry.id, entry.label, entry.description, entry.englishName || '', entry.family || '', ...(entry.sources || [])];
+      return !normalized || parts.join(' ').toLowerCase().includes(normalized);
     });
 
     body.textContent = '';
-
-    if (!filtered.length) {
+    if (!entries.length) {
       const empty = document.createElement('div');
       empty.className = 'empty';
-      empty.textContent = 'No matching commands.';
+      empty.textContent = 'No matching entries.';
       body.appendChild(empty);
       return;
     }
 
-    ['Commands'].forEach((groupName) => {
-      const commands = filtered.filter((command) => command.group === groupName);
-      if (!commands.length) return;
+    entries.forEach((entry) => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      if (entry.id === focusCommandId) row.dataset.focus = 'true';
 
-      const heading = document.createElement('div');
-      heading.className = 'group-title';
-      heading.textContent = groupName;
-      body.appendChild(heading);
+      const main = document.createElement('button');
+      main.type = 'button';
+      main.className = 'insert';
 
-      commands.forEach((command) => {
-        const row = document.createElement('div');
-        row.className = 'row';
+      const label = document.createElement('span');
+      label.className = 'row-label';
+      label.textContent = activeSurface === SURFACES.COMMANDS
+        ? `${entry.englishName} · ${entry.label}`
+        : entry.label;
 
-        const insertButton = document.createElement('button');
-        insertButton.type = 'button';
-        insertButton.className = 'insert';
-        insertButton.title = 'Insert command body with adaptive route reading';
+      const meta = document.createElement('span');
+      meta.className = 'row-meta';
+      meta.textContent = entry.description || entry.id;
+      main.append(label, meta);
 
-        const label = document.createElement('span');
-        label.className = 'row-label';
-        label.textContent = `${command.englishName} · ${command.label}`;
+      const actions = document.createElement('div');
+      actions.className = 'actions';
 
-        const meta = document.createElement('span');
-        meta.className = 'row-meta';
-        meta.textContent = command.description;
-        insertButton.append(label, meta);
+      if (entry.commandId) {
+        main.title = 'Open the related accepted command';
+        main.addEventListener('click', () => switchSurface(SURFACES.COMMANDS, entry.commandId));
+        const open = document.createElement('button');
+        open.type = 'button';
+        open.className = 'open-command';
+        open.textContent = 'Open Commands';
+        open.addEventListener('click', () => switchSurface(SURFACES.COMMANDS, entry.commandId));
+        actions.append(open);
+      } else {
+        main.title = 'Insert Adaptive body';
+        main.addEventListener('click', () => insertAndReport(entry.adaptiveBody, `Inserted: ${entry.label} · Adaptive`));
 
-        const fullRouteButton = document.createElement('button');
-        fullRouteButton.type = 'button';
-        fullRouteButton.className = 'full-route';
-        fullRouteButton.textContent = 'Full';
-        fullRouteButton.title = 'Insert the same command and force a fresh read of its complete required route';
+        const full = document.createElement('button');
+        full.type = 'button';
+        full.className = 'full';
+        full.textContent = 'Full';
+        full.title = 'Insert Full body';
+        full.addEventListener('click', () => insertAndReport(entry.fullBody, `Inserted: ${entry.label} · Full`));
+        actions.append(full);
 
-        const refinementButtons = (command.refinementBodies || []).map((refinement) => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'refinement';
-          button.textContent = refinement.label;
-          button.title = refinement.description;
+        if (activeSurface === SURFACES.COMMANDS) {
+          for (const refinement of entry.refinementBodies || []) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'refinement';
+            button.textContent = refinement.label;
+            button.title = refinement.description;
+            button.addEventListener('click', () => insertAndReport(refinement.body, `Inserted refinement: ${entry.label} · ${refinement.label}`));
+            actions.append(button);
+          }
+        }
 
-          button.addEventListener('click', () => {
-            const inserted = insertIntoComposer(refinement.body);
-            showStatus(
-              inserted
-                ? `Inserted refinement: ${command.label} · ${refinement.label}`
-                : 'Composer was not found. Click the ChatGPT input and try again.'
-            );
-          });
+        const copy = document.createElement('button');
+        copy.type = 'button';
+        copy.className = 'copy';
+        copy.textContent = 'Copy';
+        copy.title = 'Copy Adaptive body';
+        copy.addEventListener('click', async () => showStatus(await copyText(entry.adaptiveBody) ? `Copied: ${entry.label} · Adaptive` : 'Clipboard copy failed.'));
+        actions.append(copy);
+      }
 
-          return button;
-        });
+      row.append(main, actions);
+      body.appendChild(row);
 
-        const copyButton = document.createElement('button');
-        copyButton.type = 'button';
-        copyButton.className = 'copy';
-        copyButton.textContent = 'Copy';
-        copyButton.title = 'Copy the adaptive command body';
-
-        insertButton.addEventListener('click', () => {
-          const inserted = insertIntoComposer(command.adaptiveBody);
-          showStatus(
-            inserted
-              ? `Inserted: ${command.label} · adaptive route read`
-              : 'Composer was not found. Click the ChatGPT input and try again.'
-          );
-        });
-
-        fullRouteButton.addEventListener('click', () => {
-          const inserted = insertIntoComposer(command.fullRouteBody);
-          showStatus(
-            inserted
-              ? `Inserted: ${command.label} · forced full route read`
-              : 'Composer was not found. Click the ChatGPT input and try again.'
-          );
-        });
-
-        copyButton.addEventListener('click', async () => {
-          const copied = await copyText(command.adaptiveBody);
-          showStatus(copied ? `Copied: ${command.label} · adaptive route read` : 'Clipboard copy failed.');
-        });
-
-        const actions = document.createElement('div');
-        actions.className = 'actions';
-        actions.append(fullRouteButton, ...refinementButtons, copyButton);
-
-        row.append(insertButton, actions);
-        body.appendChild(row);
-      });
+      if (entry.id === focusCommandId) {
+        window.setTimeout(() => {
+          main.focus();
+          row.scrollIntoView({ block: 'nearest' });
+          focusCommandId = null;
+        }, 0);
+      }
     });
+  }
+
+  function insertAndReport(text, success) {
+    showStatus(insertIntoComposer(text) ? success : 'Composer was not found. Click the ChatGPT input and try again.');
   }
 
   function findComposer() {
@@ -681,72 +815,28 @@ TM-OBS-REUSE source sync:
       'textarea[placeholder]',
       '[contenteditable="true"][role="textbox"]'
     ];
-
     const candidates = [];
-
     for (const selector of selectors) {
       document.querySelectorAll(selector).forEach((element) => {
         if (candidates.includes(element)) return;
-
         const rect = element.getBoundingClientRect();
         const style = window.getComputedStyle(element);
-
-        if (rect.width <= 0 || rect.height <= 0) return;
-        if (style.display === 'none' || style.visibility === 'hidden') return;
-
+        if (rect.width <= 0 || rect.height <= 0 || style.display === 'none' || style.visibility === 'hidden') return;
         candidates.push(element);
       });
     }
-
     candidates.sort((a, b) => b.getBoundingClientRect().bottom - a.getBoundingClientRect().bottom);
     return candidates[0] || null;
   }
 
-  function insertIntoComposer(commandBody) {
-    const composer = findComposer();
-    if (!composer) return false;
-
-    composer.focus();
-    const currentText = getComposerText(composer);
-    const hasExistingText = currentText.trim().length > 0;
-    const textToInsert = hasExistingText ? `\n\n${commandBody}` : commandBody;
-
-    if (composer instanceof HTMLTextAreaElement || composer instanceof HTMLInputElement) {
-      const nextValue = hasExistingText ? `${currentText}\n\n${commandBody}` : commandBody;
-      const prototype = composer instanceof HTMLTextAreaElement
-        ? HTMLTextAreaElement.prototype
-        : HTMLInputElement.prototype;
-      const setter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
-
-      if (setter) setter.call(composer, nextValue);
-      else composer.value = nextValue;
-
-      dispatchInputEvents(composer, textToInsert);
-      return true;
-    }
-
-    moveCaretToEnd(composer);
-    let inserted = false;
-
-    try {
-      inserted = document.execCommand('insertText', false, textToInsert);
-    } catch (error) {
-      inserted = false;
-    }
-
-    if (!inserted) {
-      const nextValue = hasExistingText ? `${currentText}\n\n${commandBody}` : commandBody;
-      composer.textContent = nextValue;
-      dispatchInputEvents(composer, textToInsert);
-    }
-
-    return true;
+  function getComposerText(element) {
+    if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) return element.value || '';
+    return element.innerText || element.textContent || '';
   }
 
   function moveCaretToEnd(element) {
     const selection = window.getSelection();
     if (!selection) return;
-
     const range = document.createRange();
     range.selectNodeContents(element);
     range.collapse(false);
@@ -754,27 +844,40 @@ TM-OBS-REUSE source sync:
     selection.addRange(range);
   }
 
-  function getComposerText(element) {
-    if (element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement) {
-      return element.value || '';
-    }
-
-    return element.innerText || element.textContent || '';
-  }
-
   function dispatchInputEvents(element, data) {
     try {
-      element.dispatchEvent(new InputEvent('input', {
-        bubbles: true,
-        composed: true,
-        inputType: 'insertText',
-        data
-      }));
+      element.dispatchEvent(new InputEvent('input', { bubbles: true, composed: true, inputType: 'insertText', data }));
     } catch (error) {
       element.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
     }
-
     element.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+  }
+
+  function insertIntoComposer(text) {
+    const composer = findComposer();
+    if (!composer) return false;
+    composer.focus();
+    const current = getComposerText(composer);
+    const hasText = current.trim().length > 0;
+    const addition = hasText ? `\n\n${text}` : text;
+
+    if (composer instanceof HTMLTextAreaElement || composer instanceof HTMLInputElement) {
+      const next = hasText ? `${current}\n\n${text}` : text;
+      const proto = composer instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set;
+      if (setter) setter.call(composer, next); else composer.value = next;
+      dispatchInputEvents(composer, addition);
+      return true;
+    }
+
+    moveCaretToEnd(composer);
+    let inserted = false;
+    try { inserted = document.execCommand('insertText', false, addition); } catch (error) { inserted = false; }
+    if (!inserted) {
+      composer.textContent = hasText ? `${current}\n\n${text}` : text;
+      dispatchInputEvents(composer, addition);
+    }
+    return true;
   }
 
   async function copyText(text) {
@@ -788,235 +891,159 @@ TM-OBS-REUSE source sync:
       textarea.style.opacity = '0';
       document.body.appendChild(textarea);
       textarea.select();
-
       let copied = false;
-      try {
-        copied = document.execCommand('copy');
-      } finally {
-        textarea.remove();
-      }
-
+      try { copied = document.execCommand('copy'); } finally { textarea.remove(); }
       return copied;
     }
   }
 
   function showStatus(message) {
     root.querySelector('.status')?.remove();
-
-    if (statusTimerId !== null) {
-      window.clearTimeout(statusTimerId);
-      statusTimerId = null;
-    }
-
+    if (statusTimer !== null) window.clearTimeout(statusTimer);
     const status = document.createElement('div');
     status.className = 'status';
     status.textContent = message;
     panel.appendChild(status);
-
-    statusTimerId = window.setTimeout(() => {
+    statusTimer = window.setTimeout(() => {
       status.remove();
-      statusTimerId = null;
+      statusTimer = null;
     }, 3500);
   }
 
   function keepPanelInViewport() {
-    const rect = panel.getBoundingClientRect();
-    const width = rect.width || 460;
-    const height = rect.height || 560;
-
-    left = clamp(left, 8, Math.max(8, window.innerWidth - width - 8));
-    top = clamp(top, 8, Math.max(8, window.innerHeight - height - 8));
-
+    const width = panel.offsetWidth || 500;
+    const height = panel.offsetHeight || 650;
+    left = Math.min(Math.max(left, 8), Math.max(8, window.innerWidth - width - 8));
+    top = Math.min(Math.max(top, 8), Math.max(8, window.innerHeight - height - 8));
     panel.style.left = `${left}px`;
     panel.style.top = `${top}px`;
   }
 
   function enableDragging() {
     let pointerId = null;
-    let startX = 0;
-    let startY = 0;
-    let startLeft = 0;
-    let startTop = 0;
+    let startX = 0, startY = 0, startLeft = 0, startTop = 0;
 
-    function handlePointerDown(event) {
+    function down(event) {
       if (event.button !== 0 || event.target === closeButton) return;
-
       pointerId = event.pointerId;
       startX = event.clientX;
       startY = event.clientY;
-
       const rect = panel.getBoundingClientRect();
       startLeft = rect.left;
       startTop = rect.top;
-
       header.setPointerCapture(pointerId);
       event.preventDefault();
     }
-
-    function handlePointerMove(event) {
+    function move(event) {
       if (pointerId !== event.pointerId) return;
-
-      const width = panel.offsetWidth || 460;
-      const height = panel.offsetHeight || 560;
-
-      left = clamp(startLeft + event.clientX - startX, 8, Math.max(8, window.innerWidth - width - 8));
-      top = clamp(startTop + event.clientY - startY, 8, Math.max(8, window.innerHeight - height - 8));
-
-      panel.style.left = `${left}px`;
-      panel.style.top = `${top}px`;
+      left = startLeft + event.clientX - startX;
+      top = startTop + event.clientY - startY;
+      keepPanelInViewport();
       event.preventDefault();
     }
-
-    function finishDrag(event) {
+    function finish(event) {
       if (pointerId === null) return;
-
-      try {
-        header.releasePointerCapture(pointerId);
-      } catch (error) {
-        // Ignore a pointer that the browser already released.
-      }
-
+      try { header.releasePointerCapture(pointerId); } catch (error) {}
       pointerId = null;
-      savePosition(left, top);
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ left, top })); } catch (error) {}
       event.preventDefault();
     }
-
-    header.addEventListener('pointerdown', handlePointerDown);
-    header.addEventListener('pointermove', handlePointerMove);
-    header.addEventListener('pointerup', finishDrag);
-    header.addEventListener('pointercancel', finishDrag);
-
-    return function disableDragging() {
-      header.removeEventListener('pointerdown', handlePointerDown);
-      header.removeEventListener('pointermove', handlePointerMove);
-      header.removeEventListener('pointerup', finishDrag);
-      header.removeEventListener('pointercancel', finishDrag);
+    header.addEventListener('pointerdown', down);
+    header.addEventListener('pointermove', move);
+    header.addEventListener('pointerup', finish);
+    header.addEventListener('pointercancel', finish);
+    return () => {
+      header.removeEventListener('pointerdown', down);
+      header.removeEventListener('pointermove', move);
+      header.removeEventListener('pointerup', finish);
+      header.removeEventListener('pointercancel', finish);
     };
   }
 
   function readSavedPosition() {
     try {
       const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      return {
-        left: Number.isFinite(parsed.left) ? parsed.left : null,
-        top: Number.isFinite(parsed.top) ? parsed.top : null
-      };
+      return { left: Number.isFinite(parsed.left) ? parsed.left : null, top: Number.isFinite(parsed.top) ? parsed.top : null };
     } catch (error) {
       return { left: null, top: null };
     }
   }
 
-  function savePosition(nextLeft, nextTop) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        left: nextLeft,
-        top: nextTop
-      }));
-    } catch (error) {
-      // Position persistence is optional.
+  function handleShortcut(event) {
+    if (event.repeat) return;
+    if (event.altKey && !event.ctrlKey && !event.metaKey && event.key === 'F2') {
+      event.preventDefault();
+      event.stopPropagation();
+      setOpen(!isOpen);
+    } else if (event.key === 'Escape' && isOpen) {
+      event.preventDefault();
+      event.stopPropagation();
+      setOpen(false);
     }
   }
 
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
-
-  function syncDashboardVisibilityFromDom() {
+  function syncDashboardVisibility() {
     dashboardOpen = document.documentElement.dataset.obsPlanningDashboardOpen === 'true';
     launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
   }
 
-  function consumeCommandsToggle(token) {
-    const nextToken = String(token || '');
-    if (!nextToken || nextToken === lastCommandsToggleToken) return;
-
-    lastCommandsToggleToken = nextToken;
+  function consumeToggle(token) {
+    const next = String(token || '');
+    if (!next || next === lastToggleToken) return;
+    lastToggleToken = next;
     setOpen(!isOpen);
   }
 
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.attributeName === 'data-obs-planning-dashboard-open') syncDashboardVisibility();
+      if (mutation.attributeName === 'data-obs-planning-commands-toggle') consumeToggle(document.documentElement.dataset.obsPlanningCommandsToggle);
+    }
+  });
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-obs-planning-dashboard-open', 'data-obs-planning-commands-toggle']
+  });
+
+  tabButtons.forEach((button) => button.addEventListener('click', () => switchSurface(button.dataset.surface)));
+  launcher.addEventListener('click', () => setOpen(true));
+  closeButton.addEventListener('click', () => setOpen(false));
+  searchInput.addEventListener('input', () => renderEntries(searchInput.value));
+  window.addEventListener('resize', keepPanelInViewport);
+  window.addEventListener('keydown', handleShortcut, true);
   function handleDashboardVisibility(event) {
     dashboardOpen = Boolean(event?.detail?.open);
     launcher.style.display = isOpen || dashboardOpen ? 'none' : 'block';
   }
 
   function handleCommandsToggle(event) {
-    consumeCommandsToggle(
-      event?.detail?.token || document.documentElement.dataset.obsPlanningCommandsToggle
-    );
+    consumeToggle(event?.detail?.token);
   }
-
-  function handleLauncherClick() {
-    setOpen(true);
-  }
-
-  function handleCloseClick() {
-    setOpen(false);
-  }
-
-  function handleSearchInput() {
-    renderCommands(searchInput.value);
-  }
-
-  function handleWindowResize() {
-    keepPanelInViewport();
-  }
-
-  const planningDomObserver = new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      if (mutation.attributeName === 'data-obs-planning-dashboard-open') {
-        syncDashboardVisibilityFromDom();
-      }
-
-      if (mutation.attributeName === 'data-obs-planning-commands-toggle') {
-        consumeCommandsToggle(document.documentElement.dataset.obsPlanningCommandsToggle);
-      }
-    }
-  });
-
-  planningDomObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: [
-      'data-obs-planning-dashboard-open',
-      'data-obs-planning-commands-toggle'
-    ]
-  });
 
   window.addEventListener('obs-planning-dashboard-visibility', handleDashboardVisibility);
   window.addEventListener('obs-planning-commands-toggle', handleCommandsToggle);
-  launcher.addEventListener('click', handleLauncherClick);
-  closeButton.addEventListener('click', handleCloseClick);
-  searchInput.addEventListener('input', handleSearchInput);
-  window.addEventListener('resize', handleWindowResize);
-  window.addEventListener('keydown', handleGlobalShortcut, true);
 
   const disableDragging = enableDragging();
+  switchSurface(SURFACES.ORIENTATION);
 
   function dispose() {
-    if (statusTimerId !== null) {
-      window.clearTimeout(statusTimerId);
-      statusTimerId = null;
-    }
-
-    planningDomObserver.disconnect();
+    if (statusTimer !== null) window.clearTimeout(statusTimer);
+    observer.disconnect();
     disableDragging();
-
+    window.removeEventListener('resize', keepPanelInViewport);
+    window.removeEventListener('keydown', handleShortcut, true);
     window.removeEventListener('obs-planning-dashboard-visibility', handleDashboardVisibility);
     window.removeEventListener('obs-planning-commands-toggle', handleCommandsToggle);
-    window.removeEventListener('resize', handleWindowResize);
-    window.removeEventListener('keydown', handleGlobalShortcut, true);
-
-    launcher.removeEventListener('click', handleLauncherClick);
-    closeButton.removeEventListener('click', handleCloseClick);
-    searchInput.removeEventListener('input', handleSearchInput);
-
     host.remove();
 
     if (window[INSTANCE_DISPOSE_KEY] === dispose) {
       delete window[INSTANCE_DISPOSE_KEY];
     }
+
+    for (const key of LEGACY_DISPOSE_KEYS) {
+      if (window[key] === dispose) delete window[key];
+    }
   }
 
   window[INSTANCE_DISPOSE_KEY] = dispose;
-
-  renderCommands('');
 })();
