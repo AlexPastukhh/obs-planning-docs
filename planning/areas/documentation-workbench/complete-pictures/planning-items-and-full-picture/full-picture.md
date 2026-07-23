@@ -1,7 +1,7 @@
 # Planning Item And Full Picture End-To-End Workflow
 
-Status: active accepted project-local Complete Picture / item-backed / reusable-method synchronization pending
-Doc version: v0.1.0-accepted-planning-item-full-picture
+Status: active accepted project-local Complete Picture / item-backed / reusable-method synchronized
+Doc version: v0.2.0-reusable-formation-synchronized
 Scope: trigger-to-result product workflow for preserving source meaning, forming and reviewing Planning Items, maintaining an item-backed Full Picture, applying concerns proportionally, deepening justified work and handing accepted meaning to durable documentation.
 
 ## 1. Purpose
@@ -43,7 +43,7 @@ Reusable planning methodology remains under:
 planning/documentation/application-planning/
 ```
 
-The current reusable drafting workflow is supporting authority. A dedicated reusable Planning Item Formation workflow and exact review template are planned in the next batch; this project-local Complete Picture does not silently claim that synchronization is already complete.
+Reusable source-to-item behavior is synchronized through `planning/documentation/application-planning/planning-item-formation-workflow.md` and `templates/PLANNING-ITEM-REVIEW-TEMPLATE.md`. The broader reusable drafting workflow remains the owner for reconciliation, Full Picture work, concerns, branches, tests and evidence revision.
 
 ## 3. Trigger And Accepted Inputs
 
@@ -581,7 +581,6 @@ This workflow does not own:
 - final app storage/database architecture;
 - exact structured-response machine syntax;
 - implementation of parser/runtime mode detection;
-- reusable Planning Item Formation owner/template before Batch 3;
 - root Direction/Use-Case registries before Batch 4;
 - Tampermonkey multi-surface projection before Batch 5;
 - Prototype-Depth Scenario/Domain/Slice methodology;
@@ -622,11 +621,19 @@ This workflow does not own:
 
 This Complete Picture and its 11-item direct phase map are accepted through the recent-chat reconciliation and explicit user acceptance.
 
+Reusable synchronization completed:
+
+```text
+planning-item-formation-workflow.md
+templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
+terminology/principles/drafting/responsibility/navigation/template updates
+```
+
 Next work:
 
-1. synchronize reusable terminology, principles, Planning Item Formation workflow and review template;
-2. add Direction and Use-Case registries plus project-readable input conventions;
-3. name and route the item-formation command;
-4. project Orientation, Directions, Use Cases and Commands in Tampermonkey;
+1. add Direction and Use-Case registries plus project-readable input conventions;
+2. select the exact item-formation command name and add its UCM route;
+3. project Orientation, Directions, Use Cases and Commands in Tampermonkey;
+4. run the whole-repository terminology/owner/link/projection audit;
 5. plan Prototype-Depth Scenario/Domain/Slice methodology separately;
 6. plan runtime architecture only after explicit review.

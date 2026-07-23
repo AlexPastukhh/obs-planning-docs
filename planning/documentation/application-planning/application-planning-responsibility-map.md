@@ -1,315 +1,240 @@
 # Solution And Workflow Planning Responsibility Map
 
-Status: provisional reusable responsibility map
-Doc version: v0.7.0-end-to-end-picture-and-item-validation-owners
+Status: active reusable responsibility map
+Doc version: v0.8.0-planning-item-formation-owners
 Scope: ownership of files and subfolders inside `planning/documentation/application-planning/`.
 
 ## 1. Purpose
 
-Use this file after the parent documentation responsibility map has routed reusable solution/workflow-planning information into this folder.
+Use this file after the parent documentation responsibility map routes reusable solution/workflow-planning information into this folder.
 
-It answers:
-
-```text
-Which file inside application-planning owns a stable principle?
-Which file owns the repeated drafting process?
-Which template owns a recommended representation?
-What is only a migration source?
-What belongs outside this reusable folder?
-```
-
-Relationship to the parent map:
+It decides:
 
 ```text
-planning/documentation/documentation-responsibility-map.md:
-  routes information into the application-planning responsibility zone;
-
-this file:
-  routes information between files and subfolders inside that zone;
-
-README.md:
-  owns family navigation and read order.
+which file owns terminology;
+which file owns stable principles;
+which workflow owns source-to-item formation;
+which workflow owns broader drafting and reconciliation;
+which template owns an exact recommended representation;
+what is project-local;
+what is only a migration source.
 ```
 
-It does not own project command routing or concrete product state.
+Parent map:
+
+```text
+planning/documentation/documentation-responsibility-map.md
+```
+
+Family navigation:
+
+```text
+README.md
+```
+
+This map does not own project command routing, semantic registry entries or concrete product state.
 
 ## 2. Internal Owner Table
 
 | Information type | Internal owner | Notes |
 |---|---|---|
-| Family purpose, lifecycle and read order | `README.md` | Navigation and compact family overview. |
-| Working terminology for planning artifacts, End-To-End Complete Pictures, primary review objects, supporting artifacts, item validation context, sources, navigation, review and chat workspace | `terminology-and-planning-items.md` | Reviewable terminology draft. Current item-level corrections win over older naming prose until later revision. |
-| Stable planning principles | `application-planning-principles.md` | Evidence boundaries, no-parallel-CP integrity, proportional item-validation signals and artifact responsibilities. |
-| Repeated user + AI drafting and item-reconciliation process | `application-planning-drafting-workflow.md` | Classification, trigger/result picture validation, item transformations, prototype/risk follow-up and evidence feedback. |
-| Current Reality Capture recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Temporary legacy filename; active semantic role is Reality Capture. |
-| General root/branch Planning Draft representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | One candidate end-to-end plan. |
-| Functional Workflow Draft representation | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` | One independently understandable and testable behavior line. |
-| Prototype setup | `templates/PROTOTYPE-PLAN-TEMPLATE.md` | Optional experiment artifact. |
-| Prototype evidence | `templates/PROTOTYPE-RESULT-TEMPLATE.md` | Optional evidence artifact. |
-| Legacy opportunity-research representation | `templates/OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md` | Deprecated transition aid; not an active methodology owner. |
-| Legacy Product Legend representation | `templates/PRODUCT-LEGEND-DRAFT-TEMPLATE.md` | Deprecated transition aid; not an active methodology owner. |
-| Legacy solution-overview representation | `templates/SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md` | Deprecated transition aid; not an active methodology owner. |
-| Existing concrete draft migration sources | `drafts/` | Existing material to migrate deliberately; do not create new concrete product state here. |
+| Family purpose, lifecycle and read order | `README.md` | Navigation and compact overview. |
+| Planning/Full Picture/item/source/concern/review terminology | `terminology-and-planning-items.md` | Working semantic distinctions; no project storage schema. |
+| Stable planning invariants | `application-planning-principles.md` | Evidence boundaries, source review, item completeness, Complete Picture integrity, topology, concerns and delivery-mode boundaries. |
+| Source-to-Planning-Item formation and acceptance | `planning-item-formation-workflow.md` | Full-message review, accumulating meanings, owner checks, transformations, portable/application-native delivery. |
+| Exact Planning Item review representation | `templates/PLANNING-ITEM-REVIEW-TEMPLATE.md` | Recommended full item/source/transformation review shape. |
+| Broader drafting, Full Picture work and item reconciliation | `application-planning-drafting-workflow.md` | Current Reality, Planning Drafts, Complete Pictures, reconciliation, concerns, branches, tests and evidence revision. |
+| Current Reality recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Legacy filename; active role is Current Reality Capture. |
+| Root/branch Planning Draft representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | Item-backed synthesis and candidate end-to-end plan. |
+| Functional Workflow Draft representation | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` | Independently useful/testable behavior line. |
+| Prototype setup | `templates/PROTOTYPE-PLAN-TEMPLATE.md` | Optional experiment setup. |
+| Prototype evidence | `templates/PROTOTYPE-RESULT-TEMPLATE.md` | Optional observed evidence/result. |
+| Legacy opportunity research | `templates/OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md` | Migration aid, not active methodology owner. |
+| Legacy Product Legend | `templates/PRODUCT-LEGEND-DRAFT-TEMPLATE.md` | Migration aid. |
+| Legacy Solution Overview | `templates/SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md` | Migration aid. |
+| Existing concrete migration drafts | `drafts/` | Do not create new concrete state here. |
 
-## 3. Artifact Responsibilities
-
-### Shared Terminology And Planning Items
-
-Owns working definitions and distinctions for:
+## 3. Core Responsibility Split
 
 ```text
-- Planning Draft / AlgoWorkflow Draft;
-- Problem Draft alias;
-- Result Workflow;
-- Current Workflow / Old Workflow;
-- Action Workflow;
-- Goal Map;
-- End-To-End Complete Picture;
-- Primary Review Object;
-- Supporting Artifact;
-- InformationItem;
-- Planning Item;
-- Item Validation Context;
-- Prototype / Test Candidate;
-- Note;
-- Source Excerpt;
-- Source Anchor;
-- Provenance;
-- Origin;
-- Source of Truth;
-- Markdown File;
-- App Memory;
-- Hardwritten Region;
-- Object-backed Region;
-- Proposed Object Region;
-- Snapshot;
-- Materialized View;
-- Live Reference;
-- Transclusion;
-- Marker / Tag / Wrapper;
-- Workspace / Chat Workspace;
-- Conversation History;
-- Action Log;
-- Documentation Status;
-- Review Gate / Review Object / Review Status;
-- File Update Plan / Update Step / Replacement Archive.
+terminology-and-planning-items.md
+  → what concepts mean;
+
+application-planning-principles.md
+  → stable invariants;
+
+planning-item-formation-workflow.md
+  → how selected source becomes reviewed Planning Items;
+
+PLANNING-ITEM-REVIEW-TEMPLATE.md
+  → exact recommended review shape;
+
+application-planning-drafting-workflow.md
+  → how reviewed items become/revise Planning Drafts, Full Pictures,
+    Complete Pictures, concerns, branches, tests and reconciliation;
+
+project-local area
+  → accepted concrete items, sources, workflows and state;
+
+project root UCM
+  → concrete command names/routes/permissions;
+
+future semantic registries
+  → Direction and Use-Case identities/routes.
 ```
 
-Does not own:
+## 4. Terminology Responsibility
+
+The terminology owner defines distinctions for:
 
 ```text
-- concrete project schema;
-- storage implementation;
-- wrapper syntax finalization;
-- application object model;
-- accepted project state.
+Planning Draft / Full Picture;
+Result / Current / Action Workflow;
+End-To-End Complete Picture;
+Primary Review Object;
+Supporting Artifact;
+Planning Item and complete item body;
+proposed/reviewed/managed item states;
+portable/application-native modes;
+Source Message / Fragment / Excerpt / Anchor;
+Source Contribution / Contribution Role;
+Provenance;
+Reference Object boundary;
+Concern Definition / Preset / Suggestion / Applied Concern;
+Concern Work Target and observability;
+review, navigation, workspace and file-update terms.
 ```
 
-### Current Reality Capture
+It does not:
 
-Owns:
+- create project-specific entities or IDs;
+- choose exact wrapper syntax;
+- choose storage/database architecture;
+- make broad `InformationItem` canonical again;
+- make a separate `Origin` field canonical where Provenance owns it.
+
+## 5. Planning Item Formation Responsibility
+
+`planning-item-formation-workflow.md` owns:
+
+- source selection;
+- full-message preservation;
+- semantic item identification;
+- full accumulating meaning;
+- targeted current-owner check;
+- relation/action distinction;
+- Current/Incoming/Resulting transformations;
+- explicit acceptance;
+- portable and application-native delivery;
+- managed Planning Item identity boundary;
+- returned review-file integration;
+- formation checks/failure paths.
+
+It does not own:
+
+- repository-wide reconciliation;
+- Planning Draft/Full Picture synthesis;
+- semantic registry files;
+- project command names;
+- repository writes.
+
+## 6. Drafting And Reconciliation Responsibility
+
+`application-planning-drafting-workflow.md` owns:
+
+- Current Reality Capture integration;
+- representation/review-object selection;
+- item-backed Planning Draft/Full Picture;
+- Complete Picture integrity;
+- Planning Item reconciliation with repository owners;
+- concern application/observability integration;
+- alternatives/branches/details;
+- tests/prototypes/evidence feedback;
+- entry into detailed planning.
+
+It delegates raw source-to-item formation.
+
+## 7. Template Responsibility
+
+Templates own recommended shape only.
 
 ```text
-- current actions and sequence;
-- current explanations and decisions as reported;
-- user experience;
-- current strengths;
-- experienced problem situations;
-- suspected risks;
-- current workarounds;
-- existing user ideas without evaluation;
-- current unknowns and contradictions.
+PLANNING-ITEM-REVIEW-TEMPLATE.md
+  → complete review presentation;
+
+PLANNING-DRAFT-TEMPLATE.md
+  → item-backed plan/Full Picture presentation;
+
+other templates
+  → their named artifact representations.
 ```
 
-Does not own:
+A template:
+
+- may define optional fields/headings;
+- is not a mandatory schema;
+- does not promote blank fields;
+- does not contain accepted concrete product state.
+
+## 8. Reusable vs Project-Local Boundary
 
 ```text
-- validated underlying need;
-- target workflow;
-- accepted acceptance criteria;
-- alternative comparison;
-- build decision;
-- solution architecture.
-```
-
-### Planning Draft
-
-Owns:
-
-```text
-- what may need to be achieved;
-- acceptance criteria and status;
-- planning steps;
-- existing solutions and alternatives;
-- questions, problems, risks and assumptions;
-- proportional hypothesis/risk/key-situation/prototype-test context on Planning Items;
-- decisions;
-- tests and evidence;
-- branches and current conclusion.
-```
-
-The terminology draft currently clarifies that Planning Draft and Problem Draft were often used for the same central pre-scenario artifact. Treat that as a working terminology correction until the principles and templates are deliberately revised.
-
-### Application Root Planning Draft
-
-Owns shared application-level information:
-
-```text
-- application identity;
-- shared outcomes and criteria;
-- functional-workflow inventory;
-- cross-workflow dependencies and conflicts;
-- shared concepts, constraints and non-goals;
-- coordination of actual competing branches.
-```
-
-It should link to child workflow drafts instead of duplicating their full content.
-
-### Functional Workflow Draft
-
-Owns one valuable behavior line:
-
-```text
-- user outcome;
-- trigger and preconditions;
-- end-to-end steps;
-- local criteria;
-- local questions, risks and decisions;
-- local tests and evidence;
-- relationships to other workflows;
-- local implementation thoughts.
-```
-
-It is not automatically a scenario implementation slice, a solution branch or an End-To-End Complete Picture. If sibling behavior files divide one mandatory trigger-to-result cycle, the parent workflow remains the Complete Picture and the children are supporting slices.
-
-### Branch Planning Draft
-
-Owns one candidate alternative after an explicit divergence decision.
-
-The parent Planning Draft owns:
-
-```text
-- why branching is justified;
-- why options cannot yet be selected or rejected;
-- selection/rejection criteria;
-- branch inventory;
-- comparison and final decision.
-```
-
-### Detail Artifact
-
-Owns only detail extracted from a parent section. The parent keeps a useful summary, relationship and entry point.
-
-### Prototype Plan And Result
-
-A Planning Item may own a compact prototype/test candidate and the decision it affects. The separate plan owns substantial experiment setup; the result owns observed evidence. The related item and planning draft own revised hypotheses, risks, criteria, workflow status and decisions.
-
-## 4. Subfolder Responsibilities
-
-### `templates/`
-
-Owns reusable recommended representations.
-
-```text
-- Active templates may define semantic fields and optional expansion points.
-- A template is not automatically the only valid representation.
-- Templates must not contain accepted state for a concrete product.
-- Deprecated templates remain migration aids only.
-```
-
-### `drafts/`
-
-Contains existing migration-source drafts.
-
-```text
-- Existing non-empty content must be migrated deliberately.
-- The folder does not own reusable rules.
-- Do not create new concrete product/workflow drafts here.
-- New concrete state belongs in a project-local area.
-```
-
-## 5. Reusable vs Project-Specific Boundary
-
-```text
-Reusable principles, terminology, workflow and templates:
+Reusable methodology:
   planning/documentation/application-planning/
 
-Concrete captures, root plans, functional workflows, branches,
-details, prototype state and application-specific object models:
-  planning/areas/<area>/ or another project-local owner
+Concrete Planning Items, source messages/contributions, Full Pictures,
+workflows, concerns, decisions, prototypes and application models:
+  planning/areas/<area>/ or another explicit project owner
 ```
 
-A generated explanation is a reading view and owns no canonical information.
+A generated explanation is a reading/proposal view unless explicitly accepted into an owner.
 
-## 6. Representation Responsibility
+## 9. Conflict Rules
 
 ```text
-Terminology:
-  owns working names and conceptual distinctions, including Complete Picture and Item Validation Context.
-
-Principles:
-  own no-parallel-CP integrity, evidence boundaries and proportional validation-signal invariants.
-
-Drafting workflow:
-  owns how AI classifies input, validates trigger-to-result picture boundaries, transforms items and reports prototype/risk follow-up.
-
-Templates:
-  own recommended forms and optional expansion points.
-
-Concrete project-local drafts:
-  own entered state and current arrangement.
-
-Generated explanation:
-  owns no canonical information.
+- Parent documentation map wins for routing into this folder.
+- This map wins for placement inside this folder.
+- README wins for navigation/read order.
+- Terminology wins for working names/distinctions.
+- Principles win for stable invariants.
+- Formation workflow wins for source-to-item formation/review.
+- Planning Item review template wins for exact recommended review shape.
+- Drafting workflow wins for broader planning and reconciliation.
+- Other templates win only for their recommended shape.
+- Project root UCM wins for command routing/canonical English names.
+- Project semantic registries, when created, win for Direction/Use-Case entries.
+- Project-local owners win for concrete state and placement.
 ```
 
-## 7. Conflict Rules
+## 10. Placement Checks
+
+Before adding information here, ask:
 
 ```text
-- The parent documentation responsibility map wins for routing into this folder.
-- This map wins for placement between files and subfolders inside this folder.
-- README.md wins for family navigation and read order.
-- terminology-and-planning-items.md wins for working terminology and naming distinctions.
-- Principles win for stable planning invariants.
-- Drafting workflow wins for repeated user + AI process.
-- A template wins only for its recommended shape.
-- Current Reality Capture wins for descriptions of present reality.
-- Parent Planning Draft wins for branch creation and comparison.
-- Functional Workflow Draft wins for its local behavior line.
-- Prototype Result wins for observed evidence; the planning draft owns the revised decision.
-- Project root UCM wins for command routing.
-- Project-area owners win for concrete local placement and state.
+1. Is it reusable or project-specific?
+2. Is it terminology, principle, repeated process or recommended shape?
+3. Is it source-to-item formation or broader planning/reconciliation?
+4. Does a current internal owner already exist?
+5. Is it one semantic item or only a review state/projection?
+6. Is complete source context preserved?
+7. Is a separate file independently useful?
+8. Does the information belong in future Direction/Use-Case registries instead?
+9. Is evidence/decision status preserved?
+10. Does concrete state belong in a project-local area?
 ```
 
-## 8. Placement Checks
-
-Before adding information inside this folder, ask:
+## 11. Do Not
 
 ```text
-1. Is it reusable terminology, a reusable principle, repeated process, recommended form or migration source?
-2. Is it current reality or future planning?
-3. Is it one independently traversable trigger-to-result Complete Picture, application-level coordination, a supporting functional workflow/model/view, a competing branch or extracted detail?
-4. Would a proposed peer picture hide a mandatory stage required by another picture?
-5. Does the information belong in this reusable folder or a project-local area?
-6. Is evidence status preserved?
-7. Does a relevant Planning Item need hypothesis/risk/key-situation/prototype-test context?
-8. Does an existing internal owner already hold the rule?
-9. Is a separate file independently useful?
-10. Can the information remain in a compact high-level view?
-```
-
-## 9. Do Not
-
-```text
-- Do not duplicate this internal owner table in the parent documentation responsibility map.
-- Do not make working drafts sources of reusable rules.
-- Do not place concrete object/schema decisions in reusable principles.
-- Do not mix solution branches with functional workflows.
-- Do not create one file per small item.
-- Do not use deprecated stage templates as competing owners.
-- Do not create new concrete product state under drafts/.
-- Do not make generated explanations canonical.
-- Do not finalize project-specific schema or storage architecture in the terminology draft.
-- Do not classify thematic supporting slices as peer Complete Pictures when one mandatory workflow crosses them.
-- Do not make Item Validation Context a mandatory reusable schema.
+- Do not duplicate this map in the parent map.
+- Do not duplicate formation rules in the drafting workflow.
+- Do not create one file per item or UI surface.
+- Do not put concrete product state under reusable docs.
+- Do not revive broad InformationItem as a semantic owner.
+- Do not introduce Source Idea or Planning Item Candidate.
+- Do not treat templates as mandatory schemas.
+- Do not treat generated explanations as canonical automatically.
+- Do not finalize project-specific storage/wrapper architecture here.
+- Do not create Direction/Use-Case registry files in this batch.
+- Do not route project commands here.
 ```

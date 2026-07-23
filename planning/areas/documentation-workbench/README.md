@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area
-Doc version: v0.4.0-planning-item-full-picture-workflow
+Doc version: v0.5.0-reusable-formation-synchronized
 Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -35,14 +35,9 @@ Supporting reusable owners:
 planning/documentation/application-planning/README.md
 planning/documentation/application-planning/terminology-and-planning-items.md
 planning/documentation/application-planning/application-planning-principles.md
-planning/documentation/application-planning/application-planning-drafting-workflow.md
-```
-
-Planned reusable owners that are not yet present in this batch:
-
-```text
 planning/documentation/application-planning/planning-item-formation-workflow.md
 planning/documentation/application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
+planning/documentation/application-planning/application-planning-drafting-workflow.md
 ```
 
 ## 3. Source-Of-Truth Split
@@ -146,7 +141,8 @@ full-picture.md#6-planning-item-and-full-picture-end-to-end-workflow
   → affected items and full sources in planning-item-register.md
   → reference-object-model-and-lifecycle.md when managed identity/home/durability matters
   → documentation-and-reference-object-end-to-end-workflow.md for materialization handoff
-  → relevant reusable application-planning owners.
+  → planning-item-formation-workflow.md and PLANNING-ITEM-REVIEW-TEMPLATE.md for source-to-item behavior
+  → application-planning-drafting-workflow.md for reconciliation and broader planning.
 ```
 
 ## 6. Update Discipline
@@ -202,6 +198,7 @@ Do not create one file per item, capability, question or UI surface.
 - Reference Object Model And Lifecycle is an active supporting model, not a parallel workflow.
 - Managed application-native Planning Items are Reference Objects from creation.
 - Portable Markdown item review remains a supported fallback/interoperability mode.
+- Reusable Planning Item Formation workflow and exact review template are synchronized.
 - Chat/AI/Work-State remains a provisional thematic slice pending end-to-end review.
 - Prototype-Depth Scenario/Domain/Slice methodology is deferred to a separate task.
 - No runtime, application shell, storage architecture or exact Markdown marker syntax is selected.

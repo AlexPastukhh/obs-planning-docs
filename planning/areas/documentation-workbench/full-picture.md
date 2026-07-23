@@ -1,7 +1,7 @@
 # Documentation Workbench Full Picture
 
-Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / implementation incomplete
-Doc version: v0.4.0-planning-item-full-picture-workflow
+Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable Planning Item method synchronized / implementation incomplete
+Doc version: v0.5.0-reusable-formation-synchronized
 Scope: application-level identity, workflow inventory, shared invariants and coordination for Documentation Workbench. Complete item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
@@ -321,7 +321,6 @@ High-impact unresolved groups:
 - dependency-review severity/grouping and relation-view recursion/counts;
 - Chat/Action/RN/DAM end-to-end workflow boundary;
 - exact structured-response/source-anchor syntax;
-- reusable Planning Item Formation workflow and review template;
 - Direction and Use-Case registries;
 - canonical item-formation command name;
 - application shell, storage and measured repository limits;
@@ -336,10 +335,12 @@ No fallback in this Full Picture resolves these questions silently.
 2. Reference Object model review.                                       ✓
 3. Documentation/Reference Object end-to-end workflow.                  ✓
 4. Accepted recent-chat item reconciliation and 48 → 51 register.       ✓
-5. Planning Item/Full Picture end-to-end workflow.                       ✓ this update
-6. Synchronize reusable formation/terminology/principles/templates.
+5. Planning Item/Full Picture end-to-end workflow.                       ✓
+6. Synchronize reusable formation/terminology/principles/templates.     ✓ this update
 7. Add Direction/Use-Case registries and project input conventions.
-8. Add the item-formation command and multi-surface helper projection.
-9. Review Chat/AI/Work-State against the Complete Picture rule.
-10. Plan prototype-depth methodology and runtime architecture separately.
+8. Name and add the item-formation command.
+9. Add multi-surface helper projection.
+10. Run whole-repository consistency validation.
+11. Review Chat/AI/Work-State against the Complete Picture rule.
+12. Plan prototype-depth methodology and runtime architecture separately.
 ```

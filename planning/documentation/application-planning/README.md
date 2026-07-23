@@ -1,8 +1,8 @@
 # Solution And Workflow Planning Documentation Index
 
 Status: provisional reusable documentation-family index
-Doc version: v0.8.0-end-to-end-picture-and-item-validation
-Scope: reusable planning from free-form input and current-reality capture through source-linked items, end-to-end workflow pictures, an item-backed Planning Draft, concern review, alternatives, tests, prototypes and evidence-driven revision.
+Doc version: v0.9.0-planning-item-formation-sync
+Scope: reusable planning from selected source through full-message Planning Item formation, end-to-end workflow pictures, an item-backed Planning Draft, concern review, alternatives, tests, prototypes and evidence-driven revision.
 
 The folder path remains `application-planning/` during the semantic migration. The methodology itself is not limited to applications.
 
@@ -26,14 +26,15 @@ It can plan:
 ## 2. Lifecycle
 
 ```text
-free-form user input
+free-form or structured source
   → optional Current Reality Capture
-  → source-linked, purposeful and semantically complete Planning Items
+  → complete source-message preservation
+  → semantically complete Planning Item formation and review
+  → portable Markdown or application-native accepted delivery
   → proportional hypothesis / risk / prototype-test context where material
-  → lightweight purpose / relation / concern check
   → item-backed root Planning Draft / Full Picture
   → identify one trigger-to-result Complete Picture per independent workflow
-  → classify models, views, terminology and capability slices as supporting artifacts where appropriate
+  → classify models, views, terminology and capability slices as supporting artifacts
   → linear planning while one path is sufficient
   → relevant concern suggestions from manual input or presets
   → applicability review
@@ -54,9 +55,14 @@ Opportunity research, Product Legend and Solution Overview are not mandatory seq
 1. application-planning-responsibility-map.md
 2. terminology-and-planning-items.md
 3. application-planning-principles.md
-4. application-planning-drafting-workflow.md
-5. the relevant recommended template under templates/, when useful
-6. the project-local working draft and item register
+4. planning-item-formation-workflow.md
+   when source material must become reviewed Planning Items
+5. templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
+   when exact item review output is needed
+6. application-planning-drafting-workflow.md
+   for broader planning, Complete Picture work and item reconciliation
+7. the relevant recommended template under templates/, when useful
+8. the project-local working draft, Full Picture and item register
 ```
 
 Templates are recommended representations, not mandatory schemas. Concern presets recommend attention, not file shape. Project-local state remains outside `planning/documentation/`.
@@ -68,11 +74,13 @@ README.md
 application-planning-responsibility-map.md
 terminology-and-planning-items.md
 application-planning-principles.md
+planning-item-formation-workflow.md
 application-planning-drafting-workflow.md
 
 templates/
   CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
   PLANNING-DRAFT-TEMPLATE.md
+  PLANNING-ITEM-REVIEW-TEMPLATE.md
   FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md
   PROTOTYPE-PLAN-TEMPLATE.md
   PROTOTYPE-RESULT-TEMPLATE.md
@@ -117,8 +125,9 @@ Concern Work Target;
 Document Template;
 View Preset;
 Validation Rule;
-InformationItem;
-Source Excerpt and Source Anchor;
+Planning Item formation/review states;
+Source Message, Source Fragment, Source Excerpt and Source Anchor;
+Source Contribution and Contribution Role;
 Source of Truth;
 Markdown/app-memory bridge terms;
 Workspace and review terms.
@@ -193,7 +202,18 @@ Simplicity applies to structure, not to loss of meaning. A Planning Item may be 
 
 ## 7. Structured Source And Explanation
 
-The structured Planning Draft and canonical Planning Items are working sources. An AI-generated overview or deep explanation is a derived reading view unless explicitly promoted through review.
+Canonical Planning Items preserve complete source-linked meaning. A detailed AI explanatory section may be the accumulating item body; a later review block must not replace it with a shorter lossy paraphrase.
+
+Portable review repeats complete supporting user messages under each item. Canonical storage may use a shared message bank plus typed contribution relations only when the full per-item presentation remains reproducible.
+
+Dedicated reusable owners:
+
+```text
+planning-item-formation-workflow.md
+templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
+```
+
+The broader drafting workflow keeps repository reconciliation, Planning Draft/Full Picture synthesis, concerns, branches, tests and evidence feedback.
 
 ## 8. Current Deliberate Exclusions
 
@@ -204,7 +224,8 @@ This reusable family does not define:
 - storage or serialization architecture;
 - exact Markdown wrapper syntax;
 - a mandatory client platform;
-- project-specific command routes;
+- project-specific command routes or command names;
+- semantic Direction/Use-Case registries before their dedicated registry workflow exists;
 - unrestricted AI filesystem access;
 - detailed implementation plans;
 - one universal concern catalogue;
@@ -216,6 +237,9 @@ This reusable family does not define:
 ```text
 - Do not require template-ordered user input.
 - Do not treat AI classification as infallible.
+- Do not treat a proposed Planning Item as accepted without review.
+- Do not replace complete source-message review with excerpt-only presentation.
+- Do not create a separate Source Idea or Planning Item Candidate entity.
 - Do not promote an idea, inference, suggestion or risk into a confirmed fact.
 - Do not evaluate future solutions inside Current Reality Capture.
 - Do not treat a Concern Suggestion as an Applied Concern.

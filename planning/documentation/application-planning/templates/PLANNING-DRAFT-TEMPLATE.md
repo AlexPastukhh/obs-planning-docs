@@ -1,9 +1,10 @@
 # Planning Draft Template
 
-Status: provisional reusable recommended template
-Purpose: one candidate end-to-end plan for achieving a result. It may serve as a root draft or a competing branch draft.
+Status: active reusable recommended template
+Doc version: v0.2.0-item-backed-full-picture
+Purpose: one candidate item-backed end-to-end plan/Full Picture for achieving a result. It may serve as a root draft or a competing branch draft.
 
-Use only sections that improve the current work.
+Use only sections that improve the current work. This is not a mandatory schema.
 
 ## 1. Draft Identity
 
@@ -11,26 +12,52 @@ Use only sections that improve the current work.
 |---|---|
 | Draft ID | <ID> |
 | Title | <title> |
-| Draft type | root / branch / other |
-| Status | exploratory / active / selected / rejected / deferred |
-| Parent draft | <reference or none> |
+| Draft type | root / child Complete Picture / branch / other |
+| Status | exploratory / active / accepted-current / selected / rejected / deferred |
+| Parent Full Picture / draft | <reference or none> |
+| Semantic home | <reference or none/unresolved> |
+| Definition location | <path/location> |
 | Source reality | <references> |
+| Current documentation state | Working / Needs Documentation / Documented/Integrated / unresolved |
 
-## 2. What Needs To Be Achieved
+## 2. Planning Item Basis
+
+### Contributing Planning Items
+
+| Item | Complete meaning owner | Role in this picture | Source/evidence link | Documentation state |
+|---|---|---|---|---|
+| <item reference> | <canonical item owner> | <role> | <source/provenance> | <state> |
+
+Rules:
+
+- link to canonical item bodies;
+- do not copy item bodies into a second independently edited owner;
+- significant statements without an item must identify source, inference or question status;
+- preserve item-to-picture traceability.
+
+### Child Full Pictures — Optional
+
+| Child picture | Independent trigger/result | Semantic home | Parent summary/relationship | Status |
+|---|---|---|---|---|
+| <reference> | <why independently traversable> | <home> | <summary> | <status> |
+
+The child owns complete local meaning. The parent owns coordination and a readable route.
+
+## 3. What Needs To Be Achieved
 
 <Current candidate desired result.>
 
 **Status:** candidate / confirmed / needs evidence / rejected / superseded
 
-## 3. Acceptance Criteria
+## 4. Acceptance Criteria
 
-| ID | Criterion | Status | Evidence / source | Related workflow/test |
+| ID | Criterion | Status | Evidence/source | Related item/workflow/test |
 |---|---|---|---|---|
 | AC-01 | <criterion> | candidate | <reference> | <reference> |
 
 Do not invent criteria merely to fill the table.
 
-## 4. Boundaries And Non-Goals
+## 5. Boundaries And Non-Goals
 
 ### Included
 
@@ -40,19 +67,27 @@ Do not invent criteria merely to fill the table.
 
 <scope deliberately not promised>
 
-## 5. Candidate End-To-End Workflow
+## 6. Current Reality — Optional
 
-### STEP-01 — <name>
+<Reference or summarize checked current reality without introducing accepted future design.>
 
-#### Intended Result
+## 7. Candidate End-To-End Complete Picture
 
-<result of the step>
+### Trigger / Accepted Input
 
-#### Current Plan
+<trigger/input>
 
-<actions or behavior>
+### Preconditions
 
-#### Local Analysis — Optional
+<preconditions>
+
+### Mandatory Workflow
+
+#### STEP-01 — <name>
+
+**Intended result:** <result>
+
+**Current plan/behavior:** <actions or behavior>
 
 **Questions:** <when present>
 
@@ -64,47 +99,91 @@ Do not invent criteria merely to fill the table.
 
 **Decisions:** <when present>
 
-**What must be tested:** <when present>
+**Prototype/test need:** <when present>
 
 **Evidence:** <when present>
 
-**Reconsider when:** <important invalidation condition, optional>
+**Reconsider when:** <optional invalidation condition>
 
-#### Implementation Thoughts / Future Implementation Notes — Optional
-
-<non-final technical ideas with source/status>
+**Contributing items:** <references>
 
 ---
 
-### STEP-02 — <name>
+#### STEP-02 — <name>
 
 <Repeat only as needed.>
 
-## 6. Existing Solutions And Alternative Workflows — Optional
+### Decisions, Branches And Loops
+
+<decision points, loops, optional paths and return paths>
+
+### Review Gates
+
+| Gate | Review object | Required evidence/choice | Resulting status |
+|---|---|---|---|
+| <gate> | <object> | <evidence/choice> | <status> |
+
+### Failure / Unresolved Paths
+
+| Situation | Visible result / recovery |
+|---|---|
+| <situation> | <behavior> |
+
+### End Condition
+
+<understandable result or explicit unresolved/deferred state>
+
+A peer Complete Picture must not supply a missing mandatory stage.
+
+## 8. Existing Solutions And Alternative Workflows — Optional
 
 | Option | What it covers | Strengths | Limitations | Checked status | Current disposition |
 |---|---|---|---|---|---|
 | <option> | <coverage> | <strengths> | <limits> | checked / not checked | open / selected / rejected / defer |
 
-## 7. Key Scenarios Or Valuable Behaviors — Optional
+Research Existing Solutions remains optional and proportional.
 
-| ID | Behavior/outcome | Why valuable | Related criteria | Status |
-|---|---|---|---|---|
-| KS-01 | <behavior> | <value> | <AC IDs> | candidate |
+## 9. Valuable Behaviors / Functional Workflows — Optional
 
-For a multi-workflow application, create separate Functional Workflow Drafts only when independently useful.
+| ID | Behavior/outcome | Why valuable | Independent trigger/result? | Related criteria/items | Status |
+|---|---|---|---|---|---|
+| FW-01 | <behavior> | <value> | yes/no | <references> | candidate |
 
-## 8. Shared Concepts, Integrations And Constraints — Optional
+Create a separate Functional Workflow Draft only when independently useful/testable. It is not automatically a Complete Picture.
+
+## 10. Shared Concepts, Integrations And Constraints — Optional
 
 <Concepts, environment, integration boundaries and constraints shared by the plan.>
 
-## 9. Tests And Prototypes — Optional
+Supporting models do not replace workflow continuity.
 
-| ID | Uncertainty | Minimum test | Success/failure/inconclusive criteria | Decision affected | Status |
+## 11. Concern Coverage And Observability — Optional
+
+### Suggestions / Applied Concerns
+
+| Target | Concern | Stage/status | Concrete record/work target | Result/next review |
+|---|---|---|---|---|
+| <target> | <definition> | Pending Review / Open / Deferred / Resolved | <reference> | <result> |
+
+### Derived Observability
+
+| Indicator | Count/status | Drill-down target |
+|---|---:|---|
+| Unreviewed suggestions | <n> | <references> |
+| Open questions | <n> | <references> |
+| Risks/assumptions needing evidence | <n> | <references> |
+| Prototype/test needs | <n> | <references> |
+| Deferred/blocked work | <n> | <references> |
+
+Do not replace concrete records with one opaque quality score.
+
+## 12. Tests And Prototypes — Optional
+
+| ID | Uncertainty/key situation | Minimum test | Success/failure/inconclusive criteria | Decision affected | Status |
 |---|---|---|---|---|---|
 | P-01 | <uncertainty> | <test> | <criteria> | <decision> | proposed |
 
-## 10. Branch Analysis — Parent Only
+## 13. Branch Analysis — Parent Only
 
 ### Decision Point
 
@@ -114,9 +193,9 @@ For a multi-workflow application, create separate Functional Workflow Drafts onl
 
 <Why alternatives need independent work.>
 
-### Why Options Cannot Yet Be Selected Or Rejected
+### Evidence Gap
 
-<current evidence gap>
+<Why options cannot yet be selected/rejected.>
 
 ### Branch Inventory
 
@@ -128,7 +207,7 @@ For a multi-workflow application, create separate Functional Workflow Drafts onl
 
 <comparison without hiding uncertainty>
 
-## 11. Branch Metadata — Branch Only
+## 14. Branch Metadata — Branch Only
 
 | Field | Value |
 |---|---|
@@ -138,22 +217,38 @@ For a multi-workflow application, create separate Functional Workflow Drafts onl
 | Upstream-change status | aligned / proposes parent change / snapshot |
 | Stop/reject condition | <condition> |
 
-## 12. Questions
+## 15. Questions
 
-| ID | Question | Priority | Blocking | Status | Answer |
+| ID | Question | Priority | Blocking | Status | Answer/source |
 |---|---|---:|---:|---|---|
 | Q-01 | <question> | high | no | open | <answer> |
 
-## 13. Decisions
+## 16. Decisions
 
-| ID | Decision | Rationale | Status | Reconsider when |
+| ID | Decision | Rationale/source | Status | Reconsider when |
 |---|---|---|---|---|
 | D-01 | <decision> | <rationale> | proposed / accepted / rejected | <condition> |
 
-## 14. Current Conclusion
+## 17. Repository / Documentation Handoff — Optional
+
+```text
+accepted items/picture
+  → repository semantic reconciliation
+  → owner placement
+  → File Update Plan
+  → replacement files/diff review.
+```
+
+| Meaning | Current owner | Resulting owner/action | Dependency impact | Status |
+|---|---|---|---|---|
+| <meaning> | <owner> | <action> | <impact> | <status> |
+
+This template does not authorize repository edits, commit or push.
+
+## 18. Current Conclusion
 
 <What is currently understood, selected or still uncertain.>
 
-## 15. Next Action
+## 19. Next Action
 
-<Next concrete planning, research, prototype or review action.>
+<Next concrete planning, research, prototype, reconciliation or review action.>

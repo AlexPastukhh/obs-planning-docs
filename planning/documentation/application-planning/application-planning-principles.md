@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Principles
 
 Status: provisional reusable principles
-Doc version: v0.9.0-end-to-end-picture-and-item-validation
+Doc version: v0.10.0-planning-item-formation-sync
 Scope: stable guidance for source-linked Planning Items, end-to-end Complete Pictures, supporting artifacts, Planning Drafts, concern review, alternatives, tests and evidence-driven revision before optional detailed implementation planning.
 
 ## 1. Purpose
@@ -54,17 +54,25 @@ Silence, a template field, an AI proposal or a preset must not silently promote 
 
 Important planning claims remain linked to the source material that caused them.
 
-Preserve original wording when it is evidence for an item, correction, decision or uncertainty. A normalized interpretation may be added but must not erase the source.
+Preserve complete source messages when they are evidence for an item, correction, decision or uncertainty. A normalized interpretation may be added but must not erase literal wording.
 
-Group repeated support:
+Use typed many-to-many contributions:
 
 ```text
 one Planning Item
-  ← several Source Excerpts;
+  ← several Source Messages / Fragments;
 
-one Source Excerpt
-  → several Planning Items.
+one Source Message / Fragment
+  → several Planning Items;
+
+contribution roles
+  → Primary, Supporting, Clarifying, Correcting,
+    Contradicting, Example or Confirmation.
 ```
+
+For portable review, repeat each complete supporting user message under every item it supports and highlight relevant spans without removing surrounding context. Exact anchors supplement the complete message; they do not replace it.
+
+`Source Idea` is not introduced. Interpretation belongs in the Planning Item body; source evidence remains source evidence.
 
 ## 4. Convenience-First Input
 
@@ -73,6 +81,8 @@ The user may provide facts, fragments, feelings, problems, risks, ideas, alterna
 The user is not responsible for knowing the correct category, artifact, concern, relation or insertion point.
 
 AI may propose classification and placement, but ambiguity that materially affects the result remains visible and reviewable.
+
+Optional structured composition or user delimiters may identify review boundaries. They do not create a separate Candidate entity or prove that every marked fragment is an independent Planning Item.
 
 ## 5. Purposeful Planning Items
 
@@ -114,6 +124,8 @@ Its Canonical Item Body includes every detail required for correct understanding
 
 Compact IDs, titles, summaries and collapsed UI views are navigation layers only.
 
+The detailed document-ready explanation produced during formation may be the accumulating Canonical Item Body. A final review block should reuse/materialize that complete meaning rather than generate a second shorter paraphrase.
+
 ### Semantic Splitting
 
 Split an item when parts have independent meaning, owner, lifecycle/status, review, acceptance, reuse, decisions, actions or work targets.
@@ -146,6 +158,8 @@ or become a new item candidate.
 
 The Full Picture does not replace canonical item bodies. Items remain inspectable independently.
 
+A parent Full Picture may reference child Full Pictures in their own canonical homes. Child pictures own complete local meaning; the parent keeps a readable summary and route. Significant Full Picture statements trace to contributing Planning Items, source material or an explicit inference/question status.
+
 ## 9. Two-Pass Planning
 
 Use two different depths of review.
@@ -161,6 +175,30 @@ After a first Full Picture exists:
 ```
 
 The second pass may reveal missing items, duplicates, alternatives, broader concerns or unnecessary work.
+
+## 9A. Portable And Application-Native Formation Modes
+
+Reusable item formation supports both:
+
+```text
+portable Markdown mode
+  → complete review blocks
+  → explicit acceptance
+  → full updated portable ledger;
+
+application-native mode
+  → structured proposal review
+  → explicit acceptance
+  → confirmed Planning Item is immediately
+    a managed Reference Object of category Planning Item.
+```
+
+Portable mode remains a supported fallback/interoperability path.
+
+Later Markdown placement, definition-location assignment or semantic-home assignment changes durability/ownership/location state. It does not create a second Planning Item.
+
+Proposed/candidate is a review state, not a separate semantic entity.
+
 
 ## 10. Planning Lens And Concern Lifecycle
 
@@ -319,6 +357,45 @@ Rules:
 - When evidence resolves or corrects a signal, update the item, concern and every affected criterion, workflow or decision.
 - Create a separate prototype artifact only when setup, evidence, review or execution has an independent lifecycle.
 ```
+
+## 16C. Direction And Use-Case Topology
+
+A broad Direction owns a topology of independently useful whole use cases.
+
+```text
+Direction
+  → may contain sequential, partly sequential, optional,
+    conditional, alternative, repeatable or independent use cases.
+```
+
+A use-case inventory describes supported capabilities, not one universal mandatory route.
+
+Do not turn every mandatory internal step of a coherent workflow into a peer use case. A separate use case needs an independently useful trigger/result, owner route, review or lifecycle.
+
+When a solution introduces an auxiliary layer—documentation system, framework, planning tool, automation or codebase tooling—treat that layer proportionally as a user-facing solution with its own use-case inventory.
+
+Exact Direction and Use-Case registries are separate registry-owner work; these principles define only the stable topology boundary.
+
+## 16D. Concern And Item Observability
+
+Observability is a derived projection over concrete records.
+
+It may expose:
+
+```text
+unreviewed suggestions;
+open questions;
+unverified assumptions;
+risks;
+evidence or prototype/test needs;
+blocked/deferred work;
+resolved work.
+```
+
+Every indicator should drill down to concrete targets/records.
+
+Common lifecycle state, concern-type-specific assessment and derived view labels remain distinct. Do not replace them with one opaque quality score.
+
 
 ## 17. Minimal-To-Complex Artifact Design
 
@@ -511,7 +588,9 @@ This is a judgment boundary, not a rigid gate.
 ```text
 - Do not require template-ordered input.
 - Do not treat silence as evidence promotion.
-- Do not lose source wording that supports meaning.
+- Do not lose complete source wording that supports meaning.
+- Do not replace full-message review with excerpt-only presentation.
+- Do not create Source Idea or a separate Planning Item Candidate entity.
 - Do not treat every source fragment as an item.
 - Do not treat every item as a final requirement.
 - Do not compress an item until examples or distinctions are lost.
@@ -527,6 +606,8 @@ This is a judgment boundary, not a rigid gate.
 - Do not put concrete application schema/storage decisions in reusable methodology.
 - Do not choose exact wrapper syntax in reusable principles.
 - Do not make AI explanation a second canonical source.
+- Do not remove portable mode merely because application-native mode exists.
+- Do not recreate an already managed application-native Planning Item during later documentation placement.
 - Do not split one mandatory trigger-to-result workflow into peer Complete Pictures by topic.
 - Do not turn an item hypothesis, risk or prototype candidate into a confirmed requirement or architecture decision.
 ```

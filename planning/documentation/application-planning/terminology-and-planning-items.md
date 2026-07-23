@@ -1,7 +1,7 @@
 # Terminology And Planning Items
 
 Status: provisional reusable terminology draft / needs review
-Doc version: v0.3.0-end-to-end-picture-and-item-validation
+Doc version: v0.4.0-planning-item-formation-sync
 Language: Russian working draft
 Scope: shared terminology for source-linked planning, Planning Items, end-to-end Complete Pictures, supporting artifacts, concern review, documentation workspace, navigation, Markdown/object bridge, chat workspace and file updates.
 
@@ -55,6 +55,10 @@ Full Picture:
 ```
 
 The Full Picture may combine item links, summaries, groupings and explanatory prose. It must not introduce important unsupported meaning silently.
+
+A parent Full Picture may reference child Full Pictures in their own canonical homes. The child owns complete local meaning; the parent owns readable coordination and a traceable route.
+
+Significant Full Picture statements should trace to contributing Planning Items, source material or an explicit inference/question status.
 
 ### 1.3 Application Root Planning Draft
 
@@ -161,9 +165,27 @@ A later, more concrete behavior artifact created when the Planning Draft is suff
 
 ## 3. Planning Item Terms
 
-### 3.1 InformationItem
+### 3.1 Retired Broad `InformationItem` Label
 
-General information unit in app memory. It may represent a note, source excerpt, question, answer, decision, Planning Item, action entry, linkable content or another reusable unit.
+`InformationItem` is not a recommended canonical semantic entity.
+
+It previously grouped unrelated meanings such as notes, sources, questions, decisions, Planning Items, action entries and managed content. Use the actual entity or record instead:
+
+```text
+Planning Item;
+Reference Object;
+Source Message;
+Source Fragment;
+Source Excerpt;
+Question;
+Decision;
+Action Log Entry;
+Applied Concern;
+Raw Note;
+another explicitly named technical/runtime record.
+```
+
+Do not introduce a second post-planning item entity merely to hold documented Planning Item meaning.
 
 ### 3.2 Planning Item
 
@@ -246,9 +268,52 @@ Split an item when parts have independent meaning, ownership, lifecycle/status, 
 
 Do not split only because the item is long or contains several necessary examples.
 
+### 3.5A Proposed Planning Item Meaning
+
+An AI/user interpretation awaiting review.
+
+It is a review state, not a separate persistent `Planning Item Candidate` entity.
+
+### 3.5B Portable Planning Item Review Mode
+
+Complete Markdown review and ledger delivery that preserves:
+
+- complete item bodies;
+- complete supporting user messages per item;
+- typed source contributions;
+- transformation history;
+- accepted/rejected/deferred status.
+
+### 3.5C Application-Native Managed Planning Item Mode
+
+A structured review mode in which an explicitly confirmed Planning Item is created immediately as a managed Reference Object of category Planning Item.
+
+```text
+confirmation
+  → managed Planning Item identity exists;
+
+later Markdown materialization/home/location work
+  → changes durability/ownership/location;
+  → does not create another semantic item.
+```
+
+### 3.5D Planning Item Reference Object Boundary
+
+The distinction between:
+
+```text
+unpersisted interpreted meaning;
+reviewed portable Planning Item;
+confirmed managed Planning Item Reference Object;
+documented/integrated state of the same Planning Item.
+```
+
+One semantic Planning Item may move through these states without identity replacement.
+
+
 ### 3.6 Planning Direction
 
-A larger target, outcome or direction to which an item belongs. It may be another Planning Item, a Planning Draft, a file or another stable target.
+A broad semantic work direction to which an item or use case belongs. A Direction may own sequential, optional, conditional, alternative, repeatable or independently triggered use cases. It is not one mandatory universal stage list.
 
 ### 3.7 Item Kind And Item Scale
 
@@ -281,7 +346,7 @@ Relations form a typed graph; a strict tree is not required.
 
 ### 3.9 Attached Item
 
-A Planning Item or InformationItem linked to a heading, section, file, draft, chat fragment or action step.
+A Planning Item or another explicitly named managed object/record linked to a heading, section, file, draft, chat fragment or action step.
 
 ### 3.10 Key Point
 
@@ -434,6 +499,13 @@ several suggesting sources
 
 Similar but non-identical Concern Definitions require review rather than automatic merging.
 
+### 4.8A Concern / Item Observability
+
+A derived projection over concrete records, such as counts/icons for pending suggestions, open questions, risks, evidence needs, deferred work or resolved work.
+
+Every indicator should drill down to concrete targets. It is not one opaque quality score and does not create or apply concern state.
+
+
 ## 5. Guidance Mechanisms
 
 ### Document Template
@@ -462,25 +534,82 @@ A demonstration of possible content or behavior. It owns no rule.
 
 ## 6. Source And Evidence Terms
 
-### Source Excerpt
+### 6.1 Source Message
 
-Literal fragment of user text, assistant text, repository file, draft, imported file or other source supporting an item, concern or decision.
+One complete user or assistant message preserved as historical evidence.
 
-One item may have several excerpts; one excerpt may support several items.
+For portable Planning Item review, the complete supporting user message is repeated under every item it supports, with relevant spans highlighted while surrounding context remains.
 
-### Source Anchor
+### 6.2 Source Fragment
 
-Address of a Source Excerpt: chat turn, file path, heading, line range, object ID, selection range or imported fragment ID.
+An addressable semantic span inside a Source Message, repository file or imported source.
 
-### Provenance
+A fragment improves precise mapping. It does not replace the complete Source Message in review output.
 
-Origin and transformation history of content: excerpts, anchors, chat turns, review decisions and related artifacts.
+### 6.3 Source Excerpt
 
-### Origin
+A literal subset displayed for emphasis or compact evidence.
 
-Creation or first-attachment context of an item/object. It is not the same as Source of Truth.
+It may supplement full-message presentation and exact anchors; it is not sufficient as the only review source when the complete message is available.
 
-### Source of Truth
+### 6.4 Source Anchor
+
+Address of a Source Message or Fragment:
+
+```text
+conversation/thread;
+turn/message identity;
+file path;
+heading;
+line/range;
+selection/fragment identity.
+```
+
+### 6.5 Source Contribution
+
+A typed many-to-many relation describing how one Source Message/Fragment contributes to one Planning Item.
+
+### 6.6 Contribution Role
+
+Initial reusable roles:
+
+```text
+Primary;
+Supporting;
+Clarifying;
+Correcting;
+Contradicting;
+Example;
+Confirmation.
+```
+
+One source may contribute to several items. One item may use several sources.
+
+Merge combines/deduplicates contribution relations without losing roles or anchors. Split may retain the same source contribution on several resulting items. Rejection or supersession does not erase the source relation.
+
+`Source Idea` is not introduced. Normalized interpretation belongs in the Planning Item body.
+
+### 6.7 Provenance
+
+The complete origin/creation evidence and transformation history of a meaning:
+
+```text
+initial Source Message / Fragment / Anchor;
+formation and review decisions;
+rename/merge/split/move/supersession mappings;
+related artifacts and accepted transitions.
+```
+
+A separate canonical `Origin` field/term is unnecessary when it only repeats the initial part of Provenance.
+
+Provenance is not:
+
+- current canonical-state ownership;
+- Definition Location;
+- semantic Parent/Home;
+- one reference Occurrence.
+
+### 6.8 Source of Truth
 
 Authoritative owner for one content unit or region. Source of Truth is per content/region, not globally one system.
 
@@ -500,7 +629,7 @@ Markdown region whose canonical content is owned by the Markdown file.
 
 ### Object-backed Region
 
-Markdown region whose visible text is materialized from an app object or InformationItem.
+Markdown region whose visible text is materialized from a Reference Object or another explicitly named managed object.
 
 ### Proposed Object Region
 
@@ -703,9 +832,16 @@ Deferred tooling direction for applying a verified package, opening diff review 
 | Recommended file shape | Document Template | Not a concern preset |
 | Saved object projection | View Preset | Display only |
 | Checked condition | Validation Rule | Not a template section by default |
-| General app-memory unit | InformationItem | Broad data term |
-| Literal support text | Source Excerpt | Source-linked evidence |
-| Address of support | Source Anchor | Path/turn/section/range |
+| Proposed item interpretation | Proposed Planning Item Meaning | Review state, not a separate entity |
+| Portable item review | Portable Planning Item Review Mode | Complete Markdown review/ledger |
+| Managed item review | Application-Native Managed Planning Item Mode | Confirmation creates managed Planning Item Reference Object |
+| Complete historical message | Source Message | Full review context |
+| Addressable source span | Source Fragment | Precise semantic mapping |
+| Highlighted literal subset | Source Excerpt | Supplement, not full-message replacement |
+| Address of support | Source Anchor | Path/turn/message/section/range |
+| Typed source-to-item relation | Source Contribution | Many-to-many provenance relation |
+| How a source contributes | Contribution Role | Primary/Supporting/Clarifying/etc. |
+| Source and transformation history | Provenance | Includes initial source/creation evidence |
 | Authoritative owner | Source of Truth | Per content/region |
 | Real documentation file | Markdown File | First-class documentation |
 | File-owned region | Hardwritten Region | Markdown-owned |
@@ -726,3 +862,4 @@ Deferred tooling direction for applying a verified package, opening diff review 
 | TQ-06 | May one Concern Preset include another? | Allow several independent presets; do not assume inheritance. |
 | TQ-07 | Should reviewed-out suggestions persist? | Preserve the review decision when repetition would create noise; define invalidation later. |
 | TQ-08 | Should final wrapper/tag syntax be chosen here? | No; define concepts first and prototype syntax later. |
+| TQ-09 | Should a separate `Origin` term return? | No unless an independent responsibility appears beyond initial Provenance. |
