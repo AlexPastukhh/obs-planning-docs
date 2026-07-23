@@ -1,18 +1,19 @@
 # Documentation And Reference Object End-To-End Workflow
 
-Status: active accepted project-local Complete Picture / item-backed / implementation not selected
-Doc version: v0.1.0-accepted-end-to-end-picture
-Scope: trigger-to-result workflow for loading documentation, recognizing and confirming Reference Objects, authoring managed content, round-tripping Markdown, reviewing dependency impact and navigating the resulting state.
+Status: active accepted project-local Complete Picture / managed-Planning-Item boundary synchronized / implementation not selected
+Doc version: v0.2.0-managed-planning-item-entry
+Scope: trigger-to-result workflow for loading documentation, resolving accepted object-entry paths, authoring managed content, round-tripping Markdown, reviewing dependency impact and navigating the resulting state.
 
 ## 1. Purpose
 
 This file owns one continuous Documentation And Reference Object workflow.
 
 ```text
-repository / file / folder / Markdown / reviewed Planning Item
+repository / file / folder / Markdown
+or accepted planning/documentation handoff
   → load and parse
   → recognize objects, fields and references
-  → propose and confirm missing objects
+  → resolve one accepted entry path
   → establish identity, canonical state and optional home
   → apply flexible fields and category contracts
   → author documents and objects
@@ -21,7 +22,7 @@ repository / file / folder / Markdown / reviewed Planning Item
   → detect affected dependants
   → review and refresh/remove references
   → navigate object state, home, occurrences and review targets
-  → reach a diff-ready result or explicit Pending Review state
+  → reach a diff-ready result or explicit Pending Review state.
 ```
 
 The workflow replaces the former peer-level `CP-2`, `CP-3`, `CP-4` and `CP-7` split. Those labels remain historical mappings only.
@@ -30,16 +31,17 @@ The workflow replaces the former peer-level `CP-2`, `CP-3`, `CP-4` and `CP-7` sp
 
 Project-local owners:
 
-- [`planning-item-register.md`](planning-item-register.md) — complete active item bodies, sources, absorbed-item history and open questions;
-- this file — trigger-to-result workflow and phase/item map;
+- [`planning-item-register.md`](planning-item-register.md) — complete active item bodies, sources, transformations and open questions;
+- this file — trigger-to-result Documentation/Reference workflow and phase/item map;
 - [`reference-object-model-and-lifecycle.md`](reference-object-model-and-lifecycle.md) — supporting identity/state/home/durability/shape model;
-- [`full-picture.md`](full-picture.md) — Application Root coordination and provisional neighbouring slices.
+- [`full-picture.md`](full-picture.md) — Application Root coordination and cross-workflow inventory;
+- [`complete-pictures/planning-items-and-full-picture/full-picture.md`](complete-pictures/planning-items-and-full-picture/full-picture.md) — upstream Planning Item formation, Full Picture and documentation handoff.
 
 Reusable planning methodology remains under `planning/documentation/application-planning/`.
 
 ## 3. Trigger And Accepted Inputs
 
-The workflow starts when the user works with at least one of these inputs:
+The workflow starts when the user works with at least one of:
 
 - a repository working tree;
 - an individual Documentation File;
@@ -47,23 +49,28 @@ The workflow starts when the user works with at least one of these inputs:
 - existing mixed Markdown;
 - a new documentation file;
 - AI-generated Markdown containing possible object definitions;
-- a reviewed Planning Item selected for Reference Object creation;
+- an already managed Planning Item Reference Object selected for documentation placement/materialization;
+- a reviewed portable Planning Item meaning selected for managed object creation;
 - an existing documentation fragment selected for extraction.
 
-Upstream AI response interpretation and Planning Item formation remain outside this workflow. `ITEM-94 / AI-ITEM-IMPORT` supplies reviewed/proposed Planning Items to the entry boundary but is not one of this workflow's 30 active items.
+Upstream source interpretation, Planning Item formation, Full Picture synthesis and concern/deepening loops belong to the Planning Item/Full Picture workflow.
+
+`ITEM-94 / AI-ITEM-IMPORT` supplies reviewed proposals and confirmed managed Planning Items to this boundary. It is not one of this workflow's 30 direct active items.
 
 ## 4. End Conditions
 
-A selected work cycle reaches an understandable result when:
+A selected cycle reaches an understandable result when:
 
 ```text
-- every created/edited Reference Object has stable identity and an explicit canonical-state owner;
+- every created/edited Reference Object has stable identity
+  and an explicit canonical-state owner;
 - Markdown-backed state has a resolvable definition location;
 - optional parent/home is represented separately from state ownership;
 - changed Documentation Files are fully materialized for export/diff;
 - managed references preserve identity and selected full/bare mode;
-- every invalidated dependant is refreshed, removed/replaced, or visibly Pending Review;
-- unresolved targets/conflicts remain visible instead of being guessed;
+- every invalidated dependant is refreshed, removed/replaced,
+  or visibly Pending Review;
+- unresolved targets/conflicts remain visible instead of guessed;
 - object, canonical state, optional home and occurrences remain navigable.
 ```
 
@@ -71,7 +78,7 @@ The cycle may end with a non-empty review queue. Explicit outstanding obligation
 
 ## 5. Before And Accepted Structural Picture
 
-### Before
+### Before the original structural reconciliation
 
 ```text
 former CP-2 → object model
@@ -80,7 +87,7 @@ former CP-4 → import, authoring and round trip
 former CP-7 → navigation and related views
 ```
 
-Each slice required the others for a real user cycle, so none could be followed independently from trigger to result.
+Each slice required the others for a real user cycle, so none was independently traversable.
 
 ### Accepted result
 
@@ -92,42 +99,57 @@ Reference Object Model And Lifecycle
   → supports the process with model detail;
 
 navigation/views
-  → operate across workflow stages rather than form a parallel Complete Picture.
+  → operate across stages rather than form a peer Complete Picture.
 ```
+
+### Later accepted interface correction
+
+```text
+Planning Item/Full Picture workflow
+  → may already create a managed Planning Item Reference Object;
+
+this workflow
+  → must not repeat object-creation confirmation;
+  → owns canonical-state/durability/home/materialization/reference placement
+    after the explicit handoff.
+```
+
+Portable reviewed items and existing fragments still use confirmation-gated creation/extraction paths.
 
 ## 6. Phase Map
 
 | Phase | Purpose | Active items |
 |---|---|---|
-| Scope, parsing and creation | Load selected documentation, preserve mixed Markdown, discover and confirm object creation. | `ITEM-34B`, `ITEM-32B`, `ITEM-31B`, `ITEM-22B`, `ITEM-87` |
-| Identity, state and home | Establish Reference Object identity, canonical-state ownership, temporary app-only exception and optional home. | `ITEM-86`, `ITEM-23B`, `ITEM-108`, `ITEM-91` |
+| Scope, parsing and creation | Load documentation, preserve mixed Markdown, resolve entry path and confirm object creation when identity does not already exist. | `ITEM-34B`, `ITEM-32B`, `ITEM-31B`, `ITEM-22B`, `ITEM-87` |
+| Identity, state and home | Establish identity, canonical-state ownership, temporary app-only exception and optional home. | `ITEM-86`, `ITEM-23B`, `ITEM-108`, `ITEM-91` |
 | Shape and category contracts | Support arbitrary fields plus category-specific expectations and file-type guidance. | `ITEM-103`, `ITEM-106`, `ITEM-97` |
 | Authoring and references | Edit canonical content, resolve targets and create readable full/bare managed references. | `ITEM-93`, `ITEM-90`, `ITEM-114`, `ITEM-101`, `ITEM-88`, `ITEM-73`, `ITEM-83`, `ITEM-105` |
 | Change impact and review | Track dependency edges, invalidate dependants and close review obligations explicitly. | `ITEM-29B`, `ITEM-89`, `ITEM-16B` |
-| Navigation and views | Preserve work context and expose object/file/home/occurrence relationships throughout the cycle. | `ITEM-35B`, `ITEM-111`, `ITEM-118`, `ITEM-95`, `ITEM-104`, `ITEM-96` |
+| Navigation and views | Preserve context and expose object/file/home/occurrence relationships throughout the cycle. | `ITEM-35B`, `ITEM-111`, `ITEM-118`, `ITEM-95`, `ITEM-104`, `ITEM-96` |
 | Optional AI output | Produce a non-mutating expanded transfer copy. | `ITEM-107` |
 
-Total: **30 active items**.
+Total direct active items: **30**.
 
 ## 7. Step 1 — Select And Load Scope
 
 ### Input
 
-Repository working tree, file, folder or new document.
+Repository working tree, file, folder, new document or an accepted planning/documentation handoff.
 
 ### Behavior
 
-1. Select the scope.
+1. Select scope.
 2. Read complete current text and repository-relative identity.
 3. Preserve the difference between repository content, local application edits and conflicts.
 4. For folders, keep recursive/non-recursive scope explicit.
-5. Load documentation into auxiliary App Memory without hiding the literal files.
+5. Load documentation into auxiliary App Memory without hiding literal files.
+6. Preserve an upstream managed item identity when it already exists.
 
 ### Output
 
-A parsed work scope with source identity and visible conflicts.
+A parsed work scope with source identity, handoff identity and visible conflicts.
 
-Items: `ITEM-34B / REPO-FILE-FOLDER-ROUNDTRIP`, `ITEM-32B / MIXED-MARKDOWN-ROUNDTRIP`.
+Items: `ITEM-34B`, `ITEM-32B`.
 
 ## 8. Step 2 — Parse And Recognize
 
@@ -142,43 +164,59 @@ The application recognizes:
 - Documentation File and File Location targets;
 - unresolved, ambiguous or conflicting markers.
 
-Recognition does not itself authorize object creation or canonical-state replacement.
+Recognition does not authorize canonical creation or state replacement by itself.
 
 Items: `ITEM-32B`, `ITEM-83`, `ITEM-105`, `ITEM-103`, `ITEM-114`.
 
-## 9. Step 3 — Discover And Confirm Missing Objects
+## 9. Step 3 — Resolve The Entry Context
+
+Before proposing creation, determine whether the incoming meaning already has managed identity.
 
 ```text
-known identity
-  → resolve and compare current state;
+known managed Reference Object identity
+  → resolve current canonical state and continue without new creation;
 
-missing/proposed identity
-  → show proposed identity, content, fields and source location
-  → user confirms or rejects
-  → only confirmed proposal becomes canonical object state.
+portable reviewed meaning without managed identity
+  → use Planning Item proposal/confirmation path;
+
+existing fragment without independent identity
+  → use extraction path;
+
+parsed/generated proposed definition
+  → use discovery/conflict/confirmation path.
 ```
 
-Duplicate or conflicting identity resolution remains an explicit review; the application must not silently create a second canonical object.
+Ambiguous identity is an explicit conflict. Do not guess or create a duplicate.
 
-Item: `ITEM-31B / CONFIRMED-OBJECT-DISCOVERY`.
+## 10. Step 4 — Enter Through One Of Four Paths
 
-## 10. Step 4 — Enter Through One Of Three Creation Paths
-
-### Reviewed Planning Item
+### A. Already managed Planning Item Reference Object
 
 ```text
-reviewed Planning Item
-  → proposed Reference Object
-  → user confirmation
-  → object creation
+confirmed application-native Planning Item
+  → stable managed identity already exists
+  → preserve full item/source relations
+  → choose/confirm canonical-state owner and durability mode
+  → optionally assign semantic home
+  → materialize definition/reference placement
+  → continue through authoring and diff review.
+```
+
+No second item-to-object confirmation occurs.
+
+### B. Portable reviewed Planning Item
+
+```text
+reviewed portable Planning Item meaning
+  → Reference Object proposal
+  → explicit user confirmation
+  → managed object creation
   → Planning Item/source relation remains traceable.
 ```
 
-`RN` and `DAM` remain literal user annotations until a separate interpretation/review.
+`RN` and `DAM` remain literal user annotations until separately interpreted/reviewed.
 
-Item: `ITEM-22B / ITEM-TO-OBJECT` — semantic name **Planning Item To Reference Object**.
-
-### Existing documentation fragment
+### C. Existing documentation fragment
 
 ```text
 existing fragment
@@ -188,13 +226,22 @@ existing fragment
   → Reference Object extracted.
 ```
 
-Value may come from separate work, exact reuse, one Source of Truth, dependency tracking or independent review/lifecycle. Length alone is not a reason.
+Independent value may come from separate work, exact reuse, one Source of Truth, dependency tracking or independent review/lifecycle. Length alone is not a reason.
 
-Item: `ITEM-87 / OBJECT-EXTRACTION` — semantic name **Reference Object Extraction**.
+### D. Parsed proposed-object definition
 
-### Parsed proposed-object definition
+```text
+known identity
+  → resolve and compare current state;
 
-An imported or generated definition follows the discovery/confirmation behavior of `ITEM-31B`.
+missing/proposed identity
+  → show proposed identity, content, fields and source location
+  → resolve duplicate/conflict
+  → user confirms or rejects
+  → only confirmed proposal becomes canonical object state.
+```
+
+Items: `ITEM-22B`, `ITEM-87`, `ITEM-31B`.
 
 ## 11. Step 5 — Establish Identity, State And Optional Home
 
@@ -221,7 +268,9 @@ parent/home
   ≠ definition location.
 ```
 
-Items: `ITEM-86`, `ITEM-23B`, `ITEM-108`, `ITEM-91`.
+For a confirmed application-native Planning Item, managed identity already exists before this step. This step selects or updates state ownership/location/home; it does not create the item again.
+
+Items: `ITEM-86`, `ITEM-23B`, `ITEM-108`, `ITEM-91`, interface `ITEM-22B`.
 
 ## 12. Step 6 — Configure Flexible Fields And Category Contracts
 
@@ -246,21 +295,24 @@ Object Category Field Contract
 Conservative current behavior:
 
 - additional unknown fields are allowed;
-- a missing expected field produces guidance/warning rather than data loss;
+- missing expected fields produce guidance/warning rather than data loss;
 - hard restriction requires an explicit contract rule;
-- several applicable contracts remain visible when combination/conflict rules are unresolved.
+- applicable-contract combination/conflict remains visible when unresolved.
+
+Planning Item fields and states are category-specific planning meaning, not mandatory fields on every Reference Object.
 
 Items: `ITEM-103`, `ITEM-106`; analogous file-level assignments remain in `ITEM-97`.
 
 ## 13. Step 7 — Author Canonical Objects And Documents
 
-The user may edit ordinary document prose, canonical object content, fields, categories and surrounding file structure.
+The user may edit ordinary document prose, canonical object content, fields, categories and surrounding structure.
 
 ```text
 canonical object state → editable at its canonical owner;
 linked occurrence      → read-only;
 surrounding prose      → editable;
-linked field content   → remove/replace link or edit target object, never local linked text.
+linked field content   → remove/replace link or edit target object,
+                         never local linked text.
 ```
 
 An in-file object may be worked on through a separate object surface without requiring a separate Markdown file.
@@ -275,7 +327,7 @@ Supported target identities:
 - Documentation File;
 - stable File Location.
 
-Target answers where a link resolves; relation answers why the link exists. Navigation-only file links do not create dependency invalidation by default.
+Target answers where a link resolves; relation answers why it exists. Navigation-only file links do not create dependency invalidation by default.
 
 Reference Object representation modes:
 
@@ -284,7 +336,7 @@ full-text → identity + last approved materialized content;
 bare      → identity/address without duplicated content.
 ```
 
-Both modes remain managed occurrences with the same application functionality and may appear in documents or object fields. Collapsed/expanded is application view state; full/bare is persisted Markdown choice.
+Both remain managed occurrences with the same application functionality and may appear in documents or object fields. Collapsed/expanded is view state; full/bare is persisted Markdown choice.
 
 Items: `ITEM-114`, `ITEM-101`, `ITEM-88`, `ITEM-73`, `ITEM-83`, `ITEM-105`.
 
@@ -337,13 +389,13 @@ replace reference;
 leave Pending Review.
 ```
 
-Source change never proves semantic correctness of a dependent context and therefore never forces automatic refresh.
+Source change never proves semantic correctness of a dependent context and never forces automatic refresh.
 
 Items: `ITEM-89`, `ITEM-16B`, `ITEM-101`, `ITEM-90`.
 
 ## 18. Step 12 — Navigate Throughout The Cycle
 
-Navigation is cross-step workflow behavior, not a parallel Complete Picture.
+Navigation is cross-step behavior, not a peer Complete Picture.
 
 The user can:
 
@@ -354,7 +406,8 @@ The user can:
 - view Home Objects, Incoming References and Outgoing Uses;
 - aggregate direct relations at folder scope;
 - filter existing objects/records without creating semantic truth;
-- return to the original context after inspection.
+- return to the original context;
+- open the upstream Planning Item and Full Picture when the object came from planning.
 
 Items: `ITEM-35B`, `ITEM-111`, `ITEM-118`, `ITEM-95`, `ITEM-104`, `ITEM-96`.
 
@@ -369,20 +422,22 @@ selected file
   → do not mutate saved Markdown.
 ```
 
-Item: `ITEM-107 / AI-EXPANDED-COPY`.
+Item: `ITEM-107`.
 
 ## 20. Branches, Loops And Failure Paths
 
-| Condition | Required behavior |
+| Situation | Required behavior |
 |---|---|
-| Proposed object rejected | Keep source text; do not create canonical object state. |
-| Existing identity conflicts | Stop automatic creation; expose competing state and source locations. |
+| Managed Planning Item identity already exists | Do not create a second object; resolve state/home/materialization. |
+| Portable item proposal rejected | Keep source/review history; do not create managed state. |
+| Existing identity conflicts | Stop automatic creation; expose competing state and locations. |
 | Target missing or ambiguous | Preserve unresolved reference and show the problem; do not guess. |
 | Category contracts conflict | Show all applicable contracts and unresolved conflict; do not discard fields. |
 | Repository/application state conflicts | Require explicit reconciliation before overwrite/export. |
 | Dependant not reviewed | Keep it Pending Review with prior approved materialization. |
-| App-only object lacks durable recovery | Keep explicit durability debt and do not present it as Markdown-backed. |
+| App-only object lacks durable recovery | Keep explicit durability debt; do not present it as Markdown-backed. |
 | Later source change | Re-enter dependency invalidation/review loop. |
+| Upstream item meaning changes | Re-enter Planning Item/Full Picture reconciliation, then hand off again. |
 
 ## 21. Core Objects And States
 
@@ -390,6 +445,7 @@ Item: `ITEM-107 / AI-EXPANDED-COPY`.
 |---|---|
 | Imported scope | loaded; locally changed; conflict requiring review |
 | Proposed object | detected; awaiting confirmation; confirmed; rejected; conflict |
+| Managed Planning Item input | already managed; portable/not managed; conflict/ambiguous |
 | Reference Object | Markdown-backed; temporary app-only |
 | Parent/home | assigned; absent |
 | Definition location | assigned; absent only for app-only state |
@@ -399,12 +455,23 @@ Item: `ITEM-107 / AI-EXPANDED-COPY`.
 | Category contract | applicable; not applicable; combination/conflict unresolved |
 | Repository result | unchanged; modified; diff-ready; conflict unresolved |
 
-## 22. Boundaries
+## 22. Cross-Workflow Interface Contract
+
+| Upstream result | This workflow behavior |
+|---|---|
+| Confirmed application-native Planning Item | Reuse managed identity; no second creation confirmation. |
+| Accepted portable item meaning | Keep portable or propose/confirm managed object creation. |
+| Item-backed Full Picture statement | Use linked items/objects; do not make Full Picture prose a duplicate canonical item body. |
+| Concern/deep-work result | Materialize only accepted resulting meaning; keep unresolved work explicit. |
+| Repository reconciliation result | Apply only the reviewed owner placement/meaning transition. |
+
+## 23. Boundaries
 
 This workflow does not own:
 
 - raw conversation storage and Action Log lifecycle;
-- general Planning Item formation, concern suggestion/application or planning deepening;
+- Planning Item source formation/review and Full Picture synthesis before handoff;
+- concern suggestion/application and planning deepening;
 - exact wrapper/field syntax;
 - database/storage engine;
 - application-shell and UI-component architecture;
@@ -412,10 +479,11 @@ This workflow does not own:
 
 Historical AI-response links may use the same target-resolution/navigation infrastructure but do not enter the normal live stale-reference queue.
 
-## 23. Preserved Invariants
+## 24. Preserved Invariants
 
 - Real Markdown remains first-class and independently reviewable.
-- No parsed/generated content becomes canonical without confirmation.
+- Parsed/generated content does not become accepted state without confirmation.
+- Already managed identity is never recreated merely because Markdown placement is new.
 - Canonical state, Markdown definition location and semantic home remain distinct.
 - Linked content remains read-only at use sites.
 - Full-text and bare references remain equal managed modes.
@@ -425,10 +493,11 @@ Historical AI-response links may use the same target-resolution/navigation infra
 - Unresolved conflicts remain visible.
 - Implementation directions remain non-final.
 
-## 24. Open Questions
+## 25. Open Questions
 
 - final English term for `Ссылочный объект`;
-- duplicate-object resolution during import;
+- duplicate/compatible-object resolution during import;
+- portable item identity matching during application import;
 - category-contract composition, precedence, severity and inheritance;
 - exact Markdown marker/field/reference syntax;
 - app-only persistence, backup, recovery and Markdown migration;
@@ -437,13 +506,22 @@ Historical AI-response links may use the same target-resolution/navigation infra
 - current-state transport for AI;
 - exact application shell and storage architecture.
 
-## 25. Acceptance And Next Gate
+## 26. Acceptance And Next Gate
 
-This workflow structure and its 30-item phase map are accepted. The item register and supporting model record the corresponding `50 → 48` transition.
+This workflow structure and its 30-item phase map remain accepted. This update accepts the corrected handoff from the Planning Item/Full Picture workflow:
 
-Next structural work:
+```text
+managed application-native Planning Item
+  → no second object creation;
 
-1. review Chat/AI/Work-State as a trigger-to-result candidate;
-2. review Planning Items/Full Picture/Deepening as a trigger-to-result candidate;
-3. expand only workflows that pass the same Complete Picture criterion;
-4. plan syntax prototypes and runtime architecture separately.
+portable reviewed Planning Item
+  → proposal/confirmation path remains.
+```
+
+Next work:
+
+1. synchronize reusable planning-item formation terminology/workflow/template;
+2. add semantic Direction and Use-Case registries;
+3. add project-readable input conventions and the item-formation command;
+4. project semantic navigation in Tampermonkey;
+5. plan syntax prototypes and runtime architecture separately.

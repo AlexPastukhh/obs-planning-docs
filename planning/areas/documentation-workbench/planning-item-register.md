@@ -1,6 +1,6 @@
-# Documentation Workbench Planning Item Register — accepted recent-chat reconciliation transition
+# Documentation Workbench Planning Item Register — accepted Planning Item / Full Picture workflow transition
 
-Status: active project-local source-linked register / accepted Documentation And Reference Object transition + accepted recent-chat reconciliation applied
+Status: active project-local source-linked register / accepted Documentation And Reference Object transition + accepted recent-chat reconciliation + accepted Planning Item/Full Picture workflow applied
 
 Repository owner:
 
@@ -39,10 +39,13 @@ canonical active in this file
 Reconciliation status:
 
 ```text
-- Documentation And Reference Object End-To-End Workflow is accepted as the primary trigger-to-result picture.
+- Documentation And Reference Object End-To-End Workflow is accepted.
+- Planning Item And Full Picture End-To-End Workflow is accepted.
 - The former CP-2/CP-3/CP-4/CP-7 split is retained only as structural history.
+- The former Planning Items/Full Picture/Deepening thematic slice is re-homed into the accepted Planning Item workflow.
 - Explicitly accepted item transformations are applied in this register.
 - ITEM-25B maps to ITEM-23B; ITEM-102 maps to ITEM-91.
+- ITEM-22B keeps its stable technical identity and now owns the dual portable/application-native boundary.
 - Absorbed item bodies, source IDs and provenance remain in Accepted Transformation History.
 - Future transformations still require visible Current / Incoming / Resulting review and explicit acceptance.
 ```
@@ -51,8 +54,8 @@ Migration and coverage note:
 
 - The source migration SHA identifies the pre-bootstrap v0.9.2 provenance; it is not the hash of this evolved register.
 - Unchanged item bodies may retain coverage language describing the pre-bootstrap source snapshot.
-- Items affected by the accepted Documentation/Reference Object transition have updated coverage, dispositions and workflow placement.
-- The Application Root, end-to-end workflow and supporting model now exist in this area.
+- Items affected by accepted Documentation/Reference and Planning Item/Full Picture transitions have updated coverage, dispositions and workflow placement.
+- The Application Root, two accepted end-to-end workflows and supporting model now exist in this area.
 - No unrelated item meaning is silently rewritten by this transition.
 
 ## 0. Purpose
@@ -71,7 +74,7 @@ free-form user input
 
 No older item is silently deleted. A duplicate is merged into a canonical brick; an unclear item remains visible as unclear; reusable methodology stays with its reusable owner instead of being copied into the app model.
 
-## 1. Major corrections through v0.9.2
+## 1. Major corrections through current accepted transitions
 
 1. Planning Items may represent work at different scales:
    - Goal;
@@ -114,7 +117,7 @@ No older item is silently deleted. A duplicate is merged into a canonical brick;
     split only when parts have independent meaning, ownership, lifecycle, review, reuse or decisions—not merely because the text is long.
 13. Three older active items (`ITEM-31B`, `ITEM-32B`, `ITEM-93`) now include explicit explanations matching the rest of the register.
 14. Prototype implementation, React/Tauri/Electron/Tampermonkey and application-shell choices remain outside this update.
-15. The active brick count was 50 in the source snapshot; the accepted end-to-end transition reduces the current active set to 48 while preserving the complete 110-row old-item audit.
+15. The active brick count was 50 in the source snapshot; the Documentation/Reference transition reduced it to 48, and the accepted recent-chat reconciliation added three independent product meanings for a current total of 51 while preserving the complete 110-row old-item audit.
 16. No separate `Planning Item Candidate` entity/state is introduced:
     - a Planning Item is formed or updated directly;
     - during creation/update, perform a targeted check of relevant current documentation, principles, workflows and existing items when repository context is available;
@@ -135,6 +138,12 @@ No older item is silently deleted. A duplicate is merged into a canonical brick;
 22. The accepted item transition absorbs only `ITEM-25B → ITEM-23B` and `ITEM-102 → ITEM-91`; `ITEM-108` and `ITEM-106` remain active independent meanings.
 23. Object fields are not globally fixed: the application recognizes any correctly represented field, while category-specific contracts/presets describe expected fields and applicability conditions.
 24. `ITEM-94 / AI-ITEM-IMPORT` remains active upstream; `ITEM-114 / GENERAL-REFERENCE-TARGETS` belongs to the shared reference-target phase rather than navigation-only ownership.
+25. The accepted recent-chat reconciliation added three independent active product meanings: `ITEM-121`, `ITEM-122` and `ITEM-123`; `CHAT-PI-*` and `RESULT-*` remain transformation provenance rather than canonical IDs.
+26. Planning Item formation has portable Markdown and application-native modes; portable mode remains supported until deliberately retired.
+27. In application-native mode, explicit confirmation creates the Planning Item immediately as a managed Reference Object; later Markdown materialization does not create it again.
+28. The former provisional Planning Items/Full Picture/Deepening slice is now an accepted trigger-to-result Complete Picture with an 11-item direct active set.
+29. Full Pictures may reference child Full Pictures in their own canonical homes, and significant synthesis remains traceable to contributing Planning Items.
+30. Concern observability is derived from concrete suggestions, Applied Concerns, questions, risks, evidence and work state; it is not one opaque quality score or a separate peer workflow.
 
 ## 2. Item identity rule
 
@@ -154,14 +163,17 @@ ITEM-110 / SEMANTIC-ITEM-KEY
 The project-local area now has:
 
 - an Application Root Full Picture;
-- one accepted Documentation And Reference Object End-To-End Workflow;
+- an accepted Documentation And Reference Object End-To-End Workflow;
+- an accepted Planning Item And Full Picture End-To-End Workflow;
 - a supporting Reference Object model with accepted transformation history;
-- a 51-item active source-linked register after the accepted recent-chat reconciliation;
-- provisional Chat/AI/Work-State and Planning/Deepening slices awaiting the same end-to-end workflow review.
+- a 51-item active source-linked register;
+- one remaining provisional Chat/AI/Work-State thematic slice.
 
-The accepted workflow covers repository/file/folder loading, mixed-Markdown parsing, confirmation-gated object creation, canonical state and optional home, arbitrary fields and category contracts, authoring, managed references, round trip, dependency review, navigation and optional AI-expanded copy.
+The Documentation/Reference workflow covers repository/file/folder loading, mixed-Markdown parsing, accepted entry paths, canonical state and optional home, arbitrary fields and category contracts, authoring, managed references, round trip, dependency review, navigation and optional AI-expanded copy.
 
-Reusable methodology still needs later synchronization for accepted project-local terminology/model corrections. The final English Reference Object term, exact Markdown syntax, category-contract composition, app-only durability, AI current-state transport and runtime/application-shell architecture remain unresolved.
+The Planning Item/Full Picture workflow covers source preservation, complete item formation, targeted owner checks, explicit transformations and acceptance, portable/application-native modes, item-backed Full Picture synthesis, concern observability/deepening loops, repository semantic reconciliation and documentation handoff.
+
+Reusable methodology still needs synchronization for Planning Item Formation, exact review shape and terminology/principle changes. The final English Reference Object term, exact structured-response/Markdown syntax, category-contract composition, app-only durability, AI current-state transport and runtime/application-shell architecture remain unresolved.
 
 ## 4. Source bank
 
@@ -825,24 +837,38 @@ Context: explicit acceptance of the immediately preceding corrected end-to-end C
 - Explanation: A region or occurrence is a representation/use of the object, not the object identity itself.
 
 <a id="item-22b"></a>
-### ITEM-22B / ITEM-TO-OBJECT — Planning Item To Reference Object: a reviewed Planning Item may become a Reference Object only through explicit confirmation.
+### ITEM-22B / ITEM-TO-OBJECT — Planning Item Reference Object Boundary distinguishes already managed application-native Planning Items from portable reviewed meanings that still require managed-object creation.
 
-- Semantic name: **Planning Item To Reference Object**.
-- Former semantic name: **Item To Object**.
-- Kind: confirmation-gated item-to-object lifecycle.
-- Evidence status: **direct user clarification + accepted reconciliation**.
-- Current coverage: **Covered in the accepted end-to-end workflow and supporting model.**
+- Semantic name: **Planning Item Reference Object Boundary**.
+- Former semantic names:
+  - **Item To Object**;
+  - **Planning Item To Reference Object**.
+- Kind: dual-mode Planning Item / managed Reference Object lifecycle boundary.
+- Evidence status: **direct user clarification + accepted Documentation/Reference reconciliation + accepted recent-chat reconciliation + accepted Planning Item/Full Picture workflow**.
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow, downstream Documentation/Reference workflow and supporting Reference Object model.**
 - Disposition: **Update And Rename semantic meaning; preserve `ITEM-22B / ITEM-TO-OBJECT`.**
 - Required documentation action:
-  - reviewed/imported Planning Item → proposed Reference Object → user confirmation → created object;
-  - preserve Planning Item identity, interpreted statement and source-linked planning content;
-  - keep the Planning Item/source relation reviewable after object creation;
+  - application-native path:
+    - proposed Planning Item in a structured response;
+    - explicit user review/confirmation;
+    - Planning Item is created immediately as a managed Reference Object of category Planning Item;
+    - downstream documentation placement does not create it again;
+  - portable path:
+    - reviewed Planning Item meaning may remain portable/not app-managed;
+    - when managed creation is requested, show a Reference Object proposal;
+    - explicit confirmation creates managed state;
+  - later Markdown materialization, definition-location assignment, semantic-home assignment and documentation integration change owner/durability/location state rather than semantic identity;
+  - preserve Planning Item identity, interpreted statement, source contributions and transformation history;
+  - keep the Planning Item/source relation reviewable after managed creation;
   - `RN` and `DAM` remain literal user annotations, not Planning Items or Reference Objects;
   - conversion of `RN/DAM` requires separate user-requested interpretation/review;
-  - generic Reference Objects do not require planning provenance/source fields;
-  - linking to an already compatible object remains a duplicate-resolution question rather than confirmed core behavior.
-- Accepted workflow placement: object-creation entry path.
-- Owner: end-to-end workflow creation phase + supporting model.
+  - generic Reference Objects do not require Planning Item provenance/source fields;
+  - linking/merging with an already compatible managed object remains an explicit duplicate-resolution question.
+- Accepted workflow placement:
+  - application-native creation boundary in `complete-pictures/planning-items-and-full-picture/full-picture.md`;
+  - portable reviewed-item entry and managed handoff in `documentation-and-reference-object-end-to-end-workflow.md`;
+  - identity/state distinction in `reference-object-model-and-lifecycle.md`.
+- Owner: cross-workflow interface + supporting model.
 - Direct source excerpts:
   - SRC-N14;
   - SRC-N16;
@@ -851,29 +877,9 @@ Context: explicit acceptance of the immediately preceding corrected end-to-end C
   - SRC-N63;
   - SRC-N66;
   - SRC-N67;
-  - SRC-N86.
-- Explanation: Confirmation preserves user control without erasing the upstream Planning Item or silently promoting raw annotations.
-
-#### Accepted recent-chat reconciliation expansion
-
-Two creation contexts are now distinguished without creating a second Planning Item entity:
-
-```text
-portable / not-yet-managed item path
-  → reviewed Planning Item meaning
-  → Reference Object proposal
-  → explicit confirmation
-  → managed object creation;
-
-application-native item path
-  → proposed Planning Item in a structured AI response
-  → explicit user confirmation
-  → Planning Item is created immediately as a managed Reference Object
-    of category Planning Item.
-```
-
-Later Markdown materialization, definition-location assignment, semantic-home assignment or documentation integration changes ownership/durability/location state. It does not create a second semantic object. The current technical identity `ITEM-22B / ITEM-TO-OBJECT` remains active; the exact semantic rename after this broader lifecycle is reviewed with the project-local workflow owner in the next batch.
-
+  - SRC-N86;
+  - accepted recent-chat source appendix, especially `CHAT-PI-022`, `CHAT-PI-026` and `CHAT-PI-028`.
+- Explanation: User confirmation remains mandatory, but its effect depends on context. In application-native mode it creates a managed Planning Item Reference Object directly; in portable mode it may later authorize managed object creation. The same semantic item is not created twice.
 <a id="item-87"></a>
 ### ITEM-87 / OBJECT-EXTRACTION — Reference Object Extraction: an existing documentation fragment may become a Reference Object when independent management has practical value and the user confirms it.
 
@@ -1348,8 +1354,8 @@ Later Markdown materialization, definition-location assignment, semantic-home as
 
 - Kind: AI item ingestion
 - Evidence status: **direct user clarification**
-- Current coverage: **Отсутствует.**
-- Disposition: Расширить `ITEM-94` and connect it to `ITEM-116`.
+- Current coverage: **Covered as the application-native proposed-item import mode of the accepted Planning Item/Full Picture workflow; exact parser/response syntax remains open.**
+- Disposition: **Keep active and update workflow placement; connect to `ITEM-116` and `ITEM-22B`.**
 - Required documentation action:
   - batch import and object preview;
   - recognize proposed items inside a template-linked AI response;
@@ -1359,8 +1365,8 @@ Later Markdown materialization, definition-location assignment, semantic-home as
   - allow optional parent/home assignment and reference placement;
   - allow a general object to remain temporarily app-only;
   - never import user `RN/DAM` as reviewed items automatically.
-- Owner candidate: upstream AI/Planning Item workflow
-- Accepted workflow placement: upstream adapter; confirmed/reviewed Planning Items enter the Documentation/Reference Object workflow through `ITEM-22B` or `ITEM-31B`.
+- Owner: accepted Planning Item/Full Picture workflow application-native mode.
+- Accepted workflow placement: proposed-item import and application-native delivery phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`; confirmed managed items enter the Documentation/Reference workflow through `ITEM-22B` without repeated creation.
 - Direct source excerpts:
   - SRC-N16
   - SRC-N25
@@ -1591,8 +1597,8 @@ Source navigation must resolve from a Planning Item to the complete supporting u
 
 - Kind: item identity / navigation quality
 - Evidence status: **direct fresh user statement**
-- Current coverage: **Absent as a complete identity-versus-body rule.**
-- Disposition: Expand the existing item and connect it to `ITEM-120`.
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow; reusable terminology/registry synchronization remains pending.**
+- Disposition: **Keep active; connect compact identity to `ITEM-120` without limiting the full body.**
 - Required documentation action:
   - numeric ID remains stable historical identity;
   - code name is short, meaningful and unique inside the relevant registry;
@@ -1603,7 +1609,7 @@ Source navigation must resolve from a Planning Item to the complete supporting u
   - the complete description remains accessible from every compact representation;
   - concise navigation metadata must not imply that irrelevant verbosity is desirable—the full body is detailed only as far as complete meaning requires;
   - if a code name changes because meaning changed, preserve the old alias/history.
-- Owner candidate: item terminology + registry contract
+- Accepted workflow placement: item identity and complete-meaning phase of `complete-pictures/planning-items-and-full-picture/full-picture.md`; reusable terminology/registry contract later.
 - Direct source excerpts:
   - SRC-N49
   - SRC-N81
@@ -1618,8 +1624,8 @@ Compact identity remains navigation metadata. Review-time `CHAT-PI-*` and `RESUL
 
 - Kind: reusable work principle / derived-document rule
 - Evidence status: **direct fresh source + older item support**
-- Current coverage: **Partially reflected; concern reuse and semantic-size boundaries are absent.**
-- Disposition: Expand old `ITEM-41`.
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow for durable item reuse, item-backed synthesis and recursive child-picture references; reusable-method synchronization remains pending.**
+- Disposition: **Keep active and update workflow placement.**
 - Required documentation action:
   - free-form input may first survive as source-linked items or literal `RN/DAM`;
   - `RN/DAM` are not silently treated as reviewed bricks;
@@ -1640,7 +1646,7 @@ Compact identity remains navigation metadata. Review-time `CHAT-PI-*` and `RESUL
     - superseded/withdrawn;
   - no item or annotation disappears because it did not fit the latest prose;
   - no duplicate remains as a separate active brick when one canonical item owns the meaning.
-- Owner candidate: drafting workflow + item/concern registry workflow
+- Accepted workflow placement: item reuse and Full Picture synthesis phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`; reusable drafting/registry owners remain later synchronization targets.
 - Direct source excerpts:
   - SRC-N54
   - SRC-N55
@@ -1662,8 +1668,8 @@ Full Pictures may recursively reference child Full Pictures that live in their o
 
 - Kind: external workflow integration
 - Evidence status: **direct user statement + reusable methodology support**
-- Current coverage: **Reusable planning workflow exists, but concern-preset application, item-completeness boundaries and explicit repository semantic reconciliation are incomplete.**
-- Disposition: Expand `ITEM-98`; do not hard-code planning as the only domain of the documentation workbench and do not introduce a separate `Planning Item Candidate` entity.
+- Current coverage: **Covered by the accepted project-local Planning Item/Full Picture workflow; reusable Planning Item Formation and exact review-template synchronization remain pending.**
+- Disposition: **Keep active and update workflow placement; do not hard-code planning as the whole product and do not introduce a separate Planning Item Candidate entity.**
 - Required documentation action:
   - workflow:
     ```text
@@ -1723,7 +1729,7 @@ Full Pictures may recursively reference child Full Pictures that live in their o
   - not every suggested concern is applicable;
   - not every Applied Concern receives a separate file/object immediately;
   - results of deeper work return to the Applied Concern, relevant items and Full Picture.
-- Owner candidate: item-to-document planning integration workflow + documentation update-plan preflight
+- Owner: `complete-pictures/planning-items-and-full-picture/full-picture.md` + reusable application-planning drafting/update-plan preflight.
 - Direct source excerpts:
   - SRC-N14
   - SRC-N15
@@ -1764,8 +1770,8 @@ The route must expose both modes; the portable mode remains a fallback until del
 
 - Kind: planning methodology support / item semantics
 - Evidence status: **direct fresh user clarification**
-- Current coverage: **Reusable methodology contains pieces, but scale-aware app-facing item semantics are incomplete.**
-- Disposition: Expand the active item; reusable `ITEM-17/21/38/39` remain methodology owners rather than duplicate app requirements.
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow for item purpose, scale, roles, relations and Direction membership; reusable formation/registry synchronization remains pending.**
+- Disposition: **Keep active and update workflow placement; reusable `ITEM-17/21/38/39` remain methodology owners rather than duplicate product requirements.**
 - Required documentation action:
   - during item creation ask minimally:
     - what the item states;
@@ -1819,7 +1825,7 @@ The route must expose both modes; the portable mode remains a fallback until del
   - item kind/category/status may be used by `ITEM-118` views and `ITEM-97` recommendations;
   - full item detail is governed by `ITEM-120`, not by the short code name or list preview;
   - treat vocabularies as candidates to simplify through real usage, not hardcoded final enums.
-- Owner candidate: Planning Item Formation workflow + optional field contract
+- Accepted workflow placement: item formation, targeted checking and relation review phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`.
 - Direct source excerpts:
   - SRC-N57
   - SRC-N58
@@ -1843,8 +1849,8 @@ Direction membership is modeled through broad Directions that own a topology of 
 
 - Kind: planning methodology support / deepening workflow
 - Evidence status: **direct fresh user clarification**
-- Current coverage: **Questions, alternatives and prototypes exist in methodology, but the complete concern lifecycle is absent.**
-- Disposition: Expand the active item; delegate catalogue, preset, suggestion and applicability-review behavior to `ITEM-119`.
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow for Applied Concern lifecycle/deepening; catalogue/preset/application review remains with `ITEM-119`.**
+- Disposition: **Keep active; delegate catalogue, preset, suggestion and applicability review to `ITEM-119`.**
 - Required documentation action:
   - distinguish:
     - **Planning Lens** — reusable perspective used to inspect planning;
@@ -1897,7 +1903,7 @@ Direction membership is modeled through broad Directions that own a topology of 
     - Full Picture when shared understanding changes;
     - resulting Decisions/Actions when applicable;
   - deeper-planning objects use ordinary categories/statuses, allowing `ITEM-118` views to display them.
-- Owner candidate: Planning Deepening workflow
+- Accepted workflow placement: concern review, justified deepening and feedback phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`.
 - Direct source excerpts:
   - SRC-N56
   - SRC-N57
@@ -1920,8 +1926,8 @@ Concern work exposes elaboration observability rather than one opaque quality sc
 
 - Kind: planning support / concern catalogue, suggestion and application review
 - Evidence status: **direct fresh user statement**
-- Current coverage: **Absent as a complete reusable system.**
-- Disposition: New active item.
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow for product-local concern suggestion/application review; reusable catalogue/preset synchronization remains pending.**
+- Disposition: **Keep active and update workflow placement.**
 - Required documentation action:
   - define reusable **Concern Definition** identity with:
     - stable ID/code name;
@@ -2006,7 +2012,7 @@ Concern work exposes elaboration observability rather than one opaque quality sc
   - file-type assignment is owned by `ITEM-97`;
   - Applied Concern lifecycle/deepening is owned by `ITEM-113`;
   - concern suggestion/application views are owned by `ITEM-118`.
-- Owner candidate: Concern Catalogue, Preset And Suggestion Review workflow
+- Accepted workflow placement: concern suggestion and applicability-review phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`.
 - Direct source excerpts:
   - SRC-N79
   - SRC-N80
@@ -2024,8 +2030,8 @@ The default pre-application state is explicitly observable as not reviewed/pendi
 
 - Kind: item authoring principle / semantic completeness
 - Evidence status: **direct fresh user statement**
-- Current coverage: **Absent as an explicit rule.**
-- Disposition: New active item and reusable-principle candidate.
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow; reusable authoring-principle synchronization remains pending.**
+- Disposition: **Keep active and reusable-principle candidate.**
 - Required documentation action:
   - do not impose a fixed word, paragraph, line or screen-length limit on a Planning Item;
   - include inside the canonical item every element required to understand and correctly reuse its meaning, which may include:
@@ -2066,7 +2072,7 @@ The default pre-application state is explicitly observable as not reviewed/pendi
     - move genuinely independent deep work to linked objects/files;
   - when splitting is justified, preserve relations and a parent/summary item where the combined meaning still matters;
   - Full Picture may summarize an item, but the item remains the complete source for its planning meaning.
-- Owner candidate: Planning Item Authoring principles + registry/editor contract
+- Accepted workflow placement: complete proposed-item meaning and review phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`.
 - Direct source excerpts:
   - SRC-N81
 - Related active items:
@@ -2088,7 +2094,7 @@ At planning stages that precede later Full Picture reconciliation, the detailed 
 - Semantic name: **Structured User Message Composer**.
 - Kind: user input composition / source-addressability workflow.
 - Evidence status: **direct user proposal + accepted reconciliation**.
-- Current coverage: **No current canonical product item owns this independently triggerable workflow.**
+- Current coverage: **Covered as an optional upstream step of the accepted Planning Item/Full Picture workflow; detailed Chat/AI/Work-State integration remains provisional.**
 - Disposition: **New active item.**
 - Required documentation action:
   - allow a lightweight topic/subtopic/idea structure without forcing a rigid template;
@@ -2098,7 +2104,7 @@ At planning stages that precede later Full Picture reconciliation, the detailed 
   - keep unstructured writing possible;
   - treat the structure as an aid to source mapping, not proof that every fragment is a separate Planning Item;
   - keep exact UI, storage and editor behavior as later implementation/prototype work.
-- Owner candidate: future Structured Message Composition use case under the Documentation Workbench planning/chat workflow family.
+- Accepted workflow placement: optional source-capture step of `complete-pictures/planning-items-and-full-picture/full-picture.md`; future semantic use-case registry entry.
 - Source provenance: accepted recent-chat review set, especially `CHAT-PI-020`; complete source messages are preserved in the imported source appendix below.
 - Explanation: The workflow reduces source ambiguity and cognitive burden before AI interpretation while keeping the original user text as evidence.
 
@@ -2108,7 +2114,7 @@ At planning stages that precede later Full Picture reconciliation, the detailed 
 - Semantic name: **Typed Source Contribution Model**.
 - Kind: source/provenance relation model.
 - Evidence status: **direct user proposal + accepted reconciliation**.
-- Current coverage: **Many-to-many excerpts exist, but contribution roles and transformation preservation are not owned completely.**
+- Current coverage: **Covered by the accepted Planning Item/Full Picture workflow and canonical source register; reusable terminology synchronization remains pending.**
 - Disposition: **New active item.**
 - Required documentation action:
   - one item may use several source messages/fragments;
@@ -2119,7 +2125,7 @@ At planning stages that precede later Full Picture reconciliation, the detailed 
   - split items may keep the same source contribution on several resulting items;
   - rejected/superseded item meaning does not erase its source relation;
   - do not introduce a separate Source Idea entity now.
-- Owner candidate: reusable source terminology + project-local Planning Item/source relation model.
+- Accepted workflow placement: source capture, item transformation and provenance phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`; reusable source terminology later.
 - Source provenance: accepted recent-chat review set, especially `CHAT-PI-021`; complete source messages are preserved in the imported source appendix below.
 - Explanation: Source roles describe how evidence contributes to meaning without turning normalized AI interpretation into a replacement for the original message.
 
@@ -2129,7 +2135,7 @@ At planning stages that precede later Full Picture reconciliation, the detailed 
 - Semantic name: **Configurable Application Settings**.
 - Kind: application configuration / documentation synchronization capability.
 - Evidence status: **direct user proposal + accepted reconciliation**.
-- Current coverage: **No current canonical product item owns the general settings capability.**
+- Current coverage: **Canonical product item exists; runtime storage/synchronization and project-readable convention projection remain unimplemented and are planned for a later batch.**
 - Disposition: **New active item.**
 - Required documentation action:
   - settings may include Planning Item delimiters, owner paths, labels, default views, parser options and other values that benefit from configuration;
@@ -2138,7 +2144,7 @@ At planning stages that precede later Full Picture reconciliation, the detailed 
   - settings used by AI routes must have a project-readable representation;
   - changing a convention produces a controlled documentation/configuration update rather than blind global replacement;
   - application/runtime synchronization and exact settings storage remain implementation planning.
-- Owner candidate: future application settings/configuration workflow + project-local planning input convention projection.
+- Owner: future application settings/configuration workflow + planned `planning/planning-input-conventions.md` projection.
 - Source provenance: accepted recent-chat review set, especially `CHAT-PI-024` and `CHAT-PI-025`; complete source messages are preserved in the imported source appendix below.
 - Explanation: Configurability keeps conventions evolvable while preserving a reviewable documentation contract for AI and repository workflows.
 
@@ -2240,7 +2246,7 @@ Navigation from an item or structured AI response must support opening the exact
 
 - Kind: configurable view / object discovery
 - Evidence status: **direct fresh user statement**
-- Current coverage: **File/folder relation views and category templates exist separately, but concern-suggestion/applied-concern projections are incomplete.**
+- Current coverage: **Covered as a cross-workflow view/projection capability; the accepted Planning Item workflow now defines concern/item observability and drill-down expectations.**
 - Disposition: Expand the active item; concern suggestion/application behavior remains owned by `ITEM-119`, and Applied Concern lifecycle by `ITEM-113`.
 - Required documentation action:
   - confirmed selected context:
@@ -2283,8 +2289,8 @@ Navigation from an item or structured AI response must support opening the exact
   - counts must drill down to concrete objects, files, locations and occurrences;
   - opening a result uses IDE-like tabs under `ITEM-35B`;
   - direct versus transitive relationship expansion remains an open design question; every view must make its relation scope explicit.
-- Owner candidate: Related Object And Concern Views workflow
-- Accepted workflow placement: cross-step navigation and views phase of `documentation-and-reference-object-end-to-end-workflow.md`.
+- Owner: cross-workflow Related Object And Concern Views capability.
+- Accepted workflow placement: cross-step navigation/views in `documentation-and-reference-object-end-to-end-workflow.md` and concern/item observability in `complete-pictures/planning-items-and-full-picture/full-picture.md`.
 - Direct source excerpts:
   - SRC-N78
   - SRC-N79
@@ -4187,3 +4193,87 @@ Concern observability и documentation-specific planning dashboards должны
 
 
 </details>
+# Accepted Planning Item And Full Picture Workflow Transition — 2026-07-23
+
+## Decision
+
+The accepted recent-chat reconciliation is now applied to project-local workflow ownership.
+
+```text
+former provisional slice:
+  Planning Items, Full Picture And Deepening
+
+result:
+  accepted Planning Item And Full Picture End-To-End Workflow
+  at:
+    complete-pictures/planning-items-and-full-picture/full-picture.md
+```
+
+This transition does not change the active item count.
+
+## Direct active item set
+
+```text
+ITEM-121  Structured User Message Composer
+ITEM-94   AI Item Import
+ITEM-110  Semantic Item Key
+ITEM-120  Semantically Complete Item
+ITEM-122  Typed Source Contributions
+ITEM-112  Item Role And Relation Model
+ITEM-41   Item Brick Reuse
+ITEM-98   Planning To Documentation Pipeline
+ITEM-119  Concern Preset System
+ITEM-113  Planning Deepening Link
+ITEM-118  Configurable Related Object Views
+```
+
+Direct active count: **11**.
+
+## Supporting interfaces
+
+```text
+ITEM-11B:
+  immutable source/conversation history;
+
+ITEM-35B:
+  IDE-like source/item/home/picture navigation;
+
+ITEM-116:
+  template-linked AI response document;
+
+ITEM-22B:
+  Planning Item Reference Object Boundary;
+
+ITEM-23B / ITEM-108 / ITEM-91:
+  canonical-state owner, app-only durability and optional home;
+
+ITEM-123:
+  configurable application settings and later project-readable conventions.
+```
+
+## Cross-workflow boundary
+
+```text
+application-native path:
+  confirmed Planning Item
+    → immediately a managed Reference Object
+    → downstream workflow does not create it again
+    → chooses/materializes owner, definition location,
+      optional home and documentation references;
+
+portable path:
+  reviewed item meaning
+    → may remain portable
+    → or enter Reference Object proposal/confirmation
+    → managed creation and downstream materialization.
+```
+
+## Preserved boundaries
+
+- No runtime implementation or storage architecture is accepted.
+- Portable Markdown mode remains supported.
+- `Source Idea` is not introduced.
+- Prototype-Depth Scenario/Domain/Slice methodology remains a separate next task.
+- Direction/Use-Case registries, item-formation command and Tampermonkey semantic surfaces remain later batches.
+- Chat/AI/Work-State remains provisional.
+- No new `ITEM-*` identity is created by this workflow-placement transition.
