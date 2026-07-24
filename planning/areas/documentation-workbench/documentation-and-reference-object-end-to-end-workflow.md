@@ -1,7 +1,7 @@
 # Documentation And Reference Object End-To-End Workflow
 
 Status: active accepted project-local Complete Picture / managed-Planning-Item and first-class-Note boundaries synchronized / implementation not selected
-Doc version: v0.3.0-first-class-notes
+Doc version: v0.4.0-scenario-object-handoff
 Scope: trigger-to-result workflow for loading documentation, resolving accepted object-entry paths, authoring managed content, round-tripping Markdown, reviewing dependency impact and navigating the resulting state.
 
 ## 1. Purpose
@@ -50,6 +50,7 @@ The workflow starts when the user works with at least one of:
 - a new documentation file;
 - AI-generated Markdown containing possible object definitions;
 - an already managed Planning Item Reference Object selected for documentation placement/materialization;
+- an already managed Scenario, Scenario DATA or Behavior Item Reference Object selected for definition-file materialization or editing;
 - a reviewed portable Planning Item meaning selected for managed object creation;
 - an existing documentation fragment selected for extraction.
 
@@ -203,6 +204,18 @@ confirmed application-native Planning Item
 ```
 
 No second item-to-object confirmation occurs.
+
+### A2. Already managed Scenario-layer Reference Object
+
+```text
+confirmed Scenario / Scenario DATA / Behavior Item object
+  → reuse existing managed identity
+  → select or update definition location and optional home
+  → preserve links to parent Scenario, Planning Items, DATA and Behavior Items
+  → do not create the object again.
+```
+
+A source Planning Item change enters the normal dependency-review path. The scenario object/file becomes review-needed; it is not silently regenerated.
 
 ### B. Portable reviewed Planning Item
 
@@ -460,7 +473,8 @@ Item: `ITEM-107`.
 | Dependant not reviewed | Keep it Pending Review with prior approved materialization. |
 | App-only object lacks durable recovery | Keep explicit durability debt; do not present it as Markdown-backed. |
 | Later source change | Re-enter dependency invalidation/review loop. |
-| Upstream item meaning changes | Re-enter Planning Item/Full Picture reconciliation, then hand off again. |
+| Planning Item used by Scenario/DATA/Behavior changes | Mark dependent object/files review-needed; preserve previous reviewed content; refresh, confirm current or remove/replace the relation explicitly. |
+| Upstream item meaning changes before scenario materialization | Re-enter Planning Item/Full Picture reconciliation, then hand off again. |
 
 ## 21. Core Objects And States
 
@@ -469,6 +483,7 @@ Item: `ITEM-107`.
 | Imported scope | loaded; locally changed; conflict requiring review |
 | Proposed object | detected; awaiting confirmation; confirmed; rejected; conflict |
 | Managed Planning Item input | already managed; portable/not managed; conflict/ambiguous |
+| Managed Scenario-layer object | Scenario; Scenario DATA; Behavior Item; aligned; review-needed; unresolved |
 | Reference Object | Markdown-backed; temporary app-only |
 | Note Reference Object | standalone; linked by `note for`; titled; untitled |
 | Parent/home | assigned; absent |
@@ -484,6 +499,7 @@ Item: `ITEM-107`.
 | Upstream result | This workflow behavior |
 |---|---|
 | Confirmed application-native Planning Item | Reuse managed identity; no second creation confirmation. |
+| Confirmed Scenario / Scenario DATA / Behavior Item | Reuse managed identity; materialize or edit its definition owner without recreating the object. |
 | Accepted portable item meaning | Keep portable or propose/confirm managed object creation. |
 | Item-backed Full Picture statement | Use linked items/objects; do not make Full Picture prose a duplicate canonical item body. |
 | Concern/deep-work result | Materialize only accepted resulting meaning; keep unresolved work explicit. |

@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area
-Doc version: v0.9.0-notes-and-implementation-ideas
+Doc version: v0.10.0-scenario-workspace
 Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -148,6 +148,26 @@ full-picture.md#6-planning-item-and-full-picture-end-to-end-workflow
   → application-planning-drafting-workflow.md for reconciliation and broader planning.
 ```
 
+## 5A. Preliminary Scenario Workspace
+
+Read [`scenarios/README.md`](scenarios/README.md) when clean detailed Scenario work is in scope.
+
+```text
+scenarios/README.md
+  → catalog/navigation;
+
+scenarios/SCN-DW-*.md
+  → one complete Scenario Reference Object per file;
+
+scenarios/data-objects.md
+  → separate Scenario DATA Reference Objects;
+
+scenarios/behavior-items.md
+  → separate Behavior Item Reference Objects.
+```
+
+Every Scenario links to materially contributing Planning Items. A later Planning Item change marks dependent Scenario/DATA/Behavior objects/files review-needed; it does not rewrite them automatically.
+
 ## 6. Update Discipline
 
 ```text
@@ -228,6 +248,7 @@ The helper is projection only. It does not become a local owner and no tracked p
 - Orientation/Direction/Use-Case/Command helper projection is synchronized without changing local ownership.
 - The Batch 6 planning-owner terminology, ownership, link and projection audit is complete; only stale transition/status text required correction.
 - Chat/AI/Work-State remains a provisional thematic slice pending end-to-end review.
+- A preliminary clean Scenario workspace exists; Domain/Slice implementation planning remains future work.
 - Prototype-Depth Scenario/Domain/Slice methodology is deferred to a separate task.
 - No runtime, application shell, storage architecture or exact Markdown marker syntax is selected.
 ```

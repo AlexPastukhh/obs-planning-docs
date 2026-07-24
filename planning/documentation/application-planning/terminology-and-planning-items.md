@@ -1,7 +1,7 @@
 # Terminology And Planning Items
 
 Status: provisional reusable terminology draft / needs review
-Doc version: v0.5.0-implementation-ideas-field
+Doc version: v0.6.0-scenario-reference-objects
 Language: Russian working draft
 Scope: shared terminology for source-linked planning, Planning Items, end-to-end Complete Pictures, supporting artifacts, concern review, documentation workspace, navigation, Markdown/object bridge, chat workspace and file updates.
 
@@ -162,6 +162,42 @@ A structured map of a goal, subgoals, steps, dependencies and checks.
 ### Detailed Scenario
 
 A later, more concrete behavior artifact created when the Planning Draft is sufficiently clear.
+
+### Detailed Scenario Workspace
+
+A project-local deep-planning workspace that materializes one or more clean Scenario Reference Objects from an item-backed Planning Draft or Full Picture.
+
+It may use a catalog plus separate Scenario definition files. It does not own copied Planning Item bodies.
+
+### Scenario Reference Object
+
+A first-class Reference Object representing one coherent actor/context + goal + observable result.
+
+It owns the scenario-specific composition: entry points, preconditions, flow, branches, invariants, postconditions, acceptance, outcomes and questions. It links to all materially contributing Planning Items through typed `derived from` relations.
+
+### Scenario DATA Reference Object
+
+A first-class Reference Object representing one coherent set of user-visible or scenario-relevant values used by a Scenario and its Behavior Items.
+
+Scenario DATA is not automatically a domain object, DTO, API contract, database schema or UI-component state.
+
+### Behavior Item Reference Object
+
+A first-class Reference Object representing one stable addressable unit of required behavior inside a Scenario.
+
+Candidate types include precondition, entry, step, include, branch, invariant, postcondition, acceptance and observable outcome. A Behavior Item is not automatically a responsibility row, implementation task or Slice.
+
+### Scenario Source Review State
+
+The dependency-review state of a Scenario/DATA/Behavior object relative to its linked Planning Items.
+
+```text
+aligned;
+review needed;
+unresolved.
+```
+
+Changing a source Planning Item marks dependants for review. It does not silently rewrite downstream scenario content and does not automatically mutate the Planning Item from downstream deep planning.
 
 ## 3. Planning Item Terms
 

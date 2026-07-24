@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Direction Registry
 
 Status: active reusable-family semantic Direction Registry
-Doc version: v0.1.0-initial-planning-directions
+Doc version: v0.2.0-item-backed-scenario-topology
 Scope: complete semantic Direction entries for reusable solution/workflow planning under `planning/documentation/application-planning/`.
 
 Parent root registry: [`planning/direction-registry.md`](../../direction-registry.md)
@@ -96,13 +96,16 @@ Coordinate later detailed planning across target behavior, conceptual language/m
 
 ```text
 Scenario:
-  target future/use case and acceptance criteria;
+  clean Scenario Reference Objects with separate Scenario DATA
+  and Behavior Item Reference Objects, all traced to contributing Planning Items;
 
 Domain:
-  conceptual model and language;
+  conceptual model, language, lifecycle, rules and boundaries
+  discovered from reviewed scenario behavior;
 
 Slice:
-  separately deliverable/checkable increment.
+  separately deliverable/checkable implementation increment
+  that references Scenario and Behavior Item identities.
 ```
 
 Supporting owners:
@@ -115,12 +118,13 @@ planning/documentation/profiles/scenario-domain-slice-use-case-field-kit.md
 ### Topology
 
 ```text
-accepted planning direction/current picture
-  → Detailed Scenario
-  ↔ Domain review/alignment
-  → Implementation Slice planning
+selected item-backed Planning Draft / Full Picture
+  → Scenario Reference Objects + separate DATA/Behavior objects
+  → clean Scenario review
+  ↔ later Domain review/alignment
+  → later Implementation Slice planning
   → cross-artifact consistency review
-  → return corrections upstream when needed.
+  → source changes return as review-needed state rather than automatic rewrites.
 ```
 
 ### Child Use Cases
@@ -134,7 +138,7 @@ accepted planning direction/current picture
 
 ### Deferred Boundary
 
-Prototype-depth adaptation is not defined here. Do not invent prototype-specific SDS lifecycle, implementation architecture or project command routes.
+Clean item-backed Scenario/DATA/Behavior handoff is defined here. Prototype-specific adaptation, detailed domain architecture and implementation Slice design remain separate later work; do not invent project command routes.
 
 ## 4. Auxiliary Solution Principle
 

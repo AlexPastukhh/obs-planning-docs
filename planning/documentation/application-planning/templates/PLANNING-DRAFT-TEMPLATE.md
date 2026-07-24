@@ -1,7 +1,7 @@
 # Planning Draft Template
 
 Status: active reusable recommended template
-Doc version: v0.2.0-item-backed-full-picture
+Doc version: v0.3.0-scenario-handoff
 Purpose: one candidate item-backed end-to-end plan/Full Picture for achieving a result. It may serve as a root draft or a competing branch draft.
 
 Use only sections that improve the current work. This is not a mandatory schema.
@@ -229,7 +229,29 @@ Do not replace concrete records with one opaque quality score.
 |---|---|---|---|---|
 | D-01 | <decision> | <rationale> | proposed / accepted / rejected | <condition> |
 
-## 17. Repository / Documentation Handoff — Optional
+## 17. Detailed Scenario Handoff — Optional
+
+Use when this Planning Draft / Full Picture is ready to create clean Scenario Reference Objects.
+
+| Scenario candidate | Actor/context | Goal | Observable result | Contributing Planning Items | Planned definition file | Status |
+|---|---|---|---|---|---|---|
+| <scenario> | <actor/context> | <goal> | <result> | <item refs> | <path> | proposed / ready / deferred |
+
+Handoff rules:
+
+```text
+Scenario
+  -- derived from -->
+Planning Item;
+
+Scenario
+  → separate Scenario DATA Reference Objects;
+  → separate Behavior Item Reference Objects.
+```
+
+Do not copy complete item bodies. Do not add unprovided DATA. A later item change marks linked scenario artifacts review-needed and does not rewrite them automatically.
+
+## 18. Repository / Documentation Handoff — Optional
 
 ```text
 accepted items/picture
@@ -245,10 +267,10 @@ accepted items/picture
 
 This template does not authorize repository edits, commit or push.
 
-## 18. Current Conclusion
+## 19. Current Conclusion
 
 <What is currently understood, selected or still uncertain.>
 
-## 19. Next Action
+## 20. Next Action
 
 <Next concrete planning, research, prototype, reconciliation or review action.>

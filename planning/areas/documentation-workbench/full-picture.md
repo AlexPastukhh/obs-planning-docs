@@ -1,7 +1,7 @@
 # Documentation Workbench Full Picture
 
 Status: active Application Root Full Picture / item-backed / two accepted Complete Pictures / reusable method, semantic registries and helper projection synchronized / planning-owner consistency audited / implementation incomplete
-Doc version: v0.9.0-notes-and-implementation-ideas
+Doc version: v0.10.0-preliminary-scenario-workspace
 Scope: application-level identity, workflow inventory, shared invariants and coordination for Documentation Workbench. Complete item meanings remain in [`planning-item-register.md`](planning-item-register.md).
 
 ## 1. Purpose
@@ -67,6 +67,7 @@ Documentation Workbench
 | Accepted Complete Picture | [`Documentation And Reference Object End-To-End Workflow`](documentation-and-reference-object-end-to-end-workflow.md) | Accepted, 31 direct active items |
 | Accepted Complete Picture | [`Planning Item And Full Picture End-To-End Workflow`](complete-pictures/planning-items-and-full-picture/full-picture.md) | Accepted, 11 direct active items |
 | Supporting model | [`Reference Object Model And Lifecycle`](reference-object-model-and-lifecycle.md) | Active model and accepted transition history |
+| Preliminary detailed-planning workspace | [`Scenario Draft`](scenarios/README.md) | 14 clean Scenario Reference Objects plus separate Scenario DATA and Behavior Item objects |
 | Provisional thematic slice | Chat, AI Responses And Work-State Trace | Not yet validated as an independent end-to-end Complete Picture |
 
 A Complete Picture must be followable from trigger to result without another peer supplying missing mandatory stages. An explicit handoff between independently traversable workflows is allowed.
@@ -317,6 +318,21 @@ It does not duplicate either end-to-end workflow.
 
 Former labels are history, not current peer-owner IDs.
 
+## 9A. Preliminary Item-Backed Scenario Workspace
+
+[`scenarios/README.md`](scenarios/README.md) catalogs **14 preliminary Scenario Reference Objects** extracted from the accepted Planning Item/Full Picture and Documentation/Reference workflows plus accepted standalone capabilities.
+
+```text
+Planning Items
+  → Scenario Reference Objects in separate files
+  → separate Scenario DATA Reference Objects
+  → separate Behavior Item Reference Objects.
+```
+
+The workspace is behavior-only. It does not own domain, aggregate, API, persistence, UI-component or implementation-Slice design.
+
+Source-item changes enter the existing dependency-review lifecycle and mark affected scenario objects/files review-needed. They do not regenerate scenarios or update Planning Items automatically.
+
 ## 10. Provisional Slice — Chat, AI Responses And Work-State Trace
 
 Current items:
@@ -372,7 +388,7 @@ High-impact unresolved groups:
 - Chat/Action/RN/DAM end-to-end workflow boundary;
 - exact structured-response/source-anchor syntax;
 - application shell, storage and measured repository limits;
-- Prototype-Depth Scenario/Domain/Slice methodology.
+- reviewed Domain/Slice and prototype-specific planning after the preliminary clean Scenario workspace.
 
 No fallback in this Full Picture resolves these questions silently.
 
@@ -391,5 +407,5 @@ No fallback in this Full Picture resolves these questions silently.
 9. Run whole-repository planning-owner consistency validation.          ✓
 10. Name/add the item-formation command after explicit naming.            ✓ this update
 11. Review Chat/AI/Work-State against the Complete Picture rule.
-12. Plan prototype-depth methodology and runtime architecture separately.
+12. Review the preliminary Scenario/DATA/Behavior workspace, then plan Domain/Slice plus prototype-specific depth and runtime architecture.
 ```

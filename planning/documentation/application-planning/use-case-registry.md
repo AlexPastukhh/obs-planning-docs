@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Use-Case Registry
 
 Status: active reusable-family semantic Use-Case Registry
-Doc version: v0.2.0-form-items-command
+Doc version: v0.3.0-item-backed-scenario-use-case
 Scope: complete semantic Use-Case entries for reusable solution/workflow planning.
 
 Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
@@ -119,6 +119,30 @@ current project-specific scenario/domain/slice owners.
 ```
 
 These entries do not claim prototype-depth adaptation or project command routes.
+
+## 7A. `UC-AP-SCENARIO` — Draft Detailed Scenario
+
+**Trigger/input:** a sufficiently stable item-backed Planning Draft / Full Picture and selected contributing Planning Items.
+
+**Result:** a Scenario catalog plus clean Scenario Reference Objects, separate Scenario DATA Reference Objects and separate Behavior Item Reference Objects, or explicit unresolved/deferred state.
+
+**Core behavior:**
+
+```text
+select Planning Draft / Full Picture
+  → identify coherent actor/context + goal + observable result
+  → create one Scenario Reference Object per coherent scenario
+  → attach typed `derived from` links to all contributing Planning Items
+  → create only supported Scenario DATA objects
+  → create stable addressable Behavior Items
+  → review clean behavior without Domain/Slice implementation detail.
+```
+
+**Change contract:** a later Planning Item change marks dependent scenario objects/files review-needed. No automatic rewrite or automatic downstream-to-upstream mutation occurs.
+
+**Owner:** `application-planning-drafting-workflow.md`, `templates/SCENARIO-DRAFT-TEMPLATE.md`, the SDS profile and project-local scenario owners.
+
+**Related command:** none unless a project root UCM later defines one explicitly.
 
 ## 8. Activation Rules
 

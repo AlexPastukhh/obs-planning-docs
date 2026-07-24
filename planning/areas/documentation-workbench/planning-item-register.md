@@ -1,6 +1,6 @@
 # Documentation Workbench Planning Item Register — accepted Planning Item / Full Picture workflow transition
 
-Status: active project-local source-linked register / accepted Documentation And Reference Object, Planning Item/Full Picture, Form Items, Named Notes and Implementation Ideas transitions applied
+Status: active project-local source-linked register / accepted Documentation And Reference Object, Planning Item/Full Picture, Form Items, Named Notes, Implementation Ideas and item-backed Scenario transitions applied
 
 Repository owner:
 
@@ -743,6 +743,54 @@ Context: direct command-name decision plus first-class named Note capability and
 
 Context: direct request for a Planning Item `Implementation Ideas` field and a reported Tampermonkey command-click freeze requiring objective investigation.
 
+### SRC-N89
+
+```text
+отдельно подробно расписывать планирование прототипа имеетт смысл после получения опыта в этом деле. в нашей ситуации как будто можно пропустить и попробовать просто как нибудь сделать прототип который ближе к итоговому приложению чем к тесту. давай сделаем сценарный драфт, как положено по докам + с использованием наших айтемов . возможно надо будет изменить документы по глубокому планированию чтобы там было про айтемы . прочитай эти доки и пойми что имеет смысл добавить/изменить, но сначала опиши общую предполагаемую картину того как должен делаться сценарный драфт используя планнинг айтемы из планирования решения . правда мне пришла идея что возможно какое то дублироваие и возможно имеет смысл включить в планнинг айтем все что нужно для сценарио драфта чтобы можно было отработать сценарии еще на этапе создания планнинг айтемов и добавления в общую картину/планнинг решения драфт(это по сути на этом этапе и так отрабатывается, но там еще другие могут быть консерны помимо консернов глубокого планирования а именно его сценарной части, но имеет смысл иметьвсе нужные поля чтобы можно было просто перенести из солюшн планнинг драфта прямо в драфт сценариев и просто подправить если нужно, а не повторять работу или не недорабатывать т к обработка сценариев реально происходит во многом на этапе создания планинг айтемов и полной картины)
+```
+
+Context: initial request to create a Scenario Draft from item-backed solution planning while avoiding repeated work.
+
+### SRC-N90
+
+```text
+не знаю, как будто тут на самом деле нечего делать, кроме как просто взять инфу из планнинг драфта для сценарио драфта. в сценарио драфте будут созданы ссылочные обьекты уже сценариев, желательно со ссылками на планнинг айтемы из которых произошел сценарий. дальше уже будут использоваться ссылки на обьекты сценариев. т е тут по сути нечего менять кроме этого доп правила. составь предварительную версию сценарио драфта, без указания инфы которая не предоставлена
+```
+
+Context: direct Scenario Reference Object and Planning Item traceability requirement; no invented information.
+
+### SRC-N91
+
+```text
+у нас же вроде намного больше можно выделить сценариев уже, выдели все сценарии которые можно, сделай это правильным образом
+```
+
+Context: request to derive the complete supported scenario set rather than a Note-only subset.
+
+### SRC-N92
+
+```text
+мне кажется ты не слишком хорошо прочитал доки по сценарному слою глубокого планирования. там же должны быть дата обьекты + бехавиор айтемы
+```
+
+Context: direct correction that the scenario layer includes DATA Objects and Behavior Items.
+
+### SRC-N93
+
+```text
+ты как будто смешал сценарный драфт и детали имплементации
+```
+
+Context: direct boundary correction: clean scenario artifacts must not contain implementation details.
+
+### SRC-N94
+
+```text
+DATA Objects и Behavior Items — отдельные Reference Objects. Один общий Scenario Draft или отдельный файл на каждый Scenario Object? возможно лучше отдельные файлы сделать. Как изменение исходного Planning Item влияет на Scenario Object? - на этом этапе уже не ясно зачем меняться планнинг айтему, это глубокое планирование. а так как обычно бывает при изменении того для чего есть ссылка где то - уведомление о том что нужно проверить конкр файлы где используется то что только что было изменено.
+```
+
+Context: explicit separate Reference Object boundary, separate Scenario-file preference and dependency-review behavior for changed source Planning Items.
+
 ## 5. Canonical active items
 
 ## A. Product boundary and core purpose
@@ -1058,6 +1106,8 @@ Context: direct request for a Planning Item `Implementation Ideas` field and a r
   - the Note contract/projection may restrict members to Reference Objects whose categories include `Note`;
   - distinguish required identity/parser mechanics from category-specific semantic expectations;
   - exact serialization remains prototype work.
+  - the Scenario contract may expose multi-value `Planning Items`, `Scenario DATA` and `Behavior Items` fields whose members are respectively Planning Item, Scenario DATA and Behavior Item Reference Objects;
+  - Scenario DATA and Behavior Item contracts remain separate from the Scenario object contract and do not become implementation schemas;
 - Candidate contract examples:
   - Planning Item: `Planning Direction`, `Item Kind`, `Item Scale`, relations, deepening and raw/deferred fields;
   - Concern definitions/presets/applications: definitions, included definitions, applicability, sources and target-specific statuses;
@@ -1081,6 +1131,16 @@ Context: direct request for a Planning Item `Implementation Ideas` field and a r
     > пусть команда будет сформируй айтемы form items, также надо добавить возможность добавлять заметку к какому то ссылочному обьекту, **т е наверное должна быть коллекция тупо заметок(наверное просто коллекция обьектов с категорией заметка чтобы придерживаться унификации. доменная логика сохранит инвариант что эта коллекция состоит только из заметок или обьектов у которых есть такая категория(проверка при добавлении))** и чтобы можно было давать назания заметкам. это по сути и так можно делать технически будет, но как будто надо чтобы заметки были зараанее доступны для добавления ко всем обьектам именно в качестве заметок а не каких то обьектов - полей. ну и чтобы можно было просто заметку создать не к какому обьекту а впринципе ,ну и чтобы был функционал по типу увидеть заметки и тд базовый для них.
   - SRC-N88:
     > **у нас есть айтем который относится к идее имплементации, я думаю что у планнинг айтемов должно быть поле идей имплементации, если еще нет.**  также есть проблема что по какой то причине окно чата гпт подвисает когда я нажимаю на кнопку команды в тамперманки, надо рповерить есть ли обьективны едля этого причины, баги и тд
+
+- Full supporting user messages:
+  - SRC-N90:
+    > не знаю, как будто тут на самом деле нечего делать, кроме как просто взять инфу из планнинг драфта для сценарио драфта. в сценарио драфте будут созданы **ссылочные обьекты уже сценариев, желательно со ссылками на планнинг айтемы из которых произошел сценарий. дальше уже будут использоваться ссылки на обьекты сценариев.** т е тут по сути нечего менять кроме этого доп правила. составь предварительную версию сценарио драфта, **без указания инфы которая не предоставлена**
+  - SRC-N92:
+    > мне кажется ты не слишком хорошо прочитал доки по сценарному слою глубокого планирования. там же должны быть **дата обьекты + бехавиор айтемы**
+  - SRC-N93:
+    > ты как будто **смешал сценарный драфт и детали имплементации**
+  - SRC-N94:
+    > **DATA Objects и Behavior Items — отдельные Reference Objects.** Один общий Scenario Draft или отдельный файл на каждый Scenario Object? **возможно лучше отдельные файлы сделать.** Как изменение исходного Planning Item влияет на Scenario Object? - на этом этапе уже не ясно зачем меняться планнинг айтему, это глубокое планирование. а так как обычно бывает при изменении того для чего есть ссылка где то - **уведомление о том что нужно проверить конкр файлы где используется то что только что было изменено.**
 
 ## D. Reference representation, dependency and review
 
@@ -1188,6 +1248,8 @@ Context: direct request for a Planning Item `Implementation Ideas` field and a r
   - keep previous approved full text;
   - close through `approve and refresh` or `remove/replace reference`;
   - invalidate again on later changes.
+  - when a Planning Item referenced by a Scenario, Scenario DATA or Behavior Item changes, each dependent object/file becomes review-needed without automatic content rewrite;
+  - previous reviewed scenario content remains until the user refreshes, confirms current, or removes/replaces the source relation;
 - Owner candidate: Dependency Graph And Impact Review workflow
 - Accepted workflow placement: change impact and review phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
@@ -1198,6 +1260,10 @@ Context: direct request for a Planning Item `Implementation Ideas` field and a r
   - SRC-N45
 - Explanation: The app guarantees visible review obligations, not automatic semantic correctness.
 
+- Full supporting user messages:
+  - SRC-N94:
+    > **DATA Objects и Behavior Items — отдельные Reference Objects.** Один общий Scenario Draft или отдельный файл на каждый Scenario Object? **возможно лучше отдельные файлы сделать.** Как изменение исходного Planning Item влияет на Scenario Object? - на этом этапе уже не ясно зачем меняться планнинг айтему, это глубокое планирование. а так как обычно бывает при изменении того для чего есть ссылка где то - **уведомление о том что нужно проверить конкр файлы где используется то что только что было изменено.**
+
 <a id="item-29b"></a>
 ### ITEM-29B / DEPENDENCY-GRAPH — Dependency graph включает file occurrences и ссылки внутри настраиваемых полей других Ссылочных объектов.
 
@@ -1206,6 +1272,7 @@ Context: direct request for a Planning Item `Implementation Ideas` field and a r
 - Current coverage: **Частично: существующий item включал files, objects и occurrences, но не object-field edges.**
 - Disposition: Расширить ITEM-29B.
 - Required documentation action: Хранить typed edges минимум для `file/region → object` и `object.field → object`, показывать incoming/outgoing relations и propagating review-needed state.
+  - dependency coverage includes Scenario, Scenario DATA and Behavior Item references to source Planning Items and the concrete definition files that materialize those objects;
 - Owner candidate: Reference Object model + dependency workflow
 - Accepted workflow placement: change impact and review phase of `documentation-and-reference-object-end-to-end-workflow.md`.
 - Direct source excerpts:
@@ -1218,6 +1285,10 @@ Context: direct request for a Planning Item `Implementation Ideas` field and a r
     и внутри этого поля ссылка на другой обьект. т е можно изменить обьект ссылка на который в поле другого и при этом получить предупр о нужной проверке на актуальность.
     ```
 - Explanation: Зависимость является свойством не только файловой materialization, но и структурированных отношений между объектами.
+
+- Full supporting user messages:
+  - SRC-N94:
+    > **DATA Objects и Behavior Items — отдельные Reference Objects.** Один общий Scenario Draft или отдельный файл на каждый Scenario Object? **возможно лучше отдельные файлы сделать.** Как изменение исходного Planning Item влияет на Scenario Object? - на этом этапе уже не ясно зачем меняться планнинг айтему, это глубокое планирование. а так как обычно бывает при изменении того для чего есть ссылка где то - **уведомление о том что нужно проверить конкр файлы где используется то что только что было изменено.**
 
 <a id="item-16b"></a>
 ### ITEM-16B / STALE-REFERENCE-QUEUE — UI показывает unreviewed-reference state для зависимых файлов и объектов и позволяет закрыть его подтверждением актуальности либо удалением/заменой ссылки.
@@ -1860,6 +1931,10 @@ The route must expose both modes; the portable mode remains a fallback until del
   - item kind/category/status may be used by `ITEM-118` views and `ITEM-97` recommendations;
   - full item detail is governed by `ITEM-120`, not by the short code name or list preview;
   - treat vocabularies as candidates to simplify through real usage, not hardcoded final enums.
+  - a Scenario Reference Object may use one or more typed `derived from` relations to the Planning Items that contributed material scenario meaning;
+  - the Scenario `Planning Items` field is a relation-backed projection and never copies canonical item bodies;
+  - Scenario DATA and Behavior Item Reference Objects may link to the narrower contributing Planning Item subset;
+  - downstream Domain/Slice/Prototype artifacts should reference Scenario and Behavior Item identities rather than copy scenario text;
 - Accepted workflow placement: item formation, targeted checking and relation review phases of `complete-pictures/planning-items-and-full-picture/full-picture.md`.
 - Direct source excerpts:
   - SRC-N57
@@ -1881,6 +1956,14 @@ The route must expose both modes; the portable mode remains a fallback until del
 #### Accepted recent-chat reconciliation expansion
 
 Direction membership is modeled through broad Directions that own a topology of independently useful whole use cases. Use cases are supported capabilities, not mandatory universal stages. Internal mandatory workflow steps remain inside one Complete Picture unless they have an independent trigger, result and lifecycle.
+
+- Full supporting user messages:
+  - SRC-N90:
+    > не знаю, как будто тут на самом деле нечего делать, кроме как просто взять инфу из планнинг драфта для сценарио драфта. в сценарио драфте будут созданы **ссылочные обьекты уже сценариев, желательно со ссылками на планнинг айтемы из которых произошел сценарий. дальше уже будут использоваться ссылки на обьекты сценариев.** т е тут по сути нечего менять кроме этого доп правила. составь предварительную версию сценарио драфта, **без указания инфы которая не предоставлена**
+  - SRC-N92:
+    > мне кажется ты не слишком хорошо прочитал доки по сценарному слою глубокого планирования. там же должны быть **дата обьекты + бехавиор айтемы**
+  - SRC-N94:
+    > **DATA Objects и Behavior Items — отдельные Reference Objects.** Один общий Scenario Draft или отдельный файл на каждый Scenario Object? **возможно лучше отдельные файлы сделать.** Как изменение исходного Planning Item влияет на Scenario Object? - на этом этапе уже не ясно зачем меняться планнинг айтему, это глубокое планирование. а так как обычно бывает при изменении того для чего есть ссылка где то - **уведомление о том что нужно проверить конкр файлы где используется то что только что было изменено.**
 
 <a id="item-113"></a>
 ### ITEM-113 / PLANNING-DEEPENING-LINK — Planning lenses and reusable concern definitions may lead to target-specific Applied Concerns whose substantial work remains linked to the owning item, direction or file.
@@ -4466,3 +4549,54 @@ ITEM-125
 - Category-backed Notes projection remains an implementation idea requiring live/runtime validation.
 - Tampermonkey freeze is not considered resolved until browser testing passes.
 - No storage/database/application-shell architecture is selected.
+
+# Accepted Item-Backed Scenario Reference Object Transition — 2026-07-24
+
+## Decision
+
+The clean scenario layer is integrated without creating a new Planning Item identity.
+
+```text
+updated items:
+  ITEM-106 / OPTIONAL-FIELD-CONTRACT;
+  ITEM-112 / ITEM-ROLE-RELATION-MODEL;
+  ITEM-89 / REVIEWED-REFERENCE-REFRESH;
+  ITEM-29B / DEPENDENCY-GRAPH;
+
+new Planning Item identities:
+  none;
+
+new project-local Reference Object categories:
+  Scenario;
+  Scenario DATA;
+  Behavior Item.
+```
+
+## Item transformation
+
+| Role | Semantic name | ID / source | Owner / status | Complete core meaning | Relation / contribution | Action / effect | Identity / history effect | Choice |
+|---|---|---|---|---|---|---|---|---|
+| Current | Object Category Field Contracts | `ITEM-106` | active item | Category contracts may define typed field expectations and member restrictions. | Existing field-contract owner | Add Scenario, Scenario DATA and Behavior Item typed-field expectations. | Identity retained. | — |
+| Current | Item Role And Relation Model | `ITEM-112` | active item | Planning Items use typed graph relations including `derived from`. | Existing relation owner | Define Scenario-to-Planning-Item traceability and downstream identity references. | Identity retained. | — |
+| Current | Reviewed Reference Refresh | `ITEM-89` | active item | Source changes make dependent occurrences review-needed while preserving previous approved materialization. | Existing dependency-review owner | Apply the same lifecycle to scenario artifacts that reference Planning Items. | Identity retained. | — |
+| Current | Dependency Graph | `ITEM-29B` | active item | Dependency graph includes file occurrences and object-field references. | Existing graph owner | Include Scenario/DATA/Behavior source relations and definition files. | Identity retained. | — |
+| Incoming | Item-Backed Scenario Objects | `SRC-N89`–`SRC-N94` | accepted user meaning | Create clean Scenario Reference Objects from Planning Draft information, with separate DATA and Behavior Item objects, no invented information and no implementation details. | Extends four existing owners and reusable detailed-planning docs. | Update Content; create project-local scenario artifacts. | No new item identity. | accepted through archive route |
+| Resulting | Scenario Source Traceability And Review | existing items | active updated meanings | Scenario/DATA/Behavior objects link to contributing Planning Items; source changes generate review-needed notifications rather than automatic rewrites or automatic Planning Item changes. | Result of current dependency/field/relation model plus `SRC-N89`–`SRC-N94` | Update Content | Existing identities survive. | — |
+
+## Active-count effect
+
+```text
+before: 53 active Planning Items
+new Planning Item identities: 0
+after: 53 active Planning Items
+```
+
+## Preserved boundaries
+
+- Scenario Draft remains clean user-facing/observable behavior.
+- Scenario DATA is not domain, DTO, database or component design.
+- Behavior Items are not implementation tasks or Slices.
+- Planning Item bodies remain canonical at their item owners.
+- Downstream deep planning does not mutate Planning Items automatically.
+- Source changes produce review-needed state for dependent scenario artifacts.
+- No UCM command, Tampermonkey projection or runtime/storage architecture is added.

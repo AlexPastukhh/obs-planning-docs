@@ -1,7 +1,7 @@
 # Reference Object Model And Lifecycle
 
 Status: active supporting Reference Object model / managed Planning Item and first-class Note boundaries synchronized
-Doc version: v0.4.0-first-class-notes
+Doc version: v0.5.0-scenario-reference-objects
 Scope: supporting model for Reference Object identity, creation, canonical state, optional home, durability, flexible fields and accepted transformation history. Trigger-to-result behavior belongs to the accepted end-to-end workflow owners.
 
 ## 1. Responsibility
@@ -246,6 +246,51 @@ removing the category removes it from the projection;
 the Reference Object itself is not deleted.
 ```
 
+## 10B. Scenario, Scenario DATA And Behavior Item Reference Objects
+
+Detailed scenario planning creates three separate Reference Object categories:
+
+```text
+Scenario;
+Scenario DATA;
+Behavior Item.
+```
+
+### Scenario
+
+Owns one coherent actor/context + goal + observable-result behavior composition. The project uses a separate definition file per Scenario Object plus a navigation catalog.
+
+Expected relation-backed fields:
+
+```text
+Planning Items
+  → Planning Item Reference Objects;
+
+Scenario DATA
+  → Scenario DATA Reference Objects;
+
+Behavior Items
+  → Behavior Item Reference Objects.
+```
+
+Each materially contributing Planning Item is linked through `derived from`. Complete item bodies are not copied.
+
+### Scenario DATA
+
+Owns one coherent set of supported actor-visible or scenario-relevant values. It links to its parent Scenario, used-by Behavior Items and narrower Planning Item sources when useful.
+
+Scenario DATA does not by itself define domain ownership, DTOs, APIs, persistence or UI-component state.
+
+### Behavior Item
+
+Owns one stable addressable unit of required behavior. It links to one parent Scenario, relevant DATA objects and narrower Planning Item sources.
+
+Behavior Items remain distinct from implementation Slices.
+
+### Source Change Review
+
+A source Planning Item change does not rewrite these objects automatically. `ITEM-29B`, `ITEM-89` and `ITEM-16B` mark dependent objects/files review-needed, preserve previous reviewed content and require explicit refresh, confirm-current or relation removal/replacement.
+
 ## 11. Cross-Workflow Interfaces
 
 | Interface | Model output |
@@ -379,6 +424,7 @@ The accepted transitions preserve:
 - exact Markdown syntax;
 - whether a later Note category contract should make titles mandatory;
 - multi-target Note behavior;
+- exact serialization/wrapper representation for Scenario, Scenario DATA and Behavior Item object definitions;
 - category-removal enforcement beyond projection disappearance.
 
 ## 16. Next Gate

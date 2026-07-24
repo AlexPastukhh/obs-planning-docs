@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: active reusable workflow / Planning Item formation delegated
-Doc version: v0.14.0-implementation-idea-preservation
+Doc version: v0.15.0-item-backed-scenario-handoff
 Scope: repeated user + AI process for Current Reality Capture, item-backed Planning Drafts and Full Pictures, Complete Picture integrity, Planning Item reconciliation, concerns, branches, details, prototypes and evidence-driven revision.
 
 Stable invariants:
@@ -635,7 +635,7 @@ Deep work must return accepted results to owning items and Full Pictures.
 
 ## 17. Entry Into Detailed Planning
 
-Detailed scenario/domain/slice/implementation planning is useful when enough are stable:
+Detailed planning is useful when enough are stable:
 
 ```text
 desired outcome;
@@ -649,7 +649,44 @@ known remaining risks.
 
 This is a judgment boundary.
 
-Prototype-depth adaptation is a separate future methodology task.
+### 17.1 Planning Draft To Scenario Handoff
+
+When clean scenario drafting is selected:
+
+```text
+item-backed Planning Draft / Full Picture
+  → identify coherent actor/context + goal + observable-result units
+  → create Scenario Reference Objects
+  → link every materially contributing Planning Item
+  → create separate Scenario DATA Reference Objects
+  → create separate Behavior Item Reference Objects
+  → use Scenario and Behavior identities in later Domain/Slice work.
+```
+
+Rules:
+
+- Scenario uses `derived from` relations to Planning Items;
+- `Planning Items` is a multi-value relation-backed field/projection;
+- complete item bodies stay at canonical item owners;
+- Scenario owns behavioral composition only;
+- DATA includes only provided user-visible or scenario-relevant values;
+- Behavior Items remain clean observable behavior, not implementation tasks;
+- one catalog plus separate Scenario files is a valid project-local representation;
+- no project command is implied.
+
+### 17.2 Change Review
+
+Scenario drafting is downstream deep planning. It does not automatically rewrite Planning Items.
+
+When a linked Planning Item changes, dependent Scenario/DATA/Behavior objects and their definition files become review-needed through the normal dependency-review workflow. Previous reviewed content remains until the user refreshes it, confirms it is still current, or removes/replaces the relation.
+
+A requirement correction discovered during deep planning becomes an upstream Planning Item change only through a separate explicit review, not as an automatic side effect.
+
+### 17.3 Later Stages
+
+Responsibility decomposition, domain discovery/modeling and implementation Slice planning follow reviewed Scenario/DATA/Behavior artifacts. Do not place their implementation detail into the clean Scenario Draft.
+
+Prototype-specific adaptation beyond this handoff remains a separate future methodology task.
 
 ## 18. Checks Before Returning
 
@@ -663,6 +700,8 @@ Prototype-depth adaptation is a separate future methodology task.
 - source/provenance survives;
 - relevant validation signals survive;
 - Full Picture does not duplicate item ownership;
+- Scenario/DATA/Behavior objects link to item owners without copying bodies;
+- upstream item changes mark dependent scenario artifacts review-needed rather than rewriting them;
 - concerns/suggestions/views keep distinct roles;
 - implementation thoughts remain non-final;
 - no repository permission was inferred.

@@ -1,7 +1,7 @@
 # Documentation Workbench Use-Case Registry
 
 Status: active project-local semantic Use-Case Registry
-Doc version: v0.2.0-first-class-notes
+Doc version: v0.3.0-scenario-workspace-route
 Scope: independently useful Documentation Workbench workflow/capability entries and explicit provisional candidates.
 
 Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
@@ -65,6 +65,23 @@ Current canonical item owner:
 ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER
 planning-item-register.md
 ```
+
+## 4A. Project-Local Detailed Scenario Application
+
+The project applies reusable `UC-AP-SCENARIO` through [`scenarios/README.md`](scenarios/README.md).
+
+Resulting artifacts:
+
+```text
+one catalog;
+one definition file per Scenario Reference Object;
+separate Scenario DATA Reference Objects;
+separate Behavior Item Reference Objects;
+typed `derived from` links to contributing Planning Items;
+review-needed dependency state when a source item changes.
+```
+
+This does not create a new local product Use-Case identity or a root UCM command. It is a detailed-planning application of the reusable scenario use case.
 
 ## 5. Provisional Candidate — Chat/AI/Work-State Trace
 

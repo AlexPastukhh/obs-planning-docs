@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Documentation Index
 
 Status: provisional reusable documentation-family index
-Doc version: v0.10.0-semantic-registries
+Doc version: v0.11.0-item-backed-scenario-layer
 Scope: reusable planning from selected source through full-message Planning Item formation, end-to-end workflow pictures, an item-backed Planning Draft, concern review, alternatives, tests, prototypes and evidence-driven revision.
 
 The folder path remains `application-planning/` during the semantic migration. The methodology itself is not limited to applications.
@@ -42,7 +42,9 @@ free-form or structured source
   → optional Functional Workflow Drafts, branches and detail work
   → tests, prototypes and evidence-driven revision
   → update concerns, items and the parent Planning Draft
-  → optional detailed scenario/domain/slice/implementation planning
+  → item-backed Scenario Reference Objects
+  → separate Scenario DATA and Behavior Item Reference Objects
+  → optional later domain/slice/implementation planning
 ```
 
 Current Reality Capture remains descriptive. It may be omitted when enough checked current context is already available.
@@ -63,8 +65,10 @@ Opportunity research, Product Legend and Solution Overview are not mandatory seq
    when semantic Direction/Use-Case context is needed
 7. application-planning-drafting-workflow.md
    for broader planning, Complete Picture work and item reconciliation
-8. the relevant recommended template under templates/, when useful
-9. the project-local working draft, Full Picture and item register
+8. templates/SCENARIO-DRAFT-TEMPLATE.md
+   when an item-backed Planning Draft enters clean scenario drafting
+9. the relevant other recommended template under templates/, when useful
+10. the project-local working draft, Full Picture and item register
 ```
 
 Templates are recommended representations, not mandatory schemas. Concern presets recommend attention, not file shape. Project-local state remains outside `planning/documentation/`.
@@ -85,6 +89,7 @@ templates/
   CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
   PLANNING-DRAFT-TEMPLATE.md
   PLANNING-ITEM-REVIEW-TEMPLATE.md
+  SCENARIO-DRAFT-TEMPLATE.md
   FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md
   PROTOTYPE-PLAN-TEMPLATE.md
   PROTOTYPE-RESULT-TEMPLATE.md
@@ -188,6 +193,21 @@ When several sibling behavior lines together contain one mandatory trigger-to-re
 ### Branch Planning Draft
 
 Owns one independently planned alternative after a real divergence decision. The parent owns comparison.
+
+### Scenario Draft
+
+Owns a navigation catalog plus clean Scenario Reference Objects, Scenario DATA Reference Objects and Behavior Item Reference Objects derived from an item-backed Planning Draft or Full Picture.
+
+```text
+Planning Item bodies remain canonical at their item owners;
+Scenario objects own actor/context + goal + observable behavioral composition;
+Scenario DATA objects own supported user-visible/scenario-relevant values;
+Behavior Items own stable addressable units of required behavior.
+```
+
+A project may use one catalog plus a separate file per Scenario Object. DATA and Behavior Items remain separate Reference Objects even when several definitions share one registry file.
+
+Upstream Planning Item changes produce review-needed dependency state for linked scenario artifacts; they do not rewrite them automatically.
 
 ### Detail And Prototype Artifacts
 

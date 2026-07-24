@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v1.0.0-form-items-notes-helper-insertion
+Doc version: v1.1.0-scenario-reference-objects
 Scope: register root planning files, reusable owners and local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -23,7 +23,7 @@ Scope: register root planning files, reusable owners and local area ownership fo
 | `planning/documentation/direction-and-use-case-registry-workflow.md` | Registry hierarchy, topology, activation and ownership. |
 | `planning/documentation/DIRECTION-REGISTRY-TEMPLATE.md` | Direction Registry shape. |
 | `planning/documentation/USE-CASE-REGISTRY-TEMPLATE.md` | Use-Case Registry shape. |
-| `planning/documentation/application-planning/` | Reusable planning terminology, principles, formation, drafting, registries and templates. |
+| `planning/documentation/application-planning/` | Reusable planning terminology, principles, formation, drafting, Scenario handoff, registries and templates. |
 | `planning/documentation/application-planning/direction-registry.md` | Reusable planning Direction entries. |
 | `planning/documentation/application-planning/use-case-registry.md` | Reusable planning Use-Case entries. |
 | `planning/documentation/field-kits/` | Bootstrap/setup guidance only. |
@@ -49,6 +49,10 @@ Scope: register root planning files, reusable owners and local area ownership fo
 | `planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md` | Accepted Planning Item/Full Picture workflow. |
 | `planning/areas/documentation-workbench/reference-object-model-and-lifecycle.md` | Supporting model. |
 | `planning/areas/documentation-workbench/planning-item-register.md` | Complete source-linked register; 53 active items. |
+| `planning/areas/documentation-workbench/scenarios/README.md` | Preliminary Scenario catalog and owner route. |
+| `planning/areas/documentation-workbench/scenarios/SCN-DW-*.md` | One Scenario Reference Object definition per file. |
+| `planning/areas/documentation-workbench/scenarios/data-objects.md` | Separate Scenario DATA Reference Object definitions. |
+| `planning/areas/documentation-workbench/scenarios/behavior-items.md` | Separate Behavior Item Reference Object definitions. |
 
 ## 5. Current Structural State
 
@@ -194,3 +198,28 @@ Tampermonkey:
 ```
 
 Runtime implementation outside the Tampermonkey planning-helper syntax/projection boundary was not audited or implemented by these documentation batches.
+
+## 6D. Item-Backed Scenario Reference Object Update
+
+```text
+Planning Item count:
+  remains 53;
+
+Scenario workspace:
+  14 preliminary Scenario Reference Objects;
+  36 separate Scenario DATA Reference Objects;
+  67 separate Behavior Item Reference Objects;
+  one definition file per Scenario Object;
+  ITEM-107 AI-expanded transfer and ITEM-123 configurable-convention behavior included;
+
+traceability:
+  Scenario -- derived from --> Planning Item;
+  complete item bodies are not copied;
+
+change review:
+  changed source Planning Item marks dependent scenario objects/files review-needed;
+  no automatic scenario rewrite;
+  no automatic downstream mutation of the Planning Item.
+```
+
+No root UCM command, Tampermonkey projection, domain model, Slice plan or runtime/storage architecture was added.

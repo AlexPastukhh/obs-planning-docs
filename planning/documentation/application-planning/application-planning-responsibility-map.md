@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Responsibility Map
 
 Status: active reusable responsibility map
-Doc version: v0.9.0-semantic-registry-owners
+Doc version: v0.10.0-scenario-template-owner
 Scope: ownership of files and subfolders inside `planning/documentation/application-planning/`.
 
 ## 1. Purpose
@@ -48,6 +48,7 @@ This map routes reusable-family semantic registry entries but does not own proje
 | Reusable planning Use Cases | `use-case-registry.md` | Complete semantic use-case entries and command relationships. |
 | Current Reality recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Legacy filename; active role is Current Reality Capture. |
 | Root/branch Planning Draft representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | Item-backed synthesis and candidate end-to-end plan. |
+| Scenario Draft representation | `templates/SCENARIO-DRAFT-TEMPLATE.md` | Clean Scenario Reference Objects, Scenario DATA Reference Objects, Behavior Item Reference Objects and Planning Item traceability. |
 | Functional Workflow Draft representation | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` | Independently useful/testable behavior line. |
 | Prototype setup | `templates/PROTOTYPE-PLAN-TEMPLATE.md` | Optional experiment setup. |
 | Prototype evidence | `templates/PROTOTYPE-RESULT-TEMPLATE.md` | Optional observed evidence/result. |
@@ -152,7 +153,9 @@ It does not own:
 - concern application/observability integration;
 - alternatives/branches/details;
 - tests/prototypes/evidence feedback;
-- entry into detailed planning.
+- entry into detailed planning;
+- Planning Draft / Full Picture handoff to Scenario Reference Objects;
+- upstream Planning Item change review-needed behavior for dependent scenario artifacts.
 
 It delegates raw source-to-item formation.
 
@@ -166,6 +169,9 @@ PLANNING-ITEM-REVIEW-TEMPLATE.md
 
 PLANNING-DRAFT-TEMPLATE.md
   → item-backed plan/Full Picture presentation;
+
+SCENARIO-DRAFT-TEMPLATE.md
+  → clean item-backed Scenario/DATA/Behavior representation;
 
 other templates
   → their named artifact representations.

@@ -1,7 +1,7 @@
 # Planning Item And Full Picture End-To-End Workflow
 
 Status: active accepted project-local Complete Picture / item-backed / reusable-method, semantic-registry and helper-projection synchronization audited
-Doc version: v0.5.0-implementation-ideas-and-form-items
+Doc version: v0.6.0-scenario-handoff
 Scope: trigger-to-result product workflow for preserving source meaning, forming and reviewing Planning Items, maintaining an item-backed Full Picture, applying concerns proportionally, deepening justified work and handing accepted meaning to durable documentation.
 
 ## 1. Purpose
@@ -475,7 +475,9 @@ An Applied Concern may remain a compact target-owned record or link to a separat
 
 Create separate work only when independent depth, ownership, lifecycle, testing or reuse justifies it.
 
-Prototype-Depth Scenario/Domain/Slice methodology is explicitly outside this workflow version and remains the next separate planning task.
+When scenario deep work is selected, the handoff creates managed Scenario Reference Objects with separate Scenario DATA and Behavior Item Reference Objects. Every Scenario links to the Planning Items that contributed material meaning; complete item bodies remain at their canonical owners.
+
+Scenario drafting does not automatically change Planning Items. A later source-item change marks dependent scenario objects/files review-needed through the normal dependency workflow. Detailed Domain/Slice and prototype-specific adaptation remain later work.
 
 Item: `ITEM-113`.
 
@@ -596,7 +598,7 @@ This workflow does not own:
 - implementation of parser/runtime mode detection;
 - root/local Direction and Use-Case Registry ownership, which remains outside this workflow body;
 - Tampermonkey planning-surface projection, which remains a derived helper layer rather than workflow authority;
-- Prototype-Depth Scenario/Domain/Slice methodology;
+- detailed Domain/Slice and prototype-specific methodology beyond the clean item-backed Scenario/DATA/Behavior handoff;
 - commit or push.
 
 `Source Idea` is not introduced.
@@ -647,5 +649,5 @@ Next work:
 2. project the accepted `сформируй айтемы / form items` UCM route; ✓
 3. project Orientation, Directions, Use Cases and Commands in Tampermonkey; ✓
 4. run the whole-repository terminology/owner/link/projection audit; ✓
-5. plan Prototype-Depth Scenario/Domain/Slice methodology separately;
+5. review the preliminary item-backed Scenario/DATA/Behavior draft, then plan Domain/Slice and prototype-specific depth separately;
 6. plan runtime architecture only after explicit review.
