@@ -1,8 +1,8 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v0.8.0-semantic-registry-owners
-Scope: reusable documentation architecture, solution/workflow planning, Planning Item formation, update workflows, command planning, field kits, examples, parallel-work staging, Tampermonkey projection and reusable helper/tool files copied into the OBS planning layer.
+Doc version: v1.0.0-unified-planning-owner
+Scope: reusable documentation architecture, solution/workflow planning, Planning Item formation, update workflows, command planning, profiles, field kits, examples, parallel work and helper projection.
 
 ## 1. Purpose
 
@@ -10,9 +10,9 @@ Scope: reusable documentation architecture, solution/workflow planning, Planning
 planning/documentation/
 ```
 
-owns reusable process rules and templates.
+owns reusable process rules, principles, terminology, workflows, profiles and templates.
 
-Concrete project routing/state remains outside:
+Concrete project routing and state remain outside:
 
 ```text
 planning/README.md
@@ -26,20 +26,25 @@ planning/areas/
 
 ```text
 planning/documentation/
-  → reusable workflows, principles, terminology and templates;
+  → reusable workflows, concept/principle owners,
+    profiles and templates;
 
 planning/planning-use-case-map.md
-  → concrete project command routes and canonical English names;
+  → concrete project command routes
+    and canonical English names;
 
 semantic Direction/Use-Case registries
-  → semantic work/use-case identities and owner routes;
+  → semantic identities and owner routes;
 
 planning/areas/
-  → concrete project-local plans, items, workflows and models;
+  → concrete project-local plans, items,
+    workflows, decisions and models;
 
 Tampermonkey
   → projection only.
 ```
+
+A cohesive methodology family may use one combined `Principles And Terminology` owner when definitions and their stable rules would otherwise duplicate or fragment meaning.
 
 Do not use field kits as runtime routers after project root files exist.
 
@@ -69,14 +74,34 @@ file-update-overview-workflow.md
 FILE-UPDATE-OVERVIEW-TEMPLATE.md
 ```
 
-### Reusable Field Kits
+### Solution / Workflow Planning Family
 
 ```text
-field-kits/root-use-case-map-field-kit.md
-field-kits/status-reconciliation-field-kit.md
-field-kits/shared-visibility-map-field-kit.md
-field-kits/source-usage-cascade-field-kit.md
+application-planning/README.md
+application-planning/application-planning-responsibility-map.md
+application-planning/application-planning-principles-and-terminology.md
+application-planning/planning-item-formation-workflow.md
+application-planning/application-planning-drafting-workflow.md
+application-planning/direction-registry.md
+application-planning/use-case-registry.md
+
+temporary compatibility pointers:
+  application-planning/application-planning-principles.md
+  application-planning/terminology-and-planning-items.md
+
+application-planning/templates/
+  CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
+  PLANNING-ITEM-REVIEW-TEMPLATE.md
+  PLANNING-DRAFT-TEMPLATE.md
+  SCENARIO-DRAFT-TEMPLATE.md
+  FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md
+  PROTOTYPE-PLAN-TEMPLATE.md
+  PROTOTYPE-RESULT-TEMPLATE.md
 ```
+
+Legacy opportunity, Product Legend and Solution Overview templates remain migration aids.
+
+New concrete state does not belong under `application-planning/drafts/`.
 
 ### Reusable Profiles
 
@@ -85,7 +110,16 @@ profiles/scenario-domain-slice-docs-profile.md
 profiles/scenario-domain-slice-use-case-field-kit.md
 ```
 
-Prototype-depth adaptation of scenario/domain/slice planning is a separate future task.
+These are optional specialized profiles. They are not universal planning stages.
+
+### Reusable Field Kits
+
+```text
+field-kits/root-use-case-map-field-kit.md
+field-kits/status-reconciliation-field-kit.md
+field-kits/shared-visibility-map-field-kit.md
+field-kits/source-usage-cascade-field-kit.md
+```
 
 ### Parallel Work
 
@@ -96,31 +130,6 @@ parallel-work/parallel-sync-workflow.md
 parallel-work/PARALLEL-WORKSPACE-TEMPLATE.md
 parallel-work/PARALLEL-SYNC-PLAN-TEMPLATE.md
 ```
-
-### Solution / Workflow Planning Family
-
-```text
-application-planning/README.md
-application-planning/application-planning-responsibility-map.md
-application-planning/terminology-and-planning-items.md
-application-planning/application-planning-principles.md
-application-planning/planning-item-formation-workflow.md
-application-planning/application-planning-drafting-workflow.md
-application-planning/direction-registry.md
-application-planning/use-case-registry.md
-
-application-planning/templates/
-  CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
-  PLANNING-ITEM-REVIEW-TEMPLATE.md
-  PLANNING-DRAFT-TEMPLATE.md
-  FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md
-  PROTOTYPE-PLAN-TEMPLATE.md
-  PROTOTYPE-RESULT-TEMPLATE.md
-```
-
-Legacy opportunity/Product Legend/Solution Overview templates remain migration aids.
-
-New concrete state does not belong under `application-planning/drafts/`.
 
 ### Tampermonkey Tool
 
@@ -138,7 +147,7 @@ examples/README.md
 PORTABLE-STARTER-KIT.md
 ```
 
-## 4. Bootstrap vs Runtime
+## 4. Bootstrap Vs Runtime
 
 ### Bootstrap
 
@@ -157,29 +166,12 @@ other field kits as needed
 2. planning/planning-use-case-map.md
 3. planning/workflow-activation-map.md
 4. planning/root-source-sync-register.md
-5. relevant area owner
-6. relevant planning/documentation owner workflows/templates
-7. Dashboard runtime help when local planning data is in scope
+5. relevant project-local owner
+6. relevant planning/documentation owner
+7. Dashboard runtime help when local planning data is in scope.
 ```
 
 ## 5. Task Read Orders
-
-### Command / Root Route Work
-
-```text
-planning/planning-use-case-map.md
-documentation-principles-read-workflow.md
-planning-docs-architecture-principles.md
-documentation-responsibility-map.md
-field-kits/root-use-case-map-field-kit.md only for setup/shape guidance
-use-case-map-workflow.md
-USE-CASE-MAP-TEMPLATE.md
-command-planning-workflow.md when command route is planned
-example-coverage-workflow.md when example fit matters
-tampermonkey-command-projection-workflow.md only when projection is in scope
-```
-
-The root UCM is a command route map. It is not the semantic Direction/Use-Case Registry.
 
 ### Documentation Preflight / Broad Update
 
@@ -194,18 +186,33 @@ planning-docs-architecture-principles.md
 documentation-responsibility-map.md
 documentation-update-plan-workflow.md
 documentation-update-workflow.md
-documentation-responsibility-zone-review-workflow.md when classification is non-trivial
-other task owners
+documentation-responsibility-zone-review-workflow.md
+task-specific owners.
 ```
+
+### Command / Root Route Work
+
+```text
+planning/planning-use-case-map.md
+documentation-principles-read-workflow.md
+planning-docs-architecture-principles.md
+documentation-responsibility-map.md
+use-case-map-workflow.md
+USE-CASE-MAP-TEMPLATE.md
+command-planning-workflow.md when a command is planned
+example-coverage-workflow.md when example fit matters
+tampermonkey-command-projection-workflow.md only when projection is in scope.
+```
+
+The root UCM is a command route map. It is not the semantic Direction/Use-Case Registry.
 
 ### Replacement Archive / Package
 
 ```text
 planning/planning-use-case-map.md
 reviewable-agent-output-and-commands-workflow.md
-relevant package workflow
-relevant owners and complete target files
-relevant example only when required
+documentation-update-workflow.md
+relevant owner and target files.
 ```
 
 ### Planning Item Formation
@@ -213,29 +220,25 @@ relevant example only when required
 ```text
 application-planning/README.md
 application-planning/application-planning-responsibility-map.md
-application-planning/terminology-and-planning-items.md
-application-planning/application-planning-principles.md
+application-planning/application-planning-principles-and-terminology.md
 application-planning/planning-item-formation-workflow.md
 application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
 project input conventions when present
 selected source
 relevant current items/owners
-project-local item register/Full Picture owner
+project-local Planning Draft or item owner when reconciliation requires it.
 ```
 
-This read order does not itself create a project command. Command naming/routing is a later project-root update.
-
-### Planning Item Reconciliation / Full Picture Work
+### Planning Item Reconciliation / Planning Draft Work
 
 ```text
 application-planning/README.md
 application-planning/application-planning-responsibility-map.md
-application-planning/terminology-and-planning-items.md
-application-planning/application-planning-principles.md
+application-planning/application-planning-principles-and-terminology.md
 application-planning/application-planning-drafting-workflow.md
 selected items/source
 complete current project-local owners
-relevant templates and formation owner
+relevant templates and formation owner.
 ```
 
 ### Current Reality / Workflow / Branch / Prototype Planning
@@ -243,20 +246,23 @@ relevant templates and formation owner
 ```text
 application-planning/README.md
 application-planning/application-planning-responsibility-map.md
-application-planning/application-planning-principles.md
+application-planning/application-planning-principles-and-terminology.md
 application-planning/application-planning-drafting-workflow.md
 relevant recommended template
-project-local artifact
+project-local artifact.
 ```
 
-### Scenario Planning Workspace
+### Optional Scenario / Domain / Slice Planning
 
 ```text
-planning/planning-use-case-map.md
-planning/areas/planning-system/README.md
-planning/areas/planning-system/scenario-planning-workspace-workflow.md
-planning/areas/planning-system/scenario-planning-workspace-template.md
+application-planning/README.md
+application-planning/application-planning-principles-and-terminology.md
+profiles/scenario-domain-slice-docs-profile.md
+profiles/scenario-domain-slice-use-case-field-kit.md when setup is needed
+current project-local owner.
 ```
+
+Use this route only after the specialized profile is selected.
 
 ### Conspects
 
@@ -272,7 +278,7 @@ local conspect docs
 parallel-work/README.md
 parallel-work/parallel-workflow.md
 parallel-work/parallel-sync-workflow.md when sync candidates exist
-relevant templates
+relevant templates.
 ```
 
 ## 6. Semantic Registry Owners
@@ -286,7 +292,7 @@ application-planning/direction-registry.md
 application-planning/use-case-registry.md
 ```
 
-Concrete root/local registries remain outside the reusable root as project-specific owners.
+Concrete root/local registries remain project-specific owners.
 
 ## 7. Do Not
 
@@ -302,6 +308,7 @@ Concrete root/local registries remain outside the reusable root as project-speci
 - Do not keep a second tracked project-local Tampermonkey helper by default.
 - Do not treat helper scripts as command/registry authority.
 - Do not keep deprecated templates as competing owners.
-- Do not create new concrete product drafts in the reusable family.
-- Do not duplicate Planning Item formation rules in the drafting workflow.
+- Do not create concrete product drafts in the reusable family.
+- Do not split one methodology concept between competing
+  principles and terminology owners when one cohesive owner is clearer.
 ```

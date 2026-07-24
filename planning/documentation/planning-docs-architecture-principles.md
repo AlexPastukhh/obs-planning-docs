@@ -1,8 +1,8 @@
 # Planning Docs Architecture Principles
 
 Status: active reusable architecture principles
-Doc version: v0.5.0-semantic-registries-active
-Scope: stable reusable invariants for projects that use `planning/documentation/` as a portable process layer.
+Doc version: v1.0.0-unified-concept-owner
+Scope: stable reusable boundaries for projects that use `planning/documentation/` as a portable process layer.
 
 ## 1. Layer Boundary
 
@@ -11,56 +11,90 @@ planning/documentation/
   = reusable process layer;
 
 planning/README.md
-  = project planning entry/orientation;
+  = project planning entry and orientation;
 
 planning/planning-use-case-map.md
-  = concrete project command route map/UCM;
+  = concrete project command route map / UCM;
 
 project Direction/Use-Case registries
   = semantic navigation and owner routes;
 
 planning/areas/
-  = project-specific applications and state.
+  = project-specific plans, applications and state.
 ```
 
-Reusable docs do not own concrete project state, schedules, implementation status or accepted command routes.
+Reusable docs do not own concrete project state, schedules, implementation status, project commands or accepted product architecture.
 
 ## 2. Source-Of-Truth Rules
 
 ```text
-- One project root UCM owns command routing/canonical English names.
-- Semantic registries own Direction/Use-Case entries.
+- One project root UCM owns command routing
+  and canonical English names.
+- Semantic registries own Direction and Use-Case entries.
 - Workflow files own repeated process.
-- Terminology files own conceptual distinctions.
-- Principles own stable invariants.
+- Principles/terminology owners own reusable concept contracts.
+- A cohesive methodology may combine definitions and stable principles
+  in one owner when separation would duplicate or fragment meaning.
 - Templates own recommended exact shape.
+- Profiles own optional specialized approaches.
 - Field kits own bootstrap/setup only.
-- Area docs own concrete project-local application state.
+- Area docs own concrete project-local state.
 - Examples demonstrate; they do not own rules.
-- Tampermonkey projects accepted owners; it owns neither commands nor registries.
+- Tampermonkey projects accepted owners;
+  it owns neither commands nor registries.
 ```
+
+Do not maintain two active owners for the same definition/principle contract merely to preserve a terminology/principles file split.
 
 ## 3. Planning Item Owner Boundary
 
 ```text
-planning-item-formation-workflow.md
-  → selected source to reviewed/accepted Planning Items;
+application-planning/planning-item-formation-workflow.md
+  → selected source to reviewed Planning Items;
 
-application-planning-drafting-workflow.md
-  → Planning Draft/Full Picture, Complete Picture integrity,
-    reconciliation, concerns, branches and evidence revision;
+application-planning/application-planning-drafting-workflow.md
+  → Planning Draft, workflow integrity, reconciliation,
+    questions, risks, alternatives and evidence revision;
 
 project-local register/area
   → concrete accepted items, sources and current state.
 ```
 
-Do not duplicate item formation in the drafting workflow.
+Do not duplicate Planning Item formation in the drafting workflow.
 
-One semantic Planning Item may move through portable, managed and documented states.
+A reviewed Planning Item remains a semantic planning meaning. Reusable methodology does not require it to become a managed application object.
 
-A confirmed application-native Planning Item is a managed Reference Object immediately.
+Repository placement, import, storage or application integration are separate project-local decisions.
 
-## 4. Bootstrap vs Runtime
+## 4. Portable Baseline
+
+The reusable planning baseline is:
+
+```text
+readable Markdown or equivalent reviewable content;
+complete source context;
+explicit review;
+traceable Planning Items;
+separate authorization for repository updates.
+```
+
+Reusable methodology must not claim an application-native runtime, managed-object creation, database, storage model or automatic dependency mechanism unless that behavior has an explicit implemented owner.
+
+## 5. Optional Specialized Profiles
+
+A profile may define a more specialized representation, such as Scenario/Domain/Slice planning.
+
+Rules:
+
+```text
+- selecting a profile is explicit;
+- a profile does not become a universal planning stage;
+- not selecting the profile does not make a sufficient Planning Draft incomplete;
+- simple and non-application work may remain in the Planning Draft;
+- project-specific profile application remains project-local.
+```
+
+## 6. Bootstrap Vs Runtime
 
 Bootstrap:
 
@@ -77,12 +111,12 @@ planning/planning-use-case-map.md
 planning/workflow-activation-map.md
 planning/root-source-sync-register.md
 planning/areas/*
-relevant planning/documentation owners
+relevant planning/documentation owners.
 ```
 
 Field kits stop being routers after runtime files exist.
 
-## 5. No Silent Promotion
+## 7. No Silent Promotion
 
 ```text
 raw source
@@ -95,6 +129,12 @@ proposed item meaning
 AI assumption
   ≠ user decision;
 
+implementation idea
+  ≠ architecture;
+
+risk
+  ≠ evidence of failure;
+
 example
   ≠ authority;
 
@@ -104,11 +144,27 @@ local mapping
 full-message source
   ≠ normalized item body;
 
-view/projection
-  ≠ canonical state.
+view or projection
+  ≠ canonical state;
+
+profile
+  ≠ mandatory project route.
 ```
 
-## 6. Command vs Semantic Registry Authority
+## 8. Progressive Complexity
+
+Use the smallest owner and representation that preserve the required meaning.
+
+```text
+semantic core
+  → compact representation
+  → local expansion
+  → separate artifact or specialized profile when justified.
+```
+
+Do not create files, folders, schemas, object types or planning stages in advance.
+
+## 9. Command Vs Semantic Registry Authority
 
 Concrete command behavior:
 
@@ -119,45 +175,19 @@ Concrete command behavior:
 4. Tampermonkey projection after the route exists.
 ```
 
-Direction/use-case context:
+Semantic registries provide identities and routes. Activating a registry entry does not grant command or repository permissions.
+
+## 10. Update Safety
+
+Broad reusable changes require:
 
 ```text
-1. semantic registry entry;
-2. linked owner route;
-3. UCM only when an executable command is related;
-4. Tampermonkey projection after registries exist.
+documentation architecture preflight;
+owner classification;
+file-update plan;
+complete replacement files when packaged;
+exact local base verification;
+diff review before commit or push.
 ```
 
-Do not make the UCM the semantic owner merely because the historic file name contains “use-case map”.
-
-## 7. Portable Copy Rule
-
-When copied to another project:
-
-- keep reusable docs under `planning/documentation/`;
-- create fresh project root files;
-- do not copy another project's local state as active configuration;
-- keep portable Planning Item review available;
-- adapt command profiles only to accepted routes;
-- create/adapt semantic registries when the target project adopts them.
-
-## 8. Progressive Ownership
-
-Create a separate owner only when independent responsibility, lifecycle, repeated use or review justifies it.
-
-Do not create one file per item, question, field or UI surface.
-
-Parent summaries route to child owners; they do not duplicate full bodies.
-
-## 9. Do Not
-
-```text
-- Do not create a second generic UCM inside documentation/.
-- Do not put project-specific state into reusable docs.
-- Do not make helper scripts authority.
-- Do not conflate command routes with semantic registries.
-- Do not create Source Idea or a Planning Item Candidate entity.
-- Do not remove portable review because managed mode exists.
-- Do not choose project storage/wrapper architecture here.
-- Do not rely on absent project support files as if present.
-```
+A planned update or replacement archive does not authorize commit or push.

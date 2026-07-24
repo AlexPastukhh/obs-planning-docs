@@ -1,10 +1,10 @@
 # Planning Item Review Template
 
 Status: active reusable recommended template
-Doc version: v0.2.0-implementation-ideas
+Doc version: v1.0.0-portable-review-baseline
 Purpose: exact reusable review shape for proposed new, updated, merged, split, re-homed, superseded, rejected or deferred Planning Items.
 
-Use only sections that improve the current review. Do not shorten the complete item meaning merely to fit this template.
+Use only sections that improve the current review. Do not shorten complete item meaning merely to fit the template.
 
 ## 1. Review Identity
 
@@ -14,7 +14,6 @@ Use only sections that improve the current review. Do not shorten the complete i
 | Selected source | <conversation/file/ledger/reference> |
 | Source completeness | complete / partial / missing parts declared |
 | Target planning owner | <project-local owner or unresolved> |
-| Intended delivery mode | portable Markdown / application-native / auto / undecided |
 | Repository state checked | <commit/ref/files or not checked> |
 | Review status | proposed / corrected / accepted / partially accepted / rejected / deferred |
 
@@ -44,10 +43,10 @@ Use semantic names first and technical IDs second.
 
 ## 4. Document-Ready Explanatory Sections
 
-Write the complete accumulating meanings here when the response needs readable explanation before item-by-item review.
+Write complete accumulating meanings here when readable explanation is useful before item-by-item review.
 
 ```text
-The final item blocks below must reuse/materialize these complete meanings.
+The final item blocks below must reuse/materialize these meanings.
 They must not replace them with shorter lossy paraphrases.
 ```
 
@@ -77,7 +76,7 @@ They must not replace them with shorter lossy paraphrases.
 
 ## 6. Complete Planning Item Block
 
-Repeat this complete block for every reviewed resulting item.
+Repeat this block for every reviewed resulting item.
 
 ### <Semantic Planning Item Name>
 
@@ -93,14 +92,15 @@ Repeat this complete block for every reviewed resulting item.
 | Evidence status | confirmed / inference / question / decision candidate / decision / evidence |
 | Proposed action | Keep / Update / Rename / Add / Merge / Split / Move / Link / Defer / Supersede / Reject |
 | Proposed owner | <owner or unresolved> |
-| Semantic home | <reference / none / unresolved> |
-| Definition location | <path/location / app-only / portable / unresolved> |
 | Documentation state | Working / Needs Documentation / Documented/Integrated / Unresolved / Deferred / Absorbed/Superseded / Rejected |
-| Delivery mode | portable / application-native / both-compatible |
+
+Omit identity rows that do not improve the current review.
+
+Do not add application-only fields such as managed-object identity, semantic home or runtime storage location unless a separate project-local owner explicitly requires them.
 
 #### Complete Meaning Body
 
-<The full authoritative working meaning. Include every rationale, example, distinction, exception, boundary, consequence and acceptance detail required for correct understanding and reuse. No arbitrary length limit.>
+<Full authoritative working meaning. Include every rationale, example, distinction, exception, boundary, consequence and acceptance detail required for correct understanding and reuse. No arbitrary length limit.>
 
 #### Purpose And Distinctions
 
@@ -129,7 +129,7 @@ Does not imply:
 
 #### Implementation Ideas — Optional
 
-Use only when separate implementation-idea items exist.
+Use only when separate Implementation Idea items exist.
 
 | Implementation Idea | Item kind/status | Typed relation | Meaning for this target |
 |---|---|---|---|
@@ -152,7 +152,7 @@ Omit empty rows. Do not turn validation context into a universal schema.
 
 | Order | Source message/fragment | Role | Exact anchor | Relevant span | Notes |
 |---:|---|---|---|---|---|
-| 1 | <source identity> | Primary / Supporting / Clarifying / Correcting / Contradicting / Example / Confirmation | <anchor> | <span> | <notes> |
+| 1 | <source identity> | Primary / Supporting / Clarifying / Correcting / Contradicting / Example / Confirmation | <anchor> | <exact span> | <notes> |
 
 #### Full User-Message Source(s)
 
@@ -160,7 +160,7 @@ Repeat every complete supporting user message under every item it supports.
 
 ##### Source 1 — <identity / timestamp / turn>
 
-> <Complete original user message. Highlight relevant spans while retaining all surrounding context.>
+> <Complete original user message. Highlight only the exact relevant span with Markdown bold while retaining all surrounding context.>
 
 Exact anchor:
 
@@ -171,12 +171,27 @@ Exact anchor:
 Contribution role:
 
 ```text
-Primary / Supporting / Clarifying / Correcting / Contradicting / Example / Confirmation
+Primary / Supporting / Clarifying / Correcting /
+Contradicting / Example / Confirmation
 ```
+
+Highlighting rule:
+
+```text
+default:
+  **exact original relevant words**
+
+fallback when source formatting conflicts with bold:
+  [RELEVANT SPAN START]
+  exact original text
+  [RELEVANT SPAN END]
+```
+
+Do not change original wording or case merely to create emphasis.
 
 ##### Source 2 — <identity / timestamp / turn>
 
-> <Complete original user message, in chronological order.>
+> <Complete original user message, in chronological order, with its own relevant span highlighted.>
 
 Do not invent missing source wording.
 
@@ -199,7 +214,7 @@ Decision:
 
 ## 7. Non-Trivial Transformation Block
 
-Use one block per coherent transformation. Do not collapse Current, Incoming and Resulting meanings into one row.
+Use one block per coherent transformation. Do not collapse Current, Incoming and Resulting meanings into one aggregate row.
 
 | Role | Semantic name | ID / source | Owner / status | Complete core meaning | Relation / contribution | Proposed action/effect | Identity/history effect | Choice |
 |---|---|---|---|---|---|---|---|---|
@@ -217,31 +232,21 @@ For merge, split, move, supersede or reject, add as many rows as required.
 
 ## 9. Delivery Result
 
-### Portable Markdown
+### Portable Reviewable Output
 
 ```text
-- return the full updated ledger;
+- return the full updated review or ledger;
 - preserve complete item bodies;
 - preserve full per-item source messages;
-- preserve typed contributions and transformations.
+- preserve typed contributions and transformations;
+- require explicit review where the active route requires it.
 ```
 
 Result:
 
-<path/name or not selected>
+<path/name, chat output identity or not selected>
 
-### Application-Native
-
-```text
-- distinguish existing references from proposed new/updated items;
-- only explicit confirmation creates accepted managed item state;
-- confirmed Planning Item is immediately a managed Reference Object;
-- later Markdown placement does not create a second item.
-```
-
-Result:
-
-<structured response/import status or not selected>
+Repository documentation placement, application import or managed storage are separate project-local decisions and are not implied by this template.
 
 ## 10. Unresolved Choices
 

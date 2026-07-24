@@ -1,89 +1,101 @@
 # Solution And Workflow Planning Documentation Index
 
-Status: provisional reusable documentation-family index
-Doc version: v0.11.0-item-backed-scenario-layer
-Scope: reusable planning from selected source through full-message Planning Item formation, end-to-end workflow pictures, an item-backed Planning Draft, concern review, alternatives, tests, prototypes and evidence-driven revision.
+Status: active reusable documentation-family index
+Doc version: v1.0.0-unified-portable-baseline
+Scope: reusable planning from selected source through Planning Item formation, an item-backed Planning Draft, questions, alternatives, validation and optional deeper planning.
 
-The folder path remains `application-planning/` during the semantic migration. The methodology itself is not limited to applications.
+The folder path remains `application-planning/` for compatibility. The methodology is not limited to applications.
 
 ## 1. Purpose
 
-This family helps convert free-form user input into reviewable planning artifacts without requiring a strict ceremony, one fixed input order or one universal Markdown layout.
+This family helps convert free-form or structured input into reviewable planning without requiring:
+
+```text
+- one fixed input order;
+- one universal artifact sequence;
+- one mandatory Markdown layout;
+- a custom application or managed-object runtime.
+```
 
 It can plan:
 
 ```text
-- a changed workflow;
 - use of an existing tool;
+- a changed workflow;
 - scripts or automation;
 - an integration;
 - an application;
 - an organizational process;
 - no change;
-- several candidate end-to-end variants.
+- several candidate variants.
 ```
 
 ## 2. Lifecycle
 
 ```text
-free-form or structured source
+selected source or checked current context
   → optional Current Reality Capture
   → complete source-message preservation
   → semantically complete Planning Item formation and review
-  → portable Markdown or application-native accepted delivery
-  → proportional hypothesis / risk / prototype-test context where material
-  → item-backed root Planning Draft / Full Picture
-  → identify one trigger-to-result Complete Picture per independent workflow
-  → classify models, views, terminology and capability slices as supporting artifacts
-  → linear planning while one path is sufficient
-  → relevant concern suggestions from manual input or presets
-  → applicability review
-  → target-specific Applied Concerns where justified
-  → optional Functional Workflow Drafts, branches and detail work
-  → tests, prototypes and evidence-driven revision
-  → update concerns, items and the parent Planning Draft
-  → item-backed Scenario Reference Objects
-  → separate Scenario DATA and Behavior Item Reference Objects
-  → optional later domain/slice/implementation planning
+  → explicit reviewable Planning Item set
+  → proportional question/risk/prototype context
+  → item-backed Planning Draft
+  → logically ordered Planning Item links
+  → selected Scenario depth
+  → optional Full Picture Matrix
+  → alternatives, research, tests and evidence
+  → update items, decisions and Planning Draft
+  → optional specialized detailed planning when justified.
 ```
 
-Current Reality Capture remains descriptive. It may be omitted when enough checked current context is already available.
+Current Reality Capture remains descriptive and may be omitted when enough checked current context already exists.
 
-Opportunity research, Product Legend and Solution Overview are not mandatory sequential artifacts. Their useful semantics may appear in the Planning Draft, Planning Items, concern suggestions, functional-workflow drafts or prototype artifacts.
+A simple application, non-application solution or narrow workflow may complete planning in the Planning Draft. Separate Scenario, DATA, Behavior, Domain and Slice artifacts are optional.
+
+Opportunity research, Product Legend and Solution Overview are not mandatory sequential artifacts. Useful meaning belongs in Planning Items, the Planning Draft, questions, alternatives or prototype/research work.
 
 ## 3. Read Order
 
 ```text
 1. application-planning-responsibility-map.md
-2. terminology-and-planning-items.md
-3. application-planning-principles.md
-4. planning-item-formation-workflow.md
+2. application-planning-principles-and-terminology.md
+3. planning-item-formation-workflow.md
    when source material must become reviewed Planning Items
-5. templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
+4. templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
    when exact item review output is needed
-6. direction-registry.md and use-case-registry.md
+5. direction-registry.md and use-case-registry.md
    when semantic Direction/Use-Case context is needed
-7. application-planning-drafting-workflow.md
-   for broader planning, Complete Picture work and item reconciliation
-8. templates/SCENARIO-DRAFT-TEMPLATE.md
-   when an item-backed Planning Draft enters clean scenario drafting
-9. the relevant other recommended template under templates/, when useful
-10. the project-local working draft, Full Picture and item register
+6. application-planning-drafting-workflow.md
+   for broader planning and reconciliation
+7. the relevant optional template or specialized profile
+8. the project-local Planning Draft, item register and other owners.
 ```
 
-Templates are recommended representations, not mandatory schemas. Concern presets recommend attention, not file shape. Project-local state remains outside `planning/documentation/`.
+Compatibility pointers:
+
+```text
+application-planning-principles.md
+terminology-and-planning-items.md
+```
+
+They are not active owners.
+
+Templates are recommended representations, not mandatory schemas. Project-local state remains outside `planning/documentation/`.
 
 ## 4. Active Files
 
 ```text
 README.md
 application-planning-responsibility-map.md
-terminology-and-planning-items.md
-application-planning-principles.md
+application-planning-principles-and-terminology.md
 planning-item-formation-workflow.md
 application-planning-drafting-workflow.md
 direction-registry.md
 use-case-registry.md
+
+compatibility pointers:
+  application-planning-principles.md
+  terminology-and-planning-items.md
 
 templates/
   CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
@@ -95,184 +107,156 @@ templates/
   PROTOTYPE-RESULT-TEMPLATE.md
 ```
 
-The current-workflow template path is retained temporarily, but its semantic role is Current Reality Capture.
+Legacy opportunity, Product Legend and Solution Overview templates remain migration aids. Do not create new concrete project state in the reusable family.
 
-Legacy transition templates remain migration sources:
+## 5. Core Artifacts And Concepts
 
-```text
-OPPORTUNITY-AND-ECOSYSTEM-RESEARCH-DRAFT-TEMPLATE.md
-PRODUCT-LEGEND-DRAFT-TEMPLATE.md
-SOLUTION-OVERVIEW-DRAFT-TEMPLATE.md
-```
+### Planning Item
 
-Do not create new concrete product/workflow state under this reusable family.
+Owns one complete coherent planning meaning.
 
-## 5. Artifact Family
+Complete bodies remain at their item owners. Compact IDs, summaries and table cells are navigation.
 
-### Shared Terminology And Planning Items
+### Planning Draft
 
-Owns working names and distinctions for:
+Owns the current high-level organization of one planning direction.
+
+It may contain:
 
 ```text
-Planning Draft / Full Picture;
-Result Workflow;
-Current Workflow / Old Workflow;
-Action Workflow;
-End-To-End Complete Picture;
-Primary Review Object;
-Supporting Artifact;
-Planning Item and its scale/kind;
-Item Validation Context;
-Prototype / Test Candidate;
-Canonical Item Body and compact item identity;
-Planning Lens;
-Concern Definition;
-Concern Preset;
-Concern Suggestion;
-Applied Concern;
-Concern Work Target;
-Document Template;
-View Preset;
-Validation Rule;
-Planning Item formation/review states;
-Source Message, Source Fragment, Source Excerpt and Source Anchor;
-Source Contribution and Contribution Role;
-Source of Truth;
-Markdown/app-memory bridge terms;
-Workspace and review terms.
-```
-
-The terminology draft does not finalize concrete project schema, storage architecture, wrapper syntax or UI controls.
-
-### Current Reality Capture
-
-Owns checked or user-reported current reality:
-
-```text
-current workflow and explanations;
-user experience;
-strengths;
-experienced problems;
-suspected risks;
-workarounds;
-existing ideas;
-unknowns and contradictions.
-```
-
-It does not own accepted future outcomes, architecture or a build decision.
-
-### Planning Draft / Full Picture
-
-Owns one current planning synthesis:
-
-```text
-desired result;
-boundaries and criteria;
-reviewed Planning Items and their relationships;
-current/desired/action workflows when useful;
-concern coverage and open deeper work;
-alternatives and branches;
+Planning Item Map;
+Key Scenarios;
+other Scenario summaries;
+Full Picture Matrix;
+questions, risks and evidence needs;
+implementation directions;
 decisions;
-tests and evidence;
-material item hypotheses, risks, key situations and prototype/test candidates;
+selected planning depth;
 current conclusion and next action.
 ```
 
-It may combine item links, summaries, groupings and explanatory prose. It is not required to be only a list or only narrative.
+A separate `Planning Full Picture` artifact is not required.
 
-### Application Root Planning Draft
+### Full Picture Matrix
 
-Coordinates application identity, shared outcomes, workflow inventory, cross-workflow relationships, shared constraints and actual competing branches.
+An optional table or equivalent view inside the Planning Draft.
 
-### Functional Workflow Draft
+It aligns scenario meaning, implementation ideas, questions/risks/validation and follow-up through links to Planning Items.
 
-Owns one independently understandable and testable behavior line. It is not automatically an implementation slice, a competing branch or an End-To-End Complete Picture.
+### Scenario
 
-When several sibling behavior lines together contain one mandatory trigger-to-result cycle, the parent preserves the complete workflow and the children remain supporting slices.
+One coherent actor/context + goal + observable-result unit.
 
-### Branch Planning Draft
+`Key Scenario` is a role of the same Scenario entity. It is not a separate object type.
 
-Owns one independently planned alternative after a real divergence decision. The parent owns comparison.
+A Scenario may stay inline in the Planning Draft or become a separate artifact when that reduces complexity.
 
-### Scenario Draft
+### End-To-End Workflow
 
-Owns a navigation catalog plus clean Scenario Reference Objects, Scenario DATA Reference Objects and Behavior Item Reference Objects derived from an item-backed Planning Draft or Full Picture.
+One independently traversable trigger-to-result workflow.
 
-```text
-Planning Item bodies remain canonical at their item owners;
-Scenario objects own actor/context + goal + observable behavioral composition;
-Scenario DATA objects own supported user-visible/scenario-relevant values;
-Behavior Items own stable addressable units of required behavior.
-```
+`End-To-End Complete Picture` remains a temporary legacy alias in older routes.
 
-A project may use one catalog plus a separate file per Scenario Object. DATA and Behavior Items remain separate Reference Objects even when several definitions share one registry file.
+## 6. Planning Item Formation
 
-Upstream Planning Item changes produce review-needed dependency state for linked scenario artifacts; they do not rewrite them automatically.
-
-### Detail And Prototype Artifacts
-
-Create them only when independent depth, lifecycle, review, reuse or testing value justifies a separate artifact. Small prototype/test candidates may remain in Item Validation Context or embedded in their Planning Draft.
-
-## 6. Progressive Representation
-
-```text
-required semantic core
-  → simplest readable representation
-  → local expansion
-  → linked detail or specialized representation when justified
-```
-
-Simplicity applies to structure, not to loss of meaning. A Planning Item may be long when examples, distinctions, exceptions, rationale or acceptance detail are required.
-
-## 7. Structured Source And Explanation
-
-Canonical Planning Items preserve complete source-linked meaning. A detailed AI explanatory section may be the accumulating item body; a later review block must not replace it with a shorter lossy paraphrase.
-
-Portable review repeats complete supporting user messages under each item. Canonical storage may use a shared message bank plus typed contribution relations only when the full per-item presentation remains reproducible.
-
-Dedicated reusable owners:
+Canonical process:
 
 ```text
 planning-item-formation-workflow.md
+```
+
+Recommended review shape:
+
+```text
 templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
 ```
 
-The broader drafting workflow keeps repository reconciliation, Planning Draft/Full Picture synthesis, concerns, branches, tests and evidence feedback.
+The active baseline is portable, reviewable planning content:
 
-## 8. Current Deliberate Exclusions
+```text
+selected source
+  → complete source preservation
+  → complete proposed item meanings
+  → current-owner comparison
+  → Current/Incoming/Resulting transformations
+  → explicit review.
+```
+
+The reusable method does not promise an application-native managed-object runtime.
+
+## 7. Planning Draft And Reconciliation
+
+Canonical process:
+
+```text
+application-planning-drafting-workflow.md
+```
+
+It owns:
+
+```text
+Current Reality integration;
+Planning Draft construction;
+End-To-End Workflow integrity;
+Planning Item reconciliation;
+questions, risks and validation;
+alternatives and research;
+tests and prototype evidence;
+optional detailed-planning handoff.
+```
+
+## 8. Optional Detailed Planning
+
+The specialized profile is:
+
+```text
+planning/documentation/profiles/scenario-domain-slice-docs-profile.md
+```
+
+Use it only when the project benefits from separate Scenario, DATA, Behavior, Domain or Slice artifacts.
+
+For a simple or non-application solution:
+
+```text
+- Domain may be unnecessary;
+- Slice planning may be unnecessary;
+- DATA may remain inline;
+- Behavior Items may remain inline;
+- the Planning Draft may be sufficient before implementation.
+```
+
+Not selecting the profile does not make the Planning Draft incomplete.
+
+## 9. Current Deliberate Exclusions
 
 This reusable family does not define:
 
 ```text
 - a concrete application object model;
+- an App Memory layer;
+- managed Reference Object creation;
+- application-native item delivery;
 - storage or serialization architecture;
 - exact Markdown wrapper syntax;
 - a mandatory client platform;
-- project-specific command routes or command names;
-- project-specific command names or runtime implementation inferred from semantic registry entries;
+- project-specific commands or permissions;
 - unrestricted AI filesystem access;
-- detailed implementation plans;
-- one universal concern catalogue;
-- a mandatory branch, file or item length.
+- one mandatory scenario/domain/slice route;
+- one universal concern catalogue.
 ```
 
-## 9. Do Not
+## 10. Do Not
 
 ```text
 - Do not require template-ordered user input.
 - Do not treat AI classification as infallible.
-- Do not treat a proposed Planning Item as accepted without review.
-- Do not replace complete source-message review with excerpt-only presentation.
-- Do not create a separate Source Idea or Planning Item Candidate entity.
-- Do not promote an idea, inference, suggestion or risk into a confirmed fact.
-- Do not evaluate future solutions inside Current Reality Capture.
-- Do not treat a Concern Suggestion as an Applied Concern.
-- Do not make all preset concerns mandatory.
-- Do not create a branch, child file or detail artifact mechanically.
+- Do not accept a proposed Planning Item without review.
+- Do not replace complete source-message review with excerpts.
+- Do not create Source Idea or Planning Item Candidate entities.
+- Do not promote suggestions, risks or implementation ideas into decisions.
+- Do not create branches or detail artifacts mechanically.
 - Do not split a Planning Item only because it is long.
-- Do not make implementation thoughts architecture decisions automatically.
 - Do not keep concrete project state as reusable methodology.
-- Do not remove high-level views after adding detail.
-- Do not split one mandatory trigger-to-result workflow into peer Complete Pictures by topic.
-- Do not require validation context on every item or promote it into a confirmed requirement or architecture decision.
+- Do not force detailed planning layers on simple work.
+- Do not recreate a second principles or terminology owner.
 ```

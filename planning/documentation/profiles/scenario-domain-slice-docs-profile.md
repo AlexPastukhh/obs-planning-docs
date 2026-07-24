@@ -1,14 +1,18 @@
 # Scenario / Domain / Slice Docs Profile
 
 Status: active reusable specialized profile
-Doc version: v0.3.0-item-backed-scenario-objects
-Scope: optional reusable guidance for projects that organize detailed planning as clean scenarios, scenario DATA, Behavior Items, domain work and implementation slices.
+Doc version: v0.4.0-explicit-optionality
+Scope: optional reusable guidance for projects that organize detailed application/software planning as clean scenarios, scenario DATA, Behavior Items, domain work and implementation slices.
 
 ## 1. Purpose
 
-Use this profile when a project needs scenario/domain/slice documentation boundaries after an item-backed Planning Draft or Full Picture is sufficiently stable.
+Use this profile when a project needs Scenario/Domain/Slice documentation boundaries after an item-backed Planning Draft is sufficiently stable.
 
-The profile preserves this dependency direction:
+This is a specialized profile, not a universal planning stage.
+
+For a simple application or a solution that is not application development, the project may keep Scenarios in the Planning Draft and omit separate Scenario DATA, Behavior Item, Domain and Slice artifacts when they do not improve the work.
+
+When selected, the profile preserves this dependency direction:
 
 ```text
 Planning Items / Planning Draft
@@ -76,7 +80,7 @@ Create a separate file per Scenario Object when the project benefits from indepe
 
 ## 4. Planning Item Traceability
 
-When a Scenario Object is created from an item-backed Planning Draft or Full Picture:
+When a Scenario Object is created from an item-backed Planning Draft:
 
 ```text
 Scenario
@@ -86,12 +90,17 @@ Planning Item.
 
 Rules:
 
+```text
 - link every Planning Item that contributes material scenario meaning;
-- use a multi-value `Planning Items` field/projection whose members are Planning Item Reference Objects;
+- use a multi-value Planning Items field/projection whose members
+  are Planning Item Reference Objects;
 - do not copy complete Planning Item bodies into the Scenario;
 - the Scenario owns only the new behavioral composition;
-- Scenario DATA and Behavior Items may link to the narrower contributing item subset;
-- later Domain/Slice/Prototype artifacts reference Scenario and Behavior Item identities instead of copying scenario text.
+- Scenario DATA and Behavior Items may link
+  to the narrower contributing item subset;
+- later Domain/Slice/Prototype artifacts reference Scenario
+  and Behavior Item identities instead of copying scenario text.
+```
 
 A later Planning Item change does not rewrite a Scenario automatically. It marks dependent Scenario/DATA/Behavior objects and their definition files as review-needed through the normal dependency-review mechanism. The previous reviewed scenario content remains until a user reviews and refreshes, confirms it is still current, or deliberately removes/replaces the relation.
 
@@ -121,7 +130,11 @@ Responsibility-layer classification is a later analytical artifact. Do not put c
 ## 7. Boundaries
 
 ```text
-- Do not force this profile on projects that do not use scenario/domain/slice planning.
+- Do not force this profile on projects
+  that do not use Scenario/Domain/Slice planning.
+- Do not require this profile merely because a Planning Draft has Scenarios.
+- For simple or non-application solutions, do not require separate
+  Scenario DATA, Behavior Item, Domain or Slice artifacts.
 - Do not turn every view, button, rule or workflow step into a peer Scenario.
 - Do not treat Scenario DATA as domain or persistence design.
 - Do not treat Behavior Items as Slices.
