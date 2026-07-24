@@ -614,7 +614,7 @@ Scope: user-visible or scenario-relevant DATA supported by current Planning Item
 - Domain, DTO, API, persistence and component ownership are not decided here.
 
 <a id="data-dw-09-02"></a>
-## DATA-DW-09-02 — Affected Use Review Queue
+## DATA-DW-09-02 — Affected 
 
 | Field | Value |
 |---|---|
