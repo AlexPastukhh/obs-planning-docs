@@ -1,8 +1,8 @@
 # Documentation Workbench Use-Case Registry
 
 Status: active project-local semantic Use-Case Registry
-Doc version: v0.3.0-scenario-workspace-route
-Scope: independently useful Documentation Workbench workflow/capability entries and explicit provisional candidates.
+Doc version: v1.0.0-repository-native-use-cases
+Scope: independently useful current Documentation Workbench workflows/capabilities and explicit deferred candidates.
 
 Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 
@@ -10,84 +10,58 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 
 | Use-Case ID | Semantic name | Status | Direction | Main owner | Related command |
 |---|---|---|---|---|---|
-| `UC-DW-DOC-REF` | Documentation And Reference Object End-To-End Workflow | accepted | `DIR-DOCUMENTATION-WORKBENCH` | `documentation-and-reference-object-end-to-end-workflow.md` | none |
-| `UC-DW-ITEM-FULL-PICTURE` | Planning Item And Full Picture End-To-End Workflow | accepted | `DIR-DOCUMENTATION-WORKBENCH` | `complete-pictures/planning-items-and-full-picture/full-picture.md` | `сверь айтемы` for reconciliation stage only |
+| `UC-DW-DOC-REF` | Repository Documentation Change And Reference Review | accepted current | `DIR-DOCUMENTATION-WORKBENCH` | `repository-documentation-change-and-reference-review-workflow.md` | none |
+| `UC-DW-ITEM-FULL-PICTURE` | Planning Meaning To Repository | accepted current; legacy ID retained | `DIR-DOCUMENTATION-WORKBENCH` | `planning-meaning-to-repository-workflow.md` | `сверь айтемы` for reconciliation stage only |
 | `UC-DW-STRUCTURED-MESSAGE` | Structured User Message Composer | active supporting | `DIR-DOCUMENTATION-WORKBENCH` | `ITEM-121` in `planning-item-register.md` | none |
 
-## 2. `UC-DW-DOC-REF` — Documentation And Reference Object End-To-End Workflow
+## 2. `UC-DW-DOC-REF` — Repository Documentation Change And Reference Review
 
-**Trigger/input:** repository/documentation selection or accepted meaning requiring durable owner/location/reference authoring.
+**Trigger/input:** repository/file/folder/section selected for direct documentation work or accepted planning meaning handed off for materialization.
 
-**Result:** reviewable real Markdown/object/reference state, including standalone or object-linked named Notes and Note views, with dependency review, navigation and diff-ready output, or explicit unresolved/deferred state.
+**Result:** complete changed Markdown, validated stable links, resolved or explicit affected-use review state and a reviewable Git diff, or an unresolved/deferred result.
 
 **Owner route:**
 
 ```text
-full-picture.md
-documentation-and-reference-object-end-to-end-workflow.md
-reference-object-model-and-lifecycle.md when identity/state/home/shape matters
-affected planning-item-register.md items/sources.
+planning-draft.md for current boundaries
+repository-documentation-change-and-reference-review-workflow.md
+planning-item-register.md for affected requirements.
 ```
 
-Already managed application-native Planning Items do not repeat object-creation confirmation.
+The workflow does not require managed Reference Objects, App Memory, Semantic Home or a custom editor.
 
-First-Class Named Notes remain inside this accepted workflow; they do not create a separate peer Use Case or Complete Picture.
+## 3. `UC-DW-ITEM-FULL-PICTURE` — Planning Meaning To Repository
 
-## 3. `UC-DW-ITEM-FULL-PICTURE` — Planning Item And Full Picture End-To-End Workflow
+The stable ID remains for compatibility; the semantic name and current result changed.
 
-**Trigger/input:** free-form/structured source, Planning Items, portable ledger, current item-backed Full Picture or repository owners requiring reconciliation.
+**Trigger/input:** free-form/structured source, Planning Items, current Planning Draft or repository owners requiring reconciliation.
 
-**Result:** reviewed Planning Items, working/documentation state, item-backed Full Picture, proportional concern/deepening results, repository reconciliation and explicit documentation handoff.
+**Result:** reviewed canonical Planning Items, one item-backed Planning Draft, proportional alternatives/deepening, repository semantic reconciliation and a File Update Plan/diff handoff.
 
 **Owner route:**
 
 ```text
-full-picture.md
-complete-pictures/planning-items-and-full-picture/full-picture.md
+planning-draft.md
+planning-meaning-to-repository-workflow.md
 planning-item-register.md
-reusable planning-item-formation-workflow.md
-reusable application-planning-drafting-workflow.md.
+reusable Planning Item formation/drafting owners.
 ```
 
-The existing `сверь айтемы` command activates only reconciliation under its UCM permissions.
+`сверь айтемы` activates only the read-only reconciliation stage under root UCM permissions.
 
 ## 4. `UC-DW-STRUCTURED-MESSAGE` — Structured User Message Composer
 
-**Purpose:** help the user structure long input into addressable topics/subtopics/questions/corrections/examples while preserving literal wording and free-form input.
+**Purpose:** structure long literal input into addressable topics, questions, corrections and examples without rewriting meaning.
 
-**Result:** one literal user message with addressable fragments that may contribute to several Planning Items.
+**Result:** one ordinary user message whose fragments may contribute to several Planning Items.
 
-**Boundary:** does not require every fragment to become an item, rewrite literal meaning, create Source Idea, accept Planning Items automatically or replace unstructured input.
+**Boundary:** does not require every fragment to become an item or depend on a broad Workbench application.
 
-Current canonical item owner:
+Owner: `ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER`.
 
-```text
-ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER
-planning-item-register.md
-```
+## 5. Deferred Candidate — Chat/AI/Work-State Trace
 
-## 4A. Project-Local Detailed Scenario Application
-
-The project applies reusable `UC-AP-SCENARIO` through [`scenarios/README.md`](scenarios/README.md).
-
-Resulting artifacts:
-
-```text
-one catalog;
-one definition file per Scenario Reference Object;
-separate Scenario DATA Reference Objects;
-separate Behavior Item Reference Objects;
-typed `derived from` links to contributing Planning Items;
-review-needed dependency state when a source item changes.
-```
-
-This does not create a new local product Use-Case identity or a root UCM command. It is a detailed-planning application of the reusable scenario use case.
-
-## 5. Provisional Candidate — Chat/AI/Work-State Trace
-
-Status: **provisional thematic candidate, not an accepted Use Case/Complete Picture**
-
-Related items:
+Related items remain deferred:
 
 ```text
 ITEM-11B
@@ -98,21 +72,26 @@ ITEM-115
 ITEM-116
 ```
 
-Before promotion, review one trigger-to-result lifecycle covering source/conversation capture, template-linked response, answer change set, raw annotations, Action Log boundary, navigation and end state.
+Promotion requires one independently traversable trigger-to-result lifecycle and evidence that Git history/current tools are insufficient.
 
-## 6. Supporting Artifacts That Are Not Use Cases
+## 6. Detailed Scenario Boundary
+
+Project-local `scenarios/**` remains only as a preliminary migration source until Batch 3B coverage audit. It is not a current local product Use Case and does not activate reusable `UC-AP-SCENARIO`.
+
+## 7. Supporting Artifacts That Are Not Use Cases
 
 ```text
-Reference Object Model And Lifecycle → supporting model;
-Direction/Use-Case registries → semantic navigation;
-planning-item-register.md → canonical item/source state;
-views/navigation/status projections → supporting capabilities unless independent result is proven.
+planning-draft.md → high-level owner;
+planning-item-register.md → current item/source owner;
+retired-planning-items.md → historical inactive item owner;
+reference-object-model-and-lifecycle.md → deferred alternative;
+registries/templates/views → semantic or supporting artifacts.
 ```
 
-## 7. Activation
+## 8. Activation
 
-Adaptive: use remembered current local context when clearly sufficient; reread this registry and selected complete owner when uncertain.
+Adaptive: use remembered current local context when clearly sufficient.
 
-Full: read direction-registry.md, this complete entry, the complete workflow/model owner and targeted item/source records.
+Full: read this registry, the selected complete workflow, the Planning Draft and targeted item/source records.
 
 Activation grants no repository permission.

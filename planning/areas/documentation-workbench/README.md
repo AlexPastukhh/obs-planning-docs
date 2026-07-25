@@ -1,254 +1,123 @@
 # Documentation Workbench Planning Area
 
-Status: active project-local planning area
-Doc version: v0.10.0-scenario-workspace
-Scope: project-local planning state for the Documentation Workbench application direction. Reusable planning method remains under `planning/documentation/application-planning/`.
+Status: active project-local planning area / Batch 3A repository-native reset
+Doc version: v1.0.0-current-owner-reset
+Scope: current planning for repository-native documentation work and proportional independently useful helpers.
 
-## 1. Purpose
+Reusable planning method remains under [`planning/documentation/application-planning/`](../../documentation/application-planning/README.md).
 
-This area is the canonical repository home for the Documentation Workbench living plan, accepted end-to-end workflows, supporting models and complete source-linked Planning Item register.
-
-```text
-Documentation Workbench planning area
-  → preserves complete Planning Item meanings and provenance;
-  → maintains the Application Root Full Picture;
-  → owns independently traversable end-to-end Complete Pictures;
-  → keeps models, views, terminology and capability slices as supporting artifacts;
-  → keeps reusable methodology outside the product-local area;
-  → does not claim that runtime/code behavior already exists.
-```
-
-## 2. Canonical Files And Responsibilities
-
-| File | Responsibility |
-|---|---|
-| [`README.md`](README.md) | Area entry, ownership map, read order and update discipline. |
-| [`direction-registry.md`](direction-registry.md) | Local product/planning Directions and root relationships. |
-| [`use-case-registry.md`](use-case-registry.md) | Accepted local workflow/capability entries and provisional candidates. |
-| [`full-picture.md`](full-picture.md) | Application Root Full Picture, accepted workflow inventory, shared invariants and provisional slices. |
-| [`documentation-and-reference-object-end-to-end-workflow.md`](documentation-and-reference-object-end-to-end-workflow.md) | Accepted trigger-to-result Documentation And Reference Object workflow. |
-| [`complete-pictures/planning-items-and-full-picture/full-picture.md`](complete-pictures/planning-items-and-full-picture/full-picture.md) | Accepted trigger-to-result Planning Item And Full Picture workflow. |
-| [`reference-object-model-and-lifecycle.md`](reference-object-model-and-lifecycle.md) | Supporting Reference Object identity/state/home/shape model and accepted transformation history. |
-| [`planning-item-register.md`](planning-item-register.md) | Complete active source-linked item bodies, absorbed-item history, source bank, old-item audit and open questions. |
-
-Supporting reusable owners:
+## 1. Current Read Route
 
 ```text
-planning/documentation/application-planning/README.md
-planning/documentation/application-planning/terminology-and-planning-items.md
-planning/documentation/application-planning/application-planning-principles.md
-planning/documentation/application-planning/planning-item-formation-workflow.md
-planning/documentation/application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
-planning/documentation/application-planning/application-planning-drafting-workflow.md
-```
+README.md
+  → planning-draft.md
+  → planning-item-register.md
+  → selected current end-to-end workflow;
 
-## 3. Source-Of-Truth Split
-
-```text
-Planning Item bodies, full source messages, typed source contributions,
-transformation history, audit disposition and open questions:
-  planning-item-register.md
-
-Application identity, workflow inventory and cross-workflow coordination:
-  full-picture.md
-
-Documentation/Reference Object trigger-to-result behavior:
-  documentation-and-reference-object-end-to-end-workflow.md
-
-Planning Item/Full Picture trigger-to-result behavior:
-  complete-pictures/planning-items-and-full-picture/full-picture.md
-
-Reference Object identity, canonical state, home, durability, shape
-and managed-item boundary:
+on demand:
+  retired-planning-items.md
   reference-object-model-and-lifecycle.md
-
-Reusable planning behavior, terminology, principles and templates:
-  planning/documentation/application-planning/
-
-Future runtime/code and implementation architecture:
-  separate implementation owners after explicit planning and review
+  reference-link-experiment.md.
 ```
 
-The Full Picture and workflow owners summarize or organize Planning Items; they do not replace complete canonical item bodies in the register.
+## 2. Current Owners
 
-## 4. Complete Picture Rule
+| Responsibility | Owner |
+|---|---|
+| High-level selected direction | [`planning-draft.md`](planning-draft.md) |
+| Active/reusable-linked/deferred item bodies and source bank | [`planning-item-register.md`](planning-item-register.md) |
+| Finalized inactive item bodies and pre-reset history | [`retired-planning-items.md`](retired-planning-items.md) |
+| Planning source-to-repository lifecycle | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) |
+| Direct documentation change/reference review lifecycle | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) |
+| Local semantic Directions | [`direction-registry.md`](direction-registry.md) |
+| Local independently useful Use Cases | [`use-case-registry.md`](use-case-registry.md) |
+| Link/metadata experiment | [`reference-link-experiment.md`](reference-link-experiment.md) |
 
-A project-local Complete Picture is a coherent workflow that can be followed from trigger to an understandable result without requiring a parallel Complete Picture to supply missing mandatory stages.
+## 3. Selected Current Direction
 
 ```text
-end-to-end workflow
-  → may use supporting models, terminology, views and adapters;
-  → may branch or loop;
-  → may hand off to another independent workflow at an explicit boundary;
-  → may end with explicit unresolved/deferred/Pending Review state;
-  → must not be split into peer pictures only because stages concern different capabilities.
+ordinary Markdown + Git
+  → existing editor / GitHub / reviewed replacement
+  → stable file and section links
+  → optional minimal metadata
+  → narrow independent helper only when justified.
 ```
 
-Current accepted Complete Pictures:
+A custom application shell, editor, managed-object runtime, App Memory and Semantic Home are not current baseline requirements.
+
+## 4. Current Workflows
+
+### Planning Meaning To Repository
+
+Use when source meaning must become reviewed Planning Items, a Planning Draft and an explicit repository update plan.
+
+Owner: [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md).
+
+### Repository Documentation Change And Reference Review
+
+Use when work starts directly from repository Markdown or an accepted planning handoff.
+
+Owner: [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md).
+
+These workflows have independent triggers/results and an explicit handoff. They are not thematic peer fragments.
+
+## 5. Item Ownership
 
 ```text
-Documentation And Reference Object End-To-End Workflow
-  → documentation selection, object/reference authoring,
-    dependency review, navigation and diff-ready result;
+planning-item-register.md:
+  active selected;
+  active reusable-linked;
+  deferred;
+  retired tombstone/index;
 
-Planning Item And Full Picture End-To-End Workflow
-  → source-linked item formation/review,
-    item-backed Full Picture, concern/deepening loops,
-    repository reconciliation and documentation handoff.
+retired-planning-items.md:
+  complete finalized inactive bodies;
+  preserved pre-reset audit/history.
 ```
 
-Their handoff is explicit:
+Deferred does not mean rejected. Old application-heavy capabilities remain deferred where the current decision did not finally supersede them.
+
+## 6. Compatibility Paths
+
+The following old paths remain temporarily and point to current owners:
 
 ```text
-accepted managed Planning Item
-  → identity already exists as a Planning Item Reference Object
-  → Documentation/Reference workflow assigns/materializes durable owner,
-    definition location, optional home and references;
-
-portable reviewed item
-  → may remain portable
-  → or enter proposal/confirmation before managed object creation.
+full-picture.md
+complete-pictures/planning-items-and-full-picture/full-picture.md
+documentation-and-reference-object-end-to-end-workflow.md
 ```
 
-The former `CP-2`, `CP-3`, `CP-4` and `CP-7` labels remain historical mappings. Their meanings belong to the accepted Documentation/Reference workflow plus its supporting model.
+[`reference-object-model-and-lifecycle.md`](reference-object-model-and-lifecycle.md) describes the deferred alternative rather than current architecture.
 
-## 5. Read Order
+## 7. Detailed Scenario Workspace
 
-For Documentation Workbench planning:
+`scenarios/**` remains physically present until Batch 3B.
+
+Current status:
 
 ```text
-1. README.md
-2. direction-registry.md and use-case-registry.md
-3. full-picture.md
-4. affected end-to-end workflow owner
-5. affected supporting model when model details are involved
-6. relevant items in planning-item-register.md
-7. relevant reusable application-planning owners
-8. source messages and old-item audit rows when reconciliation depends on them
+preliminary migration source;
+not a current high-level owner;
+not selected as continuing planning depth;
+must not be deleted before Scenario/DATA/Behavior coverage audit.
 ```
 
-Targeted Documentation/Reference Object read order:
+## 8. Root And Projection Boundary
 
-```text
-full-picture.md#5-documentation-and-reference-object-end-to-end-workflow
-  → documentation-and-reference-object-end-to-end-workflow.md
-  → reference-object-model-and-lifecycle.md when identity/state/home/shape details matter
-  → affected items and sources in planning-item-register.md
-```
+Root README, root registries, UCM terminology, activation/source registers and Tampermonkey projection remain unchanged in Batch 3A. Batch 3B updates them only after the local owners and Scenario migration are reviewed.
 
-Targeted Planning Item/Full Picture read order:
+## 9. Update Discipline
 
-```text
-full-picture.md#6-planning-item-and-full-picture-end-to-end-workflow
-  → complete-pictures/planning-items-and-full-picture/full-picture.md
-  → affected items and full sources in planning-item-register.md
-  → reference-object-model-and-lifecycle.md when managed identity/home/durability matters
-  → documentation-and-reference-object-end-to-end-workflow.md for materialization handoff
-  → planning-item-formation-workflow.md and PLANNING-ITEM-REVIEW-TEMPLATE.md for source-to-item behavior
-  → application-planning-drafting-workflow.md for reconciliation and broader planning.
-```
+- form/reconcile meaning before file changes;
+- use complete replacements and exact base-blob checks;
+- use `git add -N` for new files before diff capture;
+- inspect the complete diff before commit;
+- do not infer commit or push permission.
 
-## 5A. Preliminary Scenario Workspace
+## 10. Current State
 
-Read [`scenarios/README.md`](scenarios/README.md) when clean detailed Scenario work is in scope.
-
-```text
-scenarios/README.md
-  → catalog/navigation;
-
-scenarios/SCN-DW-*.md
-  → one complete Scenario Reference Object per file;
-
-scenarios/data-objects.md
-  → separate Scenario DATA Reference Objects;
-
-scenarios/behavior-items.md
-  → separate Behavior Item Reference Objects.
-```
-
-Every Scenario links to materially contributing Planning Items. A later Planning Item change marks dependent Scenario/DATA/Behavior objects/files review-needed; it does not rewrite them automatically.
-
-## 6. Update Discipline
-
-```text
-new or corrected source meaning
-  → preserve it in the source-linked register
-  → identify the end-to-end workflow or supporting model actually changed
-  → review complete before/after meaning and traceable transformations
-  → apply only explicitly accepted transformations
-  → update workflow/model owners
-  → update the Application Root summary
-  → update root routing/register files
-  → plan literal repository changes separately
-```
-
-Rules:
-
-- Use semantic names first and stable technical IDs for traceability.
-- Do not assume one incoming meaning becomes one new item.
-- Preserve source-to-result history for rename, merge, split, move, supersession and removal.
-- Preserve complete source messages and typed source contributions.
-- Do not impose arbitrary item-length limits.
-- Split by independent meaning, ownership, lifecycle, review, reuse or decisions—not by topic labels or text length.
-- Keep facts, inference, questions, implementation thoughts and accepted decisions distinct.
-- Update the register before summaries that depend on changed item meaning.
-- Do not turn a workflow/model summary into a second independently edited copy of an item body.
-- Do not move an existing workflow path merely to make folder structure symmetrical; path migration requires separate link-impact review.
-
-## 7. File-Creation Boundary
-
-Create a separate workflow, branch, model, detail or prototype file only when it has its own understandable outcome, review, reuse, testing or lifecycle.
-
-Current folder rule:
-
-```text
-new child Complete Picture
-  → may live in complete-pictures/<semantic-name>/full-picture.md;
-
-existing accepted owner
-  → remains at its current path until a separate migration is justified.
-```
-
-Do not create one file per item, capability, question or UI surface.
-
-## 7A. Helper Projection
-
-The reusable Tampermonkey helper projects:
-
-```text
-Direction:
-  Develop And Maintain Documentation Workbench;
-
-Use Cases:
-  Documentation And Reference Object End-To-End Workflow;
-  Planning Item And Full Picture End-To-End Workflow;
-  Structured User Message Composer.
-```
-
-`Reconcile Planning Items` remains an application-planning Use Case linked to the existing `сверь айтемы` command.
-
-Chat/AI/Work-State remains provisional and is not projected as an accepted Use Case.
-
-The helper is projection only. It does not become a local owner and no tracked project-local helper fork is created.
-
-## 8. Current State
-
-```text
-- The active register contains 53 items.
-- ITEM-25B is absorbed into ITEM-23B; ITEM-102 is absorbed into ITEM-91; both remain traceable.
-- Documentation And Reference Object End-To-End Workflow is accepted.
-- Planning Item And Full Picture End-To-End Workflow is accepted.
-- Reference Object Model And Lifecycle is an active supporting model, not a parallel workflow.
-- Managed application-native Planning Items are Reference Objects from creation.
-- First-Class Named Notes are Reference Objects of category `Note`, may be standalone or linked to a selected object, and have dedicated views.
-- Planning Items may expose relation-backed `Implementation Ideas` that reference separate implementation-idea items.
-- Portable Markdown item review remains a supported fallback/interoperability mode.
-- Reusable Planning Item Formation workflow and exact review template are synchronized.
-- Local Direction and Use-Case Registries are active and linked from the root registry.
-- Orientation/Direction/Use-Case/Command helper projection is synchronized without changing local ownership.
-- The Batch 6 planning-owner terminology, ownership, link and projection audit is complete; only stale transition/status text required correction.
-- Chat/AI/Work-State remains a provisional thematic slice pending end-to-end review.
-- A preliminary clean Scenario workspace exists; Domain/Slice implementation planning remains future work.
-- Prototype-Depth Scenario/Domain/Slice methodology is deferred to a separate task.
-- No runtime, application shell, storage architecture or exact Markdown marker syntax is selected.
-```
+- Batch 1 reusable principles: complete.
+- Batch 2 reusable representations: complete.
+- Batch 3A local canonical planning reset: represented by the current owner set.
+- Batch 3B Scenario retirement/root/projection alignment: pending.
+- Runtime and actual micro-tool implementation: not selected.

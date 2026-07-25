@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: active reusable workflow / Planning Item formation delegated
-Doc version: v1.0.0-planning-draft-owner
+Doc version: v1.0.1-profile-inline-boundary
 Scope: repeated user + AI process for Current Reality Capture, item-backed Planning Drafts, End-To-End Workflow integrity, Planning Item reconciliation, questions, risks, alternatives, tests, evidence-driven revision and optional deeper planning.
 
 Canonical concepts and principles:
@@ -679,7 +679,9 @@ narrow scripts or automation;
 workflows sufficiently planned in one Planning Draft.
 ```
 
-Scenario DATA and Behavior Items may remain inline unless separate addressability or reuse is useful.
+Outside the selected specialized profile, Scenario DATA and Behavior meaning may remain inline when that is sufficient.
+
+Inside the selected specialized profile, follow the profile's separate logical Scenario, supported Scenario DATA and Behavior Item Reference Object contract; physical definitions may still share a registry file.
 
 ## 16. Dynamic Revision
 
