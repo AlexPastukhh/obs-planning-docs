@@ -356,9 +356,9 @@ Reconcile Planning Items
 Form Planning Items From Discussion
   → Open Commands / `сформируй айтемы`;
 
-Planning Item And Full Picture End-To-End Workflow
+Planning Meaning To Repository
   → remains a broader Use Case;
-  → `сверь айтемы` covers only reconciliation.
+  → `сверь айтемы` covers only its reconciliation stage.
 ```
 
 ## 9E. Item-Formation Boundary

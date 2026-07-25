@@ -82,13 +82,13 @@ The reusable use case does not promise an application-native managed-object resu
 
 **Purpose:** organize reviewed Planning Items into a readable current planning direction without creating a second item-body owner.
 
-**Result:** an item-backed Planning Draft that may include:
+**Result:** an item-backed Planning Draft that contains:
 
 ```text
 Planning Item Map;
-Key Scenarios;
-other Scenario summaries;
-Full Picture Matrix;
+complete Key Scenarios;
+optional other Scenario summaries;
+one Full Picture Matrix;
 questions, risks and validation links;
 Implementation Idea links;
 alternatives and existing-solution findings;
@@ -109,7 +109,7 @@ current project-local Planning Draft owner.
 
 ```text
 Full Picture Matrix:
-  optional view inside the Planning Draft;
+  required view inside a sufficient Planning Draft;
 
 separate Planning Full Picture artifact:
   not required.

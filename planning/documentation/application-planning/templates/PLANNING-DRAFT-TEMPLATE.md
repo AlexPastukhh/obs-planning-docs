@@ -1,14 +1,14 @@
 # Planning Draft Template
 
 Status: active reusable recommended template
-Doc version: v1.0.0-planning-draft-owner
+Doc version: v1.1.1-branch-workflow-language
 Purpose: one item-backed high-level plan for a problem, goal, workflow, algorithm, solution direction or no-change decision.
 
-Use only sections that improve the current work. This is not a mandatory schema.
+Use only optional sections that improve the current work. This is not a universal rigid schema, but every sufficient Planning Draft must contain complete Key Scenario coverage and one Full Picture Matrix.
 
 A Planning Draft groups, orders, summarizes and links Planning Items. Complete item meanings remain at their canonical item owners.
 
-A separate `Planning Full Picture` artifact is not required. A Full Picture Matrix may be an optional view inside this file.
+A separate `Planning Full Picture` artifact is not required. One Full Picture Matrix is required inside this file.
 
 ## 1. Draft Identity
 
@@ -71,29 +71,21 @@ Rules:
 - use grouping only when it improves the reading route.
 ```
 
-## 7. Scenario Coverage — Optional
+## 7. Key Scenario Coverage — Required
 
-Use Scenario depth proportionally.
+Identify Key Scenarios through explicit review. Do not promote existing summary rows or planning commands automatically.
 
-### Key Scenarios
-
-| Scenario | Why key | Actor/context | Goal | Observable result | Planning Items | Depth/status |
+| Scenario | Why key | Actor/context | Goal | Observable result | Planning Items | Complete owner |
 |---|---|---|---|---|---|---|
-| <scenario> | core value / risk / differentiation / viability / other | <context> | <goal> | <result> | <links> | summary / complete inline / linked detail |
+| <scenario> | core value / risk / differentiation / viability / other | <context> | <goal> | <result> | <links> | complete inline / linked complete owner |
 
-`Key Scenario` is a role of Scenario, not a separate entity type.
+`Key Scenario` is a role of Scenario, not a separate entity type. A Key Scenario cannot remain only a summary.
 
-### Other Scenarios
+Repeat this complete block for every Key Scenario:
 
-| Scenario | Actor/context | Goal | Observable result | Planning Items | Current depth |
-|---|---|---|---|---|---|
-| <scenario> | <context> | <goal> | <result> | <links> | summary / complete inline / linked detail |
+### <Key Scenario name>
 
-A non-key Scenario may be complete inside this Planning Draft when a separate artifact would add more coordination than value.
-
-### Detailed Inline Scenario — Optional
-
-#### <Scenario name>
+**Why key:** <reason>
 
 **Actor/context:** <context>
 
@@ -109,15 +101,29 @@ A non-key Scenario may be complete inside this Planning Draft when a separate ar
 
 **Branches / alternatives / failures:** <supported content>
 
-**Invariants / acceptance / outcomes:** <supported content>
+**Invariants / postconditions / acceptance / outcomes:** <supported content>
+
+**Important Scenario DATA:** <only when behavior depends on it>
 
 **Questions / risks / evidence needs:** <supported content>
 
 **Planning Items:** <links>
 
-## 8. Full Picture Matrix — Optional
+**Implementation Ideas:** <links only; do not copy accepted behavior into an idea>
 
-Use this compact view when it improves cross-linking between behavior, implementation thinking and validation.
+When the direction has no behavioral Scenario, state that explicitly and explain why.
+
+### Other Scenarios — Optional
+
+| Scenario | Actor/context | Goal | Observable result | Planning Items | Current depth |
+|---|---|---|---|---|---|
+| <scenario> | <context> | <goal> | <result> | <links> | summary / complete inline / linked detail |
+
+A non-key Scenario may be complete inside this Planning Draft when a separate artifact would add more coordination than value.
+
+## 8. Full Picture Matrix — Required
+
+Use this compact view to cross-link behavior, implementation thinking and validation.
 
 | Flow point | Scenario view | Implementation view | Questions / risks / validation | Status / follow-up |
 |---|---|---|---|---|
@@ -285,7 +291,7 @@ Create a separate branch only when an alternative needs independent planning or 
 
 <Comparison without hiding uncertainty.>
 
-For a separate Branch Planning Draft, record its parent decision, inherited source/version and stop/reject condition inside that branch. Do not create a special child Complete Picture type.
+For a separate Branch Planning Draft, record its parent decision, inherited source/version and stop/reject condition inside that branch. Do not create a special child workflow type solely because the branch has its own Planning Draft.
 
 ## 17. Decisions
 
@@ -299,7 +305,7 @@ For a separate Branch Planning Draft, record its parent decision, inherited sour
 |---|---|---|---|---|
 | Planning Items | yes | <owners> | <reason> | <signal> |
 | Scenario depth | summary / inline / separate / not used | <form> | <reason> | <signal> |
-| Full Picture Matrix | yes / no | this draft | <reason> | <signal> |
+| Full Picture Matrix | yes | this draft | required compact cross-view link structure | <signal to revise granularity> |
 | Domain | yes / no | <owner or none> | <reason> | <signal> |
 | Slice | yes / no | <owner or none> | <reason> | <signal> |
 | Prototype/research detail | embedded / separate / none | <owner> | <reason> | <signal> |

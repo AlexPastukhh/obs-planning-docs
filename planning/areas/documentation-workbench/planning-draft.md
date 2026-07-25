@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Draft
 
-Status: active current project-local Planning Draft
-Doc version: v1.0.0-repository-native-direction
+Status: active current project-local Planning Draft / Batch 3B local Scenario migration
+Doc version: v1.2.2-route-state-consistency
 Purpose: organize the reviewed Documentation Workbench Planning Items around the selected repository-native direction without creating a second item-body owner.
 
 Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
@@ -10,59 +10,97 @@ Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
 
 | Field | Value |
 |---|---|
-| Planning direction | Repository-native documentation planning and small independently useful helpers |
-| Status | selected current direction / implementation not selected |
+| Planning direction | Repository-native documentation links, affected-use review, AI transfer and linked Notes |
+| Status | selected current behavior / implementation candidates not selected |
 | Source register | [`planning-item-register.md`](planning-item-register.md) |
 | Historical inactive items | [`retired-planning-items.md`](retired-planning-items.md) |
 | Previous route | [`full-picture.md`](full-picture.md) compatibility pointer |
+| Selected planning depth | Planning Items + one Planning Draft with complete Key Scenarios and one Full Picture Matrix |
 
 ## 2. Desired Result
 
-Use ordinary repository Markdown, stable links, existing editors and Git review as the normal workspace. Add a small helper only where current tools do not provide an independently useful behavior.
+Use ordinary repository Markdown, stable links, existing editors and Git review as the normal documentation workspace.
 
-The result remains understandable and editable without the helper.
+The selected solution should support:
+
+```text
+stable links to files and anchored fragments;
+explicit Review Affected Uses behavior;
+bounded non-mutating AI transfer copies;
+durable linked Notes;
+small independent helpers only where their value is proven.
+```
+
+Repository Markdown remains understandable and editable without a helper.
 
 ## 3. Acceptance Criteria
 
 | ID | Criterion | Status | Related items |
 |---|---|---|---|
-| AC-01 | Complete documentation meaning remains in repository Markdown. | accepted current | `ITEM-23B`, `ITEM-28B` |
+| AC-01 | Complete durable documentation and Note meaning remains in repository Markdown. | accepted current | `ITEM-23B`, `ITEM-28B`, `ITEM-124` |
 | AC-02 | A user can edit and review changes through an ordinary Git working-tree/diff workflow. | accepted current | `ITEM-34B` |
-| AC-03 | File and section navigation uses portable Markdown links, including parent/sibling repository paths. | accepted current | `ITEM-114` |
-| AC-04 | Dependency review is explicit and does not turn every navigation link into an obligation. | candidate / needs prototype | `ITEM-89`, `ITEM-105` |
-| AC-05 | AI transfer expansion does not mutate saved Markdown and reports unresolved targets. | candidate / needs prototype | `ITEM-107` |
-| AC-06 | No custom editor, object runtime, App Memory or Semantic Home is required by the baseline. | accepted current | item reconciliation |
-| AC-07 | Retired and deferred meanings remain traceable. | accepted current | current and retired registers |
+| AC-03 | Links can address complete repository files and stable anchored sections/fragments across folder nesting. | accepted current behavior / item clarification pending | `ITEM-114` |
+| AC-04 | A stable anchored link survives visible target-text changes and movement inside the same file when path/anchor identity remains valid. | confirmed user requirement / item update pending review | `ITEM-114` |
+| AC-05 | Dependency review is explicit and does not turn every navigation link into an obligation. | candidate / needs prototype | `ITEM-89`, `ITEM-105` |
+| AC-06 | AI transfer expansion does not mutate saved Markdown and reports unresolved targets/cycles. | candidate / needs prototype | `ITEM-107` |
+| AC-07 | A user can create a standalone Note and link it to files, stable fragments and other Notes. | confirmed user requirement / item update pending review | `ITEM-124` |
+| AC-08 | A remote Note save is not reported successful until the intended content is verified by reading it back. | implementation candidate / supported by supplied-script evidence | `ITEM-124`, pending Notes-widget Implementation Idea |
+| AC-09 | No custom editor, generic object runtime, App Memory or Semantic Home is required by the baseline. | accepted current | item reconciliation |
+| AC-10 | Retired and deferred meanings remain traceable. | accepted current | current and retired registers |
 
 ## 4. Boundaries And Non-Goals
 
 ### Included
 
 - Planning Item reconciliation and one Planning Draft;
+- complete inline Key Scenarios;
+- one Full Picture Matrix linking behavior, implementation and validation;
 - ordinary Markdown/Git/GitHub/local-editor workflow;
-- stable file/heading links;
-- minimal optional metadata;
-- proportional small-tool ideas;
+- stable file/anchored-fragment/Note links;
+- optional explicit review-on-change and include meaning;
+- durable linked Notes;
+- proportional small-tool and prototype ideas;
 - explicit diff review and permission boundaries.
 
 ### Excluded From Current Baseline
 
 - monolithic Documentation Workbench application shell;
 - custom Markdown editor;
-- managed Reference Object runtime;
+- mandatory generic managed Reference Object runtime;
 - App Memory as a canonical owner;
 - Semantic Home and definition-location lifecycle;
 - persisted full-text/bare managed-reference modes;
 - automatic downstream semantic rewrites;
-- mandatory detailed Scenario/Domain/Slice artifacts.
+- automatic link repair;
+- arbitrary character-range targets without stable identity;
+- mandatory detailed project-local Scenario/DATA/Behavior artifacts;
+- accepted Notes storage or credential architecture.
 
 These exclusions do not erase deferred historical ideas.
 
 ## 5. Current Reality
 
-The repository already contains reusable planning methodology, a source-linked project register, GitHub-readable Markdown, a reference-link experiment and ordinary Git review/package workflows.
+The repository already provides reusable planning methodology, source-linked Planning Items, GitHub-readable Markdown and ordinary Git review/package workflows.
 
-The project-local area still contains old Full Picture, managed-object and detailed Scenario owners. Batch 3A replaces active local planning ownership. Batch 3B will audit and retire the detailed Scenario workspace and then align root/projection routes.
+Current checked implementation evidence from the supplied ChatGPT Chats History userscript includes:
+
+```text
+Tampermonkey Shadow DOM panel;
+IndexedDB local-first records;
+manual records with role=note;
+GitHub owner/repository/branch/path settings;
+user-supplied token;
+GitHub Contents API create/read/update behavior;
+Markdown message anchors and linked annotations;
+remote read-back verification;
+SHA-aware retry/conflict handling.
+```
+
+That script does not yet prove a general Notes workspace, GitHub document picker, stable repository-fragment selection, Note-to-Note linking, remote Notes indexing or an accepted security boundary.
+
+The former detailed Scenario workspace is no longer selected. Its useful current meaning is represented below and by current Planning Items/workflow owners. The complete project-local `scenarios/**` workspace is removed; Git history preserves its former detail.
+
+The former reference-link experiment is removed without a replacement owner. Standard Markdown navigation remains checked current capability; dependency invalidation and AI expansion still require prototypes.
 
 ## 6. Planning Item Map
 
@@ -73,105 +111,463 @@ The project-local area still contains old Full Picture, managed-object and detai
 | Planning lifecycle | `ITEM-98`, `ITEM-99` | planning-to-repository and Implementation Idea boundary |
 | Early delivery | `ITEM-100` | select one small useful tool before broad architecture |
 | AI transfer | `ITEM-107` | non-mutating bounded expansion |
-| Independent capabilities | `ITEM-121`, `ITEM-123`, `ITEM-124` | composer, project-readable config and linked notes |
+| Linked Notes | `ITEM-124`; proposed Notes-widget Implementation Idea pending canonical item review | durable Notes behavior and implementation candidate |
+| Independent supporting capabilities | `ITEM-121`, `ITEM-123` | composer and project-readable non-secret configuration |
 | Reusable planning support | `ITEM-94`, `ITEM-110`, `ITEM-41`, `ITEM-112`, `ITEM-113`, `ITEM-119`, `ITEM-120`, `ITEM-122` | reusable methodology and traceability |
 | Deferred alternatives | see current register | preserved but not selected |
 | Retired meanings | [`retired-planning-items.md`](retired-planning-items.md) | historical trace only |
 
-## 7. Scenario Coverage
+The latest proposed `ITEM-114`, `ITEM-124` and `ITEM-125` transformations are not silently written into the canonical register by this package. Explicit Planning Item review remains required.
 
-Detailed Scenario files are not selected as a continuing planning layer. The following high-level Scenarios preserve the useful trigger-to-result coverage needed for current planning.
+## 7. Key Scenarios
 
-| Scenario | Actor/context | Goal | Observable result | Related items |
+The four Scenarios below are current Key Scenarios because they own core value, differentiation or material implementation/validation risk. They are fully described inline so separate project-local Scenario files are unnecessary.
+
+### 7.1 Create And Navigate Stable File/Fragment Links
+
+**Why key:** stable repository navigation is the foundation for affected-use review, AI transfer and Note links.
+
+**Actor/context:** a user or contributor works with Markdown files located at different paths and nesting depths in the same Git repository.
+
+**Goal:** create a portable link to a complete file or stable anchored fragment and open the intended target later after normal document edits.
+
+**Observable result:** the link opens the intended file/fragment, or shows an explicit broken/unresolved result.
+
+**Important Scenario DATA:**
+
+- source repository path;
+- target repository file path or Note identity;
+- explicit anchor identity when a fragment/section is targeted;
+- relation meaning kept separately from target identity;
+- resolved, broken or unresolved target state.
+
+**Entry / preconditions:**
+
+- source and target are inside the selected repository, or the external target has a portable URL;
+- a fragment target has a stable explicit anchor;
+- the current source file path is known.
+
+**Main flow:**
+
+1. The user selects a target: complete Markdown file, stable anchored section/fragment or repository Note.
+2. The user creates an ordinary Markdown link from the current source.
+3. The link path is resolved relative to the source file and may traverse parent, sibling or deeper folders.
+4. The user opens the link.
+5. The target resolves to the intended file/anchor identity.
+6. Later, visible content inside or around the target changes.
+7. The target may move to another position inside the same file while retaining its anchor.
+8. The original link continues to resolve when file path and anchor identity remain valid.
+
+**Branches / alternatives / failures:**
+
+- complete-file link has no fragment component;
+- source and target are in the same folder;
+- target is in a parent, sibling or nested folder;
+- visible heading text changes but an explicit anchor stays unchanged;
+- file path changes: link must be updated or becomes unresolved;
+- anchor is renamed/removed: link must be updated or remains visibly broken;
+- arbitrary text has no stable anchor: it is not treated as a durable target;
+- a normal link remains navigation-only unless explicit adjacent relation meaning exists.
+
+**Invariants / acceptance / outcomes:**
+
+- link identity is separate from relation meaning;
+- content changes do not break an unchanged explicit anchor;
+- unresolved targets are not silently rebound to similar text;
+- repository Markdown remains useful without a helper;
+- machine-local absolute paths are not portable repository targets.
+
+**Questions / risks / evidence needs:**
+
+- exact stable-anchor convention and validation;
+- rename/move assistance without silent repair;
+- cross-platform relative-path handling;
+- whether Note identities use file paths, explicit anchors or both.
+
+**Planning Items:** `ITEM-114`, `ITEM-105`, `ITEM-23B`, `ITEM-124`.
+
+**Implementation Ideas:** standard Markdown path/anchor handling plus an optional link/anchor validator or creation helper; association only, no helper architecture accepted.
+
+### 7.2 Review Affected Uses
+
+**Why key:** the primary missing behavior is knowing which explicitly dependent uses require human review after a target changes.
+
+**Actor/context:** a contributor changes a file, stable section/fragment or Note that has one or more explicitly marked review-on-change uses.
+
+**Goal:** discover every affected use and give it a clear human disposition.
+
+**Observable result:** every discovered use is confirmed current, updated, removed/replaced or explicitly unresolved.
+
+**Important Scenario DATA:**
+
+- changed target identity, file path and optional anchor;
+- explicit review-on-change relation;
+- affected use-site path and optional anchor;
+- target-change and use-context evidence shown for review;
+- review disposition: confirm, update, remove/replace or unresolved.
+
+**Entry / preconditions:**
+
+- the changed target has stable identity;
+- review obligations are expressed separately from ordinary navigation links;
+- the changed target and candidate use sites are readable.
+
+**Main flow:**
+
+1. The target changes.
+2. A helper or review process identifies uses carrying explicit review-on-change meaning.
+3. For each use, the user sees target-change context and dependent-use context.
+4. The user reviews whether the use is still accurate.
+5. The user confirms it, updates it, removes/replaces the relation or leaves it unresolved.
+6. The review result remains visible until resolved.
+
+**Branches / alternatives / failures:**
+
+- ordinary navigation-only link: no review obligation;
+- ambiguous/malformed metadata: do not infer dependency;
+- missing target/use: show unresolved record;
+- one changed target affects several files/Notes;
+- one use references several changed targets;
+- no helper exists: manual review remains possible, but the missing automation is still observable.
+
+**Invariants / acceptance / outcomes:**
+
+- no automatic semantic rewrite;
+- no false obligations for plain links;
+- affected source and use locations are visible;
+- each explicit obligation receives a disposition;
+- dependency-only bookkeeping files may be retired only after equivalent discovery is proven.
+
+**Questions / risks / evidence needs:**
+
+- exact adjacent metadata syntax;
+- changed-target detection and Git diff input;
+- false-positive/false-negative behavior;
+- status persistence without a broad runtime;
+- minimum Reference Impact Checker prototype.
+
+**Planning Items:** `ITEM-89`, `ITEM-105`, `ITEM-114`, `ITEM-100`.
+
+**Implementation Ideas:** Reference Impact Checker; relation-backed prototype association only, not accepted implementation.
+
+### 7.3 Produce AI Transfer Copy
+
+**Why key:** AI work sometimes needs linked context expanded without mutating canonical repository Markdown.
+
+**Actor/context:** a user selects a Markdown file, stable section/fragment or Note for transfer to an AI conversation.
+
+**Goal:** create a separate bounded copy containing only explicitly includable linked content.
+
+**Observable result:** one temporary expanded copy with source identities, boundaries and visible unresolved/cycle results; repository Markdown is unchanged.
+
+**Important Scenario DATA:**
+
+- selected source file, anchored fragment or Note identity;
+- explicit include-relation set;
+- expansion depth, size and repeated-target bounds;
+- source path/anchor boundaries in the transfer copy;
+- unresolved-target, cycle and bounded-stop results.
+
+**Entry / preconditions:**
+
+- selected source exists;
+- include relations are explicit and separate from ordinary navigation/review meaning;
+- expansion limits are defined.
+
+**Main flow:**
+
+1. The user selects a file/fragment/Note.
+2. The operation reads its current Markdown.
+3. It resolves only links carrying explicit include meaning.
+4. It inserts selected linked content into a separate transfer representation.
+5. It records source path/anchor boundaries.
+6. It stops at configured depth/size limits.
+7. It reports unresolved targets and cycles.
+8. It returns the temporary copy without modifying any source file.
+
+**Branches / alternatives / failures:**
+
+- no include relations: return selected source unchanged as the transfer copy;
+- unresolved include: preserve a visible unresolved marker;
+- recursive cycle: stop and report cycle;
+- repeated target: apply deduplication/expansion policy explicitly;
+- oversized expansion: stop or omit according to configured bound;
+- navigation-only/review-only relation: do not expand automatically.
+
+**Invariants / acceptance / outcomes:**
+
+- saved Markdown is never mutated;
+- only explicit include relations expand;
+- source identity remains visible;
+- recursion is bounded;
+- incomplete expansion is explicit rather than silently truncated.
+
+**Questions / risks / evidence needs:**
+
+- exact include metadata syntax;
+- section extraction boundaries;
+- depth/size/cycle policy;
+- output format for AI transfer;
+- minimum AI Transfer Expander prototype.
+
+**Planning Items:** `ITEM-107`, `ITEM-105`, `ITEM-114`, `ITEM-100`.
+
+**Implementation Ideas:** AI Transfer Expander; relation-backed prototype association only, not accepted implementation.
+
+### 7.4 Create, Link And Manage Repository Notes
+
+**Why key:** Notes are an independently useful workflow and a concrete candidate for the first user-facing helper.
+
+**Actor/context:** a user opens a Notes widget/workspace while working with ChatGPT or repository documentation.
+
+**Goal:** create or edit a Note, link it to repository documentation or other Notes and preserve it durably in GitHub/repository Markdown.
+
+**Observable result:** the Note is available in the Notes list/search, has working links and is verified in repository storage, or its local/unresolved/failure state is explicit.
+
+**Important Scenario DATA:**
+
+- stable Note identity;
+- optional title and literal Markdown body;
+- links to repository files, explicit anchors, Notes and optional chat messages;
+- local draft, changed-after-save and durable-remote state;
+- repository owner/repository/branch/path target;
+- remote base/SHA or equivalent conflict token;
+- remote read-back verification state and unresolved-link state.
+
+**Entry / preconditions:**
+
+- Notes work surface is available;
+- local working state can be stored;
+- repository configuration is known for remote operations;
+- credentials are available only when required for remote access.
+
+**Main flow:**
+
+1. The user creates a standalone Note or opens an existing Note.
+2. The user optionally sets a title and edits the body.
+3. The user adds zero or more links to complete files, stable anchored fragments or other Notes.
+4. The widget resolves targets where possible and shows unresolved targets.
+5. The widget saves recoverable local working state.
+6. The user explicitly requests a repository save/update.
+7. The widget reads the current remote/base state.
+8. It creates or updates portable Markdown through GitHub/repository integration.
+9. It reads the remote target back and verifies the expected content.
+10. It refreshes the Note list/search/index.
+11. The user opens the Note or one of its linked targets.
+
+**Branches / alternatives / failures:**
+
+- standalone Note with no links;
+- local-only unsaved draft;
+- missing file/anchor/Note target;
+- Note-to-Note cycle;
+- missing/invalid token;
+- insufficient GitHub permission;
+- remote SHA conflict;
+- network result unknown after a write;
+- local content changed after save;
+- link is navigation-only or separately marked review-on-change.
+
+**Invariants / acceptance / outcomes:**
+
+- Note body remains ordinary Markdown;
+- token/secret is never written into Note or repository content;
+- local working state is not confused with durable repository truth;
+- remote save is verified by read-back;
+- one Note identity is not duplicated merely because several views display it;
+- unresolved links remain visible;
+- a helper does not silently become canonical owner.
+
+**Questions / risks / evidence needs:**
+
+- separate Notes userscript versus extension of Chat History;
+- file-per-Note/shared-file/hybrid persistence;
+- lightweight Note identity versus generic object projection;
+- local-first/GitHub-required boundary;
+- index derivation and stale-cache behavior;
+- fine-grained token permissions/storage;
+- rename/delete and cycle behavior;
+- minimum Notes prototype described in the Notes workflow.
+
+**Planning Items:** `ITEM-124`, `ITEM-114`, `ITEM-23B`, `ITEM-99`, `ITEM-100`, `ITEM-123`; proposed Notes-widget Implementation Idea pending explicit item review.
+
+**Implementation Ideas:** proposed Tampermonkey Linked Notes And GitHub Widget, with the supplied Chat History script as partial evidence; association only, with userscript, storage and credential design still open.
+
+## 8. Other Scenarios — Optional Summaries
+
+| Scenario | Actor/context | Goal | Observable result | Related items | Depth |
+|---|---|---|---|---|---|
+| Structure a complex source message | user preparing long input | preserve literal meaning while making fragments addressable | one usable ordinary message | `ITEM-121`, `ITEM-122` | supporting summary |
+| Change a helper convention | maintainer changes a non-secret tool value | keep configuration controlled and readable | validated project-readable configuration | `ITEM-123` | supporting summary |
+
+Planning commands, item reconciliation and repository package mechanics are development infrastructure. They are not product Key Scenarios of the planned documentation/link/Notes solution.
+
+## 9. Full Picture Matrix
+
+This table is the required current cross-view structure inside this Planning Draft. It is a view, not a separate canonical artifact. Complete item/idea/question bodies remain at their owners.
+
+| Flow point / Scenario | Scenario meaning | Implementation meaning | Questions / risks / tests / evidence | Status / next action |
 |---|---|---|---|---|
-| Structure complex source | user preparing a long message | preserve literal meaning while making fragments addressable | one usable structured message | `ITEM-121`, `ITEM-122` |
-| Form and reconcile planning meaning | user/AI with source and repository context | obtain accepted canonical Planning Items and a current plan | reviewed items and updated Planning Draft | `ITEM-94`, `ITEM-98`, reusable-linked items |
-| Edit repository documentation | contributor using local editor, replacement package or GitHub | change ordinary Markdown safely | complete files and reviewable Git diff | `ITEM-28B`, `ITEM-23B`, `ITEM-34B` |
-| Navigate related meaning | reader in any repository folder | open a stable file or section target | target opens through a portable relative link | `ITEM-114` |
-| Review affected uses | contributor changes an explicitly depended-on target | find and resolve review obligations | confirmed, updated, removed/replaced or unresolved uses | `ITEM-89`, `ITEM-105` |
-| Produce AI transfer copy | user selects a file or section | provide explicitly includable linked context to AI | bounded temporary expanded copy | `ITEM-107` |
-| Work with a note | user records standalone or target-related information | keep durable linked note content | discoverable Markdown note and links | `ITEM-124` |
-| Change a helper convention | maintainer changes a non-hardcoded tool value | keep configuration controlled and readable | validated project-readable configuration | `ITEM-123` |
+| Select a stable target | file, explicit anchored fragment or Note | standard Markdown path + explicit anchor | anchor convention; path portability | current baseline; define prototype fixtures |
+| Create link across folder nesting | same/parent/sibling/deeper path resolves | existing editor or optional link helper | Windows/URL encoding; moved file | test representative repository layout |
+| Change target content/location | link survives when path/anchor identity survives | anchor validator idea | rename/delete behavior | needs link-survival tests |
+| Review Affected Uses | explicit obligations discovered and dispositioned | Reference Impact Checker Implementation Idea | marker syntax; Git diff input; false positives/negatives | Working / Needs Prototype |
+| Produce AI Transfer Copy | explicit includes expand into separate bounded copy | AI Transfer Expander Implementation Idea | recursion, cycles, source boundaries, size | Working / Needs Prototype |
+| Create/edit Note | standalone/titled/untitled durable Markdown Note | Notes widget candidate; local IndexedDB working state | minimum Note fields; recovery | behavior selected; implementation review pending |
+| Link Note to file/fragment | link resolves to GitHub/repository documentation | repository browser/path+anchor picker | private repo access; anchor identity | prototype required |
+| Link Note to Note | stable Note target opens | Note identity/index candidate | cycles, rename/delete, storage layout | prototype required |
+| Save Note remotely | explicit write followed by read-back verification | GitHub Contents API + SHA-aware update | token scope/storage; conflicts; unknown network result | partially supported by supplied-script evidence |
+| Browse Notes | list/search/index reaches concrete Notes | local derived index or GitHub-derived index | stale cache; one-file/shared-file tradeoff | unresolved implementation choice |
+| Repository diff review | durable Markdown changes remain reviewable | normal Git working tree/package flow | exact base and permission boundary | existing accepted workflow |
 
-Batch 3B must compare every detailed Scenario/DATA/Behavior meaning against this table and the resulting item bodies before deletion.
+## 10. Existing Solutions And Alternatives
 
-## 8. Full Picture Matrix — Optional Current View
-
-| Flow point | User/solution view | Implementation view | Questions / risks |
-|---|---|---|---|
-| Repository workspace | ordinary Markdown and Git | existing editor/GitHub/local Git | portability and GitHub availability |
-| Navigation | file/heading links | standard relative paths and explicit anchors | anchor convention |
-| Impact review | explicit review obligation | Reference Impact Checker idea | syntax and false positives |
-| AI transfer | temporary expanded copy | Transfer Expander idea | recursion, unresolved targets |
-| Notes | standalone or linked Markdown | optional helper/index | whether search alone is sufficient |
-| Planning | items → Planning Draft → file plan/diff | existing reusable routes | root/projection migration |
-
-This matrix is a view, not a separate canonical artifact.
-
-## 9. Alternatives
-
-| Option | Current disposition | Reason |
+| Option | Current disposition | Reason / evidence need |
 |---|---|---|
-| Existing editor + Markdown/Git only | baseline | lowest new maintenance cost |
-| Existing editor + small local scripts/CLI | preferred candidate | adds missing behavior proportionally |
-| GitHub Action or hosted integration | later alternative | depends on remote availability and security/latency needs |
-| Browser micro-app | open Implementation Idea | useful only for a clear independent workflow |
-| Monolithic custom Workbench | deferred alternative | high coordination and maintenance cost before missing behaviors are proven |
-| No new tool | valid per capability | use when existing links/search/review are sufficient |
+| Existing editor + Markdown/Git only | baseline | lowest maintenance; sufficient where links/search are enough |
+| Existing editor + small local scripts/CLI | preferred candidate for impact/transfer | adds missing behavior proportionally |
+| Separate Tampermonkey Notes userscript | current Notes prototype candidate | narrow independent workflow; avoids coupling to command palette |
+| Extend supplied Chat History userscript | open alternative | reuses proven local/GitHub patterns but risks product coupling |
+| Shared small browser/GitHub library + separate widgets | open alternative | reuse without one monolithic UI; requires module strategy |
+| GitHub Action or hosted integration | later alternative | remote availability, permissions, latency and security costs |
+| Generic Reference Object runtime/category projection | deferred alternative | broader than current proved need |
+| Monolithic custom Workbench | deferred alternative | high coordination and maintenance cost before helpers are proven |
+| No new tool for a capability | valid | use whenever existing Markdown/search/review is sufficient |
 
-## 10. Implementation Ideas
+## 11. Implementation Ideas And Evidence
 
-| Idea | Target | Status | Minimum prototype |
+| Idea | Target | Status | Minimum prototype/evidence |
 |---|---|---|---|
-| Reference Impact Checker | `ITEM-89` | Working / Needs Prototype | scan explicit review metadata for changed targets and list affected use sites |
-| AI Transfer Expander | `ITEM-107` | Working / Needs Prototype | expand selected include relations without changing saved Markdown |
+| Reference Impact Checker | `ITEM-89` | Working / Needs Prototype | scan explicit review relations for changed stable targets and list affected uses without false navigation obligations |
+| AI Transfer Expander | `ITEM-107` | Working / Needs Prototype | expand explicit includes into a bounded non-mutating sourced copy |
 | Structured Message Composer | `ITEM-121` | independently useful candidate | preserve literal text and addressable structure |
-| Notes helper/index | `ITEM-124` | deferred | compare with ordinary Markdown search and links |
+| Tampermonkey Linked Notes And GitHub Widget | `ITEM-124`; canonical item identity pending review | proposed Working / Needs Prototype | create/open/edit linked Notes; verified GitHub persistence; file/anchor/Note navigation |
 
-## 11. Questions, Risks And Decisions
+### Supplied userscript evidence
 
-### Questions
+The supplied ChatGPT Chats History userscript is an example and evidence source, not an owner. It supports feasibility of:
 
-1. Exact metadata syntax for review and include relations.
-2. Stable anchor convention and validation.
-3. First micro-tool selection.
-4. Local-only versus GitHub-assisted execution boundary.
-5. Whether linked Notes need a dedicated helper.
+- Shadow DOM widget UI;
+- IndexedDB local records and review states;
+- manual Note-like records;
+- configurable GitHub target;
+- GitHub Contents API writes with a token;
+- exact Markdown anchors and links;
+- remote read-back verification;
+- retry/conflict-aware behavior.
+
+It does not accept the choice to extend that script or prove the full Notes scenario.
+
+## 12. Questions, Risks And Decisions
+
+### Prioritized questions
+
+| Priority | Question | Conservative fallback |
+|---:|---|---|
+| 1 | Does the Notes widget update/rename deferred `ITEM-125`, or receive a new Implementation Idea ID? | leave canonical register unchanged; keep the idea in this Draft pending explicit item review |
+| 2 | Separate Notes userscript or Chat History extension? | separate Notes userscript using the existing code only as reference evidence |
+| 3 | How are Notes stored? | compare file-per-Note and shared-file layouts in prototype; do not accept either yet |
+| 4 | What is the stable Note/fragment identity? | repository path + explicit anchor; no arbitrary character ranges |
+| 5 | How is the GitHub token handled? | local-only fine-grained least-privilege credential; never repository content |
+| 6 | Is GitHub required for Note use? | local-first working state; GitHub required only for durable remote save |
+| 7 | Which helper is implemented first? | choose only after minimum prototypes/evidence; no broad platform |
 
 ### Risks
 
 - hidden metadata may become hard to maintain;
 - anchors may be renamed without validation;
-- a small tool may expand into a new platform;
+- a small helper may expand into a new platform;
 - GitHub-specific behavior may reduce local portability;
-- retiring Scenario details before coverage audit may lose meaning.
+- token persistence may create security exposure;
+- local/remote state may be confused;
+- Notes storage layout may create avoidable write conflicts;
+- generic Reference Object logic may reintroduce deferred architecture prematurely;
+- canonical Planning Item transformations may temporarily lag the confirmed Scenario clarifications until explicit item review completes.
 
 ### Decisions
 
 - Planning Draft is the sole active high-level owner.
-- Detailed SDS profile is not selected for this solution now.
-- Existing app-heavy architecture is deferred, not silently erased.
-- No implementation is accepted by this Draft alone.
+- The four core Scenarios are complete inline Key Scenarios.
+- One Full Picture Matrix is the selected cross-view structure.
+- Former project-local detailed Scenario/DATA/Behavior files are not selected.
+- Existing app-heavy architecture remains deferred, not silently erased.
+- Repository Markdown remains durable truth.
+- Notes are an independently useful behavior/workflow.
+- No specific Notes implementation, storage layout or credential design is accepted by this Draft alone.
+- Canonical Planning Item transformations require explicit review and are not applied by this package.
 
-## 12. Selected Planning Depth
+## 13. Selected Planning Depth
 
-| Layer | Selection | Reason |
-|---|---|---|
-| Planning Items | yes | complete source-linked canonical meanings |
-| Planning Draft | yes | one high-level coordination owner |
-| Scenario summaries | inline | enough for current direction and deletion audit |
-| Detailed Scenario/DATA/Behavior | not selected | additional layer does not currently justify its coordination cost |
-| Domain | no | no separate domain model needed yet |
-| Slice | no | implementation not selected |
-| Prototype | only for chosen helper | evidence needed before architecture |
+| Layer | Selection | Current form | Reason |
+|---|---|---|---|
+| Planning Items | yes | current register; latest transformations pending explicit review | complete canonical meanings and provenance |
+| Planning Draft | yes | this file | one high-level coordination owner |
+| Key Scenarios | complete inline | four sections above | sufficient current behavior/risk depth |
+| Other Scenarios | optional summaries | section 8 | avoid unnecessary deep workspace |
+| Full Picture Matrix | yes | section 9 | required behavior/implementation/validation link view |
+| Detailed project-local Scenario/DATA/Behavior | no | removed; Git history preserves prior files | coordination cost not justified |
+| Reusable SDS profile | available but inactive | reusable profile | can be selected for another project/need |
+| Domain | no | none | no separate model needed yet |
+| Slice | no | none | implementation not selected |
+| Prototype detail | only for selected helper | current item/Draft questions or later separate artifact | evidence before architecture |
 
-## 13. Repository Handoff
+## 14. Scenario Coverage Audit Result
+
+The former local deep-planning workspace is classified as follows:
 
 ```text
-accepted Batch 3A files
-  → full diff review
-  → commit/push by separate permission
-  → Batch 3B Scenario coverage audit and root/projection alignment.
+SCN-DW-01..04:
+  planning-development infrastructure;
+  covered by reusable planning workflows and current Planning Draft route;
+  not product Key Scenarios;
+
+SCN-DW-05, 07, 08, 12:
+  useful repository/link behavior absorbed into
+  Create And Navigate Stable File/Fragment Links
+  and current repository workflow;
+  application-specific managed-object details remain deferred;
+
+SCN-DW-06:
+  application-heavy Reference Object creation/confirmation flow;
+  reuse of managed identity, explicit confirmation of portable or parsed proposals,
+  canonical state ownership, definition location, optional home and app-only branches
+  remain part of the deferred managed-object alternative;
+  preserved by deferred Planning Items, reference-object-model-and-lifecycle.md
+  and Git history;
+  no managed-object creation flow is migrated into the repository-native Key Scenarios;
+
+SCN-DW-09:
+  absorbed into Review Affected Uses;
+
+SCN-DW-10..11:
+  absorbed into Create, Link And Manage Repository Notes;
+  generic category/object projection remains an implementation alternative;
+
+SCN-DW-13:
+  absorbed into Produce AI Transfer Copy;
+
+SCN-DW-14:
+  project-readable non-secret configuration remains ITEM-123;
+  broad application settings UI remains unselected;
+
+DATA-DW-* and BI-DW-*:
+  no separate current owner files;
+  useful behavior/data distinctions are represented inline in Key Scenarios,
+  current Planning Items and workflows;
+  old representation and runtime detail is preserved by Git history/deferred items.
 ```
 
-This Planning Draft does not authorize repository edits, implementation, commit or push.
+The audit does not claim that every old application-runtime detail is selected. It only preserves current useful meaning and leaves deferred/retired meanings at their existing owners/history.
+
+## 15. Repository Handoff
+
+```text
+apply the unified Scenario/reusable/root/projection package
+  → verify exact HEAD and working-tree bases before replacements/deletions
+  → use git add -N for linked-notes-end-to-end-workflow.md
+  → inspect the complete diff
+  → review remaining canonical item decisions
+  → do not commit or push before diff approval.
+```
+
+This Planning Draft does not authorize repository edits beyond an explicitly applied package, implementation, commit or push.

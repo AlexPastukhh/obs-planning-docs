@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.17.1-form-items-and-responsive-insertion
+Doc version: v0.18.1-workflow-integrity-reconciliation
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable Orientation/Direction/Use-Case/Command projection and project planning runtime tools.
 
 ## 1. Tracked scripts
@@ -295,7 +295,7 @@ The reusable Command Palette provides:
 - one shared command definition for both insertion variants, so command semantics and reminders cannot drift;
 - a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
 - a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
-- a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route validates one trigger-to-result Complete Picture per independent workflow, rejects mandatory parallel-picture fragmentation, classifies supporting artifacts and preserves the original → incoming → resulting chain plus relevant item-validation signals;
+- a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route checks workflow integrity for each independently traversable End-To-End Workflow, rejects mandatory peer-workflow fragmentation, classifies Planning Drafts and other supporting/non-workflow objects, and preserves the original → incoming → resulting chain plus relevant item-validation signals;
 - no creation-wording command IDs, labels or aliases for the plan-command route;
 
 ```text
@@ -317,7 +317,7 @@ The reusable Command Palette provides:
   `planning/documentation/documentation-update-workflow.md`;
 - the refinement body states the validation action but does not duplicate the one-line, non-interactive or no-pager owner rules;
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
-- `reconcile planning items` inserts a read-only end-to-end Complete Picture plus item-set reconciliation body: trace trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer slices when one mandatory workflow crosses them; treat models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
+- `reconcile planning items` inserts a read-only workflow-integrity plus item-set reconciliation body: identify independently traversable End-To-End Workflows and affected non-workflow primary review objects; trace each workflow's trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer workflow slices when one mandatory workflow crosses them; treat Planning Drafts/models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
 - no repo writes, network calls, commits or pushes.
 ```
@@ -375,21 +375,21 @@ Projected Use Cases:
 ```text
 Understand Current Workflow And Reality
 Form Planning Items From Discussion → Commands
-Build Or Review An Item-Backed Full Picture
+Build Or Review An Item-Backed Planning Draft
 Reconcile Planning Items → Commands
 Research Existing Solutions And Alternative Workflows
 Draft Detailed Scenario
 Draft Or Review Domain
 Plan Implementation Slice
 Review Scenario/Domain/Slice Consistency
-Documentation And Reference Object End-To-End Workflow
-Planning Item And Full Picture End-To-End Workflow
+Repository Documentation Change And Reference Review
+Planning Meaning To Repository
 Structured User Message Composer
 ```
 
 `Form Planning Items From Discussion` opens the accepted `сформируй айтемы / form items` command.
 
-Chat/AI/Work-State remains provisional and is not projected as accepted.
+Chat/AI/Work-State and the proposed Linked Notes Use Case remain unprojected as accepted until their owner transitions are reviewed.
 
 ## 9B. Responsive Command Insertion And Diagnostics
 
@@ -462,7 +462,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not let Direction/Use-Case activation execute commands or grant permissions.
 - Project the item-formation command only from its accepted UCM route and exact English name.
 - Do not add project-only command semantics without a UCM route.
-- Do not let the Planning Item reconciliation projection reduce review to isolated item rows, preserve a thematic peer-CP split when one mandatory workflow crosses it, label supporting models/views as Complete Pictures without independent lifecycle, assume one incoming item equals one result, hide Current/Incoming/Resulting meanings or lose relevant validation signals, or edit item registers or repository files.
+- Do not let the Planning Item reconciliation projection reduce review to isolated item rows, preserve a thematic peer-workflow split when one mandatory workflow crosses it, label Planning Drafts/supporting models/views as workflows without an independent trigger-to-result lifecycle, assume one incoming item equals one result, hide Current/Incoming/Resulting meanings or lose relevant validation signals, or edit item registers or repository files.
 - Do not duplicate archive command-format rules inside the helper refinement body.
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.

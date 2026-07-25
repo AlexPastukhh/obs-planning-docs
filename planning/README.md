@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.8.0-form-items-notes
+Doc version: v0.9.0-planning-draft-workbench-alignment
 Scope: OBS repository planning entry point, semantic Direction orientation, concrete command routing, task activation and source/owner pointers built on the reusable documentation layer.
 
 ## 1. Purpose
@@ -86,15 +86,15 @@ Bootstrap files are used only when root files do not exist.
 |---|---|---|
 | Planning runtime | `planning/areas/planning-system/` | Minimal technical index and operational `конец` workflow. Dashboard runtime owns planning schema/help and sync. |
 | Conspects | `planning/areas/conspects/` | Conspect review/repetition planning. |
-| Documentation Workbench | `planning/areas/documentation-workbench/` | Application Root, accepted workflows, supporting model, local registries and source-linked item register. |
+| Documentation Workbench | `planning/areas/documentation-workbench/` | Repository-native documentation planning, stable links, affected-use review, AI transfer, proposed linked Notes workflow, local registries and source-linked item register. |
 
 Documentation Workbench route:
 
 ```text
 planning/areas/documentation-workbench/README.md
+  → planning-draft.md
   → direction-registry.md
   → use-case-registry.md
-  → full-picture.md
   → selected workflow/model owner
   → targeted planning-item-register.md items/sources
   → relevant reusable owners.
@@ -103,14 +103,18 @@ planning/areas/documentation-workbench/README.md
 ## 5. Current Documentation Workbench State
 
 ```text
-Application Root:
-  planning/areas/documentation-workbench/full-picture.md
+High-level owner:
+  planning/areas/documentation-workbench/planning-draft.md
 
-Accepted Complete Pictures:
-  Documentation And Reference Object End-To-End Workflow
-  Planning Item And Full Picture End-To-End Workflow
+Accepted End-To-End Workflows:
+  Repository Documentation Change And Reference Review
+  Planning Meaning To Repository
 
-Supporting model:
+Proposed End-To-End Workflow:
+  Create, Link And Manage Repository Notes
+  (canonical item transition pending)
+
+Supporting deferred model:
   Reference Object Model And Lifecycle
 
 Local semantic registries:
@@ -118,7 +122,11 @@ Local semantic registries:
   use-case-registry.md
 
 Canonical register:
-  53 active Planning Items.
+  53 reviewed canonical items with active/deferred/retired dispositions.
+
+Removed local artifacts:
+  reference-link experiment;
+  project-local scenarios/** workspace.
 ```
 
 Chat/AI/Work-State remains provisional.

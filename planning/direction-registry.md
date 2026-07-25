@@ -1,7 +1,7 @@
 # OBS Root Direction Registry
 
 Status: active project-specific root semantic Direction Registry
-Doc version: v0.3.0-form-items-command
+Doc version: v0.4.0-planning-draft-workbench-alignment
 Scope: OBS root orientation across broad semantic work Directions and references to complete reusable-family/project-local registries.
 
 ## 1. Authority
@@ -47,7 +47,7 @@ Root orientation:
 ```text
 understand current reality when needed
   → form/review source-linked Planning Items
-  → build/review an item-backed Full Picture
+  → build/review an item-backed Planning Draft with complete Key Scenarios and one Full Picture Matrix
   → reconcile accepted meaning with current owners
   → optional alternatives/research/prototypes/tests
   → optional detailed planning handoff.

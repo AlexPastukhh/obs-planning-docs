@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Drafting Workflow
 
 Status: active reusable workflow / Planning Item formation delegated
-Doc version: v1.0.1-profile-inline-boundary
+Doc version: v1.1.0-sufficient-planning-draft-contract
 Scope: repeated user + AI process for Current Reality Capture, item-backed Planning Drafts, End-To-End Workflow integrity, Planning Item reconciliation, questions, risks, alternatives, tests, evidence-driven revision and optional deeper planning.
 
 Canonical concepts and principles:
@@ -26,8 +26,8 @@ source/reality context
   → reviewed Planning Items
   → item-backed Planning Draft
   → Planning Item Map
-  → selected Scenario depth
-  → optional Full Picture Matrix
+  → complete Key Scenarios
+  → one required Full Picture Matrix
   → questions, risks and validation
   → alternatives, tests and prototypes
   → evidence-driven revision
@@ -262,21 +262,37 @@ Implementation Ideas.
 
 The map is navigation. Complete meanings remain with the items.
 
-### 8.2 Scenario Coverage
+### 8.2 Key Scenario Coverage
 
-A Planning Draft may contain:
+A sufficient Planning Draft identifies its Key Scenarios and describes every Key Scenario completely.
+
+Each complete Key Scenario preserves:
 
 ```text
-complete Key Scenarios;
-high-level summaries of other Scenarios;
-complete non-key Scenarios when a separate deep layer is not useful.
+semantic name and why it is key;
+actor/context;
+goal and observable result;
+entry/preconditions;
+main flow;
+branches, alternatives and failures;
+invariants, postconditions and acceptance/outcomes;
+important Scenario DATA when behavior depends on it;
+questions, risks and evidence needs;
+contributing Planning Items;
+Implementation Ideas only by link/association.
 ```
+
+Other Scenarios are optional. They may remain summaries or become complete inline sections when that improves review.
+
+Do not assign Key Scenario status automatically. Present candidates and reasons when selection is unresolved.
+
+A direction with no behavioral Scenario records that fact explicitly instead of inventing one.
 
 `Key Scenario` is the same Scenario entity selected for early depth because it affects value, viability, risk, differentiation or architecture.
 
 ### 8.3 Full Picture Matrix
 
-The Planning Draft may include one compact matrix:
+Every sufficient Planning Draft contains one compact matrix:
 
 | Flow point | Scenario view | Implementation view | Questions / risks / validation | Status / follow-up |
 |---|---|---|---|---|
@@ -290,7 +306,8 @@ Rules:
 - link questions, risks and prototype needs to their owners;
 - do not copy complete item bodies into the table;
 - allow many-to-many links;
-- do not create a separate Planning Full Picture artifact.
+- do not create a separate Planning Full Picture artifact;
+- use decision/flow points when no behavioral Scenario exists.
 ```
 
 ### 8.4 Optional Semantic Content
@@ -304,8 +321,6 @@ criteria;
 boundaries and non-goals;
 Current/Result/Action Workflows;
 Planning Item Map;
-Scenario coverage;
-Full Picture Matrix;
 existing solutions;
 alternatives;
 questions and risks;
@@ -711,8 +726,8 @@ Deep work must return accepted results to owning Planning Items and the Planning
 - source/provenance survives;
 - validation signals survive;
 - Planning Draft does not duplicate item ownership;
-- Full Picture Matrix remains a view;
-- scenario depth is proportional;
+- every sufficient Planning Draft contains one Full Picture Matrix view;
+- every Key Scenario is complete while other Scenario depth remains proportional;
 - implementation thoughts remain non-final;
 - no application/runtime assumption was invented;
 - no repository permission was inferred.

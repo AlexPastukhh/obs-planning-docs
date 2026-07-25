@@ -1,8 +1,11 @@
 # Repository Documentation Change And Reference Review Workflow
 
-Status: active accepted project-local End-To-End Workflow
-Doc version: v1.0.0-repository-native
-Scope: direct trigger-to-result workflow for changing ordinary repository Markdown, navigating stable links and reviewing explicitly affected uses.
+Status: active accepted project-local End-To-End Workflow / stable-target clarifications pending item reconciliation
+Doc version: v1.2.0-stable-target-lifecycle-review
+Scope: direct trigger-to-result workflow for changing ordinary repository Markdown, creating/navigating stable links and reviewing explicitly affected uses.
+
+
+The accepted baseline remains ordinary file/section navigation plus explicit affected-use review. The additional survival rules and Note-target references below are confirmed incoming planning meaning but do not silently update `ITEM-114` or `ITEM-124`; those canonical item transitions still require explicit review.
 
 ## 1. Trigger And Result
 
@@ -20,14 +23,22 @@ Scope: direct trigger-to-result workflow for changing ordinary repository Markdo
 ## 3. End-To-End Flow
 
 ```text
-select repository/file/folder/section
+select repository/file/folder/stable section
   → read current ordinary Markdown
   → edit with an existing editor, reviewed replacement
-    or accepted narrow helper
-  → preserve stable file/heading links
+    or separately accepted narrow helper
+  → create or preserve links to:
+      complete repository files;
+      stable anchored sections/fragments;
+      repository Notes
+  → resolve relative paths across repository folder nesting
+  → preserve target identity through content edits
+    and movement inside the same file when the anchor is unchanged
+  → expose missing, renamed or removed targets explicitly
   → detect changed targets carrying explicit
     review-on-change relations
   → review affected uses manually
+  → optional bounded AI transfer
   → validate links and Markdown
   → inspect Git diff
   → reviewed repository state
@@ -44,15 +55,29 @@ Identify complete files and exact repository/base state. A package must stop bef
 
 Use an existing editor, GitHub surface, complete replacement package or separately accepted helper. Saved content must remain useful without a custom runtime.
 
-### Stage 3 — Resolve Stable Targets
+### Stage 3 — Create Or Preserve Stable Targets
 
-Navigation targets are complete files or stable heading/section anchors. Relative links may traverse parent and sibling repository folders.
+Navigation targets are:
 
-### Stage 4 — Detect Explicit Review Relations
+```text
+complete repository file;
+stable explicit anchor for a heading/section/fragment;
+repository-owned Markdown Note.
+```
+
+Relative links may traverse parent, sibling and deeper repository folders.
+
+A stable anchored target remains resolvable after its visible text changes or its position inside the same file changes, provided the file path and anchor identity remain valid.
+
+### Stage 4 — Resolve Broken Or Changed Identity
+
+When a target file/Note/anchor is missing, renamed or removed, show an explicit broken or unresolved result. Do not invent a redirect or silently bind to similar text.
+
+### Stage 5 — Detect Explicit Review Relations
 
 Ordinary links are navigation only. Only explicit adjacent review metadata enters affected-use analysis.
 
-### Stage 5 — Review Affected Uses
+### Stage 6 — Review Affected Uses
 
 For each affected use:
 
@@ -60,11 +85,11 @@ For each affected use:
 - confirm current, update, remove/replace or leave unresolved;
 - do not rewrite meaning automatically.
 
-### Stage 6 — Optional AI Transfer
+### Stage 7 — Optional AI Transfer
 
-When requested, expand only explicitly includable relations into a temporary copy. Do not mutate saved Markdown.
+When requested, expand only explicitly includable relations into a temporary copy. Preserve source identities, stop bounded recursion/cycles and do not mutate saved Markdown.
 
-### Stage 7 — Validate And Review Diff
+### Stage 8 — Validate And Review Diff
 
 Check Markdown/link integrity, exact changed path scope and the literal Git diff.
 
@@ -72,8 +97,11 @@ Check Markdown/link integrity, exact changed path scope and the literal Git diff
 
 | Situation | Result |
 |---|---|
+| Complete-file target resolves | open the file |
+| Stable fragment target moved inside the same file with anchor unchanged | link remains valid |
+| Visible fragment text changed with anchor unchanged | link remains valid; review obligation exists only when explicit |
 | Link target missing | explicit broken-link result |
-| Stable anchor changed | update link/anchor or leave unresolved |
+| Stable anchor renamed or removed | update link/anchor or leave unresolved |
 | Review relation ambiguous | do not infer dependency; report ambiguity |
 | Include recursion/cycle | stop bounded expansion and report cycle |
 | Unresolved target | preserve visible unresolved result |
@@ -82,24 +110,28 @@ Check Markdown/link integrity, exact changed path scope and the literal Git diff
 
 ## 6. Review Gates
 
-| Gate | Required review |
-|---|---|
-| Scope/base | exact paths and blobs |
-| Link | file/section target resolves |
-| Impact | every explicit affected use receives a disposition |
-| Transfer | expansion is bounded and non-mutating |
-| Diff | exact complete file transition approved |
+| Gate | Review object | Required review |
+|---|---|---|
+| Scope/base | selected files and blobs | exact paths and base identity |
+| Link | file/Note/section target | target resolves to intended identity |
+| Impact | explicit affected uses | every use receives a disposition |
+| Transfer | temporary expanded copy | expansion is bounded, sourced and non-mutating |
+| Diff | complete file transition | exact change approved |
 
-## 7. Boundaries
+## 7. Relationship To Linked Notes
+
+[`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) independently owns Note creation, editing, local/remote state and save verification.
+
+This workflow owns repository-document changes and link/impact review. A Note workflow may hand a repository-owned Note or link change into this workflow for validation and diff review. Neither workflow owns a mandatory hidden middle of the other.
+
+## 8. Boundaries
 
 This workflow does not require a managed Reference Object runtime, custom editor, Semantic Home, object-field schema, App Memory or automatic dependency graph.
 
 Possible helpers are Implementation Ideas. Their output does not become canonical until reviewed into repository Markdown.
 
-## 8. Relationship To Planning Workflow
+## 9. Relationship To Planning Workflow
 
 [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) may hand accepted meaning to this workflow. This workflow may also start independently for direct documentation maintenance.
-
-Neither workflow supplies a hidden mandatory middle of the other.
 
 No stage authorizes commit or push without separate explicit permission.

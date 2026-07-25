@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Documentation Index
 
 Status: active reusable documentation-family index
-Doc version: v1.0.0-unified-portable-baseline
+Doc version: v1.1.0-sufficient-planning-draft-contract
 Scope: reusable planning from selected source through Planning Item formation, an item-backed Planning Draft, questions, alternatives, validation and optional deeper planning.
 
 The folder path remains `application-planning/` for compatibility. The methodology is not limited to applications.
@@ -41,8 +41,8 @@ selected source or checked current context
   → proportional question/risk/prototype context
   → item-backed Planning Draft
   → logically ordered Planning Item links
-  → selected Scenario depth
-  → optional Full Picture Matrix
+  → complete Key Scenarios
+  → one required Full Picture Matrix
   → alternatives, research, tests and evidence
   → update items, decisions and Planning Draft
   → optional specialized detailed planning when justified.
@@ -50,7 +50,7 @@ selected source or checked current context
 
 Current Reality Capture remains descriptive and may be omitted when enough checked current context already exists.
 
-A simple application, non-application solution or narrow workflow may complete planning in the Planning Draft. Separate Scenario, DATA, Behavior, Domain and Slice artifacts are optional.
+A simple application, non-application solution or narrow workflow may complete planning in one Planning Draft. A sufficient Planning Draft identifies its Key Scenarios, describes each Key Scenario completely and contains one Full Picture Matrix. Separate Scenario, DATA, Behavior, Domain and Slice artifacts remain optional.
 
 Opportunity research, Product Legend and Solution Overview are not mandatory sequential artifacts. Useful meaning belongs in Planning Items, the Planning Draft, questions, alternatives or prototype/research work.
 
@@ -139,9 +139,9 @@ A separate `Planning Full Picture` artifact is not required.
 
 ### Full Picture Matrix
 
-An optional table or equivalent view inside the Planning Draft.
+A required table or equivalent view inside every sufficient Planning Draft. It remains a section of the Planning Draft, not a separate canonical artifact or entity type.
 
-It aligns scenario meaning, implementation ideas, questions/risks/validation and follow-up through links to Planning Items.
+It aligns Scenario meaning, implementation ideas, questions/risks/tests/evidence and follow-up through links to Planning Items. For a direction with no behavioral Scenario, the draft states that explicitly and uses decision/flow points instead of inventing a Scenario.
 
 ### Scenario
 
@@ -149,7 +149,7 @@ One coherent actor/context + goal + observable-result unit.
 
 `Key Scenario` is a role of the same Scenario entity. It is not a separate object type.
 
-A Scenario may stay inline in the Planning Draft or become a separate artifact when that reduces complexity.
+Every Key Scenario is complete inline in the Planning Draft or linked to one complete Scenario owner. Other Scenarios may remain summaries, become complete inline sections or move to separate artifacts when that reduces complexity.
 
 ### End-To-End Workflow
 

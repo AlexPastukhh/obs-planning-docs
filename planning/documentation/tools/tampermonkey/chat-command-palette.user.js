@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.17.1-form-items-responsive-insertion
+// @version      0.18.1-workflow-integrity-reconciliation
 // @description  Projection-only Orientation, Directions, Use Cases and Commands helper with Adaptive/Full owner reading.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -94,9 +94,9 @@
       "planning/direction-registry.md",
       "planning/areas/documentation-workbench/direction-registry.md",
       "planning/areas/documentation-workbench/use-case-registry.md",
-      "planning/areas/documentation-workbench/full-picture.md"
+      "planning/areas/documentation-workbench/planning-draft.md"
     ],
-    "instruction": "Establish the Documentation Workbench Direction, accepted Complete Pictures, supporting model and provisional boundaries. Do not claim runtime implementation.",
+    "instruction": "Establish the Documentation Workbench Direction, current Planning Draft, accepted workflows, proposed Linked Notes workflow and deferred model boundary. Do not claim runtime implementation or accept pending item transitions.",
     "target": "<Documentation Workbench target>"
   }
 ];
@@ -120,15 +120,15 @@
   },
   {
     "id": "UC-AP-FULL-PICTURE",
-    "label": "Build Or Review An Item-Backed Full Picture",
-    "description": "item-backed synthesis",
+    "label": "Build Or Review An Item-Backed Planning Draft",
+    "description": "item-backed planning synthesis",
     "sources": [
       "planning/documentation/application-planning/use-case-registry.md",
       "planning/documentation/application-planning/application-planning-drafting-workflow.md",
       "planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md"
     ],
-    "instruction": "Establish item-backed Full Picture context. Preserve canonical item ownership and trace significant statements to items/source/inference/question.",
-    "target": "<Full Picture target>"
+    "instruction": "Establish item-backed Planning Draft context. Require complete Key Scenarios and one Full Picture Matrix while preserving canonical item ownership and traceability.",
+    "target": "<Planning Draft target>"
   },
   {
     "id": "UC-AP-RECONCILE",
@@ -193,27 +193,27 @@
   },
   {
     "id": "UC-DW-DOC-REF",
-    "label": "Documentation And Reference Object End-To-End Workflow",
-    "description": "accepted Documentation Workbench Complete Picture",
+    "label": "Repository Documentation Change And Reference Review",
+    "description": "accepted Documentation Workbench End-To-End Workflow",
     "sources": [
       "planning/areas/documentation-workbench/use-case-registry.md",
-      "planning/areas/documentation-workbench/full-picture.md",
-      "planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md"
+      "planning/areas/documentation-workbench/planning-draft.md",
+      "planning/areas/documentation-workbench/repository-documentation-change-and-reference-review-workflow.md"
     ],
-    "instruction": "Establish this accepted trigger-to-result workflow. Preserve the managed Planning Item boundary and do not repeat object creation for an already managed item.",
-    "target": "<documentation/reference-object target>"
+    "instruction": "Establish the accepted repository documentation workflow. Keep stable navigation, explicit review-on-change meaning, bounded AI transfer and pending item clarifications distinct.",
+    "target": "<repository documentation/reference-review target>"
   },
   {
     "id": "UC-DW-ITEM-FULL-PICTURE",
-    "label": "Planning Item And Full Picture End-To-End Workflow",
-    "description": "accepted Documentation Workbench Complete Picture",
+    "label": "Planning Meaning To Repository",
+    "description": "accepted Documentation Workbench End-To-End Workflow",
     "sources": [
       "planning/areas/documentation-workbench/use-case-registry.md",
-      "planning/areas/documentation-workbench/full-picture.md",
-      "planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md"
+      "planning/areas/documentation-workbench/planning-draft.md",
+      "planning/areas/documentation-workbench/planning-meaning-to-repository-workflow.md"
     ],
-    "instruction": "Establish the full Planning Item/Full Picture workflow. Treat `сверь айтемы` as one reconciliation stage rather than the whole use case.",
-    "target": "<Planning Item/Full Picture target>"
+    "instruction": "Establish the full Planning Meaning To Repository workflow. Treat `сверь айтемы` as one read-only reconciliation stage rather than the whole use case.",
+    "target": "<planning meaning/repository handoff target>"
   },
   {
     "id": "UC-DW-STRUCTURED-MESSAGE",
@@ -284,16 +284,17 @@
       id: 'planning_items.reconcile',
       group: 'Commands',
       label: 'сверь айтемы',
-      description: 'end-to-end Complete Picture + traceable item transformations',
+      description: 'workflow integrity + traceable item transformations',
       englishName: 'reconcile planning items',
       family: '`сверь айтемы` / `сверь айтемы с документацией` / `проверь айтемы по репозиторию` / `reconcile planning items` / `reconcile items`',
       reminders: [
         'Reconcile the selected working, local or unprocessed Planning Items with relevant current repository documentation.',
-        'Select one end-to-end Complete Picture for each genuinely independent workflow: trace trigger, preconditions, mandatory stages, branches/loops, review gates and result/end state.',
-        'Do not split one mandatory workflow into parallel peer Complete Pictures. If a peer owns a missing mandatory stage, combine the slices or reclassify them as supporting artifacts.',
-        'Treat models, views, terminology, root summaries and capability/detail slices as supporting or non-workflow primary review objects unless they have an independent trigger-to-result lifecycle.',
-        'Review several Complete Pictures separately only when each is independently traversable; then check cross-workflow and resulting-item-set consistency.',
-        'Show the complete before/after workflow or review object, including changed and preserved parts, purpose, boundaries, conflicts and unresolved choices.',
+        'Identify each genuinely independent End-To-End Workflow and each affected non-workflow primary review object.',
+        'For every End-To-End Workflow, trace trigger, preconditions, mandatory stages, branches/loops, review gates and result/end state, then report the workflow-integrity verdict.',
+        'Do not split one mandatory workflow into peer workflow candidates or slices. If one owns a missing mandatory stage, combine the slices or reclassify them as supporting artifacts.',
+        'Treat Planning Drafts, models, views, terminology, root summaries and capability/detail slices as supporting or non-workflow primary review objects unless they have an independent trigger-to-result lifecycle.',
+        'Review several End-To-End Workflows separately only when each is independently traversable; then check cross-workflow and resulting-item-set consistency.',
+        'Show the complete before/after workflow or non-workflow review object, including changed and preserved parts, purpose, boundaries, conflicts and unresolved choices.',
         'For each selected workflow/review object, show the current canonical item set, incoming meanings with semantic names and IDs only as secondary traceability, proposed actions and the resulting canonical item set.',
         'For every non-trivial transformation, show original/current item(s), every incoming/expanding/correcting meaning and resulting item(s) separately in one small variable-row table; use — where a field does not apply and do not show only the result.',
         'Do not assume one incoming item becomes one new canonical item: it may keep, update, rename, add, merge, split, move, link, defer, supersede, remove or reject meaning.',

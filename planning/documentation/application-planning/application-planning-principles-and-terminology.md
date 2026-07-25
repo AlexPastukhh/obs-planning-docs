@@ -1,7 +1,7 @@
 # Solution And Workflow Planning Principles And Terminology
 
 Status: active reusable canonical owner
-Doc version: v1.0.0-unified-portable-baseline
+Doc version: v1.1.0-sufficient-planning-draft-contract
 Scope: reusable definitions, distinctions and stable principles for planning a solution, workflow, use of an existing tool, automation, integration, application, organizational process or no-change decision.
 
 ## 1. Purpose And Authority
@@ -390,6 +390,21 @@ It may plan:
 
 A Planning Draft groups, orders, summarizes and links canonical Planning Items. Planning Items remain owners of their complete meanings.
 
+A sufficient Planning Draft:
+
+```text
+- identifies the Key Scenarios for the current direction;
+- describes every Key Scenario completely, inline or through one linked complete owner;
+- may keep other Scenarios as summaries or complete inline sections;
+- contains one Full Picture Matrix linking Scenario/flow meaning,
+  Implementation Ideas, questions, risks, tests/evidence,
+  status and next action;
+- explicitly states when the direction has no behavioral Scenario
+  instead of inventing one.
+```
+
+The matrix is mandatory for sufficiency but remains an internal view, not a second canonical artifact.
+
 ### 5.2 Planning Item Map
 
 A Planning Draft should provide a readable route through contributing Planning Items.
@@ -407,9 +422,9 @@ The map contains links and compact context. It is not a second item ledger.
 
 ### 5.3 Full Picture Matrix
 
-A `Full Picture Matrix` is an optional presentation section inside a Planning Draft.
+A `Full Picture Matrix` is a required presentation section inside a sufficient Planning Draft.
 
-It may align:
+It aligns:
 
 | Flow point | Scenario view | Implementation view | Questions / risks / validation | Status / follow-up |
 |---|---|---|---|---|
@@ -568,18 +583,21 @@ prototype-driving.
 
 ### 7.3 Adaptive Depth
 
-Scenario depth is proportional.
-
-A Scenario may be represented as:
+Scenario depth is proportional, but Key Scenario completeness is not optional.
 
 ```text
-- a short summary in a Planning Draft;
-- a complete Scenario section in a Planning Draft;
-- a separate linked Scenario artifact;
-- a specialized project-local Scenario representation.
+Key Scenario:
+  complete section in the Planning Draft
+  or one linked complete Scenario owner;
+
+other Scenario:
+  short summary;
+  complete inline section;
+  separate linked artifact;
+  specialized project-local representation.
 ```
 
-A simple application, non-application solution or narrow workflow may complete planning inside the Planning Draft.
+A simple application, non-application solution or narrow workflow may complete planning inside the Planning Draft when its Key Scenarios and required matrix are sufficient.
 
 A separate detailed-planning workspace is useful only when it reduces risk or coordination cost.
 
@@ -920,7 +938,7 @@ example
 |---|---|---|
 | Complete planning meaning | Planning Item / Canonical Item Body | No arbitrary size limit |
 | Main high-level planning artifact | Planning Draft | Owns organization, not item bodies |
-| Compact aligned planning view | Full Picture Matrix | Optional section inside Planning Draft |
+| Compact aligned planning view | Full Picture Matrix | Required section inside a sufficient Planning Draft; not a separate artifact |
 | Existing behavior | Current Workflow | `Old` only for replacement contrast |
 | Desired behavior | Result Workflow | Future useful behavior |
 | Route to desired behavior | Action Workflow | May include file-update work |

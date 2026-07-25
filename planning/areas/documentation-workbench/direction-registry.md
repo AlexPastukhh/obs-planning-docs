@@ -1,8 +1,8 @@
 # Documentation Workbench Direction Registry
 
 Status: active project-local semantic Direction Registry
-Doc version: v1.0.0-repository-native-direction
-Scope: project-local Directions for repository-native Documentation Workbench planning and optional helper capabilities.
+Doc version: v1.2.0-scenarios-and-proposed-notes
+Scope: project-local Directions for repository-native Documentation Workbench planning and independently useful helper capabilities.
 
 Parent root registry: [`planning/direction-registry.md`](../../direction-registry.md)
 
@@ -21,7 +21,7 @@ The stable Direction ID is preserved for compatibility. Its current meaning does
 
 ### Purpose
 
-Maintain a portable Markdown/Git documentation workspace and add independently useful small tools only when existing editors, links, search and Git review do not provide the required result.
+Maintain a portable Markdown/Git documentation workspace with stable links, explicit affected-use review, bounded AI transfer and durable linked Notes. Add independently useful small tools only when existing editors, links, search and Git review do not provide the required result.
 
 ### Topology
 
@@ -30,13 +30,16 @@ Planning Meaning To Repository workflow
   → optional explicit handoff
   → Repository Documentation Change And Reference Review workflow;
 
-independently useful capability:
+proposed independent workflow:
+  Create, Link And Manage Repository Notes;
+
+independently useful supporting capability:
   Structured User Message Composer;
 
 optional Implementation Ideas:
   Reference Impact Checker;
   AI Transfer Expander;
-  Notes helper/index;
+  Tampermonkey Linked Notes And GitHub Widget;
 
 deferred alternative:
   application-heavy managed Reference Object model.
@@ -48,14 +51,17 @@ deferred alternative:
 |---|---|---|
 | `UC-DW-DOC-REF` — Repository Documentation Change And Reference Review | accepted current | `repository-documentation-change-and-reference-review-workflow.md` |
 | `UC-DW-ITEM-FULL-PICTURE` — Planning Meaning To Repository | accepted current; legacy ID retained | `planning-meaning-to-repository-workflow.md` |
+| `UC-DW-LINKED-NOTES` — Create, Link And Manage Repository Notes | proposed / canonical item transition pending | `linked-notes-end-to-end-workflow.md` |
 | `UC-DW-STRUCTURED-MESSAGE` — Structured User Message Composer | active supporting | `ITEM-121` in `planning-item-register.md` |
 
 ### Boundaries
 
 - Planning Draft is the high-level owner.
+- Complete Key Scenarios and one Full Picture Matrix are the selected local planning representation.
 - Full Picture is not a separate current artifact.
 - Reference Object model is deferred, not a peer workflow.
-- Detailed SDS profile is not selected for this solution now.
+- Detailed project-local SDS planning is not selected for this solution now.
+- A Notes workflow does not accept a specific userscript, storage layout or credential design.
 - Tool ideas do not imply implementation.
 - Direction activation grants no edit/archive/commit/push permission.
 
@@ -70,11 +76,11 @@ Keep project-local Planning Items, Planning Draft, workflow owners, compatibilit
 ```text
 capture exact source;
 reconcile current/deferred/retired item meaning;
-maintain the Planning Draft;
-maintain two current end-to-end workflows;
+maintain the Planning Draft and its Key Scenarios;
+maintain independently traversable current workflows;
 preserve historical item bodies;
-plan Scenario migration;
-align root and projection routes in a later reviewed batch.
+retire obsolete local deep-planning files;
+keep root and projection routes aligned with current owners.
 ```
 
 No local registry activation grants repository permission.

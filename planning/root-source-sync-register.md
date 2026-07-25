@@ -1,8 +1,8 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v1.1.0-scenario-reference-objects
-Scope: register root planning files, reusable owners and local area ownership for OBS planning infrastructure.
+Doc version: v1.2.0-planning-draft-and-scenario-retirement
+Scope: register root planning files, reusable owners and current local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
 
@@ -10,10 +10,10 @@ Scope: register root planning files, reusable owners and local area ownership fo
 |---|---|---|
 | `planning/README.md` | Root planning orientation | OBS project-local root owner. |
 | `planning/direction-registry.md` | Root semantic Direction Registry and local registry references | Accepted Direction/Use-Case reconciliation. |
-| `planning/planning-use-case-map.md` | Concrete OBS command router | Root UCM created from reusable field-kit model. |
+| `planning/planning-use-case-map.md` | Concrete OBS command router | Root UCM. |
 | `planning/workflow-activation-map.md` | Task/Direction/Use-Case activation router | OBS root owner. |
 | `planning/root-source-sync-register.md` | Root source/owner register | OBS root owner. |
-| `planning/planning-input-conventions.md` | Project-readable planning input conventions | Accepted `it(` / `)it` delimiter meaning. |
+| `planning/planning-input-conventions.md` | Project-readable planning input conventions | Accepted source/input meaning. |
 
 ## 2. Reusable Layer
 
@@ -21,11 +21,13 @@ Scope: register root planning files, reusable owners and local area ownership fo
 |---|---|
 | `planning/documentation/` | Reusable documentation/process layer. |
 | `planning/documentation/direction-and-use-case-registry-workflow.md` | Registry hierarchy, topology, activation and ownership. |
-| `planning/documentation/DIRECTION-REGISTRY-TEMPLATE.md` | Direction Registry shape. |
-| `planning/documentation/USE-CASE-REGISTRY-TEMPLATE.md` | Use-Case Registry shape. |
-| `planning/documentation/application-planning/` | Reusable planning terminology, principles, formation, drafting, Scenario handoff, registries and templates. |
+| `planning/documentation/application-planning/` | Reusable Planning Item formation, sufficient Planning Draft contract, reconciliation, optional detailed profile and templates. |
+| `planning/documentation/application-planning/application-planning-principles-and-terminology.md` | Canonical planning terminology and sufficiency rules. |
+| `planning/documentation/application-planning/application-planning-drafting-workflow.md` | Planning Draft and reconciliation workflow. |
+| `planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md` | Recommended Planning Draft shape with required Key Scenario coverage and Full Picture Matrix. |
 | `planning/documentation/application-planning/direction-registry.md` | Reusable planning Direction entries. |
 | `planning/documentation/application-planning/use-case-registry.md` | Reusable planning Use-Case entries. |
+| `planning/documentation/profiles/` | Optional specialized profiles; not universal stages. |
 | `planning/documentation/field-kits/` | Bootstrap/setup guidance only. |
 | `planning/documentation/tools/tampermonkey/` | Helper implementation; projection only. |
 
@@ -35,58 +37,97 @@ Scope: register root planning files, reusable owners and local area ownership fo
 |---|---|
 | `planning/areas/planning-system/` | Minimal runtime index and operational end-session owner. |
 | `planning/areas/conspects/` | Conspect planning/repetition area. |
-| `planning/areas/documentation-workbench/` | Application Root, accepted Complete Pictures, supporting model, local registries and item register. |
+| `planning/areas/documentation-workbench/` | Repository-native Documentation Workbench planning, workflows, local registries and item owners. |
 
-## 4. Documentation Workbench Files
+## 4. Documentation Workbench Current Files
 
 | File | Role |
 |---|---|
 | `planning/areas/documentation-workbench/README.md` | Area entry/read/update discipline. |
-| `planning/areas/documentation-workbench/direction-registry.md` | Local product/planning Directions. |
-| `planning/areas/documentation-workbench/use-case-registry.md` | Accepted local workflows/capabilities and provisional candidates. |
-| `planning/areas/documentation-workbench/full-picture.md` | Application Root Full Picture. |
-| `planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md` | Accepted Documentation/Reference Object workflow. |
-| `planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md` | Accepted Planning Item/Full Picture workflow. |
-| `planning/areas/documentation-workbench/reference-object-model-and-lifecycle.md` | Supporting model. |
-| `planning/areas/documentation-workbench/planning-item-register.md` | Complete source-linked register; 53 active items. |
-| `planning/areas/documentation-workbench/scenarios/README.md` | Preliminary Scenario catalog and owner route. |
-| `planning/areas/documentation-workbench/scenarios/SCN-DW-*.md` | One Scenario Reference Object definition per file. |
-| `planning/areas/documentation-workbench/scenarios/data-objects.md` | Separate Scenario DATA Reference Object definitions. |
-| `planning/areas/documentation-workbench/scenarios/behavior-items.md` | Separate Behavior Item Reference Object definitions. |
+| `planning/areas/documentation-workbench/planning-draft.md` | Sole current high-level owner; complete Key Scenarios and Full Picture Matrix. |
+| `planning/areas/documentation-workbench/planning-item-register.md` | Complete source-linked current/deferred item owner and retired index; 53 reviewed canonical identities. |
+| `planning/areas/documentation-workbench/retired-planning-items.md` | Complete finalized inactive bodies and preserved history. |
+| `planning/areas/documentation-workbench/planning-meaning-to-repository-workflow.md` | Accepted Planning Meaning To Repository End-To-End Workflow. |
+| `planning/areas/documentation-workbench/repository-documentation-change-and-reference-review-workflow.md` | Accepted repository documentation, stable-link and affected-use review workflow; incoming clarifications remain item-reviewable. |
+| `planning/areas/documentation-workbench/linked-notes-end-to-end-workflow.md` | Proposed complete Linked Notes workflow review object; canonical item transition pending. |
+| `planning/areas/documentation-workbench/direction-registry.md` | Local semantic Directions. |
+| `planning/areas/documentation-workbench/use-case-registry.md` | Accepted local workflows/capabilities and proposed Linked Notes Use Case. |
+| `planning/areas/documentation-workbench/reference-object-model-and-lifecycle.md` | Deferred application-heavy alternative. |
+| `planning/areas/documentation-workbench/full-picture.md` | Compatibility pointer to `planning-draft.md`. |
+| `planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md` | Compatibility pointer to the current repository workflow. |
+| `planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md` | Compatibility pointer to Planning Meaning To Repository and the Planning Draft. |
+
+Removed without replacement owners:
+
+```text
+planning/reference-link-experiment.md
+planning/areas/documentation-workbench/reference-link-experiment.md
+planning/areas/documentation-workbench/scenarios/**
+```
+
+Git history preserves the former experiment and Scenario/DATA/Behavior files.
 
 ## 5. Current Structural State
 
 ```text
 root Direction Registry → planning/direction-registry.md;
-reusable planning registries → application-planning/direction-registry.md + use-case-registry.md;
-Documentation Workbench registries → direction-registry.md + use-case-registry.md;
-accepted local Complete Pictures → Documentation/Reference + Planning Item/Full Picture;
-supporting model → Reference Object Model And Lifecycle;
-canonical register → 53 active Planning Items.
+
+reusable planning owners →
+  application-planning principles/terminology
+  + drafting workflow
+  + Planning Draft template
+  + reusable registries;
+
+Documentation Workbench high-level owner →
+  planning-draft.md;
+
+accepted local workflows →
+  Planning Meaning To Repository
+  + Repository Documentation Change And Reference Review;
+
+proposed local workflow →
+  Create, Link And Manage Repository Notes
+  (canonical item transition pending);
+
+canonical register →
+  53 reviewed canonical identities with current dispositions;
+
+Tampermonkey →
+  projection of current root/reusable/local routes only.
 ```
 
-## 6. Accepted Item Mappings
+## 6. Planning Draft Sufficiency Alignment
+
+A sufficient Planning Draft now:
 
 ```text
-ITEM-25B → ITEM-23B
-ITEM-102 → ITEM-91
-
-active register:
-  50 → 48 through Documentation/Reference reconciliation
-  48 → 51 through accepted recent-chat reconciliation
-  51 → 53 through First-Class Named Notes and Category-Backed Notes Projection
-
-new active identities:
-  ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER
-  ITEM-122 / TYPED-SOURCE-CONTRIBUTIONS
-  ITEM-123 / CONFIGURABLE-APPLICATION-SETTINGS
-  ITEM-124 / FIRST-CLASS-NAMED-NOTES
-  ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION
+identifies Key Scenarios;
+describes every Key Scenario completely;
+may summarize or fully describe other Scenarios;
+contains one Full Picture Matrix linking:
+  Scenario/flow meaning;
+  Implementation Ideas;
+  questions, risks, tests and evidence;
+  status and next action;
+does not require separate Scenario/DATA/Behavior/Domain/Slice files
+unless a specialized profile is explicitly selected.
 ```
 
-`ITEM-22B / ITEM-TO-OBJECT` remains the stable Planning Item/managed Reference Object boundary identity.
+The Full Picture Matrix remains an internal view, not a separate canonical artifact.
 
-## 6A. Tampermonkey Projection
+## 7. Current Item Boundary
+
+The canonical Documentation Workbench register still requires explicit review before changing the latest proposed meanings for:
+
+```text
+ITEM-114 / stable target lifecycle clarifications;
+ITEM-124 / linked repository Notes expansion;
+ITEM-125 or a new ID / Tampermonkey Notes and GitHub Implementation Idea.
+```
+
+This route-alignment update removes stale file references and Batch 3B transition text but does not silently accept those item transformations.
+
+## 8. Tampermonkey Projection
 
 Owners:
 
@@ -96,130 +137,38 @@ planning/documentation/tools/tampermonkey/README.md
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-Accepted surfaces:
+Projected current Documentation Workbench routes use:
 
 ```text
-Orientation → planning/README.md + planning/direction-registry.md;
-Directions  → accepted Direction Registries;
-Use Cases   → accepted/provisional-supported Use-Case Registries;
-Commands    → planning/planning-use-case-map.md.
+DIR-DOCUMENTATION-WORKBENCH
+UC-DW-DOC-REF → Repository Documentation Change And Reference Review
+UC-DW-ITEM-FULL-PICTURE → Planning Meaning To Repository
+UC-DW-STRUCTURED-MESSAGE → Structured User Message Composer
 ```
 
-Boundaries:
+The proposed Linked Notes Use Case is not projected as accepted until its canonical item/Use-Case transition is reviewed.
 
-- the helper does not own semantic entries, commands or permissions;
-- Adaptive and Full share one definition;
-- command-related Use Cases do not duplicate command execution;
-- item-formation command is projected only from the accepted root UCM route;
-- Chat/AI/Work-State remains provisional;
-- the helper performs no repository write, Git or external network behavior.
+The helper remains projection-only and performs no repository write, Git, commit, push or external network behavior.
 
-## 6B. Batch 6 Planning-Owner Consistency Audit
+## 9. Historical Batch Notes
 
-Checked current owners and references:
+Earlier accepted batches introduced:
 
-```text
-33 current Batch 1–5 root/reusable/local owner files;
-planning/planning-use-case-map.md;
-planning/documentation/reviewable-agent-output-and-commands-workflow.md;
-planning/documentation/documentation-update-workflow.md;
-planning/documentation/profiles/scenario-domain-slice-docs-profile.md;
-planning/documentation/profiles/scenario-domain-slice-use-case-field-kit.md.
-```
+- reusable planning principles and terminology;
+- Direction/Use-Case registries and root command routes;
+- `сформируй айтемы / form items`;
+- `ITEM-124 / FIRST-CLASS-NAMED-NOTES`;
+- deferred `ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION`;
+- preliminary project-local Scenario/DATA/Behavior files.
 
-Validation result:
+The preliminary project-local Scenario workspace and reference-link experiments are now retired from the current file set. Their removal does not accept a runtime/storage/parser architecture.
+
+## 10. Remaining Work
 
 ```text
-terminology:
-  retired InformationItem / Origin wording appears only in explicit
-  retirement rules, negative boundaries, transformation history
-  or preserved source messages;
-
-entities:
-  no active Source Idea or Planning Item Candidate entity;
-
-ownership:
-  registries own semantic entries;
-  UCM owns executable commands and canonical English names;
-  workflows own repeated behavior;
-  project-local files own concrete state;
-  Tampermonkey owns projection only;
-
-links:
-  45 Markdown links in the checked current owner set resolved;
-  all 20 userscript owner/source paths resolved in the checked
-  owner set or through direct current-main verification;
-
-Planning Items:
-  51 active items preserved;
-  ITEM-121 / ITEM-122 / ITEM-123 preserved;
-  portable/application-native and managed-item boundaries preserved;
-
-Tampermonkey:
-  JavaScript syntax check passed;
-  one Orientation, four Directions, twelve Use Cases
-  and eleven projected UCM commands;
-  projected command English names match the root UCM;
-  no external network, repository-write, commit or push behavior.
-```
-
-Corrections were limited to stale Batch 4/5/6 transition/status statements. No semantic identities, item counts, command routes or runtime architecture were changed.
-
-## 6C. Accepted Form Items, Notes And Helper-Insertion Update
-
-```text
-root UCM:
-  сформируй айтемы / form items added;
-
-Planning Items:
-  51 → 53;
-  ITEM-124 / FIRST-CLASS-NAMED-NOTES;
-  ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION;
-  ITEM-99 / ITEM-106 / ITEM-112 updated;
-
-Documentation/Reference workflow:
-  direct active set 30 → 31 through ITEM-124;
-
-Tampermonkey:
-  projected UCM command count 11 → 12;
-  Form Planning Items redirects to Commands;
-  command insertion gains exact-first lookup, one-click locking,
-  timing diagnostics and clipboard fallback.
-```
-
-`ITEM-125` remains a Working / Needs Prototype implementation idea. This update does not accept storage architecture, multi-target Note behavior or dependency semantics for Note relations.
-
-## 7. Remaining Work
-
-```text
+- explicit Planning Item review for stable-target and Linked Notes transformations;
+- prototype evidence for impact review, AI transfer and Notes;
 - Chat/AI/Work-State trigger-to-result review;
-- Prototype-Depth Scenario/Domain/Slice methodology;
-- runtime/storage/parser/Markdown-reference architecture.
+- optional prototype-depth Scenario/Domain/Slice methodology;
+- runtime/storage/parser/credential architecture only after evidence and decisions.
 ```
-
-Runtime implementation outside the Tampermonkey planning-helper syntax/projection boundary was not audited or implemented by these documentation batches.
-
-## 6D. Item-Backed Scenario Reference Object Update
-
-```text
-Planning Item count:
-  remains 53;
-
-Scenario workspace:
-  14 preliminary Scenario Reference Objects;
-  36 separate Scenario DATA Reference Objects;
-  67 separate Behavior Item Reference Objects;
-  one definition file per Scenario Object;
-  ITEM-107 AI-expanded transfer and ITEM-123 configurable-convention behavior included;
-
-traceability:
-  Scenario -- derived from --> Planning Item;
-  complete item bodies are not copied;
-
-change review:
-  changed source Planning Item marks dependent scenario objects/files review-needed;
-  no automatic scenario rewrite;
-  no automatic downstream mutation of the Planning Item.
-```
-
-No root UCM command, Tampermonkey projection, domain model, Slice plan or runtime/storage architecture was added.

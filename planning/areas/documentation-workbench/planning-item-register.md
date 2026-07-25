@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Item Register — Repository-Native Planning Reset
 
 Status: active project-local source-linked register / Batch 3A current item set
-Doc version: v1.0.0-repository-native-reset
+Doc version: v1.0.1-scenario-and-experiment-route-cleanup
 
 Repository owner:
 
@@ -55,7 +55,7 @@ ordinary Markdown in a Git repository
 
 The application-heavy Workbench model remains a deferred alternative where explicitly preserved. It is not the current baseline.
 
-Detailed Scenario/DATA/Behavior files remain physically present until Batch 3B performs a complete coverage audit. They are not current high-level owners.
+The project-local Scenario/DATA/Behavior workspace has completed its coverage audit and is removed. Useful current meaning is represented by the Planning Draft, current item bodies and workflow owners; Git history preserves the former files.
 
 ## 2. Counts And Disposition
 
@@ -800,7 +800,7 @@ Context: explicit acceptance of the corrected plan plus the requirement to move 
 - Status: **active selected current meaning**.
 - Former code/name: `DOC-LAYER-OVERLAY` — application overlay over the documentation layer.
 - Kind: solution boundary / working environment.
-- Sources: `SRC-N1`, `SRC-N9`, `SRC-N15`, `SRC-N22`, `SRC-N95`; checked support in [`reference-link-experiment.md`](reference-link-experiment.md).
+- Sources: `SRC-N1`, `SRC-N9`, `SRC-N15`, `SRC-N22`, `SRC-N95`; historical ordinary-Markdown navigation evidence is preserved in Git history; there is no active experiment owner.
 
 #### Complete current meaning
 
@@ -885,7 +885,7 @@ Derived indexes, caches, search data, temporary generated transfer copies and lo
 - Status: **active selected current meaning**.
 - Former code/name: `REVIEWED-REFERENCE-REFRESH`.
 - Kind: change-impact review requirement.
-- Sources: `SRC-N2`, `SRC-N26`, `SRC-N28`, `SRC-N37`, `SRC-N45`, `SRC-N94`; checked experiment: [`reference-link-experiment.md`](reference-link-experiment.md).
+- Sources: `SRC-N2`, `SRC-N26`, `SRC-N28`, `SRC-N37`, `SRC-N45`, `SRC-N94`; historical experiment context is preserved in Git history; there is no active experiment owner.
 
 #### Complete current meaning
 
@@ -900,7 +900,7 @@ A review can end by:
 
 #### Current representation boundary
 
-An ordinary Markdown link is navigation only. A dependency/review obligation requires adjacent explicit metadata. Exact syntax remains an Implementation Idea; the experiment currently uses hidden link-adjacent metadata.
+An ordinary Markdown link is navigation only. A dependency/review obligation requires adjacent explicit metadata. Exact syntax remains an Implementation Idea; no active experiment file owns or proves a final marker syntax.
 
 #### Acceptance
 
@@ -915,7 +915,7 @@ An ordinary Markdown link is navigation only. A dependency/review obligation req
 - Status: **active selected current meaning**.
 - Former code/name: `QUIET-MARKDOWN-MARKERS`.
 - Kind: representation quality constraint.
-- Sources: `SRC-N35`, `SRC-N95`; checked experiment: [`reference-link-experiment.md`](reference-link-experiment.md).
+- Sources: `SRC-N35`, `SRC-N95`; historical experiment context is preserved in Git history; there is no active experiment owner.
 
 #### Complete current meaning
 
@@ -957,7 +957,7 @@ Loading the scope into App Memory is not part of the selected baseline.
 - Status: **active selected current meaning**.
 - Former code/name: `AI-EXPANDED-COPY`.
 - Kind: non-mutating transfer capability.
-- Sources: `SRC-N44`; checked experiment: [`reference-link-experiment.md`](reference-link-experiment.md).
+- Sources: `SRC-N44`; historical experiment context is preserved in Git history; there is no active experiment owner.
 
 #### Complete current meaning
 
@@ -1069,7 +1069,7 @@ A future helper may provide creation, filtering or target-related views, but:
 - Status: **active selected current meaning**.
 - Former code/name: `GENERAL-REFERENCE-TARGETS`.
 - Kind: navigation and addressability.
-- Sources: `SRC-N61`, `SRC-N72`, `SRC-N73`, `SRC-N96`; checked experiment: [`reference-link-experiment.md`](reference-link-experiment.md).
+- Sources: `SRC-N61`, `SRC-N72`, `SRC-N73`, `SRC-N96`; historical experiment context is preserved in Git history; there is no active experiment owner.
 
 #### Complete current meaning
 
@@ -2089,7 +2089,7 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 ## 11. Open Questions
 
 1. Which helper provides the first measured independently useful result?
-2. What exact adjacent metadata syntax should replace the experiment's provisional `relation=depends-on` and `expand=allow` names?
+2. What exact adjacent metadata syntax should represent review-on-change and include meaning?
 3. Which stable-anchor convention should be used for Planning Item headings and other long-lived sections?
 4. Is GitHub always available in the intended workflow, or must every helper remain fully local-first?
 5. Which deferred application-heavy capabilities, if any, should be reconsidered after experience with the repository-native baseline?
@@ -2098,10 +2098,10 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 
 ```text
 review this register and planning-draft.md
-  → review the two current end-to-end workflows
-  → commit Batch 3A
-  → perform Batch 3B Scenario coverage audit
-  → only then delete scenarios/** and align root/projection routes.
+  → review the two accepted end-to-end workflows
+  → review the proposed Linked Notes workflow and item transformations
+  → inspect the unified Scenario/reusable/root/projection diff
+  → commit/push only after explicit diff approval.
 ```
 
 This file does not authorize implementation, archive creation, commit or push.

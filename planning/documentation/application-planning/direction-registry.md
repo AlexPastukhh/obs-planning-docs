@@ -65,7 +65,7 @@ optional downstream handoff:
   only after the specialized profile is selected.
 ```
 
-A Planning Draft is the high-level owner. A Full Picture Matrix may be a view inside it; no parallel Full Picture artifact is required.
+A Planning Draft is the high-level owner. Every sufficient Planning Draft contains complete Key Scenarios and one Full Picture Matrix view; no parallel Full Picture artifact is required.
 
 Use cases are supported capabilities. Some may be independently triggered, repeated or omitted.
 

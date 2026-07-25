@@ -1,7 +1,7 @@
 # OBS Workflow Activation Map
 
 Status: active project-specific root planning/task router
-Doc version: v0.12.0-form-items-command
+Doc version: v0.13.0-planning-draft-workbench-alignment
 Scope: decide which semantic registry, reusable workflow and project-local owner to read before answering or editing in OBS planning work.
 
 ## 1. Default Rule
@@ -32,9 +32,9 @@ Registry activation does not grant repository permissions.
 | Command behavior | `planning/planning-use-case-map.md` | Owner named in route | UCM owns trigger, English name, output and permissions. |
 | Planning Item formation / `сформируй айтемы` | Root UCM | Application-planning Use-Case Registry, formation workflow, review template, input conventions, selected source and current item owners | `form items`; reviewable output only, no repository edit. |
 | Planning Item reconciliation | Root UCM | Application-planning registry, drafting workflow, selected items and complete owners | `сверь айтемы` remains read-only. |
-| Item-backed Full Picture | Application-planning Use-Case Registry | Drafting workflow, Planning Draft template and current local owners | Full Picture does not replace item bodies. |
-| Planning Item / Full Picture product workflow | Documentation Workbench Use-Case Registry | Local Full Picture, accepted workflow, register, model and downstream workflow | Reusable method and registries synchronized. |
-| Documentation / Reference Object workflow | Documentation Workbench Use-Case Registry | Local Full Picture, workflow, model and affected items | Managed items do not repeat confirmation. |
+| Item-backed Planning Draft | Application-planning Use-Case Registry | Drafting workflow, Planning Draft template and current local owners | Complete Key Scenarios and one Full Picture Matrix are required for sufficiency; item bodies stay canonical. |
+| Planning Meaning To Repository workflow | Documentation Workbench Use-Case Registry | Local Planning Draft, accepted workflow, register and downstream workflow | Reusable method and registries synchronized. |
+| Repository documentation/reference review workflow | Documentation Workbench Use-Case Registry | Local Planning Draft, current workflow and affected items | Stable links and explicit relation meanings remain distinct. |
 | Current reality | Application-planning Use-Case Registry | Drafting workflow, current-reality template and current owner | Descriptive; no future architecture acceptance. |
 | Detailed Scenario/Domain/Slice | Application-planning registries | SDS profile/field kit and project owners | Profile-limited; prototype-depth adaptation deferred. |
 | Maintain registries | Root Direction Registry | Registry workflow/templates, affected registries and navigation owners | UCM changes only for executable commands. |
@@ -42,7 +42,7 @@ Registry activation does not grant repository permissions.
 | Replacement archive | Root UCM | Reviewable-output workflow, documentation-update workflow, relevant owners/targets | Full replacements, exact base validation, one-line apply/diff command. |
 | Tampermonkey helper | `planning/README.md` for Orientation; registries for Directions/Use Cases; UCM for Commands | Projection workflow, tools README and userscript | Projection only; Adaptive/Full changes read depth, not permissions. |
 | Documentation update | `planning/documentation/README.md` | Documentation preflight and update workflows | Plan-first for broad changes. |
-| Documentation Workbench planning | Local registries | Area README, Full Picture, affected owner and targeted sources | Local concrete state. |
+| Documentation Workbench planning | Local registries | Area README, Planning Draft, affected workflow/model owner and targeted sources | Local concrete state. |
 | Conspects | `planning/areas/conspects/README.md` | Local owners | Local application. |
 | Parallel work | Parallel workflow | Workspace template | Not promoted to root Direction without explicit decision. |
 
