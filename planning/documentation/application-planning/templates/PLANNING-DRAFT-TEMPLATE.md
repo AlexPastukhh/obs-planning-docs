@@ -1,77 +1,152 @@
 # Planning Draft Template
 
 Status: active reusable recommended template
-Doc version: v0.3.0-scenario-handoff
-Purpose: one candidate item-backed end-to-end plan/Full Picture for achieving a result. It may serve as a root draft or a competing branch draft.
+Doc version: v1.0.0-planning-draft-owner
+Purpose: one item-backed high-level plan for a problem, goal, workflow, algorithm, solution direction or no-change decision.
 
 Use only sections that improve the current work. This is not a mandatory schema.
+
+A Planning Draft groups, orders, summarizes and links Planning Items. Complete item meanings remain at their canonical item owners.
+
+A separate `Planning Full Picture` artifact is not required. A Full Picture Matrix may be an optional view inside this file.
 
 ## 1. Draft Identity
 
 | Field | Value |
 |---|---|
-| Draft ID | <ID> |
+| Draft ID | <ID when useful> |
 | Title | <title> |
-| Draft type | root / child Complete Picture / branch / other |
 | Status | exploratory / active / accepted-current / selected / rejected / deferred |
-| Parent Full Picture / draft | <reference or none> |
-| Semantic home | <reference or none/unresolved> |
-| Definition location | <path/location> |
-| Source reality | <references> |
+| Planning direction | <problem, goal, workflow, algorithm or solution direction> |
+| Source/current-context references | <references> |
 | Current documentation state | Working / Needs Documentation / Documented/Integrated / unresolved |
 
-## 2. Planning Item Basis
+## 2. Desired Result
 
-### Contributing Planning Items
-
-| Item | Complete meaning owner | Role in this picture | Source/evidence link | Documentation state |
-|---|---|---|---|---|
-| <item reference> | <canonical item owner> | <role> | <source/provenance> | <state> |
-
-Rules:
-
-- link to canonical item bodies;
-- do not copy item bodies into a second independently edited owner;
-- significant statements without an item must identify source, inference or question status;
-- preserve item-to-picture traceability.
-
-### Child Full Pictures — Optional
-
-| Child picture | Independent trigger/result | Semantic home | Parent summary/relationship | Status |
-|---|---|---|---|---|
-| <reference> | <why independently traversable> | <home> | <summary> | <status> |
-
-The child owns complete local meaning. The parent owns coordination and a readable route.
-
-## 3. What Needs To Be Achieved
-
-<Current candidate desired result.>
+<Current candidate desired result, including no-change when that is a real option.>
 
 **Status:** candidate / confirmed / needs evidence / rejected / superseded
 
-## 4. Acceptance Criteria
+## 3. Acceptance Criteria — Optional
 
-| ID | Criterion | Status | Evidence/source | Related item/workflow/test |
+| ID | Criterion | Status | Evidence/source | Related Planning Item/workflow/test |
 |---|---|---|---|---|
 | AC-01 | <criterion> | candidate | <reference> | <reference> |
 
 Do not invent criteria merely to fill the table.
 
-## 5. Boundaries And Non-Goals
+## 4. Boundaries And Non-Goals
 
 ### Included
 
-<scope>
+<Scope currently included.>
 
 ### Excluded / Non-Goals
 
-<scope deliberately not promised>
+<Scope deliberately not promised.>
 
-## 6. Current Reality — Optional
+## 5. Current Reality — Optional
 
 <Reference or summarize checked current reality without introducing accepted future design.>
 
-## 7. Candidate End-To-End Complete Picture
+Use a separate Current Reality Capture only when independent descriptive depth improves review.
+
+## 6. Planning Item Map
+
+Order links so a reader can understand the planning direction without reading an unrelated ledger first.
+
+| Order / group | Planning Item | Role in this draft | Related Implementation Ideas | Status / note |
+|---|---|---|---|---|
+| <order/group> | <link to canonical item body> | <workflow, constraint, question, risk, decision, acceptance, other> | <links or none> | <state/compact context> |
+
+Rules:
+
+```text
+- link to canonical item bodies;
+- do not copy complete item bodies into this draft;
+- keep separate Implementation Ideas as linked Planning Items;
+- significant statements without an item identify
+  source, inference, question or decision status;
+- preserve source and item-to-draft traceability;
+- use grouping only when it improves the reading route.
+```
+
+## 7. Scenario Coverage — Optional
+
+Use Scenario depth proportionally.
+
+### Key Scenarios
+
+| Scenario | Why key | Actor/context | Goal | Observable result | Planning Items | Depth/status |
+|---|---|---|---|---|---|---|
+| <scenario> | core value / risk / differentiation / viability / other | <context> | <goal> | <result> | <links> | summary / complete inline / linked detail |
+
+`Key Scenario` is a role of Scenario, not a separate entity type.
+
+### Other Scenarios
+
+| Scenario | Actor/context | Goal | Observable result | Planning Items | Current depth |
+|---|---|---|---|---|---|
+| <scenario> | <context> | <goal> | <result> | <links> | summary / complete inline / linked detail |
+
+A non-key Scenario may be complete inside this Planning Draft when a separate artifact would add more coordination than value.
+
+### Detailed Inline Scenario — Optional
+
+#### <Scenario name>
+
+**Actor/context:** <context>
+
+**Goal:** <goal>
+
+**Observable result:** <result>
+
+**Entry / preconditions:** <supported content>
+
+**Main flow:**
+
+1. <observable behavior>
+
+**Branches / alternatives / failures:** <supported content>
+
+**Invariants / acceptance / outcomes:** <supported content>
+
+**Questions / risks / evidence needs:** <supported content>
+
+**Planning Items:** <links>
+
+## 8. Full Picture Matrix — Optional
+
+Use this compact view when it improves cross-linking between behavior, implementation thinking and validation.
+
+| Flow point | Scenario view | Implementation view | Questions / risks / validation | Status / follow-up |
+|---|---|---|---|---|
+| <point> | <concise meaning + item links> | <Implementation Idea links> | <question/risk/prototype links> | <state/action> |
+
+Rules:
+
+```text
+- keep cells concise;
+- link to complete Planning Items and other owners;
+- allow many-to-many links;
+- do not copy complete question, risk, prototype
+  or implementation bodies into the table;
+- treat the matrix as a view, not a canonical artifact.
+```
+
+## 9. Valuable Behaviors / Functional Workflows — Optional
+
+| ID / link | Behavior or outcome | Why valuable | Independent trigger/result? | Related criteria/items | Status |
+|---|---|---|---|---|---|
+| FW-01 | <behavior> | <value> | yes / no / unresolved | <references> | candidate |
+
+Create a separate Functional Workflow Draft only when independent review, reuse or testing value justifies it.
+
+A Functional Workflow is not automatically a branch, an End-To-End Workflow or an implementation Slice.
+
+## 10. End-To-End Workflow — Optional
+
+Use this section only when the planned result includes a process whose continuity must be reviewed.
 
 ### Trigger / Accepted Input
 
@@ -87,25 +162,17 @@ Do not invent criteria merely to fill the table.
 
 **Intended result:** <result>
 
-**Current plan/behavior:** <actions or behavior>
+**Current planned behavior/actions:** <behavior>
 
-**Questions:** <when present>
+**Questions / risks / assumptions:** <when present>
 
-**Problems:** <when present>
-
-**Risks/assumptions:** <when present>
-
-**Ideas/alternatives:** <when present>
+**Ideas / alternatives:** <when present>
 
 **Decisions:** <when present>
 
-**Prototype/test need:** <when present>
+**Prototype/test need and evidence:** <when present>
 
-**Evidence:** <when present>
-
-**Reconsider when:** <optional invalidation condition>
-
-**Contributing items:** <references>
+**Contributing Planning Items:** <links>
 
 ---
 
@@ -133,33 +200,41 @@ Do not invent criteria merely to fill the table.
 
 <understandable result or explicit unresolved/deferred state>
 
-A peer Complete Picture must not supply a missing mandatory stage.
+A peer workflow must not supply a missing mandatory stage of this workflow.
 
-## 8. Existing Solutions And Alternative Workflows — Optional
+## 11. Existing Solutions And Alternatives — Optional
 
 | Option | What it covers | Strengths | Limitations | Checked status | Current disposition |
 |---|---|---|---|---|---|
 | <option> | <coverage> | <strengths> | <limits> | checked / not checked | open / selected / rejected / defer |
 
-Research Existing Solutions remains optional and proportional.
+Research existing solutions remains optional and proportional. Include no change, simplification or use of an existing tool when they are real alternatives.
 
-## 9. Valuable Behaviors / Functional Workflows — Optional
-
-| ID | Behavior/outcome | Why valuable | Independent trigger/result? | Related criteria/items | Status |
-|---|---|---|---|---|---|
-| FW-01 | <behavior> | <value> | yes/no | <references> | candidate |
-
-Create a separate Functional Workflow Draft only when independently useful/testable. It is not automatically a Complete Picture.
-
-## 10. Shared Concepts, Integrations And Constraints — Optional
+## 12. Shared Concepts, Integrations And Constraints — Optional
 
 <Concepts, environment, integration boundaries and constraints shared by the plan.>
 
 Supporting models do not replace workflow continuity.
 
-## 11. Concern Coverage And Observability — Optional
+## 13. Questions, Risks And Assumptions — Optional
 
-### Suggestions / Applied Concerns
+### Questions
+
+| ID / item | Question | Priority | Blocking | Status | Answer/source |
+|---|---|---:|---:|---|---|
+| Q-01 | <question> | high | no | open | <answer> |
+
+### Risks And Assumptions
+
+| ID / item | Meaning | Type | Evidence state | Decision/work affected | Follow-up |
+|---|---|---|---|---|---|
+| <link> | <meaning> | risk / assumption | reported / inferred / checked | <reference> | <action> |
+
+Keep complete bodies at their Planning Item owners when they exist.
+
+## 14. Concerns And Derived Observability — Optional
+
+### Suggestions / Applied Work
 
 | Target | Concern | Stage/status | Concrete record/work target | Result/next review |
 |---|---|---|---|---|
@@ -169,7 +244,6 @@ Supporting models do not replace workflow continuity.
 
 | Indicator | Count/status | Drill-down target |
 |---|---:|---|
-| Unreviewed suggestions | <n> | <references> |
 | Open questions | <n> | <references> |
 | Risks/assumptions needing evidence | <n> | <references> |
 | Prototype/test needs | <n> | <references> |
@@ -177,13 +251,17 @@ Supporting models do not replace workflow continuity.
 
 Do not replace concrete records with one opaque quality score.
 
-## 12. Tests And Prototypes — Optional
+## 15. Tests, Prototypes And Evidence — Optional
 
-| ID | Uncertainty/key situation | Minimum test | Success/failure/inconclusive criteria | Decision affected | Status |
+| ID / link | Uncertainty or key situation | Minimum test/research | Success/failure/inconclusive criteria | Decision affected | Status/result |
 |---|---|---|---|---|---|
 | P-01 | <uncertainty> | <test> | <criteria> | <decision> | proposed |
 
-## 13. Branch Analysis — Parent Only
+Observed evidence may update several affected owners. Do not turn a technical result into an accepted solution or architecture automatically.
+
+## 16. Branch Analysis — Optional
+
+Create a separate branch only when an alternative needs independent planning or testing.
 
 ### Decision Point
 
@@ -195,7 +273,7 @@ Do not replace concrete records with one opaque quality score.
 
 ### Evidence Gap
 
-<Why options cannot yet be selected/rejected.>
+<Why options cannot yet be selected or rejected.>
 
 ### Branch Inventory
 
@@ -205,72 +283,60 @@ Do not replace concrete records with one opaque quality score.
 
 ### Comparison And Current Preference
 
-<comparison without hiding uncertainty>
+<Comparison without hiding uncertainty.>
 
-## 14. Branch Metadata — Branch Only
+For a separate Branch Planning Draft, record its parent decision, inherited source/version and stop/reject condition inside that branch. Do not create a special child Complete Picture type.
 
-| Field | Value |
-|---|---|
-| Divergence point | <parent decision/step> |
-| Inherited source/version | <reference> |
-| Why this branch exists | <reason> |
-| Upstream-change status | aligned / proposes parent change / snapshot |
-| Stop/reject condition | <condition> |
+## 17. Decisions
 
-## 15. Questions
-
-| ID | Question | Priority | Blocking | Status | Answer/source |
-|---|---|---:|---:|---|---|
-| Q-01 | <question> | high | no | open | <answer> |
-
-## 16. Decisions
-
-| ID | Decision | Rationale/source | Status | Reconsider when |
+| ID / item | Decision | Rationale/source | Status | Reconsider when |
 |---|---|---|---|---|
 | D-01 | <decision> | <rationale> | proposed / accepted / rejected | <condition> |
 
-## 17. Detailed Scenario Handoff — Optional
+## 18. Selected Planning Depth
 
-Use when this Planning Draft / Full Picture is ready to create clean Scenario Reference Objects.
+| Layer / representation | Selected? | Current form or owner | Why sufficient / why deeper work is needed | Escalation or reconsideration signal |
+|---|---|---|---|---|
+| Planning Items | yes | <owners> | <reason> | <signal> |
+| Scenario depth | summary / inline / separate / not used | <form> | <reason> | <signal> |
+| Full Picture Matrix | yes / no | this draft | <reason> | <signal> |
+| Domain | yes / no | <owner or none> | <reason> | <signal> |
+| Slice | yes / no | <owner or none> | <reason> | <signal> |
+| Prototype/research detail | embedded / separate / none | <owner> | <reason> | <signal> |
 
-| Scenario candidate | Actor/context | Goal | Observable result | Contributing Planning Items | Planned definition file | Status |
-|---|---|---|---|---|---|---|
-| <scenario> | <actor/context> | <goal> | <result> | <item refs> | <path> | proposed / ready / deferred |
+Do not treat an omitted layer as missing work when its meaning is already sufficiently covered.
 
-Handoff rules:
+## 19. Optional Detailed-Planning Route
+
+Use only after the specialized profile is explicitly selected:
 
 ```text
-Scenario
-  -- derived from -->
-Planning Item;
-
-Scenario
-  → separate Scenario DATA Reference Objects;
-  → separate Behavior Item Reference Objects.
+planning/documentation/profiles/scenario-domain-slice-docs-profile.md
+planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md
 ```
 
-Do not copy complete item bodies. Do not add unprovided DATA. A later item change marks linked scenario artifacts review-needed and does not rewrite them automatically.
+Record the selected representation and project-local owners. Do not infer separate DATA, Behavior, Domain or Slice artifacts merely because this draft contains Scenarios.
 
-## 18. Repository / Documentation Handoff — Optional
+## 20. Repository / Documentation Handoff — Optional
 
 ```text
-accepted items/picture
+accepted items and Planning Draft
   → repository semantic reconciliation
   → owner placement
   → File Update Plan
-  → replacement files/diff review.
+  → replacement files and diff review.
 ```
 
 | Meaning | Current owner | Resulting owner/action | Dependency impact | Status |
 |---|---|---|---|---|
 | <meaning> | <owner> | <action> | <impact> | <status> |
 
-This template does not authorize repository edits, commit or push.
+This template does not authorize repository edits, archive creation, commit or push.
 
-## 19. Current Conclusion
+## 21. Current Conclusion
 
 <What is currently understood, selected or still uncertain.>
 
-## 20. Next Action
+## 22. Next Action
 
 <Next concrete planning, research, prototype, reconciliation or review action.>

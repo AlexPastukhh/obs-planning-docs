@@ -1,47 +1,48 @@
 # Prototype Plan Template
 
-Status: provisional reusable recommended template
-Doc version: v0.2.1-draft-tree-additive
+Status: active reusable recommended template
+Doc version: v1.0.0-canonical-owner-impact
+Purpose: plan the minimum experiment needed to reduce a material uncertainty and inform named planning decisions.
 
-## Prototype Identity
+## 1. Prototype Identity
 
 | Field | Value |
 |---|---|
 | ID | not provided |
 | Title | not provided |
-| Related artifact/decision | not provided |
-| Related criterion/assumption/workflow/branch | not provided |
+| Related Planning Items / decisions | not provided |
+| Related Planning Draft / Scenario / workflow / branch | not provided |
 | Artifact mode | embedded / separate / not provided |
 | Status | proposed / ready / running / completed / cancelled / not provided |
 
+A small prototype may remain embedded in its Planning Item or Planning Draft. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
 
-A small prototype may remain embedded in its Planning Draft. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
-
-## Hypothesis
-
-```text
-not provided
-```
-
-## Question Being Tested
+## 2. Hypothesis
 
 ```text
 not provided
 ```
 
-## Why Test This Now
+## 3. Question Being Tested
 
 ```text
 not provided
 ```
 
-## Prototype Type
+## 4. Why Test This Now
 
 ```text
-workflow / UX / technical spike / integration / value / horizontal / vertical / PoC / pilot / not provided
+not provided
 ```
 
-## Scope
+## 5. Prototype Type
+
+```text
+workflow / UX / technical spike / integration / value /
+horizontal / vertical / PoC / pilot / not provided
+```
+
+## 6. Scope
 
 ### Included
 
@@ -55,122 +56,118 @@ not provided
 not provided
 ```
 
-## What Is Real
+## 7. What Is Real
 
 ```text
 not provided
 ```
 
-## What Is Simulated
+## 8. What Is Simulated
 
 ```text
 not provided
 ```
 
-## Required Inputs
+## 9. Required Inputs
 
 ```text
 not provided
 ```
 
-## Execution Steps
+## 10. Execution Steps
 
 1. not provided
 
-## Evidence To Collect
+## 11. Evidence To Collect
 
 | Evidence | Collection method | Why it matters |
 |---|---|---|
 | not provided | not provided | not provided |
 
-## Success Criteria
+## 12. Result Interpretation Criteria
+
+### Supported
 
 ```text
 not provided
 ```
 
-## Failure Criteria
+### Rejected
 
 ```text
 not provided
 ```
 
-## Inconclusive Criteria
+### Inconclusive
 
 ```text
 not provided
 ```
 
-## Timebox
+## 13. Timebox
 
 ```text
 not provided
 ```
 
-## Decision Affected
+## 14. Decision Affected
 
 ```text
 not provided
 ```
 
-## Expected Draft-Tree Impact
+## 15. Expected Planning Impact
 
-### If Supported
+List only owners that may genuinely change.
 
-```text
-not provided
-```
+| Possible result | Affected Planning Item / Draft / Scenario / workflow / decision | Expected update or review | Evidence required before update |
+|---|---|---|---|
+| Supported | not provided | not provided | not provided |
+| Rejected | not provided | not provided | not provided |
+| Inconclusive | not provided | not provided | not provided |
 
-### If Rejected
+A prototype result does not update every linked artifact automatically. Return observed evidence to the smallest complete owners that actually depend on the tested uncertainty.
 
-```text
-not provided
-```
-
-### If Inconclusive
-
-```text
-not provided
-```
-
-## Code Fate
+## 16. Code Fate
 
 ```text
 throwaway / evolutionary / not provided
 ```
 
-## Risks And Limitations
+## 17. Risks And Limitations
 
 ```text
 not provided
 ```
 
-## Questions
+## 18. Questions
 
-| ID | Question | Priority | Blocking | Status | Answer |
+| ID / item | Question | Priority | Blocking | Status | Answer |
 |---|---|---:|---:|---|---|
 | not provided | not provided | not provided | not provided | open | not provided |
 
-## Critical Remarks
+## 19. Critical Remarks
 
 | ID | Remark | Why it matters | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | open |
 
-## Related Ideas
+## 20. Related Ideas
 
-| ID | Idea | Relation | Status |
+| Planning Item / ID | Idea | Relation | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | undecided |
 
-## User Answers
+## 21. User Answers
 
 ```text
 not provided
 ```
 
-## Decisions
+## 22. Decisions
 
-| ID | Decision | Rationale | Status |
+| ID / item | Decision | Rationale | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | undecided |
+
+This template does not authorize implementation, repository edits, archive creation, commit or push.

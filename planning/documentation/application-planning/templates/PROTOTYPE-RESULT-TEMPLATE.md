@@ -1,145 +1,138 @@
 # Prototype Result Template
 
-Status: provisional reusable recommended template
-Doc version: v0.2.1-draft-tree-additive
+Status: active reusable recommended template
+Doc version: v1.0.0-canonical-owner-impact
+Purpose: record observed prototype evidence, interpret it proportionally and return it to the planning owners and decisions that actually depend on it.
 
-## Related Prototype Plan
-
-```text
-not provided
-```
-
-
-## Related Planning Artifact
-
-```text
-root draft / functional workflow / branch / criterion / assumption / decision / not provided
-```
-
-## Hypothesis
+## 1. Related Prototype Plan
 
 ```text
 not provided
 ```
 
-## Actual Setup
+## 2. Related Planning Owners
+
+```text
+Planning Items / Planning Draft / Scenario / workflow /
+branch / criterion / assumption / risk / decision / not provided
+```
+
+## 3. Hypothesis
 
 ```text
 not provided
 ```
 
-## What Was Built Or Simulated
+## 4. Actual Setup
 
 ```text
 not provided
 ```
 
-## Observed Results
+## 5. What Was Built Or Simulated
 
 ```text
 not provided
 ```
 
-## Evidence
+## 6. Observed Results
+
+```text
+not provided
+```
+
+## 7. Evidence
 
 | Evidence | Observation | Reliability/limitation |
 |---|---|---|
 | not provided | not provided | not provided |
 
-## Unexpected Findings
+## 8. Unexpected Findings
 
 ```text
 not provided
 ```
 
-## Limitations
+## 9. Limitations
 
 ```text
 not provided
 ```
 
-## Result
+## 10. Result
 
 ```text
 supported / rejected / inconclusive / not provided
 ```
 
-## Decision
+## 11. Decision
 
 ```text
 not provided
 ```
 
-## General Planning Impact
+A technical result does not become an accepted solution or architecture decision automatically.
 
-| Affected item | Previous status | New status / proposed update | Evidence |
-|---|---|---|---|
-| criterion / assumption / decision / step / workflow / branch | not provided | not provided | not provided |
+## 12. Affected Planning Owners
 
-## Upstream Impact
+| Affected owner | Owner type | Previous state | Evidence-backed update or review need | Resulting/proposed state | Action/status |
+|---|---|---|---|---|---|
+| not provided | Planning Item / Planning Draft / Scenario / workflow / branch / criterion / assumption / risk / decision / other | not provided | not provided | not provided | not provided |
+
+Use the smallest complete owners that actually depend on the tested uncertainty.
+
+Scenario impact is represented here when a Scenario exists. No separate Scenario transition section is required.
+
+## 13. Upstream Impact — Optional
 
 ```text
 not provided
 ```
 
-## Branch Impact
+Use only when the evidence changes a source requirement, assumption, Planning Item or shared decision.
+
+## 14. Branch Impact — Optional
 
 ```text
 select / reject / keep / create branch / no change / not provided
 ```
 
-## Legacy Stage Impact — Optional Transition Compatibility
+Use only when a real branch decision exists.
 
-## Impact On Product Legend
+## 15. New Questions
 
-```text
-not provided
-```
-
-## Impact On Scenarios
-
-```text
-not provided
-```
-
-## Impact On Solution Overview
-
-```text
-not provided
-```
-
-## New Questions
-
-| ID | Question | Priority | Blocking | Status | Answer |
+| ID / item | Question | Priority | Blocking | Status | Answer |
 |---|---|---:|---:|---|---|
 | not provided | not provided | not provided | not provided | open | not provided |
 
-## Follow-Up Experiment
+## 16. Follow-Up Experiment
 
 ```text
 not provided
 ```
 
-## Critical Remarks
+## 17. Critical Remarks
 
 | ID | Remark | Why it matters | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | open |
 
-## Related Ideas
+## 18. Related Ideas
 
-| ID | Idea | Relation | Status |
+| Planning Item / ID | Idea | Relation | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | undecided |
 
-## User Answers
+## 19. User Answers
 
 ```text
 not provided
 ```
 
-## Decisions
+## 20. Decisions
 
-| ID | Decision | Rationale | Status |
+| ID / item | Decision | Rationale | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | undecided |
+
+This template does not authorize repository edits, archive creation, commit or push.

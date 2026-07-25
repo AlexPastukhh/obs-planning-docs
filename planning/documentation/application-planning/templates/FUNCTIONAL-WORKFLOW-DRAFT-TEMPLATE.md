@@ -1,9 +1,17 @@
 # Functional Workflow Draft Template
 
-Status: provisional reusable recommended template
-Purpose: one independently understandable and testable behavior line inside the same candidate application or solution.
+Status: active reusable recommended template
+Doc version: v1.0.0-solution-neutral
+Purpose: one independently understandable and testable behavior line inside a candidate solution, workflow or Planning Draft.
 
-A functional workflow is not a competing solution branch and is not yet an implementation slice.
+A Functional Workflow is not automatically:
+
+```text
+- a competing solution branch;
+- a separate End-To-End Workflow;
+- an implementation Slice;
+- an application-only artifact.
+```
 
 ## 1. Workflow Identity
 
@@ -11,13 +19,13 @@ A functional workflow is not a competing solution branch and is not yet an imple
 |---|---|
 | Workflow ID | <FW-XX> |
 | Title | <title> |
-| Parent/root draft | <reference> |
+| Parent Planning Draft | <reference> |
 | Status | candidate / active / validated / rejected / deferred |
-| Related app-level criteria | <AC IDs> |
+| Related criteria / Planning Items | <links> |
 
-## 2. Valuable User Outcome
+## 2. Valuable Outcome
 
-<What useful outcome this workflow should produce.>
+<What useful outcome this workflow should produce and for whom or what.>
 
 **Status:** candidate / confirmed / needs evidence
 
@@ -37,7 +45,7 @@ A functional workflow is not a competing solution branch and is not yet an imple
 
 ### FW-STEP-01 — <name>
 
-#### User/System Behavior
+#### Observable Behavior
 
 <What happens.>
 
@@ -51,17 +59,19 @@ A functional workflow is not a competing solution branch and is not yet an imple
 
 #### Decisions — Optional
 
-<Local accepted/proposed decisions.>
+<Local accepted or proposed decisions.>
 
 #### What Must Be Tested — Optional
 
-<uncertainty and evidence>
+<Uncertainty and evidence need.>
 
-#### Implementation Thoughts / Future Implementation Notes — Optional
+#### Implementation Ideas — Optional
 
-| ID | Thought | Source | Status | Test needed |
+| Planning Item / ID | Thought | Source | Status | Test needed |
 |---|---|---|---|---|
-| IT-01 | <idea> | user / AI / source | open alternative | <test> |
+| <link> | <idea> | user / AI / checked source | open alternative | <test> |
+
+Implementation Ideas remain separate proposed Planning Items when they need independent reuse or review.
 
 ---
 
@@ -69,9 +79,9 @@ A functional workflow is not a competing solution branch and is not yet an imple
 
 <Repeat as needed.>
 
-## 6. Workflow Acceptance Criteria
+## 6. Workflow Acceptance Criteria — Optional
 
-| ID | Criterion | Status | Evidence/test |
+| ID / item | Criterion | Status | Evidence/test |
 |---|---|---|---|
 | FW-AC-01 | <criterion> | candidate | <reference> |
 
@@ -83,9 +93,11 @@ A functional workflow is not a competing solution branch and is not yet an imple
 
 | Related workflow | Relationship | Dependency/conflict | Coordination owner |
 |---|---|---|---|
-| <FW> | before / after / shares concept / conflicts / composes | <description> | root / local |
+| <FW> | before / after / shares concept / conflicts / composes | <description> | parent Planning Draft / local owner |
 
-Cross-workflow decisions normally belong in the application root draft.
+Cross-workflow decisions normally belong in the parent Planning Draft or another explicitly selected shared owner.
+
+Several Functional Workflows are not peer End-To-End Workflows merely because they are listed separately. A mandatory trigger-to-result route must remain reviewable as one complete workflow.
 
 ## 9. Existing Alternatives — Optional
 
@@ -95,19 +107,19 @@ Cross-workflow decisions normally belong in the application root draft.
 
 ## 10. Tests And Evidence
 
-| ID | Question/uncertainty | Test/evidence | Result | Decision affected |
+| ID / link | Question/uncertainty | Test/evidence | Result | Decision affected |
 |---|---|---|---|---|
 | T-01 | <question> | <test> | proposed / supported / rejected / inconclusive | <decision> |
 
 ## 11. Questions
 
-| ID | Question | Priority | Blocking | Status | Answer |
+| ID / item | Question | Priority | Blocking | Status | Answer |
 |---|---|---:|---:|---|---|
 | Q-01 | <question> | high | no | open | <answer> |
 
 ## 12. Decisions
 
-| ID | Decision | Rationale | Status | Reconsider when |
+| ID / item | Decision | Rationale | Status | Reconsider when |
 |---|---|---|---|---|
 | D-01 | <decision> | <rationale> | proposed | <condition> |
 
@@ -117,4 +129,6 @@ Cross-workflow decisions normally belong in the application root draft.
 
 ## 14. Next Action
 
-<Next local analysis/test/review action.>
+<Next local analysis, test or review action.>
+
+This template does not authorize repository edits, archive creation, commit or push.
