@@ -1,0 +1,11 @@
+{
+  "name": "obs-linked-notes-prototype",
+  "private": true,
+  "version": "0.1.3",
+  "type": "commonjs",
+  "scripts": {
+    "build": "node build-linked-notes.mjs",
+    "test": "node --test tests/linked-notes-core.test.mjs tests/note-markdown-codec.test.mjs tests/repository-target.test.mjs tests/github-contents-client.test.mjs tests/linked-notes-app-policy.test.mjs",
+    "verify": "node verify-linked-notes.mjs"
+  }
+}

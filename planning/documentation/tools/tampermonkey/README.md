@@ -1,8 +1,8 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.18.1-workflow-integrity-reconciliation
-Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable Orientation/Direction/Use-Case/Command projection and project planning runtime tools.
+Doc version: v0.19.1-linked-notes-recovery-boundary
+Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local Linked Notes remote-write prototype.
 
 ## 1. Tracked scripts
 
@@ -29,6 +29,13 @@ planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   Its floating launcher hides while Dashboard is open; Alt+F1 and Tools -> Capture remain available.
   It also provides the one-click 10/20/30-minute session timer, sound/system notifications,
   and one-click finished-session capture into the shared pending outbox.
+
+planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.user.js
+  project-local test-only Linked Notes prototype generated from linked-notes/src/**;
+  keeps local drafts in a dedicated IndexedDB database;
+  performs GitHub Contents API create/update only after explicit Save GitHub, Copy to current target or confirmed bound-target recovery;
+  binds a verified Note to one visible owner/repository/branch/path identity, uses SHA conflict protection and verifies by read-back;
+  never runs local git, commit or push, and does not accept a production architecture.
 ```
 
 Do not create competing tracked copies of the same script.
@@ -37,8 +44,10 @@ Do not create competing tracked copies of the same script.
 
 ```text
 Repo Markdown files are durable source of truth.
-Tampermonkey scripts are browser-side capture/projection tools.
-They do not write repo files, run git, commit or push.
+Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
+By default they do not write repository files or perform external network calls.
+The Linked Notes Prototype is the narrow test-only exception: after an explicit user action it may call the GitHub Contents API for one visibly configured or visibly bound owner/repository/branch/path, with path validation, one-operation locking, SHA-aware conflict handling and exact read-back verification.
+The Linked Notes Prototype never runs local git, commit or push; its direct API write does not make the prototype a production architecture or planning authority.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
 Tampermonkey command projection does not define command meaning.
 Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by UCM commands.
@@ -89,6 +98,14 @@ Dashboard IndexedDB:
   database: obsPlanningCache
   store: snapshots
   record: dashboard:v1
+
+Linked Notes Prototype private GM storage:
+  obsLinkedNotesPrototype:v1:settings
+  obsLinkedNotesPrototype:v1:githubToken
+
+Linked Notes Prototype IndexedDB:
+  database: obsLinkedNotesPrototype
+  store: notes
 ```
 
 Rules:
@@ -114,6 +131,10 @@ Rules:
 - Exporting does not clear pending records.
 - Pending records clear only after reviewed repository application plus reconciliation, or explicit user action.
 - Conflict records block additional Finish actions until resolved.
+- Linked Notes title/body drafts persist to their dedicated IndexedDB store before ordinary panel close, search, settings rerender or Note navigation.
+- Linked Notes token remains only in private GM storage; Note records and repository Markdown must not contain it.
+- A verified Linked Note stores owner/repository/branch/path together with SHA and verified hash; changing settings cannot silently move or recreate it.
+- Linked Notes external writes remain explicit, test-target-only and limited to GitHub Contents API create/update plus read-back verification; Save, Copy and confirmed bound-target recovery cannot run concurrently.
 - chatgpt.com and chat.openai.com are different storage origins; use chatgpt.com as the canonical V1 origin.
 ```
 
@@ -467,5 +488,6 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
-- Do not use any helper to write to the repo or perform external network calls.
+- Except for the explicitly documented Linked Notes Prototype test boundary, do not use any helper to write repository files or perform external network calls.
+- Do not let the Linked Notes exception expand beyond explicit Save/Copy/confirmed recovery actions, the visibly configured or bound GitHub target, validated repository paths, one-operation locking, SHA-aware create/update and read-back verification; it never authorizes local git, commit or push.
 ```
