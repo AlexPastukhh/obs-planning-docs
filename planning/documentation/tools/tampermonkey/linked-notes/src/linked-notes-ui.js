@@ -19,6 +19,25 @@
     return Math.ceil(edge + measured + gap);
   }
 
+  function panelViewportLayout(viewportWidth, viewportHeight) {
+    const width = Number.isFinite(Number(viewportWidth)) ? Math.max(0, Number(viewportWidth)) : 0;
+    const height = Number.isFinite(Number(viewportHeight)) ? Math.max(0, Number(viewportHeight)) : 0;
+    const edge = 12;
+    const right = width >= 960
+      ? Math.min(320, Math.max(220, Math.round(width * 0.2)))
+      : edge;
+    const bottom = height >= 520
+      ? Math.min(144, Math.max(96, Math.round(height * 0.14)))
+      : edge;
+    return {
+      edge,
+      right,
+      bottom,
+      width: Math.max(240, Math.min(980, width - right - edge)),
+      height: Math.max(240, Math.min(760, height - bottom - edge))
+    };
+  }
+
   function shouldCloseOnEscape(event, state) {
     return Boolean(event && event.key === 'Escape' && state && state.open && !state.busy);
   }
@@ -61,6 +80,7 @@
       this.workspaceManagerOpen = false;
       this.workspaceEditorDirty = false;
       this._draftTimer = null;
+      this._onViewportChange = () => this._positionPanel();
       this._onDocumentKeydown = (event) => {
         if (!shouldCloseOnEscape(event, { open: this.open, busy: this.state.busy })) return;
         event.preventDefault();
@@ -80,12 +100,20 @@
       document.documentElement.appendChild(this.host);
       this.shadow = this.host.attachShadow({ mode: 'open' });
       document.addEventListener('keydown', this._onDocumentKeydown, true);
+      if (typeof window !== 'undefined') {
+        window.addEventListener('resize', this._onViewportChange, { passive: true });
+        if (window.visualViewport) window.visualViewport.addEventListener('resize', this._onViewportChange, { passive: true });
+      }
       this.render();
     }
 
     dispose() {
       this.persistAllDraftsNow().catch(() => {});
       document.removeEventListener('keydown', this._onDocumentKeydown, true);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', this._onViewportChange);
+        if (window.visualViewport) window.visualViewport.removeEventListener('resize', this._onViewportChange);
+      }
       if (this.host) this.host.remove();
       this.host = null;
       this.shadow = null;
@@ -213,6 +241,17 @@
       else apply();
     }
 
+    _positionPanel() {
+      const panel = this.shadow && this.shadow.querySelector('.panel');
+      if (!panel || typeof window === 'undefined') return;
+      const viewport = window.visualViewport || window;
+      const layout = panelViewportLayout(viewport.width || window.innerWidth, viewport.height || window.innerHeight);
+      panel.style.right = `${layout.right}px`;
+      panel.style.bottom = `${layout.bottom}px`;
+      panel.style.width = `${layout.width}px`;
+      panel.style.height = `${layout.height}px`;
+    }
+
     render() {
       if (!this.shadow) return;
       const current = this.state.current;
@@ -257,12 +296,12 @@
           :host { all: initial; --bg:#111318; --surface:#191c23; --surface-2:#20242d; --surface-3:#292e39; --border:#3b4250; --text:#eef1f6; --muted:#aab2c0; --accent:#8eb4ff; --success:#79d69a; --danger:#ff8d8d; }
           *, *::before, *::after { box-sizing: border-box; }
           button, input, textarea, select { font: 13px/1.35 system-ui, sans-serif; }
-          .launcher { position: fixed; right: 102px; bottom: 18px; z-index: 2147483646; border: 1px solid #343a46; border-radius: 999px; padding: 10px 15px; background: #202123; color: #fff; box-shadow: 0 5px 18px rgba(0,0,0,.42); cursor: pointer; }
-          .panel { position: fixed; right: 18px; bottom: 66px; z-index: 2147483646; width: min(980px, calc(100vw - 36px)); height: min(760px, calc(100vh - 92px)); display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 260px 1fr; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.55); font: 13px/1.4 system-ui, sans-serif; color-scheme: dark; }
-          .sidebar { display: flex; flex-direction: column; min-width: 0; background: var(--surface); border-right: 1px solid var(--border); }
+          .launcher { position: fixed; right: 102px; bottom: 18px; z-index: 2147483647; border: 1px solid #343a46; border-radius: 999px; padding: 10px 15px; background: #202123; color: #fff; box-shadow: 0 5px 18px rgba(0,0,0,.42); cursor: pointer; }
+          .panel { position: fixed; right: 12px; bottom: 96px; z-index: 2147483647; width: min(980px, calc(100vw - 24px)); height: min(760px, calc(100dvh - 108px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); min-width: 0; min-height: 0; display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 260px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.55); font: 13px/1.4 system-ui, sans-serif; color-scheme: dark; }
+          .sidebar { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); }
           .toolbar, .editor-toolbar, .status, .workspace-bar { padding: 10px; border-bottom: 1px solid var(--border); }
           .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
-          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) 1fr; gap: 8px; align-items: center; background: var(--surface); }
+          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) auto; gap: 8px; align-items: center; background: var(--surface); }
           .workspace-summary { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
           input, textarea, select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 7px; background: var(--surface-2); color: var(--text); }
           input::placeholder, textarea::placeholder { color: #7f8999; }
@@ -271,13 +310,13 @@
           button.primary { background: #315b9d; color: #fff; border-color: #4a78bd; }
           button.danger { color: var(--danger); }
           button:disabled, input:disabled, textarea:disabled, select:disabled { opacity: .5; cursor: not-allowed; }
-          .notes { overflow: auto; padding: 7px; }
+          .notes { flex: 1 1 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; padding: 7px; }
           .note-row { width: 100%; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 6px; text-align: left; }
           .note-row span { color: var(--muted); font-size: 11px; }
           .note-row.active { outline: 2px solid var(--success); }
-          .main { min-width: 0; display: flex; flex-direction: column; }
+          .main { min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
           .editor-toolbar { display: flex; gap: 7px; flex-wrap: wrap; background: var(--surface); }
-          .editor { display: grid; grid-template-rows: auto 1fr auto auto auto; min-height: 0; gap: 8px; padding: 12px; overflow: auto; }
+          .editor { flex: 1 1 0; display: grid; grid-template-rows: auto minmax(220px, 1fr) auto auto auto; min-height: 0; gap: 8px; padding: 12px 12px 72px; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
           textarea { min-height: 220px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
           .links { display: grid; gap: 6px; }
           .link-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto auto; gap: 6px; align-items: center; border: 1px solid var(--border); border-radius: 7px; padding: 6px; background: var(--surface); }
@@ -300,7 +339,7 @@
           .empty { color: var(--muted); padding: 8px; }
           h3 { margin: 0 0 7px; font: 600 15px/1.3 system-ui, sans-serif; }
           .hint { color: var(--muted); font-size: 12px; }
-          @media (max-width: 700px) { .panel { grid-template-columns: 1fr; } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid { grid-template-columns: 1fr; } }
+          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid { grid-template-columns: 1fr; } }
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Notes</button>
         <section class="panel" aria-label="Linked Notes Prototype" aria-busy="${busy ? 'true' : 'false'}">
@@ -315,6 +354,7 @@
                 ${workspaceOptions || '<option value="">No saved workspace</option>'}
               </select>
               <div class="workspace-summary" title="${escapeHtml(this.state.workspaceTargetLabel)}">${escapeHtml(activeWorkspace ? `${this.state.chatContextLabel} · ${this.state.workspaceTargetLabel}` : 'Create a workspace before remote access.')}</div>
+              <button data-action="manage-workspaces" ${disabled}>Manage workspaces</button>
             </div>
             <div class="editor-toolbar">
               <button class="primary" data-action="save-local" ${current && !busy ? '' : 'disabled'}>Save local</button>
@@ -366,6 +406,7 @@
         </section>`;
 
       this._positionLauncher();
+      this._positionPanel();
       const details = this.shadow.querySelector('[data-role="workspace-manager"]');
       if (details) details.ontoggle = () => { this.workspaceManagerOpen = details.open; };
       const title = this.shadow.querySelector('[data-role="title"]');
@@ -401,6 +442,19 @@
       });
       const workspaceSelect = this.shadow.querySelector('[data-role="workspace-select"]');
       if (workspaceSelect) workspaceSelect.onchange = () => this._withAllDrafts('onSelectWorkspace', workspaceSelect.value, this.workspaceDraftState());
+      const manageWorkspaces = this.shadow.querySelector('[data-action="manage-workspaces"]');
+      if (manageWorkspaces) manageWorkspaces.onclick = async () => {
+        await this.persistAllDraftsNow();
+        this.workspaceManagerOpen = true;
+        this.render();
+        const editorScroll = this.shadow.querySelector('.editor');
+        const manager = this.shadow.querySelector('[data-role="workspace-manager"]');
+        if (manager) {
+          manager.open = true;
+          if (editorScroll) editorScroll.scrollTop = Math.max(0, manager.offsetTop - 12);
+          else if (typeof manager.scrollIntoView === 'function') manager.scrollIntoView({ block: 'start', inline: 'nearest' });
+        }
+      };
       const newWorkspace = this.shadow.querySelector('[data-action="new-workspace"]');
       if (newWorkspace) newWorkspace.onclick = () => this._withAllDrafts('onNewWorkspace', this.workspaceDraftState());
       const saveWorkspace = this.shadow.querySelector('[data-action="save-workspace"]');
@@ -454,6 +508,7 @@
     LinkedNotesUI,
     escapeHtml,
     launcherRightOffset,
+    panelViewportLayout,
     shouldCloseOnEscape,
     blankWorkspaceEditor,
     mergeWorkspaceEditorPatch

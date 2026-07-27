@@ -1,8 +1,8 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.2.2-prototype`
-Scope: one local-first Tampermonkey vertical slice for creating, linking, persisting and reopening repository-owned Markdown Notes across reusable GitHub workspaces.
+Version: `0.2.3-prototype`
+Scope: one local-first Tampermonkey vertical slice for creating, linking, persisting and reopening repository-owned Markdown Notes across reusable GitHub workspaces with a viewport-safe scrollable panel.
 
 ## 1. Owners And Boundaries
 
@@ -39,6 +39,9 @@ imported and opened URL links are restricted to portable HTTP(S);
 unknown codec metadata survives normalization, local storage, remote load and re-encoding;
 local Save never clears conflict, remote-deleted or verification-unknown recovery state;
 unsaved workspace-form values survive close, Escape, rerenders and route changes;
+the Note list and editor are independently scrollable inside a viewport-bounded panel;
+wide viewports reserve bottom-right space for neighbouring OBS widgets and the panel remains above competing overlays;
+workspace creation is reachable from a persistent top-bar Manage workspaces action;
 no generic Reference Object store;
 no category-backed Notes projection;
 no automatic link repair;
@@ -150,7 +153,7 @@ src/workspace-store.js
   multi-tab-safe workspace registry, explicit per-chat selection, one shared token, revisioned writes and deterministic v1 migration.
 
 src/linked-notes-ui.js
-  dark Shadow DOM UI, durable in-memory workspace-form draft, reset confirmation, dynamic launcher offset and Escape handling.
+  dark Shadow DOM UI, viewport-safe panel placement, independent internal scrolling, visible workspace-manager access, durable in-memory workspace-form draft, reset confirmation, dynamic launcher offset and Escape handling.
 
 src/linked-notes-app.js
   composition, route-aware explicit workspace selection, open-time state refresh, draft persistence and remote orchestration.
@@ -197,6 +200,8 @@ Automated verification covers:
 - route-safe new-chat session selection that never creates a binding merely because a stable chat ID appears;
 - immutable verified Note targets after workspace switching;
 - launcher offset calculation;
+- viewport safe-area sizing for wide, compact and short windows;
+- independent list/editor scrolling and persistent workspace-manager access;
 - Escape-close guard while a remote operation is active;
 - preservation and explicit reset of unsaved workspace-form values;
 - open-time refresh after another tab changes workspace state;
@@ -217,12 +222,12 @@ https://chatgpt.com/*
 https://chat.openai.com/*
 ```
 
-The launcher measures its own width and moves left by that width plus a gap, so it does not occupy the default right-edge launcher position used by other OBS helpers.
+The launcher measures its own width and moves left by that width plus a gap. The open panel reserves a bottom-right safe area on wide viewports, uses the highest browser stacking layer and keeps its Note list and editor independently scrollable. On compact windows it uses the available viewport while remaining internally scrollable.
 
 ## 7. First Workspace Setup
 
 1. Open `Notes`.
-2. Expand `Manage GitHub workspaces`.
+2. Press `Manage workspaces` in the top bar; the panel opens the manager and scrolls it into view.
 3. Enter a workspace name, for example `GDoc`.
 4. Enter either `AlexPastukhh/gdoc` or its full GitHub repository URL.
 5. Enter an existing branch.
@@ -267,6 +272,10 @@ Deleting a workspace removes only local workspace records and affected chat mapp
 
 - dark theme consistent with ChatGPT dark mode;
 - `Notes` launcher shifted left by its measured width plus a gap;
+- wide viewports reserve bottom-right space for other OBS widgets instead of allowing them to cover Notes content;
+- the panel uses the highest stacking layer and recalculates its bounded dimensions when the viewport changes;
+- the Note list and editor have independent internal vertical scrolling, including access to Links and workspace settings below the editor;
+- `Manage workspaces` remains visible in the top bar and opens the manager at its scroll position;
 - `Escape` persists the title/body draft and closes an idle open panel;
 - `Escape` is ignored while a remote operation is active;
 - close, search, settings, workspace switch and Note navigation persist the current Note draft first;
@@ -302,7 +311,8 @@ Run the exact test sequence in [`PROTOTYPE-CHECKLIST.md`](PROTOTYPE-CHECKLIST.md
 
 ```text
 automated verification;
-launcher position and dark theme;
+launcher position, overlay safe area, viewport resize and internal scrolling;
+visible top-bar workspace-manager access;
 Escape and draft recovery;
 workspace creation from URL and owner/repo;
 shared-token behavior;
@@ -360,6 +370,7 @@ Workspace and chat binding data are intentionally absent from this format. The N
 - Do not run two remote operations concurrently.
 - Do not close the panel through Escape during a remote operation.
 - Do not discard unsaved title/body or workspace-form text during route changes or UI rerenders.
+- Do not let panel content become unreachable outside the viewport or behind another fixed OBS widget.
 - Do not persist the default workspace as a chat binding merely because an unmapped chat was opened.
 - Do not update workspace/default/chat-map state from a stale tab without the cooperative lock and revision verification.
 - Do not hide unresolved targets.

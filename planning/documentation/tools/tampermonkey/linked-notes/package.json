@@ -1,7 +1,7 @@
 {
   "name": "obs-linked-notes-prototype",
   "private": true,
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "commonjs",
   "scripts": {
     "build": "node build-linked-notes.mjs",

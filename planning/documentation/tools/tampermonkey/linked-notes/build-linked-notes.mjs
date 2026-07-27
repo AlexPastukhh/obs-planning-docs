@@ -19,8 +19,8 @@ const sourceFiles = [
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.2.2-prototype
-// @description  Local-first linked Markdown Notes with route-safe explicit per-chat context and verified writes.
+// @version      0.2.3-prototype
+// @description  Viewport-safe linked Markdown Notes with explicit per-chat context and verified writes.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*

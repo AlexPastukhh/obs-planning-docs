@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.2.2-prototype`
+Prototype version: `0.2.3-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values.
 
@@ -14,6 +14,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | Browser/version | |
 | Tampermonkey/version | |
 | ChatGPT origin | `chatgpt.com` / `chat.openai.com` |
+| Viewport width × height and zoom | |
 | Userscript SHA-256 | |
 | Commit/ref containing tested source | |
 | Test repository A | |
@@ -29,15 +30,20 @@ Use one copy for one concrete browser/repository test run. Never record token va
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| 1 | Run `node verify-linked-notes.mjs`. | All 76 tests pass; source syntax, generated syntax and generated freshness pass. | |
+| 1 | Run `node verify-linked-notes.mjs`. | All 79 tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.2.2-prototype`; one `Notes` launcher appears. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.2.3-prototype`; one `Notes` launcher appears. | |
 
 ## 3. Launcher, Theme And Draft Close
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
 | 4 | Compare Notes with existing right-edge OBS launchers. | Notes is shifted left by approximately its own width plus a gap and is not hidden. | |
+| 4a | Open Notes with the S2/timer widget or another bottom-right OBS widget visible. | On a wide viewport, Notes reserves bottom-right space and no overlay covers its content. | |
+| 4b | Reduce the viewport height until Links and workspace settings no longer fit at once. | The editor gains an internal scrollbar; the bottom content remains reachable without scrolling the ChatGPT page. | |
+| 4c | Add enough Notes to exceed the sidebar height. | The Note list scrolls independently while status remains reachable. | |
+| 4d | Press the top-bar `Manage workspaces` button from the top of the editor. | The manager opens and is scrolled into view without losing the Note or workspace drafts. | |
+| 4e | Resize the browser while Notes is open. | Panel dimensions and safe area update; controls remain inside the viewport. | |
 | 5 | Open Notes in dark ChatGPT. | Panel, controls, status and manager use a readable dark theme. | |
 | 6 | Create a Note, type title/body without Save local, then press `Escape`. | Note draft persists and the panel closes. | |
 | 7 | Reopen Notes. | Exact title/body from step 6 remains. | |
