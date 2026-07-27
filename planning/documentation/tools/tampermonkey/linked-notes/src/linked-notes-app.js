@@ -20,17 +20,14 @@
   }
 
   function cleanBasePath(value) {
+    const api = root.ObsLinkedNotes || {};
+    if (typeof api.cleanWorkspaceBasePath === 'function') return api.cleanWorkspaceBasePath(value);
     const text = String(value == null ? '' : value).replace(/\\/g, '/').trim() || 'prototype-fixtures/linked-notes';
-    if (/^[a-zA-Z]:\//.test(text) || text.startsWith('/') || text.startsWith('//') || /^file:\/\//i.test(text)) {
-      throw new TypeError('GitHub base path must be repository-relative.');
-    }
+    if (/^[a-zA-Z]:\//.test(text) || text.startsWith('/') || text.startsWith('//') || /^file:\/\//i.test(text)) throw new TypeError('GitHub base path must be repository-relative.');
     if (text.includes('://')) throw new TypeError('GitHub base path must not be a URL.');
     if (/[?#]/.test(text)) throw new TypeError('GitHub base path must not contain query or fragment syntax.');
-    if (/[\u0000-\u001f\u007f]/.test(text)) throw new TypeError('GitHub base path contains control characters.');
     const parts = text.split('/');
-    if (parts.some((segment) => !segment || segment === '.' || segment === '..')) {
-      throw new TypeError('GitHub base path contains an empty, . or .. segment.');
-    }
+    if (parts.some((segment) => !segment || segment === '.' || segment === '..')) throw new TypeError('GitHub base path contains an empty, . or .. segment.');
     return parts.join('/');
   }
 
@@ -46,6 +43,7 @@
   }
 
   function configuredTargetForNote(note, settings, fileSlug) {
+    if (!settings || !settings.owner || !settings.repo) throw new Error('Select or create a GitHub workspace first.');
     const remotePath = note && note.remote ? String(note.remote.path || '') : '';
     const fileName = fileNameFromPath(remotePath) || fileSlug(note.title, note.id);
     return {
@@ -69,12 +67,25 @@
       this.setValue = options.setValue || gmSet;
       this.clientFactory = options.clientFactory || null;
       this.confirmAction = options.confirmAction || ((message) => (typeof window !== 'undefined' && typeof window.confirm === 'function' ? window.confirm(message) : false));
+      this.locationProvider = options.locationProvider || (() => (typeof location !== 'undefined' ? location : { pathname: '' }));
+      this.setIntervalFn = options.setIntervalFn || ((fn, ms) => setInterval(fn, ms));
+      this.clearIntervalFn = options.clearIntervalFn || ((id) => clearInterval(id));
+      this.routePollMs = options.routePollMs || 750;
       this.store = options.store || new api.IndexedDbNoteStore();
+      this.workspaceStore = options.workspaceStore || (api.WorkspaceStore ? new api.WorkspaceStore({ api, getValue: this.getValue, setValue: this.setValue }) : null);
       this.ui = options.ui || new api.LinkedNotesUI({
         onNew: () => this.newNote(),
         onSelect: (id) => this.selectNote(id),
         onSearch: (query) => this.refreshList(query),
         onDraftChange: (note) => this.saveDraft(note),
+        onOpen: () => this.openPanel(),
+        onSelectWorkspace: (id, draftState) => this.selectWorkspace(id, draftState),
+        onNewWorkspace: (draftState) => this.beginNewWorkspace(draftState),
+        onSaveWorkspace: (workspace) => this.saveWorkspace(workspace),
+        onDeleteWorkspace: (id) => this.deleteWorkspace(id),
+        onSetDefaultWorkspace: (id) => this.setDefaultWorkspace(id),
+        onSaveToken: (token) => this.saveSharedToken(token),
+        onClearToken: () => this.clearSharedToken(),
         onSaveLocal: (note) => this.saveLocal(note),
         onSaveRemote: (note) => this.saveRemote(note),
         onCopyRemote: (note) => this.copyRemote(note),
@@ -85,46 +96,80 @@
         onAddLink: (note, input) => this.addLink(note, input),
         onRemoveLink: (note, linkId) => this.removeLink(note, linkId),
         onResolveLink: (note, linkId) => this.resolveLink(note, linkId),
-        onOpenLink: (linkId) => this.openLink(linkId),
-        onSaveSettings: (settings) => this.saveSettings(settings)
+        onOpenLink: (linkId) => this.openLink(linkId)
       });
       this.current = null;
-      this.settings = options.settings || { owner: '', repo: '', branch: 'main', basePath: 'prototype-fixtures/linked-notes', hasToken: false };
       this.search = '';
       this.remoteOperation = null;
+      this.workspaceState = { workspaces: [], chatWorkspaceMap: {}, defaultWorkspaceId: '', hasToken: false };
+      this.activeWorkspaceId = '';
+      this.currentChatKey = '';
+      this.sessionWorkspaceId = '';
+      this.sessionWorkspaceExplicit = false;
+      this.routeTimer = null;
+      if (options.settings && options.settings.owner && options.settings.repo) {
+        const workspace = api.normalizeWorkspace
+          ? api.normalizeWorkspace({ id: 'workspace-test', name: 'Test workspace', ...options.settings })
+          : { id: 'workspace-test', name: 'Test workspace', ...options.settings };
+        this.workspaceState = { workspaces: [workspace], chatWorkspaceMap: {}, defaultWorkspaceId: workspace.id, hasToken: Boolean(options.settings.hasToken) };
+        this.activeWorkspaceId = workspace.id;
+      }
+    }
+
+    _activeWorkspace() {
+      return this.workspaceState.workspaces.find((workspace) => workspace.id === this.activeWorkspaceId) || null;
     }
 
     _configuredTarget(note) {
-      return configuredTargetForNote(note, this.settings, this.api.fileSlug);
+      return configuredTargetForNote(note, this._activeWorkspace(), this.api.fileSlug);
     }
 
     _boundTarget(note) {
       const remote = this.api.normalizeRemote(note && note.remote);
-      if (!this.api.hasRemoteTargetIdentity(remote)) {
-        throw new Error('A repository owner, repository, branch and path are required for this recovery action.');
-      }
+      if (!this.api.hasRemoteTargetIdentity(remote)) throw new Error('A repository owner, repository, branch and path are required for this recovery action.');
       return remote;
     }
 
+    _workspaceEditor(workspace) {
+      if (!workspace) return { id: '', name: '', repositoryInput: '', branch: 'main', basePath: this.api.DEFAULT_WORKSPACE_BASE_PATH || 'prototype-fixtures/linked-notes' };
+      return {
+        id: workspace.id,
+        name: workspace.name,
+        repositoryInput: `${workspace.owner}/${workspace.repo}`,
+        branch: workspace.branch,
+        basePath: workspace.basePath
+      };
+    }
+
+    _workspaceUiState() {
+      const active = this._activeWorkspace();
+      const mapped = this.currentChatKey ? this.workspaceState.chatWorkspaceMap[this.currentChatKey] : '';
+      let chatContextLabel = 'New chat / default fallback';
+      if (this.currentChatKey && mapped === this.activeWorkspaceId) chatContextLabel = 'Saved for this chat';
+      else if (this.currentChatKey) chatContextLabel = 'Using the default workspace; not saved for this chat';
+      else if (this.sessionWorkspaceExplicit) chatContextLabel = 'Selected for this new-chat session';
+      return {
+        workspaces: this.workspaceState.workspaces,
+        activeWorkspaceId: this.activeWorkspaceId,
+        defaultWorkspaceId: this.workspaceState.defaultWorkspaceId,
+        workspaceEditor: this._workspaceEditor(active),
+        workspaceTargetLabel: active && this.api.workspaceTargetLabel ? this.api.workspaceTargetLabel(active) : '',
+        chatContextLabel,
+        hasToken: Boolean(this.workspaceState.hasToken)
+      };
+    }
+
     _remoteUiState(note = this.current) {
-      if (!note) {
-        return {
-          remoteTargetMismatch: false,
-          remoteTargetLabel: '',
-          remoteRecoveryAvailable: false,
-          busy: Boolean(this.remoteOperation)
-        };
-      }
+      if (!note) return { remoteTargetMismatch: false, remoteTargetLabel: '', remoteRecoveryAvailable: false, busy: Boolean(this.remoteOperation) };
       const remote = this.api.normalizeRemote(note.remote);
       const complete = this.api.hasCompleteRemoteIdentity(remote);
       const recoverableTarget = this.api.hasRemoteTargetIdentity(remote);
-      const recoverableStates = new Set([
-        this.api.NOTE_STATES.CONFLICT,
-        this.api.NOTE_STATES.REMOTE_DELETED,
-        this.api.NOTE_STATES.SAVE_FAILED
-      ]);
+      const recoverableStates = new Set([this.api.NOTE_STATES.CONFLICT, this.api.NOTE_STATES.REMOTE_DELETED, this.api.NOTE_STATES.SAVE_FAILED]);
+      const workspace = this._activeWorkspace();
+      let mismatch = false;
+      if (complete && workspace) mismatch = !this.api.sameRemoteTarget(remote, configuredTargetForNote(note, workspace, this.api.fileSlug));
       return {
-        remoteTargetMismatch: complete && !this.api.sameRemoteTarget(remote, this._configuredTarget(note)),
+        remoteTargetMismatch: mismatch,
         remoteTargetLabel: remoteTargetLabel(remote),
         remoteRecoveryAvailable: recoverableTarget && recoverableStates.has(note.state),
         busy: Boolean(this.remoteOperation)
@@ -132,59 +177,174 @@
     }
 
     _setUi(patch = {}) {
-      this.ui.setState({ ...this._remoteUiState(), ...patch });
+      this.ui.setState({ ...this._workspaceUiState(), ...this._remoteUiState(), ...patch });
     }
 
     async _runRemoteOperation(label, work) {
       if (this.remoteOperation) throw new Error(`Remote operation already in progress: ${this.remoteOperation}`);
       this.remoteOperation = label;
       this._setUi({ busy: true, status: label });
-      try {
-        return await work();
-      } finally {
-        this.remoteOperation = null;
-        this._setUi({ busy: false });
-      }
+      try { return await work(); }
+      finally { this.remoteOperation = null; this._setUi({ busy: false }); }
     }
 
     async _confirm(message) {
       return Boolean(await Promise.resolve(this.confirmAction(message)));
     }
 
+    _readChatKey() {
+      return this.api.chatKeyFromLocation ? this.api.chatKeyFromLocation(this.locationProvider()) : '';
+    }
+
+    async _chooseWorkspaceForCurrentChat() {
+      const state = this.workspaceState;
+      const mapped = this.currentChatKey ? state.chatWorkspaceMap[this.currentChatKey] : '';
+      const valid = (id) => state.workspaces.some((workspace) => workspace.id === id);
+      let selected = valid(mapped) ? mapped : '';
+      if (!selected && !this.currentChatKey && this.sessionWorkspaceExplicit && valid(this.sessionWorkspaceId)) selected = this.sessionWorkspaceId;
+      if (!selected && valid(state.defaultWorkspaceId)) selected = state.defaultWorkspaceId;
+      if (!selected && state.workspaces[0]) selected = state.workspaces[0].id;
+      this.activeWorkspaceId = selected || '';
+      if (!this.currentChatKey && !this.sessionWorkspaceExplicit) this.sessionWorkspaceId = this.activeWorkspaceId;
+    }
+
+    async refreshWorkspaceState(status) {
+      if (!this.workspaceStore) return this.workspaceState;
+      this.workspaceState = await this.workspaceStore.load();
+      await this._chooseWorkspaceForCurrentChat();
+      this._setUi({ status: status || 'Workspace state refreshed from Tampermonkey storage.' });
+      return this.workspaceState;
+    }
+
+    async openPanel() {
+      await this.refreshWorkspaceState('Workspace state refreshed when Notes opened.');
+    }
+
+    async _confirmWorkspaceDraftReset(draftState) {
+      if (!draftState || !draftState.dirty) return true;
+      return this._confirm('Discard unsaved changes in the workspace form?');
+    }
+
+    async beginNewWorkspace(draftState) {
+      if (!await this._confirmWorkspaceDraftReset(draftState)) {
+        this._setUi({ status: 'New workspace cancelled; the unsaved workspace form was preserved.' });
+        return false;
+      }
+      this._setUi({
+        workspaceEditor: this._workspaceEditor(null),
+        workspaceTargetLabel: '',
+        replaceWorkspaceEditor: true,
+        status: 'New workspace form ready.'
+      });
+      return true;
+    }
+
+    async _checkRouteChange() {
+      const nextChatKey = this._readChatKey();
+      if (nextChatKey === this.currentChatKey || this.remoteOperation) return;
+      if (this.ui && typeof this.ui.persistAllDraftsNow === 'function') await this.ui.persistAllDraftsNow();
+      else if (this.ui && typeof this.ui.persistDraftNow === 'function') await this.ui.persistDraftNow();
+      this.currentChatKey = nextChatKey;
+      this.sessionWorkspaceId = '';
+      this.sessionWorkspaceExplicit = false;
+      if (this.workspaceStore) this.workspaceState = await this.workspaceStore.load();
+      await this._chooseWorkspaceForCurrentChat();
+      const mappedWorkspaceId = this.currentChatKey ? this.workspaceState.chatWorkspaceMap[this.currentChatKey] : '';
+      const status = !this.currentChatKey
+        ? 'New chat uses the default workspace until an explicit selection is made.'
+        : mappedWorkspaceId
+          ? 'Saved chat workspace restored.'
+          : 'This chat is not linked to a workspace. The default is active until you select a workspace explicitly.';
+      this._setUi({ status });
+    }
+
+    _startRouteWatch() {
+      if (this.routeTimer || typeof this.setIntervalFn !== 'function') return;
+      this.routeTimer = this.setIntervalFn(() => { this._checkRouteChange().catch((error) => this._setUi({ status: `Route context error: ${error.message || error}` })); }, this.routePollMs);
+    }
+
     async start() {
-      this.settings = await this.loadSettings();
+      if (this.workspaceStore) this.workspaceState = await this.workspaceStore.load();
+      this.currentChatKey = this._readChatKey();
+      await this._chooseWorkspaceForCurrentChat();
       this.ui.mount();
       await this.refreshList('');
-      this._setUi({ settings: this.settings, status: 'Local Notes ready. Remote writes require explicit Save GitHub.' });
+      this._setUi({ replaceWorkspaceEditor: true, status: this._activeWorkspace() ? 'Local Notes ready. Workspace fallback is not saved to a chat until you select it explicitly.' : 'Local Notes ready. Create a GitHub workspace before remote access.' });
+      this._startRouteWatch();
     }
 
     dispose() {
+      if (this.routeTimer) this.clearIntervalFn(this.routeTimer);
+      this.routeTimer = null;
       if (this.ui) this.ui.dispose();
     }
 
-    async loadSettings() {
-      const saved = await this.getValue(SETTINGS_KEY, {});
-      const token = await this.getValue(TOKEN_KEY, '');
-      return {
-        owner: String(saved.owner || ''),
-        repo: String(saved.repo || ''),
-        branch: String(saved.branch || 'main'),
-        basePath: cleanBasePath(saved.basePath),
-        hasToken: Boolean(token)
-      };
+    async selectWorkspace(workspaceId, draftState) {
+      await this.refreshWorkspaceState();
+      if (!this.workspaceState.workspaces.some((workspace) => workspace.id === workspaceId)) throw new Error('Workspace not found.');
+      if (!await this._confirmWorkspaceDraftReset(draftState)) {
+        this._setUi({ status: 'Workspace switch cancelled; the unsaved workspace form was preserved.' });
+        return this._activeWorkspace();
+      }
+      this.activeWorkspaceId = workspaceId;
+      this.sessionWorkspaceId = workspaceId;
+      this.sessionWorkspaceExplicit = !this.currentChatKey;
+      if (this.currentChatKey && this.workspaceStore) {
+        this.workspaceState = { ...(await this.workspaceStore.bindChat(this.currentChatKey, workspaceId)), hasToken: this.workspaceState.hasToken };
+      }
+      this._setUi({ replaceWorkspaceEditor: true, status: this.currentChatKey ? 'Workspace selected and saved for this chat.' : 'Workspace selected for this new-chat session.' });
+      return this._activeWorkspace();
     }
 
-    async saveSettings(settings) {
-      const next = {
-        owner: String(settings.owner || '').trim(),
-        repo: String(settings.repo || '').trim(),
-        branch: String(settings.branch || 'main').trim() || 'main',
-        basePath: cleanBasePath(settings.basePath)
-      };
-      await this.setValue(SETTINGS_KEY, next);
-      if (settings.token) await this.setValue(TOKEN_KEY, String(settings.token).trim());
-      this.settings = { ...next, hasToken: Boolean(settings.token) || this.settings.hasToken };
-      this._setUi({ settings: this.settings, status: 'GitHub test settings saved. A bound Note is not silently moved to the new target.' });
+    async saveWorkspace(input) {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      const result = await this.workspaceStore.upsert(input);
+      this.workspaceState = { ...result.state, hasToken: this.workspaceState.hasToken };
+      this.activeWorkspaceId = result.workspace.id;
+      this.sessionWorkspaceId = result.workspace.id;
+      this.sessionWorkspaceExplicit = !this.currentChatKey;
+      if (this.currentChatKey) {
+        this.workspaceState = { ...(await this.workspaceStore.bindChat(this.currentChatKey, result.workspace.id)), hasToken: this.workspaceState.hasToken };
+      }
+      this._setUi({ replaceWorkspaceEditor: true, status: `Workspace saved: ${result.workspace.name}.` });
+      return result.workspace;
+    }
+
+    async setDefaultWorkspace(workspaceId) {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      this.workspaceState = { ...(await this.workspaceStore.setDefault(workspaceId)), hasToken: this.workspaceState.hasToken };
+      this._setUi({ status: 'Default workspace updated.' });
+    }
+
+    async deleteWorkspace(workspaceId) {
+      if (!workspaceId || !this.workspaceStore) throw new Error('Workspace not found.');
+      const workspace = this.workspaceState.workspaces.find((item) => item.id === workspaceId);
+      const confirmed = await this._confirm(`Delete the local workspace ${workspace ? workspace.name : workspaceId}? Notes and remote repository files will not be deleted.`);
+      if (!confirmed) { this._setUi({ status: 'Workspace deletion cancelled.' }); return; }
+      const result = await this.workspaceStore.remove(workspaceId);
+      this.workspaceState = { ...result.state, hasToken: this.workspaceState.hasToken };
+      if (this.sessionWorkspaceId === workspaceId) {
+        this.sessionWorkspaceId = '';
+        this.sessionWorkspaceExplicit = false;
+      }
+      await this._chooseWorkspaceForCurrentChat();
+      this._setUi({ replaceWorkspaceEditor: true, status: `Workspace deleted locally. ${result.removedChatKeys.length} chat binding(s) fell back safely; Notes and remote files were untouched.` });
+    }
+
+    async saveSharedToken(token) {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      await this.workspaceStore.setToken(token);
+      this.workspaceState.hasToken = true;
+      this._setUi({ status: 'Shared GitHub token stored privately for all workspaces.' });
+    }
+
+    async clearSharedToken() {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      const confirmed = await this._confirm('Clear the shared GitHub token from Tampermonkey storage?');
+      if (!confirmed) { this._setUi({ status: 'Token clear cancelled.' }); return; }
+      await this.workspaceStore.clearToken();
+      this.workspaceState.hasToken = false;
+      this._setUi({ status: 'Shared GitHub token cleared.' });
     }
 
     async refreshList(query = this.search) {
@@ -194,7 +354,7 @@
         const refreshed = notes.find((item) => item.id === this.current.id) || await this.store.get(this.current.id);
         if (refreshed) this.current = this.api.normalizeNote(refreshed);
       }
-      this._setUi({ notes, current: this.current, search: this.search, settings: this.settings });
+      this._setUi({ notes, current: this.current, search: this.search });
     }
 
     async saveDraft(note) {
@@ -247,7 +407,8 @@
       if (this.api.hasCompleteRemoteIdentity(remote)) {
         return { owner: remote.owner, repo: remote.repo, branch: remote.branch };
       }
-      return { owner: this.settings.owner, repo: this.settings.repo, branch: this.settings.branch };
+      const workspace = this._activeWorkspace();
+      return workspace ? { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch } : { owner: '', repo: '', branch: '' };
     }
 
     async addLink(note, input) {
@@ -290,17 +451,11 @@
         repo: String(context.repo || '').trim(),
         branch: String(context.branch || '').trim()
       };
-      if (!target.owner || !target.repo || !target.branch) {
-        throw new Error('GitHub owner, repository and branch are required.');
-      }
+      if (!target.owner || !target.repo || !target.branch) throw new Error('Select a GitHub workspace with owner, repository and branch.');
       if (this.clientFactory) return this.clientFactory(target);
-      const token = await this.getValue(TOKEN_KEY, '');
-      if (!token) throw new Error('A fine-grained GitHub token is required for remote access.');
-      return new this.api.GitHubContentsClient({
-        ...target,
-        token,
-        transport: this.api.createGmTransport(GM_xmlhttpRequest)
-      });
+      const token = this.workspaceStore ? await this.workspaceStore.getToken() : await this.getValue(TOKEN_KEY, '');
+      if (!token) throw new Error('A shared fine-grained GitHub token is required for remote access.');
+      return new this.api.GitHubContentsClient({ ...target, token, transport: this.api.createGmTransport(GM_xmlhttpRequest) });
     }
 
     async resolveLink(note, linkId) {

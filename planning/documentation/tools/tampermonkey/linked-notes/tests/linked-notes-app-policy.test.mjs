@@ -3,13 +3,19 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const workspaceContext = require('../src/workspace-context.js');
+globalThis.ObsLinkedNotes = { ...(globalThis.ObsLinkedNotes || {}), ...workspaceContext };
+const workspaceStoreApi = require('../src/workspace-store.js');
 const api = Object.assign(
   {},
   require('../src/linked-notes-core.js'),
   require('../src/note-markdown-codec.js'),
   require('../src/repository-target.js'),
-  require('../src/github-contents-client.js')
+  require('../src/github-contents-client.js'),
+  workspaceContext,
+  workspaceStoreApi
 );
+globalThis.ObsLinkedNotes = { ...(globalThis.ObsLinkedNotes || {}), ...api };
 const appApi = require('../src/linked-notes-app.js');
 
 class MemoryStore {
@@ -22,10 +28,15 @@ class MemoryStore {
 }
 
 class FakeUI {
-  constructor() { this.last = {}; this.history = []; }
+  constructor() { this.last = {}; this.history = []; this.persistCalls = 0; }
   setState(patch) { this.last = { ...this.last, ...patch }; this.history.push(structuredClone(patch)); }
   mount() {}
   dispose() {}
+  async persistDraftNow() { this.persistCalls += 1; }
+  async persistAllDraftsNow() {
+    this.persistCalls += 1;
+    return { editor: this.last.workspaceEditor || {}, dirty: false };
+  }
 }
 
 function verifiedNote(overrides = {}) {
@@ -388,4 +399,184 @@ test('base path rejects traversal, URL, query and empty segments', () => {
   assert.throws(() => appApi.cleanBasePath('https://example.test/notes'), /URL/);
   assert.throws(() => appApi.cleanBasePath('notes?ref=x'), /query/);
   assert.equal(appApi.cleanBasePath('notes\\nested'), 'notes/nested');
+});
+
+
+class MemoryGM {
+  constructor(initial = {}) { this.values = structuredClone(initial); }
+  async get(key, fallback) { return Object.prototype.hasOwnProperty.call(this.values, key) ? structuredClone(this.values[key]) : fallback; }
+  async set(key, value) { this.values[key] = structuredClone(value); }
+}
+
+async function makeWorkspaceApp(pathname = '/c/chat-a', options = {}) {
+  const gm = new MemoryGM();
+  const workspaceStore = new workspaceStoreApi.WorkspaceStore({
+    api,
+    getValue: (key, fallback) => gm.get(key, fallback),
+    setValue: (key, value) => gm.set(key, value),
+    now: () => new Date('2026-07-27T00:00:00.000Z'),
+    sleep: async () => {},
+    writerId: 'workspace-app-writer',
+    lockSettleMs: 0,
+    lockRetryMs: 0
+  });
+  const gdoc = (await workspaceStore.upsert({ name: 'GDoc', repositoryInput: 'AlexPastukhh/gdoc', branch: 'main', basePath: 'notes' })).workspace;
+  const planning = (await workspaceStore.upsert({ name: 'Planning', repositoryInput: 'AlexPastukhh/obs-planning-docs', branch: 'main', basePath: 'planning/notes' })).workspace;
+  await workspaceStore.setDefault(gdoc.id);
+  await workspaceStore.bindChat('chat:chat-a', gdoc.id);
+  await workspaceStore.bindChat('chat:chat-b', planning.id);
+  const locationState = { pathname };
+  const ui = new FakeUI();
+  const app = new appApi.LinkedNotesApp({
+    api,
+    store: new MemoryStore(),
+    ui,
+    workspaceStore,
+    locationProvider: () => locationState,
+    setIntervalFn: () => 1,
+    clearIntervalFn: () => {},
+    confirmAction: options.confirmAction || (() => true),
+    getValue: (key, fallback) => gm.get(key, fallback),
+    setValue: (key, value) => gm.set(key, value)
+  });
+  await app.start();
+  return { app, ui, gm, workspaceStore, locationState, gdoc, planning };
+}
+
+test('each stable ChatGPT chat restores its own last selected workspace', async () => {
+  const { app, ui, locationState, gdoc, planning } = await makeWorkspaceApp('/c/chat-a');
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  locationState.pathname = '/c/chat-b';
+  await app._checkRouteChange();
+  assert.equal(app.activeWorkspaceId, planning.id);
+  assert.equal(ui.persistCalls, 1);
+  locationState.pathname = '/c/chat-a';
+  await app._checkRouteChange();
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+});
+
+test('workspace selection in one chat does not replace another chat mapping', async () => {
+  const { app, workspaceStore, locationState, gdoc, planning } = await makeWorkspaceApp('/c/chat-b');
+  await app.selectWorkspace(gdoc.id);
+  let state = await workspaceStore.load();
+  assert.equal(state.chatWorkspaceMap['chat:chat-b'], gdoc.id);
+  assert.equal(state.chatWorkspaceMap['chat:chat-a'], gdoc.id);
+  locationState.pathname = '/c/chat-a';
+  await app._checkRouteChange();
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  await app.selectWorkspace(planning.id);
+  state = await workspaceStore.load();
+  assert.equal(state.chatWorkspaceMap['chat:chat-a'], planning.id);
+  assert.equal(state.chatWorkspaceMap['chat:chat-b'], gdoc.id);
+});
+
+test('new-chat session workspace is not bound merely because a stable chat id appears', async () => {
+  const { app, workspaceStore, locationState, gdoc, planning } = await makeWorkspaceApp('/');
+  await app.selectWorkspace(planning.id);
+  assert.equal(app.currentChatKey, '');
+  assert.equal(app.activeWorkspaceId, planning.id);
+  const before = await workspaceStore.load();
+  locationState.pathname = '/c/new-chat-id';
+  await app._checkRouteChange();
+  const after = await workspaceStore.load();
+  assert.equal(after.chatWorkspaceMap['chat:new-chat-id'], undefined);
+  assert.deepEqual(after.revision, before.revision);
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  assert.equal(app.sessionWorkspaceExplicit, false);
+  assert.match(app.ui.last.chatContextLabel, /not saved/);
+});
+
+test('new-chat session workspace cannot leak into an existing unmapped chat', async () => {
+  const { app, workspaceStore, locationState, gdoc, planning } = await makeWorkspaceApp('/');
+  await app.selectWorkspace(planning.id);
+  assert.equal(app._configuredTarget(api.createNote({ id: 'new-chat-note', title: 'New chat' })).repo, planning.repo);
+  const before = await workspaceStore.load();
+  locationState.pathname = '/c/existing-unmapped-chat';
+  await app._checkRouteChange();
+  const after = await workspaceStore.load();
+  assert.equal(after.chatWorkspaceMap['chat:existing-unmapped-chat'], undefined);
+  assert.deepEqual(after.revision, before.revision);
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  assert.equal(app._configuredTarget(api.createNote({ id: 'existing-chat-note', title: 'Existing chat' })).repo, gdoc.repo);
+});
+
+test('switching chat workspace does not silently move a verified Note', async () => {
+  const { app, gdoc, planning } = await makeWorkspaceApp('/c/chat-a');
+  const note = api.markSavedVerified(api.createNote({ id: 'note-bound', title: 'Bound', body: 'Body' }), {
+    owner: gdoc.owner,
+    repo: gdoc.repo,
+    branch: gdoc.branch,
+    path: `${gdoc.basePath}/bound.md`,
+    sha: 'sha-bound',
+    verifiedHash: 'hash-bound'
+  });
+  app.current = note;
+  await app.selectWorkspace(planning.id);
+  assert.equal(app._remoteUiState(note).remoteTargetMismatch, true);
+  assert.equal(note.remote.repo, 'gdoc');
+});
+
+
+test('opening a fresh new-chat route falls back to the global default workspace', async () => {
+  const { app, locationState, gdoc, planning } = await makeWorkspaceApp('/c/chat-b');
+  assert.equal(app.activeWorkspaceId, planning.id);
+  locationState.pathname = '/';
+  await app._checkRouteChange();
+  assert.equal(app.currentChatKey, '');
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+});
+
+test('visiting an unmapped stable chat uses the default without creating a binding', async () => {
+  const { app, workspaceStore, gdoc } = await makeWorkspaceApp('/c/unmapped-chat');
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  const state = await workspaceStore.load();
+  assert.equal(state.chatWorkspaceMap['chat:unmapped-chat'], undefined);
+  assert.match(app.ui.last.chatContextLabel, /not saved/);
+});
+
+test('explicit workspace selection creates the stable-chat binding', async () => {
+  const { app, workspaceStore, planning } = await makeWorkspaceApp('/c/unmapped-chat');
+  await app.selectWorkspace(planning.id, { editor: {}, dirty: false });
+  const state = await workspaceStore.load();
+  assert.equal(state.chatWorkspaceMap['chat:unmapped-chat'], planning.id);
+});
+
+test('a new chat that only used the default does not create a binding when its stable id appears', async () => {
+  const { app, workspaceStore, locationState, gdoc } = await makeWorkspaceApp('/');
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  locationState.pathname = '/c/default-only-chat';
+  await app._checkRouteChange();
+  const state = await workspaceStore.load();
+  assert.equal(state.chatWorkspaceMap['chat:default-only-chat'], undefined);
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+});
+
+test('opening Notes refreshes a workspace mapping changed by another tab', async () => {
+  const { app, gm, planning } = await makeWorkspaceApp('/c/chat-a');
+  const otherTab = new workspaceStoreApi.WorkspaceStore({
+    api,
+    getValue: (key, fallback) => gm.get(key, fallback),
+    setValue: (key, value) => gm.set(key, value),
+    now: () => new Date('2026-07-27T00:00:00.000Z'),
+    sleep: async () => {},
+    writerId: 'other-tab',
+    lockSettleMs: 0,
+    lockRetryMs: 0
+  });
+  await otherTab.bindChat('chat:chat-a', planning.id);
+  assert.notEqual(app.activeWorkspaceId, planning.id);
+  await app.openPanel();
+  assert.equal(app.activeWorkspaceId, planning.id);
+});
+
+test('a dirty workspace form can cancel a workspace switch without changing the chat binding', async () => {
+  const { app, workspaceStore, gdoc, planning } = await makeWorkspaceApp('/c/chat-a', { confirmAction: () => false });
+  const selected = await app.selectWorkspace(planning.id, {
+    editor: { id: '', name: 'Unsaved', repositoryInput: 'owner/repo', branch: 'main', basePath: 'notes' },
+    dirty: true
+  });
+  assert.equal(selected.id, gdoc.id);
+  const state = await workspaceStore.load();
+  assert.equal(state.chatWorkspaceMap['chat:chat-a'], gdoc.id);
+  assert.match(app.ui.last.status, /cancelled/);
 });

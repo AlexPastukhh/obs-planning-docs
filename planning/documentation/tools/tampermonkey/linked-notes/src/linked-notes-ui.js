@@ -14,6 +14,27 @@
       .replace(/'/g, '&#39;');
   }
 
+  function launcherRightOffset(width, edge = 18, gap = 10) {
+    const measured = Number.isFinite(Number(width)) ? Math.max(0, Number(width)) : 0;
+    return Math.ceil(edge + measured + gap);
+  }
+
+  function shouldCloseOnEscape(event, state) {
+    return Boolean(event && event.key === 'Escape' && state && state.open && !state.busy);
+  }
+
+  function blankWorkspaceEditor(defaultBasePath = 'prototype-fixtures/linked-notes') {
+    return { id: '', name: '', repositoryInput: '', branch: 'main', basePath: defaultBasePath };
+  }
+
+  function mergeWorkspaceEditorPatch(captured, dirty, patch = {}) {
+    const nextPatch = { ...patch };
+    if (captured && dirty && nextPatch.workspaceEditor && !nextPatch.replaceWorkspaceEditor) {
+      nextPatch.workspaceEditor = captured;
+    }
+    return nextPatch;
+  }
+
   class LinkedNotesUI {
     constructor(handlers = {}) {
       this.handlers = handlers;
@@ -22,7 +43,13 @@
         current: null,
         search: '',
         status: 'Ready.',
-        settings: { owner: '', repo: '', branch: 'main', basePath: 'prototype-fixtures/linked-notes', hasToken: false },
+        workspaces: [],
+        activeWorkspaceId: '',
+        defaultWorkspaceId: '',
+        workspaceEditor: blankWorkspaceEditor(),
+        workspaceTargetLabel: '',
+        chatContextLabel: 'New chat / default workspace',
+        hasToken: false,
         remoteTargetMismatch: false,
         remoteTargetLabel: '',
         remoteRecoveryAvailable: false,
@@ -31,7 +58,18 @@
       this.host = null;
       this.shadow = null;
       this.open = false;
+      this.workspaceManagerOpen = false;
+      this.workspaceEditorDirty = false;
       this._draftTimer = null;
+      this._onDocumentKeydown = (event) => {
+        if (!shouldCloseOnEscape(event, { open: this.open, busy: this.state.busy })) return;
+        event.preventDefault();
+        event.stopPropagation();
+        this.persistAllDraftsNow().then(() => {
+          this.open = false;
+          this.render();
+        }).catch(() => {});
+      };
     }
 
     mount() {
@@ -41,14 +79,33 @@
       this.host.style.all = 'initial';
       document.documentElement.appendChild(this.host);
       this.shadow = this.host.attachShadow({ mode: 'open' });
+      document.addEventListener('keydown', this._onDocumentKeydown, true);
       this.render();
     }
 
     dispose() {
-      this._persistDraftNow().catch(() => {});
+      this.persistAllDraftsNow().catch(() => {});
+      document.removeEventListener('keydown', this._onDocumentKeydown, true);
       if (this.host) this.host.remove();
       this.host = null;
       this.shadow = null;
+    }
+
+    persistDraftNow() {
+      return this._persistDraftNow();
+    }
+
+    workspaceDraftState() {
+      return {
+        editor: { ...(this.state.workspaceEditor || blankWorkspaceEditor()) },
+        dirty: Boolean(this.workspaceEditorDirty)
+      };
+    }
+
+    async persistAllDraftsNow() {
+      this._captureWorkspaceIntoState();
+      await this._persistDraftNow();
+      return this.workspaceDraftState();
     }
 
     _captureDraftIntoState() {
@@ -57,13 +114,38 @@
       return draft;
     }
 
+    _workspaceFromForm() {
+      if (!this.shadow) return this.state.workspaceEditor;
+      const value = (name) => {
+        const input = this.shadow.querySelector(`[data-workspace-field="${name}"]`);
+        return input ? input.value.trim() : '';
+      };
+      return {
+        id: value('id'),
+        name: value('name'),
+        repositoryInput: value('repositoryInput'),
+        branch: value('branch') || 'main',
+        basePath: value('basePath') || 'prototype-fixtures/linked-notes'
+      };
+    }
+
+    _captureWorkspaceIntoState() {
+      const editor = this._workspaceFromForm();
+      if (editor) this.state.workspaceEditor = editor;
+      return editor;
+    }
+
     setState(patch) {
       const captured = this._captureDraftIntoState();
-      const nextPatch = { ...patch };
+      const capturedWorkspace = this._captureWorkspaceIntoState();
+      let nextPatch = { ...patch };
       if (captured && nextPatch.current && nextPatch.current.id === captured.id && !this.state.busy && !nextPatch.replaceCurrent) {
         nextPatch.current = { ...nextPatch.current, title: captured.title, body: captured.body };
       }
+      nextPatch = mergeWorkspaceEditorPatch(capturedWorkspace, this.workspaceEditorDirty, nextPatch);
+      if (nextPatch.replaceWorkspaceEditor) this.workspaceEditorDirty = false;
       delete nextPatch.replaceCurrent;
+      delete nextPatch.replaceWorkspaceEditor;
       this.state = { ...this.state, ...nextPatch };
       this.render();
     }
@@ -76,20 +158,6 @@
         ...this.state.current,
         title: title ? title.value : this.state.current.title || '',
         body: body ? body.value : this.state.current.body || ''
-      };
-    }
-
-    _settingsFromForm() {
-      const value = (name) => {
-        const input = this.shadow.querySelector(`[data-setting="${name}"]`);
-        return input ? input.value.trim() : '';
-      };
-      return {
-        owner: value('owner'),
-        repo: value('repo'),
-        branch: value('branch') || 'main',
-        basePath: value('basePath') || 'prototype-fixtures/linked-notes',
-        token: value('token')
       };
     }
 
@@ -129,12 +197,35 @@
       return this._call(name, ...args);
     }
 
+    async _withAllDrafts(name, ...args) {
+      await this.persistAllDraftsNow();
+      return this._call(name, ...args);
+    }
+
+    _positionLauncher() {
+      const launcher = this.shadow && this.shadow.querySelector('[data-action="toggle"]');
+      if (!launcher) return;
+      const apply = () => {
+        const width = launcher.getBoundingClientRect ? launcher.getBoundingClientRect().width : launcher.offsetWidth;
+        launcher.style.right = `${launcherRightOffset(width)}px`;
+      };
+      if (typeof requestAnimationFrame === 'function') requestAnimationFrame(apply);
+      else apply();
+    }
+
     render() {
       if (!this.shadow) return;
       const current = this.state.current;
       const busy = Boolean(this.state.busy);
       const disabled = busy ? 'disabled' : '';
       const links = current && Array.isArray(current.links) ? current.links : [];
+      const activeWorkspace = this.state.workspaces.find((workspace) => workspace.id === this.state.activeWorkspaceId) || null;
+      const editor = this.state.workspaceEditor || blankWorkspaceEditor();
+      const editorMatchesActive = Boolean(activeWorkspace && editor.id && editor.id === activeWorkspace.id);
+      const workspaceOptions = this.state.workspaces.map((workspace) => {
+        const suffix = workspace.id === this.state.defaultWorkspaceId ? ' · default' : '';
+        return `<option value="${escapeHtml(workspace.id)}" ${workspace.id === this.state.activeWorkspaceId ? 'selected' : ''}>${escapeHtml(workspace.name || `${workspace.owner}/${workspace.repo}`)}${suffix}</option>`;
+      }).join('');
       const notesHtml = this.state.notes.map((note) => `
         <button class="note-row ${current && current.id === note.id ? 'active' : ''}" data-note-id="${escapeHtml(note.id)}" ${disabled}>
           <strong>${escapeHtml(note.title || 'Untitled Note')}</strong>
@@ -153,7 +244,7 @@
         </div>`;
       }).join('') || '<div class="empty">No links.</div>';
       const remoteInfo = this.state.remoteTargetLabel
-        ? `<div class="remote-context ${this.state.remoteTargetMismatch ? 'mismatch' : ''}"><strong>Bound remote:</strong> ${escapeHtml(this.state.remoteTargetLabel)}${this.state.remoteTargetMismatch ? '<br><span>Current settings point elsewhere. Regular Save GitHub is blocked.</span>' : ''}</div>`
+        ? `<div class="remote-context ${this.state.remoteTargetMismatch ? 'mismatch' : ''}"><strong>Bound remote:</strong> ${escapeHtml(this.state.remoteTargetLabel)}${this.state.remoteTargetMismatch ? '<br><span>The chat workspace points elsewhere. Regular Save GitHub is blocked.</span>' : ''}</div>`
         : '<div class="remote-context">No verified remote target yet.</div>';
       const recoveryButtons = current && this.state.remoteRecoveryAvailable
         ? `<button data-action="recheck-remote" ${disabled}>Recheck remote</button>
@@ -163,43 +254,53 @@
 
       this.shadow.innerHTML = `
         <style>
-          :host { all: initial; }
+          :host { all: initial; --bg:#111318; --surface:#191c23; --surface-2:#20242d; --surface-3:#292e39; --border:#3b4250; --text:#eef1f6; --muted:#aab2c0; --accent:#8eb4ff; --success:#79d69a; --danger:#ff8d8d; }
           *, *::before, *::after { box-sizing: border-box; }
           button, input, textarea, select { font: 13px/1.35 system-ui, sans-serif; }
-          .launcher { position: fixed; right: 18px; bottom: 18px; z-index: 2147483646; border: 0; border-radius: 999px; padding: 10px 15px; background: #202123; color: #fff; box-shadow: 0 5px 18px rgba(0,0,0,.28); cursor: pointer; }
-          .panel { position: fixed; right: 18px; bottom: 66px; z-index: 2147483646; width: min(920px, calc(100vw - 36px)); height: min(720px, calc(100vh - 92px)); display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 250px 1fr; background: #fff; color: #202123; border: 1px solid #c8c8c8; border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.3); font: 13px/1.4 system-ui, sans-serif; }
-          .sidebar { display: flex; flex-direction: column; min-width: 0; background: #f4f4f4; border-right: 1px solid #ddd; }
-          .toolbar, .editor-toolbar, .status, .settings { padding: 10px; border-bottom: 1px solid #ddd; }
+          .launcher { position: fixed; right: 102px; bottom: 18px; z-index: 2147483646; border: 1px solid #343a46; border-radius: 999px; padding: 10px 15px; background: #202123; color: #fff; box-shadow: 0 5px 18px rgba(0,0,0,.42); cursor: pointer; }
+          .panel { position: fixed; right: 18px; bottom: 66px; z-index: 2147483646; width: min(980px, calc(100vw - 36px)); height: min(760px, calc(100vh - 92px)); display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 260px 1fr; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.55); font: 13px/1.4 system-ui, sans-serif; color-scheme: dark; }
+          .sidebar { display: flex; flex-direction: column; min-width: 0; background: var(--surface); border-right: 1px solid var(--border); }
+          .toolbar, .editor-toolbar, .status, .workspace-bar { padding: 10px; border-bottom: 1px solid var(--border); }
           .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
-          .toolbar input, input, textarea, select { width: 100%; border: 1px solid #aaa; border-radius: 6px; padding: 7px; background: #fff; color: #111; }
-          button { border: 1px solid #aaa; border-radius: 6px; padding: 6px 9px; background: #fff; color: #222; cursor: pointer; }
-          button.primary { background: #202123; color: #fff; border-color: #202123; }
-          button.danger { color: #a00; }
-          button:disabled, input:disabled, textarea:disabled, select:disabled { opacity: .55; cursor: not-allowed; }
+          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) 1fr; gap: 8px; align-items: center; background: var(--surface); }
+          .workspace-summary { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          input, textarea, select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 7px; background: var(--surface-2); color: var(--text); }
+          input::placeholder, textarea::placeholder { color: #7f8999; }
+          button { border: 1px solid var(--border); border-radius: 6px; padding: 6px 9px; background: var(--surface-2); color: var(--text); cursor: pointer; }
+          button:hover:not(:disabled) { background: var(--surface-3); }
+          button.primary { background: #315b9d; color: #fff; border-color: #4a78bd; }
+          button.danger { color: var(--danger); }
+          button:disabled, input:disabled, textarea:disabled, select:disabled { opacity: .5; cursor: not-allowed; }
           .notes { overflow: auto; padding: 7px; }
           .note-row { width: 100%; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 6px; text-align: left; }
-          .note-row span { color: #666; font-size: 11px; }
-          .note-row.active { outline: 2px solid #5a7; }
+          .note-row span { color: var(--muted); font-size: 11px; }
+          .note-row.active { outline: 2px solid var(--success); }
           .main { min-width: 0; display: flex; flex-direction: column; }
-          .editor-toolbar { display: flex; gap: 7px; flex-wrap: wrap; }
+          .editor-toolbar { display: flex; gap: 7px; flex-wrap: wrap; background: var(--surface); }
           .editor { display: grid; grid-template-rows: auto 1fr auto auto auto; min-height: 0; gap: 8px; padding: 12px; overflow: auto; }
           textarea { min-height: 220px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
           .links { display: grid; gap: 6px; }
-          .link-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto auto; gap: 6px; align-items: center; border: 1px solid #ddd; border-radius: 7px; padding: 6px; }
-          .link-row small { grid-column: 1 / -1; color: #555; }
+          .link-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto auto; gap: 6px; align-items: center; border: 1px solid var(--border); border-radius: 7px; padding: 6px; background: var(--surface); }
+          .link-row small { grid-column: 1 / -1; color: var(--muted); }
           .link-open { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
-          .link-status { font-size: 11px; padding: 2px 5px; border-radius: 4px; background: #eee; }
-          .link-status.resolved { background: #dff5e4; }
-          .link-status.unresolved, .link-status.invalid { background: #ffe1de; }
+          .link-status { font-size: 11px; padding: 2px 5px; border-radius: 4px; background: var(--surface-3); }
+          .link-status.resolved { background: #173d2a; color: #a9efc0; }
+          .link-status.unresolved, .link-status.invalid { background: #4a2323; color: #ffc1c1; }
           .add-link { display: grid; grid-template-columns: 120px 1fr 160px auto; gap: 6px; }
-          details { border: 1px solid #ddd; border-radius: 7px; padding: 6px; }
-          .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 7px; margin-top: 7px; }
-          .remote-context { border: 1px solid #ddd; border-radius: 7px; padding: 7px; color: #555; word-break: break-word; }
-          .remote-context.mismatch { border-color: #c66; background: #fff0ee; color: #711; }
-          .status { margin-top: auto; background: #fafafa; word-break: break-word; }
-          .empty { color: #777; padding: 8px; }
+          details { border: 1px solid var(--border); border-radius: 7px; padding: 8px; background: var(--surface); }
+          summary { cursor: pointer; color: var(--text); }
+          .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; margin-top: 9px; }
+          .field { display: grid; gap: 4px; color: var(--muted); }
+          .field.wide { grid-column: 1 / -1; }
+          .workspace-actions, .token-actions { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+          .target-preview { grid-column: 1 / -1; border: 1px solid var(--border); border-radius: 6px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface-2); }
+          .remote-context { border: 1px solid var(--border); border-radius: 7px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface); }
+          .remote-context.mismatch { border-color: #9b5a5a; background: #351f22; color: #ffb8b8; }
+          .status { margin-top: auto; background: var(--surface-2); color: var(--muted); word-break: break-word; }
+          .empty { color: var(--muted); padding: 8px; }
           h3 { margin: 0 0 7px; font: 600 15px/1.3 system-ui, sans-serif; }
-          @media (max-width: 680px) { .panel { grid-template-columns: 1fr; } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid #ddd; } .add-link { grid-template-columns: 1fr; } .settings-grid { grid-template-columns: 1fr; } }
+          .hint { color: var(--muted); font-size: 12px; }
+          @media (max-width: 700px) { .panel { grid-template-columns: 1fr; } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid { grid-template-columns: 1fr; } }
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Notes</button>
         <section class="panel" aria-label="Linked Notes Prototype" aria-busy="${busy ? 'true' : 'false'}">
@@ -209,10 +310,16 @@
             <div class="status">${escapeHtml(this.state.status)}</div>
           </aside>
           <main class="main">
+            <div class="workspace-bar">
+              <select data-role="workspace-select" ${disabled}>
+                ${workspaceOptions || '<option value="">No saved workspace</option>'}
+              </select>
+              <div class="workspace-summary" title="${escapeHtml(this.state.workspaceTargetLabel)}">${escapeHtml(activeWorkspace ? `${this.state.chatContextLabel} · ${this.state.workspaceTargetLabel}` : 'Create a workspace before remote access.')}</div>
+            </div>
             <div class="editor-toolbar">
               <button class="primary" data-action="save-local" ${current && !busy ? '' : 'disabled'}>Save local</button>
-              <button class="primary" data-action="save-remote" ${current && !busy ? '' : 'disabled'}>Save GitHub</button>
-              <button data-action="copy-remote" ${current && this.state.remoteTargetMismatch && !busy ? '' : 'disabled'}>Copy to current target</button>
+              <button class="primary" data-action="save-remote" ${current && activeWorkspace && !busy ? '' : 'disabled'}>Save GitHub</button>
+              <button data-action="copy-remote" ${current && activeWorkspace && this.state.remoteTargetMismatch && !busy ? '' : 'disabled'}>Copy to chat workspace</button>
               ${recoveryButtons}
               <button class="danger" data-action="delete" ${current && !busy ? '' : 'disabled'}>Delete local</button>
               <button data-action="close" ${disabled}>Close</button>
@@ -230,35 +337,58 @@
                     <button data-action="add-link" ${disabled}>Add link</button>
                   </div>
                 </section>` : '<div class="empty">Create or select a Note.</div>'}
-              <details>
-                <summary>GitHub test settings</summary>
+              <details data-role="workspace-manager" ${this.workspaceManagerOpen ? 'open' : ''}>
+                <summary>Manage GitHub workspaces</summary>
+                <p class="hint">A workspace is a reusable repository, branch and Notes folder. The shared token is stored once for all workspaces.</p>
                 <div class="settings-grid">
-                  <input data-setting="owner" placeholder="owner" value="${escapeHtml(this.state.settings.owner || '')}" ${disabled}>
-                  <input data-setting="repo" placeholder="repository" value="${escapeHtml(this.state.settings.repo || '')}" ${disabled}>
-                  <input data-setting="branch" placeholder="test branch" value="${escapeHtml(this.state.settings.branch || 'main')}" ${disabled}>
-                  <input data-setting="basePath" placeholder="prototype-fixtures/linked-notes" value="${escapeHtml(this.state.settings.basePath || '')}" ${disabled}>
-                  <input data-setting="token" type="password" placeholder="Fine-grained token${this.state.settings.hasToken ? ' (stored)' : ''}" ${disabled}>
-                  <button data-action="save-settings" ${disabled}>Save settings</button>
+                  <input type="hidden" data-workspace-field="id" value="${escapeHtml(editor.id || '')}">
+                  <label class="field"><span>Workspace name</span><input data-workspace-field="name" placeholder="GDoc" value="${escapeHtml(editor.name || '')}" ${disabled}></label>
+                  <label class="field"><span>Repository</span><input data-workspace-field="repositoryInput" placeholder="AlexPastukhh/gdoc or https://github.com/AlexPastukhh/gdoc" value="${escapeHtml(editor.repositoryInput || '')}" ${disabled}></label>
+                  <label class="field"><span>Branch</span><input data-workspace-field="branch" placeholder="main" value="${escapeHtml(editor.branch || 'main')}" ${disabled}></label>
+                  <label class="field"><span>Notes folder</span><input data-workspace-field="basePath" placeholder="prototype-fixtures/linked-notes" value="${escapeHtml(editor.basePath || 'prototype-fixtures/linked-notes')}" ${disabled}></label>
+                  <div class="target-preview"><strong>Target:</strong> ${escapeHtml(this.state.workspaceTargetLabel || 'Complete the workspace fields and save.')}</div>
+                  <div class="workspace-actions wide">
+                    <button data-action="new-workspace" ${disabled}>New workspace</button>
+                    <button class="primary" data-action="save-workspace" ${disabled}>Save workspace</button>
+                    <button data-action="set-default-workspace" ${editorMatchesActive && activeWorkspace.id !== this.state.defaultWorkspaceId && !busy ? '' : 'disabled'}>Set as default</button>
+                    <button class="danger" data-action="delete-workspace" ${editorMatchesActive && !busy ? '' : 'disabled'}>Delete workspace</button>
+                  </div>
+                  <label class="field wide"><span>Shared fine-grained GitHub token</span><input data-role="shared-token" type="password" placeholder="${this.state.hasToken ? 'Token stored — enter a value only to replace it' : 'Fine-grained token used by all workspaces'}" ${disabled}></label>
+                  <div class="token-actions wide">
+                    <button data-action="save-token" ${disabled}>Save shared token</button>
+                    <button class="danger" data-action="clear-token" ${this.state.hasToken && !busy ? '' : 'disabled'}>Clear shared token</button>
+                    <span class="hint">${this.state.hasToken ? 'A shared token is stored privately in Tampermonkey.' : 'No token is stored.'}</span>
+                  </div>
                 </div>
               </details>
             </div>
           </main>
         </section>`;
 
+      this._positionLauncher();
+      const details = this.shadow.querySelector('[data-role="workspace-manager"]');
+      if (details) details.ontoggle = () => { this.workspaceManagerOpen = details.open; };
       const title = this.shadow.querySelector('[data-role="title"]');
       const body = this.shadow.querySelector('[data-role="body"]');
       if (title) title.oninput = () => this._scheduleDraftPersist();
       if (body) body.oninput = () => this._scheduleDraftPersist();
+      this.shadow.querySelectorAll('[data-workspace-field]').forEach((input) => {
+        input.oninput = () => {
+          this.workspaceEditorDirty = true;
+          this._captureWorkspaceIntoState();
+        };
+      });
 
       const toggle = this.shadow.querySelector('[data-action="toggle"]');
       if (toggle) toggle.onclick = async () => {
-        await this._persistDraftNow();
+        await this.persistAllDraftsNow();
+        if (!this.open) await this._call('onOpen');
         this.open = !this.open;
         this.render();
       };
       const close = this.shadow.querySelector('[data-action="close"]');
       if (close) close.onclick = async () => {
-        await this._persistDraftNow();
+        await this.persistAllDraftsNow();
         this.open = false;
         this.render();
       };
@@ -269,6 +399,24 @@
       this.shadow.querySelectorAll('[data-note-id]').forEach((button) => {
         button.onclick = () => this._withDraft('onSelect', button.dataset.noteId);
       });
+      const workspaceSelect = this.shadow.querySelector('[data-role="workspace-select"]');
+      if (workspaceSelect) workspaceSelect.onchange = () => this._withAllDrafts('onSelectWorkspace', workspaceSelect.value, this.workspaceDraftState());
+      const newWorkspace = this.shadow.querySelector('[data-action="new-workspace"]');
+      if (newWorkspace) newWorkspace.onclick = () => this._withAllDrafts('onNewWorkspace', this.workspaceDraftState());
+      const saveWorkspace = this.shadow.querySelector('[data-action="save-workspace"]');
+      if (saveWorkspace) saveWorkspace.onclick = () => this._withAllDrafts('onSaveWorkspace', this._workspaceFromForm());
+      const setDefault = this.shadow.querySelector('[data-action="set-default-workspace"]');
+      if (setDefault) setDefault.onclick = () => this._withAllDrafts('onSetDefaultWorkspace', this.state.activeWorkspaceId);
+      const deleteWorkspace = this.shadow.querySelector('[data-action="delete-workspace"]');
+      if (deleteWorkspace) deleteWorkspace.onclick = () => this._withAllDrafts('onDeleteWorkspace', this.state.activeWorkspaceId);
+      const saveToken = this.shadow.querySelector('[data-action="save-token"]');
+      if (saveToken) saveToken.onclick = async () => {
+        await this.persistAllDraftsNow();
+        const token = this.shadow.querySelector('[data-role="shared-token"]');
+        return this._call('onSaveToken', token ? token.value : '');
+      };
+      const clearToken = this.shadow.querySelector('[data-action="clear-token"]');
+      if (clearToken) clearToken.onclick = () => this._withAllDrafts('onClearToken');
       const saveLocal = this.shadow.querySelector('[data-action="save-local"]');
       if (saveLocal) saveLocal.onclick = () => this._call('onSaveLocal', this._draftFromForm());
       const saveRemote = this.shadow.querySelector('[data-action="save-remote"]');
@@ -299,10 +447,15 @@
       this.shadow.querySelectorAll('[data-open-link]').forEach((button) => {
         button.onclick = () => this._withDraft('onOpenLink', button.dataset.openLink);
       });
-      const saveSettings = this.shadow.querySelector('[data-action="save-settings"]');
-      if (saveSettings) saveSettings.onclick = () => this._withDraft('onSaveSettings', this._settingsFromForm());
     }
   }
 
-  return { LinkedNotesUI, escapeHtml };
+  return {
+    LinkedNotesUI,
+    escapeHtml,
+    launcherRightOffset,
+    shouldCloseOnEscape,
+    blankWorkspaceEditor,
+    mergeWorkspaceEditorPatch
+  };
 });

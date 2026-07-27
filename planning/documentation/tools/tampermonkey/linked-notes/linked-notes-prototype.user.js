@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.1.3-prototype
-// @description  Local-first linked Markdown Notes prototype with conflict recovery, path safety and verified GitHub writes.
+// @version      0.2.2-prototype
+// @description  Local-first linked Markdown Notes with route-safe explicit per-chat context and verified writes.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -982,6 +982,511 @@
   };
 });
 
+/* src/workspace-context.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const DEFAULT_WORKSPACE_BASE_PATH = 'prototype-fixtures/linked-notes';
+
+  function normalizeString(value) {
+    return typeof value === 'string' ? value : '';
+  }
+
+  function nowIso(now) {
+    return (now instanceof Date ? now : new Date(now || Date.now())).toISOString();
+  }
+
+  function createWorkspaceId() {
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    const value = cryptoObject && typeof cryptoObject.randomUUID === 'function'
+      ? cryptoObject.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+    return `workspace-${value}`;
+  }
+
+  function cleanWorkspaceBasePath(value) {
+    const text = normalizeString(value).replace(/\\/g, '/').trim() || DEFAULT_WORKSPACE_BASE_PATH;
+    if (/^[a-zA-Z]:\//.test(text) || text.startsWith('/') || text.startsWith('//') || /^file:\/\//i.test(text)) {
+      throw new TypeError('GitHub base path must be repository-relative.');
+    }
+    if (text.includes('://')) throw new TypeError('GitHub base path must not be a URL.');
+    if (/[?#]/.test(text)) throw new TypeError('GitHub base path must not contain query or fragment syntax.');
+    if (/[\u0000-\u001f\u007f]/.test(text)) throw new TypeError('GitHub base path contains control characters.');
+    const parts = text.split('/');
+    if (parts.some((segment) => !segment || segment === '.' || segment === '..')) {
+      throw new TypeError('GitHub base path contains an empty, . or .. segment.');
+    }
+    return parts.join('/');
+  }
+
+  function validateOwner(owner) {
+    const text = normalizeString(owner).trim();
+    if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/.test(text) || text.endsWith('-')) {
+      throw new TypeError('GitHub owner must be a user or organization name.');
+    }
+    return text;
+  }
+
+  function validateRepo(repo) {
+    const text = normalizeString(repo).trim().replace(/\.git$/i, '');
+    if (!text || text.length > 100 || !/^[A-Za-z0-9._-]+$/.test(text)) {
+      throw new TypeError('GitHub repository name is invalid.');
+    }
+    return text;
+  }
+
+  function parseGitHubRepositoryInput(value) {
+    const raw = normalizeString(value).trim();
+    if (!raw) throw new TypeError('Repository is required. Use owner/repository or a GitHub repository URL.');
+    let owner = '';
+    let repo = '';
+    if (/^https?:\/\//i.test(raw)) {
+      let parsed;
+      try { parsed = new URL(raw); } catch (error) { throw new TypeError('Repository URL is invalid.'); }
+      if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') throw new TypeError('Repository URL must use HTTP(S).');
+      if (parsed.hostname.toLowerCase() !== 'github.com') throw new TypeError('Only github.com repository URLs are supported.');
+      if (parsed.search || parsed.hash) throw new TypeError('Repository URL must not contain query or fragment data.');
+      const parts = parsed.pathname.split('/').filter(Boolean);
+      if (parts.length !== 2) throw new TypeError('Repository URL must point to one GitHub repository root.');
+      [owner, repo] = parts;
+    } else {
+      const compact = raw.replace(/^github\.com\//i, '').replace(/^\/+|\/+$/g, '');
+      const parts = compact.split('/');
+      if (parts.length !== 2) throw new TypeError('Repository must use owner/repository format.');
+      [owner, repo] = parts;
+    }
+    return { owner: validateOwner(owner), repo: validateRepo(repo) };
+  }
+
+  function normalizeWorkspace(input = {}, now) {
+    const repositoryInput = normalizeString(input.repositoryInput || input.repository || '').trim();
+    let owner = normalizeString(input.owner).trim();
+    let repo = normalizeString(input.repo).trim();
+    if (repositoryInput) ({ owner, repo } = parseGitHubRepositoryInput(repositoryInput));
+    else {
+      owner = validateOwner(owner);
+      repo = validateRepo(repo);
+    }
+    const timestamp = nowIso(now);
+    const id = normalizeString(input.id).trim() || createWorkspaceId();
+    const createdAt = normalizeString(input.createdAt) || timestamp;
+    return {
+      id,
+      name: normalizeString(input.name).trim() || `${owner}/${repo}`,
+      owner,
+      repo,
+      branch: normalizeString(input.branch).trim() || 'main',
+      basePath: cleanWorkspaceBasePath(input.basePath),
+      createdAt,
+      updatedAt: normalizeString(input.updatedAt) || timestamp,
+      schemaVersion: 1
+    };
+  }
+
+  function workspaceRepositoryLabel(workspace) {
+    if (!workspace) return '';
+    return `${normalizeString(workspace.owner).trim()}/${normalizeString(workspace.repo).trim()}`;
+  }
+
+  function workspaceTargetLabel(workspace) {
+    if (!workspace || !workspace.owner || !workspace.repo || !workspace.branch || !workspace.basePath) return '';
+    return `${workspace.owner}/${workspace.repo}@${workspace.branch}:${workspace.basePath}`;
+  }
+
+  function chatKeyFromLocation(locationLike) {
+    const pathname = normalizeString(locationLike && locationLike.pathname).trim();
+    if (!pathname) return '';
+    const parts = pathname.split('/').filter(Boolean);
+    for (let index = parts.length - 2; index >= 0; index -= 1) {
+      if (parts[index] === 'c' && parts[index + 1]) {
+        try { return `chat:${decodeURIComponent(parts[index + 1])}`; }
+        catch (error) { return `chat:${parts[index + 1]}`; }
+      }
+    }
+    return '';
+  }
+
+  return {
+    DEFAULT_WORKSPACE_BASE_PATH,
+    createWorkspaceId,
+    cleanWorkspaceBasePath,
+    parseGitHubRepositoryInput,
+    normalizeWorkspace,
+    workspaceRepositoryLabel,
+    workspaceTargetLabel,
+    chatKeyFromLocation
+  };
+});
+
+/* src/workspace-store.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const STATE_KEY = 'obsLinkedNotesPrototype:v2:workspaceState';
+  const STATE_LOCK_KEY = 'obsLinkedNotesPrototype:v2:stateLock';
+  const SHARED_TOKEN_KEY = 'obsLinkedNotesPrototype:v2:githubToken';
+  const MIGRATION_KEY = 'obsLinkedNotesPrototype:v2:migration';
+
+  // v0.2.0 split-state inputs. Kept for migration only and never deleted automatically.
+  const WORKSPACES_KEY = 'obsLinkedNotesPrototype:v2:workspaces';
+  const CHAT_WORKSPACE_MAP_KEY = 'obsLinkedNotesPrototype:v2:chatWorkspaceMap';
+  const DEFAULT_WORKSPACE_KEY = 'obsLinkedNotesPrototype:v2:defaultWorkspace';
+
+  const LEGACY_SETTINGS_KEY = 'obsLinkedNotesPrototype:v1:settings';
+  const LEGACY_TOKEN_KEY = 'obsLinkedNotesPrototype:v1:githubToken';
+  const LEGACY_IMPORTED_WORKSPACE_ID = 'workspace-imported-v1';
+
+  function clone(value) {
+    return value == null ? value : JSON.parse(JSON.stringify(value));
+  }
+
+  function randomId(prefix) {
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    const value = cryptoObject && typeof cryptoObject.randomUUID === 'function'
+      ? cryptoObject.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+    return `${prefix}-${value}`;
+  }
+
+  function revisionIdentity(value) {
+    const revision = value && typeof value === 'object' ? value : {};
+    return `${Number(revision.number) || 0}:${String(revision.mutationId || '')}:${String(revision.writerId || '')}`;
+  }
+
+  class WorkspaceStore {
+    constructor(options = {}) {
+      this.api = options.api || root.ObsLinkedNotes || {};
+      this.getValue = options.getValue;
+      this.setValue = options.setValue;
+      this.now = options.now || (() => new Date());
+      this.sleep = options.sleep || ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
+      this.writerId = options.writerId || randomId('workspace-writer');
+      this.lockTtlMs = Number(options.lockTtlMs) > 0 ? Number(options.lockTtlMs) : 4000;
+      this.lockSettleMs = Number(options.lockSettleMs) >= 0 ? Number(options.lockSettleMs) : 20;
+      this.lockRetryMs = Number(options.lockRetryMs) >= 0 ? Number(options.lockRetryMs) : 15;
+      this.maxLockAttempts = Number(options.maxLockAttempts) > 0 ? Number(options.maxLockAttempts) : 80;
+      if (typeof this.getValue !== 'function' || typeof this.setValue !== 'function') {
+        throw new TypeError('WorkspaceStore requires getValue and setValue functions.');
+      }
+    }
+
+    _nowMs() {
+      return new Date(this.now()).getTime();
+    }
+
+    _nowIso() {
+      return new Date(this.now()).toISOString();
+    }
+
+    _normalizeRevision(value) {
+      const source = value && typeof value === 'object' ? value : {};
+      return {
+        number: Math.max(0, Number(source.number) || 0),
+        mutationId: String(source.mutationId || ''),
+        writerId: String(source.writerId || ''),
+        updatedAt: String(source.updatedAt || '')
+      };
+    }
+
+    _sanitizeState(workspacesRaw, mapRaw, defaultRaw, revisionRaw) {
+      const workspaces = [];
+      const ids = new Set();
+      for (const raw of Array.isArray(workspacesRaw) ? workspacesRaw : []) {
+        try {
+          const workspace = this.api.normalizeWorkspace(raw, raw.updatedAt || this.now());
+          if (!ids.has(workspace.id)) {
+            ids.add(workspace.id);
+            workspaces.push(workspace);
+          }
+        } catch (error) {
+          // Invalid local workspace records are ignored instead of becoming write targets.
+        }
+      }
+      const chatWorkspaceMap = {};
+      if (mapRaw && typeof mapRaw === 'object' && !Array.isArray(mapRaw)) {
+        for (const [chatKey, workspaceId] of Object.entries(mapRaw)) {
+          if (chatKey && ids.has(String(workspaceId))) chatWorkspaceMap[chatKey] = String(workspaceId);
+        }
+      }
+      const defaultWorkspaceId = ids.has(String(defaultRaw || ''))
+        ? String(defaultRaw)
+        : (workspaces[0] ? workspaces[0].id : '');
+      return {
+        schemaVersion: 1,
+        workspaces,
+        chatWorkspaceMap,
+        defaultWorkspaceId,
+        revision: this._normalizeRevision(revisionRaw)
+      };
+    }
+
+    async _readCanonicalState() {
+      const raw = await this.getValue(STATE_KEY, null);
+      if (!raw || typeof raw !== 'object' || Number(raw.schemaVersion) !== 1) return null;
+      return this._sanitizeState(raw.workspaces, raw.chatWorkspaceMap, raw.defaultWorkspaceId, raw.revision);
+    }
+
+    async _readSplitState() {
+      return this._sanitizeState(
+        await this.getValue(WORKSPACES_KEY, []),
+        await this.getValue(CHAT_WORKSPACE_MAP_KEY, {}),
+        await this.getValue(DEFAULT_WORKSPACE_KEY, ''),
+        {}
+      );
+    }
+
+    async _acquireLock() {
+      const token = randomId('workspace-lock');
+      for (let attempt = 0; attempt < this.maxLockAttempts; attempt += 1) {
+        const nowMs = this._nowMs();
+        const current = await this.getValue(STATE_LOCK_KEY, null);
+        const available = !current || !current.token || Number(current.expiresAt) <= nowMs;
+        if (available) {
+          const claim = {
+            owner: this.writerId,
+            token,
+            expiresAt: nowMs + this.lockTtlMs,
+            claimedAt: this._nowIso()
+          };
+          await this.setValue(STATE_LOCK_KEY, claim);
+          await this.sleep(this.lockSettleMs);
+          const confirmed = await this.getValue(STATE_LOCK_KEY, null);
+          if (confirmed && confirmed.owner === claim.owner && confirmed.token === claim.token) return claim;
+        }
+        await this.sleep(this.lockRetryMs);
+      }
+      throw new Error('Another tab is updating Linked Notes workspaces. Retry after it finishes.');
+    }
+
+    async _renewLock(lock) {
+      const current = await this.getValue(STATE_LOCK_KEY, null);
+      if (!current || current.owner !== lock.owner || current.token !== lock.token) {
+        throw new Error('Workspace update lock was lost to another tab. Retry the action.');
+      }
+      const renewed = { ...current, expiresAt: this._nowMs() + this.lockTtlMs };
+      await this.setValue(STATE_LOCK_KEY, renewed);
+      const confirmed = await this.getValue(STATE_LOCK_KEY, null);
+      if (!confirmed || confirmed.owner !== lock.owner || confirmed.token !== lock.token) {
+        throw new Error('Workspace update lock could not be renewed. Retry the action.');
+      }
+      return renewed;
+    }
+
+    async _releaseLock(lock) {
+      const current = await this.getValue(STATE_LOCK_KEY, null);
+      if (current && current.owner === lock.owner && current.token === lock.token) {
+        await this.setValue(STATE_LOCK_KEY, null);
+      }
+    }
+
+    async _commitState(state, previousRevision, lock) {
+      await this._renewLock(lock);
+      const revision = {
+        number: (Number(previousRevision && previousRevision.number) || 0) + 1,
+        mutationId: randomId('workspace-mutation'),
+        writerId: this.writerId,
+        updatedAt: this._nowIso()
+      };
+      const payload = {
+        schemaVersion: 1,
+        workspaces: clone(state.workspaces),
+        chatWorkspaceMap: clone(state.chatWorkspaceMap),
+        defaultWorkspaceId: state.defaultWorkspaceId || '',
+        revision
+      };
+      await this.setValue(STATE_KEY, payload);
+      await this.sleep(this.lockSettleMs);
+      const currentLock = await this.getValue(STATE_LOCK_KEY, null);
+      const written = await this._readCanonicalState();
+      if (!currentLock || currentLock.owner !== lock.owner || currentLock.token !== lock.token) {
+        throw new Error('Workspace update lock was lost before verification. Retry the action.');
+      }
+      if (!written || revisionIdentity(written.revision) !== revisionIdentity(revision)) {
+        throw new Error('Workspace state was replaced before verification. Retry the action.');
+      }
+      return written;
+    }
+
+    async _ensureCanonicalState() {
+      const current = await this._readCanonicalState();
+      if (current) return current;
+      const lock = await this._acquireLock();
+      try {
+        const existing = await this._readCanonicalState();
+        if (existing) return existing;
+
+        const split = await this._readSplitState();
+        let state = split;
+        let importedWorkspaceId = '';
+        if (!state.workspaces.length) {
+          const legacy = await this.getValue(LEGACY_SETTINGS_KEY, {});
+          if (legacy && legacy.owner && legacy.repo) {
+            const imported = this.api.normalizeWorkspace({
+              id: LEGACY_IMPORTED_WORKSPACE_ID,
+              name: 'Imported workspace',
+              owner: legacy.owner,
+              repo: legacy.repo,
+              branch: legacy.branch || 'main',
+              basePath: legacy.basePath || this.api.DEFAULT_WORKSPACE_BASE_PATH
+            }, this.now());
+            state = this._sanitizeState([imported], {}, imported.id, {});
+            importedWorkspaceId = imported.id;
+          }
+        }
+        state = await this._commitState(state, state.revision, lock);
+
+        const existingToken = await this.getValue(SHARED_TOKEN_KEY, '');
+        if (!existingToken) {
+          const legacyToken = await this.getValue(LEGACY_TOKEN_KEY, '');
+          if (legacyToken) await this.setValue(SHARED_TOKEN_KEY, String(legacyToken));
+        }
+        await this.setValue(MIGRATION_KEY, {
+          canonicalStateCreated: true,
+          v1Imported: Boolean(importedWorkspaceId),
+          importedWorkspaceId,
+          migratedAt: this._nowIso(),
+          writerId: this.writerId
+        });
+        return state;
+      } finally {
+        await this._releaseLock(lock);
+      }
+    }
+
+    async _mutate(mutator) {
+      await this._ensureCanonicalState();
+      const lock = await this._acquireLock();
+      try {
+        const current = await this._readCanonicalState();
+        if (!current) throw new Error('Canonical workspace state is unavailable.');
+        const outcome = await mutator({
+          schemaVersion: 1,
+          workspaces: clone(current.workspaces),
+          chatWorkspaceMap: clone(current.chatWorkspaceMap),
+          defaultWorkspaceId: current.defaultWorkspaceId,
+          revision: current.revision
+        });
+        const nextState = outcome && outcome.state ? outcome.state : current;
+        const sanitized = this._sanitizeState(
+          nextState.workspaces,
+          nextState.chatWorkspaceMap,
+          nextState.defaultWorkspaceId,
+          current.revision
+        );
+        const committed = await this._commitState(sanitized, current.revision, lock);
+        return { state: committed, value: outcome ? outcome.value : undefined };
+      } finally {
+        await this._releaseLock(lock);
+      }
+    }
+
+    async load() {
+      const state = await this._ensureCanonicalState();
+      return { ...state, hasToken: Boolean(await this.getValue(SHARED_TOKEN_KEY, '')) };
+    }
+
+    async upsert(input) {
+      const result = await this._mutate((state) => {
+        const existing = state.workspaces.find((workspace) => workspace.id === input.id);
+        const workspace = this.api.normalizeWorkspace({
+          ...input,
+          id: existing ? existing.id : input.id,
+          createdAt: existing ? existing.createdAt : input.createdAt,
+          updatedAt: this._nowIso()
+        }, this.now());
+        const index = state.workspaces.findIndex((item) => item.id === workspace.id);
+        if (index === -1) state.workspaces.push(workspace);
+        else state.workspaces[index] = workspace;
+        if (!state.defaultWorkspaceId) state.defaultWorkspaceId = workspace.id;
+        return { state, value: workspace };
+      });
+      return { state: result.state, workspace: result.value };
+    }
+
+    async bindChat(chatKey, workspaceId) {
+      if (!chatKey) return this.load();
+      const result = await this._mutate((state) => {
+        if (!state.workspaces.some((workspace) => workspace.id === workspaceId)) {
+          throw new Error('Cannot bind a chat to a missing workspace.');
+        }
+        state.chatWorkspaceMap[chatKey] = workspaceId;
+        return { state };
+      });
+      return result.state;
+    }
+
+    async setDefault(workspaceId) {
+      const result = await this._mutate((state) => {
+        if (!state.workspaces.some((workspace) => workspace.id === workspaceId)) {
+          throw new Error('Cannot use a missing workspace as default.');
+        }
+        state.defaultWorkspaceId = workspaceId;
+        return { state };
+      });
+      return result.state;
+    }
+
+    async remove(workspaceId) {
+      const result = await this._mutate((state) => {
+        const before = state.workspaces.length;
+        state.workspaces = state.workspaces.filter((workspace) => workspace.id !== workspaceId);
+        if (state.workspaces.length === before) throw new Error('Workspace not found.');
+        const removedChatKeys = [];
+        for (const [chatKey, selected] of Object.entries(state.chatWorkspaceMap)) {
+          if (selected === workspaceId) {
+            removedChatKeys.push(chatKey);
+            delete state.chatWorkspaceMap[chatKey];
+          }
+        }
+        if (state.defaultWorkspaceId === workspaceId) {
+          state.defaultWorkspaceId = state.workspaces[0] ? state.workspaces[0].id : '';
+        }
+        return { state, value: removedChatKeys };
+      });
+      return { state: result.state, removedChatKeys: result.value };
+    }
+
+    async getToken() {
+      return String(await this.getValue(SHARED_TOKEN_KEY, '') || '');
+    }
+
+    async setToken(token) {
+      const value = String(token || '').trim();
+      if (!value) throw new Error('Token value is empty.');
+      await this.setValue(SHARED_TOKEN_KEY, value);
+      return true;
+    }
+
+    async clearToken() {
+      await this.setValue(SHARED_TOKEN_KEY, '');
+      return false;
+    }
+  }
+
+  return {
+    WorkspaceStore,
+    STATE_KEY,
+    STATE_LOCK_KEY,
+    SHARED_TOKEN_KEY,
+    MIGRATION_KEY,
+    WORKSPACES_KEY,
+    CHAT_WORKSPACE_MAP_KEY,
+    DEFAULT_WORKSPACE_KEY,
+    LEGACY_SETTINGS_KEY,
+    LEGACY_TOKEN_KEY,
+    LEGACY_IMPORTED_WORKSPACE_ID,
+    revisionIdentity
+  };
+});
+
 /* src/linked-notes-ui.js */
 (function (root, factory) {
   const api = factory();
@@ -999,6 +1504,27 @@
       .replace(/'/g, '&#39;');
   }
 
+  function launcherRightOffset(width, edge = 18, gap = 10) {
+    const measured = Number.isFinite(Number(width)) ? Math.max(0, Number(width)) : 0;
+    return Math.ceil(edge + measured + gap);
+  }
+
+  function shouldCloseOnEscape(event, state) {
+    return Boolean(event && event.key === 'Escape' && state && state.open && !state.busy);
+  }
+
+  function blankWorkspaceEditor(defaultBasePath = 'prototype-fixtures/linked-notes') {
+    return { id: '', name: '', repositoryInput: '', branch: 'main', basePath: defaultBasePath };
+  }
+
+  function mergeWorkspaceEditorPatch(captured, dirty, patch = {}) {
+    const nextPatch = { ...patch };
+    if (captured && dirty && nextPatch.workspaceEditor && !nextPatch.replaceWorkspaceEditor) {
+      nextPatch.workspaceEditor = captured;
+    }
+    return nextPatch;
+  }
+
   class LinkedNotesUI {
     constructor(handlers = {}) {
       this.handlers = handlers;
@@ -1007,7 +1533,13 @@
         current: null,
         search: '',
         status: 'Ready.',
-        settings: { owner: '', repo: '', branch: 'main', basePath: 'prototype-fixtures/linked-notes', hasToken: false },
+        workspaces: [],
+        activeWorkspaceId: '',
+        defaultWorkspaceId: '',
+        workspaceEditor: blankWorkspaceEditor(),
+        workspaceTargetLabel: '',
+        chatContextLabel: 'New chat / default workspace',
+        hasToken: false,
         remoteTargetMismatch: false,
         remoteTargetLabel: '',
         remoteRecoveryAvailable: false,
@@ -1016,7 +1548,18 @@
       this.host = null;
       this.shadow = null;
       this.open = false;
+      this.workspaceManagerOpen = false;
+      this.workspaceEditorDirty = false;
       this._draftTimer = null;
+      this._onDocumentKeydown = (event) => {
+        if (!shouldCloseOnEscape(event, { open: this.open, busy: this.state.busy })) return;
+        event.preventDefault();
+        event.stopPropagation();
+        this.persistAllDraftsNow().then(() => {
+          this.open = false;
+          this.render();
+        }).catch(() => {});
+      };
     }
 
     mount() {
@@ -1026,14 +1569,33 @@
       this.host.style.all = 'initial';
       document.documentElement.appendChild(this.host);
       this.shadow = this.host.attachShadow({ mode: 'open' });
+      document.addEventListener('keydown', this._onDocumentKeydown, true);
       this.render();
     }
 
     dispose() {
-      this._persistDraftNow().catch(() => {});
+      this.persistAllDraftsNow().catch(() => {});
+      document.removeEventListener('keydown', this._onDocumentKeydown, true);
       if (this.host) this.host.remove();
       this.host = null;
       this.shadow = null;
+    }
+
+    persistDraftNow() {
+      return this._persistDraftNow();
+    }
+
+    workspaceDraftState() {
+      return {
+        editor: { ...(this.state.workspaceEditor || blankWorkspaceEditor()) },
+        dirty: Boolean(this.workspaceEditorDirty)
+      };
+    }
+
+    async persistAllDraftsNow() {
+      this._captureWorkspaceIntoState();
+      await this._persistDraftNow();
+      return this.workspaceDraftState();
     }
 
     _captureDraftIntoState() {
@@ -1042,13 +1604,38 @@
       return draft;
     }
 
+    _workspaceFromForm() {
+      if (!this.shadow) return this.state.workspaceEditor;
+      const value = (name) => {
+        const input = this.shadow.querySelector(`[data-workspace-field="${name}"]`);
+        return input ? input.value.trim() : '';
+      };
+      return {
+        id: value('id'),
+        name: value('name'),
+        repositoryInput: value('repositoryInput'),
+        branch: value('branch') || 'main',
+        basePath: value('basePath') || 'prototype-fixtures/linked-notes'
+      };
+    }
+
+    _captureWorkspaceIntoState() {
+      const editor = this._workspaceFromForm();
+      if (editor) this.state.workspaceEditor = editor;
+      return editor;
+    }
+
     setState(patch) {
       const captured = this._captureDraftIntoState();
-      const nextPatch = { ...patch };
+      const capturedWorkspace = this._captureWorkspaceIntoState();
+      let nextPatch = { ...patch };
       if (captured && nextPatch.current && nextPatch.current.id === captured.id && !this.state.busy && !nextPatch.replaceCurrent) {
         nextPatch.current = { ...nextPatch.current, title: captured.title, body: captured.body };
       }
+      nextPatch = mergeWorkspaceEditorPatch(capturedWorkspace, this.workspaceEditorDirty, nextPatch);
+      if (nextPatch.replaceWorkspaceEditor) this.workspaceEditorDirty = false;
       delete nextPatch.replaceCurrent;
+      delete nextPatch.replaceWorkspaceEditor;
       this.state = { ...this.state, ...nextPatch };
       this.render();
     }
@@ -1061,20 +1648,6 @@
         ...this.state.current,
         title: title ? title.value : this.state.current.title || '',
         body: body ? body.value : this.state.current.body || ''
-      };
-    }
-
-    _settingsFromForm() {
-      const value = (name) => {
-        const input = this.shadow.querySelector(`[data-setting="${name}"]`);
-        return input ? input.value.trim() : '';
-      };
-      return {
-        owner: value('owner'),
-        repo: value('repo'),
-        branch: value('branch') || 'main',
-        basePath: value('basePath') || 'prototype-fixtures/linked-notes',
-        token: value('token')
       };
     }
 
@@ -1114,12 +1687,35 @@
       return this._call(name, ...args);
     }
 
+    async _withAllDrafts(name, ...args) {
+      await this.persistAllDraftsNow();
+      return this._call(name, ...args);
+    }
+
+    _positionLauncher() {
+      const launcher = this.shadow && this.shadow.querySelector('[data-action="toggle"]');
+      if (!launcher) return;
+      const apply = () => {
+        const width = launcher.getBoundingClientRect ? launcher.getBoundingClientRect().width : launcher.offsetWidth;
+        launcher.style.right = `${launcherRightOffset(width)}px`;
+      };
+      if (typeof requestAnimationFrame === 'function') requestAnimationFrame(apply);
+      else apply();
+    }
+
     render() {
       if (!this.shadow) return;
       const current = this.state.current;
       const busy = Boolean(this.state.busy);
       const disabled = busy ? 'disabled' : '';
       const links = current && Array.isArray(current.links) ? current.links : [];
+      const activeWorkspace = this.state.workspaces.find((workspace) => workspace.id === this.state.activeWorkspaceId) || null;
+      const editor = this.state.workspaceEditor || blankWorkspaceEditor();
+      const editorMatchesActive = Boolean(activeWorkspace && editor.id && editor.id === activeWorkspace.id);
+      const workspaceOptions = this.state.workspaces.map((workspace) => {
+        const suffix = workspace.id === this.state.defaultWorkspaceId ? ' · default' : '';
+        return `<option value="${escapeHtml(workspace.id)}" ${workspace.id === this.state.activeWorkspaceId ? 'selected' : ''}>${escapeHtml(workspace.name || `${workspace.owner}/${workspace.repo}`)}${suffix}</option>`;
+      }).join('');
       const notesHtml = this.state.notes.map((note) => `
         <button class="note-row ${current && current.id === note.id ? 'active' : ''}" data-note-id="${escapeHtml(note.id)}" ${disabled}>
           <strong>${escapeHtml(note.title || 'Untitled Note')}</strong>
@@ -1138,7 +1734,7 @@
         </div>`;
       }).join('') || '<div class="empty">No links.</div>';
       const remoteInfo = this.state.remoteTargetLabel
-        ? `<div class="remote-context ${this.state.remoteTargetMismatch ? 'mismatch' : ''}"><strong>Bound remote:</strong> ${escapeHtml(this.state.remoteTargetLabel)}${this.state.remoteTargetMismatch ? '<br><span>Current settings point elsewhere. Regular Save GitHub is blocked.</span>' : ''}</div>`
+        ? `<div class="remote-context ${this.state.remoteTargetMismatch ? 'mismatch' : ''}"><strong>Bound remote:</strong> ${escapeHtml(this.state.remoteTargetLabel)}${this.state.remoteTargetMismatch ? '<br><span>The chat workspace points elsewhere. Regular Save GitHub is blocked.</span>' : ''}</div>`
         : '<div class="remote-context">No verified remote target yet.</div>';
       const recoveryButtons = current && this.state.remoteRecoveryAvailable
         ? `<button data-action="recheck-remote" ${disabled}>Recheck remote</button>
@@ -1148,43 +1744,53 @@
 
       this.shadow.innerHTML = `
         <style>
-          :host { all: initial; }
+          :host { all: initial; --bg:#111318; --surface:#191c23; --surface-2:#20242d; --surface-3:#292e39; --border:#3b4250; --text:#eef1f6; --muted:#aab2c0; --accent:#8eb4ff; --success:#79d69a; --danger:#ff8d8d; }
           *, *::before, *::after { box-sizing: border-box; }
           button, input, textarea, select { font: 13px/1.35 system-ui, sans-serif; }
-          .launcher { position: fixed; right: 18px; bottom: 18px; z-index: 2147483646; border: 0; border-radius: 999px; padding: 10px 15px; background: #202123; color: #fff; box-shadow: 0 5px 18px rgba(0,0,0,.28); cursor: pointer; }
-          .panel { position: fixed; right: 18px; bottom: 66px; z-index: 2147483646; width: min(920px, calc(100vw - 36px)); height: min(720px, calc(100vh - 92px)); display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 250px 1fr; background: #fff; color: #202123; border: 1px solid #c8c8c8; border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.3); font: 13px/1.4 system-ui, sans-serif; }
-          .sidebar { display: flex; flex-direction: column; min-width: 0; background: #f4f4f4; border-right: 1px solid #ddd; }
-          .toolbar, .editor-toolbar, .status, .settings { padding: 10px; border-bottom: 1px solid #ddd; }
+          .launcher { position: fixed; right: 102px; bottom: 18px; z-index: 2147483646; border: 1px solid #343a46; border-radius: 999px; padding: 10px 15px; background: #202123; color: #fff; box-shadow: 0 5px 18px rgba(0,0,0,.42); cursor: pointer; }
+          .panel { position: fixed; right: 18px; bottom: 66px; z-index: 2147483646; width: min(980px, calc(100vw - 36px)); height: min(760px, calc(100vh - 92px)); display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 260px 1fr; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.55); font: 13px/1.4 system-ui, sans-serif; color-scheme: dark; }
+          .sidebar { display: flex; flex-direction: column; min-width: 0; background: var(--surface); border-right: 1px solid var(--border); }
+          .toolbar, .editor-toolbar, .status, .workspace-bar { padding: 10px; border-bottom: 1px solid var(--border); }
           .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
-          .toolbar input, input, textarea, select { width: 100%; border: 1px solid #aaa; border-radius: 6px; padding: 7px; background: #fff; color: #111; }
-          button { border: 1px solid #aaa; border-radius: 6px; padding: 6px 9px; background: #fff; color: #222; cursor: pointer; }
-          button.primary { background: #202123; color: #fff; border-color: #202123; }
-          button.danger { color: #a00; }
-          button:disabled, input:disabled, textarea:disabled, select:disabled { opacity: .55; cursor: not-allowed; }
+          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) 1fr; gap: 8px; align-items: center; background: var(--surface); }
+          .workspace-summary { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+          input, textarea, select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 7px; background: var(--surface-2); color: var(--text); }
+          input::placeholder, textarea::placeholder { color: #7f8999; }
+          button { border: 1px solid var(--border); border-radius: 6px; padding: 6px 9px; background: var(--surface-2); color: var(--text); cursor: pointer; }
+          button:hover:not(:disabled) { background: var(--surface-3); }
+          button.primary { background: #315b9d; color: #fff; border-color: #4a78bd; }
+          button.danger { color: var(--danger); }
+          button:disabled, input:disabled, textarea:disabled, select:disabled { opacity: .5; cursor: not-allowed; }
           .notes { overflow: auto; padding: 7px; }
           .note-row { width: 100%; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 6px; text-align: left; }
-          .note-row span { color: #666; font-size: 11px; }
-          .note-row.active { outline: 2px solid #5a7; }
+          .note-row span { color: var(--muted); font-size: 11px; }
+          .note-row.active { outline: 2px solid var(--success); }
           .main { min-width: 0; display: flex; flex-direction: column; }
-          .editor-toolbar { display: flex; gap: 7px; flex-wrap: wrap; }
+          .editor-toolbar { display: flex; gap: 7px; flex-wrap: wrap; background: var(--surface); }
           .editor { display: grid; grid-template-rows: auto 1fr auto auto auto; min-height: 0; gap: 8px; padding: 12px; overflow: auto; }
           textarea { min-height: 220px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
           .links { display: grid; gap: 6px; }
-          .link-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto auto; gap: 6px; align-items: center; border: 1px solid #ddd; border-radius: 7px; padding: 6px; }
-          .link-row small { grid-column: 1 / -1; color: #555; }
+          .link-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto auto; gap: 6px; align-items: center; border: 1px solid var(--border); border-radius: 7px; padding: 6px; background: var(--surface); }
+          .link-row small { grid-column: 1 / -1; color: var(--muted); }
           .link-open { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
-          .link-status { font-size: 11px; padding: 2px 5px; border-radius: 4px; background: #eee; }
-          .link-status.resolved { background: #dff5e4; }
-          .link-status.unresolved, .link-status.invalid { background: #ffe1de; }
+          .link-status { font-size: 11px; padding: 2px 5px; border-radius: 4px; background: var(--surface-3); }
+          .link-status.resolved { background: #173d2a; color: #a9efc0; }
+          .link-status.unresolved, .link-status.invalid { background: #4a2323; color: #ffc1c1; }
           .add-link { display: grid; grid-template-columns: 120px 1fr 160px auto; gap: 6px; }
-          details { border: 1px solid #ddd; border-radius: 7px; padding: 6px; }
-          .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 7px; margin-top: 7px; }
-          .remote-context { border: 1px solid #ddd; border-radius: 7px; padding: 7px; color: #555; word-break: break-word; }
-          .remote-context.mismatch { border-color: #c66; background: #fff0ee; color: #711; }
-          .status { margin-top: auto; background: #fafafa; word-break: break-word; }
-          .empty { color: #777; padding: 8px; }
+          details { border: 1px solid var(--border); border-radius: 7px; padding: 8px; background: var(--surface); }
+          summary { cursor: pointer; color: var(--text); }
+          .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; margin-top: 9px; }
+          .field { display: grid; gap: 4px; color: var(--muted); }
+          .field.wide { grid-column: 1 / -1; }
+          .workspace-actions, .token-actions { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+          .target-preview { grid-column: 1 / -1; border: 1px solid var(--border); border-radius: 6px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface-2); }
+          .remote-context { border: 1px solid var(--border); border-radius: 7px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface); }
+          .remote-context.mismatch { border-color: #9b5a5a; background: #351f22; color: #ffb8b8; }
+          .status { margin-top: auto; background: var(--surface-2); color: var(--muted); word-break: break-word; }
+          .empty { color: var(--muted); padding: 8px; }
           h3 { margin: 0 0 7px; font: 600 15px/1.3 system-ui, sans-serif; }
-          @media (max-width: 680px) { .panel { grid-template-columns: 1fr; } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid #ddd; } .add-link { grid-template-columns: 1fr; } .settings-grid { grid-template-columns: 1fr; } }
+          .hint { color: var(--muted); font-size: 12px; }
+          @media (max-width: 700px) { .panel { grid-template-columns: 1fr; } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid { grid-template-columns: 1fr; } }
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Notes</button>
         <section class="panel" aria-label="Linked Notes Prototype" aria-busy="${busy ? 'true' : 'false'}">
@@ -1194,10 +1800,16 @@
             <div class="status">${escapeHtml(this.state.status)}</div>
           </aside>
           <main class="main">
+            <div class="workspace-bar">
+              <select data-role="workspace-select" ${disabled}>
+                ${workspaceOptions || '<option value="">No saved workspace</option>'}
+              </select>
+              <div class="workspace-summary" title="${escapeHtml(this.state.workspaceTargetLabel)}">${escapeHtml(activeWorkspace ? `${this.state.chatContextLabel} · ${this.state.workspaceTargetLabel}` : 'Create a workspace before remote access.')}</div>
+            </div>
             <div class="editor-toolbar">
               <button class="primary" data-action="save-local" ${current && !busy ? '' : 'disabled'}>Save local</button>
-              <button class="primary" data-action="save-remote" ${current && !busy ? '' : 'disabled'}>Save GitHub</button>
-              <button data-action="copy-remote" ${current && this.state.remoteTargetMismatch && !busy ? '' : 'disabled'}>Copy to current target</button>
+              <button class="primary" data-action="save-remote" ${current && activeWorkspace && !busy ? '' : 'disabled'}>Save GitHub</button>
+              <button data-action="copy-remote" ${current && activeWorkspace && this.state.remoteTargetMismatch && !busy ? '' : 'disabled'}>Copy to chat workspace</button>
               ${recoveryButtons}
               <button class="danger" data-action="delete" ${current && !busy ? '' : 'disabled'}>Delete local</button>
               <button data-action="close" ${disabled}>Close</button>
@@ -1215,35 +1827,58 @@
                     <button data-action="add-link" ${disabled}>Add link</button>
                   </div>
                 </section>` : '<div class="empty">Create or select a Note.</div>'}
-              <details>
-                <summary>GitHub test settings</summary>
+              <details data-role="workspace-manager" ${this.workspaceManagerOpen ? 'open' : ''}>
+                <summary>Manage GitHub workspaces</summary>
+                <p class="hint">A workspace is a reusable repository, branch and Notes folder. The shared token is stored once for all workspaces.</p>
                 <div class="settings-grid">
-                  <input data-setting="owner" placeholder="owner" value="${escapeHtml(this.state.settings.owner || '')}" ${disabled}>
-                  <input data-setting="repo" placeholder="repository" value="${escapeHtml(this.state.settings.repo || '')}" ${disabled}>
-                  <input data-setting="branch" placeholder="test branch" value="${escapeHtml(this.state.settings.branch || 'main')}" ${disabled}>
-                  <input data-setting="basePath" placeholder="prototype-fixtures/linked-notes" value="${escapeHtml(this.state.settings.basePath || '')}" ${disabled}>
-                  <input data-setting="token" type="password" placeholder="Fine-grained token${this.state.settings.hasToken ? ' (stored)' : ''}" ${disabled}>
-                  <button data-action="save-settings" ${disabled}>Save settings</button>
+                  <input type="hidden" data-workspace-field="id" value="${escapeHtml(editor.id || '')}">
+                  <label class="field"><span>Workspace name</span><input data-workspace-field="name" placeholder="GDoc" value="${escapeHtml(editor.name || '')}" ${disabled}></label>
+                  <label class="field"><span>Repository</span><input data-workspace-field="repositoryInput" placeholder="AlexPastukhh/gdoc or https://github.com/AlexPastukhh/gdoc" value="${escapeHtml(editor.repositoryInput || '')}" ${disabled}></label>
+                  <label class="field"><span>Branch</span><input data-workspace-field="branch" placeholder="main" value="${escapeHtml(editor.branch || 'main')}" ${disabled}></label>
+                  <label class="field"><span>Notes folder</span><input data-workspace-field="basePath" placeholder="prototype-fixtures/linked-notes" value="${escapeHtml(editor.basePath || 'prototype-fixtures/linked-notes')}" ${disabled}></label>
+                  <div class="target-preview"><strong>Target:</strong> ${escapeHtml(this.state.workspaceTargetLabel || 'Complete the workspace fields and save.')}</div>
+                  <div class="workspace-actions wide">
+                    <button data-action="new-workspace" ${disabled}>New workspace</button>
+                    <button class="primary" data-action="save-workspace" ${disabled}>Save workspace</button>
+                    <button data-action="set-default-workspace" ${editorMatchesActive && activeWorkspace.id !== this.state.defaultWorkspaceId && !busy ? '' : 'disabled'}>Set as default</button>
+                    <button class="danger" data-action="delete-workspace" ${editorMatchesActive && !busy ? '' : 'disabled'}>Delete workspace</button>
+                  </div>
+                  <label class="field wide"><span>Shared fine-grained GitHub token</span><input data-role="shared-token" type="password" placeholder="${this.state.hasToken ? 'Token stored — enter a value only to replace it' : 'Fine-grained token used by all workspaces'}" ${disabled}></label>
+                  <div class="token-actions wide">
+                    <button data-action="save-token" ${disabled}>Save shared token</button>
+                    <button class="danger" data-action="clear-token" ${this.state.hasToken && !busy ? '' : 'disabled'}>Clear shared token</button>
+                    <span class="hint">${this.state.hasToken ? 'A shared token is stored privately in Tampermonkey.' : 'No token is stored.'}</span>
+                  </div>
                 </div>
               </details>
             </div>
           </main>
         </section>`;
 
+      this._positionLauncher();
+      const details = this.shadow.querySelector('[data-role="workspace-manager"]');
+      if (details) details.ontoggle = () => { this.workspaceManagerOpen = details.open; };
       const title = this.shadow.querySelector('[data-role="title"]');
       const body = this.shadow.querySelector('[data-role="body"]');
       if (title) title.oninput = () => this._scheduleDraftPersist();
       if (body) body.oninput = () => this._scheduleDraftPersist();
+      this.shadow.querySelectorAll('[data-workspace-field]').forEach((input) => {
+        input.oninput = () => {
+          this.workspaceEditorDirty = true;
+          this._captureWorkspaceIntoState();
+        };
+      });
 
       const toggle = this.shadow.querySelector('[data-action="toggle"]');
       if (toggle) toggle.onclick = async () => {
-        await this._persistDraftNow();
+        await this.persistAllDraftsNow();
+        if (!this.open) await this._call('onOpen');
         this.open = !this.open;
         this.render();
       };
       const close = this.shadow.querySelector('[data-action="close"]');
       if (close) close.onclick = async () => {
-        await this._persistDraftNow();
+        await this.persistAllDraftsNow();
         this.open = false;
         this.render();
       };
@@ -1254,6 +1889,24 @@
       this.shadow.querySelectorAll('[data-note-id]').forEach((button) => {
         button.onclick = () => this._withDraft('onSelect', button.dataset.noteId);
       });
+      const workspaceSelect = this.shadow.querySelector('[data-role="workspace-select"]');
+      if (workspaceSelect) workspaceSelect.onchange = () => this._withAllDrafts('onSelectWorkspace', workspaceSelect.value, this.workspaceDraftState());
+      const newWorkspace = this.shadow.querySelector('[data-action="new-workspace"]');
+      if (newWorkspace) newWorkspace.onclick = () => this._withAllDrafts('onNewWorkspace', this.workspaceDraftState());
+      const saveWorkspace = this.shadow.querySelector('[data-action="save-workspace"]');
+      if (saveWorkspace) saveWorkspace.onclick = () => this._withAllDrafts('onSaveWorkspace', this._workspaceFromForm());
+      const setDefault = this.shadow.querySelector('[data-action="set-default-workspace"]');
+      if (setDefault) setDefault.onclick = () => this._withAllDrafts('onSetDefaultWorkspace', this.state.activeWorkspaceId);
+      const deleteWorkspace = this.shadow.querySelector('[data-action="delete-workspace"]');
+      if (deleteWorkspace) deleteWorkspace.onclick = () => this._withAllDrafts('onDeleteWorkspace', this.state.activeWorkspaceId);
+      const saveToken = this.shadow.querySelector('[data-action="save-token"]');
+      if (saveToken) saveToken.onclick = async () => {
+        await this.persistAllDraftsNow();
+        const token = this.shadow.querySelector('[data-role="shared-token"]');
+        return this._call('onSaveToken', token ? token.value : '');
+      };
+      const clearToken = this.shadow.querySelector('[data-action="clear-token"]');
+      if (clearToken) clearToken.onclick = () => this._withAllDrafts('onClearToken');
       const saveLocal = this.shadow.querySelector('[data-action="save-local"]');
       if (saveLocal) saveLocal.onclick = () => this._call('onSaveLocal', this._draftFromForm());
       const saveRemote = this.shadow.querySelector('[data-action="save-remote"]');
@@ -1284,12 +1937,17 @@
       this.shadow.querySelectorAll('[data-open-link]').forEach((button) => {
         button.onclick = () => this._withDraft('onOpenLink', button.dataset.openLink);
       });
-      const saveSettings = this.shadow.querySelector('[data-action="save-settings"]');
-      if (saveSettings) saveSettings.onclick = () => this._withDraft('onSaveSettings', this._settingsFromForm());
     }
   }
 
-  return { LinkedNotesUI, escapeHtml };
+  return {
+    LinkedNotesUI,
+    escapeHtml,
+    launcherRightOffset,
+    shouldCloseOnEscape,
+    blankWorkspaceEditor,
+    mergeWorkspaceEditorPatch
+  };
 });
 
 /* src/linked-notes-app.js */
@@ -1315,17 +1973,14 @@
   }
 
   function cleanBasePath(value) {
+    const api = root.ObsLinkedNotes || {};
+    if (typeof api.cleanWorkspaceBasePath === 'function') return api.cleanWorkspaceBasePath(value);
     const text = String(value == null ? '' : value).replace(/\\/g, '/').trim() || 'prototype-fixtures/linked-notes';
-    if (/^[a-zA-Z]:\//.test(text) || text.startsWith('/') || text.startsWith('//') || /^file:\/\//i.test(text)) {
-      throw new TypeError('GitHub base path must be repository-relative.');
-    }
+    if (/^[a-zA-Z]:\//.test(text) || text.startsWith('/') || text.startsWith('//') || /^file:\/\//i.test(text)) throw new TypeError('GitHub base path must be repository-relative.');
     if (text.includes('://')) throw new TypeError('GitHub base path must not be a URL.');
     if (/[?#]/.test(text)) throw new TypeError('GitHub base path must not contain query or fragment syntax.');
-    if (/[\u0000-\u001f\u007f]/.test(text)) throw new TypeError('GitHub base path contains control characters.');
     const parts = text.split('/');
-    if (parts.some((segment) => !segment || segment === '.' || segment === '..')) {
-      throw new TypeError('GitHub base path contains an empty, . or .. segment.');
-    }
+    if (parts.some((segment) => !segment || segment === '.' || segment === '..')) throw new TypeError('GitHub base path contains an empty, . or .. segment.');
     return parts.join('/');
   }
 
@@ -1341,6 +1996,7 @@
   }
 
   function configuredTargetForNote(note, settings, fileSlug) {
+    if (!settings || !settings.owner || !settings.repo) throw new Error('Select or create a GitHub workspace first.');
     const remotePath = note && note.remote ? String(note.remote.path || '') : '';
     const fileName = fileNameFromPath(remotePath) || fileSlug(note.title, note.id);
     return {
@@ -1364,12 +2020,25 @@
       this.setValue = options.setValue || gmSet;
       this.clientFactory = options.clientFactory || null;
       this.confirmAction = options.confirmAction || ((message) => (typeof window !== 'undefined' && typeof window.confirm === 'function' ? window.confirm(message) : false));
+      this.locationProvider = options.locationProvider || (() => (typeof location !== 'undefined' ? location : { pathname: '' }));
+      this.setIntervalFn = options.setIntervalFn || ((fn, ms) => setInterval(fn, ms));
+      this.clearIntervalFn = options.clearIntervalFn || ((id) => clearInterval(id));
+      this.routePollMs = options.routePollMs || 750;
       this.store = options.store || new api.IndexedDbNoteStore();
+      this.workspaceStore = options.workspaceStore || (api.WorkspaceStore ? new api.WorkspaceStore({ api, getValue: this.getValue, setValue: this.setValue }) : null);
       this.ui = options.ui || new api.LinkedNotesUI({
         onNew: () => this.newNote(),
         onSelect: (id) => this.selectNote(id),
         onSearch: (query) => this.refreshList(query),
         onDraftChange: (note) => this.saveDraft(note),
+        onOpen: () => this.openPanel(),
+        onSelectWorkspace: (id, draftState) => this.selectWorkspace(id, draftState),
+        onNewWorkspace: (draftState) => this.beginNewWorkspace(draftState),
+        onSaveWorkspace: (workspace) => this.saveWorkspace(workspace),
+        onDeleteWorkspace: (id) => this.deleteWorkspace(id),
+        onSetDefaultWorkspace: (id) => this.setDefaultWorkspace(id),
+        onSaveToken: (token) => this.saveSharedToken(token),
+        onClearToken: () => this.clearSharedToken(),
         onSaveLocal: (note) => this.saveLocal(note),
         onSaveRemote: (note) => this.saveRemote(note),
         onCopyRemote: (note) => this.copyRemote(note),
@@ -1380,46 +2049,80 @@
         onAddLink: (note, input) => this.addLink(note, input),
         onRemoveLink: (note, linkId) => this.removeLink(note, linkId),
         onResolveLink: (note, linkId) => this.resolveLink(note, linkId),
-        onOpenLink: (linkId) => this.openLink(linkId),
-        onSaveSettings: (settings) => this.saveSettings(settings)
+        onOpenLink: (linkId) => this.openLink(linkId)
       });
       this.current = null;
-      this.settings = options.settings || { owner: '', repo: '', branch: 'main', basePath: 'prototype-fixtures/linked-notes', hasToken: false };
       this.search = '';
       this.remoteOperation = null;
+      this.workspaceState = { workspaces: [], chatWorkspaceMap: {}, defaultWorkspaceId: '', hasToken: false };
+      this.activeWorkspaceId = '';
+      this.currentChatKey = '';
+      this.sessionWorkspaceId = '';
+      this.sessionWorkspaceExplicit = false;
+      this.routeTimer = null;
+      if (options.settings && options.settings.owner && options.settings.repo) {
+        const workspace = api.normalizeWorkspace
+          ? api.normalizeWorkspace({ id: 'workspace-test', name: 'Test workspace', ...options.settings })
+          : { id: 'workspace-test', name: 'Test workspace', ...options.settings };
+        this.workspaceState = { workspaces: [workspace], chatWorkspaceMap: {}, defaultWorkspaceId: workspace.id, hasToken: Boolean(options.settings.hasToken) };
+        this.activeWorkspaceId = workspace.id;
+      }
+    }
+
+    _activeWorkspace() {
+      return this.workspaceState.workspaces.find((workspace) => workspace.id === this.activeWorkspaceId) || null;
     }
 
     _configuredTarget(note) {
-      return configuredTargetForNote(note, this.settings, this.api.fileSlug);
+      return configuredTargetForNote(note, this._activeWorkspace(), this.api.fileSlug);
     }
 
     _boundTarget(note) {
       const remote = this.api.normalizeRemote(note && note.remote);
-      if (!this.api.hasRemoteTargetIdentity(remote)) {
-        throw new Error('A repository owner, repository, branch and path are required for this recovery action.');
-      }
+      if (!this.api.hasRemoteTargetIdentity(remote)) throw new Error('A repository owner, repository, branch and path are required for this recovery action.');
       return remote;
     }
 
+    _workspaceEditor(workspace) {
+      if (!workspace) return { id: '', name: '', repositoryInput: '', branch: 'main', basePath: this.api.DEFAULT_WORKSPACE_BASE_PATH || 'prototype-fixtures/linked-notes' };
+      return {
+        id: workspace.id,
+        name: workspace.name,
+        repositoryInput: `${workspace.owner}/${workspace.repo}`,
+        branch: workspace.branch,
+        basePath: workspace.basePath
+      };
+    }
+
+    _workspaceUiState() {
+      const active = this._activeWorkspace();
+      const mapped = this.currentChatKey ? this.workspaceState.chatWorkspaceMap[this.currentChatKey] : '';
+      let chatContextLabel = 'New chat / default fallback';
+      if (this.currentChatKey && mapped === this.activeWorkspaceId) chatContextLabel = 'Saved for this chat';
+      else if (this.currentChatKey) chatContextLabel = 'Using the default workspace; not saved for this chat';
+      else if (this.sessionWorkspaceExplicit) chatContextLabel = 'Selected for this new-chat session';
+      return {
+        workspaces: this.workspaceState.workspaces,
+        activeWorkspaceId: this.activeWorkspaceId,
+        defaultWorkspaceId: this.workspaceState.defaultWorkspaceId,
+        workspaceEditor: this._workspaceEditor(active),
+        workspaceTargetLabel: active && this.api.workspaceTargetLabel ? this.api.workspaceTargetLabel(active) : '',
+        chatContextLabel,
+        hasToken: Boolean(this.workspaceState.hasToken)
+      };
+    }
+
     _remoteUiState(note = this.current) {
-      if (!note) {
-        return {
-          remoteTargetMismatch: false,
-          remoteTargetLabel: '',
-          remoteRecoveryAvailable: false,
-          busy: Boolean(this.remoteOperation)
-        };
-      }
+      if (!note) return { remoteTargetMismatch: false, remoteTargetLabel: '', remoteRecoveryAvailable: false, busy: Boolean(this.remoteOperation) };
       const remote = this.api.normalizeRemote(note.remote);
       const complete = this.api.hasCompleteRemoteIdentity(remote);
       const recoverableTarget = this.api.hasRemoteTargetIdentity(remote);
-      const recoverableStates = new Set([
-        this.api.NOTE_STATES.CONFLICT,
-        this.api.NOTE_STATES.REMOTE_DELETED,
-        this.api.NOTE_STATES.SAVE_FAILED
-      ]);
+      const recoverableStates = new Set([this.api.NOTE_STATES.CONFLICT, this.api.NOTE_STATES.REMOTE_DELETED, this.api.NOTE_STATES.SAVE_FAILED]);
+      const workspace = this._activeWorkspace();
+      let mismatch = false;
+      if (complete && workspace) mismatch = !this.api.sameRemoteTarget(remote, configuredTargetForNote(note, workspace, this.api.fileSlug));
       return {
-        remoteTargetMismatch: complete && !this.api.sameRemoteTarget(remote, this._configuredTarget(note)),
+        remoteTargetMismatch: mismatch,
         remoteTargetLabel: remoteTargetLabel(remote),
         remoteRecoveryAvailable: recoverableTarget && recoverableStates.has(note.state),
         busy: Boolean(this.remoteOperation)
@@ -1427,59 +2130,174 @@
     }
 
     _setUi(patch = {}) {
-      this.ui.setState({ ...this._remoteUiState(), ...patch });
+      this.ui.setState({ ...this._workspaceUiState(), ...this._remoteUiState(), ...patch });
     }
 
     async _runRemoteOperation(label, work) {
       if (this.remoteOperation) throw new Error(`Remote operation already in progress: ${this.remoteOperation}`);
       this.remoteOperation = label;
       this._setUi({ busy: true, status: label });
-      try {
-        return await work();
-      } finally {
-        this.remoteOperation = null;
-        this._setUi({ busy: false });
-      }
+      try { return await work(); }
+      finally { this.remoteOperation = null; this._setUi({ busy: false }); }
     }
 
     async _confirm(message) {
       return Boolean(await Promise.resolve(this.confirmAction(message)));
     }
 
+    _readChatKey() {
+      return this.api.chatKeyFromLocation ? this.api.chatKeyFromLocation(this.locationProvider()) : '';
+    }
+
+    async _chooseWorkspaceForCurrentChat() {
+      const state = this.workspaceState;
+      const mapped = this.currentChatKey ? state.chatWorkspaceMap[this.currentChatKey] : '';
+      const valid = (id) => state.workspaces.some((workspace) => workspace.id === id);
+      let selected = valid(mapped) ? mapped : '';
+      if (!selected && !this.currentChatKey && this.sessionWorkspaceExplicit && valid(this.sessionWorkspaceId)) selected = this.sessionWorkspaceId;
+      if (!selected && valid(state.defaultWorkspaceId)) selected = state.defaultWorkspaceId;
+      if (!selected && state.workspaces[0]) selected = state.workspaces[0].id;
+      this.activeWorkspaceId = selected || '';
+      if (!this.currentChatKey && !this.sessionWorkspaceExplicit) this.sessionWorkspaceId = this.activeWorkspaceId;
+    }
+
+    async refreshWorkspaceState(status) {
+      if (!this.workspaceStore) return this.workspaceState;
+      this.workspaceState = await this.workspaceStore.load();
+      await this._chooseWorkspaceForCurrentChat();
+      this._setUi({ status: status || 'Workspace state refreshed from Tampermonkey storage.' });
+      return this.workspaceState;
+    }
+
+    async openPanel() {
+      await this.refreshWorkspaceState('Workspace state refreshed when Notes opened.');
+    }
+
+    async _confirmWorkspaceDraftReset(draftState) {
+      if (!draftState || !draftState.dirty) return true;
+      return this._confirm('Discard unsaved changes in the workspace form?');
+    }
+
+    async beginNewWorkspace(draftState) {
+      if (!await this._confirmWorkspaceDraftReset(draftState)) {
+        this._setUi({ status: 'New workspace cancelled; the unsaved workspace form was preserved.' });
+        return false;
+      }
+      this._setUi({
+        workspaceEditor: this._workspaceEditor(null),
+        workspaceTargetLabel: '',
+        replaceWorkspaceEditor: true,
+        status: 'New workspace form ready.'
+      });
+      return true;
+    }
+
+    async _checkRouteChange() {
+      const nextChatKey = this._readChatKey();
+      if (nextChatKey === this.currentChatKey || this.remoteOperation) return;
+      if (this.ui && typeof this.ui.persistAllDraftsNow === 'function') await this.ui.persistAllDraftsNow();
+      else if (this.ui && typeof this.ui.persistDraftNow === 'function') await this.ui.persistDraftNow();
+      this.currentChatKey = nextChatKey;
+      this.sessionWorkspaceId = '';
+      this.sessionWorkspaceExplicit = false;
+      if (this.workspaceStore) this.workspaceState = await this.workspaceStore.load();
+      await this._chooseWorkspaceForCurrentChat();
+      const mappedWorkspaceId = this.currentChatKey ? this.workspaceState.chatWorkspaceMap[this.currentChatKey] : '';
+      const status = !this.currentChatKey
+        ? 'New chat uses the default workspace until an explicit selection is made.'
+        : mappedWorkspaceId
+          ? 'Saved chat workspace restored.'
+          : 'This chat is not linked to a workspace. The default is active until you select a workspace explicitly.';
+      this._setUi({ status });
+    }
+
+    _startRouteWatch() {
+      if (this.routeTimer || typeof this.setIntervalFn !== 'function') return;
+      this.routeTimer = this.setIntervalFn(() => { this._checkRouteChange().catch((error) => this._setUi({ status: `Route context error: ${error.message || error}` })); }, this.routePollMs);
+    }
+
     async start() {
-      this.settings = await this.loadSettings();
+      if (this.workspaceStore) this.workspaceState = await this.workspaceStore.load();
+      this.currentChatKey = this._readChatKey();
+      await this._chooseWorkspaceForCurrentChat();
       this.ui.mount();
       await this.refreshList('');
-      this._setUi({ settings: this.settings, status: 'Local Notes ready. Remote writes require explicit Save GitHub.' });
+      this._setUi({ replaceWorkspaceEditor: true, status: this._activeWorkspace() ? 'Local Notes ready. Workspace fallback is not saved to a chat until you select it explicitly.' : 'Local Notes ready. Create a GitHub workspace before remote access.' });
+      this._startRouteWatch();
     }
 
     dispose() {
+      if (this.routeTimer) this.clearIntervalFn(this.routeTimer);
+      this.routeTimer = null;
       if (this.ui) this.ui.dispose();
     }
 
-    async loadSettings() {
-      const saved = await this.getValue(SETTINGS_KEY, {});
-      const token = await this.getValue(TOKEN_KEY, '');
-      return {
-        owner: String(saved.owner || ''),
-        repo: String(saved.repo || ''),
-        branch: String(saved.branch || 'main'),
-        basePath: cleanBasePath(saved.basePath),
-        hasToken: Boolean(token)
-      };
+    async selectWorkspace(workspaceId, draftState) {
+      await this.refreshWorkspaceState();
+      if (!this.workspaceState.workspaces.some((workspace) => workspace.id === workspaceId)) throw new Error('Workspace not found.');
+      if (!await this._confirmWorkspaceDraftReset(draftState)) {
+        this._setUi({ status: 'Workspace switch cancelled; the unsaved workspace form was preserved.' });
+        return this._activeWorkspace();
+      }
+      this.activeWorkspaceId = workspaceId;
+      this.sessionWorkspaceId = workspaceId;
+      this.sessionWorkspaceExplicit = !this.currentChatKey;
+      if (this.currentChatKey && this.workspaceStore) {
+        this.workspaceState = { ...(await this.workspaceStore.bindChat(this.currentChatKey, workspaceId)), hasToken: this.workspaceState.hasToken };
+      }
+      this._setUi({ replaceWorkspaceEditor: true, status: this.currentChatKey ? 'Workspace selected and saved for this chat.' : 'Workspace selected for this new-chat session.' });
+      return this._activeWorkspace();
     }
 
-    async saveSettings(settings) {
-      const next = {
-        owner: String(settings.owner || '').trim(),
-        repo: String(settings.repo || '').trim(),
-        branch: String(settings.branch || 'main').trim() || 'main',
-        basePath: cleanBasePath(settings.basePath)
-      };
-      await this.setValue(SETTINGS_KEY, next);
-      if (settings.token) await this.setValue(TOKEN_KEY, String(settings.token).trim());
-      this.settings = { ...next, hasToken: Boolean(settings.token) || this.settings.hasToken };
-      this._setUi({ settings: this.settings, status: 'GitHub test settings saved. A bound Note is not silently moved to the new target.' });
+    async saveWorkspace(input) {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      const result = await this.workspaceStore.upsert(input);
+      this.workspaceState = { ...result.state, hasToken: this.workspaceState.hasToken };
+      this.activeWorkspaceId = result.workspace.id;
+      this.sessionWorkspaceId = result.workspace.id;
+      this.sessionWorkspaceExplicit = !this.currentChatKey;
+      if (this.currentChatKey) {
+        this.workspaceState = { ...(await this.workspaceStore.bindChat(this.currentChatKey, result.workspace.id)), hasToken: this.workspaceState.hasToken };
+      }
+      this._setUi({ replaceWorkspaceEditor: true, status: `Workspace saved: ${result.workspace.name}.` });
+      return result.workspace;
+    }
+
+    async setDefaultWorkspace(workspaceId) {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      this.workspaceState = { ...(await this.workspaceStore.setDefault(workspaceId)), hasToken: this.workspaceState.hasToken };
+      this._setUi({ status: 'Default workspace updated.' });
+    }
+
+    async deleteWorkspace(workspaceId) {
+      if (!workspaceId || !this.workspaceStore) throw new Error('Workspace not found.');
+      const workspace = this.workspaceState.workspaces.find((item) => item.id === workspaceId);
+      const confirmed = await this._confirm(`Delete the local workspace ${workspace ? workspace.name : workspaceId}? Notes and remote repository files will not be deleted.`);
+      if (!confirmed) { this._setUi({ status: 'Workspace deletion cancelled.' }); return; }
+      const result = await this.workspaceStore.remove(workspaceId);
+      this.workspaceState = { ...result.state, hasToken: this.workspaceState.hasToken };
+      if (this.sessionWorkspaceId === workspaceId) {
+        this.sessionWorkspaceId = '';
+        this.sessionWorkspaceExplicit = false;
+      }
+      await this._chooseWorkspaceForCurrentChat();
+      this._setUi({ replaceWorkspaceEditor: true, status: `Workspace deleted locally. ${result.removedChatKeys.length} chat binding(s) fell back safely; Notes and remote files were untouched.` });
+    }
+
+    async saveSharedToken(token) {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      await this.workspaceStore.setToken(token);
+      this.workspaceState.hasToken = true;
+      this._setUi({ status: 'Shared GitHub token stored privately for all workspaces.' });
+    }
+
+    async clearSharedToken() {
+      if (!this.workspaceStore) throw new Error('Workspace storage is not available.');
+      const confirmed = await this._confirm('Clear the shared GitHub token from Tampermonkey storage?');
+      if (!confirmed) { this._setUi({ status: 'Token clear cancelled.' }); return; }
+      await this.workspaceStore.clearToken();
+      this.workspaceState.hasToken = false;
+      this._setUi({ status: 'Shared GitHub token cleared.' });
     }
 
     async refreshList(query = this.search) {
@@ -1489,7 +2307,7 @@
         const refreshed = notes.find((item) => item.id === this.current.id) || await this.store.get(this.current.id);
         if (refreshed) this.current = this.api.normalizeNote(refreshed);
       }
-      this._setUi({ notes, current: this.current, search: this.search, settings: this.settings });
+      this._setUi({ notes, current: this.current, search: this.search });
     }
 
     async saveDraft(note) {
@@ -1542,7 +2360,8 @@
       if (this.api.hasCompleteRemoteIdentity(remote)) {
         return { owner: remote.owner, repo: remote.repo, branch: remote.branch };
       }
-      return { owner: this.settings.owner, repo: this.settings.repo, branch: this.settings.branch };
+      const workspace = this._activeWorkspace();
+      return workspace ? { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch } : { owner: '', repo: '', branch: '' };
     }
 
     async addLink(note, input) {
@@ -1585,17 +2404,11 @@
         repo: String(context.repo || '').trim(),
         branch: String(context.branch || '').trim()
       };
-      if (!target.owner || !target.repo || !target.branch) {
-        throw new Error('GitHub owner, repository and branch are required.');
-      }
+      if (!target.owner || !target.repo || !target.branch) throw new Error('Select a GitHub workspace with owner, repository and branch.');
       if (this.clientFactory) return this.clientFactory(target);
-      const token = await this.getValue(TOKEN_KEY, '');
-      if (!token) throw new Error('A fine-grained GitHub token is required for remote access.');
-      return new this.api.GitHubContentsClient({
-        ...target,
-        token,
-        transport: this.api.createGmTransport(GM_xmlhttpRequest)
-      });
+      const token = this.workspaceStore ? await this.workspaceStore.getToken() : await this.getValue(TOKEN_KEY, '');
+      if (!token) throw new Error('A shared fine-grained GitHub token is required for remote access.');
+      return new this.api.GitHubContentsClient({ ...target, token, transport: this.api.createGmTransport(GM_xmlhttpRequest) });
     }
 
     async resolveLink(note, linkId) {
