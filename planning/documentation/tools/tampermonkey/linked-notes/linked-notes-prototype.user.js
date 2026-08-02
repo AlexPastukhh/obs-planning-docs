@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.4.2-prototype
-// @description  Repository Notes, file preview and GitHub-backed file categories with explicit verified remote actions.
+// @version      0.5.1-prototype
+// @description  Repository Notes, rich Markdown, target picking, bounded search and GitHub-backed file/Note categories with verified remote actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -12,6 +12,74 @@
 // @grant        GM_xmlhttpRequest
 // @connect      api.github.com
 // ==/UserScript==
+
+/* src/action-feedback.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const FEEDBACK_SEVERITIES = Object.freeze({ INFO: 'info', SUCCESS: 'success', WARNING: 'warning', ERROR: 'error' });
+  const FEEDBACK_SCOPES = Object.freeze({ GLOBAL: 'global', NOTES: 'notes', FILES: 'files', CATEGORIES: 'categories', PICKER: 'picker' });
+
+  function text(value) { return String(value == null ? '' : value); }
+  function createFeedback(input = {}) {
+    const severity = Object.values(FEEDBACK_SEVERITIES).includes(input.severity) ? input.severity : FEEDBACK_SEVERITIES.ERROR;
+    const scope = Object.values(FEEDBACK_SCOPES).includes(input.scope) ? input.scope : FEEDBACK_SCOPES.GLOBAL;
+    const id = text(input.id).trim() || `feedback-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
+    const actions = (Array.isArray(input.actions) ? input.actions : []).map((action) => ({
+      id: text(action && action.id).trim(),
+      label: text(action && action.label).trim(),
+      kind: text(action && action.kind).trim() || 'button'
+    })).filter((action) => action.id && action.label);
+    const partialResults = (Array.isArray(input.partialResults) ? input.partialResults : []).map((result) => ({
+      target: text(result && result.target),
+      status: text(result && result.status) || 'unknown',
+      message: text(result && result.message)
+    }));
+    return {
+      id,
+      scope,
+      severity,
+      title: text(input.title).trim() || (severity === 'error' ? 'Action failed' : 'Status'),
+      message: text(input.message).trim(),
+      target: text(input.target).trim(),
+      details: text(input.details).trim(),
+      actions,
+      partialResults,
+      dismissible: input.dismissible !== false,
+      createdAt: text(input.createdAt).trim() || new Date().toISOString()
+    };
+  }
+
+  function feedbackFromError(error, input = {}) {
+    const value = error instanceof Error ? error : new Error(text(error) || 'Unknown error.');
+    return createFeedback({
+      ...input,
+      severity: FEEDBACK_SEVERITIES.ERROR,
+      message: input.message || value.message || 'Unknown error.',
+      details: input.details || text(value.kind || value.name || ''),
+      partialResults: input.partialResults || value.partialResults || []
+    });
+  }
+
+  function replaceFeedback(items, feedback) {
+    const normalized = createFeedback(feedback);
+    return [...(Array.isArray(items) ? items : []).filter((item) => item && item.id !== normalized.id), normalized];
+  }
+
+  function dismissFeedback(items, id) {
+    return (Array.isArray(items) ? items : []).filter((item) => item && item.id !== id);
+  }
+
+  function feedbackForScope(items, scope) {
+    return (Array.isArray(items) ? items : []).filter((item) => item && (item.scope === scope || item.scope === FEEDBACK_SCOPES.GLOBAL));
+  }
+
+  return { FEEDBACK_SEVERITIES, FEEDBACK_SCOPES, createFeedback, feedbackFromError, replaceFeedback, dismissFeedback, feedbackForScope };
+});
 
 /* src/linked-notes-core.js */
 (function (root, factory) {
@@ -66,6 +134,17 @@
 
   function normalizeCodecExtra(value) {
     return value && typeof value === 'object' && !Array.isArray(value) ? { ...value } : {};
+  }
+
+  function normalizeCategoryIds(value) {
+    const result = [];
+    const seen = new Set();
+    for (const item of Array.isArray(value) ? value : []) {
+      const id = normalizeString(item).trim();
+      if (!id || seen.has(id)) continue;
+      seen.add(id); result.push(id);
+    }
+    return result.sort((left, right) => left.localeCompare(right));
   }
 
   function portableLink(link) {
@@ -153,6 +232,8 @@
       title: normalizeString(note.title),
       body: normalizeString(note.body),
       links: Array.isArray(note.links) ? note.links.map(normalizeLink) : [],
+      categoryIds: normalizeCategoryIds(note.categoryIds),
+      categoryIntentPending: Boolean(note.categoryIntentPending),
       codecExtra: normalizeCodecExtra(note.codecExtra),
       state,
       stateMessage: normalizeString(note.stateMessage),
@@ -170,6 +251,8 @@
       title: input.title,
       body: input.body,
       links: input.links,
+      categoryIds: input.categoryIds,
+      categoryIntentPending: Boolean(input.categoryIntentPending),
       codecExtra: input.codecExtra,
       state: input.state || NOTE_STATES.LOCAL_DRAFT,
       stateMessage: input.stateMessage,
@@ -193,6 +276,8 @@
     const contentChanged = (Object.prototype.hasOwnProperty.call(patch, 'title') && normalizeString(patch.title) !== current.title)
       || (Object.prototype.hasOwnProperty.call(patch, 'body') && normalizeString(patch.body) !== current.body)
       || (Object.prototype.hasOwnProperty.call(patch, 'links') && JSON.stringify(durableLinks(patch.links)) !== JSON.stringify(durableLinks(current.links)));
+    const categoryIntentChanged = Object.prototype.hasOwnProperty.call(patch, 'categoryIds')
+      && JSON.stringify(normalizeCategoryIds(patch.categoryIds)) !== JSON.stringify(current.categoryIds);
     let state = patch.state || current.state;
     if (contentChanged && current.state === NOTE_STATES.SAVED_VERIFIED && !patch.state) {
       state = NOTE_STATES.CHANGED_AFTER_SAVE;
@@ -200,6 +285,8 @@
     return normalizeNote({
       ...current,
       ...patch,
+      categoryIds: categoryIntentChanged ? normalizeCategoryIds(patch.categoryIds) : current.categoryIds,
+      categoryIntentPending: Object.prototype.hasOwnProperty.call(patch, 'categoryIntentPending') ? Boolean(patch.categoryIntentPending) : (categoryIntentChanged ? true : current.categoryIntentPending),
       state,
       updatedAt: nowIso(now),
       remote: patch.remote ? { ...current.remote, ...patch.remote } : current.remote
@@ -295,12 +382,23 @@
     return `${normalized}-${shortId}.md`;
   }
 
+  function searchNotesByName(notes, query) {
+    const needle = normalizeString(query).trim().toLocaleLowerCase();
+    const source = Array.isArray(notes) ? notes : [];
+    return source.filter((note) => {
+      if (!needle) return true;
+      return normalizeString(note && note.title).toLocaleLowerCase().includes(needle);
+    }).sort((left, right) => normalizeString(left && left.title).localeCompare(normalizeString(right && right.title), undefined, { sensitivity: 'base' }));
+  }
+
   return {
     NOTE_STATES,
     LINK_TYPES,
     createId,
     createNote,
     normalizeNote,
+    normalizeCategoryIds,
+    searchNotesByName,
     normalizeLink,
     portableLink,
     durableLinks,
@@ -486,6 +584,51 @@
     };
   }
 
+
+  function decodeRepositoryMarkdownPath(value) {
+    const text = String(value == null ? '' : value).replace(/\\/g, '/').trim();
+    if (!text) return '';
+    if (/%(?![0-9A-Fa-f]{2})/.test(text)) throw new Error(`Repository Markdown target has invalid percent encoding: ${text}`);
+    const rootRelative = text.startsWith('/');
+    const rawParts = text.split('/');
+    const decoded = [];
+    for (let index = 0; index < rawParts.length; index += 1) {
+      const raw = rawParts[index];
+      if (!raw) {
+        if (index === 0 && rootRelative) continue;
+        throw new Error('Repository Markdown target contains an empty path segment.');
+      }
+      if (raw === '.' || raw === '..') { decoded.push(raw); continue; }
+      let segment;
+      try { segment = decodeURIComponent(raw); }
+      catch (error) { throw new Error(`Repository Markdown target has invalid percent encoding: ${text}`); }
+      if (!segment || segment === '.' || segment === '..') throw new Error(`Repository Markdown target contains encoded traversal: ${text}`);
+      if (/[\\/?#\u0000-\u001f\u007f]/.test(segment)) throw new Error(`Repository Markdown target contains an invalid decoded path segment: ${text}`);
+      decoded.push(segment);
+    }
+    const result = decoded.join('/');
+    if (!result) throw new Error('Repository Markdown target path is empty.');
+    return `${rootRelative ? '/' : ''}${result}`;
+  }
+
+  function normalizeMarkdownRepositoryTarget(sourcePath, target) {
+    const parsed = splitTarget(target);
+    if (parsed.kind === 'url') return { type: 'url', url: parsed.url };
+    const decodedPath = decodeRepositoryMarkdownPath(parsed.path);
+    if (decodedPath.startsWith('/')) {
+      return {
+        type: 'repository',
+        path: normalizeCanonicalRepositoryPath(decodedPath.replace(/^\/+/, ''), 'Repository target path'),
+        anchor: String(parsed.anchor || '').trim()
+      };
+    }
+    return {
+      type: 'repository',
+      path: normalizeRepositoryPath(sourcePath, decodedPath),
+      anchor: String(parsed.anchor || '').trim()
+    };
+  }
+
   function assertPathSyntax(value, { allowEmpty = false, allowRelativeSegments = false, label = 'Repository path' } = {}) {
     const text = String(value == null ? '' : value).replace(/\\/g, '/').trim();
     if (!text) {
@@ -611,6 +754,8 @@
     isPortableUrl,
     isMachineLocalAbsolutePath,
     splitTarget,
+    decodeRepositoryMarkdownPath,
+    normalizeMarkdownRepositoryTarget,
     normalizeCanonicalRepositoryPath,
     normalizeRepositoryPath,
     repositoryRelativePath,
@@ -743,6 +888,360 @@
   };
 });
 
+/* src/repository-target-search.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const DEFAULT_SEARCH_LIMITS = Object.freeze({ maxFolders: 80, maxRequests: 80, maxResults: 100, maxEntriesPerFolder: 200, maxDepth: 8 });
+  function normalizedQuery(value) { return String(value == null ? '' : value).trim().toLocaleLowerCase(); }
+  function normalizedRoot(value) { return String(value == null ? '' : value).replace(/\\/g, '/').trim().replace(/^\/+|\/+$/g, ''); }
+  function normalizeDepth(value, maxDepth) {
+    if (value === 'entire' || value === Infinity) return maxDepth;
+    const number = Number(value);
+    return Number.isInteger(number) && number >= 0 ? Math.min(number, maxDepth) : 0;
+  }
+  function matchesName(entry, query) {
+    if (!query) return true;
+    return String(entry && (entry.name || entry.path) || '').toLocaleLowerCase().includes(query);
+  }
+
+  async function searchRepositoryTargets(input = {}) {
+    if (typeof input.listDirectory !== 'function') throw new TypeError('listDirectory callback is required.');
+    const limits = { ...DEFAULT_SEARCH_LIMITS, ...(input.limits || {}) };
+    const query = normalizedQuery(input.query);
+    const rootPath = normalizedRoot(input.rootPath);
+    const depth = normalizeDepth(input.depth, Number(limits.maxDepth) || DEFAULT_SEARCH_LIMITS.maxDepth);
+    const queue = [{ path: rootPath, level: 0 }];
+    const visited = new Set();
+    const results = [];
+    let requestCount = 0;
+    let folderCount = 0;
+    let truncated = false;
+    let truncationReason = '';
+
+    while (queue.length) {
+      if (requestCount >= limits.maxRequests || folderCount >= limits.maxFolders) {
+        truncated = true;
+        truncationReason = requestCount >= limits.maxRequests ? 'request_limit' : 'folder_limit';
+        break;
+      }
+      const current = queue.shift();
+      if (visited.has(current.path)) continue;
+      visited.add(current.path);
+      requestCount += 1;
+      folderCount += 1;
+      const entries = await input.listDirectory(current.path, { maxEntries: limits.maxEntriesPerFolder });
+      for (const entry of Array.isArray(entries) ? entries : []) {
+        if (entry && entry.type === 'file' && matchesName(entry, query)) {
+          results.push({
+            type: 'file',
+            path: String(entry.path || ''),
+            name: String(entry.name || ''),
+            size: Number(entry.size || 0),
+            sha: String(entry.sha || ''),
+            htmlUrl: String(entry.htmlUrl || ''),
+            depth: current.level
+          });
+          if (results.length >= limits.maxResults) {
+            truncated = true;
+            truncationReason = 'result_limit';
+            break;
+          }
+        }
+        if (entry && entry.type === 'dir' && current.level < depth) queue.push({ path: String(entry.path || ''), level: current.level + 1 });
+      }
+      if (truncated && truncationReason === 'result_limit') break;
+    }
+
+    return {
+      query,
+      rootPath,
+      requestedDepth: input.depth,
+      effectiveDepth: depth,
+      results: results.sort((a, b) => a.path.localeCompare(b.path, undefined, { sensitivity: 'base' })),
+      scannedFolders: folderCount,
+      requestCount,
+      truncated,
+      truncationReason,
+      remainingFolders: queue.length
+    };
+  }
+
+  return { DEFAULT_SEARCH_LIMITS, searchRepositoryTargets, matchesName };
+});
+
+/* src/rich-markdown-renderer.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function escapeAttribute(value) { return escapeHtml(value).replace(/`/g, '&#96;'); }
+  function isExternalHttp(value) {
+    try { const url = new URL(String(value || '')); return (url.protocol === 'http:' || url.protocol === 'https:') && Boolean(url.hostname); }
+    catch (error) { return false; }
+  }
+  function isUnsafeScheme(value) { return /^\s*(?:javascript|vbscript|file|filesystem|chrome|data|blob):/i.test(String(value || '')); }
+  function normalizeTarget(value) {
+    const target = String(value == null ? '' : value).trim();
+    if (!target || /[\u0000-\u001f\u007f]/.test(target) || isUnsafeScheme(target)) return '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(target) && !isExternalHttp(target)) return '';
+    return target;
+  }
+  function parseTitleTarget(raw) {
+    const text = String(raw || '').trim();
+    const angle = text.match(/^<([^>]+)>(?:\s+["']([^"']*)["'])?$/);
+    if (angle) return { target: angle[1], title: angle[2] || '' };
+    const quoted = text.match(/^(.*?)(?:\s+["']([^"']*)["'])?$/);
+    return { target: quoted ? quoted[1].trim() : text, title: quoted && quoted[2] || '' };
+  }
+  function parseImgAttributes(source) {
+    const allowed = {};
+    const text = String(source || '');
+    const attrPattern = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g;
+    let match;
+    while ((match = attrPattern.exec(text))) {
+      const name = match[1].toLowerCase();
+      const value = match[2] !== undefined ? match[2] : match[3] !== undefined ? match[3] : match[4] !== undefined ? match[4] : '';
+      if (name === 'src' || name === 'alt' || name === 'title') allowed[name] = value;
+      else if (name === 'loading' && /^(?:lazy|eager)$/i.test(value)) allowed.loading = value.toLowerCase();
+      else if ((name === 'width' || name === 'height') && /^\d{1,4}$/.test(value)) {
+        const number = Number(value);
+        if (number >= 1 && number <= 4096) allowed[name] = String(number);
+      }
+    }
+    return allowed;
+  }
+
+  function renderRichMarkdown(markdown, options = {}) {
+    const source = String(markdown == null ? '' : markdown).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const resources = [];
+    const links = [];
+    let imageCounter = 0;
+    let linkCounter = 0;
+
+    function imageHtml(src, alt, title, attrs = {}) {
+      const target = normalizeTarget(src);
+      if (!target) return `<span class="obs-md-invalid">[blocked image: ${escapeHtml(alt || src)}]</span>`;
+      const id = `image-${++imageCounter}`;
+      const external = isExternalHttp(target);
+      resources.push({ id, type: 'image', target, external, alt: String(alt || ''), title: String(title || ''), width: attrs.width || '', height: attrs.height || '', loading: attrs.loading || 'lazy' });
+      const dimensions = `${attrs.width ? ` width="${escapeAttribute(attrs.width)}"` : ''}${attrs.height ? ` height="${escapeAttribute(attrs.height)}"` : ''}`;
+      return `<img data-obs-image-id="${id}" data-obs-image-target="${escapeAttribute(target)}" alt="${escapeAttribute(alt || '')}"${title ? ` title="${escapeAttribute(title)}"` : ''}${dimensions} loading="${escapeAttribute(attrs.loading || 'lazy')}" class="obs-md-image obs-md-image-pending">`;
+    }
+
+    function linkHtml(targetRaw, label, title) {
+      const target = normalizeTarget(targetRaw);
+      if (!target) return `<span class="obs-md-invalid">${escapeHtml(label)}</span>`;
+      const id = `link-${++linkCounter}`;
+      const external = isExternalHttp(target);
+      links.push({ id, target, external, title: String(title || ''), label: String(label || '') });
+      return `<a href="#" data-obs-link-id="${id}" data-obs-link-target="${escapeAttribute(target)}"${title ? ` title="${escapeAttribute(title)}"` : ''}>${label}</a>`;
+    }
+
+    function inline(value) {
+      let text = String(value == null ? '' : value);
+      const tokens = [];
+      function token(html) { const key = `\u0000${tokens.length}\u0000`; tokens.push(html); return key; }
+      text = text.replace(/`([^`\n]+)`/g, (_, code) => token(`<code>${escapeHtml(code)}</code>`));
+      text = text.replace(/<img\b([^>]*)>/gi, (_, attrsText) => {
+        const attrs = parseImgAttributes(attrsText);
+        return token(imageHtml(attrs.src || '', attrs.alt || '', attrs.title || '', attrs));
+      });
+      text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, raw) => {
+        const parsed = parseTitleTarget(raw);
+        return token(imageHtml(parsed.target, alt, parsed.title));
+      });
+      text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, raw) => {
+        const parsed = parseTitleTarget(raw);
+        return token(linkHtml(parsed.target, inline(label), parsed.title));
+      });
+      text = escapeHtml(text);
+      text = text.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/__([^_\n]+)__/g, '<strong>$1</strong>');
+      text = text.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, '<em>$1</em>');
+      text = text.replace(/(?<!_)_([^_\n]+)_(?!_)/g, '<em>$1</em>');
+      text = text.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+      text = text.replace(/\u0000(\d+)\u0000/g, (_, index) => tokens[Number(index)] || '');
+      return text;
+    }
+
+    const lines = source.split('\n');
+    const output = [];
+    let index = 0;
+    let paragraph = [];
+    function flushParagraph() {
+      if (!paragraph.length) return;
+      output.push(`<p>${inline(paragraph.join('\n')).replace(/\n/g, '<br>')}</p>`);
+      paragraph = [];
+    }
+    function isTableDivider(line) { return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*$/.test(line); }
+    function cells(line) { return line.trim().replace(/^\||\|$/g, '').split('|').map((cell) => cell.trim()); }
+
+    while (index < lines.length) {
+      const line = lines[index];
+      if (/^```/.test(line)) {
+        flushParagraph();
+        const language = line.slice(3).trim().replace(/[^a-zA-Z0-9_+-]/g, '');
+        const code = [];
+        index += 1;
+        while (index < lines.length && !/^```/.test(lines[index])) code.push(lines[index++]);
+        if (index < lines.length) index += 1;
+        output.push(`<pre><code${language ? ` class="language-${escapeAttribute(language)}"` : ''}>${escapeHtml(code.join('\n'))}</code></pre>`);
+        continue;
+      }
+      const heading = line.match(/^(#{1,6})\s+(.+)$/);
+      if (heading) { flushParagraph(); const level = heading[1].length; output.push(`<h${level}>${inline(heading[2])}</h${level}>`); index += 1; continue; }
+      if (line.startsWith('>')) {
+        flushParagraph(); const quoted = [];
+        while (index < lines.length && /^>\s?/.test(lines[index])) quoted.push(lines[index++].replace(/^>\s?/, ''));
+        output.push(`<blockquote>${quoted.map((item) => `<p>${inline(item)}</p>`).join('')}</blockquote>`); continue;
+      }
+      if (/^\s*[-*+]\s+/.test(line)) {
+        flushParagraph(); const items = [];
+        while (index < lines.length && /^\s*[-*+]\s+/.test(lines[index])) {
+          const raw = lines[index++].replace(/^\s*[-*+]\s+/, '');
+          const task = raw.match(/^\[([ xX])\]\s+(.*)$/);
+          items.push(task ? `<li class="task"><input type="checkbox" disabled ${task[1].toLowerCase() === 'x' ? 'checked' : ''}> ${inline(task[2])}</li>` : `<li>${inline(raw)}</li>`);
+        }
+        output.push(`<ul>${items.join('')}</ul>`); continue;
+      }
+      if (/^\s*\d+[.)]\s+/.test(line)) {
+        flushParagraph(); const items = [];
+        while (index < lines.length && /^\s*\d+[.)]\s+/.test(lines[index])) items.push(`<li>${inline(lines[index++].replace(/^\s*\d+[.)]\s+/, ''))}</li>`);
+        output.push(`<ol>${items.join('')}</ol>`); continue;
+      }
+      if (line.includes('|') && index + 1 < lines.length && isTableDivider(lines[index + 1])) {
+        flushParagraph(); const header = cells(line); index += 2; const rows = [];
+        while (index < lines.length && lines[index].includes('|') && lines[index].trim()) rows.push(cells(lines[index++]));
+        output.push(`<table><thead><tr>${header.map((cell) => `<th>${inline(cell)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${inline(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`); continue;
+      }
+      if (/^\s*(?:---+|___+|\*\*\*+)\s*$/.test(line)) { flushParagraph(); output.push('<hr>'); index += 1; continue; }
+      if (!line.trim()) { flushParagraph(); index += 1; continue; }
+      paragraph.push(line); index += 1;
+    }
+    flushParagraph();
+    return { html: output.join('\n'), resources, links, sourceLength: source.length, safe: true, options: { allowRawImg: options.allowRawImg !== false } };
+  }
+
+  return { renderRichMarkdown, escapeRichMarkdownHtml: escapeHtml, normalizeRichMarkdownTarget: normalizeTarget, parseRichMarkdownImgAttributes: parseImgAttributes };
+});
+
+/* src/repository-media-loader.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const DEFAULT_MEDIA_MAX_BYTES = 5 * 1024 * 1024;
+  const MIME_BY_EXTENSION = Object.freeze({ png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', avif: 'image/avif' });
+  function cleanPath(value) { return String(value == null ? '' : value).replace(/\\/g, '/').trim(); }
+  function isExternal(value) { try { const parsed = new URL(String(value || '')); return parsed.protocol === 'http:' || parsed.protocol === 'https:'; } catch (error) { return false; } }
+  function fallbackDecodeRepositoryMarkdownPath(value) {
+    const text = cleanPath(value);
+    if (!text) return '';
+    if (/%(?![0-9A-Fa-f]{2})/.test(text)) throw new Error(`Repository Markdown target has invalid percent encoding: ${text}`);
+    const rootRelative = text.startsWith('/');
+    const rawParts = text.split('/');
+    const decoded = [];
+    for (let index = 0; index < rawParts.length; index += 1) {
+      const raw = rawParts[index];
+      if (!raw) {
+        if (index === 0 && rootRelative) continue;
+        throw new Error('Repository Markdown target contains an empty path segment.');
+      }
+      if (raw === '.' || raw === '..') { decoded.push(raw); continue; }
+      let segment;
+      try { segment = decodeURIComponent(raw); }
+      catch (error) { throw new Error(`Repository Markdown target has invalid percent encoding: ${text}`); }
+      if (!segment || segment === '.' || segment === '..') throw new Error(`Repository Markdown target contains encoded traversal: ${text}`);
+      if (/[\/?#\u0000-\u001f\u007f]/.test(segment)) throw new Error(`Repository Markdown target contains an invalid decoded path segment: ${text}`);
+      decoded.push(segment);
+    }
+    const result = decoded.join('/');
+    if (!result) throw new Error('Repository Markdown target path is empty.');
+    return `${rootRelative ? '/' : ''}${result}`;
+  }
+  function decodeRepositoryMarkdownPath(value) {
+    const shared = root && root.ObsLinkedNotes && root.ObsLinkedNotes.decodeRepositoryMarkdownPath;
+    return typeof shared === 'function' ? shared(value) : fallbackDecodeRepositoryMarkdownPath(value);
+  }
+  function resolveRepositoryMediaPath(sourcePath, target) {
+    const input = cleanPath(target);
+    if (!input || /[?#\u0000-\u001f\u007f]/.test(input) || input.includes('://') || /^[a-zA-Z]:\//.test(input)) throw new TypeError('Repository image path must be a portable repository-relative path.');
+    const raw = decodeRepositoryMarkdownPath(input);
+    const base = raw.startsWith('/') ? [] : cleanPath(sourcePath).split('/').slice(0, -1);
+    const pieces = raw.replace(/^\/+/, '').split('/');
+    const out = [...base];
+    for (const piece of pieces) {
+      if (!piece || piece === '.') continue;
+      if (piece === '..') { if (!out.length) throw new TypeError('Repository image path escapes the repository.'); out.pop(); }
+      else out.push(piece);
+    }
+    if (!out.length) throw new TypeError('Repository image path is empty.');
+    return out.join('/');
+  }
+  function mimeForPath(path, declared = '') {
+    const value = String(declared || '').toLowerCase().split(';')[0].trim();
+    if (value && value.startsWith('image/')) return value;
+    const name = cleanPath(path).slice(cleanPath(path).lastIndexOf('/') + 1);
+    const extension = name.includes('.') ? name.slice(name.lastIndexOf('.') + 1).toLowerCase() : '';
+    return MIME_BY_EXTENSION[extension] || '';
+  }
+
+  class RepositoryMediaLoader {
+    constructor(options = {}) {
+      this.readBytes = options.readBytes;
+      this.createObjectUrl = options.createObjectUrl || ((blob) => URL.createObjectURL(blob));
+      this.revokeObjectUrl = options.revokeObjectUrl || ((url) => URL.revokeObjectURL(url));
+      this.maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_MEDIA_MAX_BYTES;
+      this.urls = new Set();
+      if (typeof this.readBytes !== 'function') throw new TypeError('readBytes callback is required.');
+    }
+    async load(resource, context = {}) {
+      if (!resource || resource.type !== 'image') throw new TypeError('Image resource is required.');
+      if (resource.external || isExternal(resource.target)) return { id: resource.id, status: 'external_blocked', target: resource.target, message: 'External image loading requires an explicit action.' };
+      const path = resolveRepositoryMediaPath(context.sourcePath, resource.target);
+      const result = await this.readBytes(path, { maxBytes: this.maxBytes });
+      const bytes = result && result.bytes instanceof Uint8Array ? result.bytes : Uint8Array.from(result && result.bytes || []);
+      if (bytes.byteLength > this.maxBytes) throw new Error(`Repository image is ${bytes.byteLength} bytes; media limit is ${this.maxBytes}.`);
+      const mime = mimeForPath(path, result && result.contentType);
+      if (!mime) throw new Error(`Unsupported repository image format: ${path}`);
+      const blob = new Blob([bytes], { type: mime });
+      const objectUrl = this.createObjectUrl(blob);
+      this.urls.add(objectUrl);
+      return { id: resource.id, status: 'loaded', path, objectUrl, mime, size: bytes.byteLength, htmlUrl: result && result.htmlUrl || '' };
+    }
+    async loadAll(resources, context = {}) {
+      const results = [];
+      for (const resource of Array.isArray(resources) ? resources : []) {
+        try { results.push(await this.load(resource, context)); }
+        catch (error) { results.push({ id: resource && resource.id || '', status: 'error', target: resource && resource.target || '', message: String(error && error.message || error) }); }
+      }
+      return results;
+    }
+    dispose() {
+      for (const url of this.urls) { try { this.revokeObjectUrl(url); } catch (error) { /* ignore cleanup */ } }
+      this.urls.clear();
+    }
+  }
+
+  return { DEFAULT_MEDIA_MAX_BYTES, RepositoryMediaLoader, resolveRepositoryMediaPath, repositoryImageMimeForPath: mimeForPath };
+});
+
 /* src/category-definition-codec.js */
 (function (root, factory) {
   const api = factory();
@@ -753,11 +1252,16 @@
 
   const CATEGORY_V1_MARKER_PREFIX = '<!-- obs-file-category:v1 ';
   const CATEGORY_V2_MARKER_PREFIX = '<!-- obs-file-category:v2 ';
+  const CATEGORY_V3_MARKER_PREFIX = '<!-- obs-file-category:v3 ';
   const CATEGORY_MARKER_SUFFIX = ' -->';
   const IMPLIED_START = '<!-- obs-file-category:implied:start -->';
   const IMPLIED_END = '<!-- obs-file-category:implied:end -->';
   const FILES_START = '<!-- obs-file-category:files:start -->';
   const FILES_END = '<!-- obs-file-category:files:end -->';
+  const NOTES_START = '<!-- obs-file-category:notes:start -->';
+  const NOTES_END = '<!-- obs-file-category:notes:end -->';
+  const NOTE_ID_COMMENT_PREFIX = '<!-- obs-category-note:';
+  const NOTE_ID_COMMENT_SUFFIX = ' -->';
 
   function normalizeCategoryId(value) {
     const text = String(value == null ? '' : value).trim().toLowerCase()
@@ -774,21 +1278,31 @@
     return text;
   }
 
+  function normalizeNoteId(value) {
+    const text = String(value == null ? '' : value).trim();
+    if (!text) return '';
+    if (text.length > 160 || /[\r\n<>]/.test(text)) throw new TypeError('Category Note id is invalid.');
+    return text;
+  }
+
   function escapeMarkdownLabel(value) {
     return String(value == null ? '' : value).replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
   }
 
-  function normalizeLinkItems(items, key) {
+  function normalizeLinkItems(items, key, options = {}) {
     const result = [];
     const seen = new Set();
     for (const item of Array.isArray(items) ? items : []) {
       const target = String(item && item[key] || '').trim().replace(/\\/g, '/');
-      if (!target || seen.has(target)) continue;
+      if (!target) continue;
       if (/^[a-zA-Z]:\//.test(target) || target.startsWith('/') || target.includes('://') || /[?#]/.test(target)) {
         throw new TypeError(`Category link must be a portable repository-relative Markdown path: ${target}`);
       }
-      seen.add(target);
-      result.push({ ...item, [key]: target, label: String(item && item.label || target).trim() || target });
+      const noteId = options.notes ? normalizeNoteId(item && item.noteId) : '';
+      const identity = options.notes ? `${target}\n${noteId}` : target;
+      if (seen.has(identity)) continue;
+      seen.add(identity);
+      result.push({ ...item, [key]: target, label: String(item && item.label || target).trim() || target, ...(options.notes ? { noteId } : {}) });
     }
     return result;
   }
@@ -804,19 +1318,25 @@
   function decodeMarkdownTarget(value) {
     let target = String(value == null ? '' : value).trim();
     if (target.startsWith('<') && target.endsWith('>')) target = target.slice(1, -1);
-    const decoded = target.split('/').map((segment) => {
+    return target.split('/').map((segment) => {
       if (segment === '.' || segment === '..') return segment;
-      let value;
-      try { value = decodeURIComponent(segment.replace(/%(?![0-9A-Fa-f]{2})/g, '%25')); }
+      let decoded;
+      try { decoded = decodeURIComponent(segment.replace(/%(?![0-9A-Fa-f]{2})/g, '%25')); }
       catch (error) { throw new Error(`Category link target has invalid percent encoding: ${target}`); }
-      if (!value || /[\\/?#\u0000-\u001f\u007f]/.test(value)) throw new Error(`Category link target contains an invalid path segment: ${target}`);
-      return value;
+      if (!decoded || /[\\/?#\u0000-\u001f\u007f]/.test(decoded)) throw new Error(`Category link target contains an invalid path segment: ${target}`);
+      return decoded;
     }).join('/');
-    return decoded;
   }
 
   function renderLinks(items) {
     return items.length ? items.map((item) => `- [${escapeMarkdownLabel(item.label)}](<${encodeMarkdownTarget(item.target)}>)`).join('\n') : '_None._';
+  }
+
+  function renderNoteLinks(items) {
+    return items.length ? items.map((item) => {
+      const comment = item.noteId ? ` ${NOTE_ID_COMMENT_PREFIX}${String(item.noteId).replace(/--/g, '\\u002d\\u002d')}${NOTE_ID_COMMENT_SUFFIX}` : '';
+      return `- [${escapeMarkdownLabel(item.label)}](<${encodeMarkdownTarget(item.target)}>)${comment}`;
+    }).join('\n') : '_None._';
   }
 
   function encodeCategoryDefinition(input = {}) {
@@ -825,35 +1345,37 @@
     const description = String(input.description == null ? '' : input.description).replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n+$/g, '');
     const implied = normalizeLinkItems(input.impliedCategories, 'target');
     const files = normalizeLinkItems(input.files, 'target');
-    const metadata = JSON.stringify({ schemaVersion: 2, id, name });
+    const notes = normalizeLinkItems(input.notes, 'target', { notes: true });
+    const metadata = JSON.stringify({ schemaVersion: 3, id, name });
     const descriptionBlock = description ? `${description}\n\n` : '';
-    return `${CATEGORY_V2_MARKER_PREFIX}${metadata}${CATEGORY_MARKER_SUFFIX}\n\n# ${name}\n\n${descriptionBlock}${IMPLIED_START}\n## Implied categories\n\n${renderLinks(implied)}\n${IMPLIED_END}\n\n${FILES_START}\n## Files\n\n${renderLinks(files)}\n${FILES_END}\n`;
+    return `${CATEGORY_V3_MARKER_PREFIX}${metadata}${CATEGORY_MARKER_SUFFIX}\n\n# ${name}\n\n${descriptionBlock}${IMPLIED_START}\n## Implied categories\n\n${renderLinks(implied)}\n${IMPLIED_END}\n\n${FILES_START}\n## Files\n\n${renderLinks(files)}\n${FILES_END}\n\n${NOTES_START}\n## Notes\n\n${renderNoteLinks(notes)}\n${NOTES_END}\n`;
   }
 
   function parseMarker(markdown) {
     const first = String(markdown || '').split(/\r?\n/, 1)[0];
-    const prefix = first.startsWith(CATEGORY_V2_MARKER_PREFIX) ? CATEGORY_V2_MARKER_PREFIX
-      : first.startsWith(CATEGORY_V1_MARKER_PREFIX) ? CATEGORY_V1_MARKER_PREFIX : '';
-    if (!prefix || !first.endsWith(CATEGORY_MARKER_SUFFIX)) throw new Error('Markdown is not an obs-file-category definition.');
+    const candidates = [
+      [CATEGORY_V3_MARKER_PREFIX, 3], [CATEGORY_V2_MARKER_PREFIX, 2], [CATEGORY_V1_MARKER_PREFIX, 1]
+    ];
+    const found = candidates.find(([prefix]) => first.startsWith(prefix));
+    if (!found || !first.endsWith(CATEGORY_MARKER_SUFFIX)) throw new Error('Markdown is not an obs-file-category definition.');
+    const [prefix, expected] = found;
     let metadata;
     try { metadata = JSON.parse(first.slice(prefix.length, -CATEGORY_MARKER_SUFFIX.length)); }
     catch (error) { throw new Error(`Category marker JSON is invalid: ${error.message}`); }
-    const schemaVersion = Number(metadata && metadata.schemaVersion);
-    const expected = prefix === CATEGORY_V2_MARKER_PREFIX ? 2 : 1;
-    if (schemaVersion !== expected) throw new Error('Unsupported category definition schema.');
-    return { schemaVersion, id: normalizeCategoryId(metadata.id), name: normalizeCategoryName(metadata.name) };
+    if (Number(metadata && metadata.schemaVersion) !== expected) throw new Error('Unsupported category definition schema.');
+    return { schemaVersion: expected, id: normalizeCategoryId(metadata.id), name: normalizeCategoryName(metadata.name) };
   }
 
-  function parseMarkdownLinks(text) {
+  function parseMarkdownLinks(text, options = {}) {
     const result = [];
     for (const line of String(text || '').split(/\r?\n/)) {
-      const match = line.match(/^\s*-\s+\[((?:\\.|[^\]])*)\]\((.*)\)\s*$/);
+      const match = line.match(/^\s*-\s+\[((?:\\.|[^\]])*)\]\((.*)\)\s*(?:<!--\s*obs-category-note:([\s\S]*?)\s*-->)?\s*$/);
       if (!match) continue;
       const label = match[1].replace(/\\([\\\[\]])/g, '$1');
       const target = decodeMarkdownTarget(match[2]);
-      result.push({ label, target });
+      result.push({ label, target, ...(options.notes ? { noteId: normalizeNoteId(match[3] || '') } : {}) });
     }
-    return normalizeLinkItems(result, 'target');
+    return normalizeLinkItems(result, 'target', options);
   }
 
   function bodyAndHeading(source) {
@@ -871,14 +1393,11 @@
     const impliedIndex = body.indexOf(impliedHeading);
     const filesIndex = body.indexOf(filesHeading);
     if (impliedIndex < 0 || filesIndex < 0 || filesIndex <= impliedIndex) throw new Error('Legacy category managed sections are missing or out of order.');
-    const description = body.slice(heading[0].length, impliedIndex).replace(/^\n+|\n+$/g, '');
     return {
-      schemaVersion: 1,
-      id: marker.id,
-      name: marker.name,
-      description,
+      schemaVersion: 1, id: marker.id, name: marker.name,
+      description: body.slice(heading[0].length, impliedIndex).replace(/^\n+|\n+$/g, ''),
       impliedCategories: parseMarkdownLinks(body.slice(impliedIndex + impliedHeading.length, filesIndex)),
-      files: parseMarkdownLinks(body.slice(filesIndex + filesHeading.length))
+      files: parseMarkdownLinks(body.slice(filesIndex + filesHeading.length)), notes: []
     };
   }
 
@@ -886,57 +1405,50 @@
     const start = body.indexOf(startMarker);
     const end = body.indexOf(endMarker);
     if (start < 0 || end < 0 || end <= start) throw new Error(`${label} managed boundaries are missing or out of order.`);
-    if (body.indexOf(startMarker, start + startMarker.length) >= 0 || body.indexOf(endMarker, end + endMarker.length) >= 0) {
-      throw new Error(`${label} managed boundaries are duplicated.`);
-    }
+    if (body.indexOf(startMarker, start + startMarker.length) >= 0 || body.indexOf(endMarker, end + endMarker.length) >= 0) throw new Error(`${label} managed boundaries are duplicated.`);
     return { start, end, contentStart: start + startMarker.length, content: body.slice(start + startMarker.length, end) };
   }
 
-  function decodeV2(source, marker) {
+  function decodeManaged(source, marker) {
     const { body, heading } = bodyAndHeading(source);
     const implied = findManagedRegion(body, IMPLIED_START, IMPLIED_END, 'Implied categories');
     const files = findManagedRegion(body, FILES_START, FILES_END, 'Files');
     if (implied.start < heading[0].length || files.start <= implied.end) throw new Error('Category managed boundaries are out of order.');
-    const description = body.slice(heading[0].length, implied.start).replace(/^\n+|\n+$/g, '');
+    let notes = null;
+    if (marker.schemaVersion >= 3) {
+      notes = findManagedRegion(body, NOTES_START, NOTES_END, 'Notes');
+      if (notes.start <= files.end) throw new Error('Category managed boundaries are out of order.');
+    }
     return {
-      schemaVersion: 2,
+      schemaVersion: marker.schemaVersion,
       id: marker.id,
       name: marker.name,
-      description,
+      description: body.slice(heading[0].length, implied.start).replace(/^\n+|\n+$/g, ''),
       impliedCategories: parseMarkdownLinks(implied.content),
-      files: parseMarkdownLinks(files.content)
+      files: parseMarkdownLinks(files.content),
+      notes: notes ? parseMarkdownLinks(notes.content, { notes: true }) : []
     };
   }
 
   function decodeCategoryDefinition(markdown) {
     const source = String(markdown == null ? '' : markdown).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
     const marker = parseMarker(source);
-    return marker.schemaVersion === 2 ? decodeV2(source, marker) : decodeV1(source, marker);
+    return marker.schemaVersion === 1 ? decodeV1(source, marker) : decodeManaged(source, marker);
   }
 
   function isCategoryDefinitionMarkdown(markdown) {
     const source = String(markdown || '');
-    return source.startsWith(CATEGORY_V1_MARKER_PREFIX) || source.startsWith(CATEGORY_V2_MARKER_PREFIX);
+    return source.startsWith(CATEGORY_V1_MARKER_PREFIX) || source.startsWith(CATEGORY_V2_MARKER_PREFIX) || source.startsWith(CATEGORY_V3_MARKER_PREFIX);
   }
 
   function categoryFileName(id) { return `${normalizeCategoryId(id)}.md`; }
 
   return {
-    CATEGORY_MARKER_PREFIX: CATEGORY_V2_MARKER_PREFIX,
-    CATEGORY_V1_MARKER_PREFIX,
-    CATEGORY_V2_MARKER_PREFIX,
-    IMPLIED_START,
-    IMPLIED_END,
-    FILES_START,
-    FILES_END,
-    normalizeCategoryId,
-    normalizeCategoryName,
-    encodeCategoryDefinition,
-    decodeCategoryDefinition,
-    isCategoryDefinitionMarkdown,
-    categoryFileName,
-    encodeMarkdownTarget,
-    decodeMarkdownTarget
+    CATEGORY_MARKER_PREFIX: CATEGORY_V3_MARKER_PREFIX,
+    CATEGORY_V1_MARKER_PREFIX, CATEGORY_V2_MARKER_PREFIX, CATEGORY_V3_MARKER_PREFIX,
+    IMPLIED_START, IMPLIED_END, FILES_START, FILES_END, NOTES_START, NOTES_END,
+    normalizeCategoryId, normalizeCategoryName, encodeCategoryDefinition, decodeCategoryDefinition,
+    isCategoryDefinitionMarkdown, categoryFileName, encodeMarkdownTarget, decodeMarkdownTarget
   };
 });
 
@@ -949,13 +1461,14 @@
   'use strict';
 
   function normalizePath(value) { return String(value || '').replace(/\\/g, '/').replace(/^\.\//, ''); }
-  function validationFor(source, path) {
-    if (!source) return { status: 'unchecked', message: 'File target was not validated.' };
+  function validationFor(source, path, fallbackMessage) {
+    if (!source) return { status: 'unchecked', message: fallbackMessage };
     const value = source instanceof Map ? source.get(path) : source[path];
-    if (!value) return { status: 'unchecked', message: 'File target was not validated.' };
+    if (!value) return { status: 'unchecked', message: fallbackMessage };
     if (typeof value === 'string') return { status: value, message: '' };
     return { status: String(value.status || 'unchecked'), message: String(value.message || '') };
   }
+  function targetKey(type, path) { return `${type}:${path}`; }
 
   function buildRepositoryCategoryIndex(definitions = [], options = {}) {
     const categories = new Map();
@@ -972,7 +1485,17 @@
         errors.push({ kind: 'duplicate_id', id: definition.id, path, firstPath: categories.get(definition.id).path, message: `Duplicate category id ${definition.id}: ${categories.get(definition.id).path} and ${path}.` });
         continue;
       }
-      const record = { ...definition, path, sha: String(raw.sha || ''), htmlUrl: String(raw.htmlUrl || ''), explicitFiles: [], impliedCategoryIds: [], brokenLinks: [] };
+      const record = {
+        ...definition,
+        notes: Array.isArray(definition.notes) ? definition.notes : [],
+        path,
+        sha: String(raw.sha || ''),
+        htmlUrl: String(raw.htmlUrl || ''),
+        explicitFiles: [],
+        explicitNotes: [],
+        impliedCategoryIds: [],
+        brokenLinks: []
+      };
       categories.set(definition.id, record);
       byPath.set(path, definition.id);
     }
@@ -989,6 +1512,18 @@
       return out.join('/');
     }
 
+    function addValidationIssue(category, type, path, validation) {
+      const prefix = type === 'note' ? 'Note' : 'Member file';
+      if (validation.status === 'missing') {
+        const issue = { kind: type === 'note' ? 'broken_note_link' : 'broken_file_link', path: category.path, targetPath: path, message: `${prefix} does not exist: ${path}.` };
+        category.brokenLinks.push(issue); errors.push(issue);
+      } else if (validation.status === 'inaccessible') {
+        errors.push({ kind: type === 'note' ? 'inaccessible_note_link' : 'inaccessible_file_link', path: category.path, targetPath: path, message: validation.message || `${prefix} could not be validated: ${path}.` });
+      } else if (validation.status === 'unchecked') {
+        errors.push({ kind: type === 'note' ? 'unchecked_note_link' : 'unchecked_file_link', path: category.path, targetPath: path, message: validation.message || `${prefix} was not validated: ${path}.` });
+      }
+    }
+
     for (const category of categories.values()) {
       const fileSeen = new Set();
       for (const link of category.files || []) {
@@ -997,21 +1532,30 @@
           const issue = { kind: 'file_link_invalid', path: category.path, target: link.target, message: `Invalid member-file link in ${category.path}: ${link.target}.` };
           category.brokenLinks.push(issue); errors.push(issue); continue;
         }
-        if (!fileSeen.has(path)) {
-          fileSeen.add(path);
-          const validation = validationFor(options.fileValidation, path);
-          const file = { path, label: link.label || path, validation: validation.status, validationMessage: validation.message };
-          category.explicitFiles.push(file);
-          if (validation.status === 'missing') {
-            const issue = { kind: 'broken_file_link', path: category.path, targetPath: path, message: `Member file does not exist: ${path}.` };
-            category.brokenLinks.push(issue); errors.push(issue);
-          } else if (validation.status === 'inaccessible') {
-            errors.push({ kind: 'inaccessible_file_link', path: category.path, targetPath: path, message: validation.message || `Member file could not be validated: ${path}.` });
-          } else if (validation.status === 'unchecked') {
-            errors.push({ kind: 'unchecked_file_link', path: category.path, targetPath: path, message: validation.message || `Member file was not validated: ${path}.` });
-          }
-        }
+        if (fileSeen.has(path)) continue;
+        fileSeen.add(path);
+        const validation = validationFor(options.fileValidation, path, 'File target was not validated.');
+        const file = { type: 'file', path, label: link.label || path, validation: validation.status, validationMessage: validation.message };
+        category.explicitFiles.push(file);
+        addValidationIssue(category, 'file', path, validation);
       }
+
+      const noteSeen = new Set();
+      for (const link of category.notes || []) {
+        const path = resolveRelative(category.path, link.target);
+        if (!path) {
+          const issue = { kind: 'note_link_invalid', path: category.path, target: link.target, noteId: String(link.noteId || ''), message: `Invalid member-Note link in ${category.path}: ${link.target}.` };
+          category.brokenLinks.push(issue); errors.push(issue); continue;
+        }
+        const identity = `${path}\n${String(link.noteId || '')}`;
+        if (noteSeen.has(identity)) continue;
+        noteSeen.add(identity);
+        const validation = validationFor(options.noteValidation, path, 'Note target was not validated.');
+        const note = { type: 'note', path, noteId: String(link.noteId || ''), label: link.label || path, validation: validation.status, validationMessage: validation.message };
+        category.explicitNotes.push(note);
+        addValidationIssue(category, 'note', path, validation);
+      }
+
       const impliedSeen = new Set();
       for (const link of category.impliedCategories || []) {
         const targetPath = resolveRelative(category.path, link.target);
@@ -1048,16 +1592,31 @@
 
     const cycleEdges = new Set(cycles.flatMap((cycle) => cycle.slice(0, -1).map((id, index) => `${id}->${cycle[index + 1]}`)));
     const memberships = new Map();
-    for (const category of categories.values()) {
-      for (const file of category.explicitFiles) {
-        const entry = memberships.get(file.path) || { path: file.path, explicit: new Set(), derived: new Set(), validation: file.validation, validationMessage: file.validationMessage };
-        entry.explicit.add(category.id);
-        if (entry.validation === 'unchecked' && file.validation !== 'unchecked') {
-          entry.validation = file.validation; entry.validationMessage = file.validationMessage;
-        }
-        memberships.set(file.path, entry);
+    function addMembership(target, categoryId) {
+      const key = targetKey(target.type, target.path);
+      const entry = memberships.get(key) || {
+        key,
+        type: target.type,
+        path: target.path,
+        noteId: target.noteId || '',
+        label: target.label || target.path,
+        explicit: new Set(),
+        derived: new Set(),
+        validation: target.validation,
+        validationMessage: target.validationMessage
+      };
+      entry.explicit.add(categoryId);
+      if (entry.validation === 'unchecked' && target.validation !== 'unchecked') {
+        entry.validation = target.validation;
+        entry.validationMessage = target.validationMessage;
       }
+      memberships.set(key, entry);
     }
+    for (const category of categories.values()) {
+      for (const file of category.explicitFiles) addMembership(file, category.id);
+      for (const note of category.explicitNotes) addMembership(note, category.id);
+    }
+
     function ancestors(id, seen = new Set()) {
       if (seen.has(id)) return new Set();
       const nextSeen = new Set(seen); nextSeen.add(id);
@@ -1074,19 +1633,101 @@
       for (const explicit of entry.explicit) for (const implied of ancestors(explicit)) if (!entry.explicit.has(implied)) entry.derived.add(implied);
     }
 
-    function filesForCategory(id) {
+    function targetsForCategory(id, type) {
       const result = [];
       for (const entry of memberships.values()) {
-        if (entry.explicit.has(id)) result.push({ path: entry.path, membership: 'explicit', validation: entry.validation, validationMessage: entry.validationMessage });
-        else if (entry.derived.has(id)) result.push({ path: entry.path, membership: 'derived', validation: entry.validation, validationMessage: entry.validationMessage });
+        if (type && entry.type !== type) continue;
+        const base = { type: entry.type, path: entry.path, noteId: entry.noteId, label: entry.label, validation: entry.validation, validationMessage: entry.validationMessage };
+        if (entry.explicit.has(id)) result.push({ ...base, membership: 'explicit' });
+        else if (entry.derived.has(id)) result.push({ ...base, membership: 'derived' });
       }
       return result.sort((a, b) => a.path.localeCompare(b.path));
     }
+    function filesForCategory(id) { return targetsForCategory(id, 'file'); }
+    function notesForCategory(id) { return targetsForCategory(id, 'note'); }
+    function explicitCategoryIdsForTarget(type, path) {
+      const entry = memberships.get(targetKey(type, normalizePath(path)));
+      return entry ? [...entry.explicit].sort() : [];
+    }
 
-    return { categories, byPath, memberships, errors, cycles, filesForCategory, resolveRelative };
+    return { categories, byPath, memberships, errors, cycles, filesForCategory, notesForCategory, targetsForCategory, explicitCategoryIdsForTarget, resolveRelative, targetKey };
   }
 
   return { buildRepositoryCategoryIndex };
+});
+
+/* src/note-relation-index.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  function clean(value) { return String(value == null ? '' : value).trim(); }
+  function repositoryKey(target = {}) {
+    const owner = clean(target.owner).toLowerCase();
+    const repo = clean(target.repo).replace(/\.git$/i, '').toLowerCase();
+    const branch = clean(target.branch) || 'main';
+    const path = clean(target.path).replace(/\\/g, '/');
+    return owner && repo && path ? `${owner}/${repo}@${branch}:${path}` : '';
+  }
+  function noteContext(note = {}) {
+    const remote = note.remote && typeof note.remote === 'object' ? note.remote : {};
+    return { owner: clean(remote.owner), repo: clean(remote.repo), branch: clean(remote.branch) || 'main' };
+  }
+  function pushMap(map, key, value) {
+    if (!key) return;
+    const items = map.get(key) || [];
+    items.push(value);
+    map.set(key, items);
+  }
+
+  function buildNoteRelationIndex(notes = []) {
+    const byId = new Map();
+    const outgoing = new Map();
+    const incomingNotes = new Map();
+    const incomingFiles = new Map();
+    const errors = [];
+    for (const note of Array.isArray(notes) ? notes : []) if (note && note.id) byId.set(String(note.id), note);
+    for (const note of byId.values()) {
+      const relations = [];
+      const context = noteContext(note);
+      for (const link of Array.isArray(note.links) ? note.links : []) {
+        const base = { sourceNoteId: String(note.id), linkId: clean(link && link.id), label: clean(link && link.label), type: clean(link && link.type) };
+        if (base.type === 'note') {
+          const targetNoteId = clean(link && link.target && link.target.noteId);
+          if (!targetNoteId) { errors.push({ kind: 'invalid_note_relation', sourceNoteId: note.id, linkId: base.linkId, message: 'Managed Note relation has no target Note id.' }); continue; }
+          const relation = { ...base, targetNoteId, resolved: byId.has(targetNoteId) };
+          relations.push(relation);
+          pushMap(incomingNotes, targetNoteId, relation);
+        } else if (base.type === 'repository') {
+          const target = { ...context, ...(link && link.target || {}) };
+          const key = repositoryKey(target);
+          if (!key) { errors.push({ kind: 'invalid_file_relation', sourceNoteId: note.id, linkId: base.linkId, message: 'Managed repository relation has incomplete target identity.' }); continue; }
+          const relation = { ...base, target, key, resolved: clean(link.resolution) === 'resolved' };
+          relations.push(relation);
+          pushMap(incomingFiles, key, relation);
+        } else if (base.type === 'url') {
+          relations.push({ ...base, target: { ...(link && link.target || {}) }, resolved: true });
+        }
+      }
+      outgoing.set(String(note.id), relations);
+    }
+    return {
+      byId,
+      outgoing,
+      incomingNotes,
+      incomingFiles,
+      errors,
+      outgoingForNote(id) { return [...(outgoing.get(String(id)) || [])]; },
+      incomingForNote(id) { return [...(incomingNotes.get(String(id)) || [])]; },
+      incomingForFile(target) { return [...(incomingFiles.get(repositoryKey(target)) || [])]; },
+      repositoryKey
+    };
+  }
+
+  return { buildNoteRelationIndex, repositoryRelationKey: repositoryKey };
 });
 
 /* src/category-cache-store.js */
@@ -1546,18 +2187,18 @@
     throw new Error('No base64 encoder is available.');
   }
 
-  function base64ToUtf8(value) {
+  function base64ToBytes(value) {
     const compact = String(value || '').replace(/\s+/g, '');
-    let bytes;
     if (typeof atob === 'function') {
       const binary = atob(compact);
-      bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-    } else if (typeof Buffer !== 'undefined') {
-      bytes = Uint8Array.from(Buffer.from(compact, 'base64'));
-    } else {
-      throw new Error('No base64 decoder is available.');
+      return Uint8Array.from(binary, (char) => char.charCodeAt(0));
     }
-    return new TextDecoder().decode(bytes);
+    if (typeof Buffer !== 'undefined') return Uint8Array.from(Buffer.from(compact, 'base64'));
+    throw new Error('No base64 decoder is available.');
+  }
+
+  function base64ToUtf8(value) {
+    return new TextDecoder().decode(base64ToBytes(value));
   }
 
   async function sha256Hex(text) {
@@ -1601,8 +2242,9 @@
           headers: request.headers,
           data: request.body,
           timeout: request.timeoutMs || 20000,
+          responseType: request.responseType || 'text',
           onload(response) {
-            resolve({ status: response.status, text: response.responseText || '', headers: response.responseHeaders || '' });
+            resolve({ status: response.status, text: response.responseText || '', response: response.response, headers: response.responseHeaders || '' });
           },
           ontimeout() {
             reject(new GitHubClientError('network_unknown', 'GitHub request timed out; remote state must be read before retrying.'));
@@ -1672,6 +2314,31 @@
       return payload;
     }
 
+    async _requestRaw(url) {
+      let response;
+      try {
+        response = await this.transport({
+          method: 'GET',
+          url,
+          headers: { ...this._headers(), Accept: 'application/vnd.github.raw+json' },
+          timeoutMs: 20000,
+          responseType: 'arraybuffer'
+        });
+      } catch (error) {
+        if (error instanceof GitHubClientError) throw error;
+        throw new GitHubClientError('network_unknown', error && error.message ? error.message : 'GitHub binary request failed.', { cause: error });
+      }
+      if (response.status < 200 || response.status >= 300) {
+        let payload = null;
+        try { payload = parseJson(response.text || ''); } catch (error) { /* preserve status */ }
+        const message = payload && payload.message ? payload.message : `GitHub request failed with status ${response.status}.`;
+        throw new GitHubClientError(statusKind(response.status), message, { status: response.status, payload });
+      }
+      if (response.response instanceof ArrayBuffer) return new Uint8Array(response.response);
+      if (ArrayBuffer.isView(response.response)) return new Uint8Array(response.response.buffer, response.response.byteOffset, response.response.byteLength);
+      return new TextEncoder().encode(String(response.text || ''));
+    }
+
     _fileResult(payload, normalized, options = {}) {
       if (!payload || payload.type !== 'file') {
         throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a file.');
@@ -1730,6 +2397,20 @@
       const normalized = normalizeGitHubContentPath(path);
       const payload = await this._request('GET', this._url(normalized, true));
       return this._metadataResult(payload, normalized);
+    }
+
+    async readBytes(path, options = {}) {
+      const normalized = normalizeGitHubContentPath(path);
+      const metadata = await this.readMetadata(normalized);
+      const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : 5 * 1024 * 1024;
+      if (metadata.size > maxBytes) {
+        throw new GitHubClientError('limit_exceeded', `GitHub file is ${metadata.size} bytes; media limit is ${maxBytes}.`, { path: normalized, size: metadata.size, maxBytes });
+      }
+      const bytes = await this._requestRaw(this._url(normalized, true));
+      if (bytes.byteLength > maxBytes) {
+        throw new GitHubClientError('limit_exceeded', `GitHub file response is ${bytes.byteLength} bytes; media limit is ${maxBytes}.`, { path: normalized, size: bytes.byteLength, maxBytes });
+      }
+      return { ...metadata, bytes, contentType: '' };
     }
 
     async listDirectory(path, options = {}) {
@@ -1853,6 +2534,7 @@
     normalizeGitHubContentPath,
     utf8ToBase64,
     base64ToUtf8,
+    base64ToBytes,
     sha256Hex,
     statusKind
   };
@@ -2547,6 +3229,37 @@
     return nextPatch;
   }
 
+  function mergeCategoryEditorPatch(captured, dirty, patch = {}) {
+    const nextPatch = { ...patch };
+    if (captured && dirty && nextPatch.categoryEditor && !nextPatch.replaceCategoryEditor) {
+      nextPatch.categoryEditor = {
+        ...captured,
+        selectedTargets: Array.isArray(nextPatch.categoryEditor.selectedTargets)
+          ? nextPatch.categoryEditor.selectedTargets
+          : (Array.isArray(captured.selectedTargets) ? captured.selectedTargets : [])
+      };
+    }
+    return nextPatch;
+  }
+
+  function mergeVisibleCategorySelection(previousIds, availableIds, checkedIds) {
+    const normalize = (items) => {
+      const result = [];
+      const seen = new Set();
+      for (const item of Array.isArray(items) ? items : []) {
+        const id = String(item == null ? '' : item).trim();
+        if (!id || seen.has(id)) continue;
+        seen.add(id);
+        result.push(id);
+      }
+      return result;
+    };
+    const previous = normalize(previousIds);
+    const available = new Set(normalize(availableIds));
+    const checked = normalize(checkedIds).filter((id) => available.has(id));
+    return [...previous.filter((id) => !available.has(id)), ...checked];
+  }
+
   class LinkedNotesUI {
     constructor(handlers = {}) {
       this.handlers = handlers;
@@ -2573,8 +3286,17 @@
         repositoryPreview: null,
         categories: [],
         selectedCategoryId: '',
-        categoryEditor: { id: '', name: '', description: '', impliedCategoryIds: [], group: '' },
+        categoryEditor: { id: '', name: '', description: '', impliedCategoryIds: [], group: '', selectedTargets: [] },
         categoryFiles: [],
+        categoryNotes: [],
+        noteCategoryIds: [],
+        noteBacklinks: [],
+        noteViewMode: 'edit',
+        fileViewMode: 'rendered',
+        noteRendered: null,
+        fileRendered: null,
+        feedback: [],
+        targetPicker: { open: false, mode: '', query: '', depth: '2', currentPath: '', entries: [], fileResults: [], noteResults: [], selected: [], truncated: false, summary: '' },
         categoryErrors: [],
         categoryRefreshSummary: '',
         categoryRefreshedAt: '',
@@ -2585,6 +3307,7 @@
       this.open = false;
       this.workspaceManagerOpen = false;
       this.workspaceEditorDirty = false;
+      this.categoryEditorDirty = false;
       this._draftTimer = null;
       this._onViewportChange = () => this._positionPanel();
       this._onDocumentKeydown = (event) => {
@@ -2638,6 +3361,7 @@
 
     async persistAllDraftsNow() {
       this._captureWorkspaceIntoState();
+      this._captureCategoryIntoState();
       await this._persistDraftNow();
       return this.workspaceDraftState();
     }
@@ -2670,17 +3394,48 @@
       return editor;
     }
 
+    _categoryFromForm() {
+      if (!this.shadow) return this.state.categoryEditor;
+      const value = (role) => {
+        const input = this.shadow.querySelector(`[data-role="${role}"]`);
+        return input ? input.value : '';
+      };
+      return {
+        ...(this.state.categoryEditor || {}),
+        id: value('category-id').trim(),
+        name: value('category-name'),
+        description: value('category-description'),
+        impliedCategoryIds: value('category-implies').split(',').map((item) => item.trim()).filter(Boolean),
+        group: value('category-group'),
+        selectedTargets: Array.isArray(this.state.categoryEditor && this.state.categoryEditor.selectedTargets) ? [...this.state.categoryEditor.selectedTargets] : []
+      };
+    }
+
+    _captureCategoryIntoState() {
+      const editor = this._categoryFromForm();
+      if (editor) this.state.categoryEditor = editor;
+      return editor;
+    }
+
+    _feedbackForSurface(surface) {
+      return (Array.isArray(this.state.feedback) ? this.state.feedback : []).filter((item) => item && (item.scope === surface || item.scope === 'global'));
+    }
+
     setState(patch) {
       const captured = this._captureDraftIntoState();
       const capturedWorkspace = this._captureWorkspaceIntoState();
+      const capturedCategory = this._captureCategoryIntoState();
       let nextPatch = { ...patch };
       if (captured && nextPatch.current && nextPatch.current.id === captured.id && !this.state.busy && !nextPatch.replaceCurrent) {
-        nextPatch.current = { ...nextPatch.current, title: captured.title, body: captured.body };
+        nextPatch.current = { ...nextPatch.current, title: captured.title, body: captured.body, categoryIds: captured.categoryIds };
       }
       nextPatch = mergeWorkspaceEditorPatch(capturedWorkspace, this.workspaceEditorDirty, nextPatch);
+      nextPatch = mergeCategoryEditorPatch(capturedCategory, this.categoryEditorDirty, nextPatch);
       if (nextPatch.replaceWorkspaceEditor) this.workspaceEditorDirty = false;
+      if (nextPatch.replaceCategoryEditor) this.categoryEditorDirty = false;
       delete nextPatch.replaceCurrent;
       delete nextPatch.replaceWorkspaceEditor;
+      delete nextPatch.replaceCategoryEditor;
       this.state = { ...this.state, ...nextPatch };
       this.render();
     }
@@ -2689,10 +3444,14 @@
       if (!this.shadow || !this.state.current) return null;
       const title = this.shadow.querySelector('[data-role="title"]');
       const body = this.shadow.querySelector('[data-role="body"]');
+      const checkedCategoryIds = Array.from(this.shadow.querySelectorAll('[data-note-category-id]:checked')).map((input) => input.dataset.noteCategoryId);
+      const availableCategoryIds = (this.state.categories || []).map((category) => category.id);
+      const categoryIds = mergeVisibleCategorySelection(this.state.current.categoryIds, availableCategoryIds, checkedCategoryIds);
       return {
         ...this.state.current,
         title: title ? title.value : this.state.current.title || '',
-        body: body ? body.value : this.state.current.body || ''
+        body: body ? body.value : this.state.current.body || '',
+        categoryIds
       };
     }
 
@@ -2702,7 +3461,17 @@
       try {
         return await fn(...args);
       } catch (error) {
-        this.setState({ status: `Error: ${error.message || error}` });
+        const scope = this.state.targetPicker && this.state.targetPicker.open ? 'picker' : (this.state.surface || 'global');
+        const feedback = {
+          id: `ui-${scope}-error`, scope, severity: 'error', title: 'Action failed',
+          message: String(error && error.message || error), target: '', details: String(error && (error.kind || error.name) || ''),
+          partialResults: Array.isArray(error && error.partialResults) ? error.partialResults : [], dismissible: true
+        };
+        const hasEquivalent = (this.state.feedback || []).some((item) => item && item.scope === scope && item.severity === 'error' && item.message === feedback.message);
+        if (!hasEquivalent) {
+          const existing = (this.state.feedback || []).filter((item) => item.id !== feedback.id);
+          this.setState({ feedback: [...existing, feedback], status: `Error: ${feedback.message}` });
+        }
         throw error;
       }
     }
@@ -2786,7 +3555,7 @@
       const categoriesHtml = (this.state.categories || []).map((category) => `
         <button class="note-row ${category.id === this.state.selectedCategoryId ? 'active' : ''}" data-category-id="${escapeHtml(category.id)}" ${disabled}>
           <strong>${escapeHtml(category.name)}</strong>
-          <span>${escapeHtml(category.group ? `${category.group} · ` : '')}${category.explicitFileCount} explicit file(s)</span>
+          <span>${escapeHtml(category.group ? `${category.group} · ` : '')}${category.explicitFileCount} file(s) · ${category.explicitNoteCount || 0} Note(s)</span>
         </button>`).join('') || '<div class="empty">No category definitions cached.</div>';
       const sidebarBody = surface === 'notes' ? notesHtml : surface === 'files' ? repositoryEntriesHtml : categoriesHtml;
       const sidebarToolbar = surface === 'notes'
@@ -2818,27 +3587,47 @@
            <button class="danger" data-action="overwrite-remote" ${disabled}>Restore/overwrite bound remote</button>`
         : '';
       const preview = this.state.repositoryPreview;
+      const surfaceFeedback = this._feedbackForSurface(surface);
+      const feedbackHtml = surfaceFeedback.map((item) => `<section class="feedback feedback-${escapeHtml(item.severity || 'error')}" tabindex="-1" data-feedback-id="${escapeHtml(item.id)}">
+        <div class="feedback-head"><strong>${escapeHtml(item.title || 'Status')}</strong>${item.dismissible !== false ? `<button data-dismiss-feedback="${escapeHtml(item.id)}" title="Dismiss">×</button>` : ''}</div>
+        ${item.message ? `<div>${escapeHtml(item.message)}</div>` : ''}
+        ${item.target ? `<code>${escapeHtml(item.target)}</code>` : ''}
+        ${item.details ? `<details><summary>Details</summary><pre>${escapeHtml(item.details)}</pre></details>` : ''}
+        ${(item.partialResults || []).length ? `<div class="partial-results">${item.partialResults.map((result) => `<div><strong>${escapeHtml(result.status)}</strong> · ${escapeHtml(result.target)}${result.message ? ` · ${escapeHtml(result.message)}` : ''}</div>`).join('')}</div>` : ''}
+      </section>`).join('');
+      const renderProjection = (rendered) => rendered ? `<div class="rich-markdown" data-rich-root>${rendered.html || ''}</div>` : '<div class="empty">Rendered Markdown is not available yet.</div>';
       const breadcrumbs = (this.state.repositoryBreadcrumbs || []).map((item) => `<button data-browse-path="${escapeHtml(item.path)}" ${disabled}>${escapeHtml(item.label)}</button>`).join('<span>/</span>');
       const fileSurface = `
         <div class="editor-toolbar">
           <button data-action="browse-root" ${activeWorkspace && !busy ? '' : 'disabled'}>Browse root</button>
           <button data-action="browse-up" ${this.state.repositoryPath && !busy ? '' : 'disabled'}>Up</button>
+          ${preview && preview.kind === 'text' && /\.md(?:own)?$/i.test(preview.path || '') ? `<button data-file-view="rendered" class="${this.state.fileViewMode === 'rendered' ? 'active' : ''}" ${disabled}>Rendered</button><button data-file-view="source" class="${this.state.fileViewMode === 'source' ? 'active' : ''}" ${disabled}>Source</button>` : ''}
           <button class="primary" data-action="open-file-github" ${preview && !busy ? '' : 'disabled'}>Open on GitHub</button>
           <button data-action="close" ${disabled}>Close</button>
         </div>
+        ${feedbackHtml}
         <div class="file-context"><div class="breadcrumbs">${breadcrumbs || '<span>/</span>'}</div><div>${escapeHtml(this.state.repositoryPath || '/')}</div></div>
         ${preview ? `<section class="file-preview">
           <h3>${escapeHtml(preview.path)}</h3>
           <div class="hint">${escapeHtml(preview.kind)} · ${escapeHtml(preview.size || 0)} bytes · SHA ${escapeHtml(preview.sha || '')}</div>
-          ${preview.kind === 'text' ? `<pre>${escapeHtml(preview.content || '')}</pre>` : `<div class="remote-context">${escapeHtml(preview.message || 'Preview unavailable. Open on GitHub.')}</div>`}
+          ${preview.kind === 'text'
+            ? (this.state.fileViewMode === 'rendered' && /\.md(?:own)?$/i.test(preview.path || '') ? renderProjection(this.state.fileRendered) : `<pre>${escapeHtml(preview.content || '')}</pre>`)
+            : `<div class="remote-context">${escapeHtml(preview.message || 'Preview unavailable. Open on GitHub.')}</div>`}
         </section>` : '<div class="empty">Select a file to view it here. Every selected file also has an Open on GitHub action.</div>'}`;
-      const categoryEditor = this.state.categoryEditor || { id: '', name: '', description: '', impliedCategoryIds: [], group: '' };
+      const categoryEditor = this.state.categoryEditor || { id: '', name: '', description: '', impliedCategoryIds: [], group: '', selectedTargets: [] };
       const categoryFilesHtml = (this.state.categoryFiles || []).map((file) => `<div class="category-file-row">
           <button data-category-file-open="${escapeHtml(file.path)}" ${disabled}>${escapeHtml(file.path)}</button>
           <span>${escapeHtml(file.membership)} · ${escapeHtml(file.validation || 'unchecked')}</span>
           ${file.membership === 'explicit' ? `<button data-category-file-remove="${escapeHtml(file.path)}" ${disabled}>Remove</button>` : ''}
           ${file.validationMessage ? `<small>${escapeHtml(file.validationMessage)}</small>` : ''}
         </div>`).join('') || '<div class="empty">No files in this category.</div>';
+      const categoryNotesHtml = (this.state.categoryNotes || []).map((note) => `<div class="category-file-row">
+          <button data-category-note-open="${escapeHtml(note.noteId || '')}" ${note.noteId && !busy ? '' : 'disabled'}>${escapeHtml(note.label || note.path)}</button>
+          <span>${escapeHtml(note.membership)} · ${escapeHtml(note.validation || 'unchecked')}</span>
+          ${note.membership === 'explicit' ? `<button data-category-target-remove="note:${escapeHtml(note.noteId || note.path)}" ${disabled}>Remove</button>` : ''}
+          ${note.validationMessage ? `<small>${escapeHtml(note.validationMessage)}</small>` : ''}
+        </div>`).join('') || '<div class="empty">No Notes in this category.</div>';
+      const categoryTargetsHtml = (categoryEditor.selectedTargets || []).map((target) => `<div class="selected-target"><span>${target.type === 'note' ? '📝' : '📄'} ${escapeHtml(target.label || target.name || target.path || target.noteId)}</span><button data-category-draft-remove="${escapeHtml(target.type)}:${escapeHtml(target.type === 'note' ? (target.noteId || target.path) : target.path)}" ${disabled}>Remove</button></div>`).join('') || '<div class="empty">No initial members selected.</div>';
       const categoryErrorsHtml = (this.state.categoryErrors || []).map((error) => {
         const path = error && (error.path || error.targetPath) ? `<code>${escapeHtml(error.path || error.targetPath)}</code> · ` : '';
         const kind = error && error.kind ? `<strong>${escapeHtml(error.kind)}</strong>: ` : '';
@@ -2851,6 +3640,7 @@
           <button class="primary" data-action="save-category" ${activeWorkspace && !busy ? '' : 'disabled'}>Save category</button>
           <button data-action="close" ${disabled}>Close</button>
         </div>
+        ${feedbackHtml}
         ${this.state.categoryRefreshSummary ? `<div class="remote-summary"><strong>Last category refresh:</strong> ${escapeHtml(this.state.categoryRefreshSummary)}</div>` : ''}
         <section class="category-editor">
           <div class="settings-grid">
@@ -2861,35 +3651,72 @@
             <label class="field"><span>Local UX group</span><input data-role="category-group" value="${escapeHtml(categoryEditor.group || '')}" placeholder="Development technologies" ${disabled}></label>
           </div>
           <div class="category-actions">
+            <button data-action="choose-category-targets" ${activeWorkspace && !busy ? '' : 'disabled'}>Choose files and Notes</button>
             <button data-action="save-category-group" ${categoryEditor.id && !busy ? '' : 'disabled'}>Save local group</button>
             <button data-action="assign-preview-category" ${categoryEditor.id && preview && this.state.categoryAssignmentAllowed && !busy ? '' : 'disabled'}>Assign selected file</button>
-            <span class="hint">Category definitions and file links are stored in GitHub. UX groups are local-only.</span>
+            <span class="hint">Definitions own file/Note membership. UX groups are local-only.</span>
           </div>
+          <h3>Selected explicit members</h3><div class="selected-targets">${categoryTargetsHtml}</div>
           <h3>Files</h3><div class="category-files">${categoryFilesHtml}</div>
+          <h3>Notes</h3><div class="category-files">${categoryNotesHtml}</div>
           ${categoryErrorsHtml ? `<h3>Category model issues</h3><div class="category-errors">${categoryErrorsHtml}</div>` : ''}
         </section>`;
+      const availableCategoryIds = new Set((this.state.categories || []).map((category) => category.id));
+      const unavailableCategoryIds = (this.state.noteCategoryIds || []).filter((id) => !availableCategoryIds.has(id));
+      const availableCategoryHtml = (this.state.categories || []).map((category) => `<label class="category-choice"><input type="checkbox" data-note-category-id="${escapeHtml(category.id)}" ${(this.state.noteCategoryIds || []).includes(category.id) ? 'checked' : ''} ${disabled}> ${escapeHtml(category.name)}</label>`).join('');
+      const unavailableCategoryHtml = unavailableCategoryIds.map((id) => `<div class="category-choice unavailable"><strong>${escapeHtml(id)}</strong><span>Selected locally; unavailable until categories refresh succeeds.</span></div>`).join('');
+      const noteCategoryHtml = `${availableCategoryHtml}${unavailableCategoryHtml}` || '<div class="empty">Refresh categories to assign them to this Note.</div>';
+      const backlinksHtml = (this.state.noteBacklinks || []).map((relation) => `<button data-note-backlink="${escapeHtml(relation.sourceNoteId)}" ${disabled}>${escapeHtml(relation.label || relation.sourceNoteId)}</button>`).join('') || '<div class="empty">No managed backlinks.</div>';
       const notesSurface = `
         <div class="editor-toolbar">
           <button class="primary" data-action="save-local" ${current && !busy ? '' : 'disabled'}>Save local</button>
           <button class="primary" data-action="save-remote" ${current && activeWorkspace && !busy ? '' : 'disabled'}>Save GitHub</button>
+          <button data-note-view="edit" class="${this.state.noteViewMode === 'edit' ? 'active' : ''}" ${disabled}>Edit</button>
+          <button data-note-view="preview" class="${this.state.noteViewMode === 'preview' ? 'active' : ''}" ${disabled}>Preview</button>
+          <button data-note-view="split" class="${this.state.noteViewMode === 'split' ? 'active' : ''}" ${disabled}>Split</button>
           <button data-action="copy-remote" ${current && activeWorkspace && this.state.remoteTargetMismatch && !busy ? '' : 'disabled'}>Copy to chat workspace</button>
           ${recoveryButtons}
           <button class="danger" data-action="delete" ${current && !busy ? '' : 'disabled'}>Delete local</button>
           <button data-action="close" ${disabled}>Close</button>
         </div>
+        ${feedbackHtml}
         ${current ? `
           <input data-role="title" placeholder="Optional title" value="${escapeHtml(current.title || '')}" ${disabled}>
-          <textarea data-role="body" placeholder="Markdown Note body" ${disabled}>${escapeHtml(current.body || '')}</textarea>
+          <div class="note-mode note-mode-${escapeHtml(this.state.noteViewMode || 'edit')}">
+            ${this.state.noteViewMode !== 'preview' ? `<textarea data-role="body" placeholder="Markdown Note body" ${disabled}>${escapeHtml(current.body || '')}</textarea>` : ''}
+            ${this.state.noteViewMode !== 'edit' ? renderProjection(this.state.noteRendered) : ''}
+          </div>
           ${remoteInfo}
           ${remoteSummary}
-          <section><h3>Links</h3><div class="links">${linksHtml}</div>
-            <div class="add-link">
-              <select data-role="link-type" ${disabled}><option value="repository">Repository path</option><option value="note">Note ID</option><option value="url">Portable URL</option></select>
-              <input data-role="link-target" placeholder="sibling.md, ../root.md or #explicit-anchor" ${disabled}>
-              <input data-role="link-label" placeholder="Optional label" ${disabled}>
-              <button data-action="add-link" ${disabled}>Add link</button>
-            </div>
-          </section>` : '<div class="empty">Create or select a Note.</div>'}`;
+          <section><h3>Categories</h3><div class="category-choices">${noteCategoryHtml}</div><div class="hint">Selection is preserved locally; Save GitHub applies verified category-definition changes.</div></section>
+          <section><h3>Managed links</h3><div class="links">${linksHtml}</div>
+            <button data-action="choose-note-links" ${disabled}>Choose files or Notes</button>
+          </section>
+          <section><h3>Linked from</h3><div class="backlinks">${backlinksHtml}</div></section>` : '<div class="empty">Create or select a Note.</div>'}`;
+      const picker = this.state.targetPicker || {};
+      const pickerItems = (picker.query ? picker.fileResults : picker.entries || []).map((entry) => {
+        if (entry.type === 'dir') return `<button class="picker-row" data-picker-dir="${escapeHtml(entry.path)}" ${disabled}>📁 ${escapeHtml(entry.name || entry.path)}</button>`;
+        const key = `file:${entry.path}`;
+        const checked = (picker.selected || []).some((item) => item.type === 'file' && item.path === entry.path);
+        return `<label class="picker-row"><input type="checkbox" data-picker-target="${escapeHtml(key)}" data-picker-path="${escapeHtml(entry.path)}" data-picker-name="${escapeHtml(entry.name || entry.path)}" ${checked ? 'checked' : ''} ${disabled}> 📄 ${escapeHtml(entry.name || entry.path)} <small>${escapeHtml(entry.path)}</small></label>`;
+      }).join('') || '<div class="empty">No file results.</div>';
+      const pickerNotes = (picker.query ? (picker.noteResults || []) : (this.state.notes || [])).map((note) => {
+        const checked = (picker.selected || []).some((item) => item.type === 'note' && item.noteId === note.id);
+        const path = note.remote && note.remote.path || '';
+        return `<label class="picker-row"><input type="checkbox" data-picker-target="note:${escapeHtml(note.id)}" data-picker-note-id="${escapeHtml(note.id)}" data-picker-path="${escapeHtml(path)}" data-picker-name="${escapeHtml(note.title || 'Untitled Note')}" ${checked ? 'checked' : ''} ${disabled}> 📝 ${escapeHtml(note.title || 'Untitled Note')} <small>${escapeHtml(path || note.id)}</small></label>`;
+      }).join('') || '<div class="empty">No Note results.</div>';
+      const pickerSelected = (picker.selected || []).map((item) => `<div class="selected-target"><span>${item.type === 'note' ? '📝' : '📄'} ${escapeHtml(item.label || item.name || item.path || item.noteId)}</span><button data-picker-remove="${escapeHtml(item.type)}:${escapeHtml(item.type === 'note' ? (item.noteId || item.path) : item.path)}" ${disabled}>Remove</button></div>`).join('') || '<div class="empty">Nothing selected.</div>';
+      const pickerModal = picker.open ? `<div class="picker-backdrop"><section class="picker-modal" aria-modal="true" role="dialog" aria-label="Choose repository targets">
+        <div class="picker-header"><strong>Choose files or Notes</strong><button data-action="close-target-picker" ${disabled}>×</button></div>
+        ${this._feedbackForSurface('picker').map((item) => `<section class="feedback feedback-${escapeHtml(item.severity || 'error')}" tabindex="-1"><strong>${escapeHtml(item.title || 'Action failed')}</strong><div>${escapeHtml(item.message || '')}</div></section>`).join('')}
+        <div class="picker-search"><input data-role="picker-query" value="${escapeHtml(picker.query || '')}" placeholder="Search by name"><select data-role="picker-depth"><option value="0" ${picker.depth === '0' ? 'selected' : ''}>Current folder</option><option value="1" ${picker.depth === '1' ? 'selected' : ''}>Depth 1</option><option value="2" ${picker.depth === '2' ? 'selected' : ''}>Depth 2</option><option value="3" ${picker.depth === '3' ? 'selected' : ''}>Depth 3</option><option value="5" ${picker.depth === '5' ? 'selected' : ''}>Depth 5</option><option value="entire" ${picker.depth === 'entire' ? 'selected' : ''}>Entire repository (bounded)</option></select><button data-action="picker-search" ${disabled}>Search</button></div>
+        <div class="picker-tabs"><button data-picker-tab="files" class="${picker.tab === 'files' ? 'active' : ''}">Files</button><button data-picker-tab="notes" class="${picker.tab === 'notes' ? 'active' : ''}">Notes</button><button data-picker-tab="selected" class="${picker.tab === 'selected' ? 'active' : ''}">Selected (${(picker.selected || []).length})</button></div>
+        <div class="picker-summary">${escapeHtml(picker.summary || picker.currentPath || '/')} ${picker.truncated ? ' · incomplete result' : ''}</div>
+        <div class="picker-content" data-picker-panel="files" ${picker.tab !== 'files' ? 'hidden' : ''}>${pickerItems}</div>
+        <div class="picker-content" data-picker-panel="notes" ${picker.tab !== 'notes' ? 'hidden' : ''}>${pickerNotes}</div>
+        <div class="picker-content" data-picker-panel="selected" ${picker.tab !== 'selected' ? 'hidden' : ''}>${pickerSelected}</div>
+        <div class="picker-actions"><button class="primary" data-action="apply-target-picker" ${disabled}>Use selected targets</button><button data-action="close-target-picker" ${disabled}>Cancel</button></div>
+      </section></div>` : '';
       const activeSurface = surface === 'files' ? fileSurface : surface === 'categories' ? categorySurface : notesSurface;
 
       this.shadow.innerHTML = `
@@ -2950,8 +3777,42 @@
           .category-file-row button:first-child { text-align: left; overflow: hidden; text-overflow: ellipsis; }
           .category-file-row span { color: var(--muted); }
           .error-row { border: 1px solid #8b5050; background: #351f22; color: #ffb8b8; padding: 6px; border-radius: 6px; margin-bottom: 5px; }
+          .feedback { border: 2px solid #b85b5b; background: #421f24; color: #ffe3e3; border-radius: 9px; padding: 12px; font-size: 14px; line-height: 1.45; box-shadow: 0 4px 18px rgba(0,0,0,.28); }
+          .feedback-success { border-color: #3d9160; background: #173323; color: #d5ffe3; }
+          .feedback-warning { border-color: #aa7b32; background: #3d2f17; color: #ffe9bd; }
+          .feedback-info { border-color: #477ca9; background: #172d40; color: #d4ebff; }
+          .feedback-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 15px; }
+          .feedback code { display: block; margin-top: 6px; color: inherit; word-break: break-word; }
+          .partial-results { display: grid; gap: 4px; margin-top: 8px; }
+          .rich-markdown { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: #0f1217; overflow-wrap: anywhere; min-height: 120px; }
+          .rich-markdown h1, .rich-markdown h2, .rich-markdown h3, .rich-markdown h4 { margin: 1em 0 .45em; }
+          .rich-markdown p { margin: .55em 0; }
+          .rich-markdown pre { white-space: pre-wrap; overflow: auto; padding: 10px; background: #090b0f; border-radius: 6px; }
+          .rich-markdown code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+          .rich-markdown table { border-collapse: collapse; width: 100%; }
+          .rich-markdown th, .rich-markdown td { border: 1px solid var(--border); padding: 6px; text-align: left; }
+          .rich-markdown a { color: #9ec5ff; text-decoration: underline; cursor: pointer; }
+          .rich-markdown img { display: block; max-width: 100%; height: auto; margin: 10px 0; border-radius: 5px; }
+          .obs-md-image-pending { min-height: 36px; border: 1px dashed var(--border); }
+          .note-mode-split { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 10px; align-items: start; }
+          .category-choices { display: flex; flex-wrap: wrap; gap: 7px; }
+          .category-choice { border: 1px solid var(--border); border-radius: 999px; padding: 5px 8px; background: var(--surface-2); }
+          .category-choice input { width: auto; }
+          .selected-targets, .backlinks { display: grid; gap: 6px; }
+          .selected-target { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface-2); }
+          .picker-backdrop { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.72); }
+          .main { position: relative; }
+          .picker-modal { width: min(780px, 100%); max-height: 92%; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 16px 45px rgba(0,0,0,.6); }
+          .picker-header, .picker-actions, .picker-tabs { display: flex; gap: 7px; align-items: center; }
+          .picker-header { justify-content: space-between; font-size: 15px; }
+          .picker-search { display: grid; grid-template-columns: minmax(0,1fr) 180px auto; gap: 7px; }
+          .picker-summary { color: var(--muted); }
+          .picker-content { min-height: 160px; max-height: 380px; overflow: auto; border: 1px solid var(--border); border-radius: 7px; padding: 7px; }
+          .picker-row { width: 100%; display: flex; gap: 8px; align-items: center; text-align: left; margin-bottom: 5px; padding: 7px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+          .picker-row input { width: auto; }
+          .picker-row small { color: var(--muted); margin-left: auto; overflow: hidden; text-overflow: ellipsis; }
           .workspace-manager-panel { margin-top: 10px; }
-          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid { grid-template-columns: 1fr; } }
+          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid, .picker-search, .note-mode-split { grid-template-columns: 1fr; } }
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Docs</button>
         <section class="panel" aria-label="Repository Documentation Workspace Prototype" aria-busy="${busy ? 'true' : 'false'}">
@@ -2999,6 +3860,7 @@
                 </div>
               </details>
             </div>
+            ${pickerModal}
           </main>
         </section>`;
 
@@ -3013,6 +3875,8 @@
       this.shadow.querySelectorAll('[data-workspace-field]').forEach((input) => {
         input.oninput = () => { this.workspaceEditorDirty = true; this._captureWorkspaceIntoState(); };
       });
+      this.shadow.querySelectorAll('[data-role^="category-"]').forEach((input) => { input.oninput = () => { this.categoryEditorDirty = true; this._captureCategoryIntoState(); }; });
+      this.shadow.querySelectorAll('[data-note-category-id]').forEach((input) => { input.onchange = () => this._scheduleDraftPersist(); });
 
       const toggle = this.shadow.querySelector('[data-action="toggle"]');
       if (toggle) toggle.onclick = async () => { await this.persistAllDraftsNow(); if (!this.open) await this._call('onOpen'); this.open = !this.open; this.render(); };
@@ -3076,19 +3940,50 @@
       this.shadow.querySelectorAll('[data-action="refresh-categories"]').forEach((button) => { button.onclick = () => this._withAllDrafts('onRefreshCategories'); });
       this.shadow.querySelectorAll('[data-action="new-category"]').forEach((button) => { button.onclick = () => this._call('onSelectCategory', ''); });
       this.shadow.querySelectorAll('[data-category-id]').forEach((button) => { button.onclick = () => this._call('onSelectCategory', button.dataset.categoryId); });
-      const categoryFromForm = () => ({
-        id: (this.shadow.querySelector('[data-role="category-id"]') || {}).value || '',
-        name: (this.shadow.querySelector('[data-role="category-name"]') || {}).value || '',
-        description: (this.shadow.querySelector('[data-role="category-description"]') || {}).value || '',
-        impliedCategoryIds: (((this.shadow.querySelector('[data-role="category-implies"]') || {}).value || '').split(',').map((value) => value.trim()).filter(Boolean)),
-        group: (this.shadow.querySelector('[data-role="category-group"]') || {}).value || ''
-      });
+      const categoryFromForm = () => this._categoryFromForm();
       const saveCategory = this.shadow.querySelector('[data-action="save-category"]');
       if (saveCategory) saveCategory.onclick = () => this._call('onSaveCategory', categoryFromForm());
       const saveCategoryGroup = this.shadow.querySelector('[data-action="save-category-group"]');
       if (saveCategoryGroup) saveCategoryGroup.onclick = () => { const category = categoryFromForm(); return this._call('onSetCategoryGroup', category.id, category.group); };
       const assignPreview = this.shadow.querySelector('[data-action="assign-preview-category"]');
       if (assignPreview) assignPreview.onclick = () => this._call('onAssignCategory', categoryEditor.id, preview && preview.path);
+      this.shadow.querySelectorAll('[data-note-view]').forEach((button) => { button.onclick = () => this._call('onSetNoteViewMode', button.dataset.noteView, this._draftFromForm()); });
+      this.shadow.querySelectorAll('[data-file-view]').forEach((button) => { button.onclick = () => this._call('onSetFileViewMode', button.dataset.fileView); });
+      const chooseNoteLinks = this.shadow.querySelector('[data-action="choose-note-links"]');
+      if (chooseNoteLinks) chooseNoteLinks.onclick = () => { const editor = this.shadow.querySelector('[data-role="body"]'); return this._call('onOpenTargetPicker', { mode: 'note-link', cursorStart: editor ? editor.selectionStart : 0, cursorEnd: editor ? editor.selectionEnd : 0 }); };
+      const chooseCategoryTargets = this.shadow.querySelector('[data-action="choose-category-targets"]');
+      if (chooseCategoryTargets) chooseCategoryTargets.onclick = () => this._call('onOpenTargetPicker', { mode: 'category-members', initialTargets: this._categoryFromForm().selectedTargets || [] });
+      this.shadow.querySelectorAll('[data-dismiss-feedback]').forEach((button) => { button.onclick = () => this._call('onDismissFeedback', button.dataset.dismissFeedback); });
+      this.shadow.querySelectorAll('[data-note-backlink]').forEach((button) => { button.onclick = () => this._withDraft('onSelect', button.dataset.noteBacklink); });
+      this.shadow.querySelectorAll('[data-category-note-open]').forEach((button) => { button.onclick = () => this._withDraft('onSelect', button.dataset.categoryNoteOpen); });
+      const removeCategoryTarget = (identity) => {
+        const editorState = this._categoryFromForm();
+        editorState.selectedTargets = (editorState.selectedTargets || []).filter((target) => `${target.type}:${target.type === 'note' ? (target.noteId || target.path) : target.path}` !== identity);
+        this.categoryEditorDirty = true;
+        this.state.categoryEditor = editorState;
+        this.render();
+      };
+      this.shadow.querySelectorAll('[data-category-draft-remove]').forEach((button) => { button.onclick = () => removeCategoryTarget(button.dataset.categoryDraftRemove); });
+      this.shadow.querySelectorAll('[data-category-target-remove]').forEach((button) => { button.onclick = () => removeCategoryTarget(button.dataset.categoryTargetRemove); });
+      this.shadow.querySelectorAll('[data-action="close-target-picker"]').forEach((button) => { button.onclick = () => this._call('onCloseTargetPicker'); });
+      const pickerSearch = this.shadow.querySelector('[data-action="picker-search"]');
+      if (pickerSearch) pickerSearch.onclick = () => this._call('onSearchTargetPicker', (this.shadow.querySelector('[data-role="picker-query"]') || {}).value || '', (this.shadow.querySelector('[data-role="picker-depth"]') || {}).value || '2');
+      this.shadow.querySelectorAll('[data-picker-dir]').forEach((button) => { button.onclick = () => this._call('onBrowseTargetPicker', button.dataset.pickerDir); });
+      this.shadow.querySelectorAll('[data-picker-target]').forEach((input) => { input.onchange = () => this._call('onToggleTargetPicker', input.dataset.pickerNoteId ? { type: 'note', noteId: input.dataset.pickerNoteId, path: input.dataset.pickerPath, name: input.dataset.pickerName } : { type: 'file', path: input.dataset.pickerPath, name: input.dataset.pickerName }); });
+      this.shadow.querySelectorAll('[data-picker-remove]').forEach((button) => { button.onclick = () => { const identity = button.dataset.pickerRemove; const target = (this.state.targetPicker.selected || []).find((item) => `${item.type}:${item.type === 'note' ? (item.noteId || item.path) : item.path}` === identity); if (target) this._call('onToggleTargetPicker', target); }; });
+      const applyPicker = this.shadow.querySelector('[data-action="apply-target-picker"]');
+      if (applyPicker) applyPicker.onclick = () => this._call('onApplyTargetPicker');
+      this.shadow.querySelectorAll('[data-picker-tab]').forEach((button) => { button.onclick = () => this._call('onSetTargetPickerTab', button.dataset.pickerTab); });
+      const renderedState = surface === 'files' ? this.state.fileRendered : this.state.noteRendered;
+      if (renderedState) {
+        const imageById = new Map((renderedState.imageResults || []).map((item) => [item.id, item]));
+        this.shadow.querySelectorAll('[data-obs-image-id]').forEach((image) => {
+          const result = imageById.get(image.dataset.obsImageId);
+          if (result && result.status === 'loaded') { image.src = result.objectUrl; image.classList.remove('obs-md-image-pending'); }
+          else if (result) { image.alt = `${image.alt || 'Image'} — ${result.message || result.status}`; image.title = result.message || result.status; }
+        });
+        this.shadow.querySelectorAll('[data-obs-link-target]').forEach((link) => { link.onclick = (event) => { event.preventDefault(); this._call('onOpenRenderedLink', link.dataset.obsLinkTarget, renderedState.source || {}); }; });
+      }
       this.shadow.querySelectorAll('[data-category-file-open]').forEach((button) => { button.onclick = () => this._withAllDrafts('onOpenRepositoryEntry', { path: button.dataset.categoryFileOpen, type: 'file' }); });
       this.shadow.querySelectorAll('[data-category-file-remove]').forEach((button) => { button.onclick = () => this._call('onUnassignCategory', categoryEditor.id, button.dataset.categoryFileRemove); });
     }
@@ -3102,7 +3997,9 @@
     panelViewportLayout,
     shouldCloseOnEscape,
     blankWorkspaceEditor,
-    mergeWorkspaceEditorPatch
+    mergeWorkspaceEditorPatch,
+    mergeCategoryEditorPatch,
+    mergeVisibleCategorySelection
   };
 });
 
@@ -3217,7 +4114,19 @@
         onAddLink: (note, input) => this.addLink(note, input),
         onRemoveLink: (note, linkId) => this.removeLink(note, linkId),
         onResolveLink: (note, linkId) => this.resolveLink(note, linkId),
-        onOpenLink: (linkId) => this.openLink(linkId)
+        onOpenLink: (linkId) => this.openLink(linkId),
+        onSetNoteViewMode: (mode, note) => this.setNoteViewMode(mode, note),
+        onSetFileViewMode: (mode) => this.setFileViewMode(mode),
+        onOpenRenderedLink: (target, source) => this.openRenderedLink(target, source),
+        onOpenTargetPicker: (request) => this.openTargetPicker(request),
+        onCloseTargetPicker: () => this.closeTargetPicker(),
+        onSetTargetPickerTab: (tab) => this.setTargetPickerTab(tab),
+        onBrowseTargetPicker: (path) => this.browseTargetPicker(path),
+        onSearchTargetPicker: (query, depth) => this.searchTargetPicker(query, depth),
+        onToggleTargetPicker: (target) => this.toggleTargetPickerTarget(target),
+        onApplyTargetPicker: () => this.applyTargetPicker(),
+        onSetNoteCategories: (note, ids) => this.setNoteCategoryIntent(note, ids),
+        onDismissFeedback: (id) => this.dismissFeedback(id)
       });
       this.current = null;
       this.search = '';
@@ -3232,7 +4141,7 @@
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
-      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
       this.categoryContextWorkspaceId = '';
@@ -3240,6 +4149,15 @@
       this.categoryContextRequiresRefresh = false;
       this.categoryContextsRequiringRefresh = new Set();
       this.workspaceContextGeneration = 0;
+      this.noteRelationIndex = this.api.buildNoteRelationIndex ? this.api.buildNoteRelationIndex([]) : null;
+      this.noteViewMode = 'edit';
+      this.fileViewMode = 'rendered';
+      this.noteRendered = null;
+      this.fileRendered = null;
+      this.mediaLoaders = { note: null, file: null };
+      this.feedback = [];
+      this.targetPicker = { open: false, mode: '', tab: 'files', query: '', depth: '2', currentPath: '', entries: [], fileResults: [], noteResults: [], selected: [], truncated: false, summary: '', cursorStart: 0, cursorEnd: 0 };
+      this.categoryDraftTargets = [];
       if (options.settings && options.settings.owner && options.settings.repo) {
         const workspace = api.normalizeWorkspace
           ? api.normalizeWorkspace({ id: 'workspace-test', name: 'Test workspace', ...options.settings })
@@ -3323,6 +4241,7 @@
           sha: category.sha || '',
           htmlUrl: category.htmlUrl || '',
           explicitFileCount: (category.explicitFiles || []).length,
+          explicitNoteCount: (category.explicitNotes || []).length,
           impliedCategoryIds: category.impliedCategoryIds || [],
           brokenLinks: category.brokenLinks || [],
           group: this.categorySnapshot.groups && this.categorySnapshot.groups[category.id] || ''
@@ -3342,22 +4261,43 @@
         && this.categoryContextKey === this._categoryContextKey(activeWorkspace)
         && !this.categoryContextRequiresRefresh
       );
+      const indexedSelectedTargets = selectedRecord ? [
+        ...(selectedRecord.explicitFiles || []).map((item) => ({ type: 'file', path: item.path, name: item.label || item.path, label: item.label || item.path })),
+        ...(selectedRecord.explicitNotes || []).map((item) => ({ type: 'note', path: item.path, noteId: item.noteId || '', name: item.label || item.path, label: item.label || item.path }))
+      ] : [];
+      const selectedTargets = [...this.categoryDraftTargets];
+      const noteCategoryIds = this.current
+        ? (this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(this.current.categoryIds) : (this.current.categoryIds || []))
+        : [];
+      const backlinks = this.current && this.noteRelationIndex && this.noteRelationIndex.incomingForNote
+        ? this.noteRelationIndex.incomingForNote(this.current.id)
+        : [];
       return {
         surface: this.surface,
         repositoryPath: this.repositoryPath,
         repositoryEntries: this.repositoryEntries,
         repositoryBreadcrumbs: this.api.repositoryBreadcrumbs ? this.api.repositoryBreadcrumbs(this.repositoryPath) : [],
         repositoryPreview: this.repositoryPreview,
+        fileViewMode: this.fileViewMode,
+        fileRendered: this.fileRendered,
+        noteViewMode: this.noteViewMode,
+        noteRendered: this.noteRendered,
+        feedback: this.feedback,
+        targetPicker: this.targetPicker,
         categories,
+        noteCategoryIds,
+        noteBacklinks: backlinks,
         selectedCategoryId: selected ? selected.id : '',
         categoryEditor: selected ? {
           id: selected.id,
           name: selected.name,
           description: selected.description,
           impliedCategoryIds: selected.impliedCategoryIds,
-          group: selected.group
-        } : { id: '', name: '', description: '', impliedCategoryIds: [], group: '' },
+          group: selected.group,
+          selectedTargets
+        } : { id: '', name: '', description: '', impliedCategoryIds: [], group: '', selectedTargets: [] },
         categoryFiles: selectedRecord && this.categoryIndex.filesForCategory ? this.categoryIndex.filesForCategory(selected.id) : [],
+        categoryNotes: selectedRecord && this.categoryIndex.notesForCategory ? this.categoryIndex.notesForCategory(selected.id) : [],
         categoryErrors: [
           ...(Array.isArray(this.categorySnapshot.diagnostics) ? this.categorySnapshot.diagnostics : []),
           ...(this.categoryIndex && Array.isArray(this.categoryIndex.errors) ? this.categoryIndex.errors : [])
@@ -3384,6 +4324,43 @@
       };
     }
 
+    _feedbackScope() {
+      return this.surface === 'files' ? 'files' : this.surface === 'categories' ? 'categories' : 'notes';
+    }
+
+    _pushFeedback(feedback) {
+      const item = this.api.createFeedback ? this.api.createFeedback(feedback) : { id: feedback.id || `feedback-${Date.now()}`, scope: feedback.scope || this._feedbackScope(), severity: feedback.severity || 'error', title: feedback.title || 'Status', message: feedback.message || '', target: feedback.target || '', details: feedback.details || '', actions: feedback.actions || [], partialResults: feedback.partialResults || [], dismissible: true };
+      this.feedback = this.api.replaceFeedback ? this.api.replaceFeedback(this.feedback, item) : [...this.feedback.filter((existing) => existing.id !== item.id), item];
+      return item;
+    }
+
+    dismissFeedback(id) {
+      this.feedback = this.api.dismissFeedback ? this.api.dismissFeedback(this.feedback, id) : this.feedback.filter((item) => item.id !== id);
+      this._setUi();
+    }
+
+    _feedbackFromError(error, input = {}) {
+      const item = this.api.feedbackFromError
+        ? this.api.feedbackFromError(error, { scope: input.scope || this._feedbackScope(), ...input })
+        : { id: input.id || 'last-error', scope: input.scope || this._feedbackScope(), severity: 'error', title: input.title || 'Action failed', message: String(error && error.message || error), target: input.target || '', details: String(error && error.kind || ''), actions: input.actions || [], partialResults: error && error.partialResults || [] };
+      this._pushFeedback(item);
+      this._setUi({ status: `Error: ${item.message}` });
+      return item;
+    }
+
+    _disposeMediaLoader(kind) {
+      const key = kind === 'file' ? 'file' : 'note';
+      const loader = this.mediaLoaders && this.mediaLoaders[key];
+      if (loader && typeof loader.dispose === 'function') loader.dispose();
+      if (!this.mediaLoaders) this.mediaLoaders = { note: null, file: null };
+      this.mediaLoaders[key] = null;
+    }
+
+    _disposeAllMediaLoaders() {
+      this._disposeMediaLoader('note');
+      this._disposeMediaLoader('file');
+    }
+
     _setUi(patch = {}) {
       this.ui.setState({ ...this._workspaceUiState(), ...this._remoteUiState(), ...this._categoryUiState(), ...patch });
     }
@@ -3393,6 +4370,10 @@
       this.remoteOperation = label;
       this._setUi({ busy: true, status: label });
       try { return await work(); }
+      catch (error) {
+        this._feedbackFromError(error, { id: `operation-${this._feedbackScope()}`, scope: this._feedbackScope(), title: label.replace(/…$/, '') || 'Remote action failed' });
+        throw error;
+      }
       finally { this.remoteOperation = null; this._setUi({ busy: false }); }
     }
 
@@ -3429,14 +4410,20 @@
     _emptyCategoryIndex() {
       return this.api.buildRepositoryCategoryIndex
         ? this.api.buildRepositoryCategoryIndex([])
-        : { categories: new Map(), filesForCategory: () => [], errors: [] };
+        : { categories: new Map(), filesForCategory: () => [], notesForCategory: () => [], explicitCategoryIdsForTarget: () => [], errors: [] };
     }
 
-    _resetWorkspaceDerivedContext() {
+    _resetWorkspaceDerivedContext(options = {}) {
+      this._disposeMediaLoader('file');
+      this.fileRendered = null;
+      if (options.disposeNoteMedia) {
+        this._disposeMediaLoader('note');
+        this.noteRendered = null;
+      }
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
-      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
       this.categoryContextWorkspaceId = '';
@@ -3449,9 +4436,11 @@
       const previousWorkspaceId = this.categoryContextWorkspaceId;
       const previousContextKey = this.categoryContextKey;
       const targetChangedInPlace = Boolean(workspace && previousWorkspaceId === workspace.id && previousContextKey && previousContextKey !== contextKey);
+      const workspaceContextChanged = Boolean(previousContextKey && previousContextKey !== contextKey)
+        || Boolean(previousWorkspaceId && previousWorkspaceId !== (workspace ? workspace.id : ''));
       if (targetChangedInPlace) this.categoryContextsRequiringRefresh.add(contextKey);
       const generation = ++this.workspaceContextGeneration;
-      this._resetWorkspaceDerivedContext();
+      this._resetWorkspaceDerivedContext({ disposeNoteMedia: workspaceContextChanged });
       this.categoryContextRequiresRefresh = Boolean(contextKey && this.categoryContextsRequiringRefresh.has(contextKey));
       this._setUi({ categoryRefreshSummary: '' });
       if (!workspace || !this.categoryStore) {
@@ -3467,11 +4456,12 @@
         definitions: Array.isArray(snapshot.definitions) ? snapshot.definitions : [],
         diagnostics: Array.isArray(snapshot.diagnostics) ? snapshot.diagnostics : [],
         fileValidation: snapshot.fileValidation && typeof snapshot.fileValidation === 'object' ? snapshot.fileValidation : {},
+        noteValidation: snapshot.noteValidation && typeof snapshot.noteValidation === 'object' ? snapshot.noteValidation : {},
         groups: snapshot.groups && typeof snapshot.groups === 'object' ? snapshot.groups : {},
         refreshedAt: String(snapshot.refreshedAt || '')
       };
       this.categoryIndex = this.api.buildRepositoryCategoryIndex
-        ? this.api.buildRepositoryCategoryIndex(this.categorySnapshot.definitions, { fileValidation: this.categorySnapshot.fileValidation })
+        ? this.api.buildRepositoryCategoryIndex(this.categorySnapshot.definitions, { fileValidation: this.categorySnapshot.fileValidation, noteValidation: this.categorySnapshot.noteValidation })
         : this._emptyCategoryIndex();
       this.categoryContextWorkspaceId = workspace.id;
       this.categoryContextKey = contextKey;
@@ -3554,13 +4544,16 @@
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
-      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
-      this.categoryIndex = api.buildRepositoryCategoryIndex ? api.buildRepositoryCategoryIndex([]) : { categories: new Map(), filesForCategory: () => [], errors: [] };
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
+      this.categoryIndex = this.api.buildRepositoryCategoryIndex ? this.api.buildRepositoryCategoryIndex([]) : { categories: new Map(), filesForCategory: () => [], notesForCategory: () => [], errors: [] };
       this.selectedCategoryId = '';
       this.categoryContextWorkspaceId = '';
       this.categoryContextKey = '';
       this.categoryContextRequiresRefresh = false;
       this.categoryContextsRequiringRefresh.clear();
+      this._disposeAllMediaLoaders();
+      this.noteRendered = null;
+      this.fileRendered = null;
       if (this.ui) this.ui.dispose();
     }
 
@@ -3645,6 +4638,252 @@
       return next;
     }
 
+    async _renderMarkdownDocument(markdown, sourcePath, context, kind) {
+      const mediaKind = kind === 'file' ? 'file' : 'note';
+      const rendered = this.api.renderRichMarkdown ? this.api.renderRichMarkdown(markdown) : { html: `<pre>${String(markdown || '')}</pre>`, resources: [], links: [] };
+      this._disposeMediaLoader(mediaKind);
+      let imageResults = [];
+      if (rendered.resources && rendered.resources.length) {
+        if (context && context.owner && context.repo && context.branch && sourcePath && this.api.RepositoryMediaLoader) {
+          try {
+            const client = await this._client(context);
+            const loader = new this.api.RepositoryMediaLoader({ readBytes: (path, options) => client.readBytes(path, options) });
+            this.mediaLoaders[mediaKind] = loader;
+            imageResults = await loader.loadAll(rendered.resources, { sourcePath });
+          } catch (error) {
+            this._disposeMediaLoader(mediaKind);
+            imageResults = rendered.resources.map((resource) => ({ id: resource.id, status: 'error', target: resource.target, message: String(error && error.message || error) }));
+          }
+        } else {
+          imageResults = rendered.resources.map((resource) => ({ id: resource.id, status: resource.external ? 'external_blocked' : 'unavailable', target: resource.target, message: resource.external ? 'External image loading requires an explicit action.' : 'Repository context is unavailable for this image.' }));
+        }
+      }
+      return { ...rendered, imageResults, source: { path: sourcePath || '', context: context ? { owner: context.owner, repo: context.repo, branch: context.branch } : null } };
+    }
+
+    async _renderCurrentNote(note = this.current) {
+      if (!note) { this._disposeMediaLoader('note'); this.noteRendered = null; return null; }
+      const remote = this.api.normalizeRemote(note.remote);
+      let context = null;
+      let sourcePath = '';
+      if (this.api.hasRemoteTargetIdentity(remote)) {
+        context = remote;
+        sourcePath = remote.path;
+      } else {
+        const workspace = this._activeWorkspace();
+        if (workspace) {
+          context = workspace;
+          try { sourcePath = this._configuredTarget(note).path; } catch (error) { sourcePath = ''; }
+        }
+      }
+      this.noteRendered = await this._renderMarkdownDocument(note.body || '', sourcePath, context, 'note');
+      return this.noteRendered;
+    }
+
+    async _renderCurrentFile() {
+      const preview = this.repositoryPreview;
+      if (!preview || preview.kind !== 'text' || !/\.md(?:own)?$/i.test(preview.path || '')) { this._disposeMediaLoader('file'); this.fileRendered = null; return null; }
+      this.fileRendered = await this._renderMarkdownDocument(preview.content || '', preview.path, preview.context, 'file');
+      return this.fileRendered;
+    }
+
+    async setNoteViewMode(mode, note) {
+      const allowed = new Set(['edit', 'preview', 'split']);
+      if (!allowed.has(mode)) throw new Error(`Unsupported Note view mode: ${mode}`);
+      if (note) await this.saveDraft(note);
+      this.noteViewMode = mode;
+      if (mode !== 'edit') await this._renderCurrentNote(this.current);
+      else { this._disposeMediaLoader('note'); this.noteRendered = null; }
+      this._setUi({ status: `Note view: ${mode}.` });
+      return mode;
+    }
+
+    async setFileViewMode(mode) {
+      if (!new Set(['rendered', 'source']).has(mode)) throw new Error(`Unsupported file view mode: ${mode}`);
+      this.fileViewMode = mode;
+      if (mode === 'rendered') await this._renderCurrentFile();
+      else { this._disposeMediaLoader('file'); this.fileRendered = null; }
+      this._setUi({ status: `File view: ${mode}.` });
+      return mode;
+    }
+
+    async openRenderedLink(target, source = {}) {
+      const value = String(target || '').trim();
+      if (!value) return;
+      if (this.api.isPortableUrl && this.api.isPortableUrl(value)) {
+        window.open(value, '_blank', 'noopener,noreferrer');
+        return;
+      }
+      if (value.startsWith('#')) {
+        this._setUi({ status: `Rendered anchor requested: ${value}.` });
+        return;
+      }
+      const sourcePath = String(source.path || '');
+      const context = source.context || this._activeWorkspace();
+      if (!sourcePath || !context) throw new Error('Rendered repository link has no source repository context.');
+      const resolved = this.api.normalizeMarkdownRepositoryTarget ? this.api.normalizeMarkdownRepositoryTarget(sourcePath, value) : this.api.normalizeRepositoryTarget(sourcePath, value);
+      const noteTarget = this.noteRelationIndex && this.noteRelationIndex.byId
+        ? Array.from(this.noteRelationIndex.byId.values()).find((note) => {
+          const remote = this.api.normalizeRemote(note.remote);
+          return remote.path === resolved.path && this._sameRepositoryContext(remote, context);
+        }) : null;
+      if (noteTarget) return this.selectNote(noteTarget.id);
+      return this.openRepositoryEntry({ type: 'file', path: resolved.path, name: resolved.path.slice(resolved.path.lastIndexOf('/') + 1) }, context);
+    }
+
+    async setNoteCategoryIntent(note, ids) {
+      if (!note) throw new Error('No Note is selected.');
+      const draft = await this.saveDraft({ ...note, categoryIds: this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(ids) : ids, categoryIntentPending: true });
+      this.current = draft;
+      await this.refreshList();
+      this._setUi({ status: 'Note category selection saved locally. Save GitHub to apply repository category memberships.' });
+      return draft.categoryIds;
+    }
+
+    async openTargetPicker(request = {}) {
+      const mode = String(request.mode || 'note-link');
+      if (!new Set(['note-link', 'category-members']).has(mode)) throw new Error(`Unsupported target-picker mode: ${mode}`);
+      const selected = mode === 'category-members' ? [...(Array.isArray(request.initialTargets) ? request.initialTargets : this.categoryDraftTargets)] : [];
+      this.targetPicker = {
+        open: true,
+        mode,
+        tab: 'files',
+        query: '',
+        depth: '2',
+        currentPath: '',
+        entries: [],
+        fileResults: [],
+        noteResults: [],
+        selected,
+        truncated: false,
+        summary: '',
+        cursorStart: Number(request.cursorStart || 0),
+        cursorEnd: Number(request.cursorEnd || request.cursorStart || 0)
+      };
+      await this.browseTargetPicker('');
+      return this.targetPicker;
+    }
+
+    closeTargetPicker() {
+      this.targetPicker = { ...this.targetPicker, open: false };
+      this._setUi({ status: 'Target picker closed; current selection was preserved until the next picker action.' });
+    }
+
+    setTargetPickerTab(tab) {
+      const value = String(tab || 'files');
+      if (!new Set(['files', 'notes', 'selected']).has(value)) throw new Error(`Unsupported target-picker tab: ${value}`);
+      this.targetPicker = { ...this.targetPicker, tab: value };
+      this._setUi();
+      return value;
+    }
+
+    async browseTargetPicker(path = '') {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      return this._runRemoteOperation('Reading target-picker folder…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select a GitHub workspace before choosing repository files.');
+        const normalized = this.api.normalizeBrowserPath ? this.api.normalizeBrowserPath(path) : String(path || '');
+        const client = await this._client(workspace);
+        const entries = await client.listDirectory(normalized, { maxEntries: 200 });
+        this.targetPicker = { ...this.targetPicker, currentPath: normalized, entries: this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries, fileResults: [], query: '', truncated: false, summary: `${entries.length} direct entries.` };
+        this._setUi({ status: `Target picker folder loaded: ${normalized || '/'}.` });
+        return entries;
+      });
+    }
+
+    async searchTargetPicker(query, depth) {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      return this._runRemoteOperation('Searching repository targets…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select a GitHub workspace before searching files.');
+        const client = await this._client(workspace);
+        const result = await this.api.searchRepositoryTargets({
+          query,
+          depth,
+          rootPath: this.targetPicker.currentPath,
+          listDirectory: (path, options) => client.listDirectory(path, options)
+        });
+        const allNotes = await this.store.search('');
+        const noteResults = this.api.searchNotesByName ? this.api.searchNotesByName(allNotes, query) : allNotes.filter((note) => String(note.title || '').toLowerCase().includes(String(query || '').toLowerCase()));
+        this.targetPicker = {
+          ...this.targetPicker,
+          query: String(query || ''),
+          depth: String(depth == null ? '2' : depth),
+          fileResults: result.results,
+          noteResults,
+          truncated: result.truncated,
+          summary: `${result.results.length} file result(s); ${noteResults.length} Note result(s); scanned ${result.scannedFolders} folder(s)${result.truncated ? `; incomplete (${result.truncationReason})` : ''}.`
+        };
+        this._setUi({ status: `Target search complete. ${this.targetPicker.summary}` });
+        return this.targetPicker;
+      });
+    }
+
+    toggleTargetPickerTarget(target = {}) {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      const type = String(target.type || 'file');
+      const normalized = type === 'note'
+        ? { type: 'note', noteId: String(target.noteId || target.id || ''), path: String(target.path || target.remotePath || ''), name: String(target.name || target.title || 'Untitled Note'), label: String(target.label || target.name || target.title || 'Untitled Note') }
+        : { type: 'file', path: this.api.normalizeCanonicalRepositoryPath(target.path, 'Selected repository file'), name: String(target.name || target.path || ''), label: String(target.label || target.name || target.path || '') };
+      const key = type === 'note' ? `note:${normalized.noteId || normalized.path}` : `file:${normalized.path}`;
+      const selected = [...this.targetPicker.selected];
+      const index = selected.findIndex((item) => (item.type === 'note' ? `note:${item.noteId || item.path}` : `file:${item.path}`) === key);
+      if (index >= 0) selected.splice(index, 1); else selected.push(normalized);
+      this.targetPicker = { ...this.targetPicker, selected };
+      this._setUi({ status: `${selected.length} target(s) selected.` });
+      return selected;
+    }
+
+    async applyTargetPicker() {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      if (this.targetPicker.mode === 'category-members') {
+        this.categoryDraftTargets = [...this.targetPicker.selected];
+        this.targetPicker = { ...this.targetPicker, open: false };
+        this._setUi({ status: `${this.categoryDraftTargets.length} initial category member(s) selected.` });
+        return this.categoryDraftTargets;
+      }
+      if (!this.current) throw new Error('Select a Note before inserting links.');
+      let note = await this.saveDraft(this.current);
+      const sourceTarget = this.api.hasRemoteTargetIdentity(note.remote) ? this.api.normalizeRemote(note.remote) : this._configuredTarget(note);
+      const lines = [];
+      for (const selected of this.targetPicker.selected) {
+        if (selected.type === 'note') {
+          const targetNote = await this.store.get(selected.noteId);
+          if (!targetNote) throw new Error(`Selected Note no longer exists: ${selected.noteId}`);
+          const remote = this.api.normalizeRemote(targetNote.remote);
+          if (!this.api.hasRemoteTargetIdentity(remote) || !this._sameRepositoryContext(remote, sourceTarget)) throw new Error(`Selected Note is not verified in the same repository and branch: ${targetNote.title || targetNote.id}`);
+          const relative = this.api.repositoryRelativePath(sourceTarget.path, remote.path);
+          const encoded = this.api.encodeMarkdownTarget ? this.api.encodeMarkdownTarget(relative) : relative;
+          const label = String(targetNote.title || targetNote.id).replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+          lines.push(`- [${label}](<${encoded}>)`);
+          note = this.api.addLink(note, { type: 'note', label: targetNote.title || targetNote.id, target: { noteId: targetNote.id, owner: remote.owner, repo: remote.repo, branch: remote.branch, path: remote.path }, resolution: 'resolved', resolutionMessage: 'Selected through target picker.' });
+        } else {
+          const workspace = this._activeWorkspace();
+          if (!workspace || !this._sameRepositoryContext(workspace, sourceTarget)) throw new Error('The selected file and Note must use the same repository and branch.');
+          const relative = this.api.repositoryRelativePath(sourceTarget.path, selected.path);
+          const label = selected.label || selected.name || selected.path;
+          const encoded = this.api.encodeMarkdownTarget ? this.api.encodeMarkdownTarget(relative) : relative;
+          const escapedLabel = String(label).replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+          lines.push(`- [${escapedLabel}](<${encoded}>)`);
+          note = this.api.addLink(note, { type: 'repository', label, target: { owner: sourceTarget.owner, repo: sourceTarget.repo, branch: sourceTarget.branch, path: selected.path }, resolution: 'unchecked', resolutionMessage: 'Selected through target picker.' });
+        }
+      }
+      const insertion = lines.join('\n');
+      const start = Math.max(0, Math.min(note.body.length, this.targetPicker.cursorStart));
+      const end = Math.max(start, Math.min(note.body.length, this.targetPicker.cursorEnd));
+      const prefix = start > 0 && note.body[start - 1] !== '\n' ? '\n' : '';
+      const suffix = end < note.body.length && note.body[end] !== '\n' ? '\n' : '';
+      note = this.api.updateNote(note, { body: `${note.body.slice(0, start)}${prefix}${insertion}${suffix}${note.body.slice(end)}` });
+      await this.store.put(note);
+      this.current = note;
+      this.targetPicker = { ...this.targetPicker, open: false, selected: [] };
+      this.noteRelationIndex = this.api.buildNoteRelationIndex ? this.api.buildNoteRelationIndex(await this.store.search('')) : this.noteRelationIndex;
+      if (this.noteViewMode !== 'edit') await this._renderCurrentNote(note);
+      await this.refreshList();
+      this._setUi({ replaceCurrent: true, status: `${lines.length} managed link(s) inserted into the Note.` });
+      return note;
+    }
+
     async browseRepository(path = '') {
       return this._runRemoteOperation('Reading repository folder…', async () => {
         const workspace = this._activeWorkspace();
@@ -3655,6 +4894,8 @@
         this.repositoryPath = normalized;
         this.repositoryEntries = this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries;
         this.repositoryPreview = null;
+        this._disposeMediaLoader('file');
+        this.fileRendered = null;
         this.surface = 'files';
         this._setUi({ status: `Repository folder loaded: ${normalized || '/'}. ${entries.length} direct entries.` });
         return this.repositoryEntries;
@@ -3700,6 +4941,9 @@
           context: { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch }
         };
         this.surface = 'files';
+        this._disposeMediaLoader('file');
+        this.fileRendered = null;
+        if (this.fileViewMode === 'rendered' && preview.kind === 'text' && /\.md(?:own)?$/i.test(file.path || '')) await this._renderCurrentFile();
         this._setUi({ status: preview.kind === 'text' ? `Opened ${file.path} read-only.` : preview.message });
         return this.repositoryPreview;
       });
@@ -3774,34 +5018,53 @@
       }
 
       const initialIndex = this.api.buildRepositoryCategoryIndex(definitions);
-      const filePaths = Array.from(initialIndex.memberships.keys()).sort();
+      const memberEntries = Array.from(initialIndex.memberships.values());
+      const filePaths = memberEntries.filter((entry) => entry.type === 'file').map((entry) => entry.path).sort();
+      const notePaths = memberEntries.filter((entry) => entry.type === 'note').map((entry) => entry.path).sort();
       const validationLimit = 100;
+      const uniqueTargets = [];
+      const seenTargets = new Set();
+      for (const entry of memberEntries) {
+        const key = `${entry.type}:${entry.path}`;
+        if (seenTargets.has(key)) continue;
+        seenTargets.add(key);
+        uniqueTargets.push({ type: entry.type, path: entry.path });
+      }
+      uniqueTargets.sort((left, right) => left.path.localeCompare(right.path) || left.type.localeCompare(right.type));
+      const selectedTargets = uniqueTargets.slice(0, validationLimit);
       const fileValidation = {};
-      const validationPaths = filePaths.slice(0, validationLimit);
+      const noteValidation = {};
       const pathsByParent = new Map();
-      for (const path of validationPaths) {
-        const slash = path.lastIndexOf('/');
-        const parent = slash >= 0 ? path.slice(0, slash) : '';
+      for (const target of selectedTargets) {
+        const slash = target.path.lastIndexOf('/');
+        const parent = slash >= 0 ? target.path.slice(0, slash) : '';
         const group = pathsByParent.get(parent) || [];
-        group.push(path);
+        group.push(target);
         pathsByParent.set(parent, group);
       }
-      for (const [parent, paths] of pathsByParent.entries()) {
+      for (const [parent, targets] of pathsByParent.entries()) {
         try {
           const directoryEntries = await client.listDirectory(parent, { missingAsEmpty: true, maxEntries: 200 });
           const files = new Set(directoryEntries.filter((entry) => entry.type === 'file').map((entry) => entry.path));
-          for (const path of paths) {
-            fileValidation[path] = files.has(path)
-              ? { status: 'verified', message: 'Repository file exists.' }
-              : { status: 'missing', message: `Repository file does not exist: ${path}.` };
+          for (const target of targets) {
+            const targetMap = target.type === 'note' ? noteValidation : fileValidation;
+            targetMap[target.path] = files.has(target.path)
+              ? { status: 'verified', message: target.type === 'note' ? 'Repository Note file exists.' : 'Repository file exists.' }
+              : { status: 'missing', message: `${target.type === 'note' ? 'Repository Note' : 'Repository file'} does not exist: ${target.path}.` };
           }
         } catch (error) {
-          for (const path of paths) fileValidation[path] = { status: 'inaccessible', message: String(error && error.message || error) };
+          for (const target of targets) {
+            const targetMap = target.type === 'note' ? noteValidation : fileValidation;
+            targetMap[target.path] = { status: 'inaccessible', message: String(error && error.message || error) };
+          }
         }
       }
-      if (filePaths.length > validationLimit) {
-        for (const path of filePaths.slice(validationLimit)) fileValidation[path] = { status: 'unchecked', message: 'Target was not checked because the validation limit was reached.' };
-        diagnostics.push({ kind: 'incomplete_file_validation', path: basePath, message: `Validated ${validationLimit} of ${filePaths.length} unique member-file targets.` });
+      if (uniqueTargets.length > validationLimit) {
+        for (const target of uniqueTargets.slice(validationLimit)) {
+          const targetMap = target.type === 'note' ? noteValidation : fileValidation;
+          targetMap[target.path] = { status: 'unchecked', message: 'Target was not checked because the validation limit was reached.' };
+        }
+        diagnostics.push({ kind: 'incomplete_member_validation', path: basePath, message: `Validated ${validationLimit} of ${uniqueTargets.length} unique file/Note category targets.` });
       }
 
       const refreshedAt = new Date().toISOString();
@@ -3809,6 +5072,7 @@
         definitions,
         diagnostics,
         fileValidation,
+        noteValidation,
         groups: this.categorySnapshot && this.categorySnapshot.groups || {},
         refreshedAt
       };
@@ -3824,13 +5088,29 @@
       this.categoryContextKey = contextKey;
       this.categoryContextsRequiringRefresh.delete(contextKey);
       this.categoryContextRequiresRefresh = false;
-      this.categoryIndex = this.api.buildRepositoryCategoryIndex(definitions, { fileValidation });
+      this.categoryIndex = this.api.buildRepositoryCategoryIndex(definitions, { fileValidation, noteValidation });
       if (this.selectedCategoryId && !this.categoryIndex.categories.has(this.selectedCategoryId)) this.selectedCategoryId = '';
+      await this._hydrateNoteCategoryIntentsFromIndex(workspace);
       this.surface = 'categories';
       const issueCount = diagnostics.length + this.categoryIndex.errors.length;
-      const summary = `definitions ${definitions.length}; skipped ${skipped}; issues ${issueCount}; validated files ${Math.min(filePaths.length, validationLimit)}/${filePaths.length}`;
+      const summary = `definitions ${definitions.length}; skipped ${skipped}; issues ${issueCount}; validated targets ${Math.min(uniqueTargets.length, validationLimit)}/${uniqueTargets.length}`;
       this._setUi({ categoryRefreshSummary: summary, status: `Category refresh complete: ${summary}. No remote writes were performed.` });
       return { definitions: definitions.length, skipped, errors: diagnostics.length, modelErrors: this.categoryIndex.errors.length, diagnostics: [...diagnostics, ...this.categoryIndex.errors] };
+    }
+
+    async _hydrateNoteCategoryIntentsFromIndex(workspace = this._activeWorkspace()) {
+      if (!workspace || !this.categoryIndex || !this.categoryIndex.explicitCategoryIdsForTarget) return;
+      const notes = await this.store.list();
+      for (const note of notes) {
+        const normalized = this.api.normalizeNote(note);
+        if (normalized.categoryIntentPending) continue;
+        const remote = this.api.normalizeRemote(normalized.remote);
+        if (!this.api.hasRemoteTargetIdentity(remote) || !this._sameRepositoryContext(remote, workspace)) continue;
+        const categoryIds = this.categoryIndex.explicitCategoryIdsForTarget('note', remote.path);
+        const next = this.api.updateNote(normalized, { categoryIds, categoryIntentPending: false });
+        if (JSON.stringify(next.categoryIds) !== JSON.stringify(normalized.categoryIds) || normalized.categoryIntentPending) await this.store.put(next);
+        if (this.current && this.current.id === next.id) this.current = next;
+      }
     }
 
     async refreshCategories() {
@@ -3846,9 +5126,15 @@
       const value = String(id || '');
       if (value && !this.categoryIndex.categories.has(value)) throw new Error(`Category not found: ${value}`);
       this.selectedCategoryId = value;
+      const record = value ? this.categoryIndex.categories.get(value) : null;
+      this.categoryDraftTargets = record ? [
+        ...(record.explicitFiles || []).map((item) => ({ type: 'file', path: item.path, name: item.label || item.path, label: item.label || item.path })),
+        ...(record.explicitNotes || []).map((item) => ({ type: 'note', path: item.path, noteId: item.noteId || '', name: item.label || item.path, label: item.label || item.path }))
+      ] : [];
       this.surface = 'categories';
-      this._setUi({ status: value ? `Category opened: ${this.categoryIndex.categories.get(value).name}.` : 'New category form ready.' });
-      return value ? this.categoryIndex.categories.get(value) : null;
+      this.feedback = this.feedback.filter((item) => item.scope !== 'categories');
+      this._setUi({ replaceCategoryEditor: true, status: value ? `Category opened: ${record.name}.` : 'New category form ready.' });
+      return record;
     }
 
     _categoryDefinitionRecord(id) {
@@ -3869,6 +5155,32 @@
       return links;
     }
 
+    async _categoryMemberLinks(definitionPath, targets, workspace) {
+      const files = [];
+      const notes = [];
+      const seen = new Set();
+      for (const target of Array.isArray(targets) ? targets : []) {
+        if (!target || !target.type) continue;
+        if (target.type === 'file') {
+          const path = this.api.normalizeCanonicalRepositoryPath(target.path, 'Categorized repository file');
+          const key = `file:${path}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          files.push({ label: target.label || target.name || path.slice(path.lastIndexOf('/') + 1), target: this.api.repositoryRelativePath(definitionPath, path) });
+        } else if (target.type === 'note') {
+          const note = target.noteId ? await this.store.get(target.noteId) : null;
+          const remote = note ? this.api.normalizeRemote(note.remote) : { owner: target.owner, repo: target.repo, branch: target.branch, path: target.path };
+          if (!this.api.hasRemoteTargetIdentity(remote)) throw new Error(`Selected Note must be saved and verified in GitHub before category assignment: ${target.name || target.noteId || target.path || 'Untitled Note'}.`);
+          if (!this._sameRepositoryContext(remote, workspace)) throw new Error(`Selected Note belongs to another repository or branch: ${note && (note.title || note.id) || target.path}.`);
+          const key = `note:${remote.path}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          notes.push({ label: note && (note.title || note.id) || target.label || target.name || remote.path, target: this.api.repositoryRelativePath(definitionPath, remote.path), noteId: note ? note.id : String(target.noteId || '') });
+        }
+      }
+      return { files, notes };
+    }
+
     async saveCategory(input = {}) {
       return this._runRemoteOperation('Saving and verifying category definition…', async () => {
         const workspace = this._requireCategoryContext();
@@ -3884,7 +5196,7 @@
             if (error.kind !== 'not_found') throw error;
           }
         }
-        const previous = existing ? existing.definition : { files: [], impliedCategories: [] };
+        const previous = existing ? existing.definition : { files: [], notes: [], impliedCategories: [] };
         const requestedImplied = this._categoryLinksForIds(path, input.impliedCategoryIds || []);
         const unresolvedPrevious = (previous.impliedCategories || []).filter((link) => {
           try {
@@ -3895,27 +5207,35 @@
           }
         });
         const impliedCategories = [...requestedImplied];
-        for (const link of unresolvedPrevious) {
-          if (!impliedCategories.some((item) => item.target === link.target)) impliedCategories.push(link);
-        }
+        for (const link of unresolvedPrevious) if (!impliedCategories.some((item) => item.target === link.target)) impliedCategories.push(link);
+        const selectedTargets = Array.isArray(input.selectedTargets) ? input.selectedTargets : this.categoryDraftTargets;
+        const members = await this._categoryMemberLinks(path, selectedTargets, workspace);
         const content = this.api.encodeCategoryDefinition({
           id,
           name: input.name,
           description: input.description,
           impliedCategories,
-          files: previous.files || []
+          files: members.files,
+          notes: members.notes
         });
         await client.saveVerified({
           path,
           content,
           baseSha: existing ? existing.sha : '',
-          message: `${existing ? 'Update' : 'Create'} file category ${input.name || id}`
+          message: `${existing ? 'Update' : 'Create'} repository category ${input.name || id}`
         });
         await this._refreshCategoriesUnlocked(client, workspace);
         this.selectedCategoryId = id;
+        const saved = this.categoryIndex.categories.get(id);
+        this.categoryDraftTargets = saved ? [
+          ...(saved.explicitFiles || []).map((item) => ({ type: 'file', path: item.path, name: item.label || item.path, label: item.label || item.path })),
+          ...(saved.explicitNotes || []).map((item) => ({ type: 'note', path: item.path, noteId: item.noteId || '', name: item.label || item.path, label: item.label || item.path }))
+        ] : [];
         if (input.group !== undefined) await this.setCategoryGroup(id, input.group, { silent: true });
-        this._setUi({ status: `Category ${input.name || id} saved and verified by read-back.` });
-        return this.categoryIndex.categories.get(id);
+        this.feedback = this.feedback.filter((item) => item.scope !== 'categories');
+        this._pushFeedback({ id: 'category-save-success', scope: 'categories', severity: 'success', title: 'Category saved', message: `${input.name || id} and ${this.categoryDraftTargets.length} membership target(s) were verified by read-back.` });
+        this._setUi({ replaceCategoryEditor: true, status: `Category ${input.name || id} saved and verified by read-back.` });
+        return saved;
       });
     }
 
@@ -3953,7 +5273,8 @@
         name: record.definition.name,
         description: record.definition.description,
         impliedCategories: record.definition.impliedCategories,
-        files: kept
+        files: kept,
+        notes: record.definition.notes || []
       });
       const client = await this._client(workspace);
       await client.saveVerified({
@@ -3997,8 +5318,10 @@
     async refreshList(query = this.search) {
       this.search = String(query || '');
       const notes = await this.store.search(this.search);
+      const allNotes = typeof this.store.list === 'function' ? await this.store.list() : await this.store.search('');
+      this.noteRelationIndex = this.api.buildNoteRelationIndex ? this.api.buildNoteRelationIndex(allNotes) : this.noteRelationIndex;
       if (this.current) {
-        const refreshed = notes.find((item) => item.id === this.current.id) || await this.store.get(this.current.id);
+        const refreshed = allNotes.find((item) => item.id === this.current.id) || await this.store.get(this.current.id);
         if (refreshed) this.current = this.api.normalizeNote(refreshed);
       }
       this._setUi({ notes, current: this.current, search: this.search });
@@ -4217,10 +5540,16 @@
 
     async saveDraft(note) {
       if (!note) return null;
-      const next = this.api.updateNote(this.api.normalizeNote(note), {
+      const normalized = this.api.normalizeNote(note);
+      const previous = this.current && this.current.id === normalized.id ? this.api.normalizeNote(this.current) : normalized;
+      const categoryIds = this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(note.categoryIds) : (note.categoryIds || []);
+      const categoryChanged = JSON.stringify(categoryIds) !== JSON.stringify(previous.categoryIds || []);
+      const next = this.api.updateNote(normalized, {
         title: note.title,
         body: note.body,
-        links: note.links
+        links: note.links,
+        categoryIds,
+        categoryIntentPending: categoryChanged ? true : Boolean(note.categoryIntentPending)
       });
       await this.store.put(next);
       this.current = next;
@@ -4228,18 +5557,23 @@
     }
 
     async newNote() {
-      const note = this.api.createNote();
+      const note = this.api.createNote({ categoryIds: [] });
       await this.store.put(note);
       this.current = note;
+      this._disposeMediaLoader('note');
+      this.noteRendered = null;
+      this.noteViewMode = 'edit';
       await this.refreshList();
-      this._setUi({ status: 'New local Note created.' });
+      this._setUi({ replaceCurrent: true, status: 'New local Note created. Categories may be selected before the first GitHub save.' });
     }
 
     async selectNote(id) {
       const note = await this.store.get(id);
       if (!note) throw new Error(`Note not found: ${id}`);
       this.current = this.api.normalizeNote(note);
-      this._setUi({ current: this.current, status: `Opened ${this.current.title || 'Untitled Note'}.` });
+      if (this.noteViewMode !== 'edit') await this._renderCurrentNote(this.current);
+      else { this._disposeMediaLoader('note'); this.noteRendered = null; }
+      this._setUi({ current: this.current, replaceCurrent: true, status: `Opened ${this.current.title || 'Untitled Note'}.` });
     }
 
     async saveLocal(note) {
@@ -4381,6 +5715,86 @@
       return note;
     }
 
+    async _setNoteMembershipInCategory(categoryId, note, shouldInclude, client, workspace) {
+      const record = this._categoryDefinitionRecord(categoryId);
+      if (!record) throw new Error(`Category not found: ${categoryId}. Refresh categories first.`);
+      const remoteNote = this.api.normalizeRemote(note.remote);
+      if (!this.api.hasRemoteTargetIdentity(remoteNote) || !this._sameRepositoryContext(remoteNote, workspace)) throw new Error(`Note ${note.title || note.id} is not verified in the active category repository and branch.`);
+      const latestFile = await client.read(record.path);
+      const definition = this.api.decodeCategoryDefinition(latestFile.content);
+      const kept = [];
+      let found = false;
+      for (const link of definition.notes || []) {
+        let resolved = '';
+        try { resolved = this.api.normalizeRepositoryTarget(record.path, link.target).path; } catch (error) { kept.push(link); continue; }
+        if (resolved === remoteNote.path) { found = true; if (shouldInclude) kept.push({ ...link, noteId: note.id, label: note.title || note.id }); }
+        else kept.push(link);
+      }
+      if (shouldInclude && !found) kept.push({ label: note.title || note.id, target: this.api.repositoryRelativePath(record.path, remoteNote.path), noteId: note.id });
+      if (!shouldInclude && !found) return { target: categoryId, status: 'unchanged', message: 'Note was not an explicit member.' };
+      const content = this.api.encodeCategoryDefinition({
+        id: definition.id,
+        name: definition.name,
+        description: definition.description,
+        impliedCategories: definition.impliedCategories || [],
+        files: definition.files || [],
+        notes: kept
+      });
+      if (content === latestFile.content) return { target: categoryId, status: 'unchanged', message: 'Membership already matched.' };
+      await client.saveVerified({
+        path: record.path,
+        content,
+        baseSha: latestFile.sha,
+        message: `${shouldInclude ? 'Add' : 'Remove'} Note ${note.title || note.id} ${shouldInclude ? 'to' : 'from'} category ${definition.name}`
+      });
+      return { target: categoryId, status: 'completed', message: shouldInclude ? 'Note assigned and verified.' : 'Note unassigned and verified.' };
+    }
+
+    async _syncNoteCategories(note) {
+      const desired = new Set(this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(note.categoryIds) : (note.categoryIds || []));
+      const categoryContextCurrent = Boolean(
+        this.categoryContextKey
+        && !this.categoryContextRequiresRefresh
+        && this.categoryContextKey === this._categoryContextKey(this._activeWorkspace())
+      );
+      if (!desired.size && !categoryContextCurrent) return [];
+      if (!this.categoryIndex || !this.categoryIndex.explicitCategoryIdsForTarget) return [];
+      const workspace = this._requireCategoryContext();
+      const remote = this.api.normalizeRemote(note.remote);
+      if (!this.api.hasRemoteTargetIdentity(remote) || !this._sameRepositoryContext(remote, workspace)) throw new Error('Note category membership requires a verified Note in the active repository and branch.');
+      const current = new Set(this.categoryIndex.explicitCategoryIdsForTarget('note', remote.path));
+      const changes = [...new Set([...desired, ...current])].filter((id) => desired.has(id) !== current.has(id));
+      if (!changes.length) {
+        if (note.categoryIntentPending) {
+          const settled = this.api.updateNote(note, { categoryIntentPending: false });
+          await this.store.put(settled);
+          if (this.current && this.current.id === settled.id) this.current = settled;
+        }
+        return [];
+      }
+      const client = await this._client(workspace);
+      const results = [];
+      for (const categoryId of changes) {
+        try { results.push(await this._setNoteMembershipInCategory(categoryId, note, desired.has(categoryId), client, workspace)); }
+        catch (error) { results.push({ target: categoryId, status: 'failed', message: String(error && error.message || error) }); }
+      }
+      await this._refreshCategoriesUnlocked(client, workspace);
+      const failures = results.filter((result) => result.status === 'failed');
+      if (failures.length) {
+        const pending = this.api.updateNote(note, { categoryIntentPending: true });
+        await this.store.put(pending);
+        if (this.current && this.current.id === pending.id) this.current = pending;
+        const error = new Error(`Note was saved, but ${failures.length} category membership update(s) failed.`);
+        error.kind = 'partial_category_update';
+        error.partialResults = results;
+        throw error;
+      }
+      const settled = this.api.updateNote(note, { categoryIntentPending: false });
+      await this.store.put(settled);
+      if (this.current && this.current.id === settled.id) this.current = settled;
+      return results;
+    }
+
     async saveRemote(note) {
       return this._runRemoteOperation('Saving and verifying the configured GitHub target…', () => this._saveRemoteUnlocked(note));
     }
@@ -4427,15 +5841,14 @@
       this.current = local;
       await this.refreshList();
       const content = this.api.encodeNoteMarkdown(local);
+      let result;
       try {
-        const result = await client.saveVerified({
+        result = await client.saveVerified({
           path: target.path,
           content,
           baseSha: remote ? remote.sha : '',
           message: `${remote ? 'Update' : 'Create'} linked Note ${local.title || local.id}`
         });
-        local = this.api.markSavedVerified(local, { ...target, ...result });
-        return this._persistRemoteState(local, result.recoveredAfterUnknownWrite ? 'Remote content verified after an initially unknown write result.' : 'Remote save verified by read-back.');
       } catch (error) {
         if (error.kind === 'verification_unknown' && !this.api.hasRemoteTargetIdentity(local.remote)) {
           const writeResult = error.details && error.details.writeResult ? error.details.writeResult : {};
@@ -4455,6 +5868,19 @@
           : this.api.markSaveFailed(local, error.message);
         await this._persistRemoteState(local);
         throw error;
+      }
+
+      local = this.api.markSavedVerified(local, { ...target, ...result });
+      await this._persistRemoteState(local, result.recoveredAfterUnknownWrite ? 'Remote content verified after an initially unknown write result.' : 'Remote save verified by read-back.');
+      try {
+        const categoryResults = await this._syncNoteCategories(local);
+        if (categoryResults.length) this._pushFeedback({ id: 'note-category-sync', scope: 'notes', severity: 'success', title: 'Note and categories saved', message: `${categoryResults.length} category membership change(s) were verified.`, partialResults: categoryResults });
+        return this.current && this.current.id === local.id ? this.current : local;
+      } catch (categoryError) {
+        const verified = this.current && this.current.id === local.id ? this.current : local;
+        const pending = this.api.updateNote(verified, { state: this.api.NOTE_STATES.SAVED_VERIFIED, stateMessage: categoryError.message, categoryIntentPending: true });
+        await this._persistRemoteState(pending, categoryError.message);
+        throw categoryError;
       }
     }
 
@@ -4634,6 +6060,8 @@
       if (typeof window !== 'undefined' && !window.confirm('Delete this local Note? Remote repository content is not deleted.')) return;
       await this.store.delete(id);
       this.current = null;
+      this._disposeMediaLoader('note');
+      this.noteRendered = null;
       await this.refreshList();
       this._setUi({ status: 'Local Note deleted. Remote content, if any, was not deleted.' });
     }

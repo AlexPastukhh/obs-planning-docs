@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Draft
 
 Status: active current project-local Planning Draft / Batch 3B local Scenario migration
-Doc version: v1.3.0-repository-file-browser-and-categories
+Doc version: v1.4.0-rich-markdown-note-categories-and-target-picker
 Purpose: organize the reviewed Documentation Workbench Planning Items around the selected repository-native direction without creating a second item-body owner.
 
 Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
@@ -10,7 +10,7 @@ Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
 
 | Field | Value |
 |---|---|
-| Planning direction | Repository-native documentation links, affected-use review, AI transfer, linked Notes, repository file viewing and file categories |
+| Planning direction | Repository-native documentation links, affected-use review, AI transfer, categorized linked Notes, repository search and rich Markdown views |
 | Status | selected current behavior / implementation candidates not selected |
 | Source register | [`planning-item-register.md`](planning-item-register.md) |
 | Historical inactive items | [`retired-planning-items.md`](retired-planning-items.md) |
@@ -49,10 +49,16 @@ Repository Markdown remains understandable and editable without a helper.
 | AC-08 | A remote Note save is not reported successful until the intended content is verified by reading it back. | implementation candidate / supported by supplied-script evidence | `ITEM-124`, pending Notes-widget Implementation Idea |
 | AC-09 | No custom editor, generic object runtime, App Memory or Semantic Home is required by the baseline. | accepted current | item reconciliation |
 | AC-10 | Retired and deferred meanings remain traceable. | accepted current | current and retired registers |
-| AC-11 | A user can browse one repository directory at a time, read a supported file inside the helper and open the exact file on GitHub. | confirmed requirement / supported by `0.4.2-prototype` | `ITEM-126`, `ITEM-114` |
-| AC-12 | A user can create durable category definitions with descriptions, assign files and reconstruct definitions/memberships from repository Markdown. | confirmed requirement / supported by `0.4.2-prototype` | `ITEM-97`, `ITEM-128`, `ITEM-23B` |
-| AC-13 | Opening a category shows concrete files and distinguishes explicit from implied membership. | confirmed requirement / supported by `0.4.2-prototype` | `ITEM-118`, `ITEM-127` |
+| AC-11 | A user can browse one repository directory at a time, read a supported file inside the helper and open the exact file on GitHub. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-126`, `ITEM-114` |
+| AC-12 | A user can create durable category definitions with descriptions, assign files and reconstruct definitions/memberships from repository Markdown. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-97`, `ITEM-128`, `ITEM-23B` |
+| AC-13 | Opening a category shows concrete files and distinguishes explicit from implied membership. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-118`, `ITEM-127` |
 | AC-14 | Browsing and category refresh are read-only; category writes use conflict protection and exact read-back verification. | selected behavior / supported by automated prototype evidence | `ITEM-97`, `ITEM-126`, `ITEM-128` |
+| AC-15 | Categories can be assigned to files and verified Linked Notes, including during Note creation/editing and category creation with multiple selected targets. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-97`, `ITEM-124`, `ITEM-128` |
+| AC-16 | A shared target picker navigates/searches files and Notes by name, with bounded selectable file-search depth and persistent multiple selection. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-131`, `ITEM-124`, `ITEM-126` |
+| AC-17 | Markdown files and Notes have rich sanitized views while literal Markdown remains available and canonical. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-124`, `ITEM-126`, `ITEM-132` |
+| AC-18 | Repository-relative images and allowed `img` elements load through authenticated GitHub reads without exposing the token. | confirmed requirement / supported by automated evidence | `ITEM-132` |
+| AC-19 | Failed actions display prominent contextual errors and preserve forms, Note text and selected targets. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-130` |
+| AC-20 | Picker-created Note relations can be rebuilt from Note metadata and provide derived backlinks without target-side writes. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-124`, `ITEM-118`, `ITEM-133` |
 
 ## 4. Boundaries And Non-Goals
 
@@ -110,7 +116,7 @@ SHA-aware retry/conflict handling.
 
 That script does not yet prove a general Notes workspace, GitHub document picker, stable repository-fragment selection, Note-to-Note linking, remote Notes indexing or an accepted security boundary.
 
-Current `0.4.2-prototype` implementation evidence retains the Linked Notes `0.3.0` remote-reconciliation behavior and adds explicit repository directory browsing, bounded read-only text preview, exact GitHub file links, repository-backed category definitions, explicit/implied membership views, local-only category groups and verified category writes. The `0.4.2` correction additionally isolates Files/Categories state by workspace id plus owner/repository/branch/Categories folder, blocks writes after an in-place target edit until refresh, carries listing metadata through the real UI oversized-file path, rejects Note-bound cross-repository category assignment, uses unambiguous v2 managed boundaries and encoded portable member links with legacy v1 decoding, preserves path-aware diagnostics, validates member files through bounded parent-directory listings without member-content reads and applies atomic per-category group mutations across tabs. Its directory, preview and resource limits are bounded prototype choices, not accepted product architecture, and browser/real-GitHub acceptance remains pending.
+Current `0.5.1-prototype` implementation evidence retains the `0.4.2` workspace isolation, verified Note/category writes, repository browsing and file-category behavior, and adds typed file/Note category definitions, Note category intent during create/edit, multi-target category creation, a shared file/Note target picker, bounded file-name/depth search, managed Note relation recovery/backlinks, rich Markdown source/rendered modes, authenticated repository images including allowlisted `<img>`, and prominent contextual error/form recovery. Category definitions remain the sole selected prototype owner of category membership; Note metadata owns only picker-created managed links. Rendered HTML, backlinks, search results and local caches remain derived. Automated tests do not replace pending browser and real-GitHub acceptance.
 
 The former detailed Scenario workspace is no longer selected. Its useful current meaning is represented below and by current Planning Items/workflow owners. The complete project-local `scenarios/**` workspace is removed; Git history preserves its former detail.
 
@@ -125,10 +131,10 @@ The former reference-link experiment is removed without a replacement owner. Sta
 | Planning lifecycle | `ITEM-98`, `ITEM-99` | planning-to-repository and Implementation Idea boundary |
 | Early delivery | `ITEM-100` | select one small useful tool before broad architecture |
 | AI transfer | `ITEM-107` | non-mutating bounded expansion |
-| Linked Notes | `ITEM-124` | durable Notes behavior and current prototype evidence |
-| Repository file viewer | `ITEM-126`, `ITEM-114` | in-app read-only file access and exact GitHub navigation |
-| Repository file categories | `ITEM-97`, `ITEM-118`, `ITEM-127` | durable category definitions, category views and grouping/implication semantics |
-| Category implementation ideas | `ITEM-128`, `ITEM-129` | selected definition-file prototype and deferred file-local metadata alternative |
+| Linked Notes | `ITEM-124`, `ITEM-130`, `ITEM-131`, `ITEM-133` | durable Notes, target selection, recoverable links and contextual failure behavior |
+| Repository file viewer | `ITEM-126`, `ITEM-114`, `ITEM-131`, `ITEM-132` | bounded search, source/rich view, exact targets and authorized images |
+| Repository file and Note categories | `ITEM-97`, `ITEM-118`, `ITEM-127` | durable typed memberships, category views and grouping/implication semantics |
+| Category and rendering implementation ideas | `ITEM-128`, `ITEM-129`, `ITEM-132`, `ITEM-133` | selected definition, renderer and relation-metadata prototypes; deferred file-local metadata |
 | Independent supporting capabilities | `ITEM-121`, `ITEM-123` | composer and project-readable non-secret configuration |
 | Reusable planning support | `ITEM-94`, `ITEM-110`, `ITEM-41`, `ITEM-112`, `ITEM-113`, `ITEM-119`, `ITEM-120`, `ITEM-122` | reusable methodology and traceability |
 | Deferred alternatives | see current register | preserved but not selected |
@@ -523,6 +529,29 @@ The five Scenarios below are current Key Scenarios because they own core value, 
 
 **Implementation Ideas:** `ITEM-128 / CATEGORY-DEFINITION-MARKDOWN` is selected for the bounded prototype; `ITEM-129 / FILE-LOCAL-CATEGORY-METADATA` remains deferred and is not written into target files.
 
+
+### 7.6 Select Targets, Render Markdown And Recover Managed Relations
+
+**Why key:** category assignment and Note linking need one reliable target-selection path, while rich reading and visible recovery are core to using repository Markdown inside the helper.
+
+**Actor/context:** a user creates or edits a Note/category, searches a deep repository tree, selects several files or Notes, renders Markdown containing private repository images, or recovers after a failed remote action.
+
+**Goal:** select exact same-repository targets without typing paths, retain all input through failure, create visible Markdown links plus recoverable managed metadata, and read files/Notes through a safe rich projection.
+
+**Observable result:** bounded search reports its depth and incompleteness; selected targets survive rerenders/errors; verified category definitions distinguish file and Note membership; managed Note links and backlinks rebuild from repository Notes; private images load via authenticated reads without token disclosure; raw source remains available.
+
+**Invariants:**
+
+- no search, preview or rendering action performs a remote write;
+- category membership remains canonical in category definitions;
+- managed Note relation identity remains in Note metadata and visible navigation remains Markdown;
+- rendered HTML is derived and sanitized;
+- unsafe HTML/URL schemes and external automatic image loading are blocked;
+- partial multi-file results remain explicit and retryable;
+- errors do not clear user input.
+
+**Planning Items:** `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-130`, `ITEM-131`, `ITEM-132`, `ITEM-133`.
+
 ## 8. Other Scenarios — Optional Summaries
 
 | Scenario | Actor/context | Goal | Observable result | Related items | Depth |
@@ -549,11 +578,11 @@ This table is the required current cross-view structure inside this Planning Dra
 | Read/reconcile repository Notes | explicit refresh makes valid repository-only Notes and external changes visible without losing local work | bounded read-only Notes-location scan + stable-id/base comparison | discovery bounds; duplicate identity; stale snapshot; no background write | supported by `0.3.0-prototype`; browser/remote acceptance pending |
 | Save Note remotely | explicit write followed by read-back verification | GitHub Contents API + SHA-aware update | token scope/storage; conflicts; unknown network result | partially supported by supplied-script evidence |
 | Browse Notes | list/search/index reaches concrete Notes | local derived index or GitHub-derived index | stale cache; one-file/shared-file tradeoff | prototype evidence; final indexing open |
-| Browse repository files | direct folders and supported files open read-only with exact GitHub navigation | Contents API directory reads + bounded preview | binary/large files; private access; no background reads | supported by `0.4.2-prototype`; browser acceptance pending |
-| Refresh category definitions | repository Markdown reconstructs definitions and memberships | category codec + workspace cache/index | malformed/duplicate/broken/cycle states | supported by `0.4.2-prototype`; remote acceptance pending |
+| Browse repository files | direct folders and supported files open read-only with exact GitHub navigation | Contents API directory reads + bounded preview | binary/large files; private access; no background reads | supported by `0.5.1-prototype`; browser acceptance pending |
+| Refresh category definitions | repository Markdown reconstructs definitions and memberships | category codec + workspace cache/index | malformed/duplicate/broken/cycle states | supported by `0.5.1-prototype`; remote acceptance pending |
 | Create/edit category | description and implication links persist durably | verified category definition write | stale SHA; uncertain network result; syntax evolution | supported by automated prototype evidence |
 | Assign/unassign file | category definition owns portable file link | relative-link generation + verified update | moved files; broken links; rename/delete | supported by automated prototype evidence |
-| Open category | explicit and implied files are concrete navigable results | derived category index and view | transitive scope and provenance clarity | supported by `0.4.2-prototype` |
+| Open category | explicit and implied files are concrete navigable results | derived category index and view | transitive scope and provenance clarity | supported by `0.5.1-prototype` |
 | Repository diff review | durable Markdown changes remain reviewable | normal Git working tree/package flow | exact base and permission boundary | existing accepted workflow |
 
 ## 10. Existing Solutions And Alternatives
@@ -596,7 +625,7 @@ The supplied ChatGPT Chats History userscript is an example and evidence source,
 
 It does not accept the choice to extend that script or prove the full Notes scenario.
 
-Current `0.4.2-prototype` evidence additionally covers explicit GET-only Notes refresh, repository directory browsing, read-only text preview, Note-bound repository context, exact GitHub URLs, category definition round trip, cache rebuild, explicit/implied memberships, local groups, broken/cycle diagnostics and verified category writes. Automated tests do not replace the pending browser and real-GitHub run.
+Current `0.5.1-prototype` evidence additionally covers explicit GET-only Notes refresh, repository directory browsing, read-only text preview, Note-bound repository context, exact GitHub URLs, category definition round trip, cache rebuild, explicit/implied memberships, local groups, broken/cycle diagnostics and verified category writes. Automated tests do not replace the pending browser and real-GitHub run.
 
 ## 12. Questions, Risks And Decisions
 
@@ -641,7 +670,7 @@ Current `0.4.2-prototype` evidence additionally covers explicit GET-only Notes r
 - Explicit repository reading and safe local/remote reconciliation are required Note-workflow behavior; exact scan depth and resource limits remain implementation choices.
 - No specific Notes storage layout or credential design is accepted by this Draft alone.
 - Repository file viewing and repository-backed file categories are accepted requirements.
-- `ITEM-128` is selected only as the bounded `0.4.2-prototype` implementation idea; it is not final production architecture.
+- `ITEM-128` is selected only as the bounded `0.5.1-prototype` implementation idea; it is not final production architecture.
 - Category definitions own prototype explicit membership; `ITEM-129` file-local category metadata remains deferred.
 - Category groups are local UI organization; category implications are repository-backed classification relations.
 
@@ -657,7 +686,7 @@ Current `0.4.2-prototype` evidence additionally covers explicit GET-only Notes r
 | Detailed project-local Scenario/DATA/Behavior | no | removed; Git history preserves prior files | coordination cost not justified |
 | Reusable SDS profile | available but inactive | reusable profile | can be selected for another project/need |
 | Domain | no | none | no separate model needed yet |
-| Slice | prototype only | Linked Notes `0.4.2-prototype` | evidence-producing implementation; production slice not selected |
+| Slice | prototype only | Linked Notes `0.5.1-prototype` | evidence-producing implementation; production slice not selected |
 | Prototype detail | only for selected helper | current item/Draft questions or later separate artifact | evidence before architecture |
 
 ## 14. Scenario Coverage Audit Result

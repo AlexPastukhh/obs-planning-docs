@@ -33,6 +33,51 @@
     };
   }
 
+
+  function decodeRepositoryMarkdownPath(value) {
+    const text = String(value == null ? '' : value).replace(/\\/g, '/').trim();
+    if (!text) return '';
+    if (/%(?![0-9A-Fa-f]{2})/.test(text)) throw new Error(`Repository Markdown target has invalid percent encoding: ${text}`);
+    const rootRelative = text.startsWith('/');
+    const rawParts = text.split('/');
+    const decoded = [];
+    for (let index = 0; index < rawParts.length; index += 1) {
+      const raw = rawParts[index];
+      if (!raw) {
+        if (index === 0 && rootRelative) continue;
+        throw new Error('Repository Markdown target contains an empty path segment.');
+      }
+      if (raw === '.' || raw === '..') { decoded.push(raw); continue; }
+      let segment;
+      try { segment = decodeURIComponent(raw); }
+      catch (error) { throw new Error(`Repository Markdown target has invalid percent encoding: ${text}`); }
+      if (!segment || segment === '.' || segment === '..') throw new Error(`Repository Markdown target contains encoded traversal: ${text}`);
+      if (/[\\/?#\u0000-\u001f\u007f]/.test(segment)) throw new Error(`Repository Markdown target contains an invalid decoded path segment: ${text}`);
+      decoded.push(segment);
+    }
+    const result = decoded.join('/');
+    if (!result) throw new Error('Repository Markdown target path is empty.');
+    return `${rootRelative ? '/' : ''}${result}`;
+  }
+
+  function normalizeMarkdownRepositoryTarget(sourcePath, target) {
+    const parsed = splitTarget(target);
+    if (parsed.kind === 'url') return { type: 'url', url: parsed.url };
+    const decodedPath = decodeRepositoryMarkdownPath(parsed.path);
+    if (decodedPath.startsWith('/')) {
+      return {
+        type: 'repository',
+        path: normalizeCanonicalRepositoryPath(decodedPath.replace(/^\/+/, ''), 'Repository target path'),
+        anchor: String(parsed.anchor || '').trim()
+      };
+    }
+    return {
+      type: 'repository',
+      path: normalizeRepositoryPath(sourcePath, decodedPath),
+      anchor: String(parsed.anchor || '').trim()
+    };
+  }
+
   function assertPathSyntax(value, { allowEmpty = false, allowRelativeSegments = false, label = 'Repository path' } = {}) {
     const text = String(value == null ? '' : value).replace(/\\/g, '/').trim();
     if (!text) {
@@ -158,6 +203,8 @@
     isPortableUrl,
     isMachineLocalAbsolutePath,
     splitTarget,
+    decodeRepositoryMarkdownPath,
+    normalizeMarkdownRepositoryTarget,
     normalizeCanonicalRepositoryPath,
     normalizeRepositoryPath,
     repositoryRelativePath,

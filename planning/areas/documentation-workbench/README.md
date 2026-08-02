@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area / Scenario migration and route alignment
-Doc version: v1.3.0-repository-files-and-categories
+Doc version: v1.4.0-rich-markdown-note-categories-and-target-picker
 Scope: current planning for repository-native documentation work, stable repository links, affected-use review, AI transfer, linked Notes, repository file viewing and file categories.
 
 Reusable planning method remains under [`planning/documentation/application-planning/`](../../documentation/application-planning/README.md).
@@ -146,5 +146,5 @@ Root README, root Direction/activation/source routes and Tampermonkey projection
 - Batch 3A local canonical planning reset: complete.
 - Batch 3B Scenario migration and root/projection alignment: represented by this package.
 - Canonical repository file/category Planning Item transition: represented in the current register.
-- Linked Notes `0.4.2-prototype`: corrected implementation evidence with full workspace-target category isolation, v2 encoded category links, bounded directory-listing validation, cross-repository assignment guards and atomic multi-tab group mutations; browser and real-GitHub acceptance pending.
+- Linked Notes `0.5.1-prototype`: implementation evidence with file/Note categories, v3 definitions, bounded target search, managed relation recovery, rich Markdown/authenticated images, contextual form recovery and retained `0.4.2` isolation safeguards; browser and real-GitHub acceptance pending.
 - Production runtime architecture: not selected.

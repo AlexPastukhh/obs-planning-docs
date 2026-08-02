@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const api = require('../src/repository-category-index.js');
 
 function definition(path, id, extra = {}) {
-  return { path, sha: `sha-${id}`, definition: { id, name: id, description: '', impliedCategories: [], files: [], ...extra } };
+  return { path, sha: `sha-${id}`, definition: { id, name: id, description: '', impliedCategories: [], files: [], notes: [], ...extra } };
 }
 
 test('explicit file membership derives through implied categories with validation provenance', () => {
@@ -16,8 +16,8 @@ test('explicit file membership derives through implied categories with validatio
       files: [{ label: 'API', target: '../docs/api.md' }]
     })
   ], { fileValidation: { 'docs/api.md': { status: 'verified', message: 'exists' } } });
-  assert.deepEqual(index.filesForCategory('asp-net-core'), [{ path: 'docs/api.md', membership: 'explicit', validation: 'verified', validationMessage: 'exists' }]);
-  assert.deepEqual(index.filesForCategory('programming'), [{ path: 'docs/api.md', membership: 'derived', validation: 'verified', validationMessage: 'exists' }]);
+  assert.deepEqual(index.filesForCategory('asp-net-core'), [{ type: 'file', path: 'docs/api.md', noteId: '', label: 'API', membership: 'explicit', validation: 'verified', validationMessage: 'exists' }]);
+  assert.deepEqual(index.filesForCategory('programming'), [{ type: 'file', path: 'docs/api.md', noteId: '', label: 'API', membership: 'derived', validation: 'verified', validationMessage: 'exists' }]);
   assert.equal(index.errors.length, 0);
 });
 
@@ -49,4 +49,18 @@ test('missing, inaccessible and unchecked member files remain distinct', () => {
   assert.ok(index.errors.some((error) => error.kind === 'broken_file_link' && error.targetPath === 'docs/missing.md'));
   assert.ok(index.errors.some((error) => error.kind === 'inaccessible_file_link' && error.targetPath === 'docs/private.md'));
   assert.ok(index.errors.some((error) => error.kind === 'unchecked_file_link' && error.targetPath === 'docs/later.md'));
+});
+
+
+test('explicit Note membership derives through implied categories and remains distinguishable from files', () => {
+  const index = api.buildRepositoryCategoryIndex([
+    definition('categories/programming.md', 'programming'),
+    definition('categories/runtime.md', 'runtime', {
+      impliedCategories: [{ label: 'Programming', target: './programming.md' }],
+      notes: [{ label: 'Runtime Note', target: '../notes/runtime.md', noteId: 'note-runtime' }]
+    })
+  ], { noteValidation: { 'notes/runtime.md': { status: 'verified', message: 'exists' } } });
+  assert.deepEqual(index.notesForCategory('runtime'), [{ type: 'note', path: 'notes/runtime.md', noteId: 'note-runtime', label: 'Runtime Note', membership: 'explicit', validation: 'verified', validationMessage: 'exists' }]);
+  assert.deepEqual(index.notesForCategory('programming')[0].membership, 'derived');
+  assert.deepEqual(index.explicitCategoryIdsForTarget('note', 'notes/runtime.md'), ['runtime']);
 });

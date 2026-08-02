@@ -108,7 +108,19 @@
         onAddLink: (note, input) => this.addLink(note, input),
         onRemoveLink: (note, linkId) => this.removeLink(note, linkId),
         onResolveLink: (note, linkId) => this.resolveLink(note, linkId),
-        onOpenLink: (linkId) => this.openLink(linkId)
+        onOpenLink: (linkId) => this.openLink(linkId),
+        onSetNoteViewMode: (mode, note) => this.setNoteViewMode(mode, note),
+        onSetFileViewMode: (mode) => this.setFileViewMode(mode),
+        onOpenRenderedLink: (target, source) => this.openRenderedLink(target, source),
+        onOpenTargetPicker: (request) => this.openTargetPicker(request),
+        onCloseTargetPicker: () => this.closeTargetPicker(),
+        onSetTargetPickerTab: (tab) => this.setTargetPickerTab(tab),
+        onBrowseTargetPicker: (path) => this.browseTargetPicker(path),
+        onSearchTargetPicker: (query, depth) => this.searchTargetPicker(query, depth),
+        onToggleTargetPicker: (target) => this.toggleTargetPickerTarget(target),
+        onApplyTargetPicker: () => this.applyTargetPicker(),
+        onSetNoteCategories: (note, ids) => this.setNoteCategoryIntent(note, ids),
+        onDismissFeedback: (id) => this.dismissFeedback(id)
       });
       this.current = null;
       this.search = '';
@@ -123,7 +135,7 @@
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
-      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
       this.categoryContextWorkspaceId = '';
@@ -131,6 +143,15 @@
       this.categoryContextRequiresRefresh = false;
       this.categoryContextsRequiringRefresh = new Set();
       this.workspaceContextGeneration = 0;
+      this.noteRelationIndex = this.api.buildNoteRelationIndex ? this.api.buildNoteRelationIndex([]) : null;
+      this.noteViewMode = 'edit';
+      this.fileViewMode = 'rendered';
+      this.noteRendered = null;
+      this.fileRendered = null;
+      this.mediaLoaders = { note: null, file: null };
+      this.feedback = [];
+      this.targetPicker = { open: false, mode: '', tab: 'files', query: '', depth: '2', currentPath: '', entries: [], fileResults: [], noteResults: [], selected: [], truncated: false, summary: '', cursorStart: 0, cursorEnd: 0 };
+      this.categoryDraftTargets = [];
       if (options.settings && options.settings.owner && options.settings.repo) {
         const workspace = api.normalizeWorkspace
           ? api.normalizeWorkspace({ id: 'workspace-test', name: 'Test workspace', ...options.settings })
@@ -214,6 +235,7 @@
           sha: category.sha || '',
           htmlUrl: category.htmlUrl || '',
           explicitFileCount: (category.explicitFiles || []).length,
+          explicitNoteCount: (category.explicitNotes || []).length,
           impliedCategoryIds: category.impliedCategoryIds || [],
           brokenLinks: category.brokenLinks || [],
           group: this.categorySnapshot.groups && this.categorySnapshot.groups[category.id] || ''
@@ -233,22 +255,43 @@
         && this.categoryContextKey === this._categoryContextKey(activeWorkspace)
         && !this.categoryContextRequiresRefresh
       );
+      const indexedSelectedTargets = selectedRecord ? [
+        ...(selectedRecord.explicitFiles || []).map((item) => ({ type: 'file', path: item.path, name: item.label || item.path, label: item.label || item.path })),
+        ...(selectedRecord.explicitNotes || []).map((item) => ({ type: 'note', path: item.path, noteId: item.noteId || '', name: item.label || item.path, label: item.label || item.path }))
+      ] : [];
+      const selectedTargets = [...this.categoryDraftTargets];
+      const noteCategoryIds = this.current
+        ? (this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(this.current.categoryIds) : (this.current.categoryIds || []))
+        : [];
+      const backlinks = this.current && this.noteRelationIndex && this.noteRelationIndex.incomingForNote
+        ? this.noteRelationIndex.incomingForNote(this.current.id)
+        : [];
       return {
         surface: this.surface,
         repositoryPath: this.repositoryPath,
         repositoryEntries: this.repositoryEntries,
         repositoryBreadcrumbs: this.api.repositoryBreadcrumbs ? this.api.repositoryBreadcrumbs(this.repositoryPath) : [],
         repositoryPreview: this.repositoryPreview,
+        fileViewMode: this.fileViewMode,
+        fileRendered: this.fileRendered,
+        noteViewMode: this.noteViewMode,
+        noteRendered: this.noteRendered,
+        feedback: this.feedback,
+        targetPicker: this.targetPicker,
         categories,
+        noteCategoryIds,
+        noteBacklinks: backlinks,
         selectedCategoryId: selected ? selected.id : '',
         categoryEditor: selected ? {
           id: selected.id,
           name: selected.name,
           description: selected.description,
           impliedCategoryIds: selected.impliedCategoryIds,
-          group: selected.group
-        } : { id: '', name: '', description: '', impliedCategoryIds: [], group: '' },
+          group: selected.group,
+          selectedTargets
+        } : { id: '', name: '', description: '', impliedCategoryIds: [], group: '', selectedTargets: [] },
         categoryFiles: selectedRecord && this.categoryIndex.filesForCategory ? this.categoryIndex.filesForCategory(selected.id) : [],
+        categoryNotes: selectedRecord && this.categoryIndex.notesForCategory ? this.categoryIndex.notesForCategory(selected.id) : [],
         categoryErrors: [
           ...(Array.isArray(this.categorySnapshot.diagnostics) ? this.categorySnapshot.diagnostics : []),
           ...(this.categoryIndex && Array.isArray(this.categoryIndex.errors) ? this.categoryIndex.errors : [])
@@ -275,6 +318,43 @@
       };
     }
 
+    _feedbackScope() {
+      return this.surface === 'files' ? 'files' : this.surface === 'categories' ? 'categories' : 'notes';
+    }
+
+    _pushFeedback(feedback) {
+      const item = this.api.createFeedback ? this.api.createFeedback(feedback) : { id: feedback.id || `feedback-${Date.now()}`, scope: feedback.scope || this._feedbackScope(), severity: feedback.severity || 'error', title: feedback.title || 'Status', message: feedback.message || '', target: feedback.target || '', details: feedback.details || '', actions: feedback.actions || [], partialResults: feedback.partialResults || [], dismissible: true };
+      this.feedback = this.api.replaceFeedback ? this.api.replaceFeedback(this.feedback, item) : [...this.feedback.filter((existing) => existing.id !== item.id), item];
+      return item;
+    }
+
+    dismissFeedback(id) {
+      this.feedback = this.api.dismissFeedback ? this.api.dismissFeedback(this.feedback, id) : this.feedback.filter((item) => item.id !== id);
+      this._setUi();
+    }
+
+    _feedbackFromError(error, input = {}) {
+      const item = this.api.feedbackFromError
+        ? this.api.feedbackFromError(error, { scope: input.scope || this._feedbackScope(), ...input })
+        : { id: input.id || 'last-error', scope: input.scope || this._feedbackScope(), severity: 'error', title: input.title || 'Action failed', message: String(error && error.message || error), target: input.target || '', details: String(error && error.kind || ''), actions: input.actions || [], partialResults: error && error.partialResults || [] };
+      this._pushFeedback(item);
+      this._setUi({ status: `Error: ${item.message}` });
+      return item;
+    }
+
+    _disposeMediaLoader(kind) {
+      const key = kind === 'file' ? 'file' : 'note';
+      const loader = this.mediaLoaders && this.mediaLoaders[key];
+      if (loader && typeof loader.dispose === 'function') loader.dispose();
+      if (!this.mediaLoaders) this.mediaLoaders = { note: null, file: null };
+      this.mediaLoaders[key] = null;
+    }
+
+    _disposeAllMediaLoaders() {
+      this._disposeMediaLoader('note');
+      this._disposeMediaLoader('file');
+    }
+
     _setUi(patch = {}) {
       this.ui.setState({ ...this._workspaceUiState(), ...this._remoteUiState(), ...this._categoryUiState(), ...patch });
     }
@@ -284,6 +364,10 @@
       this.remoteOperation = label;
       this._setUi({ busy: true, status: label });
       try { return await work(); }
+      catch (error) {
+        this._feedbackFromError(error, { id: `operation-${this._feedbackScope()}`, scope: this._feedbackScope(), title: label.replace(/…$/, '') || 'Remote action failed' });
+        throw error;
+      }
       finally { this.remoteOperation = null; this._setUi({ busy: false }); }
     }
 
@@ -320,14 +404,20 @@
     _emptyCategoryIndex() {
       return this.api.buildRepositoryCategoryIndex
         ? this.api.buildRepositoryCategoryIndex([])
-        : { categories: new Map(), filesForCategory: () => [], errors: [] };
+        : { categories: new Map(), filesForCategory: () => [], notesForCategory: () => [], explicitCategoryIdsForTarget: () => [], errors: [] };
     }
 
-    _resetWorkspaceDerivedContext() {
+    _resetWorkspaceDerivedContext(options = {}) {
+      this._disposeMediaLoader('file');
+      this.fileRendered = null;
+      if (options.disposeNoteMedia) {
+        this._disposeMediaLoader('note');
+        this.noteRendered = null;
+      }
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
-      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
       this.categoryContextWorkspaceId = '';
@@ -340,9 +430,11 @@
       const previousWorkspaceId = this.categoryContextWorkspaceId;
       const previousContextKey = this.categoryContextKey;
       const targetChangedInPlace = Boolean(workspace && previousWorkspaceId === workspace.id && previousContextKey && previousContextKey !== contextKey);
+      const workspaceContextChanged = Boolean(previousContextKey && previousContextKey !== contextKey)
+        || Boolean(previousWorkspaceId && previousWorkspaceId !== (workspace ? workspace.id : ''));
       if (targetChangedInPlace) this.categoryContextsRequiringRefresh.add(contextKey);
       const generation = ++this.workspaceContextGeneration;
-      this._resetWorkspaceDerivedContext();
+      this._resetWorkspaceDerivedContext({ disposeNoteMedia: workspaceContextChanged });
       this.categoryContextRequiresRefresh = Boolean(contextKey && this.categoryContextsRequiringRefresh.has(contextKey));
       this._setUi({ categoryRefreshSummary: '' });
       if (!workspace || !this.categoryStore) {
@@ -358,11 +450,12 @@
         definitions: Array.isArray(snapshot.definitions) ? snapshot.definitions : [],
         diagnostics: Array.isArray(snapshot.diagnostics) ? snapshot.diagnostics : [],
         fileValidation: snapshot.fileValidation && typeof snapshot.fileValidation === 'object' ? snapshot.fileValidation : {},
+        noteValidation: snapshot.noteValidation && typeof snapshot.noteValidation === 'object' ? snapshot.noteValidation : {},
         groups: snapshot.groups && typeof snapshot.groups === 'object' ? snapshot.groups : {},
         refreshedAt: String(snapshot.refreshedAt || '')
       };
       this.categoryIndex = this.api.buildRepositoryCategoryIndex
-        ? this.api.buildRepositoryCategoryIndex(this.categorySnapshot.definitions, { fileValidation: this.categorySnapshot.fileValidation })
+        ? this.api.buildRepositoryCategoryIndex(this.categorySnapshot.definitions, { fileValidation: this.categorySnapshot.fileValidation, noteValidation: this.categorySnapshot.noteValidation })
         : this._emptyCategoryIndex();
       this.categoryContextWorkspaceId = workspace.id;
       this.categoryContextKey = contextKey;
@@ -445,13 +538,16 @@
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
-      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
-      this.categoryIndex = api.buildRepositoryCategoryIndex ? api.buildRepositoryCategoryIndex([]) : { categories: new Map(), filesForCategory: () => [], errors: [] };
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
+      this.categoryIndex = this.api.buildRepositoryCategoryIndex ? this.api.buildRepositoryCategoryIndex([]) : { categories: new Map(), filesForCategory: () => [], notesForCategory: () => [], errors: [] };
       this.selectedCategoryId = '';
       this.categoryContextWorkspaceId = '';
       this.categoryContextKey = '';
       this.categoryContextRequiresRefresh = false;
       this.categoryContextsRequiringRefresh.clear();
+      this._disposeAllMediaLoaders();
+      this.noteRendered = null;
+      this.fileRendered = null;
       if (this.ui) this.ui.dispose();
     }
 
@@ -536,6 +632,252 @@
       return next;
     }
 
+    async _renderMarkdownDocument(markdown, sourcePath, context, kind) {
+      const mediaKind = kind === 'file' ? 'file' : 'note';
+      const rendered = this.api.renderRichMarkdown ? this.api.renderRichMarkdown(markdown) : { html: `<pre>${String(markdown || '')}</pre>`, resources: [], links: [] };
+      this._disposeMediaLoader(mediaKind);
+      let imageResults = [];
+      if (rendered.resources && rendered.resources.length) {
+        if (context && context.owner && context.repo && context.branch && sourcePath && this.api.RepositoryMediaLoader) {
+          try {
+            const client = await this._client(context);
+            const loader = new this.api.RepositoryMediaLoader({ readBytes: (path, options) => client.readBytes(path, options) });
+            this.mediaLoaders[mediaKind] = loader;
+            imageResults = await loader.loadAll(rendered.resources, { sourcePath });
+          } catch (error) {
+            this._disposeMediaLoader(mediaKind);
+            imageResults = rendered.resources.map((resource) => ({ id: resource.id, status: 'error', target: resource.target, message: String(error && error.message || error) }));
+          }
+        } else {
+          imageResults = rendered.resources.map((resource) => ({ id: resource.id, status: resource.external ? 'external_blocked' : 'unavailable', target: resource.target, message: resource.external ? 'External image loading requires an explicit action.' : 'Repository context is unavailable for this image.' }));
+        }
+      }
+      return { ...rendered, imageResults, source: { path: sourcePath || '', context: context ? { owner: context.owner, repo: context.repo, branch: context.branch } : null } };
+    }
+
+    async _renderCurrentNote(note = this.current) {
+      if (!note) { this._disposeMediaLoader('note'); this.noteRendered = null; return null; }
+      const remote = this.api.normalizeRemote(note.remote);
+      let context = null;
+      let sourcePath = '';
+      if (this.api.hasRemoteTargetIdentity(remote)) {
+        context = remote;
+        sourcePath = remote.path;
+      } else {
+        const workspace = this._activeWorkspace();
+        if (workspace) {
+          context = workspace;
+          try { sourcePath = this._configuredTarget(note).path; } catch (error) { sourcePath = ''; }
+        }
+      }
+      this.noteRendered = await this._renderMarkdownDocument(note.body || '', sourcePath, context, 'note');
+      return this.noteRendered;
+    }
+
+    async _renderCurrentFile() {
+      const preview = this.repositoryPreview;
+      if (!preview || preview.kind !== 'text' || !/\.md(?:own)?$/i.test(preview.path || '')) { this._disposeMediaLoader('file'); this.fileRendered = null; return null; }
+      this.fileRendered = await this._renderMarkdownDocument(preview.content || '', preview.path, preview.context, 'file');
+      return this.fileRendered;
+    }
+
+    async setNoteViewMode(mode, note) {
+      const allowed = new Set(['edit', 'preview', 'split']);
+      if (!allowed.has(mode)) throw new Error(`Unsupported Note view mode: ${mode}`);
+      if (note) await this.saveDraft(note);
+      this.noteViewMode = mode;
+      if (mode !== 'edit') await this._renderCurrentNote(this.current);
+      else { this._disposeMediaLoader('note'); this.noteRendered = null; }
+      this._setUi({ status: `Note view: ${mode}.` });
+      return mode;
+    }
+
+    async setFileViewMode(mode) {
+      if (!new Set(['rendered', 'source']).has(mode)) throw new Error(`Unsupported file view mode: ${mode}`);
+      this.fileViewMode = mode;
+      if (mode === 'rendered') await this._renderCurrentFile();
+      else { this._disposeMediaLoader('file'); this.fileRendered = null; }
+      this._setUi({ status: `File view: ${mode}.` });
+      return mode;
+    }
+
+    async openRenderedLink(target, source = {}) {
+      const value = String(target || '').trim();
+      if (!value) return;
+      if (this.api.isPortableUrl && this.api.isPortableUrl(value)) {
+        window.open(value, '_blank', 'noopener,noreferrer');
+        return;
+      }
+      if (value.startsWith('#')) {
+        this._setUi({ status: `Rendered anchor requested: ${value}.` });
+        return;
+      }
+      const sourcePath = String(source.path || '');
+      const context = source.context || this._activeWorkspace();
+      if (!sourcePath || !context) throw new Error('Rendered repository link has no source repository context.');
+      const resolved = this.api.normalizeMarkdownRepositoryTarget ? this.api.normalizeMarkdownRepositoryTarget(sourcePath, value) : this.api.normalizeRepositoryTarget(sourcePath, value);
+      const noteTarget = this.noteRelationIndex && this.noteRelationIndex.byId
+        ? Array.from(this.noteRelationIndex.byId.values()).find((note) => {
+          const remote = this.api.normalizeRemote(note.remote);
+          return remote.path === resolved.path && this._sameRepositoryContext(remote, context);
+        }) : null;
+      if (noteTarget) return this.selectNote(noteTarget.id);
+      return this.openRepositoryEntry({ type: 'file', path: resolved.path, name: resolved.path.slice(resolved.path.lastIndexOf('/') + 1) }, context);
+    }
+
+    async setNoteCategoryIntent(note, ids) {
+      if (!note) throw new Error('No Note is selected.');
+      const draft = await this.saveDraft({ ...note, categoryIds: this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(ids) : ids, categoryIntentPending: true });
+      this.current = draft;
+      await this.refreshList();
+      this._setUi({ status: 'Note category selection saved locally. Save GitHub to apply repository category memberships.' });
+      return draft.categoryIds;
+    }
+
+    async openTargetPicker(request = {}) {
+      const mode = String(request.mode || 'note-link');
+      if (!new Set(['note-link', 'category-members']).has(mode)) throw new Error(`Unsupported target-picker mode: ${mode}`);
+      const selected = mode === 'category-members' ? [...(Array.isArray(request.initialTargets) ? request.initialTargets : this.categoryDraftTargets)] : [];
+      this.targetPicker = {
+        open: true,
+        mode,
+        tab: 'files',
+        query: '',
+        depth: '2',
+        currentPath: '',
+        entries: [],
+        fileResults: [],
+        noteResults: [],
+        selected,
+        truncated: false,
+        summary: '',
+        cursorStart: Number(request.cursorStart || 0),
+        cursorEnd: Number(request.cursorEnd || request.cursorStart || 0)
+      };
+      await this.browseTargetPicker('');
+      return this.targetPicker;
+    }
+
+    closeTargetPicker() {
+      this.targetPicker = { ...this.targetPicker, open: false };
+      this._setUi({ status: 'Target picker closed; current selection was preserved until the next picker action.' });
+    }
+
+    setTargetPickerTab(tab) {
+      const value = String(tab || 'files');
+      if (!new Set(['files', 'notes', 'selected']).has(value)) throw new Error(`Unsupported target-picker tab: ${value}`);
+      this.targetPicker = { ...this.targetPicker, tab: value };
+      this._setUi();
+      return value;
+    }
+
+    async browseTargetPicker(path = '') {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      return this._runRemoteOperation('Reading target-picker folder…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select a GitHub workspace before choosing repository files.');
+        const normalized = this.api.normalizeBrowserPath ? this.api.normalizeBrowserPath(path) : String(path || '');
+        const client = await this._client(workspace);
+        const entries = await client.listDirectory(normalized, { maxEntries: 200 });
+        this.targetPicker = { ...this.targetPicker, currentPath: normalized, entries: this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries, fileResults: [], query: '', truncated: false, summary: `${entries.length} direct entries.` };
+        this._setUi({ status: `Target picker folder loaded: ${normalized || '/'}.` });
+        return entries;
+      });
+    }
+
+    async searchTargetPicker(query, depth) {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      return this._runRemoteOperation('Searching repository targets…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select a GitHub workspace before searching files.');
+        const client = await this._client(workspace);
+        const result = await this.api.searchRepositoryTargets({
+          query,
+          depth,
+          rootPath: this.targetPicker.currentPath,
+          listDirectory: (path, options) => client.listDirectory(path, options)
+        });
+        const allNotes = await this.store.search('');
+        const noteResults = this.api.searchNotesByName ? this.api.searchNotesByName(allNotes, query) : allNotes.filter((note) => String(note.title || '').toLowerCase().includes(String(query || '').toLowerCase()));
+        this.targetPicker = {
+          ...this.targetPicker,
+          query: String(query || ''),
+          depth: String(depth == null ? '2' : depth),
+          fileResults: result.results,
+          noteResults,
+          truncated: result.truncated,
+          summary: `${result.results.length} file result(s); ${noteResults.length} Note result(s); scanned ${result.scannedFolders} folder(s)${result.truncated ? `; incomplete (${result.truncationReason})` : ''}.`
+        };
+        this._setUi({ status: `Target search complete. ${this.targetPicker.summary}` });
+        return this.targetPicker;
+      });
+    }
+
+    toggleTargetPickerTarget(target = {}) {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      const type = String(target.type || 'file');
+      const normalized = type === 'note'
+        ? { type: 'note', noteId: String(target.noteId || target.id || ''), path: String(target.path || target.remotePath || ''), name: String(target.name || target.title || 'Untitled Note'), label: String(target.label || target.name || target.title || 'Untitled Note') }
+        : { type: 'file', path: this.api.normalizeCanonicalRepositoryPath(target.path, 'Selected repository file'), name: String(target.name || target.path || ''), label: String(target.label || target.name || target.path || '') };
+      const key = type === 'note' ? `note:${normalized.noteId || normalized.path}` : `file:${normalized.path}`;
+      const selected = [...this.targetPicker.selected];
+      const index = selected.findIndex((item) => (item.type === 'note' ? `note:${item.noteId || item.path}` : `file:${item.path}`) === key);
+      if (index >= 0) selected.splice(index, 1); else selected.push(normalized);
+      this.targetPicker = { ...this.targetPicker, selected };
+      this._setUi({ status: `${selected.length} target(s) selected.` });
+      return selected;
+    }
+
+    async applyTargetPicker() {
+      if (!this.targetPicker.open) throw new Error('Target picker is not open.');
+      if (this.targetPicker.mode === 'category-members') {
+        this.categoryDraftTargets = [...this.targetPicker.selected];
+        this.targetPicker = { ...this.targetPicker, open: false };
+        this._setUi({ status: `${this.categoryDraftTargets.length} initial category member(s) selected.` });
+        return this.categoryDraftTargets;
+      }
+      if (!this.current) throw new Error('Select a Note before inserting links.');
+      let note = await this.saveDraft(this.current);
+      const sourceTarget = this.api.hasRemoteTargetIdentity(note.remote) ? this.api.normalizeRemote(note.remote) : this._configuredTarget(note);
+      const lines = [];
+      for (const selected of this.targetPicker.selected) {
+        if (selected.type === 'note') {
+          const targetNote = await this.store.get(selected.noteId);
+          if (!targetNote) throw new Error(`Selected Note no longer exists: ${selected.noteId}`);
+          const remote = this.api.normalizeRemote(targetNote.remote);
+          if (!this.api.hasRemoteTargetIdentity(remote) || !this._sameRepositoryContext(remote, sourceTarget)) throw new Error(`Selected Note is not verified in the same repository and branch: ${targetNote.title || targetNote.id}`);
+          const relative = this.api.repositoryRelativePath(sourceTarget.path, remote.path);
+          const encoded = this.api.encodeMarkdownTarget ? this.api.encodeMarkdownTarget(relative) : relative;
+          const label = String(targetNote.title || targetNote.id).replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+          lines.push(`- [${label}](<${encoded}>)`);
+          note = this.api.addLink(note, { type: 'note', label: targetNote.title || targetNote.id, target: { noteId: targetNote.id, owner: remote.owner, repo: remote.repo, branch: remote.branch, path: remote.path }, resolution: 'resolved', resolutionMessage: 'Selected through target picker.' });
+        } else {
+          const workspace = this._activeWorkspace();
+          if (!workspace || !this._sameRepositoryContext(workspace, sourceTarget)) throw new Error('The selected file and Note must use the same repository and branch.');
+          const relative = this.api.repositoryRelativePath(sourceTarget.path, selected.path);
+          const label = selected.label || selected.name || selected.path;
+          const encoded = this.api.encodeMarkdownTarget ? this.api.encodeMarkdownTarget(relative) : relative;
+          const escapedLabel = String(label).replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+          lines.push(`- [${escapedLabel}](<${encoded}>)`);
+          note = this.api.addLink(note, { type: 'repository', label, target: { owner: sourceTarget.owner, repo: sourceTarget.repo, branch: sourceTarget.branch, path: selected.path }, resolution: 'unchecked', resolutionMessage: 'Selected through target picker.' });
+        }
+      }
+      const insertion = lines.join('\n');
+      const start = Math.max(0, Math.min(note.body.length, this.targetPicker.cursorStart));
+      const end = Math.max(start, Math.min(note.body.length, this.targetPicker.cursorEnd));
+      const prefix = start > 0 && note.body[start - 1] !== '\n' ? '\n' : '';
+      const suffix = end < note.body.length && note.body[end] !== '\n' ? '\n' : '';
+      note = this.api.updateNote(note, { body: `${note.body.slice(0, start)}${prefix}${insertion}${suffix}${note.body.slice(end)}` });
+      await this.store.put(note);
+      this.current = note;
+      this.targetPicker = { ...this.targetPicker, open: false, selected: [] };
+      this.noteRelationIndex = this.api.buildNoteRelationIndex ? this.api.buildNoteRelationIndex(await this.store.search('')) : this.noteRelationIndex;
+      if (this.noteViewMode !== 'edit') await this._renderCurrentNote(note);
+      await this.refreshList();
+      this._setUi({ replaceCurrent: true, status: `${lines.length} managed link(s) inserted into the Note.` });
+      return note;
+    }
+
     async browseRepository(path = '') {
       return this._runRemoteOperation('Reading repository folder…', async () => {
         const workspace = this._activeWorkspace();
@@ -546,6 +888,8 @@
         this.repositoryPath = normalized;
         this.repositoryEntries = this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries;
         this.repositoryPreview = null;
+        this._disposeMediaLoader('file');
+        this.fileRendered = null;
         this.surface = 'files';
         this._setUi({ status: `Repository folder loaded: ${normalized || '/'}. ${entries.length} direct entries.` });
         return this.repositoryEntries;
@@ -591,6 +935,9 @@
           context: { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch }
         };
         this.surface = 'files';
+        this._disposeMediaLoader('file');
+        this.fileRendered = null;
+        if (this.fileViewMode === 'rendered' && preview.kind === 'text' && /\.md(?:own)?$/i.test(file.path || '')) await this._renderCurrentFile();
         this._setUi({ status: preview.kind === 'text' ? `Opened ${file.path} read-only.` : preview.message });
         return this.repositoryPreview;
       });
@@ -665,34 +1012,53 @@
       }
 
       const initialIndex = this.api.buildRepositoryCategoryIndex(definitions);
-      const filePaths = Array.from(initialIndex.memberships.keys()).sort();
+      const memberEntries = Array.from(initialIndex.memberships.values());
+      const filePaths = memberEntries.filter((entry) => entry.type === 'file').map((entry) => entry.path).sort();
+      const notePaths = memberEntries.filter((entry) => entry.type === 'note').map((entry) => entry.path).sort();
       const validationLimit = 100;
+      const uniqueTargets = [];
+      const seenTargets = new Set();
+      for (const entry of memberEntries) {
+        const key = `${entry.type}:${entry.path}`;
+        if (seenTargets.has(key)) continue;
+        seenTargets.add(key);
+        uniqueTargets.push({ type: entry.type, path: entry.path });
+      }
+      uniqueTargets.sort((left, right) => left.path.localeCompare(right.path) || left.type.localeCompare(right.type));
+      const selectedTargets = uniqueTargets.slice(0, validationLimit);
       const fileValidation = {};
-      const validationPaths = filePaths.slice(0, validationLimit);
+      const noteValidation = {};
       const pathsByParent = new Map();
-      for (const path of validationPaths) {
-        const slash = path.lastIndexOf('/');
-        const parent = slash >= 0 ? path.slice(0, slash) : '';
+      for (const target of selectedTargets) {
+        const slash = target.path.lastIndexOf('/');
+        const parent = slash >= 0 ? target.path.slice(0, slash) : '';
         const group = pathsByParent.get(parent) || [];
-        group.push(path);
+        group.push(target);
         pathsByParent.set(parent, group);
       }
-      for (const [parent, paths] of pathsByParent.entries()) {
+      for (const [parent, targets] of pathsByParent.entries()) {
         try {
           const directoryEntries = await client.listDirectory(parent, { missingAsEmpty: true, maxEntries: 200 });
           const files = new Set(directoryEntries.filter((entry) => entry.type === 'file').map((entry) => entry.path));
-          for (const path of paths) {
-            fileValidation[path] = files.has(path)
-              ? { status: 'verified', message: 'Repository file exists.' }
-              : { status: 'missing', message: `Repository file does not exist: ${path}.` };
+          for (const target of targets) {
+            const targetMap = target.type === 'note' ? noteValidation : fileValidation;
+            targetMap[target.path] = files.has(target.path)
+              ? { status: 'verified', message: target.type === 'note' ? 'Repository Note file exists.' : 'Repository file exists.' }
+              : { status: 'missing', message: `${target.type === 'note' ? 'Repository Note' : 'Repository file'} does not exist: ${target.path}.` };
           }
         } catch (error) {
-          for (const path of paths) fileValidation[path] = { status: 'inaccessible', message: String(error && error.message || error) };
+          for (const target of targets) {
+            const targetMap = target.type === 'note' ? noteValidation : fileValidation;
+            targetMap[target.path] = { status: 'inaccessible', message: String(error && error.message || error) };
+          }
         }
       }
-      if (filePaths.length > validationLimit) {
-        for (const path of filePaths.slice(validationLimit)) fileValidation[path] = { status: 'unchecked', message: 'Target was not checked because the validation limit was reached.' };
-        diagnostics.push({ kind: 'incomplete_file_validation', path: basePath, message: `Validated ${validationLimit} of ${filePaths.length} unique member-file targets.` });
+      if (uniqueTargets.length > validationLimit) {
+        for (const target of uniqueTargets.slice(validationLimit)) {
+          const targetMap = target.type === 'note' ? noteValidation : fileValidation;
+          targetMap[target.path] = { status: 'unchecked', message: 'Target was not checked because the validation limit was reached.' };
+        }
+        diagnostics.push({ kind: 'incomplete_member_validation', path: basePath, message: `Validated ${validationLimit} of ${uniqueTargets.length} unique file/Note category targets.` });
       }
 
       const refreshedAt = new Date().toISOString();
@@ -700,6 +1066,7 @@
         definitions,
         diagnostics,
         fileValidation,
+        noteValidation,
         groups: this.categorySnapshot && this.categorySnapshot.groups || {},
         refreshedAt
       };
@@ -715,13 +1082,29 @@
       this.categoryContextKey = contextKey;
       this.categoryContextsRequiringRefresh.delete(contextKey);
       this.categoryContextRequiresRefresh = false;
-      this.categoryIndex = this.api.buildRepositoryCategoryIndex(definitions, { fileValidation });
+      this.categoryIndex = this.api.buildRepositoryCategoryIndex(definitions, { fileValidation, noteValidation });
       if (this.selectedCategoryId && !this.categoryIndex.categories.has(this.selectedCategoryId)) this.selectedCategoryId = '';
+      await this._hydrateNoteCategoryIntentsFromIndex(workspace);
       this.surface = 'categories';
       const issueCount = diagnostics.length + this.categoryIndex.errors.length;
-      const summary = `definitions ${definitions.length}; skipped ${skipped}; issues ${issueCount}; validated files ${Math.min(filePaths.length, validationLimit)}/${filePaths.length}`;
+      const summary = `definitions ${definitions.length}; skipped ${skipped}; issues ${issueCount}; validated targets ${Math.min(uniqueTargets.length, validationLimit)}/${uniqueTargets.length}`;
       this._setUi({ categoryRefreshSummary: summary, status: `Category refresh complete: ${summary}. No remote writes were performed.` });
       return { definitions: definitions.length, skipped, errors: diagnostics.length, modelErrors: this.categoryIndex.errors.length, diagnostics: [...diagnostics, ...this.categoryIndex.errors] };
+    }
+
+    async _hydrateNoteCategoryIntentsFromIndex(workspace = this._activeWorkspace()) {
+      if (!workspace || !this.categoryIndex || !this.categoryIndex.explicitCategoryIdsForTarget) return;
+      const notes = await this.store.list();
+      for (const note of notes) {
+        const normalized = this.api.normalizeNote(note);
+        if (normalized.categoryIntentPending) continue;
+        const remote = this.api.normalizeRemote(normalized.remote);
+        if (!this.api.hasRemoteTargetIdentity(remote) || !this._sameRepositoryContext(remote, workspace)) continue;
+        const categoryIds = this.categoryIndex.explicitCategoryIdsForTarget('note', remote.path);
+        const next = this.api.updateNote(normalized, { categoryIds, categoryIntentPending: false });
+        if (JSON.stringify(next.categoryIds) !== JSON.stringify(normalized.categoryIds) || normalized.categoryIntentPending) await this.store.put(next);
+        if (this.current && this.current.id === next.id) this.current = next;
+      }
     }
 
     async refreshCategories() {
@@ -737,9 +1120,15 @@
       const value = String(id || '');
       if (value && !this.categoryIndex.categories.has(value)) throw new Error(`Category not found: ${value}`);
       this.selectedCategoryId = value;
+      const record = value ? this.categoryIndex.categories.get(value) : null;
+      this.categoryDraftTargets = record ? [
+        ...(record.explicitFiles || []).map((item) => ({ type: 'file', path: item.path, name: item.label || item.path, label: item.label || item.path })),
+        ...(record.explicitNotes || []).map((item) => ({ type: 'note', path: item.path, noteId: item.noteId || '', name: item.label || item.path, label: item.label || item.path }))
+      ] : [];
       this.surface = 'categories';
-      this._setUi({ status: value ? `Category opened: ${this.categoryIndex.categories.get(value).name}.` : 'New category form ready.' });
-      return value ? this.categoryIndex.categories.get(value) : null;
+      this.feedback = this.feedback.filter((item) => item.scope !== 'categories');
+      this._setUi({ replaceCategoryEditor: true, status: value ? `Category opened: ${record.name}.` : 'New category form ready.' });
+      return record;
     }
 
     _categoryDefinitionRecord(id) {
@@ -760,6 +1149,32 @@
       return links;
     }
 
+    async _categoryMemberLinks(definitionPath, targets, workspace) {
+      const files = [];
+      const notes = [];
+      const seen = new Set();
+      for (const target of Array.isArray(targets) ? targets : []) {
+        if (!target || !target.type) continue;
+        if (target.type === 'file') {
+          const path = this.api.normalizeCanonicalRepositoryPath(target.path, 'Categorized repository file');
+          const key = `file:${path}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          files.push({ label: target.label || target.name || path.slice(path.lastIndexOf('/') + 1), target: this.api.repositoryRelativePath(definitionPath, path) });
+        } else if (target.type === 'note') {
+          const note = target.noteId ? await this.store.get(target.noteId) : null;
+          const remote = note ? this.api.normalizeRemote(note.remote) : { owner: target.owner, repo: target.repo, branch: target.branch, path: target.path };
+          if (!this.api.hasRemoteTargetIdentity(remote)) throw new Error(`Selected Note must be saved and verified in GitHub before category assignment: ${target.name || target.noteId || target.path || 'Untitled Note'}.`);
+          if (!this._sameRepositoryContext(remote, workspace)) throw new Error(`Selected Note belongs to another repository or branch: ${note && (note.title || note.id) || target.path}.`);
+          const key = `note:${remote.path}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          notes.push({ label: note && (note.title || note.id) || target.label || target.name || remote.path, target: this.api.repositoryRelativePath(definitionPath, remote.path), noteId: note ? note.id : String(target.noteId || '') });
+        }
+      }
+      return { files, notes };
+    }
+
     async saveCategory(input = {}) {
       return this._runRemoteOperation('Saving and verifying category definition…', async () => {
         const workspace = this._requireCategoryContext();
@@ -775,7 +1190,7 @@
             if (error.kind !== 'not_found') throw error;
           }
         }
-        const previous = existing ? existing.definition : { files: [], impliedCategories: [] };
+        const previous = existing ? existing.definition : { files: [], notes: [], impliedCategories: [] };
         const requestedImplied = this._categoryLinksForIds(path, input.impliedCategoryIds || []);
         const unresolvedPrevious = (previous.impliedCategories || []).filter((link) => {
           try {
@@ -786,27 +1201,35 @@
           }
         });
         const impliedCategories = [...requestedImplied];
-        for (const link of unresolvedPrevious) {
-          if (!impliedCategories.some((item) => item.target === link.target)) impliedCategories.push(link);
-        }
+        for (const link of unresolvedPrevious) if (!impliedCategories.some((item) => item.target === link.target)) impliedCategories.push(link);
+        const selectedTargets = Array.isArray(input.selectedTargets) ? input.selectedTargets : this.categoryDraftTargets;
+        const members = await this._categoryMemberLinks(path, selectedTargets, workspace);
         const content = this.api.encodeCategoryDefinition({
           id,
           name: input.name,
           description: input.description,
           impliedCategories,
-          files: previous.files || []
+          files: members.files,
+          notes: members.notes
         });
         await client.saveVerified({
           path,
           content,
           baseSha: existing ? existing.sha : '',
-          message: `${existing ? 'Update' : 'Create'} file category ${input.name || id}`
+          message: `${existing ? 'Update' : 'Create'} repository category ${input.name || id}`
         });
         await this._refreshCategoriesUnlocked(client, workspace);
         this.selectedCategoryId = id;
+        const saved = this.categoryIndex.categories.get(id);
+        this.categoryDraftTargets = saved ? [
+          ...(saved.explicitFiles || []).map((item) => ({ type: 'file', path: item.path, name: item.label || item.path, label: item.label || item.path })),
+          ...(saved.explicitNotes || []).map((item) => ({ type: 'note', path: item.path, noteId: item.noteId || '', name: item.label || item.path, label: item.label || item.path }))
+        ] : [];
         if (input.group !== undefined) await this.setCategoryGroup(id, input.group, { silent: true });
-        this._setUi({ status: `Category ${input.name || id} saved and verified by read-back.` });
-        return this.categoryIndex.categories.get(id);
+        this.feedback = this.feedback.filter((item) => item.scope !== 'categories');
+        this._pushFeedback({ id: 'category-save-success', scope: 'categories', severity: 'success', title: 'Category saved', message: `${input.name || id} and ${this.categoryDraftTargets.length} membership target(s) were verified by read-back.` });
+        this._setUi({ replaceCategoryEditor: true, status: `Category ${input.name || id} saved and verified by read-back.` });
+        return saved;
       });
     }
 
@@ -844,7 +1267,8 @@
         name: record.definition.name,
         description: record.definition.description,
         impliedCategories: record.definition.impliedCategories,
-        files: kept
+        files: kept,
+        notes: record.definition.notes || []
       });
       const client = await this._client(workspace);
       await client.saveVerified({
@@ -888,8 +1312,10 @@
     async refreshList(query = this.search) {
       this.search = String(query || '');
       const notes = await this.store.search(this.search);
+      const allNotes = typeof this.store.list === 'function' ? await this.store.list() : await this.store.search('');
+      this.noteRelationIndex = this.api.buildNoteRelationIndex ? this.api.buildNoteRelationIndex(allNotes) : this.noteRelationIndex;
       if (this.current) {
-        const refreshed = notes.find((item) => item.id === this.current.id) || await this.store.get(this.current.id);
+        const refreshed = allNotes.find((item) => item.id === this.current.id) || await this.store.get(this.current.id);
         if (refreshed) this.current = this.api.normalizeNote(refreshed);
       }
       this._setUi({ notes, current: this.current, search: this.search });
@@ -1108,10 +1534,16 @@
 
     async saveDraft(note) {
       if (!note) return null;
-      const next = this.api.updateNote(this.api.normalizeNote(note), {
+      const normalized = this.api.normalizeNote(note);
+      const previous = this.current && this.current.id === normalized.id ? this.api.normalizeNote(this.current) : normalized;
+      const categoryIds = this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(note.categoryIds) : (note.categoryIds || []);
+      const categoryChanged = JSON.stringify(categoryIds) !== JSON.stringify(previous.categoryIds || []);
+      const next = this.api.updateNote(normalized, {
         title: note.title,
         body: note.body,
-        links: note.links
+        links: note.links,
+        categoryIds,
+        categoryIntentPending: categoryChanged ? true : Boolean(note.categoryIntentPending)
       });
       await this.store.put(next);
       this.current = next;
@@ -1119,18 +1551,23 @@
     }
 
     async newNote() {
-      const note = this.api.createNote();
+      const note = this.api.createNote({ categoryIds: [] });
       await this.store.put(note);
       this.current = note;
+      this._disposeMediaLoader('note');
+      this.noteRendered = null;
+      this.noteViewMode = 'edit';
       await this.refreshList();
-      this._setUi({ status: 'New local Note created.' });
+      this._setUi({ replaceCurrent: true, status: 'New local Note created. Categories may be selected before the first GitHub save.' });
     }
 
     async selectNote(id) {
       const note = await this.store.get(id);
       if (!note) throw new Error(`Note not found: ${id}`);
       this.current = this.api.normalizeNote(note);
-      this._setUi({ current: this.current, status: `Opened ${this.current.title || 'Untitled Note'}.` });
+      if (this.noteViewMode !== 'edit') await this._renderCurrentNote(this.current);
+      else { this._disposeMediaLoader('note'); this.noteRendered = null; }
+      this._setUi({ current: this.current, replaceCurrent: true, status: `Opened ${this.current.title || 'Untitled Note'}.` });
     }
 
     async saveLocal(note) {
@@ -1272,6 +1709,86 @@
       return note;
     }
 
+    async _setNoteMembershipInCategory(categoryId, note, shouldInclude, client, workspace) {
+      const record = this._categoryDefinitionRecord(categoryId);
+      if (!record) throw new Error(`Category not found: ${categoryId}. Refresh categories first.`);
+      const remoteNote = this.api.normalizeRemote(note.remote);
+      if (!this.api.hasRemoteTargetIdentity(remoteNote) || !this._sameRepositoryContext(remoteNote, workspace)) throw new Error(`Note ${note.title || note.id} is not verified in the active category repository and branch.`);
+      const latestFile = await client.read(record.path);
+      const definition = this.api.decodeCategoryDefinition(latestFile.content);
+      const kept = [];
+      let found = false;
+      for (const link of definition.notes || []) {
+        let resolved = '';
+        try { resolved = this.api.normalizeRepositoryTarget(record.path, link.target).path; } catch (error) { kept.push(link); continue; }
+        if (resolved === remoteNote.path) { found = true; if (shouldInclude) kept.push({ ...link, noteId: note.id, label: note.title || note.id }); }
+        else kept.push(link);
+      }
+      if (shouldInclude && !found) kept.push({ label: note.title || note.id, target: this.api.repositoryRelativePath(record.path, remoteNote.path), noteId: note.id });
+      if (!shouldInclude && !found) return { target: categoryId, status: 'unchanged', message: 'Note was not an explicit member.' };
+      const content = this.api.encodeCategoryDefinition({
+        id: definition.id,
+        name: definition.name,
+        description: definition.description,
+        impliedCategories: definition.impliedCategories || [],
+        files: definition.files || [],
+        notes: kept
+      });
+      if (content === latestFile.content) return { target: categoryId, status: 'unchanged', message: 'Membership already matched.' };
+      await client.saveVerified({
+        path: record.path,
+        content,
+        baseSha: latestFile.sha,
+        message: `${shouldInclude ? 'Add' : 'Remove'} Note ${note.title || note.id} ${shouldInclude ? 'to' : 'from'} category ${definition.name}`
+      });
+      return { target: categoryId, status: 'completed', message: shouldInclude ? 'Note assigned and verified.' : 'Note unassigned and verified.' };
+    }
+
+    async _syncNoteCategories(note) {
+      const desired = new Set(this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(note.categoryIds) : (note.categoryIds || []));
+      const categoryContextCurrent = Boolean(
+        this.categoryContextKey
+        && !this.categoryContextRequiresRefresh
+        && this.categoryContextKey === this._categoryContextKey(this._activeWorkspace())
+      );
+      if (!desired.size && !categoryContextCurrent) return [];
+      if (!this.categoryIndex || !this.categoryIndex.explicitCategoryIdsForTarget) return [];
+      const workspace = this._requireCategoryContext();
+      const remote = this.api.normalizeRemote(note.remote);
+      if (!this.api.hasRemoteTargetIdentity(remote) || !this._sameRepositoryContext(remote, workspace)) throw new Error('Note category membership requires a verified Note in the active repository and branch.');
+      const current = new Set(this.categoryIndex.explicitCategoryIdsForTarget('note', remote.path));
+      const changes = [...new Set([...desired, ...current])].filter((id) => desired.has(id) !== current.has(id));
+      if (!changes.length) {
+        if (note.categoryIntentPending) {
+          const settled = this.api.updateNote(note, { categoryIntentPending: false });
+          await this.store.put(settled);
+          if (this.current && this.current.id === settled.id) this.current = settled;
+        }
+        return [];
+      }
+      const client = await this._client(workspace);
+      const results = [];
+      for (const categoryId of changes) {
+        try { results.push(await this._setNoteMembershipInCategory(categoryId, note, desired.has(categoryId), client, workspace)); }
+        catch (error) { results.push({ target: categoryId, status: 'failed', message: String(error && error.message || error) }); }
+      }
+      await this._refreshCategoriesUnlocked(client, workspace);
+      const failures = results.filter((result) => result.status === 'failed');
+      if (failures.length) {
+        const pending = this.api.updateNote(note, { categoryIntentPending: true });
+        await this.store.put(pending);
+        if (this.current && this.current.id === pending.id) this.current = pending;
+        const error = new Error(`Note was saved, but ${failures.length} category membership update(s) failed.`);
+        error.kind = 'partial_category_update';
+        error.partialResults = results;
+        throw error;
+      }
+      const settled = this.api.updateNote(note, { categoryIntentPending: false });
+      await this.store.put(settled);
+      if (this.current && this.current.id === settled.id) this.current = settled;
+      return results;
+    }
+
     async saveRemote(note) {
       return this._runRemoteOperation('Saving and verifying the configured GitHub target…', () => this._saveRemoteUnlocked(note));
     }
@@ -1318,15 +1835,14 @@
       this.current = local;
       await this.refreshList();
       const content = this.api.encodeNoteMarkdown(local);
+      let result;
       try {
-        const result = await client.saveVerified({
+        result = await client.saveVerified({
           path: target.path,
           content,
           baseSha: remote ? remote.sha : '',
           message: `${remote ? 'Update' : 'Create'} linked Note ${local.title || local.id}`
         });
-        local = this.api.markSavedVerified(local, { ...target, ...result });
-        return this._persistRemoteState(local, result.recoveredAfterUnknownWrite ? 'Remote content verified after an initially unknown write result.' : 'Remote save verified by read-back.');
       } catch (error) {
         if (error.kind === 'verification_unknown' && !this.api.hasRemoteTargetIdentity(local.remote)) {
           const writeResult = error.details && error.details.writeResult ? error.details.writeResult : {};
@@ -1346,6 +1862,19 @@
           : this.api.markSaveFailed(local, error.message);
         await this._persistRemoteState(local);
         throw error;
+      }
+
+      local = this.api.markSavedVerified(local, { ...target, ...result });
+      await this._persistRemoteState(local, result.recoveredAfterUnknownWrite ? 'Remote content verified after an initially unknown write result.' : 'Remote save verified by read-back.');
+      try {
+        const categoryResults = await this._syncNoteCategories(local);
+        if (categoryResults.length) this._pushFeedback({ id: 'note-category-sync', scope: 'notes', severity: 'success', title: 'Note and categories saved', message: `${categoryResults.length} category membership change(s) were verified.`, partialResults: categoryResults });
+        return this.current && this.current.id === local.id ? this.current : local;
+      } catch (categoryError) {
+        const verified = this.current && this.current.id === local.id ? this.current : local;
+        const pending = this.api.updateNote(verified, { state: this.api.NOTE_STATES.SAVED_VERIFIED, stateMessage: categoryError.message, categoryIntentPending: true });
+        await this._persistRemoteState(pending, categoryError.message);
+        throw categoryError;
       }
     }
 
@@ -1525,6 +2054,8 @@
       if (typeof window !== 'undefined' && !window.confirm('Delete this local Note? Remote repository content is not deleted.')) return;
       await this.store.delete(id);
       this.current = null;
+      this._disposeMediaLoader('note');
+      this.noteRendered = null;
       await this.refreshList();
       this._setUi({ status: 'Local Note deleted. Remote content, if any, was not deleted.' });
     }

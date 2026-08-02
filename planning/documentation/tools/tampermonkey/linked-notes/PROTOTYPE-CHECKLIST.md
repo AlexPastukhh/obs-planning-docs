@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.4.2-prototype`
+Prototype version: `0.5.1-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values.
 
@@ -32,9 +32,9 @@ Use one copy for one concrete browser/repository test run. Never record token va
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| 1 | Run `node verify-linked-notes.mjs`. | All 145 tests pass; source syntax, generated syntax and generated freshness pass. | |
+| 1 | Run `node verify-linked-notes.mjs`. | All 174 tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.4.2-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.5.1-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
 
 ## 3. Launcher, Theme And Draft Close
 
@@ -89,7 +89,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 |---:|---|---|---|
 | C1 | Set a Categories folder in the workspace and save it. | Existing workspaces default safely to `categories`; no remote write occurs. | |
 | C2 | Open Categories and press `Refresh categories` when the folder is absent. | Empty category list appears only after repository/branch access is verified. | |
-| C3 | Create `Programming` with a description containing literal headings `## Files` and `## Implied categories`. | A v2 definition is created; the full description survives refresh and exact read-back verification. | |
+| C3 | Create `Programming` with a description containing literal headings `## Files` and `## Implied categories`. | A v3 definition is created; the full description survives refresh and exact read-back verification. | |
 | C4 | Create `ASP.NET Core`, set `Programming` as an implicit category and add a local UX group. | Definition links to Programming; UX group remains only in private local cache. | |
 | C5 | Select a repository file in Files, return to ASP.NET Core and press `Assign selected file`. | One portable visible link is added under `## Files`; target file is not modified. | |
 | C6 | Open ASP.NET Core. | File appears as `explicit`. | |
@@ -103,7 +103,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | C14 | Load categories in Chat A / Workspace A, then navigate to Chat B / Workspace B. | Repository preview and selected category from A clear immediately; only B cache appears and no stale A write is possible. | |
 | C15 | Delete the active Workspace B while its category is selected. | Safe fallback workspace cache replaces B; stale B category actions are blocked. | |
 | C16 | In two tabs, refresh definitions while changing local groups for the same workspace. | Both the newest definition snapshot and group update survive; lock/revision keys settle cleanly. | |
-| C17 | Open a legacy v1 category definition and save an intentional edit. | It remains readable and the explicit save upgrades it to deterministic v2 without losing description or links. | |
+| C17 | Open a legacy v1 category definition and save an intentional edit. | It remains readable and the explicit save upgrades it to deterministic v3 without losing description or links. | |
 | C18 | Edit one workspace in place so owner/repository/branch or Categories folder changes while its ID remains stable. | Old preview/category/cache clears; writes remain blocked until explicit refresh of the new target. | |
 | C19 | In two stale tabs assign different local groups to two different category IDs. | Both group assignments survive because each mutation rereads and changes one category under the lock. | |
 | C20 | Open a file from a Note bound to repository A while Categories uses repository B. | Assign selected file is disabled and the app rejects a direct cross-repository assignment call. | |
@@ -225,3 +225,53 @@ Use test branches only.
 ```text
 pass / partial / fail / inconclusive
 ```
+
+
+## 4C. Note Categories And Multi-Target Category Creation
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| NC1 | Create a local Note and select two categories before its first GitHub save. | Note body and category intent persist locally; no category definition contains an unresolved local-only Note path. | |
+| NC2 | Save the Note to GitHub. | Note is verified first; each selected category definition is then updated and verified. | |
+| NC3 | Edit a verified Note and change its category selection. | Added/removed memberships appear only in affected definitions; Note body is not modified by assignment. | |
+| NC4 | Create a category and choose multiple files and verified Notes in the picker. | One v3 definition is written with separate Files and Notes regions and exact read-back verification. | |
+| NC5 | Force one membership conflict during a multi-category Note save. | Verified Note remains saved; completed/pending/failed category rows are visible and category intent remains retryable. | |
+| NC6 | Select Note categories, then open/edit/save the Note before category refresh or after a failed refresh. | Previously selected unavailable category IDs remain visible and are not replaced with an empty list. | |
+| NC6 | Force category-create failure after entering every field and selecting targets. | ID/name/description/implies/group and all selected targets remain intact in the form. | |
+
+## 4D. Target Picker And Bounded Search
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| TP1 | Open `Choose files or Notes` from a Note. | Files, Notes and Selected tabs appear; no write occurs. | |
+| TP2 | Search a filename at Current folder, depth 1, depth 3 and Entire repository. | Results respect depth; deep matches appear only at sufficient depth. | |
+| TP3 | Reach a folder/request/result bound. | The result is marked incomplete/truncated; prior selected targets remain. | |
+| TP4 | Search Notes by title. | Matching behavior agrees with the existing Notes search. | |
+| TP5 | Select several files/Notes, change tabs/query and apply. | Selection survives; visible Markdown links and managed metadata are created once without duplicates. | |
+| TP6 | Attempt a category or relative managed link to another repository/branch. | The operation is blocked with a contextual explanation. | |
+
+## 4E. Rich Markdown And Repository Images
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| RM1 | Open a Markdown file and switch Rendered ↔ Source. | Rich view and exact source are both available; source remains read-only. | |
+| RM2 | Open a Note and switch Edit / Preview / Split while changing unsaved text. | No text is lost and no automatic remote save occurs. | |
+| RM3 | Render headings, emphasis, lists, task lists, tables, blockquotes and code fences. | Safe expected HTML is shown; code is never executed. | |
+| RM4 | Render a private repository image using Markdown image syntax. | Image loads through authenticated GitHub requests and a temporary object URL; token is absent from DOM/URL. | |
+| RM5 | Render an allowlisted `<img src="…" alt="…" width="…">`. | Image loads; event attributes and style are removed. | |
+| RM6 | Render `<img onerror>`, `<script>`, `javascript:` and unsafe data/blob inputs. | No script/event executes; unsafe targets are blocked or escaped. | |
+| RM7 | Close/switch document/workspace after loading images. | Temporary object URLs are revoked. | |
+| RM8 | Use an external image URL. | It is not loaded automatically; source remains available. | |
+| RM9 | Open rendered links/images whose Markdown destinations contain `%20`, encoded parentheses/brackets, Unicode and `%25`. | The exact decoded repository path opens; malformed `%` and encoded traversal/separators are rejected contextually. | |
+| RM10 | Keep a Note Preview image visible, then render a Markdown file with another image and return to the Note. | File rendering does not revoke the Note image URL; each surface keeps an independent media lifecycle. | |
+| RM11 | Leave each rendered mode, switch workspace and unload/reinstall the userscript after image loading. | Related object URLs are revoked and no stale rendered projection reuses revoked URLs. | |
+
+## 4F. Contextual Errors And Relation Recovery
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| ER1 | Trigger a Note, File, Category and picker error. | A high-contrast readable error appears with the failed surface/action, not only in the bottom sidebar. | |
+| ER2 | Dismiss an error. | The message closes without clearing the form, Note body or picker basket. | |
+| ER3 | Create picker-managed links, clear local Note cache/index and run explicit GitHub refresh. | Outgoing managed links rebuild from Note metadata. | |
+| ER4 | Open the target Note. | `Linked from` shows derived source Notes without target-side backlink writes. | |
+| ER5 | Delete or rename a target externally. | Unresolved relation remains visible; no silent metadata/body deletion occurs. | |

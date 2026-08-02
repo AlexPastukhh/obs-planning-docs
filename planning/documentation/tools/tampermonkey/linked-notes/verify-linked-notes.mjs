@@ -6,12 +6,17 @@ const here = dirname(fileURLToPath(import.meta.url));
 const syntaxPaths = [
   'build-linked-notes.mjs',
   'verify-linked-notes.mjs',
+  'src/action-feedback.js',
   'src/linked-notes-core.js',
   'src/note-markdown-codec.js',
   'src/repository-target.js',
   'src/repository-file-browser.js',
+  'src/repository-target-search.js',
+  'src/rich-markdown-renderer.js',
+  'src/repository-media-loader.js',
   'src/category-definition-codec.js',
   'src/repository-category-index.js',
+  'src/note-relation-index.js',
   'src/category-cache-store.js',
   'src/indexeddb-note-store.js',
   'src/github-contents-client.js',
@@ -20,7 +25,7 @@ const syntaxPaths = [
   'src/workspace-store.js',
   'src/linked-notes-ui.js',
   'src/linked-notes-app.js',
-  'linked-notes-prototype.user.js'
+  'linked-notes-prototype.user.js',
 ];
 
 function run(args) {
@@ -29,6 +34,6 @@ function run(args) {
 }
 
 for (const path of syntaxPaths) run(['--check', join(here, path)]);
-run(['--test', ...['linked-notes-core.test.mjs', 'note-markdown-codec.test.mjs', 'repository-target.test.mjs', 'repository-file-browser.test.mjs', 'category-definition-codec.test.mjs', 'repository-category-index.test.mjs', 'category-cache-store.test.mjs', 'github-contents-client.test.mjs', 'remote-note-reconcile.test.mjs', 'workspace-context.test.mjs', 'workspace-store.test.mjs', 'linked-notes-ui.test.mjs', 'linked-notes-app-policy.test.mjs'].map((name) => join(here, 'tests', name))]);
+run(['--test', ...['action-feedback.test.mjs', 'linked-notes-core.test.mjs', 'note-markdown-codec.test.mjs', 'repository-target.test.mjs', 'repository-file-browser.test.mjs', 'repository-target-search.test.mjs', 'rich-markdown-renderer.test.mjs', 'repository-media-loader.test.mjs', 'category-definition-codec.test.mjs', 'repository-category-index.test.mjs', 'note-relation-index.test.mjs', 'category-cache-store.test.mjs', 'github-contents-client.test.mjs', 'remote-note-reconcile.test.mjs', 'workspace-context.test.mjs', 'workspace-store.test.mjs', 'linked-notes-ui.test.mjs', 'linked-notes-app-policy.test.mjs'].map((name) => join(here, 'tests', name))]);
 run([join(here, 'build-linked-notes.mjs'), '--check']);
 console.log('Linked Notes prototype verification passed.');

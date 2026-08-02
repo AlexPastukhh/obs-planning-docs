@@ -1,7 +1,7 @@
 # Create, Link And Manage Repository Notes Workflow
 
 Status: working project-local End-To-End Workflow / prototype acceptance pending
-Doc version: v1.2.0-remote-read-reconciliation
+Doc version: v1.3.0-categories-picker-rich-markdown-and-relation-recovery
 Scope: independently traversable user workflow for creating, reading, reconciling, editing, linking, persisting and navigating durable repository Notes.
 
 ## 1. Purpose
@@ -12,7 +12,7 @@ This file is the complete Linked Notes behavior owner. The Tampermonkey widget, 
 
 ## 2. Trigger And Result
 
-**Trigger:** the user opens the Notes work surface to create or inspect a Note, explicitly refresh repository Notes, edit content, add/remove a link, save a Note or open a linked target.
+**Trigger:** the user opens the Notes work surface to create or inspect a Note, select categories, edit or richly preview Markdown, choose file/Note targets, explicitly refresh repository Notes, save a Note or open a linked/backlink target.
 
 **Successful result:** a durable repository-owned Markdown Note with stable links can be found, read, reconciled with recoverable local working state and opened again.
 
@@ -83,9 +83,11 @@ The user creates a standalone Note or selects an existing Note. A Note does not 
 
 The user controls title and body. The helper must not silently rewrite, summarize or promote Note content into another semantic type.
 
-### Stage 3 — Manage Links
+### Stage 3 — Select Categories And Manage Links
 
-The user can add/remove links to complete files, stable anchored fragments and other Notes. The current target and unresolved state must be visible before a save is treated as successful.
+The user can select categories while creating or editing a Note. A local-only Note retains pending intent; durable category membership is applied only after the Note target is saved and verified.
+
+Links to files and Notes are selected through a shared tree/search picker with persistent multiple selection and bounded file-search depth. Picker-created links add visible Markdown plus managed metadata. The current target and unresolved state remain visible.
 
 ### Stage 4 — Preserve Local Working State
 
@@ -105,9 +107,9 @@ The user explicitly starts a remote save. The implementation reads the current t
 
 A success response alone is insufficient when the network result may be uncertain. Read the target back and confirm the expected content/identity.
 
-### Stage 8 — Browse And Navigate
+### Stage 8 — Render, Browse And Navigate
 
-The user can find the Note through a list/search/index and open its linked repository files, fragments and Notes. A repository file target may open read-only inside the repository viewer owned by [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md), while retaining an exact `Open on GitHub` target. Category creation and membership remain outside this workflow.
+The user can find the Note through a list/search/index, switch among Edit/Preview/Split views, inspect outgoing relations and derived backlinks, and open linked repository files, fragments and Notes. A repository file target may open read-only inside the repository viewer owned by [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md), while retaining an exact `Open on GitHub` target. Category creation and membership remain outside this workflow.
 
 ## 7. Branches And Failure Paths
 
@@ -127,6 +129,10 @@ The user can find the Note through a list/search/index and open its linked repos
 | Repository file or anchor is missing | unresolved link remains visible |
 | Repository file preview is unsupported or oversized | keep exact target metadata and GitHub link; do not fabricate text preview |
 | Linked Note is missing | unresolved Note target remains visible |
+| Picker traversal reaches a bound | show explicit incomplete search and keep the selected basket |
+| Rich Markdown or repository image fails | keep source/edit state and show a contextual placeholder/error |
+| Note saves but one category update fails | keep the verified Note, preserve category intent and show completed/pending/failed category results |
+| Any form/action fails | show a prominent contextual error and retain Note text, category choices and picker state |
 | Note links form a cycle | navigation remains possible; recursive expansion must stop and report the cycle |
 | Credential missing | no remote write; keep local work |
 | Credential lacks permission | explicit permission failure; no false success |
@@ -164,7 +170,7 @@ Shadow DOM user interface
   → repository file links may use the shared read-only Files surface.
 ```
 
-The corrected `0.4.2-prototype` is supporting implementation evidence for UI, IndexedDB, local review state, GitHub settings, verified writes, explicit Notes-folder refresh, Note-to-Note links and opening repository file links in the shared read-only Files surface. Its full workspace-target context guard clears stale file/category state before a new chat workspace or edited repository target is rendered, and category assignment separately rejects Note-bound previews from another repository/branch. It does not prove final storage, identity, credential or production-distribution architecture; browser and real-GitHub acceptance remain pending.
+The `0.5.1-prototype` is supporting implementation evidence for existing local/remote reconciliation plus Note categories, shared file/Note target picking, bounded search, visible managed links, metadata-derived backlinks, Edit/Preview/Split rich Markdown, authenticated repository images and contextual form-preserving errors. Existing `obs-linked-note:v1` metadata remains the durable managed-link representation; category definitions remain the category-membership owner. Browser and real-GitHub acceptance remain pending.
 
 ## 10. Open Implementation Decisions
 

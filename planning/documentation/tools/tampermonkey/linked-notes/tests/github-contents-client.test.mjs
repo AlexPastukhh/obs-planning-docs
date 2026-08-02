@@ -191,3 +191,19 @@ test('readMetadata does not decode inline file content', async () => {
   assert.equal(result.path, 'docs/a.md');
   assert.equal(result.contentAvailable, true);
 });
+
+
+test('readBytes performs authenticated bounded binary fetch without placing token in the URL', async () => {
+  const calls = [];
+  const client = clientWith(async (request) => {
+    calls.push(request);
+    if (request.responseType === 'arraybuffer') return { status: 200, text: '', response: Uint8Array.from([1, 2, 3]).buffer };
+    return response(200, { type: 'file', path: 'assets/a.png', name: 'a.png', size: 3, sha: 'sha-image', html_url: 'https://example.test/a.png' });
+  });
+  const result = await client.readBytes('assets/a.png', { maxBytes: 10 });
+  assert.deepEqual([...result.bytes], [1, 2, 3]);
+  assert.equal(calls.length, 2);
+  assert.ok(calls.every((call) => call.headers.Authorization === 'Bearer secret'));
+  assert.ok(calls.every((call) => !call.url.includes('secret')));
+  assert.equal(calls[1].responseType, 'arraybuffer');
+});

@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Item Register — Repository-Native Planning Reset
 
 Status: active project-local source-linked register / Batch 3A current item set
-Doc version: v1.1.0-repository-files-and-categories
+Doc version: v1.2.0-rich-markdown-note-categories-and-target-picker
 
 Repository owner:
 
@@ -13,8 +13,8 @@ Selected source snapshot:
 
 ```text
 repository: AlexPastukhh/obs-planning-docs
-commit: b5bac0733c526893a54d96b7b1fe0bd731a1bd2a
-source register blob: 1f0a09dbed6fda539686ec18ecf3ecc69ad39fbf
+commit: a8de8970fd64b15dfc5c29b64ac9caacdd27aee6
+source register blob: b0639f62ef1e91a111a8757ad1d4e30b145e4a6e
 ```
 
 ## 0. Purpose
@@ -59,14 +59,14 @@ The project-local Scenario/DATA/Behavior workspace has completed its coverage au
 
 ## 2. Counts And Disposition
 
-- reviewed canonical items after this transition: **57 / 57**;
-- active selected current meanings: **18**;
+- reviewed canonical items after this transition: **61 / 61**;
+- active selected current meanings: **22**;
 - active reusable-linked meanings: **8**;
 - deferred meanings: **19**;
 - finalized retired meanings: **12**;
 - old methodology/application audit: **110 / 110**, preserved in [`retired-planning-items.md`](retired-planning-items.md).
 
-This transition introduces `ITEM-126` through `ITEM-129`. `ITEM-128` is the selected bounded prototype implementation idea; `ITEM-129` remains a deferred alternative.
+The previous transition introduced `ITEM-126` through `ITEM-129`. This transition adds `ITEM-130` through `ITEM-133`; `ITEM-132` and `ITEM-133` are selected bounded Implementation Ideas, while `ITEM-129` remains deferred.
 
 ## 3. Item Identity And Transformation Rule
 
@@ -749,6 +749,87 @@ Context: complete direct requirement for in-app repository file viewing, GitHub 
 
 Context: explicit acceptance of the immediately preceding item formation and permission to update canonical items, Planning Draft and implement the selected bounded prototype.
 
+
+### SRC-N101
+
+```text
+1 нужно иметь возможность дать категорию файлу или заметке, заметке можждно дать категорию как при создании так и при редактировании 2 при создании категории, при ошибке, сейчас сбрасывается вся введенная инфа, надо это исправить 3 можно добавить возможность выбора файлов или заметок для присванивания им новой категории при создании категории, типо выбрать файл и выбрать заметку и сколько хочешь выбираешь из дерева для присваивания.
+```
+
+Context: primary requirement for file/Note categories, Note category selection during creation/editing, category-form recovery and multi-target category creation.
+
+### SRC-N102
+
+```text
+можно ли сделать чтобы можно было просматривать файлы и заметки как богатый маркдаун?
+```
+
+Context: primary requirement for rich Markdown views of repository files and Linked Notes.
+
+### SRC-N103
+
+```text
+у нас же вроде через токен все происходит, какие проблемы с изображениями?
+```
+
+Context: clarification that private repository images should use the existing authenticated GitHub access path.
+
+### SRC-N104
+
+```text
+можно поддержать img теги?
+```
+
+Context: confirmation that allowed HTML `img` elements are part of the rich-Markdown slice.
+
+### SRC-N105
+
+```text
+также нужно исправить сообщения об ошибках, чтобы они не были где то непонятно где в углу и незаметным цветов и размером. 2 нужно реализовать нормально создание ссылок для заметок, , через выбор в дереве. чтобы еще поиск был как в выборе файла или заметки(по имени) так и в поиске файла по имени и с разной глубиной (чтобы можно было в глубоких папках найти файл с подходящим именем ) . сейчас уже реализован поиск по имени для заметок, можно переиспользовать. можно сделать чтобы в самих заметках только где то метаинфой показано было к каким заметкам или файлам была привязана заметка, чтобы через это в случае чего можно было восстановить связи
+```
+
+Context: primary requirement for prominent contextual errors, tree-based Note link creation, bounded name/depth file search, reuse of Note search and durable recoverable managed-link metadata.
+
+### SRC-N106
+
+```text
+обновить планирование с айтемами и реализовать функционал[PLANNING_COMMAND]
+Read this whole command body before answering.
+Do not ignore `key_reminders`.
+
+command:
+  план файл-обновление
+
+english_name:
+  plan file update
+
+command_family:
+  `план файл-обновление` / `спланируй обновление файлов` / `спланируй архив` / `plan file update` / `archive plan`
+
+source_of_truth:
+  Start from `planning/planning-use-case-map.md`.
+  Then read the linked owner files for this command route.
+
+route_read_rule:
+  Read or reread the route when it is not current, remembered or certain.
+  Do not rely only on this compact prompt when command behavior is uncertain.
+
+key_reminders:
+  - Plan file/docs/code/archive update only.
+  - Treat only explicit user statements and checked source facts as confirmed.
+  - For important unknowns, show prioritized questions with one conservative fallback instruction.
+  - End with `План файл-обновление` in planned mode.
+  - Do not edit files.
+  - Do not create archive unless separately requested.
+
+user_target:
+  <what update/archive should be planned>
+
+[/PLANNING_COMMAND]
+```
+
+Context: explicit acceptance of the formed item transition and authorization to update planning and implement the bounded functionality through the normal reviewed replacement-package flow.
+
 ## 5. Current Item Index
 
 | ID | Current semantic name | Disposition | Current owner |
@@ -766,9 +847,13 @@ Context: explicit acceptance of the immediately preceding item formation and per
 | `ITEM-123` | Project-Readable Tool Configuration | active selected | this register / Planning Draft |
 | `ITEM-124` | Linked Markdown Notes | active selected | this register / Planning Draft |
 | `ITEM-114` | Stable Markdown Link Targets | active selected | this register / Planning Draft |
-| `ITEM-126` | Repository File Browser And Viewer | active selected | this register / Planning Draft |
+| `ITEM-126` | Repository File Browser, Search And Rich Viewer | active selected | this register / Planning Draft |
 | `ITEM-127` | Category Groups And Implicit Category Relations | active selected | this register / Planning Draft |
 | `ITEM-128` | Repository Category Definition Markdown Files | active selected Implementation Idea | this register / prototype evidence |
+| `ITEM-130` | Contextual Action Errors And Form Recovery | active selected | this register / Planning Draft |
+| `ITEM-131` | Repository Target Picker And Bounded Search | active selected | this register / Planning Draft |
+| `ITEM-132` | Sanitized Rich Markdown And Authorized Images | active selected Implementation Idea | this register / prototype evidence |
+| `ITEM-133` | Note Relation Metadata And Derived Backlinks | active selected Implementation Idea | this register / prototype evidence |
 | `ITEM-94` | AI Planning Item Review And Transfer | active reusable-linked | reusable planning owners |
 | `ITEM-110` | Stable Planning Item Identity | active reusable-linked | reusable planning owners |
 | `ITEM-41` | Canonical Planning Item Reuse | active reusable-linked | reusable planning owners |
@@ -795,9 +880,9 @@ Context: explicit acceptance of the immediately preceding item formation and per
 | `ITEM-116` | An AI response can be an immutable file-like system document whose recommended task template defines the required resolvable links. | deferred | this register |
 | `ITEM-125` | A Notes collection/view may be implemented as a typed projection over Reference Objects whose categories include `Note`. | deferred | this register |
 | `ITEM-129` | File-Local Category Metadata | deferred Implementation Idea | this register |
-| `ITEM-118` | File, Folder And Category Views | active selected | this register / Planning Draft |
+| `ITEM-118` | File, Note, Folder And Category Views | active selected | this register / Planning Draft |
 | `ITEM-96` | Folder view aggregates object, relation and category-based views across selected files, optionally including subfolders. | deferred | this register |
-| `ITEM-97` | Repository File Categories And Guidance | active selected | this register / Planning Draft |
+| `ITEM-97` | Repository File And Note Categories And Guidance | active selected | this register / Planning Draft |
 | `ITEM-85` | Специальные файлы, существующие только ради ручного учёта зависимостей, должны стать необязательными после переноса dependency handling в приложение. | absorbed | ITEM-89 / REVIEW-ON-CHANGE-IMPACT |
 | `ITEM-86` | Reference Object Term: «Ссылочный объект» is the confirmed Russian user-facing term for independently managed documentation meaning. | superseded | ITEM-114 / STABLE-MARKDOWN-LINK-TARGETS |
 | `ITEM-22B` | Planning Item Reference Object Boundary distinguishes already managed application-native Planning Items from portable reviewed meanings that still require managed-object creation. | superseded | ITEM-94 and ITEM-98 |
@@ -1067,172 +1152,174 @@ Exact format is selected by each tool after its implementation idea is accepted.
 <a id="item-124"></a>
 ### ITEM-124 / LINKED-MARKDOWN-NOTES — Linked Markdown Notes
 
-- Status: **active selected capability; prototype implemented, acceptance pending**.
+- Status: **active selected capability; `0.5.1-prototype` implementation, acceptance pending**.
 - Former code/name: `FIRST-CLASS-NAMED-NOTES`.
 - Kind: documentation capability.
-- Sources: `SRC-N87`.
+- Sources: `SRC-N87`, `SRC-N101`, `SRC-N102`, `SRC-N105`, `SRC-N106`.
 
 #### Complete current meaning
 
-A Note may be titled or untitled, standalone or linked to another repository target. Notes must be ordinary durable Markdown content with stable links and remain discoverable without requiring a generic Reference Object store.
+A Note may be titled or untitled, standalone or linked to one or several repository files, stable fragments or other Notes. Its durable body remains ordinary repository-owned Markdown with stable Note identity and path; local drafts, indexes, rich HTML and backlinks are derived or working state.
 
-A future helper may provide creation, filtering or target-related views, but:
+The user can choose categories while creating or editing a Note. A local-only Note may retain category intent, but durable membership is written only after the Note has a verified repository target. Managed links are created through a typed file/Note picker, remain visible as ordinary Markdown links and carry quiet recoverable metadata so outgoing links and derived backlinks can be rebuilt after local cache loss. Manually typed ordinary links are not silently converted into managed relations.
 
-- the note body remains repository-owned;
-- a link does not require semantic Home;
-- a category-backed object projection is not required;
-- multi-target behavior and note indexing remain open implementation questions.
+The helper may expose `Edit`, `Preview` and `Split` views. Rendered HTML is a sanitized projection and is never saved instead of Markdown. Failed save, category, picker or rendering actions preserve literal Note content, selected categories and selected targets.
 
+#### Boundaries
+
+- category membership is owned by `ITEM-97` and its category definitions, not duplicated in Note metadata;
+- managed-link metadata identifies picker-created relations only;
+- backlinks are derived and are not written into target files or Notes;
+- a normal link remains navigation and does not create review-on-change meaning;
+- cross-repository relative links are not created silently.
+
+#### Transformation
+
+| Role | Meaning | Effect |
+|---|---|---|
+| Current | durable Markdown Notes with file/fragment/Note links and verified GitHub persistence | preserved |
+| Incoming | Note categories, rich Markdown, tree-based managed links and recoverable relation metadata | extends |
+| Resulting | durable categorized Linked Notes with source/rendered views and rebuildable managed relations | selected current meaning |
 
 <a id="item-97"></a>
-### ITEM-97 / REPOSITORY-FILE-CATEGORIES — Repository File Categories And Guidance
+### ITEM-97 / REPOSITORY-FILE-AND-NOTE-CATEGORIES — Repository File And Note Categories And Guidance
 
 - Status: **active selected current meaning**.
-- Former code/name: `FILE-TYPE-GUIDANCE-ASSIGNMENTS`.
-- Kind: repository file classification and optional guidance assignment.
-- Sources: `SRC-N20`, `SRC-N78`, `SRC-N79`, `SRC-N99`, `SRC-N100`.
+- Former code/name: `FILE-TYPE-GUIDANCE-ASSIGNMENTS`, `REPOSITORY-FILE-CATEGORIES`.
+- Kind: repository material classification and optional guidance assignment.
+- Sources: `SRC-N20`, `SRC-N78`, `SRC-N79`, `SRC-N99`, `SRC-N100`, `SRC-N101`, `SRC-N106`.
 
 #### Complete current meaning
 
-A repository file may have one or several explicit durable categories. The user can create a category, give it stable identity/name and a Markdown description, assign or remove the category for a file, and rebuild category definitions and memberships from repository content after local cache loss.
+A repository file or Linked Note may have one or several explicit durable categories. The user can create a category, give it stable identity/name and Markdown description, assign or remove files and Notes, and rebuild definitions and memberships from repository content after local cache loss.
 
-A category may independently recommend a Document Template, Concern Presets, View Presets or Validation Rules. Those recommendations remain optional and retain their separate semantics. Assigning a category does not automatically create sections, concerns, objects or validation failures.
+A Note can receive categories during creation or later editing. Category creation may start with any number of selected files and verified Notes from the shared target picker. A local-only Note may preserve pending category intent until its repository file is saved and verified.
 
-Explicit membership and derived membership are distinct. The current selected prototype stores explicit membership as visible file links inside the category definition. Local indexes and caches remain derived and rebuildable.
+Explicit and implied membership remain distinct. Category definitions are the selected prototype owner of membership; categorized target files and Note bodies are not modified merely by assignment. Optional template, concern, view or validation guidance remains independently omittable and does not create work automatically.
 
 #### Boundaries
 
-- file categories are distinct from `ITEM-106` object-category field contracts;
-- several explicit categories may coexist on one file;
-- assigning a category does not make an ordinary navigation link a review-on-change obligation;
-- category rename/delete and cross-repository membership require later lifecycle planning;
-- file-local category markers are not required by this item.
+- file and Note targets remain visibly distinct;
+- cross-repository/branch membership is blocked in the selected prototype;
+- category rename/delete and link migration remain separate lifecycle work;
+- file-local category markers remain deferred under `ITEM-129`;
+- partial multi-definition updates preserve verified successes and report pending/failed targets rather than pretending transactionality.
 
 #### Transformation
 
 | Role | Meaning | Effect |
 |---|---|---|
-| Current | deferred file type/category CRUD plus independent guidance recommendations | preserved |
-| Incoming | durable categories, descriptions, file assignment and GitHub-restorable memory | extends and activates |
-| Resulting | repository-backed file categories with optional guidance assignments | selected current meaning |
-
-#### Typed Source Contributions
-
-- `SRC-N20` — historical primary support for file categories and template guidance;
-- `SRC-N78`, `SRC-N79` — supporting view/preset meaning;
-- `SRC-N99` — primary durable category definition, assignment and recovery requirement;
-- `SRC-N100` — acceptance and implementation authorization.
+| Current | repository-backed categories for files | preserved |
+| Incoming | categories for Notes, create/edit integration and multi-target category creation | extends and renames |
+| Resulting | repository file and Note categories with durable rebuildable membership | selected current meaning |
 
 <a id="item-118"></a>
-### ITEM-118 / FILE-FOLDER-CATEGORY-VIEWS — File, Folder And Category Views
+### ITEM-118 / FILE-NOTE-FOLDER-CATEGORY-VIEWS — File, Note, Folder And Category Views
 
 - Status: **active selected current meaning**.
-- Former code/name: `CONFIGURABLE-RELATED-OBJECT-VIEWS`.
+- Former code/name: `CONFIGURABLE-RELATED-OBJECT-VIEWS`, `FILE-FOLDER-CATEGORY-VIEWS`.
 - Kind: selectable derived view and navigation capability.
-- Sources: `SRC-N19`, `SRC-N78`, `SRC-N79`, `SRC-N80`, `SRC-N99`, `SRC-N100`.
+- Sources: `SRC-N19`, `SRC-N78`, `SRC-N79`, `SRC-N80`, `SRC-N99`, `SRC-N100`, `SRC-N101`, `SRC-N105`, `SRC-N106`.
 
 #### Complete current meaning
 
-The application can open a file, folder or category as a navigation context and show concrete repository results. A category view displays its name/description, explicitly assigned files, files included through implicit category relations, exact repository paths, explicit-versus-derived membership and unresolved targets. Each file result can open inside the application and on GitHub.
+The application can open a file, Note, folder or category as a navigation context. Category views distinguish Files from Notes, explicit from implied membership, exact repository identity and unresolved targets. Note views can show managed outgoing file/Note relations and derived incoming backlinks.
 
-Views expose existing state. Opening, filtering or grouping a view does not itself change repository content, create concerns or accept semantic state.
-
-#### Boundaries
-
-- category creation/assignment is owned by `ITEM-97`;
-- folder aggregation remains compatible with `ITEM-96`;
-- file content preview is owned by `ITEM-126`;
-- every transitive expansion must make its relation and derived status visible.
-
-#### Transformation
-
-| Role | Meaning | Effect |
-|---|---|---|
-| Current | deferred configurable file/folder related-object views with category filters | preserved |
-| Incoming | category as a first-class selectable context listing files | extends and activates |
-| Resulting | file, folder and category views with drill-down to repository files | selected current meaning |
+Views expose existing or derived state. Opening, searching, filtering, rendering or grouping a view does not itself change repository content or accept semantic state. Each concrete result can open inside the helper and, when repository-backed, on GitHub.
 
 <a id="item-126"></a>
-### ITEM-126 / REPOSITORY-FILE-VIEWER — Repository File Browser And Viewer
+### ITEM-126 / REPOSITORY-FILE-BROWSER-SEARCH-RICH-VIEWER — Repository File Browser, Search And Rich Viewer
 
 - Status: **active selected current meaning**.
-- Kind: independently useful repository reading and navigation capability.
-- Sources: `SRC-N17`, `SRC-N99`, `SRC-N100`.
+- Kind: independently useful repository reading, search and navigation capability.
+- Sources: `SRC-N17`, `SRC-N99`, `SRC-N100`, `SRC-N102`, `SRC-N103`, `SRC-N104`, `SRC-N105`, `SRC-N106`.
 
 #### Complete current meaning
 
-The application allows a user to browse the selected GitHub repository and open a selected file inside the current work surface. The view shows repository/branch/path identity, a read-only preview when the format and size are supported, explicit unsupported/too-large/error states, and an exact `Open on GitHub` action.
+The application allows a user to browse one explicit GitHub directory at a time, search files by name from a selected root with an explicit depth, and open any selected file through exact repository identity and `Open on GitHub` navigation.
 
-Files reached through repository navigation, Note links or category views use the same viewer. The requirement to view “any file” means every file remains addressable and can be opened on GitHub; it does not require an in-app renderer for every binary format.
+Supported bounded text remains available as literal read-only source. Markdown may additionally be shown through a sanitized rich projection. Binary, unsupported or oversized content retains metadata and GitHub navigation without being misrepresented as complete text.
 
-#### Acceptance
-
-- direct folders can be navigated explicitly;
-- supported text is shown literally and read-only;
-- binary/unsupported/oversized content is not misrepresented as complete text;
-- every selected file keeps an exact GitHub link;
-- ordinary browse/open performs no remote write or background repository scan.
-
-#### Typed Source Contributions
-
-- `SRC-N17` — historical file-navigation support;
-- `SRC-N99` — primary in-app view and GitHub-link requirement;
-- `SRC-N100` — acceptance and implementation authorization.
+Search is explicit and bounded by folder/request/result limits. A deep or entire-repository search reports incomplete/truncated state rather than silently pretending completeness. Search and preview perform no remote write and do not create a background full-repository index.
 
 <a id="item-127"></a>
 ### ITEM-127 / CATEGORY-GROUPS-AND-IMPLICATIONS — Category Groups And Implicit Category Relations
 
 - Status: **active selected current meaning**.
 - Kind: category organization and semantic derivation.
-- Sources: `SRC-N99`, `SRC-N100`.
+- Sources: `SRC-N99`, `SRC-N100`, `SRC-N101`, `SRC-N106`.
 
 #### Complete current meaning
 
-Category grouping and category implication are separate relations.
-
-```text
-local UX group
-  → organizes category presentation only
-  → does not change file membership;
-
-category A implies category B
-  → every file explicitly in A is a derived member of B
-  → transitive derivation is visible and cycle-safe.
-```
-
-Example: `ASP.NET Core` may imply `Programming`; a file explicitly categorized as ASP.NET Core appears as a derived Programming file. Category views show why each membership matched.
-
-#### Boundaries
-
-- local UX groups need not be written to GitHub;
-- semantic implication must be durable/rebuildable;
-- cycles and missing category targets remain explicit;
-- removing the only explicit source removes the derived membership.
+Local UX grouping and durable category implication remain separate relations. A group changes presentation only. When category A implies category B, every file or Note explicitly in A is a visibly derived member of B; transitive derivation is cycle-safe and shows provenance. Missing targets and cycles remain explicit.
 
 <a id="item-128"></a>
 ### ITEM-128 / CATEGORY-DEFINITION-MARKDOWN — Repository Category Definition Markdown Files
 
 - Status: **active selected Implementation Idea / bounded prototype**.
 - Kind: relation-backed implementation idea.
-- Sources: `SRC-N99`, `SRC-N100`.
+- Sources: `SRC-N99`, `SRC-N100`, `SRC-N101`, `SRC-N106`.
 - Relations: `proposes implementation for → ITEM-97`; `supplies views to → ITEM-118`; `represents implication for → ITEM-127`.
 
 #### Complete current meaning
 
-The selected prototype uses one ordinary Markdown definition file per category in a configurable Workspace Categories folder. A compact marker stores schema and stable identity; human-readable Markdown stores the description plus visible links to implied category definitions and member files.
+The selected prototype uses one ordinary Markdown definition file per category in a configurable Categories folder. A versioned marker stores stable category identity; human-readable managed regions store the literal description, implied-category links, file links and typed Note links.
 
-```text
-category definition file
-  → stable id/name marker
-  → literal Markdown description
-  → visible implied-category links
-  → visible member-file links
-  → local cache rebuilt by explicit GitHub refresh.
-```
+Schema v3 writes separate `Files` and `Notes` regions and keeps v1/v2 definitions readable. Category-definition links remain the canonical explicit-membership owner. Every write is explicit, SHA-protected and verified by exact read-back; target files and Note bodies are not modified by assignment.
 
-In this prototype, category-definition file links are the canonical explicit membership owner. Categorized target files are not modified. All category writes are explicit, SHA-protected and verified by exact read-back.
+<a id="item-130"></a>
+### ITEM-130 / CONTEXTUAL-ACTION-ERRORS-AND-FORM-RECOVERY — Contextual Action Errors And Form Recovery
 
-This item selects a prototype representation, not final production architecture. Category rename/delete, recursive repository indexing and file-local redundancy remain open.
+- Status: **active selected current meaning**.
+- Kind: interaction reliability requirement.
+- Sources: `SRC-N101`, `SRC-N105`, `SRC-N106`.
+
+#### Complete current meaning
+
+An error must be prominent and located with the action or form that failed, rather than existing only as small muted text in a distant corner. It shows a readable title, cause, related target/path and, where useful, details or partial per-target results. It remains visible until resolved, retried or dismissed.
+
+Failure does not clear Note content, category ID/name/description, implication selection, local group, selected files/Notes, picker query/depth/basket or other user input. A form resets only after the related operation has fully succeeded and required remote read-back has passed. Partial success distinguishes completed, pending and failed targets and supports retry without undoing verified remote results.
+
+<a id="item-131"></a>
+### ITEM-131 / REPOSITORY-TARGET-PICKER-AND-BOUNDED-SEARCH — Repository Target Picker And Bounded Search
+
+- Status: **active selected current meaning**.
+- Kind: independently reusable supporting capability.
+- Sources: `SRC-N101`, `SRC-N105`, `SRC-N106`.
+
+#### Complete current meaning
+
+One shared target picker selects repository files and Linked Notes for Note links and category membership. It supports directory-tree navigation, file/Note tabs, multiple selection, a persistent selected basket, name search, full paths and an explicit file-search depth including a bounded entire-repository option.
+
+The existing Note-title matching behavior is reused. File traversal is explicit breadth-first reading with visible request/folder/result limits and incomplete state. The picker performs no write itself and blocks target combinations that cannot be represented safely in the caller's repository context.
+
+<a id="item-132"></a>
+### ITEM-132 / SANITIZED-RICH-MARKDOWN-AND-AUTHORIZED-IMAGES — Sanitized Rich Markdown And Authorized Images
+
+- Status: **active selected Implementation Idea / bounded prototype**.
+- Kind: relation-backed implementation idea.
+- Sources: `SRC-N102`, `SRC-N103`, `SRC-N104`, `SRC-N106`.
+- Relations: `proposes implementation for → ITEM-124`; `proposes implementation for → ITEM-126`.
+
+#### Complete current meaning
+
+A bounded renderer creates rich HTML projections for Markdown files and Notes while preserving literal source. It supports common headings, lists, task lists, tables, blockquotes, code, links, Markdown images and an allowlisted HTML `<img>` form.
+
+Repository-relative images resolve in the exact owner/repository/branch/path context of the viewed file or Note, are fetched through the authenticated GitHub client, and are exposed to the DOM only as temporary object URLs. Tokens never enter Markdown, URLs or rendered markup. Unsafe schemes, scripts, event attributes and arbitrary active HTML are blocked. External images are not loaded automatically in the selected prototype.
+
+<a id="item-133"></a>
+### ITEM-133 / NOTE-RELATION-METADATA — Note Relation Metadata And Derived Backlinks
+
+- Status: **active selected Implementation Idea / bounded prototype**.
+- Kind: relation-backed implementation idea.
+- Sources: `SRC-N105`, `SRC-N106`.
+- Relations: `proposes implementation for → ITEM-124`; `supplies derived views to → ITEM-118`; `uses targets from → ITEM-131`.
+
+#### Complete current meaning
+
+Managed links created through the target picker are stored in quiet versioned Note metadata using the existing linked-Note marker contract. Each relation keeps type, label and stable file or Note target identity sufficient to rebuild outgoing relations after local cache loss. The visible Note body also contains ordinary Markdown navigation links.
+
+Incoming backlinks are derived by indexing metadata from other Notes and are not written into targets. Manually typed ordinary Markdown links remain ordinary links unless the user explicitly creates or repairs a managed relation. Category membership is not duplicated in this metadata.
 
 <a id="item-114"></a>
 ### ITEM-114 / STABLE-MARKDOWN-LINK-TARGETS — Stable Markdown Link Targets
@@ -1961,7 +2048,7 @@ Source navigation must resolve from a Planning Item to the complete supporting u
 
 A categorized file could carry a quiet machine-readable category marker so classification moves with the file and can be rebuilt by repository scanning. Exact front matter/comment syntax, source-of-truth precedence, two-sided reconciliation and impact on arbitrary file formats remain unresolved.
 
-The `0.4.2-prototype` deliberately does not write this metadata. Category-definition member links are the selected bounded prototype owner, avoiding two independently editable truths.
+The `0.5.1-prototype` deliberately does not write this metadata. Category-definition member links are the selected bounded prototype owner, avoiding two independently editable truths.
 
 <a id="item-125"></a>
 ### ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION — A Notes collection/view may be implemented as a typed projection over Reference Objects whose categories include `Note`.
@@ -2144,9 +2231,11 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 | Reference Impact Checker | `ITEM-89` | Working / Needs Prototype | detect explicit review relations across changed file/section targets without false positives |
 | AI Transfer Expander | `ITEM-107` | Working / Needs Prototype | produce bounded non-mutating expansion with source identity and unresolved-target reporting |
 | Structured Message Composer implementation | `ITEM-121` | open | independently useful composition flow without a broad application shell |
-| Notes helper/index | `ITEM-124` | supported by current prototype | browser and real-GitHub acceptance |
+| Notes helper/index | `ITEM-124` | supported by `0.5.1-prototype` | browser and real-GitHub acceptance |
 | Repository Category Definition Markdown | `ITEM-97`, `ITEM-118`, `ITEM-127` | selected bounded prototype (`ITEM-128`) | real GitHub create/assign/rebuild/conflict/cycle evidence |
 | File-Local Category Metadata | `ITEM-97` | deferred (`ITEM-129`) | choose canonical precedence and prove value without duplicate truth |
+| Sanitized Rich Markdown And Authorized Images | `ITEM-124`, `ITEM-126` | selected bounded prototype (`ITEM-132`) | browser security and private-image evidence |
+| Note Relation Metadata And Derived Backlinks | `ITEM-124`, `ITEM-118` | selected bounded prototype (`ITEM-133`) | cache-clear rebuild, mismatch and backlink evidence |
 
 ## 11. Open Questions
 
@@ -2157,14 +2246,16 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 5. Which deferred application-heavy capabilities, if any, should be reconsidered after experience with the repository-native baseline?
 6. Should file-local category metadata ever complement category-definition links, and which side would be canonical?
 7. What rename/delete and link-migration behavior is required for category definitions?
+8. Which additional raw HTML elements, if any, justify expanding the rich-renderer allowlist?
+9. Should cross-repository targets use explicit GitHub URLs or remain outside managed relative-link workflows?
 
 ## 12. Next Gate
 
 ```text
 review this register and planning-draft.md
-  → review the two accepted end-to-end workflows
-  → review the proposed Linked Notes workflow and item transformations
-  → inspect the unified Scenario/reusable/root/projection diff
+  → inspect the `0.5.1-prototype` replacement diff
+  → execute browser and real-GitHub acceptance for categories, picker, rich Markdown, images, errors and relation recovery
+  → keep production architecture pending
   → commit/push only after explicit diff approval.
 ```
 

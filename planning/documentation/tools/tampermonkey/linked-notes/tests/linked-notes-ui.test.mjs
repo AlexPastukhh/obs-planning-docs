@@ -128,3 +128,38 @@ test('repository entry buttons preserve listing metadata and cross-repository as
   assert.match(source, /data-entry-html-url=/);
   assert.match(source, /categoryAssignmentAllowed/);
 });
+
+
+test('dirty category form preserves literal fields and selected targets across error rerenders', () => {
+  const captured = { id: 'new-category', name: 'Draft name', description: 'Literal **Markdown**', impliedCategoryIds: ['programming'], group: 'Group', selectedTargets: [{ type: 'file', path: 'docs/a.md' }] };
+  const incoming = { id: '', name: '', description: '', impliedCategoryIds: [], group: '', selectedTargets: [] };
+  const merged = api.mergeCategoryEditorPatch(captured, true, { categoryEditor: incoming, feedback: [{ severity: 'error', message: 'Conflict' }] });
+  assert.equal(merged.categoryEditor.name, 'Draft name');
+  assert.equal(merged.categoryEditor.description, 'Literal **Markdown**');
+  assert.deepEqual(merged.categoryEditor.selectedTargets, []);
+  assert.equal(merged.feedback[0].message, 'Conflict');
+});
+
+test('UI source exposes prominent contextual feedback, rich Markdown modes and shared target picker', () => {
+  const source = readFileSync(join(here, '..', 'src', 'linked-notes-ui.js'), 'utf8');
+  assert.match(source, /feedback-\$\{escapeHtml/);
+  assert.match(source, /data-note-view="preview"/);
+  assert.match(source, /data-note-view="split"/);
+  assert.match(source, /data-file-view="rendered"/);
+  assert.match(source, /Choose files or Notes/);
+  assert.match(source, /Entire repository \(bounded\)/);
+  assert.match(source, /data-note-category-id/);
+});
+
+test('Note category draft preserves unavailable selected IDs and only replaces visible choices', () => {
+  assert.deepEqual(api.mergeVisibleCategorySelection(['known', 'missing'], ['known', 'other'], ['other']), ['missing', 'other']);
+  assert.deepEqual(api.mergeVisibleCategorySelection(['known', 'missing'], [], []), ['known', 'missing']);
+  assert.deepEqual(api.mergeVisibleCategorySelection(['missing'], ['known'], []), ['missing']);
+});
+
+test('UI source displays unavailable selected Note categories instead of clearing them', () => {
+  const source = readFileSync(join(here, '..', 'src', 'linked-notes-ui.js'), 'utf8');
+  assert.match(source, /Selected locally; unavailable until categories refresh succeeds/);
+  assert.match(source, /categoryIds: captured\.categoryIds/);
+  assert.match(source, /mergeVisibleCategorySelection\(this\.state\.current\.categoryIds/);
+});

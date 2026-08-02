@@ -37,7 +37,7 @@ planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.us
   exposes Notes, Files and Categories surfaces in one viewport-safe dark panel;
   performs bounded explicit GET-only Notes refresh, direct repository folder/file reads and category-definition refresh; member validation uses parent-directory listings and does not read member-file content;
   previews supported text files read-only inside the app and always exposes an exact Open on GitHub link;
-  stores file categories as ordinary v2 Markdown definitions with explicit managed-region boundaries, literal descriptions, implied-category links and encoded portable file-member links;
+  stores file categories as ordinary v3 Markdown definitions with explicit managed-region boundaries, literal descriptions, implied-category links and encoded portable file-member links;
   keeps category UX groups local-only in separately revisioned target-scoped records with atomic per-category mutations, derives transitive memberships, reports path-aware malformed/broken/cycle states and rebuilds cache from GitHub;
   performs category create/update/assign/unassign only after explicit user actions with SHA protection and exact read-back verification;
   retains the existing verified Linked Note save/copy/recovery and remote reconciliation behavior;
@@ -155,6 +155,11 @@ Rules:
 - Linked Notes workspace records store only a local name plus owner/repository/branch/Notes-folder/Categories-folder configuration; stable ChatGPT chat IDs map locally only after explicit selection and never become repository content.
 - Category definitions are ordinary repository Markdown; local category snapshots and UX group names are derived/private cache and must be rebuildable or disposable. Cache identity includes workspace id, owner, repository, branch and Categories folder.
 - File-category assignment in this prototype is canonical in encoded category-definition links; categorized target files are not modified, and assignment from a preview in another repository/branch is rejected.
+- Category definitions distinguish file and Linked Note membership; Note bodies are not category owners.
+- Shared target search is explicit and bounded; no background repository index is created.
+- Picker-created Note links persist in existing Note metadata and backlinks are derived locally.
+- Rich Markdown is sanitized derived HTML; repository images use authenticated byte reads and temporary object URLs without token disclosure.
+- Contextual errors preserve the related form, Note draft and target selection.
 - Category-member validation uses bounded parent-directory listings without fetching member-file bodies; group updates mutate one category under a target-scoped lock so stale tabs do not replace unrelated groups.
 - A fresh or unmapped chat may display the global default workspace without creating a chat binding; a new-chat selection remains session-only and is cleared when any stable route appears, while only an explicit selection made on the stable chat is remembered.
 - Workspace switching changes only the current chat context for new/unbound Notes, repository links and explicit Copy; it never silently moves or recreates a verified Note.

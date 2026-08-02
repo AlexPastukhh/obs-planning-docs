@@ -6,13 +6,14 @@
   'use strict';
 
   function normalizePath(value) { return String(value || '').replace(/\\/g, '/').replace(/^\.\//, ''); }
-  function validationFor(source, path) {
-    if (!source) return { status: 'unchecked', message: 'File target was not validated.' };
+  function validationFor(source, path, fallbackMessage) {
+    if (!source) return { status: 'unchecked', message: fallbackMessage };
     const value = source instanceof Map ? source.get(path) : source[path];
-    if (!value) return { status: 'unchecked', message: 'File target was not validated.' };
+    if (!value) return { status: 'unchecked', message: fallbackMessage };
     if (typeof value === 'string') return { status: value, message: '' };
     return { status: String(value.status || 'unchecked'), message: String(value.message || '') };
   }
+  function targetKey(type, path) { return `${type}:${path}`; }
 
   function buildRepositoryCategoryIndex(definitions = [], options = {}) {
     const categories = new Map();
@@ -29,7 +30,17 @@
         errors.push({ kind: 'duplicate_id', id: definition.id, path, firstPath: categories.get(definition.id).path, message: `Duplicate category id ${definition.id}: ${categories.get(definition.id).path} and ${path}.` });
         continue;
       }
-      const record = { ...definition, path, sha: String(raw.sha || ''), htmlUrl: String(raw.htmlUrl || ''), explicitFiles: [], impliedCategoryIds: [], brokenLinks: [] };
+      const record = {
+        ...definition,
+        notes: Array.isArray(definition.notes) ? definition.notes : [],
+        path,
+        sha: String(raw.sha || ''),
+        htmlUrl: String(raw.htmlUrl || ''),
+        explicitFiles: [],
+        explicitNotes: [],
+        impliedCategoryIds: [],
+        brokenLinks: []
+      };
       categories.set(definition.id, record);
       byPath.set(path, definition.id);
     }
@@ -46,6 +57,18 @@
       return out.join('/');
     }
 
+    function addValidationIssue(category, type, path, validation) {
+      const prefix = type === 'note' ? 'Note' : 'Member file';
+      if (validation.status === 'missing') {
+        const issue = { kind: type === 'note' ? 'broken_note_link' : 'broken_file_link', path: category.path, targetPath: path, message: `${prefix} does not exist: ${path}.` };
+        category.brokenLinks.push(issue); errors.push(issue);
+      } else if (validation.status === 'inaccessible') {
+        errors.push({ kind: type === 'note' ? 'inaccessible_note_link' : 'inaccessible_file_link', path: category.path, targetPath: path, message: validation.message || `${prefix} could not be validated: ${path}.` });
+      } else if (validation.status === 'unchecked') {
+        errors.push({ kind: type === 'note' ? 'unchecked_note_link' : 'unchecked_file_link', path: category.path, targetPath: path, message: validation.message || `${prefix} was not validated: ${path}.` });
+      }
+    }
+
     for (const category of categories.values()) {
       const fileSeen = new Set();
       for (const link of category.files || []) {
@@ -54,21 +77,30 @@
           const issue = { kind: 'file_link_invalid', path: category.path, target: link.target, message: `Invalid member-file link in ${category.path}: ${link.target}.` };
           category.brokenLinks.push(issue); errors.push(issue); continue;
         }
-        if (!fileSeen.has(path)) {
-          fileSeen.add(path);
-          const validation = validationFor(options.fileValidation, path);
-          const file = { path, label: link.label || path, validation: validation.status, validationMessage: validation.message };
-          category.explicitFiles.push(file);
-          if (validation.status === 'missing') {
-            const issue = { kind: 'broken_file_link', path: category.path, targetPath: path, message: `Member file does not exist: ${path}.` };
-            category.brokenLinks.push(issue); errors.push(issue);
-          } else if (validation.status === 'inaccessible') {
-            errors.push({ kind: 'inaccessible_file_link', path: category.path, targetPath: path, message: validation.message || `Member file could not be validated: ${path}.` });
-          } else if (validation.status === 'unchecked') {
-            errors.push({ kind: 'unchecked_file_link', path: category.path, targetPath: path, message: validation.message || `Member file was not validated: ${path}.` });
-          }
-        }
+        if (fileSeen.has(path)) continue;
+        fileSeen.add(path);
+        const validation = validationFor(options.fileValidation, path, 'File target was not validated.');
+        const file = { type: 'file', path, label: link.label || path, validation: validation.status, validationMessage: validation.message };
+        category.explicitFiles.push(file);
+        addValidationIssue(category, 'file', path, validation);
       }
+
+      const noteSeen = new Set();
+      for (const link of category.notes || []) {
+        const path = resolveRelative(category.path, link.target);
+        if (!path) {
+          const issue = { kind: 'note_link_invalid', path: category.path, target: link.target, noteId: String(link.noteId || ''), message: `Invalid member-Note link in ${category.path}: ${link.target}.` };
+          category.brokenLinks.push(issue); errors.push(issue); continue;
+        }
+        const identity = `${path}\n${String(link.noteId || '')}`;
+        if (noteSeen.has(identity)) continue;
+        noteSeen.add(identity);
+        const validation = validationFor(options.noteValidation, path, 'Note target was not validated.');
+        const note = { type: 'note', path, noteId: String(link.noteId || ''), label: link.label || path, validation: validation.status, validationMessage: validation.message };
+        category.explicitNotes.push(note);
+        addValidationIssue(category, 'note', path, validation);
+      }
+
       const impliedSeen = new Set();
       for (const link of category.impliedCategories || []) {
         const targetPath = resolveRelative(category.path, link.target);
@@ -105,16 +137,31 @@
 
     const cycleEdges = new Set(cycles.flatMap((cycle) => cycle.slice(0, -1).map((id, index) => `${id}->${cycle[index + 1]}`)));
     const memberships = new Map();
-    for (const category of categories.values()) {
-      for (const file of category.explicitFiles) {
-        const entry = memberships.get(file.path) || { path: file.path, explicit: new Set(), derived: new Set(), validation: file.validation, validationMessage: file.validationMessage };
-        entry.explicit.add(category.id);
-        if (entry.validation === 'unchecked' && file.validation !== 'unchecked') {
-          entry.validation = file.validation; entry.validationMessage = file.validationMessage;
-        }
-        memberships.set(file.path, entry);
+    function addMembership(target, categoryId) {
+      const key = targetKey(target.type, target.path);
+      const entry = memberships.get(key) || {
+        key,
+        type: target.type,
+        path: target.path,
+        noteId: target.noteId || '',
+        label: target.label || target.path,
+        explicit: new Set(),
+        derived: new Set(),
+        validation: target.validation,
+        validationMessage: target.validationMessage
+      };
+      entry.explicit.add(categoryId);
+      if (entry.validation === 'unchecked' && target.validation !== 'unchecked') {
+        entry.validation = target.validation;
+        entry.validationMessage = target.validationMessage;
       }
+      memberships.set(key, entry);
     }
+    for (const category of categories.values()) {
+      for (const file of category.explicitFiles) addMembership(file, category.id);
+      for (const note of category.explicitNotes) addMembership(note, category.id);
+    }
+
     function ancestors(id, seen = new Set()) {
       if (seen.has(id)) return new Set();
       const nextSeen = new Set(seen); nextSeen.add(id);
@@ -131,16 +178,24 @@
       for (const explicit of entry.explicit) for (const implied of ancestors(explicit)) if (!entry.explicit.has(implied)) entry.derived.add(implied);
     }
 
-    function filesForCategory(id) {
+    function targetsForCategory(id, type) {
       const result = [];
       for (const entry of memberships.values()) {
-        if (entry.explicit.has(id)) result.push({ path: entry.path, membership: 'explicit', validation: entry.validation, validationMessage: entry.validationMessage });
-        else if (entry.derived.has(id)) result.push({ path: entry.path, membership: 'derived', validation: entry.validation, validationMessage: entry.validationMessage });
+        if (type && entry.type !== type) continue;
+        const base = { type: entry.type, path: entry.path, noteId: entry.noteId, label: entry.label, validation: entry.validation, validationMessage: entry.validationMessage };
+        if (entry.explicit.has(id)) result.push({ ...base, membership: 'explicit' });
+        else if (entry.derived.has(id)) result.push({ ...base, membership: 'derived' });
       }
       return result.sort((a, b) => a.path.localeCompare(b.path));
     }
+    function filesForCategory(id) { return targetsForCategory(id, 'file'); }
+    function notesForCategory(id) { return targetsForCategory(id, 'note'); }
+    function explicitCategoryIdsForTarget(type, path) {
+      const entry = memberships.get(targetKey(type, normalizePath(path)));
+      return entry ? [...entry.explicit].sort() : [];
+    }
 
-    return { categories, byPath, memberships, errors, cycles, filesForCategory, resolveRelative };
+    return { categories, byPath, memberships, errors, cycles, filesForCategory, notesForCategory, targetsForCategory, explicitCategoryIdsForTarget, resolveRelative, targetKey };
   }
 
   return { buildRepositoryCategoryIndex };

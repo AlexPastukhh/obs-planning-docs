@@ -52,6 +52,17 @@
     return value && typeof value === 'object' && !Array.isArray(value) ? { ...value } : {};
   }
 
+  function normalizeCategoryIds(value) {
+    const result = [];
+    const seen = new Set();
+    for (const item of Array.isArray(value) ? value : []) {
+      const id = normalizeString(item).trim();
+      if (!id || seen.has(id)) continue;
+      seen.add(id); result.push(id);
+    }
+    return result.sort((left, right) => left.localeCompare(right));
+  }
+
   function portableLink(link) {
     return {
       id: normalizeString(link && link.id).trim(),
@@ -137,6 +148,8 @@
       title: normalizeString(note.title),
       body: normalizeString(note.body),
       links: Array.isArray(note.links) ? note.links.map(normalizeLink) : [],
+      categoryIds: normalizeCategoryIds(note.categoryIds),
+      categoryIntentPending: Boolean(note.categoryIntentPending),
       codecExtra: normalizeCodecExtra(note.codecExtra),
       state,
       stateMessage: normalizeString(note.stateMessage),
@@ -154,6 +167,8 @@
       title: input.title,
       body: input.body,
       links: input.links,
+      categoryIds: input.categoryIds,
+      categoryIntentPending: Boolean(input.categoryIntentPending),
       codecExtra: input.codecExtra,
       state: input.state || NOTE_STATES.LOCAL_DRAFT,
       stateMessage: input.stateMessage,
@@ -177,6 +192,8 @@
     const contentChanged = (Object.prototype.hasOwnProperty.call(patch, 'title') && normalizeString(patch.title) !== current.title)
       || (Object.prototype.hasOwnProperty.call(patch, 'body') && normalizeString(patch.body) !== current.body)
       || (Object.prototype.hasOwnProperty.call(patch, 'links') && JSON.stringify(durableLinks(patch.links)) !== JSON.stringify(durableLinks(current.links)));
+    const categoryIntentChanged = Object.prototype.hasOwnProperty.call(patch, 'categoryIds')
+      && JSON.stringify(normalizeCategoryIds(patch.categoryIds)) !== JSON.stringify(current.categoryIds);
     let state = patch.state || current.state;
     if (contentChanged && current.state === NOTE_STATES.SAVED_VERIFIED && !patch.state) {
       state = NOTE_STATES.CHANGED_AFTER_SAVE;
@@ -184,6 +201,8 @@
     return normalizeNote({
       ...current,
       ...patch,
+      categoryIds: categoryIntentChanged ? normalizeCategoryIds(patch.categoryIds) : current.categoryIds,
+      categoryIntentPending: Object.prototype.hasOwnProperty.call(patch, 'categoryIntentPending') ? Boolean(patch.categoryIntentPending) : (categoryIntentChanged ? true : current.categoryIntentPending),
       state,
       updatedAt: nowIso(now),
       remote: patch.remote ? { ...current.remote, ...patch.remote } : current.remote
@@ -279,12 +298,23 @@
     return `${normalized}-${shortId}.md`;
   }
 
+  function searchNotesByName(notes, query) {
+    const needle = normalizeString(query).trim().toLocaleLowerCase();
+    const source = Array.isArray(notes) ? notes : [];
+    return source.filter((note) => {
+      if (!needle) return true;
+      return normalizeString(note && note.title).toLocaleLowerCase().includes(needle);
+    }).sort((left, right) => normalizeString(left && left.title).localeCompare(normalizeString(right && right.title), undefined, { sensitivity: 'base' }));
+  }
+
   return {
     NOTE_STATES,
     LINK_TYPES,
     createId,
     createNote,
     normalizeNote,
+    normalizeCategoryIds,
+    searchNotesByName,
     normalizeLink,
     portableLink,
     durableLinks,

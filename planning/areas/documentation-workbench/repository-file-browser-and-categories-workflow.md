@@ -1,8 +1,8 @@
 # Browse Repository Files And Manage Categories Workflow
 
 Status: working project-local End-To-End Workflow / prototype evidence pending browser and real-GitHub acceptance
-Doc version: v1.0.0-file-browser-and-category-definitions
-Scope: independently traversable behavior for reading repository files inside the helper, opening exact GitHub targets, defining durable file categories and navigating explicit or implied category memberships.
+Doc version: v1.1.0-search-rich-markdown-and-file-note-categories
+Scope: independently traversable behavior for browsing/searching and richly reading repository files, opening exact GitHub targets, defining durable file/Note categories and navigating explicit or implied memberships.
 
 ## 1. Purpose
 
@@ -19,7 +19,7 @@ This workflow owns the complete user-visible behavior introduced by:
 
 **Trigger:** the user selects a configured GitHub workspace and explicitly opens Files or Categories to browse, read, define, assign or inspect repository content.
 
-**Successful result:** the user can read a supported repository file inside the application or open its exact GitHub URL; category definitions and file memberships can be reconstructed from repository Markdown; creating or changing a category is verified by reading the remote result back.
+**Successful result:** the user can read a supported repository file inside the application or open its exact GitHub URL; category definitions and file/Note memberships can be reconstructed from repository Markdown; creating or changing a category is verified by reading the remote result back.
 
 **Other explicit results:** unsupported or oversized preview, missing target, inaccessible repository/branch, malformed category definition, broken file/category link, implication cycle, duplicate category identity, SHA conflict or uncertain remote result.
 
@@ -63,13 +63,13 @@ No repository read is triggered merely by opening the ChatGPT page, changing rou
 
 The active workspace supplies owner, repository, branch, Notes location and category-definition location. Existing workspaces without a category location gain the documented default without losing their Notes configuration.
 
-### Stage 2 — Browse Repository Paths
+### Stage 2 — Browse Or Search Repository Paths
 
-The user explicitly reads one directory at a time. Results distinguish files from directories and preserve exact repository-relative paths. Folder navigation is bounded and does not imply a recursive full-repository index.
+The user explicitly reads one directory at a time or starts a filename search from a selected root with a selected depth. Results distinguish files from directories and preserve exact repository-relative paths. Search is breadth-first and bounded by folder, request and result limits; incomplete state is explicit and no background full-repository index is created.
 
 ### Stage 3 — Read A File Or Open GitHub
 
-A supported bounded text file is shown literally in a read-only preview. Binary, unsupported or oversized files retain path, size and exact GitHub link with an explicit reason that in-app preview is unavailable.
+A supported bounded text file is shown literally in a read-only source view. Markdown can additionally be shown as a sanitized rich projection with repository-relative images loaded through authenticated GitHub reads. Binary, unsupported or oversized files retain path, size and exact GitHub link with an explicit reason that in-app preview is unavailable.
 
 A repository link opened from a Note uses the Note-bound owner/repository/branch context rather than silently switching it to the currently selected workspace.
 
@@ -83,7 +83,8 @@ The definition supplies:
 - display name;
 - literal Markdown description;
 - links to implied categories;
-- links to explicitly assigned repository files.
+- links to explicitly assigned repository files;
+- typed links to explicitly assigned Linked Notes.
 
 ### Stage 5 — Build Category Views
 
@@ -100,9 +101,9 @@ A UI group is separate from implication. Grouping organizes categories locally a
 
 The user supplies a stable ID/name and description, optionally selecting implied categories. A new definition is created only when its target path is absent. An existing definition is updated using the latest known SHA. Existing unresolved implication links are preserved rather than silently repaired or deleted.
 
-### Stage 7 — Assign Or Unassign A File
+### Stage 7 — Assign Or Unassign Files And Notes
 
-The application updates only the selected category definition. It creates or removes a portable repository-relative Markdown link to the selected file. The categorized target file itself is not modified by the selected prototype.
+The application updates only the selected category definition. It creates or removes portable typed links to selected files and verified Linked Notes. Category creation may begin with any number of picker-selected targets. Target files and Note bodies are not modified by assignment.
 
 ### Stage 8 — Verify And Refresh
 
@@ -158,18 +159,20 @@ Before reporting success:
 
 ## 9. Selected Prototype Shape
 
-The corrected bounded `0.4.2-prototype` uses:
+The bounded `0.5.1-prototype` uses:
 
 ```text
 one Tampermonkey Shadow DOM helper;
 GitHub Contents API directory/file reads;
-read-only bounded text preview;
+read-only bounded text source preview plus sanitized rich Markdown;
+explicit bounded filename/depth search and shared file/Note target picker;
+authenticated repository image loading through temporary object URLs;
 one configurable Categories folder per workspace;
-one ordinary Markdown definition per category;
+one ordinary Markdown definition per category with separate Files and Notes regions;
 category definition as canonical explicit-membership owner;
 target-scoped derived category cache and separately revisioned local-only groups with atomic per-category mutations;
 workspace-context generation guards keyed by workspace id, owner, repository, branch and Categories folder;
-category definition v2 managed boundaries and encoded portable link destinations with legacy v1 read compatibility;
+category definition v3 managed boundaries with v1/v2 read compatibility and encoded portable link destinations with legacy v1 read compatibility;
 path-aware diagnostics and bounded parent-directory validation of member-file targets without member-content reads;
 cross-repository assignment guards for Note-bound file previews;
 explicit remote reads and writes only;

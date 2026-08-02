@@ -1,7 +1,7 @@
 # Documentation Workbench Use-Case Registry
 
 Status: active project-local semantic Use-Case Registry
-Doc version: v1.3.0-repository-files-and-categories
+Doc version: v1.4.0-rich-markdown-note-categories-and-target-picker
 Scope: independently useful current Documentation Workbench workflows/capabilities and explicit deferred candidates.
 
 Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
@@ -13,7 +13,7 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 | `UC-DW-DOC-REF` | Repository Documentation Change And Reference Review | accepted current | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) | none |
 | `UC-DW-ITEM-FULL-PICTURE` | Planning Meaning To Repository | accepted current; legacy ID retained | `DIR-DOCUMENTATION-WORKBENCH` | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) | `сверь айтемы` for reconciliation stage only |
 | `UC-DW-LINKED-NOTES` | Create, Link And Manage Repository Notes | working / prototype acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) | none |
-| `UC-DW-REPOSITORY-FILES-CATEGORIES` | Browse Repository Files And Manage Categories | working / prototype acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) | none |
+| `UC-DW-REPOSITORY-FILES-CATEGORIES` | Browse Repository Files And Manage Categories | working / `0.5.1` prototype acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) | none |
 | `UC-DW-STRUCTURED-MESSAGE` | Structured User Message Composer | active supporting | `DIR-DOCUMENTATION-WORKBENCH` | `ITEM-121` in `planning-item-register.md` | none |
 
 ## 2. `UC-DW-DOC-REF` — Repository Documentation Change And Reference Review
@@ -138,3 +138,8 @@ Adaptive: use remembered current local context when clearly sufficient.
 Full: read this registry, the selected complete workflow, the Planning Draft and targeted item/source records.
 
 Activation grants no repository permission.
+
+
+## 7. `0.5.1` Shared Supporting Capabilities
+
+`UC-DW-LINKED-NOTES` and `UC-DW-REPOSITORY-FILES-CATEGORIES` share `ITEM-130` contextual errors, `ITEM-131` target picking/bounded search, `ITEM-132` rich Markdown/images and `ITEM-133` managed Note relation metadata. These are supporting capabilities, not additional independently traversable Use Cases.

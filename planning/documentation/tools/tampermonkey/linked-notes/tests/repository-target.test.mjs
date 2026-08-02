@@ -75,3 +75,22 @@ test('builds portable repository-relative links from category definitions to fil
   assert.equal(targetApi.repositoryRelativePath('a.md', 'nested/b.md'), './nested/b.md');
   assert.throws(() => targetApi.repositoryRelativePath('../a.md', 'b.md'), /repository-relative|\.\./);
 });
+
+test('decodes percent-encoded Markdown repository targets segment by segment', () => {
+  assert.equal(targetApi.decodeRepositoryMarkdownPath('../docs/My%20File%20%28draft%29%20%5Bv2%5D.md'), '../docs/My File (draft) [v2].md');
+  assert.equal(targetApi.decodeRepositoryMarkdownPath('../данные/%D1%82%D0%B5%D1%81%D1%82.md'), '../данные/тест.md');
+  assert.equal(targetApi.decodeRepositoryMarkdownPath('../docs/100%25-ready.md'), '../docs/100%-ready.md');
+  assert.deepEqual(
+    targetApi.normalizeMarkdownRepositoryTarget('notes/topic/note.md', '../../docs/My%20File.md#stable'),
+    { type: 'repository', path: 'docs/My File.md', anchor: 'stable' }
+  );
+});
+
+test('rejects malformed percent encoding and encoded traversal or separators', () => {
+  assert.throws(() => targetApi.decodeRepositoryMarkdownPath('../docs/bad%2.md'), /invalid percent encoding/);
+  assert.throws(() => targetApi.decodeRepositoryMarkdownPath('../docs/%2E%2E/secret.md'), /encoded traversal/);
+  assert.throws(() => targetApi.decodeRepositoryMarkdownPath('../docs/a%2Fb.md'), /invalid decoded path segment/);
+  assert.throws(() => targetApi.decodeRepositoryMarkdownPath('../docs/a%5Cb.md'), /invalid decoded path segment/);
+  assert.throws(() => targetApi.decodeRepositoryMarkdownPath('../docs/a%3Fb.md'), /invalid decoded path segment/);
+  assert.throws(() => targetApi.decodeRepositoryMarkdownPath('../docs/a%23b.md'), /invalid decoded path segment/);
+});

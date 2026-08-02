@@ -43,18 +43,18 @@
     throw new Error('No base64 encoder is available.');
   }
 
-  function base64ToUtf8(value) {
+  function base64ToBytes(value) {
     const compact = String(value || '').replace(/\s+/g, '');
-    let bytes;
     if (typeof atob === 'function') {
       const binary = atob(compact);
-      bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-    } else if (typeof Buffer !== 'undefined') {
-      bytes = Uint8Array.from(Buffer.from(compact, 'base64'));
-    } else {
-      throw new Error('No base64 decoder is available.');
+      return Uint8Array.from(binary, (char) => char.charCodeAt(0));
     }
-    return new TextDecoder().decode(bytes);
+    if (typeof Buffer !== 'undefined') return Uint8Array.from(Buffer.from(compact, 'base64'));
+    throw new Error('No base64 decoder is available.');
+  }
+
+  function base64ToUtf8(value) {
+    return new TextDecoder().decode(base64ToBytes(value));
   }
 
   async function sha256Hex(text) {
@@ -98,8 +98,9 @@
           headers: request.headers,
           data: request.body,
           timeout: request.timeoutMs || 20000,
+          responseType: request.responseType || 'text',
           onload(response) {
-            resolve({ status: response.status, text: response.responseText || '', headers: response.responseHeaders || '' });
+            resolve({ status: response.status, text: response.responseText || '', response: response.response, headers: response.responseHeaders || '' });
           },
           ontimeout() {
             reject(new GitHubClientError('network_unknown', 'GitHub request timed out; remote state must be read before retrying.'));
@@ -169,6 +170,31 @@
       return payload;
     }
 
+    async _requestRaw(url) {
+      let response;
+      try {
+        response = await this.transport({
+          method: 'GET',
+          url,
+          headers: { ...this._headers(), Accept: 'application/vnd.github.raw+json' },
+          timeoutMs: 20000,
+          responseType: 'arraybuffer'
+        });
+      } catch (error) {
+        if (error instanceof GitHubClientError) throw error;
+        throw new GitHubClientError('network_unknown', error && error.message ? error.message : 'GitHub binary request failed.', { cause: error });
+      }
+      if (response.status < 200 || response.status >= 300) {
+        let payload = null;
+        try { payload = parseJson(response.text || ''); } catch (error) { /* preserve status */ }
+        const message = payload && payload.message ? payload.message : `GitHub request failed with status ${response.status}.`;
+        throw new GitHubClientError(statusKind(response.status), message, { status: response.status, payload });
+      }
+      if (response.response instanceof ArrayBuffer) return new Uint8Array(response.response);
+      if (ArrayBuffer.isView(response.response)) return new Uint8Array(response.response.buffer, response.response.byteOffset, response.response.byteLength);
+      return new TextEncoder().encode(String(response.text || ''));
+    }
+
     _fileResult(payload, normalized, options = {}) {
       if (!payload || payload.type !== 'file') {
         throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a file.');
@@ -227,6 +253,20 @@
       const normalized = normalizeGitHubContentPath(path);
       const payload = await this._request('GET', this._url(normalized, true));
       return this._metadataResult(payload, normalized);
+    }
+
+    async readBytes(path, options = {}) {
+      const normalized = normalizeGitHubContentPath(path);
+      const metadata = await this.readMetadata(normalized);
+      const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : 5 * 1024 * 1024;
+      if (metadata.size > maxBytes) {
+        throw new GitHubClientError('limit_exceeded', `GitHub file is ${metadata.size} bytes; media limit is ${maxBytes}.`, { path: normalized, size: metadata.size, maxBytes });
+      }
+      const bytes = await this._requestRaw(this._url(normalized, true));
+      if (bytes.byteLength > maxBytes) {
+        throw new GitHubClientError('limit_exceeded', `GitHub file response is ${bytes.byteLength} bytes; media limit is ${maxBytes}.`, { path: normalized, size: bytes.byteLength, maxBytes });
+      }
+      return { ...metadata, bytes, contentType: '' };
     }
 
     async listDirectory(path, options = {}) {
@@ -350,6 +390,7 @@
     normalizeGitHubContentPath,
     utf8ToBase64,
     base64ToUtf8,
+    base64ToBytes,
     sha256Hex,
     statusKind
   };

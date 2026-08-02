@@ -1,8 +1,38 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.4.2-prototype`
-Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, read-only repository file browsing and GitHub-backed file categories across reusable GitHub workspaces with a viewport-safe scrollable panel.
+Version: `0.5.1-prototype`
+Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
+
+
+## 0. `0.5.1-prototype` Additions
+
+```text
+file and Linked Note categories;
+category selection during Note create/edit;
+multi-select file/Note targets during category creation;
+category definition schema v3 with separate Files and Notes regions;
+shared tree/search target picker with bounded filename/depth traversal;
+managed picker-created Note links stored in existing Note metadata;
+derived outgoing relations and backlinks rebuilt from Note records;
+Note Edit / Preview / Split and Markdown-file Rendered / Source modes;
+sanitized rich Markdown with Markdown images and allowlisted <img>;
+private repository image bytes fetched with the existing GitHub token and exposed only through temporary object URLs;
+prominent surface-scoped errors and category-form/target-basket preservation;
+segment-by-segment decoding of percent-encoded rendered repository targets with encoded-traversal rejection;
+independent Note/File image object-URL lifecycles with full disposal cleanup;
+unavailable selected Note categories preserved through failed or not-yet-completed category refresh;
+174 automated tests.
+```
+
+Durable ownership remains separated:
+
+```text
+category definition Markdown → explicit file/Note category membership;
+linked Note metadata          → picker-created outgoing link identity;
+Note body                     → visible ordinary Markdown navigation;
+rendered HTML/backlinks/cache → derived state only.
+```
 
 ## 1. Owners And Boundaries
 
@@ -150,11 +180,26 @@ store: notes
 
 Tokens and chat-workspace mappings must not be written to IndexedDB Note records or repository Markdown.
 
+
+### `0.5.1` Runtime Boundaries
+
+- Repository file search is explicit breadth-first traversal with folder/request/result/depth limits; it is not a background index.
+- Category definitions write schema v3 while v1/v2 remain readable.
+- A local-only Note may retain pending category intent, but membership is not written until the Note has a verified same-repository target.
+- Multi-category Note synchronization is sequential and may produce explicit partial results; verified writes are not rolled back blindly.
+- Rich Markdown is a derived projection. Unsafe schemes, scripts, event attributes and arbitrary active HTML are blocked.
+- Repository-relative images are fetched with authenticated GitHub requests; the token is never placed in Markdown, DOM URLs or object URLs.
+- External images are not loaded automatically.
+- Errors remain visible in their Notes, Files, Categories or picker context and do not clear related user input.
+
 ## 4. Files
 
 ```text
+src/action-feedback.js
+  structured surface-scoped feedback, partial results and dismissal helpers.
+
 src/linked-notes-core.js
-  Note identity, state transitions, links and portable file naming.
+  Note identity, state transitions, categories, links and portable file naming.
 
 src/note-markdown-codec.js
   deterministic Markdown Note encoding/decoding.
@@ -165,11 +210,23 @@ src/repository-target.js
 src/repository-file-browser.js
   pure repository browsing, breadcrumb, GitHub URL and bounded text-preview policy.
 
+src/repository-target-search.js
+  explicit breadth-first filename search with depth, request, folder and result limits.
+
+src/rich-markdown-renderer.js
+  sanitized derived Markdown HTML with link/image descriptors and allowlisted img attributes.
+
+src/repository-media-loader.js
+  authenticated repository image loading, MIME/size bounds and object-URL cleanup.
+
 src/category-definition-codec.js
   deterministic v2 category Markdown with explicit managed boundaries, encoded portable link destinations and legacy v1 decoding.
 
 src/repository-category-index.js
-  explicit and implied memberships, validation provenance, path-aware broken-link reporting and cycle detection.
+  typed file/Note explicit and implied memberships, validation provenance, path-aware broken-link reporting and cycle detection.
+
+src/note-relation-index.js
+  derived outgoing managed relations and incoming Note/file backlinks.
 
 src/category-cache-store.js
   multi-tab-safe target-scoped category snapshots and separately revisioned local-only UX groups with atomic per-category mutations.

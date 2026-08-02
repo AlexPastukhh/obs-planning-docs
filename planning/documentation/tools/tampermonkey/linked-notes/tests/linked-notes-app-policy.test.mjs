@@ -12,6 +12,11 @@ const api = Object.assign(
   require('../src/note-markdown-codec.js'),
   require('../src/repository-target.js'),
   require('../src/repository-file-browser.js'),
+  require('../src/repository-target-search.js'),
+  require('../src/action-feedback.js'),
+  require('../src/note-relation-index.js'),
+  require('../src/rich-markdown-renderer.js'),
+  require('../src/repository-media-loader.js'),
   require('../src/category-definition-codec.js'),
   require('../src/repository-category-index.js'),
   require('../src/category-cache-store.js'),
@@ -890,7 +895,10 @@ test('category create and file assignment update only the definition with SHA ve
   assert.equal(writes, 2);
   const decoded = api.decodeCategoryDefinition(files.get('categories/asp-net-core.md').content);
   assert.deepEqual(decoded.files, [{ label: 'api.md', target: '../docs/api.md' }]);
-  assert.deepEqual(app.categoryIndex.filesForCategory('asp-net-core'), [{ path: 'docs/api.md', membership: 'explicit', validation: 'verified', validationMessage: 'Repository file exists.' }]);
+  assert.deepEqual(app.categoryIndex.filesForCategory('asp-net-core'), [{
+    type: 'file', path: 'docs/api.md', noteId: '', label: 'api.md', membership: 'explicit',
+    validation: 'verified', validationMessage: 'Repository file exists.'
+  }]);
   await app.unassignCategory('asp-net-core', 'docs/api.md');
   assert.equal(writes, 3);
   assert.deepEqual(api.decodeCategoryDefinition(files.get('categories/asp-net-core.md').content).files, []);
@@ -1117,4 +1125,148 @@ test('category member validation uses bounded directory listings without reading
   assert.deepEqual(reads, ['categories/programming.md']);
   assert.deepEqual(listings, ['categories', 'docs']);
   assert.equal(metadataReads, 0);
+});
+
+
+test('category creation stores selected files and verified Notes in schema v3', async () => {
+  const note = verifiedNote({ path: 'notes/a.md' });
+  const files = new Map();
+  let writes = 0;
+  const client = {
+    async readMetadata(path) { if (!files.has(path)) { const error = new Error('Not Found'); error.kind = 'not_found'; throw error; } return { path, sha: files.get(path).sha, size: files.get(path).content.length }; },
+    async listDirectory(path) {
+      if (path === 'docs') return [{ type: 'file', path: 'docs/api.md', name: 'api.md', size: 1 }];
+      if (path === 'notes') return [{ type: 'file', path: 'notes/a.md', name: 'a.md', size: 1 }];
+      if (path === 'categories') return [...files.entries()].map(([filePath, value]) => ({ type: 'file', path: filePath, name: filePath.split('/').pop(), size: value.content.length }));
+      return [];
+    },
+    async read(path) { if (!files.has(path)) { const error = new Error('Not Found'); error.kind = 'not_found'; throw error; } const value = files.get(path); return { path, name: path.split('/').pop(), sha: value.sha, size: value.content.length, content: value.content, htmlUrl: `https://example.test/${path}` }; },
+    async saveVerified({ path, content, baseSha }) { const existing = files.get(path); assert.equal(baseSha, existing ? existing.sha : ''); writes += 1; const sha = `sha-${writes}`; files.set(path, { content, sha }); return { path, sha, verifiedHash: await api.sha256Hex(content), htmlUrl: `https://example.test/${path}` }; }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true }, client });
+  await app._loadCategoryCache();
+  await app.saveCategory({ id: 'programming', name: 'Programming', description: 'Software.', selectedTargets: [
+    { type: 'file', path: 'docs/api.md', name: 'api.md' },
+    { type: 'note', noteId: note.id, name: note.title }
+  ] });
+  const definition = api.decodeCategoryDefinition(files.get('categories/programming.md').content);
+  assert.equal(definition.schemaVersion, 3);
+  assert.deepEqual(definition.files, [{ label: 'api.md', target: '../docs/api.md' }]);
+  assert.deepEqual(definition.notes, [{ label: 'A', target: '../notes/a.md', noteId: 'note-a' }]);
+  assert.equal(app.categoryIndex.filesForCategory('programming')[0].type, 'file');
+  assert.equal(app.categoryIndex.notesForCategory('programming')[0].type, 'note');
+});
+
+test('verified Note save applies pending category intent and clears it only after read-back', async () => {
+  let note = verifiedNote({ path: 'notes/a.md' });
+  note = api.updateNote(note, { categoryIds: ['programming'], categoryIntentPending: true });
+  const categoryContent = api.encodeCategoryDefinition({ id: 'programming', name: 'Programming', description: '', files: [], notes: [] });
+  const files = new Map([
+    ['categories/programming.md', { content: categoryContent, sha: 'sha-cat' }],
+    ['notes/a.md', { content: api.encodeNoteMarkdown(note), sha: 'sha-a' }]
+  ]);
+  let writes = 0;
+  const client = {
+    async listDirectory(path) {
+      if (path === 'categories') return [{ type: 'file', path: 'categories/programming.md', name: 'programming.md', size: files.get('categories/programming.md').content.length }];
+      if (path === 'notes') return [{ type: 'file', path: 'notes/a.md', name: 'a.md', size: files.get('notes/a.md').content.length }];
+      return [];
+    },
+    async read(path) { const value = files.get(path); if (!value) { const error = new Error('Not Found'); error.kind = 'not_found'; throw error; } return { path, name: path.split('/').pop(), sha: value.sha, size: value.content.length, content: value.content, htmlUrl: `https://example.test/${path}` }; },
+    async saveVerified({ path, content, baseSha }) { const existing = files.get(path); assert.equal(baseSha, existing ? existing.sha : ''); writes += 1; const sha = `sha-new-${writes}`; files.set(path, { content, sha }); return { path, sha, verifiedHash: await api.sha256Hex(content), htmlUrl: `https://example.test/${path}` }; }
+  };
+  const { app, store } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true }, client });
+  await app._loadCategoryCache();
+  await app.refreshCategories();
+  await app.saveRemote(note);
+  const saved = await store.get(note.id);
+  assert.equal(saved.state, api.NOTE_STATES.SAVED_VERIFIED);
+  assert.equal(saved.categoryIntentPending, false);
+  const definition = api.decodeCategoryDefinition(files.get('categories/programming.md').content);
+  assert.deepEqual(definition.notes, [{ label: 'A', target: '../notes/a.md', noteId: 'note-a' }]);
+  assert.equal(writes, 2);
+});
+
+test('target picker reuses Note search and inserts visible Markdown plus managed metadata', async () => {
+  const source = verifiedNote({ path: 'notes/source.md' });
+  const target = api.markSavedVerified(api.createNote({ id: 'note-b', title: 'Target Note', body: '' }), {
+    owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', path: 'notes/target.md', sha: 'sha-b', verifiedHash: 'hash-b', htmlUrl: ''
+  });
+  const client = { async listDirectory(path) { return path === '' ? [{ type: 'file', path: 'docs/api.md', name: 'api.md', size: 1 }] : []; } };
+  const { app, store } = makeApp({ note: source, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true }, client });
+  await store.put(target);
+  app.current = source;
+  await app.openTargetPicker({ mode: 'note-link', cursorStart: 0, cursorEnd: 0 });
+  app.toggleTargetPickerTarget({ type: 'file', path: 'docs/api.md', name: 'api.md' });
+  app.toggleTargetPickerTarget({ type: 'note', noteId: 'note-b', name: 'Target Note', path: 'notes/target.md' });
+  const updated = await app.applyTargetPicker();
+  assert.match(updated.body, /\[api\.md\]\(<\.\.\/docs\/api\.md>\)/);
+  assert.match(updated.body, /\[Target Note\]\(<\.\/target\.md>\)/);
+  assert.equal(updated.links.filter((link) => link.type === 'repository').length, 1);
+  assert.equal(updated.links.filter((link) => link.type === 'note').length, 1);
+  assert.equal(app.noteRelationIndex.incomingForNote('note-b')[0].sourceNoteId, source.id);
+});
+
+test('Note and file rendering keep independent media lifecycles and dispose all URLs on app disposal', async () => {
+  const instances = [];
+  class TrackingMediaLoader {
+    constructor() { this.disposed = false; this.id = instances.length + 1; instances.push(this); }
+    async loadAll(resources) { return resources.map((resource) => ({ id: resource.id, status: 'loaded', objectUrl: `blob:${this.id}:${resource.id}` })); }
+    dispose() { this.disposed = true; }
+  }
+  const customApi = { ...api, RepositoryMediaLoader: TrackingMediaLoader };
+  const note = verifiedNote({ path: 'notes/topic/note.md' });
+  note.body = '![Note](../images/note.png)';
+  const app = new appApi.LinkedNotesApp({
+    api: customApi,
+    store: new MemoryStore([note]),
+    ui: new FakeUI(),
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true },
+    clientFactory: async () => ({ readBytes: async () => ({ bytes: Uint8Array.from([1]), contentType: 'image/png' }) }),
+    getValue: async () => 'token',
+    setValue: async () => {}
+  });
+  app.current = note;
+  await app._renderCurrentNote(note);
+  const noteLoader = instances[0];
+  assert.equal(noteLoader.disposed, false);
+  app.repositoryPreview = { kind: 'text', path: 'docs/file.md', content: '![File](../images/file.png)', context: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a' } };
+  await app._renderCurrentFile();
+  const fileLoader = instances[1];
+  assert.equal(noteLoader.disposed, false);
+  assert.equal(fileLoader.disposed, false);
+  assert.match(app.noteRendered.imageResults[0].objectUrl, /^blob:1:/);
+  assert.match(app.fileRendered.imageResults[0].objectUrl, /^blob:2:/);
+  app.dispose();
+  assert.equal(noteLoader.disposed, true);
+  assert.equal(fileLoader.disposed, true);
+});
+
+test('leaving rendered modes revokes only the related surface media', async () => {
+  const instances = [];
+  class TrackingMediaLoader {
+    constructor() { this.disposed = false; instances.push(this); }
+    async loadAll(resources) { return resources.map((resource) => ({ id: resource.id, status: 'loaded', objectUrl: `blob:${instances.length}:${resource.id}` })); }
+    dispose() { this.disposed = true; }
+  }
+  const customApi = { ...api, RepositoryMediaLoader: TrackingMediaLoader };
+  const note = verifiedNote({ path: 'notes/note.md' });
+  note.body = '![Note](image.png)';
+  const app = new appApi.LinkedNotesApp({
+    api: customApi,
+    store: new MemoryStore([note]),
+    ui: new FakeUI(),
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true },
+    clientFactory: async () => ({ readBytes: async () => ({ bytes: Uint8Array.from([1]), contentType: 'image/png' }) }),
+    getValue: async () => 'token', setValue: async () => {}
+  });
+  app.current = note;
+  await app._renderCurrentNote(note);
+  app.repositoryPreview = { kind: 'text', path: 'docs/file.md', content: '![File](image.png)', context: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a' } };
+  await app._renderCurrentFile();
+  await app.setNoteViewMode('edit', note);
+  assert.equal(instances[0].disposed, true);
+  assert.equal(instances[1].disposed, false);
+  await app.setFileViewMode('source');
+  assert.equal(instances[1].disposed, true);
 });

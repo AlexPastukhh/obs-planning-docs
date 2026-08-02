@@ -7,11 +7,16 @@
 
   const CATEGORY_V1_MARKER_PREFIX = '<!-- obs-file-category:v1 ';
   const CATEGORY_V2_MARKER_PREFIX = '<!-- obs-file-category:v2 ';
+  const CATEGORY_V3_MARKER_PREFIX = '<!-- obs-file-category:v3 ';
   const CATEGORY_MARKER_SUFFIX = ' -->';
   const IMPLIED_START = '<!-- obs-file-category:implied:start -->';
   const IMPLIED_END = '<!-- obs-file-category:implied:end -->';
   const FILES_START = '<!-- obs-file-category:files:start -->';
   const FILES_END = '<!-- obs-file-category:files:end -->';
+  const NOTES_START = '<!-- obs-file-category:notes:start -->';
+  const NOTES_END = '<!-- obs-file-category:notes:end -->';
+  const NOTE_ID_COMMENT_PREFIX = '<!-- obs-category-note:';
+  const NOTE_ID_COMMENT_SUFFIX = ' -->';
 
   function normalizeCategoryId(value) {
     const text = String(value == null ? '' : value).trim().toLowerCase()
@@ -28,21 +33,31 @@
     return text;
   }
 
+  function normalizeNoteId(value) {
+    const text = String(value == null ? '' : value).trim();
+    if (!text) return '';
+    if (text.length > 160 || /[\r\n<>]/.test(text)) throw new TypeError('Category Note id is invalid.');
+    return text;
+  }
+
   function escapeMarkdownLabel(value) {
     return String(value == null ? '' : value).replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
   }
 
-  function normalizeLinkItems(items, key) {
+  function normalizeLinkItems(items, key, options = {}) {
     const result = [];
     const seen = new Set();
     for (const item of Array.isArray(items) ? items : []) {
       const target = String(item && item[key] || '').trim().replace(/\\/g, '/');
-      if (!target || seen.has(target)) continue;
+      if (!target) continue;
       if (/^[a-zA-Z]:\//.test(target) || target.startsWith('/') || target.includes('://') || /[?#]/.test(target)) {
         throw new TypeError(`Category link must be a portable repository-relative Markdown path: ${target}`);
       }
-      seen.add(target);
-      result.push({ ...item, [key]: target, label: String(item && item.label || target).trim() || target });
+      const noteId = options.notes ? normalizeNoteId(item && item.noteId) : '';
+      const identity = options.notes ? `${target}\n${noteId}` : target;
+      if (seen.has(identity)) continue;
+      seen.add(identity);
+      result.push({ ...item, [key]: target, label: String(item && item.label || target).trim() || target, ...(options.notes ? { noteId } : {}) });
     }
     return result;
   }
@@ -58,19 +73,25 @@
   function decodeMarkdownTarget(value) {
     let target = String(value == null ? '' : value).trim();
     if (target.startsWith('<') && target.endsWith('>')) target = target.slice(1, -1);
-    const decoded = target.split('/').map((segment) => {
+    return target.split('/').map((segment) => {
       if (segment === '.' || segment === '..') return segment;
-      let value;
-      try { value = decodeURIComponent(segment.replace(/%(?![0-9A-Fa-f]{2})/g, '%25')); }
+      let decoded;
+      try { decoded = decodeURIComponent(segment.replace(/%(?![0-9A-Fa-f]{2})/g, '%25')); }
       catch (error) { throw new Error(`Category link target has invalid percent encoding: ${target}`); }
-      if (!value || /[\\/?#\u0000-\u001f\u007f]/.test(value)) throw new Error(`Category link target contains an invalid path segment: ${target}`);
-      return value;
+      if (!decoded || /[\\/?#\u0000-\u001f\u007f]/.test(decoded)) throw new Error(`Category link target contains an invalid path segment: ${target}`);
+      return decoded;
     }).join('/');
-    return decoded;
   }
 
   function renderLinks(items) {
     return items.length ? items.map((item) => `- [${escapeMarkdownLabel(item.label)}](<${encodeMarkdownTarget(item.target)}>)`).join('\n') : '_None._';
+  }
+
+  function renderNoteLinks(items) {
+    return items.length ? items.map((item) => {
+      const comment = item.noteId ? ` ${NOTE_ID_COMMENT_PREFIX}${String(item.noteId).replace(/--/g, '\\u002d\\u002d')}${NOTE_ID_COMMENT_SUFFIX}` : '';
+      return `- [${escapeMarkdownLabel(item.label)}](<${encodeMarkdownTarget(item.target)}>)${comment}`;
+    }).join('\n') : '_None._';
   }
 
   function encodeCategoryDefinition(input = {}) {
@@ -79,35 +100,37 @@
     const description = String(input.description == null ? '' : input.description).replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\n+$/g, '');
     const implied = normalizeLinkItems(input.impliedCategories, 'target');
     const files = normalizeLinkItems(input.files, 'target');
-    const metadata = JSON.stringify({ schemaVersion: 2, id, name });
+    const notes = normalizeLinkItems(input.notes, 'target', { notes: true });
+    const metadata = JSON.stringify({ schemaVersion: 3, id, name });
     const descriptionBlock = description ? `${description}\n\n` : '';
-    return `${CATEGORY_V2_MARKER_PREFIX}${metadata}${CATEGORY_MARKER_SUFFIX}\n\n# ${name}\n\n${descriptionBlock}${IMPLIED_START}\n## Implied categories\n\n${renderLinks(implied)}\n${IMPLIED_END}\n\n${FILES_START}\n## Files\n\n${renderLinks(files)}\n${FILES_END}\n`;
+    return `${CATEGORY_V3_MARKER_PREFIX}${metadata}${CATEGORY_MARKER_SUFFIX}\n\n# ${name}\n\n${descriptionBlock}${IMPLIED_START}\n## Implied categories\n\n${renderLinks(implied)}\n${IMPLIED_END}\n\n${FILES_START}\n## Files\n\n${renderLinks(files)}\n${FILES_END}\n\n${NOTES_START}\n## Notes\n\n${renderNoteLinks(notes)}\n${NOTES_END}\n`;
   }
 
   function parseMarker(markdown) {
     const first = String(markdown || '').split(/\r?\n/, 1)[0];
-    const prefix = first.startsWith(CATEGORY_V2_MARKER_PREFIX) ? CATEGORY_V2_MARKER_PREFIX
-      : first.startsWith(CATEGORY_V1_MARKER_PREFIX) ? CATEGORY_V1_MARKER_PREFIX : '';
-    if (!prefix || !first.endsWith(CATEGORY_MARKER_SUFFIX)) throw new Error('Markdown is not an obs-file-category definition.');
+    const candidates = [
+      [CATEGORY_V3_MARKER_PREFIX, 3], [CATEGORY_V2_MARKER_PREFIX, 2], [CATEGORY_V1_MARKER_PREFIX, 1]
+    ];
+    const found = candidates.find(([prefix]) => first.startsWith(prefix));
+    if (!found || !first.endsWith(CATEGORY_MARKER_SUFFIX)) throw new Error('Markdown is not an obs-file-category definition.');
+    const [prefix, expected] = found;
     let metadata;
     try { metadata = JSON.parse(first.slice(prefix.length, -CATEGORY_MARKER_SUFFIX.length)); }
     catch (error) { throw new Error(`Category marker JSON is invalid: ${error.message}`); }
-    const schemaVersion = Number(metadata && metadata.schemaVersion);
-    const expected = prefix === CATEGORY_V2_MARKER_PREFIX ? 2 : 1;
-    if (schemaVersion !== expected) throw new Error('Unsupported category definition schema.');
-    return { schemaVersion, id: normalizeCategoryId(metadata.id), name: normalizeCategoryName(metadata.name) };
+    if (Number(metadata && metadata.schemaVersion) !== expected) throw new Error('Unsupported category definition schema.');
+    return { schemaVersion: expected, id: normalizeCategoryId(metadata.id), name: normalizeCategoryName(metadata.name) };
   }
 
-  function parseMarkdownLinks(text) {
+  function parseMarkdownLinks(text, options = {}) {
     const result = [];
     for (const line of String(text || '').split(/\r?\n/)) {
-      const match = line.match(/^\s*-\s+\[((?:\\.|[^\]])*)\]\((.*)\)\s*$/);
+      const match = line.match(/^\s*-\s+\[((?:\\.|[^\]])*)\]\((.*)\)\s*(?:<!--\s*obs-category-note:([\s\S]*?)\s*-->)?\s*$/);
       if (!match) continue;
       const label = match[1].replace(/\\([\\\[\]])/g, '$1');
       const target = decodeMarkdownTarget(match[2]);
-      result.push({ label, target });
+      result.push({ label, target, ...(options.notes ? { noteId: normalizeNoteId(match[3] || '') } : {}) });
     }
-    return normalizeLinkItems(result, 'target');
+    return normalizeLinkItems(result, 'target', options);
   }
 
   function bodyAndHeading(source) {
@@ -125,14 +148,11 @@
     const impliedIndex = body.indexOf(impliedHeading);
     const filesIndex = body.indexOf(filesHeading);
     if (impliedIndex < 0 || filesIndex < 0 || filesIndex <= impliedIndex) throw new Error('Legacy category managed sections are missing or out of order.');
-    const description = body.slice(heading[0].length, impliedIndex).replace(/^\n+|\n+$/g, '');
     return {
-      schemaVersion: 1,
-      id: marker.id,
-      name: marker.name,
-      description,
+      schemaVersion: 1, id: marker.id, name: marker.name,
+      description: body.slice(heading[0].length, impliedIndex).replace(/^\n+|\n+$/g, ''),
       impliedCategories: parseMarkdownLinks(body.slice(impliedIndex + impliedHeading.length, filesIndex)),
-      files: parseMarkdownLinks(body.slice(filesIndex + filesHeading.length))
+      files: parseMarkdownLinks(body.slice(filesIndex + filesHeading.length)), notes: []
     };
   }
 
@@ -140,56 +160,49 @@
     const start = body.indexOf(startMarker);
     const end = body.indexOf(endMarker);
     if (start < 0 || end < 0 || end <= start) throw new Error(`${label} managed boundaries are missing or out of order.`);
-    if (body.indexOf(startMarker, start + startMarker.length) >= 0 || body.indexOf(endMarker, end + endMarker.length) >= 0) {
-      throw new Error(`${label} managed boundaries are duplicated.`);
-    }
+    if (body.indexOf(startMarker, start + startMarker.length) >= 0 || body.indexOf(endMarker, end + endMarker.length) >= 0) throw new Error(`${label} managed boundaries are duplicated.`);
     return { start, end, contentStart: start + startMarker.length, content: body.slice(start + startMarker.length, end) };
   }
 
-  function decodeV2(source, marker) {
+  function decodeManaged(source, marker) {
     const { body, heading } = bodyAndHeading(source);
     const implied = findManagedRegion(body, IMPLIED_START, IMPLIED_END, 'Implied categories');
     const files = findManagedRegion(body, FILES_START, FILES_END, 'Files');
     if (implied.start < heading[0].length || files.start <= implied.end) throw new Error('Category managed boundaries are out of order.');
-    const description = body.slice(heading[0].length, implied.start).replace(/^\n+|\n+$/g, '');
+    let notes = null;
+    if (marker.schemaVersion >= 3) {
+      notes = findManagedRegion(body, NOTES_START, NOTES_END, 'Notes');
+      if (notes.start <= files.end) throw new Error('Category managed boundaries are out of order.');
+    }
     return {
-      schemaVersion: 2,
+      schemaVersion: marker.schemaVersion,
       id: marker.id,
       name: marker.name,
-      description,
+      description: body.slice(heading[0].length, implied.start).replace(/^\n+|\n+$/g, ''),
       impliedCategories: parseMarkdownLinks(implied.content),
-      files: parseMarkdownLinks(files.content)
+      files: parseMarkdownLinks(files.content),
+      notes: notes ? parseMarkdownLinks(notes.content, { notes: true }) : []
     };
   }
 
   function decodeCategoryDefinition(markdown) {
     const source = String(markdown == null ? '' : markdown).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
     const marker = parseMarker(source);
-    return marker.schemaVersion === 2 ? decodeV2(source, marker) : decodeV1(source, marker);
+    return marker.schemaVersion === 1 ? decodeV1(source, marker) : decodeManaged(source, marker);
   }
 
   function isCategoryDefinitionMarkdown(markdown) {
     const source = String(markdown || '');
-    return source.startsWith(CATEGORY_V1_MARKER_PREFIX) || source.startsWith(CATEGORY_V2_MARKER_PREFIX);
+    return source.startsWith(CATEGORY_V1_MARKER_PREFIX) || source.startsWith(CATEGORY_V2_MARKER_PREFIX) || source.startsWith(CATEGORY_V3_MARKER_PREFIX);
   }
 
   function categoryFileName(id) { return `${normalizeCategoryId(id)}.md`; }
 
   return {
-    CATEGORY_MARKER_PREFIX: CATEGORY_V2_MARKER_PREFIX,
-    CATEGORY_V1_MARKER_PREFIX,
-    CATEGORY_V2_MARKER_PREFIX,
-    IMPLIED_START,
-    IMPLIED_END,
-    FILES_START,
-    FILES_END,
-    normalizeCategoryId,
-    normalizeCategoryName,
-    encodeCategoryDefinition,
-    decodeCategoryDefinition,
-    isCategoryDefinitionMarkdown,
-    categoryFileName,
-    encodeMarkdownTarget,
-    decodeMarkdownTarget
+    CATEGORY_MARKER_PREFIX: CATEGORY_V3_MARKER_PREFIX,
+    CATEGORY_V1_MARKER_PREFIX, CATEGORY_V2_MARKER_PREFIX, CATEGORY_V3_MARKER_PREFIX,
+    IMPLIED_START, IMPLIED_END, FILES_START, FILES_END, NOTES_START, NOTES_END,
+    normalizeCategoryId, normalizeCategoryName, encodeCategoryDefinition, decodeCategoryDefinition,
+    isCategoryDefinitionMarkdown, categoryFileName, encodeMarkdownTarget, decodeMarkdownTarget
   };
 });
