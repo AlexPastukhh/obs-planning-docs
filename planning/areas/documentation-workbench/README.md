@@ -1,8 +1,8 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area / Scenario migration and route alignment
-Doc version: v1.2.0-sufficient-draft-and-route-alignment
-Scope: current planning for repository-native documentation work, stable repository links, affected-use review, AI transfer and linked Notes.
+Doc version: v1.3.0-repository-files-and-categories
+Scope: current planning for repository-native documentation work, stable repository links, affected-use review, AI transfer, linked Notes, repository file viewing and file categories.
 
 Reusable planning method remains under [`planning/documentation/application-planning/`](../../documentation/application-planning/README.md).
 
@@ -30,7 +30,8 @@ Compatibility-only paths are listed separately and are not current owners.
 | Finalized inactive item bodies and pre-reset history | [`retired-planning-items.md`](retired-planning-items.md) |
 | Planning source-to-repository lifecycle | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) |
 | Direct documentation change/reference review lifecycle | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) |
-| Proposed Linked Notes lifecycle expansion | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) |
+| Linked Notes lifecycle | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) |
+| Repository file browser and category lifecycle | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) |
 | Local semantic Directions | [`direction-registry.md`](direction-registry.md) |
 | Local independently useful Use Cases | [`use-case-registry.md`](use-case-registry.md) |
 
@@ -40,13 +41,15 @@ Compatibility-only paths are listed separately and are not current owners.
 ordinary Markdown + Git
   → existing editor / GitHub / reviewed replacement
   → stable file, section and Note links
+  → in-app read-only file viewing and exact GitHub navigation
+  → durable file-category definitions and category views
   → optional explicit review-on-change/include meaning
   → narrow independent helper only when justified.
 ```
 
 A custom application shell, custom Markdown editor, managed-object runtime, App Memory and Semantic Home are not current baseline requirements.
 
-A Tampermonkey Notes widget with GitHub integration is a current Implementation Idea and prototype candidate. It is not accepted architecture and does not replace repository Markdown as the durable owner.
+A Tampermonkey repository helper with Notes, Files and Categories surfaces is current prototype evidence. It is not accepted production architecture and does not replace repository Markdown as the durable owner.
 
 ## 4. Current Workflows
 
@@ -62,13 +65,19 @@ Use when work starts directly from repository Markdown or an accepted planning h
 
 Owner: [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md).
 
-### Proposed Create, Link And Manage Repository Notes
+### Create, Link And Manage Repository Notes
 
-Use this proposed workflow as the complete review object for the incoming Notes expansion: creation/editing, links to files/fragments/Notes and GitHub-backed persistence.
+Use this workflow for Note creation/editing, links to files/fragments/Notes, explicit remote reconciliation and GitHub-backed persistence.
 
-Owner candidate: [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md).
+Owner: [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md).
 
-The two accepted workflows remain current. The Notes workflow is independently traversable but remains proposed until the related canonical Planning Item transition is explicitly reviewed.
+### Browse Repository Files And Manage Categories
+
+Use this workflow when a configured workspace is used to browse/read repository files, create or refresh category definitions, assign files or inspect explicit/implied memberships.
+
+Owner: [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md).
+
+All four workflows are independently traversable. The Tampermonkey implementation remains prototype evidence pending browser and real-GitHub acceptance.
 
 ## 5. Planning Draft Contract Used In This Area
 
@@ -102,7 +111,7 @@ retired-planning-items.md:
 
 Deferred does not mean rejected. Old application-heavy capabilities remain deferred where the current decision did not finally supersede them.
 
-The recent `ITEM-114`, `ITEM-124` and Notes-widget transformations remain subject to explicit Planning Item review before the canonical register is changed.
+The accepted file/category transformations are canonical in `ITEM-97`, `ITEM-118` and `ITEM-126` through `ITEM-129`. `ITEM-128` is selected only as a bounded prototype idea; `ITEM-129` remains deferred.
 
 ## 7. Compatibility Paths
 
@@ -136,5 +145,6 @@ Root README, root Direction/activation/source routes and Tampermonkey projection
 - Batch 2 reusable representations: complete in current repository state.
 - Batch 3A local canonical planning reset: complete.
 - Batch 3B Scenario migration and root/projection alignment: represented by this package.
-- Canonical Planning Item transformations from the latest review: pending explicit acceptance.
-- Runtime and actual micro-tool implementation: not selected.
+- Canonical repository file/category Planning Item transition: represented in the current register.
+- Linked Notes `0.4.2-prototype`: corrected implementation evidence with full workspace-target category isolation, v2 encoded category links, bounded directory-listing validation, cross-repository assignment guards and atomic multi-tab group mutations; browser and real-GitHub acceptance pending.
+- Production runtime architecture: not selected.

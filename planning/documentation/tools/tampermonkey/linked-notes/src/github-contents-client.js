@@ -169,26 +169,73 @@
       return payload;
     }
 
-    async read(path) {
-      const normalized = normalizeGitHubContentPath(path);
-      const payload = await this._request('GET', this._url(normalized, true));
-      if (!payload || payload.type !== 'file' || typeof payload.content !== 'string') {
+    _fileResult(payload, normalized, options = {}) {
+      if (!payload || payload.type !== 'file') {
         throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a file.');
       }
+      const hasInlineContent = typeof payload.content === 'string';
+      if (!hasInlineContent && !options.allowMissingContent) {
+        throw new GitHubClientError('content_unavailable', 'GitHub returned file metadata without inline content.', {
+          path: normalizeGitHubContentPath(payload.path || normalized),
+          size: Number.isFinite(Number(payload.size)) ? Math.max(0, Number(payload.size)) : 0,
+          htmlUrl: payload.html_url || ''
+        });
+      }
       return {
+        type: 'file',
         path: normalizeGitHubContentPath(payload.path || normalized),
+        name: String(payload.name || normalized.slice(normalized.lastIndexOf('/') + 1)),
         sha: payload.sha || '',
-        content: base64ToUtf8(payload.content),
-        htmlUrl: payload.html_url || ''
+        size: Number.isFinite(Number(payload.size)) ? Math.max(0, Number(payload.size)) : 0,
+        content: hasInlineContent ? base64ToUtf8(payload.content) : null,
+        contentAvailable: hasInlineContent,
+        htmlUrl: payload.html_url || '',
+        downloadUrl: payload.download_url || ''
       };
     }
 
-    async listDirectory(path, options = {}) {
+
+    _metadataResult(payload, normalized) {
+      if (!payload || payload.type !== 'file') {
+        throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a file.');
+      }
+      return {
+        type: 'file',
+        path: normalizeGitHubContentPath(payload.path || normalized),
+        name: String(payload.name || normalized.slice(normalized.lastIndexOf('/') + 1)),
+        sha: String(payload.sha || ''),
+        size: Number.isFinite(Number(payload.size)) ? Math.max(0, Number(payload.size)) : 0,
+        contentAvailable: typeof payload.content === 'string',
+        htmlUrl: String(payload.html_url || ''),
+        downloadUrl: String(payload.download_url || '')
+      };
+    }
+
+    _htmlUrl(path) {
       const normalized = normalizeGitHubContentPath(path);
+      const encodedPath = normalized.split('/').map(encodeURIComponent).join('/');
+      return `https://github.com/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/blob/${encodeURIComponent(this.branch)}/${encodedPath}`;
+    }
+
+    async read(path, options = {}) {
+      const normalized = normalizeGitHubContentPath(path);
+      const payload = await this._request('GET', this._url(normalized, true));
+      return this._fileResult(payload, normalized, options);
+    }
+
+    async readMetadata(path) {
+      const normalized = normalizeGitHubContentPath(path);
+      const payload = await this._request('GET', this._url(normalized, true));
+      return this._metadataResult(payload, normalized);
+    }
+
+    async listDirectory(path, options = {}) {
+      const rawPath = String(path == null ? '' : path).replace(/\\/g, '/').trim().replace(/^\/+|\/+$/g, '');
+      const normalized = rawPath ? normalizeGitHubContentPath(rawPath) : '';
       const maxEntries = Number.isInteger(options.maxEntries) && options.maxEntries > 0 ? options.maxEntries : 100;
       let payload;
       try {
-        payload = await this._request('GET', this._url(normalized, true));
+        payload = await this._request('GET', normalized ? this._url(normalized, true) : this._rootUrl());
       } catch (error) {
         if (error instanceof GitHubClientError && error.kind === 'not_found' && options.missingAsEmpty) {
           // A missing folder and an inaccessible repository/branch can both return 404.
@@ -205,7 +252,7 @@
         throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a directory listing.');
       }
       if (payload.length > maxEntries) {
-        throw new GitHubClientError('limit_exceeded', `GitHub Notes folder contains ${payload.length} entries; the explicit refresh limit is ${maxEntries}.`, {
+        throw new GitHubClientError('limit_exceeded', `GitHub directory contains ${payload.length} entries; the explicit listing limit is ${maxEntries}.`, {
           entryCount: payload.length,
           maxEntries
         });
@@ -215,8 +262,11 @@
           throw new GitHubClientError('invalid_response', 'GitHub directory listing contains an invalid entry.');
         }
         const entryPath = normalizeGitHubContentPath(entry.path);
-        if (!entryPath.startsWith(`${normalized}/`)) {
-          throw new GitHubClientError('invalid_response', 'GitHub directory entry escaped the requested Notes folder.');
+        if (normalized && !entryPath.startsWith(`${normalized}/`)) {
+          throw new GitHubClientError('invalid_response', 'GitHub directory entry escaped the requested folder.');
+        }
+        if (!normalized && entryPath.includes('/')) {
+          throw new GitHubClientError('invalid_response', 'GitHub repository-root listing contains a non-direct entry.');
         }
         return {
           type: String(entry.type),

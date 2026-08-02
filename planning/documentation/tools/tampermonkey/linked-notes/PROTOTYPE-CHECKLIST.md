@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.3.0-prototype`
+Prototype version: `0.4.2-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values.
 
@@ -20,9 +20,11 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | Test repository A | |
 | Test branch A | |
 | Notes folder A | `prototype-fixtures/linked-notes` |
+| Categories folder A | `categories` |
 | Test repository B | |
 | Test branch B | |
 | Notes folder B | |
+| Categories folder B | |
 | Chat A URL/identifier, without private content | |
 | Chat B URL/identifier, without private content | |
 
@@ -30,24 +32,24 @@ Use one copy for one concrete browser/repository test run. Never record token va
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| 1 | Run `node verify-linked-notes.mjs`. | All 99 tests pass; source syntax, generated syntax and generated freshness pass. | |
+| 1 | Run `node verify-linked-notes.mjs`. | All 145 tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.3.0-prototype`; one `Notes` launcher appears. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.4.2-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
 
 ## 3. Launcher, Theme And Draft Close
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| 4 | Compare Notes with existing right-edge OBS launchers. | Notes is shifted left by approximately its own width plus a gap and is not hidden. | |
-| 4a | Open Notes with the S2/timer widget or another bottom-right OBS widget visible. | On a wide viewport, Notes reserves bottom-right space and no overlay covers its content. | |
+| 4 | Compare Docs with existing right-edge OBS launchers. | Notes is shifted left by approximately its own width plus a gap and is not hidden. | |
+| 4a | Open Docs with the S2/timer widget or another bottom-right OBS widget visible. | On a wide viewport, Notes reserves bottom-right space and no overlay covers its content. | |
 | 4b | Reduce the viewport height until Links and workspace settings no longer fit at once. | The editor gains an internal scrollbar; the bottom content remains reachable without scrolling the ChatGPT page. | |
 | 4c | Add enough Notes to exceed the sidebar height. | The Note list scrolls independently while status remains reachable. | |
 | 4d | Press the top-bar `Manage workspaces` button from the top of the editor. | The manager opens and is scrolled into view without losing the Note or workspace drafts. | |
 | 4e | Resize the browser while Notes is open. | Panel dimensions and safe area update; controls remain inside the viewport. | |
-| 5 | Open Notes in dark ChatGPT. | Panel, controls, status and manager use a readable dark theme. | |
+| 5 | Open Docs in dark ChatGPT. | Panel, controls, status and manager use a readable dark theme. | |
 | 6 | Create a Note, type title/body without Save local, then press `Escape`. | Note draft persists and the panel closes. | |
 | 7 | Reopen Notes. | Exact title/body from step 6 remains. | |
-| 8 | In `New workspace`, type all four form fields, press `Escape`, then reopen. | Unsaved workspace-form values remain exactly as typed. | |
+| 8 | In `New workspace`, type all five form fields, press `Escape`, then reopen. | Unsaved workspace-form values remain exactly as typed. | |
 | 9 | With a dirty workspace form, trigger a harmless status rerender such as saving the shared token. | Workspace-form values remain unchanged. | |
 | 10 | Start a deliberately slow remote request and press `Escape`. | Panel remains open until the operation completes; no second operation starts. | |
 
@@ -66,6 +68,48 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | 10h | Delete a bound Note file on GitHub and refresh. | Local content remains and state becomes `remote_deleted`. | |
 | 10i | Open/close Notes, navigate chats and switch workspaces without pressing Refresh GitHub. | No Notes-folder listing or background remote read occurs. | |
 | 10j | Configure an invalid/inaccessible branch and refresh. | Explicit repository/branch failure; it is not reported as an empty folder. | |
+
+
+## 4A. Repository File Browser
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| F1 | Open `Files` and press `Browse root`. | Direct root entries load through GET only; folders appear before files. | |
+| F2 | Navigate root → nested folder → parent using breadcrumbs and Up. | Each explicit action reads only the selected direct directory. | |
+| F3 | Open a Markdown, JSON, source-code or text file smaller than 512 KiB. | Literal read-only content, path, size and SHA appear inside the app. | |
+| F4 | Press `Open on GitHub`. | Exact owner/repository/branch/path opens in a new browser tab. | |
+| F5 | Open a binary or unsupported fixture. | No corrupted text appears; metadata and Open on GitHub remain available. | |
+| F6 | Open a listed text fixture larger than the preview limit while recording network calls. | Explicit too-large state appears; no content GET is made and no truncated content is presented as complete. | |
+| F7 | Open a repository link from a Note. | The target opens in the Files surface; GitHub remains available as a separate action. | |
+| F8 | Open/close Docs, switch chats and workspaces without browsing. | No background repository listing or file read occurs. | |
+
+## 4B. Repository File Categories
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| C1 | Set a Categories folder in the workspace and save it. | Existing workspaces default safely to `categories`; no remote write occurs. | |
+| C2 | Open Categories and press `Refresh categories` when the folder is absent. | Empty category list appears only after repository/branch access is verified. | |
+| C3 | Create `Programming` with a description containing literal headings `## Files` and `## Implied categories`. | A v2 definition is created; the full description survives refresh and exact read-back verification. | |
+| C4 | Create `ASP.NET Core`, set `Programming` as an implicit category and add a local UX group. | Definition links to Programming; UX group remains only in private local cache. | |
+| C5 | Select a repository file in Files, return to ASP.NET Core and press `Assign selected file`. | One portable visible link is added under `## Files`; target file is not modified. | |
+| C6 | Open ASP.NET Core. | File appears as `explicit`. | |
+| C7 | Open Programming. | Same file appears as `derived`; reason is distinguishable from explicit membership. | |
+| C8 | Remove the file from ASP.NET Core. | Link is removed through SHA-aware verified update; derived Programming membership disappears. | |
+| C9 | Clear local category cache, then refresh. | Names, descriptions, relations, validation states and memberships rebuild from GitHub. | |
+| C10 | Edit a category definition externally, then submit stale local changes. | Conflict is visible; no blind overwrite occurs. | |
+| C11 | Create malformed definitions, broken category/file links and an implication cycle fixture. | Every issue shows the responsible path/reason; traversal terminates safely. | |
+| C12 | Inspect categorized files. | No file-local category marker was added by this prototype. | |
+| C13 | Inspect network calls during browse/refresh. | Browse and refresh are GET-only; only explicit category create/edit/assign/unassign uses PUT. | |
+| C14 | Load categories in Chat A / Workspace A, then navigate to Chat B / Workspace B. | Repository preview and selected category from A clear immediately; only B cache appears and no stale A write is possible. | |
+| C15 | Delete the active Workspace B while its category is selected. | Safe fallback workspace cache replaces B; stale B category actions are blocked. | |
+| C16 | In two tabs, refresh definitions while changing local groups for the same workspace. | Both the newest definition snapshot and group update survive; lock/revision keys settle cleanly. | |
+| C17 | Open a legacy v1 category definition and save an intentional edit. | It remains readable and the explicit save upgrades it to deterministic v2 without losing description or links. | |
+| C18 | Edit one workspace in place so owner/repository/branch or Categories folder changes while its ID remains stable. | Old preview/category/cache clears; writes remain blocked until explicit refresh of the new target. | |
+| C19 | In two stale tabs assign different local groups to two different category IDs. | Both group assignments survive because each mutation rereads and changes one category under the lock. | |
+| C20 | Open a file from a Note bound to repository A while Categories uses repository B. | Assign selected file is disabled and the app rejects a direct cross-repository assignment call. | |
+| C21 | Assign files named `foo(bar).md`, `a b.md`, `name[1].md`, a Unicode name and a name containing `%`. | Encoded visible links survive save, refresh and GitHub rendering without losing membership. | |
+| C22 | Refresh a category containing many valid member links while recording requests. | Validation lists bounded parent directories; it does not fetch or decode each member file body. | |
+| C23 | Browse a folder and click an oversized listed file through the actual rendered entry button. | Size metadata survives the UI event and no file-content request occurs. | |
 
 ## 5. Workspace Creation And Shared Token
 

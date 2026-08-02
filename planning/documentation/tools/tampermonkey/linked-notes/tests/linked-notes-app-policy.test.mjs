@@ -11,6 +11,10 @@ const api = Object.assign(
   require('../src/linked-notes-core.js'),
   require('../src/note-markdown-codec.js'),
   require('../src/repository-target.js'),
+  require('../src/repository-file-browser.js'),
+  require('../src/category-definition-codec.js'),
+  require('../src/repository-category-index.js'),
+  require('../src/category-cache-store.js'),
   require('../src/github-contents-client.js'),
   require('../src/remote-note-reconcile.js'),
   workspaceContext,
@@ -52,10 +56,20 @@ function makeApp({ note, settings, client, confirmAction = () => true }) {
   const store = new MemoryStore(note ? [note] : []);
   const ui = new FakeUI();
   let clientCalls = 0;
+  let categoryCache = { definitions: [], groups: {}, refreshedAt: '' };
+  const categoryStore = {
+    async load() { return structuredClone(categoryCache); },
+    async save(workspaceId, snapshot) { categoryCache = structuredClone(snapshot); return structuredClone(categoryCache); },
+    async saveDefinitions(workspaceId, snapshot) { categoryCache = { ...structuredClone(categoryCache), ...structuredClone(snapshot), groups: structuredClone(categoryCache.groups || {}) }; return structuredClone(categoryCache); },
+    async setGroups(workspaceId, groups) { categoryCache = { ...structuredClone(categoryCache), groups: structuredClone(groups) }; return structuredClone(categoryCache); },
+    async setCategoryGroup(workspaceId, categoryId, groupName) { const groups = structuredClone(categoryCache.groups || {}); if (String(groupName || '').trim()) groups[categoryId] = String(groupName).trim(); else delete groups[categoryId]; categoryCache = { ...structuredClone(categoryCache), groups }; return structuredClone(categoryCache); },
+    async clear() { categoryCache = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' }; }
+  };
   const app = new appApi.LinkedNotesApp({
     api,
     store,
     ui,
+    categoryStore,
     settings,
     confirmAction,
     clientFactory: async () => { clientCalls += 1; return client; },
@@ -63,7 +77,7 @@ function makeApp({ note, settings, client, confirmAction = () => true }) {
     setValue: async () => {}
   });
   app.current = note || null;
-  return { app, store, ui, clientCalls: () => clientCalls };
+  return { app, store, ui, categoryStore, categoryCache: () => structuredClone(categoryCache), clientCalls: () => clientCalls };
 }
 
 test('regular save blocks repository or branch switch before any network call', async () => {
@@ -782,4 +796,325 @@ test('GitHub refresh preserves conflicts when several local Notes are bound to o
   assert.match(savedB.stateMessage, /same GitHub path/);
   assert.equal(savedA.body, 'A body');
   assert.equal(savedB.body, 'B body');
+});
+
+test('repository browser reads root and previews a text file without remote writes', async () => {
+  const calls = [];
+  const client = {
+    async listDirectory(path) {
+      calls.push(['list', path]);
+      return [
+        { type: 'dir', path: 'docs', name: 'docs', size: 0 },
+        { type: 'file', path: 'README.md', name: 'README.md', size: 7, htmlUrl: 'https://example.test/readme' }
+      ];
+    },
+    async read(path) {
+      calls.push(['read', path]);
+      return { path, name: 'README.md', size: 7, sha: 'sha-readme', content: '# Hello', htmlUrl: 'https://example.test/readme' };
+    },
+    async saveVerified() { throw new Error('browse must not write'); }
+  };
+  const { app, ui } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  await app.browseRepository('');
+  await app.openRepositoryEntry({ type: 'file', path: 'README.md', name: 'README.md' });
+  assert.deepEqual(calls, [['list', ''], ['read', 'README.md']]);
+  assert.equal(app.surface, 'files');
+  assert.equal(app.repositoryPreview.kind, 'text');
+  assert.equal(app.repositoryPreview.content, '# Hello');
+  assert.equal(ui.last.repositoryPreview.path, 'README.md');
+});
+
+test('category refresh rebuilds repository-backed definitions and performs no writes', async () => {
+  const categoryContent = api.encodeCategoryDefinition({
+    id: 'programming', name: 'Programming', description: 'Software development.', files: [{ label: 'Readme', target: '../README.md' }]
+  });
+  let writes = 0;
+  const client = {
+    async listDirectory(path) {
+      assert.equal(path, 'categories');
+      return [{ type: 'file', path: 'categories/programming.md', name: 'programming.md', size: categoryContent.length }];
+    },
+    async read(path) {
+      return { path, name: 'programming.md', size: categoryContent.length, sha: 'sha-programming', content: categoryContent, htmlUrl: 'https://example.test/category' };
+    },
+    async saveVerified() { writes += 1; }
+  };
+  const { app, categoryCache } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  const result = await app.refreshCategories();
+  assert.equal(result.definitions, 1);
+  assert.equal(writes, 0);
+  assert.equal(app.categoryIndex.categories.get('programming').description, 'Software development.');
+  assert.equal(categoryCache().definitions.length, 1);
+});
+
+test('category create and file assignment update only the definition with SHA verification', async () => {
+  const files = new Map();
+  let writes = 0;
+  const client = {
+    async listDirectory(path) {
+      if (path === 'docs') return [{ type: 'file', path: 'docs/api.md', name: 'api.md', size: 10, sha: 'sha-api', htmlUrl: 'https://example.test/docs/api.md' }];
+      return [...files.entries()]
+        .filter(([filePath]) => filePath.startsWith(`${path}/`) && !filePath.slice(path.length + 1).includes('/'))
+        .map(([filePath, value]) => ({ type: 'file', path: filePath, name: filePath.slice(filePath.lastIndexOf('/') + 1), size: value.content.length }));
+    },
+    async read(path) {
+      if (!files.has(path)) { const error = new Error('Not Found'); error.kind = 'not_found'; throw error; }
+      const value = files.get(path);
+      return { path, name: path.slice(path.lastIndexOf('/') + 1), size: value.content.length, sha: value.sha, content: value.content, htmlUrl: `https://example.test/${path}` };
+    },
+    async saveVerified({ path, content, baseSha }) {
+      const existing = files.get(path);
+      assert.equal(baseSha, existing ? existing.sha : '');
+      writes += 1;
+      const sha = `sha-${writes}`;
+      files.set(path, { content, sha });
+      return { path, sha, verifiedHash: await api.sha256Hex(content), htmlUrl: `https://example.test/${path}` };
+    }
+  };
+  const { app } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  await app._loadCategoryCache();
+  await app.saveCategory({ id: 'asp-net-core', name: 'ASP.NET Core', description: 'Framework.', impliedCategoryIds: [], group: 'Technologies' });
+  assert.equal(writes, 1);
+  assert.match(files.get('categories/asp-net-core.md').content, /# ASP\.NET Core/);
+  app.repositoryPreview = { path: 'docs/api.md', context: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a' } };
+  await app.assignCategory('asp-net-core', 'docs/api.md');
+  assert.equal(writes, 2);
+  const decoded = api.decodeCategoryDefinition(files.get('categories/asp-net-core.md').content);
+  assert.deepEqual(decoded.files, [{ label: 'api.md', target: '../docs/api.md' }]);
+  assert.deepEqual(app.categoryIndex.filesForCategory('asp-net-core'), [{ path: 'docs/api.md', membership: 'explicit', validation: 'verified', validationMessage: 'Repository file exists.' }]);
+  await app.unassignCategory('asp-net-core', 'docs/api.md');
+  assert.equal(writes, 3);
+  assert.deepEqual(api.decodeCategoryDefinition(files.get('categories/asp-net-core.md').content).files, []);
+});
+
+test('repository Note links open in the in-app viewer with the Note-bound repository context', async () => {
+  const local = api.createNote({ id: 'note-view-link', title: 'Link', body: '' });
+  const linked = api.addLink(api.markSavedVerified(local, {
+    owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', path: 'notes/link.md',
+    sha: 'sha-note', verifiedHash: 'hash-note', htmlUrl: ''
+  }), { id: 'link-file', type: 'repository', label: 'Readme', target: { path: 'README.md', anchor: '' } });
+  const client = {
+    async read(path) { return { path, name: 'README.md', size: 4, sha: 'sha', content: 'text', htmlUrl: '' }; }
+  };
+  const { app } = makeApp({
+    note: linked,
+    settings: { owner: 'owner-b', repo: 'repo-b', branch: 'branch-b', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  await app.openLink('link-file');
+  assert.equal(app.surface, 'files');
+  assert.equal(app.repositoryPreview.path, 'README.md');
+  assert.deepEqual(app.repositoryPreview.context, { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a' });
+  assert.equal(app.openRepositoryFileInGitHub(), 'https://github.com/owner-a/repo-a/blob/branch-a/README.md');
+});
+
+test('editing a category preserves unresolved implied-category links', async () => {
+  const original = api.encodeCategoryDefinition({
+    id: 'asp-net-core', name: 'ASP.NET Core', description: 'Old.',
+    impliedCategories: [{ label: 'Missing parent', target: 'missing-parent.md' }], files: []
+  });
+  const files = new Map([['categories/asp-net-core.md', { content: original, sha: 'sha-1' }]]);
+  const client = {
+    async listDirectory(path) {
+      return [...files.entries()].filter(([filePath]) => filePath.startsWith(`${path}/`)).map(([filePath, value]) => ({
+        type: 'file', path: filePath, name: filePath.slice(filePath.lastIndexOf('/') + 1), size: value.content.length
+      }));
+    },
+    async read(path) {
+      if (!files.has(path)) { const error = new Error('Not Found'); error.kind = 'not_found'; throw error; }
+      const value = files.get(path);
+      return { path, name: path.slice(path.lastIndexOf('/') + 1), size: value.content.length, sha: value.sha, content: value.content, htmlUrl: '' };
+    },
+    async saveVerified({ path, content, baseSha }) {
+      assert.equal(baseSha, 'sha-1');
+      files.set(path, { content, sha: 'sha-2' });
+      return { path, sha: 'sha-2', verifiedHash: await api.sha256Hex(content), htmlUrl: '' };
+    }
+  };
+  const { app } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  await app.refreshCategories();
+  await app.saveCategory({ id: 'asp-net-core', name: 'ASP.NET Core', description: 'Updated.', impliedCategoryIds: [] });
+  const decoded = api.decodeCategoryDefinition(files.get('categories/asp-net-core.md').content);
+  assert.deepEqual(decoded.impliedCategories, [{ label: 'Missing parent', target: 'missing-parent.md' }]);
+});
+
+test('known oversized repository entry is shown without reading file content', async () => {
+  let reads = 0;
+  const client = {
+    async read() { reads += 1; throw new Error('must not read oversized content'); }
+  };
+  const { app } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  const result = await app.openRepositoryEntry({ type: 'file', path: 'large.md', name: 'large.md', size: api.DEFAULT_PREVIEW_MAX_BYTES + 1, sha: 'sha-large', htmlUrl: 'https://example.test/large' });
+  assert.equal(reads, 0);
+  assert.equal(result.kind, 'too_large');
+  assert.equal(result.htmlUrl, 'https://example.test/large');
+});
+
+test('category refresh keeps path and reason for malformed definitions and broken files', async () => {
+  const malformed = '<!-- obs-file-category:v2 {"schemaVersion":2,"id":"broken","name":"Broken"} -->\n\n# Broken\n\n<!-- obs-file-category:implied:start -->\n';
+  const valid = api.encodeCategoryDefinition({ id: 'valid', name: 'Valid', files: [{ label: 'Missing', target: '../docs/missing.md' }] });
+  const client = {
+    async listDirectory() {
+      return [
+        { type: 'file', path: 'categories/broken.md', name: 'broken.md', size: malformed.length },
+        { type: 'file', path: 'categories/valid.md', name: 'valid.md', size: valid.length }
+      ];
+    },
+    async read(path) {
+      const content = path.endsWith('broken.md') ? malformed : valid;
+      return { path, name: path.slice(path.lastIndexOf('/') + 1), size: content.length, sha: `sha-${path}`, content, htmlUrl: '' };
+    },
+    async probePath(path) { const error = new Error(`Not Found: ${path}`); error.kind = 'not_found'; throw error; }
+  };
+  const { app, ui } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  const result = await app.refreshCategories();
+  assert.ok(result.diagnostics.some((item) => item.kind === 'malformed_definition' && item.path === 'categories/broken.md' && /boundaries/.test(item.message)));
+  assert.ok(result.diagnostics.some((item) => item.kind === 'broken_file_link' && item.targetPath === 'docs/missing.md'));
+  assert.ok(ui.last.categoryErrors.some((item) => item.path === 'categories/broken.md'));
+});
+
+test('route change clears repository state and loads only the destination workspace category cache', async () => {
+  const { app, locationState, gdoc, planning } = await makeWorkspaceApp('/c/chat-a');
+  const a = { path: 'categories/a.md', definition: { id: 'a', name: 'A', description: '', impliedCategories: [], files: [] } };
+  const b = { path: 'categories/b.md', definition: { id: 'b', name: 'B', description: '', impliedCategories: [], files: [] } };
+  await app.categoryStore.saveDefinitions(app._categoryContextKey(gdoc), { definitions: [a], refreshedAt: 'a' });
+  await app.categoryStore.saveDefinitions(app._categoryContextKey(planning), { definitions: [b], refreshedAt: 'b' });
+  await app._loadCategoryCache();
+  app.repositoryPath = 'docs';
+  app.repositoryEntries = [{ type: 'file', path: 'docs/a.md' }];
+  app.repositoryPreview = { path: 'docs/a.md', kind: 'text', content: 'A' };
+  app.selectedCategoryId = 'a';
+  locationState.pathname = '/c/chat-b';
+  await app._checkRouteChange();
+  assert.equal(app.activeWorkspaceId, planning.id);
+  assert.equal(app.categoryContextWorkspaceId, planning.id);
+  assert.deepEqual([...app.categoryIndex.categories.keys()], ['b']);
+  assert.equal(app.repositoryPath, '');
+  assert.deepEqual(app.repositoryEntries, []);
+  assert.equal(app.repositoryPreview, null);
+  assert.equal(app.selectedCategoryId, '');
+});
+
+test('deleting the active workspace loads the fallback cache and blocks stale category writes', async () => {
+  const { app, gdoc, planning } = await makeWorkspaceApp('/c/chat-b');
+  const a = { path: 'categories/a.md', definition: { id: 'a', name: 'A', description: '', impliedCategories: [], files: [] } };
+  const b = { path: 'categories/b.md', definition: { id: 'b', name: 'B', description: '', impliedCategories: [], files: [] } };
+  await app.categoryStore.saveDefinitions(app._categoryContextKey(gdoc), { definitions: [a] });
+  await app.categoryStore.saveDefinitions(app._categoryContextKey(planning), { definitions: [b] });
+  await app._loadCategoryCache();
+  await app.deleteWorkspace(planning.id);
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  assert.equal(app.categoryContextWorkspaceId, gdoc.id);
+  assert.deepEqual([...app.categoryIndex.categories.keys()], ['a']);
+  app.categoryContextWorkspaceId = planning.id;
+  await assert.rejects(() => app.saveCategory({ id: 'a', name: 'A' }), /stale/);
+});
+
+test('UI-shaped oversized repository selection reuses listing metadata and performs no content read', async () => {
+  let reads = 0;
+  const client = {
+    async listDirectory() {
+      return [{ type: 'file', path: 'large.md', name: 'large.md', size: api.DEFAULT_PREVIEW_MAX_BYTES + 10, sha: 'sha-large', htmlUrl: 'https://example.test/large' }];
+    },
+    async read() { reads += 1; throw new Error('oversized content must not be read'); }
+  };
+  const { app } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  await app.browseRepository('');
+  const result = await app.openRepositoryEntry({ path: 'large.md', type: 'file', name: 'large.md' });
+  assert.equal(reads, 0);
+  assert.equal(result.kind, 'too_large');
+  assert.equal(result.sha, 'sha-large');
+  assert.equal(result.htmlUrl, 'https://example.test/large');
+});
+
+test('editing one workspace id to a different repository target invalidates category context until refresh', async () => {
+  const { app, gdoc } = await makeWorkspaceApp('/c/chat-a');
+  const oldDefinition = { path: 'categories/old.md', definition: { id: 'old', name: 'Old', description: '', impliedCategories: [], files: [] } };
+  await app.categoryStore.saveDefinitions(app._categoryContextKey(gdoc), { definitions: [oldDefinition], refreshedAt: 'old' });
+  await app._loadCategoryCache();
+  const oldKey = app.categoryContextKey;
+  app.repositoryPreview = { path: 'docs/old.md', context: { owner: gdoc.owner, repo: gdoc.repo, branch: gdoc.branch } };
+  const updated = await app.saveWorkspace({
+    id: gdoc.id,
+    name: gdoc.name,
+    repositoryInput: 'AlexPastukhh/other-repository',
+    branch: 'dev',
+    basePath: 'notes',
+    categoryBasePath: 'taxonomy',
+    createdAt: gdoc.createdAt
+  });
+  assert.equal(updated.id, gdoc.id);
+  assert.notEqual(app.categoryContextKey, oldKey);
+  assert.equal(app.categoryContextRequiresRefresh, true);
+  assert.equal(app.repositoryPreview, null);
+  assert.deepEqual([...app.categoryIndex.categories.keys()], []);
+  await assert.rejects(() => app.saveCategory({ id: 'new', name: 'New' }), /stale|Refresh/i);
+});
+
+test('category assignment rejects a Note-bound file from another repository before any write', async () => {
+  let writes = 0;
+  const client = { async saveVerified() { writes += 1; throw new Error('must not write'); } };
+  const { app } = makeApp({
+    settings: { owner: 'owner-b', repo: 'repo-b', branch: 'main', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  await app._loadCategoryCache();
+  const definition = { path: 'categories/programming.md', sha: 'sha-category', definition: { id: 'programming', name: 'Programming', description: '', impliedCategories: [], files: [] } };
+  app.categorySnapshot = { definitions: [definition], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: 'now' };
+  app.categoryIndex = api.buildRepositoryCategoryIndex([definition]);
+  app.selectedCategoryId = 'programming';
+  app.repositoryPreview = { path: 'docs/a.md', context: { owner: 'owner-a', repo: 'repo-a', branch: 'main' } };
+  assert.equal(app._categoryUiState().categoryAssignmentAllowed, false);
+  await assert.rejects(() => app.assignCategory('programming', 'docs/a.md'), /different repository|Cross-repository/i);
+  assert.equal(writes, 0);
+});
+
+test('category member validation uses bounded directory listings without reading member content', async () => {
+  const category = api.encodeCategoryDefinition({ id: 'programming', name: 'Programming', files: [{ label: 'API', target: '../docs/api.md' }] });
+  const reads = [];
+  const listings = [];
+  let metadataReads = 0;
+  const client = {
+    async listDirectory(path) {
+      listings.push(path);
+      if (path === 'categories') return [{ type: 'file', path: 'categories/programming.md', name: 'programming.md', size: category.length }];
+      if (path === 'docs') return [{ type: 'file', path: 'docs/api.md', name: 'api.md', size: 10 }];
+      return [];
+    },
+    async read(path) {
+      reads.push(path);
+      if (path !== 'categories/programming.md') throw new Error('member content must not be read');
+      return { path, name: 'programming.md', size: category.length, sha: 'sha-category', content: category, htmlUrl: '' };
+    },
+    async readMetadata() { metadataReads += 1; throw new Error('metadata GET must not be used for member validation'); }
+  };
+  const { app } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'main', basePath: 'notes', categoryBasePath: 'categories', hasToken: true },
+    client
+  });
+  await app.refreshCategories();
+  assert.deepEqual(reads, ['categories/programming.md']);
+  assert.deepEqual(listings, ['categories', 'docs']);
+  assert.equal(metadataReads, 0);
 });

@@ -102,3 +102,29 @@ test('panel exposes explicit GET-only GitHub refresh and explains first-save fol
   assert.match(source, /Missing parent folders appear automatically with the first explicit Save GitHub/);
   assert.match(source, /Last GitHub refresh/);
 });
+
+test('panel exposes Files and Categories surfaces with in-app preview and GitHub escape hatch', () => {
+  const source = readFileSync(join(here, '..', 'src', 'linked-notes-ui.js'), 'utf8');
+  assert.match(source, /data-surface="files"/);
+  assert.match(source, /data-surface="categories"/);
+  assert.match(source, /Open on GitHub/);
+  assert.match(source, /data-action="refresh-categories"/);
+  assert.match(source, /data-action="assign-preview-category"/);
+  assert.match(source, /Categories folder/);
+  assert.match(source, /UX groups are local-only/);
+});
+
+test('category diagnostics render concrete path, kind and message', () => {
+  const source = readFileSync(join(here, '..', 'src', 'linked-notes-ui.js'), 'utf8');
+  assert.match(source, /error\.path \|\| error\.targetPath/);
+  assert.match(source, /error\.kind/);
+  assert.match(source, /validationMessage/);
+});
+
+test('repository entry buttons preserve listing metadata and cross-repository assignment is UI-disabled', () => {
+  const source = readFileSync(join(here, '..', 'src', 'linked-notes-ui.js'), 'utf8');
+  assert.match(source, /data-entry-size=/);
+  assert.match(source, /data-entry-sha=/);
+  assert.match(source, /data-entry-html-url=/);
+  assert.match(source, /categoryAssignmentAllowed/);
+});

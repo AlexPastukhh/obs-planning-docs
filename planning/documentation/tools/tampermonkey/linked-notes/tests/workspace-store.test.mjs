@@ -159,3 +159,20 @@ test('deleting a workspace removes only local bindings and chooses a safe defaul
   assert.equal(result.state.defaultWorkspaceId, second.id);
   assert.equal(result.state.chatWorkspaceMap['chat:b'], second.id);
 });
+
+test('legacy workspace records gain the default Categories folder without losing Notes configuration', async () => {
+  const gm = new MemoryGM({
+    [storeApi.STATE_KEY]: {
+      schemaVersion: 1,
+      workspaces: [{
+        id: 'workspace-old', name: 'Old', owner: 'owner', repo: 'repo', branch: 'main',
+        basePath: 'notes', createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z', schemaVersion: 1
+      }],
+      chatWorkspaceMap: {}, defaultWorkspaceId: 'workspace-old', revision: { number: 1 }
+    }
+  });
+  const store = newStore(gm, 'writer-legacy');
+  const state = await store.load();
+  assert.equal(state.workspaces[0].basePath, 'notes');
+  assert.equal(state.workspaces[0].categoryBasePath, 'categories');
+});

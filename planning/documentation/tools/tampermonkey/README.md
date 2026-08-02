@@ -1,8 +1,8 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.21.0-linked-notes-remote-refresh
-Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local Linked Notes remote-write prototype.
+Doc version: v0.22.0-repository-files-and-categories
+Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository Notes, file-viewer and category prototype.
 
 ## 1. Tracked scripts
 
@@ -31,12 +31,16 @@ planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   and one-click finished-session capture into the shared pending outbox.
 
 planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.user.js
-  project-local test-only Linked Notes prototype generated from linked-notes/src/**;
-  keeps local drafts in a dedicated IndexedDB database and reusable repository workspaces in private GM storage;
-  remembers only explicitly selected workspaces separately for stable ChatGPT chats, refreshes workspace state when Notes opens and uses one shared private GitHub token;
-  performs a bounded explicit GET-only Notes-folder refresh plus GitHub Contents API create/update only after explicit Save GitHub, Copy to chat workspace or confirmed bound-target recovery;
-  binds a verified Note to one visible owner/repository/branch/path identity, uses SHA conflict protection and verifies by read-back;
-  provides a dark work surface, Escape close with draft persistence, a launcher offset from the existing OBS button stack, a viewport-bounded internally scrollable panel, direct workspace-manager access and explicit remote-only Note import/change reconciliation;
+  project-local test-only repository documentation prototype generated from linked-notes/src/**;
+  keeps Note drafts in a dedicated IndexedDB database and reusable repository workspaces plus derived category cache in private GM storage;
+  remembers only explicitly selected workspaces separately for stable ChatGPT chats and uses one shared private GitHub token;
+  exposes Notes, Files and Categories surfaces in one viewport-safe dark panel;
+  performs bounded explicit GET-only Notes refresh, direct repository folder/file reads and category-definition refresh; member validation uses parent-directory listings and does not read member-file content;
+  previews supported text files read-only inside the app and always exposes an exact Open on GitHub link;
+  stores file categories as ordinary v2 Markdown definitions with explicit managed-region boundaries, literal descriptions, implied-category links and encoded portable file-member links;
+  keeps category UX groups local-only in separately revisioned target-scoped records with atomic per-category mutations, derives transitive memberships, reports path-aware malformed/broken/cycle states and rebuilds cache from GitHub;
+  performs category create/update/assign/unassign only after explicit user actions with SHA protection and exact read-back verification;
+  retains the existing verified Linked Note save/copy/recovery and remote reconciliation behavior;
   never runs local git, commit or push, and does not accept a production architecture.
 ```
 
@@ -48,7 +52,7 @@ Do not create competing tracked copies of the same script.
 Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
 By default they do not write repository files or perform external network calls.
-The Linked Notes Prototype is the narrow test-only exception: after an explicit user action it may call the GitHub Contents API for one visibly selected workspace or visibly bound owner/repository/branch/path, with path validation, one-operation locking, SHA-aware conflict handling and exact read-back verification.
+The repository documentation prototype is the narrow test-only exception: after an explicit user action it may call the GitHub Contents API for one visibly selected workspace, directory, file, category definition or bound Note target, with path validation, one-operation locking, SHA-aware conflict handling and exact read-back verification for writes.
 The Linked Notes Prototype never runs local git, commit or push; its direct API write does not make the prototype a production architecture or planning authority.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
 Tampermonkey command projection does not define command meaning.
@@ -106,6 +110,10 @@ Linked Notes Prototype private GM storage:
   obsLinkedNotesPrototype:v2:githubToken
   obsLinkedNotesPrototype:v2:migration
   obsLinkedNotesPrototype:v2:stateLock
+  obsLinkedNotesPrototype:v1:categoryCache (legacy migration input)
+  obsLinkedNotesPrototype:v2:categoryCache:<workspace-target-context>
+  obsLinkedNotesPrototype:v2:categoryGroups:<workspace-target-context>
+  obsLinkedNotesPrototype:v2:categoryLock:<workspace-target-context>
 
 Linked Notes Prototype legacy migration input only:
   obsLinkedNotesPrototype:v2:workspaces
@@ -144,7 +152,10 @@ Rules:
 - Conflict records block additional Finish actions until resolved.
 - Linked Notes title/body drafts persist to their dedicated IndexedDB store before ordinary panel close, search, settings rerender or Note navigation.
 - Linked Notes uses one shared GitHub token for all local workspaces; the token remains only in private GM storage and Note records, workspace metadata, chat mappings and repository Markdown must not contain it.
-- Linked Notes workspace records store only a local name plus owner/repository/branch/base-path configuration; stable ChatGPT chat IDs map locally only after explicit selection and never become repository content.
+- Linked Notes workspace records store only a local name plus owner/repository/branch/Notes-folder/Categories-folder configuration; stable ChatGPT chat IDs map locally only after explicit selection and never become repository content.
+- Category definitions are ordinary repository Markdown; local category snapshots and UX group names are derived/private cache and must be rebuildable or disposable. Cache identity includes workspace id, owner, repository, branch and Categories folder.
+- File-category assignment in this prototype is canonical in encoded category-definition links; categorized target files are not modified, and assignment from a preview in another repository/branch is rejected.
+- Category-member validation uses bounded parent-directory listings without fetching member-file bodies; group updates mutate one category under a target-scoped lock so stale tabs do not replace unrelated groups.
 - A fresh or unmapped chat may display the global default workspace without creating a chat binding; a new-chat selection remains session-only and is cleared when any stable route appears, while only an explicit selection made on the stable chat is remembered.
 - Workspace switching changes only the current chat context for new/unbound Notes, repository links and explicit Copy; it never silently moves or recreates a verified Note.
 - All local Notes remain visible across workspace changes; a verified Linked Note stores owner/repository/branch/path together with SHA and verified hash.

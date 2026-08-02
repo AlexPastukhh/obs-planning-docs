@@ -68,3 +68,10 @@ test('portable URL stays outside repository path normalization', () => {
   assert.equal(result.status, 'resolved');
   assert.equal(result.target.type, 'url');
 });
+
+test('builds portable repository-relative links from category definitions to files', () => {
+  assert.equal(targetApi.repositoryRelativePath('categories/asp-net-core.md', 'docs/api.md'), '../docs/api.md');
+  assert.equal(targetApi.repositoryRelativePath('docs/categories/a.md', 'docs/categories/b.md'), './b.md');
+  assert.equal(targetApi.repositoryRelativePath('a.md', 'nested/b.md'), './nested/b.md');
+  assert.throws(() => targetApi.repositoryRelativePath('../a.md', 'b.md'), /repository-relative|\.\./);
+});

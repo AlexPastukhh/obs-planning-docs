@@ -23,11 +23,13 @@ test('workspace normalization produces reusable repository context', () => {
     name: 'GDoc',
     repositoryInput: 'https://github.com/AlexPastukhh/gdoc',
     branch: 'linked-notes-prototype-test',
-    basePath: 'prototype-fixtures/linked-notes'
+    basePath: 'prototype-fixtures/linked-notes',
+    categoryBasePath: 'documentation/categories'
   }, '2026-07-27T00:00:00.000Z');
   assert.equal(workspace.owner, 'AlexPastukhh');
   assert.equal(workspace.repo, 'gdoc');
-  assert.equal(api.workspaceTargetLabel(workspace), 'AlexPastukhh/gdoc@linked-notes-prototype-test:prototype-fixtures/linked-notes');
+  assert.equal(workspace.categoryBasePath, 'documentation/categories');
+  assert.equal(api.workspaceTargetLabel(workspace), 'AlexPastukhh/gdoc@linked-notes-prototype-test:notes=prototype-fixtures/linked-notes; categories=documentation/categories');
 });
 
 test('workspace base path preserves repository-relative safety', () => {
@@ -42,4 +44,17 @@ test('chat key uses the stable conversation route and ignores a new-chat route',
   assert.equal(api.chatKeyFromLocation({ pathname: '/g/g-foo/c/conversation-id' }), 'chat:conversation-id');
   assert.equal(api.chatKeyFromLocation({ pathname: '/' }), '');
   assert.equal(api.chatKeyFromLocation({ pathname: '/new' }), '');
+});
+
+
+test('category context identity includes repository target and category folder', () => {
+  const base = api.normalizeWorkspace({ id: 'same-id', owner: 'Owner', repo: 'Repo', branch: 'main', basePath: 'notes', categoryBasePath: 'categories' }, '2026-01-01T00:00:00.000Z');
+  const movedRepo = { ...base, repo: 'Other' };
+  const movedBranch = { ...base, branch: 'dev' };
+  const movedFolder = { ...base, categoryBasePath: 'taxonomy' };
+  assert.notEqual(api.workspaceCategoryContextKey(base), api.workspaceCategoryContextKey(movedRepo));
+  assert.notEqual(api.workspaceCategoryContextKey(base), api.workspaceCategoryContextKey(movedBranch));
+  assert.notEqual(api.workspaceCategoryContextKey(base), api.workspaceCategoryContextKey(movedFolder));
+  assert.equal(api.sameRepositoryContext(base, { owner: 'owner', repo: 'repo.git', branch: 'main' }), true);
+  assert.equal(api.sameRepositoryContext(base, movedBranch), false);
 });

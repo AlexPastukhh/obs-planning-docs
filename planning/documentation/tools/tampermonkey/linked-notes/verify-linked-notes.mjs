@@ -9,6 +9,10 @@ const syntaxPaths = [
   'src/linked-notes-core.js',
   'src/note-markdown-codec.js',
   'src/repository-target.js',
+  'src/repository-file-browser.js',
+  'src/category-definition-codec.js',
+  'src/repository-category-index.js',
+  'src/category-cache-store.js',
   'src/indexeddb-note-store.js',
   'src/github-contents-client.js',
   'src/remote-note-reconcile.js',
@@ -25,6 +29,6 @@ function run(args) {
 }
 
 for (const path of syntaxPaths) run(['--check', join(here, path)]);
-run(['--test', ...['linked-notes-core.test.mjs', 'note-markdown-codec.test.mjs', 'repository-target.test.mjs', 'github-contents-client.test.mjs', 'remote-note-reconcile.test.mjs', 'workspace-context.test.mjs', 'workspace-store.test.mjs', 'linked-notes-ui.test.mjs', 'linked-notes-app-policy.test.mjs'].map((name) => join(here, 'tests', name))]);
+run(['--test', ...['linked-notes-core.test.mjs', 'note-markdown-codec.test.mjs', 'repository-target.test.mjs', 'repository-file-browser.test.mjs', 'category-definition-codec.test.mjs', 'repository-category-index.test.mjs', 'category-cache-store.test.mjs', 'github-contents-client.test.mjs', 'remote-note-reconcile.test.mjs', 'workspace-context.test.mjs', 'workspace-store.test.mjs', 'linked-notes-ui.test.mjs', 'linked-notes-app-policy.test.mjs'].map((name) => join(here, 'tests', name))]);
 run([join(here, 'build-linked-notes.mjs'), '--check']);
 console.log('Linked Notes prototype verification passed.');

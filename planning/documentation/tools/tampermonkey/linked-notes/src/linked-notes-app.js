@@ -73,6 +73,7 @@
       this.routePollMs = options.routePollMs || 750;
       this.store = options.store || new api.IndexedDbNoteStore();
       this.workspaceStore = options.workspaceStore || (api.WorkspaceStore ? new api.WorkspaceStore({ api, getValue: this.getValue, setValue: this.setValue }) : null);
+      this.categoryStore = options.categoryStore || (api.CategoryCacheStore ? new api.CategoryCacheStore({ getValue: this.getValue, setValue: this.setValue }) : null);
       this.ui = options.ui || new api.LinkedNotesUI({
         onNew: () => this.newNote(),
         onSelect: (id) => this.selectNote(id),
@@ -80,6 +81,16 @@
         onDraftChange: (note) => this.saveDraft(note),
         onOpen: () => this.openPanel(),
         onRefreshRemote: () => this.refreshRemoteWorkspace(),
+        onSetSurface: (surface) => this.setSurface(surface),
+        onBrowseRepository: (path) => this.browseRepository(path),
+        onOpenRepositoryEntry: (entry) => this.openRepositoryEntry(entry),
+        onOpenRepositoryFileInGitHub: (path) => this.openRepositoryFileInGitHub(path),
+        onRefreshCategories: () => this.refreshCategories(),
+        onSelectCategory: (id) => this.selectCategory(id),
+        onSaveCategory: (category) => this.saveCategory(category),
+        onAssignCategory: (categoryId, path) => this.assignCategory(categoryId, path),
+        onUnassignCategory: (categoryId, path) => this.unassignCategory(categoryId, path),
+        onSetCategoryGroup: (categoryId, groupName) => this.setCategoryGroup(categoryId, groupName),
         onSelectWorkspace: (id, draftState) => this.selectWorkspace(id, draftState),
         onNewWorkspace: (draftState) => this.beginNewWorkspace(draftState),
         onSaveWorkspace: (workspace) => this.saveWorkspace(workspace),
@@ -108,6 +119,18 @@
       this.sessionWorkspaceId = '';
       this.sessionWorkspaceExplicit = false;
       this.routeTimer = null;
+      this.surface = 'notes';
+      this.repositoryPath = '';
+      this.repositoryEntries = [];
+      this.repositoryPreview = null;
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
+      this.categoryIndex = this._emptyCategoryIndex();
+      this.selectedCategoryId = '';
+      this.categoryContextWorkspaceId = '';
+      this.categoryContextKey = '';
+      this.categoryContextRequiresRefresh = false;
+      this.categoryContextsRequiringRefresh = new Set();
+      this.workspaceContextGeneration = 0;
       if (options.settings && options.settings.owner && options.settings.repo) {
         const workspace = api.normalizeWorkspace
           ? api.normalizeWorkspace({ id: 'workspace-test', name: 'Test workspace', ...options.settings })
@@ -121,6 +144,21 @@
       return this.workspaceState.workspaces.find((workspace) => workspace.id === this.activeWorkspaceId) || null;
     }
 
+
+    _categoryContextKey(workspace = this._activeWorkspace()) {
+      if (!workspace) return '';
+      if (typeof this.api.workspaceCategoryContextKey === 'function') return this.api.workspaceCategoryContextKey(workspace);
+      return JSON.stringify([workspace.id, String(workspace.owner || '').toLowerCase(), String(workspace.repo || '').toLowerCase(), workspace.branch || 'main', workspace.categoryBasePath || this.api.DEFAULT_CATEGORY_BASE_PATH || 'categories']);
+    }
+
+    _sameRepositoryContext(left, right) {
+      if (typeof this.api.sameRepositoryContext === 'function') return this.api.sameRepositoryContext(left, right);
+      if (!left || !right) return false;
+      return String(left.owner || '').toLowerCase() === String(right.owner || '').toLowerCase()
+        && String(left.repo || '').replace(/\.git$/i, '').toLowerCase() === String(right.repo || '').replace(/\.git$/i, '').toLowerCase()
+        && String(left.branch || 'main') === String(right.branch || 'main');
+    }
+
     _configuredTarget(note) {
       return configuredTargetForNote(note, this._activeWorkspace(), this.api.fileSlug);
     }
@@ -132,13 +170,18 @@
     }
 
     _workspaceEditor(workspace) {
-      if (!workspace) return { id: '', name: '', repositoryInput: '', branch: 'main', basePath: this.api.DEFAULT_WORKSPACE_BASE_PATH || 'prototype-fixtures/linked-notes' };
+      if (!workspace) return {
+        id: '', name: '', repositoryInput: '', branch: 'main',
+        basePath: this.api.DEFAULT_WORKSPACE_BASE_PATH || 'prototype-fixtures/linked-notes',
+        categoryBasePath: this.api.DEFAULT_CATEGORY_BASE_PATH || 'categories'
+      };
       return {
         id: workspace.id,
         name: workspace.name,
         repositoryInput: `${workspace.owner}/${workspace.repo}`,
         branch: workspace.branch,
-        basePath: workspace.basePath
+        basePath: workspace.basePath,
+        categoryBasePath: workspace.categoryBasePath || this.api.DEFAULT_CATEGORY_BASE_PATH || 'categories'
       };
     }
 
@@ -160,6 +203,61 @@
       };
     }
 
+
+    _categoryUiState() {
+      const categories = this.categoryIndex && this.categoryIndex.categories
+        ? Array.from(this.categoryIndex.categories.values()).map((category) => ({
+          id: category.id,
+          name: category.name,
+          description: category.description || '',
+          path: category.path,
+          sha: category.sha || '',
+          htmlUrl: category.htmlUrl || '',
+          explicitFileCount: (category.explicitFiles || []).length,
+          impliedCategoryIds: category.impliedCategoryIds || [],
+          brokenLinks: category.brokenLinks || [],
+          group: this.categorySnapshot.groups && this.categorySnapshot.groups[category.id] || ''
+        })).sort((left, right) => left.name.localeCompare(right.name))
+        : [];
+      const selected = categories.find((category) => category.id === this.selectedCategoryId) || null;
+      const selectedRecord = selected && this.categoryIndex.categories ? this.categoryIndex.categories.get(selected.id) : null;
+      const activeWorkspace = this._activeWorkspace();
+      const previewContext = this.repositoryPreview && this.repositoryPreview.context;
+      const categoryAssignmentAllowed = Boolean(
+        selected
+        && this.repositoryPreview
+        && this.repositoryPreview.path
+        && activeWorkspace
+        && this._sameRepositoryContext(previewContext, activeWorkspace)
+        && this.categoryContextKey
+        && this.categoryContextKey === this._categoryContextKey(activeWorkspace)
+        && !this.categoryContextRequiresRefresh
+      );
+      return {
+        surface: this.surface,
+        repositoryPath: this.repositoryPath,
+        repositoryEntries: this.repositoryEntries,
+        repositoryBreadcrumbs: this.api.repositoryBreadcrumbs ? this.api.repositoryBreadcrumbs(this.repositoryPath) : [],
+        repositoryPreview: this.repositoryPreview,
+        categories,
+        selectedCategoryId: selected ? selected.id : '',
+        categoryEditor: selected ? {
+          id: selected.id,
+          name: selected.name,
+          description: selected.description,
+          impliedCategoryIds: selected.impliedCategoryIds,
+          group: selected.group
+        } : { id: '', name: '', description: '', impliedCategoryIds: [], group: '' },
+        categoryFiles: selectedRecord && this.categoryIndex.filesForCategory ? this.categoryIndex.filesForCategory(selected.id) : [],
+        categoryErrors: [
+          ...(Array.isArray(this.categorySnapshot.diagnostics) ? this.categorySnapshot.diagnostics : []),
+          ...(this.categoryIndex && Array.isArray(this.categoryIndex.errors) ? this.categoryIndex.errors : [])
+        ],
+        categoryRefreshedAt: this.categorySnapshot.refreshedAt || '',
+        categoryAssignmentAllowed
+      };
+    }
+
     _remoteUiState(note = this.current) {
       if (!note) return { remoteTargetMismatch: false, remoteTargetLabel: '', remoteRecoveryAvailable: false, busy: Boolean(this.remoteOperation) };
       const remote = this.api.normalizeRemote(note.remote);
@@ -178,7 +276,7 @@
     }
 
     _setUi(patch = {}) {
-      this.ui.setState({ ...this._workspaceUiState(), ...this._remoteUiState(), ...patch });
+      this.ui.setState({ ...this._workspaceUiState(), ...this._remoteUiState(), ...this._categoryUiState(), ...patch });
     }
 
     async _runRemoteOperation(label, work) {
@@ -213,12 +311,76 @@
       if (!this.workspaceStore) return this.workspaceState;
       this.workspaceState = await this.workspaceStore.load();
       await this._chooseWorkspaceForCurrentChat();
-      this._setUi({ status: status || 'Workspace state refreshed from Tampermonkey storage.' });
+      await this._loadCategoryCache();
+      this._setUi({ status: status || 'Workspace and category context refreshed from Tampermonkey storage.' });
       return this.workspaceState;
     }
 
+
+    _emptyCategoryIndex() {
+      return this.api.buildRepositoryCategoryIndex
+        ? this.api.buildRepositoryCategoryIndex([])
+        : { categories: new Map(), filesForCategory: () => [], errors: [] };
+    }
+
+    _resetWorkspaceDerivedContext() {
+      this.repositoryPath = '';
+      this.repositoryEntries = [];
+      this.repositoryPreview = null;
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
+      this.categoryIndex = this._emptyCategoryIndex();
+      this.selectedCategoryId = '';
+      this.categoryContextWorkspaceId = '';
+      this.categoryContextKey = '';
+    }
+
+    async _loadCategoryCache() {
+      const workspace = this._activeWorkspace();
+      const contextKey = this._categoryContextKey(workspace);
+      const previousWorkspaceId = this.categoryContextWorkspaceId;
+      const previousContextKey = this.categoryContextKey;
+      const targetChangedInPlace = Boolean(workspace && previousWorkspaceId === workspace.id && previousContextKey && previousContextKey !== contextKey);
+      if (targetChangedInPlace) this.categoryContextsRequiringRefresh.add(contextKey);
+      const generation = ++this.workspaceContextGeneration;
+      this._resetWorkspaceDerivedContext();
+      this.categoryContextRequiresRefresh = Boolean(contextKey && this.categoryContextsRequiringRefresh.has(contextKey));
+      this._setUi({ categoryRefreshSummary: '' });
+      if (!workspace || !this.categoryStore) {
+        if (!workspace) this.categoryContextRequiresRefresh = false;
+        this.categoryContextWorkspaceId = workspace ? workspace.id : '';
+        this.categoryContextKey = contextKey;
+        return this.categorySnapshot;
+      }
+      const snapshot = await this.categoryStore.load(contextKey, targetChangedInPlace ? {} : { legacyWorkspaceId: workspace.id });
+      const currentWorkspace = this._activeWorkspace();
+      if (generation !== this.workspaceContextGeneration || !currentWorkspace || this._categoryContextKey(currentWorkspace) !== contextKey) return null;
+      this.categorySnapshot = {
+        definitions: Array.isArray(snapshot.definitions) ? snapshot.definitions : [],
+        diagnostics: Array.isArray(snapshot.diagnostics) ? snapshot.diagnostics : [],
+        fileValidation: snapshot.fileValidation && typeof snapshot.fileValidation === 'object' ? snapshot.fileValidation : {},
+        groups: snapshot.groups && typeof snapshot.groups === 'object' ? snapshot.groups : {},
+        refreshedAt: String(snapshot.refreshedAt || '')
+      };
+      this.categoryIndex = this.api.buildRepositoryCategoryIndex
+        ? this.api.buildRepositoryCategoryIndex(this.categorySnapshot.definitions, { fileValidation: this.categorySnapshot.fileValidation })
+        : this._emptyCategoryIndex();
+      this.categoryContextWorkspaceId = workspace.id;
+      this.categoryContextKey = contextKey;
+      return this.categorySnapshot;
+    }
+
+    _requireCategoryContext(workspace = this._activeWorkspace()) {
+      if (!workspace) throw new Error('Select or create a GitHub workspace first.');
+      const contextKey = this._categoryContextKey(workspace);
+      if (this.categoryContextRequiresRefresh || !this.categoryContextWorkspaceId || this.categoryContextWorkspaceId !== workspace.id || this.activeWorkspaceId !== workspace.id || !this.categoryContextKey || this.categoryContextKey !== contextKey) {
+        throw new Error('Category context is stale for the active repository target. Refresh categories before writing.');
+      }
+      return workspace;
+    }
+
     async openPanel() {
-      await this.refreshWorkspaceState('Workspace state refreshed when Notes opened.');
+      await this.refreshWorkspaceState('Workspace and category context refreshed when Documentation Workspace opened.');
+      this._setUi();
     }
 
     async _confirmWorkspaceDraftReset(draftState) {
@@ -250,6 +412,7 @@
       this.sessionWorkspaceExplicit = false;
       if (this.workspaceStore) this.workspaceState = await this.workspaceStore.load();
       await this._chooseWorkspaceForCurrentChat();
+      await this._loadCategoryCache();
       const mappedWorkspaceId = this.currentChatKey ? this.workspaceState.chatWorkspaceMap[this.currentChatKey] : '';
       const status = !this.currentChatKey
         ? 'New chat uses the default workspace until an explicit selection is made.'
@@ -270,13 +433,25 @@
       await this._chooseWorkspaceForCurrentChat();
       this.ui.mount();
       await this.refreshList('');
-      this._setUi({ replaceWorkspaceEditor: true, status: this._activeWorkspace() ? 'Local Notes ready. Workspace fallback is not saved to a chat until you select it explicitly.' : 'Local Notes ready. Create a GitHub workspace before remote access.' });
+      await this._loadCategoryCache();
+      this._setUi({ replaceWorkspaceEditor: true, status: this._activeWorkspace() ? 'Documentation Workspace ready. Remote reads and writes remain explicit.' : 'Local Notes ready. Create a GitHub workspace before remote access.' });
       this._startRouteWatch();
     }
 
     dispose() {
       if (this.routeTimer) this.clearIntervalFn(this.routeTimer);
       this.routeTimer = null;
+      this.surface = 'notes';
+      this.repositoryPath = '';
+      this.repositoryEntries = [];
+      this.repositoryPreview = null;
+      this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' };
+      this.categoryIndex = api.buildRepositoryCategoryIndex ? api.buildRepositoryCategoryIndex([]) : { categories: new Map(), filesForCategory: () => [], errors: [] };
+      this.selectedCategoryId = '';
+      this.categoryContextWorkspaceId = '';
+      this.categoryContextKey = '';
+      this.categoryContextRequiresRefresh = false;
+      this.categoryContextsRequiringRefresh.clear();
       if (this.ui) this.ui.dispose();
     }
 
@@ -293,6 +468,7 @@
       if (this.currentChatKey && this.workspaceStore) {
         this.workspaceState = { ...(await this.workspaceStore.bindChat(this.currentChatKey, workspaceId)), hasToken: this.workspaceState.hasToken };
       }
+      await this._loadCategoryCache();
       this._setUi({ replaceWorkspaceEditor: true, status: this.currentChatKey ? 'Workspace selected and saved for this chat.' : 'Workspace selected for this new-chat session.' });
       return this._activeWorkspace();
     }
@@ -307,6 +483,7 @@
       if (this.currentChatKey) {
         this.workspaceState = { ...(await this.workspaceStore.bindChat(this.currentChatKey, result.workspace.id)), hasToken: this.workspaceState.hasToken };
       }
+      await this._loadCategoryCache();
       this._setUi({ replaceWorkspaceEditor: true, status: `Workspace saved: ${result.workspace.name}.` });
       return result.workspace;
     }
@@ -329,6 +506,7 @@
         this.sessionWorkspaceExplicit = false;
       }
       await this._chooseWorkspaceForCurrentChat();
+      await this._loadCategoryCache();
       this._setUi({ replaceWorkspaceEditor: true, status: `Workspace deleted locally. ${result.removedChatKeys.length} chat binding(s) fell back safely; Notes and remote files were untouched.` });
     }
 
@@ -346,6 +524,365 @@
       await this.workspaceStore.clearToken();
       this.workspaceState.hasToken = false;
       this._setUi({ status: 'Shared GitHub token cleared.' });
+    }
+
+
+    setSurface(surface) {
+      const allowed = new Set(['notes', 'files', 'categories']);
+      const next = String(surface || 'notes');
+      if (!allowed.has(next)) throw new Error(`Unsupported workspace surface: ${next}`);
+      this.surface = next;
+      this._setUi({ status: `${next[0].toUpperCase()}${next.slice(1)} surface opened. Remote access remains explicit.` });
+      return next;
+    }
+
+    async browseRepository(path = '') {
+      return this._runRemoteOperation('Reading repository folder…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select or create a GitHub workspace before browsing files.');
+        const normalized = this.api.normalizeBrowserPath ? this.api.normalizeBrowserPath(path) : String(path || '');
+        const client = await this._client(workspace);
+        const entries = await client.listDirectory(normalized, { maxEntries: 200 });
+        this.repositoryPath = normalized;
+        this.repositoryEntries = this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries;
+        this.repositoryPreview = null;
+        this.surface = 'files';
+        this._setUi({ status: `Repository folder loaded: ${normalized || '/'}. ${entries.length} direct entries.` });
+        return this.repositoryEntries;
+      });
+    }
+
+    async openRepositoryEntry(entry, contextOverride = null) {
+      if (!entry || !entry.path) throw new Error('Repository entry is required.');
+      const listedEntry = !contextOverride && Array.isArray(this.repositoryEntries)
+        ? this.repositoryEntries.find((candidate) => candidate && candidate.path === entry.path)
+        : null;
+      entry = listedEntry ? { ...entry, ...listedEntry } : entry;
+      if (entry.type === 'dir') {
+        if (contextOverride) throw new Error('Cross-workspace directory browsing is not supported from a Note link.');
+        return this.browseRepository(entry.path);
+      }
+      return this._runRemoteOperation('Reading repository file…', async () => {
+        const workspace = contextOverride || this._activeWorkspace();
+        if (!workspace) throw new Error('Select or create a GitHub workspace before opening files.');
+        const maxBytes = this.api.DEFAULT_PREVIEW_MAX_BYTES || (512 * 1024);
+        let file;
+        if (Number(entry.size) > maxBytes) {
+          file = {
+            path: entry.path,
+            name: entry.name || entry.path.slice(entry.path.lastIndexOf('/') + 1),
+            size: Number(entry.size) || 0,
+            sha: String(entry.sha || ''),
+            content: null,
+            htmlUrl: String(entry.htmlUrl || '')
+          };
+        } else {
+          const client = await this._client(workspace);
+          file = await client.read(entry.path, { allowMissingContent: true });
+        }
+        const preview = this.api.classifyFilePreview
+          ? this.api.classifyFilePreview(file, { maxBytes })
+          : { kind: typeof file.content === 'string' ? 'text' : 'unsupported', path: file.path, size: file.size || 0, content: file.content || '', message: 'Read-only repository preview.' };
+        this.repositoryPreview = {
+          ...preview,
+          sha: file.sha,
+          name: file.name || entry.name || file.path.slice(file.path.lastIndexOf('/') + 1),
+          htmlUrl: file.htmlUrl || entry.htmlUrl || (this.api.buildGitHubHtmlUrl ? this.api.buildGitHubHtmlUrl(workspace, file.path, 'file') : ''),
+          context: { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch }
+        };
+        this.surface = 'files';
+        this._setUi({ status: preview.kind === 'text' ? `Opened ${file.path} read-only.` : preview.message });
+        return this.repositoryPreview;
+      });
+    }
+
+    openRepositoryFileInGitHub(path) {
+      const workspace = this.repositoryPreview && this.repositoryPreview.context || this._activeWorkspace();
+      if (!workspace) throw new Error('Select a GitHub workspace first.');
+      const target = String(path || (this.repositoryPreview && this.repositoryPreview.path) || '').trim();
+      if (!target) throw new Error('Select a repository file first.');
+      const url = this.api.buildGitHubHtmlUrl
+        ? this.api.buildGitHubHtmlUrl(workspace, target, 'file')
+        : `https://github.com/${encodeURIComponent(workspace.owner)}/${encodeURIComponent(workspace.repo)}/blob/${encodeURIComponent(workspace.branch)}/${encodeGitHubPath(target)}`;
+      if (typeof window !== 'undefined' && typeof window.open === 'function') window.open(url, '_blank', 'noopener,noreferrer');
+      return url;
+    }
+
+    _categoryBasePath(workspace = this._activeWorkspace()) {
+      if (!workspace) throw new Error('Select or create a GitHub workspace first.');
+      return cleanBasePath(workspace.categoryBasePath || this.api.DEFAULT_CATEGORY_BASE_PATH || 'categories');
+    }
+
+    async _repositoryEntryMetadata(client, path) {
+      const canonical = this.api.normalizeCanonicalRepositoryPath(path, 'Repository file path');
+      const slash = canonical.lastIndexOf('/');
+      const parent = slash >= 0 ? canonical.slice(0, slash) : '';
+      const entries = await client.listDirectory(parent, { missingAsEmpty: true, maxEntries: 200 });
+      const entry = entries.find((candidate) => candidate && candidate.path === canonical);
+      if (!entry || entry.type !== 'file') {
+        const error = new Error(`Repository file does not exist: ${canonical}.`);
+        error.kind = 'not_found';
+        throw error;
+      }
+      return entry;
+    }
+
+    async _refreshCategoriesUnlocked(client, workspace) {
+      const contextKey = this._categoryContextKey(workspace);
+      const basePath = this._categoryBasePath(workspace);
+      const entries = await client.listDirectory(basePath, { missingAsEmpty: true, maxEntries: 100 });
+      const markdownEntries = entries.filter((entry) => entry.type === 'file' && /\.md$/i.test(entry.name || entry.path));
+      const definitions = [];
+      const diagnostics = [];
+      let skipped = 0;
+      let bytes = 0;
+      const maxBytes = 1024 * 1024;
+      for (const entry of markdownEntries) {
+        if (Number(entry.size || 0) > maxBytes) {
+          skipped += 1;
+          diagnostics.push({ kind: 'oversized_definition', path: entry.path, message: `Category definition exceeds the ${maxBytes}-byte refresh limit.` });
+          continue;
+        }
+        try {
+          const file = await client.read(entry.path);
+          bytes += new TextEncoder().encode(file.content).byteLength;
+          if (bytes > maxBytes) throw new Error(`Category refresh exceeded the ${maxBytes}-byte prototype limit.`);
+          if (!this.api.isCategoryDefinitionMarkdown(file.content)) {
+            skipped += 1;
+            diagnostics.push({ kind: 'ordinary_markdown_skipped', path: file.path, message: 'Markdown file has no obs-file-category marker and was skipped.' });
+            continue;
+          }
+          try {
+            const definition = this.api.decodeCategoryDefinition(file.content);
+            definitions.push({ path: file.path, sha: file.sha, htmlUrl: file.htmlUrl, definition });
+          } catch (error) {
+            diagnostics.push({ kind: 'malformed_definition', path: file.path, message: String(error && error.message || error) });
+          }
+        } catch (error) {
+          if (String(error && error.message || '').includes('prototype limit')) throw error;
+          diagnostics.push({ kind: 'definition_read_error', path: entry.path, message: String(error && error.message || error), errorKind: String(error && error.kind || '') });
+        }
+      }
+
+      const initialIndex = this.api.buildRepositoryCategoryIndex(definitions);
+      const filePaths = Array.from(initialIndex.memberships.keys()).sort();
+      const validationLimit = 100;
+      const fileValidation = {};
+      const validationPaths = filePaths.slice(0, validationLimit);
+      const pathsByParent = new Map();
+      for (const path of validationPaths) {
+        const slash = path.lastIndexOf('/');
+        const parent = slash >= 0 ? path.slice(0, slash) : '';
+        const group = pathsByParent.get(parent) || [];
+        group.push(path);
+        pathsByParent.set(parent, group);
+      }
+      for (const [parent, paths] of pathsByParent.entries()) {
+        try {
+          const directoryEntries = await client.listDirectory(parent, { missingAsEmpty: true, maxEntries: 200 });
+          const files = new Set(directoryEntries.filter((entry) => entry.type === 'file').map((entry) => entry.path));
+          for (const path of paths) {
+            fileValidation[path] = files.has(path)
+              ? { status: 'verified', message: 'Repository file exists.' }
+              : { status: 'missing', message: `Repository file does not exist: ${path}.` };
+          }
+        } catch (error) {
+          for (const path of paths) fileValidation[path] = { status: 'inaccessible', message: String(error && error.message || error) };
+        }
+      }
+      if (filePaths.length > validationLimit) {
+        for (const path of filePaths.slice(validationLimit)) fileValidation[path] = { status: 'unchecked', message: 'Target was not checked because the validation limit was reached.' };
+        diagnostics.push({ kind: 'incomplete_file_validation', path: basePath, message: `Validated ${validationLimit} of ${filePaths.length} unique member-file targets.` });
+      }
+
+      const refreshedAt = new Date().toISOString();
+      let snapshot = {
+        definitions,
+        diagnostics,
+        fileValidation,
+        groups: this.categorySnapshot && this.categorySnapshot.groups || {},
+        refreshedAt
+      };
+      if (this.categoryStore) {
+        snapshot = typeof this.categoryStore.saveDefinitions === 'function'
+          ? await this.categoryStore.saveDefinitions(contextKey, snapshot)
+          : await this.categoryStore.save(contextKey, snapshot);
+      }
+      const currentWorkspace = this._activeWorkspace();
+      if (!currentWorkspace || this._categoryContextKey(currentWorkspace) !== contextKey) throw new Error('Workspace repository target changed before category refresh completed. Results were not applied.');
+      this.categorySnapshot = snapshot;
+      this.categoryContextWorkspaceId = workspace.id;
+      this.categoryContextKey = contextKey;
+      this.categoryContextsRequiringRefresh.delete(contextKey);
+      this.categoryContextRequiresRefresh = false;
+      this.categoryIndex = this.api.buildRepositoryCategoryIndex(definitions, { fileValidation });
+      if (this.selectedCategoryId && !this.categoryIndex.categories.has(this.selectedCategoryId)) this.selectedCategoryId = '';
+      this.surface = 'categories';
+      const issueCount = diagnostics.length + this.categoryIndex.errors.length;
+      const summary = `definitions ${definitions.length}; skipped ${skipped}; issues ${issueCount}; validated files ${Math.min(filePaths.length, validationLimit)}/${filePaths.length}`;
+      this._setUi({ categoryRefreshSummary: summary, status: `Category refresh complete: ${summary}. No remote writes were performed.` });
+      return { definitions: definitions.length, skipped, errors: diagnostics.length, modelErrors: this.categoryIndex.errors.length, diagnostics: [...diagnostics, ...this.categoryIndex.errors] };
+    }
+
+    async refreshCategories() {
+      return this._runRemoteOperation('Reading category definitions from GitHub…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select or create a GitHub workspace before refreshing categories.');
+        const client = await this._client(workspace);
+        return this._refreshCategoriesUnlocked(client, workspace);
+      });
+    }
+
+    selectCategory(id) {
+      const value = String(id || '');
+      if (value && !this.categoryIndex.categories.has(value)) throw new Error(`Category not found: ${value}`);
+      this.selectedCategoryId = value;
+      this.surface = 'categories';
+      this._setUi({ status: value ? `Category opened: ${this.categoryIndex.categories.get(value).name}.` : 'New category form ready.' });
+      return value ? this.categoryIndex.categories.get(value) : null;
+    }
+
+    _categoryDefinitionRecord(id) {
+      const value = String(id || '');
+      const indexed = this.categoryIndex.categories.get(value);
+      if (!indexed) return null;
+      const snapshot = (this.categorySnapshot.definitions || []).find((entry) => entry.path === indexed.path);
+      return snapshot ? { ...snapshot, indexed } : null;
+    }
+
+    _categoryLinksForIds(sourcePath, ids) {
+      const links = [];
+      for (const id of Array.isArray(ids) ? ids : []) {
+        const target = this.categoryIndex.categories.get(String(id));
+        if (!target) throw new Error(`Implied category not found: ${id}`);
+        links.push({ label: target.name, target: this.api.repositoryRelativePath(sourcePath, target.path) });
+      }
+      return links;
+    }
+
+    async saveCategory(input = {}) {
+      return this._runRemoteOperation('Saving and verifying category definition…', async () => {
+        const workspace = this._requireCategoryContext();
+        const client = await this._client(workspace);
+        const id = this.api.normalizeCategoryId(input.id || input.name);
+        const existing = this._categoryDefinitionRecord(id);
+        const path = existing ? existing.path : `${this._categoryBasePath(workspace)}/${this.api.categoryFileName(id)}`;
+        if (!existing) {
+          try {
+            await this._repositoryEntryMetadata(client, path);
+            throw new Error(`Category target already exists and was not overwritten: ${path}`);
+          } catch (error) {
+            if (error.kind !== 'not_found') throw error;
+          }
+        }
+        const previous = existing ? existing.definition : { files: [], impliedCategories: [] };
+        const requestedImplied = this._categoryLinksForIds(path, input.impliedCategoryIds || []);
+        const unresolvedPrevious = (previous.impliedCategories || []).filter((link) => {
+          try {
+            const targetPath = this.api.normalizeRepositoryTarget(path, link.target).path;
+            return !this.categoryIndex.byPath.has(targetPath);
+          } catch (error) {
+            return true;
+          }
+        });
+        const impliedCategories = [...requestedImplied];
+        for (const link of unresolvedPrevious) {
+          if (!impliedCategories.some((item) => item.target === link.target)) impliedCategories.push(link);
+        }
+        const content = this.api.encodeCategoryDefinition({
+          id,
+          name: input.name,
+          description: input.description,
+          impliedCategories,
+          files: previous.files || []
+        });
+        await client.saveVerified({
+          path,
+          content,
+          baseSha: existing ? existing.sha : '',
+          message: `${existing ? 'Update' : 'Create'} file category ${input.name || id}`
+        });
+        await this._refreshCategoriesUnlocked(client, workspace);
+        this.selectedCategoryId = id;
+        if (input.group !== undefined) await this.setCategoryGroup(id, input.group, { silent: true });
+        this._setUi({ status: `Category ${input.name || id} saved and verified by read-back.` });
+        return this.categoryIndex.categories.get(id);
+      });
+    }
+
+    _assertCategoryAssignmentTarget(filePath, workspace = this._requireCategoryContext()) {
+      const canonicalFile = this.api.normalizeCanonicalRepositoryPath(filePath, 'Categorized repository file');
+      const preview = this.repositoryPreview;
+      if (!preview || !preview.path || this.api.normalizeCanonicalRepositoryPath(preview.path, 'Selected repository file') !== canonicalFile) {
+        throw new Error('Select the repository file in the Files surface before assigning a category.');
+      }
+      if (!this._sameRepositoryContext(preview.context, workspace)) {
+        throw new Error('The selected file belongs to a different repository or branch than the active category workspace. Cross-repository category assignment is blocked.');
+      }
+      return canonicalFile;
+    }
+
+    async _writeCategoryMembership(categoryId, filePath, remove) {
+      const workspace = this._requireCategoryContext();
+      const record = this._categoryDefinitionRecord(categoryId);
+      if (!record) throw new Error(`Category not found: ${categoryId}. Refresh categories first.`);
+      const canonicalFile = remove
+        ? this.api.normalizeCanonicalRepositoryPath(filePath, 'Categorized repository file')
+        : this._assertCategoryAssignmentTarget(filePath, workspace);
+      const kept = [];
+      let found = false;
+      for (const link of record.definition.files || []) {
+        let resolved = '';
+        try { resolved = this.api.normalizeRepositoryTarget(record.path, link.target).path; } catch (error) { kept.push(link); continue; }
+        if (resolved === canonicalFile) { found = true; if (!remove) kept.push(link); }
+        else kept.push(link);
+      }
+      if (remove && !found) return record.indexed;
+      if (!remove && !found) kept.push({ label: canonicalFile.slice(canonicalFile.lastIndexOf('/') + 1), target: this.api.repositoryRelativePath(record.path, canonicalFile) });
+      const content = this.api.encodeCategoryDefinition({
+        id: record.definition.id,
+        name: record.definition.name,
+        description: record.definition.description,
+        impliedCategories: record.definition.impliedCategories,
+        files: kept
+      });
+      const client = await this._client(workspace);
+      await client.saveVerified({
+        path: record.path,
+        content,
+        baseSha: record.sha,
+        message: `${remove ? 'Remove' : 'Add'} ${canonicalFile} ${remove ? 'from' : 'to'} category ${record.definition.name}`
+      });
+      await this._refreshCategoriesUnlocked(client, workspace);
+      this.selectedCategoryId = categoryId;
+      this._setUi({ status: `${canonicalFile} ${remove ? 'removed from' : 'assigned to'} ${record.definition.name}; category definition verified by read-back.` });
+      return this.categoryIndex.categories.get(categoryId);
+    }
+
+    async assignCategory(categoryId, filePath) {
+      return this._runRemoteOperation('Assigning file category…', () => this._writeCategoryMembership(categoryId, filePath, false));
+    }
+
+    async unassignCategory(categoryId, filePath) {
+      return this._runRemoteOperation('Removing file category…', () => this._writeCategoryMembership(categoryId, filePath, true));
+    }
+
+    async setCategoryGroup(categoryId, groupName, options = {}) {
+      const workspace = this._requireCategoryContext();
+      if (!this.categoryStore) return;
+      if (!this.categoryIndex.categories.has(categoryId)) throw new Error(`Category not found: ${categoryId}`);
+      const value = String(groupName || '').trim();
+      const contextKey = this._categoryContextKey(workspace);
+      const nextGroups = { ...(this.categorySnapshot.groups || {}) };
+      if (value) nextGroups[categoryId] = value;
+      else delete nextGroups[categoryId];
+      this.categorySnapshot = typeof this.categoryStore.setCategoryGroup === 'function'
+        ? await this.categoryStore.setCategoryGroup(contextKey, categoryId, value)
+        : typeof this.categoryStore.setGroups === 'function'
+          ? await this.categoryStore.setGroups(contextKey, nextGroups)
+          : await this.categoryStore.save(contextKey, { ...this.categorySnapshot, groups: nextGroups });
+      if (!options.silent) this._setUi({ status: value ? `Local category group saved: ${value}.` : 'Local category group removed.' });
+      return value;
     }
 
     async refreshList(query = this.search) {
@@ -723,10 +1260,8 @@
       const context = this._repositoryContext(this.current);
       if (!context.owner || !context.repo || !context.branch) throw new Error('GitHub owner, repository and branch are required to open this target.');
       const canonicalPath = this.api.normalizeCanonicalRepositoryPath(link.target.path, 'Repository link path');
-      const path = encodeGitHubPath(canonicalPath);
-      const anchor = link.target.anchor ? `#${encodeURIComponent(link.target.anchor)}` : '';
-      const url = `https://github.com/${encodeURIComponent(context.owner)}/${encodeURIComponent(context.repo)}/blob/${encodeURIComponent(context.branch)}/${path}${anchor}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
+      await this.openRepositoryEntry({ type: 'file', path: canonicalPath, name: canonicalPath.slice(canonicalPath.lastIndexOf('/') + 1) }, context);
+      if (link.target.anchor) this._setUi({ status: `Opened ${canonicalPath} in the app. Requested anchor: #${link.target.anchor}. Use Open on GitHub for anchored browser navigation.` });
     }
 
     async _persistRemoteState(note, status) {

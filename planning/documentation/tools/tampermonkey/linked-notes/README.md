@@ -1,16 +1,17 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.3.0-prototype`
-Scope: one local-first Tampermonkey vertical slice for creating, linking, reading, reconciling, persisting and reopening repository-owned Markdown Notes across reusable GitHub workspaces with a viewport-safe scrollable panel.
+Version: `0.4.2-prototype`
+Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, read-only repository file browsing and GitHub-backed file categories across reusable GitHub workspaces with a viewport-safe scrollable panel.
 
 ## 1. Owners And Boundaries
 
 Behavior owners:
 
 - [`linked-notes-end-to-end-workflow.md`](../../../../areas/documentation-workbench/linked-notes-end-to-end-workflow.md);
-- the Linked Notes Key Scenario in [`planning-draft.md`](../../../../areas/documentation-workbench/planning-draft.md);
-- `ITEM-114 / STABLE-MARKDOWN-LINK-TARGETS` and `ITEM-124 / LINKED-MARKDOWN-NOTES` in [`planning-item-register.md`](../../../../areas/documentation-workbench/planning-item-register.md).
+- the Linked Notes and repository-file/category Key Scenarios in [`planning-draft.md`](../../../../areas/documentation-workbench/planning-draft.md);
+- [`repository-file-browser-and-categories-workflow.md`](../../../../areas/documentation-workbench/repository-file-browser-and-categories-workflow.md);
+- `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-127` and selected prototype idea `ITEM-128` in [`planning-item-register.md`](../../../../areas/documentation-workbench/planning-item-register.md).
 
 This directory is implementation/prototype material. It does not redefine behavior owners or silently accept a production architecture.
 
@@ -48,13 +49,25 @@ the Note list and editor are independently scrollable inside a viewport-bounded 
 wide viewports reserve bottom-right space for neighbouring OBS widgets and the panel remains above competing overlays;
 workspace creation is reachable from a persistent top-bar Manage workspaces action;
 no generic Reference Object store;
+repository file categories use dedicated ordinary Markdown definition files;
+category membership is stored as visible repository-relative links in category definitions;
+category implication is repository-backed while UX grouping remains local-only;
+category state is cleared and reloaded atomically whenever the active workspace or its repository/branch/Categories-folder target changes;
+category writes require the current workspace id and full owner/repository/branch/Categories-folder identity and remain blocked after an in-place target edit until explicit refresh;
+category definitions/cache and local groups use separate target-scoped lock/revision records; per-category group mutations reread the latest map under the lock;
+category definition v2 uses explicit managed-region boundaries while legacy v1 remains readable;
+category refresh keeps path-aware diagnostics and validates member-file links through bounded parent-directory listings without reading member-file content;
+repository-entry metadata survives the UI click path, so known oversized files are classified before content read;
+category assignment is blocked when a Note-bound preview belongs to another owner/repository/branch;
+category link destinations use deterministic percent-encoded angle-bracket Markdown targets and round-trip spaces, parentheses, brackets, Unicode and percent signs;
+no file-local category marker in this prototype;
 no category-backed Notes projection;
 no automatic link repair;
 no automatic background repository writes;
 no local git, commit or push.
 ```
 
-Canonical Planning Item changes remain a separate reviewed reconciliation step.
+Canonical Planning Items describe the required behavior; this directory remains prototype evidence and does not make the userscript production architecture.
 
 ## 2. Workspace Model
 
@@ -63,7 +76,7 @@ The runtime deliberately separates three identities:
 ```text
 Workspace:
   reusable local repository configuration;
-  name + owner/repository + branch + Notes folder.
+  name + owner/repository + branch + Notes folder + Categories folder.
 
 Chat Workspace Binding:
   local mapping from one stable ChatGPT conversation ID
@@ -86,7 +99,7 @@ https://github.com/AlexPastukhh/gdoc
 The helper extracts `owner=AlexPastukhh` and `repo=gdoc` and displays the effective target:
 
 ```text
-AlexPastukhh/gdoc@main:prototype-fixtures/linked-notes
+AlexPastukhh/gdoc@main:notes=prototype-fixtures/linked-notes; categories=categories
 ```
 
 The workspace selector does not filter the local Notes list. It controls the repository context for:
@@ -106,6 +119,9 @@ obsLinkedNotesPrototype:v2:workspaceState
 obsLinkedNotesPrototype:v2:githubToken
 obsLinkedNotesPrototype:v2:migration
 obsLinkedNotesPrototype:v2:stateLock
+obsLinkedNotesPrototype:v2:categoryCache:<workspace-target-context>
+obsLinkedNotesPrototype:v2:categoryGroups:<workspace-target-context>
+obsLinkedNotesPrototype:v2:categoryLock:<workspace-target-context>
 ```
 
 The canonical `workspaceState` value contains the complete workspace list, explicit chat map, default workspace and revision/writer identity in one atomic GM value.
@@ -118,6 +134,7 @@ obsLinkedNotesPrototype:v2:chatWorkspaceMap
 obsLinkedNotesPrototype:v2:defaultWorkspace
 obsLinkedNotesPrototype:v1:settings
 obsLinkedNotesPrototype:v1:githubToken
+obsLinkedNotesPrototype:v1:categoryCache
 ```
 
 On the first v2 load, valid v1 settings become one deterministic `workspace-imported-v1` record named `Imported workspace`; the old token is copied to the shared v2 token slot when that slot is empty. Migration runs under the same cooperative cross-tab lock, so two starting tabs cannot create duplicate imported workspaces. The old keys are not deleted automatically.
@@ -143,13 +160,25 @@ src/note-markdown-codec.js
   deterministic Markdown Note encoding/decoding.
 
 src/repository-target.js
-  Markdown-relative path normalization and explicit-anchor checks.
+  Markdown-relative path normalization, portable relative-link generation and explicit-anchor checks.
+
+src/repository-file-browser.js
+  pure repository browsing, breadcrumb, GitHub URL and bounded text-preview policy.
+
+src/category-definition-codec.js
+  deterministic v2 category Markdown with explicit managed boundaries, encoded portable link destinations and legacy v1 decoding.
+
+src/repository-category-index.js
+  explicit and implied memberships, validation provenance, path-aware broken-link reporting and cycle detection.
+
+src/category-cache-store.js
+  multi-tab-safe target-scoped category snapshots and separately revisioned local-only UX groups with atomic per-category mutations.
 
 src/indexeddb-note-store.js
   local Note draft/index storage.
 
 src/github-contents-client.js
-  validated GitHub Contents API directory/read/create/update and read-back verification.
+  validated GitHub Contents API directory/read/create/update, metadata-without-content-decoding and read-back verification.
 
 src/remote-note-reconcile.js
   pure local/remote classification for import, unchanged, fast-forward, local-ahead, conflict, duplicate identity and remote deletion.
@@ -196,6 +225,14 @@ node verify-linked-notes.mjs
 Automated verification covers:
 
 - existing Note state, codec, path, GitHub client and recovery policies;
+- repository-root and direct-directory browsing with GET-only text preview and GitHub links;
+- deterministic category-definition v2 Markdown round trip, literal managed-looking headings and legacy v1 compatibility;
+- explicit and transitive implied category membership, broken links and cycle detection;
+- workspace-target-isolated category cache recovery, same-id target invalidation, route-safe context reset and atomic multi-tab local-group mutations;
+- path-aware category diagnostics, bounded parent-directory member validation without member-content reads and explicit missing/inaccessible/unchecked states;
+- category create/update/assignment writes with SHA protection and exact read-back verification;
+- oversized file classification through the real UI payload before content reads and metadata responses that do not decode inline content;
+- cross-repository category-assignment rejection and portable category-link round trips for punctuation, spaces, Unicode and percent signs;
 - bounded direct-child GitHub Notes-folder listing with repository/branch verification before a missing folder is treated as empty;
 - pure remote/local reconciliation for import, unchanged, fast-forward, local-ahead, conflict, duplicate identity and remote deletion;
 - explicit GET-only workspace refresh with remote-only import, safe fast-forward and no background network reads;
@@ -243,11 +280,14 @@ The launcher measures its own width and moves left by that width plus a gap. The
 4. Enter either `AlexPastukhh/gdoc` or its full GitHub repository URL.
 5. Enter an existing branch.
 6. Enter a repository-relative Notes folder.
-7. Press `Save workspace`.
-8. Store one shared fine-grained token.
-9. Create additional workspaces as needed.
-10. Choose the current workspace from the selector at the top of the panel.
-11. Press `Refresh GitHub` to read existing Linked Notes from the selected Notes folder.
+7. Enter a repository-relative Categories folder, for example `categories`.
+8. Press `Save workspace`.
+9. Store one shared fine-grained token.
+10. Create additional workspaces as needed.
+11. Choose the current workspace from the selector at the top of the panel.
+12. Press `Refresh Notes` to read existing Linked Notes from the selected Notes folder.
+13. Open `Files` and press `Browse root` to navigate repository files.
+14. Open `Categories` and press `Refresh categories` to rebuild category memory from GitHub.
 
 Recommended first test target:
 
@@ -283,12 +323,18 @@ Deleting a workspace removes only local workspace records and affected chat mapp
 ## 9. UI Behavior
 
 - dark theme consistent with ChatGPT dark mode;
-- `Notes` launcher shifted left by its measured width plus a gap;
+- `Docs` launcher shifted left by its measured width plus a gap;
 - wide viewports reserve bottom-right space for other OBS widgets instead of allowing them to cover Notes content;
 - the panel uses the highest stacking layer and recalculates its bounded dimensions when the viewport changes;
 - the Note list and editor have independent internal vertical scrolling, including access to Links and workspace settings below the editor;
 - `Manage workspaces` remains visible in the top bar and opens the manager at its scroll position;
-- `Refresh GitHub` remains visible beside it and performs one explicit read-only reconciliation of the active workspace;
+- top-level `Notes`, `Files` and `Categories` surfaces share one selected workspace;
+- `Refresh Notes` remains visible beside workspace controls and performs one explicit read-only reconciliation of the active Notes folder;
+- `Files` browses direct repository folders and shows a bounded read-only text preview plus `Open on GitHub`;
+- repository-listing size/SHA/URL metadata survives UI selection; unsupported or oversized files show metadata and the GitHub escape hatch instead of corrupted text;
+- `Categories` reads durable category definitions, creates/edits descriptions, assigns files through visible links and distinguishes explicit from derived membership;
+- category implication is stored in definition files; category groups are local UX-only and each group change is an atomic category-level mutation;
+- category assignment is disabled and rejected when the selected preview belongs to a different repository/branch than the active category workspace;
 - the last refresh summary reports found, imported, updated, unchanged, local-ahead, conflict, deleted, skipped and error counts;
 - `Escape` persists the title/body draft and closes an idle open panel;
 - `Escape` is ignored while a remote operation is active;
@@ -299,7 +345,65 @@ Deleting a workspace removes only local workspace records and affected chat mapp
 - the current chat workspace and effective repository target are visible;
 - manager fields use user-facing names instead of an unexplained standalone `owner` field.
 
-## 10. GitHub Read And Reconciliation Boundary
+
+## 10. Repository File Browser Boundary
+
+The `Files` surface performs only explicit GitHub Contents API reads. It lists the repository root or one selected direct directory, opens one selected file and always exposes an `Open on GitHub` action.
+
+```text
+text file within 512 KiB
+  → literal read-only in-app preview;
+
+binary, unsupported or oversized file
+  → path/SHA/size metadata
+  → Open on GitHub;
+
+ordinary browse/open
+  → no PUT, delete, rename or background scan.
+```
+
+Repository links opened from Notes use the Note-bound repository context in the in-app file viewer instead of being silently rebound to the active workspace. Exact GitHub navigation remains available through the file link.
+
+## 11. Repository File Categories Boundary
+
+Each category has one ordinary Markdown definition in the Workspace Categories folder. The prototype marker owns stable identity while visible Markdown owns description, implied-category links and file-member links.
+
+```markdown
+<!-- obs-file-category:v2 {"schemaVersion":2,"id":"asp-net-core","name":"ASP.NET Core"} -->
+
+# ASP.NET Core
+
+Category description. User Markdown may contain headings named `## Files` or `## Implied categories` without becoming managed data.
+
+<!-- obs-file-category:implied:start -->
+## Implied categories
+
+- [Programming](./programming.md)
+<!-- obs-file-category:implied:end -->
+
+<!-- obs-file-category:files:start -->
+## Files
+
+- [API overview](../docs/api-overview.md)
+<!-- obs-file-category:files:end -->
+```
+
+Rules:
+
+- category refresh is explicit and read-only;
+- category create/update/assign/unassign is an explicit write;
+- every write uses the latest known SHA and exact read-back verification;
+- one file may have several explicit categories;
+- `ASP.NET Core → Programming` makes ASP.NET Core files derived members of Programming;
+- cycles, malformed definitions, broken category links and broken file links retain exact source/target paths;
+- member-file validation distinguishes verified, missing, inaccessible and unchecked results and uses bounded parent-directory listings rather than member-file content reads;
+- visible member links use encoded angle-bracket Markdown destinations and round-trip valid repository names containing spaces, parentheses, brackets, Unicode or percent signs;
+- local cache is rebuildable from GitHub and cannot be reused across a changed owner/repository/branch/Categories-folder context even when the workspace id is unchanged;
+- definition snapshots and local groups use separate target-scoped cooperative locks/revisions; group edits mutate one category after rereading the latest map;
+- local UX groups are not written to GitHub;
+- categorized files themselves are not modified by this prototype.
+
+## 12. GitHub Read And Reconciliation Boundary
 
 `Refresh GitHub` is the only Notes-folder discovery trigger. Opening the panel, changing routes and selecting workspaces do not scan GitHub.
 
@@ -320,7 +424,7 @@ performs no PUT, delete, rename, branch creation or automatic merge.
 
 A 404 for the Notes folder is treated as an empty folder only after the repository root is readable at the configured branch. This prevents an invalid or inaccessible repository/branch from being reported as a harmless empty folder.
 
-## 11. GitHub Save Boundary
+## 13. GitHub Save Boundary
 
 Use a test repository or test branch, not production `main` by default.
 
@@ -340,7 +444,7 @@ Remote recovery remains explicit:
 - `Restore/overwrite bound remote` requires confirmation and uses the latest remote SHA;
 - a successful PUT followed by failed read-back records a recoverable provisional target.
 
-## 12. Guided Test Run
+## 14. Guided Test Run
 
 Run the exact test sequence in [`PROTOTYPE-CHECKLIST.md`](PROTOTYPE-CHECKLIST.md). The checklist covers:
 
@@ -358,6 +462,8 @@ workspace-form preservation and discard confirmation;
 v1 migration;
 local Note and Note-to-Note behavior;
 explicit GitHub folder refresh, remote-only import and safe remote fast-forward;
+repository root/folder browsing, in-app text preview and GitHub link;
+category definition create/read/update, explicit/derived membership, cache rebuild, broken links and cycle handling;
 remote/local two-sided conflict and remote deletion discovery;
 verified GitHub create/update/read-back;
 workspace mismatch and explicit Copy;
@@ -368,7 +474,7 @@ secret/storage inspection.
 
 Passing automated tests does not replace the browser and real GitHub smoke tests.
 
-## 13. Prototype Markdown Format
+## 15. Prototype Markdown Format
 
 The generated file remains ordinary Markdown with one compact machine-readable HTML comment:
 
@@ -382,7 +488,7 @@ Literal user Markdown body.
 
 Workspace and chat binding data are intentionally absent from this format. The Note stores only its own verified remote identity in local state; repository Markdown remains portable.
 
-## 14. Known Open Decisions
+## 16. Known Open Decisions
 
 - final Note identity and filename convention;
 - file-per-Note versus shared/hybrid remote storage;
@@ -394,7 +500,7 @@ Workspace and chat binding data are intentionally absent from this format. The N
 - production packaging and shared-library extraction;
 - whether local Notes should later support optional workspace filters.
 
-## 15. Do Not
+## 17. Do Not
 
 - Do not edit `linked-notes-prototype.user.js` by hand; edit `src/**` and rebuild.
 - Do not claim remote success before exact read-back verification.

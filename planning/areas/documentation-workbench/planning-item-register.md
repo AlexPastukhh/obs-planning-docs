@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Item Register — Repository-Native Planning Reset
 
 Status: active project-local source-linked register / Batch 3A current item set
-Doc version: v1.0.1-scenario-and-experiment-route-cleanup
+Doc version: v1.1.0-repository-files-and-categories
 
 Repository owner:
 
@@ -59,14 +59,14 @@ The project-local Scenario/DATA/Behavior workspace has completed its coverage au
 
 ## 2. Counts And Disposition
 
-- reviewed pre-reset canonical items: **53 / 53**;
-- active selected current meanings: **13**;
+- reviewed canonical items after this transition: **57 / 57**;
+- active selected current meanings: **18**;
 - active reusable-linked meanings: **8**;
-- deferred meanings: **20**;
+- deferred meanings: **19**;
 - finalized retired meanings: **12**;
 - old methodology/application audit: **110 / 110**, preserved in [`retired-planning-items.md`](retired-planning-items.md).
 
-No new canonical `ITEM-*` ID is introduced in this batch. Reference Impact Checker and AI Transfer Expander remain Implementation Ideas linked to existing requirements.
+This transition introduces `ITEM-126` through `ITEM-129`. `ITEM-128` is the selected bounded prototype implementation idea; `ITEM-129` remains a deferred alternative.
 
 ## 3. Item Identity And Transformation Rule
 
@@ -733,6 +733,22 @@ Context: request to recheck the reconciliation before producing the file-update 
 Context: explicit acceptance of the corrected plan plus the requirement to move finalized inactive Planning Items into a separate file.
 
 
+### SRC-N99
+
+```text
+1 надо иметь возможнрость просмотреть здесь любой файл + чтобы была ссылка на файл в гитхабе если надо там открыть. 2 надо иметь возможность давать файлам в гитхабе категорию. т е создать категорию, присвоить файлу эту категорию. открыть здесь категорию и увидеть файлы с этой категорией. нужно иметь возможность дать категории категорию, или скорее просто группировать категории. это актуально только для приложения и его ux, в гитхабе это никак можно не отмечать(обычно скорее всего придется отмечать категорию файла и в самом файле). можно добавить автоматические категори для какой то категории, по типу - asp.net core категория имеет имплицитно категорию программирование и тд. ну и когда создаешь категорию можно дать ей описание, тогда добавится файл описания категории в папку (я думаю что надо определение категории всегда делать, чтобы можно было прочитать список категорий с их описаниями из гитхаба и восстановить память локальную). также надо чтобы при добавлении категории файлам создавались ссылки на эти файлы внутри ссылочвного файла категории (или внутри файла определения, по идее можно в файле определения это сделать)
+```
+
+Context: complete direct requirement for in-app repository file viewing, GitHub links, durable file categories, category views, category grouping/implication and repository-restorable category definitions with file links.
+
+### SRC-N100
+
+```text
+добавить итемы и обновить драфт + реализовать итемы
+```
+
+Context: explicit acceptance of the immediately preceding item formation and permission to update canonical items, Planning Draft and implement the selected bounded prototype.
+
 ## 5. Current Item Index
 
 | ID | Current semantic name | Disposition | Current owner |
@@ -750,6 +766,9 @@ Context: explicit acceptance of the corrected plan plus the requirement to move 
 | `ITEM-123` | Project-Readable Tool Configuration | active selected | this register / Planning Draft |
 | `ITEM-124` | Linked Markdown Notes | active selected | this register / Planning Draft |
 | `ITEM-114` | Stable Markdown Link Targets | active selected | this register / Planning Draft |
+| `ITEM-126` | Repository File Browser And Viewer | active selected | this register / Planning Draft |
+| `ITEM-127` | Category Groups And Implicit Category Relations | active selected | this register / Planning Draft |
+| `ITEM-128` | Repository Category Definition Markdown Files | active selected Implementation Idea | this register / prototype evidence |
 | `ITEM-94` | AI Planning Item Review And Transfer | active reusable-linked | reusable planning owners |
 | `ITEM-110` | Stable Planning Item Identity | active reusable-linked | reusable planning owners |
 | `ITEM-41` | Canonical Planning Item Reuse | active reusable-linked | reusable planning owners |
@@ -775,9 +794,10 @@ Context: explicit acceptance of the corrected plan plus the requirement to move 
 | `ITEM-115` | The application supports user-authored literal `RN` and `DAM` annotations attached to the nearest preceding addressable fragment. | deferred | this register |
 | `ITEM-116` | An AI response can be an immutable file-like system document whose recommended task template defines the required resolvable links. | deferred | this register |
 | `ITEM-125` | A Notes collection/view may be implemented as a typed projection over Reference Objects whose categories include `Note`. | deferred | this register |
-| `ITEM-118` | For a selected file or folder, the application derives manually configurable views of related Reference Objects and concern records. | deferred | this register |
+| `ITEM-129` | File-Local Category Metadata | deferred Implementation Idea | this register |
+| `ITEM-118` | File, Folder And Category Views | active selected | this register / Planning Draft |
 | `ITEM-96` | Folder view aggregates object, relation and category-based views across selected files, optionally including subfolders. | deferred | this register |
-| `ITEM-97` | File categories/types independently recommend document templates, concern presets, view presets and validation rules. | deferred | this register |
+| `ITEM-97` | Repository File Categories And Guidance | active selected | this register / Planning Draft |
 | `ITEM-85` | Специальные файлы, существующие только ради ручного учёта зависимостей, должны стать необязательными после переноса dependency handling в приложение. | absorbed | ITEM-89 / REVIEW-ON-CHANGE-IMPACT |
 | `ITEM-86` | Reference Object Term: «Ссылочный объект» is the confirmed Russian user-facing term for independently managed documentation meaning. | superseded | ITEM-114 / STABLE-MARKDOWN-LINK-TARGETS |
 | `ITEM-22B` | Planning Item Reference Object Boundary distinguishes already managed application-native Planning Items from portable reviewed meanings that still require managed-object creation. | superseded | ITEM-94 and ITEM-98 |
@@ -1047,7 +1067,7 @@ Exact format is selected by each tool after its implementation idea is accepted.
 <a id="item-124"></a>
 ### ITEM-124 / LINKED-MARKDOWN-NOTES — Linked Markdown Notes
 
-- Status: **active selected capability; implementation deferred**.
+- Status: **active selected capability; prototype implemented, acceptance pending**.
 - Former code/name: `FIRST-CLASS-NAMED-NOTES`.
 - Kind: documentation capability.
 - Sources: `SRC-N87`.
@@ -1062,6 +1082,157 @@ A future helper may provide creation, filtering or target-related views, but:
 - a link does not require semantic Home;
 - a category-backed object projection is not required;
 - multi-target behavior and note indexing remain open implementation questions.
+
+
+<a id="item-97"></a>
+### ITEM-97 / REPOSITORY-FILE-CATEGORIES — Repository File Categories And Guidance
+
+- Status: **active selected current meaning**.
+- Former code/name: `FILE-TYPE-GUIDANCE-ASSIGNMENTS`.
+- Kind: repository file classification and optional guidance assignment.
+- Sources: `SRC-N20`, `SRC-N78`, `SRC-N79`, `SRC-N99`, `SRC-N100`.
+
+#### Complete current meaning
+
+A repository file may have one or several explicit durable categories. The user can create a category, give it stable identity/name and a Markdown description, assign or remove the category for a file, and rebuild category definitions and memberships from repository content after local cache loss.
+
+A category may independently recommend a Document Template, Concern Presets, View Presets or Validation Rules. Those recommendations remain optional and retain their separate semantics. Assigning a category does not automatically create sections, concerns, objects or validation failures.
+
+Explicit membership and derived membership are distinct. The current selected prototype stores explicit membership as visible file links inside the category definition. Local indexes and caches remain derived and rebuildable.
+
+#### Boundaries
+
+- file categories are distinct from `ITEM-106` object-category field contracts;
+- several explicit categories may coexist on one file;
+- assigning a category does not make an ordinary navigation link a review-on-change obligation;
+- category rename/delete and cross-repository membership require later lifecycle planning;
+- file-local category markers are not required by this item.
+
+#### Transformation
+
+| Role | Meaning | Effect |
+|---|---|---|
+| Current | deferred file type/category CRUD plus independent guidance recommendations | preserved |
+| Incoming | durable categories, descriptions, file assignment and GitHub-restorable memory | extends and activates |
+| Resulting | repository-backed file categories with optional guidance assignments | selected current meaning |
+
+#### Typed Source Contributions
+
+- `SRC-N20` — historical primary support for file categories and template guidance;
+- `SRC-N78`, `SRC-N79` — supporting view/preset meaning;
+- `SRC-N99` — primary durable category definition, assignment and recovery requirement;
+- `SRC-N100` — acceptance and implementation authorization.
+
+<a id="item-118"></a>
+### ITEM-118 / FILE-FOLDER-CATEGORY-VIEWS — File, Folder And Category Views
+
+- Status: **active selected current meaning**.
+- Former code/name: `CONFIGURABLE-RELATED-OBJECT-VIEWS`.
+- Kind: selectable derived view and navigation capability.
+- Sources: `SRC-N19`, `SRC-N78`, `SRC-N79`, `SRC-N80`, `SRC-N99`, `SRC-N100`.
+
+#### Complete current meaning
+
+The application can open a file, folder or category as a navigation context and show concrete repository results. A category view displays its name/description, explicitly assigned files, files included through implicit category relations, exact repository paths, explicit-versus-derived membership and unresolved targets. Each file result can open inside the application and on GitHub.
+
+Views expose existing state. Opening, filtering or grouping a view does not itself change repository content, create concerns or accept semantic state.
+
+#### Boundaries
+
+- category creation/assignment is owned by `ITEM-97`;
+- folder aggregation remains compatible with `ITEM-96`;
+- file content preview is owned by `ITEM-126`;
+- every transitive expansion must make its relation and derived status visible.
+
+#### Transformation
+
+| Role | Meaning | Effect |
+|---|---|---|
+| Current | deferred configurable file/folder related-object views with category filters | preserved |
+| Incoming | category as a first-class selectable context listing files | extends and activates |
+| Resulting | file, folder and category views with drill-down to repository files | selected current meaning |
+
+<a id="item-126"></a>
+### ITEM-126 / REPOSITORY-FILE-VIEWER — Repository File Browser And Viewer
+
+- Status: **active selected current meaning**.
+- Kind: independently useful repository reading and navigation capability.
+- Sources: `SRC-N17`, `SRC-N99`, `SRC-N100`.
+
+#### Complete current meaning
+
+The application allows a user to browse the selected GitHub repository and open a selected file inside the current work surface. The view shows repository/branch/path identity, a read-only preview when the format and size are supported, explicit unsupported/too-large/error states, and an exact `Open on GitHub` action.
+
+Files reached through repository navigation, Note links or category views use the same viewer. The requirement to view “any file” means every file remains addressable and can be opened on GitHub; it does not require an in-app renderer for every binary format.
+
+#### Acceptance
+
+- direct folders can be navigated explicitly;
+- supported text is shown literally and read-only;
+- binary/unsupported/oversized content is not misrepresented as complete text;
+- every selected file keeps an exact GitHub link;
+- ordinary browse/open performs no remote write or background repository scan.
+
+#### Typed Source Contributions
+
+- `SRC-N17` — historical file-navigation support;
+- `SRC-N99` — primary in-app view and GitHub-link requirement;
+- `SRC-N100` — acceptance and implementation authorization.
+
+<a id="item-127"></a>
+### ITEM-127 / CATEGORY-GROUPS-AND-IMPLICATIONS — Category Groups And Implicit Category Relations
+
+- Status: **active selected current meaning**.
+- Kind: category organization and semantic derivation.
+- Sources: `SRC-N99`, `SRC-N100`.
+
+#### Complete current meaning
+
+Category grouping and category implication are separate relations.
+
+```text
+local UX group
+  → organizes category presentation only
+  → does not change file membership;
+
+category A implies category B
+  → every file explicitly in A is a derived member of B
+  → transitive derivation is visible and cycle-safe.
+```
+
+Example: `ASP.NET Core` may imply `Programming`; a file explicitly categorized as ASP.NET Core appears as a derived Programming file. Category views show why each membership matched.
+
+#### Boundaries
+
+- local UX groups need not be written to GitHub;
+- semantic implication must be durable/rebuildable;
+- cycles and missing category targets remain explicit;
+- removing the only explicit source removes the derived membership.
+
+<a id="item-128"></a>
+### ITEM-128 / CATEGORY-DEFINITION-MARKDOWN — Repository Category Definition Markdown Files
+
+- Status: **active selected Implementation Idea / bounded prototype**.
+- Kind: relation-backed implementation idea.
+- Sources: `SRC-N99`, `SRC-N100`.
+- Relations: `proposes implementation for → ITEM-97`; `supplies views to → ITEM-118`; `represents implication for → ITEM-127`.
+
+#### Complete current meaning
+
+The selected prototype uses one ordinary Markdown definition file per category in a configurable Workspace Categories folder. A compact marker stores schema and stable identity; human-readable Markdown stores the description plus visible links to implied category definitions and member files.
+
+```text
+category definition file
+  → stable id/name marker
+  → literal Markdown description
+  → visible implied-category links
+  → visible member-file links
+  → local cache rebuilt by explicit GitHub refresh.
+```
+
+In this prototype, category-definition file links are the canonical explicit membership owner. Categorized target files are not modified. All category writes are explicit, SHA-protected and verified by exact read-back.
+
+This item selects a prototype representation, not final production architecture. Category rename/delete, recursive repository indexing and file-local redundancy remain open.
 
 <a id="item-114"></a>
 ### ITEM-114 / STABLE-MARKDOWN-LINK-TARGETS — Stable Markdown Link Targets
@@ -1779,6 +1950,19 @@ Source navigation must resolve from a Planning Item to the complete supporting u
 
 </details>
 
+
+<a id="item-129"></a>
+### ITEM-129 / FILE-LOCAL-CATEGORY-METADATA — File-Local Category Metadata
+
+- Current disposition: **deferred Implementation Idea**.
+- Current baseline effect: none.
+- Sources: `SRC-N99`, `SRC-N100`.
+- Relation: `proposes alternative or complementary implementation for → ITEM-97`.
+
+A categorized file could carry a quiet machine-readable category marker so classification moves with the file and can be rebuilt by repository scanning. Exact front matter/comment syntax, source-of-truth precedence, two-sided reconciliation and impact on arbitrary file formats remain unresolved.
+
+The `0.4.2-prototype` deliberately does not write this metadata. Category-definition member links are the selected bounded prototype owner, avoiding two independently editable truths.
+
 <a id="item-125"></a>
 ### ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION — A Notes collection/view may be implemented as a typed projection over Reference Objects whose categories include `Note`.
 
@@ -1822,80 +2006,6 @@ Source navigation must resolve from a Planning Item to the complete supporting u
 
 </details>
 
-<a id="item-118"></a>
-### ITEM-118 / CONFIGURABLE-RELATED-OBJECT-VIEWS — For a selected file or folder, the application derives manually configurable views of related Reference Objects and concern records.
-
-- Current disposition: **deferred**.
-- Current baseline effect: none.
-- Reason: Configurable related-object views are deferred UI/tooling.
-- Reconsideration: requires an explicit independently useful workflow, evidence and a new Current / Incoming / Resulting review.
-
-<details>
-<summary>Preserved complete pre-reset body</summary>
-
-- Kind: configurable view / object discovery
-- Evidence status: **direct fresh user statement**
-- Current coverage: **Covered as a cross-workflow view/projection capability; the accepted Planning Item workflow now defines concern/item observability and drill-down expectations.**
-- Disposition: Expand the active item; concern suggestion/application behavior remains owned by `ITEM-119`, and Applied Concern lifecycle by `ITEM-113`.
-- Required documentation action:
-  - confirmed selected context:
-    - Documentation File;
-    - Folder through `ITEM-96`;
-  - File Location is a candidate extension rather than a confirmed first-version scope;
-  - selectable relation scopes may include:
-    - canonical definition stored here;
-    - parent/home is here;
-    - reference occurrence is here;
-    - object directly links to this file;
-    - incoming/outgoing relation groups from `ITEM-95`;
-    - deeper-planning target directly linked from an item represented in the file;
-  - filters may use:
-    - object category;
-    - Planning Item kind/scale;
-    - status;
-    - planning direction;
-    - Concern Definition;
-    - Concern Preset source;
-    - Concern Suggestion disposition;
-    - Applied Concern status;
-    - other recognized optional fields;
-  - provide projections such as:
-    - All Planning Items;
-    - Open Questions;
-    - Alternatives And Branches;
-    - Pending Concern Suggestions;
-    - Suggestions From A Selected Preset;
-    - All Applied Concerns;
-    - Open Applied Concerns;
-    - Concerns Needing Separate Work;
-    - Concern Work Targets;
-  - manual selection of relation scopes, categories and statuses is always available;
-  - recommended view presets come from file type/category under `ITEM-97`;
-  - View Preset only displays existing objects/records:
-    - it does not evaluate/apply a Concern Preset;
-    - it does not create Concern Suggestions or Applied Concerns;
-    - it does not alter canonical content;
-  - counts must drill down to concrete objects, files, locations and occurrences;
-  - opening a result uses IDE-like tabs under `ITEM-35B`;
-  - direct versus transitive relationship expansion remains an open design question; every view must make its relation scope explicit.
-- Owner: cross-workflow Related Object And Concern Views capability.
-- Accepted workflow placement: cross-step navigation/views in `documentation-and-reference-object-end-to-end-workflow.md` and concern/item observability in `complete-pictures/planning-items-and-full-picture/full-picture.md`.
-- Direct source excerpts:
-  - SRC-N78
-  - SRC-N79
-  - SRC-N80
-- Related active items:
-  - `ITEM-95`, `ITEM-96`, `ITEM-97`, `ITEM-103`, `ITEM-106`, `ITEM-112`, `ITEM-113`, `ITEM-119`.
-- Older support:
-  - `ITEM-16B`, `ITEM-40`, `ITEM-48`, `ITEM-51`, `ITEM-71`.
-- Explanation: Views expose selected existing state; they do not turn recommendations into suggestions or suggestions into applied planning work.
-
-#### Accepted recent-chat reconciliation expansion
-
-Views should expose derived concern/item observability with compact icons or counts and drill down to concrete records. They may include working, needs-documentation, documented/integrated, unresolved, deferred, absorbed/superseded and rejected Planning Item states. Views do not create or accept semantic state.
-
-</details>
-
 <a id="item-96"></a>
 ### ITEM-96 / FOLDER-DEPENDENCY-VIEW — Folder view aggregates object, relation and category-based views across selected files, optionally including subfolders.
 
@@ -1924,56 +2034,6 @@ Views should expose derived concern/item observability with compact icons or cou
   - SRC-N19
   - SRC-N78
 - Explanation: Folder overview is the same derived-view mechanism applied to a selectable collection of files.
-
-</details>
-
-<a id="item-97"></a>
-### ITEM-97 / FILE-TYPE-GUIDANCE-ASSIGNMENTS — File categories/types independently recommend document templates, concern presets, view presets and validation rules.
-
-- Current disposition: **deferred**.
-- Current baseline effect: none.
-- Reason: File-type guidance assignments are deferred until a concrete tool needs them.
-- Reconsideration: requires an explicit independently useful workflow, evidence and a new Current / Incoming / Resulting review.
-
-<details>
-<summary>Preserved complete pre-reset body</summary>
-
-- Kind: file classification / guidance assignment
-- Evidence status: **direct user statement**
-- Current coverage: **Template and view guidance exist, but concern-preset and validation-role separation is absent.**
-- Disposition: Expand and rename the existing item without absorbing `ITEM-119` semantics.
-- Required documentation action:
-  - support file-category/type CRUD;
-  - allow a file type to independently recommend:
-    - Document Template;
-    - Concern Presets;
-    - View Presets;
-    - Validation Rules;
-  - Document Template recommends how the file may be structured;
-  - Concern Preset recommends possible questions/directions to consider;
-  - View Preset configures which existing related objects are displayed;
-  - Validation Rule checks a condition and is neither a template section nor a concern;
-  - a recommendation may be omitted independently for each mechanism;
-  - applying a file type does not automatically:
-    - create document sections;
-    - create Applied Concerns;
-    - create Reference Objects;
-    - fail validation;
-  - candidate concerns should be reviewed through `ITEM-119`;
-  - related-object filtering/presentation is owned by `ITEM-118`;
-  - users may always manually change active filters or add concerns outside recommendations;
-  - confirmed Planning Draft view examples:
-    - All Planning Items;
-    - Open Questions;
-    - Alternatives And Branches;
-  - exact first template/preset/rule catalogue remains a documentation audit task.
-- Owner candidate: file category and guidance-assignment workflow
-- Accepted workflow placement: shape and category contracts phase of `documentation-and-reference-object-end-to-end-workflow.md`.
-- Direct source excerpts:
-  - SRC-N20
-  - SRC-N78
-  - SRC-N79
-- Explanation: File type is an assignment point; each guidance mechanism retains its own semantics, lifecycle and application behavior.
 
 </details>
 
@@ -2084,7 +2144,9 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 | Reference Impact Checker | `ITEM-89` | Working / Needs Prototype | detect explicit review relations across changed file/section targets without false positives |
 | AI Transfer Expander | `ITEM-107` | Working / Needs Prototype | produce bounded non-mutating expansion with source identity and unresolved-target reporting |
 | Structured Message Composer implementation | `ITEM-121` | open | independently useful composition flow without a broad application shell |
-| Notes helper/index | `ITEM-124` | deferred | prove that ordinary Markdown/search is insufficient |
+| Notes helper/index | `ITEM-124` | supported by current prototype | browser and real-GitHub acceptance |
+| Repository Category Definition Markdown | `ITEM-97`, `ITEM-118`, `ITEM-127` | selected bounded prototype (`ITEM-128`) | real GitHub create/assign/rebuild/conflict/cycle evidence |
+| File-Local Category Metadata | `ITEM-97` | deferred (`ITEM-129`) | choose canonical precedence and prove value without duplicate truth |
 
 ## 11. Open Questions
 
@@ -2093,6 +2155,8 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 3. Which stable-anchor convention should be used for Planning Item headings and other long-lived sections?
 4. Is GitHub always available in the intended workflow, or must every helper remain fully local-first?
 5. Which deferred application-heavy capabilities, if any, should be reconsidered after experience with the repository-native baseline?
+6. Should file-local category metadata ever complement category-definition links, and which side would be canonical?
+7. What rename/delete and link-migration behavior is required for category definitions?
 
 ## 12. Next Gate
 

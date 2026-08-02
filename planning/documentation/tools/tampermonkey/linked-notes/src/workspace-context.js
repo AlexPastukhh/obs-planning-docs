@@ -6,6 +6,7 @@
   'use strict';
 
   const DEFAULT_WORKSPACE_BASE_PATH = 'prototype-fixtures/linked-notes';
+  const DEFAULT_CATEGORY_BASE_PATH = 'categories';
 
   function normalizeString(value) {
     return typeof value === 'string' ? value : '';
@@ -96,6 +97,7 @@
       repo,
       branch: normalizeString(input.branch).trim() || 'main',
       basePath: cleanWorkspaceBasePath(input.basePath),
+      categoryBasePath: cleanWorkspaceBasePath(input.categoryBasePath || DEFAULT_CATEGORY_BASE_PATH),
       createdAt,
       updatedAt: normalizeString(input.updatedAt) || timestamp,
       schemaVersion: 1
@@ -109,7 +111,25 @@
 
   function workspaceTargetLabel(workspace) {
     if (!workspace || !workspace.owner || !workspace.repo || !workspace.branch || !workspace.basePath) return '';
-    return `${workspace.owner}/${workspace.repo}@${workspace.branch}:${workspace.basePath}`;
+    return `${workspace.owner}/${workspace.repo}@${workspace.branch}:notes=${workspace.basePath}; categories=${workspace.categoryBasePath || DEFAULT_CATEGORY_BASE_PATH}`;
+  }
+
+
+  function workspaceCategoryContextKey(workspace) {
+    if (!workspace || !normalizeString(workspace.id).trim()) throw new TypeError('Workspace id is required for category context.');
+    const owner = validateOwner(workspace.owner).toLowerCase();
+    const repo = validateRepo(workspace.repo).toLowerCase();
+    const branch = normalizeString(workspace.branch).trim() || 'main';
+    if (/\r|\n|[\u0000-\u001f\u007f]/.test(branch)) throw new TypeError('GitHub branch is invalid.');
+    const categoryBasePath = cleanWorkspaceBasePath(workspace.categoryBasePath || DEFAULT_CATEGORY_BASE_PATH);
+    return JSON.stringify([normalizeString(workspace.id).trim(), owner, repo, branch, categoryBasePath]);
+  }
+
+  function sameRepositoryContext(left, right) {
+    if (!left || !right) return false;
+    return normalizeString(left.owner).trim().toLowerCase() === normalizeString(right.owner).trim().toLowerCase()
+      && normalizeString(left.repo).trim().replace(/\.git$/i, '').toLowerCase() === normalizeString(right.repo).trim().replace(/\.git$/i, '').toLowerCase()
+      && (normalizeString(left.branch).trim() || 'main') === (normalizeString(right.branch).trim() || 'main');
   }
 
   function chatKeyFromLocation(locationLike) {
@@ -127,12 +147,15 @@
 
   return {
     DEFAULT_WORKSPACE_BASE_PATH,
+    DEFAULT_CATEGORY_BASE_PATH,
     createWorkspaceId,
     cleanWorkspaceBasePath,
     parseGitHubRepositoryInput,
     normalizeWorkspace,
     workspaceRepositoryLabel,
     workspaceTargetLabel,
+    workspaceCategoryContextKey,
+    sameRepositoryContext,
     chatKeyFromLocation
   };
 });

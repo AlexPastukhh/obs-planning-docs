@@ -132,3 +132,62 @@ test('listDirectory rejects file payloads, escaped entries and excessive folders
     (error) => error.kind === 'limit_exceeded'
   );
 });
+
+test('listDirectory supports repository root and rejects non-direct root entries', async () => {
+  const urls = [];
+  const client = clientWith(async (request) => {
+    urls.push(request.url);
+    return response(200, [
+      { type: 'file', path: 'README.md', name: 'README.md', size: 10 },
+      { type: 'dir', path: 'docs', name: 'docs', size: 0 }
+    ]);
+  });
+  const result = await client.listDirectory('');
+  assert.deepEqual(result.map((entry) => entry.path), ['README.md', 'docs']);
+  assert.match(urls[0], /\/contents\?ref=test$/);
+
+  await assert.rejects(
+    () => clientWith(async () => response(200, [{ type: 'file', path: 'docs/a.md', name: 'a.md' }])).listDirectory(''),
+    (error) => error.kind === 'invalid_response'
+  );
+});
+
+test('read returns file name, size and download metadata for preview policy', async () => {
+  const client = clientWith(async () => response(200, {
+    type: 'file', path: 'docs/a.md', name: 'a.md', size: 17, sha: 'sha-a',
+    content: api.utf8ToBase64('content'), html_url: 'https://example.test/a', download_url: 'https://raw.example.test/a'
+  }));
+  const result = await client.read('docs/a.md');
+  assert.equal(result.name, 'a.md');
+  assert.equal(result.size, 17);
+  assert.equal(result.downloadUrl, 'https://raw.example.test/a');
+});
+
+test('readMetadata accepts file payload without inline content', async () => {
+  const client = clientWith(async () => response(200, {
+    type: 'file', path: 'large.bin', name: 'large.bin', size: 900000, sha: 'sha-large', html_url: 'https://example.test/large'
+  }));
+  const result = await client.readMetadata('large.bin');
+  assert.equal(result.path, 'large.bin');
+  assert.equal(result.size, 900000);
+  assert.equal(result.contentAvailable, false);
+});
+
+test('read can return metadata-only result only when explicitly allowed', async () => {
+  const client = clientWith(async () => response(200, {
+    type: 'file', path: 'large.md', name: 'large.md', size: 900000, sha: 'sha-large', html_url: 'https://example.test/large'
+  }));
+  await assert.rejects(() => client.read('large.md'), (error) => error.kind === 'content_unavailable');
+  const result = await client.read('large.md', { allowMissingContent: true });
+  assert.equal(result.content, null);
+  assert.equal(result.contentAvailable, false);
+});
+
+test('readMetadata does not decode inline file content', async () => {
+  const client = clientWith(async () => response(200, {
+    type: 'file', path: 'docs/a.md', name: 'a.md', size: 12, sha: 'sha-a', content: '%%%not-base64%%%', html_url: 'https://example.test/a'
+  }));
+  const result = await client.readMetadata('docs/a.md');
+  assert.equal(result.path, 'docs/a.md');
+  assert.equal(result.contentAvailable, true);
+});

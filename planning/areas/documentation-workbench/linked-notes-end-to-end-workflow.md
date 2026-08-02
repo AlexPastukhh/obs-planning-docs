@@ -1,6 +1,6 @@
 # Create, Link And Manage Repository Notes Workflow
 
-Status: working proposed project-local End-To-End Workflow / canonical item transition pending
+Status: working project-local End-To-End Workflow / prototype acceptance pending
 Doc version: v1.2.0-remote-read-reconciliation
 Scope: independently traversable user workflow for creating, reading, reconciling, editing, linking, persisting and navigating durable repository Notes.
 
@@ -8,7 +8,7 @@ Scope: independently traversable user workflow for creating, reading, reconcilin
 
 Provide a small independently useful Notes workflow without requiring a monolithic Documentation Workbench or a universal managed Reference Object runtime.
 
-This file is the complete proposed behavior review object. It does not become the accepted workflow owner until the related Planning Item and Use-Case transition is explicitly reviewed. A Tampermonkey widget, GitHub integration, local database and exact Markdown layout are Implementation Ideas until separately reviewed and tested.
+This file is the complete Linked Notes behavior owner. The Tampermonkey widget, GitHub integration, local database and exact Markdown layout remain prototype/Implementation Idea choices until separately accepted as production architecture.
 
 ## 2. Trigger And Result
 
@@ -107,7 +107,7 @@ A success response alone is insufficient when the network result may be uncertai
 
 ### Stage 8 — Browse And Navigate
 
-The user can find the Note through a list/search/index and open its linked repository files, fragments and Notes.
+The user can find the Note through a list/search/index and open its linked repository files, fragments and Notes. A repository file target may open read-only inside the repository viewer owned by [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md), while retaining an exact `Open on GitHub` target. Category creation and membership remain outside this workflow.
 
 ## 7. Branches And Failure Paths
 
@@ -125,6 +125,7 @@ The user can find the Note through a list/search/index and open its linked repos
 | Repository/branch/location cannot be read | explicit read/authentication/permission failure; do not report a harmless empty location |
 | Repository refresh exceeds an implementation bound | explicit incomplete/blocked result; do not silently treat the partial snapshot as complete |
 | Repository file or anchor is missing | unresolved link remains visible |
+| Repository file preview is unsupported or oversized | keep exact target metadata and GitHub link; do not fabricate text preview |
 | Linked Note is missing | unresolved Note target remains visible |
 | Note links form a cycle | navigation remains possible; recursive expansion must stop and report the cycle |
 | Credential missing | no remote write; keep local work |
@@ -159,10 +160,11 @@ Shadow DOM user interface
   → GitHub Contents API create/read/update
   → SHA-aware conflict handling
   → remote read-back verification
-  → links to files, anchors and Notes.
+  → links to files, anchors and Notes
+  → repository file links may use the shared read-only Files surface.
 ```
 
-The supplied ChatGPT Chats History userscript is supporting implementation evidence for UI, IndexedDB, local review state, GitHub settings, PAT-backed writes, Markdown anchors and read-back verification. It does not yet prove repository file selection, arbitrary stable-fragment linking, Note-to-Note behavior, a remote Notes index or acceptable credential handling.
+The corrected `0.4.2-prototype` is supporting implementation evidence for UI, IndexedDB, local review state, GitHub settings, verified writes, explicit Notes-folder refresh, Note-to-Note links and opening repository file links in the shared read-only Files surface. Its full workspace-target context guard clears stale file/category state before a new chat workspace or edited repository target is rendered, and category assignment separately rejects Note-bound previews from another repository/branch. It does not prove final storage, identity, credential or production-distribution architecture; browser and real-GitHub acceptance remain pending.
 
 ## 10. Open Implementation Decisions
 
@@ -212,7 +214,8 @@ Prototype success does not automatically accept a production architecture.
 ## 12. Relationships
 
 - `ITEM-124` owns the current narrower Linked Markdown Notes baseline; this workflow proposes expanded file/fragment/Note linking and remote-persistence behavior.
-- `ITEM-114` owns the current stable repository file/section target baseline; incoming survival and Note-target clarifications remain pending item review.
+- `ITEM-114` owns stable repository file/section target identity.
+- `ITEM-126` and the repository-file/category workflow own in-app file preview and exact GitHub navigation; this workflow only consumes that capability.
 - `ITEM-23B` owns Markdown/Git durable truth.
 - `ITEM-99` keeps the Tampermonkey/GitHub design as an Implementation Idea.
 - `ITEM-123` may own project-readable non-secret configuration after item review.

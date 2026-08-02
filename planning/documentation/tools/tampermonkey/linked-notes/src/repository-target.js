@@ -71,6 +71,20 @@
     return result;
   }
 
+  function repositoryRelativePath(fromPath, toPath) {
+    const from = normalizeCanonicalRepositoryPath(fromPath, 'Source repository path');
+    const to = normalizeCanonicalRepositoryPath(toPath, 'Target repository path');
+    const fromDir = from.includes('/') ? from.slice(0, from.lastIndexOf('/')).split('/') : [];
+    const toParts = to.split('/');
+    let shared = 0;
+    while (shared < fromDir.length && shared < toParts.length && fromDir[shared] === toParts[shared]) shared += 1;
+    const up = Array(Math.max(0, fromDir.length - shared)).fill('..');
+    const down = toParts.slice(shared);
+    const result = [...up, ...down].join('/');
+    if (!result) return `./${toParts[toParts.length - 1]}`;
+    return result.startsWith('.') ? result : `./${result}`;
+  }
+
   function normalizeRepositoryPath(sourcePath, targetPath) {
     const source = normalizeCanonicalRepositoryPath(sourcePath, 'Source repository path');
     const rawTarget = assertPathSyntax(targetPath, {
@@ -146,6 +160,7 @@
     splitTarget,
     normalizeCanonicalRepositoryPath,
     normalizeRepositoryPath,
+    repositoryRelativePath,
     normalizeRepositoryTarget,
     explicitAnchorExists,
     resolveRepositoryTarget,
