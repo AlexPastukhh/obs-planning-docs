@@ -94,3 +94,11 @@ test('a clean workspace form follows the current active workspace', () => {
   const merged = api.mergeWorkspaceEditorPatch(captured, false, { workspaceEditor: incoming });
   assert.deepEqual(merged.workspaceEditor, incoming);
 });
+
+test('panel exposes explicit GET-only GitHub refresh and explains first-save folder creation', () => {
+  const source = readFileSync(join(here, '..', 'src', 'linked-notes-ui.js'), 'utf8');
+  assert.match(source, /data-action="refresh-github"/);
+  assert.match(source, /onRefreshRemote/);
+  assert.match(source, /Missing parent folders appear automatically with the first explicit Save GitHub/);
+  assert.match(source, /Last GitHub refresh/);
+});

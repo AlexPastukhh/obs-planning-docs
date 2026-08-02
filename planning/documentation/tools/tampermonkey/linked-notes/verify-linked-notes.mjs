@@ -11,6 +11,7 @@ const syntaxPaths = [
   'src/repository-target.js',
   'src/indexeddb-note-store.js',
   'src/github-contents-client.js',
+  'src/remote-note-reconcile.js',
   'src/workspace-context.js',
   'src/workspace-store.js',
   'src/linked-notes-ui.js',
@@ -24,6 +25,6 @@ function run(args) {
 }
 
 for (const path of syntaxPaths) run(['--check', join(here, path)]);
-run(['--test', ...['linked-notes-core.test.mjs', 'note-markdown-codec.test.mjs', 'repository-target.test.mjs', 'github-contents-client.test.mjs', 'workspace-context.test.mjs', 'workspace-store.test.mjs', 'linked-notes-ui.test.mjs', 'linked-notes-app-policy.test.mjs'].map((name) => join(here, 'tests', name))]);
+run(['--test', ...['linked-notes-core.test.mjs', 'note-markdown-codec.test.mjs', 'repository-target.test.mjs', 'github-contents-client.test.mjs', 'remote-note-reconcile.test.mjs', 'workspace-context.test.mjs', 'workspace-store.test.mjs', 'linked-notes-ui.test.mjs', 'linked-notes-app-policy.test.mjs'].map((name) => join(here, 'tests', name))]);
 run([join(here, 'build-linked-notes.mjs'), '--check']);
 console.log('Linked Notes prototype verification passed.');

@@ -134,6 +134,10 @@
       return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents/${encodedPath}${ref}`;
     }
 
+    _rootUrl() {
+      return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents?ref=${encodeURIComponent(this.branch)}`;
+    }
+
     _headers() {
       const headers = {
         Accept: 'application/vnd.github+json',
@@ -177,6 +181,52 @@
         content: base64ToUtf8(payload.content),
         htmlUrl: payload.html_url || ''
       };
+    }
+
+    async listDirectory(path, options = {}) {
+      const normalized = normalizeGitHubContentPath(path);
+      const maxEntries = Number.isInteger(options.maxEntries) && options.maxEntries > 0 ? options.maxEntries : 100;
+      let payload;
+      try {
+        payload = await this._request('GET', this._url(normalized, true));
+      } catch (error) {
+        if (error instanceof GitHubClientError && error.kind === 'not_found' && options.missingAsEmpty) {
+          // A missing folder and an inaccessible repository/branch can both return 404.
+          // Verify the repository root at the selected branch before treating the folder as empty.
+          const rootPayload = await this._request('GET', this._rootUrl());
+          if (!Array.isArray(rootPayload)) {
+            throw new GitHubClientError('invalid_response', 'GitHub repository root response is not a directory listing.');
+          }
+          return [];
+        }
+        throw error;
+      }
+      if (!Array.isArray(payload)) {
+        throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a directory listing.');
+      }
+      if (payload.length > maxEntries) {
+        throw new GitHubClientError('limit_exceeded', `GitHub Notes folder contains ${payload.length} entries; the explicit refresh limit is ${maxEntries}.`, {
+          entryCount: payload.length,
+          maxEntries
+        });
+      }
+      return payload.map((entry) => {
+        if (!entry || typeof entry !== 'object' || typeof entry.path !== 'string' || !entry.type) {
+          throw new GitHubClientError('invalid_response', 'GitHub directory listing contains an invalid entry.');
+        }
+        const entryPath = normalizeGitHubContentPath(entry.path);
+        if (!entryPath.startsWith(`${normalized}/`)) {
+          throw new GitHubClientError('invalid_response', 'GitHub directory entry escaped the requested Notes folder.');
+        }
+        return {
+          type: String(entry.type),
+          path: entryPath,
+          name: String(entry.name || entryPath.slice(entryPath.lastIndexOf('/') + 1)),
+          sha: String(entry.sha || ''),
+          size: Number.isFinite(Number(entry.size)) ? Math.max(0, Number(entry.size)) : 0,
+          htmlUrl: String(entry.html_url || '')
+        };
+      });
     }
 
     async write({ path, content, baseSha = '', message }) {

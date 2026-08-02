@@ -85,3 +85,50 @@ test('GitHub client independently rejects traversal and URL-like content paths',
   await assert.rejects(() => client.write({ path: 'https://example.test/a.md', content: 'x' }), /URL/);
   assert.equal(api.normalizeGitHubContentPath('notes\\nested\\a.md'), 'notes/nested/a.md');
 });
+
+
+test('listDirectory returns validated direct entries and never performs writes', async () => {
+  const calls = [];
+  const client = clientWith(async (request) => {
+    calls.push(request);
+    return response(200, [
+      { type: 'file', path: 'notes/a.md', name: 'a.md', sha: 'sha-a', size: 42, html_url: 'https://example.test/a' },
+      { type: 'dir', path: 'notes/nested', name: 'nested', sha: 'sha-dir', size: 0 }
+    ]);
+  });
+  const result = await client.listDirectory('notes');
+  assert.deepEqual(result.map((entry) => [entry.type, entry.path]), [['file', 'notes/a.md'], ['dir', 'notes/nested']]);
+  assert.deepEqual(calls.map((call) => call.method), ['GET']);
+});
+
+test('listDirectory treats a missing Notes folder as empty only after the selected branch root is readable', async () => {
+  const calls = [];
+  const client = clientWith(async (request) => {
+    calls.push(request.url);
+    if (request.url.includes('/contents/notes')) return response(404, { message: 'Not Found' });
+    return response(200, [{ type: 'file', path: 'README.md', name: 'README.md' }]);
+  });
+  assert.deepEqual(await client.listDirectory('notes', { missingAsEmpty: true }), []);
+  assert.equal(calls.length, 2);
+  await assert.rejects(() => client.listDirectory('notes'), (error) => error.kind === 'not_found');
+});
+
+test('listDirectory does not hide an inaccessible repository or branch behind an empty-folder result', async () => {
+  const client = clientWith(async () => response(404, { message: 'Not Found' }));
+  await assert.rejects(() => client.listDirectory('notes', { missingAsEmpty: true }), (error) => error.kind === 'not_found');
+});
+
+test('listDirectory rejects file payloads, escaped entries and excessive folders', async () => {
+  await assert.rejects(
+    () => clientWith(async () => response(200, { type: 'file', path: 'notes/a.md' })).listDirectory('notes'),
+    (error) => error.kind === 'invalid_response'
+  );
+  await assert.rejects(
+    () => clientWith(async () => response(200, [{ type: 'file', path: 'outside/a.md', name: 'a.md' }])).listDirectory('notes'),
+    (error) => error.kind === 'invalid_response'
+  );
+  await assert.rejects(
+    () => clientWith(async () => response(200, [{ type: 'file', path: 'notes/a.md', name: 'a.md' }, { type: 'file', path: 'notes/b.md', name: 'b.md' }])).listDirectory('notes', { maxEntries: 1 }),
+    (error) => error.kind === 'limit_exceeded'
+  );
+});

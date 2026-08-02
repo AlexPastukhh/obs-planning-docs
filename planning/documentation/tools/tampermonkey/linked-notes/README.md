@@ -1,8 +1,8 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.2.3-prototype`
-Scope: one local-first Tampermonkey vertical slice for creating, linking, persisting and reopening repository-owned Markdown Notes across reusable GitHub workspaces with a viewport-safe scrollable panel.
+Version: `0.3.0-prototype`
+Scope: one local-first Tampermonkey vertical slice for creating, linking, reading, reconciling, persisting and reopening repository-owned Markdown Notes across reusable GitHub workspaces with a viewport-safe scrollable panel.
 
 ## 1. Owners And Boundaries
 
@@ -31,6 +31,11 @@ workspace selection controls defaults for new/unbound Notes, links and explicit 
 a verified Note remains bound to its exact owner/repository/branch/path/SHA/hash;
 switching a chat workspace never silently moves a verified Note;
 remote save, copy and recovery writes are explicit;
+Refresh GitHub is a separate explicit read-only action and never performs a PUT;
+Refresh GitHub reads only direct Markdown children of the active Notes folder, up to 100 directory entries and 2 MiB of fetched content;
+only valid obs-linked-note:v1 files enter the local Note cache; ordinary Markdown is counted and skipped;
+remote-only Notes are imported by stable Note id; remote-only changes fast-forward only when local content still equals the verified base;
+different local and remote changes become an explicit conflict, and missing bound files become remote_deleted without deleting local content;
 only one remote operation may run at a time;
 remote success requires exact read-back verification;
 repository paths are validated independently at settings, app and GitHub-client boundaries;
@@ -144,7 +149,10 @@ src/indexeddb-note-store.js
   local Note draft/index storage.
 
 src/github-contents-client.js
-  validated GitHub Contents API read/create/update and read-back verification.
+  validated GitHub Contents API directory/read/create/update and read-back verification.
+
+src/remote-note-reconcile.js
+  pure local/remote classification for import, unchanged, fast-forward, local-ahead, conflict, duplicate identity and remote deletion.
 
 src/workspace-context.js
   workspace schema, repository input parser, safe base paths and ChatGPT chat-key extraction.
@@ -188,6 +196,9 @@ node verify-linked-notes.mjs
 Automated verification covers:
 
 - existing Note state, codec, path, GitHub client and recovery policies;
+- bounded direct-child GitHub Notes-folder listing with repository/branch verification before a missing folder is treated as empty;
+- pure remote/local reconciliation for import, unchanged, fast-forward, local-ahead, conflict, duplicate identity and remote deletion;
+- explicit GET-only workspace refresh with remote-only import, safe fast-forward and no background network reads;
 - repository input parsing from `owner/repo` and GitHub URL;
 - invalid repository/base-path rejection;
 - workspace normalization and target labels;
@@ -236,6 +247,7 @@ The launcher measures its own width and moves left by that width plus a gap. The
 8. Store one shared fine-grained token.
 9. Create additional workspaces as needed.
 10. Choose the current workspace from the selector at the top of the panel.
+11. Press `Refresh GitHub` to read existing Linked Notes from the selected Notes folder.
 
 Recommended first test target:
 
@@ -246,7 +258,7 @@ branch: linked-notes-prototype-test
 Notes folder: prototype-fixtures/linked-notes
 ```
 
-The branch must already exist. The helper does not create branches.
+The branch must already exist. The helper does not create branches. Saving a workspace performs no network write. If the Notes folder does not exist, its parent path appears automatically with the first explicit `Save GitHub` or `Copy to chat workspace` file creation; no `.gitkeep` is created.
 
 ## 8. Chat Workspace Behavior
 
@@ -276,6 +288,8 @@ Deleting a workspace removes only local workspace records and affected chat mapp
 - the panel uses the highest stacking layer and recalculates its bounded dimensions when the viewport changes;
 - the Note list and editor have independent internal vertical scrolling, including access to Links and workspace settings below the editor;
 - `Manage workspaces` remains visible in the top bar and opens the manager at its scroll position;
+- `Refresh GitHub` remains visible beside it and performs one explicit read-only reconciliation of the active workspace;
+- the last refresh summary reports found, imported, updated, unchanged, local-ahead, conflict, deleted, skipped and error counts;
 - `Escape` persists the title/body draft and closes an idle open panel;
 - `Escape` is ignored while a remote operation is active;
 - close, search, settings, workspace switch and Note navigation persist the current Note draft first;
@@ -285,7 +299,28 @@ Deleting a workspace removes only local workspace records and affected chat mapp
 - the current chat workspace and effective repository target are visible;
 - manager fields use user-facing names instead of an unexplained standalone `owner` field.
 
-## 10. GitHub Save Boundary
+## 10. GitHub Read And Reconciliation Boundary
+
+`Refresh GitHub` is the only Notes-folder discovery trigger. Opening the panel, changing routes and selecting workspaces do not scan GitHub.
+
+The refresh operation:
+
+```text
+validates the active repository, branch and Notes folder;
+lists direct folder children only;
+reads `.md` files within a 100-entry / 2-MiB bound;
+skips ordinary Markdown without an obs-linked-note:v1 marker;
+imports a remote-only stable Note id into IndexedDB;
+fast-forwards only when the local encoded Note still equals its last verified hash;
+preserves local-ahead content;
+marks different two-sided changes as conflict;
+marks missing bound direct-child Notes as remote_deleted;
+performs no PUT, delete, rename, branch creation or automatic merge.
+```
+
+A 404 for the Notes folder is treated as an empty folder only after the repository root is readable at the configured branch. This prevents an invalid or inaccessible repository/branch from being reported as a harmless empty folder.
+
+## 11. GitHub Save Boundary
 
 Use a test repository or test branch, not production `main` by default.
 
@@ -305,7 +340,7 @@ Remote recovery remains explicit:
 - `Restore/overwrite bound remote` requires confirmation and uses the latest remote SHA;
 - a successful PUT followed by failed read-back records a recoverable provisional target.
 
-## 11. Guided Test Run
+## 12. Guided Test Run
 
 Run the exact test sequence in [`PROTOTYPE-CHECKLIST.md`](PROTOTYPE-CHECKLIST.md). The checklist covers:
 
@@ -322,6 +357,8 @@ two-tab concurrent workspace mutations and open-time refresh;
 workspace-form preservation and discard confirmation;
 v1 migration;
 local Note and Note-to-Note behavior;
+explicit GitHub folder refresh, remote-only import and safe remote fast-forward;
+remote/local two-sided conflict and remote deletion discovery;
 verified GitHub create/update/read-back;
 workspace mismatch and explicit Copy;
 SHA conflict and recovery;
@@ -331,7 +368,7 @@ secret/storage inspection.
 
 Passing automated tests does not replace the browser and real GitHub smoke tests.
 
-## 12. Prototype Markdown Format
+## 13. Prototype Markdown Format
 
 The generated file remains ordinary Markdown with one compact machine-readable HTML comment:
 
@@ -345,7 +382,7 @@ Literal user Markdown body.
 
 Workspace and chat binding data are intentionally absent from this format. The Note stores only its own verified remote identity in local state; repository Markdown remains portable.
 
-## 13. Known Open Decisions
+## 14. Known Open Decisions
 
 - final Note identity and filename convention;
 - file-per-Note versus shared/hybrid remote storage;
@@ -357,7 +394,7 @@ Workspace and chat binding data are intentionally absent from this format. The N
 - production packaging and shared-library extraction;
 - whether local Notes should later support optional workspace filters.
 
-## 14. Do Not
+## 15. Do Not
 
 - Do not edit `linked-notes-prototype.user.js` by hand; edit `src/**` and rebuild.
 - Do not claim remote success before exact read-back verification.
@@ -368,6 +405,9 @@ Workspace and chat binding data are intentionally absent from this format. The N
 - Do not store separate token copies in Workspace records.
 - Do not accept malformed GitHub repository URLs or unsafe repository paths.
 - Do not run two remote operations concurrently.
+- Do not scan GitHub automatically on mount, panel open, route change or workspace selection.
+- Do not import arbitrary Markdown that lacks the linked-note marker.
+- Do not fast-forward a local Note after its content changed from the verified base.
 - Do not close the panel through Escape during a remote operation.
 - Do not discard unsaved title/body or workspace-form text during route changes or UI rerenders.
 - Do not let panel content become unreachable outside the viewport or behind another fixed OBS widget.

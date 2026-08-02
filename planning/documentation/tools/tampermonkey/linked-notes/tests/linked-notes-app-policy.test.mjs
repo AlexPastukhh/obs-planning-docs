@@ -12,6 +12,7 @@ const api = Object.assign(
   require('../src/note-markdown-codec.js'),
   require('../src/repository-target.js'),
   require('../src/github-contents-client.js'),
+  require('../src/remote-note-reconcile.js'),
   workspaceContext,
   workspaceStoreApi
 );
@@ -579,4 +580,206 @@ test('a dirty workspace form can cancel a workspace switch without changing the 
   const state = await workspaceStore.load();
   assert.equal(state.chatWorkspaceMap['chat:chat-a'], gdoc.id);
   assert.match(app.ui.last.status, /cancelled/);
+});
+
+async function exactVerifiedNote({ id = 'note-refresh', title = 'Base', body = 'Base body', path = 'prototype-fixtures/linked-notes/base.md' } = {}) {
+  const note = api.createNote({ id, title, body }, '2026-01-01T00:00:00.000Z');
+  const content = api.encodeNoteMarkdown(note);
+  return api.markSavedVerified(note, {
+    owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', path,
+    sha: 'sha-base', verifiedHash: await api.sha256Hex(content), htmlUrl: 'https://example.test/base'
+  }, '2026-01-01T00:01:00.000Z');
+}
+
+test('explicit GitHub refresh imports a remote-only Linked Note and performs GET-only work', async () => {
+  const remoteNote = api.createNote({ id: 'note-remote-only', title: 'Remote only', body: 'From GitHub' });
+  const content = api.encodeNoteMarkdown(remoteNote);
+  const calls = [];
+  const client = {
+    async listDirectory() {
+      calls.push('list');
+      return [{ type: 'file', path: 'prototype-fixtures/linked-notes/remote.md', name: 'remote.md', size: content.length }];
+    },
+    async read(path) {
+      calls.push(`read:${path}`);
+      return { path, sha: 'sha-remote', content, htmlUrl: 'https://example.test/remote' };
+    }
+  };
+  const { app, store, ui } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  const result = await app.refreshRemoteWorkspace();
+  const imported = await store.get(remoteNote.id);
+  assert.equal(result.imported, 1);
+  assert.equal(imported.state, api.NOTE_STATES.SAVED_VERIFIED);
+  assert.equal(imported.body, 'From GitHub');
+  assert.equal(imported.remote.path, 'prototype-fixtures/linked-notes/remote.md');
+  assert.deepEqual(calls, ['list', 'read:prototype-fixtures/linked-notes/remote.md']);
+  assert.match(ui.last.remoteRefreshSummary, /imported 1/);
+});
+
+test('explicit GitHub refresh fast-forwards when only remote content changed', async () => {
+  const note = await exactVerifiedNote();
+  const remoteNote = api.createNote({ id: note.id, title: 'Remote title', body: 'Remote body' });
+  const content = api.encodeNoteMarkdown(remoteNote);
+  const client = {
+    async listDirectory() { return [{ type: 'file', path: note.remote.path, name: 'base.md', size: content.length }]; },
+    async read() { return { path: note.remote.path, sha: 'sha-new', content, htmlUrl: '' }; }
+  };
+  const { app, store } = makeApp({
+    note,
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  const result = await app.refreshRemoteWorkspace();
+  const updated = await store.get(note.id);
+  assert.equal(result.updated, 1);
+  assert.equal(updated.title, 'Remote title');
+  assert.equal(updated.body, 'Remote body');
+  assert.equal(updated.remote.sha, 'sha-new');
+  assert.equal(updated.state, api.NOTE_STATES.SAVED_VERIFIED);
+});
+
+test('explicit GitHub refresh preserves local edits when both local and remote changed', async () => {
+  const base = await exactVerifiedNote();
+  const local = api.updateNote(base, { body: 'Local edit' });
+  const remoteNote = api.createNote({ id: base.id, title: base.title, body: 'Remote edit' });
+  const content = api.encodeNoteMarkdown(remoteNote);
+  const client = {
+    async listDirectory() { return [{ type: 'file', path: base.remote.path, name: 'base.md', size: content.length }]; },
+    async read() { return { path: base.remote.path, sha: 'sha-remote', content, htmlUrl: '' }; }
+  };
+  const { app, store } = makeApp({
+    note: local,
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  const result = await app.refreshRemoteWorkspace();
+  const conflicted = await store.get(local.id);
+  assert.equal(result.conflicts, 1);
+  assert.equal(conflicted.body, 'Local edit');
+  assert.equal(conflicted.state, api.NOTE_STATES.CONFLICT);
+  assert.match(conflicted.stateMessage, /both changed differently/);
+});
+
+test('explicit GitHub refresh marks a missing bound direct-child Note remote_deleted', async () => {
+  const note = await exactVerifiedNote();
+  const client = { async listDirectory() { return []; } };
+  const { app, store } = makeApp({
+    note,
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  const result = await app.refreshRemoteWorkspace();
+  const deleted = await store.get(note.id);
+  assert.equal(result.deleted, 1);
+  assert.equal(deleted.state, api.NOTE_STATES.REMOTE_DELETED);
+  assert.equal(deleted.body, note.body);
+});
+
+test('opening the panel refreshes local workspace state but does not read GitHub Notes', async () => {
+  let listCalls = 0;
+  const client = { async listDirectory() { listCalls += 1; return []; } };
+  const { app } = makeApp({
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  app.workspaceStore = null;
+  await app.openPanel();
+  assert.equal(listCalls, 0);
+});
+
+test('GitHub refresh marks a bound file conflict when it is no longer linked-note Markdown', async () => {
+  const note = await exactVerifiedNote();
+  const client = {
+    async listDirectory() { return [{ type: 'file', path: note.remote.path, name: 'base.md', size: 12 }]; },
+    async read() { return { path: note.remote.path, sha: 'sha-plain', content: '# Ordinary\n', htmlUrl: '' }; }
+  };
+  const { app, store } = makeApp({
+    note,
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  const result = await app.refreshRemoteWorkspace();
+  const saved = await store.get(note.id);
+  assert.equal(result.conflicts, 1);
+  assert.equal(saved.state, api.NOTE_STATES.CONFLICT);
+  assert.match(saved.stateMessage, /no longer valid/);
+});
+
+test('GitHub refresh never imports a different Note id over a path already bound locally', async () => {
+  const note = await exactVerifiedNote();
+  const replacement = api.createNote({ id: 'note-other', title: 'Other', body: 'Different identity' });
+  const content = api.encodeNoteMarkdown(replacement);
+  const client = {
+    async listDirectory() { return [{ type: 'file', path: note.remote.path, name: 'base.md', size: content.length }]; },
+    async read() { return { path: note.remote.path, sha: 'sha-other', content, htmlUrl: '' }; }
+  };
+  const { app, store } = makeApp({
+    note,
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  const result = await app.refreshRemoteWorkspace();
+  assert.equal(result.conflicts, 1);
+  assert.equal(await store.get('note-other'), null);
+  assert.equal((await store.get(note.id)).state, api.NOTE_STATES.CONFLICT);
+});
+
+test('GitHub refresh marks every path-bound local Note when remote files duplicate one stable Note id', async () => {
+  const localA = await exactVerifiedNote({ id: 'note-local-a', title: 'Local A', body: 'A', path: 'prototype-fixtures/linked-notes/a.md' });
+  const localB = await exactVerifiedNote({ id: 'note-local-b', title: 'Local B', body: 'B', path: 'prototype-fixtures/linked-notes/b.md' });
+  const duplicate = api.createNote({ id: 'note-duplicate-remote', title: 'Duplicate', body: 'Same remote identity' });
+  const content = api.encodeNoteMarkdown(duplicate);
+  const client = {
+    async listDirectory() {
+      return [
+        { type: 'file', path: localA.remote.path, name: 'a.md', size: content.length },
+        { type: 'file', path: localB.remote.path, name: 'b.md', size: content.length }
+      ];
+    },
+    async read(path) { return { path, sha: `sha-${path}`, content, htmlUrl: '' }; }
+  };
+  const { app, store } = makeApp({
+    note: localA,
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  await store.put(localB);
+  const result = await app.refreshRemoteWorkspace();
+  assert.equal(result.conflicts, 2);
+  assert.equal(result.skipped, 2);
+  assert.equal((await store.get(localA.id)).state, api.NOTE_STATES.CONFLICT);
+  assert.equal((await store.get(localB.id)).state, api.NOTE_STATES.CONFLICT);
+  assert.equal(await store.get(duplicate.id), null);
+});
+
+test('GitHub refresh preserves conflicts when several local Notes are bound to one remote path', async () => {
+  const sharedPath = 'prototype-fixtures/linked-notes/shared.md';
+  const localA = await exactVerifiedNote({ id: 'note-shared-a', title: 'Local A', body: 'A body', path: sharedPath });
+  const localB = await exactVerifiedNote({ id: 'note-shared-b', title: 'Local B', body: 'B body', path: sharedPath });
+  const remote = api.createNote({ id: localA.id, title: 'Remote A', body: 'Remote body' });
+  const content = api.encodeNoteMarkdown(remote);
+  const client = {
+    async listDirectory() { return [{ type: 'file', path: sharedPath, name: 'shared.md', size: content.length }]; },
+    async read() { return { path: sharedPath, sha: 'sha-shared', content, htmlUrl: '' }; }
+  };
+  const { app, store } = makeApp({
+    note: localA,
+    settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true },
+    client
+  });
+  await store.put(localB);
+  const result = await app.refreshRemoteWorkspace();
+  const savedA = await store.get(localA.id);
+  const savedB = await store.get(localB.id);
+  assert.equal(result.conflicts, 2);
+  assert.equal(result.skipped, 1);
+  assert.equal(savedA.state, api.NOTE_STATES.CONFLICT);
+  assert.equal(savedB.state, api.NOTE_STATES.CONFLICT);
+  assert.match(savedA.stateMessage, /same GitHub path/);
+  assert.match(savedB.stateMessage, /same GitHub path/);
+  assert.equal(savedA.body, 'A body');
+  assert.equal(savedB.body, 'B body');
 });

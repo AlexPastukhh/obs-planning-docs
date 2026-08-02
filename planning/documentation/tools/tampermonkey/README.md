@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.20.2-linked-notes-viewport-safety
+Doc version: v0.21.0-linked-notes-remote-refresh
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local Linked Notes remote-write prototype.
 
 ## 1. Tracked scripts
@@ -34,9 +34,9 @@ planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.us
   project-local test-only Linked Notes prototype generated from linked-notes/src/**;
   keeps local drafts in a dedicated IndexedDB database and reusable repository workspaces in private GM storage;
   remembers only explicitly selected workspaces separately for stable ChatGPT chats, refreshes workspace state when Notes opens and uses one shared private GitHub token;
-  performs GitHub Contents API create/update only after explicit Save GitHub, Copy to chat workspace or confirmed bound-target recovery;
+  performs a bounded explicit GET-only Notes-folder refresh plus GitHub Contents API create/update only after explicit Save GitHub, Copy to chat workspace or confirmed bound-target recovery;
   binds a verified Note to one visible owner/repository/branch/path identity, uses SHA conflict protection and verifies by read-back;
-  provides a dark work surface, Escape close with draft persistence, a launcher offset from the existing OBS button stack, a viewport-bounded internally scrollable panel and direct top-bar workspace-manager access;
+  provides a dark work surface, Escape close with draft persistence, a launcher offset from the existing OBS button stack, a viewport-bounded internally scrollable panel, direct workspace-manager access and explicit remote-only Note import/change reconciliation;
   never runs local git, commit or push, and does not accept a production architecture.
 ```
 
@@ -151,6 +151,7 @@ Rules:
 - Workspace/default/chat-map mutations use one cooperative GM-storage lease, reread the canonical state after acquiring it, replace one revisioned state value atomically and verify the committed revision; deterministic migration prevents duplicate Imported workspaces during simultaneous startup.
 - Opening Linked Notes rereads workspace state so completed changes from another tab become visible; unsaved workspace-form input stays local to the current panel and survives close, Escape, rerenders and route changes until saved or explicitly discarded.
 - Linked Notes keeps the Note list and editor independently scrollable, exposes Manage workspaces in the top bar, reserves a bottom-right safe area on wide viewports and uses the top stacking layer so neighbouring fixed OBS widgets do not cover its content.
+- Linked Notes reads the active Notes folder only after explicit Refresh GitHub, imports only valid linked-note Markdown, fast-forwards only an unchanged local base, preserves local-ahead content and marks two-sided changes or remote deletion explicitly; refresh performs no remote write.
 - Linked Notes external writes remain explicit, test-target-only and limited to GitHub Contents API create/update plus read-back verification; Save, Copy and confirmed bound-target recovery cannot run concurrently.
 - chatgpt.com and chat.openai.com are different IndexedDB origins; use chatgpt.com as the canonical Linked Notes IndexedDB origin.
 ```

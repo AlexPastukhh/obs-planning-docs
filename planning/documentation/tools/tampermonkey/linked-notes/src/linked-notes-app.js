@@ -79,6 +79,7 @@
         onSearch: (query) => this.refreshList(query),
         onDraftChange: (note) => this.saveDraft(note),
         onOpen: () => this.openPanel(),
+        onRefreshRemote: () => this.refreshRemoteWorkspace(),
         onSelectWorkspace: (id, draftState) => this.selectWorkspace(id, draftState),
         onNewWorkspace: (draftState) => this.beginNewWorkspace(draftState),
         onSaveWorkspace: (workspace) => this.saveWorkspace(workspace),
@@ -355,6 +356,217 @@
         if (refreshed) this.current = this.api.normalizeNote(refreshed);
       }
       this._setUi({ notes, current: this.current, search: this.search });
+    }
+
+    async refreshRemoteWorkspace() {
+      return this._runRemoteOperation('Reading Linked Notes from the active GitHub workspace…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select or create a GitHub workspace before refreshing GitHub.');
+        const basePath = cleanBasePath(workspace.basePath);
+        const client = await this._client(workspace);
+        const entries = await client.listDirectory(basePath, { missingAsEmpty: true, maxEntries: 100 });
+        const markdownEntries = entries.filter((entry) => entry.type === 'file' && /\.md$/i.test(entry.name || entry.path));
+        const maxBytes = 2 * 1024 * 1024;
+        const listedBytes = markdownEntries.reduce((sum, entry) => sum + Number(entry.size || 0), 0);
+        if (listedBytes > maxBytes) {
+          throw new Error(`GitHub Notes folder is too large for one explicit refresh: ${listedBytes} bytes exceeds ${maxBytes}.`);
+        }
+
+        const summary = {
+          discovered: markdownEntries.length,
+          imported: 0,
+          updated: 0,
+          unchanged: 0,
+          localAhead: 0,
+          conflicts: 0,
+          deleted: 0,
+          skipped: 0,
+          errors: 0
+        };
+        const seenPaths = new Set(markdownEntries.map((entry) => String(entry.path || '').replace(/\\/g, '/')));
+        const initialLocalNotes = await this.store.list();
+        const boundGroupsByPath = new Map();
+        for (const local of initialLocalNotes) {
+          const bound = this.api.normalizeRemote(local.remote);
+          if (bound.owner === workspace.owner && bound.repo === workspace.repo && bound.branch === workspace.branch && bound.path) {
+            const group = boundGroupsByPath.get(bound.path) || [];
+            group.push(local);
+            boundGroupsByPath.set(bound.path, group);
+          }
+        }
+        const boundByPath = new Map();
+        const duplicateLocalPaths = new Set();
+        const unsupportedPaths = new Set();
+        const conflictIds = new Set();
+        for (const [path, group] of boundGroupsByPath.entries()) {
+          if (group.length === 1) {
+            boundByPath.set(path, group[0]);
+            continue;
+          }
+          duplicateLocalPaths.add(path);
+          for (const local of group) {
+            const conflicted = this.api.markConflict(local, `Several local Notes are bound to the same GitHub path ${path}. GitHub refresh cannot select one identity automatically.`);
+            await this.store.put(conflicted);
+            if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+            conflictIds.add(conflicted.id);
+            summary.conflicts += 1;
+          }
+        }
+        const snapshots = [];
+        let actualBytes = 0;
+
+        for (const entry of markdownEntries) {
+          try {
+            const remoteFile = await client.read(entry.path);
+            actualBytes += new TextEncoder().encode(remoteFile.content).byteLength;
+            if (actualBytes > maxBytes) throw new Error(`GitHub Notes refresh exceeded the ${maxBytes}-byte content limit.`);
+            if (!this.api.isLinkedNoteMarkdown(remoteFile.content)) {
+              unsupportedPaths.add(remoteFile.path || entry.path);
+              summary.skipped += 1;
+              continue;
+            }
+            const decoded = this.api.decodeNoteMarkdown(remoteFile.content);
+            snapshots.push({
+              note: decoded,
+              content: remoteFile.content,
+              hash: await this.api.sha256Hex(remoteFile.content),
+              target: {
+                owner: workspace.owner,
+                repo: workspace.repo,
+                branch: workspace.branch,
+                path: remoteFile.path || entry.path
+              },
+              sha: remoteFile.sha,
+              htmlUrl: remoteFile.htmlUrl || entry.htmlUrl || ''
+            });
+          } catch (error) {
+            if (String(error && error.message || '').includes('content limit')) throw error;
+            summary.errors += 1;
+          }
+        }
+
+        const snapshotsById = new Map();
+        for (const snapshot of snapshots) {
+          const group = snapshotsById.get(snapshot.note.id) || [];
+          group.push(snapshot);
+          snapshotsById.set(snapshot.note.id, group);
+        }
+
+        for (const [noteId, group] of snapshotsById.entries()) {
+          const local = await this.store.get(noteId);
+          if (group.length > 1) {
+            const affected = new Map();
+            if (local) affected.set(local.id, local);
+            for (const snapshot of group) {
+              for (const boundLocal of boundGroupsByPath.get(snapshot.target.path) || []) {
+                affected.set(boundLocal.id, boundLocal);
+              }
+            }
+            if (affected.size === 0) summary.conflicts += 1;
+            for (const affectedLocal of affected.values()) {
+              const conflicted = this.api.markConflict(affectedLocal, `GitHub refresh found ${group.length} files with the same stable Note id ${noteId}. No file was selected automatically.`);
+              await this.store.put(conflicted);
+              if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+              if (!conflictIds.has(conflicted.id)) summary.conflicts += 1;
+              conflictIds.add(conflicted.id);
+            }
+            summary.skipped += group.length;
+            continue;
+          }
+
+          const snapshot = group[0];
+          if (duplicateLocalPaths.has(snapshot.target.path)) {
+            summary.skipped += 1;
+            continue;
+          }
+          const pathBoundLocal = boundByPath.get(snapshot.target.path);
+          if (pathBoundLocal && pathBoundLocal.id !== noteId) {
+            const conflicted = this.api.markConflict(pathBoundLocal, `GitHub refresh found stable Note id ${noteId} at ${snapshot.target.path}, but that path is already bound locally to ${pathBoundLocal.id}.`);
+            await this.store.put(conflicted);
+            if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+            conflictIds.add(conflicted.id);
+            summary.conflicts += 1;
+            summary.skipped += 1;
+            continue;
+          }
+          const localContentHash = local ? await this.api.sha256Hex(this.api.encodeNoteMarkdown(local)) : '';
+          const decision = this.api.classifyRemoteNote({ local, remote: snapshot, localContentHash });
+          let next = local;
+          if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.REMOTE_IMPORT) {
+            next = this.api.createNote({
+              id: snapshot.note.id,
+              title: snapshot.note.title,
+              body: snapshot.note.body,
+              links: snapshot.note.links,
+              codecExtra: snapshot.note.codecExtra
+            });
+            next = this.api.markSavedVerified(next, {
+              ...snapshot.target,
+              sha: snapshot.sha,
+              verifiedHash: snapshot.hash,
+              htmlUrl: snapshot.htmlUrl
+            });
+            summary.imported += 1;
+          } else if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.FAST_FORWARD) {
+            next = this.api.updateNote(local, {
+              title: snapshot.note.title,
+              body: snapshot.note.body,
+              links: snapshot.note.links,
+              codecExtra: snapshot.note.codecExtra
+            });
+            next = this.api.markSavedVerified(next, {
+              ...snapshot.target,
+              sha: snapshot.sha,
+              verifiedHash: snapshot.hash,
+              htmlUrl: snapshot.htmlUrl
+            });
+            summary.updated += 1;
+          } else if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.UNCHANGED || decision.action === this.api.REMOTE_RECONCILE_ACTIONS.ATTACH_EXISTING) {
+            next = this.api.markSavedVerified(local, {
+              ...snapshot.target,
+              sha: snapshot.sha,
+              verifiedHash: snapshot.hash,
+              htmlUrl: snapshot.htmlUrl
+            });
+            summary.unchanged += 1;
+          } else if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.LOCAL_AHEAD) {
+            summary.localAhead += 1;
+          } else {
+            next = this.api.markConflict(local, `GitHub refresh conflict for ${snapshot.target.path}: ${decision.reason}`);
+            summary.conflicts += 1;
+          }
+
+          if (next && next !== local) {
+            await this.store.put(next);
+            if (this.current && this.current.id === next.id) this.current = next;
+          }
+        }
+
+        for (const path of unsupportedPaths) {
+          const local = boundByPath.get(path);
+          if (!local || conflictIds.has(local.id)) continue;
+          const conflicted = this.api.markConflict(local, `The bound GitHub file ${path} is no longer valid obs-linked-note:v1 Markdown. Local content was preserved.`);
+          await this.store.put(conflicted);
+          if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+          conflictIds.add(conflicted.id);
+          summary.conflicts += 1;
+        }
+
+        const localNotes = await this.store.list();
+        for (const local of localNotes) {
+          if (conflictIds.has(local.id)) continue;
+          if (!this.api.boundNoteMissingFromSnapshot(local, workspace, basePath, seenPaths)) continue;
+          const deleted = this.api.markRemoteDeleted(local, 'The bound GitHub Note is no longer present in the active workspace folder. Local content was preserved.');
+          await this.store.put(deleted);
+          if (this.current && this.current.id === deleted.id) this.current = deleted;
+          summary.deleted += 1;
+        }
+
+        const summaryText = `found ${summary.discovered}; imported ${summary.imported}; updated ${summary.updated}; unchanged ${summary.unchanged}; local ahead ${summary.localAhead}; conflicts ${summary.conflicts}; deleted ${summary.deleted}; skipped ${summary.skipped}; errors ${summary.errors}`;
+        await this.refreshList();
+        this._setUi({ remoteRefreshSummary: summaryText, status: `GitHub refresh complete: ${summaryText}. No remote writes were performed.` });
+        return summary;
+      });
     }
 
     async saveDraft(note) {

@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.2.3-prototype
-// @description  Viewport-safe linked Markdown Notes with explicit per-chat context and verified writes.
+// @version      0.3.0-prototype
+// @description  Linked Markdown Notes with explicit GitHub folder refresh, conflict safety and verified writes.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -861,6 +861,10 @@
       return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents/${encodedPath}${ref}`;
     }
 
+    _rootUrl() {
+      return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents?ref=${encodeURIComponent(this.branch)}`;
+    }
+
     _headers() {
       const headers = {
         Accept: 'application/vnd.github+json',
@@ -904,6 +908,52 @@
         content: base64ToUtf8(payload.content),
         htmlUrl: payload.html_url || ''
       };
+    }
+
+    async listDirectory(path, options = {}) {
+      const normalized = normalizeGitHubContentPath(path);
+      const maxEntries = Number.isInteger(options.maxEntries) && options.maxEntries > 0 ? options.maxEntries : 100;
+      let payload;
+      try {
+        payload = await this._request('GET', this._url(normalized, true));
+      } catch (error) {
+        if (error instanceof GitHubClientError && error.kind === 'not_found' && options.missingAsEmpty) {
+          // A missing folder and an inaccessible repository/branch can both return 404.
+          // Verify the repository root at the selected branch before treating the folder as empty.
+          const rootPayload = await this._request('GET', this._rootUrl());
+          if (!Array.isArray(rootPayload)) {
+            throw new GitHubClientError('invalid_response', 'GitHub repository root response is not a directory listing.');
+          }
+          return [];
+        }
+        throw error;
+      }
+      if (!Array.isArray(payload)) {
+        throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a directory listing.');
+      }
+      if (payload.length > maxEntries) {
+        throw new GitHubClientError('limit_exceeded', `GitHub Notes folder contains ${payload.length} entries; the explicit refresh limit is ${maxEntries}.`, {
+          entryCount: payload.length,
+          maxEntries
+        });
+      }
+      return payload.map((entry) => {
+        if (!entry || typeof entry !== 'object' || typeof entry.path !== 'string' || !entry.type) {
+          throw new GitHubClientError('invalid_response', 'GitHub directory listing contains an invalid entry.');
+        }
+        const entryPath = normalizeGitHubContentPath(entry.path);
+        if (!entryPath.startsWith(`${normalized}/`)) {
+          throw new GitHubClientError('invalid_response', 'GitHub directory entry escaped the requested Notes folder.');
+        }
+        return {
+          type: String(entry.type),
+          path: entryPath,
+          name: String(entry.name || entryPath.slice(entryPath.lastIndexOf('/') + 1)),
+          sha: String(entry.sha || ''),
+          size: Number.isFinite(Number(entry.size)) ? Math.max(0, Number(entry.size)) : 0,
+          htmlUrl: String(entry.html_url || '')
+        };
+      });
     }
 
     async write({ path, content, baseSha = '', message }) {
@@ -979,6 +1029,110 @@
     base64ToUtf8,
     sha256Hex,
     statusKind
+  };
+});
+
+/* src/remote-note-reconcile.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const REMOTE_RECONCILE_ACTIONS = Object.freeze({
+    REMOTE_IMPORT: 'remote_import',
+    UNCHANGED: 'unchanged',
+    FAST_FORWARD: 'fast_forward',
+    LOCAL_AHEAD: 'local_ahead',
+    CONFLICT: 'conflict',
+    ATTACH_EXISTING: 'attach_existing',
+    DUPLICATE_IDENTITY: 'duplicate_identity',
+    REMOTE_DELETED: 'remote_deleted',
+    UNSUPPORTED_MARKDOWN: 'unsupported_markdown'
+  });
+
+  function normalizedTarget(value) {
+    const source = value && typeof value === 'object' ? value : {};
+    return {
+      owner: String(source.owner || '').trim(),
+      repo: String(source.repo || '').trim(),
+      branch: String(source.branch || '').trim(),
+      path: String(source.path || '').replace(/\\/g, '/').trim()
+    };
+  }
+
+  function sameTarget(left, right) {
+    const a = normalizedTarget(left);
+    const b = normalizedTarget(right);
+    return Boolean(a.owner && a.repo && a.branch && a.path)
+      && a.owner === b.owner
+      && a.repo === b.repo
+      && a.branch === b.branch
+      && a.path === b.path;
+  }
+
+  function classifyRemoteNote({ local = null, remote, localContentHash = '' } = {}) {
+    if (!remote || !remote.note || !remote.note.id || !remote.target || !remote.hash) {
+      throw new TypeError('Remote Note snapshot with note, target and hash is required.');
+    }
+    if (!local) return { action: REMOTE_RECONCILE_ACTIONS.REMOTE_IMPORT, reason: 'No local Note has this stable Note id.' };
+    if (String(local.id || '') !== String(remote.note.id || '')) {
+      return { action: REMOTE_RECONCILE_ACTIONS.DUPLICATE_IDENTITY, reason: 'Local and remote Note ids do not match.' };
+    }
+
+    const bound = local.remote && typeof local.remote === 'object' ? local.remote : {};
+    const hasBoundTarget = Boolean(bound.owner && bound.repo && bound.branch && bound.path);
+    const priorHash = String(bound.verifiedHash || '').trim();
+    const currentLocalHash = String(localContentHash || '').trim();
+
+    if (hasBoundTarget && !sameTarget(bound, remote.target)) {
+      return { action: REMOTE_RECONCILE_ACTIONS.DUPLICATE_IDENTITY, reason: 'The same Note id is already bound to another repository target.' };
+    }
+
+    if (!hasBoundTarget) {
+      if (currentLocalHash && currentLocalHash === remote.hash) {
+        return { action: REMOTE_RECONCILE_ACTIONS.ATTACH_EXISTING, reason: 'Unbound local content exactly matches the discovered remote Note.' };
+      }
+      return { action: REMOTE_RECONCILE_ACTIONS.DUPLICATE_IDENTITY, reason: 'An unbound local Note uses the same stable id but has different content.' };
+    }
+
+    if (!priorHash) {
+      return { action: REMOTE_RECONCILE_ACTIONS.CONFLICT, reason: 'The local Note has a remote target but no verified base hash.' };
+    }
+
+    const localChanged = currentLocalHash !== priorHash;
+    const remoteChanged = remote.hash !== priorHash;
+    if (!localChanged && !remoteChanged) return { action: REMOTE_RECONCILE_ACTIONS.UNCHANGED, reason: 'Local and remote content still match the verified base.' };
+    if (!localChanged && remoteChanged) return { action: REMOTE_RECONCILE_ACTIONS.FAST_FORWARD, reason: 'Only the remote Note changed after the verified base.' };
+    if (localChanged && !remoteChanged) return { action: REMOTE_RECONCILE_ACTIONS.LOCAL_AHEAD, reason: 'Only the local Note changed after the verified base.' };
+    if (currentLocalHash === remote.hash) return { action: REMOTE_RECONCILE_ACTIONS.ATTACH_EXISTING, reason: 'Both sides now contain the same content.' };
+    return { action: REMOTE_RECONCILE_ACTIONS.CONFLICT, reason: 'Local and remote content both changed differently after the verified base.' };
+  }
+
+  function isDirectChildPath(basePath, path) {
+    const base = String(basePath || '').replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+    const target = String(path || '').replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+    if (!base || !target || !target.startsWith(`${base}/`)) return false;
+    return !target.slice(base.length + 1).includes('/');
+  }
+
+  function boundNoteMissingFromSnapshot(note, workspace, basePath, seenPaths) {
+    const remote = note && note.remote && typeof note.remote === 'object' ? note.remote : {};
+    if (!sameTarget(
+      { owner: remote.owner, repo: remote.repo, branch: remote.branch, path: remote.path },
+      { owner: workspace && workspace.owner, repo: workspace && workspace.repo, branch: workspace && workspace.branch, path: remote.path }
+    )) return false;
+    if (!isDirectChildPath(basePath, remote.path)) return false;
+    return !seenPaths.has(String(remote.path).replace(/\\/g, '/'));
+  }
+
+  return {
+    REMOTE_RECONCILE_ACTIONS,
+    classifyRemoteNote,
+    isDirectChildPath,
+    boundNoteMissingFromSnapshot,
+    sameRemoteSnapshotTarget: sameTarget
   };
 });
 
@@ -1562,6 +1716,7 @@
         remoteTargetMismatch: false,
         remoteTargetLabel: '',
         remoteRecoveryAvailable: false,
+        remoteRefreshSummary: '',
         busy: false
       };
       this.host = null;
@@ -1775,6 +1930,9 @@
       const remoteInfo = this.state.remoteTargetLabel
         ? `<div class="remote-context ${this.state.remoteTargetMismatch ? 'mismatch' : ''}"><strong>Bound remote:</strong> ${escapeHtml(this.state.remoteTargetLabel)}${this.state.remoteTargetMismatch ? '<br><span>The chat workspace points elsewhere. Regular Save GitHub is blocked.</span>' : ''}</div>`
         : '<div class="remote-context">No verified remote target yet.</div>';
+      const remoteSummary = this.state.remoteRefreshSummary
+        ? `<div class="remote-summary"><strong>Last GitHub refresh:</strong> ${escapeHtml(this.state.remoteRefreshSummary)}</div>`
+        : '';
       const recoveryButtons = current && this.state.remoteRecoveryAvailable
         ? `<button data-action="recheck-remote" ${disabled}>Recheck remote</button>
            <button data-action="load-remote" ${disabled}>Load remote</button>
@@ -1791,7 +1949,7 @@
           .sidebar { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); }
           .toolbar, .editor-toolbar, .status, .workspace-bar { padding: 10px; border-bottom: 1px solid var(--border); }
           .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
-          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) auto; gap: 8px; align-items: center; background: var(--surface); }
+          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) auto auto; gap: 8px; align-items: center; background: var(--surface); }
           .workspace-summary { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
           input, textarea, select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 7px; background: var(--surface-2); color: var(--text); }
           input::placeholder, textarea::placeholder { color: #7f8999; }
@@ -1825,6 +1983,7 @@
           .target-preview { grid-column: 1 / -1; border: 1px solid var(--border); border-radius: 6px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface-2); }
           .remote-context { border: 1px solid var(--border); border-radius: 7px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface); }
           .remote-context.mismatch { border-color: #9b5a5a; background: #351f22; color: #ffb8b8; }
+          .remote-summary { border: 1px solid #365f83; border-radius: 7px; padding: 7px; color: #c7ddf3; word-break: break-word; background: #162636; }
           .status { margin-top: auto; background: var(--surface-2); color: var(--muted); word-break: break-word; }
           .empty { color: var(--muted); padding: 8px; }
           h3 { margin: 0 0 7px; font: 600 15px/1.3 system-ui, sans-serif; }
@@ -1844,6 +2003,7 @@
                 ${workspaceOptions || '<option value="">No saved workspace</option>'}
               </select>
               <div class="workspace-summary" title="${escapeHtml(this.state.workspaceTargetLabel)}">${escapeHtml(activeWorkspace ? `${this.state.chatContextLabel} · ${this.state.workspaceTargetLabel}` : 'Create a workspace before remote access.')}</div>
+              <button data-action="refresh-github" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>Refresh GitHub</button>
               <button data-action="manage-workspaces" ${disabled}>Manage workspaces</button>
             </div>
             <div class="editor-toolbar">
@@ -1859,6 +2019,7 @@
                 <input data-role="title" placeholder="Optional title" value="${escapeHtml(current.title || '')}" ${disabled}>
                 <textarea data-role="body" placeholder="Markdown Note body" ${disabled}>${escapeHtml(current.body || '')}</textarea>
                 ${remoteInfo}
+                ${remoteSummary}
                 <section><h3>Links</h3><div class="links">${linksHtml}</div>
                   <div class="add-link">
                     <select data-role="link-type" ${disabled}><option value="repository">Repository path</option><option value="note">Note ID</option><option value="url">Portable URL</option></select>
@@ -1869,7 +2030,7 @@
                 </section>` : '<div class="empty">Create or select a Note.</div>'}
               <details data-role="workspace-manager" ${this.workspaceManagerOpen ? 'open' : ''}>
                 <summary>Manage GitHub workspaces</summary>
-                <p class="hint">A workspace is a reusable repository, branch and Notes folder. The shared token is stored once for all workspaces.</p>
+                <p class="hint">A workspace is a reusable repository, branch and Notes folder. Refresh GitHub reads direct Markdown children from that folder only. Missing parent folders appear automatically with the first explicit Save GitHub; saving a workspace alone does not write remotely.</p>
                 <div class="settings-grid">
                   <input type="hidden" data-workspace-field="id" value="${escapeHtml(editor.id || '')}">
                   <label class="field"><span>Workspace name</span><input data-workspace-field="name" placeholder="GDoc" value="${escapeHtml(editor.name || '')}" ${disabled}></label>
@@ -1932,6 +2093,8 @@
       });
       const workspaceSelect = this.shadow.querySelector('[data-role="workspace-select"]');
       if (workspaceSelect) workspaceSelect.onchange = () => this._withAllDrafts('onSelectWorkspace', workspaceSelect.value, this.workspaceDraftState());
+      const refreshGitHub = this.shadow.querySelector('[data-action="refresh-github"]');
+      if (refreshGitHub) refreshGitHub.onclick = () => this._withAllDrafts('onRefreshRemote');
       const manageWorkspaces = this.shadow.querySelector('[data-action="manage-workspaces"]');
       if (manageWorkspaces) manageWorkspaces.onclick = async () => {
         await this.persistAllDraftsNow();
@@ -2087,6 +2250,7 @@
         onSearch: (query) => this.refreshList(query),
         onDraftChange: (note) => this.saveDraft(note),
         onOpen: () => this.openPanel(),
+        onRefreshRemote: () => this.refreshRemoteWorkspace(),
         onSelectWorkspace: (id, draftState) => this.selectWorkspace(id, draftState),
         onNewWorkspace: (draftState) => this.beginNewWorkspace(draftState),
         onSaveWorkspace: (workspace) => this.saveWorkspace(workspace),
@@ -2363,6 +2527,217 @@
         if (refreshed) this.current = this.api.normalizeNote(refreshed);
       }
       this._setUi({ notes, current: this.current, search: this.search });
+    }
+
+    async refreshRemoteWorkspace() {
+      return this._runRemoteOperation('Reading Linked Notes from the active GitHub workspace…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select or create a GitHub workspace before refreshing GitHub.');
+        const basePath = cleanBasePath(workspace.basePath);
+        const client = await this._client(workspace);
+        const entries = await client.listDirectory(basePath, { missingAsEmpty: true, maxEntries: 100 });
+        const markdownEntries = entries.filter((entry) => entry.type === 'file' && /\.md$/i.test(entry.name || entry.path));
+        const maxBytes = 2 * 1024 * 1024;
+        const listedBytes = markdownEntries.reduce((sum, entry) => sum + Number(entry.size || 0), 0);
+        if (listedBytes > maxBytes) {
+          throw new Error(`GitHub Notes folder is too large for one explicit refresh: ${listedBytes} bytes exceeds ${maxBytes}.`);
+        }
+
+        const summary = {
+          discovered: markdownEntries.length,
+          imported: 0,
+          updated: 0,
+          unchanged: 0,
+          localAhead: 0,
+          conflicts: 0,
+          deleted: 0,
+          skipped: 0,
+          errors: 0
+        };
+        const seenPaths = new Set(markdownEntries.map((entry) => String(entry.path || '').replace(/\\/g, '/')));
+        const initialLocalNotes = await this.store.list();
+        const boundGroupsByPath = new Map();
+        for (const local of initialLocalNotes) {
+          const bound = this.api.normalizeRemote(local.remote);
+          if (bound.owner === workspace.owner && bound.repo === workspace.repo && bound.branch === workspace.branch && bound.path) {
+            const group = boundGroupsByPath.get(bound.path) || [];
+            group.push(local);
+            boundGroupsByPath.set(bound.path, group);
+          }
+        }
+        const boundByPath = new Map();
+        const duplicateLocalPaths = new Set();
+        const unsupportedPaths = new Set();
+        const conflictIds = new Set();
+        for (const [path, group] of boundGroupsByPath.entries()) {
+          if (group.length === 1) {
+            boundByPath.set(path, group[0]);
+            continue;
+          }
+          duplicateLocalPaths.add(path);
+          for (const local of group) {
+            const conflicted = this.api.markConflict(local, `Several local Notes are bound to the same GitHub path ${path}. GitHub refresh cannot select one identity automatically.`);
+            await this.store.put(conflicted);
+            if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+            conflictIds.add(conflicted.id);
+            summary.conflicts += 1;
+          }
+        }
+        const snapshots = [];
+        let actualBytes = 0;
+
+        for (const entry of markdownEntries) {
+          try {
+            const remoteFile = await client.read(entry.path);
+            actualBytes += new TextEncoder().encode(remoteFile.content).byteLength;
+            if (actualBytes > maxBytes) throw new Error(`GitHub Notes refresh exceeded the ${maxBytes}-byte content limit.`);
+            if (!this.api.isLinkedNoteMarkdown(remoteFile.content)) {
+              unsupportedPaths.add(remoteFile.path || entry.path);
+              summary.skipped += 1;
+              continue;
+            }
+            const decoded = this.api.decodeNoteMarkdown(remoteFile.content);
+            snapshots.push({
+              note: decoded,
+              content: remoteFile.content,
+              hash: await this.api.sha256Hex(remoteFile.content),
+              target: {
+                owner: workspace.owner,
+                repo: workspace.repo,
+                branch: workspace.branch,
+                path: remoteFile.path || entry.path
+              },
+              sha: remoteFile.sha,
+              htmlUrl: remoteFile.htmlUrl || entry.htmlUrl || ''
+            });
+          } catch (error) {
+            if (String(error && error.message || '').includes('content limit')) throw error;
+            summary.errors += 1;
+          }
+        }
+
+        const snapshotsById = new Map();
+        for (const snapshot of snapshots) {
+          const group = snapshotsById.get(snapshot.note.id) || [];
+          group.push(snapshot);
+          snapshotsById.set(snapshot.note.id, group);
+        }
+
+        for (const [noteId, group] of snapshotsById.entries()) {
+          const local = await this.store.get(noteId);
+          if (group.length > 1) {
+            const affected = new Map();
+            if (local) affected.set(local.id, local);
+            for (const snapshot of group) {
+              for (const boundLocal of boundGroupsByPath.get(snapshot.target.path) || []) {
+                affected.set(boundLocal.id, boundLocal);
+              }
+            }
+            if (affected.size === 0) summary.conflicts += 1;
+            for (const affectedLocal of affected.values()) {
+              const conflicted = this.api.markConflict(affectedLocal, `GitHub refresh found ${group.length} files with the same stable Note id ${noteId}. No file was selected automatically.`);
+              await this.store.put(conflicted);
+              if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+              if (!conflictIds.has(conflicted.id)) summary.conflicts += 1;
+              conflictIds.add(conflicted.id);
+            }
+            summary.skipped += group.length;
+            continue;
+          }
+
+          const snapshot = group[0];
+          if (duplicateLocalPaths.has(snapshot.target.path)) {
+            summary.skipped += 1;
+            continue;
+          }
+          const pathBoundLocal = boundByPath.get(snapshot.target.path);
+          if (pathBoundLocal && pathBoundLocal.id !== noteId) {
+            const conflicted = this.api.markConflict(pathBoundLocal, `GitHub refresh found stable Note id ${noteId} at ${snapshot.target.path}, but that path is already bound locally to ${pathBoundLocal.id}.`);
+            await this.store.put(conflicted);
+            if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+            conflictIds.add(conflicted.id);
+            summary.conflicts += 1;
+            summary.skipped += 1;
+            continue;
+          }
+          const localContentHash = local ? await this.api.sha256Hex(this.api.encodeNoteMarkdown(local)) : '';
+          const decision = this.api.classifyRemoteNote({ local, remote: snapshot, localContentHash });
+          let next = local;
+          if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.REMOTE_IMPORT) {
+            next = this.api.createNote({
+              id: snapshot.note.id,
+              title: snapshot.note.title,
+              body: snapshot.note.body,
+              links: snapshot.note.links,
+              codecExtra: snapshot.note.codecExtra
+            });
+            next = this.api.markSavedVerified(next, {
+              ...snapshot.target,
+              sha: snapshot.sha,
+              verifiedHash: snapshot.hash,
+              htmlUrl: snapshot.htmlUrl
+            });
+            summary.imported += 1;
+          } else if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.FAST_FORWARD) {
+            next = this.api.updateNote(local, {
+              title: snapshot.note.title,
+              body: snapshot.note.body,
+              links: snapshot.note.links,
+              codecExtra: snapshot.note.codecExtra
+            });
+            next = this.api.markSavedVerified(next, {
+              ...snapshot.target,
+              sha: snapshot.sha,
+              verifiedHash: snapshot.hash,
+              htmlUrl: snapshot.htmlUrl
+            });
+            summary.updated += 1;
+          } else if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.UNCHANGED || decision.action === this.api.REMOTE_RECONCILE_ACTIONS.ATTACH_EXISTING) {
+            next = this.api.markSavedVerified(local, {
+              ...snapshot.target,
+              sha: snapshot.sha,
+              verifiedHash: snapshot.hash,
+              htmlUrl: snapshot.htmlUrl
+            });
+            summary.unchanged += 1;
+          } else if (decision.action === this.api.REMOTE_RECONCILE_ACTIONS.LOCAL_AHEAD) {
+            summary.localAhead += 1;
+          } else {
+            next = this.api.markConflict(local, `GitHub refresh conflict for ${snapshot.target.path}: ${decision.reason}`);
+            summary.conflicts += 1;
+          }
+
+          if (next && next !== local) {
+            await this.store.put(next);
+            if (this.current && this.current.id === next.id) this.current = next;
+          }
+        }
+
+        for (const path of unsupportedPaths) {
+          const local = boundByPath.get(path);
+          if (!local || conflictIds.has(local.id)) continue;
+          const conflicted = this.api.markConflict(local, `The bound GitHub file ${path} is no longer valid obs-linked-note:v1 Markdown. Local content was preserved.`);
+          await this.store.put(conflicted);
+          if (this.current && this.current.id === conflicted.id) this.current = conflicted;
+          conflictIds.add(conflicted.id);
+          summary.conflicts += 1;
+        }
+
+        const localNotes = await this.store.list();
+        for (const local of localNotes) {
+          if (conflictIds.has(local.id)) continue;
+          if (!this.api.boundNoteMissingFromSnapshot(local, workspace, basePath, seenPaths)) continue;
+          const deleted = this.api.markRemoteDeleted(local, 'The bound GitHub Note is no longer present in the active workspace folder. Local content was preserved.');
+          await this.store.put(deleted);
+          if (this.current && this.current.id === deleted.id) this.current = deleted;
+          summary.deleted += 1;
+        }
+
+        const summaryText = `found ${summary.discovered}; imported ${summary.imported}; updated ${summary.updated}; unchanged ${summary.unchanged}; local ahead ${summary.localAhead}; conflicts ${summary.conflicts}; deleted ${summary.deleted}; skipped ${summary.skipped}; errors ${summary.errors}`;
+        await this.refreshList();
+        this._setUi({ remoteRefreshSummary: summaryText, status: `GitHub refresh complete: ${summaryText}. No remote writes were performed.` });
+        return summary;
+      });
     }
 
     async saveDraft(note) {

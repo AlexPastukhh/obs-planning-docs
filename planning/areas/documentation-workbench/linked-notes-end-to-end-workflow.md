@@ -1,8 +1,8 @@
 # Create, Link And Manage Repository Notes Workflow
 
 Status: working proposed project-local End-To-End Workflow / canonical item transition pending
-Doc version: v1.1.0-proposed-behavior-owner
-Scope: independently traversable user workflow for creating, editing, linking, persisting and navigating durable repository Notes.
+Doc version: v1.2.0-remote-read-reconciliation
+Scope: independently traversable user workflow for creating, reading, reconciling, editing, linking, persisting and navigating durable repository Notes.
 
 ## 1. Purpose
 
@@ -12,11 +12,11 @@ This file is the complete proposed behavior review object. It does not become th
 
 ## 2. Trigger And Result
 
-**Trigger:** the user opens the Notes work surface to create a Note, inspect/edit an existing Note, add/remove a link, save a Note or open a linked target.
+**Trigger:** the user opens the Notes work surface to create or inspect a Note, explicitly refresh repository Notes, edit content, add/remove a link, save a Note or open a linked target.
 
-**Successful result:** a durable repository-owned Markdown Note with stable links that can be found and opened again.
+**Successful result:** a durable repository-owned Markdown Note with stable links can be found, read, reconciled with recoverable local working state and opened again.
 
-**Other explicit results:** local-only draft, unresolved target, authentication/permission failure, save conflict or verified remote failure.
+**Other explicit results:** local-only draft, remote-only import, local-ahead state, unresolved target, remote deletion, authentication/permission failure, reconciliation conflict, save conflict or verified remote failure.
 
 ## 3. Preconditions
 
@@ -58,6 +58,12 @@ open Notes work surface
   → resolve targets where possible
   → keep unresolved targets visible
   → save local working state
+  → when repository reading is explicitly requested:
+      read the selected repository Notes location;
+      identify valid repository Notes;
+      compare remote identity/base with local working state;
+      import, fast-forward or preserve local work;
+      expose conflict, deletion, unsupported or incomplete results
   → when durable remote save is requested:
       read current remote/base state;
       create or update repository Markdown;
@@ -87,15 +93,19 @@ When a helper is used, unsaved work survives ordinary UI rerenders/reloads accor
 
 Local working state is not yet durable repository truth.
 
-### Stage 5 — Save Or Update Repository Markdown
+### Stage 5 — Read And Reconcile Repository Notes
+
+The user explicitly starts repository reading for the selected Notes location. Valid repository Notes are compared with local working state by stable identity, target and last verified base. A remote-only Note may enter the local list; a remote-only change may fast-forward an unchanged local copy; local-ahead work is preserved; different two-sided changes, duplicate identity, unsupported content and remote deletion remain explicit. This read stage performs no repository write.
+
+### Stage 6 — Save Or Update Repository Markdown
 
 The user explicitly starts a remote save. The implementation reads the current target state, performs a create/update with conflict protection and avoids overwriting a changed remote file blindly.
 
-### Stage 6 — Verify Remote Result
+### Stage 7 — Verify Remote Result
 
 A success response alone is insufficient when the network result may be uncertain. Read the target back and confirm the expected content/identity.
 
-### Stage 7 — Browse And Navigate
+### Stage 8 — Browse And Navigate
 
 The user can find the Note through a list/search/index and open its linked repository files, fragments and Notes.
 
@@ -105,6 +115,15 @@ The user can find the Note through a list/search/index and open its linked repos
 |---|---|
 | Note has no links | valid standalone Note |
 | Note remains local-only | explicit unsaved/local state |
+| Selected repository Notes location does not exist yet | treat it as an empty remote set only after repository/branch access is verified; the path appears with the first explicit Note-file save, not through a placeholder write |
+| Valid repository Note has no local copy | import it after explicit repository refresh and show its exact repository identity |
+| Remote changed while local still equals the verified base | fast-forward local working state to the remote Note and new verified base |
+| Local changed while remote still equals the verified base | preserve local content and show local-ahead state; perform no write during refresh |
+| Local and remote changed differently | preserve local content and show explicit reconciliation conflict; do not merge or overwrite automatically |
+| Bound remote Note is missing | preserve local content and show remote-deleted recovery state |
+| Repository content is not a valid Note | keep it outside the Note index and show skipped/unsupported result where relevant |
+| Repository/branch/location cannot be read | explicit read/authentication/permission failure; do not report a harmless empty location |
+| Repository refresh exceeds an implementation bound | explicit incomplete/blocked result; do not silently treat the partial snapshot as complete |
 | Repository file or anchor is missing | unresolved link remains visible |
 | Linked Note is missing | unresolved Note target remains visible |
 | Note links form a cycle | navigation remains possible; recursive expansion must stop and report the cycle |
@@ -122,6 +141,7 @@ The user can find the Note through a list/search/index and open its linked repos
 | Content | Note title/body | user-controlled literal content |
 | Links | each selected target | intended identity resolves or unresolved is explicit |
 | Local state | draft/saved marker | no confusion between local work and repository truth |
+| Remote snapshot | selected Notes location, Note identity, target path/SHA/hash and last verified base | import/fast-forward/preserve/conflict/deleted result is explicit; no read action writes remotely |
 | Remote base | target path/SHA | no blind overwrite |
 | Remote verification | read-back content | exact expected Note is present |
 | Credential | token scope/storage behavior | least-privilege and no repository leakage |
@@ -135,6 +155,7 @@ Shadow DOM user interface
   → IndexedDB local working state
   → portable Markdown Note representation
   → configurable GitHub owner/repository/branch/path
+  → explicit GitHub Contents API Notes-location read and local/remote reconciliation
   → GitHub Contents API create/read/update
   → SHA-aware conflict handling
   → remote read-back verification
@@ -174,6 +195,11 @@ link A to a real repository file and explicit anchor;
 create Note B and link A → B;
 save both through a conflict-aware GitHub write;
 read both back;
+create one valid repository-only Note and import it through explicit refresh;
+change one verified Note only on the repository and fast-forward an unchanged local copy;
+change local and remote content differently and show an explicit conflict without losing local work;
+delete one bound remote Note and show remote-deleted state without deleting the local Note;
+confirm repository refresh performs no write;
 open every target;
 change target text without changing anchor;
 confirm links still resolve;
@@ -201,4 +227,7 @@ This workflow does not:
 - require every Note to be a generic category-backed object;
 - choose a final token-storage mechanism;
 - authorize repository replacement, commit or push;
-- automatically create, repair or rewrite linked documentation.
+- automatically create, repair or rewrite linked documentation;
+- require background repository polling or writes;
+- silently merge different local and remote Note bodies;
+- treat implementation scan limits as final product requirements.

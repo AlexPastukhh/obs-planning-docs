@@ -10,6 +10,7 @@ const sourceFiles = [
   'src/repository-target.js',
   'src/indexeddb-note-store.js',
   'src/github-contents-client.js',
+  'src/remote-note-reconcile.js',
   'src/workspace-context.js',
   'src/workspace-store.js',
   'src/linked-notes-ui.js',
@@ -19,8 +20,8 @@ const sourceFiles = [
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.2.3-prototype
-// @description  Viewport-safe linked Markdown Notes with explicit per-chat context and verified writes.
+// @version      0.3.0-prototype
+// @description  Linked Markdown Notes with explicit GitHub folder refresh, conflict safety and verified writes.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*

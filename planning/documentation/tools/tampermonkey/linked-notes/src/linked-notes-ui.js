@@ -72,6 +72,7 @@
         remoteTargetMismatch: false,
         remoteTargetLabel: '',
         remoteRecoveryAvailable: false,
+        remoteRefreshSummary: '',
         busy: false
       };
       this.host = null;
@@ -285,6 +286,9 @@
       const remoteInfo = this.state.remoteTargetLabel
         ? `<div class="remote-context ${this.state.remoteTargetMismatch ? 'mismatch' : ''}"><strong>Bound remote:</strong> ${escapeHtml(this.state.remoteTargetLabel)}${this.state.remoteTargetMismatch ? '<br><span>The chat workspace points elsewhere. Regular Save GitHub is blocked.</span>' : ''}</div>`
         : '<div class="remote-context">No verified remote target yet.</div>';
+      const remoteSummary = this.state.remoteRefreshSummary
+        ? `<div class="remote-summary"><strong>Last GitHub refresh:</strong> ${escapeHtml(this.state.remoteRefreshSummary)}</div>`
+        : '';
       const recoveryButtons = current && this.state.remoteRecoveryAvailable
         ? `<button data-action="recheck-remote" ${disabled}>Recheck remote</button>
            <button data-action="load-remote" ${disabled}>Load remote</button>
@@ -301,7 +305,7 @@
           .sidebar { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); }
           .toolbar, .editor-toolbar, .status, .workspace-bar { padding: 10px; border-bottom: 1px solid var(--border); }
           .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
-          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) auto; gap: 8px; align-items: center; background: var(--surface); }
+          .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) auto auto; gap: 8px; align-items: center; background: var(--surface); }
           .workspace-summary { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
           input, textarea, select { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 7px; background: var(--surface-2); color: var(--text); }
           input::placeholder, textarea::placeholder { color: #7f8999; }
@@ -335,6 +339,7 @@
           .target-preview { grid-column: 1 / -1; border: 1px solid var(--border); border-radius: 6px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface-2); }
           .remote-context { border: 1px solid var(--border); border-radius: 7px; padding: 7px; color: var(--muted); word-break: break-word; background: var(--surface); }
           .remote-context.mismatch { border-color: #9b5a5a; background: #351f22; color: #ffb8b8; }
+          .remote-summary { border: 1px solid #365f83; border-radius: 7px; padding: 7px; color: #c7ddf3; word-break: break-word; background: #162636; }
           .status { margin-top: auto; background: var(--surface-2); color: var(--muted); word-break: break-word; }
           .empty { color: var(--muted); padding: 8px; }
           h3 { margin: 0 0 7px; font: 600 15px/1.3 system-ui, sans-serif; }
@@ -354,6 +359,7 @@
                 ${workspaceOptions || '<option value="">No saved workspace</option>'}
               </select>
               <div class="workspace-summary" title="${escapeHtml(this.state.workspaceTargetLabel)}">${escapeHtml(activeWorkspace ? `${this.state.chatContextLabel} · ${this.state.workspaceTargetLabel}` : 'Create a workspace before remote access.')}</div>
+              <button data-action="refresh-github" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>Refresh GitHub</button>
               <button data-action="manage-workspaces" ${disabled}>Manage workspaces</button>
             </div>
             <div class="editor-toolbar">
@@ -369,6 +375,7 @@
                 <input data-role="title" placeholder="Optional title" value="${escapeHtml(current.title || '')}" ${disabled}>
                 <textarea data-role="body" placeholder="Markdown Note body" ${disabled}>${escapeHtml(current.body || '')}</textarea>
                 ${remoteInfo}
+                ${remoteSummary}
                 <section><h3>Links</h3><div class="links">${linksHtml}</div>
                   <div class="add-link">
                     <select data-role="link-type" ${disabled}><option value="repository">Repository path</option><option value="note">Note ID</option><option value="url">Portable URL</option></select>
@@ -379,7 +386,7 @@
                 </section>` : '<div class="empty">Create or select a Note.</div>'}
               <details data-role="workspace-manager" ${this.workspaceManagerOpen ? 'open' : ''}>
                 <summary>Manage GitHub workspaces</summary>
-                <p class="hint">A workspace is a reusable repository, branch and Notes folder. The shared token is stored once for all workspaces.</p>
+                <p class="hint">A workspace is a reusable repository, branch and Notes folder. Refresh GitHub reads direct Markdown children from that folder only. Missing parent folders appear automatically with the first explicit Save GitHub; saving a workspace alone does not write remotely.</p>
                 <div class="settings-grid">
                   <input type="hidden" data-workspace-field="id" value="${escapeHtml(editor.id || '')}">
                   <label class="field"><span>Workspace name</span><input data-workspace-field="name" placeholder="GDoc" value="${escapeHtml(editor.name || '')}" ${disabled}></label>
@@ -442,6 +449,8 @@
       });
       const workspaceSelect = this.shadow.querySelector('[data-role="workspace-select"]');
       if (workspaceSelect) workspaceSelect.onchange = () => this._withAllDrafts('onSelectWorkspace', workspaceSelect.value, this.workspaceDraftState());
+      const refreshGitHub = this.shadow.querySelector('[data-action="refresh-github"]');
+      if (refreshGitHub) refreshGitHub.onclick = () => this._withAllDrafts('onRefreshRemote');
       const manageWorkspaces = this.shadow.querySelector('[data-action="manage-workspaces"]');
       if (manageWorkspaces) manageWorkspaces.onclick = async () => {
         await this.persistAllDraftsNow();

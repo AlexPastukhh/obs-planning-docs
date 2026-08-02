@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Draft
 
 Status: active current project-local Planning Draft / Batch 3B local Scenario migration
-Doc version: v1.2.2-route-state-consistency
+Doc version: v1.2.3-linked-notes-remote-reconciliation
 Purpose: organize the reviewed Documentation Workbench Planning Items around the selected repository-native direction without creating a second item-body owner.
 
 Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
@@ -97,6 +97,8 @@ SHA-aware retry/conflict handling.
 ```
 
 That script does not yet prove a general Notes workspace, GitHub document picker, stable repository-fragment selection, Note-to-Note linking, remote Notes indexing or an accepted security boundary.
+
+Current `0.3.0-prototype` Linked Notes implementation evidence adds an explicit read-only GitHub Notes-location refresh, remote-only linked-Note import, safe remote-only fast-forward, local-ahead preservation, two-sided conflict detection and remote-deletion discovery. Its direct-child scan and resource limits are bounded prototype choices, not accepted product architecture, and browser/real-GitHub acceptance remains pending.
 
 The former detailed Scenario workspace is no longer selected. Its useful current meaning is represented below and by current Planning Items/workflow owners. The complete project-local `scenarios/**` workspace is removed; Git history preserves its former detail.
 
@@ -320,9 +322,9 @@ The four Scenarios below are current Key Scenarios because they own core value, 
 
 **Actor/context:** a user opens a Notes widget/workspace while working with ChatGPT or repository documentation.
 
-**Goal:** create or edit a Note, link it to repository documentation or other Notes and preserve it durably in GitHub/repository Markdown.
+**Goal:** create, read or edit a Note, link it to repository documentation or other Notes, reconcile external repository changes without losing local work and preserve the Note durably in GitHub/repository Markdown.
 
-**Observable result:** the Note is available in the Notes list/search, has working links and is verified in repository storage, or its local/unresolved/failure state is explicit.
+**Observable result:** a local or repository-existing Note is available in the Notes list/search, has working links and a visible local/remote reconciliation state, and is verified in repository storage after an explicit save; otherwise its local-only, unresolved, conflict, deleted or failure state is explicit.
 
 **Important Scenario DATA:**
 
@@ -331,7 +333,10 @@ The four Scenarios below are current Key Scenarios because they own core value, 
 - links to repository files, explicit anchors, Notes and optional chat messages;
 - local draft, changed-after-save and durable-remote state;
 - repository owner/repository/branch/path target;
-- remote base/SHA or equivalent conflict token;
+- selected repository Notes location/workspace;
+- remote snapshot path/SHA/content hash and last verified base;
+- remote-only, local-ahead, remote-changed, both-changed, duplicate-identity or remote-deleted state;
+- remote refresh summary or equivalent visible result;
 - remote read-back verification state and unresolved-link state.
 
 **Entry / preconditions:**
@@ -348,17 +353,30 @@ The four Scenarios below are current Key Scenarios because they own core value, 
 3. The user adds zero or more links to complete files, stable anchored fragments or other Notes.
 4. The widget resolves targets where possible and shows unresolved targets.
 5. The widget saves recoverable local working state.
-6. The user explicitly requests a repository save/update.
-7. The widget reads the current remote/base state.
-8. It creates or updates portable Markdown through GitHub/repository integration.
-9. It reads the remote target back and verifies the expected content.
-10. It refreshes the Note list/search/index.
-11. The user opens the Note or one of its linked targets.
+6. When the user explicitly requests repository reading, the widget reads the selected Notes location and identifies valid repository Notes.
+7. It compares repository identity, target and content with local working state and the last verified base.
+8. It imports a repository-only Note, fast-forwards an unchanged local copy, preserves local-ahead content or exposes conflict/deletion/unsupported/incomplete results without performing a repository write.
+9. The user explicitly requests a repository save/update when durable remote persistence is needed.
+10. The widget reads the current remote/base state.
+11. It creates or updates portable Markdown through GitHub/repository integration.
+12. It reads the remote target back and verifies the expected content.
+13. It refreshes the Note list/search/index.
+14. The user opens the Note or one of its linked targets.
 
 **Branches / alternatives / failures:**
 
 - standalone Note with no links;
 - local-only unsaved draft;
+- repository Notes location does not exist yet;
+- valid repository-only Note;
+- ordinary or unsupported Markdown in the selected location;
+- remote changed while local still equals the verified base;
+- local changed while remote still equals the verified base;
+- local and remote changed differently;
+- bound remote file deleted;
+- duplicate stable Note identity or conflicting path binding;
+- inaccessible repository/branch/location;
+- bounded repository scan cannot complete;
 - missing file/anchor/Note target;
 - Note-to-Note cycle;
 - missing/invalid token;
@@ -373,8 +391,12 @@ The four Scenarios below are current Key Scenarios because they own core value, 
 - Note body remains ordinary Markdown;
 - token/secret is never written into Note or repository content;
 - local working state is not confused with durable repository truth;
+- repository refresh is explicit and does not perform a remote write;
+- remote-only content fast-forwards local state only when local content still equals the verified base;
+- local-ahead work is preserved and different two-sided changes are not silently merged;
+- remote deletion does not delete local working state;
 - remote save is verified by read-back;
-- one Note identity is not duplicated merely because several views display it;
+- one Note identity is not duplicated merely because several views or repository paths display it;
 - unresolved links remain visible;
 - a helper does not silently become canonical owner.
 
@@ -384,7 +406,8 @@ The four Scenarios below are current Key Scenarios because they own core value, 
 - file-per-Note/shared-file/hybrid persistence;
 - lightweight Note identity versus generic object projection;
 - local-first/GitHub-required boundary;
-- index derivation and stale-cache behavior;
+- index derivation, repository discovery bounds and stale-cache behavior;
+- whether recursive Notes-location reading is ever needed;
 - fine-grained token permissions/storage;
 - rename/delete and cycle behavior;
 - minimum Notes prototype described in the Notes workflow.
@@ -416,6 +439,7 @@ This table is the required current cross-view structure inside this Planning Dra
 | Create/edit Note | standalone/titled/untitled durable Markdown Note | Notes widget candidate; local IndexedDB working state | minimum Note fields; recovery | behavior selected; implementation review pending |
 | Link Note to file/fragment | link resolves to GitHub/repository documentation | repository browser/path+anchor picker | private repo access; anchor identity | prototype required |
 | Link Note to Note | stable Note target opens | Note identity/index candidate | cycles, rename/delete, storage layout | prototype required |
+| Read/reconcile repository Notes | explicit refresh makes valid repository-only Notes and external changes visible without losing local work | bounded read-only Notes-location scan + stable-id/base comparison | discovery bounds; duplicate identity; stale snapshot; no background write | supported by `0.3.0-prototype`; browser/remote acceptance pending |
 | Save Note remotely | explicit write followed by read-back verification | GitHub Contents API + SHA-aware update | token scope/storage; conflicts; unknown network result | partially supported by supplied-script evidence |
 | Browse Notes | list/search/index reaches concrete Notes | local derived index or GitHub-derived index | stale cache; one-file/shared-file tradeoff | unresolved implementation choice |
 | Repository diff review | durable Markdown changes remain reviewable | normal Git working tree/package flow | exact base and permission boundary | existing accepted workflow |
@@ -441,7 +465,7 @@ This table is the required current cross-view structure inside this Planning Dra
 | Reference Impact Checker | `ITEM-89` | Working / Needs Prototype | scan explicit review relations for changed stable targets and list affected uses without false navigation obligations |
 | AI Transfer Expander | `ITEM-107` | Working / Needs Prototype | expand explicit includes into a bounded non-mutating sourced copy |
 | Structured Message Composer | `ITEM-121` | independently useful candidate | preserve literal text and addressable structure |
-| Tampermonkey Linked Notes And GitHub Widget | `ITEM-124`; canonical item identity pending review | proposed Working / Needs Prototype | create/open/edit linked Notes; verified GitHub persistence; file/anchor/Note navigation |
+| Tampermonkey Linked Notes And GitHub Widget | `ITEM-124`; canonical item identity pending review | proposed Working / Needs Prototype | create/open/edit linked Notes; explicit repository refresh and safe reconciliation; verified GitHub persistence; file/anchor/Note navigation |
 
 ### Supplied userscript evidence
 
@@ -457,6 +481,8 @@ The supplied ChatGPT Chats History userscript is an example and evidence source,
 - retry/conflict-aware behavior.
 
 It does not accept the choice to extend that script or prove the full Notes scenario.
+
+Current `0.3.0-prototype` evidence additionally covers an explicit GET-only active-workspace refresh, valid linked-Note import, remote-only fast-forward, local-ahead preservation, two-sided conflict, duplicate identity protection and remote deletion discovery. Automated tests do not replace the pending browser and real-GitHub run.
 
 ## 12. Questions, Risks And Decisions
 
@@ -480,6 +506,8 @@ It does not accept the choice to extend that script or prove the full Notes scen
 - GitHub-specific behavior may reduce local portability;
 - token persistence may create security exposure;
 - local/remote state may be confused;
+- a bounded repository snapshot may be mistaken for a complete index;
+- duplicate Note identity or path binding may require explicit recovery UX;
 - Notes storage layout may create avoidable write conflicts;
 - generic Reference Object logic may reintroduce deferred architecture prematurely;
 - canonical Planning Item transformations may temporarily lag the confirmed Scenario clarifications until explicit item review completes.
@@ -493,6 +521,7 @@ It does not accept the choice to extend that script or prove the full Notes scen
 - Existing app-heavy architecture remains deferred, not silently erased.
 - Repository Markdown remains durable truth.
 - Notes are an independently useful behavior/workflow.
+- Explicit repository reading and safe local/remote reconciliation are required Note-workflow behavior; exact scan depth and resource limits remain implementation choices.
 - No specific Notes implementation, storage layout or credential design is accepted by this Draft alone.
 - Canonical Planning Item transformations require explicit review and are not applied by this package.
 

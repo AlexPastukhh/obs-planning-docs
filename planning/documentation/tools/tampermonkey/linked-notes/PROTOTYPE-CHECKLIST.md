@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.2.3-prototype`
+Prototype version: `0.3.0-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values.
 
@@ -30,9 +30,9 @@ Use one copy for one concrete browser/repository test run. Never record token va
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| 1 | Run `node verify-linked-notes.mjs`. | All 79 tests pass; source syntax, generated syntax and generated freshness pass. | |
+| 1 | Run `node verify-linked-notes.mjs`. | All 99 tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.2.3-prototype`; one `Notes` launcher appears. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.3.0-prototype`; one `Notes` launcher appears. | |
 
 ## 3. Launcher, Theme And Draft Close
 
@@ -51,7 +51,23 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | 9 | With a dirty workspace form, trigger a harmless status rerender such as saving the shared token. | Workspace-form values remain unchanged. | |
 | 10 | Start a deliberately slow remote request and press `Escape`. | Panel remains open until the operation completes; no second operation starts. | |
 
-## 4. Workspace Creation And Shared Token
+
+## 4. GitHub Folder Refresh And Remote Change Reconciliation
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| 10a | Save Workspace A with a Notes folder that does not yet exist, without saving a Note. | No remote file or placeholder is created. | |
+| 10b | Save the first Note explicitly to that workspace. | The complete parent path and Markdown file appear together and read-back verification succeeds. | |
+| 10c | Create a valid `obs-linked-note:v1` Markdown Note directly on GitHub in the Notes folder, then press `Refresh GitHub`. | The remote-only Note is imported into the local list/search with exact target, SHA and verified hash. | |
+| 10d | Place ordinary Markdown in the same folder and refresh. | It is counted as skipped and is not converted into a Note. | |
+| 10e | Change a verified Note only on GitHub and refresh while local content is unchanged. | The local Note fast-forwards to the remote content and current SHA. | |
+| 10f | Change a verified Note only locally and refresh. | Local content remains; summary reports local ahead; no PUT occurs. | |
+| 10g | Change the same verified Note differently both locally and on GitHub, then refresh. | Local content is preserved and the Note enters explicit conflict. | |
+| 10h | Delete a bound Note file on GitHub and refresh. | Local content remains and state becomes `remote_deleted`. | |
+| 10i | Open/close Notes, navigate chats and switch workspaces without pressing Refresh GitHub. | No Notes-folder listing or background remote read occurs. | |
+| 10j | Configure an invalid/inaccessible branch and refresh. | Explicit repository/branch failure; it is not reported as an empty folder. | |
+
+## 5. Workspace Creation And Shared Token
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
@@ -64,7 +80,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | 17 | Edit a workspace form without saving, then select another workspace and cancel discard. | Selection is cancelled and the dirty form remains. | |
 | 18 | Repeat and confirm discard. | Selected workspace opens and the old unsaved form is cleared explicitly. | |
 
-## 5. Per-Chat Workspace Memory
+## 6. Per-Chat Workspace Memory
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
@@ -80,7 +96,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | 28 | Open another new chat, explicitly select B, send the first message and wait for `/c/<id>`. | The stable chat uses default A and has no mapping; the temporary B selection is not promoted automatically. | |
 | 29 | From a new-chat route explicitly select B, do not send a message, then open an existing unmapped chat from the sidebar. | The existing chat uses default A, receives no mapping and no remote action targets B. | |
 
-## 6. Two-Tab Concurrency And Refresh
+## 7. Two-Tab Concurrency And Refresh
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
@@ -91,7 +107,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | 34 | Leave tab A open, change Chat A mapping in tab B, then close and reopen Notes in tab A. | Tab A rereads storage and shows the new mapping without page reload. | |
 | 35 | Start two tabs simultaneously on a clean v1 profile. | Exactly one deterministic `workspace-imported-v1` record is created. | |
 
-## 7. Workspace Deletion And Migration
+## 8. Workspace Deletion And Migration
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
@@ -100,7 +116,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | 38 | Reopen affected chat. | It falls back visibly without creating a new explicit binding. | |
 | 39 | On a separate profile with v1 settings/token, install v2. | One Imported workspace appears; old token becomes the shared token; legacy keys remain. | |
 
-## 8. Local Note And Link Checks
+## 9. Local Note And Link Checks
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
@@ -112,7 +128,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | 45 | Add same-folder, parent, sibling, nested and `#anchor` repository links. | Valid targets normalize as ordinary Markdown-relative links. | |
 | 46 | Add an imported `javascript:` or `data:` URL fixture. | It is rejected and never opened. | |
 
-## 9. GitHub Create, Update And Workspace Safety
+## 10. GitHub Create, Update And Workspace Safety
 
 Use test branches only.
 
@@ -125,7 +141,7 @@ Use test branches only.
 | 51 | Press `Copy to chat workspace`. | Only an absent B target is created and verified; old A file remains. | |
 | 52 | Try Copy when B target already exists. | Conflict is visible; no overwrite occurs. | |
 
-## 10. Conflict And Recovery
+## 11. Conflict And Recovery
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
@@ -137,7 +153,7 @@ Use test branches only.
 | 58 | Use confirmed restore/overwrite. | Missing bound target is recreated only after confirmation and verification. | |
 | 59 | Simulate successful PUT followed by failed read-back. | `save_failed` retains provisional identity; Save local preserves recovery; later Recheck may verify it. | |
 
-## 11. Secret And Storage Inspection
+## 12. Secret And Storage Inspection
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
@@ -146,7 +162,7 @@ Use test branches only.
 | 62 | Search generated Markdown and repository diff for token fragments and chat IDs. | None are present. | |
 | 63 | Verify all Notes remain visible after workspace switching. | Workspace selection does not hide or duplicate Notes. | |
 
-## 12. Findings
+## 13. Findings
 
 ### Confirmed evidence
 
@@ -160,7 +176,7 @@ Use test branches only.
 
 -
 
-## 13. Verdict
+## 14. Verdict
 
 ```text
 pass / partial / fail / inconclusive
