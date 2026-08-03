@@ -43,6 +43,18 @@
     throw new Error('No base64 encoder is available.');
   }
 
+  function bytesToBase64(value) {
+    const bytes = value instanceof Uint8Array ? value : new Uint8Array(value || []);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let index = 0; index < bytes.length; index += chunk) {
+      binary += String.fromCharCode(...bytes.subarray(index, index + chunk));
+    }
+    if (typeof btoa === 'function') return btoa(binary);
+    if (typeof Buffer !== 'undefined') return Buffer.from(bytes).toString('base64');
+    throw new Error('No base64 encoder is available.');
+  }
+
   function base64ToBytes(value) {
     const compact = String(value || '').replace(/\s+/g, '');
     if (typeof atob === 'function') {
@@ -53,8 +65,17 @@
     throw new Error('No base64 decoder is available.');
   }
 
-  function base64ToUtf8(value) {
-    return new TextDecoder().decode(base64ToBytes(value));
+  function decodeUtf8Bytes(value, options = {}) {
+    const bytes = value instanceof Uint8Array ? value : new Uint8Array(value || []);
+    try {
+      return new TextDecoder('utf-8', { fatal: Boolean(options.fatal) }).decode(bytes);
+    } catch (error) {
+      throw new GitHubClientError('invalid_utf8', options.message || 'Repository text is not valid UTF-8 and cannot be modified safely.', { cause: error });
+    }
+  }
+
+  function base64ToUtf8(value, options = {}) {
+    return decodeUtf8Bytes(base64ToBytes(value), options);
   }
 
   async function sha256Hex(text) {
@@ -68,6 +89,27 @@
       return require('node:crypto').createHash('sha256').update(bytes).digest('hex');
     }
     throw new Error('SHA-256 is not available.');
+  }
+
+  async function sha256Bytes(value) {
+    const bytes = value instanceof Uint8Array ? value : new Uint8Array(value || []);
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    if (cryptoObject && cryptoObject.subtle) {
+      const digest = await cryptoObject.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
+    if (typeof require === 'function') {
+      return require('node:crypto').createHash('sha256').update(bytes).digest('hex');
+    }
+    throw new Error('SHA-256 is not available.');
+  }
+
+  function bytesEqual(left, right) {
+    const a = left instanceof Uint8Array ? left : new Uint8Array(left || []);
+    const b = right instanceof Uint8Array ? right : new Uint8Array(right || []);
+    if (a.byteLength !== b.byteLength) return false;
+    for (let index = 0; index < a.byteLength; index += 1) if (a[index] !== b[index]) return false;
+    return true;
   }
 
   function statusKind(status) {
@@ -335,6 +377,23 @@
       };
     }
 
+    async writeBytes({ path, bytes, baseSha = '', message }) {
+      const normalized = normalizeGitHubContentPath(path);
+      const value = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+      const body = {
+        message: String(message || `Update repository asset ${normalized}`),
+        content: bytesToBase64(value),
+        branch: this.branch
+      };
+      if (baseSha) body.sha = baseSha;
+      const payload = await this._request('PUT', this._url(normalized, false), body);
+      return {
+        path: normalizeGitHubContentPath(payload && payload.content ? payload.content.path : normalized),
+        sha: payload && payload.content ? payload.content.sha : '',
+        htmlUrl: payload && payload.content ? payload.content.html_url || '' : ''
+      };
+    }
+
     async saveVerified({ path, content, baseSha = '', message }) {
       const normalized = normalizeGitHubContentPath(path);
       let writeResult;
@@ -381,6 +440,41 @@
         recoveredAfterUnknownWrite: false
       };
     }
+
+    async saveBytesVerified({ path, bytes, baseSha = '', message }) {
+      const normalized = normalizeGitHubContentPath(path);
+      const expected = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+      let writeResult;
+      try {
+        writeResult = await this.writeBytes({ path: normalized, bytes: expected, baseSha, message });
+      } catch (error) {
+        if (!(error instanceof GitHubClientError) || error.kind !== 'network_unknown') throw error;
+        try {
+          const afterUnknown = await this.readBytes(normalized, { maxBytes: Math.max(expected.byteLength, 1) });
+          if (bytesEqual(afterUnknown.bytes, expected)) {
+            return { ...afterUnknown, verifiedHash: await sha256Bytes(expected), recoveredAfterUnknownWrite: true };
+          }
+        } catch (readError) { /* preserve unknown-write boundary */ }
+        throw error;
+      }
+      let readBack;
+      try {
+        readBack = await this.readBytes(normalized, { maxBytes: Math.max(expected.byteLength, 1) });
+      } catch (error) {
+        throw new GitHubClientError('verification_unknown', 'GitHub accepted the asset write, but byte read-back verification failed.', { writeResult, cause: error, status: error && error.status ? error.status : 0 });
+      }
+      if (!bytesEqual(readBack.bytes, expected)) {
+        throw new GitHubClientError('verification_mismatch', 'Remote asset bytes do not match the intended image.', { expectedHash: await sha256Bytes(expected), actualHash: await sha256Bytes(readBack.bytes) });
+      }
+      return {
+        path: readBack.path || writeResult.path,
+        sha: readBack.sha || writeResult.sha,
+        htmlUrl: readBack.htmlUrl || writeResult.htmlUrl,
+        size: readBack.size,
+        verifiedHash: await sha256Bytes(expected),
+        recoveredAfterUnknownWrite: false
+      };
+    }
   }
 
   return {
@@ -389,9 +483,13 @@
     createGmTransport,
     normalizeGitHubContentPath,
     utf8ToBase64,
+    bytesToBase64,
     base64ToUtf8,
+    decodeUtf8Bytes,
     base64ToBytes,
     sha256Hex,
+    sha256Bytes,
+    bytesEqual,
     statusKind
   };
 });

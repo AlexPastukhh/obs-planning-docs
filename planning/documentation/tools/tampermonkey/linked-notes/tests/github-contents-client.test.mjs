@@ -207,3 +207,38 @@ test('readBytes performs authenticated bounded binary fetch without placing toke
   assert.ok(calls.every((call) => !call.url.includes('secret')));
   assert.equal(calls[1].responseType, 'arraybuffer');
 });
+
+
+test('saveBytesVerified preserves exact binary bytes and verifies read-back', async () => {
+  const expected = Uint8Array.from([0, 255, 1, 2, 200]);
+  const calls = [];
+  const client = clientWith(async (request) => {
+    calls.push(request);
+    if (request.method === 'PUT') {
+      const body = JSON.parse(request.body);
+      assert.deepEqual([...api.base64ToBytes(body.content)], [...expected]);
+      return response(200, { content: { path: 'assets/a.png', sha: 'sha-new', html_url: 'https://example.test/a.png' } });
+    }
+    if (request.responseType === 'arraybuffer') return { status: 200, text: '', response: expected.buffer.slice(0) };
+    return response(200, { type: 'file', path: 'assets/a.png', name: 'a.png', size: expected.length, sha: 'sha-new', html_url: 'https://example.test/a.png' });
+  });
+  const result = await client.saveBytesVerified({ path: 'assets/a.png', bytes: expected, message: 'Add image' });
+  assert.equal(result.sha, 'sha-new');
+  assert.equal(result.verifiedHash, await api.sha256Bytes(expected));
+  assert.equal(calls.filter((call) => call.method === 'PUT').length, 1);
+});
+
+test('saveBytesVerified reports byte mismatch', async () => {
+  const client = clientWith(async (request) => {
+    if (request.method === 'PUT') return response(200, { content: { path: 'assets/a.png', sha: 'sha-new' } });
+    if (request.responseType === 'arraybuffer') return { status: 200, text: '', response: Uint8Array.from([9]).buffer };
+    return response(200, { type: 'file', path: 'assets/a.png', size: 1, sha: 'sha-new' });
+  });
+  await assert.rejects(() => client.saveBytesVerified({ path: 'assets/a.png', bytes: Uint8Array.from([1]) }), (error) => error.kind === 'verification_mismatch');
+});
+
+test('strict UTF-8 decoding rejects replacement-character mutation risk', () => {
+  const invalid = Uint8Array.from([0x66, 0x6f, 0x80, 0x6f]);
+  assert.throws(() => api.decodeUtf8Bytes(invalid, { fatal: true }), (error) => error && error.kind === 'invalid_utf8');
+  assert.equal(api.decodeUtf8Bytes(invalid), 'fo�o');
+});

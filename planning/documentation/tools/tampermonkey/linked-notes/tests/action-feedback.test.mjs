@@ -24,3 +24,11 @@ test('feedback replacement and dismissal preserve unrelated scopes', () => {
   assert.deepEqual(api.feedbackForScope(next, 'files').map((item) => item.id), ['b']);
   assert.deepEqual(api.dismissFeedback(next, 'b').map((item) => item.id), ['a']);
 });
+
+test('feedbackFromError carries contextual actions attached by the failing stage', () => {
+  const error = Object.assign(new Error('Target Markdown failed.'), {
+    feedbackActions: [{ id: 'retry-target-markdown', label: 'Retry target Markdown only' }]
+  });
+  const item = api.feedbackFromError(error, { id: 'transfer-failed', scope: 'notes' });
+  assert.deepEqual(item.actions, [{ id: 'retry-target-markdown', label: 'Retry target Markdown only', kind: 'button' }]);
+});

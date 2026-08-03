@@ -1,8 +1,8 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.22.0-repository-files-and-categories
-Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository Notes, file-viewer and category prototype.
+Doc version: v0.23.0-note-images-and-asset-transfer
+Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository Notes, image-asset transfer, file-viewer and category prototype.
 
 ## 1. Tracked scripts
 
@@ -41,6 +41,9 @@ planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.us
   keeps category UX groups local-only in separately revisioned target-scoped records with atomic per-category mutations, derives transitive memberships, reports path-aware malformed/broken/cycle states and rebuilds cache from GitHub;
   performs category create/update/assign/unassign only after explicit user actions with SHA protection and exact read-back verification;
   retains the existing verified Linked Note save/copy/recovery and remote reconciliation behavior;
+  supports local recoverable clipboard/file image insertion, explicit byte-verified repository asset save and portable Note-relative image links;
+  copies visible Note Markdown into a same-repository target with copied/reused target-owned assets and rewritten image paths;
+  preserves source Notes/assets, does not auto-download external images and reports non-atomic partial results explicitly;
   never runs local git, commit or push, and does not accept a production architecture.
 ```
 
@@ -159,6 +162,10 @@ Rules:
 - Shared target search is explicit and bounded; no background repository index is created.
 - Picker-created Note links persist in existing Note metadata and backlinks are derived locally.
 - Rich Markdown is sanitized derived HTML; repository images use authenticated byte reads and temporary object URLs without token disclosure.
+- Pending Note images use a separate local IndexedDB asset store; clipboard/file insertion does not write remotely until explicit verified Note save.
+- Binary repository image writes preserve exact bytes, safely reuse identical assets and never silently overwrite different-byte collisions.
+- Image-aware Note transfer copies visible title/body without quiet Note metadata, remains in the same owner/repository/branch and rewrites paths into a target-owned sibling `.assets` folder.
+- Source images are copied rather than moved; external images and orphan cleanup remain explicit non-automatic boundaries.
 - Contextual errors preserve the related form, Note draft and target selection.
 - Category-member validation uses bounded parent-directory listings without fetching member-file bodies; group updates mutate one category under a target-scoped lock so stale tabs do not replace unrelated groups.
 - A fresh or unmapped chat may display the global default workspace without creating a chat binding; a new-chat selection remains session-only and is cleared when any stable route appears, while only an explicit selection made on the stable chat is remembered.

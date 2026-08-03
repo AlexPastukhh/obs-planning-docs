@@ -120,6 +120,8 @@
         fileViewMode: 'rendered',
         noteRendered: null,
         fileRendered: null,
+        pendingAssets: [],
+        transferDraft: { targetPath: '', mode: 'create' },
         feedback: [],
         targetPicker: { open: false, mode: '', query: '', depth: '2', currentPath: '', entries: [], fileResults: [], noteResults: [], selected: [], truncated: false, summary: '' },
         categoryErrors: [],
@@ -419,6 +421,7 @@
         ${item.target ? `<code>${escapeHtml(item.target)}</code>` : ''}
         ${item.details ? `<details><summary>Details</summary><pre>${escapeHtml(item.details)}</pre></details>` : ''}
         ${(item.partialResults || []).length ? `<div class="partial-results">${item.partialResults.map((result) => `<div><strong>${escapeHtml(result.status)}</strong> · ${escapeHtml(result.target)}${result.message ? ` · ${escapeHtml(result.message)}` : ''}</div>`).join('')}</div>` : ''}
+        ${(item.actions || []).length ? `<div class="feedback-actions">${item.actions.map((action) => `<button class="${action.kind === 'primary' ? 'primary' : ''}" data-feedback-action="${escapeHtml(action.id)}">${escapeHtml(action.label)}</button>`).join('')}</div>` : ''}
       </section>`).join('');
       const renderProjection = (rendered) => rendered ? `<div class="rich-markdown" data-rich-root>${rendered.html || ''}</div>` : '<div class="empty">Rendered Markdown is not available yet.</div>';
       const breadcrumbs = (this.state.repositoryBreadcrumbs || []).map((item) => `<button data-browse-path="${escapeHtml(item.path)}" ${disabled}>${escapeHtml(item.label)}</button>`).join('<span>/</span>');
@@ -492,10 +495,20 @@
       const unavailableCategoryHtml = unavailableCategoryIds.map((id) => `<div class="category-choice unavailable"><strong>${escapeHtml(id)}</strong><span>Selected locally; unavailable until categories refresh succeeds.</span></div>`).join('');
       const noteCategoryHtml = `${availableCategoryHtml}${unavailableCategoryHtml}` || '<div class="empty">Refresh categories to assign them to this Note.</div>';
       const backlinksHtml = (this.state.noteBacklinks || []).map((relation) => `<button data-note-backlink="${escapeHtml(relation.sourceNoteId)}" ${disabled}>${escapeHtml(relation.label || relation.sourceNoteId)}</button>`).join('') || '<div class="empty">No managed backlinks.</div>';
+      const pendingAssetsHtml = (this.state.pendingAssets || []).map((asset) => `<div class="pending-asset-row">
+          <span>🖼️ <strong>${escapeHtml(asset.fileName || asset.originalName || asset.id)}</strong> · ${escapeHtml(asset.mimeType || '')} · ${escapeHtml(asset.size || 0)} bytes · ${escapeHtml(asset.state || 'pending')}</span>
+          ${asset.verifiedPath ? `<code>${escapeHtml(asset.verifiedPath)}</code>` : ''}
+          <button data-remove-pending-image="${escapeHtml(asset.id)}" ${disabled}>Remove</button>
+        </div>`).join('') || '<div class="empty">No locally staged images.</div>';
+      const transferDraft = this.state.transferDraft || { targetPath: '', targetDirectory: '', fileName: 'copied-note.md', mode: 'create', plan: null };
+      const transferPlan = transferDraft.plan || null;
+      const transferPlanHtml = transferPlan ? `<div class="transfer-plan"><div><strong>Source:</strong> <code>${escapeHtml(transferPlan.sourcePath || '')}</code></div><div><strong>Target:</strong> <code>${escapeHtml(transferPlan.targetPath || '')}</code> · ${escapeHtml(transferPlan.mode || '')} · ${escapeHtml(transferPlan.targetState || '')}</div>${(transferPlan.assets || []).map((asset) => `<div class="transfer-plan-row"><strong>${escapeHtml(asset.status || '')}</strong> · <code>${escapeHtml(asset.sourcePath || '')}</code> → <code>${escapeHtml(asset.targetPath || '')}</code></div>`).join('')}${(transferPlan.diagnostics || []).map((item) => `<div class="transfer-plan-row"><strong>${escapeHtml(item.status || '')}</strong> · ${escapeHtml(item.source || item.target || '')} · ${escapeHtml(item.message || '')}</div>`).join('')}</div>` : '<div class="hint">Choose the target, then prepare a read-only transfer preview before any repository write.</div>';
       const notesSurface = `
         <div class="editor-toolbar">
           <button class="primary" data-action="save-local" ${current && !busy ? '' : 'disabled'}>Save local</button>
           <button class="primary" data-action="save-remote" ${current && activeWorkspace && !busy ? '' : 'disabled'}>Save GitHub</button>
+          <button data-action="insert-image" ${current && !busy ? '' : 'disabled'}>Insert image</button>
+          <input data-role="image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
           <button data-note-view="edit" class="${this.state.noteViewMode === 'edit' ? 'active' : ''}" ${disabled}>Edit</button>
           <button data-note-view="preview" class="${this.state.noteViewMode === 'preview' ? 'active' : ''}" ${disabled}>Preview</button>
           <button data-note-view="split" class="${this.state.noteViewMode === 'split' ? 'active' : ''}" ${disabled}>Split</button>
@@ -513,12 +526,17 @@
           </div>
           ${remoteInfo}
           ${remoteSummary}
+          <section><h3>Images</h3><div class="pending-assets">${pendingAssetsHtml}</div><div class="hint">Paste an image into the editor or use Insert image. Images remain local until Save GitHub verifies the repository asset and Note.</div></section>
+          <section class="transfer-panel"><h3>Copy Note to Markdown with images</h3><div class="transfer-grid"><select data-role="transfer-mode" ${disabled}><option value="create" ${transferDraft.mode === 'create' ? 'selected' : ''}>Create new file</option><option value="append" ${transferDraft.mode === 'append' ? 'selected' : ''}>Append to existing file</option></select>${transferDraft.mode === 'create' ? `<input data-role="transfer-file-name" value="${escapeHtml(transferDraft.fileName || 'copied-note.md')}" placeholder="copied-note.md" ${disabled}>` : ''}<button data-action="choose-transfer-target" ${current && activeWorkspace && !busy ? '' : 'disabled'}>${transferDraft.mode === 'append' ? 'Choose existing Markdown' : 'Choose target folder'}</button></div><div class="target-preview"><strong>Selected target:</strong> <code>${escapeHtml(transferDraft.targetPath || 'not selected')}</code></div><div class="transfer-actions"><button data-action="prepare-transfer" ${current && activeWorkspace && transferDraft.targetPath && !busy ? '' : 'disabled'}>Prepare transfer preview</button><button class="primary" data-action="execute-transfer" ${current && activeWorkspace && transferPlan && transferPlan.ready && !busy ? '' : 'disabled'}>Execute reviewed transfer</button></div>${transferPlanHtml}<div class="hint">The first slice copies within the current repository/branch. Source Note and source images are never deleted.</div></section>
           <section><h3>Categories</h3><div class="category-choices">${noteCategoryHtml}</div><div class="hint">Selection is preserved locally; Save GitHub applies verified category-definition changes.</div></section>
           <section><h3>Managed links</h3><div class="links">${linksHtml}</div>
             <button data-action="choose-note-links" ${disabled}>Choose files or Notes</button>
           </section>
           <section><h3>Linked from</h3><div class="backlinks">${backlinksHtml}</div></section>` : '<div class="empty">Create or select a Note.</div>'}`;
       const picker = this.state.targetPicker || {};
+      const transferPicker = picker.mode === 'transfer-target';
+      const pickerTitle = transferPicker ? (picker.transferMode === 'append' ? 'Choose existing Markdown target' : 'Choose target folder') : 'Choose files or Notes';
+      const pickerActionLabel = transferPicker ? (picker.transferMode === 'append' ? 'Use selected Markdown' : 'Use current folder') : 'Use selected targets';
       const pickerItems = (picker.query ? picker.fileResults : picker.entries || []).map((entry) => {
         if (entry.type === 'dir') return `<button class="picker-row" data-picker-dir="${escapeHtml(entry.path)}" ${disabled}>📁 ${escapeHtml(entry.name || entry.path)}</button>`;
         const key = `file:${entry.path}`;
@@ -532,15 +550,15 @@
       }).join('') || '<div class="empty">No Note results.</div>';
       const pickerSelected = (picker.selected || []).map((item) => `<div class="selected-target"><span>${item.type === 'note' ? '📝' : '📄'} ${escapeHtml(item.label || item.name || item.path || item.noteId)}</span><button data-picker-remove="${escapeHtml(item.type)}:${escapeHtml(item.type === 'note' ? (item.noteId || item.path) : item.path)}" ${disabled}>Remove</button></div>`).join('') || '<div class="empty">Nothing selected.</div>';
       const pickerModal = picker.open ? `<div class="picker-backdrop"><section class="picker-modal" aria-modal="true" role="dialog" aria-label="Choose repository targets">
-        <div class="picker-header"><strong>Choose files or Notes</strong><button data-action="close-target-picker" ${disabled}>×</button></div>
+        <div class="picker-header"><strong>${escapeHtml(pickerTitle)}</strong><button data-action="close-target-picker" ${disabled}>×</button></div>
         ${this._feedbackForSurface('picker').map((item) => `<section class="feedback feedback-${escapeHtml(item.severity || 'error')}" tabindex="-1"><strong>${escapeHtml(item.title || 'Action failed')}</strong><div>${escapeHtml(item.message || '')}</div></section>`).join('')}
         <div class="picker-search"><input data-role="picker-query" value="${escapeHtml(picker.query || '')}" placeholder="Search by name"><select data-role="picker-depth"><option value="0" ${picker.depth === '0' ? 'selected' : ''}>Current folder</option><option value="1" ${picker.depth === '1' ? 'selected' : ''}>Depth 1</option><option value="2" ${picker.depth === '2' ? 'selected' : ''}>Depth 2</option><option value="3" ${picker.depth === '3' ? 'selected' : ''}>Depth 3</option><option value="5" ${picker.depth === '5' ? 'selected' : ''}>Depth 5</option><option value="entire" ${picker.depth === 'entire' ? 'selected' : ''}>Entire repository (bounded)</option></select><button data-action="picker-search" ${disabled}>Search</button></div>
-        <div class="picker-tabs"><button data-picker-tab="files" class="${picker.tab === 'files' ? 'active' : ''}">Files</button><button data-picker-tab="notes" class="${picker.tab === 'notes' ? 'active' : ''}">Notes</button><button data-picker-tab="selected" class="${picker.tab === 'selected' ? 'active' : ''}">Selected (${(picker.selected || []).length})</button></div>
-        <div class="picker-summary">${escapeHtml(picker.summary || picker.currentPath || '/')} ${picker.truncated ? ' · incomplete result' : ''}</div>
+        <div class="picker-tabs"><button data-picker-tab="files" class="${picker.tab === 'files' ? 'active' : ''}">Files</button>${transferPicker ? '' : `<button data-picker-tab="notes" class="${picker.tab === 'notes' ? 'active' : ''}">Notes</button>`}<button data-picker-tab="selected" class="${picker.tab === 'selected' ? 'active' : ''}">Selected (${(picker.selected || []).length})</button></div>
+        <div class="picker-summary">${escapeHtml(picker.summary || picker.currentPath || '/')} ${picker.truncated ? ' · incomplete result' : ''}</div>${transferPicker && picker.transferMode === 'create' ? `<div class="picker-search"><input data-role="picker-file-name" value="${escapeHtml(picker.fileName || 'copied-note.md')}" placeholder="copied-note.md"></div>` : ''}
         <div class="picker-content" data-picker-panel="files" ${picker.tab !== 'files' ? 'hidden' : ''}>${pickerItems}</div>
-        <div class="picker-content" data-picker-panel="notes" ${picker.tab !== 'notes' ? 'hidden' : ''}>${pickerNotes}</div>
+        ${transferPicker ? '' : `<div class="picker-content" data-picker-panel="notes" ${picker.tab !== 'notes' ? 'hidden' : ''}>${pickerNotes}</div>`}
         <div class="picker-content" data-picker-panel="selected" ${picker.tab !== 'selected' ? 'hidden' : ''}>${pickerSelected}</div>
-        <div class="picker-actions"><button class="primary" data-action="apply-target-picker" ${disabled}>Use selected targets</button><button data-action="close-target-picker" ${disabled}>Cancel</button></div>
+        <div class="picker-actions"><button class="primary" data-action="apply-target-picker" ${disabled}>${escapeHtml(pickerActionLabel)}</button><button data-action="close-target-picker" ${disabled}>Cancel</button></div>
       </section></div>` : '';
       const activeSurface = surface === 'files' ? fileSurface : surface === 'categories' ? categorySurface : notesSurface;
 
@@ -608,6 +626,7 @@
           .feedback-info { border-color: #477ca9; background: #172d40; color: #d4ebff; }
           .feedback-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 15px; }
           .feedback code { display: block; margin-top: 6px; color: inherit; word-break: break-word; }
+          .feedback-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
           .partial-results { display: grid; gap: 4px; margin-top: 8px; }
           .rich-markdown { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: #0f1217; overflow-wrap: anywhere; min-height: 120px; }
           .rich-markdown h1, .rich-markdown h2, .rich-markdown h3, .rich-markdown h4 { margin: 1em 0 .45em; }
@@ -625,6 +644,13 @@
           .category-choice input { width: auto; }
           .selected-targets, .backlinks { display: grid; gap: 6px; }
           .selected-target { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface-2); }
+          .pending-assets { display: grid; gap: 6px; }
+          .pending-asset-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 7px; align-items: center; border: 1px solid var(--border); border-radius: 7px; padding: 7px; background: var(--surface-2); }
+          .pending-asset-row code { overflow: hidden; text-overflow: ellipsis; }
+          .transfer-grid { display: grid; grid-template-columns: 180px minmax(0,1fr) auto; gap: 7px; }
+          .transfer-actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 7px 0; }
+          .transfer-plan { display: grid; gap: 5px; margin-top: 7px; padding: 7px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-2); }
+          .transfer-plan-row { overflow-wrap: anywhere; }
           .picker-backdrop { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.72); }
           .main { position: relative; }
           .picker-modal { width: min(780px, 100%); max-height: 92%; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 16px 45px rgba(0,0,0,.6); }
@@ -637,7 +663,7 @@
           .picker-row input { width: auto; }
           .picker-row small { color: var(--muted); margin-left: auto; overflow: hidden; text-overflow: ellipsis; }
           .workspace-manager-panel { margin-top: 10px; }
-          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid, .picker-search, .note-mode-split { grid-template-columns: 1fr; } }
+          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid, .picker-search, .note-mode-split, .transfer-grid, .pending-asset-row { grid-template-columns: 1fr; } }
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Docs</button>
         <section class="panel" aria-label="Repository Documentation Workspace Prototype" aria-busy="${busy ? 'true' : 'false'}">
@@ -734,6 +760,23 @@
       if (saveLocal) saveLocal.onclick = () => this._call('onSaveLocal', this._draftFromForm());
       const saveRemote = this.shadow.querySelector('[data-action="save-remote"]');
       if (saveRemote) saveRemote.onclick = () => this._call('onSaveRemote', this._draftFromForm());
+      const imageInput = this.shadow.querySelector('[data-role="image-file"]');
+      const insertImage = this.shadow.querySelector('[data-action="insert-image"]');
+      if (insertImage && imageInput) insertImage.onclick = () => imageInput.click();
+      if (imageInput) imageInput.onchange = () => { const file = imageInput.files && imageInput.files[0]; const editor = this.shadow.querySelector('[data-role="body"]'); if (file) this._call('onInsertImage', this._draftFromForm(), { file, cursorStart: editor ? editor.selectionStart : 0, cursorEnd: editor ? editor.selectionEnd : 0 }); imageInput.value = ''; };
+      const bodyEditor = this.shadow.querySelector('[data-role="body"]');
+      if (bodyEditor) bodyEditor.onpaste = (event) => { const items = Array.from(event.clipboardData && event.clipboardData.items || []); const image = items.find((item) => String(item.type || '').startsWith('image/')); if (!image) return; const file = image.getAsFile(); if (!file) return; event.preventDefault(); this._call('onInsertImage', this._draftFromForm(), { file, cursorStart: bodyEditor.selectionStart, cursorEnd: bodyEditor.selectionEnd }); };
+      this.shadow.querySelectorAll('[data-remove-pending-image]').forEach((button) => { button.onclick = () => this._call('onRemovePendingImage', this._draftFromForm(), button.dataset.removePendingImage); });
+      const transferMode = this.shadow.querySelector('[data-role="transfer-mode"]');
+      const transferFileName = this.shadow.querySelector('[data-role="transfer-file-name"]');
+      if (transferMode) transferMode.onchange = () => this._call('onUpdateTransferDraft', { mode: transferMode.value, fileName: transferFileName ? transferFileName.value : ((this.state.transferDraft || {}).fileName || 'copied-note.md') });
+      if (transferFileName) transferFileName.onchange = () => this._call('onUpdateTransferDraft', { mode: transferMode ? transferMode.value : 'create', fileName: transferFileName.value });
+      const chooseTransferTarget = this.shadow.querySelector('[data-action="choose-transfer-target"]');
+      if (chooseTransferTarget) chooseTransferTarget.onclick = () => this._call('onOpenTargetPicker', { mode: 'transfer-target', transferMode: (this.state.transferDraft || {}).mode || 'create', fileName: transferFileName ? transferFileName.value : ((this.state.transferDraft || {}).fileName || 'copied-note.md') });
+      const prepareTransfer = this.shadow.querySelector('[data-action="prepare-transfer"]');
+      if (prepareTransfer) prepareTransfer.onclick = () => this._call('onPrepareTransfer', this._draftFromForm(), this.state.transferDraft || {});
+      const executeTransfer = this.shadow.querySelector('[data-action="execute-transfer"]');
+      if (executeTransfer) executeTransfer.onclick = () => this._call('onExecuteTransfer', this._draftFromForm());
       const copyRemote = this.shadow.querySelector('[data-action="copy-remote"]');
       if (copyRemote) copyRemote.onclick = () => this._call('onCopyRemote', this._draftFromForm());
       const recheckRemote = this.shadow.querySelector('[data-action="recheck-remote"]');
@@ -779,6 +822,7 @@
       const chooseCategoryTargets = this.shadow.querySelector('[data-action="choose-category-targets"]');
       if (chooseCategoryTargets) chooseCategoryTargets.onclick = () => this._call('onOpenTargetPicker', { mode: 'category-members', initialTargets: this._categoryFromForm().selectedTargets || [] });
       this.shadow.querySelectorAll('[data-dismiss-feedback]').forEach((button) => { button.onclick = () => this._call('onDismissFeedback', button.dataset.dismissFeedback); });
+      this.shadow.querySelectorAll('[data-feedback-action]').forEach((button) => { button.onclick = () => this._call('onFeedbackAction', button.dataset.feedbackAction); });
       this.shadow.querySelectorAll('[data-note-backlink]').forEach((button) => { button.onclick = () => this._withDraft('onSelect', button.dataset.noteBacklink); });
       this.shadow.querySelectorAll('[data-category-note-open]').forEach((button) => { button.onclick = () => this._withDraft('onSelect', button.dataset.categoryNoteOpen); });
       const removeCategoryTarget = (identity) => {
@@ -797,7 +841,7 @@
       this.shadow.querySelectorAll('[data-picker-target]').forEach((input) => { input.onchange = () => this._call('onToggleTargetPicker', input.dataset.pickerNoteId ? { type: 'note', noteId: input.dataset.pickerNoteId, path: input.dataset.pickerPath, name: input.dataset.pickerName } : { type: 'file', path: input.dataset.pickerPath, name: input.dataset.pickerName }); });
       this.shadow.querySelectorAll('[data-picker-remove]').forEach((button) => { button.onclick = () => { const identity = button.dataset.pickerRemove; const target = (this.state.targetPicker.selected || []).find((item) => `${item.type}:${item.type === 'note' ? (item.noteId || item.path) : item.path}` === identity); if (target) this._call('onToggleTargetPicker', target); }; });
       const applyPicker = this.shadow.querySelector('[data-action="apply-target-picker"]');
-      if (applyPicker) applyPicker.onclick = () => this._call('onApplyTargetPicker');
+      if (applyPicker) applyPicker.onclick = () => { const fileName = this.shadow.querySelector('[data-role="picker-file-name"]'); return this._call('onApplyTargetPicker', { fileName: fileName ? fileName.value : '' }); };
       this.shadow.querySelectorAll('[data-picker-tab]').forEach((button) => { button.onclick = () => this._call('onSetTargetPickerTab', button.dataset.pickerTab); });
       const renderedState = surface === 'files' ? this.state.fileRendered : this.state.noteRendered;
       if (renderedState) {

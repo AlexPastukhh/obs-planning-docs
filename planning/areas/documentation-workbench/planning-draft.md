@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Draft
 
 Status: active current project-local Planning Draft / Batch 3B local Scenario migration
-Doc version: v1.4.0-rich-markdown-note-categories-and-target-picker
+Doc version: v1.5.0-note-images-and-asset-transfer
 Purpose: organize the reviewed Documentation Workbench Planning Items around the selected repository-native direction without creating a second item-body owner.
 
 Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
@@ -10,7 +10,7 @@ Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
 
 | Field | Value |
 |---|---|
-| Planning direction | Repository-native documentation links, affected-use review, AI transfer, categorized linked Notes, repository search and rich Markdown views |
+| Planning direction | Repository-native documentation links, affected-use review, categorized image-bearing Notes, repository search, rich Markdown and image-aware repository transfer |
 | Status | selected current behavior / implementation candidates not selected |
 | Source register | [`planning-item-register.md`](planning-item-register.md) |
 | Historical inactive items | [`retired-planning-items.md`](retired-planning-items.md) |
@@ -30,6 +30,7 @@ bounded non-mutating AI transfer copies;
 durable linked Notes;
 read-only in-app repository file viewing with exact GitHub navigation;
 repository-backed file categories with explicit and implied memberships;
+repository-owned Note images and image-aware Markdown transfer;
 small independent helpers only where their value is proven.
 ```
 
@@ -49,16 +50,18 @@ Repository Markdown remains understandable and editable without a helper.
 | AC-08 | A remote Note save is not reported successful until the intended content is verified by reading it back. | implementation candidate / supported by supplied-script evidence | `ITEM-124`, pending Notes-widget Implementation Idea |
 | AC-09 | No custom editor, generic object runtime, App Memory or Semantic Home is required by the baseline. | accepted current | item reconciliation |
 | AC-10 | Retired and deferred meanings remain traceable. | accepted current | current and retired registers |
-| AC-11 | A user can browse one repository directory at a time, read a supported file inside the helper and open the exact file on GitHub. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-126`, `ITEM-114` |
-| AC-12 | A user can create durable category definitions with descriptions, assign files and reconstruct definitions/memberships from repository Markdown. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-97`, `ITEM-128`, `ITEM-23B` |
-| AC-13 | Opening a category shows concrete files and distinguishes explicit from implied membership. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-118`, `ITEM-127` |
+| AC-11 | A user can browse one repository directory at a time, read a supported file inside the helper and open the exact file on GitHub. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-126`, `ITEM-114` |
+| AC-12 | A user can create durable category definitions with descriptions, assign files and reconstruct definitions/memberships from repository Markdown. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-97`, `ITEM-128`, `ITEM-23B` |
+| AC-13 | Opening a category shows concrete files and distinguishes explicit from implied membership. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-118`, `ITEM-127` |
 | AC-14 | Browsing and category refresh are read-only; category writes use conflict protection and exact read-back verification. | selected behavior / supported by automated prototype evidence | `ITEM-97`, `ITEM-126`, `ITEM-128` |
-| AC-15 | Categories can be assigned to files and verified Linked Notes, including during Note creation/editing and category creation with multiple selected targets. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-97`, `ITEM-124`, `ITEM-128` |
-| AC-16 | A shared target picker navigates/searches files and Notes by name, with bounded selectable file-search depth and persistent multiple selection. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-131`, `ITEM-124`, `ITEM-126` |
-| AC-17 | Markdown files and Notes have rich sanitized views while literal Markdown remains available and canonical. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-124`, `ITEM-126`, `ITEM-132` |
+| AC-15 | Categories can be assigned to files and verified Linked Notes, including during Note creation/editing and category creation with multiple selected targets. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-97`, `ITEM-124`, `ITEM-128` |
+| AC-16 | A shared target picker navigates/searches files and Notes by name, with bounded selectable file-search depth and persistent multiple selection. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-131`, `ITEM-124`, `ITEM-126` |
+| AC-17 | Markdown files and Notes have rich sanitized views while literal Markdown remains available and canonical. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-124`, `ITEM-126`, `ITEM-132` |
 | AC-18 | Repository-relative images and allowed `img` elements load through authenticated GitHub reads without exposing the token. | confirmed requirement / supported by automated evidence | `ITEM-132` |
-| AC-19 | Failed actions display prominent contextual errors and preserve forms, Note text and selected targets. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-130` |
-| AC-20 | Picker-created Note relations can be rebuilt from Note metadata and provide derived backlinks without target-side writes. | confirmed requirement / supported by `0.5.1-prototype` | `ITEM-124`, `ITEM-118`, `ITEM-133` |
+| AC-19 | Failed actions display prominent contextual errors and preserve forms, Note text and selected targets. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-130` |
+| AC-20 | Picker-created Note relations can be rebuilt from Note metadata and provide derived backlinks without target-side writes. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-124`, `ITEM-118`, `ITEM-133` |
+| AC-21 | A user can paste or choose a supported image while editing a Note, preserve it as recoverable pending state, and save it as a verified repository asset referenced by portable Markdown. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-124`, `ITEM-132` |
+| AC-22 | A verified Note can be copied into another same-repository Markdown file with repository images copied or safely reused and all relative image destinations rewritten and verified. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-134`, `ITEM-34B`, `ITEM-132` |
 
 ## 4. Boundaries And Non-Goals
 
@@ -70,7 +73,8 @@ Repository Markdown remains understandable and editable without a helper.
 - ordinary Markdown/Git/GitHub/local-editor workflow;
 - stable file/anchored-fragment/Note links;
 - optional explicit review-on-change and include meaning;
-- durable linked Notes;
+- durable linked Notes, including explicitly inserted repository image assets;
+- image-aware same-repository Note-to-Markdown transfer;
 - read-only repository file browsing and exact GitHub links;
 - durable file-category definitions, category views and explicit/implicit membership;
 - proportional small-tool and prototype ideas;
@@ -92,7 +96,10 @@ Repository Markdown remains understandable and editable without a helper.
 - arbitrary repository-file editing or universal binary rendering;
 - recursive background repository indexing;
 - selected file-local category marker syntax;
-- category rename/delete and automatic link repair.
+- category rename/delete and automatic link repair;
+- automatic external-image import;
+- destructive image move or orphan cleanup;
+- cross-repository image-aware transfer in the first bounded prototype.
 
 These exclusions do not erase deferred historical ideas.
 
@@ -116,7 +123,7 @@ SHA-aware retry/conflict handling.
 
 That script does not yet prove a general Notes workspace, GitHub document picker, stable repository-fragment selection, Note-to-Note linking, remote Notes indexing or an accepted security boundary.
 
-Current `0.5.1-prototype` implementation evidence retains the `0.4.2` workspace isolation, verified Note/category writes, repository browsing and file-category behavior, and adds typed file/Note category definitions, Note category intent during create/edit, multi-target category creation, a shared file/Note target picker, bounded file-name/depth search, managed Note relation recovery/backlinks, rich Markdown source/rendered modes, authenticated repository images including allowlisted `<img>`, and prominent contextual error/form recovery. Category definitions remain the sole selected prototype owner of category membership; Note metadata owns only picker-created managed links. Rendered HTML, backlinks, search results and local caches remain derived. Automated tests do not replace pending browser and real-GitHub acceptance.
+Current `0.6.4-prototype` implementation evidence retains the `0.5.1` workspace isolation, verified Note/category writes, target picker, rich Markdown and category behavior, and adds recoverable pending Note images, clipboard/file insertion, byte-preserving verified repository-asset writes, same-repository image-aware Note-to-Markdown transfer, full-plan target-path reservation, source-image freshness checks, raw code-like HTML exclusion, contextual retry actions and exact read-only recovery after unknown Markdown writes. Source Notes and source images are preserved; external images are not downloaded automatically; target assets are copied or safely reused and relative destinations are rewritten. Category definitions remain the sole selected prototype owner of category membership; Note metadata owns only picker-created managed links. Rendered HTML, backlinks, pending previews, search results and local caches remain derived. Automated tests do not replace pending browser and real-GitHub acceptance.
 
 The former detailed Scenario workspace is no longer selected. Its useful current meaning is represented below and by current Planning Items/workflow owners. The complete project-local `scenarios/**` workspace is removed; Git history preserves its former detail.
 
@@ -132,6 +139,7 @@ The former reference-link experiment is removed without a replacement owner. Sta
 | Early delivery | `ITEM-100` | select one small useful tool before broad architecture |
 | AI transfer | `ITEM-107` | non-mutating bounded expansion |
 | Linked Notes | `ITEM-124`, `ITEM-130`, `ITEM-131`, `ITEM-133` | durable Notes, target selection, recoverable links and contextual failure behavior |
+| Image-aware repository transfer | `ITEM-134`, `ITEM-34B`, `ITEM-132` | copy visible Note Markdown with verified repository assets and rewritten image paths |
 | Repository file viewer | `ITEM-126`, `ITEM-114`, `ITEM-131`, `ITEM-132` | bounded search, source/rich view, exact targets and authorized images |
 | Repository file and Note categories | `ITEM-97`, `ITEM-118`, `ITEM-127` | durable typed memberships, category views and grouping/implication semantics |
 | Category and rendering implementation ideas | `ITEM-128`, `ITEM-129`, `ITEM-132`, `ITEM-133` | selected definition, renderer and relation-metadata prototypes; deferred file-local metadata |
@@ -144,7 +152,7 @@ The accepted repository-file/category transformation is now represented canonica
 
 ## 7. Key Scenarios
 
-The five Scenarios below are current Key Scenarios because they own core value, differentiation or material implementation/validation risk. They are fully described inline so separate project-local Scenario files are unnecessary.
+The seven Scenarios below are current Key Scenarios because they own core value, differentiation or material implementation/validation risk. They are fully described inline so separate project-local Scenario files are unnecessary.
 
 ### 7.1 Create And Navigate Stable File/Fragment Links
 
@@ -552,6 +560,41 @@ The five Scenarios below are current Key Scenarios because they own core value, 
 
 **Planning Items:** `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-130`, `ITEM-131`, `ITEM-132`, `ITEM-133`.
 
+
+### 7.7 Insert Note Images And Copy A Note With Its Assets
+
+**Why key:** image-bearing Notes are not portable when the Markdown moves but its image files do not. Image insertion and transfer therefore require explicit asset ownership, path rewriting, verification and partial-result behavior.
+
+**Actor/context:** a user pastes or selects an image while editing a Note, or copies a verified repository-backed Note into another Markdown file in the same repository and branch.
+
+**Goal:** save inserted images as ordinary repository files and copy a Note together with repository-backed images so the resulting target Markdown renders without broken image destinations.
+
+**Observable result:** pending images survive local failure/reload, explicit Note save verifies both image bytes and final Markdown, and image-aware transfer copies or reuses assets under a target-owned asset folder, rewrites destinations and verifies the target file.
+
+**Main flow:**
+
+1. Insert a supported image by clipboard or file selection.
+2. Keep bytes, alt text and insertion position as local pending state without a remote write.
+3. On explicit Note save, validate the exact Note repository context and destination paths.
+4. Create or safely reuse repository image assets and verify their bytes.
+5. Replace pending references with portable repository-relative Markdown and verify the Note.
+6. For transfer, choose a target Markdown path and create/append mode in the same owner/repository/branch.
+7. Discover repository-backed Markdown images and allowlisted `img` sources in the visible Note content.
+8. Copy or reuse assets in `<target-name>.assets/`, rewrite all relative destinations and verify the target Markdown.
+9. Report complete or explicit partial state without deleting source files or pretending multi-file atomicity.
+
+**Invariants:**
+
+- source Note and source images are not deleted;
+- external images are preserved but not downloaded automatically;
+- token, object URLs and local machine paths never enter repository Markdown;
+- unknown destination files are never overwritten silently;
+- successful image writes are reused after a later Markdown conflict rather than blindly duplicated or rolled back;
+- transfer excludes quiet Linked Note metadata and copies visible title/body only;
+- every remote write is explicit, conflict-aware and read-back verified.
+
+**Planning Items:** `ITEM-124`, `ITEM-134`, `ITEM-132`, `ITEM-130`, `ITEM-34B`, `ITEM-114`.
+
 ## 8. Other Scenarios — Optional Summaries
 
 | Scenario | Actor/context | Goal | Observable result | Related items | Depth |
@@ -578,11 +621,13 @@ This table is the required current cross-view structure inside this Planning Dra
 | Read/reconcile repository Notes | explicit refresh makes valid repository-only Notes and external changes visible without losing local work | bounded read-only Notes-location scan + stable-id/base comparison | discovery bounds; duplicate identity; stale snapshot; no background write | supported by `0.3.0-prototype`; browser/remote acceptance pending |
 | Save Note remotely | explicit write followed by read-back verification | GitHub Contents API + SHA-aware update | token scope/storage; conflicts; unknown network result | partially supported by supplied-script evidence |
 | Browse Notes | list/search/index reaches concrete Notes | local derived index or GitHub-derived index | stale cache; one-file/shared-file tradeoff | prototype evidence; final indexing open |
-| Browse repository files | direct folders and supported files open read-only with exact GitHub navigation | Contents API directory reads + bounded preview | binary/large files; private access; no background reads | supported by `0.5.1-prototype`; browser acceptance pending |
-| Refresh category definitions | repository Markdown reconstructs definitions and memberships | category codec + workspace cache/index | malformed/duplicate/broken/cycle states | supported by `0.5.1-prototype`; remote acceptance pending |
+| Browse repository files | direct folders and supported files open read-only with exact GitHub navigation | Contents API directory reads + bounded preview | binary/large files; private access; no background reads | supported by `0.6.4-prototype`; browser acceptance pending |
+| Refresh category definitions | repository Markdown reconstructs definitions and memberships | category codec + workspace cache/index | malformed/duplicate/broken/cycle states | supported by `0.6.4-prototype`; remote acceptance pending |
 | Create/edit category | description and implication links persist durably | verified category definition write | stale SHA; uncertain network result; syntax evolution | supported by automated prototype evidence |
 | Assign/unassign file | category definition owns portable file link | relative-link generation + verified update | moved files; broken links; rename/delete | supported by automated prototype evidence |
-| Open category | explicit and implied files are concrete navigable results | derived category index and view | transitive scope and provenance clarity | supported by `0.5.1-prototype` |
+| Open category | explicit and implied files are concrete navigable results | derived category index and view | transitive scope and provenance clarity | supported by `0.6.4-prototype` |
+| Insert image into Note | clipboard/file image becomes pending local state and then a portable verified repository asset | pending asset store + binary Contents API verification + Note rewrite | MIME/size, reload recovery, partial asset/Note failure | supported by `0.6.4-prototype`; browser/remote acceptance pending |
+| Copy Note with images | visible Note Markdown and repository images become a verified target document and target-owned assets | transfer planner + collision-safe asset writer + rewritten relative paths | non-atomic writes, collisions, missing/external images, target SHA conflict | supported by `0.6.4-prototype`; browser/remote acceptance pending |
 | Repository diff review | durable Markdown changes remain reviewable | normal Git working tree/package flow | exact base and permission boundary | existing accepted workflow |
 
 ## 10. Existing Solutions And Alternatives
@@ -609,6 +654,8 @@ This table is the required current cross-view structure inside this Planning Dra
 | Tampermonkey Linked Notes And GitHub Widget | `ITEM-124` | Working / Needs Browser And Remote Acceptance | create/open/edit linked Notes; explicit repository refresh and safe reconciliation; verified GitHub persistence; file/anchor/Note navigation |
 | Repository Category Definition Markdown | `ITEM-97`, `ITEM-118`, `ITEM-127`; `ITEM-128` | selected bounded prototype | create/edit definitions, rebuild cache, explicit/implied views, conflicts and cycles |
 | File-Local Category Metadata | `ITEM-97`; `ITEM-129` | deferred | prove value and select precedence without creating duplicate truth |
+| Pending Note Images And Verified Asset Writes | `ITEM-124` | selected bounded prototype | clipboard/file insertion, IndexedDB recovery, byte-exact GitHub save and Note read-back |
+| Image-Aware Repository Markdown Transfer | `ITEM-134` | selected bounded prototype | same-repository create/append, asset copy/reuse, path rewrite, conflict and partial-result evidence |
 
 ### Supplied userscript evidence
 
@@ -625,7 +672,7 @@ The supplied ChatGPT Chats History userscript is an example and evidence source,
 
 It does not accept the choice to extend that script or prove the full Notes scenario.
 
-Current `0.5.1-prototype` evidence additionally covers explicit GET-only Notes refresh, repository directory browsing, read-only text preview, Note-bound repository context, exact GitHub URLs, category definition round trip, cache rebuild, explicit/implied memberships, local groups, broken/cycle diagnostics and verified category writes. Automated tests do not replace the pending browser and real-GitHub run.
+Current `0.6.4-prototype` evidence additionally covers explicit GET-only Notes refresh, repository browsing/search, rich Markdown, category definitions, managed relations, recoverable pending image insertion, byte-verified repository image writes and same-repository image-aware Note transfer. Automated tests do not replace the pending browser and real-GitHub run.
 
 ## 12. Questions, Risks And Decisions
 
@@ -640,6 +687,8 @@ Current `0.5.1-prototype` evidence additionally covers explicit GET-only Notes r
 | 5 | How are semantic implications and local UI groups presented? | keep them separate and label explicit versus derived membership |
 | 6 | How is the GitHub token handled? | local-only fine-grained least-privilege credential; never repository content |
 | 7 | Which remaining helper is implemented next? | require an independently useful acceptance result before expanding the application |
+| 8 | Should image-aware transfer later support another repository or branch? | keep the first bounded prototype in the exact source owner/repository/branch |
+| 9 | Should orphan assets be removed automatically after partial failure? | never delete automatically; expose a cleanup candidate separately |
 
 ### Risks
 
@@ -656,7 +705,9 @@ Current `0.5.1-prototype` evidence additionally covers explicit GET-only Notes r
 - category definitions may become a second source of truth if file-local metadata is later added without a precedence rule;
 - category implication cycles or broken links may make derived membership incomplete;
 - broad repository browsing may create excessive API calls if it silently becomes recursive;
-- the userscript may expand beyond a maintainable narrow helper before browser evidence is collected.
+- the userscript may expand beyond a maintainable narrow helper before browser evidence is collected;
+- a multi-file image save or transfer can leave verified assets before the final Markdown write succeeds;
+- copied assets can become redundant because automatic orphan cleanup is intentionally excluded.
 
 ### Decisions
 
@@ -667,10 +718,12 @@ Current `0.5.1-prototype` evidence additionally covers explicit GET-only Notes r
 - Existing app-heavy architecture remains deferred, not silently erased.
 - Repository Markdown remains durable truth.
 - Notes are an independently useful behavior/workflow.
+- Repository-owned image insertion is part of Note authoring, while Note-to-Markdown asset transfer is a separate independently traversable workflow.
+- Image transfer copies rather than moves source assets, is same-repository/branch in the first prototype and does not auto-download external images.
 - Explicit repository reading and safe local/remote reconciliation are required Note-workflow behavior; exact scan depth and resource limits remain implementation choices.
 - No specific Notes storage layout or credential design is accepted by this Draft alone.
 - Repository file viewing and repository-backed file categories are accepted requirements.
-- `ITEM-128` is selected only as the bounded `0.5.1-prototype` implementation idea; it is not final production architecture.
+- `ITEM-128` is selected only as the bounded `0.6.4-prototype` implementation idea; it is not final production architecture.
 - Category definitions own prototype explicit membership; `ITEM-129` file-local category metadata remains deferred.
 - Category groups are local UI organization; category implications are repository-backed classification relations.
 
@@ -680,13 +733,13 @@ Current `0.5.1-prototype` evidence additionally covers explicit GET-only Notes r
 |---|---|---|---|
 | Planning Items | yes | current register with accepted file/category transformations | complete canonical meanings and provenance |
 | Planning Draft | yes | this file | one high-level coordination owner |
-| Key Scenarios | complete inline | five sections above | sufficient current behavior/risk depth |
+| Key Scenarios | complete inline | seven sections above | sufficient current behavior/risk depth |
 | Other Scenarios | optional summaries | section 8 | avoid unnecessary deep workspace |
 | Full Picture Matrix | yes | section 9 | required behavior/implementation/validation link view |
 | Detailed project-local Scenario/DATA/Behavior | no | removed; Git history preserves prior files | coordination cost not justified |
 | Reusable SDS profile | available but inactive | reusable profile | can be selected for another project/need |
 | Domain | no | none | no separate model needed yet |
-| Slice | prototype only | Linked Notes `0.5.1-prototype` | evidence-producing implementation; production slice not selected |
+| Slice | prototype only | Linked Notes `0.6.4-prototype` | evidence-producing implementation; production slice not selected |
 | Prototype detail | only for selected helper | current item/Draft questions or later separate artifact | evidence before architecture |
 
 ## 14. Scenario Coverage Audit Result

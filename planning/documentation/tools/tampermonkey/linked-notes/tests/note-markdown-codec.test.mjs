@@ -54,3 +54,8 @@ test('rejects non-linked-note Markdown and invalid body length', () => {
   const invalid = '<!-- obs-linked-note:v1 {"schemaVersion":1,"id":"x","title":"","bodyLength":99,"links":[],"extra":{}} -->\nbody\n';
   assert.throws(() => codec.decodeNoteMarkdown(invalid), /bodyLength/);
 });
+
+
+test('remote encoding rejects unresolved pending image references', () => {
+  assert.throws(() => codec.encodeNoteMarkdown({ id: 'note-pending', title: '', body: '![P](obs-pending-image:x)', links: [] }), /pending image/i);
+});

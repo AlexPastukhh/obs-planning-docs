@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.5.1-prototype
-// @description  Repository Notes, rich Markdown, target picking, bounded search and GitHub-backed file/Note categories with verified remote actions.
+// @version      0.6.4-prototype
+// @description  Repository Notes with image insertion, image-aware Markdown transfer, rich Markdown, bounded search and verified GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -61,6 +61,7 @@
       severity: FEEDBACK_SEVERITIES.ERROR,
       message: input.message || value.message || 'Unknown error.',
       details: input.details || text(value.kind || value.name || ''),
+      actions: input.actions || value.feedbackActions || [],
       partialResults: input.partialResults || value.partialResults || []
     });
   }
@@ -421,6 +422,196 @@
   };
 });
 
+/* src/note-image-assets.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const PENDING_IMAGE_SCHEME = 'obs-pending-image:';
+  const DEFAULT_MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+  const MIME_EXTENSIONS = Object.freeze({
+    'image/png': '.png',
+    'image/jpeg': '.jpg',
+    'image/webp': '.webp',
+    'image/gif': '.gif'
+  });
+
+  function createAssetId() {
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    const value = cryptoObject && typeof cryptoObject.randomUUID === 'function'
+      ? cryptoObject.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+    return `asset-${value}`;
+  }
+
+  function toUint8Array(value) {
+    if (value instanceof Uint8Array) return new Uint8Array(value);
+    if (value instanceof ArrayBuffer) return new Uint8Array(value.slice(0));
+    if (ArrayBuffer.isView(value)) return new Uint8Array(value.buffer.slice(value.byteOffset, value.byteOffset + value.byteLength));
+    if (Array.isArray(value)) return Uint8Array.from(value);
+    throw new TypeError('Image bytes must be an ArrayBuffer or Uint8Array.');
+  }
+
+  function sanitizeFileStem(value) {
+    const raw = String(value || 'image')
+      .normalize('NFKC')
+      .replace(/[\\/?#\u0000-\u001f\u007f]+/g, '-')
+      .replace(/\s+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 80);
+    return raw || 'image';
+  }
+
+  function mimeTypeForImagePath(path) {
+    const value = String(path || '').toLowerCase().split(/[?#]/, 1)[0];
+    if (value.endsWith('.png')) return 'image/png';
+    if (value.endsWith('.jpg') || value.endsWith('.jpeg')) return 'image/jpeg';
+    if (value.endsWith('.webp')) return 'image/webp';
+    if (value.endsWith('.gif')) return 'image/gif';
+    return '';
+  }
+
+  function fileNameForImage(name, mimeType) {
+    const type = String(mimeType || '').toLowerCase();
+    const extension = MIME_EXTENSIONS[type];
+    if (!extension) throw new Error(`Unsupported image type: ${type || '<empty>'}.`);
+    const source = String(name || '').replace(/\\/g, '/');
+    const leaf = source.slice(source.lastIndexOf('/') + 1);
+    const dot = leaf.lastIndexOf('.');
+    const stem = sanitizeFileStem(dot > 0 ? leaf.slice(0, dot) : leaf);
+    return `${stem}${extension}`;
+  }
+
+  function matchesImageSignature(bytes, mimeType) {
+    const value = bytes instanceof Uint8Array ? bytes : toUint8Array(bytes);
+    const type = String(mimeType || '').toLowerCase();
+    if (type === 'image/png') return value.length >= 8 && [137, 80, 78, 71, 13, 10, 26, 10].every((byte, index) => value[index] === byte);
+    if (type === 'image/jpeg') return value.length >= 3 && value[0] === 0xff && value[1] === 0xd8 && value[2] === 0xff;
+    if (type === 'image/gif') {
+      if (value.length < 6) return false;
+      const header = String.fromCharCode(...value.subarray(0, 6));
+      return header === 'GIF87a' || header === 'GIF89a';
+    }
+    if (type === 'image/webp') {
+      if (value.length < 12) return false;
+      return String.fromCharCode(...value.subarray(0, 4)) === 'RIFF' && String.fromCharCode(...value.subarray(8, 12)) === 'WEBP';
+    }
+    return false;
+  }
+
+  function validateImageInput(input, options = {}) {
+    const type = String(input && input.type || '').toLowerCase();
+    if (!MIME_EXTENSIONS[type]) throw new Error('Only PNG, JPEG, WebP and GIF images are supported.');
+    const bytes = toUint8Array(input && input.bytes);
+    const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_MAX_IMAGE_BYTES;
+    if (!bytes.byteLength) throw new Error('The selected image is empty.');
+    if (!matchesImageSignature(bytes, type)) throw new Error('The selected bytes do not match the declared image format.');
+    if (bytes.byteLength > maxBytes) throw new Error(`The selected image is ${bytes.byteLength} bytes; the limit is ${maxBytes}.`);
+    return { type, bytes, maxBytes };
+  }
+
+  function createPendingNoteAsset(input = {}, options = {}) {
+    const validated = validateImageInput(input, options);
+    const id = String(input.id || '').trim() || createAssetId();
+    const noteId = String(input.noteId || '').trim();
+    if (!noteId) throw new Error('Pending image requires a Note id.');
+    return {
+      id,
+      noteId,
+      fileName: fileNameForImage(input.name, validated.type),
+      originalName: String(input.name || ''),
+      mimeType: validated.type,
+      size: validated.bytes.byteLength,
+      bytes: validated.bytes,
+      alt: String(input.alt || '').replace(/[\r\n]+/g, ' ').trim(),
+      title: String(input.title || '').replace(/[\r\n]+/g, ' ').trim(),
+      createdAt: String(input.createdAt || new Date().toISOString()),
+      updatedAt: String(input.updatedAt || new Date().toISOString()),
+      state: String(input.state || 'pending'),
+      stateMessage: String(input.stateMessage || ''),
+      plannedPath: String(input.plannedPath || ''),
+      verifiedPath: String(input.verifiedPath || ''),
+      verifiedSha: String(input.verifiedSha || ''),
+      verifiedHash: String(input.verifiedHash || '')
+    };
+  }
+
+  function pendingImageTarget(assetId) {
+    const id = String(assetId || '').trim();
+    if (!id || /[\s<>()]/.test(id)) throw new Error('Pending image id is invalid.');
+    return `${PENDING_IMAGE_SCHEME}${id}`;
+  }
+
+  function pendingImageMarkdown(asset) {
+    const alt = String(asset && asset.alt || '').replace(/([\\\]])/g, '\\$1');
+    const title = String(asset && asset.title || '').replace(/(["\\])/g, '\\$1');
+    return `![${alt}](<${pendingImageTarget(asset && asset.id)}>${title ? ` "${title}"` : ''})`;
+  }
+
+  function pendingAssetIds(markdown) {
+    const text = String(markdown || '');
+    const pattern = /obs-pending-image:([A-Za-z0-9._~-]+)/g;
+    const result = [];
+    const seen = new Set();
+    let match;
+    while ((match = pattern.exec(text))) {
+      if (!seen.has(match[1])) { seen.add(match[1]); result.push(match[1]); }
+    }
+    return result;
+  }
+
+  function encodeMarkdownPath(path) {
+    return String(path || '').split('/').map((segment) => {
+      if (segment === '.' || segment === '..') return segment;
+      return encodeURIComponent(segment).replace(/%2F/gi, '/');
+    }).join('/');
+  }
+
+  function replacePendingImageTargets(markdown, replacements) {
+    const map = replacements instanceof Map ? replacements : new Map(Object.entries(replacements || {}));
+    return String(markdown || '').replace(/obs-pending-image:([A-Za-z0-9._~-]+)/g, (whole, id) => {
+      const target = map.get(id);
+      return target ? encodeMarkdownPath(target) : whole;
+    });
+  }
+
+  function noteAssetFolder(notePath) {
+    const path = String(notePath || '').replace(/\\/g, '/').trim();
+    if (!path || !/\.md$/i.test(path)) throw new Error('A Markdown Note path is required for image assets.');
+    return `${path.replace(/\.md$/i, '')}.assets`;
+  }
+
+  function noteAssetPath(notePath, fileName) {
+    const leaf = String(fileName || '').replace(/\\/g, '/').split('/').pop();
+    if (!leaf || /[/?#\\\u0000-\u001f\u007f]/.test(leaf) || leaf === '.' || leaf === '..') throw new Error('Image filename is invalid.');
+    return `${noteAssetFolder(notePath)}/${leaf}`;
+  }
+
+  return {
+    PENDING_IMAGE_SCHEME,
+    DEFAULT_MAX_IMAGE_BYTES,
+    MIME_EXTENSIONS,
+    createAssetId,
+    toUint8Array,
+    sanitizeFileStem,
+    mimeTypeForImagePath,
+    fileNameForImage,
+    matchesImageSignature,
+    validateImageInput,
+    createPendingNoteAsset,
+    pendingImageTarget,
+    pendingImageMarkdown,
+    pendingAssetIds,
+    encodeMarkdownPath,
+    replacePendingImageTargets,
+    noteAssetFolder,
+    noteAssetPath
+  };
+});
+
 /* src/note-markdown-codec.js */
 (function (root, factory) {
   const api = factory();
@@ -464,6 +655,9 @@
   function encodeNoteMarkdown(note) {
     if (!note || !note.id) throw new TypeError('Note with stable id is required.');
     const body = typeof note.body === 'string' ? note.body : '';
+    if (/obs-pending-image:[A-Za-z0-9._~-]+/.test(body)) {
+      throw new Error('Note contains unresolved pending image references. Upload and verify the images before encoding remote Markdown.');
+    }
     const metadata = metadataFor(note, body);
     const marker = `${START} ${safeJson(metadata)} ${END}`;
     const trailer = body.endsWith('\n') ? '' : '\n';
@@ -766,6 +960,438 @@
   };
 });
 
+/* src/markdown-image-references.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  function mergeRanges(ranges) {
+    const sorted = (Array.isArray(ranges) ? ranges : [])
+      .filter((range) => range && Number.isInteger(range.start) && Number.isInteger(range.end) && range.end > range.start)
+      .sort((left, right) => left.start - right.start || left.end - right.end);
+    const merged = [];
+    for (const range of sorted) {
+      const previous = merged[merged.length - 1];
+      if (!previous || range.start > previous.end) merged.push({ start: range.start, end: range.end });
+      else if (range.end > previous.end) previous.end = range.end;
+    }
+    return merged;
+  }
+
+  function stripBlockquotePrefix(line) {
+    let value = String(line || '');
+    while (/^[ ]{0,3}>[ \t]?/.test(value)) value = value.replace(/^[ ]{0,3}>[ \t]?/, '');
+    return value;
+  }
+
+  function rawHtmlCodeLikeRanges(text, protectedRanges = []) {
+    const ranges = [];
+    const open = [];
+    const tags = /<\/?(pre|code|textarea|script|style)\b[^>]*>/gi;
+    let match;
+    while ((match = tags.exec(text))) {
+      if (insideRanges(match.index, protectedRanges) || isEscaped(text, match.index)) continue;
+      const raw = match[0];
+      const tag = String(match[1] || '').toLowerCase();
+      const closing = /^<\//.test(raw);
+      const selfClosing = /\/\s*>$/.test(raw);
+      if (!closing) {
+        if (!selfClosing) open.push({ tag, start: match.index });
+        continue;
+      }
+      let openIndex = -1;
+      for (let index = open.length - 1; index >= 0; index -= 1) {
+        if (open[index].tag === tag) { openIndex = index; break; }
+      }
+      if (openIndex < 0) continue;
+      const entry = open[openIndex];
+      open.splice(openIndex, 1);
+      ranges.push({ start: entry.start, end: tags.lastIndex });
+    }
+    for (const entry of open) ranges.push({ start: entry.start, end: text.length });
+    return mergeRanges(ranges);
+  }
+
+  function markdownCodeRanges(markdown) {
+    const text = String(markdown || '');
+    const ranges = [];
+    const lines = text.split(/(?<=\n)/);
+    let offset = 0;
+    let fence = null;
+
+    for (const line of lines) {
+      const body = line.replace(/[\r\n]+$/, '');
+      const normalized = stripBlockquotePrefix(body);
+      if (fence) {
+        const closing = normalized.match(/^ {0,3}(`{3,}|~{3,})[ \t]*$/);
+        if (closing && closing[1][0] === fence.char && closing[1].length >= fence.length) {
+          ranges.push({ start: fence.start, end: offset + line.length });
+          fence = null;
+        }
+        offset += line.length;
+        continue;
+      }
+
+      const opening = normalized.match(/^ {0,3}(`{3,}|~{3,})/);
+      if (opening) {
+        fence = { char: opening[1][0], length: opening[1].length, start: offset };
+        offset += line.length;
+        continue;
+      }
+
+      if (/^(?: {4}|\t)/.test(normalized)) ranges.push({ start: offset, end: offset + line.length });
+      offset += line.length;
+    }
+    if (fence) ranges.push({ start: fence.start, end: text.length });
+
+    const comments = /<!--[\s\S]*?(?:-->|$)/g;
+    let comment;
+    while ((comment = comments.exec(text))) ranges.push({ start: comment.index, end: comments.lastIndex });
+
+    let protectedRanges = mergeRanges(ranges);
+    for (let index = 0; index < text.length; index += 1) {
+      if (text[index] !== '`' || isEscaped(text, index) || insideRanges(index, protectedRanges)) continue;
+      let ticks = 1;
+      while (text[index + ticks] === '`') ticks += 1;
+      let cursor = index + ticks;
+      let closingEnd = -1;
+      while (cursor < text.length) {
+        if (text[cursor] !== '`' || insideRanges(cursor, protectedRanges)) { cursor += 1; continue; }
+        let run = 1;
+        while (text[cursor + run] === '`') run += 1;
+        if (run === ticks) { closingEnd = cursor + run; break; }
+        cursor += run;
+      }
+      if (closingEnd > index) {
+        ranges.push({ start: index, end: closingEnd });
+        protectedRanges = mergeRanges(ranges);
+        index = closingEnd - 1;
+      }
+    }
+
+    protectedRanges = mergeRanges(ranges);
+    ranges.push(...rawHtmlCodeLikeRanges(text, protectedRanges));
+    return mergeRanges(ranges);
+  }
+
+  function insideRanges(index, ranges) {
+    return ranges.some((range) => index >= range.start && index < range.end);
+  }
+
+  function isEscaped(text, index) {
+    let count = 0;
+    for (let cursor = index - 1; cursor >= 0 && text[cursor] === '\\'; cursor -= 1) count += 1;
+    return count % 2 === 1;
+  }
+
+  function unescapeMarkdown(value) {
+    return String(value || '').replace(/\\([!"#$%&'()*+,\-./:;<=>?@[\]^_`{|}~\\])/g, '$1');
+  }
+
+  function normalizeReferenceLabel(value) {
+    return unescapeMarkdown(value).trim().replace(/\s+/g, ' ').toLowerCase();
+  }
+
+  function parseBracket(text, openIndex) {
+    if (text[openIndex] !== '[') return null;
+    let depth = 1;
+    for (let index = openIndex + 1; index < text.length; index += 1) {
+      const char = text[index];
+      if (char === '\\') { index += 1; continue; }
+      if (char === '[') depth += 1;
+      else if (char === ']') {
+        depth -= 1;
+        if (depth === 0) return { value: text.slice(openIndex + 1, index), end: index + 1 };
+      }
+      if (char === '\n' || char === '\r') return null;
+    }
+    return null;
+  }
+
+  function skipWhitespace(text, index) {
+    while (index < text.length && /[ \t\r\n]/.test(text[index])) index += 1;
+    return index;
+  }
+
+  function parseQuotedTitle(text, index) {
+    const opener = text[index];
+    const closer = opener === '(' ? ')' : opener;
+    if (!new Set(['"', "'", '(']).has(opener)) return null;
+    let value = '';
+    for (let cursor = index + 1; cursor < text.length; cursor += 1) {
+      const char = text[cursor];
+      if (char === '\\' && cursor + 1 < text.length) {
+        value += text[cursor + 1];
+        cursor += 1;
+        continue;
+      }
+      if (char === closer) return { value, end: cursor + 1 };
+      if (char === '\n' || char === '\r') return null;
+      value += char;
+    }
+    return null;
+  }
+
+  function parseDestinationAndTitle(text, index, closingRequired) {
+    let cursor = skipWhitespace(text, index);
+    let source = '';
+    if (text[cursor] === '<') {
+      const start = ++cursor;
+      while (cursor < text.length && text[cursor] !== '>') {
+        if (text[cursor] === '\n' || text[cursor] === '\r') return null;
+        if (text[cursor] === '\\' && cursor + 1 < text.length) cursor += 2;
+        else cursor += 1;
+      }
+      if (text[cursor] !== '>') return null;
+      source = unescapeMarkdown(text.slice(start, cursor));
+      cursor += 1;
+    } else {
+      const start = cursor;
+      let depth = 0;
+      while (cursor < text.length) {
+        const char = text[cursor];
+        if (char === '\\' && cursor + 1 < text.length) { cursor += 2; continue; }
+        if (char === '(') { depth += 1; cursor += 1; continue; }
+        if (char === ')') {
+          if (depth === 0) break;
+          depth -= 1;
+          cursor += 1;
+          continue;
+        }
+        if ((char === ' ' || char === '\t' || char === '\r' || char === '\n') && depth === 0) break;
+        cursor += 1;
+      }
+      if (cursor === start) return null;
+      source = unescapeMarkdown(text.slice(start, cursor));
+    }
+    const afterSource = cursor;
+    cursor = skipWhitespace(text, cursor);
+    let title = '';
+    if (cursor > afterSource && new Set(['"', "'", '(']).has(text[cursor])) {
+      const parsedTitle = parseQuotedTitle(text, cursor);
+      if (!parsedTitle) return null;
+      title = parsedTitle.value;
+      cursor = skipWhitespace(text, parsedTitle.end);
+    }
+    if (closingRequired) {
+      if (text[cursor] !== ')') return null;
+      cursor += 1;
+    }
+    return { source, title, end: cursor };
+  }
+
+  function parseReferenceDefinitions(text, codeRanges) {
+    const definitions = new Map();
+    const lines = text.split(/(?<=\n)/);
+    let offset = 0;
+    for (const line of lines) {
+      if (insideRanges(offset, codeRanges)) { offset += line.length; continue; }
+      const body = line.replace(/[\r\n]+$/, '');
+      const match = body.match(/^[ ]{0,3}\[([^\]]+)\]:[ \t]*(.*)$/);
+      if (match) {
+        const label = normalizeReferenceLabel(match[1]);
+        const parsed = parseDestinationAndTitle(match[2], 0, false);
+        if (label && parsed && skipWhitespace(match[2], parsed.end) === match[2].length && !definitions.has(label)) {
+          definitions.set(label, { source: parsed.source, title: parsed.title, start: offset, end: offset + body.length });
+        }
+      }
+      offset += line.length;
+    }
+    return definitions;
+  }
+
+  function parseMarkdownImages(markdown) {
+    const text = String(markdown || '');
+    const refs = [];
+    const codeRanges = markdownCodeRanges(text);
+    const definitions = parseReferenceDefinitions(text, codeRanges);
+    const claimed = [];
+
+    for (let index = 0; index < text.length - 1; index += 1) {
+      if (text[index] !== '!' || text[index + 1] !== '[' || isEscaped(text, index) || insideRanges(index, codeRanges)) continue;
+      const alt = parseBracket(text, index + 1);
+      if (!alt) {
+        refs.push({ kind: 'unsupported', start: index, end: Math.min(text.length, index + 2), raw: text.slice(index, index + 2), source: '', message: 'Unsupported or malformed Markdown image syntax.' });
+        continue;
+      }
+      let cursor = alt.end;
+      let parsed = null;
+      if (text[cursor] === '(') {
+        const destination = parseDestinationAndTitle(text, cursor + 1, true);
+        if (destination) parsed = { source: destination.source, title: destination.title, end: destination.end, syntax: 'inline' };
+      } else if (text[cursor] === '[') {
+        const label = parseBracket(text, cursor);
+        if (label) {
+          const normalized = normalizeReferenceLabel(label.value || alt.value);
+          const definition = definitions.get(normalized);
+          if (definition) parsed = { source: definition.source, title: definition.title, end: label.end, syntax: label.value ? 'reference' : 'collapsed-reference', referenceLabel: normalized };
+        }
+      } else {
+        const normalized = normalizeReferenceLabel(alt.value);
+        const definition = definitions.get(normalized);
+        if (definition) parsed = { source: definition.source, title: definition.title, end: alt.end, syntax: 'shortcut-reference', referenceLabel: normalized };
+      }
+      if (!parsed) {
+        refs.push({ kind: 'unsupported', start: index, end: alt.end, raw: text.slice(index, alt.end), alt: unescapeMarkdown(alt.value), source: '', message: 'Unsupported or unresolved Markdown image syntax.' });
+        claimed.push({ start: index, end: alt.end });
+        index = alt.end - 1;
+        continue;
+      }
+      const ref = {
+        kind: 'markdown',
+        start: index,
+        end: parsed.end,
+        raw: text.slice(index, parsed.end),
+        alt: unescapeMarkdown(alt.value),
+        source: parsed.source,
+        title: parsed.title || '',
+        syntax: parsed.syntax,
+        referenceLabel: parsed.referenceLabel || ''
+      };
+      refs.push(ref);
+      claimed.push({ start: ref.start, end: ref.end });
+      index = parsed.end - 1;
+    }
+
+    const html = /<img\b([^>]*?)\bsrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))([^>]*)>/gi;
+    let match;
+    while ((match = html.exec(text))) {
+      if (insideRanges(match.index, codeRanges) || claimed.some((range) => match.index >= range.start && match.index < range.end)) continue;
+      refs.push({ kind: 'html', start: match.index, end: html.lastIndex, raw: match[0], source: match[2] || match[3] || match[4] || '', prefix: match[1] || '', suffix: match[5] || '' });
+    }
+    return refs.sort((a, b) => a.start - b.start || a.end - b.end);
+  }
+
+  function classifyImageReference(ref, sourcePath, api) {
+    if (ref && ref.kind === 'unsupported') return { ...ref, targetType: 'invalid', message: ref.message || 'Unsupported image syntax.' };
+    const value = String(ref && ref.source || '').trim();
+    if (!value) return { ...ref, targetType: 'invalid', message: 'Image source is empty.' };
+    if (/^obs-pending-image:/i.test(value)) return { ...ref, targetType: 'pending', assetId: value.slice(value.indexOf(':') + 1) };
+    if (api && typeof api.isPortableUrl === 'function' && api.isPortableUrl(value)) return { ...ref, targetType: 'external', url: value };
+    try {
+      const normalized = api.normalizeMarkdownRepositoryTarget(sourcePath, value);
+      if (normalized.type !== 'repository') return { ...ref, targetType: 'external', url: normalized.url || value };
+      return { ...ref, targetType: 'repository', path: normalized.path };
+    } catch (error) {
+      return { ...ref, targetType: 'invalid', message: error.message };
+    }
+  }
+
+  function replaceReferenceSource(ref, destination) {
+    const encoded = String(destination || '');
+    if (ref.kind === 'html') {
+      return ref.raw.replace(/\bsrc\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/i, `src="${encoded.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"`);
+    }
+    if (ref.kind !== 'markdown') return ref.raw;
+    const alt = String(ref.alt || '').replace(/([\\\]])/g, '\\$1');
+    const title = String(ref.title || '').replace(/(["\\])/g, '\\$1');
+    return `![${alt}](<${encoded}>${title ? ` "${title}"` : ''})`;
+  }
+
+  function rewriteImageReferences(markdown, replacements) {
+    const text = String(markdown || '');
+    const map = replacements instanceof Map ? replacements : new Map(Object.entries(replacements || {}));
+    const refs = parseMarkdownImages(text);
+    let output = text;
+    for (let index = refs.length - 1; index >= 0; index -= 1) {
+      const ref = refs[index];
+      if (ref.kind === 'unsupported') continue;
+      const replacement = map.get(ref.source);
+      if (!replacement) continue;
+      output = `${output.slice(0, ref.start)}${replaceReferenceSource(ref, replacement)}${output.slice(ref.end)}`;
+    }
+    return output;
+  }
+
+  return {
+    markdownCodeRanges,
+    insideRanges,
+    normalizeReferenceLabel,
+    parseReferenceDefinitions,
+    parseMarkdownImages,
+    classifyImageReference,
+    replaceReferenceSource,
+    rewriteImageReferences
+  };
+});
+
+/* src/image-aware-markdown-transfer.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  function targetAssetFolder(targetPath) {
+    const path = String(targetPath || '').replace(/\\/g, '/');
+    if (!/\.md$/i.test(path)) throw new Error('Transfer target must be a Markdown file.');
+    return `${path.replace(/\.md$/i, '')}.assets`;
+  }
+
+  function leafName(path) {
+    const value = String(path || '').replace(/\\/g, '/');
+    return value.slice(value.lastIndexOf('/') + 1) || 'image';
+  }
+
+  function visibleNoteMarkdown(note) {
+    const title = String(note && note.title || '').trim();
+    const body = String(note && note.body || '');
+    return `${title ? `# ${title}\n\n` : ''}${body}${body.endsWith('\n') || !body ? '' : '\n'}`;
+  }
+
+  function buildImageAwareTransferPlan(options = {}) {
+    const api = options.api;
+    if (!api || typeof api.parseMarkdownImages !== 'function' || typeof api.classifyImageReference !== 'function') throw new TypeError('Image reference APIs are required.');
+    const sourcePath = String(options.sourcePath || '');
+    const targetPath = String(options.targetPath || '');
+    const sourceMarkdown = String(options.sourceMarkdown || '');
+    const targetMarkdown = String(options.targetMarkdown || '');
+    const mode = options.mode === 'append' ? 'append' : 'create';
+    const references = api.parseMarkdownImages(sourceMarkdown).map((ref) => api.classifyImageReference(ref, sourcePath, api));
+    const assets = [];
+    const seen = new Map();
+    const diagnostics = [];
+    const folder = targetAssetFolder(targetPath);
+    for (const ref of references) {
+      if (ref.targetType === 'repository') {
+        if (!seen.has(ref.path)) {
+          const desiredPath = `${folder}/${leafName(ref.path)}`;
+          const entry = { sourcePath: ref.path, desiredPath, references: [] };
+          seen.set(ref.path, entry); assets.push(entry);
+        }
+        seen.get(ref.path).references.push(ref.source);
+      } else if (ref.targetType === 'invalid' || ref.targetType === 'pending') {
+        diagnostics.push({ status: 'blocked', source: ref.source, message: ref.message || 'Unresolved pending/invalid image cannot be transferred.' });
+      } else if (ref.targetType === 'external') {
+        diagnostics.push({ status: 'preserved', source: ref.source, message: 'External image URL is preserved and is not downloaded.' });
+      }
+    }
+    const separator = targetMarkdown && !targetMarkdown.endsWith('\n') ? '\n\n' : (targetMarkdown ? '\n' : '');
+    const intendedMarkdown = mode === 'append' ? `${targetMarkdown}${separator}${sourceMarkdown}` : sourceMarkdown;
+    return { sourcePath, targetPath, mode, sourceMarkdown, targetMarkdown, intendedMarkdown, assets, diagnostics, blocked: diagnostics.some((item) => item.status === 'blocked') };
+  }
+
+  function finalizeImageAwareTransfer(plan, actualPaths, api) {
+    const replacements = new Map();
+    for (const asset of plan.assets || []) {
+      const actual = actualPaths instanceof Map ? actualPaths.get(asset.sourcePath) : actualPaths && actualPaths[asset.sourcePath];
+      if (!actual) continue;
+      const relative = api.repositoryRelativePath(plan.targetPath, actual);
+      const encoded = api.encodeMarkdownPath ? api.encodeMarkdownPath(relative) : relative;
+      for (const original of asset.references || []) replacements.set(original, encoded);
+    }
+    const transferredSource = api.rewriteImageReferences(plan.sourceMarkdown, replacements);
+    const separator = plan.targetMarkdown && !plan.targetMarkdown.endsWith('\n') ? '\n\n' : (plan.targetMarkdown ? '\n' : '');
+    return plan.mode === 'append' ? `${plan.targetMarkdown}${separator}${transferredSource}` : transferredSource;
+  }
+
+  return { targetAssetFolder, visibleNoteMarkdown, buildImageAwareTransferPlan, finalizeImageAwareTransfer };
+});
+
 /* src/repository-file-browser.js */
 (function (root, factory) {
   const api = factory();
@@ -996,6 +1622,7 @@
   function normalizeTarget(value) {
     const target = String(value == null ? '' : value).trim();
     if (!target || /[\u0000-\u001f\u007f]/.test(target) || isUnsafeScheme(target)) return '';
+    if (/^obs-pending-image:[A-Za-z0-9._~-]+$/.test(target)) return target;
     if (/^[a-z][a-z0-9+.-]*:/i.test(target) && !isExternalHttp(target)) return '';
     return target;
   }
@@ -2141,6 +2768,119 @@
   return { IndexedDbNoteStore };
 });
 
+/* src/pending-note-asset-store.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  class PendingNoteAssetStore {
+    constructor(options = {}) {
+      this.dbName = options.dbName || 'obsLinkedNotesPrototypeAssets';
+      this.storeName = options.storeName || 'assets';
+      this.version = 1;
+      this.indexedDB = Object.prototype.hasOwnProperty.call(options, 'indexedDB')
+        ? options.indexedDB
+        : (typeof indexedDB !== 'undefined' ? indexedDB : null);
+      this.memory = options.memory || new Map();
+      this._dbPromise = null;
+    }
+
+    open() {
+      if (!this.indexedDB) return Promise.resolve(null);
+      if (this._dbPromise) return this._dbPromise;
+      this._dbPromise = new Promise((resolve, reject) => {
+        const request = this.indexedDB.open(this.dbName, this.version);
+        request.onerror = () => reject(request.error || new Error('Unable to open pending image storage.'));
+        request.onupgradeneeded = () => {
+          const db = request.result;
+          const store = db.objectStoreNames.contains(this.storeName)
+            ? request.transaction.objectStore(this.storeName)
+            : db.createObjectStore(this.storeName, { keyPath: 'id' });
+          if (!store.indexNames.contains('noteId')) store.createIndex('noteId', 'noteId', { unique: false });
+          if (!store.indexNames.contains('updatedAt')) store.createIndex('updatedAt', 'updatedAt', { unique: false });
+        };
+        request.onsuccess = () => {
+          const db = request.result;
+          db.onversionchange = () => db.close();
+          resolve(db);
+        };
+      });
+      return this._dbPromise;
+    }
+
+    async put(asset) {
+      const record = { ...asset, bytes: asset.bytes instanceof Uint8Array ? new Uint8Array(asset.bytes) : asset.bytes, updatedAt: new Date().toISOString() };
+      const db = await this.open();
+      if (!db) { this.memory.set(record.id, record); return record; }
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(this.storeName, 'readwrite');
+        tx.objectStore(this.storeName).put(record);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error || new Error('Unable to store pending image.'));
+        tx.onabort = () => reject(tx.error || new Error('Pending image transaction aborted.'));
+      });
+      return record;
+    }
+
+    async get(id) {
+      const db = await this.open();
+      if (!db) return this.memory.get(String(id)) || null;
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(this.storeName, 'readonly');
+        const request = tx.objectStore(this.storeName).get(String(id));
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error || new Error('Unable to read pending image.'));
+      });
+    }
+
+    async listByNote(noteId) {
+      const wanted = String(noteId || '');
+      const db = await this.open();
+      if (!db) return [...this.memory.values()].filter((asset) => asset.noteId === wanted).sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(this.storeName, 'readonly');
+        const index = tx.objectStore(this.storeName).index('noteId');
+        const request = index.getAll(wanted);
+        request.onsuccess = () => resolve((request.result || []).sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt))));
+        request.onerror = () => reject(request.error || new Error('Unable to list pending images.'));
+      });
+    }
+
+    async delete(id) {
+      const key = String(id || '');
+      const db = await this.open();
+      if (!db) { this.memory.delete(key); return; }
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(this.storeName, 'readwrite');
+        tx.objectStore(this.storeName).delete(key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error || new Error('Unable to delete pending image.'));
+      });
+    }
+
+    async deleteForNote(noteId) {
+      const assets = await this.listByNote(noteId);
+      for (const asset of assets) await this.delete(asset.id);
+    }
+
+    async clear() {
+      const db = await this.open();
+      if (!db) { this.memory.clear(); return; }
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(this.storeName, 'readwrite');
+        tx.objectStore(this.storeName).clear();
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error || new Error('Unable to clear pending images.'));
+      });
+    }
+  }
+
+  return { PendingNoteAssetStore };
+});
+
 /* src/github-contents-client.js */
 (function (root, factory) {
   const api = factory();
@@ -2187,6 +2927,18 @@
     throw new Error('No base64 encoder is available.');
   }
 
+  function bytesToBase64(value) {
+    const bytes = value instanceof Uint8Array ? value : new Uint8Array(value || []);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let index = 0; index < bytes.length; index += chunk) {
+      binary += String.fromCharCode(...bytes.subarray(index, index + chunk));
+    }
+    if (typeof btoa === 'function') return btoa(binary);
+    if (typeof Buffer !== 'undefined') return Buffer.from(bytes).toString('base64');
+    throw new Error('No base64 encoder is available.');
+  }
+
   function base64ToBytes(value) {
     const compact = String(value || '').replace(/\s+/g, '');
     if (typeof atob === 'function') {
@@ -2197,8 +2949,17 @@
     throw new Error('No base64 decoder is available.');
   }
 
-  function base64ToUtf8(value) {
-    return new TextDecoder().decode(base64ToBytes(value));
+  function decodeUtf8Bytes(value, options = {}) {
+    const bytes = value instanceof Uint8Array ? value : new Uint8Array(value || []);
+    try {
+      return new TextDecoder('utf-8', { fatal: Boolean(options.fatal) }).decode(bytes);
+    } catch (error) {
+      throw new GitHubClientError('invalid_utf8', options.message || 'Repository text is not valid UTF-8 and cannot be modified safely.', { cause: error });
+    }
+  }
+
+  function base64ToUtf8(value, options = {}) {
+    return decodeUtf8Bytes(base64ToBytes(value), options);
   }
 
   async function sha256Hex(text) {
@@ -2212,6 +2973,27 @@
       return require('node:crypto').createHash('sha256').update(bytes).digest('hex');
     }
     throw new Error('SHA-256 is not available.');
+  }
+
+  async function sha256Bytes(value) {
+    const bytes = value instanceof Uint8Array ? value : new Uint8Array(value || []);
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    if (cryptoObject && cryptoObject.subtle) {
+      const digest = await cryptoObject.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+    }
+    if (typeof require === 'function') {
+      return require('node:crypto').createHash('sha256').update(bytes).digest('hex');
+    }
+    throw new Error('SHA-256 is not available.');
+  }
+
+  function bytesEqual(left, right) {
+    const a = left instanceof Uint8Array ? left : new Uint8Array(left || []);
+    const b = right instanceof Uint8Array ? right : new Uint8Array(right || []);
+    if (a.byteLength !== b.byteLength) return false;
+    for (let index = 0; index < a.byteLength; index += 1) if (a[index] !== b[index]) return false;
+    return true;
   }
 
   function statusKind(status) {
@@ -2479,6 +3261,23 @@
       };
     }
 
+    async writeBytes({ path, bytes, baseSha = '', message }) {
+      const normalized = normalizeGitHubContentPath(path);
+      const value = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+      const body = {
+        message: String(message || `Update repository asset ${normalized}`),
+        content: bytesToBase64(value),
+        branch: this.branch
+      };
+      if (baseSha) body.sha = baseSha;
+      const payload = await this._request('PUT', this._url(normalized, false), body);
+      return {
+        path: normalizeGitHubContentPath(payload && payload.content ? payload.content.path : normalized),
+        sha: payload && payload.content ? payload.content.sha : '',
+        htmlUrl: payload && payload.content ? payload.content.html_url || '' : ''
+      };
+    }
+
     async saveVerified({ path, content, baseSha = '', message }) {
       const normalized = normalizeGitHubContentPath(path);
       let writeResult;
@@ -2525,6 +3324,41 @@
         recoveredAfterUnknownWrite: false
       };
     }
+
+    async saveBytesVerified({ path, bytes, baseSha = '', message }) {
+      const normalized = normalizeGitHubContentPath(path);
+      const expected = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+      let writeResult;
+      try {
+        writeResult = await this.writeBytes({ path: normalized, bytes: expected, baseSha, message });
+      } catch (error) {
+        if (!(error instanceof GitHubClientError) || error.kind !== 'network_unknown') throw error;
+        try {
+          const afterUnknown = await this.readBytes(normalized, { maxBytes: Math.max(expected.byteLength, 1) });
+          if (bytesEqual(afterUnknown.bytes, expected)) {
+            return { ...afterUnknown, verifiedHash: await sha256Bytes(expected), recoveredAfterUnknownWrite: true };
+          }
+        } catch (readError) { /* preserve unknown-write boundary */ }
+        throw error;
+      }
+      let readBack;
+      try {
+        readBack = await this.readBytes(normalized, { maxBytes: Math.max(expected.byteLength, 1) });
+      } catch (error) {
+        throw new GitHubClientError('verification_unknown', 'GitHub accepted the asset write, but byte read-back verification failed.', { writeResult, cause: error, status: error && error.status ? error.status : 0 });
+      }
+      if (!bytesEqual(readBack.bytes, expected)) {
+        throw new GitHubClientError('verification_mismatch', 'Remote asset bytes do not match the intended image.', { expectedHash: await sha256Bytes(expected), actualHash: await sha256Bytes(readBack.bytes) });
+      }
+      return {
+        path: readBack.path || writeResult.path,
+        sha: readBack.sha || writeResult.sha,
+        htmlUrl: readBack.htmlUrl || writeResult.htmlUrl,
+        size: readBack.size,
+        verifiedHash: await sha256Bytes(expected),
+        recoveredAfterUnknownWrite: false
+      };
+    }
   }
 
   return {
@@ -2533,11 +3367,163 @@
     createGmTransport,
     normalizeGitHubContentPath,
     utf8ToBase64,
+    bytesToBase64,
     base64ToUtf8,
+    decodeUtf8Bytes,
     base64ToBytes,
     sha256Hex,
+    sha256Bytes,
+    bytesEqual,
     statusKind
   };
+});
+
+/* src/repository-asset-write.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  function bytesEqual(left, right) {
+    const a = left instanceof Uint8Array ? left : new Uint8Array(left || []);
+    const b = right instanceof Uint8Array ? right : new Uint8Array(right || []);
+    if (a.byteLength !== b.byteLength) return false;
+    for (let index = 0; index < a.byteLength; index += 1) if (a[index] !== b[index]) return false;
+    return true;
+  }
+
+  function suffixedPath(path, index) {
+    const value = String(path || '');
+    const slash = value.lastIndexOf('/');
+    const folder = slash === -1 ? '' : value.slice(0, slash + 1);
+    const name = slash === -1 ? value : value.slice(slash + 1);
+    const dot = name.lastIndexOf('.');
+    const stem = dot > 0 ? name.slice(0, dot) : name;
+    const ext = dot > 0 ? name.slice(dot) : '';
+    return `${folder}${stem}-${index}${ext}`;
+  }
+
+  async function readExisting(client, path, bytes, options = {}) {
+    try {
+      return await client.readBytes(path, { maxBytes: Math.max(bytes.byteLength, options.maxBytes || 0) || undefined });
+    } catch (error) {
+      if (error && error.kind === 'not_found') return null;
+      throw error;
+    }
+  }
+
+  async function planRepositoryAssets(options = {}) {
+    const client = options.client;
+    if (!client || typeof client.readBytes !== 'function') throw new TypeError('A GitHub client with binary read support is required.');
+    const inputs = Array.isArray(options.assets) ? options.assets : [];
+    const maxAttempts = Number.isInteger(options.maxAttempts) && options.maxAttempts > 0 ? options.maxAttempts : 100;
+    const reservations = new Map();
+    const plans = [];
+
+    for (let inputIndex = 0; inputIndex < inputs.length; inputIndex += 1) {
+      const input = inputs[inputIndex] || {};
+      const bytes = input.bytes instanceof Uint8Array ? input.bytes : new Uint8Array(input.bytes || []);
+      const originalPath = String(input.path || '');
+      if (!originalPath) throw new Error('Repository image path is required.');
+      let selected = null;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        const path = attempt === 0 ? originalPath : suffixedPath(originalPath, attempt + 1);
+        const reserved = reservations.get(path);
+        if (reserved) {
+          if (bytesEqual(reserved.bytes, bytes)) {
+            selected = {
+              key: input.key == null ? String(inputIndex) : String(input.key),
+              path,
+              sha: reserved.sha || '',
+              verifiedHash: reserved.verifiedHash || '',
+              htmlUrl: reserved.htmlUrl || '',
+              status: 'reused',
+              collision: attempt > 0,
+              requiresWrite: false,
+              reserved: true,
+              reservedBy: reserved.key
+            };
+            break;
+          }
+          continue;
+        }
+
+        const existing = await readExisting(client, path, bytes, options);
+        if (existing && bytesEqual(existing.bytes, bytes)) {
+          selected = {
+            key: input.key == null ? String(inputIndex) : String(input.key),
+            path,
+            sha: existing.sha || '',
+            verifiedHash: existing.verifiedHash || '',
+            htmlUrl: existing.htmlUrl || '',
+            status: 'reused',
+            collision: attempt > 0,
+            requiresWrite: false,
+            reserved: false,
+            reservedBy: ''
+          };
+          reservations.set(path, { key: selected.key, bytes, sha: selected.sha, verifiedHash: selected.verifiedHash, htmlUrl: selected.htmlUrl });
+          break;
+        }
+        if (existing) continue;
+
+        selected = {
+          key: input.key == null ? String(inputIndex) : String(input.key),
+          path,
+          sha: '',
+          verifiedHash: '',
+          htmlUrl: '',
+          status: 'create',
+          collision: attempt > 0,
+          requiresWrite: true,
+          reserved: false,
+          reservedBy: ''
+        };
+        reservations.set(path, { key: selected.key, bytes, sha: '', verifiedHash: '', htmlUrl: '' });
+        break;
+      }
+
+      if (!selected) throw new Error(`Unable to choose a free repository image path after ${maxAttempts} attempts.`);
+      plans.push(selected);
+    }
+
+    return plans;
+  }
+
+  async function planRepositoryAsset(options = {}) {
+    const plans = await planRepositoryAssets({
+      ...options,
+      assets: [{ key: 'asset', path: options.path, bytes: options.bytes }]
+    });
+    const plan = plans[0];
+    if (!plan) throw new Error('Repository image plan is unavailable.');
+    const { key, reserved, reservedBy, ...single } = plan;
+    return single;
+  }
+
+  function stalePlanError(expected, actual) {
+    const error = new Error(`Repository image plan changed before execution: expected ${expected.status} at ${expected.path}, now ${actual.status} at ${actual.path}. Prepare the transfer again.`);
+    error.kind = 'plan_stale';
+    error.details = { expected, actual };
+    return error;
+  }
+
+  async function ensureRepositoryAsset(options = {}) {
+    const client = options.client;
+    if (!client || typeof client.readBytes !== 'function' || typeof client.saveBytesVerified !== 'function') throw new TypeError('A GitHub client with binary read/write support is required.');
+    const bytes = options.bytes instanceof Uint8Array ? options.bytes : new Uint8Array(options.bytes || []);
+    const planned = await planRepositoryAsset(options);
+    const expected = options.expectedPlan;
+    if (expected && (String(expected.path || '') !== planned.path || String(expected.status || '') !== planned.status)) throw stalePlanError(expected, planned);
+    if (!planned.requiresWrite) return planned;
+    const result = await client.saveBytesVerified({ path: planned.path, bytes, baseSha: '', message: options.message || `Add repository image ${planned.path}` });
+    return { ...result, path: planned.path, status: 'created', collision: planned.collision, requiresWrite: false };
+  }
+
+  return { bytesEqual, suffixedPath, planRepositoryAsset, planRepositoryAssets, ensureRepositoryAsset };
 });
 
 /* src/remote-note-reconcile.js */
@@ -3295,6 +4281,8 @@
         fileViewMode: 'rendered',
         noteRendered: null,
         fileRendered: null,
+        pendingAssets: [],
+        transferDraft: { targetPath: '', mode: 'create' },
         feedback: [],
         targetPicker: { open: false, mode: '', query: '', depth: '2', currentPath: '', entries: [], fileResults: [], noteResults: [], selected: [], truncated: false, summary: '' },
         categoryErrors: [],
@@ -3594,6 +4582,7 @@
         ${item.target ? `<code>${escapeHtml(item.target)}</code>` : ''}
         ${item.details ? `<details><summary>Details</summary><pre>${escapeHtml(item.details)}</pre></details>` : ''}
         ${(item.partialResults || []).length ? `<div class="partial-results">${item.partialResults.map((result) => `<div><strong>${escapeHtml(result.status)}</strong> · ${escapeHtml(result.target)}${result.message ? ` · ${escapeHtml(result.message)}` : ''}</div>`).join('')}</div>` : ''}
+        ${(item.actions || []).length ? `<div class="feedback-actions">${item.actions.map((action) => `<button class="${action.kind === 'primary' ? 'primary' : ''}" data-feedback-action="${escapeHtml(action.id)}">${escapeHtml(action.label)}</button>`).join('')}</div>` : ''}
       </section>`).join('');
       const renderProjection = (rendered) => rendered ? `<div class="rich-markdown" data-rich-root>${rendered.html || ''}</div>` : '<div class="empty">Rendered Markdown is not available yet.</div>';
       const breadcrumbs = (this.state.repositoryBreadcrumbs || []).map((item) => `<button data-browse-path="${escapeHtml(item.path)}" ${disabled}>${escapeHtml(item.label)}</button>`).join('<span>/</span>');
@@ -3667,10 +4656,20 @@
       const unavailableCategoryHtml = unavailableCategoryIds.map((id) => `<div class="category-choice unavailable"><strong>${escapeHtml(id)}</strong><span>Selected locally; unavailable until categories refresh succeeds.</span></div>`).join('');
       const noteCategoryHtml = `${availableCategoryHtml}${unavailableCategoryHtml}` || '<div class="empty">Refresh categories to assign them to this Note.</div>';
       const backlinksHtml = (this.state.noteBacklinks || []).map((relation) => `<button data-note-backlink="${escapeHtml(relation.sourceNoteId)}" ${disabled}>${escapeHtml(relation.label || relation.sourceNoteId)}</button>`).join('') || '<div class="empty">No managed backlinks.</div>';
+      const pendingAssetsHtml = (this.state.pendingAssets || []).map((asset) => `<div class="pending-asset-row">
+          <span>🖼️ <strong>${escapeHtml(asset.fileName || asset.originalName || asset.id)}</strong> · ${escapeHtml(asset.mimeType || '')} · ${escapeHtml(asset.size || 0)} bytes · ${escapeHtml(asset.state || 'pending')}</span>
+          ${asset.verifiedPath ? `<code>${escapeHtml(asset.verifiedPath)}</code>` : ''}
+          <button data-remove-pending-image="${escapeHtml(asset.id)}" ${disabled}>Remove</button>
+        </div>`).join('') || '<div class="empty">No locally staged images.</div>';
+      const transferDraft = this.state.transferDraft || { targetPath: '', targetDirectory: '', fileName: 'copied-note.md', mode: 'create', plan: null };
+      const transferPlan = transferDraft.plan || null;
+      const transferPlanHtml = transferPlan ? `<div class="transfer-plan"><div><strong>Source:</strong> <code>${escapeHtml(transferPlan.sourcePath || '')}</code></div><div><strong>Target:</strong> <code>${escapeHtml(transferPlan.targetPath || '')}</code> · ${escapeHtml(transferPlan.mode || '')} · ${escapeHtml(transferPlan.targetState || '')}</div>${(transferPlan.assets || []).map((asset) => `<div class="transfer-plan-row"><strong>${escapeHtml(asset.status || '')}</strong> · <code>${escapeHtml(asset.sourcePath || '')}</code> → <code>${escapeHtml(asset.targetPath || '')}</code></div>`).join('')}${(transferPlan.diagnostics || []).map((item) => `<div class="transfer-plan-row"><strong>${escapeHtml(item.status || '')}</strong> · ${escapeHtml(item.source || item.target || '')} · ${escapeHtml(item.message || '')}</div>`).join('')}</div>` : '<div class="hint">Choose the target, then prepare a read-only transfer preview before any repository write.</div>';
       const notesSurface = `
         <div class="editor-toolbar">
           <button class="primary" data-action="save-local" ${current && !busy ? '' : 'disabled'}>Save local</button>
           <button class="primary" data-action="save-remote" ${current && activeWorkspace && !busy ? '' : 'disabled'}>Save GitHub</button>
+          <button data-action="insert-image" ${current && !busy ? '' : 'disabled'}>Insert image</button>
+          <input data-role="image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
           <button data-note-view="edit" class="${this.state.noteViewMode === 'edit' ? 'active' : ''}" ${disabled}>Edit</button>
           <button data-note-view="preview" class="${this.state.noteViewMode === 'preview' ? 'active' : ''}" ${disabled}>Preview</button>
           <button data-note-view="split" class="${this.state.noteViewMode === 'split' ? 'active' : ''}" ${disabled}>Split</button>
@@ -3688,12 +4687,17 @@
           </div>
           ${remoteInfo}
           ${remoteSummary}
+          <section><h3>Images</h3><div class="pending-assets">${pendingAssetsHtml}</div><div class="hint">Paste an image into the editor or use Insert image. Images remain local until Save GitHub verifies the repository asset and Note.</div></section>
+          <section class="transfer-panel"><h3>Copy Note to Markdown with images</h3><div class="transfer-grid"><select data-role="transfer-mode" ${disabled}><option value="create" ${transferDraft.mode === 'create' ? 'selected' : ''}>Create new file</option><option value="append" ${transferDraft.mode === 'append' ? 'selected' : ''}>Append to existing file</option></select>${transferDraft.mode === 'create' ? `<input data-role="transfer-file-name" value="${escapeHtml(transferDraft.fileName || 'copied-note.md')}" placeholder="copied-note.md" ${disabled}>` : ''}<button data-action="choose-transfer-target" ${current && activeWorkspace && !busy ? '' : 'disabled'}>${transferDraft.mode === 'append' ? 'Choose existing Markdown' : 'Choose target folder'}</button></div><div class="target-preview"><strong>Selected target:</strong> <code>${escapeHtml(transferDraft.targetPath || 'not selected')}</code></div><div class="transfer-actions"><button data-action="prepare-transfer" ${current && activeWorkspace && transferDraft.targetPath && !busy ? '' : 'disabled'}>Prepare transfer preview</button><button class="primary" data-action="execute-transfer" ${current && activeWorkspace && transferPlan && transferPlan.ready && !busy ? '' : 'disabled'}>Execute reviewed transfer</button></div>${transferPlanHtml}<div class="hint">The first slice copies within the current repository/branch. Source Note and source images are never deleted.</div></section>
           <section><h3>Categories</h3><div class="category-choices">${noteCategoryHtml}</div><div class="hint">Selection is preserved locally; Save GitHub applies verified category-definition changes.</div></section>
           <section><h3>Managed links</h3><div class="links">${linksHtml}</div>
             <button data-action="choose-note-links" ${disabled}>Choose files or Notes</button>
           </section>
           <section><h3>Linked from</h3><div class="backlinks">${backlinksHtml}</div></section>` : '<div class="empty">Create or select a Note.</div>'}`;
       const picker = this.state.targetPicker || {};
+      const transferPicker = picker.mode === 'transfer-target';
+      const pickerTitle = transferPicker ? (picker.transferMode === 'append' ? 'Choose existing Markdown target' : 'Choose target folder') : 'Choose files or Notes';
+      const pickerActionLabel = transferPicker ? (picker.transferMode === 'append' ? 'Use selected Markdown' : 'Use current folder') : 'Use selected targets';
       const pickerItems = (picker.query ? picker.fileResults : picker.entries || []).map((entry) => {
         if (entry.type === 'dir') return `<button class="picker-row" data-picker-dir="${escapeHtml(entry.path)}" ${disabled}>📁 ${escapeHtml(entry.name || entry.path)}</button>`;
         const key = `file:${entry.path}`;
@@ -3707,15 +4711,15 @@
       }).join('') || '<div class="empty">No Note results.</div>';
       const pickerSelected = (picker.selected || []).map((item) => `<div class="selected-target"><span>${item.type === 'note' ? '📝' : '📄'} ${escapeHtml(item.label || item.name || item.path || item.noteId)}</span><button data-picker-remove="${escapeHtml(item.type)}:${escapeHtml(item.type === 'note' ? (item.noteId || item.path) : item.path)}" ${disabled}>Remove</button></div>`).join('') || '<div class="empty">Nothing selected.</div>';
       const pickerModal = picker.open ? `<div class="picker-backdrop"><section class="picker-modal" aria-modal="true" role="dialog" aria-label="Choose repository targets">
-        <div class="picker-header"><strong>Choose files or Notes</strong><button data-action="close-target-picker" ${disabled}>×</button></div>
+        <div class="picker-header"><strong>${escapeHtml(pickerTitle)}</strong><button data-action="close-target-picker" ${disabled}>×</button></div>
         ${this._feedbackForSurface('picker').map((item) => `<section class="feedback feedback-${escapeHtml(item.severity || 'error')}" tabindex="-1"><strong>${escapeHtml(item.title || 'Action failed')}</strong><div>${escapeHtml(item.message || '')}</div></section>`).join('')}
         <div class="picker-search"><input data-role="picker-query" value="${escapeHtml(picker.query || '')}" placeholder="Search by name"><select data-role="picker-depth"><option value="0" ${picker.depth === '0' ? 'selected' : ''}>Current folder</option><option value="1" ${picker.depth === '1' ? 'selected' : ''}>Depth 1</option><option value="2" ${picker.depth === '2' ? 'selected' : ''}>Depth 2</option><option value="3" ${picker.depth === '3' ? 'selected' : ''}>Depth 3</option><option value="5" ${picker.depth === '5' ? 'selected' : ''}>Depth 5</option><option value="entire" ${picker.depth === 'entire' ? 'selected' : ''}>Entire repository (bounded)</option></select><button data-action="picker-search" ${disabled}>Search</button></div>
-        <div class="picker-tabs"><button data-picker-tab="files" class="${picker.tab === 'files' ? 'active' : ''}">Files</button><button data-picker-tab="notes" class="${picker.tab === 'notes' ? 'active' : ''}">Notes</button><button data-picker-tab="selected" class="${picker.tab === 'selected' ? 'active' : ''}">Selected (${(picker.selected || []).length})</button></div>
-        <div class="picker-summary">${escapeHtml(picker.summary || picker.currentPath || '/')} ${picker.truncated ? ' · incomplete result' : ''}</div>
+        <div class="picker-tabs"><button data-picker-tab="files" class="${picker.tab === 'files' ? 'active' : ''}">Files</button>${transferPicker ? '' : `<button data-picker-tab="notes" class="${picker.tab === 'notes' ? 'active' : ''}">Notes</button>`}<button data-picker-tab="selected" class="${picker.tab === 'selected' ? 'active' : ''}">Selected (${(picker.selected || []).length})</button></div>
+        <div class="picker-summary">${escapeHtml(picker.summary || picker.currentPath || '/')} ${picker.truncated ? ' · incomplete result' : ''}</div>${transferPicker && picker.transferMode === 'create' ? `<div class="picker-search"><input data-role="picker-file-name" value="${escapeHtml(picker.fileName || 'copied-note.md')}" placeholder="copied-note.md"></div>` : ''}
         <div class="picker-content" data-picker-panel="files" ${picker.tab !== 'files' ? 'hidden' : ''}>${pickerItems}</div>
-        <div class="picker-content" data-picker-panel="notes" ${picker.tab !== 'notes' ? 'hidden' : ''}>${pickerNotes}</div>
+        ${transferPicker ? '' : `<div class="picker-content" data-picker-panel="notes" ${picker.tab !== 'notes' ? 'hidden' : ''}>${pickerNotes}</div>`}
         <div class="picker-content" data-picker-panel="selected" ${picker.tab !== 'selected' ? 'hidden' : ''}>${pickerSelected}</div>
-        <div class="picker-actions"><button class="primary" data-action="apply-target-picker" ${disabled}>Use selected targets</button><button data-action="close-target-picker" ${disabled}>Cancel</button></div>
+        <div class="picker-actions"><button class="primary" data-action="apply-target-picker" ${disabled}>${escapeHtml(pickerActionLabel)}</button><button data-action="close-target-picker" ${disabled}>Cancel</button></div>
       </section></div>` : '';
       const activeSurface = surface === 'files' ? fileSurface : surface === 'categories' ? categorySurface : notesSurface;
 
@@ -3783,6 +4787,7 @@
           .feedback-info { border-color: #477ca9; background: #172d40; color: #d4ebff; }
           .feedback-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 15px; }
           .feedback code { display: block; margin-top: 6px; color: inherit; word-break: break-word; }
+          .feedback-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
           .partial-results { display: grid; gap: 4px; margin-top: 8px; }
           .rich-markdown { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: #0f1217; overflow-wrap: anywhere; min-height: 120px; }
           .rich-markdown h1, .rich-markdown h2, .rich-markdown h3, .rich-markdown h4 { margin: 1em 0 .45em; }
@@ -3800,6 +4805,13 @@
           .category-choice input { width: auto; }
           .selected-targets, .backlinks { display: grid; gap: 6px; }
           .selected-target { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--border); border-radius: 6px; padding: 6px; background: var(--surface-2); }
+          .pending-assets { display: grid; gap: 6px; }
+          .pending-asset-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 7px; align-items: center; border: 1px solid var(--border); border-radius: 7px; padding: 7px; background: var(--surface-2); }
+          .pending-asset-row code { overflow: hidden; text-overflow: ellipsis; }
+          .transfer-grid { display: grid; grid-template-columns: 180px minmax(0,1fr) auto; gap: 7px; }
+          .transfer-actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 7px 0; }
+          .transfer-plan { display: grid; gap: 5px; margin-top: 7px; padding: 7px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-2); }
+          .transfer-plan-row { overflow-wrap: anywhere; }
           .picker-backdrop { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.72); }
           .main { position: relative; }
           .picker-modal { width: min(780px, 100%); max-height: 92%; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 16px 45px rgba(0,0,0,.6); }
@@ -3812,7 +4824,7 @@
           .picker-row input { width: auto; }
           .picker-row small { color: var(--muted); margin-left: auto; overflow: hidden; text-overflow: ellipsis; }
           .workspace-manager-panel { margin-top: 10px; }
-          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid, .picker-search, .note-mode-split { grid-template-columns: 1fr; } }
+          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid, .picker-search, .note-mode-split, .transfer-grid, .pending-asset-row { grid-template-columns: 1fr; } }
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Docs</button>
         <section class="panel" aria-label="Repository Documentation Workspace Prototype" aria-busy="${busy ? 'true' : 'false'}">
@@ -3909,6 +4921,23 @@
       if (saveLocal) saveLocal.onclick = () => this._call('onSaveLocal', this._draftFromForm());
       const saveRemote = this.shadow.querySelector('[data-action="save-remote"]');
       if (saveRemote) saveRemote.onclick = () => this._call('onSaveRemote', this._draftFromForm());
+      const imageInput = this.shadow.querySelector('[data-role="image-file"]');
+      const insertImage = this.shadow.querySelector('[data-action="insert-image"]');
+      if (insertImage && imageInput) insertImage.onclick = () => imageInput.click();
+      if (imageInput) imageInput.onchange = () => { const file = imageInput.files && imageInput.files[0]; const editor = this.shadow.querySelector('[data-role="body"]'); if (file) this._call('onInsertImage', this._draftFromForm(), { file, cursorStart: editor ? editor.selectionStart : 0, cursorEnd: editor ? editor.selectionEnd : 0 }); imageInput.value = ''; };
+      const bodyEditor = this.shadow.querySelector('[data-role="body"]');
+      if (bodyEditor) bodyEditor.onpaste = (event) => { const items = Array.from(event.clipboardData && event.clipboardData.items || []); const image = items.find((item) => String(item.type || '').startsWith('image/')); if (!image) return; const file = image.getAsFile(); if (!file) return; event.preventDefault(); this._call('onInsertImage', this._draftFromForm(), { file, cursorStart: bodyEditor.selectionStart, cursorEnd: bodyEditor.selectionEnd }); };
+      this.shadow.querySelectorAll('[data-remove-pending-image]').forEach((button) => { button.onclick = () => this._call('onRemovePendingImage', this._draftFromForm(), button.dataset.removePendingImage); });
+      const transferMode = this.shadow.querySelector('[data-role="transfer-mode"]');
+      const transferFileName = this.shadow.querySelector('[data-role="transfer-file-name"]');
+      if (transferMode) transferMode.onchange = () => this._call('onUpdateTransferDraft', { mode: transferMode.value, fileName: transferFileName ? transferFileName.value : ((this.state.transferDraft || {}).fileName || 'copied-note.md') });
+      if (transferFileName) transferFileName.onchange = () => this._call('onUpdateTransferDraft', { mode: transferMode ? transferMode.value : 'create', fileName: transferFileName.value });
+      const chooseTransferTarget = this.shadow.querySelector('[data-action="choose-transfer-target"]');
+      if (chooseTransferTarget) chooseTransferTarget.onclick = () => this._call('onOpenTargetPicker', { mode: 'transfer-target', transferMode: (this.state.transferDraft || {}).mode || 'create', fileName: transferFileName ? transferFileName.value : ((this.state.transferDraft || {}).fileName || 'copied-note.md') });
+      const prepareTransfer = this.shadow.querySelector('[data-action="prepare-transfer"]');
+      if (prepareTransfer) prepareTransfer.onclick = () => this._call('onPrepareTransfer', this._draftFromForm(), this.state.transferDraft || {});
+      const executeTransfer = this.shadow.querySelector('[data-action="execute-transfer"]');
+      if (executeTransfer) executeTransfer.onclick = () => this._call('onExecuteTransfer', this._draftFromForm());
       const copyRemote = this.shadow.querySelector('[data-action="copy-remote"]');
       if (copyRemote) copyRemote.onclick = () => this._call('onCopyRemote', this._draftFromForm());
       const recheckRemote = this.shadow.querySelector('[data-action="recheck-remote"]');
@@ -3954,6 +4983,7 @@
       const chooseCategoryTargets = this.shadow.querySelector('[data-action="choose-category-targets"]');
       if (chooseCategoryTargets) chooseCategoryTargets.onclick = () => this._call('onOpenTargetPicker', { mode: 'category-members', initialTargets: this._categoryFromForm().selectedTargets || [] });
       this.shadow.querySelectorAll('[data-dismiss-feedback]').forEach((button) => { button.onclick = () => this._call('onDismissFeedback', button.dataset.dismissFeedback); });
+      this.shadow.querySelectorAll('[data-feedback-action]').forEach((button) => { button.onclick = () => this._call('onFeedbackAction', button.dataset.feedbackAction); });
       this.shadow.querySelectorAll('[data-note-backlink]').forEach((button) => { button.onclick = () => this._withDraft('onSelect', button.dataset.noteBacklink); });
       this.shadow.querySelectorAll('[data-category-note-open]').forEach((button) => { button.onclick = () => this._withDraft('onSelect', button.dataset.categoryNoteOpen); });
       const removeCategoryTarget = (identity) => {
@@ -3972,7 +5002,7 @@
       this.shadow.querySelectorAll('[data-picker-target]').forEach((input) => { input.onchange = () => this._call('onToggleTargetPicker', input.dataset.pickerNoteId ? { type: 'note', noteId: input.dataset.pickerNoteId, path: input.dataset.pickerPath, name: input.dataset.pickerName } : { type: 'file', path: input.dataset.pickerPath, name: input.dataset.pickerName }); });
       this.shadow.querySelectorAll('[data-picker-remove]').forEach((button) => { button.onclick = () => { const identity = button.dataset.pickerRemove; const target = (this.state.targetPicker.selected || []).find((item) => `${item.type}:${item.type === 'note' ? (item.noteId || item.path) : item.path}` === identity); if (target) this._call('onToggleTargetPicker', target); }; });
       const applyPicker = this.shadow.querySelector('[data-action="apply-target-picker"]');
-      if (applyPicker) applyPicker.onclick = () => this._call('onApplyTargetPicker');
+      if (applyPicker) applyPicker.onclick = () => { const fileName = this.shadow.querySelector('[data-role="picker-file-name"]'); return this._call('onApplyTargetPicker', { fileName: fileName ? fileName.value : '' }); };
       this.shadow.querySelectorAll('[data-picker-tab]').forEach((button) => { button.onclick = () => this._call('onSetTargetPickerTab', button.dataset.pickerTab); });
       const renderedState = surface === 'files' ? this.state.fileRendered : this.state.noteRendered;
       if (renderedState) {
@@ -4078,6 +5108,7 @@
       this.clearIntervalFn = options.clearIntervalFn || ((id) => clearInterval(id));
       this.routePollMs = options.routePollMs || 750;
       this.store = options.store || new api.IndexedDbNoteStore();
+      this.pendingAssetStore = options.pendingAssetStore || (api.PendingNoteAssetStore ? new api.PendingNoteAssetStore() : null);
       this.workspaceStore = options.workspaceStore || (api.WorkspaceStore ? new api.WorkspaceStore({ api, getValue: this.getValue, setValue: this.setValue }) : null);
       this.categoryStore = options.categoryStore || (api.CategoryCacheStore ? new api.CategoryCacheStore({ getValue: this.getValue, setValue: this.setValue }) : null);
       this.ui = options.ui || new api.LinkedNotesUI({
@@ -4124,9 +5155,16 @@
         onBrowseTargetPicker: (path) => this.browseTargetPicker(path),
         onSearchTargetPicker: (query, depth) => this.searchTargetPicker(query, depth),
         onToggleTargetPicker: (target) => this.toggleTargetPickerTarget(target),
-        onApplyTargetPicker: () => this.applyTargetPicker(),
+        onApplyTargetPicker: (input) => this.applyTargetPicker(input),
         onSetNoteCategories: (note, ids) => this.setNoteCategoryIntent(note, ids),
-        onDismissFeedback: (id) => this.dismissFeedback(id)
+        onInsertImage: (note, input) => this.insertNoteImage(note, input),
+        onRemovePendingImage: (note, assetId) => this.removePendingNoteImage(note, assetId),
+        onUpdateTransferDraft: (input) => this.updateTransferDraft(input),
+        onPrepareTransfer: (note, input) => this.prepareTransfer(note, input),
+        onExecuteTransfer: (note) => this.executePreparedTransfer(note),
+        onTransferNote: (note, input) => this.transferNoteToMarkdown(note, input),
+        onDismissFeedback: (id) => this.dismissFeedback(id),
+        onFeedbackAction: (id) => this.runFeedbackAction(id)
       });
       this.current = null;
       this.search = '';
@@ -4158,6 +5196,12 @@
       this.feedback = [];
       this.targetPicker = { open: false, mode: '', tab: 'files', query: '', depth: '2', currentPath: '', entries: [], fileResults: [], noteResults: [], selected: [], truncated: false, summary: '', cursorStart: 0, cursorEnd: 0 };
       this.categoryDraftTargets = [];
+      this.pendingAssets = [];
+      this.transferDraft = { targetPath: '', targetDirectory: '', fileName: 'copied-note.md', mode: 'create', plan: null };
+      this.transferPlan = null;
+      this.transferRetry = null;
+      this.noteMarkdownRetry = null;
+      this.feedbackActionHandlers = new Map();
       if (options.settings && options.settings.owner && options.settings.repo) {
         const workspace = api.normalizeWorkspace
           ? api.normalizeWorkspace({ id: 'workspace-test', name: 'Test workspace', ...options.settings })
@@ -4303,7 +5347,9 @@
           ...(this.categoryIndex && Array.isArray(this.categoryIndex.errors) ? this.categoryIndex.errors : [])
         ],
         categoryRefreshedAt: this.categorySnapshot.refreshedAt || '',
-        categoryAssignmentAllowed
+        categoryAssignmentAllowed,
+        pendingAssets: this.pendingAssets,
+        transferDraft: this.transferDraft
       };
     }
 
@@ -4335,8 +5381,30 @@
     }
 
     dismissFeedback(id) {
-      this.feedback = this.api.dismissFeedback ? this.api.dismissFeedback(this.feedback, id) : this.feedback.filter((item) => item.id !== id);
+      const item = this.feedback.find((feedback) => feedback && feedback.id === id);
+      for (const action of item && Array.isArray(item.actions) ? item.actions : []) this.feedbackActionHandlers.delete(action.id);
+      this.feedback = this.api.dismissFeedback ? this.api.dismissFeedback(this.feedback, id) : this.feedback.filter((feedback) => feedback.id !== id);
       this._setUi();
+    }
+
+    _feedbackAction(id, label, handler) {
+      const actionId = String(id || '').trim();
+      if (!actionId || typeof handler !== 'function') throw new Error('A feedback action requires an ID and handler.');
+      this.feedbackActionHandlers.set(actionId, handler);
+      return { id: actionId, label: String(label || 'Retry') };
+    }
+
+    _attachFeedbackActions(error, actions = []) {
+      if (!error || typeof error !== 'object') return error;
+      error.feedbackActions = actions.filter(Boolean);
+      return error;
+    }
+
+    async runFeedbackAction(id) {
+      const actionId = String(id || '').trim();
+      const handler = this.feedbackActionHandlers.get(actionId);
+      if (!handler) throw new Error(`Feedback action is no longer available: ${actionId || 'unknown'}.`);
+      return handler();
     }
 
     _feedbackFromError(error, input = {}) {
@@ -4428,6 +5496,10 @@
       this.selectedCategoryId = '';
       this.categoryContextWorkspaceId = '';
       this.categoryContextKey = '';
+      this.transferPlan = null;
+      this.transferRetry = null;
+      this.noteMarkdownRetry = null;
+      this.transferDraft = { ...this.transferDraft, targetPath: '', plan: null };
     }
 
     async _loadCategoryCache() {
@@ -4532,6 +5604,7 @@
       await this._chooseWorkspaceForCurrentChat();
       this.ui.mount();
       await this.refreshList('');
+      await this._loadPendingAssets(this.current);
       await this._loadCategoryCache();
       this._setUi({ replaceWorkspaceEditor: true, status: this._activeWorkspace() ? 'Documentation Workspace ready. Remote reads and writes remain explicit.' : 'Local Notes ready. Create a GitHub workspace before remote access.' });
       this._startRouteWatch();
@@ -4554,6 +5627,7 @@
       this._disposeAllMediaLoaders();
       this.noteRendered = null;
       this.fileRendered = null;
+      this.pendingAssets = [];
       if (this.ui) this.ui.dispose();
     }
 
@@ -4644,18 +5718,34 @@
       this._disposeMediaLoader(mediaKind);
       let imageResults = [];
       if (rendered.resources && rendered.resources.length) {
-        if (context && context.owner && context.repo && context.branch && sourcePath && this.api.RepositoryMediaLoader) {
-          try {
-            const client = await this._client(context);
-            const loader = new this.api.RepositoryMediaLoader({ readBytes: (path, options) => client.readBytes(path, options) });
+        const pending = rendered.resources.filter((resource) => /^obs-pending-image:/.test(String(resource.target || '')));
+        const repositoryResources = rendered.resources.filter((resource) => !/^obs-pending-image:/.test(String(resource.target || '')));
+        let loader = null;
+        try {
+          let client = null;
+          if (repositoryResources.length && context && context.owner && context.repo && context.branch && sourcePath && this.api.RepositoryMediaLoader) client = await this._client(context);
+          if ((pending.length || client) && this.api.RepositoryMediaLoader) {
+            loader = new this.api.RepositoryMediaLoader({ readBytes: client ? (path, options) => client.readBytes(path, options) : async () => { throw new Error('Repository context is unavailable.'); } });
             this.mediaLoaders[mediaKind] = loader;
-            imageResults = await loader.loadAll(rendered.resources, { sourcePath });
-          } catch (error) {
-            this._disposeMediaLoader(mediaKind);
-            imageResults = rendered.resources.map((resource) => ({ id: resource.id, status: 'error', target: resource.target, message: String(error && error.message || error) }));
           }
-        } else {
-          imageResults = rendered.resources.map((resource) => ({ id: resource.id, status: resource.external ? 'external_blocked' : 'unavailable', target: resource.target, message: resource.external ? 'External image loading requires an explicit action.' : 'Repository context is unavailable for this image.' }));
+          for (const resource of pending) {
+            try {
+              const id = String(resource.target).slice('obs-pending-image:'.length);
+              const asset = this.pendingAssetStore ? await this.pendingAssetStore.get(id) : null;
+              if (!asset) throw new Error('Pending image bytes are unavailable.');
+              const blob = new Blob([asset.bytes], { type: asset.mimeType });
+              const objectUrl = loader.createObjectUrl(blob);
+              loader.urls.add(objectUrl);
+              imageResults.push({ id: resource.id, status: 'loaded', path: resource.target, objectUrl, mime: asset.mimeType, size: asset.size, localPending: true });
+            } catch (error) { imageResults.push({ id: resource.id, status: 'error', target: resource.target, message: String(error && error.message || error) }); }
+          }
+          if (repositoryResources.length) {
+            if (client && loader) imageResults.push(...await loader.loadAll(repositoryResources, { sourcePath }));
+            else imageResults.push(...repositoryResources.map((resource) => ({ id: resource.id, status: resource.external ? 'external_blocked' : 'unavailable', target: resource.target, message: resource.external ? 'External image loading requires an explicit action.' : 'Repository context is unavailable for this image.' })));
+          }
+        } catch (error) {
+          this._disposeMediaLoader(mediaKind);
+          imageResults = rendered.resources.map((resource) => ({ id: resource.id, status: 'error', target: resource.target, message: String(error && error.message || error) }));
         }
       }
       return { ...rendered, imageResults, source: { path: sourcePath || '', context: context ? { owner: context.owner, repo: context.repo, branch: context.branch } : null } };
@@ -4742,15 +5832,22 @@
 
     async openTargetPicker(request = {}) {
       const mode = String(request.mode || 'note-link');
-      if (!new Set(['note-link', 'category-members']).has(mode)) throw new Error(`Unsupported target-picker mode: ${mode}`);
-      const selected = mode === 'category-members' ? [...(Array.isArray(request.initialTargets) ? request.initialTargets : this.categoryDraftTargets)] : [];
+      if (!new Set(['note-link', 'category-members', 'transfer-target']).has(mode)) throw new Error(`Unsupported target-picker mode: ${mode}`);
+      const transferMode = request.transferMode === 'append' ? 'append' : 'create';
+      const selected = mode === 'category-members'
+        ? [...(Array.isArray(request.initialTargets) ? request.initialTargets : this.categoryDraftTargets)]
+        : mode === 'transfer-target' && transferMode === 'append' && this.transferDraft.targetPath
+          ? [{ type: 'file', path: this.transferDraft.targetPath, name: this.transferDraft.targetPath.slice(this.transferDraft.targetPath.lastIndexOf('/') + 1), label: this.transferDraft.targetPath }]
+          : [];
       this.targetPicker = {
         open: true,
         mode,
+        transferMode,
+        fileName: String(request.fileName || this.transferDraft.fileName || 'copied-note.md'),
         tab: 'files',
         query: '',
         depth: '2',
-        currentPath: '',
+        currentPath: mode === 'transfer-target' && transferMode === 'create' ? String(this.transferDraft.targetDirectory || '') : '',
         entries: [],
         fileResults: [],
         noteResults: [],
@@ -4760,7 +5857,7 @@
         cursorStart: Number(request.cursorStart || 0),
         cursorEnd: Number(request.cursorEnd || request.cursorStart || 0)
       };
-      await this.browseTargetPicker('');
+      await this.browseTargetPicker(this.targetPicker.currentPath);
       return this.targetPicker;
     }
 
@@ -4826,21 +5923,48 @@
         ? { type: 'note', noteId: String(target.noteId || target.id || ''), path: String(target.path || target.remotePath || ''), name: String(target.name || target.title || 'Untitled Note'), label: String(target.label || target.name || target.title || 'Untitled Note') }
         : { type: 'file', path: this.api.normalizeCanonicalRepositoryPath(target.path, 'Selected repository file'), name: String(target.name || target.path || ''), label: String(target.label || target.name || target.path || '') };
       const key = type === 'note' ? `note:${normalized.noteId || normalized.path}` : `file:${normalized.path}`;
-      const selected = [...this.targetPicker.selected];
-      const index = selected.findIndex((item) => (item.type === 'note' ? `note:${item.noteId || item.path}` : `file:${item.path}`) === key);
-      if (index >= 0) selected.splice(index, 1); else selected.push(normalized);
+      let selected = [...this.targetPicker.selected];
+      if (this.targetPicker.mode === 'transfer-target') {
+        if (type !== 'file' || !/\.md$/i.test(normalized.path)) throw new Error('Transfer append targets must be Markdown files.');
+        selected = selected.some((item) => item.type === 'file' && item.path === normalized.path) ? [] : [normalized];
+      } else {
+        const index = selected.findIndex((item) => (item.type === 'note' ? `note:${item.noteId || item.path}` : `file:${item.path}`) === key);
+        if (index >= 0) selected.splice(index, 1); else selected.push(normalized);
+      }
       this.targetPicker = { ...this.targetPicker, selected };
       this._setUi({ status: `${selected.length} target(s) selected.` });
       return selected;
     }
 
-    async applyTargetPicker() {
+    async applyTargetPicker(input = {}) {
       if (!this.targetPicker.open) throw new Error('Target picker is not open.');
       if (this.targetPicker.mode === 'category-members') {
         this.categoryDraftTargets = [...this.targetPicker.selected];
         this.targetPicker = { ...this.targetPicker, open: false };
         this._setUi({ status: `${this.categoryDraftTargets.length} initial category member(s) selected.` });
         return this.categoryDraftTargets;
+      }
+      if (this.targetPicker.mode === 'transfer-target') {
+        const transferMode = this.targetPicker.transferMode === 'append' ? 'append' : 'create';
+        let targetPath = '';
+        let targetDirectory = this.targetPicker.currentPath || '';
+        let fileName = String(input.fileName || this.targetPicker.fileName || this.transferDraft.fileName || 'copied-note.md').trim();
+        if (transferMode === 'append') {
+          if (this.targetPicker.selected.length !== 1 || this.targetPicker.selected[0].type !== 'file') throw new Error('Select exactly one existing Markdown file for append mode.');
+          targetPath = this.api.normalizeCanonicalRepositoryPath(this.targetPicker.selected[0].path, 'Transfer target path');
+          if (!/\.md$/i.test(targetPath)) throw new Error('Transfer append target must be a Markdown file.');
+          targetDirectory = targetPath.includes('/') ? targetPath.slice(0, targetPath.lastIndexOf('/')) : '';
+          fileName = targetPath.slice(targetPath.lastIndexOf('/') + 1);
+        } else {
+          if (!/^[^/\\]+\.md$/i.test(fileName) || /[?#\u0000-\u001f\u007f]/.test(fileName)) throw new Error('Enter one safe Markdown filename ending in .md.');
+          targetPath = this.api.normalizeCanonicalRepositoryPath(`${targetDirectory ? `${targetDirectory}/` : ''}${fileName}`, 'Transfer target path');
+        }
+        this.transferPlan = null;
+        this.transferRetry = null;
+        this.transferDraft = { targetPath, targetDirectory, fileName, mode: transferMode, plan: null };
+        this.targetPicker = { ...this.targetPicker, open: false, selected: [] };
+        this._setUi({ status: `Transfer target selected: ${targetPath}. Prepare the transfer plan before writing.` });
+        return this.transferDraft;
       }
       if (!this.current) throw new Error('Select a Note before inserting links.');
       let note = await this.saveDraft(this.current);
@@ -5563,6 +6687,11 @@
       this._disposeMediaLoader('note');
       this.noteRendered = null;
       this.noteViewMode = 'edit';
+      this.transferPlan = null;
+      this.transferRetry = null;
+      this.noteMarkdownRetry = null;
+      this.transferDraft = { ...this.transferDraft, targetPath: '', plan: null };
+      await this._loadPendingAssets(note);
       await this.refreshList();
       this._setUi({ replaceCurrent: true, status: 'New local Note created. Categories may be selected before the first GitHub save.' });
     }
@@ -5571,6 +6700,11 @@
       const note = await this.store.get(id);
       if (!note) throw new Error(`Note not found: ${id}`);
       this.current = this.api.normalizeNote(note);
+      this.transferPlan = null;
+      this.transferRetry = null;
+      this.noteMarkdownRetry = null;
+      this.transferDraft = { ...this.transferDraft, targetPath: '', plan: null };
+      await this._loadPendingAssets(this.current);
       if (this.noteViewMode !== 'edit') await this._renderCurrentNote(this.current);
       else { this._disposeMediaLoader('note'); this.noteRendered = null; }
       this._setUi({ current: this.current, replaceCurrent: true, status: `Opened ${this.current.title || 'Untitled Note'}.` });
@@ -5587,6 +6721,512 @@
       await this.refreshList();
       this._setUi({ status: 'Local Note saved in IndexedDB.' });
       return next;
+    }
+
+    async _loadPendingAssets(note = this.current) {
+      if (!note || !this.pendingAssetStore || typeof this.pendingAssetStore.listByNote !== 'function') {
+        this.pendingAssets = [];
+        return this.pendingAssets;
+      }
+      this.pendingAssets = await this.pendingAssetStore.listByNote(note.id);
+      return this.pendingAssets;
+    }
+
+    async _imageInputBytes(input = {}) {
+      if (input.bytes) return this.api.toUint8Array(input.bytes);
+      const file = input.file;
+      if (!file) throw new Error('Select or paste an image first.');
+      if (typeof file.arrayBuffer === 'function') return new Uint8Array(await file.arrayBuffer());
+      if (file.bytes) return this.api.toUint8Array(file.bytes);
+      throw new Error('The browser did not provide readable image bytes.');
+    }
+
+    async insertNoteImage(note, input = {}) {
+      if (!note) throw new Error('Select a Note before inserting an image.');
+      if (!this.pendingAssetStore) throw new Error('Pending image storage is not available.');
+      const draft = await this.saveDraft(note);
+      const file = input.file || {};
+      const bytes = await this._imageInputBytes(input);
+      const asset = this.api.createPendingNoteAsset({
+        noteId: draft.id,
+        name: input.name || file.name || 'image',
+        type: input.type || file.type || '',
+        bytes,
+        alt: input.alt || String(file.name || 'image').replace(/\.[^.]+$/, '')
+      });
+      await this.pendingAssetStore.put(asset);
+      const start = Math.max(0, Number.isInteger(input.cursorStart) ? input.cursorStart : String(draft.body || '').length);
+      const end = Math.max(start, Number.isInteger(input.cursorEnd) ? input.cursorEnd : start);
+      const before = String(draft.body || '').slice(0, start);
+      const after = String(draft.body || '').slice(end);
+      const prefix = before && !before.endsWith('\n') ? '\n' : '';
+      const suffix = after && !after.startsWith('\n') ? '\n' : '';
+      const body = `${before}${prefix}${this.api.pendingImageMarkdown(asset)}${suffix}${after}`;
+      const next = this.api.updateNote(draft, { body });
+      await this.store.put(next);
+      this.current = next;
+      await this._loadPendingAssets(next);
+      await this.refreshList();
+      this._setUi({ replaceCurrent: true, status: 'Image staged locally. Save GitHub to upload and verify the asset.' });
+      return asset;
+    }
+
+    async removePendingNoteImage(note, assetId) {
+      if (!note) throw new Error('Select a Note first.');
+      const draft = await this.saveDraft(note);
+      const id = String(assetId || '').trim();
+      const pattern = new RegExp(`!?\\[[^\\]]*\\]\\(\\s*<?obs-pending-image:${id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}>?(?:\\s+["'][^"']*["'])?\\s*\\)`, 'g');
+      const body = String(draft.body || '').replace(pattern, '').replace(/\n{3,}/g, '\n\n');
+      const next = this.api.updateNote(draft, { body });
+      await this.store.put(next);
+      if (this.pendingAssetStore) await this.pendingAssetStore.delete(id);
+      this.current = next;
+      await this._loadPendingAssets(next);
+      await this.refreshList();
+      this._setUi({ replaceCurrent: true, status: 'Pending image removed locally.' });
+      return next;
+    }
+
+    async _preparePendingAssets(note, target, client) {
+      const ids = this.api.pendingAssetIds ? this.api.pendingAssetIds(note.body) : [];
+      if (!ids.length) return { remoteNote: note, assets: [], replacements: new Map() };
+      if (!this.pendingAssetStore) throw new Error('Pending image storage is unavailable; the Note cannot be saved remotely.');
+      const replacements = new Map();
+      const results = [];
+      for (const id of ids) {
+        let asset = null;
+        try {
+          asset = await this.pendingAssetStore.get(id);
+          if (!asset || asset.noteId !== note.id) throw new Error(`Pending image data is missing: ${id}.`);
+          const desiredPath = asset.verifiedPath || this.api.noteAssetPath(target.path, asset.fileName);
+          const result = await this.api.ensureRepositoryAsset({
+            client,
+            path: desiredPath,
+            bytes: asset.bytes,
+            maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES,
+            message: `Add image for linked Note ${note.title || note.id}`
+          });
+          const relative = this.api.repositoryRelativePath(target.path, result.path);
+          replacements.set(id, relative);
+          const updatedAsset = { ...asset, state: 'verified', stateMessage: 'Repository image verified by read-back.', plannedPath: desiredPath, verifiedPath: result.path, verifiedSha: result.sha || '', verifiedHash: result.verifiedHash || '', updatedAt: new Date().toISOString() };
+          await this.pendingAssetStore.put(updatedAsset);
+          results.push({ target: result.path, status: result.status || 'verified', message: result.collision ? 'Collision-safe path selected and verified.' : 'Repository image verified.' });
+        } catch (error) {
+          const targetPath = asset && (asset.verifiedPath || asset.plannedPath || asset.fileName) || `pending:${id}`;
+          throw this._appendPartialResults(error, results, { target: targetPath, status: 'failed', message: String(error && error.message || error) });
+        }
+      }
+      const body = this.api.replacePendingImageTargets(note.body, replacements);
+      return { remoteNote: this.api.normalizeNote({ ...note, body }), assets: results, replacements };
+    }
+
+    async _finalizePendingAssets(noteId, ids) {
+      if (!this.pendingAssetStore) return;
+      for (const id of ids || []) await this.pendingAssetStore.delete(id);
+      if (this.current && this.current.id === noteId) await this._loadPendingAssets(this.current);
+    }
+
+    _appendPartialResults(error, results = [], extra = null) {
+      const existing = Array.isArray(error && error.partialResults) ? error.partialResults : [];
+      const combined = [...existing, ...results, ...(extra ? [extra] : [])];
+      const seen = new Set();
+      const normalized = [];
+      for (const item of combined) {
+        if (!item) continue;
+        const value = { target: String(item.target || ''), status: String(item.status || 'failed'), message: String(item.message || '') };
+        const key = `${value.status}\u0000${value.target}\u0000${value.message}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        normalized.push(value);
+      }
+      if (error && typeof error === 'object') error.partialResults = normalized;
+      return error;
+    }
+
+    async _recoverOrRetryTextWrite({ client, path, content, baseSha = '', message, beforeWrite = null }) {
+      let current = null;
+      try {
+        current = await client.read(path);
+      } catch (error) {
+        if (!error || error.kind !== 'not_found') throw error;
+      }
+
+      if (current && current.content === content) {
+        return {
+          path: current.path || path,
+          sha: current.sha || '',
+          htmlUrl: current.htmlUrl || '',
+          verifiedHash: this.api.sha256Hex ? await this.api.sha256Hex(content) : '',
+          recoveredAfterUnknownWrite: true,
+          recoveredWithoutWrite: true
+        };
+      }
+
+      if (current) {
+        if (!baseSha || current.sha !== baseSha) {
+          const error = new Error(baseSha
+            ? 'The remote Markdown changed after the failed or unverified write. Refresh and review before retrying.'
+            : 'The remote Markdown path now exists with different content. No overwrite was attempted.');
+          error.kind = 'conflict';
+          error.details = { path, expectedBaseSha: baseSha, currentSha: current.sha || '' };
+          throw error;
+        }
+      } else if (baseSha) {
+        const error = new Error('The remote Markdown target disappeared after the failed or unverified write. No recreate was attempted.');
+        error.kind = 'remote_deleted';
+        error.details = { path, expectedBaseSha: baseSha };
+        throw error;
+      }
+
+      if (typeof beforeWrite === 'function') await beforeWrite();
+      return client.saveVerified({ path, content, baseSha: current ? current.sha : '', message });
+    }
+
+    _noteDraftSnapshot(note) {
+      const value = this.api.normalizeNote(note);
+      return JSON.stringify({
+        id: value.id,
+        title: value.title,
+        body: value.body,
+        links: value.links,
+        categoryIds: value.categoryIds,
+        categoryIntentPending: Boolean(value.categoryIntentPending),
+        codecExtra: value.codecExtra
+      });
+    }
+
+    _noteMarkdownRetryAction(note) {
+      return this._feedbackAction('retry-note-markdown', 'Verify or retry Note Markdown', () => this.retryNoteMarkdown(this.current || note));
+    }
+
+    async _verifiedTransferSource(note) {
+      const local = await this.saveLocal(note);
+      const bound = this.api.normalizeRemote(local.remote);
+      if (!this.api.hasCompleteRemoteIdentity(bound)) throw new Error('Image-aware transfer requires a verified repository Note.');
+      const workspace = this._activeWorkspace();
+      if (!workspace || !this._sameRepositoryContext(bound, workspace)) throw new Error('The first transfer slice supports only the Note repository and branch selected by the active workspace.');
+      if ((this.api.pendingAssetIds ? this.api.pendingAssetIds(local.body) : []).length) throw new Error('Save and verify pending images before transferring the Note.');
+      if (local.state !== this.api.NOTE_STATES.SAVED_VERIFIED) throw new Error('Save and verify the current Note before transferring it.');
+      const client = await this._client(bound);
+      const expectedSourceContent = this.api.encodeNoteMarkdown(local);
+      let sourceRemote;
+      try { sourceRemote = await client.read(bound.path); }
+      catch (error) { throw new Error(`Unable to verify the source Note before transfer: ${error && error.message || error}`); }
+      if (!sourceRemote || sourceRemote.sha !== bound.sha || sourceRemote.content !== expectedSourceContent) throw new Error('The source Note no longer matches its last verified GitHub base. Refresh, reconcile or save it before transfer.');
+      return { local, bound, client, sourceRemote, sourceMarkdown: this.api.visibleNoteMarkdown(local) };
+    }
+
+    async _readTransferTarget(client, targetPath, mode) {
+      if (mode === 'create') {
+        try {
+          const existing = typeof client.readMetadata === 'function' ? await client.readMetadata(targetPath) : await client.read(targetPath, { allowMissingContent: true });
+          if (existing) throw new Error('Transfer target already exists. Choose append mode or another path.');
+        } catch (error) {
+          if (error && error.kind === 'not_found') return null;
+          throw error;
+        }
+        return null;
+      }
+      let targetBytes;
+      try { targetBytes = await client.readBytes(targetPath, { maxBytes: 2 * 1024 * 1024 }); }
+      catch (error) {
+        if (error && error.kind === 'not_found') throw new Error('Append target does not exist. Choose create mode or an existing Markdown file.');
+        throw error;
+      }
+      const content = this.api.decodeUtf8Bytes
+        ? this.api.decodeUtf8Bytes(targetBytes.bytes, { fatal: true, message: `Append target is not valid UTF-8 and cannot be modified safely: ${targetPath}` })
+        : new TextDecoder('utf-8', { fatal: true }).decode(targetBytes.bytes);
+      return { ...targetBytes, content };
+    }
+
+    _normalizedTransferInput(input = {}) {
+      const mode = input.mode === 'append' ? 'append' : 'create';
+      const targetPath = this.api.normalizeCanonicalRepositoryPath(String(input.targetPath || this.transferDraft.targetPath || '').trim(), 'Transfer target path');
+      if (!/\.md$/i.test(targetPath)) throw new Error('Transfer target must end in .md.');
+      return { mode, targetPath };
+    }
+
+    updateTransferDraft(input = {}) {
+      const mode = input.mode === 'append' ? 'append' : 'create';
+      const fileName = String(input.fileName || this.transferDraft.fileName || 'copied-note.md');
+      const changed = mode !== this.transferDraft.mode || fileName !== this.transferDraft.fileName;
+      this.transferPlan = null;
+      this.transferRetry = null;
+      this.transferDraft = { ...this.transferDraft, mode, fileName, targetPath: changed ? '' : this.transferDraft.targetPath, plan: null };
+      this._setUi({ status: changed ? 'Transfer target choice changed. Choose a target and prepare a new preview.' : '' });
+      return this.transferDraft;
+    }
+
+    async prepareTransfer(note, input = {}) {
+      return this._runRemoteOperation('Preparing image-aware transfer preview…', () => this._prepareTransferUnlocked(note, input));
+    }
+
+    _prepareTransferAgainAction(note) {
+      return this._feedbackAction('prepare-transfer-again', 'Prepare transfer again', () => this.prepareTransfer(this.current || note, this.transferDraft || {}));
+    }
+
+    _retryTransferMarkdownAction(note) {
+      return this._feedbackAction('retry-transfer-markdown', 'Verify or retry target Markdown', () => this.retryTransferMarkdown(this.current || note));
+    }
+
+    async _prepareTransferUnlocked(note, input = {}) {
+      const { mode, targetPath } = this._normalizedTransferInput(input);
+      const source = await this._verifiedTransferSource(note);
+      if (targetPath === source.bound.path) throw new Error('Transfer target must differ from the source Note path.');
+      const targetRemote = await this._readTransferTarget(source.client, targetPath, mode);
+      const plan = this.api.buildImageAwareTransferPlan({
+        api: this.api,
+        sourcePath: source.bound.path,
+        targetPath,
+        sourceMarkdown: source.sourceMarkdown,
+        targetMarkdown: targetRemote ? targetRemote.content : '',
+        mode
+      });
+      const loadedAssets = [];
+      const partialResults = [...plan.diagnostics];
+      for (const asset of plan.assets) {
+        try {
+          const sourceAsset = await source.client.readBytes(asset.sourcePath, { maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES });
+          const sourceMime = this.api.mimeTypeForImagePath ? this.api.mimeTypeForImagePath(asset.sourcePath) : '';
+          this.api.validateImageInput({ type: sourceMime, bytes: sourceAsset.bytes }, { maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES });
+          loadedAssets.push({ ...asset, bytes: sourceAsset.bytes, sourceSha: sourceAsset.sha || '', sourceVerifiedHash: sourceAsset.verifiedHash || '' });
+        } catch (error) {
+          partialResults.push({ target: asset.sourcePath, status: 'failed', message: String(error && error.message || error) });
+        }
+      }
+
+      const assets = [];
+      if (loadedAssets.length) {
+        try {
+          const batchPlans = await this.api.planRepositoryAssets({
+            client: source.client,
+            assets: loadedAssets.map((asset) => ({ key: asset.sourcePath, path: asset.desiredPath, bytes: asset.bytes })),
+            maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES
+          });
+          for (let index = 0; index < loadedAssets.length; index += 1) {
+            const asset = loadedAssets[index];
+            const expectedPlan = batchPlans[index];
+            const status = expectedPlan.status === 'reused' ? 'reuse' : expectedPlan.collision ? 'suffix' : 'copy';
+            assets.push({ ...asset, expectedPlan });
+            partialResults.push({ target: expectedPlan.path, status, message: `${status === 'reuse' ? 'Byte-identical target will be reused' : status === 'suffix' ? 'Different-byte or reserved-path collision; safe suffixed path will be created' : 'New repository asset will be copied'} from ${asset.sourcePath}.` });
+          }
+        } catch (error) {
+          partialResults.push({ target: targetPath, status: 'failed', message: `Unable to reserve the complete target asset plan: ${String(error && error.message || error)}` });
+        }
+      }
+
+      const ready = !plan.blocked && loadedAssets.length === plan.assets.length && assets.length === loadedAssets.length && !partialResults.some((item) => item.status === 'failed');
+      const planId = `transfer-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      this.transferRetry = null;
+      this.transferPlan = ready ? {
+        planId,
+        noteId: source.local.id,
+        repository: { owner: source.bound.owner, repo: source.bound.repo, branch: source.bound.branch },
+        sourcePath: source.bound.path,
+        sourceSha: source.bound.sha,
+        sourceContent: this.api.encodeNoteMarkdown(source.local),
+        sourceMarkdown: source.sourceMarkdown,
+        targetPath,
+        targetSha: targetRemote ? targetRemote.sha : '',
+        targetContent: targetRemote ? targetRemote.content : '',
+        mode,
+        plan,
+        assets,
+        partialResults
+      } : null;
+      const summary = {
+        planId,
+        ready,
+        sourcePath: source.bound.path,
+        targetPath,
+        mode,
+        targetState: targetRemote ? `existing @ ${targetRemote.sha}` : 'absent',
+        assets: assets.map((asset) => ({ sourcePath: asset.sourcePath, targetPath: asset.expectedPlan.path, status: asset.expectedPlan.status === 'reused' ? 'reuse' : asset.expectedPlan.collision ? 'suffix' : 'copy' })),
+        diagnostics: plan.diagnostics
+      };
+      this.transferDraft = { ...this.transferDraft, targetPath, mode, plan: summary };
+      this._pushFeedback({ id: 'note-image-transfer-preview', scope: 'notes', severity: ready ? 'info' : 'error', title: ready ? 'Transfer preview ready' : 'Transfer preview blocked', message: ready ? `${assets.length} repository image asset(s) planned. All target paths are reserved before execution.` : 'Resolve blocked or failed image rows, then prepare the preview again. No repository write occurred.', target: targetPath, partialResults, actions: ready ? [] : [this._prepareTransferAgainAction(note)] });
+      this._setUi({ status: ready ? 'Transfer preview ready. No repository write has occurred.' : 'Transfer preview is blocked. No repository write has occurred.' });
+      return summary;
+    }
+
+    async executePreparedTransfer(note) {
+      return this._runRemoteOperation('Executing reviewed Note and image transfer…', () => this._executePreparedTransferUnlocked(note));
+    }
+
+    async _executePreparedTransferUnlocked(note) {
+      const prepared = this.transferPlan;
+      if (!prepared || !prepared.planId) throw new Error('Prepare and review the transfer preview before execution.');
+      const source = await this._verifiedTransferSource(note);
+      const prepareAgain = () => [this._prepareTransferAgainAction(note)];
+      if (source.local.id !== prepared.noteId || source.bound.path !== prepared.sourcePath || source.bound.sha !== prepared.sourceSha || this.api.encodeNoteMarkdown(source.local) !== prepared.sourceContent || source.sourceMarkdown !== prepared.sourceMarkdown) {
+        const error = new Error('The source Note changed after the transfer preview. Prepare the transfer again.');
+        error.kind = 'plan_stale';
+        throw this._attachFeedbackActions(error, prepareAgain());
+      }
+      const targetRemote = await this._readTransferTarget(source.client, prepared.targetPath, prepared.mode);
+      if ((targetRemote ? targetRemote.sha : '') !== prepared.targetSha || (targetRemote ? targetRemote.content : '') !== prepared.targetContent) {
+        const error = new Error('The target Markdown changed after the transfer preview. Prepare the transfer again.');
+        error.kind = 'plan_stale';
+        throw this._attachFeedbackActions(error, prepareAgain());
+      }
+
+      for (const asset of prepared.assets) {
+        let currentSource;
+        try { currentSource = await source.client.readBytes(asset.sourcePath, { maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES }); }
+        catch (cause) {
+          const error = new Error(`The source image is no longer readable: ${asset.sourcePath}. Prepare the transfer again.`);
+          error.kind = 'plan_stale';
+          error.cause = cause;
+          error.partialResults = [{ target: asset.sourcePath, status: 'stale', message: String(cause && cause.message || cause) }];
+          throw this._attachFeedbackActions(error, prepareAgain());
+        }
+        if ((asset.sourceSha && currentSource.sha !== asset.sourceSha) || !this.api.bytesEqual(currentSource.bytes, asset.bytes)) {
+          const error = new Error(`The source image changed after the transfer preview: ${asset.sourcePath}. Prepare the transfer again.`);
+          error.kind = 'plan_stale';
+          error.partialResults = [{ target: asset.sourcePath, status: 'stale', message: `Expected source SHA ${asset.sourceSha || 'unknown'}; current SHA ${currentSource.sha || 'unknown'}.` }];
+          throw this._attachFeedbackActions(error, prepareAgain());
+        }
+      }
+
+      const currentPlans = await this.api.planRepositoryAssets({
+        client: source.client,
+        assets: prepared.assets.map((asset) => ({ key: asset.sourcePath, path: asset.desiredPath, bytes: asset.bytes })),
+        maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES
+      });
+      for (let index = 0; index < prepared.assets.length; index += 1) {
+        const asset = prepared.assets[index];
+        const currentPlan = currentPlans[index];
+        if (!currentPlan || currentPlan.path !== asset.expectedPlan.path || currentPlan.status !== asset.expectedPlan.status) {
+          const error = new Error(`The target asset plan changed for ${asset.sourcePath}. Prepare the transfer again before any writes.`);
+          error.kind = 'plan_stale';
+          error.partialResults = [{ target: asset.expectedPlan.path, status: 'stale', message: `Expected ${asset.expectedPlan.status}; now ${currentPlan ? `${currentPlan.status} at ${currentPlan.path}` : 'unavailable'}.` }];
+          throw this._attachFeedbackActions(error, prepareAgain());
+        }
+      }
+
+      const actualPaths = new Map();
+      const partialResults = [...prepared.plan.diagnostics];
+      for (const asset of prepared.assets) {
+        try {
+          const written = await this.api.ensureRepositoryAsset({
+            client: source.client,
+            path: asset.desiredPath,
+            bytes: asset.bytes,
+            maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES,
+            expectedPlan: asset.expectedPlan,
+            message: `Copy image for ${prepared.targetPath}`
+          });
+          actualPaths.set(asset.sourcePath, written.path);
+          partialResults.push({ target: written.path, status: written.status || 'created', message: `${written.status === 'reused' ? 'Byte-identical asset reused' : 'Repository asset copied and verified'} from ${asset.sourcePath}.` });
+        } catch (error) {
+          const enriched = this._appendPartialResults(error, partialResults, { target: asset.sourcePath, status: 'failed', message: String(error && error.message || error) });
+          throw this._attachFeedbackActions(enriched, prepareAgain());
+        }
+      }
+      const content = this.api.finalizeImageAwareTransfer(prepared.plan, actualPaths, this.api);
+      let result;
+      try {
+        result = await source.client.saveVerified({ path: prepared.targetPath, content, baseSha: prepared.targetSha, message: `${prepared.mode === 'append' ? 'Append' : 'Create'} Markdown from linked Note ${source.local.title || source.local.id}` });
+      } catch (error) {
+        const enriched = this._appendPartialResults(error, partialResults, { target: prepared.targetPath, status: 'failed', message: `Target Markdown was not verified: ${String(error && error.message || error)}` });
+        this.transferRetry = {
+          prepared,
+          content,
+          actualPaths: Array.from(actualPaths.entries()),
+          partialResults: enriched.partialResults || partialResults
+        };
+        throw this._attachFeedbackActions(enriched, [this._retryTransferMarkdownAction(note), this._prepareTransferAgainAction(note)]);
+      }
+      partialResults.push({ target: prepared.targetPath, status: 'verified', message: 'Target Markdown verified by read-back.' });
+      this.transferPlan = null;
+      this.transferRetry = null;
+      this.transferDraft = { ...this.transferDraft, targetPath: prepared.targetPath, mode: prepared.mode, plan: { ...(this.transferDraft.plan || {}), ready: false, completed: true } };
+      this._pushFeedback({ id: 'note-image-transfer', scope: 'notes', severity: 'success', title: 'Note and images copied', message: `${prepared.assets.length} repository image asset(s) processed.`, target: prepared.targetPath, partialResults });
+      this._setUi({ status: 'Image-aware Markdown transfer verified.' });
+      return { ...result, partialResults, assetCount: prepared.assets.length };
+    }
+
+    async retryTransferMarkdown(note) {
+      return this._runRemoteOperation('Verifying or retrying target Markdown…', () => this._retryTransferMarkdownUnlocked(note));
+    }
+
+    async _retryTransferMarkdownUnlocked(note) {
+      const retry = this.transferRetry;
+      if (!retry || !retry.prepared || !retry.content) throw new Error('No failed target-Markdown stage is available to verify or retry. Prepare the transfer again.');
+      const prepared = retry.prepared;
+      const prepareAgain = () => [this._prepareTransferAgainAction(note)];
+      const client = await this._client(prepared.repository || this._repositoryContext(note));
+      const actualPaths = new Map(retry.actualPaths || []);
+
+      for (const asset of prepared.assets) {
+        const targetPath = actualPaths.get(asset.sourcePath);
+        if (!targetPath) {
+          const error = new Error(`A verified target-asset path is missing for ${asset.sourcePath}. Prepare the transfer again.`);
+          error.kind = 'plan_stale';
+          throw this._attachFeedbackActions(error, prepareAgain());
+        }
+        let targetAsset;
+        try { targetAsset = await client.readBytes(targetPath, { maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES }); }
+        catch (cause) {
+          const error = new Error(`A previously verified target asset is no longer readable: ${targetPath}. Prepare the transfer again.`);
+          error.kind = 'plan_stale';
+          error.cause = cause;
+          throw this._attachFeedbackActions(error, prepareAgain());
+        }
+        if (!this.api.bytesEqual(targetAsset.bytes, asset.bytes)) {
+          const error = new Error(`A previously verified target asset changed before Markdown recovery: ${targetPath}. Prepare the transfer again.`);
+          error.kind = 'plan_stale';
+          throw this._attachFeedbackActions(error, prepareAgain());
+        }
+      }
+
+      let result;
+      try {
+        result = await this._recoverOrRetryTextWrite({
+          client,
+          path: prepared.targetPath,
+          content: retry.content,
+          baseSha: prepared.targetSha,
+          message: `${prepared.mode === 'append' ? 'Append' : 'Create'} Markdown from linked Note ${note && (note.title || note.id) || prepared.noteId}`,
+          beforeWrite: async () => {
+            const source = await this._verifiedTransferSource(note);
+            if (source.local.id !== prepared.noteId || source.bound.path !== prepared.sourcePath || source.bound.sha !== prepared.sourceSha || this.api.encodeNoteMarkdown(source.local) !== prepared.sourceContent || source.sourceMarkdown !== prepared.sourceMarkdown) {
+              const error = new Error('The source Note changed after the failed transfer. Prepare the transfer again.');
+              error.kind = 'plan_stale';
+              throw error;
+            }
+            for (const asset of prepared.assets) {
+              const sourceAsset = await source.client.readBytes(asset.sourcePath, { maxBytes: this.api.DEFAULT_MAX_IMAGE_BYTES });
+              if ((asset.sourceSha && sourceAsset.sha !== asset.sourceSha) || !this.api.bytesEqual(sourceAsset.bytes, asset.bytes)) {
+                const error = new Error(`The source image changed after the failed transfer: ${asset.sourcePath}. Prepare the transfer again.`);
+                error.kind = 'plan_stale';
+                throw error;
+              }
+            }
+          }
+        });
+      } catch (error) {
+        const enriched = this._appendPartialResults(error, retry.partialResults || [], { target: prepared.targetPath, status: 'failed', message: `Target Markdown verification/retry did not complete: ${String(error && error.message || error)}` });
+        const actions = error && (error.kind === 'conflict' || error.kind === 'remote_deleted' || error.kind === 'plan_stale')
+          ? prepareAgain()
+          : [this._retryTransferMarkdownAction(note), this._prepareTransferAgainAction(note)];
+        throw this._attachFeedbackActions(enriched, actions);
+      }
+      const verificationMessage = result.recoveredWithoutWrite
+        ? 'Target Markdown was already present with the exact intended content and was verified without another write.'
+        : 'Target Markdown was written and verified by read-back on retry.';
+      const partialResults = [...(retry.partialResults || []).filter((item) => !(item.target === prepared.targetPath && item.status === 'failed')), { target: prepared.targetPath, status: 'verified', message: verificationMessage }];
+      this.transferPlan = null;
+      this.transferRetry = null;
+      this.transferDraft = { ...this.transferDraft, targetPath: prepared.targetPath, mode: prepared.mode, plan: { ...(this.transferDraft.plan || {}), ready: false, completed: true } };
+      this._pushFeedback({ id: 'note-image-transfer', scope: 'notes', severity: 'success', title: result.recoveredWithoutWrite ? 'Target Markdown verified' : 'Target Markdown retry succeeded', message: 'Previously verified image assets were reused without rewriting them.', target: prepared.targetPath, partialResults });
+      this._setUi({ status: result.recoveredWithoutWrite ? 'Target Markdown verified after an unknown write result.' : 'Target Markdown verified without repeating asset writes.' });
+      return { ...result, partialResults, assetCount: prepared.assets.length };
+    }
+
+    async transferNoteToMarkdown(note, input = {}) {
+      return this.prepareTransfer(note, input);
     }
 
     _sourcePath(note) {
@@ -5799,6 +7439,67 @@
       return this._runRemoteOperation('Saving and verifying the configured GitHub target…', () => this._saveRemoteUnlocked(note));
     }
 
+    async retryNoteMarkdown(note) {
+      return this._runRemoteOperation('Verifying or retrying Note Markdown…', () => this._retryNoteMarkdownUnlocked(note));
+    }
+
+    async _retryNoteMarkdownUnlocked(note) {
+      const retry = this.noteMarkdownRetry;
+      if (!retry || !retry.noteId || !retry.content) throw new Error('No failed Note-Markdown stage is available to verify or retry. Save the Note again.');
+      const current = await this.store.get(retry.noteId) || this.api.normalizeNote(note);
+      if (!current || current.id !== retry.noteId) throw new Error('The Note for this recovery action is no longer available.');
+      const currentSnapshot = this._noteDraftSnapshot(current);
+      const client = await this._client(retry.target);
+      let result;
+      try {
+        result = await this._recoverOrRetryTextWrite({
+          client,
+          path: retry.target.path,
+          content: retry.content,
+          baseSha: retry.baseSha,
+          message: `${retry.baseSha ? 'Update' : 'Create'} linked Note ${current.title || current.id}`,
+          beforeWrite: async () => {
+            if (currentSnapshot !== retry.localSnapshot) {
+              const error = new Error('The local Note changed after the failed or unverified write. The older Markdown will not be written again.');
+              error.kind = 'plan_stale';
+              throw error;
+            }
+          }
+        });
+      } catch (error) {
+        const enriched = this._appendPartialResults(error, retry.assetResults || [], { target: retry.target.path, status: 'failed', message: `Note Markdown verification/retry did not complete: ${String(error && error.message || error)}` });
+        const actions = error && (error.kind === 'conflict' || error.kind === 'remote_deleted' || error.kind === 'plan_stale')
+          ? []
+          : [this._noteMarkdownRetryAction(current)];
+        throw this._attachFeedbackActions(enriched, actions);
+      }
+
+      let settled;
+      if (currentSnapshot === retry.localSnapshot) {
+        settled = this.api.markSavedVerified(retry.remoteNote, { ...retry.target, ...result });
+        await this._persistRemoteState(settled, result.recoveredWithoutWrite ? 'Remote Note content verified after an unknown write result.' : 'Remote Note Markdown verified on retry.');
+        await this._finalizePendingAssets(settled.id, retry.pendingIds || []);
+      } else {
+        settled = this.api.updateNote(current, {
+          remote: { ...retry.target, ...result },
+          state: this.api.NOTE_STATES.CHANGED_AFTER_SAVE,
+          stateMessage: 'The previously intended remote Note was verified; newer local edits remain unsaved.'
+        });
+        await this._persistRemoteState(settled, settled.stateMessage);
+      }
+      const partialResults = [...(retry.assetResults || []), { target: retry.target.path, status: 'verified', message: result.recoveredWithoutWrite ? 'Exact intended Note Markdown was found and verified without another write.' : 'Note Markdown was written and verified on retry.' }];
+      this.noteMarkdownRetry = null;
+      this._pushFeedback({ id: 'note-image-save', scope: 'notes', severity: 'success', title: result.recoveredWithoutWrite ? 'Note Markdown verified' : 'Note Markdown retry succeeded', message: currentSnapshot === retry.localSnapshot ? 'The Note and its previously verified image assets are now verified.' : 'The remote result was verified; newer local edits were preserved.', target: retry.target.path, partialResults });
+      if (currentSnapshot === retry.localSnapshot) {
+        try { await this._syncNoteCategories(settled); } catch (categoryError) {
+          const pending = this.api.updateNote(settled, { state: this.api.NOTE_STATES.SAVED_VERIFIED, stateMessage: categoryError.message, categoryIntentPending: true });
+          await this._persistRemoteState(pending, categoryError.message);
+          throw categoryError;
+        }
+      }
+      return this.current && this.current.id === settled.id ? this.current : settled;
+    }
+
     async _saveRemoteUnlocked(note) {
       let local = await this.saveLocal(note);
       const target = this._configuredTarget(local);
@@ -5836,11 +7537,17 @@
         return this._persistRemoteState(local);
       }
 
+      const pendingIds = this.api.pendingAssetIds ? this.api.pendingAssetIds(local.body) : [];
+      let prepared;
+      try { prepared = await this._preparePendingAssets(local, target, client); }
+      catch (error) {
+        throw this._attachFeedbackActions(error, [this._feedbackAction('retry-note-save-assets', 'Retry failed image save', () => this.saveRemote(this.current || local))]);
+      }
       local = this.api.markSaving(local);
       await this.store.put(local);
       this.current = local;
       await this.refreshList();
-      const content = this.api.encodeNoteMarkdown(local);
+      const content = this.api.encodeNoteMarkdown(prepared.remoteNote);
       let result;
       try {
         result = await client.saveVerified({
@@ -5850,6 +7557,16 @@
           message: `${remote ? 'Update' : 'Create'} linked Note ${local.title || local.id}`
         });
       } catch (error) {
+        this.noteMarkdownRetry = {
+          noteId: local.id,
+          localSnapshot: this._noteDraftSnapshot(local),
+          remoteNote: prepared.remoteNote,
+          target: { ...target },
+          baseSha: remote ? remote.sha : '',
+          content,
+          pendingIds: [...pendingIds],
+          assetResults: [...prepared.assets]
+        };
         if (error.kind === 'verification_unknown' && !this.api.hasRemoteTargetIdentity(local.remote)) {
           const writeResult = error.details && error.details.writeResult ? error.details.writeResult : {};
           local = this.api.updateNote(local, {
@@ -5867,11 +7584,15 @@
           ? this.api.markConflict(local, error.message)
           : this.api.markSaveFailed(local, error.message);
         await this._persistRemoteState(local);
-        throw error;
+        const enriched = this._appendPartialResults(error, prepared.assets, { target: target.path, status: 'failed', message: `Note Markdown was not verified: ${String(error && error.message || error)}` });
+        throw this._attachFeedbackActions(enriched, [this._noteMarkdownRetryAction(local)]);
       }
 
-      local = this.api.markSavedVerified(local, { ...target, ...result });
+      this.noteMarkdownRetry = null;
+      local = this.api.markSavedVerified(prepared.remoteNote, { ...target, ...result });
       await this._persistRemoteState(local, result.recoveredAfterUnknownWrite ? 'Remote content verified after an initially unknown write result.' : 'Remote save verified by read-back.');
+      await this._finalizePendingAssets(local.id, pendingIds);
+      if (prepared.assets.length) this._pushFeedback({ id: 'note-image-save', scope: 'notes', severity: 'success', title: 'Note images saved', message: `${prepared.assets.length} image asset(s) were verified before the Note write.`, partialResults: prepared.assets });
       try {
         const categoryResults = await this._syncNoteCategories(local);
         if (categoryResults.length) this._pushFeedback({ id: 'note-category-sync', scope: 'notes', severity: 'success', title: 'Note and categories saved', message: `${categoryResults.length} category membership change(s) were verified.`, partialResults: categoryResults });
@@ -5906,11 +7627,17 @@
       } catch (error) {
         if (error.kind !== 'not_found') throw error;
       }
+      const pendingIds = this.api.pendingAssetIds ? this.api.pendingAssetIds(local.body) : [];
+      let prepared;
+      try { prepared = await this._preparePendingAssets(local, target, client); }
+      catch (error) {
+        throw this._attachFeedbackActions(error, [this._feedbackAction('retry-note-copy-assets', 'Retry failed image copy', () => this.copyRemote(this.current || local))]);
+      }
       local = this.api.markSaving(local, 'Copying to the explicitly selected target…');
       await this.store.put(local);
       this.current = local;
       await this.refreshList();
-      const content = this.api.encodeNoteMarkdown(local);
+      const content = this.api.encodeNoteMarkdown(prepared.remoteNote);
       try {
         const result = await client.saveVerified({
           path: target.path,
@@ -5918,14 +7645,17 @@
           baseSha: '',
           message: `Copy linked Note ${local.title || local.id}`
         });
-        local = this.api.markSavedVerified(local, { ...target, ...result });
-        return this._persistRemoteState(local, 'Remote copy verified by read-back. The old remote file was not deleted.');
+        local = this.api.markSavedVerified(prepared.remoteNote, { ...target, ...result });
+        const persisted = await this._persistRemoteState(local, 'Remote copy verified by read-back. The old remote file was not deleted.');
+        await this._finalizePendingAssets(local.id, pendingIds);
+        return persisted;
       } catch (error) {
         local = error.kind === 'conflict'
           ? this.api.markConflict(local, error.message)
           : this.api.markSaveFailed(local, error.message);
         await this._persistRemoteState(local);
-        throw error;
+        const enriched = this._appendPartialResults(error, prepared.assets, { target: target.path, status: 'failed', message: `Copied Note Markdown was not verified: ${String(error && error.message || error)}` });
+        throw this._attachFeedbackActions(enriched, [this._feedbackAction('retry-note-copy-markdown', 'Retry copied Note Markdown only', () => this.copyRemote(this.current || local))]);
       }
     }
 
@@ -5961,6 +7691,9 @@
     async loadRemote(note) {
       return this._runRemoteOperation('Loading the bound remote target…', async () => {
         const bound = this._boundTarget(note);
+        if ((this.api.pendingAssetIds ? this.api.pendingAssetIds(note && note.body) : []).length) {
+          throw new Error('Save or remove pending images before loading remote content; otherwise their local bytes could be detached from the Note body.');
+        }
         const confirmed = await this._confirm('Load the bound remote Note? If local content differs, a separate local backup Note will be created first.');
         if (!confirmed) {
           this._setUi({ status: 'Load remote cancelled.' });
@@ -6031,11 +7764,17 @@
         } catch (error) {
           if (error.kind !== 'not_found') throw error;
         }
+        const pendingIds = this.api.pendingAssetIds ? this.api.pendingAssetIds(local.body) : [];
+        let prepared;
+        try { prepared = await this._preparePendingAssets(local, bound, client); }
+        catch (error) {
+          throw this._attachFeedbackActions(error, [this._feedbackAction('retry-note-overwrite-assets', 'Retry failed image save', () => this.overwriteRemote(this.current || local))]);
+        }
         local = this.api.markSaving(local, remote ? 'Explicitly overwriting the current bound remote base…' : 'Explicitly restoring the missing bound remote target…');
         await this.store.put(local);
         this.current = local;
         await this.refreshList();
-        const content = this.api.encodeNoteMarkdown(local);
+        const content = this.api.encodeNoteMarkdown(prepared.remoteNote);
         try {
           const result = await client.saveVerified({
             path: bound.path,
@@ -6043,14 +7782,17 @@
             baseSha: remote ? remote.sha : '',
             message: `${remote ? 'Reconcile' : 'Restore'} linked Note ${local.title || local.id}`
           });
-          local = this.api.markSavedVerified(local, { ...bound, ...result });
-          return this._persistRemoteState(local, remote ? 'Bound remote explicitly overwritten and verified by read-back.' : 'Missing bound remote explicitly restored and verified by read-back.');
+          local = this.api.markSavedVerified(prepared.remoteNote, { ...bound, ...result });
+          const persisted = await this._persistRemoteState(local, remote ? 'Bound remote explicitly overwritten and verified by read-back.' : 'Missing bound remote explicitly restored and verified by read-back.');
+          await this._finalizePendingAssets(local.id, pendingIds);
+          return persisted;
         } catch (error) {
           local = error.kind === 'conflict'
             ? this.api.markConflict(local, error.message)
             : this.api.markSaveFailed(local, error.message);
           await this._persistRemoteState(local);
-          throw error;
+          const enriched = this._appendPartialResults(error, prepared.assets, { target: bound.path, status: 'failed', message: `Bound Note Markdown was not verified: ${String(error && error.message || error)}` });
+          throw this._attachFeedbackActions(enriched, [this._feedbackAction('retry-note-overwrite-markdown', 'Retry bound Note Markdown only', () => this.overwriteRemote(this.current || local))]);
         }
       });
     }
@@ -6059,7 +7801,9 @@
       if (!id) return;
       if (typeof window !== 'undefined' && !window.confirm('Delete this local Note? Remote repository content is not deleted.')) return;
       await this.store.delete(id);
+      if (this.pendingAssetStore && typeof this.pendingAssetStore.deleteForNote === 'function') await this.pendingAssetStore.deleteForNote(id);
       this.current = null;
+      this.pendingAssets = [];
       this._disposeMediaLoader('note');
       this.noteRendered = null;
       await this.refreshList();

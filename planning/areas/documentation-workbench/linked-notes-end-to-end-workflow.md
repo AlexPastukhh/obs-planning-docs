@@ -1,8 +1,8 @@
 # Create, Link And Manage Repository Notes Workflow
 
 Status: working project-local End-To-End Workflow / prototype acceptance pending
-Doc version: v1.3.0-categories-picker-rich-markdown-and-relation-recovery
-Scope: independently traversable user workflow for creating, reading, reconciling, editing, linking, persisting and navigating durable repository Notes.
+Doc version: v1.4.0-note-image-insertion-and-transfer-handoff
+Scope: independently traversable user workflow for creating, reading, reconciling, editing, linking, inserting repository images, persisting and navigating durable repository Notes.
 
 ## 1. Purpose
 
@@ -12,7 +12,7 @@ This file is the complete Linked Notes behavior owner. The Tampermonkey widget, 
 
 ## 2. Trigger And Result
 
-**Trigger:** the user opens the Notes work surface to create or inspect a Note, select categories, edit or richly preview Markdown, choose file/Note targets, explicitly refresh repository Notes, save a Note or open a linked/backlink target.
+**Trigger:** the user opens the Notes work surface to create or inspect a Note, select categories, edit or richly preview Markdown, choose file/Note targets, paste or select images, explicitly refresh repository Notes, save a Note, start an image-aware transfer or open a linked/backlink target.
 
 **Successful result:** a durable repository-owned Markdown Note with stable links can be found, read, reconciled with recoverable local working state and opened again.
 
@@ -36,6 +36,7 @@ standalone;
 linked to one or several repository files;
 linked to one or several stable anchored fragments/sections;
 linked to another Note;
+containing repository-backed Markdown images;
 optionally linked to an addressable chat-history message.
 ```
 
@@ -50,6 +51,7 @@ open Notes work surface
   → create a new Note or open an existing Note
   → optionally set/change title
   → write or edit Note body
+  → optionally paste/select supported images as recoverable local pending assets
   → add, inspect or remove links to:
       repository file;
       stable anchored fragment/section;
@@ -66,6 +68,9 @@ open Notes work surface
       expose conflict, deletion, unsupported or incomplete results
   → when durable remote save is requested:
       read current remote/base state;
+      validate and write/reuse pending repository image assets;
+      verify image bytes;
+      replace pending references with portable Markdown paths;
       create or update repository Markdown;
       verify the result by reading it back
   → refresh Note list/search/index
@@ -83,11 +88,13 @@ The user creates a standalone Note or selects an existing Note. A Note does not 
 
 The user controls title and body. The helper must not silently rewrite, summarize or promote Note content into another semantic type.
 
-### Stage 3 — Select Categories And Manage Links
+### Stage 3 — Select Categories, Manage Links And Insert Images
 
 The user can select categories while creating or editing a Note. A local-only Note retains pending intent; durable category membership is applied only after the Note target is saved and verified.
 
 Links to files and Notes are selected through a shared tree/search picker with persistent multiple selection and bounded file-search depth. Picker-created links add visible Markdown plus managed metadata. The current target and unresolved state remain visible.
+
+Supported clipboard/file images enter the local draft as recoverable pending assets. Pending bytes, alt text and insertion references remain local working state and do not trigger a repository write.
 
 ### Stage 4 — Preserve Local Working State
 
@@ -101,7 +108,7 @@ The user explicitly starts repository reading for the selected Notes location. V
 
 ### Stage 6 — Save Or Update Repository Markdown
 
-The user explicitly starts a remote save. The implementation reads the current target state, performs a create/update with conflict protection and avoids overwriting a changed remote file blindly.
+The user explicitly starts a remote save. The implementation reads the current target state, validates pending images, creates or safely reuses repository image assets, verifies their exact bytes, rewrites pending references to portable Note-relative paths, then creates/updates the Note with conflict protection. Multi-file save is not presented as globally atomic; verified assets remain reusable if the final Note write later conflicts.
 
 ### Stage 7 — Verify Remote Result
 
@@ -109,7 +116,7 @@ A success response alone is insufficient when the network result may be uncertai
 
 ### Stage 8 — Render, Browse And Navigate
 
-The user can find the Note through a list/search/index, switch among Edit/Preview/Split views, inspect outgoing relations and derived backlinks, and open linked repository files, fragments and Notes. A repository file target may open read-only inside the repository viewer owned by [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md), while retaining an exact `Open on GitHub` target. Category creation and membership remain outside this workflow.
+The user can find the Note through a list/search/index, switch among Edit/Preview/Split views, inspect pending or repository-backed images, outgoing relations and derived backlinks, and open linked repository files, fragments and Notes. A repository file target may open read-only inside the repository viewer owned by [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md), while retaining an exact `Open on GitHub` target. Category creation and membership remain outside this workflow. Copying a verified Note into another Markdown file together with its images is handed to [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md).
 
 ## 7. Branches And Failure Paths
 
@@ -131,6 +138,9 @@ The user can find the Note through a list/search/index, switch among Edit/Previe
 | Linked Note is missing | unresolved Note target remains visible |
 | Picker traversal reaches a bound | show explicit incomplete search and keep the selected basket |
 | Rich Markdown or repository image fails | keep source/edit state and show a contextual placeholder/error |
+| Pasted/selected image is unsupported or oversized | keep Note text; show an explicit pending-image validation result; perform no remote write |
+| Image upload succeeds but Note write fails/conflicts | preserve the draft/pending mapping and verified asset identity; retry unresolved Note work without duplicating assets |
+| Pending image remains unresolved | block false remote success; keep local draft and pending bytes recoverable |
 | Note saves but one category update fails | keep the verified Note, preserve category intent and show completed/pending/failed category results |
 | Any form/action fails | show a prominent contextual error and retain Note text, category choices and picker state |
 | Note links form a cycle | navigation remains possible; recursive expansion must stop and report the cycle |
@@ -150,6 +160,7 @@ The user can find the Note through a list/search/index, switch among Edit/Previe
 | Local state | draft/saved marker | no confusion between local work and repository truth |
 | Remote snapshot | selected Notes location, Note identity, target path/SHA/hash and last verified base | import/fast-forward/preserve/conflict/deleted result is explicit; no read action writes remotely |
 | Remote base | target path/SHA | no blind overwrite |
+| Image assets | each pending asset destination and bytes/hash | every written/reused image is verified before Note success |
 | Remote verification | read-back content | exact expected Note is present |
 | Credential | token scope/storage behavior | least-privilege and no repository leakage |
 
@@ -159,18 +170,19 @@ A separate Tampermonkey Notes widget is a current prototype candidate:
 
 ```text
 Shadow DOM user interface
-  → IndexedDB local working state
+  → IndexedDB local Note state plus a separate pending-image asset store
   → portable Markdown Note representation
   → configurable GitHub owner/repository/branch/path
   → explicit GitHub Contents API Notes-location read and local/remote reconciliation
-  → GitHub Contents API create/read/update
+  → GitHub Contents API text and binary create/read/update
+  → byte-exact repository image verification
   → SHA-aware conflict handling
   → remote read-back verification
   → links to files, anchors and Notes
   → repository file links may use the shared read-only Files surface.
 ```
 
-The `0.5.1-prototype` is supporting implementation evidence for existing local/remote reconciliation plus Note categories, shared file/Note target picking, bounded search, visible managed links, metadata-derived backlinks, Edit/Preview/Split rich Markdown, authenticated repository images and contextual form-preserving errors. Existing `obs-linked-note:v1` metadata remains the durable managed-link representation; category definitions remain the category-membership owner. Browser and real-GitHub acceptance remain pending.
+The `0.6.4-prototype` is supporting implementation evidence for existing local/remote reconciliation plus Note categories, target picking, rich Markdown and managed relations, and adds clipboard/file image insertion, recoverable pending image bytes, byte-preserving verified repository image writes, stage-specific retry actions, exact read-only recovery after unknown Markdown write results, and handoff to same-repository image-aware Note transfer with batch path reservation, source-image freshness checks and raw code-like HTML exclusion. Existing `obs-linked-note:v1` metadata remains the durable managed-link representation; category definitions remain the category-membership owner. Browser and real-GitHub acceptance remain pending.
 
 ## 10. Open Implementation Decisions
 
@@ -181,6 +193,8 @@ The `0.5.1-prototype` is supporting implementation evidence for existing local/r
 5. Exact index/search derivation and stale-cache behavior.
 6. Fine-grained token permissions and storage.
 7. Rename/delete behavior for linked Notes and anchors.
+8. Long-term media-folder convention, deduplication and explicit orphan cleanup.
+9. Whether a later reviewed slice should support cross-repository image transfer.
 
 Conservative prototype fallback:
 
@@ -212,6 +226,13 @@ open every target;
 change target text without changing anchor;
 confirm links still resolve;
 create one SHA conflict;
+
+paste a supported image into a local Note and reload before saving;
+confirm pending bytes and Note text survive;
+save the Note and verify both repository image bytes and rewritten Markdown;
+force image success followed by Note SHA conflict and retry without duplicate asset creation;
+reject an unsupported or oversized image without clearing the Note;
+copy the verified Note and its images through the separate image-aware transfer workflow;
 show a recoverable explicit state.
 ```
 
@@ -219,9 +240,10 @@ Prototype success does not automatically accept a production architecture.
 
 ## 12. Relationships
 
-- `ITEM-124` owns the current narrower Linked Markdown Notes baseline; this workflow proposes expanded file/fragment/Note linking and remote-persistence behavior.
+- `ITEM-124` owns durable Linked Note authoring, including recoverable pending images and verified repository image persistence.
 - `ITEM-114` owns stable repository file/section target identity.
 - `ITEM-126` and the repository-file/category workflow own in-app file preview and exact GitHub navigation; this workflow only consumes that capability.
+- `ITEM-134` and [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md) own copying visible Note Markdown together with repository images into another file.
 - `ITEM-23B` owns Markdown/Git durable truth.
 - `ITEM-99` keeps the Tampermonkey/GitHub design as an Implementation Idea.
 - `ITEM-123` may own project-readable non-secret configuration after item review.
@@ -237,6 +259,9 @@ This workflow does not:
 - choose a final token-storage mechanism;
 - authorize repository replacement, commit or push;
 - automatically create, repair or rewrite linked documentation;
+- move/delete source images or automatically clean orphan assets;
+- download external images automatically;
+- treat a local pending image as durable repository truth;
 - require background repository polling or writes;
 - silently merge different local and remote Note bodies;
 - treat implementation scan limits as final product requirements.

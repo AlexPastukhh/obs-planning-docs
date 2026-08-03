@@ -1,13 +1,36 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.5.1-prototype`
+Version: `0.6.4-prototype`
 Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
 
 
-## 0. `0.5.1-prototype` Additions
+## 0. `0.6.4-prototype` Additions
 
 ```text
+all `0.5.1` file/Note category, picker, relation, rich-Markdown and contextual-error behavior;
+tree/search target selection for transfer create/append instead of a free-text path;
+read-only transfer preflight showing copy/reuse/suffix/external/blocked results before any write;
+prepared-plan invalidation when the source, target SHA, asset collision state, mode or target changes;
+contextual partial-result reporting for asset, Note and target-Markdown failures;
+full-plan target-path reservation so same-name source assets receive final copy/reuse/suffix destinations before the first write;
+source-image SHA and byte revalidation immediately before target writes;
+blockquoted fences, multiline code spans, indented code and HTML comments excluded from transferable-image discovery;
+raw HTML code-like containers (`pre`, `code`, `textarea`, `script`, `style`) excluded from transferable-image discovery, including unclosed containers;
+rendered contextual retry actions for failed image, Note-Markdown and target-Markdown stages without repeating verified writes;
+exact read-only recovery after `verification_unknown`, accepting already-written Note/target Markdown only when bytes match and otherwise retrying only from an unchanged base;
+reference-style/collapsed/shortcut images, balanced or escaped parentheses, angle destinations and titles;
+strict UTF-8 decoding for append targets before any asset write;
+clipboard paste and file-picker image insertion into Note drafts;
+recoverable pending image bytes stored separately from Note records;
+PNG, JPEG, WebP and GIF validation up to the bounded 10 MiB prototype limit;
+binary-safe GitHub Contents API asset writes with exact byte/hash read-back verification;
+portable Note-owned `<note-name>.assets/` destinations and pending-reference rewrite on verified save;
+image-aware copy of visible Note title/body into a same-repository Markdown target;
+create or append-as-new-section transfer modes;
+target-owned `<target-name>.assets/` copy/reuse with deterministic collision suffixes;
+Markdown image and allowlisted `<img>` source rewriting;
+source Note/assets preserved, external images not automatically downloaded, no destructive rollback;
 file and Linked Note categories;
 category selection during Note create/edit;
 multi-select file/Note targets during category creation;
@@ -22,7 +45,7 @@ prominent surface-scoped errors and category-form/target-basket preservation;
 segment-by-segment decoding of percent-encoded rendered repository targets with encoded-traversal rejection;
 independent Note/File image object-URL lifecycles with full disposal cleanup;
 unavailable selected Note categories preserved through failed or not-yet-completed category refresh;
-174 automated tests.
+222 automated tests.
 ```
 
 Durable ownership remains separated:
@@ -31,7 +54,9 @@ Durable ownership remains separated:
 category definition Markdown → explicit file/Note category membership;
 linked Note metadata          → picker-created outgoing link identity;
 Note body                     → visible ordinary Markdown navigation;
-rendered HTML/backlinks/cache → derived state only.
+rendered HTML/backlinks/cache → derived state only;
+pending image bytes/preview    → recoverable local working state;
+repository image assets        → ordinary verified GitHub files.
 ```
 
 ## 1. Owners And Boundaries
@@ -39,9 +64,10 @@ rendered HTML/backlinks/cache → derived state only.
 Behavior owners:
 
 - [`linked-notes-end-to-end-workflow.md`](../../../../areas/documentation-workbench/linked-notes-end-to-end-workflow.md);
+- [`image-aware-markdown-transfer-workflow.md`](../../../../areas/documentation-workbench/image-aware-markdown-transfer-workflow.md);
 - the Linked Notes and repository-file/category Key Scenarios in [`planning-draft.md`](../../../../areas/documentation-workbench/planning-draft.md);
 - [`repository-file-browser-and-categories-workflow.md`](../../../../areas/documentation-workbench/repository-file-browser-and-categories-workflow.md);
-- `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-127` and selected prototype idea `ITEM-128` in [`planning-item-register.md`](../../../../areas/documentation-workbench/planning-item-register.md).
+- `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-127`, `ITEM-134` and selected prototype ideas `ITEM-128`, `ITEM-132`, `ITEM-133` in [`planning-item-register.md`](../../../../areas/documentation-workbench/planning-item-register.md).
 
 This directory is implementation/prototype material. It does not redefine behavior owners or silently accept a production architecture.
 
@@ -85,11 +111,20 @@ category implication is repository-backed while UX grouping remains local-only;
 category state is cleared and reloaded atomically whenever the active workspace or its repository/branch/Categories-folder target changes;
 category writes require the current workspace id and full owner/repository/branch/Categories-folder identity and remain blocked after an in-place target edit until explicit refresh;
 category definitions/cache and local groups use separate target-scoped lock/revision records; per-category group mutations reread the latest map under the lock;
-category definition v2 uses explicit managed-region boundaries while legacy v1 remains readable;
+category definition v3 uses separate Files/Notes managed regions while legacy v1/v2 remain readable;
 category refresh keeps path-aware diagnostics and validates member-file links through bounded parent-directory listings without reading member-file content;
 repository-entry metadata survives the UI click path, so known oversized files are classified before content read;
 category assignment is blocked when a Note-bound preview belongs to another owner/repository/branch;
 category link destinations use deterministic percent-encoded angle-bracket Markdown targets and round-trip spaces, parentheses, brackets, Unicode and percent signs;
+pending clipboard/file images are local-only until an explicit verified Note save;
+pending image bytes live in a separate IndexedDB database and are never embedded in Note metadata;
+Note image saves create or reuse ordinary repository assets under a Note-owned sibling .assets folder;
+binary writes preserve exact bytes and require read-back verification;
+a verified asset is reused after a later Note conflict instead of being duplicated or destructively rolled back;
+image-aware transfer copies visible Note title/body without quiet Note metadata;
+image-aware transfer is restricted to the same owner/repository/branch in the bounded prototype;
+target images are copied/reused under a target-owned sibling .assets folder and destinations are rewritten;
+source Note/assets are never moved/deleted automatically and external images are not auto-downloaded;
 no file-local category marker in this prototype;
 no category-backed Notes projection;
 no automatic link repair;
@@ -176,13 +211,25 @@ Linked Notes IndexedDB:
 ```text
 database: obsLinkedNotesPrototype
 store: notes
+
+database: obsLinkedNotesPrototypeAssets
+store: assets
+  local pending image bytes and verified/retry state only
 ```
 
 Tokens and chat-workspace mappings must not be written to IndexedDB Note records or repository Markdown.
 
 
-### `0.5.1` Runtime Boundaries
+### `0.6.4` Runtime Boundaries
 
+- Pending image insertion accepts bounded PNG/JPEG/WebP/GIF clipboard or file bytes and performs no remote write until explicit Note save.
+- Note save writes/reuses and verifies repository image assets before rewriting pending references and verifying the Note.
+- Image-aware transfer remains in the exact source owner/repository/branch, copies visible Note content only, and uses create or append-as-new-section modes.
+- Multi-file image operations expose partial results; verified files are not blindly rolled back or deleted.
+- Transfer preflight reserves every target asset path as one batch, including collisions between assets in the same operation.
+- Transfer execution rereads every source image and rejects changed SHA/bytes before the first target write.
+- Image discovery ignores fenced/indented/code-span examples and HTML comments; ambiguous or unresolved syntax cannot produce false completion.
+- Contextual feedback actions retry only unresolved stages or prepare a fresh transfer plan; verified assets are reused.
 - Repository file search is explicit breadth-first traversal with folder/request/result/depth limits; it is not a background index.
 - Category definitions write schema v3 while v1/v2 remain readable.
 - A local-only Note may retain pending category intent, but membership is not written until the Note has a verified same-repository target.
@@ -197,6 +244,21 @@ Tokens and chat-workspace mappings must not be written to IndexedDB Note records
 ```text
 src/action-feedback.js
   structured surface-scoped feedback, partial results and dismissal helpers.
+
+src/note-image-assets.js
+  supported image validation, pending-reference syntax, safe filenames and Note-owned asset destinations.
+
+src/pending-note-asset-store.js
+  separate IndexedDB persistence for recoverable pending image bytes and upload state.
+
+src/repository-asset-write.js
+  absent/identical/collision-safe repository asset planning and byte-verified writes.
+
+src/markdown-image-references.js
+  Markdown image and allowlisted img source discovery, classification and deterministic rewriting.
+
+src/image-aware-markdown-transfer.js
+  pure same-repository transfer planning/finalization for visible Note Markdown and target-owned assets.
 
 src/linked-notes-core.js
   Note identity, state transitions, categories, links and portable file naming.
@@ -220,7 +282,7 @@ src/repository-media-loader.js
   authenticated repository image loading, MIME/size bounds and object-URL cleanup.
 
 src/category-definition-codec.js
-  deterministic v2 category Markdown with explicit managed boundaries, encoded portable link destinations and legacy v1 decoding.
+  deterministic v3 category Markdown with explicit managed boundaries, encoded portable link destinations and legacy v1 decoding.
 
 src/repository-category-index.js
   typed file/Note explicit and implied memberships, validation provenance, path-aware broken-link reporting and cycle detection.
@@ -235,7 +297,7 @@ src/indexeddb-note-store.js
   local Note draft/index storage.
 
 src/github-contents-client.js
-  validated GitHub Contents API directory/read/create/update, metadata-without-content-decoding and read-back verification.
+  validated GitHub Contents API directory/read/create/update, binary byte writes, metadata-without-content-decoding and exact read-back verification.
 
 src/remote-note-reconcile.js
   pure local/remote classification for import, unchanged, fast-forward, local-ahead, conflict, duplicate identity and remote deletion.
@@ -247,10 +309,10 @@ src/workspace-store.js
   multi-tab-safe workspace registry, explicit per-chat selection, one shared token, revisioned writes and deterministic v1 migration.
 
 src/linked-notes-ui.js
-  dark Shadow DOM UI, viewport-safe panel placement, independent internal scrolling, visible workspace-manager access, durable in-memory workspace-form draft, reset confirmation, dynamic launcher offset and Escape handling.
+  dark Shadow DOM UI, image paste/file insertion, pending-image and transfer controls, viewport-safe placement, independent scrolling, durable drafts and contextual recovery.
 
 src/linked-notes-app.js
-  composition, route-aware explicit workspace selection, open-time state refresh, draft persistence and remote orchestration.
+  composition, route-aware workspace selection, pending-image lifecycle, verified multi-resource Note save, image-aware transfer and remote orchestration.
 
 build-linked-notes.mjs
   deterministic zero-dependency userscript build.

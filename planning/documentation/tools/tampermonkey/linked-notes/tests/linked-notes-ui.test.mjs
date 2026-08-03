@@ -163,3 +163,10 @@ test('UI source displays unavailable selected Note categories instead of clearin
   assert.match(source, /categoryIds: captured\.categoryIds/);
   assert.match(source, /mergeVisibleCategorySelection\(this\.state\.current\.categoryIds/);
 });
+
+test('UI renders and routes contextual feedback retry actions', () => {
+  const source = readFileSync(join(here, '..', 'src', 'linked-notes-ui.js'), 'utf8');
+  assert.match(source, /data-feedback-action=/);
+  assert.match(source, /onFeedbackAction/);
+  assert.match(source, /feedback-actions/);
+});

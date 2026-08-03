@@ -45,6 +45,7 @@
       severity: FEEDBACK_SEVERITIES.ERROR,
       message: input.message || value.message || 'Unknown error.',
       details: input.details || text(value.kind || value.name || ''),
+      actions: input.actions || value.feedbackActions || [],
       partialResults: input.partialResults || value.partialResults || []
     });
   }

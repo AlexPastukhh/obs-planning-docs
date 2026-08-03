@@ -35,3 +35,10 @@ test('repository and external links are distinguishable without direct navigatio
   assert.equal(result.links[1].external, true);
   assert.match(result.html, /data-obs-link-target="\.\.\/docs\/a\.md"/);
 });
+
+
+test('pending Note image references remain safe render resources', () => {
+  const result = api.renderRichMarkdown('![Pending](obs-pending-image:asset-one)');
+  assert.equal(result.resources[0].target, 'obs-pending-image:asset-one');
+  assert.match(result.html, /data-obs-image-id/);
+});

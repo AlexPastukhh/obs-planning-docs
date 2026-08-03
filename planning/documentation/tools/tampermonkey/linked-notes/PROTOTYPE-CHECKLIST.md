@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.5.1-prototype`
+Prototype version: `0.6.4-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values.
 
@@ -32,9 +32,11 @@ Use one copy for one concrete browser/repository test run. Never record token va
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| 1 | Run `node verify-linked-notes.mjs`. | All 174 tests pass; source syntax, generated syntax and generated freshness pass. | |
+| 1 | Run `node verify-linked-notes.mjs`. | All 222 tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.5.1-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.6.4-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
+| 3a | Run the transfer parser cases containing images inside raw `<pre>`, `<code>`, `<textarea>`, `<script>` and `<style>` containers. | Only images outside those code-like containers enter the transfer plan. | |
+| 3b | Simulate a Note or target-Markdown write accepted by GitHub while immediate read-back fails, then use the contextual verification action. | Exact matching remote content is accepted without another write; absent unchanged targets retry safely; differing content becomes conflict. | |
 
 ## 3. Launcher, Theme And Draft Close
 
@@ -110,6 +112,92 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | C21 | Assign files named `foo(bar).md`, `a b.md`, `name[1].md`, a Unicode name and a name containing `%`. | Encoded visible links survive save, refresh and GitHub rendering without losing membership. | |
 | C22 | Refresh a category containing many valid member links while recording requests. | Validation lists bounded parent directories; it does not fetch or decode each member file body. | |
 | C23 | Browse a folder and click an oversized listed file through the actual rendered entry button. | Size metadata survives the UI event and no file-content request occurs. | |
+
+## 4C. Note Categories And Multi-Target Category Creation
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| NC1 | Create a local Note and select two categories before its first GitHub save. | Note body and category intent persist locally; no category definition contains an unresolved local-only Note path. | |
+| NC2 | Save the Note to GitHub. | Note is verified first; each selected category definition is then updated and verified. | |
+| NC3 | Edit a verified Note and change its category selection. | Added/removed memberships appear only in affected definitions; Note body is not modified by assignment. | |
+| NC4 | Create a category and choose multiple files and verified Notes in the picker. | One v3 definition is written with separate Files and Notes regions and exact read-back verification. | |
+| NC5 | Force one membership conflict during a multi-category Note save. | Verified Note remains saved; completed/pending/failed category rows are visible and category intent remains retryable. | |
+| NC6 | Select Note categories, then open/edit/save the Note before category refresh or after a failed refresh. | Previously selected unavailable category IDs remain visible and are not replaced with an empty list. | |
+| NC7 | Force category-create failure after entering every field and selecting targets. | ID/name/description/implies/group and all selected targets remain intact in the form. | |
+
+## 4D. Target Picker And Bounded Search
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| TP1 | Open `Choose files or Notes` from a Note. | Files, Notes and Selected tabs appear; no write occurs. | |
+| TP2 | Search a filename at Current folder, depth 1, depth 3 and Entire repository. | Results respect depth; deep matches appear only at sufficient depth. | |
+| TP3 | Reach a folder/request/result bound. | The result is marked incomplete/truncated; prior selected targets remain. | |
+| TP4 | Search Notes by title. | Matching behavior agrees with the existing Notes search. | |
+| TP5 | Select several files/Notes, change tabs/query and apply. | Selection survives; visible Markdown links and managed metadata are created once without duplicates. | |
+| TP6 | Attempt a category or relative managed link to another repository/branch. | The operation is blocked with a contextual explanation. | |
+
+## 4E. Rich Markdown And Repository Images
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| RM1 | Open a Markdown file and switch Rendered ↔ Source. | Rich view and exact source are both available; source remains read-only. | |
+| RM2 | Open a Note and switch Edit / Preview / Split while changing unsaved text. | No text is lost and no automatic remote save occurs. | |
+| RM3 | Render headings, emphasis, lists, task lists, tables, blockquotes and code fences. | Safe expected HTML is shown; code is never executed. | |
+| RM4 | Render a private repository image using Markdown image syntax. | Image loads through authenticated GitHub requests and a temporary object URL; token is absent from DOM/URL. | |
+| RM5 | Render an allowlisted `<img src="…" alt="…" width="…">`. | Image loads; event attributes and style are removed. | |
+| RM6 | Render `<img onerror>`, `<script>`, `javascript:` and unsafe data/blob inputs. | No script/event executes; unsafe targets are blocked or escaped. | |
+| RM7 | Close/switch document/workspace after loading images. | Temporary object URLs are revoked. | |
+| RM8 | Use an external image URL. | It is not loaded automatically; source remains available. | |
+| RM9 | Open rendered links/images whose Markdown destinations contain `%20`, encoded parentheses/brackets, Unicode and `%25`. | The exact decoded repository path opens; malformed `%` and encoded traversal/separators are rejected contextually. | |
+| RM10 | Keep a Note Preview image visible, then render a Markdown file with another image and return to the Note. | File rendering does not revoke the Note image URL; each surface keeps an independent media lifecycle. | |
+| RM11 | Leave each rendered mode, switch workspace and unload/reinstall the userscript after image loading. | Related object URLs are revoked and no stale rendered projection reuses revoked URLs. | |
+
+## 4F. Contextual Errors And Relation Recovery
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| ER1 | Trigger a Note, File, Category and picker error. | A high-contrast readable error appears with the failed surface/action, not only in the bottom sidebar. | |
+| ER2 | Dismiss an error. | The message closes without clearing the form, Note body or picker basket. | |
+| ER3 | Create picker-managed links, clear local Note cache/index and run explicit GitHub refresh. | Outgoing managed links rebuild from Note metadata. | |
+| ER4 | Open the target Note. | `Linked from` shows derived source Notes without target-side backlink writes. | |
+| ER5 | Delete or rename a target externally. | Unresolved relation remains visible; no silent metadata/body deletion occurs. | |
+
+## 4G. Note Image Insertion And Verified Asset Save
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| NI1 | Paste a PNG from the clipboard into a local Note. | A local pending image reference and preview appear; no GitHub write occurs. | |
+| NI2 | Choose JPEG, WebP and GIF files through `Insert image`. | Supported bounded files are retained with filename, MIME, size and alt text. | |
+| NI3 | Try SVG, non-image bytes and an image above 10 MiB. | The image is rejected contextually; Note text and prior pending assets remain. | |
+| NI4 | Reload ChatGPT before saving a Note containing pending images. | Note body and pending image bytes recover from local storage. | |
+| NI5 | Save the Note explicitly. | Assets are created or safely reused under `<note-name>.assets/`, bytes are read back exactly, pending references become portable Markdown paths, and the Note is verified. | |
+| NI6 | Force asset success followed by Note SHA conflict. | Verified assets remain reusable, Note draft/pending mapping remains, and retry does not create duplicate files. | |
+| NI7 | Remove a pending image from the Note. | Its local asset record/object URL is removed without affecting unrelated images or remote files. | |
+| NI8 | Inspect repository Markdown, DOM, URLs and diagnostics. | No token, object URL, local path or raw pending bytes are persisted. | |
+| NI9 | Force a verified image write followed by a Note-Markdown failure, then use the contextual retry action. | The UI offers `Retry Note Markdown only`; the verified image is reused and no duplicate binary write occurs. | |
+
+## 4H. Image-Aware Note-To-Markdown Transfer
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| IT1 | Open a verified Note with two repository images and choose the transfer target action. | Create mode chooses a folder plus filename; append mode chooses exactly one existing Markdown file through the shared tree/search picker. | |
+| IT2 | Create a new nested Markdown target. | Visible Note title/body is copied without quiet Note metadata; unique images are copied to `<target-name>.assets/` and relative paths render on GitHub. | |
+| IT3 | Reference one source image twice and include one allowlisted `<img>`. | One physical asset is copied/reused and every occurrence is rewritten. | |
+| IT4 | Append to an existing target, then change its SHA after preview. | The current target is appended as a new section only with the reviewed SHA; stale SHA stops blind overwrite and preserves the plan. | |
+| IT5 | Pre-create an identical target asset. | It is byte-compared and reused without a redundant PUT. | |
+| IT6 | Pre-create a different-byte asset with the same name. | A deterministic safe suffix is selected; the existing file is not overwritten. | |
+| IT7 | Include a missing repository image and an external HTTP image. | Missing asset is explicit; external URL is preserved but not downloaded automatically. | |
+| IT8 | Force one asset write success and a later transfer failure. | Partial rows identify copied/reused/failed/target state; source files remain unchanged and no destructive rollback occurs. | |
+| IT9 | Attempt another repository or branch. | The bounded prototype blocks the transfer before writes. | |
+| IT10 | Use spaces, Unicode, parentheses, brackets and percent signs in source/target paths. | Paths round-trip through encoded Markdown destinations without traversal or broken rendering. | |
+| IT11 | Prepare the transfer preview before execution. | Source/target, target state and every copy/reuse/suffix/external/blocked result are visible; no PUT occurs. | |
+| IT12 | Change the target SHA or create a new asset collision after preview. | Execution stops before its first write and requires a new preview. | |
+| IT13 | Transfer reference-style, collapsed, shortcut, balanced-parenthesis, escaped-parenthesis and angle-bracket images; include examples in code fences. | Supported images are copied/rewritten; code examples are ignored; unresolved syntax blocks false completion. | |
+| IT14 | Choose an append target containing invalid UTF-8 bytes. | Preflight fails contextually before source-image reads or repository writes; target bytes remain unchanged. | |
+| IT15 | Transfer two different source images that share one filename. | Preflight reserves distinct final target paths before execution; different bytes receive a deterministic suffix and identical bytes share one physical target. | |
+| IT16 | Change a source image SHA/bytes after preview. | Execution detects source drift before the first target write and offers `Prepare transfer again`. | |
+| IT17 | Put image-like syntax inside blockquoted fences, multiline code spans, indented code and HTML comments. | Those examples remain literal and are neither copied nor rewritten. | |
+| IT18 | Force assets to verify and then fail the target Markdown write; use the contextual retry. | `Retry target Markdown only` verifies the target without another binary write; a fresh-plan action remains available if state changed. | |
 
 ## 5. Workspace Creation And Shared Token
 
@@ -206,6 +294,7 @@ Use test branches only.
 | 62 | Search generated Markdown and repository diff for token fragments and chat IDs. | None are present. | |
 | 63 | Verify all Notes remain visible after workspace switching. | Workspace selection does not hide or duplicate Notes. | |
 
+
 ## 13. Findings
 
 ### Confirmed evidence
@@ -225,53 +314,3 @@ Use test branches only.
 ```text
 pass / partial / fail / inconclusive
 ```
-
-
-## 4C. Note Categories And Multi-Target Category Creation
-
-| Step | Action | Expected result | Result / evidence |
-|---:|---|---|---|
-| NC1 | Create a local Note and select two categories before its first GitHub save. | Note body and category intent persist locally; no category definition contains an unresolved local-only Note path. | |
-| NC2 | Save the Note to GitHub. | Note is verified first; each selected category definition is then updated and verified. | |
-| NC3 | Edit a verified Note and change its category selection. | Added/removed memberships appear only in affected definitions; Note body is not modified by assignment. | |
-| NC4 | Create a category and choose multiple files and verified Notes in the picker. | One v3 definition is written with separate Files and Notes regions and exact read-back verification. | |
-| NC5 | Force one membership conflict during a multi-category Note save. | Verified Note remains saved; completed/pending/failed category rows are visible and category intent remains retryable. | |
-| NC6 | Select Note categories, then open/edit/save the Note before category refresh or after a failed refresh. | Previously selected unavailable category IDs remain visible and are not replaced with an empty list. | |
-| NC6 | Force category-create failure after entering every field and selecting targets. | ID/name/description/implies/group and all selected targets remain intact in the form. | |
-
-## 4D. Target Picker And Bounded Search
-
-| Step | Action | Expected result | Result / evidence |
-|---:|---|---|---|
-| TP1 | Open `Choose files or Notes` from a Note. | Files, Notes and Selected tabs appear; no write occurs. | |
-| TP2 | Search a filename at Current folder, depth 1, depth 3 and Entire repository. | Results respect depth; deep matches appear only at sufficient depth. | |
-| TP3 | Reach a folder/request/result bound. | The result is marked incomplete/truncated; prior selected targets remain. | |
-| TP4 | Search Notes by title. | Matching behavior agrees with the existing Notes search. | |
-| TP5 | Select several files/Notes, change tabs/query and apply. | Selection survives; visible Markdown links and managed metadata are created once without duplicates. | |
-| TP6 | Attempt a category or relative managed link to another repository/branch. | The operation is blocked with a contextual explanation. | |
-
-## 4E. Rich Markdown And Repository Images
-
-| Step | Action | Expected result | Result / evidence |
-|---:|---|---|---|
-| RM1 | Open a Markdown file and switch Rendered ↔ Source. | Rich view and exact source are both available; source remains read-only. | |
-| RM2 | Open a Note and switch Edit / Preview / Split while changing unsaved text. | No text is lost and no automatic remote save occurs. | |
-| RM3 | Render headings, emphasis, lists, task lists, tables, blockquotes and code fences. | Safe expected HTML is shown; code is never executed. | |
-| RM4 | Render a private repository image using Markdown image syntax. | Image loads through authenticated GitHub requests and a temporary object URL; token is absent from DOM/URL. | |
-| RM5 | Render an allowlisted `<img src="…" alt="…" width="…">`. | Image loads; event attributes and style are removed. | |
-| RM6 | Render `<img onerror>`, `<script>`, `javascript:` and unsafe data/blob inputs. | No script/event executes; unsafe targets are blocked or escaped. | |
-| RM7 | Close/switch document/workspace after loading images. | Temporary object URLs are revoked. | |
-| RM8 | Use an external image URL. | It is not loaded automatically; source remains available. | |
-| RM9 | Open rendered links/images whose Markdown destinations contain `%20`, encoded parentheses/brackets, Unicode and `%25`. | The exact decoded repository path opens; malformed `%` and encoded traversal/separators are rejected contextually. | |
-| RM10 | Keep a Note Preview image visible, then render a Markdown file with another image and return to the Note. | File rendering does not revoke the Note image URL; each surface keeps an independent media lifecycle. | |
-| RM11 | Leave each rendered mode, switch workspace and unload/reinstall the userscript after image loading. | Related object URLs are revoked and no stale rendered projection reuses revoked URLs. | |
-
-## 4F. Contextual Errors And Relation Recovery
-
-| Step | Action | Expected result | Result / evidence |
-|---:|---|---|---|
-| ER1 | Trigger a Note, File, Category and picker error. | A high-contrast readable error appears with the failed surface/action, not only in the bottom sidebar. | |
-| ER2 | Dismiss an error. | The message closes without clearing the form, Note body or picker basket. | |
-| ER3 | Create picker-managed links, clear local Note cache/index and run explicit GitHub refresh. | Outgoing managed links rebuild from Note metadata. | |
-| ER4 | Open the target Note. | `Linked from` shows derived source Notes without target-side backlink writes. | |
-| ER5 | Delete or rename a target externally. | Unresolved relation remains visible; no silent metadata/body deletion occurs. | |

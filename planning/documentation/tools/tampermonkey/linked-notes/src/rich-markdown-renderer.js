@@ -19,6 +19,7 @@
   function normalizeTarget(value) {
     const target = String(value == null ? '' : value).trim();
     if (!target || /[\u0000-\u001f\u007f]/.test(target) || isUnsafeScheme(target)) return '';
+    if (/^obs-pending-image:[A-Za-z0-9._~-]+$/.test(target)) return target;
     if (/^[a-z][a-z0-9+.-]*:/i.test(target) && !isExternalHttp(target)) return '';
     return target;
   }

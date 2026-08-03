@@ -1,7 +1,7 @@
 # Documentation Workbench Planning Item Register — Repository-Native Planning Reset
 
 Status: active project-local source-linked register / Batch 3A current item set
-Doc version: v1.2.0-rich-markdown-note-categories-and-target-picker
+Doc version: v1.3.0-note-image-insertion-and-asset-transfer
 
 Repository owner:
 
@@ -13,8 +13,8 @@ Selected source snapshot:
 
 ```text
 repository: AlexPastukhh/obs-planning-docs
-commit: a8de8970fd64b15dfc5c29b64ac9caacdd27aee6
-source register blob: b0639f62ef1e91a111a8757ad1d4e30b145e4a6e
+commit: a72becd9f299f6b26dd4fa02909ef14c92286e96
+source register blob: c1fbda8c5f685bb78b8433af72885d7e9016823f
 ```
 
 ## 0. Purpose
@@ -59,14 +59,14 @@ The project-local Scenario/DATA/Behavior workspace has completed its coverage au
 
 ## 2. Counts And Disposition
 
-- reviewed canonical items after this transition: **61 / 61**;
-- active selected current meanings: **22**;
+- reviewed canonical items after this transition: **62 / 62**;
+- active selected current meanings: **23**;
 - active reusable-linked meanings: **8**;
 - deferred meanings: **19**;
 - finalized retired meanings: **12**;
 - old methodology/application audit: **110 / 110**, preserved in [`retired-planning-items.md`](retired-planning-items.md).
 
-The previous transition introduced `ITEM-126` through `ITEM-129`. This transition adds `ITEM-130` through `ITEM-133`; `ITEM-132` and `ITEM-133` are selected bounded Implementation Ideas, while `ITEM-129` remains deferred.
+The previous transition introduced `ITEM-130` through `ITEM-133`. This transition updates `ITEM-124` and adds `ITEM-134 / IMAGE-AWARE-REPOSITORY-MARKDOWN-TRANSFER`; `ITEM-129` remains deferred and source-image deletion is not selected.
 
 ## 3. Item Identity And Transformation Rule
 
@@ -830,6 +830,89 @@ user_target:
 
 Context: explicit acceptance of the formed item transition and authorization to update planning and implement the bounded functionality through the normal reviewed replacement-package flow.
 
+
+### SRC-N107
+
+```text
+хочу иметь возможность вставлять изображения и желательно чтобы потом ии могу скопировать всю из заметки в гитхабе и вставить куда то в файл гитхаба и чтобы изображение реально переставилось
+
+[PLANNING_COMMAND]
+Read this whole command body before answering.
+Do not ignore `key_reminders`.
+
+command:
+  сформируй айтемы
+
+english_name:
+  form items
+
+command_family:
+  `сформируй айтемы` / `form items`
+
+source_of_truth:
+  Start from `planning/planning-use-case-map.md`.
+  Then read the linked owner files for this command route.
+
+route_read_rule:
+  Read or reread the route when it is not current, remembered or certain.
+  Do not rely only on this compact prompt when command behavior is uncertain.
+
+key_reminders:
+  - Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.
+  - Preserve complete source messages, accumulating item meanings and typed Source Contributions.
+  - Perform a proportional current-owner check and show Current, Incoming and Resulting meanings for non-trivial transformations.
+  - Preserve optional relation-backed Implementation Ideas as separate Planning Items rather than copied text.
+  - Explicit review remains required.
+  - Do not edit repository files, create an archive, commit or push.
+
+user_target:
+  <source/discussion to form items from>
+
+[/PLANNING_COMMAND]
+```
+
+Context: primary requirement for inserting repository-owned images into Notes and copying a complete Note into another GitHub Markdown file while physically copying its repository image assets and rewriting destinations.
+
+### SRC-N108
+
+```text
+обнова доков планирования и реализация функционала[PLANNING_COMMAND]
+Read this whole command body before answering.
+Do not ignore `key_reminders`.
+
+command:
+  план файл-обновление
+
+english_name:
+  plan file update
+
+command_family:
+  `план файл-обновление` / `спланируй обновление файлов` / `спланируй архив` / `plan file update` / `archive plan`
+
+source_of_truth:
+  Start from `planning/planning-use-case-map.md`.
+  Then read the linked owner files for this command route.
+
+route_read_rule:
+  Read or reread the route when it is not current, remembered or certain.
+  Do not rely only on this compact prompt when command behavior is uncertain.
+
+key_reminders:
+  - Plan file/docs/code/archive update only.
+  - Treat only explicit user statements and checked source facts as confirmed.
+  - For important unknowns, show prioritized questions with one conservative fallback instruction.
+  - End with `План файл-обновление` in planned mode.
+  - Do not edit files.
+  - Do not create archive unless separately requested.
+
+user_target:
+  <what update/archive should be planned>
+
+[/PLANNING_COMMAND]
+```
+
+Context: explicit acceptance of the formed image-insertion and image-aware transfer transition and authorization to update planning documentation and implement the bounded prototype through the reviewed replacement-package flow.
+
 ## 5. Current Item Index
 
 | ID | Current semantic name | Disposition | Current owner |
@@ -854,6 +937,7 @@ Context: explicit acceptance of the formed item transition and authorization to 
 | `ITEM-131` | Repository Target Picker And Bounded Search | active selected | this register / Planning Draft |
 | `ITEM-132` | Sanitized Rich Markdown And Authorized Images | active selected Implementation Idea | this register / prototype evidence |
 | `ITEM-133` | Note Relation Metadata And Derived Backlinks | active selected Implementation Idea | this register / prototype evidence |
+| `ITEM-134` | Image-Aware Repository Markdown Transfer | active selected | this register / Planning Draft |
 | `ITEM-94` | AI Planning Item Review And Transfer | active reusable-linked | reusable planning owners |
 | `ITEM-110` | Stable Planning Item Identity | active reusable-linked | reusable planning owners |
 | `ITEM-41` | Canonical Planning Item Reuse | active reusable-linked | reusable planning owners |
@@ -1152,10 +1236,10 @@ Exact format is selected by each tool after its implementation idea is accepted.
 <a id="item-124"></a>
 ### ITEM-124 / LINKED-MARKDOWN-NOTES — Linked Markdown Notes
 
-- Status: **active selected capability; `0.5.1-prototype` implementation, acceptance pending**.
+- Status: **active selected capability; `0.6.4-prototype` implementation, acceptance pending**.
 - Former code/name: `FIRST-CLASS-NAMED-NOTES`.
 - Kind: documentation capability.
-- Sources: `SRC-N87`, `SRC-N101`, `SRC-N102`, `SRC-N105`, `SRC-N106`.
+- Sources: `SRC-N87`, `SRC-N101`, `SRC-N102`, `SRC-N105`, `SRC-N106`, `SRC-N107`, `SRC-N108`.
 
 #### Complete current meaning
 
@@ -1163,7 +1247,7 @@ A Note may be titled or untitled, standalone or linked to one or several reposit
 
 The user can choose categories while creating or editing a Note. A local-only Note may retain category intent, but durable membership is written only after the Note has a verified repository target. Managed links are created through a typed file/Note picker, remain visible as ordinary Markdown links and carry quiet recoverable metadata so outgoing links and derived backlinks can be rebuilt after local cache loss. Manually typed ordinary links are not silently converted into managed relations.
 
-The helper may expose `Edit`, `Preview` and `Split` views. Rendered HTML is a sanitized projection and is never saved instead of Markdown. Failed save, category, picker or rendering actions preserve literal Note content, selected categories and selected targets.
+The helper may expose `Edit`, `Preview` and `Split` views. Rendered HTML is a sanitized projection and is never saved instead of Markdown. A user may paste or select a supported image while editing; the image remains a local pending asset until an explicit GitHub save writes and byte-verifies the repository asset, rewrites the Note to a portable relative Markdown destination and verifies the Note itself. Failed asset or Note writes preserve the literal Note, pending bytes and recoverable per-target state.
 
 #### Boundaries
 
@@ -1178,8 +1262,8 @@ The helper may expose `Edit`, `Preview` and `Split` views. Rendered HTML is a sa
 | Role | Meaning | Effect |
 |---|---|---|
 | Current | durable Markdown Notes with file/fragment/Note links and verified GitHub persistence | preserved |
-| Incoming | Note categories, rich Markdown, tree-based managed links and recoverable relation metadata | extends |
-| Resulting | durable categorized Linked Notes with source/rendered views and rebuildable managed relations | selected current meaning |
+| Incoming | Note categories, rich Markdown, tree-based managed links, recoverable relation metadata and repository-owned image insertion | extends |
+| Resulting | durable categorized image-bearing Linked Notes with source/rendered views and rebuildable managed relations | selected current meaning |
 
 <a id="item-97"></a>
 ### ITEM-97 / REPOSITORY-FILE-AND-NOTE-CATEGORIES — Repository File And Note Categories And Guidance
@@ -1320,6 +1404,44 @@ Repository-relative images resolve in the exact owner/repository/branch/path con
 Managed links created through the target picker are stored in quiet versioned Note metadata using the existing linked-Note marker contract. Each relation keeps type, label and stable file or Note target identity sufficient to rebuild outgoing relations after local cache loss. The visible Note body also contains ordinary Markdown navigation links.
 
 Incoming backlinks are derived by indexing metadata from other Notes and are not written into targets. Manually typed ordinary Markdown links remain ordinary links unless the user explicitly creates or repairs a managed relation. Category membership is not duplicated in this metadata.
+
+
+<a id="item-134"></a>
+### ITEM-134 / IMAGE-AWARE-REPOSITORY-MARKDOWN-TRANSFER — Image-Aware Repository Markdown Transfer
+
+- Status: **active selected current meaning; `0.6.4-prototype` implementation, acceptance pending**.
+- Kind: repository content-transfer capability.
+- Sources: `SRC-N107`, `SRC-N108`.
+- Relations: `consumes source from → ITEM-124`; `uses image/path behavior from → ITEM-132`; `follows review boundary → ITEM-34B`; `different scope from → ITEM-107`.
+
+#### Complete current meaning
+
+A user can explicitly copy the visible title/body of a verified repository-backed Linked Note into another Markdown file in the same owner/repository/branch while preserving usable images. The transfer resolves each repository-backed Markdown image or allowlisted `img` source from the exact source Note context, copies byte-identical assets into a target-owned sibling asset folder, rewrites destinations relative to the target Markdown file and verifies every successful remote write by read-back.
+
+The first bounded implementation supports creating a new Markdown file or appending the Note to an existing Markdown file. It preserves external HTTP(S) image URLs without downloading them, blocks unresolved pending or invalid image references, reuses an identical existing target asset and selects a collision-safe suffixed filename instead of overwriting different bytes. The source Note and source images are never deleted by the default operation.
+
+The multi-file operation is not globally atomic. Verified asset writes are not blindly rolled back; a partial result identifies copied, reused, failed and pending targets, and target Markdown is not written while a required image copy is unresolved. Repository mutation remains explicit and does not extend `ITEM-107`, whose AI-transfer behavior is non-mutating.
+
+#### Transformation
+
+| Role | Meaning | Effect |
+|---|---|---|
+| Current | temporary non-mutating AI transfer and ordinary repository diff review | preserved in `ITEM-107` and `ITEM-34B` |
+| Incoming | copy a complete Note into GitHub Markdown and physically copy its images | new independently traversable workflow |
+| Resulting | explicit same-repository image-aware Markdown transfer with verified assets and rewritten paths | selected current meaning |
+
+#### Acceptance
+
+- source Note and exact target owner/repository/branch/path are visible before execution;
+- full visible Note Markdown can create a new target or append to an existing target;
+- repository images are copied or byte-identically reused and their links are rewritten relative to the target file;
+- collisions never overwrite unknown bytes silently;
+- source Note and source assets remain unchanged;
+- target Markdown is not written when a required image remains unresolved;
+- remote SHA changes prevent blind overwrite;
+- all successful asset and Markdown writes are verified by read-back;
+- token, object URLs and machine-local paths never enter repository content;
+- browser and real-GitHub acceptance remain required.
 
 <a id="item-114"></a>
 ### ITEM-114 / STABLE-MARKDOWN-LINK-TARGETS — Stable Markdown Link Targets
@@ -2048,7 +2170,7 @@ Source navigation must resolve from a Planning Item to the complete supporting u
 
 A categorized file could carry a quiet machine-readable category marker so classification moves with the file and can be rebuilt by repository scanning. Exact front matter/comment syntax, source-of-truth precedence, two-sided reconciliation and impact on arbitrary file formats remain unresolved.
 
-The `0.5.1-prototype` deliberately does not write this metadata. Category-definition member links are the selected bounded prototype owner, avoiding two independently editable truths.
+The `0.6.4-prototype` deliberately does not write this metadata. Category-definition member links are the selected bounded prototype owner, avoiding two independently editable truths.
 
 <a id="item-125"></a>
 ### ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION — A Notes collection/view may be implemented as a typed projection over Reference Objects whose categories include `Note`.
@@ -2231,11 +2353,12 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 | Reference Impact Checker | `ITEM-89` | Working / Needs Prototype | detect explicit review relations across changed file/section targets without false positives |
 | AI Transfer Expander | `ITEM-107` | Working / Needs Prototype | produce bounded non-mutating expansion with source identity and unresolved-target reporting |
 | Structured Message Composer implementation | `ITEM-121` | open | independently useful composition flow without a broad application shell |
-| Notes helper/index | `ITEM-124` | supported by `0.5.1-prototype` | browser and real-GitHub acceptance |
+| Notes helper/index | `ITEM-124` | supported by `0.6.4-prototype` | browser and real-GitHub acceptance |
 | Repository Category Definition Markdown | `ITEM-97`, `ITEM-118`, `ITEM-127` | selected bounded prototype (`ITEM-128`) | real GitHub create/assign/rebuild/conflict/cycle evidence |
 | File-Local Category Metadata | `ITEM-97` | deferred (`ITEM-129`) | choose canonical precedence and prove value without duplicate truth |
 | Sanitized Rich Markdown And Authorized Images | `ITEM-124`, `ITEM-126` | selected bounded prototype (`ITEM-132`) | browser security and private-image evidence |
 | Note Relation Metadata And Derived Backlinks | `ITEM-124`, `ITEM-118` | selected bounded prototype (`ITEM-133`) | cache-clear rebuild, mismatch and backlink evidence |
+| Image-Aware Repository Markdown Transfer | `ITEM-134`, `ITEM-124`, `ITEM-34B` | supported by `0.6.4-prototype` | browser/real-GitHub image insertion, collision and partial-result evidence |
 
 ## 11. Open Questions
 
@@ -2248,13 +2371,15 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 7. What rename/delete and link-migration behavior is required for category definitions?
 8. Which additional raw HTML elements, if any, justify expanding the rich-renderer allowlist?
 9. Should cross-repository targets use explicit GitHub URLs or remain outside managed relative-link workflows?
+10. Should a later transfer slice support cross-repository/branch targets and selected-section insertion?
+11. Which asset cleanup workflow, if any, should remove user-confirmed orphan images after partial failures?
 
 ## 12. Next Gate
 
 ```text
 review this register and planning-draft.md
-  → inspect the `0.5.1-prototype` replacement diff
-  → execute browser and real-GitHub acceptance for categories, picker, rich Markdown, images, errors and relation recovery
+  → inspect the `0.6.4-prototype` replacement diff
+  → execute browser and real-GitHub acceptance for image insertion, binary verification, transfer/collision/partial recovery and existing categories/picker/rich-Markdown behavior
   → keep production architecture pending
   → commit/push only after explicit diff approval.
 ```

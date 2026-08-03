@@ -1,8 +1,8 @@
 # Documentation Workbench Planning Area
 
 Status: active project-local planning area / Scenario migration and route alignment
-Doc version: v1.4.0-rich-markdown-note-categories-and-target-picker
-Scope: current planning for repository-native documentation work, stable repository links, affected-use review, AI transfer, linked Notes, repository file viewing and file categories.
+Doc version: v1.5.0-note-images-and-asset-transfer
+Scope: current planning for repository-native documentation work, stable repository links, affected-use review, linked Notes with repository images, image-aware Markdown transfer, repository file viewing and file/Note categories.
 
 Reusable planning method remains under [`planning/documentation/application-planning/`](../../documentation/application-planning/README.md).
 
@@ -31,6 +31,7 @@ Compatibility-only paths are listed separately and are not current owners.
 | Planning source-to-repository lifecycle | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) |
 | Direct documentation change/reference review lifecycle | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) |
 | Linked Notes lifecycle | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) |
+| Image-aware Note-to-Markdown transfer lifecycle | [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md) |
 | Repository file browser and category lifecycle | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) |
 | Local semantic Directions | [`direction-registry.md`](direction-registry.md) |
 | Local independently useful Use Cases | [`use-case-registry.md`](use-case-registry.md) |
@@ -41,6 +42,7 @@ Compatibility-only paths are listed separately and are not current owners.
 ordinary Markdown + Git
   → existing editor / GitHub / reviewed replacement
   → stable file, section and Note links
+  → repository-owned Note images and image-aware Markdown transfer
   → in-app read-only file viewing and exact GitHub navigation
   → durable file-category definitions and category views
   → optional explicit review-on-change/include meaning
@@ -71,13 +73,20 @@ Use this workflow for Note creation/editing, links to files/fragments/Notes, exp
 
 Owner: [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md).
 
+
+### Copy A Linked Note And Repository Images
+
+Use this workflow when a verified Note must be copied into another same-repository Markdown file together with copied/reused image assets and rewritten target-relative paths.
+
+Owner: [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md).
+
 ### Browse Repository Files And Manage Categories
 
 Use this workflow when a configured workspace is used to browse/read repository files, create or refresh category definitions, assign files or inspect explicit/implied memberships.
 
 Owner: [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md).
 
-All four workflows are independently traversable. The Tampermonkey implementation remains prototype evidence pending browser and real-GitHub acceptance.
+All five workflows are independently traversable. The Tampermonkey implementation remains prototype evidence pending browser and real-GitHub acceptance.
 
 ## 5. Planning Draft Contract Used In This Area
 
@@ -111,7 +120,7 @@ retired-planning-items.md:
 
 Deferred does not mean rejected. Old application-heavy capabilities remain deferred where the current decision did not finally supersede them.
 
-The accepted file/category transformations are canonical in `ITEM-97`, `ITEM-118` and `ITEM-126` through `ITEM-129`. `ITEM-128` is selected only as a bounded prototype idea; `ITEM-129` remains deferred.
+The accepted file/category transformations are canonical in `ITEM-97`, `ITEM-118` and `ITEM-126` through `ITEM-129`. Repository image insertion extends `ITEM-124`; image-aware transfer is owned by `ITEM-134`. `ITEM-128`, `ITEM-132` and `ITEM-133` remain bounded prototype ideas; `ITEM-129` remains deferred.
 
 ## 7. Compatibility Paths
 
@@ -146,5 +155,5 @@ Root README, root Direction/activation/source routes and Tampermonkey projection
 - Batch 3A local canonical planning reset: complete.
 - Batch 3B Scenario migration and root/projection alignment: represented by this package.
 - Canonical repository file/category Planning Item transition: represented in the current register.
-- Linked Notes `0.5.1-prototype`: implementation evidence with file/Note categories, v3 definitions, bounded target search, managed relation recovery, rich Markdown/authenticated images, contextual form recovery and retained `0.4.2` isolation safeguards; browser and real-GitHub acceptance pending.
+- Linked Notes `0.6.4-prototype`: retains `0.5.1` categories/search/rich Markdown/relation behavior and adds recoverable clipboard/file image insertion, byte-verified repository image writes and same-repository Note-to-Markdown transfer with copied/reused assets and rewritten paths; browser and real-GitHub acceptance pending.
 - Production runtime architecture: not selected.

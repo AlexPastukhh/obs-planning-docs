@@ -9,14 +9,19 @@ const workspaceStoreApi = require('../src/workspace-store.js');
 const api = Object.assign(
   {},
   require('../src/linked-notes-core.js'),
+  require('../src/note-image-assets.js'),
   require('../src/note-markdown-codec.js'),
   require('../src/repository-target.js'),
+  require('../src/markdown-image-references.js'),
+  require('../src/image-aware-markdown-transfer.js'),
   require('../src/repository-file-browser.js'),
   require('../src/repository-target-search.js'),
   require('../src/action-feedback.js'),
   require('../src/note-relation-index.js'),
   require('../src/rich-markdown-renderer.js'),
   require('../src/repository-media-loader.js'),
+  require('../src/repository-asset-write.js'),
+  require('../src/pending-note-asset-store.js'),
   require('../src/category-definition-codec.js'),
   require('../src/repository-category-index.js'),
   require('../src/category-cache-store.js'),
@@ -35,6 +40,15 @@ class MemoryStore {
   async delete(id) { this.map.delete(id); }
   async list() { return [...this.map.values()].map((value) => structuredClone(value)); }
   async search() { return this.list(); }
+}
+
+class MemoryPendingStore {
+  constructor() { this.map = new Map(); }
+  async put(asset) { this.map.set(asset.id, structuredClone(asset)); return asset; }
+  async get(id) { return this.map.has(id) ? structuredClone(this.map.get(id)) : null; }
+  async listByNote(noteId) { return [...this.map.values()].filter((asset) => asset.noteId === noteId).map((asset) => structuredClone(asset)); }
+  async delete(id) { this.map.delete(id); }
+  async deleteForNote(noteId) { for (const asset of await this.listByNote(noteId)) this.map.delete(asset.id); }
 }
 
 class FakeUI {
@@ -70,9 +84,11 @@ function makeApp({ note, settings, client, confirmAction = () => true }) {
     async setCategoryGroup(workspaceId, categoryId, groupName) { const groups = structuredClone(categoryCache.groups || {}); if (String(groupName || '').trim()) groups[categoryId] = String(groupName).trim(); else delete groups[categoryId]; categoryCache = { ...structuredClone(categoryCache), groups }; return structuredClone(categoryCache); },
     async clear() { categoryCache = { definitions: [], diagnostics: [], fileValidation: {}, groups: {}, refreshedAt: '' }; }
   };
+  const pendingAssetStore = new MemoryPendingStore();
   const app = new appApi.LinkedNotesApp({
     api,
     store,
+    pendingAssetStore,
     ui,
     categoryStore,
     settings,
@@ -82,7 +98,7 @@ function makeApp({ note, settings, client, confirmAction = () => true }) {
     setValue: async () => {}
   });
   app.current = note || null;
-  return { app, store, ui, categoryStore, categoryCache: () => structuredClone(categoryCache), clientCalls: () => clientCalls };
+  return { app, store, pendingAssetStore, ui, categoryStore, categoryCache: () => structuredClone(categoryCache), clientCalls: () => clientCalls };
 }
 
 test('regular save blocks repository or branch switch before any network call', async () => {
@@ -227,6 +243,13 @@ test('load remote creates a local backup before replacing conflicting literal co
   assert.match(backup.title, /local conflict backup/);
 });
 
+
+test('load remote blocks while pending image bytes are still attached to the local Note', async () => {
+  const note = api.updateNote(verifiedNote(), { body: '![Pending](<obs-pending-image:asset-one>)' });
+  const { app, clientCalls } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true }, client: {} });
+  await assert.rejects(() => app.loadRemote(note), /Save or remove pending images/);
+  assert.equal(clientCalls(), 0);
+});
 
 test('load remote rejects a codec-imported non-HTTP(S) URL before creating a backup', async () => {
   const note = api.markConflict(verifiedNote(), 'Conflict');
@@ -1269,4 +1292,445 @@ test('leaving rendered modes revokes only the related surface media', async () =
   assert.equal(instances[1].disposed, false);
   await app.setFileViewMode('source');
   assert.equal(instances[1].disposed, true);
+});
+
+
+test('image insertion persists pending bytes and verified Note save rewrites the repository link', async () => {
+  const note = api.createNote({ id: 'note-image', title: 'Image Note', body: 'Before' });
+  const files = new Map();
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes }) { const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, htmlUrl: '' }; files.set(path, { ...result, bytes: Uint8Array.from(bytes), size: bytes.length }); return result; },
+    async saveVerified({ path, content }) { const result = { path, sha: `sha-${path}`, verifiedHash: await api.sha256Hex(content), htmlUrl: '' }; files.set(path, { ...result, content }); return result; }
+  };
+  const { app, store, pendingAssetStore } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true }, client });
+  app.current = note;
+  await app.insertNoteImage(note, { name: 'diagram.png', type: 'image/png', bytes: Uint8Array.from([137, 80, 78, 71, 13, 10, 26, 10]), cursorStart: 6, cursorEnd: 6 });
+  const staged = await store.get(note.id);
+  assert.match(staged.body, /obs-pending-image:/);
+  assert.equal((await pendingAssetStore.listByNote(note.id)).length, 1);
+  const saved = await app.saveRemote(staged);
+  assert.equal(saved.state, api.NOTE_STATES.SAVED_VERIFIED);
+  assert.match(saved.body, /\.\/Image-Note-noteimage\.assets\/diagram\.png|\.\/image-note-noteimage\.assets\/diagram\.png/i);
+  assert.equal((await pendingAssetStore.listByNote(note.id)).length, 0);
+  assert.ok(files.has(saved.remote.path.replace(/\.md$/i, '.assets/diagram.png')));
+});
+
+test('image-aware transfer copies repository bytes, rewrites paths and leaves source untouched', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = '![Diagram](../images/diagram.png)';
+  const sourceBytes = Uint8Array.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  const sourceContent = api.encodeNoteMarkdown(note);
+  const files = new Map([
+    ['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: sourceContent }],
+    ['images/diagram.png', { path: 'images/diagram.png', sha: 'sha-image', bytes: sourceBytes, size: 3 }]
+  ]);
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes }) { const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(bytes), size: bytes.length }; files.set(path, result); return result; },
+    async saveVerified({ path, content, baseSha }) { assert.equal(baseSha, ''); const result = { path, sha: `sha-${path}`, verifiedHash: await api.sha256Hex(content), content, htmlUrl: '' }; files.set(path, result); return result; }
+  };
+  const { app, store } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true }, client });
+  app.current = note;
+  const preview = await app.prepareTransfer(note, { targetPath: 'docs/guide.md', mode: 'create' });
+  assert.equal(preview.assets.length, 1);
+  assert.equal(files.has('docs/guide.assets/diagram.png'), false);
+  const result = await app.executePreparedTransfer(note);
+  assert.equal(result.assetCount, 1);
+  assert.ok(files.has('docs/guide.assets/diagram.png'));
+  assert.match(files.get('docs/guide.md').content, /guide\.assets\/diagram\.png/);
+  assert.equal((await store.get(note.id)).remote.path, 'notes/source.md');
+});
+
+
+test('image-aware transfer rejects local or remote source drift before asset writes', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = 'Current local body';
+  const files = new Map([['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: 'different remote content' }]]);
+  let binaryWrites = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes() { throw new Error('must not read assets'); },
+    async saveBytesVerified() { binaryWrites += 1; throw new Error('must not write assets'); },
+    async saveVerified() { throw new Error('must not write Markdown'); }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true }, client });
+  app.current = note;
+  await assert.rejects(() => app.transferNoteToMarkdown(note, { targetPath: 'docs/guide.md', mode: 'create' }), /no longer matches/);
+  assert.equal(binaryWrites, 0);
+});
+
+test('transfer target picker chooses a create folder or one existing Markdown append target', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  const client = {
+    async listDirectory(path) {
+      if (!path) return [{ type: 'dir', path: 'docs', name: 'docs' }];
+      return [{ type: 'file', path: 'docs/existing.md', name: 'existing.md' }];
+    }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await app.openTargetPicker({ mode: 'transfer-target', transferMode: 'create', fileName: 'guide.md' });
+  await app.browseTargetPicker('docs');
+  await app.applyTargetPicker({ fileName: 'guide.md' });
+  assert.equal(app.transferDraft.targetPath, 'docs/guide.md');
+  assert.equal(app.transferDraft.mode, 'create');
+
+  await app.openTargetPicker({ mode: 'transfer-target', transferMode: 'append' });
+  app.toggleTargetPickerTarget({ type: 'file', path: 'docs/existing.md', name: 'existing.md' });
+  await app.applyTargetPicker();
+  assert.equal(app.transferDraft.targetPath, 'docs/existing.md');
+  assert.equal(app.transferDraft.mode, 'append');
+});
+
+test('pending-image save reports verified earlier assets when a later asset fails', async () => {
+  const note = api.createNote({ id: 'note-partial-assets', title: 'Partial', body: '' });
+  let assetWrites = 0;
+  let markdownWrites = 0;
+  const files = new Map();
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes }) {
+      assetWrites += 1;
+      if (assetWrites === 2) throw new Error('second asset failed');
+      const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(bytes), size: bytes.length };
+      files.set(path, result);
+      return result;
+    },
+    async saveVerified() { markdownWrites += 1; throw new Error('must not write Note'); }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await app.insertNoteImage(note, { name: 'one.png', type: 'image/png', bytes: Uint8Array.from([137,80,78,71,13,10,26,10]) });
+  await app.insertNoteImage(app.current, { name: 'two.png', type: 'image/png', bytes: Uint8Array.from([137,80,78,71,13,10,26,10,1]) });
+  await assert.rejects(async () => {
+    try { await app.saveRemote(app.current); }
+    catch (error) {
+      assert.ok(error.partialResults.some((item) => item.status === 'created' || item.status === 'verified'));
+      assert.ok(error.partialResults.some((item) => item.status === 'failed'));
+      throw error;
+    }
+  }, /second asset failed/);
+  assert.equal(markdownWrites, 0);
+});
+
+test('Note write failure reports already verified image assets and failed Markdown target', async () => {
+  const note = api.createNote({ id: 'note-note-fail', title: 'Write Fail', body: '' });
+  const files = new Map();
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes }) { const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(bytes), size: bytes.length }; files.set(path, result); return result; },
+    async saveVerified() { const error = new Error('Note SHA conflict'); error.kind = 'conflict'; throw error; }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await app.insertNoteImage(note, { name: 'one.png', type: 'image/png', bytes: Uint8Array.from([137,80,78,71,13,10,26,10]) });
+  await assert.rejects(async () => {
+    try { await app.saveRemote(app.current); }
+    catch (error) {
+      assert.ok(error.partialResults.some((item) => item.status === 'created' || item.status === 'verified'));
+      assert.ok(error.partialResults.some((item) => item.status === 'failed' && /Note Markdown/.test(item.message)));
+      throw error;
+    }
+  }, /Note SHA conflict/);
+});
+
+test('transfer preflight is read-only and target Markdown failure reports copied assets', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = '![Diagram](../images/diagram.png)';
+  const sourceBytes = Uint8Array.from([137,80,78,71,13,10,26,10]);
+  const files = new Map([
+    ['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: api.encodeNoteMarkdown(note) }],
+    ['images/diagram.png', { path: 'images/diagram.png', sha: 'sha-image', bytes: sourceBytes, size: sourceBytes.length }]
+  ]);
+  let binaryWrites = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readMetadata(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes }) { binaryWrites += 1; const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(bytes), size: bytes.length }; files.set(path, result); return result; },
+    async saveVerified() { throw new Error('target Markdown failed'); }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  const preview = await app.prepareTransfer(note, { targetPath: 'docs/guide.md', mode: 'create' });
+  assert.equal(preview.ready, true);
+  assert.equal(binaryWrites, 0);
+  await assert.rejects(async () => {
+    try { await app.executePreparedTransfer(note); }
+    catch (error) {
+      assert.ok(error.partialResults.some((item) => item.status === 'created'));
+      assert.ok(error.partialResults.some((item) => item.status === 'failed' && item.target === 'docs/guide.md'));
+      throw error;
+    }
+  }, /target Markdown failed/);
+});
+
+test('append preflight rejects invalid UTF-8 before source assets or writes', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = '![Diagram](../images/diagram.png)';
+  const sourceContent = api.encodeNoteMarkdown(note);
+  let sourceAssetReads = 0;
+  let writes = 0;
+  const client = {
+    async read(path) {
+      if (path === 'notes/source.md') return { path, sha: 'sha-a', content: sourceContent };
+      const error = new Error('missing'); error.kind = 'not_found'; throw error;
+    },
+    async readBytes(path) {
+      if (path === 'docs/invalid.md') return { path, sha: 'sha-target', bytes: Uint8Array.from([0x66,0x6f,0x80,0x6f]), size: 4 };
+      sourceAssetReads += 1;
+      return { path, sha: 'sha-image', bytes: Uint8Array.from([137,80,78,71,13,10,26,10]), size: 8 };
+    },
+    async saveBytesVerified() { writes += 1; },
+    async saveVerified() { writes += 1; }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await assert.rejects(() => app.prepareTransfer(note, { targetPath: 'docs/invalid.md', mode: 'append' }), (error) => error && error.kind === 'invalid_utf8');
+  assert.equal(sourceAssetReads, 0);
+  assert.equal(writes, 0);
+});
+
+test('transfer preflight reserves distinct target paths for same-name different-byte source assets', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = '![Light](../images/light/logo.png)\n![Dark](../images/dark/logo.png)';
+  const light = Uint8Array.from([137,80,78,71,13,10,26,10,1]);
+  const dark = Uint8Array.from([137,80,78,71,13,10,26,10,2]);
+  const files = new Map([
+    ['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: api.encodeNoteMarkdown(note) }],
+    ['images/light/logo.png', { path: 'images/light/logo.png', sha: 'sha-light', bytes: light, size: light.length }],
+    ['images/dark/logo.png', { path: 'images/dark/logo.png', sha: 'sha-dark', bytes: dark, size: dark.length }]
+  ]);
+  let binaryWrites = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readMetadata(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes }) { binaryWrites += 1; const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(bytes), size: bytes.length }; files.set(path, result); return result; },
+    async saveVerified({ path, content }) { const result = { path, sha: `sha-${path}`, verifiedHash: await api.sha256Hex(content), content }; files.set(path, result); return result; }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  const preview = await app.prepareTransfer(note, { targetPath: 'docs/guide.md', mode: 'create' });
+  assert.deepEqual(preview.assets.map((asset) => asset.targetPath), ['docs/guide.assets/logo.png', 'docs/guide.assets/logo-2.png']);
+  assert.deepEqual(preview.assets.map((asset) => asset.status), ['copy', 'suffix']);
+  assert.equal(binaryWrites, 0);
+  await app.executePreparedTransfer(note);
+  assert.equal(binaryWrites, 2);
+  assert.ok(files.has('docs/guide.assets/logo.png'));
+  assert.ok(files.has('docs/guide.assets/logo-2.png'));
+  assert.match(files.get('docs/guide.md').content, /guide\.assets\/logo\.png/);
+  assert.match(files.get('docs/guide.md').content, /guide\.assets\/logo-2\.png/);
+});
+
+test('transfer execution rechecks source image SHA and bytes before target writes', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = '![Diagram](../images/diagram.png)';
+  const original = Uint8Array.from([137,80,78,71,13,10,26,10,1]);
+  const files = new Map([
+    ['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: api.encodeNoteMarkdown(note) }],
+    ['images/diagram.png', { path: 'images/diagram.png', sha: 'sha-image-a', bytes: original, size: original.length }]
+  ]);
+  let writes = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readMetadata(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified() { writes += 1; throw new Error('must not write'); },
+    async saveVerified() { writes += 1; throw new Error('must not write'); }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await app.prepareTransfer(note, { targetPath: 'docs/guide.md', mode: 'create' });
+  files.set('images/diagram.png', { path: 'images/diagram.png', sha: 'sha-image-b', bytes: Uint8Array.from([...original, 2]), size: original.length + 1 });
+  await assert.rejects(() => app.executePreparedTransfer(note), (error) => {
+    assert.equal(error.kind, 'plan_stale');
+    assert.ok((error.feedbackActions || []).some((action) => action.id === 'prepare-transfer-again'));
+    return true;
+  });
+  assert.equal(writes, 0);
+});
+
+test('target Markdown retry action reuses verified transfer assets without another binary write', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = '![Diagram](../images/diagram.png)';
+  const bytes = Uint8Array.from([137,80,78,71,13,10,26,10]);
+  const files = new Map([
+    ['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: api.encodeNoteMarkdown(note) }],
+    ['images/diagram.png', { path: 'images/diagram.png', sha: 'sha-image', bytes, size: bytes.length }]
+  ]);
+  let binaryWrites = 0;
+  let markdownAttempts = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readMetadata(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes: writtenBytes }) { binaryWrites += 1; const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(writtenBytes), size: writtenBytes.length }; files.set(path, result); return result; },
+    async saveVerified({ path, content }) { markdownAttempts += 1; if (markdownAttempts === 1) throw new Error('target write failed'); const result = { path, sha: `sha-${path}`, verifiedHash: await api.sha256Hex(content), content }; files.set(path, result); return result; }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await app.prepareTransfer(note, { targetPath: 'docs/guide.md', mode: 'create' });
+  await assert.rejects(() => app.executePreparedTransfer(note), /target write failed/);
+  assert.equal(binaryWrites, 1);
+  assert.ok(app.feedback.some((item) => (item.actions || []).some((action) => action.id === 'retry-transfer-markdown')));
+  const result = await app.runFeedbackAction('retry-transfer-markdown');
+  assert.equal(result.assetCount, 1);
+  assert.equal(binaryWrites, 1);
+  assert.equal(markdownAttempts, 2);
+  assert.ok(files.has('docs/guide.md'));
+});
+
+test('failed Note Markdown exposes a retry action and reuses the verified image asset', async () => {
+  const note = api.createNote({ id: 'note-retry-markdown', title: 'Retry Markdown', body: '' });
+  const files = new Map();
+  let binaryWrites = 0;
+  let markdownAttempts = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes }) { binaryWrites += 1; const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(bytes), size: bytes.length }; files.set(path, result); return result; },
+    async saveVerified({ path, content }) { markdownAttempts += 1; if (markdownAttempts === 1) throw new Error('Note write failed'); const result = { path, sha: `sha-${path}`, verifiedHash: await api.sha256Hex(content), content }; files.set(path, result); return result; }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', categoryBasePath: 'categories', hasToken: true }, client });
+  app.current = note;
+  await app.insertNoteImage(note, { name: 'one.png', type: 'image/png', bytes: Uint8Array.from([137,80,78,71,13,10,26,10]) });
+  await assert.rejects(() => app.saveRemote(app.current), /Note write failed/);
+  assert.equal(binaryWrites, 1);
+  assert.ok(app.feedback.some((item) => (item.actions || []).some((action) => action.id === 'retry-note-markdown')));
+  const saved = await app.runFeedbackAction('retry-note-markdown');
+  assert.equal(saved.state, api.NOTE_STATES.SAVED_VERIFIED);
+  assert.equal(binaryWrites, 1);
+  assert.equal(markdownAttempts, 2);
+});
+
+test('create transfer verification_unknown is recovered by exact read-only target verification', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = '![Diagram](../images/diagram.png)';
+  const bytes = Uint8Array.from([137,80,78,71,13,10,26,10,7]);
+  const files = new Map([
+    ['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: api.encodeNoteMarkdown(note) }],
+    ['images/diagram.png', { path: 'images/diagram.png', sha: 'sha-image', bytes, size: bytes.length }]
+  ]);
+  let binaryWrites = 0;
+  let markdownAttempts = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readMetadata(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveBytesVerified({ path, bytes: writtenBytes }) { binaryWrites += 1; const result = { path, sha: `sha-${path}`, verifiedHash: `hash-${path}`, bytes: Uint8Array.from(writtenBytes), size: writtenBytes.length }; files.set(path, result); return result; },
+    async saveVerified({ path, content }) {
+      markdownAttempts += 1;
+      files.set(path, { path, sha: 'sha-target-accepted', content, htmlUrl: 'https://example.test/target' });
+      throw new api.GitHubClientError('verification_unknown', 'read-back unavailable', { writeResult: { path, sha: 'sha-target-accepted' } });
+    }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await app.prepareTransfer(note, { targetPath: 'docs/guide.md', mode: 'create' });
+  await assert.rejects(() => app.executePreparedTransfer(note), (error) => error.kind === 'verification_unknown');
+  const result = await app.runFeedbackAction('retry-transfer-markdown');
+  assert.equal(result.recoveredWithoutWrite, true);
+  assert.equal(markdownAttempts, 1);
+  assert.equal(binaryWrites, 1);
+});
+
+test('append transfer verification_unknown is recovered without a duplicate Markdown write', async () => {
+  const note = verifiedNote({ path: 'notes/source.md' });
+  note.title = 'Source';
+  note.body = 'Body';
+  const files = new Map([
+    ['notes/source.md', { path: 'notes/source.md', sha: 'sha-a', content: api.encodeNoteMarkdown(note) }],
+    ['docs/guide.md', { path: 'docs/guide.md', sha: 'sha-guide-base', content: '# Guide\n' }]
+  ]);
+  let markdownAttempts = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async readBytes(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveVerified({ path, content }) {
+      markdownAttempts += 1;
+      files.set(path, { path, sha: 'sha-guide-accepted', content, htmlUrl: 'https://example.test/guide' });
+      throw new api.GitHubClientError('verification_unknown', 'read-back unavailable', { writeResult: { path, sha: 'sha-guide-accepted' } });
+    }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  app.current = note;
+  await app.prepareTransfer(note, { targetPath: 'docs/guide.md', mode: 'append' });
+  await assert.rejects(() => app.executePreparedTransfer(note), (error) => error.kind === 'verification_unknown');
+  const result = await app.runFeedbackAction('retry-transfer-markdown');
+  assert.equal(result.recoveredWithoutWrite, true);
+  assert.equal(markdownAttempts, 1);
+});
+
+test('new Note verification_unknown action verifies accepted content without duplicate write', async () => {
+  const note = api.createNote({ id: 'note-unknown-action-create', title: 'Unknown create', body: 'Body' });
+  const files = new Map();
+  let markdownAttempts = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveVerified({ path, content }) {
+      markdownAttempts += 1;
+      files.set(path, { path, sha: 'sha-note-accepted', content, htmlUrl: 'https://example.test/note' });
+      throw new api.GitHubClientError('verification_unknown', 'read-back unavailable', { writeResult: { path, sha: 'sha-note-accepted' } });
+    }
+  };
+  const { app, store } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  await assert.rejects(() => app.saveRemote(note), (error) => error.kind === 'verification_unknown');
+  const saved = await app.runFeedbackAction('retry-note-markdown');
+  assert.equal(saved.state, api.NOTE_STATES.SAVED_VERIFIED);
+  assert.equal((await store.get(note.id)).remote.sha, 'sha-note-accepted');
+  assert.equal(markdownAttempts, 1);
+});
+
+test('updated Note verification_unknown action verifies accepted content without duplicate write', async () => {
+  const note = api.updateNote(verifiedNote(), { body: 'Updated body' });
+  const intended = api.encodeNoteMarkdown(note);
+  const files = new Map([[note.remote.path, { path: note.remote.path, sha: note.remote.sha, content: api.encodeNoteMarkdown(verifiedNote()), htmlUrl: '' }]]);
+  let markdownAttempts = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveVerified({ path, content }) {
+      markdownAttempts += 1;
+      assert.equal(content, intended);
+      files.set(path, { path, sha: 'sha-note-updated', content, htmlUrl: 'https://example.test/note' });
+      throw new api.GitHubClientError('verification_unknown', 'read-back unavailable', { writeResult: { path, sha: 'sha-note-updated' } });
+    }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'prototype-fixtures/linked-notes', hasToken: true }, client });
+  await assert.rejects(() => app.saveRemote(note), (error) => error.kind === 'verification_unknown');
+  const saved = await app.runFeedbackAction('retry-note-markdown');
+  assert.equal(saved.state, api.NOTE_STATES.SAVED_VERIFIED);
+  assert.equal(saved.remote.sha, 'sha-note-updated');
+  assert.equal(markdownAttempts, 1);
+});
+
+test('unknown Note write recovery reports conflict when current remote content differs', async () => {
+  const note = api.createNote({ id: 'note-unknown-mismatch', title: 'Mismatch', body: 'Body' });
+  const files = new Map();
+  let markdownAttempts = 0;
+  const client = {
+    async read(path) { if (!files.has(path)) { const error = new Error('missing'); error.kind = 'not_found'; throw error; } return files.get(path); },
+    async saveVerified({ path }) {
+      markdownAttempts += 1;
+      files.set(path, { path, sha: 'sha-other', content: '# Different content\n', htmlUrl: '' });
+      throw new api.GitHubClientError('verification_unknown', 'read-back unavailable', { writeResult: { path, sha: 'sha-write-response' } });
+    }
+  };
+  const { app } = makeApp({ note, settings: { owner: 'owner-a', repo: 'repo-a', branch: 'branch-a', basePath: 'notes', hasToken: true }, client });
+  await assert.rejects(() => app.saveRemote(note), (error) => error.kind === 'verification_unknown');
+  await assert.rejects(() => app.runFeedbackAction('retry-note-markdown'), (error) => error.kind === 'conflict');
+  assert.equal(markdownAttempts, 1);
 });

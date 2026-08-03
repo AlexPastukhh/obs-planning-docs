@@ -40,6 +40,9 @@
   function encodeNoteMarkdown(note) {
     if (!note || !note.id) throw new TypeError('Note with stable id is required.');
     const body = typeof note.body === 'string' ? note.body : '';
+    if (/obs-pending-image:[A-Za-z0-9._~-]+/.test(body)) {
+      throw new Error('Note contains unresolved pending image references. Upload and verify the images before encoding remote Markdown.');
+    }
     const metadata = metadataFor(note, body);
     const marker = `${START} ${safeJson(metadata)} ${END}`;
     const trailer = body.endsWith('\n') ? '' : '\n';

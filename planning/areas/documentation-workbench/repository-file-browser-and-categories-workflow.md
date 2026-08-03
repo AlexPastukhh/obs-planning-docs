@@ -159,7 +159,7 @@ Before reporting success:
 
 ## 9. Selected Prototype Shape
 
-The bounded `0.5.1-prototype` uses:
+The bounded `0.6.4-prototype` retains the repository-file/category behavior below:
 
 ```text
 one Tampermonkey Shadow DOM helper;

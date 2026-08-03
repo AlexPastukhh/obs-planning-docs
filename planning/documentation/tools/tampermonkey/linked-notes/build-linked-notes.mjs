@@ -7,8 +7,11 @@ const outputPath = join(here, 'linked-notes-prototype.user.js');
 const sourceFiles = [
   'src/action-feedback.js',
   'src/linked-notes-core.js',
+  'src/note-image-assets.js',
   'src/note-markdown-codec.js',
   'src/repository-target.js',
+  'src/markdown-image-references.js',
+  'src/image-aware-markdown-transfer.js',
   'src/repository-file-browser.js',
   'src/repository-target-search.js',
   'src/rich-markdown-renderer.js',
@@ -18,7 +21,9 @@ const sourceFiles = [
   'src/note-relation-index.js',
   'src/category-cache-store.js',
   'src/indexeddb-note-store.js',
+  'src/pending-note-asset-store.js',
   'src/github-contents-client.js',
+  'src/repository-asset-write.js',
   'src/remote-note-reconcile.js',
   'src/workspace-context.js',
   'src/workspace-store.js',
@@ -29,8 +34,8 @@ const sourceFiles = [
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.5.1-prototype
-// @description  Repository Notes, rich Markdown, target picking, bounded search and GitHub-backed file/Note categories with verified remote actions.
+// @version      0.6.4-prototype
+// @description  Repository Notes with image insertion, image-aware Markdown transfer, rich Markdown, bounded search and verified GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
