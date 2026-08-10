@@ -155,5 +155,5 @@ Root README, root Direction/activation/source routes and Tampermonkey projection
 - Batch 3A local canonical planning reset: complete.
 - Batch 3B Scenario migration and root/projection alignment: represented by this package.
 - Canonical repository file/category Planning Item transition: represented in the current register.
-- Linked Notes `0.6.4-prototype`: retains `0.5.1` categories/search/rich Markdown/relation behavior and adds recoverable clipboard/file image insertion, byte-verified repository image writes and same-repository Note-to-Markdown transfer with copied/reused assets and rewritten paths; browser and real-GitHub acceptance pending.
+- Linked Notes `0.6.5-prototype`: retains `0.5.1` categories/search/rich Markdown/relation behavior and adds recoverable clipboard/file image insertion, byte-verified repository image writes and same-repository Note-to-Markdown transfer with copied/reused assets and rewritten paths; browser and real-GitHub acceptance pending.
 - Production runtime architecture: not selected.

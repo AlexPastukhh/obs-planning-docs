@@ -143,6 +143,7 @@
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
+      this.repositoryBrowseLoaded = false;
       this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
@@ -455,6 +456,7 @@
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
+      this.repositoryBrowseLoaded = false;
       this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
@@ -581,6 +583,7 @@
       this.repositoryPath = '';
       this.repositoryEntries = [];
       this.repositoryPreview = null;
+      this.repositoryBrowseLoaded = false;
       this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this.api.buildRepositoryCategoryIndex ? this.api.buildRepositoryCategoryIndex([]) : { categories: new Map(), filesForCategory: () => [], notesForCategory: () => [], errors: [] };
       this.selectedCategoryId = '';
@@ -667,12 +670,15 @@
     }
 
 
-    setSurface(surface) {
+    async setSurface(surface) {
       const allowed = new Set(['notes', 'files', 'categories']);
       const next = String(surface || 'notes');
       if (!allowed.has(next)) throw new Error(`Unsupported workspace surface: ${next}`);
       this.surface = next;
       this._setUi({ status: `${next[0].toUpperCase()}${next.slice(1)} surface opened. Remote access remains explicit.` });
+      if (next === 'files' && !this.repositoryBrowseLoaded && this._activeWorkspace()) {
+        await this.browseRepository('');
+      }
       return next;
     }
 
@@ -982,6 +988,7 @@
         this.repositoryPath = normalized;
         this.repositoryEntries = this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries;
         this.repositoryPreview = null;
+        this.repositoryBrowseLoaded = true;
         this._disposeMediaLoader('file');
         this.fileRendered = null;
         this.surface = 'files';

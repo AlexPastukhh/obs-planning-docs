@@ -1,9 +1,18 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.6.4-prototype`
+Version: `0.6.5-prototype`
 Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
 
+
+## 0.1 `0.6.5-prototype` Addition
+
+```text
+an explicit first opening of Files automatically reads the active workspace repository root;
+returning to Files keeps the current loaded directory without another request;
+Browse root remains available as an explicit return-to-root and refresh action;
+a failed initial read remains visible and retryable.
+```
 
 ## 0. `0.6.4-prototype` Additions
 

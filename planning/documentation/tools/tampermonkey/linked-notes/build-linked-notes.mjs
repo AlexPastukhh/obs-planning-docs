@@ -34,7 +34,7 @@ const sourceFiles = [
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.6.4-prototype
+// @version      0.6.5-prototype
 // @description  Repository Notes with image insertion, image-aware Markdown transfer, rich Markdown, bounded search and verified GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*

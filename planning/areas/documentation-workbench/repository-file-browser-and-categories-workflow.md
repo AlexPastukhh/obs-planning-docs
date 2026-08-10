@@ -1,7 +1,7 @@
 # Browse Repository Files And Manage Categories Workflow
 
 Status: working project-local End-To-End Workflow / prototype evidence pending browser and real-GitHub acceptance
-Doc version: v1.1.0-search-rich-markdown-and-file-note-categories
+Doc version: v1.2.0-auto-open-files-root
 Scope: independently traversable behavior for browsing/searching and richly reading repository files, opening exact GitHub targets, defining durable file/Note categories and navigating explicit or implied memberships.
 
 ## 1. Purpose
@@ -36,7 +36,8 @@ This workflow owns the complete user-visible behavior introduced by:
 ```text
 select workspace
   → explicitly open Files
-  → read one repository directory
+  → automatically read repository root when the current workspace browser context has not been loaded
+  → retain the current loaded directory when returning to Files
   → select a direct child
       directory → read that directory;
       supported text file → show read-only in-app preview;
@@ -65,7 +66,7 @@ The active workspace supplies owner, repository, branch, Notes location and cate
 
 ### Stage 2 — Browse Or Search Repository Paths
 
-The user explicitly reads one directory at a time or starts a filename search from a selected root with a selected depth. Results distinguish files from directories and preserve exact repository-relative paths. Search is breadth-first and bounded by folder, request and result limits; incomplete state is explicit and no background full-repository index is created.
+The first explicit opening of Files automatically reads the repository root for the current workspace browser context. Returning to an already loaded Files surface preserves the current directory without another request. The user can then read one directory at a time or start a filename search from a selected root with a selected depth; Browse root remains an explicit return-to-root and refresh action. Results distinguish files from directories and preserve exact repository-relative paths. Search is breadth-first and bounded by folder, request and result limits; incomplete state is explicit and no background full-repository index is created.
 
 ### Stage 3 — Read A File Or Open GitHub
 
@@ -113,8 +114,11 @@ Every category write is read back and compared with the intended bytes before su
 
 | Situation | Required result |
 |---|---|
+| Files is explicitly opened for an unloaded workspace browser context | read the repository root once and show its direct children |
+| Files is reopened after a directory loaded successfully | preserve the current directory and perform no automatic repeat read |
+| Initial automatic root read fails | keep the error visible, leave the browser context unloaded and allow an explicit retry |
 | Repository root or folder is readable | show sorted direct children and breadcrumbs |
-| Folder is empty | show explicit empty result |
+| Folder is empty | show explicit empty result and treat the current browser context as loaded |
 | File is supported bounded text | show literal read-only content and GitHub link |
 | File is binary, unsupported or oversized | show metadata, explicit limitation and GitHub link |
 | File disappears after listing | visible missing-target error; no fabricated preview |
@@ -159,11 +163,12 @@ Before reporting success:
 
 ## 9. Selected Prototype Shape
 
-The bounded `0.6.4-prototype` retains the repository-file/category behavior below:
+The bounded `0.6.5-prototype` retains the repository-file/category behavior below:
 
 ```text
 one Tampermonkey Shadow DOM helper;
 GitHub Contents API directory/file reads;
+first explicit Files opening automatically reads root once per workspace browser context while tab returns preserve the loaded directory;
 read-only bounded text source preview plus sanitized rich Markdown;
 explicit bounded filename/depth search and shared file/Note target picker;
 authenticated repository image loading through temporary object URLs;
@@ -185,6 +190,8 @@ Prototype bounds such as preview byte limits, direct-directory listing, 100-targ
 
 ```text
 configure a test workspace and Categories folder;
+open Files and confirm the repository root appears without pressing Browse root;
+browse a nested folder, switch surfaces and confirm the folder remains without another automatic request;
 browse repository root and nested folders;
 open one Markdown/text file in-app;
 open the same exact target on GitHub;
