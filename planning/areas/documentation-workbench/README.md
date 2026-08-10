@@ -43,8 +43,8 @@ ordinary Markdown + Git
   → existing editor / GitHub / reviewed replacement
   → stable file, section and Note links
   → repository-owned Note images and image-aware Markdown transfer
-  → in-app read-only file viewing and exact GitHub navigation
-  → durable file-category definitions and category views
+  → in-app bounded UTF-8 text-file viewing, creation/editing and exact GitHub navigation
+  → durable file-category definitions and searchable Note/file category assignment
   → optional explicit review-on-change/include meaning
   → narrow independent helper only when justified.
 ```
@@ -82,7 +82,7 @@ Owner: [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transf
 
 ### Browse Repository Files And Manage Categories
 
-Use this workflow when a configured workspace is used to browse/read repository files, create or refresh category definitions, assign files or inspect explicit/implied memberships.
+Use this workflow when a configured workspace is used to browse/read/create/edit bounded repository text files, create tracked folders, create or refresh category definitions, assign files/Notes through the searchable picker or inspect explicit/implied memberships.
 
 Owner: [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md).
 
@@ -155,5 +155,5 @@ Root README, root Direction/activation/source routes and Tampermonkey projection
 - Batch 3A local canonical planning reset: complete.
 - Batch 3B Scenario migration and root/projection alignment: represented by this package.
 - Canonical repository file/category Planning Item transition: represented in the current register.
-- Linked Notes `0.6.5-prototype`: retains `0.5.1` categories/search/rich Markdown/relation behavior and adds recoverable clipboard/file image insertion, byte-verified repository image writes and same-repository Note-to-Markdown transfer with copied/reused assets and rewritten paths; browser and real-GitHub acceptance pending.
+- Linked Notes `0.7.0-prototype`: retains the existing Notes/images/transfer/browser/category behavior and adds verified bounded UTF-8 repository text-file creation/editing, `.gitkeep` folder creation and searchable Note/file category assignment; browser and real-GitHub acceptance pending.
 - Production runtime architecture: not selected.

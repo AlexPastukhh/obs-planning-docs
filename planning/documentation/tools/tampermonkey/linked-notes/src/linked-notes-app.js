@@ -86,6 +86,12 @@
         onBrowseRepository: (path) => this.browseRepository(path),
         onOpenRepositoryEntry: (entry) => this.openRepositoryEntry(entry),
         onOpenRepositoryFileInGitHub: (path) => this.openRepositoryFileInGitHub(path),
+        onBeginRepositoryFileCreate: () => this.beginRepositoryFileCreate(),
+        onBeginRepositoryFolderCreate: () => this.beginRepositoryFolderCreate(),
+        onBeginRepositoryFileEdit: () => this.beginRepositoryFileEdit(),
+        onCancelRepositoryEditor: () => this.cancelRepositoryEditor(),
+        onSaveRepositoryEditor: (input) => this.saveRepositoryEditor(input),
+        onApplyFileCategories: (path, ids) => this.applyFileCategories(path, ids),
         onRefreshCategories: () => this.refreshCategories(),
         onSelectCategory: (id) => this.selectCategory(id),
         onSaveCategory: (category) => this.saveCategory(category),
@@ -144,6 +150,8 @@
       this.repositoryEntries = [];
       this.repositoryPreview = null;
       this.repositoryBrowseLoaded = false;
+      this.repositoryEditor = { mode: 'none', parentPath: '', path: '', name: '', content: '', baseSha: '' };
+      this.fileCategoryDraftIds = [];
       this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
@@ -281,12 +289,29 @@
       const backlinks = this.current && this.noteRelationIndex && this.noteRelationIndex.incomingForNote
         ? this.noteRelationIndex.incomingForNote(this.current.id)
         : [];
+      const filePreviewSameWorkspace = Boolean(
+        this.repositoryPreview
+        && this.repositoryPreview.path
+        && activeWorkspace
+        && this._sameRepositoryContext(this.repositoryPreview.context, activeWorkspace)
+      );
+      const fileEditAllowed = Boolean(filePreviewSameWorkspace && this.repositoryPreview.kind === 'text');
+      const fileCategoryAssignmentAllowed = Boolean(
+        filePreviewSameWorkspace
+        && this.categoryContextKey
+        && this.categoryContextKey === this._categoryContextKey(activeWorkspace)
+        && !this.categoryContextRequiresRefresh
+      );
       return {
         surface: this.surface,
         repositoryPath: this.repositoryPath,
         repositoryEntries: this.repositoryEntries,
         repositoryBreadcrumbs: this.api.repositoryBreadcrumbs ? this.api.repositoryBreadcrumbs(this.repositoryPath) : [],
         repositoryPreview: this.repositoryPreview,
+        repositoryEditor: this.repositoryEditor,
+        fileCategoryIds: this.fileCategoryDraftIds,
+        fileEditAllowed,
+        fileCategoryAssignmentAllowed,
         fileViewMode: this.fileViewMode,
         fileRendered: this.fileRendered,
         noteViewMode: this.noteViewMode,
@@ -457,6 +482,8 @@
       this.repositoryEntries = [];
       this.repositoryPreview = null;
       this.repositoryBrowseLoaded = false;
+      this.repositoryEditor = { mode: 'none', parentPath: '', path: '', name: '', content: '', baseSha: '' };
+      this.fileCategoryDraftIds = [];
       this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
@@ -584,6 +611,8 @@
       this.repositoryEntries = [];
       this.repositoryPreview = null;
       this.repositoryBrowseLoaded = false;
+      this.repositoryEditor = { mode: 'none', parentPath: '', path: '', name: '', content: '', baseSha: '' };
+      this.fileCategoryDraftIds = [];
       this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this.api.buildRepositoryCategoryIndex ? this.api.buildRepositoryCategoryIndex([]) : { categories: new Map(), filesForCategory: () => [], notesForCategory: () => [], errors: [] };
       this.selectedCategoryId = '';
@@ -988,6 +1017,8 @@
         this.repositoryPath = normalized;
         this.repositoryEntries = this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries;
         this.repositoryPreview = null;
+        this.repositoryEditor = { mode: 'none', parentPath: normalized, path: '', name: '', content: '', baseSha: '' };
+        this.fileCategoryDraftIds = [];
         this.repositoryBrowseLoaded = true;
         this._disposeMediaLoader('file');
         this.fileRendered = null;
@@ -1035,12 +1066,211 @@
           htmlUrl: file.htmlUrl || entry.htmlUrl || (this.api.buildGitHubHtmlUrl ? this.api.buildGitHubHtmlUrl(workspace, file.path, 'file') : ''),
           context: { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch }
         };
+        this.repositoryEditor = { mode: 'none', parentPath: file.path.includes('/') ? file.path.slice(0, file.path.lastIndexOf('/')) : '', path: '', name: '', content: '', baseSha: '' };
+        const activeWorkspace = this._activeWorkspace();
+        const categoryContextCurrent = Boolean(
+          this.categoryIndex
+          && this.categoryIndex.explicitCategoryIdsForTarget
+          && this.categoryContextKey
+          && activeWorkspace
+          && this.categoryContextKey === this._categoryContextKey(activeWorkspace)
+          && this._sameRepositoryContext(workspace, activeWorkspace)
+          && !this.categoryContextRequiresRefresh
+        );
+        this.fileCategoryDraftIds = categoryContextCurrent
+          ? this.categoryIndex.explicitCategoryIdsForTarget('file', file.path)
+          : [];
         this.surface = 'files';
         this._disposeMediaLoader('file');
         this.fileRendered = null;
         if (this.fileViewMode === 'rendered' && preview.kind === 'text' && /\.md(?:own)?$/i.test(file.path || '')) await this._renderCurrentFile();
-        this._setUi({ status: preview.kind === 'text' ? `Opened ${file.path} read-only.` : preview.message });
+        this._setUi({ replaceFileCategoryIds: true, status: preview.kind === 'text' ? `Opened ${file.path}.` : preview.message });
         return this.repositoryPreview;
+      });
+    }
+
+    beginRepositoryFileCreate() {
+      const workspace = this._activeWorkspace();
+      if (!workspace) throw new Error('Select or create a GitHub workspace before creating files.');
+      this.repositoryEditor = { mode: 'create', parentPath: this.repositoryPath || '', path: '', name: '', content: '', baseSha: '' };
+      this.surface = 'files';
+      this._setUi({ replaceFileEditor: true, status: `New text file in ${this.repositoryPath || '/'}. Nothing is written until Save.` });
+      return this.repositoryEditor;
+    }
+
+    beginRepositoryFolderCreate() {
+      const workspace = this._activeWorkspace();
+      if (!workspace) throw new Error('Select or create a GitHub workspace before creating folders.');
+      this.repositoryEditor = { mode: 'folder', parentPath: this.repositoryPath || '', path: '', name: '', content: '', baseSha: '' };
+      this.surface = 'files';
+      this._setUi({ replaceFileEditor: true, status: `New folder in ${this.repositoryPath || '/'}. GitHub will track it through .gitkeep.` });
+      return this.repositoryEditor;
+    }
+
+    async beginRepositoryFileEdit() {
+      return this._runRemoteOperation('Preparing repository text editor…', async () => {
+        const workspace = this._activeWorkspace();
+        const preview = this.repositoryPreview;
+        if (!workspace || !preview || !preview.path || !this._sameRepositoryContext(preview.context, workspace)) {
+          throw new Error('Open a file from the active workspace before editing it.');
+        }
+        if (preview.kind !== 'text') throw new Error('Only supported bounded text files can be edited in this prototype.');
+        const client = await this._client(workspace);
+        const maxBytes = this.api.DEFAULT_TEXT_FILE_MAX_BYTES || this.api.DEFAULT_PREVIEW_MAX_BYTES || (512 * 1024);
+        const file = await client.readBytes(preview.path, { maxBytes });
+        const content = this.api.decodeUtf8Bytes(file.bytes, { fatal: true, message: 'Repository file is not valid UTF-8 and cannot be edited safely.' });
+        this.repositoryEditor = {
+          mode: 'edit',
+          parentPath: preview.path.includes('/') ? preview.path.slice(0, preview.path.lastIndexOf('/')) : '',
+          path: preview.path,
+          name: preview.name || preview.path.slice(preview.path.lastIndexOf('/') + 1),
+          content,
+          baseSha: file.sha || preview.sha || ''
+        };
+        this.fileViewMode = 'source';
+        this.surface = 'files';
+        this._setUi({ replaceFileEditor: true, status: `Editing ${preview.path}. Remote content is unchanged until Save.` });
+        return this.repositoryEditor;
+      });
+    }
+
+    cancelRepositoryEditor() {
+      this.repositoryEditor = { mode: 'none', parentPath: this.repositoryPath || '', path: '', name: '', content: '', baseSha: '' };
+      this._setUi({ replaceFileEditor: true, status: 'Repository file edit cancelled; no remote write was performed.' });
+      return this.repositoryEditor;
+    }
+
+    _markCategoryContextStaleForRepositoryPath(path, workspace = this._activeWorkspace()) {
+      if (!workspace || !path) return false;
+      const categoryBase = this._categoryBasePath(workspace);
+      if (path !== categoryBase && !path.startsWith(`${categoryBase}/`)) return false;
+      const contextKey = this._categoryContextKey(workspace);
+      this.categoryContextsRequiringRefresh.add(contextKey);
+      this.categoryContextRequiresRefresh = true;
+      return true;
+    }
+
+    async saveRepositoryEditor(input = {}) {
+      const requested = { ...(this.repositoryEditor || {}), ...(input || {}) };
+      const mode = requested.mode;
+      if (!['create', 'edit', 'folder'].includes(mode)) throw new Error('No repository file or folder edit is active.');
+      return this._runRemoteOperation(mode === 'folder' ? 'Creating repository folder…' : 'Saving repository text file…', async () => {
+        const workspace = this._activeWorkspace();
+        if (!workspace) throw new Error('Select or create a GitHub workspace before writing files.');
+        const client = await this._client(workspace);
+        const normalizePath = (value) => this.api.normalizeBrowserPath ? this.api.normalizeBrowserPath(value, { allowRoot: false }) : String(value || '');
+        const parentPath = this.api.normalizeBrowserPath ? this.api.normalizeBrowserPath(requested.parentPath || '') : String(requested.parentPath || '');
+        let result;
+        if (mode === 'folder') {
+          if (!this.api.createRepositoryFolder) throw new Error('Repository folder writer is unavailable.');
+          result = await this.api.createRepositoryFolder({
+            client,
+            normalizePath,
+            parentPath,
+            name: requested.name,
+            placeholderName: '.gitkeep'
+          });
+          this._markCategoryContextStaleForRepositoryPath(result.placeholderPath, workspace);
+          const entries = await client.listDirectory(parentPath, { maxEntries: 200 });
+          this.repositoryPath = parentPath;
+          this.repositoryEntries = this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries;
+          this.repositoryPreview = null;
+          this.repositoryBrowseLoaded = true;
+          this.repositoryEditor = { mode: 'none', parentPath, path: '', name: '', content: '', baseSha: '' };
+          this.fileCategoryDraftIds = [];
+          this.surface = 'files';
+          this._setUi({ replaceFileEditor: true, status: `Folder ${result.folderPath} created and verified through ${result.placeholderPath}.` });
+          return result;
+        }
+
+        if (!this.api.saveRepositoryTextFile) throw new Error('Repository text-file writer is unavailable.');
+        result = await this.api.saveRepositoryTextFile({
+          client,
+          normalizePath,
+          mode,
+          parentPath,
+          path: requested.path,
+          name: requested.name,
+          content: requested.content,
+          baseSha: requested.baseSha,
+          maxBytes: this.api.DEFAULT_TEXT_FILE_MAX_BYTES || this.api.DEFAULT_PREVIEW_MAX_BYTES || (512 * 1024)
+        });
+        this._markCategoryContextStaleForRepositoryPath(result.path, workspace);
+        const parent = result.path.includes('/') ? result.path.slice(0, result.path.lastIndexOf('/')) : '';
+        const entries = await client.listDirectory(parent, { maxEntries: 200 });
+        this.repositoryPath = parent;
+        this.repositoryEntries = this.api.sortRepositoryEntries ? this.api.sortRepositoryEntries(entries) : entries;
+        const preview = this.api.classifyFilePreview
+          ? this.api.classifyFilePreview({ path: result.path, name: result.path.slice(result.path.lastIndexOf('/') + 1), size: result.size, sha: result.sha, content: result.content, htmlUrl: result.htmlUrl }, { maxBytes: this.api.DEFAULT_PREVIEW_MAX_BYTES || (512 * 1024) })
+          : { kind: 'text', path: result.path, size: result.size, content: result.content, message: 'Repository text file.' };
+        this.repositoryPreview = {
+          ...preview,
+          sha: result.sha || '',
+          name: result.path.slice(result.path.lastIndexOf('/') + 1),
+          htmlUrl: result.htmlUrl || (this.api.buildGitHubHtmlUrl ? this.api.buildGitHubHtmlUrl(workspace, result.path, 'file') : ''),
+          context: { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch }
+        };
+        this.repositoryBrowseLoaded = true;
+        this.repositoryEditor = { mode: 'none', parentPath: parent, path: '', name: '', content: '', baseSha: '' };
+        const categoryContextCurrent = Boolean(
+          this.categoryIndex
+          && this.categoryIndex.explicitCategoryIdsForTarget
+          && this.categoryContextKey
+          && this.categoryContextKey === this._categoryContextKey(workspace)
+          && !this.categoryContextRequiresRefresh
+        );
+        this.fileCategoryDraftIds = categoryContextCurrent
+          ? this.categoryIndex.explicitCategoryIdsForTarget('file', result.path)
+          : [];
+        this.fileViewMode = 'source';
+        this._disposeMediaLoader('file');
+        this.fileRendered = null;
+        this.surface = 'files';
+        this._setUi({ replaceFileEditor: true, replaceFileCategoryIds: true, status: `${mode === 'edit' ? 'Updated' : 'Created'} ${result.path}; exact remote read-back verified.` });
+        return result;
+      });
+    }
+
+    async applyFileCategories(filePath, ids = this.fileCategoryDraftIds) {
+      return this._runRemoteOperation('Applying file category memberships…', async () => {
+        const workspace = this._requireCategoryContext();
+        const canonical = this._assertCategoryAssignmentTarget(filePath, workspace);
+        const desiredList = this.api.normalizeCategoryIds
+          ? this.api.normalizeCategoryIds(ids)
+          : [...new Set((Array.isArray(ids) ? ids : []).map((id) => String(id || '').trim()).filter(Boolean))];
+        for (const id of desiredList) if (!this.categoryIndex.categories.has(id)) throw new Error(`Category not found: ${id}. Refresh categories first.`);
+        const desired = new Set(desiredList);
+        const current = new Set(this.categoryIndex.explicitCategoryIdsForTarget ? this.categoryIndex.explicitCategoryIdsForTarget('file', canonical) : []);
+        const changes = [...new Set([...desired, ...current])].filter((id) => desired.has(id) !== current.has(id));
+        const results = [];
+        for (const categoryId of changes) {
+          try {
+            await this._writeCategoryMembership(categoryId, canonical, !desired.has(categoryId));
+            results.push({ target: categoryId, status: 'completed', message: desired.has(categoryId) ? 'File assigned and verified.' : 'File unassigned and verified.' });
+          } catch (error) {
+            results.push({ target: categoryId, status: 'failed', message: String(error && error.message || error) });
+          }
+        }
+
+        try {
+          const client = await this._client(workspace);
+          await this._refreshCategoriesUnlocked(client, workspace);
+        } catch (error) {
+          results.push({ target: this._categoryBasePath(workspace), status: 'failed', message: `Final category refresh failed: ${String(error && error.message || error)}` });
+        }
+
+        const failures = results.filter((result) => result.status === 'failed');
+        const explicit = this.categoryIndex.explicitCategoryIdsForTarget ? this.categoryIndex.explicitCategoryIdsForTarget('file', canonical) : [];
+        this.fileCategoryDraftIds = failures.length ? desiredList : explicit;
+        this.surface = 'files';
+        if (failures.length) {
+          const error = new Error(`${failures.length} file category update(s) failed. Completed changes remain verified; the requested selection is preserved for review/retry.`);
+          error.kind = 'partial_category_update';
+          error.partialResults = results;
+          throw error;
+        }
+        this._setUi({ replaceFileCategoryIds: true, status: changes.length ? `${changes.length} file category membership change(s) verified.` : 'File category memberships were already up to date.' });
+        return results;
       });
     }
 
@@ -1185,6 +1415,9 @@
       this.categoryContextRequiresRefresh = false;
       this.categoryIndex = this.api.buildRepositoryCategoryIndex(definitions, { fileValidation, noteValidation });
       if (this.selectedCategoryId && !this.categoryIndex.categories.has(this.selectedCategoryId)) this.selectedCategoryId = '';
+      if (this.repositoryPreview && this.repositoryPreview.path && this._sameRepositoryContext(this.repositoryPreview.context, workspace) && this.categoryIndex.explicitCategoryIdsForTarget) {
+        this.fileCategoryDraftIds = this.categoryIndex.explicitCategoryIdsForTarget('file', this.repositoryPreview.path);
+      }
       await this._hydrateNoteCategoryIntentsFromIndex(workspace);
       this.surface = 'categories';
       const issueCount = diagnostics.length + this.categoryIndex.errors.length;

@@ -1,8 +1,8 @@
 # Browse Repository Files And Manage Categories Workflow
 
 Status: working project-local End-To-End Workflow / prototype evidence pending browser and real-GitHub acceptance
-Doc version: v1.2.0-auto-open-files-root
-Scope: independently traversable behavior for browsing/searching and richly reading repository files, opening exact GitHub targets, defining durable file/Note categories and navigating explicit or implied memberships.
+Doc version: v1.3.0-repository-text-authoring-and-category-picker
+Scope: independently traversable behavior for browsing/searching, bounded UTF-8 repository text-file authoring and rich reading, tracked folder creation, exact GitHub targets, durable file/Note categories and explicit/implied memberships.
 
 ## 1. Purpose
 
@@ -17,9 +17,9 @@ This workflow owns the complete user-visible behavior introduced by:
 
 ## 2. Trigger And Result
 
-**Trigger:** the user selects a configured GitHub workspace and explicitly opens Files or Categories to browse, read, define, assign or inspect repository content.
+**Trigger:** the user selects a configured GitHub workspace and explicitly opens Files or Categories to browse, read, create/edit bounded text files, create tracked folders, define, assign or inspect repository content.
 
-**Successful result:** the user can read a supported repository file inside the application or open its exact GitHub URL; category definitions and file/Note memberships can be reconstructed from repository Markdown; creating or changing a category is verified by reading the remote result back.
+**Successful result:** the user can read a supported repository file inside the application, create or edit a bounded UTF-8 text file, create a tracked folder through `.gitkeep`, or open an exact GitHub URL; category definitions and file/Note memberships can be reconstructed from repository Markdown; explicit file/category writes are verified by reading the remote result back.
 
 **Other explicit results:** unsupported or oversized preview, missing target, inaccessible repository/branch, malformed category definition, broken file/category link, implication cycle, duplicate category identity, SHA conflict or uncertain remote result.
 
@@ -40,8 +40,12 @@ select workspace
   → retain the current loaded directory when returning to Files
   → select a direct child
       directory → read that directory;
-      supported text file → show read-only in-app preview;
+      supported text file → show source/rich preview and optionally enter explicit edit mode;
       unsupported/oversized file → show metadata and explicit preview limitation
+  → optionally create a UTF-8 text file in the current folder
+  → optionally create a folder through an empty `.gitkeep`
+  → save only after explicit user action with create-absence or update-SHA protection
+  → read the written file back and verify exact intended content
   → retain exact Open on GitHub target
   → explicitly open Categories
   → read category definitions from the configured location
@@ -68,11 +72,15 @@ The active workspace supplies owner, repository, branch, Notes location and cate
 
 The first explicit opening of Files automatically reads the repository root for the current workspace browser context. Returning to an already loaded Files surface preserves the current directory without another request. The user can then read one directory at a time or start a filename search from a selected root with a selected depth; Browse root remains an explicit return-to-root and refresh action. Results distinguish files from directories and preserve exact repository-relative paths. Search is breadth-first and bounded by folder, request and result limits; incomplete state is explicit and no background full-repository index is created.
 
-### Stage 3 — Read A File Or Open GitHub
+### Stage 3 — Read, Create Or Edit A Repository Text File
 
-A supported bounded text file is shown literally in a read-only source view. Markdown can additionally be shown as a sanitized rich projection with repository-relative images loaded through authenticated GitHub reads. Binary, unsupported or oversized files retain path, size and exact GitHub link with an explicit reason that in-app preview is unavailable.
+A supported bounded text file is shown literally in source view. Markdown can additionally be shown as a sanitized rich projection with repository-relative images loaded through authenticated GitHub reads. The user may explicitly enter Edit for a same-workspace supported UTF-8 text file, or start New file in the currently browsed folder. Edit rereads bounded bytes as strict UTF-8 and captures the current SHA before exposing the mutable editor buffer. Create proves the target path is absent. Save writes complete intended UTF-8 text, uses the captured SHA for updates, reads the remote result back exactly and refreshes the parent directory. Failure or conflict leaves the editor input available for review.
 
-A repository link opened from a Note uses the Note-bound owner/repository/branch context rather than silently switching it to the currently selected workspace.
+New folder creates `<folder>/.gitkeep` only after the requested folder is proven absent. Git itself has no durable empty-directory object; `.gitkeep` is a prototype convention and is not deleted automatically when later files are added.
+
+Binary, invalid-UTF-8, unsupported or oversized files retain path, size and exact GitHub link with an explicit reason that in-app editing/preview is unavailable. No automatic remote save occurs while typing.
+
+A repository link opened from a Note uses the Note-bound owner/repository/branch context rather than silently switching it to the currently selected workspace. Cross-workspace previews remain non-editable from the active workspace.
 
 ### Stage 4 — Read Category Definitions
 
@@ -104,7 +112,9 @@ The user supplies a stable ID/name and description, optionally selecting implied
 
 ### Stage 7 — Assign Or Unassign Files And Notes
 
-The application updates only the selected category definition. It creates or removes portable typed links to selected files and verified Linked Notes. Category creation may begin with any number of picker-selected targets. Target files and Note bodies are not modified by assignment.
+Note and file editors use one compact searchable multi-select category picker. Search filters by category display name or stable ID without clearing selections hidden by the current query. Note selection remains local intent until Save GitHub verifies the Note and then applies affected category-definition changes. File selection remains a local draft until Apply categories.
+
+The application updates only affected category definitions. It creates or removes portable typed links to selected files and verified Linked Notes. Category creation may begin with any number of picker-selected targets. Target files and Note bodies are not modified by assignment. Partial multi-category file updates keep completed writes verified, preserve requested selection for review/retry and refresh category definitions before the next write.
 
 ### Stage 8 — Verify And Refresh
 
@@ -119,7 +129,11 @@ Every category write is read back and compared with the intended bytes before su
 | Initial automatic root read fails | keep the error visible, leave the browser context unloaded and allow an explicit retry |
 | Repository root or folder is readable | show sorted direct children and breadcrumbs |
 | Folder is empty | show explicit empty result and treat the current browser context as loaded |
-| File is supported bounded text | show literal read-only content and GitHub link |
+| New text-file target already exists | explicit conflict; do not overwrite |
+| Existing text file changed after Edit began | stale-SHA conflict; preserve local editor input |
+| Folder create target already exists | explicit conflict; do not write `.gitkeep` |
+| Explicit file/folder write succeeds | exact read-back verification, refresh the parent directory and show the resulting target |
+| File is supported bounded text | show literal source/rich view and allow same-workspace explicit Edit |
 | File is binary, unsupported or oversized | show metadata, explicit limitation and GitHub link |
 | File disappears after listing | visible missing-target error; no fabricated preview |
 | Repository/branch is inaccessible | explicit authentication/permission/not-found result |
@@ -138,8 +152,8 @@ Every category write is read back and compared with the intended bytes before su
 
 | Data | Identity/owner | Invariant |
 |---|---|---|
-| Repository file | owner/repository/branch/path | exact path and GitHub URL remain visible |
-| File preview | one fetched remote snapshot | read-only; not a canonical editor buffer |
+| Repository file | owner/repository/branch/path | exact path and GitHub URL remain visible; ordinary files never gain Linked Note metadata from generic editing |
+| File preview | one fetched remote snapshot | immutable preview; Edit creates a separate local buffer with captured base SHA |
 | Category | stable category ID + definition path | one ID is not silently merged across definitions |
 | Category description | category definition Markdown | literal user Markdown survives round trip |
 | Explicit membership | link from category definition to file | the definition is the selected prototype owner |
@@ -163,14 +177,16 @@ Before reporting success:
 
 ## 9. Selected Prototype Shape
 
-The bounded `0.6.5-prototype` retains the repository-file/category behavior below:
+The bounded `0.7.0-prototype` retains the repository-file/category behavior below:
 
 ```text
 one Tampermonkey Shadow DOM helper;
 GitHub Contents API directory/file reads;
 first explicit Files opening automatically reads root once per workspace browser context while tab returns preserve the loaded directory;
-read-only bounded text source preview plus sanitized rich Markdown;
-explicit bounded filename/depth search and shared file/Note target picker;
+bounded UTF-8 text source preview plus explicit create/edit with SHA-aware exact read-back verification;
+tracked folder creation through `.gitkeep`;
+sanitized rich Markdown plus explicit bounded filename/depth search;
+shared searchable multi-select category assignment for Notes and repository files;
 authenticated repository image loading through temporary object URLs;
 one configurable Categories folder per workspace;
 one ordinary Markdown definition per category with separate Files and Notes regions;
@@ -194,6 +210,10 @@ open Files and confirm the repository root appears without pressing Browse root;
 browse a nested folder, switch surfaces and confirm the folder remains without another automatic request;
 browse repository root and nested folders;
 open one Markdown/text file in-app;
+create a new UTF-8 text file in the current folder and verify exact content after automatic directory refresh;
+edit an existing text file, verify exact read-back and then provoke a stale-SHA conflict without losing the local editor text;
+create a new folder and verify only `<folder>/.gitkeep` is required to make it repository-visible;
+search the category dropdown by name/ID for both a Note and an ordinary file and preserve checked categories across search filtering;
 open the same exact target on GitHub;
 open a binary or oversized fixture and see an explicit no-preview result;
 create Programming with a description;
@@ -217,7 +237,8 @@ Automated tests support but do not replace this browser and real-GitHub run.
 This workflow does not:
 
 - make the userscript accepted production architecture;
-- provide arbitrary repository-file editing;
+- edit or upload arbitrary binary files;
+- rename, move or delete ordinary repository files/folders;
 - render every binary format;
 - recursively index the whole repository in the background;
 - write a category marker into each categorized file;

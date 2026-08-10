@@ -67,6 +67,14 @@
     return nextPatch;
   }
 
+  function mergeRepositoryEditorPatch(captured, dirty, patch = {}) {
+    const nextPatch = { ...patch };
+    if (captured && dirty && nextPatch.repositoryEditor && !nextPatch.replaceFileEditor && nextPatch.repositoryEditor.mode !== 'none') {
+      nextPatch.repositoryEditor = captured;
+    }
+    return nextPatch;
+  }
+
   function mergeVisibleCategorySelection(previousIds, availableIds, checkedIds) {
     const normalize = (items) => {
       const result = [];
@@ -109,6 +117,10 @@
         repositoryEntries: [],
         repositoryBreadcrumbs: [{ label: '/', path: '' }],
         repositoryPreview: null,
+        repositoryEditor: { mode: 'none', parentPath: '', path: '', name: '', content: '', baseSha: '' },
+        fileCategoryIds: [],
+        fileEditAllowed: false,
+        fileCategoryAssignmentAllowed: false,
         categories: [],
         selectedCategoryId: '',
         categoryEditor: { id: '', name: '', description: '', impliedCategoryIds: [], group: '', selectedTargets: [] },
@@ -135,6 +147,8 @@
       this.workspaceManagerOpen = false;
       this.workspaceEditorDirty = false;
       this.categoryEditorDirty = false;
+      this.fileEditorDirty = false;
+      this.fileCategoryDirty = false;
       this._draftTimer = null;
       this._onViewportChange = () => this._positionPanel();
       this._onDocumentKeydown = (event) => {
@@ -189,6 +203,7 @@
     async persistAllDraftsNow() {
       this._captureWorkspaceIntoState();
       this._captureCategoryIntoState();
+      this._captureRepositoryEditorIntoState();
       await this._persistDraftNow();
       return this.workspaceDraftState();
     }
@@ -244,6 +259,22 @@
       return editor;
     }
 
+    _repositoryEditorFromForm() {
+      const editor = { ...(this.state.repositoryEditor || { mode: 'none', parentPath: '', path: '', name: '', content: '', baseSha: '' }) };
+      if (!this.shadow || editor.mode === 'none') return editor;
+      const name = this.shadow.querySelector('[data-role="repository-file-name"]');
+      const content = this.shadow.querySelector('[data-role="repository-file-content"]');
+      if (name) editor.name = name.value;
+      if (content) editor.content = content.value;
+      return editor;
+    }
+
+    _captureRepositoryEditorIntoState() {
+      const editor = this._repositoryEditorFromForm();
+      if (editor) this.state.repositoryEditor = editor;
+      return editor;
+    }
+
     _feedbackForSurface(surface) {
       return (Array.isArray(this.state.feedback) ? this.state.feedback : []).filter((item) => item && (item.scope === surface || item.scope === 'global'));
     }
@@ -252,17 +283,29 @@
       const captured = this._captureDraftIntoState();
       const capturedWorkspace = this._captureWorkspaceIntoState();
       const capturedCategory = this._captureCategoryIntoState();
+      const capturedFileEditor = this._captureRepositoryEditorIntoState();
       let nextPatch = { ...patch };
       if (captured && nextPatch.current && nextPatch.current.id === captured.id && !this.state.busy && !nextPatch.replaceCurrent) {
         nextPatch.current = { ...nextPatch.current, title: captured.title, body: captured.body, categoryIds: captured.categoryIds };
       }
       nextPatch = mergeWorkspaceEditorPatch(capturedWorkspace, this.workspaceEditorDirty, nextPatch);
       nextPatch = mergeCategoryEditorPatch(capturedCategory, this.categoryEditorDirty, nextPatch);
+      nextPatch = mergeRepositoryEditorPatch(capturedFileEditor, this.fileEditorDirty, nextPatch);
+      const currentPreviewPath = this.state.repositoryPreview && this.state.repositoryPreview.path || '';
+      const nextPreviewPath = nextPatch.repositoryPreview ? nextPatch.repositoryPreview.path || '' : currentPreviewPath;
+      if (nextPreviewPath !== currentPreviewPath) this.fileCategoryDirty = false;
+      if (this.fileCategoryDirty && currentPreviewPath && nextPreviewPath === currentPreviewPath && Array.isArray(nextPatch.fileCategoryIds) && !nextPatch.replaceFileCategoryIds) {
+        nextPatch.fileCategoryIds = [...(this.state.fileCategoryIds || [])];
+      }
       if (nextPatch.replaceWorkspaceEditor) this.workspaceEditorDirty = false;
       if (nextPatch.replaceCategoryEditor) this.categoryEditorDirty = false;
+      if (nextPatch.replaceFileEditor) this.fileEditorDirty = false;
+      if (nextPatch.replaceFileCategoryIds) this.fileCategoryDirty = false;
       delete nextPatch.replaceCurrent;
       delete nextPatch.replaceWorkspaceEditor;
       delete nextPatch.replaceCategoryEditor;
+      delete nextPatch.replaceFileEditor;
+      delete nextPatch.replaceFileCategoryIds;
       this.state = { ...this.state, ...nextPatch };
       this.render();
     }
@@ -388,7 +431,7 @@
       const sidebarToolbar = surface === 'notes'
         ? `<input data-role="search" placeholder="Search Notes (Enter)" value="${escapeHtml(this.state.search)}" ${disabled}><button data-action="new" ${disabled}>New</button>`
         : surface === 'files'
-          ? `<button data-action="browse-root" ${activeWorkspace && !busy ? '' : 'disabled'}>Browse root</button><button data-action="browse-up" ${this.state.repositoryPath && !busy ? '' : 'disabled'}>Up</button>`
+          ? `<button data-action="browse-root" ${activeWorkspace && !busy ? '' : 'disabled'}>Browse root</button><button data-action="browse-up" ${this.state.repositoryPath && !busy ? '' : 'disabled'}>Up</button><button data-action="new-repository-file" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>New file</button><button data-action="new-repository-folder" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>New folder</button>`
           : `<button data-action="refresh-categories" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>Refresh</button><button data-action="new-category" ${disabled}>New</button>`;
       const linksHtml = links.map((link) => {
         const target = link.type === 'repository'
@@ -425,23 +468,49 @@
       </section>`).join('');
       const renderProjection = (rendered) => rendered ? `<div class="rich-markdown" data-rich-root>${rendered.html || ''}</div>` : '<div class="empty">Rendered Markdown is not available yet.</div>';
       const breadcrumbs = (this.state.repositoryBreadcrumbs || []).map((item) => `<button data-browse-path="${escapeHtml(item.path)}" ${disabled}>${escapeHtml(item.label)}</button>`).join('<span>/</span>');
+      const categoryPickerHtml = (kind, selectedIds, enabled = true) => {
+        const selected = [...new Set((Array.isArray(selectedIds) ? selectedIds : []).map((id) => String(id || '').trim()).filter(Boolean))];
+        const available = new Set((this.state.categories || []).map((category) => category.id));
+        const unavailable = selected.filter((id) => !available.has(id));
+        const attribute = kind === 'file' ? 'data-file-category-id' : 'data-note-category-id';
+        const choices = (this.state.categories || []).map((category) => `<label class="category-picker-row" data-category-search-text="${escapeHtml(`${category.name} ${category.id}`.toLowerCase())}"><input type="checkbox" ${attribute}="${escapeHtml(category.id)}" ${selected.includes(category.id) ? 'checked' : ''} ${enabled && !busy ? '' : 'disabled'}><span>${escapeHtml(category.name)}</span><small>${escapeHtml(category.id)}</small></label>`).join('');
+        const unavailableHtml = unavailable.map((id) => `<div class="category-picker-row unavailable"><span>${escapeHtml(id)}</span><small>Selected locally; unavailable until categories refresh succeeds.</small></div>`).join('');
+        const apply = kind === 'file' ? `<button class="primary" data-action="apply-file-categories" ${enabled && !busy ? '' : 'disabled'}>Apply categories</button>` : '<span class="hint">Saved with the Note on Save GitHub.</span>';
+        return `<details class="category-picker" data-category-kind="${kind}"><summary><span data-category-summary>Categories · ${selected.length} selected</span></summary><div class="category-picker-popover"><input data-category-filter="${kind}" placeholder="Search categories…" ${enabled && !busy ? '' : 'disabled'}><div class="category-picker-list">${choices}${unavailableHtml || ''}</div><div class="category-picker-actions">${apply}</div></div></details>`;
+      };
+      const repositoryEditor = this.state.repositoryEditor || { mode: 'none', parentPath: this.state.repositoryPath || '', path: '', name: '', content: '', baseSha: '' };
+      const repositoryEditorHtml = repositoryEditor.mode === 'folder'
+        ? `<section class="repository-editor"><h3>New folder</h3><div class="hint">Parent: ${escapeHtml(repositoryEditor.parentPath || '/')} · GitHub tracks the folder through an empty .gitkeep file.</div><label class="field"><span>Folder name</span><input data-role="repository-file-name" value="${escapeHtml(repositoryEditor.name || '')}" placeholder="new-folder" ${disabled}></label><div class="repository-editor-actions"><button class="primary" data-action="save-repository-editor" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>Create folder</button><button data-action="cancel-repository-editor" ${disabled}>Cancel</button></div></section>`
+        : repositoryEditor.mode === 'create' || repositoryEditor.mode === 'edit'
+          ? `<section class="repository-editor"><h3>${repositoryEditor.mode === 'edit' ? `Edit ${escapeHtml(repositoryEditor.path)}` : 'New text file'}</h3><div class="hint">${repositoryEditor.mode === 'edit' ? `Base SHA ${escapeHtml(repositoryEditor.baseSha || '')}` : `Parent: ${escapeHtml(repositoryEditor.parentPath || '/')}`} · UTF-8 text up to 512 KiB.</div>${repositoryEditor.mode === 'create' ? `<label class="field"><span>File name</span><input data-role="repository-file-name" value="${escapeHtml(repositoryEditor.name || '')}" placeholder="document.md" ${disabled}></label>` : ''}<textarea class="repository-text-editor" data-role="repository-file-content" spellcheck="false" ${disabled}>${escapeHtml(repositoryEditor.content || '')}</textarea><div class="repository-editor-actions"><button class="primary" data-action="save-repository-editor" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>Save</button><button data-action="cancel-repository-editor" ${disabled}>Cancel</button></div></section>`
+          : '';
+      const fileCategoryHtml = preview
+        ? ((this.state.categories || []).length || (this.state.fileCategoryIds || []).length
+          ? `<section><h3>Categories</h3>${categoryPickerHtml('file', this.state.fileCategoryIds || [], Boolean(this.state.fileCategoryAssignmentAllowed))}<div class="hint">File bytes are never modified by category assignment; category definitions remain canonical.</div></section>`
+          : '<section><h3>Categories</h3><div class="empty">Refresh categories to assign them to this file.</div></section>')
+        : '';
       const fileSurface = `
         <div class="editor-toolbar">
           <button data-action="browse-root" ${activeWorkspace && !busy ? '' : 'disabled'}>Browse root</button>
           <button data-action="browse-up" ${this.state.repositoryPath && !busy ? '' : 'disabled'}>Up</button>
-          ${preview && preview.kind === 'text' && /\.md(?:own)?$/i.test(preview.path || '') ? `<button data-file-view="rendered" class="${this.state.fileViewMode === 'rendered' ? 'active' : ''}" ${disabled}>Rendered</button><button data-file-view="source" class="${this.state.fileViewMode === 'source' ? 'active' : ''}" ${disabled}>Source</button>` : ''}
+          <button data-action="refresh-folder" ${activeWorkspace && !busy ? '' : 'disabled'}>Refresh</button>
+          <button data-action="new-repository-file" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>New file</button>
+          <button data-action="new-repository-folder" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>New folder</button>
+          ${preview && preview.kind === 'text' && /\.md(?:own)?$/i.test(preview.path || '') && repositoryEditor.mode === 'none' ? `<button data-file-view="rendered" class="${this.state.fileViewMode === 'rendered' ? 'active' : ''}" ${disabled}>Rendered</button><button data-file-view="source" class="${this.state.fileViewMode === 'source' ? 'active' : ''}" ${disabled}>Source</button>` : ''}
+          <button data-action="edit-repository-file" ${preview && this.state.fileEditAllowed && repositoryEditor.mode === 'none' && this.state.hasToken && !busy ? '' : 'disabled'}>Edit</button>
           <button class="primary" data-action="open-file-github" ${preview && !busy ? '' : 'disabled'}>Open on GitHub</button>
           <button data-action="close" ${disabled}>Close</button>
         </div>
         ${feedbackHtml}
         <div class="file-context"><div class="breadcrumbs">${breadcrumbs || '<span>/</span>'}</div><div>${escapeHtml(this.state.repositoryPath || '/')}</div></div>
-        ${preview ? `<section class="file-preview">
+        ${repositoryEditor.mode !== 'none' ? repositoryEditorHtml : (preview ? `<section class="file-preview">
           <h3>${escapeHtml(preview.path)}</h3>
           <div class="hint">${escapeHtml(preview.kind)} · ${escapeHtml(preview.size || 0)} bytes · SHA ${escapeHtml(preview.sha || '')}</div>
           ${preview.kind === 'text'
             ? (this.state.fileViewMode === 'rendered' && /\.md(?:own)?$/i.test(preview.path || '') ? renderProjection(this.state.fileRendered) : `<pre>${escapeHtml(preview.content || '')}</pre>`)
             : `<div class="remote-context">${escapeHtml(preview.message || 'Preview unavailable. Open on GitHub.')}</div>`}
-        </section>` : '<div class="empty">Select a file to view it here. Every selected file also has an Open on GitHub action.</div>'}`;
+        </section>` : '<div class="empty">Select a file to view it here, or create a new text file/folder in the current directory.</div>')}
+        ${repositoryEditor.mode === 'none' ? fileCategoryHtml : ''}`;
       const categoryEditor = this.state.categoryEditor || { id: '', name: '', description: '', impliedCategoryIds: [], group: '', selectedTargets: [] };
       const categoryFilesHtml = (this.state.categoryFiles || []).map((file) => `<div class="category-file-row">
           <button data-category-file-open="${escapeHtml(file.path)}" ${disabled}>${escapeHtml(file.path)}</button>
@@ -489,11 +558,9 @@
           <h3>Notes</h3><div class="category-files">${categoryNotesHtml}</div>
           ${categoryErrorsHtml ? `<h3>Category model issues</h3><div class="category-errors">${categoryErrorsHtml}</div>` : ''}
         </section>`;
-      const availableCategoryIds = new Set((this.state.categories || []).map((category) => category.id));
-      const unavailableCategoryIds = (this.state.noteCategoryIds || []).filter((id) => !availableCategoryIds.has(id));
-      const availableCategoryHtml = (this.state.categories || []).map((category) => `<label class="category-choice"><input type="checkbox" data-note-category-id="${escapeHtml(category.id)}" ${(this.state.noteCategoryIds || []).includes(category.id) ? 'checked' : ''} ${disabled}> ${escapeHtml(category.name)}</label>`).join('');
-      const unavailableCategoryHtml = unavailableCategoryIds.map((id) => `<div class="category-choice unavailable"><strong>${escapeHtml(id)}</strong><span>Selected locally; unavailable until categories refresh succeeds.</span></div>`).join('');
-      const noteCategoryHtml = `${availableCategoryHtml}${unavailableCategoryHtml}` || '<div class="empty">Refresh categories to assign them to this Note.</div>';
+      const noteCategoryHtml = (this.state.categories || []).length || (this.state.noteCategoryIds || []).length
+        ? categoryPickerHtml('note', this.state.noteCategoryIds || [], Boolean(current))
+        : '<div class="empty">Refresh categories to assign them to this Note.</div>';
       const backlinksHtml = (this.state.noteBacklinks || []).map((relation) => `<button data-note-backlink="${escapeHtml(relation.sourceNoteId)}" ${disabled}>${escapeHtml(relation.label || relation.sourceNoteId)}</button>`).join('') || '<div class="empty">No managed backlinks.</div>';
       const pendingAssetsHtml = (this.state.pendingAssets || []).map((asset) => `<div class="pending-asset-row">
           <span>🖼️ <strong>${escapeHtml(asset.fileName || asset.originalName || asset.id)}</strong> · ${escapeHtml(asset.mimeType || '')} · ${escapeHtml(asset.size || 0)} bytes · ${escapeHtml(asset.state || 'pending')}</span>
@@ -651,6 +718,18 @@
           .transfer-actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 7px 0; }
           .transfer-plan { display: grid; gap: 5px; margin-top: 7px; padding: 7px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-2); }
           .transfer-plan-row { overflow-wrap: anywhere; }
+          .repository-editor { display: grid; gap: 8px; }
+          .repository-text-editor { min-height: 320px; width: 100%; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
+          .repository-editor-actions, .category-picker-actions { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+          .category-picker { position: relative; max-width: 620px; }
+          .category-picker > summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 34px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); }
+          .category-picker-popover { margin-top: 6px; display: grid; gap: 7px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); }
+          .category-picker-list { max-height: 280px; overflow: auto; display: grid; gap: 4px; }
+          .category-picker-row { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 8px; align-items: center; padding: 6px 7px; border-radius: 6px; }
+          .category-picker-row:hover { background: var(--surface); }
+          .category-picker-row input { width: auto; }
+          .category-picker-row small { color: var(--muted); overflow-wrap: anywhere; }
+          .category-picker-row.unavailable { opacity: .75; }
           .picker-backdrop { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.72); }
           .main { position: relative; }
           .picker-modal { width: min(780px, 100%); max-height: 92%; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 16px 45px rgba(0,0,0,.6); }
@@ -727,7 +806,37 @@
         input.oninput = () => { this.workspaceEditorDirty = true; this._captureWorkspaceIntoState(); };
       });
       this.shadow.querySelectorAll('[data-role^="category-"]').forEach((input) => { input.oninput = () => { this.categoryEditorDirty = true; this._captureCategoryIntoState(); }; });
-      this.shadow.querySelectorAll('[data-note-category-id]').forEach((input) => { input.onchange = () => this._scheduleDraftPersist(); });
+      this.shadow.querySelectorAll('[data-note-category-id]').forEach((input) => {
+        input.onchange = () => {
+          const draft = this._draftFromForm();
+          if (draft) this.state.current = draft;
+          const root = input.closest('.category-picker');
+          const summary = root && root.querySelector('[data-category-summary]');
+          if (summary) summary.textContent = `Categories · ${root.querySelectorAll('[data-note-category-id]:checked').length} selected`;
+        };
+      });
+      this.shadow.querySelectorAll('[data-role="repository-file-name"], [data-role="repository-file-content"]').forEach((input) => { input.oninput = () => { this.fileEditorDirty = true; this._captureRepositoryEditorIntoState(); }; });
+      this.shadow.querySelectorAll('[data-category-filter]').forEach((input) => {
+        input.oninput = () => {
+          const root = input.closest('.category-picker');
+          const query = String(input.value || '').trim().toLowerCase();
+          if (!root) return;
+          root.querySelectorAll('[data-category-search-text]').forEach((row) => { row.hidden = Boolean(query && !String(row.dataset.categorySearchText || '').includes(query)); });
+        };
+      });
+      this.shadow.querySelectorAll('[data-file-category-id]').forEach((input) => {
+        input.onchange = () => {
+          const ids = Array.from(this.shadow.querySelectorAll('[data-file-category-id]:checked')).map((item) => item.dataset.fileCategoryId);
+          this.state.fileCategoryIds = ids;
+          this.fileCategoryDirty = true;
+          const root = input.closest('.category-picker');
+          const summary = root && root.querySelector('[data-category-summary]');
+          if (summary) summary.textContent = `Categories · ${ids.length} selected`;
+        };
+      });
+      this.shadow.querySelectorAll('.category-picker[data-category-kind="note"]').forEach((details) => {
+        details.ontoggle = () => { if (!details.open) this._persistDraftNow().catch(() => {}); };
+      });
 
       const toggle = this.shadow.querySelector('[data-action="toggle"]');
       if (toggle) toggle.onclick = async () => { await this.persistAllDraftsNow(); if (!this.open) await this._call('onOpen'); this.open = !this.open; this.render(); };
@@ -794,6 +903,13 @@
       this.shadow.querySelectorAll('[data-open-link]').forEach((button) => { button.onclick = () => this._withDraft('onOpenLink', button.dataset.openLink); });
       this.shadow.querySelectorAll('[data-action="browse-root"]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBrowseRepository', ''); });
       this.shadow.querySelectorAll('[data-action="browse-up"]').forEach((button) => { button.onclick = () => { const path = String(this.state.repositoryPath || ''); const next = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : ''; return this._withAllDrafts('onBrowseRepository', next); }; });
+      this.shadow.querySelectorAll('[data-action="refresh-folder"]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBrowseRepository', this.state.repositoryPath || ''); });
+      this.shadow.querySelectorAll('[data-action="new-repository-file"]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBeginRepositoryFileCreate'); });
+      this.shadow.querySelectorAll('[data-action="new-repository-folder"]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBeginRepositoryFolderCreate'); });
+      this.shadow.querySelectorAll('[data-action="edit-repository-file"]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBeginRepositoryFileEdit'); });
+      this.shadow.querySelectorAll('[data-action="cancel-repository-editor"]').forEach((button) => { button.onclick = () => this._call('onCancelRepositoryEditor'); });
+      this.shadow.querySelectorAll('[data-action="save-repository-editor"]').forEach((button) => { button.onclick = () => this._call('onSaveRepositoryEditor', this._repositoryEditorFromForm()); });
+      this.shadow.querySelectorAll('[data-action="apply-file-categories"]').forEach((button) => { button.onclick = () => { const ids = Array.from(this.shadow.querySelectorAll('[data-file-category-id]:checked')).map((item) => item.dataset.fileCategoryId); this.state.fileCategoryIds = ids; return this._call('onApplyFileCategories', preview && preview.path, ids); }; });
       this.shadow.querySelectorAll('[data-browse-path]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBrowseRepository', button.dataset.browsePath); });
       this.shadow.querySelectorAll('[data-repository-entry]').forEach((button) => { button.onclick = () => this._withAllDrafts('onOpenRepositoryEntry', {
         path: button.dataset.repositoryEntry,
@@ -868,6 +984,7 @@
     blankWorkspaceEditor,
     mergeWorkspaceEditorPatch,
     mergeCategoryEditorPatch,
+    mergeRepositoryEditorPatch,
     mergeVisibleCategorySelection
   };
 });

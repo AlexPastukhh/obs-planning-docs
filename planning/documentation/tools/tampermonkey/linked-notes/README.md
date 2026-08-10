@@ -1,9 +1,24 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.6.5-prototype`
-Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
+Version: `0.7.0-prototype`
+Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search and UTF-8 text-file authoring, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
 
+
+## 0.2 `0.7.0-prototype` Additions
+
+```text
+create ordinary UTF-8 repository text files in the currently browsed folder;
+create tracked repository folders through an empty `.gitkeep` placeholder;
+edit supported repository text files up to the existing 512 KiB bound without converting them into Linked Notes;
+require an exact opened-file SHA for updates and preserve the editor draft on conflicts/failures;
+read back every explicit text-file/folder write before reporting success;
+refresh the affected directory automatically after successful writes;
+use one compact searchable multi-select category dropdown for Note and file assignment;
+stage file category selection locally and apply only category-definition changes, never file-body metadata;
+preserve the existing category-definition source of truth and implication model;
+keep binary editing/upload, rename, move and delete outside this slice.
+```
 
 ## 0.1 `0.6.5-prototype` Addition
 
@@ -54,7 +69,7 @@ prominent surface-scoped errors and category-form/target-basket preservation;
 segment-by-segment decoding of percent-encoded rendered repository targets with encoded-traversal rejection;
 independent Note/File image object-URL lifecycles with full disposal cleanup;
 unavailable selected Note categories preserved through failed or not-yet-completed category refresh;
-222 automated tests.
+automated regression coverage through the complete configured test suite.
 ```
 
 Durable ownership remains separated:
@@ -281,6 +296,9 @@ src/repository-target.js
 src/repository-file-browser.js
   pure repository browsing, breadcrumb, GitHub URL and bounded text-preview policy.
 
+src/repository-text-file-write.js
+  bounded ordinary UTF-8 text-file create/edit policy, exact base-SHA protection and `.gitkeep` folder creation.
+
 src/repository-target-search.js
   explicit breadth-first filename search with depth, request, folder and result limits.
 
@@ -318,10 +336,10 @@ src/workspace-store.js
   multi-tab-safe workspace registry, explicit per-chat selection, one shared token, revisioned writes and deterministic v1 migration.
 
 src/linked-notes-ui.js
-  dark Shadow DOM UI, image paste/file insertion, pending-image and transfer controls, viewport-safe placement, independent scrolling, durable drafts and contextual recovery.
+  dark Shadow DOM UI, searchable Note/file category dropdowns, bounded repository text editor, image/transfer controls, viewport-safe placement, durable drafts and contextual recovery.
 
 src/linked-notes-app.js
-  composition, route-aware workspace selection, pending-image lifecycle, verified multi-resource Note save, image-aware transfer and remote orchestration.
+  composition, route-aware workspace selection, verified repository text/folder writes, file-category synchronization, pending-image lifecycle, verified multi-resource Note save, image-aware transfer and remote orchestration.
 
 build-linked-notes.mjs
   deterministic zero-dependency userscript build.
@@ -353,12 +371,12 @@ node verify-linked-notes.mjs
 Automated verification covers:
 
 - existing Note state, codec, path, GitHub client and recovery policies;
-- repository-root and direct-directory browsing with GET-only text preview and GitHub links;
+- repository-root/direct-directory browsing plus explicit verified UTF-8 text-file create/edit, `.gitkeep` folder creation, stale-SHA rejection and GitHub links;
 - deterministic category-definition v2 Markdown round trip, literal managed-looking headings and legacy v1 compatibility;
 - explicit and transitive implied category membership, broken links and cycle detection;
 - workspace-target-isolated category cache recovery, same-id target invalidation, route-safe context reset and atomic multi-tab local-group mutations;
 - path-aware category diagnostics, bounded parent-directory member validation without member-content reads and explicit missing/inaccessible/unchecked states;
-- category create/update/assignment writes with SHA protection and exact read-back verification;
+- category create/update/assignment writes with SHA protection and exact read-back verification, including searchable Note/file multi-selection and partial file-category update recovery;
 - oversized file classification through the real UI payload before content reads and metadata responses that do not decode inline content;
 - cross-repository category-assignment rejection and portable category-link round trips for punctuation, spaces, Unicode and percent signs;
 - bounded direct-child GitHub Notes-folder listing with repository/branch verification before a missing folder is treated as empty;
@@ -414,7 +432,7 @@ The launcher measures its own width and moves left by that width plus a gap. The
 10. Create additional workspaces as needed.
 11. Choose the current workspace from the selector at the top of the panel.
 12. Press `Refresh Notes` to read existing Linked Notes from the selected Notes folder.
-13. Open `Files` and press `Browse root` to navigate repository files.
+13. Open `Files`; the repository root loads automatically. Use `New file`, `New folder` or `Edit` for bounded UTF-8 text authoring.
 14. Open `Categories` and press `Refresh categories` to rebuild category memory from GitHub.
 
 Recommended first test target:

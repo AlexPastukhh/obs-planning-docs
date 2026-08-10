@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.6.4-prototype`
+Prototype version: `0.7.0-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values.
 
@@ -32,9 +32,9 @@ Use one copy for one concrete browser/repository test run. Never record token va
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| 1 | Run `node verify-linked-notes.mjs`. | All 222 tests pass; source syntax, generated syntax and generated freshness pass. | |
+| 1 | Run `node verify-linked-notes.mjs`. | All configured automated tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.6.4-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.7.0-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
 | 3a | Run the transfer parser cases containing images inside raw `<pre>`, `<code>`, `<textarea>`, `<script>` and `<style>` containers. | Only images outside those code-like containers enter the transfer plan. | |
 | 3b | Simulate a Note or target-Markdown write accepted by GitHub while immediate read-back fails, then use the contextual verification action. | Exact matching remote content is accepted without another write; absent unchanged targets retry safely; differing content becomes conflict. | |
 
@@ -76,14 +76,21 @@ Use one copy for one concrete browser/repository test run. Never record token va
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| F1 | Open `Files` and press `Browse root`. | Direct root entries load through GET only; folders appear before files. | |
+| F1 | Open `Files`. | Direct root entries load automatically through GET only; folders appear before files without pressing `Browse root`. | |
 | F2 | Navigate root → nested folder → parent using breadcrumbs and Up. | Each explicit action reads only the selected direct directory. | |
-| F3 | Open a Markdown, JSON, source-code or text file smaller than 512 KiB. | Literal read-only content, path, size and SHA appear inside the app. | |
+| F3 | Open a Markdown, JSON, source-code or text file smaller than 512 KiB. | Literal content, path, size and SHA appear; supported same-workspace UTF-8 text exposes Edit. | |
 | F4 | Press `Open on GitHub`. | Exact owner/repository/branch/path opens in a new browser tab. | |
 | F5 | Open a binary or unsupported fixture. | No corrupted text appears; metadata and Open on GitHub remain available. | |
 | F6 | Open a listed text fixture larger than the preview limit while recording network calls. | Explicit too-large state appears; no content GET is made and no truncated content is presented as complete. | |
 | F7 | Open a repository link from a Note. | The target opens in the Files surface; GitHub remains available as a separate action. | |
 | F8 | Open/close Docs, switch chats and workspaces without browsing. | No background repository listing or file read occurs. | |
+| F9 | Browse a nested folder and choose `New file`. Type a filename/content without Save. | No PUT occurs; the current folder is the parent and the draft survives harmless rerenders. | |
+| F10 | Save the new text file. | Absence is proven, exact UTF-8 content is written/read back, the parent directory refreshes and the file opens with its new SHA. | |
+| F11 | Edit an existing text file, modify it remotely after Edit starts, then Save. | Captured-SHA conflict is visible; no blind overwrite occurs and the local editor text remains. | |
+| F12 | Choose `New folder` and create one. | An empty `.gitkeep` is verified at `<folder>/.gitkeep`; the folder becomes visible after parent refresh. | |
+| F13 | Try Edit on binary, invalid-UTF-8 or oversized content. | In-app editing is unavailable; no corrupted/truncated write can occur. | |
+| F14 | Edit a category-definition file through Files. | The file write may succeed, but category writes become blocked until explicit category refresh rebuilds the cache. | |
+| F15 | Create/edit an ordinary file and inspect its bytes. | No `obs-linked-note` marker or file-local category metadata is inserted automatically. | |
 
 ## 4B. Repository File Categories
 
@@ -124,6 +131,9 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | NC5 | Force one membership conflict during a multi-category Note save. | Verified Note remains saved; completed/pending/failed category rows are visible and category intent remains retryable. | |
 | NC6 | Select Note categories, then open/edit/save the Note before category refresh or after a failed refresh. | Previously selected unavailable category IDs remain visible and are not replaced with an empty list. | |
 | NC7 | Force category-create failure after entering every field and selecting targets. | ID/name/description/implies/group and all selected targets remain intact in the form. | |
+| NC8 | Open the Note category dropdown, search by part of a name/ID, check categories, change the query and clear it. | The list filters inside a scrollable dropdown and checked categories hidden by the query remain selected. | |
+| NC9 | Open an ordinary repository file, use its category dropdown, stage several categories and press Apply categories. | Only affected category definitions change; file bytes remain identical and each completed write is verified. | |
+| NC10 | Force one conflict during multi-category file Apply. | Completed category writes remain verified, failed rows are visible and the requested selection is preserved for retry/review. | |
 
 ## 4D. Target Picker And Bounded Search
 

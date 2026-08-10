@@ -1,11 +1,11 @@
 {
   "name": "obs-linked-notes-prototype",
   "private": true,
-  "version": "0.6.5",
+  "version": "0.7.0",
   "type": "commonjs",
   "scripts": {
     "build": "node build-linked-notes.mjs",
-    "test": "node --test tests/action-feedback.test.mjs tests/linked-notes-core.test.mjs tests/note-markdown-codec.test.mjs tests/repository-target.test.mjs tests/repository-file-browser.test.mjs tests/repository-target-search.test.mjs tests/rich-markdown-renderer.test.mjs tests/repository-media-loader.test.mjs tests/category-definition-codec.test.mjs tests/repository-category-index.test.mjs tests/note-relation-index.test.mjs tests/category-cache-store.test.mjs tests/github-contents-client.test.mjs tests/remote-note-reconcile.test.mjs tests/workspace-context.test.mjs tests/workspace-store.test.mjs tests/linked-notes-ui.test.mjs tests/pending-note-asset-store.test.mjs tests/note-image-assets.test.mjs tests/repository-asset-write.test.mjs tests/markdown-image-references.test.mjs tests/image-aware-markdown-transfer.test.mjs tests/linked-notes-app-policy.test.mjs tests/files-surface-auto-load.test.mjs",
+    "test": "node --test tests/action-feedback.test.mjs tests/linked-notes-core.test.mjs tests/note-markdown-codec.test.mjs tests/repository-target.test.mjs tests/repository-file-browser.test.mjs tests/repository-target-search.test.mjs tests/rich-markdown-renderer.test.mjs tests/repository-media-loader.test.mjs tests/category-definition-codec.test.mjs tests/repository-category-index.test.mjs tests/note-relation-index.test.mjs tests/category-cache-store.test.mjs tests/github-contents-client.test.mjs tests/remote-note-reconcile.test.mjs tests/workspace-context.test.mjs tests/workspace-store.test.mjs tests/linked-notes-ui.test.mjs tests/pending-note-asset-store.test.mjs tests/note-image-assets.test.mjs tests/repository-asset-write.test.mjs tests/markdown-image-references.test.mjs tests/image-aware-markdown-transfer.test.mjs tests/linked-notes-app-policy.test.mjs tests/files-surface-auto-load.test.mjs tests/repository-text-file-write.test.mjs",
     "verify": "node verify-linked-notes.mjs"
   }
 }
