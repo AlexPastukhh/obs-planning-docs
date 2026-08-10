@@ -1,8 +1,8 @@
 # Browse Repository Files And Manage Categories Workflow
 
 Status: working project-local End-To-End Workflow / prototype evidence pending browser and real-GitHub acceptance
-Doc version: v1.3.0-repository-text-authoring-and-category-picker
-Scope: independently traversable behavior for browsing/searching, bounded UTF-8 repository text-file authoring and rich reading, tracked folder creation, exact GitHub targets, durable file/Note categories and explicit/implied memberships.
+Doc version: v1.4.0-markdown-heading-link-copy
+Scope: independently traversable behavior for browsing/searching, bounded UTF-8 repository text-file authoring and rich reading, local repository-root Markdown heading-link copy, tracked folder creation, exact GitHub targets, durable file/Note categories and explicit/implied memberships.
 
 ## 1. Purpose
 
@@ -19,7 +19,7 @@ This workflow owns the complete user-visible behavior introduced by:
 
 **Trigger:** the user selects a configured GitHub workspace and explicitly opens Files or Categories to browse, read, create/edit bounded text files, create tracked folders, define, assign or inspect repository content.
 
-**Successful result:** the user can read a supported repository file inside the application, create or edit a bounded UTF-8 text file, create a tracked folder through `.gitkeep`, or open an exact GitHub URL; category definitions and file/Note memberships can be reconstructed from repository Markdown; explicit file/category writes are verified by reading the remote result back.
+**Successful result:** the user can read a supported repository file inside the application, copy a ready repository-root Markdown link to a heading in the loaded Markdown snapshot, create or edit a bounded UTF-8 text file, create a tracked folder through `.gitkeep`, or open an exact GitHub URL; category definitions and file/Note memberships can be reconstructed from repository Markdown; explicit file/category writes are verified by reading the remote result back.
 
 **Other explicit results:** unsupported or oversized preview, missing target, inaccessible repository/branch, malformed category definition, broken file/category link, implication cycle, duplicate category identity, SHA conflict or uncertain remote result.
 
@@ -74,7 +74,9 @@ The first explicit opening of Files automatically reads the repository root for 
 
 ### Stage 3 — Read, Create Or Edit A Repository Text File
 
-A supported bounded text file is shown literally in source view. Markdown can additionally be shown as a sanitized rich projection with repository-relative images loaded through authenticated GitHub reads. The user may explicitly enter Edit for a same-workspace supported UTF-8 text file, or start New file in the currently browsed folder. Edit rereads bounded bytes as strict UTF-8 and captures the current SHA before exposing the mutable editor buffer. Create proves the target path is absent. Save writes complete intended UTF-8 text, uses the captured SHA for updates, reads the remote result back exactly and refreshes the parent directory. Failure or conflict leaves the editor input available for review.
+A supported bounded text file is shown literally in source view. Markdown can additionally be shown as a sanitized rich projection with repository-relative images loaded through authenticated GitHub reads. For a loaded Markdown preview, the application derives an ordered heading outline using the GFM block forms relevant to heading identity: ATX and Setext headings, including headings inside block-quote and list-item containers. Every supported heading participates in one document-order duplicate-anchor allocation before the application copies a ready repository-root Markdown link such as `[Exposure](/game-design/combat.md#exposure)` to the clipboard. Opening the outline or copying a link performs no GitHub request and does not modify either file. Duplicate derived anchors receive deterministic numeric suffixes in document order. The heading-link control is not shown while an unsaved repository editor is active, so it never presents a draft-only heading as an existing remote target.
+
+The user may explicitly enter Edit for a same-workspace supported UTF-8 text file, or start New file in the currently browsed folder. Edit rereads bounded bytes as strict UTF-8 and captures the current SHA before exposing the mutable editor buffer. Create proves the target path is absent. Save writes complete intended UTF-8 text, uses the captured SHA for updates, reads the remote result back exactly and refreshes the parent directory. Failure or conflict leaves the editor input available for review.
 
 New folder creates `<folder>/.gitkeep` only after the requested folder is proven absent. Git itself has no durable empty-directory object; `.gitkeep` is a prototype convention and is not deleted automatically when later files are added.
 
@@ -134,6 +136,9 @@ Every category write is read back and compared with the intended bytes before su
 | Folder create target already exists | explicit conflict; do not write `.gitkeep` |
 | Explicit file/folder write succeeds | exact read-back verification, refresh the parent directory and show the resulting target |
 | File is supported bounded text | show literal source/rich view and allow same-workspace explicit Edit |
+| Loaded Markdown preview has headings | derive the ordered heading outline from the loaded bytes and copy ready repository-root Markdown links without GET or PUT |
+| Loaded Markdown preview has no headings | show an explicit empty heading-link outline; do not fabricate an anchor |
+| Clipboard write fails | show a local recoverable copy error; repository/file/category state remains unchanged |
 | File is binary, unsupported or oversized | show metadata, explicit limitation and GitHub link |
 | File disappears after listing | visible missing-target error; no fabricated preview |
 | Repository/branch is inaccessible | explicit authentication/permission/not-found result |
@@ -154,6 +159,7 @@ Every category write is read back and compared with the intended bytes before su
 |---|---|---|
 | Repository file | owner/repository/branch/path | exact path and GitHub URL remain visible; ordinary files never gain Linked Note metadata from generic editing |
 | File preview | one fetched remote snapshot | immutable preview; Edit creates a separate local buffer with captured base SHA |
+| Heading link | loaded Markdown preview path + derived heading anchor | local clipboard artifact only; no repository read/write is caused by opening or copying it |
 | Category | stable category ID + definition path | one ID is not silently merged across definitions |
 | Category description | category definition Markdown | literal user Markdown survives round trip |
 | Explicit membership | link from category definition to file | the definition is the selected prototype owner |
@@ -177,7 +183,7 @@ Before reporting success:
 
 ## 9. Selected Prototype Shape
 
-The bounded `0.7.0-prototype` retains the repository-file/category behavior below:
+The bounded `0.7.1-prototype` retains the repository-file/category behavior below:
 
 ```text
 one Tampermonkey Shadow DOM helper;
@@ -186,6 +192,7 @@ first explicit Files opening automatically reads root once per workspace browser
 bounded UTF-8 text source preview plus explicit create/edit with SHA-aware exact read-back verification;
 tracked folder creation through `.gitkeep`;
 sanitized rich Markdown plus explicit bounded filename/depth search;
+loaded Markdown heading-outline extraction plus local-only repository-root Markdown link copy;
 shared searchable multi-select category assignment for Notes and repository files;
 authenticated repository image loading through temporary object URLs;
 one configurable Categories folder per workspace;
@@ -214,6 +221,9 @@ create a new UTF-8 text file in the current folder and verify exact content afte
 edit an existing text file, verify exact read-back and then provoke a stale-SHA conflict without losing the local editor text;
 create a new folder and verify only `<folder>/.gitkeep` is required to make it repository-visible;
 search the category dropdown by name/ID for both a Note and an ordinary file and preserve checked categories across search filtering;
+open a Markdown file with ATX, Setext, block-quote/list-item and duplicate headings, copy multiple heading links and confirm repository-root paths plus deterministic duplicate suffixes across the mixed heading forms;
+record network activity while opening/copying the heading list and confirm no extra GitHub GET or PUT occurs;
+enter file Edit and confirm the remote-snapshot heading-link control is hidden until a verified save/reopen refreshes the preview;
 open the same exact target on GitHub;
 open a binary or oversized fixture and see an explicit no-preview result;
 create Programming with a description;

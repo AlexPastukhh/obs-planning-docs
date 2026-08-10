@@ -1,9 +1,21 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.7.0-prototype`
-Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search and UTF-8 text-file authoring, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
+Version: `0.7.1-prototype`
+Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search and UTF-8 text-file authoring, repository-root Markdown heading-link copy, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
 
+
+## 0.3 `0.7.1-prototype` Addition
+
+```text
+derive one ordered heading outline from ATX and Setext headings in the already-loaded bounded Markdown preview, including block-quote/list-item containers;
+copy a ready Markdown link such as [Exposure](/game-design/combat.md#exposure) with one click;
+encode repository path segments from the repository root and preserve deterministic duplicate-heading suffixes;
+perform no GitHub GET or PUT when opening the heading list or copying a link;
+show an explicit empty outline when the loaded Markdown snapshot has no supported headings;
+hide the remote-snapshot heading-link control while an unsaved repository editor is active;
+use GM_setClipboard for the explicit local clipboard action and report clipboard failure without changing repository state.
+```
 
 ## 0.2 `0.7.0-prototype` Additions
 
@@ -299,6 +311,9 @@ src/repository-file-browser.js
 src/repository-text-file-write.js
   bounded ordinary UTF-8 text-file create/edit policy, exact base-SHA protection and `.gitkeep` folder creation.
 
+src/repository-markdown-heading-links.js
+  pure ATX/Setext container-aware heading extraction, GitHub-style duplicate-anchor allocation, repository-root Markdown link formatting and confirmed Tampermonkey clipboard writes.
+
 src/repository-target-search.js
   explicit breadth-first filename search with depth, request, folder and result limits.
 
@@ -336,7 +351,7 @@ src/workspace-store.js
   multi-tab-safe workspace registry, explicit per-chat selection, one shared token, revisioned writes and deterministic v1 migration.
 
 src/linked-notes-ui.js
-  dark Shadow DOM UI, searchable Note/file category dropdowns, bounded repository text editor, image/transfer controls, viewport-safe placement, durable drafts and contextual recovery.
+  dark Shadow DOM UI, searchable Note/file category dropdowns, bounded repository text editor, loaded-Markdown heading-link clipboard popup, image/transfer controls, viewport-safe placement, durable drafts and contextual recovery.
 
 src/linked-notes-app.js
   composition, route-aware workspace selection, verified repository text/folder writes, file-category synchronization, pending-image lifecycle, verified multi-resource Note save, image-aware transfer and remote orchestration.
@@ -372,6 +387,7 @@ Automated verification covers:
 
 - existing Note state, codec, path, GitHub client and recovery policies;
 - repository-root/direct-directory browsing plus explicit verified UTF-8 text-file create/edit, `.gitkeep` folder creation, stale-SHA rejection and GitHub links;
+- loaded Markdown ATX/Setext/container heading extraction, deterministic mixed-form duplicate anchors, repository-root link formatting and confirmed local-only clipboard wiring;
 - deterministic category-definition v2 Markdown round trip, literal managed-looking headings and legacy v1 compatibility;
 - explicit and transitive implied category membership, broken links and cycle detection;
 - workspace-target-isolated category cache recovery, same-id target invalidation, route-safe context reset and atomic multi-tab local-group mutations;
@@ -432,7 +448,7 @@ The launcher measures its own width and moves left by that width plus a gap. The
 10. Create additional workspaces as needed.
 11. Choose the current workspace from the selector at the top of the panel.
 12. Press `Refresh Notes` to read existing Linked Notes from the selected Notes folder.
-13. Open `Files`; the repository root loads automatically. Use `New file`, `New folder` or `Edit` for bounded UTF-8 text authoring.
+13. Open `Files`; the repository root loads automatically. Use `New file`, `New folder` or `Edit` for bounded UTF-8 text authoring, and use `Copy heading link` on a loaded Markdown file to copy a ready repository-root section link.
 14. Open `Categories` and press `Refresh categories` to rebuild category memory from GitHub.
 
 Recommended first test target:

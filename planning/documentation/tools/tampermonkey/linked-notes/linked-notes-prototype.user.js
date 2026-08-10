@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.7.0-prototype
-// @description  Repository Notes plus verified text-file authoring, searchable categories, rich Markdown and GitHub actions.
+// @version      0.7.1-prototype
+// @description  Repository Notes plus text-file authoring, heading-link copy, searchable categories, rich Markdown and GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
 // @run-at       document-idle
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @grant        GM_setClipboard
 // @grant        GM_xmlhttpRequest
 // @connect      api.github.com
 // ==/UserScript==
@@ -1655,6 +1656,376 @@
     assertTextSize,
     saveRepositoryTextFile,
     createRepositoryFolder
+  };
+});
+
+/* src/repository-markdown-heading-links.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  function normalizeMarkdownText(value) {
+    return String(value == null ? '' : value).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  }
+
+  const BASIC_NAMED_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
+
+  function decodeNumericCharacterReference(match, code, radix) {
+    const numeric = parseInt(code, radix);
+    if (!Number.isFinite(numeric) || numeric === 0 || numeric > 0x10FFFF || (numeric >= 0xD800 && numeric <= 0xDFFF)) return '\uFFFD';
+    try { return String.fromCodePoint(numeric); } catch { return '\uFFFD'; }
+  }
+
+  function decodeHeadingEntities(value, options = {}) {
+    const text = String(value == null ? '' : value);
+    const documentLike = options.documentLike || (typeof document !== 'undefined' ? document : null);
+    if (documentLike && typeof documentLike.createElement === 'function') {
+      const textarea = documentLike.createElement('textarea');
+      if (textarea) {
+        textarea.innerHTML = text;
+        if (typeof textarea.value === 'string') return textarea.value;
+        if (typeof textarea.textContent === 'string') return textarea.textContent;
+      }
+    }
+    return text
+      .replace(/&#x([0-9a-f]{1,6});/gi, (match, code) => decodeNumericCharacterReference(match, code, 16))
+      .replace(/&#([0-9]{1,7});/g, (match, code) => decodeNumericCharacterReference(match, code, 10))
+      .replace(/&(amp|lt|gt|quot|apos);/gi, (match, name) => BASIC_NAMED_ENTITIES[name.toLowerCase()] || match);
+  }
+
+  function codeSpanPlaceholder(index) {
+    return `\uE000obs-code-span-${index}\uE001`;
+  }
+
+  function normalizeCodeSpanContent(value) {
+    let text = normalizeMarkdownText(value).replace(/\n/g, ' ');
+    if (/^ .* $/.test(text) && /[^ ]/.test(text)) text = text.slice(1, -1);
+    return text;
+  }
+
+  function protectCodeSpans(value) {
+    const source = String(value == null ? '' : value);
+    const spans = [];
+    let output = '';
+    let index = 0;
+
+    while (index < source.length) {
+      if (source[index] !== '`') {
+        output += source[index++];
+        continue;
+      }
+
+      let openingEnd = index + 1;
+      while (openingEnd < source.length && source[openingEnd] === '`') openingEnd += 1;
+      const openingLength = openingEnd - index;
+      let cursor = openingEnd;
+      let closingStart = -1;
+      let closingEnd = -1;
+
+      while (cursor < source.length) {
+        if (source[cursor] !== '`') {
+          cursor += 1;
+          continue;
+        }
+        let runEnd = cursor + 1;
+        while (runEnd < source.length && source[runEnd] === '`') runEnd += 1;
+        if (runEnd - cursor === openingLength) {
+          closingStart = cursor;
+          closingEnd = runEnd;
+          break;
+        }
+        cursor = runEnd;
+      }
+
+      if (closingStart < 0) {
+        output += source.slice(index, openingEnd);
+        index = openingEnd;
+        continue;
+      }
+
+      const token = codeSpanPlaceholder(spans.length);
+      spans.push(normalizeCodeSpanContent(source.slice(openingEnd, closingStart)));
+      output += token;
+      index = closingEnd;
+    }
+
+    return { text: output, spans };
+  }
+
+  function restoreCodeSpans(value, spans) {
+    let text = String(value == null ? '' : value);
+    for (let index = 0; index < spans.length; index += 1) {
+      text = text.split(codeSpanPlaceholder(index)).join(spans[index]);
+    }
+    return text;
+  }
+
+  function stripInlineMarkdown(value, options = {}) {
+    const protectedCode = protectCodeSpans(String(value == null ? '' : value).trim());
+    let text = protectedCode.text;
+    text = text.replace(/[ \t]+#+[ \t]*$/, '').trim();
+    text = text.replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1');
+    text = text.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
+    text = text.replace(/!\[([^\]]*)\]\[[^\]]*\]/g, '$1');
+    text = text.replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1');
+    text = text.replace(/<[^>]+>/g, '');
+    text = decodeHeadingEntities(text, options);
+    text = text.replace(/\\([!"#$%&'()*+,\-./:;<=>?@[\]^_`{|}~\\])/g, '$1');
+    text = text.replace(/[~*_]+/g, '');
+    text = restoreCodeSpans(text, protectedCode.spans);
+    return text.replace(/[ \t\n]+/g, ' ').trim();
+  }
+
+  function githubHeadingBaseAnchor(value, options = {}) {
+    const text = stripInlineMarkdown(value, options).toLowerCase();
+    return text
+      .trim()
+      .replace(/ /g, '-')
+      .replace(/[^\p{L}\p{N}\p{M}_-]/gu, '');
+  }
+
+  function uniqueHeadingAnchor(base, used) {
+    if (!base) return '';
+    let candidate = base;
+    let suffix = 1;
+    while (used.has(candidate)) candidate = `${base}-${suffix++}`;
+    used.add(candidate);
+    return candidate;
+  }
+
+  function leadingSpaces(value) {
+    const match = String(value || '').match(/^ */);
+    return match ? match[0].length : 0;
+  }
+
+  function stripBlockQuotePrefix(line) {
+    let rest = String(line == null ? '' : line);
+    let depth = 0;
+    while (true) {
+      const match = rest.match(/^ {0,3}>[ \t]?/);
+      if (!match) break;
+      rest = rest.slice(match[0].length);
+      depth += 1;
+    }
+    return { rest, depth };
+  }
+
+  function scanContainerLine(rawLine, state) {
+    const quote = stripBlockQuotePrefix(rawLine);
+    if (quote.depth !== state.quoteDepth) state.listIndents = [];
+    state.quoteDepth = quote.depth;
+    const rest = quote.rest;
+    const blank = !rest.trim();
+    if (blank) {
+      return { content: '', key: `q${quote.depth}/l${state.listIndents.join('.')}`, blank: true, indentedCode: false };
+    }
+
+    const indent = leadingSpaces(rest);
+    while (state.listIndents.length && indent < state.listIndents[state.listIndents.length - 1]) state.listIndents.pop();
+    const base = state.listIndents.length ? state.listIndents[state.listIndents.length - 1] : 0;
+    const afterBase = rest.slice(Math.min(base, rest.length));
+    const list = afterBase.match(/^( {0,3})((?:[*+-])|(?:\d{1,9}[.)]))([ \t]{1,4})(.*)$/);
+    if (list) {
+      const contentIndent = base + list[1].length + list[2].length + list[3].length;
+      state.listIndents.push(contentIndent);
+      return {
+        content: list[4],
+        key: `q${quote.depth}/l${state.listIndents.join('.')}`,
+        blank: !list[4].trim(),
+        indentedCode: false
+      };
+    }
+
+    if (!state.listIndents.length && indent >= 4) {
+      return { content: rest, key: `q${quote.depth}/l`, blank: false, indentedCode: true };
+    }
+
+    return {
+      content: state.listIndents.length ? rest.slice(base) : rest,
+      key: `q${quote.depth}/l${state.listIndents.join('.')}`,
+      blank: false,
+      indentedCode: false
+    };
+  }
+
+  function isThematicBreak(content) {
+    const text = String(content || '').trim();
+    if (!text) return false;
+    return /^(?:\*\s*){3,}$/.test(text) || /^(?:_\s*){3,}$/.test(text) || /^(?:-\s*){3,}$/.test(text);
+  }
+
+  function canStartSetextParagraph(content) {
+    const text = String(content || '');
+    if (!text.trim()) return false;
+    if (/^ {0,3}(?:`{3,}|~{3,})/.test(text)) return false;
+    if (/^ {0,3}#{1,6}(?:[ \t]+|$)/.test(text)) return false;
+    if (/^ {0,3}\[[^\]]+\]:/.test(text)) return false;
+    if (/^ {0,3}<(?:address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul)(?:[ \t/>]|$)/i.test(text)) return false;
+    if (isThematicBreak(text)) return false;
+    return true;
+  }
+
+  function canLazyContinueContainerParagraph(rawLine) {
+    const text = String(rawLine == null ? '' : rawLine);
+    if (!text.trim() || /^(?: {4}|\t)/.test(text)) return false;
+    if (/^ {0,3}>/.test(text)) return false;
+    if (/^ {0,3}(?:`{3,}|~{3,})/.test(text)) return false;
+    if (/^ {0,3}#{1,6}(?:[ \t]+|$)/.test(text)) return false;
+    if (/^ {0,3}(?:(?:[*+-])|(?:\d{1,9}[.)]))(?:[ \t]+|$)/.test(text)) return false;
+    if (/^ {0,3}(?:=+|-+)[ \t]*$/.test(text)) return false;
+    if (/^ {0,3}\[[^\]]+\]:/.test(text)) return false;
+    if (isThematicBreak(text)) return false;
+    return canStartSetextParagraph(text);
+  }
+
+  function extractRepositoryMarkdownHeadings(markdown, options = {}) {
+    const text = normalizeMarkdownText(markdown);
+    const headings = [];
+    const used = new Set();
+    const state = { quoteDepth: 0, listIndents: [] };
+    let fence = null;
+    let paragraph = null;
+
+    const appendHeading = (level, rawText) => {
+      const displayText = stripInlineMarkdown(rawText, options);
+      const base = githubHeadingBaseAnchor(rawText, options);
+      const anchor = uniqueHeadingAnchor(base, used);
+      if (!displayText || !anchor) return;
+      headings.push({ level, text: displayText, anchor });
+    };
+
+    for (const rawLine of text.split('\n')) {
+      const stateBeforeScan = { quoteDepth: state.quoteDepth, listIndents: [...state.listIndents] };
+      let scanned = scanContainerLine(rawLine, state);
+      if (paragraph && scanned.key !== paragraph.key && canLazyContinueContainerParagraph(rawLine)) {
+        state.quoteDepth = stateBeforeScan.quoteDepth;
+        state.listIndents = stateBeforeScan.listIndents;
+        scanned = { content: String(rawLine).trim(), key: paragraph.key, blank: false, indentedCode: false };
+      }
+      const line = scanned.content;
+      const opening = !scanned.indentedCode && line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+      if (fence) {
+        const closing = !scanned.indentedCode && scanned.key === fence.key && line.match(/^ {0,3}(`{3,}|~{3,})[ \t]*$/);
+        if (closing && closing[1][0] === fence.char && closing[1].length >= fence.length) fence = null;
+        paragraph = null;
+        continue;
+      }
+      if (opening) {
+        fence = { char: opening[1][0], length: opening[1].length, key: scanned.key };
+        paragraph = null;
+        continue;
+      }
+      if (scanned.indentedCode) {
+        paragraph = null;
+        continue;
+      }
+      if (scanned.blank) {
+        paragraph = null;
+        continue;
+      }
+
+      const atx = line.match(/^ {0,3}(#{1,6})(?:[ \t]+|$)(.*)$/);
+      if (atx) {
+        appendHeading(atx[1].length, atx[2]);
+        paragraph = null;
+        continue;
+      }
+
+      const setext = line.match(/^ {0,3}(=+|-+)[ \t]*$/);
+      if (setext && !(setext[1] === '-')) {
+        if (paragraph && paragraph.key === scanned.key && paragraph.lines.length) {
+          appendHeading(setext[1][0] === '=' ? 1 : 2, paragraph.lines.join(' '));
+        }
+        paragraph = null;
+        continue;
+      }
+
+      if (!canStartSetextParagraph(line)) {
+        paragraph = null;
+        continue;
+      }
+      if (paragraph && paragraph.key === scanned.key) paragraph.lines.push(line.trim());
+      else paragraph = { key: scanned.key, lines: [line.trim()] };
+    }
+    return headings;
+  }
+
+  function normalizeRepositoryHeadingPath(path) {
+    const text = String(path == null ? '' : path).replace(/\\/g, '/').trim().replace(/^\/+/, '');
+    if (!text) throw new TypeError('Repository Markdown path is required.');
+    if (/[?#\u0000-\u001f\u007f]/.test(text)) throw new TypeError('Repository Markdown path contains unsupported syntax.');
+    const parts = text.split('/');
+    if (parts.some((segment) => !segment || segment === '.' || segment === '..')) throw new TypeError('Repository Markdown path must remain inside the repository root.');
+    return parts.join('/');
+  }
+
+  function encodeRepositoryRootPath(path) {
+    return normalizeRepositoryHeadingPath(path).split('/').map((segment) => encodeURIComponent(segment).replace(/[!'()*]/g, (character) => `%${character.charCodeAt(0).toString(16).toUpperCase()}`)).join('/');
+  }
+
+  function escapeMarkdownLinkLabel(value) {
+    return String(value == null ? '' : value).replace(/\\/g, '\\\\').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+  }
+
+  function repositoryRootHeadingTarget(path, anchor) {
+    const normalizedAnchor = String(anchor == null ? '' : anchor).trim();
+    if (!normalizedAnchor || /[\s#\u0000-\u001f\u007f]/.test(normalizedAnchor)) throw new TypeError('Repository heading anchor is invalid.');
+    return `/${encodeRepositoryRootPath(path)}#${normalizedAnchor}`;
+  }
+
+  function repositoryRootHeadingMarkdownLink(path, heading) {
+    if (!heading || !heading.text || !heading.anchor) throw new TypeError('Repository heading is required.');
+    const target = repositoryRootHeadingTarget(path, heading.anchor);
+    return `[${escapeMarkdownLinkLabel(heading.text)}](${target})`;
+  }
+
+  function repositoryHeadingLinksForPreview(preview, options = {}) {
+    if (!preview || preview.kind !== 'text' || typeof preview.content !== 'string' || !/\.md(?:own)?$/i.test(String(preview.path || ''))) return [];
+    return extractRepositoryMarkdownHeadings(preview.content, options).map((heading) => {
+      const target = repositoryRootHeadingTarget(preview.path, heading.anchor);
+      return { ...heading, target, markdown: repositoryRootHeadingMarkdownLink(preview.path, heading) };
+    });
+  }
+
+  function writeTampermonkeyClipboardText(value, options = {}) {
+    const writer = options.gmSetClipboard || (typeof GM_setClipboard === 'function' ? GM_setClipboard : null);
+    const timeoutMs = Number.isFinite(Number(options.timeoutMs)) ? Math.max(1, Number(options.timeoutMs)) : 2000;
+    const setTimeoutFn = options.setTimeoutFn || ((fn, ms) => setTimeout(fn, ms));
+    const clearTimeoutFn = options.clearTimeoutFn || ((id) => clearTimeout(id));
+    if (typeof writer !== 'function') return Promise.reject(new Error('GM_setClipboard is unavailable.'));
+
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      let timer = null;
+      const finish = (error) => {
+        if (settled) return;
+        settled = true;
+        if (timer != null) clearTimeoutFn(timer);
+        if (error) reject(error);
+        else resolve();
+      };
+      try {
+        timer = setTimeoutFn(() => finish(new Error('Clipboard write was not confirmed.')), timeoutMs);
+        writer(String(value == null ? '' : value), 'text', () => finish(null));
+      } catch (error) {
+        finish(error instanceof Error ? error : new Error(String(error)));
+      }
+    });
+  }
+
+  return {
+    normalizeRepositoryHeadingPath,
+    decodeRepositoryHeadingEntities: decodeHeadingEntities,
+    stripRepositoryHeadingMarkdown: stripInlineMarkdown,
+    githubHeadingBaseAnchor,
+    extractRepositoryMarkdownHeadings,
+    repositoryRootHeadingTarget,
+    repositoryRootHeadingMarkdownLink,
+    repositoryHeadingLinksForPreview,
+    writeTampermonkeyClipboardText
   };
 });
 
@@ -4784,6 +5155,13 @@
         return `<details class="category-picker" data-category-kind="${kind}"><summary><span data-category-summary>Categories · ${selected.length} selected</span></summary><div class="category-picker-popover"><input data-category-filter="${kind}" placeholder="Search categories…" ${enabled && !busy ? '' : 'disabled'}><div class="category-picker-list">${choices}${unavailableHtml || ''}</div><div class="category-picker-actions">${apply}</div></div></details>`;
       };
       const repositoryEditor = this.state.repositoryEditor || { mode: 'none', parentPath: this.state.repositoryPath || '', path: '', name: '', content: '', baseSha: '' };
+      const repositoryHeadingLinkEligible = Boolean(preview && preview.kind === 'text' && typeof preview.content === 'string' && /\.md(?:own)?$/i.test(preview.path || '') && repositoryEditor.mode === 'none');
+      const repositoryHeadingLinks = repositoryHeadingLinkEligible && globalThis.ObsLinkedNotes && typeof globalThis.ObsLinkedNotes.repositoryHeadingLinksForPreview === 'function'
+        ? globalThis.ObsLinkedNotes.repositoryHeadingLinksForPreview(preview)
+        : [];
+      const repositoryHeadingLinkHtml = repositoryHeadingLinkEligible
+        ? `<details class="heading-link-picker"><summary>Copy heading link</summary><div class="heading-link-popover"><div class="heading-link-list">${repositoryHeadingLinks.length ? repositoryHeadingLinks.map((heading, index) => `<div class="heading-link-row" style="padding-left:${Math.max(0, Number(heading.level || 1) - 1) * 12}px"><span>${escapeHtml(`${'#'.repeat(Math.max(1, Math.min(6, Number(heading.level || 1))))} ${heading.text}`)}</span><button data-copy-repository-heading-link="${index}">Copy</button></div>`).join('') : '<div class="empty">No Markdown headings found in this loaded file snapshot.</div>'}</div><div class="hint" data-heading-copy-status>Copies a repository-root Markdown link; no GitHub request is made.</div></div></details>`
+        : '';
       const repositoryEditorHtml = repositoryEditor.mode === 'folder'
         ? `<section class="repository-editor"><h3>New folder</h3><div class="hint">Parent: ${escapeHtml(repositoryEditor.parentPath || '/')} · GitHub tracks the folder through an empty .gitkeep file.</div><label class="field"><span>Folder name</span><input data-role="repository-file-name" value="${escapeHtml(repositoryEditor.name || '')}" placeholder="new-folder" ${disabled}></label><div class="repository-editor-actions"><button class="primary" data-action="save-repository-editor" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>Create folder</button><button data-action="cancel-repository-editor" ${disabled}>Cancel</button></div></section>`
         : repositoryEditor.mode === 'create' || repositoryEditor.mode === 'edit'
@@ -4803,6 +5181,7 @@
           <button data-action="new-repository-folder" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>New folder</button>
           ${preview && preview.kind === 'text' && /\.md(?:own)?$/i.test(preview.path || '') && repositoryEditor.mode === 'none' ? `<button data-file-view="rendered" class="${this.state.fileViewMode === 'rendered' ? 'active' : ''}" ${disabled}>Rendered</button><button data-file-view="source" class="${this.state.fileViewMode === 'source' ? 'active' : ''}" ${disabled}>Source</button>` : ''}
           <button data-action="edit-repository-file" ${preview && this.state.fileEditAllowed && repositoryEditor.mode === 'none' && this.state.hasToken && !busy ? '' : 'disabled'}>Edit</button>
+          ${repositoryHeadingLinkHtml}
           <button class="primary" data-action="open-file-github" ${preview && !busy ? '' : 'disabled'}>Open on GitHub</button>
           <button data-action="close" ${disabled}>Close</button>
         </div>
@@ -5035,6 +5414,13 @@
           .category-picker-row input { width: auto; }
           .category-picker-row small { color: var(--muted); overflow-wrap: anywhere; }
           .category-picker-row.unavailable { opacity: .75; }
+          .heading-link-picker { position: relative; }
+          .heading-link-picker > summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 34px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); list-style: none; }
+          .heading-link-picker > summary::-webkit-details-marker { display: none; }
+          .heading-link-popover { position: absolute; z-index: 45; top: calc(100% + 6px); right: 0; width: min(560px, 80vw); max-height: 380px; overflow: auto; display: grid; gap: 7px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); box-shadow: 0 12px 30px rgba(0,0,0,.45); }
+          .heading-link-list { display: grid; gap: 4px; }
+          .heading-link-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: center; padding-top: 3px; padding-bottom: 3px; }
+          .heading-link-row span { min-width: 0; overflow-wrap: anywhere; }
           .picker-backdrop { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.72); }
           .main { position: relative; }
           .picker-modal { width: min(780px, 100%); max-height: 92%; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 16px 45px rgba(0,0,0,.6); }
@@ -5215,6 +5601,7 @@
       this.shadow.querySelectorAll('[data-action="cancel-repository-editor"]').forEach((button) => { button.onclick = () => this._call('onCancelRepositoryEditor'); });
       this.shadow.querySelectorAll('[data-action="save-repository-editor"]').forEach((button) => { button.onclick = () => this._call('onSaveRepositoryEditor', this._repositoryEditorFromForm()); });
       this.shadow.querySelectorAll('[data-action="apply-file-categories"]').forEach((button) => { button.onclick = () => { const ids = Array.from(this.shadow.querySelectorAll('[data-file-category-id]:checked')).map((item) => item.dataset.fileCategoryId); this.state.fileCategoryIds = ids; return this._call('onApplyFileCategories', preview && preview.path, ids); }; });
+      this.shadow.querySelectorAll('[data-copy-repository-heading-link]').forEach((button) => { button.onclick = async () => { const index = Number(button.dataset.copyRepositoryHeadingLink); const item = repositoryHeadingLinks[index]; const root = button.closest('.heading-link-picker'); const status = root && root.querySelector('[data-heading-copy-status]'); try { if (!item || !item.markdown) throw new Error('Heading link is unavailable.'); await this._call('onCopyRepositoryHeadingLink', item); if (status) status.textContent = `Copied: ${item.target}`; button.textContent = 'Copied'; } catch (error) { if (status) status.textContent = `Copy failed: ${String(error && error.message || error)}`; } }; });
       this.shadow.querySelectorAll('[data-browse-path]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBrowseRepository', button.dataset.browsePath); });
       this.shadow.querySelectorAll('[data-repository-entry]').forEach((button) => { button.onclick = () => this._withAllDrafts('onOpenRepositoryEntry', {
         path: button.dataset.repositoryEntry,
@@ -5363,6 +5750,11 @@
       this.getValue = options.getValue || gmGet;
       this.setValue = options.setValue || gmSet;
       this.clientFactory = options.clientFactory || null;
+      this.clipboardWriter = options.clipboardWriter || ((text) => {
+        const writer = this.api && this.api.writeTampermonkeyClipboardText;
+        if (typeof writer !== 'function') return Promise.reject(new Error('Clipboard writer is unavailable.'));
+        return writer(text);
+      });
       this.confirmAction = options.confirmAction || ((message) => (typeof window !== 'undefined' && typeof window.confirm === 'function' ? window.confirm(message) : false));
       this.locationProvider = options.locationProvider || (() => (typeof location !== 'undefined' ? location : { pathname: '' }));
       this.setIntervalFn = options.setIntervalFn || ((fn, ms) => setInterval(fn, ms));
@@ -5389,6 +5781,11 @@
         onCancelRepositoryEditor: () => this.cancelRepositoryEditor(),
         onSaveRepositoryEditor: (input) => this.saveRepositoryEditor(input),
         onApplyFileCategories: (path, ids) => this.applyFileCategories(path, ids),
+        onCopyRepositoryHeadingLink: (item) => {
+          const markdown = item && item.markdown ? String(item.markdown) : '';
+          if (!markdown) return Promise.reject(new Error('Heading link is unavailable.'));
+          return this.clipboardWriter(markdown);
+        },
         onRefreshCategories: () => this.refreshCategories(),
         onSelectCategory: (id) => this.selectCategory(id),
         onSaveCategory: (category) => this.saveCategory(category),

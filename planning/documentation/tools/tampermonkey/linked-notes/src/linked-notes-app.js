@@ -66,6 +66,11 @@
       this.getValue = options.getValue || gmGet;
       this.setValue = options.setValue || gmSet;
       this.clientFactory = options.clientFactory || null;
+      this.clipboardWriter = options.clipboardWriter || ((text) => {
+        const writer = this.api && this.api.writeTampermonkeyClipboardText;
+        if (typeof writer !== 'function') return Promise.reject(new Error('Clipboard writer is unavailable.'));
+        return writer(text);
+      });
       this.confirmAction = options.confirmAction || ((message) => (typeof window !== 'undefined' && typeof window.confirm === 'function' ? window.confirm(message) : false));
       this.locationProvider = options.locationProvider || (() => (typeof location !== 'undefined' ? location : { pathname: '' }));
       this.setIntervalFn = options.setIntervalFn || ((fn, ms) => setInterval(fn, ms));
@@ -92,6 +97,11 @@
         onCancelRepositoryEditor: () => this.cancelRepositoryEditor(),
         onSaveRepositoryEditor: (input) => this.saveRepositoryEditor(input),
         onApplyFileCategories: (path, ids) => this.applyFileCategories(path, ids),
+        onCopyRepositoryHeadingLink: (item) => {
+          const markdown = item && item.markdown ? String(item.markdown) : '';
+          if (!markdown) return Promise.reject(new Error('Heading link is unavailable.'));
+          return this.clipboardWriter(markdown);
+        },
         onRefreshCategories: () => this.refreshCategories(),
         onSelectCategory: (id) => this.selectCategory(id),
         onSaveCategory: (category) => this.saveCategory(category),

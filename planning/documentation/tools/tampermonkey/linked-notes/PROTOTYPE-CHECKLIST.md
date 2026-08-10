@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.7.0-prototype`
+Prototype version: `0.7.1-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values.
 
@@ -34,7 +34,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 |---:|---|---|---|
 | 1 | Run `node verify-linked-notes.mjs`. | All configured automated tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.7.0-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.7.1-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
 | 3a | Run the transfer parser cases containing images inside raw `<pre>`, `<code>`, `<textarea>`, `<script>` and `<style>` containers. | Only images outside those code-like containers enter the transfer plan. | |
 | 3b | Simulate a Note or target-Markdown write accepted by GitHub while immediate read-back fails, then use the contextual verification action. | Exact matching remote content is accepted without another write; absent unchanged targets retry safely; differing content becomes conflict. | |
 
@@ -91,6 +91,11 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | F13 | Try Edit on binary, invalid-UTF-8 or oversized content. | In-app editing is unavailable; no corrupted/truncated write can occur. | |
 | F14 | Edit a category-definition file through Files. | The file write may succeed, but category writes become blocked until explicit category refresh rebuilds the cache. | |
 | F15 | Create/edit an ordinary file and inspect its bytes. | No `obs-linked-note` marker or file-local category metadata is inserted automatically. | |
+| F16 | Open a Markdown file containing ATX, Setext and block-quote/list-item headings and open `Copy heading link`. | A scrollable ordered outline appears from the already-loaded preview; all supported heading forms participate in document order and no extra GitHub request occurs. | |
+| F17 | Copy links for repeated heading text across ATX, Setext and container forms in one Markdown file. | Clipboard receives ready root-relative Markdown links and duplicate anchors receive deterministic `-1`, `-2`, ... suffixes across the mixed forms without collision. | |
+| F18 | Record network calls while opening the heading popup and pressing Copy. | Clipboard changes locally; no GitHub GET or PUT is caused by the popup/copy action. | |
+| F19 | Enter Edit on the same Markdown file, add a draft-only heading, then cancel or save. | Heading-link control is hidden during the unsaved editor; after verified save the refreshed preview derives links only from the verified content. | |
+| F20 | Force clipboard failure. | A visible local copy error appears and repository/file/category state is unchanged. | |
 
 ## 4B. Repository File Categories
 

@@ -14,6 +14,7 @@ const sourceFiles = [
   'src/image-aware-markdown-transfer.js',
   'src/repository-file-browser.js',
   'src/repository-text-file-write.js',
+  'src/repository-markdown-heading-links.js',
   'src/repository-target-search.js',
   'src/rich-markdown-renderer.js',
   'src/repository-media-loader.js',
@@ -35,14 +36,15 @@ const sourceFiles = [
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.7.0-prototype
-// @description  Repository Notes plus verified text-file authoring, searchable categories, rich Markdown and GitHub actions.
+// @version      0.7.1-prototype
+// @description  Repository Notes plus text-file authoring, heading-link copy, searchable categories, rich Markdown and GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
 // @run-at       document-idle
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @grant        GM_setClipboard
 // @grant        GM_xmlhttpRequest
 // @connect      api.github.com
 // ==/UserScript==

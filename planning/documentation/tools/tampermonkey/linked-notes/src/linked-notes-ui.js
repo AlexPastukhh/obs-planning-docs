@@ -479,6 +479,13 @@
         return `<details class="category-picker" data-category-kind="${kind}"><summary><span data-category-summary>Categories · ${selected.length} selected</span></summary><div class="category-picker-popover"><input data-category-filter="${kind}" placeholder="Search categories…" ${enabled && !busy ? '' : 'disabled'}><div class="category-picker-list">${choices}${unavailableHtml || ''}</div><div class="category-picker-actions">${apply}</div></div></details>`;
       };
       const repositoryEditor = this.state.repositoryEditor || { mode: 'none', parentPath: this.state.repositoryPath || '', path: '', name: '', content: '', baseSha: '' };
+      const repositoryHeadingLinkEligible = Boolean(preview && preview.kind === 'text' && typeof preview.content === 'string' && /\.md(?:own)?$/i.test(preview.path || '') && repositoryEditor.mode === 'none');
+      const repositoryHeadingLinks = repositoryHeadingLinkEligible && globalThis.ObsLinkedNotes && typeof globalThis.ObsLinkedNotes.repositoryHeadingLinksForPreview === 'function'
+        ? globalThis.ObsLinkedNotes.repositoryHeadingLinksForPreview(preview)
+        : [];
+      const repositoryHeadingLinkHtml = repositoryHeadingLinkEligible
+        ? `<details class="heading-link-picker"><summary>Copy heading link</summary><div class="heading-link-popover"><div class="heading-link-list">${repositoryHeadingLinks.length ? repositoryHeadingLinks.map((heading, index) => `<div class="heading-link-row" style="padding-left:${Math.max(0, Number(heading.level || 1) - 1) * 12}px"><span>${escapeHtml(`${'#'.repeat(Math.max(1, Math.min(6, Number(heading.level || 1))))} ${heading.text}`)}</span><button data-copy-repository-heading-link="${index}">Copy</button></div>`).join('') : '<div class="empty">No Markdown headings found in this loaded file snapshot.</div>'}</div><div class="hint" data-heading-copy-status>Copies a repository-root Markdown link; no GitHub request is made.</div></div></details>`
+        : '';
       const repositoryEditorHtml = repositoryEditor.mode === 'folder'
         ? `<section class="repository-editor"><h3>New folder</h3><div class="hint">Parent: ${escapeHtml(repositoryEditor.parentPath || '/')} · GitHub tracks the folder through an empty .gitkeep file.</div><label class="field"><span>Folder name</span><input data-role="repository-file-name" value="${escapeHtml(repositoryEditor.name || '')}" placeholder="new-folder" ${disabled}></label><div class="repository-editor-actions"><button class="primary" data-action="save-repository-editor" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>Create folder</button><button data-action="cancel-repository-editor" ${disabled}>Cancel</button></div></section>`
         : repositoryEditor.mode === 'create' || repositoryEditor.mode === 'edit'
@@ -498,6 +505,7 @@
           <button data-action="new-repository-folder" ${activeWorkspace && this.state.hasToken && !busy ? '' : 'disabled'}>New folder</button>
           ${preview && preview.kind === 'text' && /\.md(?:own)?$/i.test(preview.path || '') && repositoryEditor.mode === 'none' ? `<button data-file-view="rendered" class="${this.state.fileViewMode === 'rendered' ? 'active' : ''}" ${disabled}>Rendered</button><button data-file-view="source" class="${this.state.fileViewMode === 'source' ? 'active' : ''}" ${disabled}>Source</button>` : ''}
           <button data-action="edit-repository-file" ${preview && this.state.fileEditAllowed && repositoryEditor.mode === 'none' && this.state.hasToken && !busy ? '' : 'disabled'}>Edit</button>
+          ${repositoryHeadingLinkHtml}
           <button class="primary" data-action="open-file-github" ${preview && !busy ? '' : 'disabled'}>Open on GitHub</button>
           <button data-action="close" ${disabled}>Close</button>
         </div>
@@ -730,6 +738,13 @@
           .category-picker-row input { width: auto; }
           .category-picker-row small { color: var(--muted); overflow-wrap: anywhere; }
           .category-picker-row.unavailable { opacity: .75; }
+          .heading-link-picker { position: relative; }
+          .heading-link-picker > summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 34px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); list-style: none; }
+          .heading-link-picker > summary::-webkit-details-marker { display: none; }
+          .heading-link-popover { position: absolute; z-index: 45; top: calc(100% + 6px); right: 0; width: min(560px, 80vw); max-height: 380px; overflow: auto; display: grid; gap: 7px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); box-shadow: 0 12px 30px rgba(0,0,0,.45); }
+          .heading-link-list { display: grid; gap: 4px; }
+          .heading-link-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: center; padding-top: 3px; padding-bottom: 3px; }
+          .heading-link-row span { min-width: 0; overflow-wrap: anywhere; }
           .picker-backdrop { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.72); }
           .main { position: relative; }
           .picker-modal { width: min(780px, 100%); max-height: 92%; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 16px 45px rgba(0,0,0,.6); }
@@ -910,6 +925,7 @@
       this.shadow.querySelectorAll('[data-action="cancel-repository-editor"]').forEach((button) => { button.onclick = () => this._call('onCancelRepositoryEditor'); });
       this.shadow.querySelectorAll('[data-action="save-repository-editor"]').forEach((button) => { button.onclick = () => this._call('onSaveRepositoryEditor', this._repositoryEditorFromForm()); });
       this.shadow.querySelectorAll('[data-action="apply-file-categories"]').forEach((button) => { button.onclick = () => { const ids = Array.from(this.shadow.querySelectorAll('[data-file-category-id]:checked')).map((item) => item.dataset.fileCategoryId); this.state.fileCategoryIds = ids; return this._call('onApplyFileCategories', preview && preview.path, ids); }; });
+      this.shadow.querySelectorAll('[data-copy-repository-heading-link]').forEach((button) => { button.onclick = async () => { const index = Number(button.dataset.copyRepositoryHeadingLink); const item = repositoryHeadingLinks[index]; const root = button.closest('.heading-link-picker'); const status = root && root.querySelector('[data-heading-copy-status]'); try { if (!item || !item.markdown) throw new Error('Heading link is unavailable.'); await this._call('onCopyRepositoryHeadingLink', item); if (status) status.textContent = `Copied: ${item.target}`; button.textContent = 'Copied'; } catch (error) { if (status) status.textContent = `Copy failed: ${String(error && error.message || error)}`; } }; });
       this.shadow.querySelectorAll('[data-browse-path]').forEach((button) => { button.onclick = () => this._withAllDrafts('onBrowseRepository', button.dataset.browsePath); });
       this.shadow.querySelectorAll('[data-repository-entry]').forEach((button) => { button.onclick = () => this._withAllDrafts('onOpenRepositoryEntry', {
         path: button.dataset.repositoryEntry,
