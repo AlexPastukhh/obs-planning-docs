@@ -5,6 +5,18 @@ Version: `0.7.1-prototype`
 Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search and UTF-8 text-file authoring, repository-root Markdown heading-link copy, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
 
 
+## 0.4 `0.7.1-prototype` Runtime Responsiveness Correction
+
+```text
+apply a verified category create/edit or membership write directly to the local category snapshot instead of forcing a full repository category refresh;
+reuse unchanged category definitions by repository path + listing SHA during explicit Refresh categories, fetching only changed definition bodies;
+bound membership validation to 100 unique targets and at most 20 parent-directory listings per refresh, leaving excess targets explicitly unchecked rather than issuing an unbounded request chain;
+show category-refresh phase/progress and request activity while the explicit read is running;
+make Refresh Notes and Refresh categories user-cancellable through the real GM_xmlhttpRequest abort handle during their remote-read phase; cancelled Notes reads stop before remote snapshots enter local reconciliation, and cancellation is disabled once a verified read has entered its local-apply phase; repository writes are never cancellable;
+keep the runtime correction re-installable when the userscript executes again in the same JavaScript realm, and clear only transient operation-error feedback created by an intentional cancelled read regardless of which surface was open;
+keep Close and the Docs launcher usable while a remote operation is running, with Docs showing an activity indicator so the panel may be hidden/reopened without losing operation visibility.
+```
+
 ## 0.3 `0.7.1-prototype` Addition
 
 ```text
@@ -130,6 +142,7 @@ only valid obs-linked-note:v1 files enter the local Note cache; ordinary Markdow
 remote-only Notes are imported by stable Note id; remote-only changes fast-forward only when local content still equals the verified base;
 different local and remote changes become an explicit conflict, and missing bound files become remote_deleted without deleting local content;
 only one remote operation may run at a time;
+explicit Notes/category refresh reads may be cancelled through the active request abort handle while repository writes remain non-cancellable;
 remote success requires exact read-back verification;
 repository paths are validated independently at settings, app and GitHub-client boundaries;
 ordinary Markdown-relative paths and explicit anchors are stable targets;
@@ -356,6 +369,9 @@ src/linked-notes-ui.js
 src/linked-notes-app.js
   composition, route-aware workspace selection, verified repository text/folder writes, file-category synchronization, pending-image lifecycle, verified multi-resource Note save, image-aware transfer and remote orchestration.
 
+src/runtime-responsiveness.js
+  post-composition prototype correction for abortable read-only refresh, progress/activity UI, cached/bounded category refresh and verified category fast-path snapshot updates.
+
 build-linked-notes.mjs
   deterministic zero-dependency userscript build.
 
@@ -415,6 +431,7 @@ Automated verification covers:
 - Escape-close guard while a remote operation is active;
 - preservation and explicit reset of unsaved workspace-form values;
 - open-time refresh after another tab changes workspace state;
+- abortable GM request transport, category path/SHA cache reuse, deterministic parent-validation bounds, same-realm runtime re-installation, cross-surface cancellation feedback cleanup and runtime wiring for fast category writes, cancellation, Close and Docs activity;
 - generated userscript freshness and syntax.
 
 ## 6. Install
@@ -485,21 +502,21 @@ Deleting a workspace removes only local workspace records and affected chat mapp
 ## 9. UI Behavior
 
 - dark theme consistent with ChatGPT dark mode;
-- `Docs` launcher shifted left by its measured width plus a gap;
+- `Docs` launcher shifted left by its measured width plus a gap and remains clickable during remote work; while busy it shows `Docs ⟳`;
 - wide viewports reserve bottom-right space for other OBS widgets instead of allowing them to cover Notes content;
 - the panel uses the highest stacking layer and recalculates its bounded dimensions when the viewport changes;
 - the Note list and editor have independent internal vertical scrolling, including access to Links and workspace settings below the editor;
 - `Manage workspaces` remains visible in the top bar and opens the manager at its scroll position;
 - top-level `Notes`, `Files` and `Categories` surfaces share one selected workspace;
-- `Refresh Notes` remains visible beside workspace controls and performs one explicit read-only reconciliation of the active Notes folder;
+- `Refresh Notes` remains visible beside workspace controls and performs one explicit read-only reconciliation of the active Notes folder; while remote reads are active the top bar shows request progress and `Cancel read`, then disables cancellation while the completed remote snapshot is applied locally;
 - `Files` browses direct repository folders and shows a bounded read-only text preview plus `Open on GitHub`;
 - repository-listing size/SHA/URL metadata survives UI selection; unsupported or oversized files show metadata and the GitHub escape hatch instead of corrupted text;
-- `Categories` reads durable category definitions, creates/edits descriptions, assigns files through visible links and distinguishes explicit from derived membership;
+- `Categories` reads durable category definitions, creates/edits descriptions, assigns files through visible links and distinguishes explicit from derived membership; explicit refresh reuses unchanged definition SHAs, reports progress and bounds member validation, while verified category writes update the local snapshot without a mandatory full refresh;
 - category implication is stored in definition files; category groups are local UX-only and each group change is an atomic category-level mutation;
 - category assignment is disabled and rejected when the selected preview belongs to a different repository/branch than the active category workspace;
 - the last refresh summary reports found, imported, updated, unchanged, local-ahead, conflict, deleted, skipped and error counts;
 - `Escape` persists the title/body draft and closes an idle open panel;
-- `Escape` is ignored while a remote operation is active;
+- `Escape` is ignored while a remote operation is active; the explicit Close button remains available, and the Docs launcher can reopen the hidden panel while work continues;
 - close, search, settings, workspace switch and Note navigation persist the current Note draft first;
 - workspace-form input survives close, Escape, token actions, route changes and unrelated state refreshes;
 - selecting another workspace or starting a new workspace asks before discarding a dirty workspace form;
@@ -673,6 +690,7 @@ Workspace and chat binding data are intentionally absent from this format. The N
 - Do not store separate token copies in Workspace records.
 - Do not accept malformed GitHub repository URLs or unsafe repository paths.
 - Do not run two remote operations concurrently.
+- Do not expose cancellation for repository write operations; cancellation is limited to the remote-read phase of explicit Notes/category refresh work, before local snapshot application begins.
 - Do not scan GitHub automatically on mount, panel open, route change or workspace selection.
 - Do not import arbitrary Markdown that lacks the linked-note marker.
 - Do not fast-forward a local Note after its content changed from the verified base.

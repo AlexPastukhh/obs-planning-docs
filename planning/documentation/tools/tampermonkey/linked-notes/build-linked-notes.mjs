@@ -31,13 +31,14 @@ const sourceFiles = [
   'src/workspace-store.js',
   'src/linked-notes-ui.js',
   'src/linked-notes-app.js',
+  'src/runtime-responsiveness.js',
 ];
 
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
 // @version      0.7.1-prototype
-// @description  Repository Notes plus text-file authoring, heading-link copy, searchable categories, rich Markdown and GitHub actions.
+// @description  Repository Notes plus responsive refresh controls, text-file authoring, heading-link copy, searchable categories, rich Markdown and GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
