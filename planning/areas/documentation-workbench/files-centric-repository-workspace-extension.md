@@ -189,3 +189,32 @@ Browser / real GitHub:
 - unbounded/background recursive copy/indexing;
 - cross-repository copy;
 - automatic repair of links after later path moves.
+
+## 10. Adjacent Reference Object Prototype Slice
+
+A later narrow implementation slice is owned by:
+
+[`reference-object-definition-and-materialized-use-workflow.md`](reference-object-definition-and-materialized-use-workflow.md)
+
+It adds repository-native definition/use markers, one Definitions File, local-first materialized-use checking/updating and a searchable Reference Objects menu inside the Files workspace. This is an adjacent workflow using Files as its host surface; it does not change this file into the semantic owner of Reference Objects and does not revive the deferred generic managed-object architecture.
+
+The Files integration boundary is:
+
+```text
+ordinary repository file open/edit/navigation
+  → remains owned by this Files workflow;
+
+Reference Object exact-definition creation,
+clipboard use materialization,
+usage checking/updating,
+Definitions File indexing and tag validation
+  → owned by the Reference Object workflow;
+
+local Reference Object drafts
+  → application-local complete-file overlays by exact workspace;
+
+GitHub Reference Object writes
+  → explicit separately triggered verified writes;
+  → never a side effect of opening the object list, copying a use,
+    checking staleness or validating tags.
+```

@@ -2,7 +2,7 @@
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
 // @version      0.7.1-prototype
-// @description  Repository Notes plus responsive refresh controls, Files workspace navigation/templates/copy/structure, searchable categories, rich Markdown and GitHub actions.
+// @description  Repository Notes plus responsive Files workspace, materialized Reference Objects, searchable categories, rich Markdown and verified GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -2245,6 +2245,957 @@
     parseRepositoryStructure,
     copyDestinationPath,
     clampRepositoryLinkPopoverRect: clampPopoverRect
+  };
+});
+
+/* src/reference-object-markers.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const REFERENCE_OBJECT_ID_PATTERN = /^ro_[A-Za-z0-9][A-Za-z0-9_-]{2,63}$/;
+  const MARKER_TOKEN = /<!--\s*(\/?)obs-ref:(def|use)(?:\s+id="([^"]+)")?\s*-->/g;
+  const MARKER_COMMENT = /<!--[\s\S]*?-->/g;
+
+  function sourceText(value) {
+    return String(value == null ? '' : value);
+  }
+
+  function markdownCodeRanges(text) {
+    const ranges = [];
+    const lineRanges = [];
+    let start = 0;
+    for (let index = 0; index <= text.length; index += 1) {
+      if (index !== text.length && text[index] !== '\n' && text[index] !== '\r') continue;
+      let end = index;
+      let next = index;
+      if (index < text.length && text[index] === '\r' && text[index + 1] === '\n') next = index + 2;
+      else if (index < text.length) next = index + 1;
+      lineRanges.push({ start, end, next });
+      start = next;
+      if (next > index) index = next - 1;
+    }
+
+    let fence = null;
+    for (const line of lineRanges) {
+      const value = text.slice(line.start, line.end);
+      if (!fence) {
+        const match = value.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+        if (!match) continue;
+        fence = { start: line.start, char: match[1][0], length: match[1].length };
+        continue;
+      }
+      const close = value.match(/^ {0,3}(`+|~+)[ \t]*$/);
+      if (!close || close[1][0] !== fence.char || close[1].length < fence.length) continue;
+      ranges.push([fence.start, line.next]);
+      fence = null;
+    }
+    if (fence) ranges.push([fence.start, text.length]);
+
+    const insideFence = (offset) => ranges.some(([rangeStart, rangeEnd]) => offset >= rangeStart && offset < rangeEnd);
+    let index = 0;
+    while (index < text.length) {
+      if (insideFence(index) || text[index] !== '`') { index += 1; continue; }
+      let runEnd = index + 1;
+      while (runEnd < text.length && text[runEnd] === '`') runEnd += 1;
+      const length = runEnd - index;
+      let search = runEnd;
+      let closeStart = -1;
+      let closeEnd = -1;
+      while (search < text.length) {
+        if (insideFence(search) || text[search] !== '`') { search += 1; continue; }
+        let candidateEnd = search + 1;
+        while (candidateEnd < text.length && text[candidateEnd] === '`') candidateEnd += 1;
+        if (candidateEnd - search === length) { closeStart = search; closeEnd = candidateEnd; break; }
+        search = candidateEnd;
+      }
+      if (closeStart >= 0) {
+        ranges.push([index, closeEnd]);
+        index = closeEnd;
+      } else {
+        index = runEnd;
+      }
+    }
+    ranges.sort((left, right) => left[0] - right[0]);
+    return ranges;
+  }
+
+  function inRanges(offset, ranges) {
+    return ranges.some(([start, end]) => offset >= start && offset < end);
+  }
+
+  function normalizeReferenceObjectId(value) {
+    const id = String(value == null ? '' : value).trim();
+    if (!REFERENCE_OBJECT_ID_PATTERN.test(id)) throw new TypeError(`Invalid Reference Object id: ${id || '(empty)'}.`);
+    return id;
+  }
+
+  function randomHex(length, randomSource) {
+    if (typeof randomSource === 'function') {
+      const supplied = String(randomSource(length) || '').replace(/[^A-Fa-f0-9]/g, '').toLowerCase();
+      if (supplied.length >= length) return supplied.slice(0, length);
+    }
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    if (cryptoObject && typeof cryptoObject.getRandomValues === 'function') {
+      const bytes = new Uint8Array(Math.ceil(length / 2));
+      cryptoObject.getRandomValues(bytes);
+      return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('').slice(0, length);
+    }
+    let output = '';
+    while (output.length < length) output += Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0');
+    return output.slice(0, length);
+  }
+
+  function createReferenceObjectId(randomSource) {
+    return `ro_${randomHex(12, randomSource)}`;
+  }
+
+  function formatReferenceDefinition(id, value) {
+    const stableId = normalizeReferenceObjectId(id);
+    return `<!-- obs-ref:def id="${stableId}" -->${String(value == null ? '' : value)}<!-- /obs-ref:def -->`;
+  }
+
+  function formatReferenceUse(id, value) {
+    const stableId = normalizeReferenceObjectId(id);
+    return `<!-- obs-ref:use id="${stableId}" -->${String(value == null ? '' : value)}<!-- /obs-ref:use -->`;
+  }
+
+  function lineStarts(text) {
+    const starts = [0];
+    for (let index = 0; index < text.length; index += 1) {
+      if (text[index] === '\r') {
+        if (text[index + 1] === '\n') index += 1;
+        starts.push(index + 1);
+      } else if (text[index] === '\n') starts.push(index + 1);
+    }
+    return starts;
+  }
+
+  function positionForOffset(starts, offset) {
+    let low = 0;
+    let high = starts.length - 1;
+    while (low <= high) {
+      const middle = (low + high) >> 1;
+      if (starts[middle] <= offset) low = middle + 1;
+      else high = middle - 1;
+    }
+    const index = Math.max(0, high);
+    return { line: index + 1, column: offset - starts[index] + 1 };
+  }
+
+  function parseReferenceMarkers(input) {
+    const text = sourceText(input);
+    const starts = lineStarts(text);
+    const codeRanges = markdownCodeRanges(text);
+    const tokens = [];
+    const recognizedCommentStarts = new Set();
+    MARKER_TOKEN.lastIndex = 0;
+    let match;
+    while ((match = MARKER_TOKEN.exec(text))) {
+      if (inRanges(match.index, codeRanges)) continue;
+      const closing = Boolean(match[1]);
+      const role = match[2];
+      const id = String(match[3] || '').trim();
+      recognizedCommentStarts.add(match.index);
+      tokens.push({ start: match.index, end: MARKER_TOKEN.lastIndex, closing, role, id, raw: match[0] });
+    }
+
+    const diagnostics = [];
+    MARKER_COMMENT.lastIndex = 0;
+    while ((match = MARKER_COMMENT.exec(text))) {
+      if (inRanges(match.index, codeRanges)) continue;
+      if (!/obs-ref:/i.test(match[0])) continue;
+      if (recognizedCommentStarts.has(match.index)) continue;
+      const pos = positionForOffset(starts, match.index);
+      diagnostics.push({ kind: 'malformed_marker', offset: match.index, line: pos.line, column: pos.column, message: 'Malformed obs-ref marker comment.' });
+    }
+
+    const occurrences = [];
+    let active = null;
+    for (const token of tokens) {
+      const pos = positionForOffset(starts, token.start);
+      if (!token.closing) {
+        if (!token.id || !REFERENCE_OBJECT_ID_PATTERN.test(token.id)) {
+          diagnostics.push({ kind: 'invalid_id', offset: token.start, line: pos.line, column: pos.column, message: `Invalid ${token.role} Reference Object id.` });
+        }
+        if (active) {
+          diagnostics.push({ kind: 'nested_marker', offset: token.start, line: pos.line, column: pos.column, message: `Nested obs-ref:${token.role} marker inside obs-ref:${active.role} is not supported.` });
+          continue;
+        }
+        active = token;
+        continue;
+      }
+      if (!active) {
+        diagnostics.push({ kind: 'unexpected_close', offset: token.start, line: pos.line, column: pos.column, message: `Closing obs-ref:${token.role} has no matching opener.` });
+        continue;
+      }
+      if (active.role !== token.role) {
+        diagnostics.push({ kind: 'mismatched_close', offset: token.start, line: pos.line, column: pos.column, message: `Closing obs-ref:${token.role} does not match open obs-ref:${active.role}.` });
+        active = null;
+        continue;
+      }
+      const openPos = positionForOffset(starts, active.start);
+      occurrences.push({
+        role: active.role,
+        id: active.id,
+        fullStart: active.start,
+        fullEnd: token.end,
+        openStart: active.start,
+        openEnd: active.end,
+        contentStart: active.end,
+        contentEnd: token.start,
+        closeStart: token.start,
+        closeEnd: token.end,
+        value: text.slice(active.end, token.start),
+        line: openPos.line,
+        column: openPos.column,
+        lineOccurrence: 0
+      });
+      active = null;
+    }
+    if (active) {
+      const pos = positionForOffset(starts, active.start);
+      diagnostics.push({ kind: 'unclosed_marker', offset: active.start, line: pos.line, column: pos.column, message: `Open obs-ref:${active.role} marker is not closed.` });
+    }
+
+    const perLine = new Map();
+    occurrences.sort((left, right) => left.fullStart - right.fullStart);
+    for (const occurrence of occurrences) {
+      const key = `${occurrence.role}\u0000${occurrence.id}\u0000${occurrence.line}`;
+      const next = (perLine.get(key) || 0) + 1;
+      perLine.set(key, next);
+      occurrence.lineOccurrence = next;
+    }
+    return { text, occurrences, diagnostics, codeRanges };
+  }
+
+  function overlapsRange(start, end, rangeStart, rangeEnd) {
+    return start < rangeEnd && end > rangeStart;
+  }
+
+  function findExactReferenceObjectCandidates(input, exactValue, options = {}) {
+    const text = sourceText(input);
+    const needle = String(exactValue == null ? '' : exactValue);
+    if (!needle) throw new TypeError('Paste a non-empty exact value to find Reference Object candidates.');
+    const parsed = parseReferenceMarkers(text);
+    if (parsed.diagnostics.length && options.allowMalformed !== true) {
+      const error = new Error('Current file contains malformed Reference Object markers. Validate or repair markers before creating another definition.');
+      error.kind = 'reference_marker_invalid';
+      error.diagnostics = parsed.diagnostics;
+      throw error;
+    }
+    const blockedRanges = [...parsed.codeRanges, ...parsed.occurrences.map((item) => [item.fullStart, item.fullEnd])];
+    const starts = lineStarts(text);
+    const candidates = [];
+    let offset = 0;
+    while (offset <= text.length - needle.length) {
+      const found = text.indexOf(needle, offset);
+      if (found < 0) break;
+      const end = found + needle.length;
+      if (!blockedRanges.some(([rangeStart, rangeEnd]) => overlapsRange(found, end, rangeStart, rangeEnd))) {
+        const pos = positionForOffset(starts, found);
+        const lineStart = starts[pos.line - 1];
+        const nextLineStart = pos.line < starts.length ? starts[pos.line] : text.length;
+        let lineEnd = nextLineStart;
+        if (lineEnd > lineStart && text[lineEnd - 1] === '\n') lineEnd -= 1;
+        if (lineEnd > lineStart && text[lineEnd - 1] === '\r') lineEnd -= 1;
+        candidates.push({
+          start: found,
+          end,
+          value: needle,
+          line: pos.line,
+          column: pos.column,
+          lineOccurrence: 0,
+          lineText: text.slice(lineStart, lineEnd),
+          lineMatchStart: found - lineStart,
+          lineMatchEnd: end <= lineEnd ? end - lineStart : Math.max(0, lineEnd - lineStart),
+          multiline: needle.includes('\n')
+        });
+      }
+      offset = found + Math.max(needle.length, 1);
+    }
+    const perLine = new Map();
+    for (const candidate of candidates) {
+      const next = (perLine.get(candidate.line) || 0) + 1;
+      perLine.set(candidate.line, next);
+      candidate.lineOccurrence = next;
+    }
+    return candidates;
+  }
+
+  function wrapReferenceDefinitionAtCandidate(input, candidate, id) {
+    const text = sourceText(input);
+    const stableId = normalizeReferenceObjectId(id);
+    const start = Number(candidate && candidate.start);
+    const end = Number(candidate && candidate.end);
+    if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end <= start || end > text.length) throw new TypeError('A valid exact occurrence must be selected.');
+    const parsed = parseReferenceMarkers(text);
+    if (parsed.diagnostics.length) throw new Error('Current file contains malformed Reference Object markers.');
+    if (parsed.occurrences.some((item) => overlapsRange(start, end, item.fullStart, item.fullEnd))) throw new Error('Selected occurrence overlaps an existing Reference Object marker.');
+    const value = text.slice(start, end);
+    if (candidate && Object.prototype.hasOwnProperty.call(candidate, 'value') && String(candidate.value) !== value) throw new Error('Selected exact occurrence changed. Find candidates again.');
+    return `${text.slice(0, start)}${formatReferenceDefinition(stableId, value)}${text.slice(end)}`;
+  }
+
+  function replaceReferenceOccurrenceValues(input, replacements) {
+    let text = sourceText(input);
+    const ordered = (Array.isArray(replacements) ? replacements : []).map((item) => ({
+      start: Number(item && item.contentStart),
+      end: Number(item && item.contentEnd),
+      value: String(item && item.value == null ? '' : item.value)
+    })).sort((left, right) => right.start - left.start);
+    let previousStart = text.length + 1;
+    for (const item of ordered) {
+      if (!Number.isInteger(item.start) || !Number.isInteger(item.end) || item.start < 0 || item.end < item.start || item.end > text.length) throw new TypeError('Reference occurrence replacement range is invalid.');
+      if (item.end > previousStart) throw new Error('Reference occurrence replacement ranges overlap.');
+      text = `${text.slice(0, item.start)}${item.value}${text.slice(item.end)}`;
+      previousStart = item.start;
+    }
+    return text;
+  }
+
+  function referenceDefinitionsById(input, id) {
+    const stableId = normalizeReferenceObjectId(id);
+    return parseReferenceMarkers(input).occurrences.filter((item) => item.role === 'def' && item.id === stableId);
+  }
+
+  function referenceUsesById(input, id) {
+    const stableId = normalizeReferenceObjectId(id);
+    return parseReferenceMarkers(input).occurrences.filter((item) => item.role === 'use' && item.id === stableId);
+  }
+
+  return {
+    REFERENCE_OBJECT_ID_PATTERN,
+    markdownCodeRanges,
+    normalizeReferenceObjectId,
+    createReferenceObjectId,
+    formatReferenceDefinition,
+    formatReferenceUse,
+    parseReferenceMarkers,
+    findExactReferenceObjectCandidates,
+    wrapReferenceDefinitionAtCandidate,
+    replaceReferenceOccurrenceValues,
+    referenceDefinitionsById,
+    referenceUsesById
+  };
+});
+
+/* src/reference-object-registry.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH = '.linked-notes/reference-objects.json';
+
+  function normalizePath(value, label = 'Repository path') {
+    const raw = String(value == null ? '' : value).replace(/\\/g, '/').trim().replace(/\/+$/g, '');
+    if (!raw || raw.startsWith('/') || /^[A-Za-z]:\//.test(raw) || raw.includes('://') || /[?#\u0000-\u001f\u007f]/.test(raw)) throw new TypeError(`${label} must be a non-empty repository-relative path.`);
+    const parts = raw.split('/');
+    if (parts.some((part) => !part || part === '.' || part === '..')) throw new TypeError(`${label} contains an empty, . or .. segment.`);
+    return parts.join('/');
+  }
+
+  function normalizeId(value) {
+    const id = String(value == null ? '' : value).trim();
+    if (!/^ro_[A-Za-z0-9][A-Za-z0-9_-]{2,63}$/.test(id)) throw new TypeError(`Invalid Reference Object id: ${id || '(empty)'}.`);
+    return id;
+  }
+
+  function normalizeUse(value) {
+    const path = normalizePath(value && value.path, 'Reference use path');
+    const line = Math.max(1, Math.trunc(Number(value && value.line) || 1));
+    const lineOccurrence = Math.max(1, Math.trunc(Number(value && value.lineOccurrence) || 1));
+    return { path, line, lineOccurrence };
+  }
+
+  function compareUses(left, right) {
+    return left.path.localeCompare(right.path) || left.line - right.line || left.lineOccurrence - right.lineOccurrence;
+  }
+
+  function normalizeObject(value) {
+    const id = normalizeId(value && value.id);
+    const name = String(value && value.name || '').trim();
+    if (!name) throw new TypeError(`Reference Object ${id} requires a display name.`);
+    const definitionPath = normalizePath(value && value.definition && value.definition.path, 'Reference definition path');
+    const seen = new Set();
+    const uses = [];
+    for (const raw of Array.isArray(value && value.uses) ? value.uses : []) {
+      const use = normalizeUse(raw);
+      const key = `${use.path}\u0000${use.line}\u0000${use.lineOccurrence}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      uses.push(use);
+    }
+    uses.sort(compareUses);
+    return { id, name, definition: { path: definitionPath }, uses };
+  }
+
+  function emptyReferenceObjectRegistry() {
+    return { schemaVersion: 1, objects: [] };
+  }
+
+  function normalizeReferenceObjectRegistry(value) {
+    const source = value && typeof value === 'object' ? value : {};
+    const seen = new Set();
+    const objects = [];
+    for (const raw of Array.isArray(source.objects) ? source.objects : []) {
+      const object = normalizeObject(raw);
+      if (seen.has(object.id)) throw new Error(`Duplicate Reference Object id in definitions file: ${object.id}.`);
+      seen.add(object.id);
+      objects.push(object);
+    }
+    objects.sort((left, right) => left.name.localeCompare(right.name) || left.id.localeCompare(right.id));
+    return { schemaVersion: 1, objects };
+  }
+
+  function decodeReferenceObjectRegistry(text) {
+    const source = String(text == null ? '' : text).trim();
+    if (!source) return emptyReferenceObjectRegistry();
+    let parsed;
+    try { parsed = JSON.parse(source); } catch (error) { throw new Error(`Definitions File is not valid JSON: ${error.message}`); }
+    if (Number(parsed && parsed.schemaVersion) !== 1) throw new Error(`Unsupported Definitions File schemaVersion: ${parsed && parsed.schemaVersion}.`);
+    return normalizeReferenceObjectRegistry(parsed);
+  }
+
+  function encodeReferenceObjectRegistry(value) {
+    return `${JSON.stringify(normalizeReferenceObjectRegistry(value), null, 2)}\n`;
+  }
+
+  function referenceObjectById(registry, id) {
+    const stableId = normalizeId(id);
+    return normalizeReferenceObjectRegistry(registry).objects.find((object) => object.id === stableId) || null;
+  }
+
+  function upsertReferenceObject(registry, object) {
+    const current = normalizeReferenceObjectRegistry(registry);
+    const nextObject = normalizeObject(object);
+    const objects = current.objects.filter((item) => item.id !== nextObject.id);
+    objects.push(nextObject);
+    return normalizeReferenceObjectRegistry({ schemaVersion: 1, objects });
+  }
+
+  function renameReferenceObject(registry, id, name) {
+    const stableId = normalizeId(id);
+    const display = String(name == null ? '' : name).trim();
+    if (!display) throw new TypeError('Reference Object name is required.');
+    const current = normalizeReferenceObjectRegistry(registry);
+    let found = false;
+    const objects = current.objects.map((object) => {
+      if (object.id !== stableId) return object;
+      found = true;
+      return { ...object, name: display };
+    });
+    if (!found) throw new Error(`Reference Object not found: ${stableId}.`);
+    return normalizeReferenceObjectRegistry({ schemaVersion: 1, objects });
+  }
+
+  function replaceReferenceObjectUses(registry, id, uses) {
+    const stableId = normalizeId(id);
+    const current = normalizeReferenceObjectRegistry(registry);
+    let found = false;
+    const objects = current.objects.map((object) => {
+      if (object.id !== stableId) return object;
+      found = true;
+      return normalizeObject({ ...object, uses: Array.isArray(uses) ? uses : [] });
+    });
+    if (!found) throw new Error(`Reference Object not found: ${stableId}.`);
+    return normalizeReferenceObjectRegistry({ schemaVersion: 1, objects });
+  }
+
+  function referenceObjectUsageKey(use) {
+    const normalized = normalizeUse(use);
+    return `${normalized.path}:${normalized.line}:${normalized.lineOccurrence}`;
+  }
+
+  return {
+    DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH,
+    emptyReferenceObjectRegistry,
+    normalizeReferenceObjectRegistry,
+    decodeReferenceObjectRegistry,
+    encodeReferenceObjectRegistry,
+    referenceObjectById,
+    upsertReferenceObject,
+    renameReferenceObject,
+    replaceReferenceObjectUses,
+    referenceObjectUsageKey
+  };
+});
+
+/* src/reference-object-local-store.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const DEFAULT_REFERENCE_LOCAL_MAX_BYTES = 2 * 1024 * 1024;
+
+  function normalizeWorkspacePart(value, label) {
+    const text = String(value == null ? '' : value).trim();
+    if (!text) throw new TypeError(`${label} is required.`);
+    return text;
+  }
+
+  function referenceObjectLocalStoreKey(workspace) {
+    if (!workspace) throw new TypeError('Workspace is required.');
+    const id = normalizeWorkspacePart(workspace.id || 'workspace', 'Workspace id');
+    const owner = normalizeWorkspacePart(workspace.owner, 'Workspace owner').toLowerCase();
+    const repo = normalizeWorkspacePart(workspace.repo, 'Workspace repository').replace(/\.git$/i, '').toLowerCase();
+    const branch = normalizeWorkspacePart(workspace.branch || 'main', 'Workspace branch');
+    return `obsLinkedNotesPrototype:v3:referenceObjects:${encodeURIComponent(id)}:${encodeURIComponent(owner)}:${encodeURIComponent(repo)}:${encodeURIComponent(branch)}`;
+  }
+
+  function normalizePath(value) {
+    const raw = String(value == null ? '' : value).replace(/\\/g, '/').trim().replace(/\/+$/g, '');
+    if (!raw || raw.startsWith('/') || /^[A-Za-z]:\//.test(raw) || raw.includes('://') || /[?#\u0000-\u001f\u007f]/.test(raw)) throw new TypeError('Local Reference Object draft path must be repository-relative.');
+    const parts = raw.split('/');
+    if (parts.some((part) => !part || part === '.' || part === '..')) throw new TypeError('Local Reference Object draft path contains an invalid segment.');
+    return parts.join('/');
+  }
+
+  function normalizeReferenceObjectLocalState(value, options = {}) {
+    const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_REFERENCE_LOCAL_MAX_BYTES;
+    const source = value && typeof value === 'object' ? value : {};
+    const files = [];
+    const seen = new Set();
+    let totalBytes = 0;
+    for (const raw of Array.isArray(source.files) ? source.files : []) {
+      const path = normalizePath(raw && raw.path);
+      if (seen.has(path)) continue;
+      seen.add(path);
+      const content = String(raw && raw.content == null ? '' : raw.content);
+      totalBytes += new TextEncoder().encode(content).byteLength;
+      if (totalBytes > maxBytes) throw new Error(`Local Reference Object drafts exceed the ${maxBytes}-byte prototype limit.`);
+      files.push({ path, baseSha: String(raw && raw.baseSha || ''), content, updatedAt: String(raw && raw.updatedAt || '') });
+    }
+    files.sort((left, right) => left.path.localeCompare(right.path));
+    return { schemaVersion: 1, files };
+  }
+
+  function referenceObjectLocalDraftMap(state) {
+    const normalized = normalizeReferenceObjectLocalState(state);
+    return new Map(normalized.files.map((file) => [file.path, { ...file }]));
+  }
+
+  function upsertReferenceObjectLocalDraft(state, draft, options = {}) {
+    const current = normalizeReferenceObjectLocalState(state, options);
+    const path = normalizePath(draft && draft.path);
+    const files = current.files.filter((file) => file.path !== path);
+    files.push({ path, baseSha: String(draft && draft.baseSha || ''), content: String(draft && draft.content == null ? '' : draft.content), updatedAt: String(draft && draft.updatedAt || new Date().toISOString()) });
+    return normalizeReferenceObjectLocalState({ schemaVersion: 1, files }, options);
+  }
+
+  function removeReferenceObjectLocalDraft(state, path, options = {}) {
+    const canonical = normalizePath(path);
+    const current = normalizeReferenceObjectLocalState(state, options);
+    return normalizeReferenceObjectLocalState({ schemaVersion: 1, files: current.files.filter((file) => file.path !== canonical) }, options);
+  }
+
+  return {
+    DEFAULT_REFERENCE_LOCAL_MAX_BYTES,
+    referenceObjectLocalStoreKey,
+    normalizeReferenceObjectLocalState,
+    referenceObjectLocalDraftMap,
+    upsertReferenceObjectLocalDraft,
+    removeReferenceObjectLocalDraft
+  };
+});
+
+/* src/repository-reference-object-service.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const DEFAULT_SCAN_MAX_DIRECTORIES = 80;
+  const DEFAULT_SCAN_MAX_FILES = 300;
+  const DEFAULT_SCAN_MAX_BYTES = 4 * 1024 * 1024;
+  const DEFAULT_SCAN_MAX_FILE_BYTES = 512 * 1024;
+
+  function core() {
+    const api = root.ObsLinkedNotes || {};
+    const required = ['parseReferenceMarkers', 'replaceReferenceOccurrenceValues', 'decodeReferenceObjectRegistry', 'encodeReferenceObjectRegistry', 'referenceObjectById', 'replaceReferenceObjectUses'];
+    for (const name of required) if (typeof api[name] !== 'function') throw new Error(`Reference Object dependency is unavailable: ${name}.`);
+    return api;
+  }
+
+  function errorText(error) {
+    return String(error && error.message || error || 'Unknown error');
+  }
+
+  function isNotFound(error) {
+    return Boolean(error && error.kind === 'not_found');
+  }
+
+  function supportedReferenceTextPath(path) {
+    return /\.(?:md|markdown|mdown|txt)$/i.test(String(path || ''));
+  }
+
+  function overlayMap(overlays) {
+    const map = new Map();
+    for (const item of Array.isArray(overlays) ? overlays : []) {
+      if (!item || !item.path) continue;
+      map.set(String(item.path), { path: String(item.path), baseSha: String(item.baseSha || ''), content: String(item.content == null ? '' : item.content), local: true });
+    }
+    return map;
+  }
+
+  function decodeUtf8(bytes, path) {
+    try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
+    catch (error) { throw new Error(`Reference Object scan cannot decode ${path} as strict UTF-8.`); }
+  }
+
+  async function readTextFile(client, path, options = {}) {
+    const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_SCAN_MAX_FILE_BYTES;
+    if (client && typeof client.readBytes === 'function') {
+      const file = await client.readBytes(path, { maxBytes });
+      return { path: file.path || path, sha: String(file.sha || ''), size: Number(file.size || (file.bytes && file.bytes.byteLength) || 0), content: decodeUtf8(file.bytes, path), local: false };
+    }
+    if (client && typeof client.read === 'function') {
+      const file = await client.read(path);
+      const content = String(file.content == null ? '' : file.content);
+      const bytes = new TextEncoder().encode(content).byteLength;
+      if (bytes > maxBytes) throw new Error(`Reference Object file exceeds ${maxBytes} bytes: ${path}.`);
+      return { path: file.path || path, sha: String(file.sha || ''), size: bytes, content, local: false };
+    }
+    throw new Error('GitHub client has no bounded text-file reader.');
+  }
+
+  async function readRegistrySnapshot(client, registryPath, overlays) {
+    const api = core();
+    const local = overlayMap(overlays).get(registryPath);
+    if (local) {
+      return { path: registryPath, sha: local.baseSha, content: local.content, registry: api.decodeReferenceObjectRegistry(local.content), local: true };
+    }
+    try {
+      const file = await readTextFile(client, registryPath, { maxBytes: DEFAULT_SCAN_MAX_FILE_BYTES });
+      return { path: registryPath, sha: file.sha, content: file.content, registry: api.decodeReferenceObjectRegistry(file.content), local: false };
+    } catch (error) {
+      if (!isNotFound(error)) throw error;
+      return { path: registryPath, sha: '', content: '', registry: api.emptyReferenceObjectRegistry ? api.emptyReferenceObjectRegistry() : { schemaVersion: 1, objects: [] }, local: false, missing: true };
+    }
+  }
+
+  async function scanRepositoryReferenceObjects(options = {}) {
+    const api = core();
+    const client = options.client;
+    if (!client || typeof client.listDirectory !== 'function') throw new Error('Reference Object scan requires a repository directory client.');
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const localOverlays = overlayMap(options.overlays);
+    const maxDirectories = Number(options.maxDirectories) > 0 ? Number(options.maxDirectories) : DEFAULT_SCAN_MAX_DIRECTORIES;
+    const maxFiles = Number(options.maxFiles) > 0 ? Number(options.maxFiles) : DEFAULT_SCAN_MAX_FILES;
+    const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_SCAN_MAX_BYTES;
+    const maxFileBytes = Number(options.maxFileBytes) > 0 ? Number(options.maxFileBytes) : DEFAULT_SCAN_MAX_FILE_BYTES;
+    const queue = [''];
+    const visited = new Set();
+    const files = [];
+    const fileByPath = new Map();
+    const diagnostics = [];
+    let totalBytes = 0;
+    let scannedFiles = 0;
+    let incomplete = false;
+    let truncationReason = '';
+
+    while (queue.length) {
+      const path = queue.shift();
+      if (visited.has(path)) continue;
+      if (visited.size >= maxDirectories) {
+        incomplete = true;
+        truncationReason = `directory limit ${maxDirectories}`;
+        break;
+      }
+      visited.add(path);
+      let entries;
+      try { entries = await client.listDirectory(path, { maxEntries: 200 }); }
+      catch (error) {
+        diagnostics.push({ kind: 'directory_read_error', path, message: errorText(error) });
+        incomplete = true;
+        continue;
+      }
+      for (const entry of Array.isArray(entries) ? entries : []) {
+        if (entry && entry.type === 'dir') {
+          if (!visited.has(entry.path)) queue.push(entry.path);
+          continue;
+        }
+        if (!entry || entry.type !== 'file' || !supportedReferenceTextPath(entry.path) || entry.path === registryPath) continue;
+        if (scannedFiles >= maxFiles) {
+          incomplete = true;
+          truncationReason = `file limit ${maxFiles}`;
+          queue.length = 0;
+          break;
+        }
+        scannedFiles += 1;
+        const local = localOverlays.get(entry.path);
+        try {
+          let snapshot;
+          if (local) {
+            const size = new TextEncoder().encode(local.content).byteLength;
+            if (size > maxFileBytes) throw new Error(`Local draft exceeds ${maxFileBytes} bytes.`);
+            snapshot = { path: entry.path, sha: local.baseSha || String(entry.sha || ''), baseSha: local.baseSha || String(entry.sha || ''), size, content: local.content, local: true };
+          } else {
+            if (Number(entry.size || 0) > maxFileBytes) throw new Error(`File exceeds ${maxFileBytes} bytes.`);
+            const file = await readTextFile(client, entry.path, { maxBytes: maxFileBytes });
+            snapshot = { ...file, baseSha: file.sha, local: false };
+          }
+          totalBytes += snapshot.size;
+          if (totalBytes > maxBytes) {
+            incomplete = true;
+            truncationReason = `aggregate byte limit ${maxBytes}`;
+            queue.length = 0;
+            break;
+          }
+          const parsed = api.parseReferenceMarkers(snapshot.content);
+          const record = { ...snapshot, markers: parsed.occurrences, markerDiagnostics: parsed.diagnostics };
+          files.push(record);
+          fileByPath.set(record.path, record);
+          for (const diagnostic of parsed.diagnostics) diagnostics.push({ ...diagnostic, path: record.path });
+        } catch (error) {
+          diagnostics.push({ kind: 'file_scan_error', path: entry.path, message: errorText(error) });
+          incomplete = true;
+        }
+      }
+    }
+
+    for (const local of localOverlays.values()) {
+      if (local.path === registryPath || !supportedReferenceTextPath(local.path) || fileByPath.has(local.path)) continue;
+      const size = new TextEncoder().encode(local.content).byteLength;
+      if (size > maxFileBytes || files.length >= maxFiles || totalBytes + size > maxBytes) {
+        incomplete = true;
+        truncationReason = truncationReason || 'local overlay scan limit';
+        diagnostics.push({ kind: 'local_overlay_skipped', path: local.path, message: 'Local Reference Object draft could not be included within scan bounds.' });
+        continue;
+      }
+      const parsed = api.parseReferenceMarkers(local.content);
+      const record = { path: local.path, sha: local.baseSha, baseSha: local.baseSha, size, content: local.content, local: true, markers: parsed.occurrences, markerDiagnostics: parsed.diagnostics };
+      files.push(record);
+      fileByPath.set(record.path, record);
+      totalBytes += size;
+      for (const diagnostic of parsed.diagnostics) diagnostics.push({ ...diagnostic, path: record.path });
+    }
+
+    files.sort((left, right) => left.path.localeCompare(right.path));
+    return {
+      registryPath,
+      files,
+      diagnostics,
+      incomplete,
+      truncationReason,
+      scannedDirectories: visited.size,
+      scannedFiles: files.length,
+      totalBytes
+    };
+  }
+
+  function actualUseIndex(uses) {
+    return (Array.isArray(uses) ? uses : []).map((use) => ({ path: use.path, line: use.line, lineOccurrence: use.lineOccurrence })).sort((left, right) => left.path.localeCompare(right.path) || left.line - right.line || left.lineOccurrence - right.lineOccurrence);
+  }
+
+  function sameUsageIndex(left, right) {
+    return JSON.stringify(actualUseIndex(left)) === JSON.stringify(actualUseIndex(right));
+  }
+
+  async function checkReferenceObjectUses(options = {}) {
+    const api = core();
+    const id = api.normalizeReferenceObjectId(options.objectId);
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
+    const object = api.referenceObjectById(registrySnapshot.registry, id);
+    if (!object) throw new Error(`Reference Object not found in Definitions File: ${id}.`);
+    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
+    const definitions = [];
+    const uses = [];
+    for (const file of scan.files) {
+      for (const marker of file.markers) {
+        if (marker.id !== id) continue;
+        const item = { ...marker, path: file.path, fileSha: file.baseSha || file.sha || '', local: Boolean(file.local) };
+        if (marker.role === 'def') definitions.push(item);
+        else if (marker.role === 'use') uses.push(item);
+      }
+    }
+    const diagnostics = [...scan.diagnostics];
+    const expectedDefinitions = definitions.filter((item) => item.path === object.definition.path);
+    if (expectedDefinitions.length !== 1) diagnostics.push({ kind: expectedDefinitions.length ? 'duplicate_definition_at_path' : 'definition_missing', path: object.definition.path, objectId: id, message: expectedDefinitions.length ? `Definitions File target contains ${expectedDefinitions.length} definitions for ${id}.` : `Definition marker ${id} was not found at ${object.definition.path}.` });
+    if (definitions.length > 1) diagnostics.push({ kind: 'duplicate_definition', objectId: id, path: object.definition.path, message: `${id} has ${definitions.length} definition markers in the scanned repository state.` });
+    if (definitions.some((item) => item.path !== object.definition.path)) diagnostics.push({ kind: 'definition_wrong_path', objectId: id, path: object.definition.path, message: `${id} has a definition marker outside its Definitions File path.` });
+    const definition = definitions.length === 1 && definitions[0].path === object.definition.path ? definitions[0] : null;
+    const currentValue = definition ? definition.value : '';
+    const classifiedUses = uses.sort((left, right) => left.path.localeCompare(right.path) || left.fullStart - right.fullStart).map((use) => ({ ...use, status: definition && use.value === currentValue ? 'current' : definition ? 'stale' : 'unresolved' }));
+    const index = actualUseIndex(classifiedUses);
+    const indexDrift = !sameUsageIndex(object.uses, index);
+    const blockingKinds = new Set(['definition_missing', 'duplicate_definition_at_path', 'duplicate_definition', 'definition_wrong_path']);
+    const blocked = !definition || diagnostics.some((item) => blockingKinds.has(item.kind));
+    return {
+      kind: 'reference-object-check-v1',
+      object,
+      objectId: id,
+      registryPath,
+      registrySnapshot,
+      definition,
+      currentValue,
+      uses: classifiedUses,
+      usageIndex: index,
+      indexDrift,
+      diagnostics,
+      incomplete: scan.incomplete,
+      truncationReason: scan.truncationReason,
+      blocked,
+      files: scan.files,
+      scanSummary: { directories: scan.scannedDirectories, files: scan.scannedFiles, bytes: scan.totalBytes }
+    };
+  }
+
+  function buildReferenceObjectLocalUpdate(check) {
+    const api = core();
+    if (!check || check.kind !== 'reference-object-check-v1') throw new Error('Check Reference Object uses before updating.');
+    if (check.blocked) throw new Error('Reference Object definition is unresolved or duplicated; usages cannot be updated safely.');
+    if (check.incomplete) throw new Error(`Reference Object check is incomplete${check.truncationReason ? ` (${check.truncationReason})` : ''}; usages cannot be updated safely.`);
+    const staleByPath = new Map();
+    for (const use of check.uses.filter((item) => item.status === 'stale')) {
+      const group = staleByPath.get(use.path) || [];
+      group.push(use);
+      staleByPath.set(use.path, group);
+    }
+    const filePlans = [];
+    const contentByPath = new Map(check.files.map((file) => [file.path, file.content]));
+    for (const [path, stale] of staleByPath.entries()) {
+      const file = check.files.find((item) => item.path === path);
+      if (!file) throw new Error(`Checked use file is unavailable: ${path}.`);
+      const content = api.replaceReferenceOccurrenceValues(file.content, stale.map((use) => ({ contentStart: use.contentStart, contentEnd: use.contentEnd, value: check.currentValue })));
+      contentByPath.set(path, content);
+      filePlans.push({ path, baseSha: String(file.baseSha || file.sha || ''), content, localBase: Boolean(file.local) });
+    }
+    const uses = [];
+    for (const file of check.files) {
+      const content = contentByPath.get(file.path);
+      const parsed = api.parseReferenceMarkers(content);
+      for (const marker of parsed.occurrences) if (marker.role === 'use' && marker.id === check.objectId) uses.push({ path: file.path, line: marker.line, lineOccurrence: marker.lineOccurrence });
+    }
+    uses.sort((left, right) => left.path.localeCompare(right.path) || left.line - right.line || left.lineOccurrence - right.lineOccurrence);
+    const registry = api.replaceReferenceObjectUses(check.registrySnapshot.registry, check.objectId, uses);
+    return { kind: 'reference-object-local-update-v1', objectId: check.objectId, files: filePlans, uses, registry, registryContent: api.encodeReferenceObjectRegistry(registry), staleCount: check.uses.filter((item) => item.status === 'stale').length };
+  }
+
+  async function proveExpectedBase(client, path, baseSha) {
+    if (baseSha) {
+      const metadata = await client.readMetadata(path);
+      if (String(metadata && metadata.sha || '') !== String(baseSha)) throw new Error(`Remote base changed for ${path}. Expected ${baseSha}; found ${metadata && metadata.sha || '(none)'}.`);
+      return metadata;
+    }
+    try {
+      const metadata = await client.readMetadata(path);
+      throw new Error(`Expected new path is no longer absent: ${path}${metadata && metadata.sha ? ` (${metadata.sha})` : ''}.`);
+    } catch (error) {
+      if (isNotFound(error)) return null;
+      throw error;
+    }
+  }
+
+  async function updateReferenceObjectUsesRemote(options = {}) {
+    const api = core();
+    const client = options.client;
+    if (!client || typeof client.saveVerified !== 'function' || typeof client.readMetadata !== 'function') throw new Error('Remote Reference Object update requires verified text writes and metadata reads.');
+    const check = await checkReferenceObjectUses({ ...options, overlays: [] });
+    const plan = buildReferenceObjectLocalUpdate(check);
+    const registryNeedsWrite = check.indexDrift || plan.staleCount > 0;
+    for (const file of plan.files) await proveExpectedBase(client, file.path, file.baseSha);
+    if (registryNeedsWrite) await proveExpectedBase(client, check.registryPath, check.registrySnapshot.sha);
+    const results = [];
+    for (const file of plan.files) {
+      try {
+        const saved = await client.saveVerified({ path: file.path, content: file.content, baseSha: file.baseSha, message: `Refresh materialized Reference Object ${check.objectId} in ${file.path}` });
+        results.push({ target: file.path, status: 'completed', sha: String(saved && saved.sha || ''), message: 'Stale materialized uses updated and exact read-back verified.' });
+      } catch (error) {
+        results.push({ target: file.path, status: 'failed', message: errorText(error) });
+        const partial = new Error(`Reference Object remote update stopped after ${results.filter((item) => item.status === 'completed').length} verified file(s). Completed writes remain.`);
+        partial.kind = 'partial_reference_object_update';
+        partial.partialResults = results;
+        throw partial;
+      }
+    }
+    if (registryNeedsWrite) {
+      try {
+        const saved = await client.saveVerified({ path: check.registryPath, content: plan.registryContent, baseSha: check.registrySnapshot.sha, message: `Refresh Reference Object usage index for ${check.objectId}` });
+        results.push({ target: check.registryPath, status: 'completed', sha: String(saved && saved.sha || ''), message: 'Definitions File usage index updated and verified.' });
+      } catch (error) {
+        results.push({ target: check.registryPath, status: 'failed', message: errorText(error) });
+        const partial = new Error('Materialized uses may already be updated, but the Definitions File index update failed. Validate tags before retrying.');
+        partial.kind = 'partial_reference_object_update';
+        partial.partialResults = results;
+        throw partial;
+      }
+    }
+    return { kind: 'reference-object-remote-update-result-v1', objectId: check.objectId, staleCount: plan.staleCount, results, registry: plan.registry };
+  }
+
+  async function validateReferenceObjectTags(options = {}) {
+    const api = core();
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
+    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
+    const diagnostics = [...scan.diagnostics];
+    const definitionsById = new Map();
+    const usesById = new Map();
+    for (const file of scan.files) {
+      for (const marker of file.markers) {
+        const target = marker.role === 'def' ? definitionsById : usesById;
+        const group = target.get(marker.id) || [];
+        group.push({ ...marker, path: file.path });
+        target.set(marker.id, group);
+      }
+    }
+    const registeredIds = new Set(registrySnapshot.registry.objects.map((object) => object.id));
+    for (const [id, definitions] of definitionsById.entries()) {
+      if (definitions.length > 1) diagnostics.push({ kind: 'duplicate_definition', objectId: id, path: definitions[0].path, message: `${id} has ${definitions.length} definitions.` });
+      if (!registeredIds.has(id)) diagnostics.push({ kind: 'unregistered_definition', objectId: id, path: definitions[0].path, message: `${id} has a definition marker but no Definitions File record.` });
+    }
+    for (const object of registrySnapshot.registry.objects) {
+      const definitions = definitionsById.get(object.id) || [];
+      if (!definitions.some((item) => item.path === object.definition.path)) diagnostics.push({ kind: 'registry_definition_missing', objectId: object.id, path: object.definition.path, message: 'Definitions File target does not contain the expected definition marker.' });
+      if (definitions.some((item) => item.path !== object.definition.path)) diagnostics.push({ kind: 'registry_definition_wrong_path', objectId: object.id, path: object.definition.path, message: 'Definition marker also exists outside the recorded definition path.' });
+      const uses = actualUseIndex(usesById.get(object.id) || []);
+      if (!sameUsageIndex(object.uses, uses)) diagnostics.push({ kind: 'usage_index_drift', objectId: object.id, path: registryPath, message: `Definitions File usage index differs from ${uses.length} scanned use(s).` });
+    }
+    for (const [id, uses] of usesById.entries()) if (!registeredIds.has(id)) diagnostics.push({ kind: 'unknown_use_id', objectId: id, path: uses[0].path, message: `${uses.length} use marker(s) refer to an unknown Reference Object id.` });
+    if (scan.incomplete) diagnostics.push({ kind: 'scan_incomplete', path: '', message: `Reference Object validation is incomplete${scan.truncationReason ? `: ${scan.truncationReason}` : '.'}` });
+    return {
+      kind: 'reference-object-validation-v1',
+      registryPath,
+      diagnostics,
+      valid: diagnostics.length === 0 && !scan.incomplete,
+      incomplete: scan.incomplete,
+      counts: {
+        objects: registrySnapshot.registry.objects.length,
+        definitions: [...definitionsById.values()].reduce((sum, group) => sum + group.length, 0),
+        uses: [...usesById.values()].reduce((sum, group) => sum + group.length, 0),
+        files: scan.files.length
+      },
+      registrySnapshot,
+      scanSummary: { directories: scan.scannedDirectories, files: scan.scannedFiles, bytes: scan.totalBytes }
+    };
+  }
+
+  return {
+    DEFAULT_REFERENCE_SCAN_MAX_DIRECTORIES: DEFAULT_SCAN_MAX_DIRECTORIES,
+    DEFAULT_REFERENCE_SCAN_MAX_FILES: DEFAULT_SCAN_MAX_FILES,
+    DEFAULT_REFERENCE_SCAN_MAX_BYTES: DEFAULT_SCAN_MAX_BYTES,
+    DEFAULT_REFERENCE_SCAN_MAX_FILE_BYTES: DEFAULT_SCAN_MAX_FILE_BYTES,
+    supportedReferenceTextPath,
+    readReferenceObjectRegistrySnapshot: readRegistrySnapshot,
+    scanRepositoryReferenceObjects,
+    checkReferenceObjectUses,
+    buildReferenceObjectLocalUpdate,
+    updateReferenceObjectUsesRemote,
+    validateReferenceObjectTags,
+    proveReferenceObjectExpectedBase: proveExpectedBase
   };
 });
 
@@ -10992,6 +11943,846 @@
   }
 
   return { installRepositoryFilesWorkspace };
+});
+
+/* src/repository-reference-objects-runtime.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+  if (root.ObsLinkedNotes && root.ObsLinkedNotes.LinkedNotesApp && root.ObsLinkedNotes.LinkedNotesUI) {
+    try { api.installRepositoryReferenceObjects(root.ObsLinkedNotes); } catch (error) { /* bootstrap reports failures later */ }
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const APP_PATCH = '__obsRepositoryReferenceObjectsAppV1';
+  const UI_PATCH = '__obsRepositoryReferenceObjectsUiV1';
+
+  function apiOrThrow(app) {
+    const api = app && app.api || root.ObsLinkedNotes || {};
+    const required = [
+      'referenceObjectLocalStoreKey', 'normalizeReferenceObjectLocalState', 'referenceObjectLocalDraftMap',
+      'upsertReferenceObjectLocalDraft', 'removeReferenceObjectLocalDraft', 'findExactReferenceObjectCandidates',
+      'wrapReferenceDefinitionAtCandidate', 'createReferenceObjectId', 'formatReferenceUse', 'parseReferenceMarkers',
+      'decodeReferenceObjectRegistry', 'encodeReferenceObjectRegistry', 'upsertReferenceObject', 'renameReferenceObject',
+      'replaceReferenceObjectUses', 'readReferenceObjectRegistrySnapshot', 'checkReferenceObjectUses',
+      'buildReferenceObjectLocalUpdate', 'updateReferenceObjectUsesRemote', 'validateReferenceObjectTags',
+      'proveReferenceObjectExpectedBase'
+    ];
+    for (const name of required) if (typeof api[name] !== 'function') throw new Error(`Reference Object runtime dependency is unavailable: ${name}.`);
+    return api;
+  }
+
+  function errorText(error) {
+    return String(error && error.message || error || 'Unknown error');
+  }
+
+  function sameRepository(a, b) {
+    return Boolean(a && b && a.owner === b.owner && a.repo === b.repo && a.branch === b.branch);
+  }
+
+  function previewText(value, max = 120) {
+    const text = String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+    return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+  }
+
+  function publicCheck(check) {
+    if (!check) return null;
+    return {
+      objectId: check.objectId,
+      currentValuePreview: previewText(check.currentValue),
+      staleCount: check.uses.filter((item) => item.status === 'stale').length,
+      currentCount: check.uses.filter((item) => item.status === 'current').length,
+      indexDrift: Boolean(check.indexDrift),
+      incomplete: Boolean(check.incomplete),
+      blocked: Boolean(check.blocked),
+      diagnostics: (check.diagnostics || []).map((item) => ({ kind: item.kind, path: item.path || '', message: item.message || '' })),
+      uses: check.uses.map((use) => ({
+        path: use.path,
+        line: use.line,
+        lineOccurrence: use.lineOccurrence,
+        status: use.status,
+        storedPreview: previewText(use.value),
+        currentPreview: previewText(check.currentValue)
+      }))
+    };
+  }
+
+  function publicValidation(result) {
+    if (!result) return null;
+    return {
+      valid: Boolean(result.valid),
+      incomplete: Boolean(result.incomplete),
+      counts: result.counts ? { ...result.counts } : {},
+      diagnostics: (result.diagnostics || []).map((item) => ({ kind: item.kind || 'issue', path: item.path || '', objectId: item.objectId || '', message: item.message || '' }))
+    };
+  }
+
+
+  function locateReferenceFocusOccurrence(api, content, focus) {
+    if (!api || typeof api.parseReferenceMarkers !== 'function' || !focus) return null;
+    const role = focus.role === 'definition' ? 'def' : focus.role === 'use' ? 'use' : String(focus.role || '');
+    const id = String(focus.objectId || '');
+    const line = Math.max(1, Number(focus.line) || 1);
+    const lineOccurrence = Math.max(1, Number(focus.lineOccurrence) || 1);
+    const parsed = api.parseReferenceMarkers(String(content == null ? '' : content));
+    return parsed.occurrences.find((item) => item.role === role && item.id === id && item.line === line && item.lineOccurrence === lineOccurrence) || null;
+  }
+
+  function patchApp(App) {
+    if (!App || !App.prototype || App.prototype[APP_PATCH]) return false;
+    Object.defineProperty(App.prototype, APP_PATCH, { value: true, configurable: false, enumerable: false, writable: false });
+    const originalStart = App.prototype.start;
+    const originalSelectWorkspace = App.prototype.selectWorkspace;
+    const originalSaveWorkspace = App.prototype.saveWorkspace;
+    const originalDeleteWorkspace = App.prototype.deleteWorkspace;
+    const originalOpenPanel = App.prototype.openPanel;
+    const originalOpenRepositoryEntry = App.prototype.openRepositoryEntry;
+    const originalBeginRepositoryFileEdit = App.prototype.beginRepositoryFileEdit;
+    const originalSaveRepositoryEditor = App.prototype.saveRepositoryEditor;
+
+    App.prototype._referenceObjectRegistryPath = function referenceObjectRegistryPath() {
+      return String(apiOrThrow(this).DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    };
+
+    App.prototype._referenceObjectLocalKey = function referenceObjectLocalKey() {
+      const workspace = this._activeWorkspace();
+      return workspace ? apiOrThrow(this).referenceObjectLocalStoreKey(workspace) : '';
+    };
+
+    App.prototype._referenceObjectLocalMap = function referenceObjectLocalMap() {
+      return apiOrThrow(this).referenceObjectLocalDraftMap(this.referenceObjectLocalState || { schemaVersion: 1, files: [] });
+    };
+
+    App.prototype._referenceObjectUiPatch = function referenceObjectUiPatch(extra = {}) {
+      const registry = this.referenceObjectRegistrySnapshot && this.referenceObjectRegistrySnapshot.registry;
+      const checks = {};
+      for (const [id, check] of Object.entries(this.referenceObjectChecks || {})) if (check) checks[id] = publicCheck(check);
+      return {
+        referenceObjectsLoaded: Boolean(this.referenceObjectsLoaded),
+        referenceObjects: registry && Array.isArray(registry.objects) ? registry.objects : [],
+        referenceObjectChecks: checks,
+        referenceObjectValidation: publicValidation(this.referenceObjectValidation),
+        referenceObjectPendingFiles: (this.referenceObjectLocalState && this.referenceObjectLocalState.files || []).map((file) => file.path),
+        referenceObjectRegistryPath: this._referenceObjectRegistryPath(),
+        referenceObjectFocus: this.referenceObjectFocus || null,
+        ...extra
+      };
+    };
+
+    App.prototype._loadReferenceObjectLocalState = async function loadReferenceObjectLocalState(options = {}) {
+      const api = apiOrThrow(this);
+      const key = this._referenceObjectLocalKey();
+      const state = key ? api.normalizeReferenceObjectLocalState(await this.getValue(key, { schemaVersion: 1, files: [] })) : { schemaVersion: 1, files: [] };
+      this.referenceObjectLocalState = state;
+      this.referenceObjectLocalStateKey = key;
+      this.referenceObjectsLoaded = false;
+      this.referenceObjectRegistrySnapshot = null;
+      this.referenceObjectChecks = {};
+      this.referenceObjectValidation = null;
+      this.referenceObjectFocus = null;
+      if (!options.silent) this._setUi(this._referenceObjectUiPatch({ status: state.files.length ? `${state.files.length} local Reference Object draft file(s) restored for this workspace.` : 'Reference Object local state ready.' }));
+      return state;
+    };
+
+    App.prototype._ensureReferenceObjectLocalStateCurrent = async function ensureReferenceObjectLocalStateCurrent(options = {}) {
+      const key = this._referenceObjectLocalKey();
+      if (key === this.referenceObjectLocalStateKey && this.referenceObjectLocalState) return this.referenceObjectLocalState;
+      return this._loadReferenceObjectLocalState(options);
+    };
+
+    App.prototype._persistReferenceObjectLocalState = async function persistReferenceObjectLocalState(state, options = {}) {
+      const api = apiOrThrow(this);
+      const key = this._referenceObjectLocalKey();
+      if (!key) throw new Error('Select a GitHub workspace before saving local Reference Object state.');
+      const normalized = api.normalizeReferenceObjectLocalState(state);
+      await this.setValue(key, normalized);
+      this.referenceObjectLocalState = normalized;
+      this.referenceObjectLocalStateKey = key;
+      if (!options.silent) this._setUi(this._referenceObjectUiPatch());
+      return normalized;
+    };
+
+    App.prototype._putReferenceObjectLocalDraft = async function putReferenceObjectLocalDraft(path, baseSha, content, options = {}) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const existing = this._referenceObjectLocalMap().get(path);
+      const next = api.upsertReferenceObjectLocalDraft(this.referenceObjectLocalState, {
+        path,
+        baseSha: existing ? existing.baseSha : String(baseSha || ''),
+        content,
+        updatedAt: new Date().toISOString()
+      });
+      return this._persistReferenceObjectLocalState(next, options);
+    };
+
+    App.prototype._removeReferenceObjectLocalDraft = async function removeReferenceObjectLocalDraft(path, options = {}) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      if (!this._referenceObjectLocalMap().has(path)) return this.referenceObjectLocalState;
+      return this._persistReferenceObjectLocalState(api.removeReferenceObjectLocalDraft(this.referenceObjectLocalState, path), options);
+    };
+
+    App.prototype._referenceObjectsClient = async function referenceObjectsClient() {
+      const workspace = this._activeWorkspace();
+      if (!workspace) throw new Error('Select a GitHub workspace before using Reference Objects.');
+      return this._client(workspace);
+    };
+
+    App.prototype._readReferenceRegistryUnlocked = async function readReferenceRegistryUnlocked() {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const client = await this._referenceObjectsClient();
+      const snapshot = await apiOrThrow(this).readReferenceObjectRegistrySnapshot(client, this._referenceObjectRegistryPath(), this.referenceObjectLocalState.files);
+      this.referenceObjectRegistrySnapshot = snapshot;
+      this.referenceObjectsLoaded = true;
+      return snapshot;
+    };
+
+    App.prototype.loadReferenceObjects = async function loadReferenceObjects(force = false) {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      if (!force && this.referenceObjectsLoaded && this.referenceObjectRegistrySnapshot) {
+        this._setUi(this._referenceObjectUiPatch({ status: `${this.referenceObjectRegistrySnapshot.registry.objects.length} Reference Object definition(s) loaded.` }));
+        return this.referenceObjectRegistrySnapshot.registry.objects;
+      }
+      const run = async () => this._readReferenceRegistryUnlocked();
+      const snapshot = typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Reading Reference Object Definitions File…', run)
+        : await this._runRemoteOperation('Reading Reference Object Definitions File…', run);
+      if (!snapshot || snapshot.cancelled) return snapshot;
+      this._setUi(this._referenceObjectUiPatch({ status: `${snapshot.registry.objects.length} Reference Object definition(s) loaded from ${snapshot.local ? 'local state' : snapshot.missing ? 'an empty Definitions File state' : 'GitHub'}.` }));
+      return snapshot.registry.objects;
+    };
+
+    App.prototype._ensureReferenceRegistryLoaded = async function ensureReferenceRegistryLoaded() {
+      if (this.referenceObjectsLoaded && this.referenceObjectRegistrySnapshot) return this.referenceObjectRegistrySnapshot;
+      const result = await this.loadReferenceObjects();
+      if (result && result.cancelled) throw new Error('Reference Object Definitions File read was cancelled.');
+      if (!this.referenceObjectRegistrySnapshot) throw new Error('Reference Object Definitions File is unavailable.');
+      return this.referenceObjectRegistrySnapshot;
+    };
+
+    App.prototype._effectiveReferenceObjectFile = async function effectiveReferenceObjectFile(path) {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const local = this._referenceObjectLocalMap().get(path);
+      if (local) return { path, content: local.content, sha: local.baseSha, baseSha: local.baseSha, local: true };
+      const client = await this._referenceObjectsClient();
+      const file = await client.readBytes(path, { maxBytes: apiOrThrow(this).DEFAULT_REFERENCE_SCAN_MAX_FILE_BYTES || (512 * 1024) });
+      let content;
+      try { content = new TextDecoder('utf-8', { fatal: true }).decode(file.bytes); }
+      catch (error) { throw new Error(`Reference Object file is not strict UTF-8: ${path}.`); }
+      return { path, content, sha: String(file.sha || ''), baseSha: String(file.sha || ''), local: false };
+    };
+
+    App.prototype._currentReferenceObjectSource = function currentReferenceObjectSource() {
+      const editor = this.repositoryEditor || {};
+      if (editor.mode === 'edit' && editor.path) return { path: editor.path, content: String(editor.content || ''), baseSha: String(editor.baseSha || ''), fromEditor: true };
+      const preview = this.repositoryPreview;
+      if (!preview || preview.kind !== 'text' || !preview.path || typeof preview.content !== 'string') throw new Error('Open a supported repository text file before creating a Reference Object.');
+      if (!sameRepository(preview.context, this._activeWorkspace())) throw new Error('Reference Object definitions can only be created in the active workspace repository.');
+      const local = this._referenceObjectLocalMap().get(preview.path);
+      return local
+        ? { path: preview.path, content: local.content, baseSha: local.baseSha, fromEditor: false }
+        : { path: preview.path, content: preview.content, baseSha: String(preview.sha || ''), fromEditor: false };
+    };
+
+    App.prototype.findReferenceObjectCandidates = async function findReferenceObjectCandidates(value) {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const source = this._currentReferenceObjectSource();
+      const candidates = apiOrThrow(this).findExactReferenceObjectCandidates(source.content, value);
+      return { path: source.path, value: String(value == null ? '' : value), candidates };
+    };
+
+    App.prototype.createReferenceObjectLocal = async function createReferenceObjectLocal(input = {}) {
+      const api = apiOrThrow(this);
+      const name = String(input.name || '').trim();
+      if (!name) throw new Error('Reference Object name is required.');
+      await this._ensureReferenceRegistryLoaded();
+      const source = this._currentReferenceObjectSource();
+      const candidate = input.candidate || {};
+      if (String(candidate.value == null ? '' : candidate.value) !== source.content.slice(Number(candidate.start), Number(candidate.end))) throw new Error('Selected exact occurrence changed. Find it again.');
+      const id = api.createReferenceObjectId();
+      const wrapped = api.wrapReferenceDefinitionAtCandidate(source.content, candidate, id);
+      let localState = this.referenceObjectLocalState;
+      const sourceExisting = api.referenceObjectLocalDraftMap(localState).get(source.path);
+      localState = api.upsertReferenceObjectLocalDraft(localState, { path: source.path, baseSha: sourceExisting ? sourceExisting.baseSha : source.baseSha, content: wrapped, updatedAt: new Date().toISOString() });
+      const registry = api.upsertReferenceObject(this.referenceObjectRegistrySnapshot.registry, { id, name, definition: { path: source.path }, uses: [] });
+      const registryContent = api.encodeReferenceObjectRegistry(registry);
+      const registryPath = this._referenceObjectRegistryPath();
+      const registryExisting = api.referenceObjectLocalDraftMap(localState).get(registryPath);
+      localState = api.upsertReferenceObjectLocalDraft(localState, { path: registryPath, baseSha: registryExisting ? registryExisting.baseSha : this.referenceObjectRegistrySnapshot.sha, content: registryContent, updatedAt: new Date().toISOString() });
+      await this._persistReferenceObjectLocalState(localState, { silent: true });
+      this.referenceObjectRegistrySnapshot = { path: registryPath, sha: registryExisting ? registryExisting.baseSha : this.referenceObjectRegistrySnapshot.sha, content: registryContent, registry, local: true };
+      this.referenceObjectsLoaded = true;
+      this.referenceObjectChecks = {};
+      this.referenceObjectValidation = null;
+      if (source.fromEditor) this.repositoryEditor = { ...this.repositoryEditor, content: wrapped };
+      else if (this.repositoryPreview && this.repositoryPreview.path === source.path) {
+        this.repositoryPreview = { ...this.repositoryPreview, content: wrapped, size: new TextEncoder().encode(wrapped).byteLength, localReferenceDraft: true };
+        this.fileViewMode = 'source';
+        this.fileRendered = null;
+      }
+      this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: Boolean(source.fromEditor), status: `Reference Object ${name} (${id}) created locally. ${this.referenceObjectLocalState.files.length} local draft file(s) pending; GitHub was not changed.` }));
+      return { id, name, definitionPath: source.path };
+    };
+
+    App.prototype.copyReferenceObjectUse = async function copyReferenceObjectUse(id) {
+      const api = apiOrThrow(this);
+      const snapshot = await this._ensureReferenceRegistryLoaded();
+      const object = api.referenceObjectById(snapshot.registry, id);
+      if (!object) throw new Error(`Reference Object not found: ${id}.`);
+      const read = async () => this._effectiveReferenceObjectFile(object.definition.path);
+      const file = typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Reading Reference Object definition…', read)
+        : await this._runRemoteOperation('Reading Reference Object definition…', read);
+      if (!file || file.cancelled) return file;
+      const parsed = api.parseReferenceMarkers(file.content);
+      const definitions = parsed.occurrences.filter((item) => item.role === 'def' && item.id === object.id);
+      if (parsed.diagnostics.length || definitions.length !== 1) throw new Error(`Reference Object ${object.id} must have exactly one valid definition in ${object.definition.path}.`);
+      const text = api.formatReferenceUse(object.id, definitions[0].value);
+      await this.clipboardWriter(text);
+      this._setUi(this._referenceObjectUiPatch({ status: `Reference ${object.name} copied to clipboard with its current materialized value. Paste it through normal file editing.` }));
+      return text;
+    };
+
+    App.prototype.checkReferenceObjectUses = async function checkReferenceObjectUses(id) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const run = async () => {
+        const client = await this._referenceObjectsClient();
+        return api.checkReferenceObjectUses({ client, objectId: id, registryPath: this._referenceObjectRegistryPath(), overlays: this.referenceObjectLocalState.files });
+      };
+      const check = typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Checking Reference Object uses…', run)
+        : await this._runRemoteOperation('Checking Reference Object uses…', run);
+      if (!check || check.cancelled) return check;
+      this.referenceObjectRegistrySnapshot = check.registrySnapshot;
+      this.referenceObjectsLoaded = true;
+      this.referenceObjectChecks = { ...(this.referenceObjectChecks || {}), [check.objectId]: check };
+      const stale = check.uses.filter((item) => item.status === 'stale').length;
+      this._setUi(this._referenceObjectUiPatch({ status: `Checked ${check.uses.length} use(s) for ${check.object.name}: ${stale} stale${check.incomplete ? '; scan incomplete' : ''}. No file was changed.` }));
+      return check;
+    };
+
+    App.prototype.updateReferenceObjectUsesLocal = async function updateReferenceObjectUsesLocal(id) {
+      const api = apiOrThrow(this);
+      const check = await this.checkReferenceObjectUses(id);
+      if (!check || check.cancelled) return check;
+      const plan = api.buildReferenceObjectLocalUpdate(check);
+      if (plan.staleCount === 0 && !check.indexDrift) {
+        this._setUi(this._referenceObjectUiPatch({ status: `Reference Object ${check.object.name} is already current and its usage index matches. No local draft was created.` }));
+        return plan;
+      }
+      let state = this.referenceObjectLocalState;
+      for (const file of plan.files) {
+        const existing = api.referenceObjectLocalDraftMap(state).get(file.path);
+        state = api.upsertReferenceObjectLocalDraft(state, { path: file.path, baseSha: existing ? existing.baseSha : file.baseSha, content: file.content, updatedAt: new Date().toISOString() });
+      }
+      const registryPath = this._referenceObjectRegistryPath();
+      const registryExisting = api.referenceObjectLocalDraftMap(state).get(registryPath);
+      state = api.upsertReferenceObjectLocalDraft(state, { path: registryPath, baseSha: registryExisting ? registryExisting.baseSha : check.registrySnapshot.sha, content: plan.registryContent, updatedAt: new Date().toISOString() });
+      await this._persistReferenceObjectLocalState(state, { silent: true });
+      this.referenceObjectRegistrySnapshot = { path: registryPath, sha: registryExisting ? registryExisting.baseSha : check.registrySnapshot.sha, content: plan.registryContent, registry: plan.registry, local: true };
+      this.referenceObjectsLoaded = true;
+      const synthetic = {
+        ...check,
+        registrySnapshot: this.referenceObjectRegistrySnapshot,
+        uses: plan.uses.map((use) => ({ ...use, status: 'current', value: check.currentValue })),
+        indexDrift: false,
+        diagnostics: (check.diagnostics || []).filter((item) => item.kind !== 'usage_index_drift')
+      };
+      this.referenceObjectChecks = { ...(this.referenceObjectChecks || {}), [id]: synthetic };
+      const localPreview = this.repositoryPreview && api.referenceObjectLocalDraftMap(state).get(this.repositoryPreview.path);
+      if (localPreview && this.repositoryPreview.kind === 'text') {
+        this.repositoryPreview = { ...this.repositoryPreview, content: localPreview.content, size: new TextEncoder().encode(localPreview.content).byteLength, localReferenceDraft: true };
+        this.fileViewMode = 'source';
+        this.fileRendered = null;
+      }
+      this._setUi(this._referenceObjectUiPatch({ status: `${plan.staleCount} stale use(s) updated locally for ${check.object.name}. GitHub was not changed.` }));
+      return plan;
+    };
+
+    App.prototype.updateReferenceObjectUsesGitHub = async function updateReferenceObjectUsesGitHub(id) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      if (this.referenceObjectLocalState.files.length) throw new Error('Local Reference Object drafts are pending. Publish or otherwise reconcile them before an independent GitHub usage update.');
+      return this._runRemoteOperation('Updating Reference Object uses on GitHub…', async () => {
+        const client = await this._referenceObjectsClient();
+        const result = await api.updateReferenceObjectUsesRemote({ client, objectId: id, registryPath: this._referenceObjectRegistryPath() });
+        const snapshot = await api.readReferenceObjectRegistrySnapshot(client, this._referenceObjectRegistryPath(), []);
+        this.referenceObjectRegistrySnapshot = snapshot;
+        this.referenceObjectsLoaded = true;
+        this.referenceObjectChecks = {};
+        this.referenceObjectValidation = null;
+        this._setUi(this._referenceObjectUiPatch({ status: `GitHub update complete for ${id}: ${result.staleCount} stale use(s) refreshed; verified writes: ${result.results.length}.` }));
+        return result;
+      });
+    };
+
+    App.prototype.validateReferenceObjectTags = async function validateReferenceObjectTags() {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const run = async () => {
+        const client = await this._referenceObjectsClient();
+        return api.validateReferenceObjectTags({ client, registryPath: this._referenceObjectRegistryPath(), overlays: this.referenceObjectLocalState.files });
+      };
+      const result = typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Validating Reference Object tags…', run)
+        : await this._runRemoteOperation('Validating Reference Object tags…', run);
+      if (!result || result.cancelled) return result;
+      this.referenceObjectValidation = result;
+      this.referenceObjectRegistrySnapshot = result.registrySnapshot;
+      this.referenceObjectsLoaded = true;
+      this._setUi(this._referenceObjectUiPatch({ status: result.valid ? `Reference Object tags valid: ${result.counts.objects} object(s), ${result.counts.uses} use(s).` : `Reference Object validation found ${result.diagnostics.length} issue(s)${result.incomplete ? '; scan incomplete' : ''}. Nothing was changed.` }));
+      return result;
+    };
+
+    App.prototype.renameReferenceObjectLocal = async function renameReferenceObjectLocal(id, name) {
+      const api = apiOrThrow(this);
+      const snapshot = await this._ensureReferenceRegistryLoaded();
+      const registry = api.renameReferenceObject(snapshot.registry, id, name);
+      const content = api.encodeReferenceObjectRegistry(registry);
+      const path = this._referenceObjectRegistryPath();
+      const existing = this._referenceObjectLocalMap().get(path);
+      await this._putReferenceObjectLocalDraft(path, existing ? existing.baseSha : snapshot.sha, content, { silent: true });
+      this.referenceObjectRegistrySnapshot = { path, sha: existing ? existing.baseSha : snapshot.sha, content, registry, local: true };
+      this.referenceObjectsLoaded = true;
+      this._setUi(this._referenceObjectUiPatch({ status: `Reference Object renamed locally to ${String(name || '').trim()}. Stable id ${id} did not change; GitHub was not changed.` }));
+      return api.referenceObjectById(registry, id);
+    };
+
+    App.prototype._reindexReferenceObjectFileLocal = async function reindexReferenceObjectFileLocal(path, content, options = {}) {
+      const api = apiOrThrow(this);
+      if (!this.referenceObjectsLoaded || !this.referenceObjectRegistrySnapshot) {
+        if (options.skipLoad) return null;
+        await this._ensureReferenceRegistryLoaded();
+      }
+      const parsed = api.parseReferenceMarkers(content);
+      if (parsed.diagnostics.length) return { diagnostics: parsed.diagnostics };
+      let registry = this.referenceObjectRegistrySnapshot.registry;
+      let changed = false;
+      for (const object of registry.objects) {
+        const existingOther = (object.uses || []).filter((use) => use.path !== path);
+        const localUses = parsed.occurrences.filter((marker) => marker.role === 'use' && marker.id === object.id).map((marker) => ({ path, line: marker.line, lineOccurrence: marker.lineOccurrence }));
+        const next = [...existingOther, ...localUses];
+        if (JSON.stringify(next) !== JSON.stringify(object.uses || [])) {
+          registry = api.replaceReferenceObjectUses(registry, object.id, next);
+          changed = true;
+        }
+      }
+      if (!changed) return { changed: false, diagnostics: [] };
+      const registryPath = this._referenceObjectRegistryPath();
+      const registryContent = api.encodeReferenceObjectRegistry(registry);
+      const local = this._referenceObjectLocalMap().get(registryPath);
+      await this._putReferenceObjectLocalDraft(registryPath, local ? local.baseSha : this.referenceObjectRegistrySnapshot.sha, registryContent, { silent: true });
+      this.referenceObjectRegistrySnapshot = { path: registryPath, sha: local ? local.baseSha : this.referenceObjectRegistrySnapshot.sha, content: registryContent, registry, local: true };
+      return { changed: true, diagnostics: [] };
+    };
+
+    App.prototype.saveRepositoryReferenceDraftLocal = async function saveRepositoryReferenceDraftLocal(input = {}) {
+      const editor = { ...(this.repositoryEditor || {}), ...(input || {}) };
+      if (editor.mode !== 'edit' || !editor.path) throw new Error('Open an existing repository text file in Edit before saving a local Reference Object draft.');
+      await this._putReferenceObjectLocalDraft(editor.path, editor.baseSha, editor.content, { silent: true });
+      this.repositoryEditor = { ...this.repositoryEditor, content: String(editor.content || '') };
+      try { await this._reindexReferenceObjectFileLocal(editor.path, editor.content); } catch (error) { /* local file draft remains even if index read fails */ }
+      this.referenceObjectChecks = {};
+      this.referenceObjectValidation = null;
+      this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: true, status: `Saved ${editor.path} as a local Reference Object draft. GitHub was not changed.` }));
+      return this._referenceObjectLocalMap().get(editor.path);
+    };
+
+    App.prototype.publishReferenceObjectLocalDraftsGitHub = async function publishReferenceObjectLocalDraftsGitHub() {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      if (!this.referenceObjectLocalState.files.length) {
+        this._setUi(this._referenceObjectUiPatch({ status: 'No local Reference Object draft files are pending.' }));
+        return [];
+      }
+      return this._runRemoteOperation('Publishing local Reference Object drafts to GitHub…', async () => {
+        const client = await this._referenceObjectsClient();
+        const registryPath = this._referenceObjectRegistryPath();
+        const drafts = [...this.referenceObjectLocalState.files].sort((left, right) => (left.path === registryPath ? 1 : right.path === registryPath ? -1 : left.path.localeCompare(right.path)));
+        for (const draft of drafts) await api.proveReferenceObjectExpectedBase(client, draft.path, draft.baseSha);
+        const results = [];
+        let state = this.referenceObjectLocalState;
+        for (const draft of drafts) {
+          try {
+            const saved = await client.saveVerified({ path: draft.path, content: draft.content, baseSha: draft.baseSha, message: `${draft.baseSha ? 'Update' : 'Create'} Reference Object repository state ${draft.path}` });
+            results.push({ target: draft.path, status: 'completed', sha: String(saved && saved.sha || ''), message: 'Exact GitHub read-back verified.' });
+            state = api.removeReferenceObjectLocalDraft(state, draft.path);
+            await this._persistReferenceObjectLocalState(state, { silent: true });
+          } catch (error) {
+            results.push({ target: draft.path, status: 'failed', message: errorText(error) });
+            const partial = new Error(`Publishing local Reference Object drafts stopped after ${results.filter((item) => item.status === 'completed').length} verified file(s). Completed GitHub writes remain; pending drafts are preserved.`);
+            partial.kind = 'partial_reference_object_publish';
+            partial.partialResults = results;
+            this._setUi(this._referenceObjectUiPatch());
+            throw partial;
+          }
+        }
+        const snapshot = await api.readReferenceObjectRegistrySnapshot(client, registryPath, []);
+        this.referenceObjectRegistrySnapshot = snapshot;
+        this.referenceObjectsLoaded = true;
+        this.referenceObjectChecks = {};
+        this.referenceObjectValidation = null;
+        this._setUi(this._referenceObjectUiPatch({ status: `Published ${results.length} local Reference Object draft file(s) to GitHub with exact read-back verification.` }));
+        return results;
+      });
+    };
+
+    App.prototype.openReferenceObjectDefinition = async function openReferenceObjectDefinition(id) {
+      const api = apiOrThrow(this);
+      const snapshot = await this._ensureReferenceRegistryLoaded();
+      const object = api.referenceObjectById(snapshot.registry, id);
+      if (!object) throw new Error(`Reference Object not found: ${id}.`);
+      const path = object.definition.path;
+      const preview = await this.openRepositoryEntry({ type: 'file', path, name: path.slice(path.lastIndexOf('/') + 1) });
+      const parsed = api.parseReferenceMarkers(preview && preview.content || '');
+      const definition = parsed.occurrences.find((item) => item.role === 'def' && item.id === id);
+      this.referenceObjectFocus = { objectId: id, path, line: definition ? definition.line : 1, lineOccurrence: definition ? definition.lineOccurrence : 1, role: 'definition' };
+      this._setUi(this._referenceObjectUiPatch({ status: `Opened definition for ${object.name}: ${path}.` }));
+      return preview;
+    };
+
+    App.prototype.openReferenceObjectUse = async function openReferenceObjectUse(id, use = {}) {
+      const path = String(use.path || '').trim();
+      if (!path) throw new Error('Reference Object use path is required.');
+      const preview = await this.openRepositoryEntry({ type: 'file', path, name: path.slice(path.lastIndexOf('/') + 1) });
+      this.fileViewMode = 'source';
+      this.fileRendered = null;
+      this.referenceObjectFocus = { objectId: id, path, line: Math.max(1, Number(use.line) || 1), lineOccurrence: Math.max(1, Number(use.lineOccurrence) || 1), role: 'use' };
+      this._setUi(this._referenceObjectUiPatch({ status: `Opened ${path} at Reference Object use line ${this.referenceObjectFocus.line}, occurrence #${this.referenceObjectFocus.lineOccurrence}.` }));
+      return preview;
+    };
+
+    if (typeof originalOpenRepositoryEntry === 'function') {
+      App.prototype.openRepositoryEntry = async function referenceObjectsOpenRepositoryEntry(entry, contextOverride = null) {
+        const result = await originalOpenRepositoryEntry.call(this, entry, contextOverride);
+        if (contextOverride || !this.repositoryPreview || !this.repositoryPreview.path || this.repositoryPreview.kind !== 'text') return result;
+        await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+        const draft = this._referenceObjectLocalMap().get(this.repositoryPreview.path);
+        if (!draft) return result;
+        this.repositoryPreview = { ...this.repositoryPreview, content: draft.content, size: new TextEncoder().encode(draft.content).byteLength, sha: draft.baseSha || this.repositoryPreview.sha, localReferenceDraft: true };
+        this.fileViewMode = 'source';
+        this.fileRendered = null;
+        this._setUi(this._referenceObjectUiPatch({ status: `Opened local Reference Object draft for ${draft.path}; GitHub base SHA is ${draft.baseSha || '(new path)'}.` }));
+        return this.repositoryPreview;
+      };
+    }
+
+    if (typeof originalBeginRepositoryFileEdit === 'function') {
+      App.prototype.beginRepositoryFileEdit = async function referenceObjectsBeginRepositoryFileEdit(...args) {
+        await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+        const preview = this.repositoryPreview;
+        const draft = preview && preview.path ? this._referenceObjectLocalMap().get(preview.path) : null;
+        if (!draft) return originalBeginRepositoryFileEdit.apply(this, args);
+        this.repositoryEditor = {
+          mode: 'edit',
+          parentPath: preview.path.includes('/') ? preview.path.slice(0, preview.path.lastIndexOf('/')) : '',
+          path: preview.path,
+          name: preview.name || preview.path.slice(preview.path.lastIndexOf('/') + 1),
+          content: draft.content,
+          baseSha: draft.baseSha || preview.sha || ''
+        };
+        this.fileViewMode = 'source';
+        this.surface = 'files';
+        this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: true, status: `Editing local Reference Object draft ${preview.path}. Use Save local draft to stay local or normal Save to write this file to GitHub.` }));
+        return this.repositoryEditor;
+      };
+    }
+
+    if (typeof originalSaveRepositoryEditor === 'function') {
+      App.prototype.saveRepositoryEditor = async function referenceObjectsSaveRepositoryEditor(input = {}) {
+        const requested = { ...(this.repositoryEditor || {}), ...(input || {}) };
+        const result = await originalSaveRepositoryEditor.call(this, input);
+        if (!result || !result.path || requested.mode === 'folder') return result;
+        await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+        if (this._referenceObjectLocalMap().has(result.path)) await this._removeReferenceObjectLocalDraft(result.path, { silent: true });
+        const content = String(result.content == null ? requested.content || '' : result.content);
+        try {
+          if (/obs-ref:(?:def|use)/.test(content) || this.referenceObjectsLoaded) await this._reindexReferenceObjectFileLocal(result.path, content);
+        } catch (error) { /* remote file is already verified; index remains explicitly repairable */ }
+        this.referenceObjectChecks = {};
+        this.referenceObjectValidation = null;
+        this._setUi(this._referenceObjectUiPatch({ status: `${result.path} saved to GitHub. Reference Object usage index is local until separately published when changed.` }));
+        return result;
+      };
+    }
+
+    async function reloadAfterWorkspaceChange(app, result) {
+      await app._loadReferenceObjectLocalState();
+      return result;
+    }
+
+    if (typeof originalSelectWorkspace === 'function') App.prototype.selectWorkspace = async function referenceObjectsSelectWorkspace(...args) { return reloadAfterWorkspaceChange(this, await originalSelectWorkspace.apply(this, args)); };
+    if (typeof originalSaveWorkspace === 'function') App.prototype.saveWorkspace = async function referenceObjectsSaveWorkspace(...args) { return reloadAfterWorkspaceChange(this, await originalSaveWorkspace.apply(this, args)); };
+    if (typeof originalDeleteWorkspace === 'function') App.prototype.deleteWorkspace = async function referenceObjectsDeleteWorkspace(...args) { return reloadAfterWorkspaceChange(this, await originalDeleteWorkspace.apply(this, args)); };
+    if (typeof originalOpenPanel === 'function') App.prototype.openPanel = async function referenceObjectsOpenPanel(...args) { const result = await originalOpenPanel.apply(this, args); await this._ensureReferenceObjectLocalStateCurrent(); return result; };
+
+    App.prototype.start = async function referenceObjectsStart(...args) {
+      if (this.ui && this.ui.handlers) Object.assign(this.ui.handlers, {
+        onLoadReferenceObjects: (force) => this.loadReferenceObjects(force),
+        onFindReferenceObjectCandidates: (value) => this.findReferenceObjectCandidates(value),
+        onCreateReferenceObjectLocal: (input) => this.createReferenceObjectLocal(input),
+        onCopyReferenceObjectUse: (id) => this.copyReferenceObjectUse(id),
+        onCheckReferenceObjectUses: (id) => this.checkReferenceObjectUses(id),
+        onUpdateReferenceObjectUsesLocal: (id) => this.updateReferenceObjectUsesLocal(id),
+        onUpdateReferenceObjectUsesGitHub: (id) => this.updateReferenceObjectUsesGitHub(id),
+        onValidateReferenceObjectTags: () => this.validateReferenceObjectTags(),
+        onRenameReferenceObjectLocal: (id, name) => this.renameReferenceObjectLocal(id, name),
+        onSaveRepositoryReferenceDraftLocal: (input) => this.saveRepositoryReferenceDraftLocal(input),
+        onPublishReferenceObjectLocalDraftsGitHub: () => this.publishReferenceObjectLocalDraftsGitHub(),
+        onOpenReferenceObjectDefinition: (id) => this.openReferenceObjectDefinition(id),
+        onOpenReferenceObjectUse: (id, use) => this.openReferenceObjectUse(id, use)
+      });
+      const result = await originalStart.apply(this, args);
+      await this._loadReferenceObjectLocalState();
+      return result;
+    };
+
+    return true;
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+  }
+
+  function contextKey(ui) {
+    const state = ui && ui.state || {};
+    const workspace = (Array.isArray(state.workspaces) ? state.workspaces : []).find((item) => item && item.id === state.activeWorkspaceId) || null;
+    if (!workspace) return String(state.activeWorkspaceId || '');
+    try { return (root.ObsLinkedNotes || {}).referenceObjectLocalStoreKey(workspace); } catch (error) { return String(state.activeWorkspaceId || ''); }
+  }
+
+  function detachModals(ui) {
+    if (!ui || !ui.shadow) return [];
+    const nodes = [];
+    ui.shadow.querySelectorAll('[data-reference-object-modal]').forEach((node) => { node.remove(); nodes.push(node); });
+    return nodes;
+  }
+
+  function restoreModals(ui, nodes) {
+    if (!ui || !ui.shadow) return;
+    const key = contextKey(ui);
+    for (const node of nodes || []) if (String(node.__referenceObjectContextKey || '') === key) ui.shadow.appendChild(node);
+  }
+
+  function appendStyle(ui) {
+    if (!ui.shadow || ui.shadow.querySelector('style[data-reference-object-style]')) return;
+    const style = document.createElement('style');
+    style.dataset.referenceObjectStyle = '1';
+    style.textContent = `
+      .reference-objects-menu { position:relative; display:inline-flex; }
+      .reference-objects-menu > summary { cursor:pointer; display:inline-flex; align-items:center; min-height:34px; padding:6px 10px; border:1px solid var(--border); border-radius:7px; background:var(--surface); list-style:none; }
+      .reference-objects-menu > summary::-webkit-details-marker { display:none; }
+      .reference-objects-panel { position:absolute; z-index:2147483646; top:calc(100% + 6px); right:0; width:min(680px,86vw); max-height:min(620px,74vh); overflow:auto; display:grid; gap:8px; padding:10px; border:1px solid var(--border); border-radius:9px; background:var(--surface-2); box-shadow:0 14px 38px rgba(0,0,0,.58); }
+      .reference-object-top-actions, .reference-object-actions { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+      .reference-object-search { width:100%; }
+      .reference-object-list { display:grid; gap:7px; }
+      .reference-object-row { border:1px solid var(--border); border-radius:8px; padding:8px; display:grid; gap:6px; }
+      .reference-object-row small { color:var(--muted); overflow-wrap:anywhere; }
+      .reference-object-uses { border-top:1px solid var(--border); padding-top:5px; }
+      .reference-object-use-list { display:grid; gap:4px; margin-top:5px; }
+      .reference-object-use { width:100%; display:grid; grid-template-columns:auto minmax(0,1fr); gap:8px; text-align:left; align-items:start; }
+      .reference-object-use.stale { background:rgba(220,174,60,.22); border-color:rgba(240,195,72,.65); }
+      .reference-object-use.current { border-color:rgba(90,190,120,.5); }
+      .reference-object-diagnostics { display:grid; gap:4px; max-height:180px; overflow:auto; }
+      .reference-object-diagnostic { padding:5px 6px; border:1px solid var(--border); border-radius:6px; }
+      .reference-object-modal-backdrop { position:absolute; inset:0; z-index:2147483646; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
+      .reference-object-modal { width:min(780px,calc(100% - 16px)); max-height:calc(100% - 16px); overflow:auto; display:grid; gap:10px; padding:14px; border:1px solid var(--border); border-radius:10px; background:var(--surface-2); }
+      .reference-object-modal textarea { min-height:150px; resize:vertical; }
+      .reference-object-candidates { display:grid; gap:6px; max-height:320px; overflow:auto; }
+      .reference-object-candidate { text-align:left; display:grid; gap:3px; }
+      .reference-object-candidate.active { outline:2px solid var(--accent); }
+      .reference-object-candidate code { white-space:pre-wrap; overflow-wrap:anywhere; }
+      .reference-object-highlight { background:rgba(255,218,92,.28); border-radius:3px; }
+      .reference-focus-occurrence { background:rgba(255,218,92,.28); outline:1px solid rgba(255,218,92,.65); border-radius:3px; }
+      .reference-object-local-badge { color:#ffd86a; }
+    `;
+    ui.shadow.appendChild(style);
+  }
+
+  function directHandler(ui, name, ...args) {
+    const handler = ui && ui.handlers && ui.handlers[name];
+    if (typeof handler !== 'function') return Promise.reject(new Error(`Reference Object handler unavailable: ${name}.`));
+    try { return Promise.resolve(handler(...args)); } catch (error) { return Promise.reject(error); }
+  }
+
+  function candidateContextHtml(candidate) {
+    if (candidate.multiline) return `<code>${escapeHtml(previewText(candidate.value, 300))}</code>`;
+    const line = String(candidate.lineText || '');
+    const start = Math.max(0, Number(candidate.lineMatchStart) || 0);
+    const end = Math.max(start, Number(candidate.lineMatchEnd) || start);
+    return `<code>${escapeHtml(line.slice(0, start))}<span class="reference-object-highlight">${escapeHtml(line.slice(start, end))}</span>${escapeHtml(line.slice(end))}</code>`;
+  }
+
+  function openCreateModal(ui) {
+    if (!ui.shadow || ui.shadow.querySelector('[data-reference-object-modal="create"]')) return;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'reference-object-modal-backdrop';
+    backdrop.dataset.referenceObjectModal = 'create';
+    backdrop.__referenceObjectContextKey = contextKey(ui);
+    backdrop.innerHTML = `<section class="reference-object-modal"><h3>Create Reference Object</h3><div class="hint">Paste the exact value copied from the currently open file. Find is exact only; no fuzzy matching and no GitHub write.</div><textarea data-reference-exact-value placeholder="Paste exact text / number / Markdown block"></textarea><div class="reference-object-actions"><button data-reference-find>Find exact occurrences</button><button data-reference-close>Close</button></div><div class="hint" data-reference-find-status>Choose one exact occurrence after searching.</div><div class="reference-object-candidates" data-reference-candidates></div><label class="field"><span>Reference Object name</span><input data-reference-name placeholder="Base damage"></label><button class="primary" data-reference-create disabled>Create locally</button></section>`;
+    ui.shadow.appendChild(backdrop);
+    const status = backdrop.querySelector('[data-reference-find-status]');
+    const list = backdrop.querySelector('[data-reference-candidates]');
+    const create = backdrop.querySelector('[data-reference-create]');
+    let selected = null;
+    backdrop.querySelector('[data-reference-close]').addEventListener('click', () => backdrop.remove());
+    backdrop.querySelector('[data-reference-find]').addEventListener('click', async () => {
+      selected = null; create.disabled = true; list.innerHTML = ''; status.textContent = 'Finding exact occurrences…';
+      try {
+        const result = await directHandler(ui, 'onFindReferenceObjectCandidates', backdrop.querySelector('[data-reference-exact-value]').value);
+        const candidates = result && result.candidates || [];
+        status.textContent = candidates.length ? `${candidates.length} exact occurrence(s) found in ${result.path}. Choose one.` : 'No exact occurrence found. Nothing was changed.';
+        list.innerHTML = candidates.map((candidate, index) => `<button class="reference-object-candidate" data-reference-candidate="${index}"><strong>Line ${candidate.line} · occurrence ${candidate.lineOccurrence}</strong>${candidateContextHtml(candidate)}</button>`).join('');
+        list.querySelectorAll('[data-reference-candidate]').forEach((button) => button.addEventListener('click', () => {
+          list.querySelectorAll('[data-reference-candidate]').forEach((item) => item.classList.remove('active'));
+          button.classList.add('active'); selected = candidates[Number(button.dataset.referenceCandidate)]; create.disabled = !selected;
+        }));
+      } catch (error) { status.textContent = `Find failed: ${errorText(error)}`; }
+    });
+    create.addEventListener('click', async () => {
+      if (!selected) return;
+      const name = backdrop.querySelector('[data-reference-name]').value;
+      try {
+        await ui._call('onCreateReferenceObjectLocal', { name, candidate: selected });
+        backdrop.remove();
+      } catch (error) { status.textContent = `Create failed: ${errorText(error)}`; }
+    });
+  }
+
+  function usageListHtml(object, check) {
+    const uses = check && Array.isArray(check.uses) ? check.uses : (object.uses || []).map((use) => ({ ...use, status: 'unchecked', storedPreview: '', currentPreview: '' }));
+    if (!uses.length) return '<div class="hint">No indexed uses.</div>';
+    return uses.map((use, index) => `<button class="reference-object-use ${escapeHtml(use.status || 'unchecked')}" data-reference-use-index="${index}" data-reference-use-object="${escapeHtml(object.id)}"><strong>${use.status === 'stale' ? '⚠' : use.status === 'current' ? '✓' : '•'}</strong><span>${escapeHtml(use.path)} : ${escapeHtml(use.line)} · #${escapeHtml(use.lineOccurrence)}${use.status === 'stale' ? `<br><small>stored: ${escapeHtml(use.storedPreview || '')}<br>current: ${escapeHtml(use.currentPreview || '')}</small>` : ''}</span></button>`).join('');
+  }
+
+  function validationHtml(validation) {
+    if (!validation) return '';
+    const summary = validation.valid ? `✓ Tags valid · ${validation.counts.objects || 0} object(s) · ${validation.counts.uses || 0} use(s)` : `⚠ ${validation.diagnostics.length} validation issue(s)${validation.incomplete ? ' · incomplete scan' : ''}`;
+    const rows = validation.diagnostics.slice(0, 80).map((item) => `<div class="reference-object-diagnostic"><strong>${escapeHtml(item.kind)}</strong>${item.objectId ? ` · ${escapeHtml(item.objectId)}` : ''}${item.path ? `<br><code>${escapeHtml(item.path)}</code>` : ''}${item.message ? `<br><small>${escapeHtml(item.message)}</small>` : ''}</div>`).join('');
+    return `<details><summary>${summary}</summary><div class="reference-object-diagnostics">${rows || '<div class="hint">No issues.</div>'}</div></details>`;
+  }
+
+  function renderReferenceObjectMenu(ui, details) {
+    const state = ui.state || {};
+    const objects = Array.isArray(state.referenceObjects) ? state.referenceObjects : [];
+    const checks = state.referenceObjectChecks || {};
+    const pending = Array.isArray(state.referenceObjectPendingFiles) ? state.referenceObjectPendingFiles : [];
+    const rows = objects.map((object) => {
+      const check = checks[object.id] || null;
+      const stale = check ? check.staleCount : 0;
+      return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button><button data-reference-update-github="${escapeHtml(object.id)}">Update GitHub</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
+    }).join('') || '<div class="hint">No Reference Objects loaded.</div>';
+    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button class="primary" data-reference-publish ${pending.length ? '' : 'disabled'}>Apply local changes to GitHub</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Copy reference writes only to clipboard; manual paste remains explicit.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
+    const search = details.querySelector('[data-reference-search]');
+    const applyFilter = () => {
+      const query = String(search && search.value || '').trim().toLowerCase();
+      ui.__referenceObjectQuery = query;
+      details.querySelectorAll('[data-reference-object-row]').forEach((row) => { row.hidden = Boolean(query && !String(row.dataset.referenceSearch || '').includes(query)); });
+    };
+    if (search) { search.addEventListener('input', applyFilter); applyFilter(); }
+    details.querySelector('[data-reference-create]')?.addEventListener('click', () => openCreateModal(ui));
+    details.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
+    details.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
+    details.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
+    details.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
+    details.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
+    details.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
+    details.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
+    details.querySelectorAll('[data-reference-update-github]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesGitHub', button.dataset.referenceUpdateGithub).catch(() => {})));
+    details.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
+      const input = Array.from(details.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
+      ui._call('onRenameReferenceObjectLocal', button.dataset.referenceRename, input && input.value).catch(() => {});
+    }));
+    details.querySelectorAll('[data-reference-use-index]').forEach((button) => button.addEventListener('click', () => {
+      const object = objects.find((item) => item.id === button.dataset.referenceUseObject);
+      if (!object) return;
+      const check = checks[object.id];
+      const uses = check && check.uses || object.uses || [];
+      const use = uses[Number(button.dataset.referenceUseIndex)];
+      if (use) ui._call('onOpenReferenceObjectUse', object.id, use).catch(() => {});
+    }));
+  }
+
+  function enhanceReferenceObjectsMenu(ui) {
+    if (!ui.shadow || typeof document === 'undefined') return;
+    const host = ui.shadow.querySelector('.surface-tabs') || ui.shadow.querySelector('.editor-toolbar');
+    if (!host || host.querySelector('[data-reference-objects-menu]')) return;
+    const details = document.createElement('details');
+    details.className = 'reference-objects-menu';
+    details.dataset.referenceObjectsMenu = '1';
+    details.open = Boolean(ui.__referenceObjectsMenuOpen);
+    renderReferenceObjectMenu(ui, details);
+    details.addEventListener('toggle', () => {
+      ui.__referenceObjectsMenuOpen = details.open;
+      if (details.open && !ui.state.referenceObjectsLoaded) ui._call('onLoadReferenceObjects', false).catch(() => {});
+    });
+    host.appendChild(details);
+  }
+
+  function enhanceLocalDraftSave(ui) {
+    if (!ui.shadow || ui.state.surface !== 'files') return;
+    const editor = ui.state.repositoryEditor || {};
+    if (editor.mode !== 'edit') return;
+    const actions = ui.shadow.querySelector('.repository-editor .repository-editor-actions');
+    if (!actions || actions.querySelector('[data-reference-save-local]')) return;
+    const button = document.createElement('button');
+    button.dataset.referenceSaveLocal = '1';
+    button.textContent = 'Save local draft';
+    button.addEventListener('click', () => {
+      const content = ui.shadow.querySelector('[data-role="repository-file-content"]');
+      ui._call('onSaveRepositoryReferenceDraftLocal', { ...editor, content: content ? content.value : editor.content || '' }).catch(() => {});
+    });
+    actions.insertBefore(button, actions.firstChild);
+  }
+
+  function enhanceReferenceFocus(ui) {
+    if (!ui.shadow || ui.state.surface !== 'files') return;
+    const focus = ui.state.referenceObjectFocus;
+    const preview = ui.state.repositoryPreview;
+    if (!focus || !preview || focus.path !== preview.path || ui.state.fileViewMode === 'rendered') return;
+    const pre = ui.shadow.querySelector('.file-preview pre');
+    if (!pre) return;
+    const text = pre.textContent || '';
+    const occurrence = locateReferenceFocusOccurrence(root.ObsLinkedNotes || {}, text, focus);
+    if (!occurrence) return;
+    pre.innerHTML = `${escapeHtml(text.slice(0, occurrence.fullStart))}<span class="reference-focus-occurrence" data-reference-focus-occurrence>${escapeHtml(text.slice(occurrence.fullStart, occurrence.fullEnd))}</span>${escapeHtml(text.slice(occurrence.fullEnd))}`;
+    const target = pre.querySelector('[data-reference-focus-occurrence]');
+    if (target && typeof target.scrollIntoView === 'function') setTimeout(() => target.scrollIntoView({ block: 'center', inline: 'nearest' }), 0);
+  }
+
+  function patchUi(UI) {
+    if (!UI || !UI.prototype || UI.prototype[UI_PATCH]) return false;
+    Object.defineProperty(UI.prototype, UI_PATCH, { value: true, configurable: false, enumerable: false, writable: false });
+    const originalRender = UI.prototype.render;
+    UI.prototype.render = function referenceObjectsRender(...args) {
+      const modals = detachModals(this);
+      let result;
+      try {
+        result = originalRender.apply(this, args);
+        if (!this.shadow || typeof document === 'undefined') return result;
+        appendStyle(this);
+        enhanceReferenceObjectsMenu(this);
+        enhanceLocalDraftSave(this);
+        enhanceReferenceFocus(this);
+        return result;
+      } finally {
+        restoreModals(this, modals);
+      }
+    };
+    return true;
+  }
+
+  function installRepositoryReferenceObjects(api = root.ObsLinkedNotes || {}) {
+    if (!api || !api.LinkedNotesApp || !api.LinkedNotesUI) return false;
+    const appPatched = patchApp(api.LinkedNotesApp);
+    const uiPatched = patchUi(api.LinkedNotesUI);
+    return appPatched || uiPatched;
+  }
+
+  return { installRepositoryReferenceObjects, locateReferenceFocusOccurrence };
 });
 
 /* bootstrap */
