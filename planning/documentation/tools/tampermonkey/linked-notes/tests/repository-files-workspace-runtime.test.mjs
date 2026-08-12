@@ -490,8 +490,10 @@ test('open Files modal survives destructive base rerenders and is dropped after 
   }
 });
 
-test('shared workspace dropdown portal moves panels to the shadow-root layer and clamps them inside the main surface', () => {
+test('shared top popup survives destructive rerender, reopens after errors, and falls back when clamp throws', async () => {
   const previousDocument = globalThis.document;
+  const namespace = globalThis.ObsLinkedNotes || (globalThis.ObsLinkedNotes = {});
+  const previousClamp = namespace.clampRepositoryLinkPopoverRect;
   class FakeElement {
     constructor(tag = 'div') {
       this.tag = tag;
@@ -514,12 +516,6 @@ test('shared workspace dropdown portal moves panels to the shadow-root layer and
     querySelectorAll() { return []; }
   }
 
-  const summary = new FakeElement('summary');
-  summary.getBoundingClientRect = () => ({ left: 900, right: 1020, top: 80, bottom: 114, width: 120, height: 34 });
-  const details = new FakeElement('details');
-  details.open = true;
-  details.querySelector = (selector) => selector === 'summary' ? summary : null;
-  const panel = new FakeElement('panel');
   const main = new FakeElement('main');
   main.getBoundingClientRect = () => ({ left: 300, right: 1100, top: 0, bottom: 700, width: 800, height: 700 });
   let layer = null;
@@ -532,7 +528,8 @@ test('shared workspace dropdown portal moves panels to the shadow-root layer and
       return null;
     },
     querySelectorAll(selector) {
-      return selector === '[data-files-workspace-popup-anchor][open]' ? [details] : [];
+      if (selector === '[data-files-workspace-popup-panel]') return layer ? layer.children.filter((item) => item.dataset && item.dataset.filesWorkspacePopupPanel) : [];
+      return [];
     },
     appendChild(node) {
       if (node.dataset && node.dataset.filesWorkspacePopupLayer) layer = node;
@@ -540,20 +537,52 @@ test('shared workspace dropdown portal moves panels to the shadow-root layer and
     }
   };
 
+  const makeMenu = () => {
+    const summary = new FakeElement('summary');
+    summary.getBoundingClientRect = () => ({ left: 900, right: 1020, top: 80, bottom: 114, width: 120, height: 34 });
+    const details = new FakeElement('details');
+    details.querySelector = (selector) => selector === 'summary' ? summary : null;
+    const panel = new FakeElement('panel');
+    return { summary, details, panel };
+  };
+
   try {
     globalThis.document = { createElement(tag) { return new FakeElement(tag); } };
-    const ui = { shadow };
-    assert.equal(runtime.portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 680, maxHeight: 420 }), true);
+    namespace.clampRepositoryLinkPopoverRect = () => { throw new Error('synthetic layout failure'); };
+    const ui = { shadow, state: { activeWorkspaceId: 'a', surface: 'files' } };
+    let opens = 0;
+    const first = makeMenu();
+    assert.equal(runtime.portalFilesWorkspaceDropdownPanel(ui, first.details, first.panel, { key: 'locations', maxWidth: 680, maxHeight: 420, onOpen: () => { opens += 1; } }), true);
     assert.ok(layer, 'portal layer must be attached directly to the Shadow root');
-    assert.equal(panel.parent, layer, 'dropdown panel must leave the clipping menu container');
-    assert.equal(panel.hidden, false);
-    assert.equal(panel.style.position, 'fixed');
-    const left = Number.parseFloat(panel.style.left);
-    const width = Number.parseFloat(panel.style.width);
+    assert.equal(first.panel.hidden, true);
+
+    first.summary.listeners.get('click')({ preventDefault() {} });
+    assert.equal(ui.__filesWorkspaceTopPopup, 'locations');
+    assert.equal(first.panel.hidden, false);
+    assert.equal(opens, 1);
+    assert.equal(first.panel.style.position, 'fixed', 'fallback positioning must survive a throwing clamp helper');
+    const left = Number.parseFloat(first.panel.style.left);
+    const width = Number.parseFloat(first.panel.style.width);
     assert.ok(left >= 308);
     assert.ok(left + width <= 1092);
-    assert.equal(details.dataset.filesWorkspacePopupAnchor, '1');
+
+    // Simulate base render replacing the entire Shadow DOM. Explicit popup state remains on the UI object.
+    layer = null;
+    const second = makeMenu();
+    assert.equal(runtime.portalFilesWorkspaceDropdownPanel(ui, second.details, second.panel, { key: 'locations', maxWidth: 680, maxHeight: 420, onOpen: () => { opens += 1; } }), true);
+    assert.equal(second.panel.hidden, false, 'the same popup must be reconstructed open after destructive render');
+    assert.equal(opens, 1, 'reconstruction must not rerun the network/load onOpen hook');
+
+    second.summary.listeners.get('click')({ preventDefault() {} });
+    assert.equal(ui.__filesWorkspaceTopPopup, '');
+    assert.equal(second.panel.hidden, true);
+    second.summary.listeners.get('click')({ preventDefault() {} });
+    assert.equal(ui.__filesWorkspaceTopPopup, 'locations');
+    assert.equal(second.panel.hidden, false);
+    assert.equal(opens, 2, 'a later explicit reopen must run onOpen again');
   } finally {
+    if (previousClamp === undefined) delete namespace.clampRepositoryLinkPopoverRect;
+    else namespace.clampRepositoryLinkPopoverRect = previousClamp;
     if (previousDocument === undefined) delete globalThis.document;
     else globalThis.document = previousDocument;
   }

@@ -672,34 +672,45 @@
     return null;
   }
 
-  function positionFilesWorkspaceDropdownPanel(ui, details, panel, options = {}) {
-    if (!ui || !ui.shadow || !details || !panel) return null;
-    const summary = typeof details.querySelector === 'function' ? details.querySelector('summary') : null;
-    if (!summary || typeof summary.getBoundingClientRect !== 'function') return null;
+  function fallbackFilesWorkspacePopupRect(anchorRect, containerRect, options = {}) {
+    const margin = Number(options.margin) >= 0 ? Number(options.margin) : 8;
+    const gap = Number(options.gap) >= 0 ? Number(options.gap) : 6;
+    const maxWidth = Number(options.maxWidth) > 0 ? Number(options.maxWidth) : 460;
+    const maxHeight = Number(options.maxHeight) > 0 ? Number(options.maxHeight) : 420;
+    const width = Math.min(maxWidth, Math.max(160, Number(containerRect.width) - margin * 2));
+    const height = Math.min(maxHeight, Math.max(140, Number(containerRect.height) - margin * 2));
+    const left = Math.max(Number(containerRect.left) + margin, Math.min(Number(anchorRect.left), Number(containerRect.right) - margin - width));
+    let top = Number(anchorRect.bottom) + gap;
+    if (top + height > Number(containerRect.bottom) - margin) top = Math.max(Number(containerRect.top) + margin, Number(anchorRect.top) - gap - height);
+    return { left: Math.round(left), top: Math.round(top), width: Math.round(width), maxHeight: Math.round(height) };
+  }
+
+  function validFilesWorkspacePopupRect(rect) {
+    return Boolean(rect && ['left', 'top', 'width', 'maxHeight'].every((key) => Number.isFinite(Number(rect[key]))));
+  }
+
+  function positionFilesWorkspaceDropdownPanel(ui, anchorOrDetails, panel, options = {}) {
+    if (!ui || !ui.shadow || !anchorOrDetails || !panel) return null;
+    const anchor = typeof anchorOrDetails.getBoundingClientRect === 'function'
+      ? anchorOrDetails
+      : (typeof anchorOrDetails.querySelector === 'function' ? anchorOrDetails.querySelector('summary') : null);
+    if (!anchor || typeof anchor.getBoundingClientRect !== 'function') return null;
     const containerRect = filesWorkspacePopupContainerRect(ui);
     if (!containerRect) return null;
-    const anchorRect = summary.getBoundingClientRect();
+    const anchorRect = anchor.getBoundingClientRect();
     const api = root.ObsLinkedNotes || {};
-    let rect;
+    let rect = null;
     if (typeof api.clampRepositoryLinkPopoverRect === 'function') {
-      rect = api.clampRepositoryLinkPopoverRect(anchorRect, containerRect, {
-        margin: Number(options.margin) >= 0 ? Number(options.margin) : 8,
-        gap: Number(options.gap) >= 0 ? Number(options.gap) : 6,
-        maxWidth: Number(options.maxWidth) > 0 ? Number(options.maxWidth) : 460,
-        maxHeight: Number(options.maxHeight) > 0 ? Number(options.maxHeight) : 420
-      });
-    } else {
-      const margin = Number(options.margin) >= 0 ? Number(options.margin) : 8;
-      const gap = Number(options.gap) >= 0 ? Number(options.gap) : 6;
-      const maxWidth = Number(options.maxWidth) > 0 ? Number(options.maxWidth) : 460;
-      const maxHeight = Number(options.maxHeight) > 0 ? Number(options.maxHeight) : 420;
-      const width = Math.min(maxWidth, Math.max(160, containerRect.width - margin * 2));
-      const maxHeightValue = Math.min(maxHeight, Math.max(140, containerRect.height - margin * 2));
-      const left = Math.max(containerRect.left + margin, Math.min(anchorRect.left, containerRect.right - margin - width));
-      let top = anchorRect.bottom + gap;
-      if (top + maxHeightValue > containerRect.bottom - margin) top = Math.max(containerRect.top + margin, anchorRect.top - gap - maxHeightValue);
-      rect = { left: Math.round(left), top: Math.round(top), width: Math.round(width), maxHeight: Math.round(maxHeightValue) };
+      try {
+        rect = api.clampRepositoryLinkPopoverRect(anchorRect, containerRect, {
+          margin: Number(options.margin) >= 0 ? Number(options.margin) : 8,
+          gap: Number(options.gap) >= 0 ? Number(options.gap) : 6,
+          maxWidth: Number(options.maxWidth) > 0 ? Number(options.maxWidth) : 460,
+          maxHeight: Number(options.maxHeight) > 0 ? Number(options.maxHeight) : 420
+        });
+      } catch (error) { rect = null; }
     }
+    if (!validFilesWorkspacePopupRect(rect)) rect = fallbackFilesWorkspacePopupRect(anchorRect, containerRect, options);
     panel.style.position = 'fixed';
     panel.style.left = `${rect.left}px`;
     panel.style.top = `${rect.top}px`;
@@ -720,30 +731,75 @@
     return layer;
   }
 
+  function filesWorkspaceTopPopupContextKey(ui) {
+    const state = ui && ui.state || {};
+    return `${String(state.activeWorkspaceId || '')}::${String(state.surface || '')}`;
+  }
+
+  function ensureFilesWorkspaceTopPopupContext(ui) {
+    const context = filesWorkspaceTopPopupContextKey(ui);
+    if (ui.__filesWorkspaceTopPopupContext !== context) {
+      ui.__filesWorkspaceTopPopupContext = context;
+      ui.__filesWorkspaceTopPopup = '';
+    }
+    return context;
+  }
+
+  function syncFilesWorkspaceTopPopupPanels(ui) {
+    if (!ui || !ui.shadow || typeof ui.shadow.querySelectorAll !== 'function') return;
+    ensureFilesWorkspaceTopPopupContext(ui);
+    const openKey = String(ui.__filesWorkspaceTopPopup || '');
+    for (const item of ui.shadow.querySelectorAll('[data-files-workspace-popup-panel]')) {
+      item.hidden = String(item.dataset && item.dataset.filesWorkspacePopupKey || '') !== openKey;
+    }
+  }
+
+  function closeFilesWorkspaceTopPopup(ui) {
+    if (!ui) return;
+    ensureFilesWorkspaceTopPopupContext(ui);
+    ui.__filesWorkspaceTopPopup = '';
+    syncFilesWorkspaceTopPopupPanels(ui);
+  }
+
   function portalFilesWorkspaceDropdownPanel(ui, details, panel, options = {}) {
     if (!ui || !ui.shadow || !details || !panel) return false;
     const layer = ensureFilesWorkspacePopupLayer(ui);
     if (!layer) return false;
+    const anchor = typeof details.querySelector === 'function' ? details.querySelector('summary') : null;
+    if (!anchor || typeof anchor.addEventListener !== 'function') return false;
+    const key = String(options.key || details.dataset && (details.dataset.filesLocationsMenu ? 'locations' : details.dataset.filesNewMenu ? 'new-file' : details.dataset.referenceObjectsMenu ? 'reference-objects' : '') || '').trim();
+    if (!key) return false;
+    ensureFilesWorkspaceTopPopupContext(ui);
+    details.open = false;
     details.dataset.filesWorkspacePopupAnchor = '1';
+    anchor.dataset.filesWorkspacePopupAnchor = '1';
+    anchor.dataset.filesWorkspacePopupKey = key;
     panel.dataset.filesWorkspacePopupPanel = '1';
+    panel.dataset.filesWorkspacePopupKey = key;
     layer.appendChild(panel);
+
     const sync = () => {
-      if (!details.open) {
-        panel.hidden = true;
-        return;
-      }
-      if (typeof ui.shadow.querySelectorAll === 'function') {
-        for (const other of ui.shadow.querySelectorAll('[data-files-workspace-popup-anchor][open]')) {
-          if (other !== details) other.open = false;
-        }
-      }
-      panel.hidden = false;
-      positionFilesWorkspaceDropdownPanel(ui, details, panel, options);
+      ensureFilesWorkspaceTopPopupContext(ui);
+      const open = String(ui.__filesWorkspaceTopPopup || '') === key;
+      panel.hidden = !open;
+      if (!open) return;
+      positionFilesWorkspaceDropdownPanel(ui, anchor, panel, options);
       if (typeof setTimeout === 'function') setTimeout(() => {
-        if (details.open) positionFilesWorkspaceDropdownPanel(ui, details, panel, options);
+        if (String(ui.__filesWorkspaceTopPopup || '') === key) positionFilesWorkspaceDropdownPanel(ui, anchor, panel, options);
       }, 0);
     };
-    if (typeof details.addEventListener === 'function') details.addEventListener('toggle', sync);
+
+    anchor.addEventListener('click', (event) => {
+      if (event && typeof event.preventDefault === 'function') event.preventDefault();
+      ensureFilesWorkspaceTopPopupContext(ui);
+      const opening = String(ui.__filesWorkspaceTopPopup || '') !== key;
+      ui.__filesWorkspaceTopPopup = opening ? key : '';
+      syncFilesWorkspaceTopPopupPanels(ui);
+      sync();
+      if (opening && typeof options.onOpen === 'function') {
+        try { Promise.resolve(options.onOpen()).catch(() => {}); } catch (error) { /* opening the popup itself must remain usable */ }
+      }
+    });
     sync();
     return true;
   }
@@ -801,8 +857,8 @@
     details.innerHTML = `<summary>Locations ▾</summary><div class="files-workspace-menu-panel"><button data-files-location="root">Root</button><button data-files-location="notes">Notes folder</button><button data-files-location="linked-notes">Linked Notes editor</button>${shortcutRows || '<div class="hint">No custom folder shortcuts.</div>'}<div class="files-workspace-form"><input data-files-shortcut-name placeholder="Shortcut name"><button data-add-files-shortcut ${ui.state.repositoryPath ? '' : 'disabled'}>Add current folder</button></div></div>`;
     const panel = details.querySelector('.files-workspace-menu-panel');
     const scope = panel || details;
-    scope.querySelectorAll('[data-files-location]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onNavigateFilesLocation', button.dataset.filesLocation).catch(() => {})));
-    scope.querySelectorAll('[data-files-shortcut]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onNavigateFilesLocation', 'shortcut', button.dataset.filesShortcut).catch(() => {})));
+    scope.querySelectorAll('[data-files-location]').forEach((button) => button.addEventListener('click', () => { closeFilesWorkspaceTopPopup(ui); ui._withAllDrafts('onNavigateFilesLocation', button.dataset.filesLocation).catch(() => {}); }));
+    scope.querySelectorAll('[data-files-shortcut]').forEach((button) => button.addEventListener('click', () => { closeFilesWorkspaceTopPopup(ui); ui._withAllDrafts('onNavigateFilesLocation', 'shortcut', button.dataset.filesShortcut).catch(() => {}); }));
     scope.querySelectorAll('[data-remove-files-shortcut]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryFolderShortcut', button.dataset.removeFilesShortcut).catch(() => {})));
     const add = scope.querySelector('[data-add-files-shortcut]');
     if (add) add.addEventListener('click', () => {
@@ -810,7 +866,7 @@
       ui._call('onAddRepositoryFolderShortcut', input ? input.value : '').catch(() => {});
     });
     tabs.appendChild(details);
-    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 460, maxHeight: 420 });
+    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, { key: 'locations', maxWidth: 460, maxHeight: 420 });
   }
 
   function escapeHtml(value) {
@@ -885,7 +941,7 @@
     details.innerHTML = `<summary>New file ▾</summary><div class="files-workspace-menu-panel"><button data-document-preset="blank">Blank file</button>${presets || '<div class="hint">No document presets.</div>'}<div class="files-workspace-form"><strong>Add document preset</strong><input data-document-preset-name placeholder="Type name"><input data-document-preset-category placeholder="Category ID"><input data-document-preset-template placeholder="Template repository path" value="${escapeHtml(ui.state.repositoryPreview && ui.state.repositoryPreview.path || '')}"><button data-save-document-preset>Save preset</button></div></div>`;
     const panel = details.querySelector('.files-workspace-menu-panel');
     const scope = panel || details;
-    scope.querySelectorAll('[data-document-preset]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onBeginRepositoryFileCreateFromPreset', button.dataset.documentPreset).catch(() => {})));
+    scope.querySelectorAll('[data-document-preset]').forEach((button) => button.addEventListener('click', () => { closeFilesWorkspaceTopPopup(ui); ui._withAllDrafts('onBeginRepositoryFileCreateFromPreset', button.dataset.documentPreset).catch(() => {}); }));
     scope.querySelectorAll('[data-remove-document-preset]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryDocumentPreset', button.dataset.removeDocumentPreset).catch(() => {})));
     const save = scope.querySelector('[data-save-document-preset]');
     if (save) save.addEventListener('click', () => {
@@ -893,7 +949,7 @@
       ui._call('onSaveRepositoryDocumentPreset', { name: value('[data-document-preset-name]'), categoryId: value('[data-document-preset-category]'), templatePath: value('[data-document-preset-template]') }).catch(() => {});
     });
     oldButton.replaceWith(details);
-    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 460, maxHeight: 420 });
+    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, { key: 'new-file', maxWidth: 460, maxHeight: 420 });
   }
 
   function filesWorkspaceModalContextKey(ui) {
@@ -1074,6 +1130,9 @@
         const previous = this._onDocumentKeydown;
         document.removeEventListener('keydown', previous, true);
         this._onDocumentKeydown = (event) => {
+          if (event && event.key === 'Escape' && this.__filesWorkspaceTopPopup) {
+            event.preventDefault(); event.stopPropagation(); closeFilesWorkspaceTopPopup(this); return;
+          }
           const openLink = this.shadow && this.shadow.querySelector('[data-files-copy-link][open]');
           if (event && event.key === 'Escape' && openLink) {
             event.preventDefault(); event.stopPropagation(); openLink.open = false; return;
@@ -1085,8 +1144,11 @@
       }
       if (this.shadow && !this.__filesWorkspaceOutsideClickPatched) {
         this.shadow.addEventListener('click', (event) => {
+          const target = event && event.target;
+          const popupTarget = target && typeof target.closest === 'function' && (target.closest('[data-files-workspace-popup-anchor]') || target.closest('[data-files-workspace-popup-panel]'));
+          if (this.__filesWorkspaceTopPopup && !popupTarget) closeFilesWorkspaceTopPopup(this);
           const openLink = this.shadow && this.shadow.querySelector('[data-files-copy-link][open]');
-          if (openLink && !openLink.contains(event.target)) openLink.open = false;
+          if (openLink && !openLink.contains(target)) openLink.open = false;
         });
         this.__filesWorkspaceOutsideClickPatched = true;
       }
@@ -1118,5 +1180,5 @@
     return appPatched || uiPatched;
   }
 
-  return { installRepositoryFilesWorkspace, positionFilesWorkspaceDropdownPanel, portalFilesWorkspaceDropdownPanel };
+  return { installRepositoryFilesWorkspace, positionFilesWorkspaceDropdownPanel, portalFilesWorkspaceDropdownPanel, closeFilesWorkspaceTopPopup };
 });

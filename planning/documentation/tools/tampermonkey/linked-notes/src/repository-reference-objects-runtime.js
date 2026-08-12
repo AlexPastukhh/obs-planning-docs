@@ -720,7 +720,15 @@
   function attachReferenceObjectsMenuPanel(ui, details, panel) {
     const api = root.ObsLinkedNotes || {};
     if (!panel || typeof api.portalFilesWorkspaceDropdownPanel !== 'function') return false;
-    return api.portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 680, maxHeight: 620 });
+    return api.portalFilesWorkspaceDropdownPanel(ui, details, panel, {
+      key: 'reference-objects',
+      maxWidth: 680,
+      maxHeight: 620,
+      onOpen: () => {
+        if (!ui.state || ui.state.referenceObjectsLoaded) return undefined;
+        return ui._call('onLoadReferenceObjects', false);
+      }
+    });
   }
 
   function renderReferenceObjectMenu(ui, details) {
@@ -743,7 +751,7 @@
       scope.querySelectorAll('[data-reference-object-row]').forEach((row) => { row.hidden = Boolean(query && !String(row.dataset.referenceSearch || '').includes(query)); });
     };
     if (search) { search.addEventListener('input', applyFilter); applyFilter(); }
-    scope.querySelector('[data-reference-create]')?.addEventListener('click', () => { details.open = false; openCreateModal(ui); });
+    scope.querySelector('[data-reference-create]')?.addEventListener('click', () => { const api = root.ObsLinkedNotes || {}; if (typeof api.closeFilesWorkspaceTopPopup === 'function') api.closeFilesWorkspaceTopPopup(ui); openCreateModal(ui); });
     scope.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
     scope.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
     scope.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
@@ -774,12 +782,8 @@
     const details = document.createElement('details');
     details.className = 'reference-objects-menu';
     details.dataset.referenceObjectsMenu = '1';
-    details.open = Boolean(ui.__referenceObjectsMenuOpen);
+    details.open = false;
     const panel = renderReferenceObjectMenu(ui, details);
-    details.addEventListener('toggle', () => {
-      ui.__referenceObjectsMenuOpen = details.open;
-      if (details.open && !ui.state.referenceObjectsLoaded) ui._call('onLoadReferenceObjects', false).catch(() => {});
-    });
     host.appendChild(details);
     attachReferenceObjectsMenuPanel(ui, details, panel);
   }

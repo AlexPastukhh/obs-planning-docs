@@ -299,7 +299,7 @@ test('Open definition records the actual definition line for exact focus', async
   assert.equal(app.referenceObjectFocus.lineOccurrence, 1);
 });
 
-test('Reference Objects menu delegates its panel to the shared unclipped Files popup layer', () => {
+test('Reference Objects menu uses explicit shared popup state and loads only on explicit open', async () => {
   const namespace = globalThis.ObsLinkedNotes || (globalThis.ObsLinkedNotes = {});
   const previous = namespace.portalFilesWorkspaceDropdownPanel;
   let captured = null;
@@ -308,11 +308,25 @@ test('Reference Objects menu delegates its panel to the shared unclipped Files p
     return true;
   };
   try {
-    const ui = {};
+    const calls = [];
+    const ui = {
+      state: { referenceObjectsLoaded: false },
+      _call(name, ...args) { calls.push([name, ...args]); return Promise.resolve(); }
+    };
     const details = {};
     const panel = {};
     assert.equal(runtime.attachReferenceObjectsMenuPanel(ui, details, panel), true);
-    assert.deepEqual(captured, { ui, details, panel, options: { maxWidth: 680, maxHeight: 620 } });
+    assert.equal(captured.ui, ui);
+    assert.equal(captured.details, details);
+    assert.equal(captured.panel, panel);
+    assert.equal(captured.options.key, 'reference-objects');
+    assert.equal(captured.options.maxWidth, 680);
+    assert.equal(captured.options.maxHeight, 620);
+    await captured.options.onOpen();
+    assert.deepEqual(calls, [['onLoadReferenceObjects', false]]);
+    ui.state.referenceObjectsLoaded = true;
+    await captured.options.onOpen();
+    assert.equal(calls.length, 1, 'reconstructed/open loaded menus must not start another load automatically');
   } finally {
     if (previous === undefined) delete namespace.portalFilesWorkspaceDropdownPanel;
     else namespace.portalFilesWorkspaceDropdownPanel = previous;
