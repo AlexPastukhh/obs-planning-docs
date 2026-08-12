@@ -11558,6 +11558,9 @@
       .files-workspace-menu { position: relative; display: inline-flex; }
       .files-workspace-menu > summary { cursor:pointer; display:inline-flex; align-items:center; min-height:34px; padding:6px 10px; border:1px solid var(--border); border-radius:7px; background:var(--surface); list-style:none; }
       .files-workspace-menu > summary::-webkit-details-marker { display:none; }
+      .files-workspace-popup-layer { position:fixed; inset:0; z-index:2147483646; pointer-events:none; overflow:visible; }
+      .files-workspace-popup-layer > .files-workspace-menu-panel,
+      .files-workspace-popup-layer > .reference-objects-panel { position:fixed !important; pointer-events:auto; margin:0; }
       .files-workspace-menu-panel { position:absolute; z-index:48; top:calc(100% + 6px); left:0; min-width:260px; max-width:min(460px,80vw); max-height:420px; overflow:auto; display:grid; gap:6px; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--surface-2); box-shadow:0 12px 30px rgba(0,0,0,.45); }
       .files-workspace-menu-panel button { text-align:left; }
       .files-workspace-form { display:grid; gap:6px; padding-top:6px; border-top:1px solid var(--border); }
@@ -11566,7 +11569,7 @@
       .files-link-list { display:grid; gap:3px; }
       .files-link-heading { width:100%; text-align:left; display:flex; gap:8px; align-items:center; white-space:normal; }
       .files-link-heading small { color:var(--muted); flex:0 0 auto; }
-      .files-workspace-modal-backdrop { position:absolute; inset:0; z-index:2147483645; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
+      .files-workspace-modal-backdrop { position:absolute; inset:0; z-index:2147483647; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
       .files-workspace-modal { width:min(760px,calc(100% - 16px)); max-height:calc(100% - 16px); overflow:auto; display:grid; gap:10px; padding:14px; border:1px solid var(--border); border-radius:10px; background:var(--surface-2); box-shadow:0 16px 46px rgba(0,0,0,.6); }
       .files-workspace-modal textarea { min-height:220px; resize:vertical; }
       .files-workspace-modal-actions { display:flex; gap:8px; flex-wrap:wrap; }
@@ -11576,6 +11579,94 @@
       .files-workspace-directory-list { display:grid; gap:5px; max-height:260px; overflow:auto; }
     `;
     ui.shadow.appendChild(style);
+  }
+
+  function filesWorkspacePopupContainerRect(ui) {
+    if (!ui || !ui.shadow) return null;
+    const container = ui.shadow.querySelector && (ui.shadow.querySelector('.main') || ui.shadow.querySelector('.panel'));
+    if (container && typeof container.getBoundingClientRect === 'function') return container.getBoundingClientRect();
+    const host = ui.shadow.host;
+    if (host && typeof host.getBoundingClientRect === 'function') return host.getBoundingClientRect();
+    if (typeof window !== 'undefined' && Number(window.innerWidth) > 0 && Number(window.innerHeight) > 0) {
+      return { left: 0, top: 0, right: Number(window.innerWidth), bottom: Number(window.innerHeight), width: Number(window.innerWidth), height: Number(window.innerHeight) };
+    }
+    return null;
+  }
+
+  function positionFilesWorkspaceDropdownPanel(ui, details, panel, options = {}) {
+    if (!ui || !ui.shadow || !details || !panel) return null;
+    const summary = typeof details.querySelector === 'function' ? details.querySelector('summary') : null;
+    if (!summary || typeof summary.getBoundingClientRect !== 'function') return null;
+    const containerRect = filesWorkspacePopupContainerRect(ui);
+    if (!containerRect) return null;
+    const anchorRect = summary.getBoundingClientRect();
+    const api = root.ObsLinkedNotes || {};
+    let rect;
+    if (typeof api.clampRepositoryLinkPopoverRect === 'function') {
+      rect = api.clampRepositoryLinkPopoverRect(anchorRect, containerRect, {
+        margin: Number(options.margin) >= 0 ? Number(options.margin) : 8,
+        gap: Number(options.gap) >= 0 ? Number(options.gap) : 6,
+        maxWidth: Number(options.maxWidth) > 0 ? Number(options.maxWidth) : 460,
+        maxHeight: Number(options.maxHeight) > 0 ? Number(options.maxHeight) : 420
+      });
+    } else {
+      const margin = Number(options.margin) >= 0 ? Number(options.margin) : 8;
+      const gap = Number(options.gap) >= 0 ? Number(options.gap) : 6;
+      const maxWidth = Number(options.maxWidth) > 0 ? Number(options.maxWidth) : 460;
+      const maxHeight = Number(options.maxHeight) > 0 ? Number(options.maxHeight) : 420;
+      const width = Math.min(maxWidth, Math.max(160, containerRect.width - margin * 2));
+      const maxHeightValue = Math.min(maxHeight, Math.max(140, containerRect.height - margin * 2));
+      const left = Math.max(containerRect.left + margin, Math.min(anchorRect.left, containerRect.right - margin - width));
+      let top = anchorRect.bottom + gap;
+      if (top + maxHeightValue > containerRect.bottom - margin) top = Math.max(containerRect.top + margin, anchorRect.top - gap - maxHeightValue);
+      rect = { left: Math.round(left), top: Math.round(top), width: Math.round(width), maxHeight: Math.round(maxHeightValue) };
+    }
+    panel.style.position = 'fixed';
+    panel.style.left = `${rect.left}px`;
+    panel.style.top = `${rect.top}px`;
+    panel.style.width = `${rect.width}px`;
+    panel.style.maxHeight = `${rect.maxHeight}px`;
+    panel.style.right = 'auto';
+    return rect;
+  }
+
+  function ensureFilesWorkspacePopupLayer(ui) {
+    if (!ui || !ui.shadow || typeof document === 'undefined') return null;
+    let layer = typeof ui.shadow.querySelector === 'function' ? ui.shadow.querySelector('[data-files-workspace-popup-layer]') : null;
+    if (layer) return layer;
+    layer = document.createElement('div');
+    layer.className = 'files-workspace-popup-layer';
+    layer.dataset.filesWorkspacePopupLayer = '1';
+    ui.shadow.appendChild(layer);
+    return layer;
+  }
+
+  function portalFilesWorkspaceDropdownPanel(ui, details, panel, options = {}) {
+    if (!ui || !ui.shadow || !details || !panel) return false;
+    const layer = ensureFilesWorkspacePopupLayer(ui);
+    if (!layer) return false;
+    details.dataset.filesWorkspacePopupAnchor = '1';
+    panel.dataset.filesWorkspacePopupPanel = '1';
+    layer.appendChild(panel);
+    const sync = () => {
+      if (!details.open) {
+        panel.hidden = true;
+        return;
+      }
+      if (typeof ui.shadow.querySelectorAll === 'function') {
+        for (const other of ui.shadow.querySelectorAll('[data-files-workspace-popup-anchor][open]')) {
+          if (other !== details) other.open = false;
+        }
+      }
+      panel.hidden = false;
+      positionFilesWorkspaceDropdownPanel(ui, details, panel, options);
+      if (typeof setTimeout === 'function') setTimeout(() => {
+        if (details.open) positionFilesWorkspaceDropdownPanel(ui, details, panel, options);
+      }, 0);
+    };
+    if (typeof details.addEventListener === 'function') details.addEventListener('toggle', sync);
+    sync();
+    return true;
   }
 
   function replaceSurfaceButton(ui, surface, label, kind) {
@@ -11629,15 +11720,18 @@
     details.dataset.filesLocationsMenu = '1';
     const shortcutRows = (preferences.folderShortcuts || []).map((shortcut) => `<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px"><button data-files-shortcut="${escapeHtml(shortcut.id)}">${escapeHtml(shortcut.name)}<br><small>${escapeHtml(shortcut.path)}</small></button><button data-remove-files-shortcut="${escapeHtml(shortcut.id)}" title="Remove shortcut">×</button></div>`).join('');
     details.innerHTML = `<summary>Locations ▾</summary><div class="files-workspace-menu-panel"><button data-files-location="root">Root</button><button data-files-location="notes">Notes folder</button><button data-files-location="linked-notes">Linked Notes editor</button>${shortcutRows || '<div class="hint">No custom folder shortcuts.</div>'}<div class="files-workspace-form"><input data-files-shortcut-name placeholder="Shortcut name"><button data-add-files-shortcut ${ui.state.repositoryPath ? '' : 'disabled'}>Add current folder</button></div></div>`;
-    details.querySelectorAll('[data-files-location]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onNavigateFilesLocation', button.dataset.filesLocation).catch(() => {})));
-    details.querySelectorAll('[data-files-shortcut]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onNavigateFilesLocation', 'shortcut', button.dataset.filesShortcut).catch(() => {})));
-    details.querySelectorAll('[data-remove-files-shortcut]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryFolderShortcut', button.dataset.removeFilesShortcut).catch(() => {})));
-    const add = details.querySelector('[data-add-files-shortcut]');
+    const panel = details.querySelector('.files-workspace-menu-panel');
+    const scope = panel || details;
+    scope.querySelectorAll('[data-files-location]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onNavigateFilesLocation', button.dataset.filesLocation).catch(() => {})));
+    scope.querySelectorAll('[data-files-shortcut]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onNavigateFilesLocation', 'shortcut', button.dataset.filesShortcut).catch(() => {})));
+    scope.querySelectorAll('[data-remove-files-shortcut]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryFolderShortcut', button.dataset.removeFilesShortcut).catch(() => {})));
+    const add = scope.querySelector('[data-add-files-shortcut]');
     if (add) add.addEventListener('click', () => {
-      const input = details.querySelector('[data-files-shortcut-name]');
+      const input = scope.querySelector('[data-files-shortcut-name]');
       ui._call('onAddRepositoryFolderShortcut', input ? input.value : '').catch(() => {});
     });
     tabs.appendChild(details);
+    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 460, maxHeight: 420 });
   }
 
   function escapeHtml(value) {
@@ -11710,14 +11804,17 @@
     details.dataset.filesNewMenu = '1';
     const presets = (preferences.documentPresets || []).map((preset) => `<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px"><button data-document-preset="${escapeHtml(preset.id)}">${escapeHtml(preset.name)}<br><small>${escapeHtml(preset.categoryId)} · ${escapeHtml(preset.templatePath)}</small></button><button data-remove-document-preset="${escapeHtml(preset.id)}" title="Remove preset">×</button></div>`).join('');
     details.innerHTML = `<summary>New file ▾</summary><div class="files-workspace-menu-panel"><button data-document-preset="blank">Blank file</button>${presets || '<div class="hint">No document presets.</div>'}<div class="files-workspace-form"><strong>Add document preset</strong><input data-document-preset-name placeholder="Type name"><input data-document-preset-category placeholder="Category ID"><input data-document-preset-template placeholder="Template repository path" value="${escapeHtml(ui.state.repositoryPreview && ui.state.repositoryPreview.path || '')}"><button data-save-document-preset>Save preset</button></div></div>`;
-    details.querySelectorAll('[data-document-preset]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onBeginRepositoryFileCreateFromPreset', button.dataset.documentPreset).catch(() => {})));
-    details.querySelectorAll('[data-remove-document-preset]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryDocumentPreset', button.dataset.removeDocumentPreset).catch(() => {})));
-    const save = details.querySelector('[data-save-document-preset]');
+    const panel = details.querySelector('.files-workspace-menu-panel');
+    const scope = panel || details;
+    scope.querySelectorAll('[data-document-preset]').forEach((button) => button.addEventListener('click', () => ui._withAllDrafts('onBeginRepositoryFileCreateFromPreset', button.dataset.documentPreset).catch(() => {})));
+    scope.querySelectorAll('[data-remove-document-preset]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryDocumentPreset', button.dataset.removeDocumentPreset).catch(() => {})));
+    const save = scope.querySelector('[data-save-document-preset]');
     if (save) save.addEventListener('click', () => {
-      const value = (selector) => { const input = details.querySelector(selector); return input ? input.value : ''; };
+      const value = (selector) => { const input = scope.querySelector(selector); return input ? input.value : ''; };
       ui._call('onSaveRepositoryDocumentPreset', { name: value('[data-document-preset-name]'), categoryId: value('[data-document-preset-category]'), templatePath: value('[data-document-preset-template]') }).catch(() => {});
     });
     oldButton.replaceWith(details);
+    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 460, maxHeight: 420 });
   }
 
   function filesWorkspaceModalContextKey(ui) {
@@ -11942,7 +12039,7 @@
     return appPatched || uiPatched;
   }
 
-  return { installRepositoryFilesWorkspace };
+  return { installRepositoryFilesWorkspace, positionFilesWorkspaceDropdownPanel, portalFilesWorkspaceDropdownPanel };
 });
 
 /* src/repository-reference-objects-runtime.js */
@@ -12588,7 +12685,7 @@
       .reference-object-use.current { border-color:rgba(90,190,120,.5); }
       .reference-object-diagnostics { display:grid; gap:4px; max-height:180px; overflow:auto; }
       .reference-object-diagnostic { padding:5px 6px; border:1px solid var(--border); border-radius:6px; }
-      .reference-object-modal-backdrop { position:absolute; inset:0; z-index:2147483646; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
+      .reference-object-modal-backdrop { position:absolute; inset:0; z-index:2147483647; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
       .reference-object-modal { width:min(780px,calc(100% - 16px)); max-height:calc(100% - 16px); overflow:auto; display:grid; gap:10px; padding:14px; border:1px solid var(--border); border-radius:10px; background:var(--surface-2); }
       .reference-object-modal textarea { min-height:150px; resize:vertical; }
       .reference-object-candidates { display:grid; gap:6px; max-height:320px; overflow:auto; }
@@ -12665,6 +12762,12 @@
     return `<details><summary>${summary}</summary><div class="reference-object-diagnostics">${rows || '<div class="hint">No issues.</div>'}</div></details>`;
   }
 
+  function attachReferenceObjectsMenuPanel(ui, details, panel) {
+    const api = root.ObsLinkedNotes || {};
+    if (!panel || typeof api.portalFilesWorkspaceDropdownPanel !== 'function') return false;
+    return api.portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 680, maxHeight: 620 });
+  }
+
   function renderReferenceObjectMenu(ui, details) {
     const state = ui.state || {};
     const objects = Array.isArray(state.referenceObjects) ? state.referenceObjects : [];
@@ -12676,27 +12779,29 @@
       return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button><button data-reference-update-github="${escapeHtml(object.id)}">Update GitHub</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
     }).join('') || '<div class="hint">No Reference Objects loaded.</div>';
     details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button class="primary" data-reference-publish ${pending.length ? '' : 'disabled'}>Apply local changes to GitHub</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Copy reference writes only to clipboard; manual paste remains explicit.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
-    const search = details.querySelector('[data-reference-search]');
+    const panel = details.querySelector('.reference-objects-panel');
+    const scope = panel || details;
+    const search = scope.querySelector('[data-reference-search]');
     const applyFilter = () => {
       const query = String(search && search.value || '').trim().toLowerCase();
       ui.__referenceObjectQuery = query;
-      details.querySelectorAll('[data-reference-object-row]').forEach((row) => { row.hidden = Boolean(query && !String(row.dataset.referenceSearch || '').includes(query)); });
+      scope.querySelectorAll('[data-reference-object-row]').forEach((row) => { row.hidden = Boolean(query && !String(row.dataset.referenceSearch || '').includes(query)); });
     };
     if (search) { search.addEventListener('input', applyFilter); applyFilter(); }
-    details.querySelector('[data-reference-create]')?.addEventListener('click', () => openCreateModal(ui));
-    details.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
-    details.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
-    details.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
-    details.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
-    details.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
-    details.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
-    details.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
-    details.querySelectorAll('[data-reference-update-github]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesGitHub', button.dataset.referenceUpdateGithub).catch(() => {})));
-    details.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
-      const input = Array.from(details.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
+    scope.querySelector('[data-reference-create]')?.addEventListener('click', () => { details.open = false; openCreateModal(ui); });
+    scope.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
+    scope.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
+    scope.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
+    scope.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
+    scope.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
+    scope.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
+    scope.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
+    scope.querySelectorAll('[data-reference-update-github]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesGitHub', button.dataset.referenceUpdateGithub).catch(() => {})));
+    scope.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
+      const input = Array.from(scope.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
       ui._call('onRenameReferenceObjectLocal', button.dataset.referenceRename, input && input.value).catch(() => {});
     }));
-    details.querySelectorAll('[data-reference-use-index]').forEach((button) => button.addEventListener('click', () => {
+    scope.querySelectorAll('[data-reference-use-index]').forEach((button) => button.addEventListener('click', () => {
       const object = objects.find((item) => item.id === button.dataset.referenceUseObject);
       if (!object) return;
       const check = checks[object.id];
@@ -12704,6 +12809,7 @@
       const use = uses[Number(button.dataset.referenceUseIndex)];
       if (use) ui._call('onOpenReferenceObjectUse', object.id, use).catch(() => {});
     }));
+    return panel;
   }
 
   function enhanceReferenceObjectsMenu(ui) {
@@ -12714,12 +12820,13 @@
     details.className = 'reference-objects-menu';
     details.dataset.referenceObjectsMenu = '1';
     details.open = Boolean(ui.__referenceObjectsMenuOpen);
-    renderReferenceObjectMenu(ui, details);
+    const panel = renderReferenceObjectMenu(ui, details);
     details.addEventListener('toggle', () => {
       ui.__referenceObjectsMenuOpen = details.open;
       if (details.open && !ui.state.referenceObjectsLoaded) ui._call('onLoadReferenceObjects', false).catch(() => {});
     });
     host.appendChild(details);
+    attachReferenceObjectsMenuPanel(ui, details, panel);
   }
 
   function enhanceLocalDraftSave(ui) {
@@ -12782,7 +12889,7 @@
     return appPatched || uiPatched;
   }
 
-  return { installRepositoryReferenceObjects, locateReferenceFocusOccurrence };
+  return { installRepositoryReferenceObjects, locateReferenceFocusOccurrence, attachReferenceObjectsMenuPanel };
 });
 
 /* bootstrap */

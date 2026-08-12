@@ -298,3 +298,23 @@ test('Open definition records the actual definition line for exact focus', async
   assert.equal(app.referenceObjectFocus.line, 3);
   assert.equal(app.referenceObjectFocus.lineOccurrence, 1);
 });
+
+test('Reference Objects menu delegates its panel to the shared unclipped Files popup layer', () => {
+  const namespace = globalThis.ObsLinkedNotes || (globalThis.ObsLinkedNotes = {});
+  const previous = namespace.portalFilesWorkspaceDropdownPanel;
+  let captured = null;
+  namespace.portalFilesWorkspaceDropdownPanel = (ui, details, panel, options) => {
+    captured = { ui, details, panel, options };
+    return true;
+  };
+  try {
+    const ui = {};
+    const details = {};
+    const panel = {};
+    assert.equal(runtime.attachReferenceObjectsMenuPanel(ui, details, panel), true);
+    assert.deepEqual(captured, { ui, details, panel, options: { maxWidth: 680, maxHeight: 620 } });
+  } finally {
+    if (previous === undefined) delete namespace.portalFilesWorkspaceDropdownPanel;
+    else namespace.portalFilesWorkspaceDropdownPanel = previous;
+  }
+});

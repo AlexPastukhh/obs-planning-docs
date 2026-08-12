@@ -640,7 +640,7 @@
       .reference-object-use.current { border-color:rgba(90,190,120,.5); }
       .reference-object-diagnostics { display:grid; gap:4px; max-height:180px; overflow:auto; }
       .reference-object-diagnostic { padding:5px 6px; border:1px solid var(--border); border-radius:6px; }
-      .reference-object-modal-backdrop { position:absolute; inset:0; z-index:2147483646; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
+      .reference-object-modal-backdrop { position:absolute; inset:0; z-index:2147483647; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
       .reference-object-modal { width:min(780px,calc(100% - 16px)); max-height:calc(100% - 16px); overflow:auto; display:grid; gap:10px; padding:14px; border:1px solid var(--border); border-radius:10px; background:var(--surface-2); }
       .reference-object-modal textarea { min-height:150px; resize:vertical; }
       .reference-object-candidates { display:grid; gap:6px; max-height:320px; overflow:auto; }
@@ -717,6 +717,12 @@
     return `<details><summary>${summary}</summary><div class="reference-object-diagnostics">${rows || '<div class="hint">No issues.</div>'}</div></details>`;
   }
 
+  function attachReferenceObjectsMenuPanel(ui, details, panel) {
+    const api = root.ObsLinkedNotes || {};
+    if (!panel || typeof api.portalFilesWorkspaceDropdownPanel !== 'function') return false;
+    return api.portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 680, maxHeight: 620 });
+  }
+
   function renderReferenceObjectMenu(ui, details) {
     const state = ui.state || {};
     const objects = Array.isArray(state.referenceObjects) ? state.referenceObjects : [];
@@ -728,27 +734,29 @@
       return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button><button data-reference-update-github="${escapeHtml(object.id)}">Update GitHub</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
     }).join('') || '<div class="hint">No Reference Objects loaded.</div>';
     details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button class="primary" data-reference-publish ${pending.length ? '' : 'disabled'}>Apply local changes to GitHub</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Copy reference writes only to clipboard; manual paste remains explicit.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
-    const search = details.querySelector('[data-reference-search]');
+    const panel = details.querySelector('.reference-objects-panel');
+    const scope = panel || details;
+    const search = scope.querySelector('[data-reference-search]');
     const applyFilter = () => {
       const query = String(search && search.value || '').trim().toLowerCase();
       ui.__referenceObjectQuery = query;
-      details.querySelectorAll('[data-reference-object-row]').forEach((row) => { row.hidden = Boolean(query && !String(row.dataset.referenceSearch || '').includes(query)); });
+      scope.querySelectorAll('[data-reference-object-row]').forEach((row) => { row.hidden = Boolean(query && !String(row.dataset.referenceSearch || '').includes(query)); });
     };
     if (search) { search.addEventListener('input', applyFilter); applyFilter(); }
-    details.querySelector('[data-reference-create]')?.addEventListener('click', () => openCreateModal(ui));
-    details.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
-    details.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
-    details.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
-    details.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
-    details.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
-    details.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
-    details.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
-    details.querySelectorAll('[data-reference-update-github]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesGitHub', button.dataset.referenceUpdateGithub).catch(() => {})));
-    details.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
-      const input = Array.from(details.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
+    scope.querySelector('[data-reference-create]')?.addEventListener('click', () => { details.open = false; openCreateModal(ui); });
+    scope.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
+    scope.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
+    scope.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
+    scope.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
+    scope.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
+    scope.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
+    scope.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
+    scope.querySelectorAll('[data-reference-update-github]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesGitHub', button.dataset.referenceUpdateGithub).catch(() => {})));
+    scope.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
+      const input = Array.from(scope.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
       ui._call('onRenameReferenceObjectLocal', button.dataset.referenceRename, input && input.value).catch(() => {});
     }));
-    details.querySelectorAll('[data-reference-use-index]').forEach((button) => button.addEventListener('click', () => {
+    scope.querySelectorAll('[data-reference-use-index]').forEach((button) => button.addEventListener('click', () => {
       const object = objects.find((item) => item.id === button.dataset.referenceUseObject);
       if (!object) return;
       const check = checks[object.id];
@@ -756,6 +764,7 @@
       const use = uses[Number(button.dataset.referenceUseIndex)];
       if (use) ui._call('onOpenReferenceObjectUse', object.id, use).catch(() => {});
     }));
+    return panel;
   }
 
   function enhanceReferenceObjectsMenu(ui) {
@@ -766,12 +775,13 @@
     details.className = 'reference-objects-menu';
     details.dataset.referenceObjectsMenu = '1';
     details.open = Boolean(ui.__referenceObjectsMenuOpen);
-    renderReferenceObjectMenu(ui, details);
+    const panel = renderReferenceObjectMenu(ui, details);
     details.addEventListener('toggle', () => {
       ui.__referenceObjectsMenuOpen = details.open;
       if (details.open && !ui.state.referenceObjectsLoaded) ui._call('onLoadReferenceObjects', false).catch(() => {});
     });
     host.appendChild(details);
+    attachReferenceObjectsMenuPanel(ui, details, panel);
   }
 
   function enhanceLocalDraftSave(ui) {
@@ -834,5 +844,5 @@
     return appPatched || uiPatched;
   }
 
-  return { installRepositoryReferenceObjects, locateReferenceFocusOccurrence };
+  return { installRepositoryReferenceObjects, locateReferenceFocusOccurrence, attachReferenceObjectsMenuPanel };
 });

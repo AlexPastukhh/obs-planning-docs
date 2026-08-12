@@ -489,3 +489,72 @@ test('open Files modal survives destructive base rerenders and is dropped after 
     else globalThis.document = previousDocument;
   }
 });
+
+test('shared workspace dropdown portal moves panels to the shadow-root layer and clamps them inside the main surface', () => {
+  const previousDocument = globalThis.document;
+  class FakeElement {
+    constructor(tag = 'div') {
+      this.tag = tag;
+      this.dataset = {};
+      this.style = {};
+      this.children = [];
+      this.parent = null;
+      this.hidden = false;
+      this.open = false;
+      this.listeners = new Map();
+    }
+    addEventListener(name, fn) { this.listeners.set(name, fn); }
+    appendChild(child) {
+      if (child.parent && Array.isArray(child.parent.children)) child.parent.children = child.parent.children.filter((item) => item !== child);
+      child.parent = this;
+      this.children.push(child);
+      return child;
+    }
+    querySelector() { return null; }
+    querySelectorAll() { return []; }
+  }
+
+  const summary = new FakeElement('summary');
+  summary.getBoundingClientRect = () => ({ left: 900, right: 1020, top: 80, bottom: 114, width: 120, height: 34 });
+  const details = new FakeElement('details');
+  details.open = true;
+  details.querySelector = (selector) => selector === 'summary' ? summary : null;
+  const panel = new FakeElement('panel');
+  const main = new FakeElement('main');
+  main.getBoundingClientRect = () => ({ left: 300, right: 1100, top: 0, bottom: 700, width: 800, height: 700 });
+  let layer = null;
+  const shadow = {
+    host: null,
+    querySelector(selector) {
+      if (selector === '[data-files-workspace-popup-layer]') return layer;
+      if (selector === '.main') return main;
+      if (selector === '.panel') return null;
+      return null;
+    },
+    querySelectorAll(selector) {
+      return selector === '[data-files-workspace-popup-anchor][open]' ? [details] : [];
+    },
+    appendChild(node) {
+      if (node.dataset && node.dataset.filesWorkspacePopupLayer) layer = node;
+      return node;
+    }
+  };
+
+  try {
+    globalThis.document = { createElement(tag) { return new FakeElement(tag); } };
+    const ui = { shadow };
+    assert.equal(runtime.portalFilesWorkspaceDropdownPanel(ui, details, panel, { maxWidth: 680, maxHeight: 420 }), true);
+    assert.ok(layer, 'portal layer must be attached directly to the Shadow root');
+    assert.equal(panel.parent, layer, 'dropdown panel must leave the clipping menu container');
+    assert.equal(panel.hidden, false);
+    assert.equal(panel.style.position, 'fixed');
+    const left = Number.parseFloat(panel.style.left);
+    const width = Number.parseFloat(panel.style.width);
+    assert.ok(left >= 308);
+    assert.ok(left + width <= 1092);
+    assert.equal(details.dataset.filesWorkspacePopupAnchor, '1');
+  } finally {
+    if (previousDocument === undefined) delete globalThis.document;
+    else globalThis.document = previousDocument;
+  }
+});
