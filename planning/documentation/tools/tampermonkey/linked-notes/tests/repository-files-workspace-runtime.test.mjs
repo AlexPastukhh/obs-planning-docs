@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const core = require('../src/repository-files-workspace-core.js');
+const fileTemplates = require('../src/repository-file-templates.js');
 const runtime = require('../src/repository-files-workspace-runtime.js');
 
 function missing(message = 'missing') {
@@ -74,6 +75,7 @@ function makeAppClass(client, storage = new Map()) {
     constructor() {
       this.api = {
         ...core,
+        ...fileTemplates,
         DEFAULT_TEXT_FILE_MAX_BYTES: 512 * 1024,
         DEFAULT_PREVIEW_MAX_BYTES: 512 * 1024,
         DEFAULT_COPY_MAX_BYTES: core.DEFAULT_COPY_MAX_BYTES,
@@ -184,6 +186,8 @@ test('runtime auto-opens exact folder-name Markdown index and wires Files handle
   assert.deepEqual(app.opened, ['game/game.md']);
   assert.equal(typeof app.ui.handlers.onNavigateFilesLocation, 'function');
   assert.equal(typeof app.ui.handlers.onPreviewRepositoryStructure, 'function');
+  assert.equal(typeof app.ui.handlers.onLoadRepositoryFileTemplates, 'function');
+  assert.equal(typeof app.ui.handlers.onBeginRepositoryFileCreateFromTemplate, 'function');
 });
 
 test('document preset copies template literally then applies configured category after verified create', async () => {
@@ -201,6 +205,74 @@ test('document preset copies template literally then applies configured category
   assert.equal(result.categoryApplied, true);
   assert.deepEqual(app.appliedCategories, [{ path: 'new-system.md', ids: ['system'] }]);
   assert.equal(new TextDecoder().decode(client.files.get('new-system.md').bytes), '# System\n\n| A | B |\n|---|---|\n');
+});
+
+test('repository template discovery reads only valid direct template files and reports malformed candidates without writes', async () => {
+  const client = makeClient({ files: {
+    '.linked-notes/templates/README.md': { content: '# Rules\n', sha: 'readme' },
+    '.linked-notes/templates/character.template.md': { content: '<!-- obs-template\nname: Character\n-->\n# Character\n', sha: 'character' },
+    '.linked-notes/templates/project.template.md': { content: '<!-- obs-template\nname: Project\n-->\n---\ntype: project\n---\n', sha: 'project' },
+    '.linked-notes/templates/broken.template.md': { content: '<!-- obs-template\nname:\n-->\ninvalid\n', sha: 'broken' },
+    '.linked-notes/templates/nested/ignored.template.md': { content: '<!-- obs-template\nname: Nested\n-->\nignored\n', sha: 'nested' }
+  } });
+  const { FakeApp, FakeUI } = makeAppClass(client);
+  runtime.installRepositoryFilesWorkspace({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+  const app = new FakeApp();
+  await app.start();
+  assert.equal(app.repositoryTemplatesLoaded, false, 'start must not scan templates automatically');
+
+  const result = await app.loadRepositoryFileTemplates();
+  assert.equal(result.initialized, true);
+  assert.deepEqual(app.repositoryTemplates.map((item) => item.name), ['Character', 'Project']);
+  assert.ok(app.repositoryTemplateDiagnostics.some((item) => item.path.endsWith('broken.template.md')));
+  assert.ok(!app.repositoryTemplates.some((item) => item.name === 'Nested'));
+  assert.deepEqual(app.readOperations.at(-1), { kind: 'files', label: 'Reading repository templates…' });
+  assert.equal(client.writes.length, 0);
+});
+
+test('repository template selection strips only template metadata, preserves literal body, and waits for normal Create before writing', async () => {
+  const body = '---\r\ntype: character\r\n---\r\nDamage: <!-- obs-ref:use id="ro_damage" -->25<!-- /obs-ref:use -->\r\n';
+  const templatePath = '.linked-notes/templates/character.template.md';
+  const client = makeClient({ files: { [templatePath]: { content: `<!-- obs-template\r\nname: Character\r\n-->\r\n${body}`, sha: 'template-sha' } } });
+  const { FakeApp, FakeUI } = makeAppClass(client);
+  runtime.installRepositoryFilesWorkspace({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+  const app = new FakeApp();
+  await app.start();
+
+  const editor = await app.beginRepositoryFileCreateFromTemplate(templatePath);
+  assert.equal(editor.repositoryTemplate.name, 'Character');
+  assert.equal(app.repositoryEditor.content, body);
+  assert.equal(client.writes.length, 0, 'selecting a template must be read-only');
+  assert.deepEqual(app.readOperations.at(-1), { kind: 'files', label: 'Reading repository template…' });
+
+  app.repositoryEditor.name = 'hero.md';
+  await app.saveRepositoryEditor(app.repositoryEditor);
+  assert.equal(client.writes.length, 1);
+  assert.equal(new TextDecoder().decode(client.files.get('hero.md').bytes), body);
+});
+
+test('missing template folder is an explicit empty state and workspace switch clears the loaded template index', async () => {
+  const client = makeClient();
+  const { FakeApp, FakeUI } = makeAppClass(client);
+  runtime.installRepositoryFilesWorkspace({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+  const app = new FakeApp();
+  await app.start();
+
+  const missing = await app.loadRepositoryFileTemplates();
+  assert.equal(missing.initialized, false);
+  assert.equal(app.repositoryTemplatesLoaded, true);
+  assert.deepEqual(app.repositoryTemplates, []);
+  assert.match(app.status, /not initialized/i);
+  assert.equal(client.writes.length, 0);
+
+  app.repositoryTemplates = [{ name: 'stale', path: '.linked-notes/templates/stale.template.md', sha: 'x' }];
+  app.repositoryTemplatesLoaded = true;
+  app._setUi({ repositoryTemplates: [...app.repositoryTemplates], repositoryTemplatesLoaded: true, repositoryTemplatesContextKey: app.repositoryTemplatesContextKey });
+  await app.selectWorkspace('b');
+  assert.equal(app.repositoryTemplatesLoaded, false);
+  assert.deepEqual(app.repositoryTemplates, []);
+  assert.match(app.repositoryTemplatesContextKey, /DocsB/i);
+  assert.deepEqual(app.ui.state.repositoryTemplates, []);
 });
 
 test('structure preview blocks existing files and successful apply only creates absent empty files/placeholders', async () => {
@@ -307,7 +379,7 @@ test('workspace switch reloads exact workspace-scoped shortcuts and document pre
   assert.match(app.ui.state.filesWorkspacePreferencesKey, /DocsA/i);
 });
 
-test('UI enhancement replaces the real Files sidebar New file action with the preset menu', () => {
+test('UI enhancement replaces the real Files sidebar New file action with the repository-template menu', () => {
   const previousDocument = globalThis.document;
   class FakeElement {
     constructor(tag = 'div') {
@@ -370,6 +442,8 @@ test('UI enhancement replaces the real Files sidebar New file action with the pr
     assert.ok(newFileButton.replacement);
     assert.equal(newFileButton.replacement.dataset.filesNewMenu, '1');
     assert.match(newFileButton.replacement.innerHTML, /Blank file/);
+    assert.match(newFileButton.replacement.innerHTML, /Repository templates/);
+    assert.doesNotMatch(newFileButton.replacement.innerHTML, /Add document preset/);
   } finally {
     if (previousDocument === undefined) delete globalThis.document;
     else globalThis.document = previousDocument;

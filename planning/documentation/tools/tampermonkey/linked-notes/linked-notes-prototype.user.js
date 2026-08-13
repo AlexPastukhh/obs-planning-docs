@@ -2248,6 +2248,147 @@
   };
 });
 
+/* src/repository-file-templates.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const DEFAULT_REPOSITORY_TEMPLATE_ROOT = '.linked-notes/templates';
+  const DEFAULT_REPOSITORY_TEMPLATE_MAX_FILES = 100;
+  const REPOSITORY_TEMPLATE_SUFFIX = '.template.md';
+  const TEMPLATE_HEADER = '<!-- obs-template';
+
+  function normalizeRepositoryTemplatePath(value, options = {}) {
+    const allowRoot = Boolean(options.allowRoot);
+    const raw = String(value == null ? '' : value).replace(/\\/g, '/').trim().replace(/\/+$/g, '');
+    if (!raw) {
+      if (allowRoot) return '';
+      throw new TypeError('Repository template path is required.');
+    }
+    if (raw.startsWith('/') || /^[A-Za-z]:\//.test(raw) || raw.includes('://') || /[?#\u0000-\u001f\u007f]/.test(raw)) throw new TypeError('Repository template path must be repository-relative.');
+    const parts = raw.split('/');
+    if (parts.some((part) => !part || part === '.' || part === '..')) throw new TypeError('Repository template path contains an empty, . or .. segment.');
+    return parts.join('/');
+  }
+
+  function normalizeRepositoryTemplateRoot(value = DEFAULT_REPOSITORY_TEMPLATE_ROOT) {
+    return normalizeRepositoryTemplatePath(value);
+  }
+
+  function isRepositoryFileTemplatePath(path, options = {}) {
+    let canonical;
+    let rootPath;
+    try {
+      canonical = normalizeRepositoryTemplatePath(path);
+      rootPath = normalizeRepositoryTemplateRoot(options.rootPath || DEFAULT_REPOSITORY_TEMPLATE_ROOT);
+    } catch (error) { return false; }
+    const prefix = `${rootPath}/`;
+    if (!canonical.startsWith(prefix)) return false;
+    const relative = canonical.slice(prefix.length);
+    if (!relative || relative.includes('/')) return false;
+    if (!relative.endsWith(REPOSITORY_TEMPLATE_SUFFIX)) return false;
+    return relative.length > REPOSITORY_TEMPLATE_SUFFIX.length;
+  }
+
+  function normalizeRepositoryFileTemplateCandidatePath(path, options = {}) {
+    const canonical = normalizeRepositoryTemplatePath(path);
+    if (!isRepositoryFileTemplatePath(canonical, options)) throw new TypeError(`Template file must be a direct ${REPOSITORY_TEMPLATE_SUFFIX} child of ${normalizeRepositoryTemplateRoot(options.rootPath || DEFAULT_REPOSITORY_TEMPLATE_ROOT)}: ${canonical}.`);
+    return canonical;
+  }
+
+  function repositoryTemplateNameKey(value) {
+    return String(value == null ? '' : value).trim().toLowerCase();
+  }
+
+  function parseRepositoryTemplateMetadata(raw) {
+    const metadata = {};
+    const seen = new Set();
+    const lines = String(raw == null ? '' : raw).split(/\r\n|\n|\r/);
+    for (const sourceLine of lines) {
+      const line = sourceLine.trim();
+      if (!line) continue;
+      const match = /^([A-Za-z][A-Za-z0-9_-]*):[ \t]*(.*)$/.exec(line);
+      if (!match) throw new Error(`Invalid obs-template metadata line: ${sourceLine}.`);
+      const key = match[1];
+      const value = match[2].trim();
+      if (key !== 'name') throw new Error(`Unsupported obs-template metadata field: ${key}.`);
+      if (seen.has(key)) throw new Error(`Duplicate obs-template metadata field: ${key}.`);
+      seen.add(key);
+      metadata[key] = value;
+    }
+    if (!metadata.name) throw new Error('obs-template metadata requires a non-empty name field.');
+    return { name: metadata.name };
+  }
+
+  function parseRepositoryFileTemplate(text, options = {}) {
+    const source = String(text == null ? '' : text);
+    const path = options.path ? normalizeRepositoryFileTemplateCandidatePath(options.path, options) : '';
+    const bom = source.charCodeAt(0) === 0xFEFF ? 1 : 0;
+    if (!source.startsWith(TEMPLATE_HEADER, bom)) throw new Error('Template file must start with an obs-template metadata block.');
+    let metadataStart = bom + TEMPLATE_HEADER.length;
+    if (source.startsWith('\r\n', metadataStart)) metadataStart += 2;
+    else if (source[metadataStart] === '\n' || source[metadataStart] === '\r') metadataStart += 1;
+    else throw new Error('obs-template opening marker must be followed by a newline.');
+    const close = source.indexOf('-->', metadataStart);
+    if (close < 0) throw new Error('obs-template metadata block is not closed.');
+    const metadata = parseRepositoryTemplateMetadata(source.slice(metadataStart, close));
+    let bodyStart = close + 3;
+    if (source.startsWith('\r\n', bodyStart)) bodyStart += 2;
+    else if (source[bodyStart] === '\n' || source[bodyStart] === '\r') bodyStart += 1;
+    const body = source.slice(bodyStart);
+    return {
+      path,
+      name: metadata.name,
+      body,
+      sha: String(options.sha || ''),
+      metadataStart: bom,
+      bodyStart
+    };
+  }
+
+  function finalizeRepositoryFileTemplates(records) {
+    const candidates = Array.isArray(records) ? records.filter(Boolean).map((record) => ({ ...record, name: String(record.name || '').trim(), path: String(record.path || '').trim() })) : [];
+    const counts = new Map();
+    for (const item of candidates) {
+      const key = repositoryTemplateNameKey(item.name);
+      if (!key) continue;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    }
+    const diagnostics = [];
+    const templates = [];
+    for (const item of candidates) {
+      const key = repositoryTemplateNameKey(item.name);
+      if (!key) {
+        diagnostics.push({ path: item.path, kind: 'invalid_name', message: `Template ${item.path || '(unknown path)'} has no display name.` });
+        continue;
+      }
+      if ((counts.get(key) || 0) > 1) {
+        diagnostics.push({ path: item.path, kind: 'duplicate_name', message: `Duplicate template name "${item.name}". Rename one template metadata name before using it.` });
+        continue;
+      }
+      templates.push(item);
+    }
+    templates.sort((left, right) => left.name.localeCompare(right.name) || left.path.localeCompare(right.path));
+    diagnostics.sort((left, right) => String(left.path || '').localeCompare(String(right.path || '')) || String(left.message || '').localeCompare(String(right.message || '')));
+    return { templates, diagnostics };
+  }
+
+  return {
+    DEFAULT_REPOSITORY_TEMPLATE_ROOT,
+    DEFAULT_REPOSITORY_TEMPLATE_MAX_FILES,
+    REPOSITORY_TEMPLATE_SUFFIX,
+    normalizeRepositoryTemplatePath,
+    isRepositoryFileTemplatePath,
+    normalizeRepositoryFileTemplateCandidatePath,
+    parseRepositoryFileTemplate,
+    finalizeRepositoryFileTemplates,
+    repositoryTemplateNameKey
+  };
+});
+
 /* src/reference-object-markers.js */
 (function (root, factory) {
   const api = factory();
@@ -10942,6 +11083,12 @@
     return api;
   }
 
+  function templateApiOrThrow(app) {
+    const api = apiOrThrow(app);
+    if (!api.parseRepositoryFileTemplate || !api.isRepositoryFileTemplatePath || !api.finalizeRepositoryFileTemplates) throw new Error('Repository file template support is unavailable.');
+    return api;
+  }
+
   function errorText(error) {
     return String(error && error.message || error || 'Unknown error');
   }
@@ -11054,6 +11201,147 @@
         return result;
       }
       return run();
+    };
+
+    App.prototype._clearRepositoryFileTemplates = function clearRepositoryFileTemplates(options = {}) {
+      const contextKey = this._filesWorkspacePreferencesKey();
+      this.repositoryTemplatesContextKey = contextKey;
+      this.repositoryTemplatesLoaded = false;
+      this.repositoryTemplatesInitialized = false;
+      this.repositoryTemplates = [];
+      this.repositoryTemplateDiagnostics = [];
+      this.repositoryTemplatesIncomplete = false;
+      const patch = {
+        repositoryTemplatesContextKey: contextKey,
+        repositoryTemplatesLoaded: false,
+        repositoryTemplatesInitialized: false,
+        repositoryTemplates: [],
+        repositoryTemplateDiagnostics: [],
+        repositoryTemplatesIncomplete: false
+      };
+      if (!options.silent) this._setUi(patch);
+      return patch;
+    };
+
+    App.prototype._ensureRepositoryFileTemplateContext = function ensureRepositoryFileTemplateContext(options = {}) {
+      const contextKey = this._filesWorkspacePreferencesKey();
+      if (this.repositoryTemplatesContextKey !== contextKey) this._clearRepositoryFileTemplates(options);
+      return contextKey;
+    };
+
+    App.prototype._readRepositoryFileTemplatesUnlocked = async function readRepositoryFileTemplatesUnlocked(contextKey) {
+      const api = templateApiOrThrow(this);
+      const workspace = this._activeWorkspace();
+      if (!workspace) throw new Error('Select a GitHub workspace before loading repository templates.');
+      const rootPath = api.DEFAULT_REPOSITORY_TEMPLATE_ROOT || '.linked-notes/templates';
+      const maxFiles = Math.max(1, Number(api.DEFAULT_REPOSITORY_TEMPLATE_MAX_FILES) || 100);
+      const client = await this._client(workspace);
+      let entries;
+      try {
+        entries = await client.listDirectory(rootPath, { maxEntries: 200 });
+      } catch (error) {
+        if (notFound(error)) return { contextKey, rootPath, initialized: false, loaded: true, incomplete: false, templates: [], diagnostics: [] };
+        throw error;
+      }
+      const candidates = (Array.isArray(entries) ? entries : [])
+        .filter((entry) => entry && entry.type === 'file' && api.isRepositoryFileTemplatePath(entry.path || `${rootPath}/${entry.name || ''}`))
+        .map((entry) => ({ ...entry, path: String(entry.path || `${rootPath}/${entry.name || ''}`) }))
+        .sort((left, right) => left.path.localeCompare(right.path));
+      const diagnostics = [];
+      const parsed = [];
+      const selected = candidates.slice(0, maxFiles);
+      const incomplete = candidates.length > maxFiles;
+      if (incomplete) diagnostics.push({ path: rootPath, kind: 'template_limit', message: `Template discovery is incomplete: found ${candidates.length} candidate files, limit is ${maxFiles}.` });
+      const maxBytes = this.api.DEFAULT_TEXT_FILE_MAX_BYTES || this.api.DEFAULT_PREVIEW_MAX_BYTES || (512 * 1024);
+      for (const entry of selected) {
+        try {
+          const file = await client.readBytes(entry.path, { maxBytes });
+          const text = this.api.decodeUtf8Bytes(file.bytes, { fatal: true, message: `Template is not valid UTF-8: ${entry.path}.` });
+          const item = api.parseRepositoryFileTemplate(text, { path: entry.path, sha: file.sha || entry.sha || '' });
+          parsed.push({ path: item.path, name: item.name, sha: item.sha });
+        } catch (error) {
+          diagnostics.push({ path: entry.path, kind: 'invalid_template', message: errorText(error) });
+        }
+      }
+      const finalized = api.finalizeRepositoryFileTemplates(parsed);
+      return {
+        contextKey,
+        rootPath,
+        initialized: true,
+        loaded: true,
+        incomplete,
+        templates: finalized.templates.map((item) => ({ path: item.path, name: item.name, sha: item.sha || '' })),
+        diagnostics: [...diagnostics, ...finalized.diagnostics]
+      };
+    };
+
+    App.prototype.loadRepositoryFileTemplates = async function loadRepositoryFileTemplates(force = false) {
+      const contextKey = this._ensureRepositoryFileTemplateContext({ silent: true });
+      if (!contextKey) throw new Error('Select a GitHub workspace before loading repository templates.');
+      if (!force && this.repositoryTemplatesLoaded && this.repositoryTemplatesContextKey === contextKey) {
+        this._setUi({
+          repositoryTemplatesContextKey: contextKey,
+          repositoryTemplatesLoaded: true,
+          repositoryTemplatesInitialized: Boolean(this.repositoryTemplatesInitialized),
+          repositoryTemplates: [...(this.repositoryTemplates || [])],
+          repositoryTemplateDiagnostics: [...(this.repositoryTemplateDiagnostics || [])],
+          repositoryTemplatesIncomplete: Boolean(this.repositoryTemplatesIncomplete)
+        });
+        return { templates: [...(this.repositoryTemplates || [])], diagnostics: [...(this.repositoryTemplateDiagnostics || [])], initialized: Boolean(this.repositoryTemplatesInitialized), incomplete: Boolean(this.repositoryTemplatesIncomplete) };
+      }
+      const result = await this._runFilesWorkspaceRead('Reading repository templates…', () => this._readRepositoryFileTemplatesUnlocked(contextKey));
+      if (!result || result.cancelled) return result;
+      if (this._filesWorkspacePreferencesKey() !== contextKey) return { cancelled: true, staleContext: true };
+      this.repositoryTemplatesContextKey = contextKey;
+      this.repositoryTemplatesLoaded = true;
+      this.repositoryTemplatesInitialized = Boolean(result.initialized);
+      this.repositoryTemplates = [...(result.templates || [])];
+      this.repositoryTemplateDiagnostics = [...(result.diagnostics || [])];
+      this.repositoryTemplatesIncomplete = Boolean(result.incomplete);
+      const status = !result.initialized
+        ? `Repository templates are not initialized in this workspace. Expected ${result.rootPath}. No GitHub write was performed.`
+        : `Loaded ${this.repositoryTemplates.length} repository template(s) from ${result.rootPath}${this.repositoryTemplateDiagnostics.length ? `; ${this.repositoryTemplateDiagnostics.length} diagnostic(s)` : ''}. No GitHub write was performed.`;
+      this._setUi({
+        repositoryTemplatesContextKey: contextKey,
+        repositoryTemplatesLoaded: true,
+        repositoryTemplatesInitialized: this.repositoryTemplatesInitialized,
+        repositoryTemplates: [...this.repositoryTemplates],
+        repositoryTemplateDiagnostics: [...this.repositoryTemplateDiagnostics],
+        repositoryTemplatesIncomplete: this.repositoryTemplatesIncomplete,
+        status
+      });
+      return result;
+    };
+
+    App.prototype.beginRepositoryFileCreateFromTemplate = async function beginRepositoryFileCreateFromTemplate(path = '') {
+      if (!path || path === 'blank') {
+        this.__pendingRepositoryDocumentPreset = null;
+        return originalBeginRepositoryFileCreate.call(this);
+      }
+      const api = templateApiOrThrow(this);
+      const templatePath = api.normalizeRepositoryFileTemplateCandidatePath(path);
+      const contextKey = this._ensureRepositoryFileTemplateContext({ silent: true });
+      const workspace = this._activeWorkspace();
+      if (!workspace || !contextKey) throw new Error('Select a GitHub workspace before using repository templates.');
+      const result = await this._runFilesWorkspaceRead('Reading repository template…', async () => {
+        const client = await this._client(workspace);
+        const maxBytes = this.api.DEFAULT_TEXT_FILE_MAX_BYTES || this.api.DEFAULT_PREVIEW_MAX_BYTES || (512 * 1024);
+        const file = await client.readBytes(templatePath, { maxBytes });
+        const text = this.api.decodeUtf8Bytes(file.bytes, { fatal: true, message: `Template is not valid UTF-8: ${templatePath}.` });
+        const template = api.parseRepositoryFileTemplate(text, { path: templatePath, sha: file.sha || '' });
+        if (this._filesWorkspacePreferencesKey() !== contextKey) throw new Error('Workspace changed while the repository template was being read. Open New file again.');
+        originalBeginRepositoryFileCreate.call(this);
+        this.repositoryEditor = { ...this.repositoryEditor, content: template.body };
+        this.__pendingRepositoryDocumentPreset = null;
+        this._setUi({ replaceFileEditor: true, status: `New file from template ${template.name}. obs-template metadata was removed and the template body was copied literally. No GitHub write was performed.` });
+        return { ...this.repositoryEditor, repositoryTemplate: { path: template.path, name: template.name, sha: template.sha } };
+      });
+      return result;
+    };
+
+    App.prototype.openRepositoryTemplatesFolder = async function openRepositoryTemplatesFolder() {
+      const api = templateApiOrThrow(this);
+      return this.browseRepository(api.DEFAULT_REPOSITORY_TEMPLATE_ROOT || '.linked-notes/templates');
     };
 
     App.prototype.addRepositoryFolderShortcut = async function addRepositoryFolderShortcut(name) {
@@ -11447,6 +11735,7 @@
       App.prototype.selectWorkspace = async function filesWorkspaceSelectWorkspace(...args) {
         const result = await originalSelectWorkspace.apply(this, args);
         await this._loadFilesWorkspacePreferences();
+        this._clearRepositoryFileTemplates();
         return result;
       };
     }
@@ -11455,6 +11744,7 @@
       App.prototype.saveWorkspace = async function filesWorkspaceSaveWorkspace(...args) {
         const result = await originalSaveWorkspace.apply(this, args);
         await this._loadFilesWorkspacePreferences();
+        this._clearRepositoryFileTemplates();
         return result;
       };
     }
@@ -11463,6 +11753,7 @@
       App.prototype.deleteWorkspace = async function filesWorkspaceDeleteWorkspace(...args) {
         const result = await originalDeleteWorkspace.apply(this, args);
         await this._loadFilesWorkspacePreferences();
+        this._clearRepositoryFileTemplates();
         return result;
       };
     }
@@ -11471,6 +11762,7 @@
       App.prototype.openPanel = async function filesWorkspaceOpenPanel(...args) {
         const result = await originalOpenPanel.apply(this, args);
         await this._ensureFilesWorkspacePreferencesCurrent();
+        this._ensureRepositoryFileTemplateContext();
         return result;
       };
     }
@@ -11485,6 +11777,9 @@
           onSaveRepositoryDocumentPreset: (input) => this.saveRepositoryDocumentPreset(input),
           onRemoveRepositoryDocumentPreset: (id) => this.removeRepositoryDocumentPreset(id),
           onBeginRepositoryFileCreateFromPreset: (id) => this.beginRepositoryFileCreateFromPreset(id),
+          onLoadRepositoryFileTemplates: (force) => this.loadRepositoryFileTemplates(Boolean(force)),
+          onBeginRepositoryFileCreateFromTemplate: (path) => this.beginRepositoryFileCreateFromTemplate(path),
+          onOpenRepositoryTemplatesFolder: () => this.openRepositoryTemplatesFolder(),
           onCopyRepositoryFileLink: () => this.copyRepositoryFileLink(),
           onListRepositoryDirectories: (path) => this.listRepositoryDirectoriesForWorkspace(path),
           onPreviewRepositoryStructure: (text) => this.previewRepositoryStructure(text),
@@ -11495,6 +11790,7 @@
       }
       const result = await originalStart.apply(this, args);
       await this._loadFilesWorkspacePreferences();
+      this._clearRepositoryFileTemplates();
       return result;
     };
 
@@ -11853,24 +12149,57 @@
     });
   }
 
-  function createDocumentPresetMenu(ui, oldButton) {
-    const preferences = filesWorkspacePreferencesForUi(ui);
+  function repositoryTemplateStateForUi(ui) {
+    const state = ui && ui.state || {};
+    const contextKey = filesWorkspaceModalContextKey(ui);
+    const current = String(state.repositoryTemplatesContextKey || '') === contextKey;
+    return {
+      contextKey,
+      loaded: current && Boolean(state.repositoryTemplatesLoaded),
+      initialized: current && Boolean(state.repositoryTemplatesInitialized),
+      incomplete: current && Boolean(state.repositoryTemplatesIncomplete),
+      templates: current && Array.isArray(state.repositoryTemplates) ? state.repositoryTemplates : [],
+      diagnostics: current && Array.isArray(state.repositoryTemplateDiagnostics) ? state.repositoryTemplateDiagnostics : []
+    };
+  }
+
+  function createRepositoryTemplateMenu(ui, oldButton) {
+    const state = repositoryTemplateStateForUi(ui);
     const details = document.createElement('details');
     details.className = 'files-workspace-menu';
     details.dataset.filesNewMenu = '1';
-    const presets = (preferences.documentPresets || []).map((preset) => `<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px"><button data-document-preset="${escapeHtml(preset.id)}">${escapeHtml(preset.name)}<br><small>${escapeHtml(preset.categoryId)} · ${escapeHtml(preset.templatePath)}</small></button><button data-remove-document-preset="${escapeHtml(preset.id)}" title="Remove preset">×</button></div>`).join('');
-    details.innerHTML = `<summary>New file ▾</summary><div class="files-workspace-menu-panel"><button data-document-preset="blank">Blank file</button>${presets || '<div class="hint">No document presets.</div>'}<div class="files-workspace-form"><strong>Add document preset</strong><input data-document-preset-name placeholder="Type name"><input data-document-preset-category placeholder="Category ID"><input data-document-preset-template placeholder="Template repository path" value="${escapeHtml(ui.state.repositoryPreview && ui.state.repositoryPreview.path || '')}"><button data-save-document-preset>Save preset</button></div></div>`;
+    const rows = state.templates.map((template) => `<button data-repository-template="${escapeHtml(template.path)}"><strong>${escapeHtml(template.name)}</strong><br><small>${escapeHtml(template.path)}</small></button>`).join('');
+    const empty = !state.loaded
+      ? '<div class="hint">Open this menu to load repository templates.</div>'
+      : !state.initialized
+        ? '<div class="hint">Templates are not initialized in this workspace. Expected <code>.linked-notes/templates/</code>.</div>'
+        : '<div class="hint">No valid <code>*.template.md</code> templates found.</div>';
+    const diagnostics = state.diagnostics.length
+      ? `<div class="hint"><strong>Template diagnostics (${state.diagnostics.length})${state.incomplete ? ' · incomplete' : ''}</strong>${state.diagnostics.slice(0, 6).map((item) => `<br>${escapeHtml(item.path || '')}: ${escapeHtml(item.message || '')}`).join('')}${state.diagnostics.length > 6 ? `<br>… ${state.diagnostics.length - 6} more` : ''}</div>`
+      : '';
+    details.innerHTML = `<summary>New file ▾</summary><div class="files-workspace-menu-panel"><button data-repository-template="blank">Blank file</button><div class="hint"><strong>Repository templates</strong><br><code>.linked-notes/templates/*.template.md</code></div>${rows || empty}${diagnostics}<div class="files-workspace-form"><button data-refresh-repository-templates>Refresh templates</button><button data-open-repository-templates-folder>Open templates folder</button></div></div>`;
     const panel = details.querySelector('.files-workspace-menu-panel');
     const scope = panel || details;
-    scope.querySelectorAll('[data-document-preset]').forEach((button) => button.addEventListener('click', () => { closeFilesWorkspaceTopPopup(ui); ui._withAllDrafts('onBeginRepositoryFileCreateFromPreset', button.dataset.documentPreset).catch(() => {}); }));
-    scope.querySelectorAll('[data-remove-document-preset]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryDocumentPreset', button.dataset.removeDocumentPreset).catch(() => {})));
-    const save = scope.querySelector('[data-save-document-preset]');
-    if (save) save.addEventListener('click', () => {
-      const value = (selector) => { const input = scope.querySelector(selector); return input ? input.value : ''; };
-      ui._call('onSaveRepositoryDocumentPreset', { name: value('[data-document-preset-name]'), categoryId: value('[data-document-preset-category]'), templatePath: value('[data-document-preset-template]') }).catch(() => {});
+    scope.querySelectorAll('[data-repository-template]').forEach((button) => button.addEventListener('click', () => {
+      closeFilesWorkspaceTopPopup(ui);
+      ui._withAllDrafts('onBeginRepositoryFileCreateFromTemplate', button.dataset.repositoryTemplate).catch(() => {});
+    }));
+    scope.querySelector('[data-refresh-repository-templates]')?.addEventListener('click', () => ui._call('onLoadRepositoryFileTemplates', true).catch(() => {}));
+    scope.querySelector('[data-open-repository-templates-folder]')?.addEventListener('click', () => {
+      closeFilesWorkspaceTopPopup(ui);
+      ui._call('onOpenRepositoryTemplatesFolder').catch(() => {});
     });
     oldButton.replaceWith(details);
-    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, { key: 'new-file', maxWidth: 460, maxHeight: 420 });
+    if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, {
+      key: 'new-file',
+      maxWidth: 520,
+      maxHeight: 520,
+      onOpen: () => {
+        const current = repositoryTemplateStateForUi(ui);
+        if (current.loaded) return undefined;
+        return ui._call('onLoadRepositoryFileTemplates', false);
+      }
+    });
   }
 
   function filesWorkspaceModalContextKey(ui) {
@@ -12008,7 +12337,7 @@
   function enhanceFilesToolbar(ui) {
     if (!ui.shadow || ui.state.surface !== 'files') return;
     ui.shadow.querySelectorAll('[data-action="new-repository-file"]').forEach((button) => {
-      if (!button.closest('.files-workspace-menu')) createDocumentPresetMenu(ui, button);
+      if (!button.closest('.files-workspace-menu')) createRepositoryTemplateMenu(ui, button);
     });
     const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
     if (!toolbar) return;

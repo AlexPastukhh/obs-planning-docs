@@ -17,7 +17,9 @@ A Reference Object has one stable id, a mutable display name, one definition mar
 
 HTML comments are visible in Source and invisible in rendered Markdown. Marker-looking text inside fenced code blocks or inline code spans is treated as literal code/example content rather than a live Reference Object marker.
 
-## 2. Definitions File
+## 2. Repository Contract And Definitions File
+
+The repository-facing rules live in `.linked-notes/REFERENCE-OBJECTS.md`, with `.linked-notes/README.md` as the convention entry point. Those files are intentionally readable by humans and AI agents: a synchronized value in a generated/edited document must use a complete `obs-ref:use` marker resolved from an existing stable object ID, and definition changes remain stale until an explicit Check/Update action.
 
 `.linked-notes/reference-objects.json` stores only routing/index metadata:
 

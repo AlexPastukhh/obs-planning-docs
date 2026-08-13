@@ -16,6 +16,7 @@ const sourceFiles = [
   'src/repository-text-file-write.js',
   'src/repository-markdown-heading-links.js',
   'src/repository-files-workspace-core.js',
+  'src/repository-file-templates.js',
   'src/reference-object-markers.js',
   'src/reference-object-registry.js',
   'src/reference-object-local-store.js',

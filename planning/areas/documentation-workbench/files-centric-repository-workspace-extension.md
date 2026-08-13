@@ -1,7 +1,7 @@
 # Files-Centric Repository Workspace Extension
 
 Status: current implementation slice / correction-integrated / subordinate to `repository-file-browser-and-categories-workflow.md` / browser and real-GitHub acceptance pending
-Scope: Files navigation shortcuts, folder index auto-open, document presets/templates, repository-root file/heading link copy, add-only structure creation and add-only file/folder copy for the Linked Notes prototype.
+Scope: Files navigation shortcuts, folder index auto-open, repository-native file templates, repository-root file/heading link copy, add-only structure creation and add-only file/folder copy for the Linked Notes prototype.
 
 ## 1. Ownership Boundary
 
@@ -18,11 +18,11 @@ This extension records the current user-requested implementation slice without c
 The Files surface should support the following connected behavior:
 
 1. Opening a non-root repository folder automatically opens an exact `<folder-name>.md` direct child when that file exists. The directory listing remains the current folder context. Root has no automatic index file.
-2. The real Files sidebar `New file` action is replaced by a preset selector. A document preset owns a display name, one category ID and one repository template-file path. Starting from a preset reads the template and copies its complete UTF-8 contents literally into the new-file editor. After verified file creation, the configured category is applied through the existing repository-backed category workflow.
+2. The real Files sidebar `New file` action exposes `Blank file` plus repository-native templates discovered from direct `*.template.md` children of `.linked-notes/templates/`. A valid template starts with an `obs-template` metadata block containing its display `name`. Selecting one rereads and validates that exact template, removes only the template metadata block, and copies the remaining UTF-8 body literally into the ordinary new-file editor. The selection step is read-only; the repository changes only through the existing explicit verified file Create action.
 3. Link copy exposes both a whole-file repository-root Markdown link and heading links from the already-loaded Markdown snapshot. The heading chooser must remain inside the main Files content area instead of covering the sidebar; heading search and hierarchy are visible; copying does not perform a GitHub request.
 4. The user can paste a repository-relative file/folder structure in the current folder, preview every target and create only missing empty files/folders. The first format is one path per line; a trailing `/` marks a folder. Existing content is never deleted, replaced or overwritten. Git-visible empty leaf folders use an empty `.gitkeep` only when the folder does not already exist.
 5. Files and folders can be copied to a selected repository folder. Copy is recursive for folders, byte-preserving for files and add-only at the destination. The complete destination file set is preflighted before the first write. For folder copy, the destination root folder itself must be absent: an existing destination root is a conflict rather than a merge target. Any existing destination file/root or unusable destination parent blocks the operation before writes. Source SHA is rechecked before copying bytes. Multi-file copy is not globally atomic: verified completed copies remain on partial failure and are reported explicitly.
-6. The top navigation is Files-centric: `Files` jumps to repository root, `Notes` jumps to the configured Notes folder in Files mode, and `Locations` exposes Root, Notes, the existing Linked Notes editor and user-created folder shortcuts. A user can save the currently open non-root folder as a local shortcut. Shortcuts and document presets are scoped to the exact workspace ID + owner + repository + branch, are reloaded when the active workspace changes, and stale preferences from the previous workspace are never rendered as current.
+6. The top navigation is Files-centric: `Files` jumps to repository root, `Notes` jumps to the configured Notes folder in Files mode, and `Locations` exposes Root, Notes, the existing Linked Notes editor and user-created folder shortcuts. A user can save the currently open non-root folder as a local shortcut. Folder shortcuts remain local exact-workspace preferences. Repository templates are repository-owned and are reloaded explicitly per exact workspace; a workspace change clears the prior template index so stale templates are never rendered as current.
 
 ## 3. Safety And Mutation Rules
 
@@ -53,11 +53,12 @@ file/folder copy apply
   → verified binary-safe create writes only;
   → never overwrite or delete destination/source;
 
-document preset create
-  → read template first;
-  → ordinary verified file create;
-  → category update is a separate verified result;
-  → if category update fails, keep the successfully created file and expose partial result.
+repository template discovery / selection
+  → explicit bounded read of `.linked-notes/templates/` direct children;
+  → only valid `*.template.md` files with `obs-template` metadata become selectable;
+  → selection rereads the chosen template and copies its body into the ordinary new-file editor;
+  → no GitHub PUT until the user performs the normal file Create action;
+  → legacy local document-preset records may remain in storage for compatibility but are not the primary New file UI.
 ```
 
 Repository writes remain non-cancellable once write execution begins because aborting a write can create uncertain remote state. The panel may still be closed while the operation continues under the existing responsiveness runtime.
@@ -71,6 +72,7 @@ The implementation slice uses explicit prototype bounds rather than an unbounded
 - recursive copy: at most 100 files;
 - recursive copy traversal: at most 60 directories;
 - recursive copy aggregate bytes: 10 MiB;
+- template discovery: direct children of `.linked-notes/templates/`, at most 100 candidate template files;
 - template file: existing bounded UTF-8 repository-editor limit;
 - no background recursive index.
 
@@ -102,21 +104,32 @@ Rules:
 
 The default operation is add-only. There is no "replace repository tree with pasted structure" mode in this slice.
 
-## 6. Document Preset Model
+## 6. Repository File Template Model
 
-Local preference record:
+Repository contract:
 
 ```text
-DocumentPreset:
-  id
-  display name
-  categoryId
-  templatePath
+.linked-notes/
+  README.md
+  templates/
+    README.md
+    <name>.template.md
 ```
 
-The template is an ordinary repository file and remains the only owner of its template body. Creating a file from the preset copies the complete template body as fetched; the helper performs no variable interpolation or semantic rewriting.
+A template exists when a direct child of `.linked-notes/templates/` ends in `.template.md` and starts with a valid metadata block:
 
-The category remains repository-backed through the existing category-definition model. Preset configuration itself is local convenience state and does not become repository truth in this slice.
+```text
+<!-- obs-template
+name: Character
+-->
+<literal template body>
+```
+
+The first format has one required metadata field: `name`. Duplicate names are rejected as ambiguous. Unknown metadata fields are rejected rather than silently reinterpreted. The metadata block itself is not copied into a new document; after removing it and its immediately following line break, every remaining character is copied literally. YAML frontmatter, Markdown, Reference Object markers and line endings in the body are preserved.
+
+`New file ▾` discovers repository templates from the active workspace instead of requiring a locally configured path/name/category preset. `Refresh templates` performs the explicit bounded reload. `Open templates folder` navigates to the repository folder. Missing template infrastructure in another workspace is an explicit empty/not-initialized state and never triggers an automatic GitHub write.
+
+The old local `documentPresets` preference data is retained for compatibility and is not deleted by this slice, but the repository-discovered template list is the primary New file UX. There is no variable interpolation, automatic category application or AI transformation in template v1.
 
 ## 7. Link Copy Model
 
@@ -142,19 +155,20 @@ Automated:
 
 - exact folder-name index candidate and no root index;
 - portable encoded whole-file Markdown link;
-- exact workspace-scoped shortcut/preset normalization;
+- exact workspace-scoped shortcut normalization and repository-template context isolation;
 - structure parser rejects traversal/type conflicts and derives empty leaf folders;
 - copy subtree destination mapping;
 - popup clamping stays inside the main container;
 - runtime folder browse auto-opens the exact index file;
-- the actual Files sidebar `New file` action becomes the preset menu rather than leaving presets unreachable in another toolbar;
-- document preset copies literal template content and requests category assignment after verified create;
+- the actual Files sidebar `New file` action becomes the repository-template menu;
+- template discovery ignores ordinary/nested files, reports malformed/duplicate templates and performs no write;
+- template selection strips only `obs-template` metadata, preserves literal body text/line endings/Reference Object markers and performs no write before ordinary Create;
 - structure conflict prevents writes and successful structure create writes only absent empty targets;
 - copy collision prevents writes, including an already-existing folder destination root, and successful copy preserves source bytes exactly;
 - structure/copy previews participate in the shared cancellable single-read lifecycle, publish Files request progress and cancellation performs no write;
 - an open structure/copy modal survives destructive base `render()` calls caused by read-operation state updates, while a repository-workspace context change drops the stale modal;
 - Files cancellation reports Files-specific status rather than a Notes-refresh message;
-- workspace changes reload exact workspace-scoped shortcuts/presets and never render the prior workspace's values as current;
+- workspace changes reload exact workspace-scoped shortcuts, clear the repository-template index and never render the prior workspace's templates as current;
 - runtime patch remains idempotent and re-installs on newly loaded constructors.
 
 Browser / real GitHub:
@@ -163,9 +177,10 @@ Browser / real GitHub:
 - enter a folder without the index and confirm no error/fabricated preview;
 - create a folder shortcut and reopen it from Locations after panel rerender/reopen;
 - use Notes and Files top navigation to jump directly to Notes folder/root;
-- switch between two workspaces that have different shortcuts/presets and verify each switch immediately shows only the active workspace values;
-- create a document preset from a Markdown template containing headings/table and verify literal content plus category membership;
-- intentionally break category application and verify the file remains while partial result is visible;
+- switch between two workspaces that have different shortcuts/templates and verify each switch immediately shows only the active workspace values;
+- add valid and malformed direct template files under `.linked-notes/templates/`, Refresh templates and verify only valid unique names are selectable;
+- create a file from a template containing YAML frontmatter, headings/table and an `obs-ref:use` marker and verify only `obs-template` metadata is removed;
+- confirm choosing a template produces no PUT and only the later ordinary Create writes the target file;
 - open `Copy link` at a narrow viewport like the reported screenshot and verify the menu never covers the left repository sidebar;
 - copy a whole-file link and multiple heading links while recording zero additional GitHub requests;
 - preview/apply a mixed empty-file/empty-folder structure and verify no existing file changes;
@@ -183,9 +198,9 @@ Browser / real GitHub:
 - overwrite-on-copy;
 - delete, rename or move;
 - automatic removal of `.gitkeep`;
-- repository-backed document-preset definitions;
+- recursive template discovery or a separate template registry;
 - template variables/interpolation;
-- automatic category inference from template content;
+- automatic category inference/application from template content;
 - unbounded/background recursive copy/indexing;
 - cross-repository copy;
 - automatic repair of links after later path moves.

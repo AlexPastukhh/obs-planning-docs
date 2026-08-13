@@ -187,7 +187,33 @@ The expanded usage list shows file path, current line and same-line occurrence n
 
 Rename changes Definitions File display metadata only; stable id and markers do not change.
 
-## 12. Bounded Prototype Limits
+## 12. Repository-Facing Contract For Humans And AI Agents
+
+The repository itself carries an AI-readable contract under:
+
+```text
+.linked-notes/README.md
+.linked-notes/REFERENCE-OBJECTS.md
+.linked-notes/reference-objects.json
+```
+
+`.linked-notes/REFERENCE-OBJECTS.md` explains the stable-ID, definition/use and explicit synchronization rules without requiring knowledge of the userscript implementation. An agent that needs to place a synchronized value in a newly created or edited document must resolve the existing object through the Definitions File, read the canonical value from its one `obs-ref:def`, and insert a complete `obs-ref:use` marker rather than a plain copied value.
+
+The repository contract must also state explicitly:
+
+- `obs-ref:def` inner text is canonical;
+- `obs-ref:use` inner text is a materialized copy;
+- changing a definition does not automatically rewrite uses;
+- `Check uses` is read-only and only reports stale values;
+- `Update locally` and `Update GitHub` are distinct explicit mutation actions;
+- names are mutable metadata while stable IDs remain identity;
+- `uses[].line` and `lineOccurrence` are rebuildable navigation metadata, not durable identity;
+- markers are preserved when formatting ordinary Markdown;
+- code-fenced/inline-code examples are not live markers.
+
+This repository-facing document is a projection of this workflow's selected behavior. It does not create a second semantic owner or broaden the slice into the deferred generic managed-object architecture.
+
+## 13. Bounded Prototype Limits
 
 The explicit repository scan is bounded rather than background/unbounded:
 
@@ -199,7 +225,7 @@ The explicit repository scan is bounded rather than background/unbounded:
 
 Limits are prototype evidence, not final product requirements.
 
-## 13. Failure And Safety Rules
+## 14. Failure And Safety Rules
 
 | Situation | Required result |
 |---|---|
@@ -214,13 +240,13 @@ Limits are prototype evidence, not final product requirements.
 | Scan reaches a bound/cancellation | incomplete/cancelled result; no write |
 | Workspace changes | reload exact workspace local overlay/list; never render stale prior-workspace state |
 
-## 14. Required Acceptance
+## 15. Required Acceptance
 
 Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, local no-write updates, remote preflight/verified writes, validation diagnostics, clipboard-only use creation, publish ordering and manual-paste reindexing.
 
 Browser/real-GitHub acceptance must additionally prove the rendered comments are invisible, the always-available searchable list and create modal survive ordinary rerenders, stale uses are yellow only after Check, usage navigation selects the intended same-line occurrence, local actions produce no PUT, GitHub actions preflight/read-back correctly and workspace switching does not leak local state.
 
-## 15. Deferred
+## 16. Deferred
 
 - automatic propagation when a definition changes;
 - automatic insertion into an editor;
