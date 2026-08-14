@@ -28,11 +28,11 @@ DEFERRED
 
 A roadmap direction is not an accepted Planning Item transformation. If a direction changes canonical capability meaning or semantic Use-Case identity, run the separate Planning Item / Use-Case reconciliation route first.
 
-## 2. NOW — Direction 1: Redesign ChatGPT Data Acquisition
+## 2. NOW — Direction 1: Explicit ChatGPT-to-Linked-Notes Handoff
 
 ### Current checked state
 
-Chat Response Reader currently supports:
+Chat Response Reader currently has two implemented acquisition paths:
 
 ```text
 Open in Reader
@@ -45,51 +45,63 @@ Paste Markdown
   → sourceAccuracy=exact.
 ```
 
-No private ChatGPT API is part of the current contract.
+Reader rendering is useful independently of transport and supports the documented safe Markdown/details projection. Manual Paste is the current reliable explicit exact-source transfer. The DOM path remains current prototype implementation evidence, but the project does not select programmatic extraction from the ChatGPT page/UI as the target automatic transport architecture.
 
 Current owners:
 
 - [`chat-response-reader-workflow.md`](chat-response-reader-workflow.md);
 - [`CHAT-RESPONSE-READER.md`](../../documentation/tools/tampermonkey/linked-notes/CHAT-RESPONSE-READER.md);
+- repository-facing response format `.linked-notes/CHAT-RESPONSE-FORMAT.md`;
 - `CHAT-001` in [`KNOWN-ISSUES.md`](../../documentation/tools/tampermonkey/linked-notes/KNOWN-ISSUES.md).
 
 ### Problem / direction
 
-The Reader should not own the mechanism used to acquire ChatGPT response data. The current rendered-DOM derivation is useful fallback behavior but is externally fragile and cannot claim original-source fidelity.
+The Reader should not own extraction of response content from the ChatGPT UI. The desired automatic direction is an explicit supported handoff in which response content is supplied across an integration boundary to Linked Notes.
 
 ### Target outcome
 
-Introduce a message-source boundary conceptually shaped like:
+Keep a transport/source boundary conceptually shaped like:
 
 ```text
-ChatMessageSource.read(message)
+ChatMessageSource / response handoff
   → content
   → format
   → sourceKind
   → accuracy
   → diagnostics
+      ↓
+Reader
 ```
 
-Reader consumes the normalized result and no longer needs to know whether it came from ChatGPT-native copy behavior, semantic DOM derivation or explicit Paste.
+Reader consumes the normalized result and remains independent of the concrete supported integration mechanism.
 
 ### Investigation order
 
-1. Inspect the current ChatGPT UI Copy-response behavior and determine whether its source can be consumed safely/stably from the userscript boundary.
-2. If a reliable source exists, prototype it as the preferred adapter without making private/internal ChatGPT APIs part of the contract.
-3. Move current semantic rendered-DOM conversion behind a dedicated adapter and retain `derived` accuracy.
-4. Keep explicit Paste Markdown as the guaranteed exact fallback.
-5. Compare accuracy/failure behavior on headings, lists, tables, code blocks, links and details-like content before selecting the preferred source path.
+1. Define the minimum handoff payload and source-accuracy semantics needed by Reader.
+2. Investigate supported integration mechanisms that can explicitly supply response content to Linked Notes without Linked Notes scraping the ChatGPT page/UI.
+3. Compare content fidelity, user-action/confirmation requirements, local delivery options and failure behavior.
+4. Keep explicit Paste Markdown as the reliable exact fallback during the investigation.
+5. Keep current DOM-derived behavior documented as prototype evidence until a separately reviewed runtime change replaces or removes it.
+
+Candidates may include an app/plugin/action/MCP/API or another supported integration, but this roadmap does not select one in advance.
+
+### Not selected as target architecture
+
+- programmatic DOM extraction as the automatic response-transfer contract;
+- programmatic activation of the ChatGPT UI Copy button as an extraction mechanism;
+- private/internal ChatGPT API dependence.
 
 ### Conservative fallback
 
-If no stable better source is found, keep the current semantic DOM adapter + exact Paste fallback and improve diagnostics rather than claiming exact source recovery.
+If no supported automatic handoff is selected yet, keep Reader rendering + manual exact Paste. The existing DOM-derived path may remain temporary prototype evidence, but do not promote it to the long-term integration contract.
 
 ### Exit evidence
 
-- source interface and accuracy semantics tested independently of Reader UI;
-- one documented preferred source or explicit decision to retain DOM as primary;
-- fallback behavior proven when external ChatGPT UI changes;
-- no private/internal API dependency introduced silently.
+- one documented supported handoff mechanism or an explicit decision that automatic handoff remains deferred;
+- tested payload/source-accuracy semantics independent of Reader UI;
+- documented user-action/confirmation and failure/retry behavior;
+- manual exact Paste remains available as fallback;
+- no silent dependence on private/internal APIs or page scraping as the target architecture.
 
 ## 3. NOW — Direction 2: Normal Content Copy And Chat Handoff
 
@@ -282,15 +294,21 @@ Questions:
 
 The repository should remain the handoff/memory layer between chats.
 
-Maintain:
+Maintain both documentation routes:
 
 ```text
-linked-notes/README.md
-APP-OVERVIEW.md
-ARCHITECTURE.md
-DATA-AND-STATE.md
-KNOWN-ISSUES.md
-this roadmap
+developer / implementation chat
+  → linked-notes/README.md
+  → APP-OVERVIEW.md
+  → ARCHITECTURE.md
+  → DATA-AND-STATE.md
+  → KNOWN-ISSUES.md
+  → this roadmap;
+
+repository-working / application-context chat
+  → .linked-notes/README.md
+  → .linked-notes/AGENT-GUIDE.md
+  → only applicable agent-facing contracts.
 ```
 
 Feature implementation should update focused owners rather than appending another long historical block to the entry README.
@@ -317,6 +335,7 @@ Candidate later directions/open decisions that are not active commitments:
 
 - automatic background repository writes;
 - private/internal ChatGPT API dependence as an assumed solution;
+- programmatic ChatGPT page/DOM/Copy extraction as the selected automatic handoff architecture;
 - automatic Reference Object propagation;
 - generic managed-object runtime as a prerequisite;
 - changing canonical Planning Items merely because this prototype roadmap proposes an implementation direction;

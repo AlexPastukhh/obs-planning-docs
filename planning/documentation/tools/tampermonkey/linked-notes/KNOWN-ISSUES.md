@@ -21,32 +21,39 @@ Resolution evidence
 
 Only checked facts or explicit user reports belong under `Observed / confirmed`. Hypotheses belong under investigation/notes.
 
-## CHAT-001 — ChatGPT message acquisition depends on rendered DOM
+## CHAT-001 — No accepted explicit ChatGPT-to-Linked-Notes response handoff
 
-**Status:** active architectural fragility
+**Status:** active integration gap
 **Priority:** high
 
 ### Observed / confirmed
 
-Current `Open in Reader` derives Markdown from the rendered assistant-message DOM and labels that result `derived`. Exact pasted Markdown remains the stable fallback. No private ChatGPT API is part of the current contract.
+- Reader safe Markdown rendering is implemented, including the supported narrow `<details>/<summary>` form.
+- Manual Paste Markdown is the current reliable explicit exact-source transfer into Reader.
+- Current `Open in Reader` derives Markdown from the rendered assistant-message DOM and labels that result `derived`; it is existing prototype implementation evidence.
+- The project does not select programmatic extraction from the ChatGPT page/UI, including programmatic activation of UI Copy as an extraction mechanism, as the target transport architecture.
+- A supported automatic handoff in which ChatGPT/integration supplies the response content to Linked Notes is not implemented yet.
 
 ### Risk
 
-ChatGPT DOM is external and may change independently of this repository. DOM-to-Markdown derivation can also differ from the original model/source representation even when extraction succeeds.
+The current DOM-derived path depends on an external page representation, cannot claim original-source fidelity and is not a suitable long-term contract for automatic response transfer.
 
 ### Desired direction
 
-Decouple Reader from the ChatGPT acquisition mechanism through a message-source abstraction and evaluate more reliable source acquisition before expanding the DOM parser further.
+Separate Reader rendering from response transport. Keep manual Paste as the reliable exact fallback while investigating an explicit supported integration boundary that supplies response content without Linked Notes scraping it from the ChatGPT UI.
 
 ### Evidence still needed
 
-- whether the ChatGPT UI's own Copy-response path exposes a stable, safely usable content source;
-- what data/format can be obtained without private/internal API dependence;
-- failure/accuracy comparison between candidate sources and current semantic DOM derivation.
+- which supported integration mechanism can provide the required explicit handoff;
+- what content representation/fidelity that mechanism can supply;
+- user-action/confirmation and local-delivery boundaries;
+- failure/retry semantics when the handoff cannot be completed.
+
+The concrete mechanism may involve an app/plugin/action/MCP/API or another supported integration, but no option is selected by this issue record.
 
 ### Likely subsystem
 
-`src/chat-response-reader.js`, `src/chat-response-reader-runtime.js` and a future source-adapter layer.
+`src/chat-response-reader.js`, `src/chat-response-reader-runtime.js` and a future transport/source-adapter boundary.
 
 ### Next investigation
 
@@ -152,8 +159,13 @@ Before this documentation reset, the main Linked Notes README mixed current beha
 
 ### Desired state
 
-Current-state entry docs should remain short and route into dedicated current product, architecture, data/state, known-issue and roadmap owners. Changelog/history must not become current-state authority.
+Keep two explicit documentation routes:
+
+- developer/implementation chats enter through the application README and dedicated product/architecture/data/issues/roadmap owners;
+- repository-working/application-context chats enter through `.linked-notes/AGENT-GUIDE.md` and read only the agent-facing contracts that affect content authoring.
+
+Changelog/history must not become current-state authority.
 
 ### Regression check
 
-When adding a feature, update the smallest current owner and navigation links rather than appending another large feature-history block to `README.md`.
+When adding a feature, update the smallest current owner rather than appending another large feature-history block to `README.md`. Add the feature to `AGENT-GUIDE.md` only when it changes how a content-working AI/chat should author repository content or a Reader-targeted response.

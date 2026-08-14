@@ -6,18 +6,30 @@ Scope: local-first Tampermonkey repository documentation prototype with Notes, F
 
 This directory is implementation/prototype material. Canonical Planning Items and project-local workflow owners remain under `planning/areas/documentation-workbench/`; this userscript does not silently define production architecture.
 
-## 1. Read This First
+## 1. Choose The Chat Role First
 
-For a new AI/chat or a new implementation session, read in this order:
+### Developer / implementation chat
+
+If the task is to change, debug or design Linked Notes itself, read in this order:
 
 1. [`APP-OVERVIEW.md`](APP-OVERVIEW.md) — what the application currently does and which surface owns which user action.
 2. [`ARCHITECTURE.md`](ARCHITECTURE.md) — runtime layers, module families, build order and GitHub boundary.
 3. [`DATA-AND-STATE.md`](DATA-AND-STATE.md) — repository truth, local persistence, runtime state, caches and secrets.
 4. [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md) — current implementation problems and evidence gaps.
 5. [`linked-notes-prototype-roadmap.md`](../../../../areas/documentation-workbench/linked-notes-prototype-roadmap.md) — current project-local development directions.
-6. Only then read the detailed workflow/mapping relevant to the task.
+6. Only then read the detailed workflow/mapping/source/tests relevant to the task.
 
 Do not infer current behavior from [`CHANGELOG.md`](CHANGELOG.md) alone. The changelog records how the prototype reached the current state; the current-state owners above take precedence.
+
+### Repository-working / application-context chat
+
+If the task is to work with repository files/content **inside a context where Linked Notes may consume that content**, do not read implementation architecture by default. Start at the repository-facing route:
+
+1. [`.linked-notes/README.md`](../../../../../.linked-notes/README.md);
+2. [`.linked-notes/AGENT-GUIDE.md`](../../../../../.linked-notes/AGENT-GUIDE.md);
+3. only the applicable detailed agent-facing contract.
+
+That route owns application-aware authoring rules such as Reference Objects, repository templates and Reader-target response formatting.
 
 ## 2. Current Surfaces
 
@@ -54,7 +66,7 @@ Focused implementation mappings/checks:
 - [`FULL-APP-STATE-EXPORT.md`](FULL-APP-STATE-EXPORT.md);
 - [`PROTOTYPE-CHECKLIST.md`](PROTOTYPE-CHECKLIST.md).
 
-Repository-facing conventions consumed by the prototype live under the repository root `.linked-notes/`; they are separate from this application documentation.
+Repository-facing conventions consumed by the prototype live under the repository root [`.linked-notes/`](../../../../../.linked-notes/README.md). Content-working chats should enter through its `AGENT-GUIDE.md`; those contracts are separate from this developer/application documentation.
 
 ## 4. Durable And Local Boundary
 

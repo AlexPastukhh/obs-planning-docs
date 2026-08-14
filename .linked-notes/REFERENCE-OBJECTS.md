@@ -2,6 +2,8 @@
 
 This file defines the repository-facing rules for OBS Linked Notes Reference Objects. It is intended to be readable by humans, AI agents and tools without requiring knowledge of the userscript implementation.
 
+Agent-facing feature status: **active**. Start from [`AGENT-GUIDE.md`](AGENT-GUIDE.md) and read this contract when reusing a synchronized value, editing existing `obs-ref:*` markers or intentionally creating a new Reference Object.
+
 ## Core model
 
 A Reference Object has:

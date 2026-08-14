@@ -77,6 +77,12 @@ The injected action is excluded from DOM-derived Markdown.
 
 No private ChatGPT API is used. If the external DOM changes enough that useful Markdown cannot be derived, the Reader opens paste mode with an explicit extraction status.
 
+This DOM integration is **current prototype implementation evidence**, not the selected target transport architecture. Reader rendering remains useful independently of transport. Manual Paste is the current reliable exact-source transfer; the desired supported automatic ChatGPT → Linked Notes handoff is not implemented and its concrete integration mechanism remains undecided.
+
+The target direction does not rely on Linked Notes programmatically extracting response content from the ChatGPT page/UI. The current DOM path remains documented until a separately reviewed runtime change replaces or removes it.
+
+Repository-facing response-format guidance is owned by `.linked-notes/CHAT-RESPONSE-FORMAT.md`; this file remains the implementation mapping.
+
 ## Local-only boundary
 
 Reader operations perform no:

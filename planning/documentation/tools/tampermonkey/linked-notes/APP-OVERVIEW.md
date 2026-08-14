@@ -132,6 +132,8 @@ Open in Reader on a visible assistant response
 
 The Reader supports a narrow safe `<details>/<summary>` form and keeps arbitrary active HTML blocked. Opening/rendering/copying/closing Reader content performs no GitHub or local persistence write.
 
+The rendering capability and the ChatGPT-to-Reader transport are separate concerns. Manual Paste is the current reliable exact transfer. The current DOM-derived `Open in Reader` path remains prototype implementation evidence; a supported automatic handoff that does not rely on Linked Notes extracting content from the ChatGPT UI is not implemented yet.
+
 Detailed mapping: [`CHAT-RESPONSE-READER.md`](CHAT-RESPONSE-READER.md).
 
 ## 10. App State
@@ -161,7 +163,19 @@ The current prototype does not automatically:
 - treat DOM-derived ChatGPT text as original exact model Markdown;
 - run local Git, commit or push.
 
-## 12. Where To Go Next
+## 12. Agent-Facing Repository Capabilities
+
+Some Linked Notes capabilities change how an AI/chat should author repository content or a Reader-targeted response. Their canonical repository-facing registry is [`.linked-notes/AGENT-GUIDE.md`](../../../../../.linked-notes/AGENT-GUIDE.md).
+
+Current registry entries:
+
+- Reference Objects;
+- Repository Templates;
+- Reader-target response formatting.
+
+The detailed rules stay in `.linked-notes/**`; this application overview only points to that layer.
+
+## 13. Where To Go Next
 
 - runtime composition: [`ARCHITECTURE.md`](ARCHITECTURE.md);
 - data ownership/storage: [`DATA-AND-STATE.md`](DATA-AND-STATE.md);

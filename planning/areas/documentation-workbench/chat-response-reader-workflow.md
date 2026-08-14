@@ -46,7 +46,32 @@ If useful Markdown cannot be derived, the Reader opens its paste fallback rather
 
 `sourceKind` and `sourceAccuracy` are an invariant pair: `chat-dom` is always `derived`, while content that the user actually renders from the Paste textarea is `paste` + `exact`. Starting a fresh Paste flow clears any prior DOM-derived Markdown, message/conversation keys, capture time and extraction diagnostics before the textarea is treated as exact input. A previously derived response must never become `exact` merely because the user opened Paste mode.
 
-## 4. Details / Summary Contract
+## 4. Transport Status / Product Boundary
+
+Keep Reader rendering separate from ChatGPT response transport:
+
+```text
+Reader safe Markdown renderer
+  = current capability;
+
+manual Paste Markdown
+  = current reliable explicit exact-source transfer;
+
+DOM-derived Open in Reader
+  = current prototype implementation evidence;
+  = derived only;
+  = not selected as the desired long-term ChatGPT → Linked Notes transport;
+
+future supported automatic handoff
+  = not implemented;
+  = concrete integration mechanism not selected.
+```
+
+The target automatic direction is an explicit supported handoff in which response content crosses an integration boundary without Linked Notes programmatically extracting it from the ChatGPT page/UI. This statement is a project architecture boundary, not a legal interpretation of any external service terms.
+
+The repository-facing authoring contract for chats that intentionally format a response for Reader is [`.linked-notes/CHAT-RESPONSE-FORMAT.md`](../../../.linked-notes/CHAT-RESPONSE-FORMAT.md).
+
+## 5. Details / Summary Contract
 
 Supported first-slice form:
 
@@ -78,7 +103,7 @@ Rules:
 - nested `details` are intentionally unsupported in this slice;
 - malformed, nested or unclosed details syntax remains inert literal HTML instead of becoming partially active markup.
 
-## 5. Reader Runtime State
+## 6. Reader Runtime State
 
 The serializable semantic state is:
 
@@ -100,7 +125,7 @@ This state is runtime-only. No Reader history database or GM key is introduced.
 
 DOM nodes, the Reader modal, MutationObserver handles and event callbacks are implementation handles rather than semantic state.
 
-## 6. End-To-End Flow
+## 7. End-To-End Flow
 
 ```text
 Open Reader
@@ -123,7 +148,7 @@ visible assistant response
   → close Reader.
 ```
 
-## 7. ChatGPT DOM Integration Boundary
+## 8. ChatGPT DOM Integration Boundary
 
 Assistant-message discovery uses semantic role markers when available, such as:
 
@@ -142,9 +167,9 @@ The enhancement must:
 - avoid class-name-only discovery as the sole contract;
 - extract only the selected response, not unrelated conversation messages.
 
-ChatGPT DOM remains external and changeable. Paste Markdown is the stable fallback when DOM integration no longer matches the page.
+ChatGPT DOM remains external and changeable. This path stays documented because it exists in the current prototype, but it is not the selected target transport architecture. Paste Markdown is the reliable explicit fallback while a supported automatic handoff remains unimplemented.
 
-## 8. Reader UI
+## 9. Reader UI
 
 The Reader is larger than the ordinary Linked Notes work panel and remains viewport-bounded.
 
@@ -168,7 +193,7 @@ Close
 
 Rendered links are inert in this slice. Images are not automatically loaded merely because a chat response was opened.
 
-## 9. Safety Rules
+## 10. Safety Rules
 
 - Opening, rendering, copying or closing Reader content performs no GitHub GET.
 - Opening, rendering, copying or closing Reader content performs no GitHub PUT.
@@ -182,7 +207,7 @@ Rendered links are inert in this slice. Images are not automatically loaded mere
 - Repository-relative image resources have no repository source context in a chat response and remain unloaded.
 - No GitHub credential is needed to use Reader or paste fallback.
 
-## 10. Full App State Handoff
+## 11. Full App State Handoff
 
 The current Reader semantic state is application runtime state and therefore belongs in Full App State export when present.
 
@@ -190,7 +215,7 @@ A snapshot should contain the Reader fields above, including current Markdown, s
 
 Implementation handles such as DOM elements, observers and event listeners stay omitted/non-serializable.
 
-## 11. Required Acceptance
+## 12. Required Acceptance
 
 Automated coverage should prove:
 
@@ -227,7 +252,7 @@ opening/rendering/copying produces no GitHub network activity;
 no Note/file is created automatically.
 ```
 
-## 12. Boundaries
+## 13. Boundaries
 
 This workflow does not:
 

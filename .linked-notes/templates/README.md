@@ -2,6 +2,8 @@
 
 This folder owns simple repository-native file templates for OBS Linked Notes.
 
+Agent-facing feature status: **active**. Start from [`../AGENT-GUIDE.md`](../AGENT-GUIDE.md) and read this contract when creating a document of a known template type or creating/editing a repository template.
+
 ## Template discovery
 
 A template exists when a **direct child** of this folder:
@@ -40,6 +42,34 @@ Rules:
 - ordinary YAML frontmatter, Markdown, HTML comments and Reference Object markers inside the body are normal template content and are preserved;
 - a live `obs-ref:def` / `obs-ref:use` marker in a template body is still a real Reference Object marker in that repository file and participates in explicit Reference Object Check/Update; put marker examples inside fenced code if they must remain examples only;
 - no variables, date substitution, AI interpolation or semantic rewriting are performed in v1.
+
+## Creating A New Repository Template
+
+A new repository template must be created as a **direct child** of this folder:
+
+```text
+.linked-notes/templates/<name>.template.md
+```
+
+The file must start with a valid v1 metadata block:
+
+```text
+<!-- obs-template
+name: Human readable name
+-->
+```
+
+Everything after that metadata block (and its immediately following line break) is the literal document body.
+
+Do not:
+
+- create nested template directories and expect v1 discovery to scan them;
+- create a template outside `.linked-notes/templates/`;
+- omit the `.template.md` suffix;
+- invent a template registry JSON;
+- add variables, date substitution or AI interpolation syntax that v1 does not implement.
+
+Creating a repository template is different from creating a normal document **from** a template.
 
 ## Creating a file
 
