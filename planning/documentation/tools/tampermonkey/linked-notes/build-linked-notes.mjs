@@ -35,11 +35,13 @@ const sourceFiles = [
   'src/remote-note-reconcile.js',
   'src/workspace-context.js',
   'src/workspace-store.js',
+  'src/full-app-state-export.js',
   'src/linked-notes-ui.js',
   'src/linked-notes-app.js',
   'src/runtime-responsiveness.js',
   'src/repository-files-workspace-runtime.js',
   'src/repository-reference-objects-runtime.js',
+  'src/full-app-state-runtime.js',
 ];
 
 const header = `// ==UserScript==
@@ -53,6 +55,7 @@ const header = `// ==UserScript==
 // @run-at       document-idle
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @grant        GM_listValues
 // @grant        GM_setClipboard
 // @grant        GM_xmlhttpRequest
 // @connect      api.github.com
