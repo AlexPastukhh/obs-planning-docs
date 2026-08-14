@@ -101,62 +101,134 @@
       return text;
     }
 
-    const lines = source.split('\n');
-    const output = [];
-    let index = 0;
-    let paragraph = [];
-    function flushParagraph() {
-      if (!paragraph.length) return;
-      output.push(`<p>${inline(paragraph.join('\n')).replace(/\n/g, '<br>')}</p>`);
-      paragraph = [];
-    }
     function isTableDivider(line) { return /^\s*\|?(?:\s*:?-{3,}:?\s*\|)+\s*:?-{3,}:?\s*\|?\s*$/.test(line); }
     function cells(line) { return line.trim().replace(/^\||\|$/g, '').split('|').map((cell) => cell.trim()); }
-
-    while (index < lines.length) {
-      const line = lines[index];
-      if (/^```/.test(line)) {
-        flushParagraph();
-        const language = line.slice(3).trim().replace(/[^a-zA-Z0-9_+-]/g, '');
-        const code = [];
-        index += 1;
-        while (index < lines.length && !/^```/.test(lines[index])) code.push(lines[index++]);
-        if (index < lines.length) index += 1;
-        output.push(`<pre><code${language ? ` class="language-${escapeAttribute(language)}"` : ''}>${escapeHtml(code.join('\n'))}</code></pre>`);
-        continue;
-      }
-      const heading = line.match(/^(#{1,6})\s+(.+)$/);
-      if (heading) { flushParagraph(); const level = heading[1].length; output.push(`<h${level}>${inline(heading[2])}</h${level}>`); index += 1; continue; }
-      if (line.startsWith('>')) {
-        flushParagraph(); const quoted = [];
-        while (index < lines.length && /^>\s?/.test(lines[index])) quoted.push(lines[index++].replace(/^>\s?/, ''));
-        output.push(`<blockquote>${quoted.map((item) => `<p>${inline(item)}</p>`).join('')}</blockquote>`); continue;
-      }
-      if (/^\s*[-*+]\s+/.test(line)) {
-        flushParagraph(); const items = [];
-        while (index < lines.length && /^\s*[-*+]\s+/.test(lines[index])) {
-          const raw = lines[index++].replace(/^\s*[-*+]\s+/, '');
-          const task = raw.match(/^\[([ xX])\]\s+(.*)$/);
-          items.push(task ? `<li class="task"><input type="checkbox" disabled ${task[1].toLowerCase() === 'x' ? 'checked' : ''}> ${inline(task[2])}</li>` : `<li>${inline(raw)}</li>`);
-        }
-        output.push(`<ul>${items.join('')}</ul>`); continue;
-      }
-      if (/^\s*\d+[.)]\s+/.test(line)) {
-        flushParagraph(); const items = [];
-        while (index < lines.length && /^\s*\d+[.)]\s+/.test(lines[index])) items.push(`<li>${inline(lines[index++].replace(/^\s*\d+[.)]\s+/, ''))}</li>`);
-        output.push(`<ol>${items.join('')}</ol>`); continue;
-      }
-      if (line.includes('|') && index + 1 < lines.length && isTableDivider(lines[index + 1])) {
-        flushParagraph(); const header = cells(line); index += 2; const rows = [];
-        while (index < lines.length && lines[index].includes('|') && lines[index].trim()) rows.push(cells(lines[index++]));
-        output.push(`<table><thead><tr>${header.map((cell) => `<th>${inline(cell)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${inline(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`); continue;
-      }
-      if (/^\s*(?:---+|___+|\*\*\*+)\s*$/.test(line)) { flushParagraph(); output.push('<hr>'); index += 1; continue; }
-      if (!line.trim()) { flushParagraph(); index += 1; continue; }
-      paragraph.push(line); index += 1;
+    function detailsOpen(line) {
+      const match = String(line || '').match(/^\s*<details(?:\s+(open))?\s*>\s*$/i);
+      return match ? { open: Boolean(match[1]) } : null;
     }
-    flushParagraph();
-    return { html: output.join('\n'), resources, links, sourceLength: source.length, safe: true, options: { allowRawImg: options.allowRawImg !== false } };
+    function detailsSummary(line) {
+      const match = String(line || '').match(/^\s*<summary>([\s\S]*?)<\/summary>\s*$/i);
+      return match ? match[1] : null;
+    }
+    function detailsLiteralEnd(lines, start) {
+      let fenced = false;
+      let depth = 0;
+      for (let index = start; index < lines.length; index += 1) {
+        const line = String(lines[index] || '');
+        if (/^\s*```/.test(line)) {
+          fenced = !fenced;
+          continue;
+        }
+        if (fenced) continue;
+        if (detailsOpen(line)) depth += 1;
+        else if (/^\s*<\/details>\s*$/i.test(line)) {
+          depth -= 1;
+          if (depth <= 0) return index + 1;
+        }
+      }
+      return lines.length;
+    }
+    function parseDetailsBlock(lines, start) {
+      const opening = detailsOpen(lines[start]);
+      if (!opening) return null;
+      let summaryIndex = start + 1;
+      while (summaryIndex < lines.length && !String(lines[summaryIndex]).trim()) summaryIndex += 1;
+      const summary = summaryIndex < lines.length ? detailsSummary(lines[summaryIndex]) : null;
+      if (summary == null) return null;
+      let fenced = false;
+      let closeIndex = -1;
+      for (let index = summaryIndex + 1; index < lines.length; index += 1) {
+        const line = String(lines[index] || '');
+        if (/^\s*```/.test(line)) {
+          fenced = !fenced;
+          continue;
+        }
+        if (fenced) continue;
+        if (detailsOpen(line)) return null;
+        if (/^\s*<\/details>\s*$/i.test(line)) { closeIndex = index; break; }
+      }
+      if (closeIndex < 0) return null;
+      return {
+        open: opening.open,
+        summary,
+        bodyLines: lines.slice(summaryIndex + 1, closeIndex),
+        nextIndex: closeIndex + 1
+      };
+    }
+
+    function renderLines(lines, allowDetails = true) {
+      const output = [];
+      let index = 0;
+      let paragraph = [];
+      function flushParagraph() {
+        if (!paragraph.length) return;
+        output.push(`<p>${inline(paragraph.join('\n')).replace(/\n/g, '<br>')}</p>`);
+        paragraph = [];
+      }
+
+      while (index < lines.length) {
+        const line = lines[index];
+        if (allowDetails && detailsOpen(line)) {
+          const block = parseDetailsBlock(lines, index);
+          flushParagraph();
+          if (block) {
+            const bodyHtml = renderLines(block.bodyLines, false);
+            output.push(`<details class="obs-md-details"${block.open ? ' open' : ''}><summary class="obs-md-summary">${inline(block.summary)}</summary><div class="obs-md-details-body">${bodyHtml}</div></details>`);
+            index = block.nextIndex;
+          } else {
+            const nextIndex = detailsLiteralEnd(lines, index);
+            output.push(`<p class="obs-md-literal-html">${escapeHtml(lines.slice(index, nextIndex).join('\n')).replace(/\n/g, '<br>')}</p>`);
+            index = nextIndex;
+          }
+          continue;
+        }
+        if (/^```/.test(line)) {
+          flushParagraph();
+          const language = line.slice(3).trim().replace(/[^a-zA-Z0-9_+-]/g, '');
+          const code = [];
+          index += 1;
+          while (index < lines.length && !/^```/.test(lines[index])) code.push(lines[index++]);
+          if (index < lines.length) index += 1;
+          output.push(`<pre><code${language ? ` class="language-${escapeAttribute(language)}"` : ''}>${escapeHtml(code.join('\n'))}</code></pre>`);
+          continue;
+        }
+        const heading = line.match(/^(#{1,6})\s+(.+)$/);
+        if (heading) { flushParagraph(); const level = heading[1].length; output.push(`<h${level}>${inline(heading[2])}</h${level}>`); index += 1; continue; }
+        if (line.startsWith('>')) {
+          flushParagraph(); const quoted = [];
+          while (index < lines.length && /^>\s?/.test(lines[index])) quoted.push(lines[index++].replace(/^>\s?/, ''));
+          output.push(`<blockquote>${quoted.map((item) => `<p>${inline(item)}</p>`).join('')}</blockquote>`); continue;
+        }
+        if (/^\s*[-*+]\s+/.test(line)) {
+          flushParagraph(); const items = [];
+          while (index < lines.length && /^\s*[-*+]\s+/.test(lines[index])) {
+            const raw = lines[index++].replace(/^\s*[-*+]\s+/, '');
+            const task = raw.match(/^\[([ xX])\]\s+(.*)$/);
+            items.push(task ? `<li class="task"><input type="checkbox" disabled ${task[1].toLowerCase() === 'x' ? 'checked' : ''}> ${inline(task[2])}</li>` : `<li>${inline(raw)}</li>`);
+          }
+          output.push(`<ul>${items.join('')}</ul>`); continue;
+        }
+        if (/^\s*\d+[.)]\s+/.test(line)) {
+          flushParagraph(); const items = [];
+          while (index < lines.length && /^\s*\d+[.)]\s+/.test(lines[index])) items.push(`<li>${inline(lines[index++].replace(/^\s*\d+[.)]\s+/, ''))}</li>`);
+          output.push(`<ol>${items.join('')}</ol>`); continue;
+        }
+        if (line.includes('|') && index + 1 < lines.length && isTableDivider(lines[index + 1])) {
+          flushParagraph(); const header = cells(line); index += 2; const rows = [];
+          while (index < lines.length && lines[index].includes('|') && lines[index].trim()) rows.push(cells(lines[index++]));
+          output.push(`<table><thead><tr>${header.map((cell) => `<th>${inline(cell)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${inline(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`); continue;
+        }
+        if (/^\s*(?:---+|___+|\*\*\*+)\s*$/.test(line)) { flushParagraph(); output.push('<hr>'); index += 1; continue; }
+        if (!line.trim()) { flushParagraph(); index += 1; continue; }
+        paragraph.push(line); index += 1;
+      }
+      flushParagraph();
+      return output.join('\n');
+    }
+
+    const html = renderLines(source.split('\n'), true);
+    return { html, resources, links, sourceLength: source.length, safe: true, options: { allowRawImg: options.allowRawImg !== false, allowDetails: true } };
   }
 
   return { renderRichMarkdown, escapeRichMarkdownHtml: escapeHtml, normalizeRichMarkdownTarget: normalizeTarget, parseRichMarkdownImgAttributes: parseImgAttributes };

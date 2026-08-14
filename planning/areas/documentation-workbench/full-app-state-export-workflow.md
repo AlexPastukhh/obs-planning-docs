@@ -1,7 +1,7 @@
 # Full App State Export Workflow
 
 Status: working project-local End-To-End Workflow / prototype acceptance pending
-Doc version: v0.1.0-full-local-state-export
+Doc version: v0.2.0-extension-runtime-coverage
 Scope: read-only inspection and export of OBS Linked Notes application-owned local state for troubleshooting, review and handoff to an AI/chat without exposing authentication secrets.
 
 ## 1. Purpose
@@ -67,7 +67,9 @@ If safe database inventory is unavailable, report the limitation instead of open
 
 ### Current runtime/UI state
 
-Capture the serializable current state held by the running app and UI, including extension-owned fields added by Files, repository templates, Reference Objects and responsiveness runtimes.
+Capture the serializable current state held by the running app and UI, including extension-owned fields added by Files, repository templates, Reference Objects, Chat Response Reader and responsiveness runtimes.
+
+The Chat Response Reader contribution includes its current open/mode state, exact-versus-derived source label, message/conversation keys when known, complete current Reader Markdown and extraction diagnostics. Reader DOM nodes, modal elements, MutationObserver handles and event callbacks are implementation handles and are not semantic snapshot state.
 
 Also capture live form-control values so a typed but not-yet-persisted value can be represented in the snapshot. Password/credential controls are redacted.
 
@@ -92,6 +94,7 @@ open Linked Notes
   → inspect existing application IndexedDB databases read-only
   → capture current app runtime fields
   → capture current UI state + live controls
+  → include extension-owned semantic runtime such as current Chat Response Reader state
   → redact known authentication secrets
   → normalize typed/binary/circular/non-serializable values
   → show snapshot summary + chat-safe preview
@@ -125,6 +128,7 @@ future obsLinkedNotesPrototype:* GM keys → included automatically;
 secret live controls → redacted;
 circular/functions → represented without throwing;
 absent IndexedDB databases → not opened/created;
+current Chat Response Reader Markdown/source-accuracy state → included through App runtime capture;
 copy action → no repository/local write side effect in the runtime contract.
 ```
 
@@ -133,7 +137,7 @@ Browser acceptance should additionally prove:
 ```text
 App state is reachable from the open Linked Notes workspace bar;
 Refresh works without a configured GitHub token;
-workspace/category/Files/Reference Object local state is visible when present;
+workspace/category/Files/Reference Object/Reader local state is visible when present;
 complete local Note bodies are present;
 pending assets are represented;
 unsaved visible form values are represented;

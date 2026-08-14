@@ -1,9 +1,21 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.7.1-prototype`
-Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search and UTF-8 text-file authoring, repository-root Markdown heading-link copy, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
+Version: `0.7.2-prototype`
+Scope: one local-first Tampermonkey prototype for repository-owned Markdown Notes, bounded repository browsing/search and UTF-8 text-file authoring, repository-root Markdown heading-link copy, Chat Response Reader, rich Markdown, managed links/backlinks and GitHub-backed file/Note categories across reusable GitHub workspaces.
 
+
+## 0.5 `0.7.2-prototype` Chat Response Reader Addition
+
+```text
+open one assistant response in a large local Reader through an idempotent `Open in Reader` action or use exact `Paste Markdown` fallback;
+derive Markdown from the selected rendered assistant-message DOM without claiming it is original model source;
+enforce `chat-dom` → `derived` and `paste` → `exact`, clearing prior derived source before a fresh Paste flow;
+render a narrow safe `<details>/<summary>` block form, including the boolean `open` attribute, while keeping arbitrary active HTML blocked;
+keep rendered links inert and avoid automatically loading chat-response images;
+perform no GitHub GET/PUT, GM write, IndexedDB write or automatic Note/file creation merely by opening, rendering, copying or closing Reader content;
+include serializable Reader semantic state in Full App State export while keeping DOM/observer handles non-semantic.
+```
 
 ## 0.4 `0.7.1-prototype` Runtime Responsiveness Correction
 
@@ -115,6 +127,8 @@ Behavior owners:
 - [`image-aware-markdown-transfer-workflow.md`](../../../../areas/documentation-workbench/image-aware-markdown-transfer-workflow.md);
 - the Linked Notes and repository-file/category Key Scenarios in [`planning-draft.md`](../../../../areas/documentation-workbench/planning-draft.md);
 - [`repository-file-browser-and-categories-workflow.md`](../../../../areas/documentation-workbench/repository-file-browser-and-categories-workflow.md);
+- [`chat-response-reader-workflow.md`](../../../../areas/documentation-workbench/chat-response-reader-workflow.md);
+- [`full-app-state-export-workflow.md`](../../../../areas/documentation-workbench/full-app-state-export-workflow.md);
 - `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-127`, `ITEM-134` and selected prototype ideas `ITEM-128`, `ITEM-132`, `ITEM-133` in [`planning-item-register.md`](../../../../areas/documentation-workbench/planning-item-register.md).
 
 This directory is implementation/prototype material. It does not redefine behavior owners or silently accept a production architecture.
@@ -331,7 +345,13 @@ src/repository-target-search.js
   explicit breadth-first filename search with depth, request, folder and result limits.
 
 src/rich-markdown-renderer.js
-  sanitized derived Markdown HTML with link/image descriptors and allowlisted img attributes.
+  sanitized derived Markdown HTML with link/image descriptors, allowlisted img attributes and narrow safe details/summary support.
+
+src/chat-response-reader.js
+  versioned Reader semantic state, exact/derived source invariant and safe rendered-DOM-to-Markdown derivation.
+
+src/chat-response-reader-runtime.js
+  large Reader modal, exact Paste fallback, assistant-message action injection, observer cleanup and Reader-first Escape handling.
 
 src/repository-media-loader.js
   authenticated repository image loading, MIME/size bounds and object-URL cleanup.
@@ -432,6 +452,8 @@ Automated verification covers:
 - preservation and explicit reset of unsaved workspace-form values;
 - open-time refresh after another tab changes workspace state;
 - abortable GM request transport, category path/SHA cache reuse, deterministic parent-validation bounds, same-realm runtime re-installation, cross-surface cancellation feedback cleanup and runtime wiring for fast category writes, cancellation, Close and Docs activity;
+- Chat Response Reader source-accuracy invariants, DOM-derived Markdown, idempotent assistant actions, local-only copy behavior and safe details/summary rendering;
+- Full App State capture of current Reader semantic state without DOM/observer handles;
 - generated userscript freshness and syntax.
 
 ## 6. Install
@@ -522,7 +544,8 @@ Deleting a workspace removes only local workspace records and affected chat mapp
 - selecting another workspace or starting a new workspace asks before discarding a dirty workspace form;
 - opening Notes rereads workspace state written by other tabs;
 - the current chat workspace and effective repository target are visible;
-- manager fields use user-facing names instead of an unexplained standalone `owner` field.
+- manager fields use user-facing names instead of an unexplained standalone `owner` field;
+- `Reader` opens a large local-only response viewer; assistant messages receive an idempotent `Open in Reader` enhancement when semantic ChatGPT role markers are available; exact Paste remains the stable fallback.
 
 
 ## 10. Repository File Browser Boundary
@@ -625,7 +648,7 @@ Remote recovery remains explicit:
 
 ## 14. Guided Test Run
 
-Run the exact test sequence in [`PROTOTYPE-CHECKLIST.md`](PROTOTYPE-CHECKLIST.md). The checklist covers:
+Run the exact cross-feature test sequence in [`PROTOTYPE-CHECKLIST.md`](PROTOTYPE-CHECKLIST.md). For Chat Response Reader/details acceptance, also record the focused run in [`CHAT-RESPONSE-READER-CHECKLIST.md`](CHAT-RESPONSE-READER-CHECKLIST.md). The general checklist covers:
 
 ```text
 automated verification;

@@ -52,10 +52,12 @@ The runtime patch snapshots enumerable semantic app/UI fields while excluding se
 
 Live `input`, `textarea` and `select` values are captured independently of persistence so dirty visible form state can be inspected without calling Save/persist first.
 
+`src/chat-response-reader-runtime.js` keeps the current Reader source in enumerable `app.chatResponseReader`, so open/mode state, exact-versus-derived source accuracy, current Markdown and extraction diagnostics are automatically included by the existing App runtime snapshot. The Reader modal, ChatGPT message DOM and MutationObserver remain internal handles and are not added as semantic state.
+
 ## Build integration
 
 `src/full-app-state-export.js` owns serialization/redaction/projection primitives.
 
-`src/full-app-state-runtime.js` patches the final Linked Notes App/UI constructors after Files and Reference Object runtimes are installed, so extension-owned state is visible in the captured app object.
+`src/full-app-state-runtime.js` patches the final Linked Notes App/UI constructors after Files, Reference Object and Chat Response Reader runtimes are installed, so their enumerable semantic state is visible in the captured app object.
 
 The userscript requires `@grant GM_listValues` in addition to the existing GM grants.

@@ -23,6 +23,7 @@ const sourceFiles = [
   'src/repository-reference-object-service.js',
   'src/repository-target-search.js',
   'src/rich-markdown-renderer.js',
+  'src/chat-response-reader.js',
   'src/repository-media-loader.js',
   'src/category-definition-codec.js',
   'src/repository-category-index.js',
@@ -41,14 +42,15 @@ const sourceFiles = [
   'src/runtime-responsiveness.js',
   'src/repository-files-workspace-runtime.js',
   'src/repository-reference-objects-runtime.js',
+  'src/chat-response-reader-runtime.js',
   'src/full-app-state-runtime.js',
 ];
 
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.7.1-prototype
-// @description  Repository Notes plus responsive Files workspace, materialized Reference Objects, searchable categories, rich Markdown and verified GitHub actions.
+// @version      0.7.2-prototype
+// @description  Repository Notes plus Files, materialized Reference Objects, Chat Response Reader, safe rich Markdown and verified GitHub actions.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*

@@ -22,6 +22,19 @@ test('runtime patches App/UI and copy actions stay local', async () => {
         this.ui = new FakeUI();
         this.current = { id: 'n1', body: 'draft' };
         this.remoteOperation = null;
+        this.chatResponseReader = {
+          schemaVersion: 1,
+          open: true,
+          mode: 'rendered',
+          sourceKind: 'paste',
+          sourceAccuracy: 'exact',
+          conversationKey: '',
+          messageKey: '',
+          markdown: '<details>\n<summary>Reader state</summary>\n\nlocal response\n\n</details>',
+          capturedAt: '2026-08-14T00:00:00.000Z',
+          status: 'Rendered locally.',
+          renderDiagnostics: []
+        };
         this.writes = [];
         this.clipboard = [];
         this.getValue = async (key) => key.endsWith('githubToken') ? 'secret-token' : { hello: 'world' };
@@ -39,6 +52,8 @@ test('runtime patches App/UI and copy actions stay local', async () => {
     assert.equal(Object.prototype.hasOwnProperty.call(secondSnapshot.runtime.app.state, 'fullAppStateSnapshotJson'), false);
     assert.equal(JSON.stringify(snapshot).includes('secret-token'), false);
     assert.equal(snapshot.persistent.indexedDb.databases.obsLinkedNotesPrototype.present, false);
+    assert.equal(snapshot.runtime.app.state.chatResponseReader.markdown.includes('Reader state'), true);
+    assert.equal(snapshot.runtime.app.state.chatResponseReader.sourceAccuracy, 'exact');
     const copied = await app.copyFullAppStateForChat();
     assert.ok(copied.bytes > 0);
     assert.match(app.clipboard[0], /OBS Linked Notes Full App State Snapshot/);
@@ -57,7 +72,6 @@ test('IndexedDB dump refuses to create absent databases', async () => {
   assert.equal(result.databases.obsLinkedNotesPrototype.present, false);
   assert.equal(result.databases.obsLinkedNotesPrototypeAssets.present, false);
 });
-
 
 test('IndexedDB dump includes future application-owned databases without opening unrelated databases', async () => {
   const opened = [];

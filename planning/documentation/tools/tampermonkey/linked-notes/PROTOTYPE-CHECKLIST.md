@@ -1,9 +1,9 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.7.1-prototype`
+Prototype version: `0.7.2-prototype`
 
-Use one copy for one concrete browser/repository test run. Never record token values.
+Use one copy for one concrete browser/repository test run. Never record token values. For focused Chat Response Reader/details acceptance, also use `CHAT-RESPONSE-READER-CHECKLIST.md`.
 
 ## 1. Environment
 
@@ -34,7 +34,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 |---:|---|---|---|
 | 1 | Run `node verify-linked-notes.mjs`. | All configured automated tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.7.1-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.7.2-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces and the Reader action becomes available from the Linked Notes workspace bar. | |
 | 3a | Run the transfer parser cases containing images inside raw `<pre>`, `<code>`, `<textarea>`, `<script>` and `<style>` containers. | Only images outside those code-like containers enter the transfer plan. | |
 | 3b | Simulate a Note or target-Markdown write accepted by GitHub while immediate read-back fails, then use the contextual verification action. | Exact matching remote content is accepted without another write; absent unchanged targets retry safely; differing content becomes conflict. | |
 
