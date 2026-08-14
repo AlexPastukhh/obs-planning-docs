@@ -86,6 +86,10 @@ The Planning Helper may perform an explicit GitHub Create/Update for command fil
 
 Deleting command files is not part of the first repository-write slice.
 
+## Not The Helper Local Library
+
+`planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` are optional user-authored Planning Helper library records. They contain exact insertion text and are **not** command routes, do not participate in this catalog, and do not gain planning-command authority from being stored in GitHub. Their contract is owned by `planning/helper-library/README.md`.
+
 ## Planning Helper
 
 Developer/build entry:

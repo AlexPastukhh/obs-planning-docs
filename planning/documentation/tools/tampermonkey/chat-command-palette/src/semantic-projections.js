@@ -5,7 +5,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const SURFACES = Object.freeze({ ORIENTATION: 'Orientation', DIRECTIONS: 'Directions', USE_CASES: 'Use Cases', COMMANDS: 'Commands' });
+  const SURFACES = Object.freeze({ ORIENTATION: 'Orientation', DIRECTIONS: 'Directions', USE_CASES: 'Use Cases', COMMANDS: 'Commands', LOCAL_COMMANDS: 'Local Cmds', PROMPTS: 'Prompts' });
   const MODE = Object.freeze({ ADAPTIVE: 'adaptive', FULL: 'full' });
 
   const ORIENTATION_DEFINITIONS = [{

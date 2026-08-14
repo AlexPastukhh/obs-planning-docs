@@ -34,7 +34,7 @@
     else if (typeof Buffer !== 'undefined') bytes = Uint8Array.from(Buffer.from(compact, 'base64'));
     else throw new Error('No base64 decoder available.');
     try { return new TextDecoder('utf-8', { fatal:true }).decode(bytes); }
-    catch (error) { throw new GitHubClientError('invalid_utf8', 'Repository command text is not valid UTF-8.', { cause:error }); }
+    catch (error) { throw new GitHubClientError('invalid_utf8', 'Repository text is not valid UTF-8.', { cause:error }); }
   }
 
   function statusKind(status) {
@@ -70,8 +70,8 @@
     }
     async listDirectory(path) {
       const normalized = normalizeGitHubContentPath(path); const payload = await this._request('GET', this._url(normalized, true)); if (!Array.isArray(payload)) throw new GitHubClientError('invalid_response','GitHub Contents response is not a directory listing.');
-      if (payload.length > 200) throw new GitHubClientError('limit_exceeded', 'GitHub command directory contains more than 200 direct entries.');
-      return payload.map((entry) => { const entryPath=normalizeGitHubContentPath(entry.path); if (!entryPath.startsWith(`${normalized}/`) || entryPath.slice(normalized.length+1).includes('/')) throw new GitHubClientError('invalid_response','GitHub command directory returned an entry outside the requested direct-child scope.'); return { type:String(entry.type || ''), path:entryPath, name:String(entry.name || ''), sha:String(entry.sha || ''), size:Number(entry.size || 0), htmlUrl:String(entry.html_url || '') }; });
+      if (payload.length > 200) throw new GitHubClientError('limit_exceeded', 'GitHub directory contains more than 200 direct entries.');
+      return payload.map((entry) => { const entryPath=normalizeGitHubContentPath(entry.path); if (!entryPath.startsWith(`${normalized}/`) || entryPath.slice(normalized.length+1).includes('/')) throw new GitHubClientError('invalid_response','GitHub directory returned an entry outside the requested direct-child scope.'); return { type:String(entry.type || ''), path:entryPath, name:String(entry.name || ''), sha:String(entry.sha || ''), size:Number(entry.size || 0), htmlUrl:String(entry.html_url || '') }; });
     }
     async read(path) {
       const normalized = normalizeGitHubContentPath(path); const payload = await this._request('GET', this._url(normalized, true)); if (!payload || payload.type !== 'file' || typeof payload.content !== 'string') throw new GitHubClientError('invalid_response','GitHub Contents response is not a UTF-8 file.');
@@ -90,7 +90,7 @@
         throw error;
       }
       let readBack; try { readBack = await this.read(normalized); } catch (error) { throw new GitHubClientError('verification_unknown','GitHub accepted the write, but read-back verification failed.', { cause:error, writeResult }); }
-      if (readBack.content !== content) throw new GitHubClientError('verification_mismatch','Remote read-back content does not match the intended command file.', { writeResult });
+      if (readBack.content !== content) throw new GitHubClientError('verification_mismatch','Remote read-back content does not match the intended repository file.', { writeResult });
       return { ...readBack, recoveredAfterUnknownWrite:false };
     }
   }

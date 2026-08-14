@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.25.2-repository-operation-lock
+Doc version: v0.26.0-planning-helper-local-library-prompts
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
@@ -10,7 +10,8 @@ Scope: tracked Tampermonkey scripts used by the OBS planning system, including r
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   generated install artifact for the modular Orientation / Directions / Use Cases / Commands helper;
   source/build/tests live under `chat-command-palette/`;
-  command definitions live under `planning/commands/`;
+  planning-command definitions live under `planning/commands/`;
+  user-authored local helper commands/prompts use `planning/helper-library/` when explicitly persisted to GitHub;
   its floating Planning launcher hides while Dashboard is open;
   Alt+F2 and Tools -> Commands remain available.
 
@@ -116,6 +117,8 @@ Planning Helper private GM storage:
   obsPlanningHelper:v1:repositorySettings
   obsPlanningHelper:v1:githubToken
   obsPlanningHelper:v1:commandCatalogCache
+  obsPlanningHelper:v1:localLibrary
+  obsPlanningHelper:v1:repositoryLibraryCache
 
 Linked Notes Prototype private GM storage:
   see linked-notes/DATA-AND-STATE.md for current application-owned GM namespaces and persistence ownership.
@@ -487,7 +490,7 @@ planning/planning-use-case-map.md
 
 The generated userscript bundles the valid command catalog for offline use. `Refresh repo` reads the current remote catalog and activates it only after complete validation. `Add / Update commands` accepts one or more strict command-definition blocks. `Parse & Preview` validates the merged remote catalog and captures exact repository identity plus the command-catalog snapshot and update SHAs/create absence expectations; `Save` uses that previewed plan and refuses stale or retargeted previews instead of silently reclassifying. Blank owner/repository/branch settings are rejected. Preview, refresh, settings-save and GitHub save operations are serialized under one repository-operation lock, and an in-flight save cannot be dismissed into a hidden overlapping write. Writes remain sequential, SHA-aware and exact-read-back verified. A partial multi-file result is reported without pretending rollback, and retry requires a new Preview. Delete is not implemented.
 
-Planning Helper repository settings and token use the separate `obsPlanningHelper:v1:*` GM namespace. The token is secret state and is never written into repository command files or catalog cache.
+Planning Helper repository settings, token, local helper library and repository-library cache use the separate `obsPlanningHelper:v1:*` GM namespace. The token is secret state and is never written into planning-command files, helper-library files or caches. Local Cmds and Prompts are convenience text, not planning-command authority; their optional repository copies live only under `planning/helper-library/`.
 
 ## 10. Command Palette adaptation rule
 
@@ -532,6 +535,11 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
-- Except for the explicitly documented Linked Notes boundary and Planning Helper command-management boundary, do not use helpers to write repository files or perform external network calls. Planning Helper writes are confined to direct `planning/commands/*.command.md`.
+- Except for the explicitly documented Linked Notes boundary and Planning Helper command-management boundary, do not use helpers to write repository files or perform external network calls. Planning Helper repository writes are confined to direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` targets.
 - The detailed Linked Notes test boundary, storage model and current invariants are owned under `linked-notes/` and its linked project-local workflows; this shared index must route there rather than become a competing application owner.
 ```
+
+
+## Planning Helper Local Library / Prompts
+
+Developer/runtime details remain under `chat-command-palette/`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. `Save local` is GM-only; `Repo` is a separate SHA-aware verified GitHub write. The generated userscript directly uses the granted `GM_getValue`, `GM_setValue` and `GM_xmlhttpRequest` APIs.

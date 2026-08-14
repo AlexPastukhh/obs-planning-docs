@@ -1,8 +1,8 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.1.2-repository-operation-lock
-Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries, command routes and owner-read refinements into the Tampermonkey/ChatGPT planning helper UI.
+Doc version: v1.2.0-local-helper-library-and-prompts
+Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and planning-command routes into the Tampermonkey/ChatGPT helper while keeping user-authored local commands/prompts in a separate non-authoritative helper library.
 
 ## 1. Core Rule
 
@@ -33,6 +33,13 @@ Projection implementation source/build:
 
 Generated install artifact:
   planning/documentation/tools/tampermonkey/chat-command-palette.user.js
+
+Helper local-library contract:
+  planning/helper-library/README.md
+
+Helper local-library repository records:
+  planning/helper-library/commands/*.helper-command.md
+  planning/helper-library/prompts/*.prompt.md
 ```
 
 The helper must not invent command meaning, permission boundaries, aliases or English display names. It parses accepted repository command definitions and generates runtime bodies from them.
@@ -522,3 +529,29 @@ Do not edit the generated userscript manually and do not create a competing trac
 - Do not recreate a `Docs` refinement when the standalone documentation-principles command is projected.
 - Do not retain removed creation-wording IDs, labels or aliases for `спланируй команду`.
 ```
+
+## Local Helper Commands And Prompts
+
+The planning-command projection and the helper local library are separate surfaces.
+
+```text
+Commands
+  → repository planning-command definitions from planning/commands/*.command.md;
+  → route/owner semantics;
+
+Local Cmds
+  → exact user-authored insertion text;
+  → local GM state first;
+  → optional repository copy under planning/helper-library/commands/;
+
+Prompts
+  → arbitrary exact prompt text;
+  → local GM state first;
+  → optional repository copy under planning/helper-library/prompts/.
+```
+
+A local helper command or prompt never becomes a registered planning command merely because it is copied to the repository. `Repo` must be a separate explicit action from `Save local`, show the configured repository identity plus target SHA/absence, reject stale previews, and use exact read-back verification. Repository-only helper-library items may be read/refreshed and copied into local state before editing.
+
+The modular helper may idempotently migrate the legacy page-local `obs-planning-helper-command-projections-v1` registry into its GM local helper-command library. Migration does not delete the legacy key and does not create `planning/commands/` entries.
+
+All repository operations share one serialized operation boundary. Local insert/copy/edit operations do not require a GitHub request.

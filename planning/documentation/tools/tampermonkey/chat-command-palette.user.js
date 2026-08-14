@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.20.2-repository-command-registry
-// @description  Modular OBS Planning Helper with repository-owned command definitions and explicit GitHub command-file management.
+// @version      0.21.1-repository-command-registry
+// @description  Modular OBS Planning Helper with planning commands, local helper commands/prompts and bounded GitHub persistence.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -15,7 +15,8 @@
 
 // GENERATED FILE — DO NOT EDIT MANUALLY.
 // Source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**
-// Commands: planning/commands/*.command.md
+// Planning commands: planning/commands/*.command.md
+// Helper library: planning/helper-library/{commands,prompts}/
 // Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs
 
 (function (root, factory) {
@@ -423,7 +424,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const SURFACES = Object.freeze({ ORIENTATION: 'Orientation', DIRECTIONS: 'Directions', USE_CASES: 'Use Cases', COMMANDS: 'Commands' });
+  const SURFACES = Object.freeze({ ORIENTATION: 'Orientation', DIRECTIONS: 'Directions', USE_CASES: 'Use Cases', COMMANDS: 'Commands', LOCAL_COMMANDS: 'Local Cmds', PROMPTS: 'Prompts' });
   const MODE = Object.freeze({ ADAPTIVE: 'adaptive', FULL: 'full' });
 
   const ORIENTATION_DEFINITIONS = [{
@@ -493,6 +494,147 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  const HELPER_LIBRARY_SCHEMA_VERSION = 1;
+  const HELPER_LIBRARY_MARKER = 'PLANNING_HELPER_LIBRARY_ITEM';
+  const HELPER_LIBRARY_ROOT = 'planning/helper-library';
+  const HELPER_LIBRARY_KINDS = Object.freeze({ COMMAND:'command', PROMPT:'prompt' });
+  const HELPER_LIBRARY_PATHS = Object.freeze({ command:`${HELPER_LIBRARY_ROOT}/commands`, prompt:`${HELPER_LIBRARY_ROOT}/prompts` });
+  const HELPER_LIBRARY_SUFFIXES = Object.freeze({ command:'.helper-command.md', prompt:'.prompt.md' });
+  const ID_PATTERN = /^[a-z0-9][a-z0-9._-]{0,79}$/;
+  const LEGACY_LOCAL_STORAGE_KEY = 'obs-planning-helper-command-projections-v1';
+
+  function assert(condition, message) { if (!condition) throw new TypeError(message); }
+  function hashText(value) { let hash=2166136261; for (const ch of String(value || '')) { hash^=ch.codePointAt(0); hash=Math.imul(hash,16777619); } return (hash>>>0).toString(36); }
+  function slugify(value) {
+    const slug=String(value || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9._-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,56);
+    return slug || `item-${hashText(value)}`;
+  }
+  function makeHelperLibraryId(title, text='') { const base=slugify(title); const suffix=hashText(`${title}\n${text}`).slice(0,8); return `${base.slice(0,Math.max(1,79-suffix.length))}-${suffix}`.slice(0,80).replace(/-+$/,''); }
+  function normalizeIso(value, fallback) { const text=String(value || '').trim(); if (!text) return fallback; const ms=Date.parse(text); assert(Number.isFinite(ms), `Invalid helper-library timestamp: ${text}`); return new Date(ms).toISOString(); }
+  function normalizeKind(value) { const kind=String(value || '').trim(); assert(kind===HELPER_LIBRARY_KINDS.COMMAND || kind===HELPER_LIBRARY_KINDS.PROMPT, `Unsupported helper-library kind: ${kind || '<empty>'}`); return kind; }
+
+  function normalizeHelperLibraryItem(value, options={}) {
+    assert(value && typeof value==='object', 'Helper-library item must be an object.');
+    const kind=normalizeKind(options.kind || value.kind);
+    const title=String(value.title || '').trim();
+    const text=String(value.text == null ? '' : value.text).replace(/\r\n?/g,'\n');
+    assert(title.length>0 && title.length<=160, 'Helper-library title must contain 1..160 characters.');
+    assert(!/[\r\n\u0000-\u001f\u007f]/.test(title), 'Helper-library title must be one printable line.');
+    assert(text.trim().length>0 && text.length<=100000, 'Helper-library text must contain 1..100000 characters and cannot be whitespace-only.');
+    const id=String(value.id || options.id || makeHelperLibraryId(title,text)).trim();
+    assert(ID_PATTERN.test(id), `Invalid helper-library id: ${id || '<empty>'}`);
+    const now=options.now || new Date().toISOString();
+    const createdAt=normalizeIso(value.createdAt, now);
+    const updatedAt=normalizeIso(value.updatedAt, now);
+    return { schemaVersion:HELPER_LIBRARY_SCHEMA_VERSION, kind, id, title, text, createdAt, updatedAt };
+  }
+
+  function helperLibraryTargetPath(item) {
+    const normalized=normalizeHelperLibraryItem(item);
+    return `${HELPER_LIBRARY_PATHS[normalized.kind]}/${normalized.id}${HELPER_LIBRARY_SUFFIXES[normalized.kind]}`;
+  }
+
+  function helperLibraryFilePattern(kind) {
+    const suffix=HELPER_LIBRARY_SUFFIXES[normalizeKind(kind)].replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return new RegExp(`^[a-z0-9][a-z0-9._-]{0,79}${suffix}$`);
+  }
+
+  function renderHelperLibraryDocument(item) {
+    const normalized=normalizeHelperLibraryItem(item);
+    const kindLabel=normalized.kind===HELPER_LIBRARY_KINDS.COMMAND?'Helper Command':'Prompt';
+    return `# ${kindLabel} — ${normalized.title}\n\nStatus: active Planning Helper library item\nScope: exact insertion text; not planning-command authority.\n\n[${HELPER_LIBRARY_MARKER}]\n${JSON.stringify(normalized,null,2)}\n[/${HELPER_LIBRARY_MARKER}]\n`;
+  }
+
+  function extractMarker(text) {
+    const source=String(text || '').replace(/\r\n?/g,'\n');
+    const open=`[${HELPER_LIBRARY_MARKER}]`, close=`[/${HELPER_LIBRARY_MARKER}]`;
+    const lines=source.split('\n');
+    const opens=[], closes=[];
+    for(let index=0;index<lines.length;index++){
+      if(lines[index]===open)opens.push(index);
+      if(lines[index]===close)closes.push(index);
+    }
+    assert(opens.length===1 && closes.length===1 && closes[0]>opens[0], 'Helper-library document must contain exactly one line-delimited marker block.');
+    return lines.slice(opens[0]+1,closes[0]).join('\n').trim();
+  }
+
+  function parseHelperLibraryDocument(text, options={}) {
+    let parsed; try { parsed=JSON.parse(extractMarker(text)); } catch (error) { throw new TypeError(`Invalid helper-library JSON: ${error.message}`); }
+    const allowed=new Set(['schemaVersion','kind','id','title','text','createdAt','updatedAt']);
+    for (const key of Object.keys(parsed || {})) assert(allowed.has(key), `Unsupported helper-library field: ${key}`);
+    assert(parsed.schemaVersion===HELPER_LIBRARY_SCHEMA_VERSION, `Unsupported helper-library schemaVersion: ${parsed.schemaVersion}`);
+    const item=normalizeHelperLibraryItem(parsed, options.kind ? {kind:options.kind} : {});
+    if (options.path) assert(String(options.path)===helperLibraryTargetPath(item), `Helper-library document path does not match item id/kind: ${options.path}`);
+    return item;
+  }
+
+  function normalizeHelperLibraryCollection(items) {
+    assert(Array.isArray(items), 'Helper-library collection must be an array.');
+    const result=items.map((item)=>normalizeHelperLibraryItem(item));
+    const seen=new Set();
+    for (const item of result) { const key=`${item.kind}:${item.id}`; assert(!seen.has(key), `Duplicate helper-library item: ${key}`); seen.add(key); }
+    return result;
+  }
+
+  function planningCommandProjectionText(value) {
+    const command=String(value.command || '').trim();
+    const englishName=String(value.englishName || '').trim();
+    const family=String(value.family || '').trim();
+    const target=String(value.target || '').trim();
+    const reminders=Array.isArray(value.reminders)?value.reminders.map((item)=>String(item).trim()).filter(Boolean):[];
+    assert(command && englishName && family && target && reminders.length, 'Legacy local command projection is incomplete.');
+    assert(family.includes(command), 'Legacy local command family does not include its canonical command.');
+    return [
+      '[PLANNING_COMMAND]',
+      'Read this whole command body before answering.',
+      'Do not ignore `key_reminders`.',
+      '', 'command:', `  ${command}`,
+      '', 'english_name:', `  ${englishName}`,
+      '', 'command_family:', `  ${family}`,
+      '', 'source_of_truth:', '  Start from `planning/planning-use-case-map.md`.', '  Then follow the currently registered command route and linked owner files.',
+      '', 'route_read_rule:', '  Read or reread the route when it is not current, remembered or certain.', '  Do not rely only on this compact local projection when command behavior is uncertain.',
+      '', 'key_reminders:', ...reminders.map((item)=>`  - ${item}`),
+      '', 'user_target:', `  ${target}`,
+      '', '[/PLANNING_COMMAND]'
+    ].join('\n');
+  }
+
+  function legacyProjectionToHelperItem(value, options={}) {
+    const text=planningCommandProjectionText(value);
+    const title=String(value.englishName || value.command || 'Local command').trim();
+    const legacyId=String(value.id || '').trim();
+    const id=ID_PATTERN.test(legacyId)?legacyId:makeHelperLibraryId(title,text);
+    return normalizeHelperLibraryItem({ kind:HELPER_LIBRARY_KINDS.COMMAND, id, title, text, createdAt:value.createdAt, updatedAt:value.updatedAt }, { now:options.now });
+  }
+
+  function parseLegacyProjectionRegistry(raw, options={}) {
+    if (!raw) return [];
+    let parsed; try { parsed=typeof raw==='string'?JSON.parse(raw):raw; } catch (error) { throw new TypeError(`Legacy local command registry is invalid JSON: ${error.message}`); }
+    assert(parsed && parsed.schemaVersion===1 && Array.isArray(parsed.commands), 'Unsupported legacy local command registry schema.');
+    return normalizeHelperLibraryCollection(parsed.commands.map((item)=>legacyProjectionToHelperItem(item,options)));
+  }
+
+  function mergeHelperLibrary(remoteItems, localItems) {
+    const remote=normalizeHelperLibraryCollection(remoteItems || []), local=normalizeHelperLibraryCollection(localItems || []);
+    const byKey=new Map();
+    for (const item of remote) byKey.set(`${item.kind}:${item.id}`, { ...item, source:'repo', hasRepo:true, hasLocal:false });
+    for (const item of local) {
+      const key=`${item.kind}:${item.id}`, previous=byKey.get(key);
+      byKey.set(key,{ ...item, source:previous?'local+repo':'local', hasRepo:Boolean(previous), hasLocal:true });
+    }
+    return [...byKey.values()].sort((a,b)=>a.kind.localeCompare(b.kind)||a.title.localeCompare(b.title)||a.id.localeCompare(b.id));
+  }
+
+  return { HELPER_LIBRARY_SCHEMA_VERSION, HELPER_LIBRARY_MARKER, HELPER_LIBRARY_ROOT, HELPER_LIBRARY_KINDS, HELPER_LIBRARY_PATHS, HELPER_LIBRARY_SUFFIXES, LEGACY_LOCAL_STORAGE_KEY, makeHelperLibraryId, normalizeHelperLibraryItem, normalizeHelperLibraryCollection, helperLibraryTargetPath, helperLibraryFilePattern, renderHelperLibraryDocument, parseHelperLibraryDocument, legacyProjectionToHelperItem, parseLegacyProjectionRegistry, mergeHelperLibrary };
+});
+
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
   class GitHubClientError extends Error {
     constructor(kind, message, details = {}) { super(message); this.name = 'GitHubClientError'; this.kind = kind; this.status = details.status || 0; this.details = details; }
   }
@@ -522,7 +664,7 @@
     else if (typeof Buffer !== 'undefined') bytes = Uint8Array.from(Buffer.from(compact, 'base64'));
     else throw new Error('No base64 decoder available.');
     try { return new TextDecoder('utf-8', { fatal:true }).decode(bytes); }
-    catch (error) { throw new GitHubClientError('invalid_utf8', 'Repository command text is not valid UTF-8.', { cause:error }); }
+    catch (error) { throw new GitHubClientError('invalid_utf8', 'Repository text is not valid UTF-8.', { cause:error }); }
   }
 
   function statusKind(status) {
@@ -558,8 +700,8 @@
     }
     async listDirectory(path) {
       const normalized = normalizeGitHubContentPath(path); const payload = await this._request('GET', this._url(normalized, true)); if (!Array.isArray(payload)) throw new GitHubClientError('invalid_response','GitHub Contents response is not a directory listing.');
-      if (payload.length > 200) throw new GitHubClientError('limit_exceeded', 'GitHub command directory contains more than 200 direct entries.');
-      return payload.map((entry) => { const entryPath=normalizeGitHubContentPath(entry.path); if (!entryPath.startsWith(`${normalized}/`) || entryPath.slice(normalized.length+1).includes('/')) throw new GitHubClientError('invalid_response','GitHub command directory returned an entry outside the requested direct-child scope.'); return { type:String(entry.type || ''), path:entryPath, name:String(entry.name || ''), sha:String(entry.sha || ''), size:Number(entry.size || 0), htmlUrl:String(entry.html_url || '') }; });
+      if (payload.length > 200) throw new GitHubClientError('limit_exceeded', 'GitHub directory contains more than 200 direct entries.');
+      return payload.map((entry) => { const entryPath=normalizeGitHubContentPath(entry.path); if (!entryPath.startsWith(`${normalized}/`) || entryPath.slice(normalized.length+1).includes('/')) throw new GitHubClientError('invalid_response','GitHub directory returned an entry outside the requested direct-child scope.'); return { type:String(entry.type || ''), path:entryPath, name:String(entry.name || ''), sha:String(entry.sha || ''), size:Number(entry.size || 0), htmlUrl:String(entry.html_url || '') }; });
     }
     async read(path) {
       const normalized = normalizeGitHubContentPath(path); const payload = await this._request('GET', this._url(normalized, true)); if (!payload || payload.type !== 'file' || typeof payload.content !== 'string') throw new GitHubClientError('invalid_response','GitHub Contents response is not a UTF-8 file.');
@@ -578,7 +720,7 @@
         throw error;
       }
       let readBack; try { readBack = await this.read(normalized); } catch (error) { throw new GitHubClientError('verification_unknown','GitHub accepted the write, but read-back verification failed.', { cause:error, writeResult }); }
-      if (readBack.content !== content) throw new GitHubClientError('verification_mismatch','Remote read-back content does not match the intended command file.', { writeResult });
+      if (readBack.content !== content) throw new GitHubClientError('verification_mismatch','Remote read-back content does not match the intended repository file.', { writeResult });
       return { ...readBack, recoveredAfterUnknownWrite:false };
     }
   }
@@ -709,57 +851,80 @@
 });
 
 (function (root, factory) {
-  const api = factory();
+  const api = factory(root.ObsPlanningHelper || (typeof require === 'function' ? require('./helper-library-codec.js') : {}));
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (deps) {
+  'use strict';
+
+  function conflict(message){const error=new Error(message);error.kind='conflict';return error;}
+  function sourceKey(identity){return `${identity.owner.toLowerCase()}/${identity.repo.toLowerCase()}@${identity.branch}`;}
+
+  class RepositoryHelperLibraryService {
+    constructor(client){this.client=client;}
+    _identity(){const identity={owner:String(this.client?.owner||'').trim(),repo:String(this.client?.repo||'').trim(),branch:String(this.client?.branch||'').trim()};if(!identity.owner||!identity.repo||!identity.branch)throw new TypeError('Repository client identity is incomplete.');return{...identity,sourceKey:sourceKey(identity)};}
+    _normalizeIdentity(value){if(!value||typeof value!=='object')throw new TypeError('Library preview is missing repository identity.');const identity={owner:String(value.owner||'').trim(),repo:String(value.repo||'').trim(),branch:String(value.branch||'').trim()};if(!identity.owner||!identity.repo||!identity.branch)throw new TypeError('Library preview repository identity is incomplete.');const key=sourceKey(identity);if(String(value.sourceKey||'')!==key)throw new TypeError('Library preview repository source key is invalid.');return{...identity,sourceKey:key};}
+    async _list(kind){const path=deps.HELPER_LIBRARY_PATHS[kind];let entries;try{entries=await this.client.listDirectory(path);}catch(error){if(error?.kind==='not_found')return[];throw error;}const pattern=deps.helperLibraryFilePattern(kind);return entries.filter((entry)=>entry.type==='file'&&pattern.test(entry.name)).sort((a,b)=>a.name.localeCompare(b.name));}
+    async loadKind(kind){const files=await this._list(kind);const result=[];for(const entry of files){const file=await this.client.read(entry.path);const item=deps.parseHelperLibraryDocument(file.content,{kind,path:entry.path});result.push({...item,__sha:file.sha,__path:entry.path});}return result;}
+    async loadAll(){const commands=await this.loadKind(deps.HELPER_LIBRARY_KINDS.COMMAND);const prompts=await this.loadKind(deps.HELPER_LIBRARY_KINDS.PROMPT);return[...commands,...prompts];}
+    async previewSave(value){const item=deps.normalizeHelperLibraryItem(value);const path=deps.helperLibraryTargetPath(item);let current=null;try{current=await this.client.read(path);deps.parseHelperLibraryDocument(current.content,{kind:item.kind,path});}catch(error){if(error?.kind!=='not_found')throw error;current=null;}return{repository:this._identity(),item,path,action:current?'update':'create',baseSha:current?.sha||''};}
+    _normalizePreview(plan){if(!plan||typeof plan!=='object')throw new TypeError('A helper-library Preview plan is required before Save.');const repository=this._normalizeIdentity(plan.repository);const item=deps.normalizeHelperLibraryItem(plan.item);const path=deps.helperLibraryTargetPath(item);if(String(plan.path||'')!==path)throw new TypeError('Helper-library target changed after Preview.');const action=String(plan.action||''),baseSha=String(plan.baseSha||'');if(action==='create'&&baseSha)throw new TypeError('Create helper-library preview unexpectedly contains a base SHA.');if(action==='update'&&!baseSha)throw new TypeError('Update helper-library preview is missing its base SHA.');if(action!=='create'&&action!=='update')throw new TypeError('Unknown helper-library preview action.');return{repository,item,path,action,baseSha};}
+    async savePreviewPlan(plan){const preview=this._normalizePreview(plan);const identity=this._identity();if(identity.sourceKey!==preview.repository.sourceKey)throw conflict(`Repository target changed since Preview (${preview.repository.sourceKey} -> ${identity.sourceKey}). Nothing was written; preview again.`);let current=null;try{current=await this.client.read(preview.path);}catch(error){if(error?.kind!=='not_found')throw error;}
+      if(preview.action==='create'&&current)throw conflict(`Repository helper-library item appeared after Preview: ${preview.path}. Nothing was written; preview again.`);
+      if(preview.action==='update'&&(!current||current.sha!==preview.baseSha))throw conflict(`Repository helper-library item changed after Preview: ${preview.path}. Nothing was written; preview again.`);
+      if(current)deps.parseHelperLibraryDocument(current.content,{kind:preview.item.kind,path:preview.path});
+      const content=deps.renderHelperLibraryDocument(preview.item);const write=await this.client.saveVerified({path:preview.path,content,baseSha:preview.baseSha,message:`${preview.action==='create'?'Add':'Update'} Planning Helper ${preview.item.kind} ${preview.item.title}`});return{ok:true,action:preview.action,path:preview.path,sha:write.sha,item:preview.item,recoveredAfterUnknownWrite:Boolean(write.recoveredAfterUnknownWrite)};
+    }
+  }
+
+  return { RepositoryHelperLibraryService, helperLibraryRepositorySourceKey:sourceKey };
+});
+
+(function (root, factory) {
+  const api = factory(root.ObsPlanningHelper || (typeof require === 'function' ? require('./helper-library-codec.js') : {}));
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (deps) {
   'use strict';
 
   const KEYS = Object.freeze({
     settings:'obsPlanningHelper:v1:repositorySettings',
     token:'obsPlanningHelper:v1:githubToken',
-    cache:'obsPlanningHelper:v1:commandCatalogCache'
+    cache:'obsPlanningHelper:v1:commandCatalogCache',
+    localLibrary:'obsPlanningHelper:v1:localLibrary',
+    repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'
   });
-  const POSITION_KEY = 'obs-planning-helper-position-v2';
-  const DEFAULT_SETTINGS = Object.freeze({ owner:'AlexPastukhh', repo:'obs-planning-docs', branch:'main' });
+  const POSITION_KEY='obs-planning-helper-position-v2';
+  const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
-  function getGm(name) { return typeof globalThis !== 'undefined' && typeof globalThis[name] === 'function' ? globalThis[name] : null; }
-  async function gmGet(key, fallback) { const fn=getGm('GM_getValue'); return fn ? await fn(key, fallback) : fallback; }
-  async function gmSet(key, value) { const fn=getGm('GM_setValue'); if (!fn) throw new Error('Tampermonkey GM_setValue is unavailable.'); await fn(key, value); }
+  function gmGetFn(){return typeof GM_getValue==='function'?GM_getValue:null;}
+  function gmSetFn(){return typeof GM_setValue==='function'?GM_setValue:null;}
+  async function gmGet(key,fallback){const fn=gmGetFn();return fn?await fn(key,fallback):fallback;}
+  async function gmSet(key,value){const fn=gmSetFn();if(!fn)throw new Error('Tampermonkey GM_setValue is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');await fn(key,value);}
 
-  function normalizeSettings(value) {
-    const input=value && typeof value==='object' ? value : {};
-    return {
-      owner:String(input.owner == null ? '' : input.owner).trim(),
-      repo:String(input.repo == null ? '' : input.repo).trim(),
-      branch:String(input.branch == null ? '' : input.branch).trim()
-    };
-  }
+  function normalizeSettings(value){const input=value&&typeof value==='object'?value:{};return{owner:String(input.owner==null?'':input.owner).trim(),repo:String(input.repo==null?'':input.repo).trim(),branch:String(input.branch==null?'':input.branch).trim()};}
+  function validateRepositorySettings(value){const settings=normalizeSettings(value);if(!settings.owner||!settings.repo||!settings.branch)throw new TypeError('Owner, repository and branch are required and cannot be replaced by defaults when saving settings.');for(const[field,text]of Object.entries(settings)){if(/[\r\n\u0000-\u001f\u007f]/.test(text))throw new TypeError(`${field} contains unsafe control characters.`);}return settings;}
+  function repositorySourceKey(settings){const value=validateRepositorySettings(settings);return`${value.owner.toLowerCase()}/${value.repo.toLowerCase()}@${value.branch}`;}
+  async function loadRepositorySettings(){const stored=await gmGet(KEYS.settings,null);return stored==null?{...DEFAULT_SETTINGS}:validateRepositorySettings(stored);}
+  async function saveRepositorySettings(settings){const value=validateRepositorySettings(settings);await gmSet(KEYS.settings,value);return value;}
+  async function loadGitHubToken(){return String(await gmGet(KEYS.token,'')||'').trim();}
+  async function saveGitHubToken(token){const value=String(token||'').trim();await gmSet(KEYS.token,value);return Boolean(value);}
+  async function loadCommandCatalogCache(settings){const value=await gmGet(KEYS.cache,null);if(!value||typeof value!=='object'||value.schemaVersion!==1)return null;return value.sourceKey===repositorySourceKey(settings)?value:null;}
+  async function saveCommandCatalogCache(definitions,settings){await gmSet(KEYS.cache,{schemaVersion:1,sourceKey:repositorySourceKey(settings),savedAt:new Date().toISOString(),definitions});}
 
-  function validateRepositorySettings(value) {
-    const settings=normalizeSettings(value);
-    if (!settings.owner || !settings.repo || !settings.branch) throw new TypeError('Owner, repository and branch are required and cannot be replaced by defaults when saving settings.');
-    for (const [field, text] of Object.entries(settings)) {
-      if (/[\r\n\u0000-\u001f\u007f]/.test(text)) throw new TypeError(`${field} contains unsafe control characters.`);
-    }
-    return settings;
-  }
+  async function loadLocalHelperLibrary(){const value=await gmGet(KEYS.localLibrary,null);if(value==null)return[];if(!value||value.schemaVersion!==1||!Array.isArray(value.items))throw new TypeError('Unsupported Planning Helper local-library schema.');return deps.normalizeHelperLibraryCollection(value.items);}
+  async function saveLocalHelperLibrary(items){const normalized=deps.normalizeHelperLibraryCollection(items);const payload={schemaVersion:1,items:normalized};await gmSet(KEYS.localLibrary,payload);const checked=await gmGet(KEYS.localLibrary,null);if(!checked||checked.schemaVersion!==1||JSON.stringify(checked.items)!==JSON.stringify(normalized))throw new Error('Planning Helper local-library write-back verification failed.');return normalized;}
+  async function upsertLocalHelperLibraryItem(value){const item=deps.normalizeHelperLibraryItem(value);const current=await loadLocalHelperLibrary();const key=`${item.kind}:${item.id}`;const next=[...current.filter((entry)=>`${entry.kind}:${entry.id}`!==key),item];return{item,items:await saveLocalHelperLibrary(next)};}
+  async function removeLocalHelperLibraryItem(kind,id){const current=await loadLocalHelperLibrary();const key=`${kind}:${id}`;const next=current.filter((entry)=>`${entry.kind}:${entry.id}`!==key);return saveLocalHelperLibrary(next);}
+  async function loadRepositoryHelperLibraryCache(settings){const value=await gmGet(KEYS.repositoryLibraryCache,null);if(!value||value.schemaVersion!==1||!Array.isArray(value.items)||value.sourceKey!==repositorySourceKey(settings))return null;return{...value,items:deps.normalizeHelperLibraryCollection(value.items)};}
+  async function saveRepositoryHelperLibraryCache(items,settings){const normalized=deps.normalizeHelperLibraryCollection(items.map((item)=>{const copy={...item};delete copy.__sha;delete copy.__path;return copy;}));await gmSet(KEYS.repositoryLibraryCache,{schemaVersion:1,sourceKey:repositorySourceKey(settings),savedAt:new Date().toISOString(),items:normalized});}
 
-  function repositorySourceKey(settings) { const value=validateRepositorySettings(settings); return `${value.owner.toLowerCase()}/${value.repo.toLowerCase()}@${value.branch}`; }
-  async function loadRepositorySettings() { const stored=await gmGet(KEYS.settings, null); return stored == null ? { ...DEFAULT_SETTINGS } : validateRepositorySettings(stored); }
-  async function saveRepositorySettings(settings) { const value=validateRepositorySettings(settings); await gmSet(KEYS.settings, value); return value; }
-  async function loadGitHubToken() { return String(await gmGet(KEYS.token, '') || '').trim(); }
-  async function saveGitHubToken(token) { const value=String(token || '').trim(); await gmSet(KEYS.token, value); return Boolean(value); }
-  async function loadCommandCatalogCache(settings) { const value=await gmGet(KEYS.cache, null); if (!value || typeof value!=='object' || value.schemaVersion!==1) return null; return value.sourceKey===repositorySourceKey(settings) ? value : null; }
-  async function saveCommandCatalogCache(definitions, settings) { await gmSet(KEYS.cache, { schemaVersion:1, sourceKey:repositorySourceKey(settings), savedAt:new Date().toISOString(), definitions }); }
+  async function migrateLegacyLocalCommandProjections(){let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}if(!raw)return{added:0,warning:null};let legacy;try{legacy=deps.parseLegacyProjectionRegistry(raw);}catch(error){return{added:0,warning:`Legacy local commands were not migrated: ${error.message||String(error)}`};}if(!legacy.length)return{added:0,warning:null};const current=await loadLocalHelperLibrary();const keys=new Set(current.map((item)=>`${item.kind}:${item.id}`));const additions=legacy.filter((item)=>!keys.has(`${item.kind}:${item.id}`));if(additions.length)await saveLocalHelperLibrary([...current,...additions]);return{added:additions.length,warning:null};}
 
-  function readPanelPosition() {
-    try { const parsed=JSON.parse(localStorage.getItem(POSITION_KEY) || '{}'); return { left:Number.isFinite(parsed.left) ? parsed.left : null, top:Number.isFinite(parsed.top) ? parsed.top : null }; }
-    catch (_) { return { left:null, top:null }; }
-  }
-  function savePanelPosition(position) { try { localStorage.setItem(POSITION_KEY, JSON.stringify({ left:position.left, top:position.top })); } catch (_) {} }
+  function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null};}catch(_){return{left:null,top:null};}}
+  function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top}));}catch(_){}}
 
-  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, normalizeSettings, validateRepositorySettings, repositorySourceKey, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, loadCommandCatalogCache, saveCommandCatalogCache, readPanelPosition, savePanelPosition };
+  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, normalizeSettings, validateRepositorySettings, repositorySourceKey, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, loadCommandCatalogCache, saveCommandCatalogCache, loadLocalHelperLibrary, saveLocalHelperLibrary, upsertLocalHelperLibraryItem, removeLocalHelperLibraryItem, loadRepositoryHelperLibraryCache, saveRepositoryHelperLibraryCache, migrateLegacyLocalCommandProjections, readPanelPosition, savePanelPosition };
 });
 
 (function (root, factory) {
@@ -819,70 +984,94 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (deps) {
   'use strict';
 
-  const HOST_ID = 'obs-planning-helper-host';
+  const HOST_ID='obs-planning-helper-host';
 
-  function createPlanningHelperUi(options = {}) {
-    const SURFACES = options.surfaces || deps.SURFACES;
-    document.getElementById(HOST_ID)?.remove();
-    document.getElementById('obs-command-helper-host')?.remove();
-    const host=document.createElement('div'); host.id=HOST_ID; document.documentElement.appendChild(host); const root=host.attachShadow({mode:'open'});
-    const saved=options.position || {left:null,top:null}; let left=saved.left ?? Math.max(12,window.innerWidth-540); let top=saved.top ?? Math.max(12,window.innerHeight-720);
-    let activeSurface=SURFACES.ORIENTATION; let commandEntries=[...(options.commandEntries||[])]; let semanticEntries=options.semanticEntries||{}; let focusCommandId=null; let activeOverlay=null; let isOpen=false; let dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true'; let lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||''; let statusTimer=null; let insertionBusy=false; let repositoryBusy=false; let repositoryBusyLabel='';
+  function createPlanningHelperUi(options={}) {
+    const SURFACES=options.surfaces||deps.SURFACES;
+    document.getElementById(HOST_ID)?.remove();document.getElementById('obs-command-helper-host')?.remove();
+    const host=document.createElement('div');host.id=HOST_ID;document.documentElement.appendChild(host);const root=host.attachShadow({mode:'open'});
+    const saved=options.position||{left:null,top:null};let left=saved.left??Math.max(12,window.innerWidth-560);let top=saved.top??Math.max(12,window.innerHeight-760);
+    let activeSurface=SURFACES.ORIENTATION;let commandEntries=[...(options.commandEntries||[])];let localCommandEntries=[...(options.localCommandEntries||[])];let promptEntries=[...(options.promptEntries||[])];const semanticEntries=options.semanticEntries||{};let focusCommandId=null;let activeOverlay=null;let isOpen=false;let dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true';let lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'';let statusTimer=null;let insertionBusy=false;let repositoryBusy=false;let repositoryBusyLabel='';
 
     root.innerHTML=`<style>
-:host{all:initial}*{box-sizing:border-box}button,input,textarea{font:inherit}.launcher{position:fixed;right:18px;bottom:22px;z-index:2147483647;border:1px solid rgba(148,163,184,.42);border-radius:999px;padding:9px 13px;background:#111827;color:#f8fafc;font:700 12px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.35)}.panel{position:fixed;left:${left}px;top:${top}px;z-index:2147483647;width:min(530px,calc(100vw - 24px));max-height:min(86vh,860px);display:none;flex-direction:column;overflow:hidden;border:1px solid rgba(148,163,184,.35);border-radius:14px;background:#0b1220;color:#f8fafc;box-shadow:0 20px 60px rgba(0,0,0,.5);font:13px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.panel[data-open=true]{display:flex}.header{display:flex;align-items:center;gap:8px;padding:10px;background:#111b2e;border-bottom:1px solid rgba(148,163,184,.2);cursor:grab;user-select:none}.title{flex:1;min-width:0}.title-main{font-weight:800}.title-sub{color:#94a3b8;font-size:11px}.close{width:30px;height:30px}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:7px;border-bottom:1px solid rgba(148,163,184,.16)}button{border:1px solid rgba(148,163,184,.3);border-radius:8px;background:#17243a;color:#f8fafc;cursor:pointer}button:hover,button:focus-visible{background:#243750;outline:none}button:disabled{opacity:.55;cursor:wait}.tab{padding:7px 4px;font-size:11px}.tab[aria-selected=true]{background:#1d4ed8;border-color:#60a5fa}.command-tools{display:none;gap:6px;padding:7px 8px;border-bottom:1px solid rgba(148,163,184,.16);flex-wrap:wrap}.command-tools[data-visible=true]{display:flex}.tool{padding:6px 8px}.search-wrap{padding:8px;border-bottom:1px solid rgba(148,163,184,.16)}.search{width:100%;padding:8px 9px;border:1px solid rgba(148,163,184,.3);border-radius:8px;background:#020817;color:#f8fafc}.body{overflow:auto;padding:8px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin:4px 0}.insert{min-width:0;padding:8px;text-align:left}.row-label{display:block;font-weight:750;overflow:hidden;text-overflow:ellipsis}.row-meta{display:block;color:#94a3b8;font-size:11px}.actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}.full,.refinement,.copy,.open-command{padding:5px 8px}.full{color:#bfdbfe;border-color:rgba(96,165,250,.5)}.refinement{color:#ddd6fe;border-color:rgba(167,139,250,.5)}.open-command{color:#bbf7d0;border-color:rgba(74,222,128,.5)}.status{margin:0 8px 8px;padding:8px;border-radius:8px;background:rgba(37,99,235,.18);color:#bfdbfe;white-space:pre-wrap}.empty{padding:18px;color:#94a3b8;text-align:center}.overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(760px,96vw);max-height:90vh;overflow:auto;background:#0b1220;color:#f8fafc;border:1px solid rgba(148,163,184,.4);border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55);padding:14px;font:13px/1.45 system-ui,sans-serif}.modal h2{margin:0 0 8px;font-size:17px}.modal p{color:#cbd5e1}.modal textarea{width:100%;min-height:330px;padding:10px;border:1px solid rgba(148,163,184,.35);border-radius:8px;background:#020817;color:#f8fafc;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}.modal input{width:100%;padding:8px;border:1px solid rgba(148,163,184,.35);border-radius:8px;background:#020817;color:#f8fafc}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:grid;gap:4px}.field-wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.preview{margin-top:10px;padding:10px;border:1px solid rgba(148,163,184,.25);border-radius:8px;background:#07101f;white-space:pre-wrap}.danger{color:#fecaca}.ok{color:#bbf7d0}
-</style><button class="launcher" type="button">Planning</button><section class="panel" data-open="false" aria-label="OBS planning helper"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">Repository commands · Adaptive · Full · Copy</div></div><button class="close" type="button" title="Close">×</button></div><div class="tabs" role="tablist">${Object.values(SURFACES).map((surface)=>`<button class="tab" type="button" role="tab" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="command-tools"><button class="tool refresh" type="button">Refresh repo</button><button class="tool import" type="button">Add / Update commands</button><button class="tool settings" type="button">Repository settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…" autocomplete="off"></div><div class="body"></div></section>`;
+:host{all:initial}*{box-sizing:border-box}button,input,textarea{font:inherit}.launcher{position:fixed;right:18px;bottom:22px;z-index:2147483647;border:1px solid rgba(148,163,184,.42);border-radius:999px;padding:9px 13px;background:#111827;color:#f8fafc;font:700 12px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.35)}.panel{position:fixed;left:${left}px;top:${top}px;z-index:2147483647;width:min(560px,calc(100vw - 24px));max-height:min(88vh,900px);display:none;flex-direction:column;overflow:hidden;border:1px solid rgba(148,163,184,.35);border-radius:14px;background:#0b1220;color:#f8fafc;box-shadow:0 20px 60px rgba(0,0,0,.5);font:13px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.panel[data-open=true]{display:flex}.header{display:flex;align-items:center;gap:8px;padding:10px;background:#111b2e;border-bottom:1px solid rgba(148,163,184,.2);cursor:grab;user-select:none}.title{flex:1;min-width:0}.title-main{font-weight:800}.title-sub{color:#94a3b8;font-size:11px}.close{width:30px;height:30px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:7px;border-bottom:1px solid rgba(148,163,184,.16)}button{border:1px solid rgba(148,163,184,.3);border-radius:8px;background:#17243a;color:#f8fafc;cursor:pointer}button:hover,button:focus-visible{background:#243750;outline:none}button:disabled{opacity:.55;cursor:wait}.tab{padding:7px 4px;font-size:11px}.tab[aria-selected=true]{background:#1d4ed8;border-color:#60a5fa}.surface-tools{display:none;gap:6px;padding:7px 8px;border-bottom:1px solid rgba(148,163,184,.16);flex-wrap:wrap}.surface-tools[data-visible=true]{display:flex}.tool{padding:6px 8px}.search-wrap{padding:8px;border-bottom:1px solid rgba(148,163,184,.16)}.search{width:100%;padding:8px 9px;border:1px solid rgba(148,163,184,.3);border-radius:8px;background:#020817;color:#f8fafc}.body{overflow:auto;padding:8px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin:4px 0}.insert{min-width:0;padding:8px;text-align:left}.row-label{display:block;font-weight:750;overflow:hidden;text-overflow:ellipsis}.row-meta{display:block;color:#94a3b8;font-size:11px}.actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}.full,.refinement,.copy,.open-command,.edit-library,.repo-library,.delete-library{padding:5px 8px}.full{color:#bfdbfe;border-color:rgba(96,165,250,.5)}.refinement{color:#ddd6fe;border-color:rgba(167,139,250,.5)}.open-command{color:#bbf7d0;border-color:rgba(74,222,128,.5)}.repo-library{color:#fde68a;border-color:rgba(250,204,21,.5)}.delete-library{color:#fecaca;border-color:rgba(248,113,113,.5)}.status{margin:0 8px 8px;padding:8px;border-radius:8px;background:rgba(37,99,235,.18);color:#bfdbfe;white-space:pre-wrap}.empty{padding:18px;color:#94a3b8;text-align:center}.overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(760px,96vw);max-height:90vh;overflow:auto;background:#0b1220;color:#f8fafc;border:1px solid rgba(148,163,184,.4);border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.55);padding:14px;font:13px/1.45 system-ui,sans-serif}.modal h2{margin:0 0 8px;font-size:17px}.modal p{color:#cbd5e1}.modal textarea{width:100%;min-height:300px;padding:10px;border:1px solid rgba(148,163,184,.35);border-radius:8px;background:#020817;color:#f8fafc;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}.modal input{width:100%;padding:8px;border:1px solid rgba(148,163,184,.35);border-radius:8px;background:#020817;color:#f8fafc}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:grid;gap:4px}.field-wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.preview{margin-top:10px;padding:10px;border:1px solid rgba(148,163,184,.25);border-radius:8px;background:#07101f;white-space:pre-wrap}.danger{color:#fecaca}.ok{color:#bbf7d0}
+</style><button class="launcher" type="button">Planning</button><section class="panel" data-open="false" aria-label="OBS planning helper"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">Planning routes · local commands · prompts · repository backup</div></div><button class="close" type="button" title="Close">×</button></div><div class="tabs" role="tablist">${Object.values(SURFACES).map((surface)=>`<button class="tab" type="button" role="tab" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="surface-tools command-tools"><button class="tool refresh" type="button">Refresh repo</button><button class="tool import" type="button">Add / Update planning commands</button><button class="tool settings" type="button">Repository settings</button></div><div class="surface-tools library-tools"><button class="tool new-library" type="button">New</button><button class="tool refresh-library" type="button">Refresh repo library</button><button class="tool settings-library" type="button">Repository settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…" autocomplete="off"></div><div class="body"></div></section>`;
 
-    const launcher=root.querySelector('.launcher'), panel=root.querySelector('.panel'), header=root.querySelector('.header'), closeButton=root.querySelector('.close'), searchInput=root.querySelector('.search'), body=root.querySelector('.body'), commandTools=root.querySelector('.command-tools'), tabButtons=[...root.querySelectorAll('.tab')];
+    const launcher=root.querySelector('.launcher'),panel=root.querySelector('.panel'),header=root.querySelector('.header'),closeButton=root.querySelector('.close'),searchInput=root.querySelector('.search'),body=root.querySelector('.body'),commandTools=root.querySelector('.command-tools'),libraryTools=root.querySelector('.library-tools'),tabButtons=[...root.querySelectorAll('.tab')];
 
-    function entriesForSurface(surface){return surface===SURFACES.COMMANDS?commandEntries:(semanticEntries[surface]||[])}
-    function setCommandEntries(entries){commandEntries=[...(entries||[])]; if(activeSurface===SURFACES.COMMANDS) renderEntries(searchInput.value)}
-    function switchSurface(surface,commandId=null){activeSurface=surface;focusCommandId=commandId;searchInput.value='';tabButtons.forEach((button)=>button.setAttribute('aria-selected',String(button.dataset.surface===surface)));commandTools.dataset.visible=String(surface===SURFACES.COMMANDS);renderEntries('')}
-    function setOpen(next){const requested=Boolean(next);if(!requested&&repositoryBusy){showStatus(`${repositoryBusyLabel||'Repository operation'} is still running. Wait for it to finish before closing the helper.`,7000);return}isOpen=requested;if(!isOpen&&activeOverlay)closeOverlay(activeOverlay);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen){keepPanelInViewport();switchSurface(activeSurface);window.setTimeout(()=>searchInput.focus(),0)}}
-    function showStatus(message,timeout=4200){root.querySelector('.status')?.remove();if(statusTimer!==null)window.clearTimeout(statusTimer);const status=document.createElement('div');status.className='status';status.textContent=String(message);panel.appendChild(status);statusTimer=window.setTimeout(()=>{status.remove();statusTimer=null},timeout)}
-    function setBusy(busy){insertionBusy=Boolean(busy);root.querySelectorAll('.insert,.full,.refinement,.open-command').forEach((button)=>{button.disabled=insertionBusy});root.querySelectorAll('.tool').forEach((button)=>{button.disabled=repositoryBusy||insertionBusy})} function setRepositoryBusy(busy,label=''){repositoryBusy=Boolean(busy);repositoryBusyLabel=repositoryBusy?String(label||'Repository operation'):'';root.querySelectorAll('.tool').forEach((button)=>{button.disabled=repositoryBusy||insertionBusy})} async function runRepositoryOperation(label,task){if(repositoryBusy){const error=new Error(`Repository operation already in progress: ${repositoryBusyLabel}.`);error.kind='busy';throw error}setRepositoryBusy(true,label);try{return await task()}finally{setRepositoryBusy(false)}}
-    async function insertBody(text,success,id){if(insertionBusy){showStatus('Insertion is already in progress.');return}setBusy(true);try{const message=await options.onInsert(text,success,id);showStatus(message||success)}finally{setBusy(false)}}
+    function isLibrarySurface(surface){return surface===SURFACES.LOCAL_COMMANDS||surface===SURFACES.PROMPTS;}
+    function libraryKindForSurface(surface){return surface===SURFACES.PROMPTS?deps.HELPER_LIBRARY_KINDS.PROMPT:deps.HELPER_LIBRARY_KINDS.COMMAND;}
+    function entriesForSurface(surface){if(surface===SURFACES.COMMANDS)return commandEntries;if(surface===SURFACES.LOCAL_COMMANDS)return localCommandEntries;if(surface===SURFACES.PROMPTS)return promptEntries;return semanticEntries[surface]||[];}
+    function setCommandEntries(entries){commandEntries=[...(entries||[])];if(activeSurface===SURFACES.COMMANDS)renderEntries(searchInput.value);}
+    function setLibraryEntries(result={}){if(result.localCommandEntries)localCommandEntries=[...result.localCommandEntries];if(result.promptEntries)promptEntries=[...result.promptEntries];if(isLibrarySurface(activeSurface))renderEntries(searchInput.value);}
+    function switchSurface(surface,commandId=null){activeSurface=surface;focusCommandId=commandId;searchInput.value='';tabButtons.forEach((button)=>button.setAttribute('aria-selected',String(button.dataset.surface===surface)));commandTools.dataset.visible=String(surface===SURFACES.COMMANDS);libraryTools.dataset.visible=String(isLibrarySurface(surface));const newButton=root.querySelector('.new-library');if(newButton)newButton.textContent=surface===SURFACES.PROMPTS?'New prompt':'New local command';renderEntries('');}
+    function setOpen(next){const requested=Boolean(next);if(!requested&&repositoryBusy){showStatus(`${repositoryBusyLabel||'Repository operation'} is still running. Wait for it to finish before closing the helper.`,7000);return;}isOpen=requested;if(!isOpen&&activeOverlay)closeOverlay(activeOverlay);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen){keepPanelInViewport();switchSurface(activeSurface);window.setTimeout(()=>searchInput.focus(),0);}}
+    function showStatus(message,timeout=4200){root.querySelector('.status')?.remove();if(statusTimer!==null)window.clearTimeout(statusTimer);const status=document.createElement('div');status.className='status';status.textContent=String(message);panel.appendChild(status);statusTimer=window.setTimeout(()=>{status.remove();statusTimer=null;},timeout);}
+    function setBusy(busy){insertionBusy=Boolean(busy);root.querySelectorAll('.insert,.full,.refinement,.open-command,.edit-library,.repo-library,.delete-library,.copy').forEach((button)=>{button.disabled=insertionBusy;});root.querySelectorAll('.tool').forEach((button)=>{button.disabled=repositoryBusy||insertionBusy;});}
+    function setRepositoryBusy(busy,label=''){repositoryBusy=Boolean(busy);repositoryBusyLabel=repositoryBusy?String(label||'Repository operation'):'';root.querySelectorAll('.tool,.repo-library').forEach((button)=>{button.disabled=repositoryBusy||insertionBusy;});}
+    async function runRepositoryOperation(label,task){if(repositoryBusy){const error=new Error(`Repository operation already in progress: ${repositoryBusyLabel}.`);error.kind='busy';throw error;}setRepositoryBusy(true,label);try{return await task();}finally{setRepositoryBusy(false);}}
+    async function insertBody(text,success,id){if(insertionBusy){showStatus('Insertion is already in progress.');return;}setBusy(true);try{const message=await options.onInsert(text,success,id);showStatus(message||success);}finally{setBusy(false);}}
 
-    function renderEntries(query){const normalized=String(query||'').trim().toLowerCase();const entries=entriesForSurface(activeSurface).filter((entry)=>!normalized||[entry.id,entry.label,entry.command||'',entry.description,entry.englishName||'',...(entry.commandFamily||[]),...(entry.sources||[])].join(' ').toLowerCase().includes(normalized));body.textContent='';if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='No matching entries.';body.appendChild(empty);return}for(const entry of entries){const row=document.createElement('div');row.className='row';const main=document.createElement('button');main.type='button';main.className='insert';const label=document.createElement('span');label.className='row-label';label.textContent=activeSurface===SURFACES.COMMANDS?`${entry.englishName} · ${entry.command||entry.label}`:entry.label;const meta=document.createElement('span');meta.className='row-meta';meta.textContent=entry.description||entry.id;main.append(label,meta);const actions=document.createElement('div');actions.className='actions';if(entry.commandId){main.title='Open the related accepted command';main.addEventListener('click',()=>switchSurface(SURFACES.COMMANDS,entry.commandId));const open=document.createElement('button');open.type='button';open.className='open-command';open.textContent='Open Commands';open.addEventListener('click',()=>switchSurface(SURFACES.COMMANDS,entry.commandId));actions.append(open)}else{main.title='Insert Adaptive body';main.addEventListener('click',()=>insertBody(entry.adaptiveBody,`Inserted: ${entry.label||entry.command} · Adaptive`,entry.id));const full=document.createElement('button');full.type='button';full.className='full';full.textContent='Full';full.addEventListener('click',()=>insertBody(entry.fullBody,`Inserted: ${entry.label||entry.command} · Full`,entry.id));actions.append(full);if(activeSurface===SURFACES.COMMANDS)for(const refinement of entry.refinementBodies||[]){const button=document.createElement('button');button.type='button';button.className='refinement';button.textContent=refinement.label;button.title=refinement.description;button.addEventListener('click',()=>insertBody(refinement.body,`Inserted refinement: ${entry.command} · ${refinement.label}`,`${entry.id}:${refinement.id}`));actions.append(button)}const copy=document.createElement('button');copy.type='button';copy.className='copy';copy.textContent='Copy';copy.addEventListener('click',async()=>showStatus(await options.onCopy(entry.adaptiveBody)?`Copied: ${entry.label||entry.command} · Adaptive`:'Clipboard copy failed.'));actions.append(copy)}row.append(main,actions);body.appendChild(row);if(entry.id===focusCommandId){window.setTimeout(()=>{main.focus();row.scrollIntoView({block:'nearest'});focusCommandId=null},0)}}}
+    function renderEntries(query){
+      const normalized=String(query||'').trim().toLowerCase();const entries=entriesForSurface(activeSurface).filter((entry)=>!normalized||[entry.id,entry.label,entry.command||'',entry.description,entry.englishName||'',entry.text||'',...(entry.commandFamily||[]),...(entry.sources||[])].join(' ').toLowerCase().includes(normalized));body.textContent='';
+      if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent=isLibrarySurface(activeSurface)?'No local/repository library items yet.':'No matching entries.';body.appendChild(empty);return;}
+      for(const entry of entries){
+        const row=document.createElement('div');row.className='row';const main=document.createElement('button');main.type='button';main.className='insert';const label=document.createElement('span');label.className='row-label';label.textContent=activeSurface===SURFACES.COMMANDS?`${entry.englishName} · ${entry.command||entry.label}`:entry.label;const meta=document.createElement('span');meta.className='row-meta';meta.textContent=entry.description||entry.id;main.append(label,meta);const actions=document.createElement('div');actions.className='actions';
+        if(isLibrarySurface(activeSurface)){
+          main.title='Insert exact saved text';main.addEventListener('click',()=>insertBody(entry.text,`Inserted: ${entry.title}`,entry.id));
+          const copy=document.createElement('button');copy.type='button';copy.className='copy';copy.textContent='Copy';copy.addEventListener('click',async()=>showStatus(await options.onCopy(entry.text)?`Copied: ${entry.title}`:'Clipboard copy failed.'));actions.append(copy);
+          const edit=document.createElement('button');edit.type='button';edit.className='edit-library';edit.textContent=entry.hasLocal?'Edit':'Save local';edit.addEventListener('click',()=>openLibraryEditor(entry));actions.append(edit);
+          if(entry.hasLocal){const repo=document.createElement('button');repo.type='button';repo.className='repo-library';repo.textContent='Repo';repo.title='Preview and save this local item to the configured GitHub repository';repo.addEventListener('click',()=>openLibraryRepoSave(entry));actions.append(repo);const remove=document.createElement('button');remove.type='button';remove.className='delete-library';remove.textContent='Delete local';remove.addEventListener('click',()=>deleteLocalLibrary(entry));actions.append(remove);}
+        } else if(entry.commandId){
+          main.title='Open the related accepted command';main.addEventListener('click',()=>switchSurface(SURFACES.COMMANDS,entry.commandId));const open=document.createElement('button');open.type='button';open.className='open-command';open.textContent='Open Commands';open.addEventListener('click',()=>switchSurface(SURFACES.COMMANDS,entry.commandId));actions.append(open);
+        } else {
+          main.title='Insert Adaptive body';main.addEventListener('click',()=>insertBody(entry.adaptiveBody,`Inserted: ${entry.label||entry.command} · Adaptive`,entry.id));const full=document.createElement('button');full.type='button';full.className='full';full.textContent='Full';full.addEventListener('click',()=>insertBody(entry.fullBody,`Inserted: ${entry.label||entry.command} · Full`,entry.id));actions.append(full);if(activeSurface===SURFACES.COMMANDS)for(const refinement of entry.refinementBodies||[]){const button=document.createElement('button');button.type='button';button.className='refinement';button.textContent=refinement.label;button.title=refinement.description;button.addEventListener('click',()=>insertBody(refinement.body,`Inserted refinement: ${entry.command} · ${refinement.label}`,`${entry.id}:${refinement.id}`));actions.append(button);}const copy=document.createElement('button');copy.type='button';copy.className='copy';copy.textContent='Copy';copy.addEventListener('click',async()=>showStatus(await options.onCopy(entry.adaptiveBody)?`Copied: ${entry.label||entry.command} · Adaptive`:'Clipboard copy failed.'));actions.append(copy);
+        }
+        row.append(main,actions);body.appendChild(row);if(entry.id===focusCommandId){window.setTimeout(()=>{main.focus();row.scrollIntoView({block:'nearest'});focusCommandId=null;},0);}
+      }
+    }
 
-    function closeOverlay(overlay){if(repositoryBusy&&overlay===activeOverlay){showStatus(`${repositoryBusyLabel||'Repository operation'} is still running. Wait for it to finish before closing this dialog.`,7000);return false}if(overlay===activeOverlay)activeOverlay=null;overlay?.remove();return true}
-    function makeOverlay(title){if(activeOverlay)closeOverlay(activeOverlay);const overlay=document.createElement('div');overlay.className='overlay';const modal=document.createElement('section');modal.className='modal';const h=document.createElement('h2');h.textContent=title;modal.appendChild(h);overlay.appendChild(modal);root.appendChild(overlay);activeOverlay=overlay;overlay.addEventListener('click',(event)=>{if(event.target===overlay)closeOverlay(overlay)});return{overlay,modal}}
+    function closeOverlay(overlay){if(repositoryBusy&&overlay===activeOverlay){showStatus(`${repositoryBusyLabel||'Repository operation'} is still running. Wait for it to finish before closing this dialog.`,7000);return false;}if(overlay===activeOverlay)activeOverlay=null;overlay?.remove();return true;}
+    function makeOverlay(title){if(activeOverlay&&!closeOverlay(activeOverlay))return null;const overlay=document.createElement('div');overlay.className='overlay';const modal=document.createElement('section');modal.className='modal';const h=document.createElement('h2');h.textContent=title;modal.appendChild(h);overlay.appendChild(modal);root.appendChild(overlay);activeOverlay=overlay;overlay.addEventListener('click',(event)=>{if(event.target===overlay)closeOverlay(overlay);});return{overlay,modal};}
 
     async function openImport(){
-      const {overlay,modal}=makeOverlay('Add / Update repository commands');
-      const intro=document.createElement('p');intro.textContent='Paste one or more [PLANNING_COMMAND_DEFINITION] blocks. Parse & Preview captures repository identity, the current command-catalog snapshot and update SHAs; Save uses that exact plan and refuses a stale or retargeted preview.';
-      const textarea=document.createElement('textarea');textarea.placeholder='[PLANNING_COMMAND_DEFINITION]\n{ ... }\n[/PLANNING_COMMAND_DEFINITION]';
-      const preview=document.createElement('div');preview.className='preview';preview.textContent='Not parsed yet.';
-      const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const parse=document.createElement('button');parse.textContent='Parse & Preview';const save=document.createElement('button');save.textContent='Save to GitHub';save.disabled=true;actions.append(cancel,parse,save);modal.append(intro,textarea,preview,actions);
-      let parsed=null;let savePlan=null;
-      textarea.addEventListener('input',()=>{if(parsed||savePlan){parsed=null;savePlan=null;save.disabled=true;preview.textContent='Input changed. Parse & Preview again before saving.';preview.className='preview'}});
-      cancel.addEventListener('click',()=>closeOverlay(overlay));
-      parse.addEventListener('click',async()=>{save.disabled=true;savePlan=null;parsed=null;textarea.disabled=true;cancel.disabled=true;parse.disabled=true;try{await runRepositoryOperation('Repository Preview',async()=>{parsed=options.parseDefinitions(textarea.value);preview.textContent=`${parsed.length} valid command definition(s). Checking repository…`;const plan=await options.onPreviewDefinitions(parsed);if(!plan||!Array.isArray(plan.items)||!plan.repository?.sourceKey)throw new Error('Repository Preview returned an invalid save plan.');savePlan=plan;const source=`Repository: ${plan.repository.owner}/${plan.repository.repo}@${plan.repository.branch}`;preview.textContent=source+'\n\n'+plan.items.map((row)=>`${row.action.toUpperCase()}  ${row.path}\n  ${row.definition.englishName} · ${row.definition.command}${row.baseSha?`\n  base SHA: ${row.baseSha}`:'\n  expects: absent'}`).join('\n\n');preview.className='preview ok'})}catch(error){parsed=null;savePlan=null;preview.textContent=error.message||String(error);preview.className='preview danger'}finally{textarea.disabled=false;cancel.disabled=false;parse.disabled=false;save.disabled=!savePlan}});
-      save.addEventListener('click',async()=>{if(!savePlan)return;const plan=savePlan;savePlan=null;parsed=null;textarea.disabled=true;cancel.disabled=true;parse.disabled=true;save.disabled=true;try{await runRepositoryOperation('Repository Save',async()=>{const result=await options.onSaveDefinitions(plan);const lines=result.results.map((row)=>`${row.ok?'OK':'FAIL'} ${row.action} ${row.path}${row.error?` — ${row.error}`:''}`);preview.textContent=`Repository: ${plan.repository.owner}/${plan.repository.repo}@${plan.repository.branch}\n\n`+lines.join('\n')+(result.remaining?.length?`\nNot written: ${result.remaining.join(', ')}`:'')+(result.refreshError?`\nRefresh warning: ${result.refreshError}`:'');preview.className=`preview ${result.ok?'ok':'danger'}`;if(result.commandEntries)setCommandEntries(result.commandEntries);if(result.ok)showStatus(`Saved and verified ${result.results.length} command file(s).`);else showStatus('Command save stopped after a partial/failed GitHub result; Parse & Preview again before any retry.',7000)})}catch(error){preview.textContent=`${error.message||String(error)}\nParse & Preview again before saving.`;preview.className='preview danger'}finally{textarea.disabled=false;cancel.disabled=false;parse.disabled=false}})
+      const made=makeOverlay('Add / Update repository planning commands');if(!made)return;const{overlay,modal}=made;const intro=document.createElement('p');intro.textContent='This is the planning-command registry (route/owners), not the local helper library. Paste one or more [PLANNING_COMMAND_DEFINITION] blocks. Parse & Preview captures repository identity, catalog snapshot and update SHAs; Save uses that exact plan.';const textarea=document.createElement('textarea');textarea.placeholder='[PLANNING_COMMAND_DEFINITION]\n{ ... }\n[/PLANNING_COMMAND_DEFINITION]';const preview=document.createElement('div');preview.className='preview';preview.textContent='Not parsed yet.';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const parse=document.createElement('button');parse.textContent='Parse & Preview';const save=document.createElement('button');save.textContent='Save to GitHub';save.disabled=true;actions.append(cancel,parse,save);modal.append(intro,textarea,preview,actions);let parsed=null,savePlan=null;
+      textarea.addEventListener('input',()=>{if(parsed||savePlan){parsed=null;savePlan=null;save.disabled=true;preview.textContent='Input changed. Parse & Preview again before saving.';preview.className='preview';}});cancel.addEventListener('click',()=>closeOverlay(overlay));
+      parse.addEventListener('click',async()=>{save.disabled=true;savePlan=null;parsed=null;textarea.disabled=true;cancel.disabled=true;parse.disabled=true;try{await runRepositoryOperation('Repository Preview',async()=>{parsed=options.parseDefinitions(textarea.value);preview.textContent=`${parsed.length} valid planning command definition(s). Checking repository…`;const plan=await options.onPreviewDefinitions(parsed);if(!plan||!Array.isArray(plan.items)||!plan.repository?.sourceKey)throw new Error('Repository Preview returned an invalid save plan.');savePlan=plan;const source=`Repository: ${plan.repository.owner}/${plan.repository.repo}@${plan.repository.branch}`;preview.textContent=source+'\n\n'+plan.items.map((row)=>`${row.action.toUpperCase()}  ${row.path}\n  ${row.definition.englishName} · ${row.definition.command}${row.baseSha?`\n  base SHA: ${row.baseSha}`:'\n  expects: absent'}`).join('\n\n');preview.className='preview ok';});}catch(error){parsed=null;savePlan=null;preview.textContent=error.message||String(error);preview.className='preview danger';}finally{textarea.disabled=false;cancel.disabled=false;parse.disabled=false;save.disabled=!savePlan;}});
+      save.addEventListener('click',async()=>{if(!savePlan)return;const plan=savePlan;savePlan=null;parsed=null;textarea.disabled=true;cancel.disabled=true;parse.disabled=true;save.disabled=true;try{await runRepositoryOperation('Repository Save',async()=>{const result=await options.onSaveDefinitions(plan);const lines=result.results.map((row)=>`${row.ok?'OK':'FAIL'} ${row.action} ${row.path}${row.error?` — ${row.error}`:''}`);preview.textContent=`Repository: ${plan.repository.owner}/${plan.repository.repo}@${plan.repository.branch}\n\n`+lines.join('\n')+(result.remaining?.length?`\nNot written: ${result.remaining.join(', ')}`:'')+(result.refreshError?`\nRefresh warning: ${result.refreshError}`:'');preview.className=`preview ${result.ok?'ok':'danger'}`;if(result.commandEntries)setCommandEntries(result.commandEntries);showStatus(result.ok?`Saved and verified ${result.results.length} planning command file(s).`:'Planning-command save stopped after a partial/failed GitHub result; Preview again before retry.',7000);});}catch(error){preview.textContent=`${error.message||String(error)}\nParse & Preview again before saving.`;preview.className='preview danger';}finally{textarea.disabled=false;cancel.disabled=false;parse.disabled=false;}});
+    }
+
+    async function openLibraryEditor(entry=null){
+      const kind=entry?.libraryKind||libraryKindForSurface(activeSurface);const made=makeOverlay(entry?(entry.hasLocal?'Edit local item':'Save repository item locally'):(kind===deps.HELPER_LIBRARY_KINDS.PROMPT?'New prompt':'New local command'));if(!made)return;const{overlay,modal}=made;const fields=document.createElement('div');fields.className='fields';const titleWrap=document.createElement('label');titleWrap.className='field field-wide';const titleLabel=document.createElement('span');titleLabel.textContent='Title';const title=document.createElement('input');title.value=entry?.title||'';titleWrap.append(titleLabel,title);fields.append(titleWrap);const textLabel=document.createElement('label');textLabel.className='field field-wide';const span=document.createElement('span');span.textContent=kind===deps.HELPER_LIBRARY_KINDS.PROMPT?'Prompt text':'Command text (inserted exactly as saved)';const textarea=document.createElement('textarea');textarea.value=entry?.text||'';textLabel.append(span,textarea);fields.append(textLabel);const note=document.createElement('p');note.textContent='Save local stores this exact text in Planning Helper GM storage. It does not create a planning/commands route. Use the Repo button on the saved row for a separate SHA-aware repository write.';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const save=document.createElement('button');save.textContent='Save local';actions.append(cancel,save);modal.append(fields,note,actions);cancel.addEventListener('click',()=>closeOverlay(overlay));save.addEventListener('click',async()=>{title.disabled=true;textarea.disabled=true;cancel.disabled=true;save.disabled=true;try{const result=await options.onSaveLocalLibraryItem({kind,id:entry?.libraryId||'',title:title.value,text:textarea.value,createdAt:entry?.createdAt||''});setLibraryEntries(result);closeOverlay(overlay);showStatus(`${kind==='prompt'?'Prompt':'Local command'} saved locally.`);}catch(error){showStatus(error.message||String(error),7000);}finally{title.disabled=false;textarea.disabled=false;cancel.disabled=false;save.disabled=false;}});
+    }
+
+    async function deleteLocalLibrary(entry){if(!entry?.hasLocal)return;try{const result=await options.onDeleteLocalLibraryItem(entry.libraryKind,entry.libraryId);setLibraryEntries(result);showStatus(`Local copy removed: ${entry.title}${entry.hasRepo?' · repository copy remains visible':''}.`);}catch(error){showStatus(error.message||String(error),7000);}}
+
+    async function openLibraryRepoSave(entry){
+      if(!entry?.hasLocal)return;const made=makeOverlay(`Save ${entry.libraryKind} to repository`);if(!made)return;const{overlay,modal}=made;const intro=document.createElement('p');intro.textContent='This writes one local helper-library item, not a planning command. Preview captures repository identity and the target file SHA/absence. If the target changes before Save, the write stops.';const preview=document.createElement('div');preview.className='preview';preview.textContent='Checking repository…';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const save=document.createElement('button');save.textContent='Save to GitHub';save.disabled=true;actions.append(cancel,save);modal.append(intro,preview,actions);cancel.addEventListener('click',()=>closeOverlay(overlay));let plan=null;
+      try{await runRepositoryOperation('Preview helper-library save',async()=>{plan=await options.onPreviewLibraryItem(entry.libraryKind,entry.libraryId);preview.textContent=`Repository: ${plan.repository.owner}/${plan.repository.repo}@${plan.repository.branch}\n\n${plan.action.toUpperCase()}  ${plan.path}\n${plan.baseSha?`base SHA: ${plan.baseSha}`:'expects: absent'}\n\n${entry.title}`;preview.className='preview ok';save.disabled=false;});}catch(error){preview.textContent=error.message||String(error);preview.className='preview danger';return;}
+      save.addEventListener('click',async()=>{if(!plan)return;const exact=plan;plan=null;cancel.disabled=true;save.disabled=true;try{await runRepositoryOperation('Save helper-library item',async()=>{const result=await options.onSaveLibraryItem(exact);setLibraryEntries(result);preview.textContent=`OK ${result.action} ${result.path}\nSHA: ${result.sha}${result.refreshError?`\nRefresh warning: ${result.refreshError}`:''}`;preview.className='preview ok';showStatus(`Saved and verified repository ${entry.libraryKind}: ${entry.title}.`);});}catch(error){preview.textContent=`${error.message||String(error)}\nPreview again before retrying.`;preview.className='preview danger';}finally{cancel.disabled=false;}});
     }
 
     async function openSettings(){
-      const {overlay,modal}=makeOverlay('Repository settings');const current=await options.onLoadSettings();const fields=document.createElement('div');fields.className='fields';
-      function add(labelText,value,type='text',wide=false){const wrap=document.createElement('label');wrap.className=`field${wide?' field-wide':''}`;const label=document.createElement('span');label.textContent=labelText;const input=document.createElement('input');input.type=type;input.value=value||'';wrap.append(label,input);fields.appendChild(wrap);return input}
-      const owner=add('Owner',current.settings.owner);const repo=add('Repository',current.settings.repo);const branch=add('Branch',current.settings.branch);const token=add('GitHub token (stored only in Planning Helper GM storage)',current.token,'password',true);
-      const note=document.createElement('p');note.textContent='Owner, repository and branch are required exactly as entered; blank fields are rejected rather than replaced by defaults. Command writes remain confined to direct planning/commands/*.command.md paths.';
-      const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const save=document.createElement('button');save.textContent='Save settings';actions.append(cancel,save);modal.append(fields,note,actions);cancel.addEventListener('click',()=>closeOverlay(overlay));
-      save.addEventListener('click',async()=>{for(const input of [owner,repo,branch,token])input.disabled=true;cancel.disabled=true;save.disabled=true;try{await runRepositoryOperation('Save repository settings',async()=>{const result=await options.onSaveSettings({owner:owner.value,repo:repo.value,branch:branch.value},token.value);if(result?.commandEntries)setCommandEntries(result.commandEntries);showStatus(result?.sourceChanged?'Repository target changed. Bundled commands restored; use Refresh repo for the new target.':'Repository settings saved.');});closeOverlay(overlay)}catch(error){showStatus(error.message||String(error),7000)}finally{for(const input of [owner,repo,branch,token])input.disabled=false;cancel.disabled=false;save.disabled=false}})
+      const made=makeOverlay('Repository settings');if(!made)return;const{overlay,modal}=made;let current;try{current=await options.onLoadSettings();}catch(error){closeOverlay(overlay);showStatus(error.message||String(error),7000);return;}const fields=document.createElement('div');fields.className='fields';function add(labelText,value,type='text',wide=false){const wrap=document.createElement('label');wrap.className=`field${wide?' field-wide':''}`;const label=document.createElement('span');label.textContent=labelText;const input=document.createElement('input');input.type=type;input.value=value||'';wrap.append(label,input);fields.appendChild(wrap);return input;}const owner=add('Owner',current.settings.owner),repo=add('Repository',current.settings.repo),branch=add('Branch',current.settings.branch),token=add('GitHub token (Planning Helper GM storage only)',current.token,'password',true);const note=document.createElement('p');note.textContent='Planning commands may write only planning/commands/*.command.md. Local helper commands/prompts may write only planning/helper-library/commands/*.helper-command.md and planning/helper-library/prompts/*.prompt.md. Blank owner/repository/branch values are rejected.';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const save=document.createElement('button');save.textContent='Save settings';actions.append(cancel,save);modal.append(fields,note,actions);cancel.addEventListener('click',()=>closeOverlay(overlay));save.addEventListener('click',async()=>{for(const input of[owner,repo,branch,token])input.disabled=true;cancel.disabled=true;save.disabled=true;try{await runRepositoryOperation('Save repository settings',async()=>{const result=await options.onSaveSettings({owner:owner.value,repo:repo.value,branch:branch.value},token.value);if(result?.commandEntries)setCommandEntries(result.commandEntries);setLibraryEntries(result);showStatus(result?.sourceChanged?'Repository target changed. Bundled planning commands restored and repository helper library cleared; use Refresh on the desired surfaces.':'Repository settings saved.');});closeOverlay(overlay);}catch(error){showStatus(error.message||String(error),7000);}finally{for(const input of[owner,repo,branch,token])input.disabled=false;cancel.disabled=false;save.disabled=false;}});
     }
 
-    async function refreshCommands(){try{await runRepositoryOperation('Refresh repository commands',async()=>{showStatus('Refreshing repository commands…',7000);const result=await options.onRefreshCommands();setCommandEntries(result.commandEntries);showStatus(`Repository commands refreshed: ${result.count} definitions (${result.visible} visible).`)})}catch(error){showStatus(`Repository refresh failed: ${error.message||error}`,7000)}}
+    async function refreshCommands(){try{await runRepositoryOperation('Refresh repository commands',async()=>{showStatus('Refreshing repository planning commands…',7000);const result=await options.onRefreshCommands();setCommandEntries(result.commandEntries);showStatus(`Repository planning commands refreshed: ${result.count} definitions (${result.visible} visible).`);});}catch(error){showStatus(`Repository refresh failed: ${error.message||error}`,7000);}}
+    async function refreshLibrary(){try{await runRepositoryOperation('Refresh helper library',async()=>{showStatus('Refreshing repository helper library…',7000);const result=await options.onRefreshLibrary();setLibraryEntries(result);showStatus(`Repository helper library refreshed: ${result.commands} command(s), ${result.prompts} prompt(s).`);});}catch(error){showStatus(`Helper-library refresh failed: ${error.message||error}`,7000);}}
 
-    function keepPanelInViewport(){const width=panel.offsetWidth||530,height=panel.offsetHeight||680;left=Math.min(Math.max(left,8),Math.max(8,window.innerWidth-width-8));top=Math.min(Math.max(top,8),Math.max(8,window.innerHeight-height-8));panel.style.left=`${left}px`;panel.style.top=`${top}px`}
-    function enableDragging(){let pointerId=null,startX=0,startY=0,startLeft=0,startTop=0;function down(event){if(event.button!==0||event.target===closeButton||event.target.closest('button'))return;pointerId=event.pointerId;startX=event.clientX;startY=event.clientY;const rect=panel.getBoundingClientRect();startLeft=rect.left;startTop=rect.top;header.setPointerCapture(pointerId);event.preventDefault()}function move(event){if(pointerId!==event.pointerId)return;left=startLeft+event.clientX-startX;top=startTop+event.clientY-startY;keepPanelInViewport();event.preventDefault()}function finish(event){if(pointerId===null)return;try{header.releasePointerCapture(pointerId)}catch(_){}pointerId=null;options.onSavePosition?.({left,top});event.preventDefault()}header.addEventListener('pointerdown',down);header.addEventListener('pointermove',move);header.addEventListener('pointerup',finish);header.addEventListener('pointercancel',finish);return()=>{header.removeEventListener('pointerdown',down);header.removeEventListener('pointermove',move);header.removeEventListener('pointerup',finish);header.removeEventListener('pointercancel',finish)}}
-    function handleShortcut(event){if(event.repeat)return;if(event.key==='Escape'&&activeOverlay){event.preventDefault();event.stopPropagation();closeOverlay(activeOverlay);return}if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='F2'){event.preventDefault();event.stopPropagation();setOpen(!isOpen)}else if(event.key==='Escape'&&isOpen){event.preventDefault();event.stopPropagation();setOpen(false)}}
-    function syncDashboardVisibility(){dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true';launcher.style.display=isOpen||dashboardOpen?'none':'block'}
-    function consumeToggle(token){const next=String(token||'');if(!next||next===lastToggleToken)return;lastToggleToken=next;setOpen(!isOpen)}
-    const observer=new MutationObserver((mutations)=>{for(const mutation of mutations){if(mutation.attributeName==='data-obs-planning-dashboard-open')syncDashboardVisibility();if(mutation.attributeName==='data-obs-planning-commands-toggle')consumeToggle(document.documentElement.dataset.obsPlanningCommandsToggle)}});observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-obs-planning-dashboard-open','data-obs-planning-commands-toggle']});
-    function handleDashboardVisibility(event){dashboardOpen=Boolean(event?.detail?.open);launcher.style.display=isOpen||dashboardOpen?'none':'block'}function handleCommandsToggle(event){consumeToggle(event?.detail?.token)}
-    tabButtons.forEach((button)=>button.addEventListener('click',()=>switchSurface(button.dataset.surface)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));root.querySelector('.refresh').addEventListener('click',refreshCommands);root.querySelector('.import').addEventListener('click',openImport);root.querySelector('.settings').addEventListener('click',openSettings);window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);window.addEventListener('obs-planning-dashboard-visibility',handleDashboardVisibility);window.addEventListener('obs-planning-commands-toggle',handleCommandsToggle);const disableDragging=enableDragging();switchSurface(SURFACES.ORIENTATION);
+    function keepPanelInViewport(){const width=panel.offsetWidth||560,height=panel.offsetHeight||720;left=Math.min(Math.max(left,8),Math.max(8,window.innerWidth-width-8));top=Math.min(Math.max(top,8),Math.max(8,window.innerHeight-height-8));panel.style.left=`${left}px`;panel.style.top=`${top}px`;}
+    function enableDragging(){let pointerId=null,startX=0,startY=0,startLeft=0,startTop=0;function down(event){if(event.button!==0||event.target===closeButton||event.target.closest('button'))return;pointerId=event.pointerId;startX=event.clientX;startY=event.clientY;const rect=panel.getBoundingClientRect();startLeft=rect.left;startTop=rect.top;header.setPointerCapture(pointerId);event.preventDefault();}function move(event){if(pointerId!==event.pointerId)return;left=startLeft+event.clientX-startX;top=startTop+event.clientY-startY;keepPanelInViewport();event.preventDefault();}function finish(event){if(pointerId===null)return;try{header.releasePointerCapture(pointerId);}catch(_){}pointerId=null;options.onSavePosition?.({left,top});event.preventDefault();}header.addEventListener('pointerdown',down);header.addEventListener('pointermove',move);header.addEventListener('pointerup',finish);header.addEventListener('pointercancel',finish);return()=>{header.removeEventListener('pointerdown',down);header.removeEventListener('pointermove',move);header.removeEventListener('pointerup',finish);header.removeEventListener('pointercancel',finish);};}
+    function handleShortcut(event){if(event.repeat)return;if(event.key==='Escape'&&activeOverlay){event.preventDefault();event.stopPropagation();closeOverlay(activeOverlay);return;}if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='F2'){event.preventDefault();event.stopPropagation();setOpen(!isOpen);}else if(event.key==='Escape'&&isOpen){event.preventDefault();event.stopPropagation();setOpen(false);}}
+    function syncDashboardVisibility(){dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true';launcher.style.display=isOpen||dashboardOpen?'none':'block';}
+    function consumeToggle(token){const next=String(token||'');if(!next||next===lastToggleToken)return;lastToggleToken=next;setOpen(!isOpen);}
+    const observer=new MutationObserver((mutations)=>{for(const mutation of mutations){if(mutation.attributeName==='data-obs-planning-dashboard-open')syncDashboardVisibility();if(mutation.attributeName==='data-obs-planning-commands-toggle')consumeToggle(document.documentElement.dataset.obsPlanningCommandsToggle);}});observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-obs-planning-dashboard-open','data-obs-planning-commands-toggle']});
+    function handleDashboardVisibility(event){dashboardOpen=Boolean(event?.detail?.open);launcher.style.display=isOpen||dashboardOpen?'none':'block';}function handleCommandsToggle(event){consumeToggle(event?.detail?.token);}
+    tabButtons.forEach((button)=>button.addEventListener('click',()=>switchSurface(button.dataset.surface)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));root.querySelector('.refresh').addEventListener('click',refreshCommands);root.querySelector('.import').addEventListener('click',openImport);root.querySelector('.settings').addEventListener('click',openSettings);root.querySelector('.settings-library').addEventListener('click',openSettings);root.querySelector('.refresh-library').addEventListener('click',refreshLibrary);root.querySelector('.new-library').addEventListener('click',()=>openLibraryEditor());window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);window.addEventListener('obs-planning-dashboard-visibility',handleDashboardVisibility);window.addEventListener('obs-planning-commands-toggle',handleCommandsToggle);const disableDragging=enableDragging();switchSurface(SURFACES.ORIENTATION);
+    if(Array.isArray(options.startupWarnings)&&options.startupWarnings.length)window.setTimeout(()=>showStatus(options.startupWarnings.join('\n'),9000),100);
 
-    function dispose(){if(statusTimer!==null)window.clearTimeout(statusTimer);observer.disconnect();disableDragging();window.removeEventListener('resize',keepPanelInViewport);window.removeEventListener('keydown',handleShortcut,true);window.removeEventListener('obs-planning-dashboard-visibility',handleDashboardVisibility);window.removeEventListener('obs-planning-commands-toggle',handleCommandsToggle);host.remove()}
-    return { setCommandEntries, switchSurface, setOpen, showStatus, dispose, host, root };
+    function dispose(){if(statusTimer!==null)window.clearTimeout(statusTimer);observer.disconnect();disableDragging();window.removeEventListener('resize',keepPanelInViewport);window.removeEventListener('keydown',handleShortcut,true);window.removeEventListener('obs-planning-dashboard-visibility',handleDashboardVisibility);window.removeEventListener('obs-planning-commands-toggle',handleCommandsToggle);host.remove();}
+    return{setCommandEntries,setLibraryEntries,switchSurface,setOpen,showStatus,dispose,host,root};
   }
 
   return { createPlanningHelperUi };
@@ -897,52 +1086,77 @@
 
   const INSTANCE_DISPOSE_KEY='__obsPlanningHelperDisposeV2';
   const LEGACY_DISPOSE_KEYS=['__obsCommandHelperDisposeV1'];
+  function cleanDefinitions(definitions){return definitions.map((definition)=>deps.stripRuntimeCommandMetadata(definition));}
+  function cleanLibrary(items){return deps.normalizeHelperLibraryCollection((items||[]).map((item)=>{const copy={...item};delete copy.__sha;delete copy.__path;delete copy.source;delete copy.hasRepo;delete copy.hasLocal;return copy;}));}
 
-  function cleanDefinitions(definitions){return definitions.map((definition)=>deps.stripRuntimeCommandMetadata(definition))}
+  function createRepositoryOperationLock(){let active='';return{isBusy:()=>Boolean(active),active:()=>active,async run(label,task){const next=String(label||'repository operation');if(active){const error=new Error(`Repository operation already in progress: ${active}.`);error.kind='busy';throw error;}active=next;try{return await task();}finally{active='';}}};}
 
-  function createRepositoryOperationLock() {
-    let active='';
-    return {
-      isBusy:()=>Boolean(active),
-      active:()=>active,
-      async run(label, task) {
-        const next=String(label || 'repository operation');
-        if (active) { const error=new Error(`Repository operation already in progress: ${active}.`); error.kind='busy'; throw error; }
-        active=next;
-        try { return await task(); }
-        finally { active=''; }
-      }
-    };
+  function buildLibraryEntries(kind, remoteItems, localItems){
+    return deps.mergeHelperLibrary(remoteItems,localItems).filter((item)=>item.kind===kind).map((item)=>({
+      id:`helper-library:${item.kind}:${item.id}`,
+      libraryId:item.id,
+      libraryKind:item.kind,
+      label:item.title,
+      title:item.title,
+      description:item.source==='local+repo'?'local override · repository copy exists':item.source==='local'?'local only':'repository only',
+      text:item.text,
+      adaptiveBody:item.text,
+      source:item.source,
+      hasLocal:item.hasLocal,
+      hasRepo:item.hasRepo,
+      createdAt:item.createdAt,
+      updatedAt:item.updatedAt
+    }));
   }
 
   async function startPlanningHelper(options={}) {
-    for(const key of [INSTANCE_DISPOSE_KEY,...LEGACY_DISPOSE_KEYS]){const previous=globalThis[key];if(typeof previous==='function'){try{previous()}catch(_){}}}
+    for(const key of [INSTANCE_DISPOSE_KEY,...LEGACY_DISPOSE_KEYS]){const previous=globalThis[key];if(typeof previous==='function'){try{previous();}catch(_){}}}
     const bundled=Array.isArray(options.bundledCommands)?options.bundledCommands:[];deps.validateCommandCatalog(bundled);
     const semanticEntries=deps.buildSemanticEntries();
     const initialSettings=await deps.loadRepositorySettings();
     const repositoryLock=createRepositoryOperationLock();
     let currentDefinitions=bundled;
-    try{const cache=await deps.loadCommandCatalogCache(initialSettings);if(cache&&Array.isArray(cache.definitions)){deps.validateCommandCatalog(cache.definitions);currentDefinitions=cache.definitions}}catch(error){console.warn('[OBS Planning Helper] Ignoring invalid command cache:',error)}
+    let localLibrary=[];
+    let remoteLibrary=[];
+    let startupWarnings=[];
+    try{const migration=await deps.migrateLegacyLocalCommandProjections();if(migration.added)startupWarnings.push(`Migrated ${migration.added} legacy local command projection(s) into Planning Helper GM storage.`);if(migration.warning)startupWarnings.push(migration.warning);}catch(error){startupWarnings.push(`Legacy local command migration failed: ${error.message||String(error)}`);}
+    try{localLibrary=await deps.loadLocalHelperLibrary();}catch(error){startupWarnings.push(`Local helper library could not be loaded: ${error.message||String(error)}`);localLibrary=[];}
+    try{const cache=await deps.loadCommandCatalogCache(initialSettings);if(cache&&Array.isArray(cache.definitions)){deps.validateCommandCatalog(cache.definitions);currentDefinitions=cache.definitions;}}catch(error){console.warn('[OBS Planning Helper] Ignoring invalid command cache:',error);}
+    try{const cache=await deps.loadRepositoryHelperLibraryCache(initialSettings);if(cache)remoteLibrary=cache.items;}catch(error){console.warn('[OBS Planning Helper] Ignoring invalid helper-library cache:',error);}
 
-    function commandEntries(){return deps.buildCommandEntries(currentDefinitions)}
-    async function makeService(){const settings=await deps.loadRepositorySettings();const token=await deps.loadGitHubToken();if(typeof GM_xmlhttpRequest!=='function')throw new Error('GM_xmlhttpRequest is unavailable; reinstall the generated Planning Helper userscript.');const transport=deps.createGmTransport(GM_xmlhttpRequest);const client=new deps.GitHubContentsClient({...settings,token,transport});return {service:new deps.RepositoryCommandService(client,{commandsPath:deps.COMMANDS_PATH}),settings}}
-    async function refreshRemoteUnlocked(){const {service,settings}=await makeService();const definitions=await service.loadCatalog();const clean=cleanDefinitions(definitions);deps.validateCommandCatalog(clean);currentDefinitions=clean;await deps.saveCommandCatalogCache(clean,settings);return{commandEntries:commandEntries(),count:clean.length,visible:clean.filter((definition)=>definition.palette).length}}
+    function commandEntries(){return deps.buildCommandEntries(currentDefinitions);}
+    function localCommandEntries(){return buildLibraryEntries(deps.HELPER_LIBRARY_KINDS.COMMAND,remoteLibrary,localLibrary);}
+    function promptEntries(){return buildLibraryEntries(deps.HELPER_LIBRARY_KINDS.PROMPT,remoteLibrary,localLibrary);}
+    function libraryUiState(){return{localCommandEntries:localCommandEntries(),promptEntries:promptEntries()};}
 
-    let ui;
-    async function refreshRemote(){return repositoryLock.run('Refresh repository commands',refreshRemoteUnlocked)}
-    async function previewDefinitions(definitions){return repositoryLock.run('Preview repository commands',async()=>{const {service}=await makeService();return service.previewDefinitions(definitions)})}
-    async function saveDefinitions(previewPlan){return repositoryLock.run('Save repository commands',async()=>{const {service}=await makeService();const result=await service.savePreviewPlan(previewPlan);try{const refreshed=await refreshRemoteUnlocked();return{...result,commandEntries:refreshed.commandEntries}}catch(error){return{...result,refreshError:error.message||String(error),commandEntries:commandEntries()}}})}
-    async function onInsert(text,success,id){await new Promise((resolve)=>requestAnimationFrame(resolve));const result=deps.insertIntoComposer(text,id);if(result.ok)return success;const copied=await deps.copyText(text);return copied?`Direct insertion failed (${result.reason}). Copied to clipboard — paste manually.`:`Direct insertion failed (${result.reason}) and clipboard copy also failed.`}
-    async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()}}
-    async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings();const next=await deps.saveRepositorySettings(settings);await deps.saveGitHubToken(token);const sourceChanged=deps.repositorySourceKey(previous)!==deps.repositorySourceKey(next);if(sourceChanged){currentDefinitions=bundled;return{sourceChanged:true,commandEntries:commandEntries()}}return{sourceChanged:false}})}
+    async function makeClient(){const settings=await deps.loadRepositorySettings();const token=await deps.loadGitHubToken();if(typeof GM_xmlhttpRequest!=='function')throw new Error('GM_xmlhttpRequest is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');const transport=deps.createGmTransport(GM_xmlhttpRequest);return{client:new deps.GitHubContentsClient({...settings,token,transport}),settings};}
+    async function makeCommandService(){const {client,settings}=await makeClient();return{service:new deps.RepositoryCommandService(client,{commandsPath:deps.COMMANDS_PATH}),settings};}
+    async function makeLibraryService(){const {client,settings}=await makeClient();return{service:new deps.RepositoryHelperLibraryService(client),settings};}
 
-    ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,semanticEntries,commandEntries:commandEntries(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert,onCopy:deps.copyText,onRefreshCommands:refreshRemote,parseDefinitions:deps.parseCommandDefinitionBatch,onPreviewDefinitions:previewDefinitions,onSaveDefinitions:saveDefinitions,onLoadSettings:loadSettings,onSaveSettings:saveSettings});
-    function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key]}
+    async function refreshCommandsUnlocked(){const {service,settings}=await makeCommandService();const definitions=await service.loadCatalog();const clean=cleanDefinitions(definitions);deps.validateCommandCatalog(clean);currentDefinitions=clean;await deps.saveCommandCatalogCache(clean,settings);return{commandEntries:commandEntries(),count:clean.length,visible:clean.filter((definition)=>definition.palette).length};}
+    async function refreshLibraryUnlocked(){const {service,settings}=await makeLibraryService();const items=await service.loadAll();remoteLibrary=cleanLibrary(items);await deps.saveRepositoryHelperLibraryCache(remoteLibrary,settings);return{...libraryUiState(),count:remoteLibrary.length,commands:remoteLibrary.filter((item)=>item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND).length,prompts:remoteLibrary.filter((item)=>item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT).length};}
+
+    async function refreshCommands(){return repositoryLock.run('Refresh repository commands',refreshCommandsUnlocked);}
+    async function previewDefinitions(definitions){return repositoryLock.run('Preview repository commands',async()=>{const{service}=await makeCommandService();return service.previewDefinitions(definitions);});}
+    async function saveDefinitions(previewPlan){return repositoryLock.run('Save repository commands',async()=>{const{service}=await makeCommandService();const result=await service.savePreviewPlan(previewPlan);try{const refreshed=await refreshCommandsUnlocked();return{...result,commandEntries:refreshed.commandEntries};}catch(error){return{...result,refreshError:error.message||String(error),commandEntries:commandEntries()};}});}
+    async function refreshLibrary(){return repositoryLock.run('Refresh helper library',refreshLibraryUnlocked);}
+
+    async function saveLocalLibraryItem(value){const now=new Date().toISOString();const current=localLibrary.find((item)=>item.kind===value.kind&&item.id===value.id);const normalized=deps.normalizeHelperLibraryItem({...value,createdAt:current?.createdAt||value.createdAt||now,updatedAt:now});const saved=await deps.upsertLocalHelperLibraryItem(normalized);localLibrary=saved.items;return{item:saved.item,...libraryUiState()};}
+    async function deleteLocalLibraryItem(kind,id){localLibrary=await deps.removeLocalHelperLibraryItem(kind,id);return libraryUiState();}
+    async function previewLibraryItem(kind,id){return repositoryLock.run('Preview helper-library save',async()=>{localLibrary=await deps.loadLocalHelperLibrary();const item=localLibrary.find((entry)=>entry.kind===kind&&entry.id===id);if(!item)throw new Error('Only a local helper-library item can be saved to the repository.');const{service}=await makeLibraryService();return service.previewSave(item);});}
+    async function saveLibraryItem(plan){return repositoryLock.run('Save helper-library item',async()=>{localLibrary=await deps.loadLocalHelperLibrary();const previewItem=deps.normalizeHelperLibraryItem(plan?.item||{});const current=localLibrary.find((entry)=>entry.kind===previewItem.kind&&entry.id===previewItem.id);if(!current||JSON.stringify(current)!==JSON.stringify(previewItem)){const error=new Error('Local helper-library item changed since Preview. Nothing was written; preview again.');error.kind='conflict';throw error;}const{service}=await makeLibraryService();const result=await service.savePreviewPlan(plan);try{const refreshed=await refreshLibraryUnlocked();return{...result,...refreshed};}catch(error){return{...result,...libraryUiState(),refreshError:error.message||String(error)};}});}
+
+    async function onInsert(text,success,id){await new Promise((resolve)=>requestAnimationFrame(resolve));const result=deps.insertIntoComposer(text,id);if(result.ok)return success;const copied=await deps.copyText(text);return copied?`Direct insertion failed (${result.reason}). Copied to clipboard — paste manually.`:`Direct insertion failed (${result.reason}) and clipboard copy also failed.`;}
+    async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}
+    async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings();const next=await deps.saveRepositorySettings(settings);await deps.saveGitHubToken(token);const sourceChanged=deps.repositorySourceKey(previous)!==deps.repositorySourceKey(next);if(sourceChanged){currentDefinitions=bundled;remoteLibrary=[];return{sourceChanged:true,commandEntries:commandEntries(),...libraryUiState()};}return{sourceChanged:false};});}
+
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,semanticEntries,commandEntries:commandEntries(),...libraryUiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert,onCopy:deps.copyText,onRefreshCommands:refreshCommands,parseDefinitions:deps.parseCommandDefinitionBatch,onPreviewDefinitions:previewDefinitions,onSaveDefinitions:saveDefinitions,onRefreshLibrary:refreshLibrary,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onPreviewLibraryItem:previewLibraryItem,onSaveLibraryItem:saveLibraryItem,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
+    function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}
     globalThis[INSTANCE_DISPOSE_KEY]=dispose;
-    return {dispose,refreshRemote,getDefinitions:()=>[...currentDefinitions],getRepositoryOperation:()=>repositoryLock.active()};
+    return{dispose,refreshRemote:refreshCommands,refreshLibrary,getDefinitions:()=>[...currentDefinitions],getLocalLibrary:()=>[...localLibrary],getRemoteLibrary:()=>[...remoteLibrary],getRepositoryOperation:()=>repositoryLock.active()};
   }
 
-  return { startPlanningHelper, createRepositoryOperationLock };
+  return { startPlanningHelper, createRepositoryOperationLock, buildLibraryEntries };
 });
 
 (function(){
