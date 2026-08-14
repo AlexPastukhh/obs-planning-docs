@@ -1,7 +1,7 @@
 # Root Use-Case Map Field Kit
 
 Status: active reusable documentation-layer field kit
-Doc version: v0.4.0-canonical-plan-command
+Doc version: v0.5.0-delegated-command-registry
 Scope: one-time / rare setup guidance for deriving a single project root use-case map
 
 ## 1. Purpose
@@ -22,7 +22,8 @@ This field kit is not a second use-case map and should not be used at runtime in
 
 | Owner | Owns |
 |---|---|
-| Project root use-case map | Concrete routes for one project: user wording, traversal, read sources, activated workflows, expected output and permission boundaries. |
+| Project root use-case map | Mandatory command-system entry plus shared/global routing policy; may keep concrete rows for small projects. |
+| Optional project command registry | Direct per-command definitions for command-heavy projects; one registry, no competing concrete rows in the UCM. |
 | This field kit | Setup choices for creating/adapting the project root use-case map, including common command clusters. |
 | Use-case-map workflow | Repeated maintenance process after the project map exists. |
 | Use-case-map template | Exact reusable Markdown shape for a concrete map. |
@@ -32,6 +33,7 @@ This field kit is not a second use-case map and should not be used at runtime in
 
 ```text
 One project -> one concrete root use-case map.
+Optional: one delegated project command registry under that root router.
 ```
 
 Do not create a generic reusable use-case map inside the documentation layer.
@@ -61,9 +63,10 @@ Before creating or restructuring a root use-case map, answer:
 7. Which source modes exist: conversation, GitHub/repo, archive, uploaded files, canvas?
 8. Which output modes exist: answer, draft, plan, diff, package, direct edit?
 9. Which actions require explicit user permission?
-10. Which docs layer files own reusable workflow/template logic?
-11. Which profile-specific route kits apply to this project?
-12. Which profile-specific reusable examples appear to fit this project type, workflow style or route family?
+10. Will concrete command rows remain in the root UCM, or will a command-heavy project use one delegated command registry?
+11. Which docs layer files own reusable workflow/template logic?
+12. Which profile-specific route kits apply to this project?
+13. Which profile-specific reusable examples appear to fit this project type, workflow style or route family?
 ```
 
 ## 4A. Profile-Specific Example Fit Check
@@ -100,7 +103,7 @@ A project can localize aliases and wording. Keep active-context behavior explici
 
 Use these rows as reusable starter rows when creating a new project's `planning/planning-use-case-map.md`.
 
-These rows are not runtime authority while they remain inside this field kit. After the project root UCM exists, the project root UCM owns the concrete routing.
+These rows are not runtime authority while they remain inside this field kit. After setup, either the project root UCM owns the concrete row directly or the selected delegated project command file owns it; do not keep both.
 
 | Command / trigger | English name | Meaning | Active-context behavior | Traversal/read mode | Sources / owner files | Expected output |
 |---|---|---|---|---|---|---|
@@ -127,8 +130,8 @@ planning/documentation/tampermonkey-command-projection-workflow.md
 Projection requirements:
 
 ```text
-- root UCM row has one canonical English name;
-- profile.englishName exactly matches that UCM value;
+- the accepted concrete command definition has one canonical English name;
+- the projected English name exactly matches that command definition;
 - inserted body has the same english_name;
 - button label is <englishName> · <label>;
 - helper stays projection-only and does not own command meaning.
@@ -201,7 +204,7 @@ The profile kit suggests route families. The project root map still owns the con
 
 ```text
 - Do not create a second generic use-case map inside the documentation layer.
-- Do not move concrete project routes out of the root map into this field kit.
+- Do not move concrete project routes into this field kit. A project may intentionally delegate them from its root map to one project command registry.
 - Do not put full workflow steps into root map rows.
 - Do not hide scenario/domain/slice command setup in a deep folder where project maintainers will not find it.
 - Do not silently change command meaning when extracting reusable setup logic.

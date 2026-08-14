@@ -1,7 +1,7 @@
 # Plan Command Valid Execution Example
 
 Status: supporting reusable example
-Doc version: v0.4.0-canonical-plan-command
+Doc version: v0.5.0-repository-command-definition
 Scope: demonstrates safe plan-only command-route planning after the documentation-principles preflight.
 
 ## Demonstrated Route
@@ -23,6 +23,7 @@ Composition:
 
 ```text
 planning/planning-use-case-map.md
+planning/commands/README.md
 planning/documentation/documentation-principles-read-workflow.md
 planning/documentation/file-update-overview-workflow.md
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
@@ -45,14 +46,17 @@ Command family:
 Owner semantics:
   existing owners reused or proposed owner changes identified
 
-UCM row plan:
-  complete command-route row with explicit permission boundary
+Command definition plan:
+  one direct repository command file with complete route fields and explicit permission boundary
+
+Root UCM impact:
+  only shared/global routing or registry navigation when needed
 
 Example coverage:
   required / covered / not needed / deferred
 
 Tampermonkey decision:
-  defer unless separately included
+  set command `palette` projection metadata as needed; no per-command userscript source edit is required after the command file is accepted
 
 Boundary:
   no file creation or edits, no archive, no commit or push

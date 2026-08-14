@@ -1,7 +1,7 @@
 # Planning Docs Architecture Principles
 
 Status: active reusable architecture principles
-Doc version: v1.0.0-unified-concept-owner
+Doc version: v1.1.0-delegated-command-registry
 Scope: stable reusable boundaries for projects that use `planning/documentation/` as a portable process layer.
 
 ## 1. Layer Boundary
@@ -14,7 +14,10 @@ planning/README.md
   = project planning entry and orientation;
 
 planning/planning-use-case-map.md
-  = concrete project command route map / UCM;
+  = mandatory project command-system entry / root UCM;
+
+optional project command registry such as planning/commands/
+  = delegated direct concrete command definitions;
 
 project Direction/Use-Case registries
   = semantic navigation and owner routes;
@@ -28,8 +31,10 @@ Reusable docs do not own concrete project state, schedules, implementation statu
 ## 2. Source-Of-Truth Rules
 
 ```text
-- One project root UCM owns command routing
-  and canonical English names.
+- One project root command-routing system owns commands.
+  The root UCM owns mandatory entry/global routing policy.
+  When a delegated command registry exists, each direct command file
+  owns its concrete route and canonical English name.
 - Semantic registries own Direction and Use-Case entries.
 - Workflow files own repeated process.
 - Principles/terminology owners own reusable concept contracts.
@@ -169,10 +174,11 @@ Do not create files, folders, schemas, object types or planning stages in advanc
 Concrete command behavior:
 
 ```text
-1. project root UCM;
-2. linked owner workflow/template/area docs;
-3. examples only as demonstrations;
-4. Tampermonkey projection after the route exists.
+1. project root UCM for command-system entry/global policy;
+2. selected delegated command definition when the project uses a command registry;
+3. linked owner workflow/template/area docs;
+4. examples only as demonstrations;
+5. Tampermonkey projection after the route exists.
 ```
 
 Semantic registries provide identities and routes. Activating a registry entry does not grant command or repository permissions.

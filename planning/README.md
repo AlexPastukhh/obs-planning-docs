@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.9.0-planning-draft-workbench-alignment
+Doc version: v0.10.0-repository-command-registry
 Scope: OBS repository planning entry point, semantic Direction orientation, concrete command routing, task activation and source/owner pointers built on the reusable documentation layer.
 
 ## 1. Purpose
@@ -14,7 +14,10 @@ planning/direction-registry.md
   → broad semantic Directions and local registry routes;
 
 planning/planning-use-case-map.md
-  → concrete executable command routes;
+  → root command-system entry and shared routing/global policy;
+
+planning/commands/
+  → direct repository-owned concrete command definitions;
 
 planning/workflow-activation-map.md
   → task/use-case activation;
@@ -43,8 +46,11 @@ Local semantic Direction/Use-Case entries:
   planning/documentation/<family>/*-registry.md
   planning/areas/<area>/*-registry.md
 
-Root command routing and canonical English names:
+Root command-system entry and shared routing policy:
   planning/planning-use-case-map.md
+
+Concrete command definitions and canonical English names:
+  planning/commands/*.command.md
 
 Task/use-case activation routing:
   planning/workflow-activation-map.md
@@ -59,7 +65,7 @@ Concrete local planning state:
   planning/areas/
 ```
 
-Registries own semantic entries; the UCM owns commands and permissions; workflows own repeated behavior; templates own recommended shape; area owners own concrete state; root files reference rather than copy; examples and Tampermonkey are not authority.
+Registries own semantic entries; the root UCM owns command-system entry/global routing policy; direct `planning/commands/*.command.md` files own individual concrete commands and canonical English names; workflows own repeated behavior; templates own recommended shape; area owners own concrete state; root files reference rather than copy; examples and Tampermonkey are not authority.
 
 ## 3. New-Chat Orientation Read Order
 
@@ -70,13 +76,14 @@ Registries own semantic entries; the UCM owns commands and permissions; workflow
 4. relevant Use-Case Registry
 5. complete owner workflow/area
 6. planning/planning-use-case-map.md when a command is involved
-7. planning/workflow-activation-map.md for activation details
-8. planning/root-source-sync-register.md for owner/source status
-9. planning/planning-input-conventions.md when source markers/settings matter
-10. targeted item/source register when reconciliation depends on it.
+7. planning/commands/README.md and the selected direct `*.command.md` definition
+8. planning/workflow-activation-map.md for activation details
+9. planning/root-source-sync-register.md for owner/source status
+10. planning/planning-input-conventions.md when source markers/settings matter
+11. targeted item/source register when reconciliation depends on it.
 ```
 
-For command-first input, read the root UCM immediately after this file and follow its owner route.
+For command-first input, read the root UCM immediately after this file, resolve the selected definition from `planning/commands/`, then follow that definition's owner route.
 
 Bootstrap files are used only when root files do not exist.
 
@@ -139,9 +146,10 @@ Reusable owner: `planning/documentation/application-planning/planning-item-forma
 
 Input conventions: `planning/planning-input-conventions.md`.
 
-Active root UCM command:
+Active repository command definition:
 
 ```text
+planning/commands/form-items.command.md
 сформируй айтемы
 English name: form items
 ```
@@ -165,10 +173,10 @@ Authority:
 Orientation → planning/README.md + planning/direction-registry.md;
 Directions  → root/local Direction Registries;
 Use Cases   → reusable-family/local Use-Case Registries;
-Commands    → planning/planning-use-case-map.md.
+Commands    → planning/planning-use-case-map.md → planning/commands/*.command.md.
 ```
 
-The helper performs composer insertion/copy only. It does not write repository files, call Git or grant permissions.
+Normal command execution remains composer insertion/copy only. The explicit Commands management surface may read the repository command catalog and create/update only direct `planning/commands/*.command.md` files through GitHub with SHA-aware exact read-back verification. It never runs local Git, commit or push.
 
 `Reconcile Planning Items` redirects to the existing `сверь айтемы` command instead of creating a duplicate execution action.
 

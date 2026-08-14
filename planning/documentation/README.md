@@ -1,7 +1,7 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v1.0.0-unified-planning-owner
+Doc version: v1.1.0-command-registry-navigation
 Scope: reusable documentation architecture, solution/workflow planning, Planning Item formation, update workflows, command planning, profiles, field kits, examples, parallel work and helper projection.
 
 ## 1. Purpose
@@ -30,8 +30,10 @@ planning/documentation/
     profiles and templates;
 
 planning/planning-use-case-map.md
-  → concrete project command routes
-    and canonical English names;
+  → mandatory project command-system entry/global policy;
+
+optional project command registry
+  → concrete command definitions and canonical English names;
 
 semantic Direction/Use-Case registries
   → semantic identities and owner routes;
@@ -135,7 +137,8 @@ parallel-work/PARALLEL-SYNC-PLAN-TEMPLATE.md
 
 ```text
 tools/tampermonkey/README.md
-tools/tampermonkey/chat-command-palette.user.js
+tools/tampermonkey/chat-command-palette/README.md
+tools/tampermonkey/chat-command-palette.user.js  # generated install artifact
 ```
 
 The helper is not command or semantic-registry authority.
@@ -194,6 +197,7 @@ task-specific owners.
 
 ```text
 planning/planning-use-case-map.md
+planning/commands/README.md and selected command definition when the project uses a delegated registry
 documentation-principles-read-workflow.md
 planning-docs-architecture-principles.md
 documentation-responsibility-map.md
@@ -204,7 +208,7 @@ example-coverage-workflow.md when example fit matters
 tampermonkey-command-projection-workflow.md only when projection is in scope.
 ```
 
-The root UCM is a command route map. It is not the semantic Direction/Use-Case Registry.
+The root UCM is the mandatory command-system entry. A project command registry may own individual command definitions. Neither is the semantic Direction/Use-Case Registry.
 
 ### Replacement Archive / Package
 

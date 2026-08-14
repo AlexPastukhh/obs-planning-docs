@@ -1,0 +1,11 @@
+{
+  "name": "obs-planning-helper",
+  "version": "0.20.2",
+  "private": true,
+  "scripts": {
+    "build": "node build-chat-command-palette.mjs",
+    "build:check": "node build-chat-command-palette.mjs --check",
+    "test": "node verify-chat-command-palette.mjs --tests-only",
+    "verify": "node verify-chat-command-palette.mjs"
+  }
+}

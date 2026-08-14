@@ -1,15 +1,16 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.24.0-linked-notes-doc-routing
+Doc version: v0.25.2-repository-operation-lock
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
 
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
-  reusable Orientation / Directions / Use Cases / Commands projection;
-  semantic and command meaning stays in owner documentation;
+  generated install artifact for the modular Orientation / Directions / Use Cases / Commands helper;
+  source/build/tests live under `chat-command-palette/`;
+  command definitions live under `planning/commands/`;
   its floating Planning launcher hides while Dashboard is open;
   Alt+F2 and Tools -> Commands remain available.
 
@@ -55,11 +56,11 @@ Do not create competing tracked copies of the same script.
 ```text
 Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
-By default they do not write repository files or perform external network calls.
+By default they do not write repository files or perform external network calls. The Planning Helper command-management surface and Linked Notes are the explicitly bounded exceptions described below.
 The repository documentation prototype is the narrow test-only exception: after an explicit user action it may call the GitHub Contents API for one visibly selected workspace, directory, file, category definition or bound Note target, with path validation, one-operation locking, SHA-aware conflict handling and exact read-back verification for writes.
 The Linked Notes Prototype never runs local git, commit or push; its direct API write does not make the prototype a production architecture or planning authority.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
-Tampermonkey command projection does not define command meaning.
+Tampermonkey command projection does not define command meaning. The root UCM is the command-system entry and direct `planning/commands/*.command.md` files own individual commands.
 Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by UCM commands.
 ```
 
@@ -78,6 +79,8 @@ Use Cases:
 
 Commands:
   planning/planning-use-case-map.md
+  planning/commands/README.md
+  selected planning/commands/*.command.md
   planning/documentation/command-planning-workflow.md
 
 Projection behavior:
@@ -108,6 +111,11 @@ Dashboard IndexedDB:
   database: obsPlanningCache
   store: snapshots
   record: dashboard:v1
+
+Planning Helper private GM storage:
+  obsPlanningHelper:v1:repositorySettings
+  obsPlanningHelper:v1:githubToken
+  obsPlanningHelper:v1:commandCatalogCache
 
 Linked Notes Prototype private GM storage:
   see linked-notes/DATA-AND-STATE.md for current application-owned GM namespaces and persistence ownership.
@@ -289,9 +297,18 @@ Timer rules:
 
 ## 7. Installation/update
 
+For the Planning Helper, source changes are built and verified first:
+
 ```text
-1. Open the tracked .user.js file.
-2. Copy the complete source into its matching Tampermonkey script.
+cd planning/documentation/tools/tampermonkey/chat-command-palette
+npm run verify
+```
+
+Then install the generated `../chat-command-palette.user.js`. Do not edit that generated artifact manually. Other standalone Tampermonkey tools continue to use their tracked `.user.js` source.
+
+```text
+1. Open the matching generated/standalone .user.js file.
+2. Copy the complete userscript into Tampermonkey.
 3. Save in Tampermonkey.
 4. Save the userscript, then reload or close every already-open ChatGPT tab once so no old Capture instance remains active.
 5. Reopen ChatGPT and verify that all tabs show the same current timer.
@@ -318,9 +335,9 @@ Its Session field supports `S1`, `S2`, `S3` and later positive integer labels. V
 
 The reusable Command Palette provides:
 
-- an explicit projection-only boundary: the root UCM and linked owner files remain command authority;
+- an explicit authority boundary: the root UCM is the command-system entry, direct `planning/commands/*.command.md` files own individual commands, and linked owner files own behavior;
 - separate sibling controls for adaptive insertion, forced-full route insertion, approved owner-read refinements and copying, avoiding nested interactive elements;
-- one shared command definition for both insertion variants, so command semantics and reminders cannot drift;
+- one repository command definition generates both insertion variants, so command semantics and reminders cannot drift;
 - a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
 - a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
 - a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route checks workflow integrity for each independently traversable End-To-End Workflow, rejects mandatory peer-workflow fragmentation, classifies Planning Drafts and other supporting/non-workflow objects, and preserves the original → incoming → resulting chain plus relevant item-validation signals;
@@ -347,7 +364,7 @@ The reusable Command Palette provides:
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
 - `reconcile planning items` inserts a read-only workflow-integrity plus item-set reconciliation body: identify independently traversable End-To-End Workflows and affected non-workflow primary review objects; trace each workflow's trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer workflow slices when one mandatory workflow crosses them; treat Planning Drafts/models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
-- no repo writes, network calls, commits or pushes.
+- normal insertion/copy performs no repository write; explicit repository command Refresh uses GitHub reads, and Add/Update may write only direct `planning/commands/*.command.md`; no local Git, commit or push.
 ```
 
 ## 9A. Orientation / Directions / Use Cases / Commands
@@ -367,7 +384,7 @@ Authority:
 Orientation → root documentation;
 Directions  → Direction Registries;
 Use Cases   → Use-Case Registries;
-Commands    → root UCM.
+Commands    → root UCM → direct repository command definitions.
 ```
 
 Controls:
@@ -450,23 +467,43 @@ Acceptance:
 - normal exact-selector path performs no global candidate sort;
 - failure copies once and reports the fallback;
 - console timing identifies the selector and expensive phase;
-- no external network or repository-write behavior is introduced.
+- normal insertion introduces no network/write behavior; repository Refresh/Add/Update are separate explicit command-management actions.
+
+## 9C. Modular Planning Helper / Repository Commands
+
+Developer/build entry:
+
+```text
+planning/documentation/tools/tampermonkey/chat-command-palette/README.md
+```
+
+Repository command entry:
+
+```text
+planning/planning-use-case-map.md
+  → planning/commands/README.md
+  → selected direct *.command.md
+```
+
+The generated userscript bundles the valid command catalog for offline use. `Refresh repo` reads the current remote catalog and activates it only after complete validation. `Add / Update commands` accepts one or more strict command-definition blocks. `Parse & Preview` validates the merged remote catalog and captures exact repository identity plus the command-catalog snapshot and update SHAs/create absence expectations; `Save` uses that previewed plan and refuses stale or retargeted previews instead of silently reclassifying. Blank owner/repository/branch settings are rejected. Preview, refresh, settings-save and GitHub save operations are serialized under one repository-operation lock, and an in-flight save cannot be dismissed into a hidden overlapping write. Writes remain sequential, SHA-aware and exact-read-back verified. A partial multi-file result is reported without pretending rollback, and retry requires a new Preview. Delete is not implemented.
+
+Planning Helper repository settings and token use the separate `obsPlanningHelper:v1:*` GM namespace. The token is secret state and is never written into repository command files or catalog cache.
 
 ## 10. Command Palette adaptation rule
 
 Before enabling or adapting the reusable helper for another project, verify:
 
 ```text
-1. The project root UCM exists.
-2. Each projected command exists in the project root UCM or is created in the same approved batch.
+1. The project root UCM exists and points to the project command registry when that model is used.
+2. Each projected command has one accepted direct repository command definition or is created in the same approved batch.
 3. Commands that do not apply to the target project are removed.
 4. source_of_truth points to the target project's real route/owner docs.
 5. @name and @namespace change only for an intentional fork or rebrand.
-6. The helper remains projection-only.
+6. Normal command execution remains projection/insertion only; explicit command management is confined to the repository command registry.
 7. Adaptive and forced-full bodies are generated from the same command definition.
 8. Refinements contain route/owner paths and the requested validation action, not duplicated owner logic.
-9. Standalone command rows use the exact canonical label and English name from the root UCM.
-10. Removed aliases and internal IDs are not retained for compatibility unless the root UCM still accepts them.
+9. Standalone command rows use the exact canonical label and English name from the selected repository command definition.
+10. Removed aliases and internal IDs are not retained for compatibility unless the selected repository command definition still accepts them.
 11. No second tracked project-local command-helper copy is created by default.
 ```
 
@@ -486,15 +523,15 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Event IDs identify browser records only; Finished Sessions Markdown does not store them.
 - Duplicate protection uses source SHA-256, source row boundary, exact resulting row count and ordered appended sequence.
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
-- Do not treat the Planning Helper as Orientation, Direction, Use-Case or command authority.
+- Do not treat the Planning Helper runtime, cache or generated artifact as Orientation, Direction, Use-Case or command authority.
 - Do not let Direction/Use-Case activation execute commands or grant permissions.
-- Project the item-formation command only from its accepted UCM route and exact English name.
-- Do not add project-only command semantics without a UCM route.
+- Project the item-formation command only from its accepted repository command definition and exact English name.
+- Do not add project-only command semantics outside the root-UCM-reachable `planning/commands/*.command.md` registry.
 - Do not let the Planning Item reconciliation projection reduce review to isolated item rows, preserve a thematic peer-workflow split when one mandatory workflow crosses it, label Planning Drafts/supporting models/views as workflows without an independent trigger-to-result lifecycle, assume one incoming item equals one result, hide Current/Incoming/Resulting meanings or lose relevant validation signals, or edit item registers or repository files.
 - Do not duplicate archive command-format rules inside the helper refinement body.
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
-- Except for the explicitly documented Linked Notes Prototype test boundary, do not use any helper to write repository files or perform external network calls.
+- Except for the explicitly documented Linked Notes boundary and Planning Helper command-management boundary, do not use helpers to write repository files or perform external network calls. Planning Helper writes are confined to direct `planning/commands/*.command.md`.
 - The detailed Linked Notes test boundary, storage model and current invariants are owned under `linked-notes/` and its linked project-local workflows; this shared index must route there rather than become a competing application owner.
 ```

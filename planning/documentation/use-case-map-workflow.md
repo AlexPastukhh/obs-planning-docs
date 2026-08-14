@@ -1,7 +1,7 @@
 # Use-Case Map Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.4.0-registry-owner-links
+Doc version: v0.5.0-delegated-command-registry
 Scope: creation and maintenance of concrete project route maps/UCMs for commands and user-visible actions, with explicit separation from semantic Direction and Use-Case Registries.
 
 ## 1. Naming Boundary
@@ -12,7 +12,10 @@ In current architecture:
 
 ```text
 project UCM / planning-use-case-map.md
-  → route map for commands/actions, reads, outputs and permissions;
+  → mandatory command-system entry and shared/global routing policy;
+
+optional project command registry such as planning/commands/
+  → direct per-command routes, reads, outputs, permissions and canonical English names;
 
 Direction Registry
   → broad semantic work directions;
@@ -28,7 +31,8 @@ A UCM may link to a semantic use case. It does not own the complete semantic reg
 Use this workflow for:
 
 - creating a project route map;
-- updating command/continuation rows;
+- creating or maintaining an optional delegated command registry;
+- updating command/continuation definitions;
 - adding canonical English command names;
 - changing active-context behavior;
 - changing traversal/read-source rules;
@@ -61,33 +65,35 @@ template
   → recommended exact UCM row shape;
 
 project root UCM
-  → concrete command/action routes.
+  → mandatory command-system entry/global rules;
+
+project command registry, when selected
+  → direct concrete command/action definitions.
 ```
 
 A project normally has one root UCM.
 
 Do not create a second generic UCM under the reusable layer.
 
-## 4. What The UCM Owns
+## 4. Root UCM And Delegated Command Ownership
 
-For a concrete route:
+Every project keeps one root UCM as the mandatory command-system entry. It owns shared routing/global policy and points to the concrete command representation.
+
+A smaller project may keep concrete command rows directly in the UCM. A command-heavy project may instead delegate individual routes to one direct command-registry directory. In that model each command definition owns:
 
 ```text
 user trigger / aliases;
-canonical English name for a command family;
-task/route type;
+canonical English name;
+task/route meaning;
 active-context behavior;
-traversal depth;
-read-source mode;
-activated owners;
-required reads;
-source of obligation;
+traversal/read mode;
+activated owners / required reads;
 expected output;
 permission boundary;
-optional related semantic Direction/Use Case reference.
+projection metadata.
 ```
 
-The UCM makes routing reviewable without copying owner algorithms.
+The root UCM and command files together are one routing system. They must not contain competing copies of the same concrete route.
 
 ## 5. What The UCM Does Not Own
 
@@ -166,7 +172,7 @@ Update when:
 
 Do not update for implementation detail changes that do not change routing.
 
-## 8. Row Addition / Update Workflow
+## 8. Route Addition / Update Workflow
 
 ```text
 1. Identify canonical user trigger and aliases.
@@ -176,11 +182,12 @@ Do not update for implementation detail changes that do not change routing.
 5. Decide traversal depth and source mode.
 6. Identify owner workflow/template/area.
 7. Identify required reads.
-8. Identify source of obligation.
-9. Define expected output.
-10. Define permission boundary.
-11. Link related semantic Direction/Use Case when present.
-12. Check that owner logic is linked, not copied.
+8. Identify expected output and permission boundary.
+9. If the project has a delegated command registry, create/update exactly one direct command definition there.
+10. Otherwise create/update the compact root-UCM row.
+11. Update root UCM only when registry navigation or shared/global command policy changes.
+12. Link related semantic Direction/Use Case when present.
+13. Check that owner logic is linked, not copied.
 ```
 
 Do not add the Planning Item formation command until its exact canonical Russian and English names are explicitly chosen.
@@ -275,9 +282,29 @@ When adding/changing a route or reusable route owner:
 - update relevant navigation;
 - update responsibility map when a new owner exists;
 - consider example coverage;
-- consider Tampermonkey only when projection is separately in scope;
+- consider Tampermonkey projection only when relevant; a modular helper may discover an accepted command file without a per-command source-code edit;
 - synchronize related semantic registry references when they exist;
 - preserve project action-log requirements when an owner exists.
+
+## 14A. Delegated Command Registry Contract
+
+When a project uses a registry such as `planning/commands/`:
+
+```text
+root UCM
+  → must link the registry and remain the first route entry;
+
+registry README
+  → owns discovery/format/navigation rules, not a second hand-maintained command list;
+
+direct *.command.md
+  → one concrete command each;
+
+reusable workflows/templates
+  → continue to own algorithms and exact reusable output shapes.
+```
+
+Do not maintain the same concrete command row in both the UCM and a command file.
 
 ## 15. Checks
 

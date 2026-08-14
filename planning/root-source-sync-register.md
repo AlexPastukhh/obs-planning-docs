@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v1.3.0-linked-notes-prototype-owner-alignment
+Doc version: v1.4.0-command-registry-helper-alignment
 Scope: register root planning files, reusable owners and current local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -10,7 +10,8 @@ Scope: register root planning files, reusable owners and current local area owne
 |---|---|---|
 | `planning/README.md` | Root planning orientation | OBS project-local root owner. |
 | `planning/direction-registry.md` | Root semantic Direction Registry and local registry references | Accepted Direction/Use-Case reconciliation. |
-| `planning/planning-use-case-map.md` | Concrete OBS command router | Root UCM. |
+| `planning/planning-use-case-map.md` | OBS command-system entry/global routing policy | Root UCM. |
+| `planning/commands/` | Direct concrete command-definition registry | Project command authority below the root UCM. |
 | `planning/workflow-activation-map.md` | Task/Direction/Use-Case activation router | OBS root owner. |
 | `planning/root-source-sync-register.md` | Root source/owner register | OBS root owner. |
 | `planning/planning-input-conventions.md` | Project-readable planning input conventions | Accepted source/input meaning. |
@@ -157,14 +158,16 @@ This source/register alignment records current files and navigation only.
 Owners:
 
 ```text
+planning/commands/README.md
 planning/documentation/tampermonkey-command-projection-workflow.md
 planning/documentation/tools/tampermonkey/README.md
-planning/documentation/tools/tampermonkey/chat-command-palette.user.js
+planning/documentation/tools/tampermonkey/chat-command-palette/README.md
+planning/documentation/tools/tampermonkey/chat-command-palette.user.js  # generated
 ```
 
-Projected current Documentation Workbench command/semantic routes remain governed by their registries/UCM. Supporting Linked Notes prototype workflows such as Reader/App State do not become command or semantic projections merely because they exist in the userscript.
+Projected current Documentation Workbench semantic routes remain governed by semantic registries; concrete commands resolve through the root UCM into `planning/commands/*.command.md`. Supporting Linked Notes prototype workflows such as Reader/App State do not become command or semantic projections merely because they exist in the userscript.
 
-The helper remains projection-only for command surfaces and performs no repository write, Git, commit or push under that projection boundary. The separate Linked Notes prototype has its own explicitly bounded GitHub test behavior.
+Normal helper command execution remains projection/insertion only. The explicit command-management surface may create/update only direct `planning/commands/*.command.md` files through GitHub with SHA-aware exact read-back verification. It never runs local Git, commit or push. Linked Notes keeps its separate bounded GitHub behavior.
 
 ## 9. Historical Batch Notes
 

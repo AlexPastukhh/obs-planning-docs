@@ -1,21 +1,50 @@
 # OBS Planning Use-Case Map
 
-Status: active project-specific root command router
-Doc version: v0.12.0-workflow-integrity-reconciliation
-Scope: concrete OBS command routing. Dashboard planning is performed in the Dashboard UI and is not exposed as a command family.
+Status: active project-specific root command-system router
+Doc version: v0.13.0-delegated-command-registry
+Scope: mandatory OBS command-system entry and shared routing/global policy. Individual concrete command definitions live in `planning/commands/`. Dashboard planning is performed in the Dashboard UI and is not exposed as a command family.
 
 ## 1. Authority Model
 
 ```text
-This file owns concrete OBS command routing and each command family's canonical English name.
-Reusable workflow docs own reusable behavior.
-Area docs own local application details.
-Tampermonkey is projection only.
+planning/planning-use-case-map.md
+  = mandatory root command-system entry and shared/global command policy;
+
+planning/commands/README.md
+  = command-registry discovery/format/navigation contract;
+
+planning/commands/*.command.md
+  = individual concrete command routes, aliases, canonical English names,
+    active-context behavior, read mode, owners, output and permissions;
+
+reusable workflow/template docs
+  = reusable behavior/output algorithms;
+
+area docs
+  = local application details;
+
+Tampermonkey
+  = generated projection/editor runtime, never command meaning authority.
 ```
 
-Do not use `planning/documentation/field-kits/root-use-case-map-field-kit.md` as a runtime router after this file exists.
+Do not use `planning/documentation/field-kits/root-use-case-map-field-kit.md` as a runtime router after this root file exists.
 
-## 2. Explicit-Input Rule For Planning Responses
+## 2. Command Resolution
+
+For every command invocation:
+
+```text
+1. Start here.
+2. Read `planning/commands/README.md` when the registry contract is not current.
+3. Resolve the direct `planning/commands/*.command.md` definition whose `commandFamily` contains the user trigger.
+4. Read that command definition.
+5. Follow that command definition's `ownerFiles` and traversal/read-mode requirements.
+6. Keep its permission boundary.
+```
+
+The direct command files are the concrete registry. Do not reconstruct a command from the Tampermonkey userscript or from memory when its command file is available.
+
+## 3. Explicit-Input Rule For Planning Responses
 
 For `план файл-обновление`, `планируй`, `спланируй команду` and planning parts of `положняк`:
 
@@ -28,70 +57,91 @@ For `план файл-обновление`, `планируй`, `сплани�
 - A fallback never authorizes commit, push, deletion, destructive action, unrelated files, scope expansion, invented deadlines or invented acceptance criteria.
 ```
 
-## 3. Command Naming Rule
+## 4. Command Naming And Registry Rules
 
 ```text
-- Every command family has one canonical Russian command and one canonical English name.
-- The English name is stable display/projection metadata; aliases remain triggers only.
-- Tampermonkey copies the English name from this UCM instead of inventing or shortening it.
+- Every command family has one canonical command and one canonical English name.
+- The direct command definition owns those values.
+- `commandFamily` contains the canonical command exactly plus accepted aliases.
+- IDs, canonical commands, files and aliases must be unambiguous across the complete registry.
+- One direct `*.command.md` file represents one command.
+- V1 command discovery does not scan nested directories.
+- `palette: false` means registered but not shown in the normal Commands list.
+- No separate command-registry JSON file exists.
 ```
 
-## 4. Common Commands
+Current concrete command definitions are direct children under:
 
-| Command / trigger | English name | Meaning | Active-context behavior | Traversal/read mode | Sources / owner files | Expected output |
-|---|---|---|---|---|---|---|
-| `давай архив`, `собери архив`, `give arch`, `replacement package` | `build replacement archive` | Produce a full replacement archive/package. This is output-package mode, not archive read-source mode. | Use active approved scope. An archive from an earlier message is not current automatically. An archive attached with this command is the selected current source snapshot for this invocation. Otherwise use fully readable current repository files. A package apply stage must still verify the local HEAD/base blobs and stop before changes if they differ. | Targeted/full depending on touched files and source certainty. | This UCM, `planning/documentation/reviewable-agent-output-and-commands-workflow.md`, relevant package workflow, owner docs and target files. | Full replacement archive plus apply/diff commands in chat. Record selected source identity. Use complete replacement files, not patches as the primary mechanism. Do not commit or push before reviewed diff approval. |
-| `давай архив с review diff file`, `give arch rev dif`, `archive with review diff file` | `build archive with review diff` | Produce a replacement archive and repo-stored review diff when explicitly requested. | Use only when review-diff-file transfer is approved. Apply the same source-selection and local-base verification rules as `давай архив`. | Targeted/full depending on touched files. | This UCM, `planning/documentation/reviewable-agent-output-and-commands-workflow.md`, `planning/documentation/review-diff-file-workflow.md`, relevant package workflow and target files. | Archive plus optional `_ai-review-diffs/last-archive.diff` flow only when explicitly requested. Record selected source identity. Do not commit or push before reviewed diff approval. |
-| `арх`, `из архива`, `added arch`, `use archive` | `use archive` | Treat a provided archive as a read-source snapshot. | Use the archive explicitly selected for this invocation and state available identity/freshness limits. Do not silently treat an earlier-message archive as current. | Archive read-source mode; targeted/full depending on question. | This UCM and relevant target files from the selected archive. | Answer/review/plan based on the selected archive. Do not create a replacement archive unless separately requested. |
-| `сверь айтемы`, `сверь айтемы с документацией`, `проверь айтемы по репозиторию`, `reconcile planning items`, `reconcile items` | `reconcile planning items` | Reconcile selected working, local or unprocessed Planning Items by identifying each genuinely independent End-To-End Workflow they change and each affected non-workflow review object, checking workflow integrity, and designing the canonical item-set transition rather than accepting isolated incoming rows one-for-one or splitting one mandatory workflow across peer workflow slices. | Use the clearly active item set or a same-message attached item source. Ask which source to use only when it is missing or ambiguous; do not silently select an older local file. For every candidate End-To-End Workflow, trace trigger, preconditions, mandatory stages, branches/loops, review gates and result/end state. A peer workflow candidate may not own a mandatory missing stage. Treat a Planning Draft, model, view, terminology owner, root summary or capability slice as a supporting or non-workflow primary review object unless it has its own independently traversable trigger-to-result lifecycle. Use short semantic item names as readable labels and IDs as secondary traceability. | Targeted/full by independent End-To-End Workflow or non-workflow review object: selected item source → candidate End-To-End Workflows and non-workflow review objects → mandatory stages/branches/loops → workflow-integrity check → supporting Planning Drafts/models/views/terminology → current canonical items or owner meanings → complete current owner artifacts → source-linked origins → genuine upstream/downstream or independently traversable neighbouring workflows. | This UCM, `planning/documentation/application-planning/application-planning-drafting-workflow.md`, the selected item source, complete current End-To-End Workflow owners, affected non-workflow owners, current item owners and relevant supporting files. | Read-only reconciliation review: review-object and workflow-integrity verdicts; trigger-to-result before/after workflow for each genuinely independent End-To-End Workflow; explicit reclassification or combination of invalid peer workflow slices; before/after meaning for affected non-workflow primary review objects; supporting-artifact map; current canonical item set; one small traceable transformation block for every non-trivial change showing Current, every Incoming meaning and Resulting item(s) separately; resulting canonical item set; preservation of relevant hypothesis, risk, key-situation and prototype/test context; compact prototype/risk follow-up; and cross-workflow consistency only for genuinely separate workflows. An incoming item may keep, update, rename, add, merge, split, move, link, defer, supersede, remove or reject meaning. Do not create a prototype automatically. No file edit, item-register update, archive, commit or push. |
-| `сформируй айтемы`, `form items` | `form items` | Form complete reviewable Planning Items from the selected discussion, message, file or ledger while preserving full source context, typed Source Contributions, accumulating meaning and explicit transformations. | Use the source explicitly selected in the current message or the clearly active current-conversation source. Ask only when the source is missing or ambiguous; do not silently select an earlier archive, ledger or message. | Targeted/full by source size and current-owner uncertainty: selected source → full messages/fragments → coherent meanings → proportional current-owner check → complete proposed items → Current/Incoming/Resulting transformations → user review. | This UCM, `planning/documentation/application-planning/planning-item-formation-workflow.md`, `planning/documentation/application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md`, `planning/planning-input-conventions.md`, selected source and relevant current item owners. | Complete Planning Items For Review with full item bodies, complete supporting user messages, typed Source Contributions, relations including optional Implementation Ideas, transformation blocks, resulting item set and unresolved choices. Explicit review remains required. No repository edit, archive, commit or push. |
-| `план файл-обновление`, `спланируй обновление файлов`, `спланируй архив`, `plan file update`, `archive plan` | `plan file update` | Produce a concrete file/docs/code/archive update plan. | Ask target/scope only when active context does not make it clear. | Reuse/targeted/full by update risk. | This UCM, `planning/documentation/file-update-overview-workflow.md`, `planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md`, relevant owner docs and target files. | Plan with files, responsibilities, what/why/boundaries/checks/next action. Does not edit files or create archive unless separately requested. |
-| `крит`, `crit`, `critical review` | `critical review` | Critically evaluate target/diff/plan/claim as hypothesis, not accepted truth. | Use provided target; ask only if target is missing. | Targeted/full by risk and evidence needs. | This UCM, target docs/diff/files, relevant owner docs. | Honest verdict with strengths/weaknesses/risks/assumptions/alternatives. No edits/archive/commit/push unless separately requested. |
-| `обс`, `chat rech`, `recheck` | `recheck context` | Recheck prior answer/context/sources/diff before continuing. | Use current conversation target; ask if unclear. | Targeted/full by risk. | This UCM, prior chat context, target source files, owner docs. | Corrected answer/review. State uncertainty and do not invent evidence. |
-| `обн`, `upd` | `revise returned files` | Review user-edited returned Markdown, documentation or planning-draft files and produce new complete versions from those edits. | Files attached in the same message are the selected working versions. Compare them with clearly matching prior versions when available, evaluate what changed, preserve deliberate user edits, merge same-message clarifications and repair visual Markdown structure when useful. | Full read of every returned file; targeted read of matching prior versions, relevant templates, drafting workflows and owner docs. | This UCM, `planning/documentation/reviewable-agent-output-and-commands-workflow.md`, relevant drafting workflow/templates, returned files and clearly matching prior versions. | Complete revised affected files plus a compact summary of significant adjustments and unresolved conflicts. No repository edit, archive, commit or push unless separately requested. |
-| `положняк`, `polozh`, `current state` | `current state` | Report current operational repo/chat/planning state. | Use active area/work item if clear. | Targeted source checks for state claims. | This UCM, `planning/root-source-sync-register.md`, relevant repo files. | Concise current state: what is in repo, what is local/unknown, next safe action. |
-| `планируй`, `plan now` | `plan now` | Plan the next concrete step now from active context. | Use active context if available; otherwise ask for target. | Reuse/targeted by uncertainty. | This UCM, relevant area docs, owner workflows. | Concrete next step/scope/boundary/evidence/next action. No archive/edit unless separately requested. |
-| `прочитай принципы документации`, `прочти принципы документации`, `принципы документации`, `read documentation principles`, `documentation principles`, `docs principles` | `read documentation principles` | Perform the documentation architecture/ownership/update preflight before planning or changing documentation. | Use the active documentation task if clear; otherwise report the reusable documentation read path and ask only for the target when needed. | Full when this route has not been read in the chat, is not remembered, or ownership/boundaries are uncertain; targeted refresh only after a current full pass. | This UCM, `planning/documentation/documentation-principles-read-workflow.md`, root planning files, documentation architecture/responsibility/update owners and task-specific owners. | Read-only report of checked/not-checked sources, authority, correct owner zone, required read path and boundaries. No edits, archive, commit or push. |
-| `спланируй команду`, `plan command` | `plan command` | Plan a command route and its documentation changes. This command is plan-only and never authorizes implementation. | Ask which command only if the target command is unclear. | First run the documentation-principles preflight when required; then targeted/full command-route reads by scope. | This UCM, `planning/documentation/documentation-principles-read-workflow.md`, `planning/documentation/file-update-overview-workflow.md`, `planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md`, `planning/documentation/command-planning-workflow.md`, `planning/documentation/use-case-map-workflow.md`, `planning/documentation/USE-CASE-MAP-TEMPLATE.md`, example coverage owners, and Tampermonkey projection owners only when separately in scope. | Command family/type/canonical English name/owner/UCM-row/example/projection plan followed by `План файл-обновление`. No file creation or edits, no archive, no commit or push. |
-| `начни параллельную работу`, `start parallel work`, `parallel workspace` | `start parallel work` | Start or plan one staging-only parallel workspace. | Ask scope if no concrete agent/workstream target. | Targeted/full by workspace scope. | This UCM, `planning/documentation/parallel-work/README.md`, `planning/documentation/parallel-work/parallel-workflow.md`, workspace template. | Parallel workspace plan/package when requested. Do not edit canonical docs directly; do not create aggregate sync until a sync-candidate workspace exists. |
+```text
+planning/commands/
+```
 
-## 5. OBS Operational Command
+## 5. Shared Permission / Output Rules
 
-| Command / trigger | English name | Meaning | Active-context behavior | Traversal/read mode | Sources / owner files | Expected output |
-|---|---|---|---|---|---|---|
-| `конец`, `конец сессии`, `end session` | `end session` | Add exactly one completed normal session to the existing active operational day. | Read `planning/dashboard/index.md`; require an existing `active_session_day`; require matching `active_day` and operational dates; ask only for missing final D/F/Points. | Targeted: index → active operational day → end-session workflow → Day File Template → Real Reward Work Loop Workflow. | `planning/areas/planning-system/end-session-command-workflow.md`, `planning/dashboard/index.md`, `-Planning/Templates/Day File Template.md`, `-Planning/Workflows/Real Reward Work Loop Workflow.md`. | When inputs and checks pass, produce a full replacement archive containing only the active operational-day file plus apply/diff commands. User pastes diff before commit. Do not commit or push. |
+A command definition may be read-only, plan-only, package-producing, staging-only or another explicit mode. No mode silently expands into local Git commit/push.
 
-Dashboard planning itself is not a UCM command. Day/week/month/period/year/goal planning is entered in the Dashboard manually or transported through its single-version JSON import/export, generated repo Markdown round-trip and sync prompt.
+Archive/package commands retain the shared review boundary:
 
-## 6. Tampermonkey Projection Rule
+```text
+package creation
+  → apply with exact local base verification
+  → capture full UTF-8 diff
+  → user pastes diff
+  → assistant reviews diff
+  → only an approved diff receives a combined commit+push command.
+```
 
-If a command is projected into Tampermonkey, use:
+The detailed package and PowerShell Git runtime contract remains in `planning/documentation/reviewable-agent-output-and-commands-workflow.md` and `planning/documentation/documentation-update-workflow.md`.
+
+## 6. Dashboard / Operational Boundary
+
+Dashboard planning itself is not a command family. Day/week/month/period/year/goal planning is entered in the Dashboard manually or through its documented local JSON/Markdown sync paths.
+
+The registered `end session` command is defined at:
+
+```text
+planning/commands/end-session.command.md
+```
+
+and remains bounded to the existing active operational-day workflow described by its owner files.
+
+## 7. Tampermonkey Projection And Repository Command Management
+
+Projection/build owners:
 
 ```text
 planning/documentation/tampermonkey-command-projection-workflow.md
 planning/documentation/tools/tampermonkey/README.md
+planning/documentation/tools/tampermonkey/chat-command-palette/README.md
+```
+
+Generated install artifact:
+
+```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-Projection requirements:
+Rules:
 
 ```text
-- helper remains projection-only;
-- root UCM owns command route and canonical English name;
-- owner workflow owns behavior;
-- profile.englishName exactly matches the UCM English name;
-- inserted body has the same english_name;
-- button label is <englishName> · <label>.
+- command bodies are generated from repository command definitions;
+- the bundled catalog is a build-time fallback, not authority;
+- Refresh repo may read and validate the current repository command catalog;
+- Add / Update commands is an explicit GitHub-write surface confined to direct planning/commands/*.command.md files;
+- create/update uses conflict protection and exact read-back verification;
+- multi-file writes are sequential and partial success must be reported;
+- delete is not implemented in this slice;
+- the helper never runs local Git, commit or push.
 ```
 
-## 7. Source Notes
+## 8. Source Notes
 
 Sources:
   Format/process:
-    - `planning/documentation/field-kits/root-use-case-map-field-kit.md`
+    - `planning/documentation/use-case-map-workflow.md`
     - `planning/documentation/command-planning-workflow.md`
     - `planning/documentation/reviewable-agent-output-and-commands-workflow.md`
+    - `planning/commands/README.md`
   Content:
-    - User-confirmed operational commands, command-planning boundaries, archive source-selection rules, returned-file revision behavior and Dashboard runtime boundaries.
-  Not checked:
-    - Full existing OBS vault taxonomy beyond the current repository target files.
+    - migrated current command routes from the former root-UCM command tables;
+    - user-confirmed repository command registry and modular Planning Helper direction.

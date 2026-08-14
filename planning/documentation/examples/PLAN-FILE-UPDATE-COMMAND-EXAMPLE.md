@@ -1,7 +1,7 @@
 # Plan File Update Command Example
 
 Status: supporting reusable example
-Doc version: v0.2.0-obs-cleanup
+Doc version: v0.3.0-command-registry
 Scope: demonstrates the `план файл-обновление` command.
 
 ## Example Output Shape
@@ -28,6 +28,7 @@ Owner files:
 
 ```text
 planning/planning-use-case-map.md
+planning/commands/plan-file-update.command.md
 planning/documentation/file-update-overview-workflow.md
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
 ```

@@ -1,7 +1,7 @@
 # Reviewable Agent Output And Commands Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.8.0-utf8-diff-transfer
+Doc version: v0.9.0-command-registry-routing
 Scope: answer levels, reviewable outputs, response-level command behavior, returned user-edited file revision, replacement-package source selection and the shared runtime contract for user-facing PowerShell Git commands.
 
 ## 1. Answer Levels
@@ -42,7 +42,7 @@ Use Level 2 or Level 3 for non-trivial file/docs/code/archive changes.
   use an explicitly selected archive as read-source, not output-package mode.
 ```
 
-Concrete command routing and canonical English names belong in the project root UCM.
+Concrete command routing belongs to the project root command-routing system: read the root UCM first, then the selected delegated command definition when the project uses a command registry. The command definition owns its canonical English name.
 
 ## 3. User-Facing PowerShell Git Command Contract
 

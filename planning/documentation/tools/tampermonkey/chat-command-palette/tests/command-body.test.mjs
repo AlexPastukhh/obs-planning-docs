@@ -1,0 +1,4 @@
+import test from 'node:test'; import assert from 'node:assert/strict'; import { createRequire } from 'node:module'; const require=createRequire(import.meta.url); const body=require('../src/command-body.js');
+const d={id:'file_update.plan',file:'plan-file-update.command.md',command:'план файл-обновление',englishName:'plan file update',commandFamily:['план файл-обновление','plan file update'],keyReminders:['No edits.'],userTarget:'<target>',palette:true,refinements:[]};
+test('adaptive body points through root UCM and command definition',()=>{const text=body.buildCommandBody(d,body.MODE.ADAPTIVE);assert.match(text,/Start from `planning\/planning-use-case-map\.md`/);assert.match(text,/planning\/commands\/plan-file-update\.command\.md/);assert.match(text,/english_name:\n  plan file update/)});
+test('full body requires fresh full route',()=>assert.match(body.buildCommandBody(d,body.MODE.FULL),/Full route reading is required/));

@@ -1,7 +1,7 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.0.0-form-items-and-nonblocking-insertion
+Doc version: v1.1.2-repository-operation-lock
 Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries, command routes and owner-read refinements into the Tampermonkey/ChatGPT planning helper UI.
 
 ## 1. Core Rule
@@ -19,37 +19,44 @@ Direction authority:
 Use-Case authority:
   reusable-family/local Use-Case Registries
 
-Command routing and canonical English name authority:
+Command-system entry/global policy:
   planning/planning-use-case-map.md
+
+Concrete command authority:
+  planning/commands/*.command.md
 
 Behavior authority:
   linked owner workflow/template/area docs
 
-Projection implementation:
+Projection implementation source/build:
+  planning/documentation/tools/tampermonkey/chat-command-palette/
+
+Generated install artifact:
   planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-The helper must not invent command meaning, permission boundaries, aliases or English display names.
+The helper must not invent command meaning, permission boundaries, aliases or English display names. It parses accepted repository command definitions and generates runtime bodies from them.
 
-The root UCM owns the complete route and points to the files needed for understanding. It does not need to encode which read/refinement button the user chose for one palette insertion.
+The root UCM is the mandatory command-system entry/global-policy owner. The selected direct command definition owns the concrete route fields and points to the files needed for understanding. Neither file needs to encode which read/refinement button the user chose for one palette insertion.
 
 ## 2. Before Adding Or Updating A Command
 
 Check:
 
 ```text
-1. The command route exists in the project root UCM.
-2. The route has one canonical English name.
-3. Owner docs for the route exist.
-4. Permission boundary is explicit.
-5. Inserted body points back to the root UCM and owner docs.
-6. profile.englishName exactly matches the UCM English name.
-7. Button label uses <englishName> · <label>.
-8. Adaptive and forced-full variants are generated from the same command definition.
-9. A command-specific refinement, when present, only points to route/owner docs to reread and states the validation action.
+1. The root UCM is present as the command-system entry.
+2. The selected direct `planning/commands/*.command.md` definition exists and validates.
+3. The definition has one canonical English name and unique aliases.
+4. Owner docs for the route exist.
+5. Permission boundary is explicit.
+6. Inserted body points back to the root UCM, selected command definition and owner docs.
+7. Projected englishName exactly matches the command-definition English name.
+8. Button label uses <englishName> · <label>.
+9. Adaptive and forced-full variants are generated from the same command definition.
+10. A command-specific refinement, when present, only points to route/owner docs to reread and states the validation action.
 ```
 
-If the userscript has an older label/name than the accepted UCM route, treat the userscript as stale projection and plan a separate implementation update. Do not change the UCM back to match stale helper code.
+If the bundled generated userscript is older than the accepted repository command catalog, use `Refresh repo` to load the current valid catalog. Rebuild/reinstall only when helper source/runtime changes; do not edit the generated artifact to match command data.
 
 ## 3. Shared Inserted Body Contract
 
@@ -61,10 +68,10 @@ Read this whole command body before answering.
 Do not ignore `key_reminders`.
 
 command:
-  <canonical command from root UCM>
+  <canonical command from selected command definition>
 
 english_name:
-  <canonical English name from root UCM>
+  <canonical English name from selected command definition>
 
 command_family:
   `<canonical command>` / `<alias 1>` / `<English alias>`
@@ -92,7 +99,8 @@ The normal command button uses adaptive behavior.
 ```text
 source_of_truth:
   Start from `planning/planning-use-case-map.md`.
-  Then read the owner / linked files for this command route.
+  Then read the selected `planning/commands/*.command.md` definition.
+  Then read its owner / linked files.
 
 route_read_rule:
   If you have not read this command route and its linked owner/example files in this chat, read them before answering.
@@ -109,11 +117,12 @@ A separate `Full` action inserts the same command with an explicit fresh-read re
 ```text
 source_of_truth:
   Start from `planning/planning-use-case-map.md`.
-  Follow the complete required route for this command.
+  Then read the selected `planning/commands/*.command.md` definition.
+  Follow that definition's complete required owner route.
 
 route_read_rule:
   Full route reading is required for this invocation.
-  Read the relevant command entry in `planning/planning-use-case-map.md`.
+  Read the root UCM, then the selected command definition in `planning/commands/`.
   Then read every owner, workflow, template and example file required by that command route for complete understanding.
   Do this even if the command was previously used in this chat.
   Do not execute the command from memory or from this compact prompt alone.
@@ -172,7 +181,7 @@ Do not duplicate owner rules inside the userscript or refinement body.
 
 ### Standalone documentation-principles command
 
-Project the accepted UCM route as its own command profile:
+Project the accepted repository command definition as its own command profile:
 
 ```text
 id:
@@ -206,7 +215,7 @@ commandFamily:
   `спланируй команду` / `plan command`
 ```
 
-Do not retain creation-wording IDs, labels or aliases after the root UCM removes them.
+Do not retain creation-wording IDs, labels or aliases after the accepted repository command definition removes them.
 
 ### Archive command-format refinement
 
@@ -234,15 +243,16 @@ instruction:
 ## 8. English Name Synchronization
 
 ```text
-- Root UCM is authoritative.
-- profile.englishName must exactly match the UCM English name.
+- The root UCM is the mandatory command-system entry/global-policy owner.
+- The selected command definition is authoritative for its canonical English name.
+- Projected englishName must exactly match that command definition.
 - inserted english_name must use the same value.
 - button label must use the same value.
 - aliases may differ and remain in command_family.
 - do not abbreviate, transliterate or normalize an English name only inside the helper.
 ```
 
-A batch that changes a UCM English name but defers userscript implementation must report the helper as a known stale projection until the follow-up batch is applied.
+A repository command-definition change is available to an installed helper after a successful `Refresh repo`; rebuilding/reinstalling is required only when helper source/runtime changes or when the bundled fallback itself must be refreshed.
 
 ## 9. Archive Source Reminder Projection
 
@@ -271,7 +281,7 @@ Use Cases:
   project independently useful supported capabilities;
 
 Commands:
-  project accepted UCM routes and immediate execution permissions.
+  project accepted repository command definitions reachable from the root UCM and their immediate execution permissions.
 ```
 
 Only Commands request immediate execution.
@@ -363,7 +373,7 @@ Planning Meaning To Repository
 
 ## 9E. Item-Formation Boundary
 
-`Form Planning Items From Discussion` is linked to the accepted root UCM command:
+`Form Planning Items From Discussion` is linked to the accepted repository command definition:
 
 ```text
 сформируй айтемы
@@ -459,26 +469,50 @@ Required invariants:
 - rapid double clicks cannot duplicate the body;
 - timing diagnostics record command ID, selector path, draft/body length and find/read/insert durations in the console;
 - diagnostics remain local and perform no external network call;
+- modular composer insertion preserves success, composer-not-found, contenteditable-rejected and mutation-exception timing/reason diagnostics without adding retry loops;
 - a static fix is not considered live resolution until browser testing confirms the reported freeze is gone.
+
+## 9I. Repository Command Catalog And Explicit Writes
+
+```text
+bundled catalog
+  = valid planning/commands/*.command.md files at build time;
+
+Refresh repo
+  = explicit read/list of the current repository command catalog;
+
+Add / Update commands
+  = explicit GitHub write surface for direct planning/commands/*.command.md files only.
+```
+
+Repository command management is separate from normal command insertion. Repository settings are strict: blank owner/repository/branch values are rejected rather than replaced with defaults. `Parse & Preview` validates the complete pasted batch and merged remote catalog and captures an optimistic-lock save plan: exact `owner/repository@branch` identity, command-catalog path/SHA snapshot, each update target's current SHA, and each create target's absence expectation. `Save` uses that exact plan and must not silently re-preview, reclassify or retarget; any repository-identity or catalog change since Preview stops before writes and requires a new Preview. Preview, refresh, settings-save and GitHub save operations share one operation lock; while a save is running its dialog/helper cannot be dismissed in a way that leaves a hidden overlapping write. Every successful write is read back and compared exactly. Multi-file writes are sequential and may partially succeed after the initial snapshot check; report that state explicitly and require a new Preview before retry. Delete, local Git, commit and push are outside this surface.
+
+The GitHub token belongs only to Planning Helper GM secret state and never to command definitions, generated userscript content or catalog cache.
 
 ## 10. Placement
 
-The reusable full helper lives at:
+The reusable helper source/build lives at:
+
+```text
+planning/documentation/tools/tampermonkey/chat-command-palette/
+```
+
+The generated install artifact lives at:
 
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-Do not create a tracked local `tools/tampermonkey/` copy by default.
+Do not edit the generated userscript manually and do not create a competing tracked helper copy.
 
 ## 11. Do Not
 
 ```text
-- Do not add helper commands without UCM routes.
+- Do not project commands without an accepted repository command definition reachable from the root UCM.
 - Do not make Orientation, Direction or Use-Case activation execute a command or grant permissions.
 - Do not duplicate a command-related Use Case as an execution action.
 - Do not project provisional Chat/AI/Work-State as accepted.
-- Do not make the userscript a command or English-name source of truth.
+- Do not make source modules, the generated userscript or the local/remote catalog cache a command or English-name source of truth.
 - Do not put per-invocation read-mode policy into the root UCM.
 - Do not create separate command-definition copies for adaptive, full or refinement variants.
 - Do not put owner or archive-format rules into refinement bodies; only list route/owner docs and the requested validation action.

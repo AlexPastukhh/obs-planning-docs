@@ -1,7 +1,7 @@
 # Documentation Responsibility Map
 
 Status: active reusable documentation-layer responsibility map
-Doc version: v1.0.0-unified-planning-owner
+Doc version: v1.1.0-command-registry-routing
 Scope: routes reusable documentation-layer information and preflight processes to the correct immediate owner or responsibility zone inside `planning/documentation/`.
 
 ## 1. Purpose
@@ -23,6 +23,10 @@ Concrete project command routing:
 
 ```text
 planning/planning-use-case-map.md
+  → mandatory root entry/global policy;
+
+planning/commands/README.md + direct *.command.md files, when present
+  → delegated concrete command definitions.
 ```
 
 Concrete project entry:
@@ -42,7 +46,7 @@ Semantic Direction/Use-Case registries remain separate from the command UCM.
 | Documentation update process | `documentation-update-workflow.md` | Approved edits and replacement packages |
 | Documentation update plan | `documentation-update-plan-workflow.md` | Plan-first broad updates |
 | Responsibility-zone review | `documentation-responsibility-zone-review-workflow.md` | Existing content/owner classification |
-| Project UCM maintenance | `use-case-map-workflow.md` | Commands and permissions, not semantic registry ownership |
+| Project command-routing/UCM maintenance | `use-case-map-workflow.md` | Root UCM plus optional delegated command registry; not semantic registry ownership |
 | Direction/Use-Case registry methodology | `direction-and-use-case-registry-workflow.md` | Semantic hierarchy, topology and owner routes |
 | Direction Registry shape | `DIRECTION-REGISTRY-TEMPLATE.md` | Recommended registry representation |
 | Use-Case Registry shape | `USE-CASE-REGISTRY-TEMPLATE.md` | Recommended registry representation |
@@ -112,8 +116,11 @@ Reusable solution/workflow planning does not own a concrete application runtime 
 
 ```text
 project root UCM / planning-use-case-map.md
-  → commands, active-context behavior, reads,
-    outputs and permissions;
+  → command-system entry and shared routing/global policy;
+
+project command registry, when present
+  → individual commands, aliases, canonical English names,
+    active-context behavior, reads, outputs and permissions;
 
 Direction Registry
   → broad work directions and topology;
@@ -157,7 +164,7 @@ The reusable registry workflow/templates are active. Concrete project registries
 - Workflow files win for repeated process.
 - Templates win for recommended shape only.
 - Profiles win only within their explicit optional scope.
-- Project root UCM wins for commands and canonical English names.
+- The project root command-routing system wins for commands: root UCM for global policy, and delegated direct command definitions for per-command fields when that registry exists.
 - Semantic registries win for Direction/Use-Case entries.
 - Project areas win for concrete state.
 - Examples and helper scripts do not override owners.

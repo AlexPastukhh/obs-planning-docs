@@ -1,7 +1,7 @@
 # Use-Case Map Template
 
 Status: current reusable documentation-layer template
-Doc version: v0.2.0-command-routes
+Doc version: v0.3.0-delegated-command-registry
 Scope: exact reusable Markdown shape for concrete use-case maps, including command families with canonical English names.
 
 Use with:
@@ -72,8 +72,11 @@ This file is not:
   Layer or local ownership routing.
 
 <this use-case map>
-  User command/action -> docs/workflows/templates/sources/output/permission route.
-  For command families, it also owns the accepted canonical English display name.
+  Mandatory command-system entry and shared/global routing policy.
+
+<optional project command registry>
+  Individual command/action -> docs/workflows/templates/sources/output/permission route.
+  Each command file owns its accepted canonical English display name.
 ```
 
 Reusable use-case-map setup, maintenance and shape are owned by:
@@ -129,9 +132,26 @@ If there is no active context, ask for the target unless the target is obvious.
 |---|---|---|---|---|---|---|---|
 | `<canonical command and aliases>` | `<one canonical English display name>` | <behavior> | <fallback/clarification> | <none/reuse/targeted/full> | <conversation/archive/repo/files> | <output> | <what requires explicit approval> |
 
+## 5A. Optional Delegated Command Registry
+
+For command-heavy projects, the root UCM may delegate concrete command rows to one project registry:
+
+```text
+Command registry:
+  <project command registry README/path>
+
+Discovery:
+  direct <suffix> files only
+
+Root rule:
+  read this UCM first, then resolve the selected command definition, then read linked owners.
+```
+
+When this model is used, do not duplicate the complete concrete command table below. Keep only shared/global routing policy in the root UCM.
+
 ## 6. Command Route Table
 
-Use this compact command table when the system needs stable command families but does not need the full primary-use-case table for each command.
+Use this compact command table when the project keeps command definitions directly in the root UCM. Omit it when concrete commands are delegated to a project command registry.
 
 | Command / trigger | English name | Meaning | Active-context behavior | Traversal/read mode | Sources / owner files | Expected output |
 |---|---|---|---|---|---|---|
@@ -242,6 +262,6 @@ Permission boundary
 
 A concrete project should normally have one root use-case map.
 
-The reusable documentation layer owns setup guidance, workflow and template shape. The project root map owns concrete command routing and accepted canonical English names.
+The reusable documentation layer owns setup guidance, workflow and template shape. The project root map is always the command-system entry. It may own concrete rows directly or delegate per-command routing and canonical English names to one project command registry.
 
 Do not create a generic reusable use-case map inside the documentation layer.

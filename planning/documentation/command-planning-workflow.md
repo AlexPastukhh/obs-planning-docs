@@ -1,7 +1,7 @@
 # Command Planning Workflow
 
 Status: active reusable documentation-layer command planning workflow
-Doc version: v0.6.0-canonical-plan-command
+Doc version: v0.7.0-repository-command-definitions
 Scope: rules-based planning for new or changed command routes, canonical English names, owner semantics, examples, user-facing PowerShell Git output and optional Tampermonkey projection in projects using the reusable documentation layer.
 
 ## 1. Purpose
@@ -31,8 +31,12 @@ The route first establishes documentation architecture and ownership, then produ
 ## 3. Source Of Truth
 
 ```text
-Primary route owner:
+Primary command-system entry:
   planning/planning-use-case-map.md
+
+Project command-definition registry, when present:
+  planning/commands/README.md
+  planning/commands/*.command.md
 
 Documentation preflight:
   planning/documentation/documentation-principles-read-workflow.md
@@ -60,10 +64,11 @@ Example coverage:
 Reusable Tampermonkey projection, only when separately in scope:
   planning/documentation/tampermonkey-command-projection-workflow.md
   planning/documentation/tools/tampermonkey/README.md
-  planning/documentation/tools/tampermonkey/chat-command-palette.user.js
+  planning/documentation/tools/tampermonkey/chat-command-palette/README.md
+  planning/documentation/tools/tampermonkey/chat-command-palette.user.js  # generated artifact
 ```
 
-Tampermonkey is projection only and does not own command meaning, aliases, English names or permission boundaries.
+Tampermonkey remains a projection/editor runtime. With a delegated project registry, direct command files own command meaning, aliases, English names and permission boundaries; the root UCM remains the mandatory command-system entry/global-policy owner.
 
 ## 4. Command Route Row Template
 
@@ -98,8 +103,8 @@ Rules:
 - English name is required, not optional.
 - English name is concise natural English, not an internal abbreviation.
 - English name is separate from aliases.
-- The concrete root UCM owns the accepted English name.
-- Tampermonkey copies the UCM English name exactly.
+- The concrete command representation owns the accepted English name: a direct command definition in a delegated-registry project, or the root UCM row in a smaller non-delegated project.
+- Tampermonkey copies that accepted English name exactly.
 - Changing an alias must not silently change meaning or permissions.
 ```
 
@@ -121,11 +126,11 @@ Rules:
    - Plan a new or updated reusable owner only when no suitable owner exists.
    - Do not place full reusable rules in the root UCM or an example.
 
-4. Plan the root UCM route row.
-   - Fill every command-route slot.
-   - Make active-context behavior explicit.
-   - Name the owner files.
-   - Include a clear permission boundary.
+4. Plan the concrete command definition.
+   - In a delegated command-registry project, plan one direct `planning/commands/*.command.md` file.
+   - Fill every command-definition field, including canonical command, English name, aliases, active-context behavior, read mode, owners, output, permission and projection metadata.
+   - Update the root UCM only when shared/global routing policy or registry navigation changes.
+   - In a small project without a registry, use the compact UCM row instead.
 
 5. Produce the file-update plan.
    - Use `file-update-overview-workflow.md` and `FILE-UPDATE-OVERVIEW-TEMPLATE.md`.
@@ -136,7 +141,7 @@ Rules:
    - Apply the shared runtime contract from `reviewable-agent-output-and-commands-workflow.md`.
    - Require one physical `& { ... }` line, one paste, one Enter, non-interactive execution and `git --no-pager`.
    - Link `documentation-update-workflow.md` when archive/apply/diff specialization is relevant.
-   - Do not duplicate the full runtime contract in the UCM row, example or Tampermonkey projection.
+   - Do not duplicate the full runtime contract in the command definition/UCM route, example or Tampermonkey projection.
 
 7. Decide example coverage.
    - Update the examples index when a non-trivial command/output workflow needs coverage.
@@ -149,7 +154,7 @@ Rules:
 9. Decide Tampermonkey projection separately.
    - `add now`, `defer` or `do not add`.
    - Default is `defer` unless helper projection is explicitly included.
-   - A future helper profile uses the root UCM English name exactly.
+   - The helper uses the accepted command-definition English name exactly. A newly accepted repository command can be discovered/refreshed without a per-command JavaScript source edit.
 
 10. Record applied documentation work only after implementation.
    - Append an action log only after real changed files are known.
@@ -166,7 +171,7 @@ Default:
   defer unless the user explicitly includes helper projection in the planned scope.
 ```
 
-Planning a helper change does not authorize editing the userscript. Implementation requires a separate file-update/archive action.
+Planning a helper architecture change does not authorize editing source. Adding an accepted command definition does not normally require a helper source edit; the generated helper can refresh the repository command registry. Repository writes still require a separate explicit action.
 
 ## 8. Required Answer Shape
 
@@ -192,8 +197,11 @@ Command type:
 Owner semantics:
   ...
 
-UCM row plan:
-  ...
+Command definition plan:
+  direct project command file, or compact UCM row only when no delegated registry exists
+
+Root UCM impact:
+  shared/global routing change / navigation-only / none
 
 PowerShell Git runtime contract:
   applies / not applicable
@@ -217,12 +225,12 @@ Next action:
 ## 9. Do Not
 
 ```text
-- Do not create a command only by copying a similar UCM row.
+- Do not create a command only by copying a similar UCM row or command file.
 - Do not make Tampermonkey or an example the source of truth.
 - Do not make the canonical English name optional.
 - Do not treat `спланируй команду` or `plan command` as implementation permission.
 - Do not create a command whose user-facing PowerShell Git output bypasses the shared one-line, non-interactive and no-pager contract.
-- Do not duplicate the full PowerShell Git runtime contract inside UCM rows, examples or helper projections.
+- Do not duplicate the full PowerShell Git runtime contract inside command definitions/UCM rows, examples or helper projections.
 - Do not edit or create files from this command family.
 - Do not create a replacement archive from this command family.
 - Do not commit or push.
