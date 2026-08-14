@@ -1,8 +1,8 @@
 # Documentation Workbench Use-Case Registry
 
 Status: active project-local semantic Use-Case Registry
-Doc version: v1.5.0-note-images-and-asset-transfer
-Scope: independently useful current Documentation Workbench workflows/capabilities and explicit deferred candidates.
+Doc version: v1.6.0-current-prototype-evidence-alignment
+Scope: independently useful current Documentation Workbench workflows/capabilities, supporting prototype workflows and explicit deferred candidates.
 
 Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 
@@ -12,10 +12,12 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 |---|---|---|---|---|---|
 | `UC-DW-DOC-REF` | Repository Documentation Change And Reference Review | accepted current | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) | none |
 | `UC-DW-ITEM-FULL-PICTURE` | Planning Meaning To Repository | accepted current; legacy ID retained | `DIR-DOCUMENTATION-WORKBENCH` | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) | `сверь айтемы` for reconciliation stage only |
-| `UC-DW-LINKED-NOTES` | Create, Link And Manage Repository Notes | working / `0.6.4` prototype acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) | none |
-| `UC-DW-REPOSITORY-FILES-CATEGORIES` | Browse Repository Files And Manage Categories | working / `0.6.4` prototype acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) | none |
-| `UC-DW-IMAGE-AWARE-MARKDOWN-TRANSFER` | Copy A Linked Note And Repository Images | working / `0.6.4` prototype acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md) | none |
+| `UC-DW-LINKED-NOTES` | Create, Link And Manage Repository Notes | working / current `0.7.2` prototype evidence; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) | none |
+| `UC-DW-REPOSITORY-FILES-CATEGORIES` | Browse Repository Files And Manage Categories | working / current `0.7.2` prototype evidence; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) | none |
+| `UC-DW-IMAGE-AWARE-MARKDOWN-TRANSFER` | Copy A Linked Note And Repository Images | working / current `0.7.2` prototype includes this capability; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md) | none |
 | `UC-DW-STRUCTURED-MESSAGE` | Structured User Message Composer | active supporting | `DIR-DOCUMENTATION-WORKBENCH` | `ITEM-121` in `planning-item-register.md` | none |
+
+Current supporting prototype workflows that are **not promoted here to new Use-Case IDs** are listed in Section 12.
 
 ## 2. `UC-DW-DOC-REF` — Repository Documentation Change And Reference Review
 
@@ -67,29 +69,29 @@ ITEM-124 in planning-item-register.md for current canonical capability meaning
 ITEM-114 for stable file/section targets.
 ```
 
-The Use Case supports links to complete repository files, stable anchored fragments/sections and other Notes. It does not accept a generic Reference Object runtime, a specific userscript, a Note storage layout or a token-storage architecture.
+The Use Case supports links to complete repository files, stable anchored fragments/sections and other Notes. It does not accept a generic Reference Object runtime, a specific userscript, a final Note storage layout or a token-storage architecture.
 
-The Use Case and `ITEM-124` are current selected behavior. The Tampermonkey/GitHub implementation remains prototype evidence pending browser and real-GitHub acceptance.
+The Use Case and `ITEM-124` are current selected behavior. The current `0.7.2-prototype` is implementation evidence only and remains pending browser/real-GitHub acceptance where the workflow requires it.
 
 ## 5. `UC-DW-REPOSITORY-FILES-CATEGORIES` — Browse Repository Files And Manage Categories
 
-**Trigger/input:** the user selects one configured GitHub workspace and explicitly opens Files or Categories to browse, preview, define, assign or inspect repository content.
+**Trigger/input:** the user selects one configured GitHub workspace and explicitly opens Files or Categories to browse, preview, author bounded text, define, assign or inspect repository content.
 
-**Result:** a selected supported file is readable inside the helper and retains its exact GitHub URL; category definitions, descriptions and explicit/implied memberships are reconstructible from repository Markdown; explicit writes are conflict-protected and verified, or a visible recoverable failure is returned.
+**Result:** a selected supported file is readable inside the helper and retains its exact GitHub URL; bounded text create/edit can be explicitly verified; category definitions/descriptions/memberships are reconstructible from repository Markdown; explicit writes are conflict-protected and verified, or a visible recoverable failure is returned.
 
 **Owner route:**
 
 ```text
 planning-draft.md for selected behavior and implementation questions
 repository-file-browser-and-categories-workflow.md for trigger-to-result continuity
+files-centric-repository-workspace-extension.md for adjacent Files-only prototype extensions
 ITEM-97 and ITEM-118 in planning-item-register.md for categories and views
 ITEM-126 and ITEM-127 for file viewing and category relations
 ITEM-128 for the selected bounded definition-file prototype
 ITEM-129 for the deferred file-local metadata alternative.
 ```
 
-The Use Case distinguishes read-only repository navigation from explicit verified category writes. UI-only groups do not classify files; repository-backed implications may derive category membership. It does not accept arbitrary file editing, background repository indexing, final category syntax, category rename/delete or a generic Reference Object runtime.
-
+The Use Case distinguishes read-only repository navigation from explicit verified writes. UI-only groups do not classify files; repository-backed implications may derive category membership. Current Files extensions such as repository templates or add-only structure/copy remain prototype implementation details unless their semantic meaning is separately reconciled.
 
 ## 6. `UC-DW-IMAGE-AWARE-MARKDOWN-TRANSFER` — Copy A Linked Note And Repository Images
 
@@ -108,7 +110,7 @@ ITEM-132 for safe image interpretation and rendering
 ITEM-34B for repository review/conflict boundaries.
 ```
 
-The first bounded prototype copies rather than moves, preserves source Note/assets, remains in one owner/repository/branch, does not auto-download external images and does not promise multi-file atomicity or automatic orphan cleanup.
+The bounded prototype copies rather than moves, preserves source Note/assets, remains in one owner/repository/branch, does not auto-download external images and does not promise multi-file atomicity or automatic orphan cleanup.
 
 ## 7. `UC-DW-STRUCTURED-MESSAGE` — Structured User Message Composer
 
@@ -137,7 +139,7 @@ Promotion requires one independently traversable trigger-to-result lifecycle and
 
 ## 9. Detailed Scenario Boundary
 
-The former project-local `SCN-DW-*`, DATA and Behavior files are no longer selected and are removed by Batch 3B. Their useful current meaning is represented by complete Key Scenarios in [`planning-draft.md`](planning-draft.md), existing Planning Items and the current workflow owners.
+The former project-local `SCN-DW-*`, DATA and Behavior files are no longer selected. Their useful current meaning is represented by complete Key Scenarios in [`planning-draft.md`](planning-draft.md), existing Planning Items and the current workflow owners.
 
 No project-local Scenario catalog/tombstone remains. The reusable `UC-AP-SCENARIO` route is activated only when the specialized profile is explicitly selected.
 
@@ -147,9 +149,10 @@ No project-local Scenario catalog/tombstone remains. The reusable `UC-AP-SCENARI
 planning-draft.md → high-level owner;
 planning-item-register.md → current item/source owner;
 retired-planning-items.md → historical inactive item owner;
+linked-notes-prototype-roadmap.md → current implementation priorities, not canonical item meaning;
 reference-object-model-and-lifecycle.md → deferred alternative;
 registries/templates/matrices → semantic or supporting artifacts;
-Tampermonkey implementation candidate → Implementation Idea, not a Use Case owner.
+Tampermonkey implementation → prototype evidence, not a Use Case owner.
 ```
 
 ## 11. Activation
@@ -160,7 +163,21 @@ Full: read this registry, the selected complete workflow, the Planning Draft and
 
 Activation grants no repository permission.
 
+## 12. Current Supporting Prototype Workflows Without New Use-Case IDs
 
-## 12. `0.6.4` Shared Supporting Capabilities
+The current `0.7.2-prototype` contains supporting workflows/extensions that are independently documented but are **not promoted by this registry update into new semantic Use-Case IDs**:
+
+| Supporting workflow / extension | Current owner | Boundary |
+|---|---|---|
+| Files-centric repository workspace extensions | [`files-centric-repository-workspace-extension.md`](files-centric-repository-workspace-extension.md) | adjacent implementation slice under repository Files behavior |
+| Repository-native Reference Objects | [`reference-object-definition-and-materialized-use-workflow.md`](reference-object-definition-and-materialized-use-workflow.md) | bounded repository-native slice; not the deferred generic managed-object runtime |
+| Chat Response Reader | [`chat-response-reader-workflow.md`](chat-response-reader-workflow.md) | local response-reading workflow; semantic promotion not decided here |
+| Full App State Export | [`full-app-state-export-workflow.md`](full-app-state-export-workflow.md) | diagnostic state export; not normal content-copy or restore workflow |
+
+Semantic promotion, if later desired, requires separate workflow/item/use-case reconciliation.
+
+## 13. Shared Supporting Capabilities
 
 `UC-DW-LINKED-NOTES`, `UC-DW-REPOSITORY-FILES-CATEGORIES` and `UC-DW-IMAGE-AWARE-MARKDOWN-TRANSFER` share `ITEM-130` contextual errors, `ITEM-131` target picking/bounded search, `ITEM-132` rich Markdown/images and `ITEM-133` managed Note relation metadata. These are supporting capabilities, not additional independently traversable Use Cases.
+
+The current prototype may also reuse implementation infrastructure such as the safe Markdown renderer, workspace/GitHub adapter and diagnostic App State snapshot without changing semantic Use-Case identity.

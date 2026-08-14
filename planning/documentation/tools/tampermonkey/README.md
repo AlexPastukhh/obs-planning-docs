@@ -1,8 +1,8 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.23.0-note-images-and-asset-transfer
-Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository Notes, image-asset transfer, file-viewer and category prototype.
+Doc version: v0.24.0-linked-notes-doc-routing
+Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
 
@@ -31,20 +31,21 @@ planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   and one-click finished-session capture into the shared pending outbox.
 
 planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.user.js
-  project-local test-only repository documentation prototype generated from linked-notes/src/**;
-  keeps Note drafts in a dedicated IndexedDB database and reusable repository workspaces plus derived category cache in private GM storage;
-  remembers only explicitly selected workspaces separately for stable ChatGPT chats and uses one shared private GitHub token;
-  exposes Notes, Files and Categories surfaces in one viewport-safe dark panel;
-  performs bounded explicit GET-only Notes refresh, direct repository folder/file reads and category-definition refresh; member validation uses parent-directory listings and does not read member-file content;
-  previews supported text files read-only inside the app and always exposes an exact Open on GitHub link;
-  stores file categories as ordinary v3 Markdown definitions with explicit managed-region boundaries, literal descriptions, implied-category links and encoded portable file-member links;
-  keeps category UX groups local-only in separately revisioned target-scoped records with atomic per-category mutations, derives transitive memberships, reports path-aware malformed/broken/cycle states and rebuilds cache from GitHub;
-  performs category create/update/assign/unassign only after explicit user actions with SHA protection and exact read-back verification;
-  retains the existing verified Linked Note save/copy/recovery and remote reconciliation behavior;
-  supports local recoverable clipboard/file image insertion, explicit byte-verified repository asset save and portable Note-relative image links;
-  copies visible Note Markdown into a same-repository target with copied/reused target-owned assets and rewritten image paths;
-  preserves source Notes/assets, does not auto-download external images and reports non-atomic partial results explicitly;
-  never runs local git, commit or push, and does not accept a production architecture.
+  project-local `0.7.2-prototype` repository documentation helper generated from linked-notes/src/**;
+  currently includes Workspaces, Notes, Files, Categories, repository templates, materialized Reference Objects, Chat Response Reader and Full App State diagnostics;
+  repository reads/writes remain explicit and bounded, with verified write behavior owned by the focused Linked Notes workflows;
+  never runs local git, commit or push and does not accept a production architecture.
+```
+
+Linked Notes current-state documentation is intentionally owned inside its own directory instead of being duplicated in this shared tools index:
+
+```text
+planning/documentation/tools/tampermonkey/linked-notes/README.md
+  → APP-OVERVIEW.md
+  → ARCHITECTURE.md
+  → DATA-AND-STATE.md
+  → KNOWN-ISSUES.md
+  → planning/areas/documentation-workbench/linked-notes-prototype-roadmap.md
 ```
 
 Do not create competing tracked copies of the same script.
@@ -109,25 +110,14 @@ Dashboard IndexedDB:
   record: dashboard:v1
 
 Linked Notes Prototype private GM storage:
-  obsLinkedNotesPrototype:v2:workspaceState
-  obsLinkedNotesPrototype:v2:githubToken
-  obsLinkedNotesPrototype:v2:migration
-  obsLinkedNotesPrototype:v2:stateLock
-  obsLinkedNotesPrototype:v1:categoryCache (legacy migration input)
-  obsLinkedNotesPrototype:v2:categoryCache:<workspace-target-context>
-  obsLinkedNotesPrototype:v2:categoryGroups:<workspace-target-context>
-  obsLinkedNotesPrototype:v2:categoryLock:<workspace-target-context>
-
-Linked Notes Prototype legacy migration input only:
-  obsLinkedNotesPrototype:v2:workspaces
-  obsLinkedNotesPrototype:v2:chatWorkspaceMap
-  obsLinkedNotesPrototype:v2:defaultWorkspace
-  obsLinkedNotesPrototype:v1:settings
-  obsLinkedNotesPrototype:v1:githubToken
+  see linked-notes/DATA-AND-STATE.md for current application-owned GM namespaces and persistence ownership.
 
 Linked Notes Prototype IndexedDB:
   database: obsLinkedNotesPrototype
   store: notes
+
+  database: obsLinkedNotesPrototypeAssets
+  store: assets
 ```
 
 Rules:
@@ -153,29 +143,7 @@ Rules:
 - Exporting does not clear pending records.
 - Pending records clear only after reviewed repository application plus reconciliation, or explicit user action.
 - Conflict records block additional Finish actions until resolved.
-- Linked Notes title/body drafts persist to their dedicated IndexedDB store before ordinary panel close, search, settings rerender or Note navigation.
-- Linked Notes uses one shared GitHub token for all local workspaces; the token remains only in private GM storage and Note records, workspace metadata, chat mappings and repository Markdown must not contain it.
-- Linked Notes workspace records store only a local name plus owner/repository/branch/Notes-folder/Categories-folder configuration; stable ChatGPT chat IDs map locally only after explicit selection and never become repository content.
-- Category definitions are ordinary repository Markdown; local category snapshots and UX group names are derived/private cache and must be rebuildable or disposable. Cache identity includes workspace id, owner, repository, branch and Categories folder.
-- File-category assignment in this prototype is canonical in encoded category-definition links; categorized target files are not modified, and assignment from a preview in another repository/branch is rejected.
-- Category definitions distinguish file and Linked Note membership; Note bodies are not category owners.
-- Shared target search is explicit and bounded; no background repository index is created.
-- Picker-created Note links persist in existing Note metadata and backlinks are derived locally.
-- Rich Markdown is sanitized derived HTML; repository images use authenticated byte reads and temporary object URLs without token disclosure.
-- Pending Note images use a separate local IndexedDB asset store; clipboard/file insertion does not write remotely until explicit verified Note save.
-- Binary repository image writes preserve exact bytes, safely reuse identical assets and never silently overwrite different-byte collisions.
-- Image-aware Note transfer copies visible title/body without quiet Note metadata, remains in the same owner/repository/branch and rewrites paths into a target-owned sibling `.assets` folder.
-- Source images are copied rather than moved; external images and orphan cleanup remain explicit non-automatic boundaries.
-- Contextual errors preserve the related form, Note draft and target selection.
-- Category-member validation uses bounded parent-directory listings without fetching member-file bodies; group updates mutate one category under a target-scoped lock so stale tabs do not replace unrelated groups.
-- A fresh or unmapped chat may display the global default workspace without creating a chat binding; a new-chat selection remains session-only and is cleared when any stable route appears, while only an explicit selection made on the stable chat is remembered.
-- Workspace switching changes only the current chat context for new/unbound Notes, repository links and explicit Copy; it never silently moves or recreates a verified Note.
-- All local Notes remain visible across workspace changes; a verified Linked Note stores owner/repository/branch/path together with SHA and verified hash.
-- Workspace/default/chat-map mutations use one cooperative GM-storage lease, reread the canonical state after acquiring it, replace one revisioned state value atomically and verify the committed revision; deterministic migration prevents duplicate Imported workspaces during simultaneous startup.
-- Opening Linked Notes rereads workspace state so completed changes from another tab become visible; unsaved workspace-form input stays local to the current panel and survives close, Escape, rerenders and route changes until saved or explicitly discarded.
-- Linked Notes keeps the Note list and editor independently scrollable, exposes Manage workspaces in the top bar, reserves a bottom-right safe area on wide viewports and uses the top stacking layer so neighbouring fixed OBS widgets do not cover its content.
-- Linked Notes reads the active Notes folder only after explicit Refresh GitHub, imports only valid linked-note Markdown, fast-forwards only an unchanged local base, preserves local-ahead content and marks two-sided changes or remote deletion explicitly; refresh performs no remote write.
-- Linked Notes external writes remain explicit, test-target-only and limited to GitHub Contents API create/update plus read-back verification; Save, Copy and confirmed bound-target recovery cannot run concurrently.
+- Linked Notes current storage/state ownership is documented in `linked-notes/DATA-AND-STATE.md`; this shared tools index does not duplicate the complete application persistence contract.
 - chatgpt.com and chat.openai.com are different IndexedDB origins; use chatgpt.com as the canonical Linked Notes IndexedDB origin.
 ```
 
@@ -284,7 +252,6 @@ Live Markdown reads intentionally bypass the browser/Tampermonkey HTTP cache:
 
 `Copy End` remains as a manual fallback and does not write the shared outbox.
 
-
 ## 6. Pattern Capture session timer
 
 ```text
@@ -330,7 +297,6 @@ Timer rules:
 5. Reopen ChatGPT and verify that all tabs show the same current timer.
 6. Use https://chatgpt.com for the shared V1 localStorage origin.
 ```
-
 
 ## 8. Keyboard controls
 
@@ -530,5 +496,5 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
 - Except for the explicitly documented Linked Notes Prototype test boundary, do not use any helper to write repository files or perform external network calls.
-- Do not let the Linked Notes exception expand beyond explicit Save/Copy/confirmed recovery actions, the visibly selected workspace or bound GitHub target, validated repository paths, one-operation locking, SHA-aware create/update and read-back verification; local workspace/chat mappings remain non-secret browser state and it never authorizes local git, commit or push.
+- The detailed Linked Notes test boundary, storage model and current invariants are owned under `linked-notes/` and its linked project-local workflows; this shared index must route there rather than become a competing application owner.
 ```
