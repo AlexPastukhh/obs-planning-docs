@@ -1,7 +1,7 @@
 # Repository Reference Objects Prototype Slice
 
 Status: implementation prototype / automated focused evidence available / browser and real-GitHub acceptance pending
-Prototype host: Linked Notes `0.7.1-prototype`
+Prototype host: Linked Notes `0.8.0-prototype`
 Definitions File: `.linked-notes/reference-objects.json`
 
 ## 1. Purpose
@@ -34,7 +34,7 @@ Canonical value is never copied into the Definitions File. It is read from the o
 
 ## 3. Local-First Prototype State
 
-Reference Object changes are local by default. Pending complete-file replacements are stored through the userscript value store under an exact workspace/repository/branch key with the GitHub base SHA. Complete local drafts preserve existing line endings and surrounding text outside explicit marker-range edits.
+Reference Object changes are local by default. Pending complete-file replacements share the general repository local-change queue under an exact workspace/repository/branch key with the first GitHub base SHA. Existing legacy drafts upgrade in place. Complete local state preserves existing line endings and surrounding text outside explicit marker-range edits.
 
 Local actions include:
 
@@ -46,7 +46,7 @@ Local actions include:
 
 They perform no GitHub write.
 
-`Apply local changes to GitHub` is explicit, preflights every pending base before the first write, writes content files before the Definitions File and uses verified read-back.
+GitHub publication uses the standard Files actions. `Update current file` writes only the open pending path and verifies read-back. `Update all` preflights every pending base and creates one verified Git Data commit with one non-force branch-ref update. There is no Reference Object-specific publisher or sequential bulk fallback.
 
 ## 4. Create And Use
 
@@ -62,7 +62,7 @@ Two update actions remain distinct:
 
 ```text
 Update locally → local complete-file drafts only;
-Update GitHub  → current remote definition/use state + verified remote writes.
+Update current file / Update all → standard verified publication of pending file state.
 ```
 
 Independent remote usage update is blocked while local Reference Object drafts are pending, so unsynced local definition changes cannot silently become the basis for a different remote action.
@@ -77,7 +77,7 @@ Repository-wide check/validation is explicit and cancellable through the Files r
 
 The Files workspace gains an always-available searchable `Reference objects ▾` menu.
 
-Each object exposes Copy, Open definition, Check, local/remote update, local Rename and an expandable usage list. Usage rows show path, current line and same-line occurrence number; checked stale values are highlighted yellow. Clicking a use opens the file in source view and focuses the exact marker occurrence, including distinct `#1/#2/#3` uses on the same line.
+Each object exposes Copy, Open definition, Check, Update locally, local Rename and an expandable usage list. Usage rows show path, current line and same-line occurrence number; checked stale values are highlighted yellow. Clicking a use opens the file in source view and focuses the exact marker occurrence, including distinct `#1/#2/#3` uses on the same line. Repository freshness diagnostics also expose stale/unresolved counts in the open file and Files tree after a scan.
 
 The create modal and open Reference Objects menu are restored across the base UI's destructive rerenders when the exact repository workspace context remains unchanged.
 
@@ -87,6 +87,7 @@ The create modal and open Reference Objects menu are restored across the base UI
 - no source guessing;
 - no automatic use insertion;
 - no automatic stale propagation;
+- no per-object automatic-propagation policy in this version;
 - no write from Check or Validate;
 - local state isolated by exact workspace/repository/branch;
 - SHA/absence preflight before publishing local drafts;

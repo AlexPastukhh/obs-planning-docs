@@ -1,8 +1,8 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.7.2-prototype`
-Scope: local-first Tampermonkey repository documentation prototype with Notes, Files, Categories, repository templates, materialized Reference Objects, Chat Response Reader, Full App State diagnostics and explicit verified GitHub actions.
+Version: `0.8.0-prototype`
+Scope: local-first Tampermonkey repository documentation prototype with Notes, Files, Categories, repository templates, materialized Reference Objects, Ordered Reference Lists, stale-use diagnostics, Chat Response Reader, Full App State diagnostics and explicit verified GitHub actions.
 
 This directory is implementation/prototype material. Canonical Planning Items and project-local workflow owners remain under `planning/areas/documentation-workbench/`; this userscript does not silently define production architecture.
 
@@ -55,6 +55,8 @@ Project-local workflow owners:
 - [`files-centric-repository-workspace-extension.md`](../../../../areas/documentation-workbench/files-centric-repository-workspace-extension.md) — Files-centric navigation, structure/copy and repository-template integration;
 - [`image-aware-markdown-transfer-workflow.md`](../../../../areas/documentation-workbench/image-aware-markdown-transfer-workflow.md) — copy a verified Note and its repository images;
 - [`reference-object-definition-and-materialized-use-workflow.md`](../../../../areas/documentation-workbench/reference-object-definition-and-materialized-use-workflow.md) — repository-native Reference Object definitions and materialized uses;
+- [`ordered-reference-list-workflow.md`](../../../../areas/documentation-workbench/ordered-reference-list-workflow.md) — Reference-Object-driven whole-line/paragraph item creation and local ordering;
+- [`local-first-repository-change-and-github-update-workflow.md`](../../../../areas/documentation-workbench/local-first-repository-change-and-github-update-workflow.md) — shared pending-file queue plus current/all GitHub publication scopes;
 - [`chat-response-reader-workflow.md`](../../../../areas/documentation-workbench/chat-response-reader-workflow.md) — local response Reader and source-accuracy contract;
 - [`full-app-state-export-workflow.md`](../../../../areas/documentation-workbench/full-app-state-export-workflow.md) — diagnostic full local application-state export.
 
@@ -95,7 +97,7 @@ See [`DATA-AND-STATE.md`](DATA-AND-STATE.md) for the complete current map.
 
 Repository reads/writes are explicit. Ordinary page load, ChatGPT route changes and local Reader/App State actions do not authorize repository writes.
 
-Current write paths use the GitHub Contents API and are intended to protect against blind overwrite through path validation, absence/SHA checks and read-back verification. The application never runs local Git, commit or push.
+Repository business actions stage complete intended file state locally. `Update current file` publishes exactly the open pending path through the Contents API with exact read-back. `Update all` publishes every pending path as one commit through the Git Data API, with per-path base checks, one non-force ref update and tree verification. There is no sequential bulk fallback. The application never runs local Git, commit or push.
 
 Current reliability concerns and the planned write-path audit are tracked in [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md) and the project-local roadmap.
 
@@ -158,6 +160,8 @@ A workspace may be reused by many chats. A stable ChatGPT chat remembers a works
 
 - Do not claim remote success before required verification completes.
 - Do not overwrite a changed remote SHA blindly.
+- Do not replace the first verified base SHA when a pending local file is edited again.
+- Do not implement feature-specific GitHub publication actions; use Update current file or Update all.
 - Do not treat local IndexedDB/GM state as repository truth.
 - Do not expose the GitHub credential in Markdown, repository files, DOM URLs, exported diagnostics or logs.
 - Do not run two repository operations concurrently when the application policy blocks them.

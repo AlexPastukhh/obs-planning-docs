@@ -18,7 +18,10 @@ const sourceFiles = [
   'src/repository-files-workspace-core.js',
   'src/repository-file-templates.js',
   'src/reference-object-markers.js',
+  'src/ordered-reference-list-markers.js',
+  'src/ordered-reference-list-core.js',
   'src/reference-object-registry.js',
+  'src/repository-local-change-store.js',
   'src/reference-object-local-store.js',
   'src/repository-reference-object-service.js',
   'src/repository-target-search.js',
@@ -32,6 +35,7 @@ const sourceFiles = [
   'src/indexeddb-note-store.js',
   'src/pending-note-asset-store.js',
   'src/github-contents-client.js',
+  'src/repository-change-publisher.js',
   'src/repository-asset-write.js',
   'src/remote-note-reconcile.js',
   'src/workspace-context.js',
@@ -42,6 +46,9 @@ const sourceFiles = [
   'src/runtime-responsiveness.js',
   'src/repository-files-workspace-runtime.js',
   'src/repository-reference-objects-runtime.js',
+  'src/repository-local-changes-runtime.js',
+  'src/repository-ordered-reference-lists-runtime.js',
+  'src/repository-reference-stale-runtime.js',
   'src/chat-response-reader-runtime.js',
   'src/full-app-state-runtime.js',
 ];
@@ -49,8 +56,8 @@ const sourceFiles = [
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.7.2-prototype
-// @description  Repository Notes plus Files, materialized Reference Objects, Chat Response Reader, safe rich Markdown and verified GitHub actions.
+// @version      0.8.0-prototype
+// @description  Local-first repository workspace with atomic GitHub updates, Ordered Reference Lists, stale-use diagnostics, linked Notes and safe Markdown.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*

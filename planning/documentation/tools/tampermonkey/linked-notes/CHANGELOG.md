@@ -1,9 +1,22 @@
 # OBS Linked Notes Prototype Changelog
 
 Status: implementation history / not current-state authority
-Current version: `0.7.2-prototype`
+Current version: `0.8.0-prototype`
 
 Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTURE.md`](ARCHITECTURE.md) and [`DATA-AND-STATE.md`](DATA-AND-STATE.md) for current behavior. This file records the major tracked prototype slices that were previously mixed into the main README.
+
+## 0.8.0-prototype — Local-first repository publication and Ordered Reference Lists
+
+- generalized the former Reference Object draft overlay into one legacy-compatible workspace/repository/branch pending-file queue;
+- made ordinary file/folder, structure, copy, category and Reference Object business actions stage local intended state;
+- added separate `Update current file` and `Update all` actions;
+- implemented `Update all` with Git Data blobs/tree/commit, one non-force ref update and post-update tree verification, with no sequential Contents fallback;
+- added inline Ordered Reference List/Item markers around complete selected lines or paragraphs;
+- added natural, alphabetical, guarded leading-number and non-executable custom-value ordering with stable ties;
+- allowed list creation with stale uses while blocking ordering until every nested use is current;
+- added open-file and Files-tree stale/unresolved Reference Object diagnostics;
+- added repository-facing AI rules for manual Ordered Item structural validation;
+- kept future Reference Object automatic-propagation policy as roadmap research only.
 
 ## 0.7.2-prototype — Chat Response Reader
 

@@ -1,7 +1,7 @@
 # OBS Linked Notes Prototype Architecture
 
 Status: current implementation mapping / not production architecture
-Version: `0.7.2-prototype`
+Version: `0.8.0-prototype`
 Scope: technical map of the generated Tampermonkey application, its runtime extension order and external boundaries.
 
 ## 1. Layer Map
@@ -33,7 +33,7 @@ Tampermonkey storage     IndexedDB
       │                    │
       └──────────┬─────────┘
                  ▼
-          GitHub Contents API
+       GitHub Contents + Git Data APIs
                  │
                  ▼
          repository Markdown/files
@@ -56,12 +56,17 @@ foundation / pure policy
   → runtime-responsiveness patch
   → Files workspace runtime
   → Reference Objects runtime
+  → common local-change/publication runtime
+  → Ordered Reference Lists runtime
+  → Reference Object stale-diagnostics runtime
   → Chat Response Reader runtime
   → Full App State runtime
   → bootstrap
 ```
 
 The final Full App State runtime is intentionally installed after the feature runtimes so it can observe their enumerable semantic application state.
+
+The common local-change runtime is installed after Files and Reference Objects so it becomes the final owner of repository editor, structure/copy and feature-publication behavior. It preserves the former Reference Object local storage key for migration compatibility while normalizing entries into one queue.
 
 ## 3. Module Families
 
@@ -142,13 +147,20 @@ Repository definition Markdown owns durable category meaning; index/cache module
 
 ```text
 src/reference-object-markers.js
+src/ordered-reference-list-markers.js
+src/ordered-reference-list-core.js
 src/reference-object-registry.js
+src/repository-local-change-store.js
 src/reference-object-local-store.js
 src/repository-reference-object-service.js
 src/repository-reference-objects-runtime.js
+src/repository-change-publisher.js
+src/repository-local-changes-runtime.js
+src/repository-ordered-reference-lists-runtime.js
+src/repository-reference-stale-runtime.js
 ```
 
-Marker/registry/service modules keep repository marker/index logic separate from the UI/runtime integration.
+Marker/registry/service modules keep repository marker/index logic separate from UI/runtime integration. The common store/publisher own local intent and standard publication; Ordered List core owns structural validation and deterministic sorting; stale runtime projects repository freshness into Files.
 
 ### Rich Markdown and Reader
 
@@ -175,7 +187,7 @@ Exporter primitives serialize/redact/project state; the runtime enumerates curre
 src/github-contents-client.js
 ```
 
-This is the low-level validated GitHub Contents API transport used by the higher-level workflows. Feature-specific orchestration still decides preflight, intended data, multi-step sequencing and local-state transitions.
+This client owns validated Contents operations plus Git Data ref/commit/tree/blob operations. Current-file publication uses Contents/read-back; all-file publication uses one checked Git Data commit/ref transition. Feature-specific compound Note/image/transfer workflows retain their own orchestration.
 
 ## 4. External Boundaries
 
@@ -201,11 +213,11 @@ GitHub transport
   ≠ feature save protocol.
 ```
 
-`github-contents-client.js` sends validated requests, but Notes, Files, Categories, images, Reference Objects and transfer each still have feature-specific preflight/verification/recovery logic. The roadmap therefore begins GitHub-save reliability work with a write-entrypoint audit before selecting a replacement API or unified engine.
+`github-contents-client.js` sends validated requests. The common publisher owns ordinary pending file current/all publication, while Notes, images and transfer retain feature-specific compound preflight/verification/recovery logic.
 
 ### Local storage
 
-- GM storage: workspace/config/token/category caches and other application-owned keys;
+- GM storage: workspace/config/token/category caches, common pending repository changes and other application-owned keys;
 - IndexedDB `obsLinkedNotesPrototype`: Note working records;
 - IndexedDB `obsLinkedNotesPrototypeAssets`: pending/retry image bytes/state;
 - runtime JS/DOM: open surfaces, editor state, Reader state and implementation handles.

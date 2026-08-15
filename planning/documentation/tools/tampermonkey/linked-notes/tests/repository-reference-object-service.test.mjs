@@ -148,3 +148,16 @@ test('repository scan ignores documentation examples inside Markdown code', asyn
   assert.equal(validation.counts.uses, 0);
   assert.equal(client.writes.length, 0);
 });
+
+test('repository freshness scan classifies stale and unresolved uses by file without writes', async () => {
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': definitionsFile(),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/zombie.md': `${markers.formatReferenceUse('ro_damage1', '25')} ${markers.formatReferenceUse('ro_unknown1', 'x')}`
+  });
+  const result = await service.diagnoseReferenceObjectFreshness({ client });
+  assert.equal(result.staleCount, 1);
+  assert.equal(result.unresolvedCount, 1);
+  assert.deepEqual(result.files.find((file) => file.path === 'game/zombie.md') && result.files.find((file) => file.path === 'game/zombie.md').uses.map((use) => use.status), ['stale', 'unresolved']);
+  assert.equal(client.writes.length, 0);
+});

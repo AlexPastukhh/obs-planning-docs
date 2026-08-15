@@ -134,7 +134,7 @@
       this.referenceObjectChecks = {};
       this.referenceObjectValidation = null;
       this.referenceObjectFocus = null;
-      if (!options.silent) this._setUi(this._referenceObjectUiPatch({ status: state.files.length ? `${state.files.length} local Reference Object draft file(s) restored for this workspace.` : 'Reference Object local state ready.' }));
+      if (!options.silent) this._setUi(this._referenceObjectUiPatch({ status: state.files.length ? `${state.files.length} pending local repository file(s) restored for this workspace.` : 'Local repository change state ready.' }));
       return state;
     };
 
@@ -517,7 +517,7 @@
         this.repositoryPreview = { ...this.repositoryPreview, content: draft.content, size: new TextEncoder().encode(draft.content).byteLength, sha: draft.baseSha || this.repositoryPreview.sha, localReferenceDraft: true };
         this.fileViewMode = 'source';
         this.fileRendered = null;
-        this._setUi(this._referenceObjectUiPatch({ status: `Opened local Reference Object draft for ${draft.path}; GitHub base SHA is ${draft.baseSha || '(new path)'}.` }));
+        this._setUi(this._referenceObjectUiPatch({ status: `Opened pending local state for ${draft.path}; GitHub base SHA is ${draft.baseSha || '(new path)'}.` }));
         return this.repositoryPreview;
       };
     }
@@ -538,7 +538,7 @@
         };
         this.fileViewMode = 'source';
         this.surface = 'files';
-        this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: true, status: `Editing local Reference Object draft ${preview.path}. Use Save local draft to stay local or normal Save to write this file to GitHub.` }));
+        this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: true, status: `Editing pending local state for ${preview.path}. Save locally, then use Update current file or Update all.` }));
         return this.repositoryEditor;
       };
     }
@@ -739,9 +739,9 @@
     const rows = objects.map((object) => {
       const check = checks[object.id] || null;
       const stale = check ? check.staleCount : 0;
-      return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button><button data-reference-update-github="${escapeHtml(object.id)}">Update GitHub</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
+      return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
     }).join('') || '<div class="hint">No Reference Objects loaded.</div>';
-    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button class="primary" data-reference-publish ${pending.length ? '' : 'disabled'}>Apply local changes to GitHub</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Copy reference writes only to clipboard; manual paste remains explicit.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
+    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Reference Object actions are local; use the standard Update current file or Update all action to publish.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
     const panel = details.querySelector('.reference-objects-panel');
     const scope = panel || details;
     const search = scope.querySelector('[data-reference-search]');
@@ -754,12 +754,10 @@
     scope.querySelector('[data-reference-create]')?.addEventListener('click', () => { const api = root.ObsLinkedNotes || {}; if (typeof api.closeFilesWorkspaceTopPopup === 'function') api.closeFilesWorkspaceTopPopup(ui); openCreateModal(ui); });
     scope.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
     scope.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
-    scope.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
     scope.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
     scope.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
     scope.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
     scope.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
-    scope.querySelectorAll('[data-reference-update-github]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesGitHub', button.dataset.referenceUpdateGithub).catch(() => {})));
     scope.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
       const input = Array.from(scope.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
       ui._call('onRenameReferenceObjectLocal', button.dataset.referenceRename, input && input.value).catch(() => {});
@@ -831,7 +829,6 @@
         if (!this.shadow || typeof document === 'undefined') return result;
         appendStyle(this);
         enhanceReferenceObjectsMenu(this);
-        enhanceLocalDraftSave(this);
         enhanceReferenceFocus(this);
         return result;
       } finally {

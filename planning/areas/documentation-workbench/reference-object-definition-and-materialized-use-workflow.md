@@ -8,7 +8,7 @@ Scope: create one stable Reference Object definition around exact ordinary Markd
 
 **Trigger:** a user has a supported repository text/Markdown file open in Files and wants one exact existing value or fragment to become a reusable Reference Object, or wants to use/check/update/validate an existing Reference Object.
 
-**Successful result:** ordinary repository text contains one invisible definition marker and zero or more invisible use markers carrying materialized values; one repository Definitions File maps stable object ids to mutable names, definition paths and a rebuildable usage index; local changes remain local until an explicit GitHub action; remote writes use current-base checks and exact read-back verification.
+**Successful result:** ordinary repository text contains one invisible definition marker and zero or more invisible use markers carrying materialized values; one repository Definitions File maps stable object ids to mutable names, definition paths and a rebuildable usage index; local changes remain local until `Update current file` or `Update all`; current-file writes use SHA/read-back verification and all-file publication uses one verified Git Data commit.
 
 This workflow is a narrow helper around repository Markdown. It does not select the former App Memory, Semantic Home, flexible object-field, generic object-store or full/bare managed-reference architecture.
 
@@ -60,15 +60,15 @@ objects[]:
 
 ## 4. Local State Boundary
 
-The first implementation uses a persistent application-local overlay keyed by exact:
+The implementation uses the common persistent local repository-change queue keyed by exact:
 
 ```text
 workspace id + owner + repository + branch
 ```
 
-Each pending file keeps repository path, original GitHub base SHA and complete intended UTF-8 text. Local Reference Object operations preserve the original file text outside explicitly changed marker ranges, including existing CRLF/LF line endings; the helper must not normalize an entire file as a side effect. This is prototype implementation state, not canonical repository truth and not an assumption that the userscript can mutate an OS Git working tree.
+Each pending file keeps repository path, first GitHub base SHA and complete intended UTF-8 text. Local Reference Object operations preserve the original file text outside explicitly changed marker ranges, including existing CRLF/LF line endings; the helper must not normalize an entire file as a side effect. This is prototype implementation state, not canonical repository truth and not an assumption that the userscript can mutate an OS Git working tree.
 
-Default Reference Object mutations are local. GitHub mutation always requires a separate explicit action.
+Default Reference Object mutations are local. GitHub mutation always requires the standard separate `Update current file` or `Update all` action.
 
 ## 5. Create A Definition
 
@@ -111,11 +111,11 @@ stale      → materialized value differs;
 unresolved → definition/marker integrity prevents comparison.
 ```
 
-Stale uses are shown yellow in the Reference Objects usage list. Checking never updates a file.
+Stale uses are shown yellow in the Reference Objects usage list. A repository freshness scan also exposes stale/unresolved counts in the open file and beside affected Files-tree entries. Checking never updates a file. The warning asks for review of surrounding meaning before local propagation.
 
 ## 8. Update Uses
 
-Two distinct actions are required:
+Local refresh and standard publication are distinct:
 
 ### Update locally
 
@@ -127,27 +127,22 @@ Two distinct actions are required:
 - perform no GitHub PUT;
 - if there are zero stale uses and no usage-index drift, create no local draft at all.
 
-### Update GitHub
+### Publish through the standard GitHub actions
 
-- run only as an explicit remote action;
-- use current GitHub state rather than silently publishing unrelated pending local Reference Object drafts;
-- if local Reference Object drafts are pending, block the independent remote update and require publish/reconciliation first;
-- reread current definition/usages;
-- preflight every target base before the first write;
-- update stale use files with SHA-aware verified writes;
-- update the Definitions File index separately and last;
-- report partial completion explicitly because multi-file GitHub writes are not transactional.
+- `Update current file` publishes only the open pending path through the existing Contents/read-back boundary;
+- `Update all` preflights every pending path against one branch tree, creates all blobs/tree/commit, performs one non-force ref update and verifies the resulting tree;
+- never use a sequential Contents-write fallback for `Update all`.
 
 ## 9. Publish Local Reference Object Changes
 
-`Apply local changes to GitHub` is separate from create, rename, local update and local file save.
+The standard publication actions are separate from create, rename, local update and local file save. There is no Reference Object-specific remote button.
 
 Before the first write:
 
 - verify every pending update base SHA;
 - prove every pending create path is still absent.
 
-Then write non-registry files first and the Definitions File last, using exact read-back verification. Completed writes remain on partial failure; remaining local drafts stay pending and the result is explicit.
+For `Update all`, all intended files enter one tree/commit; either the non-force ref update succeeds or the branch remains on its prior head. Created but unreachable Git objects do not constitute a repository branch change.
 
 ## 10. Validate Tags
 
@@ -178,7 +173,7 @@ Copy reference
 Open definition
 Check uses
 Update locally
-Update GitHub
+Update current file / Update all (standard Files actions)
 Rename locally
 ▸ Uses
 ```
@@ -205,7 +200,7 @@ The repository contract must also state explicitly:
 - `obs-ref:use` inner text is a materialized copy;
 - changing a definition does not automatically rewrite uses;
 - `Check uses` is read-only and only reports stale values;
-- `Update locally` and `Update GitHub` are distinct explicit mutation actions;
+- `Update locally` and standard GitHub publication are distinct explicit mutation actions;
 - names are mutable metadata while stable IDs remain identity;
 - `uses[].line` and `lineOccurrence` are rebuildable navigation metadata, not durable identity;
 - markers are preserved when formatting ordinary Markdown;
@@ -236,13 +231,13 @@ Limits are prototype evidence, not final product requirements.
 | Use value differs | stale/yellow after explicit check; no automatic rewrite |
 | Definitions File index differs from markers | drift diagnostic; marker occurrences remain evidence |
 | Local draft base changed remotely | block publish before overwriting that file |
-| Remote multi-file write partially fails | preserve verified completed writes and remaining pending work explicitly |
+| Atomic all-file preparation fails before ref update | preserve every pending file; branch remains on the checked head |
 | Scan reaches a bound/cancellation | incomplete/cancelled result; no write |
 | Workspace changes | reload exact workspace local overlay/list; never render stale prior-workspace state |
 
 ## 15. Required Acceptance
 
-Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, local no-write updates, remote preflight/verified writes, validation diagnostics, clipboard-only use creation, publish ordering and manual-paste reindexing.
+Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, local no-write updates, current/all publisher behavior, validation diagnostics, clipboard-only use creation and manual-paste reindexing.
 
 Browser/real-GitHub acceptance must additionally prove the rendered comments are invisible, the always-available searchable list and create modal survive ordinary rerenders, stale uses are yellow only after Check, usage navigation selects the intended same-line occurrence, local actions produce no PUT, GitHub actions preflight/read-back correctly and workspace switching does not leak local state.
 

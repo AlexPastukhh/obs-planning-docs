@@ -3,7 +3,7 @@
 Status: working project-local implementation roadmap / priority view
 Scope: future directions for the OBS Linked Notes prototype. This file is not the canonical Planning Item owner, does not accept production architecture and does not authorize implementation by itself.
 
-Current implementation baseline: `0.7.2-prototype`.
+Current implementation baseline: `0.8.0-prototype`.
 
 Implementation documentation entry: [`planning/documentation/tools/tampermonkey/linked-notes/README.md`](../../documentation/tools/tampermonkey/linked-notes/README.md).
 
@@ -27,6 +27,22 @@ DEFERRED
 ```
 
 A roadmap direction is not an accepted Planning Item transformation. If a direction changes canonical capability meaning or semantic Use-Case identity, run the separate Planning Item / Use-Case reconciliation route first.
+
+## Implemented baseline — local-first files and Ordered Reference Lists
+
+The `0.8.0-prototype` baseline now includes:
+
+- one workspace-scoped pending repository-file queue compatible with earlier Reference Object drafts;
+- local-first file/folder/structure/copy/category/Reference Object/ordering actions;
+- separate `Update current file` and one-commit Git Data `Update all` publication;
+- inline Ordered Reference Lists whose whole-line/paragraph items contain Reference Object uses;
+- current/stale/unresolved warnings in the open file and Files tree after a freshness scan.
+
+Browser and real-GitHub acceptance remain evidence gaps; implementation and transport tests are not substitutes for that acceptance.
+
+### LATER / RESEARCH — Reference Object propagation policy
+
+Consider an optional definition-level policy stating whether a particular Reference Object may be propagated automatically. This is deliberately not in the current marker/registry schema. Before selection, research review semantics, default-deny migration, stale surrounding-context warnings and how an automatic permission interacts with Ordered Lists. Do not add per-use policy or silent background propagation by assumption.
 
 ## 2. NOW — Direction 1: Explicit ChatGPT-to-Linked-Notes Handoff
 

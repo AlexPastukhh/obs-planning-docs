@@ -18,10 +18,10 @@ This extension records the current user-requested implementation slice without c
 The Files surface should support the following connected behavior:
 
 1. Opening a non-root repository folder automatically opens an exact `<folder-name>.md` direct child when that file exists. The directory listing remains the current folder context. Root has no automatic index file.
-2. The real Files sidebar `New file` action exposes `Blank file` plus repository-native templates discovered from direct `*.template.md` children of `.linked-notes/templates/`. A valid template starts with an `obs-template` metadata block containing its display `name`. Selecting one rereads and validates that exact template, removes only the template metadata block, and copies the remaining UTF-8 body literally into the ordinary new-file editor. The selection step is read-only; the repository changes only through the existing explicit verified file Create action.
+2. The real Files sidebar `New file` action exposes `Blank file` plus repository-native templates discovered from direct `*.template.md` children of `.linked-notes/templates/`. A valid template starts with an `obs-template` metadata block containing its display `name`. Selecting one rereads and validates that exact template, removes only the template metadata block, and copies the remaining UTF-8 body literally into the ordinary new-file editor. The selection step is read-only; Create stages the file locally and standard current/all publication changes GitHub later.
 3. Link copy exposes both a whole-file repository-root Markdown link and heading links from the already-loaded Markdown snapshot. The heading chooser must remain inside the main Files content area instead of covering the sidebar; heading search and hierarchy are visible; copying does not perform a GitHub request.
 4. The user can paste a repository-relative file/folder structure in the current folder, preview every target and create only missing empty files/folders. The first format is one path per line; a trailing `/` marks a folder. Existing content is never deleted, replaced or overwritten. Git-visible empty leaf folders use an empty `.gitkeep` only when the folder does not already exist.
-5. Files and folders can be copied to a selected repository folder. Copy is recursive for folders, byte-preserving for files and add-only at the destination. The complete destination file set is preflighted before the first write. For folder copy, the destination root folder itself must be absent: an existing destination root is a conflict rather than a merge target. Any existing destination file/root or unusable destination parent blocks the operation before writes. Source SHA is rechecked before copying bytes. Multi-file copy is not globally atomic: verified completed copies remain on partial failure and are reported explicitly.
+5. Files and folders can be copied to a selected repository folder. Copy is recursive for folders, byte-preserving for files and add-only at the destination. The complete destination file set is preflighted before local staging. For folder copy, the destination root folder itself must be absent: an existing destination root is a conflict rather than a merge target. Any existing remote/pending destination file/root or unusable destination parent blocks the operation. Source SHA is rechecked before bytes enter the local queue. `Update all` can later publish all copied files in one commit.
 6. The top navigation is Files-centric: `Files` jumps to repository root, `Notes` jumps to the configured Notes folder in Files mode, and `Locations` exposes Root, Notes, the existing Linked Notes editor and user-created folder shortcuts. A user can save the currently open non-root folder as a local shortcut. Folder shortcuts remain local exact-workspace preferences. Repository templates are repository-owned and are reloaded explicitly per exact workspace; a workspace change clears the prior template index so stale templates are never rendered as current.
 
 ## 3. Safety And Mutation Rules
@@ -43,14 +43,14 @@ structure preview / copy preview / copy destination-folder browsing
 
 structure apply
   → re-preview current destination state;
-  → create absent empty files and required .gitkeep placeholders only;
+  → stage absent empty files and required .gitkeep placeholders locally;
   → never update/delete/rename/move;
 
 file/folder copy apply
   → re-preview source/destination;
   → verify all destination files are absent before first write;
   → recheck source SHA immediately before reading bytes;
-  → verified binary-safe create writes only;
+  → binary-safe local staging only;
   → never overwrite or delete destination/source;
 
 repository template discovery / selection
@@ -61,7 +61,7 @@ repository template discovery / selection
   → legacy local document-preset records may remain in storage for compatibility but are not the primary New file UI.
 ```
 
-Repository writes remain non-cancellable once write execution begins because aborting a write can create uncertain remote state. The panel may still be closed while the operation continues under the existing responsiveness runtime.
+Standard publication remains non-cancellable once a GitHub write/ref-update begins because aborting can create uncertain remote state. Local staging can complete without a GitHub write.
 
 ## 4. Bounded Prototype Limits
 

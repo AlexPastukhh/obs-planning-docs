@@ -76,9 +76,9 @@ The first explicit opening of Files automatically reads the repository root for 
 
 A supported bounded text file is shown literally in source view. Markdown can additionally be shown as a sanitized rich projection with repository-relative images loaded through authenticated GitHub reads. For a loaded Markdown preview, the application derives an ordered heading outline using the GFM block forms relevant to heading identity: ATX and Setext headings, including headings inside block-quote and list-item containers. Every supported heading participates in one document-order duplicate-anchor allocation before the application copies a ready repository-root Markdown link such as `[Exposure](/game-design/combat.md#exposure)` to the clipboard. Opening the outline or copying a link performs no GitHub request and does not modify either file. Duplicate derived anchors receive deterministic numeric suffixes in document order. The heading-link control is not shown while an unsaved repository editor is active, so it never presents a draft-only heading as an existing remote target.
 
-The user may explicitly enter Edit for a same-workspace supported UTF-8 text file, or start New file in the currently browsed folder. Edit rereads bounded bytes as strict UTF-8 and captures the current SHA before exposing the mutable editor buffer. Create proves the target path is absent. Save writes complete intended UTF-8 text, uses the captured SHA for updates, reads the remote result back exactly and refreshes the parent directory. Failure or conflict leaves the editor input available for review.
+The user may explicitly enter Edit for a same-workspace supported UTF-8 text file, or start New file in the currently browsed folder. Edit rereads bounded bytes as strict UTF-8 and captures the current SHA before exposing the mutable editor buffer. Create proves the target path is absent. Save stages complete intended UTF-8 text in the common local queue and preserves the captured first SHA for updates. `Update current file` later writes only the open pending path and verifies exact read-back; `Update all` publishes all pending paths as one Git Data commit. Failure or conflict preserves pending local input for review.
 
-New folder creates `<folder>/.gitkeep` only after the requested folder is proven absent. Git itself has no durable empty-directory object; `.gitkeep` is a prototype convention and is not deleted automatically when later files are added.
+New folder stages `<folder>/.gitkeep` locally only after the requested folder is proven absent. Git itself has no durable empty-directory object; `.gitkeep` is a prototype convention and is not deleted automatically when later files are added.
 
 Binary, invalid-UTF-8, unsupported or oversized files retain path, size and exact GitHub link with an explicit reason that in-app editing/preview is unavailable. No automatic remote save occurs while typing.
 
@@ -110,17 +110,17 @@ A UI group is separate from implication. Grouping organizes categories locally a
 
 ### Stage 6 — Create Or Edit A Category
 
-The user supplies a stable ID/name and description, optionally selecting implied categories. A new definition is created only when its target path is absent. An existing definition is updated using the latest known SHA. Existing unresolved implication links are preserved rather than silently repaired or deleted.
+The user supplies a stable ID/name and description, optionally selecting implied categories. A new definition is staged only when its target path is absent. An existing definition is staged with its first known SHA. Existing unresolved implication links are preserved rather than silently repaired or deleted.
 
 ### Stage 7 — Assign Or Unassign Files And Notes
 
 Note and file editors use one compact searchable multi-select category picker. Search filters by category display name or stable ID without clearing selections hidden by the current query. Note selection remains local intent until Save GitHub verifies the Note and then applies affected category-definition changes. File selection remains a local draft until Apply categories.
 
-The application updates only affected category definitions. It creates or removes portable typed links to selected files and verified Linked Notes. Category creation may begin with any number of picker-selected targets. Target files and Note bodies are not modified by assignment. Partial multi-category file updates keep completed writes verified, preserve requested selection for review/retry and refresh category definitions before the next write.
+The application stages only affected category definitions. It creates or removes portable typed links to selected files and verified Linked Notes. Category creation may begin with any number of picker-selected targets. Target files and Note bodies are not modified by assignment. The common pending queue preserves each first base SHA until standard publication.
 
-### Stage 8 — Verify And Refresh
+### Stage 8 — Publish, Verify And Refresh
 
-Every category write is read back and compared with the intended bytes before success is reported. The category cache and current view are rebuilt from the verified repository definitions.
+Category actions report local completion first. `Update current file` verifies one definition by exact read-back. `Update all` verifies the one-commit tree for all pending definitions/files. Remote category projections are explicitly refreshed after publication when needed.
 
 ## 6. Branches And Failure Behavior
 
@@ -183,7 +183,7 @@ Before reporting success:
 
 ## 9. Selected Prototype Shape
 
-The bounded `0.7.1-prototype` retains the repository-file/category behavior below:
+The bounded `0.8.0-prototype` retains the repository-file/category behavior below:
 
 ```text
 one Tampermonkey Shadow DOM helper;

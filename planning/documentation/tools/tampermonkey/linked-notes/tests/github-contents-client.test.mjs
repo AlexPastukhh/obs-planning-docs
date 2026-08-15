@@ -242,3 +242,46 @@ test('strict UTF-8 decoding rejects replacement-character mutation risk', () => 
   assert.throws(() => api.decodeUtf8Bytes(invalid, { fatal: true }), (error) => error && error.kind === 'invalid_utf8');
   assert.equal(api.decodeUtf8Bytes(invalid), 'fo�o');
 });
+
+test('atomic bulk update creates blobs, one tree, one commit and one non-force ref update', async () => {
+  const calls = [];
+  let blobIndex = 0;
+  const client = clientWith(async (request) => {
+    calls.push(request);
+    const url = request.url;
+    if (request.method === 'GET' && url.includes('/git/ref/heads/test')) return response(200, { ref: 'refs/heads/test', object: { sha: calls.filter((call) => call.method === 'PATCH').length ? 'commit-new' : 'commit-old' } });
+    if (request.method === 'GET' && url.includes('/git/commits/commit-old')) return response(200, { sha: 'commit-old', tree: { sha: 'tree-old' }, parents: [{ sha: 'parent' }] });
+    if (request.method === 'GET' && url.includes('/git/commits/commit-new')) return response(200, { sha: 'commit-new', tree: { sha: 'tree-new' }, parents: [{ sha: 'commit-old' }] });
+    if (request.method === 'GET' && url.includes('/git/trees/tree-old')) return response(200, { sha: 'tree-old', truncated: false, tree: [{ path: 'a.md', mode: '100644', type: 'blob', sha: 'sha-a' }] });
+    if (request.method === 'GET' && url.includes('/git/trees/tree-new')) return response(200, { sha: 'tree-new', truncated: false, tree: [{ path: 'a.md', mode: '100644', type: 'blob', sha: 'blob-1' }, { path: 'b.md', mode: '100644', type: 'blob', sha: 'blob-2' }] });
+    if (request.method === 'POST' && url.endsWith('/git/blobs')) { blobIndex += 1; return response(201, { sha: `blob-${blobIndex}` }); }
+    if (request.method === 'POST' && url.endsWith('/git/trees')) return response(201, { sha: 'tree-new' });
+    if (request.method === 'POST' && url.endsWith('/git/commits')) return response(201, { sha: 'commit-new' });
+    if (request.method === 'PATCH' && url.includes('/git/refs/heads/test')) {
+      const body = JSON.parse(request.body);
+      assert.deepEqual(body, { sha: 'commit-new', force: false });
+      return response(200, { object: { sha: 'commit-new' } });
+    }
+    throw new Error(`Unexpected request: ${request.method} ${url}`);
+  });
+  const result = await client.saveChangesCommitVerified({ changes: [
+    { path: 'a.md', baseSha: 'sha-a', content: 'A2' },
+    { path: 'b.md', baseSha: '', content: 'B' }
+  ], message: 'Atomic update' });
+  assert.equal(result.commitSha, 'commit-new');
+  assert.equal(calls.filter((call) => call.method === 'PATCH').length, 1);
+  assert.equal(calls.filter((call) => call.method === 'PUT').length, 0);
+});
+
+test('atomic bulk update blocks before ref update when any base changed', async () => {
+  const calls = [];
+  const client = clientWith(async (request) => {
+    calls.push(request);
+    if (request.url.includes('/git/ref/heads/test')) return response(200, { object: { sha: 'commit-old' } });
+    if (request.url.includes('/git/commits/commit-old')) return response(200, { sha: 'commit-old', tree: { sha: 'tree-old' }, parents: [] });
+    if (request.url.includes('/git/trees/tree-old')) return response(200, { sha: 'tree-old', truncated: false, tree: [{ path: 'a.md', mode: '100644', type: 'blob', sha: 'remote-new' }] });
+    throw new Error('Mutation endpoint must not run.');
+  });
+  await assert.rejects(() => client.saveChangesCommitVerified({ changes: [{ path: 'a.md', baseSha: 'sha-a', content: 'A2' }] }), (error) => error.kind === 'conflict');
+  assert.equal(calls.filter((call) => call.method !== 'GET').length, 0);
+});

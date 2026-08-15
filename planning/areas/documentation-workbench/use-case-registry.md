@@ -12,9 +12,9 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 |---|---|---|---|---|---|
 | `UC-DW-DOC-REF` | Repository Documentation Change And Reference Review | accepted current | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) | none |
 | `UC-DW-ITEM-FULL-PICTURE` | Planning Meaning To Repository | accepted current; legacy ID retained | `DIR-DOCUMENTATION-WORKBENCH` | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) | `сверь айтемы` for reconciliation stage only |
-| `UC-DW-LINKED-NOTES` | Create, Link And Manage Repository Notes | working / current `0.7.2` prototype evidence; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) | none |
-| `UC-DW-REPOSITORY-FILES-CATEGORIES` | Browse Repository Files And Manage Categories | working / current `0.7.2` prototype evidence; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) | none |
-| `UC-DW-IMAGE-AWARE-MARKDOWN-TRANSFER` | Copy A Linked Note And Repository Images | working / current `0.7.2` prototype includes this capability; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md) | none |
+| `UC-DW-LINKED-NOTES` | Create, Link And Manage Repository Notes | working / current `0.8.0` prototype evidence; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`linked-notes-end-to-end-workflow.md`](linked-notes-end-to-end-workflow.md) | none |
+| `UC-DW-REPOSITORY-FILES-CATEGORIES` | Browse Repository Files And Manage Categories | working / current `0.8.0` prototype evidence; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-file-browser-and-categories-workflow.md`](repository-file-browser-and-categories-workflow.md) | none |
+| `UC-DW-IMAGE-AWARE-MARKDOWN-TRANSFER` | Copy A Linked Note And Repository Images | working / current `0.8.0` prototype retains this capability; acceptance pending | `DIR-DOCUMENTATION-WORKBENCH` | [`image-aware-markdown-transfer-workflow.md`](image-aware-markdown-transfer-workflow.md) | none |
 | `UC-DW-STRUCTURED-MESSAGE` | Structured User Message Composer | active supporting | `DIR-DOCUMENTATION-WORKBENCH` | `ITEM-121` in `planning-item-register.md` | none |
 
 Current supporting prototype workflows that are **not promoted here to new Use-Case IDs** are listed in Section 12.
@@ -71,7 +71,7 @@ ITEM-114 for stable file/section targets.
 
 The Use Case supports links to complete repository files, stable anchored fragments/sections and other Notes. It does not accept a generic Reference Object runtime, a specific userscript, a final Note storage layout or a token-storage architecture.
 
-The Use Case and `ITEM-124` are current selected behavior. The current `0.7.2-prototype` is implementation evidence only and remains pending browser/real-GitHub acceptance where the workflow requires it.
+The Use Case and `ITEM-124` are current selected behavior. The current `0.8.0-prototype` is implementation evidence only and remains pending browser/real-GitHub acceptance where the workflow requires it.
 
 ## 5. `UC-DW-REPOSITORY-FILES-CATEGORIES` — Browse Repository Files And Manage Categories
 
@@ -165,7 +165,7 @@ Activation grants no repository permission.
 
 ## 12. Current Supporting Prototype Workflows Without New Use-Case IDs
 
-The current `0.7.2-prototype` contains supporting workflows/extensions that are independently documented but are **not promoted by this registry update into new semantic Use-Case IDs**:
+The current `0.8.0-prototype` contains supporting workflows/extensions that are independently documented but are **not promoted by this registry update into new semantic Use-Case IDs**:
 
 | Supporting workflow / extension | Current owner | Boundary |
 |---|---|---|

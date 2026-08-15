@@ -213,6 +213,6 @@ The current Linked Notes prototype may expose behavior that is not projected as 
 - Batch 3A local canonical planning reset: complete.
 - Batch 3B Scenario migration and root/projection alignment: represented in current history/state.
 - Canonical repository file/category Planning Item transition: represented in the current register.
-- Linked Notes `0.7.2-prototype`: includes the existing Notes/images/transfer/Files/Categories behavior plus repository templates, materialized Reference Objects, Full App State diagnostics and Chat Response Reader; browser and real-GitHub acceptance remains feature/checklist dependent.
+- Linked Notes `0.8.0-prototype`: adds local-first repository-file publication, one-commit Update all, Ordered Reference Lists and stale-use file/tree diagnostics to the existing Notes/images/transfer/Files/Categories/templates/Reference Objects/Reader/App State behavior; browser and real-GitHub acceptance remains feature/checklist dependent.
 - Current implementation priorities are in `linked-notes-prototype-roadmap.md`.
 - Production runtime architecture: not selected.

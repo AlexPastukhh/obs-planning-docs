@@ -5,7 +5,12 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const DEFAULT_REFERENCE_LOCAL_MAX_BYTES = 2 * 1024 * 1024;
+  const DEFAULT_REFERENCE_LOCAL_MAX_BYTES = 16 * 1024 * 1024;
+
+  function shared() {
+    const api = typeof globalThis !== 'undefined' ? globalThis.ObsLinkedNotes || {} : {};
+    return typeof api.normalizeRepositoryLocalChangeState === 'function' ? api : null;
+  }
 
   function normalizeWorkspacePart(value, label) {
     const text = String(value == null ? '' : value).trim();
@@ -14,6 +19,8 @@
   }
 
   function referenceObjectLocalStoreKey(workspace) {
+    const api = shared();
+    if (api) return api.repositoryLocalChangeStoreKey(workspace);
     if (!workspace) throw new TypeError('Workspace is required.');
     const id = normalizeWorkspacePart(workspace.id || 'workspace', 'Workspace id');
     const owner = normalizeWorkspacePart(workspace.owner, 'Workspace owner').toLowerCase();
@@ -31,6 +38,8 @@
   }
 
   function normalizeReferenceObjectLocalState(value, options = {}) {
+    const api = shared();
+    if (api) return api.normalizeRepositoryLocalChangeState(value, { maxBytes: options.maxBytes || DEFAULT_REFERENCE_LOCAL_MAX_BYTES });
     const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_REFERENCE_LOCAL_MAX_BYTES;
     const source = value && typeof value === 'object' ? value : {};
     const files = [];
@@ -50,11 +59,15 @@
   }
 
   function referenceObjectLocalDraftMap(state) {
+    const api = shared();
+    if (api) return api.repositoryLocalChangeMap(state);
     const normalized = normalizeReferenceObjectLocalState(state);
     return new Map(normalized.files.map((file) => [file.path, { ...file }]));
   }
 
   function upsertReferenceObjectLocalDraft(state, draft, options = {}) {
+    const api = shared();
+    if (api) return api.upsertRepositoryLocalChange(state, { ...(draft || {}), payloadKind: 'text', source: draft && draft.source || 'reference-object' }, { maxBytes: options.maxBytes || DEFAULT_REFERENCE_LOCAL_MAX_BYTES });
     const current = normalizeReferenceObjectLocalState(state, options);
     const path = normalizePath(draft && draft.path);
     const files = current.files.filter((file) => file.path !== path);
@@ -63,6 +76,8 @@
   }
 
   function removeReferenceObjectLocalDraft(state, path, options = {}) {
+    const api = shared();
+    if (api) return api.removeRepositoryLocalChange(state, path, { maxBytes: options.maxBytes || DEFAULT_REFERENCE_LOCAL_MAX_BYTES });
     const canonical = normalizePath(path);
     const current = normalizeReferenceObjectLocalState(state, options);
     return normalizeReferenceObjectLocalState({ schemaVersion: 1, files: current.files.filter((file) => file.path !== canonical) }, options);

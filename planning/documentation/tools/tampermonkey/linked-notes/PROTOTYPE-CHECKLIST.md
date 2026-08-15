@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.7.2-prototype`
+Prototype version: `0.8.0-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values. For focused Chat Response Reader/details acceptance, also use `CHAT-RESPONSE-READER-CHECKLIST.md`.
 
@@ -34,7 +34,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 |---:|---|---|---|
 | 1 | Run `node verify-linked-notes.mjs`. | All configured automated tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.7.2-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces and the Reader action becomes available from the Linked Notes workspace bar. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.8.0-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces and the Reader action becomes available from the Linked Notes workspace bar. | |
 | 3a | Run the transfer parser cases containing images inside raw `<pre>`, `<code>`, `<textarea>`, `<script>` and `<style>` containers. | Only images outside those code-like containers enter the transfer plan. | |
 | 3b | Simulate a Note or target-Markdown write accepted by GitHub while immediate read-back fails, then use the contextual verification action. | Exact matching remote content is accepted without another write; absent unchanged targets retry safely; differing content becomes conflict. | |
 
@@ -310,7 +310,22 @@ Use test branches only.
 | 63 | Verify all Notes remain visible after workspace switching. | Workspace selection does not hide or duplicate Notes. | |
 
 
-## 13. Findings
+## 13. Local-First Publication And Ordered Reference Lists
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| 64 | Edit an ordinary file and press Save locally. | The open preview shows intended bytes; GitHub is unchanged and Update current/all count reflects the pending path. | |
+| 65 | Stage a structure, binary file copy, category change and Reference Object update. | Every target enters the same exact-workspace pending queue; no feature-specific remote write occurs. | |
+| 66 | Open one pending file and press Update current file. | Only that path changes, exact read-back verifies it and other pending paths remain. | |
+| 67 | Stage two files, change one remote base externally, then press Update all. | Preflight blocks before branch ref update; both local changes remain pending. | |
+| 68 | Stage mixed text/binary files and press Update all on unchanged bases. | One Git commit contains every path, one non-force ref update occurs and resulting tree/blob identities verify. | |
+| 69 | Create an Ordered List from two fresh uses using line and paragraph choices. | Each complete computed unit is wrapped; the nested use remains inside its paired item. | |
+| 70 | Create a list containing a stale use. | Creation succeeds with a warning; ordering is blocked and no value is automatically refreshed. | |
+| 71 | Refresh the stale use locally, then exercise natural/alphabetical/number/custom ordering. | Complete item blocks move locally, ties stay stable, missing leading numbers block number mode and custom accepts exact-value order only. | |
+| 72 | Manually corrupt an item so its declared line/paragraph is not its actual structural unit. | Ordering validation blocks and identifies the structural item problem. | |
+| 73 | Change a definition, run stale diagnostics and inspect Files. | The open file warning and affected tree entry show stale/unresolved use counts. | |
+
+## 14. Findings
 
 ### Confirmed evidence
 
@@ -324,7 +339,7 @@ Use test branches only.
 
 -
 
-## 14. Verdict
+## 15. Verdict
 
 ```text
 pass / partial / fail / inconclusive

@@ -72,13 +72,15 @@ change obs-ref:def
   → Check uses
       read-only comparison; no file is modified
   → stale uses are reported/highlighted
-  → Update locally OR Update GitHub
-      explicitly replace stale materialized values
+  → Update locally
+      explicitly replace stale materialized values in pending local files
+  → Update current file OR Update all
+      explicitly publish selected local state through the standard GitHub boundary
 ```
 
 `Check uses` must never be treated as an update command.
 
-`Update locally` changes local pending materialized uses only. `Update GitHub` is a separate explicit remote action that rereads current repository state and uses the normal conflict/read-back safeguards.
+`Update locally` changes local pending materialized uses only. There is no separate Reference Object `Update GitHub` action. Use the same standard publisher as other file operations: `Update current file` for only the open pending path, or `Update all` for one verified multi-file commit.
 
 There is no automatic/background propagation in this format.
 
@@ -121,3 +123,5 @@ If a repository edit is deliberately performed by an agent instead, creating a n
 ## Validation expectations
 
 Validation should detect malformed/unclosed markers, duplicate definitions, unknown use IDs, missing definitions and registry/index drift. Validation is read-only unless a separate explicit repair/write action is requested.
+
+Stale diagnostics are also shown in the open file and, after a freshness scan, beside affected files in the Files tree. A stale use means the surrounding statement may need semantic review before `Update locally`; the application does not treat propagation as mere blind text replacement.

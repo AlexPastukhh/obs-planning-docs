@@ -23,6 +23,7 @@ Application internals such as IndexedDB/GM storage, GitHub write orchestration, 
 | Feature | Status | Read when | Canonical contract |
 |---|---|---|---|
 | Reference Objects | active | a value should remain synchronized with an existing object, an `obs-ref:*` marker is edited, or a new Reference Object is intentionally created | [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) |
+| Ordered Reference Lists | active | `obs-order:*` markers exist, or complete lines/paragraphs must be sorted by current Reference Object values | [`ORDERED-REFERENCE-LISTS.md`](ORDERED-REFERENCE-LISTS.md) |
 | Repository Templates | active | creating a document of a known template type or creating/editing a repository template | [`templates/README.md`](templates/README.md) |
 | Reader-target response formatting | renderer active; supported automatic ChatGPT → Linked Notes handoff not implemented | a response is explicitly intended to be transferred into Linked Notes Reader | [`CHAT-RESPONSE-FORMAT.md`](CHAT-RESPONSE-FORMAT.md) |
 
@@ -43,7 +44,13 @@ Do not invent a new `ro_*` ID for an existing object. The registry is routing/in
 
 Read [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) before creating or materially editing these markers.
 
-## 4. Repository Templates — Short Rule
+## 4. Ordered Reference Lists — Short Rule
+
+Keep the `obs-ref:use` nested inside its complete Ordered Item. Validate that `unit="line"` or `unit="paragraph"` matches the actual file boundaries; do not move only part of an item. A stale/unresolved use blocks sorting even though the list may remain in the file.
+
+Read [`ORDERED-REFERENCE-LISTS.md`](ORDERED-REFERENCE-LISTS.md) before editing these markers.
+
+## 5. Repository Templates — Short Rule
 
 Before creating a document of a known type, inspect `.linked-notes/templates/` and use a matching valid direct `*.template.md` file instead of reconstructing its fields from memory.
 
@@ -55,7 +62,7 @@ When creating a **new template**, create it as a direct child:
 
 and follow [`templates/README.md`](templates/README.md). Do not invent a template registry, nested template folder or interpolation syntax.
 
-## 5. Reader-Target Response Formatting — Short Rule
+## 6. Reader-Target Response Formatting — Short Rule
 
 Linked Notes Reader can render the supported safe `<details>/<summary>` form described in [`CHAT-RESPONSE-FORMAT.md`](CHAT-RESPONSE-FORMAT.md).
 
@@ -63,7 +70,7 @@ This is a **rendering capability**, not proof that ordinary ChatGPT responses ar
 
 Use Reader-specific formatting only when the response is actually intended for Reader transfer.
 
-## 6. Working Boundary
+## 7. Working Boundary
 
 These repository conventions do not authorize automatic GitHub writes, local Git, commit or push.
 

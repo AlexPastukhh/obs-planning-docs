@@ -95,14 +95,16 @@ See Direction 2 in the roadmap.
 
 ## GITHUB-001 — GitHub save reliability problems require systematic investigation
 
-**Status:** active investigation required
+**Status:** common local-first/current/all publication implementation complete; real-GitHub acceptance still required
 **Priority:** high
 
 ### Observed / confirmed
 
 The user reports problems when saving to GitHub.
 
-Existing documented write workflows already require important safety mechanisms such as explicit write triggers, path validation, target absence/SHA protection where relevant and read-back verification. The exact failing save scenario(s) are not yet documented here.
+The `0.8.0-prototype` now routes ordinary Files, structure/copy, Categories and Reference Object/Ordered List changes through one local pending-file queue. It exposes a one-path Contents/read-back action and an all-path Git Data action using blobs/tree/commit, one non-force ref update and tree verification. Automated transport tests cover changed-base blocking and prove there is no sequential Contents fallback.
+
+The exact originally reported real-GitHub failure scenario(s) and browser acceptance evidence are still not documented here.
 
 ### Unknown / do not assume
 
@@ -136,9 +138,9 @@ retry/recovery action taken
 
 Never include the raw GitHub credential.
 
-### Desired direction
+### Implemented direction and remaining evidence
 
-Audit every repository write entrypoint and derive one common operation/failure vocabulary before selecting a unified write engine or changing GitHub APIs.
+Run the browser/real-GitHub matrix for both scopes, including permissions, branch races, network-unknown ref updates, large/mixed text-binary pending sets and post-publication refresh. Compound Note/image/transfer writes retain their established workflow and still require separate reliability evidence.
 
 ### Likely subsystems
 

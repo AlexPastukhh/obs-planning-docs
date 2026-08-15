@@ -29,7 +29,7 @@ GM keys are discovered dynamically from `GM_listValues()` and filtered by the ap
 obsLinkedNotesPrototype:
 ```
 
-This covers workspace/chat state, migrations, category caches/groups/locks, Files preferences, Reference Object drafts, legacy application records and future application-owned keys without manually listing each storage record.
+This covers workspace/chat state, migrations, category caches/groups/locks, Files preferences, the common pending repository-file queue (including migrated Reference Object drafts), legacy application records and future application-owned keys without manually listing each storage record.
 
 IndexedDB coverage is read from existing application databases only. The current known databases are:
 

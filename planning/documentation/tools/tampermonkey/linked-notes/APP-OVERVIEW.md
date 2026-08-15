@@ -1,7 +1,7 @@
 # OBS Linked Notes Application Overview
 
 Status: current prototype product map
-Version: `0.7.2-prototype`
+Version: `0.8.0-prototype`
 Scope: fast current-state orientation for the OBS Linked Notes Tampermonkey application. Detailed behavior remains owned by the linked project-local workflows and focused implementation mappings.
 
 ## 1. What The Application Is
@@ -16,10 +16,11 @@ The current prototype is not accepted production architecture. Ordinary reposito
 |---|---|---|---|---|---|---|
 | Workspace management | Select reusable repository context | create/edit/delete local workspaces, choose current workspace, store shared token | none | GM workspace/config records | none merely to edit settings | none |
 | Notes | Create/manage Linked Notes | create/edit, links, images, refresh/reconcile, Save GitHub, explicit copy/recovery | repository Note Markdown + repository image assets after verified save | IndexedDB Note records + pending asset state | explicit refresh/save/recovery | explicit save/copy/recovery |
-| Files | Repository browser/editor | browse, preview, create/edit bounded UTF-8 text, create structure/copy, links | ordinary repository files/folders | browser/editor/preferences/template caches | explicit browse/search/template/open | explicit create/edit/copy/structure actions |
-| Categories | Repository-backed file/Note classification | refresh, create/edit, assign/unassign, inspect implication | category definition Markdown | derived cache + local UX groups | explicit refresh/validation | explicit category-definition writes |
+| Files | Repository browser/editor and publication hub | browse, preview, locally create/edit/order/copy/structure, Update current file, Update all | ordinary repository files/folders after publication | browser/editor/preferences/template caches + common pending file queue | explicit browse/search/template/open | only standard current/all publication actions |
+| Categories | Repository-backed file/Note classification | refresh, locally create/edit/assign/unassign, inspect implication | category definition Markdown after publication | pending definitions + derived cache + local UX groups | explicit refresh/validation | through standard current/all publication actions |
 | Repository templates | Seed normal file creation | choose template, refresh template list, create a normal file from template body | `.linked-notes/templates/*.template.md` | template cache/index/diagnostics | explicit template discovery/read | only later normal file creation |
-| Reference Objects | Stable repository-native definition/use materialization | define, copy use marker, check uses, update local/GitHub, validate tags | definition marker text + repository index/routing metadata | workspace-scoped drafts/check state | explicit checks/open | explicit update/registry operations |
+| Reference Objects | Stable definition/use materialization and stale diagnostics | define, copy use marker, check uses, update locally, validate tags, inspect file/tree warnings | definition marker text + repository index/routing metadata after publication | common pending files + check/freshness state | explicit checks/open | through standard current/all publication actions |
+| Ordered Reference Lists | Sort complete file blocks by current Reference Object values | fresh-check uses, wrap whole line/paragraph, order locally | inline `obs-order:*` markers after publication | pending file state | explicit Reference Object checks | through standard current/all publication actions |
 | Chat Response Reader | Read one assistant response in a large safe Markdown view | Open in Reader, Paste Markdown, Render, Copy Markdown, Close | none | runtime-only Reader semantic state | none | none |
 | App State | Diagnostic application-state snapshot | Refresh, Copy for ChatGPT, Copy FULL JSON | none | generated snapshot of GM/IndexedDB/runtime state | none | none |
 
@@ -69,11 +70,12 @@ Current capabilities include:
 - explicit repository root/folder navigation;
 - bounded text preview and exact `Open on GitHub` target;
 - safe rich Markdown preview;
-- bounded UTF-8 text create/edit with absence/SHA protection;
+- bounded UTF-8 text create/edit staged locally with the first verified base SHA;
 - tracked folder creation through `.gitkeep` where that flow is used;
 - repository-root whole-file/heading-link copy;
 - filename/path target search under explicit bounds;
-- file/folder structure creation and add-only copy in the Files-centric extension;
+- file/folder structure creation and add-only binary-safe copy staged locally;
+- separate `Update current file` and atomic one-commit `Update all` publication;
 - normal New File editor populated from repository templates.
 
 Detailed owners:
@@ -93,7 +95,7 @@ Current capabilities include:
 - category implication and derived membership;
 - local UX groups;
 - path-aware malformed/broken/cycle diagnostics;
-- SHA-aware writes with read-back verification.
+- local definition/membership staging followed by standard current/all publication.
 
 Detailed owner: [`repository-file-browser-and-categories-workflow.md`](../../../../areas/documentation-workbench/repository-file-browser-and-categories-workflow.md).
 
@@ -107,7 +109,9 @@ Repository contract: `.linked-notes/templates/README.md`.
 
 Reference Objects use stable `ro_*` identities with repository-native definition/use markers. The canonical value is the content inside the definition marker; use markers materialize the value so repository Markdown remains readable outside the application.
 
-The repository registry is routing/index metadata, not the canonical value store. Propagation is explicit rather than automatic.
+The repository registry is routing/index metadata, not the canonical value store. Propagation is explicit rather than automatic. Repository-wide freshness diagnostics expose stale/unresolved uses in the open file and Files tree after a check.
+
+Ordered Reference Lists add `obs-order:list` and paired `obs-order:item` markers around complete lines or paragraphs. Creation permits stale uses with a warning; ordering is blocked until every nested use equals the checked current definition value. Ordering is local and has no feature-specific GitHub action.
 
 Detailed owners:
 
@@ -157,7 +161,7 @@ The current prototype does not automatically:
 - scan a whole repository in the background;
 - write on ChatGPT page load or route change;
 - repair links after arbitrary moves/renames;
-- make multi-file GitHub writes globally atomic;
+- automatically propagate a Reference Object definition change without review;
 - import/restore a Full App State snapshot;
 - store Reader history;
 - treat DOM-derived ChatGPT text as original exact model Markdown;
@@ -170,6 +174,7 @@ Some Linked Notes capabilities change how an AI/chat should author repository co
 Current registry entries:
 
 - Reference Objects;
+- Ordered Reference Lists;
 - Repository Templates;
 - Reader-target response formatting.
 

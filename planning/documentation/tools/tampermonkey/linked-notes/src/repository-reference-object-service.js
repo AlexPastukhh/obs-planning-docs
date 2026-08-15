@@ -33,6 +33,7 @@
     const map = new Map();
     for (const item of Array.isArray(overlays) ? overlays : []) {
       if (!item || !item.path) continue;
+      if (item.payloadKind === 'binary') continue;
       map.set(String(item.path), { path: String(item.path), baseSha: String(item.baseSha || ''), content: String(item.content == null ? '' : item.content), local: true });
     }
     return map;
@@ -372,6 +373,48 @@
     };
   }
 
+  async function diagnoseReferenceObjectFreshness(options = {}) {
+    const api = core();
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
+    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
+    const objectById = new Map(registrySnapshot.registry.objects.map((object) => [object.id, object]));
+    const definitionsById = new Map();
+    for (const file of scan.files) for (const marker of file.markers) if (marker.role === 'def') {
+      const group = definitionsById.get(marker.id) || [];
+      group.push({ ...marker, path: file.path });
+      definitionsById.set(marker.id, group);
+    }
+    const currentValueById = new Map();
+    for (const object of registrySnapshot.registry.objects) {
+      const definitions = (definitionsById.get(object.id) || []).filter((item) => item.path === object.definition.path);
+      if (definitions.length === 1 && (definitionsById.get(object.id) || []).length === 1) currentValueById.set(object.id, definitions[0].value);
+    }
+    const files = [];
+    const uses = [];
+    for (const file of scan.files) {
+      const fileUses = file.markers.filter((marker) => marker.role === 'use').map((marker) => {
+        const currentValue = currentValueById.get(marker.id);
+        const status = !objectById.has(marker.id) || currentValue == null ? 'unresolved' : marker.value === currentValue ? 'current' : 'stale';
+        const item = { path: file.path, objectId: marker.id, line: marker.line, lineOccurrence: marker.lineOccurrence, value: marker.value, currentValue: currentValue == null ? '' : currentValue, status };
+        uses.push(item);
+        return item;
+      });
+      if (fileUses.length) files.push({ path: file.path, current: fileUses.filter((item) => item.status === 'current').length, stale: fileUses.filter((item) => item.status === 'stale').length, unresolved: fileUses.filter((item) => item.status === 'unresolved').length, uses: fileUses });
+    }
+    return {
+      kind: 'reference-object-freshness-v1',
+      files,
+      uses,
+      staleCount: uses.filter((item) => item.status === 'stale').length,
+      unresolvedCount: uses.filter((item) => item.status === 'unresolved').length,
+      incomplete: scan.incomplete,
+      truncationReason: scan.truncationReason,
+      diagnostics: scan.diagnostics,
+      registrySnapshot
+    };
+  }
+
   return {
     DEFAULT_REFERENCE_SCAN_MAX_DIRECTORIES: DEFAULT_SCAN_MAX_DIRECTORIES,
     DEFAULT_REFERENCE_SCAN_MAX_FILES: DEFAULT_SCAN_MAX_FILES,
@@ -384,6 +427,7 @@
     buildReferenceObjectLocalUpdate,
     updateReferenceObjectUsesRemote,
     validateReferenceObjectTags,
+    diagnoseReferenceObjectFreshness,
     proveReferenceObjectExpectedBase: proveExpectedBase
   };
 });

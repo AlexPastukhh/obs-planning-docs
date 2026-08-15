@@ -181,6 +181,20 @@
       return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents?ref=${encodeURIComponent(this.branch)}`;
     }
 
+    _repoApiUrl(path) {
+      return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/${String(path || '').replace(/^\/+/, '')}`;
+    }
+
+    _branchRefUrl() {
+      const encoded = this.branch.split('/').map(encodeURIComponent).join('/');
+      return this._repoApiUrl(`git/ref/heads/${encoded}`);
+    }
+
+    _branchRefsUrl() {
+      const encoded = this.branch.split('/').map(encodeURIComponent).join('/');
+      return this._repoApiUrl(`git/refs/heads/${encoded}`);
+    }
+
     _headers() {
       const headers = {
         Accept: 'application/vnd.github+json',
@@ -473,6 +487,145 @@
         size: readBack.size,
         verifiedHash: await sha256Bytes(expected),
         recoveredAfterUnknownWrite: false
+      };
+    }
+
+    async readBranchHead() {
+      const payload = await this._request('GET', this._branchRefUrl());
+      const sha = String(payload && payload.object && payload.object.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub branch ref response has no commit SHA.');
+      return { ref: String(payload.ref || `refs/heads/${this.branch}`), sha };
+    }
+
+    async readGitCommit(sha) {
+      const commitSha = String(sha || '').trim();
+      if (!commitSha) throw new TypeError('Git commit SHA is required.');
+      const payload = await this._request('GET', this._repoApiUrl(`git/commits/${encodeURIComponent(commitSha)}`));
+      const treeSha = String(payload && payload.tree && payload.tree.sha || '');
+      if (!treeSha) throw new GitHubClientError('invalid_response', 'GitHub commit response has no tree SHA.');
+      return { sha: String(payload.sha || commitSha), treeSha, parents: Array.isArray(payload.parents) ? payload.parents.map((item) => String(item && item.sha || '')).filter(Boolean) : [] };
+    }
+
+    async readGitTree(sha, options = {}) {
+      const treeSha = String(sha || '').trim();
+      if (!treeSha) throw new TypeError('Git tree SHA is required.');
+      const suffix = options.recursive ? '?recursive=1' : '';
+      const payload = await this._request('GET', `${this._repoApiUrl(`git/trees/${encodeURIComponent(treeSha)}`)}${suffix}`);
+      if (payload && payload.truncated) throw new GitHubClientError('limit_exceeded', 'GitHub truncated the recursive tree; atomic bulk update is blocked.');
+      const tree = Array.isArray(payload && payload.tree) ? payload.tree.map((item) => ({
+        path: normalizeGitHubContentPath(item.path),
+        mode: String(item.mode || ''),
+        type: String(item.type || ''),
+        sha: String(item.sha || '')
+      })) : [];
+      return { sha: String(payload && payload.sha || treeSha), tree };
+    }
+
+    async createGitBlob(contentBase64) {
+      const content = String(contentBase64 == null ? '' : contentBase64).replace(/\s+/g, '');
+      const payload = await this._request('POST', this._repoApiUrl('git/blobs'), { content, encoding: 'base64' });
+      const sha = String(payload && payload.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub create-blob response has no SHA.');
+      return { sha };
+    }
+
+    async createGitTree(baseTreeSha, entries) {
+      const payload = await this._request('POST', this._repoApiUrl('git/trees'), {
+        base_tree: String(baseTreeSha || ''),
+        tree: (Array.isArray(entries) ? entries : []).map((entry) => ({
+          path: normalizeGitHubContentPath(entry.path),
+          mode: String(entry.mode || '100644'),
+          type: 'blob',
+          sha: String(entry.sha || '')
+        }))
+      });
+      const sha = String(payload && payload.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub create-tree response has no SHA.');
+      return { sha };
+    }
+
+    async createGitCommit(message, treeSha, parentSha) {
+      const payload = await this._request('POST', this._repoApiUrl('git/commits'), {
+        message: String(message || 'Update local repository changes'),
+        tree: String(treeSha || ''),
+        parents: [String(parentSha || '')]
+      });
+      const sha = String(payload && payload.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub create-commit response has no SHA.');
+      return { sha };
+    }
+
+    async updateBranchRef(commitSha) {
+      const expected = String(commitSha || '').trim();
+      if (!expected) throw new TypeError('Git commit SHA is required.');
+      try {
+        const payload = await this._request('PATCH', this._branchRefsUrl(), { sha: expected, force: false });
+        return { sha: String(payload && payload.object && payload.object.sha || expected), recoveredAfterUnknownWrite: false };
+      } catch (error) {
+        if (!(error instanceof GitHubClientError) || error.kind !== 'network_unknown') throw error;
+        try {
+          const head = await this.readBranchHead();
+          if (head.sha === expected) return { sha: expected, recoveredAfterUnknownWrite: true };
+        } catch (readError) { /* preserve the unknown ref-update boundary */ }
+        throw error;
+      }
+    }
+
+    async saveChangesCommitVerified({ changes, message }) {
+      const input = Array.isArray(changes) ? changes : [];
+      if (!input.length) throw new TypeError('At least one local repository change is required.');
+      const seen = new Set();
+      const normalized = input.map((change) => {
+        const path = normalizeGitHubContentPath(change && change.path);
+        if (seen.has(path)) throw new TypeError(`Duplicate local repository change path: ${path}.`);
+        seen.add(path);
+        const payloadKind = change && change.payloadKind === 'binary' ? 'binary' : 'text';
+        return {
+          path,
+          baseSha: String(change && change.baseSha || ''),
+          payloadKind,
+          contentBase64: payloadKind === 'binary' ? String(change && change.bytesBase64 || '').replace(/\s+/g, '') : utf8ToBase64(change && change.content == null ? '' : change.content)
+        };
+      });
+
+      const initialHead = await this.readBranchHead();
+      const initialCommit = await this.readGitCommit(initialHead.sha);
+      const initialTree = await this.readGitTree(initialCommit.treeSha, { recursive: true });
+      const blobsByPath = new Map(initialTree.tree.filter((item) => item.type === 'blob').map((item) => [item.path, item]));
+      for (const change of normalized) {
+        const current = blobsByPath.get(change.path);
+        if (change.baseSha && (!current || current.sha !== change.baseSha)) {
+          throw new GitHubClientError('conflict', `Remote base changed for ${change.path}.`, { path: change.path, expectedSha: change.baseSha, actualSha: current && current.sha || '' });
+        }
+        if (!change.baseSha && current) throw new GitHubClientError('conflict', `Expected new path already exists: ${change.path}.`, { path: change.path, actualSha: current.sha });
+      }
+
+      const treeEntries = [];
+      for (const change of normalized) {
+        const blob = await this.createGitBlob(change.contentBase64);
+        const current = blobsByPath.get(change.path);
+        treeEntries.push({ path: change.path, mode: current && current.mode || '100644', sha: blob.sha });
+      }
+      const confirmedHead = await this.readBranchHead();
+      if (confirmedHead.sha !== initialHead.sha) throw new GitHubClientError('conflict', 'Branch head changed during atomic bulk-update preparation. No branch ref was updated.', { expectedSha: initialHead.sha, actualSha: confirmedHead.sha });
+      const tree = await this.createGitTree(initialCommit.treeSha, treeEntries);
+      const commit = await this.createGitCommit(message || `Update ${normalized.length} local repository file(s)`, tree.sha, initialHead.sha);
+      const ref = await this.updateBranchRef(commit.sha);
+
+      const finalHead = await this.readBranchHead();
+      if (finalHead.sha !== commit.sha) throw new GitHubClientError('verification_mismatch', 'Branch head does not match the atomic update commit.', { expectedSha: commit.sha, actualSha: finalHead.sha });
+      const finalCommit = await this.readGitCommit(finalHead.sha);
+      if (!finalCommit.parents.includes(initialHead.sha)) throw new GitHubClientError('verification_mismatch', 'Atomic update commit does not have the verified branch head as its parent.');
+      const finalTree = await this.readGitTree(finalCommit.treeSha, { recursive: true });
+      const finalByPath = new Map(finalTree.tree.filter((item) => item.type === 'blob').map((item) => [item.path, item.sha]));
+      for (const entry of treeEntries) if (finalByPath.get(entry.path) !== entry.sha) throw new GitHubClientError('verification_mismatch', `Atomic update verification failed for ${entry.path}.`);
+      return {
+        kind: 'github-git-data-bulk-update-v1',
+        parentSha: initialHead.sha,
+        commitSha: commit.sha,
+        treeSha: finalCommit.treeSha,
+        paths: treeEntries.map((entry) => entry.path),
+        recoveredAfterUnknownWrite: Boolean(ref.recoveredAfterUnknownWrite)
       };
     }
   }

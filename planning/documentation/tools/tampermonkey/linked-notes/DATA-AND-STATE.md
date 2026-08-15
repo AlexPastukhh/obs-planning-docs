@@ -1,7 +1,7 @@
 # OBS Linked Notes Data And State Map
 
 Status: current prototype data-ownership map
-Version: `0.7.2-prototype`
+Version: `0.8.0-prototype`
 Scope: where application data lives, which representation is authoritative and what may be safely treated as cache/runtime/diagnostic state.
 
 ## 1. State Classes
@@ -28,6 +28,7 @@ A representation may participate in more than one workflow, but it should not si
 | Category | ordinary category definition Markdown | owns description, implication and explicit file/Note membership in the current prototype |
 | Reference Object canonical value | text inside `obs-ref:def` marker | value is not canonical in the registry JSON |
 | Reference Object routing/index metadata | `.linked-notes/reference-objects.json` | supports object discovery/routing; not value storage |
+| Ordered Reference List | inline `obs-order:list` and paired `obs-order:item` markers | item contains the complete movable block and nested Reference Object use |
 | Repository template | `.linked-notes/templates/*.template.md` | body seeds the normal New File editor after template metadata is removed |
 | Repository-facing contracts | `.linked-notes/*.md` | instructions/conventions for repository users/AI, separate from app runtime docs |
 
@@ -48,7 +49,7 @@ migration records
 cross-tab lock/revision records
 category cache/groups/locks
 Files workspace preferences/cache-related records
-Reference Object local drafts
+common pending repository file changes (legacy-compatible Reference Object draft key)
 future application-owned namespaced keys
 ```
 
@@ -65,6 +66,8 @@ obsLinkedNotesPrototype:v2:categoryLock:<workspace-target-context>
 ```
 
 Legacy migration inputs remain readable where documented; they are not automatically repository state.
+
+The common pending queue normalizes the former Reference Object draft records into schema v2 entries. It keeps complete text or base64 binary payloads, the first verified base SHA, operation/source metadata and update time. The workspace/repository/branch-specific storage key intentionally remains the former `v3:referenceObjects` key so existing drafts upgrade in place. Aggregate prototype storage is bounded at 16 MiB.
 
 ## 4. IndexedDB
 
@@ -99,6 +102,7 @@ currently opened repository path/file/editor
 unsaved live controls before persistence
 remote-operation progress/retry/cancellation state
 Reference Object check/validation/focus state
+Reference Object repository freshness summary by file
 Chat Response Reader state
 App State modal state
 ```
@@ -174,6 +178,10 @@ Includes the exact workspace/repository target context. Cache from one repositor
 
 Stable `ro_*` object id survives mutable display-name changes. Materialized uses are discovered occurrences rather than stable-use objects.
 
+### Ordered Reference List identity
+
+Stable `orl_*` list IDs link unique `ori_*` item IDs. These IDs identify inline structure, while sort values always come from freshly checked `ro_*` definition values.
+
 ## 9. Full App State Export
 
 Full App State is a read-only diagnostic snapshot over local application state.
@@ -206,8 +214,9 @@ Full App State does **not** replace normal user-facing content copy for Notes or
 - App State capture must not call a save/persist method as a prerequisite.
 - Local Save does not silently clear remote conflict/deleted/verification-unknown recovery state.
 - Category UX groups are local-only and do not classify repository files by themselves.
-- Repository template selection only populates a local New File editor; normal explicit create performs the write.
+- Repository template selection populates a local New File editor; normal Create stages the intended file locally.
 - Reference Object propagation is explicit; stale materialized uses are not updated automatically.
+- Files/category/Reference Object/ordering/structure/copy business actions stage local file state first. Only Update current file or Update all publishes that queue.
 - No application state authorizes local Git commit/push.
 
 ## 11. Debugging / Handoff Use

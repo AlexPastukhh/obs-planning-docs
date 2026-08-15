@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.7.2-prototype
-// @description  Repository Notes plus Files, materialized Reference Objects, Chat Response Reader, safe rich Markdown and verified GitHub actions.
+// @version      0.8.0-prototype
+// @description  Local-first repository workspace with atomic GitHub updates, Ordered Reference Lists, stale-use diagnostics, linked Notes and safe Markdown.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -2725,6 +2725,356 @@
   };
 });
 
+/* src/ordered-reference-list-markers.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const ORDERED_LIST_ID_PATTERN = /^orl_[a-f0-9]{12}$/;
+  const ORDERED_ITEM_ID_PATTERN = /^ori_[a-f0-9]{12}$/;
+  const LIST_COMMENT = /<!--\s*obs-order:list\b([\s\S]*?)-->/gi;
+  const ITEM_TOKEN = /<!--\s*(\/)?obs-order:item\b([\s\S]*?)-->/gi;
+
+  function attrs(text) {
+    const result = {};
+    const pattern = /([a-z][a-z0-9-]*)\s*=\s*"([^"]*)"/gi;
+    let match;
+    while ((match = pattern.exec(String(text || '')))) result[match[1].toLowerCase()] = match[2];
+    return result;
+  }
+
+  function randomHex(length, randomSource) {
+    const supplied = typeof randomSource === 'function' ? String(randomSource(length) || '').replace(/[^a-f0-9]/gi, '').toLowerCase() : '';
+    if (supplied.length >= length) return supplied.slice(0, length);
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    if (cryptoObject && typeof cryptoObject.getRandomValues === 'function') {
+      const bytes = new Uint8Array(Math.ceil(length / 2));
+      cryptoObject.getRandomValues(bytes);
+      return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('').slice(0, length);
+    }
+    let output = '';
+    while (output.length < length) output += Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0');
+    return output.slice(0, length);
+  }
+
+  function normalizeId(value, pattern, label) {
+    const id = String(value == null ? '' : value).trim();
+    if (!pattern.test(id)) throw new TypeError(`Invalid ${label} id: ${id || '(empty)'}.`);
+    return id;
+  }
+
+  function createOrderedReferenceListId(randomSource) { return `orl_${randomHex(12, randomSource)}`; }
+  function createOrderedReferenceItemId(randomSource) { return `ori_${randomHex(12, randomSource)}`; }
+
+  function normalizeOrderedSortMode(value) {
+    const mode = String(value || 'natural').trim().toLowerCase();
+    if (!['number', 'alphabetical', 'natural', 'custom'].includes(mode)) throw new TypeError(`Unsupported Ordered Reference List sort mode: ${mode}.`);
+    return mode;
+  }
+
+  function formatOrderedReferenceListMarker(input = {}) {
+    const id = normalizeId(input.id, ORDERED_LIST_ID_PATTERN, 'Ordered Reference List');
+    const mode = normalizeOrderedSortMode(input.mode);
+    const locale = String(input.locale || 'und').replace(/[^A-Za-z0-9-]/g, '') || 'und';
+    return `<!-- obs-order:list id="${id}" mode="${mode}" locale="${locale}" -->`;
+  }
+
+  function formatOrderedReferenceItemOpen(input = {}) {
+    const id = normalizeId(input.id, ORDERED_ITEM_ID_PATTERN, 'Ordered Reference Item');
+    const list = normalizeId(input.list, ORDERED_LIST_ID_PATTERN, 'Ordered Reference List');
+    const ref = String(input.ref || '').trim();
+    if (!/^ro_[a-f0-9]{12}$/.test(ref)) throw new TypeError(`Invalid Reference Object id for Ordered Item: ${ref || '(empty)'}.`);
+    const unit = input.unit === 'paragraph' ? 'paragraph' : input.unit === 'line' ? 'line' : '';
+    if (!unit) throw new TypeError('Ordered Reference Item unit must be line or paragraph.');
+    return `<!-- obs-order:item id="${id}" list="${list}" unit="${unit}" ref="${ref}" -->`;
+  }
+
+  function formatOrderedReferenceItem(input = {}, content = '') {
+    return `${formatOrderedReferenceItemOpen(input)}${String(content == null ? '' : content)}<!-- /obs-order:item -->`;
+  }
+
+  function codeRanges(text) {
+    const api = root.ObsLinkedNotes || {};
+    return typeof api.markdownCodeRanges === 'function' ? api.markdownCodeRanges(text) : [];
+  }
+
+  function inRanges(offset, ranges) { return ranges.some(([start, end]) => offset >= start && offset < end); }
+
+  function parseOrderedReferenceLists(input) {
+    const text = String(input == null ? '' : input);
+    const blocked = codeRanges(text);
+    const diagnostics = [];
+    const lists = [];
+    const items = [];
+    const seenLists = new Set();
+    const seenItems = new Set();
+    const recognizedStarts = new Set();
+    let match;
+    LIST_COMMENT.lastIndex = 0;
+    while ((match = LIST_COMMENT.exec(text))) {
+      if (inRanges(match.index, blocked)) continue;
+      recognizedStarts.add(match.index);
+      const values = attrs(match[1]);
+      if (!ORDERED_LIST_ID_PATTERN.test(values.id || '') || !['number', 'alphabetical', 'natural', 'custom'].includes(values.mode || '')) {
+        diagnostics.push({ kind: 'malformed_list', offset: match.index, message: 'Ordered Reference List marker requires valid id and mode.' });
+        continue;
+      }
+      if (seenLists.has(values.id)) diagnostics.push({ kind: 'duplicate_list', offset: match.index, listId: values.id, message: `Duplicate Ordered Reference List marker ${values.id}.` });
+      seenLists.add(values.id);
+      lists.push({ id: values.id, mode: values.mode, locale: values.locale || 'und', fullStart: match.index, fullEnd: LIST_COMMENT.lastIndex });
+    }
+
+    let active = null;
+    ITEM_TOKEN.lastIndex = 0;
+    while ((match = ITEM_TOKEN.exec(text))) {
+      if (inRanges(match.index, blocked)) continue;
+      recognizedStarts.add(match.index);
+      const closing = Boolean(match[1]);
+      if (!closing) {
+        if (active) {
+          diagnostics.push({ kind: 'nested_item', offset: match.index, message: 'Ordered Reference Items cannot be nested.' });
+          continue;
+        }
+        const values = attrs(match[2]);
+        if (!ORDERED_ITEM_ID_PATTERN.test(values.id || '') || !ORDERED_LIST_ID_PATTERN.test(values.list || '') || !/^ro_[a-f0-9]{12}$/.test(values.ref || '') || !['line', 'paragraph'].includes(values.unit || '')) {
+          diagnostics.push({ kind: 'malformed_item', offset: match.index, message: 'Ordered Reference Item marker requires valid id, list, unit and ref.' });
+        }
+        active = { values, fullStart: match.index, openEnd: ITEM_TOKEN.lastIndex };
+      } else if (!active) {
+        diagnostics.push({ kind: 'unexpected_item_close', offset: match.index, message: 'Closing Ordered Reference Item has no opener.' });
+      } else {
+        const item = {
+          id: active.values.id || '', listId: active.values.list || '', unit: active.values.unit || '', refId: active.values.ref || '',
+          fullStart: active.fullStart, fullEnd: ITEM_TOKEN.lastIndex, contentStart: active.openEnd, contentEnd: match.index,
+          content: text.slice(active.openEnd, match.index)
+        };
+        if (seenItems.has(item.id)) diagnostics.push({ kind: 'duplicate_item', offset: item.fullStart, itemId: item.id, message: `Duplicate Ordered Reference Item id ${item.id}.` });
+        seenItems.add(item.id);
+        items.push(item);
+        active = null;
+      }
+    }
+    if (active) diagnostics.push({ kind: 'unclosed_item', offset: active.fullStart, message: 'Ordered Reference Item is not closed.' });
+    const comments = /<!--[\s\S]*?-->/g;
+    while ((match = comments.exec(text))) {
+      if (inRanges(match.index, blocked) || !/obs-order:/i.test(match[0]) || recognizedStarts.has(match.index)) continue;
+      diagnostics.push({ kind: 'malformed_ordered_marker', offset: match.index, message: 'Malformed obs-order marker comment.' });
+    }
+    for (const item of items) if (!seenLists.has(item.listId)) diagnostics.push({ kind: 'unknown_list', offset: item.fullStart, itemId: item.id, listId: item.listId, message: `Ordered Reference Item refers to missing list ${item.listId}.` });
+    return { text, lists, items, diagnostics, codeRanges: blocked };
+  }
+
+  return {
+    ORDERED_LIST_ID_PATTERN,
+    ORDERED_ITEM_ID_PATTERN,
+    createOrderedReferenceListId,
+    createOrderedReferenceItemId,
+    normalizeOrderedSortMode,
+    formatOrderedReferenceListMarker,
+    formatOrderedReferenceItemOpen,
+    formatOrderedReferenceItem,
+    parseOrderedReferenceLists
+  };
+});
+
+/* src/ordered-reference-list-core.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  function dependencies() {
+    const api = root.ObsLinkedNotes || {};
+    for (const name of ['parseReferenceMarkers', 'parseOrderedReferenceLists', 'createOrderedReferenceListId', 'createOrderedReferenceItemId', 'formatOrderedReferenceListMarker', 'formatOrderedReferenceItem']) {
+      if (typeof api[name] !== 'function') throw new Error(`Ordered Reference List dependency is unavailable: ${name}.`);
+    }
+    return api;
+  }
+
+  function lineBounds(text, offset) {
+    let start = Math.max(0, Math.min(text.length, Number(offset) || 0));
+    while (start > 0 && text[start - 1] !== '\n' && text[start - 1] !== '\r') start -= 1;
+    let end = start;
+    while (end < text.length && text[end] !== '\n' && text[end] !== '\r') end += 1;
+    return { start, end };
+  }
+
+  function previousLine(text, start) {
+    if (start <= 0) return null;
+    let end = start;
+    if (text[end - 1] === '\n') {
+      end -= 1;
+      if (end > 0 && text[end - 1] === '\r') end -= 1;
+    } else if (text[end - 1] === '\r') {
+      end -= 1;
+    }
+    let lineStart = end;
+    while (lineStart > 0 && text[lineStart - 1] !== '\n' && text[lineStart - 1] !== '\r') lineStart -= 1;
+    return { start: lineStart, end };
+  }
+
+  function nextLine(text, end) {
+    let start = end;
+    if (text[start] === '\r') start += 1;
+    if (text[start] === '\n') start += 1;
+    return start < text.length ? lineBounds(text, start) : null;
+  }
+
+  function paragraphBounds(text, offset) {
+    let current = lineBounds(text, offset);
+    if (!text.slice(current.start, current.end).trim()) throw new Error('A Reference Object use on a blank line cannot define an Ordered paragraph item.');
+    let start = current.start;
+    let end = current.end;
+    let prior = previousLine(text, start);
+    while (prior && text.slice(prior.start, prior.end).trim()) { start = prior.start; prior = previousLine(text, start); }
+    let following = nextLine(text, end);
+    while (following && text.slice(following.start, following.end).trim()) { end = following.end; following = nextLine(text, end); }
+    return { start, end };
+  }
+
+  function orderedReferenceUnitRange(text, occurrence, unit) {
+    if (!occurrence || occurrence.role !== 'use') throw new Error('Select a Reference Object use occurrence.');
+    const range = unit === 'paragraph' ? paragraphBounds(text, occurrence.fullStart) : lineBounds(text, occurrence.fullStart);
+    if (occurrence.fullStart < range.start || occurrence.fullEnd > range.end) throw new Error(`Selected Reference Object use does not fit its ${unit} range.`);
+    return { ...range, unit: unit === 'paragraph' ? 'paragraph' : 'line' };
+  }
+
+  function containerSignature(content) {
+    const first = String(content || '').split(/\r?\n/, 1)[0];
+    const match = first.match(/^(\s*(?:(?:>\s*)|(?:[-+*]\s+)|(?:\d+[.)]\s+))*)/);
+    return String(match && match[1] || '').replace(/\d+(?=[.)])/g, '#');
+  }
+
+  function createOrderedReferenceList(input = {}) {
+    const api = dependencies();
+    const text = String(input.content == null ? '' : input.content);
+    const parsedRefs = api.parseReferenceMarkers(text);
+    const parsedOrdered = api.parseOrderedReferenceLists(text);
+    if (parsedRefs.diagnostics.length) throw new Error('Repair malformed Reference Object markers before creating an Ordered Reference List.');
+    if (parsedOrdered.diagnostics.length) throw new Error('Repair malformed Ordered Reference List markers before creating another list.');
+    const selected = Array.isArray(input.selectedUses) ? input.selectedUses : [];
+    if (!selected.length) throw new Error('Select at least one Reference Object use.');
+    const listId = input.listId || api.createOrderedReferenceListId(input.randomSource);
+    if (parsedOrdered.lists.some((list) => list.id === listId)) throw new Error(`Ordered Reference List id already exists: ${listId}.`);
+    const mode = api.normalizeOrderedSortMode(input.mode || 'natural');
+    const ranges = [];
+    const warnings = [];
+    const usedItemIds = new Set(parsedOrdered.items.map((item) => item.id));
+    for (const selection of selected) {
+      const occurrence = parsedRefs.occurrences.find((item) => item.role === 'use' && item.fullStart === Number(selection.fullStart));
+      if (!occurrence) throw new Error('A selected Reference Object use no longer exists at the checked location.');
+      const range = orderedReferenceUnitRange(text, occurrence, selection.unit === 'paragraph' ? 'paragraph' : 'line');
+      const usesInRange = parsedRefs.occurrences.filter((item) => item.role === 'use' && item.fullStart >= range.start && item.fullEnd <= range.end);
+      if (usesInRange.length !== 1) throw new Error(`Each Ordered Item ${range.unit} must contain exactly one Reference Object use.`);
+      if (parsedOrdered.items.some((item) => range.start < item.fullEnd && range.end > item.fullStart)) throw new Error('Selected content is already inside an Ordered Reference Item.');
+      const freshness = String(selection.freshness || 'unknown');
+      if (freshness !== 'current') warnings.push({ kind: 'stale_or_unresolved_use', refId: occurrence.id, offset: occurrence.fullStart, freshness, message: `Ordered Item was created with a ${freshness} Reference Object use; ordering stays blocked until refreshed.` });
+      let itemId = '';
+      for (let attempt = 0; attempt < 8 && !itemId; attempt += 1) {
+        const candidate = api.createOrderedReferenceItemId(input.randomSource);
+        if (!usedItemIds.has(candidate)) itemId = candidate;
+      }
+      if (!itemId) throw new Error('Could not allocate a unique Ordered Reference Item id.');
+      usedItemIds.add(itemId);
+      ranges.push({ ...range, refId: occurrence.id, occurrence, freshness, itemId });
+    }
+    ranges.sort((left, right) => left.start - right.start);
+    for (let index = 1; index < ranges.length; index += 1) if (ranges[index].start < ranges[index - 1].end) throw new Error('Selected Ordered Item ranges overlap. Choose one Reference Object use per line or paragraph.');
+    const signatures = new Set(ranges.map((range) => containerSignature(text.slice(range.start, range.end))));
+    if (signatures.size > 1) throw new Error('Selected Ordered Items use incompatible Markdown container prefixes.');
+    let output = text;
+    for (const range of [...ranges].reverse()) {
+      const wrapped = api.formatOrderedReferenceItem({ id: range.itemId, list: listId, unit: range.unit, ref: range.refId }, text.slice(range.start, range.end));
+      output = `${output.slice(0, range.start)}${wrapped}${output.slice(range.end)}`;
+    }
+    const insertion = ranges[0].start;
+    const eol = text.includes('\r\n') ? '\r\n' : '\n';
+    const separator = ranges[0].unit === 'paragraph' ? `${eol}${eol}` : eol;
+    output = `${output.slice(0, insertion)}${api.formatOrderedReferenceListMarker({ id: listId, mode, locale: input.locale || 'und' })}${separator}${output.slice(insertion)}`;
+    return { kind: 'ordered-reference-list-create-v1', content: output, listId, mode, itemCount: ranges.length, warnings };
+  }
+
+  function validateItemUnit(text, item) {
+    const bounds = item.unit === 'paragraph' ? paragraphBounds(text, item.fullStart) : lineBounds(text, item.fullStart);
+    return bounds.start === item.fullStart && bounds.end === item.fullEnd;
+  }
+
+  function inspectOrderedReferenceList(content, listId, options = {}) {
+    const api = dependencies();
+    const text = String(content == null ? '' : content);
+    const parsed = api.parseOrderedReferenceLists(text);
+    const list = parsed.lists.find((item) => item.id === listId);
+    if (!list) throw new Error(`Ordered Reference List not found: ${listId}.`);
+    const items = parsed.items.filter((item) => item.listId === listId).sort((left, right) => left.fullStart - right.fullStart);
+    const diagnostics = [...parsed.diagnostics];
+    const currentValues = options.currentValues instanceof Map ? options.currentValues : new Map(Object.entries(options.currentValues || {}));
+    for (const item of items) {
+      const references = api.parseReferenceMarkers(item.content);
+      const uses = references.occurrences.filter((occurrence) => occurrence.role === 'use');
+      if (references.diagnostics.length || uses.length !== 1 || uses[0] && uses[0].id !== item.refId) diagnostics.push({ kind: 'invalid_item_reference', itemId: item.id, message: 'Ordered Item must contain exactly its declared Reference Object use.' });
+      if (!validateItemUnit(text, item)) diagnostics.push({ kind: 'invalid_item_unit', itemId: item.id, message: `Ordered Item does not occupy exactly one ${item.unit}.` });
+      const expected = currentValues.get(item.refId);
+      item.sortValue = expected == null ? uses[0] && uses[0].value || '' : String(expected);
+      item.freshness = expected == null ? 'unresolved' : uses[0] && uses[0].value === String(expected) ? 'current' : 'stale';
+      if (item.freshness !== 'current') diagnostics.push({ kind: 'stale_ordered_reference_use', itemId: item.id, refId: item.refId, message: `Ordered Item ${item.id} has a ${item.freshness} Reference Object use.` });
+    }
+    const signatures = new Set(items.map((item) => containerSignature(item.content)));
+    if (signatures.size > 1) diagnostics.push({ kind: 'incompatible_item_containers', listId, message: 'Ordered Items use incompatible Markdown container prefixes.' });
+    return { kind: 'ordered-reference-list-inspection-v1', list, items, diagnostics, blocked: diagnostics.length > 0 };
+  }
+
+  function comparatorFor(list, options = {}) {
+    const locale = list.locale === 'und' ? undefined : list.locale;
+    if (list.mode === 'number') return (left, right) => {
+      const a = String(left.sortValue).match(/^\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+))/);
+      const b = String(right.sortValue).match(/^\s*([+-]?(?:\d+(?:\.\d+)?|\.\d+))/);
+      if (!a || !b) { const error = new Error('Number ordering requires every current Reference Object value to start with a number.'); error.kind = 'ordered_number_guard'; throw error; }
+      return Number(a[1]) - Number(b[1]);
+    };
+    if (list.mode === 'alphabetical') {
+      const collator = new Intl.Collator(locale, { numeric: false, sensitivity: 'base' });
+      return (left, right) => collator.compare(String(left.sortValue), String(right.sortValue));
+    }
+    if (list.mode === 'custom') {
+      const order = Array.isArray(options.customOrder) ? options.customOrder.map(String) : [];
+      if (!order.length) throw new Error('Custom ordering requires an explicit ordered list of exact current values; executable comparator code is not accepted.');
+      const ranks = new Map();
+      order.forEach((value, index) => { if (!ranks.has(value)) ranks.set(value, index); });
+      return (left, right) => {
+        if (!ranks.has(String(left.sortValue)) || !ranks.has(String(right.sortValue))) { const error = new Error('Custom ordering must include every exact current Reference Object value.'); error.kind = 'ordered_custom_guard'; throw error; }
+        const a = ranks.get(String(left.sortValue));
+        const b = ranks.get(String(right.sortValue));
+        return a - b;
+      };
+    }
+    const collator = new Intl.Collator(locale, { numeric: true, sensitivity: 'base' });
+    return (left, right) => collator.compare(String(left.sortValue), String(right.sortValue));
+  }
+
+  function orderOrderedReferenceList(content, listId, options = {}) {
+    const text = String(content == null ? '' : content);
+    const inspection = inspectOrderedReferenceList(text, listId, options);
+    if (inspection.blocked) { const error = new Error('Ordered Reference List has stale, unresolved or structurally invalid items. Refresh/repair them before ordering.'); error.kind = 'ordered_list_blocked'; error.diagnostics = inspection.diagnostics; throw error; }
+    const compare = comparatorFor(inspection.list, options);
+    const ranked = inspection.items.map((item, index) => ({ item, index }));
+    for (const entry of ranked) compare(entry.item, entry.item);
+    ranked.sort((left, right) => compare(left.item, right.item) || left.index - right.index);
+    const blocks = ranked.map(({ item }) => text.slice(item.fullStart, item.fullEnd));
+    let output = text;
+    for (let index = inspection.items.length - 1; index >= 0; index -= 1) {
+      const slot = inspection.items[index];
+      output = `${output.slice(0, slot.fullStart)}${blocks[index]}${output.slice(slot.fullEnd)}`;
+    }
+    return { kind: 'ordered-reference-list-order-v1', content: output, listId, mode: inspection.list.mode, itemCount: inspection.items.length, changed: output !== text };
+  }
+
+  return { orderedReferenceUnitRange, createOrderedReferenceList, inspectOrderedReferenceList, orderOrderedReferenceList, orderedReferenceContainerSignature: containerSignature };
+});
 /* src/reference-object-registry.js */
 (function (root, factory) {
   const api = factory();
@@ -2869,6 +3219,128 @@
   };
 });
 
+/* src/repository-local-change-store.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const DEFAULT_REPOSITORY_LOCAL_MAX_BYTES = 16 * 1024 * 1024;
+
+  function requiredPart(value, label) {
+    const text = String(value == null ? '' : value).trim();
+    if (!text) throw new TypeError(`${label} is required.`);
+    return text;
+  }
+
+  function repositoryLocalChangeStoreKey(workspace) {
+    if (!workspace) throw new TypeError('Workspace is required.');
+    const id = requiredPart(workspace.id || 'workspace', 'Workspace id');
+    const owner = requiredPart(workspace.owner, 'Workspace owner').toLowerCase();
+    const repo = requiredPart(workspace.repo, 'Workspace repository').replace(/\.git$/i, '').toLowerCase();
+    const branch = requiredPart(workspace.branch || 'main', 'Workspace branch');
+    // Keep the v3 key so existing Reference Object drafts migrate without a copy step.
+    return `obsLinkedNotesPrototype:v3:referenceObjects:${encodeURIComponent(id)}:${encodeURIComponent(owner)}:${encodeURIComponent(repo)}:${encodeURIComponent(branch)}`;
+  }
+
+  function normalizeRepositoryLocalPath(value) {
+    const raw = String(value == null ? '' : value).replace(/\\/g, '/').trim().replace(/\/+$/g, '');
+    if (!raw || raw.startsWith('/') || /^[A-Za-z]:\//.test(raw) || raw.includes('://') || /[?#\u0000-\u001f\u007f]/.test(raw)) throw new TypeError('Local repository change path must be repository-relative.');
+    const parts = raw.split('/');
+    if (parts.some((part) => !part || part === '.' || part === '..')) throw new TypeError('Local repository change path contains an invalid segment.');
+    return parts.join('/');
+  }
+
+  function normalizeBase64(value) {
+    const compact = String(value == null ? '' : value).replace(/\s+/g, '');
+    if (compact && (!/^[A-Za-z0-9+/]*={0,2}$/.test(compact) || compact.length % 4 !== 0)) throw new TypeError('Binary local repository change must contain canonical base64 bytes.');
+    return compact;
+  }
+
+  function base64ByteLength(value) {
+    if (!value) return 0;
+    const padding = value.endsWith('==') ? 2 : value.endsWith('=') ? 1 : 0;
+    return (value.length / 4) * 3 - padding;
+  }
+
+  function normalizeRepositoryLocalChangeState(value, options = {}) {
+    const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_REPOSITORY_LOCAL_MAX_BYTES;
+    const source = value && typeof value === 'object' ? value : {};
+    const files = [];
+    const seen = new Set();
+    let totalBytes = 0;
+    for (const raw of Array.isArray(source.files) ? source.files : []) {
+      const path = normalizeRepositoryLocalPath(raw && raw.path);
+      if (seen.has(path)) continue;
+      seen.add(path);
+      const payloadKind = raw && raw.payloadKind === 'binary' ? 'binary' : 'text';
+      const content = payloadKind === 'text' ? String(raw && raw.content == null ? '' : raw.content) : '';
+      const bytesBase64 = payloadKind === 'binary' ? normalizeBase64(raw && raw.bytesBase64) : '';
+      totalBytes += payloadKind === 'binary' ? base64ByteLength(bytesBase64) : new TextEncoder().encode(content).byteLength;
+      if (totalBytes > maxBytes) throw new Error(`Local repository changes exceed the ${maxBytes}-byte aggregate limit.`);
+      files.push({
+        path,
+        baseSha: String(raw && raw.baseSha || ''),
+        payloadKind,
+        content,
+        bytesBase64,
+        source: String(raw && raw.source || 'reference-object'),
+        operation: String(raw && raw.operation || ((raw && raw.baseSha) ? 'update' : 'create')),
+        dependencies: [...new Set((Array.isArray(raw && raw.dependencies) ? raw.dependencies : []).map(normalizeRepositoryLocalPath))].sort(),
+        message: String(raw && raw.message || ''),
+        updatedAt: String(raw && raw.updatedAt || '')
+      });
+    }
+    files.sort((left, right) => left.path.localeCompare(right.path));
+    return { schemaVersion: 2, files };
+  }
+
+  function repositoryLocalChangeMap(state, options = {}) {
+    const normalized = normalizeRepositoryLocalChangeState(state, options);
+    return new Map(normalized.files.map((file) => [file.path, { ...file, dependencies: [...file.dependencies] }]));
+  }
+
+  function upsertRepositoryLocalChange(state, change, options = {}) {
+    const current = normalizeRepositoryLocalChangeState(state, options);
+    const path = normalizeRepositoryLocalPath(change && change.path);
+    const previous = current.files.find((file) => file.path === path);
+    const files = current.files.filter((file) => file.path !== path);
+    files.push({
+      ...(previous || {}),
+      ...(change || {}),
+      path,
+      baseSha: previous ? previous.baseSha : String(change && change.baseSha || ''),
+      updatedAt: String(change && change.updatedAt || new Date().toISOString())
+    });
+    return normalizeRepositoryLocalChangeState({ schemaVersion: 2, files }, options);
+  }
+
+  function removeRepositoryLocalChange(state, path, options = {}) {
+    const canonical = normalizeRepositoryLocalPath(path);
+    const current = normalizeRepositoryLocalChangeState(state, options);
+    return normalizeRepositoryLocalChangeState({ schemaVersion: 2, files: current.files.filter((file) => file.path !== canonical) }, options);
+  }
+
+  function repositoryTextOverlays(state, options = {}) {
+    return normalizeRepositoryLocalChangeState(state, options).files
+      .filter((file) => file.payloadKind === 'text')
+      .map((file) => ({ path: file.path, baseSha: file.baseSha, content: file.content, source: file.source, updatedAt: file.updatedAt }));
+  }
+
+  return {
+    DEFAULT_REPOSITORY_LOCAL_MAX_BYTES,
+    repositoryLocalChangeStoreKey,
+    normalizeRepositoryLocalPath,
+    normalizeRepositoryLocalChangeState,
+    repositoryLocalChangeMap,
+    upsertRepositoryLocalChange,
+    removeRepositoryLocalChange,
+    repositoryTextOverlays
+  };
+});
+
 /* src/reference-object-local-store.js */
 (function (root, factory) {
   const api = factory();
@@ -2877,7 +3349,12 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const DEFAULT_REFERENCE_LOCAL_MAX_BYTES = 2 * 1024 * 1024;
+  const DEFAULT_REFERENCE_LOCAL_MAX_BYTES = 16 * 1024 * 1024;
+
+  function shared() {
+    const api = typeof globalThis !== 'undefined' ? globalThis.ObsLinkedNotes || {} : {};
+    return typeof api.normalizeRepositoryLocalChangeState === 'function' ? api : null;
+  }
 
   function normalizeWorkspacePart(value, label) {
     const text = String(value == null ? '' : value).trim();
@@ -2886,6 +3363,8 @@
   }
 
   function referenceObjectLocalStoreKey(workspace) {
+    const api = shared();
+    if (api) return api.repositoryLocalChangeStoreKey(workspace);
     if (!workspace) throw new TypeError('Workspace is required.');
     const id = normalizeWorkspacePart(workspace.id || 'workspace', 'Workspace id');
     const owner = normalizeWorkspacePart(workspace.owner, 'Workspace owner').toLowerCase();
@@ -2903,6 +3382,8 @@
   }
 
   function normalizeReferenceObjectLocalState(value, options = {}) {
+    const api = shared();
+    if (api) return api.normalizeRepositoryLocalChangeState(value, { maxBytes: options.maxBytes || DEFAULT_REFERENCE_LOCAL_MAX_BYTES });
     const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_REFERENCE_LOCAL_MAX_BYTES;
     const source = value && typeof value === 'object' ? value : {};
     const files = [];
@@ -2922,11 +3403,15 @@
   }
 
   function referenceObjectLocalDraftMap(state) {
+    const api = shared();
+    if (api) return api.repositoryLocalChangeMap(state);
     const normalized = normalizeReferenceObjectLocalState(state);
     return new Map(normalized.files.map((file) => [file.path, { ...file }]));
   }
 
   function upsertReferenceObjectLocalDraft(state, draft, options = {}) {
+    const api = shared();
+    if (api) return api.upsertRepositoryLocalChange(state, { ...(draft || {}), payloadKind: 'text', source: draft && draft.source || 'reference-object' }, { maxBytes: options.maxBytes || DEFAULT_REFERENCE_LOCAL_MAX_BYTES });
     const current = normalizeReferenceObjectLocalState(state, options);
     const path = normalizePath(draft && draft.path);
     const files = current.files.filter((file) => file.path !== path);
@@ -2935,6 +3420,8 @@
   }
 
   function removeReferenceObjectLocalDraft(state, path, options = {}) {
+    const api = shared();
+    if (api) return api.removeRepositoryLocalChange(state, path, { maxBytes: options.maxBytes || DEFAULT_REFERENCE_LOCAL_MAX_BYTES });
     const canonical = normalizePath(path);
     const current = normalizeReferenceObjectLocalState(state, options);
     return normalizeReferenceObjectLocalState({ schemaVersion: 1, files: current.files.filter((file) => file.path !== canonical) }, options);
@@ -2986,6 +3473,7 @@
     const map = new Map();
     for (const item of Array.isArray(overlays) ? overlays : []) {
       if (!item || !item.path) continue;
+      if (item.payloadKind === 'binary') continue;
       map.set(String(item.path), { path: String(item.path), baseSha: String(item.baseSha || ''), content: String(item.content == null ? '' : item.content), local: true });
     }
     return map;
@@ -3325,6 +3813,48 @@
     };
   }
 
+  async function diagnoseReferenceObjectFreshness(options = {}) {
+    const api = core();
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
+    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
+    const objectById = new Map(registrySnapshot.registry.objects.map((object) => [object.id, object]));
+    const definitionsById = new Map();
+    for (const file of scan.files) for (const marker of file.markers) if (marker.role === 'def') {
+      const group = definitionsById.get(marker.id) || [];
+      group.push({ ...marker, path: file.path });
+      definitionsById.set(marker.id, group);
+    }
+    const currentValueById = new Map();
+    for (const object of registrySnapshot.registry.objects) {
+      const definitions = (definitionsById.get(object.id) || []).filter((item) => item.path === object.definition.path);
+      if (definitions.length === 1 && (definitionsById.get(object.id) || []).length === 1) currentValueById.set(object.id, definitions[0].value);
+    }
+    const files = [];
+    const uses = [];
+    for (const file of scan.files) {
+      const fileUses = file.markers.filter((marker) => marker.role === 'use').map((marker) => {
+        const currentValue = currentValueById.get(marker.id);
+        const status = !objectById.has(marker.id) || currentValue == null ? 'unresolved' : marker.value === currentValue ? 'current' : 'stale';
+        const item = { path: file.path, objectId: marker.id, line: marker.line, lineOccurrence: marker.lineOccurrence, value: marker.value, currentValue: currentValue == null ? '' : currentValue, status };
+        uses.push(item);
+        return item;
+      });
+      if (fileUses.length) files.push({ path: file.path, current: fileUses.filter((item) => item.status === 'current').length, stale: fileUses.filter((item) => item.status === 'stale').length, unresolved: fileUses.filter((item) => item.status === 'unresolved').length, uses: fileUses });
+    }
+    return {
+      kind: 'reference-object-freshness-v1',
+      files,
+      uses,
+      staleCount: uses.filter((item) => item.status === 'stale').length,
+      unresolvedCount: uses.filter((item) => item.status === 'unresolved').length,
+      incomplete: scan.incomplete,
+      truncationReason: scan.truncationReason,
+      diagnostics: scan.diagnostics,
+      registrySnapshot
+    };
+  }
+
   return {
     DEFAULT_REFERENCE_SCAN_MAX_DIRECTORIES: DEFAULT_SCAN_MAX_DIRECTORIES,
     DEFAULT_REFERENCE_SCAN_MAX_FILES: DEFAULT_SCAN_MAX_FILES,
@@ -3337,6 +3867,7 @@
     buildReferenceObjectLocalUpdate,
     updateReferenceObjectUsesRemote,
     validateReferenceObjectTags,
+    diagnoseReferenceObjectFreshness,
     proveReferenceObjectExpectedBase: proveExpectedBase
   };
 });
@@ -5190,6 +5721,20 @@
       return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents?ref=${encodeURIComponent(this.branch)}`;
     }
 
+    _repoApiUrl(path) {
+      return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/${String(path || '').replace(/^\/+/, '')}`;
+    }
+
+    _branchRefUrl() {
+      const encoded = this.branch.split('/').map(encodeURIComponent).join('/');
+      return this._repoApiUrl(`git/ref/heads/${encoded}`);
+    }
+
+    _branchRefsUrl() {
+      const encoded = this.branch.split('/').map(encodeURIComponent).join('/');
+      return this._repoApiUrl(`git/refs/heads/${encoded}`);
+    }
+
     _headers() {
       const headers = {
         Accept: 'application/vnd.github+json',
@@ -5484,6 +6029,145 @@
         recoveredAfterUnknownWrite: false
       };
     }
+
+    async readBranchHead() {
+      const payload = await this._request('GET', this._branchRefUrl());
+      const sha = String(payload && payload.object && payload.object.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub branch ref response has no commit SHA.');
+      return { ref: String(payload.ref || `refs/heads/${this.branch}`), sha };
+    }
+
+    async readGitCommit(sha) {
+      const commitSha = String(sha || '').trim();
+      if (!commitSha) throw new TypeError('Git commit SHA is required.');
+      const payload = await this._request('GET', this._repoApiUrl(`git/commits/${encodeURIComponent(commitSha)}`));
+      const treeSha = String(payload && payload.tree && payload.tree.sha || '');
+      if (!treeSha) throw new GitHubClientError('invalid_response', 'GitHub commit response has no tree SHA.');
+      return { sha: String(payload.sha || commitSha), treeSha, parents: Array.isArray(payload.parents) ? payload.parents.map((item) => String(item && item.sha || '')).filter(Boolean) : [] };
+    }
+
+    async readGitTree(sha, options = {}) {
+      const treeSha = String(sha || '').trim();
+      if (!treeSha) throw new TypeError('Git tree SHA is required.');
+      const suffix = options.recursive ? '?recursive=1' : '';
+      const payload = await this._request('GET', `${this._repoApiUrl(`git/trees/${encodeURIComponent(treeSha)}`)}${suffix}`);
+      if (payload && payload.truncated) throw new GitHubClientError('limit_exceeded', 'GitHub truncated the recursive tree; atomic bulk update is blocked.');
+      const tree = Array.isArray(payload && payload.tree) ? payload.tree.map((item) => ({
+        path: normalizeGitHubContentPath(item.path),
+        mode: String(item.mode || ''),
+        type: String(item.type || ''),
+        sha: String(item.sha || '')
+      })) : [];
+      return { sha: String(payload && payload.sha || treeSha), tree };
+    }
+
+    async createGitBlob(contentBase64) {
+      const content = String(contentBase64 == null ? '' : contentBase64).replace(/\s+/g, '');
+      const payload = await this._request('POST', this._repoApiUrl('git/blobs'), { content, encoding: 'base64' });
+      const sha = String(payload && payload.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub create-blob response has no SHA.');
+      return { sha };
+    }
+
+    async createGitTree(baseTreeSha, entries) {
+      const payload = await this._request('POST', this._repoApiUrl('git/trees'), {
+        base_tree: String(baseTreeSha || ''),
+        tree: (Array.isArray(entries) ? entries : []).map((entry) => ({
+          path: normalizeGitHubContentPath(entry.path),
+          mode: String(entry.mode || '100644'),
+          type: 'blob',
+          sha: String(entry.sha || '')
+        }))
+      });
+      const sha = String(payload && payload.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub create-tree response has no SHA.');
+      return { sha };
+    }
+
+    async createGitCommit(message, treeSha, parentSha) {
+      const payload = await this._request('POST', this._repoApiUrl('git/commits'), {
+        message: String(message || 'Update local repository changes'),
+        tree: String(treeSha || ''),
+        parents: [String(parentSha || '')]
+      });
+      const sha = String(payload && payload.sha || '');
+      if (!sha) throw new GitHubClientError('invalid_response', 'GitHub create-commit response has no SHA.');
+      return { sha };
+    }
+
+    async updateBranchRef(commitSha) {
+      const expected = String(commitSha || '').trim();
+      if (!expected) throw new TypeError('Git commit SHA is required.');
+      try {
+        const payload = await this._request('PATCH', this._branchRefsUrl(), { sha: expected, force: false });
+        return { sha: String(payload && payload.object && payload.object.sha || expected), recoveredAfterUnknownWrite: false };
+      } catch (error) {
+        if (!(error instanceof GitHubClientError) || error.kind !== 'network_unknown') throw error;
+        try {
+          const head = await this.readBranchHead();
+          if (head.sha === expected) return { sha: expected, recoveredAfterUnknownWrite: true };
+        } catch (readError) { /* preserve the unknown ref-update boundary */ }
+        throw error;
+      }
+    }
+
+    async saveChangesCommitVerified({ changes, message }) {
+      const input = Array.isArray(changes) ? changes : [];
+      if (!input.length) throw new TypeError('At least one local repository change is required.');
+      const seen = new Set();
+      const normalized = input.map((change) => {
+        const path = normalizeGitHubContentPath(change && change.path);
+        if (seen.has(path)) throw new TypeError(`Duplicate local repository change path: ${path}.`);
+        seen.add(path);
+        const payloadKind = change && change.payloadKind === 'binary' ? 'binary' : 'text';
+        return {
+          path,
+          baseSha: String(change && change.baseSha || ''),
+          payloadKind,
+          contentBase64: payloadKind === 'binary' ? String(change && change.bytesBase64 || '').replace(/\s+/g, '') : utf8ToBase64(change && change.content == null ? '' : change.content)
+        };
+      });
+
+      const initialHead = await this.readBranchHead();
+      const initialCommit = await this.readGitCommit(initialHead.sha);
+      const initialTree = await this.readGitTree(initialCommit.treeSha, { recursive: true });
+      const blobsByPath = new Map(initialTree.tree.filter((item) => item.type === 'blob').map((item) => [item.path, item]));
+      for (const change of normalized) {
+        const current = blobsByPath.get(change.path);
+        if (change.baseSha && (!current || current.sha !== change.baseSha)) {
+          throw new GitHubClientError('conflict', `Remote base changed for ${change.path}.`, { path: change.path, expectedSha: change.baseSha, actualSha: current && current.sha || '' });
+        }
+        if (!change.baseSha && current) throw new GitHubClientError('conflict', `Expected new path already exists: ${change.path}.`, { path: change.path, actualSha: current.sha });
+      }
+
+      const treeEntries = [];
+      for (const change of normalized) {
+        const blob = await this.createGitBlob(change.contentBase64);
+        const current = blobsByPath.get(change.path);
+        treeEntries.push({ path: change.path, mode: current && current.mode || '100644', sha: blob.sha });
+      }
+      const confirmedHead = await this.readBranchHead();
+      if (confirmedHead.sha !== initialHead.sha) throw new GitHubClientError('conflict', 'Branch head changed during atomic bulk-update preparation. No branch ref was updated.', { expectedSha: initialHead.sha, actualSha: confirmedHead.sha });
+      const tree = await this.createGitTree(initialCommit.treeSha, treeEntries);
+      const commit = await this.createGitCommit(message || `Update ${normalized.length} local repository file(s)`, tree.sha, initialHead.sha);
+      const ref = await this.updateBranchRef(commit.sha);
+
+      const finalHead = await this.readBranchHead();
+      if (finalHead.sha !== commit.sha) throw new GitHubClientError('verification_mismatch', 'Branch head does not match the atomic update commit.', { expectedSha: commit.sha, actualSha: finalHead.sha });
+      const finalCommit = await this.readGitCommit(finalHead.sha);
+      if (!finalCommit.parents.includes(initialHead.sha)) throw new GitHubClientError('verification_mismatch', 'Atomic update commit does not have the verified branch head as its parent.');
+      const finalTree = await this.readGitTree(finalCommit.treeSha, { recursive: true });
+      const finalByPath = new Map(finalTree.tree.filter((item) => item.type === 'blob').map((item) => [item.path, item.sha]));
+      for (const entry of treeEntries) if (finalByPath.get(entry.path) !== entry.sha) throw new GitHubClientError('verification_mismatch', `Atomic update verification failed for ${entry.path}.`);
+      return {
+        kind: 'github-git-data-bulk-update-v1',
+        parentSha: initialHead.sha,
+        commitSha: commit.sha,
+        treeSha: finalCommit.treeSha,
+        paths: treeEntries.map((entry) => entry.path),
+        recoveredAfterUnknownWrite: Boolean(ref.recoveredAfterUnknownWrite)
+      };
+    }
   }
 
   return {
@@ -5501,6 +6185,56 @@
     bytesEqual,
     statusKind
   };
+});
+
+/* src/repository-change-publisher.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  function dependencies() {
+    const api = root.ObsLinkedNotes || {};
+    for (const name of ['normalizeRepositoryLocalChangeState', 'repositoryLocalChangeMap', 'removeRepositoryLocalChange', 'base64ToBytes']) {
+      if (typeof api[name] !== 'function') throw new Error(`Repository change publisher dependency is unavailable: ${name}.`);
+    }
+    return api;
+  }
+
+  async function publishCurrentRepositoryChange(options = {}) {
+    const api = dependencies();
+    const client = options.client;
+    const state = api.normalizeRepositoryLocalChangeState(options.state);
+    const path = api.normalizeRepositoryLocalPath(options.path);
+    const change = api.repositoryLocalChangeMap(state).get(path);
+    if (!change) throw new Error(`The open file has no pending local change: ${path}.`);
+    let result;
+    if (change.payloadKind === 'binary') {
+      if (!client || typeof client.saveBytesVerified !== 'function') throw new Error('Current-file binary publisher is unavailable.');
+      result = await client.saveBytesVerified({ path, bytes: api.base64ToBytes(change.bytesBase64), baseSha: change.baseSha, message: change.message || `${change.baseSha ? 'Update' : 'Create'} ${path} from local state` });
+    } else {
+      if (!client || typeof client.saveVerified !== 'function') throw new Error('Current-file text publisher is unavailable.');
+      result = await client.saveVerified({ path, content: change.content, baseSha: change.baseSha, message: change.message || `${change.baseSha ? 'Update' : 'Create'} ${path} from local state` });
+    }
+    return { kind: 'repository-current-publish-v1', path, result, state: api.removeRepositoryLocalChange(state, path) };
+  }
+
+  async function publishAllRepositoryChanges(options = {}) {
+    const api = dependencies();
+    const client = options.client;
+    const state = api.normalizeRepositoryLocalChangeState(options.state);
+    if (!state.files.length) throw new Error('There are no pending local repository changes.');
+    if (!client || typeof client.saveChangesCommitVerified !== 'function') throw new Error('Atomic Git Data publisher is unavailable; sequential Contents writes are not used as a fallback.');
+    const result = await client.saveChangesCommitVerified({
+      changes: state.files,
+      message: options.message || `Update ${state.files.length} local repository file(s)`
+    });
+    return { kind: 'repository-all-publish-v1', result, state: api.normalizeRepositoryLocalChangeState(null) };
+  }
+
+  return { publishCurrentRepositoryChange, publishAllRepositoryChanges };
 });
 
 /* src/repository-asset-write.js */
@@ -13089,7 +13823,7 @@
       this.referenceObjectChecks = {};
       this.referenceObjectValidation = null;
       this.referenceObjectFocus = null;
-      if (!options.silent) this._setUi(this._referenceObjectUiPatch({ status: state.files.length ? `${state.files.length} local Reference Object draft file(s) restored for this workspace.` : 'Reference Object local state ready.' }));
+      if (!options.silent) this._setUi(this._referenceObjectUiPatch({ status: state.files.length ? `${state.files.length} pending local repository file(s) restored for this workspace.` : 'Local repository change state ready.' }));
       return state;
     };
 
@@ -13472,7 +14206,7 @@
         this.repositoryPreview = { ...this.repositoryPreview, content: draft.content, size: new TextEncoder().encode(draft.content).byteLength, sha: draft.baseSha || this.repositoryPreview.sha, localReferenceDraft: true };
         this.fileViewMode = 'source';
         this.fileRendered = null;
-        this._setUi(this._referenceObjectUiPatch({ status: `Opened local Reference Object draft for ${draft.path}; GitHub base SHA is ${draft.baseSha || '(new path)'}.` }));
+        this._setUi(this._referenceObjectUiPatch({ status: `Opened pending local state for ${draft.path}; GitHub base SHA is ${draft.baseSha || '(new path)'}.` }));
         return this.repositoryPreview;
       };
     }
@@ -13493,7 +14227,7 @@
         };
         this.fileViewMode = 'source';
         this.surface = 'files';
-        this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: true, status: `Editing local Reference Object draft ${preview.path}. Use Save local draft to stay local or normal Save to write this file to GitHub.` }));
+        this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: true, status: `Editing pending local state for ${preview.path}. Save locally, then use Update current file or Update all.` }));
         return this.repositoryEditor;
       };
     }
@@ -13694,9 +14428,9 @@
     const rows = objects.map((object) => {
       const check = checks[object.id] || null;
       const stale = check ? check.staleCount : 0;
-      return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button><button data-reference-update-github="${escapeHtml(object.id)}">Update GitHub</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
+      return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
     }).join('') || '<div class="hint">No Reference Objects loaded.</div>';
-    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button class="primary" data-reference-publish ${pending.length ? '' : 'disabled'}>Apply local changes to GitHub</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Copy reference writes only to clipboard; manual paste remains explicit.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
+    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Reference Object actions are local; use the standard Update current file or Update all action to publish.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
     const panel = details.querySelector('.reference-objects-panel');
     const scope = panel || details;
     const search = scope.querySelector('[data-reference-search]');
@@ -13709,12 +14443,10 @@
     scope.querySelector('[data-reference-create]')?.addEventListener('click', () => { const api = root.ObsLinkedNotes || {}; if (typeof api.closeFilesWorkspaceTopPopup === 'function') api.closeFilesWorkspaceTopPopup(ui); openCreateModal(ui); });
     scope.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
     scope.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
-    scope.querySelector('[data-reference-publish]')?.addEventListener('click', () => ui._call('onPublishReferenceObjectLocalDraftsGitHub').catch(() => {}));
     scope.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
     scope.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
     scope.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
     scope.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
-    scope.querySelectorAll('[data-reference-update-github]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesGitHub', button.dataset.referenceUpdateGithub).catch(() => {})));
     scope.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
       const input = Array.from(scope.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
       ui._call('onRenameReferenceObjectLocal', button.dataset.referenceRename, input && input.value).catch(() => {});
@@ -13786,7 +14518,6 @@
         if (!this.shadow || typeof document === 'undefined') return result;
         appendStyle(this);
         enhanceReferenceObjectsMenu(this);
-        enhanceLocalDraftSave(this);
         enhanceReferenceFocus(this);
         return result;
       } finally {
@@ -13804,6 +14535,761 @@
   }
 
   return { installRepositoryReferenceObjects, locateReferenceFocusOccurrence, attachReferenceObjectsMenuPanel };
+});
+
+/* src/repository-local-changes-runtime.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+  if (root.ObsLinkedNotes && root.ObsLinkedNotes.LinkedNotesApp && root.ObsLinkedNotes.LinkedNotesUI) {
+    try { api.installRepositoryLocalChanges(root.ObsLinkedNotes); } catch (error) { /* bootstrap reports failures later */ }
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const APP_PATCH = '__obsRepositoryLocalChangesAppV1';
+  const UI_PATCH = '__obsRepositoryLocalChangesUiV1';
+
+  function apiOrThrow(app) {
+    const api = app && app.api || root.ObsLinkedNotes || {};
+    for (const name of ['normalizeRepositoryLocalChangeState', 'repositoryLocalChangeMap', 'upsertRepositoryLocalChange', 'publishCurrentRepositoryChange', 'publishAllRepositoryChanges', 'bytesToBase64']) {
+      if (typeof api[name] !== 'function') throw new Error(`Local-first repository dependency is unavailable: ${name}.`);
+    }
+    return api;
+  }
+
+  function pathForEditor(api, editor) {
+    const mode = editor.mode;
+    const parent = api.normalizeFilesWorkspacePath ? api.normalizeFilesWorkspacePath(editor.parentPath || '', { allowRoot: true }) : String(editor.parentPath || '');
+    if (mode === 'edit') return api.normalizeRepositoryLocalPath(editor.path);
+    const name = api.normalizeFilesWorkspacePath ? api.normalizeFilesWorkspacePath(editor.name, { allowRoot: false, label: mode === 'folder' ? 'Folder name' : 'File name' }) : String(editor.name || '');
+    if (name.includes('/')) throw new Error('Name must be one repository path segment.');
+    const joined = parent ? `${parent}/${name}` : name;
+    return mode === 'folder' ? `${joined}/.gitkeep` : joined;
+  }
+
+  function mergePendingEntries(app, path, entries) {
+    const api = apiOrThrow(app);
+    const folder = api.normalizeFilesWorkspacePath ? api.normalizeFilesWorkspacePath(path || '', { allowRoot: true }) : String(path || '');
+    const prefix = folder ? `${folder}/` : '';
+    const merged = new Map((Array.isArray(entries) ? entries : []).map((entry) => [entry.path, { ...entry }]));
+    for (const change of api.normalizeRepositoryLocalChangeState(app.referenceObjectLocalState || null).files) {
+      if (!change.path.startsWith(prefix)) continue;
+      const rest = change.path.slice(prefix.length);
+      if (!rest) continue;
+      const slash = rest.indexOf('/');
+      const name = slash < 0 ? rest : rest.slice(0, slash);
+      const entryPath = prefix ? `${folder}/${name}` : name;
+      const directChange = slash < 0 ? change : null;
+      const current = merged.get(entryPath);
+      merged.set(entryPath, {
+        ...(current || {}),
+        type: slash < 0 ? 'file' : 'dir',
+        path: entryPath,
+        name,
+        sha: directChange ? directChange.baseSha : String(current && current.sha || ''),
+        size: directChange ? (directChange.payloadKind === 'binary' ? api.base64ToBytes(directChange.bytesBase64).byteLength : new TextEncoder().encode(directChange.content).byteLength) : Number(current && current.size || 0),
+        localPending: true
+      });
+    }
+    const values = [...merged.values()];
+    return app.api.sortRepositoryEntries ? app.api.sortRepositoryEntries(values) : values.sort((left, right) => (left.type === right.type ? left.name.localeCompare(right.name) : left.type === 'dir' ? -1 : 1));
+  }
+
+  function patchApp(App) {
+    if (!App || !App.prototype || App.prototype[APP_PATCH]) return false;
+    Object.defineProperty(App.prototype, APP_PATCH, { value: true });
+    const originalStart = App.prototype.start;
+    const originalUiState = App.prototype._workspaceUiState;
+    const originalOpenRepositoryEntry = App.prototype.openRepositoryEntry;
+    const originalBrowseRepository = App.prototype.browseRepository;
+
+    App.prototype._repositoryPendingUiState = function repositoryPendingUiState() {
+      const state = apiOrThrow(this).normalizeRepositoryLocalChangeState(this.referenceObjectLocalState || null);
+      const previewPath = this.repositoryPreview && this.repositoryPreview.path || '';
+      return {
+        repositoryPendingChanges: state.files.map((file) => ({ path: file.path, source: file.source, payloadKind: file.payloadKind, operation: file.operation, updatedAt: file.updatedAt })),
+        repositoryPendingCount: state.files.length,
+        repositoryCurrentFilePending: Boolean(previewPath && state.files.some((file) => file.path === previewPath))
+      };
+    };
+
+    if (typeof originalUiState === 'function') App.prototype._workspaceUiState = function localChangesWorkspaceUiState(...args) {
+      const state = originalUiState.apply(this, args);
+      return { ...state, repositoryEntries: mergePendingEntries(this, state.repositoryPath || '', state.repositoryEntries), ...this._repositoryPendingUiState() };
+    };
+
+    App.prototype._openPendingRepositoryFile = function openPendingRepositoryFile(change) {
+      const workspace = this._activeWorkspace();
+      const binary = change.payloadKind === 'binary';
+      const size = binary ? apiOrThrow(this).base64ToBytes(change.bytesBase64).byteLength : new TextEncoder().encode(change.content).byteLength;
+      this.repositoryPreview = {
+        kind: binary ? 'unsupported' : 'text', path: change.path, name: change.path.slice(change.path.lastIndexOf('/') + 1), size, sha: change.baseSha,
+        ...(binary ? { content: null, message: 'Pending binary file; exact bytes are preserved locally and can be published.' } : { content: change.content }),
+        localRepositoryChange: true, context: workspace ? { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch } : null
+      };
+      this.repositoryPath = change.path.includes('/') ? change.path.slice(0, change.path.lastIndexOf('/')) : '';
+      this.repositoryEditor = { mode: 'none', parentPath: this.repositoryPath, path: '', name: '', content: '', baseSha: '' };
+      this.fileViewMode = 'source';
+      this.fileRendered = null;
+      this.surface = 'files';
+      this._setUi({ status: `Opened pending local state for ${change.path}. GitHub was not read or changed.` });
+      return this.repositoryPreview;
+    };
+
+    if (typeof originalOpenRepositoryEntry === 'function') App.prototype.openRepositoryEntry = async function localChangesOpenRepositoryEntry(entry, ...args) {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const api = apiOrThrow(this);
+      const path = api.normalizeRepositoryLocalPath(entry && entry.path);
+      const change = api.repositoryLocalChangeMap(this.referenceObjectLocalState).get(path);
+      if (change && (!entry || entry.type !== 'dir')) return this._openPendingRepositoryFile(change);
+      if (entry && entry.type === 'dir' && this.referenceObjectLocalState.files.some((file) => file.path.startsWith(`${path}/`))) return this.browseRepository(path);
+      return originalOpenRepositoryEntry.call(this, entry, ...args);
+    };
+
+    if (typeof originalBrowseRepository === 'function') App.prototype.browseRepository = async function localChangesBrowseRepository(path = '', ...args) {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const api = apiOrThrow(this);
+      const folder = api.normalizeFilesWorkspacePath ? api.normalizeFilesWorkspacePath(path || '', { allowRoot: true }) : String(path || '');
+      const hasPending = this.referenceObjectLocalState.files.some((file) => !folder || file.path.startsWith(`${folder}/`));
+      if (!hasPending) return originalBrowseRepository.call(this, path, ...args);
+      const client = await this._client(this._activeWorkspace());
+      let remote = [];
+      try { remote = await client.listDirectory(folder, { maxEntries: 200 }); }
+      catch (error) { if (!error || error.kind !== 'not_found') throw error; }
+      this.repositoryPath = folder;
+      this.repositoryEntries = mergePendingEntries(this, folder, remote);
+      this.repositoryPreview = null;
+      this.repositoryBrowseLoaded = true;
+      this.surface = 'files';
+      this._setUi({ status: `Repository folder ${folder || '/'} loaded with pending local entries.` });
+      return this.repositoryEntries;
+    };
+
+    App.prototype._stageRepositoryChange = async function stageRepositoryChange(change, options = {}) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const previous = api.repositoryLocalChangeMap(this.referenceObjectLocalState).get(change.path);
+      const next = api.upsertRepositoryLocalChange(this.referenceObjectLocalState, {
+        ...change,
+        baseSha: previous ? previous.baseSha : String(change.baseSha || ''),
+        updatedAt: new Date().toISOString()
+      });
+      await this._persistReferenceObjectLocalState(next, { silent: true });
+      this.referenceFreshnessDiagnostics = null;
+      if (!options.silent) this._setUi({ status: `${change.path} saved locally. GitHub was not changed.` });
+      return api.repositoryLocalChangeMap(next).get(change.path);
+    };
+
+    App.prototype._stageRepositoryTextChange = function stageRepositoryTextChange(path, baseSha, content, options = {}) {
+      const maxBytes = this.api.DEFAULT_TEXT_FILE_MAX_BYTES || this.api.DEFAULT_PREVIEW_MAX_BYTES || (512 * 1024);
+      const text = String(content == null ? '' : content);
+      const size = new TextEncoder().encode(text).byteLength;
+      if (size > maxBytes && !options.allowLarger) throw new Error(`Repository text file exceeds the ${maxBytes}-byte local editing limit.`);
+      return this._stageRepositoryChange({ path, baseSha, payloadKind: 'text', content: text, source: options.source || 'file-editor', operation: baseSha ? 'update' : 'create', dependencies: options.dependencies || [], message: options.message || '' }, options);
+    };
+
+    App.prototype._stageRepositoryBinaryChange = function stageRepositoryBinaryChange(path, baseSha, bytes, options = {}) {
+      const value = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+      return this._stageRepositoryChange({ path, baseSha, payloadKind: 'binary', bytesBase64: apiOrThrow(this).bytesToBase64(value), source: options.source || 'file-copy', operation: baseSha ? 'update' : 'create', dependencies: options.dependencies || [], message: options.message || '' }, options);
+    };
+
+    App.prototype.saveRepositoryEditor = async function localFirstSaveRepositoryEditor(input = {}) {
+      const api = apiOrThrow(this);
+      const editor = { ...(this.repositoryEditor || {}), ...(input || {}) };
+      if (!['create', 'edit', 'folder'].includes(editor.mode)) throw new Error('No repository file or folder edit is active.');
+      const path = pathForEditor(api, editor);
+      const pending = api.repositoryLocalChangeMap(this.referenceObjectLocalState || null);
+      if (editor.mode !== 'edit' && pending.has(path)) throw new Error(`A local change already creates ${path}.`);
+      const content = editor.mode === 'folder' ? '' : String(editor.content == null ? '' : editor.content);
+      const staged = await this._stageRepositoryTextChange(path, editor.mode === 'edit' ? editor.baseSha : '', content, { source: editor.mode === 'folder' ? 'folder-create' : 'file-editor', allowLarger: editor.mode === 'folder', message: `${editor.mode === 'edit' ? 'Update' : 'Create'} ${path} from local state`, silent: true });
+      const parent = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
+      this.repositoryEditor = { mode: 'none', parentPath: parent, path: '', name: '', content: '', baseSha: '' };
+      if (editor.mode !== 'folder') {
+        const workspace = this._activeWorkspace();
+        this.repositoryPreview = { kind: 'text', path, name: path.slice(path.lastIndexOf('/') + 1), size: new TextEncoder().encode(content).byteLength, sha: staged.baseSha, content, localRepositoryChange: true, context: workspace ? { owner: workspace.owner, repo: workspace.repo, branch: workspace.branch } : null };
+        this.fileViewMode = 'source';
+        this.fileRendered = null;
+        try { if (typeof this._reindexReferenceObjectFileLocal === 'function') await this._reindexReferenceObjectFileLocal(path, content); } catch (error) { /* explicit validation remains available */ }
+      }
+      this._setUi({ replaceFileEditor: true, status: `${path} saved locally. Use Update current file or Update all to publish it to GitHub.` });
+      return staged;
+    };
+
+    App.prototype.applyRepositoryStructure = async function localFirstApplyRepositoryStructure(plan) {
+      const api = apiOrThrow(this);
+      if (!plan || plan.kind !== 'repository-structure-plan-v1') throw new Error('Prepare a repository structure preview first.');
+      const workspace = this._activeWorkspace();
+      if (!workspace || !this._sameRepositoryContext(workspace, plan.workspace)) throw new Error('Workspace changed after structure preview. Preview again.');
+      const fresh = await this._previewRepositoryStructureRead(plan.source);
+      if (fresh.blocked) throw new Error('Repository structure has remote conflicts. Nothing was staged.');
+      const targets = [...fresh.files, ...fresh.placeholders];
+      const pending = api.repositoryLocalChangeMap(this.referenceObjectLocalState || null);
+      for (const path of targets) if (pending.has(path)) throw new Error(`Repository structure target already has a local change: ${path}.`);
+      for (const path of targets) await this._stageRepositoryTextChange(path, '', '', { source: 'structure-create', allowLarger: true, silent: true, message: `Create ${path} from local structure` });
+      this._setUi({ status: `${targets.length} repository structure file(s) staged locally. GitHub was not changed.` });
+      return targets.map((target) => ({ target, status: 'local', message: 'Staged locally.' }));
+    };
+
+    App.prototype.applyRepositoryCopy = async function localFirstApplyRepositoryCopy(plan) {
+      const api = apiOrThrow(this);
+      if (!plan || plan.kind !== 'repository-copy-plan-v1') throw new Error('Prepare a repository copy preview first.');
+      const workspace = this._activeWorkspace();
+      if (!workspace || !this._sameRepositoryContext(workspace, plan.workspace)) throw new Error('Workspace changed after copy preview. Preview again.');
+      const fresh = await this._previewRepositoryCopyRead(plan);
+      if (fresh.blocked) throw new Error('Repository copy has remote conflicts. Nothing was staged.');
+      const pending = api.repositoryLocalChangeMap(this.referenceObjectLocalState || null);
+      for (const mapping of fresh.mappings) if (pending.has(mapping.destinationPath)) throw new Error(`Copy destination already has a local change: ${mapping.destinationPath}.`);
+      const client = await this._client(workspace);
+      const results = [];
+      let bytes = 0;
+      for (const mapping of fresh.mappings) {
+        const source = await client.readBytes(mapping.sourcePath, { maxBytes: Math.max(1, (this.api.DEFAULT_COPY_MAX_BYTES || 10 * 1024 * 1024) - bytes) });
+        if (String(source.sha || '') !== mapping.sourceSha) throw new Error(`Copy source changed after preview: ${mapping.sourcePath}.`);
+        bytes += source.bytes.byteLength;
+        await this._stageRepositoryBinaryChange(mapping.destinationPath, '', source.bytes, { source: 'file-copy', silent: true, message: `Copy ${mapping.sourcePath} to ${mapping.destinationPath}` });
+        results.push({ target: mapping.destinationPath, status: 'local', message: `${source.bytes.byteLength} bytes staged locally.` });
+      }
+      this._setUi({ status: `${results.length} copied file(s), ${bytes} byte(s), staged locally. GitHub was not changed.` });
+      return results;
+    };
+
+    App.prototype.saveCategory = async function localFirstSaveCategory(input = {}) {
+      const api = apiOrThrow(this);
+      const workspace = this._requireCategoryContext();
+      const client = await this._client(workspace);
+      const id = this.api.normalizeCategoryId(input.id || input.name);
+      const existing = this._categoryDefinitionRecord(id);
+      const path = existing ? existing.path : `${this._categoryBasePath(workspace)}/${this.api.categoryFileName(id)}`;
+      const pending = api.repositoryLocalChangeMap(this.referenceObjectLocalState || null).get(path);
+      if (!existing && !pending) {
+        try { await this._repositoryEntryMetadata(client, path); throw new Error(`Category target already exists and was not overwritten: ${path}`); }
+        catch (error) { if (error.kind !== 'not_found') throw error; }
+      }
+      const previous = pending ? this.api.decodeCategoryDefinition(pending.content) : existing ? existing.definition : { files: [], notes: [], impliedCategories: [] };
+      const requestedImplied = this._categoryLinksForIds(path, input.impliedCategoryIds || []);
+      const unresolvedPrevious = (previous.impliedCategories || []).filter((link) => {
+        try { return !this.categoryIndex.byPath.has(this.api.normalizeRepositoryTarget(path, link.target).path); }
+        catch (error) { return true; }
+      });
+      const impliedCategories = [...requestedImplied];
+      for (const link of unresolvedPrevious) if (!impliedCategories.some((item) => item.target === link.target)) impliedCategories.push(link);
+      const members = await this._categoryMemberLinks(path, Array.isArray(input.selectedTargets) ? input.selectedTargets : this.categoryDraftTargets, workspace);
+      const content = this.api.encodeCategoryDefinition({ id, name: input.name, description: input.description, impliedCategories, files: members.files, notes: members.notes });
+      const baseSha = pending ? pending.baseSha : existing ? existing.sha : '';
+      await this._stageRepositoryTextChange(path, baseSha, content, { source: 'category', message: `${existing ? 'Update' : 'Create'} category ${input.name || id}`, silent: true });
+      if (typeof this._applyVerifiedCategoryRecord === 'function') await this._applyVerifiedCategoryRecord({ path, sha: baseSha, htmlUrl: existing && existing.htmlUrl || '', definition: this.api.decodeCategoryDefinition(content) }, workspace);
+      this.selectedCategoryId = id;
+      if (input.group !== undefined) await this.setCategoryGroup(id, input.group, { silent: true });
+      const saved = this.categoryIndex.categories.get(id);
+      this._setUi({ replaceCategoryEditor: true, status: `Category ${input.name || id} saved locally. Use Update current file or Update all from Files to publish.` });
+      return saved;
+    };
+
+    App.prototype._writeCategoryMembership = async function localFirstWriteCategoryMembership(categoryId, filePath, remove) {
+      const api = apiOrThrow(this);
+      const workspace = this._requireCategoryContext();
+      const record = this._categoryDefinitionRecord(categoryId);
+      if (!record) throw new Error(`Category not found: ${categoryId}. Refresh categories first.`);
+      const canonicalFile = remove ? this.api.normalizeCanonicalRepositoryPath(filePath, 'Categorized repository file') : this._assertCategoryAssignmentTarget(filePath, workspace);
+      const pending = api.repositoryLocalChangeMap(this.referenceObjectLocalState || null).get(record.path);
+      const definition = pending ? this.api.decodeCategoryDefinition(pending.content) : record.definition;
+      const kept = [];
+      let found = false;
+      for (const link of definition.files || []) {
+        let resolved = '';
+        try { resolved = this.api.normalizeRepositoryTarget(record.path, link.target).path; } catch (error) { kept.push(link); continue; }
+        if (resolved === canonicalFile) { found = true; if (!remove) kept.push(link); } else kept.push(link);
+      }
+      if (remove && !found) return record.indexed;
+      if (!remove && !found) kept.push({ label: canonicalFile.slice(canonicalFile.lastIndexOf('/') + 1), target: this.api.repositoryRelativePath(record.path, canonicalFile) });
+      const content = this.api.encodeCategoryDefinition({ id: definition.id, name: definition.name, description: definition.description, impliedCategories: definition.impliedCategories, files: kept, notes: definition.notes || [] });
+      const baseSha = pending ? pending.baseSha : record.sha;
+      await this._stageRepositoryTextChange(record.path, baseSha, content, { source: 'category', message: `${remove ? 'Remove' : 'Add'} ${canonicalFile} ${remove ? 'from' : 'to'} category ${definition.name}`, silent: true });
+      if (typeof this._applyVerifiedCategoryRecord === 'function') await this._applyVerifiedCategoryRecord({ path: record.path, sha: baseSha, htmlUrl: record.htmlUrl || '', definition: this.api.decodeCategoryDefinition(content) }, workspace);
+      this.selectedCategoryId = categoryId;
+      this._setUi({ status: `${canonicalFile} ${remove ? 'removed from' : 'assigned to'} ${definition.name} locally. GitHub was not changed.` });
+      return this.categoryIndex.categories.get(categoryId);
+    };
+
+    App.prototype.applyFileCategories = async function localFirstApplyFileCategories(filePath, ids = this.fileCategoryDraftIds) {
+      const workspace = this._requireCategoryContext();
+      const canonical = this._assertCategoryAssignmentTarget(filePath, workspace);
+      const desiredList = this.api.normalizeCategoryIds ? this.api.normalizeCategoryIds(ids) : [...new Set(ids.map(String))];
+      const desired = new Set(desiredList);
+      const current = new Set(this.categoryIndex.explicitCategoryIdsForTarget ? this.categoryIndex.explicitCategoryIdsForTarget('file', canonical) : []);
+      const changes = [...new Set([...desired, ...current])].filter((id) => desired.has(id) !== current.has(id));
+      const results = [];
+      for (const categoryId of changes) {
+        await this._writeCategoryMembership(categoryId, canonical, !desired.has(categoryId));
+        results.push({ target: categoryId, status: 'local', message: desired.has(categoryId) ? 'Assignment staged locally.' : 'Removal staged locally.' });
+      }
+      this.fileCategoryDraftIds = desiredList;
+      this.surface = 'files';
+      this._setUi({ replaceFileCategoryIds: true, status: changes.length ? `${changes.length} category membership change(s) staged locally.` : 'File category memberships were already up to date.' });
+      return results;
+    };
+
+    App.prototype._setNoteMembershipInCategory = async function localFirstSetNoteMembership(categoryId, note, shouldInclude, client, workspace) {
+      const api = apiOrThrow(this);
+      const record = this._categoryDefinitionRecord(categoryId);
+      if (!record) throw new Error(`Category not found: ${categoryId}. Refresh categories first.`);
+      const remoteNote = this.api.normalizeRemote(note.remote);
+      if (!this.api.hasRemoteTargetIdentity(remoteNote) || !this._sameRepositoryContext(remoteNote, workspace)) throw new Error(`Note ${note.title || note.id} is not verified in the active category repository and branch.`);
+      const pending = api.repositoryLocalChangeMap(this.referenceObjectLocalState || null).get(record.path);
+      const latest = pending ? { content: pending.content, sha: pending.baseSha, path: record.path, htmlUrl: record.htmlUrl || '' } : await client.read(record.path);
+      const definition = this.api.decodeCategoryDefinition(latest.content);
+      const kept = [];
+      let found = false;
+      for (const link of definition.notes || []) {
+        let resolved = '';
+        try { resolved = this.api.normalizeRepositoryTarget(record.path, link.target).path; } catch (error) { kept.push(link); continue; }
+        if (resolved === remoteNote.path) { found = true; if (shouldInclude) kept.push({ ...link, noteId: note.id, label: note.title || note.id }); } else kept.push(link);
+      }
+      if (shouldInclude && !found) kept.push({ label: note.title || note.id, target: this.api.repositoryRelativePath(record.path, remoteNote.path), noteId: note.id });
+      if (!shouldInclude && !found) return { target: categoryId, status: 'unchanged', message: 'Note was not an explicit member.' };
+      const content = this.api.encodeCategoryDefinition({ id: definition.id, name: definition.name, description: definition.description, impliedCategories: definition.impliedCategories || [], files: definition.files || [], notes: kept });
+      if (content === latest.content) return { target: categoryId, status: 'unchanged', message: 'Membership already matched.' };
+      await this._stageRepositoryTextChange(record.path, latest.sha, content, { source: 'category', message: `${shouldInclude ? 'Add' : 'Remove'} Note ${note.title || note.id} ${shouldInclude ? 'to' : 'from'} category ${definition.name}`, silent: true });
+      if (typeof this._applyVerifiedCategoryRecord === 'function') await this._applyVerifiedCategoryRecord({ path: record.path, sha: latest.sha, htmlUrl: latest.htmlUrl || '', definition: this.api.decodeCategoryDefinition(content) }, workspace);
+      return { target: categoryId, status: 'local', message: shouldInclude ? 'Note assignment staged locally.' : 'Note removal staged locally.' };
+    };
+
+    App.prototype.updateCurrentRepositoryFileGitHub = async function updateCurrentRepositoryFileGitHub() {
+      const path = this.repositoryPreview && this.repositoryPreview.path;
+      if (!path) throw new Error('Open a pending repository file first.');
+      return this._runRemoteOperation(`Updating ${path} on GitHub…`, async () => {
+        const client = await this._client(this._activeWorkspace());
+        const published = await apiOrThrow(this).publishCurrentRepositoryChange({ client, state: this.referenceObjectLocalState, path });
+        await this._persistReferenceObjectLocalState(published.state, { silent: true });
+        if (this.repositoryPreview && this.repositoryPreview.path === path) this.repositoryPreview = { ...this.repositoryPreview, sha: String(published.result && published.result.sha || ''), localRepositoryChange: false };
+        const parent = path.includes('/') ? path.slice(0, path.lastIndexOf('/')) : '';
+        let refreshError = '';
+        try {
+          this.repositoryPath = parent;
+          this.repositoryEntries = mergePendingEntries(this, parent, await client.listDirectory(parent, { maxEntries: 200 }));
+          this.repositoryBrowseLoaded = true;
+        } catch (error) { refreshError = String(error && error.message || error); }
+        this.referenceObjectChecks = {};
+        this.referenceObjectValidation = null;
+        this.referenceFreshnessDiagnostics = null;
+        this._setUi({ status: `${path} updated on GitHub and verified by exact read-back.${refreshError ? ` Folder refresh failed: ${refreshError}` : ''}` });
+        return published;
+      });
+    };
+
+    App.prototype.updateAllRepositoryChangesGitHub = async function updateAllRepositoryChangesGitHub() {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      return this._runRemoteOperation('Updating all local files on GitHub in one commit…', async () => {
+        const client = await this._client(this._activeWorkspace());
+        const published = await apiOrThrow(this).publishAllRepositoryChanges({ client, state: this.referenceObjectLocalState });
+        await this._persistReferenceObjectLocalState(published.state, { silent: true });
+        if (this.repositoryPreview && this.repositoryPreview.path) {
+          try { const metadata = await client.readMetadata(this.repositoryPreview.path); this.repositoryPreview = { ...this.repositoryPreview, sha: metadata.sha, localRepositoryChange: false }; }
+          catch (error) { this.repositoryPreview = { ...this.repositoryPreview, localRepositoryChange: false }; }
+        }
+        const folder = this.repositoryPath || '';
+        let refreshError = '';
+        try {
+          this.repositoryEntries = mergePendingEntries(this, folder, await client.listDirectory(folder, { maxEntries: 200 }));
+          this.repositoryBrowseLoaded = true;
+        } catch (error) { refreshError = String(error && error.message || error); }
+        this.referenceObjectsLoaded = false;
+        this.referenceObjectChecks = {};
+        this.referenceObjectValidation = null;
+        this.referenceFreshnessDiagnostics = null;
+        this.categoryContextRequiresRefresh = true;
+        this._setUi({ status: `${published.result.paths.length} local file(s) updated on GitHub in commit ${published.result.commitSha.slice(0, 12)} and verified.${refreshError ? ` Folder refresh failed: ${refreshError}` : ''}` });
+        return published;
+      });
+    };
+
+    App.prototype.publishReferenceObjectLocalDraftsGitHub = function publishReferenceObjectLocalDraftsGitHub() { return this.updateAllRepositoryChangesGitHub(); };
+    App.prototype.updateReferenceObjectUsesGitHub = async function localOnlyReferenceObjectUpdate(id) {
+      const result = await this.updateReferenceObjectUsesLocal(id);
+      this._setUi({ status: `Reference Object ${id} updated locally. Use the standard Update current file or Update all action for GitHub.` });
+      return result;
+    };
+
+    App.prototype.start = async function localChangesStart(...args) {
+      if (this.ui && this.ui.handlers) Object.assign(this.ui.handlers, {
+        onUpdateCurrentRepositoryFileGitHub: () => this.updateCurrentRepositoryFileGitHub(),
+        onUpdateAllRepositoryChangesGitHub: () => this.updateAllRepositoryChangesGitHub()
+      });
+      return originalStart.apply(this, args);
+    };
+    return true;
+  }
+
+  function enhanceUi(ui) {
+    if (!ui.shadow || ui.state.surface !== 'files' || typeof document === 'undefined') return;
+    const editorSave = ui.shadow.querySelector('.repository-editor [data-action="save-repository-editor"]');
+    if (editorSave) { editorSave.textContent = ui.state.repositoryEditor && ui.state.repositoryEditor.mode === 'folder' ? 'Create locally' : 'Save locally'; editorSave.disabled = Boolean(ui.state.busy || !ui.state.activeWorkspace); }
+    const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
+    if (!toolbar || toolbar.querySelector('[data-update-all-local-changes]')) return;
+    const current = document.createElement('button');
+    current.dataset.updateCurrentLocalChange = '1';
+    current.textContent = 'Update current file';
+    current.disabled = Boolean(ui.state.busy || !ui.state.repositoryCurrentFilePending || !ui.state.hasToken);
+    current.addEventListener('click', () => ui._call('onUpdateCurrentRepositoryFileGitHub').catch(() => {}));
+    const all = document.createElement('button');
+    all.dataset.updateAllLocalChanges = '1';
+    all.textContent = `Update all (${Number(ui.state.repositoryPendingCount || 0)})`;
+    all.disabled = Boolean(ui.state.busy || !ui.state.repositoryPendingCount || !ui.state.hasToken);
+    all.addEventListener('click', () => ui._call('onUpdateAllRepositoryChangesGitHub').catch(() => {}));
+    toolbar.append(current, all);
+  }
+
+  function patchUi(UI) {
+    if (!UI || !UI.prototype || UI.prototype[UI_PATCH]) return false;
+    Object.defineProperty(UI.prototype, UI_PATCH, { value: true });
+    const originalRender = UI.prototype.render;
+    UI.prototype.render = function localChangesRender(...args) { const result = originalRender.apply(this, args); enhanceUi(this); return result; };
+    return true;
+  }
+
+  function installRepositoryLocalChanges(api = root.ObsLinkedNotes || {}) {
+    if (!api || !api.LinkedNotesApp || !api.LinkedNotesUI) return false;
+    const app = patchApp(api.LinkedNotesApp);
+    const ui = patchUi(api.LinkedNotesUI);
+    return app || ui;
+  }
+
+  return { installRepositoryLocalChanges, mergePendingRepositoryEntries: mergePendingEntries };
+});
+
+/* src/repository-ordered-reference-lists-runtime.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+  if (root.ObsLinkedNotes && root.ObsLinkedNotes.LinkedNotesApp && root.ObsLinkedNotes.LinkedNotesUI) {
+    try { api.installRepositoryOrderedReferenceLists(root.ObsLinkedNotes); } catch (error) { /* bootstrap reports failures later */ }
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const APP_PATCH = '__obsOrderedReferenceListsAppV1';
+  const UI_PATCH = '__obsOrderedReferenceListsUiV1';
+
+  function apiOrThrow(app) {
+    const api = app && app.api || root.ObsLinkedNotes || {};
+    for (const name of ['parseReferenceMarkers', 'parseOrderedReferenceLists', 'createOrderedReferenceList', 'orderOrderedReferenceList', 'referenceObjectById']) if (typeof api[name] !== 'function') throw new Error(`Ordered Reference List runtime dependency is unavailable: ${name}.`);
+    return api;
+  }
+
+  function escapeHtml(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character])); }
+  function errorText(error) { return String(error && error.message || error || 'Unknown error'); }
+
+  function patchApp(App) {
+    if (!App || !App.prototype || App.prototype[APP_PATCH]) return false;
+    Object.defineProperty(App.prototype, APP_PATCH, { value: true });
+    const originalStart = App.prototype.start;
+
+    App.prototype._orderedCurrentText = function orderedCurrentText() {
+      const preview = this.repositoryPreview;
+      if (!preview || preview.kind !== 'text' || typeof preview.content !== 'string') throw new Error('Open a text file in the Files surface first.');
+      return { path: preview.path, baseSha: String(preview.sha || ''), content: preview.content };
+    };
+
+    App.prototype.prepareOrderedReferenceList = async function prepareOrderedReferenceList() {
+      const api = apiOrThrow(this);
+      const current = this._orderedCurrentText();
+      const parsed = api.parseReferenceMarkers(current.content);
+      if (parsed.diagnostics.length) throw new Error('Repair malformed Reference Object markers in the open file first.');
+      const uses = parsed.occurrences.filter((item) => item.role === 'use');
+      if (!uses.length) throw new Error('The open file has no Reference Object uses.');
+      const snapshot = await this._ensureReferenceRegistryLoaded();
+      const objects = new Map(snapshot.registry.objects.map((object) => [object.id, object]));
+      const checkById = new Map();
+      for (const id of [...new Set(uses.map((use) => use.id))]) {
+        try { checkById.set(id, await this.checkReferenceObjectUses(id)); }
+        catch (error) { checkById.set(id, null); }
+      }
+      const prepared = uses.map((use) => {
+        const check = checkById.get(use.id);
+        const checked = check && check.uses.find((item) => item.path === current.path && item.line === use.line && item.lineOccurrence === use.lineOccurrence);
+        return {
+          fullStart: use.fullStart,
+          id: use.id,
+          name: objects.get(use.id) && objects.get(use.id).name || use.id,
+          line: use.line,
+          lineOccurrence: use.lineOccurrence,
+          value: use.value,
+          currentValue: check ? check.currentValue : '',
+          freshness: checked ? checked.status : 'unresolved'
+        };
+      });
+      this._setUi({ status: `Checked ${prepared.length} Reference Object use(s) in ${current.path}; stale uses remain selectable but will block ordering.` });
+      return { path: current.path, uses: prepared };
+    };
+
+    App.prototype.createOrderedReferenceListLocal = async function createOrderedReferenceListLocal(input = {}) {
+      const api = apiOrThrow(this);
+      const current = this._orderedCurrentText();
+      const result = api.createOrderedReferenceList({ content: current.content, selectedUses: input.selectedUses, mode: input.mode, locale: input.locale || 'und' });
+      await this._stageRepositoryTextChange(current.path, current.baseSha, result.content, { source: 'ordered-reference-list', message: `Create Ordered Reference List ${result.listId} in ${current.path}`, silent: true });
+      this.repositoryPreview = { ...this.repositoryPreview, content: result.content, size: new TextEncoder().encode(result.content).byteLength, localRepositoryChange: true };
+      this.fileViewMode = 'source';
+      this.fileRendered = null;
+      try { await this._reindexReferenceObjectFileLocal(current.path, result.content); } catch (error) { /* validation remains explicit */ }
+      this._setUi({ status: `Ordered Reference List ${result.listId} created locally with ${result.itemCount} item(s)${result.warnings.length ? `; ${result.warnings.length} stale/unresolved warning(s), ordering blocked until refreshed` : ''}.` });
+      return result;
+    };
+
+    App.prototype.orderReferenceListLocal = async function orderReferenceListLocal(input = {}) {
+      const api = apiOrThrow(this);
+      const current = this._orderedCurrentText();
+      const parsed = api.parseOrderedReferenceLists(current.content);
+      const listId = String(input.listId || parsed.lists[0] && parsed.lists[0].id || '');
+      if (!listId) throw new Error('The open file has no Ordered Reference List.');
+      const items = parsed.items.filter((item) => item.listId === listId);
+      const currentValues = new Map();
+      for (const id of [...new Set(items.map((item) => item.refId))]) {
+        const check = await this.checkReferenceObjectUses(id);
+        if (!check || check.blocked || check.incomplete) throw new Error(`Reference Object ${id} could not be checked completely.`);
+        currentValues.set(id, check.currentValue);
+      }
+      const result = api.orderOrderedReferenceList(current.content, listId, { currentValues, customOrder: input.customOrder || [] });
+      if (!result.changed) { this._setUi({ status: `Ordered Reference List ${listId} is already in the requested order.` }); return result; }
+      await this._stageRepositoryTextChange(current.path, current.baseSha, result.content, { source: 'ordered-reference-list', message: `Order ${listId} in ${current.path}`, silent: true });
+      this.repositoryPreview = { ...this.repositoryPreview, content: result.content, size: new TextEncoder().encode(result.content).byteLength, localRepositoryChange: true };
+      this.fileViewMode = 'source';
+      this.fileRendered = null;
+      try { await this._reindexReferenceObjectFileLocal(current.path, result.content); } catch (error) { /* validation remains explicit */ }
+      this._setUi({ status: `Ordered Reference List ${listId} ordered locally by ${result.mode}. GitHub was not changed.` });
+      return result;
+    };
+
+    App.prototype.start = async function orderedReferenceListsStart(...args) {
+      if (this.ui && this.ui.handlers) Object.assign(this.ui.handlers, {
+        onPrepareOrderedReferenceList: () => this.prepareOrderedReferenceList(),
+        onCreateOrderedReferenceListLocal: (input) => this.createOrderedReferenceListLocal(input),
+        onOrderReferenceListLocal: (input) => this.orderReferenceListLocal(input)
+      });
+      return originalStart.apply(this, args);
+    };
+    return true;
+  }
+
+  function modalShell(title) {
+    const backdrop = document.createElement('div');
+    backdrop.className = 'ordered-reference-modal-backdrop';
+    backdrop.innerHTML = `<section class="ordered-reference-modal"><header><strong>${escapeHtml(title)}</strong><button data-close>×</button></header><div data-body></div><div class="hint" data-status></div></section>`;
+    backdrop.querySelector('[data-close]').addEventListener('click', () => backdrop.remove());
+    backdrop.addEventListener('click', (event) => { if (event.target === backdrop) backdrop.remove(); });
+    document.body.appendChild(backdrop);
+    return backdrop;
+  }
+
+  async function openCreateModal(ui) {
+    const modal = modalShell('Create Ordered Reference List');
+    const body = modal.querySelector('[data-body]');
+    const status = modal.querySelector('[data-status]');
+    status.textContent = 'Checking Reference Object uses for freshness…';
+    try {
+      const prepared = await ui._call('onPrepareOrderedReferenceList');
+      body.innerHTML = `<label>Sort mode <select data-mode><option value="natural">Natural</option><option value="number">Number (leading number required)</option><option value="alphabetical">Alphabetical</option><option value="custom">Custom exact-value order</option></select></label><div class="ordered-reference-use-list">${prepared.uses.map((use, index) => `<label class="ordered-reference-use ${use.freshness !== 'current' ? 'stale' : ''}"><input type="checkbox" data-use="${index}"><span><strong>${escapeHtml(use.name)}</strong> · line ${use.line}${use.lineOccurrence > 1 ? ` #${use.lineOccurrence}` : ''}<br><small>${escapeHtml(use.value)} · ${escapeHtml(use.freshness)}</small></span><select data-unit="${index}"><option value="line">Line</option><option value="paragraph">Paragraph</option></select></label>`).join('')}</div><button class="primary" data-create>Create locally</button>`;
+      status.textContent = 'Stale/unresolved uses may be wrapped, but the list cannot be ordered until they are current.';
+      body.querySelector('[data-create]').addEventListener('click', async () => {
+        const selectedUses = prepared.uses.flatMap((use, index) => body.querySelector(`[data-use="${index}"]`).checked ? [{ fullStart: use.fullStart, freshness: use.freshness, unit: body.querySelector(`[data-unit="${index}"]`).value }] : []);
+        status.textContent = 'Creating local markers…';
+        try { await ui._call('onCreateOrderedReferenceListLocal', { selectedUses, mode: body.querySelector('[data-mode]').value }); modal.remove(); }
+        catch (error) { status.textContent = `Create failed: ${errorText(error)}`; }
+      });
+    } catch (error) { status.textContent = `Freshness check failed: ${errorText(error)}`; }
+  }
+
+  function openOrderModal(ui, parsed) {
+    const modal = modalShell('Order locally');
+    const body = modal.querySelector('[data-body]');
+    const status = modal.querySelector('[data-status]');
+    body.innerHTML = `<label>List <select data-list>${parsed.lists.map((list) => `<option value="${escapeHtml(list.id)}">${escapeHtml(`${list.id} · ${list.mode}`)}</option>`).join('')}</select></label><label>Custom order, one exact current value per line<textarea data-custom placeholder="Only used by custom mode"></textarea></label><button class="primary" data-order>Order locally</button>`;
+    body.querySelector('[data-order]').addEventListener('click', async () => {
+      status.textContent = 'Checking current Reference Object values and ordering…';
+      try {
+        await ui._call('onOrderReferenceListLocal', { listId: body.querySelector('[data-list]').value, customOrder: body.querySelector('[data-custom]').value.split(/\r?\n/).filter((line) => line.length) });
+        modal.remove();
+      } catch (error) { status.textContent = `Ordering blocked: ${errorText(error)}`; }
+    });
+  }
+
+  function appendStyle(ui) {
+    if (!ui.shadow || ui.shadow.querySelector('[data-ordered-reference-style]')) return;
+    const css = `.ordered-reference-modal-backdrop{position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.58);display:grid;place-items:center;padding:20px}.ordered-reference-modal{width:min(760px,96vw);max-height:90vh;overflow:auto;background:#fff;color:#202124;border-radius:12px;padding:16px;box-shadow:0 18px 60px rgba(0,0,0,.4)}.ordered-reference-modal header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.ordered-reference-modal label{display:block;margin:10px 0}.ordered-reference-modal select,.ordered-reference-modal textarea{margin-left:8px}.ordered-reference-modal textarea{display:block;width:100%;min-height:90px;margin:6px 0}.ordered-reference-use{display:grid!important;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px;border:1px solid #ddd;border-radius:8px}.ordered-reference-use.stale{border-color:#c77a00;background:#fff7e6}.ordered-reference-use-list{display:grid;gap:7px;max-height:50vh;overflow:auto}`;
+    const style = document.createElement('style');
+    style.dataset.orderedReferenceStyle = '1';
+    style.textContent = css;
+    ui.shadow.appendChild(style);
+    if (!document.getElementById('obs-ordered-reference-modal-style')) {
+      const globalStyle = document.createElement('style');
+      globalStyle.id = 'obs-ordered-reference-modal-style';
+      globalStyle.textContent = css;
+      document.head.appendChild(globalStyle);
+    }
+  }
+
+  function enhanceUi(ui) {
+    if (!ui.shadow || ui.state.surface !== 'files' || typeof document === 'undefined') return;
+    appendStyle(ui);
+    const preview = ui.state.repositoryPreview;
+    if (!preview || preview.kind !== 'text' || typeof preview.content !== 'string') return;
+    const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
+    if (!toolbar || toolbar.querySelector('[data-create-ordered-reference-list]')) return;
+    const create = document.createElement('button');
+    create.dataset.createOrderedReferenceList = '1';
+    create.textContent = 'Create Ordered List';
+    create.disabled = Boolean(ui.state.busy);
+    create.addEventListener('click', () => openCreateModal(ui));
+    toolbar.appendChild(create);
+    const parsed = (root.ObsLinkedNotes || {}).parseOrderedReferenceLists(preview.content);
+    if (parsed.lists.length) {
+      const order = document.createElement('button');
+      order.dataset.orderReferenceList = '1';
+      order.textContent = 'Order locally';
+      order.disabled = Boolean(ui.state.busy);
+      order.addEventListener('click', () => openOrderModal(ui, parsed));
+      toolbar.appendChild(order);
+    }
+  }
+
+  function patchUi(UI) {
+    if (!UI || !UI.prototype || UI.prototype[UI_PATCH]) return false;
+    Object.defineProperty(UI.prototype, UI_PATCH, { value: true });
+    const originalRender = UI.prototype.render;
+    UI.prototype.render = function orderedReferenceListsRender(...args) { const result = originalRender.apply(this, args); enhanceUi(this); return result; };
+    return true;
+  }
+
+  function installRepositoryOrderedReferenceLists(api = root.ObsLinkedNotes || {}) {
+    if (!api || !api.LinkedNotesApp || !api.LinkedNotesUI) return false;
+    const app = patchApp(api.LinkedNotesApp);
+    const ui = patchUi(api.LinkedNotesUI);
+    return app || ui;
+  }
+
+  return { installRepositoryOrderedReferenceLists };
+});
+
+/* src/repository-reference-stale-runtime.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+  if (root.ObsLinkedNotes && root.ObsLinkedNotes.LinkedNotesApp && root.ObsLinkedNotes.LinkedNotesUI) {
+    try { api.installRepositoryReferenceStaleDiagnostics(root.ObsLinkedNotes); } catch (error) { /* bootstrap reports failures later */ }
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const APP_PATCH = '__obsReferenceStaleDiagnosticsAppV1';
+  const UI_PATCH = '__obsReferenceStaleDiagnosticsUiV1';
+
+  function patchApp(App) {
+    if (!App || !App.prototype || App.prototype[APP_PATCH]) return false;
+    Object.defineProperty(App.prototype, APP_PATCH, { value: true });
+    const originalStart = App.prototype.start;
+    const originalOpenRepositoryEntry = App.prototype.openRepositoryEntry;
+    const originalUiState = App.prototype._workspaceUiState;
+
+    App.prototype._referenceFreshnessUiState = function referenceFreshnessUiState() {
+      const result = this.referenceFreshnessDiagnostics;
+      const byPath = {};
+      for (const file of result && result.files || []) byPath[file.path] = { stale: file.stale, unresolved: file.unresolved, current: file.current };
+      const path = this.repositoryPreview && this.repositoryPreview.path || '';
+      return {
+        referenceFreshnessByPath: byPath,
+        referenceCurrentFileFreshness: byPath[path] || null,
+        referenceFreshnessIncomplete: Boolean(result && result.incomplete),
+        referenceFreshnessChecked: Boolean(result),
+        referenceStaleTotal: Number(result && result.staleCount || 0),
+        referenceUnresolvedTotal: Number(result && result.unresolvedCount || 0)
+      };
+    };
+    if (typeof originalUiState === 'function') App.prototype._workspaceUiState = function referenceFreshnessWorkspaceUiState(...args) { return { ...originalUiState.apply(this, args), ...this._referenceFreshnessUiState() }; };
+
+    App.prototype.refreshReferenceFreshnessDiagnostics = async function refreshReferenceFreshnessDiagnostics(options = {}) {
+      const api = this.api || root.ObsLinkedNotes || {};
+      if (typeof api.diagnoseReferenceObjectFreshness !== 'function') throw new Error('Reference Object freshness diagnostic service is unavailable.');
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const run = async () => api.diagnoseReferenceObjectFreshness({
+        client: await this._referenceObjectsClient(),
+        registryPath: this._referenceObjectRegistryPath(),
+        overlays: typeof api.repositoryTextOverlays === 'function' ? api.repositoryTextOverlays(this.referenceObjectLocalState) : this.referenceObjectLocalState.files
+      });
+      const result = options.silent && typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Checking stale Reference Object uses…', run)
+        : await run();
+      if (!result || result.cancelled) return result;
+      this.referenceFreshnessDiagnostics = result;
+      this._setUi({ status: `Reference freshness checked: ${result.staleCount} stale, ${result.unresolvedCount} unresolved use(s)${result.incomplete ? '; scan incomplete' : ''}.` });
+      return result;
+    };
+
+    if (typeof originalOpenRepositoryEntry === 'function') App.prototype.openRepositoryEntry = async function referenceFreshnessOpenEntry(...args) {
+      const result = await originalOpenRepositoryEntry.apply(this, args);
+      if (result && result.kind === 'text' && !this.referenceFreshnessDiagnostics) {
+        try { await this.refreshReferenceFreshnessDiagnostics({ silent: true }); } catch (error) { /* explicit refresh remains available */ }
+      }
+      return result;
+    };
+
+    App.prototype.start = async function referenceFreshnessStart(...args) {
+      if (this.ui && this.ui.handlers) this.ui.handlers.onRefreshReferenceFreshness = () => this.refreshReferenceFreshnessDiagnostics();
+      return originalStart.apply(this, args);
+    };
+    return true;
+  }
+
+  function enhanceUi(ui) {
+    if (!ui.shadow || ui.state.surface !== 'files' || typeof document === 'undefined') return;
+    const byPath = ui.state.referenceFreshnessByPath || {};
+    ui.shadow.querySelectorAll('[data-repository-entry]').forEach((button) => {
+      const summary = byPath[button.dataset.repositoryEntry];
+      if (!summary || (!summary.stale && !summary.unresolved) || button.querySelector('[data-reference-stale-badge]')) return;
+      const badge = document.createElement('span');
+      badge.dataset.referenceStaleBadge = '1';
+      badge.style.cssText = 'margin-left:6px;color:#b35b00;font-weight:700';
+      badge.textContent = `⚠ ${summary.stale ? `${summary.stale} stale` : `${summary.unresolved} unresolved`}`;
+      button.appendChild(badge);
+    });
+    const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
+    if (toolbar && !toolbar.querySelector('[data-refresh-reference-freshness]')) {
+      const refresh = document.createElement('button');
+      refresh.dataset.refreshReferenceFreshness = '1';
+      refresh.textContent = ui.state.referenceFreshnessChecked ? `Stale uses (${Number(ui.state.referenceStaleTotal || 0)})` : 'Check stale uses';
+      refresh.disabled = Boolean(ui.state.busy || !ui.state.hasToken);
+      refresh.addEventListener('click', () => ui._call('onRefreshReferenceFreshness').catch(() => {}));
+      toolbar.appendChild(refresh);
+    }
+    const current = ui.state.referenceCurrentFileFreshness;
+    const preview = ui.shadow.querySelector('.file-preview');
+    if (current && preview && (current.stale || current.unresolved) && !preview.querySelector('[data-reference-current-warning]')) {
+      const warning = document.createElement('div');
+      warning.dataset.referenceCurrentWarning = '1';
+      warning.className = 'remote-context mismatch';
+      warning.textContent = `Reference Object warning: ${current.stale} stale and ${current.unresolved} unresolved use(s) in this file. Review surrounding meaning before updating locally.`;
+      preview.insertBefore(warning, preview.firstChild);
+    }
+  }
+
+  function patchUi(UI) {
+    if (!UI || !UI.prototype || UI.prototype[UI_PATCH]) return false;
+    Object.defineProperty(UI.prototype, UI_PATCH, { value: true });
+    const originalRender = UI.prototype.render;
+    UI.prototype.render = function referenceFreshnessRender(...args) { const result = originalRender.apply(this, args); enhanceUi(this); return result; };
+    return true;
+  }
+
+  function installRepositoryReferenceStaleDiagnostics(api = root.ObsLinkedNotes || {}) {
+    if (!api || !api.LinkedNotesApp || !api.LinkedNotesUI) return false;
+    const app = patchApp(api.LinkedNotesApp);
+    const ui = patchUi(api.LinkedNotesUI);
+    return app || ui;
+  }
+
+  return { installRepositoryReferenceStaleDiagnostics };
 });
 
 /* src/chat-response-reader-runtime.js */
