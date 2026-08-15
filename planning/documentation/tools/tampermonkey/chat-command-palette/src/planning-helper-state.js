@@ -12,6 +12,7 @@
     localLibrary:'obsPlanningHelper:v1:localLibrary',
     repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'
   });
+  const REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION=2;
   const POSITION_KEY='obs-planning-helper-position-v2';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
@@ -34,13 +35,62 @@
   async function saveLocalHelperLibrary(items){const normalized=deps.normalizeHelperLibraryCollection(items);const payload={schemaVersion:1,items:normalized};await gmSet(KEYS.localLibrary,payload);const checked=await gmGet(KEYS.localLibrary,null);if(!checked||checked.schemaVersion!==1||JSON.stringify(checked.items)!==JSON.stringify(normalized))throw new Error('Planning Helper local-library write-back verification failed.');return normalized;}
   async function upsertLocalHelperLibraryItem(value){const item=deps.normalizeHelperLibraryItem(value);const current=await loadLocalHelperLibrary();const key=`${item.kind}:${item.id}`;const next=[...current.filter((entry)=>`${entry.kind}:${entry.id}`!==key),item];return{item,items:await saveLocalHelperLibrary(next)};}
   async function removeLocalHelperLibraryItem(kind,id){const current=await loadLocalHelperLibrary();const key=`${kind}:${id}`;const next=current.filter((entry)=>`${entry.kind}:${entry.id}`!==key);return saveLocalHelperLibrary(next);}
-  async function loadRepositoryHelperLibraryCache(settings){const value=await gmGet(KEYS.repositoryLibraryCache,null);if(!value||value.schemaVersion!==1||!Array.isArray(value.items)||value.sourceKey!==repositorySourceKey(settings))return null;return{...value,items:deps.normalizeHelperLibraryCollection(value.items)};}
-  async function saveRepositoryHelperLibraryCache(items,settings){const normalized=deps.normalizeHelperLibraryCollection(items.map((item)=>{const copy={...item};delete copy.__sha;delete copy.__path;return copy;}));await gmSet(KEYS.repositoryLibraryCache,{schemaVersion:1,sourceKey:repositorySourceKey(settings),savedAt:new Date().toISOString(),items:normalized});}
+
+  function normalizeCacheIso(value,fallback=''){
+    const text=String(value||'').trim();
+    if(!text)return fallback;
+    const ms=Date.parse(text);
+    if(!Number.isFinite(ms))throw new TypeError(`Invalid repository-library cache timestamp: ${text}`);
+    return new Date(ms).toISOString();
+  }
+  function normalizeRepositoryLibraryCacheRecord(value,options={}){
+    if(!value||typeof value!=='object')throw new TypeError('Repository-library cache record must be an object.');
+    const item=deps.normalizeHelperLibraryItem(value.item||value);
+    const expectedPath=deps.helperLibraryTargetPath(item);
+    const path=String(value.path||expectedPath).trim();
+    if(path!==expectedPath)throw new TypeError(`Repository-library cache path does not match item: ${path}`);
+    const sha=String(value.sha||'').trim();
+    if(/[\r\n\u0000-\u001f\u007f]/.test(sha))throw new TypeError('Repository-library cache SHA contains unsafe control characters.');
+    const fetchedAt=normalizeCacheIso(value.fetchedAt,options.fallbackFetchedAt||'');
+    return{item,path,sha,fetchedAt};
+  }
+  function normalizeRepositoryLibraryCacheRecords(records,options={}){
+    if(!Array.isArray(records))throw new TypeError('Repository-library cache records must be an array.');
+    const normalized=records.map((record)=>normalizeRepositoryLibraryCacheRecord(record,options));
+    const seen=new Set();
+    for(const record of normalized){if(seen.has(record.path))throw new TypeError(`Duplicate repository-library cache path: ${record.path}`);seen.add(record.path);}
+    return normalized;
+  }
+  function repositoryLibraryRecordsToItems(records){return normalizeRepositoryLibraryCacheRecords(records).map((record)=>({...record.item,__path:record.path,__sha:record.sha,__fetchedAt:record.fetchedAt}));}
+
+  async function loadRepositoryHelperLibraryCache(settings){
+    const value=await gmGet(KEYS.repositoryLibraryCache,null);
+    if(!value||typeof value!=='object'||value.sourceKey!==repositorySourceKey(settings))return null;
+    if(value.schemaVersion===REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION&&Array.isArray(value.records)){
+      const records=normalizeRepositoryLibraryCacheRecords(value.records);
+      return{schemaVersion:REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION,sourceKey:value.sourceKey,savedAt:normalizeCacheIso(value.savedAt,''),lastSyncedAt:normalizeCacheIso(value.lastSyncedAt,''),records,items:repositoryLibraryRecordsToItems(records)};
+    }
+    if(value.schemaVersion===1&&Array.isArray(value.items)){
+      const savedAt=normalizeCacheIso(value.savedAt,'');
+      const records=deps.normalizeHelperLibraryCollection(value.items).map((item)=>normalizeRepositoryLibraryCacheRecord({item,path:deps.helperLibraryTargetPath(item),sha:'',fetchedAt:savedAt},{fallbackFetchedAt:savedAt}));
+      return{schemaVersion:1,sourceKey:value.sourceKey,savedAt,lastSyncedAt:'',records,items:repositoryLibraryRecordsToItems(records),needsHydration:true};
+    }
+    return null;
+  }
+
+  async function saveRepositoryHelperLibraryCache(records,settings,options={}){
+    const normalized=normalizeRepositoryLibraryCacheRecords(records);
+    const payload={schemaVersion:REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION,sourceKey:repositorySourceKey(settings),savedAt:new Date().toISOString(),lastSyncedAt:normalizeCacheIso(options.lastSyncedAt,''),records:normalized};
+    await gmSet(KEYS.repositoryLibraryCache,payload);
+    const checked=await gmGet(KEYS.repositoryLibraryCache,null);
+    if(!checked||checked.schemaVersion!==payload.schemaVersion||checked.sourceKey!==payload.sourceKey||checked.lastSyncedAt!==payload.lastSyncedAt||JSON.stringify(checked.records)!==JSON.stringify(payload.records))throw new Error('Planning Helper repository-library cache write-back verification failed.');
+    return{...payload,items:repositoryLibraryRecordsToItems(normalized)};
+  }
 
   async function migrateLegacyLocalCommandProjections(){let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}if(!raw)return{added:0,warning:null};let legacy;try{legacy=deps.parseLegacyProjectionRegistry(raw);}catch(error){return{added:0,warning:`Legacy local commands were not migrated: ${error.message||String(error)}`};}if(!legacy.length)return{added:0,warning:null};const current=await loadLocalHelperLibrary();const keys=new Set(current.map((item)=>`${item.kind}:${item.id}`));const additions=legacy.filter((item)=>!keys.has(`${item.kind}:${item.id}`));if(additions.length)await saveLocalHelperLibrary([...current,...additions]);return{added:additions.length,warning:null};}
 
   function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null};}catch(_){return{left:null,top:null};}}
   function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top}));}catch(_){}}
 
-  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, normalizeSettings, validateRepositorySettings, repositorySourceKey, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, loadCommandCatalogCache, saveCommandCatalogCache, loadLocalHelperLibrary, saveLocalHelperLibrary, upsertLocalHelperLibraryItem, removeLocalHelperLibraryItem, loadRepositoryHelperLibraryCache, saveRepositoryHelperLibraryCache, migrateLegacyLocalCommandProjections, readPanelPosition, savePanelPosition };
+  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION, normalizeSettings, validateRepositorySettings, repositorySourceKey, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, loadCommandCatalogCache, saveCommandCatalogCache, loadLocalHelperLibrary, saveLocalHelperLibrary, upsertLocalHelperLibraryItem, removeLocalHelperLibraryItem, normalizeRepositoryLibraryCacheRecord, normalizeRepositoryLibraryCacheRecords, repositoryLibraryRecordsToItems, loadRepositoryHelperLibraryCache, saveRepositoryHelperLibraryCache, migrateLegacyLocalCommandProjections, readPanelPosition, savePanelPosition };
 });

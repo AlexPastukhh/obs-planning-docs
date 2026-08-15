@@ -1,7 +1,7 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.2.0-local-helper-library-and-prompts
+Doc version: v1.2.1-long-lived-helper-library-cache
 Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and planning-command routes into the Tampermonkey/ChatGPT helper while keeping user-authored local commands/prompts in a separate non-authoritative helper library.
 
 ## 1. Core Rule
@@ -554,4 +554,4 @@ A local helper command or prompt never becomes a registered planning command mer
 
 The modular helper may idempotently migrate the legacy page-local `obs-planning-helper-command-projections-v1` registry into its GM local helper-command library. Migration does not delete the legacy key and does not create `planning/commands/` entries.
 
-All repository operations share one serialized operation boundary. Local insert/copy/edit operations do not require a GitHub request.
+All repository operations share one serialized operation boundary. Local insert/copy/edit operations do not require a GitHub request. Repository helper-library text is cached in GM storage without an automatic TTL; explicit refresh compares directory-listing SHAs and fetches only new/changed files, while a verified single-item Repo write updates only that cached record.

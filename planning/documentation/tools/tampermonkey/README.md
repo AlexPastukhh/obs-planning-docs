@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.26.0-planning-helper-local-library-prompts
+Doc version: v0.26.1-planning-helper-long-lived-library-cache
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
@@ -118,7 +118,7 @@ Planning Helper private GM storage:
   obsPlanningHelper:v1:githubToken
   obsPlanningHelper:v1:commandCatalogCache
   obsPlanningHelper:v1:localLibrary
-  obsPlanningHelper:v1:repositoryLibraryCache
+  obsPlanningHelper:v1:repositoryLibraryCache  # long-lived helper-library repository snapshot (schema v2)
 
 Linked Notes Prototype private GM storage:
   see linked-notes/DATA-AND-STATE.md for current application-owned GM namespaces and persistence ownership.
@@ -542,4 +542,4 @@ Before enabling or adapting the reusable helper for another project, verify:
 
 ## Planning Helper Local Library / Prompts
 
-Developer/runtime details remain under `chat-command-palette/`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. `Save local` is GM-only; `Repo` is a separate SHA-aware verified GitHub write. The generated userscript directly uses the granted `GM_getValue`, `GM_setValue` and `GM_xmlhttpRequest` APIs.
+Developer/runtime details remain under `chat-command-palette/`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. `Save local` is GM-only; `Repo` is a separate SHA-aware verified GitHub write. The generated userscript directly uses the granted `GM_getValue`, `GM_setValue` and `GM_xmlhttpRequest` APIs. Repository helper-library text is retained in GM storage without automatic expiry; ordinary use is offline/local, explicit Refresh reuses same-SHA cached text and downloads only changed/new files, and a successful Repo write updates one cache record rather than refreshing the full library.

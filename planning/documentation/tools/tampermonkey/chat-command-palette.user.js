@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.21.1-repository-command-registry
+// @version      0.22.0-repository-command-registry
 // @description  Modular OBS Planning Helper with planning commands, local helper commands/prompts and bounded GitHub persistence.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -859,21 +859,55 @@
 
   function conflict(message){const error=new Error(message);error.kind='conflict';return error;}
   function sourceKey(identity){return `${identity.owner.toLowerCase()}/${identity.repo.toLowerCase()}@${identity.branch}`;}
+  function isoNow(value){return value||new Date().toISOString();}
+  function cacheRecordIsReusable(record,entry,kind){
+    if(!record||typeof record!=='object'||!record.item)return false;
+    try{return String(record.path||'')===entry.path&&String(record.sha||'')===String(entry.sha||'')&&record.item.kind===kind&&deps.helperLibraryTargetPath(record.item)===entry.path;}catch(_){return false;}
+  }
 
   class RepositoryHelperLibraryService {
     constructor(client){this.client=client;}
     _identity(){const identity={owner:String(this.client?.owner||'').trim(),repo:String(this.client?.repo||'').trim(),branch:String(this.client?.branch||'').trim()};if(!identity.owner||!identity.repo||!identity.branch)throw new TypeError('Repository client identity is incomplete.');return{...identity,sourceKey:sourceKey(identity)};}
     _normalizeIdentity(value){if(!value||typeof value!=='object')throw new TypeError('Library preview is missing repository identity.');const identity={owner:String(value.owner||'').trim(),repo:String(value.repo||'').trim(),branch:String(value.branch||'').trim()};if(!identity.owner||!identity.repo||!identity.branch)throw new TypeError('Library preview repository identity is incomplete.');const key=sourceKey(identity);if(String(value.sourceKey||'')!==key)throw new TypeError('Library preview repository source key is invalid.');return{...identity,sourceKey:key};}
     async _list(kind){const path=deps.HELPER_LIBRARY_PATHS[kind];let entries;try{entries=await this.client.listDirectory(path);}catch(error){if(error?.kind==='not_found')return[];throw error;}const pattern=deps.helperLibraryFilePattern(kind);return entries.filter((entry)=>entry.type==='file'&&pattern.test(entry.name)).sort((a,b)=>a.name.localeCompare(b.name));}
-    async loadKind(kind){const files=await this._list(kind);const result=[];for(const entry of files){const file=await this.client.read(entry.path);const item=deps.parseHelperLibraryDocument(file.content,{kind,path:entry.path});result.push({...item,__sha:file.sha,__path:entry.path});}return result;}
-    async loadAll(){const commands=await this.loadKind(deps.HELPER_LIBRARY_KINDS.COMMAND);const prompts=await this.loadKind(deps.HELPER_LIBRARY_KINDS.PROMPT);return[...commands,...prompts];}
+
+    async syncKind(kind,cachedRecords=[],options={}){
+      const files=await this._list(kind);
+      const cached=(cachedRecords||[]).filter((record)=>record?.item?.kind===kind);
+      const byPath=new Map(cached.map((record)=>[String(record.path||''),record]));
+      const remotePaths=new Set(files.map((entry)=>entry.path));
+      const records=[];let fetched=0,reused=0;
+      const fetchedAt=isoNow(options.now);
+      for(const entry of files){
+        const previous=byPath.get(entry.path);
+        if(cacheRecordIsReusable(previous,entry,kind)){
+          records.push({item:deps.normalizeHelperLibraryItem(previous.item),path:entry.path,sha:String(entry.sha||''),fetchedAt:String(previous.fetchedAt||'')});reused++;continue;
+        }
+        const file=await this.client.read(entry.path);
+        const item=deps.parseHelperLibraryDocument(file.content,{kind,path:entry.path});
+        records.push({item,path:entry.path,sha:String(file.sha||entry.sha||''),fetchedAt});fetched++;
+      }
+      const removed=cached.filter((record)=>!remotePaths.has(String(record.path||''))).length;
+      return{records,fetched,reused,removed,listed:files.length};
+    }
+
+    async syncAll(cachedRecords=[],options={}){
+      const now=isoNow(options.now);
+      const commands=await this.syncKind(deps.HELPER_LIBRARY_KINDS.COMMAND,cachedRecords,{now});
+      const prompts=await this.syncKind(deps.HELPER_LIBRARY_KINDS.PROMPT,cachedRecords,{now});
+      return{records:[...commands.records,...prompts.records],syncedAt:now,fetched:commands.fetched+prompts.fetched,reused:commands.reused+prompts.reused,removed:commands.removed+prompts.removed,listed:commands.listed+prompts.listed};
+    }
+
+    async loadKind(kind){const result=await this.syncKind(kind,[]);return result.records.map((record)=>({...record.item,__sha:record.sha,__path:record.path,__fetchedAt:record.fetchedAt}));}
+    async loadAll(){const result=await this.syncAll([]);return result.records.map((record)=>({...record.item,__sha:record.sha,__path:record.path,__fetchedAt:record.fetchedAt}));}
+
     async previewSave(value){const item=deps.normalizeHelperLibraryItem(value);const path=deps.helperLibraryTargetPath(item);let current=null;try{current=await this.client.read(path);deps.parseHelperLibraryDocument(current.content,{kind:item.kind,path});}catch(error){if(error?.kind!=='not_found')throw error;current=null;}return{repository:this._identity(),item,path,action:current?'update':'create',baseSha:current?.sha||''};}
     _normalizePreview(plan){if(!plan||typeof plan!=='object')throw new TypeError('A helper-library Preview plan is required before Save.');const repository=this._normalizeIdentity(plan.repository);const item=deps.normalizeHelperLibraryItem(plan.item);const path=deps.helperLibraryTargetPath(item);if(String(plan.path||'')!==path)throw new TypeError('Helper-library target changed after Preview.');const action=String(plan.action||''),baseSha=String(plan.baseSha||'');if(action==='create'&&baseSha)throw new TypeError('Create helper-library preview unexpectedly contains a base SHA.');if(action==='update'&&!baseSha)throw new TypeError('Update helper-library preview is missing its base SHA.');if(action!=='create'&&action!=='update')throw new TypeError('Unknown helper-library preview action.');return{repository,item,path,action,baseSha};}
     async savePreviewPlan(plan){const preview=this._normalizePreview(plan);const identity=this._identity();if(identity.sourceKey!==preview.repository.sourceKey)throw conflict(`Repository target changed since Preview (${preview.repository.sourceKey} -> ${identity.sourceKey}). Nothing was written; preview again.`);let current=null;try{current=await this.client.read(preview.path);}catch(error){if(error?.kind!=='not_found')throw error;}
       if(preview.action==='create'&&current)throw conflict(`Repository helper-library item appeared after Preview: ${preview.path}. Nothing was written; preview again.`);
       if(preview.action==='update'&&(!current||current.sha!==preview.baseSha))throw conflict(`Repository helper-library item changed after Preview: ${preview.path}. Nothing was written; preview again.`);
       if(current)deps.parseHelperLibraryDocument(current.content,{kind:preview.item.kind,path:preview.path});
-      const content=deps.renderHelperLibraryDocument(preview.item);const write=await this.client.saveVerified({path:preview.path,content,baseSha:preview.baseSha,message:`${preview.action==='create'?'Add':'Update'} Planning Helper ${preview.item.kind} ${preview.item.title}`});return{ok:true,action:preview.action,path:preview.path,sha:write.sha,item:preview.item,recoveredAfterUnknownWrite:Boolean(write.recoveredAfterUnknownWrite)};
+      const content=deps.renderHelperLibraryDocument(preview.item);const write=await this.client.saveVerified({path:preview.path,content,baseSha:preview.baseSha,message:`${preview.action==='create'?'Add':'Update'} Planning Helper ${preview.item.kind} ${preview.item.title}`});const record={item:preview.item,path:preview.path,sha:write.sha,fetchedAt:new Date().toISOString()};return{ok:true,action:preview.action,path:preview.path,sha:write.sha,item:preview.item,record,recoveredAfterUnknownWrite:Boolean(write.recoveredAfterUnknownWrite)};
     }
   }
 
@@ -894,6 +928,7 @@
     localLibrary:'obsPlanningHelper:v1:localLibrary',
     repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'
   });
+  const REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION=2;
   const POSITION_KEY='obs-planning-helper-position-v2';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
@@ -916,15 +951,64 @@
   async function saveLocalHelperLibrary(items){const normalized=deps.normalizeHelperLibraryCollection(items);const payload={schemaVersion:1,items:normalized};await gmSet(KEYS.localLibrary,payload);const checked=await gmGet(KEYS.localLibrary,null);if(!checked||checked.schemaVersion!==1||JSON.stringify(checked.items)!==JSON.stringify(normalized))throw new Error('Planning Helper local-library write-back verification failed.');return normalized;}
   async function upsertLocalHelperLibraryItem(value){const item=deps.normalizeHelperLibraryItem(value);const current=await loadLocalHelperLibrary();const key=`${item.kind}:${item.id}`;const next=[...current.filter((entry)=>`${entry.kind}:${entry.id}`!==key),item];return{item,items:await saveLocalHelperLibrary(next)};}
   async function removeLocalHelperLibraryItem(kind,id){const current=await loadLocalHelperLibrary();const key=`${kind}:${id}`;const next=current.filter((entry)=>`${entry.kind}:${entry.id}`!==key);return saveLocalHelperLibrary(next);}
-  async function loadRepositoryHelperLibraryCache(settings){const value=await gmGet(KEYS.repositoryLibraryCache,null);if(!value||value.schemaVersion!==1||!Array.isArray(value.items)||value.sourceKey!==repositorySourceKey(settings))return null;return{...value,items:deps.normalizeHelperLibraryCollection(value.items)};}
-  async function saveRepositoryHelperLibraryCache(items,settings){const normalized=deps.normalizeHelperLibraryCollection(items.map((item)=>{const copy={...item};delete copy.__sha;delete copy.__path;return copy;}));await gmSet(KEYS.repositoryLibraryCache,{schemaVersion:1,sourceKey:repositorySourceKey(settings),savedAt:new Date().toISOString(),items:normalized});}
+
+  function normalizeCacheIso(value,fallback=''){
+    const text=String(value||'').trim();
+    if(!text)return fallback;
+    const ms=Date.parse(text);
+    if(!Number.isFinite(ms))throw new TypeError(`Invalid repository-library cache timestamp: ${text}`);
+    return new Date(ms).toISOString();
+  }
+  function normalizeRepositoryLibraryCacheRecord(value,options={}){
+    if(!value||typeof value!=='object')throw new TypeError('Repository-library cache record must be an object.');
+    const item=deps.normalizeHelperLibraryItem(value.item||value);
+    const expectedPath=deps.helperLibraryTargetPath(item);
+    const path=String(value.path||expectedPath).trim();
+    if(path!==expectedPath)throw new TypeError(`Repository-library cache path does not match item: ${path}`);
+    const sha=String(value.sha||'').trim();
+    if(/[\r\n\u0000-\u001f\u007f]/.test(sha))throw new TypeError('Repository-library cache SHA contains unsafe control characters.');
+    const fetchedAt=normalizeCacheIso(value.fetchedAt,options.fallbackFetchedAt||'');
+    return{item,path,sha,fetchedAt};
+  }
+  function normalizeRepositoryLibraryCacheRecords(records,options={}){
+    if(!Array.isArray(records))throw new TypeError('Repository-library cache records must be an array.');
+    const normalized=records.map((record)=>normalizeRepositoryLibraryCacheRecord(record,options));
+    const seen=new Set();
+    for(const record of normalized){if(seen.has(record.path))throw new TypeError(`Duplicate repository-library cache path: ${record.path}`);seen.add(record.path);}
+    return normalized;
+  }
+  function repositoryLibraryRecordsToItems(records){return normalizeRepositoryLibraryCacheRecords(records).map((record)=>({...record.item,__path:record.path,__sha:record.sha,__fetchedAt:record.fetchedAt}));}
+
+  async function loadRepositoryHelperLibraryCache(settings){
+    const value=await gmGet(KEYS.repositoryLibraryCache,null);
+    if(!value||typeof value!=='object'||value.sourceKey!==repositorySourceKey(settings))return null;
+    if(value.schemaVersion===REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION&&Array.isArray(value.records)){
+      const records=normalizeRepositoryLibraryCacheRecords(value.records);
+      return{schemaVersion:REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION,sourceKey:value.sourceKey,savedAt:normalizeCacheIso(value.savedAt,''),lastSyncedAt:normalizeCacheIso(value.lastSyncedAt,''),records,items:repositoryLibraryRecordsToItems(records)};
+    }
+    if(value.schemaVersion===1&&Array.isArray(value.items)){
+      const savedAt=normalizeCacheIso(value.savedAt,'');
+      const records=deps.normalizeHelperLibraryCollection(value.items).map((item)=>normalizeRepositoryLibraryCacheRecord({item,path:deps.helperLibraryTargetPath(item),sha:'',fetchedAt:savedAt},{fallbackFetchedAt:savedAt}));
+      return{schemaVersion:1,sourceKey:value.sourceKey,savedAt,lastSyncedAt:'',records,items:repositoryLibraryRecordsToItems(records),needsHydration:true};
+    }
+    return null;
+  }
+
+  async function saveRepositoryHelperLibraryCache(records,settings,options={}){
+    const normalized=normalizeRepositoryLibraryCacheRecords(records);
+    const payload={schemaVersion:REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION,sourceKey:repositorySourceKey(settings),savedAt:new Date().toISOString(),lastSyncedAt:normalizeCacheIso(options.lastSyncedAt,''),records:normalized};
+    await gmSet(KEYS.repositoryLibraryCache,payload);
+    const checked=await gmGet(KEYS.repositoryLibraryCache,null);
+    if(!checked||checked.schemaVersion!==payload.schemaVersion||checked.sourceKey!==payload.sourceKey||checked.lastSyncedAt!==payload.lastSyncedAt||JSON.stringify(checked.records)!==JSON.stringify(payload.records))throw new Error('Planning Helper repository-library cache write-back verification failed.');
+    return{...payload,items:repositoryLibraryRecordsToItems(normalized)};
+  }
 
   async function migrateLegacyLocalCommandProjections(){let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}if(!raw)return{added:0,warning:null};let legacy;try{legacy=deps.parseLegacyProjectionRegistry(raw);}catch(error){return{added:0,warning:`Legacy local commands were not migrated: ${error.message||String(error)}`};}if(!legacy.length)return{added:0,warning:null};const current=await loadLocalHelperLibrary();const keys=new Set(current.map((item)=>`${item.kind}:${item.id}`));const additions=legacy.filter((item)=>!keys.has(`${item.kind}:${item.id}`));if(additions.length)await saveLocalHelperLibrary([...current,...additions]);return{added:additions.length,warning:null};}
 
   function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null};}catch(_){return{left:null,top:null};}}
   function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top}));}catch(_){}}
 
-  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, normalizeSettings, validateRepositorySettings, repositorySourceKey, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, loadCommandCatalogCache, saveCommandCatalogCache, loadLocalHelperLibrary, saveLocalHelperLibrary, upsertLocalHelperLibraryItem, removeLocalHelperLibraryItem, loadRepositoryHelperLibraryCache, saveRepositoryHelperLibraryCache, migrateLegacyLocalCommandProjections, readPanelPosition, savePanelPosition };
+  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, REPOSITORY_LIBRARY_CACHE_SCHEMA_VERSION, normalizeSettings, validateRepositorySettings, repositorySourceKey, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, loadCommandCatalogCache, saveCommandCatalogCache, loadLocalHelperLibrary, saveLocalHelperLibrary, upsertLocalHelperLibraryItem, removeLocalHelperLibraryItem, normalizeRepositoryLibraryCacheRecord, normalizeRepositoryLibraryCacheRecords, repositoryLibraryRecordsToItems, loadRepositoryHelperLibraryCache, saveRepositoryHelperLibraryCache, migrateLegacyLocalCommandProjections, readPanelPosition, savePanelPosition };
 });
 
 (function (root, factory) {
@@ -1050,7 +1134,7 @@
     async function openLibraryRepoSave(entry){
       if(!entry?.hasLocal)return;const made=makeOverlay(`Save ${entry.libraryKind} to repository`);if(!made)return;const{overlay,modal}=made;const intro=document.createElement('p');intro.textContent='This writes one local helper-library item, not a planning command. Preview captures repository identity and the target file SHA/absence. If the target changes before Save, the write stops.';const preview=document.createElement('div');preview.className='preview';preview.textContent='Checking repository…';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const save=document.createElement('button');save.textContent='Save to GitHub';save.disabled=true;actions.append(cancel,save);modal.append(intro,preview,actions);cancel.addEventListener('click',()=>closeOverlay(overlay));let plan=null;
       try{await runRepositoryOperation('Preview helper-library save',async()=>{plan=await options.onPreviewLibraryItem(entry.libraryKind,entry.libraryId);preview.textContent=`Repository: ${plan.repository.owner}/${plan.repository.repo}@${plan.repository.branch}\n\n${plan.action.toUpperCase()}  ${plan.path}\n${plan.baseSha?`base SHA: ${plan.baseSha}`:'expects: absent'}\n\n${entry.title}`;preview.className='preview ok';save.disabled=false;});}catch(error){preview.textContent=error.message||String(error);preview.className='preview danger';return;}
-      save.addEventListener('click',async()=>{if(!plan)return;const exact=plan;plan=null;cancel.disabled=true;save.disabled=true;try{await runRepositoryOperation('Save helper-library item',async()=>{const result=await options.onSaveLibraryItem(exact);setLibraryEntries(result);preview.textContent=`OK ${result.action} ${result.path}\nSHA: ${result.sha}${result.refreshError?`\nRefresh warning: ${result.refreshError}`:''}`;preview.className='preview ok';showStatus(`Saved and verified repository ${entry.libraryKind}: ${entry.title}.`);});}catch(error){preview.textContent=`${error.message||String(error)}\nPreview again before retrying.`;preview.className='preview danger';}finally{cancel.disabled=false;}});
+      save.addEventListener('click',async()=>{if(!plan)return;const exact=plan;plan=null;cancel.disabled=true;save.disabled=true;try{await runRepositoryOperation('Save helper-library item',async()=>{const result=await options.onSaveLibraryItem(exact);setLibraryEntries(result);preview.textContent=`OK ${result.action} ${result.path}\nSHA: ${result.sha}${result.cacheError?`\nCache warning: ${result.cacheError}`:''}`;preview.className='preview ok';showStatus(`Saved and verified repository ${entry.libraryKind}: ${entry.title}.`);});}catch(error){preview.textContent=`${error.message||String(error)}\nPreview again before retrying.`;preview.className='preview danger';}finally{cancel.disabled=false;}});
     }
 
     async function openSettings(){
@@ -1058,7 +1142,7 @@
     }
 
     async function refreshCommands(){try{await runRepositoryOperation('Refresh repository commands',async()=>{showStatus('Refreshing repository planning commands…',7000);const result=await options.onRefreshCommands();setCommandEntries(result.commandEntries);showStatus(`Repository planning commands refreshed: ${result.count} definitions (${result.visible} visible).`);});}catch(error){showStatus(`Repository refresh failed: ${error.message||error}`,7000);}}
-    async function refreshLibrary(){try{await runRepositoryOperation('Refresh helper library',async()=>{showStatus('Refreshing repository helper library…',7000);const result=await options.onRefreshLibrary();setLibraryEntries(result);showStatus(`Repository helper library refreshed: ${result.commands} command(s), ${result.prompts} prompt(s).`);});}catch(error){showStatus(`Helper-library refresh failed: ${error.message||error}`,7000);}}
+    async function refreshLibrary(){try{await runRepositoryOperation('Refresh helper library',async()=>{showStatus('Refreshing repository helper library…',7000);const result=await options.onRefreshLibrary();setLibraryEntries(result);showStatus(`Repository helper library refreshed: ${result.commands} command(s), ${result.prompts} prompt(s); downloaded ${result.fetched||0}, reused ${result.reused||0}${result.removed?`, removed ${result.removed}`:''}.`);});}catch(error){showStatus(`Helper-library refresh failed: ${error.message||error}`,7000);}}
 
     function keepPanelInViewport(){const width=panel.offsetWidth||560,height=panel.offsetHeight||720;left=Math.min(Math.max(left,8),Math.max(8,window.innerWidth-width-8));top=Math.min(Math.max(top,8),Math.max(8,window.innerHeight-height-8));panel.style.left=`${left}px`;panel.style.top=`${top}px`;}
     function enableDragging(){let pointerId=null,startX=0,startY=0,startLeft=0,startTop=0;function down(event){if(event.button!==0||event.target===closeButton||event.target.closest('button'))return;pointerId=event.pointerId;startX=event.clientX;startY=event.clientY;const rect=panel.getBoundingClientRect();startLeft=rect.left;startTop=rect.top;header.setPointerCapture(pointerId);event.preventDefault();}function move(event){if(pointerId!==event.pointerId)return;left=startLeft+event.clientX-startX;top=startTop+event.clientY-startY;keepPanelInViewport();event.preventDefault();}function finish(event){if(pointerId===null)return;try{header.releasePointerCapture(pointerId);}catch(_){}pointerId=null;options.onSavePosition?.({left,top});event.preventDefault();}header.addEventListener('pointerdown',down);header.addEventListener('pointermove',move);header.addEventListener('pointerup',finish);header.addEventListener('pointercancel',finish);return()=>{header.removeEventListener('pointerdown',down);header.removeEventListener('pointermove',move);header.removeEventListener('pointerup',finish);header.removeEventListener('pointercancel',finish);};}
@@ -1087,7 +1171,8 @@
   const INSTANCE_DISPOSE_KEY='__obsPlanningHelperDisposeV2';
   const LEGACY_DISPOSE_KEYS=['__obsCommandHelperDisposeV1'];
   function cleanDefinitions(definitions){return definitions.map((definition)=>deps.stripRuntimeCommandMetadata(definition));}
-  function cleanLibrary(items){return deps.normalizeHelperLibraryCollection((items||[]).map((item)=>{const copy={...item};delete copy.__sha;delete copy.__path;delete copy.source;delete copy.hasRepo;delete copy.hasLocal;return copy;}));}
+  function remoteItems(records){return deps.repositoryLibraryRecordsToItems(records||[]);}
+  function upsertRemoteRecord(records,record){const path=String(record?.path||'');if(!path)throw new TypeError('Repository helper-library cache record is missing path.');return[...(records||[]).filter((entry)=>String(entry.path||'')!==path),record].sort((a,b)=>String(a.path||'').localeCompare(String(b.path||'')));}
 
   function createRepositoryOperationLock(){let active='';return{isBusy:()=>Boolean(active),active:()=>active,async run(label,task){const next=String(label||'repository operation');if(active){const error=new Error(`Repository operation already in progress: ${active}.`);error.kind='busy';throw error;}active=next;try{return await task();}finally{active='';}}};}
 
@@ -1117,16 +1202,17 @@
     const repositoryLock=createRepositoryOperationLock();
     let currentDefinitions=bundled;
     let localLibrary=[];
-    let remoteLibrary=[];
+    let remoteLibraryRecords=[];
+    let remoteLibraryLastSyncedAt='';
     let startupWarnings=[];
     try{const migration=await deps.migrateLegacyLocalCommandProjections();if(migration.added)startupWarnings.push(`Migrated ${migration.added} legacy local command projection(s) into Planning Helper GM storage.`);if(migration.warning)startupWarnings.push(migration.warning);}catch(error){startupWarnings.push(`Legacy local command migration failed: ${error.message||String(error)}`);}
     try{localLibrary=await deps.loadLocalHelperLibrary();}catch(error){startupWarnings.push(`Local helper library could not be loaded: ${error.message||String(error)}`);localLibrary=[];}
     try{const cache=await deps.loadCommandCatalogCache(initialSettings);if(cache&&Array.isArray(cache.definitions)){deps.validateCommandCatalog(cache.definitions);currentDefinitions=cache.definitions;}}catch(error){console.warn('[OBS Planning Helper] Ignoring invalid command cache:',error);}
-    try{const cache=await deps.loadRepositoryHelperLibraryCache(initialSettings);if(cache)remoteLibrary=cache.items;}catch(error){console.warn('[OBS Planning Helper] Ignoring invalid helper-library cache:',error);}
+    try{const cache=await deps.loadRepositoryHelperLibraryCache(initialSettings);if(cache){remoteLibraryRecords=cache.records;remoteLibraryLastSyncedAt=cache.lastSyncedAt||'';}}catch(error){console.warn('[OBS Planning Helper] Ignoring invalid helper-library cache:',error);}
 
     function commandEntries(){return deps.buildCommandEntries(currentDefinitions);}
-    function localCommandEntries(){return buildLibraryEntries(deps.HELPER_LIBRARY_KINDS.COMMAND,remoteLibrary,localLibrary);}
-    function promptEntries(){return buildLibraryEntries(deps.HELPER_LIBRARY_KINDS.PROMPT,remoteLibrary,localLibrary);}
+    function localCommandEntries(){return buildLibraryEntries(deps.HELPER_LIBRARY_KINDS.COMMAND,remoteItems(remoteLibraryRecords),localLibrary);}
+    function promptEntries(){return buildLibraryEntries(deps.HELPER_LIBRARY_KINDS.PROMPT,remoteItems(remoteLibraryRecords),localLibrary);}
     function libraryUiState(){return{localCommandEntries:localCommandEntries(),promptEntries:promptEntries()};}
 
     async function makeClient(){const settings=await deps.loadRepositorySettings();const token=await deps.loadGitHubToken();if(typeof GM_xmlhttpRequest!=='function')throw new Error('GM_xmlhttpRequest is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');const transport=deps.createGmTransport(GM_xmlhttpRequest);return{client:new deps.GitHubContentsClient({...settings,token,transport}),settings};}
@@ -1134,7 +1220,7 @@
     async function makeLibraryService(){const {client,settings}=await makeClient();return{service:new deps.RepositoryHelperLibraryService(client),settings};}
 
     async function refreshCommandsUnlocked(){const {service,settings}=await makeCommandService();const definitions=await service.loadCatalog();const clean=cleanDefinitions(definitions);deps.validateCommandCatalog(clean);currentDefinitions=clean;await deps.saveCommandCatalogCache(clean,settings);return{commandEntries:commandEntries(),count:clean.length,visible:clean.filter((definition)=>definition.palette).length};}
-    async function refreshLibraryUnlocked(){const {service,settings}=await makeLibraryService();const items=await service.loadAll();remoteLibrary=cleanLibrary(items);await deps.saveRepositoryHelperLibraryCache(remoteLibrary,settings);return{...libraryUiState(),count:remoteLibrary.length,commands:remoteLibrary.filter((item)=>item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND).length,prompts:remoteLibrary.filter((item)=>item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT).length};}
+    async function refreshLibraryUnlocked(){const {service,settings}=await makeLibraryService();const synced=await service.syncAll(remoteLibraryRecords);remoteLibraryRecords=synced.records;remoteLibraryLastSyncedAt=synced.syncedAt;await deps.saveRepositoryHelperLibraryCache(remoteLibraryRecords,settings,{lastSyncedAt:remoteLibraryLastSyncedAt});const items=remoteItems(remoteLibraryRecords);return{...libraryUiState(),count:items.length,commands:items.filter((item)=>item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND).length,prompts:items.filter((item)=>item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT).length,fetched:synced.fetched,reused:synced.reused,removed:synced.removed,syncedAt:synced.syncedAt};}
 
     async function refreshCommands(){return repositoryLock.run('Refresh repository commands',refreshCommandsUnlocked);}
     async function previewDefinitions(definitions){return repositoryLock.run('Preview repository commands',async()=>{const{service}=await makeCommandService();return service.previewDefinitions(definitions);});}
@@ -1144,16 +1230,16 @@
     async function saveLocalLibraryItem(value){const now=new Date().toISOString();const current=localLibrary.find((item)=>item.kind===value.kind&&item.id===value.id);const normalized=deps.normalizeHelperLibraryItem({...value,createdAt:current?.createdAt||value.createdAt||now,updatedAt:now});const saved=await deps.upsertLocalHelperLibraryItem(normalized);localLibrary=saved.items;return{item:saved.item,...libraryUiState()};}
     async function deleteLocalLibraryItem(kind,id){localLibrary=await deps.removeLocalHelperLibraryItem(kind,id);return libraryUiState();}
     async function previewLibraryItem(kind,id){return repositoryLock.run('Preview helper-library save',async()=>{localLibrary=await deps.loadLocalHelperLibrary();const item=localLibrary.find((entry)=>entry.kind===kind&&entry.id===id);if(!item)throw new Error('Only a local helper-library item can be saved to the repository.');const{service}=await makeLibraryService();return service.previewSave(item);});}
-    async function saveLibraryItem(plan){return repositoryLock.run('Save helper-library item',async()=>{localLibrary=await deps.loadLocalHelperLibrary();const previewItem=deps.normalizeHelperLibraryItem(plan?.item||{});const current=localLibrary.find((entry)=>entry.kind===previewItem.kind&&entry.id===previewItem.id);if(!current||JSON.stringify(current)!==JSON.stringify(previewItem)){const error=new Error('Local helper-library item changed since Preview. Nothing was written; preview again.');error.kind='conflict';throw error;}const{service}=await makeLibraryService();const result=await service.savePreviewPlan(plan);try{const refreshed=await refreshLibraryUnlocked();return{...result,...refreshed};}catch(error){return{...result,...libraryUiState(),refreshError:error.message||String(error)};}});}
+    async function saveLibraryItem(plan){return repositoryLock.run('Save helper-library item',async()=>{localLibrary=await deps.loadLocalHelperLibrary();const previewItem=deps.normalizeHelperLibraryItem(plan?.item||{});const current=localLibrary.find((entry)=>entry.kind===previewItem.kind&&entry.id===previewItem.id);if(!current||JSON.stringify(current)!==JSON.stringify(previewItem)){const error=new Error('Local helper-library item changed since Preview. Nothing was written; preview again.');error.kind='conflict';throw error;}const{service,settings}=await makeLibraryService();const result=await service.savePreviewPlan(plan);remoteLibraryRecords=upsertRemoteRecord(remoteLibraryRecords,result.record);let cacheError='';try{await deps.saveRepositoryHelperLibraryCache(remoteLibraryRecords,settings,{lastSyncedAt:remoteLibraryLastSyncedAt});}catch(error){cacheError=error.message||String(error);}return{...result,...libraryUiState(),cacheError};});}
 
     async function onInsert(text,success,id){await new Promise((resolve)=>requestAnimationFrame(resolve));const result=deps.insertIntoComposer(text,id);if(result.ok)return success;const copied=await deps.copyText(text);return copied?`Direct insertion failed (${result.reason}). Copied to clipboard — paste manually.`:`Direct insertion failed (${result.reason}) and clipboard copy also failed.`;}
     async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}
-    async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings();const next=await deps.saveRepositorySettings(settings);await deps.saveGitHubToken(token);const sourceChanged=deps.repositorySourceKey(previous)!==deps.repositorySourceKey(next);if(sourceChanged){currentDefinitions=bundled;remoteLibrary=[];return{sourceChanged:true,commandEntries:commandEntries(),...libraryUiState()};}return{sourceChanged:false};});}
+    async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings();const next=await deps.saveRepositorySettings(settings);await deps.saveGitHubToken(token);const sourceChanged=deps.repositorySourceKey(previous)!==deps.repositorySourceKey(next);if(sourceChanged){currentDefinitions=bundled;remoteLibraryRecords=[];remoteLibraryLastSyncedAt='';return{sourceChanged:true,commandEntries:commandEntries(),...libraryUiState()};}return{sourceChanged:false};});}
 
     const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,semanticEntries,commandEntries:commandEntries(),...libraryUiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert,onCopy:deps.copyText,onRefreshCommands:refreshCommands,parseDefinitions:deps.parseCommandDefinitionBatch,onPreviewDefinitions:previewDefinitions,onSaveDefinitions:saveDefinitions,onRefreshLibrary:refreshLibrary,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onPreviewLibraryItem:previewLibraryItem,onSaveLibraryItem:saveLibraryItem,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
     function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}
     globalThis[INSTANCE_DISPOSE_KEY]=dispose;
-    return{dispose,refreshRemote:refreshCommands,refreshLibrary,getDefinitions:()=>[...currentDefinitions],getLocalLibrary:()=>[...localLibrary],getRemoteLibrary:()=>[...remoteLibrary],getRepositoryOperation:()=>repositoryLock.active()};
+    return{dispose,refreshRemote:refreshCommands,refreshLibrary,getDefinitions:()=>[...currentDefinitions],getLocalLibrary:()=>[...localLibrary],getRemoteLibrary:()=>remoteItems(remoteLibraryRecords),getRepositoryLibraryCache:()=>({records:[...remoteLibraryRecords],lastSyncedAt:remoteLibraryLastSyncedAt}),getRepositoryOperation:()=>repositoryLock.active()};
   }
 
   return { startPlanningHelper, createRepositoryOperationLock, buildLibraryEntries };

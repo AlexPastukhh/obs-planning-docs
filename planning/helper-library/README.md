@@ -33,11 +33,17 @@ Repo
   → exact read-back verification;
 
 Refresh repo library
-  → read repository helper commands/prompts
+  → list repository helper commands/prompts
+  → compare listed GitHub SHA with the long-lived GM repository snapshot
+  → download only new/changed file content
   → local copy wins for same kind + id.
 ```
 
 Repository-only items remain usable for insert/copy. Use `Save local` to create an editable local copy before changing them.
+
+The repository snapshot is local-first and does not expire automatically. It stores each fetched item together with its repository path, GitHub SHA and fetch timestamp, scoped to the exact configured `owner/repository@branch`. Startup and ordinary Insert/Copy/Edit operations never refresh it automatically. A snapshot can remain usable offline for days or months until the user explicitly refreshes, changes repository identity or clears Tampermonkey GM storage.
+
+After a verified `Repo` write, the exact read-back result updates only that one snapshot record. The helper does not rescan or redownload the rest of the helper library. A later explicit refresh reconciles additions, changes and repository deletions. Deleting a repository record from the snapshot never deletes a same-kind/same-id local copy.
 
 ## File Discovery
 

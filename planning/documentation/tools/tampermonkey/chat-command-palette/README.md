@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.21.1`
+Version: `0.22.0`
 Scope: source, tests, deterministic build, repository planning-command management, local helper commands, prompts and bounded GitHub persistence.
 
 ## Read Order
@@ -110,7 +110,7 @@ planning/helper-library/commands/<id>.helper-command.md
 planning/helper-library/prompts/<id>.prompt.md
 ```
 
-`Refresh repo library` reads both repository folders and merges them for display. Local entries override same-kind/same-id repository entries without deleting either copy. Repository-only entries can be copied into local storage through `Save local` before editing.
+`Refresh repo library` is an explicit synchronization action. The helper keeps a long-lived GM repository snapshot with item text, repository path, GitHub SHA and fetch time. The snapshot has no automatic TTL: startup, tab switching, Insert, Copy and Edit use cached/local text without GitHub requests. Refresh lists the two repository folders, reuses cached text when the listed SHA matches, and downloads only new or changed files. Repository-deleted records disappear from the repository snapshot on that explicit refresh; local copies remain. Repository-only entries can be copied into local storage through `Save local` before editing.
 
 The old page-local projection registry is imported idempotently when readable:
 
@@ -132,7 +132,7 @@ obsPlanningHelper:v1:repositorySettings
 obsPlanningHelper:v1:githubToken
 obsPlanningHelper:v1:commandCatalogCache
 obsPlanningHelper:v1:localLibrary
-obsPlanningHelper:v1:repositoryLibraryCache
+obsPlanningHelper:v1:repositoryLibraryCache  # schema v2: long-lived records with item/path/SHA/fetchedAt
 ```
 
 The generated userscript declares `GM_getValue`, `GM_setValue` and `GM_xmlhttpRequest`; runtime code accesses those granted APIs directly rather than assuming they are properties of `globalThis`.
@@ -145,7 +145,7 @@ Panel position remains in page `localStorage` at `obs-planning-helper-position-v
 
 Planning-command refresh/preview/save, helper-library refresh/preview/save and repository-settings writes share one serialized repository-operation boundary. An in-flight write dialog cannot be dismissed into a hidden write. The helper never runs local Git, commit or push.
 
-Every successful GitHub PUT uses exact read-back verification. Unknown network results are read before retry. Helper-library writes are single-item operations; planning-command batch writes remain sequential and report partial results honestly.
+Every successful GitHub PUT uses exact read-back verification. Unknown network results are read before retry. Helper-library writes are single-item operations; after a verified write the returned path/SHA/text update only that cached repository record instead of triggering a full library refresh. Planning-command batch writes remain sequential and report partial results honestly.
 
 ## Composer Diagnostics
 
