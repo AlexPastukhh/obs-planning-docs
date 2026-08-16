@@ -109,6 +109,8 @@ App State modal state
 
 Reader semantic state includes source kind/accuracy, current Markdown and diagnostics. It is intentionally runtime-only; Reader history is not persisted in this slice.
 
+The current Files location is also runtime-only. Hiding and reopening the Linked Notes panel in the same live chat/runtime preserves the selected surface, repository path/listing, opened file/editor and file view mode when the exact workspace id + repository/branch + Notes/Categories paths are unchanged. Reopen still rereads local workspace/category storage; a changed chat mapping or changed workspace target invalidates and clears the old repository-derived state. This preservation is not browser-reload persistence and does not add a GM-storage navigation record.
+
 ## 6. Derived / Cache / Projection State
 
 Examples:

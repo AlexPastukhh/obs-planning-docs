@@ -8626,6 +8626,18 @@
       return JSON.stringify([workspace.id, String(workspace.owner || '').toLowerCase(), String(workspace.repo || '').toLowerCase(), workspace.branch || 'main', workspace.categoryBasePath || this.api.DEFAULT_CATEGORY_BASE_PATH || 'categories']);
     }
 
+    _workspaceRuntimeContextKey(workspace = this._activeWorkspace()) {
+      if (!workspace) return '';
+      return JSON.stringify([
+        String(workspace.id || '').trim(),
+        String(workspace.owner || '').trim().toLowerCase(),
+        String(workspace.repo || '').trim().replace(/\.git$/i, '').toLowerCase(),
+        String(workspace.branch || 'main').trim() || 'main',
+        String(workspace.basePath || '').trim(),
+        String(workspace.categoryBasePath || this.api.DEFAULT_CATEGORY_BASE_PATH || 'categories').trim()
+      ]);
+    }
+
     _sameRepositoryContext(left, right) {
       if (typeof this.api.sameRepositoryContext === 'function') return this.api.sameRepositoryContext(left, right);
       if (!left || !right) return false;
@@ -8886,11 +8898,15 @@
       if (!this.currentChatKey && !this.sessionWorkspaceExplicit) this.sessionWorkspaceId = this.activeWorkspaceId;
     }
 
-    async refreshWorkspaceState(status) {
+    async refreshWorkspaceState(status, options = {}) {
       if (!this.workspaceStore) return this.workspaceState;
+      const previousRuntimeContextKey = this._workspaceRuntimeContextKey(this._activeWorkspace());
       this.workspaceState = await this.workspaceStore.load();
       await this._chooseWorkspaceForCurrentChat();
-      await this._loadCategoryCache();
+      const nextRuntimeContextKey = this._workspaceRuntimeContextKey(this._activeWorkspace());
+      await this._loadCategoryCache({
+        preserveRepositoryState: Boolean(options.preserveRepositoryState && previousRuntimeContextKey && previousRuntimeContextKey === nextRuntimeContextKey)
+      });
       this._setUi({ status: status || 'Workspace and category context refreshed from Tampermonkey storage.' });
       return this.workspaceState;
     }
@@ -8903,18 +8919,22 @@
     }
 
     _resetWorkspaceDerivedContext(options = {}) {
-      this._disposeMediaLoader('file');
-      this.fileRendered = null;
+      if (!options.preserveRepositoryState) {
+        this._disposeMediaLoader('file');
+        this.fileRendered = null;
+      }
       if (options.disposeNoteMedia) {
         this._disposeMediaLoader('note');
         this.noteRendered = null;
       }
-      this.repositoryPath = '';
-      this.repositoryEntries = [];
-      this.repositoryPreview = null;
-      this.repositoryBrowseLoaded = false;
-      this.repositoryEditor = { mode: 'none', parentPath: '', path: '', name: '', content: '', baseSha: '' };
-      this.fileCategoryDraftIds = [];
+      if (!options.preserveRepositoryState) {
+        this.repositoryPath = '';
+        this.repositoryEntries = [];
+        this.repositoryPreview = null;
+        this.repositoryBrowseLoaded = false;
+        this.repositoryEditor = { mode: 'none', parentPath: '', path: '', name: '', content: '', baseSha: '' };
+        this.fileCategoryDraftIds = [];
+      }
       this.categorySnapshot = { definitions: [], diagnostics: [], fileValidation: {}, noteValidation: {}, groups: {}, refreshedAt: '' };
       this.categoryIndex = this._emptyCategoryIndex();
       this.selectedCategoryId = '';
@@ -8926,7 +8946,7 @@
       this.transferDraft = { ...this.transferDraft, targetPath: '', plan: null };
     }
 
-    async _loadCategoryCache() {
+    async _loadCategoryCache(options = {}) {
       const workspace = this._activeWorkspace();
       const contextKey = this._categoryContextKey(workspace);
       const previousWorkspaceId = this.categoryContextWorkspaceId;
@@ -8934,9 +8954,16 @@
       const targetChangedInPlace = Boolean(workspace && previousWorkspaceId === workspace.id && previousContextKey && previousContextKey !== contextKey);
       const workspaceContextChanged = Boolean(previousContextKey && previousContextKey !== contextKey)
         || Boolean(previousWorkspaceId && previousWorkspaceId !== (workspace ? workspace.id : ''));
+      const preserveRepositoryState = Boolean(
+        options.preserveRepositoryState
+        && workspace
+        && previousWorkspaceId === workspace.id
+        && previousContextKey === contextKey
+        && !workspaceContextChanged
+      );
       if (targetChangedInPlace) this.categoryContextsRequiringRefresh.add(contextKey);
       const generation = ++this.workspaceContextGeneration;
-      this._resetWorkspaceDerivedContext({ disposeNoteMedia: workspaceContextChanged });
+      this._resetWorkspaceDerivedContext({ disposeNoteMedia: workspaceContextChanged, preserveRepositoryState });
       this.categoryContextRequiresRefresh = Boolean(contextKey && this.categoryContextsRequiringRefresh.has(contextKey));
       this._setUi({ categoryRefreshSummary: '' });
       if (!workspace || !this.categoryStore) {
@@ -8959,6 +8986,9 @@
       this.categoryIndex = this.api.buildRepositoryCategoryIndex
         ? this.api.buildRepositoryCategoryIndex(this.categorySnapshot.definitions, { fileValidation: this.categorySnapshot.fileValidation, noteValidation: this.categorySnapshot.noteValidation })
         : this._emptyCategoryIndex();
+      if (preserveRepositoryState && this.repositoryPreview && this.repositoryPreview.path && this._sameRepositoryContext(this.repositoryPreview.context, workspace) && this.categoryIndex.explicitCategoryIdsForTarget) {
+        this.fileCategoryDraftIds = this.categoryIndex.explicitCategoryIdsForTarget('file', this.repositoryPreview.path);
+      }
       this.categoryContextWorkspaceId = workspace.id;
       this.categoryContextKey = contextKey;
       return this.categorySnapshot;
@@ -8974,7 +9004,7 @@
     }
 
     async openPanel() {
-      await this.refreshWorkspaceState('Workspace and category context refreshed when Documentation Workspace opened.');
+      await this.refreshWorkspaceState('Workspace and category context refreshed when Documentation Workspace opened.', { preserveRepositoryState: true });
       this._setUi();
     }
 

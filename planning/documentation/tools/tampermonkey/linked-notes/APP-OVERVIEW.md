@@ -68,6 +68,7 @@ The Files surface is the repository-oriented workspace.
 Current capabilities include:
 
 - explicit repository root/folder navigation;
+- same-chat panel collapse/expand preserves the current Files surface, repository folder, opened file/editor and file view mode when the exact workspace target is unchanged; workspace/remapping/target changes still discard stale repository-derived state;
 - bounded text preview and exact `Open on GitHub` target;
 - safe rich Markdown preview;
 - bounded UTF-8 text create/edit staged locally with the first verified base SHA;

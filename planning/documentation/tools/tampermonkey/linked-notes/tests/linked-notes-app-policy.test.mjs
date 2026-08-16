@@ -594,6 +594,39 @@ test('a new chat that only used the default does not create a binding when its s
   assert.equal(app.activeWorkspaceId, gdoc.id);
 });
 
+test('opening the same workspace preserves the current Files location while refreshing local category state', async () => {
+  const { app, gdoc } = await makeWorkspaceApp('/c/chat-a');
+  const definition = { path: 'categories/docs.md', definition: { id: 'docs', name: 'Docs', description: '', impliedCategories: [], files: [] } };
+  await app.categoryStore.saveDefinitions(app._categoryContextKey(gdoc), { definitions: [definition], refreshedAt: 'external-refresh' });
+  app.surface = 'files';
+  app.repositoryPath = 'docs/nested';
+  app.repositoryEntries = [{ type: 'file', path: 'docs/nested/current.md', name: 'current.md', sha: 'sha-current', size: 10 }];
+  app.repositoryPreview = { path: 'docs/nested/current.md', name: 'current.md', kind: 'text', content: '# Current', context: { owner: gdoc.owner, repo: gdoc.repo, branch: gdoc.branch } };
+  app.repositoryBrowseLoaded = true;
+  app.repositoryEditor = { mode: 'edit', parentPath: 'docs/nested', path: 'docs/nested/current.md', name: 'current.md', content: '# Draft', baseSha: 'sha-current' };
+  app.fileViewMode = 'source';
+  app.fileCategoryDraftIds = ['stale-local-id'];
+  const rendered = { html: '<p>Current</p>', resources: [] };
+  app.fileRendered = rendered;
+  let disposed = 0;
+  app.mediaLoaders.file = { dispose() { disposed += 1; } };
+
+  await app.openPanel();
+
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  assert.equal(app.surface, 'files');
+  assert.equal(app.repositoryPath, 'docs/nested');
+  assert.equal(app.repositoryEntries[0].path, 'docs/nested/current.md');
+  assert.equal(app.repositoryPreview.path, 'docs/nested/current.md');
+  assert.equal(app.repositoryBrowseLoaded, true);
+  assert.deepEqual(app.repositoryEditor, { mode: 'edit', parentPath: 'docs/nested', path: 'docs/nested/current.md', name: 'current.md', content: '# Draft', baseSha: 'sha-current' });
+  assert.equal(app.fileViewMode, 'source');
+  assert.equal(app.fileRendered, rendered);
+  assert.equal(disposed, 0, 'same-context reopen must not dispose the current file renderer');
+  assert.deepEqual([...app.categoryIndex.categories.keys()], ['docs'], 'local category cache still refreshes on reopen');
+  assert.deepEqual(app.fileCategoryDraftIds, [], 'file category ids are recomputed from the refreshed same-context cache');
+});
+
 test('opening Notes refreshes a workspace mapping changed by another tab', async () => {
   const { app, gm, planning } = await makeWorkspaceApp('/c/chat-a');
   const otherTab = new workspaceStoreApi.WorkspaceStore({
@@ -608,8 +641,42 @@ test('opening Notes refreshes a workspace mapping changed by another tab', async
   });
   await otherTab.bindChat('chat:chat-a', planning.id);
   assert.notEqual(app.activeWorkspaceId, planning.id);
+  app.surface = 'files';
+  app.repositoryPath = 'docs/nested';
+  app.repositoryEntries = [{ type: 'file', path: 'docs/nested/current.md' }];
+  app.repositoryPreview = { path: 'docs/nested/current.md', kind: 'text', content: '# Current' };
   await app.openPanel();
   assert.equal(app.activeWorkspaceId, planning.id);
+  assert.equal(app.repositoryPath, '');
+  assert.deepEqual(app.repositoryEntries, []);
+  assert.equal(app.repositoryPreview, null);
+});
+
+test('opening the same workspace id after an external repository-target edit discards old Files context', async () => {
+  const { app, gm, gdoc } = await makeWorkspaceApp('/c/chat-a');
+  const otherTab = new workspaceStoreApi.WorkspaceStore({
+    api,
+    getValue: (key, fallback) => gm.get(key, fallback),
+    setValue: (key, value) => gm.set(key, value),
+    now: () => new Date('2026-07-27T00:00:00.000Z'),
+    sleep: async () => {},
+    writerId: 'other-tab-target-edit',
+    lockSettleMs: 0,
+    lockRetryMs: 0
+  });
+  await otherTab.upsert({ ...gdoc, repositoryInput: `${gdoc.owner}/${gdoc.repo}`, basePath: 'other-notes' });
+  app.surface = 'files';
+  app.repositoryPath = 'docs';
+  app.repositoryEntries = [{ type: 'file', path: 'docs/current.md' }];
+  app.repositoryPreview = { path: 'docs/current.md', kind: 'text', content: '# Current' };
+
+  await app.openPanel();
+
+  assert.equal(app.activeWorkspaceId, gdoc.id);
+  assert.equal(app._activeWorkspace().basePath, 'other-notes');
+  assert.equal(app.repositoryPath, '');
+  assert.deepEqual(app.repositoryEntries, []);
+  assert.equal(app.repositoryPreview, null);
 });
 
 test('a dirty workspace form can cancel a workspace switch without changing the chat binding', async () => {
