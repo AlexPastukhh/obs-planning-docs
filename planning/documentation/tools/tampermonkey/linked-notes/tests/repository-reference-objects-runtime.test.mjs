@@ -154,6 +154,8 @@ test('runtime wires handlers and isolates local Reference Object drafts by exact
   const app = new FakeApp();
   await app.start();
   assert.equal(typeof app.ui.handlers.onCreateReferenceObjectLocal, 'function');
+  assert.equal(typeof app.ui.handlers.onValidateReferenceObjectTags, 'function');
+  assert.equal(typeof app.ui.handlers.onDeepValidateReferenceObjectTags, 'function');
   await app.openRepositoryEntry({ type: 'file', path: 'docs/a.md', name: 'a.md' });
   const found = await app.findReferenceObjectCandidates('25');
   const created = await app.createReferenceObjectLocal({ name: 'Damage', candidate: found.candidates[0] });
@@ -297,6 +299,30 @@ test('Open definition records the actual definition line for exact focus', async
   await app.openReferenceObjectDefinition('ro_damage');
   assert.equal(app.referenceObjectFocus.line, 3);
   assert.equal(app.referenceObjectFocus.lineOccurrence, 1);
+});
+
+test('runtime exposes indexed validation separately from explicit deep repository validation', async () => {
+  const object = { id: 'ro_damage', name: 'Damage', definition: { path: 'docs/source.md' }, uses: [{ path: 'docs/use.md', line: 1, lineOccurrence: 1 }] };
+  const client = makeClient({
+    [registryPath]: { content: registryContent(object), sha: 'reg1' },
+    'docs/source.md': { content: '<!-- obs-ref:def id="ro_damage" -->30<!-- /obs-ref:def -->', sha: 'src1' },
+    'docs/use.md': { content: '<!-- obs-ref:use id="ro_damage" -->30<!-- /obs-ref:use -->', sha: 'use1' },
+    'elsewhere/unindexed.md': { content: '<!-- obs-ref:use id="ro_damage" -->10<!-- /obs-ref:use -->', sha: 'other1' }
+  });
+  const { FakeApp, FakeUI } = makeClasses(client);
+  runtime.installRepositoryReferenceObjects({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+  const app = new FakeApp();
+  await app.start();
+  const indexed = await app.validateReferenceObjectTags();
+  assert.equal(indexed.scope, 'indexed');
+  assert.equal(app.readOperations.at(-1), 'Validating indexed Reference Object tags…');
+  assert.equal(app.ui.state.referenceObjectValidation.scope, 'indexed');
+  assert.match(app.status, /Unrelated repository files were not scanned/);
+  const deep = await app.deepValidateReferenceObjectTags();
+  assert.equal(deep.scope, 'repository');
+  assert.equal(app.readOperations.at(-1), 'Deep-validating Reference Object tags…');
+  assert.equal(app.ui.state.referenceObjectValidation.scope, 'repository');
+  assert.ok(deep.diagnostics.some((item) => item.kind === 'usage_index_drift'));
 });
 
 test('Reference Objects menu uses explicit shared popup state and loads only on explicit open', async () => {

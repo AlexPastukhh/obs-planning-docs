@@ -108,8 +108,7 @@ test('remote update preflights then writes stale files and Definitions File sepa
 test('validation reports duplicate definitions, unknown uses and registry drift without writes', async () => {
   const client = makeClient({
     '.linked-notes/reference-objects.json': definitionsFile(),
-    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
-    'game/other.md': markers.formatReferenceDefinition('ro_damage1', '31'),
+    'game/combat.md': `${markers.formatReferenceDefinition('ro_damage1', '30')} / ${markers.formatReferenceDefinition('ro_damage1', '31')}`,
     'game/zombie.md': markers.formatReferenceUse('ro_unknown1', 'x')
   });
   const validation = await service.validateReferenceObjectTags({ client });
@@ -133,7 +132,7 @@ test('effective local overlays participate in Check uses without GitHub writes',
   assert.equal(client.writes.length, 0);
 });
 
-test('repository scan ignores documentation examples inside Markdown code', async () => {
+test('deep repository validation ignores documentation examples inside Markdown code', async () => {
   const client = makeClient({
     '.linked-notes/reference-objects.json': definitionsFile(),
     'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
@@ -145,7 +144,7 @@ test('repository scan ignores documentation examples inside Markdown code', asyn
       `Inline \`${markers.formatReferenceUse('ro_damage1', 'inline-only')}\``
     ].join('\n')
   });
-  const validation = await service.validateReferenceObjectTags({ client });
+  const validation = await service.deepValidateReferenceObjectTags({ client });
   assert.equal(validation.diagnostics.some((item) => item.kind === 'duplicate_definition'), false);
   assert.equal(validation.counts.definitions, 1);
   assert.equal(validation.counts.uses, 0);
@@ -198,7 +197,7 @@ test('Check uses reads only the indexed definition and use files', async () => {
   assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/combat.md', 'game/zombie.md']);
 });
 
-test('Validate tags remains the explicit repository-wide integrity scan', async () => {
+test('Validate tags follows only Definitions File routes and reports indexed scope', async () => {
   const client = makeClient({
     '.linked-notes/reference-objects.json': definitionsFile(),
     'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
@@ -206,7 +205,39 @@ test('Validate tags remains the explicit repository-wide integrity scan', async 
     'elsewhere/unindexed.md': markers.formatReferenceUse('ro_damage1', '10')
   });
   const validation = await service.validateReferenceObjectTags({ client });
+  assert.equal(validation.valid, true);
+  assert.equal(validation.scope, 'indexed');
+  assert.equal(validation.globalIntegrity, false);
+  assert.equal(validation.scanSummary.mode, 'indexed');
+  assert.deepEqual(client.lists, []);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/combat.md', 'game/zombie.md']);
+  assert.equal(validation.counts.uses, 1);
+});
+
+test('Deep validate repo remains the explicit repository-wide integrity scan', async () => {
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': definitionsFile(),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/zombie.md': markers.formatReferenceUse('ro_damage1', '30'),
+    'elsewhere/unindexed.md': markers.formatReferenceUse('ro_damage1', '10')
+  });
+  const validation = await service.deepValidateReferenceObjectTags({ client });
+  assert.equal(validation.scope, 'repository');
+  assert.equal(validation.scanSummary.mode, 'repository');
   assert.ok(client.lists.length > 0);
   assert.ok(client.reads.includes('elsewhere/unindexed.md'));
   assert.ok(validation.diagnostics.some((item) => item.kind === 'usage_index_drift'));
+});
+
+test('empty Definitions File indexed validation stops after the registry read', async () => {
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': registryApi.encodeReferenceObjectRegistry({ schemaVersion: 1, objects: [] }),
+    'elsewhere/unindexed.md': markers.formatReferenceUse('ro_unknown1', '10')
+  });
+  const validation = await service.validateReferenceObjectTags({ client });
+  assert.equal(validation.valid, true);
+  assert.equal(validation.scope, 'indexed');
+  assert.deepEqual(client.lists, []);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json']);
+  assert.deepEqual(validation.counts, { objects: 0, definitions: 0, uses: 0, files: 0 });
 });

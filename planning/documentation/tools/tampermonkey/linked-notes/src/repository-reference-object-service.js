@@ -310,7 +310,7 @@
     const classifiedUses = uses.sort((left, right) => left.path.localeCompare(right.path) || left.fullStart - right.fullStart).map((use) => ({ ...use, status: definition && use.value === currentValue ? 'current' : definition ? 'stale' : 'unresolved' }));
     const index = actualUseIndex(classifiedUses);
     const indexDrift = !sameUsageIndex(object.uses, index);
-    if (indexDrift) diagnostics.push({ kind: 'usage_index_drift', objectId: id, path: registryPath, message: `Definitions File usage index differs from the markers found in its ${indexedUsePaths.size} routed use file(s). Run Validate tags to discover uses in unindexed files.` });
+    if (indexDrift) diagnostics.push({ kind: 'usage_index_drift', objectId: id, path: registryPath, message: `Definitions File usage index differs from the markers found in its ${indexedUsePaths.size} routed use file(s). Run Deep validate repo to discover uses in unindexed files.` });
     const blocked = !definition;
     return {
       kind: 'reference-object-check-v1',
@@ -415,51 +415,95 @@
     return { kind: 'reference-object-remote-update-result-v1', objectId: check.objectId, staleCount: plan.staleCount, results, registry: plan.registry };
   }
 
-  async function validateReferenceObjectTags(options = {}) {
-    const api = core();
-    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
-    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
-    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
-    const diagnostics = [...scan.diagnostics];
+  function referenceValidationFromFiles(registrySnapshot, files, sourceDiagnostics, options = {}) {
+    const diagnostics = [...(Array.isArray(sourceDiagnostics) ? sourceDiagnostics : [])];
     const definitionsById = new Map();
     const usesById = new Map();
-    for (const file of scan.files) {
-      for (const marker of file.markers) {
+    for (const file of Array.isArray(files) ? files : []) {
+      for (const marker of Array.isArray(file && file.markers) ? file.markers : []) {
         const target = marker.role === 'def' ? definitionsById : usesById;
         const group = target.get(marker.id) || [];
         group.push({ ...marker, path: file.path });
         target.set(marker.id, group);
       }
     }
-    const registeredIds = new Set(registrySnapshot.registry.objects.map((object) => object.id));
+    const objects = Array.isArray(registrySnapshot && registrySnapshot.registry && registrySnapshot.registry.objects) ? registrySnapshot.registry.objects : [];
+    const registeredIds = new Set(objects.map((object) => object.id));
     for (const [id, definitions] of definitionsById.entries()) {
-      if (definitions.length > 1) diagnostics.push({ kind: 'duplicate_definition', objectId: id, path: definitions[0].path, message: `${id} has ${definitions.length} definitions.` });
+      if (definitions.length > 1) diagnostics.push({ kind: 'duplicate_definition', objectId: id, path: definitions[0].path, message: `${id} has ${definitions.length} definitions in the files read by this validation.` });
       if (!registeredIds.has(id)) diagnostics.push({ kind: 'unregistered_definition', objectId: id, path: definitions[0].path, message: `${id} has a definition marker but no Definitions File record.` });
     }
-    for (const object of registrySnapshot.registry.objects) {
+    for (const object of objects) {
       const definitions = definitionsById.get(object.id) || [];
       if (!definitions.some((item) => item.path === object.definition.path)) diagnostics.push({ kind: 'registry_definition_missing', objectId: object.id, path: object.definition.path, message: 'Definitions File target does not contain the expected definition marker.' });
-      if (definitions.some((item) => item.path !== object.definition.path)) diagnostics.push({ kind: 'registry_definition_wrong_path', objectId: object.id, path: object.definition.path, message: 'Definition marker also exists outside the recorded definition path.' });
+      if (definitions.some((item) => item.path !== object.definition.path)) diagnostics.push({ kind: 'registry_definition_wrong_path', objectId: object.id, path: object.definition.path, message: 'Definition marker also exists outside the recorded definition path among the files read by this validation.' });
       const uses = actualUseIndex(usesById.get(object.id) || []);
-      if (!sameUsageIndex(object.uses, uses)) diagnostics.push({ kind: 'usage_index_drift', objectId: object.id, path: registryPath, message: `Definitions File usage index differs from ${uses.length} scanned use(s).` });
+      if (!sameUsageIndex(object.uses, uses)) diagnostics.push({ kind: 'usage_index_drift', objectId: object.id, path: registrySnapshot.path, message: `Definitions File usage index differs from ${uses.length} use marker(s) found in the files read by this validation.` });
     }
     for (const [id, uses] of usesById.entries()) if (!registeredIds.has(id)) diagnostics.push({ kind: 'unknown_use_id', objectId: id, path: uses[0].path, message: `${uses.length} use marker(s) refer to an unknown Reference Object id.` });
-    if (scan.incomplete) diagnostics.push({ kind: 'scan_incomplete', path: '', message: `Reference Object validation is incomplete${scan.truncationReason ? `: ${scan.truncationReason}` : '.'}` });
+    const scope = options.scope === 'repository' ? 'repository' : 'indexed';
+    const incomplete = Boolean(options.incomplete);
+    if (incomplete) {
+      diagnostics.push({
+        kind: scope === 'repository' ? 'scan_incomplete' : 'indexed_validation_incomplete',
+        path: '',
+        message: scope === 'repository'
+          ? `Deep Reference Object validation is incomplete${options.truncationReason ? `: ${options.truncationReason}` : '.'}`
+          : `Indexed Reference Object validation is incomplete${options.truncationReason ? `: ${options.truncationReason}` : '.'}`
+      });
+    }
+    const valid = diagnostics.length === 0 && !incomplete;
     return {
       kind: 'reference-object-validation-v1',
-      registryPath,
+      scope,
+      globalIntegrity: scope === 'repository' && valid,
+      registryPath: registrySnapshot.path,
       diagnostics,
-      valid: diagnostics.length === 0 && !scan.incomplete,
-      incomplete: scan.incomplete,
+      valid,
+      incomplete,
       counts: {
-        objects: registrySnapshot.registry.objects.length,
+        objects: objects.length,
         definitions: [...definitionsById.values()].reduce((sum, group) => sum + group.length, 0),
         uses: [...usesById.values()].reduce((sum, group) => sum + group.length, 0),
-        files: scan.files.length
+        files: Array.isArray(files) ? files.length : 0
       },
       registrySnapshot,
-      scanSummary: { directories: scan.scannedDirectories, files: scan.scannedFiles, bytes: scan.totalBytes }
+      scanSummary: { ...(options.scanSummary || {}) }
     };
+  }
+
+  async function validateReferenceObjectTags(options = {}) {
+    const api = core();
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
+    const objects = Array.isArray(registrySnapshot.registry.objects) ? registrySnapshot.registry.objects : [];
+    if (!objects.length) {
+      return referenceValidationFromFiles(registrySnapshot, [], [], {
+        scope: 'indexed',
+        incomplete: false,
+        scanSummary: { mode: 'indexed', directories: 0, files: 0, bytes: 0, indexedPaths: 0 }
+      });
+    }
+    const routed = await readIndexedReferenceObjectState(options, registrySnapshot, objects);
+    return referenceValidationFromFiles(registrySnapshot, routed.files, routed.diagnostics, {
+      scope: 'indexed',
+      incomplete: routed.incomplete,
+      truncationReason: routed.truncationReason,
+      scanSummary: { mode: 'indexed', directories: 0, files: routed.readFiles, bytes: routed.totalBytes, indexedPaths: routed.indexedPaths }
+    });
+  }
+
+  async function deepValidateReferenceObjectTags(options = {}) {
+    const api = core();
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
+    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
+    return referenceValidationFromFiles(registrySnapshot, scan.files, scan.diagnostics, {
+      scope: 'repository',
+      incomplete: scan.incomplete,
+      truncationReason: scan.truncationReason,
+      scanSummary: { mode: 'repository', directories: scan.scannedDirectories, files: scan.scannedFiles, bytes: scan.totalBytes }
+    });
   }
 
   async function diagnoseReferenceObjectFreshness(options = {}) {
@@ -517,7 +561,7 @@
         }
       }
       const actualIndex = actualUseIndex(actualForObject.filter((item) => !item.indexedMissing));
-      if (!sameUsageIndex(object.uses, actualIndex)) diagnostics.push({ kind: 'usage_index_drift', objectId: object.id, path: registryPath, message: `Definitions File usage index differs from markers in the indexed use paths for ${object.id}. Run Validate tags for a repository-wide integrity check.` });
+      if (!sameUsageIndex(object.uses, actualIndex)) diagnostics.push({ kind: 'usage_index_drift', objectId: object.id, path: registryPath, message: `Definitions File usage index differs from markers in the indexed use paths for ${object.id}. Run Deep validate repo for a repository-wide integrity check.` });
       uses.push(...actualForObject);
     }
     uses.sort((left, right) => left.path.localeCompare(right.path) || left.line - right.line || left.lineOccurrence - right.lineOccurrence || left.objectId.localeCompare(right.objectId));
@@ -554,6 +598,7 @@
     buildReferenceObjectLocalUpdate,
     updateReferenceObjectUsesRemote,
     validateReferenceObjectTags,
+    deepValidateReferenceObjectTags,
     diagnoseReferenceObjectFreshness,
     proveReferenceObjectExpectedBase: proveExpectedBase
   };

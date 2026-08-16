@@ -93,7 +93,7 @@ The always-available searchable Reference Objects list exposes `Copy reference`.
 
 The clipboard receives the complete use marker containing the current definition value. The helper does not insert it into the current editor automatically. The user opens/edits the desired file and pastes the clipboard text through ordinary file editing.
 
-A later local save/reindex refreshes the local usage index. Explicit `Validate tags` can discover an unindexed pasted marker and report drift, but validation itself remains read-only.
+A later local save/reindex refreshes the local usage index. Ordinary `Validate tags` checks the Definitions File routes only; explicit `Deep validate repo` can discover an unindexed pasted marker elsewhere and report drift. Both validation modes remain read-only.
 
 Clipboard copy itself does not perform a GitHub write.
 
@@ -103,7 +103,7 @@ Clipboard copy itself does not perform a GitHub write.
 
 It reads `.linked-notes/reference-objects.json` first, then follows only the selected object's recorded `definition.path` and unique `uses[].path` routes. It compares the materialized uses found in those indexed files to the canonical definition value and does not crawl unrelated repository folders. If the Definitions File has no objects, ordinary freshness completes after that one registry read.
 
-This indexed check can report usage-index drift inside the files it was routed to, but it cannot prove that an unindexed marker does not exist elsewhere. Repository-wide discovery belongs to `Validate tags`.
+This indexed check can report usage-index drift inside the files it was routed to, but it cannot prove that an unindexed marker does not exist elsewhere. Ordinary `Validate tags` uses the same bounded route set for structural/index integrity; repository-wide discovery belongs only to `Deep validate repo`.
 
 Results:
 
@@ -146,23 +146,25 @@ Before the first write:
 
 For `Update all`, all intended files enter one tree/commit; either the non-force ref update succeeds or the branch remains on its prior head. Created but unreachable Git objects do not constitute a repository branch change.
 
-## 10. Validate Tags
+## 10. Validate Tags And Deep Validate Repo
 
-`Validate tags` is a separate read-only operation from `Check uses`. Unlike the indexed ordinary check, validation performs the bounded repository-wide scan required to discover unindexed markers and global integrity drift.
+`Validate tags` is a separate read-only integrity operation from `Check uses`, but it is intentionally cheap: it reads the Definitions File and the same unique recorded `definition.path` / `uses[].path` route set used by ordinary Reference Object freshness. It validates marker structure and compares the Definitions File index with the actual markers in those files. It performs no repository directory crawl and does not claim that unrelated files contain no Reference Object markers.
 
-Minimum diagnostics:
+`Deep validate repo` is the explicit bounded repository-wide integrity operation. It retains the crawler required to discover unindexed markers, definitions outside recorded routes and global index drift. It is expected to perform more requests and remains cancellable as a Files read.
 
-- malformed/open/close markers;
+Minimum diagnostics across the two modes:
+
+- malformed/open/close markers in files actually read;
 - nesting/intersection;
 - invalid object id;
-- duplicate definitions;
-- registry definition missing or at a different path;
-- definition marker absent from registry;
-- use of unknown object id;
-- Definitions File usage index drift;
-- unreadable/oversized/scanning-limit state.
+- duplicate definitions visible in the validation scope;
+- registry definition missing or at a different path within that scope;
+- definition marker absent from registry when encountered;
+- use of unknown object id when encountered;
+- Definitions File usage index drift against markers actually read;
+- unreadable/oversized/limit state.
 
-An incomplete bounded scan is never reported as globally valid. Validation performs no repair and no write.
+Only a complete `Deep validate repo` result can make a repository-wide integrity claim. An incomplete deep scan is never reported as globally valid. Neither mode performs repair or writes.
 
 ## 11. Navigation And List UX
 
@@ -212,7 +214,7 @@ This repository-facing document is a projection of this workflow's selected beha
 
 ## 13. Bounded Prototype Limits
 
-The repository-wide integrity scan used by `Validate tags` is bounded rather than background/unbounded. Normal `Check uses` and Files stale diagnostics use Definitions File routes instead and do not pay these directory-scan costs:
+The repository-wide integrity scan used only by `Deep validate repo` is bounded rather than background/unbounded. Normal `Check uses`, `Validate tags` and Files stale diagnostics use Definitions File routes instead and do not pay these directory-scan costs:
 
 - at most 80 directories;
 - at most 300 supported text files;
@@ -239,9 +241,9 @@ Limits are prototype evidence, not final product requirements.
 
 ## 15. Required Acceptance
 
-Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, Definitions-File-routed freshness with no repository crawl, empty-registry fast completion, repository-wide validation diagnostics, local no-write updates, current/all publisher behavior, clipboard-only use creation and manual-paste reindexing.
+Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, Definitions-File-routed freshness and indexed validation with no repository crawl, empty-registry fast completion, separate deep repository-wide validation diagnostics, local no-write updates, current/all publisher behavior, clipboard-only use creation and manual-paste reindexing.
 
-Browser/real-GitHub acceptance must additionally prove the rendered comments are invisible, the always-available searchable list and create modal survive ordinary rerenders, the portaled `Reference objects` panel remains visibly above the main Linked Notes panel and its controls receive clicks before/after a harmless rerender, stale uses are yellow only after Check, usage navigation selects the intended same-line occurrence, local actions produce no PUT, GitHub actions preflight/read-back correctly and workspace switching does not leak local state.
+Browser/real-GitHub acceptance must additionally prove the rendered comments are invisible, the always-available searchable list and create modal survive ordinary rerenders, the portaled `Reference objects` panel remains visibly above the main Linked Notes panel with readable theme-consistent text and clickable controls before/after a harmless rerender, ordinary `Validate tags` reads only indexed routes while `Deep validate repo` is the explicit higher-request repository scan, stale uses are yellow only after Check, usage navigation selects the intended same-line occurrence, local actions produce no PUT, GitHub actions preflight/read-back correctly and workspace switching does not leak local state.
 
 ## 16. Deferred
 

@@ -32,9 +32,9 @@ A use is **not automatically live**. Changing the definition does not silently r
 
 `.linked-notes/reference-objects.json` stores routing/index metadata only. It does not duplicate the canonical value.
 
-For normal `Check uses` and Files stale diagnostics, that routing/index is also the bounded read plan: read the Definitions File, then only the recorded `definition.path` and unique `uses[].path` files. Do not crawl unrelated repository folders merely to decide whether known materialized uses are current. If `objects[]` is empty, freshness completes after reading the Definitions File.
+For normal `Check uses`, `Validate tags` and Files stale diagnostics, that routing/index is also the bounded read plan: read the Definitions File, then only the recorded `definition.path` and unique `uses[].path` files. Do not crawl unrelated repository folders merely to decide whether known materialized uses are current or whether the recorded index agrees with markers in those routed files. If `objects[]` is empty, these indexed operations complete after reading the Definitions File.
 
-Repository-wide discovery is a different integrity operation. `Validate tags` may scan the bounded supported repository scope to find markers that are missing from the index, duplicate definitions, unknown IDs or other index drift. A normal freshness result therefore reports the state of indexed objects/uses; it is not proof that no unindexed marker exists elsewhere.
+Repository-wide discovery is a different integrity operation exposed as `Deep validate repo`. It scans the bounded supported repository scope to find markers that are missing from the index, duplicate definitions outside recorded routes, unknown IDs or other global index drift. An ordinary indexed validation/freshness result therefore reports the state of indexed objects/uses and any additional evidence encountered in those already-routed files; it is not proof that no unindexed marker exists elsewhere.
 
 ## Finding an existing object
 
@@ -126,6 +126,6 @@ If a repository edit is deliberately performed by an agent instead, creating a n
 
 ## Validation expectations
 
-Validation should detect malformed/unclosed markers, duplicate definitions, unknown use IDs, missing definitions and registry/index drift. Validation is read-only unless a separate explicit repair/write action is requested.
+Indexed `Validate tags` should detect malformed/unclosed markers in routed files, duplicate definitions visible in those files, unknown use IDs encountered there, missing recorded definitions and registry/index drift against the markers actually read. `Deep validate repo` adds bounded repository-wide discovery so unindexed markers and definitions outside recorded routes can also be detected. Both validation modes are read-only unless a separate explicit repair/write action is requested.
 
 Stale diagnostics are also shown in the open file and, after a freshness scan, beside affected files in the Files tree. A stale use means the surrounding statement may need semantic review before `Update locally`; the application does not treat propagation as mere blind text replacement.

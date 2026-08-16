@@ -552,6 +552,8 @@ test('open Files modal survives destructive base rerenders and is dropped after 
     const ui = new DestructiveUI();
     ui.render();
     assert.equal(shadow.modal, modal, 'modal node must be reattached after base render replaces shadow.innerHTML');
+    assert.match(shadow.styleNode.textContent, /files-workspace-popup-layer[^}]*color:var\(--text\)/, 'portaled popup layer must inherit the Linked Notes foreground');
+    assert.match(shadow.styleNode.textContent, /files-workspace-popup-layer[^}]*color-scheme:dark/, 'portaled popup layer must retain dark native-control theming');
 
     shadow.modal = modal;
     modal.parent = shadow;

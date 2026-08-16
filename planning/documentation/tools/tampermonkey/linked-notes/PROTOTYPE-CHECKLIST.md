@@ -326,8 +326,10 @@ Use test branches only.
 | 73 | Change a definition, run stale diagnostics and inspect Files. | The open file warning and affected tree entry show stale/unresolved use counts. | |
 | 74 | With registered objects plus unrelated repository folders/files, run Check uses and Files stale diagnostics. | Reads are limited to the Definitions File plus unique recorded definition/use paths; no unrelated directory crawl occurs. | |
 | 75 | Use an empty `reference-objects.json` and run Files stale diagnostics. | The operation finishes after the Definitions File read with zero stale/unresolved uses and no repository traversal. | |
-| 76 | Add an unindexed `obs-ref:use` outside the recorded use paths, then run Validate tags. | The explicit bounded repository-wide validation discovers index drift/unindexed evidence while ordinary freshness remains index-routed. | |
-| 77 | Open `Locations` and `Reference objects`, activate an internal control in each, trigger a harmless Files rerender, then reopen and close via Escape/outside click. | Both portaled panels remain visibly above the main Linked Notes panel and clickable before/after rerender; shared popup state reconstructs correctly and closing does not block the rest of the UI. | |
+| 76 | Add an unindexed `obs-ref:use` outside the recorded use paths. Run Validate tags, then Deep validate repo. | Validate tags reads only the Definitions File plus recorded routes and does not discover the unrelated marker; Deep validate repo performs the explicit bounded repository-wide scan and reports usage-index drift/unindexed evidence. | |
+| 77 | Open `Locations` and `Reference objects`, activate an internal control in each, trigger a harmless Files rerender, then reopen and close via Escape/outside click. | Both portaled panels remain visibly above the main Linked Notes panel, inherit readable theme-consistent foreground text and remain clickable before/after rerender; shared popup state reconstructs correctly and closing does not block the rest of the UI. | |
+| 78 | With registered objects plus unrelated repository folders/files, run Validate tags and record request activity. | Reads are limited to the Definitions File plus unique recorded definition/use paths, `scanSummary.mode` is `indexed`, no repository directory crawl occurs and the result does not claim global integrity. | |
+| 79 | Use an empty `reference-objects.json` and run Validate tags. | Indexed validation finishes after the Definitions File read with zero object/definition/use/file counts and no repository traversal. | |
 
 ## 14. Findings
 

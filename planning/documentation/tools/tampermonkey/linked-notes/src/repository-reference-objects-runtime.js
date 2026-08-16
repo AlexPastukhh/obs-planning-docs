@@ -20,7 +20,7 @@
       'decodeReferenceObjectRegistry', 'encodeReferenceObjectRegistry', 'upsertReferenceObject', 'renameReferenceObject',
       'replaceReferenceObjectUses', 'readReferenceObjectRegistrySnapshot', 'checkReferenceObjectUses',
       'buildReferenceObjectLocalUpdate', 'updateReferenceObjectUsesRemote', 'validateReferenceObjectTags',
-      'proveReferenceObjectExpectedBase'
+      'deepValidateReferenceObjectTags', 'proveReferenceObjectExpectedBase'
     ];
     for (const name of required) if (typeof api[name] !== 'function') throw new Error(`Reference Object runtime dependency is unavailable: ${name}.`);
     return api;
@@ -66,6 +66,9 @@
     return {
       valid: Boolean(result.valid),
       incomplete: Boolean(result.incomplete),
+      scope: result.scope === 'repository' ? 'repository' : 'indexed',
+      globalIntegrity: Boolean(result.globalIntegrity),
+      scanSummary: result.scanSummary ? { ...result.scanSummary } : {},
       counts: result.counts ? { ...result.counts } : {},
       diagnostics: (result.diagnostics || []).map((item) => ({ kind: item.kind || 'issue', path: item.path || '', objectId: item.objectId || '', message: item.message || '' }))
     };
@@ -378,14 +381,34 @@
         const client = await this._referenceObjectsClient();
         return api.validateReferenceObjectTags({ client, registryPath: this._referenceObjectRegistryPath(), overlays: this.referenceObjectLocalState.files });
       };
+      const label = 'Validating indexed Reference Object tags…';
       const result = typeof this._runFilesWorkspaceRead === 'function'
-        ? await this._runFilesWorkspaceRead('Validating Reference Object tags…', run)
-        : await this._runRemoteOperation('Validating Reference Object tags…', run);
+        ? await this._runFilesWorkspaceRead(label, run)
+        : await this._runRemoteOperation(label, run);
       if (!result || result.cancelled) return result;
       this.referenceObjectValidation = result;
       this.referenceObjectRegistrySnapshot = result.registrySnapshot;
       this.referenceObjectsLoaded = true;
-      this._setUi(this._referenceObjectUiPatch({ status: result.valid ? `Reference Object tags valid: ${result.counts.objects} object(s), ${result.counts.uses} use(s).` : `Reference Object validation found ${result.diagnostics.length} issue(s)${result.incomplete ? '; scan incomplete' : ''}. Nothing was changed.` }));
+      this._setUi(this._referenceObjectUiPatch({ status: result.valid ? `Indexed Reference Object tags valid: ${result.counts.objects} object(s), ${result.counts.uses} use(s). Unrelated repository files were not scanned.` : `Indexed Reference Object validation found ${result.diagnostics.length} issue(s)${result.incomplete ? '; indexed check incomplete' : ''}. Nothing was changed.` }));
+      return result;
+    };
+
+    App.prototype.deepValidateReferenceObjectTags = async function deepValidateReferenceObjectTags() {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const run = async () => {
+        const client = await this._referenceObjectsClient();
+        return api.deepValidateReferenceObjectTags({ client, registryPath: this._referenceObjectRegistryPath(), overlays: this.referenceObjectLocalState.files });
+      };
+      const label = 'Deep-validating Reference Object tags…';
+      const result = typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead(label, run)
+        : await this._runRemoteOperation(label, run);
+      if (!result || result.cancelled) return result;
+      this.referenceObjectValidation = result;
+      this.referenceObjectRegistrySnapshot = result.registrySnapshot;
+      this.referenceObjectsLoaded = true;
+      this._setUi(this._referenceObjectUiPatch({ status: result.valid ? `Deep Reference Object validation passed: ${result.counts.objects} object(s), ${result.counts.uses} use(s), ${result.counts.files} file(s) scanned.` : `Deep Reference Object validation found ${result.diagnostics.length} issue(s)${result.incomplete ? '; repository scan incomplete' : ''}. Nothing was changed.` }));
       return result;
     };
 
@@ -581,6 +604,7 @@
         onUpdateReferenceObjectUsesLocal: (id) => this.updateReferenceObjectUsesLocal(id),
         onUpdateReferenceObjectUsesGitHub: (id) => this.updateReferenceObjectUsesGitHub(id),
         onValidateReferenceObjectTags: () => this.validateReferenceObjectTags(),
+        onDeepValidateReferenceObjectTags: () => this.deepValidateReferenceObjectTags(),
         onRenameReferenceObjectLocal: (id, name) => this.renameReferenceObjectLocal(id, name),
         onSaveRepositoryReferenceDraftLocal: (input) => this.saveRepositoryReferenceDraftLocal(input),
         onPublishReferenceObjectLocalDraftsGitHub: () => this.publishReferenceObjectLocalDraftsGitHub(),
@@ -712,7 +736,10 @@
 
   function validationHtml(validation) {
     if (!validation) return '';
-    const summary = validation.valid ? `✓ Tags valid · ${validation.counts.objects || 0} object(s) · ${validation.counts.uses || 0} use(s)` : `⚠ ${validation.diagnostics.length} validation issue(s)${validation.incomplete ? ' · incomplete scan' : ''}`;
+    const repository = validation.scope === 'repository';
+    const label = repository ? 'Repository tags' : 'Indexed tags';
+    const incomplete = validation.incomplete ? (repository ? ' · incomplete repository scan' : ' · incomplete indexed check') : '';
+    const summary = validation.valid ? `✓ ${label} valid · ${validation.counts.objects || 0} object(s) · ${validation.counts.uses || 0} use(s)` : `⚠ ${validation.diagnostics.length} ${repository ? 'deep' : 'indexed'} validation issue(s)${incomplete}`;
     const rows = validation.diagnostics.slice(0, 80).map((item) => `<div class="reference-object-diagnostic"><strong>${escapeHtml(item.kind)}</strong>${item.objectId ? ` · ${escapeHtml(item.objectId)}` : ''}${item.path ? `<br><code>${escapeHtml(item.path)}</code>` : ''}${item.message ? `<br><small>${escapeHtml(item.message)}</small>` : ''}</div>`).join('');
     return `<details><summary>${summary}</summary><div class="reference-object-diagnostics">${rows || '<div class="hint">No issues.</div>'}</div></details>`;
   }
@@ -741,7 +768,7 @@
       const stale = check ? check.staleCount : 0;
       return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
     }).join('') || '<div class="hint">No Reference Objects loaded.</div>';
-    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Reference Object actions are local; use the standard Update current file or Update all action to publish.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
+    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button data-reference-deep-validate>Deep validate repo</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Validate tags checks only indexed definition/use paths; Deep validate repo performs the bounded repository-wide integrity scan. Reference Object actions are local; use the standard Update current file or Update all action to publish.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
     const panel = details.querySelector('.reference-objects-panel');
     const scope = panel || details;
     const search = scope.querySelector('[data-reference-search]');
@@ -754,6 +781,7 @@
     scope.querySelector('[data-reference-create]')?.addEventListener('click', () => { const api = root.ObsLinkedNotes || {}; if (typeof api.closeFilesWorkspaceTopPopup === 'function') api.closeFilesWorkspaceTopPopup(ui); openCreateModal(ui); });
     scope.querySelector('[data-reference-refresh]')?.addEventListener('click', () => ui._call('onLoadReferenceObjects', true).catch(() => {}));
     scope.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
+    scope.querySelector('[data-reference-deep-validate]')?.addEventListener('click', () => ui._call('onDeepValidateReferenceObjectTags').catch(() => {}));
     scope.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
     scope.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
     scope.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));

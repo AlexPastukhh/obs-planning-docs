@@ -15,8 +15,10 @@ Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTU
 - added natural, alphabetical, guarded leading-number and non-executable custom-value ordering with stable ties;
 - allowed list creation with stale uses while blocking ordering until every nested use is current;
 - added open-file and Files-tree stale/unresolved Reference Object diagnostics;
-- corrected ordinary Reference Object Check/freshness reads to follow `.linked-notes/reference-objects.json` definition/use routes instead of crawling unrelated repository folders; full bounded crawling remains only in explicit tag validation;
+- corrected ordinary Reference Object Check/freshness reads to follow `.linked-notes/reference-objects.json` definition/use routes instead of crawling unrelated repository folders;
+- changed ordinary `Validate tags` to use those same indexed definition/use routes and added explicit `Deep validate repo` for the bounded repository-wide integrity crawl;
 - corrected the shared Files top-popup stacking boundary so portaled `Locations` and `Reference objects` panels paint above the main Linked Notes panel and remain clickable across ordinary rerenders;
+- corrected shared top-popup theme inheritance so portaled explanatory text uses the Linked Notes foreground/font/dark color scheme instead of browser-default black text;
 - added repository-facing AI rules for manual Ordered Item structural validation;
 - kept future Reference Object automatic-propagation policy as roadmap research only.
 

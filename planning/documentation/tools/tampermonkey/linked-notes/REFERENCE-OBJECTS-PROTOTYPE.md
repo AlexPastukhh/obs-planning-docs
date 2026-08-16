@@ -67,11 +67,11 @@ Update current file / Update all → standard verified publication of pending fi
 
 Independent remote usage update is blocked while local Reference Object drafts are pending, so unsynced local definition changes cannot silently become the basis for a different remote action.
 
-`Validate tags` separately checks marker syntax/identity and Definitions File/index consistency. It is the explicit repository-wide integrity operation and does not repair files automatically.
+`Validate tags` separately checks marker syntax/identity and Definitions File/index consistency using the same recorded definition/use routes as ordinary freshness, so it performs no directory crawl and makes no global-integrity claim. `Deep validate repo` is the explicit repository-wide integrity operation for discovering unindexed markers and definitions outside recorded routes. Neither mode repairs files automatically.
 
 ## 6. Explicit Scan Bounds
 
-Only repository-wide integrity validation crawls the bounded supported repository scope. The prototype bound is 80 directories, 300 supported text files, 4 MiB aggregate and 512 KiB per file. Normal Check/freshness follows Definitions File routes and performs no directory traversal. No background indexer is created.
+Only `Deep validate repo` crawls the bounded supported repository scope. The prototype bound is 80 directories, 300 supported text files, 4 MiB aggregate and 512 KiB per file. Normal Check/freshness and ordinary Validate tags follow Definitions File routes and perform no directory traversal. No background indexer is created.
 
 ## 7. UI
 
