@@ -15,31 +15,102 @@ test('launcher is shifted left by its measured width plus a gap', () => {
 });
 
 
-test('panel reserves a bottom-right safe area on wide viewports', () => {
+test('panel starts centered while retaining bounded responsive dimensions', () => {
   assert.deepEqual(api.panelViewportLayout(1293, 638), {
     edge: 12,
-    right: 259,
-    bottom: 96,
+    left: 157,
+    top: 54,
     width: 980,
     height: 530
   });
 });
 
-test('panel keeps usable dimensions on compact and short viewports', () => {
+test('panel keeps centered usable dimensions on compact and short viewports', () => {
   assert.deepEqual(api.panelViewportLayout(700, 600), {
     edge: 12,
-    right: 12,
-    bottom: 96,
+    left: 12,
+    top: 54,
     width: 676,
     height: 492
   });
   assert.deepEqual(api.panelViewportLayout(390, 480), {
     edge: 12,
-    right: 12,
-    bottom: 12,
+    left: 12,
+    top: 12,
     width: 366,
     height: 456
   });
+});
+
+test('custom panel placement clamps to viewport edges including visual-viewport offsets', () => {
+  assert.deepEqual(api.clampPanelPosition(-100, -50, 980, 530, 1293, 638), { left: 12, top: 12 });
+  assert.deepEqual(api.clampPanelPosition(999, 999, 980, 530, 1293, 638), { left: 301, top: 96 });
+  assert.deepEqual(api.clampPanelPosition(999, 999, 300, 200, 800, 600, 12, 20, 30), { left: 508, top: 418 });
+});
+
+test('drag uses live panel lookup so destructive rerenders cannot detach movement state', () => {
+  const previousWindow = globalThis.window;
+  const makePanel = (left = 157, top = 54) => ({
+    style: {},
+    dataset: {},
+    getBoundingClientRect() { return { left, top, width: 980, height: 530 }; }
+  });
+  const firstPanel = makePanel();
+  const secondPanel = makePanel(12, 12);
+  let currentPanel = firstPanel;
+  const handle = {
+    captures: [], releases: [],
+    setPointerCapture(id) { this.captures.push(id); },
+    releasePointerCapture(id) { this.releases.push(id); }
+  };
+  try {
+    globalThis.window = { innerWidth: 1293, innerHeight: 638, visualViewport: null };
+    const ui = new api.LinkedNotesUI();
+    ui.shadow = { querySelector(selector) { return selector === '.panel' ? currentPanel : null; } };
+    let popupCloses = 0;
+    ui.__closeFilesWorkspaceTopPopupForPanelMove = () => { popupCloses += 1; };
+    ui._positionPanel();
+    assert.equal(firstPanel.style.left, '157px');
+    assert.equal(firstPanel.style.top, '54px');
+    ui._beginPanelDrag({ button: 0, pointerId: 7, clientX: 200, clientY: 100, currentTarget: handle, preventDefault() {} });
+    ui._movePanelDrag({ pointerId: 7, clientX: -500, clientY: -500 });
+    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 12, top: 12 });
+    assert.equal(firstPanel.style.left, '12px');
+    assert.equal(firstPanel.style.top, '12px');
+
+    currentPanel = secondPanel;
+    ui._positionPanel();
+    assert.equal(secondPanel.style.left, '12px', 'replacement panel must inherit the live custom placement');
+    assert.equal(secondPanel.style.top, '12px');
+    ui._movePanelDrag({ pointerId: 7, clientX: 400, clientY: 300 });
+    assert.equal(secondPanel.style.left, '301px', 'pointermove must target the replacement live panel');
+    assert.equal(secondPanel.style.top, '96px');
+    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 301, top: 96 });
+    ui._endPanelDrag({ pointerId: 7, clientX: 400, clientY: 300 });
+    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 301, top: 96 });
+    assert.equal(secondPanel.dataset.dragging, undefined);
+    assert.equal(popupCloses, 1);
+    assert.deepEqual(handle.captures, [7]);
+    assert.deepEqual(handle.releases, [7]);
+
+    ui._centerPanel();
+    assert.deepEqual(ui.panelPlacement, { mode: 'center', left: 0, top: 0 });
+    assert.equal(secondPanel.style.left, '157px');
+    assert.equal(secondPanel.style.top, '54px');
+    assert.equal(popupCloses, 2);
+  } finally {
+    if (previousWindow === undefined) delete globalThis.window;
+    else globalThis.window = previousWindow;
+  }
+});
+
+test('viewport changes close transient popup state before repositioning the panel', () => {
+  const ui = new api.LinkedNotesUI();
+  const order = [];
+  ui.__closeFilesWorkspaceTopPopupForPanelMove = () => order.push('close');
+  ui._positionPanel = () => order.push('position');
+  ui._onViewportChange();
+  assert.deepEqual(order, ['close', 'position']);
 });
 
 test('panel source keeps independent scrolling and a visible workspace-manager action', () => {
@@ -49,6 +120,9 @@ test('panel source keeps independent scrolling and a visible workspace-manager a
   assert.match(source, /\.notes \{[^}]*flex: 1 1 0;[^}]*overflow-y: auto;/s);
   assert.match(source, /z-index: 2147483647/);
   assert.match(source, /data-action="manage-workspaces"/);
+  assert.match(source, /data-panel-drag-handle/);
+  assert.match(source, /data-action="center-panel"/);
+  assert.match(source, /touch-action: none/);
 });
 
 test('Escape closes only an open idle panel', () => {

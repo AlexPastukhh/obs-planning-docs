@@ -99,6 +99,7 @@ Examples:
 selected surface
 current workspace selection/session context
 currently opened repository path/file/editor
+Linked Notes panel placement mode/coordinates for the live userscript runtime
 unsaved live controls before persistence
 remote-operation progress/retry/cancellation state
 Reference Object check/validation/focus state
@@ -110,6 +111,8 @@ App State modal state
 Reader semantic state includes source kind/accuracy, current Markdown and diagnostics. It is intentionally runtime-only; Reader history is not persisted in this slice.
 
 The current Files location is also runtime-only. Hiding and reopening the Linked Notes panel in the same live chat/runtime preserves the selected surface, repository path/listing, opened file/editor and file view mode when the exact workspace id + repository/branch + Notes/Categories paths are unchanged. Reopen still rereads local workspace/category storage; a changed chat mapping or changed workspace target invalidates and clears the old repository-derived state. This preservation is not browser-reload persistence and does not add a GM-storage navigation record.
+
+Panel placement is runtime-only UI state. A new userscript runtime starts centered. Dragging the dedicated panel handle switches immediately to a clamped custom `left`/`top` placement; each pointer move updates that semantic placement and reacquires the current live panel, so collapse/expand and ordinary destructive rerenders preserve both the placement and an in-progress drag in the same live runtime. `Center` switches back to centered mode, where viewport changes recompute the center; viewport changes close transient fixed-position popups first and then clamp a custom placement instead. Coordinates are not stored in GitHub, IndexedDB or GM storage and are not promised across a full page reload.
 
 ## 6. Derived / Cache / Projection State
 

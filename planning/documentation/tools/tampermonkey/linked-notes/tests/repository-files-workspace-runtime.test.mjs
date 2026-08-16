@@ -190,6 +190,11 @@ test('runtime auto-opens exact folder-name Markdown index and wires Files handle
   assert.equal(typeof app.ui.handlers.onPreviewRepositoryStructure, 'function');
   assert.equal(typeof app.ui.handlers.onLoadRepositoryFileTemplates, 'function');
   assert.equal(typeof app.ui.handlers.onBeginRepositoryFileCreateFromTemplate, 'function');
+  app.ui.mount();
+  app.ui.__filesWorkspaceTopPopup = 'locations';
+  assert.equal(typeof app.ui.__closeFilesWorkspaceTopPopupForPanelMove, 'function');
+  app.ui.__closeFilesWorkspaceTopPopupForPanelMove();
+  assert.equal(app.ui.__filesWorkspaceTopPopup, '', 'panel movement hook must close a portaled popup before the window moves');
 });
 
 test('Locations opens pasted repository-relative folders/files with bounded resolution and leaves state unchanged on invalid or missing paths', async () => {

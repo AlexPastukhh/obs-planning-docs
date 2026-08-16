@@ -43,11 +43,12 @@ Use one copy for one concrete browser/repository test run. Never record token va
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
 | 4 | Compare Docs with existing right-edge OBS launchers. | Notes is shifted left by approximately its own width plus a gap and is not hidden. | |
-| 4a | Open Docs with the S2/timer widget or another bottom-right OBS widget visible. | On a wide viewport, Notes reserves bottom-right space and no overlay covers its content. | |
+| 4a | Open Docs in a fresh page/userscript runtime. | The Linked Notes panel starts centered using its bounded responsive dimensions; it is not anchored to the historical bottom-right safe area. | |
 | 4b | Reduce the viewport height until Links and workspace settings no longer fit at once. | The editor gains an internal scrollbar; the bottom content remains reachable without scrolling the ChatGPT page. | |
 | 4c | Add enough Notes to exceed the sidebar height. | The Note list scrolls independently while status remains reachable. | |
 | 4d | Press the top-bar `Manage workspaces` button from the top of the editor. | The manager opens and is scrolled into view without losing the Note or workspace drafts. | |
-| 4e | Resize the browser while Notes is open. | Panel dimensions and safe area update; controls remain inside the viewport. | |
+| 4e | Resize the browser while Notes is open, first while centered and again after a custom drag. | Centered mode recomputes the center; custom mode keeps its position when possible and clamps it when necessary; panel dimensions/controls remain inside the viewport. | |
+| 4f | Drag the dedicated `Linked Notes · drag` handle toward each viewport edge; while the pointer is still held, trigger a harmless UI/status rerender; continue the drag, collapse/reopen Docs, then press `Center`; repeat once with `Locations` or `Reference objects` open before drag and once before viewport resize. | Only the handle moves the panel; it cannot be lost beyond the viewport edge; a destructive rerender does not detach or reset an in-progress drag; custom position survives collapse/reopen in the same live runtime; `Center` restores centered mode; a portaled top popup closes before movement/repositioning and does not remain detached. | |
 | 5 | Open Docs in dark ChatGPT. | Panel, controls, status and manager use a readable dark theme. | |
 | 6 | Create a Note, type title/body without Save local, then press `Escape`. | Note draft persists and the panel closes. | |
 | 7 | Reopen Notes. | Exact title/body from step 6 remains. | |

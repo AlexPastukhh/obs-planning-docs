@@ -68,13 +68,15 @@ The final Full App State runtime is intentionally installed after the feature ru
 
 The common local-change runtime is installed after Files and Reference Objects so it becomes the final owner of repository editor, structure/copy and feature-publication behavior. It preserves the former Reference Object local storage key for migration compatibility while normalizing entries into one queue.
 
+The movable panel remains owned by the base UI rather than a feature runtime. Drag placement is committed into runtime state during pointer movement and each move reacquires the current live panel, so a destructive UI rerender cannot strand the gesture on a detached DOM node. Feature runtimes may register transient-overlay cleanup hooks; the Files runtime uses that boundary to close its Shadow-root top popup before panel drag/Center/viewport repositioning so a fixed popup cannot remain visually detached from a moved anchor.
+
 ## 3. Module Families
 
 ### Application shell
 
 ```text
 src/linked-notes-ui.js
-  base Shadow DOM UI and common interaction surfaces;
+  base Shadow DOM UI and common interaction surfaces, including centered/runtime-only panel placement, pointer-drag handling and viewport clamping;
 
 src/linked-notes-app.js
   main application composition and remote/local orchestration;

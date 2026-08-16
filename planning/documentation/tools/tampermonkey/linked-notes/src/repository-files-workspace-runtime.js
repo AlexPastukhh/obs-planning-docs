@@ -1383,6 +1383,7 @@
 
     UI.prototype.mount = function filesWorkspaceMount(...args) {
       const result = originalMount.apply(this, args);
+      this.__closeFilesWorkspaceTopPopupForPanelMove = () => closeFilesWorkspaceTopPopup(this);
       if (!this.__filesWorkspaceEscapePatched && typeof document !== 'undefined' && this._onDocumentKeydown) {
         const previous = this._onDocumentKeydown;
         document.removeEventListener('keydown', previous, true);

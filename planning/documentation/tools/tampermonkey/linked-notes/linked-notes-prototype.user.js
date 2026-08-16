@@ -7436,18 +7436,40 @@
     const width = Number.isFinite(Number(viewportWidth)) ? Math.max(0, Number(viewportWidth)) : 0;
     const height = Number.isFinite(Number(viewportHeight)) ? Math.max(0, Number(viewportHeight)) : 0;
     const edge = 12;
-    const right = width >= 960
+    const reservedRight = width >= 960
       ? Math.min(320, Math.max(220, Math.round(width * 0.2)))
       : edge;
-    const bottom = height >= 520
+    const reservedBottom = height >= 520
       ? Math.min(144, Math.max(96, Math.round(height * 0.14)))
       : edge;
+    const panelWidth = Math.max(240, Math.min(980, width - reservedRight - edge));
+    const panelHeight = Math.max(240, Math.min(760, height - reservedBottom - edge));
     return {
       edge,
-      right,
-      bottom,
-      width: Math.max(240, Math.min(980, width - right - edge)),
-      height: Math.max(240, Math.min(760, height - bottom - edge))
+      left: Math.max(edge, Math.round((width - panelWidth) / 2)),
+      top: Math.max(edge, Math.round((height - panelHeight) / 2)),
+      width: panelWidth,
+      height: panelHeight
+    };
+  }
+
+  function clampPanelPosition(left, top, panelWidth, panelHeight, viewportWidth, viewportHeight, edge = 12, viewportLeft = 0, viewportTop = 0) {
+    const width = Number.isFinite(Number(viewportWidth)) ? Math.max(0, Number(viewportWidth)) : 0;
+    const height = Number.isFinite(Number(viewportHeight)) ? Math.max(0, Number(viewportHeight)) : 0;
+    const itemWidth = Number.isFinite(Number(panelWidth)) ? Math.max(0, Number(panelWidth)) : 0;
+    const itemHeight = Number.isFinite(Number(panelHeight)) ? Math.max(0, Number(panelHeight)) : 0;
+    const margin = Number.isFinite(Number(edge)) ? Math.max(0, Number(edge)) : 0;
+    const originLeft = Number.isFinite(Number(viewportLeft)) ? Number(viewportLeft) : 0;
+    const originTop = Number.isFinite(Number(viewportTop)) ? Number(viewportTop) : 0;
+    const minLeft = originLeft + margin;
+    const minTop = originTop + margin;
+    const maxLeft = Math.max(minLeft, originLeft + width - margin - itemWidth);
+    const maxTop = Math.max(minTop, originTop + height - margin - itemHeight);
+    const requestedLeft = Number.isFinite(Number(left)) ? Number(left) : minLeft;
+    const requestedTop = Number.isFinite(Number(top)) ? Number(top) : minTop;
+    return {
+      left: Math.round(Math.max(minLeft, Math.min(maxLeft, requestedLeft))),
+      top: Math.round(Math.max(minTop, Math.min(maxTop, requestedTop)))
     };
   }
 
@@ -7563,7 +7585,14 @@
       this.fileEditorDirty = false;
       this.fileCategoryDirty = false;
       this._draftTimer = null;
-      this._onViewportChange = () => this._positionPanel();
+      this.panelPlacement = { mode: 'center', left: 0, top: 0 };
+      this._panelDrag = null;
+      this._onPanelPointerMove = (event) => this._movePanelDrag(event);
+      this._onPanelPointerEnd = (event) => this._endPanelDrag(event);
+      this._onViewportChange = () => {
+        if (typeof this.__closeFilesWorkspaceTopPopupForPanelMove === 'function') this.__closeFilesWorkspaceTopPopupForPanelMove();
+        this._positionPanel();
+      };
       this._onDocumentKeydown = (event) => {
         if (!shouldCloseOnEscape(event, { open: this.open, busy: this.state.busy })) return;
         event.preventDefault();
@@ -7583,6 +7612,9 @@
       document.documentElement.appendChild(this.host);
       this.shadow = this.host.attachShadow({ mode: 'open' });
       document.addEventListener('keydown', this._onDocumentKeydown, true);
+      document.addEventListener('pointermove', this._onPanelPointerMove, true);
+      document.addEventListener('pointerup', this._onPanelPointerEnd, true);
+      document.addEventListener('pointercancel', this._onPanelPointerEnd, true);
       if (typeof window !== 'undefined') {
         window.addEventListener('resize', this._onViewportChange, { passive: true });
         if (window.visualViewport) window.visualViewport.addEventListener('resize', this._onViewportChange, { passive: true });
@@ -7593,6 +7625,9 @@
     dispose() {
       this.persistAllDraftsNow().catch(() => {});
       document.removeEventListener('keydown', this._onDocumentKeydown, true);
+      document.removeEventListener('pointermove', this._onPanelPointerMove, true);
+      document.removeEventListener('pointerup', this._onPanelPointerEnd, true);
+      document.removeEventListener('pointercancel', this._onPanelPointerEnd, true);
       if (typeof window !== 'undefined') {
         window.removeEventListener('resize', this._onViewportChange);
         if (window.visualViewport) window.visualViewport.removeEventListener('resize', this._onViewportChange);
@@ -7800,15 +7835,117 @@
       else apply();
     }
 
+    _panelViewportMetrics() {
+      if (typeof window === 'undefined') return { width: 0, height: 0, left: 0, top: 0 };
+      const viewport = window.visualViewport || window;
+      return {
+        width: Number(viewport.width || window.innerWidth || 0),
+        height: Number(viewport.height || window.innerHeight || 0),
+        left: Number(viewport.offsetLeft || 0),
+        top: Number(viewport.offsetTop || 0)
+      };
+    }
+
     _positionPanel() {
       const panel = this.shadow && this.shadow.querySelector('.panel');
       if (!panel || typeof window === 'undefined') return;
-      const viewport = window.visualViewport || window;
-      const layout = panelViewportLayout(viewport.width || window.innerWidth, viewport.height || window.innerHeight);
-      panel.style.right = `${layout.right}px`;
-      panel.style.bottom = `${layout.bottom}px`;
+      const viewport = this._panelViewportMetrics();
+      const layout = panelViewportLayout(viewport.width, viewport.height);
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
       panel.style.width = `${layout.width}px`;
       panel.style.height = `${layout.height}px`;
+      const centered = { left: viewport.left + layout.left, top: viewport.top + layout.top };
+      const position = this.panelPlacement && this.panelPlacement.mode === 'custom'
+        ? clampPanelPosition(this.panelPlacement.left, this.panelPlacement.top, layout.width, layout.height, viewport.width, viewport.height, layout.edge, viewport.left, viewport.top)
+        : centered;
+      panel.style.left = `${position.left}px`;
+      panel.style.top = `${position.top}px`;
+      if (this.panelPlacement && this.panelPlacement.mode === 'custom') this.panelPlacement = { mode: 'custom', ...position };
+      return { ...layout, ...position };
+    }
+
+    _movePanelDrag(event) {
+      const drag = this._panelDrag;
+      if (!drag || !event || (drag.pointerId != null && event.pointerId != null && event.pointerId !== drag.pointerId)) return;
+      const clientX = Number(event.clientX);
+      const clientY = Number(event.clientY);
+      if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) return;
+      const viewport = this._panelViewportMetrics();
+      const position = clampPanelPosition(
+        drag.startLeft + (clientX - drag.startX),
+        drag.startTop + (clientY - drag.startY),
+        drag.width,
+        drag.height,
+        viewport.width,
+        viewport.height,
+        drag.edge,
+        viewport.left,
+        viewport.top
+      );
+      drag.currentLeft = position.left;
+      drag.currentTop = position.top;
+      this.panelPlacement = { mode: 'custom', left: position.left, top: position.top };
+      const panel = this.shadow && this.shadow.querySelector('.panel');
+      if (panel && panel.style) {
+        panel.style.left = `${position.left}px`;
+        panel.style.top = `${position.top}px`;
+        panel.style.right = 'auto';
+        panel.style.bottom = 'auto';
+        if (panel.dataset) panel.dataset.dragging = '1';
+      }
+    }
+
+    _endPanelDrag(event) {
+      const drag = this._panelDrag;
+      if (!drag || (event && drag.pointerId != null && event.pointerId != null && event.pointerId !== drag.pointerId)) return;
+      this._movePanelDrag(event);
+      const placement = this.panelPlacement && this.panelPlacement.mode === 'custom' ? this.panelPlacement : null;
+      const left = placement && Number.isFinite(Number(placement.left)) ? Number(placement.left) : (Number.isFinite(Number(drag.currentLeft)) ? Number(drag.currentLeft) : drag.startLeft);
+      const top = placement && Number.isFinite(Number(placement.top)) ? Number(placement.top) : (Number.isFinite(Number(drag.currentTop)) ? Number(drag.currentTop) : drag.startTop);
+      this.panelPlacement = { mode: 'custom', left: Math.round(left), top: Math.round(top) };
+      const panel = this.shadow && this.shadow.querySelector('.panel');
+      if (panel && panel.dataset) delete panel.dataset.dragging;
+      if (drag.handle && typeof drag.handle.releasePointerCapture === 'function' && drag.pointerId != null) {
+        try { drag.handle.releasePointerCapture(drag.pointerId); } catch (error) { /* pointer capture may already be released */ }
+      }
+      this._panelDrag = null;
+    }
+
+    _beginPanelDrag(event) {
+      if (!event || (Number.isFinite(Number(event.button)) && Number(event.button) !== 0)) return;
+      const panel = this.shadow && this.shadow.querySelector('.panel');
+      if (!panel || typeof panel.getBoundingClientRect !== 'function') return;
+      if (typeof event.preventDefault === 'function') event.preventDefault();
+      if (typeof this.__closeFilesWorkspaceTopPopupForPanelMove === 'function') this.__closeFilesWorkspaceTopPopupForPanelMove();
+      const rect = panel.getBoundingClientRect();
+      const viewport = this._panelViewportMetrics();
+      const layout = panelViewportLayout(viewport.width, viewport.height);
+      this.panelPlacement = { mode: 'custom', left: Math.round(Number(rect.left) || 0), top: Math.round(Number(rect.top) || 0) };
+      this._panelDrag = {
+        pointerId: event.pointerId,
+        startX: Number(event.clientX) || 0,
+        startY: Number(event.clientY) || 0,
+        startLeft: Number(rect.left) || 0,
+        startTop: Number(rect.top) || 0,
+        currentLeft: Number(rect.left) || 0,
+        currentTop: Number(rect.top) || 0,
+        width: Number(rect.width) || layout.width,
+        height: Number(rect.height) || layout.height,
+        edge: layout.edge,
+        handle: event.currentTarget || null
+      };
+      if (panel.dataset) panel.dataset.dragging = '1';
+      if (event.currentTarget && typeof event.currentTarget.setPointerCapture === 'function' && event.pointerId != null) {
+        try { event.currentTarget.setPointerCapture(event.pointerId); } catch (error) { /* pointer capture is an optimization */ }
+      }
+    }
+
+    _centerPanel() {
+      this._panelDrag = null;
+      this.panelPlacement = { mode: 'center', left: 0, top: 0 };
+      if (typeof this.__closeFilesWorkspaceTopPopupForPanelMove === 'function') this.__closeFilesWorkspaceTopPopupForPanelMove();
+      this._positionPanel();
     }
 
     render() {
@@ -8056,8 +8193,14 @@
           *, *::before, *::after { box-sizing: border-box; }
           button, input, textarea, select { font: 13px/1.35 system-ui, sans-serif; }
           .launcher { position: fixed; right: 102px; bottom: 18px; z-index: 2147483647; border: 1px solid #343a46; border-radius: 999px; padding: 10px 15px; background: #202123; color: #fff; box-shadow: 0 5px 18px rgba(0,0,0,.42); cursor: pointer; }
-          .panel { position: fixed; right: 12px; bottom: 96px; z-index: 2147483647; width: min(980px, calc(100vw - 24px)); height: min(760px, calc(100dvh - 108px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); min-width: 0; min-height: 0; display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 260px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.55); font: 13px/1.4 system-ui, sans-serif; color-scheme: dark; }
-          .sidebar { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); }
+          .panel { position: fixed; left: 12px; top: 12px; right: auto; bottom: auto; z-index: 2147483647; width: min(980px, calc(100vw - 24px)); height: min(760px, calc(100dvh - 108px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); min-width: 0; min-height: 0; display: ${this.open ? 'grid' : 'none'}; grid-template-columns: 260px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 14px 42px rgba(0,0,0,.55); font: 13px/1.4 system-ui, sans-serif; color-scheme: dark; }
+          .panel-chrome { grid-column: 1 / -1; grid-row: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-bottom: 1px solid var(--border); background: #151820; }
+          .panel-drag-handle { min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 8px; color: var(--muted); cursor: grab; user-select: none; touch-action: none; }
+          .panel-drag-handle::before { content: '⋮⋮'; letter-spacing: -2px; color: var(--text); }
+          .panel[data-dragging="1"] .panel-drag-handle { cursor: grabbing; }
+          .panel-window-actions { display: flex; gap: 6px; margin-left: auto; }
+          .panel-window-actions button { padding: 4px 8px; }
+          .sidebar { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); }
           .toolbar, .editor-toolbar, .status, .workspace-bar, .surface-tabs { padding: 10px; border-bottom: 1px solid var(--border); }
           .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 7px; }
           .workspace-bar { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr) auto auto; gap: 8px; align-items: center; background: var(--surface); }
@@ -8075,7 +8218,7 @@
           .note-row { width: 100%; display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 6px; text-align: left; }
           .note-row span { color: var(--muted); font-size: 11px; }
           .note-row.active { outline: 2px solid var(--success); }
-          .main { min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+          .main { grid-column: 2; grid-row: 2; min-width: 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
           .editor-toolbar { display: flex; gap: 7px; flex-wrap: wrap; background: var(--surface); margin: -12px -12px 0; }
           .editor { flex: 1 1 0; display: grid; align-content: start; grid-template-rows: auto; min-height: 0; gap: 8px; padding: 12px 12px 72px; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
           textarea { min-height: 220px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
@@ -8170,10 +8313,11 @@
           .picker-row input { width: auto; }
           .picker-row small { color: var(--muted); margin-left: auto; overflow: hidden; text-overflow: ellipsis; }
           .workspace-manager-panel { margin-top: 10px; }
-          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); } .sidebar { max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .add-link, .workspace-bar, .settings-grid, .picker-search, .note-mode-split, .transfer-grid, .pending-asset-row { grid-template-columns: 1fr; } }
+          @media (max-width: 700px) { .panel { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); } .panel-chrome { grid-column: 1; grid-row: 1; } .sidebar { grid-column: 1; grid-row: 2; max-height: 190px; border-right: 0; border-bottom: 1px solid var(--border); } .main { grid-column: 1; grid-row: 3; } .add-link, .workspace-bar, .settings-grid, .picker-search, .note-mode-split, .transfer-grid, .pending-asset-row { grid-template-columns: 1fr; } }
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Docs</button>
         <section class="panel" aria-label="Repository Documentation Workspace Prototype" aria-busy="${busy ? 'true' : 'false'}">
+          <div class="panel-chrome"><div class="panel-drag-handle" data-panel-drag-handle title="Drag Linked Notes window"><strong>Linked Notes</strong><span>drag</span></div><div class="panel-window-actions"><button data-action="center-panel" title="Put Linked Notes back in the center">Center</button></div></div>
           <aside class="sidebar">
             <div class="toolbar">${sidebarToolbar}</div>
             <div class="notes">${sidebarBody}</div>
@@ -8224,6 +8368,10 @@
 
       this._positionLauncher();
       this._positionPanel();
+      const dragHandle = this.shadow.querySelector('[data-panel-drag-handle]');
+      if (dragHandle) dragHandle.onpointerdown = (event) => this._beginPanelDrag(event);
+      const centerPanel = this.shadow.querySelector('[data-action="center-panel"]');
+      if (centerPanel) centerPanel.onclick = () => this._centerPanel();
       const details = this.shadow.querySelector('[data-role="workspace-manager"]');
       if (details) details.ontoggle = () => { this.workspaceManagerOpen = details.open; };
       const title = this.shadow.querySelector('[data-role="title"]');
@@ -8409,6 +8557,7 @@
     escapeHtml,
     launcherRightOffset,
     panelViewportLayout,
+    clampPanelPosition,
     shouldCloseOnEscape,
     blankWorkspaceEditor,
     mergeWorkspaceEditorPatch,
@@ -13901,6 +14050,7 @@
 
     UI.prototype.mount = function filesWorkspaceMount(...args) {
       const result = originalMount.apply(this, args);
+      this.__closeFilesWorkspaceTopPopupForPanelMove = () => closeFilesWorkspaceTopPopup(this);
       if (!this.__filesWorkspaceEscapePatched && typeof document !== 'undefined' && this._onDocumentKeydown) {
         const previous = this._onDocumentKeydown;
         document.removeEventListener('keydown', previous, true);
