@@ -974,6 +974,17 @@
     syncFilesWorkspaceTopPopupPanels(ui);
   }
 
+  function filesWorkspaceEventInsideTopPopup(event) {
+    const path = event && typeof event.composedPath === 'function' ? event.composedPath() : [];
+    for (const node of path) {
+      if (!node) continue;
+      if (node.dataset && (node.dataset.filesWorkspacePopupAnchor || node.dataset.filesWorkspacePopupPanel)) return true;
+      if (typeof node.matches === 'function' && node.matches('[data-files-workspace-popup-anchor],[data-files-workspace-popup-panel]')) return true;
+    }
+    const target = event && event.target;
+    return Boolean(target && typeof target.closest === 'function' && (target.closest('[data-files-workspace-popup-anchor]') || target.closest('[data-files-workspace-popup-panel]')));
+  }
+
   function portalFilesWorkspaceDropdownPanel(ui, details, panel, options = {}) {
     if (!ui || !ui.shadow || !details || !panel) return false;
     const layer = ensureFilesWorkspacePopupLayer(ui);
@@ -1380,6 +1391,7 @@
     Object.defineProperty(UI.prototype, UI_PATCH, { value: true, configurable: false, enumerable: false, writable: false });
     const originalMount = UI.prototype.mount;
     const originalRender = UI.prototype.render;
+    const originalDispose = UI.prototype.dispose;
 
     UI.prototype.mount = function filesWorkspaceMount(...args) {
       const result = originalMount.apply(this, args);
@@ -1400,17 +1412,32 @@
         document.addEventListener('keydown', this._onDocumentKeydown, true);
         this.__filesWorkspaceEscapePatched = true;
       }
+      if (typeof document !== 'undefined' && !this.__filesWorkspaceOutsidePointerPatched) {
+        this.__filesWorkspaceOutsidePointerHandler = (event) => {
+          if (!this.__filesWorkspaceTopPopup || filesWorkspaceEventInsideTopPopup(event)) return;
+          closeFilesWorkspaceTopPopup(this);
+        };
+        document.addEventListener('pointerdown', this.__filesWorkspaceOutsidePointerHandler, true);
+        this.__filesWorkspaceOutsidePointerPatched = true;
+      }
       if (this.shadow && !this.__filesWorkspaceOutsideClickPatched) {
         this.shadow.addEventListener('click', (event) => {
           const target = event && event.target;
-          const popupTarget = target && typeof target.closest === 'function' && (target.closest('[data-files-workspace-popup-anchor]') || target.closest('[data-files-workspace-popup-panel]'));
-          if (this.__filesWorkspaceTopPopup && !popupTarget) closeFilesWorkspaceTopPopup(this);
           const openLink = this.shadow && this.shadow.querySelector('[data-files-copy-link][open]');
           if (openLink && !openLink.contains(target)) openLink.open = false;
         });
         this.__filesWorkspaceOutsideClickPatched = true;
       }
       return result;
+    };
+
+    UI.prototype.dispose = function filesWorkspaceDispose(...args) {
+      if (this.__filesWorkspaceOutsidePointerHandler && typeof document !== 'undefined') {
+        document.removeEventListener('pointerdown', this.__filesWorkspaceOutsidePointerHandler, true);
+      }
+      this.__filesWorkspaceOutsidePointerHandler = null;
+      this.__filesWorkspaceOutsidePointerPatched = false;
+      return typeof originalDispose === 'function' ? originalDispose.apply(this, args) : undefined;
     };
 
     UI.prototype.render = function filesWorkspaceRender(...args) {
@@ -1438,5 +1465,5 @@
     return appPatched || uiPatched;
   }
 
-  return { installRepositoryFilesWorkspace, positionFilesWorkspaceDropdownPanel, portalFilesWorkspaceDropdownPanel, closeFilesWorkspaceTopPopup };
+  return { installRepositoryFilesWorkspace, positionFilesWorkspaceDropdownPanel, portalFilesWorkspaceDropdownPanel, closeFilesWorkspaceTopPopup, filesWorkspaceEventInsideTopPopup };
 });

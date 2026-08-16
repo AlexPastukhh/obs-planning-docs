@@ -22,6 +22,7 @@ Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTU
 - added direct repository-relative path opening to `Locations`: directories browse directly, files open in their parent folder, exact pending-local paths are preferred and invalid/missing paths leave the current location unchanged;
 - preserved same-chat Files location/open-file/editor state across Linked Notes panel collapse/expand while still rereading local workspace/category storage and resetting repository-derived state when the workspace mapping or repository target actually changes;
 - made the Linked Notes panel centered by default and runtime-draggable from a dedicated handle, with viewport clamping, collapse/reopen position retention, rerender-safe in-progress dragging, a `Center` reset control and transient top-popup closure before panel movement/repositioning;
+- corrected current UI ergonomics by giving Chat Response Reader the Linked Notes dark theme, closing shared top-popups on document-level outside pointerdown and allowing recoverable 64 px left/right edge-peek for the open draggable panel;
 - added repository-facing AI rules for manual Ordered Item structural validation;
 - kept future Reference Object automatic-propagation policy as roadmap research only.
 

@@ -30,7 +30,7 @@ Use this focused record for one concrete Chat Response Reader browser run. It su
 
 | Step | Action | Expected result | Result / evidence |
 |---:|---|---|---|
-| R1 | Open Linked Notes and press `Reader` without configuring GitHub. | Large viewport-bounded Reader opens in fresh Paste mode. | |
+| R1 | Open Linked Notes in dark ChatGPT and press `Reader` without configuring GitHub. | Large viewport-bounded Reader opens in fresh Paste mode; card, controls, textarea, source/status text and rendered surface use readable Linked Notes dark-theme foreground/background/borders rather than a white browser fallback. | |
 | R2 | Paste Markdown containing headings, lists, code and a normal `<details><summary>...</summary>...</details>` block, then render. | Markdown renders safely and the details block expands/collapses natively. | |
 | R3 | Render `<details open>`. | The block starts expanded. | |
 | R4 | Render details containing `<script>`, `<iframe>`, event/style attributes and unsafe URL schemes. | Active HTML does not execute; unsupported/hostile input remains inert or escaped. | |

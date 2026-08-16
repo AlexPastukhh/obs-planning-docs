@@ -197,6 +197,63 @@ test('runtime auto-opens exact folder-name Markdown index and wires Files handle
   assert.equal(app.ui.__filesWorkspaceTopPopup, '', 'panel movement hook must close a portaled popup before the window moves');
 });
 
+test('shared top popup document pointerdown closes only outside composed paths and is removed on dispose', async () => {
+  const previousDocument = globalThis.document;
+  const listeners = new Map();
+  const removed = [];
+  globalThis.document = {
+    addEventListener(type, handler, capture) { listeners.set(`${type}:${Boolean(capture)}`, handler); },
+    removeEventListener(type, handler, capture) {
+      removed.push({ type, handler, capture: Boolean(capture) });
+      if (listeners.get(`${type}:${Boolean(capture)}`) === handler) listeners.delete(`${type}:${Boolean(capture)}`);
+    }
+  };
+  try {
+    const client = makeClient();
+    const { FakeApp, FakeUI } = makeAppClass(client);
+    runtime.installRepositoryFilesWorkspace({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+    const app = new FakeApp();
+    app.ui.shadow = {
+      addEventListener() {},
+      querySelector() { return null; },
+      querySelectorAll() { return []; }
+    };
+    app.ui.mount();
+    const handler = listeners.get('pointerdown:true');
+    assert.equal(typeof handler, 'function');
+
+    app.ui.__filesWorkspaceTopPopup = 'reference-objects';
+    const panel = { dataset: { filesWorkspacePopupPanel: '1' } };
+    handler({ composedPath() { return [{}, panel, {}]; }, target: {} });
+    assert.equal(app.ui.__filesWorkspaceTopPopup, 'reference-objects', 'inside popup pointerdown must not dismiss');
+
+    const anchor = { dataset: { filesWorkspacePopupAnchor: '1' } };
+    handler({ composedPath() { return [anchor, {}]; }, target: {} });
+    assert.equal(app.ui.__filesWorkspaceTopPopup, 'reference-objects', 'anchor pointerdown must not dismiss');
+
+    handler({ composedPath() { return [{}, {}]; }, target: {} });
+    assert.equal(app.ui.__filesWorkspaceTopPopup, '', 'document pointerdown outside the Shadow popup must dismiss');
+
+    app.ui.dispose();
+    assert.equal(listeners.has('pointerdown:true'), false);
+    assert.equal(removed.some((item) => item.type === 'pointerdown' && item.capture), true);
+  } finally {
+    if (previousDocument === undefined) delete globalThis.document;
+    else globalThis.document = previousDocument;
+  }
+});
+
+test('top popup event helper falls back to closest when composedPath is unavailable', () => {
+  const marker = {};
+  const target = {
+    closest(selector) {
+      return selector === '[data-files-workspace-popup-panel]' ? marker : null;
+    }
+  };
+  assert.equal(runtime.filesWorkspaceEventInsideTopPopup({ target }), true);
+  assert.equal(runtime.filesWorkspaceEventInsideTopPopup({ target: { closest() { return null; } } }), false);
+});
+
 test('Locations opens pasted repository-relative folders/files with bounded resolution and leaves state unchanged on invalid or missing paths', async () => {
   const client = makeClient({ files: {
     'docs/readme.md': { content: '# Readme', sha: 'readme' },

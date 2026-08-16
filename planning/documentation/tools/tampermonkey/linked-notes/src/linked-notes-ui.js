@@ -40,7 +40,7 @@
     };
   }
 
-  function clampPanelPosition(left, top, panelWidth, panelHeight, viewportWidth, viewportHeight, edge = 12, viewportLeft = 0, viewportTop = 0) {
+  function clampPanelPosition(left, top, panelWidth, panelHeight, viewportWidth, viewportHeight, edge = 12, viewportLeft = 0, viewportTop = 0, peekVisible = 64) {
     const width = Number.isFinite(Number(viewportWidth)) ? Math.max(0, Number(viewportWidth)) : 0;
     const height = Number.isFinite(Number(viewportHeight)) ? Math.max(0, Number(viewportHeight)) : 0;
     const itemWidth = Number.isFinite(Number(panelWidth)) ? Math.max(0, Number(panelWidth)) : 0;
@@ -48,9 +48,11 @@
     const margin = Number.isFinite(Number(edge)) ? Math.max(0, Number(edge)) : 0;
     const originLeft = Number.isFinite(Number(viewportLeft)) ? Number(viewportLeft) : 0;
     const originTop = Number.isFinite(Number(viewportTop)) ? Number(viewportTop) : 0;
-    const minLeft = originLeft + margin;
+    const requestedPeek = Number.isFinite(Number(peekVisible)) ? Math.max(0, Number(peekVisible)) : 64;
+    const visibleGrip = Math.min(itemWidth, Math.max(margin * 2, requestedPeek));
+    const minLeft = originLeft - Math.max(0, itemWidth - visibleGrip);
     const minTop = originTop + margin;
-    const maxLeft = Math.max(minLeft, originLeft + width - margin - itemWidth);
+    const maxLeft = Math.max(minLeft, originLeft + width - visibleGrip);
     const maxTop = Math.max(minTop, originTop + height - margin - itemHeight);
     const requestedLeft = Number.isFinite(Number(left)) ? Number(left) : minLeft;
     const requestedTop = Number.isFinite(Number(top)) ? Number(top) : minTop;
@@ -784,7 +786,10 @@
           .panel-chrome { grid-column: 1 / -1; grid-row: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-bottom: 1px solid var(--border); background: #151820; }
           .panel-drag-handle { min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 8px; color: var(--muted); cursor: grab; user-select: none; touch-action: none; }
           .panel-drag-handle::before { content: '⋮⋮'; letter-spacing: -2px; color: var(--text); }
-          .panel[data-dragging="1"] .panel-drag-handle { cursor: grabbing; }
+          .panel-edge-grip { flex: 0 0 22px; align-self: stretch; display: grid; place-items: center; color: var(--muted); cursor: grab; user-select: none; touch-action: none; border-radius: 5px; }
+          .panel-edge-grip::before { content: '⋮'; font-weight: 700; }
+          .panel-edge-grip:hover { background: var(--surface-2); color: var(--text); }
+          .panel[data-dragging="1"] .panel-drag-handle, .panel[data-dragging="1"] .panel-edge-grip { cursor: grabbing; }
           .panel-window-actions { display: flex; gap: 6px; margin-left: auto; }
           .panel-window-actions button { padding: 4px 8px; }
           .sidebar { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); }
@@ -904,7 +909,7 @@
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Docs</button>
         <section class="panel" aria-label="Repository Documentation Workspace Prototype" aria-busy="${busy ? 'true' : 'false'}">
-          <div class="panel-chrome"><div class="panel-drag-handle" data-panel-drag-handle title="Drag Linked Notes window"><strong>Linked Notes</strong><span>drag</span></div><div class="panel-window-actions"><button data-action="center-panel" title="Put Linked Notes back in the center">Center</button></div></div>
+          <div class="panel-chrome"><span class="panel-edge-grip panel-edge-grip-left" data-panel-drag-handle title="Drag Linked Notes window back from an edge" aria-label="Drag Linked Notes"></span><div class="panel-drag-handle" data-panel-drag-handle title="Drag Linked Notes window"><strong>Linked Notes</strong><span>drag</span></div><div class="panel-window-actions"><button data-action="center-panel" title="Put Linked Notes back in the center">Center</button></div><span class="panel-edge-grip panel-edge-grip-right" data-panel-drag-handle title="Drag Linked Notes window back from an edge" aria-label="Drag Linked Notes"></span></div>
           <aside class="sidebar">
             <div class="toolbar">${sidebarToolbar}</div>
             <div class="notes">${sidebarBody}</div>
@@ -955,8 +960,9 @@
 
       this._positionLauncher();
       this._positionPanel();
-      const dragHandle = this.shadow.querySelector('[data-panel-drag-handle]');
-      if (dragHandle) dragHandle.onpointerdown = (event) => this._beginPanelDrag(event);
+      for (const dragHandle of this.shadow.querySelectorAll('[data-panel-drag-handle]')) {
+        dragHandle.onpointerdown = (event) => this._beginPanelDrag(event);
+      }
       const centerPanel = this.shadow.querySelector('[data-action="center-panel"]');
       if (centerPanel) centerPanel.onclick = () => this._centerPanel();
       const details = this.shadow.querySelector('[data-role="workspace-manager"]');

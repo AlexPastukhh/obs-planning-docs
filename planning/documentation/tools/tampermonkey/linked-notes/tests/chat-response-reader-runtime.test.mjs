@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 const require = createRequire(import.meta.url);
 const readerApi = require('../src/chat-response-reader.js');
 const markdownApi = require('../src/rich-markdown-renderer.js');
@@ -96,6 +97,16 @@ test('fresh Paste mode clears a prior derived response instead of relabelling it
 test('Reader modal layout is wide and viewport-bounded', () => {
   assert.deepEqual(runtime.readerModalLayout(1400, 1000), { width: 1200, height: 900, inset: 24 });
   assert.deepEqual(runtime.readerModalLayout(800, 600), { width: 736, height: 536, inset: 24 });
+});
+
+test('Reader modal uses Linked Notes dark theme tokens instead of a white panel fallback', () => {
+  const source = readFileSync(new URL('../src/chat-response-reader-runtime.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /var\(--panel,#fff\)/);
+  assert.match(source, /background:var\(--surface-2,#20242d\)/);
+  assert.match(source, /background:var\(--surface,#191c23\)/);
+  assert.match(source, /background: 'var\(--bg,#111318\)'/);
+  assert.match(source, /color:var\(--muted,#aab2c0\)/);
+  assert.match(source, /colorScheme: 'dark'/);
 });
 
 test('assistant action injection is idempotent and uses semantic role discovery', () => {

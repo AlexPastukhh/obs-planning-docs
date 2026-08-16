@@ -7453,7 +7453,7 @@
     };
   }
 
-  function clampPanelPosition(left, top, panelWidth, panelHeight, viewportWidth, viewportHeight, edge = 12, viewportLeft = 0, viewportTop = 0) {
+  function clampPanelPosition(left, top, panelWidth, panelHeight, viewportWidth, viewportHeight, edge = 12, viewportLeft = 0, viewportTop = 0, peekVisible = 64) {
     const width = Number.isFinite(Number(viewportWidth)) ? Math.max(0, Number(viewportWidth)) : 0;
     const height = Number.isFinite(Number(viewportHeight)) ? Math.max(0, Number(viewportHeight)) : 0;
     const itemWidth = Number.isFinite(Number(panelWidth)) ? Math.max(0, Number(panelWidth)) : 0;
@@ -7461,9 +7461,11 @@
     const margin = Number.isFinite(Number(edge)) ? Math.max(0, Number(edge)) : 0;
     const originLeft = Number.isFinite(Number(viewportLeft)) ? Number(viewportLeft) : 0;
     const originTop = Number.isFinite(Number(viewportTop)) ? Number(viewportTop) : 0;
-    const minLeft = originLeft + margin;
+    const requestedPeek = Number.isFinite(Number(peekVisible)) ? Math.max(0, Number(peekVisible)) : 64;
+    const visibleGrip = Math.min(itemWidth, Math.max(margin * 2, requestedPeek));
+    const minLeft = originLeft - Math.max(0, itemWidth - visibleGrip);
     const minTop = originTop + margin;
-    const maxLeft = Math.max(minLeft, originLeft + width - margin - itemWidth);
+    const maxLeft = Math.max(minLeft, originLeft + width - visibleGrip);
     const maxTop = Math.max(minTop, originTop + height - margin - itemHeight);
     const requestedLeft = Number.isFinite(Number(left)) ? Number(left) : minLeft;
     const requestedTop = Number.isFinite(Number(top)) ? Number(top) : minTop;
@@ -8197,7 +8199,10 @@
           .panel-chrome { grid-column: 1 / -1; grid-row: 1; min-width: 0; display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-bottom: 1px solid var(--border); background: #151820; }
           .panel-drag-handle { min-width: 0; flex: 1 1 auto; display: flex; align-items: center; gap: 8px; color: var(--muted); cursor: grab; user-select: none; touch-action: none; }
           .panel-drag-handle::before { content: '⋮⋮'; letter-spacing: -2px; color: var(--text); }
-          .panel[data-dragging="1"] .panel-drag-handle { cursor: grabbing; }
+          .panel-edge-grip { flex: 0 0 22px; align-self: stretch; display: grid; place-items: center; color: var(--muted); cursor: grab; user-select: none; touch-action: none; border-radius: 5px; }
+          .panel-edge-grip::before { content: '⋮'; font-weight: 700; }
+          .panel-edge-grip:hover { background: var(--surface-2); color: var(--text); }
+          .panel[data-dragging="1"] .panel-drag-handle, .panel[data-dragging="1"] .panel-edge-grip { cursor: grabbing; }
           .panel-window-actions { display: flex; gap: 6px; margin-left: auto; }
           .panel-window-actions button { padding: 4px 8px; }
           .sidebar { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); }
@@ -8317,7 +8322,7 @@
         </style>
         <button class="launcher" data-action="toggle" ${disabled}>Docs</button>
         <section class="panel" aria-label="Repository Documentation Workspace Prototype" aria-busy="${busy ? 'true' : 'false'}">
-          <div class="panel-chrome"><div class="panel-drag-handle" data-panel-drag-handle title="Drag Linked Notes window"><strong>Linked Notes</strong><span>drag</span></div><div class="panel-window-actions"><button data-action="center-panel" title="Put Linked Notes back in the center">Center</button></div></div>
+          <div class="panel-chrome"><span class="panel-edge-grip panel-edge-grip-left" data-panel-drag-handle title="Drag Linked Notes window back from an edge" aria-label="Drag Linked Notes"></span><div class="panel-drag-handle" data-panel-drag-handle title="Drag Linked Notes window"><strong>Linked Notes</strong><span>drag</span></div><div class="panel-window-actions"><button data-action="center-panel" title="Put Linked Notes back in the center">Center</button></div><span class="panel-edge-grip panel-edge-grip-right" data-panel-drag-handle title="Drag Linked Notes window back from an edge" aria-label="Drag Linked Notes"></span></div>
           <aside class="sidebar">
             <div class="toolbar">${sidebarToolbar}</div>
             <div class="notes">${sidebarBody}</div>
@@ -8368,8 +8373,9 @@
 
       this._positionLauncher();
       this._positionPanel();
-      const dragHandle = this.shadow.querySelector('[data-panel-drag-handle]');
-      if (dragHandle) dragHandle.onpointerdown = (event) => this._beginPanelDrag(event);
+      for (const dragHandle of this.shadow.querySelectorAll('[data-panel-drag-handle]')) {
+        dragHandle.onpointerdown = (event) => this._beginPanelDrag(event);
+      }
       const centerPanel = this.shadow.querySelector('[data-action="center-panel"]');
       if (centerPanel) centerPanel.onclick = () => this._centerPanel();
       const details = this.shadow.querySelector('[data-role="workspace-manager"]');
@@ -13641,6 +13647,17 @@
     syncFilesWorkspaceTopPopupPanels(ui);
   }
 
+  function filesWorkspaceEventInsideTopPopup(event) {
+    const path = event && typeof event.composedPath === 'function' ? event.composedPath() : [];
+    for (const node of path) {
+      if (!node) continue;
+      if (node.dataset && (node.dataset.filesWorkspacePopupAnchor || node.dataset.filesWorkspacePopupPanel)) return true;
+      if (typeof node.matches === 'function' && node.matches('[data-files-workspace-popup-anchor],[data-files-workspace-popup-panel]')) return true;
+    }
+    const target = event && event.target;
+    return Boolean(target && typeof target.closest === 'function' && (target.closest('[data-files-workspace-popup-anchor]') || target.closest('[data-files-workspace-popup-panel]')));
+  }
+
   function portalFilesWorkspaceDropdownPanel(ui, details, panel, options = {}) {
     if (!ui || !ui.shadow || !details || !panel) return false;
     const layer = ensureFilesWorkspacePopupLayer(ui);
@@ -14047,6 +14064,7 @@
     Object.defineProperty(UI.prototype, UI_PATCH, { value: true, configurable: false, enumerable: false, writable: false });
     const originalMount = UI.prototype.mount;
     const originalRender = UI.prototype.render;
+    const originalDispose = UI.prototype.dispose;
 
     UI.prototype.mount = function filesWorkspaceMount(...args) {
       const result = originalMount.apply(this, args);
@@ -14067,17 +14085,32 @@
         document.addEventListener('keydown', this._onDocumentKeydown, true);
         this.__filesWorkspaceEscapePatched = true;
       }
+      if (typeof document !== 'undefined' && !this.__filesWorkspaceOutsidePointerPatched) {
+        this.__filesWorkspaceOutsidePointerHandler = (event) => {
+          if (!this.__filesWorkspaceTopPopup || filesWorkspaceEventInsideTopPopup(event)) return;
+          closeFilesWorkspaceTopPopup(this);
+        };
+        document.addEventListener('pointerdown', this.__filesWorkspaceOutsidePointerHandler, true);
+        this.__filesWorkspaceOutsidePointerPatched = true;
+      }
       if (this.shadow && !this.__filesWorkspaceOutsideClickPatched) {
         this.shadow.addEventListener('click', (event) => {
           const target = event && event.target;
-          const popupTarget = target && typeof target.closest === 'function' && (target.closest('[data-files-workspace-popup-anchor]') || target.closest('[data-files-workspace-popup-panel]'));
-          if (this.__filesWorkspaceTopPopup && !popupTarget) closeFilesWorkspaceTopPopup(this);
           const openLink = this.shadow && this.shadow.querySelector('[data-files-copy-link][open]');
           if (openLink && !openLink.contains(target)) openLink.open = false;
         });
         this.__filesWorkspaceOutsideClickPatched = true;
       }
       return result;
+    };
+
+    UI.prototype.dispose = function filesWorkspaceDispose(...args) {
+      if (this.__filesWorkspaceOutsidePointerHandler && typeof document !== 'undefined') {
+        document.removeEventListener('pointerdown', this.__filesWorkspaceOutsidePointerHandler, true);
+      }
+      this.__filesWorkspaceOutsidePointerHandler = null;
+      this.__filesWorkspaceOutsidePointerPatched = false;
+      return typeof originalDispose === 'function' ? originalDispose.apply(this, args) : undefined;
     };
 
     UI.prototype.render = function filesWorkspaceRender(...args) {
@@ -14105,7 +14138,7 @@
     return appPatched || uiPatched;
   }
 
-  return { installRepositoryFilesWorkspace, positionFilesWorkspaceDropdownPanel, portalFilesWorkspaceDropdownPanel, closeFilesWorkspaceTopPopup };
+  return { installRepositoryFilesWorkspace, positionFilesWorkspaceDropdownPanel, portalFilesWorkspaceDropdownPanel, closeFilesWorkspaceTopPopup, filesWorkspaceEventInsideTopPopup };
 });
 
 /* src/repository-reference-objects-runtime.js */
@@ -15854,31 +15887,33 @@
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-label', 'Chat Response Reader');
     modal.innerHTML = `<div data-chat-response-reader-card><style>
-      [data-chat-response-reader-card]{font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      [data-chat-response-reader-card]{font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark}
       [data-chat-response-reader-head],[data-chat-response-reader-actions]{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
       [data-chat-response-reader-head]{justify-content:space-between}
       [data-chat-response-reader-actions]{justify-content:flex-start}
       [data-chat-response-reader-card] button,[data-chat-response-reader-card] textarea{font:inherit}
-      [data-chat-response-reader-card] button{border:1px solid var(--border,#aaa);border-radius:7px;padding:6px 10px;background:var(--panel,#fff);color:var(--text,#111);cursor:pointer}
-      [data-chat-response-reader-card] button.primary{font-weight:700}
-      [data-chat-response-reader-input]{box-sizing:border-box;width:100%;height:100%;min-height:220px;resize:none;border:1px solid var(--border,#aaa);border-radius:8px;padding:10px;background:var(--panel,#fff);color:var(--text,#111)}
-      [data-chat-response-reader-view]{min-height:0;overflow:auto;border:1px solid var(--border,#aaa);border-radius:8px;padding:16px;background:var(--panel,#fff)}
+      [data-chat-response-reader-card] button{border:1px solid var(--border,#3b4250);border-radius:7px;padding:6px 10px;background:var(--surface-2,#20242d);color:var(--text,#eef1f6);cursor:pointer}
+      [data-chat-response-reader-card] button:hover{background:var(--surface-3,#292e39)}
+      [data-chat-response-reader-card] button.primary{font-weight:700;background:#315b9d;color:#fff;border-color:#4a78bd}
+      [data-chat-response-reader-input]{box-sizing:border-box;width:100%;height:100%;min-height:220px;resize:none;border:1px solid var(--border,#3b4250);border-radius:8px;padding:10px;background:var(--surface-2,#20242d);color:var(--text,#eef1f6)}
+      [data-chat-response-reader-input]::placeholder{color:var(--muted,#aab2c0)}
+      [data-chat-response-reader-view]{min-height:0;overflow:auto;border:1px solid var(--border,#3b4250);border-radius:8px;padding:16px;background:var(--surface,#191c23);color:var(--text,#eef1f6)}
       [data-chat-response-reader-rendered]{max-width:980px;margin:0 auto}
       [data-chat-response-reader-rendered] pre{overflow:auto;padding:10px;border-radius:8px;background:rgba(127,127,127,.12)}
       [data-chat-response-reader-rendered] table{border-collapse:collapse;max-width:100%;display:block;overflow:auto}
-      [data-chat-response-reader-rendered] th,[data-chat-response-reader-rendered] td{border:1px solid var(--border,#aaa);padding:6px 8px}
-      [data-chat-response-reader-rendered] .obs-md-details{border:1px solid var(--border,#aaa);border-radius:8px;padding:8px 10px;margin:10px 0}
+      [data-chat-response-reader-rendered] th,[data-chat-response-reader-rendered] td{border:1px solid var(--border,#3b4250);padding:6px 8px}
+      [data-chat-response-reader-rendered] .obs-md-details{border:1px solid var(--border,#3b4250);border-radius:8px;padding:8px 10px;margin:10px 0}
       [data-chat-response-reader-rendered] .obs-md-summary{cursor:pointer;font-weight:650}
       [data-chat-response-reader-rendered] .obs-md-details-body{padding:6px 2px 2px 14px}
       [data-chat-response-reader-rendered] img{max-width:100%}
-      [data-chat-response-reader-source],[data-chat-response-reader-status]{opacity:.78;font-size:12px}
+      [data-chat-response-reader-source],[data-chat-response-reader-status]{color:var(--muted,#aab2c0);font-size:12px}
     </style><div data-chat-response-reader-head><strong>Chat Response Reader</strong><button type="button" data-chat-response-reader-command="close">Close</button></div><div data-chat-response-reader-source></div><div data-chat-response-reader-actions><button type="button" data-chat-response-reader-command="paste">Paste Markdown</button><button type="button" class="primary" data-chat-response-reader-command="copy">Copy Markdown</button></div><div data-chat-response-reader-status>Local reader. No repository request or write is performed.</div><section data-chat-response-reader-paste><textarea data-chat-response-reader-input spellcheck="false" placeholder="Paste Markdown from ChatGPT here…"></textarea><div style="margin-top:8px"><button type="button" class="primary" data-chat-response-reader-command="render">Render pasted Markdown</button></div></section><section data-chat-response-reader-view><div data-chat-response-reader-rendered></div></section></div>`;
     const viewportWidth = typeof window !== 'undefined' ? (window.visualViewport && window.visualViewport.width || window.innerWidth || 1200) : 1200;
     const viewportHeight = typeof window !== 'undefined' ? (window.visualViewport && window.visualViewport.height || window.innerHeight || 900) : 900;
     const layout = readerModalLayout(viewportWidth, viewportHeight);
     Object.assign(modal.style, { position: 'fixed', inset: `${layout.inset}px`, zIndex: '2147483647', background: 'rgba(0,0,0,.42)', display: 'grid', placeItems: 'center' });
     const card = modal.querySelector('[data-chat-response-reader-card]');
-    Object.assign(card.style, { boxSizing: 'border-box', width: `${layout.width}px`, height: `${layout.height}px`, maxWidth: 'calc(100vw - 64px)', maxHeight: 'calc(100vh - 64px)', background: 'var(--panel,#fff)', color: 'var(--text,#111)', border: '1px solid var(--border,#aaa)', borderRadius: '12px', padding: '12px', display: 'grid', gridTemplateRows: 'auto auto auto auto minmax(0,1fr)', gap: '8px', boxShadow: '0 18px 50px rgba(0,0,0,.35)' });
+    Object.assign(card.style, { boxSizing: 'border-box', width: `${layout.width}px`, height: `${layout.height}px`, maxWidth: 'calc(100vw - 64px)', maxHeight: 'calc(100vh - 64px)', background: 'var(--bg,#111318)', color: 'var(--text,#eef1f6)', border: '1px solid var(--border,#3b4250)', borderRadius: '12px', padding: '12px', display: 'grid', gridTemplateRows: 'auto auto auto auto minmax(0,1fr)', gap: '8px', boxShadow: '0 18px 50px rgba(0,0,0,.55)', colorScheme: 'dark' });
 
     modal.querySelector('[data-chat-response-reader-command="close"]').onclick = () => {
       setReaderState(app, { open: false, status: 'Reader closed.' });

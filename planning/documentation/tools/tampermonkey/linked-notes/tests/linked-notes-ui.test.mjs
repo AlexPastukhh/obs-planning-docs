@@ -42,10 +42,11 @@ test('panel keeps centered usable dimensions on compact and short viewports', ()
   });
 });
 
-test('custom panel placement clamps to viewport edges including visual-viewport offsets', () => {
-  assert.deepEqual(api.clampPanelPosition(-100, -50, 980, 530, 1293, 638), { left: 12, top: 12 });
-  assert.deepEqual(api.clampPanelPosition(999, 999, 980, 530, 1293, 638), { left: 301, top: 96 });
-  assert.deepEqual(api.clampPanelPosition(999, 999, 300, 200, 800, 600, 12, 20, 30), { left: 508, top: 418 });
+test('custom panel placement allows horizontal edge peek while keeping a 64px recovery strip and vertical bounds', () => {
+  assert.deepEqual(api.clampPanelPosition(-2000, -50, 980, 530, 1293, 638), { left: -916, top: 12 });
+  assert.deepEqual(api.clampPanelPosition(3000, 999, 980, 530, 1293, 638), { left: 1229, top: 96 });
+  assert.deepEqual(api.clampPanelPosition(999, 999, 300, 200, 800, 600, 12, 20, 30), { left: 756, top: 418 });
+  assert.deepEqual(api.clampPanelPosition(-999, 40, 300, 200, 800, 600, 12, 20, 30), { left: -216, top: 42 });
 });
 
 test('drag uses live panel lookup so destructive rerenders cannot detach movement state', () => {
@@ -73,21 +74,21 @@ test('drag uses live panel lookup so destructive rerenders cannot detach movemen
     assert.equal(firstPanel.style.left, '157px');
     assert.equal(firstPanel.style.top, '54px');
     ui._beginPanelDrag({ button: 0, pointerId: 7, clientX: 200, clientY: 100, currentTarget: handle, preventDefault() {} });
-    ui._movePanelDrag({ pointerId: 7, clientX: -500, clientY: -500 });
-    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 12, top: 12 });
-    assert.equal(firstPanel.style.left, '12px');
+    ui._movePanelDrag({ pointerId: 7, clientX: -2000, clientY: -500 });
+    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: -916, top: 12 });
+    assert.equal(firstPanel.style.left, '-916px');
     assert.equal(firstPanel.style.top, '12px');
 
     currentPanel = secondPanel;
     ui._positionPanel();
-    assert.equal(secondPanel.style.left, '12px', 'replacement panel must inherit the live custom placement');
+    assert.equal(secondPanel.style.left, '-916px', 'replacement panel must inherit the live left-edge peek placement');
     assert.equal(secondPanel.style.top, '12px');
-    ui._movePanelDrag({ pointerId: 7, clientX: 400, clientY: 300 });
-    assert.equal(secondPanel.style.left, '301px', 'pointermove must target the replacement live panel');
+    ui._movePanelDrag({ pointerId: 7, clientX: 3000, clientY: 300 });
+    assert.equal(secondPanel.style.left, '1229px', 'pointermove must target the replacement live panel and allow right-edge peek');
     assert.equal(secondPanel.style.top, '96px');
-    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 301, top: 96 });
-    ui._endPanelDrag({ pointerId: 7, clientX: 400, clientY: 300 });
-    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 301, top: 96 });
+    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 1229, top: 96 });
+    ui._endPanelDrag({ pointerId: 7, clientX: 3000, clientY: 300 });
+    assert.deepEqual(ui.panelPlacement, { mode: 'custom', left: 1229, top: 96 });
     assert.equal(secondPanel.dataset.dragging, undefined);
     assert.equal(popupCloses, 1);
     assert.deepEqual(handle.captures, [7]);
@@ -121,6 +122,8 @@ test('panel source keeps independent scrolling and a visible workspace-manager a
   assert.match(source, /z-index: 2147483647/);
   assert.match(source, /data-action="manage-workspaces"/);
   assert.match(source, /data-panel-drag-handle/);
+  assert.match(source, /panel-edge-grip-left/);
+  assert.match(source, /panel-edge-grip-right/);
   assert.match(source, /data-action="center-panel"/);
   assert.match(source, /touch-action: none/);
 });

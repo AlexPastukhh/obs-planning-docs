@@ -54,7 +54,7 @@ extraction diagnostics.
 `src/chat-response-reader-runtime.js` owns:
 
 ```text
-large Reader modal;
+large Reader modal using the existing Linked Notes dark surface/text/border theme;
 Paste / Render / Copy / Close actions;
 Reader-first Escape handling;
 assistant-message action injection;
@@ -63,7 +63,7 @@ runtime cleanup;
 App/UI patch integration.
 ```
 
-The runtime stores semantic state in `app.chatResponseReader`. DOM nodes, modal elements, observers and callbacks remain internal implementation handles.
+The runtime stores semantic state in `app.chatResponseReader`. DOM nodes, modal elements, observers and callbacks remain internal implementation handles. Reader presentation reuses `--bg`, `--surface`, `--surface-2`, `--surface-3`, `--text`, `--muted` and `--border` with dark fallbacks; it does not use a separate white `--panel` fallback.
 
 ## ChatGPT integration
 

@@ -109,31 +109,33 @@
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-label', 'Chat Response Reader');
     modal.innerHTML = `<div data-chat-response-reader-card><style>
-      [data-chat-response-reader-card]{font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      [data-chat-response-reader-card]{font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark}
       [data-chat-response-reader-head],[data-chat-response-reader-actions]{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
       [data-chat-response-reader-head]{justify-content:space-between}
       [data-chat-response-reader-actions]{justify-content:flex-start}
       [data-chat-response-reader-card] button,[data-chat-response-reader-card] textarea{font:inherit}
-      [data-chat-response-reader-card] button{border:1px solid var(--border,#aaa);border-radius:7px;padding:6px 10px;background:var(--panel,#fff);color:var(--text,#111);cursor:pointer}
-      [data-chat-response-reader-card] button.primary{font-weight:700}
-      [data-chat-response-reader-input]{box-sizing:border-box;width:100%;height:100%;min-height:220px;resize:none;border:1px solid var(--border,#aaa);border-radius:8px;padding:10px;background:var(--panel,#fff);color:var(--text,#111)}
-      [data-chat-response-reader-view]{min-height:0;overflow:auto;border:1px solid var(--border,#aaa);border-radius:8px;padding:16px;background:var(--panel,#fff)}
+      [data-chat-response-reader-card] button{border:1px solid var(--border,#3b4250);border-radius:7px;padding:6px 10px;background:var(--surface-2,#20242d);color:var(--text,#eef1f6);cursor:pointer}
+      [data-chat-response-reader-card] button:hover{background:var(--surface-3,#292e39)}
+      [data-chat-response-reader-card] button.primary{font-weight:700;background:#315b9d;color:#fff;border-color:#4a78bd}
+      [data-chat-response-reader-input]{box-sizing:border-box;width:100%;height:100%;min-height:220px;resize:none;border:1px solid var(--border,#3b4250);border-radius:8px;padding:10px;background:var(--surface-2,#20242d);color:var(--text,#eef1f6)}
+      [data-chat-response-reader-input]::placeholder{color:var(--muted,#aab2c0)}
+      [data-chat-response-reader-view]{min-height:0;overflow:auto;border:1px solid var(--border,#3b4250);border-radius:8px;padding:16px;background:var(--surface,#191c23);color:var(--text,#eef1f6)}
       [data-chat-response-reader-rendered]{max-width:980px;margin:0 auto}
       [data-chat-response-reader-rendered] pre{overflow:auto;padding:10px;border-radius:8px;background:rgba(127,127,127,.12)}
       [data-chat-response-reader-rendered] table{border-collapse:collapse;max-width:100%;display:block;overflow:auto}
-      [data-chat-response-reader-rendered] th,[data-chat-response-reader-rendered] td{border:1px solid var(--border,#aaa);padding:6px 8px}
-      [data-chat-response-reader-rendered] .obs-md-details{border:1px solid var(--border,#aaa);border-radius:8px;padding:8px 10px;margin:10px 0}
+      [data-chat-response-reader-rendered] th,[data-chat-response-reader-rendered] td{border:1px solid var(--border,#3b4250);padding:6px 8px}
+      [data-chat-response-reader-rendered] .obs-md-details{border:1px solid var(--border,#3b4250);border-radius:8px;padding:8px 10px;margin:10px 0}
       [data-chat-response-reader-rendered] .obs-md-summary{cursor:pointer;font-weight:650}
       [data-chat-response-reader-rendered] .obs-md-details-body{padding:6px 2px 2px 14px}
       [data-chat-response-reader-rendered] img{max-width:100%}
-      [data-chat-response-reader-source],[data-chat-response-reader-status]{opacity:.78;font-size:12px}
+      [data-chat-response-reader-source],[data-chat-response-reader-status]{color:var(--muted,#aab2c0);font-size:12px}
     </style><div data-chat-response-reader-head><strong>Chat Response Reader</strong><button type="button" data-chat-response-reader-command="close">Close</button></div><div data-chat-response-reader-source></div><div data-chat-response-reader-actions><button type="button" data-chat-response-reader-command="paste">Paste Markdown</button><button type="button" class="primary" data-chat-response-reader-command="copy">Copy Markdown</button></div><div data-chat-response-reader-status>Local reader. No repository request or write is performed.</div><section data-chat-response-reader-paste><textarea data-chat-response-reader-input spellcheck="false" placeholder="Paste Markdown from ChatGPT here…"></textarea><div style="margin-top:8px"><button type="button" class="primary" data-chat-response-reader-command="render">Render pasted Markdown</button></div></section><section data-chat-response-reader-view><div data-chat-response-reader-rendered></div></section></div>`;
     const viewportWidth = typeof window !== 'undefined' ? (window.visualViewport && window.visualViewport.width || window.innerWidth || 1200) : 1200;
     const viewportHeight = typeof window !== 'undefined' ? (window.visualViewport && window.visualViewport.height || window.innerHeight || 900) : 900;
     const layout = readerModalLayout(viewportWidth, viewportHeight);
     Object.assign(modal.style, { position: 'fixed', inset: `${layout.inset}px`, zIndex: '2147483647', background: 'rgba(0,0,0,.42)', display: 'grid', placeItems: 'center' });
     const card = modal.querySelector('[data-chat-response-reader-card]');
-    Object.assign(card.style, { boxSizing: 'border-box', width: `${layout.width}px`, height: `${layout.height}px`, maxWidth: 'calc(100vw - 64px)', maxHeight: 'calc(100vh - 64px)', background: 'var(--panel,#fff)', color: 'var(--text,#111)', border: '1px solid var(--border,#aaa)', borderRadius: '12px', padding: '12px', display: 'grid', gridTemplateRows: 'auto auto auto auto minmax(0,1fr)', gap: '8px', boxShadow: '0 18px 50px rgba(0,0,0,.35)' });
+    Object.assign(card.style, { boxSizing: 'border-box', width: `${layout.width}px`, height: `${layout.height}px`, maxWidth: 'calc(100vw - 64px)', maxHeight: 'calc(100vh - 64px)', background: 'var(--bg,#111318)', color: 'var(--text,#eef1f6)', border: '1px solid var(--border,#3b4250)', borderRadius: '12px', padding: '12px', display: 'grid', gridTemplateRows: 'auto auto auto auto minmax(0,1fr)', gap: '8px', boxShadow: '0 18px 50px rgba(0,0,0,.55)', colorScheme: 'dark' });
 
     modal.querySelector('[data-chat-response-reader-command="close"]').onclick = () => {
       setReaderState(app, { open: false, status: 'Reader closed.' });

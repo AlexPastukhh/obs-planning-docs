@@ -171,7 +171,7 @@ ChatGPT DOM remains external and changeable. This path stays documented because 
 
 ## 9. Reader UI
 
-The Reader is larger than the ordinary Linked Notes work panel and remains viewport-bounded.
+The Reader is larger than the ordinary Linked Notes work panel and remains viewport-bounded. Its modal card, controls, paste textarea and rendered view inherit the Linked Notes dark surface/text/border theme rather than browser-default light fallbacks.
 
 Prototype target:
 
@@ -234,7 +234,8 @@ fenced-code details remain literal;
 nested/malformed details remain inert;
 Reader copy returns the stored Markdown source;
 Reader runtime state is captured by Full App State;
-Reader core/runtime actions do not call repository or local-storage writes.
+Reader core/runtime actions do not call repository or local-storage writes;
+Reader modal styling uses Linked Notes dark theme tokens and does not fall back to a white panel surface.
 ```
 
 Browser acceptance should additionally prove (record the focused run in `planning/documentation/tools/tampermonkey/linked-notes/CHAT-RESPONSE-READER-CHECKLIST.md`):
@@ -246,6 +247,7 @@ normal ChatGPT rerenders do not duplicate Reader actions;
 Open in Reader shows the selected response in the large modal;
 source is visibly marked DOM-derived;
 Paste Markdown remains usable if extraction fails;
+Reader card, textarea, rendered view and controls remain readable in dark ChatGPT/Linked Notes theme;
 details expand/collapse;
 Escape closes Reader before the main Linked Notes panel;
 opening/rendering/copying produces no GitHub network activity;
