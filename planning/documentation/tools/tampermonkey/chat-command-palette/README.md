@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.23.1`
+Version: `0.23.2`
 Scope: deterministic Planning Helper source/build, RAM-first local persistence, ChatGPT-mediated recovery, clipboard-first insertion and create-only GitHub backup of newly imported records.
 
 ## Read Order
@@ -116,6 +116,10 @@ Every Insert action prepares the exact clipboard body **before** composer mutati
 The helper does not rely on a synthetic browser `paste` command because browsers restrict scripted system-clipboard paste. The invariant is therefore `exact local body → clipboard ready/attempt completed → the same exact body → composer`. If direct composer insertion fails after a successful copy, the exact body is already available for normal manual paste (`Ctrl+V`).
 
 Composer lookup caches the last connected composer. Repeated insertion into the same live composer avoids a new selector/layout scan. A disconnected/replaced composer invalidates the cache and is rediscovered.
+
+For ChatGPT `contenteditable` composers, insertion uses one direct `Range.insertNode()` mutation followed by one `input` event instead of `document.execCommand('insertText')`. This avoids the multi-second synchronous browser editing path observed on current ChatGPT while keeping the exact clipboard-first string and preserving any existing draft before appending `\n\n` plus the selected body.
+
+This correction still requires live browser acceptance after reinstall: click a planning command with the console timing diagnostic enabled and confirm the multi-second `insertMs` stall is gone. If direct composer mutation is rejected, the already-prepared clipboard body remains the manual-paste fallback.
 
 ## Structure
 
