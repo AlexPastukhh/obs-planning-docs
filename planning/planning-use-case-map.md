@@ -1,7 +1,7 @@
 # OBS Planning Use-Case Map
 
 Status: active project-specific root command-system router
-Doc version: v0.13.0-delegated-command-registry
+Doc version: v0.14.0-local-helper-runtime
 Scope: mandatory OBS command-system entry and shared routing/global policy. Individual concrete command definitions live in `planning/commands/`. Dashboard planning is performed in the Dashboard UI and is not exposed as a command family.
 
 ## 1. Authority Model
@@ -105,7 +105,7 @@ planning/commands/end-session.command.md
 
 and remains bounded to the existing active operational-day workflow described by its owner files.
 
-## 7. Tampermonkey Projection And Repository Command Management
+## 7. Tampermonkey Projection, Local Recovery And Repository Backup
 
 Projection/build owners:
 
@@ -126,11 +126,12 @@ Rules:
 ```text
 - command bodies are generated from repository command definitions;
 - the bundled catalog is a build-time fallback, not authority;
-- Refresh repo may read and validate the current repository command catalog;
-- Add / Update commands is an explicit GitHub-write surface confined to direct planning/commands/*.command.md files;
-- create/update uses conflict protection and exact read-back verification;
-- multi-file writes are sequential and partial success must be reported;
-- delete is not implemented in this slice;
+- normal Planning Helper startup, search, tab switching, Insert, Copy, local edit and restore use only the browser-local snapshot/RAM state and do not read GitHub;
+- the helper has no repository Refresh/Sync action;
+- if local state is lost, the helper can copy a recovery request for ChatGPT; ChatGPT reads the repository and returns the complete current command/helper marker set, which Restore uses to reconcile repository-backed local records while preserving local-only/unbacked records, without contacting GitHub;
+- when an explicit ChatGPT import introduces a locally new/unbacked planning command, helper command or prompt, the helper may attempt one create-only GitHub Contents PUT to its deterministic repository path;
+- create-only backup sends no preliminary GET, no read-back GET and no UPDATE/DELETE fallback; an already-existing path is reported as a conflict while the local record remains intact;
+- existing local records imported again are updated locally only and never cause a GitHub write;
 - the helper never runs local Git, commit or push.
 ```
 
@@ -144,4 +145,5 @@ Sources:
     - `planning/commands/README.md`
   Content:
     - migrated current command routes from the former root-UCM command tables;
-    - user-confirmed repository command registry and modular Planning Helper direction.
+    - user-confirmed repository command registry and modular Planning Helper direction;
+    - user-confirmed RAM-first/local-recovery/create-only GitHub backup direction.

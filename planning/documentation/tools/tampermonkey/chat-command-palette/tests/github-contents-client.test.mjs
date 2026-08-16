@@ -1,5 +1,37 @@
-import test from 'node:test'; import assert from 'node:assert/strict'; import { createRequire } from 'node:module'; const require=createRequire(import.meta.url); const gh=require('../src/github-contents-client.js');
-test('path normalization rejects escapes',()=>{assert.equal(gh.normalizeGitHubContentPath('planning/commands/a.command.md'),'planning/commands/a.command.md');assert.throws(()=>gh.normalizeGitHubContentPath('../x'),/invalid segment/);assert.throws(()=>gh.normalizeGitHubContentPath('https://x'),/repository-relative/)});
-test('saveVerified reads back exact content',async()=>{let stored='';const transport=async(req)=>{if(req.method==='PUT'){const body=JSON.parse(req.body);stored=gh.base64ToUtf8(body.content);return{status:200,text:JSON.stringify({content:{path:'planning/commands/a.command.md',sha:'new'}})}}return{status:200,text:JSON.stringify({type:'file',path:'planning/commands/a.command.md',sha:'new',content:gh.utf8ToBase64(stored)})}};const client=new gh.GitHubContentsClient({owner:'o',repo:'r',branch:'main',transport});const result=await client.saveVerified({path:'planning/commands/a.command.md',content:'hello'});assert.equal(result.content,'hello')});
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require=createRequire(import.meta.url);
+const gh=require('../src/github-contents-client.js');
 
-test('directory listing rejects entries outside direct requested scope',async()=>{const transport=async()=>({status:200,text:JSON.stringify([{type:'file',path:'planning/other/a.command.md',name:'a.command.md',sha:'x'}])});const client=new gh.GitHubContentsClient({owner:'o',repo:'r',branch:'main',transport});await assert.rejects(()=>client.listDirectory('planning/commands'),/outside the requested direct-child scope/)});
+test('path normalization rejects escapes',()=>{
+  assert.equal(gh.normalizeGitHubContentPath('planning/commands/a.command.md'),'planning/commands/a.command.md');
+  assert.throws(()=>gh.normalizeGitHubContentPath('../x'),/invalid segment/);
+  assert.throws(()=>gh.normalizeGitHubContentPath('https://x'),/repository-relative/);
+});
+
+test('client exposes create-only PUT and no repository read/update helpers',async()=>{
+  const requests=[];
+  const transport=async(req)=>{requests.push(req);return{status:201,text:JSON.stringify({content:{path:'planning/commands/a.command.md',sha:'new',html_url:'https://example.invalid/a'}})}};
+  const client=new gh.GitHubContentsClient({owner:'o',repo:'r',branch:'main',transport});
+  assert.equal(typeof client.read,'undefined');
+  assert.equal(typeof client.listDirectory,'undefined');
+  assert.equal(typeof client.write,'undefined');
+  assert.equal(typeof client.saveVerified,'undefined');
+  const result=await client.create({path:'planning/commands/a.command.md',content:'hello',message:'Add a'});
+  assert.equal(result.sha,'new');
+  assert.equal(requests.length,1);
+  assert.equal(requests[0].method,'PUT');
+  assert.equal(new URL(requests[0].url).search,'');
+  const body=JSON.parse(requests[0].body);
+  assert.equal(body.sha,undefined);
+  assert.equal(Buffer.from(body.content,'base64').toString('utf8'),'hello');
+});
+
+test('existing remote path conflict stops at PUT with no follow-up request',async()=>{
+  let requests=0;
+  const transport=async()=>{requests++;return{status:422,text:JSON.stringify({message:'sha was not supplied'})}};
+  const client=new gh.GitHubContentsClient({owner:'o',repo:'r',branch:'main',transport});
+  await assert.rejects(()=>client.create({path:'planning/commands/a.command.md',content:'hello'}),(error)=>error.kind==='conflict');
+  assert.equal(requests,1);
+});

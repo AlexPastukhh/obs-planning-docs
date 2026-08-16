@@ -82,9 +82,11 @@ Normal repository workflow:
 4. Update root/global command-system documentation only when shared routing rules change.
 5. Update examples/navigation only when affected.
 
-The Planning Helper may perform an explicit GitHub Create/Update for command files only. `Parse & Preview` must validate the complete pasted batch and merged remote catalog, capture the exact repository identity (`owner/repository@branch`), current command-catalog snapshot plus each update target SHA/each create absence expectation, and confine targets to direct `planning/commands/*.command.md`. `Save` must use that exact preview plan rather than reclassifying or retargeting against newer settings/remote state; if repository identity or the command catalog changed after Preview, stop before writes and require a new Preview. Repository operations are serialized so a save cannot overlap refresh/preview/settings changes. Every successful write uses exact read-back verification, and partial multi-file results are reported honestly.
+The Planning Helper treats this repository catalog as durable authority/backup but does **not** read it during normal browser operation. Commands are loaded from one browser-local snapshot into RAM. If that local snapshot is lost, ChatGPT can read the repository and return the complete current set of exact `[PLANNING_COMMAND_DEFINITION]` blocks. Restore reconciles the repository-backed local command set to that complete pasted set while preserving any explicitly local-only/unbacked records.
 
-Deleting command files is not part of the first repository-write slice.
+When a ChatGPT import introduces a locally new or locally-unbacked command, the helper may attempt one **create-only** GitHub Contents write to the deterministic direct `planning/commands/*.command.md` path. It performs no preliminary GET, no catalog listing, no read-back GET and no update/delete fallback. An existing remote path is a conflict; the local command remains intact. Re-importing an existing local command updates only local state and never writes GitHub.
+
+Deleting or updating existing repository command files is not part of the Planning Helper runtime.
 
 ## Not The Helper Local Library
 
@@ -104,4 +106,4 @@ Generated install artifact:
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-The generated userscript bundles the valid command catalog at build time as an offline fallback. `Refresh repository commands` can load the current repository catalog without reinstalling the userscript.
+The generated userscript bundles the valid command catalog at build time as an offline fallback. At runtime the helper uses the browser-local snapshot/RAM model only; there is no repository command refresh. Recovery after local-state loss is ChatGPT-mediated: ChatGPT reads the current repository and returns exact marker blocks for local restore.

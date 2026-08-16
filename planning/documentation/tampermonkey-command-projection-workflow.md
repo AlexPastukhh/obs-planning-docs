@@ -1,7 +1,7 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.2.1-long-lived-helper-library-cache
+Doc version: v1.3.1-authoritative-chat-recovery
 Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and planning-command routes into the Tampermonkey/ChatGPT helper while keeping user-authored local commands/prompts in a separate non-authoritative helper library.
 
 ## 1. Core Rule
@@ -63,7 +63,7 @@ Check:
 10. A command-specific refinement, when present, only points to route/owner docs to reread and states the validation action.
 ```
 
-If the bundled generated userscript is older than the accepted repository command catalog, use `Refresh repo` to load the current valid catalog. Rebuild/reinstall only when helper source/runtime changes; do not edit the generated artifact to match command data.
+If the bundled generated userscript is older than the accepted repository command catalog, recover the current catalog through ChatGPT: copy the helper recovery request, let ChatGPT read the repository, and paste the complete returned marker set into local Restore. Restore treats that complete set as authoritative for repository-backed local records, removing stale repository-backed records that are absent while preserving local-only/unbacked records. The helper itself does not refresh/read GitHub. Rebuild/reinstall only when helper source/runtime changes; do not edit the generated artifact to match command data.
 
 ## 3. Shared Inserted Body Contract
 
@@ -259,7 +259,7 @@ instruction:
 - do not abbreviate, transliterate or normalize an English name only inside the helper.
 ```
 
-A repository command-definition change is available to an installed helper after a successful `Refresh repo`; rebuilding/reinstalling is required only when helper source/runtime changes or when the bundled fallback itself must be refreshed.
+A repository command-definition change is not fetched by the installed helper. To update a browser-local command set, use the ChatGPT recovery/import flow and paste the returned exact command blocks. Rebuilding/reinstalling is required only when helper source/runtime changes or when the bundled offline fallback itself must be refreshed.
 
 ## 9. Archive Source Reminder Projection
 
@@ -479,22 +479,30 @@ Required invariants:
 - modular composer insertion preserves success, composer-not-found, contenteditable-rejected and mutation-exception timing/reason diagnostics without adding retry loops;
 - a static fix is not considered live resolution until browser testing confirms the reported freeze is gone.
 
-## 9I. Repository Command Catalog And Explicit Writes
+## 9I. Local Command Snapshot And Create-Only Backup
 
 ```text
 bundled catalog
   = valid planning/commands/*.command.md files at build time;
 
-Refresh repo
-  = explicit read/list of the current repository command catalog;
+local snapshot / RAM
+  = normal Planning Helper runtime data source;
 
-Add / Update commands
-  = explicit GitHub write surface for direct planning/commands/*.command.md files only.
+ChatGPT recovery
+  = ChatGPT reads repository files and returns the complete current marker set;
+  = helper Restore reconciles repository-backed local records to that complete pasted set;
+  = stale repository-backed records absent from the complete set are removed locally;
+  = local-only/unbacked records are preserved;
+  = Restore performs zero GitHub requests;
+
+Import from ChatGPT
+  = existing local records update locally only;
+  = locally new/unbacked records may attempt one create-only repository PUT.
 ```
 
-Repository command management is separate from normal command insertion. Repository settings are strict: blank owner/repository/branch values are rejected rather than replaced with defaults. `Parse & Preview` validates the complete pasted batch and merged remote catalog and captures an optimistic-lock save plan: exact `owner/repository@branch` identity, command-catalog path/SHA snapshot, each update target's current SHA, and each create target's absence expectation. `Save` uses that exact plan and must not silently re-preview, reclassify or retarget; any repository-identity or catalog change since Preview stops before writes and requires a new Preview. Preview, refresh, settings-save and GitHub save operations share one operation lock; while a save is running its dialog/helper cannot be dismissed in a way that leaves a hidden overlapping write. Every successful write is read back and compared exactly. Multi-file writes are sequential and may partially succeed after the initial snapshot check; report that state explicitly and require a new Preview before retry. Delete, local Git, commit and push are outside this surface.
+Planning Helper has no repository Refresh/Sync/read operation. A create-only backup does not list/read the target first, does not read it back after the PUT, and never falls through to update/delete. An already-existing path is a conflict and leaves local state intact. Repository settings/token exist only for create-only backup and for generating the ChatGPT recovery request. Local Git, commit and push remain outside this surface.
 
-The GitHub token belongs only to Planning Helper GM secret state and never to command definitions, generated userscript content or catalog cache.
+The GitHub token belongs only to Planning Helper GM secret state and never to command definitions, generated userscript content or the local snapshot.
 
 ## 10. Placement
 
@@ -532,26 +540,24 @@ Do not edit the generated userscript manually and do not create a competing trac
 
 ## Local Helper Commands And Prompts
 
-The planning-command projection and the helper local library are separate surfaces.
+The planning-command projection and helper local library remain separate surfaces.
 
 ```text
 Commands
-  → repository planning-command definitions from planning/commands/*.command.md;
-  → route/owner semantics;
+  → repository planning-command definitions as semantic authority;
+  → browser-local snapshot/RAM at runtime;
 
 Local Cmds
   → exact user-authored insertion text;
-  → local GM state first;
-  → optional repository copy under planning/helper-library/commands/;
+  → browser-local snapshot/RAM at runtime;
 
 Prompts
   → arbitrary exact prompt text;
-  → local GM state first;
-  → optional repository copy under planning/helper-library/prompts/.
+  → browser-local snapshot/RAM at runtime.
 ```
 
-A local helper command or prompt never becomes a registered planning command merely because it is copied to the repository. `Repo` must be a separate explicit action from `Save local`, show the configured repository identity plus target SHA/absence, reject stale previews, and use exact read-back verification. Repository-only helper-library items may be read/refreshed and copied into local state before editing.
+A helper command/prompt never becomes a registered planning command merely because a repository backup file exists. `Import from ChatGPT` can create an append-only/cold repository backup only when the item is locally new/unbacked; later edits remain local. `Restore from GitHub copy` is a pasted-text local restore that reconciles the repository-backed portion to the complete GitHub-derived set, preserves local-only/unbacked records, and performs no network request.
 
-The modular helper may idempotently migrate the legacy page-local `obs-planning-helper-command-projections-v1` registry into its GM local helper-command library. Migration does not delete the legacy key and does not create `planning/commands/` entries.
+The modular helper may migrate legacy page-local/GM command-library caches into `obsPlanningHelper:v2:localSnapshot`. Migration does not delete legacy keys and does not contact GitHub.
 
-All repository operations share one serialized operation boundary. Local insert/copy/edit operations do not require a GitHub request. Repository helper-library text is cached in GM storage without an automatic TTL; explicit refresh compares directory-listing SHAs and fetches only new/changed files, while a verified single-item Repo write updates only that cached record.
+Every Insert starts copying the exact body to the system clipboard before composer mutation and inserts that same exact RAM string. If direct insertion fails, the clipboard already contains the body for manual paste. Browser synthetic clipboard paste is not relied on.

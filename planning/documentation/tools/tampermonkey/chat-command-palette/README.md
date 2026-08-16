@@ -1,41 +1,121 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.22.0`
-Scope: source, tests, deterministic build, repository planning-command management, local helper commands, prompts and bounded GitHub persistence.
+Version: `0.23.1`
+Scope: deterministic Planning Helper source/build, RAM-first local persistence, ChatGPT-mediated recovery, clipboard-first insertion and create-only GitHub backup of newly imported records.
 
 ## Read Order
 
-1. `planning/planning-use-case-map.md` when working on real planning commands.
-2. `planning/commands/README.md` for repository planning-command authority.
-3. `planning/helper-library/README.md` for local helper commands/prompts and their repository copy format.
+1. `planning/planning-use-case-map.md` for global command-system policy.
+2. `planning/commands/README.md` for planning-command authority.
+3. `planning/helper-library/README.md` for Local Cmds / Prompts.
 4. `planning/documentation/tampermonkey-command-projection-workflow.md`.
-5. this file and focused `src/**` / `tests/**` as needed.
+5. this file and focused `src/**` / `tests/**`.
 
-These are deliberately different registries:
+Repository command definitions remain authority. The Planning Helper is only a local projection/editor/runtime.
+
+## Runtime Model
+
+```text
+startup
+  → GM_getValue(obsPlanningHelper:v2:localSnapshot) once on the warm path
+  → validate snapshot
+  → materialize planning commands / helper commands / prompts in RAM
+  → normal work uses RAM only
+```
+
+Normal startup, tab switching, search, Insert, Copy, local edit/delete and restore do not read GitHub. There is no `Refresh repo`, `Refresh repo library`, `Sync all` or background repository polling.
+
+The first run after upgrading may migrate the old command/library/cache GM records into the unified snapshot. Legacy records are not deleted by migration.
+
+## Unified Local Snapshot
+
+Primary persistent state:
+
+```text
+obsPlanningHelper:v2:localSnapshot
+```
+
+Schema v1 contains:
+
+```text
+planningCommands[]
+  definition
+  rawContent
+  path
+  repositoryKnown
+  repositorySha
+
+helperItems[]
+  item
+  rawContent
+  path
+  repositoryKnown
+  repositorySha
+```
+
+`rawContent` is the exact normalized LF document representation. At runtime the validated records are materialized once into Maps/entry arrays; Insert/Copy never perform a GM read.
+
+Repository settings/token remain separate:
+
+```text
+obsPlanningHelper:v1:repositorySettings
+obsPlanningHelper:v1:githubToken
+```
+
+Changing repository settings does not clear or rebind the local snapshot.
+
+## ChatGPT Recovery
+
+`Copy recovery request` puts a recovery request in the clipboard. The request tells ChatGPT to read:
 
 ```text
 planning/commands/*.command.md
-  = real planning commands: route, owners, permissions, canonical command semantics;
-
 planning/helper-library/commands/*.helper-command.md
-  = user-authored helper command text saved from the Local Cmds surface;
-
 planning/helper-library/prompts/*.prompt.md
-  = arbitrary reusable prompt text saved from the Prompts surface.
 ```
 
-A helper-library item never becomes a planning command merely because it is stored in the repository.
+and return the complete current set of exact `[PLANNING_COMMAND_DEFINITION]` and `[PLANNING_HELPER_LIBRARY_ITEM]` marker blocks.
 
-Helper-library `text` is preserved without trimming; browser/CRLF line endings normalize to LF. Marker delimiters are structural only when they occupy their own document lines, so arbitrary prompt text may mention the marker tokens literally. Titles remain single printable lines.
+`Restore from GitHub copy` treats that complete pasted set as authoritative for repository-backed local records: it replaces/reconciles that portion, removes stale repository-backed records absent from the complete set, preserves local-only/unbacked records, and marks pasted records as repository-known. Restore performs **zero GitHub requests and zero GitHub writes**.
 
-The install artifact is generated:
+## Import From ChatGPT / GitHub Boundary
+
+`Import from ChatGPT` parses the same marker formats.
 
 ```text
-planning/documentation/tools/tampermonkey/chat-command-palette.user.js
+existing local record
+  → update local snapshot only
+  → 0 GitHub requests
+
+locally new or locally-unbacked record
+  → save local snapshot first
+  → attempt one create-only GitHub Contents PUT
+  → no preliminary GET
+  → no directory listing
+  → no read-back GET
+  → no UPDATE fallback
+  → no DELETE
 ```
 
-Do not edit the generated userscript manually.
+Planning-command backup paths are confined to direct `planning/commands/*.command.md`. Helper-library backup paths are confined to:
+
+```text
+planning/helper-library/commands/<id>.helper-command.md
+planning/helper-library/prompts/<id>.prompt.md
+```
+
+If GitHub reports that a create target already exists, the result is a conflict. The helper does not read the existing file and does not overwrite it. Local state remains intact.
+
+A network-unknown create result is also reported without a verification GET. The user can inspect GitHub or use ChatGPT recovery later.
+
+## Clipboard / Insert Contract
+
+Every Insert action prepares the exact clipboard body **before** composer mutation. The fast path first attempts a synchronous user-gesture `copy`; when the browser requires the async Clipboard API, composer mutation waits for that copy attempt to finish. The exact same local string is then passed to the composer insertion path. This contract is identical for planning commands, Local Cmds and Prompts; Prompt Helper rows use their exact saved `text` with no separate fetch/normalization path.
+
+The helper does not rely on a synthetic browser `paste` command because browsers restrict scripted system-clipboard paste. The invariant is therefore `exact local body → clipboard ready/attempt completed → the same exact body → composer`. If direct composer insertion fails after a successful copy, the exact body is already available for normal manual paste (`Ctrl+V`).
+
+Composer lookup caches the last connected composer. Repeated insertion into the same live composer avoids a new selector/layout scan. A disconnected/replaced composer invalidates the cache and is rediscovered.
 
 ## Structure
 
@@ -46,6 +126,7 @@ src/
   command-body.js
   semantic-projections.js
   helper-library-codec.js
+  chat-recovery.js
   github-contents-client.js
   repository-command-service.js
   repository-helper-library-service.js
@@ -53,17 +134,9 @@ src/
   composer-insertion.js
   planning-helper-ui.js
   planning-helper-runtime.js
-
-tests/
-  command-definition-codec.test.mjs
-  command-catalog.test.mjs
-  command-body.test.mjs
-  helper-library-codec.test.mjs
-  github-contents-client.test.mjs
-  repository-command-service.test.mjs
-  repository-helper-library-service.test.mjs
-  planning-helper-policy.test.mjs
 ```
+
+`github-contents-client.js`, `repository-command-service.js` and `repository-helper-library-service.js` expose only the create-only backup path used by Planning Helper. The client has no GET/list/read/read-back/update/delete surface.
 
 ## Build / Test / Verify
 
@@ -75,78 +148,16 @@ npm test
 npm run verify
 ```
 
-`npm run verify` checks JavaScript syntax, the complete dynamically discovered planning-command catalog, every planning-command `ownerFiles` and refinement `readRequired` path, focused tests and deterministic generated-artifact equality. It does not hard-code the number of planning commands.
+`npm run verify` checks JavaScript syntax, the dynamically discovered planning-command catalog, owner/refinement path existence, focused tests and generated-artifact equality. The number of planning commands is not hard-coded.
 
-## Planning Commands
-
-At build time all valid direct `planning/commands/*.command.md` files are embedded as the offline planning-command catalog. `Commands -> Refresh repo` reads the current remote catalog. `Add / Update planning commands` accepts strict `[PLANNING_COMMAND_DEFINITION]` blocks and uses an immutable preview plan containing repository identity, full catalog snapshot and target SHAs/absence expectations.
-
-Planning-command writes remain confined to direct:
+The install artifact is generated:
 
 ```text
-planning/commands/*.command.md
+planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-## Local Cmds / Prompts
+Do not edit it manually.
 
-The helper has two local-library surfaces:
+## Safety Boundary
 
-```text
-Local Cmds
-  → exact user-authored command text;
-
-Prompts
-  → exact arbitrary reusable prompt text.
-```
-
-`Save local` stores the item in Planning Helper GM storage. The item can be inserted/copied without a network request.
-
-A local row with a local copy exposes `Repo`. That action first previews the exact configured `owner/repository@branch`, deterministic target path and current SHA/absence, then requires explicit `Save to GitHub`. A stale target or changed repository identity stops before the write.
-
-Repository paths are hard-confined to:
-
-```text
-planning/helper-library/commands/<id>.helper-command.md
-planning/helper-library/prompts/<id>.prompt.md
-```
-
-`Refresh repo library` is an explicit synchronization action. The helper keeps a long-lived GM repository snapshot with item text, repository path, GitHub SHA and fetch time. The snapshot has no automatic TTL: startup, tab switching, Insert, Copy and Edit use cached/local text without GitHub requests. Refresh lists the two repository folders, reuses cached text when the listed SHA matches, and downloads only new or changed files. Repository-deleted records disappear from the repository snapshot on that explicit refresh; local copies remain. Repository-only entries can be copied into local storage through `Save local` before editing.
-
-The old page-local projection registry is imported idempotently when readable:
-
-```text
-localStorage:
-  obs-planning-helper-command-projections-v1
-
-→ Planning Helper GM local library
-```
-
-The old key is not deleted. Its normalized command projection is converted to exact `[PLANNING_COMMAND]` insertion text. This migration does not register a repository planning command.
-
-## Credentials / State
-
-Planning Helper owns its own Tampermonkey GM namespace:
-
-```text
-obsPlanningHelper:v1:repositorySettings
-obsPlanningHelper:v1:githubToken
-obsPlanningHelper:v1:commandCatalogCache
-obsPlanningHelper:v1:localLibrary
-obsPlanningHelper:v1:repositoryLibraryCache  # schema v2: long-lived records with item/path/SHA/fetchedAt
-```
-
-The generated userscript declares `GM_getValue`, `GM_setValue` and `GM_xmlhttpRequest`; runtime code accesses those granted APIs directly rather than assuming they are properties of `globalThis`.
-
-The GitHub credential never belongs in planning-command files, helper-library files, generated userscript content, caches or logs. It is separate from Linked Notes credentials.
-
-Panel position remains in page `localStorage` at `obs-planning-helper-position-v2`.
-
-## Repository Operation Boundary
-
-Planning-command refresh/preview/save, helper-library refresh/preview/save and repository-settings writes share one serialized repository-operation boundary. An in-flight write dialog cannot be dismissed into a hidden write. The helper never runs local Git, commit or push.
-
-Every successful GitHub PUT uses exact read-back verification. Unknown network results are read before retry. Helper-library writes are single-item operations; after a verified write the returned path/SHA/text update only that cached repository record instead of triggering a full library refresh. Planning-command batch writes remain sequential and report partial results honestly.
-
-## Composer Diagnostics
-
-Composer insertion keeps local timing/reason diagnostics for success, composer-not-found, contenteditable rejection and mutation exceptions. Diagnostics do not add network calls or retry loops.
+The Planning Helper never runs local Git, commit or push. It never updates or deletes an existing GitHub command/helper-library file. Repository communication is limited to explicit create-only backup attempts for locally new/unbacked records imported from ChatGPT.

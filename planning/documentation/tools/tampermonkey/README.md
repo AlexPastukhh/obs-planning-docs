@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.26.1-planning-helper-long-lived-library-cache
+Doc version: v0.27.1-planning-helper-authoritative-recovery
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
@@ -11,7 +11,7 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   generated install artifact for the modular Orientation / Directions / Use Cases / Commands helper;
   source/build/tests live under `chat-command-palette/`;
   planning-command definitions live under `planning/commands/`;
-  user-authored local helper commands/prompts use `planning/helper-library/` when explicitly persisted to GitHub;
+  user-authored local helper commands/prompts use one browser-local snapshot; repository copies are create-only cold backups;
   its floating Planning launcher hides while Dashboard is open;
   Alt+F2 and Tools -> Commands remain available.
 
@@ -57,7 +57,7 @@ Do not create competing tracked copies of the same script.
 ```text
 Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
-By default they do not write repository files or perform external network calls. The Planning Helper command-management surface and Linked Notes are the explicitly bounded exceptions described below.
+By default they do not write repository files or perform external network calls. Linked Notes remains an explicitly bounded repository client. Planning Helper normal runtime is local-only; its sole GitHub exception is create-only backup of locally new/unbacked records imported from ChatGPT.
 The repository documentation prototype is the narrow test-only exception: after an explicit user action it may call the GitHub Contents API for one visibly selected workspace, directory, file, category definition or bound Note target, with path validation, one-operation locking, SHA-aware conflict handling and exact read-back verification for writes.
 The Linked Notes Prototype never runs local git, commit or push; its direct API write does not make the prototype a production architecture or planning authority.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
@@ -114,11 +114,14 @@ Dashboard IndexedDB:
   record: dashboard:v1
 
 Planning Helper private GM storage:
-  obsPlanningHelper:v1:repositorySettings
-  obsPlanningHelper:v1:githubToken
+  obsPlanningHelper:v2:localSnapshot  # unified planning-command/helper-command/prompt working snapshot
+  obsPlanningHelper:v1:repositorySettings  # create-only backup/recovery-request target only
+  obsPlanningHelper:v1:githubToken          # create-only backup credential only
+
+Planning Helper legacy migration inputs only:
   obsPlanningHelper:v1:commandCatalogCache
   obsPlanningHelper:v1:localLibrary
-  obsPlanningHelper:v1:repositoryLibraryCache  # long-lived helper-library repository snapshot (schema v2)
+  obsPlanningHelper:v1:repositoryLibraryCache
 
 Linked Notes Prototype private GM storage:
   see linked-notes/DATA-AND-STATE.md for current application-owned GM namespaces and persistence ownership.
@@ -154,6 +157,7 @@ Rules:
 - Exporting does not clear pending records.
 - Pending records clear only after reviewed repository application plus reconciliation, or explicit user action.
 - Conflict records block additional Finish actions until resolved.
+- Planning Helper warm startup reads one unified GM snapshot, then search/Insert/Copy/edit operate from RAM; it has no GitHub Refresh/Sync/read path. ChatGPT-mediated restore is local-only, and only locally new/unbacked imported records may trigger create-only GitHub PUTs.
 - Linked Notes current storage/state ownership is documented in `linked-notes/DATA-AND-STATE.md`; this shared tools index does not duplicate the complete application persistence contract.
 - chatgpt.com and chat.openai.com are different IndexedDB origins; use chatgpt.com as the canonical Linked Notes IndexedDB origin.
 ```
@@ -367,7 +371,7 @@ The reusable Command Palette provides:
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
 - `reconcile planning items` inserts a read-only workflow-integrity plus item-set reconciliation body: identify independently traversable End-To-End Workflows and affected non-workflow primary review objects; trace each workflow's trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer workflow slices when one mandatory workflow crosses them; treat Planning Drafts/models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
-- normal insertion/copy performs no repository write; explicit repository command Refresh uses GitHub reads, and Add/Update may write only direct `planning/commands/*.command.md`; no local Git, commit or push.
+- normal insertion/copy is RAM-first and performs no repository read/write; command recovery/import is pasted from ChatGPT, and only locally new/unbacked imports may attempt create-only backup under the bounded command/helper-library paths; no local Git, commit or push.
 ```
 
 ## 9A. Orientation / Directions / Use Cases / Commands
@@ -470,7 +474,7 @@ Acceptance:
 - normal exact-selector path performs no global candidate sort;
 - failure copies once and reports the fallback;
 - console timing identifies the selector and expensive phase;
-- normal insertion introduces no network/write behavior; repository Refresh/Add/Update are separate explicit command-management actions.
+- normal insertion introduces no network/write behavior; it first prepares the exact clipboard body, then inserts the same exact string into the composer; repository reads/refreshes are not part of Planning Helper runtime.
 
 ## 9C. Modular Planning Helper / Repository Commands
 
@@ -488,9 +492,9 @@ planning/planning-use-case-map.md
   → selected direct *.command.md
 ```
 
-The generated userscript bundles the valid command catalog for offline use. `Refresh repo` reads the current remote catalog and activates it only after complete validation. `Add / Update commands` accepts one or more strict command-definition blocks. `Parse & Preview` validates the merged remote catalog and captures exact repository identity plus the command-catalog snapshot and update SHAs/create absence expectations; `Save` uses that previewed plan and refuses stale or retargeted previews instead of silently reclassifying. Blank owner/repository/branch settings are rejected. Preview, refresh, settings-save and GitHub save operations are serialized under one repository-operation lock, and an in-flight save cannot be dismissed into a hidden overlapping write. Writes remain sequential, SHA-aware and exact-read-back verified. A partial multi-file result is reported without pretending rollback, and retry requires a new Preview. Delete is not implemented.
+The generated userscript bundles a valid command catalog only as an offline fallback. The installed helper does not list, read, refresh or synchronize repository command files. `Copy recovery request` asks ChatGPT to read the configured repository and return the complete current command/helper marker set; `Restore from GitHub copy` reconciles repository-backed local records to that complete set, preserves local-only/unbacked records, and uses zero GitHub traffic. `Import from ChatGPT` validates and persists incoming records locally first. Only a record that is locally new or explicitly still unbacked may attempt one create-only GitHub Contents PUT to its deterministic path. The client has no GET/list/read/read-back/update/delete methods; an existing path is a conflict and the local record remains intact. Blank owner/repository/branch settings are rejected. Create-only backup attempts share one serialized repository-operation lock.
 
-Planning Helper repository settings, token, local helper library and repository-library cache use the separate `obsPlanningHelper:v1:*` GM namespace. The token is secret state and is never written into planning-command files, helper-library files or caches. Local Cmds and Prompts are convenience text, not planning-command authority; their optional repository copies live only under `planning/helper-library/`.
+Planning Helper keeps repository settings/token in the existing `obsPlanningHelper:v1:*` secret/config keys and keeps runtime command/helper content in the unified `obsPlanningHelper:v2:localSnapshot`. Old v1 command/library cache keys are migration inputs only. The token is secret state and is never written into planning-command files, helper-library files or the local snapshot. Local Cmds and Prompts remain convenience text, not planning-command authority; optional cold backup copies live only under `planning/helper-library/`.
 
 ## 10. Command Palette adaptation rule
 
@@ -535,11 +539,11 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
-- Except for the explicitly documented Linked Notes boundary and Planning Helper command-management boundary, do not use helpers to write repository files or perform external network calls. Planning Helper repository writes are confined to direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` targets.
+- Except for the explicitly documented Linked Notes boundary and Planning Helper create-only cold-backup boundary, do not use helpers to write repository files or perform external network calls. Planning Helper never reads GitHub and may only create previously absent direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` or `planning/helper-library/prompts/*.prompt.md` targets after an explicit ChatGPT import identifies a locally new/unbacked record.
 - The detailed Linked Notes test boundary, storage model and current invariants are owned under `linked-notes/` and its linked project-local workflows; this shared index must route there rather than become a competing application owner.
 ```
 
 
 ## Planning Helper Local Library / Prompts
 
-Developer/runtime details remain under `chat-command-palette/`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. `Save local` is GM-only; `Repo` is a separate SHA-aware verified GitHub write. The generated userscript directly uses the granted `GM_getValue`, `GM_setValue` and `GM_xmlhttpRequest` APIs. Repository helper-library text is retained in GM storage without automatic expiry; ordinary use is offline/local, explicit Refresh reuses same-SHA cached text and downloads only changed/new files, and a successful Repo write updates one cache record rather than refreshing the full library.
+Developer/runtime details remain under `chat-command-palette/`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. Normal Save/Edit/Delete are local-only. The generated userscript directly uses granted `GM_getValue`/`GM_setValue` for the unified local snapshot and uses `GM_xmlhttpRequest` only for explicit create-only cold-backup PUT attempts after ChatGPT import. There is no Planning Helper repository Refresh/Sync/read path. If browser-local state is lost, ChatGPT reads the repository and returns exact marker blocks for local Restore.

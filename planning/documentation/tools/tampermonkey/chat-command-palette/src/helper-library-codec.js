@@ -79,6 +79,27 @@
     return item;
   }
 
+
+  function parseHelperLibraryBatch(text) {
+    const source=String(text || '').replace(/\r\n?/g,'\n');
+    const open=`[${HELPER_LIBRARY_MARKER}]`, close=`[/${HELPER_LIBRARY_MARKER}]`;
+    const lines=source.split('\n');
+    const blocks=[];
+    for(let index=0;index<lines.length;index++){
+      if(lines[index]!==open)continue;
+      const end=lines.indexOf(close,index+1);
+      assert(end>index, 'Unclosed helper-library marker block.');
+      let parsed;
+      try{parsed=JSON.parse(lines.slice(index+1,end).join('\n').trim());}
+      catch(error){throw new TypeError(`Invalid helper-library JSON: ${error.message}`);}
+      blocks.push(normalizeHelperLibraryItem(parsed));
+      index=end;
+    }
+    const seen=new Set();
+    for(const item of blocks){const key=`${item.kind}:${item.id}`;assert(!seen.has(key),`Duplicate helper-library item in batch: ${key}`);seen.add(key);}
+    return blocks;
+  }
+
   function normalizeHelperLibraryCollection(items) {
     assert(Array.isArray(items), 'Helper-library collection must be an array.');
     const result=items.map((item)=>normalizeHelperLibraryItem(item));
@@ -136,5 +157,5 @@
     return [...byKey.values()].sort((a,b)=>a.kind.localeCompare(b.kind)||a.title.localeCompare(b.title)||a.id.localeCompare(b.id));
   }
 
-  return { HELPER_LIBRARY_SCHEMA_VERSION, HELPER_LIBRARY_MARKER, HELPER_LIBRARY_ROOT, HELPER_LIBRARY_KINDS, HELPER_LIBRARY_PATHS, HELPER_LIBRARY_SUFFIXES, LEGACY_LOCAL_STORAGE_KEY, makeHelperLibraryId, normalizeHelperLibraryItem, normalizeHelperLibraryCollection, helperLibraryTargetPath, helperLibraryFilePattern, renderHelperLibraryDocument, parseHelperLibraryDocument, legacyProjectionToHelperItem, parseLegacyProjectionRegistry, mergeHelperLibrary };
+  return { HELPER_LIBRARY_SCHEMA_VERSION, HELPER_LIBRARY_MARKER, HELPER_LIBRARY_ROOT, HELPER_LIBRARY_KINDS, HELPER_LIBRARY_PATHS, HELPER_LIBRARY_SUFFIXES, LEGACY_LOCAL_STORAGE_KEY, makeHelperLibraryId, normalizeHelperLibraryItem, normalizeHelperLibraryCollection, helperLibraryTargetPath, helperLibraryFilePattern, renderHelperLibraryDocument, parseHelperLibraryDocument, parseHelperLibraryBatch, legacyProjectionToHelperItem, parseLegacyProjectionRegistry, mergeHelperLibrary };
 });
