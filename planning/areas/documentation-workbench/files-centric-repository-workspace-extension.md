@@ -1,7 +1,7 @@
 # Files-Centric Repository Workspace Extension
 
 Status: current implementation slice / correction-integrated / subordinate to `repository-file-browser-and-categories-workflow.md` / browser and real-GitHub acceptance pending
-Scope: Files navigation shortcuts, folder index auto-open, repository-native file templates, repository-root file/heading link copy, add-only structure creation and add-only file/folder copy for the Linked Notes prototype.
+Scope: Files navigation shortcuts and direct repository-path opening, folder index auto-open, repository-native file templates, repository-root file/heading link copy, add-only structure creation and add-only file/folder copy for the Linked Notes prototype.
 
 ## 1. Ownership Boundary
 
@@ -22,7 +22,7 @@ The Files surface should support the following connected behavior:
 3. Link copy exposes both a whole-file repository-root Markdown link and heading links from the already-loaded Markdown snapshot. The heading chooser must remain inside the main Files content area instead of covering the sidebar; heading search and hierarchy are visible; copying does not perform a GitHub request.
 4. The user can paste a repository-relative file/folder structure in the current folder, preview every target and create only missing empty files/folders. The first format is one path per line; a trailing `/` marks a folder. Existing content is never deleted, replaced or overwritten. Git-visible empty leaf folders use an empty `.gitkeep` only when the folder does not already exist.
 5. Files and folders can be copied to a selected repository folder. Copy is recursive for folders, byte-preserving for files and add-only at the destination. The complete destination file set is preflighted before local staging. For folder copy, the destination root folder itself must be absent: an existing destination root is a conflict rather than a merge target. Any existing remote/pending destination file/root or unusable destination parent blocks the operation. Source SHA is rechecked before bytes enter the local queue. `Update all` can later publish all copied files in one commit.
-6. The top navigation is Files-centric: `Files` jumps to repository root, `Notes` jumps to the configured Notes folder in Files mode, and `Locations` exposes Root, Notes, the existing Linked Notes editor and user-created folder shortcuts. A user can save the currently open non-root folder as a local shortcut. Folder shortcuts remain local exact-workspace preferences. Repository templates are repository-owned and are reloaded explicitly per exact workspace; a workspace change clears the prior template index so stale templates are never rendered as current.
+6. The top navigation is Files-centric: `Files` jumps to repository root, `Notes` jumps to the configured Notes folder in Files mode, and `Locations` exposes Root, Notes, the existing Linked Notes editor, direct opening of a pasted repository-relative path and user-created folder shortcuts. A pasted existing directory is browsed directly; a pasted existing file opens in its parent folder; an exact pending-local file/folder is eligible before remote metadata discovery. Empty input or `/` means repository root. Absolute/URL/traversal/fragment/query paths are rejected before repository reads, and a missing path leaves the current location unchanged. A user can save the currently open non-root folder as a local shortcut. Folder shortcuts remain local exact-workspace preferences. Repository templates are repository-owned and are reloaded explicitly per exact workspace; a workspace change clears the prior template index so stale templates are never rendered as current.
 7. Top-navigation dropdowns that must escape the clipped main panel use one shared Shadow-root popup layer. `Locations`, repository-template menus and adjacent feature menus such as `Reference objects` may portal their panels into this layer, but the layer must paint at least at the main Linked Notes panel stacking level, inherit the Linked Notes foreground/font/dark color scheme and leave pointer events disabled outside the actual popup panels. Explicit popup state survives ordinary destructive rerenders in the same workspace/surface context.
 
 ## 3. Safety And Mutation Rules
@@ -156,7 +156,7 @@ Automated:
 
 - exact folder-name index candidate and no root index;
 - portable encoded whole-file Markdown link;
-- exact workspace-scoped shortcut normalization and repository-template context isolation;
+- exact workspace-scoped shortcut normalization, direct repository-location path normalization/resolution and repository-template context isolation;
 - structure parser rejects traversal/type conflicts and derives empty leaf folders;
 - copy subtree destination mapping;
 - popup clamping stays inside the main container;
@@ -178,6 +178,7 @@ Browser / real GitHub:
 - enter a folder that contains `<folder>.md` and confirm listing + automatic file preview;
 - enter a folder without the index and confirm no error/fabricated preview;
 - create a folder shortcut and reopen it from Locations after panel rerender/reopen;
+- paste an existing directory and file path into Locations and verify exact navigation; verify Enter equals Open, `/` opens root, exact pending-local paths do not require metadata discovery, and traversal/absolute/URL/missing paths do not alter the current location;
 - open `Locations` and `Reference objects`, verify each portaled panel is visibly above the Linked Notes panel and an internal button receives the click; repeat after a harmless rerender, then verify Escape/outside click closes the shared popup;
 - use Notes and Files top navigation to jump directly to Notes folder/root;
 - switch between two workspaces that have different shortcuts/templates and verify each switch immediately shows only the active workspace values;

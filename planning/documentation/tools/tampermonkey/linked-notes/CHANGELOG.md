@@ -19,6 +19,7 @@ Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTU
 - changed ordinary `Validate tags` to use those same indexed definition/use routes and added explicit `Deep validate repo` for the bounded repository-wide integrity crawl;
 - corrected the shared Files top-popup stacking boundary so portaled `Locations` and `Reference objects` panels paint above the main Linked Notes panel and remain clickable across ordinary rerenders;
 - corrected shared top-popup theme inheritance so portaled explanatory text uses the Linked Notes foreground/font/dark color scheme instead of browser-default black text;
+- added direct repository-relative path opening to `Locations`: directories browse directly, files open in their parent folder, exact pending-local paths are preferred and invalid/missing paths leave the current location unchanged;
 - added repository-facing AI rules for manual Ordered Item structural validation;
 - kept future Reference Object automatic-propagation policy as roadmap research only.
 

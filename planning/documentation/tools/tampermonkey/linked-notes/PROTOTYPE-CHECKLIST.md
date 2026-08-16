@@ -330,6 +330,7 @@ Use test branches only.
 | 77 | Open `Locations` and `Reference objects`, activate an internal control in each, trigger a harmless Files rerender, then reopen and close via Escape/outside click. | Both portaled panels remain visibly above the main Linked Notes panel, inherit readable theme-consistent foreground text and remain clickable before/after rerender; shared popup state reconstructs correctly and closing does not block the rest of the UI. | |
 | 78 | With registered objects plus unrelated repository folders/files, run Validate tags and record request activity. | Reads are limited to the Definitions File plus unique recorded definition/use paths, `scanSummary.mode` is `indexed`, no repository directory crawl occurs and the result does not claim global integrity. | |
 | 79 | Use an empty `reference-objects.json` and run Validate tags. | Indexed validation finishes after the Definitions File read with zero object/definition/use/file counts and no repository traversal. | |
+| 80 | In `Locations`, paste an existing repository directory, an existing file, `/`, an exact pending-local path, a missing path and rejected traversal/absolute/URL forms; use both Open and Enter. | Directory browsing and exact file opening use repository-relative semantics; files open in their parent folder; `/` opens root; exact pending paths are preferred before metadata discovery; rejected/missing paths leave the current location unchanged and no recursive repository search occurs. | |
 
 ## 14. Findings
 

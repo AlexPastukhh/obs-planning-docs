@@ -12809,6 +12809,58 @@
       return next;
     };
 
+    App.prototype._repositoryFilesLocationPendingEntry = async function repositoryFilesLocationPendingEntry(path) {
+      if (!path) return { type: 'dir', path: '', name: '' };
+      if (typeof this._ensureReferenceObjectLocalStateCurrent === 'function') await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const files = this.referenceObjectLocalState && Array.isArray(this.referenceObjectLocalState.files) ? this.referenceObjectLocalState.files : [];
+      if (files.some((item) => item && item.path === path)) return { type: 'file', path, name: path.slice(path.lastIndexOf('/') + 1), localRepositoryChange: true };
+      if (files.some((item) => item && typeof item.path === 'string' && item.path.startsWith(`${path}/`))) return { type: 'dir', path, name: path.slice(path.lastIndexOf('/') + 1), localRepositoryChange: true };
+      return null;
+    };
+
+    App.prototype._resolveRepositoryFilesLocation = async function resolveRepositoryFilesLocation(value) {
+      const api = apiOrThrow(this);
+      const raw = String(value == null ? '' : value).trim();
+      const path = raw === '/' || raw === '' ? '' : api.normalizeFilesWorkspacePath(raw, { allowRoot: false, label: 'Repository location' });
+      if (!path) return { type: 'dir', path: '', name: '' };
+      const current = (Array.isArray(this.repositoryEntries) ? this.repositoryEntries : []).find((entry) => entry && entry.path === path);
+      if (current) return { ...current };
+      const pending = await this._repositoryFilesLocationPendingEntry(path);
+      if (pending) return pending;
+      const workspace = this._activeWorkspace();
+      if (!workspace) throw new Error('Select a GitHub workspace first.');
+      const parent = api.repositoryFilesWorkspacePathParent(path);
+      const resolve = async () => {
+        const client = await this._client(workspace);
+        let entries = [];
+        try { entries = await client.listDirectory(parent, { maxEntries: 200 }); }
+        catch (error) { if (!notFound(error)) throw error; }
+        return (entries || []).find((entry) => entry && entry.path === path) || null;
+      };
+      const entry = await this._runFilesWorkspaceRead('Resolving repository location…', resolve);
+      if (entry && entry.cancelled) return entry;
+      if (!entry) {
+        const error = new Error(`Repository path not found: ${path}.`);
+        error.kind = 'not_found';
+        throw error;
+      }
+      return entry;
+    };
+
+    App.prototype._openResolvedRepositoryFilesLocation = async function openResolvedRepositoryFilesLocation(entry) {
+      const api = apiOrThrow(this);
+      if (!entry || entry.cancelled) return entry;
+      const path = api.normalizeFilesWorkspacePath(entry.path || '', { allowRoot: true, label: 'Repository location' });
+      if (!path || entry.type === 'dir') return this.browseRepository(path);
+      const parent = api.repositoryFilesWorkspacePathParent(path);
+      const previousSuppress = Boolean(this.__suppressFolderIndexAutoOpen);
+      this.__suppressFolderIndexAutoOpen = true;
+      try { await this.browseRepository(parent); }
+      finally { this.__suppressFolderIndexAutoOpen = previousSuppress; }
+      const listed = (Array.isArray(this.repositoryEntries) ? this.repositoryEntries : []).find((item) => item && item.path === path && item.type !== 'dir');
+      return this.openRepositoryEntry(listed || entry);
+    };
+
     App.prototype.navigateRepositoryFilesLocation = async function navigateRepositoryFilesLocation(kind, value = '') {
       if (kind === 'linked-notes') {
         if (typeof this.setSurface === 'function') return this.setSurface('notes');
@@ -12818,6 +12870,10 @@
       }
       const workspace = this._activeWorkspace();
       if (!workspace) throw new Error('Select a GitHub workspace first.');
+      if (kind === 'path') {
+        const entry = await this._resolveRepositoryFilesLocation(value);
+        return this._openResolvedRepositoryFilesLocation(entry);
+      }
       let path = '';
       if (kind === 'notes') path = String(workspace.basePath || '').trim();
       else if (kind === 'shortcut') {
@@ -13499,10 +13555,21 @@
     details.className = 'files-workspace-menu';
     details.dataset.filesLocationsMenu = '1';
     const shortcutRows = (preferences.folderShortcuts || []).map((shortcut) => `<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px"><button data-files-shortcut="${escapeHtml(shortcut.id)}">${escapeHtml(shortcut.name)}<br><small>${escapeHtml(shortcut.path)}</small></button><button data-remove-files-shortcut="${escapeHtml(shortcut.id)}" title="Remove shortcut">×</button></div>`).join('');
-    details.innerHTML = `<summary>Locations ▾</summary><div class="files-workspace-menu-panel"><button data-files-location="root">Root</button><button data-files-location="notes">Notes folder</button><button data-files-location="linked-notes">Linked Notes editor</button>${shortcutRows || '<div class="hint">No custom folder shortcuts.</div>'}<div class="files-workspace-form"><input data-files-shortcut-name placeholder="Shortcut name"><button data-add-files-shortcut ${ui.state.repositoryPath ? '' : 'disabled'}>Add current folder</button></div></div>`;
+    details.innerHTML = `<summary>Locations ▾</summary><div class="files-workspace-menu-panel"><button data-files-location="root">Root</button><button data-files-location="notes">Notes folder</button><button data-files-location="linked-notes">Linked Notes editor</button><div class="files-workspace-form"><input data-files-location-path placeholder="Repository path…" value="${escapeHtml(ui.__filesLocationPathDraft || '')}"><button data-open-files-location-path>Open</button></div>${shortcutRows || '<div class="hint">No custom folder shortcuts.</div>'}<div class="files-workspace-form"><input data-files-shortcut-name placeholder="Shortcut name"><button data-add-files-shortcut ${ui.state.repositoryPath ? '' : 'disabled'}>Add current folder</button></div></div>`;
     const panel = details.querySelector('.files-workspace-menu-panel');
     const scope = panel || details;
     scope.querySelectorAll('[data-files-location]').forEach((button) => button.addEventListener('click', () => { closeFilesWorkspaceTopPopup(ui); ui._withAllDrafts('onNavigateFilesLocation', button.dataset.filesLocation).catch(() => {}); }));
+    const locationPath = scope.querySelector('[data-files-location-path]');
+    const openLocationPath = () => {
+      if (!locationPath) return Promise.resolve();
+      ui.__filesLocationPathDraft = locationPath.value;
+      return ui._withAllDrafts('onNavigateFilesLocation', 'path', locationPath.value).then((result) => { if (!(result && result.cancelled)) closeFilesWorkspaceTopPopup(ui); return result; }).catch(() => undefined);
+    };
+    if (locationPath) {
+      locationPath.addEventListener('input', () => { ui.__filesLocationPathDraft = locationPath.value; });
+      locationPath.addEventListener('keydown', (event) => { if (event.key !== 'Enter') return; event.preventDefault(); openLocationPath(); });
+    }
+    scope.querySelector('[data-open-files-location-path]')?.addEventListener('click', () => { openLocationPath(); });
     scope.querySelectorAll('[data-files-shortcut]').forEach((button) => button.addEventListener('click', () => { closeFilesWorkspaceTopPopup(ui); ui._withAllDrafts('onNavigateFilesLocation', 'shortcut', button.dataset.filesShortcut).catch(() => {}); }));
     scope.querySelectorAll('[data-remove-files-shortcut]').forEach((button) => button.addEventListener('click', () => ui._call('onRemoveRepositoryFolderShortcut', button.dataset.removeFilesShortcut).catch(() => {})));
     const add = scope.querySelector('[data-add-files-shortcut]');

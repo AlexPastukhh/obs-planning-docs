@@ -16,6 +16,7 @@ function makeClient(initial = {}) {
   const files = new Map();
   const directories = new Map();
   const writes = [];
+  const lists = [];
   for (const [path, value] of Object.entries(initial.files || {})) {
     const bytes = value.bytes instanceof Uint8Array ? value.bytes : new TextEncoder().encode(value.content || '');
     files.set(path, { path, name: path.split('/').pop(), sha: value.sha || `sha-${path}`, size: bytes.byteLength, bytes });
@@ -35,8 +36,9 @@ function makeClient(initial = {}) {
     return [...seen.values()];
   }
   return {
-    files, directories, writes,
+    files, directories, writes, lists,
     async listDirectory(path) {
+      lists.push(path);
       if (files.has(path)) { const e = new Error('not a directory'); e.kind = 'invalid_response'; throw e; }
       if (directories.has(path)) return directories.get(path).map((entry) => ({ ...entry }));
       const computed = rebuildDirectory(path);
@@ -188,6 +190,59 @@ test('runtime auto-opens exact folder-name Markdown index and wires Files handle
   assert.equal(typeof app.ui.handlers.onPreviewRepositoryStructure, 'function');
   assert.equal(typeof app.ui.handlers.onLoadRepositoryFileTemplates, 'function');
   assert.equal(typeof app.ui.handlers.onBeginRepositoryFileCreateFromTemplate, 'function');
+});
+
+test('Locations opens pasted repository-relative folders/files with bounded resolution and leaves state unchanged on invalid or missing paths', async () => {
+  const client = makeClient({ files: {
+    'docs/readme.md': { content: '# Readme', sha: 'readme' },
+    'docs/sub/item.md': { content: '# Item', sha: 'item' }
+  } });
+  const { FakeApp, FakeUI } = makeAppClass(client);
+  runtime.installRepositoryFilesWorkspace({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+  const app = new FakeApp();
+  await app.start();
+
+  await app.navigateRepositoryFilesLocation('path', 'docs/sub');
+  assert.equal(app.repositoryPath, 'docs/sub');
+  assert.deepEqual(client.lists, ['docs', 'docs/sub']);
+
+  client.lists.length = 0;
+  await app.navigateRepositoryFilesLocation('path', 'docs/readme.md');
+  assert.equal(app.repositoryPath, 'docs');
+  assert.equal(app.repositoryPreview.path, 'docs/readme.md');
+  assert.deepEqual(app.opened.at(-1), 'docs/readme.md');
+  assert.deepEqual(client.lists, ['docs', 'docs']);
+
+  client.lists.length = 0;
+  await app.navigateRepositoryFilesLocation('path', '/');
+  assert.equal(app.repositoryPath, '');
+  assert.deepEqual(client.lists, ['']);
+
+  client.lists.length = 0;
+  app.repositoryPath = 'docs';
+  app.repositoryPreview = { path: 'docs/readme.md', name: 'readme.md' };
+  const before = { path: app.repositoryPath, preview: app.repositoryPreview.path };
+  await assert.rejects(() => app.navigateRepositoryFilesLocation('path', 'missing/path.md'), /not found/i);
+  assert.deepEqual({ path: app.repositoryPath, preview: app.repositoryPreview.path }, before);
+  assert.deepEqual(client.lists, ['missing']);
+  for (const invalid of ['../escape', '/absolute/path', 'https://example.com/file.md', 'C:\\temp\\file.md']) {
+    await assert.rejects(() => app.navigateRepositoryFilesLocation('path', invalid));
+    assert.deepEqual({ path: app.repositoryPath, preview: app.repositoryPreview.path }, before);
+  }
+  assert.deepEqual(client.lists, ['missing'], 'invalid paths must be rejected before repository reads');
+});
+
+test('Locations prefers exact pending-local paths without metadata discovery', async () => {
+  const client = makeClient({ directories: { drafts: [] } });
+  const { FakeApp, FakeUI } = makeAppClass(client);
+  runtime.installRepositoryFilesWorkspace({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+  const app = new FakeApp();
+  await app.start();
+  app.referenceObjectLocalState = { files: [{ path: 'drafts/new.md', content: 'pending', baseSha: '' }] };
+  await app.navigateRepositoryFilesLocation('path', 'drafts/new.md');
+  assert.equal(app.repositoryPath, 'drafts');
+  assert.equal(app.opened.at(-1), 'drafts/new.md');
+  assert.deepEqual(client.lists, ['drafts'], 'exact pending file must skip the parent metadata-resolution read');
 });
 
 test('document preset copies template literally then applies configured category after verified create', async () => {
