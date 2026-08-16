@@ -166,7 +166,7 @@ An incomplete bounded scan is never reported as globally valid. Validation perfo
 
 ## 11. Navigation And List UX
 
-`Reference objects ▾` remains available in the Files workspace and is searchable by name, id and definition path.
+`Reference objects ▾` remains available in the Files workspace and is searchable by name, id and definition path. The menu uses the shared Files top-popup portal rather than relying on the clipped toolbar stacking context: its panel is reconstructed from explicit popup state after ordinary rerenders and must paint at least at the base Linked Notes panel stacking level so visible controls remain clickable. Opening remains explicit and is the only event that may lazily load the Definitions File for this menu.
 
 Each object exposes:
 
@@ -241,7 +241,7 @@ Limits are prototype evidence, not final product requirements.
 
 Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, Definitions-File-routed freshness with no repository crawl, empty-registry fast completion, repository-wide validation diagnostics, local no-write updates, current/all publisher behavior, clipboard-only use creation and manual-paste reindexing.
 
-Browser/real-GitHub acceptance must additionally prove the rendered comments are invisible, the always-available searchable list and create modal survive ordinary rerenders, stale uses are yellow only after Check, usage navigation selects the intended same-line occurrence, local actions produce no PUT, GitHub actions preflight/read-back correctly and workspace switching does not leak local state.
+Browser/real-GitHub acceptance must additionally prove the rendered comments are invisible, the always-available searchable list and create modal survive ordinary rerenders, the portaled `Reference objects` panel remains visibly above the main Linked Notes panel and its controls receive clicks before/after a harmless rerender, stale uses are yellow only after Check, usage navigation selects the intended same-line occurrence, local actions produce no PUT, GitHub actions preflight/read-back correctly and workspace switching does not leak local state.
 
 ## 16. Deferred
 

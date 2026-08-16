@@ -327,6 +327,7 @@ Use test branches only.
 | 74 | With registered objects plus unrelated repository folders/files, run Check uses and Files stale diagnostics. | Reads are limited to the Definitions File plus unique recorded definition/use paths; no unrelated directory crawl occurs. | |
 | 75 | Use an empty `reference-objects.json` and run Files stale diagnostics. | The operation finishes after the Definitions File read with zero stale/unresolved uses and no repository traversal. | |
 | 76 | Add an unindexed `obs-ref:use` outside the recorded use paths, then run Validate tags. | The explicit bounded repository-wide validation discovers index drift/unindexed evidence while ordinary freshness remains index-routed. | |
+| 77 | Open `Locations` and `Reference objects`, activate an internal control in each, trigger a harmless Files rerender, then reopen and close via Escape/outside click. | Both portaled panels remain visibly above the main Linked Notes panel and clickable before/after rerender; shared popup state reconstructs correctly and closing does not block the rest of the UI. | |
 
 ## 14. Findings
 

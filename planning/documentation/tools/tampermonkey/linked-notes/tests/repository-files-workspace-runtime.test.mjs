@@ -564,7 +564,7 @@ test('open Files modal survives destructive base rerenders and is dropped after 
   }
 });
 
-test('shared top popup survives destructive rerender, reopens after errors, and falls back when clamp throws', async () => {
+test('shared top popup stays above the base panel, survives destructive rerender, reopens after errors, and falls back when clamp throws', async () => {
   const previousDocument = globalThis.document;
   const namespace = globalThis.ObsLinkedNotes || (globalThis.ObsLinkedNotes = {});
   const previousClamp = namespace.clampRepositoryLinkPopoverRect;
@@ -628,6 +628,7 @@ test('shared top popup survives destructive rerender, reopens after errors, and 
     const first = makeMenu();
     assert.equal(runtime.portalFilesWorkspaceDropdownPanel(ui, first.details, first.panel, { key: 'locations', maxWidth: 680, maxHeight: 420, onOpen: () => { opens += 1; } }), true);
     assert.ok(layer, 'portal layer must be attached directly to the Shadow root');
+    assert.equal(layer.style.zIndex, '2147483647', 'shared popup layer must not sit below the base Linked Notes panel');
     assert.equal(first.panel.hidden, true);
 
     first.summary.listeners.get('click')({ preventDefault() {} });

@@ -16,6 +16,7 @@ Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTU
 - allowed list creation with stale uses while blocking ordering until every nested use is current;
 - added open-file and Files-tree stale/unresolved Reference Object diagnostics;
 - corrected ordinary Reference Object Check/freshness reads to follow `.linked-notes/reference-objects.json` definition/use routes instead of crawling unrelated repository folders; full bounded crawling remains only in explicit tag validation;
+- corrected the shared Files top-popup stacking boundary so portaled `Locations` and `Reference objects` panels paint above the main Linked Notes panel and remain clickable across ordinary rerenders;
 - added repository-facing AI rules for manual Ordered Item structural validation;
 - kept future Reference Object automatic-propagation policy as roadmap research only.
 

@@ -3075,6 +3075,7 @@
 
   return { orderedReferenceUnitRange, createOrderedReferenceList, inspectOrderedReferenceList, orderOrderedReferenceList, orderedReferenceContainerSignature: containerSignature };
 });
+
 /* src/reference-object-registry.js */
 (function (root, factory) {
   const api = factory();
@@ -12456,6 +12457,7 @@
   const PREFS_KEY_STATE = 'filesWorkspacePreferencesKey';
   const DEFAULT_PREFS = { schemaVersion: 1, folderShortcuts: [], documentPresets: [] };
   const COPY_MAX_DIRECTORIES = 60;
+  const TOP_POPUP_Z_INDEX = 2147483647;
 
   function apiOrThrow(app) {
     const api = app && app.api || root.ObsLinkedNotes || {};
@@ -13234,7 +13236,7 @@
       .files-workspace-menu { position: relative; display: inline-flex; }
       .files-workspace-menu > summary { cursor:pointer; display:inline-flex; align-items:center; min-height:34px; padding:6px 10px; border:1px solid var(--border); border-radius:7px; background:var(--surface); list-style:none; }
       .files-workspace-menu > summary::-webkit-details-marker { display:none; }
-      .files-workspace-popup-layer { position:fixed; inset:0; z-index:2147483646; pointer-events:none; overflow:visible; }
+      .files-workspace-popup-layer { position:fixed; inset:0; z-index:${TOP_POPUP_Z_INDEX}; pointer-events:none; overflow:visible; }
       .files-workspace-popup-layer > .files-workspace-menu-panel,
       .files-workspace-popup-layer > .reference-objects-panel { position:fixed !important; pointer-events:auto; margin:0; }
       .files-workspace-menu-panel { position:absolute; z-index:48; top:calc(100% + 6px); left:0; min-width:260px; max-width:min(460px,80vw); max-height:420px; overflow:auto; display:grid; gap:6px; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--surface-2); box-shadow:0 12px 30px rgba(0,0,0,.45); }
@@ -13324,6 +13326,7 @@
     layer = document.createElement('div');
     layer.className = 'files-workspace-popup-layer';
     layer.dataset.filesWorkspacePopupLayer = '1';
+    layer.style.zIndex = String(TOP_POPUP_Z_INDEX);
     ui.shadow.appendChild(layer);
     return layer;
   }
