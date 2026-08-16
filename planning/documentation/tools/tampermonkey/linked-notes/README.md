@@ -14,7 +14,7 @@ The Tampermonkey prototype remains implementation evidence rather than accepted 
 
 If the task is to change, debug, understand or design Linked Notes itself, read in this order:
 
-1. [`USE-CASE-MAP.md`](USE-CASE-MAP.md) — what independently useful user outcomes exist and how they connect.
+1. [`USE-CASE-MAP.md`](USE-CASE-MAP.md) — what independently useful user outcomes exist, how they connect, and exact primary links from each UC to behavior docs/contracts, source modules, automated tests and manual acceptance.
 2. [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical current `UC-LN-*` identities/statuses.
 3. [`APP-OVERVIEW.md`](APP-OVERVIEW.md) — current surfaces/actions and concise current behavior.
 4. [`ARCHITECTURE.md`](ARCHITECTURE.md) — runtime layers, module families, build order and GitHub boundary.
@@ -55,7 +55,7 @@ The semantic relationship between these surfaces and current Use Cases is owned 
 
 Current semantic owners:
 
-- [`USE-CASE-MAP.md`](USE-CASE-MAP.md) — trigger/result/boundary map and relationships;
+- [`USE-CASE-MAP.md`](USE-CASE-MAP.md) — trigger/result/boundary map, relationships and per-UC exact traceability to detailed docs/contracts, primary implementation, automated tests and manual acceptance;
 - [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical current Use-Case IDs/statuses;
 - [`APP-OVERVIEW.md`](APP-OVERVIEW.md) — current surface/product map.
 
@@ -70,6 +70,8 @@ Focused implementation mappings/checks:
 Repository-facing conventions consumed by the prototype live under the repository root [`.linked-notes/`](../../../../../.linked-notes/README.md). Content-working chats should enter through its `AGENT-GUIDE.md`; those contracts are separate from this developer/application documentation.
 
 Former Linked Notes workflow documents under `planning/areas/documentation-workbench/` are retained as legacy planning/compatibility context. Do not route current Linked Notes semantics through them.
+
+Traceability rule: do not leave a canonical `UC-LN-*` with only shorthand such as “source/tests”. Its map entry should name the primary concrete files that currently implement and verify that user outcome. The list may be intentionally non-exhaustive when shared shell/infrastructure is already identified as cross-cutting.
 
 ## 4. Durable And Local Boundary
 

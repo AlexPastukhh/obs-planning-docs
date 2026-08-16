@@ -24,6 +24,7 @@ Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTU
 - made the Linked Notes panel centered by default and runtime-draggable from a dedicated handle, with viewport clamping, collapse/reopen position retention, rerender-safe in-progress dragging, a `Center` reset control and transient top-popup closure before panel movement/repositioning;
 - corrected current UI ergonomics by giving Chat Response Reader the Linked Notes dark theme, closing shared top-popups on document-level outside pointerdown and allowing recoverable 64 px left/right edge-peek for the open draggable panel;
 - moved current Linked Notes semantic ownership into local `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md`, added a local roadmap, and downgraded former Documentation Workbench Linked Notes workflow owners to legacy planning/compatibility context;
+- made every canonical `UC-LN-*` map entry explicitly traceable to current behavior docs/contracts, primary source modules, direct automated tests and manual acceptance evidence, with stable registry-to-map anchors instead of generic `source/tests` shorthand;
 - added repository-facing AI rules for manual Ordered Item structural validation;
 - kept future Reference Object automatic-propagation policy as roadmap research only.
 

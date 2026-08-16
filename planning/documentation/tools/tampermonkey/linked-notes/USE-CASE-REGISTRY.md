@@ -1,7 +1,7 @@
 # OBS Linked Notes Use-Case Registry
 
 Status: active canonical current-prototype semantic registry
-Version: v1.0.0 / Linked Notes `0.8.0-prototype`
+Version: v1.1.0 / Linked Notes `0.8.0-prototype`
 Scope: independently useful current Linked Notes user outcomes. The registry describes the current application; it does not claim accepted production architecture.
 
 Semantic map: [`USE-CASE-MAP.md`](USE-CASE-MAP.md)
@@ -16,24 +16,25 @@ Current product/surface evidence: [`APP-OVERVIEW.md`](APP-OVERVIEW.md)
 - Buttons, storage keys, APIs, renderers and popups do not receive UC IDs merely because they exist.
 - Current prototype evidence/status does not imply production acceptance.
 - Current Linked Notes semantic authority is this registry + USE-CASE-MAP.md, not planning/areas/documentation-workbench/.
+- Exact documentation/source/test/manual-acceptance links live in each canonical Use Case's Traceability block in USE-CASE-MAP.md; this registry points to those stable anchors rather than duplicating implementation lists.
 ```
 
 ## 2. Current Registry
 
-| Use-Case ID | Semantic name | Current status | Trigger/input | Successful user result | Primary evidence |
+| Use-Case ID | Semantic name | Current status | Trigger/input | Successful user result | Canonical traceability |
 |---|---|---|---|---|---|
-| `UC-LN-WORKSPACE` | Configure And Select Repository Workspace | current prototype | manage/select workspace or credential | explicit reusable repository context/chat binding | `APP-OVERVIEW.md`, `DATA-AND-STATE.md` |
-| `UC-LN-NOTES` | Create, Link, Reconcile And Save Repository Notes | current prototype; browser/remote acceptance feature-dependent | open/create/edit/refresh/save/navigate Note | durable or explicitly recoverable/conflicted repository Note state | `APP-OVERVIEW.md`, Note/image/reconcile modules/tests |
-| `UC-LN-FILES` | Browse, Read And Prepare Repository File Work | current prototype; acceptance feature-dependent | open Files/location/search/create/edit/structure/copy/template | repository content read and/or complete intended file bytes staged locally | `APP-OVERVIEW.md`, Files modules/tests |
-| `UC-LN-CATEGORIES` | Manage Repository Categories | current prototype; acceptance feature-dependent | refresh/create/edit/assign/unassign/inspect category | repository-backed category intent + derived explicit/implied views | `APP-OVERVIEW.md`, category modules/tests |
-| `UC-LN-PUBLISH` | Publish Pending Repository Changes | current prototype; real-GitHub acceptance required | `Update current file` or `Update all` with pending paths | verified one-path or atomic all-path remote publication, or preserved pending failure/conflict | common local-change/Git Data modules/tests, `KNOWN-ISSUES.md` |
-| `UC-LN-NOTE-TRANSFER` | Copy A Linked Note And Repository Images | current prototype; remote acceptance feature-dependent | verified Note + same-repository Markdown target + transfer action | Note Markdown and supported repository images copied/reused with verified target writes | transfer/image modules/tests |
-| `UC-LN-REFERENCE-OBJECTS` | Define, Materialize, Check And Synchronize Reference Objects | current prototype; acceptance feature-dependent | define/use/check/update/validate reference | stable definition/materialized uses + freshness evidence + local synchronization intent | `REFERENCE-OBJECTS-PROTOTYPE.md`, source/tests |
-| `UC-LN-ORDERED-REFERENCE-LISTS` | Create And Reorder Reference-Driven Markdown Units | current prototype; acceptance feature-dependent | create/order list from Reference Object uses | complete Markdown units wrapped/reordered locally by checked values | Ordered List source/tests, repository contract |
-| `UC-LN-READER` | Read A ChatGPT Response In A Local Reader | current prototype; browser acceptance pending | Reader + Paste or Open in Reader | safe large rendered response with explicit exact/derived source accuracy | `CHAT-RESPONSE-READER.md`, focused checklist/tests |
-| `UC-LN-APP-STATE` | Export Diagnostic Application State | current prototype; browser acceptance pending | App state Refresh/Copy | redacted versioned diagnostic snapshot | `FULL-APP-STATE-EXPORT.md`, source/tests |
+| `UC-LN-WORKSPACE` | Configure And Select Repository Workspace | current prototype | manage/select workspace or credential | explicit reusable repository context/chat binding | [`USE-CASE-MAP.md#uc-ln-workspace`](USE-CASE-MAP.md#uc-ln-workspace) |
+| `UC-LN-NOTES` | Create, Link, Reconcile And Save Repository Notes | current prototype; browser/remote acceptance feature-dependent | open/create/edit/refresh/save/navigate Note | durable or explicitly recoverable/conflicted repository Note state | [`USE-CASE-MAP.md#uc-ln-notes`](USE-CASE-MAP.md#uc-ln-notes) |
+| `UC-LN-FILES` | Browse, Read And Prepare Repository File Work | current prototype; acceptance feature-dependent | open Files/location/search/create/edit/structure/copy/template | repository content read and/or complete intended file bytes staged locally | [`USE-CASE-MAP.md#uc-ln-files`](USE-CASE-MAP.md#uc-ln-files) |
+| `UC-LN-CATEGORIES` | Manage Repository Categories | current prototype; acceptance feature-dependent | refresh/create/edit/assign/unassign/inspect category | repository-backed category intent + derived explicit/implied views | [`USE-CASE-MAP.md#uc-ln-categories`](USE-CASE-MAP.md#uc-ln-categories) |
+| `UC-LN-PUBLISH` | Publish Pending Repository Changes | current prototype; real-GitHub acceptance required | `Update current file` or `Update all` with pending paths | verified one-path or atomic all-path remote publication, or preserved pending failure/conflict | [`USE-CASE-MAP.md#uc-ln-publish`](USE-CASE-MAP.md#uc-ln-publish) |
+| `UC-LN-NOTE-TRANSFER` | Copy A Linked Note And Repository Images | current prototype; remote acceptance feature-dependent | verified Note + same-repository Markdown target + transfer action | Note Markdown and supported repository images copied/reused with verified target writes | [`USE-CASE-MAP.md#uc-ln-note-transfer`](USE-CASE-MAP.md#uc-ln-note-transfer) |
+| `UC-LN-REFERENCE-OBJECTS` | Define, Materialize, Check And Synchronize Reference Objects | current prototype; acceptance feature-dependent | define/use/check/update/validate reference | stable definition/materialized uses + freshness evidence + local synchronization intent | [`USE-CASE-MAP.md#uc-ln-reference-objects`](USE-CASE-MAP.md#uc-ln-reference-objects) |
+| `UC-LN-ORDERED-REFERENCE-LISTS` | Create And Reorder Reference-Driven Markdown Units | current prototype; acceptance feature-dependent | create/order list from Reference Object uses | complete Markdown units wrapped/reordered locally by checked values | [`USE-CASE-MAP.md#uc-ln-ordered-reference-lists`](USE-CASE-MAP.md#uc-ln-ordered-reference-lists) |
+| `UC-LN-READER` | Read A ChatGPT Response In A Local Reader | current prototype; browser acceptance pending | Reader + Paste or Open in Reader | safe large rendered response with explicit exact/derived source accuracy | [`USE-CASE-MAP.md#uc-ln-reader`](USE-CASE-MAP.md#uc-ln-reader) |
+| `UC-LN-APP-STATE` | Export Diagnostic Application State | current prototype; browser acceptance pending | App state Refresh/Copy | redacted versioned diagnostic snapshot | [`USE-CASE-MAP.md#uc-ln-app-state`](USE-CASE-MAP.md#uc-ln-app-state) |
 
-The detailed trigger/result/boundary contract for every row is in [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
+The detailed trigger/result/boundary contract **and exact primary documentation / implementation / automated-test / manual-acceptance traceability** for every row is in [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
 
 ## 3. Publication Relationships
 
