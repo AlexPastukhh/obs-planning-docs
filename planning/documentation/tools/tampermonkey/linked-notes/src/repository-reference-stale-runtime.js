@@ -44,11 +44,11 @@
         overlays: typeof api.repositoryTextOverlays === 'function' ? api.repositoryTextOverlays(this.referenceObjectLocalState) : this.referenceObjectLocalState.files
       });
       const result = options.silent && typeof this._runFilesWorkspaceRead === 'function'
-        ? await this._runFilesWorkspaceRead('Checking stale Reference Object uses…', run)
+        ? await this._runFilesWorkspaceRead('Checking indexed Reference Object uses…', run)
         : await run();
       if (!result || result.cancelled) return result;
       this.referenceFreshnessDiagnostics = result;
-      this._setUi({ status: `Reference freshness checked: ${result.staleCount} stale, ${result.unresolvedCount} unresolved use(s)${result.incomplete ? '; scan incomplete' : ''}.` });
+      this._setUi({ status: `Indexed reference freshness checked: ${result.staleCount} stale, ${result.unresolvedCount} unresolved use(s)${result.incomplete ? '; scan incomplete' : ''}.` });
       return result;
     };
 

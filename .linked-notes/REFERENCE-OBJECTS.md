@@ -32,6 +32,10 @@ A use is **not automatically live**. Changing the definition does not silently r
 
 `.linked-notes/reference-objects.json` stores routing/index metadata only. It does not duplicate the canonical value.
 
+For normal `Check uses` and Files stale diagnostics, that routing/index is also the bounded read plan: read the Definitions File, then only the recorded `definition.path` and unique `uses[].path` files. Do not crawl unrelated repository folders merely to decide whether known materialized uses are current. If `objects[]` is empty, freshness completes after reading the Definitions File.
+
+Repository-wide discovery is a different integrity operation. `Validate tags` may scan the bounded supported repository scope to find markers that are missing from the index, duplicate definitions, unknown IDs or other index drift. A normal freshness result therefore reports the state of indexed objects/uses; it is not proof that no unindexed marker exists elsewhere.
+
 ## Finding an existing object
 
 To resolve an existing Reference Object:

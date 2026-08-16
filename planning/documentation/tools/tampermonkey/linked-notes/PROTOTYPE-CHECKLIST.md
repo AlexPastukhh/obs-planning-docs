@@ -324,6 +324,9 @@ Use test branches only.
 | 71 | Refresh the stale use locally, then exercise natural/alphabetical/number/custom ordering. | Complete item blocks move locally, ties stay stable, missing leading numbers block number mode and custom accepts exact-value order only. | |
 | 72 | Manually corrupt an item so its declared line/paragraph is not its actual structural unit. | Ordering validation blocks and identifies the structural item problem. | |
 | 73 | Change a definition, run stale diagnostics and inspect Files. | The open file warning and affected tree entry show stale/unresolved use counts. | |
+| 74 | With registered objects plus unrelated repository folders/files, run Check uses and Files stale diagnostics. | Reads are limited to the Definitions File plus unique recorded definition/use paths; no unrelated directory crawl occurs. | |
+| 75 | Use an empty `reference-objects.json` and run Files stale diagnostics. | The operation finishes after the Definitions File read with zero stale/unresolved uses and no repository traversal. | |
+| 76 | Add an unindexed `obs-ref:use` outside the recorded use paths, then run Validate tags. | The explicit bounded repository-wide validation discovers index drift/unindexed evidence while ordinary freshness remains index-routed. | |
 
 ## 14. Findings
 

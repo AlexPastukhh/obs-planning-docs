@@ -162,6 +162,8 @@ src/repository-reference-stale-runtime.js
 
 Marker/registry/service modules keep repository marker/index logic separate from UI/runtime integration. The common store/publisher own local intent and standard publication; Ordered List core owns structural validation and deterministic sorting; stale runtime projects repository freshness into Files.
 
+Ordinary Reference Object checks are index-routed: the service reads `.linked-notes/reference-objects.json`, then only recorded definition/use paths, deduplicating shared paths and using pending text overlays before GitHub reads. Files stale diagnostics use the same route across registered objects, and an empty registry requires no repository-file reads beyond the registry itself. `Validate tags` intentionally keeps the separate bounded repository crawl because only that integrity operation can discover unindexed markers or definitions outside recorded routes.
+
 ### Rich Markdown and Reader
 
 ```text

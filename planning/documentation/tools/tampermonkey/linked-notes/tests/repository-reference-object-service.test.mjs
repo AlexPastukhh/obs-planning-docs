@@ -11,6 +11,8 @@ function missing(path) { const error = new Error(`missing: ${path}`); error.kind
 function makeClient(initial = {}) {
   const files = new Map();
   const writes = [];
+  const reads = [];
+  const lists = [];
   let seq = 0;
   for (const [path, content] of Object.entries(initial)) files.set(path, { path, content, sha: `sha-${++seq}` });
   function list(path) {
@@ -33,9 +35,10 @@ function makeClient(initial = {}) {
     return [...children.values()];
   }
   return {
-    files, writes,
-    async listDirectory(path) { return list(path); },
+    files, writes, reads, lists,
+    async listDirectory(path) { lists.push(path); return list(path); },
     async readBytes(path) {
+      reads.push(path);
       const file = files.get(path); if (!file) throw missing(path);
       const bytes = new TextEncoder().encode(file.content);
       return { path, name: path.split('/').pop(), sha: file.sha, size: bytes.byteLength, bytes };
@@ -149,15 +152,61 @@ test('repository scan ignores documentation examples inside Markdown code', asyn
   assert.equal(client.writes.length, 0);
 });
 
-test('repository freshness scan classifies stale and unresolved uses by file without writes', async () => {
+test('repository freshness follows Definitions File routes without crawling unrelated files', async () => {
   const client = makeClient({
     '.linked-notes/reference-objects.json': definitionsFile(),
     'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
-    'game/zombie.md': `${markers.formatReferenceUse('ro_damage1', '25')} ${markers.formatReferenceUse('ro_unknown1', 'x')}`
+    'game/zombie.md': markers.formatReferenceUse('ro_damage1', '25'),
+    'docs/unrelated.md': markers.formatReferenceUse('ro_unknown1', 'x'),
+    'deep/nested/other.md': markers.formatReferenceDefinition('ro_damage1', 'not-an-indexed-definition')
   });
   const result = await service.diagnoseReferenceObjectFreshness({ client });
   assert.equal(result.staleCount, 1);
-  assert.equal(result.unresolvedCount, 1);
-  assert.deepEqual(result.files.find((file) => file.path === 'game/zombie.md') && result.files.find((file) => file.path === 'game/zombie.md').uses.map((use) => use.status), ['stale', 'unresolved']);
+  assert.equal(result.unresolvedCount, 0);
+  assert.equal(result.scanSummary.mode, 'indexed');
+  assert.deepEqual(client.lists, []);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/combat.md', 'game/zombie.md']);
+  assert.deepEqual(result.files.map((file) => file.path), ['game/zombie.md']);
   assert.equal(client.writes.length, 0);
+});
+
+test('empty Definitions File freshness check stops after the registry read', async () => {
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': registryApi.encodeReferenceObjectRegistry({ schemaVersion: 1, objects: [] }),
+    'docs/unrelated.md': markers.formatReferenceUse('ro_unknown1', 'x')
+  });
+  const result = await service.diagnoseReferenceObjectFreshness({ client });
+  assert.equal(result.staleCount, 0);
+  assert.equal(result.unresolvedCount, 0);
+  assert.deepEqual(result.files, []);
+  assert.deepEqual(client.lists, []);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json']);
+});
+
+test('Check uses reads only the indexed definition and use files', async () => {
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': definitionsFile(),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/zombie.md': markers.formatReferenceUse('ro_damage1', '30'),
+    'elsewhere/unindexed.md': markers.formatReferenceUse('ro_damage1', '10')
+  });
+  const result = await service.checkReferenceObjectUses({ client, objectId: 'ro_damage1' });
+  assert.equal(result.currentValue, '30');
+  assert.deepEqual(result.uses.map((item) => item.value), ['30']);
+  assert.equal(result.scanSummary.mode, 'indexed');
+  assert.deepEqual(client.lists, []);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/combat.md', 'game/zombie.md']);
+});
+
+test('Validate tags remains the explicit repository-wide integrity scan', async () => {
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': definitionsFile(),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/zombie.md': markers.formatReferenceUse('ro_damage1', '30'),
+    'elsewhere/unindexed.md': markers.formatReferenceUse('ro_damage1', '10')
+  });
+  const validation = await service.validateReferenceObjectTags({ client });
+  assert.ok(client.lists.length > 0);
+  assert.ok(client.reads.includes('elsewhere/unindexed.md'));
+  assert.ok(validation.diagnostics.some((item) => item.kind === 'usage_index_drift'));
 });

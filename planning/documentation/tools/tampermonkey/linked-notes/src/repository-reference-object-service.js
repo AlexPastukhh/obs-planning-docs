@@ -193,6 +193,99 @@
     return JSON.stringify(actualUseIndex(left)) === JSON.stringify(actualUseIndex(right));
   }
 
+
+  function indexedReferenceRoutes(objects) {
+    const routes = new Map();
+    const ensure = (path) => {
+      const value = String(path || '').trim();
+      if (!value) return null;
+      if (!routes.has(value)) routes.set(value, { path: value, definitionIds: new Set(), useIds: new Set(), expectedUses: [] });
+      return routes.get(value);
+    };
+    const source = Array.isArray(objects) ? objects : [];
+    for (const object of source) {
+      const route = ensure(object && object.definition && object.definition.path);
+      if (route) route.definitionIds.add(String(object.id || ''));
+    }
+    for (const object of source) {
+      const id = String(object && object.id || '');
+      for (const use of Array.isArray(object && object.uses) ? object.uses : []) {
+        const route = ensure(use && use.path);
+        if (!route) continue;
+        route.useIds.add(id);
+        route.expectedUses.push({ objectId: id, path: route.path, line: Number(use && use.line) || 0, lineOccurrence: Number(use && use.lineOccurrence) || 0 });
+      }
+    }
+    return [...routes.values()];
+  }
+
+  async function readIndexedReferenceObjectState(options, registrySnapshot, objects) {
+    const api = core();
+    const client = options && options.client;
+    const localOverlays = overlayMap(options && options.overlays);
+    const maxFiles = Number(options && options.maxFiles) > 0 ? Number(options.maxFiles) : DEFAULT_SCAN_MAX_FILES;
+    const maxBytes = Number(options && options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_SCAN_MAX_BYTES;
+    const maxFileBytes = Number(options && options.maxFileBytes) > 0 ? Number(options.maxFileBytes) : DEFAULT_SCAN_MAX_FILE_BYTES;
+    const routes = indexedReferenceRoutes(objects);
+    const files = [];
+    const fileByPath = new Map();
+    const diagnostics = [];
+    let totalBytes = 0;
+    let incomplete = false;
+    let truncationReason = '';
+    const selected = routes.slice(0, maxFiles);
+    if (routes.length > maxFiles) {
+      incomplete = true;
+      truncationReason = `indexed file limit ${maxFiles}`;
+      diagnostics.push({ kind: 'indexed_file_limit', path: registrySnapshot.path, message: `Definitions File routes ${routes.length} unique files; only ${maxFiles} can be checked in one operation.` });
+    }
+    for (const route of selected) {
+      if (!supportedReferenceTextPath(route.path)) {
+        incomplete = true;
+        diagnostics.push({ kind: 'indexed_path_unsupported', path: route.path, message: 'Definitions File points to a path outside the supported Reference Object text-file set.' });
+        continue;
+      }
+      try {
+        const local = localOverlays.get(route.path);
+        let snapshot;
+        if (local) {
+          const size = new TextEncoder().encode(local.content).byteLength;
+          if (size > maxFileBytes) throw new Error(`Local pending file exceeds ${maxFileBytes} bytes.`);
+          snapshot = { path: route.path, sha: local.baseSha, baseSha: local.baseSha, size, content: local.content, local: true };
+        } else {
+          const file = await readTextFile(client, route.path, { maxBytes: maxFileBytes });
+          snapshot = { ...file, baseSha: file.sha, local: false };
+        }
+        if (totalBytes + snapshot.size > maxBytes) {
+          incomplete = true;
+          truncationReason = truncationReason || `indexed aggregate byte limit ${maxBytes}`;
+          diagnostics.push({ kind: 'indexed_byte_limit', path: route.path, message: `Definitions File routed reads exceed the ${maxBytes}-byte aggregate bound.` });
+          break;
+        }
+        totalBytes += snapshot.size;
+        const parsed = api.parseReferenceMarkers(snapshot.content);
+        const record = { ...snapshot, markers: parsed.occurrences, markerDiagnostics: parsed.diagnostics, route };
+        files.push(record);
+        fileByPath.set(record.path, record);
+        for (const diagnostic of parsed.diagnostics) diagnostics.push({ ...diagnostic, path: record.path });
+      } catch (error) {
+        incomplete = true;
+        diagnostics.push({ kind: 'indexed_file_read_error', path: route.path, message: errorText(error) });
+      }
+    }
+    return {
+      registryPath: registrySnapshot.path,
+      files,
+      fileByPath,
+      diagnostics,
+      incomplete,
+      truncationReason,
+      indexedPaths: routes.length,
+      readFiles: files.length,
+      totalBytes
+    };
+  }
+
   async function checkReferenceObjectUses(options = {}) {
     const api = core();
     const id = api.normalizeReferenceObjectId(options.objectId);
@@ -200,29 +293,25 @@
     const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
     const object = api.referenceObjectById(registrySnapshot.registry, id);
     if (!object) throw new Error(`Reference Object not found in Definitions File: ${id}.`);
-    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
-    const definitions = [];
-    const uses = [];
-    for (const file of scan.files) {
-      for (const marker of file.markers) {
-        if (marker.id !== id) continue;
-        const item = { ...marker, path: file.path, fileSha: file.baseSha || file.sha || '', local: Boolean(file.local) };
-        if (marker.role === 'def') definitions.push(item);
-        else if (marker.role === 'use') uses.push(item);
-      }
-    }
-    const diagnostics = [...scan.diagnostics];
-    const expectedDefinitions = definitions.filter((item) => item.path === object.definition.path);
-    if (expectedDefinitions.length !== 1) diagnostics.push({ kind: expectedDefinitions.length ? 'duplicate_definition_at_path' : 'definition_missing', path: object.definition.path, objectId: id, message: expectedDefinitions.length ? `Definitions File target contains ${expectedDefinitions.length} definitions for ${id}.` : `Definition marker ${id} was not found at ${object.definition.path}.` });
-    if (definitions.length > 1) diagnostics.push({ kind: 'duplicate_definition', objectId: id, path: object.definition.path, message: `${id} has ${definitions.length} definition markers in the scanned repository state.` });
-    if (definitions.some((item) => item.path !== object.definition.path)) diagnostics.push({ kind: 'definition_wrong_path', objectId: id, path: object.definition.path, message: `${id} has a definition marker outside its Definitions File path.` });
-    const definition = definitions.length === 1 && definitions[0].path === object.definition.path ? definitions[0] : null;
+    const routed = await readIndexedReferenceObjectState(options, registrySnapshot, [object]);
+    const diagnostics = [...routed.diagnostics];
+    const definitionFile = routed.fileByPath.get(String(object.definition && object.definition.path || ''));
+    const definitions = definitionFile ? definitionFile.markers.filter((marker) => marker.role === 'def' && marker.id === id).map((marker) => ({ ...marker, path: definitionFile.path, fileSha: definitionFile.baseSha || definitionFile.sha || '', local: Boolean(definitionFile.local) })) : [];
+    if (definitions.length !== 1) diagnostics.push({ kind: definitions.length ? 'duplicate_definition_at_path' : 'definition_missing', path: object.definition.path, objectId: id, message: definitions.length ? `Definitions File target contains ${definitions.length} definitions for ${id}.` : `Definition marker ${id} was not found at ${object.definition.path}.` });
+    const definition = definitions.length === 1 ? definitions[0] : null;
     const currentValue = definition ? definition.value : '';
+    const indexedUsePaths = new Set((Array.isArray(object.uses) ? object.uses : []).map((use) => String(use && use.path || '')).filter(Boolean));
+    const uses = [];
+    for (const path of indexedUsePaths) {
+      const file = routed.fileByPath.get(path);
+      if (!file) continue;
+      for (const marker of file.markers) if (marker.role === 'use' && marker.id === id) uses.push({ ...marker, path: file.path, fileSha: file.baseSha || file.sha || '', local: Boolean(file.local) });
+    }
     const classifiedUses = uses.sort((left, right) => left.path.localeCompare(right.path) || left.fullStart - right.fullStart).map((use) => ({ ...use, status: definition && use.value === currentValue ? 'current' : definition ? 'stale' : 'unresolved' }));
     const index = actualUseIndex(classifiedUses);
     const indexDrift = !sameUsageIndex(object.uses, index);
-    const blockingKinds = new Set(['definition_missing', 'duplicate_definition_at_path', 'duplicate_definition', 'definition_wrong_path']);
-    const blocked = !definition || diagnostics.some((item) => blockingKinds.has(item.kind));
+    if (indexDrift) diagnostics.push({ kind: 'usage_index_drift', objectId: id, path: registryPath, message: `Definitions File usage index differs from the markers found in its ${indexedUsePaths.size} routed use file(s). Run Validate tags to discover uses in unindexed files.` });
+    const blocked = !definition;
     return {
       kind: 'reference-object-check-v1',
       object,
@@ -235,11 +324,11 @@
       usageIndex: index,
       indexDrift,
       diagnostics,
-      incomplete: scan.incomplete,
-      truncationReason: scan.truncationReason,
+      incomplete: routed.incomplete,
+      truncationReason: routed.truncationReason,
       blocked,
-      files: scan.files,
-      scanSummary: { directories: scan.scannedDirectories, files: scan.scannedFiles, bytes: scan.totalBytes }
+      files: routed.files,
+      scanSummary: { mode: 'indexed', directories: 0, files: routed.readFiles, bytes: routed.totalBytes, indexedPaths: routed.indexedPaths }
     };
   }
 
@@ -377,41 +466,79 @@
     const api = core();
     const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
     const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
-    const scan = await scanRepositoryReferenceObjects({ ...options, registryPath });
-    const objectById = new Map(registrySnapshot.registry.objects.map((object) => [object.id, object]));
-    const definitionsById = new Map();
-    for (const file of scan.files) for (const marker of file.markers) if (marker.role === 'def') {
-      const group = definitionsById.get(marker.id) || [];
-      group.push({ ...marker, path: file.path });
-      definitionsById.set(marker.id, group);
+    const objects = Array.isArray(registrySnapshot.registry.objects) ? registrySnapshot.registry.objects : [];
+    if (!objects.length) {
+      return {
+        kind: 'reference-object-freshness-v1',
+        files: [],
+        uses: [],
+        staleCount: 0,
+        unresolvedCount: 0,
+        incomplete: false,
+        truncationReason: '',
+        diagnostics: [],
+        registrySnapshot,
+        scanSummary: { mode: 'indexed', directories: 0, files: 0, bytes: 0, indexedPaths: 0 }
+      };
     }
+    const routed = await readIndexedReferenceObjectState(options, registrySnapshot, objects);
+    const diagnostics = [...routed.diagnostics];
     const currentValueById = new Map();
-    for (const object of registrySnapshot.registry.objects) {
-      const definitions = (definitionsById.get(object.id) || []).filter((item) => item.path === object.definition.path);
-      if (definitions.length === 1 && (definitionsById.get(object.id) || []).length === 1) currentValueById.set(object.id, definitions[0].value);
+    for (const object of objects) {
+      const path = String(object.definition && object.definition.path || '');
+      const file = routed.fileByPath.get(path);
+      const definitions = file ? file.markers.filter((marker) => marker.role === 'def' && marker.id === object.id) : [];
+      if (definitions.length === 1) currentValueById.set(object.id, definitions[0].value);
+      else diagnostics.push({ kind: definitions.length ? 'duplicate_definition_at_path' : 'definition_missing', objectId: object.id, path, message: definitions.length ? `Definitions File target contains ${definitions.length} definitions for ${object.id}.` : `Definition marker ${object.id} was not found at ${path}.` });
     }
-    const files = [];
     const uses = [];
-    for (const file of scan.files) {
-      const fileUses = file.markers.filter((marker) => marker.role === 'use').map((marker) => {
-        const currentValue = currentValueById.get(marker.id);
-        const status = !objectById.has(marker.id) || currentValue == null ? 'unresolved' : marker.value === currentValue ? 'current' : 'stale';
-        const item = { path: file.path, objectId: marker.id, line: marker.line, lineOccurrence: marker.lineOccurrence, value: marker.value, currentValue: currentValue == null ? '' : currentValue, status };
-        uses.push(item);
-        return item;
-      });
-      if (fileUses.length) files.push({ path: file.path, current: fileUses.filter((item) => item.status === 'current').length, stale: fileUses.filter((item) => item.status === 'stale').length, unresolved: fileUses.filter((item) => item.status === 'unresolved').length, uses: fileUses });
+    for (const object of objects) {
+      const expectedByPath = new Map();
+      for (const expected of Array.isArray(object.uses) ? object.uses : []) {
+        const path = String(expected && expected.path || '');
+        if (!path) continue;
+        const group = expectedByPath.get(path) || [];
+        group.push(expected);
+        expectedByPath.set(path, group);
+      }
+      const actualForObject = [];
+      for (const [path, expected] of expectedByPath.entries()) {
+        const file = routed.fileByPath.get(path);
+        if (!file) {
+          for (const item of expected) actualForObject.push({ path, objectId: object.id, line: Number(item.line) || 0, lineOccurrence: Number(item.lineOccurrence) || 0, value: '', currentValue: currentValueById.get(object.id) || '', status: 'unresolved', indexedMissing: true });
+          continue;
+        }
+        const actual = file.markers.filter((marker) => marker.role === 'use' && marker.id === object.id).map((marker) => ({ path: file.path, objectId: object.id, line: marker.line, lineOccurrence: marker.lineOccurrence, value: marker.value, currentValue: currentValueById.get(object.id) || '', status: currentValueById.has(object.id) ? (marker.value === currentValueById.get(object.id) ? 'current' : 'stale') : 'unresolved' }));
+        actualForObject.push(...actual);
+        const missingCount = Math.max(0, expected.length - actual.length);
+        for (let index = 0; index < missingCount; index += 1) {
+          const item = expected[index] || {};
+          actualForObject.push({ path, objectId: object.id, line: Number(item.line) || 0, lineOccurrence: Number(item.lineOccurrence) || 0, value: '', currentValue: currentValueById.get(object.id) || '', status: 'unresolved', indexedMissing: true });
+        }
+      }
+      const actualIndex = actualUseIndex(actualForObject.filter((item) => !item.indexedMissing));
+      if (!sameUsageIndex(object.uses, actualIndex)) diagnostics.push({ kind: 'usage_index_drift', objectId: object.id, path: registryPath, message: `Definitions File usage index differs from markers in the indexed use paths for ${object.id}. Run Validate tags for a repository-wide integrity check.` });
+      uses.push(...actualForObject);
     }
+    uses.sort((left, right) => left.path.localeCompare(right.path) || left.line - right.line || left.lineOccurrence - right.lineOccurrence || left.objectId.localeCompare(right.objectId));
+    const fileMap = new Map();
+    for (const use of uses) {
+      const group = fileMap.get(use.path) || [];
+      group.push(use);
+      fileMap.set(use.path, group);
+    }
+    const files = [...fileMap.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([path, fileUses]) => ({ path, current: fileUses.filter((item) => item.status === 'current').length, stale: fileUses.filter((item) => item.status === 'stale').length, unresolved: fileUses.filter((item) => item.status === 'unresolved').length, uses: fileUses }));
     return {
       kind: 'reference-object-freshness-v1',
       files,
       uses,
       staleCount: uses.filter((item) => item.status === 'stale').length,
       unresolvedCount: uses.filter((item) => item.status === 'unresolved').length,
-      incomplete: scan.incomplete,
-      truncationReason: scan.truncationReason,
-      diagnostics: scan.diagnostics,
-      registrySnapshot
+      incomplete: routed.incomplete,
+      truncationReason: routed.truncationReason,
+      diagnostics,
+      registrySnapshot,
+      scanSummary: { mode: 'indexed', directories: 0, files: routed.readFiles, bytes: routed.totalBytes, indexedPaths: routed.indexedPaths }
     };
   }
 

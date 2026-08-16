@@ -15,6 +15,7 @@ Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTU
 - added natural, alphabetical, guarded leading-number and non-executable custom-value ordering with stable ties;
 - allowed list creation with stale uses while blocking ordering until every nested use is current;
 - added open-file and Files-tree stale/unresolved Reference Object diagnostics;
+- corrected ordinary Reference Object Check/freshness reads to follow `.linked-notes/reference-objects.json` definition/use routes instead of crawling unrelated repository folders; full bounded crawling remains only in explicit tag validation;
 - added repository-facing AI rules for manual Ordered Item structural validation;
 - kept future Reference Object automatic-propagation policy as roadmap research only.
 

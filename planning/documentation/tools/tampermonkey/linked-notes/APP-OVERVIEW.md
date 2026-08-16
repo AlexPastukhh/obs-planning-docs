@@ -109,7 +109,7 @@ Repository contract: `.linked-notes/templates/README.md`.
 
 Reference Objects use stable `ro_*` identities with repository-native definition/use markers. The canonical value is the content inside the definition marker; use markers materialize the value so repository Markdown remains readable outside the application.
 
-The repository registry is routing/index metadata, not the canonical value store. Propagation is explicit rather than automatic. Repository-wide freshness diagnostics expose stale/unresolved uses in the open file and Files tree after a check.
+The repository registry is routing/index metadata, not the canonical value store. Propagation is explicit rather than automatic. Normal freshness diagnostics follow the registry's definition/use paths and expose stale/unresolved indexed uses in the open file and Files tree; repository-wide discovery is reserved for explicit tag validation.
 
 Ordered Reference Lists add `obs-order:list` and paired `obs-order:item` markers around complete lines or paragraphs. Creation permits stale uses with a warning; ordering is blocked until every nested use equals the checked current definition value. Ordering is local and has no feature-specific GitHub action.
 

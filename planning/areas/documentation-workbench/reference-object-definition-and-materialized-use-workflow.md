@@ -93,7 +93,7 @@ The always-available searchable Reference Objects list exposes `Copy reference`.
 
 The clipboard receives the complete use marker containing the current definition value. The helper does not insert it into the current editor automatically. The user opens/edits the desired file and pastes the clipboard text through ordinary file editing.
 
-A later local save/reindex or explicit validation discovers the pasted marker and refreshes the local usage index.
+A later local save/reindex refreshes the local usage index. Explicit `Validate tags` can discover an unindexed pasted marker and report drift, but validation itself remains read-only.
 
 Clipboard copy itself does not perform a GitHub write.
 
@@ -101,7 +101,9 @@ Clipboard copy itself does not perform a GitHub write.
 
 `Check uses` is read-only.
 
-It explicitly scans the bounded supported repository scope, resolves the one definition and compares every discovered materialized use value to the current definition value.
+It reads `.linked-notes/reference-objects.json` first, then follows only the selected object's recorded `definition.path` and unique `uses[].path` routes. It compares the materialized uses found in those indexed files to the canonical definition value and does not crawl unrelated repository folders. If the Definitions File has no objects, ordinary freshness completes after that one registry read.
+
+This indexed check can report usage-index drift inside the files it was routed to, but it cannot prove that an unindexed marker does not exist elsewhere. Repository-wide discovery belongs to `Validate tags`.
 
 Results:
 
@@ -146,7 +148,7 @@ For `Update all`, all intended files enter one tree/commit; either the non-force
 
 ## 10. Validate Tags
 
-`Validate tags` is a separate read-only operation from `Check uses`.
+`Validate tags` is a separate read-only operation from `Check uses`. Unlike the indexed ordinary check, validation performs the bounded repository-wide scan required to discover unindexed markers and global integrity drift.
 
 Minimum diagnostics:
 
@@ -210,7 +212,7 @@ This repository-facing document is a projection of this workflow's selected beha
 
 ## 13. Bounded Prototype Limits
 
-The explicit repository scan is bounded rather than background/unbounded:
+The repository-wide integrity scan used by `Validate tags` is bounded rather than background/unbounded. Normal `Check uses` and Files stale diagnostics use Definitions File routes instead and do not pay these directory-scan costs:
 
 - at most 80 directories;
 - at most 300 supported text files;
@@ -237,7 +239,7 @@ Limits are prototype evidence, not final product requirements.
 
 ## 15. Required Acceptance
 
-Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, local no-write updates, current/all publisher behavior, validation diagnostics, clipboard-only use creation and manual-paste reindexing.
+Automated coverage must include exact same-line candidate numbering, selected-only wrapping, multiline matches, malformed markers, registry round-trip/rename, local workspace isolation, read-only stale checking, Definitions-File-routed freshness with no repository crawl, empty-registry fast completion, repository-wide validation diagnostics, local no-write updates, current/all publisher behavior, clipboard-only use creation and manual-paste reindexing.
 
 Browser/real-GitHub acceptance must additionally prove the rendered comments are invisible, the always-available searchable list and create modal survive ordinary rerenders, stale uses are yellow only after Check, usage navigation selects the intended same-line occurrence, local actions produce no PUT, GitHub actions preflight/read-back correctly and workspace switching does not leak local state.
 

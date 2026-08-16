@@ -56,7 +56,7 @@ GitHub publication uses the standard Files actions. `Update current file` writes
 
 ## 5. Check, Update And Validate
 
-`Check uses` is read-only and marks stale uses in the UI. A zero-stale/no-index-drift `Update locally` is a true no-op and creates no pending draft.
+`Check uses` is read-only and marks stale uses in the UI. It reads the Definitions File, then only the selected object's recorded definition/use paths; it does not perform a repository crawl. The Files stale-diagnostics pass uses the same indexed routing across all registered objects. An empty `objects[]` registry therefore finishes after the Definitions File read. A zero-stale/no-index-drift `Update locally` is a true no-op and creates no pending draft.
 
 Two update actions remain distinct:
 
@@ -67,17 +67,17 @@ Update current file / Update all → standard verified publication of pending fi
 
 Independent remote usage update is blocked while local Reference Object drafts are pending, so unsynced local definition changes cannot silently become the basis for a different remote action.
 
-`Validate tags` separately checks marker syntax/identity and Definitions File/index consistency. It does not repair files automatically.
+`Validate tags` separately checks marker syntax/identity and Definitions File/index consistency. It is the explicit repository-wide integrity operation and does not repair files automatically.
 
 ## 6. Explicit Scan Bounds
 
-Repository-wide check/validation is explicit and cancellable through the Files read lifecycle. The prototype bound is 80 directories, 300 supported text files, 4 MiB aggregate and 512 KiB per file. No background indexer is created.
+Only repository-wide integrity validation crawls the bounded supported repository scope. The prototype bound is 80 directories, 300 supported text files, 4 MiB aggregate and 512 KiB per file. Normal Check/freshness follows Definitions File routes and performs no directory traversal. No background indexer is created.
 
 ## 7. UI
 
 The Files workspace gains an always-available searchable `Reference objects ▾` menu.
 
-Each object exposes Copy, Open definition, Check, Update locally, local Rename and an expandable usage list. Usage rows show path, current line and same-line occurrence number; checked stale values are highlighted yellow. Clicking a use opens the file in source view and focuses the exact marker occurrence, including distinct `#1/#2/#3` uses on the same line. Repository freshness diagnostics also expose stale/unresolved counts in the open file and Files tree after a scan.
+Each object exposes Copy, Open definition, Check, Update locally, local Rename and an expandable usage list. Usage rows show path, current line and same-line occurrence number; checked stale values are highlighted yellow. Clicking a use opens the file in source view and focuses the exact marker occurrence, including distinct `#1/#2/#3` uses on the same line. Indexed repository freshness diagnostics also expose stale/unresolved counts in the open file and Files tree after the routed check.
 
 The create modal and open Reference Objects menu are restored across the base UI's destructive rerenders when the exact repository workspace context remains unchanged.
 
@@ -96,6 +96,6 @@ The create modal and open Reference Objects menu are restored across the base UI
 
 ## 9. Evidence
 
-Focused automated tests cover marker parsing/selection, registry codec, local store isolation, service check/update/validation and runtime orchestration including clipboard-only use creation, local no-write behavior, publish ordering and manual-paste reindexing.
+Focused automated tests cover marker parsing/selection, registry codec, local store isolation, indexed service check/freshness behavior, empty-registry fast completion, full-scan validation and runtime orchestration including clipboard-only use creation, local no-write behavior, publish ordering and manual-paste reindexing.
 
 The complete repository verifier must still pass after the new modules are built into `linked-notes-prototype.user.js`. Browser and real-GitHub acceptance remains required before the slice is treated as accepted runtime evidence.
