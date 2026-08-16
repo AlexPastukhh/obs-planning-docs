@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.28.0-linked-notes-semantic-root
+Doc version: v0.29.0-planning-helper-explicit-repository-sync
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
@@ -11,7 +11,7 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
   generated install artifact for the modular Orientation / Directions / Use Cases / Commands helper;
   source/build/tests live under `chat-command-palette/`;
   planning-command definitions live under `planning/commands/`;
-  user-authored local helper commands/prompts use one browser-local snapshot; repository copies are create-only cold backups;
+  user-authored local helper commands/prompts use one browser-local snapshot with explicit GitHub check/save/sync;
   its floating Planning launcher hides while Dashboard is open;
   Alt+F2 and Tools -> Commands remain available.
 
@@ -61,7 +61,7 @@ Do not create competing tracked copies of the same script.
 ```text
 Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
-By default they do not write repository files or perform external network calls. Linked Notes remains an explicitly bounded repository client. Planning Helper normal runtime is local-only; its sole GitHub exception is create-only backup of locally new/unbacked records imported from ChatGPT.
+By default they do not write repository files or perform external network calls. Linked Notes remains an explicitly bounded repository client. Planning Helper normal runtime is RAM/local-only; GitHub access is limited to explicit Check GitHub, Sync missing and Save GitHub actions for its bounded repository-backed entities.
 The repository documentation prototype is the narrow test-only exception: after explicit user actions it may perform bounded GitHub operations under the current Linked Notes contracts. Ordinary pending repository-file changes use `Update current file` for one Contents-API path or `Update all` for one Git Data tree/commit/ref transition with verification; compound Note/image-transfer paths retain their documented verified behavior.
 The Linked Notes Prototype never runs local git, commit or push. Runtime code does not define command meaning, and current application semantics are owned by the tracked `linked-notes/USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md`, not inferred from implementation alone.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
@@ -119,8 +119,8 @@ Dashboard IndexedDB:
 
 Planning Helper private GM storage:
   obsPlanningHelper:v2:localSnapshot  # unified planning-command/helper-command/prompt working snapshot
-  obsPlanningHelper:v1:repositorySettings  # create-only backup/recovery-request target only
-  obsPlanningHelper:v1:githubToken          # create-only backup credential only
+  obsPlanningHelper:v1:repositorySettings  # explicit repository-action target + recovery request
+  obsPlanningHelper:v1:githubToken          # explicit repository-action credential only
 
 Planning Helper legacy migration inputs only:
   obsPlanningHelper:v1:commandCatalogCache
@@ -161,7 +161,7 @@ Rules:
 - Exporting does not clear pending records.
 - Pending records clear only after reviewed repository application plus reconciliation, or explicit user action.
 - Conflict records block additional Finish actions until resolved.
-- Planning Helper warm startup reads one unified GM snapshot, then search/Insert/Copy/edit operate from RAM; it has no GitHub Refresh/Sync/read path. ChatGPT-mediated restore is local-only, and only locally new/unbacked imported records may trigger create-only GitHub PUTs.
+- Planning Helper warm startup reads one unified GM snapshot, then search/Insert/Copy/edit/import operate from RAM/local state. GitHub reads/writes occur only after explicit Check GitHub, Sync missing or Save GitHub actions; Sync missing never overwrites a same-path local record.
 - Linked Notes current storage/state ownership is documented in `linked-notes/DATA-AND-STATE.md`; this shared tools index does not duplicate the complete application persistence contract.
 - chatgpt.com and chat.openai.com are different IndexedDB origins; use chatgpt.com as the canonical Linked Notes IndexedDB origin.
 ```
@@ -375,7 +375,7 @@ The reusable Command Palette provides:
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
 - `reconcile planning items` inserts a read-only workflow-integrity plus item-set reconciliation body: identify independently traversable End-To-End Workflows and affected non-workflow primary review objects; trace each workflow's trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer workflow slices when one mandatory workflow crosses them; treat Planning Drafts/models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
-- normal insertion/copy is RAM-first and performs no repository read/write; command recovery/import is pasted from ChatGPT, and only locally new/unbacked imports may attempt create-only backup under the bounded command/helper-library paths; no local Git, commit or push.
+- normal insertion/copy/import is RAM-first and performs no repository read/write; explicit Check GitHub / Sync missing / Save GitHub operate only on bounded command/helper-library paths and never run local Git, commit or push.
 ```
 
 ## 9A. Orientation / Directions / Use Cases / Commands
@@ -496,9 +496,9 @@ planning/planning-use-case-map.md
   → selected direct *.command.md
 ```
 
-The generated userscript bundles a valid command catalog only as an offline fallback. The installed helper does not list, read, refresh or synchronize repository command files. `Copy recovery request` asks ChatGPT to read the configured repository and return the complete current command/helper marker set; `Restore from GitHub copy` reconciles repository-backed local records to that complete set, preserves local-only/unbacked records, and uses zero GitHub traffic. `Import from ChatGPT` validates and persists incoming records locally first. Only a record that is locally new or explicitly still unbacked may attempt one create-only GitHub Contents PUT to its deterministic path. The client has no GET/list/read/read-back/update/delete methods; an existing path is a conflict and the local record remains intact. Blank owner/repository/branch settings are rejected. Create-only backup attempts share one serialized repository-operation lock.
+The generated userscript bundles a valid command catalog only as an offline fallback. Normal helper use stays RAM/local-only. `Check GitHub` lists direct metadata and compares counts/path-name sets for planning commands, helper commands and prompts without mutating local state. `Sync missing` downloads only repository paths absent locally and never overwrites a same-path local record. Per-row `Save GitHub` creates, no-ops or SHA-updates one local entity with exact read-back verification; planning-command save validates the complete direct remote command catalog before writing. `Import from ChatGPT` remains local-only. `Copy recovery request` + pasted Restore remains an offline/manual fallback. Blank owner/repository/branch settings are rejected and explicit repository operations share one serialized lock.
 
-Planning Helper keeps repository settings/token in the existing `obsPlanningHelper:v1:*` secret/config keys and keeps runtime command/helper content in the unified `obsPlanningHelper:v2:localSnapshot`. Old v1 command/library cache keys are migration inputs only. The token is secret state and is never written into planning-command files, helper-library files or the local snapshot. Local Cmds and Prompts remain convenience text, not planning-command authority; optional cold backup copies live only under `planning/helper-library/`.
+Planning Helper keeps repository settings/token in the existing `obsPlanningHelper:v1:*` secret/config keys and keeps runtime command/helper content in the unified `obsPlanningHelper:v2:localSnapshot`. Old v1 command/library cache keys are migration inputs only. The token is secret state and is never written into planning-command files, helper-library files or the local snapshot. Local Cmds and Prompts remain convenience text, not planning-command authority; optional repository copies live only under `planning/helper-library/`. Application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md`; current behavior/traceability is owned by `chat-command-palette/USE-CASE-MAP.md`.
 
 ## 10. Command Palette adaptation rule
 
@@ -543,11 +543,11 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
-- Except for the explicitly documented Linked Notes boundary and Planning Helper create-only cold-backup boundary, do not use helpers to write repository files or perform external network calls. Planning Helper never reads GitHub and may only create previously absent direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` or `planning/helper-library/prompts/*.prompt.md` targets after an explicit ChatGPT import identifies a locally new/unbacked record.
+- Except for the explicitly documented Linked Notes boundary and Planning Helper explicit repository-action boundary, do not use helpers to write repository files or perform external network calls. Planning Helper GitHub access is limited to explicit Check GitHub, Sync missing and Save GitHub over direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` targets; normal insertion/import remains network-independent.
 - The detailed Linked Notes semantics, test boundary, storage model and current invariants are owned under `linked-notes/` by its `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md` plus focused current-state docs; legacy Documentation Workbench Linked Notes workflows are compatibility/planning history only.
 ```
 
 
 ## Planning Helper Local Library / Prompts
 
-Developer/runtime details remain under `chat-command-palette/`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. Normal Save/Edit/Delete are local-only. The generated userscript directly uses granted `GM_getValue`/`GM_setValue` for the unified local snapshot and uses `GM_xmlhttpRequest` only for explicit create-only cold-backup PUT attempts after ChatGPT import. There is no Planning Helper repository Refresh/Sync/read path. If browser-local state is lost, ChatGPT reads the repository and returns exact marker blocks for local Restore.
+Developer/runtime details remain under `chat-command-palette/`; application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md` and behavior/traceability by `chat-command-palette/USE-CASE-MAP.md`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. Local Save/Edit/Delete and ChatGPT import remain local-only. The generated userscript uses granted `GM_getValue`/`GM_setValue` for the unified local snapshot and `GM_xmlhttpRequest` only after explicit Check GitHub, Sync missing or Save GitHub actions. If browser-local state is lost, direct Sync missing can restore repository-only records, while ChatGPT marker Restore remains an offline/manual fallback.

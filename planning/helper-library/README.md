@@ -1,7 +1,7 @@
 # Planning Helper Local Library
 
-Status: active repository backup format for optional Planning Helper helper commands/prompts
-Scope: repository copies of user-authored local helper commands and arbitrary reusable prompts. This folder is not planning-command authority.
+Status: active repository format for optional Planning Helper helper commands/prompts
+Scope: repository copies of user-authored helper commands and arbitrary reusable prompts. This folder is not planning-command authority.
 
 ## Boundary
 
@@ -22,25 +22,43 @@ A helper-library file never registers a planning command or grants command permi
 
 The browser-local Planning Helper snapshot is the runtime working copy. After startup the validated helper records are materialized in RAM. Search, Insert, Copy, Edit and Delete use RAM/local persistence only and never read GitHub. Helper commands and prompts share this exact runtime path: a prompt is not fetched or normalized again when clicked; its saved `text` is taken from the in-memory record, copied to the clipboard first and then passed unchanged to composer insertion.
 
-There is no repository-library Refresh/Sync action.
+`Import from ChatGPT` is also local-only. Repository I/O is never implicit in import or insertion.
 
-If local storage is lost, `Copy recovery request` asks ChatGPT to read the repository helper-library files and return the complete current set of exact `[PLANNING_HELPER_LIBRARY_ITEM]` blocks. `Restore from GitHub copy` reconciles repository-backed helper commands/prompts to that complete set, removes stale repository-backed records that are absent, preserves local-only/unbacked helper items, and performs zero GitHub requests/writes.
-
-## Create-Only Repository Backup
-
-When `Import from ChatGPT` introduces a helper item that is locally new or locally marked as not yet repository-backed, the helper saves it locally first and may then attempt one create-only GitHub Contents PUT to its deterministic path.
+Application-level repository actions and acceptance rules are owned by:
 
 ```text
-create-only backup
-  → no preliminary GET/listing
-  → no read-back GET
-  → no UPDATE existing file
-  → no DELETE
-  → conflict if the target already exists
-  → local record remains even when backup fails
+planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md
+  → planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-MAP.md
 ```
 
-Editing or deleting an existing local helper item never updates/deletes the repository copy. Repository content is therefore an append-only/cold backup from the helper runtime, not a live synchronized database.
+## Explicit Repository Check / Sync / Save
+
+Helper commands and prompts support three explicit GitHub actions:
+
+```text
+Check GitHub
+  → list direct command/prompt repository metadata;
+  → compare local/GitHub counts and deterministic path/name sets; same-path means path overlap, not content equality;
+  → do not mutate local state;
+
+Sync missing
+  → identify repository paths absent locally;
+  → GET only those missing file bodies;
+  → parse/validate and add them to the local snapshot;
+  → never overwrite a same-path local helper item;
+
+Save GitHub
+  → operate on one local helper command/prompt;
+  → read its deterministic remote target;
+  → create when absent;
+  → no-op when exact rendered bytes already match;
+  → update with the current remote SHA when different;
+  → require exact read-back verification after a write.
+```
+
+Repository Delete is not implemented. Local Delete removes only the local snapshot record.
+
+If local storage is lost, `Copy recovery request` + `Restore from GitHub copy` remains available as a ChatGPT-mediated/manual fallback and performs zero GitHub requests from the helper during restore.
 
 ## File Paths
 
@@ -73,7 +91,7 @@ Each file contains exactly one line-delimited `[PLANNING_HELPER_LIBRARY_ITEM]` J
 
 ## Security
 
-Do not put GitHub tokens or other secrets in helper-library records. The Planning Helper token remains in its own Tampermonkey GM key and is used only for explicit create-only backup attempts.
+Do not put GitHub tokens or other secrets in helper-library records. The Planning Helper token remains in its own Tampermonkey GM key and is used only by explicit Check GitHub, Sync missing and Save GitHub actions.
 
 ## Legacy Migration
 

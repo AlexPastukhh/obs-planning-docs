@@ -1,7 +1,7 @@
 # OBS Planning Use-Case Map
 
 Status: active project-specific root command-system router
-Doc version: v0.14.0-local-helper-runtime
+Doc version: v0.15.0-explicit-helper-repository-sync
 Scope: mandatory OBS command-system entry and shared routing/global policy. Individual concrete command definitions live in `planning/commands/`. Dashboard planning is performed in the Dashboard UI and is not exposed as a command family.
 
 ## 1. Authority Model
@@ -105,7 +105,7 @@ planning/commands/end-session.command.md
 
 and remains bounded to the existing active operational-day workflow described by its owner files.
 
-## 7. Tampermonkey Projection, Local Recovery And Repository Backup
+## 7. Tampermonkey Projection, Local State And Explicit Repository Sync
 
 Projection/build owners:
 
@@ -113,6 +113,14 @@ Projection/build owners:
 planning/documentation/tampermonkey-command-projection-workflow.md
 planning/documentation/tools/tampermonkey/README.md
 planning/documentation/tools/tampermonkey/chat-command-palette/README.md
+```
+
+Planning Helper application semantic route:
+
+```text
+planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md
+  → planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-MAP.md
+  → focused docs / src / tests / MANUAL-ACCEPTANCE.md
 ```
 
 Generated install artifact:
@@ -125,15 +133,20 @@ Rules:
 
 ```text
 - command bodies are generated from repository command definitions;
-- the bundled catalog is a build-time fallback, not authority;
-- normal Planning Helper startup, search, tab switching, Insert, Copy, local edit and restore use only the browser-local snapshot/RAM state and do not read GitHub;
-- the helper has no repository Refresh/Sync action;
-- if local state is lost, the helper can copy a recovery request for ChatGPT; ChatGPT reads the repository and returns the complete current command/helper marker set, which Restore uses to reconcile repository-backed local records while preserving local-only/unbacked records, without contacting GitHub;
-- when an explicit ChatGPT import introduces a locally new/unbacked planning command, helper command or prompt, the helper may attempt one create-only GitHub Contents PUT to its deterministic repository path;
-- create-only backup sends no preliminary GET, no read-back GET and no UPDATE/DELETE fallback; an already-existing path is reported as a conflict while the local record remains intact;
-- existing local records imported again are updated locally only and never cause a GitHub write;
+- the bundled catalog is a build-time fallback, not command meaning authority;
+- normal Planning Helper startup, search, tab switching, Insert, Copy, local edit, local delete and ChatGPT import use only the browser-local snapshot/RAM state and do not read GitHub;
+- the helper may read/write GitHub only after an explicit user repository action described by its application use-case owner;
+- Check GitHub compares direct repository path/name inventories and counts for planning commands, helper commands and prompts without mutating local state; same-path means inventory overlap, not content equality;
+- Sync missing reads only repository paths absent from the local snapshot, validates them, and adds them locally without overwriting a same-path local record;
+- Save GitHub may create or update one local planning command, helper command or prompt at its deterministic repository path using current remote state/SHA and exact read-back verification;
+- planning-command Save GitHub validates the complete direct remote command catalog before writing;
+- changing repository owner/repository/branch invalidates per-record repository evidence metadata before activating the new source while preserving local content;
+- repository deletion is not part of this slice; local Delete remains local-only;
+- if local state is lost, the existing ChatGPT-mediated marker recovery path remains available as a manual/offline fallback;
 - the helper never runs local Git, commit or push.
 ```
+
+The repository-sync feature must remain disconnected from composer insertion. A GitHub timeout/failure may fail an explicit repository action, but must not be on the normal Insert/Copy execution path.
 
 ## 8. Source Notes
 
@@ -146,4 +159,5 @@ Sources:
   Content:
     - migrated current command routes from the former root-UCM command tables;
     - user-confirmed repository command registry and modular Planning Helper direction;
-    - user-confirmed RAM-first/local-recovery/create-only GitHub backup direction.
+    - user-confirmed RAM-first/local snapshot direction;
+    - user-confirmed explicit GitHub check/save/sync for Planning Helper commands and prompts while keeping insertion network-independent.

@@ -40,7 +40,7 @@
     const rawContent=String(input.rawContent||deps.renderCommandDefinitionDocument(definition)).replace(/\r\n?/g,'\n');
     const parsed=deps.parseCommandDefinitionDocument(rawContent,{path});
     if(JSON.stringify(deps.toSerializable(deps.stripRuntimeCommandMetadata(parsed)))!==JSON.stringify(deps.toSerializable(definition)))throw new TypeError(`Planning-command snapshot raw content does not match definition: ${definition.id}`);
-    return{definition,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown),repositorySha:String(input.repositorySha||'').trim()};
+    const repositorySha=String(input.repositorySha||'').trim();return{definition,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};
   }
   function normalizeHelperRecord(value){
     const input=value&&typeof value==='object'?value:{};
@@ -50,7 +50,7 @@
     const rawContent=String(input.rawContent||deps.renderHelperLibraryDocument(item)).replace(/\r\n?/g,'\n');
     const parsed=deps.parseHelperLibraryDocument(rawContent,{kind:item.kind,path});
     if(JSON.stringify(parsed)!==JSON.stringify(item))throw new TypeError(`Helper-library snapshot raw content does not match item: ${item.kind}:${item.id}`);
-    return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown),repositorySha:String(input.repositorySha||'').trim()};
+    const repositorySha=String(input.repositorySha||'').trim();return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};
   }
   function normalizePlanningHelperLocalSnapshot(value){
     if(!value||typeof value!=='object'||value.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION)throw new TypeError('Unsupported Planning Helper local snapshot schema.');

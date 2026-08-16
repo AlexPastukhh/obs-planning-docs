@@ -1,7 +1,7 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.3.1-authoritative-chat-recovery
+Doc version: v1.4.0-explicit-helper-repository-sync
 Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and planning-command routes into the Tampermonkey/ChatGPT helper while keeping user-authored local commands/prompts in a separate non-authoritative helper library.
 
 ## 1. Core Rule
@@ -30,6 +30,10 @@ Behavior authority:
 
 Projection implementation source/build:
   planning/documentation/tools/tampermonkey/chat-command-palette/
+
+Planning Helper application semantics:
+  planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md
+  → planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-MAP.md
 
 Generated install artifact:
   planning/documentation/tools/tampermonkey/chat-command-palette.user.js
@@ -63,7 +67,7 @@ Check:
 10. A command-specific refinement, when present, only points to route/owner docs to reread and states the validation action.
 ```
 
-If the bundled generated userscript is older than the accepted repository command catalog, recover the current catalog through ChatGPT: copy the helper recovery request, let ChatGPT read the repository, and paste the complete returned marker set into local Restore. Restore treats that complete set as authoritative for repository-backed local records, removing stale repository-backed records that are absent while preserving local-only/unbacked records. The helper itself does not refresh/read GitHub. Rebuild/reinstall only when helper source/runtime changes; do not edit the generated artifact to match command data.
+If the browser-local snapshot is missing repository records, use the explicit `Check GitHub` / `Sync missing` application actions to compare direct path/name inventories and download only repository-only records. The ChatGPT recovery request + pasted Restore flow remains an offline/manual fallback. Rebuild/reinstall is required only when helper source/runtime changes or when the bundled fallback itself must be refreshed; do not edit the generated artifact to match command data.
 
 ## 3. Shared Inserted Body Contract
 
@@ -259,7 +263,7 @@ instruction:
 - do not abbreviate, transliterate or normalize an English name only inside the helper.
 ```
 
-A repository command-definition change is not fetched by the installed helper. To update a browser-local command set, use the ChatGPT recovery/import flow and paste the returned exact command blocks. Rebuilding/reinstalling is required only when helper source/runtime changes or when the bundled offline fallback itself must be refreshed.
+Repository command definitions are not fetched automatically. An explicit `Check GitHub` compares inventory metadata; `Sync missing` downloads only repository command paths absent locally; `Save GitHub` explicitly creates/updates one local command with current remote state/SHA validation. Same-path local records are not overwritten by Sync missing. Rebuilding/reinstalling is required only when helper source/runtime changes or when the bundled offline fallback itself must be refreshed.
 
 ## 9. Archive Source Reminder Projection
 
@@ -479,7 +483,7 @@ Required invariants:
 - modular composer insertion preserves success, composer-not-found, contenteditable-rejected and mutation-exception timing/reason diagnostics without adding retry loops;
 - a static fix is not considered live resolution until browser testing confirms the reported freeze is gone.
 
-## 9I. Local Command Snapshot And Create-Only Backup
+## 9I. RAM-First Snapshot And Explicit Repository Sync
 
 ```text
 bundled catalog
@@ -487,22 +491,34 @@ bundled catalog
 
 local snapshot / RAM
   = normal Planning Helper runtime data source;
+  = startup/search/tab/Insert/Copy/edit/delete/import do not read GitHub;
+
+Check GitHub
+  = explicit repository metadata listing;
+  = compare local/GitHub counts and deterministic path/name sets for planning commands, helper commands and prompts; same-path is inventory overlap, not content equality;
+  = no local mutation;
+
+Sync missing
+  = explicit repository read;
+  = GET only GitHub paths that do not exist locally;
+  = parse/validate and add them to the local snapshot;
+  = never overwrite a same-path local record;
+
+Save GitHub
+  = explicit one-record persistence;
+  = create when target is absent;
+  = no-op when exact rendered content already matches;
+  = update with current remote SHA when different;
+  = exact read-back verification after write;
 
 ChatGPT recovery
-  = ChatGPT reads repository files and returns the complete current marker set;
-  = helper Restore reconciles repository-backed local records to that complete pasted set;
-  = stale repository-backed records absent from the complete set are removed locally;
-  = local-only/unbacked records are preserved;
-  = Restore performs zero GitHub requests;
-
-Import from ChatGPT
-  = existing local records update locally only;
-  = locally new/unbacked records may attempt one create-only repository PUT.
+  = manual/offline fallback that returns the complete current marker set;
+  = pasted Restore performs zero GitHub requests.
 ```
 
-Planning Helper has no repository Refresh/Sync/read operation. A create-only backup does not list/read the target first, does not read it back after the PUT, and never falls through to update/delete. An already-existing path is a conflict and leaves local state intact. Repository settings/token exist only for create-only backup and for generating the ChatGPT recovery request. Local Git, commit and push remain outside this surface.
+Planning-command Save GitHub validates the complete direct remote command catalog before writing. Helper-command/prompt Save GitHub is confined to its deterministic helper-library path. Repository deletion is not implemented; local Delete remains local-only. All GitHub operations share one serialized explicit-operation lock and remain outside composer insertion.
 
-The GitHub token belongs only to Planning Helper GM secret state and never to command definitions, generated userscript content or the local snapshot.
+The GitHub token belongs only to Planning Helper GM secret state and never to command definitions, helper-library files, generated userscript content or the local snapshot.
 
 ## 10. Placement
 
@@ -556,7 +572,7 @@ Prompts
   → browser-local snapshot/RAM at runtime.
 ```
 
-A helper command/prompt never becomes a registered planning command merely because a repository backup file exists. `Import from ChatGPT` can create an append-only/cold repository backup only when the item is locally new/unbacked; later edits remain local. `Restore from GitHub copy` is a pasted-text local restore that reconciles the repository-backed portion to the complete GitHub-derived set, preserves local-only/unbacked records, and performs no network request.
+A helper command/prompt never becomes a registered planning command merely because a repository file exists. `Import from ChatGPT` remains local-only. `Check GitHub`, `Sync missing` and per-row `Save GitHub` are explicit application actions defined by `chat-command-palette/USE-CASE-REGISTRY.md` → `USE-CASE-MAP.md`; repository Delete is not implemented. `Restore from GitHub copy` remains a pasted-text local fallback that performs no network request.
 
 The modular helper may migrate legacy page-local/GM command-library caches into `obsPlanningHelper:v2:localSnapshot`. Migration does not delete legacy keys and does not contact GitHub.
 

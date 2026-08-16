@@ -22,3 +22,6 @@ test('legacy caches migrate locally without GitHub and preserve repo-known helpe
 };await withGm(initial,async()=>{const result=await state.loadOrMigratePlanningHelperLocalSnapshot([]);assert.equal(result.migrated,true);assert.equal(result.snapshot.helperItems[0].item.text,'local override');assert.equal(result.snapshot.helperItems[0].repositoryKnown,true);assert.equal(result.snapshot.helperItems[0].repositorySha,'abc');});});
 
 test('repository settings do not clear or bind local snapshot',async()=>withGm({},async()=>{await state.savePlanningHelperLocalSnapshot({schemaVersion:1,planningCommands:[{definition:def,repositoryKnown:true}],helperItems:[]});await state.saveRepositorySettings({owner:'Other',repo:'Else',branch:'dev'});const loaded=await state.loadPlanningHelperLocalSnapshot();assert.equal(loaded.planningCommands[0].definition.id,'demo.create');}));
+
+
+test('direct repository SHA always implies repository evidence even if legacy flag is false',()=>{const commandRecord=state.normalizeCommandRecord({definition:def,repositoryKnown:false,repositorySha:'sha-direct'});const helperRecord=state.normalizeHelperRecord({item:prompt,repositoryKnown:false,repositorySha:'sha-helper'});assert.equal(commandRecord.repositoryKnown,true);assert.equal(helperRecord.repositoryKnown,true)});
