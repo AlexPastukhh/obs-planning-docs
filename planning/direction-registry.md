@@ -1,7 +1,7 @@
 # OBS Root Direction Registry
 
 Status: active project-specific root semantic Direction Registry
-Doc version: v0.4.0-planning-draft-workbench-alignment
+Doc version: v0.5.0-linked-notes-local-semantic-root
 Scope: OBS root orientation across broad semantic work Directions and references to complete reusable-family/project-local registries.
 
 ## 1. Authority
@@ -15,14 +15,18 @@ This file:
 planning/planning-use-case-map.md:
   → owns executable commands, aliases, English names, outputs and permissions;
 
-local/reusable registries:
+local/reusable/application registries:
   → own complete Direction and Use-Case entries;
 
-workflow/area owners:
+workflow/area/application owners:
   → own complete behavior and concrete state;
 
-Tampermonkey:
-  → projection only.
+Tampermonkey runtime code:
+  → projection/implementation evidence only;
+
+planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md
+planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md:
+  → explicit current Linked Notes application semantic owners colocated with its documentation.
 ```
 
 ## 2. Registry Index
@@ -32,7 +36,7 @@ Tampermonkey:
 | `DIR-PLAN-SOLUTION` | Plan A Solution Or Workflow | active | [`planning/documentation/application-planning/direction-registry.md`](documentation/application-planning/direction-registry.md) | [`planning/documentation/application-planning/use-case-registry.md`](documentation/application-planning/use-case-registry.md) |
 | `DIR-DETAILED-SDS` | Perform Detailed Scenario/Domain/Slice Planning | active / profile-limited | [`planning/documentation/application-planning/direction-registry.md`](documentation/application-planning/direction-registry.md) | [`planning/documentation/application-planning/use-case-registry.md`](documentation/application-planning/use-case-registry.md) |
 | `DIR-MAINTAIN-DOCS-ROUTES` | Maintain Documentation, Use Cases And Commands | active | this file | local registries, root UCM and reusable documentation owners |
-| `DIR-DOCUMENTATION-WORKBENCH` | Develop And Maintain Documentation Workbench | active project-local | [`planning/areas/documentation-workbench/direction-registry.md`](areas/documentation-workbench/direction-registry.md) | [`planning/areas/documentation-workbench/use-case-registry.md`](areas/documentation-workbench/use-case-registry.md) |
+| `DIR-DOCUMENTATION-WORKBENCH` | Develop And Maintain Documentation Workbench | active project-local | [`planning/areas/documentation-workbench/direction-registry.md`](areas/documentation-workbench/direction-registry.md) | [`planning/areas/documentation-workbench/use-case-registry.md`](areas/documentation-workbench/use-case-registry.md) for current non-Linked-Notes Workbench semantics; current Linked Notes application UCs: [`linked-notes/USE-CASE-REGISTRY.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md) |
 
 ## 3. Referenced Direction — Plan A Solution Or Workflow
 
@@ -125,6 +129,9 @@ the relevant local/reusable registry and the complete owner route.
 | [`planning/documentation/application-planning/use-case-registry.md`](documentation/application-planning/use-case-registry.md) | Reusable solution/workflow planning Use Cases | active |
 | [`planning/areas/documentation-workbench/direction-registry.md`](areas/documentation-workbench/direction-registry.md) | Documentation Workbench local Directions | active |
 | [`planning/areas/documentation-workbench/use-case-registry.md`](areas/documentation-workbench/use-case-registry.md) | Documentation Workbench local Use Cases | active |
+| [`planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md) | Current Linked Notes application Use Cases (`UC-LN-*`) | active current-prototype |
+
+Current Linked Notes application semantics remain under the broader Documentation Workbench direction without creating a new root Direction ID by assumption. For Linked Notes behavior, route from this direction to [`planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and its local registry rather than treating the Documentation Workbench area files as current owners.
 
 ## 7. Command Boundary
 

@@ -1,8 +1,10 @@
 # Browse Repository Files And Manage Categories Workflow
 
-Status: working project-local End-To-End Workflow / prototype evidence pending browser and real-GitHub acceptance
+Status: legacy planning/compatibility reference / not current Linked Notes authority
 Doc version: v1.4.0-markdown-heading-link-copy
 Scope: independently traversable behavior for browsing/searching, bounded UTF-8 repository text-file authoring and rich reading, local repository-root Markdown heading-link copy, tracked folder creation, exact GitHub targets, durable file/Note categories and explicit/implied memberships.
+
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Purpose
 

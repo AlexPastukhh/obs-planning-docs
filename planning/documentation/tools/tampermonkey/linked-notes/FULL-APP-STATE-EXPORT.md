@@ -2,7 +2,7 @@
 
 Status: implementation mapping / browser acceptance pending
 Version: schema `obs-linked-notes-full-app-state` v1
-Owner: `planning/areas/documentation-workbench/full-app-state-export-workflow.md`
+Owner: [`USE-CASE-MAP.md`](USE-CASE-MAP.md) / `UC-LN-APP-STATE`
 
 ## User flow
 

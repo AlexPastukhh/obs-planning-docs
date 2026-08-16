@@ -1,8 +1,10 @@
 # Chat Response Reader Workflow
 
-Status: working project-local End-To-End Workflow / prototype acceptance pending
+Status: legacy planning/compatibility reference / not current Linked Notes authority
 Doc version: v0.1.1-source-accuracy-invariant
 Scope: local read-only viewing of one ChatGPT assistant response through OBS Linked Notes with safe rich Markdown, native collapsible `details/summary`, exact paste fallback and no repository persistence.
+
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Purpose
 

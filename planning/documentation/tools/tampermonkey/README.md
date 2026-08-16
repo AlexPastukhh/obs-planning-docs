@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.27.1-planning-helper-authoritative-recovery
+Doc version: v0.28.0-linked-notes-semantic-root
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
@@ -33,22 +33,26 @@ planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   and one-click finished-session capture into the shared pending outbox.
 
 planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.user.js
-  project-local `0.7.2-prototype` repository documentation helper generated from linked-notes/src/**;
-  currently includes Workspaces, Notes, Files, Categories, repository templates, materialized Reference Objects, Chat Response Reader and Full App State diagnostics;
-  repository reads/writes remain explicit and bounded, with verified write behavior owned by the focused Linked Notes workflows;
+  project-local `0.8.0-prototype` repository documentation helper generated from linked-notes/src/**;
+  currently includes Workspaces, Notes, Files, Categories, repository templates, materialized Reference Objects, Ordered Reference Lists, stale-use diagnostics, Chat Response Reader and Full App State diagnostics;
+  ordinary Files/Categories/Reference Object/Ordered List changes are local-first and publish through explicit Update current / one-commit Update all boundaries, while compound Note/image transfer flows retain their documented paths;
   never runs local git, commit or push and does not accept a production architecture.
 ```
 
-Linked Notes current-state documentation is intentionally owned inside its own directory instead of being duplicated in this shared tools index:
+Linked Notes current semantics/product state/implementation documentation are intentionally owned inside its own directory instead of being duplicated in this shared tools index:
 
 ```text
 planning/documentation/tools/tampermonkey/linked-notes/README.md
+  → USE-CASE-MAP.md
+  → USE-CASE-REGISTRY.md
   → APP-OVERVIEW.md
   → ARCHITECTURE.md
   → DATA-AND-STATE.md
   → KNOWN-ISSUES.md
-  → planning/areas/documentation-workbench/linked-notes-prototype-roadmap.md
+  → ROADMAP.md
 ```
+
+`planning/areas/documentation-workbench/` remains broader planning/history/compatibility context for Linked Notes, not its current semantic owner.
 
 Do not create competing tracked copies of the same script.
 
@@ -58,8 +62,8 @@ Do not create competing tracked copies of the same script.
 Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
 By default they do not write repository files or perform external network calls. Linked Notes remains an explicitly bounded repository client. Planning Helper normal runtime is local-only; its sole GitHub exception is create-only backup of locally new/unbacked records imported from ChatGPT.
-The repository documentation prototype is the narrow test-only exception: after an explicit user action it may call the GitHub Contents API for one visibly selected workspace, directory, file, category definition or bound Note target, with path validation, one-operation locking, SHA-aware conflict handling and exact read-back verification for writes.
-The Linked Notes Prototype never runs local git, commit or push; its direct API write does not make the prototype a production architecture or planning authority.
+The repository documentation prototype is the narrow test-only exception: after explicit user actions it may perform bounded GitHub operations under the current Linked Notes contracts. Ordinary pending repository-file changes use `Update current file` for one Contents-API path or `Update all` for one Git Data tree/commit/ref transition with verification; compound Note/image-transfer paths retain their documented verified behavior.
+The Linked Notes Prototype never runs local git, commit or push. Runtime code does not define command meaning, and current application semantics are owned by the tracked `linked-notes/USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md`, not inferred from implementation alone.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
 Tampermonkey command projection does not define command meaning. The root UCM is the command-system entry and direct `planning/commands/*.command.md` files own individual commands.
 Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by UCM commands.
@@ -441,7 +445,7 @@ Structured User Message Composer
 
 `Form Planning Items From Discussion` opens the accepted `сформируй айтемы / form items` command.
 
-Chat/AI/Work-State and the proposed Linked Notes Use Case remain unprojected as accepted until their owner transitions are reviewed.
+Chat/AI/Work-State remains unprojected as accepted. Current Linked Notes `UC-LN-*` identities live in the Linked Notes-local semantic registry and are not automatically projected as Planning Helper commands merely because the application implements them.
 
 ## 9B. Responsive Command Insertion And Diagnostics
 
@@ -540,7 +544,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
 - Except for the explicitly documented Linked Notes boundary and Planning Helper create-only cold-backup boundary, do not use helpers to write repository files or perform external network calls. Planning Helper never reads GitHub and may only create previously absent direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` or `planning/helper-library/prompts/*.prompt.md` targets after an explicit ChatGPT import identifies a locally new/unbacked record.
-- The detailed Linked Notes test boundary, storage model and current invariants are owned under `linked-notes/` and its linked project-local workflows; this shared index must route there rather than become a competing application owner.
+- The detailed Linked Notes semantics, test boundary, storage model and current invariants are owned under `linked-notes/` by its `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md` plus focused current-state docs; legacy Documentation Workbench Linked Notes workflows are compatibility/planning history only.
 ```
 
 

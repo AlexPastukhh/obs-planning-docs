@@ -1,8 +1,10 @@
 # Create, Link And Manage Repository Notes Workflow
 
-Status: working project-local End-To-End Workflow / prototype acceptance pending
+Status: legacy planning/compatibility reference / not current Linked Notes authority
 Doc version: v1.4.0-note-image-insertion-and-transfer-handoff
 Scope: independently traversable user workflow for creating, reading, reconciling, editing, linking, inserting repository images, persisting and navigating durable repository Notes.
+
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Purpose
 

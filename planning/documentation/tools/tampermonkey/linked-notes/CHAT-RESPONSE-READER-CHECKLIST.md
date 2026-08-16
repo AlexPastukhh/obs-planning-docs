@@ -2,7 +2,7 @@
 
 Status: unexecuted focused checklist
 Prototype version: `0.7.2-prototype`
-Owner: `planning/areas/documentation-workbench/chat-response-reader-workflow.md`
+Owner: [`USE-CASE-MAP.md`](USE-CASE-MAP.md) / `UC-LN-READER`
 
 Use this focused record for one concrete Chat Response Reader browser run. It supplements the general `PROTOTYPE-CHECKLIST.md`; no repository credentials or private chat content should be copied into evidence.
 

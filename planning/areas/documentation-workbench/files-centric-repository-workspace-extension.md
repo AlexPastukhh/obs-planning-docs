@@ -1,7 +1,9 @@
 # Files-Centric Repository Workspace Extension
 
-Status: current implementation slice / correction-integrated / subordinate to `repository-file-browser-and-categories-workflow.md` / browser and real-GitHub acceptance pending
+Status: legacy planning/compatibility reference / not current Linked Notes authority
 Scope: Files navigation shortcuts and direct repository-path opening, folder index auto-open, repository-native file templates, repository-root file/heading link copy, add-only structure creation and add-only file/folder copy for the Linked Notes prototype.
+
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Ownership Boundary
 

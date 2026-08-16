@@ -2,7 +2,7 @@
 
 Status: implementation mapping / browser acceptance pending
 Version: `0.7.2-prototype`
-Owner: `planning/areas/documentation-workbench/chat-response-reader-workflow.md`
+Owner: [`USE-CASE-MAP.md`](USE-CASE-MAP.md) / `UC-LN-READER`
 
 ## User flow
 

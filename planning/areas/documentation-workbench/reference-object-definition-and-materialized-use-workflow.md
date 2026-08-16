@@ -1,8 +1,10 @@
 # Reference Object Definition And Materialized Use Workflow
 
-Status: working project-local End-To-End implementation workflow / narrow repository-native slice / canonical Planning Item reconciliation pending
+Status: legacy planning/compatibility reference / not current Linked Notes authority
 Doc version: v0.1.0-prototype-slice
 Scope: create one stable Reference Object definition around exact ordinary Markdown/text, copy materialized use markers, explicitly check/update stale uses, validate marker/index integrity and navigate occurrences without reviving the deferred generic managed-object architecture.
+
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Trigger And Result
 

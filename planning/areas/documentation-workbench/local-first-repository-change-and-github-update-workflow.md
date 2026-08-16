@@ -1,7 +1,9 @@
 # Local-First Repository Change And GitHub Update Workflow
 
-Status: current project-local implementation workflow / `0.8.0-prototype`
+Status: legacy planning/compatibility reference / not current Linked Notes authority
 Scope: ordinary Files changes, category definitions, Reference Object changes, Ordered Reference Lists, structure creation and repository copy.
+
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## Product rule
 

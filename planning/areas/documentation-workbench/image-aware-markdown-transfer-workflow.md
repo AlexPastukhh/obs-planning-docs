@@ -1,8 +1,10 @@
 # Copy A Linked Note And Repository Images Workflow
 
-Status: working project-local End-To-End Workflow / `0.6.4-prototype` evidence pending browser and real-GitHub acceptance
+Status: legacy planning/compatibility reference / not current Linked Notes authority
 Doc version: v1.0.0-image-aware-note-transfer
 Scope: independently traversable behavior for copying the visible Markdown of one verified Linked Note into another Markdown file in the same GitHub repository and branch while copying or safely reusing repository-backed image assets and rewriting their destinations.
+
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Purpose
 

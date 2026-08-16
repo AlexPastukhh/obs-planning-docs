@@ -57,7 +57,7 @@ The concrete mechanism may involve an app/plugin/action/MCP/API or another suppo
 
 ### Next investigation
 
-See Direction 1 in [`linked-notes-prototype-roadmap.md`](../../../../areas/documentation-workbench/linked-notes-prototype-roadmap.md).
+See Direction 1 in [`ROADMAP.md`](ROADMAP.md).
 
 ## COPY-001 — No coherent user-facing Note/File content/context export
 
@@ -91,7 +91,7 @@ Notes/File UI actions plus new pure formatting/projection helpers. Do not implem
 
 ### Next investigation
 
-See Direction 2 in the roadmap.
+See Direction 2 in [`ROADMAP.md`](ROADMAP.md).
 
 ## GITHUB-001 — GitHub save reliability problems require systematic investigation
 
@@ -148,7 +148,7 @@ Run the browser/real-GitHub matrix for both scopes, including permissions, branc
 
 ### Next investigation
 
-See Direction 3 in the roadmap.
+See Direction 3 in [`ROADMAP.md`](ROADMAP.md).
 
 ## DOC-001 — Documentation was fragmented across feature history and large entry files
 

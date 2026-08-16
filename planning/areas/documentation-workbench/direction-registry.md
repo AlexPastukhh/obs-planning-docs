@@ -1,12 +1,14 @@
 # Documentation Workbench Direction Registry
 
 Status: active project-local semantic Direction Registry
-Doc version: v1.2.0-scenarios-and-proposed-notes
-Scope: project-local Directions for repository-native Documentation Workbench planning and independently useful helper capabilities.
+Doc version: v1.3.0-linked-notes-current-semantics-migrated
+Scope: project-local Directions for repository-native Documentation Workbench planning and helper capabilities. Current Linked Notes application Use Cases are owned by the Linked Notes-local registry.
 
 Parent root registry: [`planning/direction-registry.md`](../../direction-registry.md)
 
 Local Use-Case Registry: [`use-case-registry.md`](use-case-registry.md)
+
+Current Linked Notes semantic registry: [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md)
 
 ## 1. Direction Index
 
@@ -30,8 +32,8 @@ Planning Meaning To Repository workflow
   → optional explicit handoff
   → Repository Documentation Change And Reference Review workflow;
 
-proposed independent workflow:
-  Create, Link And Manage Repository Notes;
+current Linked Notes application semantics:
+  migrated to planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md;
 
 independently useful supporting capability:
   Structured User Message Composer;
@@ -51,7 +53,6 @@ deferred alternative:
 |---|---|---|
 | `UC-DW-DOC-REF` — Repository Documentation Change And Reference Review | accepted current | `repository-documentation-change-and-reference-review-workflow.md` |
 | `UC-DW-ITEM-FULL-PICTURE` — Planning Meaning To Repository | accepted current; legacy ID retained | `planning-meaning-to-repository-workflow.md` |
-| `UC-DW-LINKED-NOTES` — Create, Link And Manage Repository Notes | proposed / canonical item transition pending | `linked-notes-end-to-end-workflow.md` |
 | `UC-DW-STRUCTURED-MESSAGE` — Structured User Message Composer | active supporting | `ITEM-121` in `planning-item-register.md` |
 
 ### Boundaries
@@ -61,7 +62,7 @@ deferred alternative:
 - Full Picture is not a separate current artifact.
 - Reference Object model is deferred, not a peer workflow.
 - Detailed project-local SDS planning is not selected for this solution now.
-- A Notes workflow does not accept a specific userscript, storage layout or credential design.
+- Current Linked Notes behavior/Use-Case identity is not owned by this direction registry; use the Linked Notes-local semantic map/registry.
 - Tool ideas do not imply implementation.
 - Direction activation grants no edit/archive/commit/push permission.
 

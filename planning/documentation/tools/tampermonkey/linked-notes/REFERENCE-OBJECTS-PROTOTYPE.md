@@ -3,6 +3,7 @@
 Status: implementation prototype / automated focused evidence available / browser and real-GitHub acceptance pending
 Prototype host: Linked Notes `0.8.0-prototype`
 Definitions File: `.linked-notes/reference-objects.json`
+Owner: [`USE-CASE-MAP.md`](USE-CASE-MAP.md) / `UC-LN-REFERENCE-OBJECTS`
 
 ## 1. Purpose
 

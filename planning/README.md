@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.10.0-repository-command-registry
+Doc version: v0.11.0-linked-notes-local-semantic-root
 Scope: OBS repository planning entry point, semantic Direction orientation, concrete command routing, task activation and source/owner pointers built on the reusable documentation layer.
 
 ## 1. Purpose
@@ -45,6 +45,7 @@ Root semantic Direction orientation:
 Local semantic Direction/Use-Case entries:
   planning/documentation/<family>/*-registry.md
   planning/areas/<area>/*-registry.md
+  explicitly owned project-local application registries such as planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md
 
 Root command-system entry and shared routing policy:
   planning/planning-use-case-map.md
@@ -65,7 +66,7 @@ Concrete local planning state:
   planning/areas/
 ```
 
-Registries own semantic entries; the root UCM owns command-system entry/global routing policy; direct `planning/commands/*.command.md` files own individual concrete commands and canonical English names; workflows own repeated behavior; templates own recommended shape; area owners own concrete state; root files reference rather than copy; examples and Tampermonkey are not authority.
+Registries own semantic entries; the root UCM owns command-system entry/global routing policy; direct `planning/commands/*.command.md` files own individual concrete commands and canonical English names; workflows own repeated behavior; templates own recommended shape; area/application owners own concrete state. Root files reference rather than copy. Runtime Tampermonkey code is implementation evidence, while the tracked Linked Notes `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md` are an explicit project-local semantic documentation exception colocated with that application.
 
 ## 3. New-Chat Orientation Read Order
 
@@ -93,42 +94,58 @@ Bootstrap files are used only when root files do not exist.
 |---|---|---|
 | Planning runtime | `planning/areas/planning-system/` | Minimal technical index and operational `конец` workflow. Dashboard runtime owns planning schema/help and sync. |
 | Conspects | `planning/areas/conspects/` | Conspect review/repetition planning. |
-| Documentation Workbench | `planning/areas/documentation-workbench/` | Repository-native documentation planning, stable links, affected-use review, AI transfer, proposed linked Notes workflow, local registries and source-linked item register. |
+| Documentation Workbench | `planning/areas/documentation-workbench/` | Repository-native documentation planning, stable links, affected-use review, local registries and source-linked item/history context. Linked Notes-specific area files are compatibility/planning history rather than current application semantics. |
 
-Documentation Workbench route:
+Documentation Workbench planning route:
 
 ```text
 planning/areas/documentation-workbench/README.md
   → planning-draft.md
   → direction-registry.md
   → use-case-registry.md
-  → selected workflow/model owner
+  → selected current non-Linked-Notes workflow/model owner
   → targeted planning-item-register.md items/sources
   → relevant reusable owners.
 ```
 
-## 5. Current Documentation Workbench State
+Current Linked Notes application route:
 
 ```text
-High-level owner:
+planning/documentation/tools/tampermonkey/linked-notes/README.md
+  → USE-CASE-MAP.md
+  → USE-CASE-REGISTRY.md
+  → APP-OVERVIEW.md
+  → focused implementation/state docs.
+```
+
+Do not route current Linked Notes behavior through `planning/areas/documentation-workbench/`; retained Linked Notes files there are compatibility/planning history.
+
+## 5. Current Documentation Workbench / Linked Notes Boundary
+
+```text
+Documentation Workbench high-level planning/history owner:
   planning/areas/documentation-workbench/planning-draft.md
 
-Accepted End-To-End Workflows:
+Accepted current Documentation Workbench End-To-End Workflows:
   Repository Documentation Change And Reference Review
   Planning Meaning To Repository
 
-Proposed End-To-End Workflow:
-  Create, Link And Manage Repository Notes
-  (canonical item transition pending)
-
-Supporting deferred model:
-  Reference Object Model And Lifecycle
-
-Local semantic registries:
+Documentation Workbench local registries:
   direction-registry.md
   use-case-registry.md
+    → current non-Linked-Notes Use Cases
+    → compatibility mappings for former Linked Notes UC-DW-* IDs
 
-Canonical register:
+Current Linked Notes semantic/product root:
+  planning/documentation/tools/tampermonkey/linked-notes/
+  USE-CASE-MAP.md
+  USE-CASE-REGISTRY.md
+
+Supporting deferred Documentation Workbench model:
+  Reference Object Model And Lifecycle
+    → deferred application-heavy alternative, not current Linked Notes Reference Objects
+
+Canonical planning register:
   53 reviewed canonical items with active/deferred/retired dispositions.
 
 Removed local artifacts:
@@ -136,7 +153,7 @@ Removed local artifacts:
   project-local scenarios/** workspace.
 ```
 
-Chat/AI/Work-State remains provisional.
+Chat/AI/Work-State remains provisional. Current Linked Notes semantics are not provisional merely because their earlier Documentation Workbench owners were; their current `UC-LN-*` statuses are owned by the Linked Notes-local registry.
 
 ## 6. Planning Item Formation Entry
 

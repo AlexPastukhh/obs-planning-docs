@@ -1,13 +1,12 @@
-# Linked Notes Prototype Roadmap
+# OBS Linked Notes Roadmap
 
-Status: legacy planning/compatibility reference / not current Linked Notes authority
-Scope: future directions for the OBS Linked Notes prototype. This file is not the canonical Planning Item owner, does not accept production architecture and does not authorize implementation by itself.
-
-> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins. Current implementation priorities live in [`ROADMAP.md`](../../documentation/tools/tampermonkey/linked-notes/ROADMAP.md).
+Status: active current-prototype implementation roadmap / priority view
+Scope: future directions for OBS Linked Notes. This file is not current Use-Case authority, does not accept production architecture and does not authorize implementation by itself.
 
 Current implementation baseline: `0.8.0-prototype`.
 
-Implementation documentation entry: [`planning/documentation/tools/tampermonkey/linked-notes/README.md`](../../documentation/tools/tampermonkey/linked-notes/README.md).
+Current semantic entry: [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
+Canonical current Use-Case registry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md).
 
 ## 1. Roadmap Rules
 
@@ -28,7 +27,7 @@ DEFERRED
   → intentionally not part of the active direction.
 ```
 
-A roadmap direction is not an accepted Planning Item transformation. If a direction changes canonical capability meaning or semantic Use-Case identity, run the separate Planning Item / Use-Case reconciliation route first.
+A roadmap direction is not current application semantics merely because it is written here. If a direction changes current Linked Notes capability meaning or semantic Use-Case identity, update `USE-CASE-MAP.md` and `USE-CASE-REGISTRY.md` in the same reviewed change. Broader Documentation Workbench planning may still retain historical/planning context, but it is not current Linked Notes semantic authority.
 
 ## Implemented baseline — local-first files and Ordered Reference Lists
 
@@ -67,10 +66,10 @@ Reader rendering is useful independently of transport and supports the documente
 
 Current owners:
 
-- [`chat-response-reader-workflow.md`](chat-response-reader-workflow.md);
-- [`CHAT-RESPONSE-READER.md`](../../documentation/tools/tampermonkey/linked-notes/CHAT-RESPONSE-READER.md);
+- `UC-LN-READER` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md);
+- [`CHAT-RESPONSE-READER.md`](CHAT-RESPONSE-READER.md);
 - repository-facing response format `.linked-notes/CHAT-RESPONSE-FORMAT.md`;
-- `CHAT-001` in [`KNOWN-ISSUES.md`](../../documentation/tools/tampermonkey/linked-notes/KNOWN-ISSUES.md).
+- `CHAT-001` in [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md).
 
 ### Problem / direction
 
@@ -136,7 +135,7 @@ App State → diagnostic JSON snapshot
 
 Full App State is diagnostic application state, not normal content copy.
 
-Current owner/gap record: `COPY-001` in [`KNOWN-ISSUES.md`](../../documentation/tools/tampermonkey/linked-notes/KNOWN-ISSUES.md).
+Current owner/gap record: `COPY-001` in [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md).
 
 ### Target outcome — first slice
 
@@ -208,22 +207,22 @@ Existing workflows already document safety requirements including explicit remot
 
 The user reports GitHub save problems, but the exact reproduced failure path has not yet been documented. Do not infer a root cause before evidence.
 
-Current issue: `GITHUB-001` in [`KNOWN-ISSUES.md`](../../documentation/tools/tampermonkey/linked-notes/KNOWN-ISSUES.md).
+Current issue: `GITHUB-001` in [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md).
 
 ### Phase A — Write-entrypoint audit
 
-Inventory every remote write path, including at least:
+Inventory every **actual remote write entrypoint**, distinguishing local business actions from the later publication boundary:
 
 ```text
-Linked Note save/update
-Copy to chat workspace / Note recovery writes
+UC-LN-PUBLISH / Update current file
+UC-LN-PUBLISH / Update all
+Linked Note save/update/recovery
 Note image asset writes
 image-aware Markdown transfer
-ordinary Files create/edit/folder/structure/copy writes
-category definition create/update/membership writes
-Reference Object registry/definition/use update writes
-repository-template-backed normal file creation
+any remaining feature-specific remote write path discovered in source
 ```
+
+Files create/edit/structure/copy, category changes, Reference Object changes, Ordered List changes and repository-template-backed New File are **local staging producers** in the current `0.8.0` model; audit their handoff into `UC-LN-PUBLISH` rather than misclassifying each producer as a separate remote write entrypoint.
 
 For each entrypoint record:
 
@@ -280,25 +279,30 @@ Keep feature-specific planning where needed, especially multi-resource Note/imag
 
 A future failure surface should be able to copy a safe diagnostic record containing operation/phase/target/base/result/verification/local-state information without the raw credential.
 
-### RESEARCH — Contents API versus Git Data API
+### RESEARCH — Extend Verified Publication/Transaction Boundaries Only Where Needed
 
-Do not switch APIs before the write audit.
-
-Research only if evidence shows a real need for atomic multi-file repository updates:
+The standard pending-file publisher already has two selected mechanisms:
 
 ```text
-current GitHub Contents API sequential verified writes
-vs
-Git Data tree/commit construction and one commit update
+Update current file
+  → one GitHub Contents API path
+  → exact read-back;
+
+Update all
+  → Git Data blobs/tree/commit
+  → one non-force ref transition
+  → commit/tree/blob verification.
 ```
+
+Do not reopen that choice merely for API uniformity. After the write audit, research whether any **remaining compound Note/image/transfer path** has a demonstrated failure or atomicity requirement that justifies reusing/extending Git Data or a shared verified-write orchestration boundary.
 
 Questions:
 
-- which current failures would an atomic tree/commit actually solve;
+- which reproduced failures are outside the existing `UC-LN-PUBLISH` guarantees;
+- whether Note/image/transfer resources require one remote transaction or only better diagnostics/recovery;
 - branch/ref concurrency and expected-base semantics;
-- asset + Markdown + registry multi-resource transactions;
-- recovery after uncertain ref update;
-- complexity/security/test cost.
+- recovery after an uncertain ref update or partially verified compound operation;
+- complexity/security/test cost of extending common orchestration.
 
 ### Exit evidence
 
@@ -306,7 +310,7 @@ Questions:
 - reproducible failing cases with safe diagnostics;
 - agreed failure vocabulary;
 - decision whether common orchestration is justified;
-- API-change decision only after evidence.
+- any extension/API-change decision only after evidence, without regressing the current `UC-LN-PUBLISH` contract.
 
 ## 5. NEXT — Documentation And Continuity Discipline
 
@@ -317,6 +321,8 @@ Maintain both documentation routes:
 ```text
 developer / implementation chat
   → linked-notes/README.md
+  → USE-CASE-MAP.md
+  → USE-CASE-REGISTRY.md
   → APP-OVERVIEW.md
   → ARCHITECTURE.md
   → DATA-AND-STATE.md
@@ -356,5 +362,5 @@ Candidate later directions/open decisions that are not active commitments:
 - programmatic ChatGPT page/DOM/Copy extraction as the selected automatic handoff architecture;
 - automatic Reference Object propagation;
 - generic managed-object runtime as a prerequisite;
-- changing canonical Planning Items merely because this prototype roadmap proposes an implementation direction;
+- treating this roadmap or legacy Documentation Workbench planning files as current Linked Notes semantic authority;
 - claiming production architecture from Tampermonkey prototype evidence.

@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v1.4.0-command-registry-helper-alignment
+Doc version: v1.5.0-linked-notes-local-semantic-root
 Scope: register root planning files, reusable owners and current local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -30,7 +30,7 @@ Scope: register root planning files, reusable owners and current local area owne
 | `planning/documentation/application-planning/use-case-registry.md` | Reusable planning Use-Case entries. |
 | `planning/documentation/profiles/` | Optional specialized profiles; not universal stages. |
 | `planning/documentation/field-kits/` | Bootstrap/setup guidance only. |
-| `planning/documentation/tools/tampermonkey/` | Helper implementation/tool documentation; not semantic or command authority. |
+| `planning/documentation/tools/tampermonkey/` | Helper implementation/tool documentation. The project-local `linked-notes/` subdirectory explicitly owns current Linked Notes semantic/product documentation; scripts themselves do not define command meaning. |
 
 ## 3. Local Areas
 
@@ -38,7 +38,7 @@ Scope: register root planning files, reusable owners and current local area owne
 |---|---|
 | `planning/areas/planning-system/` | Minimal runtime index and operational end-session owner. |
 | `planning/areas/conspects/` | Conspect planning/repetition area. |
-| `planning/areas/documentation-workbench/` | Repository-native Documentation Workbench planning, workflows, local registries, roadmap and item owners. |
+| `planning/areas/documentation-workbench/` | Repository-native Documentation Workbench planning/history. Linked Notes-specific files here are compatibility/planning context, not current Linked Notes semantic authority. |
 
 ## 4. Documentation Workbench Current Files
 
@@ -50,31 +50,33 @@ Scope: register root planning files, reusable owners and current local area owne
 | `planning/areas/documentation-workbench/retired-planning-items.md` | Complete finalized inactive bodies and preserved history. |
 | `planning/areas/documentation-workbench/planning-meaning-to-repository-workflow.md` | Accepted Planning Meaning To Repository End-To-End Workflow. |
 | `planning/areas/documentation-workbench/repository-documentation-change-and-reference-review-workflow.md` | Accepted repository documentation, stable-link and affected-use review workflow. |
-| `planning/areas/documentation-workbench/linked-notes-end-to-end-workflow.md` | Linked Notes workflow review object and current prototype behavior owner. |
-| `planning/areas/documentation-workbench/repository-file-browser-and-categories-workflow.md` | Repository file/browser/category workflow owner. |
-| `planning/areas/documentation-workbench/image-aware-markdown-transfer-workflow.md` | Note/image-aware Markdown transfer workflow owner. |
-| `planning/areas/documentation-workbench/files-centric-repository-workspace-extension.md` | Adjacent Files-centric prototype extension owner. |
-| `planning/areas/documentation-workbench/reference-object-definition-and-materialized-use-workflow.md` | Current repository-native Reference Object prototype workflow owner. |
-| `planning/areas/documentation-workbench/chat-response-reader-workflow.md` | Current Chat Response Reader workflow owner. |
-| `planning/areas/documentation-workbench/full-app-state-export-workflow.md` | Current Full App State diagnostic export workflow owner. |
-| `planning/areas/documentation-workbench/linked-notes-prototype-roadmap.md` | Current Linked Notes implementation priorities; not canonical Planning Item owner. |
-| `planning/areas/documentation-workbench/direction-registry.md` | Local semantic Directions. |
-| `planning/areas/documentation-workbench/use-case-registry.md` | Accepted/current semantic workflow identities and explicit supporting-prototype boundary. |
+| `planning/areas/documentation-workbench/linked-notes-end-to-end-workflow.md` | Legacy Linked Notes planning/compatibility reference; current Note semantics are under the Linked Notes-local map/registry. |
+| `planning/areas/documentation-workbench/repository-file-browser-and-categories-workflow.md` | Legacy Linked Notes planning/compatibility reference for former Files/Categories ownership. |
+| `planning/areas/documentation-workbench/image-aware-markdown-transfer-workflow.md` | Legacy Linked Notes planning/compatibility reference for Note/image transfer. |
+| `planning/areas/documentation-workbench/files-centric-repository-workspace-extension.md` | Legacy Linked Notes planning/compatibility reference for Files-centric extensions. |
+| `planning/areas/documentation-workbench/reference-object-definition-and-materialized-use-workflow.md` | Legacy Linked Notes planning/compatibility reference for repository-native Reference Objects. |
+| `planning/areas/documentation-workbench/chat-response-reader-workflow.md` | Legacy Linked Notes planning/compatibility reference for Reader. |
+| `planning/areas/documentation-workbench/full-app-state-export-workflow.md` | Legacy Linked Notes planning/compatibility reference for App State export. |
+| `planning/areas/documentation-workbench/linked-notes-prototype-roadmap.md` | Legacy Linked Notes roadmap compatibility reference; current priorities live in `linked-notes/ROADMAP.md`. |
+| `planning/areas/documentation-workbench/direction-registry.md` | Local Documentation Workbench semantic Directions; current Linked Notes semantics route elsewhere. |
+| `planning/areas/documentation-workbench/use-case-registry.md` | Current non-Linked-Notes Documentation Workbench Use Cases plus compatibility mappings for former Linked Notes IDs. |
 | `planning/areas/documentation-workbench/reference-object-model-and-lifecycle.md` | Deferred application-heavy alternative. |
 | `planning/areas/documentation-workbench/full-picture.md` | Compatibility pointer to `planning-draft.md`. |
 | `planning/areas/documentation-workbench/documentation-and-reference-object-end-to-end-workflow.md` | Compatibility pointer to the current repository workflow. |
 | `planning/areas/documentation-workbench/complete-pictures/planning-items-and-full-picture/full-picture.md` | Compatibility pointer to Planning Meaning To Repository and the Planning Draft. |
 
-Current Linked Notes implementation documentation entry:
+Current Linked Notes semantic/product/implementation entry:
 
 ```text
 planning/documentation/tools/tampermonkey/linked-notes/README.md
+  → USE-CASE-MAP.md
+  → USE-CASE-REGISTRY.md
   → APP-OVERVIEW.md
   → ARCHITECTURE.md
   → DATA-AND-STATE.md
   → KNOWN-ISSUES.md
-  → project-local linked-notes-prototype-roadmap.md
-  → focused workflow/mapping as needed.
+  → ROADMAP.md
+  → focused mapping/source/tests as needed.
 ```
 
 Removed without replacement owners:
@@ -98,32 +100,33 @@ reusable planning owners →
   + Planning Draft template
   + reusable registries;
 
-Documentation Workbench high-level owner →
+Documentation Workbench high-level planning/history owner →
   planning-draft.md;
 
-accepted local workflows →
+accepted local non-Linked-Notes workflows →
   Planning Meaning To Repository
   + Repository Documentation Change And Reference Review;
 
-working/prototype-evidence semantic workflows →
-  Create, Link And Manage Repository Notes
-  + Browse Repository Files And Manage Categories
-  + Copy A Linked Note And Repository Images;
+current Linked Notes semantic/product root →
+  planning/documentation/tools/tampermonkey/linked-notes/
+  + USE-CASE-MAP.md
+  + USE-CASE-REGISTRY.md
+  + APP-OVERVIEW.md;
 
-supporting prototype workflows/extensions →
-  Files-centric workspace extension
-  + repository-native Reference Objects
-  + Chat Response Reader
-  + Full App State Export;
+retained Linked Notes area workflows →
+  planning/history/compatibility only
+  + not current behavior owners;
 
-implementation priority view →
-  linked-notes-prototype-roadmap.md;
+current Linked Notes implementation priority view →
+  linked-notes/ROADMAP.md;
 
-canonical register →
-  53 reviewed canonical identities with current dispositions;
+canonical Documentation Workbench register →
+  current non-Linked-Notes identities
+  + compatibility mappings for former Linked Notes UC-DW-* IDs;
 
-Tampermonkey →
-  implementation/projection evidence only, not command/semantic authority.
+Tampermonkey scripts →
+  implementation/projection evidence only;
+  current Linked Notes semantics are explicitly owned by the tracked Linked Notes documentation map/registry, not by runtime code.
 ```
 
 ## 6. Planning Draft Sufficiency Alignment
@@ -145,7 +148,7 @@ unless a specialized profile is explicitly selected.
 
 The Full Picture Matrix remains an internal view, not a separate canonical artifact.
 
-The Linked Notes prototype roadmap is a project-local implementation-priority view and does not replace this Planning Draft/item ownership model.
+The current Linked Notes `ROADMAP.md` is an implementation-priority view and does not replace the Linked Notes `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md`. Documentation Workbench Planning Draft/items remain broader planning/history unless intentionally reconciled.
 
 ## 7. Current Item Boundary
 
@@ -165,7 +168,7 @@ planning/documentation/tools/tampermonkey/chat-command-palette/README.md
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js  # generated
 ```
 
-Projected current Documentation Workbench semantic routes remain governed by semantic registries; concrete commands resolve through the root UCM into `planning/commands/*.command.md`. Supporting Linked Notes prototype workflows such as Reader/App State do not become command or semantic projections merely because they exist in the userscript.
+Projected Documentation Workbench routes remain governed by their semantic registries; concrete commands resolve through the root UCM into `planning/commands/*.command.md`. Current Linked Notes `UC-LN-*` semantics are governed by `linked-notes/USE-CASE-MAP.md` and `linked-notes/USE-CASE-REGISTRY.md`; their existence does not automatically create or authorize Planning Helper commands.
 
 Normal helper command execution remains projection/insertion only. The explicit command-management surface may create/update only direct `planning/commands/*.command.md` files through GitHub with SHA-aware exact read-back verification. It never runs local Git, commit or push. Linked Notes keeps its separate bounded GitHub behavior.
 
@@ -186,8 +189,8 @@ The preliminary project-local Scenario workspace and reference-link experiments 
 
 ```text
 - explicit Planning Item review when future prototype directions change canonical capability meaning;
-- browser/real-GitHub evidence for current Linked Notes workflows where acceptance remains pending;
-- Linked Notes roadmap priorities:
+- browser/real-GitHub evidence for current Linked Notes Use Cases where acceptance remains pending;
+- Linked Notes `ROADMAP.md` priorities:
     ChatGPT data acquisition redesign;
     coherent Note/File content and Chat-context copy;
     systematic GitHub save reliability investigation/write audit;
