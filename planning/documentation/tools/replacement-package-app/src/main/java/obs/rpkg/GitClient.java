@@ -11,6 +11,8 @@ final class GitClient {
         String joined() { return String.join("\n", output); }
     }
 
+    record BytesResult(int exitCode, byte[] output, String error) {}
+
     Result run(Path repo, String errorCode, boolean allowFailure, Map<String,String> environment, String... args) {
         List<String> cmd = new ArrayList<>();
         cmd.add("git"); cmd.add("-C"); cmd.add(repo.toString()); cmd.addAll(List.of(args));
@@ -33,6 +35,38 @@ final class GitClient {
             throw new Core.ObsException(errorCode, "Git execution interrupted", e);
         }
     }
+
+
+    BytesResult bytes(Path repo, String errorCode, boolean allowFailure, Map<String,String> environment, String... args) {
+        List<String> cmd = new ArrayList<>();
+        cmd.add("git"); cmd.add("-C"); cmd.add(repo.toString()); cmd.addAll(List.of(args));
+        ProcessBuilder pb = new ProcessBuilder(cmd);
+        if (environment != null) pb.environment().putAll(environment);
+        try {
+            Process p = pb.start();
+            ByteArrayOutputStream err = new ByteArrayOutputStream();
+            Thread stderr = new Thread(() -> {
+                try { p.getErrorStream().transferTo(err); } catch (IOException ignored) {}
+            }, "obs-rpkg-git-stderr");
+            stderr.start();
+            byte[] output = p.getInputStream().readAllBytes();
+            int code = p.waitFor();
+            stderr.join();
+            String error = err.toString(StandardCharsets.UTF_8);
+            BytesResult result = new BytesResult(code, output, error);
+            if (code != 0 && !allowFailure) throw new Core.ObsException(errorCode, "git " + String.join(" ", args) + " failed (" + code + "): " + error.trim());
+            return result;
+        } catch (IOException e) {
+            throw new Core.ObsException(errorCode, "Cannot execute git: " + e.getMessage(), e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new Core.ObsException(errorCode, "Git execution interrupted", e);
+        }
+    }
+
+    BytesResult bytes(Path repo, String errorCode, String... args) { return bytes(repo, errorCode, false, null, args); }
+    BytesResult bytesAllow(Path repo, String errorCode, String... args) { return bytes(repo, errorCode, true, null, args); }
+    BytesResult bytesEnv(Path repo, String errorCode, Map<String,String> env, String... args) { return bytes(repo, errorCode, false, env, args); }
 
     Result run(Path repo, String errorCode, String... args) { return run(repo, errorCode, false, null, args); }
     Result allow(Path repo, String errorCode, String... args) { return run(repo, errorCode, true, null, args); }

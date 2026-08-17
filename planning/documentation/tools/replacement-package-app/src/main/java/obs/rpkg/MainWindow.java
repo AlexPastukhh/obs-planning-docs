@@ -23,7 +23,7 @@ final class MainWindow extends JFrame {
 
     private void build(){
         JPanel root=new JPanel();root.setLayout(new BoxLayout(root,BoxLayout.Y_AXIS));root.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        root.add(row("Repository",repositories,button("Add repository",this::addRepository),button("Remove",this::removeRepository)));
+        root.add(row("Repository",repositories,button("Add repository",this::addRepository),button("Remove",this::removeRepository),button("Export repository ZIP",this::exportRepositorySnapshot)));
         root.add(row("Repository identity",repositoryIdentity));
         root.add(row("ReviewDiff",handling));
         root.add(row("Archive ZIP",archive,button("Browse",()->chooseFile(archive))));
@@ -47,6 +47,7 @@ final class MainWindow extends JFrame {
     private void run(String label,Runnable r){try{r.run();}catch(Core.ObsException e){append("["+e.code+"] "+e.getMessage());}catch(Exception e){append("ERROR "+e);}}
     private void append(String s){log.append(s+System.lineSeparator());log.setCaretPosition(log.getDocument().getLength());}
     private void chooseFile(JTextField f){JFileChooser c=new JFileChooser();if(c.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)f.setText(c.getSelectedFile().getAbsolutePath());}
+    private void chooseDirectory(JTextField f){JFileChooser c=new JFileChooser(f.getText().isBlank()?null:new java.io.File(f.getText()));c.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);if(c.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)f.setText(c.getSelectedFile().getAbsolutePath());}
 
     private void loadState(){try{Core.Settings s=core.getSettings();loading=true;handling.setSelectedItem(s.reviewDiffHandling());loading=false;reloadRepositories(s.selectedRepositoryId(),s.selectedChangeSetId());}catch(Exception e){loading=false;append("Settings warning: "+e.getMessage());}}
     private void reloadRepositories(String selectRepoId,String selectChangeSetId){loading=true;repositories.removeAllItems();for(Core.RepositoryConfig r:core.getRepositories())repositories.addItem(new RepositoryItem(r));selectRepositoryItem(selectRepoId);loading=false;repositoryChanged(selectChangeSetId);}
@@ -61,6 +62,40 @@ final class MainWindow extends JFrame {
     private void addRepository(){JFileChooser c=new JFileChooser();c.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);if(c.showOpenDialog(this)!=JFileChooser.APPROVE_OPTION)return;Path p=c.getSelectedFile().toPath();String def=p.getFileName()==null?p.toString():p.getFileName().toString();String name=JOptionPane.showInputDialog(this,"Display name for this repository:",def);if(name==null)return;Core.RepositoryConfig r=core.registerRepository(name,p);append("SUCCESS Repository registered: "+r.name()+" — "+r.repositoryIdentity());reloadRepositories(r.id(),null);}
     private void removeRepository(){if(selectedRepository==null)return;int result=JOptionPane.showConfirmDialog(this,"Remove '"+selectedRepository.name()+"' from the allowed repository list?","Remove repository",JOptionPane.OK_CANCEL_OPTION);if(result!=JOptionPane.OK_OPTION)return;String id=selectedRepository.id();Core.Settings s=core.removeRepository(id);append("SUCCESS Repository removed from allowlist.");reloadRepositories(s.selectedRepositoryId(),s.selectedChangeSetId());}
     private void saveHandling(){core.setReviewDiffHandling(String.valueOf(handling.getSelectedItem()));append("Settings saved.");}
+
+    private void exportRepositorySnapshot(){
+        Path repository=repoPath();
+        JComboBox<String> mode=new JComboBox<>(new String[]{"Local working tree + diff","Committed snapshot"});
+        JTextField commit=new JTextField("HEAD",32);
+        JTextField destination=new JTextField(RepositorySnapshotExporter.defaultOutputDirectory().toString(),32);
+        JButton browse=new JButton("Browse");browse.addActionListener(e->chooseDirectory(destination));
+        JPanel destinationRow=new JPanel(new BorderLayout(6,0));destinationRow.add(destination,BorderLayout.CENTER);destinationRow.add(browse,BorderLayout.EAST);
+        JPanel panel=new JPanel();panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.add(new JLabel("Repository: "+selectedRepository.name()+"  ["+selectedRepository.repositoryIdentity()+"]"));
+        panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Mode"));panel.add(mode);
+        panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Commit / ref (Committed mode)"));panel.add(commit);
+        panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Destination directory"));panel.add(destinationRow);
+        Runnable updateCommit=()->commit.setEnabled(mode.getSelectedIndex()==1);mode.addActionListener(e->updateCommit.run());updateCommit.run();
+        int choice=JOptionPane.showConfirmDialog(this,panel,"Export Repository ZIP",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
+        if(choice!=JOptionPane.OK_OPTION)return;
+        String selectedMode=mode.getSelectedIndex()==0?"local":"committed";
+        String commitRef=selectedMode.equals("committed")?commit.getText().trim():null;
+        Path out=destination.getText().isBlank()?RepositorySnapshotExporter.defaultOutputDirectory():Path.of(destination.getText().trim());
+        Core.SnapshotExportResult r=core.exportRepositorySnapshot(repository,selectedMode,commitRef,out);
+        Core.Handoff clip=core.copyPathToClipboard(r.zipPath());
+        append("SUCCESS Repository snapshot created: "+r.zipPath().toAbsolutePath().normalize());
+        if(clip.warning()!=null&&!clip.warning().isBlank())append("WARNING Snapshot created, but path was not copied to clipboard: "+clip.warning());else append("SUCCESS Snapshot path copied to clipboard.");
+        showSnapshotResult(r,clip);
+    }
+
+    private void showSnapshotResult(Core.SnapshotExportResult r,Core.Handoff clipboard){
+        String path=r.zipPath().toAbsolutePath().normalize().toString();
+        String copyState=clipboard.warning()!=null&&!clipboard.warning().isBlank()?"Clipboard warning: "+clipboard.warning():"Path copied to clipboard.";
+        Object[] options={"Copy path","Open folder","Close"};
+        int selected=JOptionPane.showOptionDialog(this,"Snapshot created:\n"+path+"\n\n"+copyState,"Repository Snapshot",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[2]);
+        if(selected==0){Core.Handoff h=core.copyPathToClipboard(r.zipPath());append(h.warning()!=null&&!h.warning().isBlank()?"ERROR "+h.warning():"SUCCESS Snapshot path copied to clipboard.");}
+        if(selected==1){Path folder=r.zipPath().toAbsolutePath().normalize().getParent();if(folder==null){append("ERROR Snapshot output folder is unavailable.");return;}if(!Desktop.isDesktopSupported()||!Desktop.getDesktop().isSupported(Desktop.Action.OPEN)){append("ERROR Desktop Open is not supported on this system.");return;}try{Desktop.getDesktop().open(folder.toFile());append("SUCCESS Snapshot folder opened: "+folder);}catch(IOException e){append("ERROR Cannot open snapshot folder: "+e.getMessage());}}
+    }
 
     private Path repoPath(){if(selectedRepository==null)throw new Core.ObsException(Core.REPOSITORY_MISMATCH,"Select or add an allowed repository first.");return Path.of(selectedRepository.path());}
     private void apply(){saveHandling();Path zip=archive.getText().isBlank()?null:Path.of(archive.getText().trim());Core.ApplyResult r=action.getText().isBlank()?core.applyPackage(zip,repoPath()):core.applyAction(action.getText(),zip,repoPath());append("SUCCESS Apply. ReviewDiff is current.");if(r.attempt().handoffWarning!=null&&!r.attempt().handoffWarning.isBlank())append("WARNING "+r.attempt().handoffWarning);reloadChangeSets(r.changeSet().changeSetId);}

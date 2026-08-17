@@ -1,6 +1,6 @@
 # Replacement Package App Use-Case Registry
 
-Status: active V0.1 application semantic registry
+Status: active application semantic registry
 Scope: independently useful user outcomes of the local Replacement Package App. Buttons, state records and implementation helpers do not receive UC IDs merely because they exist.
 
 Semantic/traceability map: [`USE-CASE-MAP.md`](USE-CASE-MAP.md)
@@ -11,7 +11,7 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 ```text
 - One current application outcome has one canonical UC-RPKG-* ID.
 - One UC may span Java Core, Swing/CLI hosts and persistent local state.
-- ZIP discovery, repository registry, ChangeSet browsing, history, settings and ledger mechanics support UCs; they are not standalone semantic outcomes in V0.1.
+- ZIP discovery, repository registry, ChangeSet browsing, history, settings and ledger mechanics support UCs; they are not standalone semantic outcomes merely because they exist.
 - Command meaning remains owned by planning/commands; this registry owns application outcomes only.
 ```
 
@@ -22,6 +22,7 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 | `UC-RPKG-APPLY` | Apply Verified Replacement Package | active V0.1 | A validated package is overlaid only onto an allowed repository in exact expected/owned local state; an ApplicationAttempt and new cumulative ReviewDiff identity are recorded. |
 | `UC-RPKG-REVIEW` | Inspect Current ChangeSet Review State | active V0.1 | The user selects a readable persisted ChangeSet and obtains its current path-scoped cumulative `HEAD → working tree` diff without mutating the real Git index; exact fingerprinting remains internal. |
 | `UC-RPKG-FINALIZE` | Finalize Current ChangeSet | active V0.1 | The persisted current cumulative ReviewDiff baseline is revalidated automatically, only owned paths are committed, push is attempted, and push-failure recovery preserves the already-created commit. |
+| `UC-RPKG-EXPORT-REPOSITORY` | Export Repository Snapshot ZIP | active V1 | The selected allowed repository is exported read-only as either a Local working-tree snapshot with root diff/base marker or an exact selected committed snapshot with root commit marker; the final ZIP path is copied to clipboard when available. |
 
 ## 3. Supporting Capabilities
 
@@ -35,6 +36,8 @@ persisted current ReviewDiff restore/refresh
 optional Copy/Open ReviewDiff
 review-diff handoff setting
 repo diff-file service artifact
+read-only Local/Committed repository snapshot ZIP export
+verified clipboard path handoff
 CommittedPendingPush recovery
 ```
 

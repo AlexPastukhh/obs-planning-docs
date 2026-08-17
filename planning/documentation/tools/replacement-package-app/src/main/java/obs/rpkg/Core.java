@@ -19,7 +19,8 @@ public final class Core {
     public static final String SUCCESS="SUCCESS", PACKAGE_INVALID="PACKAGE_INVALID", PACKAGE_NOT_FOUND="PACKAGE_NOT_FOUND",
             ACTION_PACKAGE_MISMATCH="ACTION_PACKAGE_MISMATCH", REPOSITORY_MISMATCH="REPOSITORY_MISMATCH",
             PATH_OWNERSHIP_CONFLICT="PATH_OWNERSHIP_CONFLICT", BASE_MISMATCH="BASE_MISMATCH", RESULT_MISMATCH="RESULT_MISMATCH",
-            STATE_DIVERGED="STATE_DIVERGED", REVIEW_STALE="REVIEW_STALE", FINALIZE_FAILED="FINALIZE_FAILED";
+            STATE_DIVERGED="STATE_DIVERGED", REVIEW_STALE="REVIEW_STALE", FINALIZE_FAILED="FINALIZE_FAILED",
+            SNAPSHOT_EXPORT_FAILED="SNAPSHOT_EXPORT_FAILED";
 
     public static final class ObsException extends RuntimeException {
         public final String code;
@@ -38,6 +39,7 @@ public final class Core {
     public record Settings(List<RepositoryConfig> repositories,String selectedRepositoryId,String selectedChangeSetId,String reviewDiffHandling) {}
     public record ApplyResult(String code,ApplicationAttempt attempt,ChangeSet changeSet,ReviewDiff review) {}
     public record FinalizeResult(String code,String commitSha,String branch,ChangeSet changeSet) {}
+    public record SnapshotExportResult(Path zipPath,String snapshotType,String repositoryIdentity,String commitSha,String branch) {}
 
     public static final class ChangeSet {
         public int schemaVersion=1; public String changeSetId,changeSetLabel,repositoryIdentity,repositoryRoot,status="Active",lastPackageId;
@@ -92,6 +94,11 @@ public final class Core {
     public ChangeSet getChangeSet(String id){return state.getChangeSet(id);}
     public List<ApplicationAttempt> getAttempts(){return state.getAttempts();}
     public ReviewDiff currentReview(ChangeSet cs){if(cs==null)return null;if(cs.currentReviewAttemptId==null||cs.currentReviewDiffPath==null||cs.currentReviewSha256==null)return null;ReviewDiff r=new ReviewDiff(cs.currentReviewAttemptId,Path.of(cs.currentReviewDiffPath),cs.currentReviewSha256,cs.currentReviewHead);verifiedReviewDiffPath(r);return r;}
+
+    public SnapshotExportResult exportRepositorySnapshot(Path repositoryRoot,String mode,String commitRef,Path outputDirectory){
+        RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);
+        return new RepositorySnapshotExporter(git).export(Path.of(allowed.path),allowed.repositoryIdentity,mode,commitRef,outputDirectory);
+    }
 
     private Settings ensureSettings(){
         Settings s=state.getSettings();boolean changed=false;List<RepositoryConfig> repos=new ArrayList<>();
@@ -190,10 +197,19 @@ public final class Core {
         return p;
     }
 
+    public Handoff copyTextToClipboardVerified(String text){
+        String expected=text==null?"":text;
+        try{clipboard.setText(expected);String actual=clipboard.getText();if(!Objects.equals(expected,actual))return new Handoff(null,"Clipboard handoff verification failed: read-back differs from expected text.");return new Handoff(null,"");}
+        catch(Throwable e){return new Handoff(null,"Clipboard handoff failed: "+(e.getMessage()==null?e.toString():e.getMessage()));}
+    }
+
+    public Handoff copyPathToClipboard(Path path){if(path==null)throw new ObsException(SNAPSHOT_EXPORT_FAILED,"Snapshot path is unavailable.");return copyTextToClipboardVerified(path.toAbsolutePath().normalize().toString());}
+
     public Handoff copyReviewDiffToClipboard(ReviewDiff review){
         Path p=verifiedReviewDiffPath(review);String text;try{text=Files.readString(p,StandardCharsets.UTF_8);}catch(IOException e){throw new ObsException(STATE_DIVERGED,"Cannot read canonical ReviewDiff: "+e.getMessage(),e);}
-        try{clipboard.setText(text);String actual=clipboard.getText();if(!Objects.equals(text,actual))return new Handoff(null,"Clipboard handoff verification failed: read-back differs from canonical ReviewDiff.");return new Handoff(null,"");}
-        catch(Throwable e){return new Handoff(null,"Clipboard handoff failed: "+(e.getMessage()==null?e.toString():e.getMessage()));}
+        Handoff h=copyTextToClipboardVerified(text);
+        if(h.warning!=null&&!h.warning.isBlank()&&h.warning.contains("expected text"))return new Handoff(null,"Clipboard handoff verification failed: read-back differs from canonical ReviewDiff.");
+        return h;
     }
 
     public Handoff publishReviewDiff(ChangeSet cs,ReviewDiff review){Settings s=getSettings();String handling=s.reviewDiffHandling;String service=null;List<String>w=new ArrayList<>();if(handling.equals("Clipboard")||handling.equals("Both")){try{Handoff h=copyReviewDiffToClipboard(review);if(h.warning!=null&&!h.warning.isBlank())w.add(h.warning);}catch(Throwable e){w.add("Clipboard handoff failed: "+(e.getMessage()==null?e.toString():e.getMessage()));}}if(handling.equals("RepoDiffFile")||handling.equals("Both")){try{Path source=verifiedReviewDiffPath(review),rel=Path.of("_ai-review-diffs",cs.changeSetId,review.attemptId+".diff");Path dst=inside(Path.of(cs.repositoryRoot),rel.toString().replace('\\','/'));Files.createDirectories(dst.getParent());Files.copy(source,dst,StandardCopyOption.REPLACE_EXISTING);service=rel.toString().replace('\\','/');}catch(Throwable e){w.add("Repo diff-file handoff failed: "+e.getMessage());}}return new Handoff(service,String.join(" ",w));}
@@ -250,7 +266,7 @@ public final class Core {
     private Path repoRoot(Path requested){Path p=requested==null?Path.of("."):requested;GitClient.Result r=git.allow(p,REPOSITORY_MISMATCH,"rev-parse","--show-toplevel");if(r.exitCode()!=0||r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p);return Path.of(r.first()).toAbsolutePath().normalize();}
     private String safeIdentity(Path repo){try{return repositoryIdentity(repo);}catch(Throwable e){return"";}}
     private String repositoryIdentity(Path repo){GitClient.Result r=git.allow(repo,REPOSITORY_MISMATCH,"config","--get","remote.origin.url");if(r.exitCode()!=0||r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"remote.origin.url is missing.");String u=r.first();Pattern[] ps={Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^git@github\\.com:([^/]+)/([^/]+?)(?:\\.git)?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^ssh://git@github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE)};for(Pattern p:ps){Matcher m=p.matcher(u);if(m.matches())return"github:"+m.group(1)+"/"+m.group(2);}throw new ObsException(REPOSITORY_MISMATCH,"Unsupported origin for V0.1 repositoryIdentity: "+u);}
-    private static Path inside(Path repo,String repoPath){
+    static Path inside(Path repo,String repoPath){
         Path base=repo.toAbsolutePath().normalize(),full=base.resolve(repoPath.replace('/',File.separatorChar)).normalize();
         if(!full.startsWith(base)||full.equals(base))throw new ObsException(PACKAGE_INVALID,"Resolved path escaped repository: "+repoPath);
         try{

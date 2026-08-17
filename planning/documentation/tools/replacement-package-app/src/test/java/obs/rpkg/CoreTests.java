@@ -46,11 +46,104 @@ public final class CoreTests {
         test("repository set and ChangeSet browser are persisted and scoped",()->{Path second=tmp.resolve("repo-two");Files.createDirectories(second);g(second,"init","-b","main");g(second,"config","user.name","OBS Test");g(second,"config","user.email","obs@example.invalid");write(second.resolve("base.txt"),"base");g(second,"add",".");g(second,"commit","-m","base");g(second,"remote","add","origin","https://github.com/example/second.git");Core.RepositoryConfig r2=core.registerRepository("Second Repo",second);ok(core.getRepositories().size()==2,"second repository not registered");eq(core.getChangeSets(r2.id(),false).size(),0,"ChangeSets leaked across repositories");Core.Settings selected=core.selectRepository(r2.id());eq(selected.selectedRepositoryId(),r2.id(),"selected repository not persisted");Core reloaded=new Core(new StateStore(tmp.resolve("state")));eq(reloaded.getSettings().selectedRepositoryId(),r2.id(),"selected repository lost after reload");core.selectRepository(core.getRepositories().stream().filter(r->Path.of(r.path()).equals(repo.toAbsolutePath().normalize())).findFirst().orElseThrow().id());});
         test("repository with active ChangeSet cannot be removed",()->{write(repo.resolve("keep-active.txt"),"before");g(repo,"add","keep-active.txt");g(repo,"commit","-m","active repo removal base");String cs=UUID.randomUUID().toString();PackageFixture p=makePackage(repoId,cs,"keep active",List.of(op("keep-active.txt","replace","before","after")));core.applyPackage(p.path,repo);Core.RepositoryConfig primary=core.getRepositories().stream().filter(r->Path.of(r.path()).equals(repo.toAbsolutePath().normalize())).findFirst().orElseThrow();expect(Core.STATE_DIVERGED,()->core.removeRepository(primary.id()));ok(core.getRepositories().stream().anyMatch(r->r.id().equals(primary.id())),"active repository was removed");});
         test("current ReviewDiff restores from ledger and refresh replaces persisted identity",()->{String cs=UUID.randomUUID().toString();write(repo.resolve("restore.txt"),"before");g(repo,"add","restore.txt");g(repo,"commit","-m","restore base");PackageFixture p=makePackage(repoId,cs,"restore review",List.of(op("restore.txt","replace","before","after")));Core.ApplyResult ar=core.applyPackage(p.path,repo);Core.ChangeSet saved=core.getChangeSet(cs);Core.ReviewDiff restored=core.currentReview(saved);eq(restored.sha256(),ar.review().sha256(),"restored review SHA differs");Core.ReviewDiff refreshed=core.refreshReview(cs);Core.ChangeSet after=core.getChangeSet(cs);eq(after.currentReviewSha256,refreshed.sha256(),"refresh did not persist current review");eq(after.currentReviewAttemptId,refreshed.attemptId(),"refresh attempt id not persisted");Files.writeString(refreshed.diffPath(),"tampered",StandardCharsets.UTF_8);expect(Core.STATE_DIVERGED,()->core.currentReview(core.getChangeSet(cs)));});
+        test("local repository snapshot contains root metadata/diff and Git-visible working tree without touching real index",()->{
+            Files.createDirectories(tmp.resolve("snapshot-exports"));
+            SnapshotRepo s=snapshotRepo("snapshot-local","https://github.com/example/snapshot-local.git");
+            String base=g(s.repo,"rev-parse","HEAD").first();
+            write(s.repo.resolve("tracked.txt"),"working");
+            Files.delete(s.repo.resolve("delete.txt"));
+            write(s.repo.resolve("untracked.txt"),"untracked");
+            write(s.repo.resolve("skip.ignored"),"ignored");
+            write(s.repo.resolve("staged.txt"),"staged");g(s.repo,"add","staged.txt");
+            byte[] indexBefore=git.bytes(s.repo,Core.STATE_DIVERGED,"--no-pager","diff","--cached","--binary","HEAD").output();
+            Core.SnapshotExportResult r=s.core.exportRepositorySnapshot(s.repo,"local",null,tmp.resolve("snapshot-exports"));
+            byte[] indexAfter=git.bytes(s.repo,Core.STATE_DIVERGED,"--no-pager","diff","--cached","--binary","HEAD").output();
+            ok(Arrays.equals(indexBefore,indexAfter),"local snapshot changed real Git index");
+            Map<String,byte[]> z=zipEntries(r.zipPath());
+            ok(z.containsKey("SNAPSHOT.json")&&z.containsKey("BASE-COMMIT.txt")&&z.containsKey("WORKING-TREE.diff"),"local root metadata missing");
+            eq(new String(z.get("BASE-COMMIT.txt"),StandardCharsets.UTF_8).trim(),base,"local base commit marker mismatch");
+            eq(new String(z.get("snapshot/tracked.txt"),StandardCharsets.UTF_8),"working","local tracked bytes wrong");
+            eq(new String(z.get("snapshot/untracked.txt"),StandardCharsets.UTF_8),"untracked","local untracked bytes missing");
+            eq(new String(z.get("snapshot/staged.txt"),StandardCharsets.UTF_8),"staged","local staged working file missing");
+            ok(!z.containsKey("snapshot/delete.txt"),"deleted tracked file present in snapshot folder");
+            ok(!z.containsKey("snapshot/skip.ignored"),"ignored untracked file present in snapshot");
+            ok(z.keySet().stream().noneMatch(x->x.startsWith("snapshot/.git/")),".git leaked into snapshot");
+            String diff=new String(z.get("WORKING-TREE.diff"),StandardCharsets.UTF_8);
+            ok(diff.contains("tracked.txt")&&diff.contains("delete.txt")&&diff.contains("untracked.txt")&&diff.contains("staged.txt"),"local diff does not describe exported working tree");
+            Map<String,Object> manifest=Json.object(new String(z.get("SNAPSHOT.json"),StandardCharsets.UTF_8));
+            eq(manifest.get("snapshotType"),"local","wrong local snapshot type");eq(manifest.get("baseCommitSha"),base,"manifest base commit mismatch");eq(manifest.get("snapshotFolder"),"snapshot/","snapshot folder contract mismatch");
+        });
+        test("committed repository snapshot uses selected commit object database and COMMIT marker",()->{
+            SnapshotRepo s=snapshotRepo("snapshot-commit","https://github.com/example/snapshot-commit.git");
+            String first=g(s.repo,"rev-parse","HEAD").first();
+            write(s.repo.resolve("tracked.txt"),"second");g(s.repo,"add","tracked.txt");g(s.repo,"commit","-m","second");
+            write(s.repo.resolve("tracked.txt"),"dirty working tree");write(s.repo.resolve("local-only.txt"),"local");
+            Core.SnapshotExportResult r=s.core.exportRepositorySnapshot(s.repo,"committed",first,tmp.resolve("snapshot-exports"));
+            Map<String,byte[]> z=zipEntries(r.zipPath());
+            ok(z.containsKey("SNAPSHOT.json")&&z.containsKey("COMMIT.txt"),"committed root metadata missing");
+            ok(!z.containsKey("WORKING-TREE.diff")&&!z.containsKey("BASE-COMMIT.txt"),"local-only metadata leaked into committed snapshot");
+            eq(new String(z.get("COMMIT.txt"),StandardCharsets.UTF_8).trim(),first,"COMMIT marker mismatch");
+            eq(new String(z.get("snapshot/tracked.txt"),StandardCharsets.UTF_8),"base","committed snapshot used working tree bytes");
+            ok(!z.containsKey("snapshot/local-only.txt"),"committed snapshot included local-only file");
+            ok(Arrays.equals(z.get("snapshot/binary.bin"),new byte[]{0,1,2,(byte)255}),"committed binary blob changed");
+            Map<String,Object> manifest=Json.object(new String(z.get("SNAPSHOT.json"),StandardCharsets.UTF_8));
+            eq(manifest.get("snapshotType"),"committed","wrong committed snapshot type");eq(manifest.get("commitSha"),first,"manifest commit mismatch");
+        });
+        test("snapshot export requires registered repository and unchanged origin",()->{
+            SnapshotRepo s=snapshotRepo("snapshot-origin","https://github.com/example/snapshot-origin.git");
+            Core unregistered=new Core(new StateStore(tmp.resolve("snapshot-unregistered-state")));
+            expect(Core.REPOSITORY_MISMATCH,()->unregistered.exportRepositorySnapshot(s.repo,"local",null,tmp.resolve("snapshot-exports")));
+            g(s.repo,"remote","set-url","origin","https://github.com/evil/other.git");
+            try{expect(Core.REPOSITORY_MISMATCH,()->s.core.exportRepositorySnapshot(s.repo,"local",null,tmp.resolve("snapshot-exports")));}finally{g(s.repo,"remote","set-url","origin","https://github.com/example/snapshot-origin.git");}
+        });
+        test("snapshot output directory inside repository is rejected",()->{
+            SnapshotRepo s=snapshotRepo("snapshot-output","https://github.com/example/snapshot-output.git");
+            expect(Core.SNAPSHOT_EXPORT_FAILED,()->s.core.exportRepositorySnapshot(s.repo,"local",null,s.repo.resolve("exports")));
+            ok(!Files.exists(s.repo.resolve("exports")),"rejected output directory was created inside repository");
+        });
+        test("snapshot output alias into repository is rejected before creating a child",()->{
+            SnapshotRepo s=snapshotRepo("snapshot-output-alias","https://github.com/example/snapshot-output-alias.git");
+            Path target=s.repo.resolve("aliased-output-target"),alias=tmp.resolve("snapshot-output-alias-link"),child=alias.resolve("new-output");
+            Files.createDirectories(target);createEscapeLink(alias,target);
+            try{expect(Core.SNAPSHOT_EXPORT_FAILED,()->s.core.exportRepositorySnapshot(s.repo,"local",null,child));ok(!Files.exists(target.resolve("new-output")),"rejected output alias created a directory inside repository");}
+            finally{Files.deleteIfExists(alias);}
+        });
+        test("local snapshot detects working tree change during capture",()->{
+            SnapshotRepo s=snapshotRepo("snapshot-race","https://github.com/example/snapshot-race.git");Path out=tmp.resolve("snapshot-race-out");Files.createDirectories(out);
+            RepositorySnapshotExporter exporter=new RepositorySnapshotExporter(git,()->{try{write(s.repo.resolve("tracked.txt"),"changed-during-export");}catch(Exception e){throw new RuntimeException(e);}});
+            expect(Core.SNAPSHOT_EXPORT_FAILED,()->exporter.export(s.repo,s.identity,"local",null,out));
+            try(DirectoryStream<Path>d=Files.newDirectoryStream(out,"*.zip")){ok(!d.iterator().hasNext(),"race export published a final ZIP");}
+        });
+        test("local snapshot rejects HEAD change even when working tree bytes stay stable",()->{
+            SnapshotRepo s=snapshotRepo("snapshot-head-race","https://github.com/example/snapshot-head-race.git");Path out=tmp.resolve("snapshot-head-race-out");Files.createDirectories(out);String before=g(s.repo,"rev-parse","HEAD").first();
+            RepositorySnapshotExporter exporter=new RepositorySnapshotExporter(git,()->g(s.repo,"commit","--allow-empty","-m","head drift during export"));
+            expect(Core.SNAPSHOT_EXPORT_FAILED,()->exporter.export(s.repo,s.identity,"local",null,out));
+            ok(!g(s.repo,"rev-parse","HEAD").first().equals(before),"test hook did not change HEAD");
+            try(DirectoryStream<Path>d=Files.newDirectoryStream(out,"*.zip")){ok(!d.iterator().hasNext(),"HEAD-race export published a final ZIP");}
+        });
+        test("snapshot path clipboard copy is verified but clipboard failure does not affect created ZIP",()->{
+            SnapshotRepo s=snapshotRepo("snapshot-clipboard","https://github.com/example/snapshot-clipboard.git");
+            Core.SnapshotExportResult r=s.core.exportRepositorySnapshot(s.repo,"committed","HEAD",tmp.resolve("snapshot-exports"));
+            FakeClipboard clipboard=new FakeClipboard();Core c=new Core(new StateStore(tmp.resolve("snapshot-copy-state")),clipboard);
+            Core.Handoff okCopy=c.copyPathToClipboard(r.zipPath());ok(okCopy.warning().isBlank(),"path clipboard copy warned");eq(clipboard.written,r.zipPath().toAbsolutePath().normalize().toString(),"clipboard path differs");
+            clipboard.readBackOverride="different";Core.Handoff bad=c.copyPathToClipboard(r.zipPath());ok(bad.warning().contains("read-back differs"),"path clipboard mismatch not reported");
+            Core failing=new Core(new StateStore(tmp.resolve("snapshot-copy-fail-state")),new FailingClipboard());Core.Handoff failed=failing.copyPathToClipboard(r.zipPath());ok(failed.warning().contains("Clipboard handoff failed"),"clipboard failure not surfaced");ok(Files.isRegularFile(r.zipPath()),"clipboard failure removed successful snapshot ZIP");
+        });
         test("post-commit clipboard handoff failure remains SUCCESS",()->{write(repo.resolve("handoff.txt"),"before");g(repo,"add","handoff.txt");g(repo,"commit","-m","handoff base");String cs=UUID.randomUUID().toString();PackageFixture p=makePackage(repoId,cs,"handoff warning",List.of(op("handoff.txt","replace","before","after")));Core failing=new Core(new StateStore(tmp.resolve("state")),new FailingClipboard());Core.ApplyResult r=failing.applyPackage(p.path,repo);eq(r.code(),Core.SUCCESS,"handoff failure changed Apply result");eq(read(repo.resolve("handoff.txt")),"after","successful target rolled back");ok(failing.getChangeSet(cs)!=null&&failing.getChangeSet(cs).status.equals("Active"),"successful ChangeSet missing");ok(r.attempt().handoffWarning.contains("Clipboard handoff failed"),"handoff warning not surfaced");long success=failing.getAttempts().stream().filter(a->p.packageId.equals(a.packageId)&&"SUCCESS".equals(a.result)).count();ok(success==1,"persisted attempt was not SUCCESS");});
         test("post-mutation required-state failure rolls files and ChangeSet back",()->{write(repo.resolve("rollback.txt"),"before");g(repo,"add","rollback.txt");g(repo,"commit","-m","rollback base");String cs=UUID.randomUUID().toString();PackageFixture p=makePackage(repoId,cs,"rollback test",List.of(op("rollback.txt","replace","before","after")));core.setAfterMutationHookForTests(()->{throw new Core.ObsException(Core.RESULT_MISMATCH,"forced after mutation");});try{expect(Core.RESULT_MISMATCH,()->core.applyPackage(p.path,repo));}finally{core.setAfterMutationHookForTests(null);}eq(read(repo.resolve("rollback.txt")),"before","target did not rollback");ok(core.getChangeSet(cs)==null,"new ChangeSet survived failed transaction");});
         test("push failure records one pending commit; changed origin blocks Retry; restored transport retries without second commit",()->{write(repo.resolve("push.txt"),"before");g(repo,"add","push.txt");g(repo,"commit","-m","push base");String cs=UUID.randomUUID().toString();PackageFixture p=makePackage(repoId,cs,"push recovery",List.of(op("push.txt","replace","before","after")));Core.ApplyResult ar=core.applyPackage(p.path,repo);Path offline=tmp.resolve("remote.git.offline");Files.move(bare,offline);try{expect(Core.FINALIZE_FAILED,()->core.finalizeChangeSet(cs,"pending push",repo));}finally{Files.move(offline,bare);}Core.ChangeSet pending=core.getChangeSet(cs);eq(pending.status,"CommittedPendingPush","pending state missing");String commit=pending.commitSha;g(repo,"remote","set-url","origin","https://github.com/evil/other.git");try{expect(Core.REPOSITORY_MISMATCH,()->core.retryPush(cs,repo));}finally{g(repo,"remote","set-url","origin",rawOrigin);}Core.FinalizeResult rr=core.retryPush(cs,repo);eq(rr.changeSet().status,"Finalized","retry did not finalize");eq(rr.commitSha(),commit,"retry changed commit");eq(g(repo,"rev-parse","HEAD").first(),commit,"HEAD changed during retry");});
         test("traversal path rejected",()->{PackageFixture p=makePackage(repoId,UUID.randomUUID().toString(),"bad",List.of(op("../evil.txt","add",null,"x")));expect(Core.PACKAGE_INVALID,()->core.readPackage(p.path));});
     }
+
+    record SnapshotRepo(Path repo,Core core,String identity){}
+    static SnapshotRepo snapshotRepo(String name,String origin)throws Exception{
+        Path r=tmp.resolve(name);Files.createDirectories(r);g(r,"init","-b","main");g(r,"config","user.name","OBS Test");g(r,"config","user.email","obs@example.invalid");g(r,"config","commit.gpgsign","false");
+        write(r.resolve("tracked.txt"),"base");write(r.resolve("delete.txt"),"delete-me");write(r.resolve(".gitignore"),"*.ignored\n");Files.write(r.resolve("binary.bin"),new byte[]{0,1,2,(byte)255});
+        g(r,"add",".");g(r,"commit","-m","snapshot base");g(r,"remote","add","origin",origin);
+        String identity=origin.replaceFirst("^https://github\\.com/","github:").replaceFirst("\\.git$","");
+        Core c=new Core(new StateStore(tmp.resolve(name+"-state")));c.registerRepository(name,r);return new SnapshotRepo(r,c,identity);
+    }
+    static Map<String,byte[]> zipEntries(Path zip)throws Exception{Map<String,byte[]>m=new LinkedHashMap<>();try(ZipFile z=new ZipFile(zip.toFile(),StandardCharsets.UTF_8)){Enumeration<? extends ZipEntry> e=z.entries();while(e.hasMoreElements()){ZipEntry x=e.nextElement();if(x.isDirectory()){m.put(x.getName(),new byte[0]);continue;}try(InputStream in=z.getInputStream(x)){m.put(x.getName(),in.readAllBytes());}}}return m;}
 
     record Op(String path,String action,String base,String replacement){}
     record PackageFixture(Path path,String packageId){}

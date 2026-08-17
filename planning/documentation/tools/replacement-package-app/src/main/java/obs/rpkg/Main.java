@@ -41,6 +41,14 @@ public final class Main {
                 }
                 case "list-repos" -> {for(Core.RepositoryConfig r:core.getRepositories())System.out.println(r.id()+"\t"+r.name()+"\t"+r.repositoryIdentity()+"\t"+r.path());}
                 case "list-changesets" -> {for(Core.ChangeSet cs:core.getChangeSets(req(a,"repo-id"),Boolean.parseBoolean(a.getOrDefault("history","false"))))System.out.println(cs.changeSetId+"\t"+cs.status+"\t"+cs.changeSetLabel);}
+                case "export-snapshot" -> {
+                    Path repo=Path.of(req(a,"repo"));
+                    Path out=a.containsKey("output-dir")?Path.of(a.get("output-dir")):RepositorySnapshotExporter.defaultOutputDirectory();
+                    Core.SnapshotExportResult r=core.exportRepositorySnapshot(repo,req(a,"mode"),a.get("commit"),out);
+                    Core.Handoff clipboard=core.copyPathToClipboard(r.zipPath());
+                    System.out.println("SUCCESS snapshot="+r.zipPath().toAbsolutePath().normalize()+" mode="+r.snapshotType());
+                    if(clipboard.warning()!=null&&!clipboard.warning().isBlank())System.out.println("WARNING "+clipboard.warning());else System.out.println("SUCCESS snapshot path copied to clipboard.");
+                }
                 default -> usage();
             }
         } catch (Core.ObsException e) {
@@ -53,5 +61,5 @@ public final class Main {
     private static Map<String,String> parse(String[] args){Map<String,String>m=new LinkedHashMap<>();for(int i=1;i<args.length;i++){String k=args[i];if(!k.startsWith("--")||i+1>=args.length)throw new IllegalArgumentException("Expected --key value");m.put(k.substring(2),args[++i]);}return m;}
     private static String req(Map<String,String>m,String k){String v=m.get(k);if(v==null||v.isBlank())throw new IllegalArgumentException("Missing --"+k);return v;}
     private static Path path(Map<String,String>m,String k){String v=m.get(k);return v==null||v.isBlank()?null:Path.of(v);}
-    private static void usage(){System.out.println("Usage: java -jar replacement-package-app.jar [ui|apply|review|finalize|retry-push|settings|list-repos|list-changesets] ...");}
+    private static void usage(){System.out.println("Usage: java -jar replacement-package-app.jar [ui|apply|review|finalize|retry-push|settings|list-repos|list-changesets|export-snapshot] ...");}
 }

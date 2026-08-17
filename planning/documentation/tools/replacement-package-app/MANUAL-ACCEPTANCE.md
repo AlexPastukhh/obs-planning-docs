@@ -3,7 +3,7 @@
 Status: required V0.1 Windows acceptance checklist
 Scope: checks not proven by cross-platform automated Java tests alone.
 
-Run after `run-tests.cmd` reports `RESULT passed=22 failed=0` (or a later suite with `failed=0`).
+Run after `run-tests.cmd` reports `RESULT passed=30 failed=0` (or a later suite with `failed=0`).
 
 ## Environment
 
@@ -72,6 +72,30 @@ Run after `run-tests.cmd` reports `RESULT passed=22 failed=0` (or a later suite 
 9. Change raw origin before Finalize and Retry Push; require `REPOSITORY_MISMATCH` before push.
 10. In one ChangeSet, add a new path and then delete it in a continuation package; require an empty cumulative ReviewDiff and successful Finalize with no new commit/push.
 11. Exercise CLI `apply`, `review` and `finalize`; require `finalize` to have no `--sha` input and normal output not to expose a SHA as a required user workflow value.
+
+## Repository Snapshot Export
+
+1. Select a registered repository and click `Export repository ZIP`.
+2. Local mode: create a modified tracked file, a tracked deletion, an untracked non-ignored file and an ignored untracked file. Export and inspect the ZIP:
+   - root contains `SNAPSHOT.json`, `BASE-COMMIT.txt`, `WORKING-TREE.diff`, `snapshot/`;
+   - `snapshot/` contains the current tracked/untracked non-ignored files;
+   - deleted tracked and ignored untracked paths are absent;
+   - `.git/**` is absent;
+   - `BASE-COMMIT.txt` is the full current `HEAD`;
+   - `WORKING-TREE.diff` describes the local state relative to that base.
+3. Before/after Local export, compare the real Git index and require no change.
+4. Committed mode: dirty the working tree, export `HEAD` and then an older commit SHA; require `snapshot/` bytes to come from the selected commit, not local files.
+5. Require committed root to contain `SNAPSHOT.json`, `COMMIT.txt`, `snapshot/` and no `WORKING-TREE.diff`; `COMMIT.txt` must be the full resolved SHA.
+6. Attempt output to a directory inside the repository and require `SNAPSHOT_EXPORT_FAILED` with no final ZIP.
+7. Create an outside symlink/junction whose target is the repository, request a missing child directory under that alias as output, and require `SNAPSHOT_EXPORT_FAILED` **without creating that child inside the repository**.
+8. Use a non-existing ordinary output directory and require `SNAPSHOT_EXPORT_FAILED`; V1 requires the selected destination directory to already exist.
+9. Change the registered origin and require `REPOSITORY_MISMATCH` before export; restore origin afterward.
+10. During a Local export, change a repository file and require no mixed final ZIP to be published.
+11. During a Local export, create an empty commit so file bytes stay unchanged but `HEAD` changes; require export to fail and publish no ZIP.
+12. After successful export, paste clipboard and require the exact absolute ZIP path. Clipboard success must be reported only after read-back verification.
+13. Make clipboard unavailable and require the ZIP to remain successful with a warning; use `Copy path` after clipboard recovery.
+14. Click `Open folder` and require the parent directory of the created ZIP to open.
+15. For a committed tree containing a symlink/submodule, require V1 export to reject rather than silently flatten the entry.
 
 ## Action / Archive Resolution
 

@@ -1,7 +1,7 @@
 # Replacement Package App Architecture
 
-Status: active V0.1 implementation contract
-Scope: Java 21/Swing runtime layering and safety mechanics for package Apply, Review and Finalize.
+Status: active application implementation contract
+Scope: Java 21/Swing runtime layering and safety mechanics for package Apply/Review/Finalize plus read-only repository snapshot export.
 
 ## 1. Layers
 
@@ -9,8 +9,9 @@ Scope: Java 21/Swing runtime layering and safety mechanics for package Apply, Re
 MainWindow.java                 Swing host / user interaction
 Main.java                       fixed CLI + JAR entry
             ↓
-Core.java                       repository registry/package/state/review/finalize mechanics owner
+Core.java                       repository registry/package/state/review/finalize/export orchestration
             ↓
+RepositorySnapshotExporter.java read-only Local/Committed snapshot ZIP mechanics
 GitClient.java   StateStore.java   Json.java
             ↓
 filesystem + local Git + local application state
@@ -18,13 +19,13 @@ filesystem + local Git + local application state
 
 Hosts do not duplicate Core validation/mutation logic. Java standard library is the only runtime dependency.
 
-All Git execution goes through `GitClient` / `ProcessBuilder`; no shell evaluates package data. Exit code and merged process output are captured explicitly and mapped to the owning stable Core error code.
+All Git execution goes through `GitClient` / `ProcessBuilder`; no shell evaluates package or snapshot data. Text commands capture merged output; raw-byte Git reads use a dedicated stdout/stderr boundary so binary committed blobs and NUL-delimited path inventories are preserved exactly.
 
 ## 2. Repository Registry And Archive Inputs
 
 The application maintains a local allowlist of repository records. Each record contains an internal UUID, human-readable display name, absolute local path and verified `github:<owner>/<repo>` identity derived from `remote.origin.url` when the repository is registered.
 
-Apply, Finalize and Retry Push accept mutation only for a registered local path. Before every such operation Core resolves the actual Git work-tree root again and verifies that its current raw origin still maps to the repository identity stored in the allowlist. An unregistered path or changed origin is `REPOSITORY_MISMATCH`.
+Apply, Finalize and Retry Push accept mutation only for a registered local path, and Repository Snapshot export accepts reads only from that same allowlist. Before each operation Core resolves the actual Git work-tree root again and verifies that its current raw origin still maps to the repository identity stored in the allowlist. An unregistered path or changed origin is `REPOSITORY_MISMATCH`.
 
 Multiple local repositories and multiple clones of the same GitHub repository may be registered when their local paths differ. A repository record with an Active or `CommittedPendingPush` ChangeSet cannot be removed from the allowlist.
 
@@ -119,12 +120,48 @@ Opening/copying ReviewDiff is not checked. Exact equality with the persisted cur
 
 If push fails after commit, Retry Push revalidates repository/origin and requires HEAD to equal the recorded pending commit. It pushes that existing commit without creating a second commit.
 
-## 8. State / Concurrency
+## 8. Repository Snapshot Export
+
+`UC-RPKG-EXPORT-REPOSITORY` is read-only and reuses the allowed-repository gate before any ZIP is created.
+
+Local mode:
+
+```text
+resolve registered repository + current origin
+→ resolve and freeze full HEAD SHA + current branch
+→ capture tracked + untracked non-ignored current file bytes/hashes
+→ temporary GIT_INDEX_FILE: read-tree <frozen SHA> → add -A . → binary-capable cached diff against <frozen SHA>
+→ capture current file bytes/hashes again
+→ require exact inventory/hash equality and unchanged HEAD SHA
+→ regenerate diff against the same frozen SHA and require exact diff-byte equality
+→ require HEAD SHA still unchanged
+→ write SNAPSHOT.json + BASE-COMMIT.txt + WORKING-TREE.diff + snapshot/**
+→ publish final ZIP outside the repository
+```
+
+The real Git index is never changed. Tracked deletions appear only in the diff; ignored untracked files and `.git/**` are not exported. Local paths pass through the same lexical/real-path confinement as package file access.
+
+Committed mode:
+
+```text
+resolve requested ref once to full commit SHA
+→ git ls-tree -r -z <commit>
+→ read each regular blob from the Git object database
+→ write SNAPSHOT.json + COMMIT.txt + snapshot/**
+```
+
+Dirty/staged/untracked working-tree state is not consulted for committed contents. V1 rejects symlink/submodule entries rather than flattening them into regular ZIP files.
+
+Final ZIP publication uses a temporary file and non-overwriting unique destination name. The selected output directory must already exist and, before any export file/directory is created, its real path must resolve outside the repository.
+
+After successful export the Swing/CLI host attempts verified clipboard copy of the absolute ZIP path. Clipboard failure is warning-only and never invalidates the created ZIP.
+
+## 9. State / Concurrency
 
 `StateStore` uses local JSON files and one exclusive `FileChannel` lock around mutating Apply/Finalize/Retry operations. JSON writes use temporary-file replacement. Repository mutation assumes one foreground Core operation at a time.
 
 `settings.json` schema 2 owns repository allowlist records, selected repository, selected ChangeSet and ReviewDiff handling. ChangeSet JSON continues to own path ownership/current review/lifecycle. No application ledger file is written inside a target repository.
 
-## 9. Safety Boundaries
+## 10. Safety Boundaries
 
-No force-push, reset --hard, checkout of user files, automatic branch creation, worktree creation or arbitrary command execution from package content. Package payloads are bytes only. Before repository file access, Core verifies lexical containment and the real path of the nearest existing target/ancestor; symbolic-link or junction/reparse resolution outside the real repository root is rejected as `STATE_DIVERGED`.
+No force-push, reset --hard, checkout of user files, automatic branch creation, worktree creation or arbitrary command execution from package/snapshot content. Package payloads and exported snapshot bytes never authorize commands. Before local repository file access, Core verifies lexical containment and the real path of the nearest existing target/ancestor; symbolic-link or junction/reparse resolution outside the real repository root is rejected as `STATE_DIVERGED`.

@@ -1,7 +1,7 @@
 # Replacement Package App Data And State
 
-Status: active V0.1 state contract
-Scope: application repository/settings state, persistent ChangeSet/ApplicationAttempt/ReviewDiff records and lifecycle authority.
+Status: active application state contract
+Scope: application repository/settings state, persistent ChangeSet/ApplicationAttempt/ReviewDiff records, lifecycle authority and repository-snapshot non-state boundary.
 
 ## 1. Authorities
 
@@ -64,7 +64,7 @@ No ledger/state file is intentionally stored inside the target repository.
 Rules:
 
 - a repository is added only after Core verifies it is a Git work tree and derives supported GitHub identity from `remote.origin.url`;
-- Apply/Finalize/Retry Push require the actual local work-tree root to match a registered path and current origin identity to match the stored identity;
+- Apply/Finalize/Retry Push and Repository Snapshot export require the actual local work-tree root to match a registered path and current origin identity to match the stored identity;
 - multiple registered local paths are allowed, including multiple clones of one repository identity;
 - removing a repository with Active/`CommittedPendingPush` ChangeSets is blocked;
 - `selectedRepositoryId` and `selectedChangeSetId` are navigation state, not mutation authority;
@@ -153,6 +153,20 @@ For one repository identity/local repository root, active/CommittedPendingPush C
 
 A new ChangeSet cannot claim a path that is already dirty relative to HEAD/staged state unless that path is already owned by the same continuing ChangeSet. V0.1 has no implicit "adopt dirty unowned path" operation.
 
-## 9. Repo Review Artifact
+## 9. Repository Snapshot Output Is Not Ledger State
+
+Repository snapshot ZIPs are user-selected external output artifacts. Their destination path, export history and clipboard status are not persisted in `settings.json`, ChangeSets or ApplicationAttempts.
+
+The ZIP itself carries its portable identity beside the exported `snapshot/` folder:
+
+```text
+SNAPSHOT.json
+BASE-COMMIT.txt + WORKING-TREE.diff   (Local)
+COMMIT.txt                            (Committed)
+```
+
+Creating a snapshot does not claim paths, change ChangeSet lifecycle or become a prerequisite for Apply/Review/Finalize.
+
+## 10. Repo Review Artifact
 
 Optional `_ai-review-diffs/**` files are service artifacts. They are deliberately outside ChangeSet ownership and Finalize staging; users may delete them independently.
