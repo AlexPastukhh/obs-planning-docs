@@ -20,9 +20,9 @@ Application internals such as IndexedDB/GM storage, GitHub write orchestration, 
 
 ## 2. Current Agent-Facing Features
 
-| Feature | Status | Read when | Canonical contract |
+| Feature | Status | Read when | Canonical contract / workflow |
 |---|---|---|---|
-| Reference Objects | active | a value should remain synchronized with an existing object, an `obs-ref:*` marker is edited, or a new Reference Object is intentionally created | [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) |
+| Reference Objects | active | a synchronized value is being created/materially edited, freshness is explicitly being checked, or a new Reference Object is intentionally created | [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md); direct repository authoring: [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) |
 | Ordered Reference Lists | active | `obs-order:*` markers exist, or complete lines/paragraphs must be sorted by current Reference Object values | [`ORDERED-REFERENCE-LISTS.md`](ORDERED-REFERENCE-LISTS.md) |
 | Repository Templates | active | creating a document of a known template type or creating/editing a repository template | [`templates/README.md`](templates/README.md) |
 | Reader-target response formatting | renderer active; supported automatic ChatGPT → Linked Notes handoff not implemented | a response is explicitly intended to be transferred into Linked Notes Reader | [`CHAT-RESPONSE-FORMAT.md`](CHAT-RESPONSE-FORMAT.md) |
@@ -31,18 +31,9 @@ This registry is the owner of **which** Linked Notes capabilities a content-work
 
 ## 3. Reference Objects — Short Rule
 
-Do not replace a synchronized Reference Object use with plain text.
+Use [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) as the canonical Reference Object semantics/format contract. Its `Ordinary consumption vs freshness verification` section decides when an existing materialized use can be consumed directly and when the canonical definition must be resolved.
 
-When synchronization is intended:
-
-1. resolve the object from `.linked-notes/reference-objects.json`;
-2. read its `definition.path`;
-3. use the canonical inner value from the single matching `obs-ref:def` marker;
-4. preserve/insert the complete `obs-ref:use` marker.
-
-Do not invent a new `ro_*` ID for an existing object. The registry is routing/index metadata; the definition marker is the canonical value owner.
-
-Read [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) before creating or materially editing these markers.
+For intentional direct repository creation or maintenance of Reference Objects, follow [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) for procedure order and the canonical contract for every normative rule.
 
 ## 4. Ordered Reference Lists — Short Rule
 

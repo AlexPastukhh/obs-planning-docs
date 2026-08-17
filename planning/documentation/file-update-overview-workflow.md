@@ -1,16 +1,17 @@
 # File Update Overview Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.6.0-step-actions-and-file-tables
-Scope: how to produce the final `План файл-обновление` block for non-trivial file, documentation, code or replacement-package work.
+Doc version: v0.7.0-route-specific-package-reporting
+Scope: how to produce the final `План файл-обновление` block for non-trivial file, documentation, code or package work.
 
 Use with:
 
 ```text
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
-planning/documentation/reviewable-agent-output-and-commands-workflow.md
 planning/planning-use-case-map.md
 ```
+
+When a concrete command route is in scope, also read that command definition and its ownerFiles. Package/source/application/review behavior is route-specific and must not be reconstructed from a generic archive assumption.
 
 ## 1. Purpose
 
@@ -43,7 +44,7 @@ A non-trivial plan includes:
 - dependencies and expected resulting state;
 - boundaries / intentionally unchanged artifacts;
 - checks and exit criteria;
-- archive source/delivery status when relevant;
+- package/source/delivery status when relevant;
 - next action.
 ```
 
@@ -140,35 +141,51 @@ When the update concerns a command route, include:
 
 ```text
 canonical command;
-canonical English name from the project root UCM;
+canonical English name from the command definition;
 permission mode.
 ```
 
-The metadata does not replace the UCM route row.
+The metadata does not replace the command definition or root router.
 
-## 7. Archive Source And Delivery Reporting
+## 7. Package Source And Delivery Reporting
 
-For replacement-package work, resolve source selection through:
+For package work, resolve package/source/application/review semantics through:
 
 ```text
-planning/documentation/reviewable-agent-output-and-commands-workflow.md
+planning/planning-use-case-map.md
+  → selected planning/commands/*.command.md
+  → that command's ownerFiles
 ```
 
-Report:
+Do not default to a legacy PowerShell/diff lifecycle merely because the result is an archive.
+
+Report only the dimensions that matter to the selected route, such as:
 
 ```text
 - selected source snapshot;
 - source identity;
-- earlier-message archive reused automatically: no;
-- whether a fresh source archive was required;
-- delivery/source safety;
-- local base verification status;
-- new-file visibility through git add -N when needed;
-- diff clipboard status;
-- review boundary before commit.
+- source certainty / exact-base availability;
+- package/output owner;
+- package or archive delivery status;
+- application responsibility;
+- review responsibility;
+- finalization responsibility;
+- route-specific local base verification status when applicable;
+- route-specific review artifact status when applicable.
 ```
 
-Do not copy the complete source-selection algorithm into this workflow.
+A producer-only package route may legitimately report:
+
+```text
+package created
+application delegated to external/local consumer
+review delegated to consumer workflow
+finalization out of command scope
+```
+
+A legacy reviewable package route may instead require apply/diff/clipboard/paste-review reporting. Include those rows only when the selected route explicitly owns them.
+
+Do not copy a selected command's package algorithm into this workflow.
 
 ## 8. Checks
 
@@ -185,6 +202,7 @@ Before finalizing the overview:
 - Aggregate rows, when present, match the step tables.
 - Deletion and rename appear only after their migration checks.
 - Planned mode remains distinct from implementation permission.
+- Package/source/application/review rows match the selected command route rather than a generic archive assumption.
 ```
 
 ## 9. Do Not
@@ -196,7 +214,8 @@ Before finalizing the overview:
 - Do not use unordered change groups when order materially affects safety.
 - Do not maintain an aggregate matrix as a competing owner.
 - Do not treat a plan as approval to edit, create, rename, delete, archive, commit or push.
-- Do not reference project-specific package docs unless the project has them.
-- Do not invent a command English name when the root UCM owns one.
-- Do not duplicate archive source-selection rules.
+- Do not reference project-specific package docs unless the selected project/command route owns them.
+- Do not invent a command English name when the command definition owns one.
+- Do not duplicate package source-selection rules.
+- Do not treat clipboard diff, pasted review or local apply as universal package requirements.
 ```

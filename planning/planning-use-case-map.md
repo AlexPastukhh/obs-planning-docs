@@ -1,7 +1,7 @@
 # OBS Planning Use-Case Map
 
 Status: active project-specific root command-system router
-Doc version: v0.15.0-explicit-helper-repository-sync
+Doc version: v0.16.0-command-specific-package-boundaries
 Scope: mandatory OBS command-system entry and shared routing/global policy. Individual concrete command definitions live in `planning/commands/`. Dashboard planning is performed in the Dashboard UI and is not exposed as a command family.
 
 ## 1. Authority Model
@@ -80,18 +80,9 @@ planning/commands/
 
 A command definition may be read-only, plan-only, package-producing, staging-only or another explicit mode. No mode silently expands into local Git commit/push.
 
-Archive/package commands retain the shared review boundary:
+The concrete command definition owns its package/application/review/finalization behavior. Do not infer one shared archive/package workflow from the command type alone. Follow additional package, review or Git runtime rules only when the selected command definition states them directly or explicitly lists owner files that own them.
 
-```text
-package creation
-  → apply with exact local base verification
-  → capture full UTF-8 diff
-  → user pastes diff
-  → assistant reviews diff
-  → only an approved diff receives a combined commit+push command.
-```
-
-The detailed package and PowerShell Git runtime contract remains in `planning/documentation/reviewable-agent-output-and-commands-workflow.md` and `planning/documentation/documentation-update-workflow.md`.
+Legacy/reviewable package routes may still opt into local base verification, diff capture and reviewed finalization workflows. Other package-producing commands may stop at a package/handoff boundary. The selected route decides.
 
 ## 6. Dashboard / Operational Boundary
 
@@ -160,4 +151,5 @@ Sources:
     - migrated current command routes from the former root-UCM command tables;
     - user-confirmed repository command registry and modular Planning Helper direction;
     - user-confirmed RAM-first/local snapshot direction;
-    - user-confirmed explicit GitHub check/save/sync for Planning Helper commands and prompts while keeping insertion network-independent.
+    - user-confirmed explicit GitHub check/save/sync for Planning Helper commands and prompts while keeping insertion network-independent;
+    - user-confirmed command-specific package/review/finalization behavior instead of one root-level archive workflow.

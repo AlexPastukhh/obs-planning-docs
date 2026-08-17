@@ -8,7 +8,7 @@ This directory contains repository-owned conventions used by OBS Linked Notes an
 
 Read [`AGENT-GUIDE.md`](AGENT-GUIDE.md) first.
 
-It is the registry of Linked Notes capabilities that can change how a chat should author files or Reader-targeted responses. Read only the detailed agent contract that applies to the current task.
+It is the registry of Linked Notes capabilities that can change how a chat should author files or Reader-targeted responses. Read only the detailed agent contract/workflow that applies to the current task.
 
 ### AI/chat developing Linked Notes itself
 
@@ -18,10 +18,11 @@ Use the application/developer documentation instead:
 
 ## Repository-Facing Files
 
-- [`AGENT-GUIDE.md`](AGENT-GUIDE.md) — registry of application-aware authoring features for content-working chats.
-- [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) — Reference Object definition/use markers and explicit synchronization rules.
+- [`AGENT-GUIDE.md`](AGENT-GUIDE.md) — registry/router of application-aware authoring features for content-working chats.
+- [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) — canonical Reference Object definition/use semantics, marker contract and synchronization rules.
+- [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) — ordered workflow for humans/AI agents intentionally authoring Reference Objects directly in repository files; it links back to the canonical contract instead of duplicating it.
 - [`ORDERED-REFERENCE-LISTS.md`](ORDERED-REFERENCE-LISTS.md) — Reference-Object-driven ordered item markers, structural-unit validation and sorting rules.
-- [`reference-objects.json`](reference-objects.json) — Reference Object routing and rebuildable usage index.
+- [`reference-objects.json`](reference-objects.json) — current Reference Object routing and rebuildable usage index.
 - [`templates/README.md`](templates/README.md) — repository file-template format, template creation path and document-from-template rules.
 - [`CHAT-RESPONSE-FORMAT.md`](CHAT-RESPONSE-FORMAT.md) — supported Reader-target response formatting and current transport boundary.
 

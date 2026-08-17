@@ -21,6 +21,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Targeted: index → active operational day → end-session workflow → Day File Template → Real Reward Work Loop Workflow.",
   "ownerFiles": [
     "planning/areas/planning-system/end-session-command-workflow.md",
+    "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
+    "planning/documentation/documentation-update-workflow.md",
     "planning/dashboard/index.md",
     "-Planning/Templates/Day File Template.md",
     "-Planning/Workflows/Real Reward Work Loop Workflow.md"

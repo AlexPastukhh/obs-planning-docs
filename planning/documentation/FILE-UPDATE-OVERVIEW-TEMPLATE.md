@@ -1,7 +1,7 @@
 # File Update Overview Template
 
 Status: active reusable output template
-Doc version: v0.6.0-step-actions-and-file-tables
+Doc version: v0.7.0-route-specific-package-reporting
 Scope: exact reusable Markdown structure for `План файл-обновление`.
 
 Use with:
@@ -15,7 +15,7 @@ planning/documentation/file-update-overview-workflow.md
 ```markdown
 ## План файл-обновление
 
-**Статус:** <planned / archive created / diff checked / can commit / blocked>
+**Статус:** <planned / package created / review checked / blocked / other route-owned state>
 
 ### Command metadata
 
@@ -25,7 +25,7 @@ Include only when a command route is in scope.
 |---|---|
 | Canonical command | `<command>` |
 | English name | `<canonical English display name>` |
-| Permission mode | `<plan-only / package / other explicit mode>` |
+| Permission mode | `<route-owned permission mode>` |
 
 ### Target
 
@@ -87,20 +87,21 @@ Include only when a command route is in scope.
 
 ### Source and delivery check
 
-Use archive rows only when package/source classification is relevant.
+Use this section only when package/source/delivery classification is relevant. Select rows that match the concrete command route; omit irrelevant rows.
 
 | Check | Result |
 |---|---|
-| Selected source snapshot | <current repository / same-message archive / unresolved / not applicable> |
+| Selected source snapshot | <current repository / explicitly selected archive or snapshot / unresolved / not applicable> |
 | Source identity | <repo ref / archive identity / unavailable / not applicable> |
-| Earlier-message archive reused automatically | <no / not applicable> |
-| Fresh source archive required | <yes/no/not applicable + reason> |
-| Delivery/source safety | <repo-readable / archive-current / blocked / not applicable> |
-| Local base verification | <pending / passed / blocked / not applicable> |
-| New files visible in diff | <yes/no/not needed> |
-| Diff copied to clipboard | <yes/no> |
-| User must paste diff before commit | <yes/no> |
-| Commit/push permission | <not granted / granted explicitly> |
+| Source certainty / exact base | <verified / partial / blocked / not applicable> |
+| Package/output owner | <command/owner workflow / not applicable> |
+| Package delivery | <created / planned / blocked / not applicable> |
+| Application responsibility | <this route / external consumer / user/manual / not applicable> |
+| Review responsibility | <this route / external consumer / not applicable> |
+| Finalization responsibility | <this route / external consumer / out of scope / not applicable> |
+| Route-specific base verification | <pending / passed / blocked / not applicable> |
+| Route-specific review artifact | <pending / available / reviewed / not applicable> |
+| Commit/push permission | <not granted / route-owned explicit state / not applicable> |
 
 ### Следующее действие
 
@@ -122,6 +123,7 @@ Use archive rows only when package/source classification is relevant.
 - A small step may use one action and one file row.
 - The aggregate matrix is optional and derived from step tables.
 - Omit Command metadata for non-command updates.
-- Omit package/source rows when not relevant.
+- Omit source/delivery rows when not relevant.
+- Add legacy diff/clipboard/paste-review details only when the selected command route explicitly requires them.
 - Do not use this block as a generic conclusion.
 ```

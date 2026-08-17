@@ -16,43 +16,29 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "give arch",
     "replacement package"
   ],
-  "description": "output package",
-  "meaning": "Produce a full replacement archive/package. This is output-package mode, not archive read-source mode.",
-  "activeContextBehavior": "Use active approved scope. Earlier-message archives are not current automatically; a same-message archive is current for the invocation. Otherwise use fully readable current repository files.",
+  "description": "output replacement package",
+  "meaning": "Produce a replacement ZIP plus a short OBS-ACTION handoff. This is package-producer mode, not local apply/review/finalization mode and not archive read-source mode.",
+  "activeContextBehavior": "Use the active approved scope and exact checked source state. An earlier-message archive is not current automatically. A source archive/snapshot may be selected for the active invocation when it is explicitly provided or selected for that invocation and, after inspection, matches the intended repository/target and completely covers the touched source. Otherwise use fully readable current repository files. Never guess touched base content.",
   "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
   "ownerFiles": [
-    "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
-    "planning/documentation/documentation-update-workflow.md"
+    "planning/documentation/build-replacement-archive-workflow.md"
   ],
-  "expectedOutput": "Full replacement archive plus apply/diff commands in chat; complete replacement files; reviewed diff before commit/push.",
+  "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION block; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
   "permissionMode": "package-no-commit-push",
   "keyReminders": [
-    "Output-package mode, not archive read-source mode.",
+    "Package-producer mode, not archive read-source mode.",
     "An earlier-message archive is not current automatically.",
-    "A source archive attached with this command is current for this invocation.",
+    "A source archive/snapshot explicitly provided or selected for the active invocation may be used only after verifying repository/target match and complete touched-source coverage.",
     "Otherwise use fully readable current repository files.",
-    "Request a fresh archive only when size/tool limits prevent reliable reading.",
-    "The apply stage must still verify exact local base blobs before changes.",
-    "Produce a full replacement archive.",
-    "Give apply/diff commands in chat.",
-    "Use git add -N for new files before diff capture.",
-    "Ask user to paste diff before commit.",
-    "Do not commit or push."
+    "Request only the minimum fresh source/snapshot when exact touched base content cannot be read reliably.",
+    "Never guess expected base content for replace/delete operations.",
+    "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
+    "Return one short OBS-ACTION whose packageId matches PACKAGE.json.",
+    "Do not include clipboard/review-diff settings in OBS-ACTION.",
+    "Do not apply locally, generate review/finalization commands, commit or push."
   ],
-  "userTarget": "<what archive/package should include>",
+  "userTarget": "<what replacement package should include>",
   "palette": true,
-  "refinements": [
-    {
-      "id": "archive_command_format",
-      "label": "Cmd fmt",
-      "description": "reread archive command-format docs",
-      "readRequired": [
-        "planning/planning-use-case-map.md",
-        "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
-        "planning/documentation/documentation-update-workflow.md"
-      ],
-      "instruction": "Reread these files, validate every user-facing PowerShell Git command in the current answer against their archive command-format rules, and rewrite any non-compliant command."
-    }
-  ]
+  "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -2,7 +2,7 @@
 
 This file defines the repository-facing rules for OBS Linked Notes Reference Objects. It is intended to be readable by humans, AI agents and tools without requiring knowledge of the userscript implementation.
 
-Agent-facing feature status: **active**. Start from [`AGENT-GUIDE.md`](AGENT-GUIDE.md) and read this contract when reusing a synchronized value, editing existing `obs-ref:*` markers or intentionally creating a new Reference Object.
+Agent-facing feature status: **active**. Start from [`AGENT-GUIDE.md`](AGENT-GUIDE.md). For intentional direct repository creation or maintenance of Reference Objects, use [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) as the procedure map; this file remains the canonical semantic/format contract.
 
 ## Core model
 
@@ -32,7 +32,21 @@ A use is **not automatically live**. Changing the definition does not silently r
 
 `.linked-notes/reference-objects.json` stores routing/index metadata only. It does not duplicate the canonical value.
 
-For normal `Check uses`, `Validate tags` and Files stale diagnostics, that routing/index is also the bounded read plan: read the Definitions File, then only the recorded `definition.path` and unique `uses[].path` files. Do not crawl unrelated repository folders merely to decide whether known materialized uses are current or whether the recorded index agrees with markers in those routed files. If `objects[]` is empty, these indexed operations complete after reading the Definitions File.
+### Ordinary consumption vs freshness verification
+
+When a task only reads or consumes the current repository document, the materialized inner value of an existing `obs-ref:use` may be used directly. The presence of a use marker alone does not require a proactive registry/definition traversal before the surrounding document can be understood or acted on.
+
+Resolve the canonical definition when:
+
+- the task explicitly asks whether a use is current/fresh;
+- stale or unresolved evidence is already known;
+- a synchronized value is being created or materially edited;
+- a stale use is intentionally being synchronized; or
+- another operation depends on the canonical value rather than merely the materialized document state.
+
+This distinction does not make `obs-ref:use` canonical. The definition remains the source of truth, and a materialized use may become stale until an explicit freshness/synchronization operation occurs.
+
+For normal `Check uses`, `Validate tags` and Files stale diagnostics, the routing/index is the bounded read plan: read the Definitions File, then only the recorded `definition.path` and unique `uses[].path` files. Do not crawl unrelated repository folders merely to decide whether known materialized uses are current or whether the recorded index agrees with markers in those routed files. If `objects[]` is empty, these indexed operations complete after reading the Definitions File.
 
 Repository-wide discovery is a different integrity operation exposed as `Deep validate repo`. It scans the bounded supported repository scope to find markers that are missing from the index, duplicate definitions outside recorded routes, unknown IDs or other global index drift. An ordinary indexed validation/freshness result therefore reports the state of indexed objects/uses and any additional evidence encountered in those already-routed files; it is not proof that no unindexed marker exists elsewhere.
 
@@ -110,7 +124,9 @@ uses[]:
 
 `uses[]` is a rebuildable navigation/index aid. The actual `obs-ref:use` markers in Markdown are evidence that uses exist. `line` and `lineOccurrence` may change when a file is edited and are not durable identity.
 
-If registry/index data and actual markers disagree, report/validate the drift rather than silently treating the index as canonical.
+When a deliberate direct repository edit adds known use occurrences or changes the line positions of existing uses, keep the affected registry/index entries consistent with the resulting markers. Refresh the affected rebuildable `line` / `lineOccurrence` metadata instead of knowingly leaving index drift created by the same edit.
+
+If registry/index data and actual markers disagree and the intended correction is not unambiguous, report/validate the drift rather than silently treating the index as canonical or guessing a repair.
 
 ## Creating a new object outside the UI
 
@@ -123,6 +139,8 @@ If a repository edit is deliberately performed by an agent instead, creating a n
 3. add one matching object record to `.linked-notes/reference-objects.json` with its name, definition path and initial usage index;
 4. do not create multiple definitions for the same ID;
 5. validate the result before relying on it.
+
+Do not create a new live object by adding only `obs-ref:use`. A newly invented ID requires the canonical definition and consistent registry record in the same intended repository state.
 
 ## Validation expectations
 
