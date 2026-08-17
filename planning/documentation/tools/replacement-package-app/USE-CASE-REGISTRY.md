@@ -20,8 +20,8 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 | ID | Name | Status | Successful result |
 |---|---|---|---|
 | `UC-RPKG-APPLY` | Apply Verified Replacement Package | active V0.1 | A validated package is overlaid only onto an allowed repository in exact expected/owned local state; an ApplicationAttempt and new cumulative ReviewDiff identity are recorded. |
-| `UC-RPKG-REVIEW` | Inspect Current ChangeSet Review State | active V0.1 | The user selects a readable persisted ChangeSet and obtains its current path-scoped cumulative `HEAD → working tree` diff and exact SHA-256 without mutating the real Git index. |
-| `UC-RPKG-FINALIZE` | Finalize Reviewed ChangeSet | active V0.1 | The exact approved cumulative diff is revalidated, only owned paths are committed, push is attempted, and push-failure recovery preserves the already-created commit. |
+| `UC-RPKG-REVIEW` | Inspect Current ChangeSet Review State | active V0.1 | The user selects a readable persisted ChangeSet and obtains its current path-scoped cumulative `HEAD → working tree` diff without mutating the real Git index; exact fingerprinting remains internal. |
+| `UC-RPKG-FINALIZE` | Finalize Current ChangeSet | active V0.1 | The persisted current cumulative ReviewDiff baseline is revalidated automatically, only owned paths are committed, push is attempted, and push-failure recovery preserves the already-created commit. |
 
 ## 3. Supporting Capabilities
 
@@ -33,7 +33,6 @@ ChangeSet ledger/path ownership + readable browser/history
 ApplicationAttempt history
 persisted current ReviewDiff restore/refresh
 optional Copy/Open ReviewDiff
-Approve Current Review convenience
 review-diff handoff setting
 repo diff-file service artifact
 CommittedPendingPush recovery

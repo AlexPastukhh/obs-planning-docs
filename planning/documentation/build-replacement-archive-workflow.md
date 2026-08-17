@@ -122,7 +122,7 @@ Action rules:
 - `name` is presentation/history text and may vary between attempts;
 - repository operations never appear in `OBS-ACTION`;
 - clipboard/repo-file ReviewDiff handling never appears in `OBS-ACTION`; it is application configuration;
-- V0.1 Finalize is not a second `OBS-ACTION`: approval is supplied locally as `ReviewedDiffSha256` plus commit message to the application/fixed finalize wrapper.
+- V0.1 Finalize is not a second `OBS-ACTION`: the consumer uses the selected ChangeSet's persisted current ReviewDiff as the implicit Finalize baseline plus a local commit message; the ReviewDiff SHA-256 remains internal application state and is not user input.
 <!-- /obs-ref:use -->
 
 ## 5. Producer Validation

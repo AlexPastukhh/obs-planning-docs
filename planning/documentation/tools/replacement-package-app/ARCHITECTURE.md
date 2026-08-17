@@ -79,7 +79,7 @@ create temporary directory and non-existing GIT_INDEX_FILE
 
 A user-triggered `Refresh Review` also updates the ChangeSet's persisted `currentReview` identity. On Swing restart/ChangeSet selection, Core reconstructs the last persisted ReviewDiff and verifies that the canonical file still exists and still hashes to the recorded SHA before exposing it as current.
 
-## 6. Review Diff Handling And Approval
+## 6. Review Diff Handling And Finalize Baseline
 
 Application setting remains:
 
@@ -91,9 +91,9 @@ Both
 
 Core always persists canonical ReviewDiff in app state. Optional repository service copies use `_ai-review-diffs/<changeSetId>/<attemptId>.diff`; they never become ChangeSet-owned or Finalize staging targets. Handoff occurs after required Apply persistence and handoff failures are warnings, not false Apply failures. Clipboard handoff writes the canonical diff text and reads it back before reporting success; a mismatch/failure is surfaced as a warning.
 
-The Swing host exposes explicit `Copy ReviewDiff` and `Open ReviewDiff` actions for the SHA-verified current ReviewDiff. They are optional inspection actions and are **not** Finalize gates.
+The Swing host exposes explicit `Copy ReviewDiff` and `Open ReviewDiff` actions for the integrity-verified current ReviewDiff. They are optional inspection actions and are **not** Finalize gates.
 
-`Approve Current Review` verifies that same canonical file and copies its exact current SHA-256 into the editable `Reviewed SHA-256` approval field. It does not claim that the file was opened/read. Selecting another ChangeSet, Apply or Refresh Review clears the local approval field. An externally reviewed SHA may still be pasted manually.
+The persisted `currentReview` is also the implicit Finalize baseline. Its SHA-256 remains an internal fingerprint only: normal Swing/CLI flows do not display it as an approval field and never require the user to copy or enter it.
 
 ## 7. Finalize
 
@@ -101,20 +101,21 @@ The Swing host exposes explicit `Copy ReviewDiff` and `Open ReviewDiff` actions 
 load Active ChangeSet
 → require its local repository to remain registered
 → revalidate repository root + origin identity
+→ load and integrity-check persisted currentReview baseline
 → regenerate canonical ReviewDiff
-→ require SHA-256 == ReviewedDiffSha256
+→ require exact bytes fingerprint == persisted currentReview fingerprint
 → require real Git index clean
 → if reviewed cumulative diff is empty: mark Finalized and release ownership without commit/push
 → otherwise git add -A -- <effective owned paths>
 → generate staged HEAD diff to file
-→ require staged diff SHA-256 == ReviewedDiffSha256
+→ require staged diff fingerprint == persisted currentReview fingerprint
 → git commit
 → persist commit SHA + branch as CommittedPendingPush
 → git push origin <branch>
 → on success mark Finalized / release ownership
 ```
 
-Opening/copying ReviewDiff is not checked. Exact approved SHA identity remains the Core safety gate.
+Opening/copying ReviewDiff is not checked. Exact equality with the persisted current ReviewDiff fingerprint remains the Core safety gate; the fingerprint is not a user input.
 
 If push fails after commit, Retry Push revalidates repository/origin and requires HEAD to equal the recorded pending commit. It pushes that existing commit without creating a second commit.
 

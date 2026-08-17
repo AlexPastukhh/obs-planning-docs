@@ -51,27 +51,27 @@ Run after `run-tests.cmd` reports `RESULT passed=22 failed=0` (or a later suite 
 2. Apply a package containing an untracked add.
 3. Confirm cumulative diff includes the new file.
 4. Confirm `git diff --cached --quiet` remains clean after ReviewDiff generation.
-5. Verify displayed SHA-256 equals the persisted canonical diff hash.
+5. Confirm the normal Swing UI has no Review SHA fields or SHA approval controls; Review state is shown as `Current`/unavailable instead.
 6. With `Clipboard` selected, verify automatic Apply handoff either places the canonical diff in the clipboard or surfaces a handoff warning; it must not create a false Apply failure.
 7. Click `Copy ReviewDiff`, paste the clipboard into a text target, and require exact text equality with the persisted canonical diff; the UI must report success only after verified clipboard read-back.
-8. Click `Open ReviewDiff` and require the same current canonical `.diff` file to open through the desktop handler without changing the displayed current SHA.
+8. Click `Open ReviewDiff` and require the same current canonical `.diff` file to open through the desktop handler without changing the current ReviewDiff identity or `Review` state.
 9. Close/reopen the app, reselect the ChangeSet, and require Copy/Open to work immediately from its persisted `currentReview` without mandatory Refresh Review.
-10. Click `Refresh Review`; require a new current review identity to be persisted and `Reviewed SHA-256` cleared.
+10. Click `Refresh Review`; require a new current review identity to be persisted and Review state to become `Current`.
 11. Test `RepoDiffFile` and `Both` settings and confirm `_ai-review-diffs/**` is not an owned ChangeSet path.
 
-## Approval / Finalize / Push Recovery
+## Finalize / Implicit Review Baseline / Push Recovery
 
-1. Confirm Copy/Open are optional: do not use either one, click `Approve Current Review`, and require `Reviewed SHA-256` to become the current verified SHA.
-2. Select another ChangeSet, Apply another overlay or Refresh Review and require the approval field to clear.
-3. Manually paste an externally approved current SHA and verify that path remains supported.
-4. Modify an owned file after approval and require `REVIEW_STALE`.
-5. Stage any path and require Finalize to block; clear index.
-6. Finalize and verify only owned paths enter the commit.
-7. Verify successful push releases ownership.
-8. Make push unavailable after review: Finalize must create one commit and enter `CommittedPendingPush`.
-9. Restore transport, Retry Push, and verify no second commit.
-10. Change raw origin before Finalize and Retry Push; require `REPOSITORY_MISMATCH` before push.
-11. In one ChangeSet, add a new path and then delete it in a continuation package; require an empty cumulative ReviewDiff and successful Finalize with no new commit/push.
+1. Confirm there is no user-facing Review SHA field, SHA input or `Approve Current Review` action in Swing.
+2. Without using Copy/Open, Finalize a current ChangeSet and require the persisted current ReviewDiff to be used automatically as the baseline.
+3. Modify an owned file after the last Apply/Refresh Review and require `REVIEW_STALE`; no SHA value should be shown as something the user must copy or enter.
+4. Refresh Review, then Finalize again and verify only owned paths enter the commit.
+5. Stage any path before Finalize and require Finalize to block; clear index.
+6. Verify successful push releases ownership.
+7. Make push unavailable after review: Finalize must create one commit and enter `CommittedPendingPush`.
+8. Restore transport, Retry Push, and verify no second commit.
+9. Change raw origin before Finalize and Retry Push; require `REPOSITORY_MISMATCH` before push.
+10. In one ChangeSet, add a new path and then delete it in a continuation package; require an empty cumulative ReviewDiff and successful Finalize with no new commit/push.
+11. Exercise CLI `apply`, `review` and `finalize`; require `finalize` to have no `--sha` input and normal output not to expose a SHA as a required user workflow value.
 
 ## Action / Archive Resolution
 

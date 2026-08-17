@@ -28,9 +28,9 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 
 **Trigger/input:** successful Apply, selecting a persisted ChangeSet, or explicit Refresh Review.
 
-**Successful result:** the user navigates ChangeSets by `changeSetLabel · status · short UUID` within the selected repository. A valid persisted `currentReview` can be reopened after application restart only after its canonical diff file and SHA-256 are reverified. Refresh Review generates/persists a new cumulative `HEAD → working tree` diff scoped to ChangeSet-owned paths, including untracked adds, without changing `.git/index`. `Copy ReviewDiff` and `Open ReviewDiff` operate on that same SHA-verified canonical file.
+**Successful result:** the user navigates ChangeSets by `changeSetLabel · status · short UUID` within the selected repository. A valid persisted `currentReview` can be reopened after application restart only after its canonical diff file and internal fingerprint are reverified. Refresh Review generates/persists a new cumulative `HEAD → working tree` diff scoped to ChangeSet-owned paths, including untracked adds, without changing `.git/index`. `Copy ReviewDiff` and `Open ReviewDiff` operate on that same integrity-verified canonical file.
 
-**Approval boundary:** Copy/Open are optional inspection conveniences and never authorize Finalize. `Approve Current Review` explicitly copies the verified current SHA into the local `Reviewed SHA-256` field; a user may instead paste an externally reviewed SHA. A later Apply, Refresh Review or ChangeSet selection clears the UI approval field.
+**Finalize baseline boundary:** Copy/Open are optional inspection conveniences and never authorize or gate Finalize. The selected ChangeSet's persisted `currentReview` is the implicit Finalize baseline. Its SHA-256 is internal only and is not displayed/entered in the normal Swing/CLI flow. A later Apply or Refresh Review replaces the baseline.
 
 **Boundary:** repo-stored review diff files are service artifacts, never ChangeSet-owned content and never Finalize staging targets.
 
@@ -45,9 +45,9 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 
 ## 3. `UC-RPKG-FINALIZE` — Finalize Reviewed ChangeSet
 
-**Trigger/input:** selected Active ChangeSet, exact `ReviewedDiffSha256`, commit message; or Retry Push for `CommittedPendingPush`.
+**Trigger/input:** selected Active ChangeSet and commit message; or Retry Push for `CommittedPendingPush`.
 
-**Successful result:** Core requires the ChangeSet repository to remain registered, revalidates current origin, regenerates the canonical cumulative diff and requires exact hash equality; requires clean real index; stages only ChangeSet-owned paths; verifies staged diff hash; commits and pushes. Ownership is released only after successful push. No Open/Copy ReviewDiff action is required.
+**Successful result:** Core requires the ChangeSet repository to remain registered, revalidates current origin, loads the persisted current ReviewDiff baseline, regenerates the canonical cumulative diff and requires exact internal fingerprint equality; requires clean real index; stages only ChangeSet-owned paths; verifies the staged diff against the same baseline; commits and pushes. Ownership is released only after successful push. No Open/Copy ReviewDiff action or user-supplied SHA is required.
 
 **Push-failure result:** successful commit is preserved as `CommittedPendingPush` with commit SHA/branch; Retry Push pushes that existing commit and never creates a second commit.
 
@@ -77,6 +77,6 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 | repository allowlist absent from action | repository registration/selection is consumer-only local configuration. |
 | diff destination absent from action | local setting owns Clipboard / RepoDiffFile / Both. |
 | producer stops after ZIP + action | local Java app owns repository registry/apply/history/review/finalize. |
-| no Finalize action | exact local `ReviewedDiffSha256` + commit message authorizes Finalize; Open/Copy ReviewDiff is not a prerequisite. |
+| no Finalize action | selected ChangeSet + its persisted current ReviewDiff baseline + commit message drive Finalize; SHA-256 stays internal and Open/Copy ReviewDiff is not a prerequisite. |
 
 Compatibility review fails if command materialized protocol, canonical protocol, Java parser/validation or tests disagree.

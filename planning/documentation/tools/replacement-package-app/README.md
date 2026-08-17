@@ -73,16 +73,17 @@ run-app.cmd
 → Apply
 → select the readable ChangeSet entry (label · status · short UUID)
 → inspect ReviewDiff with Copy/Open when useful
-→ Approve Current Review, or paste an externally approved SHA manually
 → Finalize
 → Retry Push only if commit succeeded and push failed
 ```
 
 Repository UUIDs and full ChangeSet UUIDs remain technical identity. Normal Swing navigation uses repository display names and `changeSetLabel`; the full ChangeSet ID remains visible as a read-only detail.
 
-`Copy ReviewDiff` / `Open ReviewDiff` are inspection conveniences, not Finalize prerequisites. `Approve Current Review` is the explicit local approval action: it copies the currently SHA-verified canonical review identity into `Reviewed SHA-256`. A new Apply, Refresh Review or ChangeSet selection clears that approval.
+`Copy ReviewDiff` / `Open ReviewDiff` are optional inspection conveniences, not Finalize prerequisites. Finalize implicitly uses the selected ChangeSet's last persisted current ReviewDiff as its baseline. If owned content changed after the last Apply/Refresh Review, Finalize stops with `REVIEW_STALE` and the user refreshes ReviewDiff before retrying.
 
-The selected repository and ChangeSet are persisted. After restart, the Swing host can reopen the persisted current ReviewDiff for the selected ChangeSet if the canonical file still exists and matches its recorded SHA-256.
+ReviewDiff SHA-256 remains an internal integrity fingerprint in application state; normal Swing and CLI workflows do not ask the user to view, copy or enter it.
+
+The selected repository and ChangeSet are persisted. After restart, the Swing host can reopen the persisted current ReviewDiff for the selected ChangeSet if the canonical file still exists and matches its recorded internal fingerprint.
 
 ## 5. CLI Fallback
 
@@ -93,7 +94,7 @@ java -jar build\replacement-package-app.jar settings --repo C:\repo --name "My R
 java -jar build\replacement-package-app.jar list-repos
 java -jar build\replacement-package-app.jar apply --repo C:\repo --archive C:\Downloads\package.zip
 java -jar build\replacement-package-app.jar review --changeset <uuid>
-java -jar build\replacement-package-app.jar finalize --repo C:\repo --changeset <uuid> --sha <sha256> --message "Reviewed change"
+java -jar build\replacement-package-app.jar finalize --repo C:\repo --changeset <uuid> --message "Finalize ChangeSet"
 java -jar build\replacement-package-app.jar retry-push --repo C:\repo --changeset <uuid>
 ```
 

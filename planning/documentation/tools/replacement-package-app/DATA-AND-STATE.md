@@ -119,21 +119,17 @@ reviewDiffSha256
 
 Failed attempts are retained when enough identity/state is known to write a meaningful record.
 
-## 6. ReviewDiff And Approval Identity
+## 6. ReviewDiff Identity And Implicit Finalize Baseline
 
 Each successful apply creates a new **cumulative** review record from current `HEAD` to current working tree for all owned paths. Explicit `Refresh Review` also replaces and persists the ChangeSet's `currentReview`. Older review records remain history but are stale/non-current after a later overlay/refresh.
 
 On restart or ChangeSet selection, a persisted current review may be reconstructed only when its canonical diff file exists and exact SHA-256 still matches the recorded value.
 
-Approval binds to exact bytes:
+The persisted `currentReview.sha256` binds the current ReviewDiff to exact canonical bytes and is the implicit Finalize baseline. It is internal application state, not user approval input. Normal Swing/CLI workflows do not require the user to view, copy or enter a SHA.
 
-```text
-ReviewedDiffSha256 = SHA-256(exact canonical current diff file bytes)
-```
+`Copy ReviewDiff` / `Open ReviewDiff` are optional inspection conveniences and are never prerequisites for Finalize. Apply or Refresh Review replaces the persisted baseline.
 
-`Approve Current Review` is a Swing convenience that copies the verified current SHA into the local approval field. `Copy ReviewDiff` / `Open ReviewDiff` do not approve anything and are never prerequisites for Finalize. Approval is not persisted as ChangeSet authority; Apply, Refresh Review and ChangeSet selection clear the UI approval field.
-
-Finalize regenerates the diff; mismatch is `REVIEW_STALE`.
+Finalize integrity-checks the persisted canonical ReviewDiff, regenerates the cumulative diff and compares the internal fingerprints. A mismatch is `REVIEW_STALE`; the user refreshes ReviewDiff before retrying Finalize.
 
 ## 7. Lifecycle
 

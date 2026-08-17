@@ -186,7 +186,7 @@ public final class Core {
         if(review==null||review.diffPath==null||review.sha256==null||review.sha256.isBlank())throw new ObsException(STATE_DIVERGED,"Current ReviewDiff identity is unavailable.");
         Path p=review.diffPath.toAbsolutePath().normalize();
         if(!Files.isRegularFile(p))throw new ObsException(STATE_DIVERGED,"Canonical ReviewDiff file is missing: "+p);
-        String actual=sha256(p);if(!actual.equalsIgnoreCase(review.sha256))throw new ObsException(STATE_DIVERGED,"Canonical ReviewDiff bytes no longer match current ReviewDiff SHA-256.");
+        String actual=sha256(p);if(!actual.equalsIgnoreCase(review.sha256))throw new ObsException(STATE_DIVERGED,"Canonical ReviewDiff bytes no longer match the recorded integrity fingerprint.");
         return p;
     }
 
@@ -198,7 +198,7 @@ public final class Core {
 
     public Handoff publishReviewDiff(ChangeSet cs,ReviewDiff review){Settings s=getSettings();String handling=s.reviewDiffHandling;String service=null;List<String>w=new ArrayList<>();if(handling.equals("Clipboard")||handling.equals("Both")){try{Handoff h=copyReviewDiffToClipboard(review);if(h.warning!=null&&!h.warning.isBlank())w.add(h.warning);}catch(Throwable e){w.add("Clipboard handoff failed: "+(e.getMessage()==null?e.toString():e.getMessage()));}}if(handling.equals("RepoDiffFile")||handling.equals("Both")){try{Path source=verifiedReviewDiffPath(review),rel=Path.of("_ai-review-diffs",cs.changeSetId,review.attemptId+".diff");Path dst=inside(Path.of(cs.repositoryRoot),rel.toString().replace('\\','/'));Files.createDirectories(dst.getParent());Files.copy(source,dst,StandardCopyOption.REPLACE_EXISTING);service=rel.toString().replace('\\','/');}catch(Throwable e){w.add("Repo diff-file handoff failed: "+e.getMessage());}}return new Handoff(service,String.join(" ",w));}
 
-    public FinalizeResult finalizeChangeSet(String id,String reviewedSha,String message,Path repositoryRoot){
+    public FinalizeResult finalizeChangeSet(String id,String message,Path repositoryRoot){
         try(StateStore.Lock ignored=state.lock()){
             ChangeSet cs=state.getChangeSet(id);
             if(cs==null)throw new ObsException(FINALIZE_FAILED,"Unknown ChangeSet: "+id);
@@ -208,8 +208,11 @@ public final class Core {
             if(!samePath(repo,Path.of(cs.repositoryRoot)))throw new ObsException(REPOSITORY_MISMATCH,"Finalize repository differs from ChangeSet repository.");
             String rid=repositoryIdentity(repo);
             if(!same(rid,cs.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Finalize origin is "+rid+"; ChangeSet targets "+cs.repositoryIdentity+".");
+            ReviewDiff baseline;
+            try{baseline=currentReview(cs);}catch(ObsException e){if(STATE_DIVERGED.equals(e.code))throw new ObsException(REVIEW_STALE,"Stored ReviewDiff is unavailable or changed. Refresh Review before Finalize.",e);throw e;}
+            if(baseline==null)throw new ObsException(REVIEW_STALE,"No current ReviewDiff is recorded. Apply a package or Refresh Review before Finalize.");
             ReviewDiff review=newReviewDiff(cs);
-            if(!review.sha256.equalsIgnoreCase(reviewedSha))throw new ObsException(REVIEW_STALE,"Current ReviewDiff SHA-256 is "+review.sha256+", not reviewed "+reviewedSha+".");
+            if(!review.sha256.equalsIgnoreCase(baseline.sha256))throw new ObsException(REVIEW_STALE,"ReviewDiff changed since the last Apply/Refresh Review. Refresh Review before Finalize.");
             GitClient.Result pre=git.allow(repo,FINALIZE_FAILED,"diff","--cached","--quiet");
             if(pre.exitCode()!=0){if(pre.exitCode()==1)throw new ObsException(FINALIZE_FAILED,"V0.1 Finalize requires a clean real Git index.");throw new ObsException(FINALIZE_FAILED,"Failed to inspect real Git index: "+pre.joined());}
             try{
@@ -230,7 +233,7 @@ public final class Core {
                 List<String> d=new ArrayList<>(List.of("--no-pager","diff","--cached","--no-color","--output="+staged,"HEAD","--"));d.addAll(paths);
                 git.run(repo,FINALIZE_FAILED,d.toArray(String[]::new));
             }catch(Throwable t){resetOwned(repo,cs);throw asObs(t,FINALIZE_FAILED);}
-            if(!sha256(staged).equalsIgnoreCase(reviewedSha)){resetOwned(repo,cs);throw new ObsException(REVIEW_STALE,"Staged diff bytes differ from reviewed diff.");}
+            if(!sha256(staged).equalsIgnoreCase(baseline.sha256)){resetOwned(repo,cs);throw new ObsException(REVIEW_STALE,"Staged diff bytes differ from the current ReviewDiff baseline.");}
             try{git.run(repo,FINALIZE_FAILED,"commit","-m",message);}catch(Throwable t){resetOwned(repo,cs);throw t;}
             String commit=git.run(repo,FINALIZE_FAILED,"rev-parse","HEAD").first();cs.commitSha=commit;cs.branch=branch;cs.status="CommittedPendingPush";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);
             GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",branch);

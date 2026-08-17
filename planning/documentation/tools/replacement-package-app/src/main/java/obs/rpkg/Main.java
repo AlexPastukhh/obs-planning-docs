@@ -19,15 +19,15 @@ public final class Main {
                     Core.ApplyResult r;
                     if (a.containsKey("action-file")) r = core.applyAction(Files.readString(path(a,"action-file")), archive, repo);
                     else r = core.applyPackage(archive, repo);
-                    System.out.println("SUCCESS changeSetId=" + r.changeSet().changeSetId + " reviewSha256=" + r.review().sha256());
+                    System.out.println("SUCCESS changeSetId=" + r.changeSet().changeSetId + " reviewFile=" + r.review().diffPath());
                     if (r.attempt().handoffWarning != null && !r.attempt().handoffWarning.isBlank()) System.out.println("WARNING " + r.attempt().handoffWarning);
                 }
                 case "review" -> {
                     Core.ReviewDiff r = core.refreshReview(req(a,"changeset"));
-                    System.out.println(r.sha256()+"  "+r.diffPath());
+                    System.out.println("SUCCESS reviewFile="+r.diffPath());
                 }
                 case "finalize" -> {
-                    Core.FinalizeResult r=core.finalizeChangeSet(req(a,"changeset"),req(a,"sha"),req(a,"message"),path(a,"repo"));
+                    Core.FinalizeResult r=core.finalizeChangeSet(req(a,"changeset"),req(a,"message"),path(a,"repo"));
                     if(r.commitSha()==null)System.out.println("SUCCESS no net changes; ChangeSet finalized without commit/push.");else System.out.println("SUCCESS commit="+r.commitSha()+" branch="+r.branch());
                 }
                 case "retry-push" -> {
