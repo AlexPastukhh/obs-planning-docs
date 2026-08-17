@@ -49,10 +49,12 @@ replacement-package-app/
     │   ├── RepositorySnapshotExporter.java
     │   ├── GitClient.java
     │   ├── StateStore.java
+    │   ├── WindowsLauncherInstaller.java
     │   └── Json.java
     └── test/java/obs/rpkg/
         ├── CoreTests.java
-        └── ChatBridgeTests.java
+        ├── ChatBridgeTests.java
+        └── WindowsLauncherInstallerTests.java
 ```
 
 `Core` is the application mechanics owner. `RepositorySnapshotExporter` owns read-only Local/Committed repository ZIP construction behind Core validation. `ChatBridgeService` owns ChangeSet/chat bindings and delivery-task state; `ChatBridgeServer` exposes only the fixed loopback bridge contract to the companion Manifest V3 extension. `MainWindow` is a Swing host; `Main` is the fixed CLI/JAR entry. `GitClient` is the only native Git process boundary. Tests use Java ZIP fixtures and real temporary Git repositories/bare remotes.
@@ -62,7 +64,7 @@ replacement-package-app/
 Required on Windows:
 
 ```text
-JDK 21: java, javac, jar
+JDK 21: java, javac, jar, jpackage
 Git on PATH
 Microsoft Edge for the optional browser bridge (unpacked Manifest V3 extension)
 ```
@@ -75,6 +77,18 @@ run-app.cmd
 ```
 
 `build.cmd` produces `build\replacement-package-app.jar`. Equivalent platform-neutral build/test commands are plain `javac`, `jar` and `java`; wrappers are convenience only.
+
+### Pinnable Windows launcher
+
+The Swing app has a **Windows launcher → Install / update** action. It uses the JDK 21 `jpackage` tool to create a GUI `app-image` at the stable per-user path:
+
+```text
+%LOCALAPPDATA%\OBS\ReplacementPackageApp\launcher\Replacement Package App\Replacement Package App.exe
+```
+
+The generated app image includes its own Java runtime and opens without a console window. Use **Open folder** and pin `Replacement Package App.exe` to the Windows taskbar. The stable path is reused on update, so the existing taskbar pin remains valid when the launcher image is replaced.
+
+The launcher contains the JAR that was running when **Install / update** was clicked. After source packages change the application, start the freshly built source app once and click **Install / update** again to refresh the pinned build. Launcher creation never edits the repository or application ledger.
 
 ## 4. V0.1 User Flow
 

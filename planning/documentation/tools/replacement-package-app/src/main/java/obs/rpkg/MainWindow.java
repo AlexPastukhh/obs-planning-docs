@@ -15,7 +15,7 @@ final class MainWindow extends JFrame {
     private Core.ReviewDiff currentReview;
     private Core.RepositoryConfig selectedRepository;
     private Core.ChangeSet selectedChangeSet;
-    private boolean loading;
+    private boolean loading,launcherInstallRunning;
     private String outputArchiveKey,outputChangeSetId;
     private int outputAttempt;
     private final Set<String> outputReviewAttemptIds=new LinkedHashSet<>();
@@ -26,12 +26,12 @@ final class MainWindow extends JFrame {
     private final JComboBox<String> handling=new JComboBox<>(new String[]{"Clipboard","RepoDiffFile","Both"});
     private final JComboBox<ChatItem> reviewChats=new JComboBox<>();
     private final JCheckBox showHistory=new JCheckBox("Show history");
-    private final JTextField repositoryIdentity=new JTextField(),archive=new JTextField(),changeSetId=new JTextField(),status=new JTextField(),reviewState=new JTextField(),commitMessage=new JTextField("Finalize ChangeSet"),bridgeState=new JTextField(),chatDelivery=new JTextField();
+    private final JTextField repositoryIdentity=new JTextField(),archive=new JTextField(),changeSetId=new JTextField(),status=new JTextField(),reviewState=new JTextField(),commitMessage=new JTextField("Finalize ChangeSet"),bridgeState=new JTextField(),chatDelivery=new JTextField(),launcherState=new JTextField();
     private final JTextArea action=new JTextArea(7,60),log=new JTextArea(12,60);
 
     MainWindow(Core core){
         super("OBS Replacement Package App — Java 21");this.core=core;setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);setMinimumSize(new Dimension(1060,850));
-        for(JTextField f:new JTextField[]{repositoryIdentity,changeSetId,status,reviewState,bridgeState,chatDelivery})f.setEditable(false);log.setEditable(false);build();core.setChatBridgeEventSink(event->SwingUtilities.invokeLater(()->handleChatBridgeEvent(event)));startBridge();loadState();pack();setLocationRelativeTo(null);
+        for(JTextField f:new JTextField[]{repositoryIdentity,changeSetId,status,reviewState,bridgeState,chatDelivery,launcherState})f.setEditable(false);log.setEditable(false);build();core.setChatBridgeEventSink(event->SwingUtilities.invokeLater(()->handleChatBridgeEvent(event)));startBridge();updateLauncherState();loadState();pack();setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter(){@Override public void windowClosed(WindowEvent e){if(bridgeServer!=null)bridgeServer.close();}});
     }
 
@@ -41,6 +41,7 @@ final class MainWindow extends JFrame {
         root.add(row("Repository identity",repositoryIdentity));
         root.add(row("ReviewDiff",handling));
         root.add(row("Chat bridge",bridgeState,button("Copy pairing token",this::copyBridgeToken)));
+        root.add(row("Windows launcher",launcherState,button("Install / update",this::installWindowsLauncher),button("Open folder",this::openWindowsLauncherFolder),button("Copy path",this::copyWindowsLauncherPath)));
         root.add(row("Archive ZIP",archive,button("Browse",()->chooseFile(archive))));
         root.add(new JLabel("OBS-ACTION/1 (optional when ZIP is selected explicitly):"));root.add(new JScrollPane(action));
         root.add(row("",button("Apply",this::apply)));
@@ -60,6 +61,18 @@ final class MainWindow extends JFrame {
     }
 
     private void startBridge(){try{bridgeServer=ChatBridgeServer.start(core.chatBridgeService());bridgeState.setText("Listening on 127.0.0.1:"+ChatBridgeService.PORT);append("SUCCESS ChatGPT bridge listening on 127.0.0.1:"+ChatBridgeService.PORT+".");}catch(IOException e){bridgeState.setText("Unavailable — "+e.getMessage());append("WARNING ChatGPT bridge unavailable: "+e.getMessage());}}
+    private void updateLauncherState(){if(!WindowsLauncherInstaller.isWindows()){launcherState.setText("Windows only");return;}Path exe=WindowsLauncherInstaller.installedExePath();launcherState.setText(WindowsLauncherInstaller.installed()?exe.toString():"Not installed");}
+    private void installWindowsLauncher(){
+        if(!WindowsLauncherInstaller.isWindows())throw new Core.ObsException(Core.STATE_DIVERGED,"Windows launcher installation is available only on Windows.");
+        if(launcherInstallRunning)throw new Core.ObsException(Core.STATE_DIVERGED,"Windows launcher installation is already running.");launcherInstallRunning=true;
+        launcherState.setText("Installing…");append("Windows launcher: creating/updating pinnable app image…");
+        new SwingWorker<WindowsLauncherInstaller.Result,Void>(){
+            @Override protected WindowsLauncherInstaller.Result doInBackground()throws Exception{return WindowsLauncherInstaller.installCurrentJar();}
+            @Override protected void done(){launcherInstallRunning=false;try{WindowsLauncherInstaller.Result r=get();updateLauncherState();Core.Handoff h=core.copyPathToClipboard(r.exePath());append("SUCCESS Windows launcher "+(r.replacedExisting()?"updated":"installed")+": "+r.exePath());if(r.warning()!=null&&!r.warning().isBlank())append("WARNING "+r.warning());if(h.warning()!=null&&!h.warning().isBlank())append("WARNING Launcher path was not copied to clipboard: "+h.warning());Object[] options={"Open folder","Close"};int choice=JOptionPane.showOptionDialog(MainWindow.this,"Pinnable Windows app is ready:\n"+r.exePath()+"\n\nRight-click Replacement Package App.exe in the folder and choose Pin to taskbar.\nAfter future source updates, run the source app once and click Install / update again.","Windows launcher",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[0]);if(choice==0)openWindowsLauncherFolder();}catch(Exception e){updateLauncherState();Throwable cause=e instanceof java.util.concurrent.ExecutionException&&e.getCause()!=null?e.getCause():e;append("ERROR Windows launcher install failed: "+cause.getMessage());JOptionPane.showMessageDialog(MainWindow.this,cause.getMessage(),"Windows launcher install failed",JOptionPane.ERROR_MESSAGE);}}
+        }.execute();
+    }
+    private void openWindowsLauncherFolder(){try{WindowsLauncherInstaller.openInstallFolder();append("SUCCESS Windows launcher folder opened.");}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,e.getMessage(),e);}}
+    private void copyWindowsLauncherPath(){Path exe=WindowsLauncherInstaller.installedExePath();if(!Files.isRegularFile(exe,LinkOption.NOFOLLOW_LINKS))throw new Core.ObsException(Core.STATE_DIVERGED,"Windows launcher is not installed yet.");Core.Handoff h=core.copyPathToClipboard(exe);append(h.warning()!=null&&!h.warning().isBlank()?"ERROR "+h.warning():"SUCCESS Windows launcher path copied to clipboard.");}
     private JPanel row(String label,JComponent... cs){JPanel p=new JPanel(new BorderLayout(8,4));if(!label.isBlank())p.add(new JLabel(label),BorderLayout.WEST);JPanel inner=new JPanel();inner.setLayout(new BoxLayout(inner,BoxLayout.X_AXIS));for(JComponent c:cs){inner.add(c);inner.add(Box.createHorizontalStrut(6));}p.add(inner,BorderLayout.CENTER);p.setMaximumSize(new Dimension(Integer.MAX_VALUE,38));return p;}
     private JButton button(String text,Runnable r){JButton b=new JButton(text);b.addActionListener(e->run(text,r));return b;}
     private void run(String label,Runnable r){try{r.run();}catch(Core.ObsException e){append("["+e.code+"] "+e.getMessage());}catch(Exception e){append("ERROR "+e);}}

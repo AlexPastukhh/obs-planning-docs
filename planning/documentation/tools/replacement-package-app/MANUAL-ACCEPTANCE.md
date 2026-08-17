@@ -7,7 +7,7 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 
 ## Environment
 
-- Windows with JDK 21 (`java`, `javac`, `jar`).
+- Windows with a full JDK 21 (`java`, `javac`, `jar`, `jpackage`).
 - Git available on PATH.
 - Microsoft Edge with Developer mode available for loading the unpacked Manifest V3 extension.
 - at least two disposable Git repositories with configured GitHub-shaped `origin` values.
@@ -19,6 +19,10 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 2. Run `run-app.cmd` and verify the Swing window opens.
 3. If legacy settings contain one `repositoryRoot`, verify it appears after restart as one registered repository with a readable display name and verified GitHub identity.
 4. Close/reopen and verify selected repository and selected ChangeSet navigation state persist under `%LOCALAPPDATA%\OBS\ReplacementPackageApp\` (or documented fallback).
+5. In the source-launched app click **Windows launcher → Install / update**; require `%LOCALAPPDATA%\OBS\ReplacementPackageApp\launcher\Replacement Package App\Replacement Package App.exe` to exist and the path to be copied to clipboard when available.
+6. Open the launcher folder, start `Replacement Package App.exe`, and require the Swing app to open without a console window and without requiring the system `java` command at launch time.
+7. Pin that executable to the Windows taskbar, close/reopen from the taskbar, and require the app to open normally.
+8. Return to the source-launched app, click **Install / update** again, and require the same executable path to remain valid after replacement. The existing taskbar pin must still launch the refreshed app.
 
 ## Allowed Repository Registry
 

@@ -1,0 +1,22 @@
+package obs.rpkg;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.*;
+
+public final class WindowsLauncherInstallerTests {
+    static int passed,failed;
+    public static void main(String[] args){
+        test("stable pinnable executable path",()->{Path p=WindowsLauncherInstaller.installedExePath();eq(p.getFileName().toString(),"Replacement Package App.exe","exe name");eq(p.getParent().getFileName().toString(),"Replacement Package App","image dir");eq(p.getParent().getParent().getFileName().toString(),"launcher","launcher root");});
+        test("jpackage command creates GUI app-image from one staged jar",()->{Path jp=Path.of("jpackage.exe"),jar=Path.of("C:/tmp/input/replacement-package-app.jar"),dest=Path.of("C:/tmp/dest");List<String> c=WindowsLauncherInstaller.command(jp,jar,dest);hasPair(c,"--type","app-image");hasPair(c,"--name","Replacement Package App");hasPair(c,"--main-jar","replacement-package-app.jar");hasPair(c,"--main-class","obs.rpkg.Main");ok(!c.contains("--win-console"),"launcher unexpectedly enables console window");});
+        test("launcher command does not invoke shell or PowerShell",()->{List<String> c=WindowsLauncherInstaller.command(Path.of("jpackage.exe"),Path.of("C:/x/replacement-package-app.jar"),Path.of("C:/y"));String joined=String.join(" ",c).toLowerCase(Locale.ROOT);ok(!joined.contains("powershell"),"PowerShell leaked into launcher build");ok(!joined.contains("cmd.exe"),"cmd.exe leaked into launcher build");});
+        test("post-move verification failure restores old launcher",()->{try{Path root=Files.createTempDirectory("launcher-rollback-");try{Path target=Files.createDirectories(root.resolve("Replacement Package App"));Files.writeString(target.resolve("old.txt"),"old",StandardCharsets.UTF_8);Path generated=Files.createDirectories(root.resolve("generated"));Files.writeString(generated.resolve("Replacement Package App.exe"),"new",StandardCharsets.UTF_8);boolean failed=false;try{WindowsLauncherInstaller.commitGeneratedImage(generated,root,exe->{throw new IOException("verify fail");},WindowsLauncherInstallerTests::deleteTree);}catch(IOException expected){failed=true;}ok(failed,"verification failure was not propagated");eq(Files.readString(root.resolve("Replacement Package App/old.txt"),StandardCharsets.UTF_8),"old","old launcher was not restored");ok(!Files.exists(root.resolve("Replacement Package App/Replacement Package App.exe")),"failed new launcher remained at stable path");}finally{deleteTree(root);}}catch(IOException e){throw new RuntimeException(e);}});
+        test("backup cleanup failure keeps verified new launcher successful",()->{try{Path root=Files.createTempDirectory("launcher-cleanup-");try{Path target=Files.createDirectories(root.resolve("Replacement Package App"));Files.writeString(target.resolve("old.txt"),"old",StandardCharsets.UTF_8);Path generated=Files.createDirectories(root.resolve("generated"));Files.writeString(generated.resolve("Replacement Package App.exe"),"new",StandardCharsets.UTF_8);WindowsLauncherInstaller.Result r=WindowsLauncherInstaller.commitGeneratedImage(generated,root,exe->{if(!Files.isRegularFile(exe))throw new IOException("missing exe");},backup->{throw new IOException("locked backup");});ok(r.warning()!=null&&r.warning().contains("backup"),"cleanup warning missing");eq(Files.readString(r.exePath(),StandardCharsets.UTF_8),"new","verified new launcher was rolled back");ok(r.replacedExisting(),"existing launcher replacement not reported");}finally{deleteTree(root);}}catch(IOException e){throw new RuntimeException(e);}});
+        System.out.println("WINDOWS-LAUNCHER RESULT passed="+passed+" failed="+failed);if(failed>0)System.exit(1);
+    }
+    static void deleteTree(Path root)throws IOException{if(root==null||!Files.exists(root))return;try(var walk=Files.walk(root)){for(Path p:walk.sorted(Comparator.reverseOrder()).toList())Files.deleteIfExists(p);}}
+    static void hasPair(List<String> c,String k,String v){int i=c.indexOf(k);ok(i>=0&&i+1<c.size()&&Objects.equals(c.get(i+1),v),"missing "+k+" "+v);}
+    static void test(String name,Runnable r){try{r.run();passed++;System.out.println("PASS "+name);}catch(Throwable t){failed++;System.out.println("FAIL "+name+" :: "+t);}}
+    static void ok(boolean x,String m){if(!x)throw new AssertionError(m);}static void eq(Object a,Object b,String m){if(!Objects.equals(a,b))throw new AssertionError(m+" expected="+b+" actual="+a);}
+}
