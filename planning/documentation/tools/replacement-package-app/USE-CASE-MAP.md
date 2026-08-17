@@ -81,7 +81,43 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 - automated: [`src/test/java/obs/rpkg/CoreTests.java`](src/test/java/obs/rpkg/CoreTests.java);
 - manual: [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md#repository-snapshot-export).
 
-## 5. Command ↔ App Compatibility Matrix
+## 5. `UC-RPKG-DELIVER-REVIEW` — Deliver Current ReviewDiff to ChatGPT
+
+**Trigger/input:** a selected ChangeSet has a persisted ordinary ChatGPT conversation binding and a new current ReviewDiff is created by successful Apply/Refresh Review; or the user explicitly chooses `Send current ReviewDiff`.
+
+**Successful result:** the Java bridge queues the exact canonical ReviewDiff by `changeSetId + reviewAttemptId` together with its byte length/SHA-256; Java verifies the queued artifact again before payload delivery and the extension verifies the received bytes before paste. One open browser tab for the bound conversation claims the task. The extension requires an empty composer and pastes the exact ReviewDiff text. If ChatGPT keeps the paste as text, it sends that text. If ChatGPT's own native large-paste behavior converts it into an attachment, the extension waits until conversion/upload is complete before clicking Send. `Sent` requires both cleared composer/attachment state and observation of a new user-message turn. An empty ReviewDiff is `NoChanges` and sends nothing.
+
+**Idempotency / duplicate-tab boundary:** automatic task creation is unique for one current review identity. Several tabs of the same conversation are grouped by conversation key, only a tab currently belonging to that exact conversation may claim a task, and claims are serialized so a second queued task cannot run concurrently in another duplicate tab. Before the first composer mutation the task atomically enters `Preparing`. Loss while merely `Claimed` may return to `Pending`; uncertainty after `Preparing` becomes terminal `PreparedUnsent`, and after `SendClicked` becomes terminal `UnknownAfterSend`. Newer automatic reviews supersede older `Pending`/`Claimed` tasks, while a `Preparing` task is allowed to complete and the newer review waits. Rebind/unbind cancels only safely cancellable tasks and is blocked during `Preparing`/`SendClicked`; expired in-flight leases are normalized before that decision. Terminal states are immutable.
+
+**Lifecycle boundary:** browser delivery is downstream convenience only. Extension/bridge failure cannot roll back Apply, replace the canonical ReviewDiff, authorize Finalize, mutate Git/index state or change ChangeSet lifecycle. Binding an existing ChangeSet does not implicitly send its already-current ReviewDiff.
+
+**Primary traceability:**
+
+- bridge contract: [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md);
+- architecture/state: [`ARCHITECTURE.md`](ARCHITECTURE.md), [`DATA-AND-STATE.md`](DATA-AND-STATE.md);
+- Core/service/server: [`src/main/java/obs/rpkg/Core.java`](src/main/java/obs/rpkg/Core.java), [`src/main/java/obs/rpkg/ChatBridgeService.java`](src/main/java/obs/rpkg/ChatBridgeService.java), [`src/main/java/obs/rpkg/ChatBridgeServer.java`](src/main/java/obs/rpkg/ChatBridgeServer.java);
+- UI: [`src/main/java/obs/rpkg/MainWindow.java`](src/main/java/obs/rpkg/MainWindow.java);
+- extension: [`chatgpt-bridge-extension/`](chatgpt-bridge-extension/);
+- automated: [`src/test/java/obs/rpkg/ChatBridgeTests.java`](src/test/java/obs/rpkg/ChatBridgeTests.java);
+- manual: [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md#chatgpt-bridge--reviewdiff-delivery).
+
+## 6. `UC-RPKG-ATTACH-SNAPSHOT` — Attach Repository Snapshot to ChatGPT
+
+**Trigger/input:** a Repository Snapshot ZIP has already been created successfully and the user explicitly chooses `Attach to ChatGPT` plus one currently open ordinary ChatGPT conversation.
+
+**Successful result:** the Java side validates that the selected artifact has the Repository Snapshot root contract, queues an attach-only task and gives the claimed ChatGPT tab a short-lived artifact ticket. The extension attaches the exact ZIP and waits until ChatGPT shows the attachment as ready. It records `Attached` and stops.
+
+**Hard boundary:** snapshot tasks have `autoSend=false`; the extension must never click Send. V1 accepts only app-style Repository Snapshot ZIPs, not arbitrary local files or replacement-package ZIPs. Snapshot attachment does not create/change a ChangeSet and cannot change snapshot-export success.
+
+**Primary traceability:**
+
+- bridge contract: [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md);
+- snapshot contract: [`REPOSITORY-SNAPSHOT.md`](REPOSITORY-SNAPSHOT.md);
+- Java service/UI: [`src/main/java/obs/rpkg/ChatBridgeService.java`](src/main/java/obs/rpkg/ChatBridgeService.java), [`src/main/java/obs/rpkg/MainWindow.java`](src/main/java/obs/rpkg/MainWindow.java);
+- extension: [`chatgpt-bridge-extension/`](chatgpt-bridge-extension/);
+- automated/manual: [`src/test/java/obs/rpkg/ChatBridgeTests.java`](src/test/java/obs/rpkg/ChatBridgeTests.java), [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md#chatgpt-bridge--snapshot-attach-only).
+
+## 7. Command ↔ App Compatibility Matrix
 
 | Producer contract | Consumer requirement |
 |---|---|

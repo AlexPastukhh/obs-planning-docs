@@ -1,7 +1,7 @@
 # Replacement Package App Data And State
 
 Status: active application state contract
-Scope: application repository/settings state, persistent ChangeSet/ApplicationAttempt/ReviewDiff records, lifecycle authority and repository-snapshot non-state boundary.
+Scope: application repository/settings state, persistent ChangeSet/ApplicationAttempt/ReviewDiff records, lifecycle authority, repository-snapshot boundary and browser-delivery side state.
 
 ## 1. Authorities
 
@@ -35,6 +35,9 @@ settings.json
 changesets/<changeSetId>.json
 attempts/<attemptId>.json
 review-diffs/<changeSetId>/<attemptId>.diff
+chat-bridge.json
+chat-bindings/<changeSetId>.json
+chat-handoffs/<taskId>.json
 locks/state.lock
 ```
 
@@ -153,6 +156,8 @@ For one repository identity/local repository root, active/CommittedPendingPush C
 
 A new ChangeSet cannot claim a path that is already dirty relative to HEAD/staged state unless that path is already owned by the same continuing ChangeSet. V0.1 has no implicit "adopt dirty unowned path" operation.
 
+An explicitly declared package `add` may target a path matched by `.gitignore` when the path is actually absent at preflight. After successful package validation/mutation that path is explicit ChangeSet ownership, so canonical ReviewDiff and Finalize may force-add only that owned path. Ignore rules never authorize adoption of a pre-existing unowned file.
+
 ## 9. Repository Snapshot Output Is Not Ledger State
 
 Repository snapshot ZIPs are user-selected external output artifacts. Their destination path, export history and clipboard status are not persisted in `settings.json`, ChangeSets or ApplicationAttempts.
@@ -167,6 +172,35 @@ COMMIT.txt                            (Committed)
 
 Creating a snapshot does not claim paths, change ChangeSet lifecycle or become a prerequisite for Apply/Review/Finalize.
 
-## 10. Repo Review Artifact
+## 10. ChatGPT Bridge State
+
+Browser integration is consumer-only local delivery state and does not enter `PACKAGE.json` or `OBS-ACTION`.
+
+`chat-bridge.json` stores the random loopback pairing token and fixed V1 port. `chat-bindings/<changeSetId>.json` stores one optional ChangeSet → ordinary ChatGPT conversation binding (`conversationKey`, last-known title/URL, bound timestamp). This binding survives continuation/correction packages because they keep the same `changeSetId`.
+
+`chat-handoffs/<taskId>.json` records ReviewDiff/snapshot delivery tasks. Every deliverable task records the exact artifact path, byte length and SHA-256 captured at enqueue; payload delivery requires those bytes still to match. ReviewDiff tasks also reference the canonical `reviewAttemptId`; automatic creation is idempotent for one `changeSetId + reviewAttemptId`. Snapshot handoff records may reference an already-created snapshot ZIP, but this is delivery state rather than repository-snapshot export history and does not change the snapshot contract.
+
+Task lifecycle is independent from ChangeSet lifecycle:
+
+```text
+ReviewDiff:
+Pending → Claimed → Preparing → SendClicked → Sent | UnknownAfterSend
+Pending → Cancelled
+Claimed → FailedBeforeSend | Cancelled
+Preparing → PreparedUnsent
+empty ReviewDiff → NoChanges
+claim loss while Claimed → Pending
+
+Snapshot:
+Pending → Claimed → Preparing → Attached
+Claimed → FailedBeforeSend
+Preparing → PreparedUnsent
+```
+
+All terminal states (`Sent`, `Attached`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges`, `Cancelled`) are immutable. `UnknownAfterSend` is never automatically retried. Chat delivery status never authorizes Finalize and a missing/failed bridge never converts a successful Apply/Refresh Review/export into failure.
+
+Open-tab inventory is runtime memory only and is refreshed by the extension; it is not persisted as authoritative state. A claim is valid only while the recorded tab remains in the recorded conversation, and at most one task per conversation may be in `Claimed`/`Preparing`/`SendClicked` at a time. The extension stages `Preparing` immediately before mutating the composer. Rebind/unbind cancels only `Pending`/`Claimed` ReviewDiff tasks and refuses to move a binding while a task is `Preparing` or `SendClicked`; expired in-flight leases are normalized first. Older automatic `Pending`/`Claimed` ReviewDiff tasks are superseded when a newer current ReviewDiff is queued, while an already `Preparing` task is allowed to finish to avoid leaving an unowned composer draft.
+
+## 11. Repo Review Artifact
 
 Optional `_ai-review-diffs/**` files are service artifacts. They are deliberately outside ChangeSet ownership and Finalize staging; users may delete them independently.

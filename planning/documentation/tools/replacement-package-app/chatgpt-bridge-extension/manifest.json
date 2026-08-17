@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "OBS ChatGPT Bridge",
+  "version": "0.2.0",
+  "description": "Connects OBS Replacement Package App ReviewDiff and snapshot handoffs to ordinary ChatGPT conversations.",
+  "permissions": ["tabs", "storage", "scripting", "clipboardWrite"],
+  "host_permissions": ["https://chatgpt.com/*", "http://127.0.0.1:17831/*"],
+  "background": {"service_worker": "src/background.js"},
+  "content_scripts": [{"matches": ["https://chatgpt.com/*"], "js": ["src/chatgpt-adapter.js", "src/content.js"], "run_at": "document_idle"}],
+  "options_page": "options.html",
+  "action": {"default_title": "OBS ChatGPT Bridge"}
+}

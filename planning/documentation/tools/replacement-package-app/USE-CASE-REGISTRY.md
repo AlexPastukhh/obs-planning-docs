@@ -23,6 +23,8 @@ Shared protocol: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 | `UC-RPKG-REVIEW` | Inspect Current ChangeSet Review State | active V0.1 | The user selects a readable persisted ChangeSet and obtains its current path-scoped cumulative `HEAD → working tree` diff without mutating the real Git index; exact fingerprinting remains internal. |
 | `UC-RPKG-FINALIZE` | Finalize Current ChangeSet | active V0.1 | The persisted current cumulative ReviewDiff baseline is revalidated automatically, only owned paths are committed, push is attempted, and push-failure recovery preserves the already-created commit. |
 | `UC-RPKG-EXPORT-REPOSITORY` | Export Repository Snapshot ZIP | active V1 | The selected allowed repository is exported read-only as either a Local working-tree snapshot with root diff/base marker or an exact selected committed snapshot with root commit marker; the final ZIP path is copied to clipboard when available. |
+| `UC-RPKG-DELIVER-REVIEW` | Deliver Current ReviewDiff to ChatGPT | active V1 | A ChangeSet-bound ordinary ChatGPT conversation receives the exact current ReviewDiff once: native paste remains text or ChatGPT itself converts a large paste to an attachment; Send occurs only after the composer is ready. |
+| `UC-RPKG-ATTACH-SNAPSHOT` | Attach Repository Snapshot to ChatGPT | active V1 | A user-selected ordinary ChatGPT conversation receives the app-created Repository Snapshot ZIP as a ready attachment; the extension never presses Send for this use case. |
 
 ## 3. Supporting Capabilities
 
@@ -38,6 +40,9 @@ review-diff handoff setting
 repo diff-file service artifact
 read-only Local/Committed repository snapshot ZIP export
 verified clipboard path handoff
+open ordinary ChatGPT conversation inventory + duplicate-tab grouping
+ChangeSet → ChatGPT conversation binding
+loopback pairing/task queue + one-tab claim
 CommittedPendingPush recovery
 ```
 

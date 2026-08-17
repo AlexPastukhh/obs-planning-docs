@@ -163,3 +163,8 @@ Stable export-specific failure code:
 ```text
 SNAPSHOT_EXPORT_FAILED
 ```
+
+
+## 8. ChatGPT Attachment Is Downstream
+
+The optional `UC-RPKG-ATTACH-SNAPSHOT` browser bridge may attach an already-successful Repository Snapshot ZIP to a user-selected ordinary ChatGPT conversation. This does not change this ZIP contract, does not create a ChangeSet and does not alter export success. Snapshot bridge tasks are attach-only: the extension must not click Send. See [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).

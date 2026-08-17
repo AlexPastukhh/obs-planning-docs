@@ -20,7 +20,7 @@ public final class Core {
             ACTION_PACKAGE_MISMATCH="ACTION_PACKAGE_MISMATCH", REPOSITORY_MISMATCH="REPOSITORY_MISMATCH",
             PATH_OWNERSHIP_CONFLICT="PATH_OWNERSHIP_CONFLICT", BASE_MISMATCH="BASE_MISMATCH", RESULT_MISMATCH="RESULT_MISMATCH",
             STATE_DIVERGED="STATE_DIVERGED", REVIEW_STALE="REVIEW_STALE", FINALIZE_FAILED="FINALIZE_FAILED",
-            SNAPSHOT_EXPORT_FAILED="SNAPSHOT_EXPORT_FAILED";
+            SNAPSHOT_EXPORT_FAILED="SNAPSHOT_EXPORT_FAILED", CHAT_BRIDGE_FAILED="CHAT_BRIDGE_FAILED";
 
     public static final class ObsException extends RuntimeException {
         public final String code;
@@ -40,6 +40,9 @@ public final class Core {
     public record ApplyResult(String code,ApplicationAttempt attempt,ChangeSet changeSet,ReviewDiff review) {}
     public record FinalizeResult(String code,String commitSha,String branch,ChangeSet changeSet) {}
     public record SnapshotExportResult(Path zipPath,String snapshotType,String repositoryIdentity,String commitSha,String branch) {}
+    public record ChatConversation(String conversationKey,String title,String url,int tabCount,List<Integer> tabIds) {}
+    public record ChatBinding(String changeSetId,String conversationKey,String title,String url,String boundAt) {}
+    public record ChatTaskInfo(String taskId,String kind,String changeSetId,String reviewAttemptId,String conversationKey,String conversationTitle,String fileName,boolean autoSend,String status,String message,String createdAt,String updatedAt) {}
 
     public static final class ChangeSet {
         public int schemaVersion=1; public String changeSetId,changeSetLabel,repositoryIdentity,repositoryRoot,status="Active",lastPackageId;
@@ -68,10 +71,12 @@ public final class Core {
         public String getText() throws Exception {Object data=Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);return data==null?null:String.valueOf(data);}
     }
 
-    private final GitClient git=new GitClient(); private final StateStore state; private final ClipboardAccess clipboard; private Runnable afterMutationHook=()->{};
+    private final GitClient git=new GitClient(); private final StateStore state; private final ClipboardAccess clipboard; private final ChatBridgeService chatBridge; private Runnable afterMutationHook=()->{};
     public Core(){this(new StateStore(),new AwtClipboardAccess());}
     Core(StateStore state){this(state,new AwtClipboardAccess());}
-    Core(StateStore state,ClipboardAccess clipboard){this.state=state;this.clipboard=Objects.requireNonNull(clipboard);}
+    Core(StateStore state,ClipboardAccess clipboard){this.state=state;this.clipboard=Objects.requireNonNull(clipboard);this.chatBridge=new ChatBridgeService(state);}
+    ChatBridgeService chatBridgeService(){return chatBridge;}
+    void setChatBridgeEventSink(java.util.function.Consumer<ChatBridgeService.ChatEvent> sink){chatBridge.setEventSink(sink);}
     void setAfterMutationHookForTests(Runnable hook){afterMutationHook=hook==null?()->{}:hook;}
 
     public Settings getSettings(){return ensureSettings();}
@@ -99,6 +104,15 @@ public final class Core {
         RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);
         return new RepositorySnapshotExporter(git).export(Path.of(allowed.path),allowed.repositoryIdentity,mode,commitRef,outputDirectory);
     }
+
+    public String chatBridgePairingToken(){return chatBridge.pairingToken();}
+    public List<ChatConversation> getOpenChatConversations(){return chatBridge.openConversations();}
+    public ChatBinding getReviewChatBinding(String changeSetId){if(changeSetId==null||changeSetId.isBlank())return null;return chatBridge.binding(changeSetId);}
+    public ChatBinding bindReviewChat(String changeSetId,String conversationKey){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Unknown ChangeSet: "+changeSetId);return chatBridge.bind(changeSetId,conversationKey);}
+    public void unbindReviewChat(String changeSetId){if(state.getChangeSet(changeSetId)==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Unknown ChangeSet: "+changeSetId);chatBridge.unbind(changeSetId);}
+    public ChatTaskInfo sendCurrentReviewToChat(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Unknown ChangeSet: "+changeSetId);ChatBinding b=chatBridge.binding(changeSetId);if(b==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Select and bind an open ChatGPT conversation first.");ReviewDiff r=currentReview(cs);if(r==null)throw new ObsException(CHAT_BRIDGE_FAILED,"No current ReviewDiff is available.");return chatBridge.enqueueReview(cs,r,b,true);}
+    public String chatDeliveryStatus(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);return cs==null?"Not connected":chatBridge.deliveryStatus(changeSetId,cs.currentReviewAttemptId);}
+    public ChatTaskInfo attachSnapshotToChat(Path snapshotZip,String conversationKey){return chatBridge.enqueueSnapshot(snapshotZip,conversationKey);}
 
     private Settings ensureSettings(){
         Settings s=state.getSettings();boolean changed=false;List<RepositoryConfig> repos=new ArrayList<>();
@@ -153,13 +167,15 @@ public final class Core {
             }catch(Throwable t){boolean ok=true;for(Map.Entry<String,Backup> e:backups.entrySet()){try{Path target=inside(repo,e.getKey());Backup b=e.getValue();if(!b.existed){Files.deleteIfExists(target);}else{Files.createDirectories(target.getParent());Files.write(target,b.bytes,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);}}catch(Throwable x){ok=false;}}for(Map.Entry<String,Backup> e:backups.entrySet()){try{Path target=inside(repo,e.getKey());Backup b=e.getValue();if(b.existed!=Files.isRegularFile(target)||(b.existed&&!Arrays.equals(b.bytes,readBytes(target))))ok=false;}catch(Throwable x){ok=false;}}
                 try{if(priorExists)Files.write(state.changeSetPath(pkg.manifest.changeSetId),priorState,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);else Files.deleteIfExists(state.changeSetPath(pkg.manifest.changeSetId));Files.deleteIfExists(successAttemptPath);if(review!=null)Files.deleteIfExists(review.diffPath);}catch(Throwable x){ok=false;}if(!ok)throw new ObsException(STATE_DIVERGED,"Apply failed and target/ledger rollback could not be verified.",t);throw asObs(t,RESULT_MISMATCH);
             }
-            Handoff h;try{h=publishReviewDiff(cs,review);}catch(Throwable t){h=new Handoff(null,"ReviewDiff handoff failed: "+t.getMessage());}success.serviceReviewDiffPath=h.servicePath;success.handoffWarning=h.warning;try{state.saveAttempt(success);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" Attempt handoff metadata update failed.").trim();}return new ApplyResult(SUCCESS,success,cs,review);
+            Handoff h;try{h=publishReviewDiff(cs,review);}catch(Throwable t){h=new Handoff(null,"ReviewDiff handoff failed: "+t.getMessage());}success.serviceReviewDiffPath=h.servicePath;success.handoffWarning=h.warning;
+            try{chatBridge.enqueueReviewIfBound(cs,review);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT delivery queue warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
+            try{state.saveAttempt(success);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" Attempt handoff metadata update failed.").trim();}return new ApplyResult(SUCCESS,success,cs,review);
         }catch(ObsException e){if(pkg!=null){try{ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",e.code,e.getMessage(),null);state.saveAttempt(failed);}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,STATE_DIVERGED);if(pkg!=null){try{state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",oe.code,oe.getMessage(),null));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
     }
 
     private ApplicationAttempt attempt(String id,String now,String name,String repoId,Path repo,PackageData pkg,String result,String code,String msg,ReviewDiff review){ApplicationAttempt a=new ApplicationAttempt();a.attemptId=id;a.timestamp=now;a.name=name;a.repositoryIdentity=repoId;a.repositoryRoot=repo==null?null:repo.toString();a.archivePath=pkg.archivePath.toString();a.archiveSha256=pkg.archiveSha256;a.packageId=pkg.manifest.packageId;a.changeSetId=pkg.manifest.changeSetId;a.result=result;a.code=code;a.message=msg;if(review!=null){a.reviewDiffPath=review.diffPath.toString();a.reviewDiffSha256=review.sha256;}a.handoffWarning="";return a;}
 
-    public ReviewDiff refreshReview(String changeSetId){try(StateStore.Lock ignored=state.lock()){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+changeSetId);ReviewDiff r=newReviewDiff(cs);cs.currentReviewAttemptId=r.attemptId;cs.currentReviewDiffPath=r.diffPath.toString();cs.currentReviewSha256=r.sha256;cs.currentReviewHead=r.head;cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);return r;}}
+    public ReviewDiff refreshReview(String changeSetId){try(StateStore.Lock ignored=state.lock()){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+changeSetId);ReviewDiff r=newReviewDiff(cs);cs.currentReviewAttemptId=r.attemptId;cs.currentReviewDiffPath=r.diffPath.toString();cs.currentReviewSha256=r.sha256;cs.currentReviewHead=r.head;cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);try{chatBridge.enqueueReviewIfBound(cs,r);}catch(Throwable ignoredBridge){}return r;}}
 
     public ReviewDiff newReviewDiff(ChangeSet cs){return newReviewDiff(cs,UUID.randomUUID().toString());}
     private ReviewDiff newReviewDiff(ChangeSet cs,String reviewId){
@@ -177,7 +193,7 @@ public final class Core {
             if(paths.isEmpty()){
                 Files.write(tempDiff,new byte[0],StandardOpenOption.CREATE_NEW);
             }else{
-                List<String> add=new ArrayList<>(List.of("add","-A","--"));add.addAll(paths);
+                List<String> add=new ArrayList<>(List.of("add","-f","-A","--"));add.addAll(paths);
                 git.run(repo,STATE_DIVERGED,false,env,add.toArray(String[]::new));
                 List<String> diff=new ArrayList<>(List.of("--no-pager","diff","--cached","--no-color","HEAD","--output="+tempDiff,"--"));diff.addAll(paths);
                 git.run(repo,STATE_DIVERGED,false,env,diff.toArray(String[]::new));
@@ -241,7 +257,7 @@ public final class Core {
             if(branch.isBlank())throw new ObsException(FINALIZE_FAILED,"Detached HEAD/current branch unavailable.");
             List<String> paths=effectiveGitPaths(repo,cs.ownedPaths);
             if(paths.isEmpty())throw new ObsException(STATE_DIVERGED,"Reviewed diff is non-empty but no owned Git path remains addressable.");
-            List<String> add=new ArrayList<>(List.of("add","-A","--"));add.addAll(paths);
+            List<String> add=new ArrayList<>(List.of("add","-f","-A","--"));add.addAll(paths);
             try{git.run(repo,FINALIZE_FAILED,add.toArray(String[]::new));}catch(Throwable t){resetOwned(repo,cs);throw t;}
             Path staged;
             try{
@@ -262,7 +278,7 @@ public final class Core {
 
     private void resetOwned(Path repo,ChangeSet cs){try{List<String>paths=effectiveGitPaths(repo,cs.ownedPaths);if(paths.isEmpty())return;List<String>x=new ArrayList<>(List.of("reset","-q","--"));x.addAll(paths);git.allow(repo,FINALIZE_FAILED,x.toArray(String[]::new));}catch(Throwable ignored){}}
     private List<String> effectiveGitPaths(Path repo,Collection<String> owned){List<String> out=new ArrayList<>();for(String path:owned){Path target=inside(repo,path);boolean working=Files.exists(target,LinkOption.NOFOLLOW_LINKS);GitClient.Result head=git.run(repo,STATE_DIVERGED,"ls-tree","--name-only","HEAD","--",path);if(working||!head.joined().isBlank())out.add(path);}return out;}
-    private boolean pathDirty(Path repo,String path){GitClient.Result w=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--quiet","HEAD","--",path),s=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--cached","--quiet","HEAD","--",path);if((w.exitCode()!=0&&w.exitCode()!=1)||(s.exitCode()!=0&&s.exitCode()!=1))throw new ObsException(STATE_DIVERGED,"Failed to inspect path: "+path);if(w.exitCode()==1||s.exitCode()==1)return true;GitClient.Result status=git.run(repo,STATE_DIVERGED,"status","--porcelain=v1","--untracked-files=all","--",path);return !status.joined().isBlank();}
+    private boolean pathDirty(Path repo,String path){GitClient.Result w=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--quiet","HEAD","--",path),s=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--cached","--quiet","HEAD","--",path);if((w.exitCode()!=0&&w.exitCode()!=1)||(s.exitCode()!=0&&s.exitCode()!=1))throw new ObsException(STATE_DIVERGED,"Failed to inspect path: "+path);if(w.exitCode()==1||s.exitCode()==1)return true;GitClient.Result untracked=git.run(repo,STATE_DIVERGED,"ls-files","--others","--",path);return !untracked.joined().isBlank();}
     private Path repoRoot(Path requested){Path p=requested==null?Path.of("."):requested;GitClient.Result r=git.allow(p,REPOSITORY_MISMATCH,"rev-parse","--show-toplevel");if(r.exitCode()!=0||r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p);return Path.of(r.first()).toAbsolutePath().normalize();}
     private String safeIdentity(Path repo){try{return repositoryIdentity(repo);}catch(Throwable e){return"";}}
     private String repositoryIdentity(Path repo){GitClient.Result r=git.allow(repo,REPOSITORY_MISMATCH,"config","--get","remote.origin.url");if(r.exitCode()!=0||r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"remote.origin.url is missing.");String u=r.first();Pattern[] ps={Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^git@github\\.com:([^/]+)/([^/]+?)(?:\\.git)?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^ssh://git@github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE)};for(Pattern p:ps){Matcher m=p.matcher(u);if(m.matches())return"github:"+m.group(1)+"/"+m.group(2);}throw new ObsException(REPOSITORY_MISMATCH,"Unsupported origin for V0.1 repositoryIdentity: "+u);}

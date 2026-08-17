@@ -1,7 +1,7 @@
 # OBS Replacement Package App
 
-Status: V0.1 Java 21 local application / implementation source
-Scope: deterministic local consumer for ChatGPT-produced replacement packages plus read-only Local/Committed repository snapshot ZIP export.
+Status: active Java 21 local application / implementation source
+Scope: deterministic local consumer for ChatGPT-produced replacement packages, read-only Local/Committed repository snapshot ZIP export, and an optional local Microsoft Edge/Chromium bridge for ReviewDiff delivery and snapshot attachment.
 
 This directory is the **application documentation, Java source, fixed build/run wrappers and tests root**. Planning command meaning remains outside the app; package execution belongs here.
 
@@ -11,10 +11,11 @@ This directory is the **application documentation, Java source, fixed build/run 
 2. [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical `UC-RPKG-*` identities.
 3. [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md) — shared producer/consumer contract.
 4. [`REPOSITORY-SNAPSHOT.md`](REPOSITORY-SNAPSHOT.md) — Local/Committed repository ZIP export contract.
-5. [`ARCHITECTURE.md`](ARCHITECTURE.md) — Java Core/UI/Git/filesystem mechanics.
-6. [`DATA-AND-STATE.md`](DATA-AND-STATE.md) — repositories, ChangeSets, attempts, ownership and review identity.
-7. [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — Windows/JDK/Git acceptance.
-8. focused Java source/tests.
+5. [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md) — Java ↔ browser extension delivery contract.
+6. [`ARCHITECTURE.md`](ARCHITECTURE.md) — Java Core/UI/Git/filesystem mechanics.
+7. [`DATA-AND-STATE.md`](DATA-AND-STATE.md) — repositories, ChangeSets, attempts, ownership and review identity.
+8. [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — Windows/JDK/Git acceptance.
+9. focused Java/extension source and tests.
 
 Ordinary ChatGPT package production still starts from `planning/planning-use-case-map.md` → `planning/commands/build-replacement-archive.command.md` → `planning/documentation/build-replacement-archive-workflow.md`.
 
@@ -27,26 +28,34 @@ replacement-package-app/
 ├── USE-CASE-MAP.md
 ├── PACKAGE-PROTOCOL.md
 ├── REPOSITORY-SNAPSHOT.md
+├── CHATGPT-BRIDGE.md
 ├── ARCHITECTURE.md
 ├── DATA-AND-STATE.md
 ├── MANUAL-ACCEPTANCE.md
 ├── build.cmd
 ├── run-tests.cmd
 ├── run-app.cmd
+├── chatgpt-bridge-extension/
+│   ├── manifest.json
+│   ├── options.html / options.js
+│   └── src/{background.js,bridge-client.js,chatgpt-adapter.js,content.js}
 └── src/
     ├── main/java/obs/rpkg/
     │   ├── Main.java
     │   ├── MainWindow.java
     │   ├── Core.java
+    │   ├── ChatBridgeService.java
+    │   ├── ChatBridgeServer.java
     │   ├── RepositorySnapshotExporter.java
     │   ├── GitClient.java
     │   ├── StateStore.java
     │   └── Json.java
     └── test/java/obs/rpkg/
-        └── CoreTests.java
+        ├── CoreTests.java
+        └── ChatBridgeTests.java
 ```
 
-`Core` is the application mechanics owner. `RepositorySnapshotExporter` owns read-only Local/Committed repository ZIP construction behind Core validation. `MainWindow` is a Swing host; `Main` is the fixed CLI/JAR entry. `GitClient` is the only native Git process boundary. Tests use Java ZIP fixtures and real temporary Git repositories/bare remotes.
+`Core` is the application mechanics owner. `RepositorySnapshotExporter` owns read-only Local/Committed repository ZIP construction behind Core validation. `ChatBridgeService` owns ChangeSet/chat bindings and delivery-task state; `ChatBridgeServer` exposes only the fixed loopback bridge contract to the companion Manifest V3 extension. `MainWindow` is a Swing host; `Main` is the fixed CLI/JAR entry. `GitClient` is the only native Git process boundary. Tests use Java ZIP fixtures and real temporary Git repositories/bare remotes.
 
 ## 3. Requirements And Build
 
@@ -55,6 +64,7 @@ Required on Windows:
 ```text
 JDK 21: java, javac, jar
 Git on PATH
+Microsoft Edge for the optional browser bridge (unpacked Manifest V3 extension)
 ```
 
 No Maven, Gradle, PowerShell runtime or third-party Java library is required.
@@ -105,6 +115,30 @@ Snapshot repository files live under `snapshot/`; root files describe that folde
 
 Clipboard failure is a warning after successful ZIP creation, not an export rollback.
 
+### ChatGPT bridge
+
+The optional companion extension lives in `chatgpt-bridge-extension/`. V1 is accepted primarily in Microsoft Edge/Chromium and supports ordinary `https://chatgpt.com/c/<conversation-key>` chats only.
+
+One-time setup:
+
+```text
+run-app.cmd
+→ edge://extensions
+→ Developer mode → Load unpacked → chatgpt-bridge-extension/
+→ in app: Copy pairing token
+→ extension Options: paste token → Save and test
+```
+
+For one ChangeSet, choose a `Review chat` once and click `Bind`. The binding survives continuation/correction packages with the same `changeSetId`. Binding does not implicitly send the already-current ReviewDiff; use `Send current ReviewDiff` when that is desired. Later Apply/Refresh Review operations queue their new current ReviewDiff automatically.
+
+The extension pastes the exact canonical diff. Java and the extension verify the queued artifact fingerprint before delivery. Small pastes remain text; for a large paste the extension waits for ChatGPT's own native conversion/upload behavior and only then presses Send. It will not auto-send into a non-empty composer. Before the first composer mutation the task becomes `Preparing`; a failure after that point but before Send is recorded as `PreparedUnsent` and is never auto-retried, while post-`SendClicked` uncertainty is `UnknownAfterSend`. Browser delivery never becomes a Finalize gate.
+
+After repository snapshot export, `Attach to ChatGPT` lets the user choose one open ordinary conversation. The extension attaches the validated snapshot ZIP and **never presses Send** for snapshot tasks. See [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).
+
+### Output sessions
+
+The Swing `Output` area is archive-scoped for package application. Applying a different package identity starts a fresh output session; retrying the same package appends another attempt to the same session. `Copy output` copies the complete current session without adding a success line to the output itself, so an Apply/bridge error can be copied as one block. ReviewDiff bridge events carry their exact `reviewAttemptId`; only events belonging to ReviewDiff attempts registered in the current archive session are appended. A late event from an older archive therefore cannot bleed into the new archive's copied Output.
+
 ## 5. CLI Fallback
 
 Repository mutation through CLI uses the same allowlist as Swing. Register/select a repository first:
@@ -124,6 +158,6 @@ java -jar build\replacement-package-app.jar export-snapshot --repo C:\repo --mod
 
 ## 6. Boundaries
 
-V0.1 is Java 21 + Swing + local Git. It does not implement Multiplex, automatic branches/worktrees, auto-update, GitHub API publication, background watchers or producer-controlled arbitrary commands. Replacement-package operations still have no native rename/chmod/symlink/submodule operation; Repository Snapshot V1 committed export rejects symlink/submodule entries rather than misrepresenting them.
+The repository consumer remains Java 21 + Swing + local Git. The optional browser integration is a separate Manifest V3 companion and does not depend on Multiplex. The system does not implement automatic branches/worktrees, auto-update, GitHub API publication, repository background watchers or producer-controlled arbitrary commands. Replacement-package operations still have no native rename/chmod/symlink/submodule operation; Repository Snapshot V1 committed export rejects symlink/submodule entries rather than misrepresenting them.
 
 The Java implementation is build/testable on any JDK 21 environment; Windows UI and real-user workflow still require the manual acceptance checklist before V0.1 is operationally accepted.

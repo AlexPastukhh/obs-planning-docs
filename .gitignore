@@ -18,6 +18,7 @@
 # Documents and media not needed in the lightweight docs repo
 *.pdf
 *.html
+!planning/documentation/tools/replacement-package-app/chatgpt-bridge-extension/options.html
 *.canvas
 
 *.zip
