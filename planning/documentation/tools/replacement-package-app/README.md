@@ -11,7 +11,7 @@ This directory is the **application documentation, Java source, fixed build/run 
 2. [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical `UC-RPKG-*` identities.
 3. [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md) — shared producer/consumer contract.
 4. [`ARCHITECTURE.md`](ARCHITECTURE.md) — Java Core/UI/Git/filesystem mechanics.
-5. [`DATA-AND-STATE.md`](DATA-AND-STATE.md) — ChangeSet, attempts, ownership and review identity.
+5. [`DATA-AND-STATE.md`](DATA-AND-STATE.md) — repositories, ChangeSets, attempts, ownership and review identity.
 6. [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — Windows/JDK/Git acceptance.
 7. focused Java source/tests.
 
@@ -66,27 +66,38 @@ run-app.cmd
 ## 4. V0.1 User Flow
 
 ```text
-ChatGPT produces ZIP + OBS-ACTION
-→ run-app.cmd
-→ configure/select repository root
+run-app.cmd
+→ add one or more allowed local Git repositories once
+→ select repository by display name
 → paste OBS-ACTION and/or browse ZIP
 → Apply
-→ inspect/send cumulative ReviewDiff for external review
-→ paste reviewed diff SHA-256 + commit message
+→ select the readable ChangeSet entry (label · status · short UUID)
+→ inspect ReviewDiff with Copy/Open when useful
+→ Approve Current Review, or paste an externally approved SHA manually
 → Finalize
 → Retry Push only if commit succeeded and push failed
 ```
 
-The UI displays the current Review SHA separately and never auto-copies it into the reviewed approval field.
+Repository UUIDs and full ChangeSet UUIDs remain technical identity. Normal Swing navigation uses repository display names and `changeSetLabel`; the full ChangeSet ID remains visible as a read-only detail.
+
+`Copy ReviewDiff` / `Open ReviewDiff` are inspection conveniences, not Finalize prerequisites. `Approve Current Review` is the explicit local approval action: it copies the currently SHA-verified canonical review identity into `Reviewed SHA-256`. A new Apply, Refresh Review or ChangeSet selection clears that approval.
+
+The selected repository and ChangeSet are persisted. After restart, the Swing host can reopen the persisted current ReviewDiff for the selected ChangeSet if the canonical file still exists and matches its recorded SHA-256.
 
 ## 5. CLI Fallback
 
+Repository mutation through CLI uses the same allowlist as Swing. Register/select a repository first:
+
 ```cmd
+java -jar build\replacement-package-app.jar settings --repo C:\repo --name "My Repo" --review-diff Clipboard
+java -jar build\replacement-package-app.jar list-repos
 java -jar build\replacement-package-app.jar apply --repo C:\repo --archive C:\Downloads\package.zip
 java -jar build\replacement-package-app.jar review --changeset <uuid>
 java -jar build\replacement-package-app.jar finalize --repo C:\repo --changeset <uuid> --sha <sha256> --message "Reviewed change"
 java -jar build\replacement-package-app.jar retry-push --repo C:\repo --changeset <uuid>
 ```
+
+`list-changesets --repo-id <repository-record-uuid>` is available as a technical history fallback.
 
 ## 6. Boundaries
 
