@@ -1,8 +1,8 @@
 # Archive Source vs Output Package Example
 
 Status: supporting reusable example
-Doc version: v0.3.0-source-selection
-Scope: demonstrates the difference between using an archive as a source, selecting a current package source and creating a replacement archive.
+Doc version: v0.4.0-producer-consumer-boundary
+Scope: demonstrates archive read-source mode, explicit source selection and the current producer-only `давай архив` package handoff. Legacy reviewable package commands remain separate routes.
 
 ## `арх`
 
@@ -22,78 +22,81 @@ Boundary:
 
 ```text
 Meaning:
-  Create a replacement archive/package.
+  Produce one replacement ZIP plus one OBS-ACTION handoff.
 
 Output:
-  replacement archive plus apply/diff commands in chat.
+  PACKAGE.json + required base/replacement payloads in ZIP;
+  short OBS-ACTION/1 block in chat.
 
 Boundary:
-  Do not commit or push. Ask user to paste diff before commit.
+  Stop at producer handoff.
+  Do not generate local apply/diff/finalization PowerShell.
 ```
 
 ## Source-Selection Scenarios
 
-### A. Same-message source archive
+### A. Explicitly selected snapshot
 
 ```text
-User message contains:
-  - the source archive;
-  - `давай архив`.
+A snapshot/archive is explicitly provided or selected for the active invocation
+(including as the response to a request for missing exact source).
 
 Result:
-  the attached archive is the current source snapshot for this invocation.
-  record its filename and available hash/comment/ref in the package summary.
+  inspect it;
+  require intended repository/target match;
+  require complete touched-source coverage;
+  then it may become the selected source.
 ```
 
-### B. Earlier-message archive
+Same-message attachment is convenient, not uniquely privileged.
+
+### B. Earlier-message archive with no current selection
 
 ```text
-An archive was attached in an earlier message.
-The current `давай архив` message does not attach it again.
-
 Result:
-  do not treat the earlier archive as current automatically.
-  use fully readable current repository files or resolve source differences explicitly.
+  do not treat it as current automatically;
+  use fully readable current repository files or explicitly select/reconcile source.
 ```
 
 ### C. Current repository is fully readable
 
 ```text
-No same-message source archive exists.
-All required current files can be read completely and reliably from the repository.
-
 Result:
-  use the current repository.
-  do not request an archive merely because an archive was used earlier in the chat.
+  use current repository source;
+  do not request a snapshot merely because one was used earlier.
 ```
 
-### D. Repository/tool delivery limit
+### D. Exact touched base is unavailable
 
 ```text
-Required current files cannot be read completely and reliably because of size or tool limits.
-
 Result:
-  request a fresh source archive.
-  do not fall back silently to an earlier-message archive.
+  request the minimum fresh source/snapshot needed;
+  never guess replace/delete base bytes.
 ```
 
-### E. Selected snapshot differs from local HEAD
+### E. Package base differs from local consumer state
 
 ```text
-A package was built from a selected source snapshot.
-The apply precondition finds that a current local target blob differs from the package base blob.
+The producer package can still be valid for its selected source.
+The local Replacement Package App verifies actual touched state before mutation.
 
-Result:
-  stop before copying or deleting files;
-  do not edit manifest hashes manually;
-  rebuild from the current repository or explicitly reconcile the differing source.
+Result on mismatch:
+  BASE_MISMATCH / STATE_DIVERGED as appropriate;
+  no silent hash edit and no blind replacement;
+  rebuild or explicitly reconcile source/state.
 ```
+
+## Legacy Reviewable Package Route
+
+`давай архив с review diff file` is not an extension of the new producer-only runtime. It explicitly owns its legacy apply/diff/review behavior through its own command `ownerFiles`.
 
 Owner routes:
 
 ```text
 planning/planning-use-case-map.md
-planning/documentation/reviewable-agent-output-and-commands-workflow.md
+planning/commands/build-replacement-archive.command.md
+planning/documentation/build-replacement-archive-workflow.md
+planning/documentation/tools/replacement-package-app/PACKAGE-PROTOCOL.md
 ```
 
-This example demonstrates behavior only. It does not own source-selection or package rules.
+This example demonstrates behavior only. Canonical command/protocol owners win.

@@ -1,7 +1,7 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.4.0-explicit-helper-repository-sync
+Doc version: v1.5.0-command-owned-refinements
 Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and planning-command routes into the Tampermonkey/ChatGPT helper while keeping user-authored local commands/prompts in a separate non-authoritative helper library.
 
 ## 1. Core Rule
@@ -153,11 +153,10 @@ Each command row uses sibling controls:
 Full:
   insert forced-full command body
 
-Cmd fmt:
-  for `давай архив` only;
-  reread the route and archive command-format/source-selection owners,
-  validate every PowerShell Git command in the current answer
-  and rewrite any non-compliant command
+Refinement control:
+  render only when the selected direct command definition declares a refinement;
+  use that definition's compact label/readRequired/instruction;
+  current `давай архив` declares no refinement because its producer route does not emit local PowerShell apply/diff commands
 
 Copy:
   copy adaptive command body
@@ -444,7 +443,7 @@ command-related Use Case:
   Open Commands;
 
 command refinement:
-  Cmd fmt for `давай архив`.
+  optional and command-definition-owned; absent when `refinements` is empty.
 ```
 
 Preserve the draggable panel, `Alt+F2`, Dashboard toggle/launcher coordination, composer insertion, clipboard fallback and single-instance behavior.

@@ -1,7 +1,7 @@
 # OBS Planning Root
 
 Status: active project-specific root planning router
-Doc version: v0.11.0-linked-notes-local-semantic-root
+Doc version: v0.12.0-replacement-package-app-root
 Scope: OBS repository planning entry point, semantic Direction orientation, concrete command routing, task activation and source/owner pointers built on the reusable documentation layer.
 
 ## 1. Purpose
@@ -31,7 +31,7 @@ planning/planning-input-conventions.md
 
 Reusable process owners: `planning/documentation/`.
 
-Project-local applications: `planning/areas/`.
+Project-local planning applications usually live in `planning/areas/`; explicitly self-contained tool/application roots may live under `planning/documentation/tools/` when docs, source and tests are intentionally colocated.
 
 ## 2. Source-Of-Truth Split
 
@@ -45,7 +45,9 @@ Root semantic Direction orientation:
 Local semantic Direction/Use-Case entries:
   planning/documentation/<family>/*-registry.md
   planning/areas/<area>/*-registry.md
-  explicitly owned project-local application registries such as planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md
+  explicitly owned project-local application registries such as:
+    planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md
+    planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md
 
 Root command-system entry and shared routing policy:
   planning/planning-use-case-map.md
@@ -66,7 +68,7 @@ Concrete local planning state:
   planning/areas/
 ```
 
-Registries own semantic entries; the root UCM owns command-system entry/global routing policy; direct `planning/commands/*.command.md` files own individual concrete commands and canonical English names; workflows own repeated behavior; templates own recommended shape; area/application owners own concrete state. Root files reference rather than copy. Runtime Tampermonkey code is implementation evidence, while the tracked Linked Notes `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md` are an explicit project-local semantic documentation exception colocated with that application.
+Registries own semantic entries; the root UCM owns command-system entry/global routing policy; direct `planning/commands/*.command.md` files own individual concrete commands and canonical English names; workflows own repeated behavior; templates own recommended shape; area/application owners own concrete state. Root files reference rather than copy. Runtime code does not define Planning command meaning. The tracked Linked Notes and Replacement Package App `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md` files are explicit project-local semantic documentation roots colocated with their application source.
 
 ## 3. New-Chat Orientation Read Order
 
@@ -119,6 +121,20 @@ planning/documentation/tools/tampermonkey/linked-notes/README.md
 ```
 
 Do not route current Linked Notes behavior through `planning/areas/documentation-workbench/`; retained Linked Notes files there are compatibility/planning history.
+
+Current Replacement Package App route:
+
+```text
+planning/documentation/tools/replacement-package-app/README.md
+  → USE-CASE-MAP.md
+  → USE-CASE-REGISTRY.md
+  → PACKAGE-PROTOCOL.md
+  → ARCHITECTURE.md
+  → DATA-AND-STATE.md
+  → focused Java source/tests.
+```
+
+The app is the local consumer of `давай архив` packages. Its semantic/runtime docs do not redefine the Planning command; shared producer/consumer protocol is synchronized through the Reference Object in `PACKAGE-PROTOCOL.md`.
 
 ## 5. Current Documentation Workbench / Linked Notes Boundary
 

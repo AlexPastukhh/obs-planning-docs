@@ -1267,7 +1267,7 @@
     ],
     "description": "output package + repo review diff",
     "meaning": "Produce a replacement archive plus the explicitly requested repository-stored review diff flow.",
-    "activeContextBehavior": "Use only when review-diff-file transfer is explicitly requested. Apply the same source-selection and local-base verification rules as build replacement archive.",
+    "activeContextBehavior": "Use only when review-diff-file transfer is explicitly requested. This is a legacy reviewable package route: source selection, exact local-base verification, apply/diff and review behavior come from this command's own ownerFiles, not from the producer-only build replacement archive route.",
     "traversalReadMode": "Targeted/full depending on touched files.",
     "ownerFiles": [
       "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
@@ -1278,7 +1278,7 @@
     "permissionMode": "package-no-commit-push",
     "keyReminders": [
       "Output-package mode with review-diff-file transfer explicitly requested.",
-      "Apply the same source-selection and exact local-base verification rules as build replacement archive.",
+      "Follow this legacy route's ownerFiles for source selection, exact local-base verification, apply/diff and review.",
       "Use the review-diff-file workflow only for the approved repository-stored diff path.",
       "Produce full replacement files and apply/diff commands.",
       "Do not commit or push before the pasted diff is reviewed."
@@ -1299,44 +1299,30 @@
       "give arch",
       "replacement package"
     ],
-    "description": "output package",
-    "meaning": "Produce a full replacement archive/package. This is output-package mode, not archive read-source mode.",
-    "activeContextBehavior": "Use active approved scope. Earlier-message archives are not current automatically; a same-message archive is current for the invocation. Otherwise use fully readable current repository files.",
+    "description": "output replacement package",
+    "meaning": "Produce a replacement ZIP plus a short OBS-ACTION handoff. This is package-producer mode, not local apply/review/finalization mode and not archive read-source mode.",
+    "activeContextBehavior": "Use the active approved scope and exact checked source state. An earlier-message archive is not current automatically. A source archive/snapshot may be selected for the active invocation when it is explicitly provided or selected for that invocation and, after inspection, matches the intended repository/target and completely covers the touched source. Otherwise use fully readable current repository files. Never guess touched base content.",
     "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
     "ownerFiles": [
-      "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
-      "planning/documentation/documentation-update-workflow.md"
+      "planning/documentation/build-replacement-archive-workflow.md"
     ],
-    "expectedOutput": "Full replacement archive plus apply/diff commands in chat; complete replacement files; reviewed diff before commit/push.",
+    "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION block; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
     "permissionMode": "package-no-commit-push",
     "keyReminders": [
-      "Output-package mode, not archive read-source mode.",
+      "Package-producer mode, not archive read-source mode.",
       "An earlier-message archive is not current automatically.",
-      "A source archive attached with this command is current for this invocation.",
+      "A source archive/snapshot explicitly provided or selected for the active invocation may be used only after verifying repository/target match and complete touched-source coverage.",
       "Otherwise use fully readable current repository files.",
-      "Request a fresh archive only when size/tool limits prevent reliable reading.",
-      "The apply stage must still verify exact local base blobs before changes.",
-      "Produce a full replacement archive.",
-      "Give apply/diff commands in chat.",
-      "Use git add -N for new files before diff capture.",
-      "Ask user to paste diff before commit.",
-      "Do not commit or push."
+      "Request only the minimum fresh source/snapshot when exact touched base content cannot be read reliably.",
+      "Never guess expected base content for replace/delete operations.",
+      "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
+      "Return one short OBS-ACTION whose packageId matches PACKAGE.json.",
+      "Do not include clipboard/review-diff settings in OBS-ACTION.",
+      "Do not apply locally, generate review/finalization commands, commit or push."
     ],
-    "userTarget": "<what archive/package should include>",
+    "userTarget": "<what replacement package should include>",
     "palette": true,
-    "refinements": [
-      {
-        "id": "archive_command_format",
-        "label": "Cmd fmt",
-        "description": "reread archive command-format docs",
-        "readRequired": [
-          "planning/planning-use-case-map.md",
-          "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
-          "planning/documentation/documentation-update-workflow.md"
-        ],
-        "instruction": "Reread these files, validate every user-facing PowerShell Git command in the current answer against their archive command-format rules, and rewrite any non-compliant command."
-      }
-    ]
+    "refinements": []
   },
   {
     "schemaVersion": 1,
@@ -1412,6 +1398,8 @@
     "traversalReadMode": "Targeted: index → active operational day → end-session workflow → Day File Template → Real Reward Work Loop Workflow.",
     "ownerFiles": [
       "planning/areas/planning-system/end-session-command-workflow.md",
+      "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
+      "planning/documentation/documentation-update-workflow.md",
       "planning/dashboard/index.md",
       "-Planning/Templates/Day File Template.md",
       "-Planning/Workflows/Real Reward Work Loop Workflow.md"

@@ -1,7 +1,7 @@
 # Documentation Reusable Layer Index
 
 Status: active reusable documentation layer index
-Doc version: v1.1.0-command-registry-navigation
+Doc version: v1.2.0-replacement-package-app-route
 Scope: reusable documentation architecture, solution/workflow planning, Planning Item formation, update workflows, command planning, profiles, field kits, examples, parallel work and helper projection.
 
 ## 1. Purpose
@@ -133,15 +133,23 @@ parallel-work/PARALLEL-WORKSPACE-TEMPLATE.md
 parallel-work/PARALLEL-SYNC-PLAN-TEMPLATE.md
 ```
 
-### Tampermonkey Tool
+### Application / Tool Roots
 
 ```text
 tools/tampermonkey/README.md
 tools/tampermonkey/chat-command-palette/README.md
 tools/tampermonkey/chat-command-palette.user.js  # generated install artifact
+
+tools/replacement-package-app/README.md
+  → USE-CASE-MAP.md
+  → USE-CASE-REGISTRY.md
+  → PACKAGE-PROTOCOL.md
+  → ARCHITECTURE.md
+  → DATA-AND-STATE.md
+  → Java src/main + src/test + build/run wrappers
 ```
 
-The helper is not command or semantic-registry authority.
+Tampermonkey helper runtime is not command/semantic-registry authority. The Replacement Package App subtree is an explicit project-local application documentation/source root; its Core owns local package execution, not ChatGPT command meaning.
 
 ### Examples And Portable Setup
 
@@ -210,13 +218,23 @@ tampermonkey-command-projection-workflow.md only when projection is in scope.
 
 The root UCM is the mandatory command-system entry. A project command registry may own individual command definitions. Neither is the semantic Direction/Use-Case Registry.
 
-### Replacement Archive / Package
+### Replacement Package Producer / Consumer
 
 ```text
 planning/planning-use-case-map.md
-reviewable-agent-output-and-commands-workflow.md
-documentation-update-workflow.md
-relevant owner and target files.
+  → selected planning/commands/*.command.md
+  → that command's ownerFiles
+
+for `давай архив` / build replacement archive:
+  planning/commands/build-replacement-archive.command.md
+  → build-replacement-archive-workflow.md
+  → tools/replacement-package-app/PACKAGE-PROTOCOL.md only when shared-protocol freshness/change is in scope;
+
+for local consumer implementation/app work:
+  tools/replacement-package-app/README.md;
+
+legacy reviewable package routes:
+  read reviewable-agent-output-and-commands-workflow.md / documentation-update-workflow.md only when the selected command explicitly owns them.
 ```
 
 ### Planning Item Formation

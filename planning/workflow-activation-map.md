@@ -1,7 +1,7 @@
 # OBS Workflow Activation Map
 
 Status: active project-specific root planning/task router
-Doc version: v0.13.0-planning-draft-workbench-alignment
+Doc version: v0.14.0-replacement-package-route
 Scope: decide which semantic registry, reusable workflow and project-local owner to read before answering or editing in OBS planning work.
 
 ## 1. Default Rule
@@ -39,7 +39,8 @@ Registry activation does not grant repository permissions.
 | Detailed Scenario/Domain/Slice | Application-planning registries | SDS profile/field kit and project owners | Profile-limited; prototype-depth adaptation deferred. |
 | Maintain registries | Root Direction Registry | Registry workflow/templates, affected registries and navigation owners | UCM changes only for executable commands. |
 | Plan command | Root UCM | Documentation preflight, command workflow, UCM owner/template and related registry entry | Plan-only; helper decision separate. |
-| Replacement archive | Root UCM | Reviewable-output workflow, documentation-update workflow, relevant owners/targets | Full replacements, exact base validation, one-line apply/diff command. |
+| Replacement package / archive command | Root UCM | Selected concrete command definition and its ownerFiles | Package/application/review lifecycle is route-specific; `давай архив` is producer-only ZIP + OBS-ACTION, while legacy routes may explicitly retain apply/diff. |
+| Replacement Package App implementation/use | `planning/documentation/tools/replacement-package-app/README.md` | Use-Case Map/Registry, PACKAGE-PROTOCOL, focused architecture/state/source/tests | Local consumer owns apply/history/ReviewDiff/Finalize; command protocol does not expand into runtime internals. |
 | Tampermonkey helper | `planning/README.md` for Orientation; registries for Directions/Use Cases; UCM for Commands | Projection workflow, tools README and userscript | Projection only; Adaptive/Full changes read depth, not permissions. |
 | Documentation update | `planning/documentation/README.md` | Documentation preflight and update workflows | Plan-first for broad changes. |
 | Documentation Workbench planning | Local registries | Area README, Planning Draft, affected workflow/model owner and targeted sources | Local concrete state. |

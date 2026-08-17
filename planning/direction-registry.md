@@ -1,7 +1,7 @@
 # OBS Root Direction Registry
 
 Status: active project-specific root semantic Direction Registry
-Doc version: v0.5.0-linked-notes-local-semantic-root
+Doc version: v0.6.0-replacement-package-app-registry
 Scope: OBS root orientation across broad semantic work Directions and references to complete reusable-family/project-local registries.
 
 ## 1. Authority
@@ -26,7 +26,11 @@ Tampermonkey runtime code:
 
 planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md
 planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md:
-  → explicit current Linked Notes application semantic owners colocated with its documentation.
+  → explicit current Linked Notes application semantic owners colocated with its documentation;
+
+planning/documentation/tools/replacement-package-app/USE-CASE-MAP.md
+planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md:
+  → explicit Replacement Package App apply/review/finalize semantic owners colocated with its docs/source.
 ```
 
 ## 2. Registry Index
@@ -130,8 +134,11 @@ the relevant local/reusable registry and the complete owner route.
 | [`planning/areas/documentation-workbench/direction-registry.md`](areas/documentation-workbench/direction-registry.md) | Documentation Workbench local Directions | active |
 | [`planning/areas/documentation-workbench/use-case-registry.md`](areas/documentation-workbench/use-case-registry.md) | Documentation Workbench local Use Cases | active |
 | [`planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md) | Current Linked Notes application Use Cases (`UC-LN-*`) | active current-prototype |
+| [`planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md`](documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md) | Replacement Package App local apply/review/finalize Use Cases (`UC-RPKG-*`) | active V0.1 |
 
 Current Linked Notes application semantics remain under the broader Documentation Workbench direction without creating a new root Direction ID by assumption. For Linked Notes behavior, route from this direction to [`planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and its local registry rather than treating the Documentation Workbench area files as current owners.
+
+Replacement Package App semantics are registered without inventing a new root Direction; they support the existing documentation/command-maintenance package boundary and are entered through [`planning/documentation/tools/replacement-package-app/USE-CASE-MAP.md`](documentation/tools/replacement-package-app/USE-CASE-MAP.md).
 
 ## 7. Command Boundary
 

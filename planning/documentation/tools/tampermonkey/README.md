@@ -1,7 +1,7 @@
 # OBS Tampermonkey Tools
 
 Status: active reusable/project planning tool index
-Doc version: v0.29.0-planning-helper-explicit-repository-sync
+Doc version: v0.30.0-command-catalog-refresh
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.
 
 ## 1. Tracked scripts
@@ -359,7 +359,7 @@ The reusable Command Palette provides:
 - command search/list;
 - normal command control inserts the adaptive route-read body;
 - Full inserts the same command with mandatory fresh reading of the complete required command route;
-- `Cmd fmt` appears only for `давай архив`; it asks the chat to reread the route plus archive command-format owners, validate every user-facing PowerShell Git command in the current answer and rewrite any non-compliant command;
+- command-specific refinement controls appear only when the selected direct command definition declares them; current `давай архив` has no refinement because it no longer emits local PowerShell apply/diff commands;
 - Copy copies the adaptive route-read body;
 - Full is limited to UCM and owner/workflow/template/example files required by that command route;
 - Full does not authorize reading unrelated repository files;
@@ -367,11 +367,7 @@ The reusable Command Palette provides:
 - complete command bodies with command, english_name, command_family,
   source_of_truth, route_read_rule, key_reminders and user_target;
 - no separate UCM-only mode;
-- the approved `Cmd fmt` refinement lists only:
-  `planning/planning-use-case-map.md`,
-  `planning/documentation/reviewable-agent-output-and-commands-workflow.md` and
-  `planning/documentation/documentation-update-workflow.md`;
-- the refinement body states the validation action but does not duplicate the one-line, non-interactive or no-pager owner rules;
+- refinement bodies, when present, stay compact and route only to the explicit owner files named by the command definition;
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
 - `reconcile planning items` inserts a read-only workflow-integrity plus item-set reconciliation body: identify independently traversable End-To-End Workflows and affected non-workflow primary review objects; trace each workflow's trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer workflow slices when one mandatory workflow crosses them; treat Planning Drafts/models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
@@ -413,8 +409,8 @@ Copy:
 Open Commands:
   redirect a command-related Use Case without duplicate execution;
 
-Cmd fmt:
-  `давай архив` only.
+Refinement:
+  shown only when the selected direct command definition currently declares one.
 ```
 
 Projected Directions:

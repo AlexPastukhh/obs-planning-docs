@@ -1,4 +1,19 @@
 {
   "schemaVersion": 1,
-  "objects": []
+  "objects": [
+    {
+      "id": "ro_replacement_package_shared_protocol",
+      "name": "Replacement Package Shared Protocol",
+      "definition": {
+        "path": "planning/documentation/tools/replacement-package-app/PACKAGE-PROTOCOL.md"
+      },
+      "uses": [
+        {
+          "path": "planning/documentation/build-replacement-archive-workflow.md",
+          "line": 64,
+          "lineOccurrence": 1
+        }
+      ]
+    }
+  ]
 }

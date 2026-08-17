@@ -1,7 +1,7 @@
 # OBS Root Source Sync Register
 
 Status: active project-specific root source/register file
-Doc version: v1.5.0-linked-notes-local-semantic-root
+Doc version: v1.7.0-replacement-package-app-java
 Scope: register root planning files, reusable owners and current local area ownership for OBS planning infrastructure.
 
 ## 1. Root Files
@@ -31,6 +31,7 @@ Scope: register root planning files, reusable owners and current local area owne
 | `planning/documentation/profiles/` | Optional specialized profiles; not universal stages. |
 | `planning/documentation/field-kits/` | Bootstrap/setup guidance only. |
 | `planning/documentation/tools/tampermonkey/` | Helper implementation/tool documentation. The project-local `linked-notes/` subdirectory explicitly owns current Linked Notes semantic/product documentation; scripts themselves do not define command meaning. |
+| `planning/documentation/tools/replacement-package-app/` | Project-local Replacement Package App semantic/product/protocol documentation plus Java 21 Core/Swing/fixed CLI/tests. Shared command/app protocol is canonically owned by `PACKAGE-PROTOCOL.md`. |
 
 ## 3. Local Areas
 
@@ -79,6 +80,19 @@ planning/documentation/tools/tampermonkey/linked-notes/README.md
   → focused mapping/source/tests as needed.
 ```
 
+Current Replacement Package App semantic/product/protocol/implementation entry:
+
+```text
+planning/documentation/tools/replacement-package-app/README.md
+  → USE-CASE-MAP.md
+  → USE-CASE-REGISTRY.md
+  → PACKAGE-PROTOCOL.md
+  → ARCHITECTURE.md
+  → DATA-AND-STATE.md
+  → MANUAL-ACCEPTANCE.md
+  → Java src/main + src/test + build/run wrappers.
+```
+
 Removed without replacement owners:
 
 ```text
@@ -112,6 +126,13 @@ current Linked Notes semantic/product root →
   + USE-CASE-MAP.md
   + USE-CASE-REGISTRY.md
   + APP-OVERVIEW.md;
+
+replacement package application root →
+  planning/documentation/tools/replacement-package-app/
+  + USE-CASE-MAP.md
+  + USE-CASE-REGISTRY.md
+  + PACKAGE-PROTOCOL.md
+  + Java 21 Core/Swing/CLI/tests;
 
 retained Linked Notes area workflows →
   planning/history/compatibility only
