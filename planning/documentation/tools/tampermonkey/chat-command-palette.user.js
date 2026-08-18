@@ -326,7 +326,7 @@
     if (mode === MODE.FULL) {
       return [
         'source_of_truth:',
-        '  Start from `planning/planning-use-case-map.md`.',
+        '  Start from `planning/command-routing.md`.',
         `  Then read \`${path}\` and follow its complete owner route.`,
         '',
         'route_read_rule:',
@@ -339,7 +339,7 @@
     }
     return [
       'source_of_truth:',
-      '  Start from `planning/planning-use-case-map.md`.',
+      '  Start from `planning/command-routing.md`.',
       `  Then read \`${path}\` and its linked owner files for this command route.`,
       '',
       'route_read_rule:',
@@ -424,65 +424,33 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const SURFACES = Object.freeze({ ORIENTATION: 'Orientation', DIRECTIONS: 'Directions', USE_CASES: 'Use Cases', COMMANDS: 'Commands', LOCAL_COMMANDS: 'Local Cmds', PROMPTS: 'Prompts' });
-  const MODE = Object.freeze({ ADAPTIVE: 'adaptive', FULL: 'full' });
+  const SURFACES = Object.freeze({ ORIENTATION:'Orientation', DIRECTIONS:'Directions', USE_CASES:'Use Cases', COMMANDS:'Commands', LOCAL_COMMANDS:'Local Cmds', PROMPTS:'Prompts' });
+  const MODE = Object.freeze({ ADAPTIVE:'adaptive', FULL:'full' });
 
-  const ORIENTATION_DEFINITIONS = [{
-    id: 'OBS-PLANNING-ORIENTATION', label: 'OBS Planning Orientation', description: 'architecture and context selection',
-    sources: ['planning/README.md', 'planning/direction-registry.md'],
-    instruction: 'Explain the current planning architecture, distinguish Directions, Use Cases and Commands, and help select the relevant context. Do not execute unrelated commands.',
-    target: '<what planning context should be oriented>'
+  const ORIENTATION_DEFINITIONS=[{
+    id:'OBS-PLANNING-ORIENTATION',label:'OBS Planning Orientation',description:'repository → Direction → Use Case → owner',
+    sources:['planning/README.md','planning/AI-WORKING-CONTRACT.md','planning/direction-registry.md','planning/use-case-registry.md'],
+    instruction:'Explain the current repository architecture and help select a Direction / Use Case / canonical owner. Commands are optional shortcuts, not the primary capability catalogue.',target:'<repository/planning context>'
   }];
 
-  const DIRECTION_DEFINITIONS = [
-    { id:'DIR-PLAN-SOLUTION', label:'Plan A Solution Or Workflow', description:'solution/workflow planning', sources:['planning/direction-registry.md','planning/documentation/application-planning/direction-registry.md','planning/documentation/application-planning/use-case-registry.md'], instruction:'Establish this Direction as current context. Explain optional topology and the relevant Use Cases. Do not execute every branch automatically.', target:'<solution or workflow target>' },
-    { id:'DIR-DETAILED-SDS', label:'Perform Detailed Scenario/Domain/Slice Planning', description:'profile-limited detailed planning', sources:['planning/direction-registry.md','planning/documentation/application-planning/direction-registry.md','planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish this profile-limited Direction. Explain Scenario/Domain/Slice topology and current owner boundaries. Do not invent prototype-depth methodology.', target:'<scenario/domain/slice target>' },
-    { id:'DIR-MAINTAIN-DOCS-ROUTES', label:'Maintain Documentation, Use Cases And Commands', description:'documentation and routing', sources:['planning/direction-registry.md','planning/documentation/direction-and-use-case-registry-workflow.md','planning/planning-use-case-map.md'], instruction:'Establish documentation/registry/command maintenance context and keep registries, UCM, command definitions, workflows, templates and projection authority distinct.', target:'<documentation or routing target>' },
-    { id:'DIR-DOCUMENTATION-WORKBENCH', label:'Develop And Maintain Documentation Workbench', description:'project-local product direction', sources:['planning/direction-registry.md','planning/areas/documentation-workbench/direction-registry.md','planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md'], instruction:'Establish the Documentation Workbench Direction, current Planning Draft, accepted workflows, historical provenance boundary and deferred model boundary. Do not claim runtime implementation or promote historical records into current meaning automatically.', target:'<Documentation Workbench target>' }
+  const DIRECTION_DEFINITIONS=[
+    {id:'DIR-REPOSITORY',label:'Orient In And Work With The Repository',description:'root repository capabilities',sources:['planning/direction-registry.md','planning/use-case-registry.md'],instruction:'Establish repository-wide semantic context and select the relevant Use Case.',target:'<repository task>'},
+    {id:'DIR-PLAN-SOLUTION',label:'Plan A Solution / Workflow / Application',description:'whole solution then Scenario planning',sources:['planning/direction-registry.md','planning/documentation/application-planning/direction-registry.md','planning/documentation/application-planning/use-case-registry.md'],instruction:'Plan the whole solution first; when Application responsibility exists, use optional Spine Scenario(s), Scenario discovery and Scenario Drafts.',target:'<solution/application target>'},
+    {id:'DIR-DOCUMENTATION',label:'Use And Maintain Repository Documentation',description:'documentation governance',sources:['planning/direction-registry.md','planning/documentation/direction-registry.md','planning/documentation/use-case-registry.md'],instruction:'Select the documentation Use Case and follow reusable documentation governance/owner rules.',target:'<documentation target>'},
+    {id:'DIR-DOCUMENTATION-WORKBENCH',label:'Develop And Maintain Documentation Workbench',description:'project-local documentation workbench',sources:['planning/direction-registry.md','planning/areas/documentation-workbench/direction-registry.md','planning/areas/documentation-workbench/use-case-registry.md'],instruction:'Establish current Workbench Use Case / Scenario context; historical Planning Item/Draft sources are provenance only.',target:'<workbench target>'},
+    {id:'DIR-PLANNING-RUNTIME',label:'Use The OBS Planning Runtime',description:'dashboard/session runtime',sources:['planning/direction-registry.md','planning/areas/planning-system/direction-registry.md','planning/areas/planning-system/use-case-registry.md'],instruction:'Establish current planning-runtime capability without conflating runtime mechanics with reusable methodology.',target:'<planning runtime target>'},
+    {id:'DIR-PLANNING-HELPER',label:'Use And Maintain Planning Helper',description:'helper application',sources:['planning/direction-registry.md','planning/documentation/tools/tampermonkey/chat-command-palette/direction-registry.md','planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md'],instruction:'Use the Planning Helper application Use Cases and Scenario owners; helper remains projection/runtime, not planning authority.',target:'<Planning Helper target>'},
+    {id:'DIR-LINKED-NOTES',label:'Use And Maintain Linked Notes',description:'Linked Notes application',sources:['planning/direction-registry.md','planning/documentation/tools/tampermonkey/linked-notes/direction-registry.md','planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md'],instruction:'Use Linked Notes application Use Cases and detailed Scenario owners.',target:'<Linked Notes target>'},
+    {id:'DIR-REPLACEMENT-PACKAGE-APP',label:'Apply / Review / Finalize Replacement Packages',description:'replacement package consumer app',sources:['planning/direction-registry.md','planning/documentation/tools/replacement-package-app/direction-registry.md','planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md'],instruction:'Use Replacement Package App Use Cases and detailed Scenario owners; do not redefine producer command semantics.',target:'<replacement package app target>'}
   ];
 
-  const USE_CASE_DEFINITIONS = [
-    { id:'UC-AP-REALITY', label:'Understand Current Workflow And Reality', description:'current reality capture', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/application-planning/application-planning-drafting-workflow.md'], instruction:'Establish descriptive current-reality context. Reconstruct actors, triggers, sequence, strengths, problems, risks, workarounds and unknowns without accepting future architecture.', target:'<current workflow/reality target>' },
-    { id:'UC-AP-COLLECT-IDEAS', label:'Collect And Review Ideas From Selected Source', description:'open accepted collect-ideas command', commandId:'ideas.collect' },
-    { id:'UC-AP-FULL-PICTURE', label:'Build Or Review A Planning Draft', description:'solution/workflow planning synthesis', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/application-planning/application-planning-drafting-workflow.md','planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md'], instruction:'Establish current Planning Draft context from Problem / Need, candidate solution or Workflow Variants, current conclusions, risks and Scenario coverage as appropriate. Do not require a Planning Item layer.', target:'<Planning Draft target>' },
-    { id:'UC-AP-RESEARCH', label:'Research Existing Solutions And Alternative Workflows', description:'provisional proportional research', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/application-planning/application-planning-drafting-workflow.md'], instruction:'Establish provisional proportional research context. Compare checked options, coverage, strengths, limitations and disposition without creating an oversized specialized methodology.', target:'<solutions or alternative workflows to research>' },
-    { id:'UC-AP-SCENARIO', label:'Draft Detailed Scenario', description:'profile-limited scenario', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish detailed Scenario context using current profile and project-specific owners. Do not invent a new project command or prototype-depth method.', target:'<scenario target>' },
-    { id:'UC-AP-DOMAIN', label:'Draft Or Review Domain', description:'profile-limited domain', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish Domain review context for conceptual model, language and boundaries using current owners.', target:'<domain target>' },
-    { id:'UC-AP-SLICE', label:'Plan Implementation Slice', description:'profile-limited slice', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish Implementation Slice context for one separately deliverable/checkable increment aligned with accepted scenario/domain meaning.', target:'<slice target>' },
-    { id:'UC-AP-SDS-CONSISTENCY', label:'Review Scenario/Domain/Slice Consistency', description:'cross-artifact consistency', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish cross-artifact consistency review context and expose required upstream/downstream corrections.', target:'<scenario/domain/slice artifacts>' },
-    { id:'UC-DW-DOC-REF', label:'Repository Documentation Change And Reference Review', description:'accepted Documentation Workbench End-To-End Workflow', sources:['planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md','planning/areas/documentation-workbench/repository-documentation-change-and-reference-review-workflow.md'], instruction:'Establish the accepted repository documentation workflow. Keep stable navigation, explicit review-on-change meaning, bounded AI transfer and unresolved current-owner questions distinct.', target:'<repository documentation/reference-review target>' },
-    { id:'UC-DW-ITEM-FULL-PICTURE', label:'Planning Meaning To Repository', description:'accepted Documentation Workbench End-To-End Workflow; legacy ID retained', sources:['planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md','planning/areas/documentation-workbench/planning-meaning-to-repository-workflow.md'], instruction:'Establish the Planning Meaning To Repository workflow from selected source/current owners through Idea review when material, current planning meaning and a File Update Plan. Treat historical ITEM-* records as provenance rather than active ontology.', target:'<planning meaning/repository handoff target>' }
-  ];
+  const USE_CASE_DEFINITIONS=[{"id":"UC-REPO-ORIENT","label":"Orient In Repository And Resolve Work Route","description":"natural repository discovery","sources":["planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Orient In Repository And Resolve Work Route target>"},{"id":"UC-REPO-CURRENT-STATE","label":"Report Current Repository / Planning State","description":"open canonical Use-Case entry","commandId":"current_state.report"},{"id":"UC-REPO-PLAN-NEXT","label":"Plan The Next Concrete Step","description":"open canonical Use-Case entry","commandId":"plan.now"},{"id":"UC-REPO-RECHECK-CONTEXT","label":"Recheck Current Context Before Continuing","description":"open canonical Use-Case entry","commandId":"context_recheck.apply"},{"id":"UC-REPO-CRITICAL-REVIEW","label":"Critically Review A Claim / Plan / Diff","description":"open canonical Use-Case entry","commandId":"critical_review.apply"},{"id":"UC-REPO-USE-ARCHIVE-SOURCE","label":"Use An Explicit Archive As Read Source","description":"open canonical Use-Case entry","commandId":"archive_source.use"},{"id":"UC-REPO-PARALLEL-WORK","label":"Start A Parallel Staging Workspace","description":"open canonical Use-Case entry","commandId":"parallel_workspace.start"},{"id":"UC-PLAN-REALITY","label":"Understand Current Workflow And Reality","description":"open canonical Use-Case entry","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Understand Current Workflow And Reality target>"},{"id":"UC-PLAN-COLLECT-IDEAS","label":"Collect And Review Ideas From Selected Source","description":"open canonical Use-Case entry","commandId":"ideas.collect"},{"id":"UC-PLAN-SOLUTION","label":"Plan / Review Whole Solution Or Workflow","description":"open canonical Use-Case entry","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Plan / Review Whole Solution Or Workflow target>"},{"id":"UC-PLAN-RESEARCH","label":"Research Existing Solutions / Alternatives","description":"open canonical Use-Case entry","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Research Existing Solutions / Alternatives target>"},{"id":"UC-PLAN-APPLICATION","label":"Establish Application Responsibility","description":"open canonical Use-Case entry","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Establish Application Responsibility target>"},{"id":"UC-PLAN-SPINE","label":"Build / Review Temporary Spine Scenario","description":"temporary application scaffold","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Build / Review Temporary Spine Scenario target>"},{"id":"UC-PLAN-SCENARIO-DISCOVERY","label":"Discover Application Scenarios","description":"Need + meaningful-result boundaries","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Discover Application Scenarios target>"},{"id":"UC-PLAN-SCENARIO","label":"Draft / Review Detailed Scenario","description":"canonical detailed behavior planning","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Draft / Review Detailed Scenario target>"},{"id":"UC-PLAN-DOMAIN","label":"Draft / Review Domain","description":"open canonical Use-Case entry","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Draft / Review Domain target>"},{"id":"UC-PLAN-SLICE","label":"Plan Implementation Slice","description":"open canonical Use-Case entry","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Plan Implementation Slice target>"},{"id":"UC-PLAN-CONSISTENCY","label":"Review Cross-Scenario / Domain / Slice Consistency","description":"open canonical Use-Case entry","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Review Cross-Scenario / Domain / Slice Consistency target>"},{"id":"UC-DOC-ORIENT","label":"Orient In Documentation Architecture","description":"open canonical Use-Case entry","commandId":"documentation_principles.read"},{"id":"UC-DOC-FIND-OWNER","label":"Determine Where Information Belongs","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Determine Where Information Belongs target>"},{"id":"UC-DOC-PLAN-UPDATE","label":"Plan A Documentation Update","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Plan A Documentation Update target>"},{"id":"UC-DOC-UPDATE","label":"Perform An Approved Documentation Update","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Perform An Approved Documentation Update target>"},{"id":"UC-DOC-PLAN-FILE-UPDATE","label":"Plan Concrete File / Docs / Code Update","description":"open canonical Use-Case entry","commandId":"file_update.plan"},{"id":"UC-DOC-BUILD-REPLACEMENT-PACKAGE","label":"Build Replacement Package","description":"open canonical Use-Case entry","commandId":"replacement_archive.create"},{"id":"UC-DOC-BUILD-REVIEWABLE-ARCHIVE","label":"Build Legacy Review-Diff Archive Route","description":"open canonical Use-Case entry","commandId":"replacement_archive.review_diff.create"},{"id":"UC-DOC-REVIEW-DIFF","label":"Semantically Review A Repository ReviewDiff","description":"semantic ReviewDiff correctness review","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Semantically Review A Repository ReviewDiff target>"},{"id":"UC-DOC-REVISE-RETURNED-FILES","label":"Reconcile User-Returned Files","description":"open canonical Use-Case entry","commandId":"returned_files.revise"},{"id":"UC-DOC-MAINTAIN-REGISTRIES","label":"Maintain Directions And Use Cases","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Maintain Directions And Use Cases target>"},{"id":"UC-DOC-MAINTAIN-COMMAND","label":"Create Or Maintain Command Routing","description":"open canonical Use-Case entry","commandId":"command.plan"},{"id":"UC-DOC-REVIEW-COVERAGE","label":"Review Repository Navigation / Use-Case Coverage","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Review Repository Navigation / Use-Case Coverage target>"},{"id":"UC-DOC-REVIEW-EXAMPLES","label":"Review Practical Example Coverage","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Review Practical Example Coverage target>"},{"id":"UC-DOC-RECONCILE-STATUS","label":"Reconcile Documentation / Owner Status","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Reconcile Documentation / Owner Status target>"},{"id":"UC-DW-DOC-REF","label":"Repository Documentation Change And Reference Review","description":"open canonical Use-Case entry","sources":["planning/areas/documentation-workbench/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Repository Documentation Change And Reference Review target>"},{"id":"UC-DW-PLANNING-TO-REPOSITORY","label":"Planning Meaning To Repository","description":"open canonical Use-Case entry","sources":["planning/areas/documentation-workbench/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Planning Meaning To Repository target>"},{"id":"UC-PR-END-SESSION","label":"End Active Planning Session","description":"open canonical Use-Case entry","commandId":"session.end"},{"id":"UC-PH-DISCOVER","label":"Find And Inspect Planning Helper Content","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Find And Inspect Planning Helper Content target>"},{"id":"UC-PH-USE","label":"Use Helper Content In ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Use Helper Content In ChatGPT target>"},{"id":"UC-PH-MANAGE-LOCAL","label":"Manage Local Helper Content","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Manage Local Helper Content target>"},{"id":"UC-PH-IMPORT","label":"Import Helper Content From ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Import Helper Content From ChatGPT target>"},{"id":"UC-PH-CHECK-REPOSITORY","label":"Inspect Local And Repository Inventory","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Inspect Local And Repository Inventory target>"},{"id":"UC-PH-SYNC","label":"Bring Missing Repository Content Into Local State","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Bring Missing Repository Content Into Local State target>"},{"id":"UC-PH-PUBLISH","label":"Publish One Local Helper Entity To Repository","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Publish One Local Helper Entity To Repository target>"},{"id":"UC-PH-RECOVER","label":"Recover Repository-Backed Local State From Pasted Evidence","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Recover Repository-Backed Local State From Pasted Evidence target>"},{"id":"UC-LN-WORKSPACE","label":"Configure And Select Repository Workspace","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Configure And Select Repository Workspace target>"},{"id":"UC-LN-NOTES","label":"Create, Link, Reconcile And Save Repository Notes","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Create, Link, Reconcile And Save Repository Notes target>"},{"id":"UC-LN-FILES","label":"Browse, Read And Prepare Repository File Work","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Browse, Read And Prepare Repository File Work target>"},{"id":"UC-LN-CATEGORIES","label":"Manage Repository Categories","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Manage Repository Categories target>"},{"id":"UC-LN-PUBLISH","label":"Publish Pending Repository Changes","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Publish Pending Repository Changes target>"},{"id":"UC-LN-NOTE-TRANSFER","label":"Copy A Linked Note And Repository Images","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Copy A Linked Note And Repository Images target>"},{"id":"UC-LN-REFERENCE-OBJECTS","label":"Define, Materialize, Check And Synchronize Reference Objects","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Define, Materialize, Check And Synchronize Reference Objects target>"},{"id":"UC-LN-ORDERED-REFERENCE-LISTS","label":"Create And Reorder Reference-Driven Markdown Units","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Create And Reorder Reference-Driven Markdown Units target>"},{"id":"UC-LN-READER","label":"Read A ChatGPT Response In A Local Reader","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Read A ChatGPT Response In A Local Reader target>"},{"id":"UC-LN-APP-STATE","label":"Export Diagnostic Application State","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Export Diagnostic Application State target>"},{"id":"UC-RPKG-APPLY","label":"Apply Verified Replacement Package","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Apply Verified Replacement Package target>"},{"id":"UC-RPKG-REVIEW","label":"Inspect Current ChangeSet Review State","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Inspect Current ChangeSet Review State target>"},{"id":"UC-RPKG-FINALIZE","label":"Finalize Current ChangeSet","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Finalize Current ChangeSet target>"},{"id":"UC-RPKG-EXPORT-REPOSITORY","label":"Export Repository Snapshot ZIP","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Export Repository Snapshot ZIP target>"},{"id":"UC-RPKG-DELIVER-REVIEW","label":"Deliver Current ReviewDiff to ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Deliver Current ReviewDiff to ChatGPT target>"},{"id":"UC-RPKG-ATTACH-SNAPSHOT","label":"Attach Repository Snapshot to ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Attach Repository Snapshot to ChatGPT target>"}];
 
-  function markerFor(kind) {
-    if (kind === 'orientation') return 'PLANNING_ORIENTATION';
-    if (kind === 'direction') return 'PLANNING_DIRECTION';
-    return 'PLANNING_USE_CASE';
-  }
-
-  function readRule(mode, kind) {
-    if (mode === MODE.FULL) return [`Full ${kind} reading is required for this invocation.`, 'Read every listed source and the complete relevant owner route even if it was read earlier in this chat.', 'Read the relevant parent/root entry when needed.', 'Do not expand into unrelated repository families.', 'Full changes read depth only; it does not expand permissions.'];
-    return [`Use current remembered ${kind} context only while it is clearly sufficient.`, 'Read the listed source and owner route when it was not read in this chat, is forgotten/uncertain, may have changed, or verification is requested.', 'Do not rely on this compact prompt when ownership, status or boundaries are uncertain.'];
-  }
-
-  function buildSemanticBody(kind, definition, mode) {
-    const marker = markerFor(kind);
-    const idField = kind === 'use_case' ? 'use_case_id' : `${kind}_id`;
-    return [
-      `[${marker}]`, `${idField}:`, `  ${definition.id}`, '', `${kind}:`, `  ${definition.label}`, '', 'mode:', `  ${mode}`, '', 'source_of_truth:',
-      ...(definition.sources || []).map((source) => `  - \`${source}\``), '', 'read_rule:', ...readRule(mode, kind).map((line) => `  ${line}`), '', 'instruction:', `  ${definition.instruction}`, '', 'user_target:', `  ${definition.target}`, `[/${marker}]`
-    ].join('\n');
-  }
-
-  function buildSemanticEntries() {
-    return {
-      [SURFACES.ORIENTATION]: ORIENTATION_DEFINITIONS.map((d) => ({ ...d, adaptiveBody: buildSemanticBody('orientation', d, MODE.ADAPTIVE), fullBody: buildSemanticBody('orientation', d, MODE.FULL) })),
-      [SURFACES.DIRECTIONS]: DIRECTION_DEFINITIONS.map((d) => ({ ...d, adaptiveBody: buildSemanticBody('direction', d, MODE.ADAPTIVE), fullBody: buildSemanticBody('direction', d, MODE.FULL) })),
-      [SURFACES.USE_CASES]: USE_CASE_DEFINITIONS.map((d) => d.commandId ? { ...d } : ({ ...d, adaptiveBody: buildSemanticBody('use_case', d, MODE.ADAPTIVE), fullBody: buildSemanticBody('use_case', d, MODE.FULL) }))
-    };
-  }
-
-  return { SURFACES, ORIENTATION_DEFINITIONS, DIRECTION_DEFINITIONS, USE_CASE_DEFINITIONS, buildSemanticBody, buildSemanticEntries };
+  function markerFor(kind){if(kind==='orientation')return'PLANNING_ORIENTATION';if(kind==='direction')return'PLANNING_DIRECTION';return'PLANNING_USE_CASE';}
+  function readRule(mode,kind){return mode===MODE.FULL?[`Full ${kind} reading is required for this invocation.`,'Read every listed source and the complete relevant owner route.','Do not expand into unrelated families.','Full changes read depth only; it does not expand permissions.']:[`Use remembered ${kind} context only while clearly sufficient.`,'Read listed sources/owners when not current, uncertain, changed or challenged.','Do not rely only on this compact prompt when ownership/status/boundaries are uncertain.'];}
+  function buildSemanticBody(kind,definition,mode){const marker=markerFor(kind);const idField=kind==='use_case'?'use_case_id':`${kind}_id`;return [`[${marker}]`,`${idField}:`,`  ${definition.id}`,'',`${kind}:`,`  ${definition.label}`,'','mode:',`  ${mode}`,'','source_of_truth:',...(definition.sources||[]).map(s=>`  - \`${s}\``),'','read_rule:',...readRule(mode,kind).map(x=>`  ${x}`),'','instruction:',`  ${definition.instruction}`,'','user_target:',`  ${definition.target}`,`[/${marker}]`].join('\n');}
+  function buildSemanticEntries(){return {[SURFACES.ORIENTATION]:ORIENTATION_DEFINITIONS.map(d=>({...d,adaptiveBody:buildSemanticBody('orientation',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('orientation',d,MODE.FULL)})),[SURFACES.DIRECTIONS]:DIRECTION_DEFINITIONS.map(d=>({...d,adaptiveBody:buildSemanticBody('direction',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('direction',d,MODE.FULL)})),[SURFACES.USE_CASES]:USE_CASE_DEFINITIONS.map(d=>d.commandId?{...d}:{...d,adaptiveBody:buildSemanticBody('use_case',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('use_case',d,MODE.FULL)})};}
+  return {SURFACES,ORIENTATION_DEFINITIONS,DIRECTION_DEFINITIONS,USE_CASE_DEFINITIONS,buildSemanticBody,buildSemanticEntries};
 });
 
 (function (root, factory) {
@@ -610,7 +578,7 @@
       '', 'command:', `  ${command}`,
       '', 'english_name:', `  ${englishName}`,
       '', 'command_family:', `  ${family}`,
-      '', 'source_of_truth:', '  Start from `planning/planning-use-case-map.md`.', '  Then follow the currently registered command route and linked owner files.',
+      '', 'source_of_truth:', '  Start from `planning/command-routing.md`.', '  Then follow the currently registered command route and linked owner files.',
       '', 'route_read_rule:', '  Read or reread the route when it is not current, remembered or certain.', '  Do not rely only on this compact local projection when command behavior is uncertain.',
       '', 'key_reminders:', ...reminders.map((item)=>`  - ${item}`),
       '', 'user_target:', `  ${target}`,
@@ -1372,12 +1340,18 @@
     "meaning": "Critically evaluate the target/diff/plan/claim as a hypothesis rather than accepted truth.",
     "activeContextBehavior": "Use the provided target; ask only if the target is missing.",
     "traversalReadMode": "Targeted/full by risk and evidence needs.",
-    "ownerFiles": [],
-    "expectedOutput": "Honest verdict with strengths, weaknesses, risks, assumptions and alternatives.",
+    "ownerFiles": [
+      "planning/documentation/idea-planning-principles-and-terminology.md",
+      "planning/documentation/idea-review-and-planning-workflow.md",
+      "planning/documentation/review-diff-review-workflow.md"
+    ],
+    "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective Ideas use shared Idea review; ReviewDiff targets use the ReviewDiff semantic-review workflow.",
     "permissionMode": "read-only",
     "keyReminders": [
       "Treat target as hypothesis, not accepted truth.",
-      "Give honest verdict with risks and assumptions.",
+      "Use shared Idea review for material answer-seeking corrective alternatives; do not manufacture Ideas for mechanical findings.",
+      "When the target is a ReviewDiff, distinguish technical integrity from semantic correctness and follow the ReviewDiff semantic-review workflow.",
+      "Surface material Questions / Risks / Problems and ask the user only for genuinely unresolved material choices.",
       "Do not edit files, create archives, commit or push."
     ],
     "userTarget": "<what should be critically reviewed>",
@@ -1400,17 +1374,91 @@
     "activeContextBehavior": "Use active area/work item if clear.",
     "traversalReadMode": "Targeted source checks for state claims.",
     "ownerFiles": [
-      "planning/root-source-sync-register.md"
+      "planning/use-case-registry.md",
+      "planning/documentation/status-reconciliation-workflow.md"
     ],
     "expectedOutput": "Concise current state separating repo, local and unknown, plus next safe action.",
     "permissionMode": "read-only",
     "keyReminders": [
-      "Report current repo/chat/planning state.",
+      "Report current repo/chat/planning state from checked current owners.",
       "Separate known, local, unknown and not checked.",
-      "Do not present an unstated future plan as confirmed; show important open questions and conservative fallbacks.",
+      "Use Directions/Use Cases to resolve the current owner instead of a manually synchronized global state register.",
+      "Do not present an unstated future plan as confirmed.",
       "Do not edit or archive unless separately requested."
     ],
     "userTarget": "<state target>",
+    "palette": true,
+    "refinements": []
+  },
+  {
+    "schemaVersion": 1,
+    "id": "governance.development",
+    "file": "development-governance.command.md",
+    "command": "режим разработки",
+    "englishName": "development governance mode",
+    "commandFamily": [
+      "режим разработки",
+      "development governance mode"
+    ],
+    "description": "load planning + documentation governance",
+    "meaning": "Establish planning-governed application-development context and documentation governance without authorizing edits by itself.",
+    "activeContextBehavior": "Use the active application/repository target when clear.",
+    "traversalReadMode": "Full for governance/root planning owners; targeted for selected application Use Cases/Scenarios/current owners.",
+    "ownerFiles": [
+      "planning/AI-WORKING-CONTRACT.md",
+      "planning/README.md",
+      "planning/direction-registry.md",
+      "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
+      "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
+      "planning/documentation/planning-docs-architecture-principles.md"
+    ],
+    "expectedOutput": "Established development governance route: selected planning/application Use Case and Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
+    "permissionMode": "read-only",
+    "keyReminders": [
+      "Develop from current selected planning meaning, not an unreviewed Idea or conversational assumption.",
+      "Resolve current Direction / Application Use Case / Scenario owner before materially changing behavior.",
+      "Implementation Idea is not selected architecture.",
+      "Documentation changed during development must follow reusable documentation principles.",
+      "Code does not silently create a second documentation owner.",
+      "This command establishes working rules only; actual edits require the applicable authorization."
+    ],
+    "userTarget": "<application/development work in this session>",
+    "palette": true,
+    "refinements": []
+  },
+  {
+    "schemaVersion": 1,
+    "id": "governance.documentation",
+    "file": "documentation-governance.command.md",
+    "command": "режим документации",
+    "englishName": "documentation governance mode",
+    "commandFamily": [
+      "режим документации",
+      "documentation governance mode"
+    ],
+    "description": "load documentation governance",
+    "meaning": "Establish reusable documentation-governance context for the active work without authorizing repository edits.",
+    "activeContextBehavior": "Use the active documentation/repository target when clear.",
+    "traversalReadMode": "Full for governance owners; targeted for the selected Use Case/current owner.",
+    "ownerFiles": [
+      "planning/AI-WORKING-CONTRACT.md",
+      "planning/documentation/direction-registry.md",
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/planning-docs-architecture-principles.md",
+      "planning/documentation/documentation-responsibility-map.md",
+      "planning/documentation/documentation-principles-read-workflow.md"
+    ],
+    "expectedOutput": "Established documentation governance route: selected Use Case, canonical owner boundary and required reusable principles; no repository mutation.",
+    "permissionMode": "read-only",
+    "keyReminders": [
+      "Apply reusable documentation principles to all documentation work in this session.",
+      "Resolve the semantic Use Case and canonical owner before proposing a new file or moving meaning.",
+      "Keep reusable methodology separate from project-local state.",
+      "README/index routes; it does not duplicate full owner meaning.",
+      "Examples/projections do not override canonical owners.",
+      "This command establishes working rules only; it does not authorize repository edits."
+    ],
+    "userTarget": "<documentation work in this session>",
     "palette": true,
     "refinements": []
   },
@@ -1470,8 +1518,8 @@
       "planning/documentation/file-update-overview-workflow.md",
       "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md",
       "planning/documentation/command-planning-workflow.md",
-      "planning/documentation/use-case-map-workflow.md",
-      "planning/documentation/USE-CASE-MAP-TEMPLATE.md"
+      "planning/documentation/command-routing-workflow.md",
+      "planning/documentation/COMMAND-ROUTING-TEMPLATE.md"
     ],
     "expectedOutput": "Command family/type/English name/owner/registry/example/projection plan followed by План файл-обновление.",
     "permissionMode": "plan-only",

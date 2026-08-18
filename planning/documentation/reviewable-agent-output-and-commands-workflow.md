@@ -43,7 +43,7 @@ package-producing commands:
   use an explicitly selected archive as read-source, not output-package mode.
 ```
 
-Concrete command routing belongs to the project root command-routing system: read the root UCM first, then the selected delegated command definition when the project uses a command registry. The command definition owns its canonical English name, output contract and permission boundary.
+Concrete command routing belongs to the project root command-routing system: read the root Command Routing first, then the selected delegated command definition when the project uses a command registry. The command definition owns its canonical English name, output contract and permission boundary.
 
 ## 3. User-Facing PowerShell Git Command Contract
 
@@ -61,6 +61,7 @@ For routes that opt in:
 - Use git --no-pager for every Git command that can invoke a pager.
 - Do not rely on the user's Git pager configuration.
 - Keep an apply/diff review stage separate from any post-review repository-finalization stage when the selected route uses that lifecycle.
+- When a returned/delivered ReviewDiff is reviewed for correctness, use `review-diff-review-workflow.md`; transport/integrity and semantic correctness are separate responsibilities.
 - Creating an archive never authorizes commit or push unless the selected route explicitly grants a later reviewed finalization boundary.
 - Check commit and push exit codes before reporting success when such a route supplies finalization.
 ```
@@ -132,7 +133,7 @@ Default scope:
 
 ```text
 - Markdown documentation;
-- planning drafts;
+- planning/current-owner Markdown artifacts;
 - other text documentation artifacts with a clearly matching prior version.
 ```
 

@@ -1,4 +1,6 @@
 # Status Reconciliation Workflow
+Related semantic Use Case: `UC-DOC-RECONCILE-STATUS` in `planning/documentation/use-case-registry.md`.
+
 
 Status: active reusable workflow
 Doc version: v0.2.0-obs-cleanup

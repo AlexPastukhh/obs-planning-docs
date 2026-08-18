@@ -1,193 +1,23 @@
-# Solution And Workflow Planning Direction Registry
+# Solution And Application Planning Direction Registry
 
 Status: active reusable-family semantic Direction Registry
-Doc version: v1.0.0-planning-draft-topology
-Scope: semantic Direction entries for reusable solution/workflow planning under `planning/documentation/application-planning/`.
-
-Parent root registry: [`planning/direction-registry.md`](../../direction-registry.md)
-
+Parent: [`../../direction-registry.md`](../../direction-registry.md)
 Child Use-Case Registry: [`use-case-registry.md`](use-case-registry.md)
 
-## 1. Direction Index
+## `DIR-PLAN-SOLUTION` — Plan A Solution / Workflow / Application
 
-| Direction ID | Semantic name | Status | Use-Case Registry |
-|---|---|---|---|
-| `DIR-PLAN-SOLUTION` | Plan A Solution Or Workflow | active | [`use-case-registry.md`](use-case-registry.md) |
-| `DIR-DETAILED-SDS` | Perform Detailed Scenario/Domain/Slice Planning | active supported / optional profile-limited | [`use-case-registry.md`](use-case-registry.md) |
+**Purpose:** select the best-supported whole solution/workflow and, when it includes Application responsibility, discover and draft meaningful application behavior.
 
-## 2. `DIR-PLAN-SOLUTION` — Plan A Solution Or Workflow
-
-### Purpose
-
-Turn incomplete source or checked current context into a reviewed, evidence-aware candidate solution or workflow without imposing one rigid ceremony, one application assumption or one mandatory artifact sequence.
-
-### Boundaries
-
-Included:
+**Topology:**
 
 ```text
-- current-reality understanding when needed;
-- Problem / Need framing and generic Idea review when material;
-- solution/workflow Planning Draft work;
-- integration with current repository owners;
-- proportional alternatives, research, concerns, tests and prototypes;
-- optional handoff to specialized detailed planning when justified.
+Need / Desired Result
+→ whole-solution work
+→ Application responsibility when applicable
+→ optional Spine Scenario(s)
+→ Scenario discovery
+→ Scenario Drafts
+→ optional Domain / Slice / deeper consistency work
 ```
 
-Excluded:
-
-```text
-- mandatory execution of every supported use case;
-- a separate required Planning Full Picture artifact;
-- automatic build or architecture decisions;
-- runtime, storage or serialization selection;
-- automatic downstream rewrites;
-- repository writes without a separate authorized route.
-```
-
-### Topology
-
-```text
-Problem / Question / Idea
-  → Need / Desired Result
-  → optional current-reality understanding
-  → existing solutions / alternatives
-  → candidate whole solution / Workflow Variants when useful
-  → scoped generic Idea review/deep planning where material
-  → whole-workflow integration review
-  → Planning Draft / current conclusions
-  → justified or already-confirmed Application responsibility when applicable;
-
-optional or conditional:
-  research existing solutions;
-  suggest and review concerns;
-  test uncertainty with research or prototypes;
-  revise Ideas/current owners, decisions and the Planning Draft from evidence;
-
-optional downstream handoff:
-  Perform Detailed Scenario/Domain/Slice Planning
-  only after the specialized profile is selected.
-```
-
-A Planning Draft is the high-level owner. It may exist while Scenario boundaries are still developing. When the selected application-planning stage claims sufficiency, preserve enough complete Scenario/whole-plan coverage without inventing premature stable Scenarios; no parallel Full Picture artifact is required.
-
-Use cases are supported capabilities. Some may be independently triggered, repeated or omitted.
-
-### Child Use Cases
-
-| Use Case | Activation | Owner |
-|---|---|---|
-| `UC-AP-REALITY` — Understand Current Workflow And Reality | optional / independent | `application-planning-drafting-workflow.md` |
-| `UC-AP-COLLECT-IDEAS` — Collect And Review Ideas From Selected Source | independent / repeatable | generic Idea owners; command `собери идеи` |
-| `UC-AP-FULL-PICTURE` — Build Or Review A Planning Draft | independent / repeatable; legacy ID retained | `application-planning-drafting-workflow.md` |
-| `UC-AP-RESEARCH` — Research Existing Solutions And Alternative Workflows | optional / provisional | current Planning Draft plus proportional checked research |
-
-The stable ID `UC-AP-FULL-PICTURE` remains for route compatibility. Its current semantic result is a Planning Draft, not a separate Full Picture owner.
-
-### Activation
-
-**Adaptive**
-
-```text
-Read this entry when planning direction or context is uncertain.
-Use the current relevant use case and owner route;
-do not run every capability automatically.
-```
-
-**Full**
-
-```text
-Read this complete Direction entry, use-case-registry.md,
-the complete selected use-case owner
-and the current project-local planning owner.
-```
-
-## 3. `DIR-DETAILED-SDS` — Perform Detailed Scenario/Domain/Slice Planning
-
-### Purpose
-
-Coordinate optional later planning across observable behavior, conceptual language/model and separately deliverable/checkable implementation work when those layers materially reduce risk or coordination cost.
-
-### Activation Boundary
-
-Use this Direction only after the project explicitly selects the specialized Scenario/Domain/Slice profile.
-
-It is not required for:
-
-```text
-- a simple application;
-- use of an existing tool;
-- a narrow script or automation;
-- a process or documentation change;
-- a non-application solution;
-- work already sufficiently planned in one Planning Draft.
-```
-
-### Current Reusable Boundary
-
-When this profile is selected, the project may use:
-
-```text
-Scenario:
-  coherent motivated actor/context + Need/Goal + observable-result behavior;
-
-Scenario DATA:
-  supported user-visible or scenario-relevant values;
-
-Behavior Item:
-  stable addressable units of required observable behavior;
-
-Domain:
-  conceptual model, language, lifecycle, rules and boundaries
-  when a separate model materially helps;
-
-Slice:
-  separately deliverable and checkable implementation increments.
-```
-
-Exact file, section, catalog and object representation remains owned by the selected profile and project-local owners. The Direction Registry does not require one storage topology.
-
-Supporting owners:
-
-```text
-planning/documentation/profiles/scenario-domain-slice-docs-profile.md
-planning/documentation/profiles/scenario-domain-slice-use-case-field-kit.md
-planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md
-```
-
-### Topology
-
-```text
-sufficiently stable application planning
-  → explicit selection of the specialized profile
-  → optional Spine Scenario while boundaries are unclear
-  → selected Scenario representation and review
-  ↔ optional Domain review and alignment
-  → optional Implementation Slice planning
-  → consistency review only across artifacts that actually exist
-  → source changes create an explicit review need,
-    not an automatic rewrite.
-```
-
-### Child Use Cases
-
-| Use Case | Status | Owner boundary |
-|---|---|---|
-| `UC-AP-SCENARIO` — Draft Detailed Scenario | active supported / optional profile-limited | profile and project owners |
-| `UC-AP-DOMAIN` — Draft Or Review Domain | active supported / optional profile-limited | profile and project owners |
-| `UC-AP-SLICE` — Plan Implementation Slice | active supported / optional profile-limited | profile and project owners |
-| `UC-AP-SDS-CONSISTENCY` — Review Scenario/Domain/Slice Consistency | active supported / optional profile-limited | selected complete artifacts and profile |
-
-### Boundaries
-
-```text
-- Do not activate this Direction merely because a Planning Draft contains Scenarios.
-- Do not require separate DATA, Behavior, Domain or Slice artifacts for simple work.
-- Do not infer a project command from a reusable Use Case.
-- Do not invent project storage, runtime or automatic dependency handling.
-- Do not put Domain or Slice implementation detail into clean Scenario behavior.
-```
-
-## 4. Auxiliary Solution Principle
-
-When a planned solution includes an auxiliary planning, documentation or tooling layer, expose its independently useful capabilities proportionally instead of hiding them as implementation detail.
+Supported Use Cases are capabilities, not one mandatory ceremony.

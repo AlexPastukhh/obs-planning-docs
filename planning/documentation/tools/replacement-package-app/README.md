@@ -7,8 +7,8 @@ This directory is the **application documentation, Java source, fixed build/run 
 
 ## 1. Read Order
 
-1. [`USE-CASE-MAP.md`](USE-CASE-MAP.md) — current outcomes and source/test traceability.
-2. [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical `UC-RPKG-*` identities.
+1. [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical `UC-RPKG-*` semantic identities, purpose/trigger/result/boundaries and Scenario routes.
+2. [`scenarios/README.md`](scenarios/README.md) — detailed behavior and source/test traceability for those Use Cases.
 3. [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md) — shared producer/consumer contract.
 4. [`REPOSITORY-SNAPSHOT.md`](REPOSITORY-SNAPSHOT.md) — Local/Committed repository ZIP export contract.
 5. [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md) — Java ↔ browser extension delivery contract.
@@ -17,7 +17,7 @@ This directory is the **application documentation, Java source, fixed build/run 
 8. [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — Windows/JDK/Git acceptance.
 9. focused Java/extension source and tests.
 
-Ordinary ChatGPT package production still starts from `planning/planning-use-case-map.md` → `planning/commands/build-replacement-archive.command.md` → `planning/documentation/build-replacement-archive-workflow.md`.
+Ordinary ChatGPT package production still starts from `planning/command-routing.md` → `planning/commands/build-replacement-archive.command.md` → `planning/documentation/build-replacement-archive-workflow.md`.
 
 ## 2. Module Layout
 
@@ -25,7 +25,7 @@ Ordinary ChatGPT package production still starts from `planning/planning-use-cas
 replacement-package-app/
 ├── README.md
 ├── USE-CASE-REGISTRY.md
-├── USE-CASE-MAP.md
+├── scenarios/README.md
 ├── PACKAGE-PROTOCOL.md
 ├── REPOSITORY-SNAPSHOT.md
 ├── CHATGPT-BRIDGE.md

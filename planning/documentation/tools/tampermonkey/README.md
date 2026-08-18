@@ -43,8 +43,8 @@ Linked Notes current semantics/product state/implementation documentation are in
 
 ```text
 planning/documentation/tools/tampermonkey/linked-notes/README.md
-  → USE-CASE-MAP.md
-  → USE-CASE-REGISTRY.md
+  → scenarios/README.md
+  → use-case-registry.md
   → APP-OVERVIEW.md
   → ARCHITECTURE.md
   → DATA-AND-STATE.md
@@ -63,10 +63,10 @@ Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
 By default they do not write repository files or perform external network calls. Linked Notes remains an explicitly bounded repository client. Planning Helper normal runtime is RAM/local-only; GitHub access is limited to explicit Check GitHub, Sync missing and Save GitHub actions for its bounded repository-backed entities.
 The repository documentation prototype is the narrow test-only exception: after explicit user actions it may perform bounded GitHub operations under the current Linked Notes contracts. Ordinary pending repository-file changes use `Update current file` for one Contents-API path or `Update all` for one Git Data tree/commit/ref transition with verification; compound Note/image-transfer paths retain their documented verified behavior.
-The Linked Notes Prototype never runs local git, commit or push. Runtime code does not define command meaning, and current application semantics are owned by the tracked `linked-notes/USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md`, not inferred from implementation alone.
+The Linked Notes Prototype never runs local git, commit or push. Runtime code does not define command meaning, and current application semantic entries are owned by `linked-notes/USE-CASE-REGISTRY.md` and detailed behavior/traceability by `linked-notes/scenarios/README.md`, not inferred from implementation alone.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
-Tampermonkey command projection does not define command meaning. The root UCM is the command-system entry and direct `planning/commands/*.command.md` files own individual commands.
-Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by UCM commands.
+Tampermonkey command projection does not define command meaning. The root Command Routing is the command-system entry and direct `planning/commands/*.command.md` files own individual commands.
+Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by Command Routing commands.
 ```
 
 Planning-helper semantics must come from:
@@ -83,7 +83,7 @@ Use Cases:
   reusable-family/local Use-Case Registries
 
 Commands:
-  planning/planning-use-case-map.md
+  planning/command-routing.md
   planning/commands/README.md
   selected planning/commands/*.command.md
   planning/documentation/command-planning-workflow.md
@@ -346,7 +346,7 @@ Its Session field supports `S1`, `S2`, `S3` and later positive integer labels. V
 
 The reusable Command Palette provides:
 
-- an explicit authority boundary: the root UCM is the command-system entry, direct `planning/commands/*.command.md` files own individual commands, and linked owner files own behavior;
+- an explicit authority boundary: the root Command Routing is the command-system entry, direct `planning/commands/*.command.md` files own individual commands, and linked owner files own behavior;
 - separate sibling controls for adaptive insertion, forced-full route insertion, approved owner-read refinements and copying, avoiding nested interactive elements;
 - one repository command definition generates both insertion variants, so command semantics and reminders cannot drift;
 - a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
@@ -361,12 +361,12 @@ The reusable Command Palette provides:
 - Full inserts the same command with mandatory fresh reading of the complete required command route;
 - command-specific refinement controls appear only when the selected direct command definition declares them; current `давай архив` has no refinement because it no longer emits local PowerShell apply/diff commands;
 - Copy copies the adaptive route-read body;
-- Full is limited to UCM and owner/workflow/template/example files required by that command route;
+- Full is limited to Command Routing and owner/workflow/template/example files required by that command route;
 - Full does not authorize reading unrelated repository files;
 - button labels rendered as <englishName> · <label>;
 - complete command bodies with command, english_name, command_family,
   source_of_truth, route_read_rule, key_reminders and user_target;
-- no separate UCM-only mode;
+- no separate Command Routing-only mode;
 - refinement bodies, when present, stay compact and route only to the explicit owner files named by the command definition;
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
 - retired Planning Item formation/reconciliation commands are absent from the active generated command catalog; historical local snapshot entries may require explicit local reconciliation after repository migration;
@@ -391,7 +391,7 @@ Authority:
 Orientation → root documentation;
 Directions  → Direction Registries;
 Use Cases   → Use-Case Registries;
-Commands    → root UCM → direct repository command definitions.
+Commands    → root Command Routing → direct repository command definitions.
 ```
 
 Controls:
@@ -417,8 +417,8 @@ Projected Directions:
 
 ```text
 Plan A Solution Or Workflow
-Perform Detailed Scenario/Domain/Slice Planning
-Maintain Documentation, Use Cases And Commands
+Use And Maintain Repository Documentation
+Use And Maintain Repository Documentation
 Develop And Maintain Documentation Workbench
 ```
 
@@ -427,7 +427,7 @@ Projected Use Cases:
 ```text
 Understand Current Workflow And Reality
 Collect And Review Ideas From Selected Source → Commands
-Build Or Review A Planning Draft
+Plan / Review Whole Solution Or Workflow
 Research Existing Solutions And Alternative Workflows
 Draft Detailed Scenario
 Draft Or Review Domain
@@ -485,21 +485,21 @@ planning/documentation/tools/tampermonkey/chat-command-palette/README.md
 Repository command entry:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
   → planning/commands/README.md
   → selected direct *.command.md
 ```
 
 The generated userscript bundles a valid command catalog only as an offline fallback. Normal helper use stays RAM/local-only. `Check GitHub` lists direct metadata and compares counts/path-name sets for planning commands, helper commands and prompts without mutating local state. `Sync missing` downloads only repository paths absent locally and never overwrites a same-path local record. Per-row `Save GitHub` creates, no-ops or SHA-updates one local entity with exact read-back verification; planning-command save validates the complete direct remote command catalog before writing. `Import from ChatGPT` remains local-only. `Copy recovery request` + pasted Restore remains an offline/manual fallback. Blank owner/repository/branch settings are rejected and explicit repository operations share one serialized lock.
 
-Planning Helper keeps repository settings/token in the existing `obsPlanningHelper:v1:*` secret/config keys and keeps runtime command/helper content in the unified `obsPlanningHelper:v2:localSnapshot`. Old v1 command/library cache keys are migration inputs only. The token is secret state and is never written into planning-command files, helper-library files or the local snapshot. Local Cmds and Prompts remain convenience text, not planning-command authority; optional repository copies live only under `planning/helper-library/`. Application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md`; current behavior/traceability is owned by `chat-command-palette/USE-CASE-MAP.md`.
+Planning Helper keeps repository settings/token in the existing `obsPlanningHelper:v1:*` secret/config keys and keeps runtime command/helper content in the unified `obsPlanningHelper:v2:localSnapshot`. Old v1 command/library cache keys are migration inputs only. The token is secret state and is never written into planning-command files, helper-library files or the local snapshot. Local Cmds and Prompts remain convenience text, not planning-command authority; optional repository copies live only under `planning/helper-library/`. Application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md`; current behavior/traceability is owned by `chat-command-palette/scenarios/README.md`.
 
 ## 10. Command Palette adaptation rule
 
 Before enabling or adapting the reusable helper for another project, verify:
 
 ```text
-1. The project root UCM exists and points to the project command registry when that model is used.
+1. The project root Command Routing exists and points to the project command registry when that model is used.
 2. Each projected command has one accepted direct repository command definition or is created in the same approved batch.
 3. Commands that do not apply to the target project are removed.
 4. source_of_truth points to the target project's real route/owner docs.
@@ -531,17 +531,17 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not treat the Planning Helper runtime, cache or generated artifact as Orientation, Direction, Use-Case or command authority.
 - Do not let Direction/Use-Case activation execute commands or grant permissions.
 - Project `собери идеи` only from its accepted repository command definition and generic Idea owner route.
-- Do not add project-only command semantics outside the root-UCM-reachable `planning/commands/*.command.md` registry.
+- Do not add project-only command semantics outside the Command-Routing-reachable `planning/commands/*.command.md` registry.
 - Do not reintroduce retired Planning Item formation/reconciliation projections. Preserve semantic Use-Case boundaries, keep broader workflows distinct from commands, and do not treat historical ITEM-* registers as current command targets.
 - Do not duplicate archive command-format rules inside the helper refinement body.
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
 - Except for the explicitly documented Linked Notes boundary and Planning Helper explicit repository-action boundary, do not use helpers to write repository files or perform external network calls. Planning Helper GitHub access is limited to explicit Check GitHub, Sync missing and Save GitHub over direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` targets; normal insertion/import remains network-independent.
-- The detailed Linked Notes semantics, test boundary, storage model and current invariants are owned under `linked-notes/` by its `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md` plus focused current-state docs; legacy Documentation Workbench Linked Notes workflows are compatibility/planning history only.
+- Linked Notes semantic entries are owned under `linked-notes/USE-CASE-REGISTRY.md`; detailed behavior/traceability is owned by `linked-notes/scenarios/README.md` plus focused current-state docs; legacy Documentation Workbench Linked Notes workflows are compatibility/planning history only.
 ```
 
 
 ## Planning Helper Local Library / Prompts
 
-Developer/runtime details remain under `chat-command-palette/`; application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md` and behavior/traceability by `chat-command-palette/USE-CASE-MAP.md`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. Local Save/Edit/Delete and ChatGPT import remain local-only. The generated userscript uses granted `GM_getValue`/`GM_setValue` for the unified local snapshot and `GM_xmlhttpRequest` only after explicit Check GitHub, Sync missing or Save GitHub actions. If browser-local state is lost, direct Sync missing can restore repository-only records, while ChatGPT marker Restore remains an offline/manual fallback.
+Developer/runtime details remain under `chat-command-palette/`; application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md` and behavior/traceability by `chat-command-palette/scenarios/README.md`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. Local Save/Edit/Delete and ChatGPT import remain local-only. The generated userscript uses granted `GM_getValue`/`GM_setValue` for the unified local snapshot and `GM_xmlhttpRequest` only after explicit Check GitHub, Sync missing or Save GitHub actions. If browser-local state is lost, direct Sync missing can restore repository-only records, while ChatGPT marker Restore remains an offline/manual fallback.

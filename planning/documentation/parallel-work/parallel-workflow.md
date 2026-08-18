@@ -85,7 +85,7 @@ copies/<repo-relative-path>
 For example:
 
 ```text
-copies/planning/planning-use-case-map.md
+copies/planning/command-routing.md
 copies/planning/documentation/reviewable-agent-output-and-commands-workflow.md
 ```
 

@@ -2,7 +2,7 @@
 
 Status: current prototype product map
 Version: `0.8.0-prototype`
-Scope: fast current-state orientation for the OBS Linked Notes Tampermonkey application. Current semantic behavior is owned by `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md`; focused mappings/source/tests provide implementation evidence.
+Scope: fast current-state orientation for the OBS Linked Notes Tampermonkey application. Current semantic Use-Case entries are owned by `USE-CASE-REGISTRY.md`; detailed behavior/traceability is owned by Scenario files reached through `scenarios/README.md`; focused mappings/source/tests provide implementation evidence.
 
 ## 1. What The Application Is
 
@@ -10,7 +10,7 @@ OBS Linked Notes is a local-first browser helper running on ChatGPT pages. It co
 
 The current prototype is not accepted production architecture. Ordinary repository Markdown/files remain durable truth; browser storage is working/config/cache state unless a current Linked Notes contract says otherwise.
 
-Semantic entry: [`USE-CASE-MAP.md`](USE-CASE-MAP.md). Canonical current IDs: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md).
+Semantic entry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md). Detailed Scenario navigation: [`scenarios/README.md`](scenarios/README.md).
 
 ## 2. Surface Map
 
@@ -61,7 +61,7 @@ Current capabilities include:
 - Edit / Preview / Split rich Markdown presentation;
 - image-aware transfer into another same-repository Markdown target.
 
-Semantic owner: `UC-LN-NOTES` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
+Semantic owner: `UC-LN-NOTES` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md).
 
 ## 5. Files
 
@@ -81,7 +81,7 @@ Current capabilities include:
 - separate `Update current file` and atomic one-commit `Update all` publication;
 - normal New File editor populated from repository templates.
 
-Semantic owners: `UC-LN-FILES` and `UC-LN-PUBLISH` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
+Semantic owners: `UC-LN-FILES` and `UC-LN-PUBLISH` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md).
 
 ## 6. Categories
 
@@ -97,7 +97,7 @@ Current capabilities include:
 - path-aware malformed/broken/cycle diagnostics;
 - local definition/membership staging followed by standard current/all publication.
 
-Semantic owner: `UC-LN-CATEGORIES` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
+Semantic owner: `UC-LN-CATEGORIES` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md).
 
 ## 7. Repository Templates
 
@@ -113,7 +113,7 @@ The repository registry is routing/index metadata, not the canonical value store
 
 Ordered Reference Lists add `obs-order:list` and paired `obs-order:item` markers around complete lines or paragraphs. Creation permits stale uses with a warning; ordering is blocked until every nested use equals the checked current definition value. Ordering is local and has no feature-specific GitHub action.
 
-Semantic owners: `UC-LN-REFERENCE-OBJECTS` and `UC-LN-ORDERED-REFERENCE-LISTS` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md). Focused implementation mapping: [`REFERENCE-OBJECTS-PROTOTYPE.md`](REFERENCE-OBJECTS-PROTOTYPE.md). Repository contracts: `.linked-notes/REFERENCE-OBJECTS.md` and `.linked-notes/ORDERED-REFERENCE-LISTS.md`.
+Semantic owners: `UC-LN-REFERENCE-OBJECTS` and `UC-LN-ORDERED-REFERENCE-LISTS` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md). Focused implementation mapping: [`REFERENCE-OBJECTS-PROTOTYPE.md`](REFERENCE-OBJECTS-PROTOTYPE.md). Repository contracts: `.linked-notes/REFERENCE-OBJECTS.md` and `.linked-notes/ORDERED-REFERENCE-LISTS.md`.
 
 ## 9. Chat Response Reader
 
@@ -134,7 +134,7 @@ The Reader supports a narrow safe `<details>/<summary>` form and keeps arbitrary
 
 The rendering capability and the ChatGPT-to-Reader transport are separate concerns. Manual Paste is the current reliable exact transfer. The current DOM-derived `Open in Reader` path remains prototype implementation evidence; a supported automatic handoff that does not rely on Linked Notes extracting content from the ChatGPT UI is not implemented yet.
 
-Semantic owner: `UC-LN-READER` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md). Detailed mapping: [`CHAT-RESPONSE-READER.md`](CHAT-RESPONSE-READER.md).
+Semantic owner: `UC-LN-READER` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md). Detailed mapping: [`CHAT-RESPONSE-READER.md`](CHAT-RESPONSE-READER.md).
 
 ## 10. App State
 
@@ -148,7 +148,7 @@ It can include:
 - current Reader state;
 - binary payloads in FULL mode and binary omission descriptors in ChatGPT mode.
 
-Semantic owner: `UC-LN-APP-STATE` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md). Detailed mapping: [`FULL-APP-STATE-EXPORT.md`](FULL-APP-STATE-EXPORT.md).
+Semantic owner: `UC-LN-APP-STATE` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md). Detailed mapping: [`FULL-APP-STATE-EXPORT.md`](FULL-APP-STATE-EXPORT.md).
 
 ## 11. Main Boundaries
 
@@ -181,6 +181,6 @@ The detailed rules stay in `.linked-notes/**`; this application overview only po
 - runtime composition: [`ARCHITECTURE.md`](ARCHITECTURE.md);
 - data ownership/storage: [`DATA-AND-STATE.md`](DATA-AND-STATE.md);
 - known problems: [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md);
-- semantic relationships: [`USE-CASE-MAP.md`](USE-CASE-MAP.md);
-- canonical current IDs: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md);
+- semantic relationships/identity: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md);
+- detailed Scenario behavior/traceability: [`scenarios/README.md`](scenarios/README.md);
 - development directions: [`ROADMAP.md`](ROADMAP.md).

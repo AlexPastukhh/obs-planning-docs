@@ -4,7 +4,7 @@ Status: current implementation mapping / not production architecture
 Version: `0.8.0-prototype`
 Scope: technical map of the generated Tampermonkey application, its runtime extension order and external boundaries.
 
-Current user/semantic behavior is routed through [`USE-CASE-MAP.md`](USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md). This architecture file explains implementation shape only; legacy Linked Notes workflow files under `planning/areas/documentation-workbench/` are not current semantic owners.
+Current application semantic identities/purpose/trigger/result/boundaries are owned by [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); detailed behavior/traceability is routed through [`scenarios/README.md`](scenarios/README.md). This architecture file explains implementation shape only; legacy Linked Notes workflow files under `planning/areas/documentation-workbench/` are not current semantic owners.
 
 ## 1. Layer Map
 

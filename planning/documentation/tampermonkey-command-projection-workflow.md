@@ -20,7 +20,7 @@ Use-Case authority:
   reusable-family/local Use-Case Registries
 
 Command-system entry/global policy:
-  planning/planning-use-case-map.md
+  planning/command-routing.md
 
 Concrete command authority:
   planning/commands/*.command.md
@@ -33,7 +33,7 @@ Projection implementation source/build:
 
 Planning Helper application semantics:
   planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md
-  → planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-MAP.md
+  → planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md
 
 Generated install artifact:
   planning/documentation/tools/tampermonkey/chat-command-palette.user.js
@@ -48,19 +48,19 @@ Helper local-library repository records:
 
 The helper must not invent command meaning, permission boundaries, aliases or English display names. It parses accepted repository command definitions and generates runtime bodies from them.
 
-The root UCM is the mandatory command-system entry/global-policy owner. The selected direct command definition owns the concrete route fields and points to the files needed for understanding. Neither file needs to encode which read/refinement button the user chose for one palette insertion.
+The root Command Routing is the mandatory command-system entry/global-policy owner. The selected direct command definition owns the concrete route fields and points to the files needed for understanding. Neither file needs to encode which read/refinement button the user chose for one palette insertion.
 
 ## 2. Before Adding Or Updating A Command
 
 Check:
 
 ```text
-1. The root UCM is present as the command-system entry.
+1. The root Command Routing is present as the command-system entry.
 2. The selected direct `planning/commands/*.command.md` definition exists and validates.
 3. The definition has one canonical English name and unique aliases.
 4. Owner docs for the route exist.
 5. Permission boundary is explicit.
-6. Inserted body points back to the root UCM, selected command definition and owner docs.
+6. Inserted body points back to the root Command Routing, selected command definition and owner docs.
 7. Projected englishName exactly matches the command-definition English name.
 8. Button label uses <englishName> · <label>.
 9. Adaptive and forced-full variants are generated from the same command definition.
@@ -109,13 +109,13 @@ The normal command button uses adaptive behavior.
 
 ```text
 source_of_truth:
-  Start from `planning/planning-use-case-map.md`.
+  Start from `planning/command-routing.md`.
   Then read the selected `planning/commands/*.command.md` definition.
   Then read its owner / linked files.
 
 route_read_rule:
   If you have not read this command route and its linked owner/example files in this chat, read them before answering.
-  If you have read them but do not remember the required behavior, boundaries or key points, reread from `planning/planning-use-case-map.md` before answering.
+  If you have read them but do not remember the required behavior, boundaries or key points, reread from `planning/command-routing.md` before answering.
   Do not rely only on this prompt when command behavior is uncertain.
 ```
 
@@ -127,13 +127,13 @@ A separate `Full` action inserts the same command with an explicit fresh-read re
 
 ```text
 source_of_truth:
-  Start from `planning/planning-use-case-map.md`.
+  Start from `planning/command-routing.md`.
   Then read the selected `planning/commands/*.command.md` definition.
   Follow that definition's complete required owner route.
 
 route_read_rule:
   Full route reading is required for this invocation.
-  Read the root UCM, then the selected command definition in `planning/commands/`.
+  Read the root Command Routing, then the selected command definition in `planning/commands/`.
   Then read every owner, workflow, template and example file required by that command route for complete understanding.
   Do this even if the command was previously used in this chat.
   Do not execute the command from memory or from this compact prompt alone.
@@ -240,7 +240,7 @@ refinement:
   archive_command_format
 
 read_required:
-  - `planning/planning-use-case-map.md`
+  - `planning/command-routing.md`
   - `planning/documentation/reviewable-agent-output-and-commands-workflow.md`
   - `planning/documentation/documentation-update-workflow.md`
 
@@ -253,7 +253,7 @@ instruction:
 ## 8. English Name Synchronization
 
 ```text
-- The root UCM is the mandatory command-system entry/global-policy owner.
+- The root Command Routing is the mandatory command-system entry/global-policy owner.
 - The selected command definition is authoritative for its canonical English name.
 - Projected englishName must exactly match that command definition.
 - inserted english_name must use the same value.
@@ -291,10 +291,12 @@ Use Cases:
   project independently useful supported capabilities;
 
 Commands:
-  project accepted repository command definitions reachable from the root UCM and their immediate execution permissions.
+  project accepted repository command definitions reachable from the root Command Routing and their immediate execution permissions.
 ```
 
 Only Commands request immediate execution.
+
+Semantic projection is a derived helper view. The canonical registries remain authority. Repository verification must check exact-case source paths and registry parity so every current canonical Use Case is projected and no helper-only semantic UC appears.
 
 ## 9B. Shared Semantic Body Contract
 
@@ -394,25 +396,29 @@ The Use Cases surface uses **Open Commands** rather than inserting a duplicate e
 Directions:
 
 ```text
+DIR-REPOSITORY
 DIR-PLAN-SOLUTION
-DIR-DETAILED-SDS
-DIR-MAINTAIN-DOCS-ROUTES
+DIR-DOCUMENTATION
 DIR-DOCUMENTATION-WORKBENCH
+DIR-PLANNING-RUNTIME
+DIR-PLANNING-HELPER
+DIR-LINKED-NOTES
+DIR-REPLACEMENT-PACKAGE-APP
 ```
 
 Use Cases:
 
 ```text
-UC-AP-REALITY
-UC-AP-COLLECT-IDEAS → Commands redirect
-UC-AP-FULL-PICTURE
-UC-AP-RESEARCH
-UC-AP-SCENARIO
-UC-AP-DOMAIN
-UC-AP-SLICE
-UC-AP-SDS-CONSISTENCY
+UC-PLAN-REALITY
+UC-PLAN-COLLECT-IDEAS → Commands redirect
+UC-PLAN-SOLUTION
+UC-PLAN-RESEARCH
+UC-PLAN-SCENARIO
+UC-PLAN-DOMAIN
+UC-PLAN-SLICE
+UC-PLAN-CONSISTENCY
 UC-DW-DOC-REF
-UC-DW-ITEM-FULL-PICTURE  # legacy ID, current non-item semantics
+UC-DW-PLANNING-TO-REPOSITORY  # legacy ID, current non-item semantics
 ```
 
 Chat/AI/Work-State remains provisional and is not projected as accepted. Retired Planning Item formation/reconciliation and Structured User Message Composer entries are not active semantic projections.
@@ -533,12 +539,12 @@ Do not edit the generated userscript manually and do not create a competing trac
 ## 11. Do Not
 
 ```text
-- Do not project commands without an accepted repository command definition reachable from the root UCM.
+- Do not project commands without an accepted repository command definition reachable from the root Command Routing.
 - Do not make Orientation, Direction or Use-Case activation execute a command or grant permissions.
 - Do not duplicate a command-related Use Case as an execution action.
 - Do not project provisional Chat/AI/Work-State as accepted.
 - Do not make source modules, the generated userscript or the local/remote catalog cache a command or English-name source of truth.
-- Do not put per-invocation read-mode policy into the root UCM.
+- Do not put per-invocation read-mode policy into the root Command Routing.
 - Do not create separate command-definition copies for adaptive, full or refinement variants.
 - Do not put owner or archive-format rules into refinement bodies; only list route/owner docs and the requested validation action.
 - Do not keep competing tracked helper copies by default.
@@ -566,7 +572,7 @@ Prompts
   → browser-local snapshot/RAM at runtime.
 ```
 
-A helper command/prompt never becomes a registered planning command merely because a repository file exists. `Import from ChatGPT` remains local-only. `Check GitHub`, `Sync missing` and per-row `Save GitHub` are explicit application actions defined by `chat-command-palette/USE-CASE-REGISTRY.md` → `USE-CASE-MAP.md`; repository Delete is not implemented. `Restore from GitHub copy` remains a pasted-text local fallback that performs no network request.
+A helper command/prompt never becomes a registered planning command merely because a repository file exists. `Import from ChatGPT` remains local-only. `Check GitHub`, `Sync missing` and per-row `Save GitHub` are explicit application actions defined by `chat-command-palette/USE-CASE-REGISTRY.md` → `scenarios/README.md`; repository Delete is not implemented. `Restore from GitHub copy` remains a pasted-text local fallback that performs no network request.
 
 The modular helper may migrate legacy page-local/GM command-library caches into `obsPlanningHelper:v2:localSnapshot`. Migration does not delete legacy keys and does not contact GitHub.
 

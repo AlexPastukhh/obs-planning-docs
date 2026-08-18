@@ -2,14 +2,15 @@
 
 Status: active optional reusable archive review workflow
 Doc version: v0.4.0-one-line-no-pager
-Scope: optional repo-stored review diff file flow for replacement archive/package application when clipboard diff transfer is not practical or explicitly requested.
+Scope: optional legacy repo-stored ReviewDiff transfer flow for replacement archive/package application when clipboard transfer is not practical or explicitly requested. Semantic correctness review belongs to `review-diff-review-workflow.md`.
 
 Use with:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
 planning/documentation/reviewable-agent-output-and-commands-workflow.md
 planning/documentation/documentation-update-workflow.md
+planning/documentation/review-diff-review-workflow.md when the produced/returned diff is semantically reviewed
 ```
 
 ## 1. Purpose
@@ -39,7 +40,7 @@ When review-diff-file mode is explicitly requested, apply commands may create:
 _ai-review-diffs/last-archive.diff
 ```
 
-This file is a review artifact only. It does not approve the real changed files.
+This file is a transfer/review artifact only. It does not approve the real changed files. After the diff reaches the reviewing chat/person, use `review-diff-review-workflow.md` for semantic review; technical diff capture/integrity is not semantic correctness.
 
 ## 3. Required Apply Flow
 

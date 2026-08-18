@@ -1,239 +1,40 @@
 # Command Planning Workflow
 
 Status: active reusable documentation-layer command planning workflow
-Doc version: v0.7.0-repository-command-definitions
-Scope: rules-based planning for new or changed command routes, canonical English names, owner semantics, examples, user-facing PowerShell Git output and optional Tampermonkey projection in projects using the reusable documentation layer.
+Scope: plan a new/changed executable shortcut while preserving semantic Use-Case authority.
 
-## 1. Purpose
-
-Use this workflow for the command family:
+## Core Rule
 
 ```text
-спланируй команду
-plan command
+semantic capability / Use Case
+→ decide whether an executable shortcut is useful
+→ concrete command definition
+→ command routing / projection synchronization
 ```
 
-`спланируй команду` is the canonical command and `plan command` is its canonical English trigger/name. This route is plan-only and does not authorize file creation, editing, archive creation, commit or push.
+A command does not create the semantic capability it triggers.
 
-A command route must be planned from current principles, owner workflows and templates, not by copying a previous row blindly.
-
-## 2. Command Composition
+## Sources
 
 ```text
-спланируй команду
-  = documentation-principles preflight
-  + plan file update
-  + command-specific owner reads
+planning/command-routing.md
+planning/commands/README.md + selected direct command definitions
+planning/documentation/use-case-registry.md or other related local Use-Case Registry
+planning/documentation/command-routing-workflow.md
+planning/documentation/documentation-principles-read-workflow.md
+planning/documentation/file-update-overview-workflow.md
 ```
 
-The route first establishes documentation architecture and ownership, then produces a file-update plan for the command route. It does not implement that plan.
+## Planning Steps
 
-## 3. Source Of Truth
+1. Resolve the current semantic Use Case or identify that a new independently useful Use Case is required.
+2. Define canonical trigger, English name and aliases.
+3. Define active-context behavior, read mode, ownerFiles, expected output and explicit permission mode.
+4. Reuse current workflow/template owners; do not copy algorithms into command bodies.
+5. Plan one direct `planning/commands/*.command.md` definition.
+6. Update `planning/command-routing.md` only when shared/global policy changes.
+7. Update the semantic Use Case's `Related command` reference.
+8. Decide helper projection separately.
+9. Produce a File Update Plan; do not implement through this workflow.
 
-```text
-Primary command-system entry:
-  planning/planning-use-case-map.md
-
-Project command-definition registry, when present:
-  planning/commands/README.md
-  planning/commands/*.command.md
-
-Documentation preflight:
-  planning/documentation/documentation-principles-read-workflow.md
-  planning/documentation/planning-docs-architecture-principles.md
-  planning/documentation/documentation-responsibility-map.md
-
-File-update plan behavior and shape:
-  planning/documentation/file-update-overview-workflow.md
-  planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
-
-Reusable command/answer behavior and PowerShell Git runtime contract:
-  planning/documentation/reviewable-agent-output-and-commands-workflow.md
-
-Documentation archive/apply specialization:
-  planning/documentation/documentation-update-workflow.md
-
-Use-case map workflow and exact command-route shape:
-  planning/documentation/use-case-map-workflow.md
-  planning/documentation/USE-CASE-MAP-TEMPLATE.md
-
-Example coverage:
-  planning/documentation/example-coverage-workflow.md
-  planning/documentation/examples/README.md
-
-Reusable Tampermonkey projection, only when separately in scope:
-  planning/documentation/tampermonkey-command-projection-workflow.md
-  planning/documentation/tools/tampermonkey/README.md
-  planning/documentation/tools/tampermonkey/chat-command-palette/README.md
-  planning/documentation/tools/tampermonkey/chat-command-palette.user.js  # generated artifact
-```
-
-Tampermonkey remains a projection/editor runtime. With a delegated project registry, direct command files own command meaning, aliases, English names and permission boundaries; the root UCM remains the mandatory command-system entry/global-policy owner.
-
-## 4. Command Route Row Template
-
-Every command route plan must use this shape:
-
-```text
-| Command / trigger | English name | Meaning | Active-context behavior | Traversal/read mode | Sources / owner files | Expected output |
-|---|---|---|---|---|---|---|
-| <canonical command and aliases> | <one canonical English display name> | <what the command means> | <active/missing-context behavior> | <reuse/targeted/full and read-source mode> | <owner files to read> | <output behavior and permission boundary> |
-```
-
-Each field is a rule slot, not only table presentation.
-
-## 5. Canonical English Name Rule
-
-Every command family must have exactly one canonical English name.
-
-```text
-canonical command:
-  primary user-facing command, normally in the project's main language
-
-English name:
-  stable English display/projection name
-
-aliases:
-  additional trigger phrases in any language
-```
-
-Rules:
-
-```text
-- English name is required, not optional.
-- English name is concise natural English, not an internal abbreviation.
-- English name is separate from aliases.
-- The concrete command representation owns the accepted English name: a direct command definition in a delegated-registry project, or the root UCM row in a smaller non-delegated project.
-- Tampermonkey copies that accepted English name exactly.
-- Changing an alias must not silently change meaning or permissions.
-```
-
-## 6. Command Planning Steps
-
-```text
-1. Run the documentation-principles preflight.
-   - Use full mode when the route has not been read, is not remembered, or ownership/boundaries are uncertain.
-   - Record checked and relevant not-checked sources.
-
-2. Define the command family.
-   - canonical command;
-   - required canonical English name;
-   - aliases and language variants;
-   - command type: response modifier, output mode, file/update plan, audit, parallel work, implementation helper or other route type.
-
-3. Identify owner semantics.
-   - Reuse an existing workflow/template when it already owns the behavior.
-   - Plan a new or updated reusable owner only when no suitable owner exists.
-   - Do not place full reusable rules in the root UCM or an example.
-
-4. Plan the concrete command definition.
-   - In a delegated command-registry project, plan one direct `planning/commands/*.command.md` file.
-   - Fill every command-definition field, including canonical command, English name, aliases, active-context behavior, read mode, owners, output, permission and projection metadata.
-   - Update the root UCM only when shared/global routing policy or registry navigation changes.
-   - In a small project without a registry, use the compact UCM row instead.
-
-5. Produce the file-update plan.
-   - Use `file-update-overview-workflow.md` and `FILE-UPDATE-OVERVIEW-TEMPLATE.md`.
-   - List proposed files, responsibilities, what/why, boundaries, checks and next action.
-   - Treat only explicit user statements and checked facts as confirmed.
-
-6. Validate user-facing PowerShell Git output when the command may emit it.
-   - Apply the shared runtime contract from `reviewable-agent-output-and-commands-workflow.md`.
-   - Require one physical `& { ... }` line, one paste, one Enter, non-interactive execution and `git --no-pager`.
-   - Link `documentation-update-workflow.md` when archive/apply/diff specialization is relevant.
-   - Do not duplicate the full runtime contract in the command definition/UCM route, example or Tampermonkey projection.
-
-7. Decide example coverage.
-   - Update the examples index when a non-trivial command/output workflow needs coverage.
-   - Add a concrete example only when it demonstrates stable behavior without copying owner logic.
-
-8. Decide project/workstream impact.
-   - Update a relevant living project map only when the command belongs to an active long-running workstream.
-   - Do not expand into unrelated maps.
-
-9. Decide Tampermonkey projection separately.
-   - `add now`, `defer` or `do not add`.
-   - Default is `defer` unless helper projection is explicitly included.
-   - The helper uses the accepted command-definition English name exactly. A newly accepted repository command can be discovered/refreshed without a per-command JavaScript source edit.
-
-10. Record applied documentation work only after implementation.
-   - Append an action log only after real changed files are known.
-   - Do not log planned or local-only work as applied.
-```
-
-## 7. Tampermonkey Decision Gate
-
-```text
-Tampermonkey decision:
-  add now / defer / do not add
-
-Default:
-  defer unless the user explicitly includes helper projection in the planned scope.
-```
-
-Planning a helper architecture change does not authorize editing source. Adding an accepted command definition does not normally require a helper source edit; the generated helper can refresh the repository command registry. Repository writes still require a separate explicit action.
-
-## 8. Required Answer Shape
-
-```text
-Documentation principles preflight:
-  full / targeted refresh / already current
-
-Checked:
-  ...
-
-Not checked:
-  ...
-
-Command family:
-  canonical command and aliases
-
-English name:
-  one required canonical English name
-
-Command type:
-  ...
-
-Owner semantics:
-  ...
-
-Command definition plan:
-  direct project command file, or compact UCM row only when no delegated registry exists
-
-Root UCM impact:
-  shared/global routing change / navigation-only / none
-
-PowerShell Git runtime contract:
-  applies / not applicable
-
-Example coverage:
-  required / covered / not needed / deferred
-
-Tampermonkey decision:
-  add now / defer / do not add
-
-Boundaries:
-  plan-only permissions
-
-Next action:
-  separate implementation authorization if approved
-
-План файл-обновление:
-  final planned-mode block from the file-update overview template
-```
-
-## 9. Do Not
-
-```text
-- Do not create a command only by copying a similar UCM row or command file.
-- Do not make Tampermonkey or an example the source of truth.
-- Do not make the canonical English name optional.
-- Do not treat `спланируй команду` or `plan command` as implementation permission.
-- Do not create a command whose user-facing PowerShell Git output bypasses the shared one-line, non-interactive and no-pager contract.
-- Do not duplicate the full PowerShell Git runtime contract inside command definitions/UCM rows, examples or helper projections.
-- Do not edit or create files from this command family.
-- Do not create a replacement archive from this command family.
-- Do not commit or push.
-- Do not start unrelated command expansion.
-- Do not create placeholder parallel workspaces or sync plans.
-```
+Commands are optional. A repository remains fully discoverable through Directions/Use Cases without knowing command names.

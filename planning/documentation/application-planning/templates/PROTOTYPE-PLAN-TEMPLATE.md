@@ -11,11 +11,11 @@ Purpose: plan the minimum experiment needed to reduce a material uncertainty and
 | ID | not provided |
 | Title | not provided |
 | Related Ideas / decisions | not provided |
-| Related Planning Draft / Scenario / workflow / branch | not provided |
+| Related current planning owner / Scenario / workflow / branch | not provided |
 | Artifact mode | embedded / separate / not provided |
 | Status | proposed / ready / running / completed / cancelled / not provided |
 
-A small prototype may remain embedded in its related Idea work or Planning Draft. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
+A small prototype may remain embedded in its related Idea work or current planning owner. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
 
 ## 2. Hypothesis
 

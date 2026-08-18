@@ -1,33 +1,21 @@
-﻿# OBS Planning Documentation
+# OBS Planning Documentation
 
-Lightweight documentation-only projection of the OBS repository.
+Lightweight documentation-focused projection of the OBS repository for AI/human reading and review.
 
-Included:
+## Start Here
 
-- OBS planning root routers;
-- reusable documentation workflows and templates;
-- OBS planning-system area;
-- planning dashboard and current planning state;
-- operational Templates and Workflows;
-- all tracked Tampermonkey userscripts under
-  planning/documentation/tools/tampermonkey/.
+```text
+README.md
+→ planning/README.md
+→ planning/direction-registry.md
+→ selected Use-Case Registry
+→ canonical owner
+```
 
-Excluded:
+AI/chat sessions that materially plan, develop or change repository documentation must also follow `planning/AI-WORKING-CONTRACT.md`.
 
-- conspect and repetition content;
-- Canvases and Programming knowledge bases;
-- operational day history;
-- Obsidian configuration;
-- attachments and images;
-- PDFs, archives, media and transfer diff files.
+Commands are optional executable shortcuts and are discovered through `planning/command-routing.md`; they are not the repository's semantic Use-Case catalogue.
 
-Source repository:
+Included: planning orientation/registries, reusable documentation/planning methodology, planning runtime documentation, application/tool documentation/source/tests and tracked Tampermonkey artifacts.
 
-https://github.com/AlexPastukhh/obs
-
-Source ref used for this export:
-
-ai-conspects-repetition-plan
-
-The main OBS repository remains the source of truth.
-This repository is a lightweight documentation projection for AI reading and review.
+The main OBS repository remains the upstream source of truth for the broader OBS system; this repository is its documentation-focused projection.

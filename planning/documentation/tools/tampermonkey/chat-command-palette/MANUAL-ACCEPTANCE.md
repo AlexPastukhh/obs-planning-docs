@@ -4,7 +4,7 @@ Status: active acceptance plan; execution status must be recorded separately fro
 Version: v1.0.0 / Planning Helper `0.24.0`
 Scope: browser and real-GitHub checks that are not implied by `npm run verify`.
 
-Canonical application semantics: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) → [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
+Canonical application semantics: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) → [`scenarios/README.md`](scenarios/README.md).
 
 Passing automated tests does **not** mark these browser/remote checks complete. Record actual execution evidence when they are run.
 

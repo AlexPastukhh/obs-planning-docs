@@ -93,7 +93,7 @@ Result on mismatch:
 Owner routes:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
 planning/commands/build-replacement-archive.command.md
 planning/documentation/build-replacement-archive-workflow.md
 planning/documentation/tools/replacement-package-app/PACKAGE-PROTOCOL.md

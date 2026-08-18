@@ -1,12 +1,12 @@
 # OBS Planning Command Registry
 
 Status: active project command-definition registry
-Scope: repository-owned concrete command definitions used by the root planning router, AI/chats and the modular Planning Helper.
+Scope: repository-owned concrete command definitions used by the root command router, AI/chats and the modular Planning Helper.
 
 ## Authority
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
   = mandatory root command-system entrypoint and shared routing/global policy;
 
 planning/commands/*.command.md
@@ -19,7 +19,7 @@ Tampermonkey Planning Helper
   = projection/editor/runtime, not command meaning authority.
 ```
 
-Read `planning/planning-use-case-map.md` first. Then resolve the selected command from this folder and read its `ownerFiles`.
+Read `planning/command-routing.md` for explicit command routing, then resolve the selected direct definition and its `ownerFiles`. Use semantic registries for capability discovery/context.
 
 ## Discovery
 

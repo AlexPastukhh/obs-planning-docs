@@ -2,7 +2,7 @@
 
 Status: active reusable profile-specific field kit
 Doc version: v1.0.1-profile-contract-aligned
-Scope: setup guidance for adding Scenario/Domain/Slice route families to a concrete project root UCM when the specialized profile and commands are explicitly selected.
+Scope: setup guidance for adding Scenario/Domain/Slice route families to a concrete project root Command Routing when the specialized profile and commands are explicitly selected.
 
 ## 1. Purpose
 
@@ -14,7 +14,7 @@ Use this field kit only when both are true:
 2. the project explicitly wants one or more related root commands.
 ```
 
-A project may use the profile without commands. A project may keep Scenario meaning inside its Planning Draft and omit the profile entirely.
+A project may use the profile without commands. A project may keep Scenario meaning inside its current application planning and omit the profile entirely.
 
 This file is setup guidance, not a runtime router.
 
@@ -48,14 +48,14 @@ consistency review:
 
 The profile requires separate logical object ownership for its detailed Scenario output. Those objects may share one registry file; separate logical objects do not require separate physical files.
 
-A project that does not benefit from this representation should keep Scenario meaning in the Planning Draft instead of activating the specialized route.
+A project that does not benefit from this representation should keep Scenario meaning in the current application planning instead of activating the specialized route.
 
 ## 3. Scenario Route Expectations
 
 A concrete Scenario route should identify:
 
 ```text
-selected Planning Draft / application planning;
+selected current application planning / application planning;
 optional Spine Scenario origin when used;
 related source / Idea / current-owner references when useful;
 Scenario catalog/index owner;
@@ -104,13 +104,13 @@ Do not require Slice planning for one-step work, a narrow script, a process chan
 ## 6. Do Not
 
 ```text
-- Do not create a second UCM inside the reusable layer.
+- Do not create a second Command Routing inside the reusable layer.
 - Do not copy project-specific route rows as active configuration.
 - Do not treat this field kit as a runtime router
-  after root UCM rows exist.
+  after root Command Routing rows exist.
 - Do not require a command merely because Scenario artifacts exist.
 - Do not activate the specialized profile merely because
-  a Planning Draft contains Scenarios.
+  a current application planning contains Scenarios.
 - Do not require one physical file per logical Reference Object.
 - Do not require contributing Planning Items or a Planning Item layer.
 - Do not introduce a permanent Spine Unit.

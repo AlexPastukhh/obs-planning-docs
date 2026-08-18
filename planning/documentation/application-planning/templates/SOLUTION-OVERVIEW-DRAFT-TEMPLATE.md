@@ -1,7 +1,7 @@
 # Solution Overview Draft Template
 
 Status: deprecated transition template; legacy body retained for migration
-Active replacement: `PLANNING-DRAFT-TEMPLATE.md` and `FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md`
+Active replacement: select real semantic owners through `../use-case-registry.md` and `../solution-and-scenario-planning-workflow.md`; use `FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` only when that representation is independently useful.
 
 ## Transition Rule
 

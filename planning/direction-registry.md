@@ -1,210 +1,25 @@
 # OBS Root Direction Registry
 
 Status: active project-specific root semantic Direction Registry
-Doc version: v0.6.0-replacement-package-app-registry
-Scope: OBS root orientation across broad semantic work Directions and references to complete reusable-family/project-local registries.
+Scope: root orientation across all current semantic work/application families.
 
-## 1. Authority
+## Registry Index
 
-```text
-This file:
-  → owns root Direction orientation and root-owned Direction entries;
-  → references complete local/reusable-family Direction entries;
-  → links local Use-Case Registries;
+| Direction ID | Semantic name | Complete owner | Use-Case Registry |
+|---|---|---|---|
+| `DIR-REPOSITORY` | Orient In And Work With The Repository | this file | [`use-case-registry.md`](use-case-registry.md) |
+| `DIR-PLAN-SOLUTION` | Plan A Solution / Workflow / Application | [`documentation/application-planning/direction-registry.md`](documentation/application-planning/direction-registry.md) | [`documentation/application-planning/use-case-registry.md`](documentation/application-planning/use-case-registry.md) |
+| `DIR-DOCUMENTATION` | Use And Maintain Repository Documentation | [`documentation/direction-registry.md`](documentation/direction-registry.md) | [`documentation/use-case-registry.md`](documentation/use-case-registry.md) |
+| `DIR-DOCUMENTATION-WORKBENCH` | Develop And Maintain Documentation Workbench | [`areas/documentation-workbench/direction-registry.md`](areas/documentation-workbench/direction-registry.md) | [`areas/documentation-workbench/use-case-registry.md`](areas/documentation-workbench/use-case-registry.md) |
+| `DIR-PLANNING-RUNTIME` | Use The OBS Planning Runtime | [`areas/planning-system/direction-registry.md`](areas/planning-system/direction-registry.md) | [`areas/planning-system/use-case-registry.md`](areas/planning-system/use-case-registry.md) |
+| `DIR-PLANNING-HELPER` | Use And Maintain Planning Helper | [`documentation/tools/tampermonkey/chat-command-palette/direction-registry.md`](documentation/tools/tampermonkey/chat-command-palette/direction-registry.md) | [`documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md`](documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md) |
+| `DIR-LINKED-NOTES` | Use And Maintain Linked Notes | [`documentation/tools/tampermonkey/linked-notes/direction-registry.md`](documentation/tools/tampermonkey/linked-notes/direction-registry.md) | [`documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md) |
+| `DIR-REPLACEMENT-PACKAGE-APP` | Apply / Review / Finalize Replacement Packages | [`documentation/tools/replacement-package-app/direction-registry.md`](documentation/tools/replacement-package-app/direction-registry.md) | [`documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md`](documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md) |
 
-planning/planning-use-case-map.md:
-  → owns executable commands, aliases, English names, outputs and permissions;
+## Direction Rule
 
-local/reusable/application registries:
-  → own complete Direction and Use-Case entries;
+A Direction groups independently useful Use Cases around one broad work/result/responsibility zone. It may contain optional, conditional, alternative, repeated or independently triggered Use Cases; registry order is not automatically workflow order.
 
-workflow/area/application owners:
-  → own complete behavior and concrete state;
+## Command Boundary
 
-Tampermonkey runtime code:
-  → projection/implementation evidence only;
-
-planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md
-planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md:
-  → explicit current Linked Notes application semantic owners colocated with its documentation;
-
-planning/documentation/tools/replacement-package-app/USE-CASE-MAP.md
-planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md:
-  → explicit Replacement Package App apply/review/finalize semantic owners colocated with its docs/source.
-```
-
-## 2. Registry Index
-
-| Direction ID | Semantic name | Status | Complete owner | Use-Case Registry |
-|---|---|---|---|---|
-| `DIR-PLAN-SOLUTION` | Plan A Solution Or Workflow | active | [`planning/documentation/application-planning/direction-registry.md`](documentation/application-planning/direction-registry.md) | [`planning/documentation/application-planning/use-case-registry.md`](documentation/application-planning/use-case-registry.md) |
-| `DIR-DETAILED-SDS` | Perform Detailed Scenario/Domain/Slice Planning | active / profile-limited | [`planning/documentation/application-planning/direction-registry.md`](documentation/application-planning/direction-registry.md) | [`planning/documentation/application-planning/use-case-registry.md`](documentation/application-planning/use-case-registry.md) |
-| `DIR-MAINTAIN-DOCS-ROUTES` | Maintain Documentation, Use Cases And Commands | active | this file | local registries, root UCM and reusable documentation owners |
-| `DIR-DOCUMENTATION-WORKBENCH` | Develop And Maintain Documentation Workbench | active project-local | [`planning/areas/documentation-workbench/direction-registry.md`](areas/documentation-workbench/direction-registry.md) | [`planning/areas/documentation-workbench/use-case-registry.md`](areas/documentation-workbench/use-case-registry.md) for current non-Linked-Notes Workbench semantics; current Linked Notes application UCs: [`linked-notes/USE-CASE-REGISTRY.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md) |
-
-## 3. Referenced Direction — Plan A Solution Or Workflow
-
-Complete owner:
-
-```text
-planning/documentation/application-planning/direction-registry.md
-```
-
-Root orientation:
-
-```text
-Problem / Question / Idea
-  → Need / Desired Result
-  → understand current reality when useful
-  → existing solutions / alternatives
-  → candidate whole solution / Workflow Variants when useful
-  → scoped Idea review/deep planning where material
-  → whole-workflow integration evaluation
-  → justified / already-confirmed Application responsibility when applicable
-  → optional detailed Scenario/Domain/Slice handoff.
-```
-
-This is supported topology, not one mandatory sequence.
-
-## 4. Referenced Direction — Perform Detailed Scenario/Domain/Slice Planning
-
-Complete owner:
-
-```text
-planning/documentation/application-planning/direction-registry.md
-```
-
-Root orientation:
-
-```text
-Detailed Scenario
-  ↔ Domain model/language
-  → checkable Implementation Slice
-  → cross-artifact consistency review.
-```
-
-The current reusable profile is active. Prototype-depth adaptation remains deferred.
-
-## 5. Root-Owned Direction — Maintain Documentation, Use Cases And Commands
-
-### Purpose
-
-Maintain discoverable, non-duplicated documentation ownership and executable routes.
-
-### Supported Use Cases
-
-```text
-read documentation principles/orientation;
-maintain documentation architecture and responsibility maps;
-create/update Direction and Use-Case Registries;
-create/update command routes in the root UCM;
-review example/navigation coverage;
-plan/review replacement archives and diffs;
-project accepted owners into Tampermonkey separately.
-```
-
-### Boundaries
-
-- registries own semantic entries;
-- root UCM owns commands;
-- workflows own repeated behavior;
-- templates own recommended shape;
-- helper scripts own projection only;
-- repository changes still require their command/update permissions.
-
-### Activation
-
-**Adaptive**
-
-```text
-Use current remembered architecture when clearly sufficient.
-Reread planning/README.md, this registry and the relevant owner route when uncertain.
-```
-
-**Full**
-
-```text
-Read planning/README.md, this complete entry,
-the relevant local/reusable registry and the complete owner route.
-```
-
-## 6. Local Registry Inventory
-
-| Registry | Scope | Status |
-|---|---|---|
-| [`planning/documentation/application-planning/direction-registry.md`](documentation/application-planning/direction-registry.md) | Reusable solution/workflow planning Directions | active |
-| [`planning/documentation/application-planning/use-case-registry.md`](documentation/application-planning/use-case-registry.md) | Reusable solution/workflow planning Use Cases | active |
-| [`planning/areas/documentation-workbench/direction-registry.md`](areas/documentation-workbench/direction-registry.md) | Documentation Workbench local Directions | active |
-| [`planning/areas/documentation-workbench/use-case-registry.md`](areas/documentation-workbench/use-case-registry.md) | Documentation Workbench local Use Cases | active |
-| [`planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md) | Current Linked Notes application Use Cases (`UC-LN-*`) | active current-prototype |
-| [`planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md`](documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md) | Replacement Package App local apply/review/finalize Use Cases (`UC-RPKG-*`) | active V0.1 |
-
-Current Linked Notes application semantics remain under the broader Documentation Workbench direction without creating a new root Direction ID by assumption. For Linked Notes behavior, route from this direction to [`planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md`](documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and its local registry rather than treating the Documentation Workbench area files as current owners.
-
-Replacement Package App semantics are registered without inventing a new root Direction; they support the existing documentation/command-maintenance package boundary and are entered through [`planning/documentation/tools/replacement-package-app/USE-CASE-MAP.md`](documentation/tools/replacement-package-app/USE-CASE-MAP.md).
-
-## 7. Command Boundary
-
-Related command router:
-
-```text
-planning/planning-use-case-map.md
-```
-
-Accepted command-related semantic Use Case:
-
-```text
-Collect And Review Ideas From Selected Source
-  ↔ `собери идеи` / `collect ideas`.
-```
-
-Planning Item formation/reconciliation commands are retired from the target command set. Historical ITEM-* records may remain provenance/history without creating an active command route.
-
-## 7A. Helper Projection
-
-The Tampermonkey **Directions** surface projects the four accepted entries in this registry:
-
-```text
-DIR-PLAN-SOLUTION
-DIR-DETAILED-SDS
-DIR-MAINTAIN-DOCS-ROUTES
-DIR-DOCUMENTATION-WORKBENCH
-```
-
-Adaptive:
-
-```text
-reuse clearly current context;
-reread the selected registry entry and owner route when uncertain.
-```
-
-Full:
-
-```text
-always reread the complete selected entry and relevant owner route;
-do not expand into unrelated Direction families.
-```
-
-Direction activation establishes context only. It does not execute commands or grant repository permissions.
-
-The helper redirects `Collect And Review Ideas From Selected Source` to `собери идеи`. Retired Planning Item formation/reconciliation Use Cases are not active projections.
-
-## 8. Orientation Read Order
-
-```text
-1. planning/README.md
-2. planning/direction-registry.md
-3. relevant local/reusable Direction Registry
-4. relevant Use-Case Registry
-5. complete owner workflow/area
-6. planning/planning-use-case-map.md only when a command is involved
-7. planning/workflow-activation-map.md for task activation details.
-```
-
-## 9. Open Decisions
-
-| Decision | Status | Conservative fallback |
-|---|---|---|
-| Coordinate Parallel Work as a root Direction | not accepted | Keep parallel-work workflow discoverable without root promotion. |
-| Chat/AI/Work-State as an accepted local Use Case | provisional | Keep as candidate until trigger-to-result review. |
-| Prototype-depth SDS method | deferred | Keep profile-limited entries and avoid invented methodology. |
+Executable shortcuts live in [`command-routing.md`](command-routing.md) + [`commands/`](commands/). Commands are not a parallel semantic catalogue.

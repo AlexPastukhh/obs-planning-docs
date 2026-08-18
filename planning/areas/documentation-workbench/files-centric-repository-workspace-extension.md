@@ -3,7 +3,7 @@
 Status: legacy planning/compatibility reference / not current Linked Notes authority
 Scope: Files navigation shortcuts and direct repository-path opening, folder index auto-open, repository-native file templates, repository-root file/heading link copy, add-only structure creation and add-only file/folder copy for the Linked Notes prototype.
 
-> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`USE-CASE-MAP.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md) and [`use-case-registry.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Ownership Boundary
 
@@ -139,13 +139,13 @@ The old local `documentPresets` preference data is retained for compatibility an
 Whole file:
 
 ```text
-[combat.md](/game-design/combat.md)
+`/game-design/combat.md`
 ```
 
 Heading:
 
 ```text
-[Exposure](/game-design/combat.md#exposure)
+`/game-design/combat.md#exposure`
 ```
 
 The chooser uses the existing loaded-preview heading extraction and deterministic duplicate-anchor behavior. The whole-file action uses the repository path and filename. Both actions are clipboard-only.

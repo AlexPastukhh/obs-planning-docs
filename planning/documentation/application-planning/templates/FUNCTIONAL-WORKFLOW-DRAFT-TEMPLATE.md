@@ -2,7 +2,7 @@
 
 Status: active reusable recommended template
 Doc version: v1.0.0-solution-neutral
-Purpose: one independently understandable and testable behavior line inside a candidate solution, workflow or Planning Draft.
+Purpose: one independently understandable and testable behavior line inside a candidate solution, workflow or current planning owner.
 
 A Functional Workflow is not automatically:
 
@@ -19,7 +19,7 @@ A Functional Workflow is not automatically:
 |---|---|
 | Workflow ID | <FW-XX> |
 | Title | <title> |
-| Parent Planning Draft | <reference> |
+| Parent current planning owner | <reference> |
 | Status | candidate / active / validated / rejected / deferred |
 | Related criteria / Ideas / decisions | <links> |
 
@@ -93,9 +93,9 @@ Material unresolved implementation questions may use scoped Idea review/deep pla
 
 | Related workflow | Relationship | Dependency/conflict | Coordination owner |
 |---|---|---|---|
-| <FW> | before / after / shares concept / conflicts / composes | <description> | parent Planning Draft / local owner |
+| <FW> | before / after / shares concept / conflicts / composes | <description> | parent current planning owner / local owner |
 
-Cross-workflow decisions normally belong in the parent Planning Draft or another explicitly selected shared owner.
+Cross-workflow decisions normally belong in the parent current planning owner or another explicitly selected shared owner.
 
 Several Functional Workflows are not peer End-To-End Workflows merely because they are listed separately. A mandatory trigger-to-result route must remain reviewable as one complete workflow.
 

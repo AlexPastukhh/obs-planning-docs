@@ -6,11 +6,11 @@ Scope: deterministic Planning Helper source/build, RAM-first local persistence, 
 
 ## Read Order
 
-1. `planning/planning-use-case-map.md` for global command-system policy.
+1. `planning/command-routing.md` for global command-system policy.
 2. `planning/commands/README.md` for planning-command authority.
 3. `planning/helper-library/README.md` for Local Cmds / Prompts repository format.
 4. `planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md` for canonical application Use-Case identities/statuses.
-5. `planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-MAP.md` for behavior, relationships and exact docs → code → tests → acceptance traceability.
+5. `planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md` for behavior, relationships and exact docs → code → tests → acceptance traceability.
 6. `planning/documentation/tools/tampermonkey/chat-command-palette/MANUAL-ACCEPTANCE.md` for browser/real-GitHub acceptance.
 7. `planning/documentation/tampermonkey-command-projection-workflow.md`.
 8. this file and focused `src/**` / `tests/**`.
@@ -142,7 +142,7 @@ For ChatGPT `contenteditable` composers, insertion uses one direct `Range.insert
 
 ```text
 USE-CASE-REGISTRY.md
-USE-CASE-MAP.md
+scenarios/README.md
 MANUAL-ACCEPTANCE.md
 src/
   command-definition-codec.js

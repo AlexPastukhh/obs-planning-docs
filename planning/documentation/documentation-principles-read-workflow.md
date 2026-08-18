@@ -19,7 +19,7 @@ docs principles
 
 It is also a required preflight for `спланируй команду` when the route has not already been read and remembered in the current chat.
 
-This workflow owns the read/preflight process. It does not replace the principles, responsibility maps, update workflows, templates or project root UCM that own their own rules.
+This workflow owns the read/preflight process. It does not replace the principles, responsibility maps, update workflows, templates or project root Command Routing that own their own rules.
 
 ## 2. Permission Boundary
 
@@ -58,10 +58,10 @@ When uncertain, use the full preflight.
 ## 4. Full Preflight Read Order
 
 ```text
-1. planning/planning-use-case-map.md
+1. planning/command-routing.md
 2. planning/README.md
-3. planning/workflow-activation-map.md
-4. planning/root-source-sync-register.md
+3. planning/direction-registry.md
+4. planning/use-case-registry.md
 5. planning/documentation/README.md
 6. planning/documentation/planning-docs-architecture-principles.md
 7. planning/documentation/documentation-responsibility-map.md
@@ -85,8 +85,8 @@ Read:
 planning/documentation/file-update-overview-workflow.md
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
 planning/documentation/command-planning-workflow.md
-planning/documentation/use-case-map-workflow.md
-planning/documentation/USE-CASE-MAP-TEMPLATE.md
+planning/documentation/command-routing-workflow.md
+planning/documentation/COMMAND-ROUTING-TEMPLATE.md
 planning/documentation/example-coverage-workflow.md
 planning/documentation/examples/README.md
 ```
@@ -113,7 +113,7 @@ Not checked:
   <relevant sources not read or unavailable>
 
 Authority / layer:
-  <root UCM / reusable workflow / template / responsibility map / area owner>
+  <root Command Routing / reusable workflow / template / responsibility map / area owner>
 
 Correct owner zone:
   <where the requested information or behavior belongs>
@@ -137,7 +137,7 @@ Before proposing documentation changes, determine:
 3. Does an owner already exist?
 4. Would a new file duplicate an existing owner?
 5. Does README/navigation need an update?
-6. Does the root UCM route itself need an update?
+6. Does the root Command Routing route itself need an update?
 7. Is Tampermonkey projection in scope now or deferred?
 ```
 
@@ -146,8 +146,12 @@ Before proposing documentation changes, determine:
 ```text
 - Do not treat field kits as runtime routers after project root files exist.
 - Do not treat examples or Tampermonkey userscripts as command authority.
-- Do not copy full owner logic into the root UCM or examples.
+- Do not copy full owner logic into the root Command Routing or examples.
 - Do not infer that a compact command prompt contains the complete current workflow.
 - Do not claim a source was checked when it was not read.
 - Do not create, edit, archive, commit or push from this read-only command.
 ```
+
+## Repository Navigation / Governance Check
+
+Before material documentation work, resolve the current documentation Use Case through `planning/documentation/use-case-registry.md` and, for AI/chat work, read `planning/AI-WORKING-CONTRACT.md`. Do not rely on a command or filename as the only discovery path.

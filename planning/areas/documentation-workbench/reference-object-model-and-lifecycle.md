@@ -6,7 +6,7 @@ Scope: compact map of the former application-heavy model and its current disposi
 
 Current baseline:
 
-- [`planning-draft.md`](planning-draft.md);
+- [`current-context.md`](current-context.md);
 - [`planning-item-register.md`](planning-item-register.md);
 - [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md).
 
@@ -68,6 +68,6 @@ Reconsider this branch only when:
 2. evidence shows the coordination cost is justified;
 3. current/deferred/retired items are reconciled visibly;
 4. storage, recovery, portability, parsing and migration risks are reviewed;
-5. the result is accepted in a new Planning Draft decision.
+5. the result is accepted into the affected current owner(s).
 
 This file is not a runtime specification and does not authorize implementation.

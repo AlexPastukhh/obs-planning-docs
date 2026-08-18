@@ -1,7 +1,7 @@
 # Opportunity And Ecosystem Research Draft Template
 
 Status: deprecated transition template; legacy body retained for migration
-Active replacement: `PLANNING-DRAFT-TEMPLATE.md`
+Active replacement: select real semantic owners through `../use-case-registry.md` and `../solution-and-scenario-planning-workflow.md`; no generic Current Planning Owner artifact/template replaces this legacy form.
 
 ## Transition Rule
 

@@ -1,137 +1,37 @@
 # Documentation Update Plan Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.4.0-step-actions-and-file-tables
-Scope: plan-first workflow for non-trivial documentation changes.
+Scope: plan-first route for non-trivial documentation/ownership/navigation migrations.
 
-## 1. Purpose
+## Sources
 
-Use this before:
+Start from natural navigation and the selected Documentation Use Case, then read architecture/responsibility owners, task-specific owners and exact current target files. For an explicit command, resolve `planning/command-routing.md` + the direct command definition separately.
 
-```text
-- broad documentation changes;
-- ownership or read-order changes;
-- reusable workflow/template changes;
-- command-routing changes;
-- migrations and cleanup;
-- replacement-package preparation.
-```
+## Plan
 
-Planning does not authorize implementation.
+Use `file-update-overview-workflow.md` / `FILE-UPDATE-OVERVIEW-TEMPLATE.md` for concrete file transitions. Keep conceptual Idea Variants separate from file actions.
 
-## 2. Sources
-
-Prefer:
+Plan dependencies in safe order:
 
 ```text
-1. project root UCM;
-2. project root indexes/registers;
-3. reusable documentation architecture and responsibility owners;
-4. task-specific owner workflows/templates;
-5. current target files;
-6. relevant project-area files when local application is in scope.
+semantic owner decisions
+→ new/current canonical owners
+→ incoming navigation/Use-Case/Scenario routes
+→ consumer/projection updates
+→ stale-owner cleanup / physical rename/delete
+→ coverage + link + build/test checks
 ```
 
-Do not invent target files that have not been checked. Proposed new files may be planned explicitly.
+## Replacement Package Planning
 
-## 3. Plan Shape
-
-Use ordered actions when order, dependencies or cleanup safety matter.
+When the selected later action is `давай архив`, plan the V0.1 producer contract:
 
 ```text
-Target:
-  <desired documentation/repository state>
-
-Checked sources:
-  <files actually read>
-
-Update Step <ID>:
-  Objective:
-  Input state / dependencies:
-  Expected resulting state:
-  Actions:
-    1. <concrete operation>
-    2. <next operation>
-    3. <review gate or deferral when applicable>
-  Files:
-    <per-step table: change / path / responsibility / what / why>
-  Boundaries:
-  Checks / exit criteria:
-  Next step:
-
-Global boundaries:
-  <areas intentionally not changed>
-
-Risks:
-  <ownership / routing / duplication / stale-reference / migration risk>
-
-Apply mode:
-  direct edit / replacement archive / no artifact yet
-
-Next action:
-  <concrete next step>
+PACKAGE.json
+base-files/<replace|delete paths>
+replacement-files/<add|replace paths>
 ```
 
-The action list and per-step file table are complementary:
+Renames are represented as delete + add. Exact base bytes are required for replace/delete. Do not plan legacy `MANIFEST.md` / `APPLY.md` / pasted-diff mechanics unless the selected concrete legacy command explicitly owns them.
 
-```text
-Actions:
-  own the operation sequence;
-
-Per-step file table:
-  owns affected paths, responsibilities, changes and reasons.
-```
-
-For the exact final overview shape, use:
-
-```text
-planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
-```
-
-## 4. Step Design Rules
-
-```text
-- Make each step produce a reviewable resulting state.
-- State the concrete action sequence explicitly for non-trivial steps.
-- Do not expect the reader to infer operation order from file-table row order.
-- Keep the numbered actions and per-step file table synchronized.
-- Put prerequisites and migration gates before cleanup.
-- List the files changed by that step and why they change there.
-- Keep unrelated areas outside the step.
-- Let one file appear in several logical steps when needed,
-  but coordinate one final replacement during implementation.
-- Use an aggregate file table only as a derived summary.
-- Separate semantic migration, physical rename and cleanup when that reduces risk.
-```
-
-## 5. Package Planning
-
-For a replacement package:
-
-```text
-- resolve the selected source snapshot;
-- plan full replacement files, not patches;
-- include exact base/result blob verification;
-- include MANIFEST.md and APPLY.md;
-- use git add -N for new files before diff capture;
-- require pasted diff review before commit.
-```
-
-The archive source-selection contract belongs to:
-
-```text
-planning/documentation/reviewable-agent-output-and-commands-workflow.md
-```
-
-## 6. Do Not
-
-```text
-- Do not edit files during a plan-only pass.
-- Do not treat a fallback as permission.
-- Do not omit the action list for a non-trivial ordered step.
-- Do not maintain an action sequence and file table that disagree.
-- Do not delete or rename before migration checks pass.
-- Do not duplicate owner rules across files.
-- Do not create a new reusable owner when an existing owner can hold the rule.
-- Do not commit or push before reviewed diff approval.
-```
+Planning never authorizes edits, package creation, commit or push.

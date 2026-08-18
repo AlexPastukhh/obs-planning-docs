@@ -9,7 +9,7 @@ Use with:
 ```text
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
 planning/documentation/idea-review-and-planning-workflow.md when conceptual uncertainty is material
-planning/planning-use-case-map.md
+planning/command-routing.md
 ```
 
 When a concrete command route is in scope, also read that command definition and its ownerFiles. Package/source/application/review behavior is route-specific and must not be reconstructed from a generic archive assumption.
@@ -190,7 +190,7 @@ The metadata does not replace the command definition or root router.
 For package work, resolve package/source/application/review semantics through:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
   → selected planning/commands/*.command.md
   → that command's ownerFiles
 ```

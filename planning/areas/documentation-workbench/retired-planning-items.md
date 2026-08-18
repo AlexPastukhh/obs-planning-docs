@@ -2167,7 +2167,7 @@ Concern observability и documentation-specific planning dashboards должны
 
 ### Full working meaning
 
-Каждая documentation family, владеющая несколькими направлениями, может иметь локальный `direction-registry.md`, который хранит canonical definitions внутренних Directions, их purpose, boundary, owner, Full Picture reference, supported use cases, topology, entry conditions, expected result и status. Отдельный root `planning/direction-registry.md` располагается рядом с `planning-use-case-map.md`, но не внутри него, и агрегирует project-wide Directions как Reference Objects из локальных registries без копирования их owner state. Root registry отвечает за общий перечень и отношения направлений; local registries — за внутреннюю topology family; Use-Case Map остаётся owner конкретных use-case/command routes, required reads, outputs и permissions.
+Каждая documentation family, владеющая несколькими направлениями, может иметь локальный `direction-registry.md`, который хранит canonical definitions внутренних Directions, их purpose, boundary, owner, Full Picture reference, supported use cases, topology, entry conditions, expected result и status. Отдельный root `planning/direction-registry.md` располагается рядом с `command-routing.md`, но не внутри него, и агрегирует project-wide Directions как Reference Objects из локальных registries без копирования их owner state. Root registry отвечает за общий перечень и отношения направлений; local registries — за внутреннюю topology family; Use-Case Map остаётся owner конкретных use-case/command routes, required reads, outputs и permissions.
 
 ### Evidence and documentation status
 

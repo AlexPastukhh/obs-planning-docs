@@ -20,14 +20,16 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Use active area/work item if clear.",
   "traversalReadMode": "Targeted source checks for state claims.",
   "ownerFiles": [
-    "planning/root-source-sync-register.md"
+    "planning/use-case-registry.md",
+    "planning/documentation/status-reconciliation-workflow.md"
   ],
   "expectedOutput": "Concise current state separating repo, local and unknown, plus next safe action.",
   "permissionMode": "read-only",
   "keyReminders": [
-    "Report current repo/chat/planning state.",
+    "Report current repo/chat/planning state from checked current owners.",
     "Separate known, local, unknown and not checked.",
-    "Do not present an unstated future plan as confirmed; show important open questions and conservative fallbacks.",
+    "Use Directions/Use Cases to resolve the current owner instead of a manually synchronized global state register.",
+    "Do not present an unstated future plan as confirmed.",
     "Do not edit or archive unless separately requested."
   ],
   "userTarget": "<state target>",

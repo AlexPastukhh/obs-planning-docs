@@ -23,5 +23,5 @@ Next safe action:
 Owner route:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
 ```

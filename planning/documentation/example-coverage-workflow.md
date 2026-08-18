@@ -17,7 +17,7 @@ Where should that example be indexed?
 What do we record if no example is added?
 ```
 
-This file does not define command routing, source modes, output modes or permission boundaries. Those stay in the use-case map and owner workflows.
+This file does not define command routing, source modes, output modes or permission boundaries. Those stay in project Command Routing/direct command definitions and their owner workflows.
 
 ## 2. When To Use
 
@@ -123,7 +123,7 @@ project-local example:
   project/root-local examples area chosen by the concrete project
 ```
 
-A profile-specific reusable example may support concrete root routes only after the user/project accepts that the example fits the project type/spirit. Do not silently wire candidate examples into a concrete UCM.
+A profile-specific reusable example may support concrete root routes only after the user/project accepts that the example fits the project type/spirit. Do not silently wire candidate examples into a concrete Command Routing.
 
 
 ## 7. Example File Responsibility

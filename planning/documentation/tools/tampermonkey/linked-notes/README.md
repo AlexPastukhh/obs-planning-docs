@@ -4,7 +4,7 @@ Status: preliminary implementation prototype / browser and remote smoke testing 
 Version: `0.8.0-prototype`
 Scope: local-first Tampermonkey repository documentation prototype with Notes, Files, Categories, repository templates, materialized Reference Objects, Ordered Reference Lists, stale-use diagnostics, Chat Response Reader, Full App State diagnostics and explicit verified GitHub actions.
 
-This directory is the **current Linked Notes semantic/product/implementation documentation root**. Current application semantics are owned by [`USE-CASE-MAP.md`](USE-CASE-MAP.md) and [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md). `planning/areas/documentation-workbench/` remains useful for broader planning/history/compatibility, but its Linked Notes-specific workflow files are no longer current behavior or Use-Case authority.
+This directory is the **current Linked Notes semantic/product/implementation documentation root**. Current application semantic identities are owned only by [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md). [`scenarios/README.md`](scenarios/README.md) is navigation to detailed behavior/traceability owners. `planning/areas/documentation-workbench/` remains useful for broader planning/history/compatibility, but its Linked Notes-specific workflow files are no longer current behavior or Use-Case authority.
 
 The Tampermonkey prototype remains implementation evidence rather than accepted production architecture. Repository Markdown/files remain durable owners where the current contracts say they are.
 
@@ -14,8 +14,8 @@ The Tampermonkey prototype remains implementation evidence rather than accepted 
 
 If the task is to change, debug, understand or design Linked Notes itself, read in this order:
 
-1. [`USE-CASE-MAP.md`](USE-CASE-MAP.md) — what independently useful user outcomes exist, how they connect, and exact primary links from each UC to behavior docs/contracts, source modules, automated tests and manual acceptance.
-2. [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical current `UC-LN-*` identities/statuses.
+1. [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical current `UC-LN-*` semantic identities, purpose/trigger/result/boundaries and Scenario routes.
+2. [`scenarios/README.md`](scenarios/README.md) — navigation from those Use Cases to detailed behavior/traceability owners and exact primary links to implementation/tests/acceptance.
 3. [`APP-OVERVIEW.md`](APP-OVERVIEW.md) — current surfaces/actions and concise current behavior.
 4. [`ARCHITECTURE.md`](ARCHITECTURE.md) — runtime layers, module families, build order and GitHub boundary.
 5. [`DATA-AND-STATE.md`](DATA-AND-STATE.md) — repository truth, local persistence, runtime state, caches and secrets.
@@ -49,14 +49,14 @@ Chat Response Reader
 App State
 ```
 
-The semantic relationship between these surfaces and current Use Cases is owned by [`USE-CASE-MAP.md`](USE-CASE-MAP.md). Short current behavior is in [`APP-OVERVIEW.md`](APP-OVERVIEW.md).
+The semantic relationship between these surfaces and current Use Cases is owned by [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md); Scenario details are reached through [`scenarios/README.md`](scenarios/README.md). Short current behavior is in [`APP-OVERVIEW.md`](APP-OVERVIEW.md).
 
 ## 3. Current Semantic And Detailed Owners
 
-Current semantic owners:
+Current semantic/detail owners:
 
-- [`USE-CASE-MAP.md`](USE-CASE-MAP.md) — trigger/result/boundary map, relationships and per-UC exact traceability to detailed docs/contracts, primary implementation, automated tests and manual acceptance;
-- [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — canonical current Use-Case IDs/statuses;
+- [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) — sole canonical current Use-Case semantic entries;
+- [`scenarios/README.md`](scenarios/README.md) — navigation to detailed Scenario behavior/traceability owners;
 - [`APP-OVERVIEW.md`](APP-OVERVIEW.md) — current surface/product map.
 
 Focused implementation mappings/checks:
@@ -154,8 +154,8 @@ A workspace may be reused by many chats. A stable ChatGPT chat remembers a works
 
 ## 9. Development Documentation
 
-- semantic entry: [`USE-CASE-MAP.md`](USE-CASE-MAP.md);
-- canonical Use-Case registry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md);
+- semantic entry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md);
+- detailed Scenario navigation: [`scenarios/README.md`](scenarios/README.md);
 - current product map: [`APP-OVERVIEW.md`](APP-OVERVIEW.md);
 - runtime architecture: [`ARCHITECTURE.md`](ARCHITECTURE.md);
 - data/state ownership: [`DATA-AND-STATE.md`](DATA-AND-STATE.md);

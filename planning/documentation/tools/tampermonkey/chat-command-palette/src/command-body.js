@@ -12,7 +12,7 @@
     if (mode === MODE.FULL) {
       return [
         'source_of_truth:',
-        '  Start from `planning/planning-use-case-map.md`.',
+        '  Start from `planning/command-routing.md`.',
         `  Then read \`${path}\` and follow its complete owner route.`,
         '',
         'route_read_rule:',
@@ -25,7 +25,7 @@
     }
     return [
       'source_of_truth:',
-      '  Start from `planning/planning-use-case-map.md`.',
+      '  Start from `planning/command-routing.md`.',
       `  Then read \`${path}\` and its linked owner files for this command route.`,
       '',
       'route_read_rule:',

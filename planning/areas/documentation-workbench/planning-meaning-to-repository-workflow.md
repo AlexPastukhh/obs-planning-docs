@@ -2,13 +2,13 @@
 
 Status: active accepted project-local End-To-End Workflow
 Doc version: v1.0.0-repository-native
-Scope: preserve source meaning, review scoped Ideas/current owners when material, maintain one Planning Draft and hand reviewed meaning to repository file/update work.
+Scope: preserve source meaning, review scoped Ideas/current owners when material, integrate selected meaning into real current owners and hand reviewed meaning to repository file/update work.
 
 ## 1. Trigger And Result
 
-**Trigger:** free-form or structured source, scoped Ideas/current conclusions, a current Planning Draft or repository meaning requiring integration.
+**Trigger:** free-form or structured source, scoped Ideas/current conclusions, or repository/current-owner meaning requiring integration.
 
-**Result:** reviewed current planning meaning, one current Planning Draft when useful and an explicit repository/file-update handoff, or a documented unresolved/deferred end state.
+**Result:** reviewed selected planning meaning integrated into the appropriate real current owner(s), plus an explicit repository/file-update handoff or a documented unresolved/deferred end state.
 
 ## 2. Preconditions
 
@@ -26,7 +26,7 @@ source / current owner
   → targeted current-owner check
   → show Current / Incoming / Resulting transformations when non-trivial
   → explicit current conclusion / unresolved decision
-  → update one current Planning Draft when useful
+  → integrate selected meaning into the real affected current owner(s)
   → compare alternatives and no-change
   → deepen questions/risks/tests only where justified
   → reconcile with current repository owners
@@ -54,9 +54,9 @@ Inspect relevant current owners, principles, workflows, decisions, scoped Ideas 
 
 Select, modify, defer/reject or leave unresolved the relevant Ideas/current meanings. Acceptance of planning meaning does not authorize implementation or repository writes.
 
-### Stage 5 — Maintain One Planning Draft
+### Stage 5 — Integrate Selected Meaning Into Real Current Owners
 
-Organize current conclusions, alternatives, high-level Scenarios, questions, risks, evidence and selected depth. Do not create a parallel Full Picture body owner.
+Update/link the actual current Use Cases, Scenarios, workflows, decisions or other semantic owners that own the selected meaning. Keep cross-owner navigation where useful, but do not create a generic Current Planning Meaning, Planning Draft or Full Picture body as a parallel owner.
 
 ### Stage 6 — Deepen Proportionally
 
@@ -78,7 +78,7 @@ A separately authorized package replaces complete files, verifies exact base blo
 | Incoming meaning extends/corrects | show explicit transformation |
 | Direct conflict lacks a decision | stop with prioritized question and conservative fallback |
 | Implementation Idea appears | link it separately; do not accept architecture |
-| Evidence changes a decision | return to affected current owners / Ideas and Planning Draft |
+| Evidence changes a decision | return to affected current owners / Ideas |
 | Repository base changed | stop package application before changes |
 | Diff reveals semantic error | return to reconciliation; do not commit |
 
@@ -88,7 +88,7 @@ A separately authorized package replaces complete files, verifies exact base blo
 |---|---|---|
 | Source gate | selected messages/files | source scope explicit |
 | Meaning gate | Ideas/current-owner transformations | current selected/unresolved meanings explicit |
-| Planning gate | Planning Draft | coherent current direction and depth |
+| Planning gate | selected current owners | coherent selected meaning and integration state |
 | Repository gate | File Update Plan | explicit owners/actions/boundaries |
 | Literal gate | Git diff | approved exact file transition |
 
@@ -109,9 +109,9 @@ It does not own direct documentation editing that starts without solution planni
 ## 8. Current Owners
 
 ```text
-planning-draft.md
+current-context.md
 ../../documentation/idea-review-and-planning-workflow.md
-../../documentation/application-planning/application-planning-drafting-workflow.md
+../../documentation/application-planning/solution-and-scenario-planning-workflow.md
 planning-item-register.md  # provenance/history only
 ../../documentation/file-update-overview-workflow.md
 ```

@@ -22,14 +22,14 @@ Composition:
 ## Required Reads
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
 planning/commands/README.md
 planning/documentation/documentation-principles-read-workflow.md
 planning/documentation/file-update-overview-workflow.md
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
 planning/documentation/command-planning-workflow.md
-planning/documentation/use-case-map-workflow.md
-planning/documentation/USE-CASE-MAP-TEMPLATE.md
+planning/documentation/command-routing-workflow.md
+planning/documentation/COMMAND-ROUTING-TEMPLATE.md
 planning/documentation/example-coverage-workflow.md
 planning/documentation/examples/README.md
 ```
@@ -49,7 +49,7 @@ Owner semantics:
 Command definition plan:
   one direct repository command file with complete route fields and explicit permission boundary
 
-Root UCM impact:
+Root Command Routing impact:
   only shared/global routing or registry navigation when needed
 
 Example coverage:

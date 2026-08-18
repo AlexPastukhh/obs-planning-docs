@@ -123,7 +123,7 @@
       '', 'command:', `  ${command}`,
       '', 'english_name:', `  ${englishName}`,
       '', 'command_family:', `  ${family}`,
-      '', 'source_of_truth:', '  Start from `planning/planning-use-case-map.md`.', '  Then follow the currently registered command route and linked owner files.',
+      '', 'source_of_truth:', '  Start from `planning/command-routing.md`.', '  Then follow the currently registered command route and linked owner files.',
       '', 'route_read_rule:', '  Read or reread the route when it is not current, remembered or certain.', '  Do not rely only on this compact local projection when command behavior is uncertain.',
       '', 'key_reminders:', ...reminders.map((item)=>`  - ${item}`),
       '', 'user_target:', `  ${target}`,

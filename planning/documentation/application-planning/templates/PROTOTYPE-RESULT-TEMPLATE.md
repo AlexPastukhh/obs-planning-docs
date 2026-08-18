@@ -13,7 +13,7 @@ not provided
 ## 2. Related Planning Owners
 
 ```text
-Ideas / Planning Draft / Scenario / workflow /
+Ideas / current planning owner / Scenario / workflow /
 branch / criterion / assumption / risk / decision / not provided
 ```
 
@@ -77,7 +77,7 @@ A technical result does not become an accepted solution or architecture decision
 
 | Affected owner | Owner type | Previous state | Evidence-backed update or review need | Resulting/proposed state | Action/status |
 |---|---|---|---|---|---|
-| not provided | Idea / Planning Draft / Scenario / workflow / branch / criterion / assumption / risk / decision / other | not provided | not provided | not provided | not provided |
+| not provided | Idea / current planning owner / Scenario / workflow / branch / criterion / assumption / risk / decision / other | not provided | not provided | not provided | not provided |
 
 Use the smallest complete owners that actually depend on the tested uncertainty.
 

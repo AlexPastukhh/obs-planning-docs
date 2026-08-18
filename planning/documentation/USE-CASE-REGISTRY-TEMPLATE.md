@@ -1,165 +1,26 @@
 # Use-Case Registry Template
 
-Status: active reusable recommended template
-Doc version: v0.1.0-semantic-use-case-registry
-Purpose: exact recommended shape for reusable-family or project-local semantic Use-Case Registries.
+Status: active reusable template
 
-## 1. Registry Identity
+```markdown
+# <Family> Use-Case Registry
 
-| Field | Value |
-|---|---|
-| Registry ID | <ID> |
-| Status | active / provisional / deferred / superseded |
-| Parent Direction Registry | <reference> |
-| Scope | <scope> |
-| Owner | <file/area> |
+Status: active semantic registry
+Parent Direction Registry: <path>
 
-## 2. Authority
-
-```text
-This registry owns:
-  complete semantic Use-Case entries;
-
-Workflow/template/area owners own:
-  complete repeated behavior and concrete state;
-
-Root UCM owns:
-  executable commands and permissions;
-
-Tampermonkey owns:
-  projection only.
+## <UC-ID> — <Semantic Name>
+**Status:** <current status>
+**Parent Direction:** <DIR-ID>
+**Purpose:** <why this capability exists>
+**Trigger / accepted input:** <recognizable entry>
+**Result / end state:** <meaningful result or explicit unresolved end>
+**Boundaries:** <non-goals / authority limits>
+**Topology / optionality:** <when material>
+**Owner route:** <canonical owner(s)>
+**Scenario owner(s):** <for detailed application behavior; otherwise none>
+**Required supporting reads:** <only when necessary>
+**Related command:** <only when real command exists>
+**Dependencies / handoffs:** <when material>
 ```
 
-## 3. Registry Index
-
-| Use-Case ID | Semantic name | Status | Direction | Owner route | Related command |
-|---|---|---|---|---|---|
-| <UC-ID> | <name> | <status> | <DIR-ID> | <reference> | <command/none> |
-
-## 4. Use-Case Entry
-
-### <UC-ID> — <Semantic Use-Case Name>
-
-#### Status And Ownership
-
-| Field | Value |
-|---|---|
-| Status | active / accepted / provisional / deferred / superseded |
-| Parent Direction | <reference> |
-| Complete semantic owner | <this registry> |
-| Main workflow/template/area owner | <reference> |
-| Related command | <UCM command reference or none> |
-| Implementation status | documented / partial / not implemented / unknown |
-
-#### Purpose
-
-<Independently useful capability/result.>
-
-#### Trigger / Accepted Input
-
-```text
-<trigger/input>
-```
-
-#### Result / End State
-
-```text
-<understandable result or explicit unresolved/deferred state>
-```
-
-#### Boundaries / Non-Goals
-
-```text
-included:
-  <scope>;
-
-excluded:
-  <scope>;
-```
-
-#### Topology / Optionality
-
-```text
-mandatory internal flow:
-  <only when owned by the workflow>;
-
-optional branches:
-  <branches>;
-
-repeatability:
-  <rule>;
-
-handoffs:
-  <explicit boundaries>;
-```
-
-#### Owner Route
-
-```text
-1. <registry/area entry>;
-2. <workflow>;
-3. <template>;
-4. <project-local owner/source>.
-```
-
-#### Supporting Reads
-
-| Source | Why |
-|---|---|
-| <reference> | <reason> |
-
-#### Command Relationship
-
-```text
-command exists:
-  yes / no;
-
-when yes:
-  UCM owns trigger, English name, output and permissions;
-
-use-case activation:
-  establishes context only.
-```
-
-#### Activation
-
-**Adaptive**
-
-```text
-<use remembered current context when sufficient; reread when uncertain>
-```
-
-**Full**
-
-```text
-<always reread complete entry and relevant owner route>
-```
-
-#### Dependencies / Handoffs
-
-| Target | Relation | Meaning |
-|---|---|---|
-| <reference> | depends on / optional / hands off / supports / alternative | <meaning> |
-
-#### Open Decisions
-
-| Decision | Status | Conservative fallback |
-|---|---|---|
-| <decision> | open / deferred | <fallback> |
-
-## 5. Provisional Candidates — Optional
-
-List candidates separately. Do not present them as active Use Cases until the independent trigger/result criterion passes.
-
-## 6. Validation
-
-```text
-- unique Use-Case IDs;
-- independent trigger/result/value;
-- one complete semantic owner;
-- workflow body is linked, not copied;
-- optionality/dependencies explicit;
-- related command exists in UCM before it is claimed;
-- registry activation grants no repository permission;
-- provisional status remains visible.
-```
+A registry owns semantic entries. Purpose, trigger, result, boundaries and owner route must be explicit in the registry entry itself rather than merely implied by its name or downstream workflow. Scenario files own detailed application behavior; command routing owns executable shortcuts.

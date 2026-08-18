@@ -9,7 +9,7 @@ Doc version: v1.3.0-note-image-insertion-and-asset-transfer
 Historical repository context:
 
 - area: [`planning/areas/documentation-workbench/`](README.md);
-- current high-level plan: [`planning-draft.md`](planning-draft.md);
+- historical high-level draft: [`historical-planning-draft.md`](historical-planning-draft.md);
 - retired complete item bodies: [`retired-planning-items.md`](retired-planning-items.md).
 
 Selected source snapshot:
@@ -2380,7 +2380,7 @@ Finalized inactive bodies live only in [`retired-planning-items.md`](retired-pla
 ## 12. Next Gate
 
 ```text
-review this register and planning-draft.md
+review this historical register and historical-planning-draft.md
   → inspect the `0.6.4-prototype` replacement diff
   → execute browser and real-GitHub acceptance for image insertion, binary verification, transfer/collision/partial recovery and existing categories/picker/rich-Markdown behavior
   → keep production architecture pending

@@ -14,7 +14,7 @@ planning/documentation/reviewable-agent-output-and-commands-workflow.md
 Used by route/examples chain:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
 ```
 
 This example demonstrates valid execution only. It does not own response-level command semantics, routing or permission boundaries.

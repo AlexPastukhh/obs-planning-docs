@@ -13,7 +13,7 @@ Owner docs live in:
 ```text
 planning/documentation/*-workflow.md
 planning/documentation/*-template.md
-planning/planning-use-case-map.md
+planning/command-routing.md
 planning/areas/*
 ```
 
@@ -22,15 +22,14 @@ planning/areas/*
 | Example | Type | Owner | Status |
 |---|---|---|---|
 | `PLAN-COMMAND-VALID-EXECUTION-EXAMPLE.md` | Command-planning execution | `command-planning-workflow.md`, `documentation-principles-read-workflow.md` | current |
-| `ARCHIVE-SOURCE-VS-OUTPUT-PACKAGE-EXAMPLE.md` | Archive read-source vs output-package source selection | `reviewable-agent-output-and-commands-workflow.md`, root UCM | current |
+| `ARCHIVE-SOURCE-VS-OUTPUT-PACKAGE-EXAMPLE.md` | Archive read-source vs output-package source selection | `reviewable-agent-output-and-commands-workflow.md`, root Command Routing | current |
 | `PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md` | File-update planning | `file-update-overview-workflow.md` | current |
-| `CRITICAL-REVIEW-COMMAND-EXAMPLE.md` | Critical review | root UCM and reviewable-output owner | current |
-| `CURRENT-PLANNING-STATE-RESPONSE-EXAMPLE.md` | Current-state response | root UCM and relevant state owners | current |
+| `CRITICAL-REVIEW-COMMAND-EXAMPLE.md` | Critical review | root Command Routing and reviewable-output owner | current |
+| `CURRENT-PLANNING-STATE-RESPONSE-EXAMPLE.md` | Current-state response | root Command Routing and relevant state owners | current |
 | `LEVEL-2-KEY-POINTS-SUMMARY-EXAMPLE.md` | Reviewable Level 2 output | `reviewable-agent-output-and-commands-workflow.md` | current |
 | `GOAL-MAP-BRIEF-RESPONSE-EXAMPLE.md` | Goal Map brief | relevant Goal Map owners | current |
 | `GOAL-MAP-SYNC-COMMAND-EXAMPLE.md` | Goal Map sync | relevant Goal Map owners | current |
 | `STATUS-RECONCILIATION-SCENARIO-PROJECT-EXAMPLE.md` | Status reconciliation | relevant status owners | current |
-| `SHARED-VISIBILITY-SCENARIO-PROJECT-EXAMPLE.md` | Shared visibility | relevant visibility owners | current |
 | `SOURCE-USAGE-CASCADE-GENERIC-EXAMPLE.md` | Source-usage cascade | relevant cascade owners | current |
 
 Generic examples may be used as demonstrations only.
@@ -49,9 +48,9 @@ Do not copy their routes/state as active configuration for another project.
 
 ```text
 - Do not use examples as rule owners.
-- Do not keep stale example references in the root UCM.
+- Do not keep stale example references in the root Command Routing.
 - Do not require absent project-specific files just because an example mentions them.
-- Do not treat an example English name as authoritative when the concrete root UCM differs.
+- Do not treat an example English name as authoritative when the concrete root Command Routing differs.
 - Do not move archive source-selection rules out of the owner workflow into this index.
 ```
 

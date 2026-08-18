@@ -1,202 +1,112 @@
 # Planning Docs Architecture Principles
 
 Status: active reusable architecture principles
-Doc version: v1.1.0-delegated-command-registry
-Scope: stable reusable boundaries for projects that use `planning/documentation/` as a portable process layer.
+Scope: stable reusable boundaries for repository planning/documentation systems.
 
-## 1. Layer Boundary
+## Layer Boundary
 
 ```text
 planning/documentation/
-  = reusable process layer;
+  = reusable methodology;
 
-planning/README.md
-  = project planning entry and orientation;
+repository/root navigation
+  = project orientation;
 
-planning/planning-use-case-map.md
-  = mandatory project command-system entry / root UCM;
+Direction Registries
+  = broad semantic work areas;
 
-optional project command registry such as planning/commands/
-  = delegated direct concrete command definitions;
+Use-Case Registries
+  = independently useful supported capabilities and owner routes;
 
-project Direction/Use-Case registries
-  = semantic navigation and owner routes;
+Scenario owners
+  = detailed application behavior;
 
-planning/areas/
-  = project-specific plans, applications and state.
+command-routing + command definitions
+  = optional executable shortcuts;
+
+project/application owners
+  = concrete current state/behavior/implementation.
 ```
 
-Reusable docs do not own concrete project state, schedules, implementation status, project commands or accepted product architecture.
+## Repository Discoverability Invariant
 
-## 2. Source-Of-Truth Rules
+A new reader/AI knowing only the repository root must be able to discover:
+
+1. repository purpose;
+2. major work Directions;
+3. a matching Use Case for a concrete intent;
+4. why/when it is used and what result it produces;
+5. canonical owner(s) and required reusable principles;
+6. supporting implementation/tests/examples when relevant;
+7. historical/optional/deferred/retired boundaries.
+
+No required owner may depend solely on a command, helper UI, prior conversation or knowing a filename in advance.
+
+## Source-Of-Truth Rules
+
+- one complete semantic owner per responsibility;
+- Use-Case Registry owns semantic Use-Case identity/trigger/result/boundaries/owner route;
+- Direction Registry owns broad semantic grouping/topology;
+- Scenario owns detailed application behavior;
+- workflow owns repeated process;
+- principles/terminology own reusable concept contracts;
+- template owns recommended shape;
+- profile owns optional deeper specialization;
+- field kit owns bootstrap only;
+- example demonstrates only;
+- command definition owns executable trigger/output/read/permission route;
+- generated/tool projections are not authority.
+
+## Capability Coverage, Not File Coverage
 
 ```text
-- One project root command-routing system owns commands.
-  The root UCM owns mandatory entry/global routing policy.
-  When a delegated command registry exists, each direct command file
-  owns its concrete route and canonical English name.
-- Semantic registries own Direction and Use-Case entries.
-- Workflow files own repeated process.
-- Principles/terminology owners own reusable concept contracts.
-- A cohesive methodology may combine definitions and stable principles
-  in one owner when separation would duplicate or fragment meaning.
-- Templates own recommended exact shape.
-- Profiles own optional specialized approaches.
-- Field kits own bootstrap/setup only.
-- Area docs own concrete project-local state.
-- Examples demonstrate; they do not own rules.
-- Tampermonkey projects accepted owners;
-  it owns neither commands nor registries.
+every independently useful supported capability
+→ current Use Case
+
+every active canonical owner
+→ reachable from a current Use Case
+  or explicit supporting-owner route
+
+every file
+≠ separate Use Case
 ```
 
-Do not maintain two active owners for the same definition/principle contract merely to preserve a terminology/principles file split.
+## Planning Boundary
 
-## 3. Idea And Current-Owner Boundary
+Planning Item, Planning Draft and Full Picture Matrix are not required target ontology/stages. Historical records may remain provenance.
+
+Application planning uses:
 
 ```text
-idea-planning-principles-and-terminology.md
-  → shared Idea / Idea Variant / review-depth semantics;
-
-idea-review-and-planning-workflow.md
-  → selected source to reviewed Ideas when answer-seeking work is material;
-
-application-planning/application-planning-drafting-workflow.md
-  → Planning Draft, workflow integrity, questions, risks, alternatives and evidence revision;
-
-project-local owner/area
-  → accepted current project meaning and state.
+Need / desired result
+→ solution/workflow selection
+→ Application responsibility when justified
+→ optional Spine Scenario(s)
+→ Scenario discovery
+→ Scenario Drafts
+→ DATA / Behavior Items
+→ Domain / Slice when useful
 ```
 
-Do not create a universal intermediate semantic atom between source material and real planning owners. An Idea is answer-seeking work, not a replacement for facts, constraints, decisions, Scenarios, workflow steps or other owners.
+Spine is temporary scaffolding, not a permanent entity type.
 
-Historical Planning Item registers may remain as provenance/migration sources, but reusable target methodology does not route new work through them.
+## Bootstrap Vs Runtime
 
-Repository placement, import, storage or application integration remain separate project-local decisions.
+Bootstrap uses `PORTABLE-STARTER-KIT.md` and field kits only until runtime navigation/registries/command-routing exist. Runtime owners always win afterward.
 
-## 4. Portable Baseline
-
-The reusable planning baseline is:
+## No Silent Promotion
 
 ```text
-readable Markdown or equivalent reviewable content;
-complete source context;
-explicit review;
-traceable Ideas/current conclusions when answer-seeking work is material;
-direct routing to real current owners;
-separate authorization for repository updates.
+raw source ≠ decision
+Idea ≠ accepted current meaning
+implementation idea ≠ architecture
+risk ≠ evidence of failure
+example ≠ authority
+projection/view ≠ canonical state
+profile ≠ mandatory route
+historical record ≠ current ontology
 ```
 
-Reusable methodology must not claim an application-native runtime, managed-object creation, database, storage model or automatic dependency mechanism unless that behavior has an explicit implemented owner.
+## Progressive Complexity
 
-## 5. Optional Specialized Profiles
-
-A profile may define a more specialized representation, such as Scenario/Domain/Slice planning.
-
-Rules:
-
-```text
-- selecting a profile is explicit;
-- a profile does not become a universal planning stage;
-- not selecting the profile does not make a sufficient Planning Draft incomplete;
-- simple and non-application work may remain in the Planning Draft;
-- project-specific profile application remains project-local.
-```
-
-## 6. Bootstrap Vs Runtime
-
-Bootstrap:
-
-```text
-PORTABLE-STARTER-KIT.md
-field-kits/*
-```
-
-Runtime:
-
-```text
-planning/README.md
-planning/planning-use-case-map.md
-planning/workflow-activation-map.md
-planning/root-source-sync-register.md
-planning/areas/*
-relevant planning/documentation owners.
-```
-
-Field kits stop being routers after runtime files exist.
-
-## 7. No Silent Promotion
-
-```text
-raw source
-  ≠ accepted Idea or current decision;
-
-proposed Idea
-  ≠ separate Candidate entity
-  ≠ accepted current meaning;
-
-AI assumption
-  ≠ user decision;
-
-implementation idea
-  ≠ architecture;
-
-risk
-  ≠ evidence of failure;
-
-example
-  ≠ authority;
-
-local mapping
-  ≠ reusable principle;
-
-full-message source
-  ≠ normalized Idea/current-owner meaning;
-
-view or projection
-  ≠ canonical state;
-
-profile
-  ≠ mandatory project route.
-```
-
-## 8. Progressive Complexity
-
-Use the smallest owner and representation that preserve the required meaning.
-
-```text
-semantic core
-  → compact representation
-  → local expansion
-  → separate artifact or specialized profile when justified.
-```
-
-Do not create files, folders, schemas, object types or planning stages in advance.
-
-## 9. Command Vs Semantic Registry Authority
-
-Concrete command behavior:
-
-```text
-1. project root UCM for command-system entry/global policy;
-2. selected delegated command definition when the project uses a command registry;
-3. linked owner workflow/template/area docs;
-4. examples only as demonstrations;
-5. Tampermonkey projection after the route exists.
-```
-
-Semantic registries provide identities and routes. Activating a registry entry does not grant command or repository permissions.
-
-## 10. Update Safety
-
-Broad reusable changes require:
-
-```text
-documentation architecture preflight;
-owner classification;
-file-update plan;
-complete replacement files when packaged;
-exact local base verification;
-diff review before commit or push.
-```
-
-A planned update or replacement archive does not authorize commit or push.
+Use the smallest owner/representation that preserves required meaning. Create new files, schemas, objects, maps or stages only when independent responsibility/review/reuse/navigation/change ownership justifies them.

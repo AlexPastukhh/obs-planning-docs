@@ -28,7 +28,7 @@ Application-level repository actions and acceptance rules are owned by:
 
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md
-  → planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-MAP.md
+  → planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md
 ```
 
 ## Explicit Repository Check / Sync / Save

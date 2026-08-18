@@ -417,7 +417,7 @@ Activate repeatable behavior without manually restating the complete workflow.
 
 #### Inputs
 
-Command body, active chat context, UCM route, owner docs, key reminders.
+Command body, active chat context, Command Routing route, owner docs, key reminders.
 
 #### Outputs
 
@@ -425,7 +425,7 @@ A planning answer, archive, review or other command-specific result.
 
 #### Tools And Environments
 
-Tampermonkey command palette, repository UCM and owner docs, ChatGPT.
+Tampermonkey command palette, repository Command Routing and owner docs, ChatGPT.
 
 #### Dependencies
 
@@ -1026,7 +1026,7 @@ Which historical questions the user has actually failed to answer later, and wha
 | Current step / need | Existing solution | Why it currently helps | Remaining uncertainty |
 |---|---|---|---|
 | Reusable AI behavior | Documentation principles, workflows and templates | Reduces repeated prompting and makes output reviewable | Long-term discoverability and synchronization |
-| Command activation | Tampermonkey command palette plus UCM/owner files | Fast command insertion with route reading | Projected reminders may become stale |
+| Command activation | Tampermonkey command palette plus Command Routing/owner files | Fast command insertion with route reading | Projected reminders may become stale |
 | Controlled file application | Replacement archive plus PowerShell and pasted Git diff | Predictable full-file replacement and review boundary | Failure-output handling and manual handoffs |
 | Long-term planning | Goal Maps, day plans and sessions | Connects large goals to executable work | Exact linkage to application-planning artifacts |
 | Cross-file explanation | Slice drafts and visual diagrams | Shows a complete algorithm in one place | Synchronization with real code symbols |

@@ -26,7 +26,7 @@ This workflow does not commit or push.
 
 ```text
 Root command route:
-  planning/planning-use-case-map.md
+  planning/command-routing.md
 
 Active source registry:
   planning/dashboard/index.md

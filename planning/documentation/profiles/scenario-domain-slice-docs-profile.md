@@ -10,12 +10,12 @@ Use this profile when a project needs separate Scenario/Domain/Slice documentati
 
 This is a specialized profile, not a universal planning stage.
 
-For a simple application or a solution that is not application development, the project may keep Scenarios in the Planning Draft and omit separate Scenario DATA, Behavior Item, Domain and Slice artifacts when they do not improve the work.
+For a simple application or a solution that is not application development, the project may keep Scenarios in the current application planning and omit separate Scenario DATA, Behavior Item, Domain and Slice artifacts when they do not improve the work.
 
 When selected, the profile preserves this dependency direction:
 
 ```text
-Planning Draft / current application meaning
+current application planning / current application meaning
   → optional Spine Scenario while boundaries are unclear
   → clean Scenario Reference Objects
   → Scenario DATA Reference Objects
@@ -127,7 +127,7 @@ Responsibility-layer classification is a later analytical artifact. Do not put c
 ```text
 - Do not force this profile on projects
   that do not use Scenario/Domain/Slice planning.
-- Do not require this profile merely because a Planning Draft has Scenarios.
+- Do not require this profile merely because a current application planning has Scenarios.
 - For simple or non-application solutions, do not require separate
   Scenario DATA, Behavior Item, Domain or Slice artifacts.
 - Do not use `one Need = one Scenario`; require a meaningful result and use independence signals only as supporting lenses.
@@ -136,7 +136,7 @@ Responsibility-layer classification is a later analytical artifact. Do not put c
 - Do not treat Behavior Items as Slices.
 - Do not update upstream Ideas/current owners automatically from downstream deep planning.
 - Do not make a source change silently rewrite dependent scenario artifacts.
-- Keep project-specific routes in the project root UCM.
+- Keep project-specific routes in the project root Command Routing.
 - Keep reusable route setup in the field kit.
 ```
 

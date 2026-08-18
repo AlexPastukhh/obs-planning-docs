@@ -8,14 +8,14 @@ Scope: demonstrates how Enman root use-case map routes scenario/domain/slice com
 Owner / routing files:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
 planning/documentation/profiles/scenario-domain-slice-use-case-field-kit.md
 ```
 
 Related reusable maintenance rules:
 
 ```text
-planning/documentation/use-case-map-workflow.md
+planning/documentation/command-routing-workflow.md
 planning/documentation/example-coverage-workflow.md
 ```
 
@@ -32,7 +32,7 @@ User says:
 Valid route:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
   -> Primary row: “сделай сценарий / DATA / UI scenario / behavior items”
   -> planning/diagrams/README.md when diagram/source topology is relevant
   -> scenario responsibility/artifact/drafting docs
@@ -64,7 +64,7 @@ User says:
 Valid route:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
   -> Primary row: “разбери domain draft / domain discovery / aggregate draft”
   -> planning/domain/README.md
   -> planning/domain/domain-responsibility-map.md
@@ -97,7 +97,7 @@ User says:
 Valid route:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
   -> Primary slice/server/client row
   -> slice README / responsibility map / relevant slice drafting workflows
   -> server/client templates and principles by target
@@ -130,7 +130,7 @@ User says:
 Valid route:
 
 ```text
-planning/planning-use-case-map.md
+planning/command-routing.md
   -> Primary testing row
   -> planning/testing/README.md
   -> planning/testing/testing-responsibility-map.md

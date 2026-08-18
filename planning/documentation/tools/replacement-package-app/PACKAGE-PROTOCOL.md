@@ -132,4 +132,4 @@ A protocol change is complete only when:
 2. the materialized use in `build-replacement-archive-workflow.md` is synchronized;
 3. `.linked-notes/reference-objects.json` still routes the single definition/use correctly;
 4. Core parser/validation and tests are updated;
-5. the command ↔ app compatibility matrix in `USE-CASE-MAP.md` passes review.
+5. the command ↔ app compatibility matrix in `scenarios/README.md` passes review.

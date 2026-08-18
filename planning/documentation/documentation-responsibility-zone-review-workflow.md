@@ -79,7 +79,7 @@ Use these buckets:
 | Template detail | Exact artifact/output/file shape. | template |
 | Responsibility placement | Where an information type belongs. | responsibility map |
 | Navigation/read order | How to discover or read files. | README/index |
-| Use-case route | User wording -> workflow/output/permission route. | use-case map |
+| Command route | User wording -> executable output/permission route. | project `command-routing.md` + direct `commands/*.command.md` |
 | Example candidate | Concrete demonstration of a rule/workflow/profile. | example file/index |
 | Historical/action note | What changed and why. | action log |
 | Deferred/waiting task | Future task or waiting condition. | PMR/task register |
@@ -172,6 +172,6 @@ Use short cells. Put longer reasoning below the table when needed.
 planning/documentation-migration/documentation-layer-portability-migration-plan.md
 planning/documentation/planning-docs-architecture-principles.md
 planning/documentation/documentation-responsibility-map.md
-planning/documentation/use-case-map-workflow.md
-planning/documentation/USE-CASE-MAP-TEMPLATE.md
+planning/documentation/command-routing-workflow.md
+planning/documentation/COMMAND-ROUTING-TEMPLATE.md
 ```

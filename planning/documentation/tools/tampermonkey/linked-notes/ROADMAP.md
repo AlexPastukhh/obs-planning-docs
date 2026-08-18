@@ -5,8 +5,8 @@ Scope: future directions for OBS Linked Notes. This file is not current Use-Case
 
 Current implementation baseline: `0.8.0-prototype`.
 
-Current semantic entry: [`USE-CASE-MAP.md`](USE-CASE-MAP.md).
-Canonical current Use-Case registry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md).
+Current semantic entry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md).
+Detailed Scenario navigation: [`scenarios/README.md`](scenarios/README.md).
 
 ## 1. Roadmap Rules
 
@@ -27,7 +27,7 @@ DEFERRED
   → intentionally not part of the active direction.
 ```
 
-A roadmap direction is not current application semantics merely because it is written here. If a direction changes current Linked Notes capability meaning or semantic Use-Case identity, update `USE-CASE-MAP.md` and `USE-CASE-REGISTRY.md` in the same reviewed change. Broader Documentation Workbench planning may still retain historical/planning context, but it is not current Linked Notes semantic authority.
+A roadmap direction is not current application semantics merely because it is written here. If a direction changes current Linked Notes capability meaning or semantic Use-Case identity, update `USE-CASE-REGISTRY.md` first and update affected Scenario owners/navigation in the same reviewed change when detailed behavior changes. Broader Documentation Workbench planning may still retain historical/planning context, but it is not current Linked Notes semantic authority.
 
 ## Implemented baseline — local-first files and Ordered Reference Lists
 
@@ -66,7 +66,7 @@ Reader rendering is useful independently of transport and supports the documente
 
 Current owners:
 
-- `UC-LN-READER` in [`USE-CASE-MAP.md`](USE-CASE-MAP.md);
+- `UC-LN-READER` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md), with detailed behavior routed through [`scenarios/README.md`](scenarios/README.md);
 - [`CHAT-RESPONSE-READER.md`](CHAT-RESPONSE-READER.md);
 - repository-facing response format `.linked-notes/CHAT-RESPONSE-FORMAT.md`;
 - `CHAT-001` in [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md).
@@ -321,7 +321,7 @@ Maintain both documentation routes:
 ```text
 developer / implementation chat
   → linked-notes/README.md
-  → USE-CASE-MAP.md
+  → scenarios/README.md
   → USE-CASE-REGISTRY.md
   → APP-OVERVIEW.md
   → ARCHITECTURE.md

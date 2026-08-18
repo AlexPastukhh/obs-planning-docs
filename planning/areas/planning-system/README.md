@@ -1,4 +1,15 @@
-# OBS Planning Runtime Area
+# Planning Runtime
+
+Status: active project-local runtime area
+
+Natural semantic route:
+
+```text
+direction-registry.md
+→ use-case-registry.md
+→ scenarios/README.md
+→ runtime workflow / Dashboard owners
+```
 
 Status: active minimal OBS runtime index
 Doc version: v1.1.0-runtime-contract
@@ -17,7 +28,7 @@ Tampermonkey
   does not write repository files, run git, commit or push.
 ```
 
-Day/week/month/period/year/goal planning is not a UCM command family. Open the Dashboard and enter data manually, or copy/export its JSON and sync prompt for ChatGPT-assisted repository synchronization.
+Day/week/month/period/year/goal planning is not a Command Routing family. Open the Dashboard and enter data manually, or copy/export its JSON and sync prompt for ChatGPT-assisted repository synchronization.
 
 ## Active files
 
