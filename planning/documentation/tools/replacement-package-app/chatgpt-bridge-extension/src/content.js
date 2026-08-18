@@ -3,9 +3,33 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
   let currentTask = null, abortReason = null;
 
   async function sha256Hex(bytes) { const hash = await crypto.subtle.digest("SHA-256", bytes); return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join(""); }
+  function base64ToBytes(value) { const binary = atob(value); const bytes = new Uint8Array(binary.length); for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i); return bytes; }
   async function verifiedPayload(task) {
-    const response = await fetch(task.payloadUrl, {cache: "no-store"}); if (!response.ok) throw new Error(`Artifact fetch failed: HTTP ${response.status}`);
-    const bytes = await response.arrayBuffer(); if (bytes.byteLength !== Number(task.artifactSize)) throw new Error("Artifact size changed during delivery.");
+    const bytes = await new Promise((resolve, reject) => {
+      const port = chrome.runtime.connect({name: "OBS_PAYLOAD_STREAM"});
+      let expectedSize = null, received = 0, output = null, settled = false;
+      const finishError = error => { if (settled) return; settled = true; try { port.disconnect(); } catch {} reject(error instanceof Error ? error : new Error(String(error))); };
+      port.onDisconnect.addListener(() => { if (!settled) finishError(new Error(chrome.runtime.lastError?.message || "Payload stream disconnected before completion.")); });
+      port.onMessage.addListener(message => {
+        try {
+          if (message?.type === "ERROR") { finishError(new Error(message.error || "Artifact fetch failed.")); return; }
+          if (message?.type === "META") {
+            expectedSize = Number(message.size); if (!Number.isSafeInteger(expectedSize) || expectedSize < 0 || expectedSize !== Number(task.artifactSize)) throw new Error("Artifact size changed during delivery.");
+            output = new Uint8Array(expectedSize); return;
+          }
+          if (message?.type === "CHUNK") {
+            if (!output || Number(message.offset) !== received) throw new Error("Artifact stream chunk order changed during delivery.");
+            const chunk = base64ToBytes(String(message.data || "")); if (received + chunk.length > output.length) throw new Error("Artifact stream exceeded expected size.");
+            output.set(chunk, received); received += chunk.length; return;
+          }
+          if (message?.type === "DONE") {
+            if (!output || received !== expectedSize) throw new Error("Artifact stream ended before expected size.");
+            settled = true; try { port.disconnect(); } catch {} resolve(output); return;
+          }
+        } catch (error) { finishError(error); }
+      });
+      port.postMessage({type: "START", task});
+    });
     const sha = await sha256Hex(bytes); if (sha.toLowerCase() !== String(task.artifactSha256 || "").toLowerCase()) throw new Error("Artifact changed during delivery."); return bytes;
   }
   function currentConversation() { return OBSChatGPTAdapter.conversationKey(); }
@@ -38,7 +62,14 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
 
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message?.type === "OBS_PING") { sendResponse({ok: true}); return false; }
-    if (message?.type === "OBS_TASK" && message.task && !currentTask) { executeTask(message.task); sendResponse({ok: true}); return false; }
+    if (message?.type === "OBS_TASK" && message.task) {
+      if (currentTask) {
+        const same = currentTask.taskId === message.task.taskId;
+        sendResponse({ok: same, alreadyRunning: same, error: same ? "" : "Another ChatGPT bridge task is already running in this tab."});
+        return false;
+      }
+      executeTask(message.task); sendResponse({ok: true}); return false;
+    }
   });
 
   setInterval(() => {
