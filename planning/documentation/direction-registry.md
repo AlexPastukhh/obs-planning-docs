@@ -10,6 +10,6 @@ Child Use-Case Registry: [`use-case-registry.md`](use-case-registry.md)
 
 **Purpose:** keep repository documentation discoverable, non-duplicated, correctly owned and governed by reusable principles.
 
-**Topology:** supported Use Cases are independently activatable; documentation preflight/owner classification may hand off to planning/update/registry/command/example/coverage work when needed.
+**Topology:** supported Use Cases are independently activatable. `UC-DOC-ORIENT` bootstraps reusable governance and resolves the task-specific capability/owners; owner classification may hand off to planning/update work; navigation maintenance, semantic registry maintenance and coverage review remain distinct capabilities; command maintenance remains an optional shortcut layer.
 
-**Boundaries:** examples/project state/commands/tools do not become reusable semantic owners merely because they contain documentation.
+**Boundaries:** examples/project state/commands/tools do not become reusable semantic owners merely because they contain documentation. Navigation/read-order maintenance does not duplicate semantic Use-Case/workflow bodies.

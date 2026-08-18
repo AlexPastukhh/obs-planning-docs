@@ -74,14 +74,29 @@ Current Conclusion
 
 The review tests whether the correction deserves implementation; it does not defend a change merely because it already appears in the diff.
 
-## 5. Finding Propagation And User Intervention
+## 5. Current Review Plan And Finding Propagation
+
+Establish `Current Conclusions` before aggregate delta.
+
+For ReviewDiff output:
+
+```text
+Current Plan
+= the reviewed repository transition
+  plus the currently selected corrective route(s) from this review.
+```
+
+`Current Plan` is an output baseline, not an application approval state and not proof that selected corrections have already been applied.
+
+A confirmed defect with one clearly selected correction belongs in `Confirmed Findings` + `Current Conclusions`. It does **not** stay in aggregate `Questions / Risks / Problems` merely because the correction has not yet been applied.
 
 Material local findings propagate only as far as needed:
 
 ```text
 changed line/file finding
 → affected owner / Use Case / Scenario
-→ Questions / Risks / Problems when unresolved
+→ Current Conclusion / selected correction when resolved
+→ Questions / Risks / Problems only when unresolved/adverse relative to Current Plan
 → whole-change conclusion when broader
 ```
 
@@ -101,10 +116,61 @@ When alternatives are material:
 ```text
 Idea Variants
 → Current Selected Variant when one route is justified/selected
-→ unresolved alternatives remain explicit in Questions / Risks / Problems
+→ selected route becomes Current Plan
+→ only unresolved alternatives remain explicit in Questions / Risks / Problems
 ```
 
-## 6. Required Review Output
+## 6. Aggregate Questions / Risks / Problems
+
+Use the shared aggregate contract from the generic Idea methodology.
+
+Every real unit states at minimum:
+
+```text
+Current Plan
+Finding
+Relation / Impact On Current Plan
+```
+
+Add Related Idea IDs when applicable. Add Needed Resolution / Treatment, fallback and Blocking only when useful.
+
+Examples of valid aggregate content:
+
+```text
+- evidence needed before a selected correction can be judged safe;
+- a material user/product choice still unresolved;
+- a residual risk that remains under the current correction plan;
+- an unresolved conflict between current owners.
+```
+
+Not valid here:
+
+```text
+- confirmation that a selected correction is correct;
+- a mechanical fix already selected into Current Conclusions;
+- an ordinary ReviewDiff boundary;
+- reasoning notes with no unresolved/adverse effect on Current Plan.
+```
+
+If empty: `No material unresolved issues identified.`
+
+## 7. Potential Simplifications / Better Routes
+
+Use this section only for a material **not-yet-selected** alternative that would change the Current Plan/correction route.
+
+Each unit states:
+
+```text
+Current Plan
+Candidate Better Route
+Change To Current Plan
+Why Potentially Better
+Status
+```
+
+Reference Related Idea IDs when applicable. Once selected, move the route into Current Conclusions / Current Plan and remove it from this section.
+
+## 8. Required Review Output
 
 For a non-trivial ReviewDiff review, produce a compact reviewable structure:
 
@@ -112,15 +178,13 @@ For a non-trivial ReviewDiff review, produce a compact reviewable structure:
 Checked Scope / Owners
 Confirmed Findings
 Corrective Ideas / Idea Variants when material
-Current Conclusions
+Current Conclusions / Current Plan
 Questions / Risks / Problems
 Potential Simplifications / Better Routes when material
 ReviewDiff Verdict
 ```
 
-Material Idea-derived findings reference their Idea IDs. If no material unresolved issues exist, say:
-
-`No material unresolved issues identified.`
+Material Idea-derived aggregate findings reference their Idea IDs.
 
 Allowed whole-diff verdicts:
 
@@ -130,13 +194,29 @@ NEEDS CORRECTION
 BLOCKED BY MATERIAL DECISION
 ```
 
+Verdict rules:
+
+```text
+APPROVABLE
+  → no material unapplied correctness correction remains
+    and no material unresolved correctness/ownership issue remains;
+
+NEEDS CORRECTION
+  → a material confirmed correction is still absent from the reviewed transition,
+    even when Questions / Risks / Problems is empty because the correction route is already selected;
+
+BLOCKED BY MATERIAL DECISION
+  → a material choice/evidence/authority gap prevents safe selection of the correction/current route.
+```
+
 `APPROVABLE` is a semantic review conclusion only. It does not execute or authorize Replacement Package App Finalize, Git staging, commit or push; those remain explicit user/application actions under their own permissions.
 
-## 7. Boundaries
+## 9. Boundaries
 
 - Do not treat successful Apply, fingerprint equality or a persisted currentReview as semantic approval.
 - Do not require an AI approval flag in application state merely to use this methodology.
 - Do not create a parallel ReviewDiff-specific Idea ontology.
 - Do not rewrite historical provenance just to remove old wording.
 - Do not silently promote implementation details into accepted architecture.
-- Do not approve a diff while a material unresolved correctness/ownership issue remains hidden.
+- Do not approve a diff while a material unapplied correction or unresolved correctness/ownership issue remains hidden.
+- Do not use aggregate sections as a log of selected corrections or completed reasoning.

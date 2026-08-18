@@ -50,24 +50,46 @@ Idea <ID>
 
 Do not create file-edit variants as a copy of conceptual alternatives.
 
-### Current conclusions
+### Current Plan / Current conclusions
 
-<Selected/current planning meaning that concrete Update Steps implement.>
+<Selected/current planning meaning that concrete Update Steps implement. This is the baseline referenced by aggregate units.>
 
 ### Questions / Risks / Problems
 
-This aggregate section is present for every File Update Plan, including mechanical updates.
+This aggregate section is present for every File Update Plan, including mechanical updates. It contains only material unresolved/adverse delta relative to the Current Plan.
 
-- `[IDEA-X] <material unresolved question/risk/problem>`
-- `No material unresolved findings identified.` when genuinely empty.
+```markdown
+#### [Q/R/P-<ID>] — <finding title>
 
-Material findings reference Related Idea IDs. Unresolved Idea Variants remain here and do not silently enter Update Steps.
+**Related Idea(s):** `IDEA-X` <!-- when applicable -->
+**Current Plan:** <the selected file-update route relevant to this finding>
+**Finding:** <unresolved question / residual risk / unresolved problem>
+**Relation / Impact On Current Plan:** <why it still matters to the selected plan>
+**Needed Resolution / Treatment:** <when applicable>
+**Fallback:** <only when real>
+**Fallback Relation:** fallback only; not Current Plan
+**Blocking:** <yes / no, when useful>
+```
+
+At minimum every real unit states `Current Plan`, `Finding`, and `Relation / Impact On Current Plan`. If none: `No material unresolved issues identified.`
+
+Do not put accepted Current Conclusions, ordinary Update Step boundaries, or already selected corrections/simplifications here.
 
 ### Potential Simplifications / Better Routes — When material
 
-- `[IDEA-X] <material simplification / better route>`
+```markdown
+#### [S-<ID>] — <candidate better route>
 
-Omit this section when no material simplification was found. Do not use it as an alternate list of file-edit steps.
+**Related Idea(s):** `IDEA-X` <!-- when applicable -->
+**Current Plan:** <the selected file-update route>
+**Candidate Better Route:** <not-yet-selected route>
+**Change To Current Plan:** <what would change if accepted>
+**Why Potentially Better:** <reason>
+**Tradeoff / Evidence:** <when material>
+**Status:** candidate / unresolved / needs decision
+```
+
+Omit this section when no material unselected simplification exists. Once accepted, move the route into Current Conclusions / Update Steps and remove it from this section.
 
 ### Update Step <ID> — <name>
 
@@ -149,8 +171,9 @@ Use this section only when package/source/delivery classification is relevant. S
 - Keep table cells short.
 - Perform Idea analysis only when conceptual uncertainty is material; do not manufacture it for mechanical updates.
 - `Current Selected Variant` is the normal selected-variant term; use `fallback` only when genuinely a fallback.
-- Questions / Risks / Problems is required for every File Update Plan and uses Related Idea IDs for material Idea findings.
-- Potential Simplifications / Better Routes is conditional on real material findings and uses Related Idea IDs.
+- Questions / Risks / Problems is required for every File Update Plan; every real unit states Current Plan and its unresolved/adverse relation or impact, with Related Idea IDs when applicable.
+- Potential Simplifications / Better Routes is conditional on a real unselected candidate change to Current Plan; each unit states Current Plan + Change To Current Plan.
+- Accepted/resolved findings are integrated into Current Conclusions / Update Steps and removed from aggregate sections.
 - Ordered steps are primary when dependencies or migration order matter.
 - Numbered Actions state what is done and in what order.
 - The per-step file table retains the old changed-file view:

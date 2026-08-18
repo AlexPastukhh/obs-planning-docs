@@ -1,17 +1,22 @@
 # Documentation Principles Read Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.2.0-command-planning-owner
-Scope: full or targeted documentation architecture, ownership and update preflight before planning or changing documentation.
+Doc version: v0.3.0-reusable-governance-bootstrap
+Scope: bootstrap or refresh reusable documentation architecture/governance context, then resolve the task-specific Documentation Use Case and canonical owners before material documentation work.
 
 ## 1. Purpose
 
-Use this workflow for commands such as:
+This workflow is the reusable process owner behind the bootstrap command aliases such as:
 
 ```text
+бутстреп документации
+бутстреп принципов документации
+режим документации
 прочитай принципы документации
 прочти принципы документации
 принципы документации
+bootstrap reusable documentation principles
+documentation governance mode
 read documentation principles
 documentation principles
 docs principles
@@ -19,13 +24,14 @@ docs principles
 
 It is also a required preflight for `спланируй команду` when the route has not already been read and remembered in the current chat.
 
-This workflow owns the read/preflight process. It does not replace the principles, responsibility maps, update workflows, templates or project root Command Routing that own their own rules.
+This workflow owns **how to establish governance context**. Semantic authority remains in the Direction/Use-Case Registries, principles, responsibility map and task-specific current owners.
 
 ## 2. Permission Boundary
 
 ```text
 This route is read-only.
-It may identify owners, required reads, risks and proposed follow-up work.
+It may identify the selected Documentation Use Case,
+canonical owners, required reads, risks and proposed follow-up work.
 It does not create or edit files.
 It does not create an archive.
 It does not commit or push.
@@ -33,12 +39,12 @@ It does not commit or push.
 
 A separate command such as `план файл-обновление` plans changes. A separate output-package command such as `давай архив` authorizes creation of a replacement package after scope approval.
 
-## 3. Full vs Targeted Read
+## 3. Full vs Targeted Bootstrap
 
-Use a full preflight when:
+Use a full bootstrap when:
 
 ```text
-- this route has not been read in the current chat;
+- reusable documentation governance has not been established in the current chat/session;
 - the chat does not remember the architecture, ownership or update boundaries;
 - the task changes command routing, reusable owners, templates, examples or portable/bootstrap behavior;
 - ownership or source-of-truth placement is uncertain;
@@ -48,32 +54,34 @@ Use a full preflight when:
 Use a targeted refresh only when:
 
 ```text
-- a current full preflight was already completed in the chat;
+- a current full bootstrap was already completed in the chat;
 - the relevant principles and boundaries are still clear;
-- only task-specific owners or recently changed source files need rereading.
+- only the selected UC/current owner or recently changed sources need rereading.
 ```
 
-When uncertain, use the full preflight.
+When uncertain, use the full bootstrap.
 
-## 4. Full Preflight Read Order
+## 4. Full Bootstrap Read Order
 
 ```text
-1. planning/command-routing.md
+1. planning/AI-WORKING-CONTRACT.md
 2. planning/README.md
 3. planning/direction-registry.md
 4. planning/use-case-registry.md
 5. planning/documentation/README.md
-6. planning/documentation/planning-docs-architecture-principles.md
-7. planning/documentation/documentation-responsibility-map.md
-8. planning/documentation/documentation-update-plan-workflow.md
-9. planning/documentation/documentation-update-workflow.md
-10. planning/documentation/documentation-responsibility-zone-review-workflow.md
-11. task-specific owner workflows/templates/area docs named by the route or task
-12. examples only when coverage or demonstration fit is relevant
-13. Tampermonkey projection owners only when helper projection is separately in scope
+6. planning/documentation/direction-registry.md
+7. planning/documentation/use-case-registry.md
+8. planning/documentation/planning-docs-architecture-principles.md
+9. planning/documentation/documentation-responsibility-map.md
+10. select the applicable UC-DOC-* for the active task when one exists
+11. read that Use Case's canonical workflow/owner route
+12. read affected project/current owners required to perform or review the task
+13. examples/helper projection only when they are separately relevant
 ```
 
-Do not expand into unrelated repository files merely because the preflight is full. Full means the complete documentation route required for the task.
+For an explicit command invocation, `planning/command-routing.md` and the selected direct command definition are resolved before/around this owner route as required by the command system. Command Routing is not the semantic bootstrap owner.
+
+Do not expand into unrelated repository files merely because the bootstrap is full.
 
 ## 5. Task-Specific Expansion
 
@@ -95,37 +103,38 @@ Read Tampermonkey owners only when projection is explicitly part of the planned 
 
 ### Broad documentation update
 
-Read the relevant reusable owner workflows/templates and local area docs after completing the full preflight. Use `documentation-update-plan-workflow.md` for plan-only work and `documentation-update-workflow.md` for approved changes or replacement packages.
+Resolve the applicable `UC-DOC-*`, then read its reusable owner workflows/templates and affected current/project owners. Use `documentation-update-plan-workflow.md` for conceptual plan-only work and `documentation-update-workflow.md` for approved changes or replacement packages.
 
 ### Bootstrap or portable-copy work
 
-Read `PORTABLE-STARTER-KIT.md` and the necessary field kits only while creating or restructuring project-root artifacts. Field kits do not become runtime routers after those artifacts exist.
+`PORTABLE-STARTER-KIT.md` bootstraps reusable architecture into another repository. It is not the runtime chat/session bootstrap owned by this workflow. Read the starter kit/field kits only while creating or restructuring repository-root artifacts; field kits do not become runtime routers after those artifacts exist.
 
 ## 6. Required Output
 
-For non-trivial use, report:
+For an explicit bootstrap command, return a compact assimilation result:
 
 ```text
-Checked:
-  <files actually read>
+Reusable documentation governance loaded.
 
-Not checked:
-  <relevant sources not read or unavailable>
+Selected Documentation Use Case:
+  <UC-DOC-* / none yet>
 
-Authority / layer:
-  <root Command Routing / reusable workflow / template / responsibility map / area owner>
+Reusable owners loaded:
+  <owners actually read>
 
-Correct owner zone:
-  <where the requested information or behavior belongs>
+Current/project owners:
+  <task-specific owners / none yet>
 
-Required route read:
-  <task-specific owner chain>
+Permission boundary:
+  read-only bootstrap; follow-up work requires its own route/permission
 
-Boundaries:
-  <what this preflight did not authorize or inspect>
+Material unresolved ownership/questions:
+  <findings / none>
 ```
 
-For `спланируй команду`, this preflight feeds the command plan and final `План файл-обновление`; it is not a second independent command execution.
+If no active task exists, do not force a target question. State that governance is loaded and the next documentation task will be resolved through `DIR-DOCUMENTATION` / `UC-DOC-*`.
+
+For internal preflight use (for example `спланируй команду`), this assimilation may feed the outer command rather than appear as a second independent command result.
 
 ## 7. Owner-Placement Checks
 
@@ -133,25 +142,23 @@ Before proposing documentation changes, determine:
 
 ```text
 1. Is the information reusable or project-specific?
-2. Is it a principle, workflow, template, field kit, profile, example, route, tool note or local area rule?
+2. Is it Direction, Use Case, Scenario, principle, workflow, template, profile, field kit, example, navigation, tool note or current state?
 3. Does an owner already exist?
 4. Would a new file duplicate an existing owner?
-5. Does README/navigation need an update?
-6. Does the root Command Routing route itself need an update?
-7. Is Tampermonkey projection in scope now or deferred?
+5. Does natural navigation/read order need UC-DOC-MAINTAIN-NAVIGATION?
+6. Does semantic registry meaning need UC-DOC-MAINTAIN-REGISTRIES?
+7. Does Command Routing need UC-DOC-MAINTAIN-COMMAND?
+8. Is Tampermonkey projection in scope now or merely derived follow-up?
 ```
 
 ## 8. Do Not
 
 ```text
+- Do not create a second reusable-documentation bootstrap artifact merely for session orientation.
 - Do not treat field kits as runtime routers after project root files exist.
-- Do not treat examples or Tampermonkey userscripts as command authority.
-- Do not copy full owner logic into the root Command Routing or examples.
+- Do not treat examples, helper projections or Tampermonkey userscripts as semantic/command authority.
+- Do not copy full owner logic into Command Routing, commands or examples.
 - Do not infer that a compact command prompt contains the complete current workflow.
 - Do not claim a source was checked when it was not read.
-- Do not create, edit, archive, commit or push from this read-only command.
+- Do not create, edit, archive, commit or push from this read-only route.
 ```
-
-## Repository Navigation / Governance Check
-
-Before material documentation work, resolve the current documentation Use Case through `planning/documentation/use-case-registry.md` and, for AI/chat work, read `planning/AI-WORKING-CONTRACT.md`. Do not rely on a command or filename as the only discovery path.

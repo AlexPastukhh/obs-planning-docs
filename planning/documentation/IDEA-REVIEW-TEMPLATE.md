@@ -1,8 +1,8 @@
 # Idea Review Template
 
 Status: active reusable output template
-Doc version: v1.0.0-shared-idea-review
-Scope: recommended Markdown representation for Standard Idea Review and optional Deep Idea Planning.
+Doc version: v1.1.0-current-plan-aggregate-contract
+Scope: recommended Markdown representation for Standard Idea Review, optional Deep Idea Planning and aggregate findings relative to Current Plan.
 
 Mandatory checks do not require empty fields to be printed.
 
@@ -42,25 +42,58 @@ Mandatory checks do not require empty fields to be printed.
 ### Next Action
 ```
 
+## Current Overall Conclusions
+
+Establish the selected/current baseline before printing aggregate delta.
+
+```markdown
+# Current Overall Conclusions
+
+- <selected/current meaning>
+```
+
+When no change/answer is selected for a scope, preserve that truth explicitly rather than inventing a plan.
+
 ## Required Aggregate
 
 ```markdown
 # Questions / Risks / Problems
 
-### [IDEA-<ID>] — <finding title>
-<material unresolved finding>
+### [Q-<ID>] — <finding title>
+
+**Related Idea(s):** `IDEA-<ID>` <!-- when applicable -->
+**Current Plan:** <actual selected/current baseline>
+**Finding:** <material unresolved question / residual risk / unresolved problem>
+**Relation / Impact On Current Plan:** <why it still matters>
+**Needed Resolution / Treatment:** <when applicable>
+**Fallback:** <only when real>
+**Fallback Relation:** fallback only; not Current Plan
+**Blocking:** <yes / no, when useful>
 ```
 
-If none: `No material unresolved issues were identified in the current review.`
+Omit meaningless optional fields. `Current Plan`, `Finding`, and `Relation / Impact On Current Plan` are required for every real unit.
+
+If none: `No material unresolved issues identified.`
+
+Do not place accepted/resolved conclusions in this section.
 
 ## Material Simplifications — When Found
 
 ```markdown
 # Potential Simplifications / Better Routes
 
-### [IDEA-<ID>, IDEA-<ID>] — <simplification>
-<why>
+### [S-<ID>] — <candidate better route>
+
+**Related Idea(s):** `IDEA-<ID>` <!-- when applicable -->
+**Current Plan:** <actual selected/current baseline>
+**Candidate Better Route:** <not-yet-selected alternative>
+**Change To Current Plan:** <what would change if accepted>
+**Why Potentially Better:** <reason>
+**Tradeoff / Evidence:** <when material>
+**Status:** candidate / unresolved / needs decision
 ```
+
+This section contains only unselected candidate changes to Current Plan. Once accepted, integrate the route into Current Conclusions and remove the candidate from this section.
 
 ## Practical Example
 

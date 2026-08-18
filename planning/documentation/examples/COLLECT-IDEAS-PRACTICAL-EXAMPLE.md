@@ -731,62 +731,6 @@ Motivation, Understanding, Surface и Visual meaning расширяют суще
 
 ---
 
-# Questions / Risks / Problems
-
-### [IDEA-E2] — Core Loop may add no independent value in many applications
-
-**Question:** in which practical application cases does a separate Core Loop view materially add more than recurring Scenario-chain annotation?
-
----
-
-### [IDEA-A2, IDEA-A3, IDEA-A4] — Mandatory checks must not become synthetic review theater
-
-**Risk:** chat can invent objections/refinements merely because the analytical surfaces exist.
-
-**Current constraint:** perform every required check; report only supported material findings.
-
----
-
-### [IDEA-A5, IDEA-A10] — Finding propagation must not become duplication
-
-**Current direction:** detailed reasoning stays local; aggregate section contains concise finding + Related Idea IDs.
-
----
-
-### [IDEA-F2, IDEA-F3] — Unresolved alternative must not leak into concrete file actions
-
-**Current direction:** one `Current Selected Variant` drives current Update Steps; unresolved variants remain visible here.
-
-# Potential Simplifications / Better Routes
-
-### [IDEA-A1, IDEA-A7] — Do not create context-specific Idea entity types
-
-One shared Idea methodology + two global depths is simpler.
-
-### [IDEA-A9, IDEA-C3] — Do not create dedicated workspace merely because an Idea appears inside a Workflow Step
-
-Use Standard Review or Deep Planning according to needed depth; keep inline when sufficient.
-
-### [IDEA-B2] — Do not keep universal Planning Item layer
-
-Historical `ITEM-*` records can remain provenance/history without being current ontology.
-
-### [IDEA-D1, IDEA-D2] — Do not create permanent Spine Unit or preserve full Spine when it stops adding value
-
-Temporary scaffolding is sufficient.
-
-### [IDEA-D4, IDEA-D6] — Do not create top-level section for every Actor-understanding dimension
-
-One proportional Actor Understanding / Plan block is sufficient.
-
-### [IDEA-E1] — Do not create Window / Surface Map unless explicitly selected for an application that benefits
-
-### [IDEA-E2] — Do not create Core Loop when recurring Scenario-chain notation is sufficient
-
-### [IDEA-F2, IDEA-F3] — Do not create file-edit variants for conceptual uncertainty
-
-Use Idea Variants + Current Selected Variant + one current file-update path.
-
 # Current Overall Conclusions
 
 ```text
@@ -816,7 +760,7 @@ Problem / Question / Idea
 
 Planning Item is removed from target methodology; historical ITEM-* records may remain provenance/history/migration sources.
 
-For both `собери идеи` and `план файл-обновление`, aggregate `Questions / Risks / Problems` is structurally present, and material findings/simplifications reference Related Idea IDs.
+For `собери идеи`, `план файл-обновление` and ReviewDiff semantic review, aggregate units are delta to the established Current Plan: each real unit states Current Plan and its unresolved/adverse relation or candidate change; accepted/resolved conclusions are not repeated there.
 
 For File Update planning:
 
@@ -828,3 +772,68 @@ conceptual uncertainty
 ```
 
 Unresolved alternatives remain visible in Questions / Risks / Problems rather than becoming alternate file-edit plans.
+
+# Questions / Risks / Problems
+
+### [R-IDEA-A2-A4] — Mandatory checks can still tempt synthetic review theater
+
+**Related Idea(s):** `IDEA-A2`, `IDEA-A3`, `IDEA-A4`
+
+**Current Plan:** perform every mandatory Idea check, but print only supported material findings.
+
+**Finding:** a chat may still invent objections/refinements merely because the analytical surfaces exist.
+
+**Relation / Impact On Current Plan:** this is a residual quality risk of the selected mandatory-check design; synthetic findings would corrupt review output.
+
+**Needed Resolution / Treatment:** keep `required check ≠ required populated field` explicit and reject unsupported findings during review.
+
+**Blocking:** no.
+
+---
+
+### [R-IDEA-A5-A10] — Aggregate propagation can drift into duplicated reasoning
+
+**Related Idea(s):** `IDEA-A5`, `IDEA-A10`
+
+**Current Plan:** detailed reasoning remains local; aggregate units contain only concise material delta plus Related Idea IDs and Current Plan relation.
+
+**Finding:** repeated local reasoning can still be copied into aggregate sections and create a second unsynchronized explanation.
+
+**Relation / Impact On Current Plan:** duplication would weaken the selected single-reasoning-owner boundary and make aggregate sections harder to interpret.
+
+**Needed Resolution / Treatment:** keep aggregate units concise and route the reader back to originating Ideas for detail.
+
+**Blocking:** no.
+
+---
+
+### [R-IDEA-F2-F3] — Unresolved alternatives can leak into concrete file actions
+
+**Related Idea(s):** `IDEA-F2`, `IDEA-F3`
+
+**Current Plan:** one `Current Selected Variant` / Current Plan drives one concrete file-update path; unresolved variants remain aggregate delta only.
+
+**Finding:** an unresolved refinement/variant may still be copied into Update Steps as if selected.
+
+**Relation / Impact On Current Plan:** leakage would make the concrete file plan contradict its own selected baseline.
+
+**Needed Resolution / Treatment:** require concrete Update Steps to trace only to Current Conclusions / Current Selected Variant and keep unresolved alternatives out of file actions.
+
+**Blocking:** no.
+
+---
+
+### [Q-IDEA-E2] — Independent value threshold for a separate Core Loop view remains contextual
+
+**Related Idea(s):** `IDEA-E2`
+
+**Current Plan:** Core Loop is optional and used only when a recurring high-value sequence materially adds more than Scenario-chain notation.
+
+**Finding:** the exact threshold depends on the application and cannot be made universal from the reviewed source alone.
+
+**Relation / Impact On Current Plan:** this does not change the current optional rule, but a concrete application still needs contextual judgment before creating a separate Core Loop view.
+
+**Needed Resolution / Treatment:** decide at application scope from current Scenarios/value flow; preserve no separate Core Loop by default when independent value is not demonstrated.
+
+**Blocking:** no.
+

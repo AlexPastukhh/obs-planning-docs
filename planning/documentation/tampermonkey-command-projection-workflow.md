@@ -189,25 +189,25 @@ instruction:
 
 Do not duplicate owner rules inside the userscript or refinement body.
 
-### Standalone documentation-principles command
+### Reusable documentation bootstrap command
 
-Project the accepted repository command definition as its own command profile:
+Project the accepted repository command definition as one command profile with stable ID:
 
 ```text
 id:
   documentation_principles.read
 
 command:
-  прочитай принципы документации
+  бутстреп документации
 
 englishName:
-  read documentation principles
+  bootstrap reusable documentation principles
 
-commandFamily:
-  `прочитай принципы документации` / `прочти принципы документации` / `принципы документации` / `read documentation principles` / `documentation principles` / `docs principles`
+commandFamily includes:
+  `бутстреп документации` / `бутстреп принципов документации` / `режим документации` / `прочитай принципы документации` / `read documentation principles` / `documentation governance mode`
 ```
 
-The row uses the normal adaptive, `Full` and `Copy` controls. Do not add a separate `Docs` refinement to `спланируй команду`; the standalone command already owns that user-facing route, while the plan-command owner still requires the preflight internally.
+The row uses the normal adaptive, `Full` and `Copy` controls. Do not create a second governance/bootstrap command identity for the same capability. Do not add a separate `Docs` refinement to `спланируй команду`; the bootstrap command already owns that user-facing route, while the plan-command owner still requires the preflight internally.
 
 ### Canonical plan-command projection
 
@@ -391,37 +391,19 @@ English name: collect ideas
 
 The Use Cases surface uses **Open Commands** rather than inserting a duplicate execution-like prompt. The command routes to the generic Idea methodology and does not recreate a Planning Item formation layer.
 
-## 9F. Initial Semantic Inventory
+## 9F. Semantic Inventory Source
 
-Directions:
+The helper semantic inventory is a projection of the current canonical Direction/Use-Case Registries. Do not maintain a second hand-written list here.
 
-```text
-DIR-REPOSITORY
-DIR-PLAN-SOLUTION
-DIR-DOCUMENTATION
-DIR-DOCUMENTATION-WORKBENCH
-DIR-PLANNING-RUNTIME
-DIR-PLANNING-HELPER
-DIR-LINKED-NOTES
-DIR-REPLACEMENT-PACKAGE-APP
-```
-
-Use Cases:
+Required invariant:
 
 ```text
-UC-PLAN-REALITY
-UC-PLAN-COLLECT-IDEAS → Commands redirect
-UC-PLAN-SOLUTION
-UC-PLAN-RESEARCH
-UC-PLAN-SCENARIO
-UC-PLAN-DOMAIN
-UC-PLAN-SLICE
-UC-PLAN-CONSISTENCY
-UC-DW-DOC-REF
-UC-DW-PLANNING-TO-REPOSITORY  # legacy ID, current non-item semantics
+canonical registries
+→ semantic-projections.js
+→ tests verify exact projected UC set and exact-case source paths
 ```
 
-Chat/AI/Work-State remains provisional and is not projected as accepted. Retired Planning Item formation/reconciliation and Structured User Message Composer entries are not active semantic projections.
+`UC-DOC-ORIENT` projects to the stable command ID `documentation_principles.read`; `UC-DOC-MAINTAIN-NAVIGATION` is a normal semantic Use Case without a direct command.
 
 ## 9G. Multi-Surface UI Contract
 

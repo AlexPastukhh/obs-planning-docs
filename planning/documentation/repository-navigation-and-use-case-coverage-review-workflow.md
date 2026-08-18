@@ -1,7 +1,7 @@
 # Repository Navigation And Use-Case Coverage Review
 
 Status: active reusable documentation-layer workflow
-Scope: verify that a repository can be understood from natural navigation and that supported capabilities/owners are reachable.
+Scope: verify that a repository can be understood from natural navigation and that supported capabilities/owners are reachable. This workflow is review-only and hands identified defects to the appropriate maintenance Use Case.
 
 ## Review
 
@@ -21,6 +21,10 @@ for each current Use Case:
 for each active canonical owner:
   reachable from a current Use Case or explicit supporting-owner route?
 
+for each natural navigation entry:
+  does README/index/Direction navigation reach the intended current Use Case/owner
+  without duplicating its semantic body?
+
 for each executable command:
   related current semantic Use Case when the command represents an independently useful capability?
 ```
@@ -34,3 +38,21 @@ for each executable command:
 - capability discoverable only by command/filename/helper/prior-chat knowledge = discoverability defect.
 
 Mechanical checks can validate paths, IDs, required fields and reachability. Independent usefulness and correct Scenario/Use-Case boundaries require semantic review.
+
+## Maintenance Handoffs
+
+```text
+natural README/index/read-order defect
+→ UC-DOC-MAINTAIN-NAVIGATION;
+
+Direction / Use-Case semantic contract defect
+→ UC-DOC-MAINTAIN-REGISTRIES;
+
+executable command-route defect
+→ UC-DOC-MAINTAIN-COMMAND;
+
+owner-placement uncertainty
+→ UC-DOC-FIND-OWNER.
+```
+
+The review reports the defect and appropriate handoff. It does not silently perform maintenance or gain mutation permission.

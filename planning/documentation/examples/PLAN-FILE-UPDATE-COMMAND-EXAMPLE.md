@@ -31,9 +31,17 @@ Update an existing documentation workflow to support one selected semantic rule.
 
 **Current Conclusion:** keep.
 
+### Current Plan / Current conclusions
+
+```text
+Update the canonical workflow owner with the selected rule,
+reflect it in the representation template,
+and verify navigation/command owner links.
+```
+
 ### Questions / Risks / Problems
 
-No material unresolved issues were identified in the current review.
+No material unresolved issues identified.
 
 ### Update Step 1 — Update canonical owner and representation
 

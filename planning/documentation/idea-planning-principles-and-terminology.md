@@ -1,8 +1,8 @@
 # Idea Planning Principles And Terminology
 
 Status: active reusable cross-cutting methodology owner
-Doc version: v1.0.0-shared-idea-methodology
-Scope: canonical reusable meanings and stable invariants for Idea review and deeper Idea planning across conversation review, solution/workflow planning, application planning and file-update planning.
+Doc version: v1.1.0-current-plan-aggregate-contract
+Scope: canonical reusable meanings and stable invariants for Idea review and deeper Idea planning across conversation review, solution/workflow planning, application planning, file-update planning and ReviewDiff semantic review.
 
 ## 1. Purpose And Authority
 
@@ -150,27 +150,138 @@ An `Idea Group` is lightweight navigation/integration grouping for related Ideas
 ```text
 Idea-local finding
 → Group Review when group-relevant
-→ aggregate Questions / Risks / Problems
+→ Current Conclusion / Current Selected Variant when resolved
+→ aggregate Questions / Risks / Problems only while materially unresolved/adverse
+→ Potential Simplifications / Better Routes only while a better route remains unselected
 → Whole Review when broader
 ```
 
-Promote only material findings. Detailed reasoning remains local; aggregate findings/simplifications reference Related Idea IDs.
+Promote only material findings. Detailed reasoning remains local; aggregate findings/simplifications reference Related Idea IDs when applicable.
 
-## 12. Aggregate Questions / Risks / Problems
+## 12. Current Plan Baseline
 
-For outputs that collect/review Ideas and for File Update Plans, `Questions / Risks / Problems` is mandatory as an aggregate section.
+`Current Plan` is an output label for the currently selected baseline in the finding's scope. It is not a new semantic entity or repository artifact.
 
-It may state that no material unresolved findings were identified. Do not invent content to avoid an empty result.
+Depending on the use case it may mean:
 
-## 13. Potential Simplifications / Better Routes
+```text
+collect/review Ideas
+  → current selected conclusion/variant for the relevant scope;
 
-When review discovers material simplifications or things the plan may not need, surface them explicitly and reference Related Idea IDs.
+File Update Plan
+  → the one current selected file-update route represented by Current Conclusions and Update Steps;
 
-## 14. Source Meaning Is Not Automatically An Idea
+ReviewDiff semantic review
+  → the current reviewed transition plus any already selected corrective plan used as the review baseline.
+```
+
+If no change or answer has been selected yet, do not invent one. State the actual baseline, for example:
+
+```text
+Current Plan:
+  no change selected yet; preserve current state
+```
+
+## 13. Aggregate Questions / Risks / Problems
+
+For outputs that collect/review Ideas and for File Update Plans, `Questions / Risks / Problems` is mandatory as an aggregate section. ReviewDiff semantic review uses the same aggregate contract.
+
+The section is **delta to Current Plan**, not a summary of completed reasoning.
+
+Each material unit states at minimum:
+
+```text
+Current Plan
+Finding
+Relation / Impact On Current Plan
+```
+
+Add Related Idea IDs when the finding came from Idea review. Add Needed Resolution / Treatment, Fallback and Blocking only when meaningful.
+
+Allowed content:
+
+```text
+Question
+  → a material choice/evidence gap still unresolved relative to Current Plan;
+
+Risk
+  → a material residual risk that still exists under Current Plan;
+
+Problem
+  → a material unresolved defect/conflict that still affects Current Plan.
+```
+
+Do not use the section to confirm a route that is already selected, explain why an accepted decision was correct, or restate an ordinary boundary/Update Step.
+
+Lifecycle:
+
+```text
+resolved Question
+→ integrate answer into Current Conclusion / Current Plan
+→ remove from aggregate section;
+
+fixed/resolved Problem
+→ integrate correction
+→ remove from aggregate section;
+
+Risk fully eliminated
+→ remove;
+
+Risk still materially residual
+→ may remain, but must state its impact/treatment relative to Current Plan.
+```
+
+It may state `No material unresolved issues identified.` when genuinely empty. Do not invent content to avoid an empty result.
+
+## 14. Potential Simplifications / Better Routes
+
+This section is also **delta to Current Plan**.
+
+A unit belongs here only when review finds a material **not-yet-selected** candidate that would change the Current Plan.
+
+Each material unit states at minimum:
+
+```text
+Current Plan
+Candidate Better Route
+Change To Current Plan
+Why Potentially Better
+Status: candidate / unresolved / needs decision
+```
+
+Add Related Idea IDs when applicable and tradeoffs/evidence when material.
+
+Lifecycle:
+
+```text
+candidate better route accepted
+→ update Current Selected Variant / Current Conclusion / Current Plan
+→ remove it from Potential Simplifications / Better Routes.
+```
+
+Do not list an already accepted simplification here. Do not use this section to praise or confirm the Current Plan.
+
+## 15. Fallback Boundary
+
+A fallback is not the Current Plan unless it is explicitly promoted/selected.
+
+When a real fallback is useful inside an aggregate unit, state its relation explicitly:
+
+```text
+Fallback:
+  <fallback route>
+
+Fallback Relation:
+  fallback only; not Current Plan
+```
+
+An unanswered question does not automatically create a fallback.
+
+## 16. Source Meaning Is Not Automatically An Idea
 
 A source may also contain Existing Reality/checked facts, Constraints, Decisions, Questions, Corrections and Provenance. Do not force every extracted meaning into an Idea.
 
-## 15. Do Not
+## 17. Do Not
 
 ```text
 - Do not manufacture objections, risks or refinements.
@@ -180,4 +291,7 @@ A source may also contain Existing Reality/checked facts, Constraints, Decisions
 - Do not let an unresolved refinement silently enter Current Conclusion.
 - Do not treat a local win as proof of whole-plan quality.
 - Do not turn historical source records into Ideas mechanically.
+- Do not use aggregate sections as a reasoning transcript or confirmation log.
+- Do not leave an accepted alternative in Questions / Risks / Problems or Potential Simplifications / Better Routes.
+- Do not call a fallback the Current Plan unless it was actually selected.
 ```

@@ -349,7 +349,7 @@ The reusable Command Palette provides:
 - an explicit authority boundary: the root Command Routing is the command-system entry, direct `planning/commands/*.command.md` files own individual commands, and linked owner files own behavior;
 - separate sibling controls for adaptive insertion, forced-full route insertion, approved owner-read refinements and copying, avoiding nested interactive elements;
 - one repository command definition generates both insertion variants, so command semantics and reminders cannot drift;
-- a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
+- one `bootstrap reusable documentation principles · бутстреп документации` row with adaptive, `Full` and `Copy`; legacy `режим документации` / `прочитай принципы документации` wording remains aliases of the same stable command ID;
 - a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
 - a read-only `collect ideas · собери идеи` row with adaptive, `Full` and `Copy`, whose command route uses the generic Idea methodology and preserves read-only repository permissions;
 - no creation-wording command IDs, labels or aliases for the plan-command route;
@@ -368,7 +368,7 @@ The reusable Command Palette provides:
   source_of_truth, route_read_rule, key_reminders and user_target;
 - no separate Command Routing-only mode;
 - refinement bodies, when present, stay compact and route only to the explicit owner files named by the command definition;
-- no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
+- no `Docs` refinement for `спланируй команду`; the reusable-documentation bootstrap command covers that user-facing route;
 - retired Planning Item formation/reconciliation commands are absent from the active generated command catalog; historical local snapshot entries may require explicit local reconciliation after repository migration;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
 - normal insertion/copy/import is RAM-first and performs no repository read/write; explicit Check GitHub / Sync missing / Save GitHub operate only on bounded command/helper-library paths and never run local Git, commit or push.

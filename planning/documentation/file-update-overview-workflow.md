@@ -80,11 +80,33 @@ Use `Current Selected Variant` as the normal term. Use `fallback` only when the 
 
 ## 4. Questions / Risks / Problems
 
-Every File Update Plan contains this aggregate section, including mechanical updates. Material findings discovered in Idea review reference Related Idea IDs. If no material unresolved findings exist, say so compactly rather than inventing issues.
+Every File Update Plan contains this aggregate section, including mechanical updates, and uses the shared Current-Plan-relative aggregate contract.
+
+For File Update planning:
+
+```text
+Current Plan
+= the one current selected file-update route represented by
+  Current Conclusions + concrete Update Steps.
+```
+
+Every real unit states at minimum:
+
+```text
+Current Plan
+Finding
+Relation / Impact On Current Plan
+```
+
+Material Idea-derived findings reference Related Idea IDs. Add Needed Resolution / Treatment, a real fallback and Blocking only when useful. If no material unresolved/adverse findings exist, say `No material unresolved issues identified.` rather than preserving completed reasoning.
+
+A selected correction, accepted simplification, ordinary step boundary or explanation of why the selected route is correct does **not** belong here.
 
 ## 4.1 Potential Simplifications / Better Routes — When Material
 
-When Idea review discovers a material simplification or better route that affects the update, surface it separately and reference Related Idea IDs. Do not invent a simplification merely to populate the plan, and do not duplicate ordinary concrete Update Steps here.
+Use this section only for a material **not-yet-selected** better route that would change Current Plan. Each unit states Current Plan, Candidate Better Route, Change To Current Plan, Why Potentially Better and Status; reference Related Idea IDs when applicable.
+
+Once a simplification is selected, integrate it into Current Conclusions / Update Steps and remove it from this section. Do not duplicate ordinary concrete Update Steps here.
 
 ## 5. Ordered Update Steps
 
@@ -233,8 +255,9 @@ Before finalizing the overview:
 - Conceptual alternatives are represented as Idea Variants, not file-edit variants.
 - Current Selected Variant / Current Conclusion is the conceptual basis for concrete steps.
 - Unresolved refinements do not silently enter file actions.
-- Questions / Risks / Problems exists and references Related Idea IDs for material Idea findings.
-- Material Potential Simplifications / Better Routes, when present, reference Related Idea IDs.
+- Questions / Risks / Problems exists; every real unit states Current Plan and its unresolved/adverse relation or impact, with Related Idea IDs when applicable.
+- Material Potential Simplifications / Better Routes, when present, are unselected changes to Current Plan and state Current Plan + Change To Current Plan, with Related Idea IDs when applicable.
+- Accepted/resolved findings have been removed from aggregate sections and integrated into Current Conclusions / Update Steps.
 - Mechanical updates do not contain synthetic Idea analysis.
 - Every planned file belongs to at least one update step.
 - Every non-trivial step has a numbered action list.
@@ -255,6 +278,8 @@ Before finalizing the overview:
 - Do not create File Edit Variant A/B for conceptual uncertainty.
 - Do not turn Possible Idea Refinement into an accepted file edit automatically.
 - Do not hide material unresolved findings only inside one Idea.
+- Do not use aggregate sections as a confirmation/reasoning log for already selected Current Plan.
+- Do not leave accepted simplifications or resolved questions/problems in aggregate sections.
 - Do not manufacture Idea analysis for mechanical updates.
 - Do not hide file-change risks in prose only.
 - Do not hide the action sequence only inside a file table.
