@@ -2,7 +2,7 @@
 
 Status: active reusable documentation layer index
 Doc version: v1.2.0-replacement-package-app-route
-Scope: reusable documentation architecture, solution/workflow planning, Planning Item formation, update workflows, command planning, profiles, field kits, examples, parallel work and helper projection.
+Scope: reusable documentation architecture, shared Idea review/planning, solution/workflow planning, update workflows, command planning, profiles, field kits, examples, parallel work and helper projection.
 
 ## 1. Purpose
 
@@ -74,6 +74,9 @@ tampermonkey-command-projection-workflow.md
 example-coverage-workflow.md
 file-update-overview-workflow.md
 FILE-UPDATE-OVERVIEW-TEMPLATE.md
+idea-planning-principles-and-terminology.md
+idea-review-and-planning-workflow.md
+IDEA-REVIEW-TEMPLATE.md
 ```
 
 ### Solution / Workflow Planning Family
@@ -82,7 +85,6 @@ FILE-UPDATE-OVERVIEW-TEMPLATE.md
 application-planning/README.md
 application-planning/application-planning-responsibility-map.md
 application-planning/application-planning-principles-and-terminology.md
-application-planning/planning-item-formation-workflow.md
 application-planning/application-planning-drafting-workflow.md
 application-planning/direction-registry.md
 application-planning/use-case-registry.md
@@ -93,7 +95,7 @@ temporary compatibility pointers:
 
 application-planning/templates/
   CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md
-  PLANNING-ITEM-REVIEW-TEMPLATE.md
+  PLANNING-ITEM-REVIEW-TEMPLATE.md  # superseded compatibility/history
   PLANNING-DRAFT-TEMPLATE.md
   SCENARIO-DRAFT-TEMPLATE.md
   FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md
@@ -237,21 +239,20 @@ legacy reviewable package routes:
   read reviewable-agent-output-and-commands-workflow.md / documentation-update-workflow.md only when the selected command explicitly owns them.
 ```
 
-### Planning Item Formation
+### Idea Collection / Review
 
 ```text
-application-planning/README.md
-application-planning/application-planning-responsibility-map.md
-application-planning/application-planning-principles-and-terminology.md
-application-planning/planning-item-formation-workflow.md
-application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
-project input conventions when present
+idea-planning-principles-and-terminology.md
+idea-review-and-planning-workflow.md
+IDEA-REVIEW-TEMPLATE.md
 selected source
-relevant current items/owners
-project-local Planning Draft or item owner when reconciliation requires it.
+relevant current owners only when integration review needs them
+examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md when a full specimen is useful.
 ```
 
-### Planning Item Reconciliation / Planning Draft Work
+`собери идеи` routes here. Historical Planning Item formation/review paths are not active source-review owners.
+
+### Planning Draft / Solution Review Work
 
 ```text
 application-planning/README.md

@@ -438,22 +438,20 @@
     { id:'DIR-PLAN-SOLUTION', label:'Plan A Solution Or Workflow', description:'solution/workflow planning', sources:['planning/direction-registry.md','planning/documentation/application-planning/direction-registry.md','planning/documentation/application-planning/use-case-registry.md'], instruction:'Establish this Direction as current context. Explain optional topology and the relevant Use Cases. Do not execute every branch automatically.', target:'<solution or workflow target>' },
     { id:'DIR-DETAILED-SDS', label:'Perform Detailed Scenario/Domain/Slice Planning', description:'profile-limited detailed planning', sources:['planning/direction-registry.md','planning/documentation/application-planning/direction-registry.md','planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish this profile-limited Direction. Explain Scenario/Domain/Slice topology and current owner boundaries. Do not invent prototype-depth methodology.', target:'<scenario/domain/slice target>' },
     { id:'DIR-MAINTAIN-DOCS-ROUTES', label:'Maintain Documentation, Use Cases And Commands', description:'documentation and routing', sources:['planning/direction-registry.md','planning/documentation/direction-and-use-case-registry-workflow.md','planning/planning-use-case-map.md'], instruction:'Establish documentation/registry/command maintenance context and keep registries, UCM, command definitions, workflows, templates and projection authority distinct.', target:'<documentation or routing target>' },
-    { id:'DIR-DOCUMENTATION-WORKBENCH', label:'Develop And Maintain Documentation Workbench', description:'project-local product direction', sources:['planning/direction-registry.md','planning/areas/documentation-workbench/direction-registry.md','planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md'], instruction:'Establish the Documentation Workbench Direction, current Planning Draft, accepted workflows, proposed Linked Notes workflow and deferred model boundary. Do not claim runtime implementation or accept pending item transitions.', target:'<Documentation Workbench target>' }
+    { id:'DIR-DOCUMENTATION-WORKBENCH', label:'Develop And Maintain Documentation Workbench', description:'project-local product direction', sources:['planning/direction-registry.md','planning/areas/documentation-workbench/direction-registry.md','planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md'], instruction:'Establish the Documentation Workbench Direction, current Planning Draft, accepted workflows, historical provenance boundary and deferred model boundary. Do not claim runtime implementation or promote historical records into current meaning automatically.', target:'<Documentation Workbench target>' }
   ];
 
   const USE_CASE_DEFINITIONS = [
     { id:'UC-AP-REALITY', label:'Understand Current Workflow And Reality', description:'current reality capture', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/application-planning/application-planning-drafting-workflow.md'], instruction:'Establish descriptive current-reality context. Reconstruct actors, triggers, sequence, strengths, problems, risks, workarounds and unknowns without accepting future architecture.', target:'<current workflow/reality target>' },
-    { id:'UC-AP-FORM-ITEMS', label:'Form Planning Items From Discussion', description:'open accepted form-items command', commandId:'planning_items.form' },
-    { id:'UC-AP-FULL-PICTURE', label:'Build Or Review An Item-Backed Planning Draft', description:'item-backed planning synthesis', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/application-planning/application-planning-drafting-workflow.md','planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md'], instruction:'Establish item-backed Planning Draft context. Require complete Key Scenarios and one Full Picture Matrix while preserving canonical item ownership and traceability.', target:'<Planning Draft target>' },
-    { id:'UC-AP-RECONCILE', label:'Reconcile Planning Items', description:'open existing command', commandId:'planning_items.reconcile' },
+    { id:'UC-AP-COLLECT-IDEAS', label:'Collect And Review Ideas From Selected Source', description:'open accepted collect-ideas command', commandId:'ideas.collect' },
+    { id:'UC-AP-FULL-PICTURE', label:'Build Or Review A Planning Draft', description:'solution/workflow planning synthesis', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/application-planning/application-planning-drafting-workflow.md','planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md'], instruction:'Establish current Planning Draft context from Problem / Need, candidate solution or Workflow Variants, current conclusions, risks and Scenario coverage as appropriate. Do not require a Planning Item layer.', target:'<Planning Draft target>' },
     { id:'UC-AP-RESEARCH', label:'Research Existing Solutions And Alternative Workflows', description:'provisional proportional research', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/application-planning/application-planning-drafting-workflow.md'], instruction:'Establish provisional proportional research context. Compare checked options, coverage, strengths, limitations and disposition without creating an oversized specialized methodology.', target:'<solutions or alternative workflows to research>' },
     { id:'UC-AP-SCENARIO', label:'Draft Detailed Scenario', description:'profile-limited scenario', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish detailed Scenario context using current profile and project-specific owners. Do not invent a new project command or prototype-depth method.', target:'<scenario target>' },
     { id:'UC-AP-DOMAIN', label:'Draft Or Review Domain', description:'profile-limited domain', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish Domain review context for conceptual model, language and boundaries using current owners.', target:'<domain target>' },
     { id:'UC-AP-SLICE', label:'Plan Implementation Slice', description:'profile-limited slice', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish Implementation Slice context for one separately deliverable/checkable increment aligned with accepted scenario/domain meaning.', target:'<slice target>' },
     { id:'UC-AP-SDS-CONSISTENCY', label:'Review Scenario/Domain/Slice Consistency', description:'cross-artifact consistency', sources:['planning/documentation/application-planning/use-case-registry.md','planning/documentation/profiles/scenario-domain-slice-docs-profile.md'], instruction:'Establish cross-artifact consistency review context and expose required upstream/downstream corrections.', target:'<scenario/domain/slice artifacts>' },
-    { id:'UC-DW-DOC-REF', label:'Repository Documentation Change And Reference Review', description:'accepted Documentation Workbench End-To-End Workflow', sources:['planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md','planning/areas/documentation-workbench/repository-documentation-change-and-reference-review-workflow.md'], instruction:'Establish the accepted repository documentation workflow. Keep stable navigation, explicit review-on-change meaning, bounded AI transfer and pending item clarifications distinct.', target:'<repository documentation/reference-review target>' },
-    { id:'UC-DW-ITEM-FULL-PICTURE', label:'Planning Meaning To Repository', description:'accepted Documentation Workbench End-To-End Workflow', sources:['planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md','planning/areas/documentation-workbench/planning-meaning-to-repository-workflow.md'], instruction:'Establish the full Planning Meaning To Repository workflow. Treat `сверь айтемы` as one read-only reconciliation stage rather than the whole use case.', target:'<planning meaning/repository handoff target>' },
-    { id:'UC-DW-STRUCTURED-MESSAGE', label:'Structured User Message Composer', description:'supporting input capability', sources:['planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-item-register.md','planning/planning-input-conventions.md'], instruction:'Establish structured-message composition context while preserving literal wording and free-form input. Do not make every fragment a Planning Item.', target:'<message/composition target>' }
+    { id:'UC-DW-DOC-REF', label:'Repository Documentation Change And Reference Review', description:'accepted Documentation Workbench End-To-End Workflow', sources:['planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md','planning/areas/documentation-workbench/repository-documentation-change-and-reference-review-workflow.md'], instruction:'Establish the accepted repository documentation workflow. Keep stable navigation, explicit review-on-change meaning, bounded AI transfer and unresolved current-owner questions distinct.', target:'<repository documentation/reference-review target>' },
+    { id:'UC-DW-ITEM-FULL-PICTURE', label:'Planning Meaning To Repository', description:'accepted Documentation Workbench End-To-End Workflow; legacy ID retained', sources:['planning/areas/documentation-workbench/use-case-registry.md','planning/areas/documentation-workbench/planning-draft.md','planning/areas/documentation-workbench/planning-meaning-to-repository-workflow.md'], instruction:'Establish the Planning Meaning To Repository workflow from selected source/current owners through Idea review when material, current planning meaning and a File Update Plan. Treat historical ITEM-* records as provenance rather than active ontology.', target:'<planning meaning/repository handoff target>' }
   ];
 
   function markerFor(kind) {
@@ -1326,6 +1324,41 @@
   },
   {
     "schemaVersion": 1,
+    "id": "ideas.collect",
+    "file": "collect-ideas.command.md",
+    "command": "собери идеи",
+    "englishName": "collect ideas",
+    "commandFamily": [
+      "собери идеи",
+      "collect ideas"
+    ],
+    "description": "collect and review Ideas from selected source",
+    "meaning": "Extract coherent Ideas from the selected discussion/message/file/source, preserve material non-Idea context and perform the shared Standard Idea Review.",
+    "activeContextBehavior": "Use the explicitly selected or clearly active current source; ask only when the source is genuinely missing or ambiguous.",
+    "traversalReadMode": "Targeted/full by source size and current-owner uncertainty.",
+    "ownerFiles": [
+      "planning/documentation/idea-planning-principles-and-terminology.md",
+      "planning/documentation/idea-review-and-planning-workflow.md",
+      "planning/documentation/IDEA-REVIEW-TEMPLATE.md"
+    ],
+    "expectedOutput": "Reviewed Ideas/Idea Groups with Current Conclusions, mandatory Questions / Risks / Problems and Related Idea ID traceability; Potential Simplifications / Better Routes when material.",
+    "permissionMode": "read-only",
+    "keyReminders": [
+      "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
+      "Not every source statement is an Idea; preserve relevant Existing Reality, constraints, decisions, corrections and questions with their proper meaning.",
+      "Perform every mandatory Idea review check, but do not manufacture objections, risks or refinements merely to populate fields.",
+      "Actively test whether each Idea deserves implementation and whether a genuinely simpler or better route exists.",
+      "Possible Idea Refinements change the Idea itself and are not accepted automatically.",
+      "Always include an aggregate Questions / Risks / Problems section; reference Related Idea IDs for material findings.",
+      "When material simplifications are found, surface them with Related Idea IDs.",
+      "Do not edit repository files, create an archive, commit or push."
+    ],
+    "userTarget": "<source/discussion to collect Ideas from>",
+    "palette": true,
+    "refinements": []
+  },
+  {
+    "schemaVersion": 1,
     "id": "critical_review.apply",
     "file": "critical-review.command.md",
     "command": "крит",
@@ -1420,39 +1453,6 @@
   },
   {
     "schemaVersion": 1,
-    "id": "planning_items.form",
-    "file": "form-items.command.md",
-    "command": "сформируй айтемы",
-    "englishName": "form items",
-    "commandFamily": [
-      "сформируй айтемы",
-      "form items"
-    ],
-    "description": "full-message Planning Item formation",
-    "meaning": "Form complete reviewable Planning Items from the selected discussion/message/file/ledger.",
-    "activeContextBehavior": "Use the explicitly selected or clearly active current source; ask only when missing or ambiguous.",
-    "traversalReadMode": "Targeted/full by source size and current-owner uncertainty.",
-    "ownerFiles": [
-      "planning/documentation/application-planning/planning-item-formation-workflow.md",
-      "planning/documentation/application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md",
-      "planning/planning-input-conventions.md"
-    ],
-    "expectedOutput": "Complete Planning Items For Review with complete source context, Source Contributions and transformations.",
-    "permissionMode": "read-only",
-    "keyReminders": [
-      "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
-      "Preserve complete source messages, accumulating item meanings and typed Source Contributions.",
-      "Perform a proportional current-owner check and show Current, Incoming and Resulting meanings for non-trivial transformations.",
-      "Preserve optional relation-backed Implementation Ideas as separate Planning Items rather than copied text.",
-      "Explicit review remains required.",
-      "Do not edit repository files, create an archive, commit or push."
-    ],
-    "userTarget": "<source/discussion to form items from>",
-    "palette": true,
-    "refinements": []
-  },
-  {
-    "schemaVersion": 1,
     "id": "command.plan",
     "file": "plan-command.command.md",
     "command": "спланируй команду",
@@ -1500,19 +1500,26 @@
       "archive plan"
     ],
     "description": "file plan",
-    "meaning": "Produce a concrete file/docs/code/archive update plan.",
+    "meaning": "Produce one concrete file/docs/code/archive update plan from current selected planning meaning.",
     "activeContextBehavior": "Ask target/scope only when active context does not make it clear.",
     "traversalReadMode": "Reuse/targeted/full by update risk.",
     "ownerFiles": [
+      "planning/documentation/idea-planning-principles-and-terminology.md",
+      "planning/documentation/idea-review-and-planning-workflow.md",
       "planning/documentation/file-update-overview-workflow.md",
       "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
     ],
-    "expectedOutput": "Plan with files, responsibilities, what/why/boundaries/checks/next action.",
+    "expectedOutput": "Idea-aware File Update Plan: checked sources, conceptual Ideas/Variants when material, Current Conclusions, mandatory Questions / Risks / Problems, Potential Simplifications / Better Routes when material, ordered steps, files/responsibilities/checks/next action.",
     "permissionMode": "plan-only",
     "keyReminders": [
       "Plan file/docs/code/archive update only.",
       "Treat only explicit user statements and checked source facts as confirmed.",
-      "For important unknowns, show prioritized questions with one conservative fallback instruction.",
+      "Use shared Idea review only when the update contains material conceptual uncertainty; do not manufacture Idea analysis for mechanical updates.",
+      "When alternatives are material, keep them as Idea Variants and identify one Current Selected Variant before concrete file steps.",
+      "Possible Idea Refinements are not file edits and do not become selected changes automatically.",
+      "Always include Questions / Risks / Problems; material Idea-derived findings reference Related Idea IDs.",
+      "When material simplifications or better routes are found, surface them separately with Related Idea IDs; do not duplicate Update Steps.",
+      "For unresolved important choices, keep current selected meaning explicit and surface alternatives/questions separately.",
       "End with `План файл-обновление` in planned mode.",
       "Do not edit files.",
       "Do not create archive unless separately requested."
@@ -1609,46 +1616,6 @@
       "State what was checked and what remains unavailable."
     ],
     "userTarget": "<what discussion/context should be rechecked>",
-    "palette": true,
-    "refinements": []
-  },
-  {
-    "schemaVersion": 1,
-    "id": "planning_items.reconcile",
-    "file": "reconcile-planning-items.command.md",
-    "command": "сверь айтемы",
-    "englishName": "reconcile planning items",
-    "commandFamily": [
-      "сверь айтемы",
-      "сверь айтемы с документацией",
-      "проверь айтемы по репозиторию",
-      "reconcile planning items",
-      "reconcile items"
-    ],
-    "description": "workflow integrity + traceable item transformations",
-    "meaning": "Reconcile selected working/local/unprocessed Planning Items against current owners and workflow integrity.",
-    "activeContextBehavior": "Use the clearly active item set or same-message attached item source; ask only when missing or ambiguous.",
-    "traversalReadMode": "Targeted/full by independent End-To-End Workflow or affected non-workflow review object.",
-    "ownerFiles": [
-      "planning/documentation/application-planning/application-planning-drafting-workflow.md"
-    ],
-    "expectedOutput": "Read-only reconciliation with workflow-integrity verdicts, traceable transformations and resulting canonical item set.",
-    "permissionMode": "read-only",
-    "keyReminders": [
-      "Reconcile the selected working, local or unprocessed Planning Items with relevant current repository documentation.",
-      "Identify each genuinely independent End-To-End Workflow and each affected non-workflow primary review object.",
-      "For every End-To-End Workflow, trace trigger, preconditions, mandatory stages, branches/loops, review gates and result/end state, then report the workflow-integrity verdict.",
-      "Do not split one mandatory workflow into peer workflow candidates or slices. If one owns a missing mandatory stage, combine the slices or reclassify them as supporting artifacts.",
-      "Treat Planning Drafts, models, views, terminology, root summaries and capability/detail slices as supporting or non-workflow primary review objects unless they have an independent trigger-to-result lifecycle.",
-      "Review several End-To-End Workflows separately only when each is independently traversable; then check cross-workflow and resulting-item-set consistency.",
-      "Show the complete before/after workflow or non-workflow review object, including changed and preserved parts, purpose, boundaries, conflicts and unresolved choices.",
-      "For each selected workflow/review object, show the current canonical item set, incoming meanings with semantic names and IDs only as secondary traceability, proposed actions and the resulting canonical item set.",
-      "For every non-trivial transformation, show original/current item(s), every incoming/expanding/correcting meaning and resulting item(s) separately in one small variable-row table; use — where a field does not apply and do not show only the result.",
-      "Do not assume one incoming item becomes one new canonical item: it may keep, update, rename, add, merge, split, move, link, defer, supersede, remove or reject meaning.",
-      "Preserve relevant hypothesis, risk, key-situation and prototype/test context through item transformations; report a compact prototype/risk follow-up without creating a prototype or accepting architecture.",
-      "Do not edit files, update item registers, create an archive, commit or push."
-    ],
-    "userTarget": "<which items or item source should be reconciled>",
     "palette": true,
     "refinements": []
   },

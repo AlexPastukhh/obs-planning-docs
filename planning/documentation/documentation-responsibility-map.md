@@ -55,6 +55,9 @@ Semantic Direction/Use-Case registries remain separate from the command UCM.
 | Reviewable outputs/packages | `reviewable-agent-output-and-commands-workflow.md` | Answer/package/source-selection boundaries |
 | File-update overview process | `file-update-overview-workflow.md` | Ordered update planning/reporting |
 | File-update overview shape | `FILE-UPDATE-OVERVIEW-TEMPLATE.md` | Exact recommended Markdown shape |
+| Shared Idea concepts/principles | `idea-planning-principles-and-terminology.md` | Cross-cutting Idea / Variant / review-depth semantics |
+| Shared Idea review/planning process | `idea-review-and-planning-workflow.md` | Standard Review / Deep Planning, integration and aggregate finding propagation |
+| Shared Idea review shape | `IDEA-REVIEW-TEMPLATE.md` | Recommended representation; checks may have no printed finding |
 | Example coverage | `example-coverage-workflow.md` | When examples are useful |
 | Examples | `examples/README.md` | Demonstration navigation only |
 | Root setup field kit | `field-kits/root-use-case-map-field-kit.md` | Bootstrap only |
@@ -74,7 +77,7 @@ Current nested map:
 application-planning/application-planning-responsibility-map.md
 ```
 
-The parent map does not duplicate its complete internal owner table.
+The parent map does not duplicate its complete internal owner table. Generic Idea methodology remains at this parent reusable layer because it is used across application planning and file-update planning.
 
 It routes reusable solution/workflow-planning concepts, principles and processes into the application-planning zone. The nested map chooses the immediate owner.
 
@@ -103,7 +106,7 @@ Do not recreate separate competing application-planning terminology and principl
 Reusable methodology:
   planning/documentation/application-planning/
 
-Concrete Planning Items, source contributions, Planning Drafts,
+Concrete current planning meaning, source provenance, Planning Drafts,
 workflows, scenarios, concerns, decisions and prototype state:
   planning/areas/<project-area>/ or another project-local owner.
 ```

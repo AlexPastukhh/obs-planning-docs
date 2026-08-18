@@ -35,6 +35,40 @@ Include only when a command route is in scope.
 
 - `<source actually checked>`
 
+### Ideas / Idea Groups — When material
+
+Use the shared Idea Review / Deep Planning structure only for material conceptual questions. Omit this section for a mechanical update.
+
+For material alternatives:
+
+```text
+Idea <ID>
+  Idea Variants
+  Current Selected Variant
+  Current Conclusion
+```
+
+Do not create file-edit variants as a copy of conceptual alternatives.
+
+### Current conclusions
+
+<Selected/current planning meaning that concrete Update Steps implement.>
+
+### Questions / Risks / Problems
+
+This aggregate section is present for every File Update Plan, including mechanical updates.
+
+- `[IDEA-X] <material unresolved question/risk/problem>`
+- `No material unresolved findings identified.` when genuinely empty.
+
+Material findings reference Related Idea IDs. Unresolved Idea Variants remain here and do not silently enter Update Steps.
+
+### Potential Simplifications / Better Routes — When material
+
+- `[IDEA-X] <material simplification / better route>`
+
+Omit this section when no material simplification was found. Do not use it as an alternate list of file-edit steps.
+
 ### Update Step <ID> — <name>
 
 **Objective:** <what this step accomplishes>
@@ -113,6 +147,10 @@ Use this section only when package/source/delivery classification is relevant. S
 ```text
 - Use normal Markdown in chat output, not an outer code fence.
 - Keep table cells short.
+- Perform Idea analysis only when conceptual uncertainty is material; do not manufacture it for mechanical updates.
+- `Current Selected Variant` is the normal selected-variant term; use `fallback` only when genuinely a fallback.
+- Questions / Risks / Problems is required for every File Update Plan and uses Related Idea IDs for material Idea findings.
+- Potential Simplifications / Better Routes is conditional on real material findings and uses Related Idea IDs.
 - Ordered steps are primary when dependencies or migration order matter.
 - Numbered Actions state what is done and in what order.
 - The per-step file table retains the old changed-file view:

@@ -1,9 +1,12 @@
-# Documentation Workbench Planning Item Register — Repository-Native Planning Reset
+# Planning Item Register — Historical Provenance / Migration Source
 
-Status: active project-local source-linked register / Batch 3A current item set
+> **Historical boundary:** Planning Item is retired from the target methodology. This file preserves ITEM-* bodies/IDs as provenance, history and migration source. Do not route new source review through this register and do not convert records one-to-one into Ideas automatically.
+
+
+Status: historical project-local provenance/migration register / retired from active target methodology
 Doc version: v1.3.0-note-image-insertion-and-asset-transfer
 
-Repository owner:
+Historical repository context:
 
 - area: [`planning/areas/documentation-workbench/`](README.md);
 - current high-level plan: [`planning-draft.md`](planning-draft.md);
@@ -19,7 +22,7 @@ source register blob: c1fbda8c5f685bb78b8433af72885d7e9016823f
 
 ## 0. Purpose
 
-This file owns current active, reusable-linked and deferred Documentation Workbench Planning Item meanings, their source bank and compact tombstones for finalized inactive items.
+This file preserves former active, reusable-linked and deferred Documentation Workbench Planning Item meanings, their source bank and compact tombstones for finalized inactive items. It is not the current planning ontology or command route.
 
 ```text
 selected active meaning

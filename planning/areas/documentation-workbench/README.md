@@ -1,6 +1,6 @@
 # Documentation Workbench Planning Area
 
-Status: active project-local planning area / Linked Notes current-state ownership migrated
+Status: active project-local planning area / Linked Notes current-state ownership migrated / Planning Item ontology retired
 Doc version: v1.7.0-linked-notes-semantic-ownership-migration
 Scope: repository-native Documentation Workbench planning, planning history and non-Linked-Notes workflows. Current Linked Notes application semantics now live with the Linked Notes documentation/implementation corpus.
 
@@ -13,8 +13,12 @@ For Documentation Workbench planning work:
 ```text
 README.md
   → planning-draft.md
-  → planning-item-register.md
+  → direction-registry.md
+  → use-case-registry.md
   → selected current non-Linked-Notes workflow;
+
+on demand for provenance/history only:
+  planning-item-register.md
 
 on demand:
   retired-planning-items.md
@@ -38,8 +42,8 @@ Current Linked Notes semantic entry: [`USE-CASE-MAP.md`](../../documentation/too
 | Responsibility | Owner |
 |---|---|
 | High-level Documentation Workbench planning direction / historical selected scenarios | [`planning-draft.md`](planning-draft.md) |
-| Active/reusable-linked/deferred Planning Item bodies and source bank | [`planning-item-register.md`](planning-item-register.md) |
-| Finalized inactive item bodies and pre-reset history | [`retired-planning-items.md`](retired-planning-items.md) |
+| Historical ITEM-* provenance/migration source | [`planning-item-register.md`](planning-item-register.md) |
+| Historical finalized ITEM-* bodies and pre-reset history | [`retired-planning-items.md`](retired-planning-items.md) |
 | Planning source-to-repository lifecycle | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) |
 | Direct documentation change/reference review lifecycle | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) |
 | Local semantic Directions for this planning area | [`direction-registry.md`](direction-registry.md) |
@@ -69,7 +73,7 @@ Former `UC-DW-*` Linked Notes IDs remain compatibility aliases only. Current can
 
 ### Planning Meaning To Repository
 
-Use when source meaning must become reviewed Planning Items, a Planning Draft and an explicit repository update plan.
+Use when selected source/current planning meaning must be reviewed, integrated into the current Planning Draft/owners as needed and handed to an explicit File Update Plan.
 
 Owner: [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md).
 
@@ -100,11 +104,11 @@ linked-notes-prototype-roadmap.md
 
 Each retained file carries an explicit migration banner pointing to the current Linked Notes map/registry. The current roadmap is [`linked-notes/ROADMAP.md`](../../documentation/tools/tampermonkey/linked-notes/ROADMAP.md).
 
-## 6. Planning Draft / Item Boundary
+## 6. Planning Draft / Historical Item Boundary
 
-`planning-draft.md`, `planning-item-register.md` and retired records remain useful planning/history artifacts. They do not override the current Linked Notes semantic map merely because an older item/workflow describes an earlier product slice.
+`planning-draft.md` is the current high-level planning owner for this area. `planning-item-register.md` and `retired-planning-items.md` preserve historical ITEM-* provenance/migration context only.
 
-If future work intentionally wants to reconcile broader Documentation Workbench planning with current Linked Notes semantics, that is a separate planning update. It is not required merely to understand or maintain the current application.
+New answer-seeking work uses the shared Idea methodology. Current decisions/requirements belong in the Planning Draft, current workflows/registries and current application owners. Do not convert historical ITEM-* bodies one-to-one into Ideas.
 
 ## 7. Other Compatibility Paths
 

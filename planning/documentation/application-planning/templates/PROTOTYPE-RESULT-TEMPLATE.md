@@ -13,7 +13,7 @@ not provided
 ## 2. Related Planning Owners
 
 ```text
-Planning Items / Planning Draft / Scenario / workflow /
+Ideas / Planning Draft / Scenario / workflow /
 branch / criterion / assumption / risk / decision / not provided
 ```
 
@@ -77,7 +77,7 @@ A technical result does not become an accepted solution or architecture decision
 
 | Affected owner | Owner type | Previous state | Evidence-backed update or review need | Resulting/proposed state | Action/status |
 |---|---|---|---|---|---|
-| not provided | Planning Item / Planning Draft / Scenario / workflow / branch / criterion / assumption / risk / decision / other | not provided | not provided | not provided | not provided |
+| not provided | Idea / Planning Draft / Scenario / workflow / branch / criterion / assumption / risk / decision / other | not provided | not provided | not provided | not provided |
 
 Use the smallest complete owners that actually depend on the tested uncertainty.
 
@@ -89,7 +89,7 @@ Scenario impact is represented here when a Scenario exists. No separate Scenario
 not provided
 ```
 
-Use only when the evidence changes a source requirement, assumption, Planning Item or shared decision.
+Use only when the evidence changes a source requirement, assumption, Idea/current conclusion or shared decision.
 
 ## 14. Branch Impact — Optional
 
@@ -119,7 +119,7 @@ not provided
 
 ## 18. Related Ideas
 
-| Planning Item / ID | Idea | Relation | Status |
+| Idea / ID | Idea | Relation | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | undecided |
 

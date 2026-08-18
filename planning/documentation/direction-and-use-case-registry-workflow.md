@@ -217,7 +217,7 @@ Tampermonkey:
 
 ## 15. Input Convention Relationship
 
-Input conventions may affect accepted input but do not own use-case meaning. A Planning Item delimiter can mark a proposed semantic boundary; it does not create or accept an item and does not create a Candidate entity.
+Input conventions may affect accepted input but do not own use-case meaning. A legacy delimiter may preserve historical source boundaries, but it does not create or accept an Idea/current owner and must not be silently reinterpreted as new canonical syntax.
 
 ## 16. Projection Boundary
 
@@ -243,7 +243,7 @@ Commands    → root UCM.
 - provisional/deferred status is honest;
 - links and IDs are unique;
 - navigation/responsibility owners are synchronized;
-- no Source Idea or Planning Item Candidate entity.
+- no Source Idea Candidate or other generic Candidate entity.
 
 ## 18. Do Not
 

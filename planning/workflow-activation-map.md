@@ -30,11 +30,11 @@ Registry activation does not grant repository permissions.
 | Activate/select Direction | `planning/direction-registry.md` | Complete local Direction entry, child Use-Case Registry and owner route | Use Adaptive/Full semantics. |
 | Activate/select Use Case | Relevant `use-case-registry.md` | Complete selected workflow/template/area and required current sources | Establish context/result/next actor; no command permission. |
 | Command behavior | `planning/planning-use-case-map.md` | Owner named in route | UCM owns trigger, English name, output and permissions. |
-| Planning Item formation / `сформируй айтемы` | Root UCM | Application-planning Use-Case Registry, formation workflow, review template, input conventions, selected source and current item owners | `form items`; reviewable output only, no repository edit. |
-| Planning Item reconciliation | Root UCM | Application-planning registry, drafting workflow, selected items and complete owners | `сверь айтемы` remains read-only. |
-| Item-backed Planning Draft | Application-planning Use-Case Registry | Drafting workflow, Planning Draft template and current local owners | Complete Key Scenarios and one Full Picture Matrix are required for sufficiency; item bodies stay canonical. |
+| Idea collection / `собери идеи` | Root UCM | Generic Idea principles/workflow/template, selected source and current owners when integration review needs them | `collect ideas`; reviewable output only, no repository edit. |
+| Idea review / deeper planning | Generic Idea owners | Relevant parent/current owner and evidence only when material | Standard Review or Deep Idea Planning; no separate reconciliation command. |
+| Planning Draft | Application-planning Use-Case Registry | Drafting workflow, Planning Draft template and current local owners | May begin before stable Scenario coverage; sufficiency is claimed only when the selected planning stage has adequate coverage. No Planning Item layer is required. |
 | Planning Meaning To Repository workflow | Documentation Workbench Use-Case Registry | Local Planning Draft, accepted workflow, register and downstream workflow | Reusable method and registries synchronized. |
-| Repository documentation/reference review workflow | Documentation Workbench Use-Case Registry | Local Planning Draft, current workflow and affected items | Stable links and explicit relation meanings remain distinct. |
+| Repository documentation/reference review workflow | Documentation Workbench Use-Case Registry | Local Planning Draft, current workflow and affected current owners/uses | Stable links and explicit relation meanings remain distinct. |
 | Current reality | Application-planning Use-Case Registry | Drafting workflow, current-reality template and current owner | Descriptive; no future architecture acceptance. |
 | Detailed Scenario/Domain/Slice | Application-planning registries | SDS profile/field kit and project owners | Profile-limited; prototype-depth adaptation deferred. |
 | Maintain registries | Root Direction Registry | Registry workflow/templates, affected registries and navigation owners | UCM changes only for executable commands. |

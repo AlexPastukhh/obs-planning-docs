@@ -12,8 +12,8 @@ It decides:
 
 ```text
 which file owns principles and terminology;
-which workflow owns source-to-item formation;
-which workflow owns broader drafting and reconciliation;
+which shared generic owners own Idea review/planning;
+which workflow owns broader solution/workflow drafting and integration;
 which template owns exact recommended representation;
 what belongs to an optional specialized profile;
 what remains project-local.
@@ -39,13 +39,13 @@ This map does not own project commands, registry entries or concrete product sta
 |---|---|---|
 | Family purpose, lifecycle and read order | `README.md` | Navigation and compact overview |
 | Core planning concepts, distinctions and stable principles | `application-planning-principles-and-terminology.md` | Unified concept contract; no project application/runtime schema |
-| Source-to-Planning-Item formation and review | `planning-item-formation-workflow.md` | Full-message review, complete meanings, owner checks and transformations |
-| Exact Planning Item review representation | `templates/PLANNING-ITEM-REVIEW-TEMPLATE.md` | Recommended complete review shape |
-| Broader Planning Draft work and item reconciliation | `application-planning-drafting-workflow.md` | Current Reality, Planning Draft, workflows, questions, tests and reconciliation |
+| Shared Idea review/planning | `../idea-review-and-planning-workflow.md` + generic Idea principle/template owners | Cross-cutting owner outside this family; source review, variants and aggregate findings |
+| Historical Planning Item formation/review | `planning-item-formation-workflow.md` + `templates/PLANNING-ITEM-REVIEW-TEMPLATE.md` | Superseded compatibility/history only |
+| Broader Planning Draft / solution integration | `application-planning-drafting-workflow.md` | Current Reality, solution/workflow variants, Planning Draft, questions, tests and integration |
 | Reusable planning Directions | `direction-registry.md` | Semantic Direction entries |
 | Reusable planning Use Cases | `use-case-registry.md` | Semantic Use-Case entries and owner routes |
 | Current Reality recommended representation | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` | Optional descriptive representation |
-| Planning Draft recommended representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | Item-backed high-level plan |
+| Planning Draft recommended representation | `templates/PLANNING-DRAFT-TEMPLATE.md` | Solution/workflow high-level plan; no Planning Item layer required |
 | Scenario recommended representation | `templates/SCENARIO-DRAFT-TEMPLATE.md` | Used only when separate scenario drafting is selected |
 | Functional Workflow recommended representation | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` | Optional independently useful behavior line |
 | Prototype setup | `templates/PROTOTYPE-PLAN-TEMPLATE.md` | Optional experiment setup |
@@ -57,23 +57,25 @@ This map does not own project commands, registry entries or concrete product sta
 ## 3. Core Responsibility Split
 
 ```text
+../idea-planning-principles-and-terminology.md
+../idea-review-and-planning-workflow.md
+../IDEA-REVIEW-TEMPLATE.md
+  → shared Idea semantics, Standard Review / Deep Planning,
+    variants, integration checks and aggregate findings;
+
 application-planning-principles-and-terminology.md
-  → what planning concepts mean
-  → stable rules and invariants for those concepts;
-
-planning-item-formation-workflow.md
-  → how selected source becomes reviewed Planning Items;
-
-PLANNING-ITEM-REVIEW-TEMPLATE.md
-  → exact recommended review shape;
+  → solution/workflow/application/Scenario concepts and stable invariants;
 
 application-planning-drafting-workflow.md
-  → how reviewed items become or revise a Planning Draft,
-    workflows, scenarios, questions, tests and decisions;
+  → Problem/Need framing, solution/Workflow Variants, current Planning Draft,
+    application handoff, Scenario discovery and validation integration;
 
 project-local owner
-  → concrete accepted items, drafts, scenarios,
-    decisions, prototypes and implementation state;
+  → concrete current drafts, workflows, Scenarios, decisions,
+    prototypes and implementation state;
+
+historical Planning Item files/registers
+  → provenance/migration only;
 
 project root UCM
   → concrete command names, routes and permissions;
@@ -89,7 +91,7 @@ Direction / Use-Case registries
 ```text
 evidence and decision states;
 Source Messages, Fragments, Contributions and Provenance;
-Planning Items, Canonical Item Bodies and relations;
+shared Idea meanings are delegated to the generic Idea owners;
 Implementation Ideas and validation context;
 Planning Draft and Full Picture Matrix;
 Current, Result and Action Workflows;
@@ -107,7 +109,7 @@ It does not:
 - define a project application or managed-object runtime;
 - choose project storage/database architecture;
 - choose exact Markdown wrapper syntax;
-- own project-local Planning Items or implementation state;
+- own project-local current planning state or implementation state;
 - define command names or permissions;
 - require a specialized Scenario/Domain/Slice profile.
 ```
@@ -121,36 +123,11 @@ terminology-and-planning-items.md
 
 are temporary compatibility pointers only.
 
-## 5. Planning Item Formation Responsibility
+## 5. Historical Planning Item Responsibility
 
-`planning-item-formation-workflow.md` owns:
+`planning-item-formation-workflow.md` and `templates/PLANNING-ITEM-REVIEW-TEMPLATE.md` are superseded compatibility/history paths. They no longer own active source-to-planning behavior.
 
-```text
-source selection;
-literal source preservation;
-full-message review;
-relevant-span highlighting;
-semantic item identification;
-complete accumulating meaning;
-proportional current-owner checks;
-relation/action distinction;
-Implementation Idea preservation;
-Current/Incoming/Resulting transformations;
-explicit review;
-portable review delivery;
-returned user-edited review integration;
-formation checks and failure paths.
-```
-
-It does not own:
-
-```text
-repository-wide reconciliation;
-Planning Draft synthesis;
-project command names;
-project-local item IDs or storage;
-repository edits, archives, commit or push.
-```
+Existing project-local ITEM-* registers may remain provenance/migration sources. Do not convert them one-to-one into Ideas and do not route new work through them.
 
 ## 6. Drafting And Reconciliation Responsibility
 
@@ -159,17 +136,17 @@ repository edits, archives, commit or push.
 ```text
 Current Reality Capture integration;
 representation selection;
-item-backed Planning Draft work;
-Planning Item Map and Full Picture Matrix;
+solution/workflow Planning Draft work;
+whole-plan integration views such as the Full Picture Matrix when useful;
 End-To-End Workflow integrity;
-Planning Item reconciliation with repository owners;
+Idea/current-owner integration with repository owners;
 questions, risks and validation integration;
 alternatives and branches;
 tests, prototypes and evidence feedback;
 optional entry into detailed planning.
 ```
 
-It delegates raw source-to-item formation.
+It delegates generic Idea review/deep planning to the shared Idea owners when answer-seeking work is material.
 
 It does not require a separate detailed-planning layer for every solution.
 
@@ -179,10 +156,10 @@ Templates own recommended shape only.
 
 ```text
 PLANNING-ITEM-REVIEW-TEMPLATE.md
-  → complete item/source/transformation review;
+  → superseded compatibility/history only;
 
 PLANNING-DRAFT-TEMPLATE.md
-  → item-backed high-level planning presentation;
+  → high-level solution/workflow planning presentation;
 
 SCENARIO-DRAFT-TEMPLATE.md
   → separate scenario representation when selected;
@@ -206,7 +183,7 @@ A template:
 Reusable methodology:
   planning/documentation/application-planning/
 
-Concrete Planning Items, source contributions, Planning Drafts,
+Concrete current planning meaning, source provenance, Planning Drafts,
 scenarios, workflows, concerns, decisions, prototypes and models:
   planning/areas/<area>/ or another explicit project-local owner.
 ```
@@ -220,9 +197,9 @@ A generated explanation is a reading or proposal view unless explicitly accepted
 - This map wins for placement inside this folder.
 - README wins for navigation and read order.
 - Unified principles-and-terminology wins for concepts and invariants.
-- Formation workflow wins for source-to-item formation and review.
-- Planning Item review template wins for recommended review shape.
-- Drafting workflow wins for broader planning and reconciliation.
+- Generic Idea owners win for Idea review/deep-planning semantics and representation.
+- Historical Planning Item files own only compatibility/history.
+- Drafting workflow wins for broader solution/workflow planning and integration.
 - Other templates win only for their recommended shape.
 - Specialized profiles win only after that profile is selected.
 - Project root UCM wins for command routing and canonical English names.
@@ -237,7 +214,7 @@ Before adding information here, ask:
 ```text
 1. Is it reusable or project-specific?
 2. Is it a concept/principle, repeated process, template shape or profile?
-3. Is it source-to-item formation or broader drafting/reconciliation?
+3. Is it generic Idea review or application-specific drafting/integration?
 4. Does a current internal owner already exist?
 5. Is a separate file independently useful?
 6. Would the addition introduce an unsupported application/runtime assumption?
@@ -251,8 +228,8 @@ Before adding information here, ask:
 
 ```text
 - Do not recreate separate competing terminology and principles owners.
-- Do not duplicate formation rules in the drafting workflow.
-- Do not create one file per item or UI surface.
+- Do not duplicate generic Idea rules in the drafting workflow.
+- Do not create one file per Idea or UI surface.
 - Do not put concrete product state under reusable docs.
 - Do not introduce Source Idea or Planning Item Candidate.
 - Do not treat templates as mandatory schemas.

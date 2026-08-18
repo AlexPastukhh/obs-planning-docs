@@ -22,7 +22,8 @@ Scope: register root planning files, reusable owners and current local area owne
 |---|---|
 | `planning/documentation/` | Reusable documentation/process layer. |
 | `planning/documentation/direction-and-use-case-registry-workflow.md` | Registry hierarchy, topology, activation and ownership. |
-| `planning/documentation/application-planning/` | Reusable Planning Item formation, sufficient Planning Draft contract, reconciliation, optional detailed profile and templates. |
+| `planning/documentation/` Idea owners | Shared Idea terminology, Standard Review / Deep Planning workflow and recommended output shape. |
+| `planning/documentation/application-planning/` | Reusable solution/workflow planning, Planning Draft, Scenario planning, optional detailed profile and templates. |
 | `planning/documentation/application-planning/application-planning-principles-and-terminology.md` | Canonical planning terminology and sufficiency rules. |
 | `planning/documentation/application-planning/application-planning-drafting-workflow.md` | Planning Draft and reconciliation workflow. |
 | `planning/documentation/application-planning/templates/PLANNING-DRAFT-TEMPLATE.md` | Recommended Planning Draft shape with required Key Scenario coverage and Full Picture Matrix. |
@@ -47,8 +48,8 @@ Scope: register root planning files, reusable owners and current local area owne
 |---|---|
 | `planning/areas/documentation-workbench/README.md` | Area entry/read/update discipline and current workflow/supporting-prototype navigation. |
 | `planning/areas/documentation-workbench/planning-draft.md` | Sole current high-level owner; complete Key Scenarios and Full Picture Matrix. |
-| `planning/areas/documentation-workbench/planning-item-register.md` | Complete source-linked current/deferred item owner and retired index; 53 reviewed canonical identities. |
-| `planning/areas/documentation-workbench/retired-planning-items.md` | Complete finalized inactive bodies and preserved history. |
+| `planning/areas/documentation-workbench/planning-item-register.md` | Historical ITEM-* provenance/migration source; not current target ontology. |
+| `planning/areas/documentation-workbench/retired-planning-items.md` | Historical finalized ITEM-* provenance archive. |
 | `planning/areas/documentation-workbench/planning-meaning-to-repository-workflow.md` | Accepted Planning Meaning To Repository End-To-End Workflow. |
 | `planning/areas/documentation-workbench/repository-documentation-change-and-reference-review-workflow.md` | Accepted repository documentation, stable-link and affected-use review workflow. |
 | `planning/areas/documentation-workbench/linked-notes-end-to-end-workflow.md` | Legacy Linked Notes planning/compatibility reference; current Note semantics are under the Linked Notes-local map/registry. |
@@ -109,7 +110,8 @@ Git history preserves the former experiment and Scenario/DATA/Behavior files.
 root Direction Registry → planning/direction-registry.md;
 
 reusable planning owners →
-  application-planning principles/terminology
+  generic Idea principles/workflow/template
+  + application-planning principles/terminology
   + drafting workflow
   + Planning Draft template
   + reusable registries;
@@ -141,8 +143,11 @@ retained Linked Notes area workflows →
 current Linked Notes implementation priority view →
   linked-notes/ROADMAP.md;
 
-canonical Documentation Workbench register →
-  current non-Linked-Notes identities
+Documentation Workbench historical ITEM-* register →
+  provenance/migration source only;
+
+canonical current Documentation Workbench semantics →
+  Planning Draft + current workflows/registries
   + compatibility mappings for former Linked Notes UC-DW-* IDs;
 
 Tampermonkey scripts →
@@ -152,30 +157,27 @@ Tampermonkey scripts →
 
 ## 6. Planning Draft Sufficiency Alignment
 
-A sufficient Planning Draft now:
+A Planning Draft may exist while solution alternatives or Scenario boundaries are still being developed.
+
+When the current stage claims a **sufficient** application Planning Draft, it should proportionally identify the important Scenarios/results and preserve a useful whole-plan integration view. Existing Full Picture Matrix semantics may remain where they add value; they are not a reason to fabricate complete Scenarios before boundaries are stable.
+
+The new upstream route is:
 
 ```text
-identifies Key Scenarios;
-describes every Key Scenario completely;
-may summarize or fully describe other Scenarios;
-contains one Full Picture Matrix linking:
-  Scenario/flow meaning;
-  Implementation Ideas;
-  questions, risks, tests and evidence;
-  status and next action;
-does not require separate Scenario/DATA/Behavior/Domain/Slice files
-unless a specialized profile is explicitly selected.
+Problem / Need
+→ solution / Workflow Variants when useful
+→ justified Application responsibility
+→ optional Spine Scenario while boundaries are unclear
+→ Scenario Drafts
 ```
 
-The Full Picture Matrix remains an internal view, not a separate canonical artifact.
+Detailed Scenario/DATA/Behavior/Domain/Slice artifacts remain optional unless the specialized profile is explicitly selected.
 
-The current Linked Notes `ROADMAP.md` is an implementation-priority view and does not replace the Linked Notes `USE-CASE-MAP.md` / `USE-CASE-REGISTRY.md`. Documentation Workbench Planning Draft/items remain broader planning/history unless intentionally reconciled.
+## 7. Planning Item Retirement Boundary
 
-## 7. Current Item Boundary
+Planning Item is retired from the target methodology. Existing ITEM-* registers remain historical provenance/history/migration sources and are not the default source-to-planning layer.
 
-The canonical Documentation Workbench register still requires explicit review before changing Planning Item meanings. In particular, prototype implementation evidence or roadmap directions do not silently transform items such as stable-target, Linked Note or Tampermonkey implementation meanings.
-
-This source/register alignment records current files and navigation only.
+Current requirements/decisions/behavior belong in the current Planning Draft, workflows, registries and application owners. Do not convert every historical ITEM-* record one-to-one into an Idea.
 
 ## 8. Tampermonkey Projection
 
@@ -199,7 +201,7 @@ Earlier accepted batches introduced:
 
 - reusable planning principles and terminology;
 - Direction/Use-Case registries and root command routes;
-- `сформируй айтемы / form items`;
+- former `сформируй айтемы / form items` route (now retired in favor of `собери идеи`);
 - `ITEM-124 / FIRST-CLASS-NAMED-NOTES`;
 - deferred `ITEM-125 / CATEGORY-BACKED-NOTE-PROJECTION`;
 - preliminary project-local Scenario/DATA/Behavior files.
@@ -209,7 +211,7 @@ The preliminary project-local Scenario workspace and reference-link experiments 
 ## 10. Remaining Work
 
 ```text
-- explicit Planning Item review when future prototype directions change canonical capability meaning;
+- explicit Idea/current-owner review when future prototype directions change canonical capability meaning;
 - browser/real-GitHub evidence for current Linked Notes Use Cases where acceptance remains pending;
 - Linked Notes `ROADMAP.md` priorities:
     ChatGPT data acquisition redesign;

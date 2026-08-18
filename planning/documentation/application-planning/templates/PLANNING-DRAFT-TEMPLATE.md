@@ -2,11 +2,11 @@
 
 Status: active reusable recommended template
 Doc version: v1.1.1-branch-workflow-language
-Purpose: one item-backed high-level plan for a problem, goal, workflow, algorithm, solution direction or no-change decision.
+Purpose: one high-level plan for a problem, Need/Desired Result, workflow, algorithm, solution direction or no-change decision.
 
-Use only optional sections that improve the current work. This is not a universal rigid schema, but every sufficient Planning Draft must contain complete Key Scenario coverage and one Full Picture Matrix.
+Use only optional sections that improve the current work. This is not a universal rigid schema. An in-progress Draft may exist before Scenario boundaries are stable; when an application Planning Draft claims sufficiency, keep complete Key Scenario coverage and one Full Picture Matrix unless a separately accepted methodology change says otherwise.
 
-A Planning Draft groups, orders, summarizes and links Planning Items. Complete item meanings remain at their canonical item owners.
+A Planning Draft groups, orders, summarizes and links current planning meaning. Complete meanings remain at their real current owners; scoped Ideas/Idea Variants stay linked while unresolved or when their reasoning remains useful.
 
 A separate `Planning Full Picture` artifact is not required. One Full Picture Matrix is required inside this file.
 
@@ -29,7 +29,7 @@ A separate `Planning Full Picture` artifact is not required. One Full Picture Ma
 
 ## 3. Acceptance Criteria — Optional
 
-| ID | Criterion | Status | Evidence/source | Related Planning Item/workflow/test |
+| ID | Criterion | Status | Evidence/source | Related Idea/current owner/workflow/test |
 |---|---|---|---|---|
 | AC-01 | <criterion> | candidate | <reference> | <reference> |
 
@@ -51,33 +51,33 @@ Do not invent criteria merely to fill the table.
 
 Use a separate Current Reality Capture only when independent descriptive depth improves review.
 
-## 6. Planning Item Map
+## 6. Current Conclusions / Related Ideas — Optional
 
-Order links so a reader can understand the planning direction without reading an unrelated ledger first.
+Use when it improves the reading route through current owners, decisions and material unresolved Ideas.
 
-| Order / group | Planning Item | Role in this draft | Related Implementation Ideas | Status / note |
+| Order / group | Current owner / Idea | Role in this draft | Related variants / implementation ideas | Status / note |
 |---|---|---|---|---|
-| <order/group> | <link to canonical item body> | <workflow, constraint, question, risk, decision, acceptance, other> | <links or none> | <state/compact context> |
+| <order/group> | <link> | <workflow, constraint, question, risk, decision, acceptance, other> | <links or none> | <state/compact context> |
 
 Rules:
 
 ```text
-- link to canonical item bodies;
-- do not copy complete item bodies into this draft;
-- keep separate Implementation Ideas as linked Planning Items;
-- significant statements without an item identify
-  source, inference, question or decision status;
-- preserve source and item-to-draft traceability;
+- link to complete current owners / Idea records;
+- do not copy complete bodies into this draft;
+- distinguish current selected meaning from unresolved Idea Variants;
+- preserve source/provenance where it is materially useful;
 - use grouping only when it improves the reading route.
 ```
+
+Historical ITEM-* IDs may remain provenance references but are not required current owners.
 
 ## 7. Key Scenario Coverage — Required
 
 Identify Key Scenarios through explicit review. Do not promote existing summary rows or planning commands automatically.
 
-| Scenario | Why key | Actor/context | Goal | Observable result | Planning Items | Complete owner |
-|---|---|---|---|---|---|---|
-| <scenario> | core value / risk / differentiation / viability / other | <context> | <goal> | <result> | <links> | complete inline / linked complete owner |
+| Scenario | Why key | Actor/context | Need / motivation | Goal | Observable result | Related Ideas / provenance | Complete owner |
+|---|---|---|---|---|---|---|---|
+| <scenario> | core value / risk / differentiation / viability / other | <context> | <need> | <goal> | <result> | <links> | complete inline / linked complete owner |
 
 `Key Scenario` is a role of Scenario, not a separate entity type. A Key Scenario cannot remain only a summary.
 
@@ -89,11 +89,15 @@ Repeat this complete block for every Key Scenario:
 
 **Actor/context:** <context>
 
+**Starting situation / motivational trigger / Need:** <supported content>
+
 **Goal:** <goal>
 
-**Observable result:** <result>
+**Observable result:** <result that meaningfully resolves/satisfies the Need>
 
-**Entry / preconditions:** <supported content>
+**Actor Understanding / Plan:** <goal/path understanding, important unknowns and required understanding when material>
+
+**Application entry / preconditions:** <supported content>
 
 **Main flow:**
 
@@ -107,7 +111,7 @@ Repeat this complete block for every Key Scenario:
 
 **Questions / risks / evidence needs:** <supported content>
 
-**Planning Items:** <links>
+**Related Ideas / source provenance:** <links when useful>
 
 **Implementation Ideas:** <links only; do not copy accepted behavior into an idea>
 
@@ -115,9 +119,9 @@ When the direction has no behavioral Scenario, state that explicitly and explain
 
 ### Other Scenarios — Optional
 
-| Scenario | Actor/context | Goal | Observable result | Planning Items | Current depth |
+| Scenario | Actor/context | Need / motivation | Goal | Observable result | Current depth |
 |---|---|---|---|---|---|
-| <scenario> | <context> | <goal> | <result> | <links> | summary / complete inline / linked detail |
+| <scenario> | <context> | <need> | <goal> | <result> | summary / complete inline / linked detail |
 
 A non-key Scenario may be complete inside this Planning Draft when a separate artifact would add more coordination than value.
 
@@ -127,13 +131,13 @@ Use this compact view to cross-link behavior, implementation thinking and valida
 
 | Flow point | Scenario view | Implementation view | Questions / risks / validation | Status / follow-up |
 |---|---|---|---|---|
-| <point> | <concise meaning + item links> | <Implementation Idea links> | <question/risk/prototype links> | <state/action> |
+| <point> | <concise meaning + current-owner/Idea links> | <Implementation Idea links> | <question/risk/prototype links> | <state/action> |
 
 Rules:
 
 ```text
 - keep cells concise;
-- link to complete Planning Items and other owners;
+- link to complete current owners and related Ideas when useful;
 - allow many-to-many links;
 - do not copy complete question, risk, prototype
   or implementation bodies into the table;
@@ -142,7 +146,7 @@ Rules:
 
 ## 9. Valuable Behaviors / Functional Workflows — Optional
 
-| ID / link | Behavior or outcome | Why valuable | Independent trigger/result? | Related criteria/items | Status |
+| ID / link | Behavior or outcome | Why valuable | Independent trigger/result? | Related criteria/Ideas | Status |
 |---|---|---|---|---|---|
 | FW-01 | <behavior> | <value> | yes / no / unresolved | <references> | candidate |
 
@@ -178,7 +182,7 @@ Use this section only when the planned result includes a process whose continuit
 
 **Prototype/test need and evidence:** <when present>
 
-**Contributing Planning Items:** <links>
+**Related current owners / Ideas:** <links>
 
 ---
 
@@ -236,7 +240,7 @@ Supporting models do not replace workflow continuity.
 |---|---|---|---|---|---|
 | <link> | <meaning> | risk / assumption | reported / inferred / checked | <reference> | <action> |
 
-Keep complete bodies at their Planning Item owners when they exist.
+Keep complete bodies at their real current owners / Idea records when they exist.
 
 ## 14. Concerns And Derived Observability — Optional
 
@@ -303,7 +307,7 @@ For a separate Branch Planning Draft, record its parent decision, inherited sour
 
 | Layer / representation | Selected? | Current form or owner | Why sufficient / why deeper work is needed | Escalation or reconsideration signal |
 |---|---|---|---|---|
-| Planning Items | yes | <owners> | <reason> | <signal> |
+| Ideas / current owners | review as needed | <owners> | <reason> | <signal> |
 | Scenario depth | summary / inline / separate / not used | <form> | <reason> | <signal> |
 | Full Picture Matrix | yes | this draft | required compact cross-view link structure | <signal to revise granularity> |
 | Domain | yes / no | <owner or none> | <reason> | <signal> |
@@ -326,7 +330,7 @@ Record the selected representation and project-local owners. Do not infer separa
 ## 20. Repository / Documentation Handoff — Optional
 
 ```text
-accepted items and Planning Draft
+accepted current meaning and Planning Draft
   → repository semantic reconciliation
   → owner placement
   → File Update Plan

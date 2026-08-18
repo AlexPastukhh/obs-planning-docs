@@ -5,7 +5,7 @@ Doc version: v1.2.0-stable-target-lifecycle-review
 Scope: direct trigger-to-result workflow for changing ordinary repository Markdown, creating/navigating stable links and reviewing explicitly affected uses.
 
 
-The accepted baseline remains ordinary file/section navigation plus explicit affected-use review. The additional survival rules and Note-target references below are confirmed incoming planning meaning but do not silently update `ITEM-114` or `ITEM-124`; those canonical item transitions still require explicit review.
+The accepted baseline remains ordinary file/section navigation plus explicit affected-use review. Historical `ITEM-*` references may still explain provenance, but they are no longer canonical current planning owners. New/changed planning meaning must be reviewed into actual current workflow/decision owners before repository mutation.
 
 ## 1. Trigger And Result
 
@@ -132,6 +132,6 @@ Possible helpers are Implementation Ideas. Their output does not become canonica
 
 ## 9. Relationship To Planning Workflow
 
-[`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) may hand accepted meaning to this workflow. This workflow may also start independently for direct documentation maintenance.
+[`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) may hand current selected planning meaning to this workflow. This workflow may also start independently for direct documentation maintenance.
 
 No stage authorizes commit or push without separate explicit permission.

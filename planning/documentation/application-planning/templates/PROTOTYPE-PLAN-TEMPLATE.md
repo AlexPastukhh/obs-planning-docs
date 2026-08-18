@@ -10,12 +10,12 @@ Purpose: plan the minimum experiment needed to reduce a material uncertainty and
 |---|---|
 | ID | not provided |
 | Title | not provided |
-| Related Planning Items / decisions | not provided |
+| Related Ideas / decisions | not provided |
 | Related Planning Draft / Scenario / workflow / branch | not provided |
 | Artifact mode | embedded / separate / not provided |
 | Status | proposed / ready / running / completed / cancelled / not provided |
 
-A small prototype may remain embedded in its Planning Item or Planning Draft. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
+A small prototype may remain embedded in its related Idea work or Planning Draft. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
 
 ## 2. Hypothesis
 
@@ -120,7 +120,7 @@ not provided
 
 List only owners that may genuinely change.
 
-| Possible result | Affected Planning Item / Draft / Scenario / workflow / decision | Expected update or review | Evidence required before update |
+| Possible result | Affected Idea / Draft / Scenario / workflow / decision | Expected update or review | Evidence required before update |
 |---|---|---|---|
 | Supported | not provided | not provided | not provided |
 | Rejected | not provided | not provided | not provided |
@@ -154,7 +154,7 @@ not provided
 
 ## 20. Related Ideas
 
-| Planning Item / ID | Idea | Relation | Status |
+| Idea / ID | Idea | Relation | Status |
 |---|---|---|---|
 | not provided | not provided | not provided | undecided |
 

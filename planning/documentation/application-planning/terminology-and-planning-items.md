@@ -1,19 +1,16 @@
-# Terminology And Planning Items
+# Terminology And Planning Items — Historical Compatibility Pointer
 
-Status: superseded compatibility pointer
-Doc version: v1.0.0-unified-owner-pointer
-Former responsibility: reusable solution/workflow-planning terminology and Planning Item distinctions.
+Status: superseded historical compatibility pointer
+Doc version: v2.0.0-planning-item-retired
+Former responsibility: reusable solution/workflow terminology and Planning Item distinctions.
 
-Canonical owner:
+Current solution/application terminology owner: `application-planning-principles-and-terminology.md`.
+
+Current generic Idea owners:
 
 ```text
-application-planning-principles-and-terminology.md
+../idea-planning-principles-and-terminology.md
+../idea-review-and-planning-workflow.md
 ```
 
-Read:
-
-[`application-planning-principles-and-terminology.md`](application-planning-principles-and-terminology.md)
-
-This path remains temporarily so older links do not break during route migration.
-
-Do not add new terminology, principles or Planning Item rules here. Update the canonical unified owner instead.
+Planning Item is not part of the target reusable ontology. This path remains only for older-link interpretation.

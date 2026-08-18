@@ -12,8 +12,8 @@ Current Linked Notes registry: [`USE-CASE-REGISTRY.md`](../../documentation/tool
 | Use-Case ID | Semantic name | Status | Direction | Main owner | Related command |
 |---|---|---|---|---|---|
 | `UC-DW-DOC-REF` | Repository Documentation Change And Reference Review | accepted current | `DIR-DOCUMENTATION-WORKBENCH` | [`repository-documentation-change-and-reference-review-workflow.md`](repository-documentation-change-and-reference-review-workflow.md) | none |
-| `UC-DW-ITEM-FULL-PICTURE` | Planning Meaning To Repository | accepted current; legacy ID retained | `DIR-DOCUMENTATION-WORKBENCH` | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) | `сверь айтемы` for reconciliation stage only |
-| `UC-DW-STRUCTURED-MESSAGE` | Structured User Message Composer | active supporting | `DIR-DOCUMENTATION-WORKBENCH` | `ITEM-121` in `planning-item-register.md` | none |
+| `UC-DW-ITEM-FULL-PICTURE` | Planning Meaning To Repository | accepted current; legacy ID retained | `DIR-DOCUMENTATION-WORKBENCH` | [`planning-meaning-to-repository-workflow.md`](planning-meaning-to-repository-workflow.md) | none |
+| `UC-DW-STRUCTURED-MESSAGE` | Structured User Message Composer | retired; legacy ID only | `DIR-DOCUMENTATION-WORKBENCH` | historical `ITEM-121` only; no current owner | none |
 
 Current Linked Notes application Use Cases are deliberately **not duplicated in this index**.
 
@@ -28,24 +28,29 @@ Owner route:
 ```text
 planning-draft.md for broader planning context
 repository-documentation-change-and-reference-review-workflow.md
-planning-item-register.md for affected planning requirements when intentionally reconciled.
+planning-draft.md / current workflow owners for current planning meaning; historical `planning-item-register.md` only when provenance is materially useful.
 ```
 
 ## 3. `UC-DW-ITEM-FULL-PICTURE` — Planning Meaning To Repository
 
-**Trigger/input:** free-form/structured source, Planning Items, current Planning Draft or repository owners requiring reconciliation.
+**Trigger/input:** selected free-form/structured source, current Planning Draft, scoped Ideas/current conclusions or repository owners requiring integration.
 
-**Result:** reviewed Planning Items/Planning Draft meaning and a repository update handoff under the active planning route.
+**Result:** reviewed current planning meaning and an explicit repository/File Update handoff, or a documented unresolved/deferred state.
 
-`сверь айтемы` activates only its registered read-only reconciliation stage under root UCM permissions.
+The ID is retained for compatibility only; current semantics do not depend on Planning Item formation/reconciliation.
 
-## 4. `UC-DW-STRUCTURED-MESSAGE` — Structured User Message Composer
+Owner route:
 
-**Purpose:** structure long literal input into addressable topics, questions, corrections and examples without rewriting meaning.
+```text
+planning-draft.md
+planning-meaning-to-repository-workflow.md
+../../documentation/idea-review-and-planning-workflow.md when Idea review is material
+../../documentation/file-update-overview-workflow.md
+```
 
-**Result:** one ordinary user message whose fragments may contribute to several Planning Items.
+## 4. `UC-DW-STRUCTURED-MESSAGE` — Retired Legacy Capability
 
-Owner: `ITEM-121 / STRUCTURED-USER-MESSAGE-COMPOSER`.
+The former capability is preserved only through historical `ITEM-121` provenance. No current independent owner was identified during Planning Item retirement, so it is not an active Use Case. Ordinary source structuring remains valid input behavior and `собери идеи` accepts free-form source without this intermediate entity.
 
 ## 5. Linked Notes Migration / Compatibility Aliases
 
@@ -66,7 +71,7 @@ Do not activate these former IDs as current Linked Notes semantic owners.
 
 ## 6. Deferred Candidate — Chat/AI/Work-State Trace
 
-Related historical/deferred Planning Items remain in the planning register. Their existence does not create a current Linked Notes Use Case.
+Related historical/deferred ITEM-* records remain in the provenance register. Their existence does not create a current Linked Notes Use Case.
 
 Promotion into the actual application requires a separately implemented independently useful trigger-to-result lifecycle and then an update to the current Linked Notes map/registry.
 
@@ -74,7 +79,7 @@ Promotion into the actual application requires a separately implemented independ
 
 ```text
 planning-draft.md → broader planning/history;
-planning-item-register.md → planning item/source owner;
+planning-item-register.md → historical ITEM-* provenance/migration source;
 retired-planning-items.md → historical inactive item owner;
 legacy Linked Notes workflow files in this area → compatibility/planning history;
 Tampermonkey Linked Notes USE-CASE-MAP / USE-CASE-REGISTRY → current application semantics.

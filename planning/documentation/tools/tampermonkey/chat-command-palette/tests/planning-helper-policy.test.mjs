@@ -23,3 +23,5 @@ test('UI distinguishes same-path inventory from content equality and remote-succ
 
 
 test('repository source changes clear old-source evidence before new settings become active',()=>{const runtime=read('src/planning-helper-runtime.js');const start=runtime.indexOf('async function saveSettings(settings,token)');const end=runtime.indexOf('const ui=deps.createPlanningHelperUi',start);const body=runtime.slice(start,end);const clear=body.indexOf('persist(clearRepositoryEvidence(snapshot))');const token=body.indexOf('saveGitHubToken(token)');const settings=body.indexOf('saveRepositorySettings(candidate)');assert.ok(clear>=0&&token>clear&&settings>token)});
+
+test('semantic projections expose collect ideas and retire active Planning Item command redirects',()=>{const source=read('src/semantic-projections.js');assert.match(source,/UC-AP-COLLECT-IDEAS/);assert.match(source,/ideas\.collect/);assert.doesNotMatch(source,/planning_items\.form/);assert.doesNotMatch(source,/planning_items\.reconcile/);assert.doesNotMatch(source,/UC-AP-FORM-ITEMS/);assert.doesNotMatch(source,/UC-AP-RECONCILE/)});

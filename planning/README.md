@@ -83,7 +83,8 @@ Registries own semantic entries; the root UCM owns command-system entry/global r
 8. planning/workflow-activation-map.md for activation details
 9. planning/root-source-sync-register.md for owner/source status
 10. planning/planning-input-conventions.md when source markers/settings matter
-11. targeted item/source register when reconciliation depends on it.
+11. generic Idea owners when answer-seeking review is in scope
+12. historical provenance/source register only when legacy ITEM-* history is materially relevant.
 ```
 
 For command-first input, read the root UCM immediately after this file, resolve the selected definition from `planning/commands/`, then follow that definition's owner route.
@@ -106,8 +107,8 @@ planning/areas/documentation-workbench/README.md
   → direction-registry.md
   → use-case-registry.md
   → selected current non-Linked-Notes workflow/model owner
-  → targeted planning-item-register.md items/sources
-  → relevant reusable owners.
+  → relevant reusable owners
+  → historical planning-item-register.md only when provenance/migration history is materially relevant.
 ```
 
 Current Linked Notes application route:
@@ -161,8 +162,9 @@ Supporting deferred Documentation Workbench model:
   Reference Object Model And Lifecycle
     → deferred application-heavy alternative, not current Linked Notes Reference Objects
 
-Canonical planning register:
-  53 reviewed canonical items with active/deferred/retired dispositions.
+Historical Planning Item provenance:
+  preserved ITEM-* records with active/deferred/retired-era dispositions;
+  not current target planning ontology.
 
 Removed local artifacts:
   reference-link experiment;
@@ -171,23 +173,29 @@ Removed local artifacts:
 
 Chat/AI/Work-State remains provisional. Current Linked Notes semantics are not provisional merely because their earlier Documentation Workbench owners were; their current `UC-LN-*` statuses are owned by the Linked Notes-local registry.
 
-## 6. Planning Item Formation Entry
+## 6. Collect And Review Ideas Entry
 
-Semantic use case: `Form Planning Items From Discussion`.
+Semantic use case: `Collect And Review Ideas From Selected Source`.
 
-Reusable owner: `planning/documentation/application-planning/planning-item-formation-workflow.md`.
+Reusable owners:
 
-Input conventions: `planning/planning-input-conventions.md`.
+```text
+planning/documentation/idea-planning-principles-and-terminology.md
+planning/documentation/idea-review-and-planning-workflow.md
+planning/documentation/IDEA-REVIEW-TEMPLATE.md
+```
 
 Active repository command definition:
 
 ```text
-planning/commands/form-items.command.md
-сформируй айтемы
-English name: form items
+planning/commands/collect-ideas.command.md
+собери идеи
+English name: collect ideas
 ```
 
-The command forms complete reviewable Planning Items and remains read-only toward repository files.
+The command performs read-only Idea collection/review. It preserves material non-Idea source meaning, performs the mandatory review checks without inventing findings, and returns aggregate `Questions / Risks / Problems` with Related Idea IDs.
+
+Planning Item formation and reconciliation are retired from the target command route; historical ITEM-* registers remain provenance/migration sources only.
 
 ## 7. Tampermonkey Planning Helper
 
@@ -211,6 +219,4 @@ Commands    → planning/planning-use-case-map.md → planning/commands/*.comman
 
 Normal command execution remains composer insertion/copy only. The explicit Commands management surface may read the repository command catalog and create/update only direct `planning/commands/*.command.md` files through GitHub with SHA-aware exact read-back verification. It never runs local Git, commit or push.
 
-`Reconcile Planning Items` redirects to the existing `сверь айтемы` command instead of creating a duplicate execution action.
-
-`Form Planning Items From Discussion` redirects to the accepted `сформируй айтемы / form items` command profile.
+`Collect And Review Ideas From Selected Source` redirects to the accepted `собери идеи / collect ideas` command. Retired Planning Item formation/reconciliation routes are not projected as active commands.

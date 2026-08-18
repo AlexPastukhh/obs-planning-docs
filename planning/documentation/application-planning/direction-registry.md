@@ -27,9 +27,9 @@ Included:
 
 ```text
 - current-reality understanding when needed;
-- Planning Item formation and review;
-- item-backed Planning Draft work;
-- repository semantic reconciliation;
+- Problem / Need framing and generic Idea review when material;
+- solution/workflow Planning Draft work;
+- integration with current repository owners;
 - proportional alternatives, research, concerns, tests and prototypes;
 - optional handoff to specialized detailed planning when justified.
 ```
@@ -48,24 +48,28 @@ Excluded:
 ### Topology
 
 ```text
-optional current-reality understanding
-  → source-linked Planning Item formation and review
-  → item-backed Planning Draft work
-  → repository reconciliation when current owners matter;
+Problem / Question / Idea
+  → Need / Desired Result
+  → optional current-reality understanding
+  → existing solutions / alternatives
+  → candidate whole solution / Workflow Variants when useful
+  → scoped generic Idea review/deep planning where material
+  → whole-workflow integration review
+  → Planning Draft / current conclusions
+  → justified or already-confirmed Application responsibility when applicable;
 
 optional or conditional:
   research existing solutions;
-  compare alternatives or branches;
   suggest and review concerns;
   test uncertainty with research or prototypes;
-  revise items, decisions and the Planning Draft from evidence;
+  revise Ideas/current owners, decisions and the Planning Draft from evidence;
 
 optional downstream handoff:
   Perform Detailed Scenario/Domain/Slice Planning
   only after the specialized profile is selected.
 ```
 
-A Planning Draft is the high-level owner. Every sufficient Planning Draft contains complete Key Scenarios and one Full Picture Matrix view; no parallel Full Picture artifact is required.
+A Planning Draft is the high-level owner. It may exist while Scenario boundaries are still developing. When the selected application-planning stage claims sufficiency, preserve enough complete Scenario/whole-plan coverage without inventing premature stable Scenarios; no parallel Full Picture artifact is required.
 
 Use cases are supported capabilities. Some may be independently triggered, repeated or omitted.
 
@@ -74,9 +78,8 @@ Use cases are supported capabilities. Some may be independently triggered, repea
 | Use Case | Activation | Owner |
 |---|---|---|
 | `UC-AP-REALITY` — Understand Current Workflow And Reality | optional / independent | `application-planning-drafting-workflow.md` |
-| `UC-AP-FORM-ITEMS` — Form Planning Items From Discussion | independent / repeatable | `planning-item-formation-workflow.md` |
-| `UC-AP-FULL-PICTURE` — Build Or Review An Item-Backed Planning Draft | independent / repeatable; legacy ID retained | `application-planning-drafting-workflow.md` |
-| `UC-AP-RECONCILE` — Reconcile Planning Items | independent / command-related | `application-planning-drafting-workflow.md` |
+| `UC-AP-COLLECT-IDEAS` — Collect And Review Ideas From Selected Source | independent / repeatable | generic Idea owners; command `собери идеи` |
+| `UC-AP-FULL-PICTURE` — Build Or Review A Planning Draft | independent / repeatable; legacy ID retained | `application-planning-drafting-workflow.md` |
 | `UC-AP-RESEARCH` — Research Existing Solutions And Alternative Workflows | optional / provisional | current Planning Draft plus proportional checked research |
 
 The stable ID `UC-AP-FULL-PICTURE` remains for route compatibility. Its current semantic result is a Planning Draft, not a separate Full Picture owner.
@@ -126,7 +129,7 @@ When this profile is selected, the project may use:
 
 ```text
 Scenario:
-  coherent actor/context + goal + observable-result behavior;
+  coherent motivated actor/context + Need/Goal + observable-result behavior;
 
 Scenario DATA:
   supported user-visible or scenario-relevant values;
@@ -155,8 +158,9 @@ planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md
 ### Topology
 
 ```text
-sufficiently stable item-backed Planning Draft
+sufficiently stable application planning
   → explicit selection of the specialized profile
+  → optional Spine Scenario while boundaries are unclear
   → selected Scenario representation and review
   ↔ optional Domain review and alignment
   → optional Implementation Slice planning

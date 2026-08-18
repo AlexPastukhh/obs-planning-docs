@@ -53,12 +53,15 @@ planning/documentation/application-planning/direction-registry.md
 Root orientation:
 
 ```text
-understand current reality when needed
-  → form/review source-linked Planning Items
-  → build/review an item-backed Planning Draft with complete Key Scenarios and one Full Picture Matrix
-  → reconcile accepted meaning with current owners
-  → optional alternatives/research/prototypes/tests
-  → optional detailed planning handoff.
+Problem / Question / Idea
+  → Need / Desired Result
+  → understand current reality when useful
+  → existing solutions / alternatives
+  → candidate whole solution / Workflow Variants when useful
+  → scoped Idea review/deep planning where material
+  → whole-workflow integration evaluation
+  → justified / already-confirmed Application responsibility when applicable
+  → optional detailed Scenario/Domain/Slice handoff.
 ```
 
 This is supported topology, not one mandatory sequence.
@@ -148,17 +151,14 @@ Related command router:
 planning/planning-use-case-map.md
 ```
 
-Accepted command-related semantic Use Cases:
+Accepted command-related semantic Use Case:
 
 ```text
-Reconcile Planning Items
-  ↔ `сверь айтемы`;
-
-Form Planning Items From Discussion
-  ↔ `сформируй айтемы` / `form items`.
+Collect And Review Ideas From Selected Source
+  ↔ `собери идеи` / `collect ideas`.
 ```
 
-Both commands remain bounded by their root UCM permissions.
+Planning Item formation/reconciliation commands are retired from the target command set. Historical ITEM-* records may remain provenance/history without creating an active command route.
 
 ## 7A. Helper Projection
 
@@ -187,7 +187,7 @@ do not expand into unrelated Direction families.
 
 Direction activation establishes context only. It does not execute commands or grant repository permissions.
 
-The helper redirects both `Form Planning Items From Discussion` and `Reconcile Planning Items` from Use Cases to their accepted command routes.
+The helper redirects `Collect And Review Ideas From Selected Source` to `собери идеи`. Retired Planning Item formation/reconciliation Use Cases are not active projections.
 
 ## 8. Orientation Read Order
 

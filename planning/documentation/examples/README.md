@@ -54,3 +54,7 @@ Do not copy their routes/state as active configuration for another project.
 - Do not treat an example English name as authoritative when the concrete root UCM differs.
 - Do not move archive source-selection rules out of the owner workflow into this index.
 ```
+
+## Idea Review
+
+- [`COLLECT-IDEAS-PRACTICAL-EXAMPLE.md`](COLLECT-IDEAS-PRACTICAL-EXAMPLE.md) — full practical demonstration of `собери идеи`; example only, not methodology authority.

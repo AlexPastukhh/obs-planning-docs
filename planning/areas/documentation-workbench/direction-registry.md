@@ -35,8 +35,8 @@ Planning Meaning To Repository workflow
 current Linked Notes application semantics:
   migrated to planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-MAP.md;
 
-independently useful supporting capability:
-  Structured User Message Composer;
+retired legacy supporting capability:
+  Structured User Message Composer (historical ITEM-121 provenance only);
 
 optional Implementation Ideas:
   Reference Impact Checker;
@@ -53,7 +53,7 @@ deferred alternative:
 |---|---|---|
 | `UC-DW-DOC-REF` — Repository Documentation Change And Reference Review | accepted current | `repository-documentation-change-and-reference-review-workflow.md` |
 | `UC-DW-ITEM-FULL-PICTURE` — Planning Meaning To Repository | accepted current; legacy ID retained | `planning-meaning-to-repository-workflow.md` |
-| `UC-DW-STRUCTURED-MESSAGE` — Structured User Message Composer | active supporting | `ITEM-121` in `planning-item-register.md` |
+| `UC-DW-STRUCTURED-MESSAGE` — Structured User Message Composer | retired; legacy ID only | historical `ITEM-121` provenance; no current owner |
 
 ### Boundaries
 
@@ -70,16 +70,16 @@ deferred alternative:
 
 ### Purpose
 
-Keep project-local Planning Items, Planning Draft, workflow owners, compatibility paths and later root/projection synchronization consistent with reusable planning owners.
+Keep the project-local Planning Draft, current workflow owners, historical ITEM-* provenance paths and later root/projection synchronization consistent with reusable planning owners.
 
 ### Supported Activities
 
 ```text
 capture exact source;
-reconcile current/deferred/retired item meaning;
+integrate current planning meaning through current owners / scoped Ideas when material;
 maintain the Planning Draft and its Key Scenarios;
 maintain independently traversable current workflows;
-preserve historical item bodies;
+preserve historical ITEM-* provenance bodies without treating them as current owners;
 retire obsolete local deep-planning files;
 keep root and projection routes aligned with current owners.
 ```

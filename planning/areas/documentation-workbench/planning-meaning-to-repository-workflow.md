@@ -2,13 +2,13 @@
 
 Status: active accepted project-local End-To-End Workflow
 Doc version: v1.0.0-repository-native
-Scope: preserve source meaning, form/reconcile Planning Items, maintain one Planning Draft and hand reviewed meaning to repository file/diff work.
+Scope: preserve source meaning, review scoped Ideas/current owners when material, maintain one Planning Draft and hand reviewed meaning to repository file/update work.
 
 ## 1. Trigger And Result
 
-**Trigger:** free-form or structured source, existing Planning Items, a current Planning Draft or repository meaning requiring reconciliation.
+**Trigger:** free-form or structured source, scoped Ideas/current conclusions, a current Planning Draft or repository meaning requiring integration.
 
-**Result:** reviewed canonical Planning Items, one current Planning Draft and an explicit repository/file-update handoff, or a documented unresolved/deferred end state.
+**Result:** reviewed current planning meaning, one current Planning Draft when useful and an explicit repository/file-update handoff, or a documented unresolved/deferred end state.
 
 ## 2. Preconditions
 
@@ -20,17 +20,17 @@ Scope: preserve source meaning, form/reconcile Planning Items, maintain one Plan
 ## 3. End-To-End Flow
 
 ```text
-source
+source / current owner
   → preserve literal messages and relevant context
-  → form or select Planning Items
+  → collect/review scoped Ideas when answer-seeking work is material
   → targeted current-owner check
-  → show Current / Incoming / Resulting transformations
-  → explicit acceptance
-  → update one item-backed Planning Draft
+  → show Current / Incoming / Resulting transformations when non-trivial
+  → explicit current conclusion / unresolved decision
+  → update one current Planning Draft when useful
   → compare alternatives and no-change
   → deepen questions/risks/tests only where justified
   → reconcile with current repository owners
-  → produce a File Update Plan
+  → produce an Idea-aware File Update Plan
   → separately authorized replacement package
   → literal diff review
   → documented / unresolved / deferred result.
@@ -42,21 +42,21 @@ source
 
 Record exact messages, files or checked facts. Do not silently choose an old archive or shortened paraphrase as the sole source.
 
-### Stage 2 — Form Or Select Planning Items
+### Stage 2 — Review Ideas / Current Meaning When Material
 
-Each item owns a complete reusable meaning. A source fragment may update, merge, split, relate, defer or retire meaning; one incoming fragment does not imply one new item.
+Use the shared Idea methodology for answer-seeking work. Preserve facts, constraints and decisions as their own meanings; one incoming fragment does not imply one new Idea.
 
 ### Stage 3 — Reconcile Current Owners
 
-Inspect relevant current items, principles, workflows, decisions and owner files. Show transformations before literal repository changes.
+Inspect relevant current owners, principles, workflows, decisions, scoped Ideas and historical provenance only when useful. Show transformations before literal repository changes.
 
-### Stage 4 — Accept The Canonical Item Set
+### Stage 4 — Establish Current Conclusions
 
-User acceptance applies to meanings and dispositions, not to implementation or repository writes.
+Select, modify, defer/reject or leave unresolved the relevant Ideas/current meanings. Acceptance of planning meaning does not authorize implementation or repository writes.
 
 ### Stage 5 — Maintain One Planning Draft
 
-Organize items, alternatives, high-level Scenarios, questions, risks, evidence and selected depth. Do not create a parallel Full Picture body owner.
+Organize current conclusions, alternatives, high-level Scenarios, questions, risks, evidence and selected depth. Do not create a parallel Full Picture body owner.
 
 ### Stage 6 — Deepen Proportionally
 
@@ -78,7 +78,7 @@ A separately authorized package replaces complete files, verifies exact base blo
 | Incoming meaning extends/corrects | show explicit transformation |
 | Direct conflict lacks a decision | stop with prioritized question and conservative fallback |
 | Implementation Idea appears | link it separately; do not accept architecture |
-| Evidence changes a decision | return to affected items and Planning Draft |
+| Evidence changes a decision | return to affected current owners / Ideas and Planning Draft |
 | Repository base changed | stop package application before changes |
 | Diff reveals semantic error | return to reconciliation; do not commit |
 
@@ -87,7 +87,7 @@ A separately authorized package replaces complete files, verifies exact base blo
 | Gate | Review object | Required result |
 |---|---|---|
 | Source gate | selected messages/files | source scope explicit |
-| Item gate | Current/Incoming/Resulting rows | accepted canonical meanings/dispositions |
+| Meaning gate | Ideas/current-owner transformations | current selected/unresolved meanings explicit |
 | Planning gate | Planning Draft | coherent current direction and depth |
 | Repository gate | File Update Plan | explicit owners/actions/boundaries |
 | Literal gate | Git diff | approved exact file transition |
@@ -96,7 +96,7 @@ A separately authorized package replaces complete files, verifies exact base blo
 
 This workflow does not require:
 
-- application-native managed Planning Items;
+- a universal Planning Item layer;
 - App Memory;
 - Semantic Home;
 - a separate Planning Full Picture;
@@ -109,10 +109,10 @@ It does not own direct documentation editing that starts without solution planni
 ## 8. Current Owners
 
 ```text
-planning-item-register.md
 planning-draft.md
-../../documentation/application-planning/planning-item-formation-workflow.md
+../../documentation/idea-review-and-planning-workflow.md
 ../../documentation/application-planning/application-planning-drafting-workflow.md
+planning-item-register.md  # provenance/history only
 ../../documentation/file-update-overview-workflow.md
 ```
 

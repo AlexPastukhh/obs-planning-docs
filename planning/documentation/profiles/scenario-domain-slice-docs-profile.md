@@ -6,7 +6,7 @@ Scope: optional reusable guidance for projects that organize detailed applicatio
 
 ## 1. Purpose
 
-Use this profile when a project needs Scenario/Domain/Slice documentation boundaries after an item-backed Planning Draft is sufficiently stable.
+Use this profile when a project needs separate Scenario/Domain/Slice documentation boundaries after application/solution planning is sufficiently stable for the relevant detail. An optional Spine Scenario may precede stable Scenario boundaries.
 
 This is a specialized profile, not a universal planning stage.
 
@@ -15,7 +15,8 @@ For a simple application or a solution that is not application development, the 
 When selected, the profile preserves this dependency direction:
 
 ```text
-Planning Items / Planning Draft
+Planning Draft / current application meaning
+  → optional Spine Scenario while boundaries are unclear
   → clean Scenario Reference Objects
   → Scenario DATA Reference Objects
   → Behavior Item Reference Objects
@@ -27,7 +28,7 @@ Planning Items / Planning Draft
 
 ```text
 Scenario:
-  one coherent actor/context + goal + observable result;
+  one coherent motivated actor/context + Need/Goal + meaningful observable result;
   pure user-facing and verifiable behavior;
   no implementation design.
 
@@ -60,7 +61,10 @@ Recommended content:
 ```text
 Scenario ID and title;
 actor / application context;
+starting situation / motivational trigger;
+Need / motivation;
 goal;
+Actor Understanding / Plan when material;
 entry points;
 preconditions;
 main flow;
@@ -70,7 +74,8 @@ postconditions;
 acceptance;
 observable outcomes;
 open questions;
-Planning Item references;
+related Idea / source provenance references when useful;
+optional step-local / cross-cutting presentation and visual requirements;
 Scenario DATA references;
 Behavior Item references;
 source-review state.
@@ -78,31 +83,21 @@ source-review state.
 
 Create a separate file per Scenario Object when the project benefits from independent review, linking and change-impact notification. A catalog/index may summarize them without becoming a second owner.
 
-## 4. Planning Item Traceability
+## 4. Source / Idea / Current-Owner Traceability
 
-When a Scenario Object is created from an item-backed Planning Draft:
-
-```text
-Scenario
-  -- derived from -->
-Planning Item.
-```
+When Scenario meaning is derived from current planning or scoped Idea work, preserve links only where they materially improve provenance/change review.
 
 Rules:
 
 ```text
-- link every Planning Item that contributes material scenario meaning;
-- use a multi-value Planning Items field/projection whose members
-  are Planning Item Reference Objects;
-- do not copy complete Planning Item bodies into the Scenario;
-- the Scenario owns only the new behavioral composition;
-- Scenario DATA and Behavior Items may link
-  to the narrower contributing item subset;
-- later Domain/Slice/Prototype artifacts reference Scenario
-  and Behavior Item identities instead of copying scenario text.
+- link the current owner / Idea / source that contributes material Scenario meaning when useful;
+- do not copy complete Idea/source bodies into the Scenario;
+- the Scenario owns its behavioral composition;
+- Scenario DATA and Behavior Items may link to narrower sources/Ideas when useful;
+- later Domain/Slice/Prototype artifacts reference Scenario and Behavior Item identities instead of copying scenario text.
 ```
 
-A later Planning Item change does not rewrite a Scenario automatically. It marks dependent Scenario/DATA/Behavior objects and their definition files as review-needed through the normal dependency-review mechanism. The previous reviewed scenario content remains until a user reviews and refreshes, confirms it is still current, or deliberately removes/replaces the relation.
+A later related source/Idea/current-owner change does not rewrite a Scenario automatically. It creates an explicit review need when the project tracks that relation; the previous reviewed Scenario remains until reviewed/confirmed/replaced.
 
 ## 5. Scenario DATA Rules
 
@@ -120,7 +115,7 @@ parent Scenario;
 type;
 required observable behavior;
 Scenario DATA references when applicable;
-Planning Item references when traceability is useful;
+related Idea / source provenance references when traceability is useful;
 scope/change markers when already supported;
 open questions when present.
 ```
@@ -135,10 +130,11 @@ Responsibility-layer classification is a later analytical artifact. Do not put c
 - Do not require this profile merely because a Planning Draft has Scenarios.
 - For simple or non-application solutions, do not require separate
   Scenario DATA, Behavior Item, Domain or Slice artifacts.
+- Do not use `one Need = one Scenario`; require a meaningful result and use independence signals only as supporting lenses.
 - Do not turn every view, button, rule or workflow step into a peer Scenario.
 - Do not treat Scenario DATA as domain or persistence design.
 - Do not treat Behavior Items as Slices.
-- Do not update Planning Items automatically from downstream deep planning.
+- Do not update upstream Ideas/current owners automatically from downstream deep planning.
 - Do not make a source change silently rewrite dependent scenario artifacts.
 - Keep project-specific routes in the project root UCM.
 - Keep reusable route setup in the field kit.

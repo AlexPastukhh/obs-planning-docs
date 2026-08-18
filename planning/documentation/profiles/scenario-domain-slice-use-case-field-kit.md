@@ -28,7 +28,7 @@ scenario plan:
   output separate logical Scenario Reference Objects,
   supported Scenario DATA Reference Objects
   and Behavior Item Reference Objects;
-  preserve Planning Item source links;
+  preserve source / Idea / current-owner traceability when useful;
   identify manual review needs when upstream meaning changes;
 
 domain review:
@@ -55,8 +55,9 @@ A project that does not benefit from this representation should keep Scenario me
 A concrete Scenario route should identify:
 
 ```text
-selected Planning Draft;
-selected contributing Planning Items;
+selected Planning Draft / application planning;
+optional Spine Scenario origin when used;
+related source / Idea / current-owner references when useful;
 Scenario catalog/index owner;
 Scenario Reference Object definition owner or owners;
 Scenario DATA Reference Object owner or owners,
@@ -64,7 +65,7 @@ Scenario DATA Reference Object owner or owners,
 Behavior Item Reference Object owner or owners;
 selected physical storage representation
   such as shared registry or separate files;
-manual review behavior when an upstream Planning Item changes;
+manual review behavior when related upstream meaning changes;
 permission boundary.
 ```
 
@@ -111,6 +112,8 @@ Do not require Slice planning for one-step work, a narrow script, a process chan
 - Do not activate the specialized profile merely because
   a Planning Draft contains Scenarios.
 - Do not require one physical file per logical Reference Object.
+- Do not require contributing Planning Items or a Planning Item layer.
+- Do not introduce a permanent Spine Unit.
 - Do not make Domain or Slice details part of clean Scenario behavior.
 - Do not infer repository edit, archive, commit or push permission.
 ```

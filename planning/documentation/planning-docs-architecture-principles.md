@@ -51,25 +51,27 @@ Reusable docs do not own concrete project state, schedules, implementation statu
 
 Do not maintain two active owners for the same definition/principle contract merely to preserve a terminology/principles file split.
 
-## 3. Planning Item Owner Boundary
+## 3. Idea And Current-Owner Boundary
 
 ```text
-application-planning/planning-item-formation-workflow.md
-  → selected source to reviewed Planning Items;
+idea-planning-principles-and-terminology.md
+  → shared Idea / Idea Variant / review-depth semantics;
+
+idea-review-and-planning-workflow.md
+  → selected source to reviewed Ideas when answer-seeking work is material;
 
 application-planning/application-planning-drafting-workflow.md
-  → Planning Draft, workflow integrity, reconciliation,
-    questions, risks, alternatives and evidence revision;
+  → Planning Draft, workflow integrity, questions, risks, alternatives and evidence revision;
 
-project-local register/area
-  → concrete accepted items, sources and current state.
+project-local owner/area
+  → accepted current project meaning and state.
 ```
 
-Do not duplicate Planning Item formation in the drafting workflow.
+Do not create a universal intermediate semantic atom between source material and real planning owners. An Idea is answer-seeking work, not a replacement for facts, constraints, decisions, Scenarios, workflow steps or other owners.
 
-A reviewed Planning Item remains a semantic planning meaning. Reusable methodology does not require it to become a managed application object.
+Historical Planning Item registers may remain as provenance/migration sources, but reusable target methodology does not route new work through them.
 
-Repository placement, import, storage or application integration are separate project-local decisions.
+Repository placement, import, storage or application integration remain separate project-local decisions.
 
 ## 4. Portable Baseline
 
@@ -79,7 +81,8 @@ The reusable planning baseline is:
 readable Markdown or equivalent reviewable content;
 complete source context;
 explicit review;
-traceable Planning Items;
+traceable Ideas/current conclusions when answer-seeking work is material;
+direct routing to real current owners;
 separate authorization for repository updates.
 ```
 
@@ -125,11 +128,11 @@ Field kits stop being routers after runtime files exist.
 
 ```text
 raw source
-  ≠ accepted Planning Item;
+  ≠ accepted Idea or current decision;
 
-proposed item meaning
+proposed Idea
   ≠ separate Candidate entity
-  ≠ accepted item;
+  ≠ accepted current meaning;
 
 AI assumption
   ≠ user decision;
@@ -147,7 +150,7 @@ local mapping
   ≠ reusable principle;
 
 full-message source
-  ≠ normalized item body;
+  ≠ normalized Idea/current-owner meaning;
 
 view or projection
   ≠ canonical state;

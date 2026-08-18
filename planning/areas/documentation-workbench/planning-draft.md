@@ -1,10 +1,10 @@
 # Documentation Workbench Planning Draft
 
-Status: active current project-local Planning Draft / Batch 3B local Scenario migration
-Doc version: v1.5.0-note-images-and-asset-transfer
-Purpose: organize the reviewed Documentation Workbench Planning Items around the selected repository-native direction without creating a second item-body owner.
+Status: active current project-local Planning Draft / Planning Item ontology retired
+Doc version: v1.6.0-current-owner-migration
+Purpose: organize current Documentation Workbench planning meaning around the selected repository-native direction while preserving historical ITEM-* provenance without making Planning Item a current semantic layer.
 
-Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
+Historical provenance source: [`planning-item-register.md`](planning-item-register.md)
 
 ## 1. Draft Identity
 
@@ -12,10 +12,10 @@ Canonical item owner: [`planning-item-register.md`](planning-item-register.md)
 |---|---|
 | Planning direction | Repository-native documentation links, affected-use review, categorized image-bearing Notes, repository search, rich Markdown and image-aware repository transfer |
 | Status | selected current behavior / implementation candidates not selected |
-| Source register | [`planning-item-register.md`](planning-item-register.md) |
+| Historical provenance register | [`planning-item-register.md`](planning-item-register.md) |
 | Historical inactive items | [`retired-planning-items.md`](retired-planning-items.md) |
 | Previous route | [`full-picture.md`](full-picture.md) compatibility pointer |
-| Selected planning depth | Planning Items + one Planning Draft with complete Key Scenarios and one Full Picture Matrix |
+| Selected planning depth | One current Planning Draft; historical ITEM-* IDs retained as provenance where useful |
 
 ## 2. Desired Result
 
@@ -38,17 +38,17 @@ Repository Markdown remains understandable and editable without a helper.
 
 ## 3. Acceptance Criteria
 
-| ID | Criterion | Status | Related items |
+| ID | Criterion | Status | Historical provenance / evidence links |
 |---|---|---|---|
 | AC-01 | Complete durable documentation and Note meaning remains in repository Markdown. | accepted current | `ITEM-23B`, `ITEM-28B`, `ITEM-124` |
 | AC-02 | A user can edit and review changes through an ordinary Git working-tree/diff workflow. | accepted current | `ITEM-34B` |
-| AC-03 | Links can address complete repository files and stable anchored sections/fragments across folder nesting. | accepted current behavior / item clarification pending | `ITEM-114` |
-| AC-04 | A stable anchored link survives visible target-text changes and movement inside the same file when path/anchor identity remains valid. | confirmed user requirement / item update pending review | `ITEM-114` |
+| AC-03 | Links can address complete repository files and stable anchored sections/fragments across folder nesting. | accepted current behavior / clarification pending | `ITEM-114` |
+| AC-04 | A stable anchored link survives visible target-text changes and movement inside the same file when path/anchor identity remains valid. | confirmed user requirement / current-owner update pending review | `ITEM-114` |
 | AC-05 | Dependency review is explicit and does not turn every navigation link into an obligation. | candidate / needs prototype | `ITEM-89`, `ITEM-105` |
 | AC-06 | AI transfer expansion does not mutate saved Markdown and reports unresolved targets/cycles. | candidate / needs prototype | `ITEM-107` |
-| AC-07 | A user can create a standalone Note and link it to files, stable fragments and other Notes. | confirmed user requirement / item update pending review | `ITEM-124` |
+| AC-07 | A user can create a standalone Note and link it to files, stable fragments and other Notes. | confirmed user requirement / current-owner update pending review | `ITEM-124` |
 | AC-08 | A remote Note save is not reported successful until the intended content is verified by reading it back. | implementation candidate / supported by supplied-script evidence | `ITEM-124`, pending Notes-widget Implementation Idea |
-| AC-09 | No custom editor, generic object runtime, App Memory or Semantic Home is required by the baseline. | accepted current | item reconciliation |
+| AC-09 | No custom editor, generic object runtime, App Memory or Semantic Home is required by the baseline. | accepted current | current Planning Draft / workflow review |
 | AC-10 | Retired and deferred meanings remain traceable. | accepted current | current and retired registers |
 | AC-11 | A user can browse one repository directory at a time, read a supported file inside the helper and open the exact file on GitHub. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-126`, `ITEM-114` |
 | AC-12 | A user can create durable category definitions with descriptions, assign files and reconstruct definitions/memberships from repository Markdown. | confirmed requirement / supported by `0.6.4-prototype` | `ITEM-97`, `ITEM-128`, `ITEM-23B` |
@@ -67,7 +67,7 @@ Repository Markdown remains understandable and editable without a helper.
 
 ### Included
 
-- Planning Item reconciliation and one Planning Draft;
+- one current Planning Draft with historical ITEM-* provenance where useful;
 - complete inline Key Scenarios;
 - one Full Picture Matrix linking behavior, implementation and validation;
 - ordinary Markdown/Git/GitHub/local-editor workflow;
@@ -105,7 +105,7 @@ These exclusions do not erase deferred historical ideas.
 
 ## 5. Current Reality
 
-The repository already provides reusable planning methodology, source-linked Planning Items, GitHub-readable Markdown and ordinary Git review/package workflows.
+The repository already provides reusable planning methodology, historical source-linked ITEM-* provenance, GitHub-readable Markdown and ordinary Git review/package workflows.
 
 Current checked implementation evidence from the supplied ChatGPT Chats History userscript includes:
 
@@ -125,13 +125,17 @@ That script does not yet prove a general Notes workspace, GitHub document picker
 
 Current `0.6.4-prototype` implementation evidence retains the `0.5.1` workspace isolation, verified Note/category writes, target picker, rich Markdown and category behavior, and adds recoverable pending Note images, clipboard/file insertion, byte-preserving verified repository-asset writes, same-repository image-aware Note-to-Markdown transfer, full-plan target-path reservation, source-image freshness checks, raw code-like HTML exclusion, contextual retry actions and exact read-only recovery after unknown Markdown writes. Source Notes and source images are preserved; external images are not downloaded automatically; target assets are copied or safely reused and relative destinations are rewritten. Category definitions remain the sole selected prototype owner of category membership; Note metadata owns only picker-created managed links. Rendered HTML, backlinks, pending previews, search results and local caches remain derived. Automated tests do not replace pending browser and real-GitHub acceptance.
 
-The former detailed Scenario workspace is no longer selected. Its useful current meaning is represented below and by current Planning Items/workflow owners. The complete project-local `scenarios/**` workspace is removed; Git history preserves its former detail.
+The former detailed Scenario workspace is no longer selected. Its useful current meaning is represented below and by current workflow/Planning Draft owners; historical ITEM-* references remain provenance only. The complete project-local `scenarios/**` workspace is removed; Git history preserves its former detail.
 
 The former reference-link experiment is removed without a replacement owner. Standard Markdown navigation remains checked current capability; dependency invalidation and AI expansion still require prototypes.
 
-## 6. Planning Item Map
+## 6. Historical Planning Source Boundary
 
-| Group | Planning Items | Role |
+`ITEM-*` references below are retained for provenance/history and do not imply that Planning Item remains a canonical current entity. New answer-seeking work uses the shared Idea methodology; current decisions/requirements remain owned by this Planning Draft, current workflows and current application documentation.
+
+## 6.1 Historical Planning Source Map
+
+| Group | Historical ITEM-* provenance | Role |
 |---|---|---|
 | Repository-native foundation | `ITEM-28B`, `ITEM-23B`, `ITEM-34B` | durable workspace and change flow |
 | Stable references | `ITEM-114`, `ITEM-105`, `ITEM-89` | navigation, optional metadata and affected-use review |
@@ -148,7 +152,7 @@ The former reference-link experiment is removed without a replacement owner. Sta
 | Deferred alternatives | see current register | preserved but not selected |
 | Retired meanings | [`retired-planning-items.md`](retired-planning-items.md) | historical trace only |
 
-The accepted repository-file/category transformation is now represented canonically by `ITEM-97`, `ITEM-118` and `ITEM-126` through `ITEM-129`. `ITEM-128` is selected only as bounded prototype evidence; `ITEM-129` remains deferred.
+Historical provenance for the repository-file/category transformation includes `ITEM-97`, `ITEM-118` and `ITEM-126` through `ITEM-129`. Current semantics are owned by the current Planning Draft, current workflows and Linked Notes application owners. Repository Category Definition Markdown remains selected only as bounded prototype evidence; file-local category metadata remains deferred.
 
 ## 7. Key Scenarios
 
@@ -215,7 +219,7 @@ The seven Scenarios below are current Key Scenarios because they own core value,
 - cross-platform relative-path handling;
 - whether Note identities use file paths, explicit anchors or both.
 
-**Planning Items:** `ITEM-114`, `ITEM-105`, `ITEM-23B`, `ITEM-124`.
+**Historical ITEM-* provenance:** `ITEM-114`, `ITEM-105`, `ITEM-23B`, `ITEM-124`.
 
 **Implementation Ideas:** standard Markdown path/anchor handling plus an optional link/anchor validator or creation helper; association only, no helper architecture accepted.
 
@@ -277,7 +281,7 @@ The seven Scenarios below are current Key Scenarios because they own core value,
 - status persistence without a broad runtime;
 - minimum Reference Impact Checker prototype.
 
-**Planning Items:** `ITEM-89`, `ITEM-105`, `ITEM-114`, `ITEM-100`.
+**Historical ITEM-* provenance:** `ITEM-89`, `ITEM-105`, `ITEM-114`, `ITEM-100`.
 
 **Implementation Ideas:** Reference Impact Checker; relation-backed prototype association only, not accepted implementation.
 
@@ -341,7 +345,7 @@ The seven Scenarios below are current Key Scenarios because they own core value,
 - output format for AI transfer;
 - minimum AI Transfer Expander prototype.
 
-**Planning Items:** `ITEM-107`, `ITEM-105`, `ITEM-114`, `ITEM-100`.
+**Historical ITEM-* provenance:** `ITEM-107`, `ITEM-105`, `ITEM-114`, `ITEM-100`.
 
 **Implementation Ideas:** AI Transfer Expander; relation-backed prototype association only, not accepted implementation.
 
@@ -441,7 +445,7 @@ The seven Scenarios below are current Key Scenarios because they own core value,
 - rename/delete and cycle behavior;
 - minimum Notes prototype described in the Notes workflow.
 
-**Planning Items:** `ITEM-124`, `ITEM-114`, `ITEM-23B`, `ITEM-99`, `ITEM-100`, `ITEM-123`; proposed Notes-widget Implementation Idea pending explicit item review.
+**Historical ITEM-* provenance:** `ITEM-124`, `ITEM-114`, `ITEM-23B`, `ITEM-99`, `ITEM-100`, `ITEM-123`; proposed Notes-widget Implementation Idea pending explicit current-owner / Idea review.
 
 **Implementation Ideas:** proposed Tampermonkey Linked Notes And GitHub Widget, with the supplied Chat History script as partial evidence; association only, with userscript, storage and credential design still open.
 
@@ -533,7 +537,7 @@ The seven Scenarios below are current Key Scenarios because they own core value,
 - private-repository permissions and token lifecycle;
 - real-GitHub create/assign/rebuild/conflict evidence.
 
-**Planning Items:** `ITEM-97`, `ITEM-118`, `ITEM-126`, `ITEM-127`, `ITEM-128`, `ITEM-129`, `ITEM-23B`, `ITEM-114`, `ITEM-123`.
+**Historical ITEM-* provenance:** `ITEM-97`, `ITEM-118`, `ITEM-126`, `ITEM-127`, `ITEM-128`, `ITEM-129`, `ITEM-23B`, `ITEM-114`, `ITEM-123`.
 
 **Implementation Ideas:** `ITEM-128 / CATEGORY-DEFINITION-MARKDOWN` is selected for the bounded prototype; `ITEM-129 / FILE-LOCAL-CATEGORY-METADATA` remains deferred and is not written into target files.
 
@@ -558,7 +562,7 @@ The seven Scenarios below are current Key Scenarios because they own core value,
 - partial multi-file results remain explicit and retryable;
 - errors do not clear user input.
 
-**Planning Items:** `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-130`, `ITEM-131`, `ITEM-132`, `ITEM-133`.
+**Historical ITEM-* provenance:** `ITEM-97`, `ITEM-118`, `ITEM-124`, `ITEM-126`, `ITEM-130`, `ITEM-131`, `ITEM-132`, `ITEM-133`.
 
 
 ### 7.7 Insert Note Images And Copy A Note With Its Assets
@@ -593,7 +597,7 @@ The seven Scenarios below are current Key Scenarios because they own core value,
 - transfer excludes quiet Linked Note metadata and copies visible title/body only;
 - every remote write is explicit, conflict-aware and read-back verified.
 
-**Planning Items:** `ITEM-124`, `ITEM-134`, `ITEM-132`, `ITEM-130`, `ITEM-34B`, `ITEM-114`.
+**Historical ITEM-* provenance:** `ITEM-124`, `ITEM-134`, `ITEM-132`, `ITEM-130`, `ITEM-34B`, `ITEM-114`.
 
 ## 8. Other Scenarios — Optional Summaries
 
@@ -646,11 +650,11 @@ This table is the required current cross-view structure inside this Planning Dra
 
 ## 11. Implementation Ideas And Evidence
 
-| Idea | Target | Status | Minimum prototype/evidence |
+| Idea | Historical provenance / current target | Status | Minimum prototype/evidence |
 |---|---|---|---|
 | Reference Impact Checker | `ITEM-89` | Working / Needs Prototype | scan explicit review relations for changed stable targets and list affected uses without false navigation obligations |
 | AI Transfer Expander | `ITEM-107` | Working / Needs Prototype | expand explicit includes into a bounded non-mutating sourced copy |
-| Structured Message Composer | `ITEM-121` | independently useful candidate | preserve literal text and addressable structure |
+| Structured Message Composer | historical `ITEM-121` provenance | retired as an independent current Use Case; ordinary source structuring remains valid input behavior | preserve literal text and addressable structure when useful without a separate Planning Item layer |
 | Tampermonkey Linked Notes And GitHub Widget | `ITEM-124` | Working / Needs Browser And Remote Acceptance | create/open/edit linked Notes; explicit repository refresh and safe reconciliation; verified GitHub persistence; file/anchor/Note navigation |
 | Repository Category Definition Markdown | `ITEM-97`, `ITEM-118`, `ITEM-127`; `ITEM-128` | selected bounded prototype | create/edit definitions, rebuild cache, explicit/implied views, conflicts and cycles |
 | File-Local Category Metadata | `ITEM-97`; `ITEM-129` | deferred | prove value and select precedence without creating duplicate truth |
@@ -681,7 +685,7 @@ Current `0.6.4-prototype` evidence additionally covers explicit GET-only Notes r
 | Priority | Question | Conservative fallback |
 |---:|---|---|
 | 1 | What is the final category-definition syntax and discovery location? | retain one configurable Categories folder and one ordinary Markdown definition per category for prototype evidence only |
-| 2 | Should explicit membership ever also be written into target files? | keep category definition as the single selected prototype owner; leave `ITEM-129` deferred |
+| 2 | Should explicit membership ever also be written into target files? | keep category definition as the single selected prototype owner; keep file-local category metadata deferred (`ITEM-129` is historical provenance only) |
 | 3 | How should category rename/delete repair incoming definition and file links? | exclude rename/delete; show unresolved links rather than silently repairing them |
 | 4 | Which file formats receive in-app preview? | bounded UTF-8/text preview; metadata plus GitHub link for unsupported/binary/oversized content |
 | 5 | How are semantic implications and local UI groups presented? | keep them separate and label explicit versus derived membership |
@@ -723,15 +727,15 @@ Current `0.6.4-prototype` evidence additionally covers explicit GET-only Notes r
 - Explicit repository reading and safe local/remote reconciliation are required Note-workflow behavior; exact scan depth and resource limits remain implementation choices.
 - No specific Notes storage layout or credential design is accepted by this Draft alone.
 - Repository file viewing and repository-backed file categories are accepted requirements.
-- `ITEM-128` is selected only as the bounded `0.6.4-prototype` implementation idea; it is not final production architecture.
-- Category definitions own prototype explicit membership; `ITEM-129` file-local category metadata remains deferred.
+- Repository Category Definition Markdown is selected only as the bounded `0.6.4-prototype` implementation idea; historical provenance includes `ITEM-128`; it is not final production architecture.
+- Category definitions own prototype explicit membership; file-local category metadata remains deferred (historical provenance: `ITEM-129`).
 - Category groups are local UI organization; category implications are repository-backed classification relations.
 
 ## 13. Selected Planning Depth
 
 | Layer | Selection | Current form | Reason |
 |---|---|---|---|
-| Planning Items | yes | current register with accepted file/category transformations | complete canonical meanings and provenance |
+| Historical ITEM-* records | provenance only | historical register | preserve source/history without current ontology |
 | Planning Draft | yes | this file | one high-level coordination owner |
 | Key Scenarios | complete inline | seven sections above | sufficient current behavior/risk depth |
 | Other Scenarios | optional summaries | section 8 | avoid unnecessary deep workspace |
@@ -740,7 +744,7 @@ Current `0.6.4-prototype` evidence additionally covers explicit GET-only Notes r
 | Reusable SDS profile | available but inactive | reusable profile | can be selected for another project/need |
 | Domain | no | none | no separate model needed yet |
 | Slice | prototype only | Linked Notes `0.6.4-prototype` | evidence-producing implementation; production slice not selected |
-| Prototype detail | only for selected helper | current item/Draft questions or later separate artifact | evidence before architecture |
+| Prototype detail | only for selected helper | current Idea/Draft questions or later separate artifact | evidence before architecture |
 
 ## 14. Scenario Coverage Audit Result
 
@@ -763,7 +767,7 @@ SCN-DW-06:
   reuse of managed identity, explicit confirmation of portable or parsed proposals,
   canonical state ownership, definition location, optional home and app-only branches
   remain part of the deferred managed-object alternative;
-  preserved by deferred Planning Items, reference-object-model-and-lifecycle.md
+  preserved by historical/deferred ITEM-* provenance, reference-object-model-and-lifecycle.md
   and Git history;
   no managed-object creation flow is migrated into the repository-native Key Scenarios;
 
@@ -778,13 +782,14 @@ SCN-DW-13:
   absorbed into Produce AI Transfer Copy;
 
 SCN-DW-14:
-  project-readable non-secret configuration remains ITEM-123;
+  project-readable non-secret configuration remains supported current meaning where required;
+  historical provenance includes ITEM-123;
   broad application settings UI remains unselected;
 
 DATA-DW-* and BI-DW-*:
   no separate current owner files;
   useful behavior/data distinctions are represented inline in Key Scenarios,
-  current Planning Items and workflows;
+  current Planning Draft/current workflows plus historical ITEM-* provenance where useful;
   old representation and runtime detail is preserved by Git history/deferred items.
 ```
 

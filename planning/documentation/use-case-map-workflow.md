@@ -103,7 +103,7 @@ template body;
 responsibility map;
 semantic Direction definition;
 semantic Use-Case body/topology;
-Planning Item formation logic;
+Idea review/planning workflow logic;
 general task/action log;
 application state.
 ```
@@ -190,22 +190,21 @@ Do not update for implementation detail changes that do not change routing.
 13. Check that owner logic is linked, not copied.
 ```
 
-Do not add the Planning Item formation command until its exact canonical Russian and English names are explicitly chosen.
+Do not invent a command name from a semantic Use Case. Exact command identities remain owned by concrete command definitions.
 
-## 9. Planning Item Formation Route Boundary
+## 9. Idea Collection Route Boundary
 
-Reusable owner now exists:
+Reusable owners:
 
 ```text
-application-planning/planning-item-formation-workflow.md
-application-planning/templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
+idea-planning-principles-and-terminology.md
+idea-review-and-planning-workflow.md
+IDEA-REVIEW-TEMPLATE.md
 ```
 
-The semantic capability and registry entry may exist before a project command.
+A project command may expose Idea collection/review when that is a repeated user-visible action. The semantic capability and registry entry may exist before a project command.
 
-A later UCM row should also read project input conventions and project-local item owners.
-
-This workflow does not invent the command name.
+The route must not recreate a universal Planning Item layer or invent an Idea marker syntax.
 
 ## 10. Owner Linking Pattern
 
@@ -233,8 +232,8 @@ Keep long instructions in owners.
 Good:
 
 ```text
-reviewed Planning Item blocks using the exact template;
-read-only reconciliation with before/after pictures and item transitions;
+reviewed Idea/current-conclusion blocks using the selected reusable representation;
+read-only reconciliation with before/after pictures and current-owner / Idea transitions;
 replacement package with MANIFEST/APPLY/complete files;
 draft update with complete returned files.
 ```
@@ -316,7 +315,7 @@ Do not maintain the same concrete command row in both the UCM and a command file
 - expected output is reviewable;
 - permission boundary is explicit;
 - command route and semantic registry roles are distinct;
-- Planning Item formation command name was not invented;
+- command name was not invented from semantic Use-Case wording;
 - navigation/responsibility/example/projection updates were considered.
 
 ## 16. Do Not

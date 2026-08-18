@@ -2,12 +2,13 @@
 
 Status: active reusable documentation-layer workflow
 Doc version: v0.7.0-route-specific-package-reporting
-Scope: how to produce the final `План файл-обновление` block for non-trivial file, documentation, code or package work.
+Scope: how to produce `План файл-обновление` for non-trivial file, documentation, code or package work while separating conceptual Idea decisions from concrete file actions.
 
 Use with:
 
 ```text
 planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
+planning/documentation/idea-review-and-planning-workflow.md when conceptual uncertainty is material
 planning/planning-use-case-map.md
 ```
 
@@ -20,7 +21,10 @@ Use this workflow when an answer plans, creates, reviews or applies changes to f
 A file-update overview should make the planned repository transition understandable:
 
 ```text
-current state
+current state / Target / Checked Sources
+  → Idea analysis when material
+  → Current Conclusions / Current Selected Variant
+  → Questions / Risks / Problems
   → ordered update steps
   → explicit actions inside each step
   → per-step affected-file tables
@@ -37,6 +41,9 @@ A non-trivial plan includes:
 - status;
 - command metadata when a command route is in scope;
 - target and checked sources;
+- Ideas / Idea Groups when material;
+- Current Conclusions / Current Selected Variant when alternatives are material;
+- one aggregate Questions / Risks / Problems section;
 - ordered update steps;
 - numbered actions inside each non-trivial step;
 - files changed by each step;
@@ -48,7 +55,38 @@ A non-trivial plan includes:
 - next action.
 ```
 
-## 3. Ordered Update Steps
+## 3. Conceptual Idea Boundary
+
+Use the shared Idea methodology when the update contains a material conceptual question, alternative, conflict, unresolved responsibility, risky assumption or meaningful simplification decision.
+
+```text
+Idea
+→ Idea Variants when material
+→ Current Selected Variant
+→ Current Conclusion
+→ concrete Update Steps
+```
+
+An unresolved alternative remains in `Questions / Risks / Problems` with Related Idea IDs. Do not create `File Edit Variant A/B` to represent conceptual uncertainty.
+
+When the update is a mechanical consequence of already selected meaning:
+
+```text
+do not manufacture Idea analysis
+→ proceed to concrete Update Steps.
+```
+
+Use `Current Selected Variant` as the normal term. Use `fallback` only when the variant is genuinely a fallback.
+
+## 4. Questions / Risks / Problems
+
+Every File Update Plan contains this aggregate section, including mechanical updates. Material findings discovered in Idea review reference Related Idea IDs. If no material unresolved findings exist, say so compactly rather than inventing issues.
+
+## 4.1 Potential Simplifications / Better Routes — When Material
+
+When Idea review discovers a material simplification or better route that affects the update, surface it separately and reference Related Idea IDs. Do not invent a simplification merely to populate the plan, and do not duplicate ordinary concrete Update Steps here.
+
+## 5. Ordered Update Steps
 
 Ordered steps are the primary representation for broad or dependency-sensitive updates.
 
@@ -106,7 +144,7 @@ When useful, a file-table cell may cite action numbers, but action IDs are optio
 
 One file may appear in several planning steps when different logical actions affect it. During implementation, coordinate the final replacement for that path so the package contains one complete intended result.
 
-## 4. Aggregate File Matrix
+## 6. Aggregate File Matrix
 
 An aggregate matrix is optional.
 
@@ -124,7 +162,7 @@ The matrix is derived from the ordered steps and their per-step file tables. It 
 
 For small updates, one step, one action list and one file table may be sufficient.
 
-## 5. Planned-Mode Boundary
+## 7. Planned-Mode Boundary
 
 ```text
 A planned `План файл-обновление` is not permission to edit files.
@@ -135,7 +173,7 @@ Implementation requires a separate authorized action, such as
 
 Fallbacks in planning answers never authorize deletion, rename, archive creation, commit, push or unrelated scope expansion.
 
-## 6. Command Metadata
+## 8. Command Metadata
 
 When the update concerns a command route, include:
 
@@ -147,7 +185,7 @@ permission mode.
 
 The metadata does not replace the command definition or root router.
 
-## 7. Package Source And Delivery Reporting
+## 9. Package Source And Delivery Reporting
 
 For package work, resolve package/source/application/review semantics through:
 
@@ -187,11 +225,17 @@ A legacy reviewable package route may instead require apply/diff/clipboard/paste
 
 Do not copy a selected command's package algorithm into this workflow.
 
-## 8. Checks
+## 10. Checks
 
 Before finalizing the overview:
 
 ```text
+- Conceptual alternatives are represented as Idea Variants, not file-edit variants.
+- Current Selected Variant / Current Conclusion is the conceptual basis for concrete steps.
+- Unresolved refinements do not silently enter file actions.
+- Questions / Risks / Problems exists and references Related Idea IDs for material Idea findings.
+- Material Potential Simplifications / Better Routes, when present, reference Related Idea IDs.
+- Mechanical updates do not contain synthetic Idea analysis.
 - Every planned file belongs to at least one update step.
 - Every non-trivial step has a numbered action list.
 - Every step has an objective and resulting state.
@@ -205,9 +249,13 @@ Before finalizing the overview:
 - Package/source/application/review rows match the selected command route rather than a generic archive assumption.
 ```
 
-## 9. Do Not
+## 11. Do Not
 
 ```text
+- Do not create File Edit Variant A/B for conceptual uncertainty.
+- Do not turn Possible Idea Refinement into an accepted file edit automatically.
+- Do not hide material unresolved findings only inside one Idea.
+- Do not manufacture Idea analysis for mechanical updates.
 - Do not hide file-change risks in prose only.
 - Do not hide the action sequence only inside a file table.
 - Do not duplicate the same plan in unsynchronized action and file lists.

@@ -46,7 +46,7 @@ The direct command files are the concrete registry. Do not reconstruct a command
 
 ## 3. Explicit-Input Rule For Planning Responses
 
-For `план файл-обновление`, `планируй`, `спланируй команду` and planning parts of `положняк`:
+For `собери идеи`, `план файл-обновление`, `планируй`, `спланируй команду` and planning parts of `положняк`:
 
 ```text
 - Treat only explicit user statements and checked source facts as confirmed.

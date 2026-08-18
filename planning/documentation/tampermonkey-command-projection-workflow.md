@@ -370,27 +370,24 @@ command covers only one stage of a broader use case:
 Current application:
 
 ```text
-Reconcile Planning Items
-  → Open Commands / `сверь айтемы`;
-
-Form Planning Items From Discussion
-  → Open Commands / `сформируй айтемы`;
+Collect And Review Ideas From Selected Source
+  → Open Commands / `собери идеи`;
 
 Planning Meaning To Repository
   → remains a broader Use Case;
-  → `сверь айтемы` covers only its reconciliation stage.
+  → uses generic Idea review when material, not an item-reconciliation command.
 ```
 
-## 9E. Item-Formation Boundary
+## 9E. Idea-Collection Boundary
 
-`Form Planning Items From Discussion` is linked to the accepted repository command definition:
+`Collect And Review Ideas From Selected Source` is linked to the accepted repository command definition:
 
 ```text
-сформируй айтемы
-English name: form items
+собери идеи
+English name: collect ideas
 ```
 
-The Use Cases surface uses **Open Commands** rather than inserting a duplicate execution-like prompt.
+The Use Cases surface uses **Open Commands** rather than inserting a duplicate execution-like prompt. The command routes to the generic Idea methodology and does not recreate a Planning Item formation layer.
 
 ## 9F. Initial Semantic Inventory
 
@@ -407,20 +404,18 @@ Use Cases:
 
 ```text
 UC-AP-REALITY
-UC-AP-FORM-ITEMS → Commands redirect
+UC-AP-COLLECT-IDEAS → Commands redirect
 UC-AP-FULL-PICTURE
-UC-AP-RECONCILE → Commands redirect
 UC-AP-RESEARCH
 UC-AP-SCENARIO
 UC-AP-DOMAIN
 UC-AP-SLICE
 UC-AP-SDS-CONSISTENCY
 UC-DW-DOC-REF
-UC-DW-ITEM-FULL-PICTURE
-UC-DW-STRUCTURED-MESSAGE
+UC-DW-ITEM-FULL-PICTURE  # legacy ID, current non-item semantics
 ```
 
-Chat/AI/Work-State remains provisional and is not projected as accepted.
+Chat/AI/Work-State remains provisional and is not projected as accepted. Retired Planning Item formation/reconciliation and Structured User Message Composer entries are not active semantic projections.
 
 ## 9G. Multi-Surface UI Contract
 

@@ -21,7 +21,7 @@ A Functional Workflow is not automatically:
 | Title | <title> |
 | Parent Planning Draft | <reference> |
 | Status | candidate / active / validated / rejected / deferred |
-| Related criteria / Planning Items | <links> |
+| Related criteria / Ideas / decisions | <links> |
 
 ## 2. Valuable Outcome
 
@@ -67,11 +67,11 @@ A Functional Workflow is not automatically:
 
 #### Implementation Ideas — Optional
 
-| Planning Item / ID | Thought | Source | Status | Test needed |
+| Idea / ID | Thought | Source | Status | Test needed |
 |---|---|---|---|---|
 | <link> | <idea> | user / AI / checked source | open alternative | <test> |
 
-Implementation Ideas remain separate proposed Planning Items when they need independent reuse or review.
+Material unresolved implementation questions may use scoped Idea review/deep planning. They do not become accepted workflow meaning until selected and integrated.
 
 ---
 

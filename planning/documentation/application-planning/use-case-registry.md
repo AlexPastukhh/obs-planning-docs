@@ -11,9 +11,8 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 | Use-Case ID | Semantic name | Status | Direction | Main owner | Related command |
 |---|---|---|---|---|---|
 | `UC-AP-REALITY` | Understand Current Workflow And Reality | active | `DIR-PLAN-SOLUTION` | `application-planning-drafting-workflow.md` | none |
-| `UC-AP-FORM-ITEMS` | Form Planning Items From Discussion | active | `DIR-PLAN-SOLUTION` | `planning-item-formation-workflow.md` | `сформируй айтемы` |
-| `UC-AP-FULL-PICTURE` | Build Or Review An Item-Backed Planning Draft | active; legacy ID retained | `DIR-PLAN-SOLUTION` | `application-planning-drafting-workflow.md` | none |
-| `UC-AP-RECONCILE` | Reconcile Planning Items | active | `DIR-PLAN-SOLUTION` | `application-planning-drafting-workflow.md` | `сверь айтемы` |
+| `UC-AP-COLLECT-IDEAS` | Collect And Review Ideas From Selected Source | active | `DIR-PLAN-SOLUTION` | generic Idea owners | `собери идеи` |
+| `UC-AP-FULL-PICTURE` | Build Or Review A Planning Draft | active; legacy ID retained | `DIR-PLAN-SOLUTION` | `application-planning-drafting-workflow.md` | none |
 | `UC-AP-RESEARCH` | Research Existing Solutions And Alternative Workflows | provisional supported | `DIR-PLAN-SOLUTION` | current Planning Draft / checked sources | none |
 | `UC-AP-SCENARIO` | Draft Detailed Scenario | active supported / optional profile-limited | `DIR-DETAILED-SDS` | SDS profile/project owner | none |
 | `UC-AP-DOMAIN` | Draft Or Review Domain | active supported / optional profile-limited | `DIR-DETAILED-SDS` | SDS profile/project owner | none |
@@ -40,62 +39,34 @@ templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md when useful
 current project-local reality/planning owner.
 ```
 
-## 3. `UC-AP-FORM-ITEMS` — Form Planning Items From Discussion
+## 3. `UC-AP-COLLECT-IDEAS` — Collect And Review Ideas From Selected Source
 
-**Purpose:** transform selected source into complete, reviewable Planning Item meanings while preserving full source context and transformation choices.
+**Purpose:** extract coherent Ideas from the selected source, preserve material non-Idea context and perform the shared Standard Idea Review without inventing criticism/refinements.
 
-**Result:** a portable reviewable Planning Item set with:
-
-```text
-complete meanings;
-complete supporting user messages;
-visibly highlighted relevant spans;
-typed Source Contributions;
-Current/Incoming/Resulting transformations;
-separate relation-backed Implementation Ideas;
-unresolved choices;
-explicit review state.
-```
+**Result:** reviewed Ideas / Idea Groups with Current Conclusions, mandatory aggregate `Questions / Risks / Problems`, Related Idea ID traceability and material `Potential Simplifications / Better Routes` when found.
 
 **Owner route:**
 
 ```text
-planning-item-formation-workflow.md
-templates/PLANNING-ITEM-REVIEW-TEMPLATE.md
-planning/planning-input-conventions.md when present
-relevant current project-local owners.
+../idea-planning-principles-and-terminology.md
+../idea-review-and-planning-workflow.md
+../IDEA-REVIEW-TEMPLATE.md
 ```
 
 **Command:**
 
 ```text
-сформируй айтемы
-English name: form items
-authority: planning/planning-use-case-map.md
+собери идеи
+English name: collect ideas
 ```
 
-The command forms and presents reviewable items. It does not authorize repository edits, archive creation, commit or push.
+The command is read-only toward repository files. Facts, constraints, decisions and Existing Reality are not forced into Idea entities.
 
-The reusable use case does not promise an application-native managed-object result.
+## 4. `UC-AP-FULL-PICTURE` — Build Or Review A Planning Draft
 
-## 4. `UC-AP-FULL-PICTURE` — Build Or Review An Item-Backed Planning Draft
+**Purpose:** organize current Problem/Need, candidate solution/workflow alternatives, selected conclusions, risks and application/Scenario meaning into one readable current direction without creating a parallel semantic ledger.
 
-**Purpose:** organize reviewed Planning Items into a readable current planning direction without creating a second item-body owner.
-
-**Result:** an item-backed Planning Draft that contains:
-
-```text
-Planning Item Map;
-complete Key Scenarios;
-optional other Scenario summaries;
-one Full Picture Matrix;
-questions, risks and validation links;
-Implementation Idea links;
-alternatives and existing-solution findings;
-decisions;
-selected planning depth;
-current conclusion and next action.
-```
+**Result:** a Planning Draft that proportionally contains current meaning, candidate/selected solution or Workflow Variants, Scenario/flow coverage where applicable, whole-plan integration view, questions/risks/evidence, decisions and next action.
 
 **Owner route:**
 
@@ -105,42 +76,11 @@ templates/PLANNING-DRAFT-TEMPLATE.md when useful
 current project-local Planning Draft owner.
 ```
 
-**Boundary:**
+**Boundary:** an in-progress Draft may exist before Scenario boundaries are stable. Historical ITEM-* IDs may remain provenance only; no Planning Item layer is required.
 
-```text
-Full Picture Matrix:
-  required view inside a sufficient Planning Draft;
+## 5. Historical Planning Item Reconciliation Boundary
 
-separate Planning Full Picture artifact:
-  not required.
-```
-
-A simple application or non-application solution may finish planning in this artifact before implementation.
-
-## 5. `UC-AP-RECONCILE` — Reconcile Planning Items
-
-**Purpose:** compare selected incoming or working Planning Items with complete current repository owners and design a coherent canonical item-set transition.
-
-**Result:** read-only owner review containing:
-
-```text
-selected review-object/workflow integrity verdicts;
-Current/Incoming/Resulting transformations;
-resulting item set;
-source/provenance effects;
-preserved validation context;
-unresolved choices.
-```
-
-**Command:**
-
-```text
-сверь айтемы
-English name: reconcile planning items
-authority: planning/planning-use-case-map.md
-```
-
-No file update, archive, commit or push.
+`UC-AP-RECONCILE` and the `сверь айтемы` command are retired from the target methodology. Current incoming meaning is integrated through scoped Idea/current-owner review in `application-planning-drafting-workflow.md`. Historical ITEM-* records remain provenance/migration sources only.
 
 ## 6. `UC-AP-RESEARCH` — Research Existing Solutions And Alternative Workflows
 
@@ -160,23 +100,24 @@ These use cases apply only after the optional specialized profile is selected.
 
 ### `UC-AP-SCENARIO` — Draft Detailed Scenario
 
-**Trigger/input:** a sufficiently stable item-backed Planning Draft and selected contributing Planning Items, after the project explicitly selects the specialized Scenario/Domain/Slice profile.
+**Trigger/input:** sufficiently stable application planning after the project explicitly selects the specialized Scenario/Domain/Slice profile; an optional Spine Scenario may be used first when Scenario boundaries are unclear.
 
 **Result:** a Scenario catalog plus clean Scenario Reference Objects, separate Scenario DATA Reference Objects and separate Behavior Item Reference Objects, or explicit unresolved/deferred state.
 
 **Core behavior:**
 
 ```text
-select Planning Draft
-  → identify coherent actor/context + goal + observable result
+select current application planning
+  → identify coherent motivated actor/context + Need/Goal + meaningful observable result
+  → optionally use a temporary Spine Scenario to discover boundaries
   → create one Scenario Reference Object per coherent scenario
-  → attach typed derived-from links to contributing Planning Items
+  → attach source/Idea/current-owner links when useful
   → create only supported Scenario DATA objects
   → create stable addressable Behavior Items
   → review clean behavior without Domain/Slice implementation detail.
 ```
 
-**Change contract:** a later Planning Item change marks dependent scenario objects/files review-needed. No automatic rewrite or automatic downstream-to-upstream mutation occurs.
+**Change contract:** a later related source/Idea/current-owner change creates an explicit review need for dependent Scenario/DATA/Behavior objects. No automatic rewrite or automatic downstream-to-upstream mutation occurs.
 
 **Owner route:**
 

@@ -1,11 +1,14 @@
-# Documentation Workbench Retired Planning Items
+# Retired Planning Items — Historical Provenance Archive
 
-Status: active historical semantic owner / not an active backlog
+> **Historical boundary:** Planning Item is retired from the target methodology. This file preserves ITEM-* bodies/IDs as provenance, history and migration source. Do not route new source review through this register and do not convert records one-to-one into Ideas automatically.
+
+
+Status: historical provenance archive / not an active planning owner or backlog
 Doc version: v1.0.0-batch3a-retired-items
 
 Purpose: preserve complete finalized inactive Planning Item bodies, sources, dispositions and pre-reset reconciliation appendices without keeping them mixed into the current working register.
 
-Current register: [`planning-item-register.md`](planning-item-register.md)
+Historical companion register: [`planning-item-register.md`](planning-item-register.md)
 
 ## Ownership Boundary
 

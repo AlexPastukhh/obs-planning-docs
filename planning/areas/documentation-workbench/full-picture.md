@@ -7,11 +7,11 @@ The active high-level project-local owner is now:
 
 [`planning-draft.md`](planning-draft.md)
 
-Current complete Planning Item bodies and dispositions:
+Historical Planning Item provenance/migration bodies:
 
 [`planning-item-register.md`](planning-item-register.md)
 
-Finalized inactive complete item bodies:
+Historical finalized inactive item bodies:
 
 [`retired-planning-items.md`](retired-planning-items.md)
 

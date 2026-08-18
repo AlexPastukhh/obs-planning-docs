@@ -351,7 +351,7 @@ The reusable Command Palette provides:
 - one repository command definition generates both insertion variants, so command semantics and reminders cannot drift;
 - a standalone `read documentation principles · прочитай принципы документации` row with adaptive, `Full` and `Copy`;
 - a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
-- a read-only `reconcile planning items · сверь айтемы` row with adaptive, `Full` and `Copy`, placed immediately before `plan file update`, whose owner route checks workflow integrity for each independently traversable End-To-End Workflow, rejects mandatory peer-workflow fragmentation, classifies Planning Drafts and other supporting/non-workflow objects, and preserves the original → incoming → resulting chain plus relevant item-validation signals;
+- a read-only `collect ideas · собери идеи` row with adaptive, `Full` and `Copy`, whose command route uses the generic Idea methodology and preserves read-only repository permissions;
 - no creation-wording command IDs, labels or aliases for the plan-command route;
 
 ```text
@@ -369,7 +369,7 @@ The reusable Command Palette provides:
 - no separate UCM-only mode;
 - refinement bodies, when present, stay compact and route only to the explicit owner files named by the command definition;
 - no `Docs` refinement for `спланируй команду`; the standalone documentation-principles command covers that user-facing route;
-- `reconcile planning items` inserts a read-only workflow-integrity plus item-set reconciliation body: identify independently traversable End-To-End Workflows and affected non-workflow primary review objects; trace each workflow's trigger, mandatory stages, branches/loops, review gates and result; combine or reclassify peer workflow slices when one mandatory workflow crosses them; treat Planning Drafts/models/views/terminology/root summaries as supporting or non-workflow review objects unless independently traversable; show Current → Incoming → Resulting rows for every non-trivial transformation; preserve material hypothesis/risk/key-situation/prototype-test context; then show the resulting set and compact prototype/risk follow-up;
+- retired Planning Item formation/reconciliation commands are absent from the active generated command catalog; historical local snapshot entries may require explicit local reconciliation after repository migration;
 - no other command-specific refinement buttons until another concrete need and owner-doc paths are approved;
 - normal insertion/copy/import is RAM-first and performs no repository read/write; explicit Check GitHub / Sync missing / Save GitHub operate only on bounded command/helper-library paths and never run local Git, commit or push.
 ```
@@ -426,9 +426,8 @@ Projected Use Cases:
 
 ```text
 Understand Current Workflow And Reality
-Form Planning Items From Discussion → Commands
-Build Or Review An Item-Backed Planning Draft
-Reconcile Planning Items → Commands
+Collect And Review Ideas From Selected Source → Commands
+Build Or Review A Planning Draft
 Research Existing Solutions And Alternative Workflows
 Draft Detailed Scenario
 Draft Or Review Domain
@@ -436,10 +435,9 @@ Plan Implementation Slice
 Review Scenario/Domain/Slice Consistency
 Repository Documentation Change And Reference Review
 Planning Meaning To Repository
-Structured User Message Composer
 ```
 
-`Form Planning Items From Discussion` opens the accepted `сформируй айтемы / form items` command.
+`Collect And Review Ideas From Selected Source` opens the accepted `собери идеи / collect ideas` command. Retired Planning Item formation/reconciliation routes and the item-owned Structured User Message Composer are not projected as active Use Cases.
 
 Chat/AI/Work-State remains unprojected as accepted. Current Linked Notes `UC-LN-*` identities live in the Linked Notes-local semantic registry and are not automatically projected as Planning Helper commands merely because the application implements them.
 
@@ -532,9 +530,9 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
 - Do not treat the Planning Helper runtime, cache or generated artifact as Orientation, Direction, Use-Case or command authority.
 - Do not let Direction/Use-Case activation execute commands or grant permissions.
-- Project the item-formation command only from its accepted repository command definition and exact English name.
+- Project `собери идеи` only from its accepted repository command definition and generic Idea owner route.
 - Do not add project-only command semantics outside the root-UCM-reachable `planning/commands/*.command.md` registry.
-- Do not let the Planning Item reconciliation projection reduce review to isolated item rows, preserve a thematic peer-workflow split when one mandatory workflow crosses it, label Planning Drafts/supporting models/views as workflows without an independent trigger-to-result lifecycle, assume one incoming item equals one result, hide Current/Incoming/Resulting meanings or lose relevant validation signals, or edit item registers or repository files.
+- Do not reintroduce retired Planning Item formation/reconciliation projections. Preserve semantic Use-Case boundaries, keep broader workflows distinct from commands, and do not treat historical ITEM-* registers as current command targets.
 - Do not duplicate archive command-format rules inside the helper refinement body.
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
