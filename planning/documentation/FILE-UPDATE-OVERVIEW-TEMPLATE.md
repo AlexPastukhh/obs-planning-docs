@@ -91,6 +91,21 @@ Do not put accepted Current Conclusions, ordinary Update Step boundaries, or alr
 
 Omit this section when no material unselected simplification exists. Once accepted, move the route into Current Conclusions / Update Steps and remove it from this section.
 
+### Registered Parallel-Work Scopes / Logs — When mutation/package work is relevant
+
+```text
+Affected Scope(s):
+  <registered scope IDs>
+
+Canonical Log For This Work:
+  <scope-root/action-log.md>
+
+Reference-Only Logs:
+  <other affected logs / none>
+```
+
+When logging is active, include the required cumulative post-apply log state in the concrete package/file steps. Do not reconstruct pre-start history.
+
 ### Update Step <ID> — <name>
 
 **Objective:** <what this step accomplishes>

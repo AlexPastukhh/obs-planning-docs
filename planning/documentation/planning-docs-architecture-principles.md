@@ -110,3 +110,17 @@ historical record ≠ current ontology
 ## Progressive Complexity
 
 Use the smallest owner/representation that preserves required meaning. Create new files, schemas, objects, maps or stages only when independent responsibility/review/reuse/navigation/change ownership justifies them.
+
+## Fixed Parallel-Work Scope / Log Invariant
+
+```text
+project root Scope Registry
+→ canonical fixed parallel-work boundaries
+→ one action-log.md at each registered scope root
+```
+
+Normal chats select existing registered scopes; they do not repartition the repository ad hoc. For nested registered roots, a path belongs to the deepest active registered root containing it.
+
+Scope logs own material high-level work history/rationale for their scope and participate in coherent replacement-package target state. There is no implicit repository-wide aggregate action log. Cross-scope work has one full canonical log record plus reference-only entries in other affected logs.
+
+Logging begins only after explicit user instruction and does not reconstruct earlier history automatically.

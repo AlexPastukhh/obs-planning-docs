@@ -32,6 +32,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Otherwise use fully readable current repository files.",
     "Request only the minimum fresh source/snapshot when exact touched base content cannot be read reliably.",
     "Never guess expected base content for replace/delete operations.",
+    "Resolve the project Scope Registry when present; every affected scope log/reference required for coherent post-Apply state is part of the package transition.",
+    "When logging is active, include material Idea Review/later clarification/prior ReviewDiff correction meaning and the APPLIED target-state relation; do not defer log correctness to a later package.",
     "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
     "Return one short OBS-ACTION whose packageId matches PACKAGE.json.",
     "Do not include clipboard/review-diff settings in OBS-ACTION.",

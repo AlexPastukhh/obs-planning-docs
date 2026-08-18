@@ -12,6 +12,8 @@ planning/documentation/idea-review-and-planning-workflow.md when conceptual unce
 planning/command-routing.md
 ```
 
+Practical example: [`examples/PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md`](examples/PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md)
+
 When a concrete command route is in scope, also read that command definition and its ownerFiles. Package/source/application/review behavior is route-specific and must not be reconstructed from a generic archive assumption.
 
 ## 1. Purpose
@@ -52,6 +54,7 @@ A non-trivial plan includes:
 - boundaries / intentionally unchanged artifacts;
 - checks and exit criteria;
 - package/source/delivery status when relevant;
+- affected registered parallel-work scope(s) and canonical/reference logs when mutation/package work is relevant;
 - next action.
 ```
 
@@ -292,3 +295,9 @@ Before finalizing the overview:
 - Do not duplicate package source-selection rules.
 - Do not treat clipboard diff, pasted review or local apply as universal package requirements.
 ```
+
+## Registered Scope / Log Planning
+
+For a concrete mutation/package plan, read the project root Scope Registry when available and state the affected registered scopes. If several scopes are affected, identify the one canonical scope log for the work and the other logs that receive cross-scope references.
+
+When logging is active, the concrete package plan must include complete target-state log updates for material Idea Reviews, later material clarifications, prior ReviewDiff corrections and the package's `APPLIED` relation. Do not plan a package that leaves its logs for an assumed later cleanup package.

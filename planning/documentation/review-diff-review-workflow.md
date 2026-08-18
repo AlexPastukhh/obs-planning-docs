@@ -12,6 +12,8 @@ planning/documentation/documentation-responsibility-map.md
 selected current semantic/documentation/application owners affected by the diff
 ```
 
+Practical example: [`examples/REVIEW-DIFF-PRACTICAL-EXAMPLE.md`](examples/REVIEW-DIFF-PRACTICAL-EXAMPLE.md)
+
 ## 1. Core Distinction
 
 ```text
@@ -220,3 +222,11 @@ BLOCKED BY MATERIAL DECISION
 - Do not silently promote implementation details into accepted architecture.
 - Do not approve a diff while a material unapplied correction or unresolved correctness/ownership issue remains hidden.
 - Do not use aggregate sections as a log of selected corrections or completed reasoning.
+
+## 10. Scope-Log Handoff When Logging Is Active
+
+A ReviewDiff result changes a scope log only when it adds material semantic meaning such as a confirmed defect, selected correction, changed rationale/constraint or other material clarification.
+
+The next correction replacement package uses the latest log bytes as exact base, appends the material ReviewDiff/correction meaning and an `APPLIED` record for what that package makes true. Do not rewrite older records as though later review knowledge existed earlier.
+
+`APPROVABLE` with no new material meaning is not an action-log event and does not require a closing package solely for the verdict.

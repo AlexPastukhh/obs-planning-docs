@@ -28,7 +28,8 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | Optional Scenario/Domain/Slice specialization | `profiles/scenario-domain-slice-*` |
 | Status reconciliation | `status-reconciliation-workflow.md` |
 | Example coverage/examples | `example-coverage-workflow.md`, `examples/` |
-| Parallel work | `parallel-work/` |
+| Fixed parallel-work scope + scope-log methodology | `parallel-work-scope-and-action-log-workflow.md`; project roots/boundaries live in the root Scope Registry |
+| Actual high-level action history/rationale | canonical `action-log.md` at the registered scope root |
 | Planning Helper projection | `tampermonkey-command-projection-workflow.md` + tool docs/source |
 
 README/index files own navigation/read order only. They do not duplicate complete semantic bodies.

@@ -36,6 +36,7 @@ documentation-update-workflow.md
 file-update-overview-workflow.md
 FILE-UPDATE-OVERVIEW-TEMPLATE.md
 build-replacement-archive-workflow.md
+parallel-work-scope-and-action-log-workflow.md
 status-reconciliation-workflow.md
 example-coverage-workflow.md
 ```
@@ -71,3 +72,7 @@ See `application-planning/README.md`. Active topology is whole solution/workflow
 ## Application / Tool Roots
 
 Current application subtrees maintain their own Direction Registry + Use-Case Registry + Scenario owners and link implementation/tests as supporting evidence.
+
+## Parallel Work / Action Logs
+
+Reusable semantics are owned by [`parallel-work-scope-and-action-log-workflow.md`](parallel-work-scope-and-action-log-workflow.md). Each repository keeps its fixed scope roots in a mandatory project-specific Scope Registry and stores actual cumulative `action-log.md` state at each registered scope root. The superseded temporary shadow-workspace/sync model is not an alternate current route.

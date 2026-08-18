@@ -35,6 +35,7 @@ Scope: one concrete OBS Planning command route. Reusable Idea behavior remains i
     "Every real Questions / Risks / Problems unit states Current Plan, the unresolved/adverse finding, and its relation or impact on that plan; reference Related Idea IDs when applicable.",
     "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and states Current Plan plus Change To Current Plan; remove a candidate once it is selected.",
     "Do not use aggregate sections to confirm accepted decisions, repeat current boundaries, or preserve completed reasoning.",
+    "When scope logging is already active, treat the material review result as a loggable source for the next approved mutation/package; this read-only command itself does not edit logs.",
     "Do not edit repository files, create an archive, commit or push."
   ],
   "userTarget": "<source/discussion to collect Ideas from>",

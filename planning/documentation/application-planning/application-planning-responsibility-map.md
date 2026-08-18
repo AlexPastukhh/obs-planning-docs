@@ -11,6 +11,7 @@ Status: active reusable nested responsibility map
 | Current reality recommended shape | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` |
 | Detailed Scenario shape | `templates/SCENARIO-DRAFT-TEMPLATE.md` |
 | Generic Idea semantics/review | parent reusable Idea owners |
+| Reusable current Goal Map semantics | `goal-map.md` |
 | Optional deeper Scenario/DATA/Behavior/Domain/Slice representation | `../profiles/scenario-domain-slice-*` |
 | Concrete application Use Cases / Scenarios / decisions / implementation state | project/application-local owners |
 

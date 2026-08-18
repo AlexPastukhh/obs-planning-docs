@@ -81,7 +81,7 @@ Use these buckets:
 | Navigation/read order | How to discover or read files. | README/index |
 | Command route | User wording -> executable output/permission route. | project `command-routing.md` + direct `commands/*.command.md` |
 | Example candidate | Concrete demonstration of a rule/workflow/profile. | example file/index |
-| Historical/action note | What changed and why. | action log |
+| Historical/action note | What materially changed and why. | canonical `action-log.md` of the registered affected scope; cross-scope work uses one full canonical record + references |
 | Deferred/waiting task | Future task or waiting condition. | PMR/task register |
 
 ## 5. Portability / Reusable Migration Mode

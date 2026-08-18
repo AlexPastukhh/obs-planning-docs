@@ -167,3 +167,9 @@ Use aggregate sections only for uncertainty/residual risk/unresolved problems or
 - Deep Planning surfaces appear only when useful.
 - Source facts/constraints/decisions were not forced into Idea entities.
 ```
+
+## 12. Scope-Log Handoff When Logging Is Active
+
+The Idea review remains read-only. When the repository has active registered scope logs and the user has already started logging, the material `собери идеи` result becomes provenance for the next approved mutation/package affecting that scope.
+
+Material ordinary messages after the review that change Idea meaning, Current Conclusion, constraints, resolved Q/R/P or selected implementation requirements are `IDEA CLARIFICATION` material and must be incorporated before the package's `APPLIED` target-state record. Do not require rerunning `собери идеи` merely to legitimize a material clarification, and do not log non-material chat noise.

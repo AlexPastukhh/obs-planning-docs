@@ -15,23 +15,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "start parallel work",
     "parallel workspace"
   ],
-  "description": "parallel workspace",
-  "meaning": "Start or plan one staging-only parallel workspace.",
-  "activeContextBehavior": "Ask scope if no concrete agent/workstream target.",
-  "traversalReadMode": "Targeted/full by workspace scope.",
+  "description": "use registered parallel-work scope",
+  "meaning": "Resolve the fixed Parallel Work Scope Registry and establish one workstream inside the already registered affected scope(s), including canonical scope-log ownership for cross-scope work.",
+  "activeContextBehavior": "Use the active work target when clear; otherwise ask only for the concrete workstream target needed to resolve existing registered scope(s).",
+  "traversalReadMode": "Targeted/full by affected registered scope(s).",
   "ownerFiles": [
-    "planning/documentation/parallel-work/README.md",
-    "planning/documentation/parallel-work/parallel-workflow.md",
-    "planning/documentation/parallel-work/PARALLEL-WORKSPACE-TEMPLATE.md"
+    "parallel-work-scope-registry.md",
+    "planning/documentation/parallel-work-scope-and-action-log-workflow.md"
   ],
-  "expectedOutput": "Parallel workspace plan/package when requested; no direct canonical-doc edits.",
-  "permissionMode": "staging-only",
+  "expectedOutput": "Selected registered parallel-work scope(s), canonical scope log for the work, cross-scope boundary/reference requirements and the route-specific next action; no ad-hoc shadow workspace.",
+  "permissionMode": "scope-routing-only",
   "keyReminders": [
-    "Start one staging-only workspace only for a concrete target.",
-    "Do not edit shared canonical docs directly from workspace phase.",
-    "Do not create aggregate sync until a sync-candidate workspace exists."
+    "Read the root Scope Registry; do not invent or repartition scopes ad hoc.",
+    "A path belongs to the deepest active registered scope root containing it.",
+    "For cross-scope work choose one affected canonical log for the full record; other affected logs hold references only.",
+    "This command selects scope/log routing only and does not itself authorize edits, archive creation, commit or push."
   ],
-  "userTarget": "<parallel agent/workstream target>",
+  "userTarget": "<parallel workstream target>",
   "palette": true,
   "refinements": []
 }

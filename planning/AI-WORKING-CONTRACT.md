@@ -65,3 +65,13 @@ historical record ≠ current ontology
 ## Authority
 
 This contract routes to canonical owners. If it conflicts with a linked canonical principle/workflow owner, the canonical owner wins and this contract must be corrected.
+
+## Registered Parallel-Work Scopes And Logs
+
+Before material mutation/package work, read `../parallel-work-scope-registry.md` when scope boundaries are relevant.
+
+- Use registered scopes; do not invent a new partition ad hoc.
+- When work touches several scopes, select one canonical affected scope log for the full record and update the other affected logs with references.
+- When logging is active, preserve material Idea Review, later material clarification and material ReviewDiff correction meaning in the target-state scope log through the next approved replacement package.
+- Logging never reconstructs work before the user's explicit logging-start boundary.
+- A replacement package must leave files and required scope logs/references coherent immediately after successful Apply.

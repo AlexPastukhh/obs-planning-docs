@@ -53,6 +53,7 @@ Every independently useful supported capability must be discoverable as a curren
 - [`command-routing.md`](command-routing.md) — explicit command routing only.
 - [`commands/`](commands/) — concrete command definitions.
 - [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) — mandatory AI/chat working contract.
+- [`../parallel-work-scope-registry.md`](../parallel-work-scope-registry.md) — fixed repository parallel-work scopes + canonical scope-log locations.
 - [`documentation/`](documentation/) — reusable documentation/planning methodology.
 - [`areas/`](areas/) — project-local planning/application state.
 
@@ -95,3 +96,14 @@ Problem / Question / Idea
 A Spine Scenario is temporary scaffolding for discovering real Scenario boundaries, not a permanent entity layer.
 
 Historical Planning Item records may remain provenance. Planning Item, Planning Draft and Full Picture Matrix are not active reusable stages/artifacts. Current owners remain real responsibilities, and whole-solution/cross-Scenario integration review remains a required review responsibility when relevant without becoming a separate mandatory entity or file.
+
+## Parallel Work / Scope Logs
+
+```text
+parallel-work-scope-registry.md
+→ select existing registered scope(s)
+→ scope-root/action-log.md
+→ work/package/review inside those fixed boundaries
+```
+
+Chats do not repartition the repository per task. Cross-scope work keeps one full canonical log record and reference-only entries in the other affected scope logs.

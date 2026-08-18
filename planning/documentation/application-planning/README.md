@@ -32,9 +32,10 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 3. Idea owners when answer-seeking work is material
 4. `direction-registry.md` + `use-case-registry.md`
 5. `solution-and-scenario-planning-workflow.md`
-6. `templates/SCENARIO-DRAFT-TEMPLATE.md` when detailed application behavior is planned
-7. optional SDS profile for deeper separate DATA/Behavior/Domain/Slice representation
-8. project-local Use Cases / Scenarios / current owners.
+6. `goal-map.md` when a current working Goal Map would materially help
+7. `templates/SCENARIO-DRAFT-TEMPLATE.md` when detailed application behavior is planned
+8. optional SDS profile for deeper separate DATA/Behavior/Domain/Slice representation
+9. project-local Use Cases / Scenarios / current owners.
 
 ## Core Concepts
 
@@ -45,3 +46,7 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 - **Scenario** — coherent motivated actor/context + Need/Goal + meaningful observable result + detailed observable behavior.
 - **Scenario Draft** — canonical detailed behavioral planning owner.
 - **Scenario DATA / Behavior Items / Domain / Slice** — proportional downstream owners; separate artifacts only when useful.
+
+## Reusable Goal Map
+
+[`goal-map.md`](goal-map.md) is an optional reusable current-working surface for a meaningful goal/work direction. It may combine an action map, implementation points and lightweight `Keep In Mind` context while linking out to real canonical owners. It is not the Dashboard application's Goal Map authority and it is not historical logging.

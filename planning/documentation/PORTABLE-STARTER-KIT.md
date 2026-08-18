@@ -36,3 +36,23 @@ actual principles/workflow/current owners
 - bootstrap field kits stop routing once runtime owners exist.
 
 Use `field-kits/root-command-routing-field-kit.md` only when setting up command routing before runtime files exist.
+
+## External Reusable-Methodology Declaration
+
+When another repository uses reusable methodology maintained elsewhere, put a short declaration near that repository's mandatory natural entry (normally root README / planning entry). The declaration should identify the external repository and its reusable documentation entry without copying the methodology locally.
+
+For this methodology:
+
+```text
+Reusable methodology repository:
+  https://github.com/AlexPastukhh/obs-planning-docs
+
+Reusable documentation entry:
+  planning/documentation/README.md
+```
+
+The local repository owns its project/current meaning. The linked repository owns reusable methodology.
+
+## Fixed Parallel-Work Scopes
+
+When parallel work is supported, create a mandatory root `parallel-work-scope-registry.md` (or equivalent root registry) and one `action-log.md` at every registered scope root. Establish the initial boundaries explicitly once; normal chats read them rather than repartitioning the repository ad hoc. Use `parallel-work-scope-and-action-log-workflow.md` for reusable semantics.

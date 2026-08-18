@@ -38,3 +38,14 @@ Legacy review-diff/package commands may explicitly use their own linked owners. 
 - no active duplicate authority was created;
 - examples/projections are synchronized only when affected;
 - repository permission was not inferred from documentation planning alone.
+
+## Registered Scope / Log Consistency
+
+When an approved documentation update will mutate repository files and logging is active:
+
+1. resolve affected fixed scopes from the root Scope Registry;
+2. choose one canonical scope log for cross-scope work;
+3. preserve material Idea Review / later material clarification / material ReviewDiff correction meaning as required by the reusable scope-log workflow;
+4. ensure any replacement package contains complete coherent post-apply log/reference state together with the documentation files.
+
+A documentation update does not retroactively reconstruct pre-start log history.
