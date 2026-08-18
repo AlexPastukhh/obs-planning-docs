@@ -92,3 +92,9 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 **Rationale:** make the new scope/log reference model durable and make the two review/planning output contracts practically reproducible without creating duplicate semantic owners.
 
+### XREF-DOC-001 — Planning Helper save recovery and scope-direction clarification
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-003`  
+**Reason:** reusable scope methodology changed as part of the same cross-scope work item as the Planning Helper publishing correction. Full reasoning, selected clarification and applied-state history are owned by the canonical Helper log entry.

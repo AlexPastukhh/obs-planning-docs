@@ -122,18 +122,26 @@
     }
     async saveVerified({ path, content, baseSha = '', message }) {
       const normalized = normalizeGitHubContentPath(path);
+      const intended = String(content);
       let writeResult;
-      try { writeResult = await this.write({ path:normalized, content, baseSha, message }); }
+      try { writeResult = await this.write({ path:normalized, content:intended, baseSha, message }); }
       catch (error) {
-        if (!(error instanceof GitHubClientError) || error.kind !== 'network_unknown') throw error;
-        try { const after = await this.read(normalized); if (after.content === String(content)) return { ...after, recoveredAfterUnknownWrite:true }; } catch (_) {}
+        const recoverable = error instanceof GitHubClientError && (error.kind === 'network_unknown' || error.kind === 'conflict');
+        if (!recoverable) throw error;
+        let after = null, readError = null;
+        try { after = await this.read(normalized); } catch (nextError) { readError = nextError; }
+        if (after?.content === intended) return { ...after, recoveredAfterUnknownWrite:error.kind === 'network_unknown', recoveredAfterConflict:error.kind === 'conflict' };
+        if (error.kind === 'conflict') {
+          if (readError) throw new GitHubClientError('conflict', 'GitHub rejected the stale write and the current remote content could not be verified; nothing was overwritten.', { status:error.status, cause:error, verificationCause:readError, path:normalized });
+          throw new GitHubClientError('conflict', 'GitHub content changed since it was read and now differs from the intended file; nothing was overwritten.', { status:error.status, cause:error, path:normalized, remoteSha:String(after?.sha || '') });
+        }
         throw error;
       }
       let readBack;
       try { readBack = await this.read(normalized); }
       catch (error) { throw new GitHubClientError('verification_unknown', 'GitHub accepted the write, but read-back verification failed.', { cause:error, writeResult }); }
-      if (readBack.content !== String(content)) throw new GitHubClientError('verification_mismatch', 'Remote read-back content does not match the intended file.', { writeResult });
-      return { ...readBack, recoveredAfterUnknownWrite:false };
+      if (readBack.content !== intended) throw new GitHubClientError('verification_mismatch', 'Remote read-back content does not match the intended file.', { writeResult });
+      return { ...readBack, recoveredAfterUnknownWrite:false, recoveredAfterConflict:false };
     }
     async create({ path, content, message }) { return this.saveVerified({ path, content, message }); }
   }

@@ -1,7 +1,7 @@
 # OBS Planning Helper Use-Case Registry
 
 Status: active canonical application semantic registry
-Version: v1.0.0 / Planning Helper `0.24.0`
+Version: v1.0.0 / Planning Helper `0.24.2`
 Scope: independently useful current Planning Helper user outcomes. This registry owns application Use-Case identity; it does not own planning-command meaning or helper-library file format.
 
 Scenario catalog: [`scenarios/README.md`](scenarios/README.md)
@@ -27,7 +27,7 @@ Application entry: [`README.md`](README.md)
 | `UC-PH-IMPORT` | Import Helper Content From ChatGPT | current prototype; browser acceptance required | paste supported command/helper marker blocks into Import from ChatGPT | parsed records are merged into local state without GitHub I/O | [`SCN-PH-IMPORT`](scenarios/SCN-PH-IMPORT.md) |
 | `UC-PH-CHECK-REPOSITORY` | Inspect Local And Repository Inventory | current prototype; real-GitHub acceptance required | explicit `Check GitHub` | user receives a read-only same-path/local-only/GitHub-only inventory and known-SHA-change diagnostics | [`SCN-PH-CHECK-REPOSITORY`](scenarios/SCN-PH-CHECK-REPOSITORY.md) |
 | `UC-PH-SYNC` | Bring Missing Repository Content Into Local State | current prototype; real-GitHub acceptance required | explicit `Sync missing` | repository-only supported records are validated and added locally without overwriting same-path local records | [`SCN-PH-SYNC`](scenarios/SCN-PH-SYNC.md) |
-| `UC-PH-PUBLISH` | Publish One Local Helper Entity To Repository | current prototype; real-GitHub acceptance required | per-row explicit `Save GitHub` | one deterministic repository target is created/no-op verified/SHA-updated with exact read-back, while local verification metadata is updated when local persistence succeeds | [`SCN-PH-PUBLISH`](scenarios/SCN-PH-PUBLISH.md) |
+| `UC-PH-PUBLISH` | Publish One Local Helper Entity To Repository | current prototype; real-GitHub acceptance required | per-row explicit `Save GitHub` | one deterministic repository target is created/no-op verified/SHA-updated or recovered as an exact same-content concurrent result, with exact verification; explicit helper Save can repair malformed content at its deterministic target | [`SCN-PH-PUBLISH`](scenarios/SCN-PH-PUBLISH.md) |
 | `UC-PH-RECOVER` | Recover Repository-Backed Local State From Pasted Evidence | current prototype; browser acceptance required | `Restore from GitHub copy` with a complete supported marker set | repository-backed local records are reconciled to pasted evidence while local-only unbacked records are preserved, with zero helper-side GitHub requests | [`SCN-PH-RECOVER`](scenarios/SCN-PH-RECOVER.md) |
 
 ## 3. Supporting capabilities without separate UC IDs
@@ -159,9 +159,9 @@ These are important but are not independently useful current outcomes:
 
 **Trigger / accepted input:** per-row explicit `Save GitHub` for a planning command, helper command or prompt.
 
-**Result / end state:** the deterministic repository target is created, confirmed as an exact no-op, or updated using current remote SHA; a write requires exact read-back content verification. After remote verification, the helper attempts to persist the corresponding local repository evidence metadata.
+**Result / end state:** the deterministic repository target is created, confirmed as an exact no-op, updated using current remote SHA, or verified as already equal to the intended content after an optimistic-concurrency conflict. For helper command/prompt targets, explicit Save can also replace a malformed existing helper document using its exact current SHA. After remote verification, the helper attempts to persist the corresponding local repository evidence metadata.
 
-**Boundaries:** Detailed behavior and implementation boundaries are owned by the related Scenario and focused owners.
+**Boundaries:** a conflict whose reread bytes differ from intended content is never overwritten automatically. If the post-conflict reread itself fails, current remote equality/divergence remains unknown and must not be reported as confirmed divergence. Malformed helper repair is limited to explicit Save at the deterministic helper path; `Sync missing` and normal remote reads remain strict validation routes. Detailed behavior and implementation boundaries are owned by the related Scenario and focused owners.
 
 **Scenario owner:** [`SCN-PH-PUBLISH`](scenarios/SCN-PH-PUBLISH.md)
 

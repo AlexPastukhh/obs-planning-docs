@@ -20,6 +20,37 @@ Chats do not repartition the repository per task. Scope creation/split/merge/ret
 
 For nested registered roots, a path belongs to the deepest active registered root containing it. A parent scope excludes registered child subtrees.
 
+### 1.1 Direction / Use-Case Affinity
+
+A Direction and a registered parallel-work scope are related architecture views, but they are not the same type and there is no mandatory 1:1 mapping.
+
+```text
+Direction
+= semantic family of independently useful Use Cases / broad work-result zone
+
+registered scope
+= fixed physical ownership, coordination and action-log boundary
+```
+
+When initially defining or explicitly splitting/merging scopes, inspect the repository Direction Registry and relevant Use-Case Registries before choosing physical roots. Prefer a scope boundary that corresponds to one broad independently coordinatable Direction/work family, or to a cohesive family of closely related Use Cases, when that reduces routine cross-scope changes and makes ownership understandable.
+
+Do not mechanically create one scope per Direction. One practical scope may host several closely related Directions when they share one stable ownership/change boundary; conversely, a large Direction may justify several registered scopes when its parts genuinely need independent parallel coordination.
+
+Cross-Direction integration does not erase either boundary:
+
+```text
+Use Case A / Direction A
+→ explicit dependency / integration / handoff
+→ Use Case B / Direction B
+
+≠ merge Directions
+≠ automatically merge registered scopes
+```
+
+A Use Case may therefore link to another Direction's Use Case or owner when a concrete integration requires it. If one planned/implemented work item actually changes files in several registered roots, ordinary cross-scope canonical-log/reference rules apply.
+
+A project Scope Registry may reference related Direction IDs or Use-Case families as optional navigation metadata, but the Direction/Use-Case Registries remain semantic authority and the Scope Registry remains physical boundary authority.
+
 ## 2. Scope Log Placement
 
 Each active scope has one canonical high-level `action-log.md` at its registered root. The log file physically exposes the scope boundary; the Scope Registry remains canonical authority.

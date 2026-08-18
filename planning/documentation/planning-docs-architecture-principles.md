@@ -111,6 +111,23 @@ historical record ≠ current ontology
 
 Use the smallest owner/representation that preserves required meaning. Create new files, schemas, objects, maps or stages only when independent responsibility/review/reuse/navigation/change ownership justifies them.
 
+
+## Direction / Parallel-Scope Relationship
+
+Direction and parallel-work scope answer different questions:
+
+```text
+Direction
+→ what broad semantic work / family of Use Cases exists?
+
+registered scope
+→ what fixed repository root can be independently coordinated and logged?
+```
+
+Scope architecture should normally be informed by Directions and Use-Case families, because an independently coordinated scope is easiest to understand when it follows a coherent broad work responsibility. This is an affinity, not a required 1:1 mapping: do not split or merge physical scopes merely to mirror the Direction Registry mechanically.
+
+Use Cases in different Directions may have explicit dependencies, integrations or handoffs. Such relationships keep their semantic owners in their own Directions. When a concrete work item crosses registered physical roots, use the cross-scope logging/package rules rather than merging semantic ownership.
+
 ## Fixed Parallel-Work Scope / Log Invariant
 
 ```text

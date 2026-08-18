@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.24.0`
+Version: `0.24.2`
 Scope: deterministic Planning Helper source/build, RAM-first local persistence, explicit GitHub check/save/sync, ChatGPT-mediated recovery fallback and clipboard-first insertion.
 
 ## Read Order
@@ -109,16 +109,26 @@ remote target absent
 remote target exists and exact rendered bytes match
   → no-op
 
+remote helper target exists but helper-library document is malformed
+  → explicit Save keeps that exact current SHA as optimistic base
+  → replace only the same deterministic helper target with the valid local rendered document
+
 remote target exists and differs
   → update using current remote SHA
 
-successful write
-  → exact read-back verification
+write returns optimistic SHA conflict
+  → reread current remote exactly once
+  → if remote bytes now equal intended bytes: verified recovered success, use fresh SHA, no second PUT
+  → if remote bytes differ: real conflict, do not overwrite/retry automatically
+  → if the reread itself fails: remote relation remains unknown; report verification failure and do not claim confirmed divergence
+
+successful or recovered remote result
+  → exact content is verified
   → attempt to update repositoryKnown/repositorySha for that local record
   → if browser-local persistence fails after remote verification, report remote success + local metadata warning (do not relabel it as GitHub failure)
 ```
 
-Planning-command saves additionally read/validate the complete direct remote command catalog before writing, so a save cannot knowingly create an ambiguous command registry. Helper command/prompt saves are confined to their deterministic helper-library path.
+Planning-command saves additionally read/validate the complete direct remote command catalog before writing, so a save cannot knowingly create an ambiguous command registry. Helper command/prompt saves are confined to their deterministic helper-library path. Malformed-document repair exists only on explicit Save for that deterministic target; `Sync missing` and ordinary remote reads remain strict and do not repair malformed repository content.
 
 Repository delete is not implemented. Local Delete remains local-only.
 

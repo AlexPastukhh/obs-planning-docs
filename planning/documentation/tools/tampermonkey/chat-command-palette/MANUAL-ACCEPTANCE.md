@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution status must be recorded separately from automated tests
-Version: v1.0.0 / Planning Helper `0.24.0`
+Version: v1.0.0 / Planning Helper `0.24.2`
 Scope: browser and real-GitHub checks that are not implied by `npm run verify`.
 
 Canonical application semantics: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md) → [`scenarios/README.md`](scenarios/README.md).
@@ -54,13 +54,17 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 
 - Place supported repository records that are absent locally and confirm Sync missing downloads/adds them.
 - Confirm a same-path local record is never overwritten by Sync missing.
-- Confirm malformed downloaded content aborts rather than being silently accepted.
+- Confirm malformed downloaded content aborts rather than being silently accepted or repaired by Sync missing.
 
 <a id="uc-ph-publish"></a>
 
 ## `UC-PH-PUBLISH`
 
 - Exercise create, exact no-op and current-SHA update for helper content against real GitHub and verify exact read-back.
+- Start an update with a stale base SHA, arrange for the remote target to already contain the exact intended bytes, and confirm Save GitHub rereads once, reports recovered verified success with the fresh SHA and performs no second PUT.
+- Start an update with a stale base SHA while the remote target contains different bytes; confirm Save GitHub reports a real conflict and does not overwrite or retry with the fresh SHA.
+- Start an update with a stale base SHA and make the post-conflict remote reread fail; confirm the UI reports that current remote content could not be verified, does not claim confirmed divergence, and nothing is overwritten.
+- Put a malformed helper-library document at the deterministic helper path, then explicitly Save the valid local helper; confirm the malformed remote is replaced using its exact current SHA and the resulting bytes are read back and verified.
 - Exercise planning-command save and confirm complete remote command-catalog validation blocks an ambiguous catalog.
 - Simulate browser-local snapshot persistence failure after a remote result has already been verified; confirm UI reports remote success plus local-metadata warning rather than “GitHub save failed”.
 - Confirm repository Delete is unavailable and the helper never runs local Git/commit/push.
