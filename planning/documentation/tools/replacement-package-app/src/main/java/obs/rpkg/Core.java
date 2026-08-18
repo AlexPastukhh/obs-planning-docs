@@ -25,7 +25,7 @@ public final class Core {
     public static final class ObsException extends RuntimeException {
         public final String code;
         public ObsException(String code,String message){super(message);this.code=code;}
-        public ObsException(String code,String message,Throwable cause){super(message,cause);this.code=code;}
+        public ObsException(String code,String message,Throwable cause){super(withCauseDetails(message,cause),cause);this.code=code;}
         @Override public String toString(){return "["+code+"] "+getMessage();}
     }
 
@@ -71,13 +71,14 @@ public final class Core {
         public String getText() throws Exception {Object data=Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);return data==null?null:String.valueOf(data);}
     }
 
-    private final GitClient git=new GitClient(); private final StateStore state; private final ClipboardAccess clipboard; private final ChatBridgeService chatBridge; private Runnable afterMutationHook=()->{};
+    private final GitClient git=new GitClient(); private final StateStore state; private final ClipboardAccess clipboard; private final ChatBridgeService chatBridge; private Runnable afterMutationHook=()->{}; private java.util.function.Consumer<String> afterRecoveryPathCleanHook=path->{};
     public Core(){this(new StateStore(),new AwtClipboardAccess());}
     Core(StateStore state){this(state,new AwtClipboardAccess());}
     Core(StateStore state,ClipboardAccess clipboard){this.state=state;this.clipboard=Objects.requireNonNull(clipboard);this.chatBridge=new ChatBridgeService(state);}
     ChatBridgeService chatBridgeService(){return chatBridge;}
     void setChatBridgeEventSink(java.util.function.Consumer<ChatBridgeService.ChatEvent> sink){chatBridge.setEventSink(sink);}
     void setAfterMutationHookForTests(Runnable hook){afterMutationHook=hook==null?()->{}:hook;}
+    void setAfterRecoveryPathCleanHookForTests(java.util.function.Consumer<String> hook){afterRecoveryPathCleanHook=hook==null?path->{}:hook;}
 
     public Settings getSettings(){return ensureSettings();}
     public Settings setSettings(String repositoryRoot,String handling){
@@ -246,7 +247,7 @@ public final class Core {
             ReviewDiff review=newReviewDiff(cs);
             if(!review.sha256.equalsIgnoreCase(baseline.sha256))throw new ObsException(REVIEW_STALE,"ReviewDiff changed since the last Apply/Refresh Review. Refresh Review before Finalize.");
             GitClient.Result pre=git.allow(repo,FINALIZE_FAILED,"diff","--cached","--quiet");
-            if(pre.exitCode()!=0){if(pre.exitCode()==1)throw new ObsException(FINALIZE_FAILED,"V0.1 Finalize requires a clean real Git index.");throw new ObsException(FINALIZE_FAILED,"Failed to inspect real Git index: "+pre.joined());}
+            if(pre.exitCode()!=0){if(pre.exitCode()==1)throw new ObsException(FINALIZE_FAILED,"V0.1 Finalize requires a clean real Git index.");throw new ObsException(FINALIZE_FAILED,"Failed to inspect real Git index.\n--- git details ---\n"+pre.failureDetails());}
             try{
                 if(Files.size(review.diffPath)==0){
                     cs.commitSha=null;cs.branch=null;cs.status="Finalized";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);
@@ -269,19 +270,156 @@ public final class Core {
             try{git.run(repo,FINALIZE_FAILED,"commit","-m",message);}catch(Throwable t){resetOwned(repo,cs);throw t;}
             String commit=git.run(repo,FINALIZE_FAILED,"rev-parse","HEAD").first();cs.commitSha=commit;cs.branch=branch;cs.status="CommittedPendingPush";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);
             GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",branch);
-            if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Commit "+commit+" created; push failed. ChangeSet remains CommittedPendingPush.");
+            if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Commit "+commit+" created; push failed. ChangeSet remains CommittedPendingPush.\n--- git details ---\n"+push.failureDetails());
             cs.status="Finalized";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);return new FinalizeResult(SUCCESS,commit,branch,cs);
         }
     }
 
-    public FinalizeResult retryPush(String id,Path repositoryRoot){try(StateStore.Lock ignored=state.lock()){ChangeSet cs=state.getChangeSet(id);if(cs==null||!"CommittedPendingPush".equals(cs.status))throw new ObsException(FINALIZE_FAILED,"ChangeSet is not CommittedPendingPush.");RepositoryConfig allowed=requireAllowedRepository(repositoryRoot==null?Path.of(cs.repositoryRoot):repositoryRoot);Path repo=Path.of(allowed.path);if(!samePath(repo,Path.of(cs.repositoryRoot)))throw new ObsException(REPOSITORY_MISMATCH,"Retry Push repository differs from ChangeSet repository.");String rid=repositoryIdentity(repo);if(!same(rid,cs.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Retry Push origin is "+rid+"; ChangeSet targets "+cs.repositoryIdentity+".");String head=git.run(repo,STATE_DIVERGED,"rev-parse","HEAD").first();if(!head.equals(cs.commitSha))throw new ObsException(STATE_DIVERGED,"HEAD is not the recorded pending-push commit.");GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",cs.branch);if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push failed; existing commit remains pending.");cs.status="Finalized";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);return new FinalizeResult(SUCCESS,cs.commitSha,cs.branch,cs);}}
+    public FinalizeResult retryPush(String id,Path repositoryRoot){
+        try(StateStore.Lock ignored=state.lock()){
+            ChangeSet cs=state.getChangeSet(id);if(cs==null||!"CommittedPendingPush".equals(cs.status))throw new ObsException(FINALIZE_FAILED,"ChangeSet is not CommittedPendingPush.");
+            RepositoryConfig allowed=requireAllowedRepository(repositoryRoot==null?Path.of(cs.repositoryRoot):repositoryRoot);Path repo=Path.of(allowed.path);
+            if(!samePath(repo,Path.of(cs.repositoryRoot)))throw new ObsException(REPOSITORY_MISMATCH,"Retry Push repository differs from ChangeSet repository.");
+            String rid=repositoryIdentity(repo);if(!same(rid,cs.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Retry Push origin is "+rid+"; ChangeSet targets "+cs.repositoryIdentity+".");
+            String head=git.run(repo,STATE_DIVERGED,"rev-parse","HEAD").first();if(!head.equals(cs.commitSha))throw new ObsException(STATE_DIVERGED,"HEAD is not the recorded pending-push commit.");
+            String branch=git.run(repo,STATE_DIVERGED,"branch","--show-current").first();if(branch.isBlank()||!branch.equals(cs.branch))throw new ObsException(STATE_DIVERGED,"Current branch is not the recorded pending-push branch.");
+            GitClient.Result index=git.allow(repo,STATE_DIVERGED,"diff","--cached","--quiet");if(index.exitCode()!=0){if(index.exitCode()==1)throw new ObsException(STATE_DIVERGED,"Retry Push recovery requires a clean real Git index.");throw new ObsException(STATE_DIVERGED,"Failed to inspect real Git index before Retry Push.\n--- git details ---\n"+index.failureDetails());}
+            String remoteRef="refs/remotes/origin/"+cs.branch,remoteSpec="+refs/heads/"+cs.branch+":"+remoteRef;
+            GitClient.Result fetch=git.allow(repo,FINALIZE_FAILED,"fetch","--no-tags","origin",remoteSpec);if(fetch.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push could not refresh the remote branch; existing commit remains pending.\n--- git details ---\n"+fetch.failureDetails());
+            String remote=git.run(repo,FINALIZE_FAILED,"rev-parse","--verify",remoteRef).first();
+            if(head.equals(remote)){return markPushed(cs);}
+            boolean pendingInRemote=isAncestor(repo,head,remote),remoteBehindPending=isAncestor(repo,remote,head);
+            if(pendingInRemote){requireRemoteDisjointFromOtherActive(repo,cs,remoteRef);advanceLocalToPublishedRemote(repo,cs,remoteRef);return markPushed(cs);}
+            if(remoteBehindPending){GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",cs.branch);if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push failed; existing commit remains pending.\n--- git details ---\n"+push.failureDetails());return markPushed(cs);}
+            requireRemoteDisjointFromPending(repo,cs,remoteRef);
+            requireRemoteDisjointFromOtherActive(repo,cs,remoteRef);
+            rebasePendingOntoRemote(repo,cs,remoteRef);
+            GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",cs.branch);if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push rebased the pending commit onto the refreshed remote branch, but push still failed. The rebased commit remains CommittedPendingPush for another Retry Push.\n--- git details ---\n"+push.failureDetails());
+            return markPushed(cs);
+        }
+    }
+
+    private FinalizeResult markPushed(ChangeSet cs){cs.status="Finalized";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);return new FinalizeResult(SUCCESS,cs.commitSha,cs.branch,cs);}
+    private boolean isAncestor(Path repo,String older,String newer){GitClient.Result r=git.allow(repo,FINALIZE_FAILED,"merge-base","--is-ancestor",older,newer);if(r.exitCode()==0)return true;if(r.exitCode()==1)return false;throw new ObsException(FINALIZE_FAILED,"Failed to compare local and remote commit ancestry.\n--- git details ---\n"+r.failureDetails());}
+    private void requireRemoteDisjointFromPending(Path repo,ChangeSet pending,String remoteRef){
+        String mergeBase=git.run(repo,FINALIZE_FAILED,"merge-base",pending.commitSha,remoteRef).first();
+        if(mergeBase.isBlank())throw new ObsException(FINALIZE_FAILED,"Retry Push could not determine a common base for the pending commit and refreshed remote branch.");
+        List<String> args=new ArrayList<>(List.of("diff","--name-only",mergeBase,remoteRef,"--"));args.addAll(pending.ownedPaths);
+        GitClient.Result changed=git.allow(repo,FINALIZE_FAILED,args.toArray(String[]::new));
+        if(changed.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push could not inspect remote changes on pending-owned paths.\n--- git details ---\n"+changed.failureDetails());
+        if(!changed.joined().isBlank())throw new ObsException(FINALIZE_FAILED,"Remote branch changed paths owned by the pending ChangeSet. Automatic Retry Push recovery stopped before rebase or push; the original pending commit and other active work remain unchanged.\nRemote-changed pending paths:\n"+changed.joined());
+    }
+
+    private void requireRemoteDisjointFromOtherActive(Path repo,ChangeSet pending,String remoteRef){
+        LinkedHashSet<String> activeOwned=new LinkedHashSet<>();
+        for(ChangeSet other:state.activeChangeSets()){
+            if(other.changeSetId.equals(pending.changeSetId)||!samePath(Path.of(other.repositoryRoot),repo)||!same(other.repositoryIdentity,pending.repositoryIdentity))continue;
+            if("CommittedPendingPush".equals(other.status))throw new ObsException(STATE_DIVERGED,"Retry Push recovery does not support a second CommittedPendingPush ChangeSet in the same repository.");
+            if("Active".equals(other.status))activeOwned.addAll(other.ownedPaths);
+        }
+        if(activeOwned.isEmpty())return;
+        String mergeBase=git.run(repo,FINALIZE_FAILED,"merge-base",pending.commitSha,remoteRef).first();
+        if(mergeBase.isBlank())throw new ObsException(FINALIZE_FAILED,"Retry Push could not determine a common base while checking other Active ChangeSets.");
+        List<String> args=new ArrayList<>(List.of("diff","--name-only",mergeBase,remoteRef,"--"));args.addAll(activeOwned);
+        GitClient.Result changed=git.allow(repo,FINALIZE_FAILED,args.toArray(String[]::new));
+        if(changed.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push could not inspect remote changes on other Active ChangeSet-owned paths.\n--- git details ---\n"+changed.failureDetails());
+        if(!changed.joined().isBlank())throw new ObsException(FINALIZE_FAILED,"Remote branch changed paths owned by another Active ChangeSet. Automatic Retry Push recovery stopped before changing HEAD; the pending commit and all Active working bytes remain unchanged.\nRemote-changed Active paths:\n"+changed.joined());
+    }
+
+    private void advanceLocalToPublishedRemote(Path repo,ChangeSet pending,String remoteRef){
+        Map<String,Backup> preserved=preserveOtherActiveWork(repo,pending);boolean cleaned=false;
+        try{
+            cleanPreservedPathsToHead(repo,preserved);cleaned=true;
+            GitClient.Result ff=git.allow(repo,FINALIZE_FAILED,"merge","--ff-only",remoteRef);if(ff.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Remote already contains the pending commit, but the local branch could not fast-forward to the refreshed remote branch.\n--- git details ---\n"+ff.failureDetails());
+            restorePreservedWork(repo,preserved);
+        }catch(Throwable t){if(cleaned){try{restorePreservedWork(repo,preserved);}catch(Throwable restore){t.addSuppressed(restore);throw new ObsException(STATE_DIVERGED,"Retry Push could not restore other active ChangeSet work after local fast-forward failure.",t);}}throw asObs(t,FINALIZE_FAILED);}
+    }
+
+    private void rebasePendingOntoRemote(Path repo,ChangeSet pending,String remoteRef){
+        String oldCommit=pending.commitSha,parent=git.run(repo,FINALIZE_FAILED,"rev-parse",oldCommit+"^").first();
+        Map<String,Backup> preserved=preserveOtherActiveWork(repo,pending);boolean cleaned=false,rebaseStarted=false;
+        try{
+            cleanPreservedPathsToHead(repo,preserved);cleaned=true;
+            GitClient.Result rebase=git.allow(repo,FINALIZE_FAILED,"-c","commit.gpgsign=false","rebase","--onto",remoteRef,parent);rebaseStarted=true;
+            if(rebase.exitCode()!=0){GitClient.Result abort=git.allow(repo,STATE_DIVERGED,"rebase","--abort");if(abort.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Automatic Retry Push rebase failed and git rebase --abort also failed.\n--- rebase details ---\n"+rebase.failureDetails()+"\n--- abort details ---\n"+abort.failureDetails());restorePreservedWork(repo,preserved);cleaned=false;throw new ObsException(FINALIZE_FAILED,"Remote branch advanced and the pending commit could not be rebased automatically. No force push was attempted; the original pending commit and other active work were restored.\n--- git details ---\n"+rebase.failureDetails());}
+            String rebased=git.run(repo,FINALIZE_FAILED,"rev-parse","HEAD").first();
+            GitClient.Result exact=ownedTreeEqual(repo,oldCommit,rebased,pending.ownedPaths);if(exact.exitCode()==1){rollbackRebasedHead(repo,oldCommit,preserved);cleaned=false;throw new ObsException(FINALIZE_FAILED,"Automatic Retry Push rebase would change the reviewed result on paths owned by the pending ChangeSet. The original pending commit and other active work were restored; resolve the remote overlap explicitly before retrying.");}if(exact.exitCode()!=0){rollbackRebasedHead(repo,oldCommit,preserved);cleaned=false;throw new ObsException(STATE_DIVERGED,"Failed to verify the rebased pending ChangeSet result.\n--- git details ---\n"+exact.failureDetails());}
+            try{restorePreservedWork(repo,preserved);cleaned=false;}catch(Throwable restore){rollbackRebasedHead(repo,oldCommit,preserved);cleaned=false;throw new ObsException(STATE_DIVERGED,"Retry Push rebased the pending commit but could not restore other active ChangeSet work; the original pending commit was restored.",restore);}
+            pending.commitSha=rebased;pending.updatedAt=Instant.now().toString();
+            try{state.saveChangeSet(pending);}catch(Throwable persist){
+                pending.commitSha=oldCommit;
+                try{cleanPreservedPathsToHead(repo,preserved);GitClient.Result reset=git.allow(repo,STATE_DIVERGED,"reset","--hard",oldCommit);if(reset.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Cannot restore original pending commit after ledger persistence failure.\n--- git details ---\n"+reset.failureDetails());restorePreservedWork(repo,preserved);}catch(Throwable rollback){persist.addSuppressed(rollback);throw new ObsException(STATE_DIVERGED,"Retry Push rebased the pending commit but could not persist or fully restore the pending ledger state.",persist);}
+                throw asObs(persist,STATE_DIVERGED);
+            }
+        }catch(Throwable t){
+            if(cleaned){try{if(rebaseStarted)git.allow(repo,STATE_DIVERGED,"rebase","--abort");git.allow(repo,STATE_DIVERGED,"reset","--hard",oldCommit);restorePreservedWork(repo,preserved);}catch(Throwable rollback){t.addSuppressed(rollback);throw new ObsException(STATE_DIVERGED,"Retry Push recovery failed and could not restore the original pending state.",t);}}
+            throw asObs(t,FINALIZE_FAILED);
+        }
+    }
+
+    private GitClient.Result ownedTreeEqual(Path repo,String oldCommit,String rebased,Collection<String> paths){List<String> args=new ArrayList<>(List.of("diff","--quiet",oldCommit,rebased,"--"));args.addAll(paths);return git.allow(repo,FINALIZE_FAILED,args.toArray(String[]::new));}
+    private void rollbackRebasedHead(Path repo,String oldCommit,Map<String,Backup> preserved){GitClient.Result reset=git.allow(repo,STATE_DIVERGED,"reset","--hard",oldCommit);if(reset.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Cannot restore original pending commit after Retry Push recovery.\n--- git details ---\n"+reset.failureDetails());restorePreservedWork(repo,preserved);}
+
+    private Map<String,Backup> preserveOtherActiveWork(Path repo,ChangeSet pending){
+        LinkedHashMap<String,Backup> backups=new LinkedHashMap<>();LinkedHashSet<String> allowedDirty=new LinkedHashSet<>();
+        for(ChangeSet other:state.activeChangeSets()){
+            if(other.changeSetId.equals(pending.changeSetId)||!samePath(Path.of(other.repositoryRoot),repo)||!same(other.repositoryIdentity,pending.repositoryIdentity))continue;
+            if("CommittedPendingPush".equals(other.status))throw new ObsException(STATE_DIVERGED,"Retry Push recovery does not support a second CommittedPendingPush ChangeSet in the same repository.");
+            for(String path:other.ownedPaths){allowedDirty.add(path);backupRecoveryPath(repo,backups,path,"Active ChangeSet");}
+        }
+        backupGeneratedRuntimeWork(repo,backups);
+        LinkedHashSet<String> visibleDirty=visibleDirtyPaths(repo);for(String path:visibleDirty)if(!allowedDirty.contains(path)&&!isServiceArtifact(path))throw new ObsException(STATE_DIVERGED,"Retry Push found dirty work not owned by another active ChangeSet: "+path);
+        return backups;
+    }
+
+    private void backupGeneratedRuntimeWork(Path repo,LinkedHashMap<String,Backup> backups){
+        String root="planning/documentation/tools/replacement-package-app/build";LinkedHashSet<String> paths=new LinkedHashSet<>();
+        for(String[] args:new String[][]{{"diff","--name-only","-z","HEAD","--",root},{"ls-files","--others","--exclude-standard","-z","--",root}}){GitClient.BytesResult r=git.bytesAllow(repo,STATE_DIVERGED,args);if(r.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Failed to inspect generated runtime output before Retry Push recovery.\n--- git details ---\ncommand: git -C "+repo+" "+String.join(" ",args)+"\nexitCode: "+r.exitCode()+(r.error().isBlank()?"":"\nstderr:\n"+r.error().trim()));for(String raw:new String(r.output(),StandardCharsets.UTF_8).split("\u0000",-1)){if(raw.isBlank())continue;String path=raw.replace('\\','/');if(isGeneratedRuntimeArtifact(path))paths.add(path);}}
+        for(String path:paths)backupRecoveryPath(repo,backups,path,"generated runtime");
+    }
+    private void backupRecoveryPath(Path repo,LinkedHashMap<String,Backup> backups,String path,String kind){if(backups.containsKey(path))return;Path target=inside(repo,path);if(Files.exists(target,LinkOption.NOFOLLOW_LINKS)){if(!Files.isRegularFile(target,LinkOption.NOFOLLOW_LINKS))throw new ObsException(STATE_DIVERGED,kind+" path is not a regular file: "+path);backups.put(path,new Backup(true,readBytes(target)));}else backups.put(path,new Backup(false,null));}
+
+    private LinkedHashSet<String> visibleDirtyPaths(Path repo){
+        LinkedHashSet<String> out=new LinkedHashSet<>();
+        for(String[] args:new String[][]{{"diff","--name-only","-z","HEAD"},{"diff","--cached","--name-only","-z","HEAD"}})collectVisibleDirty(repo,out,args,false);
+        collectVisibleDirty(repo,out,new String[]{"ls-files","--others","--exclude-standard","-z"},true);
+        return out;
+    }
+    private void collectVisibleDirty(Path repo,LinkedHashSet<String> out,String[] args,boolean untracked){
+        GitClient.BytesResult r=git.bytesAllow(repo,STATE_DIVERGED,args);if(r.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Failed to inspect working tree before Retry Push recovery.\n--- git details ---\ncommand: git -C "+repo+" "+String.join(" ",args)+"\nexitCode: "+r.exitCode()+(r.error().isBlank()?"":"\nstderr:\n"+r.error().trim()));
+        for(String raw:new String(r.output(),StandardCharsets.UTF_8).split("\u0000",-1)){if(raw.isBlank())continue;String path=raw.replace('\\','/');if(isGeneratedRuntimeArtifact(path))continue;out.add(path);}
+    }
+    private static boolean isGeneratedRuntimeArtifact(String path){String root="planning/documentation/tools/replacement-package-app/build/";return path.equals(root.substring(0,root.length()-1))||path.startsWith(root);}
+    private static boolean isServiceArtifact(String path){return path.equals("_ai-review-diffs")||path.startsWith("_ai-review-diffs/");}
+
+    private void cleanPreservedPathsToHead(Path repo,Map<String,Backup> backups){
+        LinkedHashMap<String,Backup> attempted=new LinkedHashMap<>();
+        try{
+            for(Map.Entry<String,Backup> e:backups.entrySet()){
+                String path=e.getKey();attempted.put(path,e.getValue());Path target=inside(repo,path);GitClient.Result tracked=git.run(repo,STATE_DIVERGED,"ls-tree","--name-only","HEAD","--",path);
+                if(!tracked.joined().isBlank())git.run(repo,STATE_DIVERGED,"checkout","--",path);else try{Files.deleteIfExists(target);}catch(IOException x){throw new ObsException(STATE_DIVERGED,"Cannot temporarily clear preserved path before Retry Push recovery: "+path,x);}
+                afterRecoveryPathCleanHook.accept(path);
+            }
+        }catch(Throwable t){
+            try{restorePreservedWork(repo,attempted);}catch(Throwable restore){t.addSuppressed(restore);throw new ObsException(STATE_DIVERGED,"Retry Push failed during preserved-path cleanup and could not restore all paths already touched by cleanup.",t);}
+            throw asObs(t,STATE_DIVERGED);
+        }
+    }
+    private void restorePreservedWork(Path repo,Map<String,Backup> backups){
+        for(Map.Entry<String,Backup> e:backups.entrySet()){
+            Path target=inside(repo,e.getKey());Backup b=e.getValue();if(backupMatches(target,b))continue;
+            try{if(!b.existed)Files.deleteIfExists(target);else{Files.createDirectories(target.getParent());Files.write(target,b.bytes,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);}}catch(IOException x){throw new ObsException(STATE_DIVERGED,"Cannot restore preserved path after Retry Push recovery: "+e.getKey(),x);}
+        }
+        for(Map.Entry<String,Backup> e:backups.entrySet())if(!backupMatches(inside(repo,e.getKey()),e.getValue()))throw new ObsException(STATE_DIVERGED,"Restored preserved path does not match its pre-recovery bytes: "+e.getKey());
+    }
+    private static boolean backupMatches(Path target,Backup b){boolean exists=Files.isRegularFile(target,LinkOption.NOFOLLOW_LINKS);return exists==b.existed&&(!b.existed||Arrays.equals(b.bytes,readBytes(target)));}
 
     private void resetOwned(Path repo,ChangeSet cs){try{List<String>paths=effectiveGitPaths(repo,cs.ownedPaths);if(paths.isEmpty())return;List<String>x=new ArrayList<>(List.of("reset","-q","--"));x.addAll(paths);git.allow(repo,FINALIZE_FAILED,x.toArray(String[]::new));}catch(Throwable ignored){}}
     private List<String> effectiveGitPaths(Path repo,Collection<String> owned){List<String> out=new ArrayList<>();for(String path:owned){Path target=inside(repo,path);boolean working=Files.exists(target,LinkOption.NOFOLLOW_LINKS);GitClient.Result head=git.run(repo,STATE_DIVERGED,"ls-tree","--name-only","HEAD","--",path);if(working||!head.joined().isBlank())out.add(path);}return out;}
-    private boolean pathDirty(Path repo,String path){GitClient.Result w=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--quiet","HEAD","--",path),s=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--cached","--quiet","HEAD","--",path);if((w.exitCode()!=0&&w.exitCode()!=1)||(s.exitCode()!=0&&s.exitCode()!=1))throw new ObsException(STATE_DIVERGED,"Failed to inspect path: "+path);if(w.exitCode()==1||s.exitCode()==1)return true;GitClient.Result untracked=git.run(repo,STATE_DIVERGED,"ls-files","--others","--",path);return !untracked.joined().isBlank();}
-    private Path repoRoot(Path requested){Path p=requested==null?Path.of("."):requested;GitClient.Result r=git.allow(p,REPOSITORY_MISMATCH,"rev-parse","--show-toplevel");if(r.exitCode()!=0||r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p);return Path.of(r.first()).toAbsolutePath().normalize();}
+    private boolean pathDirty(Path repo,String path){GitClient.Result w=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--quiet","HEAD","--",path),s=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--cached","--quiet","HEAD","--",path);if((w.exitCode()!=0&&w.exitCode()!=1)||(s.exitCode()!=0&&s.exitCode()!=1)){StringBuilder d=new StringBuilder("Failed to inspect path: "+path);if(w.exitCode()!=0&&w.exitCode()!=1)d.append("\n--- working-tree git details ---\n").append(w.failureDetails());if(s.exitCode()!=0&&s.exitCode()!=1)d.append("\n--- staged git details ---\n").append(s.failureDetails());throw new ObsException(STATE_DIVERGED,d.toString());}if(w.exitCode()==1||s.exitCode()==1)return true;GitClient.Result untracked=git.run(repo,STATE_DIVERGED,"ls-files","--others","--",path);return !untracked.joined().isBlank();}
+    private Path repoRoot(Path requested){Path p=requested==null?Path.of("."):requested;GitClient.Result r=git.allow(p,REPOSITORY_MISMATCH,"rev-parse","--show-toplevel");if(r.exitCode()!=0)throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p+"\n--- git details ---\n"+r.failureDetails());if(r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p+". git rev-parse returned no repository root.");return Path.of(r.first()).toAbsolutePath().normalize();}
     private String safeIdentity(Path repo){try{return repositoryIdentity(repo);}catch(Throwable e){return"";}}
-    private String repositoryIdentity(Path repo){GitClient.Result r=git.allow(repo,REPOSITORY_MISMATCH,"config","--get","remote.origin.url");if(r.exitCode()!=0||r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"remote.origin.url is missing.");String u=r.first();Pattern[] ps={Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^git@github\\.com:([^/]+)/([^/]+?)(?:\\.git)?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^ssh://git@github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE)};for(Pattern p:ps){Matcher m=p.matcher(u);if(m.matches())return"github:"+m.group(1)+"/"+m.group(2);}throw new ObsException(REPOSITORY_MISMATCH,"Unsupported origin for V0.1 repositoryIdentity: "+u);}
+    private String repositoryIdentity(Path repo){GitClient.Result r=git.allow(repo,REPOSITORY_MISMATCH,"config","--get","remote.origin.url");if(r.exitCode()!=0)throw new ObsException(REPOSITORY_MISMATCH,"remote.origin.url is missing.\n--- git details ---\n"+r.failureDetails());if(r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"remote.origin.url is missing; git config returned an empty value.");String u=r.first();Pattern[] ps={Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^git@github\\.com:([^/]+)/([^/]+?)(?:\\.git)?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^ssh://git@github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE)};for(Pattern p:ps){Matcher m=p.matcher(u);if(m.matches())return"github:"+m.group(1)+"/"+m.group(2);}throw new ObsException(REPOSITORY_MISMATCH,"Unsupported origin for V0.1 repositoryIdentity: "+u);}
     static Path inside(Path repo,String repoPath){
         Path base=repo.toAbsolutePath().normalize(),full=base.resolve(repoPath.replace('/',File.separatorChar)).normalize();
         if(!full.startsWith(base)||full.equals(base))throw new ObsException(PACKAGE_INVALID,"Resolved path escaped repository: "+repoPath);
@@ -312,6 +450,8 @@ public final class Core {
     private static boolean same(String a,String b){return a!=null&&b!=null&&a.equalsIgnoreCase(b);}
     private static boolean samePath(Path a,Path b){return a.toAbsolutePath().normalize().equals(b.toAbsolutePath().normalize());}
     private static boolean containsIgnoreCase(Collection<String> c,String s){for(String x:c)if(x.equalsIgnoreCase(s))return true;return false;}
+    private static String withCauseDetails(String message,Throwable cause){if(cause==null)return message;String details=throwableDetails(cause);return details.isBlank()?message:message+"\n--- technical details ---\n"+details;}
+    private static String throwableDetails(Throwable t){if(t==null)return"";StringWriter out=new StringWriter();t.printStackTrace(new PrintWriter(out));return out.toString().stripTrailing();}
     private static ObsException asObs(Throwable t,String fallback){if(t instanceof ObsException o)return o;return new ObsException(fallback,t.getMessage()==null?t.toString():t.getMessage(),t);}
     private static void deleteTree(Path p){if(p==null||!Files.exists(p))return;try(var s=Files.walk(p)){s.sorted(Comparator.reverseOrder()).forEach(x->{try{Files.deleteIfExists(x);}catch(IOException ignored){}});}catch(IOException ignored){}}
     private record Backup(boolean existed,byte[] bytes){}
