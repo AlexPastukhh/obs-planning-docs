@@ -26,6 +26,8 @@ Do not create Screen-local `data/` or `behavior/` folders. Screen planning owns 
 | Status | preliminary / reviewed / accepted-current / needs-review |
 | Spatial responsibility | <what application surface/space this owner defines> |
 | Related Scenarios | <Scenario links> |
+| Prototype origin/evidence | <PSCR/Prototype result when useful> |
+| Related spatial/visual Requirements | <links when material> |
 | Related Screens | <when useful> |
 
 ### Spatial Boundaries
@@ -42,8 +44,8 @@ Do not create Screen-local `data/` or `behavior/` folders. Screen planning owns 
 
 Every material Screen → Scenario relation must also be discoverable from the Scenario owner's Screens Used / flow references. This does not transfer behavioral authority to the Screen.
 
-### Spatial / Visual Rules
-<Layout hierarchy, placement, visibility/arrangement rules and other spatial meaning.>
+### Spatial / Visual Requirements
+<Selected layout hierarchy, placement, visibility/arrangement rules and other spatial meaning. These are Screen requirements; behavioral conditions/transitions remain Scenario/Behavior truth.>
 
 ### Visual States
 <Material visual/layout states. Behavioral transitions remain owned by Scenarios.>
@@ -75,4 +77,4 @@ Scenario → behavior / actor understanding / result / acceptance
 Screen   → spatial composition / zones / visual states
 ```
 
-If a visual artifact implies a behavioral rule, ensure that behavioral truth is owned/referenced from the appropriate Scenario/Behavior owner rather than remaining accidental Screen-only truth.
+If a visual artifact implies a behavioral rule, ensure that behavioral truth is owned/referenced from the appropriate Scenario/Behavior owner rather than remaining accidental Screen-only truth. Frontend Slice plans own implementation mechanisms that realize selected Screen requirements; they do not redefine this spatial authority.

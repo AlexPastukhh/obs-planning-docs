@@ -1,138 +1,111 @@
 # Prototype Result Template
 
 Status: active reusable recommended template
-Doc version: v1.0.0-canonical-owner-impact
-Purpose: record observed prototype evidence, interpret it proportionally and return it to the planning owners and decisions that actually depend on it.
+Purpose: record prototype evidence and promote only supported meaning into the real current owners.
 
-## 1. Related Prototype Plan
+Canonical workflow: [`../prototype-planning-workflow.md`](../prototype-planning-workflow.md)
+Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
 
-```text
-not provided
-```
+## Prototype Identity / Plan
 
-## 2. Related Planning Owners
+| Field | Value |
+|---|---|
+| Prototype ID | <ID> |
+| Related Prototype Plan | <link> |
+| Mode | interaction/workflow / technical feasibility spike / other |
+| Related Concept / application context | <link> |
 
-```text
-Ideas / current planning owner / Scenario / workflow /
-branch / criterion / assumption / risk / decision / not provided
-```
+## Hypothesis / Question
+<What was tested.>
 
-## 3. Hypothesis
+## Actual Setup
+<What was real/simulated and how the prototype was run.>
 
-```text
-not provided
-```
+## Observed Results
+<Observed behavior/evidence, not desired behavior rewritten as observation.>
 
-## 4. Actual Setup
+## Evidence
 
-```text
-not provided
-```
-
-## 5. What Was Built Or Simulated
-
-```text
-not provided
-```
-
-## 6. Observed Results
-
-```text
-not provided
-```
-
-## 7. Evidence
-
-| Evidence | Observation | Reliability/limitation |
+| Evidence | Observation | Reliability / limitation |
 |---|---|---|
-| not provided | not provided | not provided |
+| <evidence> | <observation> | <limitation> |
 
-## 8. Unexpected Findings
+## Unexpected Findings / Limitations
+<Material only.>
 
-```text
-not provided
-```
-
-## 9. Limitations
+## Result
 
 ```text
-not provided
+supported / rejected / inconclusive
 ```
 
-## 10. Result
+## Prototype Scenario Findings — When Applicable
 
-```text
-supported / rejected / inconclusive / not provided
-```
+| Prototype Scenario | Finding | Disposition |
+|---|---|---|
+| <PSCN-X> | <boundary/flow/result finding> | promote / split / merge / reject / needs evidence |
 
-## 11. Decision
+## Prototype Screen Findings — When Applicable
 
-```text
-not provided
-```
+| Prototype Screen | Finding | Disposition |
+|---|---|---|
+| <PSCR-X> | <spatial/layout finding> | promote / merge / split / reject / needs evidence |
 
-A technical result does not become an accepted solution or architecture decision automatically.
+## Requirement / DATA / Behavior Findings
 
-## 12. Affected Planning Owners
+### Requirements
+| Candidate Requirement | Evidence-backed disposition | Current/promotion owner |
+|---|---|---|
+| <REQ-X> | confirmed-current / rejected / needs-evidence | <owner/link> |
 
-| Affected owner | Owner type | Previous state | Evidence-backed update or review need | Resulting/proposed state | Action/status |
-|---|---|---|---|---|---|
-| not provided | Idea / current planning owner / Scenario / workflow / branch / criterion / assumption / risk / decision / other | not provided | not provided | not provided | not provided |
+### Scenario DATA / Behavior
+<What provisional meaning should be promoted/reviewed in Scenario/shared Scenario owners.>
 
-Use the smallest complete owners that actually depend on the tested uncertainty.
+## Future Scenario Ideas / Change Axes
+<Preserve justified evolution context and confidence. Do not convert it into current Requirements automatically.>
 
-Scenario impact is represented here when a Scenario exists. No separate Scenario transition section is required.
+## Implementation-Scoped Ideas
+<Which generic Ideas were created/refined/promoted/rejected. Selected implementation meaning must live in its Domain/Slice/other owner.>
 
-## 13. Upstream Impact — Optional
+## Affected Planning Owners
 
-```text
-not provided
-```
-
-Use only when the evidence changes a source requirement, assumption, Idea/current conclusion or shared decision.
-
-## 14. Branch Impact — Optional
-
-```text
-select / reject / keep / create branch / no change / not provided
-```
-
-Use only when a real branch decision exists.
-
-## 15. New Questions
-
-| ID / item | Question | Priority | Blocking | Status | Answer |
-|---|---|---:|---:|---|---|
-| not provided | not provided | not provided | not provided | open | not provided |
-
-## 16. Follow-Up Experiment
-
-```text
-not provided
-```
-
-## 17. Critical Remarks
-
-| ID | Remark | Why it matters | Status |
+| Affected owner | Previous/current relation | Evidence-backed update/review need | Resulting/proposed state |
 |---|---|---|---|
-| not provided | not provided | not provided | open |
+| <owner> | <relation> | <need> | <state> |
 
-## 18. Related Ideas
+Use the smallest complete owners that actually depend on the evidence.
 
-| Idea / ID | Idea | Relation | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
-
-## 19. User Answers
+## Promotion / Handoff
 
 ```text
-not provided
+Prototype Scenario findings
+→ Application Use Case refinement / Scenario Discovery / detailed Scenario Drafts
+
+Prototype Screen findings
+→ canonical Screen owners when useful
+
+Requirements
+→ narrowest real canonical owner
+
+DATA / Behavior
+→ Scenario/shared Scenario owner
+
+Change Axes / Future Scenario Ideas
+→ cross-cutting change context
 ```
 
-## 20. Decisions
+Prototype artifacts do not remain a hidden second authority after selected meaning is promoted.
 
-| ID / item | Decision | Rationale | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
+## Upstream Impact — When Material
+<Concept / whole-solution / application-boundary assumptions that must be reviewed.>
+
+## Follow-Up Experiment — When Material
+<Only if another evidence gap genuinely warrants it.>
+
+## Current Decisions
+<Selected evidence-backed conclusions.>
+
+## Questions / Risks / Problems
+<Use Current Plan + Finding + Relation / Impact. If none: `No material unresolved issues identified.`>
 
 This template does not authorize repository edits, archive creation, commit or push.

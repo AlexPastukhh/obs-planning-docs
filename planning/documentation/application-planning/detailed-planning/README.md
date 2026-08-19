@@ -1,7 +1,7 @@
 # Detailed Application Planning Workspaces
 
 Status: active reusable canonical workflow
-Scope: detailed application planning after meaningful Scenario boundaries exist: Scenario Draft workspaces, shared/local supporting meaning, spatial Screen planning, Domain and Implementation Slice drafts, integrated Variants, current decisions and Current-Draft-relative review state.
+Scope: current detailed application planning after meaningful Scenario boundaries exist: Scenario Draft workspaces, shared/local supporting meaning, Requirements/dependencies, spatial Screen planning, optional Domain, Slice Strategy / Implementation Slice drafts, integrated Variants, current decisions and Current-Draft-relative review state.
 
 Parent family: [`../README.md`](../README.md)
 
@@ -13,6 +13,12 @@ Detailed planning keeps semantic owners explicit without returning to a generic 
 Scenario / Screen / Domain / Slice
 = semantic planning owner
 
+Requirement
+= must-hold condition owned by its narrowest real semantic owner
+
+Slice Strategy
+= optional decomposition/order planning result before individual Slices
+
 workspace folder
 = physical organization around that owner
 ≠ new semantic entity
@@ -21,6 +27,10 @@ workspace folder
 ```
 
 No `current-draft.md` type exists. The current draft is the currently selected semantic owner/file for that planning unit.
+
+Prototype planning is upstream of this canonical current-behavior layer. `PSCN-*` Prototype Scenarios and `PSCR-*` Prototype Screens are provisional evidence/design and must not remain competing current owners after selected meaning is promoted into `SCN-*` / `SCR-*`. See [`../prototype-planning-workflow.md`](../prototype-planning-workflow.md).
+
+When a project benefits from physical separation, [`../requirements-and-change-context.md`](../requirements-and-change-context.md) recommends `solution-and-application/` for solution/concept/prototype/current Scenario/Screen/Requirement work and `domain-and-implementation/` for Domain/Slice work. Folder placement is organization only, not semantic ownership or registered scope creation.
 
 ## 2. Shared Draft-State Contract
 
@@ -193,6 +203,20 @@ owned by another semantic responsibility
 ```
 
 Within `data/` or `behavior/`, one object may be a dedicated file or several objects may share a registry file. Separate logical/addressable ownership does not require one physical file per item.
+
+### Requirements In Detailed Scenario Work
+
+A Scenario should make relevant must-hold conditions discoverable without turning Requirement identity into Scenario identity.
+
+```text
+Scenario Need / Result
+→ why/what meaningful behavior exists
+
+Related Requirements
+→ conditions/constraints that current behavior must satisfy
+```
+
+A Requirement true only for this Scenario may be owned locally; shared/application Requirements link their canonical owner. A technical mechanism remains a Requirement/implementation constraint rather than a Scenario merely because it is mandatory. Apply [`../requirements-and-change-context.md`](../requirements-and-change-context.md).
 
 ## 4. Scoped Ideas
 
@@ -370,13 +394,17 @@ Do not create Screen-local `data/` or `behavior/` folders. DATA/Behavior meaning
 
 `Scenario/visual/` remains distinct: it visualizes a Scenario journey/flow/transition and may reference canonical Screen owners.
 
+Screen owns selected **spatial requirements** such as zone hierarchy, placement, visibility/arrangement and material layout/visual states. Scenario/Behavior owns the behavioral condition/meaning of actions and transitions. A frontend Slice plan owns how those selected requirements are implemented; it must not become a second Screen/Scenario requirements authority.
+
 Screen Variants use the same second-integrated-design rule when materially different spatial designs exist.
 
 Applications without screen/surface UI do not create meaningless `screens/` structure.
 
 ## 7. Domain Workspaces
 
-Create a separate Domain only when conceptual language/lifecycle/rules materially benefit from independent ownership.
+Create a separate Domain only when conceptual language/lifecycle/rules/boundaries materially benefit from independent ownership.
+
+Canonical planning algorithm: [`../domain-planning-workflow.md`](../domain-planning-workflow.md).
 
 Recommended rich shape:
 
@@ -390,11 +418,31 @@ DOM-X/
 
 Domain does not need `visual/` by default.
 
-`domain.md` owns concepts, relationships, lifecycle, rules/invariants and conceptual boundaries. It references Scenario/Behavior meaning that motivated the Domain without copying Scenario behavior as Domain truth.
+`domain.md` owns concepts, relationships, lifecycle, rules/invariants, policy/variation distinctions and conceptual boundaries. It references Scenario/Behavior/Requirement meaning that motivated the Domain without copying Scenario behavior as Domain truth.
 
-## 8. Implementation Slice Workspaces
+Domain planning reads current Requirements/Scenarios first, then uses evidence-backed Change Axes to test change propagation. The target is:
 
-A Slice is a separately deliverable/checkable integrated increment after enough behavior/domain meaning is understood.
+```text
+simplest correct current model
++ cheap justified evolution
+≠ maximum theoretical extensibility
+```
+
+A speculative future possibility does not justify an abstraction by itself. Relevant implementation-scoped Ideas remain Ideas until selected and integrated into Domain current meaning.
+
+## 8. Slice Strategy / Implementation Slice Workspaces
+
+Canonical planning algorithm: [`../slice-planning-workflow.md`](../slice-planning-workflow.md).
+
+### Slice Strategy — When Useful
+
+Use `UC-PLAN-SLICE-STRATEGY` when choosing decomposition/order is itself material. The strategy owns the selected set/order of vertical increments, dependencies and delivery/learning/risk rationale. It is not required for trivial work.
+
+Recommended shape may use [`../templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md`](../templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md).
+
+### One Implementation Slice
+
+A Slice is one separately deliverable/checkable integrated increment after enough behavior/domain meaning is understood.
 
 Recommended rich shape:
 
@@ -410,11 +458,13 @@ SL-X/
 └── variants/         # when a second integrated Slice design exists
 ```
 
-`slice.md` owns the integrated vertical delivery boundary/result.
+`slice.md` owns the integrated vertical delivery boundary/result. It links covered Scenarios/Behavior, Requirements, Domain meaning and the selected Slice Strategy when present.
 
-A simple Slice may keep the implementation plan entirely in `slice.md`. A richer Slice may split implementation-part plans such as `frontend.md`, `server.md` or another real responsibility-specific file while `slice.md` remains the integrated owner.
+A simple Slice may keep the implementation plan entirely in `slice.md`. A richer Slice may split implementation-part plans such as `frontend.md`, `server.md` or another real responsibility-specific file while `slice.md` remains the integrated owner. These implementation-part plans are not separate planning Use Cases by default.
 
-`visual/` is presentation/visual planning and is not the same as frontend implementation planning.
+`visual/` is presentation/implementation-support visualization and is not the same as Screen spatial authority or frontend implementation planning.
+
+Change Axes may influence coupling/seams but do not automatically require generalization. Implementation-scoped Ideas promoted into one Slice become selected Slice meaning; the originating Idea may retain provenance but not duplicate current implementation authority.
 
 `Feature` does not become a required extra semantic layer merely because a Slice has a product-facing feature name.
 
@@ -425,6 +475,7 @@ Local verification derives from current semantic owners:
 ```text
 Scenario Acceptance
 + Behavior Items
++ Requirements
 + Domain invariants when present
 + Slice verification target
 → planned verification evidence
@@ -440,9 +491,10 @@ Examples:
 
 ```text
 Scenario → Screen
+Scenario → Requirement
 Scenario → Domain
-Slice → Behavior Item
-Domain → Scenario DATA
+Slice → Requirement / Behavior Item
+Domain → Scenario DATA / Change Axis
 ```
 
 These relations alone are not Linked Notes Reference Objects.
@@ -522,10 +574,11 @@ Do not invent an ID for an existing object or create a new live RO without the o
 ## 11. Integration And Change Review
 
 ```text
-local Scenario / Screen / Domain / Slice conclusion
+local Scenario / Screen / Requirement / Domain / Slice conclusion
 → identify affected owners
 → review them explicitly
 → confirm unchanged or update their current meaning
+→ preserve/review Change Axes when evidence about likely evolution changes
 → revisit selected Application Concept when value/feasibility/cost assumptions change materially
 → revisit the real-world workflow / whole-solution choice when material
 ```

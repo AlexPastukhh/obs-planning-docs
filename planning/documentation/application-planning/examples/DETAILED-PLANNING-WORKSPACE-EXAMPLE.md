@@ -1,7 +1,7 @@
 # Detailed Planning Workspace Example — FixFlow Service Requests
 
 Status: current reusable practical example
-Scope: demonstrate how whole-solution planning progressively becomes Scenario Draft workspaces, shared/local DATA/Behavior/Visual, Screen spatial owners, Domain work, Implementation Slices, verification and integration review.
+Scope: demonstrate how whole-solution/Application Concept planning becomes Prototype Scenarios/Screens, Requirements/change context, canonical Scenario/Screen owners, Domain work, Slice Strategy, Implementation Slices, verification and integration review.
 
 Methodology owner: [`../detailed-planning/README.md`](../detailed-planning/README.md)
 
@@ -246,35 +246,109 @@ Before detailed Scenario decomposition, the selected Concept can be projected in
 
 These candidate Use Cases may be split/merged/refined as real Scenario boundaries become clearer.
 
-## 8. Temporary Spine And Scenario Discovery
+## 8. Prototype Planning And Scenario Discovery
 
-Temporary Spine:
+The Concept/Application boundary is selected, but interaction/spatial detail is still uncertain. Use `UC-PLAN-PROTOTYPE` before creating canonical detailed Scenarios/Screens.
+
+### Spine Pass — discovery method only
 
 ```text
 Anna notices a leak
 → reports the problem and photo
 → dispatcher triages
-→ technician is selected
-→ visit is proposed
-→ Anna confirms
+→ technician/availability is considered
+→ visit arrangement is established
 → technician performs work
 → technician records evidence
 → Anna reviews current result/status
 → Anna accepts or reports unresolved problem
 ```
 
-The Spine is only a discovery scaffold. It is not preserved as a permanent detailed behavior owner.
+This is a **Spine Pass/Walkthrough**, not a `Spine Scenario` and not a current behavior owner. It is used to discover provisional behavior/spatial needs.
 
-The Spine and candidate Use Cases expose these independently meaningful Need/result boundaries:
+### Prototype Scenarios
 
-| Scenario | Need | Observable result |
-|---|---|---|
-| `SCN-REPORT-PROBLEM` | customer needs to report one service problem | registered request exists and customer sees it was received |
-| `SCN-TRIAGE-REQUEST` | dispatcher needs to make a request actionable | urgency/work type/next responsibility are established |
-| `SCN-CHECK-REQUEST-STATUS` | customer needs to understand what is happening and whether action is required | customer understands current status + next responsibility; no mutation is required |
-| `SCN-SCHEDULE-VISIT` | parties need an agreed visit arrangement | one current appointment arrangement is visible/confirmed |
-| `SCN-PERFORM-WORK` | technician needs to complete assigned visit and evidence | visit completion/evidence is recorded |
-| `SCN-ACCEPT-RESULT` | customer needs to judge whether the problem is resolved | result accepted or same request explicitly returns to work |
+```text
+PSCN-CHECK-STATUS
+Need:
+  understand what is happening and whether customer action is required
+Approximate result:
+  Anna understands current status + next responsibility
+Possible Screens:
+  PSCR-REQUEST-LIST, PSCR-REQUEST-DETAILS
+Candidate information:
+  request state, latest event, next responsible actor
+
+PSCN-SCHEDULE-VISIT
+Need:
+  establish a usable visit arrangement
+Approximate interaction:
+  inspect request → choose/propose feasible availability → confirm arrangement
+Candidate Behavior:
+  feasible-window validation, confirmation-state rule
+```
+
+The prototype may later split/merge/reject these boundaries. `PSCN-*` is not `SCN-*` authority.
+
+### Prototype Screens
+
+```text
+PSCR-REQUEST-DETAILS
+
+[ request identity / summary ]
+[ current status              ]
+[ next responsibility         ]
+[ appointment                 ]
+[ history / evidence          ]
+[ primary contextual action   ]
+```
+
+Prototype spatial findings:
+
+```text
+current status + next responsibility should be immediately visible;
+appointment controls belong in an appointment zone;
+work evidence and customer resolution should not visually collapse into one state.
+```
+
+`PSCR-*` is provisional and may merge/split before canonical Screen ownership.
+
+### Candidate Requirements / Change Context
+
+Prototype evidence discovers these candidates:
+
+```text
+REQ-STATUS-01
+Status: candidate
+Statement: current customer-visible state and next responsibility must not contradict the request lifecycle.
+Expected Stability: stable
+
+REQ-SPATIAL-01
+Status: candidate
+Statement: current status/next responsibility must be available without entering edit mode.
+Expected Stability: stable
+
+AXIS-CALENDAR-PROVIDER
+Current assumption: one external calendar provider.
+Likely variation: provider may differ later.
+Confidence: medium.
+Meaning: Domain/Slice planning should evaluate coupling; this does not require a generic provider framework now.
+```
+
+The prototype also exposes candidate Scenario DATA (`current state`, `next responsibility`, `feasible window`) and Behavior Items. They remain provisional until promoted.
+
+### Promotion And Current Scenario Discovery
+
+After review, supported Requirements are promoted to their real owners and current Scenario boundaries are selected:
+
+| Scenario | Need | Observable result | Prototype origin |
+|---|---|---|---|
+| `SCN-REPORT-PROBLEM` | customer needs to report one service problem | registered request exists and customer sees it was received | Spine/Concept finding |
+| `SCN-TRIAGE-REQUEST` | dispatcher needs to make a request actionable | urgency/work type/next responsibility are established | Spine/Concept finding |
+| `SCN-CHECK-REQUEST-STATUS` | customer needs to understand what is happening and whether action is required | customer understands current status + next responsibility; no mutation is required | `PSCN-CHECK-STATUS` |
+| `SCN-SCHEDULE-VISIT` | parties need an agreed visit arrangement | one current appointment arrangement is visible/confirmed | `PSCN-SCHEDULE-VISIT` |
+| `SCN-PERFORM-WORK` | technician needs to complete assigned visit and evidence | visit completion/evidence is recorded | prototype/spine finding |
+| `SCN-ACCEPT-RESULT` | customer needs to judge whether the problem is resolved | result accepted or same request explicitly returns to work | prototype/spine finding |
 
 `SCN-CHECK-REQUEST-STATUS` is a valid informational/read-only Scenario because obtaining reliable understanding is itself an independently meaningful result.
 
@@ -341,6 +415,9 @@ reach a usable visit arrangement without losing the current request context
 
 Observable result:
 one current appointment arrangement is explicit to the relevant parties
+
+Related Requirements:
+REQ-STATUS-01 + appointment-specific confirmation constraints
 ```
 
 ### Initial Main Flow
@@ -556,6 +633,19 @@ Customer resolution zone
 Primary action zone
 ```
 
+Example ownership split:
+
+```text
+"primary scheduling action belongs in the Appointment/Primary Action zone"
+→ Screen spatial requirement
+
+"action is available only for a feasible current window and confirmation state"
+→ Scenario / Behavior requirement
+
+"implement the zone with a sticky React action container"
+→ frontend Slice implementation plan
+```
+
 Screen-side Scenario Coverage:
 
 ```text
@@ -597,7 +687,19 @@ Technician completed work
 Customer accepted result
 ```
 
-A separate Domain is now useful:
+A separate Domain is now useful. Domain planning reads the current Scenarios/Requirements plus justified change context rather than generalizing from imagination.
+
+Inputs include:
+
+```text
+REQ-STATUS-01
+→ customer-visible state must match lifecycle meaning
+
+AXIS-CALENDAR-PROVIDER
+→ provider choice may vary, but provider-specific transport is not Service Request domain truth
+```
+
+This supports keeping provider mechanics outside the stable Service Request core rather than creating a universal integration framework.
 
 ```text
 domains/
@@ -680,7 +782,25 @@ Materialized Linked Notes RO:
 
 This consumer-side note is not a second definition. The Domain remains the canonical source of the invariant until/unless the exact literal is intentionally materialized through the Linked Notes contract.
 
-## 18. Implementation Slices
+## 18. Slice Strategy And Implementation Slices
+
+The implementation is large enough that decomposition/order is a meaningful planning result. `UC-PLAN-SLICE-STRATEGY` selects a current vertical route:
+
+```text
+1. Request Intake & Triage
+   → establish usable request identity/state first
+
+2. Appointment Coordination
+   → exercise scheduling/provider uncertainty while the request core already works
+
+3. Work Visit & Evidence
+   → extend lifecycle/evidence vertically
+
+4. Customer Acceptance / Reopen
+   → complete customer-resolution loop and lifecycle invariant
+```
+
+The strategy uses current Scenario/Requirement coverage and considers `AXIS-CALENDAR-PROVIDER`, but deliberately does not introduce a generic provider framework until evidence justifies it.
 
 ### Slice 1 — Request Intake & Triage
 
@@ -730,7 +850,7 @@ SL-CUSTOMER-ACCEPTANCE/
 └── verification.md
 ```
 
-`slice.md` owns the integrated vertical result. `frontend.md` and `server.md` are implementation-part plans, not separate product Slices. `visual/` owns presentation planning, not frontend code design.
+`slice.md` owns the integrated vertical result and links the Requirements/Scenario/Domain meaning it implements. `frontend.md` and `server.md` are implementation-part plans, not separate planning Use Cases or product Slices. `visual/` does not replace canonical Screen spatial authority.
 
 ## 19. Verification
 
@@ -742,6 +862,9 @@ customer can distinguish accepted vs unresolved result.
 
 Behavior Item:
 reject returns the same request to active work.
+
+Requirement:
+customer-visible current state remains consistent with the selected lifecycle.
 
 Domain invariant:
 rejection does not create a new request automatically.
@@ -780,7 +903,8 @@ Do not solve this only inside `server.md`.
 ```text
 downstream finding
 → affected SCN-PERFORM-WORK
-→ possible Scenario DATA/state implications
+→ possible Requirement / Scenario DATA/state implications
+→ Change-Axis review if offline operation is likely recurring evolution
 → Domain transition guarantees
 → Slice synchronization plan
 → whole-application integration review
@@ -808,17 +932,24 @@ Problem / Need
 → selected Application Concept when custom app wins / is already mandated
 → Application Responsibility
 → candidate Application Use Cases
-→ temporary Spine when useful
-→ meaningful user-visible Scenarios
+→ Prototype Planning when useful
+   → Spine Pass / Walkthrough = discovery method only
+   → Prototype Scenarios / Prototype Screens
+   → candidate Requirements / DATA / Behavior
+   → Future Scenario Ideas / Change Axes
+→ meaningful current user-visible Scenarios
    → informational/read-only Scenarios when understanding itself is the meaningful result
 → Scenario Draft workspaces
    → shared/local Ideas
    → DATA
    → Behavior
+   → Related Requirements
    → Visual
    → integrated Variants when real alternatives appear
 → reciprocal Scenario ↔ Screen coverage
 → Domain when conceptual ownership helps
+   → stable semantics + justified evolution stress check
+→ Slice Strategy when decomposition/order matters
 → vertical Implementation Slices
 → verification evidence
 → cross-file dependency / Reference Object Candidate review

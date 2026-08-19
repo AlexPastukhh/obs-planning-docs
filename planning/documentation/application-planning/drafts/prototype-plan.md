@@ -1,151 +1,66 @@
 # Prototype Plan Draft
 
 Status: empty starter draft
-
 Template: `../templates/PROTOTYPE-PLAN-TEMPLATE.md`
+Canonical workflow: `../prototype-planning-workflow.md`
 
 ## Prototype Identity
 
 | Field | Value |
 |---|---|
-| ID | not provided |
+| Prototype ID | not provided |
 | Title | not provided |
-| Related artifact/decision | not provided |
+| Mode | interaction/workflow / technical feasibility spike / other / not provided |
+| Related Concept / decision | not provided |
 
-## Hypothesis
-
-```text
-not provided
-```
-
-## Question Being Tested
+## Question / Hypothesis
 
 ```text
 not provided
 ```
 
-## Why Test This Now
+## Scope / What Is Real / What Is Simulated
 
 ```text
 not provided
 ```
 
-## Prototype Type
-
-```text
-workflow / UX / technical spike / integration / value / horizontal / vertical / PoC / pilot / not provided
-```
-
-## Scope
-
-### Included
+## Spine Pass / Walkthrough — When Useful
 
 ```text
 not provided
 ```
 
-### Excluded
+## Prototype Scenarios
 
 ```text
 not provided
 ```
 
-## What Is Real
+## Prototype Screens
 
 ```text
 not provided
 ```
 
-## What Is Simulated
+## Candidate Requirements / DATA / Behavior / Change Axes / Implementation-Scoped Ideas
 
 ```text
 not provided
 ```
 
-## Required Inputs
+## Evidence To Collect / Interpretation Criteria
 
 ```text
 not provided
 ```
 
-## Execution Steps
-
-1. not provided
-
-## Evidence To Collect
-
-| Evidence | Collection method | Why it matters |
-|---|---|---|
-| not provided | not provided | not provided |
-
-## Success Criteria
+## Expected Planning Impact
 
 ```text
 not provided
 ```
 
-## Failure Criteria
+## Questions / Risks / Problems
 
-```text
-not provided
-```
-
-## Inconclusive Criteria
-
-```text
-not provided
-```
-
-## Timebox
-
-```text
-not provided
-```
-
-## Decision Affected
-
-```text
-not provided
-```
-
-## Code Fate
-
-```text
-throwaway / evolutionary / not provided
-```
-
-## Risks And Limitations
-
-```text
-not provided
-```
-
-## Questions
-
-| ID | Question | Priority | Blocking | Status | Answer |
-|---|---|---:|---:|---|---|
-| not provided | not provided | not provided | not provided | open | not provided |
-
-## Critical Remarks
-
-| ID | Remark | Why it matters | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | open |
-
-## Related Ideas
-
-| ID | Idea | Relation | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
-
-## User Answers
-
-```text
-not provided
-```
-
-## Decisions
-
-| ID | Decision | Rationale | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
+`not reviewed / not provided`

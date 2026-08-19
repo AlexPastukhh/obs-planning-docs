@@ -1,7 +1,9 @@
 # Solution And Scenario Planning Workflow
 
 Status: active reusable workflow
-Scope: repeated whole-solution planning and, when Application responsibility exists, Spine-assisted Scenario discovery followed by detailed Scenario/Screen/Domain/Slice planning.
+Scope: repeated whole-solution planning and, when own Application responsibility exists, progressive Concept → Prototype → Scenario/Screen → optional Domain/Slice planning.
+
+Cross-cutting Requirement/change semantics: [`requirements-and-change-context.md`](requirements-and-change-context.md)
 
 ## Whole-Solution Flow
 
@@ -21,7 +23,7 @@ source / current context
 → select current whole-solution responsibility
 ```
 
-Do not force a custom application, branch, prototype, research exercise or artifact merely because the methodology supports it.
+Do not force a custom application, prototype, research exercise, Domain, Slice Strategy or other artifact merely because the methodology supports it.
 
 ### Real-World Workflow And Open Solution Slots
 
@@ -68,7 +70,9 @@ local + whole-solution integrated evaluation
 current worth-it conclusion
 ```
 
-Technical shape here exists only to judge feasibility/cost. Do not turn Concept review into detailed architecture or Slice planning. Prefer ranges/relative complexity and confidence over false precision; use research/prototype evidence when an unknown can change selection.
+Technical shape here exists only to judge feasibility/cost. Do not turn Concept review into detailed architecture or Slice planning. Prefer ranges/relative complexity and confidence over false precision.
+
+A decision-sensitive technical uncertainty may use a feasibility spike/research experiment inside Concept work. That differs from `UC-PLAN-PROTOTYPE`, whose purpose is provisional interaction/workflow/spatial planning.
 
 An Application Concept can be rejected in favor of an existing/process route. That is a successful result.
 
@@ -80,33 +84,61 @@ When the selected whole solution includes own Application responsibility, or tha
 selected/current Application Concept
 → explicit Application responsibility / inside-outside boundary
 → candidate/current Application Use Cases grounded in real-world Needs/results
-→ optional Spine Scenario(s) while behavioral boundaries are unclear
-→ discover independently meaningful Scenarios
-→ validate / split / merge Application Use Cases from discovered Scenario coverage
+→ Prototype Planning when material interaction/workflow/spatial uncertainty remains
+   → Spine Pass / Walkthrough when useful as a discovery technique
+   → Prototype Scenarios
+   → Prototype Screens
+   → candidate Requirements
+   → candidate Scenario DATA / Behavior
+   → Future Scenario Ideas / Change Axes when material
+→ discover independently meaningful current Scenarios
+→ validate / split / merge Application Use Cases from prototype/discovered Scenario coverage
 → create detailed Scenario Draft workspaces
    + shared/local Ideas
    + Scenario DATA
    + Behavior Items
    + Scenario visual material
-→ add Screen spatial owners when useful
+   + Related Requirements
+→ add canonical Screen spatial owners when useful
 → add Domain owners when useful
-→ add Implementation Slices when useful
+→ add Slice Strategy when implementation decomposition/order materially helps
+→ add individual Implementation Slices when useful
 → derive verification/testing evidence proportionally
-→ review cross-Scenario / Screen / Domain / Slice / whole-application consistency
+→ review cross-Scenario / Screen / Requirement / Domain / Slice / whole-application consistency
 → return to Application Concept / real-world workflow / whole solution when material
 ```
 
 If application responsibility is externally mandated, do not manufacture a custom-vs-existing decision merely to satisfy the flow; still ground the Concept, real-world Need coverage and application boundary.
 
+Prototype workflow: [`prototype-planning-workflow.md`](prototype-planning-workflow.md).
+
 Shared detailed-planning contract: [`detailed-planning/README.md`](detailed-planning/README.md).
 
-## Spine Use
+## Prototype Planning
 
-Use a Spine only when a concrete end-to-end traversal helps expose missing behavior or Scenario boundaries. Revise/split it as real Scenarios emerge. Do not preserve a Spine as a parallel permanent behavior owner or grow it into a generic Draft Workspace layer.
+Use `UC-PLAN-PROTOTYPE` only when concrete provisional interaction/spatial work is useful before canonical Scenario/Screen ownership.
+
+Prototype output may contain `PSCN-*` Prototype Scenarios and `PSCR-*` Prototype Screens, candidate Requirements/DATA/Behavior and evolution observations. These are evidence/provisional planning and do not become current `SCN-*` / `SCR-*` truth automatically.
+
+### Spine Pass / Walkthrough
+
+A Spine is only a method inside Prototype/Scenario Discovery:
+
+```text
+concrete user situation
++ meaningful Need
+→ plausible end-to-end navigation / information / actions / responses
+→ intermediate/final meaningful result
+→ discover candidate Scenario / Screen / Requirement / DATA / Behavior boundaries
+```
+
+Do not preserve a `Spine Scenario` as a peer behavior owner and do not expose `UC-PLAN-SPINE` as a standalone current Use Case.
 
 ## Scenario Discovery
 
-For each candidate boundary ask:
+Use selected Concept/Application responsibility, candidate/current Application Use Cases and prototype evidence when present.
+
+For each candidate current boundary ask:
 
 ```text
 1. What meaningful user-world Need motivates this behavior?
@@ -127,11 +159,31 @@ command identity
 
 A Scenario may contain one or many commands/actions, and one command may happen to implement most of one Scenario. The Scenario exists because of the Need/result behavioral boundary, not the command name.
 
-Technical requirements/implementation constraints remain constraints unless they create required user-visible behavior that participates in an independently meaningful Need/result; the mechanism itself is not a Scenario.
+Technical requirements/implementation constraints remain Requirements/constraints unless they create required user-visible behavior that participates in an independently meaningful Need/result; the mechanism itself is not a Scenario.
+
+During discovery also preserve, when genuinely supported:
+
+```text
+Future Scenario Ideas
+→ not current Scenario truth
+
+Change Axes
+→ evidence-backed expected variation
+→ input to later Domain/Slice stress checks
+→ not authorization to generalize now
+```
 
 ## Application Use-Case Registration
 
-Every independently useful current application capability gets one semantic Use Case with trigger/purpose/result/boundaries and Scenario owner route(s). Ground Need/Purpose in real user/work outcomes rather than merely application commands. Candidate Use Cases may come from the selected Concept and are validated/split/merged during Scenario discovery. Detailed behavior stays in Scenario owners.
+Every independently useful current application capability gets one semantic Use Case with trigger/purpose/result/boundaries and Scenario owner route(s). Ground Need/Purpose in real user/work outcomes rather than merely application commands.
+
+Candidate Use Cases may come from the selected Concept, be explored by Prototype Scenarios and then be validated/split/merged during current Scenario discovery. Detailed behavior stays in Scenario owners.
+
+## Requirements
+
+A Requirement is a must-hold condition/property/constraint, not a Scenario identity. Prototype/Scenario/Screen work may discover Requirements and route them to their narrowest canonical owner.
+
+Use [`requirements-and-change-context.md`](requirements-and-change-context.md) for status, stability, placement, Change Axes and implementation-scoped Ideas.
 
 ## Detailed Scenario Work
 
@@ -146,7 +198,7 @@ semantic body
 → Potential Better Routes when material
 ```
 
-Use scoped Idea work only when a real answer-seeking question deserves it.
+Use scoped Idea work only when a real answer-seeking question deserves it. Link relevant Requirements rather than copying or turning them into flow steps mechanically.
 
 ## Variant Work
 
@@ -173,32 +225,70 @@ Runtime branches and local Idea Variants are not whole Scenario Variants.
 
 Create Screen owners only when spatial/screen UI benefits from separate ownership.
 
-Screen planning answers spatial questions: boundary, zones, composition, visual states and Scenario-to-space relations. Every material Scenario↔Screen relation is discoverable from both sides: Scenario names the Screen/role/flow relation and Screen names the Scenario/relevant zones or states. Scenario owners continue to own actor behavior/result/acceptance. Do not create Screen-local DATA/Behavior copies.
+```text
+Scenario / Behavior
+→ when/why interaction happens, what actions mean, transitions/results
 
-## Domain / Slice / Verification
+Screen
+→ spatial boundary, zones, hierarchy, placement, visibility/arrangement, visual/layout states
 
-Create Domain only when a separate conceptual language/lifecycle/rules owner materially helps.
+frontend Slice
+→ implementation mechanism that realizes selected behavioral/spatial Requirements
+```
 
-Create Slice only when understood behavior can form a separately deliverable/checkable integrated increment. A Slice may split implementation-part plans such as frontend/server when useful while retaining one integrated Slice owner.
+Every material Scenario↔Screen relation is discoverable from both sides. Scenario owners continue to own actor behavior/result/acceptance. Do not create Screen-local DATA/Behavior copies.
 
-Verification derives from Scenario Acceptance, Behavior Items, Domain invariants when present and the Slice verification target. Tests are evidence, not semantic authority.
+`Scenario/visual/` visualizes journey/flow/transition. `Screen/visual/` visualizes spatial composition. Do not use either as accidental frontend implementation authority.
+
+## Domain Planning
+
+Create Domain only when separate conceptual language/lifecycle/rules/boundaries materially help. Follow [`domain-planning-workflow.md`](domain-planning-workflow.md): derive stable semantics from current Scenarios/Requirements, distinguish invariant from policy, use justified Change Axes to stress boundaries and reject abstractions justified only by speculation.
+
+A valid Domain-planning result may be that no separate Domain owner is necessary.
+
+## Slice Strategy / Slice Planning
+
+Follow [`slice-planning-workflow.md`](slice-planning-workflow.md).
+
+```text
+UC-PLAN-SLICE-STRATEGY
+→ selected vertical decomposition/order when that decision itself matters
+
+UC-PLAN-SLICE
+→ one selected separately deliverable/checkable integrated increment
+```
+
+A simple project may skip explicit strategy and/or separate Slice owners. Frontend/server/verification plans are parts of one Slice, not separate Use Cases by default.
+
+## Verification
+
+Verification derives from current semantic owners:
+
+```text
+Scenario Acceptance
++ Behavior Items
++ Requirements
++ Domain invariants when present
++ Slice verification target
+→ planned verification evidence
+```
+
+Tests are evidence, not semantic authority.
 
 ## Integration Loop
 
 ```text
-local Idea / Scenario / Screen / Domain / Slice conclusion
+local Idea / Prototype finding / Scenario / Screen / Requirement / Domain / Slice conclusion
 → identify affected owners
 → integrate/review into whole application/workflow
-→ review neighboring Scenarios and relevant spatial/domain/delivery owners
+→ review neighboring current owners
 → confirm unchanged or revise selected meaning
-→ return to whole solution when material
+→ return upstream to Concept / whole solution when material
 ```
 
+Domain/Slice planning may expose an upstream inconsistency or unreasonable implementation cost. Return it as an explicit finding/review need rather than silently redefining product/behavior truth.
+
 Best local result is not automatically best integrated solution.
-
-## Current Reality / Research / Prototypes
-
-Use only as needed to resolve real uncertainty. Evidence updates affected Ideas, selected solution meaning and current owners; it does not create an automatic architecture decision.
 
 ## Repository Boundary
 

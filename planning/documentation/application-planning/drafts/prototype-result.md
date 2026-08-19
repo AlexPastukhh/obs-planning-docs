@@ -1,8 +1,8 @@
 # Prototype Result Draft
 
 Status: empty starter draft
-
 Template: `../templates/PROTOTYPE-RESULT-TEMPLATE.md`
+Canonical workflow: `../prototype-planning-workflow.md`
 
 ## Related Prototype Plan
 
@@ -10,43 +10,7 @@ Template: `../templates/PROTOTYPE-RESULT-TEMPLATE.md`
 not provided
 ```
 
-## Hypothesis
-
-```text
-not provided
-```
-
-## Actual Setup
-
-```text
-not provided
-```
-
-## What Was Built Or Simulated
-
-```text
-not provided
-```
-
-## Observed Results
-
-```text
-not provided
-```
-
-## Evidence
-
-| Evidence | Observation | Reliability/limitation |
-|---|---|---|
-| not provided | not provided | not provided |
-
-## Unexpected Findings
-
-```text
-not provided
-```
-
-## Limitations
+## Observed Results / Evidence
 
 ```text
 not provided
@@ -58,62 +22,30 @@ not provided
 supported / rejected / inconclusive / not provided
 ```
 
-## Decision
+## Prototype Scenario / Screen Findings
 
 ```text
 not provided
 ```
 
-## Impact On Product Legend
+## Requirement / DATA / Behavior Findings
 
 ```text
 not provided
 ```
 
-## Impact On Scenarios
+## Future Scenario Ideas / Change Axes / Implementation-Scoped Ideas
 
 ```text
 not provided
 ```
 
-## Impact On Solution Overview
+## Affected Planning Owners / Promotion Handoff
 
 ```text
 not provided
 ```
 
-## New Questions
+## Questions / Risks / Problems
 
-| ID | Question | Priority | Blocking | Status | Answer |
-|---|---|---:|---:|---|---|
-| not provided | not provided | not provided | not provided | open | not provided |
-
-## Follow-Up Experiment
-
-```text
-not provided
-```
-
-## Critical Remarks
-
-| ID | Remark | Why it matters | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | open |
-
-## Related Ideas
-
-| ID | Idea | Relation | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
-
-## User Answers
-
-```text
-not provided
-```
-
-## Decisions
-
-| ID | Decision | Rationale | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
+`not reviewed / not provided`

@@ -120,3 +120,11 @@ Additional selected clarification: cross-scope work has one affected canonical l
 **Canonical Log:** `planning/documentation/application-planning/action-log.md`  
 **Entry:** `LOG-APP-007`  
 **Reason:** generic Idea/File Update/ReviewDiff traceability semantics changed as part of the same cross-scope work item as the Application Concept/Solution→Application planning bridge and detailed-planning traceability update. Full Idea Review and applied-state history are owned by the canonical Application Planning log entry.
+
+
+### XREF-DOC-005 — Prototype/Requirement/Domain/Slice planning and focused Use-Case activation
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-009`  
+**Reason:** reusable Scenario/Domain/Slice profile/field-kit and Tampermonkey semantic-projection workflow changed as part of the same Application Planning methodology work. Full Idea Review and applied-state history are owned by the canonical Application Planning log entry.

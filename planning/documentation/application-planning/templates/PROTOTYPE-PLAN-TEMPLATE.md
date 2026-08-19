@@ -1,173 +1,165 @@
 # Prototype Plan Template
 
 Status: active reusable recommended template
-Doc version: v1.0.0-canonical-owner-impact
-Purpose: plan the minimum experiment needed to reduce a material uncertainty and inform named planning decisions.
+Purpose: plan the minimum prototype/experiment needed to reduce a material uncertainty, with explicit support for interaction/workflow Prototype Scenarios and Prototype Screens.
 
-## 1. Prototype Identity
+Canonical workflow: [`../prototype-planning-workflow.md`](../prototype-planning-workflow.md)
+Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
+
+Blank sections are not requirements. A small feasibility spike may remain embedded in Application Concept/Idea work; use a separate file when evidence/setup/lifecycle deserves independent addressability.
+
+## Prototype Identity
 
 | Field | Value |
 |---|---|
-| ID | not provided |
-| Title | not provided |
-| Related Ideas / decisions | not provided |
-| Related current planning owner / Scenario / workflow / branch | not provided |
-| Artifact mode | embedded / separate / not provided |
-| Status | proposed / ready / running / completed / cancelled / not provided |
+| Prototype ID | <stable ID when useful> |
+| Title | <title> |
+| Prototype mode | interaction/workflow / technical feasibility spike / integration / value / other |
+| Status | proposed / ready / running / completed / cancelled |
+| Related Application Concept / decision | <link> |
+| Related Application responsibility / Use Cases | <when applicable> |
+| Related Ideas / Requirements | <when applicable> |
 
-A small prototype may remain embedded in its related Idea work or current planning owner. Use a separate file when the experiment has an independent lifecycle, substantial setup/evidence or several dependent decisions.
+## Question / Hypothesis
 
-## 2. Hypothesis
+### Question Being Tested
+<What material uncertainty should this prototype reduce?>
 
-```text
-not provided
-```
+### Hypothesis
+<Current proposition being tested.>
 
-## 3. Question Being Tested
+### Why Test This Now
+<Why evidence can change a current planning decision.>
 
-```text
-not provided
-```
-
-## 4. Why Test This Now
-
-```text
-not provided
-```
-
-## 5. Prototype Type
-
-```text
-workflow / UX / technical spike / integration / value /
-horizontal / vertical / PoC / pilot / not provided
-```
-
-## 6. Scope
+## Scope
 
 ### Included
-
-```text
-not provided
-```
+<Minimum useful prototype scope.>
 
 ### Excluded
+<What is intentionally simulated/omitted.>
+
+### What Is Real
+<Actual behavior/data/integration/user involvement.>
+
+### What Is Simulated
+<Mocks/stubs/manual stand-ins/fake data.>
+
+## Spine Pass / Walkthrough — Interaction/Workflow Prototype
+
+Use only as a discovery method when helpful:
 
 ```text
-not provided
+concrete actor situation
+→ meaningful Need
+→ plausible surfaces / information / actions
+→ application responses
+→ meaningful result
 ```
 
-## 7. What Is Real
+Record the walkthrough; do not call it a Scenario owner.
 
-```text
-not provided
-```
+## Prototype Scenarios — When Applicable
 
-## 8. What Is Simulated
+### PSCN-<ID> — <provisional scenario>
 
-```text
-not provided
-```
+**Provisional Need / motivation:** <why>
 
-## 9. Required Inputs
+**Starting situation:** <context>
 
-```text
-not provided
-```
+**Approximate interaction:** <rough user-visible behavior>
 
-## 10. Execution Steps
+**Approximate meaningful result:** <result>
 
-1. not provided
+**Candidate Screens:** <PSCR links>
 
-## 11. Evidence To Collect
+**Candidate Requirements:** <REQ candidates/links>
 
+**Candidate DATA / Behavior:** <provisional items>
+
+**Questions / evidence need:** <what must be learned>
+
+Prototype Scenario identity is provisional and may split/merge/disappear before canonical Scenario discovery.
+
+## Prototype Screens — When Applicable
+
+### PSCR-<ID> — <provisional screen>
+
+**Purpose / Prototype Scenarios supported:** <links>
+
+**Approximate zones / hierarchy:** <layout hypothesis>
+
+**Information / control placement:** <what should be immediately/secondarily visible and where major controls approximately live>
+
+**Material visual/layout states:** <states>
+
+**Candidate spatial Requirements:** <REQ candidates/links>
+
+**Visual reference:** <wireframe/mockup when useful>
+
+Prototype Screen identity is provisional and does not create canonical Screen authority.
+
+## Candidate Requirements / DATA / Behavior / Change Context
+
+### Candidate Requirements
+| ID | Statement | Source / evidence sought | Expected stability | Status |
+|---|---|---|---|---|
+| <REQ-X> | <must-hold candidate> | <source/test> | stable / likely-variable / unknown | candidate |
+
+### Candidate Scenario DATA / Behavior
+<What information/rules appear necessary; do not promote implementation schemas mechanically.>
+
+### Future Scenario Ideas / Change Axes — When Material
+<Only evidence-backed likely evolution or clearly marked speculative Ideas. A Change Axis does not mandate generalization.>
+
+### Implementation-Scoped Ideas — When Material
+<Link ordinary generic Ideas about possible implementation routes. They are not architecture truth.>
+
+## Execution / Evidence
+
+### Required Inputs
+<inputs>
+
+### Execution Steps
+1. <step>
+
+### Evidence To Collect
 | Evidence | Collection method | Why it matters |
 |---|---|---|
-| not provided | not provided | not provided |
+| <evidence> | <method> | <decision impact> |
 
-## 12. Result Interpretation Criteria
+### Interpretation Criteria
 
-### Supported
+**Supported:** <what evidence supports current hypothesis>
 
-```text
-not provided
-```
+**Rejected:** <what evidence rejects it>
 
-### Rejected
+**Inconclusive:** <what remains unknown>
 
-```text
-not provided
-```
+### Timebox
+<when useful>
 
-### Inconclusive
+## Expected Planning Impact
 
-```text
-not provided
-```
+| Possible result | Affected owner | Expected update/review |
+|---|---|---|
+| supported / rejected / inconclusive | <Concept / UC / Scenario candidate / Screen candidate / Requirement / other> | <impact> |
 
-## 13. Timebox
+Prototype evidence updates only owners that actually depend on the tested uncertainty.
 
-```text
-not provided
-```
-
-## 14. Decision Affected
+## Code / Artifact Fate
 
 ```text
-not provided
+throwaway / evolutionary / non-code / not applicable
 ```
 
-## 15. Expected Planning Impact
+## Current Decisions
+<Selected prototype-plan choices when material.>
 
-List only owners that may genuinely change.
+## Questions / Risks / Problems
+<Use Current Plan + Finding + Relation / Impact. If none: `No material unresolved issues identified.`>
 
-| Possible result | Affected Idea / Draft / Scenario / workflow / decision | Expected update or review | Evidence required before update |
-|---|---|---|---|
-| Supported | not provided | not provided | not provided |
-| Rejected | not provided | not provided | not provided |
-| Inconclusive | not provided | not provided | not provided |
-
-A prototype result does not update every linked artifact automatically. Return observed evidence to the smallest complete owners that actually depend on the tested uncertainty.
-
-## 16. Code Fate
-
-```text
-throwaway / evolutionary / not provided
-```
-
-## 17. Risks And Limitations
-
-```text
-not provided
-```
-
-## 18. Questions
-
-| ID / item | Question | Priority | Blocking | Status | Answer |
-|---|---|---:|---:|---|---|
-| not provided | not provided | not provided | not provided | open | not provided |
-
-## 19. Critical Remarks
-
-| ID | Remark | Why it matters | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | open |
-
-## 20. Related Ideas
-
-| Idea / ID | Idea | Relation | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
-
-## 21. User Answers
-
-```text
-not provided
-```
-
-## 22. Decisions
-
-| ID / item | Decision | Rationale | Status |
-|---|---|---|---|
-| not provided | not provided | not provided | undecided |
+## Potential Simplifications / Better Routes — When Material
+<Only unselected changes to this prototype plan.>
 
 This template does not authorize implementation, repository edits, archive creation, commit or push.

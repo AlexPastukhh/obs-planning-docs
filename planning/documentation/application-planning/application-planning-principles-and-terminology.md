@@ -1,7 +1,7 @@
 # Solution And Application Planning Principles And Terminology
 
 Status: active reusable canonical owner
-Scope: stable concepts/invariants for whole-solution/workflow planning and Scenario-based detailed application planning.
+Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning.
 
 ## Evidence And Decision States
 
@@ -122,7 +122,7 @@ Scenario owner route(s)
 
 It does not duplicate detailed Main Flow.
 
-An Application Use Case normally grounds its `Need / Purpose` in the real user/work context rather than merely naming an application command or screen. Candidate Use Cases may be proposed from the selected Application Concept before Scenario discovery and then split/merge/refined as Spine/Scenario discovery reveals the real behavioral boundaries.
+An Application Use Case normally grounds its `Need / Purpose` in the real user/work context rather than merely naming an application command or screen. Candidate Use Cases may be proposed from the selected Application Concept and then split/merge/refined as Prototype/Scenario discovery reveals the real behavioral boundaries.
 
 ## Scenario
 
@@ -158,17 +158,82 @@ A Scenario may contain any of those actions. One command may even implement near
 
 Technical constraints/implementation requirements remain constraints/invariants unless they create required user-visible behavior that participates in an independently meaningful Need/result. The implementation mechanism itself does not become a Scenario.
 
-## Spine Scenario
+## Requirement
 
-One or several early Spine Scenarios may temporarily provide representative end-to-end traversal while Scenario boundaries are being discovered.
+A `Requirement` is a condition/property/constraint that the selected solution must satisfy.
 
 ```text
-Spine Scenario
-→ temporary discovery/integration scaffold
-≠ permanent canonical entity layer
+Need
+→ why something matters
+
+Scenario
+→ user/actor-visible behavior reaching a meaningful result
+
+Requirement
+→ what must be true
 ```
 
-No `Spine Unit` entity exists.
+A technical/external Requirement such as `use organization SSO` does not become a Scenario without an independent Need/result behavioral boundary. Requirements may be behavioral, informational/DATA, spatial/visual, Domain/invariant, technical, integration, operational/non-functional or external; those labels are optional rather than a mandatory taxonomy.
+
+Use one canonical owner and link consumers. Shared/application Requirements may use a registry while Scenario-/Screen-/Domain-/Slice-specific requirements stay with their narrowest real owner. Prototype findings may begin as `candidate` Requirements before evidence promotes/rejects them.
+
+Canonical semantics: [`requirements-and-change-context.md`](requirements-and-change-context.md).
+
+## Future Scenario Ideas / Change Axes
+
+A Future Scenario Idea is an ordinary Idea about possible later behavior, not a current Scenario/Requirement. Distinguish current required meaning from evidence-backed likely evolution and unsupported speculation.
+
+A `Change Axis` records a justified dimension along which meaning may vary and is used to evaluate coupling/adaptability.
+
+```text
+Change Axis
+→ reason to evaluate cost of change
+≠ Requirement to generalize now
+≠ instruction to build an extension point
+```
+
+Current Requirements and selected Scenario meaning outrank speculative future flexibility.
+
+## Implementation-Scoped Ideas
+
+Implementation thoughts that appear during solution/concept/prototype/Scenario work remain ordinary generic `Idea` objects with implementation scope/placement. Do not create a separate `Implementation Idea` ontology. When selected during Domain/Slice work, integrate the meaning into the real Domain/Slice owner and keep only provenance/status in the originating Idea.
+
+## Prototype Planning
+
+`Prototype Planning` is proportional provisional interaction/workflow design and evidence collection between a selected/current Application Concept + Application responsibility and canonical detailed Scenario/Screen planning.
+
+```text
+Application Concept / responsibility
+→ Prototype Planning when material uncertainty remains
+   → Prototype Scenarios
+   → Prototype Screens
+   → candidate Requirements
+   → candidate Scenario DATA / Behavior
+   → Future Scenario Ideas / Change Axes when material
+→ Scenario Discovery
+→ current detailed Scenario / Screen owners
+```
+
+Prototype artifacts are provisional. `PSCN-*` does not become canonical `SCN-*` authority and `PSCR-*` does not become canonical `SCR-*` authority merely because the prototype exists; promotion may split, merge, reject or rework provisional meaning.
+
+A technical feasibility spike may remain inside Application Concept/research when the question is whether a concept is feasible/costly. `UC-PLAN-PROTOTYPE` is specifically for interaction/workflow prototyping.
+
+Canonical workflow: [`prototype-planning-workflow.md`](prototype-planning-workflow.md).
+
+### Spine Pass / Spine Walkthrough
+
+A `Spine Pass` / `Spine Walkthrough` is an optional **discovery technique**: take a concrete user situation with a real Need through a plausible end-to-end application journey to expose candidate boundaries, Screens, Requirements, DATA, Behavior and missing capabilities.
+
+```text
+Spine Pass
+≠ Scenario
+≠ Prototype Scenario
+≠ semantic owner
+≠ standalone Use Case
+≠ mandatory stage/artifact
+```
+
+Do not create `Spine Scenario` / `Spine Unit` as a current planning entity.
 
 ## Scenario Draft
 
@@ -186,6 +251,8 @@ Branches / Invariants
 Outcomes / Acceptance
 Scenario DATA references
 Behavior Item references
+Related Requirements
+Relevant Change Axes / Future Scenario Ideas when material
 Visual / Screen references
 Current Decisions
 Questions / Risks / Problems relative to Current Draft Plan
@@ -194,7 +261,7 @@ Potential Simplifications / Better Routes when material
 
 `Motivational Trigger ≠ Application Entry Point`.
 
-Main Flow may proportionally add Surface/Screen, DATA/information, Actor Understanding, Desired User Response, System Response/State Change, Presentation/Visual Requirement and Result/Transition when material. Do not expand every step mechanically.
+Main Flow may proportionally add Surface/Screen, DATA/information, Actor Understanding, Desired User Response, System Response/State Change, Presentation/Visual Requirement and Result/Transition when material. Requirements are linked as must-hold conditions rather than converted mechanically into flow steps. Do not expand every step mechanically.
 
 ## Current Draft / Current Draft Plan
 
@@ -243,7 +310,7 @@ Screen
 → spatial boundary / zones / composition / visual states
 ```
 
-A Screen may list Scenarios that use it without becoming their behavioral authority. Every material Scenario↔Screen relation should be discoverable from both owners: the Scenario identifies the Screen and its behavioral role/range, while the Screen identifies the Scenario and relevant zones/states. This is one relationship with reciprocal navigation, not duplicate behavioral ownership. Screen planning does not require `data/` or `behavior/` folders.
+A Screen may list Scenarios that use it without becoming their behavioral authority. Every material Scenario↔Screen relation should be discoverable from both owners: the Scenario identifies the Screen and its behavioral role/range, while the Screen identifies the Scenario and relevant zones/states. This is one relationship with reciprocal navigation, not duplicate behavioral ownership. Screen planning does not require `data/` or `behavior/` folders. Spatial requirements such as zone hierarchy, placement, visibility/arrangement and layout state belong to Screen; behavioral conditions/transitions remain Scenario/Behavior truth; frontend Slice plans own the implementation mechanism that realizes selected requirements.
 
 ## Planning Unit Variant
 
@@ -259,11 +326,30 @@ Planning Unit Variant
 
 Do not create explicit VAR-A ceremony while only one integrated design exists. When a second design appears, the root draft may become explicit VAR-A and remain physically at the root while the alternative lives under `variants/`; both are semantic peers for evaluation. Exactly one selected current Variant must be routed explicitly.
 
-## Domain / Slice
+## Domain / Slice Strategy / Slice
 
-Domain is optional conceptual model/language/lifecycle/rules when separate ownership improves planning.
+Domain is an optional conceptual model/language/lifecycle/rules/boundary owner when separate ownership improves planning. Domain planning aims for the simplest model that supports current selected meaning plus **justified** likely evolution: stable semantics explicit, likely variation localized when useful, speculative possibilities prevented from forcing premature abstraction. Canonical algorithm: [`domain-planning-workflow.md`](domain-planning-workflow.md).
 
-Slice is an optional separately deliverable/checkable implementation increment after enough behavior/concepts are understood. A Slice may use a product-facing feature label without introducing a mandatory Feature layer. Application Concept Features remain upstream concept hypotheses and do not create a required Feature owner between Scenario and Slice.
+`Slice Strategy` is an optional decomposition/order plan used when implementation is large or uncertain enough that choosing vertical increments is itself an independently useful result.
+
+An `Implementation Slice` is one separately deliverable/checkable integrated increment. Its integrated owner may link optional `frontend.md`, `server.md`, `verification.md` or other implementation-part plans, but those parts do not become separate planning Use Cases by default. Canonical algorithm: [`slice-planning-workflow.md`](slice-planning-workflow.md).
+
+```text
+Scenario / Screen / Requirement / Domain
+→ selected meaning the implementation must realize
+
+Slice Strategy
+→ decomposition / order
+
+Slice
+→ one integrated delivery plan
+```
+
+A Slice may use a product-facing feature label without introducing a mandatory Feature layer. Application Concept Features remain upstream concept hypotheses and do not create a required Feature owner between Scenario and Slice.
+
+## Recommended Project-Local Planning Zones
+
+When physical organization helps, use `solution-and-application/` for solution/concept/prototype/current behavior/spatial requirements and `domain-and-implementation/` for Domain/Slice implementation planning. Root Ideas/Requirements/Change-Axes may act as intake before promotion to a narrower owner. Folder placement does not itself create semantic ownership or a registered parallel-work scope. See [`requirements-and-change-context.md`](requirements-and-change-context.md).
 
 ## Reference Object Candidate
 

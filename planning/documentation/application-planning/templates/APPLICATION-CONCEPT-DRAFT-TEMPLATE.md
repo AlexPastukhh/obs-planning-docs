@@ -132,6 +132,21 @@ important unknowns
 <Selected current meaning: keep as candidate / select into whole solution / reject in favor of another route / needs evidence.>
 
 A conclusion that an existing/process route is better is a successful planning result.
+## Prototype / Downstream Handoff — When Application Responsibility Is Selected
+
+<Identify interaction/workflow uncertainties that deserve `UC-PLAN-PROTOTYPE`, candidate Application Use Cases ready for provisional exploration, and decision-sensitive technical uncertainties that instead remain Concept feasibility spikes/research.>
+
+```text
+technical feasibility spike
+→ Concept/research evidence
+
+interaction/workflow prototype
+→ Prototype Scenarios / Prototype Screens / candidate Requirements
+→ Scenario Discovery / canonical Scenario-Screen planning
+```
+
+Do not create Prototype work merely because the methodology supports it.
+
 
 ## Questions / Risks / Problems
 

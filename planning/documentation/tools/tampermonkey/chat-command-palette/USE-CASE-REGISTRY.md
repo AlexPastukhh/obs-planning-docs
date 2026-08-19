@@ -1,7 +1,7 @@
 # OBS Planning Helper Use-Case Registry
 
 Status: active canonical application semantic registry
-Version: v1.0.0 / Planning Helper `0.24.2`
+Version: v1.1.0 / Planning Helper `0.25.0`
 Scope: independently useful current Planning Helper user outcomes. This registry owns application Use-Case identity; it does not own planning-command meaning or helper-library file format.
 
 Scenario catalog: [`scenarios/README.md`](scenarios/README.md)
@@ -22,7 +22,7 @@ Application entry: [`README.md`](README.md)
 | Use-Case ID | Semantic name | Current status | Trigger/input | Successful user result | Canonical traceability |
 |---|---|---|---|---|---|
 | `UC-PH-DISCOVER` | Find And Inspect Planning Helper Content | current prototype | open helper, choose a surface, search/browse | requested current local/projection item is discoverable and inspectable without repository I/O | [`SCN-PH-DISCOVER`](scenarios/SCN-PH-DISCOVER.md) |
-| `UC-PH-USE` | Use Helper Content In ChatGPT | current prototype; browser acceptance required | select Copy/Insert/Full/refinement for an available item | exact selected text is copied and/or inserted into the ChatGPT composer without repository I/O | [`SCN-PH-USE`](scenarios/SCN-PH-USE.md) |
+| `UC-PH-USE` | Use Helper Content In ChatGPT | current prototype; browser acceptance required | select Copy/Insert/Full/refinement for an available item | exact selected text is copied and/or inserted; semantic Use-Case bodies focus the receiving chat on that UC and current owner route without repository I/O | [`SCN-PH-USE`](scenarios/SCN-PH-USE.md) |
 | `UC-PH-MANAGE-LOCAL` | Manage Local Helper Content | current prototype; browser acceptance required | create/edit/save/delete a helper command or prompt | normalized helper content is created/updated/deleted in local snapshot/RAM only | [`SCN-PH-MANAGE-LOCAL`](scenarios/SCN-PH-MANAGE-LOCAL.md) |
 | `UC-PH-IMPORT` | Import Helper Content From ChatGPT | current prototype; browser acceptance required | paste supported command/helper marker blocks into Import from ChatGPT | parsed records are merged into local state without GitHub I/O | [`SCN-PH-IMPORT`](scenarios/SCN-PH-IMPORT.md) |
 | `UC-PH-CHECK-REPOSITORY` | Inspect Local And Repository Inventory | current prototype; real-GitHub acceptance required | explicit `Check GitHub` | user receives a read-only same-path/local-only/GitHub-only inventory and known-SHA-change diagnostics | [`SCN-PH-CHECK-REPOSITORY`](scenarios/SCN-PH-CHECK-REPOSITORY.md) |
@@ -65,13 +65,13 @@ These are important but are not independently useful current outcomes:
 
 **Status:** active current
 **Parent Direction:** `DIR-PLANNING-HELPER`
-**Purpose:** deliver exact selected helper content into ChatGPT/clipboard while preserving the underlying command/semantic authority.
+**Purpose:** deliver exact selected helper content into ChatGPT/clipboard while preserving underlying authority; for semantic Use Cases, focus the receiving chat on one stable UC and its current repository owner route.
 
 **Trigger / accepted input:** the user chooses a command/helper/prompt row, Full/refinement or Copy/Insert action.
 
-**Result / end state:** the exact selected RAM text is available on the clipboard and/or inserted into the current ChatGPT composer; repository availability does not affect the normal insertion path.
+**Result / end state:** the exact selected RAM text is available on the clipboard and/or inserted into the current ChatGPT composer; a semantic Use-Case body identifies the stable UC ID/registry, requests current owner-route resolution and preserves semantic focus/permission boundaries; repository availability does not affect the normal insertion path.
 
-**Boundaries:** Copy/Insert are delivery mechanisms of one user outcome, not separate Use Cases. Planning-command insertion does not grant permissions beyond the command definition.
+**Boundaries:** Copy/Insert are delivery mechanisms of one user outcome, not separate Use Cases. Planning-command insertion does not grant permissions beyond the command definition. Semantic Use-Case activation grants no executable-command/repository permission, and the body must not become a frozen second owner-file registry.
 
 **Scenario owner:** [`SCN-PH-USE`](scenarios/SCN-PH-USE.md)
 

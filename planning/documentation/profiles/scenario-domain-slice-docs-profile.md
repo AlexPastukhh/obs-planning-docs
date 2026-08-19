@@ -2,7 +2,7 @@
 
 Status: active reusable specialized profile
 Doc version: v0.5.0-detailed-workspace-aligned
-Scope: optional reusable guidance for projects that activate a structured Scenario/Domain/Slice documentation family after application/solution planning is sufficiently stable for detailed behavior work.
+Scope: optional reusable guidance for projects that activate structured Prototype → Scenario/Screen → Requirement → Domain/Slice documentation after solution/Application Concept planning is sufficiently grounded.
 
 Core detailed-planning contract:
 
@@ -10,26 +10,48 @@ Core detailed-planning contract:
 
 ## 1. Purpose
 
-Use this profile when a project benefits from explicit Scenario workspaces, separately addressable Scenario DATA / Behavior Items, optional Domain owners and Implementation Slices.
+Use this profile when a project benefits from explicit Prototype evidence, Scenario workspaces, separately addressable Scenario DATA / Behavior Items, Requirements, optional Domain owners and Implementation Slices.
 
-This is a specialized profile, not a universal planning stage. An optional Spine Scenario may precede stable Scenario boundaries.
+This is a specialized profile, not a universal planning stage. Prototype planning is proportional; a Spine Pass/Walkthrough may be used as a discovery technique but is not a Scenario type or Use Case.
 
 When selected, the dependency direction is:
 
 ```text
-current application planning / selected application meaning
-  → optional Spine while boundaries are unclear
+current Application Concept / selected application responsibility
+  → Prototype Planning when useful
+     → Spine Pass / Walkthrough as discovery technique
+     → Prototype Scenarios / Prototype Screens
+     → candidate Requirements / DATA / Behavior / Change Axes
+  → Scenario discovery
   → detailed Scenario workspaces
-  → Scenario DATA / Behavior Items
+  → Scenario DATA / Behavior Items + related Requirements
   → optional Screen spatial owners
   → optional Domain work
-  → optional Implementation Slice planning
+  → optional Slice Strategy
+  → optional individual Implementation Slice planning
   → verification / consistency review proportionally
 ```
 
 ## 2. Core Split
 
 ```text
+Prototype Scenario:
+  provisional user-visible behavioral design used to discover/refine future Scenario boundaries;
+  not canonical Scenario authority.
+
+Prototype Screen:
+  provisional spatial/layout design used to discover/refine Screen requirements;
+  not canonical Screen authority.
+
+Requirement:
+  must-hold condition/property/constraint;
+  may be behavioral, spatial, domain, technical, integration or operational;
+  not automatically a Scenario.
+
+Change Axis:
+  evidence-backed expected-variation dimension used to evaluate adaptability;
+  not a requirement to generalize now.
+
 Scenario:
   one coherent motivated actor/context + Need/Goal + meaningful observable result;
   pure user-facing and verifiable behavior;
@@ -55,9 +77,12 @@ Domain:
   conceptual model, language, lifecycle, rules and boundaries
   discovered after scenario behavior is understood.
 
+Slice Strategy:
+  optional decomposition/order result for vertical implementation increments.
+
 Slice:
-  separately deliverable/checkable integrated implementation increment
-  planned after enough Scenario/relevant Domain meaning is understood.
+  one separately deliverable/checkable integrated implementation increment
+  planned after enough Scenario/Requirement/relevant Domain meaning is understood.
 ```
 
 ## 3. Scenario Workspace Contract
@@ -95,6 +120,8 @@ runtime branches / invariants
 postconditions / acceptance / observable outcomes
 Scenario DATA references
 Behavior Item references
+Related Requirements
+Relevant Change Axes / Future Scenario Ideas when material
 visual / Screen references
 Current Decisions
 Questions / Risks / Problems relative to Current Draft Plan
@@ -168,9 +195,13 @@ Runtime Branches and Idea Variants are not automatically whole Planning Unit Var
 
 ## 8. Domain / Slice Boundaries
 
-Domain workspaces use a Domain owner + `ideas/`, with `variants/` only when a second integrated Domain design exists. Domain does not need a default `visual/` area.
+Domain workspaces use a Domain owner + `ideas/`, with `variants/` only when a second integrated Domain design exists. Domain does not need a default `visual/` area. Follow the core Domain workflow: current Scenarios/Requirements first, then justified Change Axes, invariants vs policies, current-scenario stress check and premature-generalization check.
 
-Slice workspaces keep one integrated Slice owner plus `ideas/` and `visual/`. A simple Slice may stay one implementation file; a richer Slice may split responsibility plans such as `frontend.md`, `server.md` and `verification.md` without losing the integrated Slice owner.
+When decomposition/order is material, `UC-PLAN-SLICE-STRATEGY` may use a Slice Strategy draft before individual Slice work. It is optional for trivial work.
+
+Slice workspaces keep one integrated Slice owner plus `ideas/` and `visual/`. A simple Slice may stay one implementation file; a richer Slice may split responsibility plans such as `frontend.md`, `server.md` and `verification.md` without losing the integrated Slice owner. These parts are not separate planning Use Cases by default.
+
+Screen owns selected spatial requirements; Scenario owns behavior; frontend Slice planning owns the implementation mechanism that realizes those requirements.
 
 Do not treat Behavior Items as Slices. Do not add a mandatory Feature layer between behavior and Slice.
 
@@ -196,8 +227,9 @@ Preserve links only where they materially improve provenance/change review.
 ```text
 - do not copy complete Idea/source bodies into Scenario owners;
 - one question has one primary Idea workspace;
-- later Domain/Slice artifacts reference Scenario/Behavior identity instead of copying whole Scenario flow;
-- a related source/Idea/current-owner change creates review need, not automatic rewrite.
+- later Domain/Slice artifacts reference Scenario/Behavior/Requirement identity instead of copying whole Scenario flow or Requirement bodies;
+- implementation-scoped Ideas stay generic Ideas until selected into Domain/Slice current meaning;
+- a related source/Idea/Requirement/current-owner change creates review need, not automatic rewrite.
 ```
 
 ## 11. Boundaries

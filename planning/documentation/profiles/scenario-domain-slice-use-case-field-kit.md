@@ -2,7 +2,7 @@
 
 Status: active reusable profile-specific field kit
 Doc version: v1.1.0-detailed-workspace-aligned
-Scope: setup guidance for adding Scenario/Domain/Slice route families to a concrete project root Command Routing when the specialized profile and commands are explicitly selected.
+Scope: setup guidance for adding Prototype/Scenario/Domain/Slice route families to a concrete project root Command Routing when the specialized profile and commands are explicitly selected.
 
 Core detailed-planning contract:
 
@@ -25,30 +25,36 @@ A project may use the profile without commands. This file is setup guidance, not
 Create only the route families the project actually needs.
 
 ```text
+prototype planning:
+  when interaction/workflow uncertainty merits it, plan/review provisional
+  Prototype Scenarios / Prototype Screens / candidate Requirements;
+  Spine Pass/Walkthrough is a supporting discovery method, not a separate UC;
+
 scenario plan:
   create/update the selected detailed Scenario workspace;
   maintain Scenario semantic owner + standard ideas/data/behavior/visual areas;
-  use shared Scenario-level areas for meaning spanning several Scenarios;
+  link relevant Requirements and prototype evidence;
   preserve source / Idea / current-owner traceability when useful;
-  identify review needs when upstream meaning changes;
 
 screen/spatial support when applicable:
   route Scenario work to canonical Screen owners
-  for spatial boundary / zones / visual states;
+  for spatial boundary / zones / placement / visual states / spatial Requirements;
   do not move Scenario behavior into Screen owners;
 
 domain review:
-  align terms, model, lifecycle, rules and boundaries
-  from reviewed Scenario/Behavior meaning
-  when a separate Domain owner is useful;
+  derive stable concepts/lifecycle/rules/boundaries
+  from reviewed Scenario/Behavior/Requirement meaning;
+  use justified Change Axes to stress likely evolution without speculative over-generalization;
+
+slice strategy when applicable:
+  choose/review vertical Slice decomposition and delivery order;
 
 slice planning:
-  turn accepted Scenario/Behavior coverage
-  into separately deliverable/checkable integrated increments;
+  plan one selected separately deliverable/checkable integrated increment;
   optionally split implementation-part plans such as frontend/server;
 
 consistency review:
-  review contradictions across the selected Scenario, Screen,
+  review contradictions across selected Scenario, Screen, Requirement,
   Domain and Slice owners that actually exist.
 ```
 
@@ -59,9 +65,10 @@ The profile requires unambiguous logical/addressable ownership for Scenario, DAT
 A concrete Scenario route should identify:
 
 ```text
-selected current application planning / application responsibility;
-optional Spine origin when used;
+selected current Application Concept / application responsibility;
+Prototype evidence/origin when used;
 Application Use Case;
+related Requirements / Change Axes when material;
 Scenario collection root;
 Scenario workspace README;
 current selected Scenario owner/Variant;
@@ -101,9 +108,12 @@ Identify:
 
 ```text
 selected reviewed Scenario/Behavior meaning;
+confirmed Requirements;
+relevant prototype evidence / justified Change Axes;
 Domain workspace/owner;
 Domain ideas/ area;
-terms, lifecycle, rules and boundaries in scope;
+stable semantic core, terms, lifecycle, invariants/policies and boundaries in scope;
+current-Scenario and likely-evolution stress checks;
 current decisions;
 Current-Draft-relative Q/R/P;
 open consistency conflicts;
@@ -114,22 +124,41 @@ Do not create a Domain route merely because Scenario artifacts exist. Do not req
 
 ## 6. Slice Route Expectations — When Selected
 
+### Slice Strategy — When decomposition/order matters
+
 Identify:
 
 ```text
-selected accepted Scenario/Behavior coverage;
+selected accepted Scenario/Behavior/Requirement coverage;
 relevant Domain boundaries when they exist;
+candidate vertical Slices;
+dependencies / delivery order;
+learning/risk rationale;
+Change Axes considered without automatic generalization;
+current selected decomposition/order;
+permission boundary.
+```
+
+### One Implementation Slice
+
+Identify:
+
+```text
+selected Slice Strategy when one exists;
+selected accepted Scenario/Behavior/Requirement coverage;
+relevant Domain boundaries;
 integrated Slice owner;
 ideas/ and visual/ areas;
 optional frontend/server/other implementation-part plans;
 optional verification plan;
 deliverable/checkable result;
+implementation-scoped Ideas promoted/rejected when material;
 current decisions;
 Current-Draft-relative Q/R/P;
 permission boundary.
 ```
 
-Do not require Slice planning for one-step work, a narrow script, a process change or another solution that does not benefit from separate increments.
+Do not require Slice Strategy for trivial one-step work. Do not turn frontend/server files into separate planning Use Cases merely because one Slice splits implementation-part plans.
 
 ## 7. Reference Object Candidate Handling
 
@@ -153,7 +182,9 @@ When a route needs actual Linked Notes Reference Object materialization, read th
 - Do not require one physical file per addressable Scenario DATA/Behavior Item.
 - Do not label every addressable planning object as an already-materialized Linked Notes RO.
 - Do not require contributing Planning Items or a Planning Item layer.
-- Do not introduce a permanent Spine Unit.
+- Do not introduce a permanent Spine Unit or standalone `UC-PLAN-SPINE`; Spine Pass/Walkthrough is a supporting method.
+- Do not treat Prototype Scenario/Screen as canonical current Scenario/Screen authority.
+- Do not turn Requirements or Change Axes into Scenarios mechanically.
 - Do not make Domain/Slice details part of clean Scenario behavior.
 - Do not infer repository edit, archive, commit or push permission.
 ```

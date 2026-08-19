@@ -75,3 +75,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - the generated userscript matches the corrected modular source.
 
 **Rationale:** keep user-visible repository state claims no stronger than the evidence available after optimistic-concurrency recovery.
+
+
+### XREF-002 — Focus planning Use-Case activation on current owner routes
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-009`  
+**Reason:** Planning Helper semantic projection/source/tests/generated artifact changed to expose the selected Application Planning Use Cases and insert focused dynamic owner-route bodies. Full methodology rationale and applied-state relation are owned by the canonical Application Planning log entry.

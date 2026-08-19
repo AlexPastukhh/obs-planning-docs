@@ -23,6 +23,9 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 - Insert a planning command, helper command and prompt into the live ChatGPT composer; confirm exact intended text.
 - Confirm clipboard is prepared and manual paste remains usable if direct insertion fails.
 - Confirm the normal insertion path remains responsive with GitHub unavailable.
+- On the Use Cases surface, insert `UC-PLAN-PROTOTYPE`, `UC-PLAN-DOMAIN` and `UC-PLAN-SLICE-STRATEGY`; confirm each body contains the selected UC ID, `focus`, canonical registry source, `route_resolution`, read rule and explicit semantic-only permission boundary.
+- Confirm `Full` preserves the same UC focus/permission but requires complete current owner-route reading.
+- Confirm `UC-PLAN-SPINE` is not projected and the current Application Planning registry parity check includes `UC-PLAN-APP-CONCEPT`, `UC-PLAN-PROTOTYPE` and `UC-PLAN-SLICE-STRATEGY`.
 
 <a id="uc-ph-manage-local"></a>
 

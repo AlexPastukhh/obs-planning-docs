@@ -1,8 +1,8 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.24.2`
-Scope: deterministic Planning Helper source/build, RAM-first local persistence, explicit GitHub check/save/sync, ChatGPT-mediated recovery fallback and clipboard-first insertion.
+Version: `0.25.0`
+Scope: deterministic Planning Helper source/build, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub check/save/sync, ChatGPT-mediated recovery fallback and clipboard-first insertion.
 
 ## Read Order
 
@@ -88,7 +88,7 @@ Prompts
   planning/helper-library/prompts/*.prompt.md
 ```
 
-Orientation, Directions and Use Cases remain build-time/read-only semantic projections. They are not a second writable repository registry.
+Orientation, Directions and Use Cases remain build-time/read-only semantic projections. They are not a second writable repository registry. A non-command Use-Case Insert/Copy activates one semantic focus: its body identifies the stable UC ID + canonical registry, tells ChatGPT to resolve the **current** registry entry/Main Owner route and follow current owner links to materially defining principles/workflows/templates, and explicitly does not grant command/repository permissions. The Helper does not hard-code a permanent full owner-file list into each UC body.
 
 ### Check GitHub
 
@@ -140,6 +140,8 @@ Repository delete is not implemented. Local Delete remains local-only.
 
 ## Clipboard / Insert Contract
 
+For semantic Use Cases, the exact inserted body includes `focus`, current registry `source_of_truth`, dynamic `route_resolution`, Adaptive/Full `read_rule`, UC-specific instruction and a permission boundary. `Full` requires the receiving chat to read the complete current owner route; Adaptive may reuse clearly sufficient current context. Both keep the same semantic focus and permissions.
+
 Every Insert action prepares the exact clipboard body **before** composer mutation. The fast path first attempts a synchronous user-gesture `copy`; when the browser requires the async Clipboard API, composer mutation waits for that copy attempt to finish. The exact same RAM string is then passed to composer insertion. This contract is identical for planning commands, Local Cmds and Prompts.
 
 The helper does not rely on synthetic browser paste. If direct insertion fails after a successful copy, the exact body is already available for normal manual paste (`Ctrl+V`).
@@ -182,7 +184,7 @@ npm test
 npm run verify
 ```
 
-`npm run verify` checks JavaScript syntax, the dynamically discovered planning-command catalog, owner/refinement path existence, focused tests (including Use-Case registry/map traceability invariants) and generated-artifact equality. The number of planning commands is not hard-coded.
+`npm run verify` checks JavaScript syntax, the dynamically discovered planning-command catalog, owner/refinement path existence, focused tests (including Use-Case registry parity, focused semantic-body routing and exact owner-path invariants) and generated-artifact equality. The number of planning commands is not hard-coded.
 
 The install artifact is generated:
 

@@ -75,6 +75,10 @@ A Functional Workflow is not automatically:
 
 Material unresolved implementation questions may use scoped Idea review/deep planning. They do not become accepted workflow meaning until selected and integrated.
 
+#### Requirement / Change Context Findings — Optional
+
+<Record candidate/shared Requirements or evidence-backed likely Change Axes discovered here when they materially affect later application/domain/implementation planning. A Change Axis is not a Requirement to generalize now. Early implementation thoughts remain generic Ideas until selected.>
+
 ---
 
 ### FW-STEP-02 — <name>

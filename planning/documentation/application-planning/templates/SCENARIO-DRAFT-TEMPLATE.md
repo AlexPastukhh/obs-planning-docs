@@ -1,7 +1,7 @@
 # Scenario Draft Template
 
 Status: active reusable recommended template
-Purpose: draft one current application Scenario after Application responsibility is justified. A temporary Spine Scenario may be used before stable boundaries exist.
+Purpose: draft one current canonical application Scenario after Scenario discovery. Upstream Prototype Scenarios/Spine Passes may inform it but do not own current behavior.
 
 Detailed workspace contract: [`../detailed-planning/README.md`](../detailed-planning/README.md)
 
@@ -41,6 +41,9 @@ The current selected Scenario owner/Variant owns current detailed behavior. Whil
 | Related Application Use Case | <UC> |
 | Related real-world Workflow / Open Solution Slot | <when useful> |
 | Related Application Concept / Concept Feature(s) | <when useful> |
+| Prototype origin/evidence | <PSCN/Prototype result when useful> |
+| Related Requirements | <links when material> |
+| Relevant Change Axes / Future Scenario Ideas | <when material; not current requirements> |
 | Related Ideas / provenance | <when useful> |
 
 ### Actor Understanding / Plan
@@ -79,6 +82,12 @@ The current selected Scenario owner/Variant owns current detailed behavior. Whil
 
 ### Behavior Item References
 <Link stable addressable Behavior Items. Behavior Items are not implementation tasks/Slices.>
+
+### Related Requirements
+<Link must-hold conditions without converting Requirement identity into Scenario identity. A technical mechanism remains a Requirement/implementation constraint unless the Need/result boundary independently justifies Scenario behavior.>
+
+### Change Context — When Material
+<Link evidence-backed Change Axes / Future Scenario Ideas only as evolution context. They do not expand current Scenario scope automatically.>
 
 ### Visual / Screen References
 <Link Scenario-specific `visual/` material and canonical `screens/` owners when relevant.>
@@ -173,6 +182,6 @@ A read-only/informational Scenario is valid when obtaining information or unders
 
 Re-entry/reuse/wait/handoff/testability are supporting signals, not mandatory checklist fields. Instrumental sub-needs/actions/information remain inside the parent Scenario. A required technical mechanism stays a constraint/implementation requirement unless there is independently meaningful user-visible behavior; the mechanism itself does not become a Scenario.
 
-Spine is temporary scaffolding and is not a permanent entity type.
+A Spine Pass / Walkthrough is an optional discovery technique, not a Scenario/Prototype Scenario/owner/Use Case. Prototype Scenario findings may inform this draft but do not remain competing current behavior authority.
 
 When a materially distinct whole-Scenario design appears, use the Variant rules in the detailed-planning owner. Do not turn ordinary runtime branches or one local Idea Variant into whole-Scenario Variants mechanically.

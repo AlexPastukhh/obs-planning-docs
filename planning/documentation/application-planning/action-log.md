@@ -123,3 +123,72 @@ No material unresolved issues identified.
 - the FixFlow worked example demonstrates real-world workflow Slots, viable SaaS comparison, Application Concept/Features/feasibility, selected application responsibility, candidate Use Cases, informational Scenario behavior, command-vs-Scenario boundaries, reciprocal Screen coverage and consumer-side RO-candidate discovery.
 
 **Rationale:** keep application planning anchored in the best real-world way to satisfy the Need, make custom-app value/feasibility explicit before low-level behavior planning, and strengthen cross-owner traceability without reviving generic Planning Draft or mandatory Feature layers.
+
+
+### LOG-APP-008 — Prototype, Requirements, Domain/Slice planning and focused Use-Case activation
+
+**Type:** IDEA REVIEW  
+**Source:** current planning discussion + material result of `собери идеи` covering planning Use Cases, Prototype layer, Spine semantics, Requirements, Change Axes, implementation-scoped Ideas, project-local planning zones, Domain/Slice planning and Planning Helper semantic activation  
+
+**Current Conclusions:**
+- planning capabilities are independently activatable where they have distinct useful planning results: Whole Solution, Application Concept, Prototype, Scenario Discovery, detailed Scenario, Domain, Slice Strategy, one Implementation Slice and consistency review; Scenario DATA/Behavior remain inside Scenario planning rather than separate Use Cases;
+- `Spine Pass` / `Spine Walkthrough` is only a discovery method inside Prototype/Scenario Discovery and is not a Scenario type, canonical owner or standalone `UC-PLAN-SPINE`;
+- interaction/workflow Prototype planning is the provisional bridge between selected Application Concept/responsibility and canonical detailed Scenario/Screen planning; Prototype Scenarios (`PSCN-*`) and Prototype Screens (`PSCR-*`) are revisable evidence/design and do not become current `SCN-*` / `SCR-*` authority automatically;
+- technical feasibility spikes may remain inside Application Concept/research, while interaction/workflow Prototype work may discover candidate Requirements, Scenario DATA/Behavior, Future Scenario Ideas and Change Axes;
+- `Requirement` is a must-hold condition/property/constraint distinct from Need/Scenario identity; one canonical Requirement owner is linked by consumers and candidate/current status + expected stability are recorded proportionally;
+- Future Scenario Ideas remain ordinary Ideas until selected as current behavior, and `Change Axis` is evidence-backed expected-variation context used to evaluate change propagation rather than an instruction to generalize now;
+- early implementation thoughts remain generic Ideas with implementation scope/placement instead of introducing a separate `Implementation Idea` ontology; selected meaning is promoted into the real Domain/Slice/other owner;
+- project-local planning may use `solution-and-application/` and `domain-and-implementation/` as two physical zones with root idea/requirement/change-context intake, while folder placement does not create semantic ownership or a registered parallel-work scope;
+- Domain planning explicitly derives stable semantics/invariants/policies from current Scenarios/Requirements, stress-tests only justified likely evolution and rejects premature generalization;
+- Slice planning has two distinct outcomes when useful: `UC-PLAN-SLICE-STRATEGY` selects vertical decomposition/order, while `UC-PLAN-SLICE` plans one selected separately deliverable/checkable increment; frontend/server/verification files remain implementation parts rather than separate planning Use Cases;
+- Screen owns selected spatial requirements (zones/hierarchy/placement/visibility/layout states), Scenario/Behavior owns behavioral conditions/results, and frontend Slice planning owns implementation mechanisms;
+- Planning Helper semantic Use-Case activation should focus a chat on one stable UC ID, resolve the current canonical registry entry/Main Owner route dynamically, support Adaptive/Full read depth and grant no executable-command/repository permissions.
+
+**Questions / Risks / Problems:**  
+No material unresolved issues identified.
+
+### LOG-APP-009 — Apply Prototype/Requirement/Domain/Slice planning and focused Use-Case activation
+
+**Type:** APPLIED  
+**Applied From:** `LOG-APP-008`  
+**ChangeSet:** `21955477-e109-45da-a6a6-e290ea5a3a81`  
+**Package:** `ec8d0557-b81b-44ed-8498-f189f3ff261d`  
+
+**Target-State Result:** after successful Apply of this package:
+- reusable Application Planning routes explicitly through optional interaction/workflow Prototype planning before canonical Scenario/Screen planning when uncertainty warrants it;
+- `UC-PLAN-SPINE` is retired and Spine Pass/Walkthrough is documented only as a supporting discovery method;
+- `UC-PLAN-PROTOTYPE` and reusable Prototype workflow/plan/result shapes own provisional Prototype Scenario/Screen evidence and promotion into current Requirements/Scenarios/Screens;
+- Requirements, Future Scenario Ideas, Change Axes and implementation-scoped Idea placement have one canonical cross-cutting owner, including the optional two-zone project-local topology;
+- Scenario/Screen templates expose Requirement/prototype/change-context traceability while preserving behavior-vs-spatial-vs-frontend implementation ownership;
+- Domain planning has a dedicated workflow/template emphasizing stable semantics, invariants vs policies, justified likely evolution and premature-generalization checks;
+- `UC-PLAN-SLICE-STRATEGY` + a Slice Strategy template/workflow separate decomposition/order from `UC-PLAN-SLICE` planning of one integrated increment;
+- the specialized Scenario/Domain/Slice profile/field kit and FixFlow practical example demonstrate the same Prototype → Requirement/Scenario/Screen → Domain → Slice Strategy → Slice route;
+- Planning Helper `0.25.0` projects the current Application Planning Use Cases including Application Concept/Prototype/Slice Strategy, omits `UC-PLAN-SPINE`, and inserts focused semantic Use-Case bodies with dynamic current-owner route resolution, Adaptive/Full read semantics and an explicit no-command-permission boundary;
+- helper tests/verification cover canonical Use-Case parity and focused semantic body routing, and the generated userscript is rebuilt from modular source;
+- full cross-scope work history is owned here while reusable-documentation and Planning Helper scope logs contain reference-only entries.
+
+**Rationale:** make the planning route explicit from application concept through provisional user-experience discovery into current requirements/behavior/spatial meaning, then design Domain and delivery boundaries for simple current implementation plus justified evolution without conflating discovery methods, requirements or implementation thoughts with Scenarios.
+
+
+### LOG-APP-010 — ReviewDiff correct empty Prototype starter draft state
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `21955477-e109-45da-a6a6-e290ea5a3a81`, package `ec8d0557-b81b-44ed-8498-f189f3ff261d`  
+
+**Material Finding / Selected Correction:** `drafts/prototype-plan.md` and `drafts/prototype-result.md` are explicitly empty starter drafts, but each currently states `No material unresolved issues identified.` as a literal conclusion. That overstates evidence because no draft-specific review has happened yet. Keep the templates' conditional `If none: No material unresolved issues identified.` guidance for reviewed drafts, but make the empty starter files neutral with `not reviewed / not provided` until their own planning/review establishes a truthful Q/R/P state.
+
+**Resulting Current Meaning:** an empty starter draft does not claim that review found no material issues; it preserves an explicit not-yet-reviewed/not-provided baseline until the draft is populated and reviewed.
+
+### LOG-APP-011 — Apply empty Prototype starter draft state correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-APP-010`  
+**ChangeSet:** `21955477-e109-45da-a6a6-e290ea5a3a81`  
+**Package:** `c74161d4-3902-466f-a8d3-bcadb1782237`  
+
+**Target-State Result:** after successful Apply of this package:
+- `drafts/prototype-plan.md` and `drafts/prototype-result.md` remain empty starter drafts but use `not reviewed / not provided` under `Questions / Risks / Problems` instead of asserting that no material unresolved issues exist;
+- reusable Prototype templates keep their conditional reviewed-state guidance, so a populated/reviewed draft may still state `No material unresolved issues identified.` when that conclusion is actually established;
+- all other Prototype/Requirement/Domain/Slice planning and focused Use-Case activation meaning from `LOG-APP-008` / `LOG-APP-009` remains unchanged.
+
+**Rationale:** preserve truthful draft state and distinguish `not yet reviewed` from an evidence-backed `reviewed with no material unresolved issues` conclusion.

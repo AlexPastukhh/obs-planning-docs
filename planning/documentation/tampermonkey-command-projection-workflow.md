@@ -296,6 +296,8 @@ Commands:
 
 Only Commands request immediate execution.
 
+A Use-Case insertion **activates semantic focus**, not command permission. The inserted body must let a new chat resolve the exact current registry entry and then follow that entry's current owner route instead of depending on a historical hard-coded owner list embedded in the Helper. Neighboring planning responsibilities are inputs/integration context unless the selected Use Case routes into them.
+
 Semantic projection is a derived helper view. The canonical registries remain authority. Repository verification must check exact-case source paths and registry parity so every current canonical Use Case is projected and no helper-only semantic UC appears.
 
 ## 9B. Shared Semantic Body Contract
@@ -327,14 +329,54 @@ user_target:
 [/PLANNING_ORIENTATION]
 ```
 
-Directions and Use Cases use the corresponding markers:
+Directions use the corresponding marker:
 
 ```text
 [PLANNING_DIRECTION] ... [/PLANNING_DIRECTION]
-[PLANNING_USE_CASE] ... [/PLANNING_USE_CASE]
 ```
 
-Each body identifies the registry entry and complete owner route.
+A non-command semantic Use Case uses this focused contract:
+
+```text
+[PLANNING_USE_CASE]
+use_case_id:
+  <stable canonical UC ID>
+
+use_case:
+  <current semantic name>
+
+mode:
+  adaptive / full
+
+focus:
+  Work in this Use Case. Neighboring responsibilities are inputs/integration
+  context unless the selected owner route explicitly requires them.
+
+source_of_truth:
+  - `<canonical Use-Case registry>`
+
+route_resolution:
+  Resolve this exact current Use-Case entry. Follow its current Main Owner /
+  Owner Route and then the current owner links/read-order to every principle,
+  workflow, template and integration rule materially defining this Use Case.
+  Do not treat this Helper body as a frozen list of all future owner paths.
+
+read_rule:
+  <adaptive/full semantics>
+
+instruction:
+  <UC-specific compact instruction>
+
+permission:
+  Semantic planning/read context only. Use-Case activation does not grant
+  executable-command, repository-mutation, archive, commit or push permission.
+
+user_target:
+  <placeholder>
+[/PLANNING_USE_CASE]
+```
+
+Each semantic body identifies the stable registry entry and tells the chat to resolve the **current** complete owner route.
 
 ## 9C. Shared Adaptive / Full Semantics
 
@@ -342,14 +384,17 @@ Adaptive:
 
 ```text
 reuse current remembered context only while clearly sufficient;
-reread entry/owner when not read, forgotten, uncertain,
-possibly changed or explicitly requested.
+resolve/reread the selected registry entry and owner route when not read,
+forgotten, uncertain, possibly changed or explicitly requested;
+keep the selected Use Case as the active focus.
 ```
 
 Full:
 
 ```text
-always reread the complete selected entry and relevant owner route;
+always reread the complete selected registry entry;
+follow the current complete owner route through materially defining
+principles/workflows/templates/integration rules;
 read relevant parent/root entry when needed;
 do not expand into unrelated repository families;
 do not expand permissions.
@@ -404,6 +449,8 @@ canonical registries
 ```
 
 `UC-DOC-ORIENT` projects to the stable command ID `documentation_principles.read`; `UC-DOC-MAINTAIN-NAVIGATION` is a normal semantic Use Case without a direct command.
+
+Application-planning semantic projection must follow the current application-planning Use-Case Registry exactly. Supporting methods such as a Spine Pass are not projected as UCs when the registry no longer owns them; new semantic UCs such as Prototype or Slice Strategy appear automatically in parity checks when added to the canonical registry.
 
 ## 9G. Multi-Surface UI Contract
 

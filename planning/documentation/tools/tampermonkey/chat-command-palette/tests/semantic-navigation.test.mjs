@@ -45,3 +45,27 @@ test('registered parallel-work and reusable Goal Map Use Cases project from cano
   assert.ok(goalMap);
   assert.ok((goalMap.sources||[]).includes('planning/documentation/application-planning/goal-map.md'));
 });
+
+test('application planning semantic projection exposes current prototype/domain/slice-strategy route and retires Spine UC',()=>{
+  const ids=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);
+  for(const id of ['UC-PLAN-APP-CONCEPT','UC-PLAN-PROTOTYPE','UC-PLAN-SCENARIO-DISCOVERY','UC-PLAN-SCENARIO','UC-PLAN-DOMAIN','UC-PLAN-SLICE-STRATEGY','UC-PLAN-SLICE'])assert.ok(ids.includes(id),`missing ${id}`);
+  assert.ok(!ids.includes('UC-PLAN-SPINE'),'Spine is a supporting discovery method, not a projected Use Case');
+});
+
+test('non-command semantic Use Case body keeps one focused current-owner route and explicit permission boundary',()=>{
+  const domain=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-PLAN-DOMAIN');
+  assert.ok(domain);
+  const adaptive=semantic.buildSemanticBody('use_case',domain,'adaptive');
+  const full=semantic.buildSemanticBody('use_case',domain,'full');
+  for(const body of [adaptive,full]){
+    assert.match(body,/\[PLANNING_USE_CASE\]/);
+    assert.match(body,/use_case_id:\n  UC-PLAN-DOMAIN/);
+    assert.match(body,/focus:/);
+    assert.match(body,/route_resolution:/);
+    assert.match(body,/current Main Owner \/ Owner Route/);
+    assert.match(body,/permission:/);
+    assert.match(body,/does not grant executable-command, repository-mutation, archive, commit or push permission/);
+  }
+  assert.match(full,/Full use_case reading is required/);
+  assert.match(full,/complete relevant owner route/);
+});
