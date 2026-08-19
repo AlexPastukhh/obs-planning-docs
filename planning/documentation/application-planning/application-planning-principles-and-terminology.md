@@ -181,18 +181,23 @@ Canonical semantics: [`requirements-and-change-context.md`](requirements-and-cha
 
 ## Future Scenario Ideas / Change Axes
 
-A Future Scenario Idea is an ordinary Idea about possible later behavior, not a current Scenario/Requirement. Distinguish current required meaning from evidence-backed likely evolution and unsupported speculation.
+A `Future Scenario Idea` is an ordinary Idea about behavior that may matter later. It is not current Scenario/Requirement truth until selected.
 
-A `Change Axis` records a justified dimension along which meaning may vary and is used to evaluate coupling/adaptability.
+Generic Workspace Change Pressure / `Change Axis` semantics are owned by sibling [`../architecture-planning/workspace-use-cases-and-change-pressure.md`](../architecture-planning/workspace-use-cases-and-change-pressure.md). Application Planning contributes evidence from Requirements, Scenarios/Behavior, prototype findings and expected application Extensions.
 
 ```text
+Future Scenario Idea / Extension evidence
+→ may contribute to Change Pressure / Change Axis
+
 Change Axis
-→ reason to evaluate cost of change
-≠ Requirement to generalize now
-≠ instruction to build an extension point
+→ evaluate coupling/adaptability where it actually crosses
+
+Change Axis
+≠ current Requirement
+≠ instruction to generalize now
 ```
 
-Current Requirements and selected Scenario meaning outrank speculative future flexibility.
+Current selected behavior/Requirements outrank speculative future flexibility.
 
 ## Implementation-Scoped Ideas
 
@@ -328,7 +333,11 @@ Do not create explicit VAR-A ceremony while only one integrated design exists. W
 
 ## Domain / Slice Strategy / Slice
 
-Domain is an optional conceptual model/language/lifecycle/rules/boundary owner when separate ownership improves planning. Domain planning aims for the simplest model that supports current selected meaning plus **justified** likely evolution: stable semantics explicit, likely variation localized when useful, speculative possibilities prevented from forcing premature abstraction. Canonical algorithm: [`domain-planning-workflow.md`](domain-planning-workflow.md).
+`Domain Discovery` is optional evidence-driven semantic discovery before Domain selection. It extracts identity/lifecycle/relationship/rule/invariant/policy/consistency candidates from current Scenario DATA/Behavior/Requirements and may form integrated Domain Variants when material. Canonical algorithm: [`domain-discovery-workflow.md`](domain-discovery-workflow.md).
+
+Domain is an optional selected conceptual model/language/lifecycle/rules/boundary owner when separate ownership improves planning. Domain planning aims for the simplest model that supports current selected meaning plus **justified** likely evolution: stable semantics explicit, likely variation localized when useful, speculative possibilities prevented from forcing premature abstraction. Canonical selection/review algorithm: [`domain-planning-workflow.md`](domain-planning-workflow.md).
+
+`Application Realization` is an optional high-level stress review of representative Runtime Realization Paths, persistence/transaction/integration/algorithm concerns and verification seams before detailed Slice planning. It may return material technical/correctness findings upstream but does not let implementation convenience define Domain truth. Canonical algorithm: [`application-realization-workflow.md`](application-realization-workflow.md).
 
 `Slice Strategy` is an optional decomposition/order plan used when implementation is large or uncertain enough that choosing vertical increments is itself an independently useful result.
 

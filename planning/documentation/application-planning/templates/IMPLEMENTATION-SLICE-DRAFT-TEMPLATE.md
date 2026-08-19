@@ -5,6 +5,8 @@ Purpose: plan one selected separately deliverable/checkable vertical implementat
 
 Canonical workflow: [`../slice-planning-workflow.md`](../slice-planning-workflow.md)
 Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
+Generic Architecture Lens / path semantics: [`../../architecture-planning/README.md`](../../architecture-planning/README.md)
+Application Realization workflow: [`../application-realization-workflow.md`](../application-realization-workflow.md)
 Detailed workspace contract: [`../detailed-planning/README.md`](../detailed-planning/README.md)
 
 ## Workspace Shape
@@ -37,7 +39,9 @@ A simple Slice may keep all implementation planning in `slice.md`. Split fronten
 | Requirements implemented | <links> |
 | Requirements constraining implementation | <links> |
 | Relevant Domain owners | <links when applicable> |
-| Relevant Change Axes | <links when material> |
+| Relevant Domain verification meaning | <links/examples when applicable> |
+| Relevant Application Realization findings | <links when material> |
+| Relevant Change Axes / Change Pressure | <links when material> |
 
 ### Vertical Boundary
 <What end-to-end behavior/technical responsibility this Slice delivers and what remains outside.>
@@ -57,6 +61,29 @@ A simple Slice may keep all implementation planning in `slice.md`. Split fronten
 ### Change-Axis / Coupling Review — When Material
 <Which evidence-backed likely changes were considered, which seams are justified now, and which speculative abstractions are intentionally deferred.>
 
+### Implementation Complexity Lens — When Material
+<Use the Architecture Planning path concepts proportionally. Record only what materially helps evaluate whether this Slice is genuinely local/vertical.>
+
+```text
+Expected Runtime Path
+→ calls / state changes / queries / remote calls
+→ branches / transaction / concurrency
+→ algorithm / data-volume concerns
+
+Implementation Path
+→ Domain work / orchestration / persistence
+→ adapters / integrations / API/UI
+→ configuration / migrations / verification
+
+Workspace Change Impact
+→ existing owners touched
+→ new owners introduced
+→ cross-Slice/shared changes
+
+Risks
+→ coupling / performance / operations / migration / testability
+```
+
 ### Implementation-Scoped Ideas
 <Link candidate generic Ideas considered. Mark promoted/rejected; selected meaning belongs in this Slice plan rather than remaining only in the Idea.>
 
@@ -67,7 +94,7 @@ A simple Slice may keep all implementation planning in `slice.md`. Split fronten
 <What must be demonstrably true for this Slice to count as delivered.>
 
 ### Verification Evidence — When Useful
-<Link `verification.md` and derive evidence from Scenario Acceptance + Behavior Items + Requirements + Domain invariants + Slice target.>
+<Link `verification.md` and derive evidence from Scenario Acceptance + Behavior Items + Requirements + Domain invariants/verification meaning + Slice target.>
 
 ## Cross-File Dependencies / Reference Object Candidates — When Material
 

@@ -38,7 +38,10 @@ Problem / Question / Idea
       + Scenario visual material
       + Related Requirements
    → Screens when spatial/screen UI needs independent ownership
-   → Domain when useful
+   → Domain Discovery when separate semantic discovery is useful
+   → Domain review/selection when separate Domain ownership helps
+   → Domain verification meaning proportionally
+   → Application Realization review when high-level implementation feasibility materially needs stress-testing
    → Slice Strategy when decomposition materially helps
    → Implementation Slices when useful
    → verification/testing evidence proportionally
@@ -58,12 +61,14 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 7. `templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` when own application is a material candidate or already mandated but its concept is not grounded
 8. `prototype-planning-workflow.md` + Prototype Plan/Result templates when interaction/workflow uncertainty benefits from prototyping
 9. [`detailed-planning/README.md`](detailed-planning/README.md) when canonical Scenario/Screen or downstream detailed planning begins
-10. `domain-planning-workflow.md` when a separate Domain owner materially helps
-11. `slice-planning-workflow.md` when implementation decomposition/Slice planning materially helps
-12. `goal-map.md` when a current working Goal Map would materially help
-13. other type-specific templates under `templates/`
-14. optional specialized SDS profile for projects that activate that route family
-15. project-local Use Cases / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / current owners.
+10. `domain-discovery-workflow.md` when Domain evidence/candidates need explicit discovery
+11. `domain-planning-workflow.md` when a separate Domain owner materially helps and current Domain meaning must be selected/reviewed
+12. `application-realization-workflow.md` when representative runtime/persistence/technical feasibility needs high-level stress review before detailed delivery
+13. `slice-planning-workflow.md` when implementation decomposition/Slice planning materially helps
+14. `goal-map.md` when a current working Goal Map would materially help
+15. other type-specific templates under `templates/`
+16. optional specialized SDS profile for projects that activate that route family
+17. project-local Use Cases / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / current owners.
 
 ## Core Concepts
 
@@ -80,11 +85,13 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 - **Prototype Scenario** — provisional behavioral design (`PSCN-*`) used to discover/refine eventual Scenario boundaries; not canonical Scenario authority.
 - **Prototype Screen** — provisional spatial design (`PSCR-*`) used to discover/refine eventual Screen requirements; not canonical Screen authority.
 - **Requirement** — condition/property/constraint the selected solution must satisfy; not automatically a Scenario.
-- **Change Axis** — evidence-backed expected-variation dimension used to evaluate adaptability/coupling; not authorization to generalize.
+- **Change Axis** — generic Workspace variability/pressure concept owned by sibling Architecture Planning; Application Planning contributes Scenario/Requirement/prototype evidence without making an axis authorization to generalize.
 - **Scenario** — coherent user/actor-visible behavioral unit grounded in a meaningful user-world Need and independently meaningful observable result; informational/read-only behavior is valid when understanding itself is the result, while command/implementation identity alone is insufficient.
 - **Scenario Draft workspace** — canonical Scenario behavior plus standard `ideas/`, `data/`, `behavior/`, `visual/` supporting areas.
 - **Screen** — spatial/visual owner for an application surface; it may map related Scenarios but does not own their behavior.
-- **Domain** — optional conceptual model/language/lifecycle/rules/boundaries when separate ownership improves planning.
+- **Domain Discovery** — optional evidence-driven extraction of concepts/identity/lifecycle/rules/invariants/policies/consistency candidates from current Scenario/DATA/Behavior/Requirements before Domain selection.
+- **Domain** — optional selected conceptual model/language/lifecycle/rules/boundaries when separate ownership improves planning.
+- **Application Realization** — optional high-level runtime/persistence/integration/technical stress review before detailed Slice planning; not Domain authority or task decomposition.
 - **Slice Strategy** — optional decomposition/order plan for separately deliverable/checkable implementation increments.
 - **Implementation Slice** — one optional separately deliverable/checkable integrated implementation increment after enough behavior/concepts are understood.
 - **Current Draft Plan** — current selected baseline named inside a detailed draft's Q/R/P or Better Route unit; not a file/entity/stage.

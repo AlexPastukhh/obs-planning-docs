@@ -41,7 +41,7 @@ status-reconciliation-workflow.md
 example-coverage-workflow.md
 ```
 
-Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`.
+Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`. Universal Workspace Architecture Planning lives under `architecture-planning/` and is a peer reusable family rather than an application-implementation subfolder.
 
 ReviewDiff semantic correctness review is owned by `review-diff-review-workflow.md`; `review-diff-file-workflow.md` is only an optional legacy transfer/capture route.
 
@@ -64,6 +64,10 @@ command routing/definition → executable shortcut layer
 ## Runtime Vs Bootstrap
 
 Runtime starts from repository navigation/registries. Field kits are used only before their runtime owners exist. `Use-Case Map / UCM` is not a current generic file type; executable shortcuts use Command Routing while semantic capabilities live in Use-Case Registries.
+
+## Workspace Architecture Planning
+
+See `architecture-planning/README.md`. Architecture Planning starts from important Workspace Use Cases (including read-only/understanding work), important concrete changes, Extensions, Requirements/constraints and their Work/Runtime paths; it derives Change Pressure/Change Axes and evaluates architecture proportionally rather than targeting patterns.
 
 ## Solution / Application Planning
 

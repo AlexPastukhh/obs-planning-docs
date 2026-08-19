@@ -192,3 +192,18 @@ No material unresolved issues identified.
 - all other Prototype/Requirement/Domain/Slice planning and focused Use-Case activation meaning from `LOG-APP-008` / `LOG-APP-009` remains unchanged.
 
 **Rationale:** preserve truthful draft state and distinguish `not yet reviewed` from an evidence-backed `reviewed with no material unresolved issues` conclusion.
+
+### XREF-002 — Workspace Architecture Planning foundation and application handoffs
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-011`  
+**Reason:** Application Planning gains Domain Discovery / Application Realization and consumes generic Architecture Change-Axis/path semantics as part of the same cross-scope Architecture Planning foundation ChangeSet. Full Idea Review, clarification and applied-state history are owned by the canonical reusable-documentation log entry.
+
+### XREF-003 — Architecture Planning integration corrections
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-013`  
+**Reason:** Application Planning templates are synchronized with the Domain Verification / Realization / Slice complexity semantics of the same Architecture Planning ChangeSet. Full ReviewDiff correction reasoning and applied-state history are owned by the canonical reusable-documentation log entry.
+

@@ -1,7 +1,7 @@
 # Requirements And Change Context
 
 Status: active reusable canonical owner
-Scope: cross-cutting application-planning semantics for Requirements, expected stability, Future Scenario Ideas, Change Axes and early implementation-scoped Ideas used across solution/application and domain/implementation planning.
+Scope: cross-cutting application-planning semantics for Requirements, expected stability, Future Scenario Ideas, application-specific Change-Axis evidence/placement and early implementation-scoped Ideas used across solution/application and domain/implementation planning. Generic Workspace Change Pressure / Change Axis semantics are owned by sibling Architecture Planning.
 
 ## 1. Purpose
 
@@ -18,7 +18,7 @@ Requirement
 = a condition/property/constraint the selected solution must satisfy
 
 Change Axis
-= an evidence-backed dimension along which current meaning may plausibly vary
+= generic evidence-backed Workspace variability/pressure concept owned by sibling Architecture Planning; application planning contributes Scenario/Requirement/prototype evidence and records application impact
 
 implementation-scoped Idea
 = an ordinary Idea about a possible implementation route
@@ -142,45 +142,34 @@ Future Scenario Ideas are useful inputs to Change-Axis reasoning but must not si
 
 ## 6. Change Axis
 
-A `Change Axis` describes an evidence-backed dimension along which application meaning may vary, for example:
+Generic `Change Axis`, Workspace Use Case / Work Path, Extension and Change Pressure semantics are canonical in sibling [`../architecture-planning/workspace-use-cases-and-change-pressure.md`](../architecture-planning/workspace-use-cases-and-change-pressure.md).
+
+Application Planning contributes evidence such as:
 
 ```text
-number/type of actors
-role model
-workflow ordering
-request lifecycle
-provider/integration choice
-number of simultaneous objects
-input/output channels
-authorization model
-data volume
-offline/online boundary
-presentation surfaces
+current / candidate Requirements
+Scenarios / Behavior Items
+prototype findings
+Future Scenario Ideas
+selected/plausible application Extensions
+provider/integration constraints
+observed application change history
 ```
 
-Recommended shape:
+Application-local axis records may still live in project `solution-and-application/change-axes/` or another useful local zone. They should record the generic axis identity/evidence/confidence plus affected application Requirements / Scenarios / Domain / Slices when known.
 
-```text
-Change Axis ID
-Current state / current assumption
-Likely variation
-Evidence / source
-Confidence
-Affected Requirements / Scenarios / Domain / Slices when known
-```
-
-Critical invariant:
+Critical invariant remains:
 
 ```text
 Change Axis
-→ reason to evaluate adaptability and coupling
+→ reason to evaluate adaptability/coupling where the axis actually crosses
 
 Change Axis
 ≠ Requirement to generalize now
 ≠ instruction to build an extension point
 ```
 
-Domain/Slice planning should consider high-confidence change pressure while rejecting abstractions justified only by speculation.
+Domain/Slice planning consumes high-confidence material change pressure through the Architecture Planning contract while rejecting abstractions justified only by speculation.
 
 ## 7. Implementation-Scoped Ideas
 

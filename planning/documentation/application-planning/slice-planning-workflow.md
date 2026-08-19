@@ -31,7 +31,9 @@ confirmed Requirements
 canonical Screens where frontend spatial work matters
 Domain owners/invariants when present
 prototype evidence when still decision-relevant
-Change Axes with evidence/confidence
+Change Axes / Change Pressure with evidence/confidence
+Domain verification meaning when present
+application-realization findings when present
 implementation-scoped Ideas
 technical/integration/operational constraints
 existing implementation state when extending an application
@@ -39,7 +41,7 @@ existing implementation state when extending an application
 
 ## 3. Slice Strategy Goal
 
-Prefer small **vertical**, usable/checkable increments that deliver or validate meaningful application behavior.
+Prefer small **vertical**, usable/checkable increments that deliver or validate meaningful application behavior. Vertical Slice means locality of capability-specific change and end-to-end verification, not a mandatory one-folder-per-Slice directory convention. Genuinely shared cohesive Domain invariants remain shared rather than copied into each Slice merely for physical verticality.
 
 Evaluate candidate decompositions against:
 
@@ -97,9 +99,8 @@ After a Slice is selected, plan its integrated delivery:
 ```text
 Deliverable result
 Covered Scenarios / Behavior Items
-Requirements implemented
-Requirements constraining implementation
-Relevant Domain meaning
+Requirements implemented / constraining implementation
+Relevant Domain meaning / verification contract
 Vertical boundary
 Dependencies / handoffs
 Integrated implementation plan
@@ -109,6 +110,38 @@ Change Axes considered
 implementation-scoped Ideas promoted/rejected
 verification target/evidence
 ```
+
+Also apply a proportional Implementation Complexity Lens:
+
+```text
+Expected Runtime Path
+→ calls / state changes / queries / remote calls
+→ branches / transaction / concurrency
+→ algorithm / data-volume concerns
+
+Implementation Path
+→ Domain work
+→ orchestration
+→ persistence
+→ adapters / integrations
+→ API/UI
+→ configuration / migrations
+→ verification
+
+Workspace Change Impact
+→ existing owners touched
+→ new owners introduced
+→ cross-Slice/shared changes
+
+Risks
+→ coupling
+→ performance
+→ operations
+→ migration
+→ testability
+```
+
+Use the Architecture Planning path concepts where useful. The goal is to see whether the Slice is genuinely local/vertical or only named that way.
 
 `slice.md` remains integrated authority. `frontend.md`, `server.md`, `verification.md` or other focused files are implementation-part plans, not new Use Cases by default.
 

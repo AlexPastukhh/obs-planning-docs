@@ -1,15 +1,19 @@
 # Domain Planning Workflow
 
 Status: active reusable workflow
-Scope: plan/review an optional Domain owner from current application behavior, requirements and justified expected change without over-generalizing for speculative futures.
+Scope: compare/refine/select/review an optional current Domain owner from discovered semantic evidence, current application behavior, requirements and justified expected change without over-generalizing for speculative futures.
 
-Canonical cross-cutting context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
+Discovery workflow: [`domain-discovery-workflow.md`](domain-discovery-workflow.md)
+Canonical application change context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
+Generic Architecture Lens / Change Axes: [`../architecture-planning/README.md`](../architecture-planning/README.md)
 Recommended Domain shape: [`templates/DOMAIN-DRAFT-TEMPLATE.md`](templates/DOMAIN-DRAFT-TEMPLATE.md)
 Shared draft-state contract: [`detailed-planning/README.md`](detailed-planning/README.md)
 
 ## 1. Purpose
 
 Domain planning exists when a separate conceptual language/lifecycle/rules/boundary owner materially improves clarity, consistency or change cost.
+
+`UC-PLAN-DOMAIN-DISCOVERY` owns evidence/candidate discovery. `UC-PLAN-DOMAIN` owns comparison/refinement/selection/review of current Domain meaning.
 
 Primary goal:
 
@@ -21,13 +25,7 @@ make justified likely variation local/easy enough to change
 keep the current model as simple as possible
 ```
 
-Not:
-
-```text
-make everything extensible
-build abstractions for every imaginable future
-translate UI/data structures directly into domain objects
-```
+Not maximum extensibility or implementation-convenience-shaped semantics.
 
 ## 2. Inputs
 
@@ -38,38 +36,27 @@ selected Application Concept / responsibility
 current Application Use Cases
 current detailed Scenarios
 Scenario DATA / Behavior Items
-current Screen meaning when it constrains domain semantics
 confirmed Requirements
+Domain Discovery evidence/candidates/Variants when available
 prototype evidence when relevant
-Future Scenario Ideas / Change Axes with evidence/confidence
+material Change Axes / Change Pressure from Architecture Planning
 relevant implementation-scoped Ideas
 existing Domain/current implementation evidence when reviewing an existing system
 ```
 
 Current Requirements and selected Scenario meaning outrank speculative future possibilities.
 
-## 3. Identify Stable Semantic Core
+## 3. Review Semantic Core / Candidates
 
-Ask:
+Confirm that candidate concepts/identities/relationships/lifecycle/rules are justified by current selected meaning. If evidence/candidates are not grounded enough, return to `UC-PLAN-DOMAIN-DISCOVERY` instead of inventing Domain structure during selection.
 
-```text
-What identities/concepts must remain understandable across Scenarios?
-What relationships are semantically meaningful rather than implementation convenience?
-What lifecycle/state meaning is observable or rule-relevant?
-Which rules must never be violated?
-Which terms need one canonical language?
-Which current behaviors are merely presentation/workflow choices rather than Domain truth?
-```
+## 4. Separate Invariant From Policy / Mechanism
 
-Keep only concepts justified by current selected meaning.
-
-## 4. Separate Invariant From Policy / Variation
-
-For each rule/relationship ask whether it is:
+For each material rule/relationship distinguish:
 
 ```text
 Invariant
-→ must remain true for the current model to be correct
+→ must remain true for current model correctness
 
 Policy / selected current rule
 → current choice that may legitimately vary
@@ -78,79 +65,86 @@ Implementation mechanism
 → how selected meaning is realized; normally not Domain truth
 ```
 
-Do not freeze an implementation mechanism into Domain semantics merely because it exists today.
+## 5. Evaluate Material Change Axes
 
-## 5. Evaluate Change Axes
-
-For each material Change Axis:
+For each axis crossing the candidate Domain:
 
 ```text
 current assumption
-likely variation
-evidence/confidence
-what Domain meaning would need to change
-how far that change would propagate under the candidate model
-whether an abstraction/boundary now is actually cheaper than direct future change
+material likely variation / evidence
+what Domain meaning would change
+how far change propagates under candidate model
+whether a boundary now is actually cheaper than direct future change
 ```
 
-Use high-confidence likely change to evaluate boundaries. Record speculative possibilities but do not let them force generalization.
+An axis elsewhere does not justify abstraction here.
 
-## 6. Candidate Domain Design
+## 6. Compare Integrated Domain Variants
 
-Plan proportionally:
-
-```text
-concepts / identities
-relationships
-lifecycle / states
-invariants
-policies / variation points
-conceptual boundaries
-interfaces between Domain areas when meaningful
-```
-
-A Domain workspace may have Variants when there are genuinely distinct integrated Domain designs. Do not create Variants for small implementation alternatives.
+A Domain Variant is one coherent integrated semantic model, not one small implementation alternative. Compare material Variants against current Scenario/Requirement correctness, semantic clarity, invariant enforceability and justified likely evolution.
 
 ## 7. Stress Checks
 
 ### Current-Scenario Check
 
-Walk current Scenarios/Behavior through the candidate Domain:
-
 ```text
 Can required current behavior be expressed simply?
-Are any Scenario rules contradicted?
+Are Scenario/Requirement rules contradicted?
 Is important user-visible meaning missing?
-Did Domain planning accidentally invent behavior?
+Did Domain planning invent behavior?
 ```
 
-### Likely-Evolution Check
-
-Use only justified likely change:
+### Change-Axis Check
 
 ```text
-If this Change Axis moves, what changes?
-Does one local concept/policy change or does meaning leak across the system?
-Would a small boundary now materially reduce future cost?
+If the material axis moves, what semantic owners change?
+Is likely variation localized enough?
+Would a small boundary now materially reduce evidence-backed future cost?
 ```
 
 ### Premature-Generalization Check
 
 ```text
-Is this abstraction needed by current requirements?
-If not, is there evidence-backed likely change that justifies it?
-If both answers are no, remove/simplify it.
+No current Requirement/Scenario need
++ no material Change Axis crossing here
+→ remove/simplify unsupported abstraction.
 ```
+
+### Realization Sanity Check
+
+Before selecting a materially complex Variant, ask proportionally whether representative current Scenarios can be realized reasonably, invariants can be enforced at required consistency, persistence/transactions are non-pathological, data/algorithm constraints are acceptable and important rules remain verifiable.
+
+`slightly more code` is not a reason to reject semantically correct Domain meaning. A real consistency/performance/technical impossibility is valid upstream evidence and may require Domain Variant review or `UC-PLAN-REALIZATION`.
+
+Persistence is stress input, not Domain authority.
 
 ## 8. Select And Integrate
 
-Selected Domain meaning belongs in the Domain owner/template, with material rationale in Current Decisions when useful.
+Selected Domain meaning belongs in the Domain owner/template, with material rationale in Current Decisions when useful. Implementation-scoped Ideas promoted into Domain are no longer separate current implementation authority.
 
-Implementation-scoped Ideas that become selected Domain meaning are marked promoted/rejected in their Idea owner; the Domain becomes current semantic authority.
+If Domain planning exposes an upstream Requirement/Scenario problem, return an explicit finding rather than silently changing upstream meaning.
 
-If Domain planning exposes an upstream requirement/Scenario problem, create an explicit review finding rather than silently changing upstream meaning.
+## 9. Domain Verification Meaning
 
-## 9. Exit Criteria
+For nontrivial selected Domain meaning, establish proportionally before detailed Slice planning:
+
+```text
+invariant examples
+allowed transitions
+forbidden transitions
+business-rule examples
+important derived-value examples
+cross-object consistency examples
+```
+
+This is a verification contract/meaning derived from Domain semantics, not a second Domain semantic authority and not necessarily a separate file. When an executable Domain API is already sufficiently selected, these cases may be materialized early as tests. In unresolved greenfield architecture, keep them technology-neutral until the proper executable boundary becomes concrete.
+
+```text
+verification meaning should precede implementation detail where practical
+but test framework must not prematurely design Domain API.
+```
+
+## 10. Exit Criteria
 
 A useful Domain plan has:
 
@@ -162,6 +156,8 @@ lifecycle/rules/invariants when needed
 explicit policy/variation where materially useful
 traceability to current Scenarios/Requirements
 justified Change-Axis reasoning
+selected current Variant when alternatives exist
+proportional Domain verification meaning
 no unsupported future abstractions
 current draft state / decisions / findings
 ```

@@ -24,6 +24,7 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | ReviewDiff semantic correctness review | `review-diff-review-workflow.md` + shared Idea owners |
 | Shared Idea methodology / aggregate Current-Plan contract | Idea principles/workflow/template |
 | Solution/application planning | `application-planning/` |
+| Universal Workspace Architecture Planning | `architecture-planning/` |
 | Detailed application behavior | project/application Scenario owner(s) |
 | Optional Scenario/Domain/Slice specialization | `profiles/scenario-domain-slice-*` |
 | Status reconciliation | `status-reconciliation-workflow.md` |

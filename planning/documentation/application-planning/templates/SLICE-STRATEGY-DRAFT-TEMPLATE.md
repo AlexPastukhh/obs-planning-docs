@@ -5,6 +5,7 @@ Purpose: plan/review decomposition and delivery order for Implementation Slices 
 
 Canonical workflow: [`../slice-planning-workflow.md`](../slice-planning-workflow.md)
 Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
+Application Realization workflow: [`../application-realization-workflow.md`](../application-realization-workflow.md)
 
 Blank sections are not requirements. Skip explicit strategy artifacts for trivial work that does not benefit from decomposition planning.
 
@@ -26,8 +27,14 @@ Blank sections are not requirements. Skip explicit strategy artifacts for trivia
 ### Requirements
 <Confirmed Requirements and constraints that materially shape delivery.>
 
-### Change Axes
-<Only evidence-backed expected variation that should influence coupling/boundary evaluation.>
+### Domain Verification Meaning — When Present
+<Invariant/transition/rule/consistency examples that selected Slices must preserve and eventually verify.>
+
+### Application Realization Findings — When Present
+<Material runtime/persistence/integration/transaction/algorithm/verification constraints that should influence decomposition/order without redefining upstream semantics.>
+
+### Change Axes / Change Pressure
+<Only evidence-backed expected variation/pressure that should influence coupling/boundary evaluation.>
 
 ### Relevant Implementation-Scoped Ideas
 <Link candidate Ideas; they are not selected implementation truth merely because they are listed.>

@@ -6,10 +6,13 @@ Status: active reusable nested responsibility map
 |---|---|
 | Core planning concepts/invariants | `application-planning-principles-and-terminology.md` |
 | Repeated whole-solution → application behavior process | `solution-and-scenario-planning-workflow.md` |
-| Requirement / change-context / early implementation-Idea semantics | `requirements-and-change-context.md` |
+| Requirement / application change-context / early implementation-Idea semantics | `requirements-and-change-context.md` |
+| Generic Workspace Architecture / Change Pressure / Change Axis semantics | sibling `../architecture-planning/` |
 | Interaction/workflow Prototype planning | `prototype-planning-workflow.md` |
 | Shared detailed planning/workspace/Variant/draft-state/reference-candidate contract | `detailed-planning/README.md` |
-| Domain planning algorithm | `domain-planning-workflow.md` |
+| Domain evidence/candidate discovery algorithm | `domain-discovery-workflow.md` |
+| Current Domain selection/review algorithm | `domain-planning-workflow.md` |
+| High-level application realization/stress algorithm | `application-realization-workflow.md` |
 | Slice Strategy + one-Slice planning algorithm | `slice-planning-workflow.md` |
 | Semantic planning Directions | `direction-registry.md` |
 | Semantic planning Use Cases | `use-case-registry.md` |

@@ -24,13 +24,15 @@ Need / Desired Result
    → Prototype Scenarios / Prototype Screens / candidate Requirements
 → Scenario discovery
 → detailed Scenario Draft workspaces + Screen spatial owners when useful
-→ optional Domain planning
+→ optional Domain Discovery
+→ optional Domain review/selection + verification meaning
+→ optional Application Realization review
 → optional Slice Strategy
 → optional Implementation Slice / verification work
 → repeated cross-owner / whole-solution consistency review
 ```
 
-Cross-cutting Requirements / Future Scenario Ideas / Change Axes / implementation-scoped Ideas are owned by [`requirements-and-change-context.md`](requirements-and-change-context.md).
+Application-specific Requirements / Future Scenario Ideas / implementation-scoped Ideas are owned by [`requirements-and-change-context.md`](requirements-and-change-context.md). Generic Workspace Change Pressure / Change Axis semantics are owned by sibling [`../architecture-planning/`](../architecture-planning/); application owners contribute evidence and consume those semantics where architecture/Domain/Slice reasoning needs them.
 
 Shared low-level contract: [`detailed-planning/README.md`](detailed-planning/README.md).
 

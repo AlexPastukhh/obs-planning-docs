@@ -5,6 +5,7 @@ Purpose: create/review a separate Domain owner only when conceptual language, li
 
 Canonical workflow: [`../domain-planning-workflow.md`](../domain-planning-workflow.md)
 Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
+Generic Architecture Lens / Change Axes: [`../../architecture-planning/README.md`](../../architecture-planning/README.md)
 Detailed workspace contract: [`../detailed-planning/README.md`](../detailed-planning/README.md)
 
 ## Workspace Shape
@@ -60,8 +61,11 @@ Domain does not require `visual/` by default.
 ### Current Scenario / Requirement Stress Check
 <Confirm current selected behavior and Requirements can be represented simply without Domain inventing behavior.>
 
-### Likely-Evolution Stress Check — When Material
-<Test only justified likely evolution; do not convert possibilities into Requirements.>
+### Realization Sanity Check — When Material
+<Stress representative current Scenarios against invariant enforcement, persistence/transaction shape, integration/remote boundaries, important algorithms/data volume and verification feasibility. Slightly more code is not a reason to distort correct Domain meaning; material correctness/performance/consistency/technical impossibility is valid upstream evidence.>
+
+### Domain Verification Meaning — When Material
+<Derive technology-neutral invariant examples, allowed/forbidden transitions, business-rule examples, important derived-value examples and cross-object consistency cases. This is verification meaning derived from Domain semantics, not a second Domain authority or a requirement for a separate file.>
 
 ### Scenario / Behavior / Requirement Traceability
 <Link relevant owners without copying detailed flow/Requirement bodies unnecessarily.>
