@@ -134,7 +134,7 @@ Finding
 Relation / Impact On Current Plan
 ```
 
-Add Related Idea IDs when applicable. Add Needed Resolution / Treatment, fallback and Blocking only when useful.
+Add Related Idea IDs when applicable. For Idea-related Q/R/P, also apply the shared bidirectional discoverability rule: one Related Idea gets the full same-ID Idea-local mirror; several Related Ideas get lightweight same-ID references inside every affected Idea while the aggregate keeps the one full cross-Idea body. Add Needed Resolution / Treatment, fallback and Blocking only when useful.
 
 Examples of valid aggregate content:
 
@@ -186,7 +186,7 @@ Potential Simplifications / Better Routes when material
 ReviewDiff Verdict
 ```
 
-Material Idea-derived aggregate findings reference their Idea IDs.
+Material Idea-derived aggregate findings reference their Idea IDs and remain discoverable from each affected Idea through the shared same-Finding-ID mirror/reference rule.
 
 Allowed whole-diff verdicts:
 

@@ -153,6 +153,17 @@ When an area has no content yet, a neutral `.gitkeep` placeholder is preferred o
 
 The current selected Scenario owner/Variant owns current detailed behavior. While the root design is selected, that owner is the root Scenario file; if a nested integrated Variant becomes selected, that Variant's Scenario file becomes the current behavioral owner. `README.md` owns local navigation/topology/status and routes to exactly one current selected Scenario owner/Variant.
 
+Scenario identity is behavioral rather than command-/UI-/implementation-shaped:
+
+```text
+meaningful user-world Need
++ user/actor-visible behavior or information interaction
++ independently meaningful observable result
+→ Scenario candidate
+```
+
+A read-only/informational flow may be a valid Scenario when obtaining reliable information or understanding is itself an independently meaningful result. A command, button, Screen, API call, database mutation, backend operation or technical procedure is not a Scenario merely because it is addressable. Such actions/operations remain inside a parent Scenario unless the Need/result boundary independently justifies a separate Scenario.
+
 ### Shared Scenario-Draft Areas
 
 Meaning shared by several Scenario Drafts belongs at the Scenario collection level rather than being copied into each Scenario:
@@ -206,6 +217,23 @@ Variant-specific question
 ```
 
 One question has one primary Idea workspace. Other affected owners link it rather than maintain duplicate Idea copies.
+
+When a detailed-draft Q/R/P references Idea(s), use the generic Idea ↔ Q/R/P discoverability rule:
+
+```text
+exactly one Related Idea
+→ one logical finding / one stable Finding ID
+→ keep the full aggregate Current-Draft-relative finding
+→ mirror the full same-ID Q/R/P inside that Idea
+
+several Related Ideas
+→ keep one full cross-Idea aggregate finding
+→ list every Related Idea
+→ add a lightweight same-ID reference inside every affected Idea
+→ do not copy the complete finding into every Idea
+```
+
+The Idea-side mirror/reference is a projection of the same finding, not a second semantic owner. Resolution removes the aggregate representation and every Idea-side mirror/reference together.
 
 ## 5. Planning Unit Variants
 
@@ -324,6 +352,18 @@ Screen
 
 A Screen may list which Scenarios use it and which spatial areas those Scenarios occupy. That relation does not transfer behavioral authority to the Screen.
 
+Every material Scenario ↔ Screen relation must be discoverable from both owners:
+
+```text
+Scenario
+→ Screen + role in Scenario + relevant flow/behavior range
+
+Screen
+→ Scenario + Screen role / zones / visual states used
+```
+
+This is reciprocal navigation/traceability, not duplicated behavioral ownership. An application-level Scenario × Screen coverage matrix may be maintained when useful, but it is a derived projection rather than a third canonical owner of the relationship. A one-sided material relation is a consistency finding.
+
 Do not create Screen-local `data/` or `behavior/` folders. DATA/Behavior meaning stays with Scenario/shared Scenario owners or another real semantic owner.
 
 `visual/` under a Screen may contain wireframes, annotated mockups, layout/state maps, responsive arrangements and spatial hierarchy.
@@ -432,6 +472,32 @@ A whole Scenario/Data/Behavior object is not automatically a live Reference Obje
 
 A context-specific paraphrase may intentionally differ and should not be forced into literal synchronization.
 
+### Consumer-Side Candidate Discovery
+
+A consuming file may be the first place where exact cross-file reuse becomes visible. When useful, record the dependency proportionally:
+
+```text
+Source Owner:
+  <canonical semantic owner>
+
+Canonical Meaning / Fragment:
+  <identify the source meaning; do not redefine it here>
+
+Use Here:
+  <why this owner consumes it>
+
+Usage Mode:
+  semantic link / intentional paraphrase / exact-literal candidate
+
+Reference Object Candidate:
+  yes / no
+
+Materialized Linked Notes RO:
+  no / existing ro_* when actually applicable
+```
+
+A consumer-side candidate note does not create a second canonical definition. Prefer an ordinary link or intentional paraphrase unless exact literal equality and stale-copy review are genuinely valuable.
+
 ### Linked Notes Materialization
 
 When a candidate genuinely needs literal stale-copy detection/synchronization, it may be materialized with the repository Linked Notes Reference Object mechanism.
@@ -460,7 +526,8 @@ local Scenario / Screen / Domain / Slice conclusion
 → identify affected owners
 → review them explicitly
 → confirm unchanged or update their current meaning
-→ return to whole-application / whole-solution integration when material
+→ revisit selected Application Concept when value/feasibility/cost assumptions change materially
+→ revisit the real-world workflow / whole-solution choice when material
 ```
 
 An upstream change does not silently rewrite downstream owners, and a downstream finding does not automatically redefine upstream meaning.

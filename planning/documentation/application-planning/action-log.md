@@ -84,3 +84,42 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - workspace `README.md` navigation routes to exactly one current selected Scenario owner/Variant, preserving explicit selected/not-selected/candidate Variant state without introducing duplicate current authority.
 
 **Rationale:** keep Scenario semantic authority consistent with the already-selected Variant lifecycle while preserving the intentionally optional physical relocation of the first Variant.
+
+
+### LOG-APP-006 — Application Concept bridge, Scenario semantics and Idea-finding traceability
+
+**Type:** IDEA REVIEW  
+**Source:** current planning discussion covering bidirectional Idea/Q/R/P discoverability, real-world problem-resolution workflows and open solution slots, viable existing-solution comparison, Application Concept/Concept Features, feasibility/cost reasoning, Scenario/read-only boundaries, reciprocal Screen/Scenario coverage and cross-file Reference Object Candidate discovery  
+
+**Current Conclusions:**
+- every material Idea-linked Q/R/P remains discoverable from its affected Idea(s): one Related Idea gets a full same-Finding-ID mirror, while several Related Ideas share one full aggregate finding plus lightweight same-ID references in every affected Idea; mirrors/references are projections of one logical finding and follow its resolution lifecycle;
+- whole-solution planning may model a real-world problem-resolution Workflow with lightweight `Open Solution Slot` surfaces where a meaningful intermediate result is known but the mechanism is not; Slots can be filled by process/manual routes, existing tools/services, integrations, Application Concepts or hybrids and do not create a mandatory entity/stage;
+- existing solutions that still materially satisfy the relevant Need/Slot remain `viable` alternatives and stay in comparison while a custom Application Concept is being evaluated;
+- `Application Concept` is a distinct candidate-app planning responsibility: it states the life/workflow simplification, what the application would let users do/know/obtain, Concept Features, interaction hypotheses, technical feasibility, dependencies/unknowns, rough development effort/time/complexity, maintenance/support burden and comparison against viable alternatives before detailed application planning;
+- early Concept estimates use rough ranges/relative bands plus assumptions/evidence/confidence; decision-sensitive feasibility uncertainty routes to research/prototype rather than false precision;
+- `Application Concept Feature` is scoped to the Concept as a capability/value hypothesis and does not create a mandatory global Feature layer or 1:1 Feature→Use Case→Scenario→Slice chain;
+- after a custom Concept is selected (or application creation is already externally mandated), Application responsibility and candidate Application Use Cases are grounded in real-world Needs/results before optional Spine and Scenario discovery;
+- Scenario identity is a meaningful user-world Need + user/actor-visible behavior or information interaction + independently meaningful observable result; informational/read-only behavior can be a Scenario when understanding itself is a meaningful result, while commands, buttons, Screens, API/database/backend operations and technical procedures do not become Scenarios merely because they are addressable;
+- every material Scenario↔Screen relationship is discoverable from both owners without transferring behavioral authority to the Screen; a coverage matrix may exist only as a derived projection;
+- low-level owners explicitly review cross-file dependencies for Reference Object Candidates; a consumer-side candidate note identifies a source owner/use mode but does not create a second canonical definition or a live Linked Notes Reference Object.
+
+**Questions / Risks / Problems:**  
+No material unresolved issues identified.
+
+### LOG-APP-007 — Apply Application Concept bridge and detailed planning traceability
+
+**Type:** APPLIED  
+**Applied From:** `LOG-APP-006`  
+**ChangeSet:** `7a2834e0-4e61-4a79-9e43-d499ad2bc4a0`  
+**Package:** `4eca35aa-9d7a-46d4-850c-ff1b6f20884e`  
+
+**Target-State Result:** after successful Apply of this package:
+- reusable Idea/File Update/ReviewDiff methodology owns bidirectional Idea↔Q/R/P discoverability with one logical Finding ID and cardinality-sensitive mirror/reference behavior;
+- whole-solution planning explicitly models real-world workflows/Open Solution Slots, keeps viable existing alternatives in comparison and can review a custom Application Concept before selecting custom application ownership;
+- Application Concept has a reusable recommended template covering value/simplification, Concept Features, interaction hypotheses, technical feasibility, rough development/maintenance burden, estimate confidence and comparison against viable alternatives;
+- Application planning routing exposes `UC-PLAN-APP-CONCEPT` and an explicit Concept→Application responsibility→Application Use Case→Spine/Scenario bridge without making those capabilities mandatory stages;
+- Scenario semantics explicitly support independently meaningful informational/read-only outcomes while preventing command/action/UI/implementation identity from mechanically becoming Scenario identity;
+- detailed planning requires reciprocal Scenario↔Screen discoverability and provides consumer-side cross-file dependency / Reference Object Candidate surfaces without changing Linked Notes runtime/registry state;
+- the FixFlow worked example demonstrates real-world workflow Slots, viable SaaS comparison, Application Concept/Features/feasibility, selected application responsibility, candidate Use Cases, informational Scenario behavior, command-vs-Scenario boundaries, reciprocal Screen coverage and consumer-side RO-candidate discovery.
+
+**Rationale:** keep application planning anchored in the best real-world way to satisfy the Need, make custom-app value/feasibility explicit before low-level behavior planning, and strengthen cross-owner traceability without reviving generic Planning Draft or mandatory Feature layers.

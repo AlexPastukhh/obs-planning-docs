@@ -112,3 +112,11 @@ Additional selected clarification: cross-scope work has one affected canonical l
 **Canonical Log:** `planning/documentation/application-planning/action-log.md`  
 **Entry:** `LOG-APP-005`  
 **Reason:** the specialized SDS profile under the reusable-documentation scope was corrected so current Scenario behavior authority follows the selected Scenario owner/Variant rather than unconditionally the root Scenario file. Full ReviewDiff correction reasoning and applied-state history are owned by the canonical Application Planning log entry.
+
+
+### XREF-DOC-004 — Application Concept bridge and Idea-finding traceability
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-007`  
+**Reason:** generic Idea/File Update/ReviewDiff traceability semantics changed as part of the same cross-scope work item as the Application Concept/Solution→Application planning bridge and detailed-planning traceability update. Full Idea Review and applied-state history are owned by the canonical Application Planning log entry.

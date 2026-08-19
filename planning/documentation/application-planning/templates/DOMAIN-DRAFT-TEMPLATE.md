@@ -44,11 +44,19 @@ Domain does not require `visual/` by default.
 ### Scenario / Behavior Traceability
 <Link relevant Scenario/Behavior owners without copying their detailed flow.>
 
+## Cross-File Dependencies / Reference Object Candidates — When Material
+
+| Source Owner | Meaning Used Here | Use Here | Usage Mode | RO Candidate | Materialized RO |
+|---|---|---|---|---|---|
+| <owner> | <canonical fragment/reference> | <Domain use> | semantic link / paraphrase / exact-literal candidate | yes / no | no / existing `ro_*` |
+
+A consumer-side candidate note does not redefine source meaning. Domain rules/invariants may themselves be source candidates when exact literal reuse across Scenario/Slice/verification owners is genuinely useful.
+
 ## Current Decisions
 <Use the shared detailed-planning Current Decisions contract.>
 
 ## Questions / Risks / Problems
-<Each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan.>
+<Each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan. When Related Idea(s) exist, apply the shared Idea ↔ Q/R/P mirror/reference rule.>
 
 ## Potential Simplifications / Better Routes — When Material
 <Only unselected changes to current Domain meaning.>

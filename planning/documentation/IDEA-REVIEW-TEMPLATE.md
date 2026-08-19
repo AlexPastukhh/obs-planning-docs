@@ -25,6 +25,29 @@ Mandatory checks do not require empty fields to be printed.
 **Current Conclusion:** <current meaning>
 ```
 
+### Related Q/R/P — When Applicable
+
+If a material Q/R/P relates to exactly this one Idea, mirror the full aggregate unit here with the **same Finding ID**:
+
+```markdown
+### [Q/R/P-<ID>] — <finding title>
+
+**Type:** Question / Risk / Problem
+**Current Plan:** <same selected/current baseline used by the aggregate finding>
+**Finding:** <same logical unresolved/adverse finding>
+**Relation / Impact On Current Plan:** <same material relation>
+**Needed Resolution / Treatment:** <when applicable>
+**Blocking:** <yes / no, when useful>
+```
+
+If the same finding relates to several Ideas, do not copy the full body into every Idea. Add a lightweight reference inside each affected Idea:
+
+```markdown
+- `[Q/R/P-<ID>]` — <short title>; Related Ideas: `IDEA-A`, `IDEA-B`; see the aggregate Q/R/P for the full Current-Plan-relative finding.
+```
+
+Use one stable Finding ID across aggregate and Idea-side representations. Remove/update both sides together when the finding resolves or its Related-Idea set changes.
+
 ## Deep Planning Additions — When Useful
 
 ```markdown

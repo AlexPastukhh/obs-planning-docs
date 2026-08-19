@@ -54,11 +54,19 @@ A simple Slice may keep all implementation planning in `slice.md`. Split fronten
 ### Verification Evidence — When Useful
 <Link `verification.md` and derive evidence from Scenario Acceptance + Behavior Items + Domain invariants + Slice target.>
 
+## Cross-File Dependencies / Reference Object Candidates — When Material
+
+| Source Owner | Meaning Used Here | Use Here | Usage Mode | RO Candidate | Materialized RO |
+|---|---|---|---|---|---|
+| <owner> | <canonical fragment/reference> | <Slice/verification use> | semantic link / paraphrase / exact-literal candidate | yes / no | no / existing `ro_*` |
+
+A consumer-side candidate note does not redefine Scenario/Domain/other source meaning. Use ordinary links by default.
+
 ## Current Decisions
 <Use the shared detailed-planning Current Decisions contract.>
 
 ## Questions / Risks / Problems
-<Each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan.>
+<Each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan. When Related Idea(s) exist, apply the shared Idea ↔ Q/R/P mirror/reference rule.>
 
 ## Potential Simplifications / Better Routes — When Material
 <Only unselected changes to the current Slice draft.>
@@ -66,5 +74,5 @@ A simple Slice may keep all implementation planning in `slice.md`. Split fronten
 ## Boundary Rules
 
 - Slice does not redefine Scenario or Domain meaning merely for implementation convenience.
-- `Feature` is not a required extra semantic layer; a Slice may have a product-facing feature label.
+- `Feature` is not a required extra semantic layer; an Application Concept Feature is a concept-scoped capability hypothesis and does not create a mandatory Feature → Scenario → Slice chain. A Slice may still have a product-facing feature label.
 - Tests/verification provide evidence and do not become semantic authority for behavior by themselves.

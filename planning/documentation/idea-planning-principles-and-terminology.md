@@ -158,6 +158,43 @@ Idea-local finding
 
 Promote only material findings. Detailed reasoning remains local; aggregate findings/simplifications reference Related Idea IDs when applicable.
 
+### Idea ↔ Q/R/P Discoverability
+
+Every material `Question / Risk / Problem` that has Related Idea(s) must also be discoverable from every affected Idea.
+
+```text
+exactly one Related Idea
+→ keep one logical finding with one stable Finding ID
+→ keep the aggregate Q/R/P representation for Current-Plan integration
+→ mirror the full same-ID Q/R/P inside that one Idea
+
+several Related Ideas
+→ keep one full cross-Idea aggregate Q/R/P
+→ list every Related Idea on the aggregate finding
+→ add a lightweight same-ID reference inside every affected Idea
+→ each reference identifies the complete Related-Idea set
+→ do not copy the full cross-Idea finding into every Idea
+```
+
+The Idea-local mirror/reference is a projection of the same logical finding, not an independent semantic owner and not a second finding. Do not assign a new ID merely because the finding is visible in two places.
+
+Lifecycle must remain synchronized:
+
+```text
+finding resolved
+→ integrate the selected answer into Current Conclusion / Current Selected Variant / Current Plan
+→ remove the aggregate Q/R/P
+→ remove every Idea-local mirror/reference
+
+one Related Idea becomes several
+→ replace the former full Idea-local mirror with cross-Idea references
+
+several Related Ideas become one
+→ keep the remaining Idea's full same-ID mirror
+```
+
+This rule is for Q/R/P discoverability. Ordinary Idea reasoning remains local, and aggregate sections remain delta to Current Plan.
+
 ## 12. Current Plan Baseline
 
 `Current Plan` is an output label for the currently selected baseline in the finding's scope. It is not a new semantic entity or repository artifact.
@@ -294,4 +331,5 @@ A source may also contain Existing Reality/checked facts, Constraints, Decisions
 - Do not use aggregate sections as a reasoning transcript or confirmation log.
 - Do not leave an accepted alternative in Questions / Risks / Problems or Potential Simplifications / Better Routes.
 - Do not call a fallback the Current Plan unless it was actually selected.
+- Do not leave an Idea-related Q/R/P discoverable only from the aggregate; apply the single-Idea mirror / cross-Idea reference rule.
 ```

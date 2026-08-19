@@ -39,6 +39,8 @@ The current selected Scenario owner/Variant owns current detailed behavior. Whil
 | Goal / intent | <goal> |
 | Observable result | <meaningful result> |
 | Related Application Use Case | <UC> |
+| Related real-world Workflow / Open Solution Slot | <when useful> |
+| Related Application Concept / Concept Feature(s) | <when useful> |
 | Related Ideas / provenance | <when useful> |
 
 ### Actor Understanding / Plan
@@ -81,6 +83,22 @@ The current selected Scenario owner/Variant owns current detailed behavior. Whil
 ### Visual / Screen References
 <Link Scenario-specific `visual/` material and canonical `screens/` owners when relevant.>
 
+### Screens Used — When Material
+
+| Screen | Role In Scenario | Relevant Flow / Behavior Range |
+|---|---|---|
+| <SCR-X> | entry / primary / supporting / result / other | <steps/range or concise relation> |
+
+Every material Scenario → Screen relation must also be discoverable from the Screen owner's Scenario Coverage / relations. This reciprocal traceability does not move behavior authority into the Screen.
+
+## Cross-File Dependencies / Reference Object Candidates — When Material
+
+| Source Owner | Meaning Used Here | Use Here | Usage Mode | RO Candidate | Materialized RO |
+|---|---|---|---|---|---|
+| <owner> | <canonical fragment/reference> | <Scenario use> | semantic link / paraphrase / exact-literal candidate | yes / no | no / existing `ro_*` |
+
+A consumer-side candidate note does not redefine the source meaning. Ordinary semantic relationships remain ordinary links unless exact literal equality and stale-copy review are genuinely valuable.
+
 ## Current Decisions
 
 ### D-SCN-<id> — <decision title>
@@ -103,7 +121,7 @@ The current selected Scenario owner/Variant owns current detailed behavior. Whil
 
 **Type:** Question / Risk / Problem
 
-**Related Idea:** <when applicable>
+**Related Idea:** <when applicable; if present, apply the shared Idea ↔ Q/R/P mirror/reference rule>
 
 **Current Draft Plan:** <relevant selected Scenario baseline; may reference section/range>
 
@@ -143,6 +161,18 @@ When none exist, write exactly:
 
 ## Boundary Rules
 
-A separate Scenario normally requires meaningful user Need + independently meaningful observable result. Re-entry/reuse/wait/handoff/testability are supporting signals, not mandatory checklist fields. Spine is temporary scaffolding and is not a permanent entity type.
+A separate Scenario normally requires:
+
+```text
+meaningful user-world Need
++ user/actor-visible behavior or information interaction
++ independently meaningful observable result
+```
+
+A read-only/informational Scenario is valid when obtaining information or understanding is itself an independently meaningful result. A command, button, Screen, API call, database mutation, backend operation or technical procedure is not a Scenario merely because it is addressable. These may be actions/implementation inside a Scenario. One command may implement most or all of a Scenario only when the Need/result boundary independently justifies that Scenario.
+
+Re-entry/reuse/wait/handoff/testability are supporting signals, not mandatory checklist fields. Instrumental sub-needs/actions/information remain inside the parent Scenario. A required technical mechanism stays a constraint/implementation requirement unless there is independently meaningful user-visible behavior; the mechanism itself does not become a Scenario.
+
+Spine is temporary scaffolding and is not a permanent entity type.
 
 When a materially distinct whole-Scenario design appears, use the Variant rules in the detailed-planning owner. Do not turn ordinary runtime branches or one local Idea Variant into whole-Scenario Variants mechanically.

@@ -50,6 +50,8 @@ Idea <ID>
 
 Do not create file-edit variants as a copy of conceptual alternatives.
 
+When a Q/R/P later names Related Idea(s), also apply the shared Idea ↔ Q/R/P discoverability rule in this Idea section: one Related Idea gets the full same-ID mirror; several Related Ideas each get only a lightweight same-ID reference to the one aggregate finding.
+
 ### Current Plan / Current conclusions
 
 <Selected/current planning meaning that concrete Update Steps implement. This is the baseline referenced by aggregate units.>
@@ -187,6 +189,7 @@ Use this section only when package/source/delivery classification is relevant. S
 - Perform Idea analysis only when conceptual uncertainty is material; do not manufacture it for mechanical updates.
 - `Current Selected Variant` is the normal selected-variant term; use `fallback` only when genuinely a fallback.
 - Questions / Risks / Problems is required for every File Update Plan; every real unit states Current Plan and its unresolved/adverse relation or impact, with Related Idea IDs when applicable.
+- Idea-related Q/R/P uses one Finding ID and is mirrored/referenced from each affected Idea according to the shared cardinality rule.
 - Potential Simplifications / Better Routes is conditional on a real unselected candidate change to Current Plan; each unit states Current Plan + Change To Current Plan.
 - Accepted/resolved findings are integrated into Current Conclusions / Update Steps and removed from aggregate sections.
 - Ordered steps are primary when dependencies or migration order matter.

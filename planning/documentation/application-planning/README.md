@@ -9,13 +9,22 @@ Scope: plan a whole solution/workflow first; when Application responsibility is 
 Problem / Question / Idea
 → Need / Desired Result
 → Current Reality when useful
-→ existing solutions / alternatives
-→ candidate whole solution/workflow variants
-→ scoped Idea review/deep planning when material
+→ real-world problem-resolution Workflow Variant(s) when the path matters
+   → Open Solution Slot(s) where the best route is still unknown
+→ inspect existing solutions / alternatives proportionally
+→ candidate slot fills / whole-solution variants
+   → manual / process / existing solution / integration / no-change / hybrid
+   → Application Concept candidate(s) when own software may be useful
+→ preserve viable existing alternatives while custom-vs-existing remains open
+→ review Application Concept value + feasibility + rough effort/maintenance when material
+→ scoped Idea review/deep planning where uncertainty deserves it
 → whole-solution integration review
 → selected solution responsibility
-→ if Application responsibility is justified/already confirmed:
-   optional Spine Scenario(s)
+→ if own Application responsibility is selected/already confirmed:
+   selected/current Application Concept
+   → explicit Application responsibility
+   → candidate/current Application Use Cases
+   → optional Spine Scenario(s)
    → progressive Scenario discovery
    → Scenario Draft workspaces
       + shared/local Ideas
@@ -26,7 +35,7 @@ Problem / Question / Idea
    → Domain when useful
    → Implementation Slices when useful
    → verification/testing evidence proportionally
-   → repeated cross-owner / whole-application integration review
+   → repeated cross-owner / whole-application / whole-solution integration review
 ```
 
 Planning Item, Planning Draft and Full Picture Matrix are not active target stages/artifacts. Current owners remain real responsibilities. Whole-solution and cross-owner integration review remain required review responsibilities when relevant, but do not require a separate mandatory artifact/entity.
@@ -38,19 +47,25 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 3. Idea owners when answer-seeking work is material
 4. `direction-registry.md` + `use-case-registry.md`
 5. `solution-and-scenario-planning-workflow.md`
-6. [`detailed-planning/README.md`](detailed-planning/README.md) when Scenario-level or downstream detailed planning begins
-7. `goal-map.md` when a current working Goal Map would materially help
-8. type-specific templates under `templates/`
-9. optional specialized SDS profile for projects that activate that route family
-10. project-local Use Cases / Scenarios / Screens / Domains / Slices / current owners.
+6. `templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` when own application is a material candidate or already mandated but its concept is not grounded
+7. [`detailed-planning/README.md`](detailed-planning/README.md) when Scenario-level or downstream detailed planning begins
+8. `goal-map.md` when a current working Goal Map would materially help
+9. other type-specific templates under `templates/`
+10. optional specialized SDS profile for projects that activate that route family
+11. project-local Use Cases / Scenarios / Screens / Domains / Slices / current owners.
 
 ## Core Concepts
 
 - **Whole Solution / Workflow** — integrated candidate answer; existing tools/manual/no-change/custom app/hybrids are equal candidates.
+- **Real-World Problem-Resolution Workflow** — trigger-to-primary-result path in the user's actual life/work context; it may include actions before and after application use.
+- **Open Solution Slot** — addressable unresolved place inside that workflow where a Need, available inputs and desired output are known but the best fill is not; it is a planning surface, not a new mandatory owner/stage.
+- **Viable Existing Alternative** — an existing solution/process/integration that materially covers the relevant Need/slot and therefore remains a real comparator while custom-vs-existing selection is open.
+- **Application Concept** — a reviewed custom-application candidate explaining its life/workflow simplification, Concept Features, interaction hypotheses, feasibility and rough development/maintenance burden before detailed behavior planning.
+- **Application Concept Feature** — a Concept-scoped hypothesis about something useful the application would let users do/know/obtain; not automatically a Use Case, Scenario or Slice and not a mandatory global Feature layer.
 - **Application responsibility** — selected only when the whole solution actually needs application behavior.
 - **Application Use Case** — semantic identity/navigation for an independently useful application Need/result.
 - **Spine Scenario** — temporary representative end-to-end scaffold used while real Scenario boundaries are still unclear.
-- **Scenario** — coherent motivated actor/context + Need/Goal + meaningful observable result + detailed observable behavior.
+- **Scenario** — coherent user/actor-visible behavioral unit grounded in a meaningful user-world Need and independently meaningful observable result; informational/read-only behavior is valid when understanding itself is the result, while command/implementation identity alone is insufficient.
 - **Scenario Draft workspace** — canonical Scenario behavior plus standard `ideas/`, `data/`, `behavior/`, `visual/` supporting areas.
 - **Screen** — spatial/visual owner for an application surface; it may map related Scenarios but does not own their behavior.
 - **Domain** — optional conceptual model/language/lifecycle/rules when separate ownership improves planning.

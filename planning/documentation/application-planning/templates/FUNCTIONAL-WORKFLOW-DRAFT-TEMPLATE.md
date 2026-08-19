@@ -4,6 +4,8 @@ Status: active reusable recommended template
 Doc version: v1.0.0-solution-neutral
 Purpose: one independently understandable and testable behavior line inside a candidate solution, workflow or current planning owner.
 
+It is solution-neutral and may describe a real-world problem-resolution path that includes people, existing tools, services, integrations, an application, or unresolved solution points.
+
 A Functional Workflow is not automatically:
 
 ```text
@@ -79,17 +81,47 @@ Material unresolved implementation questions may use scoped Idea review/deep pla
 
 <Repeat as needed.>
 
-## 6. Workflow Acceptance Criteria — Optional
+## 6. Open Solution Slots — When Material
+
+Use an `Open Solution Slot` only where the real-world workflow has a meaningful result gap but the mechanism that should fill it is not selected yet. A Slot is an addressable planning surface inside the Workflow, not a new semantic owner or mandatory stage.
+
+### SLOT-<ID> — <meaningful result gap>
+
+**Context / Before:** <what has already happened>
+
+**User-world Need:** <what the person/system genuinely needs at this point>
+
+**Available Inputs / Resources:** <what is available to solve it>
+
+**Desired Output / Intermediate Result:** <what should be true when the Slot is filled>
+
+**Constraints:** <when material>
+
+**Continuation:** <what happens after the result>
+
+**Relation To Primary Desired Result:** <why this intermediate result matters>
+
+**Candidate Fills:**
+- manual/process route;
+- existing solution/tool/service;
+- integration/automation;
+- Application Concept;
+- hybrid;
+- another supported route.
+
+Different Workflow Variants may place Slots differently, fill them differently, combine them or eliminate them by changing the workflow itself.
+
+## 7. Workflow Acceptance Criteria — Optional
 
 | ID / item | Criterion | Status | Evidence/test |
 |---|---|---|---|
 | FW-AC-01 | <criterion> | candidate | <reference> |
 
-## 7. Related Objects, Resources Or Concepts — Optional
+## 8. Related Objects, Resources Or Concepts — Optional
 
 <Information entities, documents, services, environments or other resources involved.>
 
-## 8. Relationships With Other Functional Workflows
+## 9. Relationships With Other Functional Workflows
 
 | Related workflow | Relationship | Dependency/conflict | Coordination owner |
 |---|---|---|---|
@@ -99,35 +131,55 @@ Cross-workflow decisions normally belong in the parent current planning owner or
 
 Several Functional Workflows are not peer End-To-End Workflows merely because they are listed separately. A mandatory trigger-to-result route must remain reviewable as one complete workflow.
 
-## 9. Existing Alternatives — Optional
+## 10. Existing Alternatives — Optional
+
+Keep an alternative visible while it remains a realistic way to cover a Workflow Need/Slot. Do not discard a valid existing route merely because a custom Application Concept is also being explored.
 
 | Alternative | Coverage | Limitation | Status |
 |---|---|---|---|
-| <alternative> | <coverage> | <limitation> | open |
+| <alternative> | <coverage> | <limitation> | viable / rejected / needs-evidence |
 
-## 10. Tests And Evidence
+A `viable` alternative remains part of whole-solution/Application Concept comparison until the relevant choice is resolved.
+
+## 11. Tests And Evidence
 
 | ID / link | Question/uncertainty | Test/evidence | Result | Decision affected |
 |---|---|---|---|---|
 | T-01 | <question> | <test> | proposed / supported / rejected / inconclusive | <decision> |
 
-## 11. Questions
+## 12. Questions / Risks / Problems — When Material
 
-| ID / item | Question | Priority | Blocking | Status | Answer |
-|---|---|---:|---:|---|---|
-| Q-01 | <question> | high | no | open | <answer> |
+Use the shared Current-Plan-relative aggregate contract rather than maintaining a second workflow-specific issue model.
 
-## 12. Decisions
+### Q/R/P-FW-<ID> — <finding title>
+
+**Type:** Question / Risk / Problem
+
+**Related Idea(s):** <when applicable; apply the shared Idea ↔ Q/R/P mirror/reference rule>
+
+**Current Plan:** <current selected Workflow baseline>
+
+**Finding:** <unresolved/adverse finding>
+
+**Relation / Impact On Current Plan:** <why it still matters>
+
+**Needed Resolution / Treatment:** <when useful>
+
+**Blocking:** yes / no <when useful>
+
+If none exist: `No material unresolved issues identified.`
+
+## 13. Decisions
 
 | ID / item | Decision | Rationale | Status | Reconsider when |
 |---|---|---|---|---|
 | D-01 | <decision> | <rationale> | proposed | <condition> |
 
-## 13. Current Conclusion
+## 14. Current Conclusion
 
 <Current understanding of this behavior line.>
 
-## 14. Next Action
+## 15. Next Action
 
 <Next local analysis, test or review action.>
 

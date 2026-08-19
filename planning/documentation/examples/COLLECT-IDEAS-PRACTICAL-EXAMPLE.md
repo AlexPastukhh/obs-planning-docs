@@ -44,7 +44,10 @@ required check ≠ required populated field
 - material unresolved findings are promoted
   to Questions / Risks / Problems;
 - aggregate findings reference the Idea(s)
-  from whose review they were discovered.
+  from whose review they were discovered;
+- Idea-related Q/R/P is also discoverable from every affected Idea:
+  one Related Idea gets a full same-ID mirror;
+  several Related Ideas get lightweight same-ID references.
 ```
 
 ---
@@ -95,6 +98,8 @@ Need / Problem
 
 **Current Conclusion:** **keep with conditional output**.
 
+**Related Cross-Idea Finding:** `R-IDEA-A2-A4` — Related Ideas: `IDEA-A2`, `IDEA-A3`, `IDEA-A4`; see aggregate Q/R/P for the full residual synthetic-review risk.
+
 ---
 
 ## IDEA-A3 — Necessity / Better-Route Check должен быть truth-seeking
@@ -124,6 +129,8 @@ Need / Problem
 вместо требования обязательно спорить с Idea.
 
 **Current Conclusion:** **keep**.
+
+**Related Cross-Idea Finding:** `R-IDEA-A2-A4` — Related Ideas: `IDEA-A2`, `IDEA-A3`, `IDEA-A4`; see aggregate Q/R/P for the full residual synthetic-review risk.
 
 ---
 
@@ -156,6 +163,8 @@ make a risky part conditional.
 
 **Current Conclusion:** **keep with conditional output**.
 
+**Related Cross-Idea Finding:** `R-IDEA-A2-A4` — Related Ideas: `IDEA-A2`, `IDEA-A3`, `IDEA-A4`; see aggregate Q/R/P for the full residual synthetic-review risk.
+
 ---
 
 ## IDEA-A5 — Material findings поднимаются выше локальной Idea
@@ -180,6 +189,8 @@ Idea-local finding
 **Possible Refinement:** поднимать только material finding; подробное reasoning оставлять возле originating Idea.
 
 **Current Conclusion:** **keep**.
+
+**Related Cross-Idea Finding:** `R-IDEA-A5-A10` — Related Ideas: `IDEA-A5`, `IDEA-A10`; see aggregate Q/R/P for the full duplication-risk finding.
 
 ---
 
@@ -297,30 +308,39 @@ Question:
 Related Ideas: IDEA-D5, IDEA-D6
 ```
 
-**Relevance / Expected Effect:** появляется простая traceability:
+**Relevance / Expected Effect:** traceability becomes bidirectional rather than aggregate-only:
 
 ```
-Aggregate Finding
-→ originating / affected Ideas
-→ local reasoning
+Aggregate Q/R/P
+→ Related Idea(s)
+
+and
+
+Affected Idea
+→ related Q/R/P
 ```
 
-**Necessity / Better-Route:** relying only on section position or wording is less reliable once the review becomes large or Ideas move between Groups.
+**Necessity / Better-Route:** relying only on section position or wording is less reliable once the review becomes large or Ideas move between Groups. Full copying into every affected Idea is also too heavy for cross-Idea findings.
 
-**Possible Refinement:** различать не требуется жёстко `originating` и `affected` Idea. Для lightweight review достаточно `Related Ideas`, если это понятнее и не теряет связь.
-
-**Local Consistency:** ссылка на Idea не означает, что finding принадлежит только ей; cross-Idea finding может ссылаться на несколько IDs.
-
-**Integrated Consistency:** то же правило применяется к:
+**Current Selected Meaning:**
 
 ```
-Questions / Risks / Problems
-Potential Simplifications / Better Routes
-Group-level material findings
-Whole-review findings
+exactly one Related Idea
+→ full same-Finding-ID mirror inside that Idea
+
+several Related Ideas
+→ one full cross-Idea aggregate finding
+→ lightweight same-Finding-ID reference inside every affected Idea
+→ each reference names the complete Related-Idea set
 ```
 
-**Current Conclusion:** **keep as traceability invariant**.
+**Local Consistency:** Idea-side mirror/reference is a projection of the same logical finding, not a second semantic owner. Detailed reasoning remains at the Idea that owns it; the aggregate remains the Current-Plan integration view.
+
+**Integrated Consistency:** resolution/removal and changes from one↔many Related Ideas update both aggregate and Idea-side representations together.
+
+**Current Conclusion:** **keep as bidirectional Q/R/P traceability invariant**.
+
+**Related Cross-Idea Finding:** `R-IDEA-A5-A10` — Related Ideas: `IDEA-A5`, `IDEA-A10`; see aggregate Q/R/P for the full duplication-risk finding.
 
 ---
 
@@ -658,6 +678,22 @@ there is an explicit planning decision to use it.
 
 **Current Conclusion:** **keep proportionally**.
 
+### [Q-IDEA-E2] — Independent value threshold for a separate Core Loop view remains contextual
+
+**Type:** Question
+
+**Current Plan:** Core Loop is optional and used only when a recurring high-value sequence materially adds more than Scenario-chain notation.
+
+**Finding:** the exact threshold depends on the application and cannot be made universal from the reviewed source alone.
+
+**Relation / Impact On Current Plan:** this does not change the current optional rule, but a concrete application still needs contextual judgment before creating a separate Core Loop view.
+
+**Needed Resolution / Treatment:** decide at application scope from current Scenarios/value flow; preserve no separate Core Loop by default when independent value is not demonstrated.
+
+**Blocking:** no.
+
+This is the full same-ID Idea-local mirror of the aggregate `Q-IDEA-E2`, because `IDEA-E2` is its only Related Idea.
+
 ---
 
 # Group F — File Update planning
@@ -692,6 +728,8 @@ Use `fallback` only when something is genuinely a fallback.
 
 **Current Conclusion:** **keep**.
 
+**Related Cross-Idea Finding:** `R-IDEA-F2-F3` — Related Ideas: `IDEA-F2`, `IDEA-F3`; see aggregate Q/R/P for the full unresolved-alternative leakage risk.
+
 ## IDEA-F3 — Unresolved Idea Variant remains visible while file plan follows selected meaning
 
 **Source / Status:** accepted direction.
@@ -701,6 +739,8 @@ Use `fallback` only when something is genuinely a fallback.
 **Proposed Answer:** unresolved alternative goes to `Questions / Risks / Problems` with Related Idea IDs; concrete Update Steps follow `Current Selected Variant`.
 
 **Current Conclusion:** **keep**.
+
+**Related Cross-Idea Finding:** `R-IDEA-F2-F3` — Related Ideas: `IDEA-F2`, `IDEA-F3`; see aggregate Q/R/P for the full unresolved-alternative leakage risk.
 
 # Existing Reality / Must Preserve
 
@@ -761,6 +801,8 @@ Problem / Question / Idea
 Planning Item is removed from target methodology; historical ITEM-* records may remain provenance/history/migration sources.
 
 For `собери идеи`, `план файл-обновление` and ReviewDiff semantic review, aggregate units are delta to the established Current Plan: each real unit states Current Plan and its unresolved/adverse relation or candidate change; accepted/resolved conclusions are not repeated there.
+
+Idea-related Q/R/P uses one stable Finding ID and is bidirectionally discoverable: exactly one Related Idea carries a full same-ID mirror; cross-Idea findings keep one full aggregate body and lightweight same-ID references from every affected Idea.
 
 For File Update planning:
 

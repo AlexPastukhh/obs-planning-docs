@@ -99,6 +99,20 @@ Always include this aggregate section in collect/review Ideas outputs and File U
 
 Every material Idea-derived aggregate finding identifies Related Idea ID(s). Keep detailed reasoning at the originating Idea.
 
+Apply the shared bidirectional discoverability rule after the Related Idea set is known:
+
+```text
+one Related Idea
+→ full same-ID Q/R/P mirror inside that Idea
+
+several Related Ideas
+→ one full aggregate finding
+→ lightweight same-ID reference inside every affected Idea
+→ reference the complete Related-Idea set
+```
+
+The mirror/reference is not a second finding owner. When the finding resolves or its Related-Idea cardinality changes, update/remove both aggregate and Idea-side projections in the same current result.
+
 Do not put these in the section:
 
 ```text
@@ -160,6 +174,7 @@ Use aggregate sections only for uncertainty/residual risk/unresolved problems or
 - Every aggregate unit states Current Plan and its relation/change to that plan.
 - Aggregate sections contain no accepted/resolved confirmation items.
 - Aggregate findings/simplifications reference Related Idea IDs when applicable.
+- Every Idea-related Q/R/P is discoverable from each affected Idea using the single-Idea full mirror / multi-Idea lightweight-reference rule and one stable Finding ID.
 - A selected simplification was removed from Potential Simplifications / Better Routes.
 - A resolved Question/Problem was removed from Questions / Risks / Problems.
 - A residual Risk states its remaining impact/treatment.

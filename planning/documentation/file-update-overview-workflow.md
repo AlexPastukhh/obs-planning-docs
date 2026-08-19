@@ -101,7 +101,7 @@ Finding
 Relation / Impact On Current Plan
 ```
 
-Material Idea-derived findings reference Related Idea IDs. Add Needed Resolution / Treatment, a real fallback and Blocking only when useful. If no material unresolved/adverse findings exist, say `No material unresolved issues identified.` rather than preserving completed reasoning.
+Material Idea-derived findings reference Related Idea IDs and obey the shared Idea ↔ Q/R/P discoverability rule: exactly one Related Idea gets a full same-ID Idea-local mirror; several Related Ideas get lightweight same-ID references from each affected Idea to the one aggregate finding. Add Needed Resolution / Treatment, a real fallback and Blocking only when useful. If no material unresolved/adverse findings exist, say `No material unresolved issues identified.` rather than preserving completed reasoning.
 
 A selected correction, accepted simplification, ordinary step boundary or explanation of why the selected route is correct does **not** belong here.
 
@@ -259,6 +259,7 @@ Before finalizing the overview:
 - Current Selected Variant / Current Conclusion is the conceptual basis for concrete steps.
 - Unresolved refinements do not silently enter file actions.
 - Questions / Risks / Problems exists; every real unit states Current Plan and its unresolved/adverse relation or impact, with Related Idea IDs when applicable.
+- Idea-related Q/R/P uses one Finding ID and is also visible from each affected Idea through the shared single-Idea mirror / multi-Idea reference rule.
 - Material Potential Simplifications / Better Routes, when present, are unselected changes to Current Plan and state Current Plan + Change To Current Plan, with Related Idea IDs when applicable.
 - Accepted/resolved findings have been removed from aggregate sections and integrated into Current Conclusions / Update Steps.
 - Mechanical updates do not contain synthetic Idea analysis.

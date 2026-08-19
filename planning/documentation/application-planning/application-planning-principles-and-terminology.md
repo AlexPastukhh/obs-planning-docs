@@ -15,8 +15,10 @@ Equal solution candidates include existing tools, manual process, process change
 Problem / Question / Idea
 → Need / Desired Result
 → Current Reality when useful
+→ real-world problem-resolution Workflow Variant(s) when sequence/context matters
 → existing solutions / alternatives
-→ candidate whole Solution / Workflow Variants
+→ candidate fills / whole Solution / Workflow Variants
+→ Application Concept candidate(s) when own software may be useful
 → scoped Idea work where material
 → repeated whole-solution integration evaluation
 → selected solution responsibility
@@ -28,9 +30,83 @@ Invariant:
 best local variant ≠ automatically best whole solution/workflow
 ```
 
+### Real-World Problem-Resolution Workflow
+
+When the path from problem to primary result matters, model the real-world sequence rather than starting at the application boundary.
+
+```text
+real-world problem / trigger
+→ actions and context before a solution is used
+→ one or more solution points
+→ actions after the solution output
+→ primary real-world Desired Result
+```
+
+The workflow may include an `Open Solution Slot`: an addressable place where the current context, user-world Need, available inputs/resources, desired output and continuation are understandable but the best way to fill the slot is still unknown.
+
+```text
+Open Solution Slot
+= planning surface inside a real-world / whole-solution workflow
+≠ mandatory semantic owner
+≠ application assumption
+```
+
+A slot may be filled by a manual/process route, an existing product, an integration, no-change, a custom Application Concept or a hybrid. Whole-Workflow Variants may place or eliminate slots differently when that materially changes the path.
+
+### Viable Existing Alternative
+
+An existing solution/process/integration that materially covers a Need or Open Solution Slot remains a `Viable Existing Alternative` while custom-vs-existing selection is open.
+
+```text
+checked existing alternative
+→ viable / rejected / needs evidence
+```
+
+Do not discard a viable existing option merely because an Application Concept is attractive. Compare the custom concept against the best relevant existing route(s) at whole-solution level.
+
+## Application Concept
+
+An `Application Concept` is a reviewed candidate for using own application behavior to simplify or improve one or more real-world Needs/solution slots.
+
+It answers proportionally:
+
+```text
+what life/workflow simplification the application creates
+what users would be able to do / know / obtain
+candidate Concept Features
+current interaction / solution hypotheses
+whether there is a realistic technical path
+important dependencies / implementation unknowns
+rough development complexity / effort / time
+maintenance / support burden
+comparison with viable existing alternatives
+local value + whole-solution integrated value
+```
+
+`Application Concept` may be reviewed **before** deciding to build custom software. It does not itself authorize or imply Application responsibility. A valid conclusion is to reject the custom concept because an existing/process route is simpler or better.
+
+When application creation is already explicitly mandated, do not reopen that external commitment without reason; still use Concept planning to ground what simplification/value the application should provide and whether the proposed concept is feasible.
+
+Technical feasibility at this level is a decision aid, not implementation planning. Use rough ranges/relative complexity, assumptions and confidence rather than false precision; use research/prototypes when a technical unknown can materially change the solution choice.
+
+### Application Concept Feature
+
+An `Application Concept Feature` is a Concept-scoped hypothesis about a useful capability/value contribution: something the application may let a user do, understand or obtain.
+
+```text
+Concept Feature
+≠ automatically Application Use Case
+≠ automatically Scenario
+≠ automatically Implementation Slice
+```
+
+Feature-to-Use-Case/Scenario/Slice relationships may be many-to-many. Concept Features do not revive a mandatory global `Feature` ontology or a required `Feature → Slice` stage.
+
 ## Application Responsibility
 
-Do not assume an application. Enter application planning only when Application responsibility is justified by the selected whole solution or already explicitly confirmed.
+Do not assume an application. Enter selected application planning only when Application responsibility is justified by the selected whole solution or already explicitly confirmed.
+
+When a custom concept is selected, derive the Application responsibility from the selected Concept + whole-solution boundary rather than silently expanding it. Keep people/process/existing tools/external services outside when the selected whole solution leaves them outside.
 
 ## Application Use Case
 
@@ -46,19 +122,41 @@ Scenario owner route(s)
 
 It does not duplicate detailed Main Flow.
 
+An Application Use Case normally grounds its `Need / Purpose` in the real user/work context rather than merely naming an application command or screen. Candidate Use Cases may be proposed from the selected Application Concept before Scenario discovery and then split/merge/refined as Spine/Scenario discovery reveals the real behavioral boundaries.
+
 ## Scenario
 
-A Scenario is one coherent motivated actor/context + Need/Goal + meaningful observable-result behavioral unit.
+A Scenario is one coherent **user/actor-visible behavioral unit** in which a meaningful user-world Need motivates interaction with the Application and the behavior reaches an independently meaningful observable result.
 
 Primary boundary test:
 
 ```text
 meaningful user Need
 +
+user/actor-visible behavior or information interaction
++
 independently meaningful observable result
 ```
 
+The result may be informational/understanding-only. A read-only Scenario is valid when obtaining trustworthy information or understanding itself meaningfully satisfies the Need even if no mutation or later action follows.
+
 Supporting signals for ambiguous boundaries include independent entry/re-entry, recurrence/reuse, wait/handoff and independent acceptance/testing value. Need alone is insufficient; distinguish an independent user Need from an instrumental sub-need.
+
+Do not derive Scenario identity mechanically from implementation/application commands:
+
+```text
+command / button / UI action
+screen
+API call
+database mutation
+backend operation
+technical procedure / implementation step
+≠ Scenario merely because it is addressable
+```
+
+A Scenario may contain any of those actions. One command may even implement nearly the whole Scenario, but only the independent Need/result behavioral boundary establishes Scenario identity. Information shown as a small instrumental part of another Scenario stays inside that Scenario rather than becoming a peer read-only Scenario.
+
+Technical constraints/implementation requirements remain constraints/invariants unless they create required user-visible behavior that participates in an independently meaningful Need/result. The implementation mechanism itself does not become a Scenario.
 
 ## Spine Scenario
 
@@ -145,7 +243,7 @@ Screen
 → spatial boundary / zones / composition / visual states
 ```
 
-A Screen may list Scenarios that use it without becoming their behavioral authority. Screen planning does not require `data/` or `behavior/` folders.
+A Screen may list Scenarios that use it without becoming their behavioral authority. Every material Scenario↔Screen relation should be discoverable from both owners: the Scenario identifies the Screen and its behavioral role/range, while the Screen identifies the Scenario and relevant zones/states. This is one relationship with reciprocal navigation, not duplicate behavioral ownership. Screen planning does not require `data/` or `behavior/` folders.
 
 ## Planning Unit Variant
 
@@ -165,7 +263,7 @@ Do not create explicit VAR-A ceremony while only one integrated design exists. W
 
 Domain is optional conceptual model/language/lifecycle/rules when separate ownership improves planning.
 
-Slice is an optional separately deliverable/checkable implementation increment after enough behavior/concepts are understood. A Slice may use a product-facing feature label without introducing a mandatory Feature layer.
+Slice is an optional separately deliverable/checkable implementation increment after enough behavior/concepts are understood. A Slice may use a product-facing feature label without introducing a mandatory Feature layer. Application Concept Features remain upstream concept hypotheses and do not create a required Feature owner between Scenario and Slice.
 
 ## Reference Object Candidate
 
@@ -180,6 +278,8 @@ that may now be stale and need explicit review/update?
 ```
 
 If yes, it may be a good candidate for the Linked Notes Reference Object mechanism. Semantic dependency, ownership relation, or ordinary cross-file linking alone is not sufficient.
+
+A consuming planning file may be the place where candidate synchronization need is discovered. It may record the source owner, meaning used, local use and whether exact literal equality is needed; that consumer note does **not** become a second canonical definition.
 
 Detailed rules and Linked Notes route: [`detailed-planning/README.md`](detailed-planning/README.md).
 

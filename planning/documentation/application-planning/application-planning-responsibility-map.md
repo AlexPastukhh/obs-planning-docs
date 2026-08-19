@@ -10,6 +10,8 @@ Status: active reusable nested responsibility map
 | Semantic planning Directions | `direction-registry.md` |
 | Semantic planning Use Cases | `use-case-registry.md` |
 | Current reality recommended shape | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` |
+| Real-world / functional workflow recommended shape | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` |
+| Application Concept recommended shape | `templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` |
 | Detailed Scenario shape | `templates/SCENARIO-DRAFT-TEMPLATE.md` |
 | Screen spatial/visual shape | `templates/SCREEN-DRAFT-TEMPLATE.md` |
 | Domain draft shape | `templates/DOMAIN-DRAFT-TEMPLATE.md` |
@@ -18,7 +20,7 @@ Status: active reusable nested responsibility map
 | Reusable current Goal Map semantics | `goal-map.md` |
 | Specialized Scenario/DATA/Behavior/Domain/Slice project route profile | `../profiles/scenario-domain-slice-*` |
 | Detailed planning worked example | `examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md` |
-| Concrete application Use Cases / Scenarios / Screens / Domains / Slices / decisions / implementation state | project/application-local owners |
+| Concrete solution/application Workflows / Application Concepts / Use Cases / Scenarios / Screens / Domains / Slices / decisions / implementation state | project/application-local owners |
 
 Do not create Planning Item, Planning Draft or Full Picture Matrix as intermediate mandatory owners. Do not turn whole-solution / cross-owner integration review into a separate mandatory artifact; perform that review through the actual affected owners.
 
