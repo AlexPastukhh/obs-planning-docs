@@ -83,16 +83,15 @@ When the selected whole solution includes own Application responsibility, or tha
 ```text
 selected/current Application Concept
 → explicit Application responsibility / inside-outside boundary
-→ candidate/current Application Use Cases grounded in real-world Needs/results
+→ candidate/current Application Scenarios grounded in real-world Needs/results
 → Prototype Planning when material interaction/workflow/spatial uncertainty remains
-   → Spine Pass / Walkthrough when useful as a discovery technique
    → Prototype Scenarios
    → Prototype Screens
    → candidate Requirements
    → candidate Scenario DATA / Behavior
    → Future Scenario Ideas / Change Axes when material
 → discover independently meaningful current Scenarios
-→ validate / split / merge Application Use Cases from prototype/discovered Scenario coverage
+→ validate / split / merge Application Scenarios from prototype/discovered Scenario coverage
 → create detailed Scenario Draft workspaces
    + shared/local Ideas
    + Scenario DATA
@@ -120,9 +119,7 @@ Use `UC-PLAN-PROTOTYPE` only when concrete provisional interaction/spatial work 
 
 Prototype output may contain `PSCN-*` Prototype Scenarios and `PSCR-*` Prototype Screens, candidate Requirements/DATA/Behavior and evolution observations. These are evidence/provisional planning and do not become current `SCN-*` / `SCR-*` truth automatically.
 
-### Spine Pass / Walkthrough
-
-A Spine is only a method inside Prototype/Scenario Discovery:
+When a lightweight end-to-end representation helps discover boundaries, use a rough walkthrough/sketch/sequence as disposable evidence rather than a named planning entity:
 
 ```text
 concrete user situation
@@ -132,11 +129,10 @@ concrete user situation
 → discover candidate Scenario / Screen / Requirement / DATA / Behavior boundaries
 ```
 
-Do not preserve a `Spine Scenario` as a peer behavior owner and do not expose `UC-PLAN-SPINE` as a standalone current Use Case.
 
 ## Scenario Discovery
 
-Use selected Concept/Application responsibility, candidate/current Application Use Cases and prototype evidence when present.
+Use selected Concept/Application responsibility, candidate/current Application Scenarios and prototype evidence when present.
 
 For each candidate current boundary ask:
 
@@ -173,11 +169,11 @@ Change Axes
 → not authorization to generalize now
 ```
 
-## Application Use-Case Registration
+## Application Scenario Registration
 
-Every independently useful current application capability gets one semantic Use Case with trigger/purpose/result/boundaries and Scenario owner route(s). Ground Need/Purpose in real user/work outcomes rather than merely application commands.
+Every independently useful current application Need/result boundary is represented by an Application Scenario with stable identity, status and owner route in the application's Scenario Catalog. Ground Scenario identity in real user/work outcomes rather than merely application commands, screens or implementation operations.
 
-Candidate Use Cases may come from the selected Concept, be explored by Prototype Scenarios and then be validated/split/merged during current Scenario discovery. Detailed behavior stays in Scenario owners.
+Candidate Scenarios may come from the selected Concept, be explored by Prototype Scenarios and then be validated/split/merged during current Scenario discovery. Detailed behavior and trigger/context/result/boundaries stay in the Scenario owner; do not add a parallel Application Use-Case alias layer.
 
 ## Requirements
 

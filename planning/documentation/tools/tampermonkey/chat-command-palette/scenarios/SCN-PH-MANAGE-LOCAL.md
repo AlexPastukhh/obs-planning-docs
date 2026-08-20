@@ -1,9 +1,7 @@
 # SCN-PH-MANAGE-LOCAL — Manage Local Helper Content
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-PH-MANAGE-LOCAL`.
-
-Related Application Use Case: [`UC-PH-MANAGE-LOCAL`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** New local/New prompt/Edit/Save local/Delete on helper command or prompt content.
 
@@ -15,7 +13,7 @@ Related Application Use Case: [`UC-PH-MANAGE-LOCAL`](../USE-CASE-REGISTRY.md)
 - a real local content change updates `updatedAt` and invalidates exact-content repository evidence for that record;
 - local Delete does not delete repository content.
 
-**Boundary:** Repository persistence is a separate `UC-PH-PUBLISH` intent.
+**Boundary:** Repository persistence is a separate `SCN-PH-PUBLISH` intent.
 
 **Traceability:**
 
@@ -23,4 +21,4 @@ Related Application Use Case: [`UC-PH-MANAGE-LOCAL`](../USE-CASE-REGISTRY.md)
 - **Focused / durable contract:** [`planning/helper-library/README.md`](../../../../../helper-library/README.md).
 - **Primary implementation:** [`src/helper-library-codec.js`](../src/helper-library-codec.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
 - **Automated evidence:** [`tests/helper-library-codec.test.mjs`](../tests/helper-library-codec.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs).
-- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#uc-ph-manage-local`](../MANUAL-ACCEPTANCE.md#uc-ph-manage-local).
+- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-manage-local`](../MANUAL-ACCEPTANCE.md#scn-ph-manage-local).

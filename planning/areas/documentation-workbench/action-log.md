@@ -13,3 +13,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-005`  
 **Reason:** this scope/log was established as part of the cross-scope registered-scope/log migration. Full rationale and application history are owned by the canonical entry.
+
+
+### XREF-002 — Scenario-first planning, Testing foundation and Review Dependencies
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-014`  
+**Reason:** retained Linked Notes compatibility headers are updated to point to the current Scenario Catalog without changing Documentation Workbench Use-Case semantics; full rationale is owned by the canonical Application Planning entry.

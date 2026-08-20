@@ -1,9 +1,7 @@
 # SCN-LN-NOTE-TRANSFER — Copy A Linked Note And Repository Images
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-NOTE-TRANSFER`.
-
-Related Application Use Case: [`UC-LN-NOTE-TRANSFER`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the user starts transfer from a verified repository-backed Note, chooses a same-owner/repository/branch Markdown target and create/append mode, and reviews image classifications/destinations.
 

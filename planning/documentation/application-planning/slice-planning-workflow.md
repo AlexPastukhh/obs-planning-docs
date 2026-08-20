@@ -177,3 +177,17 @@ Tests are evidence, not semantic authority.
 Slice Strategy is ready when decomposition/order is understandable and justified enough to select the next Slice.
 
 One Slice plan is ready when its vertical result, semantic coverage, dependencies, implementation boundary and verification target are clear enough for implementation without inventing product behavior during coding.
+
+## Behavior Coverage / Test Coverage Boundary
+
+Keep these distinct:
+
+```text
+Scope → what delivery increment is included
+Behavior Coverage → which selected behavior this Slice implements
+Test Coverage → how selected behavior/outcomes are proved
+```
+
+For non-trivial work, record material related behavior that is **not** implemented by this Slice, its owner/destination and reason. This protects vertical Slice boundaries from scope creep.
+
+When verification is material, build or route a Behavior-to-Test Trace through `../testing-planning/test-design-workflow.md`. A vague `covered by integration tests` statement is not a proof plan.

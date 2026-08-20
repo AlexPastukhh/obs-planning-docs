@@ -1,9 +1,7 @@
 # SCN-PH-SYNC — Bring Missing Repository Content Into Local State
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-PH-SYNC`.
-
-Related Application Use Case: [`UC-PH-SYNC`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** explicit `Sync missing`.
 
@@ -17,4 +15,4 @@ Related Application Use Case: [`UC-PH-SYNC`](../USE-CASE-REGISTRY.md)
 - **Focused / durable contract:** [`planning/commands/README.md`](../../../../../commands/README.md), [`planning/helper-library/README.md`](../../../../../helper-library/README.md).
 - **Primary implementation:** [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/repository-command-service.js`](../src/repository-command-service.js), [`src/repository-helper-library-service.js`](../src/repository-helper-library-service.js), [`src/github-contents-client.js`](../src/github-contents-client.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js).
 - **Automated evidence:** [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/repository-command-service.test.mjs`](../tests/repository-command-service.test.mjs), [`tests/repository-helper-library-service.test.mjs`](../tests/repository-helper-library-service.test.mjs), [`tests/github-contents-client.test.mjs`](../tests/github-contents-client.test.mjs).
-- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#uc-ph-sync`](../MANUAL-ACCEPTANCE.md#uc-ph-sync); real-GitHub acceptance remains explicit.
+- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-sync`](../MANUAL-ACCEPTANCE.md#scn-ph-sync); real-GitHub acceptance remains explicit.

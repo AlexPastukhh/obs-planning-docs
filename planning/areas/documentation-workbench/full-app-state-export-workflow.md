@@ -4,7 +4,7 @@ Status: legacy planning/compatibility reference / not current Linked Notes autho
 Doc version: v0.2.0-extension-runtime-coverage
 Scope: read-only inspection and export of OBS Linked Notes application-owned local state for troubleshooting, review and handoff to an AI/chat without exposing authentication secrets.
 
-> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md) and [`use-case-registry.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Purpose
 

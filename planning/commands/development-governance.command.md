@@ -19,7 +19,7 @@ Scope: working-context governance shortcut; semantic authority remains in linked
   "description": "load planning + documentation governance",
   "meaning": "Establish planning-governed application-development context and documentation governance without authorizing edits by itself.",
   "activeContextBehavior": "Use the active application/repository target when clear.",
-  "traversalReadMode": "Full for governance/root planning owners; targeted for selected application Use Cases/Scenarios/current owners.",
+  "traversalReadMode": "Full for governance/root planning owners; targeted for selected planning Use Cases and application Scenarios/current owners.",
   "ownerFiles": [
     "planning/AI-WORKING-CONTRACT.md",
     "planning/README.md",
@@ -28,11 +28,11 @@ Scope: working-context governance shortcut; semantic authority remains in linked
     "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
     "planning/documentation/planning-docs-architecture-principles.md"
   ],
-  "expectedOutput": "Established development governance route: selected planning/application Use Case and Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
+  "expectedOutput": "Established development governance route: selected planning Workspace Use Case and/or application Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
   "permissionMode": "read-only",
   "keyReminders": [
     "Develop from current selected planning meaning, not an unreviewed Idea or conversational assumption.",
-    "Resolve current Direction / Application Use Case / Scenario owner before materially changing behavior.",
+    "Resolve current Direction / Application Scenario / Scenario owner before materially changing behavior.",
     "Implementation Idea is not selected architecture.",
     "Documentation changed during development must follow reusable documentation principles.",
     "Code does not silently create a second documentation owner.",

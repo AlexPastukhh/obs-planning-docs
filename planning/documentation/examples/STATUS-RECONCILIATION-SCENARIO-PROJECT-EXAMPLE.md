@@ -1,14 +1,14 @@
 # Status Reconciliation Scenario Project Example
 
 Status: active reusable example  
-Scope: scenario-driven software project example for using the status reconciliation field kit
+Scope: scenario-driven software project example for using the status reconciliation workflow
 
 ## 1. Purpose
 
 This example demonstrates how a scenario-driven software project can apply:
 
 ```text
-planning/documentation/field-kits/status-reconciliation-field-kit.md
+planning/documentation/status-reconciliation-workflow.md
 ```
 
 It is an example only. It does not own rules.
@@ -40,4 +40,4 @@ Current repo evidence shows:
 
 This example uses software evidence.
 
-A study notes project, research project or day planning system would define a different current-reality model through the field kit.
+A study notes project, research project or day planning system would define a different current-reality model through the current project owner/routing.

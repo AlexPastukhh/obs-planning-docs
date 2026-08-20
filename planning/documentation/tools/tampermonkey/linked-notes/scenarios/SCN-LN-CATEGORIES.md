@@ -1,9 +1,7 @@
 # SCN-LN-CATEGORIES — Manage Repository Categories
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-CATEGORIES`.
-
-Related Application Use Case: [`UC-LN-CATEGORIES`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the user explicitly opens Categories, refreshes definitions, creates/edits a category, assigns/unassigns a file or verified Note, or inspects explicit/implied membership.
 
@@ -19,7 +17,7 @@ Related Application Use Case: [`UC-LN-CATEGORIES`](../USE-CASE-REGISTRY.md)
 - malformed/broken/cycle diagnostics;
 - local category-definition/membership staging.
 
-**Boundary:** category definitions are repository truth after publication; local cache/groups are not. Publication uses `UC-LN-PUBLISH`.
+**Boundary:** category definitions are repository truth after publication; local cache/groups are not. Publication uses `SCN-LN-PUBLISH`.
 
 **Traceability:**
 

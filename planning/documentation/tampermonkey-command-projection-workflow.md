@@ -32,7 +32,7 @@ Projection implementation source/build:
   planning/documentation/tools/tampermonkey/chat-command-palette/
 
 Planning Helper application semantics:
-  planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md
+  planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md
   → planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md
 
 Generated install artifact:
@@ -450,7 +450,7 @@ canonical registries
 
 `UC-DOC-ORIENT` projects to the stable command ID `documentation_principles.read`; `UC-DOC-MAINTAIN-NAVIGATION` is a normal semantic Use Case without a direct command.
 
-Application-planning semantic projection must follow the current application-planning Use-Case Registry exactly. Supporting methods such as a Spine Pass are not projected as UCs when the registry no longer owns them; new semantic UCs such as Prototype or Slice Strategy appear automatically in parity checks when added to the canonical registry.
+Workspace/methodology semantic projection must follow the current canonical Use-Case Registries exactly. Application Directions are navigation-only on the helper semantic surfaces and route to their Scenario Catalogs; their application Scenarios do not become Workspace Use Cases. New canonical Workspace UCs appear through parity checks, while ordinary discovery techniques are not projected as UCs merely because documentation names them.
 
 ## 9G. Multi-Surface UI Contract
 
@@ -601,8 +601,10 @@ Prompts
   → browser-local snapshot/RAM at runtime.
 ```
 
-A helper command/prompt never becomes a registered planning command merely because a repository file exists. `Import from ChatGPT` remains local-only. `Check GitHub`, `Sync missing` and per-row `Save GitHub` are explicit application actions defined by `chat-command-palette/USE-CASE-REGISTRY.md` → `scenarios/README.md`; repository Delete is not implemented. `Restore from GitHub copy` remains a pasted-text local fallback that performs no network request.
+A helper command/prompt never becomes a registered planning command merely because a repository file exists. `Import from ChatGPT` remains local-only. `Check GitHub`, `Sync missing` and per-row `Save GitHub` are explicit application actions defined by `chat-command-palette/scenarios/README.md`; repository Delete is not implemented. `Restore from GitHub copy` remains a pasted-text local fallback that performs no network request.
 
 The modular helper may migrate legacy page-local/GM command-library caches into `obsPlanningHelper:v2:localSnapshot`. Migration does not delete legacy keys and does not contact GitHub.
 
 Every Insert starts copying the exact body to the system clipboard before composer mutation and inserts that same exact RAM string. If direct insertion fails, the clipboard already contains the body for manual paste. Browser synthetic clipboard paste is not relied on.
+
+Testing Planning Workspace UCs and `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` are valid semantic projections. Planning Helper and Linked Notes application behavior is routed through their Scenario Catalogs rather than projected as Workspace Use Cases. Replacement Package App remains an explicit unmigrated exception until separately selected.

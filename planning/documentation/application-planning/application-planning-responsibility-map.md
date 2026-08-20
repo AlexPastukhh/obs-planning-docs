@@ -27,9 +27,9 @@ Status: active reusable nested responsibility map
 | Implementation Slice draft shape | `templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md` |
 | Generic Idea semantics/review | parent reusable Idea owners |
 | Reusable current Goal Map semantics | `goal-map.md` |
-| Specialized Scenario/DATA/Behavior/Domain/Slice project route profile | `../profiles/scenario-domain-slice-*` |
+| Specialized Scenario/DATA/Behavior/Domain/Slice project route profile | `../profiles/scenario-domain-slice-docs-profile.md` |
 | Detailed planning worked example | `examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md` |
-| Concrete solution/application Workflows / Concepts / Prototype artifacts / Requirements / Use Cases / Scenarios / Screens / Domains / Slices / decisions / implementation state | project/application-local owners |
+| Concrete solution/application Workflows / Concepts / Prototype artifacts / Requirements / Scenarios / Screens / Domains / Slices / decisions / implementation state | project/application-local owners |
 
 Do not create Planning Item, Planning Draft or Full Picture Matrix as intermediate mandatory owners. Do not turn whole-solution / cross-owner integration review into a separate mandatory artifact; perform that review through the actual affected owners.
 

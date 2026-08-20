@@ -7,7 +7,7 @@ Status: active reusable template
 
 Status: active semantic Direction Registry
 Parent: <root registry when applicable>
-Child Use-Case Registry: <path>
+Primary semantic registry / owner: <path>
 
 ## <DIR-ID> — <Semantic Name>
 **Purpose:** <broad responsibility/result>

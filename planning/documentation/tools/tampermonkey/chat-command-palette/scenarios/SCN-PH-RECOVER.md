@@ -1,9 +1,7 @@
 # SCN-PH-RECOVER — Recover Repository-Backed Local State From Pasted Evidence
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-PH-RECOVER`.
-
-Related Application Use Case: [`UC-PH-RECOVER`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** `Restore from GitHub copy` with the complete current marker set supplied externally after repository reading.
 
@@ -17,7 +15,7 @@ Related Application Use Case: [`UC-PH-RECOVER`](../USE-CASE-REGISTRY.md)
 - **Focused / durable contract:** recovery markers reuse [`planning/commands/README.md`](../../../../../commands/README.md) and [`planning/helper-library/README.md`](../../../../../helper-library/README.md) formats.
 - **Primary implementation:** [`src/chat-recovery.js`](../src/chat-recovery.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
 - **Automated evidence:** [`tests/chat-recovery.test.mjs`](../tests/chat-recovery.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs).
-- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#uc-ph-recover`](../MANUAL-ACCEPTANCE.md#uc-ph-recover).
+- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-recover`](../MANUAL-ACCEPTANCE.md#scn-ph-recover).
 
 ## 12. Repository evidence metadata
 

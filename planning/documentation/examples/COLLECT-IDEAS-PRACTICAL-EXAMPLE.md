@@ -448,52 +448,7 @@ already confirmed by source/context.
 
 ---
 
-# Group D — Spine Scenario → Scenario Draft
-
-## IDEA-D1 — Spine Scenario — временный ранний способ начать Scenario planning
-
-**Source / Status:** user-stated; current direction.
-
-**Problem / Need:** правильные reusable Scenario boundaries часто неизвестны в начале.
-
-**Proposed Answer:** при необходимости начинать с concrete representative Spine Scenario и постепенно его углублять.
-
-```
-Spine Scenario
-→ deeper understanding
-→ split / merge
-→ Scenario Drafts
-```
-
-**Necessity / Better-Route:** если Scenarios уже очевидны, Spine stage не нужен.
-
-**Possible Refinement:** после decomposition сохранять только provenance/navigation, если отдельный Spine больше ничего не добавляет.
-
-**Current Conclusion:** **keep as optional temporary scaffold**.
-
----
-
-## IDEA-D2 — Permanent canonical Spine Unit сейчас не нужен
-
-**Source / Status:** current direction.
-
-**Problem / Need:**
-
-```
-Spine Unit
-→ Scenario
-→ Behavior Item
-```
-
-создаёт дополнительный semantic layer и может пересечься с существующей ролью Behavior Items.
-
-**Proposed Answer:** использовать provisional sections / temporary IDs внутри Spine без permanent entity type.
-
-**Necessity / Better-Route:** temporary addressability можно получить без новой ontology.
-
-**Current Conclusion:** **do not introduce canonical Spine Unit unless unique responsibility later emerges**.
-
----
+# Group D — Scenario Discovery → Scenario Draft
 
 ## IDEA-D3 — Scenario должен начинаться с Motivational Trigger / Need
 
@@ -582,7 +537,7 @@ They are lenses, not a mandatory checklist.
 
 ```text
 1. how we arrive at Scenario Draft:
-   Application responsibility → optional Spine → Scenario discovery → Scenario Draft;
+   Application responsibility → Prototype / rough representation when useful → Scenario discovery → Scenario Draft;
 
 2. targeted parts of the existing Scenario Draft:
    + Motivation / Starting Situation
@@ -748,7 +703,6 @@ Use `fallback` only when something is genuinely a fallback.
 
 ## P-01 — Behavior Item остаётся low-level required-behavior unit Scenario
 
-Новый Spine flow не должен создавать competing permanent behavioral unit.
 
 ## P-02 — Behavior Items имеют downstream значение
 
@@ -789,7 +743,6 @@ Problem / Question / Idea
 → Current Reality when useful
 → solution alternatives / Workflow Variants
 → justified/already-confirmed Application responsibility
-→ optional Spine Scenario
 → Scenario Drafts
 → Scenario DATA / Behavior Items
 → optional Domain

@@ -12,14 +12,13 @@ Core detailed-planning contract:
 
 Use this profile when a project benefits from explicit Prototype evidence, Scenario workspaces, separately addressable Scenario DATA / Behavior Items, Requirements, optional Domain owners and Implementation Slices.
 
-This is a specialized profile, not a universal planning stage. Prototype planning is proportional; a Spine Pass/Walkthrough may be used as a discovery technique but is not a Scenario type or Use Case.
+This is a specialized profile, not a universal stage. A project may use it without creating executable commands or an extra setup/router layer.
 
 When selected, the dependency direction is:
 
 ```text
 current Application Concept / selected application responsibility
   → Prototype Planning when useful
-     → Spine Pass / Walkthrough as discovery technique
      → Prototype Scenarios / Prototype Screens
      → candidate Requirements / DATA / Behavior / Change Axes
   → Scenario discovery
@@ -248,9 +247,14 @@ Preserve links only where they materially improve provenance/change review.
 - Do not require one physical file per addressable DATA/Behavior object.
 - Do not create per-workspace action logs unless a real registered parallel-work scope exists.
 - Keep project-specific routes in the project root Command Routing.
-- Keep reusable route setup in the field kit.
 ```
 
-Related setup kit:
+## 12. Optional Project Route Setup
 
-`planning/documentation/profiles/scenario-domain-slice-use-case-field-kit.md`
+A project may expose Prototype/Scenario/Domain/Slice shortcuts only when those commands are independently useful. Create only the route families actually needed, keep concrete route rows in the project root Command Routing, and use the current reusable command-routing / registry workflows rather than a second reusable router.
+
+Related reusable owners:
+
+- [`../command-routing-workflow.md`](../command-routing-workflow.md)
+- [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
+

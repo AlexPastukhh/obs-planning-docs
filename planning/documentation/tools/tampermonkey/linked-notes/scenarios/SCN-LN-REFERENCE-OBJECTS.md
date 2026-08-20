@@ -1,9 +1,7 @@
 # SCN-LN-REFERENCE-OBJECTS — Define, Materialize, Check And Synchronize Reference Objects
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-REFERENCE-OBJECTS`.
-
-Related Application Use Case: [`UC-LN-REFERENCE-OBJECTS`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the user defines/updates a Reference Object, copies/inserts a materialized use marker, checks freshness, updates a use locally, validates indexed tags or explicitly deep-validates repository evidence.
 
@@ -19,7 +17,7 @@ Related Application Use Case: [`UC-LN-REFERENCE-OBJECTS`](../USE-CASE-REGISTRY.m
 - definition changes do not silently propagate into all uses;
 - stale/unresolved Files warnings are diagnostic only.
 
-**Boundary:** local definition/use/index changes publish through `UC-LN-PUBLISH`; automatic propagation remains roadmap research only.
+**Boundary:** local definition/use/index changes publish through `SCN-LN-PUBLISH`; automatic propagation remains roadmap research only.
 
 **Traceability:**
 

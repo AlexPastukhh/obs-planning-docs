@@ -4,7 +4,7 @@ Status: legacy planning/compatibility reference / not current Linked Notes autho
 Doc version: v0.1.0-prototype-slice
 Scope: create one stable Reference Object definition around exact ordinary Markdown/text, copy materialized use markers, explicitly check/update stale uses, validate marker/index integrity and navigate occurrences without reviving the deferred generic managed-object architecture.
 
-> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md) and [`use-case-registry.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Trigger And Result
 

@@ -1,9 +1,7 @@
 # SCN-LN-WORKSPACE — Configure And Select Repository Workspace
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-WORKSPACE`.
-
-Related Application Use Case: [`UC-LN-WORKSPACE`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the user opens workspace management, creates/edits/deletes a local workspace, stores the shared GitHub credential, or explicitly selects a workspace for the current stable chat.
 

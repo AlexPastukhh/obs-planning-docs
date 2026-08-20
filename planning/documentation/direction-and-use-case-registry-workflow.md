@@ -9,7 +9,7 @@ Scope: create/maintain semantic Direction and Use-Case Registries consistently a
 
 **Use Case** — independently useful supported capability with recognizable trigger/input, purpose, meaningful result/end state, boundaries and owner route.
 
-**Application Scenario** — detailed behavioral owner reached from an Application Use Case when material behavior exists.
+**Application Scenario** — canonical application behavioral owner for one independently meaningful actor-visible path/result.
 
 **Command** — optional executable shortcut with explicit output/read/permission contract. It may relate to a Use Case but never replaces it.
 
@@ -49,12 +49,12 @@ Create a peer Use Case only when independently useful trigger/result/owner/revie
 ## Application Boundary
 
 ```text
-Application Use Case
-→ Need/Purpose + Trigger + meaningful Result + boundaries
-→ Scenario owner(s) for detailed behavior
+Application Direction
+→ Scenario Catalog
+→ Scenario owner = Need/context + actor-visible behavior + meaningful observable result + boundaries
 ```
 
-One Use Case may route to several Scenarios when they are contextual paths of one Need/result. A Scenario with its own independently meaningful Need + observable Result is a strong signal that a separate Use Case may be warranted.
+Application Scenarios are the behavioral identity layer. Do not add an Application Use-Case alias solely to normalize file types with Workspace/methodology Directions.
 
 ## Update Algorithm
 
@@ -78,3 +78,14 @@ One Use Case may route to several Scenarios when they are contextual paths of on
 - do not imply all Use Cases are mandatory stages;
 - do not let command activation or Use-Case activation expand repository permissions;
 - do not let helper projections own semantic entries.
+
+## Application Direction Routing
+
+Use-Case Registries own Workspace/methodology capabilities. Application behavioral identity is owned by Scenario Catalog/Scenario owners:
+
+```text
+Workspace / methodology Direction → Use-Case Registry
+Application Direction → Scenario Catalog
+```
+
+Do not introduce an Application Use-Case alias layer merely to make all Directions use the same child file type.

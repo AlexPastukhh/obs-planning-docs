@@ -1,11 +1,11 @@
 # OBS Linked Notes Roadmap
 
 Status: active current-prototype implementation roadmap / priority view
-Scope: future directions for OBS Linked Notes. This file is not current Use-Case authority, does not accept production architecture and does not authorize implementation by itself.
+Scope: future directions for OBS Linked Notes. This file is not current Scenario authority, does not accept production architecture and does not authorize implementation by itself.
 
 Current implementation baseline: `0.8.0-prototype`.
 
-Current semantic entry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md).
+Current semantic entry: [`scenarios/README.md`](scenarios/README.md).
 Detailed Scenario navigation: [`scenarios/README.md`](scenarios/README.md).
 
 ## 1. Roadmap Rules
@@ -27,7 +27,7 @@ DEFERRED
   → intentionally not part of the active direction.
 ```
 
-A roadmap direction is not current application semantics merely because it is written here. If a direction changes current Linked Notes capability meaning or semantic Use-Case identity, update `USE-CASE-REGISTRY.md` first and update affected Scenario owners/navigation in the same reviewed change when detailed behavior changes. Broader Documentation Workbench planning may still retain historical/planning context, but it is not current Linked Notes semantic authority.
+A roadmap direction is not current application semantics merely because it is written here. If a direction changes current Linked Notes capability meaning or Scenario identity, update `scenarios/README.md` first and update affected Scenario owners/navigation in the same reviewed change when detailed behavior changes. Broader Documentation Workbench planning may still retain historical/planning context, but it is not current Linked Notes semantic authority.
 
 ## Implemented baseline — local-first files and Ordered Reference Lists
 
@@ -66,7 +66,7 @@ Reader rendering is useful independently of transport and supports the documente
 
 Current owners:
 
-- `UC-LN-READER` in [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md), with detailed behavior routed through [`scenarios/README.md`](scenarios/README.md);
+- `SCN-LN-READER` in [`scenarios/README.md`](scenarios/README.md), with detailed behavior routed through [`scenarios/README.md`](scenarios/README.md);
 - [`CHAT-RESPONSE-READER.md`](CHAT-RESPONSE-READER.md);
 - repository-facing response format `.linked-notes/CHAT-RESPONSE-FORMAT.md`;
 - `CHAT-001` in [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md).
@@ -214,15 +214,15 @@ Current issue: `GITHUB-001` in [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md).
 Inventory every **actual remote write entrypoint**, distinguishing local business actions from the later publication boundary:
 
 ```text
-UC-LN-PUBLISH / Update current file
-UC-LN-PUBLISH / Update all
+SCN-LN-PUBLISH / Update current file
+SCN-LN-PUBLISH / Update all
 Linked Note save/update/recovery
 Note image asset writes
 image-aware Markdown transfer
 any remaining feature-specific remote write path discovered in source
 ```
 
-Files create/edit/structure/copy, category changes, Reference Object changes, Ordered List changes and repository-template-backed New File are **local staging producers** in the current `0.8.0` model; audit their handoff into `UC-LN-PUBLISH` rather than misclassifying each producer as a separate remote write entrypoint.
+Files create/edit/structure/copy, category changes, Reference Object changes, Ordered List changes and repository-template-backed New File are **local staging producers** in the current `0.8.0` model; audit their handoff into `SCN-LN-PUBLISH` rather than misclassifying each producer as a separate remote write entrypoint.
 
 For each entrypoint record:
 
@@ -298,7 +298,7 @@ Do not reopen that choice merely for API uniformity. After the write audit, rese
 
 Questions:
 
-- which reproduced failures are outside the existing `UC-LN-PUBLISH` guarantees;
+- which reproduced failures are outside the existing `SCN-LN-PUBLISH` guarantees;
 - whether Note/image/transfer resources require one remote transaction or only better diagnostics/recovery;
 - branch/ref concurrency and expected-base semantics;
 - recovery after an uncertain ref update or partially verified compound operation;
@@ -310,7 +310,7 @@ Questions:
 - reproducible failing cases with safe diagnostics;
 - agreed failure vocabulary;
 - decision whether common orchestration is justified;
-- any extension/API-change decision only after evidence, without regressing the current `UC-LN-PUBLISH` contract.
+- any extension/API-change decision only after evidence, without regressing the current `SCN-LN-PUBLISH` contract.
 
 ## 5. NEXT — Documentation And Continuity Discipline
 
@@ -322,7 +322,7 @@ Maintain both documentation routes:
 developer / implementation chat
   → linked-notes/README.md
   → scenarios/README.md
-  → USE-CASE-REGISTRY.md
+  → scenarios/README.md
   → APP-OVERVIEW.md
   → ARCHITECTURE.md
   → DATA-AND-STATE.md
@@ -354,6 +354,40 @@ Candidate later directions/open decisions that are not active commitments:
 - production packaging and shared-library extraction if the generated userscript architecture becomes difficult to maintain;
 - optional local workspace filters for the Note list if they are still useful;
 - cross-repository transfer only after current same-repository behavior is stable.
+
+## NEXT — Required Review Dependencies
+
+### Selected future capability
+
+Linked Notes should support explicit repository review dependencies:
+
+```text
+source file
+→ one or more consumer files
+→ reason / optional review scope
+
+source state changes
+→ consumer = NEEDS REVIEW
+```
+
+This complements Reference Objects rather than replacing them. A Reference Object can additionally detect stale materialized canonical values; a Review Dependency covers semantic dependencies where no exact literal copy exists.
+
+### Review lifecycle
+
+```text
+source changed
+→ consumer needs review
+→ review performed
+   ├─ consumer meaning unchanged → mark reviewed/current; cascade stops
+   └─ consumer meaning changed → mark reviewed/current; its own registered consumers may then require review
+```
+
+Do not create blind transitive review avalanches and do not mutate consumer files automatically. The reusable semantic capability is owned by `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES`; Linked Notes will own the future application behavior/runtime mechanism.
+
+### Implementation handoff
+
+Runtime/schema/UI/test design is intentionally delegated to a separate implementation-planning chat. This roadmap entry does not claim the feature is implemented and does not yet create a current `SCN-LN-*` Scenario. Scenario identity/split is selected when implementation planning establishes the actual user path.
+
 
 ## 7. DEFERRED / Not Selected By This Roadmap
 

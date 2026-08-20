@@ -120,7 +120,7 @@ Check Markdown/link integrity, exact changed path scope and the literal Git diff
 
 ## 7. Relationship To Linked Notes
 
-[`Linked Notes scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md) now owns current Linked Notes Note semantics (`UC-LN-NOTES`), including creation, editing, reconciliation and save verification. The former local `linked-notes-end-to-end-workflow.md` is retained only as planning/compatibility history.
+[`Linked Notes scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md) now owns current Linked Notes Note semantics (`SCN-LN-NOTES`), including creation, editing, reconciliation and save verification. The former local `linked-notes-end-to-end-workflow.md` is retained only as planning/compatibility history.
 
 This workflow owns repository-document changes and link/impact review. A Note workflow may hand a repository-owned Note or link change into this workflow for validation and diff review. Neither workflow owns a mandatory hidden middle of the other.
 

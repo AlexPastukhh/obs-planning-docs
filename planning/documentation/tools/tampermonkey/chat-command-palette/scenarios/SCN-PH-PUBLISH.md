@@ -1,9 +1,7 @@
 # SCN-PH-PUBLISH — Publish One Local Helper Entity To Repository
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-PH-PUBLISH`.
-
-Related Application Use Case: [`UC-PH-PUBLISH`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** per-row explicit `Save GitHub` for a planning command, helper command or prompt.
 
@@ -19,4 +17,4 @@ Related Application Use Case: [`UC-PH-PUBLISH`](../USE-CASE-REGISTRY.md)
 - **Focused / durable contract:** [`planning/commands/README.md`](../../../../../commands/README.md), [`planning/helper-library/README.md`](../../../../../helper-library/README.md).
 - **Primary implementation:** [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/repository-command-service.js`](../src/repository-command-service.js), [`src/repository-helper-library-service.js`](../src/repository-helper-library-service.js), [`src/github-contents-client.js`](../src/github-contents-client.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
 - **Automated evidence:** [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/repository-command-service.test.mjs`](../tests/repository-command-service.test.mjs), [`tests/repository-helper-library-service.test.mjs`](../tests/repository-helper-library-service.test.mjs), [`tests/github-contents-client.test.mjs`](../tests/github-contents-client.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-ui.test.mjs`](../tests/planning-helper-ui.test.mjs).
-- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#uc-ph-publish`](../MANUAL-ACCEPTANCE.md#uc-ph-publish); real-GitHub create/no-op/update/read-back cases remain separately observable.
+- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-publish`](../MANUAL-ACCEPTANCE.md#scn-ph-publish); real-GitHub create/no-op/update/read-back cases remain separately observable.

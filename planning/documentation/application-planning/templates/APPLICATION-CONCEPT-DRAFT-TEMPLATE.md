@@ -47,7 +47,7 @@ Blank sections are not requirements. Use only supported meaning and keep rough e
 
 ## Concept Features
 
-Use Concept Features only when stable addressability helps comparison/reasoning. They are Concept-scoped hypotheses, not automatically Use Cases, Scenarios or Slices.
+Use Concept Features only when stable addressability helps comparison/reasoning. They are Concept-scoped hypotheses, not automatically Application Scenarios or Slices.
 
 ### CF-<ID> — <feature/capability hypothesis>
 
@@ -63,7 +63,7 @@ Use Concept Features only when stable addressability helps comparison/reasoning.
 
 ## Interaction / Solution Hypotheses
 
-<Current guesses about how users may obtain the result. These are hypotheses that downstream Application Use Case / Scenario planning may split, merge or replace.>
+<Current guesses about how users may obtain the result. These are hypotheses that downstream Scenario planning may split, merge or replace.>
 
 ## Candidate Application Responsibility
 
@@ -134,7 +134,7 @@ important unknowns
 A conclusion that an existing/process route is better is a successful planning result.
 ## Prototype / Downstream Handoff — When Application Responsibility Is Selected
 
-<Identify interaction/workflow uncertainties that deserve `UC-PLAN-PROTOTYPE`, candidate Application Use Cases ready for provisional exploration, and decision-sensitive technical uncertainties that instead remain Concept feasibility spikes/research.>
+<Identify interaction/workflow uncertainties that deserve `UC-PLAN-PROTOTYPE`, candidate Scenarios / Scenario boundaries ready for provisional exploration, and decision-sensitive technical uncertainties that instead remain Concept feasibility spikes/research.>
 
 ```text
 technical feasibility spike
@@ -163,7 +163,6 @@ If none: `No material unresolved issues identified.`
 ```text
 Application Concept
 ≠ selected Application responsibility by itself
-≠ Application Use Case
 ≠ Scenario
 ≠ technical architecture spec
 ≠ Implementation Slice plan

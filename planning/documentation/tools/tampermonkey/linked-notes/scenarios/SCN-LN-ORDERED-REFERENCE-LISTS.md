@@ -1,9 +1,7 @@
 # SCN-LN-ORDERED-REFERENCE-LISTS — Create And Reorder Reference-Driven Markdown Units
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-ORDERED-REFERENCE-LISTS`.
-
-Related Application Use Case: [`UC-LN-ORDERED-REFERENCE-LISTS`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** an open text/Markdown file contains Reference Object uses and the user invokes Ordered List creation or local ordering.
 
@@ -19,7 +17,7 @@ Related Application Use Case: [`UC-LN-ORDERED-REFERENCE-LISTS`](../USE-CASE-REGI
 - no `eval` or arbitrary comparator code;
 - complete item units move; unrelated bytes remain in place.
 
-**Boundary:** ordering is local and has no feature-specific GitHub action; the resulting file publishes through `UC-LN-PUBLISH`.
+**Boundary:** ordering is local and has no feature-specific GitHub action; the resulting file publishes through `SCN-LN-PUBLISH`.
 
 **Traceability:**
 

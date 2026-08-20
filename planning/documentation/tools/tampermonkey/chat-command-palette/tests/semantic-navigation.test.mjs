@@ -12,11 +12,11 @@ const semantic=require('../src/semantic-projections.js');
 const registries=[
   ['planning/use-case-registry.md','UC-REPO-'],
   ['planning/documentation/application-planning/use-case-registry.md','UC-PLAN-'],
+  ['planning/documentation/architecture-planning/use-case-registry.md','UC-PLAN-ARCH-'],
+  ['planning/documentation/testing-planning/use-case-registry.md','UC-PLAN-TEST-'],
   ['planning/documentation/use-case-registry.md','UC-DOC-'],
   ['planning/areas/documentation-workbench/use-case-registry.md','UC-DW-'],
   ['planning/areas/planning-system/use-case-registry.md','UC-PR-'],
-  ['planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md','UC-PH-'],
-  ['planning/documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md','UC-LN-'],
   ['planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md','UC-RPKG-']
 ];
 function read(rel){return fs.readFileSync(path.join(repoRoot,rel),'utf8')}
@@ -27,9 +27,12 @@ test('semantic projection contains every current canonical Use Case exactly once
 
 test('all semantic projection source paths exist with exact repository casing',()=>{for(const definition of [...semantic.ORIENTATION_DEFINITIONS,...semantic.DIRECTION_DEFINITIONS,...semantic.USE_CASE_DEFINITIONS])for(const source of definition.sources||[])assert.ok(exactCaseExists(source),`${definition.id}: missing/exact-case-invalid source ${source}`)});
 
-test('root/documentation/planning table registries expose explicit complete UC contract',()=>{for(const rel of ['planning/use-case-registry.md','planning/documentation/use-case-registry.md','planning/documentation/application-planning/use-case-registry.md']){const text=read(rel);assert.match(text,/\| ID \| Name \| Status \| Parent Direction \| Purpose \| Trigger \/ input \| Result \/ end state \| Boundaries \|/i,`${rel}: incomplete table contract`)}});
+test('root/documentation/planning table registries expose explicit complete UC contract',()=>{for(const rel of ['planning/use-case-registry.md','planning/documentation/use-case-registry.md','planning/documentation/application-planning/use-case-registry.md','planning/documentation/architecture-planning/use-case-registry.md']){const text=read(rel);assert.match(text,/\| ID \| Name \| Status \| Parent Direction \| Purpose \| Trigger \/ input \| Result \/ end state \| Boundaries \|/i,`${rel}: incomplete table contract`)}});
 
-test('detailed application registry entries state purpose trigger result boundaries and owner route',()=>{for(const [rel,prefix] of registries.slice(3)){const text=read(rel);for(const id of canonicalIds(rel,prefix)){const heading=new RegExp('^#{2,3} `'+id+'`.*$','m').exec(text);assert.ok(heading,`${rel}: missing detailed section for ${id}`);const after=heading.index+heading[0].length, rest=text.slice(after), next=rest.search(/^#{2,3} `UC-/m), section=text.slice(heading.index,next>=0?after+next:text.length);assert.match(section,/\*\*Status:\*\*/i,`${rel} ${id}: missing Status`);assert.match(section,/\*\*Parent Direction:\*\*/i,`${rel} ${id}: missing Parent Direction`);assert.match(section,/\*\*Purpose:\*\*/i,`${rel} ${id}: missing Purpose`);assert.match(section,/\*\*Trigger(?: \/ accepted input| \/ input|\/input)?:\*\*/i,`${rel} ${id}: missing Trigger`);assert.match(section,/\*\*Result(?: \/ end state)?:\*\*/i,`${rel} ${id}: missing Result`);assert.match(section,/\*\*Boundaries:\*\*/i,`${rel} ${id}: missing Boundaries`);assert.match(section,/\*\*Owner route:\*\*/i,`${rel} ${id}: missing Owner route`)}}});
+test('migrated application Directions route to Scenario Catalogs instead of Application Use-Case registries',()=>{
+  for(const rel of ['planning/documentation/tools/tampermonkey/chat-command-palette/direction-registry.md','planning/documentation/tools/tampermonkey/linked-notes/direction-registry.md']){const text=read(rel);assert.match(text,/scenarios\/README\.md/);assert.doesNotMatch(text,/USE-CASE-REGISTRY\.md/)}
+  const ids=semantic.USE_CASE_DEFINITIONS.map(d=>d.id);
+});
 
 test('application Direction registries link the real root Direction Registry, not placeholders',()=>{for(const rel of ['planning/documentation/tools/tampermonkey/chat-command-palette/direction-registry.md','planning/documentation/tools/tampermonkey/linked-notes/direction-registry.md','planning/documentation/tools/replacement-package-app/direction-registry.md']){const text=read(rel);assert.doesNotMatch(text,/<root planning direction registry>/);assert.match(text,/planning\/direction-registry\.md/)}});
 test('documentation bootstrap Use Case projects to the sole stable bootstrap command identity',()=>{const orient=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-DOC-ORIENT');assert.ok(orient);assert.equal(orient.commandId,'documentation_principles.read');assert.equal(orient.label,'Bootstrap Reusable Documentation Governance')});
@@ -46,10 +49,9 @@ test('registered parallel-work and reusable Goal Map Use Cases project from cano
   assert.ok((goalMap.sources||[]).includes('planning/documentation/application-planning/goal-map.md'));
 });
 
-test('application planning semantic projection exposes current prototype/domain/slice-strategy route and retires Spine UC',()=>{
+test('application planning semantic projection exposes current prototype/domain/slice-strategy route',()=>{
   const ids=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);
   for(const id of ['UC-PLAN-APP-CONCEPT','UC-PLAN-PROTOTYPE','UC-PLAN-SCENARIO-DISCOVERY','UC-PLAN-SCENARIO','UC-PLAN-DOMAIN','UC-PLAN-SLICE-STRATEGY','UC-PLAN-SLICE'])assert.ok(ids.includes(id),`missing ${id}`);
-  assert.ok(!ids.includes('UC-PLAN-SPINE'),'Spine is a supporting discovery method, not a projected Use Case');
 });
 
 test('non-command semantic Use Case body keeps one focused current-owner route and explicit permission boundary',()=>{

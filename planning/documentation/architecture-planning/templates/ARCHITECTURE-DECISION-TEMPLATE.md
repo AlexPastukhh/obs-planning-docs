@@ -17,7 +17,7 @@ Current pressure / problem:
 ```text
 Current Workspace UCs:
 Other important Workspace UCs:
-Important concrete changes:
+Workspace Change Cases:
 Planned / Likely Extensions + expected future UCs:
 Requirements / Domain invariants:
 Change Axes crossing this decision:

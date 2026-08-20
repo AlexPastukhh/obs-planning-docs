@@ -221,3 +221,20 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 **Rationale:** remove ontology ambiguity and workflow/template/log drift without expanding the selected Architecture Planning scope or adding new capabilities/artifacts.
 
+
+
+### XREF-DOC-006 — Scenario-first planning, Testing foundation and Review Dependencies
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-014`  
+**Reason:** reusable documentation gains Testing Planning and Review Dependency owners and retires Field Kits as part of the same transition; full rationale and applied state are owned by the canonical Application Planning entry.
+
+
+### XREF-DOC-007 — ReviewDiff correction for preserved content and Scenario-first consistency
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-016`  
+**Reason:** reusable documentation bootstrap/profile/example corrections participate in the same ChangeSet correction; full ReviewDiff findings and target state are owned by the canonical Application Planning entry.
+

@@ -1,0 +1,23 @@
+# Testing Planning
+
+Status: active reusable planning family
+
+Purpose: plan and review how selected behavior/correctness is proved without transferring semantic authority from Scenario, Requirement, Domain or Slice owners.
+
+## Read Order
+
+```text
+direction-registry.md
+→ use-case-registry.md
+→ testing-planning-principles-and-terminology.md
+→ testing-planning-responsibility-map.md
+→ selected workflow/template
+```
+
+Three independently useful capabilities are supported: shared Testing Strategy, behavior-specific Test Design, and Current Test Coverage/Evidence Review. Test layers are techniques/responsibility zones inside these capabilities, not separate Use Cases.
+
+## Supporting Guidance
+
+- `api-integration-test-guidance.md` — public API/integration proof, read vs command behavior, persistence/no-mutation.
+- `e2e-testing-guidance.md` — critical cross-layer actor-path proof.
+- `test-object-patterns.md` — Page/Component Object boundaries without hiding Scenario outcomes.

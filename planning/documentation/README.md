@@ -39,6 +39,8 @@ build-replacement-archive-workflow.md
 parallel-work-scope-and-action-log-workflow.md
 status-reconciliation-workflow.md
 example-coverage-workflow.md
+review-dependency-planning-workflow.md
+testing-planning/
 ```
 
 Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`. Universal Workspace Architecture Planning lives under `architecture-planning/` and is a peer reusable family rather than an application-implementation subfolder.
@@ -56,27 +58,34 @@ principles → stable reusable definitions/invariants
 workflow → repeated process
 template → recommended shape
 profile → optional specialization
-field kit → bootstrap only
 example → demonstration only
 command routing/definition → executable shortcut layer
 ```
 
 ## Runtime Vs Bootstrap
 
-Runtime starts from repository navigation/registries. Field kits are used only before their runtime owners exist. `Use-Case Map / UCM` is not a current generic file type; executable shortcuts use Command Routing while semantic capabilities live in Use-Case Registries.
+Runtime starts from current repository navigation/Direction/Use-Case/Scenario owners. Bootstrap aids do not remain a separate active file type once runtime owners exist.
 
 ## Workspace Architecture Planning
 
-See `architecture-planning/README.md`. Architecture Planning starts from important Workspace Use Cases (including read-only/understanding work), important concrete changes, Extensions, Requirements/constraints and their Work/Runtime paths; it derives Change Pressure/Change Axes and evaluates architecture proportionally rather than targeting patterns.
+See `architecture-planning/README.md`. Architecture Planning starts from important Workspace Use Cases (including read-only/understanding work), Workspace Change Cases, Extensions, Requirements/constraints and their Work/Runtime paths; it derives Change Pressure/Change Axes and evaluates architecture proportionally rather than targeting patterns.
 
 ## Solution / Application Planning
 
-See `application-planning/README.md`. Active topology is whole solution/workflow planning followed, when an Application responsibility exists, by optional Spine Scenario(s), Scenario discovery and Scenario Drafts. Planning Item / Planning Draft / Full Picture Matrix are historical/retired concepts rather than active stages.
+See `application-planning/README.md`. Active topology is whole solution/workflow planning followed, when an Application responsibility exists, by Prototype when useful, Scenario discovery and Scenario Drafts. Planning Item / Planning Draft / Full Picture Matrix are historical/retired concepts rather than active stages.
 
 ## Application / Tool Roots
 
-Current application subtrees maintain their own Direction Registry + Use-Case Registry + Scenario owners and link implementation/tests as supporting evidence.
+Current application subtrees maintain their own Direction Registry + Scenario Catalog + Scenario owners and link implementation/tests as supporting evidence. Workspace/methodology families use Use-Case Registries.
 
 ## Parallel Work / Action Logs
 
 Reusable semantics are owned by [`parallel-work-scope-and-action-log-workflow.md`](parallel-work-scope-and-action-log-workflow.md). Each repository keeps its fixed scope roots in a mandatory project-specific Scope Registry and stores actual cumulative `action-log.md` state at each registered scope root. The superseded temporary shadow-workspace/sync model is not an alternate current route.
+
+## Testing Planning
+
+Sibling reusable family: `testing-planning/` owns Testing Strategy, behavior-specific Test Design and Current Test Coverage/Evidence Review.
+
+## Review Dependencies
+
+`UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` + `review-dependency-planning-workflow.md` own required downstream semantic-review signals. Linked Notes is the selected implementation mechanism when available.

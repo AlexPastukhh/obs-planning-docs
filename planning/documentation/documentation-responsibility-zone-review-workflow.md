@@ -12,7 +12,7 @@ It answers:
 ```text
 What is this existing paragraph/section trying to do?
 Which responsibility zone should own it?
-Is it a reusable principle, workflow detail, field-kit setup question, template shape, adapter mapping, example, or navigation/placement row?
+Is it a reusable principle, workflow detail, template shape, profile/adapter mapping, example or navigation/placement row?
 What can be extracted before moving or splitting the text?
 ```
 
@@ -24,7 +24,7 @@ Use this workflow when reviewing existing docs for:
 - principles vs workflow vs adapter confusion;
 - overloaded files;
 - project-specific paths embedded in reusable files;
-- possible extraction into profiles, adapters, examples or field kits.
+- possible extraction into current workflows, templates, profiles, adapters or examples.
 ```
 
 ## 2. What This Workflow Owns
@@ -75,7 +75,6 @@ Use these buckets:
 | Specialized reusable profile | Pattern for a class of projects, but not all docs systems. | profile file |
 | Project adapter mapping | Concrete project path, source map, evidence map, register map or layer vocabulary. | project adapter/profile |
 | Workflow detail | Repeatable operational steps. | workflow file |
-| Field-kit setup detail | Setup questions/tools used to derive project-specific artifacts. | field kit |
 | Template detail | Exact artifact/output/file shape. | template |
 | Responsibility placement | Where an information type belongs. | responsibility map |
 | Navigation/read order | How to discover or read files. | README/index |
@@ -148,7 +147,7 @@ Use short cells. Put longer reasoning below the table when needed.
 | Purpose checked | Did we identify what problem the text prevents? |
 | Path trap avoided | Did we avoid moving text only because it contains a concrete path? |
 | Reusable core extracted | Did we extract a reusable rule before assigning project-specific leftovers? |
-| Owner type selected | Did we decide principle/workflow/field-kit/template/adapter/example/etc.? |
+| Owner type selected | Did we decide principle/workflow/template/profile/adapter/example/navigation/etc.? |
 | Project content boundary | Did we avoid reviewing non-documentation-layer content by accident? |
 | Examples separated | Are concrete examples linked or planned separately instead of embedded in reusable owners? |
 | Split safety | Are active docs preserved unless an approved migration batch changes them? |
@@ -160,10 +159,10 @@ Use short cells. Put longer reasoning below the table when needed.
 - Do not use this workflow as a replacement for the responsibility map.
 - Do not put exact project mappings into reusable principles.
 - Do not leave process steps in principles when a workflow owns them.
+- Do not invent a separate setup owner when the reusable setup belongs in a workflow/template/profile and concrete configuration belongs in a project owner.
 - Do not turn examples into owner docs.
 - Do not review scenario/slice/domain/API content when the task is docs-layer responsibility review.
 - Do not split active files before the candidate-copy/classification plan says to do so.
-- Do not treat a field kit as the repeated project workflow after project-specific artifacts exist.
 ```
 
 ## 10. Related Files

@@ -19,23 +19,24 @@ For each substantial family/application:
 
 ```text
 direction-registry.md
-use-case-registry.md
-scenarios/                                 # when detailed application behavior exists
+use-case-registry.md                       # Workspace/methodology family
+scenarios/README.md                        # Application behavioral catalog
 actual principles/workflow/current owners
 ```
 
+Use the registry shape that matches the Direction: Workspace/methodology capabilities use Use Cases; Application behavior uses Scenarios. Do not add an Application Use-Case alias merely for file-type symmetry.
+
 ## Invariants
 
-- every independently useful supported capability is discoverable as a current Use Case;
-- every active canonical owner is reachable from a current Use Case or supporting-owner route;
-- Use-Case Registry is the semantic authority;
-- Scenario owns detailed application behavior;
+- every independently useful supported Workspace/methodology capability is discoverable as a current Use Case;
+- Application behavioral identity is discoverable through its Scenario Catalog and Scenario owners;
+- every active canonical owner is reachable from its current semantic registry/owner route;
+- Use-Case Registry owns Workspace/methodology Use-Case identity; Scenario Catalog/Scenario owners own Application behavior;
 - commands are optional shortcuts;
 - README/index routes rather than duplicating owner bodies;
 - examples/projections are never authority;
-- bootstrap field kits stop routing once runtime owners exist.
+- bootstrap/setup guidance hands off to the current runtime owners once those owners exist.
 
-Use `field-kits/root-command-routing-field-kit.md` only when setting up command routing before runtime files exist.
 
 ## External Reusable-Methodology Declaration
 

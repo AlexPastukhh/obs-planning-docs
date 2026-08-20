@@ -1,7 +1,6 @@
 # Scenario Draft Template
 
 Status: active reusable recommended template
-Purpose: draft one current canonical application Scenario after Scenario discovery. Upstream Prototype Scenarios/Spine Passes may inform it but do not own current behavior.
 
 Detailed workspace contract: [`../detailed-planning/README.md`](../detailed-planning/README.md)
 
@@ -38,7 +37,6 @@ The current selected Scenario owner/Variant owns current detailed behavior. Whil
 | Need / motivation | <meaningful user Need> |
 | Goal / intent | <goal> |
 | Observable result | <meaningful result> |
-| Related Application Use Case | <UC> |
 | Related real-world Workflow / Open Solution Slot | <when useful> |
 | Related Application Concept / Concept Feature(s) | <when useful> |
 | Prototype origin/evidence | <PSCN/Prototype result when useful> |
@@ -55,7 +53,22 @@ The current selected Scenario owner/Variant owns current detailed behavior. Whil
 ### Preconditions
 <Only supported preconditions.>
 
-### Main Flow
+### User / Actor Effort — When Material
+
+Review the path from the actor perspective without reducing it to click count:
+
+- actions / repeated actions;
+- decisions / choices;
+- information to find or remember;
+- repeated data entry;
+- screen/context switches;
+- waits/blocking;
+- retries/recovery;
+- technical internals the actor must understand;
+- irreversible actions;
+- burden on happy and material alternate/failure paths.
+
+## Main Flow
 1. <observable behavior>
    - Surface / Screen: <reference canonical Screen when material>
    - Relevant DATA / Information: <reference Scenario/shared DATA owner when material>
@@ -182,6 +195,5 @@ A read-only/informational Scenario is valid when obtaining information or unders
 
 Re-entry/reuse/wait/handoff/testability are supporting signals, not mandatory checklist fields. Instrumental sub-needs/actions/information remain inside the parent Scenario. A required technical mechanism stays a constraint/implementation requirement unless there is independently meaningful user-visible behavior; the mechanism itself does not become a Scenario.
 
-A Spine Pass / Walkthrough is an optional discovery technique, not a Scenario/Prototype Scenario/owner/Use Case. Prototype Scenario findings may inform this draft but do not remain competing current behavior authority.
 
 When a materially distinct whole-Scenario design appears, use the Variant rules in the detailed-planning owner. Do not turn ordinary runtime branches or one local Idea Variant into whole-Scenario Variants mechanically.

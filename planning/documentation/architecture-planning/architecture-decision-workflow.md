@@ -17,7 +17,7 @@ Read/reuse:
 ```text
 current Workspace UC being implemented/reviewed
 other important Workspace UCs crossing the decision
-important concrete changes
+Workspace Change Cases
 Planned/Likely Extensions and expected future UCs
 Requirements / Domain invariants
 Change Axes crossing this exact decision
@@ -74,3 +74,30 @@ Selected meaning belongs in the narrowest real semantic/architecture owner; the 
 ## 7. Exit Criteria
 
 One current route is selected, its important path trade-offs are understood, and intentionally rejected complexity/revisit evidence is explicit where future pressure matters.
+
+## Decision Scope / Semantic Owner Routing
+
+Architecture reasoning does not steal semantic authority from Scenario, Screen, Domain, Realization or Slice owners. For each material decision record:
+
+```text
+Primary Decision Scope
+Primary Owner
+Affected Owners
+Affected Scenario actor paths when relevant
+Affected Runtime paths when relevant
+Affected Workspace paths when relevant
+```
+
+Recommended Primary Decision Scope values:
+
+```text
+Scenario Interaction
+Screen / Spatial
+Domain / Semantic / Consistency
+Application Realization / Runtime
+Slice Strategy / Delivery
+Implementation Slice
+Workspace / Cross-cutting Architecture
+```
+
+Materialize selected meaning in the narrowest real semantic owner by default. Keep a separate Architecture Decision owner only when the decision is genuinely cross-owner or needs independent review/history/navigation. Temporary analysis need not persist as a separate artifact.

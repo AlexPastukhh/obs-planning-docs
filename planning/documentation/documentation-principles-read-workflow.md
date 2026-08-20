@@ -107,7 +107,7 @@ Resolve the applicable `UC-DOC-*`, then read its reusable owner workflows/templa
 
 ### Bootstrap or portable-copy work
 
-`PORTABLE-STARTER-KIT.md` bootstraps reusable architecture into another repository. It is not the runtime chat/session bootstrap owned by this workflow. Read the starter kit/field kits only while creating or restructuring repository-root artifacts; field kits do not become runtime routers after those artifacts exist.
+`PORTABLE-STARTER-KIT.md` bootstraps the reusable owner/navigation architecture into another repository. It is not the runtime chat/session bootstrap owned by this workflow. While creating or restructuring repository-root artifacts, read the starter kit plus the current routed principles, workflows, templates and profiles that actually own the setup meaning; once runtime owners exist, those owners win.
 
 ## 6. Required Output
 
@@ -142,7 +142,7 @@ Before proposing documentation changes, determine:
 
 ```text
 1. Is the information reusable or project-specific?
-2. Is it Direction, Use Case, Scenario, principle, workflow, template, profile, field kit, example, navigation, tool note or current state?
+2. Is it Direction, Use Case, Scenario, principle, workflow, template, profile, example, navigation, tool note or current state?
 3. Does an owner already exist?
 4. Would a new file duplicate an existing owner?
 5. Does natural navigation/read order need UC-DOC-MAINTAIN-NAVIGATION?
@@ -155,7 +155,7 @@ Before proposing documentation changes, determine:
 
 ```text
 - Do not create a second reusable-documentation bootstrap artifact merely for session orientation.
-- Do not treat field kits as runtime routers after project root files exist.
+- Do not create a separate bootstrap-only owner type when current principles/workflows/templates/profiles or project owners can own the setup meaning.
 - Do not treat examples, helper projections or Tampermonkey userscripts as semantic/command authority.
 - Do not copy full owner logic into Command Routing, commands or examples.
 - Do not infer that a compact command prompt contains the complete current workflow.

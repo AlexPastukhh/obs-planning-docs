@@ -30,7 +30,7 @@ planning/direction-registry.md
 relevant Use-Case Registry
 ```
 
-For material answer-seeking uncertainty use the shared Idea methodology. For an application, detailed behavior belongs to Scenario owners reached from Application Use Cases.
+For material answer-seeking uncertainty use the shared Idea methodology. For an application, behavioral identity and detailed behavior belong directly to Scenario owners reached from its Scenario Catalog.
 
 ## ReviewDiff Work
 

@@ -1,9 +1,7 @@
 # SCN-LN-NOTES — Create, Link, Reconcile And Save Repository Notes
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-NOTES`.
-
-Related Application Use Case: [`UC-LN-NOTES`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the user opens Notes to create or inspect a Note, edits title/body, manages links/categories/images, explicitly refreshes repository Notes, saves, recovers or navigates a Note relation.
 
@@ -18,7 +16,7 @@ Related Application Use Case: [`UC-LN-NOTES`](../USE-CASE-REGISTRY.md)
 - explicit refresh/reconciliation of remote Notes;
 - explicit verified Note save/recovery;
 - Edit / Preview / Split rich Markdown presentation;
-- handoff to `UC-LN-NOTE-TRANSFER` for copying one verified Note plus repository images.
+- handoff to `SCN-LN-NOTE-TRANSFER` for copying one verified Note plus repository images.
 
 **Boundary:** Note `Save GitHub` remains the established compound Note workflow and is not replaced by the generic pending-file publisher.
 

@@ -43,7 +43,19 @@ Domain does not require `visual/` by default.
 ### Relationships
 <Material conceptual relationships.>
 
-### Lifecycles / States
+### Discovery Evidence — When Material
+
+### State / Condition Matrix
+
+| Current condition | Action / behavior | Result condition | Allowed? | Required guarantee | Failure / no-write guarantee | Evidence |
+|---|---|---|---|---|---|---|
+
+### Impossible State / Combination Review
+
+| State / data combination | Valid? | Why | Protecting invariant / consistency rule | Evidence |
+|---|---|---|---|---|
+
+## Lifecycles / States
 <When lifecycle meaning materially helps.>
 
 ### Rules / Invariants

@@ -92,3 +92,7 @@ upstream review findings when required
 ```
 
 Detailed Slice Strategy/Slice planning remains downstream.
+
+## Actor / Verification Effects
+
+For representative Runtime Realization Paths, record user-visible latency/wait/retry/confirmation/eventual-consistency effects that materially increase Scenario actor effort. Also identify verification seams and hand off material proof-design questions to sibling Testing Planning; realization does not make tests semantic authority.

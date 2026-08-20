@@ -18,7 +18,7 @@ UC-WORK-05 — Verify scheduling invariants
 
 Notice `UC-WORK-01` is read-only: the useful result is trustworthy understanding of the Workspace.
 
-Important concrete change:
+Workspace Change Case:
 
 ```text
 replace the current calendar provider

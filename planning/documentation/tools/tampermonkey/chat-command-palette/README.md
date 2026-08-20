@@ -9,11 +9,10 @@ Scope: deterministic Planning Helper source/build, focused semantic Use-Case act
 1. `planning/command-routing.md` for global command-system policy.
 2. `planning/commands/README.md` for planning-command authority.
 3. `planning/helper-library/README.md` for Local Cmds / Prompts repository format.
-4. `planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md` for canonical application Use-Case identities/statuses.
-5. `planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md` for behavior, relationships and exact docs → code → tests → acceptance traceability.
-6. `planning/documentation/tools/tampermonkey/chat-command-palette/MANUAL-ACCEPTANCE.md` for browser/real-GitHub acceptance.
-7. `planning/documentation/tampermonkey-command-projection-workflow.md`.
-8. this file and focused `src/**` / `tests/**`.
+4. `planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md` for canonical application Scenario identities/statuses and routes to exact docs → code → tests → acceptance traceability.
+5. `planning/documentation/tools/tampermonkey/chat-command-palette/MANUAL-ACCEPTANCE.md` for browser/real-GitHub acceptance.
+6. `planning/documentation/tampermonkey-command-projection-workflow.md`.
+7. this file and focused `src/**` / `tests/**`.
 
 Repository command definitions remain authority. The Planning Helper is a local projection/editor/runtime; its explicit repository actions do not redefine command meaning.
 
@@ -153,7 +152,6 @@ For ChatGPT `contenteditable` composers, insertion uses one direct `Range.insert
 ## Structure
 
 ```text
-USE-CASE-REGISTRY.md
 scenarios/README.md
 MANUAL-ACCEPTANCE.md
 src/

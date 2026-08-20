@@ -10,6 +10,6 @@ Child Use-Case Registry: [`use-case-registry.md`](use-case-registry.md)
 
 **Workspace scope:** codebases, documentation/planning repositories, automation projects, data pipelines, knowledge/workspace systems and other evolving engineered artifacts.
 
-**Topology:** start from real Workspace work rather than target patterns. Important Workspace Use Cases, important concrete changes, Extensions, Requirements/Constraints and observed history are traced through Workspace Work Paths and Runtime Realization Paths when applicable; these expose Change Pressure and Change Axes used by Architecture State, Decision and Evolution work.
+**Topology:** start from real Workspace work rather than target patterns. Important Workspace Use Cases, Workspace Change Cases, Extensions, Requirements/Constraints and observed history are traced through Workspace Work Paths and Runtime Realization Paths when applicable; these expose Change Pressure and Change Axes used by Architecture State, Decision and Evolution work.
 
 Supported Use Cases are independent/proportional capabilities, not mandatory sequential stages.

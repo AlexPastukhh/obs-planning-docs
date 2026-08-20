@@ -46,7 +46,7 @@ important Workspace Use Cases
   - diagnose/operate
   - verify
 +
-important concrete Workspace changes
+Workspace Change Cases
 +
 Planned / Likely Extensions
   → expected future Workspace Use Cases

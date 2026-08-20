@@ -63,7 +63,7 @@ Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
 By default they do not write repository files or perform external network calls. Linked Notes remains an explicitly bounded repository client. Planning Helper normal runtime is RAM/local-only; GitHub access is limited to explicit Check GitHub, Sync missing and Save GitHub actions for its bounded repository-backed entities.
 The repository documentation prototype is the narrow test-only exception: after explicit user actions it may perform bounded GitHub operations under the current Linked Notes contracts. Ordinary pending repository-file changes use `Update current file` for one Contents-API path or `Update all` for one Git Data tree/commit/ref transition with verification; compound Note/image-transfer paths retain their documented verified behavior.
-The Linked Notes Prototype never runs local git, commit or push. Runtime code does not define command meaning, and current application semantic entries are owned by `linked-notes/USE-CASE-REGISTRY.md` and detailed behavior/traceability by `linked-notes/scenarios/README.md`, not inferred from implementation alone.
+The Linked Notes Prototype never runs local git, commit or push. Runtime code does not define command meaning, and current application semantic entries are owned by `linked-notes/scenarios/README.md` and its Scenario owners, not inferred from implementation alone.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
 Tampermonkey command projection does not define command meaning. The root Command Routing is the command-system entry and direct `planning/commands/*.command.md` files own individual commands.
 Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by Command Routing commands.
@@ -439,7 +439,7 @@ Planning Meaning To Repository
 
 `Collect And Review Ideas From Selected Source` opens the accepted `собери идеи / collect ideas` command. Retired Planning Item formation/reconciliation routes and the item-owned Structured User Message Composer are not projected as active Use Cases.
 
-Chat/AI/Work-State remains unprojected as accepted. Current Linked Notes `UC-LN-*` identities live in the Linked Notes-local semantic registry and are not automatically projected as Planning Helper commands merely because the application implements them.
+Chat/AI/Work-State remains unprojected as accepted. Current Linked Notes behavior is owned by its Scenario Catalog/Scenario owners and is not projected into the Planning Helper Workspace Use-Case surface merely because the application implements it.
 
 ## 9B. Responsive Command Insertion And Diagnostics
 
@@ -492,7 +492,7 @@ planning/command-routing.md
 
 The generated userscript bundles a valid command catalog only as an offline fallback. Normal helper use stays RAM/local-only. `Check GitHub` lists direct metadata and compares counts/path-name sets for planning commands, helper commands and prompts without mutating local state. `Sync missing` downloads only repository paths absent locally and never overwrites a same-path local record. Per-row `Save GitHub` creates, no-ops or SHA-updates one local entity with exact read-back verification; planning-command save validates the complete direct remote command catalog before writing. `Import from ChatGPT` remains local-only. `Copy recovery request` + pasted Restore remains an offline/manual fallback. Blank owner/repository/branch settings are rejected and explicit repository operations share one serialized lock.
 
-Planning Helper keeps repository settings/token in the existing `obsPlanningHelper:v1:*` secret/config keys and keeps runtime command/helper content in the unified `obsPlanningHelper:v2:localSnapshot`. Old v1 command/library cache keys are migration inputs only. The token is secret state and is never written into planning-command files, helper-library files or the local snapshot. Local Cmds and Prompts remain convenience text, not planning-command authority; optional repository copies live only under `planning/helper-library/`. Application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md`; current behavior/traceability is owned by `chat-command-palette/scenarios/README.md`.
+Planning Helper keeps repository settings/token in the existing `obsPlanningHelper:v1:*` secret/config keys and keeps runtime command/helper content in the unified `obsPlanningHelper:v2:localSnapshot`. Old v1 command/library cache keys are migration inputs only. The token is secret state and is never written into planning-command files, helper-library files or the local snapshot. Local Cmds and Prompts remain convenience text, not planning-command authority; optional repository copies live only under `planning/helper-library/`. Application semantics and behavior/traceability are owned by `chat-command-palette/scenarios/README.md` and its Scenario owners.
 
 ## 10. Command Palette adaptation rule
 
@@ -538,10 +538,10 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
 - Except for the explicitly documented Linked Notes boundary and Planning Helper explicit repository-action boundary, do not use helpers to write repository files or perform external network calls. Planning Helper GitHub access is limited to explicit Check GitHub, Sync missing and Save GitHub over direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` targets; normal insertion/import remains network-independent.
-- Linked Notes semantic entries are owned under `linked-notes/USE-CASE-REGISTRY.md`; detailed behavior/traceability is owned by `linked-notes/scenarios/README.md` plus focused current-state docs; legacy Documentation Workbench Linked Notes workflows are compatibility/planning history only.
+- Linked Notes semantic entries and detailed behavior/traceability are owned under `linked-notes/scenarios/README.md` and its Scenario owners plus focused current-state docs; legacy Documentation Workbench Linked Notes workflows are compatibility/planning history only.
 ```
 
 
 ## Planning Helper Local Library / Prompts
 
-Developer/runtime details remain under `chat-command-palette/`; application semantic identity is owned by `chat-command-palette/USE-CASE-REGISTRY.md` and behavior/traceability by `chat-command-palette/scenarios/README.md`. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. Local Save/Edit/Delete and ChatGPT import remain local-only. The generated userscript uses granted `GM_getValue`/`GM_setValue` for the unified local snapshot and `GM_xmlhttpRequest` only after explicit Check GitHub, Sync missing or Save GitHub actions. If browser-local state is lost, direct Sync missing can restore repository-only records, while ChatGPT marker Restore remains an offline/manual fallback.
+Developer/runtime details remain under `chat-command-palette/`; application semantic identity and behavior/traceability are owned by `chat-command-palette/scenarios/README.md` and its Scenario owners. The repository format for local helper commands and prompts is `planning/helper-library/README.md`. Local Save/Edit/Delete and ChatGPT import remain local-only. The generated userscript uses granted `GM_getValue`/`GM_setValue` for the unified local snapshot and `GM_xmlhttpRequest` only after explicit Check GitHub, Sync missing or Save GitHub actions. If browser-local state is lost, direct Sync missing can restore repository-only records, while ChatGPT marker Restore remains an offline/manual fallback.

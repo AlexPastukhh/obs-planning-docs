@@ -17,7 +17,7 @@ Prototype planning cheaply tests and clarifies **how the selected application co
 ```text
 selected/current Application Concept
 + explicit Application responsibility
-+ candidate/current Application Use Cases
++ candidate/current Application Scenarios
 ↓
 Prototype Planning
 ↓
@@ -52,9 +52,9 @@ interaction/workflow prototype
 
 The reusable Prototype Plan/Result shapes may support both experiment types, but only interaction/workflow prototype work establishes the provisional `Prototype Scenario` / `Prototype Screen` surfaces described here.
 
-## 3. Spine Pass / Spine Walkthrough
+## 3. Lightweight Discovery Representation — When Useful
 
-A `Spine Pass` or `Spine Walkthrough` is a **discovery technique**, not a Scenario type or planning owner.
+When boundaries are unclear, use a rough walkthrough, sketch, sequence or other disposable representation proportionally:
 
 ```text
 concrete actor situation
@@ -69,14 +69,13 @@ concrete actor situation
 Use it to expose candidate Scenario boundaries, missing capabilities, candidate Screens, Requirements, DATA, Behavior and uncertainty.
 
 ```text
-Spine Pass
 ≠ Scenario
 ≠ Prototype Scenario
 ≠ canonical behavior owner
 ≠ mandatory stage/artifact
 ```
 
-Do not create `UC-PLAN-SPINE` merely for this technique. It is available inside Prototype/Scenario Discovery when useful.
+Use rough walkthrough/sketch/representation only as an ordinary discovery technique inside Prototype/Scenario Discovery when useful; it is not a named planning entity or separate Use Case.
 
 ## 4. Prototype Scenario
 
@@ -202,7 +201,7 @@ After prototype review:
 
 ```text
 Prototype Scenario findings
-→ refine/split/merge candidate Application Use Cases
+→ refine/split/merge candidate Application Scenarios
 → Scenario Discovery
 → detailed Scenario Drafts
 
@@ -230,7 +229,7 @@ A prototype may invalidate Application Concept assumptions or expose whole-solut
 
 ```text
 prototype evidence
-→ affected Concept / Application responsibility / Use Case / Requirement / Scenario/Screen candidate
+→ affected Concept / Application responsibility / Requirement / Application Scenario / Screen candidate
 → explicit review
 → selected current meaning
 ```
@@ -238,3 +237,7 @@ prototype evidence
 ## 11. Repository Boundary
 
 Prototype planning does not authorize implementation, repository mutation, archive creation, commit or push. Use the relevant command route for file/package changes.
+
+## Integrated Prototype Alternatives
+
+Use the existing `Planning Unit Variant` mechanism when a second materially distinct integrated Prototype design exists. Variants may own different `PSCN-*` / `PSCR-*` sets; exactly one is selected. Do not create a Prototype-specific Variant ontology.

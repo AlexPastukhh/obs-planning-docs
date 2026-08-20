@@ -79,7 +79,7 @@ Use the smallest complete owners that actually depend on the evidence.
 
 ```text
 Prototype Scenario findings
-→ Application Use Case refinement / Scenario Discovery / detailed Scenario Drafts
+→ Application Scenario refinement / Scenario Discovery / detailed Scenario Drafts
 
 Prototype Screen findings
 → canonical Screen owners when useful

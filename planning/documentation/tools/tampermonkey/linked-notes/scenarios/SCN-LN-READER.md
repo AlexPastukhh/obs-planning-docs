@@ -1,9 +1,7 @@
 # SCN-LN-READER — Read A ChatGPT Response In A Local Reader
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-READER`.
-
-Related Application Use Case: [`UC-LN-READER`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the user presses `Reader` and pastes Markdown, or presses `Open in Reader` on one visible assistant response.
 

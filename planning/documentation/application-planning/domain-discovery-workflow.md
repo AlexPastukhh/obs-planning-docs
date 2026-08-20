@@ -88,6 +88,43 @@ Does violation make current required behavior incorrect?
 Is it invariant, current policy, workflow choice, presentation rule or implementation mechanism?
 ```
 
+## 5.1 Behavior Evidence Classification — When Useful
+
+Before modeling, classify material evidence by what it is trying to prove rather than by nouns/files:
+
+```text
+change / command behavior
+lifecycle / state / condition
+impossible state / combination
+value integrity
+coordination / consistency
+read / query meaning
+integration concern
+failure / no-write guarantee
+```
+
+These labels are a reasoning aid, not mandatory ontology. They prevent every Behavior Item from becoming an Entity/Aggregate concern.
+
+## 5.2 State / Condition Matrix — When Material
+
+When behavior availability/result depends on state or conditions, enumerate materially distinct combinations:
+
+| Current condition | Action / behavior | Result condition | Allowed? | Required guarantee | Failure / no-write guarantee | Evidence |
+|---|---|---|---|---|---|---|
+| `<state/condition>` | `<behavior>` | `<result>` | yes/no | `<must become true>` | `<must not change>` | `<source>` |
+
+Use the matrix to discover lifecycle states, allowed/forbidden transitions, preconditions, policies and invariants. Do not build a Cartesian product of every field; include combinations that can materially change behavior or correctness.
+
+## 5.3 Impossible State / Combination Review — When Material
+
+State-transition validity and impossible-state validity are different questions. Separately review combinations that must never exist:
+
+| State / data combination | Valid? | Why | Protecting invariant / consistency rule | Evidence |
+|---|---|---|---|---|
+| `<combination>` | yes/no | `<reason>` | `<invariant>` | `<source>` |
+
+An impossible combination may exist even when no single transition row directly exposes it. Feed selected findings into Domain lifecycle/invariants/policies/consistency boundaries and later verification meaning.
+
 ## 6. Form Domain Candidates
 
 Candidate kinds include:

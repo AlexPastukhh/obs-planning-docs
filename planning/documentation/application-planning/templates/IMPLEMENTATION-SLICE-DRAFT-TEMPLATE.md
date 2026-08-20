@@ -46,6 +46,15 @@ A simple Slice may keep all implementation planning in `slice.md`. Split fronten
 ### Vertical Boundary
 <What end-to-end behavior/technical responsibility this Slice delivers and what remains outside.>
 
+### Behavior Coverage
+<List the selected Behavior Items / acceptance / invariant obligations implemented by this Slice. Keep this distinct from file/task scope and from test names.>
+
+### Related Behavior Explicitly Out Of Scope — When Material
+
+| Related behavior | Owner / destination | Why not this Slice |
+|---|---|---|
+| <behavior> | <owner / later Slice> | <boundary reason> |
+
 ### Dependencies / Handoffs
 <Only material dependencies.>
 
@@ -93,8 +102,8 @@ Risks
 ### Verification Target
 <What must be demonstrably true for this Slice to count as delivered.>
 
-### Verification Evidence — When Useful
-<Link `verification.md` and derive evidence from Scenario Acceptance + Behavior Items + Requirements + Domain invariants/verification meaning + Slice target.>
+### Verification Evidence / Test Coverage — When Useful
+<Link `verification.md` and derive evidence from Scenario Acceptance + Behavior Items + Requirements + Domain invariants/verification meaning + Slice target. Keep `Scope`, `Behavior Coverage` and `Test Coverage` distinct. When proof design is material, route/build a Behavior-to-Test Trace through sibling Testing Planning `UC-PLAN-TEST-DESIGN`; a test name or `covered by integration tests` note is not sufficient proof planning.>
 
 ## Cross-File Dependencies / Reference Object Candidates — When Material
 

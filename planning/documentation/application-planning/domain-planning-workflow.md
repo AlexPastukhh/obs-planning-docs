@@ -33,7 +33,7 @@ Read proportionally:
 
 ```text
 selected Application Concept / responsibility
-current Application Use Cases
+current Application Scenarios
 current detailed Scenarios
 Scenario DATA / Behavior Items
 confirmed Requirements

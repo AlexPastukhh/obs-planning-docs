@@ -2,10 +2,10 @@
 
 Status: active application Direction Registry
 Parent root registry: [`planning/direction-registry.md`](../../../../direction-registry.md)
-Child Use-Case Registry: [`USE-CASE-REGISTRY.md`](USE-CASE-REGISTRY.md)
+Primary semantic registry: [`scenarios/README.md`](scenarios/README.md)
 
 ## `DIR-LINKED-NOTES` — Use And Maintain Linked Notes
 
-Purpose: expose the application's independently useful user capabilities through one semantic Use-Case Registry and detailed Scenario owners.
+Purpose: expose the Linked Notes application through independently meaningful current Scenarios and their canonical behavior owners.
 
-Application Use Cases own trigger/purpose/result/boundaries. Scenario owners own detailed behavior and traceability.
+Scenario owners directly own trigger/context/behavior/result/boundaries and traceability.

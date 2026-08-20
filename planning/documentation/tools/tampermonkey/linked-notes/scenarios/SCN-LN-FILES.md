@@ -1,9 +1,7 @@
 # SCN-LN-FILES — Browse, Read And Prepare Repository File Work
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-FILES`.
-
-Related Application Use Case: [`UC-LN-FILES`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the user explicitly opens Files, navigates a repository location/path, opens/searches a file, creates/edits bounded text, creates structure, copies files/folders or starts a New File from a repository template.
 
@@ -22,7 +20,7 @@ Related Application Use Case: [`UC-LN-FILES`](../USE-CASE-REGISTRY.md)
 - repository templates as a New File seed;
 - same-live-runtime Files context preservation across panel collapse/expand when workspace target is unchanged.
 
-**Boundary:** local repository changes are not remote success. Standard publication is delegated to `UC-LN-PUBLISH`.
+**Boundary:** local repository changes are not remote success. Standard publication is delegated to `SCN-LN-PUBLISH`.
 
 **Traceability:**
 

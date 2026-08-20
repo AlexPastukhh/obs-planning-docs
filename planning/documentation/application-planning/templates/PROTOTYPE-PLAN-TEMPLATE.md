@@ -17,7 +17,7 @@ Blank sections are not requirements. A small feasibility spike may remain embedd
 | Prototype mode | interaction/workflow / technical feasibility spike / integration / value / other |
 | Status | proposed / ready / running / completed / cancelled |
 | Related Application Concept / decision | <link> |
-| Related Application responsibility / Use Cases | <when applicable> |
+| Related Application responsibility / Scenarios | <when applicable> |
 | Related Ideas / Requirements | <when applicable> |
 
 ## Question / Hypothesis
@@ -45,9 +45,11 @@ Blank sections are not requirements. A small feasibility spike may remain embedd
 ### What Is Simulated
 <Mocks/stubs/manual stand-ins/fake data.>
 
-## Spine Pass / Walkthrough — Interaction/Workflow Prototype
+## Discovery Representation — When Useful
 
-Use only as a discovery method when helpful:
+A rough walkthrough, sketch or sequence may be recorded here as disposable discovery evidence. It is not a Scenario owner or separate planning entity.
+
+Use only when helpful:
 
 ```text
 concrete actor situation

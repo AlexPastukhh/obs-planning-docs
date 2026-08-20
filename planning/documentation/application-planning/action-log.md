@@ -207,3 +207,125 @@ No material unresolved issues identified.
 **Entry:** `LOG-DOC-013`  
 **Reason:** Application Planning templates are synchronized with the Domain Verification / Realization / Slice complexity semantics of the same Architecture Planning ChangeSet. Full ReviewDiff correction reasoning and applied-state history are owned by the canonical reusable-documentation log entry.
 
+
+
+### LOG-APP-012 — Scenario-first planning, Domain state discovery, Testing foundation and Review Dependencies
+
+**Type:** IDEA REVIEW  
+**Source:** current planning discussion after the Workspace Architecture Planning foundation, including explicit user clarifications and checked reusable material from `AlexPastukhh/enman@my-changes` for Domain/Slice/Testing/source-dependency methodology  
+
+**Current Conclusions:**
+- Application behavior is owned directly by Application Scenarios; the separate Application Use-Case semantic layer is removed for migrated/current application-planning and selected application scopes;
+- Scenario planning proportionally reviews user/actor effort across actions, choices, information/context load, repeated entry, switches, waits, retries/recovery, forced technical understanding and irreversible actions;
+- `Workspace Change Case` is the canonical Architecture term for a concrete significant architecture-relevant Workspace change, including rare/one-off change;
+- Workspace Use-Case Discovery becomes the independent `UC-PLAN-ARCH-WORKSPACE-USES` capability and `workspace-use-case-discovery-workflow.md` becomes its Main Owner;
+- Architecture Decisions route selected meaning to the narrowest real semantic owner and use Primary Decision Scope/Owner/Affected Owners, keeping a separate Architecture Decision owner only when the decision is genuinely cross-owner or independently reviewable/navigable;
+- Prototype integrated alternatives use the existing Planning Unit Variant mechanism; no Prototype-specific Variant ontology is introduced;
+- the named Spine methodology is retired; rough representations/walkthroughs remain ordinary proportional discovery techniques;
+- Domain Discovery gains proportional behavior-evidence classification, State/Condition Matrix analysis and separate Impossible State/Combination Review so invariants/lifecycle/policies/no-write guarantees are systematically discovered rather than only recorded after intuition;
+- reusable Testing Planning becomes peer Direction `DIR-PLAN-TESTING` with independent `UC-PLAN-TEST-STRATEGY`, `UC-PLAN-TEST-DESIGN` and `UC-PLAN-TEST-COVERAGE`; test layers remain techniques/responsibility zones rather than Use Cases;
+- Testing Planning preserves Behavior Coverage vs Test Coverage, Behavior-to-Test Trace, concrete assertions, Escape Risk, Refactor Risk, public-boundary proof, no-mutation proof, idempotency/no-op and stable/unrelated-state safety, focused regression guards, representative coverage, paired cross-side proof, API/component/E2E boundaries, test-object boundaries, test-data/isolation rules and explicit planned/implemented/checked/executed evidence states;
+- Slice planning distinguishes Scope, Behavior Coverage and Test Coverage and explicitly routes out-of-scope behavior plus material proof design;
+- reusable Documentation gains `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES`: source changes can require explicit downstream semantic review even without a materialized literal Reference Object use;
+- Review Dependencies do not create blind transitive avalanches: A change makes direct consumer B need review; cascade continues only if B review changes B meaning;
+- Reference Objects remain the stronger exact-materialized-reference mechanism and already include stale detection plus consumer semantic-review needs before synchronization;
+- Field Kits are retired as an active documentation type; useful meaning is moved into current owners/workflows/profiles rather than preserved as another bootstrap layer;
+- Planning Helper and Linked Notes migrate to Scenario Catalogs; Replacement Package App is explicitly excluded from this migration and remains an unmigrated application-Use-Case exception until separately selected.
+
+**Questions / Risks / Problems:**  
+No material unresolved issues identified for this selected documentation/methodology transition. Linked Notes Review Dependency runtime/schema/UI/test details are deliberately delegated to separate future application implementation planning and are not claimed as current behavior.
+
+### LOG-APP-013 — Maximize reusable testing extraction and delegate Linked Notes Review Dependency implementation
+
+**Type:** IDEA CLARIFICATION  
+**Updates:** `LOG-APP-012`  
+
+**Clarification:**
+- extract as much generic useful Testing Planning meaning as practical from the checked Enman material rather than carrying only a thin verification paragraph; keep project/technology-specific ASP.NET/Vite/LocalDB/Playwright setup details out of reusable core while retaining reusable API/integration, E2E and Test Object guidance;
+- do not create one Use Case per test layer: shared strategy, behavior-specific proof design and actual-evidence coverage review are the independently useful planning results;
+- configure mandatory downstream review as a reusable Workspace/Documentation capability and use Linked Notes as the selected future mechanism; the semantic review itself is performed by the affected real owner/another chat rather than by the configuration capability;
+- record the Linked Notes Review Dependency feature in its roadmap without implementing runtime code or prematurely creating a current Scenario before the separate implementation-planning chat establishes the actual actor path;
+- preserve the explicit `planning/documentation/tools/replacement-package-app/**` exclusion, including its unrelated local build/smoke working-tree state.
+
+### LOG-APP-014 — Apply scenario-first planning, Testing foundation and review-dependency methodology
+
+**Type:** APPLIED  
+**Applied From:** `LOG-APP-012`, `LOG-APP-013`  
+**ChangeSet:** `bcf47f72-a79a-430a-ba8c-9b5b566f57c1`  
+**Package:** `f408c34c-210e-4a9c-93aa-6b648a795475`  
+
+**Target-State Result:** after successful Apply of this package:
+- root/reusable navigation supports Workspace/methodology Directions through Use-Case Registries and Application Directions through Scenario Catalogs, and exposes the new Testing Planning Direction;
+- reusable Application Planning has no separate Application Use-Case layer, Scenario owns application behavioral identity, Scenario actor effort is reviewable, Prototype uses generic Planning Unit Variants and named Spine methodology is absent;
+- Workspace Architecture Planning has six UCs including Workspace Use-Case Discovery, uses `Workspace Change Case`, and Architecture Decision routing preserves narrow semantic ownership;
+- Domain Discovery provides explicit State/Condition Matrix and Impossible State/Combination techniques feeding lifecycle/invariant/policy/no-write/consistency meaning;
+- `planning/documentation/testing-planning/` owns reusable Testing Strategy, Test Design and Current Test Coverage/Evidence Review plus supporting API/integration, E2E and Test Object guidance;
+- Slice/Domain/Application-Realization owners hand off material proof design to Testing without making tests semantic authority;
+- reusable Documentation exposes `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` and a Review Dependency workflow integrated with Reference Object semantics;
+- active Field Kit files and their obsolete source-usage examples are removed while current workflows/profiles remain authoritative;
+- Planning Helper and Linked Notes application Directions route to Scenario Catalogs and current Scenario owners, Planning Helper semantic projection omits migrated `UC-PH-*`/`UC-LN-*` application identities while preserving Workspace/planning UCs and the explicitly excluded Replacement Package App projection;
+- Linked Notes roadmap records Required Review Dependencies as selected future functionality with runtime implementation delegated to a separate chat; no Linked Notes runtime/schema/UI implementation is claimed by this package;
+- Documentation Workbench compatibility headers point to the current Linked Notes Scenario Catalog without changing Workbench Use-Case semantics;
+- all affected registered scope logs point to this canonical applied entry; Replacement Package App and `.linked-notes/` repository state are unchanged.
+
+**Rationale:** consolidate the selected Scenario/Architecture/Domain/Slice methodology, recover mature reusable testing reasoning from the Enman reference, and turn semantic dependency-review needs into an explicit tool-backed capability without duplicating semantic authority or prematurely implementing Linked Notes runtime work.
+
+
+### LOG-APP-015 — ReviewDiff correct destructive terminology cleanup and incomplete Scenario-first migration
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `bcf47f72-a79a-430a-ba8c-9b5b566f57c1`, package `f408c34c-210e-4a9c-93aa-6b648a795475`  
+
+**Material Findings / Selected Corrections:**
+- terminology cleanup accidentally removed the complete `text` field from three user-authored Planning Helper prompt records; restore those prompt files exactly to their pre-package content because prompt text is user content, not semantic-authority cleanup surface;
+- retiring the old setup layer removed whole classification/bootstrap statements from reusable documentation workflows and left empty/dangling sections; preserve the useful owner-placement/setup meaning in current workflows/profiles/templates instead of deleting the surrounding rule;
+- named-Scaffold cleanup damaged the practical Collect-Ideas example and left unlabeled/numbering gaps in Prototype guidance; remove obsolete example bodies coherently and preserve only ordinary rough walkthrough/sketch/representation evidence without creating a named planning entity;
+- the Scenario-first migration was incomplete in several active Application Planning owners (`Application Use-Case Registration`, candidate `Use Cases`, Concept Feature / Prototype references); route application behavioral identity directly through Application Scenarios and Scenario Catalogs everywhere in active methodology;
+- fix the duplicate Planning Helper Scenario-Catalog route and a stray Tampermonkey README backtick discovered in the same ReviewDiff.
+
+**Resulting Current Meaning:** the selected Scenario-first / Testing / Review-Dependency methodology remains unchanged. This correction restores lost user content and makes the active documentation internally match that already-selected meaning; it does not add a new capability or reopen the selected architecture.
+
+### LOG-APP-016 — Apply ReviewDiff correction for preserved content and Scenario-first consistency
+
+**Type:** APPLIED  
+**Applied From:** `LOG-APP-015`  
+**ChangeSet:** `bcf47f72-a79a-430a-ba8c-9b5b566f57c1`  
+**Package:** `5db46ddc-cd7f-4258-8ec6-ffb6edc9c835`  
+
+**Target-State Result:** after successful Apply of this correction package:
+- all three affected Planning Helper prompt records again contain their exact pre-package user-authored `text`;
+- reusable documentation bootstrap/responsibility-zone guidance preserves owner classification and setup handoff without reviving the retired setup-only owner layer;
+- Portable Starter Kit and reusable routing distinguish Workspace/methodology Use-Case Registries from Application Scenario Catalogs;
+- Prototype/Scenario guidance uses ordinary rough walkthrough/sketch/representation only as disposable discovery evidence, with no named scaffold entity and no malformed empty sections caused by cleanup;
+- active Application Planning no longer contains an Application Use-Case registration layer or candidate Application Use-Case identities; Application behavioral identity is Scenario-first throughout the corrected owners/templates/examples;
+- the Collect-Ideas practical example is structurally coherent after retirement of obsolete scaffold-specific example Ideas;
+- Planning Helper/Tampermonkey navigation wording is syntactically clean;
+- no Linked Notes runtime/application files, Replacement Package App files or `.linked-notes/` repository-state files are changed by this correction.
+
+**Rationale:** correct information loss and cleanup drift from the first package while preserving the already selected methodology and keeping the correction limited to affected planning-root/reusable-documentation/Application-Planning scopes.
+
+
+### LOG-APP-017 — ReviewDiff correct two residual Scenario-first cleanup duplicates
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `bcf47f72-a79a-430a-ba8c-9b5b566f57c1`, correction package `5db46ddc-cd7f-4258-8ec6-ffb6edc9c835`  
+
+**Material Findings / Selected Corrections:**
+- Planning Helper `README.md` still lists `scenarios/README.md` twice in the Structure block because the deleted `USE-CASE-REGISTRY.md` row was mechanically replaced rather than removed; keep one Scenario Catalog row;
+- `APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` contains two consecutive `≠ Scenario` boundary rows after removal of the Application Use-Case layer; keep one Scenario boundary row.
+
+**Resulting Current Meaning:** no methodology choice changes. This is a mechanical consistency correction of the already-selected Scenario-first model.
+
+### LOG-APP-018 — Apply residual Scenario-first cleanup correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-APP-017`  
+**ChangeSet:** `bcf47f72-a79a-430a-ba8c-9b5b566f57c1`  
+**Package:** `499aff12-0a41-4fd2-9544-40a8febec361`  
+
+**Target-State Result:** after successful Apply of this correction package:
+- Planning Helper `README.md` contains one `scenarios/README.md` Structure entry followed by `MANUAL-ACCEPTANCE.md`;
+- Application Concept boundaries contain one `≠ Scenario` row and no duplicate left by Application-Use-Case retirement;
+- no Linked Notes files/action-log, reusable-documentation parent files, Planning Root files, Replacement Package App files or `.linked-notes/` repository-state files are changed.
+
+**Rationale:** finish the two residual mechanical cleanup corrections identified by semantic ReviewDiff without changing the selected Scenario-first / Testing / Review-Dependency methodology.

@@ -2,7 +2,7 @@
 
 Status: implementation mapping / browser acceptance pending
 Version: `0.7.2-prototype`
-Owner: [`scenarios/README.md`](scenarios/README.md) / `UC-LN-READER`
+Owner: [`scenarios/README.md`](scenarios/README.md) / `SCN-LN-READER`
 
 ## User flow
 

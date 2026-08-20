@@ -79,23 +79,20 @@ Command permission does not come from Use-Case activation.
 ```text
 Problem / Question / Idea
 → Need / Desired Result
-→ Current Reality when useful
-→ existing solutions / alternatives
-→ candidate whole solution/workflow variants
-→ scoped Idea work when material
-→ whole-solution integration review
-→ selected Application responsibility when applicable
-→ optional Spine Scenario(s)
-→ progressive Scenario discovery
-→ Scenario Drafts
-→ Scenario DATA / Behavior Items
-→ Domain when useful
-→ Features / Implementation Slices when useful
+→ whole-solution / Application Concept work when useful
+→ selected Application responsibility
+→ Prototype when material
+→ Scenario discovery
+→ Scenario Drafts / Screens
+→ optional Domain Discovery / Domain
+→ optional Application Realization
+→ optional Slice Strategy / Implementation Slice
+→ Verification / Testing planning when useful
 ```
 
-A Spine Scenario is temporary scaffolding for discovering real Scenario boundaries, not a permanent entity layer.
+Application behavior is owned by **Scenarios**. There is no reusable Application-Use-Case semantic layer between Application responsibility and Scenario discovery. A rough walkthrough/representation may help discovery without becoming a named planning entity.
 
-Historical Planning Item records may remain provenance. Planning Item, Planning Draft and Full Picture Matrix are not active reusable stages/artifacts. Current owners remain real responsibilities, and whole-solution/cross-Scenario integration review remains a required review responsibility when relevant without becoming a separate mandatory entity or file.
+Testing Planning is a sibling reusable Direction under `planning/documentation/testing-planning/`; it plans proof/evidence without taking semantic authority from Scenario, Requirement, Domain or Slice owners.
 
 ## Parallel Work / Scope Logs
 

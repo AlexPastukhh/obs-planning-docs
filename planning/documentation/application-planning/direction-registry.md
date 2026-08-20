@@ -18,10 +18,9 @@ Need / Desired Result
 → Application Concept review when own software is a material candidate
 → whole-solution selection
 → Application responsibility when applicable
-→ Application Use Cases
 → Prototype Planning when useful
-   → Spine Pass / Walkthrough as optional discovery technique
    → Prototype Scenarios / Prototype Screens / candidate Requirements
+   → rough representation / walkthrough when useful
 → Scenario discovery
 → detailed Scenario Draft workspaces + Screen spatial owners when useful
 → optional Domain Discovery

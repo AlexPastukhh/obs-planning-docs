@@ -25,8 +25,10 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | Shared Idea methodology / aggregate Current-Plan contract | Idea principles/workflow/template |
 | Solution/application planning | `application-planning/` |
 | Universal Workspace Architecture Planning | `architecture-planning/` |
+| Reusable Testing Planning | `testing-planning/` |
+| Required semantic downstream review dependencies | `review-dependency-planning-workflow.md` + `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` |
 | Detailed application behavior | project/application Scenario owner(s) |
-| Optional Scenario/Domain/Slice specialization | `profiles/scenario-domain-slice-*` |
+| Optional Scenario/Domain/Slice specialization | `profiles/scenario-domain-slice-docs-profile.md` |
 | Status reconciliation | `status-reconciliation-workflow.md` |
 | Example coverage/examples | `example-coverage-workflow.md`, `examples/` |
 | Fixed parallel-work scope + scope-log methodology | `parallel-work-scope-and-action-log-workflow.md`; project roots/boundaries live in the root Scope Registry |
@@ -38,7 +40,7 @@ README/index files own navigation/read order only. They do not duplicate complet
 ## Placement Checks
 
 1. reusable or project-specific?
-2. Direction/Use Case/Scenario/principle/workflow/template/profile/field-kit/example/tool/current state?
+2. Direction / Use Case / Scenario / principle / workflow / template / profile / example / tool / current state?
 3. what is the narrowest canonical owner?
 4. is that owner already reachable from a current Use Case?
 5. would a new file duplicate an existing owner?

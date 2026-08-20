@@ -12,7 +12,7 @@ Start from one concrete result:
 
 ```text
 Workspace UC
-important concrete Workspace change
+Workspace Change Case
 Extension-derived future UC
 Application Scenario (Runtime path)
 ```

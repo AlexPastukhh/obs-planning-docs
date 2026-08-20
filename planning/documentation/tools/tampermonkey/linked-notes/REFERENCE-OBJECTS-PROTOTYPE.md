@@ -3,7 +3,7 @@
 Status: implementation prototype / automated focused evidence available / browser and real-GitHub acceptance pending
 Prototype host: Linked Notes `0.8.0-prototype`
 Definitions File: `.linked-notes/reference-objects.json`
-Owner: [`scenarios/README.md`](scenarios/README.md) / `UC-LN-REFERENCE-OBJECTS`
+Owner: [`scenarios/README.md`](scenarios/README.md) / `SCN-LN-REFERENCE-OBJECTS`
 
 ## 1. Purpose
 

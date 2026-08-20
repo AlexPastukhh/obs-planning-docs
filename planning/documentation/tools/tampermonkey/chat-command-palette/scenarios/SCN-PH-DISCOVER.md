@@ -1,9 +1,7 @@
 # SCN-PH-DISCOVER — Find And Inspect Planning Helper Content
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-PH-DISCOVER`.
-
-Related Application Use Case: [`UC-PH-DISCOVER`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** the helper starts/opens, the user selects a surface or searches/browses current content.
 
@@ -17,4 +15,4 @@ Related Application Use Case: [`UC-PH-DISCOVER`](../USE-CASE-REGISTRY.md)
 - **Focused / durable contract:** planning-command authority starts at [`planning/commands/README.md`](../../../../../commands/README.md); helper files use [`planning/helper-library/README.md`](../../../../../helper-library/README.md).
 - **Primary implementation:** [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js), [`src/semantic-projections.js`](../src/semantic-projections.js).
 - **Automated evidence:** [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-policy.test.mjs`](../tests/planning-helper-policy.test.mjs).
-- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#uc-ph-discover`](../MANUAL-ACCEPTANCE.md#uc-ph-discover).
+- **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-discover`](../MANUAL-ACCEPTANCE.md#scn-ph-discover).

@@ -9,7 +9,7 @@ Owner / routing files:
 
 ```text
 planning/command-routing.md
-planning/documentation/profiles/scenario-domain-slice-use-case-field-kit.md
+planning/documentation/profiles/scenario-domain-slice-docs-profile.md
 ```
 
 Related reusable maintenance rules:
@@ -155,7 +155,7 @@ Boundary:
 
 ```text
 - The concrete Enman root use-case map owns the route rows.
-- The scenario/domain/slice field kit suggests route families but is not a second use-case map.
+- The scenario/domain/slice profile suggests route families but is not a second use-case map.
 - This file is project-specific demonstration-only.
 - It links owner files instead of copying their workflows.
 - It keeps file writes/package/direct edits behind explicit approval.

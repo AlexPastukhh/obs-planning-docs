@@ -23,9 +23,8 @@ Problem / Question / Idea
 → if own Application responsibility is selected/already confirmed:
    selected/current Application Concept
    → explicit Application responsibility
-   → candidate/current Application Use Cases
+   → candidate/current Application Scenarios
    → Prototype Planning when useful
-      → Spine Pass / Walkthrough as discovery technique
       → Prototype Scenarios
       → Prototype Screens
       → candidate Requirements / DATA / Behavior
@@ -68,7 +67,7 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 14. `goal-map.md` when a current working Goal Map would materially help
 15. other type-specific templates under `templates/`
 16. optional specialized SDS profile for projects that activate that route family
-17. project-local Use Cases / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / current owners.
+17. project-local Scenario Catalog / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / current owners.
 
 ## Core Concepts
 
@@ -77,11 +76,10 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 - **Open Solution Slot** — addressable unresolved place inside that workflow where a Need, available inputs and desired output are known but the best fill is not; it is a planning surface, not a new mandatory owner/stage.
 - **Viable Existing Alternative** — an existing solution/process/integration that materially covers the relevant Need/slot and therefore remains a real comparator while custom-vs-existing selection is open.
 - **Application Concept** — reviewed custom-application candidate explaining its life/workflow simplification, Concept Features, interaction hypotheses, feasibility and rough development/maintenance burden before detailed behavior planning.
-- **Application Concept Feature** — Concept-scoped capability/value hypothesis; not automatically a Use Case, Scenario or Slice and not a mandatory global Feature layer.
+- **Application Concept Feature** — Concept-scoped capability/value hypothesis; not automatically an Application Scenario or Slice and not a mandatory global Feature layer.
 - **Application responsibility** — selected only when the whole solution actually needs application behavior.
-- **Application Use Case** — semantic identity/navigation for an independently useful application Need/result.
+- **Application Scenario** — semantic identity/navigation for an independently useful application Need/result.
 - **Prototype Planning** — provisional interaction/workflow design/evidence before canonical detailed Scenario/Screen authority.
-- **Spine Pass / Spine Walkthrough** — optional discovery technique inside Prototype/Scenario Discovery; not a Scenario type, owner or Use Case.
 - **Prototype Scenario** — provisional behavioral design (`PSCN-*`) used to discover/refine eventual Scenario boundaries; not canonical Scenario authority.
 - **Prototype Screen** — provisional spatial design (`PSCR-*`) used to discover/refine eventual Screen requirements; not canonical Screen authority.
 - **Requirement** — condition/property/constraint the selected solution must satisfy; not automatically a Scenario.

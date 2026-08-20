@@ -6,7 +6,7 @@ Status: reusable recommended template
 
 ```text
 Path Kind: Workspace Understanding / Workspace Change / Runtime Realization
-Source: Workspace UC / concrete change / Extension-derived future UC / Application Scenario
+Source: Workspace UC / Workspace Change Case / Extension-derived future UC / Application Scenario
 Desired Result:
 Current or Expected Path:
 ```

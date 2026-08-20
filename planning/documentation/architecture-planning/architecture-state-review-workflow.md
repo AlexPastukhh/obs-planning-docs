@@ -14,7 +14,7 @@ Read proportionally:
 ```text
 Current Workspace Reality
 important Workspace UCs
-important concrete changes / Extensions
+Workspace Change Cases / Extensions
 representative Workspace Work Paths
 Runtime Realization Paths when relevant
 current Change Pressure / Change Axes / Hot Paths
@@ -45,7 +45,7 @@ For material complexity identify its intent/payment when known:
 ```text
 Requirement / invariant
 important Workspace UC
-important concrete change
+Workspace Change Case
 Change Axis
 verification / operational / security need
 explicit accepted trade-off

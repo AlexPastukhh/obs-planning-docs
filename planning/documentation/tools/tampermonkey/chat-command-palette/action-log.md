@@ -83,3 +83,19 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/application-planning/action-log.md`  
 **Entry:** `LOG-APP-009`  
 **Reason:** Planning Helper semantic projection/source/tests/generated artifact changed to expose the selected Application Planning Use Cases and insert focused dynamic owner-route bodies. Full methodology rationale and applied-state relation are owned by the canonical Application Planning log entry.
+
+
+### XREF-003 — Scenario-first planning, Testing foundation and Review Dependencies
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-014`  
+**Reason:** Planning Helper Scenario-Catalog migration, semantic projection source/tests/generated artifact synchronization are part of the same transition; full rationale and applied state are owned by the canonical Application Planning entry.
+
+
+### XREF-004 — Residual Scenario-first cleanup correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
+**Entry:** `LOG-APP-018`  
+**Reason:** Planning Helper `README.md` Structure cleanup is one part of the same ReviewDiff correction; full findings and applied target state are owned by the canonical Application Planning entry.

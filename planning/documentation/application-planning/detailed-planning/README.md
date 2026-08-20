@@ -481,7 +481,7 @@ Scenario Acceptance
 → planned verification evidence
 ```
 
-A Slice may use `verification.md`. If testing grows into an independent cross-Slice responsibility, it may get a project-local testing owner/workspace. Tests provide evidence; they do not redefine Scenario/Domain truth merely because a test currently expects something.
+A Slice may use `verification.md`. If testing grows into an independent cross-Slice responsibility, route shared strategy through sibling Testing Planning (`UC-PLAN-TEST-STRATEGY`) and materialize a project-local testing owner/workspace when useful. Tests provide evidence; they do not redefine Scenario/Domain truth merely because a test currently expects something.
 
 ## 10. Cross-File Links And Reference Object Candidates
 
@@ -592,3 +592,11 @@ An upstream change does not silently rewrite downstream owners, and a downstream
 - Git/history records document revision; Variant is not document revision.
 - Keep ordinary semantic links distinct from literal-sync Reference Objects.
 - Do not introduce `versions/` merely to store edit history.
+
+## Cross-Owner Review Dependencies
+
+When one owner semantically derives meaning from another and an upstream change should require explicit downstream review, configure a Review Dependency through the reusable Documentation capability. Exact synchronized canonical fragments remain Reference Objects; ordinary navigation remains an ordinary link. Do not duplicate stale tracking for a materialized Reference Object use.
+
+## Testing Planning Handoff
+
+Slice-local verification may remain compact, but material proof design routes to sibling `../testing-planning/` through `UC-PLAN-TEST-DESIGN`. Shared/cross-Slice test architecture routes to `UC-PLAN-TEST-STRATEGY`; checking whether actual current tests prove selected meaning routes to `UC-PLAN-TEST-COVERAGE`. Tests remain evidence, never Scenario/Requirement/Domain semantic authority.

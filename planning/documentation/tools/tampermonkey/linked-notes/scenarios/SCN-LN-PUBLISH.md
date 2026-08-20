@@ -1,9 +1,7 @@
 # SCN-LN-PUBLISH — Publish Pending Repository Changes
 
 Status: active current behavior owner
-Scope: detailed application behavior and traceability for `UC-LN-PUBLISH`.
-
-Related Application Use Case: [`UC-LN-PUBLISH`](../USE-CASE-REGISTRY.md)
+Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
 **Trigger/input:** one or more pending repository-file changes exist and the user explicitly invokes `Update current file` or `Update all`.
 

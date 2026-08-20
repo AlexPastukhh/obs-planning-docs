@@ -37,11 +37,9 @@ Frequency/repeatability is important architecture-analysis evidence but is not t
 
 Application Scenarios remain application-behavior owners in Application Planning; Workspace Use Cases describe work with the Workspace itself.
 
-## Important Concrete Workspace Change
+## Workspace Change Case
 
-Architecture analysis also needs concrete significant changes that may be rare or one-off and therefore are not necessarily stable Workspace Use Cases, for example replacing one storage mechanism, performing a major refactor or splitting a deployment.
-
-`Workspace Change Case` is a working descriptive term, not a newly fixed canonical ontology name here.
+A `Workspace Change Case` is a concrete significant architecture-relevant Workspace change that may be rare or one-off and therefore is not necessarily a stable Workspace Use Case, for example replacing one storage mechanism, performing a major refactor or splitting a deployment.
 
 ## Extension
 
@@ -118,7 +116,7 @@ Workspace UC
 + frequency / current relevance
 + representative Work Path
 
-important concrete Workspace change
+Workspace Change Case
 + importance / probability
 + expected Change Path
 
@@ -139,7 +137,7 @@ The point is not only `what can vary?` but `where does important work/change eff
 
 A `Change Axis` is a material generalized dimension along which Workspace meaning, behavior, mechanism or structure may vary.
 
-Evidence may come from recurring Workspace-UC paths, important concrete changes, Planned/Likely Extensions, observed history and Requirements/constraints.
+Evidence may come from recurring Workspace-UC paths, Workspace Change Cases, Planned/Likely Extensions, observed history and Requirements/constraints.
 
 ```text
 Change Path

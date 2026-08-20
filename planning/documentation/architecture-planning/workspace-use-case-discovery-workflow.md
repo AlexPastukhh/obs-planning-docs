@@ -1,6 +1,8 @@
 # Workspace Use-Case Discovery Workflow
 
-Status: active reusable supporting workflow
+Main owner for `UC-PLAN-ARCH-WORKSPACE-USES`.
+
+Status: active reusable Use-Case owner workflow
 Scope: discover the material current/future Workspace Use Cases needed by Architecture Planning without inventing a mandatory exhaustive UC catalogue.
 
 Canonical semantics: [`workspace-use-cases-and-change-pressure.md`](workspace-use-cases-and-change-pressure.md)
@@ -41,7 +43,7 @@ Do not assume useful work mutates the Workspace.
 
 ## 4. Separate Stable UCs From Concrete Significant Changes
 
-A stable useful capability belongs in the Workspace UC set. A rare/one-off but architecture-relevant change may remain an important concrete Workspace change rather than being forced into UC identity.
+A stable useful capability belongs in the Workspace UC set. A rare/one-off but architecture-relevant change may remain an Workspace Change Case rather than being forced into UC identity.
 
 Frequency/relevance are analysis characteristics, not the UC definition.
 
@@ -70,7 +72,7 @@ Important Current Workspace UCs
 Important Future Workspace UC candidates
 Relevant frequency/current relevance where useful
 Related Extensions / constraints
-Important concrete Workspace changes kept separate
+Workspace Change Cases kept separate
 ```
 
 A separate file/artifact is optional; the result may be inline input to another Architecture Planning owner.

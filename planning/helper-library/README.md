@@ -27,8 +27,8 @@ The browser-local Planning Helper snapshot is the runtime working copy. After st
 Application-level repository actions and acceptance rules are owned by:
 
 ```text
-planning/documentation/tools/tampermonkey/chat-command-palette/USE-CASE-REGISTRY.md
-  → planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md
+planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md
+  → current `SCN-PH-*` Scenario owner
 ```
 
 ## Explicit Repository Check / Sync / Save

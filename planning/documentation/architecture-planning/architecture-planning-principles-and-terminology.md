@@ -58,7 +58,7 @@ Material payment may come from:
 ```text
 current required correctness
 important Workspace Use Case
-important concrete Workspace change
+Workspace Change Case
 material evidence-backed Change Axis
 technical / operational Requirement
 independent ownership

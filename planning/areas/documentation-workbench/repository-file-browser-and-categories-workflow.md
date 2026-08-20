@@ -4,7 +4,7 @@ Status: legacy planning/compatibility reference / not current Linked Notes autho
 Doc version: v1.4.0-markdown-heading-link-copy
 Scope: independently traversable behavior for browsing/searching, bounded UTF-8 repository text-file authoring and rich reading, local repository-root Markdown heading-link copy, tracked folder creation, exact GitHub targets, durable file/Note categories and explicit/implied memberships.
 
-> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md) and [`use-case-registry.md`](../../documentation/tools/tampermonkey/linked-notes/USE-CASE-REGISTRY.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
+> **Current Linked Notes ownership migrated.** This retained file is planning/history/compatibility context, not a current behavior or Use-Case owner. Current semantics live in [`scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md). When this retained body conflicts with current Linked Notes docs, the current Linked Notes corpus wins.
 
 ## 1. Purpose
 

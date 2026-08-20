@@ -158,7 +158,7 @@ the application would let relevant actors:
 | `CF-WORK-EVIDENCE` | inspect completed-work evidence | keep evidence on same request | evidence surface | medium |
 | `CF-CUSTOMER-RESOLUTION` | accept or report unresolved result | explicit customer resolution state | resolution interaction | medium |
 
-Concept Features are capability hypotheses inside the Concept. They are not Scenarios, Use Cases or Implementation Slices and no 1:1 mapping is assumed.
+Concept Features are capability hypotheses inside the Concept. They are not Application Scenarios or Implementation Slices and no 1:1 mapping is assumed.
 
 ### Interaction / Solution Hypothesis
 
@@ -232,11 +232,11 @@ physical repair work itself
 
 This boundary is derived from the selected Concept + whole-solution choice; the Concept itself did not automatically authorize custom application work.
 
-## 7. Candidate Application Use Cases
+## 7. Candidate Application Scenarios
 
 Before detailed Scenario decomposition, the selected Concept can be projected into candidate independently useful application capabilities:
 
-| Application Use Case | Real-world Need / result | Concept Feature coverage |
+| Application Scenario | Real-world Need / result | Concept Feature coverage |
 |---|---|---|
 | manage actionable service request | keep one request understandable/actionable | `CF-REQUEST-STATE`, `CF-NEXT-RESPONSIBILITY` |
 | coordinate visit arrangement | reach a usable visit arrangement | `CF-APPOINTMENT-COORDINATION` |
@@ -244,13 +244,13 @@ Before detailed Scenario decomposition, the selected Concept can be projected in
 | understand current request status | customer understands current state/next responsibility | `CF-REQUEST-STATE`, `CF-NEXT-RESPONSIBILITY` |
 | resolve repair result | customer accepts or reports remaining problem | `CF-CUSTOMER-RESOLUTION` |
 
-These candidate Use Cases may be split/merged/refined as real Scenario boundaries become clearer.
+These candidate Application Scenarios may be split/merged/refined as real Scenario boundaries become clearer.
 
 ## 8. Prototype Planning And Scenario Discovery
 
 The Concept/Application boundary is selected, but interaction/spatial detail is still uncertain. Use `UC-PLAN-PROTOTYPE` before creating canonical detailed Scenarios/Screens.
 
-### Spine Pass — discovery method only
+A rough end-to-end walkthrough is useful here only as disposable discovery evidence; it is not a separate Scenario type or semantic owner:
 
 ```text
 Anna notices a leak
@@ -264,7 +264,6 @@ Anna notices a leak
 → Anna accepts or reports unresolved problem
 ```
 
-This is a **Spine Pass/Walkthrough**, not a `Spine Scenario` and not a current behavior owner. It is used to discover provisional behavior/spatial needs.
 
 ### Prototype Scenarios
 
@@ -343,12 +342,10 @@ After review, supported Requirements are promoted to their real owners and curre
 
 | Scenario | Need | Observable result | Prototype origin |
 |---|---|---|---|
-| `SCN-REPORT-PROBLEM` | customer needs to report one service problem | registered request exists and customer sees it was received | Spine/Concept finding |
-| `SCN-TRIAGE-REQUEST` | dispatcher needs to make a request actionable | urgency/work type/next responsibility are established | Spine/Concept finding |
 | `SCN-CHECK-REQUEST-STATUS` | customer needs to understand what is happening and whether action is required | customer understands current status + next responsibility; no mutation is required | `PSCN-CHECK-STATUS` |
 | `SCN-SCHEDULE-VISIT` | parties need an agreed visit arrangement | one current appointment arrangement is visible/confirmed | `PSCN-SCHEDULE-VISIT` |
-| `SCN-PERFORM-WORK` | technician needs to complete assigned visit and evidence | visit completion/evidence is recorded | prototype/spine finding |
-| `SCN-ACCEPT-RESULT` | customer needs to judge whether the problem is resolved | result accepted or same request explicitly returns to work | prototype/spine finding |
+| `SCN-PERFORM-WORK` | technician needs to complete assigned visit and evidence | visit completion/evidence is recorded | prototype finding |
+| `SCN-ACCEPT-RESULT` | customer needs to judge whether the problem is resolved | result accepted or same request explicitly returns to work | prototype finding |
 
 `SCN-CHECK-REQUEST-STATUS` is a valid informational/read-only Scenario because obtaining reliable understanding is itself an independently meaningful result.
 
@@ -931,9 +928,8 @@ Problem / Need
 → selected Whole Solution
 → selected Application Concept when custom app wins / is already mandated
 → Application Responsibility
-→ candidate Application Use Cases
+→ candidate Application Scenarios
 → Prototype Planning when useful
-   → Spine Pass / Walkthrough = discovery method only
    → Prototype Scenarios / Prototype Screens
    → candidate Requirements / DATA / Behavior
    → Future Scenario Ideas / Change Axes

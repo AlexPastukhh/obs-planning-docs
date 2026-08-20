@@ -52,7 +52,6 @@ No required owner may depend solely on a command, helper UI, prior conversation 
 - principles/terminology own reusable concept contracts;
 - template owns recommended shape;
 - profile owns optional deeper specialization;
-- field kit owns bootstrap only;
 - example demonstrates only;
 - command definition owns executable trigger/output/read/permission route;
 - generated/tool projections are not authority.
@@ -81,18 +80,16 @@ Application planning uses:
 Need / desired result
 → solution/workflow selection
 → Application responsibility when justified
-→ optional Spine Scenario(s)
 → Scenario discovery
 → Scenario Drafts
 → DATA / Behavior Items
 → Domain / Slice when useful
 ```
 
-Spine is temporary scaffolding, not a permanent entity type.
 
 ## Bootstrap Vs Runtime
 
-Bootstrap uses `PORTABLE-STARTER-KIT.md` and field kits only until runtime navigation/registries/command-routing exist. Runtime owners always win afterward.
+Bootstrap/setup guidance exists to establish current repository owners. Once README/index navigation, registries, command routing and task-specific owners exist, runtime work follows those current owners directly. Do not preserve a separate bootstrap-only routing layer after the real owners exist.
 
 ## No Silent Promotion
 

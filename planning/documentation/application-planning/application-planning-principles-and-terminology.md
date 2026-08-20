@@ -95,12 +95,11 @@ An `Application Concept Feature` is a Concept-scoped hypothesis about a useful c
 
 ```text
 Concept Feature
-≠ automatically Application Use Case
 ≠ automatically Scenario
 ≠ automatically Implementation Slice
 ```
 
-Feature-to-Use-Case/Scenario/Slice relationships may be many-to-many. Concept Features do not revive a mandatory global `Feature` ontology or a required `Feature → Slice` stage.
+Feature-to-Scenario/Slice relationships may be many-to-many. Concept Features do not revive a mandatory global `Feature` ontology or a required `Feature → Slice` stage.
 
 ## Application Responsibility
 
@@ -108,21 +107,6 @@ Do not assume an application. Enter selected application planning only when Appl
 
 When a custom concept is selected, derive the Application responsibility from the selected Concept + whole-solution boundary rather than silently expanding it. Keep people/process/existing tools/external services outside when the selected whole solution leaves them outside.
 
-## Application Use Case
-
-An Application Use Case owns semantic/navigation identity for one independently useful application capability:
-
-```text
-Need / Purpose
-Trigger / accepted input
-Meaningful result / end state
-Boundaries
-Scenario owner route(s)
-```
-
-It does not duplicate detailed Main Flow.
-
-An Application Use Case normally grounds its `Need / Purpose` in the real user/work context rather than merely naming an application command or screen. Candidate Use Cases may be proposed from the selected Application Concept and then split/merge/refined as Prototype/Scenario discovery reveals the real behavioral boundaries.
 
 ## Scenario
 
@@ -157,6 +141,33 @@ technical procedure / implementation step
 A Scenario may contain any of those actions. One command may even implement nearly the whole Scenario, but only the independent Need/result behavioral boundary establishes Scenario identity. Information shown as a small instrumental part of another Scenario stays inside that Scenario rather than becoming a peer read-only Scenario.
 
 Technical constraints/implementation requirements remain constraints/invariants unless they create required user-visible behavior that participates in an independently meaningful Need/result. The implementation mechanism itself does not become a Scenario.
+
+## User / Actor Effort In A Scenario
+
+Scenario planning reviews how much work the actor must do to reach the meaningful result. This is qualitative/proportional, not a click-count score. Check when material:
+
+```text
+actions and repeated actions
+decisions / choices
+information to find, remember or compare
+repeated data entry
+screen / context switches
+waits / blocking
+retries / recovery
+technical internals the actor is forced to understand
+irreversible actions
+happy-path and material alternate/failure-path burden
+```
+
+Keep three perspectives distinct:
+
+```text
+Scenario actor path → user/actor effort
+Runtime Realization Path → system work
+Workspace Work Path → maintainer/agent work
+```
+
+Architecture and realization planning may consume actor-effort evidence when technical choices create user-visible friction, latency, confirmation, retry or consistency burden; Scenario remains the semantic owner.
 
 ## Requirement
 
@@ -225,20 +236,6 @@ A technical feasibility spike may remain inside Application Concept/research whe
 
 Canonical workflow: [`prototype-planning-workflow.md`](prototype-planning-workflow.md).
 
-### Spine Pass / Spine Walkthrough
-
-A `Spine Pass` / `Spine Walkthrough` is an optional **discovery technique**: take a concrete user situation with a real Need through a plausible end-to-end application journey to expose candidate boundaries, Screens, Requirements, DATA, Behavior and missing capabilities.
-
-```text
-Spine Pass
-≠ Scenario
-≠ Prototype Scenario
-≠ semantic owner
-≠ standalone Use Case
-≠ mandatory stage/artifact
-```
-
-Do not create `Spine Scenario` / `Spine Unit` as a current planning entity.
 
 ## Scenario Draft
 
@@ -319,7 +316,7 @@ A Screen may list Scenarios that use it without becoming their behavioral author
 
 ## Planning Unit Variant
 
-A Planning Unit Variant is an integrated alternative design of a Scenario, Screen, Domain or Slice.
+A Planning Unit Variant is an integrated alternative design of a Prototype, Scenario, Screen, Domain or Slice.
 
 ```text
 Planning Unit Variant

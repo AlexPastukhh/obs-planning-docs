@@ -25,7 +25,7 @@ not provided
 not provided
 ```
 
-## Spine Pass / Walkthrough — When Useful
+## Discovery Representation — When Useful
 
 ```text
 not provided

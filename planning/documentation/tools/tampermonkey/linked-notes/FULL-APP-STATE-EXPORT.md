@@ -2,7 +2,7 @@
 
 Status: implementation mapping / browser acceptance pending
 Version: schema `obs-linked-notes-full-app-state` v1
-Owner: [`scenarios/README.md`](scenarios/README.md) / `UC-LN-APP-STATE`
+Owner: [`scenarios/README.md`](scenarios/README.md) / `SCN-LN-APP-STATE`
 
 ## User flow
 
