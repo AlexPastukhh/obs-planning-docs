@@ -13854,7 +13854,15 @@
     };
   }
 
-  function createRepositoryTemplateMenu(ui, oldButton) {
+  function repositoryTemplatePopupKey(button, index = 0) {
+    const closest = button && typeof button.closest === 'function' ? button.closest.bind(button) : null;
+    const slot = closest && closest('.sidebar') ? 'sidebar'
+      : closest && closest('.editor') ? 'editor'
+        : `slot-${Math.max(0, Number(index) || 0)}`;
+    return `new-file:${slot}`;
+  }
+
+  function createRepositoryTemplateMenu(ui, oldButton, popupKey) {
     const state = repositoryTemplateStateForUi(ui);
     const details = document.createElement('details');
     details.className = 'files-workspace-menu';
@@ -13882,7 +13890,7 @@
     });
     oldButton.replaceWith(details);
     if (panel) portalFilesWorkspaceDropdownPanel(ui, details, panel, {
-      key: 'new-file',
+      key: String(popupKey || 'new-file:slot-0'),
       maxWidth: 520,
       maxHeight: 520,
       onOpen: () => {
@@ -14027,8 +14035,8 @@
 
   function enhanceFilesToolbar(ui) {
     if (!ui.shadow || ui.state.surface !== 'files') return;
-    ui.shadow.querySelectorAll('[data-action="new-repository-file"]').forEach((button) => {
-      if (!button.closest('.files-workspace-menu')) createRepositoryTemplateMenu(ui, button);
+    ui.shadow.querySelectorAll('[data-action="new-repository-file"]').forEach((button, index) => {
+      if (!button.closest('.files-workspace-menu')) createRepositoryTemplateMenu(ui, button, repositoryTemplatePopupKey(button, index));
     });
     const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
     if (!toolbar) return;
@@ -15407,8 +15415,14 @@
 
   function enhanceUi(ui) {
     if (!ui.shadow || ui.state.surface !== 'files' || typeof document === 'undefined') return;
+    const state = ui.state || {};
+    const activeWorkspace = (Array.isArray(state.workspaces) ? state.workspaces : [])
+      .find((workspace) => workspace && workspace.id === state.activeWorkspaceId) || null;
     const editorSave = ui.shadow.querySelector('.repository-editor [data-action="save-repository-editor"]');
-    if (editorSave) { editorSave.textContent = ui.state.repositoryEditor && ui.state.repositoryEditor.mode === 'folder' ? 'Create locally' : 'Save locally'; editorSave.disabled = Boolean(ui.state.busy || !ui.state.activeWorkspace); }
+    if (editorSave) {
+      editorSave.textContent = state.repositoryEditor && state.repositoryEditor.mode === 'folder' ? 'Create locally' : 'Save locally';
+      editorSave.disabled = Boolean(state.busy || !activeWorkspace);
+    }
     const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
     if (!toolbar || toolbar.querySelector('[data-update-all-local-changes]')) return;
     const current = document.createElement('button');

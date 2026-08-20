@@ -35,3 +35,52 @@ test('pending new paths are projected into the browsable repository tree', () =>
   const nested = runtime.mergePendingRepositoryEntries(app, 'docs/new', []);
   assert.deepEqual(nested.map((entry) => [entry.type, entry.path, entry.localPending]), [['file', 'docs/new/file.md', true]]);
 });
+
+test('Save locally is enabled from activeWorkspaceId/workspaces without requiring a token', () => {
+  const previousDocument = globalThis.document;
+  const editorSave = { textContent: '', disabled: true };
+  const shadow = {
+    querySelector(selector) {
+      if (selector === '.repository-editor [data-action="save-repository-editor"]') return editorSave;
+      return null;
+    }
+  };
+  class FakeApp {}
+  class FakeUI {
+    constructor() {
+      this.handlers = {};
+      this.shadow = shadow;
+      this.state = {
+        surface: 'files',
+        busy: false,
+        hasToken: false,
+        activeWorkspaceId: 'a',
+        workspaces: [{ id: 'a', owner: 'Org', repo: 'Docs', branch: 'main' }],
+        repositoryEditor: { mode: 'create' }
+      };
+    }
+    render() { return true; }
+  }
+
+  try {
+    globalThis.document = { createElement() { throw new Error('toolbar controls should not be created in this test'); } };
+    assert.equal(runtime.installRepositoryLocalChanges({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI }), true);
+    const ui = new FakeUI();
+
+    ui.render();
+    assert.equal(editorSave.textContent, 'Save locally');
+    assert.equal(editorSave.disabled, false, 'selected workspace must enable local save even when no GitHub token is present');
+
+    ui.state.busy = true;
+    ui.render();
+    assert.equal(editorSave.disabled, true, 'busy state must disable local save');
+
+    ui.state.busy = false;
+    ui.state.activeWorkspaceId = 'missing';
+    ui.render();
+    assert.equal(editorSave.disabled, true, 'missing active workspace must disable local save');
+  } finally {
+    if (previousDocument === undefined) delete globalThis.document;
+    else globalThis.document = previousDocument;
+  }
+});

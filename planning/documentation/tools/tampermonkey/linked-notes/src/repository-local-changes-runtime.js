@@ -384,8 +384,14 @@
 
   function enhanceUi(ui) {
     if (!ui.shadow || ui.state.surface !== 'files' || typeof document === 'undefined') return;
+    const state = ui.state || {};
+    const activeWorkspace = (Array.isArray(state.workspaces) ? state.workspaces : [])
+      .find((workspace) => workspace && workspace.id === state.activeWorkspaceId) || null;
     const editorSave = ui.shadow.querySelector('.repository-editor [data-action="save-repository-editor"]');
-    if (editorSave) { editorSave.textContent = ui.state.repositoryEditor && ui.state.repositoryEditor.mode === 'folder' ? 'Create locally' : 'Save locally'; editorSave.disabled = Boolean(ui.state.busy || !ui.state.activeWorkspace); }
+    if (editorSave) {
+      editorSave.textContent = state.repositoryEditor && state.repositoryEditor.mode === 'folder' ? 'Create locally' : 'Save locally';
+      editorSave.disabled = Boolean(state.busy || !activeWorkspace);
+    }
     const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
     if (!toolbar || toolbar.querySelector('[data-update-all-local-changes]')) return;
     const current = document.createElement('button');

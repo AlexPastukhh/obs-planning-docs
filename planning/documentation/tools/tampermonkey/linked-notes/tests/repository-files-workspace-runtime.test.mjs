@@ -496,29 +496,84 @@ test('workspace switch reloads exact workspace-scoped shortcuts and document pre
   assert.match(app.ui.state.filesWorkspacePreferencesKey, /DocsA/i);
 });
 
-test('UI enhancement replaces the real Files sidebar New file action with the repository-template menu', () => {
+test('New file template popups keep stable sidebar/editor identity across destructive rerenders', () => {
   const previousDocument = globalThis.document;
   class FakeElement {
-    constructor(tag = 'div') {
+    constructor(tag = 'div', slot = '') {
       this.tag = tag;
+      this.slot = slot;
       this.dataset = {};
       this.children = [];
       this.replacement = null;
       this.open = false;
+      this.hidden = false;
       this.style = {};
+      this.listeners = new Map();
+      this.parent = null;
+      this._summary = null;
+      this._panel = null;
     }
-    addEventListener() {}
-    appendChild(child) { this.children.push(child); return child; }
-    querySelector() { return null; }
+    addEventListener(name, fn) { this.listeners.set(name, fn); }
+    appendChild(child) {
+      if (child.parent && Array.isArray(child.parent.children)) child.parent.children = child.parent.children.filter((item) => item !== child);
+      child.parent = this;
+      this.children.push(child);
+      return child;
+    }
+    querySelector(selector) {
+      if (this.tag === 'details' && selector === 'summary') {
+        if (!this._summary) {
+          this._summary = new FakeElement('summary', this.slot);
+          this._summary.getBoundingClientRect = () => ({ left: this.slot === 'sidebar' ? 330 : 850, right: this.slot === 'sidebar' ? 450 : 970, top: 80, bottom: 114, width: 120, height: 34 });
+        }
+        return this._summary;
+      }
+      if (this.tag === 'details' && selector === '.files-workspace-menu-panel') {
+        if (!this._panel) this._panel = new FakeElement('panel', this.slot);
+        return this._panel;
+      }
+      return null;
+    }
     querySelectorAll() { return []; }
-    closest() { return null; }
-    replaceWith(node) { this.replacement = node; }
-    remove() {}
+    closest(selector) {
+      if (selector === '.sidebar' && this.slot === 'sidebar') return this;
+      if (selector === '.editor' && this.slot === 'editor') return this;
+      return null;
+    }
+    replaceWith(node) { node.slot = this.slot; this.replacement = node; }
+    remove() {
+      if (this.parent && Array.isArray(this.parent.children)) this.parent.children = this.parent.children.filter((item) => item !== this);
+      this.parent = null;
+    }
     set innerHTML(value) { this._innerHTML = value; }
     get innerHTML() { return this._innerHTML || ''; }
   }
 
   try {
+    let layer = null;
+    let currentButtons = [];
+    const main = new FakeElement('main');
+    main.getBoundingClientRect = () => ({ left: 300, right: 1100, top: 0, bottom: 700, width: 800, height: 700 });
+    const editorToolbar = new FakeElement('div', 'editor');
+    const shadow = new FakeElement('shadow');
+    shadow.querySelectorAll = (selector) => {
+      if (selector === '[data-action="new-repository-file"]') return currentButtons;
+      if (selector === '[data-files-workspace-popup-panel]') return layer ? layer.children.filter((item) => item.dataset && item.dataset.filesWorkspacePopupPanel) : [];
+      return [];
+    };
+    shadow.querySelector = (selector) => {
+      if (selector === '[data-files-workspace-popup-layer]') return layer;
+      if (selector === '.main') return main;
+      if (selector === '.panel') return null;
+      if (selector === '.editor .editor-toolbar' || selector === '.editor-toolbar') return editorToolbar;
+      if (selector === 'style[data-files-workspace-style]' || selector === '.surface-tabs') return null;
+      return null;
+    };
+    shadow.appendChild = (node) => {
+      if (node.dataset && node.dataset.filesWorkspacePopupLayer) layer = node;
+      return node;
+    };
+
     globalThis.document = {
       createElement(tag) { return new FakeElement(tag); },
       addEventListener() {},
@@ -526,41 +581,64 @@ test('UI enhancement replaces the real Files sidebar New file action with the re
     };
     const client = makeClient();
     const base = makeAppClass(client);
-    const newFileButton = new FakeElement('button');
-    const editorToolbar = new FakeElement('div');
-    const shadow = new FakeElement('shadow');
-    shadow.querySelectorAll = (selector) => selector === '[data-action="new-repository-file"]' ? [newFileButton] : [];
-    shadow.querySelector = (selector) => {
-      if (selector === '.editor .editor-toolbar' || selector === '.editor-toolbar') return editorToolbar;
-      return null;
-    };
-
     class DomUI {
       constructor() {
         this.handlers = {};
         this.shadow = shadow;
         this.state = {
-          surface: 'files',
-          busy: false,
-          workspaces: [],
-          activeWorkspaceId: '',
-          repositoryPath: '',
-          repositoryPreview: null,
-          repositoryEditor: { mode: 'none' }
+          surface: 'files', busy: false,
+          workspaces: [{ id: 'a', owner: 'Org', repo: 'Docs', branch: 'main' }], activeWorkspaceId: 'a',
+          repositoryPath: '', repositoryPreview: null, repositoryEditor: { mode: 'none' },
+          repositoryTemplatesLoaded: false, repositoryTemplatesInitialized: false, repositoryTemplates: [], repositoryTemplateDiagnostics: []
         };
       }
       mount() {}
-      render() {}
+      render() {
+        layer = null;
+        currentButtons = [new FakeElement('button', 'sidebar'), new FakeElement('button', 'editor')];
+        return true;
+      }
+      _call() { return Promise.resolve(); }
+      _withAllDrafts() { return Promise.resolve(); }
     }
 
     runtime.installRepositoryFilesWorkspace({ LinkedNotesApp: base.FakeApp, LinkedNotesUI: DomUI });
     const ui = new DomUI();
     ui.render();
-    assert.ok(newFileButton.replacement);
-    assert.equal(newFileButton.replacement.dataset.filesNewMenu, '1');
-    assert.match(newFileButton.replacement.innerHTML, /Blank file/);
-    assert.match(newFileButton.replacement.innerHTML, /Repository templates/);
-    assert.doesNotMatch(newFileButton.replacement.innerHTML, /Add document preset/);
+    assert.equal(currentButtons.length, 2);
+    const firstSidebarMenu = currentButtons[0].replacement;
+    const firstEditorMenu = currentButtons[1].replacement;
+    assert.ok(firstSidebarMenu);
+    assert.ok(firstEditorMenu);
+    assert.match(firstSidebarMenu.innerHTML, /Blank file/);
+    assert.match(firstEditorMenu.innerHTML, /Repository templates/);
+    const firstSidebarSummary = firstSidebarMenu.querySelector('summary');
+    const firstEditorSummary = firstEditorMenu.querySelector('summary');
+    assert.equal(firstSidebarSummary.dataset.filesWorkspacePopupKey, 'new-file:sidebar');
+    assert.equal(firstEditorSummary.dataset.filesWorkspacePopupKey, 'new-file:editor');
+    assert.notEqual(firstSidebarSummary.dataset.filesWorkspacePopupKey, firstEditorSummary.dataset.filesWorkspacePopupKey);
+
+    firstSidebarSummary.listeners.get('click')({ preventDefault() {} });
+    assert.equal(ui.__filesWorkspaceTopPopup, 'new-file:sidebar');
+    assert.deepEqual(layer.children.map((panel) => [panel.dataset.filesWorkspacePopupKey, panel.hidden]), [
+      ['new-file:sidebar', false],
+      ['new-file:editor', true]
+    ]);
+
+    ui.render();
+    assert.equal(ui.__filesWorkspaceTopPopup, 'new-file:sidebar', 'destructive rerender must preserve the exact anchor identity');
+    assert.deepEqual(layer.children.map((panel) => [panel.dataset.filesWorkspacePopupKey, panel.hidden]), [
+      ['new-file:sidebar', false],
+      ['new-file:editor', true]
+    ], 'rerender must restore exactly one New file popup');
+
+    const secondEditorSummary = currentButtons[1].replacement.querySelector('summary');
+    secondEditorSummary.listeners.get('click')({ preventDefault() {} });
+    assert.equal(ui.__filesWorkspaceTopPopup, 'new-file:editor');
+    assert.deepEqual(layer.children.map((panel) => [panel.dataset.filesWorkspacePopupKey, panel.hidden]), [
+      ['new-file:sidebar', true],
+      ['new-file:editor', false]
+    ]);
   } finally {
     if (previousDocument === undefined) delete globalThis.document;
     else globalThis.document = previousDocument;
