@@ -23,6 +23,7 @@ Application internals such as IndexedDB/GM storage, GitHub write orchestration, 
 | Feature | Status | Read when | Canonical contract / workflow |
 |---|---|---|---|
 | Reference Objects | active | a synchronized value is being created/materially edited, freshness is explicitly being checked, or a new Reference Object is intentionally created | [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md); direct repository authoring: [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) |
+| Review Dependencies | active | a registered source/consumer relation exists, or a whole-file dependency is being created, reviewed or acknowledged | [`REVIEW-DEPENDENCIES.md`](REVIEW-DEPENDENCIES.md) |
 | Ordered Reference Lists | active | `obs-order:*` markers exist, or complete lines/paragraphs must be sorted by current Reference Object values | [`ORDERED-REFERENCE-LISTS.md`](ORDERED-REFERENCE-LISTS.md) |
 | Repository Templates | active | creating a document of a known template type or creating/editing a repository template | [`templates/README.md`](templates/README.md) |
 | Reader-target response formatting | renderer active; supported automatic ChatGPT → Linked Notes handoff not implemented | a response is explicitly intended to be transferred into Linked Notes Reader | [`CHAT-RESPONSE-FORMAT.md`](CHAT-RESPONSE-FORMAT.md) |
@@ -35,13 +36,20 @@ Use [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) as the canonical Reference Ob
 
 For intentional direct repository creation or maintenance of Reference Objects, follow [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) for procedure order and the canonical contract for every normative rule.
 
-## 4. Ordered Reference Lists — Short Rule
+
+## 4. Review Dependencies — Short Rule
+
+Read [`REVIEW-DEPENDENCIES.md`](REVIEW-DEPENDENCIES.md) when a registered whole-file source/consumer relation applies. Compare the consumer marker's `against` fingerprint with the current source fingerprint defined by that contract. A mismatch or missing `against` means `NEEDS REVIEW`.
+
+After actually reviewing the source, consumer, relation reason and optional review scope, update the consumer marker to the current source fingerprint. Do not change `against` merely to silence a warning. Pending local source text participates in the fingerprint, and Review Dependency bookkeeping comments are excluded from source fingerprints so acknowledgement-only edits do not trigger false cascades.
+
+## 5. Ordered Reference Lists — Short Rule
 
 Keep the `obs-ref:use` nested inside its complete Ordered Item. Validate that `unit="line"` or `unit="paragraph"` matches the actual file boundaries; do not move only part of an item. A stale/unresolved use blocks sorting even though the list may remain in the file.
 
 Read [`ORDERED-REFERENCE-LISTS.md`](ORDERED-REFERENCE-LISTS.md) before editing these markers.
 
-## 5. Repository Templates — Short Rule
+## 6. Repository Templates — Short Rule
 
 Before creating a document of a known type, inspect `.linked-notes/templates/` and use a matching valid direct `*.template.md` file instead of reconstructing its fields from memory.
 
@@ -53,7 +61,7 @@ When creating a **new template**, create it as a direct child:
 
 and follow [`templates/README.md`](templates/README.md). Do not invent a template registry, nested template folder or interpolation syntax.
 
-## 6. Reader-Target Response Formatting — Short Rule
+## 7. Reader-Target Response Formatting — Short Rule
 
 Linked Notes Reader can render the supported safe `<details>/<summary>` form described in [`CHAT-RESPONSE-FORMAT.md`](CHAT-RESPONSE-FORMAT.md).
 
@@ -61,7 +69,7 @@ This is a **rendering capability**, not proof that ordinary ChatGPT responses ar
 
 Use Reader-specific formatting only when the response is actually intended for Reader transfer.
 
-## 7. Working Boundary
+## 8. Working Boundary
 
 These repository conventions do not authorize automatic GitHub writes, local Git, commit or push.
 

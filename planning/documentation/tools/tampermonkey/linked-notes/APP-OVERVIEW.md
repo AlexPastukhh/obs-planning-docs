@@ -1,7 +1,7 @@
 # OBS Linked Notes Application Overview
 
 Status: current prototype product map
-Version: `0.8.0-prototype`
+Version: `0.9.0-prototype`
 Scope: fast current-state orientation for the OBS Linked Notes Tampermonkey application. Current Scenario entries are owned by `scenarios/README.md`; detailed behavior/traceability is owned by Scenario files reached through `scenarios/README.md`; focused mappings/source/tests provide implementation evidence.
 
 ## 1. What The Application Is
@@ -22,6 +22,7 @@ Semantic entry: [`scenarios/README.md`](scenarios/README.md). Detailed Scenario 
 | Categories | Repository-backed file/Note classification | refresh, locally create/edit/assign/unassign, inspect implication | category definition Markdown after publication | pending definitions + derived cache + local UX groups | explicit refresh/validation | through standard current/all publication actions |
 | Repository templates | Seed normal file creation | choose template, refresh template list, create a normal file from template body | `.linked-notes/templates/*.template.md` | template cache/index/diagnostics | explicit template discovery/read | only later normal file creation |
 | Reference Objects | Stable definition/use materialization and stale diagnostics | define, copy use marker, check uses, update locally, validate tags, inspect file/tree warnings | definition marker text + repository index/routing metadata after publication | common pending files + check/freshness state | explicit checks/open | through standard current/all publication actions |
+| Review Dependencies | Whole-file semantic review obligations | add/edit/remove relation, refresh status, open source/consumer, Review complete | relation registry + consumer reviewed-against marker after publication | common pending files + derived fingerprint/status diagnostics | explicit refresh/open | through standard current/all publication actions |
 | Ordered Reference Lists | Sort complete file blocks by current Reference Object values | fresh-check uses, wrap whole line/paragraph, order locally | inline `obs-order:*` markers after publication | pending file state | explicit Reference Object checks | through standard current/all publication actions |
 | Chat Response Reader | Read one assistant response in a large safe Markdown view | Open in Reader, Paste Markdown, Render, Copy Markdown, Close | none | runtime-only Reader semantic state | none | none |
 | App State | Diagnostic application-state snapshot | Refresh, Copy for ChatGPT, Copy FULL JSON | none | generated snapshot of GM/IndexedDB/runtime state | none | none |
@@ -115,7 +116,17 @@ Ordered Reference Lists add `obs-order:list` and paired `obs-order:item` markers
 
 Semantic owners: `SCN-LN-REFERENCE-OBJECTS` and `SCN-LN-ORDERED-REFERENCE-LISTS` in [`scenarios/README.md`](scenarios/README.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md). Focused implementation mapping: [`REFERENCE-OBJECTS-PROTOTYPE.md`](REFERENCE-OBJECTS-PROTOTYPE.md). Repository contracts: `.linked-notes/REFERENCE-OBJECTS.md` and `.linked-notes/ORDERED-REFERENCE-LISTS.md`.
 
-## 9. Chat Response Reader
+## 9. Review Dependencies
+
+Review Dependencies cover semantic whole-file relationships where no exact literal materialization exists. `.linked-notes/review-dependencies.json` records each source/consumer pair, required reason and optional review scope. The consumer marker records the SHA-256 fingerprint of the source state against which review was completed.
+
+A missing or mismatched fingerprint produces `NEEDS REVIEW`. `Review complete` records the current source fingerprint only after the user has actually reviewed the source and consumer; it never mutates consumer meaning automatically. Pending local source text participates before publication, while Review Dependency bookkeeping markers are excluded from source fingerprints to prevent acknowledgement-only cascade noise.
+
+Reference Objects remain separate and continue to detect stale materialized values by literal definition/use comparison.
+
+Semantic owner: `SCN-LN-REVIEW-DEPENDENCIES` in [`scenarios/README.md`](scenarios/README.md). Repository contract: `.linked-notes/REVIEW-DEPENDENCIES.md`.
+
+## 10. Chat Response Reader
 
 The Reader is a temporary local projection, not a Note or repository file.
 
@@ -136,7 +147,7 @@ The rendering capability and the ChatGPT-to-Reader transport are separate concer
 
 Semantic owner: `SCN-LN-READER` in [`scenarios/README.md`](scenarios/README.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md). Detailed mapping: [`CHAT-RESPONSE-READER.md`](CHAT-RESPONSE-READER.md).
 
-## 10. App State
+## 11. App State
 
 App State is diagnostic support for transferring application state to another chat or debugging a problem. It is deliberately different from normal Note/File content copy.
 
@@ -150,7 +161,7 @@ It can include:
 
 Semantic owner: `SCN-LN-APP-STATE` in [`scenarios/README.md`](scenarios/README.md); detailed behavior: [`scenarios/README.md`](scenarios/README.md). Detailed mapping: [`FULL-APP-STATE-EXPORT.md`](FULL-APP-STATE-EXPORT.md).
 
-## 11. Main Boundaries
+## 12. Main Boundaries
 
 The current prototype does not automatically:
 
@@ -163,7 +174,7 @@ The current prototype does not automatically:
 - treat DOM-derived ChatGPT text as original exact model Markdown;
 - run local Git, commit or push.
 
-## 12. Agent-Facing Repository Capabilities
+## 13. Agent-Facing Repository Capabilities
 
 Some Linked Notes capabilities change how an AI/chat should author repository content or a Reader-targeted response. Their canonical repository-facing registry is [`.linked-notes/AGENT-GUIDE.md`](../../../../../.linked-notes/AGENT-GUIDE.md).
 
@@ -176,7 +187,7 @@ Current registry entries:
 
 The detailed rules stay in `.linked-notes/**`; this application overview only points to that layer.
 
-## 13. Where To Go Next
+## 14. Where To Go Next
 
 - runtime composition: [`ARCHITECTURE.md`](ARCHITECTURE.md);
 - data ownership/storage: [`DATA-AND-STATE.md`](DATA-AND-STATE.md);

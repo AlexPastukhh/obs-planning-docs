@@ -1,9 +1,20 @@
 # OBS Linked Notes Prototype Changelog
 
 Status: implementation history / not current-state authority
-Current version: `0.8.0-prototype`
+Current version: `0.9.0-prototype`
 
 Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTURE.md`](ARCHITECTURE.md) and [`DATA-AND-STATE.md`](DATA-AND-STATE.md) for current behavior. This file records the major tracked prototype slices that were previously mixed into the main README.
+
+
+## 0.9.0-prototype — Hash-based Review Dependencies
+
+- added `SCN-LN-REVIEW-DEPENDENCIES` and repository-facing `.linked-notes/REVIEW-DEPENDENCIES.md`;
+- added `.linked-notes/review-dependencies.json` with per-relation source, consumer, reason and optional review scope;
+- added consumer `obs-review:dependency` acknowledgement markers and deterministic LF-normalized SHA-256 source fingerprints;
+- excluded live Review Dependency bookkeeping markers from source fingerprints so acknowledgement-only edits do not trigger false downstream cascades;
+- added local-first create/edit/remove/refresh/Review complete runtime behavior and Files warnings;
+- kept Reference Object freshness unchanged and literal-content based;
+- added focused marker/registry/fingerprint/service/runtime tests and rebuilt the generated userscript.
 
 ## 0.8.0-prototype — Local-first repository publication and Ordered Reference Lists
 

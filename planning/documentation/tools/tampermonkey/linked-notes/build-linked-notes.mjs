@@ -22,8 +22,12 @@ const sourceFiles = [
   'src/ordered-reference-list-core.js',
   'src/reference-object-registry.js',
   'src/repository-local-change-store.js',
+  'src/review-dependency-markers.js',
+  'src/review-dependency-registry.js',
+  'src/review-dependency-fingerprint.js',
   'src/reference-object-local-store.js',
   'src/repository-reference-object-service.js',
+  'src/repository-review-dependency-service.js',
   'src/repository-target-search.js',
   'src/rich-markdown-renderer.js',
   'src/chat-response-reader.js',
@@ -47,6 +51,7 @@ const sourceFiles = [
   'src/repository-files-workspace-runtime.js',
   'src/repository-reference-objects-runtime.js',
   'src/repository-local-changes-runtime.js',
+  'src/repository-review-dependencies-runtime.js',
   'src/repository-ordered-reference-lists-runtime.js',
   'src/repository-reference-stale-runtime.js',
   'src/chat-response-reader-runtime.js',
@@ -56,8 +61,8 @@ const sourceFiles = [
 const header = `// ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.8.0-prototype
-// @description  Local-first repository workspace with atomic GitHub updates, Ordered Reference Lists, stale-use diagnostics, linked Notes and safe Markdown.
+// @version      0.9.0-prototype
+// @description  Local-first repository workspace with atomic GitHub updates, Review Dependencies, Ordered Reference Lists, stale-use diagnostics, linked Notes and safe Markdown.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*

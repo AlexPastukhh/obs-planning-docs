@@ -3,7 +3,7 @@
 Status: active current-prototype implementation roadmap / priority view
 Scope: future directions for OBS Linked Notes. This file is not current Scenario authority, does not accept production architecture and does not authorize implementation by itself.
 
-Current implementation baseline: `0.8.0-prototype`.
+Current implementation baseline: `0.9.0-prototype`.
 
 Current semantic entry: [`scenarios/README.md`](scenarios/README.md).
 Detailed Scenario navigation: [`scenarios/README.md`](scenarios/README.md).
@@ -29,15 +29,16 @@ DEFERRED
 
 A roadmap direction is not current application semantics merely because it is written here. If a direction changes current Linked Notes capability meaning or Scenario identity, update `scenarios/README.md` first and update affected Scenario owners/navigation in the same reviewed change when detailed behavior changes. Broader Documentation Workbench planning may still retain historical/planning context, but it is not current Linked Notes semantic authority.
 
-## Implemented baseline — local-first files and Ordered Reference Lists
+## Implemented baseline — local-first files, Ordered Reference Lists and Review Dependencies
 
-The `0.8.0-prototype` baseline now includes:
+The `0.9.0-prototype` baseline now includes:
 
 - one workspace-scoped pending repository-file queue compatible with earlier Reference Object drafts;
 - local-first file/folder/structure/copy/category/Reference Object/ordering actions;
 - separate `Update current file` and one-commit Git Data `Update all` publication;
 - inline Ordered Reference Lists whose whole-line/paragraph items contain Reference Object uses;
-- current/stale/unresolved warnings in the open file and Files tree after a freshness scan.
+- current/stale/unresolved Reference Object warnings in the open file and Files tree after a freshness scan;
+- hash-based whole-file Review Dependencies with per-relation reason/review scope, repository-visible reviewed-against evidence and explicit Review complete acknowledgement.
 
 Browser and real-GitHub acceptance remain evidence gaps; implementation and transport tests are not substitutes for that acceptance.
 
@@ -222,7 +223,7 @@ image-aware Markdown transfer
 any remaining feature-specific remote write path discovered in source
 ```
 
-Files create/edit/structure/copy, category changes, Reference Object changes, Ordered List changes and repository-template-backed New File are **local staging producers** in the current `0.8.0` model; audit their handoff into `SCN-LN-PUBLISH` rather than misclassifying each producer as a separate remote write entrypoint.
+Files create/edit/structure/copy, category changes, Reference Object changes, Ordered List changes and repository-template-backed New File are **local staging producers** in the current `0.9.0` model; audit their handoff into `SCN-LN-PUBLISH` rather than misclassifying each producer as a separate remote write entrypoint.
 
 For each entrypoint record:
 
@@ -355,38 +356,9 @@ Candidate later directions/open decisions that are not active commitments:
 - optional local workspace filters for the Note list if they are still useful;
 - cross-repository transfer only after current same-repository behavior is stable.
 
-## NEXT — Required Review Dependencies
+## Implemented — Required Review Dependencies
 
-### Selected future capability
-
-Linked Notes should support explicit repository review dependencies:
-
-```text
-source file
-→ one or more consumer files
-→ reason / optional review scope
-
-source state changes
-→ consumer = NEEDS REVIEW
-```
-
-This complements Reference Objects rather than replacing them. A Reference Object can additionally detect stale materialized canonical values; a Review Dependency covers semantic dependencies where no exact literal copy exists.
-
-### Review lifecycle
-
-```text
-source changed
-→ consumer needs review
-→ review performed
-   ├─ consumer meaning unchanged → mark reviewed/current; cascade stops
-   └─ consumer meaning changed → mark reviewed/current; its own registered consumers may then require review
-```
-
-Do not create blind transitive review avalanches and do not mutate consumer files automatically. The reusable semantic capability is owned by `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES`; Linked Notes will own the future application behavior/runtime mechanism.
-
-### Implementation handoff
-
-Runtime/schema/UI/test design is intentionally delegated to a separate implementation-planning chat. This roadmap entry does not claim the feature is implemented and does not yet create a current `SCN-LN-*` Scenario. Scenario identity/split is selected when implementation planning establishes the actual user path.
+`SCN-LN-REVIEW-DEPENDENCIES` now implements the selected repository review-dependency capability. Relations live in `.linked-notes/review-dependencies.json`, consumer markers store reviewed-against SHA-256 fingerprints, and Linked Notes/AI follow the same explicit review-completion contract. Source changes produce `NEEDS REVIEW`; acknowledgement-only bookkeeping does not create blind downstream cascades, and consumers are never mutated automatically.
 
 
 ## 7. DEFERRED / Not Selected By This Roadmap

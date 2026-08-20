@@ -1,7 +1,7 @@
 # OBS Linked Notes Prototype Architecture
 
 Status: current implementation mapping / not production architecture
-Version: `0.8.0-prototype`
+Version: `0.9.0-prototype`
 Scope: technical map of the generated Tampermonkey application, its runtime extension order and external boundaries.
 
 Current application semantic identities/purpose/trigger/result/boundaries are owned by [`scenarios/README.md`](scenarios/README.md); detailed behavior/traceability is routed through [`scenarios/README.md`](scenarios/README.md). This architecture file explains implementation shape only; legacy Linked Notes workflow files under `planning/areas/documentation-workbench/` are not current semantic owners.
@@ -59,6 +59,7 @@ foundation / pure policy
   → Files workspace runtime
   → Reference Objects runtime
   → common local-change/publication runtime
+  → Review Dependencies runtime
   → Ordered Reference Lists runtime
   → Reference Object stale-diagnostics runtime
   → Chat Response Reader runtime
@@ -68,7 +69,7 @@ foundation / pure policy
 
 The final Full App State runtime is intentionally installed after the feature runtimes so it can observe their enumerable semantic application state.
 
-The common local-change runtime is installed after Files and Reference Objects so it becomes the final owner of repository editor, structure/copy and feature-publication behavior. It preserves the former Reference Object local storage key for migration compatibility while normalizing entries into one queue.
+The common local-change runtime is installed after Files and Reference Objects so it becomes the final owner of repository editor, structure/copy and feature-publication behavior. Review Dependencies are installed after that common runtime because their local relation/acknowledgement changes stage through `_stageRepositoryTextChange(...)`. The common runtime preserves the former Reference Object local storage key for migration compatibility while normalizing entries into one queue.
 
 The movable panel remains owned by the base UI rather than a feature runtime. Drag placement is committed into runtime state during pointer movement and each move reacquires the current live panel, so a destructive UI rerender cannot strand the gesture on a detached DOM node. Horizontal custom placement may enter a safe edge-peek state that leaves a 64 px recovery strip plus dedicated left/right edge grips visible; vertical placement remains viewport-bounded and `Center` always restores the full centered panel. Feature runtimes may register transient-overlay cleanup hooks; the Files runtime uses that boundary to close its Shadow-root top popup before panel drag/Center/viewport repositioning and installs a document-capture outside-pointer listener so `Locations`/`Reference objects` also close when the user clicks the surrounding ChatGPT page.
 
@@ -162,6 +163,11 @@ src/repository-change-publisher.js
 src/repository-local-changes-runtime.js
 src/repository-ordered-reference-lists-runtime.js
 src/repository-reference-stale-runtime.js
+src/review-dependency-markers.js
+src/review-dependency-registry.js
+src/review-dependency-fingerprint.js
+src/repository-review-dependency-service.js
+src/repository-review-dependencies-runtime.js
 ```
 
 Marker/registry/service modules keep repository marker/index logic separate from UI/runtime integration. The common store/publisher own local intent and standard publication; Ordered List core owns structural validation and deterministic sorting; stale runtime projects repository freshness into Files.
@@ -272,3 +278,10 @@ Current future-design pressure points are tracked rather than silently resolved 
 3. GitHub write orchestration is feature-specific around one low-level Contents client, making cross-feature reliability diagnosis harder.
 
 See [`KNOWN-ISSUES.md`](KNOWN-ISSUES.md) and the project-local roadmap.
+
+### Review Dependencies
+
+Review Dependency implementation is deliberately separate from Reference Object freshness. `review-dependency-markers.js` owns consumer acknowledgement markers, `review-dependency-registry.js` owns source/consumer/reason/review-scope routing, `review-dependency-fingerprint.js` owns deterministic LF-normalized SHA-256 source identity with live Review Dependency bookkeeping comments excluded, and `repository-review-dependency-service.js` performs bounded registry-routed reads using pending text overlays first.
+
+`repository-review-dependencies-runtime.js` integrates local-first relation creation/edit/removal, explicit `Review complete`, Files warnings and source/consumer navigation. It stages registry/consumer files through the existing common pending repository queue and has no feature-specific GitHub writer.
+

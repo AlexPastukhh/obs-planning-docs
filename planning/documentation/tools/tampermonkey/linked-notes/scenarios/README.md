@@ -15,6 +15,7 @@ Scope: canonical current Linked Notes application Scenarios. Application behavio
 | `SCN-LN-ORDERED-REFERENCE-LISTS` — Create And Reorder Reference-Driven Markdown Units | [`SCN-LN-ORDERED-REFERENCE-LISTS.md`](SCN-LN-ORDERED-REFERENCE-LISTS.md) |
 | `SCN-LN-PUBLISH` — Publish Pending Repository Changes | [`SCN-LN-PUBLISH.md`](SCN-LN-PUBLISH.md) |
 | `SCN-LN-READER` — Read A ChatGPT Response In A Local Reader | [`SCN-LN-READER.md`](SCN-LN-READER.md) |
+| `SCN-LN-REVIEW-DEPENDENCIES` — Configure And Complete Required File Reviews | [`SCN-LN-REVIEW-DEPENDENCIES.md`](SCN-LN-REVIEW-DEPENDENCIES.md) |
 | `SCN-LN-REFERENCE-OBJECTS` — Define, Materialize, Check And Synchronize Reference Objects | [`SCN-LN-REFERENCE-OBJECTS.md`](SCN-LN-REFERENCE-OBJECTS.md) |
 | `SCN-LN-WORKSPACE` — Configure And Select Repository Workspace | [`SCN-LN-WORKSPACE.md`](SCN-LN-WORKSPACE.md) |
 

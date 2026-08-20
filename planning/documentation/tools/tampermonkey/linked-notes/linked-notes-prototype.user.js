@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         OBS Linked Notes Prototype
 // @namespace    https://github.com/AlexPastukhh/obs-planning-docs
-// @version      0.8.0-prototype
-// @description  Local-first repository workspace with atomic GitHub updates, Ordered Reference Lists, stale-use diagnostics, linked Notes and safe Markdown.
+// @version      0.9.0-prototype
+// @description  Local-first repository workspace with atomic GitHub updates, Review Dependencies, Ordered Reference Lists, stale-use diagnostics, linked Notes and safe Markdown.
 // @author       OBS planning prototype
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -3342,6 +3342,360 @@
   };
 });
 
+/* src/review-dependency-markers.js */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const REVIEW_DEPENDENCY_ID_PATTERN = /^rd_[A-Za-z0-9][A-Za-z0-9_-]{2,63}$/;
+  const REVIEW_FINGERPRINT_PATTERN = /^sha256:[a-f0-9]{64}$/;
+  const COMMENT_PATTERN = /<!--[\s\S]*?-->/g;
+
+  function markdownCodeRanges(text) {
+    const ranges = [];
+    const lines = [];
+    let start = 0;
+    for (let index = 0; index <= text.length; index += 1) {
+      if (index !== text.length && text[index] !== '\n' && text[index] !== '\r') continue;
+      let next = index;
+      if (index < text.length && text[index] === '\r' && text[index + 1] === '\n') next = index + 2;
+      else if (index < text.length) next = index + 1;
+      lines.push({ start, end: index, next });
+      start = next;
+      if (next > index) index = next - 1;
+    }
+    let fence = null;
+    for (const line of lines) {
+      const value = text.slice(line.start, line.end);
+      if (!fence) {
+        const match = value.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+        if (match) fence = { start: line.start, char: match[1][0], length: match[1].length };
+        continue;
+      }
+      const close = value.match(/^ {0,3}(`+|~+)[ \t]*$/);
+      if (!close || close[1][0] !== fence.char || close[1].length < fence.length) continue;
+      ranges.push([fence.start, line.next]);
+      fence = null;
+    }
+    if (fence) ranges.push([fence.start, text.length]);
+    const inFence = (offset) => ranges.some(([a, b]) => offset >= a && offset < b);
+    let index = 0;
+    while (index < text.length) {
+      if (inFence(index) || text[index] !== '`') { index += 1; continue; }
+      let runEnd = index + 1;
+      while (runEnd < text.length && text[runEnd] === '`') runEnd += 1;
+      const length = runEnd - index;
+      let search = runEnd;
+      let closeEnd = -1;
+      while (search < text.length) {
+        if (inFence(search) || text[search] !== '`') { search += 1; continue; }
+        let candidateEnd = search + 1;
+        while (candidateEnd < text.length && text[candidateEnd] === '`') candidateEnd += 1;
+        if (candidateEnd - search === length) { closeEnd = candidateEnd; break; }
+        search = candidateEnd;
+      }
+      if (closeEnd >= 0) { ranges.push([index, closeEnd]); index = closeEnd; }
+      else index = runEnd;
+    }
+    return ranges.sort((a, b) => a[0] - b[0]);
+  }
+
+  function inRanges(offset, ranges) {
+    return ranges.some(([start, end]) => offset >= start && offset < end);
+  }
+
+  function normalizeReviewDependencyId(value) {
+    const id = String(value == null ? '' : value).trim();
+    if (!REVIEW_DEPENDENCY_ID_PATTERN.test(id)) throw new TypeError(`Invalid Review Dependency id: ${id || '(empty)'}.`);
+    return id;
+  }
+
+  function normalizeReviewFingerprint(value, options = {}) {
+    const fingerprint = String(value == null ? '' : value).trim().toLowerCase();
+    if (!fingerprint && options.allowEmpty) return '';
+    if (!REVIEW_FINGERPRINT_PATTERN.test(fingerprint)) throw new TypeError(`Invalid Review Dependency fingerprint: ${fingerprint || '(empty)'}.`);
+    return fingerprint;
+  }
+
+  function randomHex(length, randomSource) {
+    if (typeof randomSource === 'function') {
+      const value = String(randomSource(length) || '').replace(/[^a-fA-F0-9]/g, '').toLowerCase();
+      if (value.length >= length) return value.slice(0, length);
+    }
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    if (cryptoObject && typeof cryptoObject.getRandomValues === 'function') {
+      const bytes = new Uint8Array(Math.ceil(length / 2));
+      cryptoObject.getRandomValues(bytes);
+      return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('').slice(0, length);
+    }
+    let output = '';
+    while (output.length < length) output += Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0');
+    return output.slice(0, length);
+  }
+
+  function createReviewDependencyId(randomSource) {
+    return `rd_${randomHex(12, randomSource)}`;
+  }
+
+  function formatReviewDependencyMarker(id, against = '') {
+    const stableId = normalizeReviewDependencyId(id);
+    const fingerprint = normalizeReviewFingerprint(against, { allowEmpty: true });
+    return `<!-- obs-review:dependency id="${stableId}"${fingerprint ? ` against="${fingerprint}"` : ''} -->`;
+  }
+
+  function parseAttributes(body) {
+    const attrs = {};
+    const pattern = /([A-Za-z][A-Za-z0-9_-]*)\s*=\s*"([^"]*)"/g;
+    let match;
+    while ((match = pattern.exec(body))) attrs[match[1]] = match[2];
+    return attrs;
+  }
+
+  function parseReviewDependencyMarkers(input) {
+    const text = String(input == null ? '' : input);
+    const codeRanges = markdownCodeRanges(text);
+    const markers = [];
+    const diagnostics = [];
+    COMMENT_PATTERN.lastIndex = 0;
+    let match;
+    while ((match = COMMENT_PATTERN.exec(text))) {
+      if (inRanges(match.index, codeRanges)) continue;
+      if (!/obs-review:dependency/i.test(match[0])) continue;
+      const bodyMatch = match[0].match(/^<!--\s*obs-review:dependency\b([\s\S]*?)-->$/i);
+      if (!bodyMatch) {
+        diagnostics.push({ kind: 'malformed_marker', offset: match.index, message: 'Malformed obs-review:dependency marker.' });
+        continue;
+      }
+      const attrs = parseAttributes(bodyMatch[1]);
+      const unknown = bodyMatch[1].replace(/([A-Za-z][A-Za-z0-9_-]*)\s*=\s*"([^"]*)"/g, '').trim();
+      if (unknown) diagnostics.push({ kind: 'malformed_marker', offset: match.index, message: 'Review Dependency marker contains unsupported syntax.' });
+      const id = String(attrs.id || '').trim();
+      const againstRaw = String(attrs.against || '').trim();
+      if (!REVIEW_DEPENDENCY_ID_PATTERN.test(id)) diagnostics.push({ kind: 'invalid_id', offset: match.index, message: 'Review Dependency marker has an invalid id.' });
+      if (againstRaw && !REVIEW_FINGERPRINT_PATTERN.test(againstRaw.toLowerCase())) diagnostics.push({ kind: 'invalid_fingerprint', offset: match.index, id, message: 'Review Dependency marker has an invalid against fingerprint.' });
+      markers.push({
+        id,
+        against: againstRaw.toLowerCase(),
+        start: match.index,
+        end: COMMENT_PATTERN.lastIndex,
+        raw: match[0]
+      });
+    }
+    return { text, markers, diagnostics, codeRanges };
+  }
+
+  function markerById(input, id) {
+    const stableId = normalizeReviewDependencyId(id);
+    return parseReviewDependencyMarkers(input).markers.filter((marker) => marker.id === stableId);
+  }
+
+  function appendReviewDependencyMarker(input, id, against = '') {
+    const text = String(input == null ? '' : input);
+    if (markerById(text, id).length) throw new Error(`Review Dependency marker already exists: ${id}.`);
+    const marker = formatReviewDependencyMarker(id, against);
+    if (!text) return `${marker}\n`;
+    const newline = text.endsWith('\n') || text.endsWith('\r') ? '' : '\n';
+    return `${text}${newline}${marker}\n`;
+  }
+
+  function setReviewDependencyAgainst(input, id, against) {
+    const stableId = normalizeReviewDependencyId(id);
+    const fingerprint = normalizeReviewFingerprint(against);
+    const parsed = parseReviewDependencyMarkers(input);
+    const matches = parsed.markers.filter((marker) => marker.id === stableId);
+    if (matches.length !== 1) throw new Error(`Review Dependency ${stableId} must have exactly one consumer marker; found ${matches.length}.`);
+    const marker = matches[0];
+    return `${parsed.text.slice(0, marker.start)}${formatReviewDependencyMarker(stableId, fingerprint)}${parsed.text.slice(marker.end)}`;
+  }
+
+  function removeReviewDependencyMarker(input, id) {
+    const stableId = normalizeReviewDependencyId(id);
+    const parsed = parseReviewDependencyMarkers(input);
+    const matches = parsed.markers.filter((marker) => marker.id === stableId);
+    if (!matches.length) return parsed.text;
+    if (matches.length !== 1) throw new Error(`Review Dependency ${stableId} has duplicate consumer markers.`);
+    const marker = matches[0];
+    let start = marker.start;
+    let end = marker.end;
+    if (start > 0 && parsed.text[start - 1] === '\n' && (end === parsed.text.length || parsed.text[end] === '\n')) start -= 1;
+    if (end < parsed.text.length && parsed.text[end] === '\n') end += 1;
+    return `${parsed.text.slice(0, start)}${parsed.text.slice(end)}`;
+  }
+
+  return {
+    REVIEW_DEPENDENCY_ID_PATTERN,
+    REVIEW_FINGERPRINT_PATTERN,
+    normalizeReviewDependencyId,
+    normalizeReviewFingerprint,
+    createReviewDependencyId,
+    formatReviewDependencyMarker,
+    parseReviewDependencyMarkers,
+    appendReviewDependencyMarker,
+    setReviewDependencyAgainst,
+    removeReviewDependencyMarker
+  };
+});
+
+/* src/review-dependency-registry.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const DEFAULT_REVIEW_DEPENDENCY_REGISTRY_PATH = '.linked-notes/review-dependencies.json';
+
+  function apiOrThrow() {
+    const api = root.ObsLinkedNotes || {};
+    if (typeof api.normalizeReviewDependencyId !== 'function') throw new Error('Review Dependency marker API is unavailable.');
+    return api;
+  }
+
+  function normalizePath(value) {
+    const api = root.ObsLinkedNotes || {};
+    if (typeof api.normalizeRepositoryLocalPath === 'function') return api.normalizeRepositoryLocalPath(value);
+    const path = String(value == null ? '' : value).replace(/\\/g, '/').trim().replace(/\/+$/g, '');
+    if (!path || path.startsWith('/') || /^[A-Za-z]:\//.test(path) || path.includes('://') || /[?#\u0000-\u001f\u007f]/.test(path)) throw new TypeError('Review Dependency path must be repository-relative.');
+    const parts = path.split('/');
+    if (parts.some((part) => !part || part === '.' || part === '..')) throw new TypeError('Review Dependency path contains an invalid segment.');
+    return parts.join('/');
+  }
+
+  function normalizeRelation(value) {
+    const api = apiOrThrow();
+    const source = value && typeof value === 'object' ? value : {};
+    const id = api.normalizeReviewDependencyId(source.id);
+    const sourcePath = normalizePath(source.sourcePath || source.source && source.source.path);
+    const consumerPath = normalizePath(source.consumerPath || source.consumer && source.consumer.path);
+    if (sourcePath === consumerPath) throw new TypeError('Review Dependency source and consumer must be different files.');
+    const reason = String(source.reason == null ? '' : source.reason).trim() || 'Depends on this source file.';
+    const reviewScope = String(source.reviewScope == null ? '' : source.reviewScope).trim();
+    return { id, sourcePath, consumerPath, reason, ...(reviewScope ? { reviewScope } : {}) };
+  }
+
+  function emptyReviewDependencyRegistry() {
+    return { schemaVersion: 1, dependencies: [] };
+  }
+
+  function normalizeReviewDependencyRegistry(value) {
+    const source = value && typeof value === 'object' ? value : {};
+    const ids = new Set();
+    const pairs = new Set();
+    const dependencies = [];
+    for (const raw of Array.isArray(source.dependencies) ? source.dependencies : []) {
+      const relation = normalizeRelation(raw);
+      if (ids.has(relation.id)) throw new Error(`Duplicate Review Dependency id: ${relation.id}.`);
+      const pair = `${relation.sourcePath}\u0000${relation.consumerPath}`;
+      if (pairs.has(pair)) throw new Error(`Duplicate Review Dependency source/consumer pair: ${relation.sourcePath} → ${relation.consumerPath}.`);
+      ids.add(relation.id);
+      pairs.add(pair);
+      dependencies.push(relation);
+    }
+    dependencies.sort((a, b) => a.sourcePath.localeCompare(b.sourcePath) || a.consumerPath.localeCompare(b.consumerPath) || a.id.localeCompare(b.id));
+    return { schemaVersion: 1, dependencies };
+  }
+
+  function decodeReviewDependencyRegistry(text) {
+    const raw = String(text == null ? '' : text).trim();
+    if (!raw) return emptyReviewDependencyRegistry();
+    let parsed;
+    try { parsed = JSON.parse(raw); } catch (error) { throw new Error(`Review Dependency registry is not valid JSON: ${error.message}`); }
+    if (Number(parsed && parsed.schemaVersion) !== 1) throw new Error(`Unsupported Review Dependency registry schemaVersion: ${parsed && parsed.schemaVersion}.`);
+    return normalizeReviewDependencyRegistry(parsed);
+  }
+
+  function encodeReviewDependencyRegistry(value) {
+    return `${JSON.stringify(normalizeReviewDependencyRegistry(value), null, 2)}\n`;
+  }
+
+  function reviewDependencyById(registry, id) {
+    const stableId = apiOrThrow().normalizeReviewDependencyId(id);
+    return normalizeReviewDependencyRegistry(registry).dependencies.find((item) => item.id === stableId) || null;
+  }
+
+  function upsertReviewDependency(registry, relation) {
+    const current = normalizeReviewDependencyRegistry(registry);
+    const next = normalizeRelation(relation);
+    return normalizeReviewDependencyRegistry({ schemaVersion: 1, dependencies: [...current.dependencies.filter((item) => item.id !== next.id), next] });
+  }
+
+  function removeReviewDependency(registry, id) {
+    const stableId = apiOrThrow().normalizeReviewDependencyId(id);
+    const current = normalizeReviewDependencyRegistry(registry);
+    if (!current.dependencies.some((item) => item.id === stableId)) throw new Error(`Review Dependency not found: ${stableId}.`);
+    return normalizeReviewDependencyRegistry({ schemaVersion: 1, dependencies: current.dependencies.filter((item) => item.id !== stableId) });
+  }
+
+  return {
+    DEFAULT_REVIEW_DEPENDENCY_REGISTRY_PATH,
+    normalizeReviewDependencyRelation: normalizeRelation,
+    emptyReviewDependencyRegistry,
+    normalizeReviewDependencyRegistry,
+    decodeReviewDependencyRegistry,
+    encodeReviewDependencyRegistry,
+    reviewDependencyById,
+    upsertReviewDependency,
+    removeReviewDependency
+  };
+});
+
+/* src/review-dependency-fingerprint.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  function apiOrThrow() {
+    const api = root.ObsLinkedNotes || {};
+    if (typeof api.parseReviewDependencyMarkers !== 'function') throw new Error('Review Dependency marker parser is unavailable.');
+    return api;
+  }
+
+  function normalizeReviewDependencySourceText(input) {
+    const text = String(input == null ? '' : input);
+    const parsed = apiOrThrow().parseReviewDependencyMarkers(text);
+    const ranges = [...parsed.markers].map((marker) => {
+      let start = marker.start;
+      let end = marker.end;
+      const lineStart = Math.max(text.lastIndexOf('\n', marker.start - 1), text.lastIndexOf('\r', marker.start - 1)) + 1;
+      let lineEnd = text.length;
+      for (let index = marker.end; index < text.length; index += 1) {
+        if (text[index] === '\n' || text[index] === '\r') { lineEnd = index; break; }
+      }
+      if (!text.slice(lineStart, marker.start).trim() && !text.slice(marker.end, lineEnd).trim()) {
+        start = lineStart;
+        end = lineEnd;
+        if (end < text.length && text[end] === '\r' && text[end + 1] === '\n') end += 2;
+        else if (end < text.length) end += 1;
+      }
+      return { start, end };
+    }).sort((a, b) => b.start - a.start);
+    let stripped = text;
+    for (const range of ranges) stripped = `${stripped.slice(0, range.start)}${stripped.slice(range.end)}`;
+    return stripped.replace(/\r\n?/g, '\n');
+  }
+
+  async function sha256Hex(input) {
+    const bytes = new TextEncoder().encode(String(input == null ? '' : input));
+    const cryptoObject = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+    if (!cryptoObject || !cryptoObject.subtle || typeof cryptoObject.subtle.digest !== 'function') throw new Error('SHA-256 Web Crypto is unavailable.');
+    const digest = new Uint8Array(await cryptoObject.subtle.digest('SHA-256', bytes));
+    return [...digest].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function reviewDependencySourceFingerprint(input) {
+    return `sha256:${await sha256Hex(normalizeReviewDependencySourceText(input))}`;
+  }
+
+  return { normalizeReviewDependencySourceText, reviewDependencySourceFingerprint };
+});
+
 /* src/reference-object-local-store.js */
 (function (root, factory) {
   const api = factory();
@@ -4042,6 +4396,173 @@
     deepValidateReferenceObjectTags,
     diagnoseReferenceObjectFreshness,
     proveReferenceObjectExpectedBase: proveExpectedBase
+  };
+});
+
+/* src/repository-review-dependency-service.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const DEFAULT_MAX_FILE_BYTES = 512 * 1024;
+
+  function core() {
+    const api = root.ObsLinkedNotes || {};
+    const required = [
+      'decodeReviewDependencyRegistry', 'encodeReviewDependencyRegistry', 'reviewDependencyById',
+      'parseReviewDependencyMarkers', 'appendReviewDependencyMarker', 'setReviewDependencyAgainst',
+      'removeReviewDependencyMarker', 'reviewDependencySourceFingerprint'
+    ];
+    for (const name of required) if (typeof api[name] !== 'function') throw new Error(`Review Dependency dependency is unavailable: ${name}.`);
+    return api;
+  }
+
+  function overlayMap(overlays) {
+    const map = new Map();
+    for (const item of Array.isArray(overlays) ? overlays : []) {
+      if (!item || !item.path || item.payloadKind === 'binary') continue;
+      map.set(String(item.path), { path: String(item.path), baseSha: String(item.baseSha || ''), content: String(item.content == null ? '' : item.content), local: true });
+    }
+    return map;
+  }
+
+  function isNotFound(error) { return Boolean(error && error.kind === 'not_found'); }
+
+  function decodeUtf8(bytes, path) {
+    try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
+    catch (error) { throw new Error(`Review Dependency file cannot be decoded as strict UTF-8: ${path}.`); }
+  }
+
+  async function readTextFile(client, path, options = {}) {
+    const maxBytes = Number(options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_MAX_FILE_BYTES;
+    if (client && typeof client.readBytes === 'function') {
+      const file = await client.readBytes(path, { maxBytes });
+      return { path: file.path || path, sha: String(file.sha || ''), content: decodeUtf8(file.bytes, path), local: false };
+    }
+    if (client && typeof client.read === 'function') {
+      const file = await client.read(path);
+      const content = String(file.content == null ? '' : file.content);
+      if (new TextEncoder().encode(content).byteLength > maxBytes) throw new Error(`Review Dependency file exceeds ${maxBytes} bytes: ${path}.`);
+      return { path: file.path || path, sha: String(file.sha || ''), content, local: false };
+    }
+    throw new Error('Repository client has no bounded text reader.');
+  }
+
+  async function readEffectiveText(client, path, overlays) {
+    const local = overlayMap(overlays).get(path);
+    if (local) return local;
+    return readTextFile(client, path);
+  }
+
+  async function readReviewDependencyRegistrySnapshot(client, registryPath, overlays) {
+    const api = core();
+    const path = String(registryPath || api.DEFAULT_REVIEW_DEPENDENCY_REGISTRY_PATH || '.linked-notes/review-dependencies.json');
+    const local = overlayMap(overlays).get(path);
+    if (local) return { path, sha: local.baseSha, content: local.content, registry: api.decodeReviewDependencyRegistry(local.content), local: true, missing: false };
+    try {
+      const file = await readTextFile(client, path);
+      return { path, sha: file.sha, content: file.content, registry: api.decodeReviewDependencyRegistry(file.content), local: false, missing: false };
+    } catch (error) {
+      if (!isNotFound(error)) throw error;
+      return { path, sha: '', content: '', registry: api.emptyReviewDependencyRegistry ? api.emptyReviewDependencyRegistry() : { schemaVersion: 1, dependencies: [] }, local: false, missing: true };
+    }
+  }
+
+  async function diagnoseReviewDependencies(options = {}) {
+    const api = core();
+    const client = options.client;
+    const registryPath = String(options.registryPath || api.DEFAULT_REVIEW_DEPENDENCY_REGISTRY_PATH || '.linked-notes/review-dependencies.json');
+    const overlays = Array.isArray(options.overlays) ? options.overlays : [];
+    const registrySnapshot = await readReviewDependencyRegistrySnapshot(client, registryPath, overlays);
+    const sourceCache = new Map();
+    const consumerCache = new Map();
+    const results = [];
+
+    async function sourceSnapshot(path) {
+      if (!sourceCache.has(path)) sourceCache.set(path, readEffectiveText(client, path, overlays).then(async (file) => ({ ...file, fingerprint: await api.reviewDependencySourceFingerprint(file.content) })));
+      return sourceCache.get(path);
+    }
+    async function consumerSnapshot(path) {
+      if (!consumerCache.has(path)) consumerCache.set(path, readEffectiveText(client, path, overlays).then((file) => ({ ...file, parsed: api.parseReviewDependencyMarkers(file.content) })));
+      return consumerCache.get(path);
+    }
+
+    for (const relation of registrySnapshot.registry.dependencies) {
+      let source = null;
+      let consumer = null;
+      let status = 'unresolved';
+      let message = '';
+      let against = '';
+      try { source = await sourceSnapshot(relation.sourcePath); }
+      catch (error) { message = `Source unavailable: ${error.message}`; }
+      try { consumer = await consumerSnapshot(relation.consumerPath); }
+      catch (error) { message = message || `Consumer unavailable: ${error.message}`; }
+      if (source && consumer) {
+        const matches = consumer.parsed.markers.filter((marker) => marker.id === relation.id);
+        const markerDiagnostics = consumer.parsed.diagnostics.filter((item) => !item.id || item.id === relation.id);
+        if (markerDiagnostics.length) message = markerDiagnostics.map((item) => item.message).join(' ');
+        else if (matches.length !== 1) message = `Expected exactly one consumer marker; found ${matches.length}.`;
+        else {
+          against = matches[0].against || '';
+          status = against && against === source.fingerprint ? 'current' : 'needs-review';
+          message = status === 'current' ? 'Reviewed against current source state.' : (against ? 'Source changed since the last completed review.' : 'Review has not been completed yet.');
+        }
+      }
+      results.push({
+        ...relation,
+        status,
+        message,
+        against,
+        currentFingerprint: source && source.fingerprint || '',
+        sourceLocal: Boolean(source && source.local),
+        consumerLocal: Boolean(consumer && consumer.local),
+        sourceSha: source && source.sha || '',
+        consumerSha: consumer && consumer.sha || ''
+      });
+    }
+
+    const filesMap = new Map();
+    for (const item of results) {
+      if (!filesMap.has(item.consumerPath)) filesMap.set(item.consumerPath, { path: item.consumerPath, current: 0, needsReview: 0, unresolved: 0, relations: [] });
+      const row = filesMap.get(item.consumerPath);
+      if (item.status === 'current') row.current += 1;
+      else if (item.status === 'needs-review') row.needsReview += 1;
+      else row.unresolved += 1;
+      row.relations.push(item.id);
+    }
+    return {
+      registryPath,
+      registrySnapshot,
+      relations: results,
+      files: [...filesMap.values()].sort((a, b) => a.path.localeCompare(b.path)),
+      currentCount: results.filter((item) => item.status === 'current').length,
+      needsReviewCount: results.filter((item) => item.status === 'needs-review').length,
+      unresolvedCount: results.filter((item) => item.status === 'unresolved').length
+    };
+  }
+
+  function addRelationMarker(content, relationId) {
+    return core().appendReviewDependencyMarker(content, relationId, '');
+  }
+
+  function completeReviewMarker(content, relationId, fingerprint) {
+    return core().setReviewDependencyAgainst(content, relationId, fingerprint);
+  }
+
+  function removeRelationMarker(content, relationId) {
+    return core().removeReviewDependencyMarker(content, relationId);
+  }
+
+  return {
+    readReviewDependencyTextFile: readTextFile,
+    readReviewDependencyRegistrySnapshot,
+    diagnoseReviewDependencies,
+    addReviewDependencyRelationMarker: addRelationMarker,
+    completeReviewDependencyMarker: completeReviewMarker,
+    removeReviewDependencyRelationMarker: removeRelationMarker
   };
 });
 
@@ -15454,6 +15975,324 @@
   }
 
   return { installRepositoryLocalChanges, mergePendingRepositoryEntries: mergePendingEntries };
+});
+
+/* src/repository-review-dependencies-runtime.js */
+(function (root, factory) {
+  const api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsLinkedNotes = Object.assign(root.ObsLinkedNotes || {}, api);
+  if (root.ObsLinkedNotes && root.ObsLinkedNotes.LinkedNotesApp && root.ObsLinkedNotes.LinkedNotesUI) {
+    try { api.installRepositoryReviewDependencies(root.ObsLinkedNotes); } catch (error) { /* bootstrap reports failures later */ }
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root) {
+  'use strict';
+
+  const APP_PATCH = '__obsRepositoryReviewDependenciesAppV1';
+  const UI_PATCH = '__obsRepositoryReviewDependenciesUiV1';
+
+  function apiOrThrow(app) {
+    const api = app && app.api || root.ObsLinkedNotes || {};
+    const required = [
+      'createReviewDependencyId', 'decodeReviewDependencyRegistry', 'encodeReviewDependencyRegistry',
+      'upsertReviewDependency', 'removeReviewDependency', 'reviewDependencyById',
+      'diagnoseReviewDependencies', 'readReviewDependencyRegistrySnapshot',
+      'addReviewDependencyRelationMarker', 'completeReviewDependencyMarker', 'removeReviewDependencyRelationMarker',
+      'repositoryTextOverlays', 'repositoryLocalChangeMap', 'normalizeRepositoryLocalPath'
+    ];
+    for (const name of required) if (typeof api[name] !== 'function') throw new Error(`Review Dependency runtime dependency is unavailable: ${name}.`);
+    return api;
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  }
+
+  async function effectiveText(app, path) {
+    const api = apiOrThrow(app);
+    await app._ensureReferenceObjectLocalStateCurrent({ silent: true });
+    const pending = api.repositoryLocalChangeMap(app.referenceObjectLocalState).get(path);
+    if (pending && pending.payloadKind === 'text') return { path, sha: pending.baseSha, content: pending.content, local: true };
+    const client = await app._client(app._activeWorkspace());
+    const file = await (client.read ? client.read(path) : client.readBytes(path));
+    if (file.bytes) return { path, sha: String(file.sha || ''), content: new TextDecoder('utf-8', { fatal: true }).decode(file.bytes), local: false };
+    return { path, sha: String(file.sha || ''), content: String(file.content == null ? '' : file.content), local: false };
+  }
+
+  function patchApp(App) {
+    if (!App || !App.prototype || App.prototype[APP_PATCH]) return false;
+    Object.defineProperty(App.prototype, APP_PATCH, { value: true });
+    const originalStart = App.prototype.start;
+    const originalUiState = App.prototype._workspaceUiState;
+    const originalSelectWorkspace = App.prototype.selectWorkspace;
+    const originalOpenRepositoryEntry = App.prototype.openRepositoryEntry;
+    const originalStageRepositoryChange = App.prototype._stageRepositoryChange;
+
+    App.prototype._reviewDependencyRegistryPath = function reviewDependencyRegistryPath() {
+      return (this.api || root.ObsLinkedNotes || {}).DEFAULT_REVIEW_DEPENDENCY_REGISTRY_PATH || '.linked-notes/review-dependencies.json';
+    };
+
+    App.prototype._reviewDependencyUiState = function reviewDependencyUiState() {
+      const result = this.reviewDependencyDiagnostics;
+      const byPath = {};
+      for (const file of result && result.files || []) byPath[file.path] = { current: file.current, needsReview: file.needsReview, unresolved: file.unresolved, relations: file.relations };
+      const currentPath = this.repositoryPreview && this.repositoryPreview.path || '';
+      return {
+        reviewDependencies: result && result.relations || [],
+        reviewDependenciesLoaded: Boolean(result),
+        reviewDependencyRegistryPath: this._reviewDependencyRegistryPath(),
+        reviewDependencyByPath: byPath,
+        reviewDependencyCurrentFile: byPath[currentPath] || null,
+        reviewDependencyNeedsReviewCount: Number(result && result.needsReviewCount || 0),
+        reviewDependencyUnresolvedCount: Number(result && result.unresolvedCount || 0)
+      };
+    };
+
+    if (typeof originalUiState === 'function') App.prototype._workspaceUiState = function reviewDependencyWorkspaceUiState(...args) {
+      return { ...originalUiState.apply(this, args), ...this._reviewDependencyUiState() };
+    };
+
+    App.prototype.refreshReviewDependencies = async function refreshReviewDependencies(options = {}) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const run = async () => api.diagnoseReviewDependencies({
+        client: await this._client(this._activeWorkspace()),
+        registryPath: this._reviewDependencyRegistryPath(),
+        overlays: api.repositoryTextOverlays(this.referenceObjectLocalState)
+      });
+      const result = options.silent && typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Checking Review Dependencies…', run)
+        : await run();
+      if (!result || result.cancelled) return result;
+      this.reviewDependencyDiagnostics = result;
+      this._setUi({ status: `Review Dependencies checked: ${result.needsReviewCount} need review, ${result.unresolvedCount} unresolved.` });
+      return result;
+    };
+
+    App.prototype._loadReviewDependencyRegistry = async function loadReviewDependencyRegistry() {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      return api.readReviewDependencyRegistrySnapshot(
+        await this._client(this._activeWorkspace()),
+        this._reviewDependencyRegistryPath(),
+        api.repositoryTextOverlays(this.referenceObjectLocalState)
+      );
+    };
+
+    App.prototype.createReviewDependencyLocal = async function createReviewDependencyLocal(input = {}) {
+      const api = apiOrThrow(this);
+      const sourcePath = api.normalizeRepositoryLocalPath(input.sourcePath);
+      const consumerPath = api.normalizeRepositoryLocalPath(input.consumerPath);
+      const reason = String(input.reason == null ? '' : input.reason).trim() || 'Depends on this source file.';
+      const reviewScope = String(input.reviewScope == null ? '' : input.reviewScope).trim();
+      const id = input.id ? api.normalizeReviewDependencyId(input.id) : api.createReviewDependencyId();
+      const registrySnapshot = await this._loadReviewDependencyRegistry();
+      if (registrySnapshot.registry.dependencies.some((item) => item.sourcePath === sourcePath && item.consumerPath === consumerPath)) throw new Error(`Review Dependency already exists: ${sourcePath} → ${consumerPath}.`);
+      await effectiveText(this, sourcePath);
+      const consumer = await effectiveText(this, consumerPath);
+      const registry = api.upsertReviewDependency(registrySnapshot.registry, { id, sourcePath, consumerPath, reason, reviewScope });
+      const consumerContent = api.addReviewDependencyRelationMarker(consumer.content, id);
+      await this._stageRepositoryTextChange(this._reviewDependencyRegistryPath(), registrySnapshot.sha, api.encodeReviewDependencyRegistry(registry), { source: 'review-dependency', allowLarger: true, silent: true, message: `Register Review Dependency ${id}` });
+      await this._stageRepositoryTextChange(consumerPath, consumer.sha, consumerContent, { source: 'review-dependency', silent: true, message: `Add Review Dependency marker ${id}` });
+      this.reviewDependencyDiagnostics = null;
+      const result = await this.refreshReviewDependencies({ silent: true });
+      this._setUi({ status: `Review Dependency ${id} created locally and requires review. GitHub was not changed.` });
+      return { id, relation: api.reviewDependencyById(registry, id), diagnostics: result };
+    };
+
+    App.prototype.editReviewDependencyLocal = async function editReviewDependencyLocal(id, input = {}) {
+      const api = apiOrThrow(this);
+      const registrySnapshot = await this._loadReviewDependencyRegistry();
+      const current = api.reviewDependencyById(registrySnapshot.registry, id);
+      if (!current) throw new Error(`Review Dependency not found: ${id}.`);
+      const next = api.upsertReviewDependency(registrySnapshot.registry, {
+        ...current,
+        reason: String(input.reason == null ? current.reason : input.reason).trim() || 'Depends on this source file.',
+        reviewScope: String(input.reviewScope == null ? current.reviewScope || '' : input.reviewScope).trim()
+      });
+      await this._stageRepositoryTextChange(this._reviewDependencyRegistryPath(), registrySnapshot.sha, api.encodeReviewDependencyRegistry(next), { source: 'review-dependency', allowLarger: true, silent: true, message: `Edit Review Dependency ${id}` });
+      this.reviewDependencyDiagnostics = null;
+      await this.refreshReviewDependencies({ silent: true });
+      this._setUi({ status: `Review Dependency ${id} metadata updated locally. Review acknowledgement was not changed.` });
+      return api.reviewDependencyById(next, id);
+    };
+
+    App.prototype.removeReviewDependencyLocal = async function removeReviewDependencyLocal(id) {
+      const api = apiOrThrow(this);
+      const registrySnapshot = await this._loadReviewDependencyRegistry();
+      const relation = api.reviewDependencyById(registrySnapshot.registry, id);
+      if (!relation) throw new Error(`Review Dependency not found: ${id}.`);
+      const consumer = await effectiveText(this, relation.consumerPath);
+      const nextRegistry = api.removeReviewDependency(registrySnapshot.registry, id);
+      const nextConsumer = api.removeReviewDependencyRelationMarker(consumer.content, id);
+      await this._stageRepositoryTextChange(this._reviewDependencyRegistryPath(), registrySnapshot.sha, api.encodeReviewDependencyRegistry(nextRegistry), { source: 'review-dependency', allowLarger: true, silent: true, message: `Remove Review Dependency ${id}` });
+      if (nextConsumer !== consumer.content) await this._stageRepositoryTextChange(relation.consumerPath, consumer.sha, nextConsumer, { source: 'review-dependency', silent: true, message: `Remove Review Dependency marker ${id}` });
+      this.reviewDependencyDiagnostics = null;
+      await this.refreshReviewDependencies({ silent: true });
+      this._setUi({ status: `Review Dependency ${id} removed locally. GitHub was not changed.` });
+      return relation;
+    };
+
+    App.prototype.completeReviewDependencyLocal = async function completeReviewDependencyLocal(id) {
+      const api = apiOrThrow(this);
+      const diagnostics = await this.refreshReviewDependencies({ silent: true });
+      const relation = diagnostics.relations.find((item) => item.id === id);
+      if (!relation) throw new Error(`Review Dependency not found: ${id}.`);
+      if (!relation.currentFingerprint) throw new Error(`Current source fingerprint is unavailable for ${id}.`);
+      const consumer = await effectiveText(this, relation.consumerPath);
+      const content = api.completeReviewDependencyMarker(consumer.content, id, relation.currentFingerprint);
+      await this._stageRepositoryTextChange(relation.consumerPath, consumer.sha, content, { source: 'review-dependency', silent: true, message: `Complete review for ${id}` });
+      this.reviewDependencyDiagnostics = null;
+      const result = await this.refreshReviewDependencies({ silent: true });
+      this._setUi({ status: `Review Dependency ${id} marked complete against ${relation.currentFingerprint}${relation.sourceLocal ? ' (pending local source state)' : ''}.` });
+      return result.relations.find((item) => item.id === id) || null;
+    };
+
+    App.prototype.openReviewDependencyPath = async function openReviewDependencyPath(path) {
+      return this.openRepositoryEntry({ type: 'file', path, name: path.split('/').pop() });
+    };
+
+
+    if (typeof originalStageRepositoryChange === 'function') App.prototype._stageRepositoryChange = async function reviewDependencyStageRepositoryChange(...args) {
+      const result = await originalStageRepositoryChange.apply(this, args);
+      this.reviewDependencyDiagnostics = null;
+      return result;
+    };
+
+    if (typeof originalOpenRepositoryEntry === 'function') App.prototype.openRepositoryEntry = async function reviewDependencyOpenRepositoryEntry(...args) {
+      const result = await originalOpenRepositoryEntry.apply(this, args);
+      if (result && result.kind === 'text' && !this.reviewDependencyDiagnostics) {
+        try { await this.refreshReviewDependencies({ silent: true }); } catch (error) { /* explicit refresh remains available */ }
+      }
+      return result;
+    };
+
+    if (typeof originalSelectWorkspace === 'function') App.prototype.selectWorkspace = async function reviewDependencySelectWorkspace(...args) {
+      const result = await originalSelectWorkspace.apply(this, args);
+      this.reviewDependencyDiagnostics = null;
+      return result;
+    };
+
+    App.prototype.start = async function reviewDependencyStart(...args) {
+      if (this.ui && this.ui.handlers) {
+        this.ui.handlers.onRefreshReviewDependencies = () => this.refreshReviewDependencies();
+        this.ui.handlers.onCreateReviewDependencyLocal = (input) => this.createReviewDependencyLocal(input);
+        this.ui.handlers.onEditReviewDependencyLocal = (id, input) => this.editReviewDependencyLocal(id, input);
+        this.ui.handlers.onRemoveReviewDependencyLocal = (id) => this.removeReviewDependencyLocal(id);
+        this.ui.handlers.onCompleteReviewDependencyLocal = (id) => this.completeReviewDependencyLocal(id);
+        this.ui.handlers.onOpenReviewDependencyPath = (path) => this.openReviewDependencyPath(path);
+      }
+      return originalStart.apply(this, args);
+    };
+    return true;
+  }
+
+  function createFromPrompts(ui) {
+    if (typeof window === 'undefined' || typeof window.prompt !== 'function') return;
+    const current = ui.state.repositoryPreview && ui.state.repositoryPreview.path || '';
+    const sourcePath = window.prompt('Source repository path', current);
+    if (sourcePath == null) return;
+    const consumerPath = window.prompt('Consumer repository path', '');
+    if (consumerPath == null) return;
+    const reason = window.prompt('Why does the consumer depend on the source?', 'Depends on this source file.');
+    if (reason == null) return;
+    const reviewScope = window.prompt('Optional review scope (what exactly should be checked)', '');
+    if (reviewScope == null) return;
+    ui._call('onCreateReviewDependencyLocal', { sourcePath, consumerPath, reason, reviewScope }).catch(() => {});
+  }
+
+  function editFromPrompts(ui, relation) {
+    if (typeof window === 'undefined' || typeof window.prompt !== 'function') return;
+    const reason = window.prompt('Dependency reason', relation.reason || 'Depends on this source file.');
+    if (reason == null) return;
+    const reviewScope = window.prompt('Optional review scope', relation.reviewScope || '');
+    if (reviewScope == null) return;
+    ui._call('onEditReviewDependencyLocal', relation.id, { reason, reviewScope }).catch(() => {});
+  }
+
+  function renderMenu(ui, details) {
+    const state = ui.state || {};
+    const relations = Array.isArray(state.reviewDependencies) ? state.reviewDependencies : [];
+    const rows = relations.map((item) => {
+      const badge = item.status === 'current' ? 'current' : item.status === 'needs-review' ? 'NEEDS REVIEW' : 'UNRESOLVED';
+      const pending = item.sourceLocal ? ' · source pending local' : '';
+      return `<div data-review-dependency-row="${escapeHtml(item.id)}" style="padding:8px 0;border-top:1px solid rgba(127,127,127,.25)"><strong>${escapeHtml(item.id)}</strong> · <b>${escapeHtml(badge)}</b>${escapeHtml(pending)}<br><small>${escapeHtml(item.sourcePath)} → ${escapeHtml(item.consumerPath)}</small><div style="margin-top:4px">${escapeHtml(item.reason)}</div>${item.reviewScope ? `<small>Review scope: ${escapeHtml(item.reviewScope)}</small>` : ''}<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button data-review-open-source="${escapeHtml(item.id)}">Open source</button><button data-review-open-consumer="${escapeHtml(item.id)}">Open consumer</button><button data-review-complete="${escapeHtml(item.id)}" ${item.status === 'unresolved' ? 'disabled' : ''}>Review complete</button><button data-review-edit="${escapeHtml(item.id)}">Edit</button><button data-review-remove="${escapeHtml(item.id)}">Remove</button></div></div>`;
+    }).join('') || '<div class="hint">No Review Dependencies loaded.</div>';
+    details.innerHTML = `<summary>Review dependencies ▾${state.reviewDependencyNeedsReviewCount ? ` · ${state.reviewDependencyNeedsReviewCount} need review` : ''}</summary><div style="padding:10px;min-width:520px;max-width:720px"><div style="display:flex;gap:6px;flex-wrap:wrap"><button data-review-create>+ Add dependency</button><button data-review-refresh>Refresh</button></div><small>Registry: <code>${escapeHtml(state.reviewDependencyRegistryPath || '.linked-notes/review-dependencies.json')}</code>. Completion records the current source SHA-256 in the consumer marker; it does not perform the semantic review automatically.</small>${rows}</div>`;
+    details.querySelector('[data-review-create]')?.addEventListener('click', () => createFromPrompts(ui));
+    details.querySelector('[data-review-refresh]')?.addEventListener('click', () => ui._call('onRefreshReviewDependencies').catch(() => {}));
+    for (const button of details.querySelectorAll('[data-review-open-source]')) button.addEventListener('click', () => { const item = relations.find((row) => row.id === button.dataset.reviewOpenSource); if (item) ui._call('onOpenReviewDependencyPath', item.sourcePath).catch(() => {}); });
+    for (const button of details.querySelectorAll('[data-review-open-consumer]')) button.addEventListener('click', () => { const item = relations.find((row) => row.id === button.dataset.reviewOpenConsumer); if (item) ui._call('onOpenReviewDependencyPath', item.consumerPath).catch(() => {}); });
+    for (const button of details.querySelectorAll('[data-review-complete]')) button.addEventListener('click', () => ui._call('onCompleteReviewDependencyLocal', button.dataset.reviewComplete).catch(() => {}));
+    for (const button of details.querySelectorAll('[data-review-edit]')) button.addEventListener('click', () => { const item = relations.find((row) => row.id === button.dataset.reviewEdit); if (item) editFromPrompts(ui, item); });
+    for (const button of details.querySelectorAll('[data-review-remove]')) button.addEventListener('click', () => {
+      const id = button.dataset.reviewRemove;
+      if (typeof window === 'undefined' || typeof window.confirm !== 'function' || window.confirm(`Remove Review Dependency ${id}?`)) ui._call('onRemoveReviewDependencyLocal', id).catch(() => {});
+    });
+  }
+
+  function enhanceMenu(ui) {
+    if (!ui.shadow || typeof document === 'undefined') return;
+    const host = ui.shadow.querySelector('.surface-tabs') || ui.shadow.querySelector('.editor-toolbar');
+    if (!host) return;
+    let details = host.querySelector('[data-review-dependencies-menu]');
+    if (!details) {
+      details = document.createElement('details');
+      details.dataset.reviewDependenciesMenu = '1';
+      details.addEventListener('toggle', () => {
+        if (details.open && !ui.state.reviewDependenciesLoaded) ui._call('onRefreshReviewDependencies').catch(() => {});
+      });
+      host.appendChild(details);
+    }
+    renderMenu(ui, details);
+  }
+
+  function enhanceWarnings(ui) {
+    if (!ui.shadow || ui.state.surface !== 'files') return;
+    const byPath = ui.state.reviewDependencyByPath || {};
+    ui.shadow.querySelectorAll('[data-repository-entry]').forEach((button) => {
+      const summary = byPath[button.dataset.repositoryEntry];
+      if (!summary || (!summary.needsReview && !summary.unresolved) || button.querySelector('[data-review-dependency-badge]')) return;
+      const badge = document.createElement('span');
+      badge.dataset.reviewDependencyBadge = '1';
+      badge.style.cssText = 'margin-left:6px;color:#b35b00;font-weight:700';
+      badge.textContent = `⚠ ${summary.needsReview ? `${summary.needsReview} review` : `${summary.unresolved} unresolved`}`;
+      button.appendChild(badge);
+    });
+    const current = ui.state.reviewDependencyCurrentFile;
+    const preview = ui.shadow.querySelector('.file-preview');
+    if (current && preview && (current.needsReview || current.unresolved) && !preview.querySelector('[data-review-dependency-warning]')) {
+      const warning = document.createElement('div');
+      warning.dataset.reviewDependencyWarning = '1';
+      warning.className = 'remote-context mismatch';
+      warning.textContent = `Review Dependency warning: ${current.needsReview} relation(s) need review and ${current.unresolved} are unresolved for this file.`;
+      preview.insertBefore(warning, preview.firstChild);
+    }
+  }
+
+  function patchUi(UI) {
+    if (!UI || !UI.prototype || UI.prototype[UI_PATCH]) return false;
+    Object.defineProperty(UI.prototype, UI_PATCH, { value: true });
+    const originalRender = UI.prototype.render;
+    UI.prototype.render = function reviewDependencyRender(...args) {
+      const result = originalRender.apply(this, args);
+      if (this.shadow && typeof document !== 'undefined') {
+        enhanceMenu(this);
+        enhanceWarnings(this);
+      }
+      return result;
+    };
+    return true;
+  }
+
+  function installRepositoryReviewDependencies(api = root.ObsLinkedNotes || {}) {
+    if (!api || !api.LinkedNotesApp || !api.LinkedNotesUI) return false;
+    const app = patchApp(api.LinkedNotesApp);
+    const ui = patchUi(api.LinkedNotesUI);
+    return app || ui;
+  }
+
+  return { installRepositoryReviewDependencies };
 });
 
 /* src/repository-ordered-reference-lists-runtime.js */

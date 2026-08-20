@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.8.0-prototype`
+Prototype version: `0.9.0-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values. For focused Chat Response Reader/details acceptance, also use `CHAT-RESPONSE-READER-CHECKLIST.md`.
 
@@ -34,7 +34,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 |---:|---|---|---|
 | 1 | Run `node verify-linked-notes.mjs`. | All configured automated tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.8.0-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces and the Reader action becomes available from the Linked Notes workspace bar. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.9.0-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces and the Reader action becomes available from the Linked Notes workspace bar. | |
 | 3a | Run the transfer parser cases containing images inside raw `<pre>`, `<code>`, `<textarea>`, `<script>` and `<style>` containers. | Only images outside those code-like containers enter the transfer plan. | |
 | 3b | Simulate a Note or target-Markdown write accepted by GitHub while immediate read-back fails, then use the contextual verification action. | Exact matching remote content is accepted without another write; absent unchanged targets retry safely; differing content becomes conflict. | |
 
@@ -353,3 +353,16 @@ Use test branches only.
 ```text
 pass / partial / fail / inconclusive
 ```
+
+## Review Dependencies
+
+| Step | Action | Expected result | Result / evidence |
+|---:|---|---|---|
+| RD1 | Add a dependency A → B with a reason and optional review scope. | Registry and B marker are staged locally; relation starts `NEEDS REVIEW`; GitHub is unchanged. | |
+| RD2 | Complete review without editing B. | B marker receives the current source SHA-256 and relation becomes current. | |
+| RD3 | Edit A locally without publishing. | A→B becomes `NEEDS REVIEW` against pending local source state. | |
+| RD4 | Build A → B → C, complete A→B without changing B meaning. | Updating only B's acknowledgement marker does not stale B→C. | |
+| RD5 | During A→B review materially edit B, then complete review. | B's source fingerprint changes and B→C becomes `NEEDS REVIEW`. | |
+| RD6 | Manually perform the documented AI workflow and write the exact current hash into B's marker. | Linked Notes reports the same current state as the manual repository operation. | |
+| RD7 | Remove source, consumer or marker evidence. | Relation becomes `UNRESOLVED`; no automatic repair or consumer mutation occurs. | |
+| RD8 | Change Reference Object definition/use content. | Existing Reference Object literal-content stale behavior is unchanged by Review Dependencies. | |

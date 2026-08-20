@@ -1,8 +1,8 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.8.0-prototype`
-Scope: local-first Tampermonkey repository documentation prototype with Notes, Files, Categories, repository templates, materialized Reference Objects, Ordered Reference Lists, stale-use diagnostics, Chat Response Reader, Full App State diagnostics and explicit verified GitHub actions.
+Version: `0.9.0-prototype`
+Scope: local-first Tampermonkey repository documentation prototype with Notes, Files, Categories, repository templates, materialized Reference Objects, whole-file Review Dependencies, Ordered Reference Lists, stale-use/review diagnostics, Chat Response Reader, Full App State diagnostics and explicit verified GitHub actions.
 
 This directory is the **current Linked Notes semantic/product/implementation documentation root**. Current application semantic identities are owned by the Scenario owners routed through [`scenarios/README.md`](scenarios/README.md). `planning/areas/documentation-workbench/` remains useful for broader planning/history/compatibility, but its Linked Notes-specific workflow files are no longer current behavior or Scenario authority.
 
@@ -32,7 +32,7 @@ If the task is to work with repository files/content **inside a context where Li
 2. [`.linked-notes/AGENT-GUIDE.md`](../../../../../.linked-notes/AGENT-GUIDE.md);
 3. only the applicable detailed agent-facing contract.
 
-That route owns application-aware authoring rules such as Reference Objects, Ordered Reference Lists, repository templates and Reader-target response formatting.
+That route owns application-aware authoring rules such as Reference Objects, Review Dependencies, Ordered Reference Lists, repository templates and Reader-target response formatting.
 
 ## 2. Current Surfaces
 
@@ -43,6 +43,7 @@ Files
 Categories
 Repository templates
 Reference Objects
+Review Dependencies
 Ordered Reference Lists
 Chat Response Reader
 App State
@@ -98,7 +99,7 @@ See [`DATA-AND-STATE.md`](DATA-AND-STATE.md) for the complete current map.
 
 Repository reads/writes are explicit. Ordinary page load, ChatGPT route changes and local Reader/App State actions do not authorize repository writes.
 
-Repository business actions in Files, Categories, Reference Objects and Ordered Reference Lists stage complete intended file state locally. `Update current file` publishes exactly the open pending path through the Contents API with exact read-back. `Update all` publishes every pending path as one commit through the Git Data API, with per-path base checks, one non-force ref update and tree verification. There is no sequential bulk fallback.
+Repository business actions in Files, Categories, Reference Objects, Review Dependencies and Ordered Reference Lists stage complete intended file state locally. `Update current file` publishes exactly the open pending path through the Contents API with exact read-back. `Update all` publishes every pending path as one commit through the Git Data API, with per-path base checks, one non-force ref update and tree verification. There is no sequential bulk fallback.
 
 Linked Note `Save GitHub` and image-aware Note transfer retain their own compound workflows; they are not silently collapsed into the common publisher. The application never runs local Git, commit or push.
 

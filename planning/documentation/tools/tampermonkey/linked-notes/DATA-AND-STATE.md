@@ -1,7 +1,7 @@
 # OBS Linked Notes Data And State Map
 
 Status: current prototype data-ownership map
-Version: `0.8.0-prototype`
+Version: `0.9.0-prototype`
 Scope: where application data lives, which representation is authoritative and what may be safely treated as cache/runtime/diagnostic state.
 
 ## 1. State Classes
@@ -242,3 +242,15 @@ actual user document content
   → currently use the feature-specific copy path/manual source;
   → unified content/context copy is a roadmap item.
 ```
+
+## Review Dependency state
+
+Durable Review Dependency truth is repository-owned:
+
+- `.linked-notes/review-dependencies.json` owns relation identity, source path, consumer path, reason and optional review scope;
+- the consumer `obs-review:dependency` marker owns the `against` fingerprint recorded at explicit review completion;
+- the source fingerprint is derived, not stored: effective source text (pending local overlay first), live Review Dependency bookkeeping comments removed, line endings normalized to LF, UTF-8 SHA-256;
+- current / needs-review / unresolved status is runtime-derived diagnostics and is not a second persistent truth.
+
+Completing review changes only local pending repository state until `SCN-LN-PUBLISH` runs. A review completed against a pending source is valid against that pending state and may become stale again if the acknowledgement is published without the source change. Reference Object freshness remains literal-content based and is not converted to this fingerprint model.
+
