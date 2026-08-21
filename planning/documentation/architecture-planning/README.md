@@ -17,6 +17,9 @@ Current supported capabilities are:
 UC-PLAN-ARCH-STATE
 → understand/review current Workspace Architecture State
 
+UC-PLAN-ARCH-WORKSPACE-USES
+→ resolve important current canonical Workspace UCs and discover architecture-relevant candidate useful results
+
 UC-PLAN-ARCH-PATH
 → trace/evaluate one architecture-relevant Workspace or runtime path
 
@@ -32,25 +35,27 @@ UC-PLAN-ARCH-EVOLUTION
 
 The Use Cases are independently activatable and proportional. Registry order is not a mandatory waterfall.
 
-`workspace-use-case-discovery-workflow.md` is a supporting workflow primarily used by `UC-PLAN-ARCH-PRESSURE`; it does not currently receive a separate Use Case merely because its result can be useful independently.
+`workspace-use-case-discovery-workflow.md` is the owner for `UC-PLAN-ARCH-WORKSPACE-USES` and is also consumed by pressure/state/path/decision work as needed. Its result is an architecture-input picture: current canonical UCs plus explicit candidates/evidence. Canonical establishment/change/topology of Workspace UC meaning remains in sibling Workspace Planning and the generic registry authority.
 
 ## Core Model
 
 ```text
 Current Workspace Reality
 +
-important Workspace Use Cases
+important current canonical Workspace Use Cases
   - change/write
   - read/understand
   - inspect/review
   - diagnose/operate
   - verify
 +
+architecture-relevant candidate useful results
++
 Workspace Change Cases
 +
 Planned / Likely Extensions
-  → expected future Workspace Use Cases
-  → affected current Workspace Use Cases
+  → candidate future useful results / Workspace UCs
+  → affected current canonical Workspace UCs
 +
 Requirements / Constraints
 +
@@ -77,17 +82,19 @@ Architecture State / Decisions / Evolution
 
 1. `architecture-planning-responsibility-map.md`
 2. `architecture-planning-principles-and-terminology.md`
-3. `workspace-use-cases-and-change-pressure.md`
-4. `direction-registry.md` + `use-case-registry.md`
-5. the workflow for the selected Use Case
-6. templates only when a stable materialized result helps
-7. `examples/ARCHITECTURE-PLANNING-WORKED-EXAMPLE.md` when an integrated example is useful
+3. `../direction-and-use-case-registry-workflow.md` when generic UC identity/boundary is material
+4. `workspace-use-cases-and-change-pressure.md`
+5. `direction-registry.md` + `use-case-registry.md`
+6. the workflow for the selected Use Case
+7. sibling `../workspace-planning/` only when canonical Workspace UC establishment/change/topology is required
+8. templates only when a stable materialized result helps
+9. `examples/ARCHITECTURE-PLANNING-WORKED-EXAMPLE.md` when an integrated example is useful
 
 ## Files
 
 - `architecture-planning-principles-and-terminology.md` — stable universal Architecture Lens concepts/invariants.
-- `workspace-use-cases-and-change-pressure.md` — Workspace Use Cases, Work Paths, Extensions, Change Pressure, Change Axes and Hot Paths.
-- `workspace-use-case-discovery-workflow.md` — supporting discovery of material current/future Workspace Use Cases.
+- `workspace-use-cases-and-change-pressure.md` — architecture-input view of Workspace work plus Work Paths, Extensions, Change Pressure, Change Axes and Hot Paths; generic UC identity remains outside this file.
+- `workspace-use-case-discovery-workflow.md` — `UC-PLAN-ARCH-WORKSPACE-USES`: resolve current canonical UCs + discover explicit architecture-relevant candidates and hand canonical UC lifecycle questions to Workspace Planning.
 - `architecture-path-analysis-workflow.md` — Understanding/Change/Runtime path tracing and qualitative architecture analysis.
 - `architecture-change-pressure-workflow.md` — UCs/cases/extensions/requirements/history → pressure → axes/hot paths.
 - `architecture-state-review-workflow.md` — current Architecture State review through important Workspace work.

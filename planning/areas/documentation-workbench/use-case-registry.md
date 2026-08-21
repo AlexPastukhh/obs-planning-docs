@@ -25,12 +25,12 @@ Parent Direction: [`direction-registry.md`](direction-registry.md)
 
 **Trigger / input:** selected source/current owners/Ideas/current conclusions require integration and repository file handoff.
 
-**Purpose:** turn selected current planning meaning into a reviewable repository/file-update transition.
+**Purpose:** turn selected current planning meaning into a reviewable repository realization/handoff without forcing a duplicate planning layer.
 
-**Result:** reconciled current planning meaning plus explicit File Update Plan/repository handoff or unresolved/deferred state.
+**Result:** reconciled current planning meaning plus a concrete reviewable repository realization/handoff surface to the selected depth; an ordered File Update Plan is included only when that separate capability is selected/useful, otherwise an explicit unresolved/deferred state is allowed.
 
-**Boundaries:** selected meaning is integrated into real current owners; no Planning Item/Planning Draft/current-planning-meaning intermediate artifact is created automatically.
+**Boundaries:** selected meaning is integrated into real current owners; no Planning Item/Planning Draft/current-planning-meaning intermediate artifact is created automatically; a second ordered File Update Plan is not mandatory when UC-centric Step 3 already supplies a sufficient exact realization/file surface.
 
-**Owner route:** `planning-meaning-to-repository-workflow.md` + shared Idea/file-update owners + [`SCN-DW-PLANNING-TO-REPOSITORY`](scenarios/SCN-DW-PLANNING-TO-REPOSITORY.md).
+**Owner route:** `planning-meaning-to-repository-workflow.md` + shared Idea/Workspace-planning owners + File Update owners only when that explicit route is selected + [`SCN-DW-PLANNING-TO-REPOSITORY`](scenarios/SCN-DW-PLANNING-TO-REPOSITORY.md).
 
 Historical Planning Item-era IDs such as `UC-DW-ITEM-FULL-PICTURE` are provenance/compatibility only and are not current Use Cases. `UC-DW-PLANNING-TO-REPOSITORY` above is the current semantic identity.

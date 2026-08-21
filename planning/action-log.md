@@ -36,3 +36,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-016`  
 **Reason:** planning-root Direction/README/command changes participate in the same UC-centric Workspace Planning transition; full Idea Review, clarifications, rationale and target-state application record are owned by the canonical reusable-documentation log entry.
+
+### XREF-005 — UC-centric planning consistency cleanup
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-020`  
+**Reason:** the planning-root local Helper `собери идеи` record is synchronized as part of the same consistency correction; full findings/rationale and target-state application record are owned by the canonical reusable-documentation log.

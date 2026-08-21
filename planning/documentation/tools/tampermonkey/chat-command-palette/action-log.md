@@ -99,3 +99,18 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/application-planning/action-log.md`  
 **Entry:** `LOG-APP-018`  
 **Reason:** Planning Helper `README.md` Structure cleanup is one part of the same ReviewDiff correction; full findings and applied target state are owned by the canonical Application Planning entry.
+
+### XREF-005 — UC-centric planning consistency cleanup
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-020`  
+**Reason:** Planning Helper semantic projection source/tests are synchronized with the current Workspace Planning Direction/Use-Case registries and the generated userscript is rebuilt; full consistency findings/rationale and target state are owned by the canonical reusable-documentation log.
+
+
+### XREF-006 — Planning Helper Direction parity correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-022`  
+**Reason:** Planning Helper source/tests/generated artifact add the missing Architecture Direction and generic root-Direction parity check as the final correction of the same UC-centric consistency-cleanup ChangeSet; full ReviewDiff finding/rationale and target state are owned by the canonical reusable-documentation log.

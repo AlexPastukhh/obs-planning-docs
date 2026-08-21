@@ -1,7 +1,7 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.5.0-command-owned-refinements
+Doc version: v1.5.1-command-projection-consistency
 Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and planning-command routes into the Tampermonkey/ChatGPT helper while keeping user-authored local commands/prompts in a separate non-authoritative helper library.
 
 ## 1. Core Rule
@@ -227,28 +227,9 @@ commandFamily:
 
 Do not retain creation-wording IDs, labels or aliases after the accepted repository command definition removes them.
 
-### Archive command-format refinement
+### Replacement archive command
 
-Approved for `давай архив`:
-
-```text
-[PLANNING_COMMAND_REFINEMENT]
-command:
-  давай архив
-
-refinement:
-  archive_command_format
-
-read_required:
-  - `planning/command-routing.md`
-  - `planning/documentation/reviewable-agent-output-and-commands-workflow.md`
-  - `planning/documentation/documentation-update-workflow.md`
-
-instruction:
-  Reread these files, validate every user-facing PowerShell Git command in the current answer against their archive command-format and source-selection rules, and rewrite any non-compliant command.
-
-[/PLANNING_COMMAND_REFINEMENT]
-```
+Current `давай архив` declares no refinement. Its direct command/owner route is package-producer-only and does not emit local PowerShell Apply/diff/finalization commands. Do not retain or project the retired `archive_command_format` refinement from older command behavior.
 
 ## 8. English Name Synchronization
 
@@ -270,13 +251,13 @@ When `давай архив` is projected, its reminders should include the comp
 
 ```text
 An earlier-message archive is not current automatically.
-A source archive attached with this command is current for this invocation.
+A source archive/snapshot explicitly provided or selected for this invocation may be used only after checking repository/target match and complete touched-source coverage.
 Otherwise use fully readable current repository files.
-Request a fresh archive only when size/tool limits prevent reliable reading.
-The apply stage must still verify exact local base blobs before changes.
+Request only the minimum fresh source/snapshot when exact touched base cannot be read reliably.
+Never guess expected base content for replace/delete operations.
 ```
 
-The full source-selection algorithm remains in `reviewable-agent-output-and-commands-workflow.md`.
+The full current source-selection/package algorithm remains in `build-replacement-archive-workflow.md` and the direct `planning/commands/build-replacement-archive.command.md`.
 
 ## 9A. Four Planning Surfaces
 
@@ -298,7 +279,7 @@ Only Commands request immediate execution.
 
 A Use-Case insertion **activates semantic focus**, not command permission. The inserted body must let a new chat resolve the exact current registry entry and then follow that entry's current owner route instead of depending on a historical hard-coded owner list embedded in the Helper. Neighboring planning responsibilities are inputs/integration context unless the selected Use Case routes into them.
 
-Semantic projection is a derived helper view. The canonical registries remain authority. Repository verification must check exact-case source paths and registry parity so every current canonical Use Case is projected and no helper-only semantic UC appears.
+Semantic projection is a derived helper view. The canonical registries remain authority. Repository verification must check exact-case source paths and registry parity so every current root Direction and every current canonical Use Case are projected, with no helper-only semantic Direction or UC appearing.
 
 ## 9B. Shared Semantic Body Contract
 

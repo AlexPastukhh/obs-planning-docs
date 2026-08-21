@@ -12,6 +12,7 @@ const semantic=require('../src/semantic-projections.js');
 const registries=[
   ['planning/use-case-registry.md','UC-REPO-'],
   ['planning/documentation/application-planning/use-case-registry.md','UC-PLAN-'],
+  ['planning/documentation/workspace-planning/use-case-registry.md','UC-PLAN-WORKSPACE-'],
   ['planning/documentation/architecture-planning/use-case-registry.md','UC-PLAN-ARCH-'],
   ['planning/documentation/testing-planning/use-case-registry.md','UC-PLAN-TEST-'],
   ['planning/documentation/use-case-registry.md','UC-DOC-'],
@@ -21,7 +22,10 @@ const registries=[
 ];
 function read(rel){return fs.readFileSync(path.join(repoRoot,rel),'utf8')}
 function canonicalIds(rel,prefix){const text=read(rel), ids=[];for(const line of text.split(/\r?\n/)){let m=line.match(/^#{2,3} `((?:UC-[A-Z0-9-]+))` — /);if(!m)m=line.match(/^\| `((?:UC-[A-Z0-9-]+))` \|/);if(m&&m[1].startsWith(prefix)&&!ids.includes(m[1]))ids.push(m[1])}return ids}
+function canonicalDirectionIds(rel){const text=read(rel), ids=[];for(const line of text.split(/\r?\n/)){const m=line.match(/^\| `((?:DIR-[A-Z0-9-]+))` \|/);if(m&&!ids.includes(m[1]))ids.push(m[1])}return ids}
 function exactCaseExists(rel){let current=repoRoot;for(const segment of rel.split('/')){const names=fs.readdirSync(current);if(!names.includes(segment))return false;current=path.join(current,segment)}return fs.existsSync(current)}
+
+test('semantic projection contains every current root Direction exactly once',()=>{const expected=canonicalDirectionIds('planning/direction-registry.md');const actual=semantic.DIRECTION_DEFINITIONS.map(d=>d.id);assert.equal(new Set(actual).size,actual.length,'duplicate projected Direction id');assert.deepEqual([...actual].sort(),[...new Set(expected)].sort())});
 
 test('semantic projection contains every current canonical Use Case exactly once',()=>{const expected=[];for(const [rel,prefix] of registries)expected.push(...canonicalIds(rel,prefix));const actual=semantic.USE_CASE_DEFINITIONS.map(d=>d.id);assert.equal(new Set(actual).size,actual.length,'duplicate projected Use-Case id');assert.deepEqual([...actual].sort(),[...new Set(expected)].sort())});
 
@@ -52,6 +56,14 @@ test('registered parallel-work and reusable Goal Map Use Cases project from cano
 test('application planning semantic projection exposes current prototype/domain/slice-strategy route',()=>{
   const ids=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);
   for(const id of ['UC-PLAN-APP-CONCEPT','UC-PLAN-PROTOTYPE','UC-PLAN-SCENARIO-DISCOVERY','UC-PLAN-SCENARIO','UC-PLAN-DOMAIN','UC-PLAN-SLICE-STRATEGY','UC-PLAN-SLICE'])assert.ok(ids.includes(id),`missing ${id}`);
+});
+
+test('Workspace Planning Direction and fundamental UCs project from current registries',()=>{
+  const direction=semantic.DIRECTION_DEFINITIONS.find((d)=>d.id==='DIR-PLAN-WORKSPACE');
+  assert.ok(direction);
+  assert.ok((direction.sources||[]).includes('planning/documentation/workspace-planning/use-case-registry.md'));
+  const ids=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);
+  for(const id of ['UC-PLAN-WORKSPACE-ESTABLISH-UC','UC-PLAN-WORKSPACE-CHANGE-UC','UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY'])assert.ok(ids.includes(id),`missing ${id}`);
 });
 
 test('non-command semantic Use Case body keeps one focused current-owner route and explicit permission boundary',()=>{

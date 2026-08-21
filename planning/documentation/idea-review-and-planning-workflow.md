@@ -1,7 +1,7 @@
 # Idea Review And Planning Workflow
 
 Status: active reusable cross-cutting workflow
-Doc version: v1.2.0-useful-result-integration
+Doc version: v1.3.0-integrated-output-order
 Scope: how to collect, review, deepen and integrate Ideas while preserving source meaning and surfacing only material findings that remain relevant relative to the current selected plan.
 
 Canonical meanings: [`idea-planning-principles-and-terminology.md`](idea-planning-principles-and-terminology.md)
@@ -45,17 +45,34 @@ selected source
 → group related Ideas when useful
 → Standard Idea Review for every Idea
 → Group Review when useful
-→ Current Overall Conclusions / Current Selected Variants
+→ Idea-local Current Conclusions / Current Selected Variants
 → when selected Ideas imply material Workspace/Application change, resolve affected/new Workspace UCs or Application Scenarios
 → integrate several Ideas that affect one useful-result owner into one Target UC/Scenario
 → keep one cross-cutting Idea body and reference only local impact from each affected unit
 → continue through the selected/justified UC/Scenario planning depth when the invoking command/workflow owns that integration
-→ establish Current Plan baseline for each affected scope
-→ Questions / Risks / Problems for material unresolved/adverse delta only
+→ establish the integrated Current Plan baseline for each affected scope
+→ derive Questions / Risks / Problems as material unresolved/adverse delta only
+→ review the whole integrated candidate
+→ Current Overall Conclusions
 → Potential Simplifications / Better Routes for material unselected candidate changes only
 ```
 
 One fragment may contribute to several Ideas and several fragments may contribute to one Idea.
+
+Processing order and presentation order are different concerns. The Current Plan must be semantically established before aggregate findings are derived even when a consuming command displays those findings near the beginning. For the current `собери идеи` command, project the completed review as:
+
+```text
+Source / Baseline
+→ short Current Plan Snapshot
+→ Questions / Risks / Problems
+→ compact Cross-Cutting Ideas when material
+→ affected UC / Scenario groups to selected depth
+→ Resolved UC Graph / Cross-UC or Cross-Slice review when material
+→ Current Overall Conclusions
+→ Potential Simplifications / Better Routes
+```
+
+Do not move final `Current Overall Conclusions` ahead of useful-result integration merely to establish the aggregate baseline; use `Current Plan Snapshot` for that early projection.
 
 ## 4. Truth-Seeking Review
 
@@ -195,7 +212,7 @@ Use aggregate sections only for uncertainty/residual risk/unresolved problems or
 - Baseline Idea meaning is understandable.
 - Mandatory checks were performed even when no finding is printed.
 - No objection/refinement exists merely to satisfy the template.
-- Current Conclusions / Current Selected Variants are established before aggregate delta is reported.
+- Idea-local Current Conclusions / Current Selected Variants and the integrated Current Plan baseline are established before aggregate delta is derived, even when Q/R/P is displayed early.
 - Every aggregate unit states Current Plan and its relation/change to that plan.
 - Aggregate sections contain no accepted/resolved confirmation items.
 - Aggregate findings/simplifications reference Related Idea IDs when applicable.

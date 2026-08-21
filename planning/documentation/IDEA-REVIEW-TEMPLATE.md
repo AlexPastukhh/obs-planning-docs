@@ -1,7 +1,7 @@
 # Idea Review Template
 
 Status: active reusable output template
-Doc version: v1.1.0-current-plan-aggregate-contract
+Doc version: v1.2.0-integrated-output-order
 Scope: recommended Markdown representation for Standard Idea Review, optional Deep Idea Planning and aggregate findings relative to Current Plan.
 
 Mandatory checks do not require empty fields to be printed.
@@ -65,17 +65,33 @@ Use one stable Finding ID across aggregate and Idea-side representations. Remove
 ### Next Action
 ```
 
-## Current Overall Conclusions
+## Current Plan Snapshot — For Integrated Outputs
 
-Establish the selected/current baseline before printing aggregate delta.
+When the consuming route continues beyond local Idea review into useful-result planning, establish a short Current Plan baseline before deriving aggregate delta. Do **not** use final `Current Overall Conclusions` as a pre-integration baseline.
 
 ```markdown
-# Current Overall Conclusions
+# Current Plan Snapshot
 
-- <selected/current meaning>
+- <selected/current baseline relevant to the integrated review>
+- <affected useful-result owners / selected planning depth when material>
 ```
 
-When no change/answer is selected for a scope, preserve that truth explicitly rather than inventing a plan.
+When no change/answer is selected for a scope, preserve the truthful no-change/current-state baseline rather than inventing a plan.
+
+Top-level ordering belongs to the consuming route. For the current `собери идеи` command, use:
+
+```text
+Source / Baseline
+→ Current Plan Snapshot
+→ Questions / Risks / Problems
+→ compact Cross-Cutting Ideas when material
+→ affected UC / Scenario planning
+→ cross-unit review when material
+→ Current Overall Conclusions
+→ Potential Simplifications / Better Routes
+```
+
+The component sections in this template are reusable shapes; their physical order here is not authority to override a command/workflow output contract.
 
 ## Required Aggregate
 
@@ -99,6 +115,18 @@ Omit meaningless optional fields. `Current Plan`, `Finding`, and `Relation / Imp
 If none: `No material unresolved issues identified.`
 
 Do not place accepted/resolved conclusions in this section.
+
+## Current Overall Conclusions — Final Integrated Summary
+
+After useful-result integration and whole-plan review, summarize the selected integrated meaning. This is a final review projection, not the early baseline used to define Q/R/P.
+
+```markdown
+# Current Overall Conclusions
+
+- <selected integrated meaning>
+```
+
+For an Idea-review-only route with no wider UC/Scenario integration, summarize the resulting selected Idea meaning here after aggregate review.
 
 ## Material Simplifications — When Found
 

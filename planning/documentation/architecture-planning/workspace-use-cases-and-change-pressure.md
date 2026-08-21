@@ -1,13 +1,16 @@
 # Workspace Use Cases And Change Pressure
 
-Status: active reusable canonical semantic owner
-Scope: Workspace work and change-pressure concepts used by Architecture Planning.
+Status: active reusable Architecture Planning semantic owner
+Scope: architecture-specific Workspace-work, Work-Path, Extension and change-pressure concepts. Generic Workspace Use-Case identity/contract remains owned by the reusable Direction/Use-Case registry methodology.
 
-## Workspace Use Case
+Generic UC identity/contract: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
+Canonical establish/change/topology planning for Workspace UCs: [`../workspace-planning/direction-registry.md`](../workspace-planning/direction-registry.md)
 
-A `Workspace Use Case` is an independently useful result obtained by working with or understanding an evolving Workspace.
+## Workspace Use Case — Architecture Input View
 
-It is not restricted to mutation. Examples include:
+Resolve current canonical Workspace UC identity/contracts from the applicable Use-Case Registry and generic registry methodology. Architecture Planning consumes those UCs as work evidence and may discover evidence-backed **candidate useful results** for architecture analysis; it does not canonically establish/change UC identity itself.
+
+Architecture-relevant Workspace work is not restricted to mutation. Examples include:
 
 ```text
 change/write
@@ -33,7 +36,7 @@ verify
 → check repository consistency
 ```
 
-Frequency/repeatability is important architecture-analysis evidence but is not the definition of a Use Case. Record frequency/relevance only when it changes architecture reasoning.
+Frequency/repeatability is architecture-analysis evidence, not a reason to redefine UC identity. Record frequency/relevance only when it changes architecture reasoning.
 
 Application Scenarios remain application-behavior owners in Application Planning; Workspace Use Cases describe work with the Workspace itself.
 
@@ -65,13 +68,13 @@ Speculative Possibility
 For architecture reasoning, do not treat an Extension as a bare label. Ask proportionally:
 
 ```text
-What future Workspace Use Cases appear?
-Which current Workspace Use Cases change?
+What candidate future useful results / Workspace UCs appear?
+Which current canonical Workspace UCs may change?
 Which future Application Scenarios / Requirements appear when applicable?
 What expected Workspace Work Paths follow?
 ```
 
-An Extension may be largely expressible through future Workspace UCs, but no mechanical 1:1 decomposition is required.
+An Extension may be largely expressible through future Workspace-UC candidates, but no mechanical 1:1 decomposition is required. When a candidate must become canonical planning meaning, hand it to the applicable Workspace Planning Establish/Change/Topology owner.
 
 ## Workspace Work Path
 

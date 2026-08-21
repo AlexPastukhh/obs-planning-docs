@@ -5,7 +5,9 @@ Status: active reusable nested responsibility map
 | Responsibility | Owner |
 |---|---|
 | Core Architecture Lens concepts/invariants | `architecture-planning-principles-and-terminology.md` |
-| Workspace Use Cases / Work Paths / Extensions / Change Pressure / Change Axis / Hot Path semantics | `workspace-use-cases-and-change-pressure.md` |
+| Generic Workspace Use-Case identity / contract | sibling `../direction-and-use-case-registry-workflow.md` |
+| Canonical Workspace UC establish/change/topology planning | sibling `../workspace-planning/` |
+| Architecture-input Workspace work / Work Paths / Extensions / Change Pressure / Change Axis / Hot Path semantics | `workspace-use-cases-and-change-pressure.md` |
 | Workspace Use-Case discovery process | `workspace-use-case-discovery-workflow.md` |
 | Architecture-relevant path analysis | `architecture-path-analysis-workflow.md` |
 | Change-pressure / Change-Axis analysis | `architecture-change-pressure-workflow.md` |

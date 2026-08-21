@@ -321,3 +321,65 @@ Additional selected clarification: cross-scope work has one affected canonical l
 - all other meaning from `LOG-DOC-014` through `LOG-DOC-016` remains unchanged.
 
 **Rationale:** remove four semantic drifts found by ReviewDiff while preserving the selected UC-centric architecture and keeping the correction local to reusable Workspace Planning owners.
+
+### LOG-DOC-019 — Align current documentation after UC-centric Workspace planning
+
+**Type:** ACTION  
+**Source:** checked consistency review of local repository snapshot `391fc4832ff7f166d2ff07397a5b1f9ebba5f0ab` after the UC-centric Workspace Planning ChangeSet  
+
+**Selected Corrections:**
+- distinguish Idea-local Current Conclusions / Current Selected Variants and the integrated `Current Plan Snapshot` from final `Current Overall Conclusions`, so `собери идеи` can present Q/R/P early without implying final conclusions exist before UC/Scenario integration;
+- make Documentation Workbench `Planning Meaning To Repository` consume current Workspace Planning proportionally and allow a complete Step-3 exact realization/file surface to hand directly to the next authorized route; an ordered File Update Plan remains active but is no longer a mandatory intermediate layer;
+- narrow Architecture Planning authority: generic Workspace UC identity/contract stays in the reusable registry methodology, canonical establish/change/topology planning stays in Workspace Planning, while Architecture Planning owns architecture-input discovery/candidates, Work Paths and Change Pressure;
+- resolve the Architecture Planning index contradiction by recognizing `UC-PLAN-ARCH-WORKSPACE-USES` as the active architecture-input discovery UC and routing canonical UC lifecycle questions out to Workspace Planning;
+- synchronize the stale local Helper `собери идеи` insertion with the current direct command contract;
+- remove the obsolete `давай архив` command-format refinement and stale archive-source reminder from the reusable Tampermonkey projection workflow so it matches the current package-producer command;
+- restore Planning Helper semantic registry parity by projecting `DIR-PLAN-WORKSPACE` and its three fundamental Workspace Planning UCs, adding the Workspace registry to parity tests and rebuilding the generated userscript.
+
+**Boundary:** this correction does not change Replacement Package App files/semantics, does not retire File Update Plan, does not implement unrelated unrealized Ideas and does not perform broad legacy registry-shape normalization.
+
+**Rationale:** remove contradictions between already-active owners/projections after UC-centric Workspace Planning became current, without reopening separate future design work.
+
+### LOG-DOC-020 — Apply UC-centric planning consistency cleanup
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-019`  
+**ChangeSet:** `3fc169b2-413e-42cd-8557-c7231eff05de`  
+**Package:** `435db6d8-06d6-438d-abcf-65fded5ab627`  
+
+**Target-State Result:** after successful Apply of this package:
+- generic Idea review and integrated `собери идеи` output use one coherent baseline/order contract: local Idea conclusions feed an integrated Current Plan, Q/R/P may be displayed early, and final Current Overall Conclusions follow useful-result integration;
+- Documentation Workbench can proceed from reviewed UC-centric Step 3 directly to an authorized repository/package route when the exact realization surface is sufficient, while keeping the ordered File Update Plan as an explicit optional capability;
+- Architecture Planning consumes canonical Workspace UCs and owns architecture-input candidate discovery/path/change-pressure meaning without becoming a second canonical UC identity/lifecycle authority; its README, responsibility map, registry and discovery workflow agree on `UC-PLAN-ARCH-WORKSPACE-USES`;
+- the local `собери идеи` helper insertion reflects the current command contract;
+- reusable Tampermonkey projection rules no longer advertise the retired `давай архив` refinement or unconditional attached-archive source rule;
+- Planning Helper semantic projections include `DIR-PLAN-WORKSPACE` plus Establish/Change/Topology Workspace Planning UCs, parity tests include the Workspace Planning registry, all Helper tests pass and the generated userscript matches source/command catalog;
+- no Replacement Package App path is changed and previously deferred/unselected future Ideas remain outside this ChangeSet.
+
+**Rationale:** make active current documentation/projections agree with the already-selected UC-centric methodology and current direct command contracts.
+
+
+### LOG-DOC-021 — ReviewDiff correct Planning Helper Direction parity
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `3fc169b2-413e-42cd-8557-c7231eff05de`, package `435db6d8-06d6-438d-abcf-65fded5ab627`  
+
+**Material Finding / Selected Correction:** the consistency-cleanup package restored `DIR-PLAN-WORKSPACE` and the Workspace Planning UCs in Planning Helper projections, but the active root `DIR-PLAN-ARCHITECTURE` remained absent from `DIRECTION_DEFINITIONS` even though Architecture Planning UCs were already projected. The selected correction is to add the missing Architecture Direction and replace the one-off Workspace Direction test with generic root-Direction registry parity so this class of drift fails verification.
+
+**Resulting Current Meaning:** Planning Helper semantic Directions are projections of every current root Direction Registry entry exactly once; canonical registries remain authority, and no Helper-only semantic Direction is permitted. Existing Workspace/Architecture semantic ownership, UC boundaries, command behavior and Replacement Package App scope remain unchanged.
+
+### LOG-DOC-022 — Apply Planning Helper Direction parity correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-021`  
+**ChangeSet:** `3fc169b2-413e-42cd-8557-c7231eff05de`  
+**Package:** `c72eec6e-9a21-4bac-99af-e3e921ed73b7`  
+
+**Target-State Result:** after successful Apply of this package:
+- Planning Helper projects `DIR-PLAN-ARCHITECTURE` alongside every other current root Direction;
+- semantic navigation tests compare `DIRECTION_DEFINITIONS` against the canonical root Direction Registry and still enforce complete Use-Case parity/exact-case sources;
+- reusable Tampermonkey projection methodology explicitly states parity for both root Directions and canonical Use Cases;
+- the generated userscript is rebuilt from the corrected source and the full Helper verification passes with 88 tests;
+- no Workspace/Architecture semantic owner, Documentation Workbench behavior, command contract or Replacement Package App file is otherwise changed.
+
+**Rationale:** close the one remaining active Helper projection inconsistency from the UC-centric consistency cleanup and prevent recurrence through registry-wide Direction parity verification.
