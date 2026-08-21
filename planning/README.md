@@ -31,8 +31,8 @@ Use-Case Registry
 Scenario owner
   → detailed application behavior;
 
-principles / workflow / template
-  → reusable definition/invariant / repeated process / recommended shape;
+principles / workflow / model / template
+  → reusable definition/invariant / repeated process / focused semantic model when justified / recommended shape;
 
 command-routing.md
   → executable command-system entry/global policy;
@@ -59,7 +59,7 @@ Every independently useful supported capability must be discoverable as a curren
 
 ## Current Directions
 
-See [`direction-registry.md`](direction-registry.md). Current families cover repository orientation/interaction, solution/application planning, reusable documentation governance, Documentation Workbench, Planning Runtime, Planning Helper, Linked Notes and Replacement Package App.
+See [`direction-registry.md`](direction-registry.md). Current families cover repository orientation/interaction, solution/application planning, Workspace capability planning, Workspace Architecture Planning, Testing Planning, reusable documentation governance, Documentation Workbench, Planning Runtime, Planning Helper, Linked Notes and Replacement Package App.
 
 ## Command-First Input
 
@@ -73,6 +73,20 @@ planning/command-routing.md
 ```
 
 Command permission does not come from Use-Case activation.
+
+## Workspace Planning Orientation
+
+For evolving code/documentation/planning/automation/knowledge Workspaces, reusable Workspace Planning is the semantic route for establishing/changing useful Workspace capabilities before concrete file execution:
+
+```text
+Need / source / Ideas
+→ affected existing Workspace UC or candidate new Workspace UC
+→ Step 1 — Target UC
+→ Step 2 — Domain / Rules / Models / Representations when useful
+→ Step 3 — expected Workspace Change Path + proportional Architecture Lens + vertical realization/files/verification when selected
+```
+
+See [`documentation/workspace-planning/direction-registry.md`](documentation/workspace-planning/direction-registry.md). Application actor-visible behavior remains Scenario-owned; the code/documentation artifacts used to develop/support it are Workspaces with their own UCs.
 
 ## Application Planning Orientation
 

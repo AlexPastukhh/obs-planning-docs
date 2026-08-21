@@ -41,9 +41,10 @@ status-reconciliation-workflow.md
 example-coverage-workflow.md
 review-dependency-planning-workflow.md
 testing-planning/
+workspace-planning/
 ```
 
-Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`. Universal Workspace Architecture Planning lives under `architecture-planning/` and is a peer reusable family rather than an application-implementation subfolder.
+Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`. Reusable Workspace capability planning lives under `workspace-planning/`; Universal Workspace Architecture Planning lives under `architecture-planning/`. These are peer reusable families with distinct semantic responsibilities rather than application-implementation subfolders.
 
 ReviewDiff semantic correctness review is owned by `review-diff-review-workflow.md`; `review-diff-file-workflow.md` is only an optional legacy transfer/capture route.
 
@@ -55,7 +56,8 @@ Direction Registry → broad work directions
 Use-Case Registry → semantic supported capabilities
 Scenario → detailed application behavior
 principles → stable reusable definitions/invariants
-workflow → repeated process
+workflow → repeated process/orchestration
+model → focused concepts/state/lifecycle/relationships/invariants when separately justified
 template → recommended shape
 profile → optional specialization
 example → demonstration only
@@ -65,6 +67,12 @@ command routing/definition → executable shortcut layer
 ## Runtime Vs Bootstrap
 
 Runtime starts from current repository navigation/Direction/Use-Case/Scenario owners. Bootstrap aids do not remain a separate active file type once runtime owners exist.
+
+## Workspace Planning
+
+See `workspace-planning/direction-registry.md` + `workspace-planning/use-case-registry.md`. Workspace Planning establishes/reviews useful Workspace UCs and keeps Step 1 (UC), Step 2 (Domain/rules) and Step 3 (vertical realization) inside the selected UC plan. It consumes current Architecture Planning proportionally before exact files when Step 3 exposes material architecture/path pressure.
+
+The generic UC identity/contract owner remains `direction-and-use-case-registry-workflow.md`; Workspace Planning does not create a second Use-Case model authority.
 
 ## Workspace Architecture Planning
 

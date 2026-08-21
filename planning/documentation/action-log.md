@@ -238,3 +238,86 @@ Additional selected clarification: cross-scope work has one affected canonical l
 **Entry:** `LOG-APP-016`  
 **Reason:** reusable documentation bootstrap/profile/example corrections participate in the same ChangeSet correction; full ReviewDiff findings and target state are owned by the canonical Application Planning entry.
 
+### LOG-DOC-014 — UC-centric Workspace planning and integrated collect-ideas
+
+**Type:** IDEA REVIEW  
+**Source:** current planning discussion + repeated `собери идеи` review of UC/Scenario-centric planning, semantic file roles, vertical UC realization and the `собери идеи` command  
+
+**Current Conclusions:**
+- development of an evolving Workspace is centered on useful Workspace Use Cases; Application actor-visible behavior remains Scenario-centered at the application boundary;
+- every material Workspace owner/structure should be justified by a useful result or a necessary realization/support/verification path rather than by file existence alone;
+- Ideas remain one generic entity and are routed to affected existing/new Workspace UCs or Application Scenarios; several Ideas may converge into one integrated Target UC, while one cross-cutting Idea is kept once and referenced from each affected unit with local impact only;
+- fundamental generic Workspace planning capabilities are Establish Workspace Use Case, Review/Change Workspace Use Case and proportional Review Workspace Use-Case Topology;
+- Step 1 (UC), Step 2 (Domain/rules/models/representations) and Step 3 (vertical realization/files/verification) are planning depths inside the selected Workspace UC rather than separate peer UCs by default;
+- documentation planning normally reviews Step 1 + Step 2 together once the UC boundary is grounded, while Step 3 is added when requested or sufficiently grounded; earlier later-step insights are preserved as Carry-Forward Context and later validated/refined/rejected;
+- Current, Target and Transition are separate review projections: current owners are summarized/linked, changed/new Target meaning is explicit enough to avoid semantic blind spots, and Transition separately explains what/why/owner movement;
+- UC workflows act as orchestration owners analogous in responsibility to application-service/use-case coordinators, while registries, focused model/rule owners and templates retain distinct semantic authority;
+- recognizable semantic file roles include Registry, Workflow, optional focused Model, Principles/Terminology, Template, Navigation, Command, Verification and Log; a Model file is not mandatory per UC;
+- Step 3 traces the expected Workspace Change Path and uses the current Architecture Lens proportionally before exact file choice, optimizes the lowest-cost correct/verifiable path rather than raw step/file count, and minimizes capability-local cross-Slice overlap/shared coordination tax;
+- the `собери идеи` command may orchestrate Idea Review into affected UC/Scenario planning to the selected depth while remaining read-only and not becoming semantic authority;
+- standalone `план файл-обновление` retirement remains an unselected future simplification and is not part of this ChangeSet.
+
+### LOG-DOC-015 — UC-centric planning clarifications and pre-package owner corrections
+
+**Type:** IDEA CLARIFICATION  
+**Updates:** `LOG-DOC-014`  
+
+**Clarification / resulting meaning:**
+- Step 3 stays inside the same UC block as Step 1/2; do not create generic Workspace Domain/Slice peer UCs merely because those planning depths are separately reviewable;
+- Q/R/P appears near the beginning of the integrated output after a short Current Plan Snapshot, while cross-cutting Ideas remain compact and are defined once;
+- the canonical generic Use-Case definition/contract remains `direction-and-use-case-registry-workflow.md` + `USE-CASE-REGISTRY-TEMPLATE.md`; do not add a duplicate `workspace-use-case-model.md` authority;
+- instead add a Workspace Planning principles owner that defines how UC changes are planned, while generic UC identity/relationships remain in the existing registry methodology;
+- `UC-PLAN-COLLECT-IDEAS` remains the narrow Idea-review capability; the concrete `собери идеи` command is the wider read-only orchestration shortcut and dynamically reads affected semantic owners;
+- Application Planning registry/contracts are not changed by this package; application behavior continues through existing Scenario/Domain/Slice owners;
+- current `planning/README.md` must be updated because it explicitly enumerates current Direction families; the current `COLLECT-IDEAS-PRACTICAL-EXAMPLE.md` must also be updated because the command output contract changes materially;
+- scope logging for this cross-scope package uses `planning/documentation/action-log.md` as canonical full log and `planning/action-log.md` as reference-only log.
+
+### LOG-DOC-016 — Apply UC-centric Workspace planning foundation and collect-ideas integration
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-014`, `LOG-DOC-015`  
+**ChangeSet:** `d70d352a-e364-4798-8dab-910f14eaba49`  
+**Package:** `1379cdb4-b362-4147-96fe-1babfe6b848e`  
+
+**Target-State Result:** after successful Apply of this package:
+- `DIR-PLAN-WORKSPACE` is discoverable as a reusable peer Direction for planning useful capabilities of evolving Workspaces;
+- its registry exposes independently useful Establish Workspace Use Case, Review/Change Workspace Use Case and proportional Review Workspace Use-Case Topology capabilities;
+- shared Workspace Planning principles own UC-centric Step 1/2/3 change-planning semantics, Current/Target/Transition projections, Carry-Forward, recognizable semantic owner roles, graph usage, vertical realization/locality and shared-coordination review without duplicating the generic UC or Architecture authorities;
+- each Workspace planning workflow keeps Step 1, Step 2 and Step 3 inside one selected UC plan and uses current Architecture Planning proportionally before exact files when Step 3 exposes material architecture/path pressure;
+- the `собери идеи` command remains read-only but returns an integrated UC/Scenario-centric plan to the selected/justified depth, with early Current-Plan-relative Q/R/P, compact cross-cutting Ideas, one integrated target per affected unit and cross-UC/cross-Slice review when material;
+- generic Idea owners route selected Ideas to affected useful-result owners while preserving the single generic Idea entity and Current-Plan aggregate contracts;
+- documentation update planning uses generic Workspace Planning before concrete execution and retains the explicit ordered File Update Plan only when that separate active route is requested/useful;
+- root/reusable navigation and responsibility owners expose the new Workspace Planning family and optional Model semantic role;
+- the practical collect-Ideas example demonstrates the new UC-centric output contract;
+- no duplicate `workspace-use-case-model.md`, Application Planning registry change, generic Workspace Domain/Slice peer UCs, File Update retirement, new parallel-work scope, commit or push is introduced.
+
+**Rationale:** move planning earlier from Ideas/files to useful-result ownership and complete vertical UC realization, while reusing current generic UC/Architecture authorities and minimizing new shared coordination surface.
+
+### LOG-DOC-017 — ReviewDiff correct Workspace planning target boundaries
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `d70d352a-e364-4798-8dab-910f14eaba49`, package `1379cdb4-b362-4147-96fe-1babfe6b848e`  
+
+**Material Findings / Selected Corrections:**
+- keep `WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md` Workspace-UC-specific rather than mixing the Workspace template with Application Scenario grouping; `собери идеи` remains the orchestration route that branches to existing Application Planning owners when actor-visible behavior is in scope;
+- activate `UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY` only when coherent multi-UC boundaries/relations/topology are themselves the independently useful result; a cross-cutting Idea that merely affects several independent UCs does not automatically trigger topology review;
+- strengthen Target semantic-state wording so a sufficiently reviewed changed/new primary workflow includes its complete planned future semantic body rather than a `may`/`nearly literally` approximation or implementation-time TODO;
+- make Establish/Change/Topology registry results truly proportional: Step 1 is always the selected UC target, while Step 2 and Step 3 meaning appear only when those depths are selected/reviewed.
+
+**Resulting Current Meaning:** the applied UC-centric Workspace Planning foundation remains selected; the correction narrows Workspace/Application ownership, topology activation and target-completeness/proportional-depth wording without changing the Direction, fundamental UC split, Step-1/2/3-in-one-UC model, Architecture reuse, command permissions or File Update retirement boundary.
+
+### LOG-DOC-018 — Apply Workspace planning ReviewDiff corrections
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-017`  
+**ChangeSet:** `d70d352a-e364-4798-8dab-910f14eaba49`  
+**Package:** `e11ef3c8-5ca5-4d2d-a21b-882ef9bc80ba`  
+
+**Target-State Result:** after successful Apply of this package:
+- the Workspace planning template is Workspace-UC-specific; Application Scenario planning continues through existing Application Planning owners while `собери идеи` may orchestrate both branches;
+- topology review activates only for a real independently useful multi-UC boundary/relationship/topology concern rather than every cross-cutting Idea;
+- sufficiently reviewed changed/new primary workflows require a complete planned future semantic body, preserving `Current`, `Target` and `Transition` as separate projections with no implementation-time semantic gap;
+- Establish, Review/Change and Topology registry result contracts include Step-2/Step-3 material only when those depths are actually selected/reviewed;
+- all other meaning from `LOG-DOC-014` through `LOG-DOC-016` remains unchanged.
+
+**Rationale:** remove four semantic drifts found by ReviewDiff while preserving the selected UC-centric architecture and keeping the correction local to reusable Workspace Planning owners.

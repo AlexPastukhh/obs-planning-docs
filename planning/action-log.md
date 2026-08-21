@@ -30,3 +30,9 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Entry:** `LOG-APP-016`  
 **Reason:** Planning-root helper-library prompt restoration and routing cleanup participate in the same correction; full ReviewDiff findings and target state are owned by the canonical Application Planning entry.
 
+### XREF-004 — UC-centric Workspace planning and integrated collect-ideas
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-016`  
+**Reason:** planning-root Direction/README/command changes participate in the same UC-centric Workspace Planning transition; full Idea Review, clarifications, rationale and target-state application record are owned by the canonical reusable-documentation log entry.

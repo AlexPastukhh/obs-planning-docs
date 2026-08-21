@@ -11,14 +11,16 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | Documentation Direction identity | `direction-registry.md` |
 | Documentation Use Cases | `use-case-registry.md` |
 | Repository navigation/read order | affected README/index files; governed by architecture principles/responsibility rules and maintained through `UC-DOC-MAINTAIN-NAVIGATION` |
-| Direction/Use-Case registry methodology | `direction-and-use-case-registry-workflow.md` |
+| Direction/Use-Case registry methodology + canonical generic UC identity/relationship contract | `direction-and-use-case-registry-workflow.md` |
+| Workspace UC change planning (Step 1/2/3) | `workspace-planning/` |
+| Focused semantic model owner, when separately justified | narrow `*-model.md` owner routed from the relevant UC/workflow; do not duplicate registry/workflow/principles authority |
 | Registry shapes | `DIRECTION-REGISTRY-TEMPLATE.md`, `USE-CASE-REGISTRY-TEMPLATE.md` |
 | Repository discoverability/coverage review | `repository-navigation-and-use-case-coverage-review-workflow.md` |
 | Command routing methodology | `command-routing-workflow.md` |
 | Command routing shape | `COMMAND-ROUTING-TEMPLATE.md` |
 | Concrete project commands | project `command-routing.md` + `commands/*.command.md` |
 | Command planning | `command-planning-workflow.md` |
-| Documentation update planning/application | `documentation-update-plan-workflow.md`, `documentation-update-workflow.md` |
+| Documentation update planning/application | `documentation-update-plan-workflow.md`, generic `workspace-planning/` when UC-centric semantic planning is needed, `documentation-update-workflow.md` for approved application |
 | Concrete File Update Plan | `file-update-overview-workflow.md`, `FILE-UPDATE-OVERVIEW-TEMPLATE.md` |
 | Replacement package producer | `build-replacement-archive-workflow.md` |
 | ReviewDiff semantic correctness review | `review-diff-review-workflow.md` + shared Idea owners |

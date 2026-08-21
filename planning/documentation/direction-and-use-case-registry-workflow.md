@@ -46,6 +46,23 @@ Stable ID/name/status, parent Direction, purpose, trigger/input, result/end stat
 
 Create a peer Use Case only when independently useful trigger/result/owner/review/lifecycle/repeated activation/branch choice justifies it. A workflow step, heading, button, model/view or implementation module is not automatically a Use Case.
 
+## Use-Case Relationships / Graph
+
+Use a semantic graph when several Workspace/methodology UCs compose or hand work to one another. Add only relationships that carry real meaning. Initial reusable vocabulary when applicable:
+
+```text
+uses
+depends on
+includes when applicable
+hands off to
+reviews
+produces input for
+```
+
+A `sub-use-case` relation is optional and requires real compositional ownership; do not force all supporting UCs into one mandatory hierarchy. A supporting UC may serve several consumers. Cross-cutting Idea membership is not itself a UC relation, and file/import dependency is not automatically a semantic UC dependency.
+
+When several UCs materially overlap, split/merge/extraction or relation changes may require integrated topology review through the applicable Workspace-planning owner rather than silently editing registry rows independently.
+
 ## Application Boundary
 
 ```text
@@ -64,11 +81,12 @@ Application Scenarios are the behavioral identity layer. Do not add an Applicati
 4. assign stable ID/name/status;
 5. write trigger/purpose/result/boundaries/topology;
 6. link complete owner route;
-7. for application behavior link Scenario owner(s);
-8. link command only when a real command exists;
-9. update root/navigation/responsibility owners;
-10. run navigation/use-case coverage review;
-11. consider projection separately.
+7. resolve semantic UC relations/dependencies/handoffs when material;
+8. for application behavior link Scenario owner(s);
+9. link command only when a real command exists;
+10. update root/navigation/responsibility owners;
+11. run navigation/use-case coverage review;
+12. consider projection separately.
 
 ## Do Not
 

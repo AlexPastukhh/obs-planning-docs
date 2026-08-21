@@ -48,7 +48,8 @@ No required owner may depend solely on a command, helper UI, prior conversation 
 - Use-Case Registry owns semantic Use-Case identity/trigger/result/boundaries/owner route;
 - Direction Registry owns broad semantic grouping/topology;
 - Scenario owns detailed application behavior;
-- workflow owns repeated process;
+- workflow owns repeated process/orchestration;
+- model owns focused concepts/state/lifecycle/relationships/invariants only when separately justified;
 - principles/terminology own reusable concept contracts;
 - template owns recommended shape;
 - profile owns optional deeper specialization;
@@ -86,6 +87,26 @@ Need / desired result
 → Domain / Slice when useful
 ```
 
+
+## UC-Centric Workspace Planning
+
+Material Workspace changes should be planned from useful results before concrete file structure:
+
+```text
+Need / Ideas
+→ affected/new Workspace UC
+→ target UC meaning
+→ Domain/rules/models/representations when useful
+→ expected Workspace Change Path + proportional Architecture Lens
+→ vertical realization
+→ concrete files / verification
+```
+
+Application actor-visible behavior remains Scenario-owned at the application boundary. Several Ideas may converge into one Target UC; one Idea may affect several UCs without becoming a new shared UC. Step 1/2/3 are planning depths of one selected Workspace UC rather than mandatory peer Use Cases.
+
+A material owner/structure should be justified by a useful Workspace result or a necessary realization/support/verification path. This does not require a one-file-per-UC mapping.
+
+Recognizable file roles improve discoverability, but `Model` is optional: create a separate model owner only when independent concept/state/lifecycle/invariant/reuse responsibility justifies it.
 
 ## Bootstrap Vs Runtime
 

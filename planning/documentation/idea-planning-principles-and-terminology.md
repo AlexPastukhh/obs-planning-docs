@@ -1,7 +1,7 @@
 # Idea Planning Principles And Terminology
 
 Status: active reusable cross-cutting methodology owner
-Doc version: v1.1.0-current-plan-aggregate-contract
+Doc version: v1.2.0-useful-result-integration
 Scope: canonical reusable meanings and stable invariants for Idea review and deeper Idea planning across conversation review, solution/workflow planning, application planning, file-update planning and ReviewDiff semantic review.
 
 ## 1. Purpose And Authority
@@ -141,6 +141,33 @@ Idea work belongs to the narrowest real owner where the question is meaningful. 
 
 Semantic ownership does not imply one folder/file per Idea.
 
+## 9.1 Impact On Useful Results
+
+When an Idea is selected/material enough to imply a Workspace/Application change, review its impact on useful-result owners rather than jumping directly to files.
+
+```text
+Idea
+→ affected existing Workspace UC(s)
+→ candidate new Workspace UC only when normal independent-usefulness rules justify it
+→ affected Application Scenario(s) when actor-visible behavior changes
+```
+
+Invariants:
+
+```text
+Idea ≠ automatically Use Case
+Idea ≠ automatically Scenario
+
+several Ideas
+→ may converge into one integrated Target UC / Scenario
+
+one Idea affecting several UCs/Scenarios
+→ remains one Idea
+→ downstream planning records each local impact
+```
+
+This is impact routing/integration, not a new Idea entity type. A cross-cutting Idea is reviewed once and referenced from affected useful-result plans rather than copied in full into each one.
+
 ## 10. Idea Groups
 
 An `Idea Group` is lightweight navigation/integration grouping for related Ideas. It may contain Ideas, Group Review and Group Conclusion. It is not automatically a new canonical semantic owner.
@@ -203,7 +230,7 @@ Depending on the use case it may mean:
 
 ```text
 collect/review Ideas
-  → current selected conclusion/variant for the relevant scope;
+  → current selected conclusion/variant for the relevant scope, plus the current integrated affected-UC/Scenario target when the selected command/workflow has continued into useful-result planning;
 
 File Update Plan
   → the one current selected file-update route represented by Current Conclusions and Update Steps;

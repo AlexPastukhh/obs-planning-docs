@@ -1,7 +1,7 @@
 # Idea Review And Planning Workflow
 
 Status: active reusable cross-cutting workflow
-Doc version: v1.1.0-current-plan-aggregate-contract
+Doc version: v1.2.0-useful-result-integration
 Scope: how to collect, review, deepen and integrate Ideas while preserving source meaning and surfacing only material findings that remain relevant relative to the current selected plan.
 
 Canonical meanings: [`idea-planning-principles-and-terminology.md`](idea-planning-principles-and-terminology.md)
@@ -46,6 +46,10 @@ selected source
 → Standard Idea Review for every Idea
 → Group Review when useful
 → Current Overall Conclusions / Current Selected Variants
+→ when selected Ideas imply material Workspace/Application change, resolve affected/new Workspace UCs or Application Scenarios
+→ integrate several Ideas that affect one useful-result owner into one Target UC/Scenario
+→ keep one cross-cutting Idea body and reference only local impact from each affected unit
+→ continue through the selected/justified UC/Scenario planning depth when the invoking command/workflow owns that integration
 → establish Current Plan baseline for each affected scope
 → Questions / Risks / Problems for material unresolved/adverse delta only
 → Potential Simplifications / Better Routes for material unselected candidate changes only
@@ -69,6 +73,27 @@ local Idea / Variant
 → revise local or wider meaning if necessary
 → remove resolved aggregate findings rather than preserving them as review history
 ```
+
+## 5.1 Useful-Result Integration
+
+Idea Review does not itself become the semantic owner of Workspace Use Cases, Application Scenarios, Domain rules, Architecture or realization. When the invoking route continues into planning:
+
+```text
+selected Ideas
+→ affected existing/new useful-result owners
+
+Workspace / methodology
+→ current Workspace Planning UC owner(s)
+
+Application actor-visible behavior
+→ current Scenario / Application Planning owner(s)
+```
+
+For one affected UC/Scenario, integrate all selected local/cross-cutting Idea impacts into one target. Do not produce one competing target state per Idea.
+
+A `собери идеи` output may therefore be grouped primarily by UC/Scenario while retaining local Idea review/provenance. Keep cross-cutting Ideas once and reference them from affected units with local impact only.
+
+For Workspace planning, use the current `workspace-planning/` principles/workflows/template. Step 1/2/3 are planning depths inside the selected UC; Step 3 uses current Architecture Planning proportionally before exact files when architecture is material.
 
 ## 6. Shared Aggregate-Finding Rule
 
@@ -145,18 +170,18 @@ Once a better route is selected, move it into Current Conclusion / Current Plan 
 
 ## 9. File Update Integration
 
+UC/Scenario-centric planning may already establish a Step-3 exact affected-file surface before implementation. The explicit File Update Plan remains a separate active capability only when its ordered concrete transition is selected/useful.
+
 ```text
 Idea
 → Idea Variants when material
-→ Current Selected Variant
-→ Current Conclusion
-→ one Current File Update Plan
-→ concrete Update Steps
+→ Current Selected Variant / Conclusion
+→ affected UC / Scenario planning when material
+→ Step-3 exact file surface when selected
+→ explicit File Update Plan only when that route is requested/useful
 ```
 
-Unresolved alternatives remain in `Questions / Risks / Problems`; they do not become alternate file-edit plans.
-
-When the update is mechanical consequence of already selected meaning, skip manufactured Idea analysis.
+Do not create alternate file-edit plans for unresolved conceptual alternatives. When the update is a mechanical consequence of already selected meaning, skip manufactured Idea analysis.
 
 ## 10. ReviewDiff Integration
 
