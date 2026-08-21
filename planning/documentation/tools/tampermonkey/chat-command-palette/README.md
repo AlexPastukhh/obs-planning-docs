@@ -1,14 +1,14 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.25.0`
-Scope: deterministic Planning Helper source/build, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub check/save/sync, ChatGPT-mediated recovery fallback and clipboard-first insertion.
+Version: `0.26.1`
+Scope: deterministic Planning Helper source/build, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub repository actions, ChatGPT-mediated recovery fallback and clipboard-first insertion.
 
 ## Read Order
 
 1. `planning/command-routing.md` for global command-system policy.
-2. `planning/commands/README.md` for planning-command authority.
-3. `planning/helper-library/README.md` for Local Cmds / Prompts repository format.
+2. `planning/commands/README.md` for real Planning Command definition authority.
+3. `planning/helper-library/README.md` for Prompts / legacy insertion compatibility.
 4. `planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md` for canonical application Scenario identities/statuses and routes to exact docs → code → tests → acceptance traceability.
 5. `planning/documentation/tools/tampermonkey/chat-command-palette/MANUAL-ACCEPTANCE.md` for browser/real-GitHub acceptance.
 6. `planning/documentation/tampermonkey-command-projection-workflow.md`.
@@ -22,16 +22,16 @@ Repository command definitions remain authority. The Planning Helper is a local 
 startup
   → GM_getValue(obsPlanningHelper:v2:localSnapshot) once on the warm path
   → validate snapshot
-  → materialize planning commands / helper commands / prompts in RAM
+  → materialize planning commands / prompts / legacy helper-command compatibility records in RAM
   → normal work uses RAM only
 
 explicit repository action
-  → Check GitHub | Sync missing | Save GitHub
+  → Check GitHub | Sync missing | Reload GitHub | Save GitHub
   → GitHub Contents API only for that action
   → update RAM/local snapshot only when the action contract says so
 ```
 
-Normal startup, tab switching, search, Insert, Copy, local edit/delete, ChatGPT import and pasted Restore do not read GitHub. There is no background repository polling.
+Normal startup, tab switching, search, Insert, Copy, local command/prompt draft edit/delete, ChatGPT import and pasted Restore do not read GitHub. `Reload GitHub` is an explicit repository action. There is no background repository polling.
 
 The first run after upgrading may migrate old command/library/cache GM records into the unified snapshot. Legacy records are not deleted by migration.
 
@@ -79,27 +79,33 @@ Changing owner/repository/branch preserves local content but clears per-record r
 ```text
 Commands
   planning/commands/*.command.md
-
-Local Cmds
-  planning/helper-library/commands/*.helper-command.md
+  → current surface supports validated local create/edit drafts, Save GitHub and explicit Reload GitHub
 
 Prompts
   planning/helper-library/prompts/*.prompt.md
+
+Legacy helper-command compatibility
+  planning/helper-library/commands/*.helper-command.md
+  → may remain visible as clearly marked legacy insertions; current UI does not create new ones
 ```
 
 Orientation, Directions and Use Cases remain build-time/read-only semantic projections. They are not a second writable repository registry. A non-command Use-Case Insert/Copy activates one semantic focus: its body identifies the stable UC ID + canonical registry, tells ChatGPT to resolve the **current** registry entry/Main Owner route and follow current owner links to materially defining principles/workflows/templates, and explicitly does not grant command/repository permissions. The Helper does not hard-code a permanent full owner-file list into each UC body.
 
 ### Check GitHub
 
-`Check GitHub` lists direct GitHub directory metadata and compares local/GitHub path-name sets and counts for all three repository-backed entity kinds. It reports same-path, local-only and GitHub-only names. Same-path is inventory overlap only and does not claim file-content equality. It does not mutate local state and does not fetch every file body merely to count/compare inventory.
+`Check GitHub` lists direct GitHub directory metadata and compares local/GitHub path-name sets/counts for real Planning Commands, Prompts and any legacy helper-command compatibility records. It reports same-path, local-only and GitHub-only names. Same-path is inventory overlap only and does not claim file-content equality. It does not mutate local state and does not fetch every file body merely to count/compare inventory.
 
 ### Sync missing
 
-`Sync missing` runs the inventory comparison, GETs only repository paths absent locally, parses/validates those files and adds them to the unified local snapshot. It never overwrites a same-path local record.
+`Sync missing` runs the inventory comparison, GETs only repository paths absent locally, parses/validates those files and adds them to the unified local snapshot. It never overwrites a same-path local record. A changed Planning Command is replaced only by explicit `Reload GitHub` or by an accepted local edit followed by `Save GitHub`.
+
+### Reload GitHub
+
+On a tracked Planning Command row, `Reload GitHub` explicitly GETs that exact current command file, parses/validates it against the local command catalog and replaces the local draft/record with the verified remote definition. It is the deliberate same-path repository→local replacement route; `Sync missing` remains non-overwriting.
 
 ### Save GitHub
 
-Each Commands / Local Cmds / Prompts row has `Save GitHub`.
+Each real Commands / Prompts row has `Save GitHub`; legacy helper-command compatibility rows retain their historical explicit save behavior.
 
 ```text
 remote target absent
@@ -129,7 +135,7 @@ successful or recovered remote result
 
 Planning-command saves additionally read/validate the complete direct remote command catalog before writing, so a save cannot knowingly create an ambiguous command registry. Helper command/prompt saves are confined to their deterministic helper-library path. Malformed-document repair exists only on explicit Save for that deterministic target; `Sync missing` and ordinary remote reads remain strict and do not repair malformed repository content.
 
-Repository delete is not implemented. Local Delete remains local-only.
+Repository delete is not implemented. `Delete draft` is local-only and only applies to unregistered Planning Command drafts; legacy helper/prompt Delete remains local-only. Registered command retirement is a separate repository/documentation action.
 
 ## ChatGPT Import And Recovery
 
@@ -141,7 +147,7 @@ Repository delete is not implemented. Local Delete remains local-only.
 
 For semantic Use Cases, the exact inserted body includes `focus`, current registry `source_of_truth`, dynamic `route_resolution`, Adaptive/Full `read_rule`, UC-specific instruction and a permission boundary. `Full` requires the receiving chat to read the complete current owner route; Adaptive may reuse clearly sufficient current context. Both keep the same semantic focus and permissions.
 
-Every Insert action prepares the exact clipboard body **before** composer mutation. The fast path first attempts a synchronous user-gesture `copy`; when the browser requires the async Clipboard API, composer mutation waits for that copy attempt to finish. The exact same RAM string is then passed to composer insertion. This contract is identical for planning commands, Local Cmds and Prompts.
+Every Insert action prepares the exact clipboard body **before** composer mutation. The fast path first attempts a synchronous user-gesture `copy`; when the browser requires the async Clipboard API, composer mutation waits for that copy attempt to finish. The exact same RAM string is then passed to composer insertion. This contract is identical for real Planning Commands, Prompts and any legacy helper-command compatibility insertion.
 
 The helper does not rely on synthetic browser paste. If direct insertion fails after a successful copy, the exact body is already available for normal manual paste (`Ctrl+V`).
 
@@ -194,4 +200,4 @@ Do not edit it manually.
 
 ## Safety Boundary
 
-The Planning Helper never runs local Git, commit or push. GitHub I/O happens only after explicit `Check GitHub`, `Sync missing` or `Save GitHub` actions. Normal insertion/copy/import remains RAM/local-only. Repository deletion is not part of this slice.
+The Planning Helper never runs local Git, commit or push. GitHub I/O happens only after explicit `Check GitHub`, `Sync missing`, `Reload GitHub` or `Save GitHub` actions. Normal insertion/copy/import remains RAM/local-only. Repository deletion is not part of this slice.

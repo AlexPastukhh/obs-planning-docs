@@ -40,7 +40,7 @@
     const rawContent=String(input.rawContent||deps.renderCommandDefinitionDocument(definition)).replace(/\r\n?/g,'\n');
     const parsed=deps.parseCommandDefinitionDocument(rawContent,{path});
     if(JSON.stringify(deps.toSerializable(deps.stripRuntimeCommandMetadata(parsed)))!==JSON.stringify(deps.toSerializable(definition)))throw new TypeError(`Planning-command snapshot raw content does not match definition: ${definition.id}`);
-    const repositorySha=String(input.repositorySha||'').trim();return{definition,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};
+    const repositorySha=String(input.repositorySha||'').trim();const repositoryKnown=Boolean(input.repositoryKnown||repositorySha);const repositoryTracked=Boolean(input.repositoryTracked||repositoryKnown);return{definition,path,rawContent,repositoryKnown,repositoryTracked,repositorySha};
   }
   function normalizeHelperRecord(value){
     const input=value&&typeof value==='object'?value:{};
@@ -72,7 +72,7 @@
     return payload;
   }
 
-  function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown}));}
+  function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}
   function helperKey(item){return`${item.kind}:${item.id}`;}
   async function loadOrMigratePlanningHelperLocalSnapshot(bundledCommands){
     const existing=await loadPlanningHelperLocalSnapshot();

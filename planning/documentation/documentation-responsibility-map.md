@@ -15,6 +15,7 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | Workspace UC change planning (Step 1/2/3) | `workspace-planning/` |
 | Focused semantic model owner, when separately justified | narrow `*-model.md` owner routed from the relevant UC/workflow; do not duplicate registry/workflow/principles authority |
 | Registry shapes | `DIRECTION-REGISTRY-TEMPLATE.md`, `USE-CASE-REGISTRY-TEMPLATE.md` |
+| Reusable AI prompt/helper insertion methodology | `prompt-maintenance-workflow.md`; concrete prompt text remains in `planning/helper-library/prompts/` |
 | Repository discoverability/coverage review | `repository-navigation-and-use-case-coverage-review-workflow.md` |
 | Command routing methodology | `command-routing-workflow.md` |
 | Command routing shape | `COMMAND-ROUTING-TEMPLATE.md` |

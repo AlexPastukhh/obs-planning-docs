@@ -122,3 +122,66 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Entry:** `LOG-DOC-024`  
 **Reason:** Planning Helper semantic projection source/generated artifact updates the coverage-UC label/meaning as part of the same consistency correction; full findings/rationale and applied state are owned by the canonical reusable-documentation log.
 
+### LOG-PH-006 — Review editable real Commands and prompt governance
+
+**Type:** ACTION  
+**Source:** current post-`bd53ee52-46b2-4c32-b631-ab9b21bcc51c` repository state + user clarification that the editable command surface should operate on real Planning Commands rather than a separate Local Cmd entity  
+
+**Selected Corrections / Changes:**
+- replace the separate read-only `Commands` + editable `Local Cmds` UI split with one current `Commands` surface for real `planning/commands/*.command.md` definitions; local edits/new commands are draft state, not a second command type or authority;
+- support `New command`, structured definition `Edit`, local draft validation, explicit `Save GitHub`, explicit same-path `Reload GitHub`, and local-only `Delete draft` only for unregistered commands; repository command retirement/delete remains outside the Helper;
+- preserve historical helper-command records only as clearly marked legacy compatibility insertions in the same Commands surface; current UI no longer creates new helper-command records;
+- preserve `Prompts` as a separate reusable insertion surface and establish reusable prompt-maintenance methodology so prompts navigate current owners instead of becoming source of truth; bootstrap/audit evidence requirements are profile-proportional;
+- add a composable Deep Semantic Traceability Extension prompt instead of duplicating exhaustive per-UC/Scenario traceability blocks into every bootstrap;
+- finish the previously identified Linked Notes bootstrap migration so its application semantic identity is Scenario/Scenario-Catalog based throughout;
+- make command planning/routing methodology resolve the applicable semantic entry (Workspace/methodology UC or Application Scenario) rather than universally assuming a Use Case;
+- strict-parse the tracked helper-library corpus during verification and repair the malformed tracked `план файл-обновление` legacy helper record.
+
+**Boundary:** no `planning/documentation/tools/replacement-package-app/**` path or Replacement Package App behavior is changed; no repository command delete/retire UI is introduced; local command drafts do not grant or redefine permissions.
+
+**Rationale:** keep one understandable command workspace around the real registered command authority, preserve safe local editing/provenance, and make reusable prompts/bootstraps follow current repository owners without duplicating changing semantic truth.
+
+### LOG-PH-007 — Apply editable real Commands and prompt governance
+
+**Type:** APPLIED  
+**Applied From:** `LOG-PH-006`  
+**ChangeSet:** `14491bc4-efb9-4263-8688-427a7e82e7ce`  
+**Package:** `394b8864-cd82-4586-8da0-70a5aac76b0b`  
+
+**Target-State Result:** after successful Apply of this package:
+- Planning Helper `0.26.0` exposes one current `Commands` surface; `Local Cmds` is no longer a current surface/entity;
+- real Planning Commands can be created/edited as validated local drafts and then explicitly persisted to their canonical `planning/commands/*.command.md` target; tracked commands support explicit `Reload GitHub`, while only unregistered drafts expose local `Delete draft`;
+- legacy helper-command records remain accessible only as clearly marked compatibility insertions and current UI does not create new ones;
+- prompt creation/review has a reusable non-authority UC/workflow, and the library includes one composable deep semantic traceability extension;
+- Linked Notes bootstrap uses Scenario/Scenario Catalog terminology consistently; command planning/routing resolves UC-or-Scenario semantic entries correctly;
+- every tracked helper-library record is strict-parsed by automated verification and the previously malformed legacy record is valid;
+- generated userscript is rebuilt from source and full Helper verification passes;
+- no Replacement Package App path is changed.
+
+**Rationale:** make editable command work operate directly around real registered commands while keeping authority, permissions, repository mutations and reusable prompt guidance explicit.
+
+### LOG-PH-008 — ReviewDiff correct residual command-workspace wording and GitHub disclosure
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `14491bc4-efb9-4263-8688-427a7e82e7ce`, package `394b8864-cd82-4586-8da0-70a5aac76b0b`  
+
+**Material Findings / Selected Correction:** the editable-real-Commands transition is functionally present, but active UI/docs still omit `Reload GitHub` from some GitHub-I/O/token disclosures; `SCN-PH-PUBLISH` still names its result as publishing a local helper entity; root command routing retains one UC-only command-link sentence; and the Helper developer read order duplicates the command-authority README. The selected correction is to align those current summaries/identity labels with the already-implemented model, strengthen the existing policy test, and rebuild the generated userscript without changing command authority, repository deletion behavior or application scope.
+
+**Resulting Current Meaning:** Planning Helper GitHub I/O is user-triggered only through `Check GitHub`, `Sync missing`, `Reload GitHub` or `Save GitHub`; `SCN-PH-PUBLISH` publishes one real Planning Command or Prompt/legacy compatibility record to its deterministic repository target; commands may relate to the applicable Workspace/methodology UC or Application Scenario; current read-order/surface summaries no longer teach the retired Local Cmd split.
+
+### LOG-PH-009 — Apply residual command-workspace wording and GitHub disclosure correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-PH-008`  
+**ChangeSet:** `14491bc4-efb9-4263-8688-427a7e82e7ce`  
+**Package:** `4a1a90ea-4abf-40a1-b070-de216fbf6acf`  
+
+**Target-State Result:** after successful Apply of this package:
+- Planning Helper `0.26.1` names all explicit GitHub-I/O/token actions consistently, including `Reload GitHub`, while normal startup/search/insert/copy/edit/import remains RAM/local-only;
+- `SCN-PH-PUBLISH` keeps its stable Scenario ID but is named `Publish One Planning Command Or Prompt To Repository`, matching its real trigger/body;
+- root command routing says a command may link to the applicable Workspace/methodology Use Case or Application Scenario without owning semantic meaning;
+- the Helper developer read order no longer duplicates `planning/commands/README.md`, and shared Tampermonkey/helper-library summaries describe the current Commands/Prompts/legacy-compatibility boundary;
+- the existing policy test checks the complete explicit GitHub-action disclosure, the generated userscript is rebuilt, and full Helper verification passes;
+- no repository command delete/retire UI and no `planning/documentation/tools/replacement-package-app/**` behavior/path change is introduced.
+
+**Rationale:** close the ReviewDiff wording/disclosure defects without reopening the already-selected editable-real-Commands design.

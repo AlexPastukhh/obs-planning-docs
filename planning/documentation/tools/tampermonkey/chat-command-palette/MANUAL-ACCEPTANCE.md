@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution status must be recorded separately from automated tests
-Version: v1.0.0 / Planning Helper `0.24.2`
+Version: v1.1.0 / Planning Helper `0.26.1`
 Scope: browser and real-GitHub checks that are not implied by `npm run verify`.
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md).
@@ -20,7 +20,7 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 
 ## `SCN-PH-USE`
 
-- Insert a planning command, helper command and prompt into the live ChatGPT composer; confirm exact intended text.
+- Insert a Planning Command, legacy helper-command compatibility record when present, and prompt into the live ChatGPT composer; confirm exact intended text.
 - Confirm clipboard is prepared and manual paste remains usable if direct insertion fails.
 - Confirm the normal insertion path remains responsive with GitHub unavailable.
 - On the Use Cases surface, insert `UC-PLAN-PROTOTYPE`, `UC-PLAN-DOMAIN` and `UC-PLAN-SLICE-STRATEGY`; confirm each body contains the selected UC ID, `focus`, canonical registry source, `route_resolution`, read rule and explicit semantic-only permission boundary.
@@ -31,7 +31,15 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 
 ## `SCN-PH-MANAGE-LOCAL`
 
-- Create, edit and delete a helper command/prompt and verify only local snapshot/RAM changes occur.
+- Confirm there is one `Commands` surface and no separate `Local Cmds` tab.
+- Create a new Planning Command draft, edit its structured definition and confirm no GitHub request occurs until explicit Save GitHub.
+- Edit an existing registered command and confirm its id/file cannot be changed in-place.
+- Use Reload GitHub and confirm the current remote command replaces the local draft only after the explicit action.
+- Confirm Delete draft is offered only for an unregistered command draft; registered command retirement is not exposed as local Delete.
+- Confirm legacy helper-command records, when present, are clearly marked compatibility insertions and new ones are not created by the Commands UI.
+
+- Create/edit a Planning Command draft and create/edit/delete a prompt; verify only local snapshot/RAM changes occur until explicit repository actions.
+- Edit/delete a legacy helper-command compatibility record only when one exists; confirm the UI does not offer creation of a new legacy helper-command record.
 - Edit an already repository-evidenced helper without changing title/text and press Save local; confirm it is a no-op and repository evidence display is preserved.
 - Make a real local title/text change; confirm repository evidence becomes unverified until direct repository verification/publish.
 
@@ -54,6 +62,9 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 <a id="scn-ph-sync"></a>
 
 ## `SCN-PH-SYNC`
+
+- Run Reload GitHub on an edited tracked Planning Command and confirm that exact remote content replaces the local draft only after the explicit action.
+- Confirm Reload GitHub on a missing/unregistered remote target reports failure and does not silently delete the local draft.
 
 - Place supported repository records that are absent locally and confirm Sync missing downloads/adds them.
 - Confirm a same-path local record is never overwritten by Sync missing.

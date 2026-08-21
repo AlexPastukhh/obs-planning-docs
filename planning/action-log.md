@@ -51,3 +51,16 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Entry:** `LOG-DOC-024`  
 **Reason:** planning-root README/command-routing/AI contract and active helper-library prompts are synchronized with the same semantic-discoverability correction; full findings/rationale and applied state are owned by the canonical reusable-documentation log.
 
+### XREF-007 — Planning Helper editable real Commands and prompt governance
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-007`  
+**Reason:** planning-root real command registry documentation, helper-library compatibility/prompt records and bootstrap prompt corrections participate in the same Helper transition; full rationale and applied target state are owned by the canonical Helper log.
+
+### XREF-008 — Planning Helper residual command-workspace correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-009`  
+**Reason:** root `planning/command-routing.md` participates in the same ReviewDiff correction by replacing its remaining UC-only command-link wording with the applicable UC-or-Scenario semantic-entry boundary; full finding/rationale and applied target state are owned by the canonical Helper log.

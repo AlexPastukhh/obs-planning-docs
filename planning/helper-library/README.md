@@ -1,7 +1,7 @@
-# Planning Helper Local Library
+# Planning Helper Prompt / Legacy Insertion Library
 
-Status: active repository format for optional Planning Helper helper commands/prompts
-Scope: repository copies of user-authored helper commands and arbitrary reusable prompts. This folder is not planning-command authority.
+Status: active prompt repository format + legacy helper-command compatibility
+Scope: reusable prompt insertion text and historical helper-command insertion records. Real Planning Commands are owned and edited through `planning/commands/*.command.md`; this folder is never planning-command authority.
 
 ## Boundary
 
@@ -10,7 +10,7 @@ planning/commands/*.command.md
   = real planning commands with route/owners/permissions;
 
 planning/helper-library/commands/*.helper-command.md
-  = exact helper command text;
+  = legacy compatibility insertion text only; new command authoring uses real `planning/commands/*.command.md`;
 
 planning/helper-library/prompts/*.prompt.md
   = exact reusable prompt text.
@@ -20,7 +20,7 @@ A helper-library file never registers a planning command or grants command permi
 
 ## RAM-First Local Model
 
-The browser-local Planning Helper snapshot is the runtime working copy. After startup the validated helper records are materialized in RAM. Search, Insert, Copy, Edit and Delete use RAM/local persistence only and never read GitHub. Helper commands and prompts share this exact runtime path: a prompt is not fetched or normalized again when clicked; its saved `text` is taken from the in-memory record, copied to the clipboard first and then passed unchanged to composer insertion.
+The browser-local Planning Helper snapshot is the runtime working copy. After startup the validated helper records are materialized in RAM. Search, Insert, Copy, Edit and Delete use RAM/local persistence only and never read GitHub. Prompts and legacy helper-command records use this exact compatibility runtime path: their saved `text` is taken from the in-memory record, copied first and then passed unchanged to composer insertion. The current `Commands` surface creates/edits structured Planning Command definitions instead.
 
 `Import from ChatGPT` is also local-only. Repository I/O is never implicit in import or insertion.
 
@@ -33,7 +33,7 @@ planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.
 
 ## Explicit Repository Check / Sync / Save
 
-Helper commands and prompts support three explicit GitHub actions:
+Prompts and legacy helper-command compatibility records support the helper-library GitHub actions below. Real Planning Commands use the command repository service from the same Commands surface:
 
 ```text
 Check GitHub
@@ -91,7 +91,7 @@ Each file contains exactly one line-delimited `[PLANNING_HELPER_LIBRARY_ITEM]` J
 
 ## Security
 
-Do not put GitHub tokens or other secrets in helper-library records. The Planning Helper token remains in its own Tampermonkey GM key and is used only by explicit Check GitHub, Sync missing and Save GitHub actions.
+Do not put GitHub tokens or other secrets in helper-library records. The Planning Helper token remains in its own Tampermonkey GM key and is used only by explicit Check GitHub, Sync missing, Reload GitHub and Save GitHub actions.
 
 ## Legacy Migration
 

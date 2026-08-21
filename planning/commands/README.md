@@ -16,7 +16,7 @@ linked owner workflows/templates/area docs
   = reusable or local behavior algorithms;
 
 Tampermonkey Planning Helper
-  = projection/editor/runtime, not command meaning authority.
+  = projection/editor/runtime for real Planning Commands and local drafts, not command meaning authority.
 ```
 
 Read `planning/command-routing.md` for explicit command routing, then resolve the selected direct definition and its `ownerFiles`. Use semantic registries for capability discovery/context.
@@ -84,13 +84,11 @@ Normal repository workflow:
 
 The Planning Helper treats this repository catalog as durable authority/backup but does **not** read it during normal browser operation. Commands are loaded from one browser-local snapshot into RAM. If that local snapshot is lost, ChatGPT can read the repository and return the complete current set of exact `[PLANNING_COMMAND_DEFINITION]` blocks. Restore reconciles the repository-backed local command set to that complete pasted set while preserving any explicitly local-only/unbacked records.
 
-When a ChatGPT import introduces a locally new or locally-unbacked command, the helper may attempt one **create-only** GitHub Contents write to the deterministic direct `planning/commands/*.command.md` path. It performs no preliminary GET, no catalog listing, no read-back GET and no update/delete fallback. An existing remote path is a conflict; the local command remains intact. Re-importing an existing local command updates only local state and never writes GitHub.
+The Planning Helper Commands surface can create/edit a validated local command-definition draft. `Save GitHub` reads/validates the complete direct remote command catalog, then creates or updates the deterministic `planning/commands/*.command.md` target with optimistic SHA protection and exact verification. `Reload GitHub` explicitly replaces one local command draft with the current remote command. Repository command deletion/retirement remains outside the Helper runtime and requires the separate authorized documentation/command-maintenance route.
 
-Deleting or updating existing repository command files is not part of the Planning Helper runtime.
+## Helper Library Boundary
 
-## Not The Helper Local Library
-
-`planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` are optional user-authored Planning Helper library records. They contain exact insertion text and are **not** command routes, do not participate in this catalog, and do not gain planning-command authority from being stored in GitHub. Their contract is owned by `planning/helper-library/README.md`.
+`planning/helper-library/prompts/*.prompt.md` contains reusable prompt insertion text and is not command authority. Historical `planning/helper-library/commands/*.helper-command.md` records are legacy compatibility insertions only: the current UI does not create them, and they never become Planning Commands. Their compatibility contract is owned by `planning/helper-library/README.md`.
 
 ## Planning Helper
 

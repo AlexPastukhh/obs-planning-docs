@@ -28,7 +28,7 @@ Planning Helper
   = projection only.
 ```
 
-A command may link to a semantic Use Case, but never owns or replaces its semantic entry.
+A command may link to the applicable semantic entry (Workspace/methodology Use Case or Application Scenario), but never owns or replaces that semantic entry.
 
 ## Command Resolution
 

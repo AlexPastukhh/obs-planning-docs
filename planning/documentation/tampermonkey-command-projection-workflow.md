@@ -1,8 +1,8 @@
 # Tampermonkey Planning Surface Projection Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v1.5.1-command-projection-consistency
-Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and planning-command routes into the Tampermonkey/ChatGPT helper while keeping user-authored local commands/prompts in a separate non-authoritative helper library.
+Doc version: v1.6.0-editable-real-commands
+Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and real planning-command routes into the Tampermonkey/ChatGPT helper. The Commands surface edits validated local drafts of the real `planning/commands/*.command.md` definitions; Prompts remain separate non-authoritative helper-library insertions. Historical helper-command records are legacy compatibility only.
 
 ## 1. Core Rule
 
@@ -41,9 +41,11 @@ Generated install artifact:
 Helper local-library contract:
   planning/helper-library/README.md
 
-Helper local-library repository records:
-  planning/helper-library/commands/*.helper-command.md
+Prompt repository records:
   planning/helper-library/prompts/*.prompt.md
+
+Legacy helper-command compatibility records:
+  planning/helper-library/commands/*.helper-command.md
 ```
 
 The helper must not invent command meaning, permission boundaries, aliases or English display names. It parses accepted repository command definitions and generates runtime bodies from them.
@@ -144,7 +146,7 @@ route_read_rule:
 
 ## 6. UI Contract
 
-Each command row uses sibling controls:
+Each real Planning Command row uses sibling controls:
 
 ```text
 <englishName> · <label>:
@@ -154,12 +156,22 @@ Full:
   insert forced-full command body
 
 Refinement control:
-  render only when the selected direct command definition declares a refinement;
-  use that definition's compact label/readRequired/instruction;
-  current `давай архив` declares no refinement because its producer route does not emit local PowerShell apply/diff commands
+  render only when the selected direct command definition declares a refinement
 
 Copy:
   copy adaptive command body
+
+Edit:
+  edit the structured command definition into a validated local draft
+
+Save GitHub:
+  publish that draft through the real planning/commands repository path
+
+Reload GitHub:
+  explicitly replace a tracked local draft/record with current remote content
+
+Delete draft:
+  local-only and offered only for an unregistered command draft
 ```
 
 Do not nest buttons inside another button. Do not duplicate the whole command definition to create another read variant.
@@ -243,7 +255,7 @@ Current `давай архив` declares no refinement. Its direct command/owner
 - do not abbreviate, transliterate or normalize an English name only inside the helper.
 ```
 
-Repository command definitions are not fetched automatically. An explicit `Check GitHub` compares inventory metadata; `Sync missing` downloads only repository command paths absent locally; `Save GitHub` explicitly creates/updates one local command with current remote state/SHA validation. Same-path local records are not overwritten by Sync missing. Rebuilding/reinstalling is required only when helper source/runtime changes or when the bundled offline fallback itself must be refreshed.
+Repository command definitions are not fetched automatically. `Check GitHub` compares inventory metadata; `Sync missing` downloads only repository command paths absent locally and never overwrites a same-path command; `Reload GitHub` is the explicit same-path repository→local replacement; `Save GitHub` explicitly creates/updates one validated local command draft with current remote catalog/SHA verification. Rebuilding/reinstalling is required only when helper source/runtime changes or when the bundled offline fallback itself must be refreshed.
 
 ## 9. Archive Source Reminder Projection
 
@@ -501,11 +513,11 @@ bundled catalog
 
 local snapshot / RAM
   = normal Planning Helper runtime data source;
-  = startup/search/tab/Insert/Copy/edit/delete/import do not read GitHub;
+  = startup/search/tab/Insert/Copy/local draft edit/delete/import do not read GitHub;
 
 Check GitHub
   = explicit repository metadata listing;
-  = compare local/GitHub counts and deterministic path/name sets for planning commands, helper commands and prompts; same-path is inventory overlap, not content equality;
+  = compare local/GitHub counts and deterministic path/name sets for planning commands, prompts and legacy helper-command compatibility records; same-path is inventory overlap, not content equality;
   = no local mutation;
 
 Sync missing
@@ -513,6 +525,10 @@ Sync missing
   = GET only GitHub paths that do not exist locally;
   = parse/validate and add them to the local snapshot;
   = never overwrite a same-path local record;
+
+Reload GitHub
+  = explicit one-command repository→local replacement;
+  = never happens during Sync missing;
 
 Save GitHub
   = explicit one-record persistence;
@@ -526,7 +542,7 @@ ChatGPT recovery
   = pasted Restore performs zero GitHub requests.
 ```
 
-Planning-command Save GitHub validates the complete direct remote command catalog before writing. Helper-command/prompt Save GitHub is confined to its deterministic helper-library path. Repository deletion is not implemented; local Delete remains local-only. All GitHub operations share one serialized explicit-operation lock and remain outside composer insertion.
+Planning-command Save GitHub validates the complete direct remote command catalog before writing. Prompt Save GitHub is confined to its deterministic helper-library path; legacy helper-command compatibility saves retain that old deterministic path only for existing records. Repository command deletion/retirement is not implemented in the Helper; unregistered command `Delete draft` and prompt/legacy Delete remain local-only. All GitHub operations share one serialized explicit-operation lock and remain outside composer insertion.
 
 The GitHub token belongs only to Planning Helper GM secret state and never to command definitions, helper-library files, generated userscript content or the local snapshot.
 
@@ -564,25 +580,30 @@ Do not edit the generated userscript manually and do not create a competing trac
 - Do not retain removed creation-wording IDs, labels or aliases for `спланируй команду`.
 ```
 
-## Local Helper Commands And Prompts
+## Commands, Prompts And Legacy Compatibility
 
-The planning-command projection and helper local library remain separate surfaces.
+There is one current `Commands` surface. `Local Cmds` is not a separate current semantic/UI entity.
 
 ```text
 Commands
-  → repository planning-command definitions as semantic authority;
-  → browser-local snapshot/RAM at runtime;
-
-Local Cmds
-  → exact user-authored insertion text;
-  → browser-local snapshot/RAM at runtime;
+  → real planning/commands/*.command.md definitions;
+  → repository authority after successful save;
+  → browser-local validated draft overlay/state while editing;
+  → New / Edit / Copy / Insert / Full / Save GitHub / Reload GitHub;
 
 Prompts
   → arbitrary exact prompt text;
-  → browser-local snapshot/RAM at runtime.
+  → browser-local snapshot/RAM;
+  → repository format planning/helper-library/prompts/*.prompt.md;
+
+Legacy helper-command records
+  → historical exact insertion text only;
+  → may remain visible as explicitly marked compatibility rows;
+  → current UI does not create new ones;
+  → never become Planning Commands.
 ```
 
-A helper command/prompt never becomes a registered planning command merely because a repository file exists. `Import from ChatGPT` remains local-only. `Check GitHub`, `Sync missing` and per-row `Save GitHub` are explicit application actions defined by `chat-command-palette/scenarios/README.md`; repository Delete is not implemented. `Restore from GitHub copy` remains a pasted-text local fallback that performs no network request.
+A local Planning Command draft is not a second semantic authority and does not grant permissions merely because the user edited it. The current repository command definition becomes authority only after successful repository persistence. `Import from ChatGPT` remains local-only. `Check GitHub`, `Sync missing`, `Reload GitHub` and per-row `Save GitHub` are explicit application actions defined by `chat-command-palette/scenarios/README.md`; repository command Delete is not implemented. `Restore from GitHub copy` remains a pasted-text local fallback that performs no network request.
 
 The modular helper may migrate legacy page-local/GM command-library caches into `obsPlanningHelper:v2:localSnapshot`. Migration does not delete legacy keys and does not contact GitHub.
 

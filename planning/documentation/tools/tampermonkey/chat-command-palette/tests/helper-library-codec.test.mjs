@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 const require=createRequire(import.meta.url);
 const codec=require('../src/helper-library-codec.js');
 
@@ -58,3 +61,6 @@ test('helper library marker tokens inside arbitrary prompt text do not collide w
 test('helper library title is a single printable line',()=>{
   assert.throws(()=>codec.normalizeHelperLibraryItem({kind:'prompt',id:'bad-title',title:'Bad\nTitle',text:'ok'}),/one printable line/);
 });
+
+
+test('tracked helper-library corpus is strict-parseable with path/kind agreement',()=>{const repoRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../../../../..');for(const [kind,rel] of [['command','planning/helper-library/commands'],['prompt','planning/helper-library/prompts']]){const dir=path.join(repoRoot,rel);for(const name of fs.readdirSync(dir)){if(!codec.helperLibraryFilePattern(kind).test(name))continue;const full=path.join(dir,name),repoRel=path.relative(repoRoot,full).replaceAll(path.sep,'/');assert.doesNotThrow(()=>codec.parseHelperLibraryDocument(fs.readFileSync(full,'utf8'),{kind,path:repoRel}),repoRel)}}});

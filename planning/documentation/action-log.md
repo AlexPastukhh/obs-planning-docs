@@ -422,3 +422,16 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 **Rationale:** remove the remaining active UC/Scenario discoverability drift without reopening separate product/application work or future methodology Ideas.
 
+### XREF-DOC-008 — Planning Helper editable real Commands and prompt governance
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-007`  
+**Reason:** reusable command-routing/planning semantics, prompt-maintenance UC/workflow, Tampermonkey projection methodology and reusable Helper overview participate in the same Planning Helper command-workspace transition; full rationale and applied target state are owned by the canonical Helper log.
+
+### XREF-DOC-009 — Planning Helper residual command-workspace correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-009`  
+**Reason:** reusable Tampermonkey overview/helper-library summaries and the generated userscript participate in the same ReviewDiff correction for complete `Reload GitHub` disclosure and current Commands/Prompts boundaries; full finding/rationale and applied target state are owned by the canonical Helper log.
