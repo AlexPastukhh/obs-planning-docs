@@ -31,7 +31,8 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | Reusable Testing Planning | `testing-planning/` |
 | Required semantic downstream review dependencies | `review-dependency-planning-workflow.md` + `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` |
 | Detailed application behavior | project/application Scenario owner(s) |
-| Optional Scenario/Domain/Slice specialization | `profiles/scenario-domain-slice-docs-profile.md` |
+| Proportional Mini/Modular/Full SDS planning profile family | `profiles/sds-planning-profiles.md` |
+| Rich Full SDS Scenario/Domain/Slice specialization | `profiles/scenario-domain-slice-docs-profile.md` |
 | Status reconciliation | `status-reconciliation-workflow.md` |
 | Example coverage/examples | `example-coverage-workflow.md`, `examples/` |
 | Fixed parallel-work scope + scope-log methodology | `parallel-work-scope-and-action-log-workflow.md`; project roots/boundaries live in the root Scope Registry |

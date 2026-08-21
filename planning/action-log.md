@@ -71,3 +71,24 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-026`  
 **Reason:** planning-root helper-library prompt edits plus duplicate/test-artifact deletion participate in the same prompt-governance consistency cleanup; full findings/rationale and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-010 — Directed accumulating SDS/UCDS planning and AI reviewability
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-030`  
+**Reason:** planning-root AI contract, root semantic registry and command changes participate in the same directed SDS/UCDS planning and reviewability transition; full Idea Review, clarifications and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-011 — SDS/UCDS ReviewDiff integration correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-032`  
+**Reason:** planning-root `собери идеи` owner routing changes as part of the same ReviewDiff correction; full findings and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-012 — Collect-Ideas depth and legacy-insertion correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-034`  
+**Reason:** planning-root `собери идеи` command and active helper-library compatibility insertion participate in the same ReviewDiff correction; full findings and applied target state are owned by the canonical reusable-documentation log.

@@ -13,7 +13,7 @@ planning/README.md
 → selected documentation owner
 ```
 
-For AI/chat work also read `planning/AI-WORKING-CONTRACT.md`.
+For AI/chat work also read `planning/AI-WORKING-CONTRACT.md` and `ai-reviewability-and-directed-planning-principles.md` for material planning/development output.
 
 ## Core Owners
 
@@ -21,6 +21,7 @@ For AI/chat work also read `planning/AI-WORKING-CONTRACT.md`.
 planning-docs-architecture-principles.md
 documentation-responsibility-map.md
 documentation-principles-read-workflow.md
+ai-reviewability-and-directed-planning-principles.md
 documentation-responsibility-zone-review-workflow.md
 direction-registry.md
 use-case-registry.md
@@ -46,43 +47,47 @@ testing-planning/
 workspace-planning/
 ```
 
-Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`. Reusable Workspace capability planning lives under `workspace-planning/`; Universal Workspace Architecture Planning lives under `architecture-planning/`. These are peer reusable families with distinct semantic responsibilities rather than application-implementation subfolders.
+Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`. Reusable Workspace capability planning lives under `workspace-planning/`; Universal Workspace Architecture Planning lives under `architecture-planning/`.
 
 ReviewDiff semantic correctness review is owned by `review-diff-review-workflow.md`; `review-diff-file-workflow.md` is only an optional legacy transfer/capture route.
 
-## File-Type Rule
+## AI Reviewability / Directed Planning
+
+`ai-reviewability-and-directed-planning-principles.md` owns Key Points, Review Priority (`Critical / High / Normal / Low`), upstream→downstream planning dependency direction, built-in recheck and evidence-driven backflow. `крит` remains optional explicit adversarial review. Former answer Levels 1/2/3 and `обс` are not current reviewability architecture.
+
+## Workspace Planning / UCDS
+
+Workspace/documentation planning may use Mini or Modular **UCDS** representation:
 
 ```text
-README/index → navigation
-Direction Registry → broad work directions
-Use-Case Registry → semantic supported capabilities
-Scenario → detailed application behavior
-principles → stable reusable definitions/invariants
-workflow → repeated process/orchestration
-model → focused concepts/state/lifecycle/relationships/invariants when separately justified
-template → recommended shape
-profile → optional specialization
-example → demonstration only
-command routing/definition → executable shortcut layer
+Use Case
+→ Domain / Rules
+→ Vertical Slice / Realization
 ```
 
-## Runtime Vs Bootstrap
-
-Runtime starts from current repository navigation/Direction/Use-Case/Scenario owners. Bootstrap aids do not remain a separate active file type once runtime owners exist.
-
-## Workspace Planning
-
-See `workspace-planning/direction-registry.md` + `workspace-planning/use-case-registry.md`. Workspace Planning establishes/reviews useful Workspace UCs and keeps Step 1 (UC), Step 2 (Domain/rules) and Step 3 (vertical realization) inside the selected UC plan. It consumes current Architecture Planning proportionally before exact files when Step 3 exposes material architecture/path pressure.
+Mini/Modular are physical/reviewability choices around existing Workspace planning owners, not new semantic entities or weaker correctness. Execution order may be a section or separate current projection and may express parallel work/dependencies.
 
 The generic UC identity/contract owner remains `direction-and-use-case-registry-workflow.md`; Workspace Planning does not create a second Use-Case model authority.
 
+## Solution / Application Planning / SDS
+
+See `application-planning/README.md`. Application change planning may use Mini/Modular/Full **SDS** representation:
+
+```text
+Scenario
+→ Domain / Rules
+→ Slice Strategy / Slices
+```
+
+Profile family: `profiles/sds-planning-profiles.md`. Full SDS is the rich detailed planning profile. Mini/Modular can also plan a bounded application change rather than an entire app. A current SDS/UCDS plan may accumulate selected results from repeated `собери идеи`; a separate reusable Goal Map is retired.
+
+## File-Type Rule
+
+README/index owns navigation; registries own semantic identities; Scenario owns application behavior; principles/workflows/templates/profiles/examples/commands keep their existing narrow roles. Current planning projections do not become second authorities over Scenario/UC/Domain/Slice meaning.
+
 ## Workspace Architecture Planning
 
-See `architecture-planning/README.md`. Architecture Planning starts from important Workspace Use Cases (including read-only/understanding work), Workspace Change Cases, Extensions, Requirements/constraints and their Work/Runtime paths; it derives Change Pressure/Change Axes and evaluates architecture proportionally rather than targeting patterns.
-
-## Solution / Application Planning
-
-See `application-planning/README.md`. Active topology is whole solution/workflow planning followed, when an Application responsibility exists, by Prototype when useful, Scenario discovery and Scenario Drafts. Planning Item / Planning Draft / Full Picture Matrix are historical/retired concepts rather than active stages.
+See `architecture-planning/README.md`. Architecture Planning derives evidence-backed path/change pressure/axes and evaluates architecture proportionally rather than targeting patterns.
 
 ## Application / Tool Roots
 
@@ -90,7 +95,7 @@ Current application subtrees maintain their own Direction Registry + Scenario Ca
 
 ## Parallel Work / Action Logs
 
-Reusable semantics are owned by [`parallel-work-scope-and-action-log-workflow.md`](parallel-work-scope-and-action-log-workflow.md). Each repository keeps its fixed scope roots in a mandatory project-specific Scope Registry and stores actual cumulative `action-log.md` state at each registered scope root. The superseded temporary shadow-workspace/sync model is not an alternate current route.
+Reusable semantics are owned by `parallel-work-scope-and-action-log-workflow.md`. Current planning files are current/forward selected meaning; action logs remain material history/rationale.
 
 ## Testing Planning
 

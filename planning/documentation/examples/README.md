@@ -1,7 +1,7 @@
 # Documentation Layer Examples Index
 
 Status: active reusable examples index
-Doc version: v0.5.0-review-file-update-practical-coverage
+Doc version: v0.6.0-directed-reviewability-and-sds-ucds
 Scope: navigation for reusable examples and project-specific demonstration examples.
 
 ## 1. Rule
@@ -27,9 +27,9 @@ planning/areas/*
 | `REVIEW-DIFF-PRACTICAL-EXAMPLE.md` | Semantic ReviewDiff review | `review-diff-review-workflow.md` + shared Idea owners | current |
 | `CRITICAL-REVIEW-COMMAND-EXAMPLE.md` | Critical review | root Command Routing and reviewable-output owner | current |
 | `CURRENT-PLANNING-STATE-RESPONSE-EXAMPLE.md` | Current-state response | root Command Routing and relevant state owners | current |
-| `LEVEL-2-KEY-POINTS-SUMMARY-EXAMPLE.md` | Reviewable Level 2 output | `reviewable-agent-output-and-commands-workflow.md` | current |
-| `GOAL-MAP-BRIEF-RESPONSE-EXAMPLE.md` | Goal Map brief | relevant Goal Map owners | current |
-| `GOAL-MAP-SYNC-COMMAND-EXAMPLE.md` | Goal Map sync | relevant Goal Map owners | current |
+| `AI-REVIEWABILITY-KEY-POINTS-EXAMPLE.md` | AI Key Points / Review Priority output | `ai-reviewability-and-directed-planning-principles.md` | current |
+| `GOAL-MAP-BRIEF-RESPONSE-EXAMPLE.md` | retired reusable Goal Map historical placeholder | retired reusable Goal Map | parked |
+| `GOAL-MAP-SYNC-COMMAND-EXAMPLE.md` | retired reusable Goal Map historical placeholder | retired reusable Goal Map | parked |
 | `STATUS-RECONCILIATION-SCENARIO-PROJECT-EXAMPLE.md` | Status reconciliation | relevant status owners | current |
 | `SOURCE-USAGE-CASCADE-GENERIC-EXAMPLE.md` | Source-usage cascade | relevant cascade owners | current |
 

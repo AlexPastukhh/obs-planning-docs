@@ -1,32 +1,17 @@
 # Reviewable Agent Output And Commands Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.10.0-route-specific-package-runtime
-Scope: answer levels, reviewable outputs, response-level command behavior, returned user-edited file revision, and legacy/reviewable package routes that explicitly opt into user-facing PowerShell Git stages.
+Doc version: v0.11.0-reviewability-separated
+Scope: response-level command behavior, truthful source reporting, returned user-edited file revision, and legacy/reviewable package routes that explicitly opt into user-facing PowerShell Git stages.
 
-## 1. Answer Levels
+Current cross-cutting AI answer reviewability and directed-planning semantics are owned by [`ai-reviewability-and-directed-planning-principles.md`](ai-reviewability-and-directed-planning-principles.md). The former Level 1/2/3 answer model and `обс`-as-quality-mechanism are retired.
 
-```text
-Level 1:
-  concise answer, no broad source pass.
-
-Level 2:
-  reviewable answer with sources/checked/not-checked/boundaries.
-
-Level 3:
-  artifact/package/diff-sensitive answer with explicit route-owned boundaries.
-```
-
-Use Level 2 or Level 3 for non-trivial file/docs/code/archive changes.
-
-## 2. Response-Level Commands
+## 1. Response-Level Commands
 
 ```text
 крит / critical review:
-  critically review target as hypothesis; do not edit unless separately asked.
-
-обс / recheck context:
-  recheck prior chat/context/sources before continuing.
+  optional explicit adversarial review of a target as hypothesis;
+  do not edit unless separately asked.
 
 обн / upd / revise returned files:
   review same-message user-edited returned Markdown/docs/planning files,
@@ -43,9 +28,11 @@ package-producing commands:
   use an explicitly selected archive as read-source, not output-package mode.
 ```
 
+`обс` remains only as a hidden legacy compatibility command definition. Normal material answers must already perform the built-in focus/integration recheck from the reviewability principles.
+
 Concrete command routing belongs to the project root command-routing system: read the root Command Routing first, then the selected delegated command definition when the project uses a command registry. The command definition owns its canonical English name, output contract and permission boundary.
 
-## 3. User-Facing PowerShell Git Command Contract
+## 2. User-Facing PowerShell Git Command Contract
 
 This section applies **only when the selected command definition or one of its explicit owner files requires a runnable user-facing PowerShell Git stage**. It is not a default property of every archive/package command.
 
@@ -83,9 +70,9 @@ Use this pattern:
 6. Do not run the diff a second time for console display.
 ```
 
-## 4. Source Reporting
+## 3. Source Reporting
 
-For reviewable answers, include when useful:
+Truthful checked-source reporting remains useful independently of the retired answer levels. For material answers include, when it improves reviewability:
 
 ```text
 Checked:
@@ -98,34 +85,24 @@ Boundary:
   <what this answer did not do>
 ```
 
-For package work, source reporting must follow the selected package command/owner contract. Do not assume that every package requires the legacy local apply/diff lifecycle below.
+Do not print empty ceremony. For package work, source reporting follows the selected package command/owner contract.
 
-## 5. Legacy Reviewable Archive Source Selection
+## 4. Legacy Reviewable Archive Source Selection
 
 Use this section only for a command route that explicitly links this workflow as an owner for its reviewable archive source/application behavior.
 
 ```text
 1. An archive attached in an earlier user message is not current automatically.
-
-2. An archive attached in the same user message as the selected legacy/reviewable archive command
-   is the selected current source snapshot for that invocation unless the selected route says otherwise.
-
-3. If there is no same-message source archive, use the current repository
-   when every required target file can be read completely and reliably.
-
-4. Request a fresh source archive only when file size or tool limitations
-   prevent complete and reliable reading of required current files.
-
-5. A selected source snapshot does not prove that the user's local HEAD is identical.
-   When the selected route owns local application, validate the exact required base before changes.
-
-6. Do not silently combine an earlier archive with newer repository
-   or conversation state. Resolve source differences explicitly before packaging.
+2. An archive attached in the same user message as the selected legacy/reviewable archive command is the selected current source snapshot for that invocation unless the selected route says otherwise.
+3. If there is no same-message source archive, use the current repository when every required target file can be read completely and reliably.
+4. Request a fresh source archive only when file size or tool limitations prevent complete and reliable reading of required current files.
+5. A selected source snapshot does not prove that the user's local HEAD is identical. When the selected route owns local application, validate the exact required base before changes.
+6. Do not silently combine an earlier archive with newer repository or conversation state. Resolve source differences explicitly before packaging.
 ```
 
 A different package command may own a different source/handoff contract in its own owner file. Follow that route instead of this section.
 
-## 6. Returned User-Edited Files
+## 5. Returned User-Edited Files
 
 Use this workflow when the user returns one or more changed files with `обн` or `upd`.
 
@@ -147,31 +124,22 @@ Source and revision rules:
 3. Compare with a clearly matching prior version when one is available.
 4. Identify what the user added, removed, reordered or reworded.
 5. Treat those edits as explicit new input and revision intent.
-6. Do not automatically treat every edited statement as a confirmed fact,
-   accepted decision or requirement.
-7. Preserve deliberate user edits unless they conflict with:
-   - an explicit reusable rule;
-   - a checked source fact;
-   - another explicit clarification in the same message;
-   - an ownership or safety boundary.
+6. Do not automatically treat every edited statement as a confirmed fact, accepted decision or requirement.
+7. Preserve deliberate user edits unless they conflict with an explicit reusable rule, checked source fact, same-message clarification or ownership/safety boundary.
 8. Do not silently restore text that the user removed from the older version.
 9. Merge additional clarifications from the same message into the new version.
-10. Evaluate consistency, evidence status, artifact ownership and relationships
-    with other affected drafts.
-11. Improve Markdown presentation when useful:
-    headings, spacing, tables, grouping, ordering and scanability.
-12. Do not require the user to spend time polishing visual formatting.
-13. Update related files only when the returned changes or chat clarification
-    actually affects them.
-14. Return complete revised files, not isolated replacement fragments.
-15. Briefly state significant adjustments, conflicts and unresolved questions.
+10. Evaluate consistency, evidence status, artifact ownership and relationships with other affected drafts.
+11. Improve Markdown presentation when useful; do not require the user to polish formatting first.
+12. Update related files only when the returned changes or chat clarification actually affects them.
+13. Return complete revised files, not isolated replacement fragments.
+14. Briefly state significant adjustments, conflicts and unresolved questions.
 ```
 
 If no prior version is available, revise from the returned file and same-message clarification, and state that historical comparison was unavailable.
 
 This command is response-only by default. It does not authorize repository edits, archive creation, commit or push.
 
-## 7. Legacy Reviewable Archive Output Boundary
+## 6. Legacy Reviewable Archive Output Boundary
 
 Use this section only when the selected command/owner explicitly opts into the legacy reviewable archive flow.
 
@@ -191,10 +159,12 @@ For such routes:
 
 Do not apply this boundary to package-producer commands that explicitly stop at ZIP/action handoff.
 
-## 8. Do Not
+## 7. Do Not
 
 ```text
 - Do not pretend to have checked files not checked.
+- Do not revive Level 1/2/3 as the current answer-quality model.
+- Do not require `обс` as a normal completion step for material answers.
 - Do not treat examples/helper scripts as authority.
 - Do not infer apply/diff commands merely because a command produces an archive.
 - Do not use an earlier-message archive as current without explicit route-owned selection or reconciliation.

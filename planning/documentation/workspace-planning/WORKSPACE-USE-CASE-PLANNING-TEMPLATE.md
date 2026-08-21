@@ -1,65 +1,36 @@
 # Workspace Use-Case Planning Template
 
 Status: active reusable template
-Scope: recommended integrated shape for planning one or several Workspace UCs through Step 1/2/3. Use proportionally; omit inapplicable detail rather than manufacturing content.
+Scope: recommended Mini/Modular UCDS representation for one or several Workspace UCs through Step 1/2/3. Use proportionally; omit inapplicable detail rather than manufacturing content.
 
-Use with:
+Use with `workspace-planning-principles-and-terminology.md`, current Establish/Change/Topology workflows, shared Idea owners and AI reviewability principles.
 
-- `workspace-planning-principles-and-terminology.md`
-- `establish-workspace-use-case-workflow.md`
-- `review-change-workspace-use-case-workflow.md`
-- `review-workspace-use-case-topology-workflow.md`
-- shared Idea owners when Ideas are the source of change.
+## Mini UCDS
 
-## Template
+A small bounded change may stay in one file:
 
 ```markdown
 # Current Integrated Workspace Plan
 
 ## Source / Baseline
-
-<selected source/current owner baseline>
+## Key Points
+<material conclusions + Critical / High / Normal / Low Review Priority>
 
 ## Current Plan Snapshot
-
-<short selected/current meaning and current planning depth>
-
 ## Questions / Risks / Problems
-
-<only material unresolved/adverse delta relative to Current Plan; if none, say so briefly>
-
-## Cross-Cutting Ideas — When material
-
-### IDEA-...
-**Problem / Need:** ...
-**Proposed Answer:** ...
-**Affected Workspace UCs:** ...
-**Current Conclusion:** ...
-
-<print other Standard Idea Review fields only when they contain material supported findings>
+## Shared / Cross-Cutting Ideas — When material
 
 # Workspace UC Groups
 
 ## <UC-ID> — <name>
-
 ### Current State
-<high-level summary + direct current-owner links>
-
 ### Planned Change — High Level
-<compact complete description of the planned UC change>
+### Related Ideas
 
-### Related Ideas — When material
-
-#### Local Ideas
-<full local review only where useful>
-
-#### Cross-Cutting Idea References
-- `IDEA-X` — <UC-specific impact only>
-
-### Planning Depth
-- Step 1: <reviewed / partial / not selected>
-- Step 2: <reviewed / partial / not selected>
-- Step 3: <reviewed / partial / not selected>
+### Planning State
+- Step 1 — Use Case: <reviewed / partial / not selected>
+- Step 2 — Domain / Rules: <reviewed / partial / not selected>
+- Step 3 — Vertical Realization: <reviewed / partial / not selected>
 
 ### Step 1 — Target Use Case
 **Purpose:** ...
@@ -70,89 +41,78 @@ Use with:
 **Relations / handoffs:** ...
 
 ### Carry-Forward Context — When useful
-<known later-layer meaning that is preserved but not yet final at that later depth>
 
 ### Step 2 — Target Domain / Rules — When selected
-**Concepts:** ...
-**State / lifecycle:** ...
-**Relationships:** ...
+**Concepts / relationships / state:** ...
 **Rules / invariants / policies:** ...
 **Model / template / representation needs:** ...
 **Semantic ownership:** ...
 **Verification meaning:** ...
 
 ### Carry-Forward Context — When useful
-<known realization/file/verification implications>
 
 ### Step 3 — Target Vertical Realization — When selected
 **Deliverable UC result:** ...
 **Expected Workspace Change Path:** ...
-**Architecture review / reused Architecture findings:** ...
+**Architecture review:** ...
 **Slice(s):** ...
-**Local semantic owners:** ...
-**Shared semantic owners:** ...
-**Orchestration / routing / projections:** ...
+**Local/shared owners:** ...
 **Dependencies:** ...
 **Verification:** ...
 
-#### Affected Files
+#### Affected Files — When exact realization is selected
 | Change | File | Role in UC | Local / Shared | Why |
 |---|---|---|---|---|
 
-#### Checked But Unchanged
-| File | Why unchanged |
-|---|---|
-
 ### Target Semantic Owners
-
-#### Future Registry Meaning
-<complete target UC registry contract when changed/new>
-
-#### Future Workflow
-<full planned future semantic body when sufficiently reviewed>
-
-#### Future Model(s) / Template(s) — When changed/new
-<complete target meaning/shape; do not create owners merely for template symmetry>
-
 ### Transition Review
-| Responsibility | Current | Current owner | Target | Target owner | Why |
-|---|---|---|---|---|---|
 
-# Resolved UC Graph — When several UCs are involved
+# Execution Order — When material
+<partial order; show parallel groups and real dependencies rather than forcing total order>
 
-<uses / depends on / includes when applicable / hands off / reviews / produces input for>
-
-# Cross-UC / Cross-Slice Architecture Review — When several UCs/Slices are involved
-
-## Combined architecture effect
-...
-
-## Overlap / shared coordination review
-...
-
-## UC / owner-boundary findings
-...
-
+# Resolved UC Graph — When material
+# Cross-UC / Cross-Slice Architecture Review — When material
 # Current Overall Conclusions
-
-<selected integrated meaning>
-
 # Potential Simplifications / Better Routes — When material
-
-<only not-yet-selected candidate changes to Current Plan>
 ```
+
+## Modular UCDS
+
+When the Mini plan becomes expensive to scan/review, split physical owners while preserving one current plan. A typical shape may be:
+
+```text
+planning/
+├── execution-order.md
+├── shared-ideas/
+├── use-cases/
+├── rules-and-owners/
+└── realization/
+```
+
+This shape is illustrative, not mandatory folder ontology. Existing canonical owners may remain elsewhere and be linked rather than copied.
+
+## Execution Order
+
+Execution order is a projection/part of the selected realization, not a semantic owner of UC/rules. It may express:
+
+```text
+Slice A
+→ Slice B || Slice C
+→ Slice D after B+C
+```
+
+Track completion/current-next position only when useful; do not create history inside the current plan.
 
 ## Rules
 
-- Primary planning unit is the Workspace UC, not the Idea or file.
-- Keep Q/R/P near the beginning as review-attention delta to Current Plan.
-- Keep cross-cutting Ideas compact and define them once; affected UCs reference them and state local impact.
-- Several Ideas affecting one UC converge into one Target UC.
-- Step 1/2/3 belong inside the same selected UC plan; deeper sections are proportional.
-- Preserve earlier later-step knowledge as Carry-Forward Context rather than discarding or silently finalizing it.
-- Current State normally summarizes and links current owners; do not duplicate complete current bodies.
-- Target changed/new owner meaning must be complete enough to avoid semantic blind spots; when a changed/new primary workflow is sufficiently reviewed at the selected depth, include its complete planned future workflow body rather than an approximate summary or TODO.
-- Keep Transition Review separate from the clean Target state.
-- Step 3 traces expected paths and uses the current Architecture Lens before exact files when architecture is material.
-- Do not optimize raw step/file count; prefer the lowest-cost correct, local, independently verifiable path.
-- Review every material cross-Slice overlap and the number/necessity of shared coordination owners.
+- UCDS = **UC** (Use Case) → **D** (Domain/Rules) → **S** (Vertical Slice/Realization); Step 1/2/3 remain depths of the selected Workspace UC planning.
+- Mini and Modular have the same semantic correctness; Modular is a review/navigation split.
+- A later `собери идеи` pass updates the clearly selected current plan rather than appending a parallel result ledger.
+- Keep shared Ideas once; affected UCs reference local impact.
+- Stabilize upstream meaning before dependent downstream planning; later-step insight may be Carry-Forward context but not silent upstream authority.
+- Keep Planning State explicit enough to distinguish reviewed upstream meaning from partial/not-selected downstream depth; Execution Order does not replace this state.
+- Keep Q/R/P as unresolved/adverse current-plan delta only.
+- Current State summarizes/links current owners; Target changed/new owner meaning must be complete enough for implementation not to invent decisions.
+- Step 3 traces expected paths and Architecture Lens before exact files when material.
+- Review cross-Slice overlap/shared coordination tax.
+- Step 4 is downstream realization feedback + semantic ReviewDiff of actual change, not another required pre-implementation template section.

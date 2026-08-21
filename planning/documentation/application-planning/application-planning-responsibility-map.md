@@ -26,8 +26,8 @@ Status: active reusable nested responsibility map
 | Slice Strategy shape | `templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md` |
 | Implementation Slice draft shape | `templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md` |
 | Generic Idea semantics/review | parent reusable Idea owners |
-| Reusable current Goal Map semantics | `goal-map.md` |
-| Specialized Scenario/DATA/Behavior/Domain/Slice project route profile | `../profiles/scenario-domain-slice-docs-profile.md` |
+| Proportional Mini/Modular/Full SDS planning profile family | `../profiles/sds-planning-profiles.md` |
+| Rich Full SDS Scenario/DATA/Behavior/Domain/Slice project route | `../profiles/scenario-domain-slice-docs-profile.md` |
 | Detailed planning worked example | `examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md` |
 | Concrete solution/application Workflows / Concepts / Prototype artifacts / Requirements / Scenarios / Screens / Domains / Slices / decisions / implementation state | project/application-local owners |
 

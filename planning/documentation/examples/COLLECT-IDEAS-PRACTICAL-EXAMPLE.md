@@ -1,74 +1,84 @@
-# Practical Example — UC-Centric `собери идеи`
+# Practical Example — Accumulating UCDS `собери идеи`
 
 Status: current demonstration only
-Scope: compact practical example of the current `собери идеи` output contract after Standard Idea Review is integrated with affected useful-result planning. This file demonstrates; canonical rules remain in the Idea and Workspace Planning owners.
+Scope: compact example of the current `собери идеи` output contract using Key Points, Review Priority, an accumulating current plan and Mini UCDS. Canonical rules remain in the Idea, Workspace Planning and AI reviewability owners.
 
-## Example source
+## Example Source
 
-User discussion proposes a hypothetical documentation-quality refinement:
+User discussion proposes a documentation-quality refinement:
 
-> When a practical example becomes stale after its canonical owner changes, the review should identify the authoritative owner, state the stale meaning precisely, and update only the example/navigation surfaces that actually need change. The example must remain demonstration-only.
+> When a practical example becomes stale after its canonical owner changes, identify the authoritative owner, state the stale meaning precisely, and update only the example/navigation surfaces that need change.
 
-The example assumes current repository owners were checked. UC-centric planning, optional File Update Plan handoff and the Workspace/Application semantic boundary are already current baseline; they are not changes being introduced by this example.
+Assume current repository owners were checked and an existing Mini UCDS plan is already the selected current plan.
 
-# Current Plan Snapshot
+## Source / Baseline
+
+- selected source: the discussion above;
+- current plan: the existing documentation-quality Mini UCDS;
+- current canonical examples owner: `example-coverage-workflow.md`;
+- examples demonstrate current owners and do not become semantic authority.
+
+## Key Points
+
+- **KP-1 — Example authority boundary — High** — stale examples must be corrected against canonical owners; the example itself never defines current methodology.
+- **KP-2 — Current-plan continuity — High** — integrate this selected change into the existing UCDS rather than creating a second command-result plan.
+- **KP-3 — Realization locality — Normal** — only the affected example/index surfaces should change when canonical semantics are already correct.
+
+## Current Plan Snapshot
 
 ```text
-- Standard Idea Review is current;
-- documentation changes route through affected Workspace UCs;
-- Step 1 / Step 2 / Step 3 are proportional depths inside one selected Workspace UC;
-- Application actor-visible behavior remains Scenario-owned;
-- complete Step-3 file surface may hand directly to a separately authorized update/package route;
-- an ordered File Update Plan remains a separate optional capability;
-- examples demonstrate current owners and never become semantic authority.
+UC-DOC-REVIEW-EXAMPLES
+→ current example review capability
+→ existing canonical owner remains correct
+→ target change is a narrow example-coverage refinement
 ```
 
-# Questions / Risks / Problems
+## Questions / Risks / Problems
 
-No material unresolved issues identified in this example.
+No material unresolved issues identified.
 
-# Cross-Cutting Ideas
+## Cross-Cutting Ideas
 
-## IDEA-EXAMPLE-01 — Make stale-example review explicit without promoting examples to authority
+### IDEA-EXAMPLE-01 — Keep stale-example correction narrow
 
-**Problem / Need:** after a canonical owner changes, an example may still look plausible while demonstrating outdated meaning or navigation.
+**Problem / Need:** an example can remain plausible while demonstrating retired terminology.
 
-**Proposed Answer:** make example review state the current canonical owner, the exact stale demonstration meaning and the narrow example/navigation surface that requires correction.
+**Proposed Answer:** compare it with the canonical owner, state the stale demonstrated meaning and update/remove only the example/navigation surfaces that are actually stale.
 
-**Affected Workspace UCs:** `UC-DOC-REVIEW-EXAMPLES`, `UC-DOC-MAINTAIN-NAVIGATION` only when discoverability/read-order is materially affected.
+**Affected Workspace UCs:** `UC-DOC-REVIEW-EXAMPLES`; navigation maintenance only when discoverability is affected.
 
-**Current Conclusion:** selected for this hypothetical example.
+**Current Conclusion:** selected. Necessity/Better-Route and consistency checks found no simpler route than correcting the stale demonstration directly.
 
-Mandatory Necessity/Refinement/Consistency checks were performed; no additional material finding is printed merely to populate fields.
-
-# UC / Scenario Groups
+# Workspace UC Groups
 
 ## `UC-DOC-REVIEW-EXAMPLES` — Review Practical Example Coverage
 
 ### Current State
 
-Current reusable owners already state that examples demonstrate but do not own semantic rules. Example review decides whether a demonstration is needed and whether current examples still match canonical meaning.
+Current reusable owners already state that examples demonstrate but do not own semantic rules.
 
 ### Planned Change — High Level
 
-Refine the review result so a stale example finding identifies the canonical semantic owner, the stale demonstration meaning and the narrow correction surface instead of treating the example itself as the source of truth.
+Make stale-example review identify the canonical owner, stale demonstrated meaning and narrow correction surface.
 
 ### Related Ideas
 
-- `IDEA-EXAMPLE-01` — local impact: strengthen stale-example finding/result semantics.
+- `IDEA-EXAMPLE-01` — local impact: strengthen stale-example review/correction clarity.
 
-### Planning Depth
+### Planning State
 
-- Step 1: reviewed
-- Step 2: reviewed
-- Step 3: reviewed for this example
+- Step 1 — Use Case: reviewed
+- Step 2 — Domain / Rules: reviewed
+- Step 3 — Vertical Realization: reviewed for this bounded change
 
 ### Step 1 — Target Use Case
 
-**Purpose:** review whether practical examples adequately and truthfully demonstrate current canonical reusable meaning.
+**Purpose:** review whether reusable examples adequately and truthfully demonstrate current canonical meaning.
 **Trigger / Input:** example coverage or staleness is questioned after a canonical owner changes.
 **Result / End State:** explicit keep/update/remove/add-example conclusion with canonical owner reference and precise stale/current demonstration meaning when applicable.
-**Boundaries:** examples remain demonstration-only; this UC does not redefine the canonical workflow/principle/registry or grant mutation permission.
+**Behavior / useful capability:** reviewers can distinguish stale demonstration from a defect in the canonical owner.
+**Boundaries:** examples remain demonstration-only and this UC grants no mutation permission.
+**Relations / handoffs:** selected corrections hand to the normal documentation update/package route.
 
 ### Step 2 — Target Domain / Rules
 
@@ -84,94 +94,29 @@ stale-example finding
 → stale demonstrated meaning
 → current meaning that should be demonstrated
 → narrow affected example/navigation surface
-
-example mismatch
-≠ reason to rewrite canonical owner when that owner is already correct
 ```
 
 ### Step 3 — Target Vertical Realization
 
-**Deliverable result:** the example-review capability can produce a reviewable exact realization path for one stale demonstration without broad documentation churn.
+**Deliverable UC result:** corrected current example coverage with no duplicate semantic owner.
+**Expected Workspace Change Path:** canonical owner → examples index/example body → example verification.
+**Architecture review:** local reusable-documentation change; no new shared coordination owner justified.
+**Slice(s):** one local example-coverage slice.
+**Dependencies:** current canonical owner meaning must already be selected.
+**Verification:** reread changed example/index against the canonical owner and confirm retired terminology is not presented as current.
 
-**Expected Workspace Change Path:** resolve example-review UC → read canonical owner + current example → classify semantic mismatch → check whether navigation is affected → identify exact example/index files → verify links and demonstration-only boundary.
-
-**Architecture review:** keep semantic authority local to the canonical owner; do not create a shared “example model” or duplicate workflow rules inside the example.
-
-#### Affected Files — illustrative
-
-| Change | File | Role in UC | Local / Shared | Why |
-|---|---|---|---|---|
-| Updated | `example-coverage-workflow.md` | UC workflow/supporting review rules | Local | make stale-example finding explicit |
-| Updated | `examples/<affected-example>.md` | demonstration | Local | align demonstration with current canonical meaning |
-| Checked unchanged | canonical workflow/principle owner | semantic authority | Separate | verify current meaning rather than rewrite it |
-| Conditional | README/index | navigation | Shared routing | only when discovery/read-order actually changes |
-
-### Target Semantic Owners
-
-When sufficiently reviewed, the target workflow meaning is written completely enough that implementation does not need to invent what qualifies as a stale example or which owner wins.
-
-### Transition Review
-
-| Responsibility | Current | Target | Why |
-|---|---|---|---|
-| Example authority | demonstration-only | unchanged | preserve owner boundary |
-| Stale-example result | example coverage conclusion | explicit owner + stale/current demonstration delta + narrow surface | make correction reviewable |
-| Navigation | changed only when needed | unchanged rule | avoid incidental shared edits |
-
-## `UC-DOC-MAINTAIN-NAVIGATION` — Maintain Repository Documentation Navigation
-
-### Current State
-
-Navigation owns discovery/read order only and routes readers to current semantic owners.
-
-### Planned Change — High Level
-
-No automatic change. This UC is affected only when the stale example also changes which example/index route should be discoverable.
-
-### Related Ideas
-
-- `IDEA-EXAMPLE-01` — local impact is conditional; do not edit navigation merely because an example body changed.
-
-### Planning Depth
-
-- Step 1: reviewed
-- Step 2: reviewed
-- Step 3: conditional / not selected unless a real navigation delta exists
-
-### Step 1 — Target Use Case
-
-Keep the current independently useful navigation-maintenance result.
-
-### Step 2 — Target Domain / Rules
+## Execution Order
 
 ```text
-example body changed
-≠ automatic navigation change
-
-example added / removed / moved / discovery role changed
-→ review navigation delta
+confirm canonical owner
+→ correct stale example body/index
+→ verify discoverability and terminology
 ```
 
-# Resolved UC Graph
+## Current Overall Conclusions
 
-```text
-UC-DOC-REVIEW-EXAMPLES
-→ hands off to → UC-DOC-MAINTAIN-NAVIGATION only when discovery/read-order meaning changes
-```
+The selected Idea is integrated into the existing UCDS current plan. No parallel Goal Map or append-only `собери идеи` ledger is created.
 
-The relation is semantic and conditional; co-editing files alone would not justify it.
+## Potential Simplifications / Better Routes
 
-# Cross-UC / Cross-Slice Architecture Review
-
-- canonical semantic owners remain unchanged and are checked rather than copied into example files;
-- example-review meaning stays local to its workflow/example surface;
-- navigation is shared coordination surface and is touched only for a real discovery delta;
-- no new Model/shared abstraction is justified.
-
-# Current Overall Conclusions
-
-The example demonstrates the current `собери идеи` contract without pretending UC-centric planning itself is still a pending transition: Standard Idea Review feeds affected Workspace UC planning, Q/R/P appears early, Step 1/2/3 remain inside each selected UC, cross-cutting meaning is defined once, and exact files appear only after semantic/work-path review.
-
-# Potential Simplifications / Better Routes
-
-None in this example. An already selected simplification would belong in Current Overall Conclusions rather than this section.
+No material unselected better route identified.

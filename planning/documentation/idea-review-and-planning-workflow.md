@@ -1,14 +1,12 @@
 # Idea Review And Planning Workflow
 
 Status: active reusable cross-cutting workflow
-Doc version: v1.3.0-integrated-output-order
-Scope: how to collect, review, deepen and integrate Ideas while preserving source meaning and surfacing only material findings that remain relevant relative to the current selected plan.
+Doc version: v1.4.0-accumulating-current-plan
+Scope: collect, review, deepen and integrate Ideas while preserving source meaning and updating one current selected plan rather than accumulating a transcript of planning outputs.
 
 Canonical meanings: [`idea-planning-principles-and-terminology.md`](idea-planning-principles-and-terminology.md)
-
 Recommended shape: [`IDEA-REVIEW-TEMPLATE.md`](IDEA-REVIEW-TEMPLATE.md)
-
-Practical example: [`examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md`](examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md)
+AI reviewability: [`ai-reviewability-and-directed-planning-principles.md`](ai-reviewability-and-directed-planning-principles.md)
 
 ## 1. Standard Idea Review
 
@@ -35,198 +33,121 @@ Starts from Standard Review and expands only useful surfaces: clarify Need/Promp
 
 Do not force deliberate Variant generation during ordinary review when no material alternative is visible or needed.
 
-## 3. Collecting Ideas From Conversation Or Source
+## 3. Collecting Ideas Into A Current Plan
 
 ```text
 selected source
++ selected current integrated plan when one clearly exists
 → preserve material context/provenance
 → extract coherent Ideas proportionally
 → preserve non-Idea facts/constraints/decisions/questions separately
-→ group related Ideas when useful
-→ Standard Idea Review for every Idea
-→ Group Review when useful
-→ Idea-local Current Conclusions / Current Selected Variants
-→ when selected Ideas imply material Workspace/Application change, resolve affected/new Workspace UCs or Application Scenarios
-→ integrate several Ideas that affect one useful-result owner into one Target UC/Scenario
-→ keep one cross-cutting Idea body and reference only local impact from each affected unit
-→ continue through the selected/justified UC/Scenario planning depth when the invoking command/workflow owns that integration
-→ establish the integrated Current Plan baseline for each affected scope
-→ derive Questions / Risks / Problems as material unresolved/adverse delta only
-→ review the whole integrated candidate
+→ Standard Idea Review
+→ integrate selected meaning into affected current useful-result owners
+→ update one coherent Current Plan
+→ derive Q/R/P as unresolved/adverse delta
+→ whole-plan review
 → Current Overall Conclusions
-→ Potential Simplifications / Better Routes for material unselected candidate changes only
+→ unselected Potential Simplifications / Better Routes only
 ```
 
-One fragment may contribute to several Ideas and several fragments may contribute to one Idea.
+Do not create an append-only `собери идеи` result ledger. A later invocation should normally revise/expand the same current plan when that plan is clearly selected.
 
-Processing order and presentation order are different concerns. The Current Plan must be semantically established before aggregate findings are derived even when a consuming command displays those findings near the beginning. For the current `собери идеи` command, project the completed review as:
+A physical Mini plan may contain several semantic sections in one file. When growth makes review/navigation expensive, split it into a Modular structure while preserving the same semantic owners/meaning. Structural split is not a new plan or automatic semantic redesign.
+
+## 4. Useful-Result Integration: UCDS And SDS
+
+Idea Review does not become the semantic owner of Use Cases, Scenarios, Domain rules or Slices.
+
+Workspace/documentation planning uses the current Workspace owners through the proportional **UCDS** pattern:
+
+```text
+Use Case
+→ Domain / Rules / semantic meaning
+→ Vertical Slice / Realization
+```
+
+Application planning uses current Application owners through the proportional **SDS** pattern:
+
+```text
+Scenario
+→ Domain / Rules when useful
+→ Slice Strategy / Slices when useful
+```
+
+Mini/Modular/Full are representation/depth choices, not weaker semantic correctness. Full SDS is the rich detailed profile; Mini/Modular can also plan a bounded change/action rather than an entire application.
+
+Several Ideas affecting one UC/Scenario converge into one integrated target. One cross-cutting Idea remains one Idea and is referenced from affected units with local impact only.
+
+## 5. Directed Integration
+
+A provisional whole-picture pass is allowed to reveal integration and later-layer implications, but selection/review should stabilize dependency direction upstream → downstream. Preserve later-step insight as Carry-Forward/provisional context; do not let downstream convenience normally define upstream meaning.
+
+For Workspace planning, Step 1/2/3 remain depths inside the selected UC and use current Architecture Planning proportionally before exact files when architecture is material.
+
+## 6. Presentation Order
+
+The Current Plan must be semantically established before aggregate findings are derived even when the consuming command shows Q/R/P early.
+
+For `собери идеи`, a material result normally projects:
 
 ```text
 Source / Baseline
+→ Key Points + Review Priority
 → short Current Plan Snapshot
 → Questions / Risks / Problems
 → compact Cross-Cutting Ideas when material
-→ affected UC / Scenario groups to selected depth
-→ Resolved UC Graph / Cross-UC or Cross-Slice review when material
+→ affected UC / Scenario planning in current UCDS/SDS representation
+→ Execution Order / versions when selected and useful
+→ cross-unit review when material
 → Current Overall Conclusions
 → Potential Simplifications / Better Routes
 ```
 
-Do not move final `Current Overall Conclusions` ahead of useful-result integration merely to establish the aggregate baseline; use `Current Plan Snapshot` for that early projection.
+## 7. Execution Order Boundary
 
-## 4. Truth-Seeking Review
+Execution order is a current route through already planned work, not a second semantic authority. It may be a section in Mini form or a separate file/projection in Modular form.
 
-For Necessity / Better-Route, actively search for a real reason to omit, remove, reuse, simplify or choose another route. If a real reason exists, state it clearly; otherwise do not invent one.
-
-Possible Idea Refinements are checked for every Idea but written only when a genuinely useful candidate exists.
-
-## 5. Integration Loop
+Represent genuine partial order:
 
 ```text
-local Idea / Variant
-→ integrate selected meaning into real Workflow / Scenario / plan candidate
-→ establish/update Current Plan
-→ review whole candidate
-→ revise local or wider meaning if necessary
-→ remove resolved aggregate findings rather than preserving them as review history
+A
+→ B || C
+→ D after B+C
 ```
 
-## 5.1 Useful-Result Integration
+Application execution order may group selected Slices into versions/releases. Version grouping does not become a semantic layer between Scenario and Slice.
 
-Idea Review does not itself become the semantic owner of Workspace Use Cases, Application Scenarios, Domain rules, Architecture or realization. When the invoking route continues into planning:
+## 8. Shared Aggregate Findings
+
+Use the aggregate contract from `idea-planning-principles-and-terminology.md`.
+
+Every real Q/R/P unit states Current Plan, Finding and Relation / Impact On Current Plan. Add Related Idea(s), treatment/fallback/blocking only when useful. Resolved/accepted meaning leaves Q/R/P and candidate Better Routes.
+
+Apply the shared same-Finding-ID discoverability rule between aggregate findings and affected Ideas.
+
+If no material unresolved issue remains: `No material unresolved issues identified.`
+
+## 9. File Update And ReviewDiff Integration
+
+UC/Scenario planning may already establish an exact realization/file surface. An explicit ordered File Update Plan remains separate only when selected/useful.
+
+After materialization, semantic ReviewDiff reviews the actual transition against selected current owners. A confirmed implementation defect does not require a new Idea unless a material answer-seeking correction/alternative exists.
+
+## 10. Checks Before Returning
 
 ```text
-selected Ideas
-→ affected existing/new useful-result owners
-
-Workspace / methodology
-→ current Workspace Planning UC owner(s)
-
-Application actor-visible behavior
-→ current Scenario / Application Planning owner(s)
+- selected source and current-plan baseline are explicit;
+- mandatory Idea checks were performed without manufactured objections;
+- selected meaning is integrated into real useful-result owners;
+- no parallel Goal Map/result ledger duplicates the current plan;
+- Mini→Modular structural growth preserves semantic ownership;
+- dependency direction is upstream→downstream and any backflow is an explicit evidence finding;
+- execution order does not masquerade as semantic dependency;
+- aggregate findings are real current-plan delta only;
+- Key Points/Review Priority and built-in recheck were applied proportionally;
+- final Current Overall Conclusions follow useful-result integration.
 ```
 
-For one affected UC/Scenario, integrate all selected local/cross-cutting Idea impacts into one target. Do not produce one competing target state per Idea.
+## 11. Scope-Log Handoff When Logging Is Active
 
-A `собери идеи` output may therefore be grouped primarily by UC/Scenario while retaining local Idea review/provenance. Keep cross-cutting Ideas once and reference them from affected units with local impact only.
-
-For Workspace planning, use the current `workspace-planning/` principles/workflows/template. Step 1/2/3 are planning depths inside the selected UC; Step 3 uses current Architecture Planning proportionally before exact files when architecture is material.
-
-## 6. Shared Aggregate-Finding Rule
-
-Use the aggregate contract from `idea-planning-principles-and-terminology.md` in every consumer of this methodology.
-
-For each real `Questions / Risks / Problems` unit:
-
-```text
-Current Plan:
-  <actual selected/current baseline>
-
-Finding:
-  <unresolved question / residual risk / unresolved problem>
-
-Relation / Impact On Current Plan:
-  <why it still matters to that baseline>
-```
-
-Add `Related Idea(s)`, `Needed Resolution / Treatment`, `Fallback` and `Blocking` when applicable.
-
-If no selected change exists yet, use the truthful baseline such as `no change selected yet; preserve current state` rather than inventing a plan.
-
-A finding that has already been resolved/accepted is not an aggregate finding anymore.
-
-## 7. Questions / Risks / Problems
-
-Always include this aggregate section in collect/review Ideas outputs and File Update Plans. ReviewDiff uses the same unit semantics through its own workflow.
-
-Every material Idea-derived aggregate finding identifies Related Idea ID(s). Keep detailed reasoning at the originating Idea.
-
-Apply the shared bidirectional discoverability rule after the Related Idea set is known:
-
-```text
-one Related Idea
-→ full same-ID Q/R/P mirror inside that Idea
-
-several Related Ideas
-→ one full aggregate finding
-→ lightweight same-ID reference inside every affected Idea
-→ reference the complete Related-Idea set
-```
-
-The mirror/reference is not a second finding owner. When the finding resolves or its Related-Idea cardinality changes, update/remove both aggregate and Idea-side projections in the same current result.
-
-Do not put these in the section:
-
-```text
-- confirmation that Variant A was selected;
-- explanation that an already selected simplification is good;
-- an ordinary current-plan boundary;
-- a selected correction that already belongs to Current Conclusions / Update Steps;
-- reasoning notes with no unresolved/adverse effect on Current Plan.
-```
-
-If empty: `No material unresolved issues identified.`
-
-## 8. Potential Simplifications / Better Routes
-
-When material, list only **unselected** simplifications/better routes that would change Current Plan.
-
-Each unit states:
-
-```text
-Current Plan
-Candidate Better Route
-Change To Current Plan
-Why Potentially Better
-Status
-```
-
-Reference Related Idea IDs when applicable.
-
-Once a better route is selected, move it into Current Conclusion / Current Plan and remove it from this section.
-
-## 9. File Update Integration
-
-UC/Scenario-centric planning may already establish a Step-3 exact affected-file surface before implementation. The explicit File Update Plan remains a separate active capability only when its ordered concrete transition is selected/useful.
-
-```text
-Idea
-→ Idea Variants when material
-→ Current Selected Variant / Conclusion
-→ affected UC / Scenario planning when material
-→ Step-3 exact file surface when selected
-→ explicit File Update Plan only when that route is requested/useful
-```
-
-Do not create alternate file-edit plans for unresolved conceptual alternatives. When the update is a mechanical consequence of already selected meaning, skip manufactured Idea analysis.
-
-## 10. ReviewDiff Integration
-
-A ReviewDiff can contain confirmed defects whose correction is already clear. Such defects stay in `Confirmed Findings` / `Current Conclusions` and can require `NEEDS CORRECTION` even when aggregate Q/R/P is empty.
-
-Use aggregate sections only for uncertainty/residual risk/unresolved problems or not-yet-selected better correction routes relative to the current review plan.
-
-## 11. Checks Before Returning
-
-```text
-- Baseline Idea meaning is understandable.
-- Mandatory checks were performed even when no finding is printed.
-- No objection/refinement exists merely to satisfy the template.
-- Idea-local Current Conclusions / Current Selected Variants and the integrated Current Plan baseline are established before aggregate delta is derived, even when Q/R/P is displayed early.
-- Every aggregate unit states Current Plan and its relation/change to that plan.
-- Aggregate sections contain no accepted/resolved confirmation items.
-- Aggregate findings/simplifications reference Related Idea IDs when applicable.
-- Every Idea-related Q/R/P is discoverable from each affected Idea using the single-Idea full mirror / multi-Idea lightweight-reference rule and one stable Finding ID.
-- A selected simplification was removed from Potential Simplifications / Better Routes.
-- A resolved Question/Problem was removed from Questions / Risks / Problems.
-- A residual Risk states its remaining impact/treatment.
-- Current Conclusion does not silently include unresolved refinements.
-- Deep Planning surfaces appear only when useful.
-- Source facts/constraints/decisions were not forced into Idea entities.
-```
-
-## 12. Scope-Log Handoff When Logging Is Active
-
-The Idea review remains read-only. When the repository has active registered scope logs and the user has already started logging, the material `собери идеи` result becomes provenance for the next approved mutation/package affecting that scope.
-
-Material ordinary messages after the review that change Idea meaning, Current Conclusion, constraints, resolved Q/R/P or selected implementation requirements are `IDEA CLARIFICATION` material and must be incorporated before the package's `APPLIED` target-state record. Do not require rerunning `собери идеи` merely to legitimize a material clarification, and do not log non-material chat noise.
+The Idea review remains read-only. When scope logging is active, the material `собери идеи` result becomes provenance for the next approved mutation/package. Later material chat clarification remains `IDEA CLARIFICATION` provenance and must be included before the next `APPLIED` target-state record; non-material chat noise is not logged.

@@ -1,21 +1,77 @@
 # Workspace Planning Principles And Terminology
 
 Status: active reusable canonical principles/terminology owner
-Scope: plan changes to evolving Workspaces through useful Workspace Use Cases, explicit semantic meaning and low-coupled vertical realization without creating duplicate Use-Case or Architecture authorities.
+Scope: plan changes to evolving Workspaces through useful Workspace Use Cases, explicit semantic meaning and low-coupled vertical realization; also define Mini/Modular UCDS representation for accumulating current plans.
 
 Canonical generic UC identity/registry semantics: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
 Generic Architecture Lens: [`../architecture-planning/README.md`](../architecture-planning/README.md)
+AI reviewability/direction: [`../ai-reviewability-and-directed-planning-principles.md`](../ai-reviewability-and-directed-planning-principles.md)
 Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md)
 
-## 1. Useful-Result-Centric Workspace Development
+## 1. UCDS Pattern
 
-A material Workspace structure/semantic owner should be justified by a useful Workspace result or by a necessary realization/support/verification path for such a result.
+Workspace/documentation change planning can be expressed as **UCDS**:
+
+```text
+UC — Use Case / useful Workspace result
+D — Domain / Rules / semantic owner meaning
+S — Vertical Slice / Realization
+```
+
+This is a compact name for the existing Step 1/2/3 reasoning pattern, not a new Use-Case ontology or peer Domain/Slice Use Cases.
+
+```text
+Step 1 — Target UC
+→ useful result / behavior / trigger / boundaries / relationships
+
+Step 2 — Target Domain / Rules
+→ concepts / rules / invariants / policies / models / templates /
+  semantic owner responsibilities / verification meaning
+
+Step 3 — Target Vertical Realization
+→ Workspace Change Path / Architecture Lens / Slice boundary /
+  local/shared owners / exact files / dependencies / verification
+```
+
+Default proportional review depth for documentation/Workspace planning:
+
+```text
+UC boundary materially unresolved
+→ Step 1 may stand alone
+
+UC boundary sufficiently grounded
+→ normally review Step 1 + Step 2
+
+Step 3
+→ include when explicitly requested or realization is sufficiently grounded/useful
+```
+
+This default does not collapse the dependency direction: Step 2 still depends on a sufficiently stable Step 1, and Step 3 still realizes sufficiently stable Step 1/2 meaning.
+
+## 2. Accumulating Current Plan
+
+A bounded change/action may be planned in one current UCDS plan. Later `собери идеи` results may update/expand that same plan when it is clearly selected.
+
+```text
+Mini UCDS
+→ compact composed plan, often one file
+
+Modular UCDS
+→ the same current plan split into UC/shared-Idea/rule/realization/order owners as growth makes review/navigation cheaper
+```
+
+Mini→Modular is structural growth, not weaker/stronger semantic correctness and not a new planning stage. Do not create an append-only command-result ledger or separate Goal Map beside the current UCDS plan.
+
+The accumulating plan should expose a compact **Planning State** for Step 1/2/3 (`reviewed`, `partial`, `not selected`) so later work can distinguish stable upstream meaning from provisional Carry-Forward context. Planning State is a review/progress projection, not a second semantic authority.
+
+## 3. Useful-Result-Centric Workspace Development
+
+A material Workspace structure/semantic owner should be justified by a useful Workspace result or a necessary realization/support/verification path.
 
 ```text
 Need / source / discussion
 → Ideas when answer-seeking change proposals exist
-→ affected existing Workspace UC
-   or independently justified candidate new Workspace UC
+→ affected existing Workspace UC or justified candidate new UC
 → target semantic meaning
 → architecture/path review proportionally
 → vertical realization
@@ -23,88 +79,37 @@ Need / source / discussion
 → verification
 ```
 
-If a structure cannot be related to a useful result or a necessary supporting path, review whether it is accidental/speculative complexity.
+Application actor-visible behavior remains Scenario-owned; Application SDS is a sibling specialization of the same directed planning idea.
 
-Application actor-visible behavior remains Scenario-owned:
+## 4. Directed Planning And Stability Before Handoff
 
-```text
-Application boundary
-→ Application Scenario
-
-Development Workspace boundary
-→ Workspace Use Case
-```
-
-The relationship can be recursive: Application Scenarios drive work in a code Workspace; documentation Workspaces support understanding/planning/changing other Workspaces and themselves; reusable-methodology Workspaces support those planning/documentation capabilities.
-
-## 2. Primary Planning Unit
-
-The primary integrated planning unit is the affected/new `Workspace Use Case`, not an Idea and not a file.
+Planning dependency direction is:
 
 ```text
-several Ideas
-→ may converge into one Target UC
-
-one Idea
-→ may affect several UCs
-→ remains one Idea
-→ each affected UC records only its local impact
+Use Case
+→ Domain / Rules
+→ Vertical Realization
 ```
 
-An Idea is never automatically a UC. Apply the normal independent-usefulness rules from the canonical registry methodology.
+Step 1 should be sufficiently correct by UC responsibility before Step 2 normally depends on it; Step 2 should be sufficiently correct before Step 3 normally realizes it. A provisional whole-picture pass may preserve later-step implications as Carry-Forward Context, but downstream convenience must not normally define upstream meaning.
 
-## 3. Three Planning Depths Inside One UC
+If Step 3 repeatedly causes Step 1/2 redesign, review stage completion/order/boundaries. Genuine new evidence/infeasibility returns upstream as an explicit finding.
 
-```text
-Step 1 — Target UC
-→ useful result / behavior / trigger / boundaries / relationships
+## 5. Primary Planning Unit And Shared Ideas
 
-Step 2 — Target Domain / Rules
-→ concepts / state/lifecycle when real / relationships / rules / invariants /
-  policies / models / templates / owner responsibilities / verification meaning
+The primary integrated planning unit is the affected/new Workspace UC, not an Idea and not a file. Several Ideas may converge into one Target UC. One Idea may affect several UCs and remains one Idea; shared Ideas are defined once and referenced with local impact from each UC.
 
-Step 3 — Target Vertical Realization
-→ expected Workspace Change Path / Architecture Lens / Slice boundary /
-  local/shared owners / exact files / dependencies / verification
-```
-
-These are planning depths of the same UC, not peer UCs merely because separate reasoning is useful.
-
-For documentation planning, Step 1 + Step 2 are normally reviewed together when the UC boundary is sufficiently grounded. Step 1 may stand alone when target Workspace UCs are still materially unresolved. Step 3 is added when realization planning is requested or sufficiently grounded.
-
-## 4. Carry-Forward
-
-Planning depths are not hermetic phases.
-
-```text
-earlier insight about a later step
-→ preserve as Carry-Forward Context
-→ later step validates / refines / rejects it
-
-known later-step implication
-≠ automatically final later-step decision
-```
-
-Do not discard known Domain/file/verification implications merely because their dedicated depth has not yet been reviewed.
-
-## 5. Current / Target / Transition
-
-Planning depth and review projection are separate axes.
+## 6. Current / Target / Transition
 
 ```text
 Current
-→ high-level summary + direct canonical owner links
-→ do not duplicate full current bodies unnecessarily
+→ high-level summary + canonical owner links
 
 Target
-→ complete planned meaning for every new/changed semantic owner
-→ when a changed/new primary workflow is sufficiently reviewed at the selected depth, include its complete planned future workflow body rather than an approximate summary or TODO
+→ complete selected meaning for every changed/new semantic owner
 
 Transition
-→ what changed
-→ why
-→ current owner
-→ target owner
+→ what changed / why / current owner / target owner
 ```
 
 Completeness invariant:
@@ -113,158 +118,61 @@ Completeness invariant:
 CURRENT + explicit complete DELTA = TARGET
 ```
 
-After reading linked current owners plus the plan, implementation must not need to invent missing semantic decisions.
+Implementation should not need to invent missing semantic decisions.
 
-## 6. Semantic Owner / File Roles
+## 7. Semantic Owner Roles
 
-Recognizable semantic roles improve discoverability and reduce Working-Context Load:
+Recognizable roles remain Direction Registry, Use-Case Registry, Workflow, optional focused Model, Principles, Template, README/index, Command definition, Verification owners and Action Log. A semantic role does not imply one file of every role per UC.
 
-```text
-Direction Registry
-→ broad work family/topology
+Action Log owns material history/rationale; current UCDS planning owns current/forward selected meaning.
 
-Use-Case Registry
-→ UC identity / purpose / trigger / result / boundaries / route
+## 8. UC Graph And Vertical Realization
 
-Workflow
-→ end-to-end UC orchestration
+Prefer an explicit semantic graph when several UCs compose. File/import dependency is not automatically UC dependency.
 
-Model
-→ focused concepts / fields-state / lifecycle / relationships / invariants
-  only when separately justified
+Step 3 aims for coherent vertical, independently checkable change. One UC is not ontologically one Slice; several increments are allowed when delivery/risk/dependency reasons justify them. Shared coordination owners are architectural tax and require real cross-capability payoff.
 
-Principles / terminology
-→ reusable cross-cutting contracts
+Before exact files, trace expected Workspace Change Paths and use current Architecture Planning proportionally. Optimize lowest-cost correct/verifiable path, not raw file count.
 
-Template
-→ recommended/exact representation shape
+## 9. Execution Order
 
-README / index
-→ navigation/read order
+Execution order is the selected work route through already planned UCDS material. It may be a section in Mini UCDS or a separate current projection/file in Modular UCDS.
 
-Command definition
-→ executable shortcut/output/read/permission route
-
-Verification owners
-→ evidence, not semantic authority
-
-Action Log
-→ material history/rationale, not current semantic body
-```
-
-The workflow is analogous in responsibility to an application-service/use-case coordinator: it knows which semantic rules/owners/actions apply and in what sequence, but it does not absorb every invariant/model/template into one monolith.
+Use partial order when real:
 
 ```text
-semantic role exists
-≠ every UC gets one file of every role
+Slice A
+→ Slice B || Slice C
+→ Slice D after B+C
 ```
 
-Create a separate Model owner only when identity/state/lifecycle/invariants/reuse/independent review make it cheaper and clearer than keeping a simple rule in an existing workflow/principles owner.
-
-## 7. UC Graph
-
-Prefer an explicit graph over a mandatory parent/child hierarchy.
-
-Initial semantic relationship vocabulary, used only when real:
-
-```text
-uses
-depends on
-includes when applicable
-hands off to
-reviews
-produces input for
-```
-
-A `sub-use-case` relationship is optional and requires real compositional meaning; a supporting UC may be reused by several parents. A cross-cutting Idea is not a graph edge by itself. File/import dependency is not automatically a UC dependency.
-
-## 8. Vertical Realization
-
-Step 3 plans how the selected UC change becomes true end-to-end.
-
-Default target:
-
-```text
-one coherent UC change
-→ one coherent vertical Slice when practical
-```
-
-But:
-
-```text
-1 UC ≠ exactly 1 Slice by ontology
-```
-
-Several independently checkable increments are allowed when delivery/risk/dependency reasons justify them. A genuinely shared semantic change may become an explicit shared Slice only after cross-UC review; do not create a shared Slice mechanically for every overlap.
-
-Before choosing exact files, trace the expected Workspace Change Path and use the current generic Architecture Lens proportionally. Reuse Architecture Planning semantics rather than copying its dimensions/decision rules here.
-
-Optimize the lowest-cost correct path, not raw step/file count:
-
-```text
-minimum unnecessary work
-+ low incidental coupling/context
-+ independently verifiable result
-```
-
-Several obvious local edits may be better than fewer edits requiring hidden synchronized knowledge.
-
-## 9. Slice Locality And Shared Coordination
-
-Capability-specific semantic change should be local to the selected UC/Slice as far as practical.
-
-```text
-LocalSemanticFiles(A) ∩ LocalSemanticFiles(B)
-≈ empty
-```
-
-This is architecture pressure, not an absolute zero-overlap law.
-
-When two planned Slices touch the same mutable owner, classify why:
-
-```text
-orchestration / routing / projection overlap
-shared Domain overlap
-capability-local semantic overlap
-generated / mechanical overlap
-historical / logging overlap
-other
-```
-
-A shared coordination owner is architectural tax. Preserve/create one only when its cross-capability payoff justifies coordination/review/parallel-work cost. Capability-local semantic overlap is a reason to review UC/owner boundaries. Generated overlap may suggest derivation/automation. Shared Domain overlap may justify a shared semantic owner/Slice only when the meaning genuinely must remain canonical across consumers.
+Do not force an arbitrary total order for work that can proceed independently. Execution order is not semantic dependency authority.
 
 ## 10. Combined Architecture Effect
 
-```text
-best local realization for Idea/UC A
-+
-best local realization for Idea/UC B
-≠ automatically best architecture for A+B
-```
+After several UCs/Slices are planned, review combined paths, shared owners, overlap and coordination tax. Best local realization for A + best local realization for B is not automatically the best combined architecture.
 
-After affected UCs are planned, review their combined paths, shared owners, overlap and architectural tax before implementation.
+## 11. Step 4 — Realization Feedback And Actual Change Review
 
-## 11. Post-Realization Boundary
-
-Steps 1–3 are pre-implementation planning. Actual realization review is downstream.
-
-For documentation, a normal route may be:
+Steps 1–3 are pre-implementation planning. Step 4 is downstream lifecycle, usually per implemented Slice/change:
 
 ```text
-Steps 1–3
-→ materialize
-→ semantic ReviewDiff
+selected plan
+→ materialize / implement
+→ local adaptation for ordinary implementation detail
+→ explicit upstream finding when real evidence contradicts selected meaning
+→ rebuild affected downstream planning when upstream changes
+→ semantic ReviewDiff of actual uncommitted transition
 ```
 
-For application development, actual code/build/test/runtime evidence may justify a deeper realization-integration loop that distinguishes implementation mismatch from planning discovery and may return to Step 1/2/3. Do not silently rewrite upstream meaning from downstream evidence.
+Backflow is evidence-driven exception, not normal planning direction. ReviewDiff checks what the plan actually produced rather than re-reviewing only the plan.
 
 ## 12. Do Not
 
-- Do not create a second generic Use-Case model authority; use `direction-and-use-case-registry-workflow.md` for UC identity/contracts.
-- Do not turn Step 2 or Step 3 into peer Workspace UCs merely because they are planning depths.
-- Do not turn every file/model/template into a UC.
-- Do not force a separate Domain/Model owner when simple meaning has a good current owner.
+- Do not create a second generic Use-Case model authority.
+- Do not turn Step 2/3 into peer Workspace UCs.
+- Do not create a Goal Map beside an active UCDS current plan.
+- Do not make Mini UCDS semantically weaker than Modular UCDS.
+- Do not let execution order redefine UC/rule meaning.
+- Do not let implementation convenience silently rewrite upstream meaning.
 - Do not optimize raw step/file count as an architecture score.
-- Do not copy the generic Architecture Lens into Workspace Planning owners.
-- Do not let commands become semantic UC authorities.
-- Do not let implementation convenience redefine unresolved UC/Domain meaning.

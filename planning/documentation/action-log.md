@@ -494,3 +494,100 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 **Rationale:** close the sole ReviewDiff inconsistency without reopening the selected prompt/library cleanup.
 
+### LOG-DOC-029 — Directed accumulating SDS/UCDS planning and AI reviewability
+
+**Type:** IDEA REVIEW  
+**Source:** current planning discussion and selected clarifications covering durable accumulation of `собери идеи` results, proportional Application/Workspace planning profiles, reviewable AI output, directed planning dependencies, execution order and recheck quality  
+
+**Current Conclusions:**
+- material AI planning/development answers expose complete `Key Points` and a separate `Review Priority` (`Critical / High / Normal / Low`) based on blast radius/correction cost/cross-owner effect and material current change pressure rather than confidence;
+- ordinary material answers perform built-in Focus Recheck plus Direction/Integration Recheck before return; `крит` remains optional explicit adversarial review, while the legacy `обс` repository Use Case is retired and its command remains hidden compatibility only;
+- planning normally follows upstream semantic dependency → downstream realization, while a provisional whole picture may be used for discovery and genuine downstream evidence may explicitly flow back to the earliest affected upstream owner; frequent backflow is treated as a planning-quality signal;
+- repeated `собери идеи` work updates one clearly selected current plan and the real semantic owners instead of accumulating a transient command-result transcript or parallel reusable Goal Map;
+- Workspace/documentation planning may use Mini/Modular **UCDS** (`Use Case → Domain/Rules → Vertical Slice/Realization`) with the same semantic correctness at either physical depth;
+- Application planning may use Mini/Modular/Full **SDS** (`Scenario → Domain/Rules → Slice Strategy/Slices`); Full reuses the existing rich Scenario/Domain/Slice detailed profile, while Mini/Modular may plan a bounded change rather than the whole application;
+- split a compact plan when scan/review cost, independent change cadence, Variants or shared cross-scenario meaning justify it; more than roughly five Scenarios or more than roughly three large Scenarios is a useful heuristic, not ontology;
+- shared Ideas are defined once and referenced from affected units with local impact; execution order is a current projection distinct from semantic dependency direction and may express parallel groups/dependencies and application release/version grouping;
+- pre-implementation UCDS/SDS planning is complete through Scenario/UC, Domain/Rules and Slice/Realization planning; downstream Step 4 is realization feedback plus semantic review of the actual change, with upstream correction only for genuine new evidence/contradiction/infeasibility;
+- the reusable Goal Map owner/Use Case is retired because its useful current-plan function is covered by the accumulating UCDS/SDS representation and execution-order projection; Dashboard/product-specific Goal Maps remain separate application concepts;
+- no new generic `Current Planning Workspace`, Planning Draft, Planning Item or other parallel semantic owner is introduced.
+
+**Questions / Risks / Problems:**  
+No material unresolved issue blocks this selected transition. Exact physical Mini/Modular project layouts remain proportional and project-local; the profile examples are not mandatory directory ontology.
+
+### LOG-DOC-030 — Apply directed SDS/UCDS planning and AI reviewability transition
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-029`  
+**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`  
+**Package:** `d0ac05e6-e115-4cfa-a32e-1639d1420280`  
+
+**Target-State Result:** after successful Apply of this package:
+- reusable AI working/reviewability semantics own Key Points, Review Priority, upstream→downstream planning direction, built-in focus/integration recheck and evidence-driven backflow; former answer Levels 1/2/3 and the current `обс` Use Case are retired;
+- root planning keeps the legacy `обс` command definition hidden for compatibility while `крит` remains the explicit adversarial review route;
+- `собери идеи` updates an existing selected current plan when present and routes Workspace/documentation planning through proportional UCDS and Application planning through proportional SDS without creating a command-result ledger;
+- Workspace planning exposes Mini/Modular UCDS plus execution-order and Step-4 realization-feedback guidance while preserving existing UC/Architecture authorities;
+- Application planning exposes Mini/Modular/Full SDS, shared-Idea and execution-order/version guidance while preserving Scenario/Domain/Slice ownership;
+- reusable Goal Map semantics/Use Case/file are retired and current Application Direction/responsibility/navigation no longer route to them;
+- Planning Helper semantic projections remove the retired current UCs, retain the hidden legacy command in the command catalog, rebuild the generated userscript and keep registry-parity verification current;
+- all affected registered scope logs carry this target-state transition or a cross-scope reference, and the package is based on the explicitly selected local repository snapshot.
+
+**Rationale:** keep AI-driven planning cumulative, reviewable and dependency-directed while allowing compact-to-detailed documentation growth without weakening semantic correctness or creating duplicate current-plan authorities.
+
+### LOG-DOC-031 — ReviewDiff correct SDS/UCDS profile routing, planning state and example coverage
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `89c6d385-fcab-4142-b83c-e89e1fbda34d`, package `d0ac05e6-e115-4cfa-a32e-1639d1420280`  
+
+**Material Findings / Selected Corrections:**
+- current examples still advertised the retired Level-2 response model and reusable Goal Map as current, while the collect-Ideas practical example still demonstrated the pre-UCDS output contract; replace the Level-2 example with a current Key-Points/Review-Priority example, park Goal-Map examples in the index and update the collect-Ideas example to the accumulating UCDS contract;
+- the new Mini/Modular/Full SDS profile family was not fully routed: Application read order still pointed Mini/Modular guidance at the old rich-only profile, generic responsibility navigation omitted the new family, and `собери идеи` did not list the SDS family among its reusable owner files; route all three surfaces to `profiles/sds-planning-profiles.md`;
+- Mini/Modular UCDS removed explicit Step-1/2/3 planning state even though directed planning needs to distinguish reviewed upstream meaning from partial/not-selected downstream depth; restore a compact Planning State projection and add the same proportional guidance to SDS;
+- UCDS was ambiguously expanded as `U` + `C/D` + `S`; define it consistently as `UC` (Use Case) + `D` (Domain/Rules) + `S` (Slice/Vertical Realization);
+- the reusable Documentation README accidentally dropped the explicit ReviewDiff semantic-owner routing line while Step 4 now relies more heavily on semantic ReviewDiff; restore that navigation boundary.
+
+**Resulting Current Meaning:** the directed accumulating SDS/UCDS + AI reviewability architecture from `LOG-DOC-029`/`LOG-DOC-030` remains selected. Corrections are integration/coverage fixes only: no Goal Map revival, no answer-level revival, no new planning owner, and no change to Step-4 or upstream→downstream dependency semantics.
+
+### LOG-DOC-032 — Apply SDS/UCDS ReviewDiff integration corrections
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-031`  
+**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`  
+**Package:** `90cabe4e-0690-4059-ac1b-2771c65c08ce`  
+
+**Target-State Result:** after successful Apply of this correction package:
+- reusable examples expose current Key Points/Review Priority without Level 1/2/3, Goal-Map examples are parked rather than current, and the collect-Ideas practical example demonstrates accumulating Mini UCDS with explicit Planning State;
+- Mini/Modular/Full SDS profile-family routing is discoverable from Application read order, reusable responsibility navigation and the `собери идеи` command owner route;
+- Mini/Modular UCDS and SDS can explicitly project which upstream/downstream planning depths are reviewed, partial or not selected, while Execution Order remains a separate realization-order projection;
+- UCDS is consistently read as `UC` → `D` → `S`;
+- reusable Documentation navigation again routes semantic ReviewDiff to `review-diff-review-workflow.md`;
+- Planning Helper is rebuilt from the corrected command catalog and all affected scope logs reference this correction.
+
+**Rationale:** close the concrete ReviewDiff integration gaps without changing the selected directed-planning architecture or introducing duplicate semantic authorities.
+
+### LOG-DOC-033 — ReviewDiff restore collect-Ideas default depth and sync legacy insertion
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `89c6d385-fcab-4142-b83c-e89e1fbda34d`, correction package `90cabe4e-0690-4059-ac1b-2771c65c08ce`  
+
+**Material Findings / Selected Corrections:**
+- the directed/UCDS rewrite accidentally removed the established `собери идеи` default depth from the canonical command and Workspace Planning principles: once a documentation/Workspace UC boundary is sufficiently grounded, Step 1 + Step 2 should normally be reviewed; Step 1 may stand alone while the target UC picture remains materially unresolved; Step 3 is included when explicitly requested or realization is sufficiently grounded/useful;
+- the visible legacy Planning Helper insertion for `собери идеи` remained active with the older compact reminders, so synchronize that compatibility surface with current accumulating-plan, UCDS/SDS, Planning State, directed-planning, execution-order/version and reviewability guidance while keeping the direct command definition as authority.
+
+**Resulting Current Meaning:** the selected accumulating SDS/UCDS + AI reviewability architecture remains unchanged. Planning State still reports reviewed/partial/not-selected depth, Execution Order still reports realization order, and the restored default-depth rule only specifies how far `собери идеи` normally reviews Workspace/documentation planning in one invocation.
+
+### LOG-DOC-034 — Apply collect-Ideas depth and legacy-insertion correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-033`  
+**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`  
+**Package:** `9e1b397e-3383-4101-87ef-1aafaa1e3c0d`  
+
+**Target-State Result:** after successful Apply of this correction package:
+- the canonical `собери идеи` route and Workspace Planning principles again state the normal documentation/Workspace planning depth: Step 1 + Step 2 once the UC boundary is grounded, Step 1 alone only while the UC picture remains materially unresolved, and Step 3 when requested or sufficiently grounded/useful;
+- this review-depth default remains subordinate to upstream→downstream stability rather than bypassing it;
+- the active legacy helper-library `собери идеи` insertion is synchronized with current accumulating-plan, UCDS/SDS, Planning State, execution-order/version and Key-Points/Review-Priority reminders while still routing to the direct command as source of truth;
+- Planning Helper is rebuilt from the corrected command catalog and full verification passes 92/92;
+- affected Planning Root and Planning Helper scope logs reference this correction.
+
+**Rationale:** close the remaining ReviewDiff regressions without changing the selected SDS/UCDS ontology, Goal-Map retirement, reviewability model or Step-4 lifecycle.

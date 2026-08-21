@@ -7,6 +7,8 @@ Scope: AI/chat sessions that plan, develop or materially change repository docum
 
 Before material work, resolve the applicable Direction and semantic entry (Workspace/methodology Use Case or Application Scenario) and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
 
+For material planning/development answers also follow `documentation/ai-reviewability-and-directed-planning-principles.md`.
+
 ## Documentation Work
 
 Read and follow:
@@ -33,6 +35,22 @@ relevant primary semantic registry
 ```
 
 For material answer-seeking uncertainty use the shared Idea methodology. For an application, behavioral identity and detailed behavior belong directly to Scenario owners reached from its Scenario Catalog.
+
+When a current integrated plan already exists, treat it as the current working baseline and integrate new selected meaning into the real Scenario/UC/Domain/Slice owners rather than creating a transcript of planning answers.
+
+## Directed Planning And Reviewability
+
+Material AI planning should be reviewable before it is returned:
+
+```text
+complete provisional picture when useful
+→ stabilize/review upstream meaning before downstream realization
+→ Key Points + Review Priority
+→ built-in focus recheck
+→ integration check against selected upstream/global direction
+```
+
+Planning dependencies should normally point from upstream meaning to downstream realization. Downstream evidence may challenge upstream meaning only through an explicit finding; frequent backflow is a signal to review stage order/completion/boundaries. `крит` remains an optional explicit adversarial review; the retired `обс` shortcut and former Level 1/2/3 answer model are not the current quality architecture.
 
 ## ReviewDiff Work
 

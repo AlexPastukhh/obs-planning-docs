@@ -1,7 +1,7 @@
 # Solution And Application Planning Documentation Index
 
 Status: active reusable methodology-family index
-Scope: plan the best whole solution/workflow first; when own Application responsibility is selected, prototype and plan current application behavior/spatial requirements before optional Domain and implementation delivery planning.
+Scope: plan the best whole solution/workflow first; when own Application responsibility is selected, plan current application behavior and downstream realization proportionally through directed Scenario / Domain / Slice (SDS) planning.
 
 ## Lifecycle
 
@@ -25,29 +25,91 @@ Problem / Question / Idea
    → explicit Application responsibility
    → candidate/current Application Scenarios
    → Prototype Planning when useful
-      → Prototype Scenarios
-      → Prototype Screens
-      → candidate Requirements / DATA / Behavior
-      → Future Scenario Ideas / Change Axes when material
-   → progressive Scenario discovery
-   → Scenario Draft workspaces
-      + shared/local Ideas
-      + Scenario DATA
-      + Behavior Items
-      + Scenario visual material
-      + Related Requirements
-   → Screens when spatial/screen UI needs independent ownership
-   → Domain Discovery when separate semantic discovery is useful
-   → Domain review/selection when separate Domain ownership helps
-   → Domain verification meaning proportionally
-   → Application Realization review when high-level implementation feasibility materially needs stress-testing
-   → Slice Strategy when decomposition materially helps
-   → Implementation Slices when useful
-   → verification/testing evidence proportionally
-   → repeated cross-owner / whole-application / whole-solution integration review
+   → Scenario discovery / Scenario owners
+   → optional Screen / Requirement detail
+   → optional Domain Discovery / selected Domain meaning
+   → optional pre-Slice Application Realization stress review
+   → Slice Strategy / Implementation Slices when useful
+   → implementation
+      → ordinary local adaptation when implementation detail requires it
+      → explicit upstream finding only when new evidence materially challenges selected Scenario/Domain/Slice meaning
+   → semantic ReviewDiff of actual uncommitted transition
+   → repeated cross-owner / whole-application / whole-solution consistency review when material
 ```
 
-Planning Item, Planning Draft and Full Picture Matrix are not active target stages/artifacts. Current owners remain real responsibilities. Whole-solution and cross-owner integration review remain required review responsibilities when relevant, but do not require a separate mandatory artifact/entity.
+Planning Item, Planning Draft, Full Picture Matrix and the reusable Goal Map are not active target stages/artifacts. Current owners remain real responsibilities. Whole-solution and cross-owner integration review remain required review responsibilities when relevant, but do not require a separate mandatory artifact/entity.
+
+## SDS Planning Family
+
+`SDS` means the directed Application planning pattern:
+
+```text
+Scenario
+→ Domain / Rules when separate Domain meaning helps
+→ Slice Strategy / Slices
+```
+
+The dependency direction is semantic: downstream realization consumes upstream selected meaning. A later stage may expose genuinely new evidence or contradiction, but it does not normally design upstream behavior for implementation convenience.
+
+Three representation scales use the same semantic correctness rules:
+
+```text
+Mini SDS
+→ one compact current planning surface when that remains reviewable
+
+Modular SDS
+→ the same current plan split into Scenario/shared-Idea/Domain/Slice owners and an execution-order projection as the plan grows
+
+Full SDS
+→ the rich detailed Scenario / Domain / Slice workspace profile with Scenario DATA, Behavior Items, Requirements, Screens, Domain/Slice workspaces and proportional variants/verification
+```
+
+`Mini → Modular` is structural growth, not a later semantic stage. Split when reviewability, independent change/review cadence, shared material or Working-Context Load justifies it; raw Scenario count is only a practical signal.
+
+Repeated `собери идеи` may update the same current SDS plan. New selected meaning is integrated into the real Scenario/Domain/Slice owners instead of accumulating an append-only command-result ledger or parallel Goal Map.
+
+## Execution Order And Versions
+
+Planning dependency direction and implementation execution order are different responsibilities.
+
+```text
+Scenario → Domain → Slice
+= what meaning depends on what
+
+SL-1 → {SL-2 || SL-3} → SL-4
+= how already selected work is intended to be carried out
+```
+
+Execution order may therefore be partial rather than artificially total. Independent Slices may be marked parallel; dependencies and order-sensitive handoffs remain explicit.
+
+In Mini SDS the selected execution order may be one section of the compact plan. In Modular/Full SDS it may be a separate `execution-order.md`-style projection that links canonical owners without becoming another semantic authority.
+
+For Application delivery, the execution-order projection may group Slices by versions/releases when useful:
+
+```text
+Version 1
+→ selected usable Slice set/order
+
+Version 1.1 / Version 2
+→ later selected Slice set/order
+```
+
+A Version is delivery grouping, not a mandatory semantic layer between Scenario and Slice.
+
+## Post-Planning Realization Feedback
+
+Steps through Scenario / Domain / Slice are pre-implementation planning. Actual realization is downstream and normally repeats per selected Slice/change:
+
+```text
+selected Slice/change
+→ implementation attempt
+→ ordinary local implementation adaptation when semantics stay unchanged
+→ explicit upstream finding when new real evidence contradicts selected meaning
+→ rebuild affected downstream planning only when that upstream finding is accepted
+→ semantic ReviewDiff of the actual uncommitted transition
+```
+
+`UC-PLAN-REALIZATION` remains an optional **pre-Slice** high-level feasibility/stress review. It is not the post-implementation feedback loop.
 
 ## Read Order
 
@@ -64,10 +126,9 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 11. `domain-planning-workflow.md` when a separate Domain owner materially helps and current Domain meaning must be selected/reviewed
 12. `application-realization-workflow.md` when representative runtime/persistence/technical feasibility needs high-level stress review before detailed delivery
 13. `slice-planning-workflow.md` when implementation decomposition/Slice planning materially helps
-14. `goal-map.md` when a current working Goal Map would materially help
+14. `../profiles/sds-planning-profiles.md` for Mini/Modular/Full SDS representation guidance; Full SDS routes onward to the rich Scenario/Domain/Slice docs profile
 15. other type-specific templates under `templates/`
-16. optional specialized SDS profile for projects that activate that route family
-17. project-local Scenario Catalog / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / current owners.
+16. project-local Scenario Catalog / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / current owners.
 
 ## Core Concepts
 
@@ -92,13 +153,14 @@ Planning Item, Planning Draft and Full Picture Matrix are not active target stag
 - **Application Realization** — optional high-level runtime/persistence/integration/technical stress review before detailed Slice planning; not Domain authority or task decomposition.
 - **Slice Strategy** — optional decomposition/order plan for separately deliverable/checkable implementation increments.
 - **Implementation Slice** — one optional separately deliverable/checkable integrated implementation increment after enough behavior/concepts are understood.
+- **Execution Order** — current delivery projection of selected Slices/dependencies/parallel groups/versions; not a second behavior/domain authority.
 - **Current Draft Plan** — current selected baseline named inside a detailed draft's Q/R/P or Better Route unit; not a file/entity/stage.
 - **Planning Unit Variant** — integrated alternative design of one Scenario/Screen/Domain/Slice; not a runtime branch, Idea Variant or document revision.
 - **Reference Object Candidate** — canonical literal meaning that may benefit from Linked Notes literal stale-copy checking/synchronization when intentionally materialized in other files.
 
 ## Recommended Project-Local Organization
 
-When physical separation helps, [`requirements-and-change-context.md`](requirements-and-change-context.md) recommends two broad zones:
+A compact Mini SDS may stay in one file. When physical separation helps, a Modular/Full plan may use the current broad zones from [`requirements-and-change-context.md`](requirements-and-change-context.md):
 
 ```text
 solution-and-application/
@@ -108,6 +170,8 @@ solution-and-application/
 domain-and-implementation/
 → domain / slice strategy / slices
 → implementation-planning idea intake
+
+execution-order.md when a separate current delivery projection materially improves review/navigation
 ```
 
 This is organization only: it does not create new semantic owners or registered parallel-work scopes.
@@ -117,7 +181,3 @@ This is organization only: it does not create new semantic owners or registered 
 [`detailed-planning/README.md`](detailed-planning/README.md) owns the shared low-level contract for current Scenario/Screen/Domain/Slice meaning, workspace topology, Variants, draft state, Requirements/dependencies, verification and Reference Object Candidate review.
 
 Practical walkthrough: [`examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md`](examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md).
-
-## Reusable Goal Map
-
-[`goal-map.md`](goal-map.md) is an optional reusable current-working surface for a meaningful goal/work direction. It may combine an action map, implementation points and lightweight `Keep In Mind` context while linking out to real canonical owners. It is not the Dashboard application's Goal Map authority and it is not historical logging.

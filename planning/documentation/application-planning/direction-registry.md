@@ -8,7 +8,7 @@ Child Use-Case Registry: [`use-case-registry.md`](use-case-registry.md)
 
 **Purpose:** select the best-supported real-world whole solution/workflow, compare viable existing routes with custom Application Concept candidates when relevant and, when own Application responsibility exists, progressively prototype, define current user-visible behavior/spatial requirements, model Domain meaning when useful and plan delivery through Slices.
 
-**Topology:** supported Use Cases are independently activatable/proportional. `UC-PLAN-GOAL-MAP` may maintain a current working map alongside the relevant planning work without becoming a mandatory stage.
+**Topology:** supported Use Cases are independently activatable/proportional. Current planning continuity may use proportional Mini/Modular/Full SDS representation around the real Scenario/Domain/Slice owners; this does not create a separate Goal Map Use Case or authority.
 
 ```text
 Need / Desired Result

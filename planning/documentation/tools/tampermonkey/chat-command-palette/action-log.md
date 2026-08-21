@@ -192,3 +192,24 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-026`  
 **Reason:** Planning Helper semantic projection source/test/version/generated artifact are synchronized with the same corrected prompt-maintenance identity and helper-library corpus invariant; full findings/rationale and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-009 — Directed planning reviewability and current-UC projection cleanup
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-030`  
+**Reason:** Planning Helper semantic projections/tests/generated artifact remove the retired current recheck/Goal-Map UCs while retaining the hidden compatibility command as part of the same directed planning/reviewability transition. Full rationale and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-010 — Corrected collect-Ideas owner routing rebuild
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-032`  
+**Reason:** Planning Helper generated command catalog is rebuilt after the corrected `собери идеи` owner route; full ReviewDiff findings and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-011 — Rebuild after collect-Ideas depth correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-034`  
+**Reason:** Planning Helper generated command catalog/userscript is rebuilt after the canonical `собери идеи` depth correction; full ReviewDiff findings and applied target state are owned by the canonical reusable-documentation log.

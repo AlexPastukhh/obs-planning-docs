@@ -1,7 +1,7 @@
 # Recheck Context
 
-Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Status: retired compatibility project command definition
+Scope: legacy explicit recheck shortcut retained only for compatibility; current material-answer quality is owned by built-in AI reviewability principles.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -15,20 +15,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "chat rech",
     "recheck"
   ],
-  "description": "context recheck",
-  "meaning": "Recheck prior answer/context/sources/diff before continuing.",
-  "activeContextBehavior": "Use current conversation target; ask if unclear.",
-  "traversalReadMode": "Targeted/full by risk.",
-  "ownerFiles": [],
-  "expectedOutput": "Corrected answer/review with uncertainty stated.",
+  "description": "legacy context recheck",
+  "meaning": "Legacy explicit recheck shortcut; current material answers use built-in focus and integration recheck before return.",
+  "activeContextBehavior": "If explicitly invoked for compatibility, recheck the selected current target using the current reviewability principles; do not treat this shortcut as a separate current planning capability.",
+  "traversalReadMode": "Targeted/full by risk and current owner uncertainty.",
+  "ownerFiles": [
+    "planning/documentation/ai-reviewability-and-directed-planning-principles.md"
+  ],
+  "expectedOutput": "Corrected current answer/review only when material new findings exist; otherwise a compact confirmation that no material omission was found.",
   "permissionMode": "read-only",
   "keyReminders": [
-    "Re-check relevant prior discussion.",
-    "Preserve accepted decisions and constraints.",
-    "State what was checked and what remains unavailable."
+    "This command is legacy compatibility, not the current reviewability architecture.",
+    "Use current canonical owners and checked evidence rather than rereading prior prose as authority.",
+    "Preserve accepted decisions and constraints unless evidence challenges them.",
+    "Do not edit files, create archives, commit or push."
   ],
-  "userTarget": "<what discussion/context should be rechecked>",
-  "palette": true,
+  "userTarget": "<legacy explicit recheck target>",
+  "palette": false,
   "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]

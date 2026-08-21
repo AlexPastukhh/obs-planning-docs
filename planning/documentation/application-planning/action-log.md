@@ -329,3 +329,17 @@ No material unresolved issues identified for this selected documentation/methodo
 - no Linked Notes files/action-log, reusable-documentation parent files, Planning Root files, Replacement Package App files or `.linked-notes/` repository-state files are changed.
 
 **Rationale:** finish the two residual mechanical cleanup corrections identified by semantic ReviewDiff without changing the selected Scenario-first / Testing / Review-Dependency methodology.
+
+### XREF-004 — Directed accumulating SDS planning and reusable Goal Map retirement
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-030`  
+**Reason:** Application Planning registry/navigation/responsibility and profile routing change as part of the same cross-cutting SDS/UCDS + AI reviewability transition, including retirement of the reusable Goal Map. Full rationale and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-005 — SDS profile-family routing and planning-state correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-032`  
+**Reason:** Application Planning read-order/profile guidance participates in the same ReviewDiff correction; full findings and applied target state are owned by the canonical reusable-documentation log.
