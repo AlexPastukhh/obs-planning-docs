@@ -1,41 +1,52 @@
-# Repository Navigation And Use-Case Coverage Review
+# Repository Navigation And Semantic Coverage Review
 
 Status: active reusable documentation-layer workflow
-Scope: verify that a repository can be understood from natural navigation and that supported capabilities/owners are reachable. This workflow is review-only and hands identified defects to the appropriate maintenance Use Case.
+Scope: verify that a repository can be understood from natural navigation and that supported capabilities/behavior/owners are reachable through the correct current semantic registry. This workflow is review-only and hands identified defects to the appropriate maintenance/planning owner.
 
 ## Review
 
 ```text
 for each current Direction:
-  current local owner + Use-Case Registry reachable?
+  current local owner + applicable primary semantic registry reachable?
+    Workspace / methodology Direction → Use-Case Registry
+    Application Direction → Scenario Catalog
 
-for each current Use Case:
+for each current Workspace/methodology Use Case:
   stable ID/name/status?
   recognizable trigger/input?
   purpose explicitly stated in the registry entry?
   meaningful result/end state?
   boundaries explicitly stated in the registry entry?
   owner route explicitly stated in the registry entry?
-  related Scenario when detailed application behavior exists?
+  semantic UC relations/handoffs when material?
+
+for each current Application Scenario:
+  stable ID/name/status?
+  Need/context + actor-visible behavior + meaningful observable result?
+  boundaries/current owner route?
+  reachable from the current Scenario Catalog?
 
 for each active canonical owner:
-  reachable from a current Use Case or explicit supporting-owner route?
+  reachable from the applicable current semantic entry
+  or explicit supporting-owner route?
 
 for each natural navigation entry:
-  does README/index/Direction navigation reach the intended current Use Case/owner
-  without duplicating its semantic body?
+  does README/index/Direction navigation reach the intended current semantic registry,
+  semantic entry and owner without duplicating its semantic body?
 
 for each executable command:
-  related current semantic Use Case when the command represents an independently useful capability?
+  related current semantic capability/behavior when the command represents an independently useful shortcut?
 ```
 
 ## Defects
 
 - active owner with no incoming semantic/navigation route = orphan owner;
 - current navigation path to a missing/retired owner = broken route;
-- independently useful supported capability with no Use Case = coverage gap;
-- complete semantic Use-Case body maintained in two active files = duplicate authority;
-- capability discoverable only by command/filename/helper/prior-chat knowledge = discoverability defect.
+- independently useful supported Workspace/methodology capability with no current Use Case = UC coverage gap;
+- independently meaningful Application behavior with no current Scenario/Scenario-Catalog route = Scenario coverage gap;
+- complete semantic Use-Case or Scenario body maintained in two active authorities = duplicate authority;
+- capability/behavior discoverable only by command/filename/helper/prior-chat knowledge = discoverability defect;
+- Application Direction forced through a parallel Application-Use-Case layer merely for file-type symmetry = semantic-boundary defect.
 
 Mechanical checks can validate paths, IDs, required fields and reachability. Independent usefulness and correct Scenario/Use-Case boundaries require semantic review.
 
@@ -45,8 +56,11 @@ Mechanical checks can validate paths, IDs, required fields and reachability. Ind
 natural README/index/read-order defect
 → UC-DOC-MAINTAIN-NAVIGATION;
 
-Direction / Use-Case semantic contract defect
+Direction / Workspace-methodology Use-Case registry contract defect
 → UC-DOC-MAINTAIN-REGISTRIES;
+
+Application Scenario identity/behavior/catalog-content defect
+→ current Application Planning / Scenario owner route;
 
 executable command-route defect
 → UC-DOC-MAINTAIN-COMMAND;

@@ -11,7 +11,7 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | Documentation Direction identity | `direction-registry.md` |
 | Documentation Use Cases | `use-case-registry.md` |
 | Repository navigation/read order | affected README/index files; governed by architecture principles/responsibility rules and maintained through `UC-DOC-MAINTAIN-NAVIGATION` |
-| Direction/Use-Case registry methodology + canonical generic UC identity/relationship contract | `direction-and-use-case-registry-workflow.md` |
+| Direction / Workspace-methodology Use-Case registry methodology + Application Scenario-Catalog boundary + canonical generic UC identity/relationship contract | `direction-and-use-case-registry-workflow.md` |
 | Workspace UC change planning (Step 1/2/3) | `workspace-planning/` |
 | Focused semantic model owner, when separately justified | narrow `*-model.md` owner routed from the relevant UC/workflow; do not duplicate registry/workflow/principles authority |
 | Registry shapes | `DIRECTION-REGISTRY-TEMPLATE.md`, `USE-CASE-REGISTRY-TEMPLATE.md` |
@@ -44,8 +44,8 @@ README/index files own navigation/read order only. They do not duplicate complet
 1. reusable or project-specific?
 2. Direction / Use Case / Scenario / principle / workflow / template / profile / example / tool / current state?
 3. what is the narrowest canonical owner?
-4. is that owner already reachable from a current Use Case?
+4. is that owner already reachable from the applicable current semantic entry (Workspace/methodology Use Case or Application Scenario) or an explicit supporting-owner route?
 5. would a new file duplicate an existing owner?
 6. does natural README/index/Direction navigation need maintenance through `UC-DOC-MAINTAIN-NAVIGATION`?
-7. does a semantic Direction/Use-Case contract need maintenance through `UC-DOC-MAINTAIN-REGISTRIES`?
+7. does a Direction/Workspace-methodology Use-Case routing contract need maintenance through `UC-DOC-MAINTAIN-REGISTRIES`, or does Application Scenario meaning need its current Application Planning owner?
 8. if a command is involved, is it only an executable shortcut to a semantic capability?

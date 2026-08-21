@@ -5,7 +5,7 @@ Scope: AI/chat sessions that plan, develop or materially change repository docum
 
 ## Mandatory Rule
 
-Before material work, resolve the applicable Direction / Use Case and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
+Before material work, resolve the applicable Direction and semantic entry (Workspace/methodology Use Case or Application Scenario) and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
 
 ## Documentation Work
 
@@ -27,7 +27,9 @@ Start from:
 ```text
 planning/README.md
 planning/direction-registry.md
-relevant Use-Case Registry
+relevant primary semantic registry
+  - Use-Case Registry for Workspace/methodology work
+  - Scenario Catalog for Application behavior
 ```
 
 For material answer-seeking uncertainty use the shared Idea methodology. For an application, behavioral identity and detailed behavior belong directly to Scenario owners reached from its Scenario Catalog.

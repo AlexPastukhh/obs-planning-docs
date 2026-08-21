@@ -383,3 +383,42 @@ Additional selected clarification: cross-scope work has one affected canonical l
 - no Workspace/Architecture semantic owner, Documentation Workbench behavior, command contract or Replacement Package App file is otherwise changed.
 
 **Rationale:** close the one remaining active Helper projection inconsistency from the UC-centric consistency cleanup and prevent recurrence through registry-wide Direction parity verification.
+
+### LOG-DOC-023 — Review UC/Scenario semantic discoverability consistency
+
+**Type:** ACTION  
+**Source:** checked current local snapshot `317eb792a13c59b67b8904d1d77695ae7f354080` after the prior UC-centric consistency ChangeSet was approved  
+
+**Selected Corrections:**
+- replace the residual universal `everything useful → Use Case` discoverability wording with the current semantic boundary: Workspace/methodology capabilities route through Use-Case Registries/UCs, while Application actor-visible behavior routes through Scenario Catalogs/Scenarios;
+- align root/planning navigation, command-system global wording, AI working contract, reusable architecture/discoverability principles, responsibility placement checks, Direction contract/template and repository coverage review around one `Direction → applicable primary semantic registry → semantic entry → canonical owner` route;
+- broaden `UC-DOC-REVIEW-COVERAGE` from Use-Case-only wording to semantic coverage while keeping its stable ID and review-only responsibility; Application Scenario-content defects hand to current Application Planning/Scenario owners rather than being absorbed by documentation registry maintenance;
+- keep `UC-DOC-PLAN-UPDATE` separate from the explicit `план файл-обновление` command by removing that command from its `Related command` field; the ordered File Update Plan remains an optional downstream handoff owned by `UC-DOC-PLAN-FILE-UPDATE`;
+- synchronize the Testing Planning registry with the current reusable UC contract by making `DIR-PLAN-TESTING` explicit on each entry without performing broad registry-shape migration elsewhere;
+- replace the stale `собери идеи` practical example with a current-baseline hypothetical example that demonstrates UC-centric planning without presenting the already-applied UC-centric/File-Update transition as future work;
+- update active helper-library prompts so Linked Notes bootstraps through its current Scenario Catalog/Scenarios, Application Planning no longer teaches a retired Application-Use-Case alias, and Commands onboarding follows the current `давай архив` producer owner/permission route;
+- synchronize the Planning Helper projection label/description for `UC-DOC-REVIEW-COVERAGE` and rebuild the generated userscript.
+
+**Boundary:** this ChangeSet does not change `planning/documentation/tools/replacement-package-app/**`, does not retire File Update Plan, does not implement unrelated unrealized Ideas, and does not perform broad legacy registry-shape normalization.
+
+**Rationale:** make active repository navigation, coverage methodology, templates, examples and helper projections consistently express the already-selected UC/Scenario boundary rather than preserving older universal-Use-Case assumptions.
+
+### LOG-DOC-024 — Apply UC/Scenario semantic discoverability consistency cleanup
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-023`  
+**ChangeSet:** `7e35d0db-274f-4da9-9ebb-319e965cabae`  
+**Package:** `bd53ee52-46b2-4c32-b631-ab9b21bcc51c`  
+
+**Target-State Result:** after successful Apply of this package:
+- natural repository navigation resolves a Direction and then the correct primary semantic registry: Workspace/methodology → Use-Case Registry, Application → Scenario Catalog;
+- reusable discoverability/coverage owners detect missing Workspace/methodology UCs and missing Application Scenarios as distinct coverage defects and route correction to the appropriate semantic owner;
+- Direction contracts/templates use Direction-type-appropriate child semantic entries instead of requiring `Child Use Cases` for every Direction;
+- `UC-DOC-REVIEW-COVERAGE` is projected as `Review Repository Navigation / Semantic Coverage`, while `UC-DOC-PLAN-UPDATE` no longer claims the separate `план файл-обновление` command;
+- Testing Planning entries explicitly expose `DIR-PLAN-TESTING` as their Parent Direction;
+- the current `собери идеи` example and active helper-library bootstrap/onboarding prompts no longer teach already-retired or already-applied semantics;
+- Planning Helper source/generated projection reflects the current coverage-UC name/meaning and the full Helper verification passes with 88 tests;
+- no Replacement Package App path is changed.
+
+**Rationale:** remove the remaining active UC/Scenario discoverability drift without reopening separate product/application work or future methodology Ideas.
+

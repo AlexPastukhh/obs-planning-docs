@@ -114,3 +114,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-022`  
 **Reason:** Planning Helper source/tests/generated artifact add the missing Architecture Direction and generic root-Direction parity check as the final correction of the same UC-centric consistency-cleanup ChangeSet; full ReviewDiff finding/rationale and target state are owned by the canonical reusable-documentation log.
+
+### XREF-007 — UC/Scenario semantic discoverability consistency cleanup
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-024`  
+**Reason:** Planning Helper semantic projection source/generated artifact updates the coverage-UC label/meaning as part of the same consistency correction; full findings/rationale and applied state are owned by the canonical reusable-documentation log.
+

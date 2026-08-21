@@ -5,21 +5,22 @@ Scope: compact practical example of the current `собери идеи` output c
 
 ## Example source
 
-User discussion proposes:
+User discussion proposes a hypothetical documentation-quality refinement:
 
-> When planning a material documentation change, organize the result by the Workspace Use Cases being changed, preserve one cross-cutting Idea instead of copying it into every UC, and review the end-to-end file surface before implementation.
+> When a practical example becomes stale after its canonical owner changes, the review should identify the authoritative owner, state the stale meaning precisely, and update only the example/navigation surfaces that actually need change. The example must remain demonstration-only.
 
-The example assumes current repository owners were checked and no material source fact is being invented.
+The example assumes current repository owners were checked. UC-centric planning, optional File Update Plan handoff and the Workspace/Application semantic boundary are already current baseline; they are not changes being introduced by this example.
 
 # Current Plan Snapshot
 
 ```text
-- keep the generic Idea entity and Standard Idea Review;
-- use Workspace UC / Application Scenario as the primary integrated planning unit;
-- for documentation, review Step 1 + Step 2 by default once the UC boundary is grounded;
-- include Step 3 when exact realization is requested/grounded;
-- keep Current / Target / Transition separate;
-- minimize cross-Slice overlap and shared coordination owners.
+- Standard Idea Review is current;
+- documentation changes route through affected Workspace UCs;
+- Step 1 / Step 2 / Step 3 are proportional depths inside one selected Workspace UC;
+- Application actor-visible behavior remains Scenario-owned;
+- complete Step-3 file surface may hand directly to a separately authorized update/package route;
+- an ordered File Update Plan remains a separate optional capability;
+- examples demonstrate current owners and never become semantic authority.
 ```
 
 # Questions / Risks / Problems
@@ -28,33 +29,33 @@ No material unresolved issues identified in this example.
 
 # Cross-Cutting Ideas
 
-## IDEA-EXAMPLE-01 — Plan documentation changes by affected useful result
+## IDEA-EXAMPLE-01 — Make stale-example review explicit without promoting examples to authority
 
-**Problem / Need:** a file-first plan can show what to edit without making the useful capability/result or combined architecture clear.
+**Problem / Need:** after a canonical owner changes, an example may still look plausible while demonstrating outdated meaning or navigation.
 
-**Proposed Answer:** route the selected change to affected Workspace UCs, integrate all Ideas for one UC into one Target UC, review semantic rules and then plan the vertical realization/file surface.
+**Proposed Answer:** make example review state the current canonical owner, the exact stale demonstration meaning and the narrow example/navigation surface that requires correction.
 
-**Affected UCs:** `UC-DOC-PLAN-UPDATE`, `UC-DOC-MAINTAIN-REGISTRIES`.
+**Affected Workspace UCs:** `UC-DOC-REVIEW-EXAMPLES`, `UC-DOC-MAINTAIN-NAVIGATION` only when discoverability/read-order is materially affected.
 
-**Current Conclusion:** selected for this example.
+**Current Conclusion:** selected for this hypothetical example.
 
 Mandatory Necessity/Refinement/Consistency checks were performed; no additional material finding is printed merely to populate fields.
 
 # UC / Scenario Groups
 
-## `UC-DOC-PLAN-UPDATE` — Plan A Documentation Update
+## `UC-DOC-REVIEW-EXAMPLES` — Review Practical Example Coverage
 
 ### Current State
 
-Current owner route is the documentation Use-Case Registry + `documentation-update-plan-workflow.md`. Assume those owners currently describe a conceptual/owner plan with a later concrete file-plan handoff.
+Current reusable owners already state that examples demonstrate but do not own semantic rules. Example review decides whether a demonstration is needed and whether current examples still match canonical meaning.
 
 ### Planned Change — High Level
 
-Plan the documentation change around the affected Workspace UC first, then review rules/owners and finally the end-to-end vertical realization. The result should be understandable at high level without reading every Idea, and implementation should not need to invent missing semantic decisions.
+Refine the review result so a stale example finding identifies the canonical semantic owner, the stale demonstration meaning and the narrow correction surface instead of treating the example itself as the source of truth.
 
 ### Related Ideas
 
-- `IDEA-EXAMPLE-01` — local impact: make the UC plan own the integrated semantic target before files.
+- `IDEA-EXAMPLE-01` — local impact: strengthen stale-example finding/result semantics.
 
 ### Planning Depth
 
@@ -64,96 +65,113 @@ Plan the documentation change around the affected Workspace UC first, then revie
 
 ### Step 1 — Target Use Case
 
-**Purpose:** plan one material documentation change as a coherent change to a useful documentation capability.
-**Trigger / Input:** selected documentation change intent/Ideas.
-**Result / End State:** one coherent Target UC plan rather than independent file edits per Idea.
-**Boundaries:** planning does not mutate files or grant package/commit permission.
-**Relations / handoffs:** may use registry/navigation maintenance and Architecture Planning proportionally.
+**Purpose:** review whether practical examples adequately and truthfully demonstrate current canonical reusable meaning.
+**Trigger / Input:** example coverage or staleness is questioned after a canonical owner changes.
+**Result / End State:** explicit keep/update/remove/add-example conclusion with canonical owner reference and precise stale/current demonstration meaning when applicable.
+**Boundaries:** examples remain demonstration-only; this UC does not redefine the canonical workflow/principle/registry or grant mutation permission.
 
 ### Step 2 — Target Domain / Rules
 
 ```text
-- UC identity remains owned by the Use-Case Registry;
-- workflow owns orchestration;
-- focused Model owner is optional and requires real state/lifecycle/invariant responsibility;
-- template owns representation shape;
-- Current state is summarized + linked;
-- Target changed/new meaning is explicit;
-- Transition explains what/why separately.
+canonical owner
+→ authoritative current meaning
+
+example
+→ demonstration only
+
+stale-example finding
+→ canonical owner reference
+→ stale demonstrated meaning
+→ current meaning that should be demonstrated
+→ narrow affected example/navigation surface
+
+example mismatch
+≠ reason to rewrite canonical owner when that owner is already correct
 ```
 
 ### Step 3 — Target Vertical Realization
 
-**Deliverable result:** the documentation planning UC can produce an end-to-end reviewed target with a concrete file surface.
+**Deliverable result:** the example-review capability can produce a reviewable exact realization path for one stale demonstration without broad documentation churn.
 
-**Expected Workspace Change Path:** resolve UC → read current owners → integrate Ideas → review rules → trace path/architecture → identify exact files → verify.
+**Expected Workspace Change Path:** resolve example-review UC → read canonical owner + current example → classify semantic mismatch → check whether navigation is affected → identify exact example/index files → verify links and demonstration-only boundary.
 
-**Architecture review:** prefer local semantic owners; shared registry/navigation touches are allowed only for genuine routing/discovery responsibility.
+**Architecture review:** keep semantic authority local to the canonical owner; do not create a shared “example model” or duplicate workflow rules inside the example.
 
 #### Affected Files — illustrative
 
 | Change | File | Role in UC | Local / Shared | Why |
 |---|---|---|---|---|
-| Updated | `documentation-update-plan-workflow.md` | UC orchestration | Local | make UC-centric planning the default semantic route |
-| Updated | `use-case-registry.md` | UC contract/route | Shared routing | expose the changed result/owner route |
-| Checked unchanged | `file-update-overview-workflow.md` | explicit ordered file-plan capability | Separate | still active; not automatically retired |
+| Updated | `example-coverage-workflow.md` | UC workflow/supporting review rules | Local | make stale-example finding explicit |
+| Updated | `examples/<affected-example>.md` | demonstration | Local | align demonstration with current canonical meaning |
+| Checked unchanged | canonical workflow/principle owner | semantic authority | Separate | verify current meaning rather than rewrite it |
+| Conditional | README/index | navigation | Shared routing | only when discovery/read-order actually changes |
 
 ### Target Semantic Owners
 
-The target workflow should be written as a complete planned future semantic body when the review is sufficiently grounded. It should not merely say “update the workflow later.”
+When sufficiently reviewed, the target workflow meaning is written completely enough that implementation does not need to invent what qualifies as a stale example or which owner wins.
 
 ### Transition Review
 
 | Responsibility | Current | Target | Why |
 |---|---|---|---|
-| Primary planning axis | conceptual owners → later file steps | affected UC → rules → vertical realization | make useful result and architecture visible earlier |
-| File plan | primary concrete downstream representation | optional explicit ordered plan when still useful | avoid duplicate planning surfaces |
+| Example authority | demonstration-only | unchanged | preserve owner boundary |
+| Stale-example result | example coverage conclusion | explicit owner + stale/current demonstration delta + narrow surface | make correction reviewable |
+| Navigation | changed only when needed | unchanged rule | avoid incidental shared edits |
 
-## `UC-DOC-MAINTAIN-REGISTRIES` — Maintain Directions And Use Cases
+## `UC-DOC-MAINTAIN-NAVIGATION` — Maintain Repository Documentation Navigation
 
 ### Current State
 
-Registry maintenance owns complete semantic Direction/UC entries and routing, not workflow bodies or command permissions.
+Navigation owns discovery/read order only and routes readers to current semantic owners.
 
 ### Planned Change — High Level
 
-No change to registry authority. The cross-cutting Idea only requires that UC-centric planning update the registry contract/route when the planned capability meaning actually changes.
+No automatic change. This UC is affected only when the stale example also changes which example/index route should be discoverable.
 
 ### Related Ideas
 
-- `IDEA-EXAMPLE-01` — local impact: registry changes remain narrow routing/identity consequences, not the main planning unit.
+- `IDEA-EXAMPLE-01` — local impact is conditional; do not edit navigation merely because an example body changed.
+
+### Planning Depth
+
+- Step 1: reviewed
+- Step 2: reviewed
+- Step 3: conditional / not selected unless a real navigation delta exists
 
 ### Step 1 — Target Use Case
 
-Keep the same independently useful registry-maintenance result.
+Keep the current independently useful navigation-maintenance result.
 
 ### Step 2 — Target Domain / Rules
 
-Keep the existing generic UC contract authority; do not create a second Use-Case model owner.
+```text
+example body changed
+≠ automatic navigation change
 
-### Step 3 — Target Vertical Realization
-
-Only the affected registry row/file is changed when semantic routing really changes. This shared orchestration overlap is explicit and should remain minimal.
+example added / removed / moved / discovery role changed
+→ review navigation delta
+```
 
 # Resolved UC Graph
 
 ```text
-UC-DOC-PLAN-UPDATE
-→ uses/hands off to → UC-DOC-MAINTAIN-REGISTRIES when registry meaning changes
+UC-DOC-REVIEW-EXAMPLES
+→ hands off to → UC-DOC-MAINTAIN-NAVIGATION only when discovery/read-order meaning changes
 ```
 
-The relation is semantic; mere co-editing of a file would not be enough to invent it.
+The relation is semantic and conditional; co-editing files alone would not justify it.
 
 # Cross-UC / Cross-Slice Architecture Review
 
-- `use-case-registry.md` is shared routing/identity surface and therefore justified shared coordination, but should stay thin.
-- UC-local workflow meaning remains local to `UC-DOC-PLAN-UPDATE`.
-- If two independent UC slices repeatedly require the same capability-local workflow/model file to change, review the UC/owner boundary instead of normalizing the overlap.
+- canonical semantic owners remain unchanged and are checked rather than copied into example files;
+- example-review meaning stays local to its workflow/example surface;
+- navigation is shared coordination surface and is touched only for a real discovery delta;
+- no new Model/shared abstraction is justified.
 
 # Current Overall Conclusions
 
-The example demonstrates that `собери идеи` is no longer only a flat Idea list: Standard Idea Review remains intact, while selected change meaning is integrated into affected UC/Scenario plans to the requested/justified depth. Cross-cutting Ideas are defined once, Q/R/P stays near the beginning, and Step 1/2/3 remain inside each affected UC.
+The example demonstrates the current `собери идеи` contract without pretending UC-centric planning itself is still a pending transition: Standard Idea Review feeds affected Workspace UC planning, Q/R/P appears early, Step 1/2/3 remain inside each selected UC, cross-cutting meaning is defined once, and exact files appear only after semantic/work-path review.
 
 # Potential Simplifications / Better Routes
 
-None in this example. An already selected simplification would belong in Current Conclusions rather than this section.
+None in this example. An already selected simplification would belong in Current Overall Conclusions rather than this section.

@@ -8,7 +8,10 @@ Lightweight documentation-focused projection of the OBS repository for AI/human 
 README.md
 → planning/README.md
 → planning/direction-registry.md
-→ selected Use-Case Registry
+→ selected primary semantic registry
+   (Use-Case Registry for Workspace/methodology;
+    Scenario Catalog for Application)
+→ selected semantic entry
 → canonical owner
 ```
 
@@ -16,7 +19,7 @@ AI/chat sessions that materially plan, develop or change repository documentatio
 
 Registered independent parallel-work boundaries are fixed in [`parallel-work-scope-registry.md`](parallel-work-scope-registry.md). Read that registry before parallel or package work that may cross scope boundaries.
 
-Commands are optional executable shortcuts and are discovered through `planning/command-routing.md`; they are not the repository's semantic Use-Case catalogue.
+Commands are optional executable shortcuts and are discovered through `planning/command-routing.md`; they are not the repository's semantic capability/behavior catalogue.
 
 Included: planning orientation/registries, reusable documentation/planning methodology, planning runtime documentation, application/tool documentation/source/tests and tracked Tampermonkey artifacts.
 

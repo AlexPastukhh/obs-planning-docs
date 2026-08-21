@@ -10,12 +10,14 @@ README.md
 → planning/README.md
 → planning/direction-registry.md
 → selected local/reusable Direction Registry
-→ selected Use-Case Registry
-→ selected Use Case
+→ selected primary semantic registry
+   (Use-Case Registry for Workspace/methodology;
+    Scenario Catalog for Application)
+→ selected Use Case / Scenario
 → canonical owner(s)
 ```
 
-If you do not know which file to read, select the intent through Directions / Use Cases instead of browsing filenames at random.
+If you do not know which file to read, select the intent through Directions and the applicable semantic entry (Workspace/methodology Use Case or Application Scenario) instead of browsing filenames at random.
 
 For AI/chat work, read [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) before material planning, development or documentation changes.
 
@@ -26,10 +28,10 @@ Direction Registry
   → broad semantic work directions;
 
 Use-Case Registry
-  → independently useful capabilities: purpose, trigger, result, boundaries, owner route;
+  → independently useful Workspace/methodology capabilities: purpose, trigger, result, boundaries, owner route;
 
-Scenario owner
-  → detailed application behavior;
+Scenario Catalog / Scenario owner
+  → independently meaningful Application behavior and its detailed actor-visible contract;
 
 principles / workflow / model / template
   → reusable definition/invariant / repeated process / focused semantic model when justified / recommended shape;
@@ -44,7 +46,7 @@ project/application owners
   → concrete current state and implementation meaning.
 ```
 
-Every independently useful supported capability must be discoverable as a current Use Case. Every active canonical owner must be reachable from a current Use Case or an explicit supporting-owner route. A file does not receive a Use Case merely because it exists.
+Every independently useful supported Workspace/methodology capability must be discoverable as a current Use Case. Independently meaningful Application behavior must be discoverable as a current Scenario through its Scenario Catalog. Every active canonical owner must be reachable from the applicable semantic entry or an explicit supporting-owner route. A file does not receive a Use Case or Scenario merely because it exists.
 
 ## Root Files
 

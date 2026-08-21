@@ -1,7 +1,7 @@
 # OBS Command Routing
 
 Status: active project-specific root command-system router
-Scope: mandatory executable-command entry and shared command routing/global policy. Semantic repository capabilities live in Direction and Use-Case Registries.
+Scope: mandatory executable-command entry and shared command routing/global policy. Semantic repository meaning is discovered through Direction Registries and the applicable primary semantic registry: Workspace/methodology Use-Case Registries or Application Scenario Catalogs.
 
 ## Authority
 
@@ -16,7 +16,10 @@ planning/direction-registry.md + local Direction Registries
   = semantic work directions;
 
 planning/use-case-registry.md + local Use-Case Registries
-  = semantic independently useful capabilities;
+  = semantic independently useful Workspace/methodology capabilities;
+
+Application Scenario Catalogs + Scenario owners
+  = independently meaningful Application behavior;
 
 workflow/template/project owners
   = complete repeated process or current meaning;
@@ -35,7 +38,7 @@ A command may link to a semantic Use Case, but never owns or replaces its semant
 3. Read that complete command definition.
 4. Follow its ownerFiles/read-mode requirements.
 5. Preserve its permission boundary.
-6. Use the related semantic Use Case only for purpose/context/owner navigation; Use-Case activation does not grant command permission.
+6. Use the related semantic entry (Workspace/methodology Use Case or Application Scenario) only for purpose/context/owner navigation; semantic-entry activation does not grant command permission.
 ```
 
 Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.
@@ -68,11 +71,11 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 - `commandFamily` includes the canonical trigger exactly;
 - command files own output, active-context behavior, reads and permissions;
 - reusable workflows own algorithms instead of being copied into command bodies;
-- commands are optional shortcuts: repository capability discovery must remain possible through Directions and Use Cases.
+- commands are optional shortcuts: repository semantic discovery must remain possible through Directions and the applicable current Use-Case Registry or Scenario Catalog.
 
 ## Permission Boundary
 
-Command permission is explicit and local to the selected command. Use-Case/Direction activation never expands it. No command implies Git commit/push unless its direct definition explicitly owns that behavior.
+Command permission is explicit and local to the selected command. Direction/semantic-entry activation never expands it. No command implies Git commit/push unless its direct definition explicitly owns that behavior.
 
 ## Planning Helper Boundary
 

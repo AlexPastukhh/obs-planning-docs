@@ -43,3 +43,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-020`  
 **Reason:** the planning-root local Helper `собери идеи` record is synchronized as part of the same consistency correction; full findings/rationale and target-state application record are owned by the canonical reusable-documentation log.
+
+### XREF-006 — UC/Scenario semantic discoverability consistency cleanup
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-024`  
+**Reason:** planning-root README/command-routing/AI contract and active helper-library prompts are synchronized with the same semantic-discoverability correction; full findings/rationale and applied state are owned by the canonical reusable-documentation log.
+

@@ -16,10 +16,10 @@ Direction Registries
   = broad semantic work areas;
 
 Use-Case Registries
-  = independently useful supported capabilities and owner routes;
+  = independently useful Workspace/methodology capabilities and owner routes;
 
-Scenario owners
-  = detailed application behavior;
+Scenario Catalogs / Scenario owners
+  = independently meaningful Application behavior and detailed actor-visible contracts;
 
 command-routing + command definitions
   = optional executable shortcuts;
@@ -34,7 +34,9 @@ A new reader/AI knowing only the repository root must be able to discover:
 
 1. repository purpose;
 2. major work Directions;
-3. a matching Use Case for a concrete intent;
+3. a matching semantic entry for a concrete intent:
+   - Use Case for Workspace/methodology capability work;
+   - Scenario for Application behavior;
 4. why/when it is used and what result it produces;
 5. canonical owner(s) and required reusable principles;
 6. supporting implementation/tests/examples when relevant;
@@ -60,15 +62,18 @@ No required owner may depend solely on a command, helper UI, prior conversation 
 ## Capability Coverage, Not File Coverage
 
 ```text
-every independently useful supported capability
+every independently useful supported Workspace/methodology capability
 → current Use Case
 
+every independently meaningful Application behavior
+→ current Scenario through its Scenario Catalog
+
 every active canonical owner
-→ reachable from a current Use Case
+→ reachable from the applicable semantic entry
   or explicit supporting-owner route
 
 every file
-≠ separate Use Case
+≠ separate Use Case / Scenario
 ```
 
 ## Planning Boundary

@@ -1,11 +1,11 @@
 # Direction And Use-Case Registry Workflow
 
 Status: active reusable documentation-layer workflow
-Scope: create/maintain semantic Direction and Use-Case Registries consistently across repositories.
+Scope: create/maintain semantic Direction and Workspace/methodology Use-Case Registries consistently across repositories, while routing Application Directions to Scenario Catalogs/Scenario owners instead of a parallel Application-UC layer.
 
 ## Entities
 
-**Direction** — broad semantic work direction grouping independently useful Use Cases around a responsibility/result/planning intent.
+**Direction** — broad semantic work direction grouping a coherent family of independently meaningful capabilities/behavior around a responsibility/result/planning intent.
 
 **Use Case** — independently useful supported capability with recognizable trigger/input, purpose, meaningful result/end state, boundaries and owner route.
 
@@ -22,21 +22,24 @@ root Direction Registry
 local/family Direction Registry
 → complete Direction entries
 
-local/family Use-Case Registry
+Workspace/methodology local/family Use-Case Registry
 → complete semantic Use-Case entries
 
+Application Scenario Catalog
+→ current Scenario identities/routes
+
 Scenario owner(s)
-→ detailed application behavior
+→ complete detailed application behavior
 
 project command routing
 → executable shortcuts only
 ```
 
-A global root Use-Case Registry is optional when local registries plus root Direction routing cover all capabilities; repository-wide cross-family capabilities may live there.
+A global root Use-Case Registry is optional when local registries plus root Direction routing cover all Workspace/methodology capabilities; repository-wide cross-family Workspace/methodology capabilities may live there. Application behavior remains Scenario-Catalog/Scenario-owned.
 
 ## Direction Contract
 
-Stable ID/name/status, purpose, boundaries, complete owner registry, parent/root relation, real topology/optionality, child UC references, related Directions and open decisions when material.
+Stable ID/name/status, purpose, boundaries, complete owner registry, parent/root relation, real topology/optionality, primary semantic registry/owner, child semantic references appropriate to Direction type (Use Cases for Workspace/methodology; Scenarios for Application), related Directions and open decisions when material.
 
 ## Use-Case Contract
 
@@ -75,17 +78,19 @@ Application Scenarios are the behavioral identity layer. Do not add an Applicati
 
 ## Update Algorithm
 
-1. identify semantic capability and parent Direction;
-2. confirm independent usefulness;
-3. choose root aggregation vs narrow local/family owner;
-4. assign stable ID/name/status;
-5. write trigger/purpose/result/boundaries/topology;
+1. identify the semantic capability/behavior and parent Direction;
+2. classify the Direction boundary:
+   - Workspace/methodology capability → Use-Case Registry / UC contract;
+   - Application behavior → Scenario Catalog / Scenario owner;
+3. for Workspace/methodology UCs, confirm independent usefulness and choose root aggregation vs narrow local/family owner;
+4. assign stable ID/name/status in the applicable semantic registry;
+5. write the applicable semantic contract: UC trigger/purpose/result/boundaries/topology or Scenario Need/context/actor-visible behavior/result/boundaries;
 6. link complete owner route;
 7. resolve semantic UC relations/dependencies/handoffs when material;
-8. for application behavior link Scenario owner(s);
+8. for Application behavior maintain the Scenario Catalog/Scenario route rather than adding an Application-UC alias;
 9. link command only when a real command exists;
 10. update root/navigation/responsibility owners;
-11. run navigation/use-case coverage review;
+11. run repository navigation/semantic coverage review;
 12. consider projection separately.
 
 ## Do Not
