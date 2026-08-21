@@ -64,3 +64,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
 **Entry:** `LOG-PH-009`  
 **Reason:** root `planning/command-routing.md` participates in the same ReviewDiff correction by replacing its remaining UC-only command-link wording with the applicable UC-or-Scenario semantic-entry boundary; full finding/rationale and applied target state are owned by the canonical Helper log.
+
+### XREF-009 — Prompt and helper-library consistency cleanup
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-026`  
+**Reason:** planning-root helper-library prompt edits plus duplicate/test-artifact deletion participate in the same prompt-governance consistency cleanup; full findings/rationale and applied target state are owned by the canonical reusable-documentation log.

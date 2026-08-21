@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution status must be recorded separately from automated tests
-Version: v1.1.0 / Planning Helper `0.26.1`
+Version: v1.1.0 / Planning Helper `0.26.2`
 Scope: browser and real-GitHub checks that are not implied by `npm run verify`.
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md).

@@ -435,3 +435,62 @@ Additional selected clarification: cross-scope work has one affected canonical l
 **Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
 **Entry:** `LOG-PH-009`  
 **Reason:** reusable Tampermonkey overview/helper-library summaries and the generated userscript participate in the same ReviewDiff correction for complete `Reload GitHub` disclosure and current Commands/Prompts boundaries; full finding/rationale and applied target state are owned by the canonical Helper log.
+
+### LOG-DOC-025 — Review prompt/helper-library consistency after editable Commands transition
+
+**Type:** ACTION  
+**Source:** holistic consistency review of selected local snapshot `070d02a599582a612d7e39acedba5bdd66bbe181` after the editable-real-Commands and ReviewDiff correction packages  
+
+**Selected Corrections:**
+- expose `prompt-maintenance-workflow.md` and the already-active `reviewable-agent-output-and-commands-workflow.md` in the reusable Documentation Core Owners index so current UCs route naturally to their real owners;
+- rename `UC-DOC-MAINTAIN-PROMPT` from `Create / Review Reusable Prompt` to `Create / Maintain Reusable Prompt` and align its purpose with create/review/change while preserving the same stable UC ID and non-authority boundary;
+- make the three light/bootstrap prompts `Commands onboarding`, `реф обьекты бутстр` and `бутстр реюзабл документация` report exact checked paths plus `FULL` / `DEEP` / `TARGETED` / `ROUTING ONLY` depth, and surface only material conflicts/ambiguities/questions actually found without turning light bootstrap into broad audit;
+- clarify Commands onboarding that `planning/helper-library/commands/*.helper-command.md` is legacy compatibility insertion text rather than a current command-authoring surface;
+- remove the byte-identical duplicate `gdoc-1nba1pe.prompt.md`, retaining the more descriptive `gdoc-991hn9.prompt.md`, and remove the tracked `Clipboard freeze test` legacy helper-command artifact;
+- strengthen reusable prompt-maintenance rules and Helper corpus verification so accidental exact duplicate active prompt bodies are rejected in future;
+- synchronize the Planning Helper semantic projection label, patch version and generated userscript with the corrected prompt-maintenance identity.
+
+**Boundary:** this cleanup does not change Planning Command permissions/CRUD behavior, does not remove legacy helper-command compatibility support in the runtime, does not broaden bootstrap reads beyond their selected profiles, and does not touch `planning/documentation/tools/replacement-package-app/**`.
+
+**Rationale:** finish non-blocking discoverability/library cleanup found by the full current-snapshot review while preserving the selected Commands/Prompts authority model.
+
+### LOG-DOC-026 — Apply prompt/helper-library consistency cleanup
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-025`  
+**ChangeSet:** `5a94619f-95a6-4b9f-8439-368bdc431798`  
+**Package:** `fdd1940b-9834-49fd-bd25-5ce0d3e94318`  
+
+**Target-State Result:** after successful Apply of this package:
+- reusable Documentation Core Owners directly expose prompt maintenance and reviewable-agent-output/command response behavior;
+- `UC-DOC-MAINTAIN-PROMPT` is the stable `Create / Maintain Reusable Prompt` capability and the Helper projection uses the same current label;
+- the three selected bootstrap prompts provide compact checked-file/depth evidence and material inconsistency/question reporting proportional to their profile;
+- the active prompt library has no accidental byte-identical duplicate between the two gdoc audit prompts, and the test-only Clipboard freeze helper record is no longer tracked;
+- prompt-maintenance methodology explicitly rejects accidental duplicate active prompt records, and automated corpus verification enforces unique exact prompt insertion text;
+- Planning Helper `0.26.2` passes its full verification suite and the generated userscript matches modular source/current command catalog;
+- no Replacement Package App path changes.
+
+**Rationale:** keep reusable prompts inspectable, non-authoritative and drift-resistant without expanding ordinary command or bootstrap responsibilities.
+
+### LOG-DOC-027 — ReviewDiff correct exact-duplicate prompt invariant
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `5a94619f-95a6-4b9f-8439-368bdc431798`, package `fdd1940b-9834-49fd-bd25-5ce0d3e94318`  
+
+**Material Finding / Selected Correction:** the new prompt-maintenance workflow allowed an explicitly intentional byte-identical prompt duplicate for a distinct interaction purpose, while the selected automated corpus invariant rejects every duplicate exact `item.text`. Keep the stricter tested invariant: byte-identical active prompt bodies have exactly one current record; only materially overlapping but non-identical prompts may coexist when their distinct interaction purpose is explicit. No schema escape hatch or test change is needed.
+
+**Boundary:** this correction changes only reusable prompt-maintenance wording/log history; it does not change Helper runtime, prompt bodies, command behavior, test behavior, package-app scope or permissions.
+
+**Rationale:** make methodology and automated enforcement state the same exact duplicate rule.
+
+### LOG-DOC-028 — Apply exact-duplicate prompt invariant correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-027`  
+**ChangeSet:** `5a94619f-95a6-4b9f-8439-368bdc431798`  
+**Package:** `6cc9bdbc-66e8-4b93-b361-610ee3127d26`  
+
+**Target-State Result:** after successful Apply of this package, reusable prompt maintenance requires one current record for every byte-identical active prompt body, while materially overlapping non-identical prompts may coexist only for an explicit distinct interaction purpose; the existing Helper corpus test already enforces the exact-body uniqueness invariant and remains unchanged.
+
+**Rationale:** close the sole ReviewDiff inconsistency without reopening the selected prompt/library cleanup.
+

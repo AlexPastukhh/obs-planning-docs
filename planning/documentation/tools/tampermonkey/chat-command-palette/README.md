@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.26.1`
+Version: `0.26.2`
 Scope: deterministic Planning Helper source/build, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub repository actions, ChatGPT-mediated recovery fallback and clipboard-first insertion.
 
 ## Read Order

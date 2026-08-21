@@ -185,3 +185,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - no repository command delete/retire UI and no `planning/documentation/tools/replacement-package-app/**` behavior/path change is introduced.
 
 **Rationale:** close the ReviewDiff wording/disclosure defects without reopening the already-selected editable-real-Commands design.
+
+### XREF-008 — Prompt and helper-library consistency cleanup
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-026`  
+**Reason:** Planning Helper semantic projection source/test/version/generated artifact are synchronized with the same corrected prompt-maintenance identity and helper-library corpus invariant; full findings/rationale and applied target state are owned by the canonical reusable-documentation log.

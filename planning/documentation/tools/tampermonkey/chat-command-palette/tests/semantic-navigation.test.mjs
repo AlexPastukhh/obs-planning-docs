@@ -40,6 +40,7 @@ test('migrated application Directions route to Scenario Catalogs instead of Appl
 
 test('application Direction registries link the real root Direction Registry, not placeholders',()=>{for(const rel of ['planning/documentation/tools/tampermonkey/chat-command-palette/direction-registry.md','planning/documentation/tools/tampermonkey/linked-notes/direction-registry.md','planning/documentation/tools/replacement-package-app/direction-registry.md']){const text=read(rel);assert.doesNotMatch(text,/<root planning direction registry>/);assert.match(text,/planning\/direction-registry\.md/)}});
 test('documentation bootstrap Use Case projects to the sole stable bootstrap command identity',()=>{const orient=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-DOC-ORIENT');assert.ok(orient);assert.equal(orient.commandId,'documentation_principles.read');assert.equal(orient.label,'Bootstrap Reusable Documentation Governance')});
+test('reusable prompt maintenance projection uses the current maintain identity',()=>{const prompt=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-DOC-MAINTAIN-PROMPT');assert.ok(prompt);assert.equal(prompt.label,'Create / Maintain Reusable Prompt')});
 
 test('registered parallel-work and reusable Goal Map Use Cases project from canonical registries',()=>{
   const defineScopes=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-REPO-DEFINE-PARALLEL-SCOPES');

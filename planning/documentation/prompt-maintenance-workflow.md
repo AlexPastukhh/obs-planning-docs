@@ -57,11 +57,13 @@ Ordinary planning commands do not inherit this reporting contract merely because
 6. for bootstrap/audit prompts, require checked-source/depth reporting and material contradictions/QRP when useful;
 7. avoid frozen exhaustive path/UC/Scenario lists when current repository routing can resolve them;
 8. validate the helper-library document and exact insertion text;
-9. review for stale terminology, conflicting ownership, invented permissions and unnecessary duplicated methodology.
+9. check the active prompt library for byte-identical or materially duplicate records under different IDs/titles; byte-identical active prompt bodies must have one current record, while materially overlapping but non-identical prompts may coexist only when their distinct interaction purpose is explicit;
+10. review for stale terminology, conflicting ownership, invented permissions and unnecessary duplicated methodology.
 
 ## Do Not
 
 - do not make a prompt the semantic owner of a UC, Scenario, workflow or command;
 - do not let a prompt grant command/repository permissions;
 - do not require every bootstrap to enumerate every semantic entry; use a composable verification extension when deep per-entry traceability is desired;
+- do not keep byte-identical active prompt copies under different IDs/titles;
 - do not invent problems just to fill an audit section.

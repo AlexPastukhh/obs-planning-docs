@@ -31,6 +31,8 @@ repository-navigation-and-use-case-coverage-review-workflow.md
 command-routing-workflow.md
 COMMAND-ROUTING-TEMPLATE.md
 command-planning-workflow.md
+prompt-maintenance-workflow.md
+reviewable-agent-output-and-commands-workflow.md
 documentation-update-plan-workflow.md
 documentation-update-workflow.md
 file-update-overview-workflow.md
