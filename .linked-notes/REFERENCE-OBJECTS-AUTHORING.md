@@ -1,61 +1,73 @@
 # Reference Objects Direct Repository Authoring
 
 Status: active repository-facing workflow
-Scope: procedure order for humans or AI agents that intentionally create or maintain OBS Linked Notes Reference Objects directly in repository files, without relying on the Linked Notes UI.
+Scope: procedure order for humans or AI agents intentionally creating or maintaining OBS Linked Notes Reference Objects directly in repository files.
 
-This file owns **procedure order only**. It does not redefine Reference Object semantics, marker syntax, identity rules, freshness rules or registry structure.
-
-Canonical contract:
-
-[`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md)
-
-Current live routing/index data:
-
-[`reference-objects.json`](reference-objects.json)
-
-If this workflow and the canonical contract appear to disagree, the canonical contract wins.
+This file owns **procedure order only**. Canonical semantics and formats live in [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md); current routing/index/review state lives in [`reference-objects.json`](reference-objects.json).
 
 ## 1. Decide Whether This Workflow Applies
 
 1. Read the applicable rules in [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md).
-2. If the task only consumes an existing materialized use, follow the contract's [`Ordinary consumption vs freshness verification`](REFERENCE-OBJECTS.md#ordinary-consumption-vs-freshness-verification) section and stop here unless direct authoring is actually required.
-3. If direct Reference Object creation or maintenance is required, continue with the matching procedure below.
+2. If the task only consumes an existing materialized use, follow the ordinary-consumption rule and stop unless authoring/freshness work is actually required.
+3. If the task only expresses an ordinary semantic relation with no literal synchronization or review obligation, use plain repository content/links instead of creating Reference Object metadata.
 
 ## 2. Create A New Reference Object
 
-1. Read the current [`reference-objects.json`](reference-objects.json).
-2. Follow [`Creating a new object outside the UI`](REFERENCE-OBJECTS.md#creating-a-new-object-outside-the-ui).
-3. For any synchronized copies created in the same change, follow [`Inserting a synchronized value into a file`](REFERENCE-OBJECTS.md#inserting-a-synchronized-value-into-a-file).
-4. Bring the registry/index into the state required by [`Definitions File`](REFERENCE-OBJECTS.md#definitions-file).
-5. Finish with [`Validation expectations`](REFERENCE-OBJECTS.md#validation-expectations).
+1. Read the current Definitions File.
+2. Choose a new unique stable `ro_*` ID.
+3. Add exactly one canonical `obs-ref:def` occurrence.
+4. Add the matching registry record, including correct initial `uses` / `depends` indexes.
+5. Validate the resulting state.
 
-## 3. Add A Use Of An Existing Object
+## 3. Add A Literal Use
 
-1. Follow [`Finding an existing object`](REFERENCE-OBJECTS.md#finding-an-existing-object).
-2. Follow [`Inserting a synchronized value into a file`](REFERENCE-OBJECTS.md#inserting-a-synchronized-value-into-a-file).
-3. Update the affected usage index according to [`Definitions File`](REFERENCE-OBJECTS.md#definitions-file).
-4. Finish with [`Validation expectations`](REFERENCE-OBJECTS.md#validation-expectations).
+1. Resolve the existing object and current definition.
+2. Insert a complete `obs-ref:use` whose inner value equals the current definition.
+3. Update the object's `uses[]` routing/index metadata.
+4. Validate.
 
-## 4. Change The Canonical Definition
+## 4. Add A Dependent Fragment
 
-1. Follow [`Changing the source value`](REFERENCE-OBJECTS.md#changing-the-source-value).
-2. If synchronized uses are also being refreshed, continue with Section 5 below.
-3. Finish with [`Validation expectations`](REFERENCE-OBJECTS.md#validation-expectations) for the intended resulting state.
+1. Resolve the existing object and current canonical definition.
+2. Confirm the intended fragment has a real semantic review obligation on that value and is not merely related text.
+3. Choose an unused positive file-local `dep` number.
+4. Wrap the exact bounded fragment in `obs-ref:depend id="..." dep="N"` markers; do not insert a fingerprint into the working file.
+5. Add `depends[]` routing metadata for `path + dep`.
+6. If the fragment was actually reviewed as part of this operation, store the exact canonical-value SHA-256 in `reviewedAgainst` **and** the exact bounded-fragment SHA-256 in `reviewedFragment`; otherwise leave the acknowledgement absent so the dependency is `NEEDS REVIEW`.
+7. Validate the resulting marker/index state.
 
-## 5. Synchronize Stale Uses
+## 5. Change The Canonical Definition
 
-1. Resolve freshness according to [`Ordinary consumption vs freshness verification`](REFERENCE-OBJECTS.md#ordinary-consumption-vs-freshness-verification).
-2. Follow [`Changing the source value`](REFERENCE-OBJECTS.md#changing-the-source-value) and [`Editing existing uses`](REFERENCE-OBJECTS.md#editing-existing-uses).
-3. Update affected registry/index metadata according to [`Definitions File`](REFERENCE-OBJECTS.md#definitions-file).
-4. Finish with [`Validation expectations`](REFERENCE-OBJECTS.md#validation-expectations).
+1. Change only the inner text of the canonical `obs-ref:def`.
+2. Treat existing literal uses as potentially stale.
+3. Treat registered dependent fragments whose source or fragment review fingerprint no longer matches as `NEEDS REVIEW`.
+4. Do not automatically rewrite uses or dependent fragments.
 
-## 6. Registry / Index Maintenance After Direct Edits
+## 6. Synchronize Stale Uses
 
-1. Use [`Definitions File`](REFERENCE-OBJECTS.md#definitions-file) as the sole owner of registry/index semantics.
-2. Reconcile only the entries affected by the intended direct edit.
-3. If the intended repair is ambiguous, stop at the contract boundary rather than inventing repository state.
-4. Finish with [`Validation expectations`](REFERENCE-OBJECTS.md#validation-expectations).
+1. Resolve the current definition.
+2. Check the indexed uses.
+3. Replace only stale `obs-ref:use` inner values when synchronization is intended.
+4. Rebuild affected use line metadata.
+5. Validate.
 
-## 7. Undefined Operations
+## 7. Complete A Dependency Review
 
-If the desired direct operation is not defined by [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md), do not define its semantics in this workflow. Resolve the contract gap first, then add only the procedure order here if a dedicated authoring path is still useful.
+1. Resolve the current canonical definition and its exact-value fingerprint.
+2. Resolve the registered dependent fragment by `path + dep` and confirm exactly one live marker exists.
+3. Read the complete bounded fragment and any needed surrounding context.
+4. Review its semantic correctness against the current canonical value.
+5. Edit the fragment only when the review requires a content change.
+6. After review is actually complete, set `reviewedAgainst` to the current canonical fingerprint and `reviewedFragment` to the current exact fragment fingerprint; refresh line hints.
+7. If the definition is pending local state, publish the definition and acknowledgement coherently; do not publish the Definitions File alone ahead of its pending definition.
+8. Validate.
+
+## 8. Registry / Index Maintenance After Direct Edits
+
+Reconcile only entries affected by the intended edit. `uses[].line` and dependency `line` / `lineOccurrence` are rebuildable. Dependency `path + dep` is identity and must not be silently reassigned to a different fragment. Preserve acknowledgement only when the current bounded inner content still matches `reviewedFragment`; otherwise clear/invalidate it pending review.
+
+If repair is ambiguous, diagnose rather than invent repository state.
+
+## 9. Undefined Operations
+
+If a desired operation is not defined by the canonical contract, resolve the contract gap first instead of inventing semantics in this procedure document.

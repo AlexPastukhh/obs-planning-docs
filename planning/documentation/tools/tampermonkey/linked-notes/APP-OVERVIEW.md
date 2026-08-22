@@ -1,7 +1,7 @@
 # OBS Linked Notes Application Overview
 
 Status: current prototype product map
-Version: `0.9.0-prototype`
+Version: `0.10.0-prototype`
 Scope: fast current-state orientation for the OBS Linked Notes Tampermonkey application. Current Scenario entries are owned by `scenarios/README.md`; detailed behavior/traceability is owned by Scenario files reached through `scenarios/README.md`; focused mappings/source/tests provide implementation evidence.
 
 ## 1. What The Application Is
@@ -21,7 +21,7 @@ Semantic entry: [`scenarios/README.md`](scenarios/README.md). Detailed Scenario 
 | Files | Repository browser/editor and publication hub | browse, preview, locally create/edit/order/copy/structure, Update current file, Update all | ordinary repository files/folders after publication | browser/editor/preferences/template caches + common pending file queue | explicit browse/search/template/open | only standard current/all publication actions |
 | Categories | Repository-backed file/Note classification | refresh, locally create/edit/assign/unassign, inspect implication | category definition Markdown after publication | pending definitions + derived cache + local UX groups | explicit refresh/validation | through standard current/all publication actions |
 | Repository templates | Seed normal file creation | choose template, refresh template list, create a normal file from template body | `.linked-notes/templates/*.template.md` | template cache/index/diagnostics | explicit template discovery/read | only later normal file creation |
-| Reference Objects | Stable definition/use materialization and stale diagnostics | define, copy use marker, check uses, update locally, validate tags, inspect file/tree warnings | definition marker text + repository index/routing metadata after publication | common pending files + check/freshness state | explicit checks/open | through standard current/all publication actions |
+| Reference Objects | Stable canonical values with literal uses and bounded semantic dependencies | define, copy use marker, add dependent fragment, check uses/dependencies, Review complete, update uses locally, validate tags | definition marker text + repository routing/index/review metadata after publication | common pending files + use/dependency check state | explicit checks/open/review | through standard current/all publication actions |
 | Review Dependencies | Whole-file semantic review obligations | add/edit/remove relation, refresh status, open source/consumer, Review complete | relation registry + consumer reviewed-against marker after publication | common pending files + derived fingerprint/status diagnostics | explicit refresh/open | through standard current/all publication actions |
 | Ordered Reference Lists | Sort complete file blocks by current Reference Object values | fresh-check uses, wrap whole line/paragraph, order locally | inline `obs-order:*` markers after publication | pending file state | explicit Reference Object checks | through standard current/all publication actions |
 | Chat Response Reader | Read one assistant response in a large safe Markdown view | Open in Reader, Paste Markdown, Render, Copy Markdown, Close | none | runtime-only Reader semantic state | none | none |
@@ -108,9 +108,9 @@ Repository contract: `.linked-notes/templates/README.md`.
 
 ## 8. Reference Objects
 
-Reference Objects use stable `ro_*` identities with repository-native definition/use markers. The canonical value is the content inside the definition marker; use markers materialize the value so repository Markdown remains readable outside the application.
+Reference Objects use stable `ro_*` identities. `obs-ref:def` owns the canonical literal; `obs-ref:use` materializes a literal synchronized copy; `obs-ref:depend` wraps a bounded fragment whose semantic correctness must be reviewed when the canonical value changes. Dependency markers use positive file-local `dep` numbers and do not embed fingerprints.
 
-The repository registry is routing/index metadata, not the canonical value store. Propagation is explicit rather than automatic. Normal freshness diagnostics and ordinary `Validate tags` follow the registry's definition/use paths; `Deep validate repo` is the separate explicit bounded repository-wide discovery operation for unindexed evidence.
+The schema-v2 Definitions File stores routing/rebuildable indexes plus optional `reviewedAgainst` (exact canonical definition SHA-256) and `reviewedFragment` (exact bounded-fragment SHA-256). `Check dependencies` reads only indexed dependency paths, requires the live `path + dep` marker to resolve uniquely and classifies CURRENT only when both fingerprints match. `Review complete` validates the selected consumer fragment before updating both registry acknowledgements. Stale uses and dependency review warnings remain distinct. `Deep validate repo` is the separate bounded repository-wide discovery operation for unindexed evidence.
 
 Ordered Reference Lists add `obs-order:list` and paired `obs-order:item` markers around complete lines or paragraphs. Creation permits stale uses with a warning; ordering is blocked until every nested use equals the checked current definition value. Ordering is local and has no feature-specific GitHub action.
 

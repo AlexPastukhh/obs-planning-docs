@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "objects": [
     {
       "id": "ro_replacement_package_shared_protocol",
@@ -13,7 +13,8 @@
           "line": 64,
           "lineOccurrence": 1
         }
-      ]
+      ],
+      "depends": []
     }
   ]
 }

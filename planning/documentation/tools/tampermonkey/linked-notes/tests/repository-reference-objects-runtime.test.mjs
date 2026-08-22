@@ -358,3 +358,46 @@ test('Reference Objects menu uses explicit shared popup state and loads only on 
     else namespace.portalFilesWorkspaceDropdownPanel = previous;
   }
 });
+
+test('dependency creation and Review complete stay local while acknowledgement lives only in Definitions File', async () => {
+  const object = { id: 'ro_damage', name: 'Damage', definition: { path: 'docs/source.md' }, uses: [], depends: [] };
+  const client = makeClient({
+    [registryPath]: { content: registryContent(object), sha: 'reg1' },
+    'docs/source.md': { content: markers.formatReferenceDefinition('ro_damage', '30'), sha: 'src1' },
+    'docs/consumer.md': { content: 'This conclusion depends on current damage.', sha: 'con1' }
+  });
+  const { FakeApp, FakeUI } = makeClasses(client);
+  runtime.installRepositoryReferenceObjects({ LinkedNotesApp: FakeApp, LinkedNotesUI: FakeUI });
+  const app = new FakeApp();
+  await app.start();
+  await app.openRepositoryEntry({ type: 'file', path: 'docs/consumer.md', name: 'consumer.md' });
+  const found = await app.findReferenceObjectDependencyCandidates('This conclusion depends on current damage.');
+  const created = await app.createReferenceObjectDependencyLocal({ objectId: 'ro_damage', candidate: found.candidates[0] });
+  assert.equal(created.dep, 1);
+  assert.equal(client.writes.length, 0);
+  const consumerDraft = app._referenceObjectLocalMap().get('docs/consumer.md').content;
+  assert.match(consumerDraft, /obs-ref:depend id="ro_damage" dep="1"/);
+  assert.equal(consumerDraft.includes('sha256:'), false);
+  let pendingRegistry = registryApi.decodeReferenceObjectRegistry(app._referenceObjectLocalMap().get(registryPath).content);
+  assert.equal(pendingRegistry.objects[0].depends[0].reviewedAgainst, await markers.referenceObjectValueFingerprint('30'));
+  assert.equal(pendingRegistry.objects[0].depends[0].reviewedFragment, await markers.referenceObjectValueFingerprint('This conclusion depends on current damage.'));
+
+  await app._putReferenceObjectLocalDraft('docs/source.md', 'src1', markers.formatReferenceDefinition('ro_damage', '40'), { silent: true });
+  const stale = await app.checkReferenceObjectDependencies('ro_damage');
+  assert.equal(stale.needsReviewCount, 1);
+  const beforeConsumer = app._referenceObjectLocalMap().get('docs/consumer.md').content;
+  await app.completeReferenceObjectDependencyReviewLocal('ro_damage', stale.dependencies[0]);
+  pendingRegistry = registryApi.decodeReferenceObjectRegistry(app._referenceObjectLocalMap().get(registryPath).content);
+  assert.equal(pendingRegistry.objects[0].depends[0].reviewedAgainst, await markers.referenceObjectValueFingerprint('40'));
+  assert.equal(pendingRegistry.objects[0].depends[0].reviewedFragment, await markers.referenceObjectValueFingerprint('This conclusion depends on current damage.'));
+  assert.equal(app._referenceObjectLocalMap().get('docs/consumer.md').content, beforeConsumer);
+  assert.equal(client.writes.length, 0);
+
+  app.repositoryEditor = { mode: 'edit', path: 'docs/consumer.md', baseSha: 'con1', content: markers.formatReferenceDependency('ro_damage', 1, 'Changed conclusion after review.') };
+  await app.saveRepositoryReferenceDraftLocal();
+  pendingRegistry = registryApi.decodeReferenceObjectRegistry(app._referenceObjectLocalMap().get(registryPath).content);
+  assert.equal(Boolean(pendingRegistry.objects[0].depends[0].reviewedAgainst), false);
+  assert.equal(Boolean(pendingRegistry.objects[0].depends[0].reviewedFragment), false);
+  const changedFragment = await app.checkReferenceObjectDependencies('ro_damage');
+  assert.equal(changedFragment.needsReviewCount, 1);
+});

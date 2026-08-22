@@ -1,10 +1,21 @@
 # OBS Linked Notes Prototype Changelog
 
 Status: implementation history / not current-state authority
-Current version: `0.9.0-prototype`
+Current version: `0.10.0-prototype`
 
 Use [`README.md`](README.md), [`APP-OVERVIEW.md`](APP-OVERVIEW.md), [`ARCHITECTURE.md`](ARCHITECTURE.md) and [`DATA-AND-STATE.md`](DATA-AND-STATE.md) for current behavior. This file records the major tracked prototype slices that were previously mixed into the main README.
 
+
+
+## 0.10.0-prototype — Reference Object Fragment Dependencies
+
+- added `obs-ref:depend` for bounded repository fragments whose semantic correctness depends on a Reference Object canonical value without materializing that value as a copy;
+- added positive file-local dependency numbers and schema-v2 `depends[]` routing/review metadata under each Reference Object; v1 registries remain readable and migrate to v2 on write;
+- kept canonical literal truth exclusively inside `obs-ref:def`; dependency `reviewedAgainst` (source) and `reviewedFragment` (bounded consumer content) SHA-256 acknowledgements live only in the Definitions File;
+- added indexed-fragment `Check dependencies`, explicit `Review complete`, separate Files dependency warnings and no automatic dependent-content rewrite; CURRENT requires a live unique marker plus matching source and fragment fingerprints;
+- allowed ordinary `obs-ref:use` markers inside dependency fragments while rejecting nested dependencies/definitions, duplicate file-local dependency numbers and duplicate marker attributes;
+- blocked current-only publication of the Definitions File when a canonical definition is also pending so acknowledgements derived from pending source state use coherent `Update all`;
+- expanded focused contracts, Scenario traceability, tests and manual acceptance for the new dependency lifecycle.
 
 ## 0.9.0-prototype — Hash-based Review Dependencies
 

@@ -32,7 +32,7 @@ This registry is the owner of **which** Linked Notes capabilities a content-work
 
 ## 3. Reference Objects — Short Rule
 
-Use [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) as the canonical Reference Object semantics/format contract. Its `Ordinary consumption vs freshness verification` section decides when an existing materialized use can be consumed directly and when the canonical definition must be resolved.
+Use [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) as the canonical Reference Object semantics/format contract. `obs-ref:use` is a literal synchronized copy; `obs-ref:depend` is a bounded semantic fragment that must be reviewed when its Reference Object value changes. Dependency review fingerprints for both the canonical value and the reviewed fragment live in the Definitions File, not in working Markdown. The contract decides when ordinary materialized content can be consumed directly and when the canonical definition must be resolved.
 
 For intentional direct repository creation or maintenance of Reference Objects, follow [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) for procedure order and the canonical contract for every normative rule.
 

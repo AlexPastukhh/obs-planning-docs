@@ -239,5 +239,75 @@ test('empty Definitions File indexed validation stops after the registry read', 
   assert.equal(validation.scope, 'indexed');
   assert.deepEqual(client.lists, []);
   assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json']);
-  assert.deepEqual(validation.counts, { objects: 0, definitions: 0, uses: 0, files: 0 });
+  assert.deepEqual(validation.counts, { objects: 0, definitions: 0, uses: 0, depends: 0, files: 0 });
+});
+
+
+function dependencyDefinitionsFile(reviewedAgainst = '', reviewedFragment = '') {
+  return registryApi.encodeReferenceObjectRegistry({ schemaVersion: 2, objects: [{ id: 'ro_damage1', name: 'Base damage', definition: { path: 'game/combat.md' }, uses: [], depends: [{ dep: 1, path: 'game/balance.md', line: 1, lineOccurrence: 1, ...(reviewedAgainst ? { reviewedAgainst } : {}), ...(reviewedFragment ? { reviewedFragment } : {}) }] }] });
+}
+
+test('Check dependencies validates source acknowledgement and the indexed consumer fragment', async () => {
+  const sourceFingerprint = await markers.referenceObjectValueFingerprint('30');
+  const fragmentFingerprint = await markers.referenceObjectValueFingerprint('Derived conclusion');
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': dependencyDefinitionsFile(sourceFingerprint, fragmentFingerprint),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/balance.md': markers.formatReferenceDependency('ro_damage1', 1, 'Derived conclusion')
+  });
+  const current = await service.checkReferenceObjectDependencies({ client, objectId: 'ro_damage1' });
+  assert.equal(current.currentCount, 1);
+  assert.equal(current.needsReviewCount, 0);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/combat.md', 'game/balance.md']);
+
+  client.reads.length = 0;
+  const sourceChanged = await service.checkReferenceObjectDependencies({ client, objectId: 'ro_damage1', overlays: [{ path: 'game/combat.md', baseSha: client.files.get('game/combat.md').sha, content: markers.formatReferenceDefinition('ro_damage1', '40') }] });
+  assert.equal(sourceChanged.needsReviewCount, 1);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/balance.md']);
+
+  client.reads.length = 0;
+  const fragmentChanged = await service.checkReferenceObjectDependencies({ client, objectId: 'ro_damage1', overlays: [{ path: 'game/balance.md', baseSha: client.files.get('game/balance.md').sha, content: markers.formatReferenceDependency('ro_damage1', 1, 'Different conclusion') }] });
+  assert.equal(fragmentChanged.needsReviewCount, 1);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/combat.md']);
+});
+
+test('Check dependencies marks a missing registered fragment unresolved', async () => {
+  const sourceFingerprint = await markers.referenceObjectValueFingerprint('30');
+  const fragmentFingerprint = await markers.referenceObjectValueFingerprint('Derived conclusion');
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': dependencyDefinitionsFile(sourceFingerprint, fragmentFingerprint),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/balance.md': 'The dependency marker was removed.'
+  });
+  const result = await service.checkReferenceObjectDependencies({ client, objectId: 'ro_damage1' });
+  assert.equal(result.unresolvedCount, 1);
+  assert.ok(result.diagnostics.some((item) => item.kind === 'dependency_marker_missing'));
+});
+
+test('Review complete validates the bounded fragment then stores source and fragment fingerprints only in registry metadata', async () => {
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': dependencyDefinitionsFile('', ''),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/balance.md': markers.formatReferenceDependency('ro_damage1', 1, 'Derived conclusion')
+  });
+  const result = await service.completeReferenceObjectDependencyReview({ client, objectId: 'ro_damage1', path: 'game/balance.md', dep: 1 });
+  assert.equal(client.writes.length, 0);
+  const stored = registryApi.decodeReferenceObjectRegistry(result.registryContent).objects[0].depends[0];
+  assert.equal(stored.reviewedAgainst, await markers.referenceObjectValueFingerprint('30'));
+  assert.equal(stored.reviewedFragment, await markers.referenceObjectValueFingerprint('Derived conclusion'));
+  assert.equal(client.files.get('game/balance.md').content.includes('sha256:'), false);
+});
+
+test('freshness exposes dependency review warnings and validates indexed consumer content', async () => {
+  const sourceFingerprint = await markers.referenceObjectValueFingerprint('30');
+  const oldFragmentFingerprint = await markers.referenceObjectValueFingerprint('Old conclusion');
+  const client = makeClient({
+    '.linked-notes/reference-objects.json': dependencyDefinitionsFile(sourceFingerprint, oldFragmentFingerprint),
+    'game/combat.md': markers.formatReferenceDefinition('ro_damage1', '30'),
+    'game/balance.md': markers.formatReferenceDependency('ro_damage1', 1, 'Derived conclusion')
+  });
+  const result = await service.diagnoseReferenceObjectFreshness({ client });
+  assert.equal(result.dependencyNeedsReviewCount, 1);
+  assert.deepEqual(client.reads, ['.linked-notes/reference-objects.json', 'game/combat.md', 'game/balance.md']);
+  assert.equal(result.files.find((item) => item.path === 'game/balance.md').dependencyNeedsReview, 1);
 });

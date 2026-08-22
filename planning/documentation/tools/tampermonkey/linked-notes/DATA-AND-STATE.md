@@ -1,7 +1,7 @@
 # OBS Linked Notes Data And State Map
 
 Status: current prototype data-ownership map
-Version: `0.9.0-prototype`
+Version: `0.10.0-prototype`
 Scope: where application data lives, which representation is authoritative and what may be safely treated as cache/runtime/diagnostic state.
 
 ## 1. State Classes
@@ -181,7 +181,7 @@ Includes the exact workspace/repository target context. Cache from one repositor
 
 ### Reference Object identity
 
-Stable `ro_*` object id survives mutable display-name changes. Materialized uses are discovered occurrences rather than stable-use objects.
+Stable `ro_*` object id survives mutable display-name changes. Materialized uses are discovered occurrences rather than stable-use objects. Bounded dependencies use `path + dep` as routing identity, where `dep` is a positive number unique in that file. Their line/occurrence fields are rebuildable; `reviewedAgainst` records the exact canonical-value SHA-256 and `reviewedFragment` records the exact bounded-fragment SHA-256 last reviewed. Both are derived Definitions File metadata, not canonical content.
 
 ### Ordered Reference List identity
 
@@ -220,7 +220,7 @@ Full App State does **not** replace normal user-facing content copy for Notes or
 - Local Save does not silently clear remote conflict/deleted/verification-unknown recovery state.
 - Category UX groups are local-only and do not classify repository files by themselves.
 - Repository template selection populates a local New File editor; normal Create stages the intended file locally.
-- Reference Object propagation is explicit; stale materialized uses are not updated automatically.
+- Reference Object propagation is explicit; stale materialized uses are not updated automatically. Dependent fragments are never auto-rewritten; canonical-value changes instead invalidate registry review acknowledgements until semantic Review complete.
 - Files/category/Reference Object/ordering/structure/copy business actions stage local file state first. Only Update current file or Update all publishes that queue.
 - No application state authorizes local Git commit/push.
 
@@ -252,5 +252,5 @@ Durable Review Dependency truth is repository-owned:
 - the source fingerprint is derived, not stored: effective source text (pending local overlay first), live Review Dependency bookkeeping comments removed, line endings normalized to LF, UTF-8 SHA-256;
 - current / needs-review / unresolved status is runtime-derived diagnostics and is not a second persistent truth.
 
-Completing review changes only local pending repository state until `SCN-LN-PUBLISH` runs. A review completed against a pending source is valid against that pending state and may become stale again if the acknowledgement is published without the source change. Reference Object freshness remains literal-content based and is not converted to this fingerprint model.
+Completing review changes only local pending repository state until `SCN-LN-PUBLISH` runs. A review completed against a pending source is valid against that pending state and may become stale again if the acknowledgement is published without the source change. Whole-file Review Dependencies keep this source-file fingerprint model. Reference Objects separately use literal equality for `obs-ref:use` and paired source/fragment fingerprints stored only in the Reference Object registry for bounded `obs-ref:depend` review acknowledgement.
 

@@ -12,7 +12,7 @@
 
   function core() {
     const api = root.ObsLinkedNotes || {};
-    const required = ['parseReferenceMarkers', 'replaceReferenceOccurrenceValues', 'decodeReferenceObjectRegistry', 'encodeReferenceObjectRegistry', 'referenceObjectById', 'replaceReferenceObjectUses'];
+    const required = ['parseReferenceMarkers', 'replaceReferenceOccurrenceValues', 'decodeReferenceObjectRegistry', 'encodeReferenceObjectRegistry', 'referenceObjectById', 'replaceReferenceObjectUses', 'replaceReferenceObjectDependencies', 'setReferenceObjectDependencyReviewedAgainst', 'referenceObjectValueFingerprint', 'normalizeReferenceDependencyNumber'];
     for (const name of required) if (typeof api[name] !== 'function') throw new Error(`Reference Object dependency is unavailable: ${name}.`);
     return api;
   }
@@ -71,7 +71,7 @@
       return { path: registryPath, sha: file.sha, content: file.content, registry: api.decodeReferenceObjectRegistry(file.content), local: false };
     } catch (error) {
       if (!isNotFound(error)) throw error;
-      return { path: registryPath, sha: '', content: '', registry: api.emptyReferenceObjectRegistry ? api.emptyReferenceObjectRegistry() : { schemaVersion: 1, objects: [] }, local: false, missing: true };
+      return { path: registryPath, sha: '', content: '', registry: api.emptyReferenceObjectRegistry ? api.emptyReferenceObjectRegistry() : { schemaVersion: 2, objects: [] }, local: false, missing: true };
     }
   }
 
@@ -193,13 +193,28 @@
     return JSON.stringify(actualUseIndex(left)) === JSON.stringify(actualUseIndex(right));
   }
 
+  function actualDependencyIndex(depends) {
+    return (Array.isArray(depends) ? depends : []).map((dependency) => ({
+      dep: Number(dependency && dependency.dep) || 0,
+      path: String(dependency && dependency.path || ''),
+      line: Number(dependency && dependency.line) || 0,
+      lineOccurrence: Number(dependency && dependency.lineOccurrence) || 0
+    })).sort((left, right) => left.path.localeCompare(right.path) || left.dep - right.dep || left.line - right.line || left.lineOccurrence - right.lineOccurrence);
+  }
 
-  function indexedReferenceRoutes(objects) {
+  function sameDependencyIndex(left, right) {
+    return JSON.stringify(actualDependencyIndex(left)) === JSON.stringify(actualDependencyIndex(right));
+  }
+
+
+  function indexedReferenceRoutes(objects, options = {}) {
     const routes = new Map();
+    const includeUses = options.includeUses !== false;
+    const includeDepends = Boolean(options.includeDepends);
     const ensure = (path) => {
       const value = String(path || '').trim();
       if (!value) return null;
-      if (!routes.has(value)) routes.set(value, { path: value, definitionIds: new Set(), useIds: new Set(), expectedUses: [] });
+      if (!routes.has(value)) routes.set(value, { path: value, definitionIds: new Set(), useIds: new Set(), dependencyIds: new Set(), expectedUses: [], expectedDependencies: [] });
       return routes.get(value);
     };
     const source = Array.isArray(objects) ? objects : [];
@@ -209,11 +224,17 @@
     }
     for (const object of source) {
       const id = String(object && object.id || '');
-      for (const use of Array.isArray(object && object.uses) ? object.uses : []) {
+      if (includeUses) for (const use of Array.isArray(object && object.uses) ? object.uses : []) {
         const route = ensure(use && use.path);
         if (!route) continue;
         route.useIds.add(id);
         route.expectedUses.push({ objectId: id, path: route.path, line: Number(use && use.line) || 0, lineOccurrence: Number(use && use.lineOccurrence) || 0 });
+      }
+      if (includeDepends) for (const dependency of Array.isArray(object && object.depends) ? object.depends : []) {
+        const route = ensure(dependency && dependency.path);
+        if (!route) continue;
+        route.dependencyIds.add(id);
+        route.expectedDependencies.push({ objectId: id, path: route.path, dep: Number(dependency && dependency.dep) || 0, line: Number(dependency && dependency.line) || 0, lineOccurrence: Number(dependency && dependency.lineOccurrence) || 0 });
       }
     }
     return [...routes.values()];
@@ -226,7 +247,7 @@
     const maxFiles = Number(options && options.maxFiles) > 0 ? Number(options.maxFiles) : DEFAULT_SCAN_MAX_FILES;
     const maxBytes = Number(options && options.maxBytes) > 0 ? Number(options.maxBytes) : DEFAULT_SCAN_MAX_BYTES;
     const maxFileBytes = Number(options && options.maxFileBytes) > 0 ? Number(options.maxFileBytes) : DEFAULT_SCAN_MAX_FILE_BYTES;
-    const routes = indexedReferenceRoutes(objects);
+    const routes = indexedReferenceRoutes(objects, { includeUses: options && options.includeUses !== false, includeDepends: Boolean(options && options.includeDepends) });
     const files = [];
     const fileByPath = new Map();
     const diagnostics = [];
@@ -332,6 +353,115 @@
     };
   }
 
+  async function checkReferenceObjectDependencies(options = {}) {
+    const api = core();
+    const id = api.normalizeReferenceObjectId(options.objectId);
+    const registryPath = String(options.registryPath || api.DEFAULT_REFERENCE_OBJECT_REGISTRY_PATH || '.linked-notes/reference-objects.json');
+    const registrySnapshot = await readRegistrySnapshot(options.client, registryPath, options.overlays);
+    const object = api.referenceObjectById(registrySnapshot.registry, id);
+    if (!object) throw new Error(`Reference Object not found in Definitions File: ${id}.`);
+    const routed = await readIndexedReferenceObjectState({ ...options, includeUses: false, includeDepends: true }, registrySnapshot, [object]);
+    const diagnostics = [...routed.diagnostics];
+    const definitionFile = routed.fileByPath.get(String(object.definition && object.definition.path || ''));
+    const definitions = definitionFile ? definitionFile.markers.filter((marker) => marker.role === 'def' && marker.id === id).map((marker) => ({ ...marker, path: definitionFile.path, fileSha: definitionFile.baseSha || definitionFile.sha || '', local: Boolean(definitionFile.local) })) : [];
+    if (definitions.length !== 1) diagnostics.push({ kind: definitions.length ? 'duplicate_definition_at_path' : 'definition_missing', path: object.definition.path, objectId: id, message: definitions.length ? `Definitions File target contains ${definitions.length} definitions for ${id}.` : `Definition marker ${id} was not found at ${object.definition.path}.` });
+    const definition = definitions.length === 1 ? definitions[0] : null;
+    const currentValue = definition ? definition.value : '';
+    const currentFingerprint = definition ? await api.referenceObjectValueFingerprint(currentValue) : '';
+    const dependencies = [];
+    const actualIndex = [];
+    for (const dependency of Array.isArray(object.depends) ? object.depends : []) {
+      const file = routed.fileByPath.get(dependency.path);
+      if (!definition || !file || (file.markerDiagnostics || []).length) {
+        dependencies.push({ ...dependency, objectId: id, currentFingerprint, currentFragmentFingerprint: '', status: 'unresolved' });
+        continue;
+      }
+      const matches = file.markers.filter((marker) => marker.role === 'depend' && marker.id === id && marker.dep === dependency.dep);
+      if (matches.length !== 1) {
+        diagnostics.push({ kind: matches.length ? 'duplicate_dependency_marker' : 'dependency_marker_missing', objectId: id, path: dependency.path, dep: dependency.dep, message: `Reference Object dependency ${id} #${dependency.dep} must resolve to exactly one live marker in ${dependency.path}; found ${matches.length}.` });
+        dependencies.push({ ...dependency, objectId: id, currentFingerprint, currentFragmentFingerprint: '', status: 'unresolved' });
+        continue;
+      }
+      const marker = matches[0];
+      actualIndex.push({ dep: dependency.dep, path: dependency.path, line: marker.line, lineOccurrence: marker.lineOccurrence });
+      const currentFragmentFingerprint = await api.referenceObjectValueFingerprint(marker.value);
+      const sourceCurrent = String(dependency.reviewedAgainst || '') === currentFingerprint;
+      const fragmentCurrent = String(dependency.reviewedFragment || '') === currentFragmentFingerprint;
+      dependencies.push({ ...dependency, objectId: id, line: marker.line, lineOccurrence: marker.lineOccurrence, currentFingerprint, currentFragmentFingerprint, markerValue: marker.value, status: sourceCurrent && fragmentCurrent ? 'current' : 'needs_review' });
+    }
+    const expectedIndex = actualDependencyIndex(object.depends);
+    const resolvedIndex = actualDependencyIndex(actualIndex);
+    const indexDrift = JSON.stringify(expectedIndex) !== JSON.stringify(resolvedIndex) || dependencies.some((item) => item.status === 'unresolved');
+    if (indexDrift) diagnostics.push({ kind: 'dependency_index_drift', objectId: id, path: registryPath, message: `Definitions File dependency index differs from the live markers found in its routed dependency files for ${id}.` });
+    dependencies.sort((left, right) => left.path.localeCompare(right.path) || left.dep - right.dep);
+    return {
+      kind: 'reference-object-dependency-check-v1',
+      object,
+      objectId: id,
+      registryPath,
+      registrySnapshot,
+      definition,
+      currentValue,
+      currentFingerprint,
+      dependencies,
+      currentCount: dependencies.filter((item) => item.status === 'current').length,
+      needsReviewCount: dependencies.filter((item) => item.status === 'needs_review').length,
+      unresolvedCount: dependencies.filter((item) => item.status === 'unresolved').length,
+      diagnostics,
+      indexDrift,
+      incomplete: routed.incomplete,
+      truncationReason: routed.truncationReason,
+      blocked: !definition,
+      scanSummary: { mode: 'indexed-dependencies', directories: 0, files: routed.readFiles, bytes: routed.totalBytes, indexedPaths: routed.indexedPaths }
+    };
+  }
+
+  async function completeReferenceObjectDependencyReview(options = {}) {
+    const api = core();
+    const id = api.normalizeReferenceObjectId(options.objectId);
+    const path = String(options.path || '').trim();
+    const dep = api.normalizeReferenceDependencyNumber(options.dep);
+    const check = await checkReferenceObjectDependencies(options);
+    if (check.blocked) throw new Error('Reference Object definition is unresolved or duplicated; dependency review cannot be acknowledged safely.');
+    if (check.incomplete) throw new Error(`Reference Object dependency check is incomplete${check.truncationReason ? ` (${check.truncationReason})` : ''}; dependency review cannot be acknowledged safely.`);
+    const registered = check.object.depends.find((item) => item.path === path && item.dep === dep);
+    if (!registered) throw new Error(`Reference Object dependency is not registered: ${id} at ${path} #${dep}.`);
+    const dependencyState = check.dependencies.find((item) => item.path === path && item.dep === dep);
+    if (!dependencyState || dependencyState.status === 'unresolved' || !dependencyState.currentFragmentFingerprint) throw new Error(`Reference Object dependency ${id} #${dep} cannot be resolved safely in ${path}.`);
+    const local = overlayMap(options.overlays).get(path);
+    let consumer;
+    if (local) consumer = { path, sha: local.baseSha, baseSha: local.baseSha, content: local.content, local: true };
+    else {
+      const file = await readTextFile(options.client, path, { maxBytes: Number(options.maxFileBytes) > 0 ? Number(options.maxFileBytes) : DEFAULT_SCAN_MAX_FILE_BYTES });
+      consumer = { ...file, baseSha: file.sha, local: false };
+    }
+    const parsed = api.parseReferenceMarkers(consumer.content);
+    if (parsed.diagnostics.length) {
+      const error = new Error(`Dependent file contains invalid Reference Object markers: ${path}.`);
+      error.kind = 'reference_marker_invalid';
+      error.diagnostics = parsed.diagnostics;
+      throw error;
+    }
+    const matches = parsed.occurrences.filter((marker) => marker.role === 'depend' && marker.id === id && marker.dep === dep);
+    if (matches.length !== 1) throw new Error(`Reference Object dependency ${id} #${dep} must have exactly one live marker in ${path}; found ${matches.length}.`);
+    const marker = matches[0];
+    const reviewedFragment = await api.referenceObjectValueFingerprint(marker.value);
+    const registry = api.setReferenceObjectDependencyReviewedAgainst(check.registrySnapshot.registry, id, path, dep, check.currentFingerprint, { line: marker.line, lineOccurrence: marker.lineOccurrence, reviewedFragment });
+    return {
+      kind: 'reference-object-dependency-review-v1',
+      objectId: id,
+      path,
+      dep,
+      reviewedAgainst: check.currentFingerprint,
+      reviewedFragment,
+      marker: { line: marker.line, lineOccurrence: marker.lineOccurrence, value: marker.value },
+      registry,
+      registryContent: api.encodeReferenceObjectRegistry(registry),
+      registrySnapshot: check.registrySnapshot,
+      consumer
+    };
+  }
+
   function buildReferenceObjectLocalUpdate(check) {
     const api = core();
     if (!check || check.kind !== 'reference-object-check-v1') throw new Error('Check Reference Object uses before updating.');
@@ -419,9 +549,11 @@
     const diagnostics = [...(Array.isArray(sourceDiagnostics) ? sourceDiagnostics : [])];
     const definitionsById = new Map();
     const usesById = new Map();
+    const dependenciesById = new Map();
     for (const file of Array.isArray(files) ? files : []) {
       for (const marker of Array.isArray(file && file.markers) ? file.markers : []) {
-        const target = marker.role === 'def' ? definitionsById : usesById;
+        const target = marker.role === 'def' ? definitionsById : marker.role === 'use' ? usesById : marker.role === 'depend' ? dependenciesById : null;
+        if (!target) continue;
         const group = target.get(marker.id) || [];
         group.push({ ...marker, path: file.path });
         target.set(marker.id, group);
@@ -439,8 +571,11 @@
       if (definitions.some((item) => item.path !== object.definition.path)) diagnostics.push({ kind: 'registry_definition_wrong_path', objectId: object.id, path: object.definition.path, message: 'Definition marker also exists outside the recorded definition path among the files read by this validation.' });
       const uses = actualUseIndex(usesById.get(object.id) || []);
       if (!sameUsageIndex(object.uses, uses)) diagnostics.push({ kind: 'usage_index_drift', objectId: object.id, path: registrySnapshot.path, message: `Definitions File usage index differs from ${uses.length} use marker(s) found in the files read by this validation.` });
+      const dependencies = actualDependencyIndex((dependenciesById.get(object.id) || []).map((item) => ({ dep: item.dep, path: item.path, line: item.line, lineOccurrence: item.lineOccurrence })));
+      if (!sameDependencyIndex(object.depends, dependencies)) diagnostics.push({ kind: 'dependency_index_drift', objectId: object.id, path: registrySnapshot.path, message: `Definitions File dependency index differs from ${dependencies.length} depend marker(s) found in the files read by this validation.` });
     }
     for (const [id, uses] of usesById.entries()) if (!registeredIds.has(id)) diagnostics.push({ kind: 'unknown_use_id', objectId: id, path: uses[0].path, message: `${uses.length} use marker(s) refer to an unknown Reference Object id.` });
+    for (const [id, dependencies] of dependenciesById.entries()) if (!registeredIds.has(id)) diagnostics.push({ kind: 'unknown_dependency_object_id', objectId: id, path: dependencies[0].path, message: `${dependencies.length} depend marker(s) refer to an unknown Reference Object id.` });
     const scope = options.scope === 'repository' ? 'repository' : 'indexed';
     const incomplete = Boolean(options.incomplete);
     if (incomplete) {
@@ -454,7 +589,7 @@
     }
     const valid = diagnostics.length === 0 && !incomplete;
     return {
-      kind: 'reference-object-validation-v1',
+      kind: 'reference-object-validation-v2',
       scope,
       globalIntegrity: scope === 'repository' && valid,
       registryPath: registrySnapshot.path,
@@ -465,6 +600,7 @@
         objects: objects.length,
         definitions: [...definitionsById.values()].reduce((sum, group) => sum + group.length, 0),
         uses: [...usesById.values()].reduce((sum, group) => sum + group.length, 0),
+        depends: [...dependenciesById.values()].reduce((sum, group) => sum + group.length, 0),
         files: Array.isArray(files) ? files.length : 0
       },
       registrySnapshot,
@@ -484,7 +620,7 @@
         scanSummary: { mode: 'indexed', directories: 0, files: 0, bytes: 0, indexedPaths: 0 }
       });
     }
-    const routed = await readIndexedReferenceObjectState(options, registrySnapshot, objects);
+    const routed = await readIndexedReferenceObjectState({ ...options, includeDepends: true }, registrySnapshot, objects);
     return referenceValidationFromFiles(registrySnapshot, routed.files, routed.diagnostics, {
       scope: 'indexed',
       incomplete: routed.incomplete,
@@ -513,11 +649,14 @@
     const objects = Array.isArray(registrySnapshot.registry.objects) ? registrySnapshot.registry.objects : [];
     if (!objects.length) {
       return {
-        kind: 'reference-object-freshness-v1',
+        kind: 'reference-object-freshness-v2',
         files: [],
         uses: [],
+        dependencies: [],
         staleCount: 0,
         unresolvedCount: 0,
+        dependencyNeedsReviewCount: 0,
+        dependencyUnresolvedCount: 0,
         incomplete: false,
         truncationReason: '',
         diagnostics: [],
@@ -525,15 +664,18 @@
         scanSummary: { mode: 'indexed', directories: 0, files: 0, bytes: 0, indexedPaths: 0 }
       };
     }
-    const routed = await readIndexedReferenceObjectState(options, registrySnapshot, objects);
+    const routed = await readIndexedReferenceObjectState({ ...options, includeDepends: true }, registrySnapshot, objects);
     const diagnostics = [...routed.diagnostics];
     const currentValueById = new Map();
+    const currentFingerprintById = new Map();
     for (const object of objects) {
       const path = String(object.definition && object.definition.path || '');
       const file = routed.fileByPath.get(path);
       const definitions = file ? file.markers.filter((marker) => marker.role === 'def' && marker.id === object.id) : [];
-      if (definitions.length === 1) currentValueById.set(object.id, definitions[0].value);
-      else diagnostics.push({ kind: definitions.length ? 'duplicate_definition_at_path' : 'definition_missing', objectId: object.id, path, message: definitions.length ? `Definitions File target contains ${definitions.length} definitions for ${object.id}.` : `Definition marker ${object.id} was not found at ${path}.` });
+      if (definitions.length === 1) {
+        currentValueById.set(object.id, definitions[0].value);
+        currentFingerprintById.set(object.id, await api.referenceObjectValueFingerprint(definitions[0].value));
+      } else diagnostics.push({ kind: definitions.length ? 'duplicate_definition_at_path' : 'definition_missing', objectId: object.id, path, message: definitions.length ? `Definitions File target contains ${definitions.length} definitions for ${object.id}.` : `Definition marker ${object.id} was not found at ${path}.` });
     }
     const uses = [];
     for (const object of objects) {
@@ -565,19 +707,52 @@
       uses.push(...actualForObject);
     }
     uses.sort((left, right) => left.path.localeCompare(right.path) || left.line - right.line || left.lineOccurrence - right.lineOccurrence || left.objectId.localeCompare(right.objectId));
-    const fileMap = new Map();
-    for (const use of uses) {
-      const group = fileMap.get(use.path) || [];
-      group.push(use);
-      fileMap.set(use.path, group);
+    const dependencies = [];
+    for (const object of objects) {
+      const fingerprint = currentFingerprintById.get(object.id) || '';
+      for (const dependency of Array.isArray(object.depends) ? object.depends : []) {
+        const file = routed.fileByPath.get(dependency.path);
+        const matches = file && !(file.markerDiagnostics || []).length ? file.markers.filter((marker) => marker.role === 'depend' && marker.id === object.id && marker.dep === dependency.dep) : [];
+        if (!fingerprint || !file || (file.markerDiagnostics || []).length || matches.length !== 1) {
+          dependencies.push({ ...dependency, objectId: object.id, currentFingerprint: fingerprint, currentFragmentFingerprint: '', status: 'unresolved' });
+          continue;
+        }
+        const currentFragmentFingerprint = await api.referenceObjectValueFingerprint(matches[0].value);
+        const sourceCurrent = String(dependency.reviewedAgainst || '') === fingerprint;
+        const fragmentCurrent = String(dependency.reviewedFragment || '') === currentFragmentFingerprint;
+        dependencies.push({ ...dependency, objectId: object.id, line: matches[0].line, lineOccurrence: matches[0].lineOccurrence, currentFingerprint: fingerprint, currentFragmentFingerprint, status: sourceCurrent && fragmentCurrent ? 'current' : 'needs_review' });
+      }
     }
-    const files = [...fileMap.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([path, fileUses]) => ({ path, current: fileUses.filter((item) => item.status === 'current').length, stale: fileUses.filter((item) => item.status === 'stale').length, unresolved: fileUses.filter((item) => item.status === 'unresolved').length, uses: fileUses }));
+    dependencies.sort((left, right) => left.path.localeCompare(right.path) || left.dep - right.dep || left.objectId.localeCompare(right.objectId));
+    const fileMap = new Map();
+    const ensureFile = (path) => {
+      if (!fileMap.has(path)) fileMap.set(path, { path, current: 0, stale: 0, unresolved: 0, dependencyCurrent: 0, dependencyNeedsReview: 0, dependencyUnresolved: 0, uses: [], dependencies: [] });
+      return fileMap.get(path);
+    };
+    for (const use of uses) {
+      const file = ensureFile(use.path);
+      file.uses.push(use);
+      if (use.status === 'current') file.current += 1;
+      else if (use.status === 'stale') file.stale += 1;
+      else file.unresolved += 1;
+    }
+    for (const dependency of dependencies) {
+      const file = ensureFile(dependency.path);
+      file.dependencies.push(dependency);
+      if (dependency.status === 'current') file.dependencyCurrent += 1;
+      else if (dependency.status === 'needs_review') file.dependencyNeedsReview += 1;
+      else file.dependencyUnresolved += 1;
+    }
+    const files = [...fileMap.values()].sort((left, right) => left.path.localeCompare(right.path));
     return {
-      kind: 'reference-object-freshness-v1',
+      kind: 'reference-object-freshness-v2',
       files,
       uses,
+      dependencies,
       staleCount: uses.filter((item) => item.status === 'stale').length,
       unresolvedCount: uses.filter((item) => item.status === 'unresolved').length,
+      dependencyNeedsReviewCount: dependencies.filter((item) => item.status === 'needs_review').length,
+      dependencyUnresolvedCount: dependencies.filter((item) => item.status === 'unresolved').length,
       incomplete: routed.incomplete,
       truncationReason: routed.truncationReason,
       diagnostics,
@@ -595,6 +770,8 @@
     readReferenceObjectRegistrySnapshot: readRegistrySnapshot,
     scanRepositoryReferenceObjects,
     checkReferenceObjectUses,
+    checkReferenceObjectDependencies,
+    completeReferenceObjectDependencyReview,
     buildReferenceObjectLocalUpdate,
     updateReferenceObjectUsesRemote,
     validateReferenceObjectTags,

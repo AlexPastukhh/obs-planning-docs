@@ -1,7 +1,7 @@
 # Linked Notes Prototype Check Record
 
 Status: unexecuted template
-Prototype version: `0.9.0-prototype`
+Prototype version: `0.10.0-prototype`
 
 Use one copy for one concrete browser/repository test run. Never record token values. For focused Chat Response Reader/details acceptance, also use `CHAT-RESPONSE-READER-CHECKLIST.md`.
 
@@ -34,7 +34,7 @@ Use one copy for one concrete browser/repository test run. Never record token va
 |---:|---|---|---|
 | 1 | Run `node verify-linked-notes.mjs`. | All configured automated tests pass; source syntax, generated syntax and generated freshness pass. | |
 | 2 | Record the generated userscript SHA-256. | One stable hash is available for the tested build. | |
-| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.9.0-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces and the Reader action becomes available from the Linked Notes workspace bar. | |
+| 3 | Install the complete generated userscript and reload ChatGPT. | Tampermonkey reports `0.10.0-prototype`; one `Docs` launcher appears with Notes / Files / Categories surfaces and the Reader action becomes available from the Linked Notes workspace bar. | |
 | 3a | Run the transfer parser cases containing images inside raw `<pre>`, `<code>`, `<textarea>`, `<script>` and `<style>` containers. | Only images outside those code-like containers enter the transfer plan. | |
 | 3b | Simulate a Note or target-Markdown write accepted by GitHub while immediate read-back fails, then use the contextual verification action. | Exact matching remote content is accepted without another write; absent unchanged targets retry safely; differing content becomes conflict. | |
 
@@ -333,6 +333,17 @@ Use test branches only.
 | 79 | Use an empty `reference-objects.json` and run Validate tags. | Indexed validation finishes after the Definitions File read with zero object/definition/use/file counts and no repository traversal. | |
 | 80 | In `Locations`, paste an existing repository directory, an existing file, `/`, an exact pending-local path, a missing path and rejected traversal/absolute/URL forms; use both Open and Enter. | Directory browsing and exact file opening use repository-relative semantics; files open in their parent folder; `/` opens root; exact pending paths are preferred before metadata discovery; rejected/missing paths leave the current location unchanged and no recursive repository search occurs. | |
 | 81 | In one chat, open a nested Files folder/file, enter source/edit state, collapse Docs and expand it again; then change that chat's workspace mapping (or edit the active workspace repository target) from another tab and repeat reopen. | Same exact workspace target preserves the Files surface/path/listing/open file/editor/view mode while local workspace/category storage is reread; a changed mapping/target clears stale repository-derived state instead of restoring it into the new context. A full page reload is not required to preserve this case and is not claimed as persistent navigation. | |
+
+| 82 | In one file add two dependent fragments, including one for a second Reference Object. | `Add dependency` assigns distinct positive file-local `dep` numbers; working Markdown contains `obs-ref:depend` boundaries but no SHA-256 fingerprint. | |
+| 83 | Put an `obs-ref:use` inside a dependent fragment and validate. | The nested literal use is valid; nested `depend` or `def` structure is rejected. | |
+| 84 | Check dependencies for an object with unrelated repository files present. | Reads are limited to the Definitions File, canonical definition and registered dependent-fragment paths; unrelated files are not fetched. CURRENT requires a unique live marker plus matching source and fragment fingerprints. | |
+| 85 | Change the canonical definition locally after a dependency was reviewed. | The dependency becomes NEEDS REVIEW from the pending definition fingerprint; its fragment text is unchanged. | |
+| 86 | Review that fragment and conclude no content change is necessary, then use Review complete. | Only Definitions File acknowledgement metadata is staged; the consumer file remains byte-identical. | |
+| 87 | Manually paste a new valid `obs-ref:depend` and save locally. | The dependency is reindexed with no acknowledgement and therefore reports NEEDS REVIEW until explicitly reviewed. | |
+| 88 | With a pending canonical definition plus dependency acknowledgement, open the pending Definitions File and attempt Update current file, then use Update all. | Current-only publication is blocked; Update all publishes the coherent definition/registry/affected-file state under the common verified one-commit boundary. | |
+| 89 | After Review complete, edit the inner content of the same `path + dep` fragment without changing the canonical definition. | Reindex clears/invalidates its acknowledgement; Check dependencies reports NEEDS REVIEW until the changed fragment is semantically reviewed again. | |
+| 90 | Remove a registered dependency marker, then Check dependencies. | The dependency reports UNRESOLVED rather than CURRENT. | |
+| 91 | Validate markers containing duplicate `id` or duplicate `dep` attributes. | Duplicate attributes are reported invalid; no last-wins identity is accepted. | |
 
 ## 14. Findings
 

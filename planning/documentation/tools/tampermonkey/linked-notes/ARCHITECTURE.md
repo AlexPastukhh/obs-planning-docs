@@ -1,7 +1,7 @@
 # OBS Linked Notes Prototype Architecture
 
 Status: current implementation mapping / not production architecture
-Version: `0.9.0-prototype`
+Version: `0.10.0-prototype`
 Scope: technical map of the generated Tampermonkey application, its runtime extension order and external boundaries.
 
 Current application semantic identities/purpose/trigger/result/boundaries are owned by [`scenarios/README.md`](scenarios/README.md); detailed behavior/traceability is routed through [`scenarios/README.md`](scenarios/README.md). This architecture file explains implementation shape only; legacy Linked Notes workflow files under `planning/areas/documentation-workbench/` are not current semantic owners.
@@ -170,9 +170,9 @@ src/repository-review-dependency-service.js
 src/repository-review-dependencies-runtime.js
 ```
 
-Marker/registry/service modules keep repository marker/index logic separate from UI/runtime integration. The common store/publisher own local intent and standard publication; Ordered List core owns structural validation and deterministic sorting; stale runtime projects repository freshness into Files.
+Marker/registry/service modules keep repository marker/index/review-state logic separate from UI/runtime integration. The common store/publisher own local intent and standard publication; Ordered List core owns structural validation and deterministic sorting; stale runtime projects literal-use and dependent-fragment status into Files.
 
-Ordinary Reference Object checks and `Validate tags` are index-routed: the service reads `.linked-notes/reference-objects.json`, then only recorded definition/use paths, deduplicating shared paths and using pending text overlays before GitHub reads. Files stale diagnostics use the same route across registered objects, and an empty registry requires no repository-file reads beyond the registry itself. `Deep validate repo` alone keeps the separate bounded repository crawl because only that explicit integrity operation can discover unindexed markers or definitions outside recorded routes.
+Reference Object literal-use checks read the Definitions File plus indexed definition/use paths. Dependency checks read the Definitions File, canonical definition and **indexed dependent-fragment paths**; they require each `path + dep` marker to resolve uniquely and compare both canonical-value `reviewedAgainst` and exact-fragment `reviewedFragment` SHA-256 values. `Review complete` validates exactly one live dependency marker and then stages both registry acknowledgements. Pending text overlays participate before GitHub reads. `Validate tags` follows indexed definition/use/dependency routes, while `Deep validate repo` alone performs bounded repository-wide discovery. The common current-file publisher blocks a Definitions File acknowledgement from publishing alone when its canonical definition path is also pending, preserving coherent review/source publication.
 
 ### Rich Markdown and Reader
 

@@ -19,10 +19,10 @@ Use the application/developer documentation instead:
 ## Repository-Facing Files
 
 - [`AGENT-GUIDE.md`](AGENT-GUIDE.md) — registry/router of application-aware authoring features for content-working chats.
-- [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) — canonical Reference Object definition/use semantics, marker contract and synchronization rules.
+- [`REFERENCE-OBJECTS.md`](REFERENCE-OBJECTS.md) — canonical Reference Object definition/use/dependent-fragment semantics, marker contract, synchronization and review rules.
 - [`REFERENCE-OBJECTS-AUTHORING.md`](REFERENCE-OBJECTS-AUTHORING.md) — ordered workflow for humans/AI agents intentionally authoring Reference Objects directly in repository files; it links back to the canonical contract instead of duplicating it.
 - [`ORDERED-REFERENCE-LISTS.md`](ORDERED-REFERENCE-LISTS.md) — Reference-Object-driven ordered item markers, structural-unit validation and sorting rules.
-- [`reference-objects.json`](reference-objects.json) — current Reference Object routing and rebuildable usage index.
+- [`reference-objects.json`](reference-objects.json) — current Reference Object routing, rebuildable use/dependency index and dependent-fragment review acknowledgements; canonical literal values remain in `obs-ref:def`.
 - [`REVIEW-DEPENDENCIES.md`](REVIEW-DEPENDENCIES.md) — whole-file semantic Review Dependency contract, fingerprint rules and explicit review lifecycle.
 - [`review-dependencies.json`](review-dependencies.json) — Review Dependency routing plus per-relation reason/review scope.
 - [`templates/README.md`](templates/README.md) — repository file-template format, template creation path and document-from-template rules.
@@ -30,6 +30,6 @@ Use the application/developer documentation instead:
 
 ## General Agent Rule
 
-Before creating or materially editing repository content, check whether a repository template, existing Reference Object, Ordered Reference List or registered Review Dependency applies to the requested content. When a response is explicitly intended for Linked Notes Reader, check the Reader response-format contract.
+Before creating or materially editing repository content, check whether a repository template, existing Reference Object literal use or bounded Reference Object dependency, Ordered Reference List or registered whole-file Review Dependency applies to the requested content. When a response is explicitly intended for Linked Notes Reader, check the Reader response-format contract.
 
 These convention files do not authorize automatic GitHub writes. Linked Notes business actions produce local file state first; `Update current file` and `Update all` are the explicit publication actions.

@@ -21,7 +21,7 @@
     App.prototype._referenceFreshnessUiState = function referenceFreshnessUiState() {
       const result = this.referenceFreshnessDiagnostics;
       const byPath = {};
-      for (const file of result && result.files || []) byPath[file.path] = { stale: file.stale, unresolved: file.unresolved, current: file.current };
+      for (const file of result && result.files || []) byPath[file.path] = { stale: file.stale, unresolved: file.unresolved, current: file.current, dependencyCurrent: file.dependencyCurrent || 0, dependencyNeedsReview: file.dependencyNeedsReview || 0, dependencyUnresolved: file.dependencyUnresolved || 0 };
       const path = this.repositoryPreview && this.repositoryPreview.path || '';
       return {
         referenceFreshnessByPath: byPath,
@@ -29,7 +29,9 @@
         referenceFreshnessIncomplete: Boolean(result && result.incomplete),
         referenceFreshnessChecked: Boolean(result),
         referenceStaleTotal: Number(result && result.staleCount || 0),
-        referenceUnresolvedTotal: Number(result && result.unresolvedCount || 0)
+        referenceUnresolvedTotal: Number(result && result.unresolvedCount || 0),
+        referenceDependencyNeedsReviewTotal: Number(result && result.dependencyNeedsReviewCount || 0),
+        referenceDependencyUnresolvedTotal: Number(result && result.dependencyUnresolvedCount || 0)
       };
     };
     if (typeof originalUiState === 'function') App.prototype._workspaceUiState = function referenceFreshnessWorkspaceUiState(...args) { return { ...originalUiState.apply(this, args), ...this._referenceFreshnessUiState() }; };
@@ -48,7 +50,7 @@
         : await run();
       if (!result || result.cancelled) return result;
       this.referenceFreshnessDiagnostics = result;
-      this._setUi({ status: `Indexed reference freshness checked: ${result.staleCount} stale, ${result.unresolvedCount} unresolved use(s)${result.incomplete ? '; scan incomplete' : ''}.` });
+      this._setUi({ status: `Indexed references checked: ${result.staleCount} stale and ${result.unresolvedCount} unresolved use(s); ${result.dependencyNeedsReviewCount || 0} dependent fragment(s) need review and ${result.dependencyUnresolvedCount || 0} are unresolved${result.incomplete ? '; scan incomplete' : ''}.` });
       return result;
     };
 
@@ -72,29 +74,29 @@
     const byPath = ui.state.referenceFreshnessByPath || {};
     ui.shadow.querySelectorAll('[data-repository-entry]').forEach((button) => {
       const summary = byPath[button.dataset.repositoryEntry];
-      if (!summary || (!summary.stale && !summary.unresolved) || button.querySelector('[data-reference-stale-badge]')) return;
+      if (!summary || (!summary.stale && !summary.unresolved && !summary.dependencyNeedsReview && !summary.dependencyUnresolved) || button.querySelector('[data-reference-stale-badge]')) return;
       const badge = document.createElement('span');
       badge.dataset.referenceStaleBadge = '1';
       badge.style.cssText = 'margin-left:6px;color:#b35b00;font-weight:700';
-      badge.textContent = `⚠ ${summary.stale ? `${summary.stale} stale` : `${summary.unresolved} unresolved`}`;
+      badge.textContent = `⚠ ${[summary.stale ? `${summary.stale} stale use${summary.stale === 1 ? '' : 's'}` : '', summary.unresolved ? `${summary.unresolved} unresolved use${summary.unresolved === 1 ? '' : 's'}` : '', summary.dependencyNeedsReview ? `${summary.dependencyNeedsReview} review` : '', summary.dependencyUnresolved ? `${summary.dependencyUnresolved} dep unresolved` : ''].filter(Boolean).join(' · ')}`;
       button.appendChild(badge);
     });
     const toolbar = ui.shadow.querySelector('.editor .editor-toolbar') || ui.shadow.querySelector('.editor-toolbar');
     if (toolbar && !toolbar.querySelector('[data-refresh-reference-freshness]')) {
       const refresh = document.createElement('button');
       refresh.dataset.refreshReferenceFreshness = '1';
-      refresh.textContent = ui.state.referenceFreshnessChecked ? `Stale uses (${Number(ui.state.referenceStaleTotal || 0)})` : 'Check stale uses';
+      refresh.textContent = ui.state.referenceFreshnessChecked ? `References (${Number(ui.state.referenceStaleTotal || 0)} stale · ${Number(ui.state.referenceDependencyNeedsReviewTotal || 0)} review)` : 'Check references';
       refresh.disabled = Boolean(ui.state.busy || !ui.state.hasToken);
       refresh.addEventListener('click', () => ui._call('onRefreshReferenceFreshness').catch(() => {}));
       toolbar.appendChild(refresh);
     }
     const current = ui.state.referenceCurrentFileFreshness;
     const preview = ui.shadow.querySelector('.file-preview');
-    if (current && preview && (current.stale || current.unresolved) && !preview.querySelector('[data-reference-current-warning]')) {
+    if (current && preview && (current.stale || current.unresolved || current.dependencyNeedsReview || current.dependencyUnresolved) && !preview.querySelector('[data-reference-current-warning]')) {
       const warning = document.createElement('div');
       warning.dataset.referenceCurrentWarning = '1';
       warning.className = 'remote-context mismatch';
-      warning.textContent = `Reference Object warning: ${current.stale} stale and ${current.unresolved} unresolved use(s) in this file. Review surrounding meaning before updating locally.`;
+      warning.textContent = `Reference Object warning: ${current.stale} stale / ${current.unresolved} unresolved use(s); ${current.dependencyNeedsReview || 0} dependent fragment(s) need semantic review / ${current.dependencyUnresolved || 0} unresolved. Stale uses may be synchronized explicitly; dependent fragment content is never auto-rewritten.`;
       preview.insertBefore(warning, preview.firstChild);
     }
   }

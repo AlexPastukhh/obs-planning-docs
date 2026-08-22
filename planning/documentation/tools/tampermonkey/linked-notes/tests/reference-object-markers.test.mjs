@@ -88,3 +88,40 @@ test('definition wrapping and use replacement preserve CRLF outside exact change
   const replaced = markers.replaceReferenceOccurrenceValues(useSource, [{ contentStart: parsed.occurrences[0].contentStart, contentEnd: parsed.occurrences[0].contentEnd, value: 'new' }]);
   assert.equal(replaced, 'Header\r\nValue <!-- obs-ref:use id="ro_crlf1" -->new<!-- /obs-ref:use -->\r\nTail\r\n');
 });
+
+
+test('dependency markers wrap derived content, use file-local numbers, and allow nested materialized uses', async () => {
+  const source = `Intro\nA value ${markers.formatReferenceUse('ro_damage1', '25')} drives this conclusion.\nTail`;
+  const exact = `A value ${markers.formatReferenceUse('ro_damage1', '25')} drives this conclusion.`;
+  const candidates = markers.findExactReferenceDependencyCandidates(source, exact);
+  assert.equal(candidates.length, 1);
+  const wrapped = markers.wrapReferenceDependencyAtCandidate(source, candidates[0], 'ro_damage1', 1);
+  const parsed = markers.parseReferenceMarkers(wrapped);
+  assert.equal(parsed.diagnostics.length, 0);
+  const dependency = parsed.occurrences.find((item) => item.role === 'depend');
+  assert.equal(dependency.dep, 1);
+  assert.equal(dependency.value, exact);
+  assert.equal(parsed.occurrences.filter((item) => item.role === 'use').length, 1);
+  assert.equal(markers.nextReferenceDependencyNumber(wrapped), 2);
+  assert.match(await markers.referenceObjectValueFingerprint('25'), /^sha256:[0-9a-f]{64}$/);
+  assert.notEqual(await markers.referenceObjectValueFingerprint('25'), await markers.referenceObjectValueFingerprint('25\n'));
+});
+
+test('duplicate dependency numbers in one file are invalid regardless of object id', () => {
+  const text = `${markers.formatReferenceDependency('ro_damage1', 1, 'A')}\n${markers.formatReferenceDependency('ro_speed11', 1, 'B')}`;
+  const parsed = markers.parseReferenceMarkers(text);
+  assert.ok(parsed.diagnostics.some((item) => item.kind === 'duplicate_dependency_number'));
+});
+
+
+test('duplicate marker attributes are invalid instead of silently using one value', () => {
+  for (const text of [
+    '<!-- obs-ref:def id="ro_first1" id="ro_second" -->x<!-- /obs-ref:def -->',
+    '<!-- obs-ref:use id="ro_first1" id="ro_second" -->x<!-- /obs-ref:use -->',
+    '<!-- obs-ref:depend id="ro_first1" id="ro_second" dep="1" -->x<!-- /obs-ref:depend -->',
+    '<!-- obs-ref:depend id="ro_first1" dep="1" dep="2" -->x<!-- /obs-ref:depend -->'
+  ]) {
+    const parsed = markers.parseReferenceMarkers(text);
+    assert.ok(parsed.diagnostics.some((item) => item.kind === 'duplicate_attribute'));
+  }
+});

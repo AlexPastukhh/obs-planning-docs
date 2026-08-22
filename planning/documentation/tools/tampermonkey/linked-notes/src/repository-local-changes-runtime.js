@@ -319,6 +319,16 @@
     App.prototype.updateCurrentRepositoryFileGitHub = async function updateCurrentRepositoryFileGitHub() {
       const path = this.repositoryPreview && this.repositoryPreview.path;
       if (!path) throw new Error('Open a pending repository file first.');
+      const api = apiOrThrow(this);
+      if (path === '.linked-notes/reference-objects.json' && typeof api.decodeReferenceObjectRegistry === 'function') {
+        const pendingMap = api.repositoryLocalChangeMap(this.referenceObjectLocalState || null);
+        const registryChange = pendingMap.get(path);
+        if (registryChange && registryChange.encoding === 'utf8') {
+          const registry = api.decodeReferenceObjectRegistry(registryChange.content);
+          const pendingDefinitions = (registry.objects || []).map((object) => object.definition && object.definition.path).filter((definitionPath) => definitionPath && pendingMap.has(definitionPath));
+          if (pendingDefinitions.length) throw new Error(`Definitions File cannot be published alone while canonical definition path(s) are pending (${pendingDefinitions.join(', ')}). Use Update all so dependency review acknowledgements and the definitions they were checked against publish coherently.`);
+        }
+      }
       return this._runRemoteOperation(`Updating ${path} on GitHub…`, async () => {
         const client = await this._client(this._activeWorkspace());
         const published = await apiOrThrow(this).publishCurrentRepositoryChange({ client, state: this.referenceObjectLocalState, path });
@@ -332,6 +342,7 @@
           this.repositoryBrowseLoaded = true;
         } catch (error) { refreshError = String(error && error.message || error); }
         this.referenceObjectChecks = {};
+        this.referenceObjectDependencyChecks = {};
         this.referenceObjectValidation = null;
         this.referenceFreshnessDiagnostics = null;
         this._setUi({ status: `${path} updated on GitHub and verified by exact read-back.${refreshError ? ` Folder refresh failed: ${refreshError}` : ''}` });
@@ -357,6 +368,7 @@
         } catch (error) { refreshError = String(error && error.message || error); }
         this.referenceObjectsLoaded = false;
         this.referenceObjectChecks = {};
+        this.referenceObjectDependencyChecks = {};
         this.referenceObjectValidation = null;
         this.referenceFreshnessDiagnostics = null;
         this.categoryContextRequiresRefresh = true;

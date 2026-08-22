@@ -3,7 +3,7 @@
 Status: active current-prototype implementation roadmap / priority view
 Scope: future directions for OBS Linked Notes. This file is not current Scenario authority, does not accept production architecture and does not authorize implementation by itself.
 
-Current implementation baseline: `0.9.0-prototype`.
+Current implementation baseline: `0.10.0-prototype`.
 
 Current semantic entry: [`scenarios/README.md`](scenarios/README.md).
 Detailed Scenario navigation: [`scenarios/README.md`](scenarios/README.md).
@@ -29,15 +29,16 @@ DEFERRED
 
 A roadmap direction is not current application semantics merely because it is written here. If a direction changes current Linked Notes capability meaning or Scenario identity, update `scenarios/README.md` first and update affected Scenario owners/navigation in the same reviewed change when detailed behavior changes. Broader Documentation Workbench planning may still retain historical/planning context, but it is not current Linked Notes semantic authority.
 
-## Implemented baseline — local-first files, Ordered Reference Lists and Review Dependencies
+## Implemented baseline — local-first files, Reference Object fragment dependencies, Ordered Reference Lists and Review Dependencies
 
-The `0.9.0-prototype` baseline now includes:
+The `0.10.0-prototype` baseline now includes:
 
 - one workspace-scoped pending repository-file queue compatible with earlier Reference Object drafts;
 - local-first file/folder/structure/copy/category/Reference Object/ordering actions;
 - separate `Update current file` and one-commit Git Data `Update all` publication;
 - inline Ordered Reference Lists whose whole-line/paragraph items contain Reference Object uses;
-- current/stale/unresolved Reference Object warnings in the open file and Files tree after a freshness scan;
+- current/stale/unresolved literal-use warnings plus bounded Reference Object dependency review warnings in the open file and Files tree after indexed checks;
+- `obs-ref:depend` bounded semantic fragments with file-local dependency numbers and registry-owned exact-canonical-value review acknowledgements;
 - hash-based whole-file Review Dependencies with per-relation reason/review scope, repository-visible reviewed-against evidence and explicit Review complete acknowledgement.
 
 Browser and real-GitHub acceptance remain evidence gaps; implementation and transport tests are not substitutes for that acceptance.
@@ -223,7 +224,7 @@ image-aware Markdown transfer
 any remaining feature-specific remote write path discovered in source
 ```
 
-Files create/edit/structure/copy, category changes, Reference Object changes, Ordered List changes and repository-template-backed New File are **local staging producers** in the current `0.9.0` model; audit their handoff into `SCN-LN-PUBLISH` rather than misclassifying each producer as a separate remote write entrypoint.
+Files create/edit/structure/copy, category changes, Reference Object definition/use/dependency changes, Ordered List changes and repository-template-backed New File are **local staging producers** in the current `0.10.0` model; audit their handoff into `SCN-LN-PUBLISH` rather than misclassifying each producer as a separate remote write entrypoint.
 
 For each entrypoint record:
 

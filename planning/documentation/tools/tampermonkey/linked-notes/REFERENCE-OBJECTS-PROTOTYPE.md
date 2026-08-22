@@ -1,102 +1,72 @@
 # Repository Reference Objects Prototype Slice
 
 Status: implementation prototype / automated focused evidence available / browser and real-GitHub acceptance pending
-Prototype host: Linked Notes `0.8.0-prototype`
-Definitions File: `.linked-notes/reference-objects.json`
+Prototype host: Linked Notes `0.10.0-prototype`
+Definitions File: `.linked-notes/reference-objects.json` schema v2
 Owner: [`scenarios/README.md`](scenarios/README.md) / `SCN-LN-REFERENCE-OBJECTS`
 
 ## 1. Purpose
 
-This slice adds a narrow repository-native Reference Object helper to the Files workspace. It does not reinstate the former generic managed-object architecture.
-
-A Reference Object has one stable id, a mutable display name, one definition marker and zero or more materialized use markers in ordinary repository text/Markdown.
+The Files workspace provides a narrow repository-native Reference Object helper. One stable `ro_*` object can have one canonical definition, literal materialized uses and bounded semantic dependent fragments.
 
 ```text
 <!-- obs-ref:def id="ro_example" -->canonical value<!-- /obs-ref:def -->
 <!-- obs-ref:use id="ro_example" -->materialized value<!-- /obs-ref:use -->
+<!-- obs-ref:depend id="ro_example" dep="1" -->derived content that must be reviewed after source change<!-- /obs-ref:depend -->
 ```
 
-HTML comments are visible in Source and invisible in rendered Markdown. Marker-looking text inside fenced code blocks or inline code spans is treated as literal code/example content rather than a live Reference Object marker.
+`use` is literal synchronization. `depend` is semantic review, not propagation. A dependency may contain `use` markers; nested dependencies and definitions inside dependencies are invalid.
 
-## 2. Repository Contract And Definitions File
+## 2. Definitions File And Review State
 
-The repository-facing rules live in `.linked-notes/REFERENCE-OBJECTS.md`, with `.linked-notes/README.md` as the convention entry point. Those files are intentionally readable by humans and AI agents: a synchronized value in a generated/edited document must use a complete `obs-ref:use` marker resolved from an existing stable object ID, and definition changes remain stale until an explicit Check/Update action.
+`.linked-notes/reference-objects.json` stores `id`, mutable display name, definition path, rebuildable uses and dependencies. Version 1 registries are read as `depends: []`; writes use schema v2.
 
-`.linked-notes/reference-objects.json` stores only routing/index metadata:
+Each dependency has a positive number unique in its file, path/line hints plus optional `reviewedAgainst` and `reviewedFragment`. The first is SHA-256 of the **exact canonical definition inner text**; the second is SHA-256 of the **exact bounded fragment inner content** last reviewed. Neither hash is placed in consumer Markdown.
 
-```text
-id
-name
-definition path
-rebuildable uses: path + line + lineOccurrence
-```
+Canonical value remains only in the one `obs-ref:def`.
 
-Canonical value is never copied into the Definitions File. It is read from the one definition marker.
+## 3. Local-First State
 
-## 3. Local-First Prototype State
+Reference Object edits, use refreshes, dependency creation/review metadata and registry reindexing use the common workspace/repository/branch pending-file queue with first verified base SHA. They perform no GitHub write.
 
-Reference Object changes are local by default. Pending complete-file replacements share the general repository local-change queue under an exact workspace/repository/branch key with the first GitHub base SHA. Existing legacy drafts upgrade in place. Complete local state preserves existing line endings and surrounding text outside explicit marker-range edits.
+If the Definitions File acknowledgement is based on a pending definition, `Update current file` blocks publishing the Definitions File alone; `Update all` publishes the coherent pending definition/registry/consumer set through the common one-commit boundary.
 
-Local actions include:
+## 4. Use Freshness
 
-- create definition;
-- rename;
-- save an edited repository file as a local Reference Object draft;
-- update stale uses locally;
-- Definitions File index changes caused by manually pasted use markers.
+`Check uses` follows the Definitions File, definition path and indexed use paths. It compares literal inner values, reports current/stale/unresolved and never writes. `Update uses locally` changes stale literal inner values only.
 
-They perform no GitHub write.
+## 5. Dependent Fragments
 
-GitHub publication uses the standard Files actions. `Update current file` writes only the open pending path and verifies read-back. `Update all` preflights every pending base and creates one verified Git Data commit with one non-force branch-ref update. There is no Reference Object-specific publisher or sequential bulk fallback.
+`Add dependency` exact-matches a selected fragment, assigns the next free file-local `dep` number, wraps the fragment and records it as reviewed against the current definition. The working file contains no fingerprint.
 
-## 4. Create And Use
+`Check dependencies` reads the Definitions File, canonical definition and indexed dependency consumer paths only. A dependency is CURRENT only when `path + dep` resolves to exactly one live marker and both source and fragment fingerprints match; changed content becomes NEEDS REVIEW and a missing/ambiguous marker becomes UNRESOLVED. No unrelated repository crawl occurs.
 
-`Create Reference Object` accepts pasted exact text. Find returns every eligible exact occurrence. Same-line matches are numbered left-to-right. The user selects one and names the object; only that occurrence is wrapped locally.
+`Review complete` opens/validates the selected `path + dep`, requires exactly one live marker, expects the user/AI to perform semantic review and then records the current canonical and fragment fingerprints in the Definitions File. If the fragment remains correct, its file is unchanged. No action automatically edits derived content.
 
-`Copy reference` copies a complete materialized `obs-ref:use` marker. It never inserts into the editor automatically. The user pastes it through ordinary repository file editing.
+## 6. Validation And Diagnostics
 
-## 5. Check, Update And Validate
+`Validate tags` checks indexed definition/use/dependency routes for marker errors, identity/index drift, duplicate file-local dependency numbers and missing/unknown occurrences. `Deep validate repo` is the only bounded repository-wide discovery path.
 
-`Check uses` is read-only and marks stale uses in the UI. It reads the Definitions File, then only the selected object's recorded definition/use paths; it does not perform a repository crawl. The Files stale-diagnostics pass uses the same indexed routing across all registered objects. An empty `objects[]` registry therefore finishes after the Definitions File read. A zero-stale/no-index-drift `Update locally` is a true no-op and creates no pending draft.
-
-Two update actions remain distinct:
-
-```text
-Update locally → local complete-file drafts only;
-Update current file / Update all → standard verified publication of pending file state.
-```
-
-Independent remote usage update is blocked while local Reference Object drafts are pending, so unsynced local definition changes cannot silently become the basis for a different remote action.
-
-`Validate tags` separately checks marker syntax/identity and Definitions File/index consistency using the same recorded definition/use routes as ordinary freshness, so it performs no directory crawl and makes no global-integrity claim. `Deep validate repo` is the explicit repository-wide integrity operation for discovering unindexed markers and definitions outside recorded routes. Neither mode repairs files automatically.
-
-## 6. Explicit Scan Bounds
-
-Only `Deep validate repo` crawls the bounded supported repository scope. The prototype bound is 80 directories, 300 supported text files, 4 MiB aggregate and 512 KiB per file. Normal Check/freshness and ordinary Validate tags follow Definitions File routes and perform no directory traversal. No background indexer is created.
+Files diagnostics show stale/unresolved literal uses separately from dependency fragments needing review/unresolved.
 
 ## 7. UI
 
-The Files workspace gains an always-available searchable `Reference objects ▾` menu.
-
-Each object exposes Copy, Open definition, Check, Update locally, local Rename and an expandable usage list. Usage rows show path, current line and same-line occurrence number; checked stale values are highlighted yellow. Clicking a use opens the file in source view and focuses the exact marker occurrence, including distinct `#1/#2/#3` uses on the same line. Indexed repository freshness diagnostics also expose stale/unresolved counts in the open file and Files tree after the routed check.
-
-The create modal and open Reference Objects menu are restored across the base UI's destructive rerenders when the exact repository workspace context remains unchanged.
+Each Reference Object exposes Copy reference, Add dependency, Open definition, Check uses, Check dependencies, Update uses locally, Rename, expandable Uses and Dependencies lists. Dependency rows expose Open and Review complete.
 
 ## 8. Safety
 
-- exact source matching only;
-- no source guessing;
+- no source guessing or fuzzy wrapping;
 - no automatic use insertion;
 - no automatic stale propagation;
-- no per-object automatic-propagation policy in this version;
-- no write from Check or Validate;
-- local state isolated by exact workspace/repository/branch;
-- SHA/absence preflight before publishing local drafts;
-- exact read-back for GitHub text writes;
-- partial multi-file writes are explicit, never reported as atomic success.
+- no automatic rewriting of dependent fragment content;
+- no fingerprint in working `obs-ref:depend` markup;
+- dependency `path + dep` is stable routing identity while line fields are rebuildable;
+- fragment edits invalidate acknowledgement until review is completed again;
+- duplicate marker attributes are invalid rather than last-wins;
+- indexed checks avoid unrelated repository traversal;
+- pending-source acknowledgements must publish coherently with their source definition;
+- common publication keeps SHA/absence preflight and exact verification.
 
 ## 9. Evidence
 
-Focused automated tests cover marker parsing/selection, registry codec, local store isolation, indexed service check/freshness behavior, empty-registry fast completion, full-scan validation and runtime orchestration including clipboard-only use creation, local no-write behavior, publish ordering and manual-paste reindexing.
-
-The complete repository verifier must still pass after the new modules are built into `linked-notes-prototype.user.js`. Browser and real-GitHub acceptance remains required before the slice is treated as accepted runtime evidence.
+Focused tests cover dependency parsing/nesting/duplicate-attribute rules, v1→v2 registry migration, file-local dependency identity, source+fragment hashing, indexed consumer integrity checks, Review complete validation, fragment-edit invalidation, local runtime creation/acknowledgement and publication safety, alongside existing Reference Object literal-use tests. Browser and real-GitHub acceptance remains required.

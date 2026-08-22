@@ -84,3 +84,8 @@ test('Save locally is enabled from activeWorkspaceId/workspaces without requirin
     else globalThis.document = previousDocument;
   }
 });
+
+test('Definitions File current-only publication is guarded when a canonical definition is also pending', () => {
+  assert.match(source, /Definitions File cannot be published alone while canonical definition path\(s\) are pending/);
+  assert.match(source, /Use Update all so dependency review acknowledgements and the definitions they were checked against publish coherently/);
+});

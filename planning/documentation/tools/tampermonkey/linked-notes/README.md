@@ -1,8 +1,8 @@
 # OBS Linked Notes Prototype
 
 Status: preliminary implementation prototype / browser and remote smoke testing pending
-Version: `0.9.0-prototype`
-Scope: local-first Tampermonkey repository documentation prototype with Notes, Files, Categories, repository templates, materialized Reference Objects, whole-file Review Dependencies, Ordered Reference Lists, stale-use/review diagnostics, Chat Response Reader, Full App State diagnostics and explicit verified GitHub actions.
+Version: `0.10.0-prototype`
+Scope: local-first Tampermonkey repository documentation prototype with Notes, Files, Categories, repository templates, Reference Objects with literal uses and bounded semantic dependencies, whole-file Review Dependencies, Ordered Reference Lists, stale-use/review diagnostics, Chat Response Reader, Full App State diagnostics and explicit verified GitHub actions.
 
 This directory is the **current Linked Notes semantic/product/implementation documentation root**. Current application semantic identities are owned by the Scenario owners routed through [`scenarios/README.md`](scenarios/README.md). `planning/areas/documentation-workbench/` remains useful for broader planning/history/compatibility, but its Linked Notes-specific workflow files are no longer current behavior or Scenario authority.
 

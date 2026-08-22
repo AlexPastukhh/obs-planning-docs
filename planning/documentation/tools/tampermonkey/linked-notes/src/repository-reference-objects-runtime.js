@@ -15,11 +15,11 @@
     const api = app && app.api || root.ObsLinkedNotes || {};
     const required = [
       'referenceObjectLocalStoreKey', 'normalizeReferenceObjectLocalState', 'referenceObjectLocalDraftMap',
-      'upsertReferenceObjectLocalDraft', 'removeReferenceObjectLocalDraft', 'findExactReferenceObjectCandidates',
-      'wrapReferenceDefinitionAtCandidate', 'createReferenceObjectId', 'formatReferenceUse', 'parseReferenceMarkers',
-      'decodeReferenceObjectRegistry', 'encodeReferenceObjectRegistry', 'upsertReferenceObject', 'renameReferenceObject',
-      'replaceReferenceObjectUses', 'readReferenceObjectRegistrySnapshot', 'checkReferenceObjectUses',
-      'buildReferenceObjectLocalUpdate', 'updateReferenceObjectUsesRemote', 'validateReferenceObjectTags',
+      'upsertReferenceObjectLocalDraft', 'removeReferenceObjectLocalDraft', 'findExactReferenceObjectCandidates', 'findExactReferenceDependencyCandidates',
+      'wrapReferenceDefinitionAtCandidate', 'wrapReferenceDependencyAtCandidate', 'nextReferenceDependencyNumber', 'createReferenceObjectId', 'formatReferenceUse', 'parseReferenceMarkers',
+      'normalizeReferenceDependencyNumber', 'decodeReferenceObjectRegistry', 'encodeReferenceObjectRegistry', 'upsertReferenceObject', 'renameReferenceObject',
+      'replaceReferenceObjectUses', 'replaceReferenceObjectDependencies', 'readReferenceObjectRegistrySnapshot', 'checkReferenceObjectUses', 'checkReferenceObjectDependencies',
+      'completeReferenceObjectDependencyReview', 'buildReferenceObjectLocalUpdate', 'updateReferenceObjectUsesRemote', 'validateReferenceObjectTags',
       'deepValidateReferenceObjectTags', 'proveReferenceObjectExpectedBase'
     ];
     for (const name of required) if (typeof api[name] !== 'function') throw new Error(`Reference Object runtime dependency is unavailable: ${name}.`);
@@ -61,6 +61,29 @@
     };
   }
 
+  function publicDependencyCheck(check) {
+    if (!check) return null;
+    return {
+      objectId: check.objectId,
+      currentFingerprint: check.currentFingerprint || '',
+      currentCount: Number(check.currentCount || 0),
+      needsReviewCount: Number(check.needsReviewCount || 0),
+      unresolvedCount: Number(check.unresolvedCount || 0),
+      incomplete: Boolean(check.incomplete),
+      blocked: Boolean(check.blocked),
+      diagnostics: (check.diagnostics || []).map((item) => ({ kind: item.kind, path: item.path || '', message: item.message || '' })),
+      dependencies: (check.dependencies || []).map((dependency) => ({
+        dep: dependency.dep,
+        path: dependency.path,
+        line: dependency.line,
+        lineOccurrence: dependency.lineOccurrence,
+        status: dependency.status,
+        reviewedAgainst: dependency.reviewedAgainst || '',
+        currentFingerprint: check.currentFingerprint || ''
+      }))
+    };
+  }
+
   function publicValidation(result) {
     if (!result) return null;
     return {
@@ -77,12 +100,12 @@
 
   function locateReferenceFocusOccurrence(api, content, focus) {
     if (!api || typeof api.parseReferenceMarkers !== 'function' || !focus) return null;
-    const role = focus.role === 'definition' ? 'def' : focus.role === 'use' ? 'use' : String(focus.role || '');
+    const role = focus.role === 'definition' ? 'def' : focus.role === 'use' ? 'use' : focus.role === 'dependency' ? 'depend' : String(focus.role || '');
     const id = String(focus.objectId || '');
     const line = Math.max(1, Number(focus.line) || 1);
     const lineOccurrence = Math.max(1, Number(focus.lineOccurrence) || 1);
     const parsed = api.parseReferenceMarkers(String(content == null ? '' : content));
-    return parsed.occurrences.find((item) => item.role === role && item.id === id && item.line === line && item.lineOccurrence === lineOccurrence) || null;
+    return parsed.occurrences.find((item) => item.role === role && item.id === id && item.line === line && item.lineOccurrence === lineOccurrence && (role !== 'depend' || item.dep === Math.max(1, Number(focus.dep) || 1))) || null;
   }
 
   function patchApp(App) {
@@ -114,10 +137,13 @@
       const registry = this.referenceObjectRegistrySnapshot && this.referenceObjectRegistrySnapshot.registry;
       const checks = {};
       for (const [id, check] of Object.entries(this.referenceObjectChecks || {})) if (check) checks[id] = publicCheck(check);
+      const dependencyChecks = {};
+      for (const [id, check] of Object.entries(this.referenceObjectDependencyChecks || {})) if (check) dependencyChecks[id] = publicDependencyCheck(check);
       return {
         referenceObjectsLoaded: Boolean(this.referenceObjectsLoaded),
         referenceObjects: registry && Array.isArray(registry.objects) ? registry.objects : [],
         referenceObjectChecks: checks,
+        referenceObjectDependencyChecks: dependencyChecks,
         referenceObjectValidation: publicValidation(this.referenceObjectValidation),
         referenceObjectPendingFiles: (this.referenceObjectLocalState && this.referenceObjectLocalState.files || []).map((file) => file.path),
         referenceObjectRegistryPath: this._referenceObjectRegistryPath(),
@@ -135,6 +161,7 @@
       this.referenceObjectsLoaded = false;
       this.referenceObjectRegistrySnapshot = null;
       this.referenceObjectChecks = {};
+      this.referenceObjectDependencyChecks = {};
       this.referenceObjectValidation = null;
       this.referenceObjectFocus = null;
       if (!options.silent) this._setUi(this._referenceObjectUiPatch({ status: state.files.length ? `${state.files.length} pending local repository file(s) restored for this workspace.` : 'Local repository change state ready.' }));
@@ -270,6 +297,7 @@
       this.referenceObjectRegistrySnapshot = { path: registryPath, sha: registryExisting ? registryExisting.baseSha : this.referenceObjectRegistrySnapshot.sha, content: registryContent, registry, local: true };
       this.referenceObjectsLoaded = true;
       this.referenceObjectChecks = {};
+      this.referenceObjectDependencyChecks = {};
       this.referenceObjectValidation = null;
       if (source.fromEditor) this.repositoryEditor = { ...this.repositoryEditor, content: wrapped };
       else if (this.repositoryPreview && this.repositoryPreview.path === source.path) {
@@ -279,6 +307,58 @@
       }
       this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: Boolean(source.fromEditor), status: `Reference Object ${name} (${id}) created locally. ${this.referenceObjectLocalState.files.length} local draft file(s) pending; GitHub was not changed.` }));
       return { id, name, definitionPath: source.path };
+    };
+
+    App.prototype.findReferenceObjectDependencyCandidates = async function findReferenceObjectDependencyCandidates(value) {
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const source = this._currentReferenceObjectSource();
+      if (source.path === this._referenceObjectRegistryPath()) throw new Error('Reference Object dependencies cannot wrap content inside the Definitions File itself.');
+      const candidates = apiOrThrow(this).findExactReferenceDependencyCandidates(source.content, value);
+      return { path: source.path, value: String(value == null ? '' : value), candidates };
+    };
+
+    App.prototype.createReferenceObjectDependencyLocal = async function createReferenceObjectDependencyLocal(input = {}) {
+      const api = apiOrThrow(this);
+      const id = api.normalizeReferenceObjectId(input.objectId);
+      await this._ensureReferenceRegistryLoaded();
+      const source = this._currentReferenceObjectSource();
+      if (source.path === this._referenceObjectRegistryPath()) throw new Error('Reference Object dependencies cannot wrap content inside the Definitions File itself.');
+      const candidate = input.candidate || {};
+      if (String(candidate.value == null ? '' : candidate.value) !== source.content.slice(Number(candidate.start), Number(candidate.end))) throw new Error('Selected exact dependency occurrence changed. Find it again.');
+      const check = await this.checkReferenceObjectDependencies(id);
+      if (!check || check.cancelled) return check;
+      if (check.blocked || check.incomplete) throw new Error('Reference Object definition must be resolved completely before creating a dependency.');
+      const dep = api.nextReferenceDependencyNumber(source.content);
+      const wrapped = api.wrapReferenceDependencyAtCandidate(source.content, candidate, id, dep);
+      const parsed = api.parseReferenceMarkers(wrapped);
+      if (parsed.diagnostics.length) throw new Error('Wrapping the dependency produced invalid Reference Object markers.');
+      const marker = parsed.occurrences.find((item) => item.role === 'depend' && item.id === id && item.dep === dep);
+      if (!marker) throw new Error('Created Reference Object dependency marker could not be resolved.');
+      let localState = this.referenceObjectLocalState;
+      const sourceExisting = api.referenceObjectLocalDraftMap(localState).get(source.path);
+      localState = api.upsertReferenceObjectLocalDraft(localState, { path: source.path, baseSha: sourceExisting ? sourceExisting.baseSha : source.baseSha, content: wrapped, updatedAt: new Date().toISOString() });
+      const object = api.referenceObjectById(check.registrySnapshot.registry, id);
+      const reviewedFragment = await api.referenceObjectValueFingerprint(marker.value);
+      const depends = [...(object.depends || []), { dep, path: source.path, line: marker.line, lineOccurrence: marker.lineOccurrence, reviewedAgainst: check.currentFingerprint, reviewedFragment }];
+      const registry = api.replaceReferenceObjectDependencies(check.registrySnapshot.registry, id, depends);
+      const registryContent = api.encodeReferenceObjectRegistry(registry);
+      const registryPath = this._referenceObjectRegistryPath();
+      const registryExisting = api.referenceObjectLocalDraftMap(localState).get(registryPath);
+      localState = api.upsertReferenceObjectLocalDraft(localState, { path: registryPath, baseSha: registryExisting ? registryExisting.baseSha : check.registrySnapshot.sha, content: registryContent, updatedAt: new Date().toISOString() });
+      await this._persistReferenceObjectLocalState(localState, { silent: true });
+      this.referenceObjectRegistrySnapshot = { path: registryPath, sha: registryExisting ? registryExisting.baseSha : check.registrySnapshot.sha, content: registryContent, registry, local: true };
+      this.referenceObjectsLoaded = true;
+      this.referenceObjectChecks = {};
+      this.referenceObjectDependencyChecks = {};
+      this.referenceObjectValidation = null;
+      if (source.fromEditor) this.repositoryEditor = { ...this.repositoryEditor, content: wrapped };
+      else if (this.repositoryPreview && this.repositoryPreview.path === source.path) {
+        this.repositoryPreview = { ...this.repositoryPreview, content: wrapped, size: new TextEncoder().encode(wrapped).byteLength, localReferenceDraft: true };
+        this.fileViewMode = 'source';
+        this.fileRendered = null;
+      }
+      this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: Boolean(source.fromEditor), status: `Dependency #${dep} on ${object.name} created locally in ${source.path} and acknowledged against the current canonical value. GitHub was not changed.` }));
+      return { objectId: id, dep, path: source.path, reviewedAgainst: check.currentFingerprint, reviewedFragment };
     };
 
     App.prototype.copyReferenceObjectUse = async function copyReferenceObjectUse(id) {
@@ -317,6 +397,53 @@
       const stale = check.uses.filter((item) => item.status === 'stale').length;
       this._setUi(this._referenceObjectUiPatch({ status: `Checked ${check.uses.length} use(s) for ${check.object.name}: ${stale} stale${check.incomplete ? '; scan incomplete' : ''}. No file was changed.` }));
       return check;
+    };
+
+    App.prototype.checkReferenceObjectDependencies = async function checkReferenceObjectDependencies(id) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const run = async () => {
+        const client = await this._referenceObjectsClient();
+        return api.checkReferenceObjectDependencies({ client, objectId: id, registryPath: this._referenceObjectRegistryPath(), overlays: this.referenceObjectLocalState.files });
+      };
+      const check = typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Checking Reference Object dependencies…', run)
+        : await this._runRemoteOperation('Checking Reference Object dependencies…', run);
+      if (!check || check.cancelled) return check;
+      this.referenceObjectRegistrySnapshot = check.registrySnapshot;
+      this.referenceObjectsLoaded = true;
+      this.referenceObjectDependencyChecks = { ...(this.referenceObjectDependencyChecks || {}), [check.objectId]: check };
+      this._setUi(this._referenceObjectUiPatch({ status: `Checked ${check.dependencies.length} dependent fragment(s) for ${check.object.name}: ${check.needsReviewCount} need review, ${check.unresolvedCount} unresolved. Indexed dependent fragments were read for integrity; no file was changed.` }));
+      return check;
+    };
+
+    App.prototype.completeReferenceObjectDependencyReviewLocal = async function completeReferenceObjectDependencyReviewLocal(id, dependency = {}) {
+      const api = apiOrThrow(this);
+      await this._ensureReferenceObjectLocalStateCurrent({ silent: true });
+      const path = String(dependency.path || '').trim();
+      const dep = api.normalizeReferenceDependencyNumber(dependency.dep);
+      const run = async () => api.completeReferenceObjectDependencyReview({
+        client: await this._referenceObjectsClient(),
+        objectId: id,
+        path,
+        dep,
+        registryPath: this._referenceObjectRegistryPath(),
+        overlays: this.referenceObjectLocalState.files
+      });
+      const result = typeof this._runFilesWorkspaceRead === 'function'
+        ? await this._runFilesWorkspaceRead('Completing Reference Object dependency review…', run)
+        : await this._runRemoteOperation('Completing Reference Object dependency review…', run);
+      if (!result || result.cancelled) return result;
+      const registryPath = this._referenceObjectRegistryPath();
+      const existing = this._referenceObjectLocalMap().get(registryPath);
+      await this._putReferenceObjectLocalDraft(registryPath, existing ? existing.baseSha : result.registrySnapshot.sha, result.registryContent, { silent: true });
+      this.referenceObjectRegistrySnapshot = { path: registryPath, sha: existing ? existing.baseSha : result.registrySnapshot.sha, content: result.registryContent, registry: result.registry, local: true };
+      this.referenceObjectsLoaded = true;
+      const check = await api.checkReferenceObjectDependencies({ client: await this._referenceObjectsClient(), objectId: id, registryPath, overlays: this.referenceObjectLocalState.files });
+      this.referenceObjectDependencyChecks = { ...(this.referenceObjectDependencyChecks || {}), [id]: check };
+      this.referenceObjectValidation = null;
+      this._setUi(this._referenceObjectUiPatch({ status: `Dependency #${dep} in ${path} marked reviewed against the current ${check.object.name} definition and current fragment content. Only Definitions File metadata changed locally.` }));
+      return result;
     };
 
     App.prototype.updateReferenceObjectUsesLocal = async function updateReferenceObjectUsesLocal(id) {
@@ -368,6 +495,7 @@
         this.referenceObjectRegistrySnapshot = snapshot;
         this.referenceObjectsLoaded = true;
         this.referenceObjectChecks = {};
+        this.referenceObjectDependencyChecks = {};
         this.referenceObjectValidation = null;
         this._setUi(this._referenceObjectUiPatch({ status: `GitHub update complete for ${id}: ${result.staleCount} stale use(s) refreshed; verified writes: ${result.results.length}.` }));
         return result;
@@ -439,9 +567,32 @@
       for (const object of registry.objects) {
         const existingOther = (object.uses || []).filter((use) => use.path !== path);
         const localUses = parsed.occurrences.filter((marker) => marker.role === 'use' && marker.id === object.id).map((marker) => ({ path, line: marker.line, lineOccurrence: marker.lineOccurrence }));
-        const next = [...existingOther, ...localUses];
-        if (JSON.stringify(next) !== JSON.stringify(object.uses || [])) {
-          registry = api.replaceReferenceObjectUses(registry, object.id, next);
+        const nextUses = [...existingOther, ...localUses];
+        if (JSON.stringify(nextUses) !== JSON.stringify(object.uses || [])) {
+          registry = api.replaceReferenceObjectUses(registry, object.id, nextUses);
+          changed = true;
+        }
+        const refreshedObject = api.referenceObjectById(registry, object.id);
+        const existingDepends = refreshedObject.depends || [];
+        const existingByDep = new Map(existingDepends.filter((dependency) => dependency.path === path).map((dependency) => [dependency.dep, dependency]));
+        const dependencyOther = existingDepends.filter((dependency) => dependency.path !== path);
+        const localDepends = [];
+        for (const marker of parsed.occurrences.filter((item) => item.role === 'depend' && item.id === object.id)) {
+          const previous = existingByDep.get(marker.dep) || {};
+          const currentFragmentFingerprint = await api.referenceObjectValueFingerprint(marker.value);
+          const sameReviewedFragment = previous.reviewedFragment && previous.reviewedFragment === currentFragmentFingerprint;
+          localDepends.push({
+            dep: marker.dep,
+            path,
+            line: marker.line,
+            lineOccurrence: marker.lineOccurrence,
+            ...(sameReviewedFragment && previous.reviewedAgainst ? { reviewedAgainst: previous.reviewedAgainst } : {}),
+            ...(sameReviewedFragment ? { reviewedFragment: previous.reviewedFragment } : {})
+          });
+        }
+        const nextDepends = [...dependencyOther, ...localDepends];
+        if (JSON.stringify(nextDepends) !== JSON.stringify(existingDepends)) {
+          registry = api.replaceReferenceObjectDependencies(registry, object.id, nextDepends);
           changed = true;
         }
       }
@@ -461,6 +612,7 @@
       this.repositoryEditor = { ...this.repositoryEditor, content: String(editor.content || '') };
       try { await this._reindexReferenceObjectFileLocal(editor.path, editor.content); } catch (error) { /* local file draft remains even if index read fails */ }
       this.referenceObjectChecks = {};
+      this.referenceObjectDependencyChecks = {};
       this.referenceObjectValidation = null;
       this._setUi(this._referenceObjectUiPatch({ replaceFileEditor: true, status: `Saved ${editor.path} as a local Reference Object draft. GitHub was not changed.` }));
       return this._referenceObjectLocalMap().get(editor.path);
@@ -499,6 +651,7 @@
         this.referenceObjectRegistrySnapshot = snapshot;
         this.referenceObjectsLoaded = true;
         this.referenceObjectChecks = {};
+        this.referenceObjectDependencyChecks = {};
         this.referenceObjectValidation = null;
         this._setUi(this._referenceObjectUiPatch({ status: `Published ${results.length} local Reference Object draft file(s) to GitHub with exact read-back verification.` }));
         return results;
@@ -527,6 +680,21 @@
       this.fileRendered = null;
       this.referenceObjectFocus = { objectId: id, path, line: Math.max(1, Number(use.line) || 1), lineOccurrence: Math.max(1, Number(use.lineOccurrence) || 1), role: 'use' };
       this._setUi(this._referenceObjectUiPatch({ status: `Opened ${path} at Reference Object use line ${this.referenceObjectFocus.line}, occurrence #${this.referenceObjectFocus.lineOccurrence}.` }));
+      return preview;
+    };
+
+    App.prototype.openReferenceObjectDependency = async function openReferenceObjectDependency(id, dependency = {}) {
+      const api = apiOrThrow(this);
+      const path = String(dependency.path || '').trim();
+      const dep = api.normalizeReferenceDependencyNumber(dependency.dep);
+      if (!path) throw new Error('Reference Object dependency path is required.');
+      const preview = await this.openRepositoryEntry({ type: 'file', path, name: path.slice(path.lastIndexOf('/') + 1) });
+      this.fileViewMode = 'source';
+      this.fileRendered = null;
+      const parsed = api.parseReferenceMarkers(preview && preview.content || '');
+      const marker = parsed.occurrences.find((item) => item.role === 'depend' && item.id === id && item.dep === dep);
+      this.referenceObjectFocus = { objectId: id, path, dep, line: marker ? marker.line : Math.max(1, Number(dependency.line) || 1), lineOccurrence: marker ? marker.lineOccurrence : Math.max(1, Number(dependency.lineOccurrence) || 1), role: 'dependency' };
+      this._setUi(this._referenceObjectUiPatch({ status: `Opened ${path} at Reference Object dependency #${dep}. Review the fragment against the current definition before marking Review complete.` }));
       return preview;
     };
 
@@ -575,9 +743,10 @@
         if (this._referenceObjectLocalMap().has(result.path)) await this._removeReferenceObjectLocalDraft(result.path, { silent: true });
         const content = String(result.content == null ? requested.content || '' : result.content);
         try {
-          if (/obs-ref:(?:def|use)/.test(content) || this.referenceObjectsLoaded) await this._reindexReferenceObjectFileLocal(result.path, content);
+          if (/obs-ref:(?:def|use|depend)/.test(content) || this.referenceObjectsLoaded) await this._reindexReferenceObjectFileLocal(result.path, content);
         } catch (error) { /* remote file is already verified; index remains explicitly repairable */ }
         this.referenceObjectChecks = {};
+        this.referenceObjectDependencyChecks = {};
         this.referenceObjectValidation = null;
         this._setUi(this._referenceObjectUiPatch({ status: `${result.path} saved to GitHub. Reference Object usage index is local until separately published when changed.` }));
         return result;
@@ -598,9 +767,13 @@
       if (this.ui && this.ui.handlers) Object.assign(this.ui.handlers, {
         onLoadReferenceObjects: (force) => this.loadReferenceObjects(force),
         onFindReferenceObjectCandidates: (value) => this.findReferenceObjectCandidates(value),
+        onFindReferenceObjectDependencyCandidates: (value) => this.findReferenceObjectDependencyCandidates(value),
         onCreateReferenceObjectLocal: (input) => this.createReferenceObjectLocal(input),
+        onCreateReferenceObjectDependencyLocal: (input) => this.createReferenceObjectDependencyLocal(input),
         onCopyReferenceObjectUse: (id) => this.copyReferenceObjectUse(id),
         onCheckReferenceObjectUses: (id) => this.checkReferenceObjectUses(id),
+        onCheckReferenceObjectDependencies: (id) => this.checkReferenceObjectDependencies(id),
+        onCompleteReferenceObjectDependencyReviewLocal: (id, dependency) => this.completeReferenceObjectDependencyReviewLocal(id, dependency),
         onUpdateReferenceObjectUsesLocal: (id) => this.updateReferenceObjectUsesLocal(id),
         onUpdateReferenceObjectUsesGitHub: (id) => this.updateReferenceObjectUsesGitHub(id),
         onValidateReferenceObjectTags: () => this.validateReferenceObjectTags(),
@@ -609,7 +782,8 @@
         onSaveRepositoryReferenceDraftLocal: (input) => this.saveRepositoryReferenceDraftLocal(input),
         onPublishReferenceObjectLocalDraftsGitHub: () => this.publishReferenceObjectLocalDraftsGitHub(),
         onOpenReferenceObjectDefinition: (id) => this.openReferenceObjectDefinition(id),
-        onOpenReferenceObjectUse: (id, use) => this.openReferenceObjectUse(id, use)
+        onOpenReferenceObjectUse: (id, use) => this.openReferenceObjectUse(id, use),
+        onOpenReferenceObjectDependency: (id, dependency) => this.openReferenceObjectDependency(id, dependency)
       });
       const result = await originalStart.apply(this, args);
       await this._loadReferenceObjectLocalState();
@@ -662,6 +836,13 @@
       .reference-object-use { width:100%; display:grid; grid-template-columns:auto minmax(0,1fr); gap:8px; text-align:left; align-items:start; }
       .reference-object-use.stale { background:rgba(220,174,60,.22); border-color:rgba(240,195,72,.65); }
       .reference-object-use.current { border-color:rgba(90,190,120,.5); }
+      .reference-object-dependencies { border-top:1px solid var(--border); padding-top:5px; }
+      .reference-object-dependency-list { display:grid; gap:4px; margin-top:5px; }
+      .reference-object-dependency { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; padding:6px; border:1px solid var(--border); border-radius:6px; }
+      .reference-object-dependency.needs_review { background:rgba(220,174,60,.22); border-color:rgba(240,195,72,.65); }
+      .reference-object-dependency.current { border-color:rgba(90,190,120,.5); }
+      .reference-object-dependency.unresolved { border-color:rgba(220,90,90,.6); }
+      .reference-object-dependency small { overflow-wrap:anywhere; }
       .reference-object-diagnostics { display:grid; gap:4px; max-height:180px; overflow:auto; }
       .reference-object-diagnostic { padding:5px 6px; border:1px solid var(--border); border-radius:6px; }
       .reference-object-modal-backdrop { position:absolute; inset:0; z-index:2147483647; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.72); }
@@ -728,10 +909,58 @@
     });
   }
 
+  function openDependencyModal(ui, object) {
+    if (!ui.shadow || !object || ui.shadow.querySelector('[data-reference-object-modal="dependency"]')) return;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'reference-object-modal-backdrop';
+    backdrop.dataset.referenceObjectModal = 'dependency';
+    backdrop.__referenceObjectContextKey = contextKey(ui);
+    backdrop.innerHTML = `<section class="reference-object-modal"><h3>Add dependency on ${escapeHtml(object.name)}</h3><div class="hint">Paste the exact dependent fragment from the currently open file. The fragment keeps its own content; Linked Notes records that it was reviewed against the current canonical value of <code>${escapeHtml(object.id)}</code>. No fingerprint is inserted into the working file.</div><textarea data-reference-dependency-exact-value placeholder="Paste exact dependent text / Markdown block"></textarea><div class="reference-object-actions"><button data-reference-dependency-find>Find exact occurrences</button><button data-reference-dependency-close>Close</button></div><div class="hint" data-reference-dependency-find-status>Choose one exact occurrence after searching.</div><div class="reference-object-candidates" data-reference-dependency-candidates></div><button class="primary" data-reference-dependency-create disabled>Create dependency locally</button></section>`;
+    ui.shadow.appendChild(backdrop);
+    const status = backdrop.querySelector('[data-reference-dependency-find-status]');
+    const list = backdrop.querySelector('[data-reference-dependency-candidates]');
+    const create = backdrop.querySelector('[data-reference-dependency-create]');
+    let selected = null;
+    backdrop.querySelector('[data-reference-dependency-close]').addEventListener('click', () => backdrop.remove());
+    backdrop.querySelector('[data-reference-dependency-find]').addEventListener('click', async () => {
+      selected = null; create.disabled = true; list.innerHTML = ''; status.textContent = 'Finding exact dependent occurrences…';
+      try {
+        const result = await directHandler(ui, 'onFindReferenceObjectDependencyCandidates', backdrop.querySelector('[data-reference-dependency-exact-value]').value);
+        const candidates = result && result.candidates || [];
+        status.textContent = candidates.length ? `${candidates.length} exact occurrence(s) found in ${result.path}. Choose one.` : 'No exact occurrence found. Nothing was changed.';
+        list.innerHTML = candidates.map((candidate, index) => `<button class="reference-object-candidate" data-reference-dependency-candidate="${index}"><strong>Line ${candidate.line} · occurrence ${candidate.lineOccurrence}</strong>${candidateContextHtml(candidate)}</button>`).join('');
+        list.querySelectorAll('[data-reference-dependency-candidate]').forEach((button) => button.addEventListener('click', () => {
+          list.querySelectorAll('[data-reference-dependency-candidate]').forEach((item) => item.classList.remove('active'));
+          button.classList.add('active'); selected = candidates[Number(button.dataset.referenceDependencyCandidate)]; create.disabled = !selected;
+        }));
+      } catch (error) { status.textContent = `Find failed: ${errorText(error)}`; }
+    });
+    create.addEventListener('click', async () => {
+      if (!selected) return;
+      try {
+        await ui._call('onCreateReferenceObjectDependencyLocal', { objectId: object.id, candidate: selected });
+        backdrop.remove();
+      } catch (error) { status.textContent = `Create failed: ${errorText(error)}`; }
+    });
+  }
+
   function usageListHtml(object, check) {
     const uses = check && Array.isArray(check.uses) ? check.uses : (object.uses || []).map((use) => ({ ...use, status: 'unchecked', storedPreview: '', currentPreview: '' }));
     if (!uses.length) return '<div class="hint">No indexed uses.</div>';
     return uses.map((use, index) => `<button class="reference-object-use ${escapeHtml(use.status || 'unchecked')}" data-reference-use-index="${index}" data-reference-use-object="${escapeHtml(object.id)}"><strong>${use.status === 'stale' ? '⚠' : use.status === 'current' ? '✓' : '•'}</strong><span>${escapeHtml(use.path)} : ${escapeHtml(use.line)} · #${escapeHtml(use.lineOccurrence)}${use.status === 'stale' ? `<br><small>stored: ${escapeHtml(use.storedPreview || '')}<br>current: ${escapeHtml(use.currentPreview || '')}</small>` : ''}</span></button>`).join('');
+  }
+
+  function dependencyListHtml(object, check) {
+    const dependencies = check && Array.isArray(check.dependencies)
+      ? check.dependencies
+      : (object.depends || []).map((item) => ({ ...item, status: 'unchecked' }));
+    if (!dependencies.length) return '<div class="hint">No dependent fragments indexed.</div>';
+    return dependencies.map((dependency, index) => {
+      const status = String(dependency.status || 'unchecked');
+      const icon = status === 'needs_review' ? '⚠' : status === 'current' ? '✓' : status === 'unresolved' ? '!' : '•';
+      const label = status === 'needs_review' ? 'needs review' : status === 'current' ? 'current' : status === 'unresolved' ? 'unresolved' : 'unchecked';
+      return `<div class="reference-object-dependency ${escapeHtml(status)}"><div><strong>${icon} Dependency #${escapeHtml(dependency.dep)}</strong> · ${escapeHtml(label)}<br><small>${escapeHtml(dependency.path)} · line ${escapeHtml(dependency.line)} · occurrence ${escapeHtml(dependency.lineOccurrence)}</small></div><div class="reference-object-actions"><button data-reference-dependency-open-index="${index}" data-reference-dependency-object="${escapeHtml(object.id)}">Open</button><button data-reference-dependency-review-index="${index}" data-reference-dependency-object="${escapeHtml(object.id)}" ${status === 'unresolved' ? 'disabled' : ''}>Review complete</button></div></div>`;
+    }).join('');
   }
 
   function validationHtml(validation) {
@@ -762,13 +991,18 @@
     const state = ui.state || {};
     const objects = Array.isArray(state.referenceObjects) ? state.referenceObjects : [];
     const checks = state.referenceObjectChecks || {};
+    const dependencyChecks = state.referenceObjectDependencyChecks || {};
     const pending = Array.isArray(state.referenceObjectPendingFiles) ? state.referenceObjectPendingFiles : [];
     const rows = objects.map((object) => {
       const check = checks[object.id] || null;
+      const dependencyCheck = dependencyChecks[object.id] || null;
       const stale = check ? check.staleCount : 0;
-      return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${stale ? `<span class="reference-object-local-badge">· ${stale} stale</span>` : ''}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-update-local="${escapeHtml(object.id)}">Update locally</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
+      const needsReview = dependencyCheck ? dependencyCheck.needsReviewCount : 0;
+      const unresolved = dependencyCheck ? dependencyCheck.unresolvedCount : 0;
+      const badges = `${stale ? `<span class="reference-object-local-badge">· ${stale} stale use${stale === 1 ? '' : 's'}</span>` : ''}${needsReview ? `<span class="reference-object-local-badge"> · ${needsReview} review</span>` : ''}${unresolved ? `<span class="reference-object-local-badge"> · ${unresolved} unresolved</span>` : ''}`;
+      return `<div class="reference-object-row" data-reference-object-row data-reference-search="${escapeHtml(`${object.name} ${object.id} ${object.definition && object.definition.path || ''}`.toLowerCase())}"><div><strong>${escapeHtml(object.name)}</strong> ${badges}<br><small>${escapeHtml(object.id)} · ${escapeHtml(object.definition && object.definition.path || '')}</small></div><div class="reference-object-actions"><button data-reference-copy="${escapeHtml(object.id)}">Copy reference</button><button data-reference-add-dependency="${escapeHtml(object.id)}">Add dependency</button><button data-reference-open-definition="${escapeHtml(object.id)}">Open definition</button><button data-reference-check="${escapeHtml(object.id)}">Check uses</button><button data-reference-check-dependencies="${escapeHtml(object.id)}">Check dependencies</button><button data-reference-update-local="${escapeHtml(object.id)}">Update uses locally</button></div><details class="reference-object-uses"><summary>▸ Uses (${escapeHtml(check ? check.uses.length : (object.uses || []).length)})</summary><div class="reference-object-use-list">${usageListHtml(object, check)}</div></details><details class="reference-object-dependencies"><summary>▸ Dependencies (${escapeHtml(dependencyCheck ? dependencyCheck.dependencies.length : (object.depends || []).length)})</summary><div class="reference-object-dependency-list">${dependencyListHtml(object, dependencyCheck)}</div></details><details><summary>Rename</summary><div class="reference-object-actions"><input data-reference-rename-input="${escapeHtml(object.id)}" value="${escapeHtml(object.name)}"><button data-reference-rename="${escapeHtml(object.id)}">Save locally</button></div></details></div>`;
     }).join('') || '<div class="hint">No Reference Objects loaded.</div>';
-    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button data-reference-deep-validate>Deep validate repo</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Validate tags checks only indexed definition/use paths; Deep validate repo performs the bounded repository-wide integrity scan. Reference Object actions are local; use the standard Update current file or Update all action to publish.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
+    details.innerHTML = `<summary>Reference objects ▾${pending.length ? ` · ${pending.length} local` : ''}</summary><div class="reference-objects-panel"><div class="reference-object-top-actions"><button data-reference-create>+ Create Reference Object</button><button data-reference-refresh>Refresh list</button><button data-reference-validate>Validate tags</button><button data-reference-deep-validate>Deep validate repo</button></div><small>Definitions File: <code>${escapeHtml(state.referenceObjectRegistryPath || '.linked-notes/reference-objects.json')}</code>. Uses are literal synchronized copies; dependencies are bounded fragments that require semantic review when the canonical value changes. Validate tags checks indexed definition/use/dependency paths; Deep validate repo performs the bounded repository-wide integrity scan. Local changes publish through Update current file or Update all.</small><input class="reference-object-search" data-reference-search placeholder="Search Reference Objects…" value="${escapeHtml(ui.__referenceObjectQuery || '')}">${validationHtml(state.referenceObjectValidation)}<div class="reference-object-list">${rows}</div></div>`;
     const panel = details.querySelector('.reference-objects-panel');
     const scope = panel || details;
     const search = scope.querySelector('[data-reference-search]');
@@ -783,8 +1017,15 @@
     scope.querySelector('[data-reference-validate]')?.addEventListener('click', () => ui._call('onValidateReferenceObjectTags').catch(() => {}));
     scope.querySelector('[data-reference-deep-validate]')?.addEventListener('click', () => ui._call('onDeepValidateReferenceObjectTags').catch(() => {}));
     scope.querySelectorAll('[data-reference-copy]').forEach((button) => button.addEventListener('click', () => ui._call('onCopyReferenceObjectUse', button.dataset.referenceCopy).catch(() => {})));
+    scope.querySelectorAll('[data-reference-add-dependency]').forEach((button) => button.addEventListener('click', () => {
+      const object = objects.find((item) => item.id === button.dataset.referenceAddDependency);
+      if (!object) return;
+      const api = root.ObsLinkedNotes || {}; if (typeof api.closeFilesWorkspaceTopPopup === 'function') api.closeFilesWorkspaceTopPopup(ui);
+      openDependencyModal(ui, object);
+    }));
     scope.querySelectorAll('[data-reference-open-definition]').forEach((button) => button.addEventListener('click', () => ui._call('onOpenReferenceObjectDefinition', button.dataset.referenceOpenDefinition).catch(() => {})));
     scope.querySelectorAll('[data-reference-check]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectUses', button.dataset.referenceCheck).catch(() => {})));
+    scope.querySelectorAll('[data-reference-check-dependencies]').forEach((button) => button.addEventListener('click', () => ui._call('onCheckReferenceObjectDependencies', button.dataset.referenceCheckDependencies).catch(() => {})));
     scope.querySelectorAll('[data-reference-update-local]').forEach((button) => button.addEventListener('click', () => ui._call('onUpdateReferenceObjectUsesLocal', button.dataset.referenceUpdateLocal).catch(() => {})));
     scope.querySelectorAll('[data-reference-rename]').forEach((button) => button.addEventListener('click', () => {
       const input = Array.from(scope.querySelectorAll('[data-reference-rename-input]')).find((node) => node.dataset.referenceRenameInput === button.dataset.referenceRename);
@@ -797,6 +1038,19 @@
       const uses = check && check.uses || object.uses || [];
       const use = uses[Number(button.dataset.referenceUseIndex)];
       if (use) ui._call('onOpenReferenceObjectUse', object.id, use).catch(() => {});
+    }));
+    const dependencyForButton = (button) => {
+      const object = objects.find((item) => item.id === button.dataset.referenceDependencyObject);
+      if (!object) return null;
+      const check = dependencyChecks[object.id];
+      const dependencies = check && check.dependencies || object.depends || [];
+      return { object, dependency: dependencies[Number(button.dataset.referenceDependencyOpenIndex ?? button.dataset.referenceDependencyReviewIndex)] };
+    };
+    scope.querySelectorAll('[data-reference-dependency-open-index]').forEach((button) => button.addEventListener('click', () => {
+      const found = dependencyForButton(button); if (found && found.dependency) ui._call('onOpenReferenceObjectDependency', found.object.id, found.dependency).catch(() => {});
+    }));
+    scope.querySelectorAll('[data-reference-dependency-review-index]').forEach((button) => button.addEventListener('click', () => {
+      const found = dependencyForButton(button); if (found && found.dependency) ui._call('onCompleteReferenceObjectDependencyReviewLocal', found.object.id, found.dependency).catch(() => {});
     }));
     return panel;
   }
