@@ -28,7 +28,7 @@ package-producing commands:
   use an explicitly selected archive as read-source, not output-package mode.
 ```
 
-`обс` remains only as a hidden legacy compatibility command definition. Normal material answers must already perform the built-in focus/integration recheck from the reviewability principles.
+`обс` remains only as a hidden legacy compatibility command definition. Normal material answers must already perform the built-in current-target/integration recheck from the reviewability principles.
 
 Concrete command routing belongs to the project root command-routing system: read the root Command Routing first, then the selected delegated command definition when the project uses a command registry. The command definition owns its canonical English name, output contract and permission boundary.
 

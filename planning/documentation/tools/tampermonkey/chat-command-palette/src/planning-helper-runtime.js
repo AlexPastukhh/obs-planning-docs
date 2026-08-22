@@ -14,15 +14,17 @@
   function materializeSnapshot(snapshot){
     const commandRecords=[...(snapshot.planningCommands||[])];
     const helperRecords=[...(snapshot.helperItems||[])];
+    const hiddenUseCaseIds=new Set(snapshot.hiddenUseCaseIds||[]);
     const definitions=commandRecords.map((record)=>record.definition);
     deps.validateCommandCatalog(definitions);
     const commandByFile=new Map(commandRecords.map((record)=>[record.definition.file,record]));
     const commandById=new Map(commandRecords.map((record)=>[record.definition.id,record]));
     const helperByKey=new Map(helperRecords.map((record)=>[helperKey(record.item),record]));
-    const planningEntries=deps.buildCommandEntries(definitions).map((entry)=>{const record=commandById.get(entry.id);const stateLabel=record?.repositoryKnown?'Registered · repository content verified':record?.repositoryTracked?'Registered · local draft changed':'New command draft · not registered';return{...entry,entityType:'planning-command',definition:record?.definition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',stateLabel};});
+    const planningEntries=deps.buildCommandEntries(definitions).map((entry)=>{const record=commandById.get(entry.id);const stateLabel=record?.repositoryKnown?'Registered · repository content verified':record?.repositoryTracked?'Registered · local draft changed':'New command draft · not registered';return{...entry,entityType:'planning-command',definition:record?.definition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',stateLabel,directionIds:deps.directionIdsForCommand(record?.definition||entry)};});
     const helperEntries=helperRecords.map((record)=>{const item=record.item;const evidence=record.repositorySha?'local · GitHub SHA verified':record.repositoryKnown?'local · repository-backed content; SHA unverified':'local · repository match not verified';return{id:`helper-library:${item.kind}:${item.id}`,entityType:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?'legacy-helper-command':'prompt',libraryId:item.id,libraryKind:item.kind,label:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy insertion · ${item.title}`:item.title,title:item.title,description:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy helper-command compatibility · ${evidence}`:evidence,text:item.text,adaptiveBody:item.text,repositoryPath:record.path,repositoryKnown:Boolean(record.repositoryKnown),repositoryTracked:Boolean(record.repositoryKnown),repositorySha:record.repositorySha||'',createdAt:item.createdAt,updatedAt:item.updatedAt};});
     const legacyCommandEntries=helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.COMMAND);
-    return{commandRecords,helperRecords,commandByFile,commandById,helperByKey,commandEntries:[...planningEntries,...legacyCommandEntries],localCommandEntries:legacyCommandEntries,promptEntries:helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.PROMPT)};
+    const useCaseEntries=(deps.buildSemanticEntries()[deps.SURFACES.USE_CASES]||[]).filter((entry)=>!hiddenUseCaseIds.has(entry.id));
+    return{commandRecords,helperRecords,commandByFile,commandById,helperByKey,commandEntries:[...planningEntries,...legacyCommandEntries],localCommandEntries:legacyCommandEntries,promptEntries:helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.PROMPT),useCaseEntries};
   }
 
   function mergeChatImport(snapshot,parsed,mode='import'){
@@ -45,7 +47,8 @@
       commandMap.set(normalized.file,record);if(mode==='import'&&!previous)newCommandRecords.push(record);
     }
     for(const itemValue of parsed.helperItems||[]){const item=deps.normalizeHelperLibraryItem(itemValue),key=helperKey(item),previous=current.helperByKey.get(key),rendered=deps.renderHelperLibraryDocument(item),unchanged=Boolean(previous)&&previous.rawContent===rendered;const record=deps.normalizeHelperRecord({item,rawContent:rendered,repositoryKnown:mode==='restore'?true:(unchanged&&Boolean(previous?.repositoryKnown)),repositoryTracked:mode==='restore'?true:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:mode==='restore'?'':(unchanged?previous?.repositorySha||'':'')});helperMap.set(key,record);if(mode==='import'&&!previous)newHelperRecords.push(record);}
-    const next={schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()]};
+    const restoredCommandIds=new Set((parsed.definitions||[]).map((definition)=>deps.normalizeCommandDefinition(definition).id));
+    const next={schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>!restoredCommandIds.has(id)),hiddenUseCaseIds:[...(snapshot.hiddenUseCaseIds||[])]};
     deps.normalizePlanningHelperLocalSnapshot(next);
     return{snapshot:next,newCommandRecords,newHelperRecords,removedRepositoryCommands,removedRepositoryHelperItems,parsed};
   }
@@ -98,7 +101,18 @@
     const record=deps.normalizeCommandRecord({definition,rawContent,repositoryKnown:false,repositoryTracked:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:''});
     const records=[...memory.commandRecords.filter((entry)=>entry.definition.id!==definition.id),record];
     deps.validateCommandCatalog(records.map((entry)=>entry.definition));
-    return{changed:true,definition,record,snapshot:{...snapshot,planningCommands:records}};
+    return{changed:true,definition,record,snapshot:{...snapshot,planningCommands:records,hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>id!==definition.id)}};
+  }
+
+  function deleteLocalCommandFromSnapshot(snapshot,id){
+    const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),record=memory.commandById.get(value);
+    if(!record)throw new Error(`Planning command not found: ${value||'<empty>'}`);
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.filter((entry)=>entry.definition.id!==value),hiddenCommandIds:[...new Set([...(snapshot.hiddenCommandIds||[]),value])]});
+  }
+
+  function deleteLocalUseCaseFromSnapshot(snapshot,id){
+    const value=String(id||'').trim();if(!deps.USE_CASE_DEFINITIONS.some((entry)=>entry.id===value))throw new Error(`Use Case not found: ${value||'<empty>'}`);
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,hiddenUseCaseIds:[...new Set([...(snapshot.hiddenUseCaseIds||[]),value])]});
   }
 
   function prepareLocalHelperSave(snapshot,value,now=new Date().toISOString()){
@@ -152,9 +166,11 @@
   async function startPlanningHelper(options={}){
     for(const key of [INSTANCE_DISPOSE_KEY,...LEGACY_DISPOSE_KEYS]){const previous=globalThis[key];if(typeof previous==='function'){try{previous();}catch(_){}}}
     const bundled=Array.isArray(options.bundledCommands)?options.bundledCommands:[];deps.validateCommandCatalog(bundled);
-    const semanticEntries=deps.buildSemanticEntries();const repositoryLock=createRepositoryOperationLock();
+    const bundledUseCases=Array.isArray(options.bundledUseCases)?options.bundledUseCases:[];
+    if(bundledUseCases.length){const expected=deps.USE_CASE_DEFINITIONS.map((entry)=>entry.id).sort(),actual=bundledUseCases.map((entry)=>String(entry?.id||'')).sort();if(JSON.stringify(actual)!==JSON.stringify(expected))throw new Error('Bundled Use-Case seed catalog does not match current semantic projections.');}
+    const repositoryLock=createRepositoryOperationLock();
     const loaded=await deps.loadOrMigratePlanningHelperLocalSnapshot(bundled);let snapshot=loaded.snapshot;let memory=materializeSnapshot(snapshot);const startupWarnings=[...(loaded.warnings||[])];if(loaded.migrated)startupWarnings.push('Planning Helper migrated existing local caches into one RAM-first local snapshot.');
-    function uiState(){return{commandEntries:memory.commandEntries,localCommandEntries:memory.localCommandEntries,promptEntries:memory.promptEntries};}
+    function uiState(){return{commandEntries:memory.commandEntries,localCommandEntries:memory.localCommandEntries,promptEntries:memory.promptEntries,useCaseEntries:memory.useCaseEntries};}
     async function persist(next){snapshot=await deps.savePlanningHelperLocalSnapshot(next);memory=materializeSnapshot(snapshot);return uiState();}
     async function makeClient(){const settings=await deps.loadRepositorySettings();const token=await deps.loadGitHubToken();if(typeof GM_xmlhttpRequest!=='function')throw new Error('GM_xmlhttpRequest is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');return{client:new deps.GitHubContentsClient({...settings,token,transport:deps.createGmTransport(GM_xmlhttpRequest)}),settings,token};}
     async function makeServices(){const{client,settings}=await makeClient();return{commandService:new deps.RepositoryCommandService(client,{commandsPath:deps.COMMANDS_PATH}),helperService:new deps.RepositoryHelperLibraryService(client),settings};}
@@ -164,7 +180,8 @@
     }
 
     async function saveLocalCommandDefinition(value,existingId=''){const prepared=prepareLocalCommandSave(snapshot,value,existingId);if(!prepared.changed)return{definition:prepared.definition,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{definition:prepared.definition,unchanged:false,...state};}
-    async function deleteLocalCommandDraft(id){const record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);if(record.repositoryTracked)throw new Error('Registered command records are not locally deletable from Commands. Use Reload GitHub to replace a changed draft; repository retirement is a separate authorized route.');const next={...snapshot,planningCommands:memory.commandRecords.filter((entry)=>entry.definition.id!==record.definition.id)};return persist(next);}
+    async function deleteLocalCommand(id){return persist(deleteLocalCommandFromSnapshot(snapshot,id));}
+    async function deleteLocalUseCase(id){return persist(deleteLocalUseCaseFromSnapshot(snapshot,id));}
     async function reloadRepositoryCommand(id){return repositoryLock.run('Reload planning command from GitHub',async()=>{const{commandService,settings}=await makeServices();const record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);const remote=await commandService.readRemote(record.path);const replacement=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});const records=memory.commandRecords.map((entry)=>entry.definition.id===record.definition.id?replacement:entry);deps.validateCommandCatalog(records.map((entry)=>entry.definition));const state=await persist({...snapshot,planningCommands:records});return{settings,path:remote.path,sha:remote.sha,...state};});}
     async function saveLocalLibraryItem(value){const prepared=prepareLocalHelperSave(snapshot,value);if(!prepared.changed)return{item:prepared.item,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{item:prepared.item,unchanged:false,...state};}
     async function deleteLocalLibraryItem(kind,id){const key=`${kind}:${id}`;const next={...snapshot,helperItems:memory.helperRecords.filter((record)=>helperKey(record.item)!==key)};return persist(next);}
@@ -179,11 +196,11 @@
     async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}
     async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings();const candidate=deps.validateRepositorySettings(settings);const sourceChanged=repositorySettingsKey(previous)!==repositorySettingsKey(candidate);if(sourceChanged)await persist(clearRepositoryEvidence(snapshot));await deps.saveGitHubToken(token);await deps.saveRepositorySettings(candidate);return{sourceChanged,...uiState()};});}
 
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,semanticEntries,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:(text,success,id)=>insertWithClipboard(text,success,id),onCopy:deps.copyText,onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommandDraft:deleteLocalCommandDraft,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,directionDefinitions:deps.DIRECTION_DEFINITIONS,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:(text,success,id)=>insertWithClipboard(text,success,id),onCopy:deps.copyText,onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
     function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}
     globalThis[INSTANCE_DISPOSE_KEY]=dispose;
-    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommandDraft,reloadRepositoryCommand,checkRepository,syncMissingRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
+    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
   }
 
-  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,insertWithClipboard};
+  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,insertWithClipboard};
 });

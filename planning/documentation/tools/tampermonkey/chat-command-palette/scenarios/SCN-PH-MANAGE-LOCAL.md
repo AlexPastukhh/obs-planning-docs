@@ -1,11 +1,11 @@
-# SCN-PH-MANAGE-LOCAL — Manage Planning Commands And Prompts
+# SCN-PH-MANAGE-LOCAL — Manage Helper-Local Commands, Use Cases And Prompts
 
 Status: active current behavior owner
-Scope: canonical detailed application behavior owner; this Scenario owns local draft/edit behavior for real Planning Commands and reusable prompts.
+Scope: canonical detailed application behavior owner; this Scenario owns Helper-local create/edit/delete behavior for Planning Commands, Use-Case projections and reusable prompts.
 
-**Trigger/input:** `New command`, command `Edit`, `New prompt`, prompt `Edit`, local draft save/delete, or edit of a legacy helper-command compatibility insertion.
+**Trigger/input:** `New command`, command `Edit`, `New prompt`, prompt `Edit`, or local `Delete` on a Command, Use Case, Prompt or legacy helper-command compatibility insertion.
 
-**Successful result:** a validated Planning Command draft or prompt/helper compatibility record is created/changed/deleted in the unified local snapshot and RAM without an implicit repository mutation.
+**Successful result:** the selected Helper-local Command/Use-Case/Prompt state is created/changed/deleted in the unified local snapshot/RAM without an implicit repository mutation; deleting a registered Command or Use-Case projection never deletes its canonical repository authority.
 
 **Current invariants:**
 
@@ -13,8 +13,10 @@ Scope: canonical detailed application behavior owner; this Scenario owns local d
 - editing an existing command cannot change its stable `id` or `file`; create a new command draft for a new identity/path;
 - the complete local command catalog is validated before a command draft is accepted;
 - unchanged local save preserves repository evidence; a real edit clears exact-content evidence while retaining tracked-command provenance;
-- unregistered command drafts may be deleted locally; registered command retirement/deletion is not a local Delete action;
-- prompt edits remain exact insertion-text edits; legacy helper-command records remain compatibility-only and the current UI does not create new ones.
+- any visible Planning Command may be removed from this Helper locally; registered command retirement/deletion remains a separate repository action and the canonical `planning/commands/*.command.md` file is untouched;
+- any visible Use Case may be removed from this Helper locally; canonical Use-Case registry/owner meaning is untouched;
+- prompt edits remain exact insertion-text edits; Prompt Delete remains local-only; legacy helper-command records remain compatibility-only and the current UI does not create new ones;
+- generated `seed/commands.json` and `seed/use-cases.json` ship the complete current default catalogs in the update; local tombstones prevent intentionally deleted items from being silently re-added on ordinary startup.
 
 **Boundary:** repository persistence is separate `SCN-PH-PUBLISH`; explicit repository→local replacement of a command is `Reload GitHub`, not an implicit freshness sync.
 

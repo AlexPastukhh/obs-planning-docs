@@ -15,7 +15,7 @@
     localLibrary:'obsPlanningHelper:v1:localLibrary',
     repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'
   });
-  const LOCAL_SNAPSHOT_SCHEMA_VERSION=1;
+  const LOCAL_SNAPSHOT_SCHEMA_VERSION=2;
   const POSITION_KEY='obs-planning-helper-position-v2';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
@@ -32,6 +32,7 @@
   async function saveGitHubToken(token){const value=String(token||'').trim();await gmSet(KEYS.token,value);return Boolean(value);}
 
   function cleanIso(value,fallback=''){const text=String(value||'').trim();if(!text)return fallback;const ms=Date.parse(text);if(!Number.isFinite(ms))throw new TypeError(`Invalid snapshot timestamp: ${text}`);return new Date(ms).toISOString();}
+  function normalizeIdList(value,label){const result=[];for(const raw of Array.isArray(value)?value:[]){const id=String(raw||'').trim();if(!id)continue;if(/[\r\n\u0000-\u001f\u007f]/.test(id))throw new TypeError(`${label} contains unsafe id.`);if(!result.includes(id))result.push(id);}return result.sort();}
   function normalizeCommandRecord(value){
     const input=value&&typeof value==='object'?value:{};
     const definition=deps.normalizeCommandDefinition(input.definition||input);
@@ -53,13 +54,16 @@
     const repositorySha=String(input.repositorySha||'').trim();return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};
   }
   function normalizePlanningHelperLocalSnapshot(value){
-    if(!value||typeof value!=='object'||value.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION)throw new TypeError('Unsupported Planning Helper local snapshot schema.');
+    if(!value||typeof value!=='object'||![1,LOCAL_SNAPSHOT_SCHEMA_VERSION].includes(value.schemaVersion))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
     const planningCommands=(value.planningCommands||[]).map(normalizeCommandRecord).sort((a,b)=>a.path.localeCompare(b.path));
     const helperItems=(value.helperItems||[]).map(normalizeHelperRecord).sort((a,b)=>a.path.localeCompare(b.path));
+    const hiddenCommandIds=normalizeIdList(value.hiddenCommandIds,'hiddenCommandIds');
+    const hiddenUseCaseIds=normalizeIdList(value.hiddenUseCaseIds,'hiddenUseCaseIds');
     deps.validateCommandCatalog(planningCommands.map((record)=>record.definition));
     if(new Set(planningCommands.map((record)=>record.path)).size!==planningCommands.length)throw new TypeError('Duplicate planning-command path in local snapshot.');
     if(new Set(helperItems.map((record)=>record.path)).size!==helperItems.length)throw new TypeError('Duplicate helper-library path in local snapshot.');
-    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems};
+    if(planningCommands.some((record)=>hiddenCommandIds.includes(record.definition.id)))throw new TypeError('A planning command cannot be both visible and locally deleted.');
+    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,hiddenCommandIds,hiddenUseCaseIds};
   }
   async function loadPlanningHelperLocalSnapshot(){const value=await gmGet(KEYS.localSnapshot,null);return value==null?null:normalizePlanningHelperLocalSnapshot(value);}
   async function savePlanningHelperLocalSnapshot(value){
@@ -74,10 +78,26 @@
 
   function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}
   function helperKey(item){return`${item.kind}:${item.id}`;}
+  function mergeBundledCommandSeed(snapshot,bundledCommands){
+    const current=normalizePlanningHelperLocalSnapshot(snapshot);
+    const hidden=new Set(current.hiddenCommandIds||[]);
+    const byId=new Map(current.planningCommands.map((record)=>[record.definition.id,record]));
+    let added=0;
+    for(const raw of bundledCommands||[]){const definition=deps.normalizeCommandDefinition(raw);if(hidden.has(definition.id)||byId.has(definition.id))continue;const record=normalizeCommandRecord({definition,repositoryKnown:true,repositoryTracked:true});byId.set(definition.id,record);added++;}
+    const next=normalizePlanningHelperLocalSnapshot({...current,planningCommands:[...byId.values()]});
+    return{snapshot:next,added};
+  }
   async function loadOrMigratePlanningHelperLocalSnapshot(bundledCommands){
-    const existing=await loadPlanningHelperLocalSnapshot();
-    if(existing)return{snapshot:existing,migrated:false,warnings:[]};
+    const existingRaw=await gmGet(KEYS.localSnapshot,null);
     const warnings=[];
+    if(existingRaw!=null){
+      const existing=normalizePlanningHelperLocalSnapshot(existingRaw);
+      const merged=mergeBundledCommandSeed(existing,bundledCommands||[]);
+      const needsWrite=existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION||merged.added>0;
+      const snapshot=needsWrite?await savePlanningHelperLocalSnapshot(merged.snapshot):existing;
+      if(merged.added)warnings.push(`Planning Helper added ${merged.added} current bundled command(s) to the local snapshot; locally deleted command IDs stayed deleted.`);
+      return{snapshot,migrated:existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION,seededCommands:merged.added,warnings};
+    }
     let definitions=[...(bundledCommands||[])];
     try{
       const legacy=await gmGet(LEGACY_KEYS.commandCache,null);
@@ -98,12 +118,12 @@
       let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}
       if(raw){for(const item of deps.parseLegacyProjectionRegistry(raw)){const key=helperKey(item);if(!helperByKey.has(key))helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:false}));}}
     }catch(error){warnings.push(`Legacy page-local command projections ignored: ${error.message||String(error)}`);}
-    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()]});
-    return{snapshot,migrated:true,warnings};
+    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()],hiddenCommandIds:[],hiddenUseCaseIds:[]});
+    return{snapshot,migrated:true,seededCommands:definitions.length,warnings};
   }
 
   function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null};}catch(_){return{left:null,top:null};}}
-  function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top}));}catch(_){}}
+  function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top}));}catch(_){} }
 
-  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, LOCAL_SNAPSHOT_SCHEMA_VERSION, normalizeSettings, validateRepositorySettings, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, normalizeCommandRecord, normalizeHelperRecord, normalizePlanningHelperLocalSnapshot, loadPlanningHelperLocalSnapshot, savePlanningHelperLocalSnapshot, loadOrMigratePlanningHelperLocalSnapshot, commandRecordsFromDefinitions, readPanelPosition, savePanelPosition };
+  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, LOCAL_SNAPSHOT_SCHEMA_VERSION, normalizeSettings, validateRepositorySettings, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, normalizeCommandRecord, normalizeHelperRecord, normalizePlanningHelperLocalSnapshot, loadPlanningHelperLocalSnapshot, savePlanningHelperLocalSnapshot, loadOrMigratePlanningHelperLocalSnapshot, mergeBundledCommandSeed, commandRecordsFromDefinitions, readPanelPosition, savePanelPosition };
 });

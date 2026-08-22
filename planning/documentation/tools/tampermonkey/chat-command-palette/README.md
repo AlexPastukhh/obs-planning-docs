@@ -1,8 +1,8 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.26.2`
-Scope: deterministic Planning Helper source/build, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub repository actions, ChatGPT-mediated recovery fallback and clipboard-first insertion.
+Version: `0.27.0`
+Scope: deterministic Planning Helper source/build, Direction-nested Commands/Use Cases, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub repository actions, ChatGPT-mediated recovery fallback and clipboard-first insertion.
 
 ## Read Order
 
@@ -43,7 +43,7 @@ Primary persistent state:
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v1 contains:
+Schema v2 contains:
 
 ```text
 planningCommands[]
@@ -59,9 +59,12 @@ helperItems[]
   path
   repositoryKnown
   repositorySha
+
+hiddenCommandIds[]
+hiddenUseCaseIds[]
 ```
 
-`rawContent` is the exact normalized LF document representation. At runtime the validated records are materialized once into Maps/entry arrays; Insert/Copy never perform a GM read.
+`rawContent` is the exact normalized LF document representation. At runtime the validated records are materialized once into Maps/entry arrays; Insert/Copy never perform a GM read. `hiddenCommandIds` / `hiddenUseCaseIds` are local-only tombstones used by Delete so a normal userscript restart/update does not immediately resurrect an item the user intentionally removed locally.
 
 Repository settings/token remain separate:
 
@@ -79,7 +82,11 @@ Changing owner/repository/branch preserves local content but clears per-record r
 ```text
 Commands
   planning/commands/*.command.md
-  → current surface supports validated local create/edit drafts, Save GitHub and explicit Reload GitHub
+  → current surface supports validated local create/edit drafts, local-only Delete, Save GitHub and explicit Reload GitHub
+
+Use Cases
+  current canonical Use-Case registries + owners
+  → current surface is a local semantic projection with local-only Delete; deleting the projection never changes the registry/owner
 
 Prompts
   planning/helper-library/prompts/*.prompt.md
@@ -89,7 +96,9 @@ Legacy helper-command compatibility
   → may remain visible as clearly marked legacy insertions; current UI does not create new ones
 ```
 
-Orientation, Directions and Use Cases remain build-time/read-only semantic projections. They are not a second writable repository registry. A non-command Use-Case Insert/Copy activates one semantic focus: its body identifies the stable UC ID + canonical registry, tells ChatGPT to resolve the **current** registry entry/Main Owner route and follow current owner links to materially defining principles/workflows/templates, and explicitly does not grant command/repository permissions. The Helper does not hard-code a permanent full owner-file list into each UC body.
+The main navigation keeps **Commands** and **Use Cases** as separate surfaces. Both are browsed through collapsible current Direction groups; there is no separate Directions tab. Commands contains command entries only (plus clearly marked legacy command compatibility records), while Use Cases contains every current canonical Use Case, including command-backed UCs as semantic UC entries rather than redirects to Commands. Prompts remain a separate surface.
+
+Directions and Use Cases remain build-time/read-only semantic projections, not writable application registries. A Use-Case Insert/Copy selects one current semantic planning unit: its body identifies the stable UC ID + canonical registry, tells ChatGPT to resolve the **current** registry entry/Main Owner route and follow current owner links to materially defining principles/workflows/templates, and explicitly does not grant command/repository permissions. The Helper does not hard-code a permanent full owner-file list into each UC body.
 
 ### Check GitHub
 
@@ -135,7 +144,7 @@ successful or recovered remote result
 
 Planning-command saves additionally read/validate the complete direct remote command catalog before writing, so a save cannot knowingly create an ambiguous command registry. Helper command/prompt saves are confined to their deterministic helper-library path. Malformed-document repair exists only on explicit Save for that deterministic target; `Sync missing` and ordinary remote reads remain strict and do not repair malformed repository content.
 
-Repository delete is not implemented. `Delete draft` is local-only and only applies to unregistered Planning Command drafts; legacy helper/prompt Delete remains local-only. Registered command retirement is a separate repository/documentation action.
+Repository delete is not implemented. `Delete` on Commands, Use Cases and Prompts is local-only: it removes/hides the Helper-local record/projection and makes zero GitHub writes. A registered Planning Command file and a canonical Use-Case registry/owner remain untouched. Explicit `Sync missing` can restore a locally deleted registered command from GitHub; Use-Case deletion remains a local projection preference. Repository command retirement/deletion is a separate authorized documentation action.
 
 ## ChatGPT Import And Recovery
 
@@ -145,7 +154,7 @@ Repository delete is not implemented. `Delete draft` is local-only and only appl
 
 ## Clipboard / Insert Contract
 
-For semantic Use Cases, the exact inserted body includes `focus`, current registry `source_of_truth`, dynamic `route_resolution`, Adaptive/Full `read_rule`, UC-specific instruction and a permission boundary. `Full` requires the receiving chat to read the complete current owner route; Adaptive may reuse clearly sufficient current context. Both keep the same semantic focus and permissions.
+For semantic Use Cases, the exact inserted body includes `semantic_owner`, current registry `source_of_truth`, dynamic `route_resolution`, Adaptive/Full `read_rule`, UC-specific instruction and a permission boundary. `Full` requires the receiving chat to read the complete current owner route; Adaptive may reuse clearly sufficient current context. Both keep the same semantic planning unit and permissions.
 
 Every Insert action prepares the exact clipboard body **before** composer mutation. The fast path first attempts a synchronous user-gesture `copy`; when the browser requires the async Clipboard API, composer mutation waits for that copy attempt to finish. The exact same RAM string is then passed to composer insertion. This contract is identical for real Planning Commands, Prompts and any legacy helper-command compatibility insertion.
 
@@ -160,6 +169,9 @@ For ChatGPT `contenteditable` composers, insertion uses one direct `Range.insert
 ```text
 scenarios/README.md
 MANUAL-ACCEPTANCE.md
+seed/
+  commands.json     # generated local seed projection from planning/commands/*.command.md
+  use-cases.json    # generated local seed projection from current canonical UC registries
 src/
   command-definition-codec.js
   command-catalog.js
@@ -188,7 +200,9 @@ npm test
 npm run verify
 ```
 
-`npm run verify` checks JavaScript syntax, the dynamically discovered planning-command catalog, owner/refinement path existence, focused tests (including Use-Case registry parity, focused semantic-body routing and exact owner-path invariants) and generated-artifact equality. The number of planning commands is not hard-coded.
+`npm run verify` checks JavaScript syntax, the dynamically discovered planning-command catalog, owner/refinement path existence, focused tests (including Use-Case registry parity, local Delete/tombstone behavior, startup surface and semantic-body routing), generated seed-catalog equality and generated-userscript equality. The number of planning commands or Use Cases is not hard-coded.
+
+The seed catalogs are generated **in this repository update**, not fetched after installation. The userscript bundles those current command/use-case seeds so an existing local snapshot gains missing current commands on upgrade while respecting explicit local-delete tombstones.
 
 The install artifact is generated:
 
@@ -200,4 +214,4 @@ Do not edit it manually.
 
 ## Safety Boundary
 
-The Planning Helper never runs local Git, commit or push. GitHub I/O happens only after explicit `Check GitHub`, `Sync missing`, `Reload GitHub` or `Save GitHub` actions. Normal insertion/copy/import remains RAM/local-only. Repository deletion is not part of this slice.
+The Planning Helper never runs local Git, commit or push. GitHub I/O happens only after explicit `Check GitHub`, `Sync missing`, `Reload GitHub` or `Save GitHub` actions. Normal insertion/copy/import/delete remains RAM/local-only. Repository deletion is not part of this slice.

@@ -659,3 +659,18 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - no new semantic UC, Q/R/P, command ontology or cross-scope change is introduced.
 
 **Rationale:** make the reviewed repository transition semantically self-consistent without rewriting historical records or expanding the selected methodology.
+
+### XREF-DOC-010 — Planning Helper Direction-nested Commands / Use Cases
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-011`  
+**Reason:** the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact belongs to the reusable-documentation parent scope while the Helper source/docs/tests own the behavior change; full rationale and APPLIED target state remain in the canonical Planning Helper log.
+
+
+### XREF-DOC-011 — Planning Helper local Delete, seed catalogs and branch consistency
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-013`  
+**Reason:** reusable reviewability wording and the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact participate in the same Helper correction; full user clarification, ReviewDiff findings and APPLIED target state remain in the canonical Planning Helper log.

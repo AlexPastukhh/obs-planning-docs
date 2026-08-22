@@ -6,7 +6,8 @@ const codec=require('../src/command-definition-codec.js');
 const catalog=require('../src/command-catalog.js');
 const helper=require('../src/helper-library-codec.js');
 const body=require('../src/command-body.js');
-globalThis.ObsPlanningHelper=Object.assign({},codec,catalog,helper,body);
+const semantic=require('../src/semantic-projections.js');
+globalThis.ObsPlanningHelper=Object.assign({},codec,catalog,helper,body,semantic);
 const state=require('../src/planning-helper-state.js');
 Object.assign(globalThis.ObsPlanningHelper,state);
 const runtime=require('../src/planning-helper-runtime.js');
@@ -42,3 +43,10 @@ test('restore reconciles repository-backed records but preserves local-only cont
 test('planning command local draft edit validates catalog, preserves tracked provenance and clears exact repository evidence',()=>{const original=def('tracked','tracked');const local=state.normalizePlanningHelperLocalSnapshot({schemaVersion:1,savedAt:'2026-08-16T00:00:00Z',planningCommands:[state.normalizeCommandRecord({definition:original,repositoryKnown:true,repositoryTracked:true,repositorySha:'sha'})],helperItems:[]});const changed={...original,description:'changed locally'};const prepared=runtime.prepareLocalCommandSave(local,changed,'tracked');assert.equal(prepared.changed,true);assert.equal(prepared.record.repositoryKnown,false);assert.equal(prepared.record.repositoryTracked,true);assert.equal(prepared.record.repositorySha,'');assert.equal(prepared.record.definition.description,'changed locally')});
 
 test('new planning command draft is unregistered and existing command id/file cannot be renamed in-place',()=>{const local=state.normalizePlanningHelperLocalSnapshot({schemaVersion:1,savedAt:'2026-08-16T00:00:00Z',planningCommands:[state.normalizeCommandRecord({definition:def('a'),repositoryKnown:true,repositoryTracked:true})],helperItems:[]});const newDef=def('new-one','new one');const created=runtime.prepareLocalCommandSave(local,newDef);assert.equal(created.record.repositoryTracked,false);assert.equal(created.snapshot.planningCommands.length,2);assert.throws(()=>runtime.prepareLocalCommandSave(local,{...def('a'),id:'renamed',file:'renamed.command.md'},'a'),/cannot change its id or file/)})
+
+test('local Delete removes even a registered command from Helper only and records a tombstone',()=>{const local=snapshot();const next=runtime.deleteLocalCommandFromSnapshot(local,'a');assert.equal(next.planningCommands.some((record)=>record.definition.id==='a'),false);assert.deepEqual(next.hiddenCommandIds,['a']);});
+
+test('explicit GitHub sync can restore a locally deleted command and clears its tombstone',()=>{const local=runtime.deleteLocalCommandFromSnapshot(snapshot(),'a');const definition=def('a');const merged=runtime.mergeRemoteMissing(local,{commands:[{path:'planning/commands/a.command.md',sha:'fresh',definition,rawContent:codec.renderCommandDefinitionDocument(definition)}],helperItems:[]});assert.equal(merged.snapshot.planningCommands.some((record)=>record.definition.id==='a'),true);assert.deepEqual(merged.snapshot.hiddenCommandIds,[]);});
+
+test('local Delete hides a Use Case without changing canonical semantic definitions',()=>{const local=snapshot();const id='UC-PLAN-DOMAIN';assert.ok(semantic.USE_CASE_DEFINITIONS.some((entry)=>entry.id===id));const next=runtime.deleteLocalUseCaseFromSnapshot(local,id);assert.ok(next.hiddenUseCaseIds.includes(id));const materialized=runtime.materializeSnapshot(next);assert.equal(materialized.useCaseEntries.some((entry)=>entry.id===id),false);assert.ok(semantic.USE_CASE_DEFINITIONS.some((entry)=>entry.id===id));});
+

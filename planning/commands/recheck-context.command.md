@@ -16,7 +16,7 @@ Scope: legacy explicit recheck shortcut retained only for compatibility; current
     "recheck"
   ],
   "description": "legacy context recheck",
-  "meaning": "Legacy explicit recheck shortcut; current material answers use built-in focus and integration recheck before return.",
+  "meaning": "Legacy explicit recheck shortcut; current material answers use built-in current-target and integration recheck before return.",
   "activeContextBehavior": "If explicitly invoked for compatibility, recheck the selected current target using the current reviewability principles; do not treat this shortcut as a separate current planning capability.",
   "traversalReadMode": "Targeted/full by risk and current owner uncertainty.",
   "ownerFiles": [

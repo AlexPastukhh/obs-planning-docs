@@ -72,7 +72,8 @@ test('non-command semantic Use Case body keeps one focused current-owner route a
   for(const body of [adaptive,full]){
     assert.match(body,/\[PLANNING_USE_CASE\]/);
     assert.match(body,/use_case_id:\n  UC-PLAN-DOMAIN/);
-    assert.match(body,/focus:/);
+    assert.match(body,/semantic_owner:/);
+    assert.doesNotMatch(body,/\nfocus:/);
     assert.match(body,/route_resolution:/);
     assert.match(body,/current Main Owner \/ Owner Route/);
     assert.match(body,/permission:/);
@@ -81,3 +82,29 @@ test('non-command semantic Use Case body keeps one focused current-owner route a
   assert.match(full,/Full use_case reading is required/);
   assert.match(full,/complete relevant owner route/);
 });
+
+
+test('every projected Use Case has one current Direction and command-backed UCs remain semantic insertions',()=>{
+  const directionIds=new Set(semantic.DIRECTION_DEFINITIONS.map((d)=>d.id));
+  for(const uc of semantic.USE_CASE_DEFINITIONS){assert.ok(directionIds.has(uc.directionId),`${uc.id}: missing current Direction`)}
+  const entries=semantic.buildSemanticEntries()[semantic.SURFACES.USE_CASES];
+  const current=entries.find((entry)=>entry.id==='UC-REPO-CURRENT-STATE');
+  assert.ok(current?.adaptiveBody);
+  assert.match(current.adaptiveBody,new RegExp('use_case_id:\\n  UC-REPO-CURRENT-STATE'));
+});
+
+test('every visible planning command resolves through at least one current Direction',()=>{
+  const commandDir=path.join(repoRoot,'planning','commands');
+  const codec=require('../src/command-definition-codec.js');
+  const directionIds=new Set(semantic.DIRECTION_DEFINITIONS.map((d)=>d.id));
+  for(const name of fs.readdirSync(commandDir).filter((name)=>name.endsWith('.command.md'))){
+    const definition=codec.parseCommandDefinitionDocument(fs.readFileSync(path.join(commandDir,name),'utf8'));
+    if(definition.palette!==true)continue;
+    const ids=semantic.directionIdsForCommand(definition);
+    assert.ok(ids.length,`${definition.id}: no Direction`);
+    for(const id of ids)assert.ok(directionIds.has(id),`${definition.id}: unknown Direction ${id}`);
+  }
+});
+
+test('Application Realization projection matches selected comparative pre-Domain contract',()=>{const realization=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-PLAN-REALIZATION');assert.ok(realization);assert.equal(realization.label,'Review / Compare High-Level Application Realization');assert.match(realization.description,/candidate Domain variants/);assert.match(realization.instruction,/pre-Domain comparative evidence/);assert.match(realization.instruction,/Domain authority/);});
+

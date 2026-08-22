@@ -130,7 +130,7 @@ Execution order may be partial: independent work can be parallel and dependencie
 
 ```text
 built-in recheck
-→ did this answer its selected focus correctly and integrate with current direction?
+→ did this answer its selected target/scope correctly and integrate with current direction?
 
 крит
 → is the selected answer/plan itself actually the best supported route under adversarial review?

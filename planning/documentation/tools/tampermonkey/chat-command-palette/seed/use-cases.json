@@ -1,0 +1,766 @@
+{
+  "schemaVersion": 1,
+  "kind": "use-case-seed",
+  "generatedFrom": "current canonical Use-Case registries via src/semantic-projections.js",
+  "items": [
+    {
+      "id": "UC-REPO-ORIENT",
+      "label": "Orient In Repository And Resolve Work Route",
+      "description": "natural repository discovery",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Orient In Repository And Resolve Work Route target>",
+      "directionId": "DIR-REPOSITORY"
+    },
+    {
+      "id": "UC-REPO-CURRENT-STATE",
+      "label": "Report Current Repository / Planning State",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-REPOSITORY",
+      "commandId": "current_state.report"
+    },
+    {
+      "id": "UC-REPO-PLAN-NEXT",
+      "label": "Plan The Next Concrete Step",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-REPOSITORY",
+      "commandId": "plan.now"
+    },
+    {
+      "id": "UC-REPO-CRITICAL-REVIEW",
+      "label": "Critically Review A Claim / Plan / Diff",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-REPOSITORY",
+      "commandId": "critical_review.apply"
+    },
+    {
+      "id": "UC-REPO-USE-ARCHIVE-SOURCE",
+      "label": "Use An Explicit Archive As Read Source",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-REPOSITORY",
+      "commandId": "archive_source.use"
+    },
+    {
+      "id": "UC-REPO-DEFINE-PARALLEL-SCOPES",
+      "label": "Define / Maintain Fixed Parallel-Work Scopes",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/use-case-registry.md",
+        "parallel-work-scope-registry.md"
+      ],
+      "instruction": "Read the root Scope Registry and reusable scope/log workflow. Change registered boundaries only as an explicit repository-architecture update; do not repartition scopes ad hoc.",
+      "target": "<parallel-scope architecture target>",
+      "directionId": "DIR-REPOSITORY"
+    },
+    {
+      "id": "UC-REPO-PARALLEL-WORK",
+      "label": "Work In Registered Parallel Scope(s)",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-REPOSITORY",
+      "commandId": "parallel_workspace.start"
+    },
+    {
+      "id": "UC-PLAN-REALITY",
+      "label": "Understand Current Workflow And Reality",
+      "description": "checked current reality before solution choice",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Understand Current Workflow And Reality target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-COLLECT-IDEAS",
+      "label": "Collect And Review Ideas From Selected Source",
+      "description": "command-backed Idea collection/review",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-PLAN-SOLUTION",
+      "commandId": "ideas.collect"
+    },
+    {
+      "id": "UC-PLAN-SOLUTION",
+      "label": "Plan / Review Whole Solution Or Workflow",
+      "description": "integrated real-world solution/workflow choice",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Plan / Review Whole Solution Or Workflow target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-RESEARCH",
+      "label": "Research Existing Solutions / Alternatives",
+      "description": "proportional evidence gathering for solution choice",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Research Existing Solutions / Alternatives target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-APP-CONCEPT",
+      "label": "Plan / Review Application Concept",
+      "description": "custom-app value/feasibility candidate before detailed behavior",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Plan / Review Application Concept target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-APPLICATION",
+      "label": "Establish Application Responsibility",
+      "description": "selected application inside/outside responsibility boundary",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Establish Application Responsibility target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-PROTOTYPE",
+      "label": "Prototype Application Experience / Workflow",
+      "description": "provisional interaction/workflow scenarios/screens and evidence",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve the Prototype Use-Case entry and follow the complete current Prototype owner route. Focus on provisional Prototype Scenarios/Screens, Requirements/DATA/Behavior findings and evidence; treat rough walkthroughs only as discovery techniques and do not promote prototype artifacts to canonical Scenario/Screen truth automatically.",
+      "target": "<Prototype Application Experience / Workflow target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-SCENARIO-DISCOVERY",
+      "label": "Discover Application Scenarios",
+      "description": "current Need/result behavioral boundaries",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve the Scenario Discovery Use-Case entry and follow its current owner route. Focus on current meaningful Need/result boundaries; use prototype/rough-walkthrough evidence only as input and keep commands/actions/implementation operations from becoming Scenarios mechanically.",
+      "target": "<Discover Application Scenarios target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-SCENARIO",
+      "label": "Draft / Review Detailed Scenario",
+      "description": "canonical detailed current behavior + DATA/Behavior/Requirements",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Draft / Review Detailed Scenario target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-DOMAIN-DISCOVERY",
+      "label": "Discover Domain Evidence / Candidates",
+      "description": "evidence-backed Domain concepts, lifecycle, invariants and consistency candidates",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry and follow domain-discovery-workflow.md. Discover evidence and candidates without silently selecting Domain authority.",
+      "target": "<Domain discovery target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-REALIZATION",
+      "label": "Review / Compare High-Level Application Realization",
+      "description": "bounded realization evidence for selected meaning or serious candidate Domain variants",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry and follow application-realization-workflow.md. Review or compare representative realization paths when material, including pre-Domain comparative evidence, without letting implementation convenience or this projection become Domain authority.",
+      "target": "<Application realization target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-DOMAIN",
+      "label": "Plan / Review Domain",
+      "description": "stable semantics, invariants and justified variation",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve the Domain Use-Case entry and follow the complete current Domain planning route. Focus on stable semantics, current Requirements/Scenarios, invariants vs policies, justified Change Axes and premature-generalization checks; do not redesign upstream behavior silently.",
+      "target": "<Plan / Review Domain target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-SLICE-STRATEGY",
+      "label": "Plan / Review Slice Strategy",
+      "description": "vertical implementation decomposition/order",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Plan / Review Slice Strategy target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-SLICE",
+      "label": "Plan / Review One Implementation Slice",
+      "description": "one selected separately deliverable/checkable increment",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Plan / Review One Implementation Slice target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-PLAN-CONSISTENCY",
+      "label": "Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency",
+      "description": "cross-owner contradiction/change-impact review",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+      "target": "<Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency target>",
+      "directionId": "DIR-PLAN-SOLUTION"
+    },
+    {
+      "id": "UC-DOC-ORIENT",
+      "label": "Bootstrap Reusable Documentation Governance",
+      "description": "open reusable documentation bootstrap command",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-DOCUMENTATION",
+      "commandId": "documentation_principles.read"
+    },
+    {
+      "id": "UC-DOC-FIND-OWNER",
+      "label": "Determine Where Information Belongs",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Determine Where Information Belongs target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-PLAN-UPDATE",
+      "label": "Plan A Documentation Update",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Plan A Documentation Update target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-UPDATE",
+      "label": "Perform An Approved Documentation Update",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Perform An Approved Documentation Update target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-PLAN-FILE-UPDATE",
+      "label": "Plan Concrete File / Docs / Code Update",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-DOCUMENTATION",
+      "commandId": "file_update.plan"
+    },
+    {
+      "id": "UC-DOC-BUILD-REPLACEMENT-PACKAGE",
+      "label": "Build Replacement Package",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-DOCUMENTATION",
+      "commandId": "replacement_archive.create"
+    },
+    {
+      "id": "UC-DOC-BUILD-REVIEWABLE-ARCHIVE",
+      "label": "Build Legacy Review-Diff Archive Route",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-DOCUMENTATION",
+      "commandId": "replacement_archive.review_diff.create"
+    },
+    {
+      "id": "UC-DOC-REVIEW-DIFF",
+      "label": "Semantically Review A Repository ReviewDiff",
+      "description": "semantic ReviewDiff correctness review",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Semantically Review A Repository ReviewDiff target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-REVISE-RETURNED-FILES",
+      "label": "Reconcile User-Returned Files",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-DOCUMENTATION",
+      "commandId": "returned_files.revise"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-NAVIGATION",
+      "label": "Maintain Repository Documentation Navigation",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve navigation-vs-semantic-owner boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Maintain Repository Documentation Navigation target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-REGISTRIES",
+      "label": "Maintain Directions And Use Cases",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Maintain Directions And Use Cases target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-COMMAND",
+      "label": "Create / Maintain Planning Command",
+      "description": "registered planning-command creation/change without semantic-authority drift",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-DOCUMENTATION",
+      "commandId": "command.plan"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-PROMPT",
+      "label": "Create / Maintain Reusable Prompt",
+      "description": "reusable prompt/helper insertion maintenance without semantic-authority drift",
+      "sources": [
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/prompt-maintenance-workflow.md",
+        "planning/helper-library/README.md"
+      ],
+      "instruction": "Resolve the canonical prompt-maintenance Use Case and current owner route. Choose a prompt profile proportionally, point to current semantic owners rather than copying changing truth, and require checked-source/depth or contradiction/QRP reporting only when the selected bootstrap/audit profile needs it.",
+      "target": "<reusable prompt target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-REVIEW-COVERAGE",
+      "label": "Review Repository Navigation / Semantic Coverage",
+      "description": "semantic discoverability coverage across Workspace/methodology UCs and Application Scenarios",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Resolve the canonical coverage-review Use-Case entry and follow its current owner route. Check Workspace/methodology capabilities through Use Cases and Application behavior through Scenario Catalogs/Scenarios; do not treat the Helper as semantic authority.",
+      "target": "<repository semantic coverage target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-REVIEW-EXAMPLES",
+      "label": "Review Practical Example Coverage",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Review Practical Example Coverage target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-RECONCILE-STATUS",
+      "label": "Reconcile Documentation / Owner Status",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Reconcile Documentation / Owner Status target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DW-DOC-REF",
+      "label": "Repository Documentation Change And Reference Review",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/areas/documentation-workbench/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Repository Documentation Change And Reference Review target>",
+      "directionId": "DIR-DOCUMENTATION-WORKBENCH"
+    },
+    {
+      "id": "UC-DW-PLANNING-TO-REPOSITORY",
+      "label": "Planning Meaning To Repository",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/areas/documentation-workbench/use-case-registry.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Planning Meaning To Repository target>",
+      "directionId": "DIR-DOCUMENTATION-WORKBENCH"
+    },
+    {
+      "id": "UC-PR-END-SESSION",
+      "label": "End Active Planning Session",
+      "description": "open canonical Use-Case entry",
+      "sources": [],
+      "instruction": "",
+      "target": "",
+      "directionId": "DIR-PLANNING-RUNTIME",
+      "commandId": "session.end"
+    },
+    {
+      "id": "UC-PLAN-WORKSPACE-ESTABLISH-UC",
+      "label": "Establish Workspace Use Case",
+      "description": "establish one justified new Workspace capability through proportional Step 1/2/3 planning",
+      "sources": [
+        "planning/documentation/workspace-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Workspace Planning Use-Case entry, follow its Establish workflow/current owner route and preserve generic UC/Architecture authority boundaries.",
+      "target": "<candidate Workspace capability>",
+      "directionId": "DIR-PLAN-WORKSPACE"
+    },
+    {
+      "id": "UC-PLAN-WORKSPACE-CHANGE-UC",
+      "label": "Review / Change Workspace Use Case",
+      "description": "integrate selected change meaning into one existing Workspace UC through proportional Step 1/2/3 planning",
+      "sources": [
+        "planning/documentation/workspace-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Workspace Planning Use-Case entry, follow its Review/Change workflow/current owner route and keep all selected Ideas for the UC in one integrated target.",
+      "target": "<existing Workspace UC change>",
+      "directionId": "DIR-PLAN-WORKSPACE"
+    },
+    {
+      "id": "UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY",
+      "label": "Review Workspace Use-Case Topology",
+      "description": "review multi-UC boundaries/relations when coherent topology is independently useful",
+      "sources": [
+        "planning/documentation/workspace-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact proportional Workspace Planning topology Use Case. Activate it for real multi-UC boundary/relationship/topology concerns, not merely because one Idea affects several independent UCs.",
+      "target": "<multi-UC topology concern>",
+      "directionId": "DIR-PLAN-WORKSPACE"
+    },
+    {
+      "id": "UC-PLAN-ARCH-STATE",
+      "label": "Understand / Review Workspace Architecture State",
+      "description": "current architecture state and maintainability review",
+      "sources": [
+        "planning/documentation/architecture-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.",
+      "target": "<architecture state target>",
+      "directionId": "DIR-PLAN-ARCHITECTURE"
+    },
+    {
+      "id": "UC-PLAN-ARCH-PATH",
+      "label": "Trace / Evaluate Architecture-Relevant Path",
+      "description": "trace understanding, change or runtime path as architecture evidence",
+      "sources": [
+        "planning/documentation/architecture-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.",
+      "target": "<architecture path target>",
+      "directionId": "DIR-PLAN-ARCHITECTURE"
+    },
+    {
+      "id": "UC-PLAN-ARCH-PRESSURE",
+      "label": "Establish / Review Workspace Change Pressure",
+      "description": "evidence-backed change pressure, axes and hot paths",
+      "sources": [
+        "planning/documentation/architecture-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; consume Workspace Use-Case discovery when needed.",
+      "target": "<architecture pressure target>",
+      "directionId": "DIR-PLAN-ARCHITECTURE"
+    },
+    {
+      "id": "UC-PLAN-ARCH-DECISION",
+      "label": "Plan / Review One Material Architecture Decision",
+      "description": "compare and select one material architecture choice",
+      "sources": [
+        "planning/documentation/architecture-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; route selected meaning to the narrowest real semantic owner.",
+      "target": "<architecture decision target>",
+      "directionId": "DIR-PLAN-ARCHITECTURE"
+    },
+    {
+      "id": "UC-PLAN-ARCH-EVOLUTION",
+      "label": "Plan / Review Workspace Architecture Evolution",
+      "description": "coordinated multi-decision architecture evolution",
+      "sources": [
+        "planning/documentation/architecture-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.",
+      "target": "<architecture evolution target>",
+      "directionId": "DIR-PLAN-ARCHITECTURE"
+    },
+    {
+      "id": "UC-PLAN-ARCH-WORKSPACE-USES",
+      "label": "Discover / Review Workspace Use Cases",
+      "description": "architecture-relevant Workspace capability discovery",
+      "sources": [
+        "planning/documentation/architecture-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow workspace-use-case-discovery-workflow.md.",
+      "target": "<Workspace uses target>",
+      "directionId": "DIR-PLAN-ARCHITECTURE"
+    },
+    {
+      "id": "UC-PLAN-TEST-STRATEGY",
+      "label": "Establish / Review Testing Strategy",
+      "description": "shared/cross-Slice testing strategy",
+      "sources": [
+        "planning/documentation/testing-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this Testing Planning Use Case and follow its strategy owner route.",
+      "target": "<testing strategy target>",
+      "directionId": "DIR-PLAN-TESTING"
+    },
+    {
+      "id": "UC-PLAN-TEST-DESIGN",
+      "label": "Plan / Review Verification For Selected Behavior",
+      "description": "Behavior-to-Test proof design",
+      "sources": [
+        "planning/documentation/testing-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this Testing Planning Use Case and follow test-design-workflow.md.",
+      "target": "<behavior proof target>",
+      "directionId": "DIR-PLAN-TESTING"
+    },
+    {
+      "id": "UC-PLAN-TEST-COVERAGE",
+      "label": "Review Current Test Coverage / Evidence",
+      "description": "audit actual current test evidence",
+      "sources": [
+        "planning/documentation/testing-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve this Testing Planning Use Case and inspect actual evidence; plans/test names do not prove coverage.",
+      "target": "<coverage review target>",
+      "directionId": "DIR-PLAN-TESTING"
+    },
+    {
+      "id": "UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES",
+      "label": "Configure Required Dependency Reviews",
+      "description": "register source changes that must signal consumer review",
+      "sources": [
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/review-dependency-planning-workflow.md"
+      ],
+      "instruction": "Configure a semantic source→consumer review obligation; use Linked Notes as the selected mechanism when implemented. Do not perform or propagate semantic edits automatically.",
+      "target": "<review dependency target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-RPKG-APPLY",
+      "label": "Apply Verified Replacement Package",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Apply Verified Replacement Package target>",
+      "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+    },
+    {
+      "id": "UC-RPKG-REVIEW",
+      "label": "Inspect Current ChangeSet Review State",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Inspect Current ChangeSet Review State target>",
+      "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+    },
+    {
+      "id": "UC-RPKG-FINALIZE",
+      "label": "Finalize Current ChangeSet",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Finalize Current ChangeSet target>",
+      "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+    },
+    {
+      "id": "UC-RPKG-EXPORT-REPOSITORY",
+      "label": "Export Repository Snapshot ZIP",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Export Repository Snapshot ZIP target>",
+      "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+    },
+    {
+      "id": "UC-RPKG-DELIVER-REVIEW",
+      "label": "Deliver Current ReviewDiff to ChatGPT",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Deliver Current ReviewDiff to ChatGPT target>",
+      "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+    },
+    {
+      "id": "UC-RPKG-ATTACH-SNAPSHOT",
+      "label": "Attach Repository Snapshot to ChatGPT",
+      "description": "open canonical Use-Case entry",
+      "sources": [
+        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+      "target": "<Attach Repository Snapshot to ChatGPT target>",
+      "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+    },
+    {
+      "id": "UC-REPO-REFINE-CURRENT-PLAN",
+      "label": "Refine The Current Plan",
+      "description": "integrate material clarification/change into one accumulating Current Plan",
+      "sources": [
+        "planning/use-case-registry.md",
+        "planning/documentation/progressive-plan-refinement-workflow.md"
+      ],
+      "instruction": "Resolve this exact root Use Case and refine the current semantic owner from Need/UC/Scenario meaning; keep Q/R/P secondary and owner-attached.",
+      "target": "<current plan refinement target>",
+      "directionId": "DIR-REPOSITORY"
+    },
+    {
+      "id": "UC-REPO-AUDIT-REVIEW",
+      "label": "Audit Review Coverage And Quality",
+      "description": "report checked scope, sufficiency, gaps and repeat-review delta",
+      "sources": [
+        "planning/use-case-registry.md",
+        "planning/documentation/review-audit-workflow.md"
+      ],
+      "instruction": "Audit what was actually reviewed, what remains partial/unchecked and what the repeat review adds; do not substitute file count for semantic coverage.",
+      "target": "<review audit target>",
+      "directionId": "DIR-REPOSITORY"
+    },
+    {
+      "id": "UC-REPO-REVIEW-PLANNING-FINDINGS",
+      "label": "Review Planning Findings / Q/R/P Completeness",
+      "description": "detect missing, duplicate, stale or invalid owner-attached unresolved deltas",
+      "sources": [
+        "planning/use-case-registry.md",
+        "planning/documentation/planning-findings-review-workflow.md"
+      ],
+      "instruction": "Review Q/R/P only against concrete current semantic owners/current-target meaning. Do not use FIND order as the planning queue.",
+      "target": "<planning findings review target>",
+      "directionId": "DIR-REPOSITORY"
+    },
+    {
+      "id": "UC-PLAN-ARCH-DISCOVER-WEUC",
+      "label": "Discover Contextual Workspace Evolution Use Cases",
+      "description": "contextual future Workspace-evolution use discovery against a concrete owner/change surface",
+      "sources": [
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md"
+      ],
+      "instruction": "Discover contextual evolution-use instances and expected Workspace Change Paths proportionally; keep this distinct from broad current/candidate Workspace-use discovery.",
+      "target": "<Workspace evolution-use discovery target>",
+      "directionId": "DIR-PLAN-ARCHITECTURE"
+    },
+    {
+      "id": "UC-DOC-REVIEW-CURRENT-CONSISTENCY",
+      "label": "Review Current Semantic Consistency",
+      "description": "check registries, owners, templates and projections for current semantic agreement",
+      "sources": [
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/current-semantic-consistency-review-workflow.md"
+      ],
+      "instruction": "Review current semantic consistency and route confirmed corrections to their real owners; mechanical link success alone is insufficient.",
+      "target": "<semantic consistency target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-ESTABLISH-DEPENDENCY",
+      "label": "Establish Semantic Dependency",
+      "description": "decide/classify one meaningful semantic dependency and its owner/handoff",
+      "sources": [
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/review-dependency-planning-workflow.md"
+      ],
+      "instruction": "Establish semantic dependency intent first and select explicit tracking only when correctness needs it.",
+      "target": "<dependency target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-REVIEW-DEPENDENTS",
+      "label": "Review Semantic Dependents",
+      "description": "review known consumers after material upstream change",
+      "sources": [
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/review-dependency-planning-workflow.md"
+      ],
+      "instruction": "Review known dependents after material source change; stay manual-first and do not broaden into automatic rediscovery without need.",
+      "target": "<dependent review target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-SHARED-EXACT-MEANING",
+      "label": "Maintain Shared Exact Meaning",
+      "description": "preserve exact synchronized literal meaning only where truly required",
+      "sources": [
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/review-dependency-planning-workflow.md"
+      ],
+      "instruction": "Use the narrowest exact-meaning mechanism only when literal synchronization is required; ordinary semantic relations remain ordinary relations.",
+      "target": "<shared exact meaning target>",
+      "directionId": "DIR-DOCUMENTATION"
+    },
+    {
+      "id": "UC-DOC-REVIEW-DEPENDENCY-COVERAGE",
+      "label": "Review Dependency Coverage",
+      "description": "check whether material semantic dependency obligations are represented/reviewable",
+      "sources": [
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/review-dependency-planning-workflow.md"
+      ],
+      "instruction": "Review dependency coverage when requested or correctness materially depends on it; do not hunt for dependencies merely to populate a registry.",
+      "target": "<dependency coverage target>",
+      "directionId": "DIR-DOCUMENTATION"
+    }
+  ]
+}

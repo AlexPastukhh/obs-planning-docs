@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.26.2-repository-command-registry
+// @version      0.28.0-repository-command-registry
 // @description  RAM-first OBS Planning Helper with editable real Planning Commands, prompts and explicit GitHub actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -15,7 +15,9 @@
 
 // GENERATED FILE — DO NOT EDIT MANUALLY.
 // Source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**
-// Planning commands: planning/commands/*.command.md
+// Local seed catalogs: planning/documentation/tools/tampermonkey/chat-command-palette/seed/commands.json + seed/use-cases.json
+// Planning-command authority: planning/commands/*.command.md
+// Use-Case authority: current canonical Use-Case registries/owners; seed/use-cases.json is projection only.
 // Prompt library: planning/helper-library/prompts/ (helper-library/commands is legacy compatibility)
 // Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs
 
@@ -424,7 +426,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const SURFACES = Object.freeze({ ORIENTATION:'Orientation', DIRECTIONS:'Directions', USE_CASES:'Use Cases', COMMANDS:'Commands', PROMPTS:'Prompts' });
+  const SURFACES = Object.freeze({ COMMANDS:'Commands', USE_CASES:'Use Cases', PROMPTS:'Prompts' });
   const MODE = Object.freeze({ ADAPTIVE:'adaptive', FULL:'full' });
 
   const ORIENTATION_DEFINITIONS=[{
@@ -447,7 +449,47 @@
     {id:'DIR-REPLACEMENT-PACKAGE-APP',label:'Apply / Review / Finalize Replacement Packages',description:'replacement package consumer app',sources:['planning/direction-registry.md','planning/documentation/tools/replacement-package-app/direction-registry.md','planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md'],instruction:'Use Replacement Package App Use Cases and detailed Scenario owners; do not redefine producer command semantics.',target:'<replacement package app target>'}
   ];
 
-  const USE_CASE_DEFINITIONS=[{"id":"UC-REPO-ORIENT","label":"Orient In Repository And Resolve Work Route","description":"natural repository discovery","sources":["planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Orient In Repository And Resolve Work Route target>"},{"id":"UC-REPO-CURRENT-STATE","label":"Report Current Repository / Planning State","description":"open canonical Use-Case entry","commandId":"current_state.report"},{"id":"UC-REPO-PLAN-NEXT","label":"Plan The Next Concrete Step","description":"open canonical Use-Case entry","commandId":"plan.now"},{"id":"UC-REPO-CRITICAL-REVIEW","label":"Critically Review A Claim / Plan / Diff","description":"open canonical Use-Case entry","commandId":"critical_review.apply"},{"id":"UC-REPO-USE-ARCHIVE-SOURCE","label":"Use An Explicit Archive As Read Source","description":"open canonical Use-Case entry","commandId":"archive_source.use"},{"id":"UC-REPO-DEFINE-PARALLEL-SCOPES","label":"Define / Maintain Fixed Parallel-Work Scopes","description":"open canonical Use-Case entry","sources":["planning/use-case-registry.md","parallel-work-scope-registry.md"],"instruction":"Read the root Scope Registry and reusable scope/log workflow. Change registered boundaries only as an explicit repository-architecture update; do not repartition scopes ad hoc.","target":"<parallel-scope architecture target>"},{"id":"UC-REPO-PARALLEL-WORK","label":"Work In Registered Parallel Scope(s)","description":"open canonical Use-Case entry","commandId":"parallel_workspace.start"},{"id":"UC-PLAN-REALITY","label":"Understand Current Workflow And Reality","description":"checked current reality before solution choice","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Understand Current Workflow And Reality target>"},{"id":"UC-PLAN-COLLECT-IDEAS","label":"Collect And Review Ideas From Selected Source","description":"command-backed Idea collection/review","commandId":"ideas.collect"},{"id":"UC-PLAN-SOLUTION","label":"Plan / Review Whole Solution Or Workflow","description":"integrated real-world solution/workflow choice","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Plan / Review Whole Solution Or Workflow target>"},{"id":"UC-PLAN-RESEARCH","label":"Research Existing Solutions / Alternatives","description":"proportional evidence gathering for solution choice","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Research Existing Solutions / Alternatives target>"},{"id":"UC-PLAN-APP-CONCEPT","label":"Plan / Review Application Concept","description":"custom-app value/feasibility candidate before detailed behavior","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Plan / Review Application Concept target>"},{"id":"UC-PLAN-APPLICATION","label":"Establish Application Responsibility","description":"selected application inside/outside responsibility boundary","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Establish Application Responsibility target>"},{"id":"UC-PLAN-PROTOTYPE","label":"Prototype Application Experience / Workflow","description":"provisional interaction/workflow scenarios/screens and evidence","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve the Prototype Use-Case entry and follow the complete current Prototype owner route. Focus on provisional Prototype Scenarios/Screens, Requirements/DATA/Behavior findings and evidence; treat rough walkthroughs only as discovery techniques and do not promote prototype artifacts to canonical Scenario/Screen truth automatically.","target":"<Prototype Application Experience / Workflow target>"},{"id":"UC-PLAN-SCENARIO-DISCOVERY","label":"Discover Application Scenarios","description":"current Need/result behavioral boundaries","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve the Scenario Discovery Use-Case entry and follow its current owner route. Focus on current meaningful Need/result boundaries; use prototype/rough-walkthrough evidence only as input and keep commands/actions/implementation operations from becoming Scenarios mechanically.","target":"<Discover Application Scenarios target>"},{"id":"UC-PLAN-SCENARIO","label":"Draft / Review Detailed Scenario","description":"canonical detailed current behavior + DATA/Behavior/Requirements","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Draft / Review Detailed Scenario target>"},{"id":"UC-PLAN-DOMAIN-DISCOVERY","label":"Discover Domain Evidence / Candidates","description":"evidence-backed Domain concepts, lifecycle, invariants and consistency candidates","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry and follow domain-discovery-workflow.md. Discover evidence and candidates without silently selecting Domain authority.","target":"<Domain discovery target>"},{"id":"UC-PLAN-REALIZATION","label":"Review High-Level Application Realization","description":"high-level runtime/persistence/integration feasibility review","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry and follow application-realization-workflow.md. Review representative realization paths without letting implementation convenience redefine upstream semantics.","target":"<Application realization target>"},{"id":"UC-PLAN-DOMAIN","label":"Plan / Review Domain","description":"stable semantics, invariants and justified variation","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve the Domain Use-Case entry and follow the complete current Domain planning route. Focus on stable semantics, current Requirements/Scenarios, invariants vs policies, justified Change Axes and premature-generalization checks; do not redesign upstream behavior silently.","target":"<Plan / Review Domain target>"},{"id":"UC-PLAN-SLICE-STRATEGY","label":"Plan / Review Slice Strategy","description":"vertical implementation decomposition/order","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Plan / Review Slice Strategy target>"},{"id":"UC-PLAN-SLICE","label":"Plan / Review One Implementation Slice","description":"one selected separately deliverable/checkable increment","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Plan / Review One Implementation Slice target>"},{"id":"UC-PLAN-CONSISTENCY","label":"Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency","description":"cross-owner contradiction/change-impact review","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning focus and preserve neighboring-owner boundaries.","target":"<Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency target>"},{"id":"UC-DOC-ORIENT","label":"Bootstrap Reusable Documentation Governance","description":"open reusable documentation bootstrap command","commandId":"documentation_principles.read"},{"id":"UC-DOC-FIND-OWNER","label":"Determine Where Information Belongs","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Determine Where Information Belongs target>"},{"id":"UC-DOC-PLAN-UPDATE","label":"Plan A Documentation Update","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Plan A Documentation Update target>"},{"id":"UC-DOC-UPDATE","label":"Perform An Approved Documentation Update","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Perform An Approved Documentation Update target>"},{"id":"UC-DOC-PLAN-FILE-UPDATE","label":"Plan Concrete File / Docs / Code Update","description":"open canonical Use-Case entry","commandId":"file_update.plan"},{"id":"UC-DOC-BUILD-REPLACEMENT-PACKAGE","label":"Build Replacement Package","description":"open canonical Use-Case entry","commandId":"replacement_archive.create"},{"id":"UC-DOC-BUILD-REVIEWABLE-ARCHIVE","label":"Build Legacy Review-Diff Archive Route","description":"open canonical Use-Case entry","commandId":"replacement_archive.review_diff.create"},{"id":"UC-DOC-REVIEW-DIFF","label":"Semantically Review A Repository ReviewDiff","description":"semantic ReviewDiff correctness review","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Semantically Review A Repository ReviewDiff target>"},{"id":"UC-DOC-REVISE-RETURNED-FILES","label":"Reconcile User-Returned Files","description":"open canonical Use-Case entry","commandId":"returned_files.revise"},{"id":"UC-DOC-MAINTAIN-NAVIGATION","label":"Maintain Repository Documentation Navigation","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve navigation-vs-semantic-owner boundaries. Do not treat helper projection as semantic authority.","target":"<Maintain Repository Documentation Navigation target>"},{"id":"UC-DOC-MAINTAIN-REGISTRIES","label":"Maintain Directions And Use Cases","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Maintain Directions And Use Cases target>"},{"id":"UC-DOC-MAINTAIN-COMMAND","label":"Create / Maintain Planning Command","description":"registered planning-command creation/change without semantic-authority drift","commandId":"command.plan"},{"id":"UC-DOC-MAINTAIN-PROMPT","label":"Create / Maintain Reusable Prompt","description":"reusable prompt/helper insertion maintenance without semantic-authority drift","sources":["planning/documentation/use-case-registry.md","planning/documentation/prompt-maintenance-workflow.md","planning/helper-library/README.md"],"instruction":"Resolve the canonical prompt-maintenance Use Case and current owner route. Choose a prompt profile proportionally, point to current semantic owners rather than copying changing truth, and require checked-source/depth or contradiction/QRP reporting only when the selected bootstrap/audit profile needs it.","target":"<reusable prompt target>"},{"id":"UC-DOC-REVIEW-COVERAGE","label":"Review Repository Navigation / Semantic Coverage","description":"semantic discoverability coverage across Workspace/methodology UCs and Application Scenarios","sources":["planning/documentation/use-case-registry.md"],"instruction":"Resolve the canonical coverage-review Use-Case entry and follow its current owner route. Check Workspace/methodology capabilities through Use Cases and Application behavior through Scenario Catalogs/Scenarios; do not treat the Helper as semantic authority.","target":"<repository semantic coverage target>"},{"id":"UC-DOC-REVIEW-EXAMPLES","label":"Review Practical Example Coverage","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Review Practical Example Coverage target>"},{"id":"UC-DOC-RECONCILE-STATUS","label":"Reconcile Documentation / Owner Status","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Reconcile Documentation / Owner Status target>"},{"id":"UC-DW-DOC-REF","label":"Repository Documentation Change And Reference Review","description":"open canonical Use-Case entry","sources":["planning/areas/documentation-workbench/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Repository Documentation Change And Reference Review target>"},{"id":"UC-DW-PLANNING-TO-REPOSITORY","label":"Planning Meaning To Repository","description":"open canonical Use-Case entry","sources":["planning/areas/documentation-workbench/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Planning Meaning To Repository target>"},{"id":"UC-PR-END-SESSION","label":"End Active Planning Session","description":"open canonical Use-Case entry","commandId":"session.end"},{"id":"UC-PLAN-WORKSPACE-ESTABLISH-UC","label":"Establish Workspace Use Case","description":"establish one justified new Workspace capability through proportional Step 1/2/3 planning","sources":["planning/documentation/workspace-planning/use-case-registry.md"],"instruction":"Resolve this exact Workspace Planning Use-Case entry, follow its Establish workflow/current owner route and preserve generic UC/Architecture authority boundaries.","target":"<candidate Workspace capability>"},{"id":"UC-PLAN-WORKSPACE-CHANGE-UC","label":"Review / Change Workspace Use Case","description":"integrate selected change meaning into one existing Workspace UC through proportional Step 1/2/3 planning","sources":["planning/documentation/workspace-planning/use-case-registry.md"],"instruction":"Resolve this exact Workspace Planning Use-Case entry, follow its Review/Change workflow/current owner route and keep all selected Ideas for the UC in one integrated target.","target":"<existing Workspace UC change>"},{"id":"UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY","label":"Review Workspace Use-Case Topology","description":"review multi-UC boundaries/relations when coherent topology is independently useful","sources":["planning/documentation/workspace-planning/use-case-registry.md"],"instruction":"Resolve this exact proportional Workspace Planning topology Use Case. Activate it for real multi-UC boundary/relationship/topology concerns, not merely because one Idea affects several independent UCs.","target":"<multi-UC topology concern>"},{"id":"UC-PLAN-ARCH-STATE","label":"Understand / Review Workspace Architecture State","description":"current architecture state and maintainability review","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.","target":"<architecture state target>"},{"id":"UC-PLAN-ARCH-PATH","label":"Trace / Evaluate Architecture-Relevant Path","description":"trace understanding, change or runtime path as architecture evidence","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.","target":"<architecture path target>"},{"id":"UC-PLAN-ARCH-PRESSURE","label":"Establish / Review Workspace Change Pressure","description":"evidence-backed change pressure, axes and hot paths","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; consume Workspace Use-Case discovery when needed.","target":"<architecture pressure target>"},{"id":"UC-PLAN-ARCH-DECISION","label":"Plan / Review One Material Architecture Decision","description":"compare and select one material architecture choice","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; route selected meaning to the narrowest real semantic owner.","target":"<architecture decision target>"},{"id":"UC-PLAN-ARCH-EVOLUTION","label":"Plan / Review Workspace Architecture Evolution","description":"coordinated multi-decision architecture evolution","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.","target":"<architecture evolution target>"},{"id":"UC-PLAN-ARCH-WORKSPACE-USES","label":"Discover / Review Workspace Use Cases","description":"architecture-relevant Workspace capability discovery","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow workspace-use-case-discovery-workflow.md.","target":"<Workspace uses target>"},{"id":"UC-PLAN-TEST-STRATEGY","label":"Establish / Review Testing Strategy","description":"shared/cross-Slice testing strategy","sources":["planning/documentation/testing-planning/use-case-registry.md"],"instruction":"Resolve this Testing Planning Use Case and follow its strategy owner route.","target":"<testing strategy target>"},{"id":"UC-PLAN-TEST-DESIGN","label":"Plan / Review Verification For Selected Behavior","description":"Behavior-to-Test proof design","sources":["planning/documentation/testing-planning/use-case-registry.md"],"instruction":"Resolve this Testing Planning Use Case and follow test-design-workflow.md.","target":"<behavior proof target>"},{"id":"UC-PLAN-TEST-COVERAGE","label":"Review Current Test Coverage / Evidence","description":"audit actual current test evidence","sources":["planning/documentation/testing-planning/use-case-registry.md"],"instruction":"Resolve this Testing Planning Use Case and inspect actual evidence; plans/test names do not prove coverage.","target":"<coverage review target>"},{"id":"UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES","label":"Configure Required Dependency Reviews","description":"register source changes that must signal consumer review","sources":["planning/documentation/use-case-registry.md","planning/documentation/review-dependency-planning-workflow.md"],"instruction":"Configure a semantic source→consumer review obligation; use Linked Notes as the selected mechanism when implemented. Do not perform or propagate semantic edits automatically.","target":"<review dependency target>"},{"id":"UC-RPKG-APPLY","label":"Apply Verified Replacement Package","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Apply Verified Replacement Package target>"},{"id":"UC-RPKG-REVIEW","label":"Inspect Current ChangeSet Review State","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Inspect Current ChangeSet Review State target>"},{"id":"UC-RPKG-FINALIZE","label":"Finalize Current ChangeSet","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Finalize Current ChangeSet target>"},{"id":"UC-RPKG-EXPORT-REPOSITORY","label":"Export Repository Snapshot ZIP","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Export Repository Snapshot ZIP target>"},{"id":"UC-RPKG-DELIVER-REVIEW","label":"Deliver Current ReviewDiff to ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Deliver Current ReviewDiff to ChatGPT target>"},{"id":"UC-RPKG-ATTACH-SNAPSHOT","label":"Attach Repository Snapshot to ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Attach Repository Snapshot to ChatGPT target>"}];
+  const USE_CASE_DEFINITIONS=[{"id":"UC-REPO-ORIENT","label":"Orient In Repository And Resolve Work Route","description":"natural repository discovery","sources":["planning/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Orient In Repository And Resolve Work Route target>"},{"id":"UC-REPO-CURRENT-STATE","label":"Report Current Repository / Planning State","description":"open canonical Use-Case entry","commandId":"current_state.report"},{"id":"UC-REPO-PLAN-NEXT","label":"Plan The Next Concrete Step","description":"open canonical Use-Case entry","commandId":"plan.now"},{"id":"UC-REPO-CRITICAL-REVIEW","label":"Critically Review A Claim / Plan / Diff","description":"open canonical Use-Case entry","commandId":"critical_review.apply"},{"id":"UC-REPO-USE-ARCHIVE-SOURCE","label":"Use An Explicit Archive As Read Source","description":"open canonical Use-Case entry","commandId":"archive_source.use"},{"id":"UC-REPO-DEFINE-PARALLEL-SCOPES","label":"Define / Maintain Fixed Parallel-Work Scopes","description":"open canonical Use-Case entry","sources":["planning/use-case-registry.md","parallel-work-scope-registry.md"],"instruction":"Read the root Scope Registry and reusable scope/log workflow. Change registered boundaries only as an explicit repository-architecture update; do not repartition scopes ad hoc.","target":"<parallel-scope architecture target>"},{"id":"UC-REPO-PARALLEL-WORK","label":"Work In Registered Parallel Scope(s)","description":"open canonical Use-Case entry","commandId":"parallel_workspace.start"},{"id":"UC-PLAN-REALITY","label":"Understand Current Workflow And Reality","description":"checked current reality before solution choice","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Understand Current Workflow And Reality target>"},{"id":"UC-PLAN-COLLECT-IDEAS","label":"Collect And Review Ideas From Selected Source","description":"command-backed Idea collection/review","commandId":"ideas.collect"},{"id":"UC-PLAN-SOLUTION","label":"Plan / Review Whole Solution Or Workflow","description":"integrated real-world solution/workflow choice","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Plan / Review Whole Solution Or Workflow target>"},{"id":"UC-PLAN-RESEARCH","label":"Research Existing Solutions / Alternatives","description":"proportional evidence gathering for solution choice","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Research Existing Solutions / Alternatives target>"},{"id":"UC-PLAN-APP-CONCEPT","label":"Plan / Review Application Concept","description":"custom-app value/feasibility candidate before detailed behavior","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Plan / Review Application Concept target>"},{"id":"UC-PLAN-APPLICATION","label":"Establish Application Responsibility","description":"selected application inside/outside responsibility boundary","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Establish Application Responsibility target>"},{"id":"UC-PLAN-PROTOTYPE","label":"Prototype Application Experience / Workflow","description":"provisional interaction/workflow scenarios/screens and evidence","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve the Prototype Use-Case entry and follow the complete current Prototype owner route. Focus on provisional Prototype Scenarios/Screens, Requirements/DATA/Behavior findings and evidence; treat rough walkthroughs only as discovery techniques and do not promote prototype artifacts to canonical Scenario/Screen truth automatically.","target":"<Prototype Application Experience / Workflow target>"},{"id":"UC-PLAN-SCENARIO-DISCOVERY","label":"Discover Application Scenarios","description":"current Need/result behavioral boundaries","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve the Scenario Discovery Use-Case entry and follow its current owner route. Focus on current meaningful Need/result boundaries; use prototype/rough-walkthrough evidence only as input and keep commands/actions/implementation operations from becoming Scenarios mechanically.","target":"<Discover Application Scenarios target>"},{"id":"UC-PLAN-SCENARIO","label":"Draft / Review Detailed Scenario","description":"canonical detailed current behavior + DATA/Behavior/Requirements","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Draft / Review Detailed Scenario target>"},{"id":"UC-PLAN-DOMAIN-DISCOVERY","label":"Discover Domain Evidence / Candidates","description":"evidence-backed Domain concepts, lifecycle, invariants and consistency candidates","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry and follow domain-discovery-workflow.md. Discover evidence and candidates without silently selecting Domain authority.","target":"<Domain discovery target>"},{"id":"UC-PLAN-REALIZATION","label":"Review / Compare High-Level Application Realization","description":"bounded realization evidence for selected meaning or serious candidate Domain variants","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry and follow application-realization-workflow.md. Review or compare representative realization paths when material, including pre-Domain comparative evidence, without letting implementation convenience or this projection become Domain authority.","target":"<Application realization target>"},{"id":"UC-PLAN-DOMAIN","label":"Plan / Review Domain","description":"stable semantics, invariants and justified variation","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve the Domain Use-Case entry and follow the complete current Domain planning route. Focus on stable semantics, current Requirements/Scenarios, invariants vs policies, justified Change Axes and premature-generalization checks; do not redesign upstream behavior silently.","target":"<Plan / Review Domain target>"},{"id":"UC-PLAN-SLICE-STRATEGY","label":"Plan / Review Slice Strategy","description":"vertical implementation decomposition/order","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Plan / Review Slice Strategy target>"},{"id":"UC-PLAN-SLICE","label":"Plan / Review One Implementation Slice","description":"one selected separately deliverable/checkable increment","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Plan / Review One Implementation Slice target>"},{"id":"UC-PLAN-CONSISTENCY","label":"Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency","description":"cross-owner contradiction/change-impact review","sources":["planning/documentation/application-planning/use-case-registry.md"],"instruction":"Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.","target":"<Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency target>"},{"id":"UC-DOC-ORIENT","label":"Bootstrap Reusable Documentation Governance","description":"open reusable documentation bootstrap command","commandId":"documentation_principles.read"},{"id":"UC-DOC-FIND-OWNER","label":"Determine Where Information Belongs","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Determine Where Information Belongs target>"},{"id":"UC-DOC-PLAN-UPDATE","label":"Plan A Documentation Update","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Plan A Documentation Update target>"},{"id":"UC-DOC-UPDATE","label":"Perform An Approved Documentation Update","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Perform An Approved Documentation Update target>"},{"id":"UC-DOC-PLAN-FILE-UPDATE","label":"Plan Concrete File / Docs / Code Update","description":"open canonical Use-Case entry","commandId":"file_update.plan"},{"id":"UC-DOC-BUILD-REPLACEMENT-PACKAGE","label":"Build Replacement Package","description":"open canonical Use-Case entry","commandId":"replacement_archive.create"},{"id":"UC-DOC-BUILD-REVIEWABLE-ARCHIVE","label":"Build Legacy Review-Diff Archive Route","description":"open canonical Use-Case entry","commandId":"replacement_archive.review_diff.create"},{"id":"UC-DOC-REVIEW-DIFF","label":"Semantically Review A Repository ReviewDiff","description":"semantic ReviewDiff correctness review","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Semantically Review A Repository ReviewDiff target>"},{"id":"UC-DOC-REVISE-RETURNED-FILES","label":"Reconcile User-Returned Files","description":"open canonical Use-Case entry","commandId":"returned_files.revise"},{"id":"UC-DOC-MAINTAIN-NAVIGATION","label":"Maintain Repository Documentation Navigation","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve navigation-vs-semantic-owner boundaries. Do not treat helper projection as semantic authority.","target":"<Maintain Repository Documentation Navigation target>"},{"id":"UC-DOC-MAINTAIN-REGISTRIES","label":"Maintain Directions And Use Cases","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Maintain Directions And Use Cases target>"},{"id":"UC-DOC-MAINTAIN-COMMAND","label":"Create / Maintain Planning Command","description":"registered planning-command creation/change without semantic-authority drift","commandId":"command.plan"},{"id":"UC-DOC-MAINTAIN-PROMPT","label":"Create / Maintain Reusable Prompt","description":"reusable prompt/helper insertion maintenance without semantic-authority drift","sources":["planning/documentation/use-case-registry.md","planning/documentation/prompt-maintenance-workflow.md","planning/helper-library/README.md"],"instruction":"Resolve the canonical prompt-maintenance Use Case and current owner route. Choose a prompt profile proportionally, point to current semantic owners rather than copying changing truth, and require checked-source/depth or contradiction/QRP reporting only when the selected bootstrap/audit profile needs it.","target":"<reusable prompt target>"},{"id":"UC-DOC-REVIEW-COVERAGE","label":"Review Repository Navigation / Semantic Coverage","description":"semantic discoverability coverage across Workspace/methodology UCs and Application Scenarios","sources":["planning/documentation/use-case-registry.md"],"instruction":"Resolve the canonical coverage-review Use-Case entry and follow its current owner route. Check Workspace/methodology capabilities through Use Cases and Application behavior through Scenario Catalogs/Scenarios; do not treat the Helper as semantic authority.","target":"<repository semantic coverage target>"},{"id":"UC-DOC-REVIEW-EXAMPLES","label":"Review Practical Example Coverage","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Review Practical Example Coverage target>"},{"id":"UC-DOC-RECONCILE-STATUS","label":"Reconcile Documentation / Owner Status","description":"open canonical Use-Case entry","sources":["planning/documentation/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Reconcile Documentation / Owner Status target>"},{"id":"UC-DW-DOC-REF","label":"Repository Documentation Change And Reference Review","description":"open canonical Use-Case entry","sources":["planning/areas/documentation-workbench/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Repository Documentation Change And Reference Review target>"},{"id":"UC-DW-PLANNING-TO-REPOSITORY","label":"Planning Meaning To Repository","description":"open canonical Use-Case entry","sources":["planning/areas/documentation-workbench/use-case-registry.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Planning Meaning To Repository target>"},{"id":"UC-PR-END-SESSION","label":"End Active Planning Session","description":"open canonical Use-Case entry","commandId":"session.end"},{"id":"UC-PLAN-WORKSPACE-ESTABLISH-UC","label":"Establish Workspace Use Case","description":"establish one justified new Workspace capability through proportional Step 1/2/3 planning","sources":["planning/documentation/workspace-planning/use-case-registry.md"],"instruction":"Resolve this exact Workspace Planning Use-Case entry, follow its Establish workflow/current owner route and preserve generic UC/Architecture authority boundaries.","target":"<candidate Workspace capability>"},{"id":"UC-PLAN-WORKSPACE-CHANGE-UC","label":"Review / Change Workspace Use Case","description":"integrate selected change meaning into one existing Workspace UC through proportional Step 1/2/3 planning","sources":["planning/documentation/workspace-planning/use-case-registry.md"],"instruction":"Resolve this exact Workspace Planning Use-Case entry, follow its Review/Change workflow/current owner route and keep all selected Ideas for the UC in one integrated target.","target":"<existing Workspace UC change>"},{"id":"UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY","label":"Review Workspace Use-Case Topology","description":"review multi-UC boundaries/relations when coherent topology is independently useful","sources":["planning/documentation/workspace-planning/use-case-registry.md"],"instruction":"Resolve this exact proportional Workspace Planning topology Use Case. Activate it for real multi-UC boundary/relationship/topology concerns, not merely because one Idea affects several independent UCs.","target":"<multi-UC topology concern>"},{"id":"UC-PLAN-ARCH-STATE","label":"Understand / Review Workspace Architecture State","description":"current architecture state and maintainability review","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.","target":"<architecture state target>"},{"id":"UC-PLAN-ARCH-PATH","label":"Trace / Evaluate Architecture-Relevant Path","description":"trace understanding, change or runtime path as architecture evidence","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.","target":"<architecture path target>"},{"id":"UC-PLAN-ARCH-PRESSURE","label":"Establish / Review Workspace Change Pressure","description":"evidence-backed change pressure, axes and hot paths","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; consume Workspace Use-Case discovery when needed.","target":"<architecture pressure target>"},{"id":"UC-PLAN-ARCH-DECISION","label":"Plan / Review One Material Architecture Decision","description":"compare and select one material architecture choice","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; route selected meaning to the narrowest real semantic owner.","target":"<architecture decision target>"},{"id":"UC-PLAN-ARCH-EVOLUTION","label":"Plan / Review Workspace Architecture Evolution","description":"coordinated multi-decision architecture evolution","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.","target":"<architecture evolution target>"},{"id":"UC-PLAN-ARCH-WORKSPACE-USES","label":"Discover / Review Workspace Use Cases","description":"architecture-relevant Workspace capability discovery","sources":["planning/documentation/architecture-planning/use-case-registry.md"],"instruction":"Resolve this exact Architecture Planning Use-Case entry and follow workspace-use-case-discovery-workflow.md.","target":"<Workspace uses target>"},{"id":"UC-PLAN-TEST-STRATEGY","label":"Establish / Review Testing Strategy","description":"shared/cross-Slice testing strategy","sources":["planning/documentation/testing-planning/use-case-registry.md"],"instruction":"Resolve this Testing Planning Use Case and follow its strategy owner route.","target":"<testing strategy target>"},{"id":"UC-PLAN-TEST-DESIGN","label":"Plan / Review Verification For Selected Behavior","description":"Behavior-to-Test proof design","sources":["planning/documentation/testing-planning/use-case-registry.md"],"instruction":"Resolve this Testing Planning Use Case and follow test-design-workflow.md.","target":"<behavior proof target>"},{"id":"UC-PLAN-TEST-COVERAGE","label":"Review Current Test Coverage / Evidence","description":"audit actual current test evidence","sources":["planning/documentation/testing-planning/use-case-registry.md"],"instruction":"Resolve this Testing Planning Use Case and inspect actual evidence; plans/test names do not prove coverage.","target":"<coverage review target>"},{"id":"UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES","label":"Configure Required Dependency Reviews","description":"register source changes that must signal consumer review","sources":["planning/documentation/use-case-registry.md","planning/documentation/review-dependency-planning-workflow.md"],"instruction":"Configure a semantic source→consumer review obligation; use Linked Notes as the selected mechanism when implemented. Do not perform or propagate semantic edits automatically.","target":"<review dependency target>"},{"id":"UC-RPKG-APPLY","label":"Apply Verified Replacement Package","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Apply Verified Replacement Package target>"},{"id":"UC-RPKG-REVIEW","label":"Inspect Current ChangeSet Review State","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Inspect Current ChangeSet Review State target>"},{"id":"UC-RPKG-FINALIZE","label":"Finalize Current ChangeSet","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Finalize Current ChangeSet target>"},{"id":"UC-RPKG-EXPORT-REPOSITORY","label":"Export Repository Snapshot ZIP","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Export Repository Snapshot ZIP target>"},{"id":"UC-RPKG-DELIVER-REVIEW","label":"Deliver Current ReviewDiff to ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Deliver Current ReviewDiff to ChatGPT target>"},{"id":"UC-RPKG-ATTACH-SNAPSHOT","label":"Attach Repository Snapshot to ChatGPT","description":"open canonical Use-Case entry","sources":["planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"],"instruction":"Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.","target":"<Attach Repository Snapshot to ChatGPT target>"},{"id":"UC-REPO-REFINE-CURRENT-PLAN","label":"Refine The Current Plan","description":"integrate material clarification/change into one accumulating Current Plan","sources":["planning/use-case-registry.md","planning/documentation/progressive-plan-refinement-workflow.md"],"instruction":"Resolve this exact root Use Case and refine the current semantic owner from Need/UC/Scenario meaning; keep Q/R/P secondary and owner-attached.","target":"<current plan refinement target>"},{"id":"UC-REPO-AUDIT-REVIEW","label":"Audit Review Coverage And Quality","description":"report checked scope, sufficiency, gaps and repeat-review delta","sources":["planning/use-case-registry.md","planning/documentation/review-audit-workflow.md"],"instruction":"Audit what was actually reviewed, what remains partial/unchecked and what the repeat review adds; do not substitute file count for semantic coverage.","target":"<review audit target>"},{"id":"UC-REPO-REVIEW-PLANNING-FINDINGS","label":"Review Planning Findings / Q/R/P Completeness","description":"detect missing, duplicate, stale or invalid owner-attached unresolved deltas","sources":["planning/use-case-registry.md","planning/documentation/planning-findings-review-workflow.md"],"instruction":"Review Q/R/P only against concrete current semantic owners/current-target meaning. Do not use FIND order as the planning queue.","target":"<planning findings review target>"},{"id":"UC-PLAN-ARCH-DISCOVER-WEUC","label":"Discover Contextual Workspace Evolution Use Cases","description":"contextual future Workspace-evolution use discovery against a concrete owner/change surface","sources":["planning/documentation/architecture-planning/use-case-registry.md","planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md"],"instruction":"Discover contextual evolution-use instances and expected Workspace Change Paths proportionally; keep this distinct from broad current/candidate Workspace-use discovery.","target":"<Workspace evolution-use discovery target>"},{"id":"UC-DOC-REVIEW-CURRENT-CONSISTENCY","label":"Review Current Semantic Consistency","description":"check registries, owners, templates and projections for current semantic agreement","sources":["planning/documentation/use-case-registry.md","planning/documentation/current-semantic-consistency-review-workflow.md"],"instruction":"Review current semantic consistency and route confirmed corrections to their real owners; mechanical link success alone is insufficient.","target":"<semantic consistency target>"},{"id":"UC-DOC-ESTABLISH-DEPENDENCY","label":"Establish Semantic Dependency","description":"decide/classify one meaningful semantic dependency and its owner/handoff","sources":["planning/documentation/use-case-registry.md","planning/documentation/review-dependency-planning-workflow.md"],"instruction":"Establish semantic dependency intent first and select explicit tracking only when correctness needs it.","target":"<dependency target>"},{"id":"UC-DOC-REVIEW-DEPENDENTS","label":"Review Semantic Dependents","description":"review known consumers after material upstream change","sources":["planning/documentation/use-case-registry.md","planning/documentation/review-dependency-planning-workflow.md"],"instruction":"Review known dependents after material source change; stay manual-first and do not broaden into automatic rediscovery without need.","target":"<dependent review target>"},{"id":"UC-DOC-MAINTAIN-SHARED-EXACT-MEANING","label":"Maintain Shared Exact Meaning","description":"preserve exact synchronized literal meaning only where truly required","sources":["planning/documentation/use-case-registry.md","planning/documentation/review-dependency-planning-workflow.md"],"instruction":"Use the narrowest exact-meaning mechanism only when literal synchronization is required; ordinary semantic relations remain ordinary relations.","target":"<shared exact meaning target>"},{"id":"UC-DOC-REVIEW-DEPENDENCY-COVERAGE","label":"Review Dependency Coverage","description":"check whether material semantic dependency obligations are represented/reviewable","sources":["planning/documentation/use-case-registry.md","planning/documentation/review-dependency-planning-workflow.md"],"instruction":"Review dependency coverage when requested or correctness materially depends on it; do not hunt for dependencies merely to populate a registry.","target":"<dependency coverage target>"}];
+
+  function directionIdForUseCase(definition){
+    const id=String(definition?.id||'');
+    if(id.startsWith('UC-REPO-'))return 'DIR-REPOSITORY';
+    if(id.startsWith('UC-PLAN-WORKSPACE-'))return 'DIR-PLAN-WORKSPACE';
+    if(id.startsWith('UC-PLAN-ARCH-'))return 'DIR-PLAN-ARCHITECTURE';
+    if(id.startsWith('UC-PLAN-TEST-'))return 'DIR-PLAN-TESTING';
+    if(id.startsWith('UC-PLAN-'))return 'DIR-PLAN-SOLUTION';
+    if(id.startsWith('UC-DOC-'))return 'DIR-DOCUMENTATION';
+    if(id.startsWith('UC-DW-'))return 'DIR-DOCUMENTATION-WORKBENCH';
+    if(id.startsWith('UC-PR-'))return 'DIR-PLANNING-RUNTIME';
+    if(id.startsWith('UC-RPKG-'))return 'DIR-REPLACEMENT-PACKAGE-APP';
+    return '';
+  }
+
+  function directionIdForOwnerPath(path){
+    const value=String(path||'');
+    if(value.includes('planning/documentation/tools/tampermonkey/chat-command-palette/'))return 'DIR-PLANNING-HELPER';
+    if(value.includes('planning/documentation/tools/tampermonkey/linked-notes/'))return 'DIR-LINKED-NOTES';
+    if(value.includes('planning/documentation/tools/replacement-package-app/'))return 'DIR-REPLACEMENT-PACKAGE-APP';
+    if(value.includes('planning/documentation/application-planning/'))return 'DIR-PLAN-SOLUTION';
+    if(value.includes('planning/documentation/workspace-planning/'))return 'DIR-PLAN-WORKSPACE';
+    if(value.includes('planning/documentation/architecture-planning/'))return 'DIR-PLAN-ARCHITECTURE';
+    if(value.includes('planning/documentation/testing-planning/'))return 'DIR-PLAN-TESTING';
+    if(value.includes('planning/areas/documentation-workbench/'))return 'DIR-DOCUMENTATION-WORKBENCH';
+    if(value.includes('planning/areas/planning-system/')||value.includes('planning/dashboard/')||value.startsWith('-Planning/'))return 'DIR-PLANNING-RUNTIME';
+    if(value.includes('planning/documentation/'))return 'DIR-DOCUMENTATION';
+    if(value.startsWith('planning/')||value==='parallel-work-scope-registry.md')return 'DIR-REPOSITORY';
+    return '';
+  }
+
+  for(const definition of USE_CASE_DEFINITIONS)definition.directionId=directionIdForUseCase(definition);
+
+  function directionIdsForCommand(definition){
+    const linked=[...new Set(USE_CASE_DEFINITIONS.filter((item)=>item.commandId===definition?.id).map((item)=>item.directionId).filter(Boolean))];
+    if(linked.length)return linked;
+    const inferred=[];
+    for(const path of definition?.ownerFiles||[]){const id=directionIdForOwnerPath(path);if(id&&!inferred.includes(id))inferred.push(id);}
+    return inferred.length?inferred:['DIR-REPOSITORY'];
+  }
 
   function markerFor(kind){if(kind==='orientation')return'PLANNING_ORIENTATION';if(kind==='direction')return'PLANNING_DIRECTION';return'PLANNING_USE_CASE';}
   function readRule(mode,kind){
@@ -457,7 +499,7 @@
   function buildSemanticBody(kind,definition,mode){
     const marker=markerFor(kind),idField=kind==='use_case'?'use_case_id':`${kind}_id`;
     const lines=[`[${marker}]`,`${idField}:`,`  ${definition.id}`,'',`${kind}:`,`  ${definition.label}`,'','mode:',`  ${mode}`];
-    if(kind==='use_case')lines.push('','focus:','  Work in this Use Case. Neighboring responsibilities are inputs/integration context unless the selected owner route explicitly requires them.');
+    if(kind==='use_case')lines.push('','semantic_owner:','  Work in this Use Case as the current semantic planning unit. Neighboring responsibilities are inputs/integration context unless the selected owner route explicitly requires them.');
     lines.push('','source_of_truth:',...(definition.sources||[]).map(s=>`  - \`${s}\``));
     if(kind==='use_case')lines.push('','route_resolution:','  Resolve this exact current Use-Case entry. Follow its current Main Owner / Owner Route and then the current owner links/read-order to every principle, workflow, template and integration rule materially defining this Use Case. Do not treat this Helper body as a frozen list of all future owner paths.');
     lines.push('','read_rule:',...readRule(mode,kind).map(x=>`  ${x}`),'','instruction:',`  ${definition.instruction}`);
@@ -465,8 +507,8 @@
     lines.push('','user_target:',`  ${definition.target}`,`[/${marker}]`);
     return lines.join('\n');
   }
-  function buildSemanticEntries(){return {[SURFACES.ORIENTATION]:ORIENTATION_DEFINITIONS.map(d=>({...d,adaptiveBody:buildSemanticBody('orientation',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('orientation',d,MODE.FULL)})),[SURFACES.DIRECTIONS]:DIRECTION_DEFINITIONS.map(d=>({...d,adaptiveBody:buildSemanticBody('direction',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('direction',d,MODE.FULL)})),[SURFACES.USE_CASES]:USE_CASE_DEFINITIONS.map(d=>d.commandId?{...d}:{...d,adaptiveBody:buildSemanticBody('use_case',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('use_case',d,MODE.FULL)})};}
-  return {SURFACES,ORIENTATION_DEFINITIONS,DIRECTION_DEFINITIONS,USE_CASE_DEFINITIONS,buildSemanticBody,buildSemanticEntries};
+  function buildSemanticEntries(){return {[SURFACES.USE_CASES]:USE_CASE_DEFINITIONS.map(d=>({...d,adaptiveBody:buildSemanticBody('use_case',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('use_case',d,MODE.FULL)}))};}
+  return {SURFACES,ORIENTATION_DEFINITIONS,DIRECTION_DEFINITIONS,USE_CASE_DEFINITIONS,directionIdForUseCase,directionIdsForCommand,buildSemanticBody,buildSemanticEntries};
 });
 
 (function (root, factory) {
@@ -878,7 +920,7 @@
     localLibrary:'obsPlanningHelper:v1:localLibrary',
     repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'
   });
-  const LOCAL_SNAPSHOT_SCHEMA_VERSION=1;
+  const LOCAL_SNAPSHOT_SCHEMA_VERSION=2;
   const POSITION_KEY='obs-planning-helper-position-v2';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
@@ -895,6 +937,7 @@
   async function saveGitHubToken(token){const value=String(token||'').trim();await gmSet(KEYS.token,value);return Boolean(value);}
 
   function cleanIso(value,fallback=''){const text=String(value||'').trim();if(!text)return fallback;const ms=Date.parse(text);if(!Number.isFinite(ms))throw new TypeError(`Invalid snapshot timestamp: ${text}`);return new Date(ms).toISOString();}
+  function normalizeIdList(value,label){const result=[];for(const raw of Array.isArray(value)?value:[]){const id=String(raw||'').trim();if(!id)continue;if(/[\r\n\u0000-\u001f\u007f]/.test(id))throw new TypeError(`${label} contains unsafe id.`);if(!result.includes(id))result.push(id);}return result.sort();}
   function normalizeCommandRecord(value){
     const input=value&&typeof value==='object'?value:{};
     const definition=deps.normalizeCommandDefinition(input.definition||input);
@@ -916,13 +959,16 @@
     const repositorySha=String(input.repositorySha||'').trim();return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};
   }
   function normalizePlanningHelperLocalSnapshot(value){
-    if(!value||typeof value!=='object'||value.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION)throw new TypeError('Unsupported Planning Helper local snapshot schema.');
+    if(!value||typeof value!=='object'||![1,LOCAL_SNAPSHOT_SCHEMA_VERSION].includes(value.schemaVersion))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
     const planningCommands=(value.planningCommands||[]).map(normalizeCommandRecord).sort((a,b)=>a.path.localeCompare(b.path));
     const helperItems=(value.helperItems||[]).map(normalizeHelperRecord).sort((a,b)=>a.path.localeCompare(b.path));
+    const hiddenCommandIds=normalizeIdList(value.hiddenCommandIds,'hiddenCommandIds');
+    const hiddenUseCaseIds=normalizeIdList(value.hiddenUseCaseIds,'hiddenUseCaseIds');
     deps.validateCommandCatalog(planningCommands.map((record)=>record.definition));
     if(new Set(planningCommands.map((record)=>record.path)).size!==planningCommands.length)throw new TypeError('Duplicate planning-command path in local snapshot.');
     if(new Set(helperItems.map((record)=>record.path)).size!==helperItems.length)throw new TypeError('Duplicate helper-library path in local snapshot.');
-    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems};
+    if(planningCommands.some((record)=>hiddenCommandIds.includes(record.definition.id)))throw new TypeError('A planning command cannot be both visible and locally deleted.');
+    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,hiddenCommandIds,hiddenUseCaseIds};
   }
   async function loadPlanningHelperLocalSnapshot(){const value=await gmGet(KEYS.localSnapshot,null);return value==null?null:normalizePlanningHelperLocalSnapshot(value);}
   async function savePlanningHelperLocalSnapshot(value){
@@ -937,10 +983,26 @@
 
   function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}
   function helperKey(item){return`${item.kind}:${item.id}`;}
+  function mergeBundledCommandSeed(snapshot,bundledCommands){
+    const current=normalizePlanningHelperLocalSnapshot(snapshot);
+    const hidden=new Set(current.hiddenCommandIds||[]);
+    const byId=new Map(current.planningCommands.map((record)=>[record.definition.id,record]));
+    let added=0;
+    for(const raw of bundledCommands||[]){const definition=deps.normalizeCommandDefinition(raw);if(hidden.has(definition.id)||byId.has(definition.id))continue;const record=normalizeCommandRecord({definition,repositoryKnown:true,repositoryTracked:true});byId.set(definition.id,record);added++;}
+    const next=normalizePlanningHelperLocalSnapshot({...current,planningCommands:[...byId.values()]});
+    return{snapshot:next,added};
+  }
   async function loadOrMigratePlanningHelperLocalSnapshot(bundledCommands){
-    const existing=await loadPlanningHelperLocalSnapshot();
-    if(existing)return{snapshot:existing,migrated:false,warnings:[]};
+    const existingRaw=await gmGet(KEYS.localSnapshot,null);
     const warnings=[];
+    if(existingRaw!=null){
+      const existing=normalizePlanningHelperLocalSnapshot(existingRaw);
+      const merged=mergeBundledCommandSeed(existing,bundledCommands||[]);
+      const needsWrite=existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION||merged.added>0;
+      const snapshot=needsWrite?await savePlanningHelperLocalSnapshot(merged.snapshot):existing;
+      if(merged.added)warnings.push(`Planning Helper added ${merged.added} current bundled command(s) to the local snapshot; locally deleted command IDs stayed deleted.`);
+      return{snapshot,migrated:existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION,seededCommands:merged.added,warnings};
+    }
     let definitions=[...(bundledCommands||[])];
     try{
       const legacy=await gmGet(LEGACY_KEYS.commandCache,null);
@@ -961,14 +1023,14 @@
       let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}
       if(raw){for(const item of deps.parseLegacyProjectionRegistry(raw)){const key=helperKey(item);if(!helperByKey.has(key))helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:false}));}}
     }catch(error){warnings.push(`Legacy page-local command projections ignored: ${error.message||String(error)}`);}
-    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()]});
-    return{snapshot,migrated:true,warnings};
+    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()],hiddenCommandIds:[],hiddenUseCaseIds:[]});
+    return{snapshot,migrated:true,seededCommands:definitions.length,warnings};
   }
 
   function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null};}catch(_){return{left:null,top:null};}}
-  function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top}));}catch(_){}}
+  function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top}));}catch(_){} }
 
-  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, LOCAL_SNAPSHOT_SCHEMA_VERSION, normalizeSettings, validateRepositorySettings, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, normalizeCommandRecord, normalizeHelperRecord, normalizePlanningHelperLocalSnapshot, loadPlanningHelperLocalSnapshot, savePlanningHelperLocalSnapshot, loadOrMigratePlanningHelperLocalSnapshot, commandRecordsFromDefinitions, readPanelPosition, savePanelPosition };
+  return { PLANNING_HELPER_STATE_KEYS:KEYS, PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS, PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS, LOCAL_SNAPSHOT_SCHEMA_VERSION, normalizeSettings, validateRepositorySettings, loadRepositorySettings, saveRepositorySettings, loadGitHubToken, saveGitHubToken, normalizeCommandRecord, normalizeHelperRecord, normalizePlanningHelperLocalSnapshot, loadPlanningHelperLocalSnapshot, savePlanningHelperLocalSnapshot, loadOrMigratePlanningHelperLocalSnapshot, mergeBundledCommandSeed, commandRecordsFromDefinitions, readPanelPosition, savePanelPosition };
 });
 
 (function (root, factory) {
@@ -1047,24 +1109,41 @@
     return `GitHub save failed or could not be verified: ${detail}`;
   }
 
+
+  function groupEntriesByDirections(entries,directions){
+    const groups=(directions||[]).map((direction)=>({id:direction.id,label:direction.label,description:direction.description||'',entries:[]}));
+    const byId=new Map(groups.map((group)=>[group.id,group]));
+    const ungrouped=[];
+    for(const entry of entries||[]){
+      const ids=[...new Set([...(entry.directionIds||[]),entry.directionId].filter(Boolean))];
+      let placed=false;
+      for(const id of ids){const group=byId.get(id);if(group){group.entries.push(entry);placed=true;}}
+      if(!placed)ungrouped.push(entry);
+    }
+    const result=groups.filter((group)=>group.entries.length);
+    if(ungrouped.length)result.push({id:'OTHER',label:'Other / legacy compatibility',description:'Commands or projections without a current semantic Direction mapping.',entries:ungrouped});
+    return result;
+  }
+
   function createPlanningHelperUi(options={}){
     const SURFACES=options.surfaces||deps.SURFACES;document.getElementById(HOST_ID)?.remove();document.getElementById('obs-command-helper-host')?.remove();
-    const host=document.createElement('div');host.id=HOST_ID;document.documentElement.appendChild(host);const root=host.attachShadow({mode:'open'});const saved=options.position||{left:null,top:null};let left=saved.left??Math.max(12,window.innerWidth-560),top=saved.top??Math.max(12,window.innerHeight-760);let activeSurface=SURFACES.ORIENTATION,commandEntries=[...(options.commandEntries||[])],promptEntries=[...(options.promptEntries||[])];const semanticEntries=options.semanticEntries||{};let focusCommandId=null,activeOverlay=null,isOpen=false,statusTimer=null,insertionBusy=false,operationBusy=false,dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true',lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'';
-    root.innerHTML=`<style>:host{all:initial}*{box-sizing:border-box}button,input,textarea{font:inherit}.launcher{position:fixed;right:18px;bottom:22px;z-index:2147483647;border:1px solid #64748b;border-radius:999px;padding:9px 13px;background:#111827;color:#f8fafc;font:700 12px system-ui;cursor:pointer}.panel{position:fixed;left:${left}px;top:${top}px;z-index:2147483647;width:min(580px,calc(100vw - 24px));max-height:min(88vh,900px);display:none;flex-direction:column;overflow:hidden;border:1px solid #475569;border-radius:14px;background:#0b1220;color:#f8fafc;box-shadow:0 20px 60px rgba(0,0,0,.5);font:13px/1.4 system-ui}.panel[data-open=true]{display:flex}.header{display:flex;align-items:center;gap:8px;padding:10px;background:#111b2e;border-bottom:1px solid #334155;cursor:grab}.title{flex:1}.title-main{font-weight:800}.title-sub{color:#94a3b8;font-size:11px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:7px}.tab,.tool{padding:7px}.tab[aria-selected=true]{background:#1d4ed8}.surface-tools{display:flex;gap:6px;padding:7px 8px;border-top:1px solid #1e293b;border-bottom:1px solid #1e293b;flex-wrap:wrap}.search-wrap{padding:8px}.search{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #334155;border-radius:8px}.body{overflow:auto;padding:8px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin:4px 0}.insert{padding:8px;text-align:left;min-width:0}.row-label{display:block;font-weight:750;overflow:hidden;text-overflow:ellipsis}.row-meta{display:block;color:#94a3b8;font-size:11px}.actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}button{border:1px solid #475569;border-radius:8px;background:#17243a;color:#f8fafc;cursor:pointer}button:hover,button:focus-visible{background:#243750}button:disabled{opacity:.55;cursor:wait}.copy,.full,.refinement,.edit-library,.edit-command,.delete-library,.delete-command,.reload-command,.open-command,.repo-library,.repo-command{padding:5px 8px}.delete-library,.delete-command{color:#fecaca}.status{margin:0 8px 8px;padding:8px;border-radius:8px;background:#172554;color:#bfdbfe;white-space:pre-wrap}.empty{padding:18px;color:#94a3b8;text-align:center}.overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(780px,96vw);max-height:90vh;overflow:auto;background:#0b1220;color:#f8fafc;border:1px solid #475569;border-radius:14px;padding:14px;font:13px/1.45 system-ui}.modal h2{margin:0 0 8px}.modal p{color:#cbd5e1}.modal textarea{width:100%;min-height:320px;padding:10px;background:#020817;color:#f8fafc;border:1px solid #475569;border-radius:8px;font:12px/1.45 ui-monospace,monospace}.modal input{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:grid;gap:4px}.field-wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.preview{margin-top:10px;padding:10px;border:1px solid #334155;border-radius:8px;background:#07101f;white-space:pre-wrap}.danger{color:#fecaca}.ok{color:#bbf7d0}</style><button class="launcher" type="button">Planning</button><section class="panel" data-open="false"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">RAM-first · clipboard-first insert · explicit GitHub actions</div></div><button class="close" type="button">×</button></div><div class="tabs">${Object.values(SURFACES).map((surface)=>`<button class="tab" type="button" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="surface-tools"><button class="tool new-library" type="button">New</button><button class="tool import-chat" type="button">Import from ChatGPT</button><button class="tool restore-chat" type="button">Restore from GitHub copy</button><button class="tool recovery-request" type="button">Copy recovery request</button><button class="tool check-github" type="button">Check GitHub</button><button class="tool sync-github" type="button">Sync missing</button><button class="tool settings" type="button">Repository settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…"></div><div class="body"></div></section>`;
+    const host=document.createElement('div');host.id=HOST_ID;document.documentElement.appendChild(host);const root=host.attachShadow({mode:'open'});const saved=options.position||{left:null,top:null};let left=saved.left??Math.max(12,window.innerWidth-560),top=saved.top??Math.max(12,window.innerHeight-760);let activeSurface=SURFACES.COMMANDS,commandEntries=[...(options.commandEntries||[])],promptEntries=[...(options.promptEntries||[])],useCaseEntries=[...(options.useCaseEntries||[])];const directionDefinitions=[...(options.directionDefinitions||[])];let focusCommandId=null,activeOverlay=null,isOpen=false,statusTimer=null,insertionBusy=false,operationBusy=false,dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true',lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'';
+    root.innerHTML=`<style>:host{all:initial}*{box-sizing:border-box}button,input,textarea{font:inherit}.launcher{position:fixed;right:18px;bottom:22px;z-index:2147483647;border:1px solid #64748b;border-radius:999px;padding:9px 13px;background:#111827;color:#f8fafc;font:700 12px system-ui;cursor:pointer}.panel{position:fixed;left:${left}px;top:${top}px;z-index:2147483647;width:min(580px,calc(100vw - 24px));max-height:min(88vh,900px);display:none;flex-direction:column;overflow:hidden;border:1px solid #475569;border-radius:14px;background:#0b1220;color:#f8fafc;box-shadow:0 20px 60px rgba(0,0,0,.5);font:13px/1.4 system-ui}.panel[data-open=true]{display:flex}.header{display:flex;align-items:center;gap:8px;padding:10px;background:#111b2e;border-bottom:1px solid #334155;cursor:grab}.title{flex:1}.title-main{font-weight:800}.title-sub{color:#94a3b8;font-size:11px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:7px}.tab,.tool{padding:7px}.tab[aria-selected=true]{background:#1d4ed8}.surface-tools{display:flex;gap:6px;padding:7px 8px;border-top:1px solid #1e293b;border-bottom:1px solid #1e293b;flex-wrap:wrap}.search-wrap{padding:8px}.search{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #334155;border-radius:8px}.body{overflow:auto;padding:8px}.direction-group{margin:6px 0;border:1px solid #26364f;border-radius:10px;background:#0d1728}.direction-group>summary{cursor:pointer;padding:8px 10px;font-weight:800;list-style:none}.direction-group>summary::-webkit-details-marker{display:none}.direction-group>summary::before{content:'▸';display:inline-block;width:16px;color:#94a3b8}.direction-group[open]>summary::before{content:'▾'}.direction-meta{display:block;margin-left:16px;color:#94a3b8;font-size:11px;font-weight:400}.direction-entries{padding:0 7px 7px 20px}.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin:4px 0}.insert{padding:8px;text-align:left;min-width:0}.row-label{display:block;font-weight:750;overflow:hidden;text-overflow:ellipsis}.row-meta{display:block;color:#94a3b8;font-size:11px}.actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}button{border:1px solid #475569;border-radius:8px;background:#17243a;color:#f8fafc;cursor:pointer}button:hover,button:focus-visible{background:#243750}button:disabled{opacity:.55;cursor:wait}.copy,.full,.refinement,.edit-library,.edit-command,.delete-library,.delete-command,.reload-command,.open-command,.repo-library,.repo-command{padding:5px 8px}.delete-library,.delete-command{color:#fecaca}.status{margin:0 8px 8px;padding:8px;border-radius:8px;background:#172554;color:#bfdbfe;white-space:pre-wrap}.empty{padding:18px;color:#94a3b8;text-align:center}.overlay{position:fixed;inset:0;z-index:2147483647;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(780px,96vw);max-height:90vh;overflow:auto;background:#0b1220;color:#f8fafc;border:1px solid #475569;border-radius:14px;padding:14px;font:13px/1.45 system-ui}.modal h2{margin:0 0 8px}.modal p{color:#cbd5e1}.modal textarea{width:100%;min-height:320px;padding:10px;background:#020817;color:#f8fafc;border:1px solid #475569;border-radius:8px;font:12px/1.45 ui-monospace,monospace}.modal input{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:grid;gap:4px}.field-wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.preview{margin-top:10px;padding:10px;border:1px solid #334155;border-radius:8px;background:#07101f;white-space:pre-wrap}.danger{color:#fecaca}.ok{color:#bbf7d0}</style><button class="launcher" type="button">Planning</button><section class="panel" data-open="false"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">RAM-first · clipboard-first insert · explicit GitHub actions</div></div><button class="close" type="button">×</button></div><div class="tabs">${Object.values(SURFACES).map((surface)=>`<button class="tab" type="button" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="surface-tools"><button class="tool new-library" type="button">New</button><button class="tool import-chat" type="button">Import from ChatGPT</button><button class="tool restore-chat" type="button">Restore from GitHub copy</button><button class="tool recovery-request" type="button">Copy recovery request</button><button class="tool check-github" type="button">Check GitHub</button><button class="tool sync-github" type="button">Sync missing</button><button class="tool settings" type="button">Repository settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…"></div><div class="body"></div></section>`;
     const launcher=root.querySelector('.launcher'),panel=root.querySelector('.panel'),header=root.querySelector('.header'),closeButton=root.querySelector('.close'),searchInput=root.querySelector('.search'),body=root.querySelector('.body'),tabButtons=[...root.querySelectorAll('.tab')],newLibraryButton=root.querySelector('.new-library'),checkGithubButton=root.querySelector('.check-github'),syncGithubButton=root.querySelector('.sync-github');
-    function isLibrarySurface(surface){return surface===SURFACES.PROMPTS;}function isRepositorySurface(surface){return surface===SURFACES.COMMANDS||surface===SURFACES.PROMPTS;}function libraryKindForSurface(){return deps.HELPER_LIBRARY_KINDS.PROMPT;}function entriesForSurface(surface){if(surface===SURFACES.COMMANDS)return commandEntries;if(surface===SURFACES.PROMPTS)return promptEntries;return semanticEntries[surface]||[];}
-    function setCommandEntries(entries){commandEntries=[...(entries||[])];if(activeSurface===SURFACES.COMMANDS)renderEntries(searchInput.value);}function setLibraryEntries(result={}){if(result.promptEntries)promptEntries=[...result.promptEntries];if(activeSurface===SURFACES.PROMPTS)renderEntries(searchInput.value);}function applyState(result={}){if(result.commandEntries)setCommandEntries(result.commandEntries);setLibraryEntries(result);}
+    function isLibrarySurface(surface){return surface===SURFACES.PROMPTS;}function isRepositorySurface(surface){return surface===SURFACES.COMMANDS||surface===SURFACES.PROMPTS;}function libraryKindForSurface(){return deps.HELPER_LIBRARY_KINDS.PROMPT;}function entriesForSurface(surface){if(surface===SURFACES.COMMANDS)return commandEntries;if(surface===SURFACES.PROMPTS)return promptEntries;if(surface===SURFACES.USE_CASES)return useCaseEntries;return[];}
+    function setCommandEntries(entries){commandEntries=[...(entries||[])];if(activeSurface===SURFACES.COMMANDS)renderEntries(searchInput.value);}function setUseCaseEntries(entries){useCaseEntries=[...(entries||[])];if(activeSurface===SURFACES.USE_CASES)renderEntries(searchInput.value);}function setLibraryEntries(result={}){if(result.promptEntries)promptEntries=[...result.promptEntries];if(activeSurface===SURFACES.PROMPTS)renderEntries(searchInput.value);}function applyState(result={}){if(result.commandEntries)setCommandEntries(result.commandEntries);if(result.useCaseEntries)setUseCaseEntries(result.useCaseEntries);setLibraryEntries(result);}
     function showStatus(message,timeout=5200){root.querySelector('.status')?.remove();if(statusTimer!==null)clearTimeout(statusTimer);const status=document.createElement('div');status.className='status';status.textContent=String(message);panel.appendChild(status);statusTimer=setTimeout(()=>{status.remove();statusTimer=null;},timeout);}function setBusy(){root.querySelectorAll('button').forEach((button)=>{if(!button.classList.contains('close'))button.disabled=insertionBusy||operationBusy;});}
     async function insertBody(text,success,id){if(insertionBusy)return;insertionBusy=true;setBusy();try{showStatus(await options.onInsert(text,success,id)||success);}finally{insertionBusy=false;setBusy();}}
     function switchSurface(surface,commandId=null){activeSurface=surface;focusCommandId=commandId;searchInput.value='';tabButtons.forEach((button)=>button.setAttribute('aria-selected',String(button.dataset.surface===surface)));newLibraryButton.style.display=(surface===SURFACES.COMMANDS||surface===SURFACES.PROMPTS)?'inline-block':'none';newLibraryButton.textContent=surface===SURFACES.PROMPTS?'New prompt':'New command';checkGithubButton.style.display=isRepositorySurface(surface)?'inline-block':'none';syncGithubButton.style.display=isRepositorySurface(surface)?'inline-block':'none';renderEntries('');}
     function setOpen(value){isOpen=Boolean(value);if(!isOpen&&activeOverlay){activeOverlay.remove();activeOverlay=null;}panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen){keepPanelInViewport();renderEntries(searchInput.value);}}
     function repositoryReference(entry){if(activeSurface===SURFACES.COMMANDS&&entry.entityType==='planning-command')return{type:'planning-command',id:entry.id};if(entry.entityType==='legacy-helper-command'||activeSurface===SURFACES.PROMPTS)return{type:'helper',kind:entry.libraryKind,id:entry.libraryId};return null;}
     async function saveRepositoryEntry(entry){const reference=repositoryReference(entry);if(!reference)return;operationBusy=true;setBusy();try{showStatus(`Saving to GitHub: ${entry.title||entry.command||entry.label}…`,8000);const result=await options.onSaveRepositoryEntity(reference);applyState(result);const localWarning=result.localSnapshotUpdated===false?`\nRemote state is verified, but local repository-evidence metadata could not be saved: ${result.localSnapshotError||'unknown local persistence error'}. Run Check GitHub before relying on the local verification indicator.`:'';const outcome=result.replacedMalformedRemote?'GitHub invalid helper file repaired and verified':result.recoveredAfterConflict?'GitHub already contains intended content; verification recovered after concurrent/stale-SHA change':result.action==='noop'?'GitHub already matches':'GitHub saved';showStatus(`${outcome}: ${result.path}\nSHA: ${result.sha||'<none>'}${localWarning}`,localWarning?12000:8000);}catch(error){showStatus(repositorySaveFailureMessage(error),9000);}finally{operationBusy=false;setBusy();}}
-    function renderEntries(query){const q=String(query||'').trim().toLowerCase();const entries=entriesForSurface(activeSurface).filter((entry)=>!q||[entry.id,entry.label,entry.command||'',entry.description||'',entry.englishName||'',entry.text||'',...(entry.commandFamily||[])].join(' ').toLowerCase().includes(q));body.textContent='';if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='No matching entries.';body.appendChild(empty);return;}for(const entry of entries){const row=document.createElement('div');row.className='row';const main=document.createElement('button');main.type='button';main.className='insert';const label=document.createElement('span');label.className='row-label';label.textContent=activeSurface===SURFACES.COMMANDS?(entry.entityType==='planning-command'?`${entry.englishName} · ${entry.command}`:entry.label):entry.label;const meta=document.createElement('span');meta.className='row-meta';meta.textContent=entry.entityType==='planning-command'?[entry.stateLabel,entry.description].filter(Boolean).join(' · '):(entry.description||entry.id);main.append(label,meta);const actions=document.createElement('div');actions.className='actions';
+    function entryMatches(entry,q){return !q||[entry.id,entry.label,entry.command||'',entry.description||'',entry.englishName||'',entry.text||'',...(entry.commandFamily||[])].join(' ').toLowerCase().includes(q);}
+    function appendEntryRow(entry,parent){const row=document.createElement('div');row.className='row';const main=document.createElement('button');main.type='button';main.className='insert';const label=document.createElement('span');label.className='row-label';label.textContent=activeSurface===SURFACES.COMMANDS?(entry.entityType==='planning-command'?`${entry.englishName} · ${entry.command}`:entry.label):entry.label;const meta=document.createElement('span');meta.className='row-meta';meta.textContent=entry.entityType==='planning-command'?[entry.stateLabel,entry.description].filter(Boolean).join(' · '):(entry.description||entry.id);main.append(label,meta);const actions=document.createElement('div');actions.className='actions';
       if(activeSurface===SURFACES.PROMPTS||entry.entityType==='legacy-helper-command'){main.addEventListener('click',()=>insertBody(entry.text,`Inserted: ${entry.title}`,entry.id));const copy=document.createElement('button');copy.className='copy';copy.textContent='Copy';copy.addEventListener('click',async()=>showStatus(await options.onCopy(entry.text)?`Copied: ${entry.title}`:'Clipboard copy failed.'));const edit=document.createElement('button');edit.className='edit-library';edit.textContent='Edit';edit.addEventListener('click',()=>openLibraryEditor(entry));const repo=document.createElement('button');repo.className='repo-library';repo.textContent='Save GitHub';repo.addEventListener('click',()=>saveRepositoryEntry(entry));const remove=document.createElement('button');remove.className='delete-library';remove.textContent='Delete';remove.addEventListener('click',()=>deleteLocalLibrary(entry));actions.append(copy,edit,repo,remove);
-      }else if(entry.commandId){main.addEventListener('click',()=>switchSurface(SURFACES.COMMANDS,entry.commandId));const open=document.createElement('button');open.className='open-command';open.textContent='Open Commands';open.addEventListener('click',()=>switchSurface(SURFACES.COMMANDS,entry.commandId));actions.append(open);
-      }else{main.addEventListener('click',()=>insertBody(entry.adaptiveBody,`Inserted: ${entry.label||entry.command} · Adaptive`,entry.id));const full=document.createElement('button');full.className='full';full.textContent='Full';full.addEventListener('click',()=>insertBody(entry.fullBody,`Inserted: ${entry.label||entry.command} · Full`,entry.id));actions.append(full);if(activeSurface===SURFACES.COMMANDS)for(const refinement of entry.refinementBodies||[]){const button=document.createElement('button');button.className='refinement';button.textContent=refinement.label;button.addEventListener('click',()=>insertBody(refinement.body,`Inserted refinement: ${entry.command} · ${refinement.label}`,`${entry.id}:${refinement.id}`));actions.append(button);}const copy=document.createElement('button');copy.className='copy';copy.textContent='Copy';copy.addEventListener('click',async()=>showStatus(await options.onCopy(entry.adaptiveBody)?`Copied: ${entry.label||entry.command}`:'Clipboard copy failed.'));actions.append(copy);if(activeSurface===SURFACES.COMMANDS){const edit=document.createElement('button');edit.className='edit-command';edit.textContent='Edit';edit.addEventListener('click',()=>openCommandEditor(entry));const repo=document.createElement('button');repo.className='repo-command';repo.textContent='Save GitHub';repo.addEventListener('click',()=>saveRepositoryEntry(entry));actions.append(edit,repo);if(entry.repositoryTracked){const reload=document.createElement('button');reload.className='reload-command';reload.textContent='Reload GitHub';reload.addEventListener('click',()=>reloadRepositoryCommand(entry));actions.append(reload);}else{const remove=document.createElement('button');remove.className='delete-command';remove.textContent='Delete draft';remove.addEventListener('click',()=>deleteLocalCommandDraft(entry));actions.append(remove);}}}
-      row.append(main,actions);body.appendChild(row);if(entry.id===focusCommandId)setTimeout(()=>{main.focus();row.scrollIntoView({block:'nearest'});focusCommandId=null;},0);}}
+      }else{main.addEventListener('click',()=>insertBody(entry.adaptiveBody,`Inserted: ${entry.label||entry.command} · Adaptive`,entry.id));const full=document.createElement('button');full.className='full';full.textContent='Full';full.addEventListener('click',()=>insertBody(entry.fullBody,`Inserted: ${entry.label||entry.command} · Full`,entry.id));actions.append(full);if(activeSurface===SURFACES.COMMANDS)for(const refinement of entry.refinementBodies||[]){const button=document.createElement('button');button.className='refinement';button.textContent=refinement.label;button.addEventListener('click',()=>insertBody(refinement.body,`Inserted refinement: ${entry.command} · ${refinement.label}`,`${entry.id}:${refinement.id}`));actions.append(button);}const copy=document.createElement('button');copy.className='copy';copy.textContent='Copy';copy.addEventListener('click',async()=>showStatus(await options.onCopy(entry.adaptiveBody)?`Copied: ${entry.label||entry.command}`:'Clipboard copy failed.'));actions.append(copy);if(activeSurface===SURFACES.COMMANDS){const edit=document.createElement('button');edit.className='edit-command';edit.textContent='Edit';edit.addEventListener('click',()=>openCommandEditor(entry));const repo=document.createElement('button');repo.className='repo-command';repo.textContent='Save GitHub';repo.addEventListener('click',()=>saveRepositoryEntry(entry));actions.append(edit,repo);if(entry.repositoryTracked){const reload=document.createElement('button');reload.className='reload-command';reload.textContent='Reload GitHub';reload.addEventListener('click',()=>reloadRepositoryCommand(entry));actions.append(reload);}const remove=document.createElement('button');remove.className='delete-command';remove.textContent='Delete';remove.title='Remove only from this Helper local snapshot; repository file is untouched.';remove.addEventListener('click',()=>deleteLocalCommand(entry));actions.append(remove);}else if(activeSurface===SURFACES.USE_CASES){const remove=document.createElement('button');remove.className='delete-command';remove.textContent='Delete';remove.title='Remove only from this Helper local snapshot; canonical Use-Case registries/owners are untouched.';remove.addEventListener('click',()=>deleteLocalUseCase(entry));actions.append(remove);}}
+      row.append(main,actions);parent.appendChild(row);if(entry.id===focusCommandId)setTimeout(()=>{main.focus();row.scrollIntoView({block:'nearest'});focusCommandId=null;},0);}
+    function renderEntries(query){const q=String(query||'').trim().toLowerCase();const all=entriesForSurface(activeSurface);body.textContent='';if(activeSurface===SURFACES.COMMANDS||activeSurface===SURFACES.USE_CASES){const groups=groupEntriesByDirections(all,directionDefinitions);let shown=0;for(const group of groups){const groupMatch=!q||[group.id,group.label,group.description].join(' ').toLowerCase().includes(q);const entries=group.entries.filter((entry)=>groupMatch||entryMatches(entry,q));if(!entries.length)continue;shown+=entries.length;const details=document.createElement('details');details.className='direction-group';details.dataset.direction=group.id;details.open=Boolean(q)||entries.some((entry)=>entry.id===focusCommandId);const summary=document.createElement('summary');summary.textContent=`${group.label} (${entries.length})`;const meta=document.createElement('span');meta.className='direction-meta';meta.textContent=group.id;summary.appendChild(meta);const nested=document.createElement('div');nested.className='direction-entries';for(const entry of entries)appendEntryRow(entry,nested);details.append(summary,nested);body.appendChild(details);}if(!shown){const empty=document.createElement('div');empty.className='empty';empty.textContent='No matching entries.';body.appendChild(empty);}return;}const entries=all.filter((entry)=>entryMatches(entry,q));if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='No matching entries.';body.appendChild(empty);return;}for(const entry of entries)appendEntryRow(entry,body);}
 
     function makeOverlay(title){activeOverlay?.remove();const overlay=document.createElement('div');overlay.className='overlay';const modal=document.createElement('section');modal.className='modal';const h=document.createElement('h2');h.textContent=title;modal.appendChild(h);overlay.appendChild(modal);root.appendChild(overlay);activeOverlay=overlay;overlay.addEventListener('click',(event)=>{if(event.target===overlay&&!operationBusy){overlay.remove();activeOverlay=null;}});return{overlay,modal};}
     async function openImport(mode){const restoring=mode==='restore';const{overlay,modal}=makeOverlay(restoring?'Restore local snapshot from GitHub copy':'Import new/changed items from ChatGPT');const intro=document.createElement('p');intro.textContent=restoring?'Paste the complete exact marker set returned by ChatGPT after it read GitHub. Restore reconciles repository-backed local records to that complete set, removes stale repository-backed records that are absent from it, preserves local-only unbacked records, and makes zero GitHub requests/writes.':'Paste planning-command definition and/or helper-library marker blocks from ChatGPT. Import changes only the local RAM/snapshot state. Use Save GitHub explicitly on a row when you want to create or update its repository file.';const textarea=document.createElement('textarea');textarea.placeholder='[PLANNING_COMMAND_DEFINITION]\n{ ... }\n[/PLANNING_COMMAND_DEFINITION]\n\n[PLANNING_HELPER_LIBRARY_ITEM]\n{ ... }\n[/PLANNING_HELPER_LIBRARY_ITEM]';const preview=document.createElement('div');preview.className='preview';preview.textContent='Not parsed yet.';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const parse=document.createElement('button');parse.textContent='Preview local import';const apply=document.createElement('button');apply.textContent=restoring?'Restore locally':'Import locally';apply.disabled=true;actions.append(cancel,parse,apply);modal.append(intro,textarea,preview,actions);let ready=false;cancel.addEventListener('click',()=>{if(!operationBusy){overlay.remove();activeOverlay=null;}});textarea.addEventListener('input',()=>{ready=false;apply.disabled=true;preview.textContent='Input changed. Preview again.';});parse.addEventListener('click',()=>{try{const result=options.onPreviewChatImport(textarea.value,mode);preview.textContent=`${result.parsed.definitions.length} planning command(s), ${result.parsed.helperItems.length} helper item(s).\n\n${result.lines.join('\n')}`;preview.className='preview ok';ready=true;apply.disabled=false;}catch(error){preview.textContent=error.message||String(error);preview.className='preview danger';ready=false;apply.disabled=true;}});apply.addEventListener('click',async()=>{if(!ready)return;operationBusy=true;setBusy();textarea.disabled=true;try{const result=await options.onApplyChatImport(textarea.value,mode);applyState(result);const failures=result.errors||[];preview.textContent=restoring?`Restored locally and reconciled repository-backed records. GitHub requests: 0.`:`Imported locally: ${result.createdLocal||0} new local record(s). GitHub requests: 0.`;preview.className='preview ok';showStatus(restoring?'Local snapshot restored/reconciled from pasted GitHub copy; no GitHub request was made.':'Local import completed. Use Save GitHub explicitly for repository persistence.',8000);}catch(error){preview.textContent=error.message||String(error);preview.className='preview danger';}finally{operationBusy=false;textarea.disabled=false;setBusy();}});}
@@ -1072,7 +1151,8 @@
     async function openCommandEditor(entry=null){const{overlay,modal}=makeOverlay(entry?'Edit planning command':'New planning command');const intro=document.createElement('p');intro.textContent=entry?'Edit the real structured planning-command definition. Save local creates a draft in the unified snapshot; Save GitHub on the row publishes it through the validated planning/commands route. Existing command id/file are immutable in this editor.':'Create a real Planning Command draft. This does not register or grant its permissions until Save GitHub succeeds against the current repository command catalog.';const textWrap=document.createElement('label');textWrap.className='field field-wide';textWrap.innerHTML='<span>Planning command definition JSON</span>';const textarea=document.createElement('textarea');textarea.value=JSON.stringify(entry?.definition||newCommandDefinitionTemplate(),null,2);textWrap.append(textarea);const note=document.createElement('p');note.textContent='The Helper validates the complete local command catalog. Command meaning remains owned by planning/commands/*.command.md + ownerFiles after repository save; keep workflow algorithms in owners rather than duplicating them here.';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const save=document.createElement('button');save.textContent='Save local draft';actions.append(cancel,save);modal.append(intro,textWrap,note,actions);cancel.addEventListener('click',()=>{overlay.remove();activeOverlay=null;});save.addEventListener('click',async()=>{try{const result=await options.onSaveLocalCommandDefinition(textarea.value,entry?.id||'');applyState(result);overlay.remove();activeOverlay=null;showStatus(result.unchanged?'No command-definition change. Repository evidence preserved. GitHub requests: 0.':'Planning command draft saved locally. GitHub requests: 0.');}catch(error){showStatus(error.message||String(error),8000);}});}
     async function reloadRepositoryCommand(entry){operationBusy=true;setBusy();try{showStatus(`Reloading current GitHub command: ${entry.command}…`,8000);const result=await options.onReloadRepositoryCommand(entry.id);applyState(result);showStatus(`Reloaded from GitHub: ${result.path}
 SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload failed: ${error.message||String(error)}`,9000);}finally{operationBusy=false;setBusy();}}
-    async function deleteLocalCommandDraft(entry){try{const result=await options.onDeleteLocalCommandDraft(entry.id);applyState(result);showStatus('Deleted unregistered command draft locally. GitHub requests: 0.');}catch(error){showStatus(error.message||String(error),7000);}}
+    async function deleteLocalCommand(entry){try{const result=await options.onDeleteLocalCommand(entry.id);applyState(result);showStatus('Removed command from this Helper local snapshot. Repository file unchanged. GitHub requests: 0.');}catch(error){showStatus(error.message||String(error),7000);}}
+    async function deleteLocalUseCase(entry){try{const result=await options.onDeleteLocalUseCase(entry.id);applyState(result);showStatus('Removed Use Case from this Helper local snapshot. Canonical registry/owners unchanged. GitHub requests: 0.');}catch(error){showStatus(error.message||String(error),7000);}}
     async function openLibraryEditor(entry=null){const kind=entry?.libraryKind||libraryKindForSurface(activeSurface);const{overlay,modal}=makeOverlay(entry?(entry.entityType==='legacy-helper-command'?'Edit legacy helper insertion':'Edit prompt'):'New prompt');const fields=document.createElement('div');fields.className='fields';const titleWrap=document.createElement('label');titleWrap.className='field field-wide';titleWrap.innerHTML='<span>Title</span>';const title=document.createElement('input');title.value=entry?.title||'';titleWrap.append(title);const textWrap=document.createElement('label');textWrap.className='field field-wide';textWrap.innerHTML='<span>Exact insertion text</span>';const textarea=document.createElement('textarea');textarea.value=entry?.text||'';textWrap.append(textarea);const note=document.createElement('p');note.textContent='Save local changes the RAM/local snapshot only. After saving, use Save GitHub on the row when repository persistence is wanted.';const actions=document.createElement('div');actions.className='modal-actions';const cancel=document.createElement('button');cancel.textContent='Cancel';const save=document.createElement('button');save.textContent='Save local';actions.append(cancel,save);modal.append(titleWrap,textWrap,note,actions);cancel.addEventListener('click',()=>{overlay.remove();activeOverlay=null;});save.addEventListener('click',async()=>{try{const result=await options.onSaveLocalLibraryItem({kind,id:entry?.libraryId||'',title:title.value,text:textarea.value,createdAt:entry?.createdAt||''});setLibraryEntries(result);overlay.remove();activeOverlay=null;showStatus(result.unchanged?'No local content change. Repository evidence preserved. GitHub requests: 0.':'Saved locally. GitHub requests: 0.');}catch(error){showStatus(error.message||String(error),7000);}});}
     async function deleteLocalLibrary(entry){try{const result=await options.onDeleteLocalLibraryItem(entry.libraryKind,entry.libraryId);setLibraryEntries(result);showStatus('Removed from local snapshot. GitHub requests: 0.');}catch(error){showStatus(error.message||String(error),7000);}}
     async function copyRecoveryRequest(){try{const text=await options.onGetRecoveryRequest();showStatus(await options.onCopy(text)?'Recovery request copied. Paste it into ChatGPT; then paste ChatGPT’s marker blocks into Restore from GitHub copy.':'Could not copy the recovery request.',9000);}catch(error){showStatus(error.message||String(error),7000);}}
@@ -1085,11 +1165,11 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
     function enableDragging(){let pointerId=null,startX=0,startY=0,startLeft=0,startTop=0;function down(event){if(event.button!==0||event.target.closest('button'))return;pointerId=event.pointerId;startX=event.clientX;startY=event.clientY;const rect=panel.getBoundingClientRect();startLeft=rect.left;startTop=rect.top;header.setPointerCapture(pointerId);}function move(event){if(pointerId!==event.pointerId)return;left=startLeft+event.clientX-startX;top=startTop+event.clientY-startY;keepPanelInViewport();}function finish(event){if(pointerId===null)return;try{header.releasePointerCapture(pointerId);}catch(_){}pointerId=null;options.onSavePosition?.({left,top});}header.addEventListener('pointerdown',down);header.addEventListener('pointermove',move);header.addEventListener('pointerup',finish);header.addEventListener('pointercancel',finish);return()=>{header.removeEventListener('pointerdown',down);header.removeEventListener('pointermove',move);header.removeEventListener('pointerup',finish);header.removeEventListener('pointercancel',finish);};}
     function consumeToggle(token){const next=String(token||'');if(next&&next!==lastToggleToken){lastToggleToken=next;setOpen(!isOpen);}}function handleShortcut(event){if(event.repeat)return;if(event.key==='Escape'&&activeOverlay&&!operationBusy){activeOverlay.remove();activeOverlay=null;return;}if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='F2'){event.preventDefault();setOpen(!isOpen);}else if(event.key==='Escape'&&isOpen)setOpen(false);}
     const observer=new MutationObserver((mutations)=>{for(const mutation of mutations){if(mutation.attributeName==='data-obs-planning-dashboard-open'){dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true';launcher.style.display=isOpen||dashboardOpen?'none':'block';}if(mutation.attributeName==='data-obs-planning-commands-toggle')consumeToggle(document.documentElement.dataset.obsPlanningCommandsToggle);}});observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-obs-planning-dashboard-open','data-obs-planning-commands-toggle']});
-    tabButtons.forEach((button)=>button.addEventListener('click',()=>switchSurface(button.dataset.surface)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));newLibraryButton.addEventListener('click',()=>activeSurface===SURFACES.COMMANDS?openCommandEditor():openLibraryEditor());root.querySelector('.import-chat').addEventListener('click',()=>openImport('import'));root.querySelector('.restore-chat').addEventListener('click',()=>openImport('restore'));root.querySelector('.recovery-request').addEventListener('click',copyRecoveryRequest);checkGithubButton.addEventListener('click',checkRepository);syncGithubButton.addEventListener('click',syncMissingRepository);root.querySelector('.settings').addEventListener('click',openSettings);window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);const disableDragging=enableDragging();switchSurface(SURFACES.ORIENTATION);if(options.startupWarnings?.length)setTimeout(()=>showStatus(options.startupWarnings.join('\n'),9000),100);
+    tabButtons.forEach((button)=>button.addEventListener('click',()=>switchSurface(button.dataset.surface)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));newLibraryButton.addEventListener('click',()=>activeSurface===SURFACES.COMMANDS?openCommandEditor():openLibraryEditor());root.querySelector('.import-chat').addEventListener('click',()=>openImport('import'));root.querySelector('.restore-chat').addEventListener('click',()=>openImport('restore'));root.querySelector('.recovery-request').addEventListener('click',copyRecoveryRequest);checkGithubButton.addEventListener('click',checkRepository);syncGithubButton.addEventListener('click',syncMissingRepository);root.querySelector('.settings').addEventListener('click',openSettings);window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);const disableDragging=enableDragging();switchSurface(SURFACES.COMMANDS);if(options.startupWarnings?.length)setTimeout(()=>showStatus(options.startupWarnings.join('\n'),9000),100);
     function dispose(){if(statusTimer!==null)clearTimeout(statusTimer);observer.disconnect();disableDragging();window.removeEventListener('resize',keepPanelInViewport);window.removeEventListener('keydown',handleShortcut,true);host.remove();}
-    return{setCommandEntries,setLibraryEntries,switchSurface,setOpen,showStatus,dispose,host,root};
+    return{setCommandEntries,setUseCaseEntries,setLibraryEntries,switchSurface,setOpen,showStatus,dispose,host,root};
   }
-  return{createPlanningHelperUi,repositorySaveFailureMessage};
+  return{createPlanningHelperUi,repositorySaveFailureMessage,groupEntriesByDirections};
 });
 
 (function (root, factory) {
@@ -1108,15 +1188,17 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
   function materializeSnapshot(snapshot){
     const commandRecords=[...(snapshot.planningCommands||[])];
     const helperRecords=[...(snapshot.helperItems||[])];
+    const hiddenUseCaseIds=new Set(snapshot.hiddenUseCaseIds||[]);
     const definitions=commandRecords.map((record)=>record.definition);
     deps.validateCommandCatalog(definitions);
     const commandByFile=new Map(commandRecords.map((record)=>[record.definition.file,record]));
     const commandById=new Map(commandRecords.map((record)=>[record.definition.id,record]));
     const helperByKey=new Map(helperRecords.map((record)=>[helperKey(record.item),record]));
-    const planningEntries=deps.buildCommandEntries(definitions).map((entry)=>{const record=commandById.get(entry.id);const stateLabel=record?.repositoryKnown?'Registered · repository content verified':record?.repositoryTracked?'Registered · local draft changed':'New command draft · not registered';return{...entry,entityType:'planning-command',definition:record?.definition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',stateLabel};});
+    const planningEntries=deps.buildCommandEntries(definitions).map((entry)=>{const record=commandById.get(entry.id);const stateLabel=record?.repositoryKnown?'Registered · repository content verified':record?.repositoryTracked?'Registered · local draft changed':'New command draft · not registered';return{...entry,entityType:'planning-command',definition:record?.definition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',stateLabel,directionIds:deps.directionIdsForCommand(record?.definition||entry)};});
     const helperEntries=helperRecords.map((record)=>{const item=record.item;const evidence=record.repositorySha?'local · GitHub SHA verified':record.repositoryKnown?'local · repository-backed content; SHA unverified':'local · repository match not verified';return{id:`helper-library:${item.kind}:${item.id}`,entityType:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?'legacy-helper-command':'prompt',libraryId:item.id,libraryKind:item.kind,label:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy insertion · ${item.title}`:item.title,title:item.title,description:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy helper-command compatibility · ${evidence}`:evidence,text:item.text,adaptiveBody:item.text,repositoryPath:record.path,repositoryKnown:Boolean(record.repositoryKnown),repositoryTracked:Boolean(record.repositoryKnown),repositorySha:record.repositorySha||'',createdAt:item.createdAt,updatedAt:item.updatedAt};});
     const legacyCommandEntries=helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.COMMAND);
-    return{commandRecords,helperRecords,commandByFile,commandById,helperByKey,commandEntries:[...planningEntries,...legacyCommandEntries],localCommandEntries:legacyCommandEntries,promptEntries:helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.PROMPT)};
+    const useCaseEntries=(deps.buildSemanticEntries()[deps.SURFACES.USE_CASES]||[]).filter((entry)=>!hiddenUseCaseIds.has(entry.id));
+    return{commandRecords,helperRecords,commandByFile,commandById,helperByKey,commandEntries:[...planningEntries,...legacyCommandEntries],localCommandEntries:legacyCommandEntries,promptEntries:helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.PROMPT),useCaseEntries};
   }
 
   function mergeChatImport(snapshot,parsed,mode='import'){
@@ -1139,7 +1221,8 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
       commandMap.set(normalized.file,record);if(mode==='import'&&!previous)newCommandRecords.push(record);
     }
     for(const itemValue of parsed.helperItems||[]){const item=deps.normalizeHelperLibraryItem(itemValue),key=helperKey(item),previous=current.helperByKey.get(key),rendered=deps.renderHelperLibraryDocument(item),unchanged=Boolean(previous)&&previous.rawContent===rendered;const record=deps.normalizeHelperRecord({item,rawContent:rendered,repositoryKnown:mode==='restore'?true:(unchanged&&Boolean(previous?.repositoryKnown)),repositoryTracked:mode==='restore'?true:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:mode==='restore'?'':(unchanged?previous?.repositorySha||'':'')});helperMap.set(key,record);if(mode==='import'&&!previous)newHelperRecords.push(record);}
-    const next={schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()]};
+    const restoredCommandIds=new Set((parsed.definitions||[]).map((definition)=>deps.normalizeCommandDefinition(definition).id));
+    const next={schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>!restoredCommandIds.has(id)),hiddenUseCaseIds:[...(snapshot.hiddenUseCaseIds||[])]};
     deps.normalizePlanningHelperLocalSnapshot(next);
     return{snapshot:next,newCommandRecords,newHelperRecords,removedRepositoryCommands,removedRepositoryHelperItems,parsed};
   }
@@ -1192,7 +1275,18 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
     const record=deps.normalizeCommandRecord({definition,rawContent,repositoryKnown:false,repositoryTracked:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:''});
     const records=[...memory.commandRecords.filter((entry)=>entry.definition.id!==definition.id),record];
     deps.validateCommandCatalog(records.map((entry)=>entry.definition));
-    return{changed:true,definition,record,snapshot:{...snapshot,planningCommands:records}};
+    return{changed:true,definition,record,snapshot:{...snapshot,planningCommands:records,hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>id!==definition.id)}};
+  }
+
+  function deleteLocalCommandFromSnapshot(snapshot,id){
+    const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),record=memory.commandById.get(value);
+    if(!record)throw new Error(`Planning command not found: ${value||'<empty>'}`);
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.filter((entry)=>entry.definition.id!==value),hiddenCommandIds:[...new Set([...(snapshot.hiddenCommandIds||[]),value])]});
+  }
+
+  function deleteLocalUseCaseFromSnapshot(snapshot,id){
+    const value=String(id||'').trim();if(!deps.USE_CASE_DEFINITIONS.some((entry)=>entry.id===value))throw new Error(`Use Case not found: ${value||'<empty>'}`);
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,hiddenUseCaseIds:[...new Set([...(snapshot.hiddenUseCaseIds||[]),value])]});
   }
 
   function prepareLocalHelperSave(snapshot,value,now=new Date().toISOString()){
@@ -1246,9 +1340,11 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
   async function startPlanningHelper(options={}){
     for(const key of [INSTANCE_DISPOSE_KEY,...LEGACY_DISPOSE_KEYS]){const previous=globalThis[key];if(typeof previous==='function'){try{previous();}catch(_){}}}
     const bundled=Array.isArray(options.bundledCommands)?options.bundledCommands:[];deps.validateCommandCatalog(bundled);
-    const semanticEntries=deps.buildSemanticEntries();const repositoryLock=createRepositoryOperationLock();
+    const bundledUseCases=Array.isArray(options.bundledUseCases)?options.bundledUseCases:[];
+    if(bundledUseCases.length){const expected=deps.USE_CASE_DEFINITIONS.map((entry)=>entry.id).sort(),actual=bundledUseCases.map((entry)=>String(entry?.id||'')).sort();if(JSON.stringify(actual)!==JSON.stringify(expected))throw new Error('Bundled Use-Case seed catalog does not match current semantic projections.');}
+    const repositoryLock=createRepositoryOperationLock();
     const loaded=await deps.loadOrMigratePlanningHelperLocalSnapshot(bundled);let snapshot=loaded.snapshot;let memory=materializeSnapshot(snapshot);const startupWarnings=[...(loaded.warnings||[])];if(loaded.migrated)startupWarnings.push('Planning Helper migrated existing local caches into one RAM-first local snapshot.');
-    function uiState(){return{commandEntries:memory.commandEntries,localCommandEntries:memory.localCommandEntries,promptEntries:memory.promptEntries};}
+    function uiState(){return{commandEntries:memory.commandEntries,localCommandEntries:memory.localCommandEntries,promptEntries:memory.promptEntries,useCaseEntries:memory.useCaseEntries};}
     async function persist(next){snapshot=await deps.savePlanningHelperLocalSnapshot(next);memory=materializeSnapshot(snapshot);return uiState();}
     async function makeClient(){const settings=await deps.loadRepositorySettings();const token=await deps.loadGitHubToken();if(typeof GM_xmlhttpRequest!=='function')throw new Error('GM_xmlhttpRequest is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');return{client:new deps.GitHubContentsClient({...settings,token,transport:deps.createGmTransport(GM_xmlhttpRequest)}),settings,token};}
     async function makeServices(){const{client,settings}=await makeClient();return{commandService:new deps.RepositoryCommandService(client,{commandsPath:deps.COMMANDS_PATH}),helperService:new deps.RepositoryHelperLibraryService(client),settings};}
@@ -1258,7 +1354,8 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
     }
 
     async function saveLocalCommandDefinition(value,existingId=''){const prepared=prepareLocalCommandSave(snapshot,value,existingId);if(!prepared.changed)return{definition:prepared.definition,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{definition:prepared.definition,unchanged:false,...state};}
-    async function deleteLocalCommandDraft(id){const record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);if(record.repositoryTracked)throw new Error('Registered command records are not locally deletable from Commands. Use Reload GitHub to replace a changed draft; repository retirement is a separate authorized route.');const next={...snapshot,planningCommands:memory.commandRecords.filter((entry)=>entry.definition.id!==record.definition.id)};return persist(next);}
+    async function deleteLocalCommand(id){return persist(deleteLocalCommandFromSnapshot(snapshot,id));}
+    async function deleteLocalUseCase(id){return persist(deleteLocalUseCaseFromSnapshot(snapshot,id));}
     async function reloadRepositoryCommand(id){return repositoryLock.run('Reload planning command from GitHub',async()=>{const{commandService,settings}=await makeServices();const record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);const remote=await commandService.readRemote(record.path);const replacement=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});const records=memory.commandRecords.map((entry)=>entry.definition.id===record.definition.id?replacement:entry);deps.validateCommandCatalog(records.map((entry)=>entry.definition));const state=await persist({...snapshot,planningCommands:records});return{settings,path:remote.path,sha:remote.sha,...state};});}
     async function saveLocalLibraryItem(value){const prepared=prepareLocalHelperSave(snapshot,value);if(!prepared.changed)return{item:prepared.item,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{item:prepared.item,unchanged:false,...state};}
     async function deleteLocalLibraryItem(kind,id){const key=`${kind}:${id}`;const next={...snapshot,helperItems:memory.helperRecords.filter((record)=>helperKey(record.item)!==key)};return persist(next);}
@@ -1273,13 +1370,13 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
     async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}
     async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings();const candidate=deps.validateRepositorySettings(settings);const sourceChanged=repositorySettingsKey(previous)!==repositorySettingsKey(candidate);if(sourceChanged)await persist(clearRepositoryEvidence(snapshot));await deps.saveGitHubToken(token);await deps.saveRepositorySettings(candidate);return{sourceChanged,...uiState()};});}
 
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,semanticEntries,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:(text,success,id)=>insertWithClipboard(text,success,id),onCopy:deps.copyText,onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommandDraft:deleteLocalCommandDraft,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,directionDefinitions:deps.DIRECTION_DEFINITIONS,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:(text,success,id)=>insertWithClipboard(text,success,id),onCopy:deps.copyText,onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
     function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}
     globalThis[INSTANCE_DISPOSE_KEY]=dispose;
-    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommandDraft,reloadRepositoryCommand,checkRepository,syncMissingRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
+    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
   }
 
-  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,insertWithClipboard};
+  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,insertWithClipboard};
 });
 
 (function(){
@@ -1368,7 +1465,7 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
       "collect ideas"
     ],
     "description": "collect/review Ideas and update integrated current planning",
-    "meaning": "Extract coherent Ideas from the selected source, preserve material non-Idea context, perform shared Standard Idea Review, resolve affected Workspace Use Cases or Application Scenarios, and produce/update one integrated current plan using proportional UCDS or SDS planning rather than a transcript of command results.",
+    "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve the affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Q/R/P is derived only as an owner-attached unresolved/adverse delta; it is never the planning root.",
     "activeContextBehavior": "Use the explicitly selected or clearly active current source. When a current integrated plan is clearly selected, use it as the current baseline and update it rather than starting a parallel plan. For Workspace/documentation planning use UCDS (Use Case → Domain/Rules → Vertical Slice/Realization) proportionally: once the UC boundary is sufficiently grounded, normally review Step 1 + Step 2; Step 1 may stand alone while the target UC picture remains materially unresolved; include Step 3 when explicitly requested or realization is sufficiently grounded/useful. For Application planning use SDS (Scenario → Domain/Rules → Slice) proportionally. Mini is a compact representation; Modular separates owners/order as the plan grows; Full SDS uses the detailed SDS profile. Ask only when source/current-plan identity is genuinely missing or ambiguous.",
     "traversalReadMode": "Targeted/full by source size, current-plan/current-owner uncertainty, affected useful results and selected planning depth.",
     "ownerFiles": [
@@ -1381,11 +1478,12 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
       "planning/documentation/workspace-planning/WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md",
       "planning/documentation/profiles/sds-planning-profiles.md"
     ],
-    "expectedOutput": "Source/Baseline + Key Points with Review Priority + Current Plan Snapshot + early Current-Plan-relative Questions/Risks/Problems + compact cross-cutting Ideas when material + affected Workspace UC/Application Scenario planning integrated into the current Mini/Modular UCDS or SDS representation + execution order/versions when selected and useful + cross-unit review when material + Current Overall Conclusions + only unselected Potential Simplifications/Better Routes.",
+    "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UC/Application Scenario Current→Target planning in proportional UCDS/SDS + attached Q/R/P only when material unresolved deltas remain + Review Order lens only when useful + execution order/versions when selected + cross-unit review + Current Overall Conclusions + only genuinely unselected Better Routes.",
     "permissionMode": "read-only",
     "keyReminders": [
       "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
       "When a current integrated plan is clearly active, update that plan as baseline; do not create an append-only command-result ledger or parallel Goal Map.",
+      "Ordinary chat text controls requested scope/depth/lens. Do not create a persistent Focus/H0-H1-H2 state or a command for each modifier.",
       "Not every source statement is an Idea; preserve relevant Existing Reality, constraints, decisions, corrections and questions with their proper meaning.",
       "Perform every mandatory Idea review check, but do not manufacture objections, risks or refinements merely to populate fields.",
       "Actively test whether each Idea deserves implementation and whether a genuinely simpler or better route exists.",
@@ -1395,7 +1493,7 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
       "For Workspace/documentation planning use UCDS: Step 1 Use Case → Step 2 Domain/Rules → Step 3 Vertical Slice/Realization. For Application planning use SDS: Scenario → Domain/Rules → Slice. The semantic rules do not become weaker in Mini form.",
       "Use planning dependency direction upstream → downstream. Preserve early later-step insight as provisional context, but do not let downstream convenience normally define upstream meaning.",
       "For Workspace/documentation planning, Step 1 + Step 2 is the normal default once the UC boundary is sufficiently grounded; Step 1 may stand alone while the target UC picture is materially unresolved; include Step 3 when explicitly requested or realization is sufficiently grounded/useful.",
-      "Keep Questions / Risks / Problems near the beginning after a short Current Plan Snapshot; aggregate units remain unresolved/adverse delta to Current Plan, not a confirmation log.",
+      "Plan from Need/situation → UC/Scenario → Current→Target. Derive Q/R/P only after a concrete owner/current planned state exists; do not walk a FIND queue.",
       "Execution order is the selected route through planned work; represent genuine parallelism/dependencies rather than forcing a total order. Application execution order may group Slices by versions/releases.",
       "Current State normally uses a high-level summary + direct current-owner links. Target changed/new semantic meaning must be complete enough that implementation does not invent missing decisions; keep Current→Target Transition separate.",
       "When several UCs/Slices are affected, review their combined architecture effect, classify cross-Slice overlap and challenge the number/necessity of shared coordination owners.",
@@ -1712,7 +1810,7 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
       "recheck"
     ],
     "description": "legacy context recheck",
-    "meaning": "Legacy explicit recheck shortcut; current material answers use built-in focus and integration recheck before return.",
+    "meaning": "Legacy explicit recheck shortcut; current material answers use built-in current-target and integration recheck before return.",
     "activeContextBehavior": "If explicitly invoked for compatibility, recheck the selected current target using the current reviewability principles; do not treat this shortcut as a separate current planning capability.",
     "traversalReadMode": "Targeted/full by risk and current owner uncertainty.",
     "ownerFiles": [
@@ -1823,7 +1921,768 @@ SHA: ${result.sha||'<none>'}`,8000);}catch(error){showStatus(`GitHub reload fail
     "refinements": []
   }
 ];
+  const useCases=[
+  {
+    "id": "UC-REPO-ORIENT",
+    "label": "Orient In Repository And Resolve Work Route",
+    "description": "natural repository discovery",
+    "sources": [
+      "planning/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Orient In Repository And Resolve Work Route target>",
+    "directionId": "DIR-REPOSITORY"
+  },
+  {
+    "id": "UC-REPO-CURRENT-STATE",
+    "label": "Report Current Repository / Planning State",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-REPOSITORY",
+    "commandId": "current_state.report"
+  },
+  {
+    "id": "UC-REPO-PLAN-NEXT",
+    "label": "Plan The Next Concrete Step",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-REPOSITORY",
+    "commandId": "plan.now"
+  },
+  {
+    "id": "UC-REPO-CRITICAL-REVIEW",
+    "label": "Critically Review A Claim / Plan / Diff",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-REPOSITORY",
+    "commandId": "critical_review.apply"
+  },
+  {
+    "id": "UC-REPO-USE-ARCHIVE-SOURCE",
+    "label": "Use An Explicit Archive As Read Source",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-REPOSITORY",
+    "commandId": "archive_source.use"
+  },
+  {
+    "id": "UC-REPO-DEFINE-PARALLEL-SCOPES",
+    "label": "Define / Maintain Fixed Parallel-Work Scopes",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/use-case-registry.md",
+      "parallel-work-scope-registry.md"
+    ],
+    "instruction": "Read the root Scope Registry and reusable scope/log workflow. Change registered boundaries only as an explicit repository-architecture update; do not repartition scopes ad hoc.",
+    "target": "<parallel-scope architecture target>",
+    "directionId": "DIR-REPOSITORY"
+  },
+  {
+    "id": "UC-REPO-PARALLEL-WORK",
+    "label": "Work In Registered Parallel Scope(s)",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-REPOSITORY",
+    "commandId": "parallel_workspace.start"
+  },
+  {
+    "id": "UC-PLAN-REALITY",
+    "label": "Understand Current Workflow And Reality",
+    "description": "checked current reality before solution choice",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Understand Current Workflow And Reality target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-COLLECT-IDEAS",
+    "label": "Collect And Review Ideas From Selected Source",
+    "description": "command-backed Idea collection/review",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-PLAN-SOLUTION",
+    "commandId": "ideas.collect"
+  },
+  {
+    "id": "UC-PLAN-SOLUTION",
+    "label": "Plan / Review Whole Solution Or Workflow",
+    "description": "integrated real-world solution/workflow choice",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Plan / Review Whole Solution Or Workflow target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-RESEARCH",
+    "label": "Research Existing Solutions / Alternatives",
+    "description": "proportional evidence gathering for solution choice",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Research Existing Solutions / Alternatives target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-APP-CONCEPT",
+    "label": "Plan / Review Application Concept",
+    "description": "custom-app value/feasibility candidate before detailed behavior",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Plan / Review Application Concept target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-APPLICATION",
+    "label": "Establish Application Responsibility",
+    "description": "selected application inside/outside responsibility boundary",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Establish Application Responsibility target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-PROTOTYPE",
+    "label": "Prototype Application Experience / Workflow",
+    "description": "provisional interaction/workflow scenarios/screens and evidence",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve the Prototype Use-Case entry and follow the complete current Prototype owner route. Focus on provisional Prototype Scenarios/Screens, Requirements/DATA/Behavior findings and evidence; treat rough walkthroughs only as discovery techniques and do not promote prototype artifacts to canonical Scenario/Screen truth automatically.",
+    "target": "<Prototype Application Experience / Workflow target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-SCENARIO-DISCOVERY",
+    "label": "Discover Application Scenarios",
+    "description": "current Need/result behavioral boundaries",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve the Scenario Discovery Use-Case entry and follow its current owner route. Focus on current meaningful Need/result boundaries; use prototype/rough-walkthrough evidence only as input and keep commands/actions/implementation operations from becoming Scenarios mechanically.",
+    "target": "<Discover Application Scenarios target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-SCENARIO",
+    "label": "Draft / Review Detailed Scenario",
+    "description": "canonical detailed current behavior + DATA/Behavior/Requirements",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Draft / Review Detailed Scenario target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-DOMAIN-DISCOVERY",
+    "label": "Discover Domain Evidence / Candidates",
+    "description": "evidence-backed Domain concepts, lifecycle, invariants and consistency candidates",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry and follow domain-discovery-workflow.md. Discover evidence and candidates without silently selecting Domain authority.",
+    "target": "<Domain discovery target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-REALIZATION",
+    "label": "Review / Compare High-Level Application Realization",
+    "description": "bounded realization evidence for selected meaning or serious candidate Domain variants",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry and follow application-realization-workflow.md. Review or compare representative realization paths when material, including pre-Domain comparative evidence, without letting implementation convenience or this projection become Domain authority.",
+    "target": "<Application realization target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-DOMAIN",
+    "label": "Plan / Review Domain",
+    "description": "stable semantics, invariants and justified variation",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve the Domain Use-Case entry and follow the complete current Domain planning route. Focus on stable semantics, current Requirements/Scenarios, invariants vs policies, justified Change Axes and premature-generalization checks; do not redesign upstream behavior silently.",
+    "target": "<Plan / Review Domain target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-SLICE-STRATEGY",
+    "label": "Plan / Review Slice Strategy",
+    "description": "vertical implementation decomposition/order",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Plan / Review Slice Strategy target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-SLICE",
+    "label": "Plan / Review One Implementation Slice",
+    "description": "one selected separately deliverable/checkable increment",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Plan / Review One Implementation Slice target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-PLAN-CONSISTENCY",
+    "label": "Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency",
+    "description": "cross-owner contradiction/change-impact review",
+    "sources": [
+      "planning/documentation/application-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact canonical Use-Case entry, follow its current owner route, keep this Use Case as the active planning unit and preserve neighboring-owner boundaries.",
+    "target": "<Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency target>",
+    "directionId": "DIR-PLAN-SOLUTION"
+  },
+  {
+    "id": "UC-DOC-ORIENT",
+    "label": "Bootstrap Reusable Documentation Governance",
+    "description": "open reusable documentation bootstrap command",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-DOCUMENTATION",
+    "commandId": "documentation_principles.read"
+  },
+  {
+    "id": "UC-DOC-FIND-OWNER",
+    "label": "Determine Where Information Belongs",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Determine Where Information Belongs target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-PLAN-UPDATE",
+    "label": "Plan A Documentation Update",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Plan A Documentation Update target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-UPDATE",
+    "label": "Perform An Approved Documentation Update",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Perform An Approved Documentation Update target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-PLAN-FILE-UPDATE",
+    "label": "Plan Concrete File / Docs / Code Update",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-DOCUMENTATION",
+    "commandId": "file_update.plan"
+  },
+  {
+    "id": "UC-DOC-BUILD-REPLACEMENT-PACKAGE",
+    "label": "Build Replacement Package",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-DOCUMENTATION",
+    "commandId": "replacement_archive.create"
+  },
+  {
+    "id": "UC-DOC-BUILD-REVIEWABLE-ARCHIVE",
+    "label": "Build Legacy Review-Diff Archive Route",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-DOCUMENTATION",
+    "commandId": "replacement_archive.review_diff.create"
+  },
+  {
+    "id": "UC-DOC-REVIEW-DIFF",
+    "label": "Semantically Review A Repository ReviewDiff",
+    "description": "semantic ReviewDiff correctness review",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Semantically Review A Repository ReviewDiff target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-REVISE-RETURNED-FILES",
+    "label": "Reconcile User-Returned Files",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-DOCUMENTATION",
+    "commandId": "returned_files.revise"
+  },
+  {
+    "id": "UC-DOC-MAINTAIN-NAVIGATION",
+    "label": "Maintain Repository Documentation Navigation",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve navigation-vs-semantic-owner boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Maintain Repository Documentation Navigation target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-MAINTAIN-REGISTRIES",
+    "label": "Maintain Directions And Use Cases",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Maintain Directions And Use Cases target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-MAINTAIN-COMMAND",
+    "label": "Create / Maintain Planning Command",
+    "description": "registered planning-command creation/change without semantic-authority drift",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-DOCUMENTATION",
+    "commandId": "command.plan"
+  },
+  {
+    "id": "UC-DOC-MAINTAIN-PROMPT",
+    "label": "Create / Maintain Reusable Prompt",
+    "description": "reusable prompt/helper insertion maintenance without semantic-authority drift",
+    "sources": [
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/prompt-maintenance-workflow.md",
+      "planning/helper-library/README.md"
+    ],
+    "instruction": "Resolve the canonical prompt-maintenance Use Case and current owner route. Choose a prompt profile proportionally, point to current semantic owners rather than copying changing truth, and require checked-source/depth or contradiction/QRP reporting only when the selected bootstrap/audit profile needs it.",
+    "target": "<reusable prompt target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-REVIEW-COVERAGE",
+    "label": "Review Repository Navigation / Semantic Coverage",
+    "description": "semantic discoverability coverage across Workspace/methodology UCs and Application Scenarios",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Resolve the canonical coverage-review Use-Case entry and follow its current owner route. Check Workspace/methodology capabilities through Use Cases and Application behavior through Scenario Catalogs/Scenarios; do not treat the Helper as semantic authority.",
+    "target": "<repository semantic coverage target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-REVIEW-EXAMPLES",
+    "label": "Review Practical Example Coverage",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Review Practical Example Coverage target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-RECONCILE-STATUS",
+    "label": "Reconcile Documentation / Owner Status",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Reconcile Documentation / Owner Status target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DW-DOC-REF",
+    "label": "Repository Documentation Change And Reference Review",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/areas/documentation-workbench/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Repository Documentation Change And Reference Review target>",
+    "directionId": "DIR-DOCUMENTATION-WORKBENCH"
+  },
+  {
+    "id": "UC-DW-PLANNING-TO-REPOSITORY",
+    "label": "Planning Meaning To Repository",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/areas/documentation-workbench/use-case-registry.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Planning Meaning To Repository target>",
+    "directionId": "DIR-DOCUMENTATION-WORKBENCH"
+  },
+  {
+    "id": "UC-PR-END-SESSION",
+    "label": "End Active Planning Session",
+    "description": "open canonical Use-Case entry",
+    "sources": [],
+    "instruction": "",
+    "target": "",
+    "directionId": "DIR-PLANNING-RUNTIME",
+    "commandId": "session.end"
+  },
+  {
+    "id": "UC-PLAN-WORKSPACE-ESTABLISH-UC",
+    "label": "Establish Workspace Use Case",
+    "description": "establish one justified new Workspace capability through proportional Step 1/2/3 planning",
+    "sources": [
+      "planning/documentation/workspace-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Workspace Planning Use-Case entry, follow its Establish workflow/current owner route and preserve generic UC/Architecture authority boundaries.",
+    "target": "<candidate Workspace capability>",
+    "directionId": "DIR-PLAN-WORKSPACE"
+  },
+  {
+    "id": "UC-PLAN-WORKSPACE-CHANGE-UC",
+    "label": "Review / Change Workspace Use Case",
+    "description": "integrate selected change meaning into one existing Workspace UC through proportional Step 1/2/3 planning",
+    "sources": [
+      "planning/documentation/workspace-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Workspace Planning Use-Case entry, follow its Review/Change workflow/current owner route and keep all selected Ideas for the UC in one integrated target.",
+    "target": "<existing Workspace UC change>",
+    "directionId": "DIR-PLAN-WORKSPACE"
+  },
+  {
+    "id": "UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY",
+    "label": "Review Workspace Use-Case Topology",
+    "description": "review multi-UC boundaries/relations when coherent topology is independently useful",
+    "sources": [
+      "planning/documentation/workspace-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact proportional Workspace Planning topology Use Case. Activate it for real multi-UC boundary/relationship/topology concerns, not merely because one Idea affects several independent UCs.",
+    "target": "<multi-UC topology concern>",
+    "directionId": "DIR-PLAN-WORKSPACE"
+  },
+  {
+    "id": "UC-PLAN-ARCH-STATE",
+    "label": "Understand / Review Workspace Architecture State",
+    "description": "current architecture state and maintainability review",
+    "sources": [
+      "planning/documentation/architecture-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.",
+    "target": "<architecture state target>",
+    "directionId": "DIR-PLAN-ARCHITECTURE"
+  },
+  {
+    "id": "UC-PLAN-ARCH-PATH",
+    "label": "Trace / Evaluate Architecture-Relevant Path",
+    "description": "trace understanding, change or runtime path as architecture evidence",
+    "sources": [
+      "planning/documentation/architecture-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.",
+    "target": "<architecture path target>",
+    "directionId": "DIR-PLAN-ARCHITECTURE"
+  },
+  {
+    "id": "UC-PLAN-ARCH-PRESSURE",
+    "label": "Establish / Review Workspace Change Pressure",
+    "description": "evidence-backed change pressure, axes and hot paths",
+    "sources": [
+      "planning/documentation/architecture-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; consume Workspace Use-Case discovery when needed.",
+    "target": "<architecture pressure target>",
+    "directionId": "DIR-PLAN-ARCHITECTURE"
+  },
+  {
+    "id": "UC-PLAN-ARCH-DECISION",
+    "label": "Plan / Review One Material Architecture Decision",
+    "description": "compare and select one material architecture choice",
+    "sources": [
+      "planning/documentation/architecture-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route; route selected meaning to the narrowest real semantic owner.",
+    "target": "<architecture decision target>",
+    "directionId": "DIR-PLAN-ARCHITECTURE"
+  },
+  {
+    "id": "UC-PLAN-ARCH-EVOLUTION",
+    "label": "Plan / Review Workspace Architecture Evolution",
+    "description": "coordinated multi-decision architecture evolution",
+    "sources": [
+      "planning/documentation/architecture-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow its current owner route.",
+    "target": "<architecture evolution target>",
+    "directionId": "DIR-PLAN-ARCHITECTURE"
+  },
+  {
+    "id": "UC-PLAN-ARCH-WORKSPACE-USES",
+    "label": "Discover / Review Workspace Use Cases",
+    "description": "architecture-relevant Workspace capability discovery",
+    "sources": [
+      "planning/documentation/architecture-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this exact Architecture Planning Use-Case entry and follow workspace-use-case-discovery-workflow.md.",
+    "target": "<Workspace uses target>",
+    "directionId": "DIR-PLAN-ARCHITECTURE"
+  },
+  {
+    "id": "UC-PLAN-TEST-STRATEGY",
+    "label": "Establish / Review Testing Strategy",
+    "description": "shared/cross-Slice testing strategy",
+    "sources": [
+      "planning/documentation/testing-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this Testing Planning Use Case and follow its strategy owner route.",
+    "target": "<testing strategy target>",
+    "directionId": "DIR-PLAN-TESTING"
+  },
+  {
+    "id": "UC-PLAN-TEST-DESIGN",
+    "label": "Plan / Review Verification For Selected Behavior",
+    "description": "Behavior-to-Test proof design",
+    "sources": [
+      "planning/documentation/testing-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this Testing Planning Use Case and follow test-design-workflow.md.",
+    "target": "<behavior proof target>",
+    "directionId": "DIR-PLAN-TESTING"
+  },
+  {
+    "id": "UC-PLAN-TEST-COVERAGE",
+    "label": "Review Current Test Coverage / Evidence",
+    "description": "audit actual current test evidence",
+    "sources": [
+      "planning/documentation/testing-planning/use-case-registry.md"
+    ],
+    "instruction": "Resolve this Testing Planning Use Case and inspect actual evidence; plans/test names do not prove coverage.",
+    "target": "<coverage review target>",
+    "directionId": "DIR-PLAN-TESTING"
+  },
+  {
+    "id": "UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES",
+    "label": "Configure Required Dependency Reviews",
+    "description": "register source changes that must signal consumer review",
+    "sources": [
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/review-dependency-planning-workflow.md"
+    ],
+    "instruction": "Configure a semantic source→consumer review obligation; use Linked Notes as the selected mechanism when implemented. Do not perform or propagate semantic edits automatically.",
+    "target": "<review dependency target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-RPKG-APPLY",
+    "label": "Apply Verified Replacement Package",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Apply Verified Replacement Package target>",
+    "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+  },
+  {
+    "id": "UC-RPKG-REVIEW",
+    "label": "Inspect Current ChangeSet Review State",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Inspect Current ChangeSet Review State target>",
+    "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+  },
+  {
+    "id": "UC-RPKG-FINALIZE",
+    "label": "Finalize Current ChangeSet",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Finalize Current ChangeSet target>",
+    "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+  },
+  {
+    "id": "UC-RPKG-EXPORT-REPOSITORY",
+    "label": "Export Repository Snapshot ZIP",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Export Repository Snapshot ZIP target>",
+    "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+  },
+  {
+    "id": "UC-RPKG-DELIVER-REVIEW",
+    "label": "Deliver Current ReviewDiff to ChatGPT",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Deliver Current ReviewDiff to ChatGPT target>",
+    "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+  },
+  {
+    "id": "UC-RPKG-ATTACH-SNAPSHOT",
+    "label": "Attach Repository Snapshot to ChatGPT",
+    "description": "open canonical Use-Case entry",
+    "sources": [
+      "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
+    ],
+    "instruction": "Read the canonical Use-Case entry, follow its owner route and preserve its boundaries. Do not treat helper projection as semantic authority.",
+    "target": "<Attach Repository Snapshot to ChatGPT target>",
+    "directionId": "DIR-REPLACEMENT-PACKAGE-APP"
+  },
+  {
+    "id": "UC-REPO-REFINE-CURRENT-PLAN",
+    "label": "Refine The Current Plan",
+    "description": "integrate material clarification/change into one accumulating Current Plan",
+    "sources": [
+      "planning/use-case-registry.md",
+      "planning/documentation/progressive-plan-refinement-workflow.md"
+    ],
+    "instruction": "Resolve this exact root Use Case and refine the current semantic owner from Need/UC/Scenario meaning; keep Q/R/P secondary and owner-attached.",
+    "target": "<current plan refinement target>",
+    "directionId": "DIR-REPOSITORY"
+  },
+  {
+    "id": "UC-REPO-AUDIT-REVIEW",
+    "label": "Audit Review Coverage And Quality",
+    "description": "report checked scope, sufficiency, gaps and repeat-review delta",
+    "sources": [
+      "planning/use-case-registry.md",
+      "planning/documentation/review-audit-workflow.md"
+    ],
+    "instruction": "Audit what was actually reviewed, what remains partial/unchecked and what the repeat review adds; do not substitute file count for semantic coverage.",
+    "target": "<review audit target>",
+    "directionId": "DIR-REPOSITORY"
+  },
+  {
+    "id": "UC-REPO-REVIEW-PLANNING-FINDINGS",
+    "label": "Review Planning Findings / Q/R/P Completeness",
+    "description": "detect missing, duplicate, stale or invalid owner-attached unresolved deltas",
+    "sources": [
+      "planning/use-case-registry.md",
+      "planning/documentation/planning-findings-review-workflow.md"
+    ],
+    "instruction": "Review Q/R/P only against concrete current semantic owners/current-target meaning. Do not use FIND order as the planning queue.",
+    "target": "<planning findings review target>",
+    "directionId": "DIR-REPOSITORY"
+  },
+  {
+    "id": "UC-PLAN-ARCH-DISCOVER-WEUC",
+    "label": "Discover Contextual Workspace Evolution Use Cases",
+    "description": "contextual future Workspace-evolution use discovery against a concrete owner/change surface",
+    "sources": [
+      "planning/documentation/architecture-planning/use-case-registry.md",
+      "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md"
+    ],
+    "instruction": "Discover contextual evolution-use instances and expected Workspace Change Paths proportionally; keep this distinct from broad current/candidate Workspace-use discovery.",
+    "target": "<Workspace evolution-use discovery target>",
+    "directionId": "DIR-PLAN-ARCHITECTURE"
+  },
+  {
+    "id": "UC-DOC-REVIEW-CURRENT-CONSISTENCY",
+    "label": "Review Current Semantic Consistency",
+    "description": "check registries, owners, templates and projections for current semantic agreement",
+    "sources": [
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/current-semantic-consistency-review-workflow.md"
+    ],
+    "instruction": "Review current semantic consistency and route confirmed corrections to their real owners; mechanical link success alone is insufficient.",
+    "target": "<semantic consistency target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-ESTABLISH-DEPENDENCY",
+    "label": "Establish Semantic Dependency",
+    "description": "decide/classify one meaningful semantic dependency and its owner/handoff",
+    "sources": [
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/review-dependency-planning-workflow.md"
+    ],
+    "instruction": "Establish semantic dependency intent first and select explicit tracking only when correctness needs it.",
+    "target": "<dependency target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-REVIEW-DEPENDENTS",
+    "label": "Review Semantic Dependents",
+    "description": "review known consumers after material upstream change",
+    "sources": [
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/review-dependency-planning-workflow.md"
+    ],
+    "instruction": "Review known dependents after material source change; stay manual-first and do not broaden into automatic rediscovery without need.",
+    "target": "<dependent review target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-MAINTAIN-SHARED-EXACT-MEANING",
+    "label": "Maintain Shared Exact Meaning",
+    "description": "preserve exact synchronized literal meaning only where truly required",
+    "sources": [
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/review-dependency-planning-workflow.md"
+    ],
+    "instruction": "Use the narrowest exact-meaning mechanism only when literal synchronization is required; ordinary semantic relations remain ordinary relations.",
+    "target": "<shared exact meaning target>",
+    "directionId": "DIR-DOCUMENTATION"
+  },
+  {
+    "id": "UC-DOC-REVIEW-DEPENDENCY-COVERAGE",
+    "label": "Review Dependency Coverage",
+    "description": "check whether material semantic dependency obligations are represented/reviewable",
+    "sources": [
+      "planning/documentation/use-case-registry.md",
+      "planning/documentation/review-dependency-planning-workflow.md"
+    ],
+    "instruction": "Review dependency coverage when requested or correctness materially depends on it; do not hunt for dependencies merely to populate a registry.",
+    "target": "<dependency coverage target>",
+    "directionId": "DIR-DOCUMENTATION"
+  }
+];
   const api=globalThis.ObsPlanningHelper;
   if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');
-  api.startPlanningHelper({bundledCommands:commands}).catch((error)=>console.error('[OBS Planning Helper startup]',error));
+  api.startPlanningHelper({bundledCommands:commands,bundledUseCases:useCases}).catch((error)=>console.error('[OBS Planning Helper startup]',error));
 })();

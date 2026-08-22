@@ -99,3 +99,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-036`  
 **Reason:** planning-root AI contract, root Use-Case registry and `собери идеи` command participate in the same methodology transition; full Idea Review, clarifications and APPLIED target state are owned by the reusable-documentation log.
+
+### XREF-014 — Planning Helper local Delete and current command/UC seeds
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-013`  
+**Reason:** the retired recheck command compatibility wording and the active legacy `собери идеи` Helper insertion are synchronized with the same UC/Scenario-first Helper correction; full rationale and APPLIED target state remain in the canonical Planning Helper log.

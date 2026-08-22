@@ -213,3 +213,69 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-034`  
 **Reason:** Planning Helper generated command catalog/userscript is rebuilt after the canonical `собери идеи` depth correction; full ReviewDiff findings and applied target state are owned by the canonical reusable-documentation log.
+
+### LOG-PH-010 — Direction-nested Commands and complete Use-Case navigation
+
+**Type:** IDEA CLARIFICATION  
+**Source:** explicit user request to make Commands and all Use Cases available through nested Directions, with Commands and Use Cases kept in separate tabs  
+
+**Current Conclusions:**
+- Planning Helper navigation should expose `Commands`, `Use Cases` and `Prompts` as focused top-level surfaces; a separate Directions tab is unnecessary because Directions are the navigation tree inside Commands and Use Cases;
+- `Commands` contains real Planning Command rows (plus clearly marked legacy command compatibility records) grouped under their applicable current Directions;
+- `Use Cases` contains every current canonical UC from the registered UC sources, grouped under its Parent Direction, including command-backed UCs as semantic UC entries rather than redirects to Commands;
+- Direction groups are collapsible/read-only navigation projections and do not become semantic authority;
+- the current snapshot already exposes a parity defect: nine newly registered UCs are absent from `semantic-projections.js`; this same change must restore exact UC registry parity rather than add only the visual hierarchy.
+
+**Questions / Risks / Problems:** none. The selected behavior follows the existing `SCN-PH-DISCOVER` / `SCN-PH-USE` responsibilities and does not require a new Scenario or new command ontology.
+
+### LOG-PH-011 — Apply Direction-nested Commands and complete Use-Case navigation
+
+**Type:** APPLIED  
+**Applied From:** `LOG-PH-010`  
+**ChangeSet:** `26236213-ed4e-43a3-b46f-4b8ca55175e8`  
+**Package:** `d576af9b-fa21-4e5f-b1a5-fd2e067fb40b`  
+
+**Target-State Result:** after successful Apply of this package:
+- Planning Helper `0.27.0` exposes separate `Commands`, `Use Cases` and `Prompts` tabs with no standalone Directions tab;
+- Commands and Use Cases are browsed through collapsible current Direction groups, and search can reveal matching Direction/entry content;
+- all current canonical Use Cases are projected with Direction identity and remain independently insertable semantic UC bodies even when a command shortcut exists;
+- visible Planning Commands resolve to one or more applicable Directions without changing command definitions/authority;
+- the nine UCs added by the recent methodology transition are restored to Helper projection parity;
+- docs, Scenario behavior, automated checks, manual acceptance and generated userscript agree on the same navigation behavior.
+
+**Rationale:** make semantic navigation usable at scale without mixing executable Commands with semantic Use Cases or promoting Directions into a separate editable authority.
+
+
+### LOG-PH-012 — Review local Delete, immediate seed catalogs and branch consistency
+
+**Type:** REVIEW DIFF / LATER CLARIFICATION  
+**Reviewed:** ChangeSet `26236213-ed4e-43a3-b46f-4b8ca55175e8`, applied package `d576af9b-fa21-4e5f-b1a5-fd2e067fb40b` + user clarification that Commands and Use Cases must support the same Helper-local removal behavior as Prompts and the complete current command/UC catalogs must ship in the update itself  
+
+**Material Findings / Selected Corrections:**
+- the Direction-nested branch removed the `Orientation` surface but startup still called `switchSurface(SURFACES.ORIENTATION)`, leaving the initial selected surface undefined until a manual tab click; startup must select `Commands` directly and a regression test must cover it;
+- `UC-PLAN-REALIZATION` in the Helper projection still exposed the pre-methodology name/meaning and omitted the selected bounded pre-Domain comparative-evidence mode; synchronize that projection with the canonical current registry while keeping Domain authority upstream;
+- active compatibility/reviewability surfaces still contained old `focus` control wording after the UC/Scenario-first transition; use current-target / semantic-owner wording instead of reviving a persistent Focus ontology;
+- Prompts already support local-only Delete. Extend the same user outcome to real Planning Commands and Use-Case projections: Delete changes only the Helper-local snapshot/RAM, never deletes a registered command file and never changes a canonical Use-Case registry/owner;
+- because an existing warm local snapshot previously ignored the current bundled command catalog, the update itself must carry complete generated local seed catalogs and merge missing current commands on startup while respecting explicit local-delete tombstones; do not defer initial completeness to a post-update GitHub sync;
+- add generated `seed/commands.json` and `seed/use-cases.json` now. They are Helper-local projections only: Planning Command authority remains `planning/commands/*.command.md`, and Use-Case authority remains the canonical registries/owners.
+
+**Questions / Risks / Problems:** none. The selected behavior stays inside current `SCN-PH-MANAGE-LOCAL`, `SCN-PH-DISCOVER` and `SCN-PH-USE`; no new semantic Scenario/UC or repository-delete capability is required.
+
+### LOG-PH-013 — Apply local Delete, seed catalogs and branch consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-PH-012`  
+**ChangeSet:** `26236213-ed4e-43a3-b46f-4b8ca55175e8`  
+**Package:** `9d58ce38-17b3-4ee7-b99d-fe958684bd41`  
+
+**Target-State Result:** after successful Apply of this package:
+- Planning Helper `0.28.0` starts on `Commands` with no removed-Orientation startup reference;
+- every visible Planning Command, Use Case and Prompt supports local-only Delete; registered command files and canonical Use-Case registries/owners are never deleted by this UI action;
+- local snapshot schema v2 stores `hiddenCommandIds` and `hiddenUseCaseIds`; ordinary startup/update respects those tombstones, while explicit `Sync missing` may restore a deleted registered command from GitHub;
+- generated `seed/commands.json` carries all 15 current Planning Command definitions and generated `seed/use-cases.json` carries all 69 current canonical Use-Case projections in this package itself; the userscript bundles the same seeds and merges missing current commands into an existing warm snapshot without resurrecting explicitly deleted IDs;
+- `UC-PLAN-REALIZATION` projection exposes the selected Review/Compare + bounded pre-Domain comparative-evidence contract, and semantic Use-Case bodies use `semantic_owner` rather than `focus`;
+- current reviewability/legacy compatibility wording uses Current-Target/semantic-owner language consistently;
+- automated Helper verification passes 101/101 tests and generated userscript/seed catalogs exactly match current sources;
+- no GitHub/repository deletion, implicit repository write, new command ontology or new semantic owner is introduced.
+
+**Rationale:** finish the same Helper navigation ChangeSet with immediately available local catalogs, symmetric local removal controls and the concrete consistency defects found in the applied branch.

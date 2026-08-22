@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution status must be recorded separately from automated tests
-Version: v1.1.0 / Planning Helper `0.26.2`
+Version: v1.1.0 / Planning Helper `0.27.0`
 Scope: browser and real-GitHub checks that are not implied by `npm run verify`.
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md).
@@ -12,9 +12,14 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 
 ## `SCN-PH-DISCOVER`
 
+- On a clean open, confirm the default selected surface is Commands and content is immediately rendered without requiring a tab click.
+
 - With GitHub unavailable, reload ChatGPT with an existing local snapshot and confirm Planning Helper opens/browses/searches local content.
 - Confirm no background GitHub request is made merely by startup, opening surfaces or searching.
-- Confirm Orientation/Directions/Use Cases remain read-only projections rather than writable application registries.
+- Confirm the top-level navigation exposes separate `Commands`, `Use Cases` and `Prompts` surfaces and no separate Directions tab.
+- Confirm Commands and Use Cases are nested under collapsible current Direction groups; search by Direction name/ID expands the matching group.
+- Confirm `Commands` contains command rows only (plus clearly marked legacy command compatibility rows), while `Use Cases` contains every current canonical UC exactly once semantically even when a UC has a command shortcut.
+- Confirm Direction grouping is navigation only and remains read-only semantic projection.
 
 <a id="scn-ph-use"></a>
 
@@ -23,8 +28,9 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 - Insert a Planning Command, legacy helper-command compatibility record when present, and prompt into the live ChatGPT composer; confirm exact intended text.
 - Confirm clipboard is prepared and manual paste remains usable if direct insertion fails.
 - Confirm the normal insertion path remains responsive with GitHub unavailable.
-- On the Use Cases surface, insert `UC-PLAN-PROTOTYPE`, `UC-PLAN-DOMAIN` and `UC-PLAN-SLICE-STRATEGY`; confirm each body contains the selected UC ID, `focus`, canonical registry source, `route_resolution`, read rule and explicit semantic-only permission boundary.
-- Confirm `Full` preserves the same UC focus/permission but requires complete current owner-route reading.
+- On the Use Cases surface, expand nested Directions and insert `UC-PLAN-PROTOTYPE`, `UC-PLAN-DOMAIN`, `UC-PLAN-SLICE-STRATEGY`, and command-backed `UC-REPO-CURRENT-STATE`; confirm each body contains the selected UC ID, `semantic_owner`, canonical registry source, `route_resolution`, read rule and explicit semantic-only permission boundary.
+- Confirm command-backed UCs insert their UC body from Use Cases instead of opening the Commands surface.
+- Confirm `Full` preserves the same UC semantic-owner/permission but requires complete current owner-route reading.
 - Confirm the current Application Planning registry parity check includes `UC-PLAN-APP-CONCEPT`, `UC-PLAN-PROTOTYPE`, `UC-PLAN-DOMAIN-DISCOVERY`, `UC-PLAN-REALIZATION` and `UC-PLAN-SLICE-STRATEGY`.
 
 <a id="scn-ph-manage-local"></a>
@@ -35,10 +41,13 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 - Create a new Planning Command draft, edit its structured definition and confirm no GitHub request occurs until explicit Save GitHub.
 - Edit an existing registered command and confirm its id/file cannot be changed in-place.
 - Use Reload GitHub and confirm the current remote command replaces the local draft only after the explicit action.
-- Confirm Delete draft is offered only for an unregistered command draft; registered command retirement is not exposed as local Delete.
+- Confirm every visible Planning Command exposes `Delete`; delete a registered command and verify it disappears only from Helper local state while its repository file remains unchanged.
 - Confirm legacy helper-command records, when present, are clearly marked compatibility insertions and new ones are not created by the Commands UI.
 
-- Create/edit a Planning Command draft and create/edit/delete a prompt; verify only local snapshot/RAM changes occur until explicit repository actions.
+- Create/edit a Planning Command draft, delete a Command, delete a Use Case, and create/edit/delete a Prompt; verify only local snapshot/RAM changes occur until explicit repository actions.
+- Reload/restart the userscript and verify locally deleted Command/Use-Case IDs stay hidden rather than being re-added by bundled seeds.
+- Run explicit `Sync missing` after deleting a registered Command and verify the command can be restored from GitHub and its local-delete tombstone clears.
+- Confirm a deleted Use Case changes only the Helper projection and does not mutate its canonical registry/owner.
 - Edit/delete a legacy helper-command compatibility record only when one exists; confirm the UI does not offer creation of a new legacy helper-command record.
 - Edit an already repository-evidenced helper without changing title/text and press Save local; confirm it is a no-op and repository evidence display is preserved.
 - Make a real local title/text change; confirm repository evidence becomes unverified until direct repository verification/publish.

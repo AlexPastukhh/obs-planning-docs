@@ -1,0 +1,545 @@
+{
+  "schemaVersion": 1,
+  "kind": "planning-command-seed",
+  "generatedFrom": "planning/commands/*.command.md",
+  "items": [
+    {
+      "schemaVersion": 1,
+      "id": "replacement_archive.review_diff.create",
+      "file": "build-archive-with-review-diff.command.md",
+      "command": "давай архив с review diff file",
+      "englishName": "build archive with review diff",
+      "commandFamily": [
+        "давай архив с review diff file",
+        "give arch rev dif",
+        "archive with review diff file"
+      ],
+      "description": "output package + repo review diff",
+      "meaning": "Produce a replacement archive plus the explicitly requested repository-stored review diff flow.",
+      "activeContextBehavior": "Use only when review-diff-file transfer is explicitly requested. This is a legacy reviewable package route: source selection, exact local-base verification, apply/diff and review behavior come from this command's own ownerFiles, not from the producer-only build replacement archive route.",
+      "traversalReadMode": "Targeted/full depending on touched files.",
+      "ownerFiles": [
+        "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
+        "planning/documentation/review-diff-file-workflow.md",
+        "planning/documentation/documentation-update-workflow.md"
+      ],
+      "expectedOutput": "Replacement archive plus the approved review-diff-file flow; reviewed diff before commit/push.",
+      "permissionMode": "package-no-commit-push",
+      "keyReminders": [
+        "Output-package mode with review-diff-file transfer explicitly requested.",
+        "Follow this legacy route's ownerFiles for source selection, exact local-base verification, apply/diff and review.",
+        "Use the review-diff-file workflow only for the approved repository-stored diff path.",
+        "Produce full replacement files and apply/diff commands.",
+        "Do not commit or push before the pasted diff is reviewed."
+      ],
+      "userTarget": "<what archive/package and review diff should include>",
+      "palette": false,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "replacement_archive.create",
+      "file": "build-replacement-archive.command.md",
+      "command": "давай архив",
+      "englishName": "build replacement archive",
+      "commandFamily": [
+        "давай архив",
+        "собери архив",
+        "give arch",
+        "replacement package"
+      ],
+      "description": "output replacement package",
+      "meaning": "Produce a replacement ZIP plus a short OBS-ACTION handoff. This is package-producer mode, not local apply/review/finalization mode and not archive read-source mode.",
+      "activeContextBehavior": "Use the active approved scope and exact checked source state. An earlier-message archive is not current automatically. A source archive/snapshot may be selected for the active invocation when it is explicitly provided or selected for that invocation and, after inspection, matches the intended repository/target and completely covers the touched source. Otherwise use fully readable current repository files. Never guess touched base content.",
+      "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
+      "ownerFiles": [
+        "planning/documentation/build-replacement-archive-workflow.md"
+      ],
+      "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION block; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
+      "permissionMode": "package-no-commit-push",
+      "keyReminders": [
+        "Package-producer mode, not archive read-source mode.",
+        "An earlier-message archive is not current automatically.",
+        "A source archive/snapshot explicitly provided or selected for the active invocation may be used only after verifying repository/target match and complete touched-source coverage.",
+        "Otherwise use fully readable current repository files.",
+        "Request only the minimum fresh source/snapshot when exact touched base content cannot be read reliably.",
+        "Never guess expected base content for replace/delete operations.",
+        "Resolve the project Scope Registry when present; every affected scope log/reference required for coherent post-Apply state is part of the package transition.",
+        "When logging is active, include material Idea Review/later clarification/prior ReviewDiff correction meaning and the APPLIED target-state relation; do not defer log correctness to a later package.",
+        "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
+        "Return one short OBS-ACTION whose packageId matches PACKAGE.json.",
+        "Do not include clipboard/review-diff settings in OBS-ACTION.",
+        "Do not apply locally, generate review/finalization commands, commit or push."
+      ],
+      "userTarget": "<what replacement package should include>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "ideas.collect",
+      "file": "collect-ideas.command.md",
+      "command": "собери идеи",
+      "englishName": "collect ideas",
+      "commandFamily": [
+        "собери идеи",
+        "collect ideas"
+      ],
+      "description": "collect/review Ideas and update integrated current planning",
+      "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve the affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Q/R/P is derived only as an owner-attached unresolved/adverse delta; it is never the planning root.",
+      "activeContextBehavior": "Use the explicitly selected or clearly active current source. When a current integrated plan is clearly selected, use it as the current baseline and update it rather than starting a parallel plan. For Workspace/documentation planning use UCDS (Use Case → Domain/Rules → Vertical Slice/Realization) proportionally: once the UC boundary is sufficiently grounded, normally review Step 1 + Step 2; Step 1 may stand alone while the target UC picture remains materially unresolved; include Step 3 when explicitly requested or realization is sufficiently grounded/useful. For Application planning use SDS (Scenario → Domain/Rules → Slice) proportionally. Mini is a compact representation; Modular separates owners/order as the plan grows; Full SDS uses the detailed SDS profile. Ask only when source/current-plan identity is genuinely missing or ambiguous.",
+      "traversalReadMode": "Targeted/full by source size, current-plan/current-owner uncertainty, affected useful results and selected planning depth.",
+      "ownerFiles": [
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
+        "planning/documentation/ai-reviewability-and-directed-planning-principles.md",
+        "planning/documentation/direction-and-use-case-registry-workflow.md",
+        "planning/documentation/workspace-planning/workspace-planning-principles-and-terminology.md",
+        "planning/documentation/workspace-planning/WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md",
+        "planning/documentation/profiles/sds-planning-profiles.md"
+      ],
+      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UC/Application Scenario Current→Target planning in proportional UCDS/SDS + attached Q/R/P only when material unresolved deltas remain + Review Order lens only when useful + execution order/versions when selected + cross-unit review + Current Overall Conclusions + only genuinely unselected Better Routes.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
+        "When a current integrated plan is clearly active, update that plan as baseline; do not create an append-only command-result ledger or parallel Goal Map.",
+        "Ordinary chat text controls requested scope/depth/lens. Do not create a persistent Focus/H0-H1-H2 state or a command for each modifier.",
+        "Not every source statement is an Idea; preserve relevant Existing Reality, constraints, decisions, corrections and questions with their proper meaning.",
+        "Perform every mandatory Idea review check, but do not manufacture objections, risks or refinements merely to populate fields.",
+        "Actively test whether each Idea deserves implementation and whether a genuinely simpler or better route exists.",
+        "Idea remains the generic Idea entity; do not create Scenario Idea, Workspace-UC Idea, File-Update Idea or other context-specific Idea types.",
+        "For material selected change, resolve affected existing/new Workspace UCs or Application Scenarios using current semantic owners and normal independent-usefulness/Scenario-boundary rules.",
+        "Several Ideas affecting one UC/Scenario converge into one integrated target for that unit; one cross-cutting Idea is reviewed once and referenced from affected units with local impact only.",
+        "For Workspace/documentation planning use UCDS: Step 1 Use Case → Step 2 Domain/Rules → Step 3 Vertical Slice/Realization. For Application planning use SDS: Scenario → Domain/Rules → Slice. The semantic rules do not become weaker in Mini form.",
+        "Use planning dependency direction upstream → downstream. Preserve early later-step insight as provisional context, but do not let downstream convenience normally define upstream meaning.",
+        "For Workspace/documentation planning, Step 1 + Step 2 is the normal default once the UC boundary is sufficiently grounded; Step 1 may stand alone while the target UC picture is materially unresolved; include Step 3 when explicitly requested or realization is sufficiently grounded/useful.",
+        "Plan from Need/situation → UC/Scenario → Current→Target. Derive Q/R/P only after a concrete owner/current planned state exists; do not walk a FIND queue.",
+        "Execution order is the selected route through planned work; represent genuine parallelism/dependencies rather than forcing a total order. Application execution order may group Slices by versions/releases.",
+        "Current State normally uses a high-level summary + direct current-owner links. Target changed/new semantic meaning must be complete enough that implementation does not invent missing decisions; keep Current→Target Transition separate.",
+        "When several UCs/Slices are affected, review their combined architecture effect, classify cross-Slice overlap and challenge the number/necessity of shared coordination owners.",
+        "The command is an orchestration shortcut, not semantic authority. Read affected current UC/Scenario/Domain/Architecture owners instead of copying their contracts into the command.",
+        "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and is removed once a candidate is selected.",
+        "Apply Key Points / Review Priority and built-in recheck before returning material output; `крит` remains an optional separate adversarial review.",
+        "When scope logging is already active, treat the material review result as a loggable source for the next approved mutation/package; this read-only command itself does not edit logs.",
+        "Do not edit repository files, create an archive, commit or push."
+      ],
+      "userTarget": "<source/discussion to collect Ideas from>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "critical_review.apply",
+      "file": "critical-review.command.md",
+      "command": "крит",
+      "englishName": "critical review",
+      "commandFamily": [
+        "крит",
+        "crit",
+        "critical review"
+      ],
+      "description": "critical review",
+      "meaning": "Critically evaluate the target/diff/plan/claim as a hypothesis rather than accepted truth.",
+      "activeContextBehavior": "Use the provided target; ask only if the target is missing.",
+      "traversalReadMode": "Targeted/full by risk and evidence needs.",
+      "ownerFiles": [
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/review-diff-review-workflow.md"
+      ],
+      "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective Ideas use shared Idea review; ReviewDiff targets use the ReviewDiff semantic-review workflow.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Treat target as hypothesis, not accepted truth.",
+        "Use shared Idea review for material answer-seeking corrective alternatives; do not manufacture Ideas for mechanical findings.",
+        "When the target is a ReviewDiff, distinguish technical integrity from semantic correctness and follow the ReviewDiff semantic-review workflow.",
+        "Surface material Questions / Risks / Problems and ask the user only for genuinely unresolved material choices.",
+        "Do not edit files, create archives, commit or push."
+      ],
+      "userTarget": "<what should be critically reviewed>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "current_state.report",
+      "file": "current-state.command.md",
+      "command": "положняк",
+      "englishName": "current state",
+      "commandFamily": [
+        "положняк",
+        "polozh",
+        "current state"
+      ],
+      "description": "current state",
+      "meaning": "Report current operational repo/chat/planning state.",
+      "activeContextBehavior": "Use active area/work item if clear.",
+      "traversalReadMode": "Targeted source checks for state claims.",
+      "ownerFiles": [
+        "planning/use-case-registry.md",
+        "planning/documentation/status-reconciliation-workflow.md"
+      ],
+      "expectedOutput": "Concise current state separating repo, local and unknown, plus next safe action.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Report current repo/chat/planning state from checked current owners.",
+        "Separate known, local, unknown and not checked.",
+        "Use Directions/Use Cases to resolve the current owner instead of a manually synchronized global state register.",
+        "Do not present an unstated future plan as confirmed.",
+        "Do not edit or archive unless separately requested."
+      ],
+      "userTarget": "<state target>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "governance.development",
+      "file": "development-governance.command.md",
+      "command": "режим разработки",
+      "englishName": "development governance mode",
+      "commandFamily": [
+        "режим разработки",
+        "development governance mode"
+      ],
+      "description": "load planning + documentation governance",
+      "meaning": "Establish planning-governed application-development context and documentation governance without authorizing edits by itself.",
+      "activeContextBehavior": "Use the active application/repository target when clear.",
+      "traversalReadMode": "Full for governance/root planning owners; targeted for selected planning Use Cases and application Scenarios/current owners.",
+      "ownerFiles": [
+        "planning/AI-WORKING-CONTRACT.md",
+        "planning/README.md",
+        "planning/direction-registry.md",
+        "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
+        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
+        "planning/documentation/planning-docs-architecture-principles.md"
+      ],
+      "expectedOutput": "Established development governance route: selected planning Workspace Use Case and/or application Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Develop from current selected planning meaning, not an unreviewed Idea or conversational assumption.",
+        "Resolve current Direction / Application Scenario / Scenario owner before materially changing behavior.",
+        "Implementation Idea is not selected architecture.",
+        "Documentation changed during development must follow reusable documentation principles.",
+        "Code does not silently create a second documentation owner.",
+        "This command establishes working rules only; actual edits require the applicable authorization."
+      ],
+      "userTarget": "<application/development work in this session>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "session.end",
+      "file": "end-session.command.md",
+      "command": "конец",
+      "englishName": "end session",
+      "commandFamily": [
+        "конец",
+        "конец сессии",
+        "end session"
+      ],
+      "description": "operational end session",
+      "meaning": "Add exactly one completed normal session to the existing active operational day.",
+      "activeContextBehavior": "Read planning/dashboard/index.md; require active_session_day and matching active_day/operational dates; ask only for missing final D/F/Points.",
+      "traversalReadMode": "Targeted: index → active operational day → end-session workflow → Day File Template → Real Reward Work Loop Workflow.",
+      "ownerFiles": [
+        "planning/areas/planning-system/end-session-command-workflow.md",
+        "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
+        "planning/documentation/documentation-update-workflow.md",
+        "planning/dashboard/index.md",
+        "-Planning/Templates/Day File Template.md",
+        "-Planning/Workflows/Real Reward Work Loop Workflow.md"
+      ],
+      "expectedOutput": "Full replacement archive containing only the active operational-day file plus apply/diff commands; user pastes diff before commit.",
+      "permissionMode": "package-no-commit-push",
+      "keyReminders": [
+        "Require an existing active_session_day from planning/dashboard/index.md.",
+        "Require matching active_day and operational dates.",
+        "Ask only for missing final D/F/Points.",
+        "Produce a full replacement archive containing only the active operational-day file plus apply/diff commands.",
+        "Ask user to paste the diff before commit.",
+        "Do not commit or push."
+      ],
+      "userTarget": "<final D/F/Points or active end-session target>",
+      "palette": false,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "command.plan",
+      "file": "plan-command.command.md",
+      "command": "спланируй команду",
+      "englishName": "plan command",
+      "commandFamily": [
+        "спланируй команду",
+        "plan command"
+      ],
+      "description": "plan command",
+      "meaning": "Plan a command route and its documentation changes without implementing it.",
+      "activeContextBehavior": "Ask which command only when the target command is unclear.",
+      "traversalReadMode": "Documentation-principles preflight, then targeted/full command-route reads.",
+      "ownerFiles": [
+        "planning/documentation/documentation-principles-read-workflow.md",
+        "planning/documentation/file-update-overview-workflow.md",
+        "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md",
+        "planning/documentation/command-planning-workflow.md",
+        "planning/documentation/command-routing-workflow.md",
+        "planning/documentation/COMMAND-ROUTING-TEMPLATE.md"
+      ],
+      "expectedOutput": "Command family/type/English name/owner/registry/example/projection plan followed by План файл-обновление.",
+      "permissionMode": "plan-only",
+      "keyReminders": [
+        "Plan a command route only.",
+        "Run the documentation-principles preflight.",
+        "Produce a file-update plan and read command-specific owners.",
+        "Tampermonkey is projection, not source of truth.",
+        "Do not edit files, create an archive, commit or push."
+      ],
+      "userTarget": "<what command route should be planned>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "file_update.plan",
+      "file": "plan-file-update.command.md",
+      "command": "план файл-обновление",
+      "englishName": "plan file update",
+      "commandFamily": [
+        "план файл-обновление",
+        "спланируй обновление файлов",
+        "спланируй архив",
+        "plan file update",
+        "archive plan"
+      ],
+      "description": "file plan",
+      "meaning": "Produce one concrete file/docs/code/archive update plan from current selected planning meaning.",
+      "activeContextBehavior": "Ask target/scope only when active context does not make it clear.",
+      "traversalReadMode": "Reuse/targeted/full by update risk.",
+      "ownerFiles": [
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/file-update-overview-workflow.md",
+        "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
+      ],
+      "expectedOutput": "Idea-aware File Update Plan from one Current Selected Meaning: Current Conclusions, mandatory Current-Plan-relative Questions / Risks / Problems, unselected Potential Simplifications / Better Routes when material, then ordered concrete steps/files/checks/next action.",
+      "permissionMode": "plan-only",
+      "keyReminders": [
+        "Plan file/docs/code/archive update only.",
+        "Treat only explicit user statements and checked source facts as confirmed.",
+        "Use shared Idea review only when the update contains material conceptual uncertainty; do not manufacture Idea analysis for mechanical updates.",
+        "When alternatives are material, keep them as Idea Variants and identify one Current Selected Variant before concrete file steps.",
+        "Possible Idea Refinements are not file edits and do not become selected changes automatically.",
+        "Establish the one Current Plan from Current Selected Meaning before aggregate findings.",
+        "Every real Questions / Risks / Problems unit states Current Plan, the unresolved/adverse finding, and its relation or impact on that plan; reference Related Idea IDs when applicable.",
+        "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and states Current Plan plus Change To Current Plan; accepted simplifications belong in Current Conclusions/Update Steps instead.",
+        "Do not use aggregate sections to confirm selected routes, repeat ordinary boundaries, or preserve completed reasoning.",
+        "For unresolved important choices, keep current selected meaning explicit and surface alternatives/questions separately.",
+        "End with `План файл-обновление` in planned mode.",
+        "Do not edit files.",
+        "Do not create archive unless separately requested."
+      ],
+      "userTarget": "<what update/archive should be planned>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "plan.now",
+      "file": "plan-now.command.md",
+      "command": "планируй",
+      "englishName": "plan now",
+      "commandFamily": [
+        "планируй",
+        "plan now"
+      ],
+      "description": "plan now",
+      "meaning": "Plan the next concrete step now from active context.",
+      "activeContextBehavior": "Use active context if available; otherwise ask for target.",
+      "traversalReadMode": "Reuse/targeted by uncertainty.",
+      "ownerFiles": [],
+      "expectedOutput": "Concrete next step/scope/boundary/evidence/next action.",
+      "permissionMode": "plan-only",
+      "keyReminders": [
+        "Plan the next concrete step now.",
+        "Treat only explicit user statements and checked source facts as confirmed.",
+        "For important unknowns, show prioritized questions with one conservative fallback instruction.",
+        "State scope, boundary, evidence and next action.",
+        "Do not edit files or create archive unless separately requested."
+      ],
+      "userTarget": "<what should be planned>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "documentation_principles.read",
+      "file": "read-documentation-principles.command.md",
+      "command": "бутстреп документации",
+      "englishName": "bootstrap reusable documentation principles",
+      "commandFamily": [
+        "бутстреп документации",
+        "бутстреп принципов документации",
+        "режим документации",
+        "прочитай принципы документации",
+        "прочти принципы документации",
+        "принципы документации",
+        "bootstrap reusable documentation principles",
+        "documentation governance mode",
+        "read documentation principles",
+        "documentation principles",
+        "docs principles"
+      ],
+      "description": "load reusable documentation governance",
+      "meaning": "Establish reusable documentation-governance context, resolve the applicable Documentation Use Case and canonical owners, and preserve the task's permission boundary without authorizing repository edits.",
+      "activeContextBehavior": "Use the active documentation/repository target when clear and resolve its UC-DOC-* + owners; if no task is active, load governance and stop ready for the next documentation task without forcing a target question.",
+      "traversalReadMode": "Full when reusable governance is not current/remembered or uncertain; targeted refresh only after a current full bootstrap.",
+      "ownerFiles": [
+        "planning/AI-WORKING-CONTRACT.md",
+        "planning/documentation/direction-registry.md",
+        "planning/documentation/use-case-registry.md",
+        "planning/documentation/planning-docs-architecture-principles.md",
+        "planning/documentation/documentation-responsibility-map.md",
+        "planning/documentation/documentation-principles-read-workflow.md"
+      ],
+      "expectedOutput": "Compact reusable-documentation bootstrap result: selected Documentation Use Case when applicable, reusable owners loaded, current/project owners, permission boundary and material unresolved ownership/questions; no repository mutation.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Apply reusable documentation principles to documentation work after this bootstrap.",
+        "Resolve DIR-DOCUMENTATION / the applicable UC-DOC-* and canonical owner before proposing a new file or moving meaning.",
+        "Keep reusable methodology separate from project/current state; README/index navigation does not own full semantic bodies.",
+        "Commands, examples, helper projections and implementation do not override canonical semantic owners.",
+        "Use full bootstrap when governance is not current/remembered or boundaries are uncertain; targeted refresh only after a current full pass.",
+        "If no active task exists, load governance and stop ready for the next documentation task instead of inventing a target.",
+        "This command is read-only and does not authorize file edits, archive creation, commit or push."
+      ],
+      "userTarget": "<documentation work in this session or none yet>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "context_recheck.apply",
+      "file": "recheck-context.command.md",
+      "command": "обс",
+      "englishName": "recheck context",
+      "commandFamily": [
+        "обс",
+        "chat rech",
+        "recheck"
+      ],
+      "description": "legacy context recheck",
+      "meaning": "Legacy explicit recheck shortcut; current material answers use built-in current-target and integration recheck before return.",
+      "activeContextBehavior": "If explicitly invoked for compatibility, recheck the selected current target using the current reviewability principles; do not treat this shortcut as a separate current planning capability.",
+      "traversalReadMode": "Targeted/full by risk and current owner uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/ai-reviewability-and-directed-planning-principles.md"
+      ],
+      "expectedOutput": "Corrected current answer/review only when material new findings exist; otherwise a compact confirmation that no material omission was found.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "This command is legacy compatibility, not the current reviewability architecture.",
+        "Use current canonical owners and checked evidence rather than rereading prior prose as authority.",
+        "Preserve accepted decisions and constraints unless evidence challenges them.",
+        "Do not edit files, create archives, commit or push."
+      ],
+      "userTarget": "<legacy explicit recheck target>",
+      "palette": false,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "returned_files.revise",
+      "file": "revise-returned-files.command.md",
+      "command": "обн",
+      "englishName": "revise returned files",
+      "commandFamily": [
+        "обн",
+        "upd"
+      ],
+      "description": "revise returned files",
+      "meaning": "Review user-edited returned Markdown/docs/planning-draft files and produce complete revised versions.",
+      "activeContextBehavior": "Same-message returned files are the selected working versions; compare with clearly matching prior versions when available.",
+      "traversalReadMode": "Full read of every returned file; targeted read of matching prior versions and relevant owners/templates.",
+      "ownerFiles": [
+        "planning/documentation/reviewable-agent-output-and-commands-workflow.md"
+      ],
+      "expectedOutput": "Complete revised affected files plus compact significant-adjustment and unresolved-conflict summary.",
+      "permissionMode": "response-only",
+      "keyReminders": [
+        "Treat same-message returned files as the selected working versions.",
+        "Read every returned file completely.",
+        "Compare with clearly matching prior versions when available.",
+        "Preserve deliberate user edits unless they conflict with checked owner/safety rules or same-message clarification.",
+        "Return complete revised files, not isolated fragments.",
+        "Do not edit the repository, create an archive, commit or push unless separately requested."
+      ],
+      "userTarget": "<returned files and clarification to revise>",
+      "palette": false,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "parallel_workspace.start",
+      "file": "start-parallel-work.command.md",
+      "command": "начни параллельную работу",
+      "englishName": "start parallel work",
+      "commandFamily": [
+        "начни параллельную работу",
+        "start parallel work",
+        "parallel workspace"
+      ],
+      "description": "use registered parallel-work scope",
+      "meaning": "Resolve the fixed Parallel Work Scope Registry and establish one workstream inside the already registered affected scope(s), including canonical scope-log ownership for cross-scope work.",
+      "activeContextBehavior": "Use the active work target when clear; otherwise ask only for the concrete workstream target needed to resolve existing registered scope(s).",
+      "traversalReadMode": "Targeted/full by affected registered scope(s).",
+      "ownerFiles": [
+        "parallel-work-scope-registry.md",
+        "planning/documentation/parallel-work-scope-and-action-log-workflow.md"
+      ],
+      "expectedOutput": "Selected registered parallel-work scope(s), canonical scope log for the work, cross-scope boundary/reference requirements and the route-specific next action; no ad-hoc shadow workspace.",
+      "permissionMode": "scope-routing-only",
+      "keyReminders": [
+        "Read the root Scope Registry; do not invent or repartition scopes ad hoc.",
+        "A path belongs to the deepest active registered scope root containing it.",
+        "For cross-scope work choose one affected canonical log for the full record; other affected logs hold references only.",
+        "This command selects scope/log routing only and does not itself authorize edits, archive creation, commit or push."
+      ],
+      "userTarget": "<parallel workstream target>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "archive_source.use",
+      "file": "use-archive.command.md",
+      "command": "арх",
+      "englishName": "use archive",
+      "commandFamily": [
+        "арх",
+        "из архива",
+        "added arch",
+        "use archive"
+      ],
+      "description": "archive source",
+      "meaning": "Treat an explicitly selected archive as the read-source snapshot.",
+      "activeContextBehavior": "Use only the archive explicitly selected for this invocation and state identity/freshness limits.",
+      "traversalReadMode": "Archive read-source mode; targeted/full depending on question.",
+      "ownerFiles": [],
+      "expectedOutput": "Answer/review/plan from the selected archive; no replacement package unless separately requested.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Read-source mode, not output-package mode.",
+        "Use only the archive explicitly selected for this invocation.",
+        "Do not silently treat an earlier-message archive as current.",
+        "Do not create replacement archive unless separately requested.",
+        "State archive freshness/source limits when relevant."
+      ],
+      "userTarget": "<what should be checked from archive>",
+      "palette": true,
+      "refinements": []
+    }
+  ]
+}
