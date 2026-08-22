@@ -79,7 +79,7 @@ Scenario
 → Slice Strategy / Slices
 ```
 
-Profile family: `profiles/sds-planning-profiles.md`. Full SDS is the rich detailed planning profile. Mini/Modular can also plan a bounded application change rather than an entire app. A current SDS/UCDS plan may accumulate selected results from repeated `собери идеи`; a separate reusable Goal Map is retired.
+Profile family: `profiles/sds-planning-profiles.md`. Full SDS is the rich detailed planning profile. Mini/Modular can also plan a bounded application change rather than an entire app. A current SDS/UCDS plan may accumulate selected results from repeated `собери идеи`.
 
 ## File-Type Rule
 

@@ -20,6 +20,9 @@ UC-PLAN-ARCH-STATE
 UC-PLAN-ARCH-WORKSPACE-USES
 → resolve important current canonical Workspace UCs and discover architecture-relevant candidate useful results
 
+UC-PLAN-ARCH-DISCOVER-WEUC
+→ discover contextual future-change instances + likelihood/change-path/friction evidence
+
 UC-PLAN-ARCH-PATH
 → trace/evaluate one architecture-relevant Workspace or runtime path
 
@@ -95,6 +98,8 @@ Architecture State / Decisions / Evolution
 - `architecture-planning-principles-and-terminology.md` — stable universal Architecture Lens concepts/invariants.
 - `workspace-use-cases-and-change-pressure.md` — architecture-input view of Workspace work plus Work Paths, Extensions, Change Pressure, Change Axes and Hot Paths; generic UC identity remains outside this file.
 - `workspace-use-case-discovery-workflow.md` — `UC-PLAN-ARCH-WORKSPACE-USES`: resolve current canonical UCs + discover explicit architecture-relevant candidates and hand canonical UC lifecycle questions to Workspace Planning.
+- `workspace-evolution-use-case-discovery-workflow.md` — `UC-PLAN-ARCH-DISCOVER-WEUC`: discover concrete future-change instances, likelihood/value/timing, expected change paths and friction/fan-out/risk.
+- `templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md` — durable project-local register shape when material contextual instances need stable cross-plan/decision tracking.
 - `architecture-path-analysis-workflow.md` — Understanding/Change/Runtime path tracing and qualitative architecture analysis.
 - `architecture-change-pressure-workflow.md` — UCs/cases/extensions/requirements/history → pressure → axes/hot paths.
 - `architecture-state-review-workflow.md` — current Architecture State review through important Workspace work.
@@ -123,4 +128,6 @@ concrete Workspace area / owner
 → Architecture Pressure/Decision handoff when needed
 ```
 
-It is invoked when explicitly requested or when current Architecture planning needs this evidence; it is not an automatic scan of the whole Workspace.
+It is invoked when explicitly requested, when current Architecture planning needs this evidence, or when Application SDS Step 3 reaches a concrete target realization where expected future change materially affects architecture/Slice design. It is not an automatic scan of the whole Workspace.
+
+When durable tracking helps, especially in Full SDS, material instances may be transferred to `templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md`. Architecture Decisions should cite the concrete driving instances/change paths.

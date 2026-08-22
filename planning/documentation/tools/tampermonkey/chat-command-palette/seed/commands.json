@@ -87,7 +87,7 @@
       ],
       "description": "collect/review Ideas and update integrated current planning",
       "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve the affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Q/R/P is derived only as an owner-attached unresolved/adverse delta; it is never the planning root.",
-      "activeContextBehavior": "Use the explicitly selected or clearly active current source. When a current integrated plan is clearly selected, use it as the current baseline and update it rather than starting a parallel plan. For Workspace/documentation planning use UCDS (Use Case → Domain/Rules → Vertical Slice/Realization) proportionally: once the UC boundary is sufficiently grounded, normally review Step 1 + Step 2; Step 1 may stand alone while the target UC picture remains materially unresolved; include Step 3 when explicitly requested or realization is sufficiently grounded/useful. For Application planning use SDS (Scenario → Domain/Rules → Slice) proportionally. Mini is a compact representation; Modular separates owners/order as the plan grows; Full SDS uses the detailed SDS profile. Ask only when source/current-plan identity is genuinely missing or ambiguous.",
+      "activeContextBehavior": "Use the explicitly selected or clearly active current source. When a current integrated plan is clearly selected, use it as the current baseline and update it rather than starting another plan. For Workspace/documentation planning use UCDS proportionally. For Application planning use the same-quality SDS Step 0–4 contract from `sds-planning-profiles.md`: Why/Solution Discovery → Scenario with DATA/Behavior → Domain Draft → Slices plus contextual WEUC/architecture evidence → Practical Realization Feedback. Mini is one accumulating application-plan file; Modular/Medium splits that same meaning into a small growing file set; Full uses rich stable owners. Ask only when source/current-plan identity is genuinely missing or ambiguous.",
       "traversalReadMode": "Targeted/full by source size, current-plan/current-owner uncertainty, affected useful results and selected planning depth.",
       "ownerFiles": [
         "planning/documentation/idea-planning-principles-and-terminology.md",
@@ -97,13 +97,17 @@
         "planning/documentation/direction-and-use-case-registry-workflow.md",
         "planning/documentation/workspace-planning/workspace-planning-principles-and-terminology.md",
         "planning/documentation/workspace-planning/WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md",
-        "planning/documentation/profiles/sds-planning-profiles.md"
+        "planning/documentation/profiles/sds-planning-profiles.md",
+        "planning/documentation/application-planning/direction-registry.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
+        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
       ],
-      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UC/Application Scenario Current→Target planning in proportional UCDS/SDS + attached Q/R/P only when material unresolved deltas remain + Review Order lens only when useful + execution order/versions when selected + cross-unit review + Current Overall Conclusions + only genuinely unselected Better Routes.",
+      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UCDS or Application SDS Current Plan. For Application planning, preserve Step 0 Why/Solution Discovery, Step 1 Scenario + DATA/Behavior, Step 2 Domain Draft, Step 3 Slices + material contextual WEUC/architecture evidence, and Step 4 practical realization-feedback plan; then attached Q/R/P only for material unresolved deltas, execution/review projections when useful, Current Overall Conclusions and only genuinely unselected Better Routes.",
       "permissionMode": "read-only",
       "keyReminders": [
         "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
-        "When a current integrated plan is clearly active, update that plan as baseline; do not create an append-only command-result ledger or parallel Goal Map.",
+        "When a current integrated plan is clearly active, update that plan as baseline; do not create an append-only command-result ledger or a second competing current plan.",
         "Ordinary chat text controls requested scope/depth/lens. Do not create a persistent Focus/H0-H1-H2 state or a command for each modifier.",
         "Not every source statement is an Idea; preserve relevant Existing Reality, constraints, decisions, corrections and questions with their proper meaning.",
         "Perform every mandatory Idea review check, but do not manufacture objections, risks or refinements merely to populate fields.",
@@ -111,14 +115,17 @@
         "Idea remains the generic Idea entity; do not create Scenario Idea, Workspace-UC Idea, File-Update Idea or other context-specific Idea types.",
         "For material selected change, resolve affected existing/new Workspace UCs or Application Scenarios using current semantic owners and normal independent-usefulness/Scenario-boundary rules.",
         "Several Ideas affecting one UC/Scenario converge into one integrated target for that unit; one cross-cutting Idea is reviewed once and referenced from affected units with local impact only.",
-        "For Workspace/documentation planning use UCDS: Step 1 Use Case → Step 2 Domain/Rules → Step 3 Vertical Slice/Realization. For Application planning use SDS: Scenario → Domain/Rules → Slice. The semantic rules do not become weaker in Mini form.",
+        "For Workspace/documentation planning use UCDS: Step 1 Use Case → Step 2 Domain/Rules → Step 3 Vertical Slice/Realization.",
+        "For Application planning preserve the full SDS reasoning shape: Step 0 Real-Life Need → Current Reality → solution alternatives → Application Concept/responsibility/prototype; Step 1 Scenario + Scenario DATA + Behavior Items + material Requirements/Screens; Step 2 Domain Draft; Step 3 Slice Strategy/Slices + material contextual WEUC instances/likelihood/change paths/architecture evidence; Step 4 practical realization-feedback planning.",
+        "Mini, Modular/Medium and Full SDS have the same semantic quality. Mini keeps the complete plan in one file; Modular reorganizes without losing reviewed DATA/Behavior or other selected meaning; Full increases stable addressability.",
+        "For Step 3 architecture judgment, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths over generic future flexibility; derive Change Pressure/Architecture Decisions only when evidence supports them.",
         "Use planning dependency direction upstream → downstream. Preserve early later-step insight as provisional context, but do not let downstream convenience normally define upstream meaning.",
         "For Workspace/documentation planning, Step 1 + Step 2 is the normal default once the UC boundary is sufficiently grounded; Step 1 may stand alone while the target UC picture is materially unresolved; include Step 3 when explicitly requested or realization is sufficiently grounded/useful.",
         "Plan from Need/situation → UC/Scenario → Current→Target. Derive Q/R/P only after a concrete owner/current planned state exists; do not walk a FIND queue.",
         "Execution order is the selected route through planned work; represent genuine parallelism/dependencies rather than forcing a total order. Application execution order may group Slices by versions/releases.",
         "Current State normally uses a high-level summary + direct current-owner links. Target changed/new semantic meaning must be complete enough that implementation does not invent missing decisions; keep Current→Target Transition separate.",
-        "When several UCs/Slices are affected, review their combined architecture effect, classify cross-Slice overlap and challenge the number/necessity of shared coordination owners.",
-        "The command is an orchestration shortcut, not semantic authority. Read affected current UC/Scenario/Domain/Architecture owners instead of copying their contracts into the command.",
+        "When several UCs/Slices are affected, review their combined architecture effect, including material WEUC/change-path evidence, and challenge unnecessary shared coordination owners.",
+        "The command is read-only orchestration, not semantic authority. Read affected current Solution/Scenario/Domain/Slice/Architecture/Testing owners instead of copying their contracts into the command.",
         "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and is removed once a candidate is selected.",
         "Apply Key Points / Review Priority and built-in recheck before returning material output; `крит` remains an optional separate adversarial review.",
         "When scope logging is already active, treat the material review result as a loggable source for the next approved mutation/package; this read-only command itself does not edit logs.",
@@ -231,6 +238,104 @@
     },
     {
       "schemaVersion": 1,
+      "id": "application_scenarios.discover",
+      "file": "discover-application-scenarios.command.md",
+      "command": "собери сценарии приложения",
+      "englishName": "discover application scenarios",
+      "commandFamily": [
+        "собери сценарии приложения",
+        "найди сценарии приложения",
+        "discover application scenarios"
+      ],
+      "description": "discover meaningful Application Scenario boundaries",
+      "meaning": "Invoke UC-PLAN-SCENARIO-DISCOVERY to identify independently meaningful user-visible Need/result Scenario boundaries for the selected Application responsibility.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+      ],
+      "expectedOutput": "Current Scenario inventory/boundaries + material future Scenario/change evidence.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Selected Application responsibility>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_domain.discover",
+      "file": "discover-domain.command.md",
+      "command": "исследуй домен приложения",
+      "englishName": "discover application domain candidates",
+      "commandFamily": [
+        "исследуй домен приложения",
+        "собери домен приложения",
+        "discover application domain candidates",
+        "discover domain"
+      ],
+      "description": "discover evidence-backed Domain candidates",
+      "meaning": "Invoke UC-PLAN-DOMAIN-DISCOVERY to discover concepts, identity/lifecycle/rule/invariant/policy candidates before selecting Domain authority.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/domain-discovery-workflow.md"
+      ],
+      "expectedOutput": "Domain evidence + candidates + invariant/policy findings + variants when material.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Application Scenario/DATA/Behavior/Requirements target>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "architecture_weuc.discover",
+      "file": "discover-weuc.command.md",
+      "command": "собери WEUC",
+      "englishName": "discover contextual WEUCs",
+      "commandFamily": [
+        "собери WEUC",
+        "найди WEUC",
+        "discover WEUC",
+        "discover contextual WEUCs",
+        "эволюционные юзкейсы"
+      ],
+      "description": "discover contextual future-change instances",
+      "meaning": "Invoke UC-PLAN-ARCH-DISCOVER-WEUC to enumerate concrete future-change instances, likelihood/value/timing, expected change paths and friction/fan-out/risk.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
+        "planning/documentation/architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md"
+      ],
+      "expectedOutput": "Contextual WEUC instances + likelihood/value/timing + change paths + architecture handoff.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "Prefer contextual instances over generic flexibility. Use stable IDs/register only when cross-plan tracking is materially useful.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Concrete target code/workspace area>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "session.end",
       "file": "end-session.command.md",
       "command": "конец",
@@ -268,6 +373,37 @@
     },
     {
       "schemaVersion": 1,
+      "id": "application_responsibility.establish",
+      "file": "establish-application-responsibility.command.md",
+      "command": "определи ответственность приложения",
+      "englishName": "establish application responsibility",
+      "commandFamily": [
+        "определи ответственность приложения",
+        "границы приложения",
+        "establish application responsibility"
+      ],
+      "description": "establish exact application responsibility boundary",
+      "meaning": "Invoke UC-PLAN-APPLICATION to establish what the selected own Application is responsible for and what stays outside it.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+      ],
+      "expectedOutput": "Explicit selected Application responsibility/boundary.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Selected solution / Application candidate>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "use_case.invoke",
       "file": "invoke-use-case.command.md",
       "command": "вызови юзкейс",
@@ -293,6 +429,136 @@
       ],
       "userTarget": "<UC id + concrete target>",
       "palette": false,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_concept.plan",
+      "file": "plan-application-concept.command.md",
+      "command": "план концепции приложения",
+      "englishName": "plan application concept",
+      "commandFamily": [
+        "план концепции приложения",
+        "план концепции",
+        "application concept",
+        "plan application concept"
+      ],
+      "description": "plan/review Application Concept",
+      "meaning": "Invoke UC-PLAN-APP-CONCEPT to assess custom-application value, feasibility, rough effort/maintenance and alternatives before detailed behavior.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
+        "planning/documentation/application-planning/templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md"
+      ],
+      "expectedOutput": "Reviewed Application Concept + worth-it conclusion.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Application Concept candidate>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_scenario.plan",
+      "file": "plan-application-scenario.command.md",
+      "command": "план сценария приложения",
+      "englishName": "plan application scenario",
+      "commandFamily": [
+        "план сценария приложения",
+        "план сценария",
+        "plan application scenario",
+        "plan scenario"
+      ],
+      "description": "plan/review detailed Application Scenario",
+      "meaning": "Invoke UC-PLAN-SCENARIO and preserve Scenario DATA + Behavior Items + material Requirements/Screens as first-class Scenario planning meaning.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/detailed-planning/README.md"
+      ],
+      "expectedOutput": "Reviewed Scenario meaning/workspace with DATA/Behavior preserved.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Application Scenario>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_slice.plan",
+      "file": "plan-application-slice.command.md",
+      "command": "план слайса приложения",
+      "englishName": "plan application slice",
+      "commandFamily": [
+        "план слайса приложения",
+        "план слайса",
+        "plan application slice",
+        "plan slice"
+      ],
+      "description": "plan one implementation Slice",
+      "meaning": "Invoke UC-PLAN-SLICE to plan one integrated vertical increment; split frontend/server/verification implementation-part plans only when useful.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/slice-planning-workflow.md"
+      ],
+      "expectedOutput": "Integrated Slice plan + optional frontend/server/verification implementation-part plans.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Selected Slice>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "architecture_decision.plan",
+      "file": "plan-architecture-decision.command.md",
+      "command": "прими архитектурное решение",
+      "englishName": "plan architecture decision",
+      "commandFamily": [
+        "прими архитектурное решение",
+        "спланируй архитектурное решение",
+        "plan architecture decision"
+      ],
+      "description": "plan/review one material architecture decision",
+      "meaning": "Invoke UC-PLAN-ARCH-DECISION to compare/select one material architecture choice against important current/future paths and concrete driving evidence.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/architecture-planning/architecture-decision-workflow.md",
+        "planning/documentation/architecture-planning/templates/ARCHITECTURE-DECISION-TEMPLATE.md"
+      ],
+      "expectedOutput": "Selected Architecture Decision + affected-path conclusion + rejected complexity/revisit trigger when useful.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "Reference concrete driving WEUC instances/change paths when they materially justify the choice; an abstract Change Axis alone is weaker evidence.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Material architecture pressure/problem/choice>",
+      "palette": true,
       "refinements": []
     },
     {
@@ -327,6 +593,38 @@
         "Do not edit files, create an archive, commit or push."
       ],
       "userTarget": "<what command route should be planned>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_domain.plan",
+      "file": "plan-domain.command.md",
+      "command": "план домена приложения",
+      "englishName": "plan application domain",
+      "commandFamily": [
+        "план домена приложения",
+        "план домена",
+        "plan application domain",
+        "plan domain"
+      ],
+      "description": "plan/review Application Domain",
+      "meaning": "Invoke UC-PLAN-DOMAIN to select the simplest explicit concepts/state/lifecycle/rules/invariants/policies that support current Scenario meaning and justified evolution.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/domain-planning-workflow.md"
+      ],
+      "expectedOutput": "Selected Domain Draft/meaning + coverage/variation/verification decisions.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Application Domain target>",
       "palette": true,
       "refinements": []
     },
@@ -399,6 +697,194 @@
         "Do not edit files or create archive unless separately requested."
       ],
       "userTarget": "<what should be planned>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "practical_testing.plan",
+      "file": "plan-practical-testing.command.md",
+      "command": "план практического тестирования",
+      "englishName": "plan practical testing",
+      "commandFamily": [
+        "план практического тестирования",
+        "план тестирования",
+        "plan practical testing",
+        "practical testing plan"
+      ],
+      "description": "plan operated practical acceptance",
+      "meaning": "Invoke UC-PLAN-TEST-PLAN to compose real human/AI/E2E operated acceptance actions, observable evidence and pass/fail without claiming execution.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/testing-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+      ],
+      "expectedOutput": "Practical Testing Plan / acceptance cards or campaign.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "Planned evidence is not executed evidence; actual coverage/evidence review remains UC-PLAN-TEST-COVERAGE.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Selected application/change result>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_slice_strategy.plan",
+      "file": "plan-slice-strategy.command.md",
+      "command": "план стратегии слайсов",
+      "englishName": "plan slice strategy",
+      "commandFamily": [
+        "план стратегии слайсов",
+        "стратегия слайсов",
+        "plan slice strategy"
+      ],
+      "description": "plan/review Slice Strategy",
+      "meaning": "Invoke UC-PLAN-SLICE-STRATEGY to choose vertical decomposition/order without redefining upstream Scenario/Domain meaning.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/slice-planning-workflow.md"
+      ],
+      "expectedOutput": "Selected Slice decomposition/order + dependencies/rationale.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Application delivery scope>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_solution.plan",
+      "file": "plan-solution.command.md",
+      "command": "план решения",
+      "englishName": "plan solution",
+      "commandFamily": [
+        "план решения",
+        "plan solution",
+        "plan whole solution"
+      ],
+      "description": "plan/review whole solution",
+      "meaning": "Invoke UC-PLAN-SOLUTION to compare/select the integrated real-world solution/workflow before assuming custom application work.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+      ],
+      "expectedOutput": "Current whole Solution/Workflow Variant + integration conclusion.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Real-Life Need / desired result>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "test_design.plan",
+      "file": "plan-test-design.command.md",
+      "command": "спланируй проверку поведения",
+      "englishName": "plan behavior verification",
+      "commandFamily": [
+        "спланируй проверку поведения",
+        "дизайн тестов",
+        "plan behavior verification"
+      ],
+      "description": "design convincing proof for selected behavior",
+      "meaning": "Invoke UC-PLAN-TEST-DESIGN to map selected Scenario/Requirement/Domain/Slice behavior to concrete assertions and appropriate proof layers.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/testing-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/test-design-workflow.md"
+      ],
+      "expectedOutput": "Behavior-to-Test Trace + selected proof layers/assertions/boundary decisions.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Selected behavior to verify>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "testing_strategy.plan",
+      "file": "plan-testing-strategy.command.md",
+      "command": "стратегия тестирования",
+      "englishName": "plan testing strategy",
+      "commandFamily": [
+        "стратегия тестирования",
+        "план стратегии тестирования",
+        "plan testing strategy"
+      ],
+      "description": "plan/review shared testing strategy",
+      "meaning": "Invoke UC-PLAN-TEST-STRATEGY when proof responsibility spans several Slices/layers or shared harness/data/isolation/E2E policy matters.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/testing-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/testing-strategy-workflow.md"
+      ],
+      "expectedOutput": "Current testing strategy + layer/shared proof responsibilities.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Testing responsibility / application change>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_prototype.plan",
+      "file": "prototype-application.command.md",
+      "command": "прототип приложения",
+      "englishName": "prototype application",
+      "commandFamily": [
+        "прототип приложения",
+        "prototype application",
+        "plan application prototype"
+      ],
+      "description": "prototype application experience/workflow",
+      "meaning": "Invoke UC-PLAN-PROTOTYPE to test provisional interaction/workflow, Prototype Scenarios/Screens and candidate DATA/Behavior/Requirements.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/prototype-planning-workflow.md"
+      ],
+      "expectedOutput": "Reviewed Prototype Plan/Result + candidate Scenario/DATA/Behavior/Requirement evidence.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Application prototype target>",
       "palette": true,
       "refinements": []
     },
@@ -480,6 +966,161 @@
     },
     {
       "schemaVersion": 1,
+      "id": "application_research.research",
+      "file": "research-solution-alternatives.command.md",
+      "command": "исследуй альтернативы решения",
+      "englishName": "research solution alternatives",
+      "commandFamily": [
+        "исследуй альтернативы решения",
+        "исследуй решения",
+        "research solution alternatives"
+      ],
+      "description": "research existing solution alternatives",
+      "meaning": "Invoke UC-PLAN-RESEARCH to close material evidence gaps before selecting the whole solution.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "expectedOutput": "Checked alternatives/evidence + disposition for solution choice.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Need / solution-choice evidence gap>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_realization.review",
+      "file": "review-application-realization.command.md",
+      "command": "проверь реализацию приложения",
+      "englishName": "review application realization",
+      "commandFamily": [
+        "проверь реализацию приложения",
+        "сравни реализацию приложения",
+        "review application realization"
+      ],
+      "description": "review/compare high-level realization evidence",
+      "meaning": "Invoke UC-PLAN-REALIZATION for bounded representative runtime/persistence/integration feasibility evidence without taking Domain authority.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/application-realization-workflow.md"
+      ],
+      "expectedOutput": "Representative realization picture/comparison + material feasibility/cost/upstream findings.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Application / Domain candidate realization target>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "architecture_pressure.review",
+      "file": "review-architecture-pressure.command.md",
+      "command": "оцени давление на архитектуру",
+      "englishName": "review architecture pressure",
+      "commandFamily": [
+        "оцени давление на архитектуру",
+        "давление на архитектуру",
+        "review architecture pressure"
+      ],
+      "description": "derive evidence-backed architecture pressure",
+      "meaning": "Invoke UC-PLAN-ARCH-PRESSURE from important current/future paths and contextual WEUC evidence; derive Change Axes only to the degree evidence supports them.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/architecture-planning/architecture-change-pressure-workflow.md"
+      ],
+      "expectedOutput": "Change Pressure picture + evidence-backed Change Axes/confidence + hot paths/findings.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "Prefer contextual WEUC instances/change paths with likelihood/value/timing when future evolution materially drives the pressure.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Architecture / change-pressure target>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_reality.review",
+      "file": "review-current-reality.command.md",
+      "command": "разбери текущую реальность",
+      "englishName": "review current application reality",
+      "commandFamily": [
+        "разбери текущую реальность",
+        "текущая реальность приложения",
+        "review current application reality"
+      ],
+      "description": "establish checked current reality before solution choice",
+      "meaning": "Invoke UC-PLAN-REALITY to establish descriptive checked present reality that materially affects solution choice.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+      ],
+      "expectedOutput": "Checked Current Reality relevant to the selected Need/solution choice.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Real-Life Situation / Need>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "test_coverage.review",
+      "file": "review-test-coverage.command.md",
+      "command": "проверь тестовое покрытие",
+      "englishName": "review test coverage",
+      "commandFamily": [
+        "проверь тестовое покрытие",
+        "проверь тесты",
+        "review test coverage"
+      ],
+      "description": "review actual current test evidence",
+      "meaning": "Invoke UC-PLAN-TEST-COVERAGE to inspect whether actual current tests/evidence prove selected current meaning.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/testing-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/test-coverage-review-workflow.md"
+      ],
+      "expectedOutput": "Behavior→actual-evidence map + missing/weak/stale/duplicated/wrong-layer findings.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Current behavior / test evidence target>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "returned_files.revise",
       "file": "revise-returned-files.command.md",
       "command": "обн",
@@ -542,6 +1183,39 @@
     },
     {
       "schemaVersion": 1,
+      "id": "architecture_path.trace",
+      "file": "trace-architecture-path.command.md",
+      "command": "разбери путь изменения",
+      "englishName": "trace architecture-relevant path",
+      "commandFamily": [
+        "разбери путь изменения",
+        "разбери change path",
+        "trace architecture-relevant path",
+        "trace change path"
+      ],
+      "description": "trace one architecture-relevant change/understanding/runtime path",
+      "meaning": "Invoke UC-PLAN-ARCH-PATH to inspect the concrete path required for one material result or future change and expose locality/fan-out/friction as architecture evidence.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/architecture-planning/architecture-path-analysis-workflow.md"
+      ],
+      "expectedOutput": "Checked Workspace Change/Understanding/Runtime path + qualitative architecture findings.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
+        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
+        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
+        "Use concrete contextual WEUC instances/change paths and their likelihood/value/timing when future change drives the architecture question; generic flexibility alone is not evidence.",
+        "No repository mutation, archive, commit or push is implied."
+      ],
+      "userTarget": "<Workspace UC / contextual WEUC instance / Application Scenario path>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "archive_source.use",
       "file": "use-archive.command.md",
       "command": "арх",
@@ -567,6 +1241,128 @@
         "State archive freshness/source limits when relevant."
       ],
       "userTarget": "<what should be checked from archive>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_sds.full",
+      "file": "work-full-sds.command.md",
+      "command": "фулл сдс",
+      "englishName": "work in full SDS",
+      "commandFamily": [
+        "фулл сдс",
+        "full sds",
+        "work in full sds"
+      ],
+      "description": "work in rich Full Application SDS",
+      "meaning": "Continue the current Application plan in Full SDS using rich stable Scenario/DATA/Behavior/Requirement/Screen/Domain/Slice owners and durable architecture/testing evidence where justified.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/direction-registry.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/profiles/sds-planning-profiles.md",
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
+        "planning/documentation/testing-planning/practical-testing-plan-workflow.md",
+        "planning/documentation/profiles/scenario-domain-slice-docs-profile.md",
+        "planning/documentation/architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md"
+      ],
+      "expectedOutput": "Updated Full SDS owner topology preserving the same Step 0–4 meaning, with material contextual WEUC instances transferred to the project-local register and architecture decisions linked to driving evidence.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
+        "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
+        "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
+        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Q/R/P stays attached unresolved/adverse delta, never the planning root.",
+        "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
+        "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
+        "Do not edit repository files, create an archive, commit or push.",
+        "Full increases addressability, not semantic quality. Transfer material durable contextual WEUC instances into the project-local WEUC Instance Register; do not leave architecture decisions justified only by abstract axes."
+      ],
+      "userTarget": "<Application to plan in Full SDS>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_sds.mini",
+      "file": "work-mini-sds.command.md",
+      "command": "мини сдс",
+      "englishName": "work in mini SDS",
+      "commandFamily": [
+        "мини сдс",
+        "mini sds",
+        "work in mini sds"
+      ],
+      "description": "work in one-file Application SDS",
+      "meaning": "Continue the current Application plan in Mini SDS: one complete accumulating application-plan file with the same semantic quality as larger profiles.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/direction-registry.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/profiles/sds-planning-profiles.md",
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
+        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+      ],
+      "expectedOutput": "Updated one-file Current Application Plan containing the material Step 0–4 meaning, including Scenario DATA/Behavior and material WEUC/testing evidence.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
+        "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
+        "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
+        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Q/R/P stays attached unresolved/adverse delta, never the planning root.",
+        "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
+        "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
+        "Do not edit repository files, create an archive, commit or push.",
+        "Mini is appropriate only while the full-quality plan remains genuinely small and reviewable in one file."
+      ],
+      "userTarget": "<Application / bounded change to plan in Mini SDS>",
+      "palette": true,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_sds.modular",
+      "file": "work-modular-sds.command.md",
+      "command": "модульный сдс",
+      "englishName": "work in modular SDS",
+      "commandFamily": [
+        "модульный сдс",
+        "медиум сдс",
+        "modular sds",
+        "medium sds",
+        "work in modular sds",
+        "work in medium sds"
+      ],
+      "description": "work in Modular/Medium Application SDS",
+      "meaning": "Continue the current Application plan in Modular/Medium SDS: same-quality planning split into a small file set that grows only as reviewability requires.",
+      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
+      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "ownerFiles": [
+        "planning/documentation/application-planning/direction-registry.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/profiles/sds-planning-profiles.md",
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
+        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+      ],
+      "expectedOutput": "Updated Modular/Medium Current Application Plan, normally application-plan + domain-draft + slice file(s), with extra WEUC/order/testing/scenario files only when useful.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
+        "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
+        "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
+        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Q/R/P stays attached unresolved/adverse delta, never the planning root.",
+        "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
+        "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
+        "Do not edit repository files, create an archive, commit or push.",
+        "Default physical split: application-plan.md owns Step 0 + Scenario/DATA/Behavior; domain-draft.md owns Step 2; slices.md or slices/ owns Step 3. Grow further only when useful."
+      ],
+      "userTarget": "<Application / bounded change to plan in Modular/Medium SDS>",
       "palette": true,
       "refinements": []
     }

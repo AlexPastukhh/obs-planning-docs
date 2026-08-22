@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution status must be recorded separately from automated tests
-Version: v1.1.0 / Planning Helper `0.27.0`
+Version: v1.2.0 / Planning Helper `0.30.0`
 Scope: browser and real-GitHub checks that are not implied by `npm run verify`.
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md).
@@ -18,6 +18,7 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 - Confirm no background GitHub request is made merely by startup, opening surfaces or searching.
 - Confirm the top-level navigation exposes separate `Commands`, `Use Cases` and `Prompts` surfaces and no separate Directions tab.
 - Confirm Commands and Use Cases are nested under collapsible current Direction groups; search by Direction name/ID expands the matching group.
+- Favorite one Command and one Use Case. Confirm `★ Favorites` appears above Directions on each relevant surface, the favorite row is duplicated there, and the original row remains inside its Direction. Unfavorite and confirm only the top duplicate disappears.
 - Confirm `Commands` contains command rows only (plus clearly marked legacy command compatibility rows), while `Use Cases` contains every current canonical UC exactly once semantically even when a UC has a command shortcut.
 - Confirm Direction grouping is navigation only and remains read-only semantic projection.
 
@@ -46,6 +47,7 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 
 - Create/edit a Planning Command draft, delete a Command, delete a Use Case, and create/edit/delete a Prompt; verify only local snapshot/RAM changes occur until explicit repository actions.
 - Reload/restart the userscript and verify locally deleted Command/Use-Case IDs stay hidden rather than being re-added by bundled seeds.
+- Reload/restart after favoriting Command/Use-Case IDs and confirm favorites persist locally; deleting a favorited item also removes its favorite ID.
 - Run explicit `Sync missing` after deleting a registered Command and verify the command can be restored from GitHub and its local-delete tombstone clears.
 - Confirm a deleted Use Case changes only the Helper projection and does not mutate its canonical registry/owner.
 - Edit/delete a legacy helper-command compatibility record only when one exists; confirm the UI does not offer creation of a new legacy helper-command record.
@@ -114,3 +116,10 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 - Confirm UCs with bespoke commands do not receive a duplicate generated invocation row.
 - Confirm `UC-PLAN-WORKSPACE-ESTABLISH-UC`, `UC-PLAN-WORKSPACE-CHANGE-UC`, `UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY` and `UC-DOC-RECONCILE-STATUS` each have their own generated direct invocation row even though their registries mention `собери идеи`/`положняк` only as supporting or may-route commands.
 - Confirm genuinely direct mappings such as `UC-PLAN-COLLECT-IDEAS → ideas.collect` and `UC-REPO-CURRENT-STATE → current_state.report` still reuse the bespoke command without a duplicate generated row.
+
+## Application SDS command acceptance
+
+- Confirm `мини сдс`, `модульный сдс`/`медиум сдс` and `фулл сдс` exist as Planning Commands and all route to the same Step 0–4 quality contract.
+- Confirm direct commands exist for Current Reality, Solution Research, Solution, Application Concept, Application Responsibility, Prototype, Scenario Discovery, Scenario, Domain, Application Realization, Slice Strategy, Slice, contextual WEUC discovery, Architecture Pressure/Decision, Testing Strategy/Design/Coverage and Practical Testing Plan.
+- Confirm the related canonical UC rows reuse those bespoke commands and do not receive duplicate generated UC invocation rows.
+- Confirm Mini/Modular/Full prompts preserve Scenario DATA and Behavior Items and do not claim Full is semantically stronger.

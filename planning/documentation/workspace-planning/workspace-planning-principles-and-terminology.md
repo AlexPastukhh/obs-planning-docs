@@ -60,7 +60,7 @@ Modular UCDS
 → the same current plan split into UC/shared-Idea/rule/realization/order owners as growth makes review/navigation cheaper
 ```
 
-Mini→Modular is structural growth, not weaker/stronger semantic correctness and not a new planning stage. Do not create an append-only command-result ledger or separate Goal Map beside the current UCDS plan.
+Mini→Modular is structural growth, not weaker/stronger semantic correctness and not a new planning stage. Do not create an append-only command-result ledger or a second competing current plan.
 
 The accumulating plan should expose a compact **Planning State** for Step 1/2/3 (`reviewed`, `partial`, `not selected`) so later work can distinguish stable upstream meaning from provisional Carry-Forward context. Planning State is a review/progress projection, not a second semantic authority.
 
@@ -171,7 +171,7 @@ Backflow is evidence-driven exception, not normal planning direction. ReviewDiff
 
 - Do not create a second generic Use-Case model authority.
 - Do not turn Step 2/3 into peer Workspace UCs.
-- Do not create a Goal Map beside an active UCDS current plan.
+- Do not create a second competing current plan beside an active UCDS current plan.
 - Do not make Mini UCDS semantically weaker than Modular UCDS.
 - Do not let execution order redefine UC/rule meaning.
 - Do not let implementation convenience silently rewrite upstream meaning.

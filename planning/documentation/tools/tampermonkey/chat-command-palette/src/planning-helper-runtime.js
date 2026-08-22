@@ -52,7 +52,7 @@
     }
     for(const itemValue of parsed.helperItems||[]){const item=deps.normalizeHelperLibraryItem(itemValue),key=helperKey(item),previous=current.helperByKey.get(key),rendered=deps.renderHelperLibraryDocument(item),unchanged=Boolean(previous)&&previous.rawContent===rendered;const record=deps.normalizeHelperRecord({item,rawContent:rendered,repositoryKnown:mode==='restore'?true:(unchanged&&Boolean(previous?.repositoryKnown)),repositoryTracked:mode==='restore'?true:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:mode==='restore'?'':(unchanged?previous?.repositorySha||'':'')});helperMap.set(key,record);if(mode==='import'&&!previous)newHelperRecords.push(record);}
     const restoredCommandIds=new Set((parsed.definitions||[]).map((definition)=>deps.normalizeCommandDefinition(definition).id));
-    const next={schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>!restoredCommandIds.has(id)),hiddenUseCaseIds:[...(snapshot.hiddenUseCaseIds||[])]};
+    const next={schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>!restoredCommandIds.has(id)),hiddenUseCaseIds:[...(snapshot.hiddenUseCaseIds||[])],favoriteCommandIds:[...(snapshot.favoriteCommandIds||[])],favoriteUseCaseIds:[...(snapshot.favoriteUseCaseIds||[])]};
     deps.normalizePlanningHelperLocalSnapshot(next);
     return{snapshot:next,newCommandRecords,newHelperRecords,removedRepositoryCommands,removedRepositoryHelperItems,parsed};
   }
@@ -112,12 +112,26 @@
     const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),record=memory.commandById.get(value);
     const invocation=deps.USE_CASE_DEFINITIONS.some((uc)=>deps.useCaseInvocationCommandId(uc.id)===value);
     if(!record&&!invocation)throw new Error(`Planning/UC invocation command not found: ${value||'<empty>'}`);
-    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:record?memory.commandRecords.filter((entry)=>entry.definition.id!==value):memory.commandRecords,hiddenCommandIds:[...new Set([...(snapshot.hiddenCommandIds||[]),value])]});
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:record?memory.commandRecords.filter((entry)=>entry.definition.id!==value):memory.commandRecords,hiddenCommandIds:[...new Set([...(snapshot.hiddenCommandIds||[]),value])],favoriteCommandIds:(snapshot.favoriteCommandIds||[]).filter((id)=>id!==value)});
   }
 
   function deleteLocalUseCaseFromSnapshot(snapshot,id){
     const value=String(id||'').trim();if(!deps.USE_CASE_DEFINITIONS.some((entry)=>entry.id===value))throw new Error(`Use Case not found: ${value||'<empty>'}`);
-    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,hiddenUseCaseIds:[...new Set([...(snapshot.hiddenUseCaseIds||[]),value])]});
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,hiddenUseCaseIds:[...new Set([...(snapshot.hiddenUseCaseIds||[]),value])],favoriteUseCaseIds:(snapshot.favoriteUseCaseIds||[]).filter((id)=>id!==value)});
+  }
+
+  function toggleFavoriteCommandInSnapshot(snapshot,id){
+    const memory=materializeSnapshot(snapshot),value=String(id||'').trim();
+    if(!memory.commandEntries.some((entry)=>entry.id===value))throw new Error(`Command row not found: ${value||'<empty>'}`);
+    const ids=new Set(snapshot.favoriteCommandIds||[]);if(ids.has(value))ids.delete(value);else ids.add(value);
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,favoriteCommandIds:[...ids]});
+  }
+
+  function toggleFavoriteUseCaseInSnapshot(snapshot,id){
+    const value=String(id||'').trim();
+    if(!deps.USE_CASE_DEFINITIONS.some((entry)=>entry.id===value))throw new Error(`Use Case not found: ${value||'<empty>'}`);
+    const ids=new Set(snapshot.favoriteUseCaseIds||[]);if(ids.has(value))ids.delete(value);else ids.add(value);
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,favoriteUseCaseIds:[...ids]});
   }
 
   function prepareLocalHelperSave(snapshot,value,now=new Date().toISOString()){
@@ -156,7 +170,8 @@
     for(const remote of remoteRecords.commands||[]){if(commandMap.has(remote.path))continue;const record=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});commandMap.set(record.path,record);addedCommands.push(record);}
     const mergedDefinitions=[...commandMap.values()].map((record)=>record.definition);deps.validateCommandCatalog(mergedDefinitions);
     for(const remote of remoteRecords.helperItems||[]){if(helperMap.has(remote.path))continue;const record=deps.normalizeHelperRecord({item:remote.item,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositorySha:remote.sha});helperMap.set(record.path,record);addedHelpers.push(record);}
-    const next=deps.normalizePlanningHelperLocalSnapshot({schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()]});
+    const restoredCommandIds=new Set(addedCommands.map((record)=>record.definition.id));
+    const next=deps.normalizePlanningHelperLocalSnapshot({schemaVersion:deps.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:new Date().toISOString(),planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>!restoredCommandIds.has(id)),hiddenUseCaseIds:[...(snapshot.hiddenUseCaseIds||[])],favoriteCommandIds:[...(snapshot.favoriteCommandIds||[])],favoriteUseCaseIds:[...(snapshot.favoriteUseCaseIds||[])]});
     return{snapshot:next,addedCommands,addedHelpers};
   }
 
@@ -175,7 +190,7 @@
     if(bundledUseCases.length){const expected=deps.USE_CASE_DEFINITIONS.map((entry)=>entry.id).sort(),actual=bundledUseCases.map((entry)=>String(entry?.id||'')).sort();if(JSON.stringify(actual)!==JSON.stringify(expected))throw new Error('Bundled Use-Case seed catalog does not match current semantic projections.');}
     const repositoryLock=createRepositoryOperationLock();
     const loaded=await deps.loadOrMigratePlanningHelperLocalSnapshot(bundled);let snapshot=loaded.snapshot;let memory=materializeSnapshot(snapshot);const startupWarnings=[...(loaded.warnings||[])];if(loaded.migrated)startupWarnings.push('Planning Helper migrated existing local caches into one RAM-first local snapshot.');
-    function uiState(){return{commandEntries:memory.commandEntries,localCommandEntries:memory.localCommandEntries,promptEntries:memory.promptEntries,useCaseEntries:memory.useCaseEntries};}
+    function uiState(){return{commandEntries:memory.commandEntries,localCommandEntries:memory.localCommandEntries,promptEntries:memory.promptEntries,useCaseEntries:memory.useCaseEntries,favoriteCommandIds:[...(snapshot.favoriteCommandIds||[])],favoriteUseCaseIds:[...(snapshot.favoriteUseCaseIds||[])]};}
     async function persist(next){snapshot=await deps.savePlanningHelperLocalSnapshot(next);memory=materializeSnapshot(snapshot);return uiState();}
     async function makeClient(){const settings=await deps.loadRepositorySettings();const token=await deps.loadGitHubToken();if(typeof GM_xmlhttpRequest!=='function')throw new Error('GM_xmlhttpRequest is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');return{client:new deps.GitHubContentsClient({...settings,token,transport:deps.createGmTransport(GM_xmlhttpRequest)}),settings,token};}
     async function makeServices(){const{client,settings}=await makeClient();return{commandService:new deps.RepositoryCommandService(client,{commandsPath:deps.COMMANDS_PATH}),helperService:new deps.RepositoryHelperLibraryService(client),settings};}
@@ -187,6 +202,8 @@
     async function saveLocalCommandDefinition(value,existingId=''){const prepared=prepareLocalCommandSave(snapshot,value,existingId);if(!prepared.changed)return{definition:prepared.definition,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{definition:prepared.definition,unchanged:false,...state};}
     async function deleteLocalCommand(id){return persist(deleteLocalCommandFromSnapshot(snapshot,id));}
     async function deleteLocalUseCase(id){return persist(deleteLocalUseCaseFromSnapshot(snapshot,id));}
+    async function toggleFavoriteCommand(id){return persist(toggleFavoriteCommandInSnapshot(snapshot,id));}
+    async function toggleFavoriteUseCase(id){return persist(toggleFavoriteUseCaseInSnapshot(snapshot,id));}
     async function reloadRepositoryCommand(id){return repositoryLock.run('Reload planning command from GitHub',async()=>{const{commandService,settings}=await makeServices();const record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);const remote=await commandService.readRemote(record.path);const replacement=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});const records=memory.commandRecords.map((entry)=>entry.definition.id===record.definition.id?replacement:entry);deps.validateCommandCatalog(records.map((entry)=>entry.definition));const state=await persist({...snapshot,planningCommands:records});return{settings,path:remote.path,sha:remote.sha,...state};});}
     async function saveLocalLibraryItem(value){const prepared=prepareLocalHelperSave(snapshot,value);if(!prepared.changed)return{item:prepared.item,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{item:prepared.item,unchanged:false,...state};}
     async function deleteLocalLibraryItem(kind,id){const key=`${kind}:${id}`;const next={...snapshot,helperItems:memory.helperRecords.filter((record)=>helperKey(record.item)!==key)};return persist(next);}
@@ -201,11 +218,11 @@
     async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}
     async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings();const candidate=deps.validateRepositorySettings(settings);const sourceChanged=repositorySettingsKey(previous)!==repositorySettingsKey(candidate);if(sourceChanged)await persist(clearRepositoryEvidence(snapshot));await deps.saveGitHubToken(token);await deps.saveRepositorySettings(candidate);return{sourceChanged,...uiState()};});}
 
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,directionDefinitions:deps.DIRECTION_DEFINITIONS,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:(text,success,id)=>insertWithClipboard(text,success,id),onCopy:deps.copyText,onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,directionDefinitions:deps.DIRECTION_DEFINITIONS,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:(text,success,id)=>insertWithClipboard(text,success,id),onCopy:deps.copyText,onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
     function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}
     globalThis[INSTANCE_DISPOSE_KEY]=dispose;
-    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
+    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,toggleFavoriteCommand,toggleFavoriteUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
   }
 
-  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,insertWithClipboard};
+  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,toggleFavoriteCommandInSnapshot,toggleFavoriteUseCaseInSnapshot,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,insertWithClipboard};
 });

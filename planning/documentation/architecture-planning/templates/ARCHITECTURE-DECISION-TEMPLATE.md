@@ -19,6 +19,8 @@ Current Workspace UCs:
 Other important Workspace UCs:
 Workspace Change Cases:
 Planned / Likely Extensions + expected future UCs:
+Driving contextual WEUC instances + likelihood/value/timing:
+Expected Workspace Change Paths + friction/fan-out/risk:
 Requirements / Domain invariants:
 Change Axes crossing this decision:
 Affected Workspace / Runtime paths:
@@ -49,6 +51,7 @@ Payoff:
 Selected:
 Architecture Intent:
 Why it pays for itself now:
+Driving WEUC instance IDs / evidence:
 Affected owners / paths:
 ```
 

@@ -3,9 +3,9 @@
 Status: active current behavior owner
 Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
 
-**Trigger/input:** the user chooses a command/helper/prompt row, Full/refinement or Copy/Insert action.
+**Trigger/input:** the user chooses a command/helper/prompt row, favorites/unfavorites a Command or Use Case, or uses Full/refinement/Copy/Insert.
 
-**Successful result:** the exact selected Command, Use-Case or Prompt RAM text is available on the clipboard and/or inserted into the current ChatGPT composer; semantic Use-Case bodies focus the receiving chat on the selected UC, current registry entry and dynamically resolved current owner route; repository availability does not affect the normal insertion path.
+**Successful result:** the exact selected Command, Use-Case or Prompt RAM text is available on the clipboard and/or inserted into the current ChatGPT composer; semantic Use-Case bodies focus the receiving chat on the selected UC, current registry entry and dynamically resolved current owner route; repository availability does not affect the normal insertion path; favorite state is local-only and does not change the inserted identity/body.
 
 **Boundary:** Copy/Insert are delivery mechanisms of one user outcome, not separate Use Cases. A command-backed UC remains independently insertable from the Use Cases surface and does not redirect to/open the Commands surface. Planning-command insertion does not grant permissions beyond the command definition. Semantic Use-Case bodies grant no command/repository permission and do not hard-code a permanent exhaustive owner-path list.
 

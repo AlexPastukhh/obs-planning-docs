@@ -1,8 +1,8 @@
 # Scenario / Domain / Slice Docs Profile
 
 Status: active reusable specialized profile
-Doc version: v0.5.0-detailed-workspace-aligned
-Scope: optional reusable guidance for projects that activate structured Prototype → Scenario/Screen → Requirement → Domain/Slice documentation after solution/Application Concept planning is sufficiently grounded.
+Doc version: v0.6.0-step0-weuc-aligned
+Scope: rich Full SDS owner topology for the same Step 0–4 Application planning semantics used by Mini/Modular SDS, with durable Scenario/DATA/Behavior/Domain/Slice/WEUC/testing addressability when scale justifies it.
 
 Core detailed-planning contract:
 
@@ -10,25 +10,49 @@ Core detailed-planning contract:
 
 ## 1. Purpose
 
-Use this profile when a project benefits from explicit Prototype evidence, Scenario workspaces, separately addressable Scenario DATA / Behavior Items, Requirements, optional Domain owners and Implementation Slices.
+Use this profile when a project benefits from explicit solution/prototype evidence, Scenario workspaces, separately addressable Scenario DATA / Behavior Items, Requirements, optional Domain owners, Implementation Slices, durable architecture-evolution evidence and practical testing surfaces.
 
-This is a specialized profile, not a universal stage. A project may use it without creating executable commands or an extra setup/router layer.
+This is the Full physical/addressability profile, not a higher semantic-quality level. Mini/Modular/Full must preserve the same selected behavior, DATA, rules, WEUC evidence and verification meaning; Full only materializes more of that meaning as stable independently reviewable owners.
 
 When selected, the dependency direction is:
 
 ```text
-current Application Concept / selected application responsibility
+STEP 0 — WHY / SOLUTION DISCOVERY
+Real-Life Situation / Need
+  → Current Reality
+  → solution alternatives / research when useful
+  → Application Concept when own software is justified
+  → selected Application Responsibility
   → Prototype Planning when useful
      → Prototype Scenarios / Prototype Screens
      → candidate Requirements / DATA / Behavior / Change Axes
+
+STEP 1 — SCENARIO
   → Scenario discovery
   → detailed Scenario workspaces
   → Scenario DATA / Behavior Items + related Requirements
   → optional Screen spatial owners
-  → optional Domain work
+
+STEP 2 — DOMAIN
+  → optional Domain Discovery / Domain Draft / selected Domain meaning
+
+STEP 3 — REALIZATION / SLICES
+  → optional high-level realization stress review
   → optional Slice Strategy
   → optional individual Implementation Slice planning
-  → verification / consistency review proportionally
+  → target code/workspace realization
+     → WEUC Types / contextual WEUC Instances
+     → likelihood / value / timing
+     → expected Workspace Change Paths
+     → friction / fan-out / risk
+     → Change Pressure / Change Axes
+     → Architecture Decisions when concrete payoff warrants them
+
+STEP 4 — PRACTICAL REALIZATION FEEDBACK
+  → implementation
+  → practical testing
+  → semantic ReviewDiff / actual evidence
+  → upstream correction only when real evidence requires it
 ```
 
 ## 2. Core Split
@@ -50,6 +74,15 @@ Requirement:
 Change Axis:
   evidence-backed expected-variation dimension used to evaluate adaptability;
   not a requirement to generalize now.
+
+WEUC Type:
+  reusable kind of future Workspace evolution work;
+  useful for grouping, but not enough by itself to justify architecture.
+
+Contextual WEUC Instance:
+  one concrete likely/possible future change against a specific target code/workspace area;
+  carries likelihood/value/timing + expected change path + friction/fan-out/risk evidence;
+  architecture evidence, not Application behavior authority.
 
 Scenario:
   one coherent motivated actor/context + Need/Goal + meaningful observable result;
@@ -200,11 +233,40 @@ When decomposition/order is material, `UC-PLAN-SLICE-STRATEGY` may use a Slice S
 
 Slice workspaces keep one integrated Slice owner plus `ideas/` and `visual/`. A simple Slice may stay one implementation file; a richer Slice may split responsibility plans such as `frontend.md`, `server.md` and `verification.md` without losing the integrated Slice owner. These parts are not separate planning Use Cases by default.
 
+Before accepting material architecture seams merely for future flexibility, apply `UC-PLAN-ARCH-DISCOVER-WEUC` to the concrete target code/workspace area when likely evolution can materially affect the Slice/architecture:
+
+```text
+WEUC Type candidate
+→ contextual WEUC Instance
+→ likelihood / value / timing
+→ expected Workspace Change Path
+→ friction / fan-out / migration / verification risk
+→ Change Pressure / Change Axis only when supported
+→ Architecture Decision only when concrete payoff justifies it
+```
+
+For Full SDS, durable material instances should be transferred to the project-local WEUC Instance Register using [`../architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md`](../architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md). Architecture Decisions should reference the concrete driving instance/path rather than only an abstract axis.
+
 Screen owns selected spatial requirements; Scenario owns behavior; frontend Slice planning owns the implementation mechanism that realizes those requirements.
 
 Do not treat Behavior Items as Slices. Do not add a mandatory Feature layer between behavior and Slice.
 
-## 9. Current Draft State
+## 9. Practical Testing / Realization Feedback
+
+Full SDS may keep a stable practical-testing surface when operated acceptance needs independent review.
+
+```text
+selected Scenario / Behavior / Requirement / Domain / Slice meaning
+→ UC-PLAN-TEST-PLAN
+→ human / AI-operated / E2E actions + observable evidence + pass/fail
+→ implementation / execution
+→ UC-PLAN-TEST-COVERAGE for actual evidence review
+→ semantic ReviewDiff
+```
+
+Planning the acceptance campaign does not claim execution happened. Actual evidence may flow upstream only when it reveals a genuine contradiction/infeasibility/new fact.
+
+## 10. Current Draft State
 
 Detailed planning owners use the shared contract from the core detailed-planning workflow:
 
@@ -219,7 +281,7 @@ Potential Simplifications / Better Routes when material
 
 Resolved findings leave aggregate Q/R/P. Selected Better Routes leave the candidate section and become current draft meaning.
 
-## 10. Source / Idea / Current-Owner Traceability
+## 11. Source / Idea / Current-Owner Traceability
 
 Preserve links only where they materially improve provenance/change review.
 
@@ -231,7 +293,7 @@ Preserve links only where they materially improve provenance/change review.
 - a related source/Idea/Requirement/current-owner change creates review need, not automatic rewrite.
 ```
 
-## 11. Boundaries
+## 12. Boundaries
 
 ```text
 - Do not force this profile on projects that do not use Scenario/Domain/Slice planning.
@@ -245,11 +307,13 @@ Preserve links only where they materially improve provenance/change review.
 - Do not make source changes silently rewrite dependent owners.
 - Do not treat ordinary semantic links as Linked Notes Reference Objects.
 - Do not require one physical file per addressable DATA/Behavior object.
+- Do not treat Full as the only profile that preserves DATA/Behavior; Mini/Modular preserve the same selected Scenario meaning.
+- Do not make an Architecture Decision from generic future flexibility when concrete WEUC instances/change paths can be assessed.
 - Do not create per-workspace action logs unless a real registered parallel-work scope exists.
 - Keep project-specific routes in the project root Command Routing.
 ```
 
-## 12. Optional Project Route Setup
+## 13. Optional Project Route Setup
 
 A project may expose Prototype/Scenario/Domain/Slice shortcuts only when those commands are independently useful. Create only the route families actually needed, keep concrete route rows in the project root Command Routing, and use the current reusable command-routing / registry workflows rather than a second reusable router.
 

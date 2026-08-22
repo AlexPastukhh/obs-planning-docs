@@ -3,70 +3,80 @@
 Status: active reusable methodology-family index
 Scope: plan the best whole solution/workflow first; when own Application responsibility is selected, plan current application behavior and downstream realization proportionally through directed Scenario / Domain / Slice (SDS) planning.
 
-## Lifecycle
+## Lifecycle / Application `собери идеи` Shape
+
+Application planning uses one Step 0–4 reasoning contract. `собери идеи` integrates selected source meaning into this current plan proportionally; profile choice only changes physical organization.
 
 ```text
-Problem / Question / Idea
-→ Need / Desired Result
-→ Current Reality when useful
-→ real-world problem-resolution Workflow Variant(s) when the path matters
-   → Open Solution Slot(s) where the best route is still unknown
-→ inspect existing solutions / alternatives proportionally
-→ candidate slot fills / whole-solution variants
-   → manual / process / existing solution / integration / no-change / hybrid
-   → Application Concept candidate(s) when own software may be useful
-→ preserve viable existing alternatives while custom-vs-existing remains open
-→ review Application Concept value + feasibility + rough effort/maintenance when material
-→ scoped Idea review/deep planning where uncertainty deserves it
-→ whole-solution integration review
-→ selected solution responsibility
-→ if own Application responsibility is selected/already confirmed:
-   selected/current Application Concept
-   → explicit Application responsibility
-   → candidate/current Application Scenarios
-   → Prototype Planning when useful
-   → Scenario discovery / Scenario owners
-   → optional Screen / Requirement detail
-   → optional Domain Discovery / selected Domain meaning
-   → optional pre-Slice Application Realization stress review
-   → Slice Strategy / Implementation Slices when useful
-   → implementation
-      → ordinary local adaptation when implementation detail requires it
-      → explicit upstream finding only when new evidence materially challenges selected Scenario/Domain/Slice meaning
-   → semantic ReviewDiff of actual uncommitted transition
-   → repeated cross-owner / whole-application / whole-solution consistency review when material
+STEP 0 — WHY / SOLUTION DISCOVERY
+
+Real-Life Situation / Need
+→ Current Reality
+→ whole-solution alternatives / research when useful
+→ own Application Concept when justified
+→ Application Responsibility
+→ Prototype when useful
+→ Prototype Scenarios / Screens
+→ candidate DATA / Behavior / Requirements
+→ selected real Application responsibility
+
+
+STEP 1 — SCENARIO
+
+Application Scenario
++ Scenario DATA
++ Behavior Items
++ Requirements / Screens when material
+
+
+STEP 2 — DOMAIN
+
+Domain Draft
+→ concepts / relationships
+→ state / lifecycle
+→ invariants / policies / rules
+→ likely/evidence-backed variation
+
+
+STEP 3 — REALIZATION / SLICES
+
+Slice Strategy
+→ vertical Slice(s)
+→ frontend / server / other implementation-part plans when justified
+
+target code/workspace realization
+→ WEUC Types when useful
+→ contextual WEUC Instances
+→ likelihood / value / timing
+→ expected Workspace Change Paths
+→ friction / fan-out / risk
+→ Change Pressure / Change Axes
+→ Architecture Decisions
+→ adjust Slice/architecture only where evidence warrants
+
+
+STEP 4 — PRACTICAL REALIZATION FEEDBACK
+
+implementation
+→ practical testing
+→ semantic ReviewDiff
+→ actual evidence
+→ upstream correction only when real evidence requires it
 ```
 
-Planning Item, Planning Draft, Full Picture Matrix and the reusable Goal Map are not active target stages/artifacts. Current owners remain real responsibilities. Whole-solution and cross-owner integration review remain required review responsibilities when relevant, but do not require a separate mandatory artifact/entity.
+The current Application Direction Use Cases remain independently activatable/proportional; this flow is orchestration/dependency guidance, not a mandatory ceremony.
 
 ## SDS Planning Family
 
-`SDS` means the directed Application planning pattern:
+Mini, Modular/Medium and Full SDS use the **same semantic correctness and completeness expectations**. Scenario DATA and Behavior Items are preserved in all profiles; Full does not own “more truth”, only more durable addressability.
 
-```text
-Scenario
-→ Domain / Rules when separate Domain meaning helps
-→ Slice Strategy / Slices
-```
+- **Mini SDS** — one accumulating application-plan file, appropriate only while a genuinely small app/change remains cheap to review in one surface.
+- **Modular / Medium SDS** — the same plan split by default into an application/Scenario file, a Domain Draft file and Slice file(s), then grown only when useful.
+- **Full SDS** — rich detailed owner topology with independently addressable Scenario DATA/Behavior, Requirements/Screens, Domain/Slice workspaces, durable WEUC instance evidence and testing/verification surfaces when justified.
 
-The dependency direction is semantic: downstream realization consumes upstream selected meaning. A later stage may expose genuinely new evidence or contradiction, but it does not normally design upstream behavior for implementation convenience.
+Canonical profile contract: [`../profiles/sds-planning-profiles.md`](../profiles/sds-planning-profiles.md).
 
-Three representation scales use the same semantic correctness rules:
-
-```text
-Mini SDS
-→ one compact current planning surface when that remains reviewable
-
-Modular SDS
-→ the same current plan split into Scenario/shared-Idea/Domain/Slice owners and an execution-order projection as the plan grows
-
-Full SDS
-→ the rich detailed Scenario / Domain / Slice workspace profile with Scenario DATA, Behavior Items, Requirements, Screens, Domain/Slice workspaces and proportional variants/verification
-```
-
-`Mini → Modular` is structural growth, not a later semantic stage. Split when reviewability, independent change/review cadence, shared material or Working-Context Load justifies it; raw Scenario count is only a practical signal.
-
-Repeated `собери идеи` may update the same current SDS plan. New selected meaning is integrated into the real Scenario/Domain/Slice owners instead of accumulating an append-only command-result ledger or parallel Goal Map.
+Repeated `собери идеи` updates the same clearly selected Current Plan. Structural growth preserves reviewed meaning; it does not create a new plan.
 
 ## Execution Order And Versions
 
@@ -96,20 +106,22 @@ Version 1.1 / Version 2
 
 A Version is delivery grouping, not a mandatory semantic layer between Scenario and Slice.
 
-## Post-Planning Realization Feedback
+## Practical Realization Feedback
 
-Steps through Scenario / Domain / Slice are pre-implementation planning. Actual realization is downstream and normally repeats per selected Slice/change:
+Steps 0–3 are pre-implementation planning. Step 4 is downstream execution/evidence.
 
 ```text
 selected Slice/change
-→ implementation attempt
-→ ordinary local implementation adaptation when semantics stay unchanged
-→ explicit upstream finding when new real evidence contradicts selected meaning
-→ rebuild affected downstream planning only when that upstream finding is accepted
-→ semantic ReviewDiff of the actual uncommitted transition
+→ implementation
+→ UC-PLAN-TEST-PLAN when operated acceptance is useful
+→ human / AI-operated / E2E evidence
+→ semantic ReviewDiff
+→ actual finding
+→ ordinary local adaptation when semantics stay unchanged
+→ upstream correction only when evidence materially challenges selected meaning
 ```
 
-`UC-PLAN-REALIZATION` remains an optional **pre-Slice** high-level feasibility/stress review. It is not the post-implementation feedback loop.
+`UC-PLAN-REALIZATION` remains an optional **pre-Slice** high-level feasibility/stress review. It is not the post-implementation feedback loop. `UC-PLAN-TEST-COVERAGE` reviews actual current executed evidence.
 
 ## Read Order
 
@@ -126,9 +138,11 @@ selected Slice/change
 11. `domain-planning-workflow.md` when a separate Domain owner materially helps and current Domain meaning must be selected/reviewed
 12. `application-realization-workflow.md` when representative runtime/persistence/technical feasibility needs high-level stress review before detailed delivery
 13. `slice-planning-workflow.md` when implementation decomposition/Slice planning materially helps
-14. `../profiles/sds-planning-profiles.md` for Mini/Modular/Full SDS representation guidance; Full SDS routes onward to the rich Scenario/Domain/Slice docs profile
-15. other type-specific templates under `templates/`
-16. project-local Scenario Catalog / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / current owners.
+14. `../architecture-planning/workspace-evolution-use-case-discovery-workflow.md` when contextual future code/workspace change evidence materially affects architecture/Slice design
+15. `../testing-planning/practical-testing-plan-workflow.md` when a real operated acceptance pass/campaign should be planned
+16. `../profiles/sds-planning-profiles.md` for Mini/Modular/Full SDS representation guidance; Full SDS routes onward to the rich Scenario/Domain/Slice docs profile
+17. other type-specific templates under `templates/`
+18. project-local Scenario Catalog / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / WEUC register / testing/current owners.
 
 ## Core Concepts
 
@@ -144,7 +158,9 @@ selected Slice/change
 - **Prototype Scenario** — provisional behavioral design (`PSCN-*`) used to discover/refine eventual Scenario boundaries; not canonical Scenario authority.
 - **Prototype Screen** — provisional spatial design (`PSCR-*`) used to discover/refine eventual Screen requirements; not canonical Screen authority.
 - **Requirement** — condition/property/constraint the selected solution must satisfy; not automatically a Scenario.
-- **Change Axis** — generic Workspace variability/pressure concept owned by sibling Architecture Planning; Application Planning contributes Scenario/Requirement/prototype evidence without making an axis authorization to generalize.
+- **WEUC Type** — reusable kind of Workspace evolution work; useful for grouping future-change evidence but insufficient by itself to justify architecture.
+- **Contextual WEUC Instance** — one concrete future-change instance against a current/target code/workspace area, assessed by likelihood/value/timing, expected change path and friction/fan-out/risk; architecture evidence, not Application behavior authority.
+- **Change Axis** — generic Workspace variability/pressure concept owned by sibling Architecture Planning; derive it only to the degree concrete evidence such as Scenario/Requirement/prototype/WEUC instances supports it.
 - **Scenario** — coherent user/actor-visible behavioral unit grounded in a meaningful user-world Need and independently meaningful observable result; informational/read-only behavior is valid when understanding itself is the result, while command/implementation identity alone is insufficient.
 - **Scenario Draft workspace** — canonical Scenario behavior plus standard `ideas/`, `data/`, `behavior/`, `visual/` supporting areas.
 - **Screen** — spatial/visual owner for an application surface; it may map related Scenarios but does not own their behavior.
@@ -160,21 +176,25 @@ selected Slice/change
 
 ## Recommended Project-Local Organization
 
-A compact Mini SDS may stay in one file. When physical separation helps, a Modular/Full plan may use the current broad zones from [`requirements-and-change-context.md`](requirements-and-change-context.md):
+Physical organization follows the selected SDS profile.
 
 ```text
-solution-and-application/
-→ solution / concept / prototype / scenarios / screens
-→ shared ideas / requirements / implementation-scoped idea intake / change axes
+Mini
+→ application-plan.md
 
-domain-and-implementation/
-→ domain / slice strategy / slices
-→ implementation-planning idea intake
+Modular / Medium default
+→ application-plan.md        # Step 0 + Scenario + DATA/Behavior
+→ domain-draft.md            # Step 2
+→ slices.md or slices/       # Step 3
+→ add weuc-instances.md / execution-order.md / practical-testing.md only when useful
 
-execution-order.md when a separate current delivery projection materially improves review/navigation
+Full
+→ rich Scenario/DATA/Behavior/Requirement/Screen/Domain/Slice workspaces
+→ durable project-local WEUC Instance Register when material
+→ separate testing/verification surfaces when material
 ```
 
-This is organization only: it does not create new semantic owners or registered parallel-work scopes.
+These are planning/reviewability layouts, not registered parallel-work scopes or new semantic authorities.
 
 ## Detailed Planning
 

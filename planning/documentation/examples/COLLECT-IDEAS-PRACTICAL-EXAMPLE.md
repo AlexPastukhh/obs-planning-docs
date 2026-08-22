@@ -115,7 +115,7 @@ confirm canonical owner
 
 ## Current Overall Conclusions
 
-The selected Idea is integrated into the existing UCDS current plan. No parallel Goal Map or append-only `собери идеи` ledger is created.
+The selected Idea is integrated into the existing UCDS current plan. No second competing current plan or append-only `собери идеи` ledger is created.
 
 ## Potential Simplifications / Better Routes
 

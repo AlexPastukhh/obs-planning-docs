@@ -385,7 +385,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "custom application is a material candidate, or application creation is confirmed but concept/value/feasibility is not grounded",
-      "result": "reviewed Application Concept + Concept Features + feasibility/rough effort/maintenance picture + viable-alternative comparison + current worth-it conclusion"
+      "result": "reviewed Application Concept + Concept Features + feasibility/rough effort/maintenance picture + viable-alternative comparison + current worth-it conclusion",
+      "commandId": "application_concept.plan"
     },
     {
       "id": "UC-PLAN-APPLICATION",
@@ -399,7 +400,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "selected solution/Concept includes own application behavior, or external context already confirms it",
-      "result": "explicit application responsibility/boundary"
+      "result": "explicit application responsibility/boundary",
+      "commandId": "application_responsibility.establish"
     },
     {
       "id": "UC-PLAN-ARCH-DECISION",
@@ -413,12 +415,13 @@
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
       "trigger": "one material architecture pressure/problem/choice is ready for explicit comparison",
-      "result": "selected Architecture Decision + Intent + affected-path conclusion + Rejected Complexity + Revisit Trigger when useful"
+      "result": "selected Architecture Decision + Intent + affected-path conclusion + Rejected Complexity + Revisit Trigger when useful",
+      "commandId": "architecture_decision.plan"
     },
     {
       "id": "UC-PLAN-ARCH-DISCOVER-WEUC",
       "label": "Discover Contextual Workspace Evolution Use Cases",
-      "description": "discover bounded future Workspace-evolution work instances against a concrete current owner/change surface",
+      "description": "discover bounded future Workspace-evolution work instances against a concrete current/target owner/change surface",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
@@ -426,8 +429,9 @@
       "target": "<Discover Contextual Workspace Evolution Use Cases target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
-      "trigger": "explicit WEUC/evolvability discovery is requested or Architecture planning needs contextual future-change evidence for a sufficiently concrete area",
-      "result": "contextual WEUC instances + expected Workspace Change Path + likelihood/value/timing evidence + friction/fan-out/risk + architecture-handoff yes/no"
+      "trigger": "explicit WEUC/evolvability discovery is requested, Architecture planning needs contextual future-change evidence, or Application SDS Step 3 needs architecture-driving future-change evidence",
+      "result": "contextual WEUC Types/instances + likelihood/value/timing + expected Workspace Change Paths + friction/fan-out/migration/verification risk + architecture-handoff yes/no",
+      "commandId": "architecture_weuc.discover"
     },
     {
       "id": "UC-PLAN-ARCH-EVOLUTION",
@@ -455,7 +459,8 @@
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
       "trigger": "one Workspace UC, important Workspace Change Case, Extension-derived future UC or Application Scenario needs path analysis",
-      "result": "checked Workspace Understanding Path, Workspace Change Path or Runtime Realization Path + qualitative architecture findings"
+      "result": "checked Workspace Understanding Path, Workspace Change Path or Runtime Realization Path + qualitative architecture findings",
+      "commandId": "architecture_path.trace"
     },
     {
       "id": "UC-PLAN-ARCH-PRESSURE",
@@ -469,7 +474,8 @@
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
       "trigger": "Workspace architecture must account for important UCs, Workspace Change Cases, Extensions, constraints or observed history",
-      "result": "Change Pressure picture + evidence-backed Change Axes/confidence + Change Hot Paths + material architecture findings"
+      "result": "Change Pressure picture + evidence-backed Change Axes/confidence + Change Hot Paths + material architecture findings",
+      "commandId": "architecture_pressure.review"
     },
     {
       "id": "UC-PLAN-ARCH-STATE",
@@ -540,7 +546,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "Domain candidates/meaning are sufficiently understood and separate Domain ownership materially improves clarity/consistency/change cost",
-      "result": "selected Domain meaning + current Scenario/Requirement coverage + justified variation/invariant decisions + verification meaning + draft-state review"
+      "result": "selected Domain meaning + current Scenario/Requirement coverage + justified variation/invariant decisions + verification meaning + draft-state review",
+      "commandId": "application_domain.plan"
     },
     {
       "id": "UC-PLAN-DOMAIN-DISCOVERY",
@@ -554,7 +561,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "current Scenario/DATA/Behavior/Requirements contain enough semantic complexity that explicit discovery materially helps",
-      "result": "Domain evidence + candidates + invariant/policy findings + integrated Domain Variants when material"
+      "result": "Domain evidence + candidates + invariant/policy findings + integrated Domain Variants when material",
+      "commandId": "application_domain.discover"
     },
     {
       "id": "UC-PLAN-PROTOTYPE",
@@ -568,7 +576,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "Application Concept/responsibility exists but important interaction/workflow/spatial uncertainty remains",
-      "result": "reviewed Prototype Plan/Result with Prototype Scenarios/Screens + evidence-backed candidate Requirements/DATA/Behavior/Change-Axis findings and handoff"
+      "result": "reviewed Prototype Plan/Result with Prototype Scenarios/Screens + evidence-backed candidate Requirements/DATA/Behavior/Change-Axis findings and handoff",
+      "commandId": "application_prototype.plan"
     },
     {
       "id": "UC-PLAN-REALITY",
@@ -582,7 +591,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "current context materially affects solution choice",
-      "result": "descriptive checked Current Reality"
+      "result": "descriptive checked Current Reality",
+      "commandId": "application_reality.review"
     },
     {
       "id": "UC-PLAN-REALIZATION",
@@ -596,7 +606,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "current application/Domain meaning needs a high-level stress check, or grounded Domain candidates cannot be selected confidently without comparative realization evidence",
-      "result": "high-level realization picture or candidate comparison + representative Runtime/Implementation Paths + material feasibility/cost/constraint/upstream findings"
+      "result": "high-level realization picture or candidate comparison + representative Runtime/Implementation Paths + material feasibility/cost/constraint/upstream findings",
+      "commandId": "application_realization.review"
     },
     {
       "id": "UC-PLAN-RESEARCH",
@@ -610,7 +621,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "material evidence gap affects solution choice",
-      "result": "checked options/evidence/disposition"
+      "result": "checked options/evidence/disposition",
+      "commandId": "application_research.research"
     },
     {
       "id": "UC-PLAN-SCENARIO",
@@ -624,7 +636,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "one Scenario boundary is meaningful enough for detail",
-      "result": "current Scenario workspace with behavior owner + relevant Ideas/DATA/Behavior/Visual/Requirements + draft-state review"
+      "result": "current Scenario workspace with behavior owner + relevant Ideas/DATA/Behavior/Visual/Requirements + draft-state review",
+      "commandId": "application_scenario.plan"
     },
     {
       "id": "UC-PLAN-SCENARIO-DISCOVERY",
@@ -638,7 +651,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "selected Application responsibility or prototype findings need current behavioral boundaries",
-      "result": "current Scenario inventory/boundaries + material Future Scenario Ideas/Change Axes when discovered"
+      "result": "current Scenario inventory/boundaries + material Future Scenario Ideas/Change Axes when discovered",
+      "commandId": "application_scenarios.discover"
     },
     {
       "id": "UC-PLAN-SLICE",
@@ -652,7 +666,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "one Slice boundary is selected and behavior/domain meaning is understood enough",
-      "result": "integrated Slice plan + optional implementation-part/visual/verification plans"
+      "result": "integrated Slice plan + optional implementation-part/visual/verification plans",
+      "commandId": "application_slice.plan"
     },
     {
       "id": "UC-PLAN-SLICE-STRATEGY",
@@ -666,7 +681,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "implementation is large/uncertain enough that decomposition/order materially matters",
-      "result": "selected Slice decomposition/order + dependencies + delivery/learning/risk rationale"
+      "result": "selected Slice decomposition/order + dependencies + delivery/learning/risk rationale",
+      "commandId": "application_slice_strategy.plan"
     },
     {
       "id": "UC-PLAN-SOLUTION",
@@ -680,7 +696,8 @@
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "Need requires integrated answer",
-      "result": "current whole Solution/Workflow Variant + integration conclusion"
+      "result": "current whole Solution/Workflow Variant + integration conclusion",
+      "commandId": "application_solution.plan"
     },
     {
       "id": "UC-PLAN-TEST-COVERAGE",
@@ -694,7 +711,8 @@
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
       "trigger": "current tests/evidence must be trusted, changed or audited",
-      "result": "behavior→actual-evidence mapping + missing/weak/stale/duplicated/wrong-layer findings"
+      "result": "behavior→actual-evidence mapping + missing/weak/stale/duplicated/wrong-layer findings",
+      "commandId": "test_coverage.review"
     },
     {
       "id": "UC-PLAN-TEST-DESIGN",
@@ -708,7 +726,8 @@
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
       "trigger": "selected behavior is understood enough to design proof",
-      "result": "Behavior-to-Test Trace + selected layers + concrete assertions + risk/boundary decisions"
+      "result": "Behavior-to-Test Trace + selected layers + concrete assertions + risk/boundary decisions",
+      "commandId": "test_design.plan"
     },
     {
       "id": "UC-PLAN-TEST-PLAN",
@@ -722,7 +741,8 @@
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
       "trigger": "selected behavior/proof choices are grounded enough that a real practical verification pass or campaign is useful",
-      "result": "Practical Testing Plan with acceptance cards, operator/environment/setup/actions/evidence/pass-fail and campaign scope when needed"
+      "result": "Practical Testing Plan with acceptance cards, operator/environment/setup/actions/evidence/pass-fail and campaign scope when needed",
+      "commandId": "practical_testing.plan"
     },
     {
       "id": "UC-PLAN-TEST-STRATEGY",
@@ -736,7 +756,8 @@
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
       "trigger": "testing responsibility spans several Slices/layers or shared harness/data/isolation/E2E policy materially matters",
-      "result": "current testing strategy + layer responsibilities + shared proof/data/isolation boundaries"
+      "result": "current testing strategy + layer responsibilities + shared proof/data/isolation boundaries",
+      "commandId": "testing_strategy.plan"
     },
     {
       "id": "UC-PLAN-WORKSPACE-CHANGE-UC",

@@ -350,3 +350,18 @@ No material unresolved issues identified for this selected documentation/methodo
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-036`  
 **Reason:** Application Planning Domain/Realization/Slice owners participate in the same owner-first planning transition; full current rationale, testing/dependency/WEUC integration meaning and APPLIED target state are owned by the reusable-documentation log.
+
+
+### XREF-007 — Complete same-quality Application SDS and WEUC evidence integration
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-044`  
+**Reason:** Application Planning registry/direction/read-order/profile routing and Step 0–4 SDS semantics participate in the same current-plan, WEUC-evidence, practical-testing and manual-command transition; full clarification and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-008 — Correct Application SDS package-log coherence
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-046`  
+**Reason:** Application Planning removes the duplicate `XREF-007` produced by the original package and records the log-coherence correction without changing SDS/WEUC semantics.

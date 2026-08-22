@@ -52,7 +52,7 @@ selected source
 
 Do not create an append-only `собери идеи` result ledger. A later invocation should normally revise/expand the same current plan when that plan is clearly selected.
 
-A physical Mini plan may contain several semantic sections in one file. When growth makes review/navigation expensive, split it into a Modular structure while preserving the same semantic owners/meaning. Structural split is not a new plan or automatic semantic redesign.
+For Application planning, Mini is one accumulating application-plan file. When growth makes review/navigation expensive, Modular/Medium splits the same reviewed meaning into a small growing file set; Full increases stable addressability. Structural change is never permission to drop Scenario DATA, Behavior Items or other selected meaning.
 
 ## 4. Useful-Result Integration: UCDS And SDS
 
@@ -66,15 +66,26 @@ Use Case
 → Vertical Slice / Realization
 ```
 
-Application planning uses current Application owners through the proportional **SDS** pattern:
+Application planning uses the same-quality **SDS** Step 0–4 pattern:
 
 ```text
-Scenario
-→ Domain / Rules when useful
-→ Slice Strategy / Slices when useful
+STEP 0 — Real-Life Need / Current Reality / solution alternatives
+→ Application Concept / Responsibility / Prototype when useful
+
+STEP 1 — Application Scenario
++ Scenario DATA + Behavior Items
++ Requirements / Screens when material
+
+STEP 2 — Domain Draft / Rules when material
+
+STEP 3 — Slice Strategy / Slices
++ contextual WEUC instances / likelihood / Workspace Change Paths
++ Change Pressure / Architecture Decisions when material
+
+STEP 4 — implementation / practical testing / ReviewDiff / actual evidence
 ```
 
-Mini/Modular/Full are representation/depth choices, not weaker semantic correctness. Full SDS is the rich detailed profile; Mini/Modular can also plan a bounded change/action rather than an entire application.
+Mini/Modular/Full change physical organization/addressability only. They do not weaken semantic correctness; reviewed Scenario DATA/Behavior and other selected meaning survive profile changes.
 
 Several Ideas affecting one UC/Scenario converge into one integrated target. One cross-cutting Idea remains one Idea and is referenced from affected units with local impact only.
 
@@ -82,7 +93,7 @@ Several Ideas affecting one UC/Scenario converge into one integrated target. One
 
 A provisional whole-picture pass is allowed to reveal integration and later-layer implications, but selection/review should stabilize dependency direction upstream → downstream. Preserve later-step insight as Carry-Forward/provisional context; do not let downstream convenience normally define upstream meaning.
 
-For Workspace planning, Step 1/2/3 remain depths inside the selected UC and use current Architecture Planning proportionally before exact files when architecture is material.
+For Workspace planning, Step 1/2/3 remain depths inside the selected UC and use current Architecture Planning proportionally before exact files when architecture is material. For Application SDS Step 3, concrete target code/workspace realization should use `UC-PLAN-ARCH-DISCOVER-WEUC` when future-change pressure is material, so architecture decisions are driven by contextual instances/change paths rather than generic flexibility.
 
 ## 6. Presentation Order
 
@@ -95,7 +106,7 @@ Source / Baseline / Real-Life Basis
 → Key Points + Review Priority
 → Related Ideas / provenance
 → affected Workspace UC / Application Scenario
-→ Current → Target planning in UCDS/SDS
+→ Current → Target planning in UCDS or Application SDS Step 0–4
 → attached Questions / Risks / Problems only where unresolved/material
 → Review Order lens only when several attached deltas need ordering
 → Execution Order / versions when selected and useful
@@ -140,7 +151,7 @@ After materialization, semantic ReviewDiff reviews the actual transition against
 - selected source and current-plan baseline are explicit;
 - mandatory Idea checks were performed without manufactured objections;
 - selected meaning is integrated into real useful-result owners;
-- no parallel Goal Map/result ledger duplicates the current plan;
+- no second plan/result ledger duplicates the selected accumulating Current Plan;
 - Mini→Modular structural growth preserves semantic ownership;
 - dependency direction is upstream→downstream and any backflow is an explicit evidence finding;
 - execution order does not masquerade as semantic dependency;

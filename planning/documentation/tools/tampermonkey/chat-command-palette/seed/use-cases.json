@@ -308,7 +308,8 @@
       "instruction": "Resolve UC-PLAN-APP-CONCEPT in the current canonical registry and follow its current owner route (planning principles + whole-solution workflow + Concept template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Application Concept target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_concept.plan"
     },
     {
       "id": "UC-PLAN-APPLICATION",
@@ -320,7 +321,8 @@
       "instruction": "Resolve UC-PLAN-APPLICATION in the current canonical registry and follow its current owner route (planning principles + whole-solution workflow). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Establish Application Responsibility target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_responsibility.establish"
     },
     {
       "id": "UC-PLAN-ARCH-DECISION",
@@ -332,19 +334,21 @@
       "instruction": "Resolve UC-PLAN-ARCH-DECISION in the current canonical registry and follow its current owner route (architecture-decision-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review One Material Architecture Decision target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "architecture_decision.plan"
     },
     {
       "id": "UC-PLAN-ARCH-DISCOVER-WEUC",
       "label": "Discover Contextual Workspace Evolution Use Cases",
-      "description": "discover bounded future Workspace-evolution work instances against a concrete current owner/change surface",
+      "description": "discover bounded future Workspace-evolution work instances against a concrete current/target owner/change surface",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
       "instruction": "Resolve UC-PLAN-ARCH-DISCOVER-WEUC in the current canonical registry and follow its current owner route (workspace-evolution-use-case-discovery-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Discover Contextual Workspace Evolution Use Cases target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "architecture_weuc.discover"
     },
     {
       "id": "UC-PLAN-ARCH-EVOLUTION",
@@ -368,7 +372,8 @@
       "instruction": "Resolve UC-PLAN-ARCH-PATH in the current canonical registry and follow its current owner route (architecture-path-analysis-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Trace / Evaluate Architecture-Relevant Path target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "architecture_path.trace"
     },
     {
       "id": "UC-PLAN-ARCH-PRESSURE",
@@ -380,7 +385,8 @@
       "instruction": "Resolve UC-PLAN-ARCH-PRESSURE in the current canonical registry and follow its current owner route (architecture-change-pressure-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Establish / Review Workspace Change Pressure target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "architecture_pressure.review"
     },
     {
       "id": "UC-PLAN-ARCH-STATE",
@@ -441,7 +447,8 @@
       "instruction": "Resolve UC-PLAN-DOMAIN in the current canonical registry and follow its current owner route (domain-planning-workflow.md + Domain template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Domain target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_domain.plan"
     },
     {
       "id": "UC-PLAN-DOMAIN-DISCOVERY",
@@ -453,7 +460,8 @@
       "instruction": "Resolve UC-PLAN-DOMAIN-DISCOVERY in the current canonical registry and follow its current owner route (domain-discovery-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Discover Domain Evidence / Candidates target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_domain.discover"
     },
     {
       "id": "UC-PLAN-PROTOTYPE",
@@ -465,7 +473,8 @@
       "instruction": "Resolve UC-PLAN-PROTOTYPE in the current canonical registry and follow its current owner route (prototype-planning-workflow.md + Prototype Plan/Result templates). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Prototype Application Experience / Workflow target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_prototype.plan"
     },
     {
       "id": "UC-PLAN-REALITY",
@@ -477,7 +486,8 @@
       "instruction": "Resolve UC-PLAN-REALITY in the current canonical registry and follow its current owner route (solution-and-scenario-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Understand Current Workflow And Reality target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_reality.review"
     },
     {
       "id": "UC-PLAN-REALIZATION",
@@ -489,7 +499,8 @@
       "instruction": "Resolve this exact canonical Use-Case entry and follow application-realization-workflow.md. Review or compare representative realization paths when material, including pre-Domain comparative evidence, without letting implementation convenience or this projection become Domain authority.",
       "target": "<Review / Compare High-Level Application Realization target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_realization.review"
     },
     {
       "id": "UC-PLAN-RESEARCH",
@@ -501,7 +512,8 @@
       "instruction": "Resolve UC-PLAN-RESEARCH in the current canonical registry and follow its current owner route (selected solution/current owner + checked sources). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Research Existing Solutions / Alternatives target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_research.research"
     },
     {
       "id": "UC-PLAN-SCENARIO",
@@ -513,7 +525,8 @@
       "instruction": "Resolve UC-PLAN-SCENARIO in the current canonical registry and follow its current owner route (detailed-planning/README.md + Scenario template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Draft / Review Detailed Scenario target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_scenario.plan"
     },
     {
       "id": "UC-PLAN-SCENARIO-DISCOVERY",
@@ -525,7 +538,8 @@
       "instruction": "Resolve UC-PLAN-SCENARIO-DISCOVERY in the current canonical registry and follow its current owner route (planning workflow + prototype workflow when used). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Discover Application Scenarios target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_scenarios.discover"
     },
     {
       "id": "UC-PLAN-SLICE",
@@ -537,7 +551,8 @@
       "instruction": "Resolve UC-PLAN-SLICE in the current canonical registry and follow its current owner route (slice-planning-workflow.md + Implementation Slice template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review One Implementation Slice target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_slice.plan"
     },
     {
       "id": "UC-PLAN-SLICE-STRATEGY",
@@ -549,7 +564,8 @@
       "instruction": "Resolve UC-PLAN-SLICE-STRATEGY in the current canonical registry and follow its current owner route (slice-planning-workflow.md + Slice Strategy template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Slice Strategy target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_slice_strategy.plan"
     },
     {
       "id": "UC-PLAN-SOLUTION",
@@ -561,7 +577,8 @@
       "instruction": "Resolve UC-PLAN-SOLUTION in the current canonical registry and follow its current owner route (solution-and-scenario-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Whole Solution Or Workflow target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "application_solution.plan"
     },
     {
       "id": "UC-PLAN-TEST-COVERAGE",
@@ -573,7 +590,8 @@
       "instruction": "Resolve UC-PLAN-TEST-COVERAGE in the current canonical registry and follow its current owner route (test-coverage-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Current Test Coverage / Evidence target>",
       "directionId": "DIR-PLAN-TESTING",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "test_coverage.review"
     },
     {
       "id": "UC-PLAN-TEST-DESIGN",
@@ -585,7 +603,8 @@
       "instruction": "Resolve UC-PLAN-TEST-DESIGN in the current canonical registry and follow its current owner route (test-design-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Verification For Selected Behavior target>",
       "directionId": "DIR-PLAN-TESTING",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "test_design.plan"
     },
     {
       "id": "UC-PLAN-TEST-PLAN",
@@ -597,7 +616,8 @@
       "instruction": "Resolve UC-PLAN-TEST-PLAN in the current canonical registry and follow its current owner route (practical-testing-plan-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan Practical Testing / Acceptance target>",
       "directionId": "DIR-PLAN-TESTING",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "practical_testing.plan"
     },
     {
       "id": "UC-PLAN-TEST-STRATEGY",
@@ -609,7 +629,8 @@
       "instruction": "Resolve UC-PLAN-TEST-STRATEGY in the current canonical registry and follow its current owner route (testing-strategy-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Establish / Review Testing Strategy target>",
       "directionId": "DIR-PLAN-TESTING",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "commandId": "testing_strategy.plan"
     },
     {
       "id": "UC-PLAN-WORKSPACE-CHANGE-UC",

@@ -114,3 +114,17 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Entry:** `LOG-DOC-040`  
 **Reason:** Planning Root adds the generic `invoke-use-case.command.md` route used by generated Helper UC invocation commands; full selected meaning and APPLIED target state are owned by the reusable-documentation log.
 
+
+### XREF-016 — Complete Application SDS planning and Helper favorites
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-044`  
+**Reason:** Planning-root command definitions and the active compact `собери идеи` helper-library insertion participate in the same Application SDS/WEUC/manual-command/Favorites transition; full clarification and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-017 — Correct Application SDS package-log coherence
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-046`  
+**Reason:** Planning Root removes the duplicate `XREF-016` produced by the original package and retains one coherent reference plus this correction reference; no command or planning semantics change.

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
-const {repositorySaveFailureMessage,groupEntriesByDirections}=require('../src/planning-helper-ui.js');
+const {repositorySaveFailureMessage,groupEntriesByDirections,favoriteEntries}=require('../src/planning-helper-ui.js');
 
 test('conflict with verified different remote reports confirmed divergence',()=>{
   const message=repositorySaveFailureMessage({kind:'conflict',message:'GitHub content changed since it was read and now differs from the intended file; nothing was overwritten.',details:{remoteSha:'fresh'}});
@@ -27,3 +27,6 @@ test('direction grouping nests entries under current Directions and preserves cr
   assert.deepEqual(groups[1].entries.map((e)=>e.id),['two']);
   assert.deepEqual(groups[2].entries.map((e)=>e.id),['legacy']);
 });
+
+
+test('favorites project the same rows above Directions without changing original grouping',()=>{const entries=[{id:'a',directionId:'DIR-A'},{id:'b',directionId:'DIR-A'}];assert.deepEqual(favoriteEntries(entries,['b']).map((e)=>e.id),['b']);const groups=groupEntriesByDirections(entries,[{id:'DIR-A',label:'A'}]);assert.deepEqual(groups[0].entries.map((e)=>e.id),['a','b']);});

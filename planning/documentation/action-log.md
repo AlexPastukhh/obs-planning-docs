@@ -739,3 +739,71 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - no canonical UC, command definition, testing semantics, repository permission or local-delete behavior changes beyond this classification correction.
 
 **Rationale:** preserve the selected complete manual-entry surface without conflating “a command can lead/support this UC” with “this command is the direct invocation of this UC.”
+
+
+### LOG-DOC-043 — Clarify same-quality Application SDS, WEUC-driven architecture evidence and Helper favorites
+
+**Type:** IDEA CLARIFICATION / INTEGRATED REVIEW  
+**Updates:** `LOG-DOC-035`, `LOG-DOC-036`, `LOG-DOC-039`, `LOG-DOC-040`  
+**Source:** current planning discussion clarifying the accumulated `собери идеи` Application plan, SDS physical profiles, architecture-driving internal evolution cases, practical testing and Planning Helper manual control
+
+**Clarification / Resulting Current Meaning:**
+- Application `собери идеи` uses one explicit Step 0–4 reasoning shape: Step 0 Why/Solution Discovery from Real-Life Need through Current Reality, alternatives, Application Concept/responsibility and Prototype; Step 1 Scenario with Scenario DATA + Behavior Items + material Requirements/Screens; Step 2 Domain Draft; Step 3 Slice Strategy/Slices plus contextual WEUC/change-path architecture evidence; Step 4 practical realization feedback through implementation, operated testing, semantic ReviewDiff and actual evidence;
+- Mini, Modular/Medium and Full SDS have the same planning-quality requirement. Scenario DATA, Behavior Items and every other material reviewed meaning are preserved across profile changes; Full is richer addressability, not stronger correctness;
+- Mini SDS is one accumulating Application planning file when the whole selected plan remains cheaply reviewable. Modular/Medium starts with a small useful split—normally `application-plan.md` for Step 0 + Scenario meaning, `domain-draft.md` and `slices.md`/Slice files—and grows only when independent review/change needs justify more files. Full transfers mature selected meaning into the rich stable owner topology;
+- Application Step 3 must not make architecture decisions from generic future flexibility. It uses WEUC Types only as reusable classes and prefers concrete contextual WEUC Instances with likelihood/value/timing evidence, expected Workspace Change Paths and friction/fan-out/migration/verification risk; those instances feed Change Pressure/Change Axes and Architecture Decisions only to the degree supported by evidence;
+- material durable WEUC instances in Full SDS may be maintained in a project-local WEUC Instance Register so later Architecture Decisions can cite the concrete driving instance/path and reassess it when the code/owner surface changes;
+- frontend/server/other implementation-part plans remain parts of an integrated Slice when useful, not separate semantic Use Cases by default;
+- Practical Testing is the operated-acceptance planning responsibility in Application Step 4; planning does not claim implementation or evidence already happened, and actual evidence remains separately reviewable through current testing/evidence owners;
+- existing current Application/Architecture/Testing UCs remain semantic authority; no duplicate profile UCs are introduced. Important manually useful stages gain direct human-readable Planning Commands, while every remaining current UC still keeps exactly one generated or bespoke manual command route; SDS profile controls remain commands/profiles rather than fake UCs;
+- Planning Helper Favorites are local presentation state: starring a Command or Use Case duplicates the same ID in a top `★ Favorites` group outside Directions while keeping the original row in its Direction. Favorites never create another semantic identity, registry owner or GitHub mutation;
+- active current reusable planning docs/Helper surfaces do not use the old reusable Goal Map concept; historical action-log evidence and unrelated Dashboard/product-specific Goal Maps remain historical/product state, not current reusable planning terminology.
+
+**Questions / Risks / Problems:** none material. Physical project-local SDS layout remains proportional; the documented Modular default is a starting shape, not mandatory folder ontology. The selected changes preserve the UC/Scenario-first root and Q/R/P admission semantics.
+
+### LOG-DOC-044 — Apply complete Application SDS planning and Planning Helper favorites
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-043`  
+**ChangeSet:** `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`  
+**Package:** `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb`  
+
+**Target-State Result:** after successful Apply of this package:
+- canonical SDS profile guidance, Application planning and `собери идеи` expose the same explicit Step 0–4 Application planning-quality contract, preserve Scenario DATA/Behavior in Mini/Modular/Full, and define Mini one-file, Modular small-growing-file-set and Full rich-owner representations;
+- the rich Full SDS profile contains Step 0 solution/concept/prototype planning, contextual WEUC discovery, likelihood/value/timing/change-path evidence, a durable WEUC Instance Register route, Architecture Decision evidence links and practical testing/realization feedback;
+- `UC-PLAN-ARCH-DISCOVER-WEUC` explicitly supports Application SDS Step 3 and distinguishes reusable WEUC Types from contextual instances; the reusable register template tracks likelihood, timing, expected change path, friction/fan-out/migration/verification risk and related Architecture Decisions;
+- Application, Architecture and Testing registries directly map important manually useful UCs to explicit Planning Commands; profile-control commands `мини сдс`, `модульный/медиум сдс` and `фулл сдс` remain representation controls rather than fake UCs; all 70 current canonical UCs remain exactly projected and manually invokable with one bespoke-or-generated route each;
+- Planning Helper `0.30.0` stores local Command/Use-Case Favorites in snapshot schema v3, renders Favorites above Directions without removing normal Direction rows, preserves them across local persistence/migration and clears them when the corresponding local row is deleted;
+- generated command/use-case seeds are rebuilt from 40 current Planning Command definitions and 70 current canonical UCs; generated userscript, registry-driven projections and seeds match current sources;
+- current reusable planning surfaces no longer carry the old reusable Goal Map term/examples, while historical logs and unrelated product-specific Goal Maps are untouched;
+- affected Planning Root, Application Planning and Planning Helper scope logs point to this canonical applied result;
+- automated Planning Helper verification passes 115/115 tests.
+
+**Rationale:** make the already-selected accumulating Application planning model explicit and callable end-to-end, base architecture choices on concrete likely change evidence, and make frequently used Commands/Use Cases immediately reachable without changing semantic ownership.
+
+### LOG-DOC-045 — ReviewDiff correct duplicate Application SDS package logging
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`, applied package `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb`  
+
+**Material Finding / Selected Correction:**
+- the repository transition itself, SDS/WEUC semantics, direct command surface, Favorites behavior and automated verification are correct, but the produced target logs accidentally contain duplicate `LOG-DOC-043` / `LOG-DOC-044` entries plus duplicate cross-scope `XREF-016`, `XREF-007` and `XREF-014` entries;
+- one duplicate `LOG-DOC-044` also carries unrelated ChangeSet/package identifiers (`61edf677-181e-4f05-b38e-4ce054b80c6c` / `ecca4c1b-d5e5-49c0-9e16-1aebc622c7c8`), so the current action-log state is not a coherent history of the actually applied package;
+- consolidate the duplicated clarification/applied meaning into one `LOG-DOC-043` and one `LOG-DOC-044` using the actual ChangeSet/package identity, retain one original cross-scope reference per affected scope, and add one correction reference per affected non-canonical scope.
+
+**Resulting Current Meaning:** the Application SDS/WEUC/commands/Favorites target state remains unchanged. This correction changes only action-log coherence and package provenance; no new semantic UC, command, profile behavior, Helper runtime behavior or Q/R/P is introduced.
+
+### LOG-DOC-046 — Apply Application SDS package-log coherence correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-045`  
+**ChangeSet:** `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`  
+**Package:** `b633a04e-ce30-40c1-a4ab-090601234c05`  
+
+**Target-State Result:** after successful Apply of this correction package:
+- reusable-documentation history has exactly one `LOG-DOC-043` clarification and one `LOG-DOC-044` applied record for the original `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb` package;
+- the unrelated duplicate ChangeSet/package identifiers are removed from this logical work;
+- Planning Root, Application Planning and Planning Helper each keep one original reference to `LOG-DOC-044` and add one correction reference to `LOG-DOC-046`, with no duplicate XREF IDs;
+- all previously selected Application SDS Step 0–4, WEUC evidence, manual command and Helper Favorites semantics remain unchanged.
+
+**Rationale:** make the applied ChangeSet history internally unique and traceable without altering the already verified implementation target.

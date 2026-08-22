@@ -1,11 +1,11 @@
 # SCN-PH-MANAGE-LOCAL — Manage Helper-Local Commands, Use Cases And Prompts
 
 Status: active current behavior owner
-Scope: canonical detailed application behavior owner; this Scenario owns Helper-local create/edit/delete behavior for Planning Commands, Use-Case projections and reusable prompts.
+Scope: canonical detailed application behavior owner; this Scenario owns Helper-local create/edit/delete and Favorite-preference behavior for Planning Commands, Use-Case projections and reusable prompts.
 
-**Trigger/input:** `New command`, command `Edit`, `New prompt`, prompt `Edit`, or local `Delete` on a Command, Use Case, Prompt or legacy helper-command compatibility insertion.
+**Trigger/input:** `New command`, command `Edit`, `New prompt`, prompt `Edit`, local `Delete`, or Favorite star/unstar on a Command/Use Case.
 
-**Successful result:** the selected Helper-local Command/Use-Case/Prompt state is created/changed/deleted in the unified local snapshot/RAM without an implicit repository mutation; deleting a registered Command or Use-Case projection never deletes its canonical repository authority.
+**Successful result:** the selected Helper-local Command/Use-Case/Prompt state or Favorite preference is created/changed/deleted in the unified local snapshot/RAM without an implicit repository mutation; deleting a registered Command or Use-Case projection never deletes its canonical repository authority.
 
 **Current invariants:**
 
@@ -15,6 +15,8 @@ Scope: canonical detailed application behavior owner; this Scenario owns Helper-
 - unchanged local save preserves repository evidence; a real edit clears exact-content evidence while retaining tracked-command provenance;
 - any visible Planning Command may be removed from this Helper locally; registered command retirement/deletion remains a separate repository action and the canonical `planning/commands/*.command.md` file is untouched;
 - any visible Use Case may be removed from this Helper locally; canonical Use-Case registry/owner meaning is untouched;
+- any visible Command or Use Case may be starred/unstarred locally; the same ID is duplicated in a top-level `★ Favorites` projection while its original row remains inside the normal Direction group;
+- Favorite state is local-only and makes zero GitHub requests/writes; deleting a Command/Use Case also clears its Favorite reference;
 - prompt edits remain exact insertion-text edits; Prompt Delete remains local-only; legacy helper-command records remain compatibility-only and the current UI does not create new ones;
 - generated `seed/commands.json` and `seed/use-cases.json` ship the complete current default catalogs in the update; local tombstones prevent intentionally deleted items from being silently re-added on ordinary startup.
 

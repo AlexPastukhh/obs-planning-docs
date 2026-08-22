@@ -6,33 +6,51 @@ Child Use-Case Registry: [`use-case-registry.md`](use-case-registry.md)
 
 ## `DIR-PLAN-SOLUTION` — Plan A Solution / Workflow / Application
 
-**Purpose:** select the best-supported real-world whole solution/workflow, compare viable existing routes with custom Application Concept candidates when relevant and, when own Application responsibility exists, progressively prototype, define current user-visible behavior/spatial requirements, model Domain meaning when useful and plan delivery through Slices.
+**Purpose:** plan the real-world solution and, when own Application responsibility is selected, continue through same-quality Step 0–4 Application planning from Scenario behavior to Domain, Slices, architecture-evolution evidence and practical realization feedback.
 
-**Topology:** supported Use Cases are independently activatable/proportional. Current planning continuity may use proportional Mini/Modular/Full SDS representation around the real Scenario/Domain/Slice owners; this does not create a separate Goal Map Use Case or authority.
+**Topology:** supported Use Cases are independently activatable/proportional. Mini, Modular/Medium and Full SDS are physical/addressability profiles over the same planning-quality contract.
 
 ```text
-Need / Desired Result
-→ real-world / whole-solution workflow work
-→ Open Solution Slot(s) when the best fill is unknown
-→ viable existing alternatives + candidate fills
-→ Application Concept review when own software is a material candidate
-→ whole-solution selection
-→ Application responsibility when applicable
-→ Prototype Planning when useful
-   → Prototype Scenarios / Prototype Screens / candidate Requirements
-   → rough representation / walkthrough when useful
-→ Scenario discovery
-→ detailed Scenario Draft workspaces + Screen spatial owners when useful
-→ optional Domain Discovery
-→ optional Domain review/selection + verification meaning
-→ optional Application Realization review
-→ optional Slice Strategy
-→ optional Implementation Slice / verification work
-→ repeated cross-owner / whole-solution consistency review
+STEP 0 — WHY / SOLUTION DISCOVERY
+Real-Life Situation / Need
+→ Current Reality
+→ solution alternatives / research
+→ Application Concept when justified
+→ Application Responsibility
+→ Prototype when useful
+→ Prototype Scenarios / Screens
+→ candidate DATA / Behavior / Requirements
+
+STEP 1 — SCENARIO
+Application Scenario
++ Scenario DATA
++ Behavior Items
++ Requirements / Screens when material
+
+STEP 2 — DOMAIN
+Domain Draft
+→ concepts / relationships / state / lifecycle
+→ rules / invariants / policies
+→ likely/evidence-backed variation
+
+STEP 3 — REALIZATION / SLICES
+Slice Strategy
+→ vertical Slice(s)
+→ frontend/server/other implementation-part plans when useful
+→ contextual WEUC discovery against target code/workspace when material
+→ likelihood / change paths / friction / fan-out
+→ Change Pressure / Change Axes / Architecture Decisions only when supported
+
+STEP 4 — PRACTICAL REALIZATION FEEDBACK
+implementation
+→ practical testing
+→ semantic ReviewDiff
+→ actual evidence
+→ upstream correction only when evidence requires it
 ```
 
-Application-specific Requirements / Future Scenario Ideas / implementation-scoped Ideas are owned by [`requirements-and-change-context.md`](requirements-and-change-context.md). Generic Workspace Change Pressure / Change Axis semantics are owned by sibling [`../architecture-planning/`](../architecture-planning/); application owners contribute evidence and consume those semantics where architecture/Domain/Slice reasoning needs them.
+Application-specific Requirements / Future Scenario Ideas / implementation-scoped Ideas are owned by [`requirements-and-change-context.md`](requirements-and-change-context.md). Generic WEUC / Workspace Change Pressure / Change Axis / Architecture Decision semantics are owned by sibling [`../architecture-planning/`](../architecture-planning/); Application planning invokes them as evidence where Step 3 needs architecture judgment. Practical operated acceptance is owned by sibling [`../testing-planning/`](../testing-planning/).
 
-Shared low-level contract: [`detailed-planning/README.md`](detailed-planning/README.md).
+Canonical SDS profile family: [`../profiles/sds-planning-profiles.md`](../profiles/sds-planning-profiles.md). Shared low-level contract: [`detailed-planning/README.md`](detailed-planning/README.md).
 
 Supported Use Cases are capabilities, not one mandatory ceremony.

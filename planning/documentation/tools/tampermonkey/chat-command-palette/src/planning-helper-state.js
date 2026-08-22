@@ -15,7 +15,7 @@
     localLibrary:'obsPlanningHelper:v1:localLibrary',
     repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'
   });
-  const LOCAL_SNAPSHOT_SCHEMA_VERSION=2;
+  const LOCAL_SNAPSHOT_SCHEMA_VERSION=3;
   const POSITION_KEY='obs-planning-helper-position-v2';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
@@ -54,16 +54,18 @@
     const repositorySha=String(input.repositorySha||'').trim();return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};
   }
   function normalizePlanningHelperLocalSnapshot(value){
-    if(!value||typeof value!=='object'||![1,LOCAL_SNAPSHOT_SCHEMA_VERSION].includes(value.schemaVersion))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
+    if(!value||typeof value!=='object'||![1,2,LOCAL_SNAPSHOT_SCHEMA_VERSION].includes(value.schemaVersion))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
     const planningCommands=(value.planningCommands||[]).map(normalizeCommandRecord).sort((a,b)=>a.path.localeCompare(b.path));
     const helperItems=(value.helperItems||[]).map(normalizeHelperRecord).sort((a,b)=>a.path.localeCompare(b.path));
     const hiddenCommandIds=normalizeIdList(value.hiddenCommandIds,'hiddenCommandIds');
     const hiddenUseCaseIds=normalizeIdList(value.hiddenUseCaseIds,'hiddenUseCaseIds');
+    const favoriteCommandIds=normalizeIdList(value.favoriteCommandIds,'favoriteCommandIds');
+    const favoriteUseCaseIds=normalizeIdList(value.favoriteUseCaseIds,'favoriteUseCaseIds');
     deps.validateCommandCatalog(planningCommands.map((record)=>record.definition));
     if(new Set(planningCommands.map((record)=>record.path)).size!==planningCommands.length)throw new TypeError('Duplicate planning-command path in local snapshot.');
     if(new Set(helperItems.map((record)=>record.path)).size!==helperItems.length)throw new TypeError('Duplicate helper-library path in local snapshot.');
     if(planningCommands.some((record)=>hiddenCommandIds.includes(record.definition.id)))throw new TypeError('A planning command cannot be both visible and locally deleted.');
-    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,hiddenCommandIds,hiddenUseCaseIds};
+    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,hiddenCommandIds,hiddenUseCaseIds,favoriteCommandIds,favoriteUseCaseIds};
   }
   async function loadPlanningHelperLocalSnapshot(){const value=await gmGet(KEYS.localSnapshot,null);return value==null?null:normalizePlanningHelperLocalSnapshot(value);}
   async function savePlanningHelperLocalSnapshot(value){
@@ -118,7 +120,7 @@
       let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}
       if(raw){for(const item of deps.parseLegacyProjectionRegistry(raw)){const key=helperKey(item);if(!helperByKey.has(key))helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:false}));}}
     }catch(error){warnings.push(`Legacy page-local command projections ignored: ${error.message||String(error)}`);}
-    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()],hiddenCommandIds:[],hiddenUseCaseIds:[]});
+    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()],hiddenCommandIds:[],hiddenUseCaseIds:[],favoriteCommandIds:[],favoriteUseCaseIds:[]});
     return{snapshot,migrated:true,seededCommands:definitions.length,warnings};
   }
 

@@ -294,3 +294,18 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-042`  
 **Reason:** Planning Helper build/source projection, generated artifact, README/manual acceptance and regression tests correct the distinction between direct bespoke UC invocation and merely supporting/may-route command references; full ReviewDiff finding and APPLIED target state remain in the reusable-documentation canonical log.
+
+
+### XREF-014 — Planning Helper Favorites and complete Application planning command surface
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-044`  
+**Reason:** Planning Helper snapshot/UI/runtime/tests/docs/generated artifacts add local Command/Use-Case Favorites and rebuild the complete direct/generated manual invocation surface for the same Application SDS/WEUC/Testing transition; full clarification and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-015 — Correct Application SDS package-log coherence
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-046`  
+**Reason:** Planning Helper removes the duplicate `XREF-014` produced by the original package and records the action-log correction; Helper runtime, Favorites and command/UC projections are unchanged.

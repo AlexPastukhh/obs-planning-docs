@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.29.1`
+Version: `0.30.0`
 Scope: deterministic Planning Helper source/build, Direction-nested Commands/Use Cases, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub repository actions, ChatGPT-mediated recovery fallback and clipboard-first insertion.
 
 ## Read Order
@@ -43,7 +43,7 @@ Primary persistent state:
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v2 contains:
+Schema v3 contains:
 
 ```text
 planningCommands[]
@@ -62,9 +62,11 @@ helperItems[]
 
 hiddenCommandIds[]
 hiddenUseCaseIds[]
+favoriteCommandIds[]
+favoriteUseCaseIds[]
 ```
 
-`rawContent` is the exact normalized LF document representation. At runtime the validated records are materialized once into Maps/entry arrays; Insert/Copy never perform a GM read. `hiddenCommandIds` / `hiddenUseCaseIds` are local-only tombstones used by Delete so a normal userscript restart/update does not immediately resurrect an item the user intentionally removed locally.
+`rawContent` is the exact normalized LF document representation. `favoriteCommandIds` / `favoriteUseCaseIds` are local-only UI preferences: a favorite duplicates the same row in a top-level `★ Favorites` group while the original remains inside its Direction; no new command/UC identity or repository content is created. At runtime the validated records are materialized once into Maps/entry arrays; Insert/Copy never perform a GM read. `hiddenCommandIds` / `hiddenUseCaseIds` are local-only tombstones used by Delete so a normal userscript restart/update does not immediately resurrect an item the user intentionally removed locally.
 
 Repository settings/token remain separate:
 
@@ -96,7 +98,7 @@ Legacy helper-command compatibility
   → may remain visible as clearly marked legacy insertions; current UI does not create new ones
 ```
 
-The main navigation keeps **Commands** and **Use Cases** as separate surfaces. Both are browsed through collapsible current Direction groups; there is no separate Directions tab. Commands contains command entries only (plus clearly marked legacy command compatibility records), while Use Cases contains every current canonical Use Case discovered directly from all current canonical UC registries. Commands also exposes one manual invocation route for every current UC: an existing bespoke command is reused only when the registry's Related command field directly names that command as the UC invocation route; supporting wording such as `supports ...` or `none required; ... may route here` does not suppress a generated direct UC-invocation row. Otherwise a generated thin row routes through `planning/commands/invoke-use-case.command.md`. Prompts remain a separate surface.
+The main navigation keeps **Commands** and **Use Cases** as separate surfaces. Each surface may show a top-level `★ Favorites` group above Directions; Favorites are duplicate UI projections of the same IDs and the original rows remain in their Direction groups. Both surfaces are browsed through collapsible current Direction groups; there is no separate Directions tab. Commands contains command entries only (plus clearly marked legacy command compatibility records), while Use Cases contains every current canonical Use Case discovered directly from all current canonical UC registries. Commands also exposes one manual invocation route for every current UC: an existing bespoke command is reused only when the registry's Related command field directly names that command as the UC invocation route; supporting wording such as `supports ...` or `none required; ... may route here` does not suppress a generated direct UC-invocation row. Otherwise a generated thin row routes through `planning/commands/invoke-use-case.command.md`. Prompts remain a separate surface.
 
 Directions and Use Cases remain build-time/read-only semantic projections, not writable application registries. A Use-Case Insert/Copy selects one current semantic planning unit: its body identifies the stable UC ID + canonical registry, tells ChatGPT to resolve the **current** registry entry/Main Owner route and follow current owner links to materially defining principles/workflows/templates, and explicitly does not grant command/repository permissions. The Helper does not hard-code a permanent full owner-file list into each UC body.
 
@@ -144,7 +146,7 @@ successful or recovered remote result
 
 Planning-command saves additionally read/validate the complete direct remote command catalog before writing, so a save cannot knowingly create an ambiguous command registry. Helper command/prompt saves are confined to their deterministic helper-library path. Malformed-document repair exists only on explicit Save for that deterministic target; `Sync missing` and ordinary remote reads remain strict and do not repair malformed repository content.
 
-Repository delete is not implemented. `Delete` on Commands, Use Cases and Prompts is local-only: it removes/hides the Helper-local record/projection and makes zero GitHub writes. A registered Planning Command file and a canonical Use-Case registry/owner remain untouched. Explicit `Sync missing` can restore a locally deleted registered command from GitHub; Use-Case deletion remains a local projection preference. Repository command retirement/deletion is a separate authorized documentation action.
+Repository delete is not implemented. `Delete` on Commands, Use Cases and Prompts is local-only: it removes/hides the Helper-local record/projection and makes zero GitHub writes. Deleting a favorited Command/Use Case also clears its local Favorite reference. A registered Planning Command file and a canonical Use-Case registry/owner remain untouched. Explicit `Sync missing` can restore a locally deleted registered command from GitHub; Use-Case deletion remains a local projection preference. Repository command retirement/deletion is a separate authorized documentation action.
 
 ## ChatGPT Import And Recovery
 

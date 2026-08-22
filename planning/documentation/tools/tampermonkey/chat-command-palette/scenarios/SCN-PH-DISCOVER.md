@@ -5,9 +5,9 @@ Scope: canonical detailed application behavior owner; this Scenario owns its tri
 
 **Trigger/input:** the helper starts/opens, the user selects a surface or searches/browses current content.
 
-**Successful result:** Commands and all current canonical Use Cases can be found from separate surfaces through collapsible current Direction groups, while prompts/legacy compatibility remain available as their own supported content; browsing/searching uses materialized RAM state without implicit GitHub access.
+**Successful result:** Commands and all current canonical Use Cases can be found from separate surfaces through a top-level local Favorites projection plus collapsible current Direction groups, while prompts/legacy compatibility remain available as their own supported content; browsing/searching uses materialized RAM state without implicit GitHub access.
 
-**Boundary:** Direction groups are navigation only and never become semantic authority. Commands remain command definitions; Use Cases remain semantic projections even when a UC also has a command shortcut. Startup/migration/materialization are supporting mechanisms, not separate outcomes.
+**Boundary:** Favorites and Direction groups are navigation only and never become semantic authority. Favoriting duplicates the same Command/UC row above Directions while leaving the original row in its Direction. Commands remain command definitions; Use Cases remain semantic projections even when a UC also has a command shortcut. Startup/migration/materialization are supporting mechanisms, not separate outcomes.
 
 **Traceability:**
 
