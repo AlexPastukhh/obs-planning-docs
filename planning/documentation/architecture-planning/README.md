@@ -111,3 +111,16 @@ Architecture Decision consideration ≠ ADR ceremony
 ```
 
 Plan as deeply as the decision requires; materialize only what benefits from stable independent ownership, reuse or review.
+
+## Contextual Workspace Evolution Use-Case Discovery
+
+`UC-PLAN-ARCH-DISCOVER-WEUC` is a dedicated proportional Architecture supporting UC with a narrower independently useful result than broad `UC-PLAN-ARCH-WORKSPACE-USES`.
+
+```text
+concrete Workspace area / owner
+→ contextual evolution-use discovery
+→ expected Workspace Change Path + likelihood/value/timing + friction/fan-out/risk
+→ Architecture Pressure/Decision handoff when needed
+```
+
+It is invoked when explicitly requested or when current Architecture planning needs this evidence; it is not an automatic scan of the whole Workspace.

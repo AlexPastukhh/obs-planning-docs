@@ -600,3 +600,9 @@ When one owner semantically derives meaning from another and an upstream change 
 ## Testing Planning Handoff
 
 Slice-local verification may remain compact, but material proof design routes to sibling `../testing-planning/` through `UC-PLAN-TEST-DESIGN`. Shared/cross-Slice test architecture routes to `UC-PLAN-TEST-STRATEGY`; checking whether actual current tests prove selected meaning routes to `UC-PLAN-TEST-COVERAGE`. Tests remain evidence, never Scenario/Requirement/Domain semantic authority.
+
+## Owner-Attached Q/R/P Contract
+
+`Questions / Risks / Problems` inside detailed planning is a lens over the selected Scenario/Domain/Slice owner, not a planning entity. Each material item carries Origin/Provenance + affected owner + Current/Target planned meaning + unresolved/adverse delta.
+
+If no material delta remains, the Q/R/P section may be empty. A fully described Scenario/Domain/Slice does not receive another Q/R/P merely because another question can be phrased.

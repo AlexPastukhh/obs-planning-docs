@@ -343,3 +343,10 @@ No material unresolved issues identified for this selected documentation/methodo
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-032`  
 **Reason:** Application Planning read-order/profile guidance participates in the same ReviewDiff correction; full findings and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-006 — UC/Scenario-first planning and methodology integration
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-036`  
+**Reason:** Application Planning Domain/Realization/Slice owners participate in the same owner-first planning transition; full current rationale, testing/dependency/WEUC integration meaning and APPLIED target state are owned by the reusable-documentation log.

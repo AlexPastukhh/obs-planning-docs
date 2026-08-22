@@ -86,21 +86,22 @@ For Workspace planning, Step 1/2/3 remain depths inside the selected UC and use 
 
 ## 6. Presentation Order
 
-The Current Plan must be semantically established before aggregate findings are derived even when the consuming command shows Q/R/P early.
+Planning presentation follows semantic ownership, not a FIND-first queue.
 
 For `собери идеи`, a material result normally projects:
 
 ```text
-Source / Baseline
+Source / Baseline / Real-Life Basis
 → Key Points + Review Priority
-→ short Current Plan Snapshot
-→ Questions / Risks / Problems
-→ compact Cross-Cutting Ideas when material
-→ affected UC / Scenario planning in current UCDS/SDS representation
+→ Related Ideas / provenance
+→ affected Workspace UC / Application Scenario
+→ Current → Target planning in UCDS/SDS
+→ attached Questions / Risks / Problems only where unresolved/material
+→ Review Order lens only when several attached deltas need ordering
 → Execution Order / versions when selected and useful
 → cross-unit review when material
 → Current Overall Conclusions
-→ Potential Simplifications / Better Routes
+→ Potential Simplifications / Better Routes only while genuinely unselected
 ```
 
 ## 7. Execution Order Boundary
@@ -121,7 +122,7 @@ Application execution order may group selected Slices into versions/releases. Ve
 
 Use the aggregate contract from `idea-planning-principles-and-terminology.md`.
 
-Every real Q/R/P unit states Current Plan, Finding and Relation / Impact On Current Plan. Add Related Idea(s), treatment/fallback/blocking only when useful. Resolved/accepted meaning leaves Q/R/P and candidate Better Routes.
+Every real Q/R/P unit states Origin/Provenance, affected semantic owner, Current/Target planned meaning, Finding and Relation/Impact. Add Related Idea(s), treatment/fallback/blocking only when useful. Resolved/accepted meaning leaves Q/R/P and candidate Better Routes.
 
 Apply the shared same-Finding-ID discoverability rule between aggregate findings and affected Ideas.
 

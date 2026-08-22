@@ -591,3 +591,71 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - affected Planning Root and Planning Helper scope logs reference this correction.
 
 **Rationale:** close the remaining ReviewDiff regressions without changing the selected SDS/UCDS ontology, Goal-Map retirement, reviewability model or Step-4 lifecycle.
+
+### LOG-DOC-035 — UC/Scenario-first planning and methodology integration
+
+**Type:** IDEA REVIEW / LATER CLARIFICATION INTEGRATION  
+**Source:** current planning discussion after the directed SDS/UCDS planning packages; includes material later clarifications and full UC/Idea/Q/R/P consistency review  
+
+**Current Conclusions:**
+- primary planning is hard-locked to Real-Life Need/situation → Workspace UC or Application Scenario → Current→Target meaning → downstream dependencies/realization; a FIND/Q/R/P queue cannot be the planning root;
+- Q/R/P is only an owner-attached unresolved/adverse delta with explicit provenance and affected Current/Target meaning; obvious consequences are integrated instead of preserved as ceremonial findings;
+- `Review Order` is a derived lens over attached findings in the current semantic scope, never a global work queue;
+- ordinary chat text is the control plane for scope/depth/lens/redirection; no persistent Focus/H0-H1-H2 ontology and no command per modifier;
+- Key Points remain a cross-cutting AI Reviewability projection; `UC-REPO-AUDIT-REVIEW`, `UC-REPO-REFINE-CURRENT-PLAN`, `UC-REPO-REVIEW-PLANNING-FINDINGS` and `UC-DOC-REVIEW-CURRENT-CONSISTENCY` have independently useful reusable results and are selected;
+- reuse-first means reuse existing owners when they already own the useful result and extract a supporting UC when its result is independently useful/reusable; simplification alone is not a closure basis;
+- dedicated `UC-PLAN-ARCH-DISCOVER-WEUC` is selected and remains distinct from broad `UC-PLAN-ARCH-WORKSPACE-USES`; invocation is proportional/manual/evidence-driven;
+- Documentation dependency management uses the selected establish/configure-review/review-dependents/exact-meaning/coverage family; semantic dependency intent precedes Linked Notes realization;
+- Application `UC-PLAN-REALIZATION` may provide bounded comparative evidence before final Domain selection when material without becoming Domain authority;
+- Testing Planning uses a lightweight Testing Plan + Practical Acceptance contract while keeping planned proof, implemented tests and executed evidence distinct;
+- Idea/provenance coverage was checked against current UCs; every UC needs real provenance but not a synthetic one-to-one Idea record.
+
+**Questions / Risks / Problems:** no active material Q/R/P remains for this selected methodology target. Future questions are created only when a concrete owner/current planned state acquires a material unresolved/adverse delta.
+
+**Realization:** the selected Step-3 package updates current reusable owners/registries/templates and adds the missing reusable owner/template files. Historical logs remain historical; current semantic owners carry the new truth.
+
+### LOG-DOC-036 — Apply UC/Scenario-first planning and methodology integration
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-035`  
+**ChangeSet:** `62b89da9-51ad-4492-8c6f-e27415cb421f`  
+**Package:** `5858bb0f-fbcb-40e8-a319-71f2db029e9c`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- root/reusable registries expose the selected Progressive Review, Review Audit, Planning Findings Review and Current Semantic Consistency capabilities;
+- AI working/reviewability contracts use current-target/owner-first review instead of current Focus framing;
+- Idea and Workspace planning establish Need/provenance + UC/Scenario meaning before deriving attached Q/R/P, and Review Order is a lens;
+- dedicated contextual WEUC discovery is registered with its own workflow and Architecture Pressure handoff;
+- selected dependency-management UC family is discoverable through the Documentation registry and one reusable owner;
+- Application Realization supports bounded pre-Domain comparative evidence while Domain keeps semantic authority;
+- Testing Planning exposes the lightweight Testing Plan / Practical Acceptance template and keeps planned-vs-executed evidence truth;
+- registered scope logs for Planning Root and Application Planning reference this canonical transition;
+- no new command ontology, generic Port layer, Focus-state framework or repository mutation beyond the declared package operations is introduced.
+
+**Rationale:** align the repository with the accumulated current methodology plan while preserving independently useful semantic UCs and removing Q/R/P-first process drift.
+
+### LOG-DOC-037 — ReviewDiff correct package identity and dependency owner boundary
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `62b89da9-51ad-4492-8c6f-e27415cb421f`, applied package `81749fe8-1e1a-4fb2-bd7d-1207058d5e9d`  
+
+**Material Findings / Selected Corrections:**
+- `LOG-DOC-036` recorded the superseded pre-exact-base package ID `5858bb0f-fbcb-40e8-a319-71f2db029e9c`, while the exact-base replacement package actually applied for this ChangeSet was `81749fe8-1e1a-4fb2-bd7d-1207058d5e9d`; preserve the historical record and correct the cumulative history through this later ReviewDiff entry rather than rewriting old knowledge;
+- `planning/documentation/use-case-registry.md` correctly registered the full selected dependency-management UC family, but `review-dependency-planning-workflow.md` still declared only `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` as its owner/purpose and the Documentation README still exposed only that narrow branch; broaden the existing shared owner/navigation to the already selected family rather than create another UC or owner.
+
+**Resulting Current Meaning:** the UC/Scenario-first methodology transition remains selected unchanged. Dependency management is one reusable family owned by `review-dependency-planning-workflow.md`, with Configure Review Dependencies as one branch/result. No new Q/R/P remains.
+
+### LOG-DOC-038 — Apply ReviewDiff correction for dependency owner and package history
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-037`  
+**ChangeSet:** `62b89da9-51ad-4492-8c6f-e27415cb421f`  
+**Package:** `7d46ae70-9f16-491f-8bd2-95e0fb1ec70d`  
+
+**Target-State Result:** after successful Apply of this correction package:
+- the dependency workflow header/purpose semantically owns the full already-registered dependency-management UC family rather than only Configure Review Dependencies;
+- Documentation navigation exposes that same family and keeps Linked Notes as downstream mechanism rather than semantic owner;
+- cumulative Action Log explicitly records that the exact-base package actually applied before this correction was `81749fe8-1e1a-4fb2-bd7d-1207058d5e9d`, while preserving `LOG-DOC-036` as historical text;
+- no new semantic UC, Q/R/P, command ontology or cross-scope change is introduced.
+
+**Rationale:** make the reviewed repository transition semantically self-consistent without rewriting historical records or expanding the selected methodology.

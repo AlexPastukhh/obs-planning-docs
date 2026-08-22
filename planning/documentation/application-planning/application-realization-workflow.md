@@ -96,3 +96,12 @@ Detailed Slice Strategy/Slice planning remains downstream.
 ## Actor / Verification Effects
 
 For representative Runtime Realization Paths, record user-visible latency/wait/retry/confirmation/eventual-consistency effects that materially increase Scenario actor effort. Also identify verification seams and hand off material proof-design questions to sibling Testing Planning; realization does not make tests semantic authority.
+
+## Candidate-Domain Comparative Mode
+
+The workflow has two proportional modes:
+
+1. **selected/current meaning stress check** before Slice planning;
+2. **candidate-Domain comparison** before final Domain selection when realization evidence is genuinely decision-relevant.
+
+For candidate comparison, trace only representative paths/dependencies deeply enough to discriminate material feasibility/cost/performance/consistency differences. Do not fully design every Slice Variant. Return evidence upstream to `UC-PLAN-DOMAIN`; do not silently select Domain meaning here.

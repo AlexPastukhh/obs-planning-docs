@@ -360,3 +360,18 @@ A source may also contain Existing Reality/checked facts, Constraints, Decisions
 - Do not call a fallback the Current Plan unless it was actually selected.
 - Do not leave an Idea-related Q/R/P discoverable only from the aggregate; apply the single-Idea mirror / cross-Idea reference rule.
 ```
+
+## Owner Attachment And Q/R/P Admission Gate
+
+A candidate Question/Risk/Problem becomes an active finding only after attachment to real planned meaning:
+
+```text
+candidate concern
+→ concrete UC / Scenario / semantic owner?
+→ concrete Current/Target meaning?
+→ material unresolved/adverse delta after cheap resolution against current principles/evidence?
+```
+
+If no owner can be named, keep the content as Idea/observation/evidence/context/note. If current selected principles already determine the answer, integrate the consequence and do not manufacture a FIND.
+
+Every current UC/Scenario needs real provenance (Need, existing useful capability, Idea or evidence), but not a synthetic one-to-one Idea record.

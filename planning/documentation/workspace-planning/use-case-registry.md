@@ -44,3 +44,14 @@ Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
 **Required supporting reads:** affected UC registries/owners; Architecture Planning proportionally when combined realization changes architecture.
 **Related command:** none required; `собери идеи` may route here when one reviewed source raises an independently useful multi-UC boundary/relationship/topology question, not merely because one Idea affects several otherwise independent UCs.
 **Dependencies / handoffs:** resulting local UC plans use the Establish/Change workflows as applicable; unresolved architecture decisions route to sibling Architecture Planning rather than being hidden in file planning.
+
+## Current Shared Contract Across Workspace Planning UCs
+
+All three Workspace Planning UCs use these selected rules:
+
+- Real-Life Basis is `known | partial | unknown`; do not invent Need;
+- reuse an existing UC whenever its useful result already owns the Need, or reuse/extraction is currently useful/clearly justified;
+- Q/R/P is attached only after a concrete UC/current planned state has a material unresolved/adverse delta;
+- `Review Order` is only a lens over attached deltas;
+- Step 3 records **Target Dependencies** before exact file realization when material;
+- ordinary chat text controls depth/lens/redirection; no extra Focus-state ontology is required.

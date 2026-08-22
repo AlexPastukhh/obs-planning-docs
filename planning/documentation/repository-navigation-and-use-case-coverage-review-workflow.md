@@ -70,3 +70,14 @@ owner-placement uncertainty
 ```
 
 The review reports the defect and appropriate handoff. It does not silently perform maintenance or gain mutation permission.
+
+## Current Coverage Checks
+
+Coverage review now also verifies:
+
+- every selected reusable UC has one semantic registry identity and reachable owner route;
+- Application behavior remains Scenario-owned; Workspace/methodology behavior remains UC-owned;
+- a Q/R/P is never treated as a free-standing planning owner;
+- `Review Order` remains a lens/projection rather than navigation authority;
+- dedicated `UC-PLAN-ARCH-DISCOVER-WEUC` is reachable without replacing broad `UC-PLAN-ARCH-WORKSPACE-USES`;
+- Testing Plan / Practical Acceptance remains reachable from Testing Planning without becoming product-behavior authority.

@@ -74,3 +74,9 @@ unselected Potential Simplifications only
 ```
 
 This workflow is planning/review only and grants no repository mutation permission.
+
+## Reuse-First Topology Boundary
+
+Topology review is selected because the multi-UC boundary/relationship result is independently useful. It must not become a way to manufacture UCs or FINDs.
+
+When extraction/reuse pressure appears, ask whether the candidate supporting capability has an independently useful result, distinct trigger/result and meaningful consumers, and whether an existing owner already covers it. `Review Order` may order attached unresolved topology deltas but never replaces the UC graph.

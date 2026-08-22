@@ -169,3 +169,7 @@ unresolved semantic findings
 ```
 
 The result is not yet selected Domain authority; `UC-PLAN-DOMAIN` owns selection/review.
+
+## Comparative Realization Handoff
+
+If several serious Domain candidates remain and high-level realization could materially distinguish them, hand off a bounded comparison to `UC-PLAN-REALIZATION`. Preserve each candidate's semantic assumptions; request only enough realization detail to discriminate the decision. The returned evidence is input to Domain selection, not selected Domain authority.

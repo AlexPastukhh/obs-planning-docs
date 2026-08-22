@@ -191,3 +191,7 @@ Test Coverage → how selected behavior/outcomes are proved
 For non-trivial work, record material related behavior that is **not** implemented by this Slice, its owner/destination and reason. This protects vertical Slice boundaries from scope creep.
 
 When verification is material, build or route a Behavior-to-Test Trace through `../testing-planning/test-design-workflow.md`. A vague `covered by integration tests` statement is not a proof plan.
+
+## Target Dependencies / Practical Acceptance Handoff
+
+For one selected Slice, record material **Target Dependencies** before choosing exact mechanism/files. Plan the whole vertical result before implementation when nontrivial. Verification may hand off to Testing Planning, including project-local Practical Acceptance when the property is best proved through operated human/AI/E2E behavior rather than a narrow automated assertion.

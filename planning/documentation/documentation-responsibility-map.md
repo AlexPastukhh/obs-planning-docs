@@ -51,3 +51,15 @@ README/index files own navigation/read order only. They do not duplicate complet
 6. does natural README/index/Direction navigation need maintenance through `UC-DOC-MAINTAIN-NAVIGATION`?
 7. does a Direction/Workspace-methodology Use-Case routing contract need maintenance through `UC-DOC-MAINTAIN-REGISTRIES`, or does Application Scenario meaning need its current Application Planning owner?
 8. if a command is involved, is it only an executable shortcut to a semantic capability?
+
+## Current Planning / Review Owner Routes
+
+Current routing additions:
+
+- current-plan refinement → root `UC-REPO-REFINE-CURRENT-PLAN` → `progressive-plan-refinement-workflow.md`;
+- review coverage/quality → `UC-REPO-AUDIT-REVIEW` → `review-audit-workflow.md`;
+- planning-finding completeness → `UC-REPO-REVIEW-PLANNING-FINDINGS` → `planning-findings-review-workflow.md`;
+- reusable semantic consistency → `UC-DOC-REVIEW-CURRENT-CONSISTENCY` → `current-semantic-consistency-review-workflow.md`;
+- dependency intent/review/exact-meaning/coverage → selected `UC-DOC-*DEPENDENCY*` family → `review-dependency-planning-workflow.md`.
+
+Navigation/projection files may expose these capabilities but do not duplicate their semantic bodies.

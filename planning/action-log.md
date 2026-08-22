@@ -92,3 +92,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-034`  
 **Reason:** planning-root `собери идеи` command and active helper-library compatibility insertion participate in the same ReviewDiff correction; full findings and applied target state are owned by the canonical reusable-documentation log.
+
+### XREF-013 — UC/Scenario-first planning and methodology integration
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-036`  
+**Reason:** planning-root AI contract, root Use-Case registry and `собери идеи` command participate in the same methodology transition; full Idea Review, clarifications and APPLIED target state are owned by the reusable-documentation log.

@@ -109,3 +109,17 @@ This feedback loop normally repeats per implemented Slice/change. Frequent upstr
 ## Goal Map Boundary
 
 The reusable Goal Map is retired. Its useful current-plan function is covered by the current Mini/Modular/Full SDS representation plus the selected Execution Order projection. Historical rationale remains in Git / registered scope Action Logs, not in the current plan.
+
+## Current Planning Lenses
+
+Mini/Modular/Full are representation scales, not different semantic correctness levels. Across profiles, use the same lenses over one current plan:
+
+```text
+Real-Life
+UC / Scenario
+Q/R/P (attached unresolved delta only)
+Review Order (derived ordering lens)
+Realization / Evolution
+```
+
+Application Scenario remains the behavioral planning owner. Workspace/methodology Use Case remains the useful-capability owner. Promote selected local meaning into its real canonical owner; do not keep a parallel plan merely because Modular splits files.

@@ -382,3 +382,15 @@ Surface Map and Core Loop remain explicit opt-in views only when a concrete appl
 ## Historical Boundary
 
 Planning Item, Planning Draft and Full Picture Matrix are not active reusable ontology/stages. Workspace folders do not revive them. Current owners remain real responsibilities. Whole-solution / cross-owner integration review remains required when relevant but is a review responsibility, not a separate mandatory entity/file/stage. Historical project artifacts may remain provenance/migration sources but never win over current Use Cases/Scenarios/current owners.
+
+## Realization Evidence Before Final Domain Selection
+
+When serious Domain candidates are grounded but a correct selection materially depends on runtime/persistence/integration/algorithm/performance feasibility, `UC-PLAN-REALIZATION` may run before final Domain selection.
+
+```text
+Domain candidate meaning
+↔ bounded candidate realization evidence
+→ Domain owner selects conceptual truth
+```
+
+Implementation convenience alone cannot redefine Scenario/Requirement/Domain meaning. New material infeasibility/correctness/cost/consistency evidence may flow upstream explicitly.

@@ -38,7 +38,7 @@ Review Priority
 → not confidence
 
 built-in recheck
-→ Focus Recheck
+→ Current-Target Recheck
 → Direction / Integration Recheck
 ```
 

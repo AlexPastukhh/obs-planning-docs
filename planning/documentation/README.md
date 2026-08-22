@@ -101,6 +101,25 @@ Reusable semantics are owned by `parallel-work-scope-and-action-log-workflow.md`
 
 Sibling reusable family: `testing-planning/` owns Testing Strategy, behavior-specific Test Design and Current Test Coverage/Evidence Review.
 
-## Review Dependencies
+## Dependency Management / Review Dependencies
 
-`UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` + `review-dependency-planning-workflow.md` own required downstream semantic-review signals. Linked Notes is the selected implementation mechanism when available.
+`review-dependency-planning-workflow.md` owns the selected reusable dependency-management family:
+
+- `UC-DOC-ESTABLISH-DEPENDENCY`;
+- `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES`;
+- `UC-DOC-REVIEW-DEPENDENTS`;
+- `UC-DOC-MAINTAIN-SHARED-EXACT-MEANING`;
+- `UC-DOC-REVIEW-DEPENDENCY-COVERAGE`.
+
+Semantic dependency intent comes first. Linked Notes is the downstream implementation mechanism when explicit review tracking or exact synchronization is actually required; ordinary Markdown relations remain navigation only.
+
+## Current Review And Consistency Owners
+
+Selected reusable owners added by the current planning contract:
+
+- `progressive-plan-refinement-workflow.md` — `UC-REPO-REFINE-CURRENT-PLAN`;
+- `review-audit-workflow.md` — `UC-REPO-AUDIT-REVIEW`;
+- `planning-findings-review-workflow.md` — `UC-REPO-REVIEW-PLANNING-FINDINGS`;
+- `current-semantic-consistency-review-workflow.md` — `UC-DOC-REVIEW-CURRENT-CONSISTENCY`.
+
+These capabilities remain reachable through semantic registries; no new command is required merely for a lens/filter/depth modifier.

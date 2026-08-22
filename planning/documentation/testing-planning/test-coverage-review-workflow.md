@@ -20,3 +20,7 @@ Determine whether **actual current** tests/checks/manual acceptance prove curren
 9. Check test data/order/isolation assumptions.
 10. Distinguish implemented/current from last executed/passed/manual-acceptance state.
 11. Produce corrections or Test Design handoff without rewriting semantic owners from tests.
+
+## Practical Acceptance Evidence Review
+
+Coverage review may map selected meaning to executed Practical Acceptance evidence as well as automated tests. Check operator/setup/action/evidence/pass-fail result and freshness. A planned card or campaign does not count as actual evidence until executed.

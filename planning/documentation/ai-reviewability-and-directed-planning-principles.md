@@ -81,17 +81,17 @@ Known later-layer implications may be preserved as provisional/Carry-Forward con
 
 Before returning a material result, perform two proportional passes.
 
-### Focus Recheck
+### Current-Target Recheck
 
-Reconstruct what the current focus must answer from the current source/owner rather than merely rereading the draft prose. Check for omissions, contradictions, unsupported assumptions, silently selected unresolved alternatives and incomplete completion criteria.
+Reconstruct what the current target/scope must answer from the current source/owner rather than merely rereading the draft prose. Check for omissions, contradictions, unsupported assumptions, silently selected unresolved alternatives and incomplete completion criteria.
 
 ### Direction / Integration Recheck
 
-Check Critical/High Key Points and the current focus against selected upstream/global direction, affected owners, Requirements/Constraints and material change pressure. Confirm that downstream planning realizes rather than silently rewrites upstream meaning.
+Check Critical/High Key Points and the current target/scope against selected upstream/global direction, affected owners, Requirements/Constraints and material change pressure. Confirm that downstream planning realizes rather than silently rewrites upstream meaning.
 
 Quality target:
 
-> Repeating an ordinary recheck of the same current focus with no new evidence should normally find no material omission that should have been found before the first answer.
+> Repeating an ordinary recheck of the same current target/scope with no new evidence should normally find no material omission that should have been found before the first answer.
 
 This is a quality objective, not a proof of truth.
 
@@ -146,3 +146,20 @@ The retired `обс` shortcut is not part of the current reviewability architect
 - Do not make normal downstream work responsible for redesigning upstream meaning.
 - Do not hide a real upstream contradiction merely to preserve a linear workflow.
 - Do not treat repeated self-review as a substitute for reading the current canonical owner/evidence.
+
+## 11. Current Planning Root / Review Lenses
+
+Before material planning review, establish the semantic owner first:
+
+```text
+Need / situation
+→ UC / Scenario / semantic owner
+→ Current → Target meaning
+→ attached Q/R/P only if a material unresolved delta remains
+```
+
+`Review Order` is a derived lens over attached deltas in the current semantic scope. Key Points are a conclusion-first projection of existing meaning, not a separate UC. Ordinary chat text may request depth/lens/redirection without persistent Focus state.
+
+## 12. Review Audit Boundary
+
+Built-in recheck tries to make the current answer good before return. `UC-REPO-AUDIT-REVIEW` is independently useful when the result itself must report checked files/semantic units, quality/sufficiency, partial/unchecked material and delta versus a prior review. A repeated audit should prefer new value over mechanically replaying already-current sufficient checks.

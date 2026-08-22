@@ -149,3 +149,19 @@ This section contains only unselected candidate changes to Current Plan. Once ac
 ## Practical Example
 
 See [`examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md`](examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md) for a full demonstration. The example demonstrates the method; it does not override the canonical Idea owners.
+
+## Q/R/P Provenance / Owner Attachment
+
+When a related Q/R/P is material, use:
+
+```markdown
+### <FIND/Q/R/P ID> — <title>
+**Origin / Provenance:** ...
+**Affected UC / Scenario / semantic owner:** ...
+**Current Planned State / Target meaning:** ...
+**Finding:** ...
+**Relation / Impact:** ...
+**Treatment / Needed Resolution:** ... # only when useful
+```
+
+No owner/current planned state → do not promote to active FIND. If the answer is already forced by current selected principles/evidence, integrate it instead of preserving a ceremonial Q/R/P.

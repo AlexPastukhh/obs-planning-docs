@@ -113,3 +113,9 @@ simplest correct current model
 ```
 
 Domain meaning does not silently override Scenario/Screen/Requirement truth. When current owners conflict, perform explicit consistency review and update the real selected owner(s).
+
+## Realization Evidence / Attached Q/R/P
+
+Domain selection may consume bounded comparative evidence from `UC-PLAN-REALIZATION` when material, while Domain remains authority for conceptual truth.
+
+Attached Q/R/P, when any, states Origin/Provenance + affected Domain/Scenario owner + Current/Target meaning + unresolved/adverse delta. Do not register implementation inconvenience as a Domain problem unless it is material evidence of infeasibility/correctness/cost/consistency.

@@ -176,3 +176,20 @@ Backflow is evidence-driven exception, not normal planning direction. ReviewDiff
 - Do not let execution order redefine UC/rule meaning.
 - Do not let implementation convenience silently rewrite upstream meaning.
 - Do not optimize raw step/file count as an architecture score.
+
+## Hard UC-First / Real-Life / Q/R/P Contract
+
+Workspace planning root:
+
+```text
+Real-Life Situation / Need / Desired Result
+→ selected Workspace responsibility
+→ Workspace UC
+→ Domain / Rules
+→ Target Dependencies when material
+→ Vertical Realization / verification when useful
+```
+
+A Q/R/P is valid only as an unresolved/adverse delta attached to that semantic owner/current planned state. `Review Order` is a derived lens, never a queue. Real-Life Basis may be `known | partial | unknown`; formal RLUC is proportional.
+
+Reuse-first: if an existing UC already owns the useful result, reuse it; extract a supporting UC when it has an independently useful reusable result, distinct trigger/result and meaningful consumers. Do not create a new UC for a trivial repeated check, but do not collapse an independently useful capability merely to reduce count.

@@ -89,3 +89,7 @@ Canonical establish/change/topology handoff when needed
 ```
 
 A separate file/artifact is optional; the result may be inline input to another Architecture Planning owner. When architecture analysis identifies a candidate or changed UC that must become canonical planning meaning, route that question to current Workspace Planning rather than editing UC identity from this workflow.
+
+## Boundary With Contextual Evolution Discovery
+
+This broad workflow keeps current canonical Workspace UCs and architecture-relevant candidate useful results in view. When the independently useful result needed is specifically contextual future evolution work against a concrete area, hand off to `UC-PLAN-ARCH-DISCOVER-WEUC` rather than folding that narrower result into this workflow.

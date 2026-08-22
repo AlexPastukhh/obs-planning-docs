@@ -181,3 +181,18 @@ This is organization only: it does not create new semantic owners or registered 
 [`detailed-planning/README.md`](detailed-planning/README.md) owns the shared low-level contract for current Scenario/Screen/Domain/Slice meaning, workspace topology, Variants, draft state, Requirements/dependencies, verification and Reference Object Candidate review.
 
 Practical walkthrough: [`examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md`](examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md).
+
+## Domain ↔ Realization Co-Design
+
+Selected proportional route:
+
+```text
+Scenario / Requirement evidence
+→ Domain Discovery / candidate Domain variants
+→ UC-PLAN-REALIZATION comparative evidence when material
+→ UC-PLAN-DOMAIN selection
+→ Slice Strategy / Slice
+→ implementation / Testing
+```
+
+Realization supplies feasibility/cost/performance/consistency evidence; it does not own Domain truth. Candidate Slice/realization detail may be deepened only enough to discriminate a material Domain choice.

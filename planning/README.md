@@ -120,3 +120,17 @@ parallel-work-scope-registry.md
 ```
 
 Chats do not repartition the repository per task. Cross-scope work keeps one full canonical log record and reference-only entries in the other affected scope logs.
+
+## Current Planning Lenses And Root
+
+The primary planning path is Need/situation → UC or Scenario → planned meaning → downstream realization.
+
+Current review lenses are projections over that one plan:
+
+- **Real-Life** — Need / situation / desired result and known|partial|unknown basis;
+- **UC / Scenario** — useful-result ownership and Current→Target meaning;
+- **Q/R/P** — only material unresolved/adverse deltas attached to a concrete owner;
+- **Review Order** — dependency/blast-radius ordering of attached unresolved deltas in the current scope;
+- **Realization / Evolution** — dependencies, paths, files, verification and architecture evolution when useful.
+
+`Review Order` never selects an unrelated FIND as the next planning unit. Natural-language chat instructions may redirect scope/depth/lens without creating a new command or persistent attention-state entity.

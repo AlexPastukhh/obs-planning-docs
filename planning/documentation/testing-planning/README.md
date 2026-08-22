@@ -21,3 +21,7 @@ Three independently useful capabilities are supported: shared Testing Strategy, 
 - `api-integration-test-guidance.md` — public API/integration proof, read vs command behavior, persistence/no-mutation.
 - `e2e-testing-guidance.md` — critical cross-layer actor-path proof.
 - `test-object-patterns.md` — Page/Component Object boundaries without hiding Scenario outcomes.
+
+## Testing Plan / Practical Acceptance
+
+Use [`templates/TESTING-PLAN-TEMPLATE.md`](templates/TESTING-PLAN-TEMPLATE.md) as the lightweight project-local planning baseline when a stable cross-Slice/project proof plan is useful. It composes current Strategy/Design/Coverage UCs rather than replacing them. Practical Acceptance is a planned operated proof route for properties/negative guarantees that are most credibly verified by human/AI/E2E operation.

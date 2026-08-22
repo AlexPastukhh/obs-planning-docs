@@ -43,3 +43,7 @@ Required assertions are concrete. `success assertions`, `no-mutation assertions`
 ## Read vs State-Changing Behavior
 
 Read/query proof emphasizes projection correctness, access/filtering and absence of unintended mutation when material. State-changing command proof emphasizes state before/after, persisted outcome and no partial mutation on rejection/failure.
+
+## Practical Acceptance Choice
+
+During proof design, explicitly consider whether a material property is better demonstrated through a Practical Acceptance card. Select it when operated behavior/evidence gives stronger meaningful proof than forcing a brittle narrow automated test. Preserve negative guarantees (for example “must not mutate”) as explicit observable/pass-fail conditions.

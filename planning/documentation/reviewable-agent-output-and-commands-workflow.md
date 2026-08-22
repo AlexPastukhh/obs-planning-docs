@@ -178,3 +178,21 @@ Do not apply this boundary to package-producer commands that explicitly stop at 
 - Do not silently restore removed content from a prior version.
 - Do not apply `обн` / `upd` to code without an explicit code/update route.
 ```
+
+## Review Audit Projection
+
+When `UC-REPO-AUDIT-REVIEW` is active, expose proportionally:
+
+```text
+Checked
+→ concrete files actually inspected when file-based
+→ semantic units actually reviewed
+
+Not Checked / Partial
+Review Quality / Sufficiency
+Material Findings / Corrections
+Review Delta vs previous relevant review
+Next Useful Checks
+```
+
+Do not use file count as a substitute for semantic coverage. On repeat, prefer changed/stale/unchecked/partial/weak/newly relevant material before replaying an already-current sufficient check.

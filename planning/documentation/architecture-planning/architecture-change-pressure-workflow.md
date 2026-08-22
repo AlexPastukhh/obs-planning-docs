@@ -68,3 +68,17 @@ Material Architecture Flags/findings
 ```
 
 Do not translate an axis mechanically into an interface/extension point.
+
+## WEUC Evidence Input
+
+When material, consume `UC-PLAN-ARCH-DISCOVER-WEUC` output as contextual change-pressure evidence:
+
+```text
+contextual WEUC instance
+→ expected Workspace Change Path
+→ likelihood / value / timing
+→ friction / fan-out / risk
+→ pressure/axis only to the degree evidence supports it
+```
+
+A WEUC candidate does not automatically justify abstraction or a new Port.

@@ -105,3 +105,9 @@ When several UC boundaries/relations are materially affected, use `UC-PLAN-WORKS
 ## 9. Exit
 
 Return the selected planning depth plus only material unresolved/adverse Q/R/P relative to the Current Plan. Planning is read-only unless a separate mutation/package route is explicitly invoked.
+
+## Current Entry / Reuse / Dependency Rules
+
+Start from Real-Life Basis + the candidate/current useful result. Reuse the existing UC when it already owns the Need/result. A separate UC is justified when its result is independently useful/reusable, not merely because a check repeats.
+
+Only after the semantic owner is grounded may a material unresolved/adverse delta become attached Q/R/P. Step 3 identifies Target Dependencies before selecting exact Linked Notes/file realization when material.

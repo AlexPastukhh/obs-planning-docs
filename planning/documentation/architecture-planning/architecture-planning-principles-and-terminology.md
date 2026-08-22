@@ -270,3 +270,9 @@ later need for refactoring
 ```
 
 An intentionally rejected abstraction may record a `Revisit Trigger` such as a second implementation becoming selected or an axis reaching planned/confirmed evidence.
+
+## WEUC Type Vs Contextual WEUC Instance
+
+A **WEUC Type** is a reusable kind of evolution work (for example add provider / migrate schema / split owner). A **contextual WEUC Instance** is that work against a concrete Workspace area/owner/change surface.
+
+Architecture evidence should prefer contextual instances when judging locality, fan-out, migration/verification friction and Working-Context Load. Generic future flexibility does not pay architecture complexity by itself.

@@ -23,3 +23,9 @@ Status: active reusable nested responsibility map
 | Application-specific Scenario/Domain/Realization/Slice semantics | sibling `../application-planning/` owners |
 
 Architecture Planning is reusable across Workspace types. Do not move application behavior/Domain truth into this family merely because architecture analysis consumes it.
+
+## Discover WEUC Responsibility
+
+`UC-PLAN-ARCH-DISCOVER-WEUC` owns contextual Workspace-evolution-use discovery and the bounded handoff result.
+
+Broad current/candidate Workspace-use discovery remains under `UC-PLAN-ARCH-WORKSPACE-USES`. Architecture Pressure consumes either/both as evidence. Workspace Planning retains canonical ordinary Workspace UC establishment/change/topology authority.

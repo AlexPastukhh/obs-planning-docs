@@ -130,3 +130,21 @@ If none: `No material unresolved issues identified.`
 - `Feature` is not a required extra semantic layer; an Application Concept Feature is a concept-scoped capability hypothesis and does not create a mandatory Feature → Scenario → Slice chain.
 - Change Axes are reasons to evaluate coupling, not automatic requirements for extension points.
 - Tests/verification provide evidence and do not become semantic authority for behavior by themselves.
+
+## Target Dependencies / Practical Acceptance
+
+Add when material:
+
+```markdown
+### Target Dependencies
+- semantic dependency / handoff
+- consumer/source meaning
+- exact tracking mechanism only when selected
+
+### Practical Acceptance — When useful
+- target property / negative guarantee
+- operator: human | AI | E2E/tool
+- setup / action / observable evidence
+- pass/fail rule
+- planned vs executed evidence state
+```

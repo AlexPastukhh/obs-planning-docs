@@ -17,15 +17,24 @@ A small bounded change may stay in one file:
 <material conclusions + Critical / High / Normal / Low Review Priority>
 
 ## Current Plan Snapshot
-## Questions / Risks / Problems
-## Shared / Cross-Cutting Ideas — When material
+## Shared / Cross-Cutting Ideas / Provenance — When material
+## Review Order Lens — When material attached Q/R/P exists
 
 # Workspace UC Groups
 
 ## <UC-ID> — <name>
+### Real-Life Basis
+**Status:** known | partial | unknown
+**Need / situation / desired result:** ... # when known/material
+
 ### Current State
 ### Planned Change — High Level
-### Related Ideas
+### Related Ideas / Provenance
+
+### Attached Questions / Risks / Problems — When material
+**Origin / Provenance:** ...
+**Current / Target meaning affected:** ...
+**Unresolved/adverse delta:** ...
 
 ### Planning State
 - Step 1 — Use Case: <reviewed / partial / not selected>
@@ -57,7 +66,8 @@ A small bounded change may stay in one file:
 **Architecture review:** ...
 **Slice(s):** ...
 **Local/shared owners:** ...
-**Dependencies:** ...
+**Target Dependencies:** ...
+**Dependency realization/mechanism:** ... # only when selected/useful
 **Verification:** ...
 
 #### Affected Files — When exact realization is selected
@@ -111,7 +121,8 @@ Track completion/current-next position only when useful; do not create history i
 - Keep shared Ideas once; affected UCs reference local impact.
 - Stabilize upstream meaning before dependent downstream planning; later-step insight may be Carry-Forward context but not silent upstream authority.
 - Keep Planning State explicit enough to distinguish reviewed upstream meaning from partial/not-selected downstream depth; Execution Order does not replace this state.
-- Keep Q/R/P as unresolved/adverse current-plan delta only.
+- Keep Q/R/P as owner-attached unresolved/adverse current-plan delta only; no concrete owner/current planned state means no active FIND.
+- Review Order is a derived lens over attached deltas, never the primary planning queue.
 - Current State summarizes/links current owners; Target changed/new owner meaning must be complete enough for implementation not to invent decisions.
 - Step 3 traces expected paths and Architecture Lens before exact files when material.
 - Review cross-Slice overlap/shared coordination tax.

@@ -163,3 +163,7 @@ current draft state / decisions / findings
 ```
 
 A valid result may also be: `no separate Domain owner is justified; keep meaning in existing Scenario/Requirement owners`.
+
+## Consume Realization Evidence Without Authority Reversal
+
+Domain review may consume comparative `UC-PLAN-REALIZATION` evidence before selection when material. Weigh correctness, invariant fit, feasibility, operational/verification cost and justified evolution pressure. Select the simplest correct Domain that satisfies current meaning; reject complexity justified only by generic future flexibility.

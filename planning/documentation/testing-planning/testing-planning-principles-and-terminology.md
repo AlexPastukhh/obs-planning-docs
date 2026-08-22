@@ -77,3 +77,9 @@ Tests should not rely on order or previous runs. Use unique/reproducible data an
 ## Screenshot / Evidence Artifact Boundary
 
 Screenshots/demonstration artifacts can be valuable evidence, but are not ordinary behavior proof unless the selected requirement specifically concerns visual evidence/output.
+
+## Practical Acceptance
+
+**Practical Acceptance** is a planned operated verification for a selected property/negative guarantee when the strongest useful proof is human/AI/E2E operation rather than a narrow automated assertion.
+
+A Practical Acceptance card states target property, operator, setup, action, observable evidence and pass/fail rule. It may belong to a reusable/project-local Testing Plan and may be repeated as a campaign when coverage across variants/environments matters. Planned acceptance is not executed evidence.

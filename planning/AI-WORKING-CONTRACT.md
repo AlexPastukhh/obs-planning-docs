@@ -9,6 +9,21 @@ Before material work, resolve the applicable Direction and semantic entry (Works
 
 For material planning/development answers also follow `documentation/ai-reviewability-and-directed-planning-principles.md`.
 
+## Hard Planning Root Invariant
+
+Planning never starts from a FIND/Q/R/P queue. The semantic root is:
+
+```text
+Real-Life Situation / Need / Desired Result
+→ selected solution / responsibility
+→ Workspace Use Case or Application Scenario
+→ Domain / Rules
+→ Target Dependencies when material
+→ realization / verification when useful
+```
+
+Q/R/P is a secondary unresolved-delta lens attached to a concrete semantic owner/current planned state. `Review Order` is a derived lens over those attached deltas, not a task queue. If no material unresolved delta exists, continue the semantic UC/Scenario graph. Ordinary chat text controls scope/depth/lens; no persistent Focus/H0-H1-H2 control ontology is required.
+
 ## Documentation Work
 
 Read and follow:
@@ -46,7 +61,7 @@ Material AI planning should be reviewable before it is returned:
 complete provisional picture when useful
 → stabilize/review upstream meaning before downstream realization
 → Key Points + Review Priority
-→ built-in focus recheck
+→ built-in current-target recheck
 → integration check against selected upstream/global direction
 ```
 

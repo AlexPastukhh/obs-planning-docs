@@ -197,3 +197,22 @@ Re-entry/reuse/wait/handoff/testability are supporting signals, not mandatory ch
 
 
 When a materially distinct whole-Scenario design appears, use the Variant rules in the detailed-planning owner. Do not turn ordinary runtime branches or one local Idea Variant into whole-Scenario Variants mechanically.
+
+## Real-Life Basis / Attached Q/R/P
+
+For material planning, preserve a proportional basis:
+
+```markdown
+## Real-Life Basis
+**Status:** known | partial | unknown
+**Need / situation / desired result:** <when known/material; do not invent>
+**Provenance:** <Idea/evidence/existing responsibility when useful>
+
+## Attached Questions / Risks / Problems — When material
+- Origin / Provenance
+- affected owner = this Scenario (or explicit shared owner)
+- Current/Target planned meaning
+- unresolved/adverse delta
+```
+
+Formal RLUC is not mandatory for every existing Scenario; deepen Step 0 when the current decision depends on it.
