@@ -674,3 +674,68 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 **Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
 **Entry:** `LOG-PH-013`  
 **Reason:** reusable reviewability wording and the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact participate in the same Helper correction; full user clarification, ReviewDiff findings and APPLIED target state remain in the canonical Planning Helper log.
+
+### LOG-DOC-039 — Complete callable Use-Case projection and practical testing plan
+
+**Type:** IDEA CLARIFICATION / INTEGRATED REVIEW  
+**Source:** explicit user clarification after the Planning Helper local-delete/seed package and review of the Testing Planning realization  
+
+**Current Conclusions:**
+- Testing Plan / Practical Acceptance has an independently useful result and must therefore be a current semantic Use Case rather than only a template/shared contract; select `UC-PLAN-TEST-PLAN — Plan Practical Testing / Acceptance`;
+- Test Design owns how one selected behavior is best proved, Practical Test Plan composes selected proofs into a real operated human/AI/E2E acceptance pass or campaign, and Coverage owns review of actual executed/current evidence; planned proof remains distinct from executed evidence;
+- every current canonical Use Case from every current `planning/**/use-case-registry.md` must be visible in Planning Helper `Use Cases`; Helper parity must be registry-driven and build-verified rather than maintained as a curated manual list;
+- every current canonical UC is independently useful enough to support manual invocation. When a bespoke Planning Command already maps to that UC, reuse it; otherwise expose one generated thin invocation command routed through the generic registered `use_case.invoke` command and exact current UC registry/owner;
+- generated UC invocation rows are Helper projections only: they are not one repository command file per UC and never become semantic authority;
+- local Delete of a generated UC invocation command hides only that command row; it does not hide/delete the corresponding Use Case or mutate any canonical registry;
+- Mini/Modular/Full SDS and Mini/Modular UCDS remain planning representation profiles, not fake Use Cases merely to appear in Helper.
+
+**Questions / Risks / Problems:** none. The selected route follows the existing independent-usefulness rule and avoids both a manually synchronized UC subset and a repository-file explosion of one command file per UC.
+
+### LOG-DOC-040 — Apply callable Use-Case parity and practical testing plan
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-039`  
+**ChangeSet:** `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`  
+**Package:** `058d09c3-5a6e-4df9-a80e-cf948243cd71`  
+
+**Target-State Result:** after successful Apply of this package:
+- Testing Planning registers `UC-PLAN-TEST-PLAN` with `practical-testing-plan-workflow.md` as its owner and routes the existing Testing Plan / Practical Acceptance template through that UC;
+- Planning Helper `0.29.0` discovers every current canonical UC directly from all current Use-Case registries at build time and generates exact `semantic-projections.js` + `seed/use-cases.json` parity; the current package contains 70 current UC projections including the new Practical Testing Plan UC;
+- one hidden generic repository command `use_case.invoke` provides the authority/routing contract for generated UC invocation rows; existing bespoke UC-linked commands are reused and every remaining current UC receives exactly one generated manual invocation row in Commands;
+- generated UC invocation commands can be locally deleted without deleting/hiding the corresponding Use Case; canonical registry/owner meaning and repository files remain untouched;
+- `seed/commands.json` contains the 16 current registered Planning Command definitions, while generated per-UC invocation rows remain deterministic projections derived from the UC seed rather than duplicate command files;
+- Helper automated verification passes 106/106 tests and build verification checks generated userscript, registry-driven UC projection and seed catalogs against current sources;
+- affected Planning Root and Planning Helper scope logs reference this canonical transition.
+
+**Rationale:** make the Helper a complete manual entry surface over the real current UC graph while preserving canonical ownership and giving practical operated testing its own independently useful semantic route.
+
+
+### LOG-DOC-041 — ReviewDiff correct direct-command classification for callable UCs
+
+**Type:** REVIEW DIFF  
+**Reviewed:** ChangeSet `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`, applied package `058d09c3-5a6e-4df9-a80e-cf948243cd71`  
+
+**Material Finding / Selected Correction:**
+- registry-driven UC discovery and 70/70 Helper visibility are correct, but the build mapped any `Related command` cell containing a known command alias to `commandId`; this incorrectly treated supporting wording such as `supports положняк` and `none required; собери идеи may route here` as direct bespoke invocation ownership;
+- direct bespoke mapping must exist only when the `Related command` value itself starts with a concrete command alias (optionally followed by a qualifier such as `when ...`); supporting/may-route wording must not suppress the generated `use_case.invoke` row;
+- restore distinct generated direct invocation rows for `UC-DOC-RECONCILE-STATUS`, `UC-PLAN-WORKSPACE-ESTABLISH-UC`, `UC-PLAN-WORKSPACE-CHANGE-UC` and `UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY`, while preserving genuine direct mappings such as `UC-PLAN-COLLECT-IDEAS → ideas.collect`, `UC-REPO-CURRENT-STATE → current_state.report` and `UC-DOC-REVIEW-DIFF → critical_review.apply`.
+
+**Resulting Current Meaning:** every current canonical UC still has exactly one manual invocation route, but supporting/upstream commands are not mislabeled as that UC's bespoke command. The 70-current-UC registry parity, Practical Testing UC and generic `use_case.invoke` design remain unchanged. No new Q/R/P is introduced.
+
+### LOG-DOC-042 — Apply direct-command classification correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-041`  
+**ChangeSet:** `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`  
+**Package:** `eb0549b8-3626-4e86-a2bc-73eb879ca211`  
+
+**Target-State Result:** after successful Apply of this correction package:
+- Planning Helper `0.29.1` keeps exact 70/70 current canonical UC projection/seed parity;
+- generated UC discovery classifies a registry `Related command` as bespoke invocation only when that field directly starts with a concrete current command alias; longest matching alias wins when one alias prefixes another;
+- `supports ...`, `none required; ... may route here` and equivalent supporting/upstream route wording do not suppress a generated direct UC invocation row;
+- `UC-DOC-RECONCILE-STATUS` and all three current Workspace Planning UCs therefore receive their own generated `use_case.invoke` command rows, while genuine direct command mappings remain bespoke and unduplicated;
+- README/manual acceptance and automated regression coverage express the same boundary;
+- Helper automated verification passes 109/109 tests and generated userscript/semantic projection/seed catalogs match current sources;
+- no canonical UC, command definition, testing semantics, repository permission or local-delete behavior changes beyond this classification correction.
+
+**Rationale:** preserve the selected complete manual-entry surface without conflating “a command can lead/support this UC” with “this command is the direct invocation of this UC.”

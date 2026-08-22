@@ -106,3 +106,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
 **Entry:** `LOG-PH-013`  
 **Reason:** the retired recheck command compatibility wording and the active legacy `собери идеи` Helper insertion are synchronized with the same UC/Scenario-first Helper correction; full rationale and APPLIED target state remain in the canonical Planning Helper log.
+
+### XREF-015 — Callable Use-Case parity and practical testing plan
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-040`  
+**Reason:** Planning Root adds the generic `invoke-use-case.command.md` route used by generated Helper UC invocation commands; full selected meaning and APPLIED target state are owned by the reusable-documentation log.
+

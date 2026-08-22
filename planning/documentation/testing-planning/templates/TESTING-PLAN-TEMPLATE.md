@@ -1,7 +1,7 @@
 # Lightweight Testing Plan Template
 
 Status: active reusable template
-Scope: proportional project-local testing plan consumed by Testing Strategy / Design / Coverage. It is not product-behavior authority.
+Scope: proportional project-local testing plan owned as a practical operated-plan result by `UC-PLAN-TEST-PLAN` and consumed alongside Testing Strategy / Design / Coverage. It is not product-behavior authority.
 
 ```markdown
 # Testing Plan

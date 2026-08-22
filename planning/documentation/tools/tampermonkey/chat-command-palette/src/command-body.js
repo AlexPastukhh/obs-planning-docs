@@ -88,6 +88,48 @@
     ].join('\n');
   }
 
+  function buildUseCaseInvocationBody(genericDefinition,useCase,mode=MODE.ADAPTIVE){
+    const full=mode===MODE.FULL;
+    return [
+      '[PLANNING_COMMAND]',
+      'Read this whole command body before answering.',
+      'Do not ignore `key_reminders`.',
+      '',
+      'command:',
+      `  ${useCase.label}`,
+      '',
+      'english_name:',
+      `  invoke use case · ${useCase.label}`,
+      '',
+      'command_definition:',
+      `  planning/commands/${genericDefinition.file}`,
+      '',
+      'use_case_id:',
+      `  ${useCase.id}`,
+      '',
+      'source_of_truth:',
+      '  Start from `planning/command-routing.md`.',
+      `  Then read \`planning/commands/${genericDefinition.file}\` and resolve \`${useCase.id}\` in \`${useCase.sources[0]}\`.`,
+      '  Follow the current UC owner route; the Helper projection is not semantic authority.',
+      '',
+      'route_read_rule:',
+      `  ${full?'Read the complete relevant current owner route for this UC.':'Read or reread the selected UC route when it is not current, remembered or certain.'}`,
+      '  Do not expand permissions merely because the UC is selected.',
+      '',
+      'key_reminders:',
+      ...genericDefinition.keyReminders.map((item)=>`  - ${item}`),
+      `  - Current UC result: ${useCase.description||useCase.label}`,
+      '',
+      'user_target:',
+      `  ${useCase.target||'<current target>'}`,
+      '',
+      '[/PLANNING_COMMAND]'
+    ].join('\n');
+  }
+
+  function useCaseInvocationCommandId(useCaseId){return `uc.invoke.${String(useCaseId||'').toLowerCase()}`;}
+  function buildUseCaseInvocationEntry(genericDefinition,useCase){return{id:useCaseInvocationCommandId(useCase.id),entityType:'use-case-invocation-command',useCaseId:useCase.id,label:useCase.label,command:useCase.label,englishName:`invoke use case · ${useCase.label}`,description:`Manual invocation of ${useCase.id} through its current canonical owner route`,directionIds:[useCase.directionId],adaptiveBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.ADAPTIVE),fullBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.FULL),refinementBodies:[],stateLabel:'Generated UC invocation · canonical registry remains authority'};}
+
   function buildCommandEntry(definition) {
     return {
       ...definition,
@@ -100,5 +142,5 @@
 
   function buildCommandEntries(definitions) { return (definitions || []).filter((definition) => definition.palette === true).map(buildCommandEntry); }
 
-  return { MODE, commandReadBlock, buildCommandBody, buildRefinementBody, buildCommandEntry, buildCommandEntries };
+  return { MODE, commandReadBlock, buildCommandBody, buildRefinementBody, buildUseCaseInvocationBody, useCaseInvocationCommandId, buildUseCaseInvocationEntry, buildCommandEntry, buildCommandEntries };
 });

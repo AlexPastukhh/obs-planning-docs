@@ -14,7 +14,7 @@ direction-registry.md
 → selected workflow/template
 ```
 
-Three independently useful capabilities are supported: shared Testing Strategy, behavior-specific Test Design, and Current Test Coverage/Evidence Review. Test layers are techniques/responsibility zones inside these capabilities, not separate Use Cases.
+Four independently useful capabilities are supported: shared Testing Strategy, behavior-specific Test Design, Practical Testing / Acceptance Plan, and Current Test Coverage/Evidence Review. Test layers are techniques/responsibility zones inside these capabilities, not separate Use Cases.
 
 ## Supporting Guidance
 
@@ -24,4 +24,4 @@ Three independently useful capabilities are supported: shared Testing Strategy, 
 
 ## Testing Plan / Practical Acceptance
 
-Use [`templates/TESTING-PLAN-TEMPLATE.md`](templates/TESTING-PLAN-TEMPLATE.md) as the lightweight project-local planning baseline when a stable cross-Slice/project proof plan is useful. It composes current Strategy/Design/Coverage UCs rather than replacing them. Practical Acceptance is a planned operated proof route for properties/negative guarantees that are most credibly verified by human/AI/E2E operation.
+Use [`templates/TESTING-PLAN-TEMPLATE.md`](templates/TESTING-PLAN-TEMPLATE.md) as the lightweight project-local baseline. `UC-PLAN-TEST-PLAN` owns the independently useful practical operated-plan result; it composes current Strategy/Design meaning and hands executed evidence to Coverage rather than replacing those UCs. Practical Acceptance is a planned operated proof route for properties/negative guarantees that are most credibly verified by human/AI/E2E operation.

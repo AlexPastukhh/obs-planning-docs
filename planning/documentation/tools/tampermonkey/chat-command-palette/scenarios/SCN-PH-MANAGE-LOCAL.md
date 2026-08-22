@@ -27,3 +27,5 @@ Scope: canonical detailed application behavior owner; this Scenario owns Helper-
 - **Primary implementation:** [`src/command-definition-codec.js`](../src/command-definition-codec.js), [`src/command-catalog.js`](../src/command-catalog.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
 - **Automated evidence:** [`tests/command-definition-codec.test.mjs`](../tests/command-definition-codec.test.mjs), [`tests/command-catalog.test.mjs`](../tests/command-catalog.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-manage-local`](../MANUAL-ACCEPTANCE.md#scn-ph-manage-local).
+- generated UC invocation commands may be hidden locally without hiding the corresponding Use Case; their tombstone uses `hiddenCommandIds` and never changes canonical registries.
+

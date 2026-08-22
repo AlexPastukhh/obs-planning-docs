@@ -104,3 +104,13 @@ Passing automated tests does **not** mark these browser/remote checks complete. 
 
 - Change owner/repository/branch and confirm repository evidence metadata is cleared **before** the new source becomes active.
 - Force local snapshot persistence failure during a source change and confirm the new repository settings are not activated with stale old-source verification metadata.
+
+## Registry-driven UC parity and invocation
+
+- Confirm every current canonical UC registry row appears under **Use Cases**, including `UC-PLAN-TEST-PLAN`.
+- Confirm `UC-PLAN-TEST-PLAN — Plan Practical Testing / Acceptance` is manually invokable from **Commands**.
+- Pick a UC without a bespoke command and confirm its generated command inserts a body that references `planning/commands/invoke-use-case.command.md`, the exact UC ID and current registry source.
+- Delete only that generated command locally and confirm the Use Case remains visible under **Use Cases** and no repository file is deleted.
+- Confirm UCs with bespoke commands do not receive a duplicate generated invocation row.
+- Confirm `UC-PLAN-WORKSPACE-ESTABLISH-UC`, `UC-PLAN-WORKSPACE-CHANGE-UC`, `UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY` and `UC-DOC-RECONCILE-STATUS` each have their own generated direct invocation row even though their registries mention `собери идеи`/`положняк` only as supporting or may-route commands.
+- Confirm genuinely direct mappings such as `UC-PLAN-COLLECT-IDEAS → ideas.collect` and `UC-REPO-CURRENT-STATE → current_state.report` still reuse the bespoke command without a duplicate generated row.

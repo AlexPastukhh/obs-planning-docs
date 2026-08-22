@@ -50,3 +50,10 @@ test('explicit GitHub sync can restore a locally deleted command and clears its 
 
 test('local Delete hides a Use Case without changing canonical semantic definitions',()=>{const local=snapshot();const id='UC-PLAN-DOMAIN';assert.ok(semantic.USE_CASE_DEFINITIONS.some((entry)=>entry.id===id));const next=runtime.deleteLocalUseCaseFromSnapshot(local,id);assert.ok(next.hiddenUseCaseIds.includes(id));const materialized=runtime.materializeSnapshot(next);assert.equal(materialized.useCaseEntries.some((entry)=>entry.id===id),false);assert.ok(semantic.USE_CASE_DEFINITIONS.some((entry)=>entry.id===id));});
 
+
+
+test('every current UC has exactly one manual command route: bespoke or generated',()=>{const local=snapshot();const memory=runtime.materializeSnapshot(local);const commands=memory.commandEntries;for(const uc of semantic.USE_CASE_DEFINITIONS){const bespoke=uc.commandId?commands.filter((e)=>e.id===uc.commandId):[];const generated=commands.filter((e)=>e.entityType==='use-case-invocation-command'&&e.useCaseId===uc.id);assert.equal(bespoke.length+generated.length,1,uc.id);}});
+
+test('generated UC invocation command can be deleted without hiding the Use Case',()=>{const local=snapshot();const memory=runtime.materializeSnapshot(local);const generated=memory.commandEntries.find((e)=>e.entityType==='use-case-invocation-command');assert.ok(generated);const next=runtime.deleteLocalCommandFromSnapshot(local,generated.id);const after=runtime.materializeSnapshot(next);assert.equal(after.commandEntries.some((e)=>e.id===generated.id),false);assert.equal(after.useCaseEntries.some((e)=>e.id===generated.useCaseId),true);});
+
+test('supporting command references receive distinct generated direct invocation rows',()=>{const memory=runtime.materializeSnapshot(snapshot());for(const id of ['UC-DOC-RECONCILE-STATUS','UC-PLAN-WORKSPACE-ESTABLISH-UC','UC-PLAN-WORKSPACE-CHANGE-UC','UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY']){const row=memory.commandEntries.find((entry)=>entry.entityType==='use-case-invocation-command'&&entry.useCaseId===id);assert.ok(row,`${id}: missing generated direct invocation row`);}});

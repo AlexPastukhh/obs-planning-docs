@@ -279,3 +279,18 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - no GitHub/repository deletion, implicit repository write, new command ontology or new semantic owner is introduced.
 
 **Rationale:** finish the same Helper navigation ChangeSet with immediately available local catalogs, symmetric local removal controls and the concrete consistency defects found in the applied branch.
+
+### XREF-012 — Registry-driven complete UC projection and manual invocation
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-040`  
+**Reason:** Planning Helper source/build/tests/generated artifact implement complete registry-driven UC parity and one manual command route per current UC as part of the same Practical Testing / callable-UC transition; full clarification and APPLIED target state are owned by the reusable-documentation log.
+
+
+### XREF-013 — Correct direct-command classification for callable UCs
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-042`  
+**Reason:** Planning Helper build/source projection, generated artifact, README/manual acceptance and regression tests correct the distinction between direct bespoke UC invocation and merely supporting/may-route command references; full ReviewDiff finding and APPLIED target state remain in the reusable-documentation canonical log.

@@ -1,6 +1,6 @@
 {
   "name": "obs-planning-helper",
-  "version": "0.28.0",
+  "version": "0.29.1",
   "private": true,
   "scripts": {
     "build": "node build-chat-command-palette.mjs",

@@ -46,4 +46,4 @@ Read/query proof emphasizes projection correctness, access/filtering and absence
 
 ## Practical Acceptance Choice
 
-During proof design, explicitly consider whether a material property is better demonstrated through a Practical Acceptance card. Select it when operated behavior/evidence gives stronger meaningful proof than forcing a brittle narrow automated test. Preserve negative guarantees (for example “must not mutate”) as explicit observable/pass-fail conditions.
+During proof design, explicitly consider whether a material property is better demonstrated through Practical Acceptance. Select that proof style when operated behavior/evidence gives stronger meaningful proof than forcing a brittle narrow automated test; when a practical operated pass/campaign is independently useful, hand the selected proof meaning to `UC-PLAN-TEST-PLAN` rather than treating Test Design as the plan owner. Preserve negative guarantees (for example “must not mutate”) as explicit observable/pass-fail conditions.

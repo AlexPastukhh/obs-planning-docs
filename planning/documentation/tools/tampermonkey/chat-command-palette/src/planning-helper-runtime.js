@@ -21,10 +21,14 @@
     const commandById=new Map(commandRecords.map((record)=>[record.definition.id,record]));
     const helperByKey=new Map(helperRecords.map((record)=>[helperKey(record.item),record]));
     const planningEntries=deps.buildCommandEntries(definitions).map((entry)=>{const record=commandById.get(entry.id);const stateLabel=record?.repositoryKnown?'Registered · repository content verified':record?.repositoryTracked?'Registered · local draft changed':'New command draft · not registered';return{...entry,entityType:'planning-command',definition:record?.definition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',stateLabel,directionIds:deps.directionIdsForCommand(record?.definition||entry)};});
+    const genericInvoke=definitions.find((definition)=>definition.id==='use_case.invoke')||{file:'invoke-use-case.command.md',keyReminders:['The selected Use Case registry entry and current owner route are semantic authority; this generated Helper row is invocation only.','Do not infer repository mutation, archive, commit or push permission from UC activation.']};
+    const visibleCommandIds=new Set(planningEntries.map((entry)=>entry.id));
+    const hiddenCommandIds=new Set(snapshot.hiddenCommandIds||[]);
+    const invocationEntries=deps.USE_CASE_DEFINITIONS.filter((uc)=>!(uc.commandId&&visibleCommandIds.has(uc.commandId))).map((uc)=>deps.buildUseCaseInvocationEntry(genericInvoke,uc)).filter((entry)=>!hiddenCommandIds.has(entry.id));
     const helperEntries=helperRecords.map((record)=>{const item=record.item;const evidence=record.repositorySha?'local · GitHub SHA verified':record.repositoryKnown?'local · repository-backed content; SHA unverified':'local · repository match not verified';return{id:`helper-library:${item.kind}:${item.id}`,entityType:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?'legacy-helper-command':'prompt',libraryId:item.id,libraryKind:item.kind,label:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy insertion · ${item.title}`:item.title,title:item.title,description:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy helper-command compatibility · ${evidence}`:evidence,text:item.text,adaptiveBody:item.text,repositoryPath:record.path,repositoryKnown:Boolean(record.repositoryKnown),repositoryTracked:Boolean(record.repositoryKnown),repositorySha:record.repositorySha||'',createdAt:item.createdAt,updatedAt:item.updatedAt};});
     const legacyCommandEntries=helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.COMMAND);
     const useCaseEntries=(deps.buildSemanticEntries()[deps.SURFACES.USE_CASES]||[]).filter((entry)=>!hiddenUseCaseIds.has(entry.id));
-    return{commandRecords,helperRecords,commandByFile,commandById,helperByKey,commandEntries:[...planningEntries,...legacyCommandEntries],localCommandEntries:legacyCommandEntries,promptEntries:helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.PROMPT),useCaseEntries};
+    return{commandRecords,helperRecords,commandByFile,commandById,helperByKey,commandEntries:[...planningEntries,...invocationEntries,...legacyCommandEntries],localCommandEntries:legacyCommandEntries,promptEntries:helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.PROMPT),useCaseEntries};
   }
 
   function mergeChatImport(snapshot,parsed,mode='import'){
@@ -106,8 +110,9 @@
 
   function deleteLocalCommandFromSnapshot(snapshot,id){
     const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),record=memory.commandById.get(value);
-    if(!record)throw new Error(`Planning command not found: ${value||'<empty>'}`);
-    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.filter((entry)=>entry.definition.id!==value),hiddenCommandIds:[...new Set([...(snapshot.hiddenCommandIds||[]),value])]});
+    const invocation=deps.USE_CASE_DEFINITIONS.some((uc)=>deps.useCaseInvocationCommandId(uc.id)===value);
+    if(!record&&!invocation)throw new Error(`Planning/UC invocation command not found: ${value||'<empty>'}`);
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:record?memory.commandRecords.filter((entry)=>entry.definition.id!==value):memory.commandRecords,hiddenCommandIds:[...new Set([...(snapshot.hiddenCommandIds||[]),value])]});
   }
 
   function deleteLocalUseCaseFromSnapshot(snapshot,id){

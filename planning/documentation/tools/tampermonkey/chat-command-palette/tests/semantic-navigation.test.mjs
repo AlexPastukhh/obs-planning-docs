@@ -108,3 +108,16 @@ test('every visible planning command resolves through at least one current Direc
 
 test('Application Realization projection matches selected comparative pre-Domain contract',()=>{const realization=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-PLAN-REALIZATION');assert.ok(realization);assert.equal(realization.label,'Review / Compare High-Level Application Realization');assert.match(realization.description,/candidate Domain variants/);assert.match(realization.instruction,/pre-Domain comparative evidence/);assert.match(realization.instruction,/Domain authority/);});
 
+
+
+test('all current canonical UC registry files participate in exact Helper parity',()=>{
+  function walk(dir,result=[]){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,entry.name);if(entry.isDirectory())walk(p,result);else if(entry.isFile()&&entry.name.toLowerCase()==='use-case-registry.md')result.push(p)}return result}
+  const expected=[];for(const file of walk(path.join(repoRoot,'planning'))){for(const line of fs.readFileSync(file,'utf8').split(/\r?\n/)){let m=line.match(/^\| `((?:UC-[A-Z0-9-]+))` \|/);if(!m)m=line.match(/^## `((?:UC-[A-Z0-9-]+))` — /);if(m)expected.push(m[1]);}}
+  const actual=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...new Set(expected)].sort());
+});
+
+test('Practical Testing Plan is an independent current Testing UC',()=>{const uc=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-PLAN-TEST-PLAN');assert.ok(uc);assert.equal(uc.label,'Plan Practical Testing / Acceptance');assert.equal(uc.directionId,'DIR-PLAN-TESTING');assert.match(uc.description,/practical operated proof plan/i);});
+
+test('supporting or may-route command references do not become bespoke UC invocation ownership',()=>{for(const id of ['UC-DOC-RECONCILE-STATUS','UC-PLAN-WORKSPACE-ESTABLISH-UC','UC-PLAN-WORKSPACE-CHANGE-UC','UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY']){const uc=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id===id);assert.ok(uc,id);assert.equal(uc.commandId,undefined,`${id}: supporting command relation must not suppress generated invocation`);}});
+
+test('direct Related command references still map to the intended bespoke command',()=>{const expected=new Map([['UC-PLAN-COLLECT-IDEAS','ideas.collect'],['UC-REPO-CURRENT-STATE','current_state.report'],['UC-DOC-REVIEW-DIFF','critical_review.apply'],['UC-REPO-ORIENT','governance.development'],['UC-DOC-BUILD-REVIEWABLE-ARCHIVE','replacement_archive.review_diff.create']]);for(const [id,commandId] of expected){const uc=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id===id);assert.ok(uc,id);assert.equal(uc.commandId,commandId,id);}});
