@@ -1,11 +1,24 @@
-# Replacement Package App Manual Acceptance
+# Replacement Package App Manual Practical Testing Plan
 
-Status: required Windows / Microsoft Edge acceptance checklist
-Scope: checks not proven by cross-platform automated Java tests alone.
+Status: current Slice-oriented Windows / Microsoft Edge practical-testing plan
+Scope: operated proof for user-visible/environment behavior not established by automated Java/component/integration tests alone.
 
-Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE RESULT passed=29 failed=0` (or later suites with `failed=0`).
+This plan is the manual proof surface referenced by `testing-plan.md`. It is not an automated E2E suite. Planned cards do not become executed evidence until their execution state is explicitly recorded.
 
-## Environment
+## Execution-State Contract
+
+Each material practical card records one of:
+
+```text
+planned
+executed-pass
+executed-fail
+stale
+```
+
+Historical ad-hoc runs are not silently imported as current acceptance evidence by this documentation migration.
+
+## Shared Environment
 
 - Windows with a full JDK 21 (`java`, `javac`, `jar`, `jpackage`).
 - Git available on PATH.
@@ -13,7 +26,7 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 - at least two disposable Git repositories with configured GitHub-shaped `origin` values.
 - no valuable uncommitted work in disposable repositories.
 
-## Build / Launch / Settings Migration
+## Shared Build / Launch / Settings Preflight
 
 1. Run `run-tests.cmd`; require `failed=0`.
 2. Run `run-app.cmd` and verify the Swing window opens.
@@ -24,7 +37,12 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 7. Pin that executable to the Windows taskbar, close/reopen from the taskbar, and require the app to open normally.
 8. Return to the source-launched app, click **Install / update** again, and require the same executable path to remain valid after replacement. The existing taskbar pin must still launch the refreshed app.
 
-## Allowed Repository Registry
+## `PA-SL01` — Apply Replacement Work
+
+**Target property:** a prepared package can become active work only in the intended concrete repository, without partial mutation, cross-repository false ownership conflicts or silent adoption of unrelated work.  
+**Execution state:** `planned`
+
+### Repository registry / target checks
 
 1. Add two repositories and assign readable display names.
 2. Switch between them and verify displayed `github:<owner>/<repo>` identities.
@@ -33,7 +51,7 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 5. Restore origin and verify normal operations resume.
 6. With an Active ChangeSet in a repository, attempt to remove that repository from the allowlist and require the removal to be blocked.
 
-## Apply And Rollback
+### Apply / rollback checks
 
 1. Apply a valid add/replace/delete package and verify exact result bytes.
 2. Confirm ApplicationAttempt + ChangeSet appear in local state and the ChangeSet selector automatically selects the applied item.
@@ -42,7 +60,30 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 5. Exercise a filesystem failure during mutation; require exact rollback or explicit `STATE_DIVERGED`.
 6. Create a repository path through a Windows junction/symlink to a directory outside the repository and target a file below it; require `STATE_DIVERGED` and verify outside bytes are untouched.
 
-## ChangeSet Browser / Restart
+### Action / archive resolution checks
+
+1. Paste a valid OBS-ACTION with matching ZIP and verify packageId-based resolution.
+2. Change action packageId; require `ACTION_PACKAGE_MISMATCH`/no mutation.
+3. Wrong repository package must produce `REPOSITORY_MISMATCH`.
+4. Filename alone must never override packageId mismatch.
+
+### Repository-scoped ownership regression
+
+1. In repository A create/retain an unfinished ChangeSet owning `action-log.md`.
+2. In a different concrete repository B apply independent work touching its own `action-log.md`; the repository-A owner must not itself cause `PATH_OWNERSHIP_CONFLICT`.
+3. In one concrete repository create two independent unfinished works touching the same repository-relative path; the second work must be blocked before mutation.
+4. When two local clones share one logical `repositoryIdentity`, ownership remains scoped by concrete local repository rather than by origin identity alone.
+
+### Policy-dependent pending coverage
+
+Tracked-file base equivalence under Git clean/filter/line-ending conversion remains unresolved in the current plan. Do not mark that case pass/fail against an invented normalization rule; once the policy is selected, add/run a regression that accepts the selected clean-equivalent case while continuing to reject true content divergence and preserving strict binary/untracked safety.
+
+## `PA-SL02` — Inspect Current Change
+
+**Target property:** the selected logical work exposes an exact current cumulative change that survives restart/refresh and optional Copy/Open without mutating the real Git index or becoming an approval gate.  
+**Execution state:** `planned`
+
+### ChangeSet navigation / restart
 
 1. Confirm the selector displays `changeSetLabel`, lifecycle status and a short UUID rather than requiring manual UUID entry.
 2. Confirm full ChangeSet UUID is visible read-only for technical copy/debugging.
@@ -50,7 +91,7 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 4. Restart the application and verify the last selected repository/ChangeSet is restored when still valid.
 5. Toggle `Show history` and verify Finalized ChangeSets appear without replacing the default Active/`CommittedPendingPush` view.
 
-## ReviewDiff And Real Index
+### Current ReviewDiff / real-index checks
 
 1. Ensure real index is clean.
 2. Apply a package containing an untracked add.
@@ -64,7 +105,10 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 10. Click `Refresh Review`; require a new current review identity to be persisted and Review state to become `Current`.
 11. Test `RepoDiffFile` and `Both` settings and confirm `_ai-review-diffs/**` is not an owned ChangeSet path.
 
-## Finalize / Implicit Review Baseline / Push Recovery
+## `PA-SL03` — Finalize And Publish Work
+
+**Target property:** only the selected current work is completed/published; publication failure preserves the already-created local work and recovery does not create a second logical work item.  
+**Execution state:** `planned`
 
 1. Confirm there is no user-facing Review SHA field, SHA input or `Approve Current Review` action in Swing.
 2. Without using Copy/Open, Finalize a current ChangeSet and require the persisted current ReviewDiff to be used automatically as the baseline.
@@ -81,15 +125,16 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 13. Add an explicit package path matched by `.gitignore`; require Apply ReviewDiff and Finalize to include only that owned path successfully.
 14. For each package action `add`, `replace` and `delete`, create a matching pre-existing ignored unowned path and require `STATE_DIVERGED`; ignore rules must never make an existing unowned file adoptable.
 
-## Output Session / Error Copy
+### Remote-ahead practical recovery
 
-1. Select package A and Apply; require Output to start with one archive header plus `Apply attempt 1`.
-2. Retry the same package A; require the existing Output to remain and `Apply attempt 2` to append.
-3. Select package B (different `packageId`, including when reused at the same filesystem path) and Apply; require a fresh Output session containing only package B output.
-4. Force an Apply error and click `Copy output`; paste into a text editor and require the complete current Output block to match. Successful copy must not add another line to Output.
-5. Force a bridge-side terminal error such as `FailedBeforeSend` for the current archive ReviewDiff; require its task id/status/message to appear asynchronously in the current Output so it can be copied with the Apply context. Then start a different package output session and deliver a late terminal event from the older archive; require the old event **not** to appear in the new archive Output.
+1. Put a ChangeSet into `CommittedPendingPush`, then advance the remote on a disjoint path. Retry Push must preserve the same logical ChangeSet, recover/publish safely, and finalize without creating a second logical work item.
+2. Repeat with a remote change touching a pending-owned path. Automatic recovery must stop rather than force overwrite; the ChangeSet remains publication-pending with actionable technical output.
+3. Where verified recovery rewrites the technical commit, user workflow must not require SHA interpretation and the logical ChangeSet identity must remain stable.
 
-## Repository Snapshot Export
+## `PA-SL04` — Export Repository Snapshot
+
+**Target property:** Local/Committed repository context is exported as the documented stable ZIP without mutating repository work/index; artifact success survives downstream clipboard problems.  
+**Execution state:** `planned`
 
 1. Select a registered repository and click `Export repository ZIP`.
 2. Local mode: create a modified tracked file, a tracked deletion, an untracked non-ignored file and an ignored untracked file. Export and inspect the ZIP:
@@ -113,7 +158,23 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 14. Click `Open folder` and require the parent directory of the created ZIP to open.
 15. For a committed tree containing a symlink/submodule, require V1 export to reject rather than silently flatten the entry.
 
-## ChatGPT Bridge / ReviewDiff Delivery
+## `PA-SL05` — Attach Repository Snapshot To ChatGPT
+
+**Target property:** the exact validated Repository Snapshot becomes ready in the explicitly selected ordinary ChatGPT conversation and remains unsent.  
+**Execution state:** `planned`
+
+1. Create a Repository Snapshot ZIP and choose `Attach to ChatGPT`; select one open ordinary conversation.
+2. Require the exact ZIP filename to become a ready ChatGPT attachment.
+3. Require the extension to **never press Send** for the snapshot task; the user remains responsible for sending the prepared composer.
+4. Attempt to queue a generic ZIP or replacement-package ZIP through the Java bridge mechanics and require `CHAT_BRIDGE_FAILED`; V1 accepts only Repository Snapshot ZIPs.
+5. Verify snapshot attachment failure does not delete/reclassify the already-successful snapshot ZIP and does not create/change a ChangeSet.
+
+Manual pass requires observing the real Edge/ChatGPT composer; Java/bridge task-state tests alone are insufficient evidence for this Slice result.
+
+## `PA-SL06` — Deliver Current Change To ChatGPT
+
+**Target property:** the exact current change reaches the intended ordinary ChatGPT conversation once, or a truthful failed/uncertain/no-content outcome is preserved without changing repository-work authority.  
+**Execution state:** `planned`
 
 1. Load `chatgpt-bridge-extension/` unpacked in Microsoft Edge, start the Java app, copy the pairing token from the app, save it in extension Options and require the connection test to pass.
 2. Open two different ordinary `https://chatgpt.com/c/<id>` conversations and verify both titles appear in `Refresh chats`. Open a second tab of one conversation and verify it remains one choice with a larger tab count.
@@ -135,21 +196,20 @@ Run after `run-tests.cmd` reports `RESULT passed=32 failed=0` and `CHAT-BRIDGE R
 18. Reload the unpacked extension while ordinary ChatGPT tabs are already open; require the service worker to inject/reconnect the content script without requiring a manual tab refresh.
 19. After extension setup, inspect content-script access to extension storage and require the pairing token to be unavailable there; Options/service-worker connection must continue to work.
 
-## ChatGPT Bridge / Snapshot Attach-Only
+Manual pass requires real small-paste and native large-paste behavior plus the duplicate-tab/composer protections above; Java/bridge state-machine tests alone are insufficient evidence for live-browser success.
 
-1. Create a Repository Snapshot ZIP and choose `Attach to ChatGPT`; select one open ordinary conversation.
-2. Require the exact ZIP filename to become a ready ChatGPT attachment.
-3. Require the extension to **never press Send** for the snapshot task; the user remains responsible for sending the prepared composer.
-4. Attempt to queue a generic ZIP or replacement-package ZIP through the Java bridge mechanics and require `CHAT_BRIDGE_FAILED`; V1 accepts only Repository Snapshot ZIPs.
-5. Verify snapshot attachment failure does not delete/reclassify the already-successful snapshot ZIP and does not create/change a ChangeSet.
+## Shared Operational Diagnostic Checks
 
-## Action / Archive Resolution
+These checks support several Slices and remain cross-cutting rather than becoming a separate Slice merely because Output is separately addressable.
 
-1. Paste a valid OBS-ACTION with matching ZIP and verify packageId-based resolution.
-2. Change action packageId; require `ACTION_PACKAGE_MISMATCH`/no mutation.
-3. Wrong repository package must produce `REPOSITORY_MISMATCH`.
-4. Filename alone must never override packageId mismatch.
+1. Select package A and Apply; require Output to start with one archive header plus `Apply attempt 1`.
+2. Retry the same package A; require the existing Output to remain and `Apply attempt 2` to append.
+3. Select package B (different `packageId`, including when reused at the same filesystem path) and Apply; require a fresh Output session containing only package B output.
+4. Force an Apply error and click `Copy output`; paste into a text editor and require the complete current Output block to match. Successful copy must not add another line to Output.
+5. Force a bridge-side terminal error such as `FailedBeforeSend` for the current archive ReviewDiff; require its task id/status/message to appear asynchronously in the current Output so it can be copied with the Apply context. Then start a different package output session and deliver a late terminal event from the older archive; require the old event **not** to appear in the new archive Output.
 
 ## Acceptance Record
 
 Record Windows/JDK/Git versions, registered repository identities, date, pass/fail items and discovered issues before declaring V0.1 operationally accepted.
+
+For each executed `PA-SLxx` card, record Windows/JDK/Git/Edge context when material, repository identities/fixtures used, date, observable evidence, pass/fail and discovered issues. A Slice requiring live UI/browser proof is operationally accepted only while its relevant current cards are `executed-pass`.

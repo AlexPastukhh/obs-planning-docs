@@ -128,3 +128,17 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-046`  
 **Reason:** Planning Root removes the duplicate `XREF-016` produced by the original package and retains one coherent reference plus this correction reference; no command or planning semantics change.
+
+### XREF-018 — Replacement Package App SDS ReviewDiff correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-005`  
+**Reason:** Planning Root updates `DIR-REPLACEMENT-PACKAGE-APP` to point directly to the current Scenario Catalog as part of the same SDS ReviewDiff correction; full finding and selected correction are owned by adjacent canonical `LOG-RPKG-004`, with the applied target state recorded by `LOG-RPKG-005`.
+
+### XREF-019 — Replacement Package App Direction semantic-name correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-007`  
+**Reason:** Planning Root changes the semantic name of `DIR-REPLACEMENT-PACKAGE-APP` to `Use Replacement Package App` in the root Direction Registry as part of the same SDS ReviewDiff correction; full finding and selected correction are owned by adjacent canonical `LOG-RPKG-006`, with the applied target state recorded by `LOG-RPKG-007`.

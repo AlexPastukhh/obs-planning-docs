@@ -1,19 +1,36 @@
-# Scenario Catalog
+# Replacement Package App Scenario Catalog
 
-Status: active application scenario navigation
-Scope: detailed behavior owners for current application Use Cases. The Use-Case Registry owns semantic identity/trigger/result/boundaries; Scenario files own detailed behavior and traceability.
+Status: active application Scenario navigation
+Profile: Modular / Medium SDS
+Application plan: [`../application-plan.md`](../application-plan.md)
 
-## Scenario Inventory
+## Current Scenario Inventory
 
-| Use Case | Scenario | Behavior owner |
+| Scenario | Status | Real-life Need / independently meaningful result |
 |---|---|---|
-| `UC-RPKG-APPLY` | `SCN-RPKG-APPLY` — Apply Verified Replacement Package | [`SCN-RPKG-APPLY.md`](SCN-RPKG-APPLY.md) |
-| `UC-RPKG-REVIEW` | `SCN-RPKG-REVIEW` — Inspect Current ChangeSet Review State | [`SCN-RPKG-REVIEW.md`](SCN-RPKG-REVIEW.md) |
-| `UC-RPKG-FINALIZE` | `SCN-RPKG-FINALIZE` — Finalize Reviewed ChangeSet | [`SCN-RPKG-FINALIZE.md`](SCN-RPKG-FINALIZE.md) |
-| `UC-RPKG-EXPORT-REPOSITORY` | `SCN-RPKG-EXPORT-REPOSITORY` — Export Repository Snapshot ZIP | [`SCN-RPKG-EXPORT-REPOSITORY.md`](SCN-RPKG-EXPORT-REPOSITORY.md) |
-| `UC-RPKG-DELIVER-REVIEW` | `SCN-RPKG-DELIVER-REVIEW` — Deliver Current ReviewDiff to ChatGPT | [`SCN-RPKG-DELIVER-REVIEW.md`](SCN-RPKG-DELIVER-REVIEW.md) |
-| `UC-RPKG-ATTACH-SNAPSHOT` | `SCN-RPKG-ATTACH-SNAPSHOT` — Attach Repository Snapshot to ChatGPT | [`SCN-RPKG-ATTACH-SNAPSHOT.md`](SCN-RPKG-ATTACH-SNAPSHOT.md) |
+| [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) — Complete Prepared Repository Work | preliminary current | Safely bring prepared repository work into a local repository, understand its current state, and finish/publicly publish that logical work without capturing unrelated work. |
+| [`SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT`](SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) — Provide Repository Context For Further Work | preliminary current | Produce an exact portable repository context and, when useful, make that context available in the intended ChatGPT conversation without changing repository work. |
+| [`SCN-RPKG-PROVIDE-CURRENT-CHANGE`](SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) — Provide Current Change For Review / Continuation | preliminary current | Give the intended ChatGPT conversation the exact current change for one logical work item so review/continuation can proceed without manual large-diff handling. |
 
-## Boundary
+These boundaries are intentionally user-world/Need/result shaped. `Apply`, `Refresh Review`, `Finalize`, `Retry Push`, `Export ZIP`, `Bind`, `Send` and `Attach` are actions/branches or implementation Slices, not separate Scenarios by default.
 
-This catalog is navigation only. It does not duplicate complete Use-Case entries or Scenario bodies.
+## Supporting Meaning
+
+- shared/current Scenario DATA + cross-cutting Behavior + Requirements: [`../application-plan.md`](../application-plan.md)
+- spatial/visual meaning: [`../screens.md`](../screens.md)
+- Domain discovery/current working model: [`../domain-draft.md`](../domain-draft.md)
+- implementation Slice decomposition/current realization: [`../slices.md`](../slices.md)
+- cross-Slice proof strategy: [`../testing-plan.md`](../testing-plan.md)
+
+## Legacy Compatibility
+
+The historical operation-shaped files remain as compatibility stubs because existing notes/links may reference them:
+
+- `SCN-RPKG-APPLY.md` → `SL-RPKG-01`
+- `SCN-RPKG-REVIEW.md` → `SL-RPKG-02`
+- `SCN-RPKG-FINALIZE.md` → `SL-RPKG-03`
+- `SCN-RPKG-EXPORT-REPOSITORY.md` → `SL-RPKG-04`
+- `SCN-RPKG-ATTACH-SNAPSHOT.md` → `SL-RPKG-05`
+- `SCN-RPKG-DELIVER-REVIEW.md` → `SL-RPKG-06`
+
+Those files are not current Scenario semantic owners.

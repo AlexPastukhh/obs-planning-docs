@@ -17,7 +17,7 @@ Scope: root orientation across all current semantic work/application families.
 | `DIR-PLANNING-RUNTIME` | Use The OBS Planning Runtime | [`areas/planning-system/direction-registry.md`](areas/planning-system/direction-registry.md) | [`areas/planning-system/use-case-registry.md`](areas/planning-system/use-case-registry.md) |
 | `DIR-PLANNING-HELPER` | Use And Maintain Planning Helper | [`documentation/tools/tampermonkey/chat-command-palette/direction-registry.md`](documentation/tools/tampermonkey/chat-command-palette/direction-registry.md) | [`documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md`](documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md) |
 | `DIR-LINKED-NOTES` | Use And Maintain Linked Notes | [`documentation/tools/tampermonkey/linked-notes/direction-registry.md`](documentation/tools/tampermonkey/linked-notes/direction-registry.md) | [`documentation/tools/tampermonkey/linked-notes/scenarios/README.md`](documentation/tools/tampermonkey/linked-notes/scenarios/README.md) |
-| `DIR-REPLACEMENT-PACKAGE-APP` | Apply / Review / Finalize Replacement Packages | [`documentation/tools/replacement-package-app/direction-registry.md`](documentation/tools/replacement-package-app/direction-registry.md) | [`documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md`](documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md) |
+| `DIR-REPLACEMENT-PACKAGE-APP` | Use Replacement Package App | [`documentation/tools/replacement-package-app/direction-registry.md`](documentation/tools/replacement-package-app/direction-registry.md) | [`documentation/tools/replacement-package-app/scenarios/README.md`](documentation/tools/replacement-package-app/scenarios/README.md) |
 
 ## Direction Rule
 
