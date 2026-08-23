@@ -31,7 +31,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
     "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
     "Planned evidence is not executed evidence; actual coverage/evidence review remains UC-PLAN-TEST-COVERAGE.",
-    "No repository mutation, archive, commit or push is implied."
+    "No repository mutation, archive, commit or push is implied.",
+    "In Application SDS this is pre-implementation proof planning; Step 4 later executes the selected proof and Coverage reviews actual evidence."
   ],
   "userTarget": "<Selected application/change result>",
   "palette": true,

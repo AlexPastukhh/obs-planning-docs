@@ -1,37 +1,30 @@
-# SCN-PH-RECOVER — Recover Repository-Backed Local State From Pasted Evidence
+# SCN-PH-RECOVER — Recover GitHub-Backed Local Catalog State
 
 Status: active current behavior owner
-Scope: canonical detailed application behavior owner; this Scenario owns its trigger/context/behavior/result/boundaries and traceability.
+Scope: canonical detailed application behavior owner for restoring durable repository-backed Helper state after local loss/drift or when repository state should become the local baseline again.
 
-**Trigger/input:** `Restore from GitHub copy` with the complete current marker set supplied externally after repository reading.
+**Trigger/input:** explicit `Hard Reload GitHub`; or pasted complete repository marker evidence when direct GitHub recovery is unavailable.
 
-**Successful result:** repository-backed local records are reconciled to the pasted complete set, stale repository-backed records absent from that set are removed, and local-only unbacked records are preserved.
+**Successful result — Hard Reload:**
 
-**Boundary:** the helper performs zero GitHub requests during Restore. Pasted evidence establishes repository-backed content provenance but does not fabricate a direct GitHub SHA; `repositorySha` stays empty until direct remote evidence exists.
+```text
+current GitHub planning/commands/*.command.md
++ current seed/directions.json
++ current seed/use-cases.json
++ current catalog-order.json
+→ validate
+→ replace local Direction + Command + Use-Case catalogs and local order
+→ restore locally hidden repository catalog rows
+→ preserve local Prompt content and Favorites
+```
+
+The UI confirms before replacement because unsaved local Command drafts are intentionally discarded.
+
+**Boundary:** Hard Reload is explicit and performs repository reads only after confirmation. It does not mutate GitHub, does not overwrite local Prompt content and does not imply commit/push. Generated direction/use-case seeds are build-verified repository projections; canonical semantic meaning remains in registries.
 
 **Traceability:**
 
-- **Product / behavior:** [`README.md#chatgpt-import-and-recovery`](../README.md#chatgpt-import-and-recovery).
-- **Focused / durable contract:** recovery markers reuse [`planning/commands/README.md`](../../../../../commands/README.md) and [`planning/helper-library/README.md`](../../../../../helper-library/README.md) formats.
-- **Primary implementation:** [`src/chat-recovery.js`](../src/chat-recovery.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
-- **Automated evidence:** [`tests/chat-recovery.test.mjs`](../tests/chat-recovery.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs).
+- **Product / behavior:** [`README.md#hard-reload-github`](../README.md#hard-reload-github), [`README.md#source--cache-model`](../README.md#source--cache-model).
+- **Primary implementation:** [`src/repository-catalog-service.js`](../src/repository-catalog-service.js), [`src/repository-command-service.js`](../src/repository-command-service.js), [`src/chat-recovery.js`](../src/chat-recovery.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
+- **Automated evidence:** [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/chat-recovery.test.mjs`](../tests/chat-recovery.test.mjs), [`tests/semantic-navigation.test.mjs`](../tests/semantic-navigation.test.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-recover`](../MANUAL-ACCEPTANCE.md#scn-ph-recover).
-
-## 12. Repository evidence metadata
-
-Snapshot compatibility keeps the existing fields:
-
-```text
-repositoryKnown
-repositorySha
-```
-
-Their current meaning is deliberately narrower than “the remote currently matches”:
-
-- `repositoryKnown=true` means the exact local record content has repository evidence/provenance (for example bundled repository content, pasted complete repository recovery evidence, direct Sync, or verified Save);
-- `repositorySha` is populated only when a direct GitHub operation supplied a concrete SHA for that exact content;
-- `repositorySha` therefore implies repository-known content, while repository-known content may legitimately have an empty SHA;
-- a real local content change clears both pieces of exact-content evidence;
-- a repository source change clears both before the new source settings become active.
-
-The UI must not describe `repositoryKnown=true` with an empty SHA as a currently verified GitHub version.

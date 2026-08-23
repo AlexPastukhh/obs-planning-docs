@@ -1,7 +1,7 @@
 # Domain Discovery Workflow
 
 Status: active reusable workflow
-Scope: discover evidence-backed Domain candidates/invariants/policies/consistency boundaries from current application behavior before selecting a current Domain model.
+Scope: discover evidence-backed Domain candidates/invariants/policies/consistency and, when justified, value/ownership/Aggregate boundaries from current application behavior before selecting a current Domain model.
 
 Generic Architecture Lens: [`../architecture-planning/README.md`](../architecture-planning/README.md)
 Application change context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
@@ -13,7 +13,9 @@ Selection/review workflow: [`domain-planning-workflow.md`](domain-planning-workf
 
 ```text
 Domain Discovery
-→ evidence + candidates + integrated Domain Variants when material
+→ evidence + candidates
+→ Value Object / Aggregate ownership candidates when justified
+→ integrated Domain Variants when material
 
 Domain Planning
 → compare/refine/select/review current Domain meaning
@@ -132,15 +134,82 @@ Candidate kinds include:
 ```text
 concept
 entity/identity
-value/concept
+value / Value Object candidate when value-integrity evidence justifies one
 relationship
 lifecycle/state
 invariant
 policy
 consistency boundary
+Aggregate / Aggregate Root candidate when ownership evidence justifies one
+owned child/entity/value-like state
+external Aggregate reference
+cross-Aggregate / application coordination
 ```
 
+A Value Object candidate is justified by meaningful value integrity/equality/validation/operation semantics, not by a desire to wrap every primitive.
+
 `Domain Candidate` is one possible semantic piece. `Domain Variant` is one coherent integrated model combining candidates into a current answer.
+
+## 6.1 Aggregate / Ownership Boundary Discovery — When Material
+
+Aggregate discovery is derived from **current invariant/lifecycle/consistency ownership evidence**, not from nouns, classes, tables, UI grouping or ORM navigation. It is valid to conclude that no explicit Aggregate boundary needs modeling.
+
+For each materially related cluster ask:
+
+```text
+Which concrete invariant(s) must be protected together?
+Which lifecycle/state changes must be governed together?
+What consistency is actually required: atomic/strong, coordinated, eventual, or none?
+Which concept can naturally own those changes and protect those invariants?
+Is there a credible Aggregate Root candidate?
+Which child entities / value-like state are actually owned and changed through that Root?
+What state is owned here vs derived/read-only vs intentionally outside?
+What is explicitly NOT part of this Aggregate?
+Which other Aggregates are external references rather than owned children?
+Which rule crosses Aggregate boundaries and therefore belongs to application coordination unless one Aggregate clearly owns it?
+```
+
+Strong evidence may look like:
+
+```text
+several concepts participate in one current invariant
++ violation would make required behavior incorrect
++ the invariant must be protected through one ownership/consistency boundary
+→ Aggregate candidate worth evaluating
+```
+
+Weak/insufficient evidence by itself:
+
+```text
+same Screen / UI flow
+same database table family / foreign-key graph
+ORM navigation
+same module/folder
+read/query convenience
+objects merely mention each other
+```
+
+Do not infer write ownership from read shape or persistence convenience. External Aggregates should normally remain references/identities, not child ownership.
+
+When several candidates are plausible, record the boundary alternatives explicitly:
+
+```text
+candidate root
+owned children/state
+protected invariants
+explicitly outside
+external references
+cross-boundary coordination
+select / split / merge / reject / unresolved
+```
+
+An optional Scenario → Domain/Aggregate discovery projection may be used when it improves reviewability:
+
+| Scenario / Behavior evidence | Domain candidates | Aggregate / Root candidate | Coordination / outside notes | Status |
+|---|---|---|---|---|
+| `<source>` | `<concepts/invariants>` | `<candidate or none>` | `<external/cross-boundary meaning>` | candidate / rejected / selected-for-review |
+
+This is discovery evidence only; it does not become selected Domain authority.
 
 ## 7. Apply Change Axes Where They Cross
 
@@ -164,6 +233,9 @@ Domain Evidence
 Domain Candidates
 Invariant / Policy findings
 Candidate consistency boundaries
+Value Object candidates when justified
+Candidate Aggregate / Aggregate Root / ownership boundaries when justified
+explicit outside/external-reference/cross-Aggregate coordination findings when material
 Integrated Domain Variants when needed
 unresolved semantic findings
 ```

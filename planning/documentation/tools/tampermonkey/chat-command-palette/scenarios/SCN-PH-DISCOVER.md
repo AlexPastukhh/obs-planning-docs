@@ -16,5 +16,5 @@ Scope: canonical detailed application behavior owner; this Scenario owns its tri
 - **Primary implementation:** [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js), [`src/semantic-projections.js`](../src/semantic-projections.js).
 - **Automated evidence:** [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-policy.test.mjs`](../tests/planning-helper-policy.test.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-discover`](../MANUAL-ACCEPTANCE.md#scn-ph-discover).
-**Registry parity invariant:** every current canonical Use Case found in current `planning/**/use-case-registry.md` files must appear exactly once in the Use Cases surface; the build fails on projection/seed parity drift.
+**Registry parity invariant:** every current canonical Use Case found in current Use-Case registries under `planning/**` must appear exactly once in the Use Cases surface; registry filenames are matched case-insensitively, while legacy/historical compatibility indexes are excluded from the current-UC projection. The build fails on projection/seed parity drift.
 

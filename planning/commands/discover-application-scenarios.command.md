@@ -29,7 +29,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
     "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
     "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied."
+    "No repository mutation, archive, commit or push is implied.",
+    "Application Scenario identity is a user/actor goal/Need or desired result reached through observable useful behavior; internal implementation operations remain downstream unless they participate in an independently meaningful user/actor-visible outcome."
   ],
   "userTarget": "<Selected Application responsibility>",
   "palette": true,

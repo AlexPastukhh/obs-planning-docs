@@ -11,7 +11,7 @@ Recommended shape: [`templates/CHANGE-PRESSURE-REVIEW-TEMPLATE.md`](templates/CH
 
 Start with important Workspace UCs. Include read/understand/inspect/diagnose/verify capabilities, not only mutation.
 
-For each material UC record current relevance/frequency when useful and obtain/reuse a representative Workspace Work Path.
+For each material UC record current relevance/frequency/importance evidence when useful and obtain/reuse a representative Workspace Work Path. Include observed analytical/read cost as well as mutation cost.
 
 ## 2. Collect Important Concrete Changes
 
@@ -45,6 +45,7 @@ poor locality
 high Working-Context Load / low discoverability
 repeated state/semantic boundary crossings
 high verification/migration/operational cost
+high representative Application runtime cost when architecture-induced
 external volatility / failure pressure
 ```
 
@@ -76,7 +77,9 @@ When material, consume `UC-PLAN-ARCH-DISCOVER-WEUC` output as contextual change-
 ```text
 contextual WEUC instance
 → expected Workspace Change Path
-→ likelihood / value / timing
+→ likelihood / horizon / value / confidence
+→ current-work overlap + preparation-now vs deferred cost
+→ read / mutation / verification / runtime cost effects
 → friction / fan-out / risk
 → pressure/axis only to the degree evidence supports it
 ```

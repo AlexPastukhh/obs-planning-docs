@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "kind": "direction-seed",
+  "generatedFrom": "planning/direction-registry.md",
+  "items": [
+    {
+      "id": "DIR-REPOSITORY",
+      "label": "Orient In And Work With The Repository",
+      "description": "Current semantic Direction · Orient In And Work With The Repository",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-PLAN-SOLUTION",
+      "label": "Plan A Solution / Workflow / Application",
+      "description": "Current semantic Direction · Plan A Solution / Workflow / Application",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/application-planning/direction-registry.md",
+        "planning/documentation/application-planning/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-PLAN-WORKSPACE",
+      "label": "Plan / Review Workspace Capabilities",
+      "description": "Current semantic Direction · Plan / Review Workspace Capabilities",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/workspace-planning/direction-registry.md",
+        "planning/documentation/workspace-planning/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-PLAN-ARCHITECTURE",
+      "label": "Plan / Review Workspace Architecture",
+      "description": "Current semantic Direction · Plan / Review Workspace Architecture",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/architecture-planning/direction-registry.md",
+        "planning/documentation/architecture-planning/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-PLAN-TESTING",
+      "label": "Plan / Review Verification And Testing",
+      "description": "Current semantic Direction · Plan / Review Verification And Testing",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/testing-planning/direction-registry.md",
+        "planning/documentation/testing-planning/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-DOCUMENTATION",
+      "label": "Use And Maintain Repository Documentation",
+      "description": "Current semantic Direction · Use And Maintain Repository Documentation",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/direction-registry.md",
+        "planning/documentation/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-DOCUMENTATION-WORKBENCH",
+      "label": "Develop And Maintain Documentation Workbench",
+      "description": "Current semantic Direction · Develop And Maintain Documentation Workbench",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/areas/documentation-workbench/direction-registry.md",
+        "planning/areas/documentation-workbench/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-PLANNING-RUNTIME",
+      "label": "Use The OBS Planning Runtime",
+      "description": "Current semantic Direction · Use The OBS Planning Runtime",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/areas/planning-system/direction-registry.md",
+        "planning/areas/planning-system/use-case-registry.md"
+      ]
+    },
+    {
+      "id": "DIR-PLANNING-HELPER",
+      "label": "Use And Maintain Planning Helper",
+      "description": "Current semantic Direction · Use And Maintain Planning Helper",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/tools/tampermonkey/chat-command-palette/direction-registry.md",
+        "planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md"
+      ]
+    },
+    {
+      "id": "DIR-LINKED-NOTES",
+      "label": "Use And Maintain Linked Notes",
+      "description": "Current semantic Direction · Use And Maintain Linked Notes",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/tools/tampermonkey/linked-notes/direction-registry.md",
+        "planning/documentation/tools/tampermonkey/linked-notes/scenarios/README.md"
+      ]
+    },
+    {
+      "id": "DIR-REPLACEMENT-PACKAGE-APP",
+      "label": "Use Replacement Package App",
+      "description": "Current semantic Direction · Use Replacement Package App",
+      "sources": [
+        "planning/direction-registry.md",
+        "planning/documentation/tools/replacement-package-app/direction-registry.md",
+        "planning/documentation/tools/replacement-package-app/scenarios/README.md"
+      ]
+    }
+  ]
+}

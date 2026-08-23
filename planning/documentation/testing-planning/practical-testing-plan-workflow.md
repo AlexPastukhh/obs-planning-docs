@@ -7,7 +7,7 @@ Owner Use Case: `UC-PLAN-TEST-PLAN`
 
 A proportional practical verification plan for one meaningful application/change result, ready to be operated by a human, AI-operated environment or E2E/tool route.
 
-For Application SDS this is the planning responsibility inside **Step 4 — Practical Realization Feedback**. It plans the operated acceptance pass/campaign after selected Scenario/Domain/Slice meaning; it does not claim implementation or evidence already exists.
+For Application SDS this is a **pre-implementation Step 3 verification-planning responsibility** after selected Scenario/Domain/Slice meaning is grounded enough. It plans the operated acceptance pass/campaign that Step 4 may later execute; it does not claim implementation or evidence already exists.
 
 ```text
 selected Scenario / Requirements / Domain / Slice meaning

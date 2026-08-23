@@ -55,6 +55,29 @@ Domain does not require `visual/` by default.
 | State / data combination | Valid? | Why | Protecting invariant / consistency rule | Evidence |
 |---|---|---|---|---|
 
+### Value Objects — When Material
+<Use only where value integrity/equality/validation/operations justify a stable value concept. Do not introduce wrappers merely to avoid primitives.>
+
+### Aggregate / Ownership Boundaries — When Material
+
+Use only where current invariant/lifecycle/consistency evidence justifies an explicit Aggregate. `No explicit Aggregate needed` is valid.
+
+For each selected or still-material candidate:
+
+| Field | Meaning |
+|---|---|
+| Aggregate / status | <name + selected / split / merge / rejected / unresolved> |
+| Aggregate Root | <root candidate / selected root> |
+| Owned child entities / value-like state | <what changes through the root> |
+| Protected invariants / lifecycle | <concrete current rules justifying the boundary> |
+| Consistency expectation | <atomic/strong / coordinated / eventual / none> |
+| Explicitly outside | <what this Aggregate does not own> |
+| External Aggregate references | <identity/reference only where applicable> |
+| Cross-Aggregate coordination | <rules/workflow owned outside one Aggregate> |
+| Evidence | <Scenario/DATA/Behavior/Requirement links> |
+
+Do not infer Aggregate ownership from read/query convenience, UI shape, ORM navigation, database relations or module layout alone. One Aggregate Root does not directly own/mutate another Aggregate Root.
+
 ## Lifecycles / States
 <When lifecycle meaning materially helps.>
 

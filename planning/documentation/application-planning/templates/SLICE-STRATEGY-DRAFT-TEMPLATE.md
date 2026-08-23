@@ -62,6 +62,20 @@ Blank sections are not requirements. Skip explicit strategy artifacts for trivia
 
 <Where would likely changes propagate under this decomposition? Which seams are justified now, and which possible abstractions are intentionally deferred as speculative?>
 
+## Product Priority / Implementation Sequence — When Material
+
+| Item | Meaning |
+|---|---|
+| Product / Scenario priority | <what is actually wanted sooner> |
+| Recommended implementation order | <technical sequence> |
+| Why they differ | <dependency/cleanliness/risk/change-path reason> |
+| Minimum prerequisite | <only work that should precede the priority result> |
+| Deferred lower-priority work | <what is intentionally not implemented now> |
+| WEUC / architecture evidence | <likely instance/path/pressure/trade-off> |
+| Risk if future never happens | <Architectural Tax / speculative work> |
+
+Architecture/Slice planning recommends implementation sequence; it does not redefine product priority or pull a whole lower-priority feature forward without sufficient evidence.
+
 ## Current Selected Strategy
 
 <Selected decomposition/order and why.>

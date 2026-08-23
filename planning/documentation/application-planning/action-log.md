@@ -365,3 +365,10 @@ No material unresolved issues identified for this selected documentation/methodo
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-046`  
 **Reason:** Application Planning removes the duplicate `XREF-007` produced by the original package and records the log-coherence correction without changing SDS/WEUC semantics.
+
+### XREF-009 — Full SDS Scenario/Domain/Slice and Architecture-work-cost alignment
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-048`
+**Reason:** Application Planning owners/templates/registries align iterative Scenario DATA/Behavior discovery, evidence-backed Domain Aggregate/VO boundaries, Slice sequencing/delegation/drift/proof handoff, runtime-cost evidence and Step 3/4 Testing boundaries as part of the same reviewed Full SDS transition.

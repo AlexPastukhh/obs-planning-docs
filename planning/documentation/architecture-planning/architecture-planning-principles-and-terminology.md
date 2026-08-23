@@ -19,6 +19,8 @@ What is the least complex architecture justified by that evidence now?
 
 A valid Architecture Lens conclusion is: `no additional architectural structure is justified now`.
 
+Canonical Workspace-work / cost semantics live in [`workspace-use-cases-and-change-pressure.md`](workspace-use-cases-and-change-pressure.md). In particular, architecture decisions trade off important Workspace understanding, mutation/evolution, verification/diagnosis/operation and representative Application runtime costs rather than optimizing one structural metric in isolation.
+
 ## Progressive Architecture
 
 ```text
@@ -220,6 +222,54 @@ prefer the one that is cheaper to revise later.
 
 Reversibility is not generic extensibility everywhere. A direct implementation that can later be extracted may be better than a general extension framework for futures not yet understood.
 
+## Principle → Workspace UC / WEUC Decision Examples
+
+Architecture principles are useful only when they help choose between concrete work paths. When clarifying/refining a principle, try to express at least one representative current Workspace UC or contextual WEUC Instance and a real choice where the principle changes the trade-off. Examples:
+
+```text
+Discoverability / Naming
+Workspace UC: find where retry policy is owned
+Choice: generic helpers scattered by mechanism vs explicit RetryPolicy owner/name/location
+Trade-off: extra explicit concept vs lower analytical/read cost
+
+Semantic DRY
+WEUC: change one business rule used by client/server
+Choice: one semantic authority vs two intentionally independent representations
+Trade-off: drift risk vs wrong shared abstraction/coupling
+
+Port / Interface
+WEUC: add a second provider
+Choice: direct first provider vs stable provider boundary now
+Trade-off: preparation/tax now vs later extraction/rework
+
+State Ownership / Cache
+Scenario/runtime need: lower read latency
+Choice: direct authoritative read vs cache/derived state
+Trade-off: latency payoff vs invalidation, verification and mutation complexity
+
+Persistence
+WEUC: migrate storage representation
+Choice: direct persistence-shaped model vs mapping boundary
+Trade-off: current simplicity vs migration/locality/semantic-decoupling payoff
+
+Sync / Async
+Scenario need: avoid user blocking
+Choice: direct synchronous flow vs asynchronous boundary
+Trade-off: latency/throughput/failure isolation vs retries, observability, consistency and operational tax
+
+Tests / Seams
+Workspace UC: prove one important failure/no-mutation behavior
+Choice: direct integrated proof vs extracted seam
+Trade-off: stronger/local proof vs seam complexity that may not express a real system boundary
+
+Reversibility
+WEUC: plausible later second implementation
+Choice: small direct implementation now vs generalized extension framework
+Trade-off: cheap later extraction vs permanent speculative tax
+```
+
+These are reasoning examples, not mandatory patterns. A different current Workspace may produce the opposite correct decision.
+
 ## Architecture Flags
 
 An `Architecture Flag` is a signal to evaluate a decision explicitly, not a pattern command.
@@ -275,4 +325,4 @@ An intentionally rejected abstraction may record a `Revisit Trigger` such as a s
 
 A **WEUC Type** is a reusable kind of evolution work (for example add provider / migrate schema / split owner). A **contextual WEUC Instance** is that work against a concrete Workspace area/owner/change surface.
 
-Architecture evidence should prefer contextual instances when judging locality, fan-out, migration/verification friction and Working-Context Load. Generic future flexibility does not pay architecture complexity by itself.
+Architecture evidence should prefer contextual instances when judging locality, fan-out, migration/verification friction, Working-Context Load and the broader Work-Cost Model. Evaluate likelihood/horizon/value/confidence, current-work overlap, preparation-now vs deferred cost, reversibility and Architectural Tax when material. Generic future flexibility does not pay architecture complexity by itself.

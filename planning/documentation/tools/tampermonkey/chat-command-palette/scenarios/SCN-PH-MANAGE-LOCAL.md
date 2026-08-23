@@ -1,33 +1,27 @@
-# SCN-PH-MANAGE-LOCAL — Manage Helper-Local Commands, Use Cases And Prompts
+# SCN-PH-MANAGE-LOCAL — Manage Helper-Local Catalogs, Prompts And Layout
 
 Status: active current behavior owner
-Scope: canonical detailed application behavior owner; this Scenario owns Helper-local create/edit/delete and Favorite-preference behavior for Planning Commands, Use-Case projections and reusable prompts.
+Scope: canonical detailed application behavior owner for local draft/hide/Favorite/order/layout work without implicit repository mutation.
 
-**Trigger/input:** `New command`, command `Edit`, `New prompt`, prompt `Edit`, local `Delete`, or Favorite star/unstar on a Command/Use Case.
+**Trigger/input:** local Command/Prompt create/edit/delete, Command/Use-Case hide, Favorite toggle, item/Direction `↑`/`↓`, panel drag or resize.
 
-**Successful result:** the selected Helper-local Command/Use-Case/Prompt state or Favorite preference is created/changed/deleted in the unified local snapshot/RAM without an implicit repository mutation; deleting a registered Command or Use-Case projection never deletes its canonical repository authority.
+**Successful result:** selected Helper-local content/preference/order/layout changes in RAM/local persistence only; canonical GitHub content remains untouched until an explicit repository action.
 
 **Current invariants:**
 
-- the Commands surface represents real `planning/commands/*.command.md` definitions; a local edit is a draft, not a second command authority;
-- editing an existing command cannot change its stable `id` or `file`; create a new command draft for a new identity/path;
-- the complete local command catalog is validated before a command draft is accepted;
-- unchanged local save preserves repository evidence; a real edit clears exact-content evidence while retaining tracked-command provenance;
-- any visible Planning Command may be removed from this Helper locally; registered command retirement/deletion remains a separate repository action and the canonical `planning/commands/*.command.md` file is untouched;
-- any visible Use Case may be removed from this Helper locally; canonical Use-Case registry/owner meaning is untouched;
-- any visible Command or Use Case may be starred/unstarred locally; the same ID is duplicated in a top-level `★ Favorites` projection while its original row remains inside the normal Direction group;
-- Favorite state is local-only and makes zero GitHub requests/writes; deleting a Command/Use Case also clears its Favorite reference;
-- prompt edits remain exact insertion-text edits; Prompt Delete remains local-only; legacy helper-command records remain compatibility-only and the current UI does not create new ones;
-- generated `seed/commands.json` and `seed/use-cases.json` ship the complete current default catalogs in the update; local tombstones prevent intentionally deleted items from being silently re-added on ordinary startup.
-
-**Boundary:** repository persistence is separate `SCN-PH-PUBLISH`; explicit repository→local replacement of a command is `Reload GitHub`, not an implicit freshness sync.
+- real Planning Commands are local drafts of GitHub-backed `planning/commands/*.command.md` records;
+- current Directions and Use Cases are local materializations of GitHub-backed generated catalogs whose semantic authority remains canonical registries;
+- a visible Command/Use Case may be hidden locally without deleting repository authority;
+- Favorite state stores only stable IDs and duplicates the same row in `★ Favorites`;
+- `↑` / `↓` changes only local `catalogOrder`; unknown/new IDs append rather than disappear;
+- `Save order GitHub` is required when local order should become durable repository order;
+- Prompt edits remain local-first and are not overwritten by Direction/Command/Use-Case Hard Reload;
+- panel position and size are local UI state only;
+- local content/order changes make zero GitHub requests.
 
 **Traceability:**
 
-- **Product / behavior:** [`README.md#unified-local-snapshot`](../README.md#unified-local-snapshot), [`README.md#repository-backed-entities`](../README.md#repository-backed-entities).
-- **Focused / durable contract:** [`planning/commands/README.md`](../../../../../commands/README.md), [`planning/helper-library/README.md`](../../../../../helper-library/README.md).
-- **Primary implementation:** [`src/command-definition-codec.js`](../src/command-definition-codec.js), [`src/command-catalog.js`](../src/command-catalog.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
-- **Automated evidence:** [`tests/command-definition-codec.test.mjs`](../tests/command-definition-codec.test.mjs), [`tests/command-catalog.test.mjs`](../tests/command-catalog.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs).
+- **Product / behavior:** [`README.md#unified-local-snapshot`](../README.md#unified-local-snapshot), [`README.md#catalog-order`](../README.md#catalog-order), [`README.md#ui-layout`](../README.md#ui-layout).
+- **Primary implementation:** [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js), [`src/semantic-projections.js`](../src/semantic-projections.js).
+- **Automated evidence:** [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-ui.test.mjs`](../tests/planning-helper-ui.test.mjs), [`tests/planning-helper-policy.test.mjs`](../tests/planning-helper-policy.test.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-manage-local`](../MANUAL-ACCEPTANCE.md#scn-ph-manage-local).
-- generated UC invocation commands may be hidden locally without hiding the corresponding Use Case; their tombstone uses `hiddenCommandIds` and never changes canonical registries.
-

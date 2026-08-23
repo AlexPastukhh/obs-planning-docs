@@ -1,7 +1,7 @@
 # Scenario / Domain / Slice Docs Profile
 
 Status: active reusable specialized profile
-Doc version: v0.6.0-step0-weuc-aligned
+Doc version: v0.7.0-sds-architecture-cost-aligned
 Scope: rich Full SDS owner topology for the same Step 0–4 Application planning semantics used by Mini/Modular SDS, with durable Scenario/DATA/Behavior/Domain/Slice/WEUC/testing addressability when scale justifies it.
 
 Core detailed-planning contract:
@@ -31,6 +31,7 @@ STEP 1 — SCENARIO
   → Scenario discovery
   → detailed Scenario workspaces
   → Scenario DATA / Behavior Items + related Requirements
+  → iterative Scenario ↔ DATA ↔ Behavior refinement when decomposition exposes gaps
   → optional Screen spatial owners
 
 STEP 2 — DOMAIN
@@ -47,10 +48,14 @@ STEP 3 — REALIZATION / SLICES
      → friction / fan-out / risk
      → Change Pressure / Change Axes
      → Architecture Decisions when concrete payoff warrants them
+  → Test Strategy when shared/layer policy is material
+  → Test Design for material selected behavior
+  → Practical Test Plan when an operated acceptance pass/campaign is useful
 
 STEP 4 — PRACTICAL REALIZATION FEEDBACK
   → implementation
-  → practical testing
+  → execute selected automated / human / AI / E2E proof
+  → current Coverage/Evidence review when needed
   → semantic ReviewDiff / actual evidence
   → upstream correction only when real evidence requires it
 ```
@@ -227,7 +232,7 @@ Runtime Branches and Idea Variants are not automatically whole Planning Unit Var
 
 ## 8. Domain / Slice Boundaries
 
-Domain workspaces use a Domain owner + `ideas/`, with `variants/` only when a second integrated Domain design exists. Domain does not need a default `visual/` area. Follow the core Domain workflow: current Scenarios/Requirements first, then justified Change Axes, invariants vs policies, current-scenario stress check and premature-generalization check.
+Domain workspaces use a Domain owner + `ideas/`, with `variants/` only when a second integrated Domain design exists. Domain does not need a default `visual/` area. Follow the core Domain workflow: current Scenarios/Requirements first, then invariants/value integrity/consistency, Value Object and Aggregate/Root/ownership candidates when justified, explicit outside/external references/cross-Aggregate coordination, selected/split/merged/rejected boundaries, justified Change Axes, current-scenario stress check and premature-generalization check. `No explicit Aggregate needed` is valid.
 
 When decomposition/order is material, `UC-PLAN-SLICE-STRATEGY` may use a Slice Strategy draft before individual Slice work. It is optional for trivial work.
 
@@ -236,12 +241,16 @@ Slice workspaces keep one integrated Slice owner plus `ideas/` and `visual/`. A 
 Before accepting material architecture seams merely for future flexibility, apply `UC-PLAN-ARCH-DISCOVER-WEUC` to the concrete target code/workspace area when likely evolution can materially affect the Slice/architecture:
 
 ```text
-WEUC Type candidate
+important Workspace UC Types / current UCs
+→ WEUC Type candidate
 → contextual WEUC Instance
-→ likelihood / value / timing
-→ expected Workspace Change Path
-→ friction / fan-out / migration / verification risk
+→ likelihood / horizon / value / confidence
+→ current-work overlap + preparation-now vs deferred cost
+→ expected Workspace Change / Understanding / Verification Path
+→ representative Application Runtime cost when relevant
+→ read + mutation + verification/diagnosis/operation + runtime cost trade-offs
 → Change Pressure / Change Axis only when supported
+→ implementation-sequence recommendation when useful
 → Architecture Decision only when concrete payoff justifies it
 ```
 
@@ -257,9 +266,9 @@ Full SDS may keep a stable practical-testing surface when operated acceptance ne
 
 ```text
 selected Scenario / Behavior / Requirement / Domain / Slice meaning
-→ UC-PLAN-TEST-PLAN
-→ human / AI-operated / E2E actions + observable evidence + pass/fail
-→ implementation / execution
+→ UC-PLAN-TEST-DESIGN for proof choices when material
+→ UC-PLAN-TEST-PLAN for practical operated acceptance when useful
+→ implementation / execute automated or human / AI / E2E proof
 → UC-PLAN-TEST-COVERAGE for actual evidence review
 → semantic ReviewDiff
 ```

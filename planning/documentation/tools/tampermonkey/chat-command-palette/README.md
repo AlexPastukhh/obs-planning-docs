@@ -1,219 +1,177 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.30.0`
-Scope: deterministic Planning Helper source/build, Direction-nested Commands/Use Cases, focused semantic Use-Case activation, RAM-first local persistence, explicit GitHub repository actions, ChatGPT-mediated recovery fallback and clipboard-first insertion.
+Version: `0.31.0`
+Scope: local-first Planning Helper with GitHub-backed Directions, Planning Commands and Use Cases; reusable Prompts; explicit repository recovery/publish actions; editable durable catalog order; Favorites; and wide/resizable browser UI.
 
 ## Read Order
 
-1. `planning/command-routing.md` for global command-system policy.
-2. `planning/commands/README.md` for real Planning Command definition authority.
-3. `planning/helper-library/README.md` for Prompts / legacy insertion compatibility.
-4. `planning/documentation/tools/tampermonkey/chat-command-palette/scenarios/README.md` for canonical application Scenario identities/statuses and routes to exact docs → code → tests → acceptance traceability.
-5. `planning/documentation/tools/tampermonkey/chat-command-palette/MANUAL-ACCEPTANCE.md` for browser/real-GitHub acceptance.
-6. `planning/documentation/tampermonkey-command-projection-workflow.md`.
-7. this file and focused `src/**` / `tests/**`.
+1. `planning/command-routing.md` — executable-command policy.
+2. `planning/commands/README.md` — Planning Command authority.
+3. `planning/direction-registry.md` — current Direction authority.
+4. current canonical Use-Case registries under `planning/**` (registry filename is matched case-insensitively; legacy/historical compatibility indexes are excluded) — Workspace/methodology Use-Case authority.
+5. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
+6. `scenarios/README.md` — Planning Helper application behavior.
+7. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
+8. focused `src/**` / `tests/**`.
 
-Repository command definitions remain authority. The Planning Helper is a local projection/editor/runtime; its explicit repository actions do not redefine command meaning.
+The userscript is a runtime/projection, not semantic authority. It must not contain a maintained hard-coded catalog of current Commands, Use Cases or Directions.
 
-## Runtime Model
+## Source / Cache Model
 
 ```text
-startup
-  → GM_getValue(obsPlanningHelper:v2:localSnapshot) once on the warm path
-  → validate snapshot
-  → materialize planning commands / prompts / legacy helper-command compatibility records in RAM
-  → normal work uses RAM only
+GitHub durable sources
+  planning/direction-registry.md
+  planning/commands/*.command.md
+  current canonical Use-Case registries under planning/**
+  planning/helper-library/prompts/*.prompt.md
+  catalog-order.json
 
-explicit repository action
-  → Check GitHub | Sync missing | Reload GitHub | Save GitHub
-  → GitHub Contents API only for that action
-  → update RAM/local snapshot only when the action contract says so
+build-verified GitHub projections
+  seed/directions.json   <- planning/direction-registry.md
+  seed/commands.json     <- planning/commands/*.command.md
+  seed/use-cases.json    <- every current canonical Use-Case registry under planning/**
+
+browser local snapshot / RAM
+  = normal working copy/cache
+
+explicit Hard Reload GitHub
+  = authoritative repository -> local recovery for
+    Directions + Commands + Use Cases + catalog order
 ```
 
-Normal startup, tab switching, search, Insert, Copy, local command/prompt draft edit/delete, ChatGPT import and pasted Restore do not read GitHub. `Reload GitHub` is an explicit repository action. There is no background repository polling.
+`seed/*.json` is repository-backed generated data, not independent semantic authority and not embedded as the live catalog in `chat-command-palette.user.js`. `npm run build:check` verifies that the generated catalogs still match their canonical GitHub sources.
 
-The first run after upgrading may migrate old command/library/cache GM records into the unified snapshot. Legacy records are not deleted by migration.
+Normal startup/search/tab switching/Insert/Copy/local edit/reorder/Favorite operations make no GitHub request. GitHub access occurs only after explicit repository actions.
 
 ## Unified Local Snapshot
 
-Primary persistent state:
+Persistent key:
 
 ```text
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v3 contains:
+Schema v4 keeps:
 
 ```text
 planningCommands[]
-  definition
-  rawContent
-  path
-  repositoryKnown
-  repositorySha
-
+directions[] + directionCatalogSha
+useCases[] + useCaseCatalogSha
 helperItems[]
-  item
-  rawContent
-  path
-  repositoryKnown
-  repositorySha
-
+catalogOrder { directions[], commands[], useCases[], prompts[] }
+catalogOrderSha
 hiddenCommandIds[]
 hiddenUseCaseIds[]
 favoriteCommandIds[]
 favoriteUseCaseIds[]
 ```
 
-`rawContent` is the exact normalized LF document representation. `favoriteCommandIds` / `favoriteUseCaseIds` are local-only UI preferences: a favorite duplicates the same row in a top-level `★ Favorites` group while the original remains inside its Direction; no new command/UC identity or repository content is created. At runtime the validated records are materialized once into Maps/entry arrays; Insert/Copy never perform a GM read. `hiddenCommandIds` / `hiddenUseCaseIds` are local-only tombstones used by Delete so a normal userscript restart/update does not immediately resurrect an item the user intentionally removed locally.
+The snapshot is a browser working copy/cache. Losing it must not lose durable Direction/Command/Use-Case truth because those catalogs can be rebuilt from GitHub with `Hard Reload GitHub`.
 
-Repository settings/token remain separate:
+Favorites and local hides are local UI preferences. They reference stable IDs only and never copy semantic authority.
+
+## Repository-Backed Catalogs
+
+### Directions
+
+Canonical source: `planning/direction-registry.md`. Build projection: `seed/directions.json`.
+
+### Planning Commands
+
+Canonical source: `planning/commands/*.command.md`.
+
+Commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Reload` replaces one selected local command from GitHub. `Hard Reload GitHub` replaces the complete local command catalog.
+
+A Command linked directly as a current UC's Related command is reused as that UC's manual invocation route. A UC without a bespoke route receives a generated thin invocation row through `use_case.invoke`; this generated row is not a repository command file and not semantic authority.
+
+Standalone command controls that do not correspond to a UC may carry `directionIds` in their GitHub command definition rather than runtime hard-code.
+
+### Use Cases
+
+Canonical source: all current canonical Use-Case registries under `planning/**`; registry filenames are matched case-insensitively and legacy/historical compatibility indexes are excluded. Build projection: `seed/use-cases.json`.
+
+The build discovers every current canonical UC, verifies unique IDs/current Directions/direct command mappings and regenerates the seed. Runtime treats that repository projection as recoverable local navigation. Use-Case Insert/Copy still resolves the exact current registry entry and owner route.
+
+### Prompts
+
+Prompt working content remains local-first and independently GitHub-backed through deterministic files in `planning/helper-library/prompts/*.prompt.md`.
+
+Hard Reload of Direction/Command/Use-Case catalogs does **not** overwrite local Prompt content.
+
+## Catalog Order
+
+Durable order source:
 
 ```text
-obsPlanningHelper:v1:repositorySettings
-obsPlanningHelper:v1:githubToken
+planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 ```
 
-`repositoryKnown` records exact-content repository evidence/provenance; `repositorySha` is present only when direct GitHub evidence supplied a concrete SHA. Repository-known content may therefore have no SHA (for example bundled repository content or pasted recovery evidence). A direct SHA implies repository-known content. Real local content changes clear both.
+It stores ordered stable IDs for Directions, Commands, Use Cases and Prompts. The UI exposes `↑` / `↓` for rows and Direction groups. Moving an item changes only local order. `Save order GitHub` explicitly persists the current order. Editing `catalog-order.json` directly in GitHub is also valid; `Hard Reload GitHub` adopts that order locally.
 
-Changing owner/repository/branch preserves local content but clears per-record repository evidence metadata **before** the new source settings become active, so old-source evidence cannot be rebound to a new repository/branch.
+Unknown/new IDs not listed in an older order file append after configured IDs rather than disappearing.
 
-## Repository-Backed Entities
+The initial repository order intentionally presents the universal planning route first: real-life reality/solution → Scenario → Domain → Slice → internal Workspace Uses / WEUC Instances → architecture paths/pressure/decisions → Testing → remaining repository/documentation capabilities. Existing `собери идеи` and SDS profile controls remain orchestration/profile controls; no new collect-ideas variants are defined here.
 
-```text
-Commands
-  planning/commands/*.command.md
-  → current surface supports validated local create/edit drafts, local-only Delete, Save GitHub and explicit Reload GitHub
-
-Use Cases
-  current canonical Use-Case registries + owners
-  → current surface is a local semantic projection with local-only Delete; deleting the projection never changes the registry/owner
-
-Prompts
-  planning/helper-library/prompts/*.prompt.md
-
-Legacy helper-command compatibility
-  planning/helper-library/commands/*.helper-command.md
-  → may remain visible as clearly marked legacy insertions; current UI does not create new ones
-```
-
-The main navigation keeps **Commands** and **Use Cases** as separate surfaces. Each surface may show a top-level `★ Favorites` group above Directions; Favorites are duplicate UI projections of the same IDs and the original rows remain in their Direction groups. Both surfaces are browsed through collapsible current Direction groups; there is no separate Directions tab. Commands contains command entries only (plus clearly marked legacy command compatibility records), while Use Cases contains every current canonical Use Case discovered directly from all current canonical UC registries. Commands also exposes one manual invocation route for every current UC: an existing bespoke command is reused only when the registry's Related command field directly names that command as the UC invocation route; supporting wording such as `supports ...` or `none required; ... may route here` does not suppress a generated direct UC-invocation row. Otherwise a generated thin row routes through `planning/commands/invoke-use-case.command.md`. Prompts remain a separate surface.
-
-Directions and Use Cases remain build-time/read-only semantic projections, not writable application registries. A Use-Case Insert/Copy selects one current semantic planning unit: its body identifies the stable UC ID + canonical registry, tells ChatGPT to resolve the **current** registry entry/Main Owner route and follow current owner links to materially defining principles/workflows/templates, and explicitly does not grant command/repository permissions. The Helper does not hard-code a permanent full owner-file list into each UC body.
+## GitHub Actions
 
 ### Check GitHub
 
-`Check GitHub` lists direct GitHub directory metadata and compares local/GitHub path-name sets/counts for real Planning Commands, Prompts and any legacy helper-command compatibility records. It reports same-path, local-only and GitHub-only names. Same-path is inventory overlap only and does not claim file-content equality. It does not mutate local state and does not fetch every file body merely to count/compare inventory.
+Reads repository inventory/current generated catalog files and reports local/GitHub counts plus known SHA changes for Planning Commands, Directions, Use Cases, Prompts/helper records and catalog order. No local mutation occurs.
 
 ### Sync missing
 
-`Sync missing` runs the inventory comparison, GETs only repository paths absent locally, parses/validates those files and adds them to the unified local snapshot. It never overwrites a same-path local record. A changed Planning Command is replaced only by explicit `Reload GitHub` or by an accepted local edit followed by `Save GitHub`.
+Adds only repository records/IDs absent locally. It does not overwrite same-path/same-ID local content. This is incremental acquisition, not authoritative freshness reconciliation.
 
-### Reload GitHub
+### Reload one Command
 
-On a tracked Planning Command row, `Reload GitHub` explicitly GETs that exact current command file, parses/validates it against the local command catalog and replaces the local draft/record with the verified remote definition. It is the deliberate same-path repository→local replacement route; `Sync missing` remains non-overwriting.
+`Reload` on a Planning Command GETs that exact command file and replaces the selected local command draft with verified remote content.
 
-### Save GitHub
+### Hard Reload GitHub
 
-Each real Commands / Prompts row has `Save GitHub`; legacy helper-command compatibility rows retain their historical explicit save behavior.
-
-```text
-remote target absent
-  → create
-
-remote target exists and exact rendered bytes match
-  → no-op
-
-remote helper target exists but helper-library document is malformed
-  → explicit Save keeps that exact current SHA as optimistic base
-  → replace only the same deterministic helper target with the valid local rendered document
-
-remote target exists and differs
-  → update using current remote SHA
-
-write returns optimistic SHA conflict
-  → reread current remote exactly once
-  → if remote bytes now equal intended bytes: verified recovered success, use fresh SHA, no second PUT
-  → if remote bytes differ: real conflict, do not overwrite/retry automatically
-  → if the reread itself fails: remote relation remains unknown; report verification failure and do not claim confirmed divergence
-
-successful or recovered remote result
-  → exact content is verified
-  → attempt to update repositoryKnown/repositorySha for that local record
-  → if browser-local persistence fails after remote verification, report remote success + local metadata warning (do not relabel it as GitHub failure)
-```
-
-Planning-command saves additionally read/validate the complete direct remote command catalog before writing, so a save cannot knowingly create an ambiguous command registry. Helper command/prompt saves are confined to their deterministic helper-library path. Malformed-document repair exists only on explicit Save for that deterministic target; `Sync missing` and ordinary remote reads remain strict and do not repair malformed repository content.
-
-Repository delete is not implemented. `Delete` on Commands, Use Cases and Prompts is local-only: it removes/hides the Helper-local record/projection and makes zero GitHub writes. Deleting a favorited Command/Use Case also clears its local Favorite reference. A registered Planning Command file and a canonical Use-Case registry/owner remain untouched. Explicit `Sync missing` can restore a locally deleted registered command from GitHub; Use-Case deletion remains a local projection preference. Repository command retirement/deletion is a separate authorized documentation action.
-
-## ChatGPT Import And Recovery
-
-`Import from ChatGPT` parses planning-command/helper-library marker blocks and merges them into the local snapshot only. It makes zero GitHub requests. Use per-row `Save GitHub` explicitly when repository persistence is wanted.
-
-`Copy recovery request` + `Restore from GitHub copy` remains available as a manual/offline fallback. Restore reconciles the pasted repository-backed marker set locally while preserving local-only records and performs zero GitHub requests/writes from the helper.
-
-## Clipboard / Insert Contract
-
-For semantic Use Cases, the exact inserted body includes `semantic_owner`, current registry `source_of_truth`, dynamic `route_resolution`, Adaptive/Full `read_rule`, UC-specific instruction and a permission boundary. `Full` requires the receiving chat to read the complete current owner route; Adaptive may reuse clearly sufficient current context. Both keep the same semantic planning unit and permissions.
-
-Every Insert action prepares the exact clipboard body **before** composer mutation. The fast path first attempts a synchronous user-gesture `copy`; when the browser requires the async Clipboard API, composer mutation waits for that copy attempt to finish. The exact same RAM string is then passed to composer insertion. This contract is identical for real Planning Commands, Prompts and any legacy helper-command compatibility insertion.
-
-The helper does not rely on synthetic browser paste. If direct insertion fails after a successful copy, the exact body is already available for normal manual paste (`Ctrl+V`).
-
-Composer lookup caches the last connected composer. Repeated insertion into the same live composer avoids a new selector/layout scan. A disconnected/replaced composer invalidates the cache and is rediscovered.
-
-For ChatGPT `contenteditable` composers, insertion uses one direct `Range.insertNode()` mutation followed by one `input` event instead of `document.execCommand('insertText')`. This is the accepted correction for the previously observed multi-second synchronous insertion stall. Repository check/save/sync is not called from this path.
-
-## Structure
+Explicit authoritative recovery path:
 
 ```text
-scenarios/README.md
-MANUAL-ACCEPTANCE.md
-seed/
-  commands.json     # generated local seed projection from planning/commands/*.command.md
-  use-cases.json    # generated local seed projection from current canonical UC registries
-src/
-  command-definition-codec.js
-  command-catalog.js
-  command-body.js
-  semantic-projections.js
-  helper-library-codec.js
-  chat-recovery.js
-  github-contents-client.js
-  repository-command-service.js
-  repository-helper-library-service.js
-  planning-helper-state.js
-  composer-insertion.js
-  planning-helper-ui.js
-  planning-helper-runtime.js
+fetch complete planning/commands catalog
+fetch seed/directions.json
+fetch seed/use-cases.json
+fetch catalog-order.json
+validate all catalogs
+replace local Directions + Commands + Use Cases + order
+clear local Command/Use-Case hide tombstones
+preserve Prompts and Favorites
 ```
 
-`github-contents-client.js` owns generic GitHub Contents list/read/write/read-back behavior. Repository services confine paths and entity parsing/validation. Runtime exposes those services only through explicit repository UI actions.
+The confirmation warns that unsaved local command drafts are lost. No implicit/background hard reload exists.
 
-## Build / Test / Verify
+### Save GitHub / Save order GitHub
 
-From this directory:
+Per-row Command/Prompt save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. `Save order GitHub` persists only `catalog-order.json`; it changes presentation order, not semantic meaning.
 
-```text
-npm run build
-npm test
-npm run verify
-```
+Repository delete remains unsupported. Local Delete/hide makes zero GitHub writes.
 
-`npm run verify` checks JavaScript syntax, the dynamically discovered planning-command catalog, owner/refinement path existence, focused tests (including Use-Case registry parity, local Delete/tombstone behavior, startup surface and semantic-body routing), generated seed-catalog equality and generated-userscript equality. The number of planning commands or Use Cases is not hard-coded.
+## UI Layout
 
-The seed catalogs are generated **in this repository update**, not fetched after installation. The userscript bundles those current command/use-case seeds so an existing local snapshot gains missing current commands on upgrade while respecting explicit local-delete tombstones.
+Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps itself to the viewport, uses a wide content column with compact actions on desktop, and switches to one-column rows with wrapped actions on narrow screens.
 
-The install artifact is generated:
-
-```text
-planning/documentation/tools/tampermonkey/chat-command-palette.user.js
-```
-
-Do not edit it manually.
+The same entity may appear in `★ Favorites` and its normal Direction group. Favorites are projections, not duplicate records.
 
 ## Safety Boundary
 
-The Planning Helper never runs local Git, commit or push. GitHub I/O happens only after explicit `Check GitHub`, `Sync missing`, `Reload GitHub` or `Save GitHub` actions. Normal insertion/copy/import/delete remains RAM/local-only. Repository deletion is not part of this slice.
+- normal browse/edit/reorder/insert/copy is local-only;
+- all repository reads/writes are explicit UI actions;
+- Hard Reload is destructive only to the local Direction/Command/Use-Case cache/order and requires confirmation;
+- local Prompt content is excluded from Hard Reload;
+- GitHub writes use deterministic paths and optimistic concurrency;
+- generated seeds/userscript never become canonical semantic authority;
+- no Helper action implies repository commit/push.
+
+## Build / Verify
+
+```bash
+cd planning/documentation/tools/tampermonkey/chat-command-palette
+npm run build
+npm run verify
+```
+
+`verify` proves current Direction/UC/Command parity, manual UC invokability, command alias validity, local/repository boundaries, generated-script freshness and Scenario traceability.

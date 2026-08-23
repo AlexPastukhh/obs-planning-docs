@@ -49,11 +49,13 @@ A simple Slice may keep all implementation planning in `slice.md`. Split fronten
 ### Behavior Coverage
 <List the selected Behavior Items / acceptance / invariant obligations implemented by this Slice. Keep this distinct from file/task scope and from test names.>
 
-### Related Behavior Explicitly Out Of Scope — When Material
+### Related Behavior / Responsibility Boundary — When Material
 
-| Related behavior | Owner / destination | Why not this Slice |
-|---|---|---|
-| <behavior> | <owner / later Slice> | <boundary reason> |
+| Related behavior / concern | Treatment | Owner / destination | Why |
+|---|---|---|---|
+| <behavior/concern> | implemented here / delegated / later Slice / explicitly outside | <owner / Slice> | <boundary reason> |
+
+`delegated` means the concern applies to this Slice but canonical ownership remains elsewhere. Applicability does not transfer semantic ownership.
 
 ### Dependencies / Handoffs
 <Only material dependencies.>
@@ -93,6 +95,10 @@ Risks
 → coupling / performance / operations / migration / testability
 ```
 
+### Expected Realization / Drift Check — When Material
+
+<Distinguish provisional names/paths from selected behavioral/responsibility contracts. Renaming/reorganizing a class/file/method is not drift by itself. Behavior changes, responsibility-owner moves, weakened invariants/negative guarantees, unexpected mutation/failure behavior or weakened verification are real drift and require review.>
+
 ### Implementation-Scoped Ideas
 <Link candidate generic Ideas considered. Mark promoted/rejected; selected meaning belongs in this Slice plan rather than remaining only in the Idea.>
 
@@ -100,7 +106,7 @@ Risks
 <Link `visual/` material when presentation/implementation explanation belongs to this Slice. This does not replace canonical Screen spatial ownership.>
 
 ### Verification Target
-<What must be demonstrably true for this Slice to count as delivered.>
+<What must be demonstrably true for this Slice to count as delivered, including important positive outcomes and negative/no-mutation guarantees.>
 
 ### Verification Evidence / Test Coverage — When Useful
 <Link `verification.md` and derive evidence from Scenario Acceptance + Behavior Items + Requirements + Domain invariants/verification meaning + Slice target. Keep `Scope`, `Behavior Coverage` and `Test Coverage` distinct. When proof design is material, route/build a Behavior-to-Test Trace through sibling Testing Planning `UC-PLAN-TEST-DESIGN`; a test name or `covered by integration tests` note is not sufficient proof planning.>

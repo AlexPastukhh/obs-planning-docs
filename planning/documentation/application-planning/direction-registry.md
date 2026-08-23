@@ -33,19 +33,20 @@ Domain Draft
 → rules / invariants / policies
 → likely/evidence-backed variation
 
-STEP 3 — REALIZATION / SLICES
+STEP 3 — REALIZATION / SLICES + VERIFICATION PLANNING
 Slice Strategy
 → vertical Slice(s)
 → frontend/server/other implementation-part plans when useful
-→ contextual WEUC discovery against target code/workspace when material
-→ likelihood / change paths / friction / fan-out
-→ Change Pressure / Change Axes / Architecture Decisions only when supported
+→ keep product/Scenario priority distinct from recommended technical implementation sequence
+→ important Workspace Uses + contextual WEUC discovery against target code/workspace when material
+→ expected Understanding/Change/Verify paths + work-cost / Change Pressure / Architecture Decisions only when supported
+→ Test Strategy / Test Design / Practical Test Plan before implementation when material
 
 STEP 4 — PRACTICAL REALIZATION FEEDBACK
 implementation
-→ practical testing
-→ semantic ReviewDiff
-→ actual evidence
+→ execute selected proofs
+→ actual evidence / current Coverage review when useful
+→ semantic ReviewDiff + proportional architecture work-cost regression check when material
 → upstream correction only when evidence requires it
 ```
 

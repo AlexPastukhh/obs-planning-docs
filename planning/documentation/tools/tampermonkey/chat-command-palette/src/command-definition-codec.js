@@ -13,7 +13,7 @@
     'schemaVersion', 'id', 'file', 'command', 'englishName', 'commandFamily',
     'description', 'meaning', 'activeContextBehavior', 'traversalReadMode',
     'ownerFiles', 'expectedOutput', 'permissionMode', 'keyReminders',
-    'userTarget', 'palette', 'refinements'
+    'userTarget', 'palette', 'refinements', 'directionIds'
   ]);
 
   function assert(condition, message) {
@@ -111,6 +111,7 @@
       keyReminders: stringArray(raw.keyReminders, 'keyReminders', { nonEmpty: true }),
       userTarget: singleLine(raw.userTarget, 'userTarget'),
       palette: raw.palette,
+      directionIds: raw.directionIds == null ? [] : stringArray(raw.directionIds, 'directionIds').map((id,index)=>{const value=singleLine(id,`directionIds[${index}]`);assert(/^DIR-[A-Z0-9-]+$/.test(value),`directionIds[${index}] must be a DIR-* id.`);return value;}),
       refinements
     };
   }
@@ -184,6 +185,7 @@
       keyReminders: normalized.keyReminders,
       userTarget: normalized.userTarget,
       palette: normalized.palette,
+      ...(normalized.directionIds.length ? { directionIds: normalized.directionIds } : {}),
       refinements: normalized.refinements
     };
   }

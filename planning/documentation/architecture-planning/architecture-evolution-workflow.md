@@ -32,7 +32,7 @@ When alternatives are material, use generic `Idea Variants` whose Proposed Answe
 
 ## 5. Evaluate Important Paths
 
-For each candidate inspect representative current/future Workspace UCs and Runtime paths where applicable. Include cognitive/readability effects, migration/operational cost and reversibility.
+For each candidate inspect representative current/future Workspace UCs, contextual WEUC Instances and Runtime paths where applicable. Use the canonical Work-Cost Model: understanding/analytical, mutation/evolution, verification/diagnosis/operation and representative Application runtime costs, plus preparation-now vs deferred cost, migration, reversibility and Architectural Tax.
 
 ## 6. Select Target Architecture
 

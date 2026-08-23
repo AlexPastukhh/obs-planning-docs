@@ -81,6 +81,20 @@ Scenario / DATA / Behavior / Requirements
 
 Implementation convenience does not outrank Domain correctness. A real technical/correctness/performance/consistency impossibility is valid upstream evidence and must be returned as an explicit finding.
 
+## 6.1 Architecture Cost Handoff — When Material
+
+Application Realization owns concrete runtime feasibility/cost evidence for selected/candidate Scenario/Domain meaning. When architecture choices are affected, hand off only that evidence to Architecture Planning:
+
+```text
+Scenario / Runtime Path
+→ latency / waiting / throughput / remote hops
+→ consistency / transaction / failure / retry effects
+→ resource / operational / user-effort effects
+→ Architecture Work-Cost trade-off input
+```
+
+Architecture Planning may trade runtime payoff against Workspace understanding/change/verification cost, but it does not redefine Scenario priority or behavior.
+
 ## 7. Exit Result
 
 ```text

@@ -1,125 +1,92 @@
 # OBS Planning Helper Manual Acceptance
 
-Status: active acceptance plan; execution status must be recorded separately from automated tests
-Version: v1.2.0 / Planning Helper `0.30.0`
-Scope: browser and real-GitHub checks that are not implied by `npm run verify`.
+Status: active acceptance plan; execution evidence remains separate from automated tests
+Version: v1.3.0 / Planning Helper `0.31.0`
 
-Canonical application semantics: [`scenarios/README.md`](scenarios/README.md).
-
-Passing automated tests does **not** mark these browser/remote checks complete. Record actual execution evidence when they are run.
+Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). Automated tests do **not** mark these browser/remote checks complete.
 
 <a id="scn-ph-discover"></a>
-
 ## `SCN-PH-DISCOVER`
 
-- On a clean open, confirm the default selected surface is Commands and content is immediately rendered without requiring a tab click.
-
-- With GitHub unavailable, reload ChatGPT with an existing local snapshot and confirm Planning Helper opens/browses/searches local content.
-- Confirm no background GitHub request is made merely by startup, opening surfaces or searching.
-- Confirm the top-level navigation exposes separate `Commands`, `Use Cases` and `Prompts` surfaces and no separate Directions tab.
-- Confirm Commands and Use Cases are nested under collapsible current Direction groups; search by Direction name/ID expands the matching group.
-- Favorite one Command and one Use Case. Confirm `★ Favorites` appears above Directions on each relevant surface, the favorite row is duplicated there, and the original row remains inside its Direction. Unfavorite and confirm only the top duplicate disappears.
-- Confirm `Commands` contains command rows only (plus clearly marked legacy command compatibility rows), while `Use Cases` contains every current canonical UC exactly once semantically even when a UC has a command shortcut.
-- Confirm Direction grouping is navigation only and remains read-only semantic projection.
+- With an existing local snapshot and GitHub unavailable, reload ChatGPT and confirm Commands / Use Cases / Prompts browse/search from local state.
+- Confirm startup/open/search/Insert/Copy makes no GitHub request.
+- On a fresh/empty catalog snapshot, confirm Commands/Use Cases direct the user to `Hard Reload GitHub` instead of silently using a hard-coded bundled catalog.
+- After Hard Reload, confirm current Commands and Use Cases are grouped under current GitHub-backed Directions.
+- Favorite one Command and one Use Case; confirm `★ Favorites` duplicates the same row while the original remains in its Direction.
 
 <a id="scn-ph-use"></a>
-
 ## `SCN-PH-USE`
 
-- Insert a Planning Command, legacy helper-command compatibility record when present, and prompt into the live ChatGPT composer; confirm exact intended text.
-- Confirm clipboard is prepared and manual paste remains usable if direct insertion fails.
-- Confirm the normal insertion path remains responsive with GitHub unavailable.
-- On the Use Cases surface, expand nested Directions and insert `UC-PLAN-PROTOTYPE`, `UC-PLAN-DOMAIN`, `UC-PLAN-SLICE-STRATEGY`, and command-backed `UC-REPO-CURRENT-STATE`; confirm each body contains the selected UC ID, `semantic_owner`, canonical registry source, `route_resolution`, read rule and explicit semantic-only permission boundary.
-- Confirm command-backed UCs insert their UC body from Use Cases instead of opening the Commands surface.
-- Confirm `Full` preserves the same UC semantic-owner/permission but requires complete current owner-route reading.
-- Confirm the current Application Planning registry parity check includes `UC-PLAN-APP-CONCEPT`, `UC-PLAN-PROTOTYPE`, `UC-PLAN-DOMAIN-DISCOVERY`, `UC-PLAN-REALIZATION` and `UC-PLAN-SLICE-STRATEGY`.
+- Insert a Planning Command, Use Case and Prompt into the live composer; verify exact intended text and clipboard fallback.
+- Confirm a Use-Case body contains stable UC ID, current registry source, owner-route resolution and semantic-only permission boundary.
+- Confirm `Full` changes read depth, not semantic owner or permissions.
 
 <a id="scn-ph-manage-local"></a>
-
 ## `SCN-PH-MANAGE-LOCAL`
 
-- Confirm there is one `Commands` surface and no separate `Local Cmds` tab.
-- Create a new Planning Command draft, edit its structured definition and confirm no GitHub request occurs until explicit Save GitHub.
-- Edit an existing registered command and confirm its id/file cannot be changed in-place.
-- Use Reload GitHub and confirm the current remote command replaces the local draft only after the explicit action.
-- Confirm every visible Planning Command exposes `Delete`; delete a registered command and verify it disappears only from Helper local state while its repository file remains unchanged.
-- Confirm legacy helper-command records, when present, are clearly marked compatibility insertions and new ones are not created by the Commands UI.
-
-- Create/edit a Planning Command draft, delete a Command, delete a Use Case, and create/edit/delete a Prompt; verify only local snapshot/RAM changes occur until explicit repository actions.
-- Reload/restart the userscript and verify locally deleted Command/Use-Case IDs stay hidden rather than being re-added by bundled seeds.
-- Reload/restart after favoriting Command/Use-Case IDs and confirm favorites persist locally; deleting a favorited item also removes its favorite ID.
-- Run explicit `Sync missing` after deleting a registered Command and verify the command can be restored from GitHub and its local-delete tombstone clears.
-- Confirm a deleted Use Case changes only the Helper projection and does not mutate its canonical registry/owner.
-- Edit/delete a legacy helper-command compatibility record only when one exists; confirm the UI does not offer creation of a new legacy helper-command record.
-- Edit an already repository-evidenced helper without changing title/text and press Save local; confirm it is a no-op and repository evidence display is preserved.
-- Make a real local title/text change; confirm repository evidence becomes unverified until direct repository verification/publish.
+- Create/edit a Planning Command draft and Prompt locally; verify no GitHub request.
+- Hide/delete a Command and Use Case locally; confirm repository authority remains untouched.
+- Favorite/unfavorite Command/Use-Case IDs and confirm persistence.
+- Move Commands, Use Cases, Prompts and Direction groups with `↑` / `↓`; confirm immediate local order and zero GitHub requests.
+- Resize/drag the panel; reopen and confirm `left/top/width/height` persist and remain viewport-clamped.
+- On desktop confirm wide content/action layout; on a narrow viewport confirm actions wrap below content.
 
 <a id="scn-ph-import"></a>
-
 ## `SCN-PH-IMPORT`
 
-- Import valid planning-command/helper marker blocks and confirm local merge without GitHub requests.
+- Import valid Planning Command/helper marker blocks and confirm local merge without GitHub requests.
 - Confirm changed imported content loses exact-content repository verification metadata.
-- Confirm invalid/colliding command definitions fail before local persistence.
+- Confirm invalid/colliding definitions fail before persistence.
 
 <a id="scn-ph-check-repository"></a>
-
 ## `SCN-PH-CHECK-REPOSITORY`
 
-- Against a controlled GitHub repository, run Check GitHub and verify local/GitHub counts plus same-path/local-only/GitHub-only groups.
-- Confirm same-path does not claim content equality.
-- Change a directly known remote SHA and confirm known-SHA-change diagnostics appear without mutating local records.
+- Run `Check GitHub` against a controlled repository.
+- Verify inventory includes Planning Commands, Directions, Use Cases, Prompts/helper records and catalog-order status.
+- Confirm same-path/ID does not claim content equality without SHA/content evidence.
+- Confirm Check mutates no local catalog/order.
 
 <a id="scn-ph-sync"></a>
-
 ## `SCN-PH-SYNC`
 
-- Run Reload GitHub on an edited tracked Planning Command and confirm that exact remote content replaces the local draft only after the explicit action.
-- Confirm Reload GitHub on a missing/unregistered remote target reports failure and does not silently delete the local draft.
-
-- Place supported repository records that are absent locally and confirm Sync missing downloads/adds them.
-- Confirm a same-path local record is never overwritten by Sync missing.
-- Confirm malformed downloaded content aborts rather than being silently accepted or repaired by Sync missing.
+- Put a supported Direction/Command/Use-Case/Prompt record in GitHub that is absent locally; run `Sync missing` and confirm only missing content is added.
+- Confirm same-ID/path local records are not overwritten.
+- Edit one tracked local Planning Command, run row `Reload`, and confirm only that command is replaced by GitHub content.
 
 <a id="scn-ph-publish"></a>
-
 ## `SCN-PH-PUBLISH`
 
-- Exercise create, exact no-op and current-SHA update for helper content against real GitHub and verify exact read-back.
-- Start an update with a stale base SHA, arrange for the remote target to already contain the exact intended bytes, and confirm Save GitHub rereads once, reports recovered verified success with the fresh SHA and performs no second PUT.
-- Start an update with a stale base SHA while the remote target contains different bytes; confirm Save GitHub reports a real conflict and does not overwrite or retry with the fresh SHA.
-- Start an update with a stale base SHA and make the post-conflict remote reread fail; confirm the UI reports that current remote content could not be verified, does not claim confirmed divergence, and nothing is overwritten.
-- Put a malformed helper-library document at the deterministic helper path, then explicitly Save the valid local helper; confirm the malformed remote is replaced using its exact current SHA and the resulting bytes are read back and verified.
-- Exercise planning-command save and confirm complete remote command-catalog validation blocks an ambiguous catalog.
-- Simulate browser-local snapshot persistence failure after a remote result has already been verified; confirm UI reports remote success plus local-metadata warning rather than “GitHub save failed”.
-- Confirm repository Delete is unavailable and the helper never runs local Git/commit/push.
+- Exercise Command/Prompt create, exact no-op and current-SHA update; verify exact remote read-back.
+- Exercise stale-SHA conflict with equal intended remote bytes; confirm recovered verified success without a second PUT.
+- Exercise real conflicting bytes; confirm no automatic overwrite.
+- Force local snapshot persistence failure after verified remote success; confirm UI reports remote success plus local-metadata warning.
+- Reorder Directions/Commands/Use Cases, run `Save order GitHub`, and verify only `catalog-order.json` changes with intended stable-ID order.
+- Edit `catalog-order.json` directly in GitHub, then Hard Reload; confirm edited durable order becomes local order.
+- Confirm repository delete/local Git commit/push are unavailable.
 
 <a id="scn-ph-recover"></a>
-
 ## `SCN-PH-RECOVER`
 
-- With a mixed local snapshot, paste a complete recovery set and confirm repository-backed records reconcile to that set while local-only records survive.
-- Confirm stale repository-backed local records missing from the pasted set are removed.
-- Confirm Restore performs zero helper-side GitHub requests and does not invent remote SHAs.
+- Create local Command edits/hides and a local order divergence; keep a local Prompt with unsaved local content.
+- Run `Hard Reload GitHub`, accept confirmation and verify current GitHub Directions/Commands/Use Cases/order replace local catalog state; hidden catalog rows reappear; local Prompt content and Favorites survive.
+- Confirm no maintained Command/Use-Case/Direction catalog needs reinstalling with a new userscript for recovery.
+- Exercise pasted recovery fallback and confirm it makes zero Helper-side GitHub requests and invents no SHA.
 
-## Repository settings supporting acceptance
+## Registry-driven parity / no-hardcode
 
-- Change owner/repository/branch and confirm repository evidence metadata is cleared **before** the new source becomes active.
-- Force local snapshot persistence failure during a source change and confirm the new repository settings are not activated with stale old-source verification metadata.
+- Confirm `seed/directions.json` exactly projects current `planning/direction-registry.md`.
+- Confirm `seed/use-cases.json` exactly projects every current canonical Use-Case registry under `planning/**`, while legacy/historical compatibility indexes are not projected as current UCs.
+- Confirm `seed/commands.json` exactly projects current `planning/commands/*.command.md`.
+- Search generated `chat-command-palette.user.js` for representative current IDs (`UC-PLAN-DOMAIN`, `DIR-PLAN-SOLUTION`, `application_domain.plan`) and confirm they are absent as maintained catalog data.
 
-## Registry-driven UC parity and invocation
+## Universal order acceptance
 
-- Confirm every current canonical UC registry row appears under **Use Cases**, including `UC-PLAN-TEST-PLAN`.
-- Confirm `UC-PLAN-TEST-PLAN — Plan Practical Testing / Acceptance` is manually invokable from **Commands**.
-- Pick a UC without a bespoke command and confirm its generated command inserts a body that references `planning/commands/invoke-use-case.command.md`, the exact UC ID and current registry source.
-- Delete only that generated command locally and confirm the Use Case remains visible under **Use Cases** and no repository file is deleted.
-- Confirm UCs with bespoke commands do not receive a duplicate generated invocation row.
-- Confirm `UC-PLAN-WORKSPACE-ESTABLISH-UC`, `UC-PLAN-WORKSPACE-CHANGE-UC`, `UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY` and `UC-DOC-RECONCILE-STATUS` each have their own generated direct invocation row even though their registries mention `собери идеи`/`положняк` only as supporting or may-route commands.
-- Confirm genuinely direct mappings such as `UC-PLAN-COLLECT-IDEAS → ideas.collect` and `UC-REPO-CURRENT-STATE → current_state.report` still reuse the bespoke command without a duplicate generated row.
+- After Hard Reload confirm the repository default semantic route is approximately: current reality / whole solution → Application responsibility/prototype → Scenario Discovery/Scenario → Domain Discovery/Domain → realization stress-check → Slice Strategy/Slice → internal Workspace Use Cases → contextual WEUC Instances → architecture path/pressure/decision/evolution → Testing → remaining capabilities.
+- Confirm existing `собери идеи` and Mini/Modular/Full SDS controls stay before the route as orchestration/profile controls; no new collect-ideas variants are introduced by this Helper change.
 
-## Application SDS command acceptance
+## Planning-methodology route acceptance
 
-- Confirm `мини сдс`, `модульный сдс`/`медиум сдс` and `фулл сдс` exist as Planning Commands and all route to the same Step 0–4 quality contract.
-- Confirm direct commands exist for Current Reality, Solution Research, Solution, Application Concept, Application Responsibility, Prototype, Scenario Discovery, Scenario, Domain, Application Realization, Slice Strategy, Slice, contextual WEUC discovery, Architecture Pressure/Decision, Testing Strategy/Design/Coverage and Practical Testing Plan.
-- Confirm the related canonical UC rows reuse those bespoke commands and do not receive duplicate generated UC invocation rows.
-- Confirm Mini/Modular/Full prompts preserve Scenario DATA and Behavior Items and do not claim Full is semantically stronger.
+- Confirm Scenario planning keeps Scenario identity tied to user/actor goal/Need/desired useful observable result and treats DATA/Behavior as iterative discovery inputs.
+- Confirm Domain discovery/planning can identify Value Object/Aggregate candidates from evidence, records Root/owned/outside/external/coordination boundaries, and permits select/split/merge/reject/no explicit Aggregate.
+- Confirm Slice planning distinguishes product priority from technical implementation sequence, cross-cutting applicability from ownership, semantic drift from harmless names/paths, and hands negative/no-mutation guarantees to testing.
+- Confirm `изучи внутренние юзкейсы` invokes `UC-PLAN-ARCH-WORKSPACE-USES`; `собери WEUC` / `исследуй WEUC-инстансы` invokes `UC-PLAN-ARCH-DISCOVER-WEUC`; `перепроверь` invokes `UC-REPO-AUDIT-REVIEW`.

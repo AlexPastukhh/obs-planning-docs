@@ -13,6 +13,7 @@ Start from one concrete result:
 ```text
 Workspace UC
 Workspace Change Case
+contextual WEUC Instance
 Extension-derived future UC
 Application Scenario (Runtime path)
 ```
@@ -57,19 +58,22 @@ High incidental Working-Context Load is an Architecture Flag even when the raw f
 
 ## 5. Evaluate Qualitatively
 
-Use only meaningful dimensions; do not fabricate scores:
+Use only meaningful dimensions; do not fabricate scores. Resolve them through the canonical Work-Cost Model:
 
 ```text
-Locality
-Coupling
-Change Surface
-Discoverability
-Comprehension Cost
-Working-Context Load
-Verification Cost
-Migration Risk
-Operational Risk
-Reversibility
+Understanding / analytical
+→ Discoverability / naming / logical placement / owner visibility
+→ Comprehension Cost / Working-Context Load
+
+Mutation / evolution
+→ Locality / coupling / Change Surface / synchronized edits / duplication
+→ migration / compatibility / transaction / failure / reversibility
+
+Verification / diagnosis / operation
+→ proof setup/feedback/localization/observability/operational cost
+
+Application runtime when this is a Runtime path
+→ latency / throughput / remote hops / consistency / failure / user effort / operational burden
 ```
 
 ## 6. Findings / Handoff

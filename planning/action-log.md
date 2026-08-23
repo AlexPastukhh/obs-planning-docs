@@ -142,3 +142,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
 **Entry:** `LOG-RPKG-007`  
 **Reason:** Planning Root changes the semantic name of `DIR-REPLACEMENT-PACKAGE-APP` to `Use Replacement Package App` in the root Direction Registry as part of the same SDS ReviewDiff correction; full finding and selected correction are owned by adjacent canonical `LOG-RPKG-006`, with the applied target state recorded by `LOG-RPKG-007`.
+
+### XREF-020 — Full SDS / Architecture work-cost and GitHub-backed Helper correction
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-048`
+**Reason:** Planning Root direct command definitions (`перепроверь`, internal Workspace-use discovery, WEUC/Scenario/Domain/Slice/Testing reminders and SDS profile placement) participate in the same Full SDS/Architecture/Helper transition; full reviewed meaning and APPLIED target state are owned by the reusable-documentation canonical log.

@@ -330,13 +330,13 @@ Do not create explicit VAR-A ceremony while only one integrated design exists. W
 
 ## Domain / Slice Strategy / Slice
 
-`Domain Discovery` is optional evidence-driven semantic discovery before Domain selection. It extracts identity/lifecycle/relationship/rule/invariant/policy/consistency candidates from current Scenario DATA/Behavior/Requirements and may form integrated Domain Variants when material. Canonical algorithm: [`domain-discovery-workflow.md`](domain-discovery-workflow.md).
+`Domain Discovery` is optional evidence-driven semantic discovery before Domain selection. It extracts identity/lifecycle/relationship/rule/invariant/policy/consistency candidates from current Scenario DATA/Behavior/Requirements, including Value Object and Aggregate/Root/ownership candidates only when evidence justifies them, and may form integrated Domain Variants when material. Canonical algorithm: [`domain-discovery-workflow.md`](domain-discovery-workflow.md).
 
 Domain is an optional selected conceptual model/language/lifecycle/rules/boundary owner when separate ownership improves planning. Domain planning aims for the simplest model that supports current selected meaning plus **justified** likely evolution: stable semantics explicit, likely variation localized when useful, speculative possibilities prevented from forcing premature abstraction. Canonical selection/review algorithm: [`domain-planning-workflow.md`](domain-planning-workflow.md).
 
 `Application Realization` is an optional high-level stress review of representative Runtime Realization Paths, persistence/transaction/integration/algorithm concerns and verification seams before detailed Slice planning. It may return material technical/correctness findings upstream but does not let implementation convenience define Domain truth. Canonical algorithm: [`application-realization-workflow.md`](application-realization-workflow.md).
 
-`Slice Strategy` is an optional decomposition/order plan used when implementation is large or uncertain enough that choosing vertical increments is itself an independently useful result.
+`Slice Strategy` is an optional decomposition/order plan used when implementation is large or uncertain enough that choosing vertical increments is itself an independently useful result. Product/Scenario priority remains upstream input; Slice/Architecture planning may recommend a different technical implementation sequence only with explicit dependency/work-cost evidence.
 
 An `Implementation Slice` is one separately deliverable/checkable integrated increment. Its integrated owner may link optional `frontend.md`, `server.md`, `verification.md` or other implementation-part plans, but those parts do not become separate planning Use Cases by default. Canonical algorithm: [`slice-planning-workflow.md`](slice-planning-workflow.md).
 

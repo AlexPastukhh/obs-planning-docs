@@ -43,6 +43,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Application to plan in Full SDS>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

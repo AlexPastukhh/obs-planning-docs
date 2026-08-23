@@ -309,3 +309,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-046`  
 **Reason:** Planning Helper removes the duplicate `XREF-014` produced by the original package and records the action-log correction; Helper runtime, Favorites and command/UC projections are unchanged.
+
+### XREF-016 — GitHub-backed Direction/Command/UC catalogs, durable order and Hard Reload
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-048`
+**Reason:** Planning Helper `0.31.0` source/build/tests/docs/generated artifact implement GitHub-backed Direction/Command/Use-Case recovery, local durable order, Hard Reload, wider/resizable UI and current direct command projections as part of the same Full SDS/Architecture correction; full review and APPLIED target state are owned by the reusable-documentation canonical log.

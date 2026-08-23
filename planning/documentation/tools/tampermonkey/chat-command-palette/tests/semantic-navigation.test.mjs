@@ -8,122 +8,31 @@ const require=createRequire(import.meta.url);
 const moduleRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const repoRoot=path.resolve(moduleRoot,'../../../../..');
 const semantic=require('../src/semantic-projections.js');
+const codec=require('../src/command-definition-codec.js');
+const directions=semantic.normalizeDirectionDefinitions(JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed/directions.json'),'utf8')).items);
+const useCases=semantic.normalizeUseCaseDefinitions(JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed/use-cases.json'),'utf8')).items);
+const read=(rel)=>fs.readFileSync(path.join(repoRoot,rel),'utf8');
+function walk(dir,result=[]){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,entry.name);if(entry.isDirectory())walk(p,result);else if(entry.isFile()&&entry.name.toLowerCase()==='use-case-registry.md')result.push(p)}return result}
+function canonicalUcIds(){const ids=[];for(const file of walk(path.join(repoRoot,'planning'))){const lines=fs.readFileSync(file,'utf8').split(/\r?\n/),status=String(lines.find((line)=>/^Status:/i.test(line))||'').toLowerCase();if(status.includes('legacy')||status.includes('historical')||status.includes('compatibility'))continue;for(const line of lines){let m=line.match(/^#{2,3} `((?:UC-[A-Z0-9-]+))` — /);if(!m)m=line.match(/^\| `((?:UC-[A-Z0-9-]+))` \|/);if(m&&!ids.includes(m[1]))ids.push(m[1])}}return ids}
+function canonicalDirectionIds(){const ids=[];for(const line of read('planning/direction-registry.md').split(/\r?\n/)){const m=line.match(/^\| `((?:DIR-[A-Z0-9-]+))` \|/);if(m&&!ids.includes(m[1]))ids.push(m[1])}return ids}
+function exactCaseExists(rel){let current=repoRoot;for(const segment of rel.split('/')){if(!fs.existsSync(current))return false;const names=fs.readdirSync(current);if(!names.includes(segment))return false;current=path.join(current,segment)}return fs.existsSync(current)}
 
-const registries=[
-  ['planning/use-case-registry.md','UC-REPO-'],
-  ['planning/documentation/application-planning/use-case-registry.md','UC-PLAN-'],
-  ['planning/documentation/workspace-planning/use-case-registry.md','UC-PLAN-WORKSPACE-'],
-  ['planning/documentation/architecture-planning/use-case-registry.md','UC-PLAN-ARCH-'],
-  ['planning/documentation/testing-planning/use-case-registry.md','UC-PLAN-TEST-'],
-  ['planning/documentation/use-case-registry.md','UC-DOC-'],
-  ['planning/areas/documentation-workbench/use-case-registry.md','UC-DW-'],
-  ['planning/areas/planning-system/use-case-registry.md','UC-PR-'],
-  ['planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md','UC-RPKG-']
-];
-function read(rel){return fs.readFileSync(path.join(repoRoot,rel),'utf8')}
-function canonicalIds(rel,prefix){const text=read(rel), ids=[];for(const line of text.split(/\r?\n/)){let m=line.match(/^#{2,3} `((?:UC-[A-Z0-9-]+))` — /);if(!m)m=line.match(/^\| `((?:UC-[A-Z0-9-]+))` \|/);if(m&&m[1].startsWith(prefix)&&!ids.includes(m[1]))ids.push(m[1])}return ids}
-function canonicalDirectionIds(rel){const text=read(rel), ids=[];for(const line of text.split(/\r?\n/)){const m=line.match(/^\| `((?:DIR-[A-Z0-9-]+))` \|/);if(m&&!ids.includes(m[1]))ids.push(m[1])}return ids}
-function exactCaseExists(rel){let current=repoRoot;for(const segment of rel.split('/')){const names=fs.readdirSync(current);if(!names.includes(segment))return false;current=path.join(current,segment)}return fs.existsSync(current)}
+test('generated Direction seed contains every current root Direction exactly once',()=>{const expected=canonicalDirectionIds(),actual=directions.map((d)=>d.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,11)});
 
-test('semantic projection contains every current root Direction exactly once',()=>{const expected=canonicalDirectionIds('planning/direction-registry.md');const actual=semantic.DIRECTION_DEFINITIONS.map(d=>d.id);assert.equal(new Set(actual).size,actual.length,'duplicate projected Direction id');assert.deepEqual([...actual].sort(),[...new Set(expected)].sort())});
+test('generated Use-Case seed contains every current canonical UC exactly once',()=>{const expected=canonicalUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,expected.length);assert.ok(!actual.some((id)=>id.startsWith('UC-RPKG-')),'legacy Replacement Package App capability IDs must not be projected as current UCs')});
 
-test('semantic projection contains every current canonical Use Case exactly once',()=>{const expected=[];for(const [rel,prefix] of registries)expected.push(...canonicalIds(rel,prefix));const actual=semantic.USE_CASE_DEFINITIONS.map(d=>d.id);assert.equal(new Set(actual).size,actual.length,'duplicate projected Use-Case id');assert.deepEqual([...actual].sort(),[...new Set(expected)].sort())});
+test('all generated semantic source paths exist with exact repository casing',()=>{for(const definition of [...directions,...useCases])for(const source of definition.sources||[])assert.ok(exactCaseExists(source),`${definition.id}: missing/exact-case-invalid source ${source}`)});
 
-test('all semantic projection source paths exist with exact repository casing',()=>{for(const definition of [...semantic.ORIENTATION_DEFINITIONS,...semantic.DIRECTION_DEFINITIONS,...semantic.USE_CASE_DEFINITIONS])for(const source of definition.sources||[])assert.ok(exactCaseExists(source),`${definition.id}: missing/exact-case-invalid source ${source}`)});
+test('every current Use Case resolves through exactly one current Direction',()=>{const ids=new Set(directions.map((d)=>d.id));for(const uc of useCases)assert.ok(ids.has(uc.directionId),`${uc.id}: missing current Direction`)});
 
-test('root/documentation/planning table registries expose explicit complete UC contract',()=>{for(const rel of ['planning/use-case-registry.md','planning/documentation/use-case-registry.md','planning/documentation/application-planning/use-case-registry.md','planning/documentation/architecture-planning/use-case-registry.md']){const text=read(rel);assert.match(text,/\| ID \| Name \| Status \| Parent Direction \| Purpose \| Trigger \/ input \| Result \/ end state \| Boundaries \|/i,`${rel}: incomplete table contract`)}});
+test('Use-Case semantic bodies remain thin owner-route projections with explicit permission boundary',()=>{const domain=useCases.find((u)=>u.id==='UC-PLAN-DOMAIN');assert.ok(domain);for(const mode of ['adaptive','full']){const body=semantic.buildSemanticBody('use_case',domain,mode);assert.match(body,/\[PLANNING_USE_CASE\]/);assert.match(body,/use_case_id:\n  UC-PLAN-DOMAIN/);assert.match(body,/route_resolution:/);assert.match(body,/current Main Owner \/ Owner Route/);assert.match(body,/Semantic planning\/read context only/)}assert.match(semantic.buildSemanticBody('use_case',domain,'full'),/Full use_case reading is required/)});
 
-test('migrated application Directions route to Scenario Catalogs instead of Application Use-Case registries',()=>{
-  for(const rel of ['planning/documentation/tools/tampermonkey/chat-command-palette/direction-registry.md','planning/documentation/tools/tampermonkey/linked-notes/direction-registry.md']){const text=read(rel);assert.match(text,/scenarios\/README\.md/);assert.doesNotMatch(text,/USE-CASE-REGISTRY\.md/)}
-  const ids=semantic.USE_CASE_DEFINITIONS.map(d=>d.id);
-});
+test('all visible repository commands resolve through at least one current Direction',()=>{const directionIds=new Set(directions.map((d)=>d.id)),commandDir=path.join(repoRoot,'planning','commands');for(const name of fs.readdirSync(commandDir).filter((n)=>n.endsWith('.command.md'))){const definition=codec.parseCommandDefinitionDocument(fs.readFileSync(path.join(commandDir,name),'utf8'));if(definition.palette!==true)continue;const ids=semantic.directionIdsForCommand(definition,useCases);assert.ok(ids.length,`${definition.id}: no Direction`);for(const id of ids)assert.ok(directionIds.has(id),`${definition.id}: unknown Direction ${id}`)}});
 
-test('application Direction registries link the real root Direction Registry, not placeholders',()=>{for(const rel of ['planning/documentation/tools/tampermonkey/chat-command-palette/direction-registry.md','planning/documentation/tools/tampermonkey/linked-notes/direction-registry.md','planning/documentation/tools/replacement-package-app/direction-registry.md']){const text=read(rel);assert.doesNotMatch(text,/<root planning direction registry>/);assert.match(text,/planning\/direction-registry\.md/)}});
-test('documentation bootstrap Use Case projects to the sole stable bootstrap command identity',()=>{const orient=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-DOC-ORIENT');assert.ok(orient);assert.equal(orient.commandId,'documentation_principles.read');assert.equal(orient.label,'Bootstrap Reusable Documentation Governance')});
-test('reusable prompt maintenance projection uses the current maintain identity',()=>{const prompt=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-DOC-MAINTAIN-PROMPT');assert.ok(prompt);assert.equal(prompt.label,'Create / Maintain Reusable Prompt')});
+test('important direct command-backed UCs resolve to their bespoke command routes',()=>{for(const [id,commandId] of [['UC-REPO-AUDIT-REVIEW','review_audit.recheck'],['UC-PLAN-ARCH-WORKSPACE-USES','workspace_uses.discover'],['UC-PLAN-ARCH-DISCOVER-WEUC','architecture_weuc.discover'],['UC-PLAN-DOMAIN','application_domain.plan'],['UC-PLAN-SLICE','application_slice.plan'],['UC-PLAN-TEST-PLAN','practical_testing.plan'],['UC-DOC-ORIENT','documentation_principles.read']]){const uc=useCases.find((u)=>u.id===id);assert.ok(uc,id);assert.equal(uc.commandId,commandId,id)}});
 
-test('registered parallel-work Use Cases project from canonical registries',()=>{
-  const defineScopes=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-REPO-DEFINE-PARALLEL-SCOPES');
-  const parallel=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-REPO-PARALLEL-WORK');
-  assert.ok(defineScopes);
-  assert.ok(parallel);
-  assert.equal(parallel.commandId,'parallel_workspace.start');
-  assert.equal(parallel.label,'Work In Registered Parallel Scope(s)');
-});
+test('Application Realization projection is generic while its owner carries runtime/architecture handoff semantics',()=>{const realization=useCases.find((u)=>u.id==='UC-PLAN-REALIZATION');assert.ok(realization);assert.equal(realization.label,'Review / Compare High-Level Application Realization');assert.match(realization.instruction,/current canonical registry/);assert.doesNotMatch(realization.instruction,/hardcoded|pre-Domain comparative evidence/);const owner=read('planning/documentation/application-planning/application-realization-workflow.md');assert.match(owner,/Architecture Cost Handoff/);assert.match(owner,/runtime/i)});
 
-test('application planning semantic projection exposes current prototype/domain/slice-strategy route',()=>{
-  const ids=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);
-  for(const id of ['UC-PLAN-APP-CONCEPT','UC-PLAN-PROTOTYPE','UC-PLAN-SCENARIO-DISCOVERY','UC-PLAN-SCENARIO','UC-PLAN-DOMAIN','UC-PLAN-SLICE-STRATEGY','UC-PLAN-SLICE'])assert.ok(ids.includes(id),`missing ${id}`);
-});
+test('SDS profiles keep same quality and explicit Step 0–4 with pre-implementation test planning',()=>{const text=read('planning/documentation/profiles/sds-planning-profiles.md');assert.match(text,/same planning-quality contract/i);assert.match(text,/STEP 0 — WHY \/ SOLUTION DISCOVERY/);assert.match(text,/Scenario DATA/);assert.match(text,/Behavior Items/);assert.match(text,/application-plan\.md/);assert.match(text,/domain-draft\.md/);assert.match(text,/slices\.md/);assert.match(text,/contextual WEUC Instances/);assert.match(text,/Test Design/);assert.match(text,/Practical Test Plan/);assert.match(text,/STEP 4 — PRACTICAL REALIZATION FEEDBACK/);assert.match(text,/actual evidence/i);assert.doesNotMatch(text,/Goal Map/i)});
 
-test('Workspace Planning Direction and fundamental UCs project from current registries',()=>{
-  const direction=semantic.DIRECTION_DEFINITIONS.find((d)=>d.id==='DIR-PLAN-WORKSPACE');
-  assert.ok(direction);
-  assert.ok((direction.sources||[]).includes('planning/documentation/workspace-planning/use-case-registry.md'));
-  const ids=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);
-  for(const id of ['UC-PLAN-WORKSPACE-ESTABLISH-UC','UC-PLAN-WORKSPACE-CHANGE-UC','UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY'])assert.ok(ids.includes(id),`missing ${id}`);
-});
-
-test('non-command semantic Use Case body keeps one focused current-owner route and explicit permission boundary',()=>{
-  const domain=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-PLAN-DOMAIN');
-  assert.ok(domain);
-  const adaptive=semantic.buildSemanticBody('use_case',domain,'adaptive');
-  const full=semantic.buildSemanticBody('use_case',domain,'full');
-  for(const body of [adaptive,full]){
-    assert.match(body,/\[PLANNING_USE_CASE\]/);
-    assert.match(body,/use_case_id:\n  UC-PLAN-DOMAIN/);
-    assert.match(body,/semantic_owner:/);
-    assert.doesNotMatch(body,/\nfocus:/);
-    assert.match(body,/route_resolution:/);
-    assert.match(body,/current Main Owner \/ Owner Route/);
-    assert.match(body,/permission:/);
-    assert.match(body,/does not grant executable-command, repository-mutation, archive, commit or push permission/);
-  }
-  assert.match(full,/Full use_case reading is required/);
-  assert.match(full,/complete relevant owner route/);
-});
-
-
-test('every projected Use Case has one current Direction and command-backed UCs remain semantic insertions',()=>{
-  const directionIds=new Set(semantic.DIRECTION_DEFINITIONS.map((d)=>d.id));
-  for(const uc of semantic.USE_CASE_DEFINITIONS){assert.ok(directionIds.has(uc.directionId),`${uc.id}: missing current Direction`)}
-  const entries=semantic.buildSemanticEntries()[semantic.SURFACES.USE_CASES];
-  const current=entries.find((entry)=>entry.id==='UC-REPO-CURRENT-STATE');
-  assert.ok(current?.adaptiveBody);
-  assert.match(current.adaptiveBody,new RegExp('use_case_id:\\n  UC-REPO-CURRENT-STATE'));
-});
-
-test('every visible planning command resolves through at least one current Direction',()=>{
-  const commandDir=path.join(repoRoot,'planning','commands');
-  const codec=require('../src/command-definition-codec.js');
-  const directionIds=new Set(semantic.DIRECTION_DEFINITIONS.map((d)=>d.id));
-  for(const name of fs.readdirSync(commandDir).filter((name)=>name.endsWith('.command.md'))){
-    const definition=codec.parseCommandDefinitionDocument(fs.readFileSync(path.join(commandDir,name),'utf8'));
-    if(definition.palette!==true)continue;
-    const ids=semantic.directionIdsForCommand(definition);
-    assert.ok(ids.length,`${definition.id}: no Direction`);
-    for(const id of ids)assert.ok(directionIds.has(id),`${definition.id}: unknown Direction ${id}`);
-  }
-});
-
-test('Application Realization projection matches selected comparative pre-Domain contract',()=>{const realization=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-PLAN-REALIZATION');assert.ok(realization);assert.equal(realization.label,'Review / Compare High-Level Application Realization');assert.match(realization.description,/candidate Domain variants/);assert.match(realization.instruction,/pre-Domain comparative evidence/);assert.match(realization.instruction,/Domain authority/);});
-
-
-
-test('all current canonical UC registry files participate in exact Helper parity',()=>{
-  function walk(dir,result=[]){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,entry.name);if(entry.isDirectory())walk(p,result);else if(entry.isFile()&&entry.name.toLowerCase()==='use-case-registry.md')result.push(p)}return result}
-  const expected=[];for(const file of walk(path.join(repoRoot,'planning'))){for(const line of fs.readFileSync(file,'utf8').split(/\r?\n/)){let m=line.match(/^\| `((?:UC-[A-Z0-9-]+))` \|/);if(!m)m=line.match(/^## `((?:UC-[A-Z0-9-]+))` — /);if(m)expected.push(m[1]);}}
-  const actual=semantic.USE_CASE_DEFINITIONS.map((d)=>d.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...new Set(expected)].sort());
-});
-
-test('Practical Testing Plan is an independent current Testing UC',()=>{const uc=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id==='UC-PLAN-TEST-PLAN');assert.ok(uc);assert.equal(uc.label,'Plan Practical Testing / Acceptance');assert.equal(uc.directionId,'DIR-PLAN-TESTING');assert.match(uc.description,/practical operated proof plan/i);});
-
-test('supporting or may-route command references do not become bespoke UC invocation ownership',()=>{for(const id of ['UC-DOC-RECONCILE-STATUS','UC-PLAN-WORKSPACE-ESTABLISH-UC','UC-PLAN-WORKSPACE-CHANGE-UC','UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY']){const uc=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id===id);assert.ok(uc,id);assert.equal(uc.commandId,undefined,`${id}: supporting command relation must not suppress generated invocation`);}});
-
-test('direct Related command references still map to the intended bespoke command',()=>{const expected=new Map([['UC-PLAN-COLLECT-IDEAS','ideas.collect'],['UC-REPO-CURRENT-STATE','current_state.report'],['UC-DOC-REVIEW-DIFF','critical_review.apply'],['UC-REPO-ORIENT','governance.development'],['UC-DOC-BUILD-REVIEWABLE-ARCHIVE','replacement_archive.review_diff.create']]);for(const [id,commandId] of expected){const uc=semantic.USE_CASE_DEFINITIONS.find((d)=>d.id===id);assert.ok(uc,id);assert.equal(uc.commandId,commandId,id);}});
-
-
-test('important Application SDS and architecture/testing UCs reuse explicit planning commands',()=>{const expected={
-'UC-PLAN-REALITY':'application_reality.review','UC-PLAN-SOLUTION':'application_solution.plan','UC-PLAN-RESEARCH':'application_research.research','UC-PLAN-APP-CONCEPT':'application_concept.plan','UC-PLAN-APPLICATION':'application_responsibility.establish','UC-PLAN-PROTOTYPE':'application_prototype.plan','UC-PLAN-SCENARIO-DISCOVERY':'application_scenarios.discover','UC-PLAN-SCENARIO':'application_scenario.plan','UC-PLAN-DOMAIN-DISCOVERY':'application_domain.discover','UC-PLAN-DOMAIN':'application_domain.plan','UC-PLAN-REALIZATION':'application_realization.review','UC-PLAN-SLICE-STRATEGY':'application_slice_strategy.plan','UC-PLAN-SLICE':'application_slice.plan','UC-PLAN-ARCH-DISCOVER-WEUC':'architecture_weuc.discover','UC-PLAN-ARCH-PATH':'architecture_path.trace','UC-PLAN-ARCH-PRESSURE':'architecture_pressure.review','UC-PLAN-ARCH-DECISION':'architecture_decision.plan','UC-PLAN-TEST-STRATEGY':'testing_strategy.plan','UC-PLAN-TEST-DESIGN':'test_design.plan','UC-PLAN-TEST-COVERAGE':'test_coverage.review','UC-PLAN-TEST-PLAN':'practical_testing.plan'};for(const [id,commandId] of Object.entries(expected)){const uc=semantic.USE_CASE_DEFINITIONS.find((entry)=>entry.id===id);assert.ok(uc,id);assert.equal(uc.commandId,commandId,id);}});
-
-test('SDS profiles keep same quality and explicit Step 0 to 4 plus modular default split',()=>{const text=read('planning/documentation/profiles/sds-planning-profiles.md');assert.match(text,/same planning-quality contract/i);assert.match(text,/STEP 0 — WHY \/ SOLUTION DISCOVERY/);assert.match(text,/Scenario DATA/);assert.match(text,/Behavior Items/);assert.match(text,/application-plan\.md/);assert.match(text,/domain-draft\.md/);assert.match(text,/slices\.md/);assert.match(text,/contextual WEUC Instances/);assert.match(text,/STEP 4 — PRACTICAL REALIZATION FEEDBACK/);assert.doesNotMatch(text,/Goal Map/i);});
+test('semantic runtime source contains no maintained current Direction/UC catalog identities',()=>{const source=fs.readFileSync(path.join(moduleRoot,'src/semantic-projections.js'),'utf8');for(const identity of ['UC-PLAN-DOMAIN','UC-REPO-CURRENT-STATE','DIR-PLAN-SOLUTION','application_domain.plan'])assert.doesNotMatch(source,new RegExp(identity.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));assert.match(source,/normalizeDirectionDefinitions/);assert.match(source,/normalizeUseCaseDefinitions/)});

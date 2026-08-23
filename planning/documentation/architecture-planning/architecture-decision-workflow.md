@@ -39,18 +39,36 @@ current correctness
 complexity introduced
 current UC effect
 other current UC effects
-future UC / Extension effects
+future UC / contextual WEUC / Extension effects
+WEUC likelihood/horizon/value/confidence and current-work overlap when material
+preparation-now vs deferred/rework cost
 Change-Axis effects
-locality / coupling / change fan-out
-Discoverability / Comprehension Cost / Working-Context Load
-verification / debugging
-runtime / transaction / failure / operational effect
+Understanding / analytical cost
+Mutation / evolution cost
+verification / diagnosis / operation cost
+representative Application Scenario / runtime cost
 migration effect
 reversibility
 Architectural Tax vs payoff
 ```
 
 Ask explicitly whether the decision creates more future actions, synchronized edits or facts that must be remembered to avoid mistakes.
+
+## 4.1 Priority / Implementation Sequence Decision — When Material
+
+When the architecture choice changes delivery order, keep product priority separate from technical sequence. State:
+
+```text
+Product / Scenario priority supplied by application/product context
+Recommended implementation sequence
+Why the sequence differs, if it does
+Minimum prerequisite/seam needed before the priority result
+Lower-priority feature work intentionally deferred
+WEUC/path evidence
+Architectural Tax if anticipated future work never happens
+```
+
+Do not infer that a technically convenient lower-priority feature is product-important. Architecture Planning owns the technical sequence recommendation and trade-off; external application/product context owns priority unless explicitly delegated.
 
 ## 5. Apply Conditional Heuristics
 

@@ -807,3 +807,51 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - all previously selected Application SDS Step 0–4, WEUC evidence, manual command and Helper Favorites semantics remain unchanged.
 
 **Rationale:** make the applied ChangeSet history internally unique and traceable without altering the already verified implementation target.
+
+### LOG-DOC-047 — Recheck Full SDS methodology, Architecture work-cost ownership and Planning Helper durability
+
+**Type:** IDEA CLARIFICATION / INTEGRATED REVIEW
+**Source:** explicit user request to recheck the accumulated Full SDS/Enman findings, consolidate WEUC/Architecture methodology, and finish the already-selected Planning Helper GitHub-backed/order/recheck work before archive production
+
+**Current Conclusions:**
+- keep the existing Full SDS Step 0–4 architecture and same-quality Mini/Modular/Full profiles; correct gaps rather than create another planning methodology;
+- Scenario remains a user/actor Need/goal/desired-result boundary; make Scenario ↔ DATA ↔ Behavior decomposition explicitly iterative because DATA/Behavior discovery may expose missing Scenario branches/results; internal implementation operations do not become Scenarios by themselves;
+- Domain Discovery/Planning already owns identity/lifecycle/invariants/impossible states/consistency; add only the missing evidence-backed Value Object and Aggregate/Root/ownership bridge: owned state, explicitly outside, external Aggregate references, cross-Aggregate/application coordination, select/split/merge/reject, and `no explicit Aggregate needed`; read/query/ORM/database shape is not ownership evidence;
+- Slice Planning keeps vertical useful increments and now distinguishes product/Scenario priority from recommended technical implementation sequence, implemented/delegated/later/outside behavior, cross-cutting applicability from ownership, semantic/responsibility drift from harmless provisional name/path drift, and positive plus negative/no-mutation proof obligations;
+- Testing semantics do not need another methodology: Test Strategy/Test Design/Practical Test Plan belong to pre-implementation Step 3 planning when material; Step 4 executes selected proofs, records actual evidence/Coverage, runs semantic ReviewDiff and corrects upstream meaning only from real evidence;
+- consolidate Architecture work-cost semantics under `architecture-planning/workspace-use-cases-and-change-pressure.md`: important Workspace UC Types/current uses, contextual WEUC Instances, Understanding/Mutation/Verification/Diagnosis/Operation costs and consumed Application runtime/Scenario costs are evidence for architecture decisions; `UC-PLAN-REALIZATION` remains owner of concrete runtime facts;
+- contextual WEUC Instances are evaluated proportionally by likelihood, horizon, value/consequence, confidence, current-work overlap, preparation-now cost, deferred cost, cost-surface effects, reversibility and Architectural Tax if the future never happens; no fake numeric scoring is required;
+- Product/Scenario priority is upstream input and must not be redefined by Architecture/Slice planning. AI planning may recommend a different implementation sequence or a minimum prerequisite seam when dependencies/work-cost evidence justifies it;
+- architecture principles should remain tied to representative Workspace UC/WEUC decision situations rather than aesthetic rules; consumer workflows for Workspace-use discovery, WEUC discovery, path/pressure/state/decision/evolution, Slice, Full SDS and ReviewDiff use one canonical work-cost model;
+- ReviewDiff performs only a proportional architecture work-cost regression check when a material implementation diff changes an important Understanding/Change/Verify or representative Runtime path; no full architecture ceremony is required for every diff;
+- retain existing `собери идеи` semantics in this change. Do **not** add the proposed new Application/Scenario/Domain/Slice collect-ideas variants or custom Helper tabs yet; those depend on stabilized owners and are explicitly deferred;
+- preserve the fresher Replacement Package App Scenario migration: its six `UC-RPKG-*` identifiers are legacy compatibility/navigation entries, not current canonical UCs, so Helper parity must exclude them rather than reconstruct the old capability model;
+- complete the previously selected Planning Helper durability work now: Directions/Commands/Use Cases are GitHub-backed recoverable catalogs; generated repository seeds are build-verified projections, not embedded userscript authority; local snapshot schema v4 is a working cache; explicit Hard Reload restores full Direction/Command/UC catalogs plus durable order while preserving Prompts/Favorites; order is editable locally and explicitly persisted through `catalog-order.json`;
+- expose direct current command routes `перепроверь` → `UC-REPO-AUDIT-REVIEW` and `изучи внутренние юзкейсы` → `UC-PLAN-ARCH-WORKSPACE-USES`; WEUC command wording emphasizes contextual instances; keep runtime command/UC/Direction semantics data-driven rather than hard-coded.
+
+**Review / Consistency Result:**
+- the useful Enman mechanisms relevant to reusable Full SDS are covered by the selected Scenario loop, Domain Aggregate/VO bridge, Slice ownership/drift/proof refinements and existing Testing proof model; Enman project-specific physical Domain/Slice file ceremony is not imported;
+- semantic owners remain singular: Application owners own Scenario/Domain/Slice/runtime meaning, Testing owners own proof design/plan/coverage, Architecture owns Workspace-work/WEUC cost trade-offs, and the Helper remains projection/runtime;
+- no new collect-ideas command family or Helper tab model is introduced in this transition.
+
+**Questions / Risks / Problems:** none blocking the selected correction. Architecture cost comparison remains qualitative/evidence-backed; product priority and technical implementation sequencing stay intentionally separate.
+
+### LOG-DOC-048 — Apply Full SDS / Architecture work-cost and GitHub-backed Helper correction
+
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-047`
+**ChangeSet:** `d024446d-fb19-4bb6-89c7-3dbf213d15ef`
+**Package:** `543a8676-5807-4530-907f-880dfdf20992`
+
+**Target-State Result:** after successful Apply of this package:
+- Full SDS profiles and Application Direction/index consistently express Step 0 Need/Solution, iterative Scenario+DATA+Behavior, optional evidence-backed Domain/VO/Aggregate modeling, vertical Slice planning plus technical sequencing, Architecture/WEUC evidence and pre-implementation verification planning, followed by Step 4 implementation/executed evidence/Coverage/ReviewDiff feedback;
+- Architecture Planning has one explicit work-cost owner and synchronized Workspace-Use, WEUC, Path, Pressure, State, Decision and Evolution consumers; Application Realization supplies runtime cost evidence without losing Application semantic authority;
+- ReviewDiff can detect material actual architecture work-cost regressions proportionally;
+- direct `перепроверь` and `изучи внутренние юзкейсы` routes are registered without adding new semantic UCs;
+- Planning Helper `0.31.0` uses GitHub-backed generated Direction/Command/Use-Case catalogs plus a durable `catalog-order.json`, local snapshot schema v4, explicit Hard Reload GitHub, local reorder + explicit Save order GitHub, wider/resizable persisted panel geometry and existing Favorite projections;
+- the generated userscript contains runtime code but no maintained current Direction/Command/UC catalog identities; current build contains 42 registered command definitions, 11 Directions and 64 current canonical UCs, and every current UC has one manual invocation route; the six `UC-RPKG-*` identifiers in the newer Replacement Package App compatibility index remain legacy navigation only and are not revived as current UCs;
+- Helper automated/build verification passes 104/104 tests across 16 test files; generated userscript and repository seeds match current sources;
+- existing `собери идеи` remains the only collect-ideas command in this package; proposed new collect-ideas variants/custom Helper tabs remain deferred;
+- affected Planning Root, Application Planning and Planning Helper logs point to this canonical applied transition.
+
+**Rationale:** close the reviewed Full SDS/Architecture ownership gaps and finish the already-selected Helper durability/recovery/order changes before introducing any new orchestration command family.

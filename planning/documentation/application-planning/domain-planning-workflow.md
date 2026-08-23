@@ -50,6 +50,45 @@ Current Requirements and selected Scenario meaning outrank speculative future po
 
 Confirm that candidate concepts/identities/relationships/lifecycle/rules are justified by current selected meaning. If evidence/candidates are not grounded enough, return to `UC-PLAN-DOMAIN-DISCOVERY` instead of inventing Domain structure during selection.
 
+## 3.1 Review / Select Value And Aggregate Boundaries — When Material
+
+When discovery produced Value Object or Aggregate candidates, review them as semantic/ownership choices rather than implementation containers.
+
+For a Value Object candidate ask whether value integrity, equality, validation or domain operations justify one stable concept. Reject primitive-wrapper ceremony with no meaningful semantic payoff.
+
+For each Aggregate candidate ask:
+
+```text
+Which concrete current invariant(s) justify one ownership boundary?
+Does the proposed Root naturally own lifecycle/state changes and invariant protection for its children?
+Can owned children/value-like state be changed through that Root without awkward bypasses?
+What is explicitly outside the Aggregate?
+Are external Aggregates referenced rather than owned/mutated as children?
+Which cross-Aggregate rule is really application coordination unless one Aggregate clearly owns it?
+Is this the smallest useful consistency/ownership boundary?
+Would split / merge / rejection make current behavior simpler and still correct?
+Is read/query/persistence convenience merely making a larger boundary look attractive?
+```
+
+Selection result for each material candidate is explicit:
+
+```text
+select
+split
+merge
+reject
+no explicit Aggregate needed
+```
+
+Guardrails:
+
+- one Aggregate Root should not directly own/create/mutate another Aggregate Root;
+- external Aggregates are normally referenced by identity/reference;
+- cross-Aggregate invariants default to application coordination unless ownership is genuinely clear;
+- read/query joins, UI shape, ORM navigation and database layout do not define write ownership;
+- a larger Aggregate is not safer merely because it can enforce more rules atomically;
+- `no explicit Aggregate needed` is a valid selected Domain result for simple meaning.
+
 ## 4. Separate Invariant From Policy / Mechanism
 
 For each material rule/relationship distinguish:
@@ -92,6 +131,17 @@ Can required current behavior be expressed simply?
 Are Scenario/Requirement rules contradicted?
 Is important user-visible meaning missing?
 Did Domain planning invent behavior?
+```
+
+### Aggregate-Boundary Check — When Material
+
+```text
+Does each selected Aggregate protect specific current invariants/lifecycle ownership?
+Is the Root actually responsible for child state changes and invariant protection?
+Is the boundary minimal rather than a convenience-based giant Aggregate?
+Are outside concepts and external Aggregate references explicit?
+Are cross-Aggregate rules routed to coordination instead of hidden inside one Aggregate?
+Would read/persistence structure be different without changing Domain ownership? If yes, keep them separate.
 ```
 
 ### Change-Axis Check
@@ -152,6 +202,8 @@ A useful Domain plan has:
 clear purpose/boundary
 stable semantic core
 canonical concepts/relationships
+Value Object boundaries when justified
+selected/split/merged/rejected Aggregate boundaries when justified
 lifecycle/rules/invariants when needed
 explicit policy/variation where materially useful
 traceability to current Scenarios/Requirements

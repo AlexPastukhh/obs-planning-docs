@@ -25,9 +25,12 @@ Do not scan every Workspace area merely because this UC exists.
 Concrete Workspace Area / Owner
 WEUC Type candidate when useful
 Contextual WEUC Instance(s)
-Likelihood / value / timing evidence
+Likelihood / horizon / value / confidence evidence
+Current-work overlap + preparation-now vs deferred cost
 Expected Workspace Change Path
+Understanding / mutation / verification / runtime effects when material
 Friction / fan-out / migration / verification risk
+Architectural Tax / reversibility when material
 Architecture/change-pressure handoff yes | no
 ```
 
@@ -39,18 +42,28 @@ A contextual WEUC Instance is that work against a concrete current/target Worksp
 
 Stable IDs are proportional. Use them when an instance must survive across planning/review/architecture decisions.
 
-## Likelihood / Value / Timing
+## Contextual Instance Assessment
 
-Assess expected occurrence qualitatively and evidence-first:
+Assess only dimensions that materially affect the architecture choice:
 
 ```text
 likelihood: high | medium | low | unknown
+horizon: now | near | planned | plausible later | unknown
 value / consequence: material description
-timing: near / planned / plausible later / unknown
+confidence: how well the future change is understood
+current-work overlap: does it cross the owner/seam/path being changed now?
+preparation-now cost: marginal work/tax to support it now
+deferred cost: expected rework/fan-out/migration if added later
+read/understanding effect: discoverability/comprehension/context load
+mutation/evolution effect: locality/fan-out/coupling/duplication
+verification/diagnosis/operation effect
+runtime/Scenario effect when applicable
+reversibility
+Architectural Tax if the instance never happens
 evidence: source / selected plan / observed history / explicit assumption
 ```
 
-Do not manufacture numeric probability. An attractive hypothetical change with no evidence remains weak architecture pressure.
+Do not manufacture numeric probability or score. An attractive hypothetical change with no evidence remains weak architecture pressure. A later-but-serious refactor can still justify a small action now when current-work overlap is high and preparation improves current work; a near future can still fail to justify a framework when preparation tax is large and deferral is cheap.
 
 ## Durable Instance Register
 
@@ -71,8 +84,9 @@ When target code/base structure changes materially, re-evaluate affected paths i
 ```text
 contextual WEUC instance
 → expected Workspace Change Path
-→ likelihood / value / timing
-→ friction / fan-out / risk
+→ likelihood / horizon / value / confidence
+→ current-work overlap + preparation-now vs deferred cost
+→ friction / fan-out / risk + applicable Work-Cost effects
 → UC-PLAN-ARCH-PRESSURE when material
 → Change Axis only to the degree evidence supports it
 → UC-PLAN-ARCH-DECISION when a concrete choice is justified

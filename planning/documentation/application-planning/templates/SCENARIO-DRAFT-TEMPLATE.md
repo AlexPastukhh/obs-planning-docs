@@ -96,6 +96,16 @@ Review the path from the actor perspective without reducing it to click count:
 ### Behavior Item References
 <Link stable addressable Behavior Items. Behavior Items are not implementation tasks/Slices.>
 
+### Scenario / DATA / Behavior Discovery Check — When Material
+
+Use Scenario DATA and Behavior Items as discovery tools, not only as downstream documentation. Revisit the Scenario boundary when decomposition exposes a missing input, hidden branch, invariant, outcome or separately meaningful Need/result. Revisit DATA/Behavior after any material Scenario change.
+
+```text
+Scenario ↔ DATA ↔ Behavior
+= iterative refinement of one current behavioral plan
+```
+
+
 ### Related Requirements
 <Link must-hold conditions without converting Requirement identity into Scenario identity. A technical mechanism remains a Requirement/implementation constraint unless the Need/result boundary independently justifies Scenario behavior.>
 

@@ -44,6 +44,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Application / bounded change to plan in Modular/Medium SDS>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

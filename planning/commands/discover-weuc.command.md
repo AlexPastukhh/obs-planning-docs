@@ -15,10 +15,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "найди WEUC",
     "discover WEUC",
     "discover contextual WEUCs",
-    "эволюционные юзкейсы"
+    "эволюционные юзкейсы",
+    "исследуй WEUC-инстансы",
+    "изучи инстансы эволюции",
+    "discover WEUC instances"
   ],
-  "description": "discover contextual future-change instances",
-  "meaning": "Invoke UC-PLAN-ARCH-DISCOVER-WEUC to enumerate concrete future-change instances, likelihood/value/timing, expected change paths and friction/fan-out/risk.",
+  "description": "discover contextual Workspace Evolution Use-Case instances",
+  "meaning": "Invoke UC-PLAN-ARCH-DISCOVER-WEUC to discover concrete contextual WEUC Instances (optionally grouped by reusable WEUC Type), assess likelihood/horizon/value/confidence, current-work overlap, preparation-now vs deferred cost, expected Workspace Change Paths and applicable work-cost/friction/risk evidence.",
   "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
   "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
   "ownerFiles": [
@@ -26,14 +29,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
     "planning/documentation/architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md"
   ],
-  "expectedOutput": "Contextual WEUC instances + likelihood/value/timing + change paths + architecture handoff.",
+  "expectedOutput": "Contextual WEUC Instances + optional WEUC Type grouping + likelihood/horizon/value/confidence + current-work overlap/preparation-vs-deferred cost + expected Workspace Change Paths + work-cost/friction/risk + architecture handoff.",
   "permissionMode": "read-only",
   "keyReminders": [
     "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
     "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
     "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
     "Prefer contextual instances over generic flexibility. Use stable IDs/register only when cross-plan tracking is materially useful.",
-    "No repository mutation, archive, commit or push is implied."
+    "No repository mutation, archive, commit or push is implied.",
+    "A future instance is architecture evidence only to the degree likelihood/horizon/value/current-work overlap and preparation-now vs deferred cost justify paying Architectural Tax now."
   ],
   "userTarget": "<Concrete target code/workspace area>",
   "palette": true,

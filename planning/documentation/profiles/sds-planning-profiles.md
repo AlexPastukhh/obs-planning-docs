@@ -49,11 +49,17 @@ target code/workspace realization
 → Architecture Decisions when warranted
 → adjust architecture / Slice planning only where evidence warrants
 
+verification planning before implementation
+→ UC-PLAN-TEST-STRATEGY when shared/layer policy is material
+→ UC-PLAN-TEST-DESIGN for material selected behavior
+→ UC-PLAN-TEST-PLAN when an operated acceptance pass/campaign is useful
+
 STEP 4 — PRACTICAL REALIZATION FEEDBACK
 implementation
-→ practical testing
-→ semantic ReviewDiff
+→ execute selected automated / human / AI / E2E proof
 → actual evidence
+→ UC-PLAN-TEST-COVERAGE when current evidence must be reviewed
+→ semantic ReviewDiff
 → upstream correction only for genuine new evidence / contradiction / infeasibility
 ```
 
@@ -98,7 +104,8 @@ STEP 3 — Slice Strategy / Slices
   + implementation-part plans when material
   + WEUC Types / contextual instances / likelihood / change paths when material
   + architecture pressure/decisions when material
-STEP 4 — Practical Testing / Realization Feedback plan
+  + Test Strategy/Design/Practical Test Plan when material
+STEP 4 — implementation + executed evidence + Coverage/ReviewDiff feedback
 
 Execution Order / versions when useful
 Current Overall Conclusions
@@ -142,7 +149,7 @@ slices.md
 → STEP 3 Slice Strategy
 → one or several vertical Slices
 → frontend / server / other implementation-part plans when useful
-→ verification targets
+→ verification targets + Test Design/Plan handoff when material
 ```
 
 Grow the structure only when it becomes useful. Examples:
@@ -193,12 +200,16 @@ For implementation architecture, do not reason from generic flexibility alone.
 
 ```text
 target code/workspace area
+→ resolve important Workspace UC Types / current UCs
 → discover WEUC Type candidates when useful
 → enumerate concrete contextual WEUC Instances
-→ estimate likelihood / value / timing from evidence
-→ trace expected Workspace Change Path
-→ assess friction / fan-out / migration / verification risk
+→ assess likelihood / horizon / value / confidence
+→ assess current-work overlap + preparation-now vs deferred cost
+→ trace expected Workspace Change / Understanding / Verification paths
+→ consume representative Application Runtime costs when relevant
+→ assess read/comprehension + mutation/evolution + verification/diagnosis/operation + runtime costs
 → derive Change Pressure / Change Axes only to supported degree
+→ compare Architectural Tax/payoff and implementation sequencing
 → make Architecture Decisions only when concrete payoff warrants complexity
 ```
 
@@ -222,13 +233,16 @@ Execution order may be partial. Show parallel groups when sequence is not meanin
 
 ## 7. Practical Realization Feedback
 
-Steps 0–3 are pre-implementation planning. Step 4 plans and then reviews real operated evidence.
+Steps 0–3 are pre-implementation planning. Material proof design belongs there: `UC-PLAN-TEST-DESIGN` selects how behavior will be proved, and `UC-PLAN-TEST-PLAN` composes a practical operated pass/campaign when useful.
+
+Step 4 is execution and feedback from reality:
 
 ```text
-selected Slice/change
+selected Slice/change + selected proof plan
 → implementation
-→ UC-PLAN-TEST-PLAN when practical operated acceptance is useful
-→ executed human / AI / E2E evidence
+→ execute automated / human / AI / E2E proof
+→ actual evidence
+→ UC-PLAN-TEST-COVERAGE when current evidence must be audited
 → semantic ReviewDiff
 → actual finding
 → ordinary local adaptation when semantics stay unchanged

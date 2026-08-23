@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "use-case-seed",
-  "generatedFrom": "all current canonical planning/**/use-case-registry.md files",
+  "generatedFrom": "all current canonical Use-Case registries under planning/** (case-insensitive filename; legacy/historical compatibility indexes excluded)",
   "items": [
     {
       "id": "UC-DOC-BUILD-REPLACEMENT-PACKAGE",
@@ -14,6 +14,8 @@
       "target": "<Build Replacement Package target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
+      "trigger": "approved file transition + exact touched base",
+      "result": "protocol-valid ZIP + OBS-ACTION",
       "commandId": "replacement_archive.create"
     },
     {
@@ -27,6 +29,8 @@
       "target": "<Build Legacy Review-Diff Archive Route target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
+      "trigger": "user explicitly selects legacy review-diff package mode",
+      "result": "route-owned archive + transfer/capture instructions",
       "commandId": "replacement_archive.review_diff.create"
     },
     {
@@ -39,7 +43,9 @@
       "instruction": "Resolve UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md + Linked Notes mechanism when available). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Configure Required Dependency Reviews target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "a meaningful dependency should not rely on human memory to notice downstream impact",
+      "result": "explicit Review Dependency with source, consumer(s), reason/scope and freshness/review tracking route"
     },
     {
       "id": "UC-DOC-ESTABLISH-DEPENDENCY",
@@ -51,7 +57,9 @@
       "instruction": "Resolve UC-DOC-ESTABLISH-DEPENDENCY in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Establish Semantic Dependency target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "one owner/result materially depends on another",
+      "result": "selected semantic dependency intent/classification + affected owners + realization need when any"
     },
     {
       "id": "UC-DOC-FIND-OWNER",
@@ -63,7 +71,9 @@
       "instruction": "Resolve UC-DOC-FIND-OWNER in the current canonical registry and follow its current owner route (documentation-responsibility-zone-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Determine Where Information Belongs target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "content/file responsibility is unclear",
+      "result": "reusable/project classification + narrow canonical owner"
     },
     {
       "id": "UC-DOC-MAINTAIN-COMMAND",
@@ -76,6 +86,8 @@
       "target": "<Create / Maintain Planning Command target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
+      "trigger": "a new command is useful or an existing command route/definition must change",
+      "result": "validated current planning/commands/*.command.md definition + correct semantic-entry/owner route + explicit output/permission boundary",
       "commandId": "command.plan"
     },
     {
@@ -88,7 +100,9 @@
       "instruction": "Resolve UC-DOC-MAINTAIN-NAVIGATION in the current canonical registry and follow its current owner route (architecture principles + responsibility map + affected README/index/navigation owners; validate with coverage-review workflow). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Maintain Repository Documentation Navigation target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "a capability/behavior/owner is added, moved, renamed, retired or otherwise changes how readers should discover current meaning",
+      "result": "affected navigation/read-order owners lead naturally to current Direction → primary semantic registry → Workspace/methodology Use Case or Application Scenario → canonical owner routes"
     },
     {
       "id": "UC-DOC-MAINTAIN-PROMPT",
@@ -100,7 +114,9 @@
       "instruction": "Resolve UC-DOC-MAINTAIN-PROMPT in the current canonical registry and follow its current owner route (prompt-maintenance-workflow.md + planning/helper-library/README.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Create / Maintain Reusable Prompt target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "a reusable prompt is needed or an existing prompt is stale/duplicative/misrouting",
+      "result": "valid current prompt with explicit profile, owner-navigation boundary and proportional output/evidence contract"
     },
     {
       "id": "UC-DOC-MAINTAIN-REGISTRIES",
@@ -112,7 +128,9 @@
       "instruction": "Resolve UC-DOC-MAINTAIN-REGISTRIES in the current canonical registry and follow its current owner route (direction-and-use-case-registry-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Maintain Directions And Use Cases target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "semantic capability/direction meaning changes",
+      "result": "complete current registry entries + correct semantic parent/owner/handoff links"
     },
     {
       "id": "UC-DOC-MAINTAIN-SHARED-EXACT-MEANING",
@@ -124,7 +142,9 @@
       "instruction": "Resolve UC-DOC-MAINTAIN-SHARED-EXACT-MEANING in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Maintain Shared Exact Meaning target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "repeated exact text/definition must remain synchronized",
+      "result": "canonical exact meaning + synchronized consumers through the narrowest suitable mechanism"
     },
     {
       "id": "UC-DOC-ORIENT",
@@ -137,6 +157,8 @@
       "target": "<Bootstrap Reusable Documentation Governance target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
+      "trigger": "a new chat/session starts documentation work, reusable documentation principles are explicitly requested, or ownership/governance is uncertain",
+      "result": "reusable principles loaded + applicable UC-DOC-* and canonical reusable/current owners identified + permission boundary understood",
       "commandId": "documentation_principles.read"
     },
     {
@@ -150,6 +172,8 @@
       "target": "<Plan Concrete File / Docs / Code Update target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
+      "trigger": "selected meaning needs concrete file transition",
+      "result": "ordered File Update Plan",
       "commandId": "file_update.plan"
     },
     {
@@ -162,7 +186,9 @@
       "instruction": "Resolve UC-DOC-PLAN-UPDATE in the current canonical registry and follow its current owner route (documentation-update-plan-workflow.md → workspace-planning/ as needed → file-update workflow only when an explicit ordered concrete file plan is selected). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan A Documentation Update target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "material docs change needs integrated semantic/owner/realization review",
+      "result": "checked UC-centric documentation target plan to the selected depth, including exact affected-file surface when Step 3 is selected"
     },
     {
       "id": "UC-DOC-RECONCILE-STATUS",
@@ -174,7 +200,9 @@
       "instruction": "Resolve UC-DOC-RECONCILE-STATUS in the current canonical registry and follow its current owner route (status-reconciliation-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Reconcile Documentation / Owner Status target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "owner/status labels or routes may disagree",
+      "result": "explicit reconciled status + owner route"
     },
     {
       "id": "UC-DOC-REVIEW-COVERAGE",
@@ -186,7 +214,9 @@
       "instruction": "Resolve UC-DOC-REVIEW-COVERAGE in the current canonical registry and follow its current owner route (repository-navigation-and-use-case-coverage-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Repository Navigation / Semantic Coverage target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "repository discoverability/semantic coverage may be incomplete",
+      "result": "uncovered Workspace/methodology UCs, uncovered Application Scenarios, orphan owners, broken routes and incomplete semantic contracts identified with maintenance/planning handoffs"
     },
     {
       "id": "UC-DOC-REVIEW-CURRENT-CONSISTENCY",
@@ -198,7 +228,9 @@
       "instruction": "Resolve UC-DOC-REVIEW-CURRENT-CONSISTENCY in the current canonical registry and follow its current owner route (current-semantic-consistency-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Current Semantic Consistency target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "a material methodology change or consistency concern may leave stale/duplicated/conflicting current semantics",
+      "result": "checked contradictions/stale duplicates/orphan routes + selected corrective owner updates"
     },
     {
       "id": "UC-DOC-REVIEW-DEPENDENCY-COVERAGE",
@@ -210,7 +242,9 @@
       "instruction": "Resolve UC-DOC-REVIEW-DEPENDENCY-COVERAGE in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Dependency Coverage target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "completeness of dependency handling materially affects correctness",
+      "result": "missing/weak/duplicate dependency findings + treatment route"
     },
     {
       "id": "UC-DOC-REVIEW-DEPENDENTS",
@@ -222,7 +256,9 @@
       "instruction": "Resolve UC-DOC-REVIEW-DEPENDENTS in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Semantic Dependents target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "selected source meaning changed or dependency review is explicitly requested/needed for correctness",
+      "result": "checked affected dependents + stale/current findings + required repairs"
     },
     {
       "id": "UC-DOC-REVIEW-DIFF",
@@ -235,6 +271,8 @@
       "target": "<Semantically Review A Repository ReviewDiff target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
+      "trigger": "ReviewDiff is pasted/attached/delivered/selected for review",
+      "result": "checked findings + selected corrective plan when needed + Current-Plan-relative Q/R/P + ReviewDiff verdict",
       "commandId": "critical_review.apply"
     },
     {
@@ -247,7 +285,9 @@
       "instruction": "Resolve UC-DOC-REVIEW-EXAMPLES in the current canonical registry and follow its current owner route (example-coverage-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Practical Example Coverage target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "reusable method/template needs demonstration review",
+      "result": "example need / owner / boundary decision"
     },
     {
       "id": "UC-DOC-REVISE-RETURNED-FILES",
@@ -260,6 +300,8 @@
       "target": "<Reconcile User-Returned Files target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
+      "trigger": "user returns edited files for revision",
+      "result": "complete reconciled files",
       "commandId": "returned_files.revise"
     },
     {
@@ -272,7 +314,9 @@
       "instruction": "Resolve UC-DOC-UPDATE in the current canonical registry and follow its current owner route (documentation-update-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Perform An Approved Documentation Update target>",
       "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "selected meaning is authorized for docs change",
+      "result": "current owners updated consistently"
     },
     {
       "id": "UC-DW-DOC-REF",
@@ -284,7 +328,9 @@
       "instruction": "Resolve UC-DW-DOC-REF in the current canonical registry and follow its current owner route (repository-documentation-change-and-reference-review-workflow.md + [SCN-DW-DOC-REF](scenarios/SCN-DW-DOC-REF.md).). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Repository Documentation Change And Reference Review target>",
       "directionId": "DIR-DOCUMENTATION-WORKBENCH",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "repository file/folder/stable section is selected for direct documentation work or accepted planning meaning is ready for materialization.",
+      "result": "complete changed Markdown/docs with validated stable links and explicit affected-use review state, or an explicit unresolved/deferred result."
     },
     {
       "id": "UC-DW-PLANNING-TO-REPOSITORY",
@@ -296,7 +342,9 @@
       "instruction": "Resolve UC-DW-PLANNING-TO-REPOSITORY in the current canonical registry and follow its current owner route (planning-meaning-to-repository-workflow.md + shared Idea/Workspace-planning owners + File Update owners only when that explicit route is selected + [SCN-DW-PLANNING-TO-REPOSITORY](scenarios/SCN-DW-PLANNING-TO-REPOSITORY.md).). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Planning Meaning To Repository target>",
       "directionId": "DIR-DOCUMENTATION-WORKBENCH",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "selected source/current owners/Ideas/current conclusions require integration and repository file handoff.",
+      "result": "reconciled current planning meaning plus a concrete reviewable repository realization/handoff surface to the selected depth; an ordered File Update Plan is included only when that separate capability is selected/useful, otherwise an explicit unresolved/deferred state is allowed."
     },
     {
       "id": "UC-PLAN-APP-CONCEPT",
@@ -309,6 +357,8 @@
       "target": "<Plan / Review Application Concept target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "custom application is a material candidate, or application creation is confirmed but concept/value/feasibility is not grounded",
+      "result": "reviewed Application Concept + Concept Features + feasibility/rough effort/maintenance picture + viable-alternative comparison + current worth-it conclusion",
       "commandId": "application_concept.plan"
     },
     {
@@ -322,12 +372,14 @@
       "target": "<Establish Application Responsibility target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "selected solution/Concept includes own application behavior, or external context already confirms it",
+      "result": "explicit application responsibility/boundary",
       "commandId": "application_responsibility.establish"
     },
     {
       "id": "UC-PLAN-ARCH-DECISION",
       "label": "Plan / Review One Material Architecture Decision",
-      "description": "select/review one architecture choice by its correctness and effects on important current/future Workspace paths",
+      "description": "select/review one architecture choice by correctness and explicit trade-offs across important Workspace work, contextual WEUCs and representative runtime paths",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
@@ -335,12 +387,14 @@
       "target": "<Plan / Review One Material Architecture Decision target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
+      "trigger": "one material architecture pressure/problem/choice is ready for explicit comparison",
+      "result": "selected Architecture Decision + Intent + affected Work-Cost/path conclusion + implementation-sequence recommendation when material + Rejected Complexity + Revisit Trigger when useful",
       "commandId": "architecture_decision.plan"
     },
     {
       "id": "UC-PLAN-ARCH-DISCOVER-WEUC",
       "label": "Discover Contextual Workspace Evolution Use Cases",
-      "description": "discover bounded future Workspace-evolution work instances against a concrete current/target owner/change surface",
+      "description": "discover bounded future Workspace-evolution instances against a concrete current/target owner/change surface and assess when preparing now is justified",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
@@ -348,24 +402,28 @@
       "target": "<Discover Contextual Workspace Evolution Use Cases target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
+      "trigger": "explicit WEUC/evolvability discovery is requested, Architecture planning needs contextual future-change evidence, or Application SDS Step 3 needs architecture-driving future-change evidence",
+      "result": "contextual WEUC Types/instances + likelihood/horizon/value/confidence + current-work overlap + preparation-now/deferred cost + expected Change Paths + Work-Cost/friction/risk + architecture-handoff yes/no",
       "commandId": "architecture_weuc.discover"
     },
     {
       "id": "UC-PLAN-ARCH-EVOLUTION",
       "label": "Plan / Review Workspace Architecture Evolution",
-      "description": "select a coherent target architecture change when several related decisions/risks must move together",
+      "description": "select a coherent target architecture change when several related decisions/risks must move together under the same work-cost model",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
       "instruction": "Resolve UC-PLAN-ARCH-EVOLUTION in the current canonical registry and follow its current owner route (architecture-evolution-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Workspace Architecture Evolution target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "current Architecture State and accumulated pressure require coordinated multi-decision evolution",
+      "result": "selected target architecture/evolution direction + work-cost trade-offs + boundaries/transition constraints + routed downstream realization work"
     },
     {
       "id": "UC-PLAN-ARCH-PATH",
       "label": "Trace / Evaluate Architecture-Relevant Path",
-      "description": "understand what must actually be understood, changed or executed for one material result and expose architecture cost/pressure",
+      "description": "understand what must actually be understood, changed, verified/operated or executed for one material result and expose qualitative architecture work cost/pressure",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
@@ -373,6 +431,8 @@
       "target": "<Trace / Evaluate Architecture-Relevant Path target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
+      "trigger": "one Workspace UC, contextual WEUC Instance, important Workspace Change Case, Extension-derived future UC or Application Scenario needs path analysis",
+      "result": "checked Workspace Understanding Path, Workspace Change Path or Runtime Realization Path + applicable Understanding/Mutation/Verification/Runtime cost findings",
       "commandId": "architecture_path.trace"
     },
     {
@@ -386,31 +446,38 @@
       "target": "<Establish / Review Workspace Change Pressure target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
       "manualInvocation": true,
+      "trigger": "Workspace architecture must account for important UCs, contextual WEUCs, Workspace Change Cases, Extensions, runtime constraints or observed history",
+      "result": "Change Pressure picture + qualitative work-cost evidence + evidence-backed Change Axes/confidence + Change Hot Paths + material architecture findings",
       "commandId": "architecture_pressure.review"
     },
     {
       "id": "UC-PLAN-ARCH-STATE",
       "label": "Understand / Review Workspace Architecture State",
-      "description": "establish an inspectable current architecture baseline and identify material architecture/maintainability concerns relative to important Workspace work",
+      "description": "establish an inspectable current architecture baseline and identify material architecture/maintainability concerns relative to important Workspace work and representative runtime paths",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
       "instruction": "Resolve UC-PLAN-ARCH-STATE in the current canonical registry and follow its current owner route (architecture-state-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Understand / Review Workspace Architecture State target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "current Workspace architecture needs orientation/review or an architecture baseline is needed before further work",
+      "result": "current Architecture State + Architecture Intent where known + expensive Understanding/Mutation/Verification/Runtime path findings + intentional/accidental/speculative/legacy complexity + Maintainability Risks / revisit triggers when material"
     },
     {
       "id": "UC-PLAN-ARCH-WORKSPACE-USES",
       "label": "Discover / Review Workspace Use Cases",
-      "description": "establish the architecture-relevant current-work picture from canonical Workspace UCs plus explicit candidate useful results without taking canonical UC lifecycle authority",
+      "description": "establish the architecture-relevant current-work picture from canonical Workspace UCs plus explicit candidate useful results/types and importance/cost evidence without taking canonical UC lifecycle authority",
       "sources": [
         "planning/documentation/architecture-planning/use-case-registry.md"
       ],
       "instruction": "Resolve UC-PLAN-ARCH-WORKSPACE-USES in the current canonical registry and follow its current owner route (workspace-use-case-discovery-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Discover / Review Workspace Use Cases target>",
       "directionId": "DIR-PLAN-ARCHITECTURE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "explicit important-work picture is needed or current/future Workspace work has materially changed",
+      "result": "important current canonical Workspace UCs + architecture-relevant candidate useful results/types + relevance/frequency/importance/cost evidence when useful + canonical Workspace Planning handoff when establishment/change/topology is required",
+      "commandId": "workspace_uses.discover"
     },
     {
       "id": "UC-PLAN-COLLECT-IDEAS",
@@ -423,6 +490,8 @@
       "target": "<Collect And Review Ideas From Selected Source target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "selected source contains answer-seeking Ideas",
+      "result": "reviewed Ideas + Q/R/P + conclusions",
       "commandId": "ideas.collect"
     },
     {
@@ -435,12 +504,14 @@
       "instruction": "Resolve UC-PLAN-CONSISTENCY in the current canonical registry and follow its current owner route (complete selected owners + detailed-planning contract). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency target>",
       "directionId": "DIR-PLAN-SOLUTION",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "multiple owners may conflict or one owner changed materially",
+      "result": "explicit contradictions/corrections/review state"
     },
     {
       "id": "UC-PLAN-DOMAIN",
       "label": "Plan / Review Domain",
-      "description": "compare/refine/select/review the simplest explicit conceptual language/lifecycle/rules/boundaries that supports current meaning and cheap justified evolution",
+      "description": "compare/refine/select/review the simplest explicit conceptual language/lifecycle/rules/value/ownership boundaries that supports current meaning and cheap justified evolution",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
@@ -448,12 +519,14 @@
       "target": "<Plan / Review Domain target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "Domain candidates/meaning are sufficiently understood and separate Domain ownership materially improves clarity/consistency/change cost",
+      "result": "selected Domain meaning + current Scenario/Requirement coverage + justified variation/invariant decisions + selected/split/merged/rejected Aggregate boundaries when material + verification meaning + draft-state review",
       "commandId": "application_domain.plan"
     },
     {
       "id": "UC-PLAN-DOMAIN-DISCOVERY",
       "label": "Discover Domain Evidence / Candidates",
-      "description": "discover evidence-backed concepts/identity/lifecycle/rules/invariants/policies/consistency candidates before selecting a current Domain model",
+      "description": "discover evidence-backed concepts/identity/lifecycle/rules/invariants/policies/consistency plus Value Object and Aggregate/Root/ownership candidates when justified before selecting a current Domain model",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
@@ -461,6 +534,8 @@
       "target": "<Discover Domain Evidence / Candidates target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "current Scenario/DATA/Behavior/Requirements contain enough semantic complexity that explicit discovery materially helps",
+      "result": "Domain evidence + candidates + invariant/policy findings + Value Object/Aggregate/Root/owned-vs-outside/external-reference/coordination candidates when material + integrated Domain Variants when material",
       "commandId": "application_domain.discover"
     },
     {
@@ -474,6 +549,8 @@
       "target": "<Prototype Application Experience / Workflow target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "Application Concept/responsibility exists but important interaction/workflow/spatial uncertainty remains",
+      "result": "reviewed Prototype Plan/Result with Prototype Scenarios/Screens + evidence-backed candidate Requirements/DATA/Behavior/Change-Axis findings and handoff",
       "commandId": "application_prototype.plan"
     },
     {
@@ -487,6 +564,8 @@
       "target": "<Understand Current Workflow And Reality target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "current context materially affects solution choice",
+      "result": "descriptive checked Current Reality",
       "commandId": "application_reality.review"
     },
     {
@@ -496,10 +575,12 @@
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve this exact canonical Use-Case entry and follow application-realization-workflow.md. Review or compare representative realization paths when material, including pre-Domain comparative evidence, without letting implementation convenience or this projection become Domain authority.",
+      "instruction": "Resolve UC-PLAN-REALIZATION in the current canonical registry and follow its current owner route (application-realization-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review / Compare High-Level Application Realization target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "current application/Domain meaning needs a high-level stress check, or grounded Domain candidates cannot be selected confidently without comparative realization evidence",
+      "result": "high-level realization picture or candidate comparison + representative Runtime/Implementation Paths + material feasibility/cost/constraint/upstream findings + architecture runtime-cost handoff when material",
       "commandId": "application_realization.review"
     },
     {
@@ -513,12 +594,14 @@
       "target": "<Research Existing Solutions / Alternatives target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "material evidence gap affects solution choice",
+      "result": "checked options/evidence/disposition",
       "commandId": "application_research.research"
     },
     {
       "id": "UC-PLAN-SCENARIO",
       "label": "Draft / Review Detailed Scenario",
-      "description": "own detailed observable behavior and local/shared supporting planning for one meaningful current Scenario",
+      "description": "own detailed observable behavior and iteratively refine Scenario ↔ DATA ↔ Behavior meaning for one meaningful current Scenario",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
@@ -526,12 +609,14 @@
       "target": "<Draft / Review Detailed Scenario target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "one Scenario boundary is meaningful enough for detail",
+      "result": "current Scenario workspace with behavior owner + relevant Ideas/DATA/Behavior/Visual/Requirements + iterative decomposition review + draft-state review",
       "commandId": "application_scenario.plan"
     },
     {
       "id": "UC-PLAN-SCENARIO-DISCOVERY",
       "label": "Discover Application Scenarios",
-      "description": "identify independently meaningful user-visible Need/result behavior boundaries for the selected Application responsibility",
+      "description": "identify independently meaningful user/actor Need/goal/desired-result behavior boundaries for the selected Application responsibility",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
@@ -539,12 +624,14 @@
       "target": "<Discover Application Scenarios target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "selected Application responsibility or prototype findings need current behavioral boundaries",
+      "result": "current Scenario inventory/boundaries + material Future Scenario Ideas/Change Axes when discovered",
       "commandId": "application_scenarios.discover"
     },
     {
       "id": "UC-PLAN-SLICE",
       "label": "Plan / Review One Implementation Slice",
-      "description": "plan one selected separately deliverable/checkable implementation increment",
+      "description": "plan one selected separately deliverable/checkable implementation increment with explicit behavior/delegation boundaries and proof obligations",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
@@ -552,12 +639,14 @@
       "target": "<Plan / Review One Implementation Slice target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "one Slice boundary is selected and behavior/domain meaning is understood enough",
+      "result": "integrated Slice plan + implemented/delegated/later/outside coverage + optional implementation-part/visual/verification plans + negative guarantees when material",
       "commandId": "application_slice.plan"
     },
     {
       "id": "UC-PLAN-SLICE-STRATEGY",
       "label": "Plan / Review Slice Strategy",
-      "description": "select implementation decomposition/order into useful vertical separately deliverable/checkable increments",
+      "description": "select implementation decomposition/order into useful vertical separately deliverable/checkable increments, including technical sequence when it materially differs from product priority",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
@@ -565,6 +654,8 @@
       "target": "<Plan / Review Slice Strategy target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "implementation is large/uncertain enough that decomposition/order materially matters",
+      "result": "selected Slice decomposition/order + dependencies + delivery/learning/risk rationale + product-priority/implementation-sequence distinction when material",
       "commandId": "application_slice_strategy.plan"
     },
     {
@@ -578,6 +669,8 @@
       "target": "<Plan / Review Whole Solution Or Workflow target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
+      "trigger": "Need requires integrated answer",
+      "result": "current whole Solution/Workflow Variant + integration conclusion",
       "commandId": "application_solution.plan"
     },
     {
@@ -591,6 +684,8 @@
       "target": "<Review Current Test Coverage / Evidence target>",
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
+      "trigger": "current tests/evidence must be trusted, changed or audited",
+      "result": "behavior→actual-evidence mapping + missing/weak/stale/duplicated/wrong-layer findings",
       "commandId": "test_coverage.review"
     },
     {
@@ -604,6 +699,8 @@
       "target": "<Plan / Review Verification For Selected Behavior target>",
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
+      "trigger": "selected behavior is understood enough to design proof",
+      "result": "Behavior-to-Test Trace + selected layers + concrete assertions + risk/boundary decisions",
       "commandId": "test_design.plan"
     },
     {
@@ -617,6 +714,8 @@
       "target": "<Plan Practical Testing / Acceptance target>",
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
+      "trigger": "selected behavior/proof choices are grounded enough that a real practical verification pass or campaign is useful",
+      "result": "Practical Testing Plan with acceptance cards, operator/environment/setup/actions/evidence/pass-fail and campaign scope when needed",
       "commandId": "practical_testing.plan"
     },
     {
@@ -630,6 +729,8 @@
       "target": "<Establish / Review Testing Strategy target>",
       "directionId": "DIR-PLAN-TESTING",
       "manualInvocation": true,
+      "trigger": "testing responsibility spans several Slices/layers or shared harness/data/isolation/E2E policy materially matters",
+      "result": "current testing strategy + layer responsibilities + shared proof/data/isolation boundaries",
       "commandId": "testing_strategy.plan"
     },
     {
@@ -642,7 +743,9 @@
       "instruction": "Resolve UC-PLAN-WORKSPACE-CHANGE-UC in the current canonical registry and follow its current owner route ([review-change-workspace-use-case-workflow.md](review-change-workspace-use-case-workflow.md) + [workspace-planning-principles-and-terminology.md](workspace-planning-principles-and-terminology.md)). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review / Change Workspace Use Case target>",
       "directionId": "DIR-PLAN-WORKSPACE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "Ideas, requirements, evidence, corrections or change pressure materially affect a current Workspace Use Case.",
+      "result": "the current UC is intentionally unchanged, or one integrated Target UC plan is established to the selected planning depth: Target UC meaning at Step 1, plus Step-2 semantic rules and Step-3 vertical realization/file surface only when those depths are selected and reviewed."
     },
     {
       "id": "UC-PLAN-WORKSPACE-ESTABLISH-UC",
@@ -654,7 +757,9 @@
       "instruction": "Resolve UC-PLAN-WORKSPACE-ESTABLISH-UC in the current canonical registry and follow its current owner route ([establish-workspace-use-case-workflow.md](establish-workspace-use-case-workflow.md) + [workspace-planning-principles-and-terminology.md](workspace-planning-principles-and-terminology.md)). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Establish Workspace Use Case target>",
       "directionId": "DIR-PLAN-WORKSPACE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "a Need, Idea, Extension or observed Workspace result is not clearly owned by a current Workspace Use Case.",
+      "result": "either an existing UC is confirmed as the correct owner and work hands off to UC-PLAN-WORKSPACE-CHANGE-UC, or one justified new Target UC contract + graph placement is established, with Step-2 semantic meaning and Step-3 vertical realization/file surface included only when those depths are selected and reviewed."
     },
     {
       "id": "UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY",
@@ -666,7 +771,9 @@
       "instruction": "Resolve UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY in the current canonical registry and follow its current owner route ([review-workspace-use-case-topology-workflow.md](review-workspace-use-case-topology-workflow.md) + [workspace-planning-principles-and-terminology.md](workspace-planning-principles-and-terminology.md)). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Workspace Use-Case Topology target>",
       "directionId": "DIR-PLAN-WORKSPACE",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "overlap, split/merge/extraction pressure, changed dependencies/handoffs, or a cross-cutting Idea that creates a material boundary/relationship question affects several UCs and makes coherent topology review independently useful.",
+      "result": "coherent selected UC boundaries + semantic relationships + one local Target UC projection for every affected UC, with Step-2/Step-3 meaning and cross-UC/cross-Slice architecture findings included only to the selected/reviewed depth."
     },
     {
       "id": "UC-PR-END-SESSION",
@@ -679,6 +786,8 @@
       "target": "<End Active Planning Session target>",
       "directionId": "DIR-PLANNING-RUNTIME",
       "manualInvocation": true,
+      "trigger": "user explicitly ends the active session/day workflow.",
+      "result": "current operational session state is closed/logged according to the runtime workflow and next state is explicit.",
       "commandId": "session.end"
     },
     {
@@ -691,7 +800,10 @@
       "instruction": "Resolve UC-REPO-AUDIT-REVIEW in the current canonical registry and follow its current owner route (documentation/review-audit-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Audit Review Coverage And Quality target>",
       "directionId": "DIR-REPOSITORY",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "user asks what was checked / to recheck, or a broad coverage/quality claim needs evidence",
+      "result": "checked files/semantic units + quality/sufficiency + partial/unchecked + review delta + next useful checks",
+      "commandId": "review_audit.recheck"
     },
     {
       "id": "UC-REPO-CRITICAL-REVIEW",
@@ -704,6 +816,8 @@
       "target": "<Critically Review A Claim / Plan / Diff target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
+      "trigger": "target should be tested as hypothesis",
+      "result": "supported strengths/issues/counterevidence/conclusion; material corrective Ideas reviewed proportionally",
       "commandId": "critical_review.apply"
     },
     {
@@ -717,6 +831,8 @@
       "target": "<Report Current Repository / Planning State target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
+      "trigger": "state/status question",
+      "result": "checked known/local/unknown state + next safe action",
       "commandId": "current_state.report"
     },
     {
@@ -729,7 +845,9 @@
       "instruction": "Resolve UC-REPO-DEFINE-PARALLEL-SCOPES in the current canonical registry and follow its current owner route (../parallel-work-scope-registry.md + documentation/parallel-work-scope-and-action-log-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Define / Maintain Fixed Parallel-Work Scopes target>",
       "directionId": "DIR-REPOSITORY",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "repository scope boundaries/log locations need initial definition or explicit structural change",
+      "result": "current root Scope Registry + canonical log at every active scope root"
     },
     {
       "id": "UC-REPO-ORIENT",
@@ -742,6 +860,8 @@
       "target": "<Orient In Repository And Resolve Work Route target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
+      "trigger": "new/uncertain repository task",
+      "result": "relevant Direction, Use Case, owners and governance identified",
       "commandId": "governance.development"
     },
     {
@@ -755,6 +875,8 @@
       "target": "<Work In Registered Parallel Scope(s) target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
+      "trigger": "work should proceed in parallel or scope ownership matters",
+      "result": "selected registered scope(s), canonical scope log, cross-scope references when needed",
       "commandId": "parallel_workspace.start"
     },
     {
@@ -768,6 +890,8 @@
       "target": "<Plan The Next Concrete Step target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
+      "trigger": "active context needs immediate next planning step",
+      "result": "one justified next step + unresolved blockers",
       "commandId": "plan.now"
     },
     {
@@ -780,7 +904,9 @@
       "instruction": "Resolve UC-REPO-REFINE-CURRENT-PLAN in the current canonical registry and follow its current owner route (documentation/progressive-plan-refinement-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Refine The Current Plan target>",
       "directionId": "DIR-REPOSITORY",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "current planning meaning needs refinement, deeper review or directed continuation",
+      "result": "updated current semantic owner(s) + truthful reviewed/partial/unchecked state + attached Q/R/P only when material"
     },
     {
       "id": "UC-REPO-REVIEW-PLANNING-FINDINGS",
@@ -792,7 +918,9 @@
       "instruction": "Resolve UC-REPO-REVIEW-PLANNING-FINDINGS in the current canonical registry and follow its current owner route (documentation/planning-findings-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Planning Findings / Q/R/P Completeness target>",
       "directionId": "DIR-REPOSITORY",
-      "manualInvocation": true
+      "manualInvocation": true,
+      "trigger": "completeness of current planning findings materially matters",
+      "result": "owner-attached active findings + missing/duplicate/obsolete finding corrections"
     },
     {
       "id": "UC-REPO-USE-ARCHIVE-SOURCE",
@@ -805,79 +933,9 @@
       "target": "<Use An Explicit Archive As Read Source target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
+      "trigger": "user selects archive/snapshot for reading",
+      "result": "checked source identity/coverage + source-bounded work context",
       "commandId": "archive_source.use"
-    },
-    {
-      "id": "UC-RPKG-APPLY",
-      "label": "Apply Verified Replacement Package",
-      "description": "Apply Verified Replacement Package",
-      "sources": [
-        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
-      ],
-      "instruction": "Resolve UC-RPKG-APPLY in the current canonical registry and follow its current owner route. Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Apply Verified Replacement Package target>",
-      "directionId": "",
-      "manualInvocation": true
-    },
-    {
-      "id": "UC-RPKG-ATTACH-SNAPSHOT",
-      "label": "Attach Repository Snapshot to ChatGPT",
-      "description": "Attach Repository Snapshot to ChatGPT",
-      "sources": [
-        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
-      ],
-      "instruction": "Resolve UC-RPKG-ATTACH-SNAPSHOT in the current canonical registry and follow its current owner route. Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Attach Repository Snapshot to ChatGPT target>",
-      "directionId": "",
-      "manualInvocation": true
-    },
-    {
-      "id": "UC-RPKG-DELIVER-REVIEW",
-      "label": "Deliver Current ReviewDiff to ChatGPT",
-      "description": "Deliver Current ReviewDiff to ChatGPT",
-      "sources": [
-        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
-      ],
-      "instruction": "Resolve UC-RPKG-DELIVER-REVIEW in the current canonical registry and follow its current owner route. Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Deliver Current ReviewDiff to ChatGPT target>",
-      "directionId": "",
-      "manualInvocation": true
-    },
-    {
-      "id": "UC-RPKG-EXPORT-REPOSITORY",
-      "label": "Export Repository Snapshot ZIP",
-      "description": "Export Repository Snapshot ZIP",
-      "sources": [
-        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
-      ],
-      "instruction": "Resolve UC-RPKG-EXPORT-REPOSITORY in the current canonical registry and follow its current owner route. Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Export Repository Snapshot ZIP target>",
-      "directionId": "",
-      "manualInvocation": true
-    },
-    {
-      "id": "UC-RPKG-FINALIZE",
-      "label": "Finalize Current ChangeSet",
-      "description": "Finalize Current ChangeSet",
-      "sources": [
-        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
-      ],
-      "instruction": "Resolve UC-RPKG-FINALIZE in the current canonical registry and follow its current owner route. Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Finalize Current ChangeSet target>",
-      "directionId": "",
-      "manualInvocation": true
-    },
-    {
-      "id": "UC-RPKG-REVIEW",
-      "label": "Inspect Current ChangeSet Review State",
-      "description": "Inspect Current ChangeSet Review State",
-      "sources": [
-        "planning/documentation/tools/replacement-package-app/USE-CASE-REGISTRY.md"
-      ],
-      "instruction": "Resolve UC-RPKG-REVIEW in the current canonical registry and follow its current owner route. Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Inspect Current ChangeSet Review State target>",
-      "directionId": "",
-      "manualInvocation": true
     }
   ]
 }

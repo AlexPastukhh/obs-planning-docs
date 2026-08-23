@@ -1,7 +1,7 @@
 # Workspace Architecture Planning Documentation Index
 
 Status: active reusable methodology-family index
-Scope: understand, evaluate and evolve the architecture of an evolving Workspace through the work it must support, using the least complexity justified by current correctness, important Workspace work and evidence-backed change pressure.
+Scope: understand, evaluate and evolve the architecture of an evolving Workspace through the work it must support, using the least complexity justified by current correctness, important Workspace work, representative Application runtime constraints and evidence-backed change pressure.
 
 ## Direction
 
@@ -54,6 +54,8 @@ important current canonical Workspace Use Cases
 +
 architecture-relevant candidate useful results
 +
+Workspace UC Type / importance profile
++
 Workspace Change Cases
 +
 Planned / Likely Extensions
@@ -70,7 +72,19 @@ Workspace Work Paths
   - Understanding Paths
   - Change Paths
 +
+contextual WEUC Instances
+  - likelihood / horizon / value / confidence
+  - current-work overlap / preparation-now vs deferred cost
++
 Runtime Realization Paths when applicable
+
+↓
+
+Architecture Work-Cost Model
+  - understanding / analytical
+  - mutation / evolution
+  - verification / diagnosis / operation
+  - representative application runtime
 
 ↓
 
@@ -96,7 +110,7 @@ Architecture State / Decisions / Evolution
 ## Files
 
 - `architecture-planning-principles-and-terminology.md` — stable universal Architecture Lens concepts/invariants.
-- `workspace-use-cases-and-change-pressure.md` — architecture-input view of Workspace work plus Work Paths, Extensions, Change Pressure, Change Axes and Hot Paths; generic UC identity remains outside this file.
+- `workspace-use-cases-and-change-pressure.md` — canonical architecture-input/work-cost owner: Workspace UC Types/importance, Work Paths, contextual evolution evidence, Understanding/Mutation/Verification/Runtime cost surfaces, priority-vs-implementation-sequence reasoning, Change Pressure, Change Axes and Hot Paths; generic UC identity remains outside this file.
 - `workspace-use-case-discovery-workflow.md` — `UC-PLAN-ARCH-WORKSPACE-USES`: resolve current canonical UCs + discover explicit architecture-relevant candidates and hand canonical UC lifecycle questions to Workspace Planning.
 - `workspace-evolution-use-case-discovery-workflow.md` — `UC-PLAN-ARCH-DISCOVER-WEUC`: discover concrete future-change instances, likelihood/value/timing, expected change paths and friction/fan-out/risk.
 - `templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md` — durable project-local register shape when material contextual instances need stable cross-plan/decision tracking.
@@ -124,7 +138,7 @@ Plan as deeply as the decision requires; materialize only what benefits from sta
 ```text
 concrete Workspace area / owner
 → contextual evolution-use discovery
-→ expected Workspace Change Path + likelihood/value/timing + friction/fan-out/risk
+→ expected Workspace Change Path + likelihood/horizon/value/confidence + current-work overlap/preparation-vs-deferred cost + friction/fan-out/risk
 → Architecture Pressure/Decision handoff when needed
 ```
 

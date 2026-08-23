@@ -41,7 +41,21 @@ operate/diagnose
 verify/check
 ```
 
-Do not assume useful work mutates the Workspace.
+Do not assume useful work mutates the Workspace. Treat read/understand/find/trace work as first-class architecture input because naming, placement and ownership can make those UCs expensive even when no bytes change.
+
+## 3.1 Establish Importance / Cost Relevance — When Useful
+
+For each material current/candidate Workspace use, record only evidence that changes architecture reasoning:
+
+```text
+current frequency / repeated history
+future likelihood / horizon
+value / consequence / correctness criticality
+representative Understanding / Change / Verify path
+current observed analytical or mutation cost
+```
+
+Do not create pseudo-precise scores. The purpose is to identify which work deserves stronger locality/discoverability/reversibility and which rare possibilities should not dominate architecture.
 
 ## 4. Separate Canonical UCs, Candidates And Change Cases
 
@@ -82,7 +96,7 @@ Useful result:
 ```text
 Important Current Canonical Workspace UCs
 Architecture-relevant candidate useful results / future Workspace-UC candidates
-Relevant frequency/current relevance where useful
+Relevant frequency/current relevance + importance/cost evidence where useful
 Related Extensions / constraints
 Workspace Change Cases kept separate
 Canonical establish/change/topology handoff when needed

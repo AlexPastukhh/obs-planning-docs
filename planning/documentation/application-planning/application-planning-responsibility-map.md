@@ -7,7 +7,8 @@ Status: active reusable nested responsibility map
 | Core planning concepts/invariants | `application-planning-principles-and-terminology.md` |
 | Repeated whole-solution → application behavior process | `solution-and-scenario-planning-workflow.md` |
 | Requirement / application change-context / early implementation-Idea semantics | `requirements-and-change-context.md` |
-| Generic Workspace Architecture / Change Pressure / Change Axis semantics | sibling `../architecture-planning/` |
+| Generic Workspace Architecture Work-Cost / Workspace UC/WEUC / Change Pressure / Change Axis semantics | sibling `../architecture-planning/workspace-use-cases-and-change-pressure.md` + Architecture UCs |
+| Testing Strategy / Test Design / Practical Test Plan / Coverage semantics | sibling `../testing-planning/` owners |
 | Interaction/workflow Prototype planning | `prototype-planning-workflow.md` |
 | Shared detailed planning/workspace/Variant/draft-state/reference-candidate contract | `detailed-planning/README.md` |
 | Domain evidence/candidate discovery algorithm | `domain-discovery-workflow.md` |

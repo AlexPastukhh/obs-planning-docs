@@ -12,3 +12,5 @@ test('rejects canonical missing from family',()=>assert.throws(()=>codec.parseCo
 test('rejects nested file path',()=>assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,file:'nested/demo.command.md'})),/direct-child/));
 
 test('rejects multiline command fields and unsafe owner paths',()=>{assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,command:'demo\ncommand',commandFamily:['demo\ncommand']})),/one safe text line/);assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,ownerFiles:['../outside.md']})),/invalid path segment/)});
+
+test('accepts optional explicit Direction placement for standalone command controls',()=>{const d=codec.parseCommandDefinitionBatch(block({...base,directionIds:['DIR-PLAN-SOLUTION']}))[0];assert.deepEqual(d.directionIds,['DIR-PLAN-SOLUTION']);assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,directionIds:['bad']})),/DIR-\* id/)});

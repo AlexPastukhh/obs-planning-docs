@@ -169,6 +169,39 @@ Change Axes
 → not authorization to generalize now
 ```
 
+## Scenario ↔ DATA ↔ Behavior Discovery Loop
+
+Scenario planning is iterative. Do not wait for a supposedly final Scenario before decomposing DATA and Behavior, and do not treat DATA/Behavior as passive documentation written only after the Scenario is settled.
+
+```text
+Real-Life Need / selected Application responsibility
+→ candidate Scenario boundary
+→ Scenario DATA discovery
+→ Behavior Item discovery
+→ missing information / branch / invariant / outcome becomes visible
+→ refine / split / merge Scenario when evidence requires
+→ refine DATA / Behavior
+→ repeat until the selected Scenario boundary and its addressable meaning are coherent enough for the current planning depth
+```
+
+Useful feedback examples:
+
+```text
+Behavior needs information the Scenario never obtains
+→ Scenario/DATA gap
+
+DATA appears only because an implementation schema has a field
+→ remove from Scenario DATA unless user/scenario meaning requires it
+
+Behavior branch produces a separately meaningful Need/result
+→ re-evaluate Scenario split
+
+several Behavior Items depend on one must-hold rule
+→ preserve it for Requirement/Domain discovery instead of hiding it in prose
+```
+
+The loop refines one current plan. It does not authorize implementation details to redefine user-visible behavior.
+
 ## Application Scenario Registration
 
 Every independently useful current application Need/result boundary is represented by an Application Scenario with stable identity, status and owner route in the application's Scenario Catalog. Ground Scenario identity in real user/work outcomes rather than merely application commands, screens or implementation operations.

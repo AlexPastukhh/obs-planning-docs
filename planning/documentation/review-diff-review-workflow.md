@@ -172,6 +172,27 @@ Status
 
 Reference Related Idea IDs when applicable. Once selected, move the route into Current Conclusions / Current Plan and remove it from this section.
 
+## 7.1 Architecture Work-Cost Regression Check — When Material
+
+For a material implementation diff, ask whether actual code materially changed an important Workspace Understanding/Change/Verify path or representative Application Runtime path. Do not run full architecture ceremony for every diff.
+
+```text
+material path changed?
+  no → no architecture-cost finding required
+  yes → compare expected vs actual:
+         understanding / analytical cost
+         mutation / evolution cost
+         verification / diagnosis / operation cost
+         runtime / Scenario cost when applicable
+         Architectural Tax / reversibility
+
+→ no concern
+  | accepted explicit trade-off
+  | architecture correction/review needed
+```
+
+Use the canonical Architecture Work-Cost Model and relevant `UC-PLAN-ARCH-*` owner when a real concern appears. A rename/file movement alone is not a regression; increased hidden context, duplicated semantic logic, broader synchronized edits, new verification/migration burden or materially worse runtime behavior can be.
+
 ## 8. Required Review Output
 
 For a non-trivial ReviewDiff review, produce a compact reviewable structure:

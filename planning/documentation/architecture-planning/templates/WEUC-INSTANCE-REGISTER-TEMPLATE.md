@@ -16,16 +16,17 @@ A type is a reusable class such as add provider, migrate schema, split owner or 
 
 ## Contextual WEUC Instances
 
-| Instance ID | Type | Concrete area / owner | Expected change / useful result | Likelihood | Value / timing | Expected Workspace Change Path | Friction / fan-out / migration / verification risk | Pressure / Change Axis | Related Architecture Decision(s) | State |
-|---|---|---|---|---|---|---|---|---|---|---|
-| `WEUC-INS-*` |  |  |  |  |  |  |  |  |  | `candidate / reviewed / selected-evidence / obsolete` |
+| Instance ID | Type | Concrete area / owner | Expected change / useful result | Likelihood / horizon / value / confidence | Current-work overlap | Preparation now / deferred cost | Expected Workspace Change Path | Work-Cost effects / friction / risk | Pressure / Change Axis | Related Architecture Decision(s) | State |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `WEUC-INS-*` |  |  |  |  |  |  |  |  |  |  | `candidate / reviewed / selected-evidence / obsolete` |
 
 ## Assessment Rules
 
-- likelihood/value/timing must state evidence or uncertainty; do not invent pseudo-precise probabilities;
+- likelihood/horizon/value/confidence must state evidence or uncertainty; do not invent pseudo-precise probabilities or scores;
 - prefer concrete instances over generic future flexibility;
 - trace the expected change path against the current/target Workspace realization;
-- record whether architecture makes the important instance local, discoverable, testable and cheap enough;
+- record whether architecture makes the important instance local, discoverable, understandable, testable/diagnosable/operable and cheap enough;
+- compare current-work overlap, marginal preparation-now cost, deferred/rework cost, reversibility and Architectural Tax when those can change the decision;
 - fan-out or friction is evidence, not an automatic abstraction mandate;
 - when code/base structure changes materially, recheck affected instance paths and mark stale/obsolete evidence;
 - an Architecture Decision should reference the concrete instances/change paths that materially justify it.
@@ -35,7 +36,9 @@ A type is a reusable class such as add provider, migrate schema, split owner or 
 ```text
 contextual WEUC Instance
 → expected Workspace Change Path
-→ likelihood / value / timing
+→ likelihood / horizon / value / confidence
+→ current-work overlap + preparation-now vs deferred cost
+→ applicable read / mutation / verification / runtime effects
 → friction / fan-out / risk
 → UC-PLAN-ARCH-PRESSURE when material
 → UC-PLAN-ARCH-DECISION when a material choice is justified

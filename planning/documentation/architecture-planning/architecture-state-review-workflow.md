@@ -32,8 +32,10 @@ Can important UCs be performed correctly?
 Can they be understood/navigated reasonably?
 Are canonical owners and terms discoverable?
 How much incidental context must be remembered?
-Are common changes local enough?
+Are common/important changes local enough?
+Are verification/diagnosis/operation paths proportionate?
 Are important runtime/failure boundaries reasonable?
+Has the qualitative cost of any important Workspace UC or representative Runtime path materially grown?
 ```
 
 Do not infer architectural quality from the presence of DDD, layers, interfaces or other patterns.
@@ -55,7 +57,7 @@ Classify proportionally as Essential/Intentional, Accidental, Speculative or Leg
 
 ## 5. Identify Maintainability Risks
 
-A `Maintainability Risk` needs evidence that important expected Workspace work is becoming unnecessarily expensive, risky or opaque under current architecture.
+A `Maintainability Risk` needs evidence that important expected Workspace work is becoming unnecessarily expensive, risky or opaque under current architecture. Compare the applicable Understanding, Mutation, Verification/Diagnosis/Operation and representative Runtime cost surfaces rather than relying on visual complexity alone.
 
 A visually ugly but correct rarely touched area with no material axis may be low priority.
 

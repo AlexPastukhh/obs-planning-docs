@@ -55,11 +55,32 @@ learning/prototype opportunity
 integration/migration constraints
 likely change pressure
 ability to defer unnecessary infrastructure
+implementation sequence vs product/Scenario priority when they differ materially
 ```
 
 Do not assume a horizontal sequence such as `generic backend framework → generic domain engine → frontend` is good slicing merely because it separates technical layers.
 
 A foundation Slice is justified when it has a real delivery/risk/dependency reason, not because architecture can be designed in isolation.
+
+### Product Priority Vs Implementation Sequence — When Material
+
+Product/Scenario priority says **what should matter sooner**. Slice Strategy may recommend a different technical order when a prerequisite/seam/foundation materially lowers the cost or risk of delivering the priority result and likely subsequent work. It does not redefine product priority.
+
+When the orders differ, make the recommendation explicit:
+
+```text
+Product / Scenario priority
+Implementation sequence recommendation
+Why they differ
+Minimum prerequisite work actually needed
+Lower-priority feature work intentionally NOT pulled forward
+WEUC / architecture evidence supporting the sequence
+Cost of doing priority work directly now
+Cost/tax of preparing for later work now
+Revisit trigger when future work is uncertain
+```
+
+Do not fully implement a lower-priority feature merely because its architecture is convenient. Ask whether the future instance is sufficiently likely/near/material, whether only a small reusable seam is needed now, whether deferral creates real rework, and what permanent Architectural Tax is paid if that future never happens.
 
 ## 4. Candidate Slice Decomposition
 
@@ -157,6 +178,45 @@ Slice
 
 A Slice may discover that an upstream Requirement/Scenario/Domain choice is inconsistent, expensive or impossible. Return that as an explicit finding/review need. Do not redefine upstream meaning for implementation convenience.
 
+## 7.1 Shared / Cross-Cutting Applicability Vs Ownership
+
+A concern may apply to this Slice without becoming owned by this Slice.
+
+```text
+shared/cross-cutting rule applies here
+≠ this Slice owns the whole concern
+```
+
+For material cases record:
+
+```text
+what applies here
+canonical owner
+what this Slice implements/integrates locally
+what remains delegated/shared
+what verification obligation still applies to this Slice
+```
+
+Examples include authentication policy, audit/logging, shared Domain invariants, retry policy, observability and common validation. Avoid copying semantic authority into each Slice.
+
+## 7.2 Expected Realization Vs Semantic Drift
+
+Expected files/classes/methods/paths are realization hypotheses unless explicitly selected as a hard contract.
+
+```text
+class/file/method renamed or locally reorganized
+→ not automatically Slice drift
+
+selected behavior changed
+responsibility moved to the wrong owner/layer
+invariant/consistency guarantee weakened
+unexpected mutation/failure behavior appeared
+verification guarantee weakened
+→ real semantic / responsibility drift
+```
+
+Implementation/review should compare actual realization to the selected Slice result and responsibility boundaries rather than defending provisional names.
+
 ## 8. Verification
 
 Derive verification from semantic owners:
@@ -167,6 +227,8 @@ Scenario Acceptance
 + Requirements
 + Domain invariants when present
 + Slice deliverable target
++ positive outcomes
++ negative / no-mutation guarantees when material
 → verification plan/evidence
 ```
 

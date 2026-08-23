@@ -38,29 +38,34 @@ Domain Draft
 → likely/evidence-backed variation
 
 
-STEP 3 — REALIZATION / SLICES
+STEP 3 — REALIZATION / SLICES + VERIFICATION PLANNING
 
 Slice Strategy
 → vertical Slice(s)
 → frontend / server / other implementation-part plans when justified
+→ product/Scenario priority kept distinct from recommended technical implementation sequence
 
 target code/workspace realization
-→ WEUC Types when useful
+→ important Workspace UC Types / current work when material
 → contextual WEUC Instances
-→ likelihood / value / timing
-→ expected Workspace Change Paths
-→ friction / fan-out / risk
-→ Change Pressure / Change Axes
-→ Architecture Decisions
+→ likelihood / horizon / value / confidence / current-work overlap
+→ expected Workspace Understanding / Change / Verify Paths
+→ Architecture Work-Cost / Change Pressure / Decisions only where evidence warrants
 → adjust Slice/architecture only where evidence warrants
+
+verification planning before implementation
+→ Test Strategy when shared policy is material
+→ Test Design for selected behavior
+→ Practical Test Plan when an operated acceptance pass/campaign is useful
 
 
 STEP 4 — PRACTICAL REALIZATION FEEDBACK
 
 implementation
-→ practical testing
-→ semantic ReviewDiff
+→ execute selected automated / human / AI / E2E proofs
 → actual evidence
+→ current Coverage review when useful
+→ semantic ReviewDiff, including proportional architecture work-cost regression check when material
 → upstream correction only when real evidence requires it
 ```
 

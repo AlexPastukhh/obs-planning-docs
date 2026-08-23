@@ -17,20 +17,21 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "plan slice"
   ],
   "description": "plan one implementation Slice",
-  "meaning": "Invoke UC-PLAN-SLICE to plan one integrated vertical increment; split frontend/server/verification implementation-part plans only when useful.",
+  "meaning": "Invoke UC-PLAN-SLICE to plan one integrated vertical increment with explicit implemented/delegated/later/outside behavior boundaries; split frontend/server/verification implementation-part plans only when useful.",
   "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
   "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
   "ownerFiles": [
     "planning/documentation/application-planning/use-case-registry.md",
     "planning/documentation/application-planning/slice-planning-workflow.md"
   ],
-  "expectedOutput": "Integrated Slice plan + optional frontend/server/verification implementation-part plans.",
+  "expectedOutput": "Integrated Slice plan + behavior/delegation boundary + positive/negative proof obligations + optional frontend/server/verification implementation-part plans.",
   "permissionMode": "read-only",
   "keyReminders": [
     "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
     "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
     "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied."
+    "No repository mutation, archive, commit or push is implied.",
+    "Cross-cutting applicability does not transfer ownership; provisional file/class/method names may change without semantic drift, while behavior/responsibility/invariant/negative-guarantee changes require review."
   ],
   "userTarget": "<Selected Slice>",
   "palette": true,
