@@ -43,6 +43,27 @@ A command may link to the applicable semantic entry (Workspace/methodology Use C
 
 Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.
 
+## Governance Preflight / Read-Reuse Rule
+
+A result-producing command may assume reusable governance that is owned outside its compact command definition. Before executing such a command, preserve the requested result while refreshing only as much governance as correctness requires.
+
+```text
+relevant governance current + confidently remembered
+  → reuse it; do not reread the complete bootstrap route;
+
+relevant owner/route/rule may be stale or a newly relevant zone was not read deeply
+  → targeted refresh of the affected governance owners;
+
+no reliable prior governance pass / ownership cannot be reconstructed confidently / governance architecture materially changed
+  → perform the required full bootstrap/preflight internally, then continue the requested command.
+```
+
+A new snapshot, commit, branch or repository identity **does not by itself** invalidate remembered governance. Refresh only when the changed or uncertain source can materially affect the selected command route, semantic ownership, reusable rules or permission boundary. Elapsed chat time/message count alone is also not a freshness rule.
+
+When bootstrap/preflight is internal to another command, do not require the user to invoke a bootstrap command separately and do not return the bootstrap assimilation instead of the requested command result. Explicit bootstrap commands still return their own bootstrap result.
+
+Canonical reusable algorithm: `planning/documentation/command-routing-workflow.md`; family-specific bootstrap owners may refine the read set without weakening this rule.
+
 ## Explicit-Meaning Rule
 
 For planning commands:

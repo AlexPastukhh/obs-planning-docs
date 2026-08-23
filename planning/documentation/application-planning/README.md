@@ -3,6 +3,14 @@
 Status: active reusable methodology-family index
 Scope: plan the best whole solution/workflow first; when own Application responsibility is selected, plan current application behavior and downstream realization proportionally through directed Scenario / Domain / Slice (SDS) planning.
 
+## Governance Bootstrap / Command Preflight
+
+Full reusable Solution/Application SDS governance bootstrap is owned by [`application-planning-governance-read-workflow.md`](application-planning-governance-read-workflow.md) and exposed semantically as `UC-PLAN-ORIENT` / command `бутстреп сдс`.
+
+Application-planning commands whose current owner route explicitly requires complete SDS governance do not replay that full bootstrap mechanically. They reuse current confidently remembered governance, refresh only the affected owner route when material, and perform a full internal preflight only when no reliable sufficient SDS governance pass exists. Ordinary narrow result-producing commands follow their own UC/workflow owners and do not imply a full SDS bootstrap merely because they return a result. Source snapshot/commit/branch changes alone are not invalidation events.
+
+`бутстреп сдс` and `фулл сдс` are different: the former loads governance; the latter selects/continues the rich Full physical/addressability profile.
+
 ## Lifecycle / Application `собери идеи` Shape
 
 Application planning uses one Step 0–4 reasoning contract. `собери идеи` integrates selected source meaning into this current plan proportionally; profile choice only changes physical organization.
@@ -129,6 +137,8 @@ selected Slice/change
 `UC-PLAN-REALIZATION` remains an optional **pre-Slice** high-level feasibility/stress review. It is not the post-implementation feedback loop. `UC-PLAN-TEST-COVERAGE` reviews actual current executed evidence.
 
 ## Read Order
+
+For an explicit full SDS governance bootstrap, or an internal command preflight that genuinely requires a full pass, follow `application-planning-governance-read-workflow.md`. For ordinary task-specific work after governance is current, reuse that context and follow this proportional owner order without replaying unrelated files:
 
 1. `application-planning-responsibility-map.md`
 2. `application-planning-principles-and-terminology.md`

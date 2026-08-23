@@ -8,7 +8,7 @@ Child Use-Case Registry: [`use-case-registry.md`](use-case-registry.md)
 
 **Purpose:** plan the real-world solution and, when own Application responsibility is selected, continue through same-quality Step 0–4 Application planning from Scenario behavior to Domain, Slices, architecture-evolution evidence and practical realization feedback.
 
-**Topology:** supported Use Cases are independently activatable/proportional. Mini, Modular/Medium and Full SDS are physical/addressability profiles over the same planning-quality contract.
+**Topology:** `UC-PLAN-ORIENT` is the reusable governance bootstrap/preflight for this Direction; result-producing commands may use it internally when their SDS governance context is not reliable. Other supported Use Cases remain independently activatable/proportional. Mini, Modular/Medium and Full SDS are physical/addressability profiles over the same planning-quality contract and are not bootstrap modes.
 
 ```text
 STEP 0 — WHY / SOLUTION DISCOVERY

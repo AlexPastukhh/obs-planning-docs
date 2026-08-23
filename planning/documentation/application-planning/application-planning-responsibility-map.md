@@ -5,6 +5,7 @@ Status: active reusable nested responsibility map
 | Responsibility | Owner |
 |---|---|
 | Core planning concepts/invariants | `application-planning-principles-and-terminology.md` |
+| Full Solution/Application SDS governance bootstrap + proportional command preflight refresh | `application-planning-governance-read-workflow.md` |
 | Repeated whole-solution → application behavior process | `solution-and-scenario-planning-workflow.md` |
 | Requirement / application change-context / early implementation-Idea semantics | `requirements-and-change-context.md` |
 | Generic Workspace Architecture Work-Cost / Workspace UC/WEUC / Change Pressure / Change Axis semantics | sibling `../architecture-planning/workspace-use-cases-and-change-pressure.md` + Architecture UCs |

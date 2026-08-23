@@ -31,11 +31,12 @@ planning/documentation/file-update-overview-workflow.md
 1. Resolve the current semantic entry: Workspace/methodology Use Case or Application Scenario; if the semantic entry itself is missing, route that semantic work to its current owner rather than inventing it inside the command.
 2. Define canonical trigger, English name and aliases.
 3. Define active-context behavior, read mode, ownerFiles, expected output and explicit permission mode.
-4. Reuse current workflow/template owners; do not copy algorithms into command bodies.
-5. Plan one direct `planning/commands/*.command.md` definition.
-6. Update `planning/command-routing.md` only when shared/global policy changes.
-7. Update the related semantic-entry command reference only where that registry/catalog contract actually owns such a reference.
-8. Decide helper projection separately.
-9. Produce a File Update Plan; do not implement through this workflow.
+4. If a result-producing command assumes reusable governance, identify the family-specific bootstrap/preflight owner in its owner route. Rely on the shared command-routing reuse/targeted/full preflight rule instead of forcing a full reread on every invocation or copying bootstrap logic into the command.
+5. Reuse current workflow/template owners; do not copy algorithms into command bodies.
+6. Plan one direct `planning/commands/*.command.md` definition.
+7. Update `planning/command-routing.md` only when shared/global policy changes.
+8. Update the related semantic-entry command reference only where that registry/catalog contract actually owns such a reference.
+9. Decide helper projection separately.
+10. Produce a File Update Plan; do not implement through this workflow.
 
 Commands are optional. A repository remains fully discoverable through Directions and the applicable Use-Case Registry or Scenario Catalog without knowing command names.

@@ -18,8 +18,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "description": "work in rich Full Application SDS",
   "meaning": "Continue the current Application plan in Full SDS using rich stable Scenario/DATA/Behavior/Requirement/Screen/Domain/Slice owners and durable architecture/testing evidence where justified.",
   "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+  "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh by selected owner/profile and current-plan uncertainty; full SDS governance preflight only when no reliable sufficient pass exists.",
   "ownerFiles": [
+    "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
     "planning/documentation/application-planning/direction-registry.md",
     "planning/documentation/application-planning/use-case-registry.md",
     "planning/documentation/idea-review-and-planning-workflow.md",
@@ -32,6 +33,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "expectedOutput": "Updated Full SDS owner topology preserving the same Step 0–4 meaning, with material contextual WEUC instances transferred to the project-local register and architecture decisions linked to driving evidence.",
   "permissionMode": "read-only",
   "keyReminders": [
+    "This result-producing command assumes current SDS governance: reuse a reliable prior pass, refresh only affected governance when material, and perform the full SDS preflight internally only when no reliable sufficient pass exists; do not ask the user to invoke `бутстреп сдс` separately.",
     "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
     "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
     "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",

@@ -539,6 +539,21 @@
       "commandId": "application_domain.discover"
     },
     {
+      "id": "UC-PLAN-ORIENT",
+      "label": "Bootstrap Solution/Application SDS Planning Governance",
+      "description": "establish the complete reusable Step 0–4 Application/SDS planning governance and owner boundaries before task-specific planning when needed",
+      "sources": [
+        "planning/documentation/application-planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-PLAN-ORIENT in the current canonical registry and follow its current owner route (application-planning-governance-read-workflow.md + responsibility map + SDS profiles). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Bootstrap Solution/Application SDS Planning Governance target>",
+      "directionId": "DIR-PLAN-SOLUTION",
+      "manualInvocation": true,
+      "trigger": "SDS governance is explicitly requested, no reliable prior pass exists for a command whose current owner route explicitly requires complete SDS governance, or such a command needs an internal governance preflight",
+      "result": "current reusable SDS governance + applicable current Application/project owners when a target exists",
+      "commandId": "application_sds.bootstrap"
+    },
+    {
       "id": "UC-PLAN-PROTOTYPE",
       "label": "Prototype Application Experience / Workflow",
       "description": "cheaply test/refine provisional user interaction, Scenario boundaries, Screens and Requirements before canonical detailed behavior/spatial ownership",

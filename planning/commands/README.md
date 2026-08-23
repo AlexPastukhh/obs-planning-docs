@@ -74,6 +74,7 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - optional `directionIds` contains current Direction IDs for standalone palette/orchestration placement when the command is not a semantic UC's direct command; every listed Direction must exist.
 - one high-level command may orchestrate several existing UCs/Scenario owners when that gives a useful stable invocation surface. This never creates a semantic UC or lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.
+- result-producing commands may depend on reusable governance through `ownerFiles` / their semantic owner route; the shared command router reuses current governance, refreshes affected owners proportionally, and performs a full internal preflight only when no reliable sufficient governance context exists. A source snapshot/commit/branch change alone does not force a full reread.
 
 ## Creating Or Updating A Command
 

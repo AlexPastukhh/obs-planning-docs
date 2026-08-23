@@ -21,6 +21,7 @@
     "ideas.collect.scenario",
     "ideas.collect.domain",
     "ideas.collect.slice",
+    "application_sds.bootstrap",
     "application_sds.mini",
     "application_sds.modular",
     "application_sds.full",
@@ -88,6 +89,7 @@
     "uc.invoke.uc-pr-end-session"
   ],
   "useCases": [
+    "UC-PLAN-ORIENT",
     "UC-PLAN-COLLECT-IDEAS",
     "UC-PLAN-REALITY",
     "UC-PLAN-RESEARCH",

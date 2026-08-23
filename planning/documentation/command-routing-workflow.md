@@ -28,6 +28,48 @@ Use this workflow when creating/changing command triggers, aliases, canonical En
 
 Do not use it to define semantic capability bodies.
 
+## Governance Preflight And Read Reuse
+
+Result-producing commands often depend on reusable governance that should be established before task-specific work but should not be reread blindly on every invocation.
+
+Use this state model:
+
+```text
+CURRENT
+→ a sufficient prior governance pass exists in the working conversation/context;
+→ relevant owner boundaries are confidently remembered;
+→ there is no material reason to suspect the applicable route/rules changed;
+→ reuse it and read only command-specific/task-specific owners.
+
+TARGETED REFRESH
+→ the prior governance pass remains broadly usable, but a relevant command/registry/workflow/profile/owner may have changed;
+→ or the active task enters a governance zone not previously read deeply;
+→ reread only the affected governance owners plus the minimum routing context needed to reconnect them.
+
+FULL PREFLIGHT
+→ no reliable sufficient governance pass exists;
+→ ownership/boundaries cannot be reconstructed confidently;
+→ or governance architecture changed materially enough that a targeted refresh is unsafe;
+→ perform the family-specific full bootstrap/preflight, then execute the requested command.
+```
+
+Freshness is semantic, not chronological. Do not invalidate governance merely because many messages passed or because the repository uses a new snapshot, commit, branch or repository target. A source-state change matters only when it can materially affect the relevant command route, semantic ownership, reusable rule set or permission boundary.
+
+For an implicit preflight triggered by another command:
+
+```text
+user command
+→ resolve current command definition
+→ reuse / targeted-refresh / full-preflight required governance
+→ read command-specific + task-specific owners
+→ execute the requested command
+→ return the requested command result
+```
+
+Do not tell the user to invoke a bootstrap command first when the current command can safely establish its precondition internally. Do not replace the requested result with a bootstrap assimilation unless the bootstrap itself was explicitly invoked.
+
+Family-specific governance owners define what constitutes a sufficient full pass and what may be refreshed proportionally. Individual command definitions point to those owners through `ownerFiles` / semantic owner routes rather than copying bootstrap algorithms into every command.
+
 ## Update Algorithm
 
 1. Identify the semantic capability/behavior and resolve the applicable current semantic entry: Workspace/methodology Use Case or Application Scenario.
