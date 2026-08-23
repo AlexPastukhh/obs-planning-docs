@@ -117,10 +117,13 @@ Do not infer Aggregate ownership from read/query convenience, UI shape, ORM navi
 A consumer-side candidate note does not redefine source meaning. Domain rules/invariants may themselves be source candidates when exact literal reuse across Scenario/Slice/verification owners is genuinely useful.
 
 ## Current Decisions
-<Use the shared detailed-planning Current Decisions contract.>
+<Use the shared Planning Concern/Decision trace contract. Material Domain Decisions are integrated into Domain meaning; add Addresses/Introduced-Exposed Concern refs only when useful.>
 
-## Questions / Risks / Problems
-<Each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan. When Related Idea(s) exist, apply the shared Idea ↔ Q/R/P mirror/reference rule.>
+## Area Concern Register — When Material
+<Inline or link the current Domain-area register: Concern/Group ID, owner, Stored At, Priority, Concern Category, Status, Decision refs/residual state when material.>
+
+## Planning Concerns / Q/R/P
+<Use the shared Concern model. Group one-resolution-surface Q/R/P; keep member Priority/Concern Category/Status; include AI Comment without inventing user-owned preferences; Recommendation only when justified; Decision only when selected. Related Ideas reference the canonical Concern/Group location rather than duplicate full bodies.>
 
 If none: `No material unresolved issues identified.`
 
@@ -137,8 +140,8 @@ simplest correct current model
 
 Domain meaning does not silently override Scenario/Screen/Requirement truth. When current owners conflict, perform explicit consistency review and update the real selected owner(s).
 
-## Realization Evidence / Attached Q/R/P
+## Realization Evidence / Attached Concerns
 
 Domain selection may consume bounded comparative evidence from `UC-PLAN-REALIZATION` when material, while Domain remains authority for conceptual truth.
 
-Attached Q/R/P, when any, states Origin/Provenance + affected Domain/Scenario owner + Current/Target meaning + unresolved/adverse delta. Do not register implementation inconvenience as a Domain problem unless it is material evidence of infeasibility/correctness/cost/consistency.
+Attached Planning Concerns follow the shared owner/current-plan gate and may be grouped when one resolution surface spans several Q/R/P. Do not register implementation inconvenience as a Domain problem unless it is material evidence of infeasibility/correctness/cost/consistency. Residual Risk/Problem remains visible even after a related Question is answered.

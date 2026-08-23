@@ -136,42 +136,43 @@ A consumer-side candidate note does not redefine the source meaning. Ordinary se
 ### D-SCN-<id> — <decision title>
 
 **Decision:** <selected meaning>
-
 **Rationale:** <why selected when material>
-
-**Related Idea / Variant:** <when applicable>
-
 **Integrated Into:** <sections/owners where selected meaning is now expressed>
-
 **Affected Owners:** <owners needing review when material>
-
+**Addresses Concerns:** <Q/R/P/CG refs when useful>
+**Introduced / Exposed Concerns:** <refs when useful>
+**Related Idea / Variant / Evidence:** <when useful>
 **Reconsider When:** <only when a real trigger exists>
 
-## Questions / Risks / Problems
+## Area Concern Register — When Material
 
-### Q/R/P-SCN-<id> — <finding title>
+<Inline or link the Scenario-area register: Concern/Group ID, title, owner, Stored At, Priority, Concern Category, Status, Decision refs/residual state when material.>
 
-**Type:** Question / Risk / Problem
+## Planning Concerns / Questions / Risks / Problems
 
-**Related Idea:** <when applicable; if present, apply the shared Idea ↔ Q/R/P mirror/reference rule>
+### CG/Q/R/P-SCN-<id> — <title>
 
-**Current Draft Plan:** <relevant selected Scenario baseline; may reference section/range>
+**Type:** Question / Risk / Problem <!-- omit on group header; preserve on members -->
+**Priority:** P0 / Critical | P1 / High | P2 / Normal | P3 / Low
+**Concern Category:** <primary category>
+**Status:** <type/group-appropriate status>
+**Owner / affected meaning:** this Scenario or explicit shared owner
+**Origin / Provenance:** <when useful>
+**Current Draft Plan:** <relevant selected Scenario baseline>
+**Concern Group / Members:** <when related>
+**Finding / Shared Resolution Surface:** <current concern>
+**Relation / Impact On Current Draft Plan:** <why material>
 
-**Finding:** <unresolved/adverse finding>
+**AI Comment:** <what Current Plan/evidence implies; realistic options; justified technical/logical preference; user-owned unknown; minimum useful user question only if decision-changing>
+**Recommendation:** <optional; only with sufficient grounds>
+**Answer / Evidence:** <when applicable>
+**Decision refs:** <only after selection/material>
+**Residual state / treatment:** <when applicable>
+**Stored At:** <when detail lives elsewhere>
 
-**Relation / Impact On Current Draft Plan:** <how the finding affects the baseline>
+Group related Q/R/P when one answer/evidence/Decision materially addresses them. Do not infer user-visible UX/Need preference merely to close a concern. Related Ideas reference the one canonical Concern/Group location.
 
-**Needed Resolution / Treatment:** <when applicable>
-
-**Fallback:** <only when real>
-
-**Fallback Relation:** fallback only; not Current Draft Plan
-
-**Blocking:** yes / no <when useful>
-
-When none exist, write exactly:
-
-`No material unresolved issues identified.`
+If none: `No material unresolved issues identified.`
 
 ## Potential Simplifications / Better Routes — When Material
 
@@ -208,21 +209,6 @@ Re-entry/reuse/wait/handoff/testability are supporting signals, not mandatory ch
 
 When a materially distinct whole-Scenario design appears, use the Variant rules in the detailed-planning owner. Do not turn ordinary runtime branches or one local Idea Variant into whole-Scenario Variants mechanically.
 
-## Real-Life Basis / Attached Q/R/P
+## Real-Life Basis / Attached Concerns
 
-For material planning, preserve a proportional basis:
-
-```markdown
-## Real-Life Basis
-**Status:** known | partial | unknown
-**Need / situation / desired result:** <when known/material; do not invent>
-**Provenance:** <Idea/evidence/existing responsibility when useful>
-
-## Attached Questions / Risks / Problems — When material
-- Origin / Provenance
-- affected owner = this Scenario (or explicit shared owner)
-- Current/Target planned meaning
-- unresolved/adverse delta
-```
-
-Formal RLUC is not mandatory for every existing Scenario; deepen Step 0 when the current decision depends on it.
+For material planning, preserve a proportional Real-Life basis and use the shared Planning Concern owner for any attached active/residual concern. A missing user Need/preference/feeling/business priority/risk tolerance stays explicit as a user-owned unknown; AI does not invent it.

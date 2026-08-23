@@ -149,3 +149,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-048`
 **Reason:** Planning Root direct command definitions (`перепроверь`, internal Workspace-use discovery, WEUC/Scenario/Domain/Slice/Testing reminders and SDS profile placement) participate in the same Full SDS/Architecture/Helper transition; full reviewed meaning and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-021 — Shared Planning Concerns and Decisions model
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-050`
+**Reason:** Planning Root AI contract, root registries, commands and helper-library command projections consume the shared Concern/Q/R/P/Decision model; full clarification and APPLIED target state are owned by the reusable-documentation canonical log.

@@ -120,10 +120,13 @@ Risks
 A consumer-side candidate note does not redefine Scenario/Requirement/Domain/other source meaning. Use ordinary links by default.
 
 ## Current Decisions
-<Use the shared detailed-planning Current Decisions contract.>
+<Use the shared Planning Concern/Decision trace contract; integrate selected Slice meaning here and keep generic Addresses/Introduced-Exposed Concern refs only when useful.>
 
-## Questions / Risks / Problems
-<Each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan. When Related Idea(s) exist, apply the shared Idea ↔ Q/R/P mirror/reference rule.>
+## Area Concern Register — When Material
+<Inline or link the current Slice-area register when durable/distributed concerns exist.>
+
+## Planning Concerns / Q/R/P
+<Use the shared Concern model. Group related Q/R/P by one resolution surface; keep member Priority/Concern Category/Status; AI Comment separates evidence-backed technical implications from user-owned unknowns; Recommendation is optional; Decision requires actual selection. Related Ideas reference the canonical Concern/Group location.>
 
 If none: `No material unresolved issues identified.`
 

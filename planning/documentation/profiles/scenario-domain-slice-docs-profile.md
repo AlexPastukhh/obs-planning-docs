@@ -161,7 +161,9 @@ Related Requirements
 Relevant Change Axes / Future Scenario Ideas when material
 visual / Screen references
 Current Decisions
-Questions / Risks / Problems relative to Current Draft Plan
+Area Concern Register when material
+Planning Concerns / Q/R/P + Concern Groups relative to Current Draft Plan
+Retained Concern/Decision trace when material
 Potential Better Routes when material
 source / Idea provenance references when useful
 ```
@@ -281,14 +283,18 @@ Detailed planning owners use the shared contract from the core detailed-planning
 
 ```text
 Current Decisions
-Questions / Risks / Problems
-  → Current Draft Plan
-  → Finding
-  → Relation / Impact On Current Draft Plan
+Area Concern Register when material
+Planning Concerns / Q/R/P + Concern Groups
+  → Priority + Concern Category + Status when material
+  → Current Draft Plan / Finding / Relation
+  → AI Comment without inventing user-owned preferences
+  → Recommendation only when justified
+  → Decision refs only when selected
+Retained Concern/Decision trace when material
 Potential Simplifications / Better Routes when material
 ```
 
-Resolved findings leave aggregate Q/R/P. Selected Better Routes leave the candidate section and become current draft meaning.
+Answered/resolved/eliminated items leave active Q/R/P; residual Risk/Problem remains active and material answer/rationale/Decision trace may be retained. Selected Better Routes leave the candidate section and become current draft meaning. Full SDS may keep the Area Concern Register at the relevant application/domain/etc area root, but detailed concerns remain next to their real semantic owners.
 
 ## 11. Source / Idea / Current-Owner Traceability
 

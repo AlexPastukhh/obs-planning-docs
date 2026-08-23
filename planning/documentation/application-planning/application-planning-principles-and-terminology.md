@@ -1,7 +1,7 @@
 # Solution And Application Planning Principles And Terminology
 
 Status: active reusable canonical owner
-Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning.
+Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning. Generic Planning Concern/Q/R/P/Concern-Group/Decision trace semantics are owned by `../planning-concerns-and-decisions-model.md`.
 
 ## Evidence And Decision States
 
@@ -257,7 +257,9 @@ Related Requirements
 Relevant Change Axes / Future Scenario Ideas when material
 Visual / Screen references
 Current Decisions
-Questions / Risks / Problems relative to Current Draft Plan
+Area Concern Register when material
+Planning Concerns / Q/R/P + Concern Groups relative to Current Draft Plan
+Retained Concern/Decision trace when material
 Potential Simplifications / Better Routes when material
 ```
 
@@ -269,24 +271,24 @@ Main Flow may proportionally add Surface/Screen, DATA/information, Actor Underst
 
 The current draft is the selected semantic owner/Variant for one detailed planning unit.
 
-`Current Draft Plan` is not a file/entity/stage. It is the relevant selected baseline named inside a detailed draft's unresolved/adverse Q/R/P or unselected Better Route.
+`Current Draft Plan` is not a file/entity/stage. It is the relevant selected baseline named inside a detailed draft's active/residual Planning Concern/Q/R/P or unselected Better Route.
 
 ```text
 Current Draft
 = baseline
 
-Q/R/P
-= material unresolved/adverse delta to baseline
+Planning Concern / Q/R/P
+= material active/residual Question/Risk/Problem delta to baseline; related concerns may form one Concern Group
 
 Potential Better Route
 = material unselected candidate change to baseline
 ```
 
-Resolved findings leave Q/R/P. Selected routes leave Better Routes and are integrated into the semantic body; material selected choices may remain in `Current Decisions` for rationale/traceability.
+Answered/resolved/eliminated items leave active Q/R/P, while material retained answer/rationale/Decision trace may remain and residual Risk/Problem stays active. Selected routes leave Better Routes and are integrated into the semantic body. Area Concern Register/storage, Priority/Concern Category/Status and AI Comment/Recommendation/Decision boundaries follow the shared Concern owner.
 
 ## Current Decision
 
-A Current Decision records a material selected choice that is already integrated into current semantic meaning. It is not a candidate and it is not a replacement for the semantic body.
+A Current Decision records a material selected choice that is already integrated into current semantic meaning. It is not a candidate and it is not a replacement for the semantic body. Generic trace fields such as `Addresses Concerns`, `Introduced / Exposed Concerns`, `Affected Owners` and `Reconsider When` are optional/proportional and owned by the shared Concern/Decision model.
 
 ## Scenario DATA
 

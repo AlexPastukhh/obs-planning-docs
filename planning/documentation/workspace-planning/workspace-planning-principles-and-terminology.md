@@ -190,6 +190,6 @@ Real-Life Situation / Need / Desired Result
 → Vertical Realization / verification when useful
 ```
 
-A Q/R/P is valid only as an unresolved/adverse delta attached to that semantic owner/current planned state. `Review Order` is a derived lens, never a queue. Real-Life Basis may be `known | partial | unknown`; formal RLUC is proportional.
+Planning Concerns/Q/R/P use the shared `../planning-concerns-and-decisions-model.md`. Active/residual concerns attach to a concrete semantic owner/current planned state; related Q/R/P sharing one resolution surface form a Concern Group. Concern Priority reuses Review Priority semantics and stays distinct from Concern Category/Review Order. AI Comment must not invent user-owned Need/preferences/risk tolerance. `Review Order` is derived, never a queue. Real-Life Basis may be `known | partial | unknown`; formal RLUC is proportional.
 
 Reuse-first: if an existing UC already owns the useful result, reuse it; extract a supporting UC when it has an independently useful reusable result, distinct trigger/result and meaningful consumers. Do not create a new UC for a trivial repeated check, but do not collapse an independently useful capability merely to reduce count.

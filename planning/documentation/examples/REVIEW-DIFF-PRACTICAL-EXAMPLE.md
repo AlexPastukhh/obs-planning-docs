@@ -3,7 +3,7 @@
 Status: active practical example
 Scope: demonstrate current semantic ReviewDiff output without owning methodology or transport/application mechanics.
 
-Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-workflow.md). Shared Idea semantics remain in the canonical Idea owners.
+Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-workflow.md). Shared Planning Concern/Decision semantics live in [`../planning-concerns-and-decisions-model.md`](../planning-concerns-and-decisions-model.md); shared Idea semantics remain in the canonical Idea owners.
 
 ## Case A — Confirmed correction selected, but not yet present in reviewed transition
 
@@ -53,17 +53,17 @@ Selected correction
 
 The correction is selected into Current Plan, but it is not yet present in the reviewed transition.
 
-### Questions / Risks / Problems
+### Planning Concerns / Q/R/P
 
 No material unresolved issues identified.
 
-The absence of Q/R/P does **not** make the reviewed transition approvable: the material correction is resolved conceptually but still unapplied.
+The absence of active Q/R/P does **not** make the reviewed transition approvable: the material correction is resolved conceptually but still unapplied. Its selected correction may still have retained Decision trace without becoming an active concern.
 
 ### ReviewDiff Verdict
 
 **NEEDS CORRECTION**
 
-Reason: a material confirmed correction is still absent from the reviewed transition even though its route is selected and Q/R/P is empty.
+Reason: a material confirmed correction is still absent from the reviewed transition even though its route is selected and active Q/R/P is empty.
 
 ### Scope-log handoff
 
@@ -91,7 +91,7 @@ Current Plan
 No additional corrective route is selected.
 ```
 
-### Questions / Risks / Problems
+### Planning Concerns / Q/R/P
 
 No material unresolved issues identified.
 
@@ -109,6 +109,6 @@ The approval adds no new material meaning, so it does **not** create an approval
 
 It demonstrates three boundaries from the owner workflow:
 
-1. a confirmed defect with a clearly selected correction belongs in Confirmed Findings + Current Plan, not aggregate Q/R/P;
+1. a confirmed defect with a clearly selected correction belongs in Confirmed Findings + Current Plan, not active Q/R/P; material retained Decision/Concern trace is separate;
 2. `NEEDS CORRECTION` can coexist with `No material unresolved issues identified.` when the correction is selected but still unapplied;
 3. a later `APPROVABLE` with no new material meaning creates no log noise.

@@ -855,3 +855,48 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - affected Planning Root, Application Planning and Planning Helper logs point to this canonical applied transition.
 
 **Rationale:** close the reviewed Full SDS/Architecture ownership gaps and finish the already-selected Helper durability/recovery/order changes before introducing any new orchestration command family.
+
+### LOG-DOC-049 — Consolidate shared Planning Concerns, Q/R/P grouping and Decision trace
+
+**Type:** IDEA CLARIFICATION / INTEGRATED CONSISTENCY REVIEW
+**Source:** user clarification after the Full SDS/Architecture package and a dedicated Q/R/P consistency pass
+
+**Current Conclusions:**
+- do not create a new Q/R/P Use Case. Keep `UC-REPO-REFINE-CURRENT-PLAN` and `UC-REPO-REVIEW-PLANNING-FINDINGS` as the executable/current-plan capabilities and add one shared semantic owner: `planning/documentation/planning-concerns-and-decisions-model.md`;
+- the shared owner defines Planning Concern (`Question | Risk | Problem`), Concern Group, Concern Priority, Concern Category, Status, AI Comment, Answer/Evidence, optional Recommendation, selected Decision relations, residual state, retention and Area Concern Register semantics;
+- group Q/R/P that materially share one resolution surface instead of presenting one Question, related Risk(s) and Problem(s) as unrelated findings. Every member retains its own Type, Priority, Concern Category, Status and owner/affected meaning;
+- Concern Priority reuses existing Review Priority semantics (`P0/Critical`, `P1/High`, `P2/Normal`, `P3/Low`) rather than creating a second incompatible priority system. Concern Category is a separate extensible review/filter lens such as `semantic`, `UX/product`, `domain/data`, `architecture`, `engineering/implementation`, `testing/verification`, `integration`, `operations` or `documentation/maintainability`; Category never determines semantic ownership by itself;
+- for each material active Concern/Group, AI should provide a useful `AI Comment`: what Current Plan/evidence implies, realistic options, a technical/logical preference only when supported, what cannot be inferred, and the minimum useful user question only when its answer changes the decision. AI must not invent unrecorded user Need/preference/feeling/desired UX/business priority/risk tolerance merely to close a concern;
+- `Recommendation` is optional and evidence-bound. `Decision` exists only after the applicable authority/context actually selects a choice. Answer/Evidence, Recommendation and Decision remain distinct;
+- generic Decision trace is many-to-many with concerns when useful: Decision/Rationale/Integrated Into/Affected Owners plus `Addresses Concerns`, `Introduced / Exposed Concerns`, related evidence/Idea/Variant and `Reconsider When`. The selected semantic decision still lives in its real Scenario/Domain/Slice/Architecture/Workspace/etc owner; the shared model does not become a second source of truth;
+- active Q/R/P is not reasoning history. Answered Questions, resolved Problems and eliminated Risks leave the active projection; material answer/rationale/Decision trace may be retained when useful, while accepted/mitigated residual Risk and unresolved/deferred Problem remain active; do not preserve trivial resolved findings forever;
+- one logical Concern/Group has one primary detailed storage location. Related Ideas/owners/registers reference the stable Concern/Group ID/location instead of keeping duplicate full bodies. Idea methodology continues to own Idea/Variant/evaluation semantics but no longer owns generic Q/R/P lifecycle;
+- when material persistent/distributed concerns exist, maintain one logical Area Concern Register for routing/state (`ID`, title, owner, Stored At, Priority, Concern Category, Status, Decision refs/residual state). Physical placement remains contextual: the current profile/workflow/command may keep the register inline in one Application/Domain/Slice/Workspace file or split it into an area-root file when useful. There is no mandatory `concerns.md`, one-file-per-concern rule or global topology;
+- Mini/Modular/Full SDS retain the same semantic quality: only physical addressability/register placement changes with scale;
+- no new `собери идеи` variants and no custom Helper-tab model are introduced in this change. Existing commands only gain owner pointers/output reminders where needed.
+
+**Consistency Result:**
+- shared concern/Decision semantics are separated from Idea semantics without introducing a competing UC or semantic owner;
+- Application, Workspace, ReviewDiff, File Update, Testing and Architecture consumers all use the same Concern/Decision contract while keeping their real semantic decisions in their own owners;
+- old full same-ID Idea/QRP mirror behavior is retired in current methodology and replaced by one detailed storage location + references/register;
+- current Full SDS/Architecture/WEUC semantics from `LOG-DOC-048` remain unchanged except for consuming the new cross-cutting concern/Decision contract.
+
+**Questions / Risks / Problems:** none blocking this transition. Physical file topology remains intentionally contextual; user-owned preference/Need/risk-tolerance gaps remain explicit rather than being auto-resolved by AI.
+
+### LOG-DOC-050 — Apply shared Planning Concerns and Decisions model
+
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-049`
+**ChangeSet:** `586476d4-c70b-4326-8f68-037f9dfb2669`
+**Package:** `ebd46cb8-1bb5-4106-a4d6-db8d133fbc53`
+
+**Target-State Result:** after successful Apply of this package:
+- `planning-concerns-and-decisions-model.md` is the reusable semantic owner for Q/R/P, Concern Groups, Priority/Concern Category/Status, AI Comment, Recommendation/Decision boundaries, retained/residual trace and Area Concern Register/storage rules;
+- root `UC-REPO-REFINE-CURRENT-PLAN` and `UC-REPO-REVIEW-PLANNING-FINDINGS` consume the new owner; no new Q/R/P UC is added;
+- shared Idea methodology no longer owns generic Q/R/P lifecycle or requires duplicate same-ID Q/R/P bodies; one concern/group has one detailed storage location and references from related Ideas/owners;
+- Application planning/detail/templates/profiles, Workspace Planning, File Update, ReviewDiff, Testing and Architecture Decision/Evolution consume the same shared model while retaining their existing semantic authority;
+- current command definitions for `собери идеи`, critical review and file-update planning plus Mini/Modular/Full SDS controls point to the shared concern contract without introducing new collect-Ideas variants;
+- Planning Helper generated command/use-case seeds are rebuilt from the current repository definitions/registries; automated Helper verification passes 104/104 tests with 42 command definitions, 11 Directions and 64 current canonical UCs;
+- Planning Root, Application Planning and Planning Helper scope logs point to this canonical applied transition.
+
+**Rationale:** make Q/R/P durable and reviewable without turning it into a separate planning queue or centralized storage dump, preserve residual/decision meaning, and prevent AI from silently resolving user-owned concerns.

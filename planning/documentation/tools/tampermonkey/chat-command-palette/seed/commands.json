@@ -88,10 +88,11 @@
         "collect ideas"
       ],
       "description": "collect/review Ideas and update integrated current planning",
-      "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve the affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Q/R/P is derived only as an owner-attached unresolved/adverse delta; it is never the planning root.",
+      "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Planning Concerns/Q/R/P are secondary owner-attached active/residual state using the shared Concern/Decision model; related concerns may form one Concern Group and are never the planning root.",
       "activeContextBehavior": "Use the explicitly selected or clearly active current source. When a current integrated plan is clearly selected, use it as the current baseline and update it rather than starting another plan. For Workspace/documentation planning use UCDS proportionally. For Application planning use the same-quality SDS Step 0–4 contract from `sds-planning-profiles.md`: Why/Solution Discovery → Scenario with DATA/Behavior → Domain Draft → Slices plus contextual WEUC/architecture evidence → Practical Realization Feedback. Mini is one accumulating application-plan file; Modular/Medium splits that same meaning into a small growing file set; Full uses rich stable owners. Ask only when source/current-plan identity is genuinely missing or ambiguous.",
       "traversalReadMode": "Targeted/full by source size, current-plan/current-owner uncertainty, affected useful results and selected planning depth.",
       "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
         "planning/documentation/idea-planning-principles-and-terminology.md",
         "planning/documentation/idea-review-and-planning-workflow.md",
         "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
@@ -105,7 +106,7 @@
         "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
         "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
       ],
-      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UCDS or Application SDS Current Plan. For Application planning, preserve Step 0 Why/Solution Discovery, Step 1 Scenario + DATA/Behavior, Step 2 Domain Draft, Step 3 Slices + material contextual WEUC/architecture evidence, and Step 4 practical realization-feedback plan; then attached Q/R/P only for material unresolved deltas, execution/review projections when useful, Current Overall Conclusions and only genuinely unselected Better Routes.",
+      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UCDS or Application SDS Current Plan; Area Concern Register + active/residual Planning Concerns/Concern Groups/retained trace when material; execution/review projections when useful; Current Overall Conclusions and only genuinely unselected Better Routes.",
       "permissionMode": "read-only",
       "keyReminders": [
         "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
@@ -131,7 +132,10 @@
         "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and is removed once a candidate is selected.",
         "Apply Key Points / Review Priority and built-in recheck before returning material output; `крит` remains an optional separate adversarial review.",
         "When scope logging is already active, treat the material review result as a loggable source for the next approved mutation/package; this read-only command itself does not edit logs.",
-        "Do not edit repository files, create an archive, commit or push."
+        "Do not edit repository files, create an archive, commit or push.",
+        "Use the shared Planning Concern/Decision owner for Q/R/P semantics: group related concerns by one resolution surface; keep member Priority/Concern Category/Status; one logical Concern/Group has one detailed storage location plus Area Concern Register routing when material.",
+        "For material active concerns, provide a useful AI Comment that separates plan/evidence implications from user-owned Needs/preferences/feelings/business priority/risk tolerance. Recommendation is optional and Decision exists only after actual selection.",
+        "Answered/resolved/eliminated items leave active Q/R/P; retain material answer/rationale/Decision trace when useful and keep residual Risk/Problem active."
       ],
       "userTarget": "<source/discussion to collect Ideas from>",
       "palette": true,
@@ -154,18 +158,20 @@
       "activeContextBehavior": "Use the provided target; ask only if the target is missing.",
       "traversalReadMode": "Targeted/full by risk and evidence needs.",
       "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
         "planning/documentation/idea-planning-principles-and-terminology.md",
         "planning/documentation/idea-review-and-planning-workflow.md",
         "planning/documentation/review-diff-review-workflow.md"
       ],
-      "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective Ideas use shared Idea review; ReviewDiff targets use the ReviewDiff semantic-review workflow.",
+      "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective Ideas use shared Idea review; material Planning Concerns use shared Concern/Decision semantics; ReviewDiff targets use the ReviewDiff semantic-review workflow.",
       "permissionMode": "read-only",
       "keyReminders": [
         "Treat target as hypothesis, not accepted truth.",
         "Use shared Idea review for material answer-seeking corrective alternatives; do not manufacture Ideas for mechanical findings.",
         "When the target is a ReviewDiff, distinguish technical integrity from semantic correctness and follow the ReviewDiff semantic-review workflow.",
-        "Surface material Questions / Risks / Problems and ask the user only for genuinely unresolved material choices.",
-        "Do not edit files, create archives, commit or push."
+        "Surface material Planning Concerns through the shared model and ask the user only for genuinely unresolved user-owned choices; AI Comment may recommend technical/logical routes when justified but must not invent preferences or mark them selected.",
+        "Do not edit files, create archives, commit or push.",
+        "Surface material Planning Concerns through the shared model: group one-resolution-surface Q/R/P, state priority/category/status when useful, add AI Comment without inventing user-owned preferences, recommend only when justified, and keep Decision separate until selected."
       ],
       "userTarget": "<what should be critically reviewed>",
       "palette": true,
@@ -708,12 +714,13 @@
       "activeContextBehavior": "Ask target/scope only when active context does not make it clear.",
       "traversalReadMode": "Reuse/targeted/full by update risk.",
       "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
         "planning/documentation/idea-planning-principles-and-terminology.md",
         "planning/documentation/idea-review-and-planning-workflow.md",
         "planning/documentation/file-update-overview-workflow.md",
         "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
       ],
-      "expectedOutput": "Idea-aware File Update Plan from one Current Selected Meaning: Current Conclusions, mandatory Current-Plan-relative Questions / Risks / Problems, unselected Potential Simplifications / Better Routes when material, then ordered concrete steps/files/checks/next action.",
+      "expectedOutput": "Idea-aware File Update Plan from one Current Selected Meaning: Current Conclusions, active Planning Concerns/Q/R/P + Concern Groups/Area Register/retained trace when material, unselected Potential Simplifications / Better Routes when material, then ordered concrete steps/files/checks/next action.",
       "permissionMode": "plan-only",
       "keyReminders": [
         "Plan file/docs/code/archive update only.",
@@ -722,13 +729,16 @@
         "When alternatives are material, keep them as Idea Variants and identify one Current Selected Variant before concrete file steps.",
         "Possible Idea Refinements are not file edits and do not become selected changes automatically.",
         "Establish the one Current Plan from Current Selected Meaning before aggregate findings.",
-        "Every real Questions / Risks / Problems unit states Current Plan, the unresolved/adverse finding, and its relation or impact on that plan; reference Related Idea IDs when applicable.",
+        "For every material active Planning Concern/Group, use the shared owner/current-plan attachment and Priority/Concern Category/Status/grouping/AI Comment lifecycle; Related Ideas reference the canonical Concern/Group location rather than duplicate bodies.",
         "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and states Current Plan plus Change To Current Plan; accepted simplifications belong in Current Conclusions/Update Steps instead.",
         "Do not use aggregate sections to confirm selected routes, repeat ordinary boundaries, or preserve completed reasoning.",
         "For unresolved important choices, keep current selected meaning explicit and surface alternatives/questions separately.",
         "End with `План файл-обновление` in planned mode.",
         "Do not edit files.",
-        "Do not create archive unless separately requested."
+        "Do not create archive unless separately requested.",
+        "Use the shared Planning Concern/Decision owner rather than a File-Update-specific Q/R/P ontology. Group concerns sharing one resolution surface and keep Priority separate from Concern Category/status.",
+        "AI Comment may explain/recommend from sufficient evidence but must not invent user-owned Need/preferences/risk tolerance. Decision exists only after actual selection.",
+        "One logical Concern/Group has one detailed storage location; Related Ideas/other files reference its ID/location. Resolved trivial items leave active Q/R/P while material retained trace/residual Risk/Problem remains when useful."
       ],
       "userTarget": "<what update/archive should be planned>",
       "palette": true,
@@ -1394,7 +1404,7 @@
         "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
         "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
         "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
-        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Q/R/P stays attached unresolved/adverse delta, never the planning root.",
+        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Planning Concerns/Q/R/P remain a secondary owner-attached active/residual lens with shared grouping/priority/category/AI-comment/Decision-retention semantics; never the planning root.",
         "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
         "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
         "Do not edit repository files, create an archive, commit or push.",
@@ -1436,7 +1446,7 @@
         "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
         "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
         "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
-        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Q/R/P stays attached unresolved/adverse delta, never the planning root.",
+        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Planning Concerns/Q/R/P remain a secondary owner-attached active/residual lens with shared grouping/priority/category/AI-comment/Decision-retention semantics; never the planning root.",
         "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
         "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
         "Do not edit repository files, create an archive, commit or push.",
@@ -1481,7 +1491,7 @@
         "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
         "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
         "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
-        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Q/R/P stays attached unresolved/adverse delta, never the planning root.",
+        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Planning Concerns/Q/R/P remain a secondary owner-attached active/residual lens with shared grouping/priority/category/AI-comment/Decision-retention semantics; never the planning root.",
         "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
         "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
         "Do not edit repository files, create an archive, commit or push.",

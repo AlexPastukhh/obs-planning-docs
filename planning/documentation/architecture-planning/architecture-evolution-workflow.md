@@ -4,6 +4,7 @@ Status: active reusable workflow
 Scope: plan/review coherent Workspace Architecture evolution when several related architecture decisions/risks must move together.
 
 Generic Idea/Variant semantics: [`../idea-planning-principles-and-terminology.md`](../idea-planning-principles-and-terminology.md)
+Shared Planning Concern / generic Decision trace semantics: [`../planning-concerns-and-decisions-model.md`](../planning-concerns-and-decisions-model.md)
 
 ## 1. When To Use
 
@@ -45,3 +46,8 @@ Architecture Evolution stops before detailed implementation task/Slice planning.
 ## 8. Temporal Guard
 
 Later justified evolution does not prove an earlier simpler architecture was wrong. Record what new evidence/pressure now pays for the change.
+## Concern / Decision Integration
+
+When evolution is driven by several related Questions/Risks/Problems, group them by shared resolution surface rather than turning each into an independent architecture project. Preserve member Priority/Concern Category/Status, AI Comment/user-owned unknowns, selected Decision relations and residual Risks/Problems through the shared Concern model.
+
+One coherent evolution may address several Concern Groups/Decisions; trace relations are many-to-many when materially useful.

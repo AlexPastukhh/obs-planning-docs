@@ -2,6 +2,7 @@
 
 Status: active reusable owner
 Semantic entry: `UC-REPO-REFINE-CURRENT-PLAN`
+Shared Concern semantics: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md)
 
 ## Purpose
 
@@ -25,22 +26,31 @@ Real-Life Basis may be `known | partial | unknown`; do not invent a formal Need/
 
 - Real-Life;
 - UC / Scenario;
-- Q/R/P (attached unresolved/adverse delta only);
-- Review Order (derived dependency/blast-radius ordering of attached deltas);
+- Planning Concerns / Q/R/P (owner-attached active/residual state plus retained trace when material);
+- Concern Group (shared resolution surface when several Q/R/P are causally coupled);
+- Review Order (derived priority/dependency/blast-radius ordering of attached concerns);
 - Realization / Evolution.
 
 Ordinary chat text controls current scope/depth/lens/redirection. No persistent Focus/H0-H1-H2 ontology is required.
 
-## Q/R/P Admission
+## Concern Admission
 
 ```text
 candidate concern
 → concrete affected semantic owner?
 → concrete Current/Target planned meaning?
-→ material unresolved/adverse delta after cheap resolution?
+→ material Question/Risk/Problem after cheap check?
 ```
 
-If no: integrate the obvious consequence, or keep as Idea/observation/evidence/context rather than an active FIND.
+If no: integrate the obvious consequence, or keep as Idea/observation/evidence/context rather than an active concern.
+
+If several admitted concerns substantially share one answer/evidence/decision surface, group them rather than creating independent pseudo-problems.
+
+## AI Comment / User-Owned Boundary
+
+When the refinement result keeps a material concern/group, include a useful AI Comment proportionally. It may expose implications/options and a technical/logical recommendation when justified, but must name user-owned unknowns rather than inventing unrecorded Need/preferences/feelings/business priority/risk tolerance.
+
+`Recommendation` is optional. `Decision` is recorded only when actually selected.
 
 ## Related / Affected Units
 
@@ -49,15 +59,33 @@ Default to enough current-state/impact review to trust the current decision. Dee
 ## Accepted-Decision Recheck
 
 ```text
-integrate into real owner
+integrate selected meaning into real semantic owner
+→ record generic Decision trace only when material
+→ update Addresses Concerns / Introduced-Exposed Concerns when useful
 → check known immediate upstream/downstream units actually affected
 → update Review Currency only where material
-→ update finding lifecycle with valid closure basis
-→ recompute Review Order lens only if its basis changed
+→ update active/residual concern lifecycle with valid closure basis
+→ preserve only material retained answer/rationale/decision trace
+→ update Area Concern Register routing/status when material
+→ recompute Review Order only if its basis changed
 ```
 
 No broad automatic rediscovery by default.
 
+## Physical Storage
+
+This workflow does not require a universal Q/R/P file. Use the current profile/workflow/command physical shape:
+
+```text
+small/mini area
+→ inline Concern Register + detailed concern bodies may live in the same owner file
+
+larger/modular/full area
+→ register may live at area root while detailed concerns remain next to Scenario/Domain/Slice/Workspace owners
+```
+
+One logical Concern/Group has one primary detailed storage location; Ideas/other owners reference it instead of mirroring full bodies.
+
 ## Exit
 
-Return current owner(s), selected meaning, truthful reviewed/partial/unchecked state, attached active Q/R/P if any, and next semantic planning unit/realization handoff.
+Return current owner(s), selected meaning, truthful reviewed/partial/unchecked state, current Area Concern Register/active-residual Q/R/P/retained trace when material, and next semantic planning unit/realization handoff.

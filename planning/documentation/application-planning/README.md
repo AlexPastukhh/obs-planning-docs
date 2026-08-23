@@ -132,22 +132,23 @@ selected Slice/change
 
 1. `application-planning-responsibility-map.md`
 2. `application-planning-principles-and-terminology.md`
-3. Idea owners when answer-seeking work is material
-4. `direction-registry.md` + `use-case-registry.md`
-5. `solution-and-scenario-planning-workflow.md`
-6. `requirements-and-change-context.md` when Requirements / Future Scenario Ideas / Change Axes / implementation-scoped Ideas matter
-7. `templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` when own application is a material candidate or already mandated but its concept is not grounded
-8. `prototype-planning-workflow.md` + Prototype Plan/Result templates when interaction/workflow uncertainty benefits from prototyping
-9. [`detailed-planning/README.md`](detailed-planning/README.md) when canonical Scenario/Screen or downstream detailed planning begins
-10. `domain-discovery-workflow.md` when Domain evidence/candidates need explicit discovery
-11. `domain-planning-workflow.md` when a separate Domain owner materially helps and current Domain meaning must be selected/reviewed
-12. `application-realization-workflow.md` when representative runtime/persistence/technical feasibility needs high-level stress review before detailed delivery
-13. `slice-planning-workflow.md` when implementation decomposition/Slice planning materially helps
-14. `../architecture-planning/workspace-evolution-use-case-discovery-workflow.md` when contextual future code/workspace change evidence materially affects architecture/Slice design
-15. `../testing-planning/practical-testing-plan-workflow.md` when a real operated acceptance pass/campaign should be planned
-16. `../profiles/sds-planning-profiles.md` for Mini/Modular/Full SDS representation guidance; Full SDS routes onward to the rich Scenario/Domain/Slice docs profile
-17. other type-specific templates under `templates/`
-18. project-local Scenario Catalog / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / WEUC register / testing/current owners.
+3. parent `../planning-concerns-and-decisions-model.md` when material Planning Concerns/Q/R/P or Decision trace are present
+4. Idea owners when answer-seeking work is material
+5. `direction-registry.md` + `use-case-registry.md`
+6. `solution-and-scenario-planning-workflow.md`
+7. `requirements-and-change-context.md` when Requirements / Future Scenario Ideas / Change Axes / implementation-scoped Ideas matter
+8. `templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` when own application is a material candidate or already mandated but its concept is not grounded
+9. `prototype-planning-workflow.md` + Prototype Plan/Result templates when interaction/workflow uncertainty benefits from prototyping
+10. [`detailed-planning/README.md`](detailed-planning/README.md) when canonical Scenario/Screen or downstream detailed planning begins
+11. `domain-discovery-workflow.md` when Domain evidence/candidates need explicit discovery
+12. `domain-planning-workflow.md` when a separate Domain owner materially helps and current Domain meaning must be selected/reviewed
+13. `application-realization-workflow.md` when representative runtime/persistence/technical feasibility needs high-level stress review before detailed delivery
+14. `slice-planning-workflow.md` when implementation decomposition/Slice planning materially helps
+15. `../architecture-planning/workspace-evolution-use-case-discovery-workflow.md` when contextual future code/workspace change evidence materially affects architecture/Slice design
+16. `../testing-planning/practical-testing-plan-workflow.md` when a real operated acceptance pass/campaign should be planned
+17. `../profiles/sds-planning-profiles.md` for Mini/Modular/Full SDS representation guidance; Full SDS routes onward to the rich Scenario/Domain/Slice docs profile
+18. other type-specific templates under `templates/`
+19. project-local Scenario Catalog / prototype artifacts / Scenarios / Screens / Requirements / Domains / Slices / WEUC register / testing/current owners.
 
 ## Core Concepts
 
@@ -175,7 +176,7 @@ selected Slice/change
 - **Slice Strategy** — optional decomposition/order plan for separately deliverable/checkable implementation increments.
 - **Implementation Slice** — one optional separately deliverable/checkable integrated implementation increment after enough behavior/concepts are understood.
 - **Execution Order** — current delivery projection of selected Slices/dependencies/parallel groups/versions; not a second behavior/domain authority.
-- **Current Draft Plan** — current selected baseline named inside a detailed draft's Q/R/P or Better Route unit; not a file/entity/stage.
+- **Current Draft Plan** — current selected baseline named inside a detailed draft's active/residual Planning Concern/Q/R/P or Better Route unit; not a file/entity/stage. Generic concern/group/priority/category/status/AI-comment/Decision-retention semantics come from `../planning-concerns-and-decisions-model.md`.
 - **Planning Unit Variant** — integrated alternative design of one Scenario/Screen/Domain/Slice; not a runtime branch, Idea Variant or document revision.
 - **Reference Object Candidate** — canonical literal meaning that may benefit from Linked Notes literal stale-copy checking/synchronization when intentionally materialized in other files.
 

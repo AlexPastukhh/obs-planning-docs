@@ -5,6 +5,8 @@ Scope: current detailed application planning after meaningful Scenario boundarie
 
 Parent family: [`../README.md`](../README.md)
 
+Shared Planning Concern / generic Decision trace owner: [`../../planning-concerns-and-decisions-model.md`](../../planning-concerns-and-decisions-model.md)
+
 ## 1. Purpose
 
 Detailed planning keeps semantic owners explicit without returning to a generic `Planning Draft` layer.
@@ -41,8 +43,12 @@ Current semantic body
 +
 Current Decisions
 +
-Questions / Risks / Problems
-  relative to Current Draft Plan
+Area Concern Register — inline or separate when material
++
+Planning Concerns / Q/R/P + Concern Groups
+  active/residual relative to Current Draft Plan
++
+Retained Concern/Decision trace — when material
 +
 Potential Simplifications / Better Routes
   relative to Current Draft Plan
@@ -50,7 +56,7 @@ Potential Simplifications / Better Routes
 
 ### Current Decisions
 
-Use `Current Decisions` for material selected choices whose rationale/traceability remains useful.
+Use the generic Decision trace contract from `planning-concerns-and-decisions-model.md` for material selected choices whose rationale/traceability remains useful.
 
 A Decision does not replace the semantic body. Selected meaning must be integrated into the Scenario, Screen, Domain or Slice itself.
 
@@ -59,51 +65,70 @@ Recommended fields when material:
 ```text
 Decision
 Rationale
-Related Idea / Variant
 Integrated Into
 Affected Owners
+Addresses Concerns
+Introduced / Exposed Concerns
+Related Idea / Variant / Evidence
 Reconsider When
 ```
 
-`Affected Owners` means review/integration impact. It does not silently rewrite another owner.
+Only `Decision/Rationale/Integrated Into` are commonly useful; concern relations and other trace fields are proportional. `Affected Owners` means review/integration impact, not silent rewrite authority.
 
-### Questions / Risks / Problems
+### Area Concern Register / Physical Storage
 
-Only material unresolved/adverse findings relative to the current draft belong here.
+When this planning area has material persistent/distributed concerns, maintain one logical Area Concern Register. The current physical profile decides where it lives:
 
-Each real unit states at minimum:
+```text
+small / Mini
+→ section in the same owner/application-plan file
+
+Modular / Full / larger owner collection
+→ area-root register/concerns file when useful
+→ detailed Concern/Group bodies stay next to the real Scenario/Domain/Slice/etc owner
+```
+
+Register fields: Concern/Group ID, title, owner, Stored At, Priority, Concern Category, Status, Decision refs when material, Residual state. It is an index/state surface, not the full semantic body.
+
+One logical Concern/Group has one primary detailed storage location. Other Ideas/owners reference the same ID/location rather than copying the full body.
+
+### Planning Concerns / Questions / Risks / Problems
+
+Use the shared Concern model. Active Q/R/P is current-plan delta, while material retained answer/rationale/Decision trace may remain after closure.
+
+A single material Concern states proportionally:
 
 ```text
 ID / Type
-Related Idea when applicable
+Priority: P0/Critical | P1/High | P2/Normal | P3/Low
+Concern Category
+Status
+Owner / affected meaning
+Origin / Provenance
 Current Draft Plan
-Finding
-Relation / Impact On Current Draft Plan
+Finding / Relation / Impact
+Concern Group when related
+AI Comment
+Recommendation when justified
+Answer / Evidence when applicable
+Decision refs when selected/material
+Residual state / treatment when applicable
+Stored At when cross-file
 ```
 
-Add `Needed Resolution / Treatment`, `Fallback`, `Fallback Relation` and `Blocking` only when useful.
+`AI Comment` is useful interpretation, not autonomous user-decision authority. It should separate what Current Plan/evidence implies from what depends on unrecorded user Need/preference/feeling/business priority/risk tolerance. Recommendation is optional; Decision exists only after actual selection.
+
+Group related Q/R/P when they substantially share one answer/evidence/Decision resolution surface. Grouping never erases member Type/Priority/Concern Category/Status.
 
 `Current Draft Plan` is the relevant currently selected baseline of this draft. It may reference a section/range rather than copy the whole draft.
 
-Example:
-
-```text
-Current Draft Plan:
-`scenario.md` → Main Flow 4–7:
-customer confirms one visit slot before final technician assignment.
-
-Finding:
-Some jobs cannot expose a reliable slot before technician availability is known.
-
-Relation / Impact On Current Draft Plan:
-The selected ordering may fail for technician-dependent scheduling.
-```
-
-If no material unresolved issue exists, write exactly:
+If no material active concern exists, write exactly:
 
 ```text
 No material unresolved issues identified.
 ```
+
+Residual Risk/Problem remains active when material even after a related Question is answered. Resolved trivial items leave active Q/R/P. Preserve retained trace only when rationale/decision/residual meaning is materially useful.
 
 ### Potential Simplifications / Better Routes
 
@@ -126,13 +151,17 @@ Once selected, the route leaves this section and becomes current semantic meanin
 ### Lifecycle
 
 ```text
-finding appears
-→ scoped Idea / analysis when useful
-→ candidate route(s)
-→ one route selected
+concern appears
+→ group with related Q/R/P when one resolution surface exists
+→ scoped Idea / evidence / analysis when useful
+→ AI Comment + optional Recommendation
+→ answer/evidence and/or one route selected
 → selected meaning integrated into current draft
-→ material choice recorded in Current Decisions when useful
-→ finding no longer remains Q/R/P
+→ material Decision trace recorded when useful
+→ answered/resolved/eliminated item leaves active Q/R/P
+→ residual Risk/Problem remains active when material
+→ retained trace remains only when useful
+→ Area Concern Register/status/storage updated
 → selected route no longer remains Potential Better Route
 ```
 
@@ -242,22 +271,20 @@ Variant-specific question
 
 One question has one primary Idea workspace. Other affected owners link it rather than maintain duplicate Idea copies.
 
-When a detailed-draft Q/R/P references Idea(s), use the generic Idea ↔ Q/R/P discoverability rule:
+When a detailed-draft Concern/Q/R/P relates to Idea(s), use the shared Concern storage rule:
 
 ```text
-exactly one Related Idea
-→ one logical finding / one stable Finding ID
-→ keep the full aggregate Current-Draft-relative finding
-→ mirror the full same-ID Q/R/P inside that Idea
+one logical Concern / Concern Group
+→ one primary detailed storage location
 
-several Related Ideas
-→ keep one full cross-Idea aggregate finding
-→ list every Related Idea
-→ add a lightweight same-ID reference inside every affected Idea
-→ do not copy the complete finding into every Idea
+Related Idea(s)
+→ reference Concern/Group ID + location + useful relation/provenance
+
+If the Idea is itself the selected detailed storage owner
+→ full concern body may live there
 ```
 
-The Idea-side mirror/reference is a projection of the same finding, not a second semantic owner. Resolution removes the aggregate representation and every Idea-side mirror/reference together.
+Do not maintain the former full same-ID mirror in both an aggregate/owner and one Idea. The Area Concern Register provides durable discoverability when concerns are distributed.
 
 ## 5. Planning Unit Variants
 
@@ -601,8 +628,8 @@ When one owner semantically derives meaning from another and an upstream change 
 
 Slice-local verification may remain compact, but material proof design routes to sibling `../testing-planning/` through `UC-PLAN-TEST-DESIGN`. Shared/cross-Slice test architecture routes to `UC-PLAN-TEST-STRATEGY`; checking whether actual current tests prove selected meaning routes to `UC-PLAN-TEST-COVERAGE`. Tests remain evidence, never Scenario/Requirement/Domain semantic authority.
 
-## Owner-Attached Q/R/P Contract
+## Planning Concern / Q/R/P Handoff
 
-`Questions / Risks / Problems` inside detailed planning is a lens over the selected Scenario/Domain/Slice owner, not a planning entity. Each material item carries Origin/Provenance + affected owner + Current/Target planned meaning + unresolved/adverse delta.
+`Questions / Risks / Problems` inside detailed planning is a secondary lens over the selected Scenario/Screen/Domain/Slice owner, not a planning entity. Generic semantics, Concern Groups, Priority, Concern Category, Status, AI Comment/Recommendation/Decision boundary, residual lifecycle, retention and Area Concern Register behavior are owned by `../../planning-concerns-and-decisions-model.md`.
 
-If no material delta remains, the Q/R/P section may be empty. A fully described Scenario/Domain/Slice does not receive another Q/R/P merely because another question can be phrased.
+A fully described Scenario/Domain/Slice does not receive another concern merely because another question can be phrased. Conversely, a material residual Risk/Problem is not dropped merely because the Question that exposed it has been answered.

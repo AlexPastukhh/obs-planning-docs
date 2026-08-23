@@ -55,13 +55,13 @@ A Functional Workflow is not automatically:
 
 <Observable result.>
 
-#### Local Questions / Problems / Risks — Optional
+#### Local Planning Concerns / Q/R/P — Optional
 
-<Only applicable material.>
+<Use the shared Concern model for applicable material concerns; group by one resolution surface when related.>
 
 #### Decisions — Optional
 
-<Local accepted or proposed decisions.>
+<Selected local Decisions only; Recommendation remains separate. Use generic Decision trace fields when material.>
 
 #### What Must Be Tested — Optional
 
@@ -151,33 +151,32 @@ A `viable` alternative remains part of whole-solution/Application Concept compar
 |---|---|---|---|---|
 | T-01 | <question> | <test> | proposed / supported / rejected / inconclusive | <decision> |
 
-## 12. Questions / Risks / Problems — When Material
+## 12. Planning Concerns / Q/R/P — When Material
 
-Use the shared Current-Plan-relative aggregate contract rather than maintaining a second workflow-specific issue model.
+Use the shared `../../planning-concerns-and-decisions-model.md`; do not maintain a workflow-specific issue ontology.
 
-### Q/R/P-FW-<ID> — <finding title>
+```markdown
+### CG/Q/R/P-FW-<ID> — <title>
+**Type:** Question / Risk / Problem <!-- member only -->
+**Priority:** P0/Critical | P1/High | P2/Normal | P3/Low
+**Concern Category:** <primary category>
+**Status:** <current status>
+**Owner / affected meaning:** <workflow/Scenario/other owner>
+**Current Plan:** <selected Workflow baseline>
+**Finding / Shared Resolution Surface:** <current concern>
+**AI Comment:** <known/options/justified preference/user-owned unknown/minimum useful question>
+**Recommendation:** <optional>
+**Decision refs / residual state:** <when material>
+**Stored At:** <when routed elsewhere>
+```
 
-**Type:** Question / Risk / Problem
-
-**Related Idea(s):** <when applicable; apply the shared Idea ↔ Q/R/P mirror/reference rule>
-
-**Current Plan:** <current selected Workflow baseline>
-
-**Finding:** <unresolved/adverse finding>
-
-**Relation / Impact On Current Plan:** <why it still matters>
-
-**Needed Resolution / Treatment:** <when useful>
-
-**Blocking:** yes / no <when useful>
-
-If none exist: `No material unresolved issues identified.`
+Related Ideas reference the canonical Concern/Group location rather than full mirrors. If none: `No material unresolved issues identified.`
 
 ## 13. Decisions
 
-| ID / item | Decision | Rationale | Status | Reconsider when |
-|---|---|---|---|---|
-| D-01 | <decision> | <rationale> | proposed | <condition> |
+| ID / item | Decision | Rationale | Integrated Into | Addresses / Introduced Concerns — when useful | Reconsider when |
+|---|---|---|---|---|---|
+| D-01 | <selected decision> | <rationale> | <owner/section> | <concern refs> | <condition> |
 
 ## 14. Current Conclusion
 

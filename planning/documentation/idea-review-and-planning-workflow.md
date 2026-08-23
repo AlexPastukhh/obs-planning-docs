@@ -22,7 +22,7 @@ For every Idea:
 7. Perform Local Consistency check.
 8. Perform Integrated Consistency check.
 9. Record Current Conclusion.
-10. Propagate only material findings that remain unresolved/adverse after the current conclusion is established.
+10. Route material Planning Concerns through the shared Concern/Decision model: active/residual concerns remain visible, materially useful retained trace may survive closure, and duplicate full concern mirrors are not created.
 ```
 
 Checks 5–8 are mandatory. Their output is conditional.
@@ -44,7 +44,7 @@ selected source
 → Standard Idea Review
 → integrate selected meaning into affected current useful-result owners
 → update one coherent Current Plan
-→ derive Q/R/P as unresolved/adverse delta
+→ derive material Planning Concerns/Q/R/P through the shared Concern model
 → whole-plan review
 → Current Overall Conclusions
 → unselected Potential Simplifications / Better Routes only
@@ -107,7 +107,7 @@ Source / Baseline / Real-Life Basis
 → Related Ideas / provenance
 → affected Workspace UC / Application Scenario
 → Current → Target planning in UCDS or Application SDS Step 0–4
-→ attached Questions / Risks / Problems only where unresolved/material
+→ active/residual Planning Concerns / Concern Groups only where material
 → Review Order lens only when several attached deltas need ordering
 → Execution Order / versions when selected and useful
 → cross-unit review when material
@@ -129,15 +129,17 @@ A
 
 Application execution order may group selected Slices into versions/releases. Version grouping does not become a semantic layer between Scenario and Slice.
 
-## 8. Shared Aggregate Findings
+## 8. Shared Planning Concerns / Q/R/P
 
-Use the aggregate contract from `idea-planning-principles-and-terminology.md`.
+Use [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md). Idea review may expose single concerns or Concern Groups, but does not own their generic lifecycle.
 
-Every real Q/R/P unit states Origin/Provenance, affected semantic owner, Current/Target planned meaning, Finding and Relation/Impact. Add Related Idea(s), treatment/fallback/blocking only when useful. Resolved/accepted meaning leaves Q/R/P and candidate Better Routes.
+For every material concern/group preserve the real affected owner/current-plan relation, Priority/Concern Category/Status when useful, and a useful AI Comment without inventing user-owned Needs/preferences/risk tolerance. Recommendation is optional; selected Decision trace is recorded only when actually chosen.
 
-Apply the shared same-Finding-ID discoverability rule between aggregate findings and affected Ideas.
+One logical Concern/Group has one detailed storage location. Related Ideas reference its ID/location unless the Idea itself is that storage owner. Do not maintain the former full same-ID mirror in both an aggregate and one Idea.
 
-If no material unresolved issue remains: `No material unresolved issues identified.`
+Resolved trivial concerns leave the active projection; materially useful answer/rationale/Decision trace may remain, and residual Risk/Problem stays active.
+
+If no material active concern remains: `No material unresolved issues identified.`
 
 ## 9. File Update And ReviewDiff Integration
 
@@ -155,7 +157,7 @@ After materialization, semantic ReviewDiff reviews the actual transition against
 - Mini→Modular structural growth preserves semantic ownership;
 - dependency direction is upstream→downstream and any backflow is an explicit evidence finding;
 - execution order does not masquerade as semantic dependency;
-- aggregate findings are real current-plan delta only;
+- active concern projection is real current-plan delta only; retained trace/residual state follows the shared Concern owner;
 - Key Points/Review Priority and built-in recheck were applied proportionally;
 - final Current Overall Conclusions follow useful-result integration.
 ```

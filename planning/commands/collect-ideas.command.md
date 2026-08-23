@@ -15,10 +15,11 @@ Scope: one concrete OBS Planning command route. Reusable Idea, SDS/UCDS and revi
     "collect ideas"
   ],
   "description": "collect/review Ideas and update integrated current planning",
-  "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve the affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Q/R/P is derived only as an owner-attached unresolved/adverse delta; it is never the planning root.",
+  "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Planning Concerns/Q/R/P are secondary owner-attached active/residual state using the shared Concern/Decision model; related concerns may form one Concern Group and are never the planning root.",
   "activeContextBehavior": "Use the explicitly selected or clearly active current source. When a current integrated plan is clearly selected, use it as the current baseline and update it rather than starting another plan. For Workspace/documentation planning use UCDS proportionally. For Application planning use the same-quality SDS Step 0–4 contract from `sds-planning-profiles.md`: Why/Solution Discovery → Scenario with DATA/Behavior → Domain Draft → Slices plus contextual WEUC/architecture evidence → Practical Realization Feedback. Mini is one accumulating application-plan file; Modular/Medium splits that same meaning into a small growing file set; Full uses rich stable owners. Ask only when source/current-plan identity is genuinely missing or ambiguous.",
   "traversalReadMode": "Targeted/full by source size, current-plan/current-owner uncertainty, affected useful results and selected planning depth.",
   "ownerFiles": [
+    "planning/documentation/planning-concerns-and-decisions-model.md",
     "planning/documentation/idea-planning-principles-and-terminology.md",
     "planning/documentation/idea-review-and-planning-workflow.md",
     "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
@@ -32,7 +33,7 @@ Scope: one concrete OBS Planning command route. Reusable Idea, SDS/UCDS and revi
     "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
     "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
   ],
-  "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UCDS or Application SDS Current Plan. For Application planning, preserve Step 0 Why/Solution Discovery, Step 1 Scenario + DATA/Behavior, Step 2 Domain Draft, Step 3 Slices + material contextual WEUC/architecture evidence, and Step 4 practical realization-feedback plan; then attached Q/R/P only for material unresolved deltas, execution/review projections when useful, Current Overall Conclusions and only genuinely unselected Better Routes.",
+  "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UCDS or Application SDS Current Plan; Area Concern Register + active/residual Planning Concerns/Concern Groups/retained trace when material; execution/review projections when useful; Current Overall Conclusions and only genuinely unselected Better Routes.",
   "permissionMode": "read-only",
   "keyReminders": [
     "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
@@ -58,7 +59,10 @@ Scope: one concrete OBS Planning command route. Reusable Idea, SDS/UCDS and revi
     "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and is removed once a candidate is selected.",
     "Apply Key Points / Review Priority and built-in recheck before returning material output; `крит` remains an optional separate adversarial review.",
     "When scope logging is already active, treat the material review result as a loggable source for the next approved mutation/package; this read-only command itself does not edit logs.",
-    "Do not edit repository files, create an archive, commit or push."
+    "Do not edit repository files, create an archive, commit or push.",
+    "Use the shared Planning Concern/Decision owner for Q/R/P semantics: group related concerns by one resolution surface; keep member Priority/Concern Category/Status; one logical Concern/Group has one detailed storage location plus Area Concern Register routing when material.",
+    "For material active concerns, provide a useful AI Comment that separates plan/evidence implications from user-owned Needs/preferences/feelings/business priority/risk tolerance. Recommendation is optional and Decision exists only after actual selection.",
+    "Answered/resolved/eliminated items leave active Q/R/P; retain material answer/rationale/Decision trace when useful and keep residual Risk/Problem active."
   ],
   "userTarget": "<source/discussion to collect Ideas from>",
   "palette": true,

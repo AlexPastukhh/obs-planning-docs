@@ -577,9 +577,9 @@ selected
 
 The first Variant does not need to be physically moved into `variants/VAR-A/`. Status/navigation makes the semantic peer relationship explicit.
 
-The old risk is removed from Q/R/P because the route is selected.
+The answered Question/selected route leaves active Q/R/P, but any material residual Risk/Problem would remain active and the material Decision trace may be retained. In this example no residual risk remains, so the active concern projection is empty after selection.
 
-Current Decision:
+Current Decision (shared Decision-trace semantics):
 
 ```text
 D-SCN-SCHEDULE-02 — Feasible window precedes final appointment assignment

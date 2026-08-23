@@ -2,6 +2,7 @@
 
 Status: reusable recommended template
 Generic Idea/Variant semantics: [`../../idea-planning-principles-and-terminology.md`](../../idea-planning-principles-and-terminology.md)
+Shared Planning Concern / Decision trace semantics: [`../../planning-concerns-and-decisions-model.md`](../../planning-concerns-and-decisions-model.md)
 
 ## Target / Current Baseline
 
@@ -45,6 +46,19 @@ Architectural Tax:
 Payoff:
 ```
 
+## Driving Planning Concerns / Concern Groups — When Material
+
+```text
+Concern / Group IDs:
+Priority / Concern Category / Status:
+Shared resolution surface:
+AI Comment:
+User-owned unknown / minimum useful question when applicable:
+Recommendation when justified:
+```
+
+Do not turn a technical recommendation into a selected Decision until the applicable authority/context has actually selected it.
+
 ## Current Selected Variant
 
 ```text
@@ -53,6 +67,9 @@ Architecture Intent:
 Why it pays for itself now:
 Driving WEUC instance IDs / evidence:
 Affected owners / paths:
+Addresses Concerns — when useful:
+Introduced / Exposed Concerns — when useful:
+Residual concerns / accepted risks — when material:
 ```
 
 ## Rejected Complexity

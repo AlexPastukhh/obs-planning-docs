@@ -24,8 +24,9 @@ Scope: route reusable documentation material to its immediate canonical owner ty
 | Documentation update planning/application | `documentation-update-plan-workflow.md`, generic `workspace-planning/` when UC-centric semantic planning is needed, `documentation-update-workflow.md` for approved application |
 | Concrete File Update Plan | `file-update-overview-workflow.md`, `FILE-UPDATE-OVERVIEW-TEMPLATE.md` |
 | Replacement package producer | `build-replacement-archive-workflow.md` |
-| ReviewDiff semantic correctness review | `review-diff-review-workflow.md` + shared Idea owners |
-| Shared Idea methodology / aggregate Current-Plan contract | Idea principles/workflow/template |
+| ReviewDiff semantic correctness review | `review-diff-review-workflow.md` + affected current owners + shared Planning Concern/Decision owner; shared Idea owners only when a corrective alternative/Idea is material |
+| Shared Planning Concern / Q/R/P / Concern Group / generic Decision trace semantics | `planning-concerns-and-decisions-model.md` |
+| Shared Idea methodology / Idea Variant / Idea evaluation semantics | Idea principles/workflow/template; consumes the Planning Concern/Decision owner rather than owning generic Q/R/P lifecycle |
 | Solution/application planning | `application-planning/` |
 | Universal Workspace Architecture Planning | `architecture-planning/` |
 | Reusable Testing Planning | `testing-planning/` |
@@ -58,6 +59,7 @@ Current routing additions:
 
 - current-plan refinement → root `UC-REPO-REFINE-CURRENT-PLAN` → `progressive-plan-refinement-workflow.md`;
 - review coverage/quality → `UC-REPO-AUDIT-REVIEW` → `review-audit-workflow.md`;
+- Planning Concern / Q/R/P / Concern Group / Decision trace semantics → `planning-concerns-and-decisions-model.md`;
 - planning-finding completeness → `UC-REPO-REVIEW-PLANNING-FINDINGS` → `planning-findings-review-workflow.md`;
 - reusable semantic consistency → `UC-DOC-REVIEW-CURRENT-CONSISTENCY` → `current-semantic-consistency-review-workflow.md`;
 - dependency intent/review/exact-meaning/coverage → selected `UC-DOC-*DEPENDENCY*` family → `review-dependency-planning-workflow.md`.

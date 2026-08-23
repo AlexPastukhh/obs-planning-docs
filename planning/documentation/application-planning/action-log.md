@@ -372,3 +372,10 @@ No material unresolved issues identified for this selected documentation/methodo
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-048`
 **Reason:** Application Planning owners/templates/registries align iterative Scenario DATA/Behavior discovery, evidence-backed Domain Aggregate/VO boundaries, Slice sequencing/delegation/drift/proof handoff, runtime-cost evidence and Step 3/4 Testing boundaries as part of the same reviewed Full SDS transition.
+
+### XREF-010 — Shared Concern/Q/R/P and Decision-trace integration
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-050`
+**Reason:** Application Planning owners/templates/profiles adopt Concern Groups, shared Priority/Concern Category/Status, AI Comment boundaries, contextual Area Concern Register storage and retained/residual Decision trace without changing Scenario/Domain/Slice semantic ownership; full reviewed meaning is owned by the reusable-documentation canonical log.

@@ -50,32 +50,41 @@ Idea <ID>
 
 Do not create file-edit variants as a copy of conceptual alternatives.
 
-When a Q/R/P later names Related Idea(s), also apply the shared Idea ↔ Q/R/P discoverability rule in this Idea section: one Related Idea gets the full same-ID mirror; several Related Ideas each get only a lightweight same-ID reference to the one aggregate finding.
+When a Planning Concern/Concern Group relates to Idea(s), reference the canonical Concern/Group ID + storage location from the Idea. Do not mirror the full body into both the Idea and aggregate/owner sections.
 
 ### Current Plan / Current conclusions
 
 <Selected/current planning meaning that concrete Update Steps implement. This is the baseline referenced by aggregate units.>
 
-### Questions / Risks / Problems
+### Planning Concerns / Q/R/P
 
-This aggregate section is present for every File Update Plan, including mechanical updates. It contains only material unresolved/adverse delta relative to the Current Plan.
+This active concern surface is present for every File Update Plan, including mechanical updates. Use the shared `planning-concerns-and-decisions-model.md`.
 
 ```markdown
-#### [Q/R/P-<ID>] — <finding title>
+#### CG-<ID> / Q-<ID> / R-<ID> / P-<ID> — <title>
 
-**Related Idea(s):** `IDEA-X` <!-- when applicable -->
-**Current Plan:** <the selected file-update route relevant to this finding>
-**Finding:** <unresolved question / residual risk / unresolved problem>
-**Relation / Impact On Current Plan:** <why it still matters to the selected plan>
-**Needed Resolution / Treatment:** <when applicable>
-**Fallback:** <only when real>
-**Fallback Relation:** fallback only; not Current Plan
-**Blocking:** <yes / no, when useful>
+**Type:** Question / Risk / Problem <!-- omit on group header; keep on members -->
+**Priority:** P0 / Critical | P1 / High | P2 / Normal | P3 / Low
+**Concern Category:** <primary category>
+**Status:** <type/group-appropriate status>
+**Owner / affected meaning:** <owner>
+**Current Plan:** <selected file-update route relevant to this concern>
+**Origin / Provenance:** <when useful>
+**Concern Group / Members:** <when applicable>
+**Finding / Shared Resolution Surface:** <current concern/group meaning>
+**Relation / Impact On Current Plan:** <why it matters>
+
+**AI Comment:** <what follows from plan/evidence; options; justified technical preference; user-owned unknown; minimum useful user question when decision-changing>
+**Recommendation:** <optional; only with sufficient grounds>
+**Answer / Evidence:** <when applicable>
+**Decision refs:** <when actually selected/material>
+**Residual state / treatment:** <when applicable>
+**Stored At:** <when detail lives elsewhere>
 ```
 
-At minimum every real unit states `Current Plan`, `Finding`, and `Relation / Impact On Current Plan`. If none: `No material unresolved issues identified.`
+Group related Q/R/P when one answer/evidence/Decision substantially addresses them. Member Type/Priority/Concern Category/Status stays visible.
 
-Do not put accepted Current Conclusions, ordinary Update Step boundaries, or already selected corrections/simplifications here.
+If none: `No material unresolved issues identified.` Resolved trivial items leave active Q/R/P; material retained trace and residual Risk/Problem follow the shared model. One logical Concern/Group has one detailed storage location; Ideas/other files reference it.
 
 ### Potential Simplifications / Better Routes — When material
 
@@ -188,10 +197,11 @@ Use this section only when package/source/delivery classification is relevant. S
 - Keep table cells short.
 - Perform Idea analysis only when conceptual uncertainty is material; do not manufacture it for mechanical updates.
 - `Current Selected Variant` is the normal selected-variant term; use `fallback` only when genuinely a fallback.
-- Questions / Risks / Problems is required for every File Update Plan; every real unit states Current Plan and its unresolved/adverse relation or impact, with Related Idea IDs when applicable.
-- Idea-related Q/R/P uses one Finding ID and is mirrored/referenced from each affected Idea according to the shared cardinality rule.
+- Planning Concerns / Q/R/P active surface is required for every File Update Plan (or explicit empty result) and follows the shared Concern/Decision model.
+- Group one-resolution-surface Q/R/P; keep Priority and Concern Category separate; AI Comment must not invent user-owned preferences; Recommendation is optional; Decision requires actual selection.
+- One logical Concern/Group has one detailed storage location; Ideas/other owners reference its ID/location instead of duplicating full bodies.
 - Potential Simplifications / Better Routes is conditional on a real unselected candidate change to Current Plan; each unit states Current Plan + Change To Current Plan.
-- Accepted/resolved findings are integrated into Current Conclusions / Update Steps and removed from aggregate sections.
+- Resolved trivial findings leave active Q/R/P and selected meaning is integrated into Current Conclusions / Update Steps; material retained Decision/Concern trace and residual R/P remain when useful.
 - Ordered steps are primary when dependencies or migration order matter.
 - Numbered Actions state what is done and in what order.
 - The per-step file table retains the old changed-file view:

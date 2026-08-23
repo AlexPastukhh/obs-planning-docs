@@ -267,12 +267,12 @@
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-REVIEW-DIFF in the current canonical registry and follow its current owner route (review-diff-review-workflow.md + affected current owners + shared Idea owners). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-DOC-REVIEW-DIFF in the current canonical registry and follow its current owner route (review-diff-review-workflow.md + affected current owners + planning-concerns-and-decisions-model.md + shared Idea owners only for material corrective alternatives). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Semantically Review A Repository ReviewDiff target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
       "trigger": "ReviewDiff is pasted/attached/delivered/selected for review",
-      "result": "checked findings + selected corrective plan when needed + Current-Plan-relative Q/R/P + ReviewDiff verdict",
+      "result": "checked findings + selected corrective plan when needed + current Concern/Decision state + ReviewDiff verdict",
       "commandId": "critical_review.apply"
     },
     {
@@ -486,12 +486,12 @@
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-COLLECT-IDEAS in the current canonical registry and follow its current owner route (shared Idea owners). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-COLLECT-IDEAS in the current canonical registry and follow its current owner route (shared Idea owners + ../planning-concerns-and-decisions-model.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Collect And Review Ideas From Selected Source target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
       "trigger": "selected source contains answer-seeking Ideas",
-      "result": "reviewed Ideas + Q/R/P + conclusions",
+      "result": "reviewed Ideas + integrated current planning + shared Planning Concern/Concern Group state when material + conclusions",
       "commandId": "ideas.collect"
     },
     {
@@ -901,26 +901,26 @@
       "sources": [
         "planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-REPO-REFINE-CURRENT-PLAN in the current canonical registry and follow its current owner route (documentation/progressive-plan-refinement-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-REPO-REFINE-CURRENT-PLAN in the current canonical registry and follow its current owner route (documentation/progressive-plan-refinement-workflow.md + documentation/planning-concerns-and-decisions-model.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Refine The Current Plan target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
       "trigger": "current planning meaning needs refinement, deeper review or directed continuation",
-      "result": "updated current semantic owner(s) + truthful reviewed/partial/unchecked state + attached Q/R/P only when material"
+      "result": "updated current semantic owner(s) + truthful reviewed/partial/unchecked state + current Area Concern Register/active-residual Q/R/P/retained decision trace when material"
     },
     {
       "id": "UC-REPO-REVIEW-PLANNING-FINDINGS",
       "label": "Review Planning Findings / Q/R/P Completeness",
-      "description": "detect/deduplicate material unresolved deltas attached to current semantic owners",
+      "description": "detect/deduplicate/group material concerns and verify priority/category/status/residual/trace completeness against current semantic owners",
       "sources": [
         "planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-REPO-REVIEW-PLANNING-FINDINGS in the current canonical registry and follow its current owner route (documentation/planning-findings-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-REPO-REVIEW-PLANNING-FINDINGS in the current canonical registry and follow its current owner route (documentation/planning-findings-review-workflow.md + documentation/planning-concerns-and-decisions-model.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review Planning Findings / Q/R/P Completeness target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
-      "trigger": "completeness of current planning findings materially matters",
-      "result": "owner-attached active findings + missing/duplicate/obsolete finding corrections"
+      "trigger": "completeness of current planning concerns materially matters",
+      "result": "owner-attached active concerns + Concern Groups + missing/duplicate/stale/obsolete/grouping/priority/category/status/residual/trace corrections"
     },
     {
       "id": "UC-REPO-USE-ARCHIVE-SOURCE",

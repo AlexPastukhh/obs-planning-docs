@@ -51,7 +51,9 @@ All three Workspace Planning UCs use these selected rules:
 
 - Real-Life Basis is `known | partial | unknown`; do not invent Need;
 - reuse an existing UC whenever its useful result already owns the Need, or reuse/extraction is currently useful/clearly justified;
-- Q/R/P is attached only after a concrete UC/current planned state has a material unresolved/adverse delta;
-- `Review Order` is only a lens over attached deltas;
+- Planning Concerns/Q/R/P follow the shared `../planning-concerns-and-decisions-model.md`: active/residual concerns attach only to a concrete UC/current planned state; related concerns sharing one resolution surface are grouped;
+- Concern Priority reuses Review Priority semantics and is separate from Concern Category/status; AI Comment does not invent user-owned Need/preferences/risk tolerance;
+- one logical Concern/Group has one detailed storage location plus an Area Concern Register when material; retained trace is preserved only when useful;
+- `Review Order` is a derived lens over attached concerns;
 - Step 3 records **Target Dependencies** before exact file realization when material;
 - ordinary chat text controls depth/lens/redirection; no extra Focus-state ontology is required.

@@ -62,10 +62,13 @@ Every material Screen → Scenario relation must also be discoverable from the S
 Do not turn ordinary Scenario → Screen semantic relations into Reference Objects. A consumer-side candidate note does not redefine the source meaning.
 
 ## Current Decisions
-<Use the shared detailed-planning Current Decisions contract.>
+<Use the shared Planning Concern/Decision trace contract when material; selected spatial meaning remains integrated into the Screen owner.>
 
-## Questions / Risks / Problems
-<Use the shared contract; each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan. When Related Idea(s) exist, apply the shared Idea ↔ Q/R/P mirror/reference rule.>
+## Area Concern Register — When Material
+<Inline/link the current Screen-area register when useful.>
+
+## Planning Concerns / Q/R/P
+<Use the shared Concern model: group one-resolution-surface concerns, preserve Priority/Concern Category/Status, use AI Comment without inventing user UX preference, and reference Related Ideas instead of mirroring full concern bodies.>
 
 ## Potential Simplifications / Better Routes — When Material
 <Only unselected changes to the current Screen/spatial draft.>

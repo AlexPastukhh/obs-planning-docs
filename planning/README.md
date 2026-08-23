@@ -129,8 +129,11 @@ Current review lenses are projections over that one plan:
 
 - **Real-Life** — Need / situation / desired result and known|partial|unknown basis;
 - **UC / Scenario** — useful-result ownership and Current→Target meaning;
-- **Q/R/P** — only material unresolved/adverse deltas attached to a concrete owner;
-- **Review Order** — dependency/blast-radius ordering of attached unresolved deltas in the current scope;
+- **Planning Concerns / Q/R/P** — material owner-attached Questions/Risks/Problems using the shared Concern model; active projection keeps current unresolved/residual state while material retained trace may preserve answers/Decisions without turning history into an active queue;
+- **Concern Group** — related Q/R/P sharing one resolution surface; members keep independent Type/Priority/Concern Category/Status;
+- **Review Order** — derived from Concern Priority + dependency/blocking/blast-radius/timing over attached concerns in the current scope; it is not the Concern Priority itself;
 - **Realization / Evolution** — dependencies, paths, files, verification and architecture evolution when useful.
 
 `Review Order` never selects an unrelated FIND as the next planning unit. Natural-language chat instructions may redirect scope/depth/lens without creating a new command or persistent attention-state entity.
+
+Canonical shared concern semantics: `documentation/planning-concerns-and-decisions-model.md`. Physical concern/register placement is contextual: the selected workflow/profile may keep an Area Concern Register inline in one planning file or split it when useful; no global `concerns.md` topology is required.

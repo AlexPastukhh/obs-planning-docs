@@ -35,8 +35,8 @@ Files Checked
 Material Documentation Findings
 → real contradiction / stale route / ambiguous owner / missing required owner
 
-Questions / Risks / Problems
-→ only unresolved/adverse findings; do not manufacture issues
+Planning Concerns / Q/R/P
+→ use the shared Concern model for material active/residual findings; group one-resolution-surface concerns; do not manufacture issues or invent user-owned preferences
 
 Not Read / Not Verified
 → material evidence gaps
@@ -54,7 +54,7 @@ Ordinary planning commands do not inherit this reporting contract merely because
 3. keep semantic authority in those owners and make the prompt explicitly defer to them;
 4. include only stable conceptual guidance needed to navigate/read correctly;
 5. choose output/evidence requirements proportionally to the profile;
-6. for bootstrap/audit prompts, require checked-source/depth reporting and material contradictions/QRP when useful;
+6. for bootstrap/audit prompts, require checked-source/depth reporting and material Planning Concerns/Q/R/P when useful;
 7. avoid frozen exhaustive path/UC/Scenario lists when current repository routing can resolve them;
 8. validate the helper-library document and exact insertion text;
 9. check the active prompt library for byte-identical or materially duplicate records under different IDs/titles; byte-identical active prompt bodies must have one current record, while materially overlapping but non-identical prompts may coexist only when their distinct interaction purpose is explicit;

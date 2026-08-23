@@ -223,11 +223,13 @@ Detailed owner state follows:
 ```text
 semantic body
 → Current Decisions
-→ Q/R/P relative to Current Draft Plan
+→ Area Concern Register when material
+→ Planning Concerns / Q/R/P + Concern Groups relative to Current Draft Plan
+→ retained Concern/Decision trace when material
 → Potential Better Routes when material
 ```
 
-Use scoped Idea work only when a real answer-seeking question deserves it. Link relevant Requirements rather than copying or turning them into flow steps mechanically.
+Use the shared `../planning-concerns-and-decisions-model.md` for generic concern/group/priority/category/AI-comment/Decision-retention semantics. Use scoped Idea work only when a real answer-seeking question deserves it. Link relevant Requirements rather than copying or turning them into flow steps mechanically.
 
 ## Variant Work
 

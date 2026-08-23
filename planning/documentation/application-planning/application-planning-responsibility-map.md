@@ -26,7 +26,8 @@ Status: active reusable nested responsibility map
 | Domain draft shape | `templates/DOMAIN-DRAFT-TEMPLATE.md` |
 | Slice Strategy shape | `templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md` |
 | Implementation Slice draft shape | `templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md` |
-| Generic Idea semantics/review | parent reusable Idea owners |
+| Generic Planning Concern / Q/R/P / Concern Group / Decision trace semantics | parent `../planning-concerns-and-decisions-model.md` |
+| Generic Idea semantics/review | parent reusable Idea owners; Ideas reference shared Concerns rather than owning generic Q/R/P lifecycle |
 | Proportional Mini/Modular/Full SDS planning profile family | `../profiles/sds-planning-profiles.md` |
 | Rich Full SDS Scenario/DATA/Behavior/Domain/Slice project route | `../profiles/scenario-domain-slice-docs-profile.md` |
 | Detailed planning worked example | `examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md` |

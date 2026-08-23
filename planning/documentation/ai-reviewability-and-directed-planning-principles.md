@@ -34,6 +34,8 @@ Review Priority expresses the cost/blast radius of being wrong. It is not confid
 - **Normal** — material but mainly local; correction should not substantially change the wider plan.
 - **Low** — local, cheaply reversible detail with little downstream effect.
 
+Planning Concern Priority reuses this exact impact semantics as the compact aliases `P0 / Critical`, `P1 / High`, `P2 / Normal`, `P3 / Low`. Do not create another concern-specific impact scale. Concern Priority is distinct from Concern Category, confidence, status and derived Review Order. See `planning-concerns-and-decisions-model.md`.
+
 Use current Requirements/Constraints and evidence-backed Change Pressure/Change Axes when they materially affect impact. Do not raise priority for speculative future possibilities alone.
 
 ## 4. Directed Planning
@@ -155,10 +157,10 @@ Before material planning review, establish the semantic owner first:
 Need / situation
 → UC / Scenario / semantic owner
 → Current → Target meaning
-→ attached Q/R/P only if a material unresolved delta remains
+→ active/residual Planning Concern/Q/R/P only if material; retain material Decision trace separately when useful
 ```
 
-`Review Order` is a derived lens over attached deltas in the current semantic scope. Key Points are a conclusion-first projection of existing meaning, not a separate UC. Ordinary chat text may request depth/lens/redirection without persistent Focus state.
+`Review Order` is a derived lens over attached concerns in the current semantic scope and uses Concern Priority + dependency/blocking/blast-radius/timing; Priority itself reuses the Review Priority semantics above. Key Points are a conclusion-first projection of existing meaning, not a separate UC. Ordinary chat text may request depth/lens/redirection without persistent Focus state.
 
 ## 12. Review Audit Boundary
 

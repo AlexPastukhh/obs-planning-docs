@@ -8,6 +8,7 @@ Use with:
 ```text
 planning/documentation/idea-planning-principles-and-terminology.md
 planning/documentation/idea-review-and-planning-workflow.md
+planning/documentation/planning-concerns-and-decisions-model.md
 planning/documentation/documentation-responsibility-map.md
 selected current semantic/documentation/application owners affected by the diff
 ```
@@ -90,7 +91,7 @@ Current Plan
 
 `Current Plan` is an output baseline, not an application approval state and not proof that selected corrections have already been applied.
 
-A confirmed defect with one clearly selected correction belongs in `Confirmed Findings` + `Current Conclusions`. It does **not** stay in aggregate `Questions / Risks / Problems` merely because the correction has not yet been applied.
+A confirmed defect with one clearly selected correction belongs in `Confirmed Findings` + `Current Conclusions`. It does **not** stay in active `Planning Concerns / Q/R/P` merely because the correction has not yet been applied; material retained Decision/Concern trace is separate.
 
 Material local findings propagate only as far as needed:
 
@@ -98,7 +99,7 @@ Material local findings propagate only as far as needed:
 changed line/file finding
 → affected owner / Use Case / Scenario
 → Current Conclusion / selected correction when resolved
-→ Questions / Risks / Problems only when unresolved/adverse relative to Current Plan
+→ shared Planning Concern/Concern Group state only when active/residual relative to Current Plan; retain material answer/Decision trace when useful
 → whole-change conclusion when broader
 ```
 
@@ -119,42 +120,42 @@ When alternatives are material:
 Idea Variants
 → Current Selected Variant when one route is justified/selected
 → selected route becomes Current Plan
-→ only unresolved alternatives remain explicit in Questions / Risks / Problems
+→ only still-active concerns/alternatives remain in active Q/R/P; selected material decisions may retain trace
 ```
 
-## 6. Aggregate Questions / Risks / Problems
+## 6. Planning Concerns / Q/R/P
 
-Use the shared aggregate contract from the generic Idea methodology.
+Use [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md). ReviewDiff does not own a separate concern lifecycle.
 
-Every real unit states at minimum:
+Valid active concerns include:
 
 ```text
-Current Plan
-Finding
-Relation / Impact On Current Plan
+evidence needed before a selected correction can be judged safe
+material user/product choice still unresolved
+residual Risk remaining under the selected correction plan
+unresolved owner conflict
+material Problem intentionally deferred / accepted limitation
 ```
 
-Add Related Idea IDs when applicable. For Idea-related Q/R/P, also apply the shared bidirectional discoverability rule: one Related Idea gets the full same-ID Idea-local mirror; several Related Ideas get lightweight same-ID references inside every affected Idea while the aggregate keeps the one full cross-Idea body. Add Needed Resolution / Treatment, fallback and Blocking only when useful.
+When several findings are substantially one resolution surface, group them into one Concern Group rather than listing Question/Risk/Problem as independent concerns. Preserve each member's Type/Priority/Concern Category/Status.
 
-Examples of valid aggregate content:
+For material AI-produced concerns/groups include a useful AI Comment: distinguish checked implications/options from user-owned unknowns; recommend only when evidence is sufficient; do not mark a Decision selected until it is actually selected.
+
+Not active Q/R/P:
 
 ```text
-- evidence needed before a selected correction can be judged safe;
-- a material user/product choice still unresolved;
-- a residual risk that remains under the current correction plan;
-- an unresolved conflict between current owners.
+confirmation that a selected correction is correct
+mechanical fix already selected into Current Conclusions
+answered Question with no residual current concern
+resolved Problem / eliminated Risk
+reasoning note with no current adverse effect
 ```
 
-Not valid here:
+However material answer/rationale/Decision relation may remain in retained trace, and a residual Risk/Problem remains active even after the related Question is answered.
 
-```text
-- confirmation that a selected correction is correct;
-- a mechanical fix already selected into Current Conclusions;
-- an ordinary ReviewDiff boundary;
-- reasoning notes with no unresolved/adverse effect on Current Plan.
-```
+Related Ideas reference the canonical Concern/Group ID/location. Do not recreate the old full same-ID Idea mirror.
 
-If empty: `No material unresolved issues identified.`
+If the current review area maintains durable/distributed concerns, update its Area Concern Register status/storage/Decision refs consistently. If empty: `No material unresolved issues identified.`
 
 ## 7. Potential Simplifications / Better Routes
 
@@ -202,12 +203,13 @@ Checked Scope / Owners
 Confirmed Findings
 Corrective Ideas / Idea Variants when material
 Current Conclusions / Current Plan
-Questions / Risks / Problems
+Planning Concerns / Q/R/P + Concern Groups when material
+Retained Decision/Concern trace when material
 Potential Simplifications / Better Routes when material
 ReviewDiff Verdict
 ```
 
-Material Idea-derived aggregate findings reference their Idea IDs and remain discoverable from each affected Idea through the shared same-Finding-ID mirror/reference rule.
+Material Idea-derived concerns keep Related Idea provenance when useful, but one Concern/Group has one detailed storage location and affected Ideas reference its ID/location.
 
 Allowed whole-diff verdicts:
 
@@ -226,7 +228,7 @@ APPROVABLE
 
 NEEDS CORRECTION
   → a material confirmed correction is still absent from the reviewed transition,
-    even when Questions / Risks / Problems is empty because the correction route is already selected;
+    even when active Q/R/P is empty because the correction route is already selected;
 
 BLOCKED BY MATERIAL DECISION
   → a material choice/evidence/authority gap prevents safe selection of the correction/current route.
@@ -242,7 +244,7 @@ BLOCKED BY MATERIAL DECISION
 - Do not rewrite historical provenance just to remove old wording.
 - Do not silently promote implementation details into accepted architecture.
 - Do not approve a diff while a material unapplied correction or unresolved correctness/ownership issue remains hidden.
-- Do not use aggregate sections as a log of selected corrections or completed reasoning.
+- Do not use active Q/R/P as a log of selected corrections or completed reasoning; preserve only material retained Concern/Decision trace under the shared model.
 
 ## 10. Scope-Log Handoff When Logging Is Active
 

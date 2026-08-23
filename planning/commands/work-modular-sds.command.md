@@ -36,7 +36,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
     "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
     "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
-    "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Q/R/P stays attached unresolved/adverse delta, never the planning root.",
+    "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Planning Concerns/Q/R/P remain a secondary owner-attached active/residual lens with shared grouping/priority/category/AI-comment/Decision-retention semantics; never the planning root.",
     "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
     "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
     "Do not edit repository files, create an archive, commit or push.",

@@ -5,6 +5,7 @@ Scope: plan/review one material Architecture Decision as a testable current hypo
 
 Recommended shape: [`templates/ARCHITECTURE-DECISION-TEMPLATE.md`](templates/ARCHITECTURE-DECISION-TEMPLATE.md)
 Generic Idea/Variant semantics: [`../idea-planning-principles-and-terminology.md`](../idea-planning-principles-and-terminology.md)
+Shared Planning Concern / generic Decision trace semantics: [`../planning-concerns-and-decisions-model.md`](../planning-concerns-and-decisions-model.md)
 
 ## 1. Establish Trigger And Current Baseline
 
@@ -88,6 +89,23 @@ Revisit Trigger when useful
 ```
 
 Selected meaning belongs in the narrowest real semantic/architecture owner; the decision record must not become a competing definition of Domain/Scenario/Requirement truth.
+
+
+## Concern / Decision Trace — When Material
+
+Architecture choice remains owned here or in the narrower semantic owner according to Decision Scope. Use the shared Planning Concern model for supporting Q/R/P:
+
+```text
+Architecture Concern / Concern Group
+→ Priority + Concern Category + Status
+→ AI Comment / optional Recommendation
+→ selected Architecture Decision only when actually chosen
+→ Addresses Concerns / Introduced-Exposed Concerns when useful
+→ residual Risk/Problem remains active
+→ material rationale/Decision trace retained when useful
+```
+
+Do not infer product/user priority or risk tolerance merely because one architecture route is technically cleaner. If user-owned input is missing, keep it explicit in AI Comment.
 
 ## 7. Exit Criteria
 

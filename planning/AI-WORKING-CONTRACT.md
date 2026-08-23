@@ -9,6 +9,8 @@ Before material work, resolve the applicable Direction and semantic entry (Works
 
 For material planning/development answers also follow `documentation/ai-reviewability-and-directed-planning-principles.md`.
 
+For material Planning Concerns also follow `documentation/planning-concerns-and-decisions-model.md`. AI should provide a useful `AI Comment` when material, but must not silently invent user-owned Needs/preferences/feelings/business priority/risk tolerance in order to close a concern. `Recommendation` is optional and evidence-bound; `Decision` exists only after the choice is actually selected.
+
 ## Hard Planning Root Invariant
 
 Planning never starts from a FIND/Q/R/P queue. The semantic root is:
@@ -22,7 +24,7 @@ Real-Life Situation / Need / Desired Result
 → realization / verification when useful
 ```
 
-Q/R/P is a secondary unresolved-delta lens attached to a concrete semantic owner/current planned state. `Review Order` is a derived lens over those attached deltas, not a task queue. If no material unresolved delta exists, continue the semantic UC/Scenario graph. Ordinary chat text controls scope/depth/lens; no persistent Focus/H0-H1-H2 control ontology is required.
+Planning Concerns/Q/R/P are a secondary lens attached to a concrete semantic owner/current planned state. Active Q/R/P keeps current unresolved/residual concerns; material retained concern/Decision trace may preserve answers/rationale after closure without making closed history an active queue. `Concern Group` groups Q/R/P that share one resolution surface. `Review Order` is derived from priority/dependency/blast-radius/timing, not a task queue. If no material active concern exists, continue the semantic UC/Scenario graph. Ordinary chat text controls scope/depth/lens; no persistent Focus/H0-H1-H2 control ontology is required. Canonical semantics: `documentation/planning-concerns-and-decisions-model.md`.
 
 ## Documentation Work
 

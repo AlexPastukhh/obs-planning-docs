@@ -22,12 +22,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Ask target/scope only when active context does not make it clear.",
   "traversalReadMode": "Reuse/targeted/full by update risk.",
   "ownerFiles": [
+    "planning/documentation/planning-concerns-and-decisions-model.md",
     "planning/documentation/idea-planning-principles-and-terminology.md",
     "planning/documentation/idea-review-and-planning-workflow.md",
     "planning/documentation/file-update-overview-workflow.md",
     "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
   ],
-  "expectedOutput": "Idea-aware File Update Plan from one Current Selected Meaning: Current Conclusions, mandatory Current-Plan-relative Questions / Risks / Problems, unselected Potential Simplifications / Better Routes when material, then ordered concrete steps/files/checks/next action.",
+  "expectedOutput": "Idea-aware File Update Plan from one Current Selected Meaning: Current Conclusions, active Planning Concerns/Q/R/P + Concern Groups/Area Register/retained trace when material, unselected Potential Simplifications / Better Routes when material, then ordered concrete steps/files/checks/next action.",
   "permissionMode": "plan-only",
   "keyReminders": [
     "Plan file/docs/code/archive update only.",
@@ -36,13 +37,16 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "When alternatives are material, keep them as Idea Variants and identify one Current Selected Variant before concrete file steps.",
     "Possible Idea Refinements are not file edits and do not become selected changes automatically.",
     "Establish the one Current Plan from Current Selected Meaning before aggregate findings.",
-    "Every real Questions / Risks / Problems unit states Current Plan, the unresolved/adverse finding, and its relation or impact on that plan; reference Related Idea IDs when applicable.",
+    "For every material active Planning Concern/Group, use the shared owner/current-plan attachment and Priority/Concern Category/Status/grouping/AI Comment lifecycle; Related Ideas reference the canonical Concern/Group location rather than duplicate bodies.",
     "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and states Current Plan plus Change To Current Plan; accepted simplifications belong in Current Conclusions/Update Steps instead.",
     "Do not use aggregate sections to confirm selected routes, repeat ordinary boundaries, or preserve completed reasoning.",
     "For unresolved important choices, keep current selected meaning explicit and surface alternatives/questions separately.",
     "End with `План файл-обновление` in planned mode.",
     "Do not edit files.",
-    "Do not create archive unless separately requested."
+    "Do not create archive unless separately requested.",
+    "Use the shared Planning Concern/Decision owner rather than a File-Update-specific Q/R/P ontology. Group concerns sharing one resolution surface and keep Priority separate from Concern Category/status.",
+    "AI Comment may explain/recommend from sufficient evidence but must not invent user-owned Need/preferences/risk tolerance. Decision exists only after actual selection.",
+    "One logical Concern/Group has one detailed storage location; Related Ideas/other files reference its ID/location. Resolved trivial items leave active Q/R/P while material retained trace/residual Risk/Problem remains when useful."
   ],
   "userTarget": "<what update/archive should be planned>",
   "palette": true,

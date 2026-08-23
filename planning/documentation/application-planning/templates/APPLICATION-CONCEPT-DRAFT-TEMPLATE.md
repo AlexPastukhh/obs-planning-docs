@@ -148,11 +148,11 @@ interaction/workflow prototype
 Do not create Prototype work merely because the methodology supports it.
 
 
-## Questions / Risks / Problems
+## Planning Concerns / Q/R/P — When Material
 
-Use the shared Current-Plan-relative Idea/Q/R/P contract when material. If a finding has Related Idea(s), apply the shared Idea↔Q/R/P mirror/reference rule.
+Use `../../planning-concerns-and-decisions-model.md`. Group related Q/R/P when they share one resolution surface; keep member Priority/Concern Category/Status. AI Comment may recommend only when evidence is sufficient and must not invent user-owned Needs/preferences. Related Ideas reference the one canonical Concern/Group storage location instead of mirroring full bodies.
 
-If none: `No material unresolved issues identified.`
+If material concerns are durable/distributed, keep/update the Area Concern Register chosen by the current profile. If none: `No material unresolved issues identified.`
 
 ## Potential Simplifications / Better Routes — When Material
 

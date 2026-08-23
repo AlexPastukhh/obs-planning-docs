@@ -316,3 +316,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-048`
 **Reason:** Planning Helper `0.31.0` source/build/tests/docs/generated artifact implement GitHub-backed Direction/Command/Use-Case recovery, local durable order, Hard Reload, wider/resizable UI and current direct command projections as part of the same Full SDS/Architecture correction; full review and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-017 — Rebuild Helper projections for shared Planning Concerns model
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-050`
+**Reason:** Planning Helper generated command/use-case seeds are rebuilt from updated current command definitions and UC registries for the shared Concern/Q/R/P/Decision transition; Helper runtime behavior is unchanged and full semantic rationale/APPLIED state remain in the reusable-documentation canonical log.

@@ -18,7 +18,10 @@ A small bounded change may stay in one file:
 
 ## Current Plan Snapshot
 ## Shared / Cross-Cutting Ideas / Provenance — When material
-## Review Order Lens — When material attached Q/R/P exists
+## Area Concern Register — When material
+<Inline or link current area register: Concern/Group ID, owner, Stored At, Priority, Concern Category, Status, Decision refs/residual state.>
+
+## Review Order Lens — When material active concerns exist
 
 # Workspace UC Groups
 
@@ -31,10 +34,18 @@ A small bounded change may stay in one file:
 ### Planned Change — High Level
 ### Related Ideas / Provenance
 
-### Attached Questions / Risks / Problems — When material
+### Attached Planning Concerns / Q/R/P — When material
+**Concern / Group ID:** ...
+**Type:** Question / Risk / Problem
+**Priority:** P0/Critical | P1/High | P2/Normal | P3/Low
+**Concern Category:** ...
+**Status:** ...
 **Origin / Provenance:** ...
 **Current / Target meaning affected:** ...
-**Unresolved/adverse delta:** ...
+**Finding / Shared Resolution Surface:** ...
+**AI Comment:** <known/options/justified recommendation/user-owned unknown/minimum useful question>
+**Recommendation / Decision refs / Residual state:** <when material>
+**Stored At:** <when routed elsewhere>
 
 ### Planning State
 - Step 1 — Use Case: <reviewed / partial / not selected>
@@ -121,8 +132,10 @@ Track completion/current-next position only when useful; do not create history i
 - Keep shared Ideas once; affected UCs reference local impact.
 - Stabilize upstream meaning before dependent downstream planning; later-step insight may be Carry-Forward context but not silent upstream authority.
 - Keep Planning State explicit enough to distinguish reviewed upstream meaning from partial/not-selected downstream depth; Execution Order does not replace this state.
-- Keep Q/R/P as owner-attached unresolved/adverse current-plan delta only; no concrete owner/current planned state means no active FIND.
-- Review Order is a derived lens over attached deltas, never the primary planning queue.
+- Use the shared Planning Concern model: active/residual Q/R/P stays owner-attached; one-resolution-surface concerns are grouped; material retained answer/Decision trace may survive closure; no concrete owner/current planned state means no active concern.
+- Keep Priority and Concern Category distinct; AI Comment does not invent user-owned Need/preferences/risk tolerance; Recommendation is optional and Decision requires actual selection.
+- One logical Concern/Group has one detailed storage location; the Area Concern Register preserves addressability.
+- Review Order is derived from concern priority + dependency/blocking/blast-radius/timing, never the primary planning queue.
 - Current State summarizes/links current owners; Target changed/new owner meaning must be complete enough for implementation not to invent decisions.
 - Step 3 traces expected paths and Architecture Lens before exact files when material.
 - Review cross-Slice overlap/shared coordination tax.

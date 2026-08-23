@@ -12,4 +12,5 @@ Status: review draft
 ## Evidence-State Findings
 ## Duplicated / Wrong-Layer Coverage
 ## Corrections / Handoffs
-## Questions / Risks / Problems
+## Planning Concerns / Q/R/P
+<Use the shared `../../planning-concerns-and-decisions-model.md`: owner/current-plan attachment, grouping by shared resolution surface, Priority + Concern Category + Status when material, AI Comment without inventing user/product preference, optional Recommendation, selected Decision refs, residual/retained lifecycle and Area Concern Register when useful.>

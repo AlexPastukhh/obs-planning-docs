@@ -81,10 +81,13 @@ Architecture/Slice planning recommends implementation sequence; it does not rede
 <Selected decomposition/order and why.>
 
 ## Current Decisions
-<Use the shared detailed-planning Current Decisions contract when material.>
+<Use the shared Planning Concern/Decision trace contract when material.>
 
-## Questions / Risks / Problems
-<Each real unit includes Current Draft Plan + Finding + Relation / Impact On Current Draft Plan. Link Related Idea(s) when applicable.>
+## Area Concern Register — When Material
+<Inline/link the current strategy-area register when durable concerns exist.>
+
+## Planning Concerns / Q/R/P
+<Use the shared Concern model. Keep product-priority/user-owned unknowns explicit; AI may recommend technical implementation sequence only from sufficient architecture/dependency evidence. Group related Q/R/P by shared resolution surface and keep member Priority/Concern Category/Status.>
 
 If none: `No material unresolved issues identified.`
 

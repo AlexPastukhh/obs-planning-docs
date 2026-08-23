@@ -22,6 +22,7 @@ planning-docs-architecture-principles.md
 documentation-responsibility-map.md
 documentation-principles-read-workflow.md
 ai-reviewability-and-directed-planning-principles.md
+planning-concerns-and-decisions-model.md
 documentation-responsibility-zone-review-workflow.md
 direction-registry.md
 use-case-registry.md
@@ -47,7 +48,7 @@ testing-planning/
 workspace-planning/
 ```
 
-Shared Idea owners remain at this reusable root. Solution/application planning lives under `application-planning/`. Reusable Workspace capability planning lives under `workspace-planning/`; Universal Workspace Architecture Planning lives under `architecture-planning/`.
+Shared Planning Concern/Q/R/P/Concern-Group/Decision-trace semantics live at this reusable root in `planning-concerns-and-decisions-model.md`. Shared Idea owners remain here for Idea/Variant/evaluation semantics and consume that concern model. Solution/application planning lives under `application-planning/`. Reusable Workspace capability planning lives under `workspace-planning/`; Universal Workspace Architecture Planning lives under `architecture-planning/`.
 
 ReviewDiff semantic correctness review is owned by `review-diff-review-workflow.md`; `review-diff-file-workflow.md` is only an optional legacy transfer/capture route.
 
@@ -119,6 +120,7 @@ Selected reusable owners added by the current planning contract:
 
 - `progressive-plan-refinement-workflow.md` — `UC-REPO-REFINE-CURRENT-PLAN`;
 - `review-audit-workflow.md` — `UC-REPO-AUDIT-REVIEW`;
+- `planning-concerns-and-decisions-model.md` — shared Planning Concern/Q/R/P/Concern Group/Decision trace semantics used by current owners;
 - `planning-findings-review-workflow.md` — `UC-REPO-REVIEW-PLANNING-FINDINGS`;
 - `current-semantic-consistency-review-workflow.md` — `UC-DOC-REVIEW-CURRENT-CONSISTENCY`.
 

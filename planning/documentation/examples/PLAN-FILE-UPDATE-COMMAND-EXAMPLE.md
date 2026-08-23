@@ -64,7 +64,7 @@ examples/
 → index both as examples only
 ```
 
-### Questions / Risks / Problems
+### Planning Concerns / Q/R/P
 
 No material unresolved issues identified.
 
@@ -105,8 +105,8 @@ Logging is already active, so the implementation package must accumulate the mat
 
 #### Actions
 
-1. Update this File Update example to demonstrate command metadata, selected variant, Current Plan-relative aggregates and registered scope/log planning.
-2. Add a ReviewDiff example where a selected unapplied correction yields `NEEDS CORRECTION` even with empty Q/R/P.
+1. Update this File Update example to demonstrate command metadata, selected variant, shared Planning Concern/Decision model and registered scope/log planning.
+2. Add a ReviewDiff example where a selected unapplied correction yields `NEEDS CORRECTION` even with an empty active concern projection.
 3. In the same ReviewDiff example, show the follow-up `APPROVABLE` case and the rule that approval-only results do not create log events.
 4. Link both examples from their owner workflows and the examples index.
 
@@ -146,7 +146,7 @@ Logging is already active, so the implementation package must accumulate the mat
 ### Checks / exit criteria
 
 1. Every new/changed example points back to canonical owners and does not become semantic authority.
-2. ReviewDiff example distinguishes selected correction from unresolved Q/R/P.
+2. ReviewDiff example distinguishes selected correction from active/residual Planning Concerns.
 3. File Update example includes command metadata, one selected route, scope/log planning, boundaries and checks.
 4. No broken Markdown links.
 5. Existing repository tests/verify remain green.

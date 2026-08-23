@@ -103,9 +103,9 @@ Prototype artifacts do not remain a hidden second authority after selected meani
 <Only if another evidence gap genuinely warrants it.>
 
 ## Current Decisions
-<Selected evidence-backed conclusions.>
+<Selected evidence-backed conclusions; use shared Decision trace fields when material and integrate selected semantic meaning into its real owner.>
 
-## Questions / Risks / Problems
-<Use Current Plan + Finding + Relation / Impact. If none: `No material unresolved issues identified.`>
+## Planning Concerns / Q/R/P
+<Use the shared Concern model. An experiment may answer a Question while leaving a residual Risk/Problem active; retain material answer/Decision trace when useful. AI Comment must distinguish evidence from user-owned preference. If none: `No material unresolved issues identified.`>
 
 This template does not authorize repository edits, archive creation, commit or push.

@@ -75,7 +75,7 @@ reviewed Step-2 meaning to selected depth
 reviewed Step-3 realization/file surface when selected
 Target semantic-owner meaning
 Current → Target Transition
-remaining Current-Plan-relative Q/R/P only
+current Area Concern Register + active/residual Planning Concerns/Q/R/P + retained trace when material
 ```
 
 This workflow is planning only; repository mutation follows a separately authorized route.
@@ -84,4 +84,4 @@ This workflow is planning only; repository mutation follows a separately authori
 
 Start from Real-Life Basis + the candidate/current useful result. Reuse the existing UC when it already owns the Need/result. A separate UC is justified when its result is independently useful/reusable, not merely because a check repeats.
 
-Only after the semantic owner is grounded may a material unresolved/adverse delta become attached Q/R/P. Step 3 identifies Target Dependencies before selecting exact Linked Notes/file realization when material.
+Only after the semantic owner is grounded may a material Planning Concern become active under the shared Concern model; group related Q/R/P by shared resolution surface, preserve residual state/retained trace, and do not invent user-owned preferences in AI Comment. Step 3 identifies Target Dependencies before selecting exact Linked Notes/file realization when material.

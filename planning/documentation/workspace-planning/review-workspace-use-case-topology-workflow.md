@@ -64,7 +64,7 @@ Return:
 
 ```text
 Current Plan Snapshot
-Current-Plan-relative Q/R/P
+Current Planning Concerns / Q/R/P + Concern Groups
 compact cross-cutting Ideas when present
 one full block per affected UC
 Resolved UC Graph

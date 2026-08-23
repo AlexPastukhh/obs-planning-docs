@@ -1,7 +1,7 @@
 # Practical Example — Accumulating UCDS `собери идеи`
 
 Status: current demonstration only
-Scope: compact example of the current `собери идеи` output contract using Key Points, Review Priority, an accumulating current plan and Mini UCDS. Canonical rules remain in the Idea, Workspace Planning and AI reviewability owners.
+Scope: compact example of the current `собери идеи` output contract using Key Points, Review Priority, an accumulating current plan and Mini UCDS. Canonical rules remain in the Idea, shared Planning Concern/Decision, Workspace Planning and AI reviewability owners.
 
 ## Example Source
 
@@ -33,7 +33,7 @@ UC-DOC-REVIEW-EXAMPLES
 → target change is a narrow example-coverage refinement
 ```
 
-## Questions / Risks / Problems
+## Planning Concerns / Q/R/P
 
 No material unresolved issues identified.
 

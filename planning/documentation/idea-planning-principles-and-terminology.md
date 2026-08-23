@@ -2,13 +2,13 @@
 
 Status: active reusable cross-cutting methodology owner
 Doc version: v1.2.0-useful-result-integration
-Scope: canonical reusable meanings and stable invariants for Idea review and deeper Idea planning across conversation review, solution/workflow planning, application planning, file-update planning and ReviewDiff semantic review.
+Scope: canonical reusable meanings and stable invariants for Idea review and deeper Idea planning across conversation review, solution/workflow planning, application planning, file-update planning and ReviewDiff semantic review. Generic Planning Concern/Q/R/P/Concern-Group/Decision lifecycle is owned separately by `planning-concerns-and-decisions-model.md`.
 
 ## 1. Purpose And Authority
 
 An `Idea` is one possible answer to a Problem, Question, Need or other material answer-seeking concern.
 
-This file owns shared Idea meanings. Repeated behavior is owned by [`idea-review-and-planning-workflow.md`](idea-review-and-planning-workflow.md); recommended shape by [`IDEA-REVIEW-TEMPLATE.md`](IDEA-REVIEW-TEMPLATE.md).
+This file owns shared Idea meanings. Repeated behavior is owned by [`idea-review-and-planning-workflow.md`](idea-review-and-planning-workflow.md); recommended shape by [`IDEA-REVIEW-TEMPLATE.md`](IDEA-REVIEW-TEMPLATE.md). Shared Planning Concern/Q/R/P/Concern Group/Decision trace semantics are owned by [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md).
 
 Use one Idea concept at different scopes. Do not create `Scenario Idea`, `Workflow-Step Idea`, `File-Update Idea`, `Review Idea` or `Deep Idea` entity types merely because the surrounding owner differs.
 
@@ -172,55 +172,39 @@ This is impact routing/integration, not a new Idea entity type. A cross-cutting 
 
 An `Idea Group` is lightweight navigation/integration grouping for related Ideas. It may contain Ideas, Group Review and Group Conclusion. It is not automatically a new canonical semantic owner.
 
-## 11. Material Finding Propagation
+## 11. Idea ↔ Planning Concern Relation
+
+Idea review may expose or address material Planning Concerns, but Idea methodology does not own generic Q/R/P lifecycle. Use [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md).
 
 ```text
 Idea-local finding
-→ Group Review when group-relevant
 → Current Conclusion / Current Selected Variant when resolved
-→ aggregate Questions / Risks / Problems only while materially unresolved/adverse
+→ Planning Concern / Concern Group only while materially active/residual
+→ retained Concern/Decision trace when material after closure
 → Potential Simplifications / Better Routes only while a better route remains unselected
 → Whole Review when broader
 ```
 
-Promote only material findings. Detailed reasoning remains local; aggregate findings/simplifications reference Related Idea IDs when applicable.
+An Idea may be provenance for a Concern, one candidate answer to it, or be addressed/affected by a Decision. `Related Idea` is therefore an optional relation, not Q/R/P ownership.
 
-### Idea ↔ Q/R/P Discoverability
+### One Detailed Concern Storage Location
 
-Every material `Question / Risk / Problem` that has Related Idea(s) must also be discoverable from every affected Idea.
-
-```text
-exactly one Related Idea
-→ keep one logical finding with one stable Finding ID
-→ keep the aggregate Q/R/P representation for Current-Plan integration
-→ mirror the full same-ID Q/R/P inside that one Idea
-
-several Related Ideas
-→ keep one full cross-Idea aggregate Q/R/P
-→ list every Related Idea on the aggregate finding
-→ add a lightweight same-ID reference inside every affected Idea
-→ each reference identifies the complete Related-Idea set
-→ do not copy the full cross-Idea finding into every Idea
-```
-
-The Idea-local mirror/reference is a projection of the same logical finding, not an independent semantic owner and not a second finding. Do not assign a new ID merely because the finding is visible in two places.
-
-Lifecycle must remain synchronized:
+Do not maintain a full same-ID Q/R/P mirror inside an Idea merely for discoverability.
 
 ```text
-finding resolved
-→ integrate the selected answer into Current Conclusion / Current Selected Variant / Current Plan
-→ remove the aggregate Q/R/P
-→ remove every Idea-local mirror/reference
+one logical Concern / Concern Group
+→ one primary detailed storage location selected by current context/profile/workflow
 
-one Related Idea becomes several
-→ replace the former full Idea-local mirror with cross-Idea references
+Related Idea
+→ reference Concern/Group ID + location
 
-several Related Ideas become one
-→ keep the remaining Idea's full same-ID mirror
+If that Idea itself is the selected concern storage owner
+→ full concern body may live there
 ```
 
-This rule is for Q/R/P discoverability. Ordinary Idea reasoning remains local, and aggregate sections remain delta to Current Plan.
+When several Ideas relate to one concern/group, every affected Idea may reference the same ID/location without copying the full body. Resolution updates the canonical Concern/Group/Area Register once rather than synchronizing duplicate mirrors.
+
+Idea-specific reasoning remains local. Concern Priority, Concern Category, Status, AI Comment, Recommendation, Decision relation, residual state and retention follow the shared Concern owner.
 
 ## 12. Current Plan Baseline
 
@@ -246,56 +230,17 @@ Current Plan:
   no change selected yet; preserve current state
 ```
 
-## 13. Aggregate Questions / Risks / Problems
+## 13. Questions / Risks / Problems In Idea Outputs
 
-For outputs that collect/review Ideas and for File Update Plans, `Questions / Risks / Problems` is mandatory as an aggregate section. ReviewDiff semantic review uses the same aggregate contract.
+For outputs that collect/review Ideas and for File Update Plans, keep a visible current concern surface when material, but consume the shared [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md) rather than maintaining an Idea-owned aggregate ontology.
 
-The section is **delta to Current Plan**, not a summary of completed reasoning.
+The active projection remains delta to Current Plan. It may contain single concerns or Concern Groups and should make Priority / Concern Category / Status visible when material. AI Comment is normally useful for material AI-produced concerns, while Recommendation remains optional and Decision exists only after actual selection.
 
-Each material unit states at minimum:
+Resolved trivial items leave active Q/R/P. Material answers/rationale/Decision relations may remain in retained trace, and residual Risks/Problems remain active according to the shared lifecycle.
 
-```text
-Current Plan
-Finding
-Relation / Impact On Current Plan
-```
+Physical placement is contextual: an Area Concern Register may be a section in the same plan or a separate area-root file; detailed concerns live once next to the appropriate owner and Ideas reference them when needed.
 
-Add Related Idea IDs when the finding came from Idea review. Add Needed Resolution / Treatment, Fallback and Blocking only when meaningful.
-
-Allowed content:
-
-```text
-Question
-  → a material choice/evidence gap still unresolved relative to Current Plan;
-
-Risk
-  → a material residual risk that still exists under Current Plan;
-
-Problem
-  → a material unresolved defect/conflict that still affects Current Plan.
-```
-
-Do not use the section to confirm a route that is already selected, explain why an accepted decision was correct, or restate an ordinary boundary/Update Step.
-
-Lifecycle:
-
-```text
-resolved Question
-→ integrate answer into Current Conclusion / Current Plan
-→ remove from aggregate section;
-
-fixed/resolved Problem
-→ integrate correction
-→ remove from aggregate section;
-
-Risk fully eliminated
-→ remove;
-
-Risk still materially residual
-→ may remain, but must state its impact/treatment relative to Current Plan.
-```
-
-It may state `No material unresolved issues identified.` when genuinely empty. Do not invent content to avoid an empty result.
+If there is no material active concern, `No material unresolved issues identified.` remains a valid compact active-projection statement.
 
 ## 14. Potential Simplifications / Better Routes
 
@@ -356,9 +301,9 @@ A source may also contain Existing Reality/checked facts, Constraints, Decisions
 - Do not treat a local win as proof of whole-plan quality.
 - Do not turn historical source records into Ideas mechanically.
 - Do not use aggregate sections as a reasoning transcript or confirmation log.
-- Do not leave an accepted alternative in Questions / Risks / Problems or Potential Simplifications / Better Routes.
+- Do not leave an accepted alternative in active Planning Concerns / Q/R/P or Potential Simplifications / Better Routes; retain only material trace/residual state under the shared Concern owner.
 - Do not call a fallback the Current Plan unless it was actually selected.
-- Do not leave an Idea-related Q/R/P discoverable only from the aggregate; apply the single-Idea mirror / cross-Idea reference rule.
+- Do not duplicate full Concern/Q/R/P bodies between Idea and aggregate/owner files; use one detailed storage location plus Concern/Group references and the Area Concern Register when material.
 ```
 
 ## Owner Attachment And Q/R/P Admission Gate

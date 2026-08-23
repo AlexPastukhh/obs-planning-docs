@@ -76,7 +76,28 @@ Full → compact projection
 = projection only; reviewed owner meaning is not deleted because the view is smaller
 ```
 
-`Planning State` should truthfully mark material depths as `reviewed | partial | not selected`. Q/R/P remain attached unresolved/adverse delta to a concrete owner/current planned state.
+`Planning State` should truthfully mark material depths as `reviewed | partial | not selected`. Planning Concerns/Q/R/P use the shared `planning-concerns-and-decisions-model.md`: active/residual concerns stay owner-attached, material retained trace may survive closure, and one logical Area Concern Register preserves addressability without forcing one concerns file.
+
+
+## 1.1 Concern Storage / Register Invariant
+
+The same Planning Concern semantics apply in all three physical profiles. Profile choice changes storage/addressability only.
+
+```text
+Mini
+→ Concern Register may be a section in application-plan.md
+→ concern/group bodies may live in the same file
+
+Modular / Medium
+→ register may remain in application-plan.md or move to an area-root concerns/register file when useful
+→ Domain/Slice-specific concern detail may stay in domain-draft.md / slice owner files
+
+Full
+→ stable area/root Concern Register when persistent distributed concerns justify it
+→ detailed Concern/Group bodies live beside real Scenario/Domain/Slice/etc owners
+```
+
+There is no mandatory filename and no one-file-per-concern rule. One logical Concern/Group has one primary detailed storage location; other files/Ideas reference its ID/location.
 
 ## 2. Mini SDS
 
@@ -92,7 +113,9 @@ application-plan.md
 Source / Baseline / Real-Life Basis
 Key Points / Review Priority
 Current Plan Snapshot
-Questions / Risks / Problems when material
+Area Concern Register when material
+Planning Concerns / Q/R/P + Concern Groups when material
+Retained Concern/Decision trace when material
 
 STEP 0 — Why / Solution Discovery
 STEP 1 — Scenarios
@@ -258,8 +281,9 @@ Use the same lenses over one accumulating Current Plan:
 ```text
 Real-Life
 UC / Scenario
-Q/R/P (attached unresolved delta only)
-Review Order (derived lens only)
+Planning Concerns / Q/R/P (active/residual owner-attached state + retained trace when material)
+Concern Group (shared resolution surface when related Q/R/P are coupled)
+Review Order (derived from Concern Priority + dependency/blocking/blast-radius/timing)
 Realization / Evolution
 ```
 

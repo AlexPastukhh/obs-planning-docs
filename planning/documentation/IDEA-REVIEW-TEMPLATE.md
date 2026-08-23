@@ -1,8 +1,10 @@
 # Idea Review Template
 
 Status: active reusable output template
-Doc version: v1.2.0-integrated-output-order
-Scope: recommended Markdown representation for Standard Idea Review, optional Deep Idea Planning and aggregate findings relative to Current Plan.
+Doc version: v1.3.0-shared-concern-model
+Scope: recommended Markdown representation for Standard Idea Review, optional Deep Idea Planning and Idea relations to the shared Planning Concern/Decision model.
+
+Shared Planning Concern semantics: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md)
 
 Mandatory checks do not require empty fields to be printed.
 
@@ -25,28 +27,15 @@ Mandatory checks do not require empty fields to be printed.
 **Current Conclusion:** <current meaning>
 ```
 
-### Related Q/R/P — When Applicable
+### Related Planning Concerns — When Applicable
 
-If a material Q/R/P relates to exactly this one Idea, mirror the full aggregate unit here with the **same Finding ID**:
-
-```markdown
-### [Q/R/P-<ID>] — <finding title>
-
-**Type:** Question / Risk / Problem
-**Current Plan:** <same selected/current baseline used by the aggregate finding>
-**Finding:** <same logical unresolved/adverse finding>
-**Relation / Impact On Current Plan:** <same material relation>
-**Needed Resolution / Treatment:** <when applicable>
-**Blocking:** <yes / no, when useful>
-```
-
-If the same finding relates to several Ideas, do not copy the full body into every Idea. Add a lightweight reference inside each affected Idea:
+Do not mirror a full Q/R/P body here merely because the Idea is related. Reference the one logical Concern/Concern Group and its primary detailed storage location:
 
 ```markdown
-- `[Q/R/P-<ID>]` — <short title>; Related Ideas: `IDEA-A`, `IDEA-B`; see the aggregate Q/R/P for the full Current-Plan-relative finding.
+- `CG-<ID>` / `Q-<ID>` / `R-<ID>` / `P-<ID>` — <short title>; Stored At: `<path/section>`; Relation: <origin / candidate answer / affected by / other useful relation>.
 ```
 
-Use one stable Finding ID across aggregate and Idea-side representations. Remove/update both sides together when the finding resolves or its Related-Idea set changes.
+If this Idea is itself the selected detailed storage owner for that concern/group, the full concern body may live here. Otherwise keep only the reference.
 
 ## Deep Planning Additions — When Useful
 
@@ -67,7 +56,7 @@ Use one stable Finding ID across aggregate and Idea-side representations. Remove
 
 ## Current Plan Snapshot — For Integrated Outputs
 
-When the consuming route continues beyond local Idea review into useful-result planning, establish a short Current Plan baseline before deriving aggregate delta. Do **not** use final `Current Overall Conclusions` as a pre-integration baseline.
+When the consuming route continues beyond local Idea review into useful-result planning, establish a short Current Plan baseline before deriving concern delta. Do **not** use final `Current Overall Conclusions` as a pre-integration baseline.
 
 ```markdown
 # Current Plan Snapshot
@@ -83,7 +72,7 @@ Top-level ordering belongs to the consuming route. For the current `собери
 ```text
 Source / Baseline
 → Current Plan Snapshot
-→ Questions / Risks / Problems
+→ Active Planning Concerns / Q/R/P + Concern Groups when material
 → compact Cross-Cutting Ideas when material
 → affected UC / Scenario planning
 → cross-unit review when material
@@ -93,32 +82,47 @@ Source / Baseline
 
 The component sections in this template are reusable shapes; their physical order here is not authority to override a command/workflow output contract.
 
-## Required Aggregate
+## Active Planning Concerns / Q/R/P — Shared Shape
+
+Use the shared Concern owner. A single concern may be represented as:
 
 ```markdown
-# Questions / Risks / Problems
+### Q-<ID> — <title>
 
-### [Q-<ID>] — <finding title>
-
-**Related Idea(s):** `IDEA-<ID>` <!-- when applicable -->
+**Type:** Question / Risk / Problem
+**Priority:** P0 / Critical | P1 / High | P2 / Normal | P3 / Low
+**Concern Category:** <semantic / UX/product / domain/data / architecture / engineering/implementation / testing/verification / integration / operations / documentation/maintainability / contextual>
+**Status:** <type-appropriate status>
+**Owner / affected meaning:** <semantic owner>
 **Current Plan:** <actual selected/current baseline>
-**Finding:** <material unresolved question / residual risk / unresolved problem>
-**Relation / Impact On Current Plan:** <why it still matters>
-**Needed Resolution / Treatment:** <when applicable>
-**Fallback:** <only when real>
-**Fallback Relation:** fallback only; not Current Plan
-**Blocking:** <yes / no, when useful>
+**Origin / Provenance:** <when useful>
+**Concern Group:** `CG-<ID>` <!-- when related -->
+**Finding:** <material current question / risk / problem>
+**Relation / Impact On Current Plan:** <why it matters>
+
+**AI Comment:**
+- Known / implied: <what current plan/evidence already establishes>
+- Options / interpretation: <when useful>
+- Technical/logical preference: <only when justified>
+- User-owned unknown: <when applicable>
+- Minimum useful user question: <only when the answer can change the decision>
+
+**Recommendation:** <optional; only with sufficient grounds>
+**Answer / Evidence:** <when applicable>
+**Decision refs:** <only after selection/material>
+**Residual state / treatment:** <when applicable>
+**Stored At:** <when cross-file addressability matters>
 ```
 
-Omit meaningless optional fields. `Current Plan`, `Finding`, and `Relation / Impact On Current Plan` are required for every real unit.
+A related cluster may instead be headed by one Concern Group with member references and one shared resolution surface/AI Comment while each member retains its own Type/Priority/Category/Status.
 
-If none: `No material unresolved issues identified.`
+If there are no active concerns: `No material unresolved issues identified.`
 
-Do not place accepted/resolved conclusions in this section.
+Resolved trivial items leave active Q/R/P. Material answer/rationale/Decision trace may remain through the shared retention rules, and residual Risk/Problem remains active.
 
 ## Current Overall Conclusions — Final Integrated Summary
 
-After useful-result integration and whole-plan review, summarize the selected integrated meaning. This is a final review projection, not the early baseline used to define Q/R/P.
+After useful-result integration and whole-plan review, summarize the selected integrated meaning. This is a final review projection, not the early baseline used to define concerns.
 
 ```markdown
 # Current Overall Conclusions
@@ -126,7 +130,7 @@ After useful-result integration and whole-plan review, summarize the selected in
 - <selected integrated meaning>
 ```
 
-For an Idea-review-only route with no wider UC/Scenario integration, summarize the resulting selected Idea meaning here after aggregate review.
+For an Idea-review-only route with no wider UC/Scenario integration, summarize the resulting selected Idea meaning here after concern review.
 
 ## Material Simplifications — When Found
 
@@ -144,24 +148,8 @@ For an Idea-review-only route with no wider UC/Scenario integration, summarize t
 **Status:** candidate / unresolved / needs decision
 ```
 
-This section contains only unselected candidate changes to Current Plan. Once accepted, integrate the route into Current Conclusions and remove the candidate from this section.
+This section contains only unselected candidate changes to Current Plan. Once accepted, integrate the route into Current Conclusions and record a material Decision trace when useful.
 
 ## Practical Example
 
-See [`examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md`](examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md) for a full demonstration. The example demonstrates the method; it does not override the canonical Idea owners.
-
-## Q/R/P Provenance / Owner Attachment
-
-When a related Q/R/P is material, use:
-
-```markdown
-### <FIND/Q/R/P ID> — <title>
-**Origin / Provenance:** ...
-**Affected UC / Scenario / semantic owner:** ...
-**Current Planned State / Target meaning:** ...
-**Finding:** ...
-**Relation / Impact:** ...
-**Treatment / Needed Resolution:** ... # only when useful
-```
-
-No owner/current planned state → do not promote to active FIND. If the answer is already forced by current selected principles/evidence, integrate it instead of preserving a ceremonial Q/R/P.
+See [`examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md`](examples/COLLECT-IDEAS-PRACTICAL-EXAMPLE.md) for a demonstration. The example demonstrates the method; it does not override canonical owners. If an old example still shows the former full Idea/QRP mirror, the shared Concern owner wins and the example must be corrected separately.

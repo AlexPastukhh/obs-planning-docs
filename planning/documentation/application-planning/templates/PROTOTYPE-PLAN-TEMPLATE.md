@@ -156,10 +156,13 @@ throwaway / evolutionary / non-code / not applicable
 ```
 
 ## Current Decisions
-<Selected prototype-plan choices when material.>
+<Selected prototype-plan choices when material; use the shared generic Decision trace fields only as useful.>
 
-## Questions / Risks / Problems
-<Use Current Plan + Finding + Relation / Impact. If none: `No material unresolved issues identified.`>
+## Area Concern Register — When Material
+<Inline/link the prototype-area register if material concerns need durable addressability.>
+
+## Planning Concerns / Q/R/P
+<Use the shared Concern model: Type/Priority/Concern Category/Status, grouping by shared resolution surface, AI Comment, optional Recommendation, selected Decision refs/residual state when material. Do not infer user preference from a technical prototype result. If none: `No material unresolved issues identified.`>
 
 ## Potential Simplifications / Better Routes — When Material
 <Only unselected changes to this prototype plan.>

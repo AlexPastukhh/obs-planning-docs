@@ -26,7 +26,7 @@ A file-update overview should make the planned repository transition understanda
 current state / Target / Checked Sources
   → Idea analysis when material
   → Current Conclusions / Current Selected Variant
-  → Questions / Risks / Problems
+  → Planning Concerns / Q/R/P + Concern Groups when material
   → ordered update steps
   → explicit actions inside each step
   → per-step affected-file tables
@@ -45,7 +45,7 @@ A non-trivial plan includes:
 - target and checked sources;
 - Ideas / Idea Groups when material;
 - Current Conclusions / Current Selected Variant when alternatives are material;
-- one aggregate Questions / Risks / Problems section;
+- one active Planning Concerns / Q/R/P section (single concerns and/or Concern Groups) using the shared model;
 - ordered update steps;
 - numbered actions inside each non-trivial step;
 - files changed by each step;
@@ -70,7 +70,7 @@ Idea
 → concrete Update Steps
 ```
 
-An unresolved alternative remains in `Questions / Risks / Problems` with Related Idea IDs. Do not create `File Edit Variant A/B` to represent conceptual uncertainty.
+A material unresolved alternative may remain as a Planning Concern with Related Idea provenance. Use one detailed concern storage location plus references; do not create `File Edit Variant A/B` or duplicate full Idea/QRP mirrors.
 
 When the update is a mechanical consequence of already selected meaning:
 
@@ -81,29 +81,24 @@ do not manufacture Idea analysis
 
 Use `Current Selected Variant` as the normal term. Use `fallback` only when the variant is genuinely a fallback.
 
-## 4. Questions / Risks / Problems
+## 4. Planning Concerns / Q/R/P
 
-Every File Update Plan contains this aggregate section, including mechanical updates, and uses the shared Current-Plan-relative aggregate contract.
+Every File Update Plan exposes an active concern surface, including a valid empty result, and consumes [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md).
 
 For File Update planning:
 
 ```text
 Current Plan
-= the one current selected file-update route represented by
-  Current Conclusions + concrete Update Steps.
+= the one current selected file-update route represented by Current Conclusions + ordered Update Steps
 ```
 
-Every real unit states at minimum:
+A material concern/group records enough to locate the affected plan and understand its current state. Use Priority / Concern Category / Status when material; group Q/R/P that share one resolution surface. AI Comment should explain what follows from current plan/evidence and what remains user-owned instead of inventing a preference. Recommendation is optional; selected Decision trace is separate.
 
-```text
-Current Plan
-Finding
-Relation / Impact On Current Plan
-```
+Related Ideas reference the Concern/Group ID/location. Do not maintain full mirrored bodies inside Ideas.
 
-Material Idea-derived findings reference Related Idea IDs and obey the shared Idea ↔ Q/R/P discoverability rule: exactly one Related Idea gets a full same-ID Idea-local mirror; several Related Ideas get lightweight same-ID references from each affected Idea to the one aggregate finding. Add Needed Resolution / Treatment, a real fallback and Blocking only when useful. If no material unresolved/adverse findings exist, say `No material unresolved issues identified.` rather than preserving completed reasoning.
+If none: `No material unresolved issues identified.` Resolved trivial items leave active Q/R/P; material retained answer/Decision trace and residual Risk/Problem follow the shared lifecycle.
 
-A selected correction, accepted simplification, ordinary step boundary or explanation of why the selected route is correct does **not** belong here.
+Physical storage is contextual. A small File Update Plan may keep the Area Concern Register and concern bodies inline; a larger planning area may route detail to the real owner and keep only register/reference state here.
 
 ## 4.1 Potential Simplifications / Better Routes — When Material
 
@@ -258,10 +253,10 @@ Before finalizing the overview:
 - Conceptual alternatives are represented as Idea Variants, not file-edit variants.
 - Current Selected Variant / Current Conclusion is the conceptual basis for concrete steps.
 - Unresolved refinements do not silently enter file actions.
-- Questions / Risks / Problems exists; every real unit states Current Plan and its unresolved/adverse relation or impact, with Related Idea IDs when applicable.
-- Idea-related Q/R/P uses one Finding ID and is also visible from each affected Idea through the shared single-Idea mirror / multi-Idea reference rule.
+- Active Planning Concerns / Q/R/P exists (or explicit empty result); every real concern/group follows the shared owner, including owner/current-plan attachment, Priority/Concern Category/Status when material, and grouping by shared resolution surface.
+- One logical Concern/Group has one detailed storage location; Ideas/other owners reference it rather than duplicate full bodies.
 - Material Potential Simplifications / Better Routes, when present, are unselected changes to Current Plan and state Current Plan + Change To Current Plan, with Related Idea IDs when applicable.
-- Accepted/resolved findings have been removed from aggregate sections and integrated into Current Conclusions / Update Steps.
+- Resolved trivial findings leave active Q/R/P; selected meaning is integrated into Current Conclusions / Update Steps, while material retained Decision/Concern trace and residual R/P are preserved according to the shared model.
 - Mechanical updates do not contain synthetic Idea analysis.
 - Every planned file belongs to at least one update step.
 - Every non-trivial step has a numbered action list.
@@ -281,9 +276,9 @@ Before finalizing the overview:
 ```text
 - Do not create File Edit Variant A/B for conceptual uncertainty.
 - Do not turn Possible Idea Refinement into an accepted file edit automatically.
-- Do not hide material unresolved findings only inside one Idea.
-- Do not use aggregate sections as a confirmation/reasoning log for already selected Current Plan.
-- Do not leave accepted simplifications or resolved questions/problems in aggregate sections.
+- Do not hide material active concerns only inside one unrelated Idea; use the selected concern storage owner + Area Concern Register/reference.
+- Do not use active Q/R/P as a confirmation/reasoning log for already selected Current Plan.
+- Do not leave trivial resolved Questions/Problems in active Q/R/P, but do not drop material residual Risk/Problem or required retained Decision trace.
 - Do not manufacture Idea analysis for mechanical updates.
 - Do not hide file-change risks in prose only.
 - Do not hide the action sequence only inside a file table.
