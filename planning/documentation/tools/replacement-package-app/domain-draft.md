@@ -130,7 +130,8 @@ Candidate invariants:
 - cancellation before possible Send stops future automation;
 - if external content is already prepared, `Cancelled` does **not** mean deleted: prepared content remains and no automatic cleanup/send occurs;
 - once Send may have occurred, interaction cannot be rewritten to definitely Cancelled/unsent;
-- interaction outcome never changes Repository Work authority/lifecycle.
+- interaction outcome never changes Repository Work authority/lifecycle;
+- ordinary terminal interaction is not reusable work: a later user retry creates a new External Interaction identity; terminal/tombstone retention is technical safety evidence, not user-facing history.
 
 Pairing, heartbeat, polling, claim leases, tab IDs and content-script reconnect are implementation mechanics, not aggregate identity/state names.
 
@@ -205,8 +206,11 @@ Replacement Package
 | Finalized + Reopen conflict/unowned dirty adoption risk | Reopen ChangeSet | remains Finalized | no | no partial lifecycle/ownership change; failed operation notifies but creates no Finalized error marker |
 | recovery unsafe/ambiguous | Retry | remains pending | no automatic completion | no unsafe overwrite |
 | current-change representation stale | Finalize | unchanged | no | re-establish current representation |
+| interaction queued, no confirmed composer mutation, preparation fails | delivery | FailedBeforeSend | yes terminal result | do not claim content was prepared |
+| interaction content confirmed prepared, failure before possible Send | delivery | PreparedUnsent | yes terminal result | retain prepared-content truth; no blind retry |
 | interaction queued/prepared, user cancels before possible Send | Cancel | Cancelled; prepared content may remain | yes | no future automation; no cleanup claim |
 | Send may have occurred | cancel request | Sent/uncertain truth retained | no false cancellation | no rewrite/no blind resend |
+| terminal interaction, user retries | new handoff | new External Interaction identity | yes | never restore/reuse cancelled/terminal attempt |
 
 ## Invariants
 
@@ -223,6 +227,8 @@ Replacement Package
 - `INV-RPKG-11` — one External Interaction has one exact source and destination; implementation claim/tab changes do not alter that identity.
 - `INV-RPKG-12` — `Cancelled` never implies external prepared content was deleted; possible-send uncertainty is never rewritten to definitely unsent.
 - `INV-RPKG-13` — explicit Reopen preserves ChangeSet identity and historical finalization evidence; it may return Finalized to Active only when historical path ownership can be re-established without stealing sibling ownership or silently adopting unrelated dirty/unowned work.
+- `INV-RPKG-14` — `Preparing` for current-change delivery means the intended external composer has actually been prepared; a failed preparation attempt before composer mutation is not `PreparedUnsent`.
+- `INV-RPKG-15` — one terminal External Interaction is never resumed as a new attempt; user retry creates a new interaction identity, while terminal retention may remain only as technical safety evidence.
 
 ## Selected Application Policies Affecting Domain-Safe Transitions
 

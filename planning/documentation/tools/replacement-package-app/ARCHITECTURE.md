@@ -300,6 +300,22 @@ Add an application query service/read model over persisted ChangeSets/repository
 
 Selecting work establishes exact `selectedRepositoryId + selectedChangeSetId` navigation context. Same-origin clones stay distinct; unavailable target is not silently replaced. When history is shown and the exact selected ChangeSet is Finalized, UI may expose `Reopen ChangeSet`; this is only an entry to the guarded command above and selection itself remains read-only.
 
+### Current-Change Browser Preparation Target
+
+SL-06 keeps exact ReviewDiff bytes and intended conversation as authority, but selected browser preparation no longer depends on Clipboard API/native paste or foreground document focus.
+
+```text
+verified exact ReviewDiff text
+→ intended conversation + empty composer guard
+→ direct DOM/editor insertion through ChatGPT adapter
+→ verify expected content is actually prepared
+→ Preparing
+→ SendClicked immediately before possible Send
+→ Sent | UnknownAfterSend
+```
+
+Before confirmed composer mutation, preparation failure is `FailedBeforeSend`; only after expected content is confirmed prepared may a pre-Send failure become `PreparedUnsent`. Use the same direct text path for small/large ReviewDiff initially; introduce an attachment fallback only if practical evidence establishes a real composer limit.
+
 ### External Interaction Semantic Layer
 
 Introduce a semantic `External Interaction` service/model above current bridge task mechanics. One interaction keeps exact source + destination + user-semantic outcome. Low-level `Claimed`, lease, tab ID and reconnect states remain adapter mechanics.
@@ -309,7 +325,7 @@ Target Cancel does not perform browser cleanup:
 - prepared unsent content → Cancelled + prepared content retained, stop future Send/automation;
 - possible Send → preserve Sent/UnknownAfterSend truth.
 
-Common user-facing interaction inventory includes current-change and snapshot handoffs and current-session terminal history; persistence across restart remains only where safety/idempotency/recovery requires it.
+Common user-facing interaction inventory includes current-change and snapshot handoffs that are still active/actionable plus `UnknownAfterSend`/equivalent attention-requiring uncertainty. Ordinary terminal results are reported through Output/notifications and are not projected as accumulated list history. Persistence may retain terminal/tombstone records only where safety/idempotency/recovery/uncertainty requires them; a retry creates a new interaction identity.
 
 ### User Operation / Windows Notifications
 

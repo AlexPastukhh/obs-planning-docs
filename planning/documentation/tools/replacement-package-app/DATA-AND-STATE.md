@@ -311,7 +311,26 @@ Semantic cancellation:
 - prepared unsent text/attachment → `Cancelled` plus `preparedContentRetained=true` (or equivalent semantic result), no automatic deletion and no future Send;
 - possible/actual Send → preserve Sent/uncertain truth; never rewrite to Cancelled.
 
-UI history shows active/actionable + terminal interactions from the current app session. Across restart persist only records/states needed for recovery, uncertainty truth, idempotency or duplicate prevention; ordinary successful terminal history need not be retained as user history.
+The user-facing interaction projection shows active/actionable interactions plus `UnknownAfterSend` (or equivalent attention-requiring uncertainty); it is not terminal history. Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` interactions leave the projection after their result is surfaced. Across restart persist only records/states needed for recovery, uncertainty truth, idempotency or duplicate prevention. A retry is a new External Interaction identity; a terminal/cancelled interaction is not resumed.
+
+### ReviewDiff External Preparation Boundary
+
+For current-change delivery, selected target semantic state follows external evidence rather than attempt timing:
+
+```text
+before confirmed composer mutation
+→ not Prepared
+→ failure = FailedBeforeSend
+
+expected ReviewDiff confirmed in intended composer
+→ Preparing / externally prepared
+
+possible Send boundary crossed
+→ SendClicked
+→ unconfirmed result = UnknownAfterSend
+```
+
+Direct composer/editor insertion is selected so preparation does not depend on foreground document focus or Clipboard API write permission. No separate large-review attachment state is selected until practical evidence requires a fallback.
 
 ### Source-State Applicability Result
 

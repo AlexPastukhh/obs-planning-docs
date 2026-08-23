@@ -118,7 +118,18 @@ Cancel semantics:
 - prepared unsent content: `Cancelled — prepared content retained`; do not automatically delete composer text/attachment and do not continue/send;
 - once Send may have happened, preserve truthful `Sent`/uncertain outcome rather than rewriting it to `Cancelled`.
 
-The UI shows active/actionable plus terminal interactions from the current app session; across restart persist only state required for truthful recovery, uncertainty, idempotency or duplicate prevention.
+The user-facing interaction list is a current/actionable projection, not a terminal-attempt history. Show interactions that can still progress/cancel plus `UnknownAfterSend` (or equivalent uncertainty that still requires attention). Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` results leave this list after their result is surfaced through Output/notification. Technical terminal/tombstone state may persist only where recovery, uncertainty, idempotency or duplicate prevention requires it. A later user retry is a new External Interaction; a cancelled interaction is never restored/reused.
+
+### `BI-RPKG-CURRENT-CHANGE-DELIVERY-PREPARATION`
+Current-change delivery must be able to prepare the intended ChatGPT composer without requiring the ChatGPT document/tab to be foreground-focused and without depending on browser Clipboard API write permission. The selected realization direction is direct composer/editor insertion through the ChatGPT DOM adapter for ReviewDiff text of any size, followed by verification that the expected content is actually prepared.
+
+Delivery state follows externally meaningful evidence:
+- before confirmed composer mutation, failure is `FailedBeforeSend`;
+- only after the expected ReviewDiff is confirmed prepared may the interaction enter `Preparing`;
+- failure after confirmed preparation but before possible Send is `PreparedUnsent`;
+- after `SendClicked`, unconfirmed delivery remains `UnknownAfterSend`.
+
+No size-threshold/native-large-paste attachment branch is selected up front. If practical evidence later establishes a real ChatGPT composer size limit, an explicit fallback may be designed separately.
 
 ### `BI-RPKG-OPERATION-NOTIFICATION`
 Track meaningful nontrivial user operations, including Apply, Finalize, Retry Push, explicit Reopen ChangeSet, Repository Snapshot export, ChatGPT handoff interactions and Change Repository Location. Terminal success always produces a simple Windows notification; failure/action-required always produces a notification with concise reason. Passive navigation and trivial Copy/Open actions are excluded.
@@ -148,6 +159,8 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 - `REQ-RPKG-16` — a compact latest ChangeSet-linked operation outcome survives restart for error-marker/reason presentation without requiring a generic persistent operation-history list.
 - `REQ-RPKG-17` — baseline/ref-dependent operations report actionable Repository Not Ready when no first commit exists.
 - `REQ-RPKG-18` — explicit Reopen may transition a selected Finalized ChangeSet back to Active without changing its identity/history, but only after exact-target revalidation and safe path-ownership/unowned-work checks; no implicit reopen is allowed.
+- `REQ-RPKG-19` — current-change preparation must not require foreground/document focus or successful Clipboard API write; `Preparing` is reached only after the intended ReviewDiff has actually been prepared in the composer.
+- `REQ-RPKG-20` — External Interactions terminal ordinary results do not accumulate in the user-facing list; a retry creates a new interaction identity, while uncertainty requiring attention remains visible.
 
 ## Current Implementation Divergences / Target Work
 
@@ -160,10 +173,18 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 | `P-RPKG-UNBORN-LOW-LEVEL-ERROR` | Missing first commit can surface low-level HEAD/Git failure. | Repository Not Ready with initial-commit guidance when baseline/ref is required. | P1 / SL-01,04 |
 | `P-RPKG-NO-GLOBAL-WORK-DISCOVERY` | ChangeSet navigation is repository-first. | Global persisted work projection + exact work opening. | P0 / SL-07 |
 | `P-RPKG-NO-REPOSITORY-LOCATION-EDIT` | Registered target path cannot be explicitly changed while preserving target identity/work. | Dedicated Change Repository Location action. | P1 behavior |
-| `P-RPKG-NO-UNIFIED-EXTENSION-INTERACTION-LIST` | Bridge tasks are implementation mechanics, not one user-facing interaction surface. | Semantic External Interaction list + truthful Cancel/history. | P1 / SL-08 |
+| `P-RPKG-BROWSER-UNFOCUSED-PREPARATION` | Live Edge evidence shows Clipboard API ReviewDiff preparation can fail with `Document is not focused`, and current staging can then overstate `PreparedUnsent` before composer mutation. | Direct composer/editor insertion independent of foreground focus; confirm preparation before `Preparing`. | P0 practical correction / SL-06 |
+| `P-RPKG-NO-UNIFIED-EXTENSION-INTERACTION-LIST` | Bridge tasks are implementation mechanics, not one user-facing interaction surface; terminal cancelled attempts can accumulate as useless list history. | Semantic current/actionable External Interaction list + truthful Cancel; ordinary terminal results leave the list and retries create new interactions. | P1 / SL-08 |
 | `P-RPKG-NO-OPERATION-NOTIFICATIONS` | No Windows terminal-result notification layer. | Notify tracked operations on every terminal success/failure. | P1 / SL-09 |
 | `P-RPKG-NO-DEDICATED-DIAGNOSTIC-SURFACE` | Existing Output/Copy is not the selected clean technical diagnostic surface. | Cross-Slice session diagnostic surface. | P1 behavior |
 | `P-RPKG-NO-FINALIZED-REOPEN` | Current lifecycle treats Finalized as terminal in normal UI; no explicit recovery action returns the same logical ChangeSet to Active. | `Reopen ChangeSet` on explicitly selected Finalized history work, with exact-target + ownership/unowned-work safety guards. | P1 / SL-03 + SL-07 entry |
+
+## Accepted Low-Frequency Implementation Risks
+
+These are known implementation-hardening risks, not blockers for the current revision:
+
+- `R-RPKG-SL01-PACKAGE-RE-READ` — current Apply realization may resolve target/work from one ZIP read and read the package again for actual Apply, including after explicit choice among same-identity Repository Targets. An externally replaced ZIP in that short interval could differ from the resolved input. Accepted for now; future hardening is one captured immutable/prepared Apply context or an exact package fingerprint recheck before mutation.
+- `R-RPKG-SL07-REMOVED-TARGET-HISTORY` — Finalized history can retain a Repository Target association after that target is removed from the registry; the current query path may fail instead of projecting a truthful unavailable row. Accepted for now; future hardening is a nullable/query target lookup separated from strict operational lookup.
 
 ## Selected Engineering Direction / Proof Requirement
 

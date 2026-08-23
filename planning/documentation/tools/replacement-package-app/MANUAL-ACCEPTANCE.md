@@ -212,8 +212,8 @@ Manual pass requires observing the real Edge/ChatGPT composer; Java/bridge task-
 2. Open two different ordinary `https://chatgpt.com/c/<id>` conversations and verify both titles appear in `Refresh chats`. Open a second tab of one conversation and verify it remains one choice with a larger tab count.
 3. Open two different conversations with the same visible title and require them to remain separate choices by conversation key.
 4. Bind an Active ChangeSet to one conversation, restart the Java app and require the binding to remain. Binding must not automatically send the already-current ReviewDiff.
-5. Click `Send current ReviewDiff` with an empty composer and a small diff; require exactly one outgoing user message in the bound conversation.
-6. Use a ReviewDiff large enough for ChatGPT's own paste mechanism to convert the paste into an attachment. Require the extension to wait for ChatGPT's conversion/upload to finish and then send exactly once; the extension must not construct its own `.diff` attachment based on a local size threshold.
+5. Click `Send current ReviewDiff` with an empty composer and a small diff; require direct composer/editor preparation followed by exactly one outgoing user message in the bound conversation.
+6. Repeat with a large ReviewDiff while keeping the intended ChatGPT conversation open but **not foreground-focused** (work in another application/tab while delivery proceeds). Require the exact ReviewDiff to be prepared/sent once without `navigator.clipboard.writeText`/document-focus dependence. No native large-paste attachment conversion is required by the target.
 7. Put text or an existing attachment in the composer and attempt automatic ReviewDiff delivery; require `FailedBeforeSend` and verify the existing draft is not mixed/sent.
 8. Apply/Refresh another ReviewDiff for the same bound ChangeSet and require the same conversation to be reused without choosing it again. A continuation/correction package with the same `changeSetId` must retain that binding.
 9. Open the same bound conversation in multiple tabs; require only one tab to claim/send one ReviewDiff. Queue a second task for the same conversation and require it to remain `Pending` while the first task is `Claimed`, `Preparing` or `SendClicked`, even from another duplicate tab. Close a claimed tab before composer preparation and require the task to become retryable by another tab after claim loss/expiry.
@@ -223,12 +223,12 @@ Manual pass requires observing the real Edge/ChatGPT composer; Java/bridge task-
 13. Queue a ReviewDiff, then change its persisted `.diff` bytes before the extension fetches it; require delivery failure before paste. The user-facing Output may say the artifact changed, but must not expose hash/SHA terminology as something the user needs to act on.
 14. Queue a ReviewDiff in Chat A and navigate the claimed tab to Chat B before Send; require the claim to be released/rejected and verify nothing is sent to Chat B. Repeat after `SendClicked` and require `UnknownAfterSend`, never an automatic retry.
 15. Rebind an unsent ChangeSet from Chat A to Chat B and require old `Pending`/`Claimed` review tasks to become `Cancelled`. Stage a task as `Preparing` and require rebind/unbind to be blocked; repeat after `SendClicked`. Expire a `SendClicked` lease and require the next rebind/status read to normalize it to `UnknownAfterSend` rather than blocking forever.
-16. Produce a newer automatic ReviewDiff while an older task is still `Pending`/`Claimed`; require the older automatic task to become `Cancelled` and only the newer task to remain deliverable. Repeat after the older task has entered `Preparing`; require the preparing task not to be cancelled, the newer task to wait, and any pre-Send failure of the preparing task to become terminal `PreparedUnsent` with no automatic retry.
+16. Produce a newer automatic ReviewDiff while an older task is still `Pending`/`Claimed`; require the older automatic task to become `Cancelled` and only the newer task to remain deliverable. Force direct composer preparation to fail **before any composer mutation** and require `FailedBeforeSend`, not `PreparedUnsent`. Then repeat after the expected ReviewDiff is verifiably present/prepared; require the task to have entered `Preparing`, the newer task to wait, and any later pre-Send failure to become terminal `PreparedUnsent` with no automatic retry.
 17. Use an empty cumulative ReviewDiff and require `NoChanges` with no ChatGPT message.
 18. Reload the unpacked extension while ordinary ChatGPT tabs are already open; require the service worker to inject/reconnect the content script without requiring a manual tab refresh.
 19. After extension setup, inspect content-script access to extension storage and require the pairing token to be unavailable there; Options/service-worker connection must continue to work.
 
-Manual pass requires real small-paste and native large-paste behavior plus the duplicate-tab/composer protections above; Java/bridge state-machine tests alone are insufficient evidence for live-browser success.
+Manual pass requires real direct composer insertion for both small and large ReviewDiff content, including a non-foreground/unfocused ChatGPT document, plus the preparation-state/duplicate-tab/composer protections above; Java/bridge state-machine tests alone are insufficient evidence for live-browser success.
 
 ## `PA-SL07` — Discover And Open Existing Work
 
@@ -248,18 +248,20 @@ Manual pass requires real small-paste and native large-paste behavior plus the d
 
 ## `PA-SL08` — Manage External Interactions
 
-**Target property:** current-change and snapshot handoffs appear as user-semantic External Interactions with exact source/destination, current-session history and truthful Cancel behavior.  
+**Target property:** current-change and snapshot handoffs that are still active/actionable or uncertain appear as user-semantic External Interactions with exact source/destination and truthful Cancel behavior; ordinary terminal attempts do not accumulate as list history.  
 **Execution state:** `planned target / not current implementation evidence`
 
 1. Create one current-change delivery and one snapshot-attachment interaction; require both to appear in one list with distinguishable kind/source/destination/status.
 2. Verify pairing, heartbeat/polling, claim/lease/tab reconnect mechanics do **not** appear as independent user interactions.
-3. Cancel a queued interaction before external preparation; require `Cancelled` and no browser/composer mutation/further automation.
-4. Prepare extension-owned ReviewDiff text without Send, then Cancel; require interaction to show `Cancelled — prepared content retained`, text to remain in ChatGPT, and no cleanup/Send/further automation.
-5. Prepare a snapshot attachment, then Cancel; require attachment to remain prepared, `Cancelled — prepared content retained`, and Send untouched.
-6. Force possible-Send uncertainty after `SendClicked`; require Sent/UnknownAfterSend truth and no ability to rewrite it to Cancelled or auto-resend.
-7. Cancel one interaction while another exists; require no cross-interaction cancellation/state corruption.
-8. Restart/reload; require only safety/recovery/idempotency-critical interaction state to persist and no duplicate semantic interaction/delivery. Ordinary previous-session successful history need not remain visible.
-9. Confirm user-semantic status/reason does not expose `Claimed`, lease duration or tab ID as interaction identity.
+3. Cancel a queued interaction before external preparation; require `Cancelled`, no browser/composer mutation/further automation, and require the terminal row to disappear from the External Interactions list after its result is surfaced.
+4. Prepare extension-owned ReviewDiff text without Send, then Cancel; require `Cancelled — prepared content retained`, text to remain in ChatGPT, no cleanup/Send/further automation, and then removal of the terminal row from the list.
+5. Prepare a snapshot attachment, then Cancel; require attachment to remain prepared, `Cancelled — prepared content retained`, Send untouched, and removal of the terminal row from the list.
+6. Complete ordinary `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` examples; require each terminal outcome to be available through Output/notification but not accumulate in the External Interactions list.
+7. Force possible-Send uncertainty after `SendClicked`; require `UnknownAfterSend` truth to remain visible/actionable and no ability to rewrite it to Cancelled or auto-resend.
+8. After Cancel/ordinary terminal completion, explicitly retry the same user intent; require a **new External Interaction identity**, never restoration/reuse of the terminal one.
+9. Cancel one interaction while another exists; require no cross-interaction cancellation/state corruption.
+10. Restart/reload; require only safety/recovery/uncertainty/idempotency-critical technical state to persist and no duplicate semantic interaction/delivery; ordinary terminal rows remain absent from the user list.
+11. Confirm user-semantic status/reason does not expose `Claimed`, lease duration or tab ID as interaction identity.
 
 ## `PA-SL09` — Notify Operation Outcomes
 

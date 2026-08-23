@@ -135,3 +135,36 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **Rationale:** correct the ReviewDiff-level consistency issues before application implementation while preserving the same logical documentation ChangeSet.
 
+### LOG-RPKG-012 — Practical feedback correction for SL-06 delivery preparation and SL-08 interaction projection
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / IDEA CLARIFICATION  
+**Updates:** `LOG-RPKG-008..011`  
+**Source:** live Replacement Package App / Microsoft Edge testing after the first target implementation pass
+
+**Material Finding / selected correction:**
+- real current-change handoff failed before composer mutation because the browser Clipboard API rejected `navigator.clipboard.writeText(...)` when the intended ChatGPT document was not focused (`Document is not focused`); the current delivery staging could nevertheless classify that pre-mutation failure as `PreparedUnsent`;
+- selected SL-06 target therefore prepares ReviewDiff text by direct ChatGPT composer/editor insertion through the DOM adapter, independent of foreground/document focus and Clipboard API write permission, verifies the expected content before semantic `Preparing`, uses `FailedBeforeSend` before confirmed composer mutation, `PreparedUnsent` only after confirmed preparation, and preserves `UnknownAfterSend` after possible Send;
+- the same direct text path is selected initially for ReviewDiff content regardless of size. Native large-paste→attachment behavior is not a target requirement; a separate fallback is deferred until practical evidence demonstrates a real composer limit;
+- practical SL-08 use showed that current-session terminal rows (especially repeated `Cancelled`) form useless history. The External Interactions UI is now a current/actionable projection: active/cancellable work plus attention-requiring `UnknownAfterSend`; ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` leave the list after Output/notification reports the result;
+- terminal/tombstone technical records may still be retained for safety, uncertainty, idempotency or duplicate prevention, but retrying user intent always creates a new External Interaction identity rather than restoring a cancelled/terminal one;
+- two rare implementation findings are recorded as accepted non-blocking Slice risks: SL-01 package re-read between target resolution and Apply execution, and SL-07 Finalized history whose registered Repository Target was later removed. Future hardening is documented, but neither is selected for the current code correction.
+
+**Resulting Meaning:** the four Scenario boundaries remain unchanged. This is practical-realization feedback that corrects SL-06 preparation evidence/state boundaries and SL-08 list projection while explicitly deferring two low-frequency hardening cases.
+
+### LOG-RPKG-013 — Apply SL-06/SL-08 practical SDS correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-RPKG-012`  
+**ChangeSet:** `7cd4c79a-0bf8-402b-92e6-cedad79bd7ed`  
+**Package:** `cf3d89cd-e45e-4bb3-8635-8f48d1fde668`
+
+**Target-State Result:** after successful Apply of this documentation package:
+- SL-06 target delivery no longer requires browser clipboard/native paste or foreground focus; direct composer/editor insertion is verified before `Preparing`, with `FailedBeforeSend` / `PreparedUnsent` / `UnknownAfterSend` boundaries tied to real external evidence;
+- no large-review attachment fallback is selected without practical evidence of a composer limit;
+- SL-08 External Interactions list contains current/actionable work and attention-requiring uncertainty rather than accumulating ordinary terminal session history; terminal retries are new interaction identities;
+- application/domain/state/architecture/screens/testing/manual owners express the same corrected meaning;
+- SL-01 package re-read and SL-07 removed-target history behavior are documented as accepted low-frequency risks for later hardening rather than current blockers;
+- this package changes documentation only and performs no Java/extension mutation, operational acceptance, commit or push.
+
+**Rationale:** incorporate concrete practical feedback into the SDS before the next implementation correction without changing user-world Scenario identity or expanding current code scope to rare risks.
+

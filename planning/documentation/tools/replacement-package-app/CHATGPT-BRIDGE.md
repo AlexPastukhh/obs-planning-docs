@@ -83,6 +83,8 @@ large paste converted by ChatGPT itself
 
 The extension does not choose a byte threshold and does not construct a `.diff` File for the large-review path. ChatGPT's own paste behavior decides whether the paste remains text or becomes an attachment.
 
+This is the **current V1 mechanism, not the selected target preparation mechanism**. Live Microsoft Edge evidence showed that `navigator.clipboard.writeText(...)` can fail with `Document is not focused` when the intended ChatGPT document is not foreground-focused. That practical failure does not change the Scenario result; it requires the selected SL-06 realization correction below.
+
 If the composer already contains user text or an attachment, automatic ReviewDiff delivery fails before Send rather than mixing with an existing draft.
 
 A claimed tab renews its lease while delivery is active. Immediately before the extension first mutates the ChatGPT composer it atomically stages the task as `Preparing`. Claim/tab loss while still only `Claimed` returns the task to `Pending`; once `Preparing` has begun, any pre-Send interruption becomes terminal `PreparedUnsent` so an uncertain draft is never retried automatically. After `SendClicked`, uncertainty becomes terminal `UnknownAfterSend`. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are immutable terminal results. A newer automatic ReviewDiff supersedes older `Pending`/`Claimed` automatic tasks, but an already `Preparing` delivery is allowed to complete and the newer review waits behind it. Rebind/unbind cancels only safely cancellable `Pending`/`Claimed` review tasks and is blocked during `Preparing` or `SendClicked`. Expired leases are normalized before binding changes and delivery-status reads so stale `SendClicked` state cannot block the user forever.
@@ -174,14 +176,14 @@ bridge unavailable
 extension absent
 conversation closed
 DOM changed
-paste/upload failed
+current V1 paste/upload failed or target direct composer preparation failed
 ```
 
 must never roll back a successful package Apply, invalidate a canonical ReviewDiff, alter Git/index state, authorize Finalize or change a successful repository snapshot export into failure.
 
 ## 9. DOM Adapter Boundary
 
-ChatGPT DOM is not a public stable application API. Browser selectors, composer discovery, native paste observation, upload readiness and Send-button mechanics are centralized in:
+ChatGPT DOM is not a public stable application API. Browser selectors, composer discovery, current native-paste observation, selected direct composer/editor insertion, upload readiness and Send-button mechanics are centralized in:
 
 ```text
 chatgpt-bridge-extension/src/chatgpt-adapter.js
@@ -189,9 +191,45 @@ chatgpt-bridge-extension/src/chatgpt-adapter.js
 
 Manual Microsoft Edge acceptance is required after meaningful ChatGPT UI changes even when Java automated tests still pass.
 
-## 10. Selected Target External Interaction Layer — Not Yet Implemented
+## 10. Selected Target Current-Change Preparation Correction
 
-Sections 1–9 describe current V1 bridge mechanics. The selected target adds a user-semantic `External Interaction` layer and does not promote claim/lease/tab states into product identity.
+The selected SL-06 target removes browser Clipboard API/native paste as a required preparation mechanism.
+
+```text
+exact verified ReviewDiff bytes
+→ decode exact UTF-8 text
+→ verify exact intended conversation + empty composer
+→ direct composer/editor insertion through ChatGPT DOM adapter
+→ verify expected ReviewDiff is actually present/prepared
+→ only then mark semantic Preparing
+→ wait for Send readiness
+→ mark SendClicked immediately before possible Send
+→ confirm outgoing user turn
+```
+
+Direct insertion must work when the ChatGPT tab/document is not foreground-focused. The selected initial path is the same direct text preparation for ReviewDiff content regardless of size; no size threshold or automatic `.diff` attachment fallback is selected until live evidence establishes a real ChatGPT composer limit.
+
+State/result boundary:
+
+```text
+no confirmed composer mutation
++ failure
+→ FailedBeforeSend
+
+expected ReviewDiff confirmed prepared
++ failure before possible Send
+→ PreparedUnsent
+
+SendClicked
++ delivery cannot be confirmed
+→ UnknownAfterSend
+```
+
+Thus `Preparing` is evidence that external content is actually prepared, not merely that preparation was attempted. A clipboard/focus/DOM failure before composer mutation cannot truthfully become `PreparedUnsent`.
+
+## 11. Selected Target External Interaction Layer — Not Yet Implemented
+
+Sections 1–9 describe current V1 bridge mechanics. Section 10 records the selected SL-06 preparation correction. This section adds a user-semantic `External Interaction` layer and does not promote claim/lease/tab states into product identity.
 
 ### Interaction Scope
 
@@ -209,7 +247,7 @@ Pairing, inventory polling, heartbeat, claim leases, tab ID, ticket and content-
 
 ### Common Interaction List / History
 
-Application exposes one list for both handoff kinds. It shows active/actionable interactions and terminal interactions from the current application session. Across restart, retain only interaction records/states needed for truthful recovery, uncertainty, idempotency or duplicate prevention; ordinary successful terminal history need not remain user-visible persistently.
+Application exposes one list for both handoff kinds as a current/actionable projection, not terminal attempt history. Show interactions that can still progress/cancel plus `UnknownAfterSend` (or equivalent uncertainty requiring attention). Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` results leave the list after Output/notification reports the outcome. Across restart, retain technical records/states only where truthful recovery, uncertainty, idempotency or duplicate prevention requires them. A new user retry creates a new interaction/task identity; a cancelled interaction is never restored for reuse.
 
 ### Target Cancel Semantics
 

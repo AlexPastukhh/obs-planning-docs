@@ -103,7 +103,7 @@ One target list contains only user-significant payload-to-conversation attempts:
 
 It excludes pairing/heartbeat/poll/claim/lease/tab mechanics.
 
-Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. For prepared-unsent content, target presentation is explicitly `Cancelled — prepared content retained`; no UI promise of automatic cleanup is made. Current-session terminal history remains visible; ordinary completed success history need not persist across restart.
+Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. The list is a current/actionable projection: active/cancellable work plus `UnknownAfterSend` (or equivalent uncertainty requiring attention). Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` rows disappear after their result is surfaced through Output/notification. For prepared-unsent content, Cancel may report `Cancelled — prepared content retained` before the row leaves the list; no UI promise of automatic cleanup is made. A retry appears as a new interaction rather than restoring the cancelled row.
 
 ## `SCR-RPKG-DIAGNOSTICS` — Technical Diagnostics
 

@@ -26,7 +26,7 @@ Use for deterministic semantic/application rules:
 - global work projection ordering/filtering from persisted lifecycle plus unfinished-work latest outcome;
 - latest unfinished ChangeSet outcome replacement/persistence and no Finalized marker after failed Reopen;
 - User Operation outcome→notification request mapping;
-- External Interaction identity/semantic cancellation/terminal truth;
+- External Interaction identity/semantic cancellation/terminal truth/current-actionable projection and new-attempt identity after terminal work;
 - parser/path validation and pure helpers.
 
 ### Automated integration proof
@@ -94,9 +94,9 @@ For repository-scope tests include:
 | `SL-RPKG-03` Finalize And Publish Work | owned-only commit, lifecycle, publication pending, safe recovery, guarded Finalized→Active Reopen, failed-Reopen no-marker rule | real Finalize/Retry/Reopen/remote-ahead UX/truthful state + notification on failed Reopen |
 | `SL-RPKG-04` Export Repository Snapshot | exact/stable ZIP, readiness, index/output safety | export dialog, Repository Not Ready, destination/clipboard/open-folder |
 | `SL-RPKG-05` Attach Snapshot | exact artifact/task integration | real Edge/ChatGPT attachment ready + Send untouched |
-| `SL-RPKG-06` Deliver Current Change | exact delivery integration/dedupe/uncertainty | real small/native-large paste, duplicate tabs, send outcome |
+| `SL-RPKG-06` Deliver Current Change | exact delivery integration/dedupe/uncertainty + evidence-based preparation state boundary | real direct composer insertion for small/large ReviewDiff with ChatGPT foreground and non-foreground; prepared-content verification; duplicate tabs; send outcome |
 | `SL-RPKG-07` Discover/Open Existing Work | Active/Pending default projection, history filter/order, unfinished latest outcome, exact target/set selection, history-only Reopen entry | real global list, unavailable target, exact repo+set navigation, Show History/Reopen control |
-| `SL-RPKG-08` Manage External Interactions | semantic identity/state/cancel/history/persistence boundary | real list/select/cancel; prepared content retained; uncertainty truth |
+| `SL-RPKG-08` Manage External Interactions | semantic identity/state/cancel/current-actionable projection/persistence boundary | real list/select/cancel; ordinary terminal rows disappear; retry creates new interaction; prepared content retained; uncertainty truth |
 | `SL-RPKG-09` Notify Operation Outcomes | User Operation result→one notification request; unfinished latest-outcome persistence; failed-Reopen notification without Finalized marker | real Windows success/failure notifications and click repository routing |
 
 ## Critical Negative Guarantees
@@ -115,6 +115,8 @@ The strategy must preserve explicit proof that:
 - selecting Finalized history never reopens automatically; explicit Reopen preserves identity/history, reacquires only safe historical ownership and fails with no partial transition on sibling-owner or unrelated dirty/unowned conflict;
 - snapshot export does not mutate repository/index;
 - External Interaction Cancel never auto-deletes prepared ChatGPT content and possible-send uncertainty is not rewritten;
+- ordinary terminal External Interactions do not accumulate as user-facing history and retries never reuse terminal/cancelled interaction identity;
+- current-change preparation does not require foreground/document focus or Clipboard API write success, and `PreparedUnsent` is impossible before confirmed composer mutation;
 - browser failure never rolls back/authorizes repository work;
 - snapshot attachment never sends;
 - notification delivery never repeats/executes the operation.

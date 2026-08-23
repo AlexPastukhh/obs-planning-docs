@@ -85,6 +85,8 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 
 **Verification target:** add/replace/delete; passive input; target resolver/multiple-clone behavior; Repository Not Ready; same-target ownership conflict/different-target same path allowed; raw and Git-equivalent source match accepted; true/manual source divergence and verification failure rejected; no mutation until all preflight passes; result bytes/rollback/current ReviewDiff correct.
 
+**Accepted low-frequency risk:** current realization can resolve package/target context from one ZIP read and read the package again for actual Apply (including after explicit clone/target choice). External replacement of the ZIP during that short interval could make the applied bytes differ from the resolved input. Do not block this revision; future hardening is one captured immutable/prepared Apply context or exact package fingerprint revalidation before mutation.
+
 ## `SL-RPKG-02` — Inspect Current Change
 
 **Deliverable:** selected logical work restores/generates exact current cumulative change for optional inspection without mutating real Git index.
@@ -139,11 +141,13 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 
 **Scenario coverage:** Provide Current Change For Review / Continuation.
 
-**Current core implementation:** persistent binding, automatic/manual queueing, duplicate-tab claim serialization, exact artifact verification, `Preparing`/`SendClicked` guards, native large-paste handling, immutable terminal outcomes/no blind retry.
+**Current core implementation:** persistent binding, automatic/manual queueing, duplicate-tab claim serialization, exact artifact verification, `Preparing`/`SendClicked` guards, browser Clipboard/native-paste preparation, immutable terminal outcomes/no blind retry. Live Edge evidence has exposed a focus-dependent failure (`Document is not focused`) before composer mutation while the task can already be classified as `PreparedUnsent`.
 
-**Target boundary:** core delivery stays here. Common semantic interaction inventory, selected Cancel behavior/history moves to SL-08. User-visible interaction state must not simply mirror claim/lease/tab implementation states. Terminal outcome feeds SL-09 notification where this explicit handoff is tracked.
+**Selected target correction:** keep exact payload/destination/dedupe/send-confirmation responsibilities here, but prepare ReviewDiff text through direct ChatGPT composer/editor insertion in the DOM adapter rather than browser Clipboard API/native paste. This path is selected for ReviewDiff text of any size initially and must not require the ChatGPT tab/document to be foreground-focused. Verify the expected ReviewDiff is actually prepared before entering semantic `Preparing`; failures before confirmed composer mutation are `FailedBeforeSend`, failures after confirmed preparation but before possible Send are `PreparedUnsent`, and uncertainty after `SendClicked` remains `UnknownAfterSend`. No large-text attachment threshold/fallback is selected until practical evidence demonstrates a real composer limit.
 
-**Manual verification:** real small/native-large paste, destination, duplicate tabs/composer protection, uncertain send, bridge reload/reconnect, upstream work unaffected.
+**Target boundary:** core delivery stays here. Common semantic interaction inventory and selected Cancel/current-actionable projection move to SL-08. User-visible interaction state must not simply mirror claim/lease/tab implementation states. Terminal outcome feeds SL-09 notification where this explicit handoff is tracked.
+
+**Manual verification:** real focused and non-foreground/unfocused-tab delivery; small and large ReviewDiff direct insertion; exact prepared-content verification; destination; duplicate tabs/composer protection; correct `FailedBeforeSend`/`PreparedUnsent` boundary; uncertain send; bridge reload/reconnect; upstream work unaffected.
 
 ## `SL-RPKG-07` — Discover And Open Existing Work
 
@@ -167,11 +171,13 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 
 **Verification:** multiple repos; same-identity clones; Active/Pending/Finalized states; unfinished error markers; unavailable target; same paths across repos; exact target + set context; history-only Finalized Reopen button visibility; failed Reopen remains history-only with notification/diagnostics and no persistent marker; selecting history alone causes zero Git/lifecycle mutation.
 
+**Accepted low-frequency risk:** a Finalized ChangeSet can outlive removal of its registered Repository Target. Current query realization may then fail while building Existing Work instead of rendering that historical row as unavailable. Do not block this revision; future hardening is a non-throwing/query target lookup separate from strict operational target resolution.
+
 ## `SL-RPKG-08` — Manage External Interactions
 
 **Status:** selected target / new, not implemented.
 
-**Deliverable/checkable result:** all relevant user-significant ChatGPT handoffs are visible in one list, selectable with semantic state and cancellable only under truthful selected semantics.
+**Deliverable/checkable result:** user-significant ChatGPT handoffs that are still active/actionable or uncertain are visible in one list, selectable with semantic state and cancellable only under truthful selected semantics; ordinary terminal attempts do not accumulate as reusable/history rows.
 
 **Scenario coverage:** Provide Current Change; Provide Repository Context.
 
@@ -182,9 +188,9 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 - prepared unsent text/attachment → Cancelled + prepared content retained, no automatic deletion/send;
 - Send may have occurred → preserve Sent/uncertain truth, not false Cancelled.
 
-**History:** active/actionable + terminal current session; across restart persist only recovery/uncertainty/idempotency-critical state.
+**List projection / retention:** show active/actionable interactions plus `UnknownAfterSend` (or equivalent attention-requiring uncertainty). Once an interaction reaches ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` or `PreparedUnsent`, surface its outcome through Output/SL-09 notification and remove it from the user-facing interaction list. Internal terminal/tombstone data may remain only for recovery, uncertainty, idempotency or duplicate-prevention truth. A later user attempt always creates a new External Interaction; cancelled work is never restored/reused.
 
-**Verification:** both interaction kinds; stable identity/source/destination; cancel phases; no cleanup of prepared content; no false cancellation after uncertainty; independent interactions; reload/reconnect no duplication; semantic state does not leak lease/tab names.
+**Verification:** both interaction kinds; stable identity/source/destination; cancel phases; terminal ordinary rows disappear; `UnknownAfterSend` remains actionable/visible; retry after Cancel creates a new interaction identity; no cleanup of prepared content; no false cancellation after uncertainty; independent interactions; reload/reconnect no duplication; semantic state does not leak lease/tab names.
 
 ## `SL-RPKG-09` — Notify Operation Outcomes
 
