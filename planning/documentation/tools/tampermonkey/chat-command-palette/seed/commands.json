@@ -79,6 +79,95 @@
     },
     {
       "schemaVersion": 1,
+      "id": "ideas.collect.application",
+      "file": "collect-application-ideas.command.md",
+      "command": "собери идеи приложения",
+      "englishName": "collect application ideas",
+      "commandFamily": [
+        "собери идеи приложения",
+        "application ideas",
+        "собери план приложения"
+      ],
+      "description": "accumulate whole-Application Ideas into one SDS Current Plan",
+      "meaning": "Run the shared collect-ideas shell with the integration target fixed to the whole accumulating Application Current Plan. Know the complete SDS Step 0–4 lifecycle, but automatically traverse only the semantic depth justified by the source/current plan and stop before explicit Pre-Update and practical realization/evidence.",
+      "activeContextBehavior": "Use the selected Application/current plan. Start from unresolved upstream meaning when needed and move through Reality/Solution/Application Concept/Scenario/Domain/Slices only as justified; preserve later-layer insights as carry-forward rather than forcing every lifecycle phase.",
+      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
+        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
+        "planning/documentation/application-planning/detailed-planning/README.md",
+        "planning/documentation/profiles/sds-planning-profiles.md",
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/use-case-registry.md"
+      ],
+      "expectedOutput": "One integrated Application Current Plan at source-justified SDS depth, with reviewed Ideas, current/preliminary integration, Q/R/P/Decisions and downstream handoffs; no automatic Pre-Update or Step 4 execution.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
+        "`собери идеи приложения` already represents the full semantic Application SDS lifecycle; do not invent a separate `full application ideas` command. Mini/Modular/Full are physical/addressability profiles, not quality levels.",
+        "Preserve Step 0 Need/Solution, Step 1 Scenario+DATA+Behavior, Step 2 Domain and Step 3 Slice/WEUC/Architecture/Testing meaning when material; Step 4 actual realization/evidence remains explicit downstream work.",
+        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
+        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
+        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
+        "Do not edit repository files, create an archive, commit or push."
+      ],
+      "userTarget": "<selected source/current planning target>",
+      "palette": true,
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "ideas.collect.domain",
+      "file": "collect-domain-ideas.command.md",
+      "command": "собери идеи домена",
+      "englishName": "collect domain ideas",
+      "commandFamily": [
+        "собери идеи домена",
+        "domain ideas"
+      ],
+      "description": "accumulate Ideas around evidence-backed Domain meaning",
+      "meaning": "Run the shared collect-ideas shell with the integration target fixed to Domain meaning. Use Domain Discovery when candidate exploration is useful, then integrate selected/current concepts, identity/lifecycle, rules/invariants/policies and VO/Aggregate/Root/ownership boundaries only when evidence justifies them.",
+      "activeContextBehavior": "Use current Scenario/DATA/Behavior/Requirements and existing Domain meaning as evidence. Discovery is proportional; no explicit Aggregate is a valid result. Stop before Slice planning unless scope is expanded.",
+      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
+        "planning/documentation/application-planning/domain-discovery-workflow.md",
+        "planning/documentation/application-planning/domain-planning-workflow.md",
+        "planning/documentation/application-planning/templates/DOMAIN-DRAFT-TEMPLATE.md"
+      ],
+      "expectedOutput": "Reviewed Domain Ideas + evidence/candidates when useful + current/preliminary selected Domain meaning + Q/R/P/Decisions + realization handoffs.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
+        "Do not infer Domain entities/ownership from nouns, tables, ORM or database shape alone.",
+        "Select/split/merge/reject candidates from behavior/state/rule evidence; `no explicit Aggregate needed` remains valid.",
+        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
+        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
+        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
+        "Do not edit repository files, create an archive, commit or push."
+      ],
+      "userTarget": "<selected source/current planning target>",
+      "palette": true,
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "ideas.collect",
       "file": "collect-ideas.command.md",
       "command": "собери идеи",
@@ -87,9 +176,9 @@
         "собери идеи",
         "collect ideas"
       ],
-      "description": "collect/review Ideas and update integrated current planning",
-      "meaning": "Extract coherent Ideas/provenance from the selected source, preserve material non-Idea context, review necessity/better routes, resolve affected Workspace Use Cases or Application Scenarios, and integrate selected meaning into one current plan. Planning Concerns/Q/R/P are secondary owner-attached active/residual state using the shared Concern/Decision model; related concerns may form one Concern Group and are never the planning root.",
-      "activeContextBehavior": "Use the explicitly selected or clearly active current source. When a current integrated plan is clearly selected, use it as the current baseline and update it rather than starting another plan. For Workspace/documentation planning use UCDS proportionally. For Application planning use the same-quality SDS Step 0–4 contract from `sds-planning-profiles.md`: Why/Solution Discovery → Scenario with DATA/Behavior → Domain Draft → Slices plus contextual WEUC/architecture evidence → Practical Realization Feedback. Mini is one accumulating application-plan file; Modular/Medium splits that same meaning into a small growing file set; Full uses rich stable owners. Ask only when source/current-plan identity is genuinely missing or ambiguous.",
+      "description": "collect/review Ideas with contextual semantic integration",
+      "meaning": "Use the generic Idea/Concern working shell: extract coherent Ideas and provenance, preserve material non-Idea meaning, review Ideas, determine the real contextual semantic integration target when useful, and show current/preliminary integration without inventing a planning unit. Q/R/P follows the shared Concern/Decision model. The command stops before explicit Pre-Update/file realization and before practical realization/evidence.",
+      "activeContextBehavior": "Use the explicitly selected or clearly active source and one current plan when one exists. Infer the useful integration target from context (for example Workspace UC, Application Scenario, Domain, Slice or another real owner); if no grounded integration surface exists, pure Idea + Concern work is valid. Traverse UCDS/Application SDS only to the semantic depth justified by the source/current plan. Full lifecycle awareness does not authorize automatic Pre-Update or Step 4 execution.",
       "traversalReadMode": "Targeted/full by source size, current-plan/current-owner uncertainty, affected useful results and selected planning depth.",
       "ownerFiles": [
         "planning/documentation/planning-concerns-and-decisions-model.md",
@@ -98,32 +187,33 @@
         "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
         "planning/documentation/ai-reviewability-and-directed-planning-principles.md",
         "planning/documentation/direction-and-use-case-registry-workflow.md",
-        "planning/documentation/workspace-planning/workspace-planning-principles-and-terminology.md",
-        "planning/documentation/workspace-planning/WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md",
-        "planning/documentation/profiles/sds-planning-profiles.md",
-        "planning/documentation/application-planning/direction-registry.md",
+        "planning/documentation/workspace-planning/use-case-registry.md",
         "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
-        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/use-case-registry.md",
+        "planning/documentation/profiles/sds-planning-profiles.md"
       ],
-      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points + Related Ideas/provenance + affected Workspace UCDS or Application SDS Current Plan; Area Concern Register + active/residual Planning Concerns/Concern Groups/retained trace when material; execution/review projections when useful; Current Overall Conclusions and only genuinely unselected Better Routes.",
+      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points/Review Priority + reviewed Ideas/provenance + contextual Current/Preliminary Integration when useful + Area Concern Register/active-residual Concern state when material + Current Overall Conclusions + explicit downstream handoff. Exact file Pre-Update and practical realization/evidence are not executed unless separately requested.",
       "permissionMode": "read-only",
       "keyReminders": [
         "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
         "When a current integrated plan is clearly active, update that plan as baseline; do not create an append-only command-result ledger or a second competing current plan.",
         "Ordinary chat text controls requested scope/depth/lens. Do not create a persistent Focus/H0-H1-H2 state or a command for each modifier.",
+        "The automatic collect-ideas lifecycle is Phase 1 Idea/Concern Review + Phase 2 Semantic Integration when grounded. Phase 3 Pre-Update (exact owners/files/actions/checks) and Phase 4 Realization/Evidence/Review are explicit continuations only.",
+        "When several Ideas combine around one meaningful unit, propose a contextual preliminary integration/draft view so their combined effect can be reviewed. Mark it current-selected, preliminary, candidate/draft or explanatory; never silently promote provisional meaning to canonical truth.",
+        "Do not manufacture a Scenario/UC/Domain/Slice merely because Ideas exist. Pure Idea/Q/R/P work is a valid result when no useful integration target is grounded.",
         "Not every source statement is an Idea; preserve relevant Existing Reality, constraints, decisions, corrections and questions with their proper meaning.",
         "Perform every mandatory Idea review check, but do not manufacture objections, risks or refinements merely to populate fields.",
         "Actively test whether each Idea deserves implementation and whether a genuinely simpler or better route exists.",
         "Idea remains the generic Idea entity; do not create Scenario Idea, Workspace-UC Idea, File-Update Idea or other context-specific Idea types.",
         "For material selected change, resolve affected existing/new Workspace UCs or Application Scenarios using current semantic owners and normal independent-usefulness/Scenario-boundary rules.",
         "Several Ideas affecting one UC/Scenario converge into one integrated target for that unit; one cross-cutting Idea is reviewed once and referenced from affected units with local impact only.",
-        "For Workspace/documentation planning use UCDS: Step 1 Use Case → Step 2 Domain/Rules → Step 3 Vertical Slice/Realization.",
-        "For Application planning preserve the full SDS reasoning shape: Step 0 Real-Life Need → Current Reality → solution alternatives → Application Concept/responsibility/prototype; Step 1 Scenario + Scenario DATA + Behavior Items + material Requirements/Screens; Step 2 Domain Draft; Step 3 Slice Strategy/Slices + material contextual WEUC instances/likelihood/change paths/architecture evidence; Step 4 practical realization-feedback planning.",
+        "For Workspace/documentation planning, use current Workspace UCs proportionally for semantic integration. Do not enter exact file realization merely because UCDS has a Step 3; exact files/actions belong to explicit Pre-Update for this command family.",
+        "For Application planning, know the full SDS lifecycle: Step 0 Why/Solution → Step 1 Scenario + DATA/Behavior → Step 2 Domain → Step 3 Slices plus material WEUC/architecture/testing planning → Step 4 implementation/executed proof/actual evidence. Traverse only the source-justified semantic depth automatically; Step 4 is downstream, not automatic collect-ideas scope.",
         "Mini, Modular/Medium and Full SDS have the same semantic quality. Mini keeps the complete plan in one file; Modular reorganizes without losing reviewed DATA/Behavior or other selected meaning; Full increases stable addressability.",
         "For Step 3 architecture judgment, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths over generic future flexibility; derive Change Pressure/Architecture Decisions only when evidence supports them.",
         "Use planning dependency direction upstream → downstream. Preserve early later-step insight as provisional context, but do not let downstream convenience normally define upstream meaning.",
-        "For Workspace/documentation planning, Step 1 + Step 2 is the normal default once the UC boundary is sufficiently grounded; Step 1 may stand alone while the target UC picture is materially unresolved; include Step 3 when explicitly requested or realization is sufficiently grounded/useful.",
+        "For Workspace/documentation planning, Step 1 + Step 2 remains a normal semantic depth once the UC boundary is grounded. Carry high-level realization implications forward when useful, but require explicit Pre-Update before choosing concrete repository files/actions.",
         "Plan from Need/situation → UC/Scenario → Current→Target. Derive Q/R/P only after a concrete owner/current planned state exists; do not walk a FIND queue.",
         "Execution order is the selected route through planned work; represent genuine parallelism/dependencies rather than forcing a total order. Application execution order may group Slices by versions/releases.",
         "Current State normally uses a high-level summary + direct current-owner links. Target changed/new semantic meaning must be complete enough that implementation does not invent missing decisions; keep Current→Target Transition separate.",
@@ -140,6 +230,140 @@
       "userTarget": "<source/discussion to collect Ideas from>",
       "palette": true,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "ideas.collect.application.modular",
+      "file": "collect-modular-application-ideas.command.md",
+      "command": "собери модульный план приложения",
+      "englishName": "collect modular application plan",
+      "commandFamily": [
+        "собери модульный план приложения",
+        "собери идеи приложения модульно",
+        "собери модульные идеи приложения",
+        "modular application ideas"
+      ],
+      "description": "coordinate Scenario → Domain → Slice Idea accumulators in a Modular Application plan",
+      "meaning": "Coordinate the existing collect-ideas Scenario, Domain and Slice semantic routes as one high-level Modular Application planning pass. Preserve one Application Current Plan while making Scenario/Domain/Slice work areas independently addressable; Ideas, concerns and Decisions may be split by area when useful without forcing one file per entity.",
+      "activeContextBehavior": "Use the selected Application and Modular/Medium SDS profile as the physical/addressability preference. Run focused Scenario → Domain → Slice passes only where each area is material, then integrate cross-area conclusions. Exact filenames remain contextual and are selected only in explicit Pre-Update.",
+      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/detailed-planning/README.md",
+        "planning/documentation/application-planning/domain-discovery-workflow.md",
+        "planning/documentation/application-planning/domain-planning-workflow.md",
+        "planning/documentation/application-planning/slice-planning-workflow.md",
+        "planning/documentation/profiles/sds-planning-profiles.md",
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/use-case-registry.md"
+      ],
+      "expectedOutput": "One Modular Application Current Plan with coordinated Scenario/Domain/Slice Idea work areas, per-area semantic integration/Q/R/P/Decision trace and cross-area conclusions; no fixed file count and no automatic Pre-Update.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
+        "This command is an orchestration/profile shortcut over existing semantic UCs; do not create a Modular-Application semantic UC for it.",
+        "Prefer separately addressable Scenario/Domain/Slice Idea/Concern/Decision work areas when reviewability benefits, but do not mandate `ideas.md`, `concerns.md` and `decisions.md` everywhere.",
+        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
+        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
+        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
+        "Do not edit repository files, create an archive, commit or push."
+      ],
+      "userTarget": "<selected source/current planning target>",
+      "palette": true,
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "ideas.collect.scenario",
+      "file": "collect-scenario-ideas.command.md",
+      "command": "собери идеи сценария",
+      "englishName": "collect scenario ideas",
+      "commandFamily": [
+        "собери идеи сценария",
+        "scenario ideas"
+      ],
+      "description": "accumulate Ideas around Application Scenario meaning",
+      "meaning": "Run the shared collect-ideas shell with the integration target fixed to an Application Scenario. Integrate Ideas into observable actor/user goal/result behavior, Scenario DATA and Behavior Items, adding Requirements/Screens when material; preserve Domain/Slice findings as downstream handoffs.",
+      "activeContextBehavior": "Use the clearly selected/current Scenario, or identify the candidate Scenario when the source makes it clear. Do not broaden into Domain/Slice planning merely because downstream implications are visible.",
+      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
+        "planning/documentation/application-planning/detailed-planning/README.md",
+        "planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md"
+      ],
+      "expectedOutput": "Reviewed Scenario Ideas + current/preliminary Scenario integration + DATA/Behavior + material Requirements/Screens + Q/R/P/Decisions + downstream handoffs.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
+        "Scenario identity is a user/actor Need/goal/desired result reached through observable useful behavior; internal implementation operations are not Scenarios by themselves.",
+        "Stop before Domain planning unless the user intentionally expands scope.",
+        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
+        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
+        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
+        "Do not edit repository files, create an archive, commit or push."
+      ],
+      "userTarget": "<selected source/current planning target>",
+      "palette": true,
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "ideas.collect.slice",
+      "file": "collect-slice-ideas.command.md",
+      "command": "собери идеи слайса",
+      "englishName": "collect slice ideas",
+      "commandFamily": [
+        "собери идеи слайса",
+        "slice ideas"
+      ],
+      "description": "accumulate Ideas around Slice Strategy or one implementation Slice",
+      "meaning": "Run the shared collect-ideas shell with the integration target fixed to Slice Strategy when decomposition is unresolved, otherwise to one selected Slice. Integrate vertical useful-result boundaries, dependencies, technical sequence, proof obligations and material Architecture/Testing evidence through their current UCs.",
+      "activeContextBehavior": "Use selected Scenario/Behavior/Requirements and Domain meaning when material. Route architecture/testing questions to their current registries; do not copy those methodologies into the command or let technical sequencing redefine product priority.",
+      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "ownerFiles": [
+        "planning/documentation/planning-concerns-and-decisions-model.md",
+        "planning/documentation/idea-planning-principles-and-terminology.md",
+        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
+        "planning/documentation/application-planning/use-case-registry.md",
+        "planning/documentation/application-planning/slice-planning-workflow.md",
+        "planning/documentation/application-planning/templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md",
+        "planning/documentation/application-planning/templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md",
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/testing-planning/use-case-registry.md"
+      ],
+      "expectedOutput": "Reviewed Slice Ideas + selected/current Slice Strategy or Slice integration + dependencies/technical sequence/proof obligations + Q/R/P/Decisions + material Architecture/Testing handoffs.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
+        "Product/Scenario priority is upstream input and is distinct from recommended technical implementation sequence.",
+        "Testing Strategy/Test Design/Practical Test Plan may be Step-3 planning evidence when material; actual coverage/executed evidence remains downstream.",
+        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
+        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
+        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
+        "Do not edit repository files, create an archive, commit or push."
+      ],
+      "userTarget": "<selected source/current planning target>",
+      "palette": true,
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -704,14 +928,17 @@
       "englishName": "plan file update",
       "commandFamily": [
         "план файл-обновление",
+        "пред-апдейт",
         "спланируй обновление файлов",
         "спланируй архив",
         "plan file update",
-        "archive plan"
+        "archive plan",
+        "pre-update",
+        "спланируй изменения файлов"
       ],
-      "description": "file plan",
-      "meaning": "Produce one concrete file/docs/code/archive update plan from current selected planning meaning.",
-      "activeContextBehavior": "Ask target/scope only when active context does not make it clear.",
+      "description": "Pre-Update / concrete file plan",
+      "meaning": "Explicit Pre-Update continuation: translate current selected semantic planning meaning into one ordered concrete repository/file update plan with exact owners, files, add/replace/delete actions, dependencies and verification. This is plan-only and is not Application SDS Step 3 or implementation permission.",
+      "activeContextBehavior": "Use the clearly selected current semantic planning result as input. Ask target/scope only when active context does not make it clear. If invoked after collect-ideas work, continue from that selected/current semantic integration instead of reopening the whole Idea review unless material uncertainty remains.",
       "traversalReadMode": "Reuse/targeted/full by update risk.",
       "ownerFiles": [
         "planning/documentation/planning-concerns-and-decisions-model.md",
@@ -720,9 +947,11 @@
         "planning/documentation/file-update-overview-workflow.md",
         "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
       ],
-      "expectedOutput": "Idea-aware File Update Plan from one Current Selected Meaning: Current Conclusions, active Planning Concerns/Q/R/P + Concern Groups/Area Register/retained trace when material, unselected Potential Simplifications / Better Routes when material, then ordered concrete steps/files/checks/next action.",
+      "expectedOutput": "Pre-Update / File Update Plan from one Current Selected Meaning: Current Conclusions and active concerns when material, then ordered concrete steps, exact files/actions/dependencies/checks, explicit boundaries and next authorized action.",
       "permissionMode": "plan-only",
       "keyReminders": [
+        "`Pre-Update` / `пред-апдейт` is the explicit continuation from semantic planning into concrete file planning; it is not a new semantic UC and not a global rename for SDS/UCDS Step 3.",
+        "Do not treat contextual `давай шаг 3` as a global command alias because Step 3 already has canonical meanings in SDS/UCDS; resolve it from active context instead.",
         "Plan file/docs/code/archive update only.",
         "Treat only explicit user statements and checked source facts as confirmed.",
         "Use shared Idea review only when the update contains material conceptual uncertainty; do not manufacture Idea analysis for mechanical updates.",

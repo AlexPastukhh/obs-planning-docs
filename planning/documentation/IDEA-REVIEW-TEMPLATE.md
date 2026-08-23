@@ -1,7 +1,7 @@
 # Idea Review Template
 
 Status: active reusable output template
-Doc version: v1.3.0-shared-concern-model
+Doc version: v1.4.0-contextual-integration
 Scope: recommended Markdown representation for Standard Idea Review, optional Deep Idea Planning and Idea relations to the shared Planning Concern/Decision model.
 
 Shared Planning Concern semantics: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md)
@@ -54,6 +54,25 @@ If this Idea is itself the selected detailed storage owner for that concern/grou
 ### Next Action
 ```
 
+## Contextual / Preliminary Integration — When Useful
+
+When several Ideas materially combine around a more fundamental planning meaning, show the combined effect without pretending a provisional projection is already canonical:
+
+```markdown
+## Contextual / Preliminary Integration
+
+**Integration Target:** <existing owner / candidate owner / none>
+**Status:** <current selected / preliminary integration / candidate-draft / explanatory projection>
+**Why this target:** <why it is the useful unit around which the Ideas combine>
+**Combined effect:**
+- <what the Ideas collectively imply>
+
+**Related Ideas:** <IDs when useful>
+**Owner / Stored At:** <when current semantic owner/addressability exists>
+```
+
+Omit this section when pure Idea/Q/R/P work is sufficient. Do not manufacture a semantic unit merely because Ideas exist.
+
 ## Current Plan Snapshot — For Integrated Outputs
 
 When the consuming route continues beyond local Idea review into useful-result planning, establish a short Current Plan baseline before deriving concern delta. Do **not** use final `Current Overall Conclusions` as a pre-integration baseline.
@@ -72,12 +91,13 @@ Top-level ordering belongs to the consuming route. For the current `собери
 ```text
 Source / Baseline
 → Current Plan Snapshot
+→ compact reviewed Ideas / provenance
+→ Contextual / Preliminary Integration when useful
 → Active Planning Concerns / Q/R/P + Concern Groups when material
-→ compact Cross-Cutting Ideas when material
-→ affected UC / Scenario planning
 → cross-unit review when material
 → Current Overall Conclusions
 → Potential Simplifications / Better Routes
+→ explicit Pre-Update / downstream handoff when relevant
 ```
 
 The component sections in this template are reusable shapes; their physical order here is not authority to override a command/workflow output contract.
@@ -149,6 +169,19 @@ For an Idea-review-only route with no wider UC/Scenario integration, summarize t
 ```
 
 This section contains only unselected candidate changes to Current Plan. Once accepted, integrate the route into Current Conclusions and record a material Decision trace when useful.
+
+## Continuation Handoff — When Relevant
+
+The `собери идеи` family normally stops after semantic integration:
+
+```markdown
+## Continuation
+
+- **Pre-Update:** not executed; invoke `пред-апдейт` / `план файл-обновление` to choose exact repository files/actions.
+- **Realization / Evidence / Review:** downstream explicit work; no implementation/testing/ReviewDiff evidence is claimed by this Idea review.
+```
+
+Do not print this mechanically for tiny pure-Idea discussion when no downstream work is relevant.
 
 ## Practical Example
 

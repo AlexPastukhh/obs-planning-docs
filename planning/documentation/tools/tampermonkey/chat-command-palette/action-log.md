@@ -323,3 +323,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-050`
 **Reason:** Planning Helper generated command/use-case seeds are rebuilt from updated current command definitions and UC registries for the shared Concern/Q/R/P/Decision transition; Helper runtime behavior is unchanged and full semantic rationale/APPLIED state remain in the reusable-documentation canonical log.
+
+### XREF-018 — Project collect-ideas orchestrator commands into Planning Helper
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-052`
+**Reason:** Planning Helper README, durable catalog order and generated command seed project the new GitHub-backed collect-ideas orchestrator commands without changing runtime/source/test behavior or adding custom tabs; full semantic rationale and APPLIED target state are owned by the reusable-documentation canonical log.

@@ -900,3 +900,49 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - Planning Root, Application Planning and Planning Helper scope logs point to this canonical applied transition.
 
 **Rationale:** make Q/R/P durable and reviewable without turning it into a separate planning queue or centralized storage dump, preserve residual/decision meaning, and prevent AI from silently resolving user-owned concerns.
+
+### LOG-DOC-051 — Clarify collect-ideas orchestrator family and explicit Pre-Update boundary
+
+**Type:** IDEA CLARIFICATION / INTEGRATED CONSISTENCY REVIEW
+**Source:** user clarifications after `LOG-DOC-050`, followed by pointer-matrix review and explicit Pre-Update planning before package production
+
+**Current Conclusions:**
+- keep one generic `собери идеи` as the universal Idea/Q/R/P working shell. It may stay in pure-Idea mode, or when several Ideas materially combine around a real planning meaning it should propose a clearly marked current/preliminary/candidate integration view so the combined result can be reviewed;
+- do not create a separate `собери идеи полного приложения`: `собери идеи приложения` already knows the complete same-quality Application SDS Step 0–4 lifecycle. Mini/Modular/Full remain physical/addressability profiles rather than different semantic quality levels;
+- add high-level accumulator/orchestrator Planning Commands for whole Application, Scenario, Domain and Slice planning plus one Modular Application orchestrator that coordinates focused Scenario → Domain → Slice Idea passes. These commands are invocation/orchestration surfaces only and do not create new semantic UCs;
+- specialized orchestrators fix the integration-target kind while consuming current owners: Scenario → `UC-PLAN-SCENARIO`; Domain → Domain Discovery/Planning as useful; Slice → Slice Strategy/Slice with conditional Architecture/Testing UCs; whole Application → the existing Application UC graph. The generic command infers the target contextually and may have none;
+- for the collect-ideas command family, default automatic execution is Phase 1 Idea/Concern Review plus Phase 2 Semantic Integration when grounded. Phase 3 `Pre-Update` translates selected semantic meaning into exact repository owners/files/actions/checks and requires explicit continuation. Phase 4 Realization/Evidence/Review is also explicit downstream work;
+- `Pre-Update` is a user-facing continuation label for the existing `file_update.plan` capability, not a new semantic UC and not a global rename of canonical SDS/UCDS Step 3. Add `пред-апдейт`, `pre-update` and `спланируй изменения файлов` aliases; do not add ambiguous global `давай шаг 3`;
+- Step 4 remains fully described in Application lifecycle methodology but is never implied to have executed merely because collect-ideas planning knows it. Actual implementation, practical proof execution, Coverage/actual evidence and ReviewDiff remain downstream;
+- orchestrator commands are ordinary GitHub-backed `planning/commands/*.command.md` records intended for Tampermonkey Planning Helper projection. Use `directionIds` for standalone Application-oriented placement rather than creating fake UC ownership;
+- first establish stable commands and Helper catalog projection. Generic user-defined Helper tabs plus an initial `Ideas` tab remain a separate next change after these command IDs exist;
+- rechecking the earlier Pre-Update removed unnecessary change surface: no Application UC registry rewrite, Workspace UCDS template rewrite, SDS profile rewrite, Architecture/Testing registry rewrite, Helper runtime/source/test rewrite, Use-Case seed rewrite, Direction seed rewrite or userscript rewrite is needed for this command-family transition. Current semantic owners are consumed through pointers instead.
+
+**Consistency Result:**
+- the command family adds stable high-level invocation choices without duplicating Scenario/Domain/Slice/Architecture/Testing semantics or creating new UCs;
+- generic and specialized collect-ideas routes share one Idea/Concern contract and one explicit stop before concrete file planning;
+- existing direct Scenario/Domain/Slice planning commands remain valid and distinct: they directly invoke the semantic capability, while the new collect-ideas commands accumulate Ideas/Q/R/P plus integration around that capability;
+- Helper receives the new commands through the existing GitHub-backed command catalog/projection model; custom tabs are not smuggled into this package.
+
+**Questions / Risks / Problems:** none blocking the selected transition. The exact Modular Application physical file split remains contextual by design; the command may prefer separately addressable Scenario/Domain/Slice work areas but does not mandate `ideas.md`/`concerns.md`/`decisions.md` files.
+
+### LOG-DOC-052 — Apply collect-ideas orchestrator family and explicit Pre-Update boundary
+
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-051`
+**ChangeSet:** `102d689f-26e1-4a20-9bb2-dc9847bd52f4`
+**Package:** `bd375ae5-a129-4355-8b16-28fbef024e6a`
+
+**Target-State Result:** after successful Apply of this package:
+- `собери идеи` is the generic adaptive accumulator: reviewed Ideas + shared Concern/Q/R/P state + contextual current/preliminary integration when useful, with pure-Idea mode still valid;
+- five new high-level repository Planning Commands provide whole-Application, Scenario, Domain, Slice and Modular-Application collect-ideas orchestration without adding semantic UCs;
+- the collect-ideas lifecycle explicitly stops automatically after Idea/Concern Review plus source-justified Semantic Integration. `Pre-Update`/`план файл-обновление` is the explicit exact-file continuation; practical Realization/Evidence/Review is separate downstream work;
+- Application SDS Step 0–4 remains fully known and same-quality across Mini/Modular/Full, while Step 4 is not auto-executed by collect-ideas commands and no exact file plan is implied by semantic Step 3 planning;
+- Idea methodology/template/example expose contextual/preliminary integration status and an explicit continuation handoff, preventing provisional drafts from becoming accidental semantic authority;
+- File Update workflow/template and `file_update.plan` expose `Pre-Update` as the plan-only continuation label and retain separate implementation permission;
+- Planning Command registry documentation describes standalone `directionIds`, high-level orchestrator commands and current explicit GitHub recovery rather than the stale ChatGPT-only recovery statement;
+- Planning Helper projects the five new commands through the repository command catalog, generated command seed and durable catalog order; the current command-definition count becomes 47 while Direction/UC semantic catalogs are unchanged by this transition;
+- legacy compact `собери идеи` helper insertion is synchronized only for compatibility; no new legacy helper-command records are created;
+- custom Helper tabs remain deferred to the next separate Helper change.
+
+**Rationale:** provide stable high-level collect-ideas accumulators for the Helper while preserving one semantic owner graph, keeping concrete file planning and actual evidence explicitly downstream, and avoiding unnecessary methodology/runtime churn.

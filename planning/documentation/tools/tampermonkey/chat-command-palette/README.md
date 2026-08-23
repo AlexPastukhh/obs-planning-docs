@@ -111,7 +111,7 @@ It stores ordered stable IDs for Directions, Commands, Use Cases and Prompts. Th
 
 Unknown/new IDs not listed in an older order file append after configured IDs rather than disappearing.
 
-The initial repository order intentionally presents the universal planning route first: real-life reality/solution → Scenario → Domain → Slice → internal Workspace Uses / WEUC Instances → architecture paths/pressure/decisions → Testing → remaining repository/documentation capabilities. Existing `собери идеи` and SDS profile controls remain orchestration/profile controls; no new collect-ideas variants are defined here.
+The initial repository order intentionally presents the collect-ideas orchestrator family first, then the universal planning route: whole Application / Scenario / Domain / Slice accumulators → SDS profile controls → reality/solution → Scenario → Domain → Slice → internal Workspace Uses / WEUC Instances → architecture paths/pressure/decisions → Testing → remaining repository/documentation capabilities. The orchestrators are ordinary repository-owned `planning/commands/*.command.md` records; Helper only projects them. Custom user-defined tabs are a separate future UI capability and are not introduced by this command-family change.
 
 ## GitHub Actions
 

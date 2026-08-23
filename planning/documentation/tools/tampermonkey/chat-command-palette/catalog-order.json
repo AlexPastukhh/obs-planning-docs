@@ -16,6 +16,11 @@
   ],
   "commands": [
     "ideas.collect",
+    "ideas.collect.application",
+    "ideas.collect.application.modular",
+    "ideas.collect.scenario",
+    "ideas.collect.domain",
+    "ideas.collect.slice",
     "application_sds.mini",
     "application_sds.modular",
     "application_sds.full",

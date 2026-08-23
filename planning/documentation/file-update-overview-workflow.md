@@ -1,8 +1,8 @@
 # File Update Overview Workflow
 
 Status: active reusable documentation-layer workflow
-Doc version: v0.7.0-route-specific-package-reporting
-Scope: how to produce `План файл-обновление` for non-trivial file, documentation, code or package work while separating conceptual Idea decisions from concrete file actions.
+Doc version: v0.8.0-pre-update-continuation
+Scope: how to produce explicit `Pre-Update` / `План файл-обновление` for non-trivial file, documentation, code or package work while separating conceptual semantic planning from concrete file actions.
 
 Use with:
 
@@ -17,6 +17,17 @@ Practical example: [`examples/PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md`](examples/PLA
 When a concrete command route is in scope, also read that command definition and its ownerFiles. Package/source/application/review behavior is route-specific and must not be reconstructed from a generic archive assumption.
 
 ## 1. Purpose
+
+`Pre-Update` / `пред-апдейт` is the user-facing continuation label for the existing File Update Plan capability:
+
+```text
+selected semantic planning result
+→ explicit Pre-Update
+→ exact repository owners/files/actions/dependencies/checks
+→ still plan-only
+```
+
+It is not a new semantic Use Case, not a rename of Application SDS Step 3 or Workspace UCDS Step 3, and not permission to materialize changes.
 
 Use this workflow when an answer plans, creates, reviews or applies changes to files or packages.
 
@@ -185,7 +196,7 @@ For small updates, one step, one action list and one file table may be sufficien
 ## 7. Planned-Mode Boundary
 
 ```text
-A planned `План файл-обновление` is not permission to edit files.
+A planned `Pre-Update` / `План файл-обновление` is not permission to edit files.
 It may propose new, updated, renamed or deleted paths.
 Implementation requires a separate authorized action, such as
 `давай архив` / `build replacement archive`.

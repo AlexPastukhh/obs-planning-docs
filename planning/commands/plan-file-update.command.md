@@ -12,14 +12,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "englishName": "plan file update",
   "commandFamily": [
     "план файл-обновление",
+    "пред-апдейт",
     "спланируй обновление файлов",
     "спланируй архив",
     "plan file update",
-    "archive plan"
+    "archive plan",
+    "pre-update",
+    "спланируй изменения файлов"
   ],
-  "description": "file plan",
-  "meaning": "Produce one concrete file/docs/code/archive update plan from current selected planning meaning.",
-  "activeContextBehavior": "Ask target/scope only when active context does not make it clear.",
+  "description": "Pre-Update / concrete file plan",
+  "meaning": "Explicit Pre-Update continuation: translate current selected semantic planning meaning into one ordered concrete repository/file update plan with exact owners, files, add/replace/delete actions, dependencies and verification. This is plan-only and is not Application SDS Step 3 or implementation permission.",
+  "activeContextBehavior": "Use the clearly selected current semantic planning result as input. Ask target/scope only when active context does not make it clear. If invoked after collect-ideas work, continue from that selected/current semantic integration instead of reopening the whole Idea review unless material uncertainty remains.",
   "traversalReadMode": "Reuse/targeted/full by update risk.",
   "ownerFiles": [
     "planning/documentation/planning-concerns-and-decisions-model.md",
@@ -28,9 +31,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/file-update-overview-workflow.md",
     "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
   ],
-  "expectedOutput": "Idea-aware File Update Plan from one Current Selected Meaning: Current Conclusions, active Planning Concerns/Q/R/P + Concern Groups/Area Register/retained trace when material, unselected Potential Simplifications / Better Routes when material, then ordered concrete steps/files/checks/next action.",
+  "expectedOutput": "Pre-Update / File Update Plan from one Current Selected Meaning: Current Conclusions and active concerns when material, then ordered concrete steps, exact files/actions/dependencies/checks, explicit boundaries and next authorized action.",
   "permissionMode": "plan-only",
   "keyReminders": [
+    "`Pre-Update` / `пред-апдейт` is the explicit continuation from semantic planning into concrete file planning; it is not a new semantic UC and not a global rename for SDS/UCDS Step 3.",
+    "Do not treat contextual `давай шаг 3` as a global command alias because Step 3 already has canonical meanings in SDS/UCDS; resolve it from active context instead.",
     "Plan file/docs/code/archive update only.",
     "Treat only explicit user statements and checked source facts as confirmed.",
     "Use shared Idea review only when the update contains material conceptual uncertainty; do not manufacture Idea analysis for mechanical updates.",

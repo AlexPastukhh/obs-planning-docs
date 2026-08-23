@@ -156,3 +156,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-050`
 **Reason:** Planning Root AI contract, root registries, commands and helper-library command projections consume the shared Concern/Q/R/P/Decision model; full clarification and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-022 — Collect-ideas orchestrators and explicit Pre-Update boundary
+
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/action-log.md`
+**Entry:** `LOG-DOC-052`
+**Reason:** Planning Root adds the high-level collect-ideas command family, updates the generic collect-ideas/file-update command boundaries, synchronizes command-registry guidance and the legacy compact insertion; full clarification and APPLIED target state are owned by the reusable-documentation canonical log.

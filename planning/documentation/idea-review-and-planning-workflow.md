@@ -1,7 +1,7 @@
 # Idea Review And Planning Workflow
 
 Status: active reusable cross-cutting workflow
-Doc version: v1.4.0-accumulating-current-plan
+Doc version: v1.5.0-explicit-pre-update
 Scope: collect, review, deepen and integrate Ideas while preserving source meaning and updating one current selected plan rather than accumulating a transcript of planning outputs.
 
 Canonical meanings: [`idea-planning-principles-and-terminology.md`](idea-planning-principles-and-terminology.md)
@@ -42,7 +42,9 @@ selected source
 → extract coherent Ideas proportionally
 → preserve non-Idea facts/constraints/decisions/questions separately
 → Standard Idea Review
-→ integrate selected meaning into affected current useful-result owners
+→ determine a useful contextual integration target when grounded
+→ show current/preliminary combined integration when it improves reviewability
+→ integrate actually selected meaning into affected current useful-result owners
 → update one coherent Current Plan
 → derive material Planning Concerns/Q/R/P through the shared Concern model
 → whole-plan review
@@ -89,6 +91,30 @@ Mini/Modular/Full change physical organization/addressability only. They do not 
 
 Several Ideas affecting one UC/Scenario converge into one integrated target. One cross-cutting Idea remains one Idea and is referenced from affected units with local impact only.
 
+Full SDS/UCDS lifecycle awareness is **not** permission to execute every downstream phase during `собери идеи`.
+
+## 4.1 Collect-Ideas Automatic Scope And Continuations
+
+```text
+Phase 1 — Idea / Concern Review
+  source → Ideas → Q/R/P / Concern Groups → AI Comment → recommendations/selected Decisions
+  automatic
+
+Phase 2 — Semantic Integration
+  resolve the real contextual owner and show current/preliminary integrated meaning
+  automatic when grounded
+
+Phase 3 — Pre-Update
+  selected semantic meaning → exact repository owners/files/add|replace|delete/actions/dependencies/checks
+  NOT automatic; invoke `пред-апдейт` / `план файл-обновление` / equivalent explicit continuation
+
+Phase 4 — Realization / Evidence / Review
+  materialize → execute proof → actual evidence/Coverage → ReviewDiff → evidence-backed upstream correction when needed
+  NOT automatic; downstream explicit work
+```
+
+`Pre-Update` is a collect-ideas continuation label, not a new semantic UC and not a rename of canonical Application SDS Step 3 or Workspace UCDS Step 3. Contextual `давай шаг 3` may refer to Pre-Update inside an active collect-ideas conversation, but it must not become a global command alias.
+
 ## 5. Directed Integration
 
 A provisional whole-picture pass is allowed to reveal integration and later-layer implications, but selection/review should stabilize dependency direction upstream → downstream. Preserve later-step insight as Carry-Forward/provisional context; do not let downstream convenience normally define upstream meaning.
@@ -105,8 +131,8 @@ For `собери идеи`, a material result normally projects:
 Source / Baseline / Real-Life Basis
 → Key Points + Review Priority
 → Related Ideas / provenance
-→ affected Workspace UC / Application Scenario
-→ Current → Target planning in UCDS or Application SDS Step 0–4
+→ contextual integration target when grounded
+→ Current / Preliminary Integration at the source-justified semantic depth
 → active/residual Planning Concerns / Concern Groups only where material
 → Review Order lens only when several attached deltas need ordering
 → Execution Order / versions when selected and useful
@@ -141,11 +167,11 @@ Resolved trivial concerns leave the active projection; materially useful answer/
 
 If no material active concern remains: `No material unresolved issues identified.`
 
-## 9. File Update And ReviewDiff Integration
+## 9. Pre-Update, File Update And ReviewDiff Integration
 
-UC/Scenario planning may already establish an exact realization/file surface. An explicit ordered File Update Plan remains separate only when selected/useful.
+`собери идеи` stops before exact repository realization. When the user explicitly continues with `пред-апдейт`, `спланируй изменения файлов` or `план файл-обновление`, use the File Update workflow to translate selected semantic meaning into exact owners/files/actions/checks. That plan remains plan-only.
 
-After materialization, semantic ReviewDiff reviews the actual transition against selected current owners. A confirmed implementation defect does not require a new Idea unless a material answer-seeking correction/alternative exists.
+After separately authorized materialization, semantic ReviewDiff reviews the actual transition against selected current owners. A confirmed implementation defect does not require a new Idea unless a material answer-seeking correction/alternative exists.
 
 ## 10. Checks Before Returning
 
@@ -159,7 +185,8 @@ After materialization, semantic ReviewDiff reviews the actual transition against
 - execution order does not masquerade as semantic dependency;
 - active concern projection is real current-plan delta only; retained trace/residual state follows the shared Concern owner;
 - Key Points/Review Priority and built-in recheck were applied proportionally;
-- final Current Overall Conclusions follow useful-result integration.
+- final Current Overall Conclusions follow useful-result integration;
+- automatic collect-ideas scope stopped before Pre-Update and practical realization/evidence unless explicitly continued.
 ```
 
 ## 11. Scope-Log Handoff When Logging Is Active

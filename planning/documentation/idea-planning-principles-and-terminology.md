@@ -1,7 +1,7 @@
 # Idea Planning Principles And Terminology
 
 Status: active reusable cross-cutting methodology owner
-Doc version: v1.2.0-useful-result-integration
+Doc version: v1.3.0-contextual-integration
 Scope: canonical reusable meanings and stable invariants for Idea review and deeper Idea planning across conversation review, solution/workflow planning, application planning, file-update planning and ReviewDiff semantic review. Generic Planning Concern/Q/R/P/Concern-Group/Decision lifecycle is owned separately by `planning-concerns-and-decisions-model.md`.
 
 ## 1. Purpose And Authority
@@ -168,6 +168,28 @@ one Idea affecting several UCs/Scenarios
 
 This is impact routing/integration, not a new Idea entity type. A cross-cutting Idea is reviewed once and referenced from affected useful-result plans rather than copied in full into each one.
 
+### 9.2 Contextual / Preliminary Integration
+
+Idea review should make the **combined effect** of Ideas reviewable when several Ideas act on one more fundamental planning meaning. The integration surface is contextual; it may be an existing Workspace UC, Application Scenario, Domain, Slice, workflow, architecture/testing planning unit or another real owner.
+
+```text
+several Ideas
+→ identify an existing/candidate integration target when useful
+→ show what the Ideas collectively imply for that target
+→ derive Concerns against the combined view
+```
+
+The projection must state its authority status when material:
+
+```text
+current selected meaning
+preliminary integration
+candidate / draft
+explanatory projection only
+```
+
+A useful draft-shaped projection is not automatically a new canonical entity. If no grounded integration surface exists, working directly with Ideas + Q/R/P + relations/evaluation is valid. Do not manufacture a Scenario/UC/Domain/Slice merely to give Ideas a container.
+
 ## 10. Idea Groups
 
 An `Idea Group` is lightweight navigation/integration grouping for related Ideas. It may contain Ideas, Group Review and Group Conclusion. It is not automatically a new canonical semantic owner.
@@ -289,6 +311,19 @@ An unanswered question does not automatically create a fallback.
 ## 16. Source Meaning Is Not Automatically An Idea
 
 A source may also contain Existing Reality/checked facts, Constraints, Decisions, Questions, Corrections and Provenance. Do not force every extracted meaning into an Idea.
+
+## 16.1 Collect-Ideas Continuation Boundary
+
+For the `собери идеи` command family, semantic awareness is broader than automatic execution:
+
+```text
+Phase 1 — Idea / Concern Review                     automatic
+Phase 2 — Semantic Integration when grounded       automatic
+Phase 3 — Pre-Update: exact owners/files/actions   explicit continuation
+Phase 4 — Realization / Evidence / Review           explicit downstream work
+```
+
+This continuation numbering belongs only to the collect-ideas workflow. It does not redefine Application SDS Step 3/4 or Workspace UCDS Step 3.
 
 ## 17. Do Not
 

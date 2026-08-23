@@ -54,6 +54,7 @@ Every command file contains exactly one marker block:
   "keyReminders": ["..."],
   "userTarget": "<placeholder>",
   "palette": true,
+  "directionIds": ["DIR-..."],
   "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]
@@ -70,6 +71,8 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - IDs, canonical commands and aliases are unique across the complete catalog.
 - `ownerFiles` and `keyReminders` are arrays of strings.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
+- optional `directionIds` contains current Direction IDs for standalone palette/orchestration placement when the command is not a semantic UC's direct command; every listed Direction must exist.
+- one high-level command may orchestrate several existing UCs/Scenario owners when that gives a useful stable invocation surface. This never creates a semantic UC or lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.
 
 ## Creating Or Updating A Command
@@ -82,7 +85,7 @@ Normal repository workflow:
 4. Update root/global command-system documentation only when shared routing rules change.
 5. Update examples/navigation only when affected.
 
-The Planning Helper treats this repository catalog as durable authority/backup but does **not** read it during normal browser operation. Commands are loaded from one browser-local snapshot into RAM. If that local snapshot is lost, ChatGPT can read the repository and return the complete current set of exact `[PLANNING_COMMAND_DEFINITION]` blocks. Restore reconciles the repository-backed local command set to that complete pasted set while preserving any explicitly local-only/unbacked records.
+The Planning Helper treats this repository catalog as durable authority/backup while normal browser operation remains local-first. Commands are loaded from one browser-local snapshot into RAM. Explicit `Hard Reload GitHub` reads the complete current direct command catalog and replaces the repository-backed local command cache; `Sync missing` remains incremental. ChatGPT-mediated marker-block restore is a fallback/debugging route, not the only repository recovery path.
 
 The Planning Helper Commands surface can create/edit a validated local command-definition draft. `Save GitHub` reads/validates the complete direct remote command catalog, then creates or updates the deterministic `planning/commands/*.command.md` target with optimistic SHA protection and exact verification. `Reload GitHub` explicitly replaces one local command draft with the current remote command. Repository command deletion/retirement remains outside the Helper runtime and requires the separate authorized documentation/command-maintenance route.
 
@@ -104,4 +107,4 @@ Generated install artifact:
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
-The generated userscript bundles the valid command catalog at build time as an offline fallback. At runtime the helper uses the browser-local snapshot/RAM model only; there is no repository command refresh. Recovery after local-state loss is ChatGPT-mediated: ChatGPT reads the current repository and returns exact marker blocks for local restore.
+Build generates `seed/commands.json` from the direct command catalog as a verified repository projection; current command identities are not maintained as hard-coded userscript authority. Runtime remains browser-local/RAM-first, while explicit `Reload`, `Sync missing` and `Hard Reload GitHub` provide repository reads/recovery. Generated projections never replace `planning/commands/*.command.md` as authority.

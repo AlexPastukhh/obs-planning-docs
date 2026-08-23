@@ -1,8 +1,8 @@
 # File Update Overview Template
 
 Status: active reusable output template
-Doc version: v0.7.0-route-specific-package-reporting
-Scope: exact reusable Markdown structure for `План файл-обновление`.
+Doc version: v0.8.0-pre-update
+Scope: exact reusable Markdown structure for explicit `Pre-Update` / `План файл-обновление`.
 
 Use with:
 
@@ -13,7 +13,7 @@ planning/documentation/file-update-overview-workflow.md
 ## Template
 
 ```markdown
-## План файл-обновление
+## Pre-Update / План файл-обновление
 
 **Статус:** <planned / package created / review checked / blocked / other route-owned state>
 
@@ -30,6 +30,8 @@ Include only when a command route is in scope.
 ### Target
 
 <What repository/documentation state this update should produce.>
+
+**Continuation basis:** <selected semantic planning result / current owner / other explicit basis>
 
 ### Checked sources
 

@@ -22,7 +22,7 @@ Assume current repository owners were checked and an existing Mini UCDS plan is 
 
 - **KP-1 — Example authority boundary — High** — stale examples must be corrected against canonical owners; the example itself never defines current methodology.
 - **KP-2 — Current-plan continuity — High** — integrate this selected change into the existing UCDS rather than creating a second command-result plan.
-- **KP-3 — Realization locality — Normal** — only the affected example/index surfaces should change when canonical semantics are already correct.
+- **KP-3 — Explicit realization handoff — Normal** — semantic integration may identify a narrow downstream effect, but exact files/actions belong to explicit Pre-Update.
 
 ## Current Plan Snapshot
 
@@ -69,7 +69,7 @@ Make stale-example review identify the canonical owner, stale demonstrated meani
 
 - Step 1 — Use Case: reviewed
 - Step 2 — Domain / Rules: reviewed
-- Step 3 — Vertical Realization: reviewed for this bounded change
+- Step 3 — concrete repository realization: not executed by `собери идеи`; carry forward to Pre-Update
 
 ### Step 1 — Target Use Case
 
@@ -96,26 +96,33 @@ stale-example finding
 → narrow affected example/navigation surface
 ```
 
-### Step 3 — Target Vertical Realization
+### Preliminary Integration / Carry-Forward
 
-**Deliverable UC result:** corrected current example coverage with no duplicate semantic owner.
-**Expected Workspace Change Path:** canonical owner → examples index/example body → example verification.
-**Architecture review:** local reusable-documentation change; no new shared coordination owner justified.
-**Slice(s):** one local example-coverage slice.
-**Dependencies:** current canonical owner meaning must already be selected.
-**Verification:** reread changed example/index against the canonical owner and confirm retired terminology is not presented as current.
-
-## Execution Order
+The reviewed Ideas imply a narrow future correction surface: the stale example and any navigation entry that presents the stale terminology. This is **preliminary semantic integration**, not an exact file-update plan.
 
 ```text
-confirm canonical owner
-→ correct stale example body/index
-→ verify discoverability and terminology
+selected Idea
+→ UC-DOC-REVIEW-EXAMPLES target meaning updated
+→ likely narrow example/navigation correction downstream
+→ exact files/actions not selected yet
+```
+
+## Continuation
+
+```text
+собери идеи
+→ stops here after semantic integration
+
+пред-апдейт / план файл-обновление
+→ would choose exact example/navigation files, actions and checks
+
+realization / ReviewDiff
+→ downstream explicit work only
 ```
 
 ## Current Overall Conclusions
 
-The selected Idea is integrated into the existing UCDS current plan. No second competing current plan or append-only `собери идеи` ledger is created.
+The selected Idea is integrated into the existing UCDS current plan at semantic depth. No second competing current plan or append-only `собери идеи` ledger is created, and no exact file plan or implementation evidence is claimed.
 
 ## Potential Simplifications / Better Routes
 
