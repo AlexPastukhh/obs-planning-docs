@@ -9,7 +9,7 @@ Current semantic entry:
 
 ## Boundary
 
-Current application behavior is owned by Scenario owners directly. Historical `UC-RPKG-*` entries were operation/capability-shaped and are retained only so old links, notes and implementation traceability remain understandable.
+Application behavior is owned by Scenario owners directly; selected target Scenario entries may precede implementation. Historical `UC-RPKG-*` entries were operation/capability-shaped and are retained only so old links, notes and implementation traceability remain understandable.
 
 ```text
 historical capability ID
@@ -30,4 +30,6 @@ Do not create new `UC-RPKG-*` entries for application buttons/actions. Reusable/
 | `UC-RPKG-ATTACH-SNAPSHOT` | Attach Repository Snapshot to ChatGPT | [`SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT`](scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) | `SL-RPKG-05` |
 | `UC-RPKG-DELIVER-REVIEW` | Deliver Current ReviewDiff to ChatGPT | [`SCN-RPKG-PROVIDE-CURRENT-CHANGE`](scenarios/SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) | `SL-RPKG-06` |
 
-Detailed current realization is owned by [`slices.md`](slices.md), while `PACKAGE-PROTOCOL.md`, `REPOSITORY-SNAPSHOT.md`, `CHATGPT-BRIDGE.md`, `DATA-AND-STATE.md` and `ARCHITECTURE.md` remain focused downstream contracts/evidence.
+`SCN-RPKG-FIND-EXISTING-WORK` is a selected target Scenario with no historical `UC-RPKG-*` capability ID; do not invent one merely for compatibility. Target SL-07/08/09 likewise remain target Slice identities rather than historical UC entries.
+
+Detailed current/target realization is owned by [`slices.md`](slices.md), while `PACKAGE-PROTOCOL.md`, `REPOSITORY-SNAPSHOT.md`, `CHATGPT-BRIDGE.md`, `DATA-AND-STATE.md` and `ARCHITECTURE.md` remain focused downstream contracts/evidence.

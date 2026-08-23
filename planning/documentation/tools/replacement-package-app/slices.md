@@ -1,12 +1,12 @@
-# Replacement Package App — Slice Strategy And Current Realization
+# Replacement Package App — Slice Strategy And Current/Target Realization
 
-Status: current implementation-aligned strategy / reviewed decomposition
+Status: current implementation + selected target decomposition
 Profile: Modular / Medium SDS
 Upstream: [`application-plan.md`](application-plan.md), [`domain-draft.md`](domain-draft.md)
 
-Slice identity is implementation/delivery identity, not user-world Scenario identity. A Slice may implement only part of a larger Scenario when it has a clear separately checkable result.
+Slice identity is implementation/delivery identity, not user-world Scenario identity. Scenario and Slice changes are reviewed independently: one Scenario may require several Slices, and one Slice may support several Scenarios.
 
-## Current Selected Decomposition
+## Current Implemented Decomposition
 
 ```text
 SL-RPKG-01 Apply Replacement Work
@@ -20,140 +20,200 @@ SL-RPKG-04 Export Repository Snapshot
 SL-RPKG-05 Attach Repository Snapshot To ChatGPT
 ```
 
-`SL-RPKG-04` is largely parallel to repository-work completion. `SL-RPKG-05/06` depend on real browser/manual acceptance for their user-visible result.
+Current source/tests implement SL-01..06. `SL-RPKG-05/06` still require live browser/manual practical evidence for operational acceptance.
+
+## Selected Target Decomposition
+
+```text
+SL-RPKG-01 Apply Replacement Work               EXPAND
+        ↓
+SL-RPKG-02 Inspect Current Change                KEEP
+        ├────────→ SL-RPKG-03 Finalize And Publish Work   LIGHT EXPAND
+        └────────→ SL-RPKG-06 Deliver Current Change      KEEP CORE RESULT
+
+SL-RPKG-04 Export Repository Snapshot            READINESS UPDATE
+        ↓
+SL-RPKG-05 Attach Repository Snapshot            KEEP CORE RESULT
+
+SL-RPKG-07 Discover And Open Existing Work       NEW
+        └→ establishes context consumed by SL-02 / SL-03 / SL-06
+
+SL-RPKG-05 ─┐
+            ├→ SL-RPKG-08 Manage External Interactions   NEW
+SL-RPKG-06 ─┘
+
+meaningful user operations across Slices
+        → SL-RPKG-09 Notify Operation Outcomes           NEW
+```
+
+SL-08/09 are not operation prerequisites: they manage downstream interaction/outcome surfaces. Repository location editing and technical diagnostics remain cross-Slice/application Behavior, not separate Slices in the first target.
 
 ## `SL-RPKG-01` — Apply Replacement Work
 
-**Deliverable/checkable result:** a valid prepared package safely becomes active work in the correct local repository, with updated ownership and a current cumulative change representation.
+**Target deliverable:** a valid prepared package safely becomes active work in the correct concrete Repository Target, with updated ownership/current cumulative change, or stops truthfully before mutation.
 
-**Scenario coverage:** complete prepared repository work.
+**Scenario coverage:** Complete Prepared Repository Work.
 
-**Relevant Domain meaning:** Repository Target, ChangeSet identity, Relative Path/ownership, Current Change; `INV-RPKG-01`, `INV-RPKG-02`, `INV-RPKG-04`, `INV-RPKG-06`. Complete preflight-before-mutation remains upstream `REQ-RPKG-01`, not a Domain invariant.
+**Current implementation path:** `MainWindow.apply`, `Core.applyAction/applyPackage`, `GitClient`, `StateStore`, package validation, `CoreTests`.
 
-**Current implementation path:**
-- `MainWindow.apply`
-- `Core.applyAction` / `Core.applyPackage` / internal apply transaction
-- `GitClient`
-- `StateStore`
-- package protocol validation
-- `CoreTests`
+**Current divergences:** cross-repository false `PATH_OWNERSHIP_CONFLICT`; raw-byte false `BASE_MISMATCH`; selected-repository-first package targeting; low-level no-HEAD failure.
 
-**Current known divergences:**
-- confirmed false cross-repository `PATH_OWNERSHIP_CONFLICT`: active ownership comparison currently uses relative path across all active ChangeSets without first constraining to the same concrete repository;
-- observed false raw-byte `BASE_MISMATCH` for clean tracked text under Windows Git line-ending conversion; selected base-equivalence policy remains unresolved;
-- repository without resolvable first `HEAD` currently fails through low-level Git errors rather than a selected product-level readiness contract.
+**Selected target expansion:**
 
-**Verification target:** exact add/replace/delete, all-preconditions-before-mutation, rollback/no-write guarantees, same-repo ownership conflict, different-repo same-relative-path allowed, true base divergence rejected, selected tracked-base equivalence behavior, real index unaffected by ReviewDiff generation.
+```text
+package/action supplied
+→ passive
+
+user presses Apply
+→ parse/validate package
+→ resolve exact Repository Target
+   existing ChangeSet: stored target wins
+   new work: current match / unique match / explicit choice among clones / no-match stop
+→ retain auto-selected repository context even if later preflight fails
+→ revalidate exact target
+→ Repository Ready check when commit/HEAD baseline is required
+→ repository-scoped ownership/adoptability checks
+→ expected source-state proof for replace/delete
+   raw equal OR Git path-semantic equivalent
+   different/unverifiable → stop
+→ complete all preconditions
+→ mutate/verify/rollback as required
+→ persist ChangeSet/current change/result
+```
+
+Target Git-equivalence implementation direction: binary-safe canonical IDs for expected/actual content using Git path semantics (selected design equivalent to `git hash-object --stdin --path=<path>`); exact engineering proof is required before acceptance.
+
+**Verification target:** add/replace/delete; passive input; target resolver/multiple-clone behavior; Repository Not Ready; same-target ownership conflict/different-target same path allowed; raw and Git-equivalent source match accepted; true/manual source divergence and verification failure rejected; no mutation until all preflight passes; result bytes/rollback/current ReviewDiff correct.
 
 ## `SL-RPKG-02` — Inspect Current Change
 
-**Deliverable/checkable result:** from a selected logical work item, the application can restore/generate the exact current cumulative change and expose it for optional inspection without mutating the real Git index.
+**Deliverable:** selected logical work restores/generates exact current cumulative change for optional inspection without mutating real Git index.
 
-**Scenario coverage:** complete prepared repository work; prerequisite representation for current-change handoff.
+**Scenario coverage:** Complete Prepared Repository Work; prerequisite representation for current-change handoff.
 
-**Relevant Domain meaning:** Current Change; currentness/staleness is semantic, ReviewDiff file/SHA are realization.
+**Current implementation path:** `Core.currentReview/refreshReview/verifiedReviewDiffPath`, `MainWindow` Refresh/Copy/Open, temporary index, StateStore, CoreTests.
 
-**Current implementation path:**
-- `Core.currentReview`
-- `Core.refreshReview`
-- `Core.verifiedReviewDiffPath`
-- `MainWindow.refreshReview` / Copy/Open
-- temporary-index Git operations
-- `StateStore`
-- `CoreTests`
+**Target:** keep current result/boundary. SL-07 may establish work context before this Slice; it does not duplicate Current Change generation.
 
-**Requirements:** cumulative owned-path change; untracked owned adds represented; persisted review reverified after restart; Copy/Open optional and never approval/Finalize gate; service diff artifacts excluded from ChangeSet ownership.
-
-**Verification target:** restore after restart, refresh identity replacement, corruption/staleness detection, tracked/delete/untracked representation, empty current change, real `.git/index` unchanged, exact clipboard/open artifact behavior where manually operated.
+**Verification:** restart restore, refresh identity, corruption/staleness detection, tracked/delete/untracked representation, empty current change, real index unchanged, Copy/Open optional and never Finalize gate.
 
 ## `SL-RPKG-03` — Finalize And Publish Work
 
-**Deliverable/checkable result:** current work for one ChangeSet becomes truthfully finalized/published, or remains in a recoverable publication-pending state without losing/duplicating logical work.
+**Deliverable:** one current ChangeSet becomes truthfully Finalized/published or remains recoverable Publication Pending without losing/duplicating logical work; when the user explicitly selects Finalized history for continuation/recovery, that same ChangeSet can also be safely Reopened to Active without losing identity/history or stealing/adopting other work.
 
-**Scenario coverage:** complete prepared repository work.
+**Scenario coverage:** Complete Prepared Repository Work.
 
-**Relevant Domain meaning:** Current Change, Publication State, ownership release, ChangeSet identity; `INV-RPKG-06..10`.
+**Current implementation path:** `Core.finalizeChangeSet/retryPush`, GitClient, StateStore, Swing/CLI, CoreTests.
 
-**Current implementation path:**
-- `Core.finalizeChangeSet`
-- `Core.retryPush`
-- `GitClient`
-- `StateStore`
-- Swing/CLI Finalize and Retry Push
-- `CoreTests`
+**Target light expansion:** work opened through SL-07 may route directly to current Finalize/Retry recovery. SL-03 also owns the explicit guarded `Reopen ChangeSet` lifecycle transition: selected Finalized work may return to Active with the same identity/history only after exact-target revalidation and safe historical-path ownership/unowned-work checks. Successful Reopen returns the work to the unfinished set; failed Reopen leaves it Finalized and feeds SL-09 notification/result/diagnostics without creating a persistent Finalized error marker. No new Scenario/Slice for Retry Push or Reopen.
 
-**Current realization includes:** current-review regeneration/equality check, clean real-index guard, owned-path staging, commit, ordinary push, `CommittedPendingPush`, remote refresh/ancestry evaluation, safe recovery/rebase routes, preservation of other Active work where supported, no force push.
-
-**Known limitation / behavior gap:** remote changes touching pending-owned paths stop automatic recovery even when a human could prove a safe reconciliation; this remains a behavior/recovery planning question rather than permission to weaken the guard.
-
-**Verification target:** owned-only commit, no second commit on retry, no-net-change finalize, commit-success/push-failure preservation, remote-ahead safe recovery, unsafe overlap stop, rewritten commit identity with stable ChangeSet identity, ownership release only on true Finalized.
+**Verification:** owned-only commit, no second commit on retry, no-net-change finalize, push-failure preservation, safe remote-ahead recovery, unsafe overlap stop, stable logical identity, ownership release only on true Finalized; explicit Finalized→Active Reopen preserves identity/history, reacquires historical paths only when safe, blocks sibling-owner/unowned-dirty conflicts with no partial transition.
 
 ## `SL-RPKG-04` — Export Repository Snapshot
 
-**Deliverable/checkable result:** selected repository state becomes a stable portable Local or Committed Snapshot ZIP without changing repository work.
+**Deliverable:** selected repository state becomes a stable portable Local or Committed Snapshot ZIP without changing repository work.
 
-**Scenario coverage:** provide repository context for further work.
+**Scenario coverage:** Provide Repository Context For Further Work.
 
-**Current implementation path:**
-- `MainWindow.exportRepositorySnapshot`
-- `Core.exportRepositorySnapshot`
-- `RepositorySnapshotExporter`
-- `GitClient`
-- `REPOSITORY-SNAPSHOT.md`
-- `CoreTests`
+**Current implementation path:** `MainWindow/Core.exportRepositorySnapshot`, `RepositorySnapshotExporter`, GitClient, snapshot contract, CoreTests.
 
-**Verification target:** Local snapshot current tracked/untracked non-ignored files + base/diff; Committed snapshot selected commit blobs independent of dirty working tree; no `.git`; real index unchanged; stable-capture failure publishes no mixed ZIP; output outside repository; clipboard failure warning-only.
+**Selected target update:** both current V1 snapshot modes require commit/ref baseline semantics; repository without first commit yields actionable Repository Not Ready and no snapshot. Successful/failed export is a tracked User Operation for SL-09. Local Snapshot remains the intentional producer-source route for current manual/local state.
+
+**Verification:** stable Local capture, exact Committed blobs, no real-index mutation, no mixed ZIP, output outside repository, clipboard warning-only, Repository Not Ready for missing first commit.
 
 ## `SL-RPKG-05` — Attach Repository Snapshot To ChatGPT
 
-**Deliverable/checkable result:** an already-created valid Repository Snapshot appears as a ready attachment in the explicitly selected ordinary ChatGPT conversation and the extension does not press Send.
+**Deliverable:** an already-created valid Repository Snapshot becomes a ready attachment in explicitly selected ordinary ChatGPT conversation and the extension never presses Send.
 
-**Scenario coverage:** provide repository context for further work.
+**Scenario coverage:** Provide Repository Context For Further Work.
 
-**Current implementation path:**
-- `MainWindow.attachSnapshotToChat`
-- `ChatBridgeService`
-- `ChatBridgeServer`
-- browser extension background/content/adapter
-- `CHATGPT-BRIDGE.md`
-- `ChatBridgeTests`
+**Current core implementation path:** `MainWindow.attachSnapshotToChat`, ChatBridgeService/Server, extension, ChatBridgeTests.
 
-**Automated proof boundary:** Java/bridge tests can prove artifact validation/task-state/idempotency mechanics, but not that the real ChatGPT UI accepted the attachment.
+**Target boundary:** exact attachment result remains here; user-facing interaction inventory/cancel/history is owned by SL-08. One attach attempt creates one External Interaction. SL-09 receives terminal operation result notification.
 
-**Manual verification target:** real Edge/ChatGPT conversation selection, exact snapshot filename/bytes, ready attachment, Send untouched, failure does not reclassify/delete successful snapshot or affect ChangeSet state.
+**Manual verification:** real conversation/destination/artifact; Send untouched; failure leaves successful snapshot/repository state unchanged; browser evidence required.
 
 ## `SL-RPKG-06` — Deliver Current Change To ChatGPT
 
-**Deliverable/checkable result:** the exact current change for one ChangeSet reaches the intended ordinary ChatGPT conversation exactly once, or a truthful safe/uncertain outcome is preserved without changing repository-work authority.
+**Deliverable:** exact current change reaches intended ordinary ChatGPT conversation once, or truthful failed/uncertain/no-content result is retained without changing Repository Work authority.
 
-**Scenario coverage:** provide current change for review/continuation.
+**Scenario coverage:** Provide Current Change For Review / Continuation.
 
-**Current implementation path:**
-- ChangeSet conversation binding
-- `ChatBridgeService`
-- `ChatBridgeServer`
-- browser extension background/content/adapter
-- `MainWindow` review-chat/delivery controls
-- `ChatBridgeTests`
+**Current core implementation:** persistent binding, automatic/manual queueing, duplicate-tab claim serialization, exact artifact verification, `Preparing`/`SendClicked` guards, native large-paste handling, immutable terminal outcomes/no blind retry.
 
-**Current realization includes:** persistent binding, automatic/manual queueing, duplicate-tab grouping/claim serialization, exact artifact verification, `Preparing`/`SendClicked` guard states, native ChatGPT large-paste handling, immutable terminal outcomes, no blind retry after uncertain send.
+**Target boundary:** core delivery stays here. Common semantic interaction inventory, selected Cancel behavior/history moves to SL-08. User-visible interaction state must not simply mirror claim/lease/tab implementation states. Terminal outcome feeds SL-09 notification where this explicit handoff is tracked.
 
-**Current operational finding:** implementation/state-machine tests exist, but live Edge/ChatGPT delivery is not currently treated as operationally accepted.
+**Manual verification:** real small/native-large paste, destination, duplicate tabs/composer protection, uncertain send, bridge reload/reconnect, upstream work unaffected.
 
-**Manual verification target:** small text diff, native large-paste conversion, duplicate tabs, pre-existing composer content, tab navigation/claim loss, exact destination, no duplicate send after uncertainty, extension reload/reconnect, upstream Apply/Finalize unaffected by bridge failure.
+## `SL-RPKG-07` — Discover And Open Existing Work
 
-## Cross-Slice Shared Realization
+**Status:** selected target / new, not implemented.
 
-`Core`, `GitClient`, `StateStore`, `MainWindow` and bridge classes are shared implementation owners. Do not create horizontal foundation Slices such as “introduce service layer” or “rewrite StateStore” unless a future separately deliverable/risk-reduction result justifies them.
+**Deliverable/checkable result:** persisted work across registered repositories becomes one repository-independent projection; selecting a ChangeSet establishes its exact Repository Target + ChangeSet current context.
 
-## Current Non-Slice Future Ideas
+**Scenario coverage:** Find And Open Existing Repository Work; also navigation entry for other Scenarios.
 
-The following are not current Slices merely because they are useful capabilities:
-- package-driven repository preselection/preflight UX;
-- global unfinished-work/Attention view;
-- Windows background notifications;
-- separate clean technical/PowerShell-compatible output surface;
-- queue-wide cancel-pending UX;
-- controlled state surgery.
+**Owns:**
+- cross-repository persisted work projection;
+- default/history ordering and unfinished-work error ordering;
+- exact ChangeSet selection and target context establishment;
+- history-mode presentation of `Reopen ChangeSet` only when a Finalized row is explicitly selected;
+- truthful unavailable-target presentation;
+- compact latest-operation error marker/reason for unfinished work only.
 
-Route each future change into an existing Slice when it extends that result; create a new Slice only for a genuinely separate deliverable/checkable increment.
+**Does not own:** Current Change generation, Apply/Finalize/Reopen lifecycle authority, delivery execution, ownership mutation, generic repository rebind. SL-07 exposes the Reopen entry point; SL-03 owns the guarded lifecycle/ownership transition.
+
+**Default projection:** Active + Publication Pending only; `Show History` adds all Finalized. Error-marked unfinished work sorts first, then recent; failed Reopen does not pull Finalized history into the default projection.
+
+**Verification:** multiple repos; same-identity clones; Active/Pending/Finalized states; unfinished error markers; unavailable target; same paths across repos; exact target + set context; history-only Finalized Reopen button visibility; failed Reopen remains history-only with notification/diagnostics and no persistent marker; selecting history alone causes zero Git/lifecycle mutation.
+
+## `SL-RPKG-08` — Manage External Interactions
+
+**Status:** selected target / new, not implemented.
+
+**Deliverable/checkable result:** all relevant user-significant ChatGPT handoffs are visible in one list, selectable with semantic state and cancellable only under truthful selected semantics.
+
+**Scenario coverage:** Provide Current Change; Provide Repository Context.
+
+**Interaction scope:** Deliver Current Change, Attach Repository Snapshot, future equivalent exact payload-to-conversation handoffs. Pairing/heartbeat/poll/claim/lease/tab mechanics excluded.
+
+**Cancel:**
+- before external preparation → Cancelled/no further automation;
+- prepared unsent text/attachment → Cancelled + prepared content retained, no automatic deletion/send;
+- Send may have occurred → preserve Sent/uncertain truth, not false Cancelled.
+
+**History:** active/actionable + terminal current session; across restart persist only recovery/uncertainty/idempotency-critical state.
+
+**Verification:** both interaction kinds; stable identity/source/destination; cancel phases; no cleanup of prepared content; no false cancellation after uncertainty; independent interactions; reload/reconnect no duplication; semantic state does not leak lease/tab names.
+
+## `SL-RPKG-09` — Notify Operation Outcomes
+
+**Status:** selected target / new, not implemented.
+
+**Deliverable/checkable result:** terminal outcome of a tracked meaningful user operation produces one concise Windows notification and notification click restores relevant repository context without triggering the operation.
+
+**Tracked operations:** meaningful nontrivial explicit operations including Apply, Finalize, Retry Push, explicit Reopen ChangeSet, Repository Snapshot export, current-change/snapshot ChatGPT handoff and Change Repository Location. Passive navigation/selection and trivial Copy/Open actions are excluded.
+
+**Selected policy:** success notification always; failure/action-required notification always with concise reason.
+
+**Click:** open/foreground app; select exact Repository Target when known; do not auto-select ChangeSet and do not retry/apply/finalize/send.
+
+**State boundary:** `User Operation` is Application process/outcome state, not a new Repository Work aggregate. Only unfinished ChangeSet-linked latest outcome persists compact summary/reason/timestamp for the SL-07 marker; failed Reopen on Finalized history remains an operation result/notification/diagnostic without a persistent ChangeSet marker. No generic persistent all-operation history list is selected.
+
+**Verification:** success/failure/action/uncertain mapping; exactly one terminal notification; correct repository navigation; no ChangeSet auto-select; no state/mutation authority; persisted latest unfinished ChangeSet outcome survives restart; failed Reopen creates no Finalized marker.
+
+## Cross-Slice Repository Management Behavior — Change Repository Location
+
+Explicit separate button/action updates one Repository Target's mutable location after validating:
+- new path is a Git work tree;
+- Repository Identity/origin matches stored target identity.
+
+Then Target ID and all ChangeSet associations remain unchanged. A different clone with the same Repository Identity may be deliberately selected through this explicit action; automatic substitution remains forbidden. Later operations run their ordinary readiness/source/current-change/ownership checks. This does not justify a separate Slice in the first target.
+
+## Cross-Slice Diagnostics
+
+A clean technical/PowerShell-friendly session diagnostics surface supports operation failures without becoming a separate Slice, approval gate or repository authority. Protect secrets/tokens while preserving useful non-secret raw detail.
+
+## Current-vs-Target Rule
+
+Do not rename target Slice behavior as current implementation until Java/extension/state/tests exist and required practical evidence is executed. Current source paths in this file remain evidence for SL-01..06 only; SL-07..09 are selected implementation plans.

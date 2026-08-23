@@ -1,6 +1,6 @@
 # Repository Snapshot Export
 
-Status: active V1 repository snapshot contract
+Status: active V1 current snapshot contract + selected target readiness delta
 Scope: read-only ZIP export of one registered repository for transport/review. This artifact is not a replacement package and does not use `PACKAGE.json` or `OBS-ACTION`.
 
 ## 1. Use Case
@@ -168,3 +168,21 @@ SNAPSHOT_EXPORT_FAILED
 ## 8. ChatGPT Attachment Is Downstream
 
 The optional `UC-RPKG-ATTACH-SNAPSHOT` browser bridge may attach an already-successful Repository Snapshot ZIP to a user-selected ordinary ChatGPT conversation. This does not change this ZIP contract, does not create a ChangeSet and does not alter export success. Snapshot bridge tasks are attach-only: the extension must not click Send. See [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).
+
+## 9. Selected Target Readiness / Planning Delta — Not Yet Implemented
+
+Current V1 Local and Committed modes both depend on a committed baseline/ref (`HEAD` or another commit). Selected target behavior therefore reports Application-level Repository Not Ready when the selected repository has no first commit:
+
+```text
+snapshot mode requires committed baseline/ref
++ repository has no commits
+→ Repository Not Ready
+→ explain: repository has no commits; create an initial commit and retry
+→ no snapshot/temp publication through an invented empty-tree fallback
+```
+
+This is readiness policy, not a new snapshot format or ChangeSet lifecycle state.
+
+A successful **Local** Snapshot is also the selected ordinary producer-source route when intentional local/manual working-tree content must be given to ChatGPT for a later replacement package. That role does not make snapshot export Apply authority: the later package still carries expected base content and Apply still proves source freshness because the repository may change after the snapshot was created.
+
+Optional ChatGPT attachment remains downstream and will be represented as one External Interaction in the selected target interaction list; cancellation of an already-prepared attachment stops future automation but does not automatically remove the prepared attachment from ChatGPT.

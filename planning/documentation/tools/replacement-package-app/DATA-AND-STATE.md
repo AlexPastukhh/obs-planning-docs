@@ -1,6 +1,6 @@
 # Replacement Package App Data And State
 
-Status: active application state contract
+Status: active current state contract + selected target delta
 Scope: application repository/settings state, persistent ChangeSet/ApplicationAttempt/ReviewDiff records, lifecycle authority, repository-snapshot boundary and browser-delivery side state.
 
 ## 1. Authorities
@@ -148,7 +148,7 @@ CommittedPendingPush
   → Retry Push failure → remains CommittedPendingPush
 ```
 
-`Finalized` releases path ownership. Historical files remain.
+`Finalized` releases path ownership. Historical files remain. Current implementation treats this as terminal; selected target Reopen behavior is documented in the target delta below.
 
 ## 8. Path Ownership / Dirty State
 
@@ -204,3 +204,128 @@ Open-tab inventory is runtime memory only and is refreshed by the extension; it 
 ## 11. Repo Review Artifact
 
 Optional `_ai-review-diffs/**` files are service artifacts. They are deliberately outside ChangeSet ownership and Finalize staging; users may delete them independently.
+
+## 12. Selected Target State Delta — Not Yet Implemented
+
+The current schemas/records above describe current implementation. The following state meaning is selected for the next implementation revision and must not be read as already materialized on disk.
+
+### Repository Target Identity / Mutable Location
+
+Repository registry record UUID becomes the stable `Repository Target` identity. The current persisted `path` field is the implementation representation of mutable `Repository Location`, not target identity.
+
+Target operation:
+
+```text
+Change Repository Location
+→ explicit user action
+→ new path is valid Git work tree
+→ current origin maps to stored Repository Identity
+→ update the existing repository record's location/path
+→ preserve repository record UUID
+→ preserve every ChangeSet association
+```
+
+No per-ChangeSet rebind is performed. A different clone with the same Repository Identity may be deliberately selected by this explicit operation; the application never substitutes a clone automatically.
+
+ChangeSet persistence should migrate toward a stable `repositoryTargetId` reference. Current `repositoryRoot`/`repositoryIdentity` fields may remain compatibility/evidence fields during migration but must not make the filesystem path the ChangeSet's identity.
+
+### Package ChangeSet Identity Resolution
+
+`PACKAGE.json.changeSetId` is the exact logical-work key for Apply. An existing record is resolved by that ID before continuation semantics are chosen. `selectedChangeSetId` is navigation/UI state and cannot substitute another Active, similarly labelled or more recent ChangeSet. An exact Finalized record blocks Apply until explicit Reopen; Apply itself never changes that identity or reopens it.
+
+### Finalized ChangeSet Reopen
+
+Selected target adds an explicit recovery transition without changing ChangeSet identity:
+
+```text
+Finalized
++ explicit Reopen ChangeSet
++ exact Repository Target valid
++ historical paths can be reacquired safely
+→ Active
+```
+
+Reopen does not erase prior finalize/commit/ApplicationAttempt history. Because Finalized released live ownership, Reopen must establish a new live ownership reservation for the ChangeSet's historical owned paths only after checking that no unfinished sibling owns them and no unrelated dirty/unowned state would be silently adopted. A failed guard leaves lifecycle and ownership unchanged; its failure is reported through the User Operation result/Windows notification/session diagnostics and does not create a persistent error marker on the Finalized history record.
+
+The target must retain enough historical path information after Finalize to evaluate safe Reopen even though those paths are no longer live reservations. Current `ownedPaths[]` may be preserved as historical membership while live-reservation calculation remains status-aware, or an equivalent schema may separate historical membership from live ownership. Exact storage shape is downstream design.
+
+A successful Reopen should invalidate/refresh completion-specific `currentReview` state so later continuation/finalization uses a current baseline rather than a pre-Finalize review. Prior review/finalization artifacts remain history/evidence.
+
+### Global Existing-Work Projection
+
+Target query/read model spans persisted ChangeSets across repository records:
+
+```text
+default rows
+= Active
++ CommittedPendingPush / Publication Pending
+
+Show History
+= default rows + all Finalized
+
+unfinished ordering
+= error-marked unfinished first, then most recently active
+```
+
+Selecting a row writes ordinary navigation state (`selectedRepositoryId`, `selectedChangeSetId`) for that exact stored Repository Target/ChangeSet. If the target path is unavailable, the row remains visible; no other same-origin repository record becomes authoritative automatically.
+
+### Compact Latest ChangeSet Operation Outcome
+
+Persist one compact latest relevant operation summary for **unfinished** ChangeSet error-marker/reason presentation across restart, for example:
+
+```text
+lastOperationOutcome {
+  status: SUCCESS | FAILED | ACTION_REQUIRED | UNCERTAIN
+  code
+  message
+  timestamp
+}
+```
+
+A later relevant success replaces/clears the previous failure marker while the ChangeSet remains unfinished. This field is presentation/query state separate from publication lifecycle. Finalized rows do not retain this persistent error marker; failed Reopen remains a failed User Operation result/notification/diagnostic while lifecycle stays Finalized. No full generic persistent User Operation history is selected.
+
+### User Operation Runtime Model
+
+Meaningful nontrivial explicit operations produce a process/outcome record during execution, including Apply, Finalize, Retry Push, explicit Reopen ChangeSet, Repository Snapshot export, current-change/snapshot ChatGPT handoff and Change Repository Location. Passive navigation/selection and trivial Copy/Open actions are excluded.
+
+Target outcome set:
+
+```text
+Running
+Succeeded
+Failed
+Action Required
+Uncertain
+```
+
+Terminal results drive Windows notification requests. Only the compact latest outcome used by Active/Publication Pending work-list markers is required to survive restart; a failed Reopen on Finalized history does not create that marker. Session diagnostics remain session-scoped.
+
+### External Interaction Semantic State
+
+Current `chat-handoffs/<taskId>.json` technical task records remain implementation evidence. Target user-facing `External Interaction` identity is one user-significant exact payload/artifact → exact conversation attempt.
+
+The target list includes current-change delivery and snapshot attachment, but excludes pairing, polling, heartbeat, claim/lease/tab mechanics.
+
+Semantic cancellation:
+- before external preparation → `Cancelled`, no future automation;
+- prepared unsent text/attachment → `Cancelled` plus `preparedContentRetained=true` (or equivalent semantic result), no automatic deletion and no future Send;
+- possible/actual Send → preserve Sent/uncertain truth; never rewrite to Cancelled.
+
+UI history shows active/actionable + terminal interactions from the current app session. Across restart persist only records/states needed for recovery, uncertainty truth, idempotency or duplicate prevention; ordinary successful terminal history need not be retained as user history.
+
+### Source-State Applicability Result
+
+Target Apply distinguishes:
+
+```text
+EXACT_SOURCE_MATCH
+GIT_EQUIVALENT_SOURCE_MATCH
+SOURCE_STATE_CHANGED
+SOURCE_STATE_UNVERIFIABLE
+```
+
+Names are implementation choices, but the semantic distinction is required. `BASE_MISMATCH` may remain a compatibility machine code during migration; user-facing meaning should describe changed/unverifiable source state rather than raw byte mismatch.
+
+### Repository Not Ready
+
+Repository-without-first-commit is not a ChangeSet lifecycle state. When a requested operation requires HEAD/commit/ref baseline semantics, target result is Application-level `Repository Not Ready` with actionable initial-commit guidance and no unsafe fallback/mutation.

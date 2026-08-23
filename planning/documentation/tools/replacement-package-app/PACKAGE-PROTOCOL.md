@@ -1,6 +1,6 @@
 # Replacement Package Protocol
 
-Status: active V0.1 shared producer/consumer contract
+Status: active V0.1 current contract + selected target source-state delta
 Scope: exact protocol shared by the ChatGPT replacement-package producer and the local Windows Replacement Package App. Consumer-only state, Git execution and UI behavior are documented after the shared literal.
 
 Producer owner:
@@ -133,3 +133,39 @@ A protocol change is complete only when:
 3. `.linked-notes/reference-objects.json` still routes the single definition/use correctly;
 4. Core parser/validation and tests are updated;
 5. the command ↔ app compatibility matrix in `scenarios/README.md` passes review.
+
+## 6. Selected Target Source-State Semantics — Implementation Pending
+
+The V0.1 shared literal above remains the **current executable producer/consumer contract** until the consumer implementation is updated and the Reference Object use is promoted in one synchronized change.
+
+Selected target semantics do **not** change the ZIP schema/layout or which payloads exist:
+- `add` still has no `base-files/<path>` and requires an absent/adoptable target;
+- `replace/delete` still carry `base-files/<path>` as the producer's exact expected source content evidence;
+- replacement payloads remain complete intended result bytes.
+
+The selected consumer target changes only how a `replace/delete` expected base is proven against the current checkout:
+
+```text
+raw current bytes == base-files/<path>
+→ expected source matches
+
+otherwise
+→ compare base content and current content through this repository/path's Git clean/filter semantics
+→ Git-equivalent: expected source matches
+→ different: source changed, block
+→ cannot verify safely: block
+```
+
+This deliberately avoids naive global LF/CRLF normalization and supports continuation packages whose expected current content may be uncommitted ChangeSet work rather than `HEAD`.
+
+Target user-facing result should describe `Source state changed` / `Source state could not be safely verified`; current `BASE_MISMATCH` may remain a compatibility/internal code while migrating.
+
+### Promotion Rule
+
+Do not change the active shared `obs-ref:def/use` literal to claim Git-equivalent source matching until:
+1. Core/GitClient implementation and regression tests exist;
+2. current consumer behavior passes raw/Git-equivalent/changed/unverifiable cases;
+3. the canonical literal and producer materialized use are synchronized in the same documentation/application transition;
+4. command/application compatibility review passes.
+
+Until that promotion, package producers must continue supplying exact readable base payloads and must not rely on the unimplemented consumer fallback.

@@ -1,11 +1,11 @@
 # ChatGPT Bridge Integration
 
-Status: active V1 integration contract
+Status: active V1 current integration contract + selected target External Interaction delta
 Scope: local Java ↔ Chromium extension handoff for ordinary ChatGPT conversations. It does not change the replacement-package producer protocol, ReviewDiff authority, snapshot format or Finalize authority.
 
-## 1. Use Cases
+## 1. Historical Capability Mapping
 
-Two user outcomes are owned here:
+Current implementation traces two historical capability IDs here:
 
 ```text
 UC-RPKG-DELIVER-REVIEW
@@ -188,3 +188,54 @@ chatgpt-bridge-extension/src/chatgpt-adapter.js
 ```
 
 Manual Microsoft Edge acceptance is required after meaningful ChatGPT UI changes even when Java automated tests still pass.
+
+## 10. Selected Target External Interaction Layer — Not Yet Implemented
+
+Sections 1–9 describe current V1 bridge mechanics. The selected target adds a user-semantic `External Interaction` layer and does not promote claim/lease/tab states into product identity.
+
+### Interaction Scope
+
+One External Interaction is one user-significant transfer attempt:
+
+```text
+Interaction ID
++ Kind (Deliver Current Change | Attach Repository Snapshot)
++ exact source payload/artifact
++ exact destination conversation
++ semantic state/outcome
+```
+
+Pairing, inventory polling, heartbeat, claim leases, tab ID, ticket and content-script reconnect are implementation mechanics and do not appear as independent user interactions.
+
+### Common Interaction List / History
+
+Application exposes one list for both handoff kinds. It shows active/actionable interactions and terminal interactions from the current application session. Across restart, retain only interaction records/states needed for truthful recovery, uncertainty, idempotency or duplicate prevention; ordinary successful terminal history need not remain user-visible persistently.
+
+### Target Cancel Semantics
+
+Automatic cleanup of ChatGPT composer/attachment content is explicitly **not selected**.
+
+```text
+interaction not externally prepared
++ Cancel
+→ Cancelled
+→ stop future automation
+
+interaction already prepared unsent text/attachment
++ Cancel
+→ Cancelled — prepared content retained
+→ do not delete text/attachment
+→ do not Send / continue automation
+
+Send may already have happened
+→ cancellation cannot rewrite delivery truth
+→ preserve Sent / UnknownAfterSend / equivalent truthful result
+```
+
+Thus `Cancelled` means this interaction's future automation stopped; it does not mean the external effect was reversed.
+
+Current bridge restrictions that protect exact destination/payload and duplicate-send uncertainty remain required. Target implementation may map existing technical records to semantic state, but terminal semantic truth must not be overwritten by later lease/tab normalization.
+
+### Slice Boundary
+
+SL-05 and SL-06 retain artifact/delivery results. SL-08 owns common interaction inventory/select/cancel/history. Browser interaction failure remains downstream from Repository Work, and SL-09 may notify terminal results without becoming delivery authority.

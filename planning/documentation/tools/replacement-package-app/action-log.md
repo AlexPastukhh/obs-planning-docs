@@ -65,3 +65,73 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Rationale:** complete the SDS semantic-ownership correction without changing Direction ID, Scenario boundaries, implementation or testing state.  
 **ChangeSet:** `763133c4-b4fa-4d54-a72c-d7e9b9c370fc`  
 **Package:** `55948837-d778-41d3-9268-baafea4933d8`
+
+### LOG-RPKG-008 — Resolve target SDS behavior before application implementation
+
+**Type:** IDEA CLARIFICATION / INTEGRATED CONSISTENCY REVIEW  
+**Updates:** `LOG-RPKG-001..007`  
+**Source:** accumulated Replacement Package App planning discussion after the Modular SDS migration and its ReviewDiff corrections
+
+**Clarification / Resulting Meaning:**
+- documentation-first gate is selected: canonical SDS semantics, downstream contracts/state/architecture and practical-testing plans are updated/reviewed before Java/Swing/extension implementation changes;
+- target Scenario inventory is four user-world Scenarios: Complete Prepared Repository Work, Find And Open Existing Repository Work, Provide Current Change, and Provide Repository Context; Scenario and Slice boundaries remain bidirectionally independent;
+- `Repository Work` remains the core aggregate candidate; Repository Target has stable Target ID, logical Repository Identity and mutable Repository Location; explicit `Change repository location` validates Git work tree + matching origin, updates the same target and preserves every ChangeSet, while automatic clone substitution is forbidden;
+- `External Interaction` becomes a strong separate aggregate candidate for one exact payload/artifact → one exact ChatGPT conversation; `User Operation` remains Application process/outcome state rather than a Domain aggregate;
+- target Apply keeps package/action input passive, resolves/captures exact repository context only on Apply, honors stored target for existing ChangeSet continuation, does not guess among same-identity clones, keeps an auto-selected repository current after later preflight failure, and reports Repository Not Ready for baseline-dependent operations on repositories without a first commit;
+- expected source-state protection is clarified as stale/out-of-band-change protection separate from Path Ownership: raw exact base/current equality passes; otherwise selected target compares expected and actual bytes through Git path-specific clean/filter semantics (binary-safe Git canonical identity, design equivalent to `git hash-object --stdin --path=<path>`); Git-equivalent representation passes while changed/unverifiable source fails closed; no naive LF/CRLF conversion or separate tracked/HEAD-equality requirement is selected;
+- global Existing Work target defaults to Active + Publication Pending + any failed-latest ChangeSet, history adds remaining Finalized, failed-latest sorts first, and selection establishes exact Repository Target + ChangeSet navigation only; when `Show History` is enabled and an exact Finalized ChangeSet is selected, the UI exposes explicit `Reopen ChangeSet` without reopening on selection;
+- explicit Reopen is a recovery branch inside Complete Repository Work, not a new Scenario/Slice: it preserves the same ChangeSet identity and historical finalization evidence, revalidates the exact Repository Target, and returns Finalized→Active only when historical path ownership can be reacquired without stealing sibling unfinished ownership or silently adopting unrelated dirty/unowned state; conflict leaves lifecycle/ownership unchanged;
+- each ChangeSet persists a compact latest relevant operation outcome/reason/timestamp for restart error-marker presentation; later relevant success clears the marker while publication lifecycle stays independent; no generic persistent operation-history list is selected;
+- tracked meaningful User Operations include Apply, Finalize, Retry Push, explicit Reopen ChangeSet, Repository Snapshot export, ChatGPT handoffs and Change Repository Location; terminal success always notifies, failure/action-required always notifies with concise reason; notification click foregrounds/selects exact Repository Target only and never auto-selects ChangeSet or invokes the operation;
+- common External Interaction list includes current-change and snapshot handoffs only (not pairing/heartbeat/claim/lease/tab mechanics), shows active/actionable + current-session terminal history, and persists across restart only safety/recovery/idempotency-critical state;
+- Cancel never automatically deletes already-prepared ChatGPT text/attachment: before possible Send it stops future automation and may report `Cancelled — prepared content retained`; once Send may have happened, Sent/uncertain truth is preserved;
+- target Slice strategy keeps current SL-01..06 explicit and adds SL-07 Discover/Open Existing Work, SL-08 Manage External Interactions and SL-09 Notify Operation Outcomes; repository-location editing and clean technical diagnostics remain cross-Slice Behavior;
+- testing remains automated component/integration + Manual Practical Testing; no automated Swing/Edge E2E layer is selected.
+
+**Questions / Risks / Problems:** no unresolved product/UX question remains for this target documentation revision. Git source-state canonical comparison and live Windows/Edge behavior remain implementation/proof work, not product-choice blockers.
+
+### LOG-RPKG-009 — Apply selected target SDS documentation revision
+
+**Type:** APPLIED  
+**Applied From:** `LOG-RPKG-008`  
+**ChangeSet:** `d41911d6-4e3f-4035-a46b-b95775b5eee0`  
+**Package:** `568de348-d577-4644-808c-27c3d6b259de`
+
+**Target-State Result:** after successful Apply of this documentation package:
+- Replacement Package App semantic owners express the four selected target Scenarios, stable Repository Target identity/location model, Repository Work + External Interaction aggregate candidates and User Operation application-process boundary;
+- application-plan/scenarios/screens/domain/slices/testing consistently express passive package input, Apply-time target resolution, Repository Not Ready, repository-scoped ownership, Git path-semantic expected-source proof, explicit repository-location change, global work discovery/latest-operation marker, explicit guarded Finalized→Active Reopen, common External Interaction cancel/history, always-on terminal operation notifications and separate technical diagnostics;
+- `slices.md` and testing docs explicitly preserve six current implementation Slices while describing target SL-01..09 and target proof cards without claiming target Java/extension behavior already exists;
+- downstream state/architecture/package/snapshot/bridge/manual/README docs contain explicit selected-target deltas while retaining current implementation contracts; active V0.1 shared package literal is **not** prematurely changed before consumer implementation, so current producer/consumer compatibility remains truthful;
+- no Java/extension/source implementation, commit, push or operational acceptance is performed by this package.
+
+**Rationale:** make the complete selected SDS target internally coherent and implementation-ready, including the newly selected manual Reopen recovery behavior, while preserving an explicit current-vs-target boundary before application code changes.
+
+### LOG-RPKG-010 — ReviewDiff correction for work-history markers and exact continuation identity
+
+**Type:** REVIEW DIFF / IDEA CLARIFICATION  
+**Reviewed:** ChangeSet `d41911d6-4e3f-4035-a46b-b95775b5eee0` / package `568de348-d577-4644-808c-27c3d6b259de`  
+**Material Finding / selected correction:**
+- Existing Work default visibility must represent unfinished work only: Active + Publication Pending. `Show History` adds all Finalized work; a failure must not pull Finalized history into the default list.
+- persistent latest-operation error markers belong to unfinished work. Failed `Reopen ChangeSet` remains Finalized and is surfaced through the operation result, Windows notification and diagnostics, without a persistent Finalized-row marker;
+- current package semantics already make `PACKAGE.json.changeSetId` the exact logical continuation identity. Documentation/testing now states explicitly that UI-selected, same-label, recent or another Active ChangeSet cannot substitute; an exact Finalized ID blocks Apply and requires explicit Reopen rather than auto-reopen;
+- SL-RPKG-03 target deliverable explicitly includes its guarded Finalized→Active lifecycle-recovery result, while SL-RPKG-07 owns only history discovery/Reopen entry presentation;
+- no dedicated `Paste OBS-ACTION` clipboard button/Behavior is selected; ordinary OBS-ACTION field insertion remains sufficient.
+
+**Resulting Meaning:** lifecycle visibility, error attention, Apply identity authority and Reopen recovery are independent: Finalized stays history until successful explicit Reopen; unfinished failures may carry a persistent marker; package identity cannot be retargeted by UI navigation.
+
+### LOG-RPKG-011 — Apply ReviewDiff consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-RPKG-010`  
+**ChangeSet:** `d41911d6-4e3f-4035-a46b-b95775b5eee0`  
+**Package:** `8c3affba-f4ad-40b1-be04-8afe8bb16f32`
+
+**Target-State Result:** after successful Apply of this correction package:
+- canonical SDS owners and downstream target-aware docs use Active + Publication Pending as the default Existing Work projection, with all Finalized work behind `Show History`;
+- persistent latest-operation error markers are limited to unfinished work; failed Reopen remains Finalized and is communicated through notification/result/diagnostics without a Finalized marker;
+- Apply documentation/proof explicitly preserves exact `PACKAGE.json.changeSetId` continuation authority independently from mutable UI ChangeSet selection;
+- SL-RPKG-03 deliverable includes guarded Reopen recovery consistently with Scenario, Domain, state, UI and testing documents;
+- the revision remains documentation-only: no Java/extension implementation, commit, push or operational acceptance is performed by this package.
+
+**Rationale:** correct the ReviewDiff-level consistency issues before application implementation while preserving the same logical documentation ChangeSet.
+

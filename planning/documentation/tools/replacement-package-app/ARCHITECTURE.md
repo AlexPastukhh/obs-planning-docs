@@ -1,6 +1,6 @@
 # Replacement Package App Architecture
 
-Status: active application implementation contract
+Status: active current implementation contract + selected target architecture delta
 Scope: Java 21/Swing runtime layering and safety mechanics for package Apply/Review/Finalize, read-only repository snapshot export and optional local ChatGPT browser handoff.
 
 ## 1. Layers
@@ -190,3 +190,137 @@ The extension content script never receives the long-lived pairing token; extens
 ## 11. Safety Boundaries
 
 No force-push, reset --hard, checkout of user files, automatic branch creation, worktree creation or arbitrary command execution from package/snapshot content. Package payloads and exported snapshot bytes never authorize commands. Before local repository file access, Core verifies lexical containment and the real path of the nearest existing target/ancestor; symbolic-link or junction/reparse resolution outside the real repository root is rejected as `STATE_DIVERGED`.
+
+## 12. Selected Target Architecture Delta — Not Yet Implemented
+
+Sections 1–11 describe current implementation. This section records selected architecture behavior for the next application revision; code/tests remain downstream work.
+
+### Apply-Time Repository Resolution
+
+Package/OBS-ACTION selection is passive. `Apply` captures one exact target/work command context and resolves Repository Target before applicability/mutation:
+
+```text
+existing ChangeSet continuation
+→ stored repositoryTargetId / concrete target is authoritative
+→ package Repository Identity contradiction blocks
+
+new work
+→ current target matches Repository Identity: keep
+→ exactly one other registered target matches: select it
+→ several matching targets: require concrete user choice
+→ none: block
+```
+
+A target automatically selected during Apply remains selected if a later preflight fails. Repository context selection is reusable navigation behavior, but mutation authority begins only after the operation captures/revalidates the exact target.
+
+### Explicit Repository Location Change
+
+Add one explicit repository-management action/button. It validates only the registration contract required to move/update the target record:
+
+```text
+new location is Git work tree
++ origin maps to stored Repository Identity
+→ update same Repository Target record/path
+→ keep Target ID and ChangeSet associations
+```
+
+Do not perform automatic clone substitution. Do not require HEAD/branch/content compatibility at location-change time; later operations perform their own readiness/source/current-change/ownership checks.
+
+### Expected Source-State Comparison
+
+Replace raw-only `BASE_MISMATCH` logic for `replace/delete` with a two-stage binary-safe comparer:
+
+```text
+actual bytes == expected base bytes
+→ EXACT match
+
+otherwise
+→ compute Git canonical identity for expected bytes using this repo/path semantics
+→ compute Git canonical identity for actual bytes using the same repo/path semantics
+→ equal: Git-equivalent match
+→ different: source changed
+→ Git/filter error/unverifiable: fail closed
+```
+
+Selected implementation direction is equivalent to invoking, from the exact repository:
+
+```text
+git hash-object --stdin --path=<repository-relative-path>
+```
+
+for each side, writing payload bytes directly to stdin and comparing returned canonical blob IDs. Do not decode content as text and do not implement global CRLF/LF replacement. The real Git index/object database must not be mutated merely to compare; do not use `-w`.
+
+`add` remains path-absence/adoptability based. Source-state proof is independent from Path Ownership: ownership prevents ChangeSet overlap; source-state comparison prevents out-of-band/manual/IDE/script/Git changes from being overwritten by a stale package.
+
+### Complete Apply Pipeline Target
+
+```text
+passive package/action
+→ explicit Apply
+→ parse/validate package
+→ resolve exact ChangeSet by PACKAGE.json.changeSetId when it already exists
+   (UI-selected/label/recent work cannot substitute)
+→ resolve/capture exact Repository Target (+ exact existing ChangeSet when continuation)
+→ revalidate target/origin
+→ Repository Ready check where baseline is required
+→ path ownership/adoptability
+→ expected source-state proof
+→ verify complete preflight for all operations
+→ mutate/verify with bounded rollback
+→ persist ChangeSet/current Review/result
+→ latest ChangeSet outcome + notification request
+```
+
+No target mutation occurs until every required preflight succeeds. An exact existing Finalized `changeSetId` is not redirected to another Active ChangeSet and is not auto-reopened; Apply blocks until the user explicitly Reopens that exact logical work and later supplies/applies a valid continuation.
+
+
+### Finalized ChangeSet Reopen
+
+Add an explicit application command invoked only for a user-selected Finalized ChangeSet (normally surfaced from `Show History`). It is not an Apply fallback and is never triggered by selection/package resolution.
+
+```text
+capture exact Repository Target + Finalized ChangeSet
+→ revalidate target/origin
+→ load historical path membership
+→ verify no unfinished sibling owns any path to be reacquired
+→ verify reacquisition would not silently adopt unrelated dirty/unowned state
+→ if any check fails: no lifecycle/ownership mutation
+→ otherwise atomically restore live ownership for safe historical paths
+→ status = Active
+→ invalidate/re-establish current completion review baseline as required
+→ persist same ChangeSet ID + prior finalization history
+→ publish operation result / notification
+```
+
+The implementation must treat lifecycle + ownership reacquisition as one consistency transition. A crash/failure cannot leave a Finalized ChangeSet owning paths or an Active reopened ChangeSet missing the ownership state that was successfully reacquired. If a Reopen guard fails, keep the ChangeSet Finalized, publish the failed-operation result/notification/diagnostics, and do not persist an error marker onto that Finalized history record.
+
+### Repository-Independent Work Projection
+
+Add an application query service/read model over persisted ChangeSets/repository records. It must not scan/lock/mutate every Git repository merely to render the list. Persisted state provides initial truth; availability is checked when opening/operating on a target.
+
+Selecting work establishes exact `selectedRepositoryId + selectedChangeSetId` navigation context. Same-origin clones stay distinct; unavailable target is not silently replaced. When history is shown and the exact selected ChangeSet is Finalized, UI may expose `Reopen ChangeSet`; this is only an entry to the guarded command above and selection itself remains read-only.
+
+### External Interaction Semantic Layer
+
+Introduce a semantic `External Interaction` service/model above current bridge task mechanics. One interaction keeps exact source + destination + user-semantic outcome. Low-level `Claimed`, lease, tab ID and reconnect states remain adapter mechanics.
+
+Target Cancel does not perform browser cleanup:
+- no external preparation → Cancelled/stop;
+- prepared unsent content → Cancelled + prepared content retained, stop future Send/automation;
+- possible Send → preserve Sent/UnknownAfterSend truth.
+
+Common user-facing interaction inventory includes current-change and snapshot handoffs and current-session terminal history; persistence across restart remains only where safety/idempotency/recovery requires it.
+
+### User Operation / Windows Notifications
+
+Add an Application operation runner/outcome publisher for meaningful operations, including explicit `Reopen ChangeSet`. Terminal success and failure/action-required always request one Windows notification. Notification click foregrounds the app and reuses repository-context selection for the exact Repository Target when known; it does not select a ChangeSet automatically and never invokes Retry/Apply/Finalize/Send.
+
+Persist only the compact latest outcome needed for Active/Publication Pending error-marker/reason presentation across restart. Failed Reopen on a Finalized ChangeSet is reported by the operation result/notification/diagnostics and does not create a persistent history-row error marker. Do not create a generic persistent all-operations aggregate/list.
+
+### Technical Diagnostics
+
+Add a separate clean copyable technical diagnostics surface fed by operation/bridge/Git details. Preserve useful non-secret command/output detail, protect tokens/secrets centrally, and keep diagnostics independent from semantic result and operation authority.
+
+### Target Concurrency Boundary
+
+Mutable UI context may change while operations execute. Every meaningful operation captures exact Repository Target/ChangeSet/External Interaction identity at invocation and revalidates that captured context before side effects. UI selection changes cannot retarget an in-flight operation.

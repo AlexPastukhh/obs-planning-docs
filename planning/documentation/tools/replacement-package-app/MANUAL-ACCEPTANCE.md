@@ -1,9 +1,9 @@
 # Replacement Package App Manual Practical Testing Plan
 
-Status: current Slice-oriented Windows / Microsoft Edge practical-testing plan
+Status: current + selected-target Slice-oriented Windows / Microsoft Edge practical-testing plan
 Scope: operated proof for user-visible/environment behavior not established by automated Java/component/integration tests alone.
 
-This plan is the manual proof surface referenced by `testing-plan.md`. It is not an automated E2E suite. Planned cards do not become executed evidence until their execution state is explicitly recorded.
+This plan is the manual proof surface referenced by `testing-plan.md`. It is not an automated E2E suite. Planned target cards/deltas do not become implemented or executed evidence merely because they are documented; run them only against an implementation that claims the corresponding target behavior.
 
 ## Execution-State Contract
 
@@ -67,6 +67,19 @@ Historical ad-hoc runs are not silently imported as current acceptance evidence 
 3. Wrong repository package must produce `REPOSITORY_MISMATCH`.
 4. Filename alone must never override packageId mismatch.
 
+### Selected target Apply-time repository resolution / readiness
+
+Run after target implementation exists:
+
+1. Select/paste a valid package/OBS-ACTION for repository B while repository A is current; verify package input alone does not change repository context.
+2. Press Apply with exactly one registered Repository Target matching the package identity; require context to switch to B, show repository-selected feedback, then continue preflight.
+3. Force a later preflight failure and require B to remain selected while no target mutation occurs.
+4. Register two clones with the same Repository Identity and start new work; require Apply to stop for concrete target selection instead of guessing.
+5. Continue an existing ChangeSet while another same-origin clone is current; require the ChangeSet's stored concrete target to win and no silent re-home.
+6. Use a valid Git repository with no first commit for an Apply path that requires HEAD/current-change baseline; require actionable Repository Not Ready (`create an initial commit and retry`) and no mutation/raw HEAD exception.
+7. In one repository keep ChangeSet A Active and ChangeSet B Finalized; enable history and select B in the UI, then Apply a package whose `PACKAGE.json.changeSetId` is A. Require continuation of exact A regardless of UI selection; B stays Finalized.
+8. With the same setup, Apply a package whose `PACKAGE.json.changeSetId` is B. Require Apply to block with Finalized/Reopen-required meaning; it must not substitute A and must not auto-Reopen B.
+
 ### Repository-scoped ownership regression
 
 1. In repository A create/retain an unfinished ChangeSet owning `action-log.md`.
@@ -74,9 +87,17 @@ Historical ad-hoc runs are not silently imported as current acceptance evidence 
 3. In one concrete repository create two independent unfinished works touching the same repository-relative path; the second work must be blocked before mutation.
 4. When two local clones share one logical `repositoryIdentity`, ownership remains scoped by concrete local repository rather than by origin identity alone.
 
-### Policy-dependent pending coverage
+### Selected target source-state regression
 
-Tracked-file base equivalence under Git clean/filter/line-ending conversion remains unresolved in the current plan. Do not mark that case pass/fail against an invented normalization rule; once the policy is selected, add/run a regression that accepts the selected clean-equivalent case while continuing to reject true content divergence and preserving strict binary/untracked safety.
+Target implementation replaces raw-only base equality with expected source-state proof. Run after the target implementation exists:
+
+1. Raw exact package base/current bytes → Apply succeeds.
+2. With repository/path Git settings that produce LF package/base bytes and CRLF working-tree representation while Git considers content equivalent, raw comparison differs but target Apply succeeds through Git path-semantic equivalence.
+3. Repeat with `.gitattributes` path-specific EOL rules.
+4. Modify semantic content manually/through IDE after package source was prepared; require source-changed failure/no mutation even when line endings differ.
+5. Force Git/filter canonicalization failure and require source-unverifiable/fail-closed behavior.
+6. Use a binary path with differing bytes and require no newline-style false equivalence.
+7. Continue an Active ChangeSet whose current owned file differs from HEAD; a correction package based on that actual current content must remain applicable without requiring `HEAD` equality.
 
 ## `PA-SL02` — Inspect Current Change
 
@@ -125,6 +146,16 @@ Tracked-file base equivalence under Git clean/filter/line-ending conversion rema
 13. Add an explicit package path matched by `.gitignore`; require Apply ReviewDiff and Finalize to include only that owned path successfully.
 14. For each package action `add`, `replace` and `delete`, create a matching pre-existing ignored unowned path and require `STATE_DIVERGED`; ignore rules must never make an existing unowned file adoptable.
 
+### Finalized ChangeSet Reopen
+
+1. Finalize a ChangeSet and verify its live path ownership is released while it remains visible under `Show History`.
+2. With `Show History` off, require no Reopen control for that Finalized record. Enable `Show History`, select the exact Finalized ChangeSet and require `Reopen ChangeSet` to appear.
+3. Click Reopen with the exact Repository Target available and historical paths free/clean; require the same ChangeSet identity to become Active, prior finalization evidence/history to remain, and safe historical paths to become live ownership again.
+4. Finalize ChangeSet A, let unfinished ChangeSet B acquire one historical A path, then try Reopen A; require a clear conflict, no partial lifecycle/ownership change, one failure notification/result with diagnostics, and no persistent error marker on the still-Finalized A history row.
+5. Finalize another ChangeSet, create unrelated dirty/unowned content on a historical path, then try Reopen; require no silent adoption, no partial lifecycle/ownership change, notification/diagnostics, and no Finalized-row error marker.
+6. Selecting a Finalized row without clicking Reopen must never change status/ownership.
+7. After successful Reopen, apply a continuation package using the same ChangeSet ID and require ordinary repository/path/source-state preflight to run; Reopen must not bypass Apply guards.
+
 ### Remote-ahead practical recovery
 
 1. Put a ChangeSet into `CommittedPendingPush`, then advance the remote on a disjoint path. Retry Push must preserve the same logical ChangeSet, recover/publish safely, and finalize without creating a second logical work item.
@@ -157,6 +188,7 @@ Tracked-file base equivalence under Git clean/filter/line-ending conversion rema
 13. Make clipboard unavailable and require the ZIP to remain successful with a warning; use `Copy path` after clipboard recovery.
 14. Click `Open folder` and require the parent directory of the created ZIP to open.
 15. For a committed tree containing a symlink/submodule, require V1 export to reject rather than silently flatten the entry.
+16. Target readiness: with a registered Git repository that has no first commit, attempt Local and Committed V1 snapshot modes; require Repository Not Ready with initial-commit guidance and no snapshot/temp publication.
 
 ## `PA-SL05` — Attach Repository Snapshot To ChatGPT
 
@@ -198,9 +230,65 @@ Manual pass requires observing the real Edge/ChatGPT composer; Java/bridge task-
 
 Manual pass requires real small-paste and native large-paste behavior plus the duplicate-tab/composer protections above; Java/bridge state-machine tests alone are insufficient evidence for live-browser success.
 
+## `PA-SL07` — Discover And Open Existing Work
+
+**Target property:** persisted work can be discovered across repositories and opening one work item establishes its exact Repository Target + ChangeSet navigation context without Git mutation.  
+**Execution state:** `planned target / not current implementation evidence`
+
+1. Register several repositories; include two clones sharing the same Repository Identity.
+2. Create persisted Active, Publication Pending and Finalized ChangeSets across those targets plus at least one unfinished ChangeSet whose persisted latest relevant operation outcome is failure.
+3. Open the global Existing Work view without first choosing a repository; require only Active + Publication Pending work to appear by default, including the failed unfinished item with its marker.
+4. Require error-marked unfinished rows first, then most recently active ordering; show concise semantic failure reason.
+5. Toggle `Show History`; require all Finalized rows to appear without changing work state and without persistent error markers.
+6. With history enabled, select a Finalized row and require `Reopen ChangeSet` to appear; selecting the row alone must not change lifecycle/ownership. For Active/Publication Pending selection, require the Reopen action to be absent or disabled.
+7. Force Reopen failure for the selected Finalized row; require it to remain Finalized, receive failure notification/result/diagnostics, and keep no persistent ChangeSet error marker.
+8. Select one ChangeSet and require the exact stored Repository Target + ChangeSet to become current; no repository file/index change.
+9. Make that target location unavailable; require its work to remain visible with truthful unavailable state and no automatic substitution by another same-origin clone.
+10. Restart application and require compact latest unfinished ChangeSet outcome/error marker/reason to survive while Finalized history remains marker-free.
+
+## `PA-SL08` — Manage External Interactions
+
+**Target property:** current-change and snapshot handoffs appear as user-semantic External Interactions with exact source/destination, current-session history and truthful Cancel behavior.  
+**Execution state:** `planned target / not current implementation evidence`
+
+1. Create one current-change delivery and one snapshot-attachment interaction; require both to appear in one list with distinguishable kind/source/destination/status.
+2. Verify pairing, heartbeat/polling, claim/lease/tab reconnect mechanics do **not** appear as independent user interactions.
+3. Cancel a queued interaction before external preparation; require `Cancelled` and no browser/composer mutation/further automation.
+4. Prepare extension-owned ReviewDiff text without Send, then Cancel; require interaction to show `Cancelled — prepared content retained`, text to remain in ChatGPT, and no cleanup/Send/further automation.
+5. Prepare a snapshot attachment, then Cancel; require attachment to remain prepared, `Cancelled — prepared content retained`, and Send untouched.
+6. Force possible-Send uncertainty after `SendClicked`; require Sent/UnknownAfterSend truth and no ability to rewrite it to Cancelled or auto-resend.
+7. Cancel one interaction while another exists; require no cross-interaction cancellation/state corruption.
+8. Restart/reload; require only safety/recovery/idempotency-critical interaction state to persist and no duplicate semantic interaction/delivery. Ordinary previous-session successful history need not remain visible.
+9. Confirm user-semantic status/reason does not expose `Claimed`, lease duration or tab ID as interaction identity.
+
+## `PA-SL09` — Notify Operation Outcomes
+
+**Target property:** each tracked meaningful user operation emits one simple Windows notification on terminal success/failure, and clicking it navigates only to exact repository context.  
+**Execution state:** `planned target / not current implementation evidence`
+
+1. Exercise successful Apply, Finalize/Retry Push as applicable, Repository Snapshot export, ChatGPT handoff and Change Repository Location; require one success notification for each tracked terminal result regardless of foreground state.
+2. Force a failure/action-required outcome for representative operations; require one notification with concise semantic reason and separate diagnostics availability.
+3. Click a ChangeSet-linked notification; require application foreground + exact Repository Target selection, but **no automatic ChangeSet selection** and no retry/apply/finalize/send.
+4. Click a repository-only result notification and require exact repository context when available.
+5. Change UI repository/ChangeSet selection while a long operation runs; require terminal notification/result to remain associated with the captured operation target, not the later UI selection.
+6. Verify passive repository/ChangeSet navigation and trivial Copy/Open actions do not create tracked-operation notifications.
+7. Verify a terminal failure on Active/Publication Pending work persists compact latest outcome/error marker/reason and a later relevant success clears it; separately fail Reopen on Finalized history and require notification/result/diagnostics without any persistent Finalized error marker.
+
+## Shared Target Repository-Location Checks
+
+These are cross-Slice repository-management behavior rather than a separate Slice.
+
+1. Use the explicit `Change repository location` action; select a non-Git path and require rejection/no registry change.
+2. Select a Git work tree whose origin Repository Identity differs and require rejection.
+3. Select a moved copy/work tree or another deliberate clone with the same Repository Identity; require the same Repository Target ID/record to receive the new location and all its ChangeSets to remain associated.
+4. Verify no automatic location/clone substitution occurs merely because the old path becomes unavailable.
+5. After explicit location change, run an operation against repository state incompatible with its expected source/current work; require that operation's ordinary readiness/source/current-change guard to block rather than pretending the location change proved compatibility.
+
 ## Shared Operational Diagnostic Checks
 
 These checks support several Slices and remain cross-cutting rather than becoming a separate Slice merely because Output is separately addressable.
+
+Selected target also requires a separate clean technical/PowerShell-friendly diagnostics surface: semantic result remains concise, complete useful non-secret technical details can be copied independently, secrets/tokens are protected, and diagnostics never gate Apply/Finalize/Retry.
 
 1. Select package A and Apply; require Output to start with one archive header plus `Apply attempt 1`.
 2. Retry the same package A; require the existing Output to remain and `Apply attempt 2` to append.
