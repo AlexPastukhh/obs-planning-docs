@@ -68,6 +68,29 @@ final class GitClient {
         }
     }
 
+
+    Result stdin(Path repo, String errorCode, boolean allowFailure, byte[] input, String... args) {
+        List<String> cmd = new ArrayList<>();
+        cmd.add("git"); cmd.add("-C"); cmd.add(repo.toString()); cmd.addAll(List.of(args));
+        ProcessBuilder pb = new ProcessBuilder(cmd);
+        try {
+            Process process = pb.start();
+            ByteArrayOutputStream stdoutBytes=new ByteArrayOutputStream(),stderrBytes=new ByteArrayOutputStream();
+            StreamCapture stdoutReader=streamReader(process.getInputStream(),stdoutBytes,"obs-rpkg-git-stdout"),stderrReader=streamReader(process.getErrorStream(),stderrBytes,"obs-rpkg-git-stderr");
+            stdoutReader.start(); stderrReader.start();
+            try(OutputStream out=process.getOutputStream()){ if(input!=null) out.write(input); }
+            int code=process.waitFor(); stdoutReader.join(); stderrReader.join();
+            throwIfStreamReadFailed(errorCode,cmd,code,stdoutReader,stderrReader);
+            Result result=new Result(code,lines(stdoutBytes.toString(StandardCharsets.UTF_8)),lines(stderrBytes.toString(StandardCharsets.UTF_8)),List.copyOf(cmd));
+            if(code!=0&&!allowFailure)throw new Core.ObsException(errorCode,"Git command failed.\n--- git details ---\n"+result.failureDetails());
+            return result;
+        } catch(IOException e){ throw new Core.ObsException(errorCode,"Cannot execute git: "+e.getMessage(),e); }
+        catch(InterruptedException e){ Thread.currentThread().interrupt(); throw new Core.ObsException(errorCode,"Git execution interrupted",e); }
+    }
+
+    Result stdin(Path repo,String errorCode,byte[] input,String... args){return stdin(repo,errorCode,false,input,args);}
+    Result stdinAllow(Path repo,String errorCode,byte[] input,String... args){return stdin(repo,errorCode,true,input,args);}
+
     static final class StreamCapture {
         private final Thread thread;
         private volatile IOException failure;

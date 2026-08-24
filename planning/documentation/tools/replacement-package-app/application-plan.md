@@ -21,7 +21,7 @@ Planning may describe selected target behavior before code exists. Downstream im
 Replacement Package App is a local Java 21/Swing application responsible for:
 - applying deterministic replacement packages to explicitly registered local Git repositories;
 - keeping one logical ChangeSet coherent across package continuations, current-change inspection and publication/recovery;
-- letting the user find/open existing work across registered repositories;
+- letting the user select the existing ChangeSet context they need, locally or across registered repositories;
 - exporting portable Local/Committed repository context;
 - optionally handing exact repository/change context to ordinary ChatGPT conversations through a local browser companion;
 - reporting meaningful operation outcomes without turning notifications/navigation into repository-operation authority.
@@ -33,7 +33,6 @@ Producer command semantics remain outside the application. Git commands, persist
 | Scenario | Need / motivation | Independently meaningful observable result | Target implementation status |
 |---|---|---|---|
 | [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) | Safely bring prepared work into the correct local repository and finish that logical work without losing/capturing unrelated work. | Intended work is applied and either finalized/published or left in a truthful recoverable publication-pending state; unrelated work is preserved. | current Scenario partly implemented; selected target expands Apply/readiness/source-state behavior |
-| [`SCN-RPKG-FIND-EXISTING-WORK`](scenarios/SCN-RPKG-FIND-EXISTING-WORK.md) | Understand what repository work already exists across registered repositories and open the work the user wants to continue. | The selected ChangeSet and its exact concrete Repository Target become the current work context, or an unavailable target is shown truthfully. | selected target; not implemented as a repository-independent work surface |
 | [`SCN-RPKG-PROVIDE-CURRENT-CHANGE`](scenarios/SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) | Give the intended ChatGPT conversation the exact current change for one logical work item without manual large-diff handling. | The exact current change reaches the intended conversation once, or a truthful safe/failed/uncertain/cancelled result is retained without changing repository-work authority. | core delivery exists; selected target adds common External Interaction management |
 | [`SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT`](scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) | Produce exact portable repository context and optionally make it ready in the intended ChatGPT conversation without changing repository work. | A valid Repository Snapshot exists; optional attachment is ready in the intended conversation and is never auto-sent. | current export/attach exists; selected target adds readiness/common interaction management |
 
@@ -79,6 +78,8 @@ At Apply time:
 ### `BI-RPKG-PRESERVE-OTHER-WORK`
 One logical work item must not silently adopt, commit, overwrite or release another unfinished work item's paths or unrelated local changes. Exclusive ownership is scoped by **concrete Repository Target + repository-relative path**, not by relative path globally and not by Repository Identity alone.
 
+When Apply blocks on path ownership/adoptability, the semantic result identifies the exact path and Repository Target, the applying ChangeSet, and the ownership truth: either `Unowned — no unfinished ChangeSet owns this path` or the owning unfinished ChangeSet's label/status/ID. Do not emit an owner-looking path error without stating whether an owner actually exists.
+
 ### `BI-RPKG-EXPECTED-SOURCE-STATE`
 For `replace`/`delete`, Apply proves that the current touched content still represents the source state from which the package was prepared:
 
@@ -101,8 +102,10 @@ No global LF/CRLF replacement and no separate `tracked?` semantic prerequisite i
 ### `BI-RPKG-REPOSITORY-READY`
 When an operation genuinely requires committed baseline/HEAD/ref semantics and the Git repository has no first commit, report `Repository Not Ready` with actionable guidance to create an initial commit and retry; do not invent an empty-tree fallback.
 
-### `BI-RPKG-GLOBAL-WORK-NAVIGATION`
-A repository-independent work projection lets the user find/open persisted work. It is navigation/query state only and never becomes mutation authority. Default visibility contains unfinished work only: Active + Publication Pending. `Show History` adds all Finalized records. Within unfinished work, error-marked items sort first and the remainder sorts by recent activity; an error never pulls Finalized history into the default list.
+### `BI-RPKG-SELECT-EXISTING-WORK-CONTEXT`
+The existing `ChangeSet` selector is the single work-context navigation surface; there is no separate `Existing work` workflow/window. By default it shows unfinished Active + Publication Pending ChangeSets for the current Repository Target. `All repositories` expands the same selector to unfinished ChangeSets across registered targets. `Show history` adds Finalized records within whichever scope is selected.
+
+When `All repositories` is enabled, each row identifies its Repository Target. Selecting a ChangeSet whose exact target is registered switches the Repository selector to that exact target and makes the ChangeSet current. Same-origin clones remain distinct. A stored ChangeSet whose target is unavailable remains truthful query state and must not crash the selector or silently substitute another target. Selection is navigation only and never Applies, Reopens, Finalizes, sends or otherwise becomes mutation authority. Unfinished error markers still sort first; Finalized history is never pulled into the default list by failure.
 
 ### `BI-RPKG-LAST-CHANGESET-OUTCOME`
 For Active or Publication Pending work, persist a compact latest relevant outcome summary (`success/failure`, concise reason, timestamp) for the unfinished-work error marker. Latest failure shows the marker/reason and a later relevant success clears it. Finalized history does not carry a persistent ChangeSet error marker; in particular, a failed Reopen remains Finalized and is surfaced through the operation result, Windows notification and diagnostics.
@@ -153,7 +156,7 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 - `REQ-RPKG-10` — real Swing/Windows/Edge/ChatGPT behavior requires manual practical evidence; automated bridge/component tests alone do not establish live-browser success.
 - `REQ-RPKG-11` — Git-controlled representation differences must not cause false source-state mismatch, while true source change or unverifiable equivalence blocks before mutation.
 - `REQ-RPKG-12` — Repository Target identity survives explicit repository-location change; all associated ChangeSets remain attached to that target.
-- `REQ-RPKG-13` — existing-work discovery is repository-independent navigation and cannot silently substitute another concrete clone for an unavailable target.
+- `REQ-RPKG-13` — ChangeSet context selection uses one selector with current-repository/global scope; global selection switches only to the exact registered Repository Target and never silently substitutes another clone for unavailable work.
 - `REQ-RPKG-14` — External Interaction cancellation never implies automatic cleanup of already-prepared external content and never rewrites possible-send uncertainty.
 - `REQ-RPKG-15` — tracked meaningful User Operations notify on terminal success/failure; notification navigation has no operation authority.
 - `REQ-RPKG-16` — a compact latest ChangeSet-linked operation outcome survives restart for error-marker/reason presentation without requiring a generic persistent operation-history list.
@@ -161,6 +164,7 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 - `REQ-RPKG-18` — explicit Reopen may transition a selected Finalized ChangeSet back to Active without changing its identity/history, but only after exact-target revalidation and safe path-ownership/unowned-work checks; no implicit reopen is allowed.
 - `REQ-RPKG-19` — current-change preparation must not require foreground/document focus or successful Clipboard API write; `Preparing` is reached only after the intended ReviewDiff has actually been prepared in the composer.
 - `REQ-RPKG-20` — External Interactions terminal ordinary results do not accumulate in the user-facing list; a retry creates a new interaction identity, while uncertainty requiring attention remains visible.
+- `REQ-RPKG-21` — ownership/adoptability failures identify exact path + Repository Target + applying ChangeSet and explicitly distinguish `Unowned` from a concrete owning unfinished ChangeSet.
 
 ## Current Implementation Divergences / Target Work
 
@@ -171,7 +175,7 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 | `P-RPKG-MANUAL-PACKAGE-TARGETING` | Apply assumes repository context is selected first. | Package input passive; resolve concrete target on Apply. | P0 / SL-01 |
 | `P-RPKG-BROWSER-ACCEPTANCE` | Bridge/state-machine tests do not prove live Edge/ChatGPT operation. | Manual practical evidence remains required. | P0 proof / SL-05,06,08 |
 | `P-RPKG-UNBORN-LOW-LEVEL-ERROR` | Missing first commit can surface low-level HEAD/Git failure. | Repository Not Ready with initial-commit guidance when baseline/ref is required. | P1 / SL-01,04 |
-| `P-RPKG-NO-GLOBAL-WORK-DISCOVERY` | ChangeSet navigation is repository-first. | Global persisted work projection + exact work opening. | P0 / SL-07 |
+| `P-RPKG-SPLIT-EXISTING-WORK-UI` | First implementation added a separate `Existing work` dialog; practical use showed this duplicates the existing ChangeSet selector and one unavailable target can abort the dialog. | One ChangeSet selector + `All repositories` + `Show history`; exact-target switch on selection; unavailable target is query state, not projection failure. | P0 practical correction / SL-07 |
 | `P-RPKG-NO-REPOSITORY-LOCATION-EDIT` | Registered target path cannot be explicitly changed while preserving target identity/work. | Dedicated Change Repository Location action. | P1 behavior |
 | `P-RPKG-BROWSER-UNFOCUSED-PREPARATION` | Live Edge evidence shows Clipboard API ReviewDiff preparation can fail with `Document is not focused`, and current staging can then overstate `PreparedUnsent` before composer mutation. | Direct composer/editor insertion independent of foreground focus; confirm preparation before `Preparing`. | P0 practical correction / SL-06 |
 | `P-RPKG-NO-UNIFIED-EXTENSION-INTERACTION-LIST` | Bridge tasks are implementation mechanics, not one user-facing interaction surface; terminal cancelled attempts can accumulate as useless list history. | Semantic current/actionable External Interaction list + truthful Cancel; ordinary terminal results leave the list and retries create new interactions. | P1 / SL-08 |
@@ -184,7 +188,6 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 These are known implementation-hardening risks, not blockers for the current revision:
 
 - `R-RPKG-SL01-PACKAGE-RE-READ` — current Apply realization may resolve target/work from one ZIP read and read the package again for actual Apply, including after explicit choice among same-identity Repository Targets. An externally replaced ZIP in that short interval could differ from the resolved input. Accepted for now; future hardening is one captured immutable/prepared Apply context or an exact package fingerprint recheck before mutation.
-- `R-RPKG-SL07-REMOVED-TARGET-HISTORY` — Finalized history can retain a Repository Target association after that target is removed from the registry; the current query path may fail instead of projecting a truthful unavailable row. Accepted for now; future hardening is a nullable/query target lookup separated from strict operational lookup.
 
 ## Selected Engineering Direction / Proof Requirement
 
@@ -194,7 +197,7 @@ Source-state equivalence implementation is selected to use Git's own path semant
 
 ## Current Conclusions
 
-- Four user-world Scenarios define target application meaning; explicit Finalized→Active Reopen is a recovery branch inside Complete Repository Work, not a fifth Scenario.
+- Three user-world Scenarios define current target application meaning. The retired Find Existing Work draft is now shared navigation behavior, while explicit Finalized→Active Reopen remains a recovery branch inside Complete Repository Work rather than a separate Scenario.
 - `Repository Work` remains the strong core aggregate candidate; `External Interaction` is a second strong integration aggregate candidate; `User Operation` remains Application process/outcome state.
-- Current code still realizes six Slices; target planning adds SL-07/08/09 and expands selected existing Slices without pretending implementation already exists.
+- After this package, source/tests realize the corrected SL-06/07/08 behavior and the prior SL-09 implementation; live practical evidence remains required before operational acceptance.
 - Testing remains automated component/integration proof plus Manual Practical Testing; no full Swing/Edge browser E2E layer is selected.

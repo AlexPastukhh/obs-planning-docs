@@ -155,6 +155,22 @@ final class ChatBridgeService {
 
     synchronized Core.ChatTaskInfo taskInfo(String taskId){Task t=load(taskId);return t==null?null:info(t);}
 
+    synchronized List<Core.ExternalInteraction> externalInteractions(){
+        expireClaims();List<Core.ExternalInteraction> out=new ArrayList<>();
+        for(Task t:listTasks())if(!TERMINAL.contains(t.status)||"UnknownAfterSend".equals(t.status))out.add(interaction(t));
+        out.sort(Comparator.comparing(Core.ExternalInteraction::updatedAt,Comparator.nullsFirst(Comparator.naturalOrder())).reversed());return List.copyOf(out);
+    }
+
+    synchronized Core.ExternalInteraction cancelExternalInteraction(String taskId){
+        expireClaims();Task t=requireTask(taskId);
+        if(Set.of("Pending","Claimed").contains(t.status)){terminal(t,"Cancelled","Cancelled before external preparation; no further automation.");return interaction(t);}
+        if("Preparing".equals(t.status)){terminal(t,"Cancelled","Cancelled — prepared content retained; no further automation or Send.");return interaction(t);}
+        if("SendClicked".equals(t.status))throw fail("Send may already have happened; cancellation cannot rewrite this interaction as Cancelled.");
+        throw fail("Interaction is already terminal in state "+t.status+".");
+    }
+
+    private Core.ExternalInteraction interaction(Task t){String kind="reviewDiff".equals(t.kind)?"Deliver Current Change":"Attach Repository Snapshot";String source=t.fileName==null?t.artifactPath:t.fileName;String title=t.conversationTitle==null||t.conversationTitle.isBlank()?"ChatGPT conversation":t.conversationTitle;String destination=title+" ["+t.conversationKey+"]";String semantic=switch(t.status){case "Pending","Claimed"->"Pending";case "Preparing"->"Preparing";case "SendClicked"->"UnknownAfterSend";default->t.status;};boolean cancellable=Set.of("Pending","Claimed","Preparing").contains(t.status);return new Core.ExternalInteraction(t.taskId,kind,t.changeSetId,source,destination,semantic,t.message,t.updatedAt,cancellable);}
+
     private Core.ChatTaskInfo info(Task t){return new Core.ChatTaskInfo(t.taskId,t.kind,t.changeSetId,t.reviewAttemptId,t.conversationKey,t.conversationTitle,t.fileName,t.autoSend,t.status,t.message,t.createdAt,t.updatedAt);}
     private Map<String,Object> claimResponse(Task t){Map<String,Object> m=new LinkedHashMap<>();m.put("taskId",t.taskId);m.put("kind",t.kind);m.put("changeSetId",t.changeSetId);m.put("reviewAttemptId",t.reviewAttemptId);m.put("conversationKey",t.conversationKey);m.put("fileName",t.fileName);m.put("autoSend",t.autoSend);m.put("artifactSha256",t.artifactSha256);m.put("artifactSize",t.artifactSize);m.put("payloadUrl","http://127.0.0.1:"+PORT+"/v1/tasks/"+t.taskId+"/payload?ticket="+t.payloadTicket);return m;}
 

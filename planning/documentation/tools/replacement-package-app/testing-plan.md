@@ -23,7 +23,7 @@ No automated browser/desktop E2E layer is selected. Selenium/Playwright/Swing-dr
 Use for deterministic semantic/application rules:
 - ChangeSet publication lifecycle, explicit Finalized→Active Reopen and repository-scoped ownership;
 - Repository Target stable ID vs mutable location data rules;
-- global work projection ordering/filtering from persisted lifecycle plus unfinished-work latest outcome;
+- local/global ChangeSet-selector projection ordering/filtering from persisted lifecycle plus unfinished-work latest outcome and unavailable-target query state;
 - latest unfinished ChangeSet outcome replacement/persistence and no Finalized marker after failed Reopen;
 - User Operation outcome→notification request mapping;
 - External Interaction identity/semantic cancellation/terminal truth/current-actionable projection and new-attempt identity after terminal work;
@@ -56,7 +56,7 @@ Raw equality may short-circuit Git comparison. Git command/filter failure is fai
 
 Use actual application/environment for:
 - Swing context/navigation/state presentation;
-- global Existing Work UX;
+- local/global ChangeSet selector scope UX and exact-target switching;
 - explicit repository location change;
 - Windows launcher/clipboard/notifications;
 - notification-click repository routing;
@@ -89,13 +89,13 @@ For repository-scope tests include:
 
 | Slice | Automated responsibility | Manual practical responsibility |
 |---|---|---|
-| `SL-RPKG-01` Apply Replacement Work | passive input, target resolver, readiness, ownership, source-state Git equivalence, rollback/result | real Swing target switch/preflight/result/reason readability |
+| `SL-RPKG-01` Apply Replacement Work | passive input, target resolver, readiness, ownership + owner/unowned diagnostic detail, source-state Git equivalence, rollback/result | real Swing target switch/preflight/result/reason readability including exact owner/unowned truth |
 | `SL-RPKG-02` Inspect Current Change | cumulative ReviewDiff, persistence, corruption/stale detection, real-index isolation | Refresh/Copy/Open/restart/current-state presentation |
 | `SL-RPKG-03` Finalize And Publish Work | owned-only commit, lifecycle, publication pending, safe recovery, guarded Finalized→Active Reopen, failed-Reopen no-marker rule | real Finalize/Retry/Reopen/remote-ahead UX/truthful state + notification on failed Reopen |
 | `SL-RPKG-04` Export Repository Snapshot | exact/stable ZIP, readiness, index/output safety | export dialog, Repository Not Ready, destination/clipboard/open-folder |
 | `SL-RPKG-05` Attach Snapshot | exact artifact/task integration | real Edge/ChatGPT attachment ready + Send untouched |
-| `SL-RPKG-06` Deliver Current Change | exact delivery integration/dedupe/uncertainty + evidence-based preparation state boundary | real direct composer insertion for small/large ReviewDiff with ChatGPT foreground and non-foreground; prepared-content verification; duplicate tabs; send outcome |
-| `SL-RPKG-07` Discover/Open Existing Work | Active/Pending default projection, history filter/order, unfinished latest outcome, exact target/set selection, history-only Reopen entry | real global list, unavailable target, exact repo+set navigation, Show History/Reopen control |
+| `SL-RPKG-06` Deliver Current Change | exact delivery integration/dedupe/uncertainty + evidence-based preparation state boundary | real direct composer insertion for small/large ReviewDiff with ChatGPT foreground and non-foreground; prepared-content verification; post-staging fresh connected Send-control click; duplicate tabs; send outcome |
+| `SL-RPKG-07` Select Existing Work Context | local/global ChangeSet projection, history filter/order, unfinished latest outcome, nullable unavailable-target query, exact target/set selection, history-only Reopen entry | real `All repositories` + `Show history` selector behavior, unavailable target, exact repo+set navigation, Reopen control |
 | `SL-RPKG-08` Manage External Interactions | semantic identity/state/cancel/current-actionable projection/persistence boundary | real list/select/cancel; ordinary terminal rows disappear; retry creates new interaction; prepared content retained; uncertainty truth |
 | `SL-RPKG-09` Notify Operation Outcomes | User Operation result→one notification request; unfinished latest-outcome persistence; failed-Reopen notification without Finalized marker | real Windows success/failure notifications and click repository routing |
 
@@ -104,6 +104,7 @@ For repository-scope tests include:
 The strategy must preserve explicit proof that:
 - passive package input and any failed preflight cause no target mutation;
 - one ChangeSet cannot capture sibling same-target ownership; another concrete repository does not conflict merely because relative paths match;
+- ownership/adoptability failures never leave the user guessing who owns a path: exact target/path/applying ChangeSet are shown, with either explicit `Unowned` or concrete owner label/status/ID;
 - real manual/out-of-band source change is not accepted merely because Git-controlled EOL/filter representations differ;
 - Git-equivalent representation is not false-rejected;
 - inability to prove source equivalence fails closed;
@@ -130,7 +131,7 @@ PA-SL03 Finalize And Publish Work
 PA-SL04 Export Repository Snapshot
 PA-SL05 Attach Repository Snapshot To ChatGPT
 PA-SL06 Deliver Current Change To ChatGPT
-PA-SL07 Discover And Open Existing Work
+PA-SL07 Select Existing Work Context
 PA-SL08 Manage External Interactions
 PA-SL09 Notify Operation Outcomes
 ```

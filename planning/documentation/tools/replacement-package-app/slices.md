@@ -35,11 +35,11 @@ SL-RPKG-04 Export Repository Snapshot            READINESS UPDATE
         ↓
 SL-RPKG-05 Attach Repository Snapshot            KEEP CORE RESULT
 
-SL-RPKG-07 Discover And Open Existing Work       NEW
+SL-RPKG-07 Select Existing Work Context          CORRECTED
         └→ establishes context consumed by SL-02 / SL-03 / SL-06
 
 SL-RPKG-05 ─┐
-            ├→ SL-RPKG-08 Manage External Interactions   NEW
+            ├→ SL-RPKG-08 Manage External Interactions   CORRECTED
 SL-RPKG-06 ─┘
 
 meaningful user operations across Slices
@@ -83,7 +83,7 @@ user presses Apply
 
 Target Git-equivalence implementation direction: binary-safe canonical IDs for expected/actual content using Git path semantics (selected design equivalent to `git hash-object --stdin --path=<path>`); exact engineering proof is required before acceptance.
 
-**Verification target:** add/replace/delete; passive input; target resolver/multiple-clone behavior; Repository Not Ready; same-target ownership conflict/different-target same path allowed; raw and Git-equivalent source match accepted; true/manual source divergence and verification failure rejected; no mutation until all preflight passes; result bytes/rollback/current ReviewDiff correct.
+**Verification target:** add/replace/delete; passive input; target resolver/multiple-clone behavior; Repository Not Ready; same-target ownership conflict/different-target same path allowed; ownership/adoptability failures name exact path + Repository Target + applying ChangeSet and either explicit `Unowned` or concrete owner label/status/ID; raw and Git-equivalent source match accepted; true/manual source divergence and verification failure rejected; no mutation until all preflight passes; result bytes/rollback/current ReviewDiff correct.
 
 **Accepted low-frequency risk:** current realization can resolve package/target context from one ZIP read and read the package again for actual Apply (including after explicit clone/target choice). External replacement of the ZIP during that short interval could make the applied bytes differ from the resolved input. Do not block this revision; future hardening is one captured immutable/prepared Apply context or exact package fingerprint revalidation before mutation.
 
@@ -141,41 +141,38 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 
 **Scenario coverage:** Provide Current Change For Review / Continuation.
 
-**Current core implementation:** persistent binding, automatic/manual queueing, duplicate-tab claim serialization, exact artifact verification, `Preparing`/`SendClicked` guards, browser Clipboard/native-paste preparation, immutable terminal outcomes/no blind retry. Live Edge evidence has exposed a focus-dependent failure (`Document is not focused`) before composer mutation while the task can already be classified as `PreparedUnsent`.
+**Current implementation after this correction:** persistent binding, automatic/manual queueing, duplicate-tab claim serialization, exact artifact verification, direct DOM/editor ReviewDiff preparation, `Preparing` only after verified preparation, `SendClicked` guard, immutable terminal outcomes/no blind retry. Live Edge practical acceptance remains required.
 
-**Selected target correction:** keep exact payload/destination/dedupe/send-confirmation responsibilities here, but prepare ReviewDiff text through direct ChatGPT composer/editor insertion in the DOM adapter rather than browser Clipboard API/native paste. This path is selected for ReviewDiff text of any size initially and must not require the ChatGPT tab/document to be foreground-focused. Verify the expected ReviewDiff is actually prepared before entering semantic `Preparing`; failures before confirmed composer mutation are `FailedBeforeSend`, failures after confirmed preparation but before possible Send are `PreparedUnsent`, and uncertainty after `SendClicked` remains `UnknownAfterSend`. No large-text attachment threshold/fallback is selected until practical evidence demonstrates a real composer limit.
+**Implemented correction:** keep exact payload/destination/dedupe/send-confirmation responsibilities here, but prepare ReviewDiff text through direct ChatGPT composer/editor insertion in the DOM adapter rather than browser Clipboard API/native paste. This path is used for ReviewDiff text of any size initially and does not require the ChatGPT tab/document to be foreground-focused. The expected ReviewDiff is verified before semantic `Preparing`; failures before confirmed composer mutation are `FailedBeforeSend`, failures after confirmed preparation but before possible Send are `PreparedUnsent`, and uncertainty after `SendClicked` remains `UnknownAfterSend`. No large-text attachment threshold/fallback is selected until practical evidence demonstrates a real composer limit.
 
 **Target boundary:** core delivery stays here. Common semantic interaction inventory and selected Cancel/current-actionable projection move to SL-08. User-visible interaction state must not simply mirror claim/lease/tab implementation states. Terminal outcome feeds SL-09 notification where this explicit handoff is tracked.
 
 **Manual verification:** real focused and non-foreground/unfocused-tab delivery; small and large ReviewDiff direct insertion; exact prepared-content verification; destination; duplicate tabs/composer protection; correct `FailedBeforeSend`/`PreparedUnsent` boundary; uncertain send; bridge reload/reconnect; upstream work unaffected.
 
-## `SL-RPKG-07` — Discover And Open Existing Work
+## `SL-RPKG-07` — Select Existing Work Context
 
-**Status:** selected target / new, not implemented.
+**Status:** practical correction implemented by this package; live Swing acceptance pending.
 
-**Deliverable/checkable result:** persisted work across registered repositories becomes one repository-independent projection; selecting a ChangeSet establishes its exact Repository Target + ChangeSet current context.
+**Deliverable/checkable result:** one existing `ChangeSet` selector establishes current work context. Default scope is the selected Repository Target; `All repositories` expands that same selector across registered targets; `Show history` adds Finalized within the chosen scope. No separate `Existing work` dialog exists.
 
-**Scenario coverage:** Find And Open Existing Repository Work; also navigation entry for other Scenarios.
+**Scenario coverage:** shared navigation supporting Complete Repository Work, Provide Current Change and any other operation that needs an existing ChangeSet context. It is not an independent user-world Scenario.
 
-**Owns:**
-- cross-repository persisted work projection;
-- default/history ordering and unfinished-work error ordering;
-- exact ChangeSet selection and target context establishment;
-- history-mode presentation of `Reopen ChangeSet` only when a Finalized row is explicitly selected;
-- truthful unavailable-target presentation;
-- compact latest-operation error marker/reason for unfinished work only.
+**Selection behavior:**
+- default → Active + Publication Pending for current Repository Target;
+- `All repositories` → Active + Publication Pending across targets, with repository shown per row;
+- `Show history` adds Finalized in current scope;
+- global row selection switches to the exact registered Repository Target + ChangeSet;
+- same-origin clones are never substituted;
+- unavailable target does not crash the projection and cannot authorize an operation;
+- selection itself performs no Apply/Reopen/Finalize/Send.
 
-**Does not own:** Current Change generation, Apply/Finalize/Reopen lifecycle authority, delivery execution, ownership mutation, generic repository rebind. SL-07 exposes the Reopen entry point; SL-03 owns the guarded lifecycle/ownership transition.
+**Implementation correction:** replace the first-pass `Existing work` modal/dialog with the shared selector scopes above. Core exposes a nullable query lookup for unavailable target projection while strict operation lookup continues to fail closed.
 
-**Default projection:** Active + Publication Pending only; `Show History` adds all Finalized. Error-marked unfinished work sorts first, then recent; failed Reopen does not pull Finalized history into the default projection.
-
-**Verification:** multiple repos; same-identity clones; Active/Pending/Finalized states; unfinished error markers; unavailable target; same paths across repos; exact target + set context; history-only Finalized Reopen button visibility; failed Reopen remains history-only with notification/diagnostics and no persistent marker; selecting history alone causes zero Git/lifecycle mutation.
-
-**Accepted low-frequency risk:** a Finalized ChangeSet can outlive removal of its registered Repository Target. Current query realization may then fail while building Existing Work instead of rendering that historical row as unavailable. Do not block this revision; future hardening is a non-throwing/query target lookup separate from strict operational target resolution.
+**Verification:** several repos and same-origin clones; local/global selector scopes; Active/Pending/Finalized filtering; unfinished error ordering; exact target switch; unavailable-target row/query does not abort list; history-only Reopen visibility; zero repository mutation from selection.
 
 ## `SL-RPKG-08` — Manage External Interactions
 
-**Status:** selected target / new, not implemented.
+**Status:** implementation corrected by this package; live Edge/Swing acceptance pending.
 
 **Deliverable/checkable result:** user-significant ChatGPT handoffs that are still active/actionable or uncertain are visible in one list, selectable with semantic state and cancellable only under truthful selected semantics; ordinary terminal attempts do not accumulate as reusable/history rows.
 
@@ -194,7 +191,7 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 
 ## `SL-RPKG-09` — Notify Operation Outcomes
 
-**Status:** selected target / new, not implemented.
+**Status:** implementation exists from the prior realization pass; live Windows notification acceptance pending.
 
 **Deliverable/checkable result:** terminal outcome of a tracked meaningful user operation produces one concise Windows notification and notification click restores relevant repository context without triggering the operation.
 

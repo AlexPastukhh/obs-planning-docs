@@ -168,3 +168,71 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **Rationale:** incorporate concrete practical feedback into the SDS before the next implementation correction without changing user-world Scenario identity or expanding current code scope to rare risks.
 
+### LOG-RPKG-014 — Practical feedback retires separate Existing Work UI/Scenario and exposes ownership-diagnostic gap
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / SCENARIO BOUNDARY CORRECTION  
+**Updates:** `LOG-RPKG-008..013`  
+**Source:** live Swing/package Apply use after the documentation correction
+
+**Material Finding / selected correction:**
+- the first-pass `Existing work` button/dialog duplicates the already-existing ChangeSet selector and does not represent a separately meaningful user outcome; the user intent is “select the ChangeSet context needed for the next operation,” not “complete a discovery workflow”;
+- retire `SCN-RPKG-FIND-EXISTING-WORK` as a current Scenario. Its valid meaning moves to shared `BI-RPKG-SELECT-EXISTING-WORK-CONTEXT` and `SL-RPKG-07 Select Existing Work Context`; the application has three current target user-world Scenarios;
+- the main `ChangeSet` dropdown becomes the only existing-work selector. Default scope is current Repository Target; `All repositories` expands the same dropdown across registered targets; `Show history` adds Finalized within the selected scope;
+- selecting a global ChangeSet switches to that exact registered Repository Target + ChangeSet, with same-origin clones kept distinct and no operation side effect from selection;
+- live use reproduced the removed/unregistered-target failure: one orphan ChangeSet caused `[REPOSITORY_MISMATCH]` and aborted the separate Existing Work dialog. Query lookup therefore becomes nullable/non-throwing while strict operational lookup remains fail-closed; unavailable work must not abort or silently retarget the selector;
+- a subsequent Apply attempt also exposed poor ownership diagnostics: `Dirty unowned path cannot be adopted` names the path but not the Repository Target, applying work or the fact that **no owner exists**. Selected correction: ownership/adoptability failures state exact target/path/applying ChangeSet and explicitly say `Unowned` when there is no unfinished owner; real ownership conflicts state owner label/status/ID;
+- the first package for this independent implementation work (`bbe7157c-0382-4430-8e87-677cc4f628c7`) was rejected by exact base preflight because `chatgpt-bridge-extension/manifest.json` in the local working tree was already version `0.2.1` with `clipboardWrite`, while the package expected different base bytes. The user supplied local snapshot `915325d4d1f1d67330b21565136ee7a4b2d1ee22`; this correction package uses that snapshot's complete touched files as exact base and keeps the same logical ChangeSet identity.
+
+**Implementation relation:** the same correction package implements the already-selected SL-06 direct composer insertion/state-boundary change and SL-08 current/actionable External Interaction projection, because those documentation corrections were approved but code had not yet been updated. The prior SL-01 package re-read TOCTOU remains an accepted low-frequency risk.
+
+### LOG-RPKG-015 — Apply unified ChangeSet selector, browser interaction and ownership-diagnostics correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-RPKG-014` plus approved `LOG-RPKG-012/013` target meaning  
+**ChangeSet:** `3aad2fc7-bba0-4a2e-94b1-15d0eb72667d`  
+**Package:** `0f68fa45-6f47-41ce-bf65-cdba7ea935fa`
+
+**Target-State Result:** after successful Apply of this exact package:
+- current Scenario inventory is three user-world Scenarios; retired Find Existing Work remains only a historical planning note;
+- `Existing work` button/dialog is removed; `ChangeSet` has `All repositories` + `Show history` scope controls and exact-target switching; unavailable Repository Target query state cannot abort the whole selector or silently substitute a clone;
+- SL-06 ReviewDiff delivery uses direct composer/editor insertion without browser Clipboard API/foreground-focus dependency and reaches `Preparing` only after expected content is verified;
+- SL-08 user list shows only active/actionable interactions plus `UnknownAfterSend`; ordinary terminal rows disappear and retries create new identities; source + exact destination key are visible;
+- SL-01 ownership/adoptability failures identify exact path, Repository Target and applying ChangeSet; dirty-unowned state explicitly says no unfinished ChangeSet owns the path, while ownership conflicts show owner label/status/ID;
+- automated Java tests cover nullable unavailable-target query, interaction projection/identity and owner/unowned diagnostic content; live Swing/Edge practical acceptance remains required;
+- this package uses the supplied local snapshot as exact base after the prior package's base mismatch and does not treat that failed attempt as applied;
+- the package changes documentation, Java and extension sources but does not commit or push.
+
+**Rationale:** carry approved implementation corrections into one coherent post-Apply state while incorporating concrete selector, unavailable-target, ownership-diagnostic and local-base feedback.
+
+### LOG-RPKG-016 — Live small-ReviewDiff test isolates stale Send-control reference
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / IMPLEMENTATION DEFECT
+**Updates:** `LOG-RPKG-012..015`
+**Source:** live Replacement Package App / Microsoft Edge smoke test using a two-line ReviewDiff
+
+**Material Finding / selected correction:**
+- after reloading the unpacked extension, a small ReviewDiff was successfully claimed and inserted into the intended ChatGPT composer, and ChatGPT exposed an enabled Send control; automatic delivery nevertheless did not send;
+- manually querying the current Send control in DevTools and calling `.click()` sent the already-prepared ReviewDiff, proving direct preparation and synthetic click were both viable for the small case;
+- `chatgpt-adapter.js` retained the Send button found before the asynchronous `stageSend()` / `SendClicked` bridge round-trip and clicked that old reference afterwards. ChatGPT may rerender the control during that gap, leaving the retained element disconnected/stale;
+- selected correction: wait for readiness before staging, record `SendClicked`, then synchronously reacquire a currently connected/enabled Send control and click that fresh element with no further `await` between lookup and click. Post-send confirmation similarly reacquires the live composer/root rather than depending on pre-send DOM references;
+- the earlier large-diff hang is **not yet** accepted as proof of a size/composer limit because the send-path defect and stale extension load contaminated that observation. Keep the current no-threshold direct-text target until it is retested after this fix.
+
+**Resulting Meaning:** no Scenario/Slice/domain boundary changes. This is a DOM-adapter implementation correction inside SL-06 plus stronger live acceptance evidence.
+
+### LOG-RPKG-017 — Apply fresh Send-control correction
+
+**Type:** APPLIED TARGET
+**Applied From:** `LOG-RPKG-016`
+**ChangeSet:** `3aad2fc7-bba0-4a2e-94b1-15d0eb72667d`
+**Package:** `42d5c3bf-360f-4ab8-b3a0-f27ee77f3b24`
+
+**Target-State Result:** after successful Apply of this correction package:
+- extension version is `0.2.3`;
+- direct ReviewDiff preparation remains unchanged;
+- after semantic `SendClicked` staging, the adapter reacquires and validates the live Send control, then clicks it without another asynchronous gap;
+- outgoing confirmation reads the current composer/root rather than stale pre-send DOM references;
+- automated source-contract coverage guards the staging→fresh-control→click order and live-composer confirmation;
+- small and large live Edge tests remain required after extension reload; no size threshold or attachment fallback is introduced by this correction.
+
+**Rationale:** correct the concrete live Send-path defect without changing already-selected delivery semantics or prematurely redesigning large-diff handling.
+

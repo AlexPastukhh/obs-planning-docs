@@ -1,13 +1,12 @@
 {
   "manifest_version": 3,
   "name": "OBS ChatGPT Bridge",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "description": "Connects OBS Replacement Package App ReviewDiff and snapshot handoffs to ordinary ChatGPT conversations.",
   "permissions": [
     "tabs",
     "storage",
-    "scripting",
-    "clipboardWrite"
+    "scripting"
   ],
   "host_permissions": [
     "https://chatgpt.com/*",

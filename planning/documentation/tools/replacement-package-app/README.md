@@ -10,7 +10,7 @@ This directory contains both current implementation contracts/source/tests and t
 
 1. [`direction-registry.md`](direction-registry.md) — Application Direction.
 2. [`application-plan.md`](application-plan.md) — selected target Scenario DATA/Behavior/Requirements and current divergences.
-3. [`scenarios/README.md`](scenarios/README.md) — four target user-world Scenarios.
+3. [`scenarios/README.md`](scenarios/README.md) — three current target user-world Scenarios plus retired planning notes.
 4. [`screens.md`](screens.md) — current + target spatial/visual meaning.
 5. [`domain-draft.md`](domain-draft.md) — target conceptual model/aggregate candidates.
 6. [`slices.md`](slices.md) — explicit current SL-01..06 vs target SL-01..09 decomposition.
@@ -33,9 +33,9 @@ replacement-package-app/
 ├ scenarios/
 │  ├ README.md
 │  ├ SCN-RPKG-COMPLETE-REPOSITORY-WORK.md
-│  ├ SCN-RPKG-FIND-EXISTING-WORK.md
 │  ├ SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md
-│  └ SCN-RPKG-PROVIDE-CURRENT-CHANGE.md
+│  ├ SCN-RPKG-PROVIDE-CURRENT-CHANGE.md
+│  └ SCN-RPKG-FIND-EXISTING-WORK.md  (retired planning note)
 ├ screens.md
 ├ domain-draft.md
 ├ slices.md
@@ -52,9 +52,9 @@ replacement-package-app/
 
 Scenario owns user-world behavior; Screen owns spatial meaning; Domain owns stable conceptual rules; Slice owns implementation/delivery increments; testing docs own proof planning/evidence, not product semantics.
 
-## 3. Current Implementation
+## 3. Current Implementation / Practical Acceptance Boundary
 
-Current code is represented by six implemented Slices:
+After this package, current source/tests realize the SL-01..09 decomposition used by this SDS, including the practical corrections in this package:
 
 ```text
 SL-RPKG-01 Apply Replacement Work
@@ -63,35 +63,22 @@ SL-RPKG-03 Finalize And Publish Work
 SL-RPKG-04 Export Repository Snapshot
 SL-RPKG-05 Attach Repository Snapshot To ChatGPT
 SL-RPKG-06 Deliver Current Change To ChatGPT
-```
-
-Known current gaps include cross-repository ownership false conflict, raw-byte BASE mismatch under Git checkout conversion, repository-first work navigation, no explicit guarded Finalized→Active Reopen, no explicit repository-location edit, no common External Interaction list and no Windows operation-outcome notification layer. Live Edge/ChatGPT operation still requires manual evidence.
-
-## 4. Selected Target Plan — Not Yet Implemented
-
-Target keeps/expands SL-01..06 and adds:
-
-```text
-SL-RPKG-07 Discover And Open Existing Work
+SL-RPKG-07 Select Existing Work Context
 SL-RPKG-08 Manage External Interactions
 SL-RPKG-09 Notify Operation Outcomes
 ```
 
-Key selected target behavior:
-- package/action input stays passive; Apply resolves exact Repository Target at invocation;
-- `PACKAGE.json.changeSetId` identifies the exact continuation work; UI-selected/label/recent work never substitutes another ChangeSet, and an exact Finalized ID requires explicit Reopen rather than auto-reopen;
-- existing ChangeSet's concrete target is authoritative; new-work matching clones are never guessed;
-- Repository Target has stable ID + logical Repository Identity + mutable Location; explicit `Change repository location` updates location and preserves all ChangeSets;
-- `replace/delete` expected source proof accepts raw equality or Git path-semantic equivalent content and blocks changed/unverifiable content;
-- baseline/ref-dependent operation against a repo with no commits reports Repository Not Ready;
-- Existing Work view spans repositories; default shows Active + Publication Pending only, `Show History` adds all Finalized, and selecting Finalized history exposes explicit guarded `Reopen ChangeSet` without reopening automatically;
-- compact latest-operation error marker survives restart for unfinished work only; failed Reopen leaves history Finalized and is reported by notification/result/diagnostics without a persistent Finalized marker;
-- External Interaction is exact payload/artifact → exact conversation; common list/cancel/history covers current change + snapshot handoffs;
-- Cancel never automatically removes already-prepared ChatGPT content; prepared cancellation retains content and stops future automation;
-- meaningful tracked operations always notify on terminal success/failure; notification click selects repository context only, not ChangeSet/operation;
-- technical diagnostics become a separate clean copyable session surface.
+Implementation existence does not by itself establish live Windows/Edge/ChatGPT acceptance. The manual cards remain the authority for practical evidence.
 
-See [`application-plan.md`](application-plan.md) for selected semantics and [`ARCHITECTURE.md`](ARCHITECTURE.md) for target implementation direction.
+Current work-context navigation uses the existing `ChangeSet` selector rather than a separate Existing Work workflow:
+- default scope: Active + Publication Pending for the selected Repository Target;
+- `All repositories`: the same selector expands across registered targets and identifies the repository per row;
+- `Show history`: adds Finalized within the selected local/global scope;
+- selecting a global ChangeSet selects its exact registered Repository Target + ChangeSet; an unavailable stored target is truthful query state and is never silently substituted.
+
+Current ReviewDiff delivery prepares exact text through direct ChatGPT composer/editor insertion without requiring Clipboard API write permission or foreground document focus. `Preparing` is reached only after the expected ReviewDiff is confirmed prepared; before that, failure is `FailedBeforeSend`. Ordinary terminal External Interactions leave the user list after Output/notification; `UnknownAfterSend` remains attention-requiring state and retries create new interaction identities. Ownership/adoptability failures identify exact target/path/applying work and explicitly distinguish unowned local changes from another ChangeSet owner.
+
+The accepted low-frequency SL-01 package re-read/Apply TOCTOU risk remains documented for later hardening. See [`application-plan.md`](application-plan.md), [`slices.md`](slices.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) for exact semantics and proof status.
 
 ## 5. Build / Run — Current Implementation
 

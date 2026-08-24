@@ -56,7 +56,7 @@ Historical ad-hoc runs are not silently imported as current acceptance evidence 
 1. Apply a valid add/replace/delete package and verify exact result bytes.
 2. Confirm ApplicationAttempt + ChangeSet appear in local state and the ChangeSet selector automatically selects the applied item.
 3. Apply base mismatch and wrong-repository packages; verify no target mutation.
-4. Apply against a dirty unowned path; verify `STATE_DIVERGED`.
+4. Apply against a dirty unowned path; verify `STATE_DIVERGED` names the exact path + Repository Target + applying ChangeSet and says `Ownership: Unowned — no unfinished ChangeSet owns this path`. Then create a same-target ownership conflict and require owner ChangeSet label/status/ID instead of `Unowned`.
 5. Exercise a filesystem failure during mutation; require exact rollback or explicit `STATE_DIVERGED`.
 6. Create a repository path through a Windows junction/symlink to a directory outside the repository and target a file below it; require `STATE_DIVERGED` and verify outside bytes are untouched.
 
@@ -212,7 +212,7 @@ Manual pass requires observing the real Edge/ChatGPT composer; Java/bridge task-
 2. Open two different ordinary `https://chatgpt.com/c/<id>` conversations and verify both titles appear in `Refresh chats`. Open a second tab of one conversation and verify it remains one choice with a larger tab count.
 3. Open two different conversations with the same visible title and require them to remain separate choices by conversation key.
 4. Bind an Active ChangeSet to one conversation, restart the Java app and require the binding to remain. Binding must not automatically send the already-current ReviewDiff.
-5. Click `Send current ReviewDiff` with an empty composer and a small diff; require direct composer/editor preparation followed by exactly one outgoing user message in the bound conversation.
+5. Click `Send current ReviewDiff` with an empty composer and a small diff; require direct composer/editor preparation followed by exactly one outgoing user message in the bound conversation. The extension must use the currently connected/enabled Send control after `SendClicked` staging rather than a DOM reference captured before the asynchronous stage write; no additional async gap may occur between that fresh lookup and click.
 6. Repeat with a large ReviewDiff while keeping the intended ChatGPT conversation open but **not foreground-focused** (work in another application/tab while delivery proceeds). Require the exact ReviewDiff to be prepared/sent once without `navigator.clipboard.writeText`/document-focus dependence. No native large-paste attachment conversion is required by the target.
 7. Put text or an existing attachment in the composer and attempt automatic ReviewDiff delivery; require `FailedBeforeSend` and verify the existing draft is not mixed/sent.
 8. Apply/Refresh another ReviewDiff for the same bound ChangeSet and require the same conversation to be reused without choosing it again. A continuation/correction package with the same `changeSetId` must retain that binding.
@@ -230,26 +230,26 @@ Manual pass requires observing the real Edge/ChatGPT composer; Java/bridge task-
 
 Manual pass requires real direct composer insertion for both small and large ReviewDiff content, including a non-foreground/unfocused ChatGPT document, plus the preparation-state/duplicate-tab/composer protections above; Java/bridge state-machine tests alone are insufficient evidence for live-browser success.
 
-## `PA-SL07` — Discover And Open Existing Work
+## `PA-SL07` — Select Existing Work Context
 
-**Target property:** persisted work can be discovered across repositories and opening one work item establishes its exact Repository Target + ChangeSet navigation context without Git mutation.  
-**Execution state:** `planned target / not current implementation evidence`
+**Target property:** one ChangeSet selector can stay repository-scoped or expand across registered Repository Targets, and selecting a global row establishes its exact Repository Target + ChangeSet context without a separate discovery workflow or Git mutation.  
+**Execution state:** `implementation present / manual practical evidence pending`
 
 1. Register several repositories; include two clones sharing the same Repository Identity.
-2. Create persisted Active, Publication Pending and Finalized ChangeSets across those targets plus at least one unfinished ChangeSet whose persisted latest relevant operation outcome is failure.
-3. Open the global Existing Work view without first choosing a repository; require only Active + Publication Pending work to appear by default, including the failed unfinished item with its marker.
-4. Require error-marked unfinished rows first, then most recently active ordering; show concise semantic failure reason.
-5. Toggle `Show History`; require all Finalized rows to appear without changing work state and without persistent error markers.
-6. With history enabled, select a Finalized row and require `Reopen ChangeSet` to appear; selecting the row alone must not change lifecycle/ownership. For Active/Publication Pending selection, require the Reopen action to be absent or disabled.
-7. Force Reopen failure for the selected Finalized row; require it to remain Finalized, receive failure notification/result/diagnostics, and keep no persistent ChangeSet error marker.
-8. Select one ChangeSet and require the exact stored Repository Target + ChangeSet to become current; no repository file/index change.
-9. Make that target location unavailable; require its work to remain visible with truthful unavailable state and no automatic substitution by another same-origin clone.
-10. Restart application and require compact latest unfinished ChangeSet outcome/error marker/reason to survive while Finalized history remains marker-free.
+2. Create Active, Publication Pending and Finalized ChangeSets across targets plus at least one unfinished failed-latest marker.
+3. With `All repositories` off and `Show history` off, require the ChangeSet dropdown to show only Active + Publication Pending for the currently selected Repository Target.
+4. Enable `All repositories`; require the **same dropdown** to show unfinished ChangeSets across registered targets with repository identity/name visible per row. There must be no separate `Existing work` button/dialog.
+5. Select a ChangeSet from another target; require the Repository selector to switch to that exact target and the ChangeSet to become current. Repeat with same-origin clones and require no clone substitution.
+6. Toggle `Show history`; require Finalized rows to be added within the current local/global scope. Selecting Finalized history alone must not Reopen; the explicit Reopen control remains history-only.
+7. Persist an orphan/unavailable Repository Target reference. Require the global projection to continue loading without `[REPOSITORY_MISMATCH]` aborting the whole selector and without substituting another target. The unavailable row must not authorize repository operations.
+8. Verify unfinished error-marker ordering/reason and that Finalized rows remain marker-free.
+9. Toggle back to repository scope and require only that Repository Target's applicable rows.
+10. Restart and repeat selection; navigation state may persist, but no selection/toggle may mutate Git/filesystem/lifecycle state.
 
 ## `PA-SL08` — Manage External Interactions
 
 **Target property:** current-change and snapshot handoffs that are still active/actionable or uncertain appear as user-semantic External Interactions with exact source/destination and truthful Cancel behavior; ordinary terminal attempts do not accumulate as list history.  
-**Execution state:** `planned target / not current implementation evidence`
+**Execution state:** `implementation present / manual practical evidence pending`
 
 1. Create one current-change delivery and one snapshot-attachment interaction; require both to appear in one list with distinguishable kind/source/destination/status.
 2. Verify pairing, heartbeat/polling, claim/lease/tab reconnect mechanics do **not** appear as independent user interactions.

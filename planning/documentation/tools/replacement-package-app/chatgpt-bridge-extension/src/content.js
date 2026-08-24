@@ -45,9 +45,9 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
       OBSChatGPTAdapter.assertConversation(task.conversationKey); const bytes = await verifiedPayload(task); await guard(task);
       if (task.kind === "reviewDiff") {
         const text = new TextDecoder("utf-8", {fatal: true}).decode(bytes); if (!text.length) throw new Error("Empty ReviewDiff should have been suppressed by the Java bridge.");
-        await OBSChatGPTAdapter.requireEmptyReviewComposer(task.conversationKey);
-        await stageTask(task, "Preparing"); preparingStaged = true;
-        const prepared = await OBSChatGPTAdapter.pasteReviewDiff(text, task.conversationKey); await guard(task);
+        await OBSChatGPTAdapter.requireEmptyReviewComposer(task.conversationKey); await guard(task);
+        const prepared = await OBSChatGPTAdapter.prepareReviewDiff(text, task.conversationKey);
+        await stageTask(task, "Preparing"); preparingStaged = true; await guard(task);
         const confirmed = await OBSChatGPTAdapter.sendPrepared(prepared, task.conversationKey, async () => { await stageTask(task, "SendClicked"); sendStaged = true; }, async () => guard(task));
         if (confirmed) await result(task, "Sent", `ReviewDiff sent as ${prepared.mode}.`); else await result(task, "UnknownAfterSend", "Send was clicked but the outgoing message could not be confirmed.");
       } else if (task.kind === "snapshot") {

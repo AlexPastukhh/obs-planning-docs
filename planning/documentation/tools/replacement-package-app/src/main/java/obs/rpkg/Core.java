@@ -20,7 +20,9 @@ public final class Core {
             ACTION_PACKAGE_MISMATCH="ACTION_PACKAGE_MISMATCH", REPOSITORY_MISMATCH="REPOSITORY_MISMATCH",
             PATH_OWNERSHIP_CONFLICT="PATH_OWNERSHIP_CONFLICT", BASE_MISMATCH="BASE_MISMATCH", RESULT_MISMATCH="RESULT_MISMATCH",
             STATE_DIVERGED="STATE_DIVERGED", REVIEW_STALE="REVIEW_STALE", FINALIZE_FAILED="FINALIZE_FAILED",
-            SNAPSHOT_EXPORT_FAILED="SNAPSHOT_EXPORT_FAILED", CHAT_BRIDGE_FAILED="CHAT_BRIDGE_FAILED";
+            SNAPSHOT_EXPORT_FAILED="SNAPSHOT_EXPORT_FAILED", CHAT_BRIDGE_FAILED="CHAT_BRIDGE_FAILED",
+            SOURCE_STATE_CHANGED="SOURCE_STATE_CHANGED", SOURCE_STATE_UNVERIFIABLE="SOURCE_STATE_UNVERIFIABLE",
+            REPOSITORY_NOT_READY="REPOSITORY_NOT_READY", REPOSITORY_SELECTION_REQUIRED="REPOSITORY_SELECTION_REQUIRED";
 
     public static final class ObsException extends RuntimeException {
         public final String code;
@@ -43,19 +45,29 @@ public final class Core {
     public record ChatConversation(String conversationKey,String title,String url,int tabCount,List<Integer> tabIds) {}
     public record ChatBinding(String changeSetId,String conversationKey,String title,String url,String boundAt) {}
     public record ChatTaskInfo(String taskId,String kind,String changeSetId,String reviewAttemptId,String conversationKey,String conversationTitle,String fileName,boolean autoSend,String status,String message,String createdAt,String updatedAt) {}
+    public record ApplyTargetResolution(RepositoryConfig target,List<RepositoryConfig> candidates,boolean contextChanged,String reason) {}
+    public record ExternalInteraction(String interactionId,String kind,String changeSetId,String source,String destination,String state,String message,String updatedAt,boolean cancellable) {}
 
     public static final class ChangeSet {
-        public int schemaVersion=1; public String changeSetId,changeSetLabel,repositoryIdentity,repositoryRoot,status="Active",lastPackageId;
-        public final List<String> ownedPaths=new ArrayList<>(); public String currentReviewAttemptId,currentReviewDiffPath,currentReviewSha256,currentReviewHead;
+        public int schemaVersion=2;
+        public String changeSetId,changeSetLabel,repositoryIdentity,repositoryTargetId,repositoryRoot,status="Active",lastPackageId;
+        public final List<String> ownedPaths=new ArrayList<>();
+        public String currentReviewAttemptId,currentReviewDiffPath,currentReviewSha256,currentReviewHead;
         public String commitSha,branch,createdAt,updatedAt;
+        public String lastOperationStatus,lastOperationCode,lastOperationMessage,lastOperationAt;
+        public final List<Map<String,Object>> finalizationHistory=new ArrayList<>();
         Map<String,Object> json(){
-            Map<String,Object> m=new LinkedHashMap<>(); m.put("schemaVersion",1);m.put("changeSetId",changeSetId);m.put("changeSetLabel",changeSetLabel);m.put("repositoryIdentity",repositoryIdentity);m.put("repositoryRoot",repositoryRoot);m.put("ownedPaths",new ArrayList<>(ownedPaths));m.put("status",status);m.put("lastPackageId",lastPackageId);
+            Map<String,Object> m=new LinkedHashMap<>();m.put("schemaVersion",2);m.put("changeSetId",changeSetId);m.put("changeSetLabel",changeSetLabel);m.put("repositoryIdentity",repositoryIdentity);m.put("repositoryTargetId",repositoryTargetId);m.put("repositoryRoot",repositoryRoot);m.put("ownedPaths",new ArrayList<>(ownedPaths));m.put("status",status);m.put("lastPackageId",lastPackageId);
             Map<String,Object> r=new LinkedHashMap<>();r.put("attemptId",currentReviewAttemptId);r.put("diffPath",currentReviewDiffPath);r.put("sha256",currentReviewSha256);r.put("head",currentReviewHead);m.put("currentReview",r);
-            m.put("commitSha",commitSha);m.put("branch",branch);m.put("createdAt",createdAt);m.put("updatedAt",updatedAt);return m;
+            m.put("commitSha",commitSha);m.put("branch",branch);m.put("createdAt",createdAt);m.put("updatedAt",updatedAt);
+            Map<String,Object> o=new LinkedHashMap<>();o.put("status",lastOperationStatus);o.put("code",lastOperationCode);o.put("message",lastOperationMessage);o.put("timestamp",lastOperationAt);m.put("lastOperationOutcome",o);
+            m.put("finalizationHistory",new ArrayList<>(finalizationHistory));return m;
         }
         @SuppressWarnings("unchecked") static ChangeSet from(Map<String,Object> m){
-            ChangeSet c=new ChangeSet();c.changeSetId=str(m.get("changeSetId"));c.changeSetLabel=str(m.get("changeSetLabel"));c.repositoryIdentity=str(m.get("repositoryIdentity"));c.repositoryRoot=str(m.get("repositoryRoot"));c.status=str(m.get("status"));c.lastPackageId=str(m.get("lastPackageId"));c.commitSha=str(m.get("commitSha"));c.branch=str(m.get("branch"));c.createdAt=str(m.get("createdAt"));c.updatedAt=str(m.get("updatedAt"));
-            Object op=m.get("ownedPaths");if(op instanceof List<?> l)for(Object x:l)c.ownedPaths.add(str(x)); Object rr=m.get("currentReview");if(rr instanceof Map<?,?> rm){Map<String,Object> r=(Map<String,Object>)rm;c.currentReviewAttemptId=str(r.get("attemptId"));c.currentReviewDiffPath=str(r.get("diffPath"));c.currentReviewSha256=str(r.get("sha256"));c.currentReviewHead=str(r.get("head"));} return c;
+            ChangeSet c=new ChangeSet();c.changeSetId=str(m.get("changeSetId"));c.changeSetLabel=str(m.get("changeSetLabel"));c.repositoryIdentity=str(m.get("repositoryIdentity"));c.repositoryTargetId=str(m.get("repositoryTargetId"));c.repositoryRoot=str(m.get("repositoryRoot"));c.status=str(m.get("status"));if(c.status==null||c.status.isBlank())c.status="Active";c.lastPackageId=str(m.get("lastPackageId"));c.commitSha=str(m.get("commitSha"));c.branch=str(m.get("branch"));c.createdAt=str(m.get("createdAt"));c.updatedAt=str(m.get("updatedAt"));
+            Object op=m.get("ownedPaths");if(op instanceof List<?> l)for(Object x:l)c.ownedPaths.add(str(x));Object rr=m.get("currentReview");if(rr instanceof Map<?,?> rm){Map<String,Object> r=(Map<String,Object>)rm;c.currentReviewAttemptId=str(r.get("attemptId"));c.currentReviewDiffPath=str(r.get("diffPath"));c.currentReviewSha256=str(r.get("sha256"));c.currentReviewHead=str(r.get("head"));}
+            Object oo=m.get("lastOperationOutcome");if(oo instanceof Map<?,?> raw){Map<String,Object> o=(Map<String,Object>)raw;c.lastOperationStatus=str(o.get("status"));c.lastOperationCode=str(o.get("code"));c.lastOperationMessage=str(o.get("message"));c.lastOperationAt=str(o.get("timestamp"));}
+            Object fh=m.get("finalizationHistory");if(fh instanceof List<?> l)for(Object x:l)if(x instanceof Map<?,?> raw)c.finalizationHistory.add(new LinkedHashMap<>((Map<String,Object>)raw));return c;
         }
     }
 
@@ -92,18 +104,29 @@ public final class Core {
         for(int i=0;i<repos.size();i++){RepositoryConfig r=repos.get(i);if(samePath(Path.of(r.path),repo)){RepositoryConfig n=new RepositoryConfig(r.id,displayRepositoryName(name,repo),repo.toString(),identity);repos.set(i,n);state.saveSettings(new Settings(List.copyOf(repos),n.id,s.selectedChangeSetId,s.reviewDiffHandling));return n;}}
         RepositoryConfig n=new RepositoryConfig(UUID.randomUUID().toString(),displayRepositoryName(name,repo),repo.toString(),identity);repos.add(n);state.saveSettings(new Settings(List.copyOf(repos),n.id,s.selectedChangeSetId,s.reviewDiffHandling));return n;
     }
-    public Settings removeRepository(String repositoryId){Settings s=ensureSettings();RepositoryConfig r=findRepository(s,repositoryId);for(ChangeSet cs:state.activeChangeSets())if(samePath(Path.of(cs.repositoryRoot),Path.of(r.path))&&same(cs.repositoryIdentity,r.repositoryIdentity))throw new ObsException(STATE_DIVERGED,"Repository has active or pending ChangeSets and cannot be removed.");List<RepositoryConfig> repos=new ArrayList<>(s.repositories);repos.removeIf(x->x.id.equals(repositoryId));String selected=Objects.equals(s.selectedRepositoryId,repositoryId)?(repos.isEmpty()?null:repos.get(0).id):s.selectedRepositoryId;String cs=Objects.equals(s.selectedRepositoryId,repositoryId)?null:s.selectedChangeSetId;Settings n=new Settings(List.copyOf(repos),selected,cs,s.reviewDiffHandling);state.saveSettings(n);return n;}
+    public Settings removeRepository(String repositoryId){Settings s=ensureSettings();RepositoryConfig r=findRepository(s,repositoryId);for(ChangeSet cs:state.activeChangeSets())if(belongsTo(cs,r))throw new ObsException(STATE_DIVERGED,"Repository has active or pending ChangeSets and cannot be removed.");List<RepositoryConfig> repos=new ArrayList<>(s.repositories);repos.removeIf(x->x.id.equals(repositoryId));String selected=Objects.equals(s.selectedRepositoryId,repositoryId)?(repos.isEmpty()?null:repos.get(0).id):s.selectedRepositoryId;String cs=Objects.equals(s.selectedRepositoryId,repositoryId)?null:s.selectedChangeSetId;Settings n=new Settings(List.copyOf(repos),selected,cs,s.reviewDiffHandling);state.saveSettings(n);return n;}
+    public RepositoryConfig changeRepositoryLocation(String repositoryId,Path requested){
+        try(StateStore.Lock ignored=state.lock()){
+            Settings s=ensureSettings();RepositoryConfig current=findRepository(s,repositoryId);Path repo=repoRoot(requested);String identity=repositoryIdentity(repo);if(!same(identity,current.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Selected repository origin is "+identity+"; target expects "+current.repositoryIdentity+".");for(RepositoryConfig r:s.repositories)if(!r.id.equals(current.id)&&samePath(Path.of(r.path),repo))throw new ObsException(STATE_DIVERGED,"Selected location is already registered as another Repository Target: "+r.name+".");
+            for(ChangeSet cs:state.getChangeSets())if((cs.repositoryTargetId==null||cs.repositoryTargetId.isBlank())&&same(cs.repositoryIdentity,current.repositoryIdentity)&&cs.repositoryRoot!=null&&samePath(Path.of(cs.repositoryRoot),Path.of(current.path))){cs.repositoryTargetId=current.id;state.saveChangeSet(cs);}
+            List<RepositoryConfig> repos=new ArrayList<>(s.repositories);RepositoryConfig updated=new RepositoryConfig(current.id,current.name,repo.toString(),current.repositoryIdentity);for(int i=0;i<repos.size();i++)if(repos.get(i).id.equals(repositoryId)){repos.set(i,updated);break;}state.saveSettings(new Settings(List.copyOf(repos),s.selectedRepositoryId,s.selectedChangeSetId,s.reviewDiffHandling));return updated;
+        }
+    }
     public Settings selectRepository(String repositoryId){Settings s=ensureSettings();findRepository(s,repositoryId);String cs=s.selectedChangeSetId;ChangeSet selected=state.getChangeSet(cs);RepositoryConfig r=findRepository(s,repositoryId);if(selected==null||!belongsTo(selected,r))cs=null;Settings n=new Settings(s.repositories,repositoryId,cs,s.reviewDiffHandling);state.saveSettings(n);return n;}
     public Settings selectChangeSet(String changeSetId){Settings s=ensureSettings();if(changeSetId==null||changeSetId.isBlank()){Settings n=new Settings(s.repositories,s.selectedRepositoryId,null,s.reviewDiffHandling);state.saveSettings(n);return n;}ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+changeSetId);if(s.selectedRepositoryId==null)throw new ObsException(REPOSITORY_MISMATCH,"Select a registered repository first.");RepositoryConfig r=findRepository(s,s.selectedRepositoryId);if(!belongsTo(cs,r))throw new ObsException(REPOSITORY_MISMATCH,"ChangeSet belongs to a different repository.");Settings n=new Settings(s.repositories,s.selectedRepositoryId,changeSetId,s.reviewDiffHandling);state.saveSettings(n);return n;}
     public List<RepositoryConfig> getRepositories(){return ensureSettings().repositories;}
-    public List<ChangeSet> getChangeSets(String repositoryId,boolean includeFinalized){Settings s=ensureSettings();RepositoryConfig r=findRepository(s,repositoryId);List<ChangeSet> out=new ArrayList<>();for(ChangeSet cs:state.getChangeSets())if(belongsTo(cs,r)&&(includeFinalized||"Active".equals(cs.status)||"CommittedPendingPush".equals(cs.status)))out.add(cs);out.sort(Comparator.comparingInt((ChangeSet c)->statusRank(c.status)).thenComparing((ChangeSet c)->c.updatedAt==null?"":c.updatedAt,Comparator.reverseOrder()));return out;}
+    public List<ChangeSet> getChangeSets(String repositoryId,boolean includeFinalized){Settings s=ensureSettings();RepositoryConfig r=findRepository(s,repositoryId);List<ChangeSet> out=new ArrayList<>();for(ChangeSet cs:state.getChangeSets())if(belongsTo(cs,r)&&(includeFinalized||isUnfinished(cs)))out.add(cs);out.sort(workComparator());return out;}
+    public List<ChangeSet> getGlobalChangeSets(boolean includeFinalized){List<ChangeSet> out=new ArrayList<>();for(ChangeSet cs:state.getChangeSets())if(includeFinalized||isUnfinished(cs))out.add(cs);out.sort(workComparator());return out;}
+    public RepositoryConfig findRepositoryForChangeSet(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);return cs==null?null:queryRepositoryForChangeSet(cs);}
+    public RepositoryConfig repositoryForChangeSet(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)return null;return repositoryForChangeSet(cs,false);}
+    public boolean hasFailedLatestOutcome(ChangeSet cs){return cs!=null&&isUnfinished(cs)&&("FAILED".equals(cs.lastOperationStatus)||"ACTION_REQUIRED".equals(cs.lastOperationStatus)||"UNCERTAIN".equals(cs.lastOperationStatus));}
     public ChangeSet getChangeSet(String id){return state.getChangeSet(id);}
     public List<ApplicationAttempt> getAttempts(){return state.getAttempts();}
     public ReviewDiff currentReview(ChangeSet cs){if(cs==null)return null;if(cs.currentReviewAttemptId==null||cs.currentReviewDiffPath==null||cs.currentReviewSha256==null)return null;ReviewDiff r=new ReviewDiff(cs.currentReviewAttemptId,Path.of(cs.currentReviewDiffPath),cs.currentReviewSha256,cs.currentReviewHead);verifiedReviewDiffPath(r);return r;}
 
     public SnapshotExportResult exportRepositorySnapshot(Path repositoryRoot,String mode,String commitRef,Path outputDirectory){
-        RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);
-        return new RepositorySnapshotExporter(git).export(Path.of(allowed.path),allowed.repositoryIdentity,mode,commitRef,outputDirectory);
+        RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);Path repo=Path.of(allowed.path);requireRepositoryReady(repo);
+        return new RepositorySnapshotExporter(git).export(repo,allowed.repositoryIdentity,mode,commitRef,outputDirectory);
     }
 
     public String chatBridgePairingToken(){return chatBridge.pairingToken();}
@@ -114,6 +137,8 @@ public final class Core {
     public ChatTaskInfo sendCurrentReviewToChat(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Unknown ChangeSet: "+changeSetId);ChatBinding b=chatBridge.binding(changeSetId);if(b==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Select and bind an open ChatGPT conversation first.");ReviewDiff r=currentReview(cs);if(r==null)throw new ObsException(CHAT_BRIDGE_FAILED,"No current ReviewDiff is available.");return chatBridge.enqueueReview(cs,r,b,true);}
     public String chatDeliveryStatus(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);return cs==null?"Not connected":chatBridge.deliveryStatus(changeSetId,cs.currentReviewAttemptId);}
     public ChatTaskInfo attachSnapshotToChat(Path snapshotZip,String conversationKey){return chatBridge.enqueueSnapshot(snapshotZip,conversationKey);}
+    public List<ExternalInteraction> getExternalInteractions(){return chatBridge.externalInteractions();}
+    public ExternalInteraction cancelExternalInteraction(String interactionId){return chatBridge.cancelExternalInteraction(interactionId);}
 
     private Settings ensureSettings(){
         Settings s=state.getSettings();boolean changed=false;List<RepositoryConfig> repos=new ArrayList<>();
@@ -123,7 +148,25 @@ public final class Core {
     }
     private RepositoryConfig requireAllowedRepository(Path requested){Settings s=ensureSettings();Path repo=repoRoot(requested);for(RepositoryConfig r:s.repositories)if(samePath(Path.of(r.path),repo)){String identity=repositoryIdentity(repo);if(!same(identity,r.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Registered repository origin changed from "+r.repositoryIdentity+" to "+identity+".");return r;}throw new ObsException(REPOSITORY_MISMATCH,"Repository is not registered in Replacement Package App: "+repo);}
     private static RepositoryConfig findRepository(Settings s,String id){if(id==null||id.isBlank())throw new ObsException(REPOSITORY_MISMATCH,"No registered repository is selected.");for(RepositoryConfig r:s.repositories)if(r.id.equals(id))return r;throw new ObsException(REPOSITORY_MISMATCH,"Unknown registered repository: "+id);}
-    private static boolean belongsTo(ChangeSet cs,RepositoryConfig r){return cs!=null&&r!=null&&same(cs.repositoryIdentity,r.repositoryIdentity)&&samePath(Path.of(cs.repositoryRoot),Path.of(r.path));}
+    private RepositoryConfig queryRepositoryForChangeSet(ChangeSet cs){
+        Settings s=ensureSettings();
+        if(cs.repositoryTargetId!=null&&!cs.repositoryTargetId.isBlank())for(RepositoryConfig r:s.repositories)if(r.id.equals(cs.repositoryTargetId))return r;
+        if(cs.repositoryRoot!=null)for(RepositoryConfig r:s.repositories)if(same(cs.repositoryIdentity,r.repositoryIdentity)&&samePath(Path.of(cs.repositoryRoot),Path.of(r.path)))return r;
+        return null;
+    }
+    private RepositoryConfig repositoryForChangeSet(ChangeSet cs,boolean requireAvailable){
+        RepositoryConfig match=queryRepositoryForChangeSet(cs);
+        if(match==null)throw new ObsException(REPOSITORY_MISMATCH,"ChangeSet Repository Target is not registered: "+cs.changeSetId);
+        if(cs.repositoryTargetId==null||cs.repositoryTargetId.isBlank()){cs.repositoryTargetId=match.id;state.saveChangeSet(cs);}
+        if(requireAvailable){Path repo=repoRoot(Path.of(match.path));String identity=repositoryIdentity(repo);if(!same(identity,match.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Registered repository origin changed from "+match.repositoryIdentity+" to "+identity+".");}
+        return match;
+    }
+    private RepositoryConfig operationRepository(ChangeSet cs,Path explicit,String operation){RepositoryConfig target=repositoryForChangeSet(cs,true);Path repo=Path.of(target.path).toAbsolutePath().normalize();if(explicit!=null){Path supplied=repoRoot(explicit);if(!samePath(supplied,repo))throw new ObsException(REPOSITORY_MISMATCH,operation+" repository differs from the ChangeSet Repository Target location.");}cs.repositoryTargetId=target.id;cs.repositoryRoot=repo.toString();return target;}
+    private RepositoryConfig repositoryByPath(Path requested){return requireAllowedRepository(requested);}
+
+    private static boolean belongsTo(ChangeSet cs,RepositoryConfig r){if(cs==null||r==null)return false;if(cs.repositoryTargetId!=null&&!cs.repositoryTargetId.isBlank())return Objects.equals(cs.repositoryTargetId,r.id);return same(cs.repositoryIdentity,r.repositoryIdentity)&&cs.repositoryRoot!=null&&samePath(Path.of(cs.repositoryRoot),Path.of(r.path));}
+    private static boolean isUnfinished(ChangeSet cs){return cs!=null&&("Active".equals(cs.status)||"CommittedPendingPush".equals(cs.status));}
+    private Comparator<ChangeSet> workComparator(){return Comparator.comparingInt((ChangeSet c)->hasFailedLatestOutcome(c)?0:isUnfinished(c)?1:2).thenComparing((ChangeSet c)->c.updatedAt==null?"":c.updatedAt,Comparator.reverseOrder());}
     private static int statusRank(String s){if("CommittedPendingPush".equals(s))return 0;if("Active".equals(s))return 1;return 2;}
     private static String displayRepositoryName(String requested,Path repo){if(requested!=null&&!requested.isBlank())return requested.trim();Path n=repo.getFileName();return n==null?repo.toString():n.toString();}
 
@@ -150,20 +193,33 @@ public final class Core {
         return new PackageData(archive.toAbsolutePath().normalize(),sha256(archive),new PackageManifest(1,packageId,changeSetId,label,repoId,List.copyOf(ops)),base,repl);
     }
 
+    public ApplyTargetResolution resolveApplyTarget(String actionText,Path archive,String currentRepositoryId){
+        ObsAction action=actionText==null||actionText.isBlank()?null:parseAction(actionText);Path p=action==null?archive:resolveArchiveForAction(action,archive);PackageData pkg=readPackage(p);if(action!=null&&!pkg.manifest.packageId.equals(action.packageId()))throw new ObsException(ACTION_PACKAGE_MISMATCH,"OBS-ACTION packageId does not match PACKAGE.json.");
+        Settings settings=ensureSettings();ChangeSet existing=state.getChangeSet(pkg.manifest.changeSetId);
+        if(existing!=null){RepositoryConfig target=repositoryForChangeSet(existing,false);if(!same(existing.repositoryIdentity,pkg.manifest.repositoryIdentity))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet repository identity differs from package.");return new ApplyTargetResolution(target,List.of(target),!Objects.equals(currentRepositoryId,target.id),"Existing ChangeSet target");}
+        RepositoryConfig current=null;if(currentRepositoryId!=null)for(RepositoryConfig r:settings.repositories)if(r.id.equals(currentRepositoryId)){current=r;break;}
+        if(current!=null&&same(current.repositoryIdentity,pkg.manifest.repositoryIdentity))return new ApplyTargetResolution(current,List.of(current),false,"Current matching target");
+        List<RepositoryConfig> matches=new ArrayList<>();for(RepositoryConfig r:settings.repositories)if(same(r.repositoryIdentity,pkg.manifest.repositoryIdentity))matches.add(r);
+        if(matches.isEmpty())throw new ObsException(REPOSITORY_MISMATCH,"No registered Repository Target matches "+pkg.manifest.repositoryIdentity+".");
+        if(matches.size()==1)return new ApplyTargetResolution(matches.get(0),List.copyOf(matches),!Objects.equals(currentRepositoryId,matches.get(0).id),"Unique matching target");
+        return new ApplyTargetResolution(null,List.copyOf(matches),false,"Multiple matching Repository Targets require explicit selection");
+    }
+
     public ApplyResult applyAction(String actionText,Path archive,Path repositoryRoot){ObsAction a=parseAction(actionText);Path p=resolveArchiveForAction(a,archive);PackageData pkg=readPackage(p);if(!pkg.manifest.packageId.equals(a.packageId()))throw new ObsException(ACTION_PACKAGE_MISMATCH,"OBS-ACTION packageId does not match PACKAGE.json.");return applyInternal(pkg,repositoryRoot,a);}
     public ApplyResult applyPackage(Path archive,Path repositoryRoot){return applyInternal(readPackage(archive),repositoryRoot,null);}
 
     private ApplyResult applyInternal(PackageData pkg,Path repositoryRoot,ObsAction action){
         String attemptId=UUID.randomUUID().toString(),now=Instant.now().toString();Path repo=null;ChangeSet cs=null;ReviewDiff review=null;ApplicationAttempt success=null;StateStore.Lock stateLock=state.lock();try{
-            RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);repo=Path.of(allowed.path);String repoIdentity=allowed.repositoryIdentity;if(!same(repoIdentity,pkg.manifest.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Configured origin is "+repoIdentity+"; package targets "+pkg.manifest.repositoryIdentity+".");
-            ChangeSet prior=state.getChangeSet(pkg.manifest.changeSetId);boolean priorExists=prior!=null;byte[] priorState=priorExists?readBytes(state.changeSetPath(pkg.manifest.changeSetId)):null;cs=priorExists?prior:new ChangeSet();if(priorExists){if(!"Active".equals(cs.status))throw new ObsException(STATE_DIVERGED,"ChangeSet is not Active: "+cs.status);if(!same(cs.repositoryIdentity,repoIdentity)||!samePath(Path.of(cs.repositoryRoot),repo)||!Objects.equals(cs.changeSetLabel,pkg.manifest.changeSetLabel))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet identity/label/repository differs from package.");}else{cs.changeSetId=pkg.manifest.changeSetId;cs.changeSetLabel=pkg.manifest.changeSetLabel;cs.repositoryIdentity=repoIdentity;cs.repositoryRoot=repo.toString();cs.createdAt=now;cs.updatedAt=now;}
-            Set<String> owned=new TreeSet<>(String.CASE_INSENSITIVE_ORDER);owned.addAll(cs.ownedPaths);for(ChangeSet other:state.activeChangeSets())if(!other.changeSetId.equals(cs.changeSetId))for(String p:other.ownedPaths)for(Operation op:pkg.manifest.operations)if(p.equalsIgnoreCase(op.path))throw new ObsException(PATH_OWNERSHIP_CONFLICT,"Path is owned by ChangeSet "+other.changeSetId+": "+op.path);
-            for(Operation op:pkg.manifest.operations)if(!containsIgnoreCase(owned,op.path)&&pathDirty(repo,op.path))throw new ObsException(STATE_DIVERGED,"Dirty unowned path cannot be adopted: "+op.path);
-            Map<String,Backup> backups=new LinkedHashMap<>();for(Operation op:pkg.manifest.operations){Path target=inside(repo,op.path);boolean exists=Files.isRegularFile(target);byte[] before=exists?readBytes(target):null;backups.put(op.path,new Backup(exists,before));switch(op.action){case"add"->{if(Files.exists(target))throw new ObsException(BASE_MISMATCH,"Add target already exists: "+op.path);}case"replace","delete"->{if(!exists||!Arrays.equals(before,pkg.base.get(op.path)))throw new ObsException(BASE_MISMATCH,"Current bytes do not match package base: "+op.path);}}}
+            RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);repo=Path.of(allowed.path);String repoIdentity=allowed.repositoryIdentity;if(!same(repoIdentity,pkg.manifest.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Configured origin is "+repoIdentity+"; package targets "+pkg.manifest.repositoryIdentity+".");requireRepositoryReady(repo);
+            ChangeSet prior=state.getChangeSet(pkg.manifest.changeSetId);boolean priorExists=prior!=null;byte[] priorState=priorExists?readBytes(state.changeSetPath(pkg.manifest.changeSetId)):null;cs=priorExists?prior:new ChangeSet();if(priorExists){if(!"Active".equals(cs.status))throw new ObsException(STATE_DIVERGED,"ChangeSet is not Active: "+cs.status);RepositoryConfig owner=repositoryForChangeSet(cs,false);if(!Objects.equals(owner.id,allowed.id)||!same(cs.repositoryIdentity,repoIdentity)||!Objects.equals(cs.changeSetLabel,pkg.manifest.changeSetLabel))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet identity/label/repository target differs from package/apply target.");}else{cs.changeSetId=pkg.manifest.changeSetId;cs.changeSetLabel=pkg.manifest.changeSetLabel;cs.repositoryIdentity=repoIdentity;cs.repositoryTargetId=allowed.id;cs.repositoryRoot=repo.toString();cs.createdAt=now;cs.updatedAt=now;}
+            cs.repositoryTargetId=allowed.id;cs.repositoryRoot=repo.toString();
+            Set<String> owned=new TreeSet<>(String.CASE_INSENSITIVE_ORDER);owned.addAll(cs.ownedPaths);for(ChangeSet other:state.activeChangeSets())if(!other.changeSetId.equals(cs.changeSetId)&&belongsTo(other,allowed))for(String p:other.ownedPaths)for(Operation op:pkg.manifest.operations)if(p.equalsIgnoreCase(op.path))throw new ObsException(PATH_OWNERSHIP_CONFLICT,ownershipConflictMessage(op.path,allowed,other,cs));
+            for(Operation op:pkg.manifest.operations)if(!containsIgnoreCase(owned,op.path)&&pathDirty(repo,op.path))throw new ObsException(STATE_DIVERGED,dirtyUnownedMessage(op.path,allowed,cs));
+            Map<String,Backup> backups=new LinkedHashMap<>();for(Operation op:pkg.manifest.operations){Path target=inside(repo,op.path);boolean exists=Files.isRegularFile(target);byte[] before=exists?readBytes(target):null;backups.put(op.path,new Backup(exists,before));switch(op.action){case"add"->{if(Files.exists(target))throw new ObsException(BASE_MISMATCH,"Add target already exists: "+op.path);}case"replace","delete"->{if(!exists)throw new ObsException(SOURCE_STATE_CHANGED,"Expected source path is missing: "+op.path);requireExpectedSource(repo,op.path,pkg.base.get(op.path),before);}}}
             Path successAttemptPath=state.attemptPath(attemptId);try{
                 for(Operation op:pkg.manifest.operations){Path target=inside(repo,op.path);if(op.action.equals("delete")){Files.delete(target);}else{Files.createDirectories(target.getParent());Files.write(target,pkg.replacement.get(op.path),StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);}}
                 for(Operation op:pkg.manifest.operations){Path target=inside(repo,op.path);if(op.action.equals("delete")){if(Files.exists(target))throw new ObsException(RESULT_MISMATCH,"Delete result still exists: "+op.path);}else if(!Files.isRegularFile(target)||!Arrays.equals(readBytes(target),pkg.replacement.get(op.path)))throw new ObsException(RESULT_MISMATCH,"Result bytes mismatch: "+op.path);}
-                afterMutationHook.run();for(Operation op:pkg.manifest.operations)owned.add(op.path);cs.ownedPaths.clear();cs.ownedPaths.addAll(owned);cs.lastPackageId=pkg.manifest.packageId;cs.updatedAt=Instant.now().toString();review=newReviewDiff(cs,attemptId);cs.currentReviewAttemptId=review.attemptId;cs.currentReviewDiffPath=review.diffPath.toString();cs.currentReviewSha256=review.sha256;cs.currentReviewHead=review.head;state.saveChangeSet(cs);
+                afterMutationHook.run();for(Operation op:pkg.manifest.operations)owned.add(op.path);cs.ownedPaths.clear();cs.ownedPaths.addAll(owned);cs.lastPackageId=pkg.manifest.packageId;cs.updatedAt=Instant.now().toString();review=newReviewDiff(cs,attemptId);cs.currentReviewAttemptId=review.attemptId;cs.currentReviewDiffPath=review.diffPath.toString();cs.currentReviewSha256=review.sha256;cs.currentReviewHead=review.head;setOutcome(cs,"SUCCESS",SUCCESS,"Apply succeeded");state.saveChangeSet(cs);
                 success=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repoIdentity,repo,pkg,SUCCESS,SUCCESS,"Package applied and cumulative ReviewDiff generated.",review);state.saveAttempt(success);
             }catch(Throwable t){boolean ok=true;for(Map.Entry<String,Backup> e:backups.entrySet()){try{Path target=inside(repo,e.getKey());Backup b=e.getValue();if(!b.existed){Files.deleteIfExists(target);}else{Files.createDirectories(target.getParent());Files.write(target,b.bytes,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);}}catch(Throwable x){ok=false;}}for(Map.Entry<String,Backup> e:backups.entrySet()){try{Path target=inside(repo,e.getKey());Backup b=e.getValue();if(b.existed!=Files.isRegularFile(target)||(b.existed&&!Arrays.equals(b.bytes,readBytes(target))))ok=false;}catch(Throwable x){ok=false;}}
                 try{if(priorExists)Files.write(state.changeSetPath(pkg.manifest.changeSetId),priorState,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);else Files.deleteIfExists(state.changeSetPath(pkg.manifest.changeSetId));Files.deleteIfExists(successAttemptPath);if(review!=null)Files.deleteIfExists(review.diffPath);}catch(Throwable x){ok=false;}if(!ok)throw new ObsException(STATE_DIVERGED,"Apply failed and target/ledger rollback could not be verified.",t);throw asObs(t,RESULT_MISMATCH);
@@ -171,7 +227,7 @@ public final class Core {
             Handoff h;try{h=publishReviewDiff(cs,review);}catch(Throwable t){h=new Handoff(null,"ReviewDiff handoff failed: "+t.getMessage());}success.serviceReviewDiffPath=h.servicePath;success.handoffWarning=h.warning;
             try{chatBridge.enqueueReviewIfBound(cs,review);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT delivery queue warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
             try{state.saveAttempt(success);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" Attempt handoff metadata update failed.").trim();}return new ApplyResult(SUCCESS,success,cs,review);
-        }catch(ObsException e){if(pkg!=null){try{ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",e.code,e.getMessage(),null);state.saveAttempt(failed);}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,STATE_DIVERGED);if(pkg!=null){try{state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",oe.code,oe.getMessage(),null));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
+        }catch(ObsException e){if(pkg!=null){try{ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",e.code,e.getMessage(),null);state.saveAttempt(failed);recordOperationOutcomeUnlocked(pkg.manifest.changeSetId,"FAILED",e.code,semanticSummary(e.getMessage()));}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,STATE_DIVERGED);if(pkg!=null){try{state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",oe.code,oe.getMessage(),null));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
     }
 
     private ApplicationAttempt attempt(String id,String now,String name,String repoId,Path repo,PackageData pkg,String result,String code,String msg,ReviewDiff review){ApplicationAttempt a=new ApplicationAttempt();a.attemptId=id;a.timestamp=now;a.name=name;a.repositoryIdentity=repoId;a.repositoryRoot=repo==null?null:repo.toString();a.archivePath=pkg.archivePath.toString();a.archiveSha256=pkg.archiveSha256;a.packageId=pkg.manifest.packageId;a.changeSetId=pkg.manifest.changeSetId;a.result=result;a.code=code;a.message=msg;if(review!=null){a.reviewDiffPath=review.diffPath.toString();a.reviewDiffSha256=review.sha256;}a.handoffWarning="";return a;}
@@ -180,7 +236,7 @@ public final class Core {
 
     public ReviewDiff newReviewDiff(ChangeSet cs){return newReviewDiff(cs,UUID.randomUUID().toString());}
     private ReviewDiff newReviewDiff(ChangeSet cs,String reviewId){
-        Path repo=Path.of(cs.repositoryRoot);
+        RepositoryConfig target=repositoryForChangeSet(cs,true);Path repo=Path.of(target.path);cs.repositoryRoot=repo.toString();requireRepositoryReady(repo);
         if(cs.ownedPaths.isEmpty())throw new ObsException(STATE_DIVERGED,"ChangeSet has no owned paths.");
         String head=git.run(repo,STATE_DIVERGED,"rev-parse","HEAD").first();
         Path dir=state.reviewDir(cs.changeSetId),tempDir=null;
@@ -229,30 +285,26 @@ public final class Core {
         return h;
     }
 
-    public Handoff publishReviewDiff(ChangeSet cs,ReviewDiff review){Settings s=getSettings();String handling=s.reviewDiffHandling;String service=null;List<String>w=new ArrayList<>();if(handling.equals("Clipboard")||handling.equals("Both")){try{Handoff h=copyReviewDiffToClipboard(review);if(h.warning!=null&&!h.warning.isBlank())w.add(h.warning);}catch(Throwable e){w.add("Clipboard handoff failed: "+(e.getMessage()==null?e.toString():e.getMessage()));}}if(handling.equals("RepoDiffFile")||handling.equals("Both")){try{Path source=verifiedReviewDiffPath(review),rel=Path.of("_ai-review-diffs",cs.changeSetId,review.attemptId+".diff");Path dst=inside(Path.of(cs.repositoryRoot),rel.toString().replace('\\','/'));Files.createDirectories(dst.getParent());Files.copy(source,dst,StandardCopyOption.REPLACE_EXISTING);service=rel.toString().replace('\\','/');}catch(Throwable e){w.add("Repo diff-file handoff failed: "+e.getMessage());}}return new Handoff(service,String.join(" ",w));}
+    public Handoff publishReviewDiff(ChangeSet cs,ReviewDiff review){Settings s=getSettings();String handling=s.reviewDiffHandling;String service=null;List<String>w=new ArrayList<>();if(handling.equals("Clipboard")||handling.equals("Both")){try{Handoff h=copyReviewDiffToClipboard(review);if(h.warning!=null&&!h.warning.isBlank())w.add(h.warning);}catch(Throwable e){w.add("Clipboard handoff failed: "+(e.getMessage()==null?e.toString():e.getMessage()));}}if(handling.equals("RepoDiffFile")||handling.equals("Both")){try{Path source=verifiedReviewDiffPath(review),rel=Path.of("_ai-review-diffs",cs.changeSetId,review.attemptId+".diff");RepositoryConfig target=repositoryForChangeSet(cs,true);Path dst=inside(Path.of(target.path),rel.toString().replace('\\','/'));Files.createDirectories(dst.getParent());Files.copy(source,dst,StandardCopyOption.REPLACE_EXISTING);service=rel.toString().replace('\\','/');}catch(Throwable e){w.add("Repo diff-file handoff failed: "+e.getMessage());}}return new Handoff(service,String.join(" ",w));}
 
-    public FinalizeResult finalizeChangeSet(String id,String message,Path repositoryRoot){
+    public FinalizeResult finalizeChangeSet(String id,String message,Path repositoryRoot){try{return finalizeChangeSetInternal(id,message,repositoryRoot);}catch(Throwable e){recordFailureOutcome(id,e);throw e;}}
+    private FinalizeResult finalizeChangeSetInternal(String id,String message,Path repositoryRoot){
         try(StateStore.Lock ignored=state.lock()){
             ChangeSet cs=state.getChangeSet(id);
             if(cs==null)throw new ObsException(FINALIZE_FAILED,"Unknown ChangeSet: "+id);
             if("CommittedPendingPush".equals(cs.status))throw new ObsException(FINALIZE_FAILED,"ChangeSet already has a commit pending push; use Retry Push.");
             if(!"Active".equals(cs.status))throw new ObsException(FINALIZE_FAILED,"ChangeSet is not Active: "+cs.status);
-            RepositoryConfig allowed=requireAllowedRepository(repositoryRoot==null?Path.of(cs.repositoryRoot):repositoryRoot);Path repo=Path.of(allowed.path);
-            if(!samePath(repo,Path.of(cs.repositoryRoot)))throw new ObsException(REPOSITORY_MISMATCH,"Finalize repository differs from ChangeSet repository.");
-            String rid=repositoryIdentity(repo);
-            if(!same(rid,cs.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Finalize origin is "+rid+"; ChangeSet targets "+cs.repositoryIdentity+".");
+            RepositoryConfig allowed=operationRepository(cs,repositoryRoot,"Finalize");Path repo=Path.of(allowed.path);requireRepositoryReady(repo);
+            String rid=repositoryIdentity(repo);if(!same(rid,cs.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Finalize origin is "+rid+"; ChangeSet targets "+cs.repositoryIdentity+".");
             ReviewDiff baseline;
             try{baseline=currentReview(cs);}catch(ObsException e){if(STATE_DIVERGED.equals(e.code))throw new ObsException(REVIEW_STALE,"Stored ReviewDiff is unavailable or changed. Refresh Review before Finalize.",e);throw e;}
             if(baseline==null)throw new ObsException(REVIEW_STALE,"No current ReviewDiff is recorded. Apply a package or Refresh Review before Finalize.");
             ReviewDiff review=newReviewDiff(cs);
             if(!review.sha256.equalsIgnoreCase(baseline.sha256))throw new ObsException(REVIEW_STALE,"ReviewDiff changed since the last Apply/Refresh Review. Refresh Review before Finalize.");
             GitClient.Result pre=git.allow(repo,FINALIZE_FAILED,"diff","--cached","--quiet");
-            if(pre.exitCode()!=0){if(pre.exitCode()==1)throw new ObsException(FINALIZE_FAILED,"V0.1 Finalize requires a clean real Git index.");throw new ObsException(FINALIZE_FAILED,"Failed to inspect real Git index.\n--- git details ---\n"+pre.failureDetails());}
+            if(pre.exitCode()!=0){if(pre.exitCode()==1)throw new ObsException(FINALIZE_FAILED,"Finalize requires a clean real Git index.");throw new ObsException(FINALIZE_FAILED,"Failed to inspect real Git index.\n--- git details ---\n"+pre.failureDetails());}
             try{
-                if(Files.size(review.diffPath)==0){
-                    cs.commitSha=null;cs.branch=null;cs.status="Finalized";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);
-                    return new FinalizeResult(SUCCESS,null,null,cs);
-                }
+                if(Files.size(review.diffPath)==0){finalizeState(cs,null,null,"NoNetChange");return new FinalizeResult(SUCCESS,null,null,cs);}
             }catch(IOException e){throw new ObsException(FINALIZE_FAILED,"Cannot inspect reviewed diff: "+e.getMessage(),e);}
             String branch=git.run(repo,FINALIZE_FAILED,"branch","--show-current").first();
             if(branch.isBlank())throw new ObsException(FINALIZE_FAILED,"Detached HEAD/current branch unavailable.");
@@ -268,18 +320,18 @@ public final class Core {
             }catch(Throwable t){resetOwned(repo,cs);throw asObs(t,FINALIZE_FAILED);}
             if(!sha256(staged).equalsIgnoreCase(baseline.sha256)){resetOwned(repo,cs);throw new ObsException(REVIEW_STALE,"Staged diff bytes differ from the current ReviewDiff baseline.");}
             try{git.run(repo,FINALIZE_FAILED,"commit","-m",message);}catch(Throwable t){resetOwned(repo,cs);throw t;}
-            String commit=git.run(repo,FINALIZE_FAILED,"rev-parse","HEAD").first();cs.commitSha=commit;cs.branch=branch;cs.status="CommittedPendingPush";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);
+            String commit=git.run(repo,FINALIZE_FAILED,"rev-parse","HEAD").first();cs.commitSha=commit;cs.branch=branch;cs.status="CommittedPendingPush";cs.updatedAt=Instant.now().toString();setOutcome(cs,"SUCCESS",SUCCESS,"Local commit created; publication pending.");state.saveChangeSet(cs);
             GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",branch);
-            if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Commit "+commit+" created; push failed. ChangeSet remains CommittedPendingPush.\n--- git details ---\n"+push.failureDetails());
-            cs.status="Finalized";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);return new FinalizeResult(SUCCESS,commit,branch,cs);
+            if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Commit "+commit+" created; push failed. ChangeSet remains Publication Pending.\n--- git details ---\n"+push.failureDetails());
+            finalizeState(cs,commit,branch,"Published");return new FinalizeResult(SUCCESS,commit,branch,cs);
         }
     }
 
-    public FinalizeResult retryPush(String id,Path repositoryRoot){
+    public FinalizeResult retryPush(String id,Path repositoryRoot){try{return retryPushInternal(id,repositoryRoot);}catch(Throwable e){recordFailureOutcome(id,e);throw e;}}
+    private FinalizeResult retryPushInternal(String id,Path repositoryRoot){
         try(StateStore.Lock ignored=state.lock()){
-            ChangeSet cs=state.getChangeSet(id);if(cs==null||!"CommittedPendingPush".equals(cs.status))throw new ObsException(FINALIZE_FAILED,"ChangeSet is not CommittedPendingPush.");
-            RepositoryConfig allowed=requireAllowedRepository(repositoryRoot==null?Path.of(cs.repositoryRoot):repositoryRoot);Path repo=Path.of(allowed.path);
-            if(!samePath(repo,Path.of(cs.repositoryRoot)))throw new ObsException(REPOSITORY_MISMATCH,"Retry Push repository differs from ChangeSet repository.");
+            ChangeSet cs=state.getChangeSet(id);if(cs==null||!"CommittedPendingPush".equals(cs.status))throw new ObsException(FINALIZE_FAILED,"ChangeSet is not Publication Pending.");
+            RepositoryConfig allowed=operationRepository(cs,repositoryRoot,"Retry Push");Path repo=Path.of(allowed.path);requireRepositoryReady(repo);
             String rid=repositoryIdentity(repo);if(!same(rid,cs.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Retry Push origin is "+rid+"; ChangeSet targets "+cs.repositoryIdentity+".");
             String head=git.run(repo,STATE_DIVERGED,"rev-parse","HEAD").first();if(!head.equals(cs.commitSha))throw new ObsException(STATE_DIVERGED,"HEAD is not the recorded pending-push commit.");
             String branch=git.run(repo,STATE_DIVERGED,"branch","--show-current").first();if(branch.isBlank()||!branch.equals(cs.branch))throw new ObsException(STATE_DIVERGED,"Current branch is not the recorded pending-push branch.");
@@ -291,15 +343,26 @@ public final class Core {
             boolean pendingInRemote=isAncestor(repo,head,remote),remoteBehindPending=isAncestor(repo,remote,head);
             if(pendingInRemote){requireRemoteDisjointFromOtherActive(repo,cs,remoteRef);advanceLocalToPublishedRemote(repo,cs,remoteRef);return markPushed(cs);}
             if(remoteBehindPending){GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",cs.branch);if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push failed; existing commit remains pending.\n--- git details ---\n"+push.failureDetails());return markPushed(cs);}
-            requireRemoteDisjointFromPending(repo,cs,remoteRef);
-            requireRemoteDisjointFromOtherActive(repo,cs,remoteRef);
-            rebasePendingOntoRemote(repo,cs,remoteRef);
-            GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",cs.branch);if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push rebased the pending commit onto the refreshed remote branch, but push still failed. The rebased commit remains CommittedPendingPush for another Retry Push.\n--- git details ---\n"+push.failureDetails());
+            requireRemoteDisjointFromPending(repo,cs,remoteRef);requireRemoteDisjointFromOtherActive(repo,cs,remoteRef);rebasePendingOntoRemote(repo,cs,remoteRef);
+            GitClient.Result push=git.allow(repo,FINALIZE_FAILED,"push","origin",cs.branch);if(push.exitCode()!=0)throw new ObsException(FINALIZE_FAILED,"Retry Push rebased the pending commit onto the refreshed remote branch, but push still failed. The rebased commit remains Publication Pending.\n--- git details ---\n"+push.failureDetails());
             return markPushed(cs);
         }
     }
 
-    private FinalizeResult markPushed(ChangeSet cs){cs.status="Finalized";cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);return new FinalizeResult(SUCCESS,cs.commitSha,cs.branch,cs);}
+    public ChangeSet reopenChangeSet(String id){try{return reopenChangeSetInternal(id);}catch(Throwable e){recordFailureOutcome(id,e);throw e;}}
+    private ChangeSet reopenChangeSetInternal(String id){
+        try(StateStore.Lock ignored=state.lock()){
+            ChangeSet cs=state.getChangeSet(id);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+id);if(!"Finalized".equals(cs.status))throw new ObsException(STATE_DIVERGED,"Only a Finalized ChangeSet can be reopened.");
+            RepositoryConfig target=repositoryForChangeSet(cs,true);Path repo=Path.of(target.path);requireRepositoryReady(repo);
+            for(ChangeSet other:state.activeChangeSets())if(!other.changeSetId.equals(cs.changeSetId)&&belongsTo(other,target))for(String owned:other.ownedPaths)for(String historical:cs.ownedPaths)if(owned.equalsIgnoreCase(historical))throw new ObsException(PATH_OWNERSHIP_CONFLICT,"Cannot Reopen: path is owned by unfinished ChangeSet "+other.changeSetId+": "+historical);
+            for(String path:cs.ownedPaths)if(pathDirty(repo,path))throw new ObsException(STATE_DIVERGED,"Cannot Reopen without adopting unrelated dirty/unowned state: "+path);
+            archiveFinalizationIfNeeded(cs);cs.status="Active";cs.repositoryTargetId=target.id;cs.repositoryRoot=repo.toString();cs.commitSha=null;cs.branch=null;cs.currentReviewAttemptId=null;cs.currentReviewDiffPath=null;cs.currentReviewSha256=null;cs.currentReviewHead=null;setOutcome(cs,"SUCCESS",SUCCESS,"ChangeSet reopened.");cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);return cs;
+        }
+    }
+
+    private FinalizeResult markPushed(ChangeSet cs){finalizeState(cs,cs.commitSha,cs.branch,"Published");return new FinalizeResult(SUCCESS,cs.commitSha,cs.branch,cs);}
+    private void finalizeState(ChangeSet cs,String commit,String branch,String kind){cs.commitSha=commit;cs.branch=branch;Map<String,Object> h=new LinkedHashMap<>();h.put("kind",kind);h.put("commitSha",commit);h.put("branch",branch);h.put("timestamp",Instant.now().toString());cs.finalizationHistory.add(h);cs.status="Finalized";cs.lastOperationStatus=null;cs.lastOperationCode=null;cs.lastOperationMessage=null;cs.lastOperationAt=null;cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);}
+    private void archiveFinalizationIfNeeded(ChangeSet cs){if(!cs.finalizationHistory.isEmpty())return;Map<String,Object> h=new LinkedHashMap<>();h.put("kind","HistoricalFinalization");h.put("commitSha",cs.commitSha);h.put("branch",cs.branch);h.put("timestamp",cs.updatedAt);cs.finalizationHistory.add(h);}
     private boolean isAncestor(Path repo,String older,String newer){GitClient.Result r=git.allow(repo,FINALIZE_FAILED,"merge-base","--is-ancestor",older,newer);if(r.exitCode()==0)return true;if(r.exitCode()==1)return false;throw new ObsException(FINALIZE_FAILED,"Failed to compare local and remote commit ancestry.\n--- git details ---\n"+r.failureDetails());}
     private void requireRemoteDisjointFromPending(Path repo,ChangeSet pending,String remoteRef){
         String mergeBase=git.run(repo,FINALIZE_FAILED,"merge-base",pending.commitSha,remoteRef).first();
@@ -311,9 +374,9 @@ public final class Core {
     }
 
     private void requireRemoteDisjointFromOtherActive(Path repo,ChangeSet pending,String remoteRef){
-        LinkedHashSet<String> activeOwned=new LinkedHashSet<>();
+        LinkedHashSet<String> activeOwned=new LinkedHashSet<>();RepositoryConfig target=repositoryForChangeSet(pending,false);
         for(ChangeSet other:state.activeChangeSets()){
-            if(other.changeSetId.equals(pending.changeSetId)||!samePath(Path.of(other.repositoryRoot),repo)||!same(other.repositoryIdentity,pending.repositoryIdentity))continue;
+            if(other.changeSetId.equals(pending.changeSetId)||!belongsTo(other,target))continue;
             if("CommittedPendingPush".equals(other.status))throw new ObsException(STATE_DIVERGED,"Retry Push recovery does not support a second CommittedPendingPush ChangeSet in the same repository.");
             if("Active".equals(other.status))activeOwned.addAll(other.ownedPaths);
         }
@@ -361,9 +424,9 @@ public final class Core {
     private void rollbackRebasedHead(Path repo,String oldCommit,Map<String,Backup> preserved){GitClient.Result reset=git.allow(repo,STATE_DIVERGED,"reset","--hard",oldCommit);if(reset.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Cannot restore original pending commit after Retry Push recovery.\n--- git details ---\n"+reset.failureDetails());restorePreservedWork(repo,preserved);}
 
     private Map<String,Backup> preserveOtherActiveWork(Path repo,ChangeSet pending){
-        LinkedHashMap<String,Backup> backups=new LinkedHashMap<>();LinkedHashSet<String> allowedDirty=new LinkedHashSet<>();
+        LinkedHashMap<String,Backup> backups=new LinkedHashMap<>();LinkedHashSet<String> allowedDirty=new LinkedHashSet<>();RepositoryConfig target=repositoryForChangeSet(pending,false);
         for(ChangeSet other:state.activeChangeSets()){
-            if(other.changeSetId.equals(pending.changeSetId)||!samePath(Path.of(other.repositoryRoot),repo)||!same(other.repositoryIdentity,pending.repositoryIdentity))continue;
+            if(other.changeSetId.equals(pending.changeSetId)||!belongsTo(other,target))continue;
             if("CommittedPendingPush".equals(other.status))throw new ObsException(STATE_DIVERGED,"Retry Push recovery does not support a second CommittedPendingPush ChangeSet in the same repository.");
             for(String path:other.ownedPaths){allowedDirty.add(path);backupRecoveryPath(repo,backups,path,"Active ChangeSet");}
         }
@@ -417,6 +480,14 @@ public final class Core {
     private void resetOwned(Path repo,ChangeSet cs){try{List<String>paths=effectiveGitPaths(repo,cs.ownedPaths);if(paths.isEmpty())return;List<String>x=new ArrayList<>(List.of("reset","-q","--"));x.addAll(paths);git.allow(repo,FINALIZE_FAILED,x.toArray(String[]::new));}catch(Throwable ignored){}}
     private List<String> effectiveGitPaths(Path repo,Collection<String> owned){List<String> out=new ArrayList<>();for(String path:owned){Path target=inside(repo,path);boolean working=Files.exists(target,LinkOption.NOFOLLOW_LINKS);GitClient.Result head=git.run(repo,STATE_DIVERGED,"ls-tree","--name-only","HEAD","--",path);if(working||!head.joined().isBlank())out.add(path);}return out;}
     private boolean pathDirty(Path repo,String path){GitClient.Result w=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--quiet","HEAD","--",path),s=git.allow(repo,STATE_DIVERGED,"--no-pager","diff","--cached","--quiet","HEAD","--",path);if((w.exitCode()!=0&&w.exitCode()!=1)||(s.exitCode()!=0&&s.exitCode()!=1)){StringBuilder d=new StringBuilder("Failed to inspect path: "+path);if(w.exitCode()!=0&&w.exitCode()!=1)d.append("\n--- working-tree git details ---\n").append(w.failureDetails());if(s.exitCode()!=0&&s.exitCode()!=1)d.append("\n--- staged git details ---\n").append(s.failureDetails());throw new ObsException(STATE_DIVERGED,d.toString());}if(w.exitCode()==1||s.exitCode()==1)return true;GitClient.Result untracked=git.run(repo,STATE_DIVERGED,"ls-files","--others","--",path);return !untracked.joined().isBlank();}
+    private void requireRepositoryReady(Path repo){GitClient.Result head=git.allow(repo,REPOSITORY_NOT_READY,"rev-parse","--verify","HEAD");if(head.exitCode()!=0||head.first().isBlank())throw new ObsException(REPOSITORY_NOT_READY,"Repository has no commits; create an initial commit and retry.");}
+    private void requireExpectedSource(Path repo,String path,byte[] expected,byte[] actual){if(Arrays.equals(expected,actual))return;GitClient.Result a=git.stdinAllow(repo,SOURCE_STATE_UNVERIFIABLE,expected,"hash-object","--stdin","--path="+path),b=git.stdinAllow(repo,SOURCE_STATE_UNVERIFIABLE,actual,"hash-object","--stdin","--path="+path);if(a.exitCode()!=0||b.exitCode()!=0||a.first().isBlank()||b.first().isBlank())throw new ObsException(SOURCE_STATE_UNVERIFIABLE,"Source state could not be safely verified for "+path+".\n--- expected git details ---\n"+a.failureDetails()+"\n--- actual git details ---\n"+b.failureDetails());if(!a.first().equalsIgnoreCase(b.first()))throw new ObsException(SOURCE_STATE_CHANGED,"Source state changed since the package was prepared: "+path);}
+    private static String semanticSummary(String message){if(message==null)return"";int p=message.indexOf("\n---");return (p>=0?message.substring(0,p):message).strip();}
+    private static void setOutcome(ChangeSet cs,String status,String code,String message){if(cs==null)return;cs.lastOperationStatus=status;cs.lastOperationCode=code;cs.lastOperationMessage=semanticSummary(message);cs.lastOperationAt=Instant.now().toString();}
+    private void recordFailureOutcome(String changeSetId,Throwable failure){String code=failure instanceof ObsException oe?oe.code:STATE_DIVERGED;try{recordOperationOutcome(changeSetId,"FAILED",code,semanticSummary(failure.getMessage()==null?failure.toString():failure.getMessage()));}catch(Throwable ignored){}}
+    private void recordOperationOutcomeUnlocked(String changeSetId,String status,String code,String message){if(changeSetId==null||changeSetId.isBlank())return;ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null||!isUnfinished(cs))return;setOutcome(cs,status,code,message);cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);}
+    public void recordOperationOutcome(String changeSetId,String status,String code,String message){if(changeSetId==null||changeSetId.isBlank())return;try(StateStore.Lock ignored=state.lock()){recordOperationOutcomeUnlocked(changeSetId,status,code,message);}}
+
     private Path repoRoot(Path requested){Path p=requested==null?Path.of("."):requested;GitClient.Result r=git.allow(p,REPOSITORY_MISMATCH,"rev-parse","--show-toplevel");if(r.exitCode()!=0)throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p+"\n--- git details ---\n"+r.failureDetails());if(r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p+". git rev-parse returned no repository root.");return Path.of(r.first()).toAbsolutePath().normalize();}
     private String safeIdentity(Path repo){try{return repositoryIdentity(repo);}catch(Throwable e){return"";}}
     private String repositoryIdentity(Path repo){GitClient.Result r=git.allow(repo,REPOSITORY_MISMATCH,"config","--get","remote.origin.url");if(r.exitCode()!=0)throw new ObsException(REPOSITORY_MISMATCH,"remote.origin.url is missing.\n--- git details ---\n"+r.failureDetails());if(r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"remote.origin.url is missing; git config returned an empty value.");String u=r.first();Pattern[] ps={Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^git@github\\.com:([^/]+)/([^/]+?)(?:\\.git)?$",Pattern.CASE_INSENSITIVE),Pattern.compile("^ssh://git@github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$",Pattern.CASE_INSENSITIVE)};for(Pattern p:ps){Matcher m=p.matcher(u);if(m.matches())return"github:"+m.group(1)+"/"+m.group(2);}throw new ObsException(REPOSITORY_MISMATCH,"Unsupported origin for V0.1 repositoryIdentity: "+u);}
@@ -449,6 +520,11 @@ public final class Core {
     static String str(Object x){return x==null?null:String.valueOf(x);}
     private static boolean same(String a,String b){return a!=null&&b!=null&&a.equalsIgnoreCase(b);}
     private static boolean samePath(Path a,Path b){return a.toAbsolutePath().normalize().equals(b.toAbsolutePath().normalize());}
+    private static String changeSetRef(ChangeSet cs){String label=cs.changeSetLabel==null||cs.changeSetLabel.isBlank()?"<unnamed>":cs.changeSetLabel;String status=cs.status==null||cs.status.isBlank()?"<unknown status>":cs.status;return label+" · "+status+" · "+cs.changeSetId;}
+    private static String repositoryTargetRef(RepositoryConfig repository){String name=repository.name==null||repository.name.isBlank()?"<unnamed repository>":repository.name;return name+" · "+repository.repositoryIdentity+" · targetId="+repository.id;}
+    private static String ownershipConflictMessage(String path,RepositoryConfig repository,ChangeSet owner,ChangeSet applying){return "Path is owned by another unfinished ChangeSet.\nPath: "+path+"\nRepository Target: "+repositoryTargetRef(repository)+"\nOwner ChangeSet: "+changeSetRef(owner)+"\nApplying ChangeSet: "+changeSetRef(applying);}
+    private static String dirtyUnownedMessage(String path,RepositoryConfig repository,ChangeSet applying){return "Existing local changes are not owned by any unfinished ChangeSet; Apply cannot adopt them implicitly.\nPath: "+path+"\nRepository Target: "+repositoryTargetRef(repository)+"\nOwnership: Unowned — no unfinished ChangeSet owns this path.\nApplying ChangeSet: "+changeSetRef(applying)+"\nWorking tree: Dirty outside the applying ChangeSet.";}
+
     private static boolean containsIgnoreCase(Collection<String> c,String s){for(String x:c)if(x.equalsIgnoreCase(s))return true;return false;}
     private static String withCauseDetails(String message,Throwable cause){if(cause==null)return message;String details=throwableDetails(cause);return details.isBlank()?message:message+"\n--- technical details ---\n"+details;}
     private static String throwableDetails(Throwable t){if(t==null)return"";StringWriter out=new StringWriter();t.printStackTrace(new PrintWriter(out));return out.toString().stripTrailing();}

@@ -1,6 +1,6 @@
 # ChatGPT Bridge Integration
 
-Status: active V1 current integration contract + selected target External Interaction delta
+Status: active V1 integration contract; SL-06/SL-08 correction implemented in current source, live Edge/Swing acceptance pending
 Scope: local Java ↔ Chromium extension handoff for ordinary ChatGPT conversations. It does not change the replacement-package producer protocol, ReviewDiff authority, snapshot format or Finalize authority.
 
 ## 1. Historical Capability Mapping
@@ -46,48 +46,31 @@ A chat binding is delivery state only. It does not change owned paths, Applicati
 
 ## 4. ReviewDiff Delivery
 
-The Java app remains the authority for exact canonical ReviewDiff bytes. A queued review task is keyed to one `changeSetId` + `reviewAttemptId`. Automatic queue creation is idempotent for that identity. At enqueue time the task records the artifact byte length and SHA-256; payload delivery rechecks both, and the extension independently verifies the received bytes before paste. An empty canonical ReviewDiff becomes terminal `NoChanges` and does not create a ChatGPT message.
+The Java app remains the authority for exact canonical ReviewDiff bytes. A queued review task is keyed to one `changeSetId` + `reviewAttemptId`. Automatic queue creation is idempotent for that identity. At enqueue time the task records artifact byte length and SHA-256; payload delivery rechecks both, and the extension independently verifies the received bytes before preparation. An empty canonical ReviewDiff becomes terminal `NoChanges` and does not create a ChatGPT message.
 
-Delivery flow:
+Current delivery flow:
 
 ```text
 current ReviewDiff persisted
 → bound conversation exists?
 → queue Pending task
-→ any open tab of that conversation may claim it
+→ any open tab of that exact conversation may claim it
 → exactly one tab gets the claim
-→ require empty ChatGPT composer
-→ paste exact ReviewDiff text through browser clipboard/paste mechanics
-→ let ChatGPT decide its native paste representation
-```
-
-Then:
-
-```text
-small/native text paste
+→ require empty intended ChatGPT composer
+→ direct composer/editor insertion (no Clipboard API/native paste)
+→ verify expected ReviewDiff is actually prepared
+→ stage semantic Preparing
 → wait for enabled Send
-→ mark SendClicked
-→ click Send
-→ require composer cleared and a new user-message turn observed
-→ Sent
-
-large paste converted by ChatGPT itself
-→ observe attachment transition
-→ wait until attachment/upload is no longer busy
-→ wait for enabled Send
-→ mark SendClicked
-→ click Send
-→ require composer/attachment cleared and a new user-message turn observed
+→ mark SendClicked immediately before possible Send
+→ reacquire the currently connected/enabled Send control
+→ click that fresh control without another async gap
+→ reacquire live composer state while confirming clear + new user-message turn
 → Sent
 ```
 
-The extension does not choose a byte threshold and does not construct a `.diff` File for the large-review path. ChatGPT's own paste behavior decides whether the paste remains text or becomes an attachment.
+The direct-text path is used for ReviewDiff content regardless of size until practical evidence demonstrates a real ChatGPT composer limit. No local size threshold or automatic `.diff` attachment fallback is selected. The path must work when the ChatGPT tab/document is not foreground-focused. Live small-diff testing confirmed direct preparation and an enabled ChatGPT Send control; manual console lookup/click then sent the message. The implementation therefore must not retain a pre-`SendClicked` DOM button reference across asynchronous staging: it reacquires a connected/enabled Send control after staging and clicks that fresh element immediately.
 
-This is the **current V1 mechanism, not the selected target preparation mechanism**. Live Microsoft Edge evidence showed that `navigator.clipboard.writeText(...)` can fail with `Document is not focused` when the intended ChatGPT document is not foreground-focused. That practical failure does not change the Scenario result; it requires the selected SL-06 realization correction below.
-
-If the composer already contains user text or an attachment, automatic ReviewDiff delivery fails before Send rather than mixing with an existing draft.
-
-A claimed tab renews its lease while delivery is active. Immediately before the extension first mutates the ChatGPT composer it atomically stages the task as `Preparing`. Claim/tab loss while still only `Claimed` returns the task to `Pending`; once `Preparing` has begun, any pre-Send interruption becomes terminal `PreparedUnsent` so an uncertain draft is never retried automatically. After `SendClicked`, uncertainty becomes terminal `UnknownAfterSend`. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are immutable terminal results. A newer automatic ReviewDiff supersedes older `Pending`/`Claimed` automatic tasks, but an already `Preparing` delivery is allowed to complete and the newer review waits behind it. Rebind/unbind cancels only safely cancellable `Pending`/`Claimed` review tasks and is blocked during `Preparing` or `SendClicked`. Expired leases are normalized before binding changes and delivery-status reads so stale `SendClicked` state cannot block the user forever.
+If the composer already contains user text or an attachment, automatic ReviewDiff delivery fails before mutation rather than mixing with an existing draft. Failure before confirmed composer mutation is `FailedBeforeSend`; only after expected content is verified prepared may a later pre-Send interruption become terminal `PreparedUnsent`. After `SendClicked`, uncertainty becomes terminal `UnknownAfterSend`. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are immutable terminal results. A newer automatic ReviewDiff supersedes older `Pending`/`Claimed` automatic tasks, but an already `Preparing` delivery is allowed to complete and the newer review waits behind it. Rebind/unbind cancels only safely cancellable `Pending`/`Claimed` review tasks and is blocked during `Preparing` or `SendClicked`. Expired leases are normalized before binding changes and delivery-status reads so stale `SendClicked` state cannot block the user forever.
 
 ## 5. Snapshot Attach-Only
 
@@ -191,9 +174,9 @@ chatgpt-bridge-extension/src/chatgpt-adapter.js
 
 Manual Microsoft Edge acceptance is required after meaningful ChatGPT UI changes even when Java automated tests still pass.
 
-## 10. Selected Target Current-Change Preparation Correction
+## 10. Current-Change Preparation Correction — Implemented / Live Acceptance Pending
 
-The selected SL-06 target removes browser Clipboard API/native paste as a required preparation mechanism.
+Current SL-06 source removes browser Clipboard API/native paste as a required preparation mechanism.
 
 ```text
 exact verified ReviewDiff bytes
@@ -204,10 +187,11 @@ exact verified ReviewDiff bytes
 → only then mark semantic Preparing
 → wait for Send readiness
 → mark SendClicked immediately before possible Send
-→ confirm outgoing user turn
+→ reacquire current connected/enabled Send control after staging and click it immediately
+→ confirm outgoing user turn from live composer/message state
 ```
 
-Direct insertion must work when the ChatGPT tab/document is not foreground-focused. The selected initial path is the same direct text preparation for ReviewDiff content regardless of size; no size threshold or automatic `.diff` attachment fallback is selected until live evidence establishes a real ChatGPT composer limit.
+Direct insertion must work when the ChatGPT tab/document is not foreground-focused. The current path uses the same direct text preparation for ReviewDiff content regardless of size; no size threshold or automatic `.diff` attachment fallback is selected until live evidence establishes a real ChatGPT composer limit.
 
 State/result boundary:
 
@@ -227,9 +211,9 @@ SendClicked
 
 Thus `Preparing` is evidence that external content is actually prepared, not merely that preparation was attempted. A clipboard/focus/DOM failure before composer mutation cannot truthfully become `PreparedUnsent`.
 
-## 11. Selected Target External Interaction Layer — Not Yet Implemented
+## 11. External Interaction Layer — Implemented / Practical Acceptance Pending
 
-Sections 1–9 describe current V1 bridge mechanics. Section 10 records the selected SL-06 preparation correction. This section adds a user-semantic `External Interaction` layer and does not promote claim/lease/tab states into product identity.
+Sections 1–9 describe current V1 bridge mechanics. Section 10 records the implemented SL-06 preparation correction. This section records the implemented user-semantic `External Interaction` projection and does not promote claim/lease/tab states into product identity.
 
 ### Interaction Scope
 

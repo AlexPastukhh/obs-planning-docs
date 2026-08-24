@@ -7,7 +7,7 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 
 ## `SCR-RPKG-MAIN` — Main Work Surface
 
-**Scenario coverage:** all four target Scenarios.
+**Scenario coverage:** all three current target Scenarios.
 
 ### Current implementation areas
 
@@ -15,7 +15,7 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - repository identity;
 - Archive ZIP + OBS-ACTION input;
 - Apply;
-- repository-filtered ChangeSet selector/history + status/ID;
+- linked Repository + ChangeSet selectors with local/global (`All repositories`) and history scope + status/ID;
 - Review state + Refresh/Copy/Open;
 - Review chat binding/delivery;
 - commit message + Finalize/Retry Push;
@@ -25,7 +25,6 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 ### Selected target additions
 
 - explicit `Change repository location` action next to registered repository management;
-- repository-independent Existing Work entry/list;
 - `Reopen ChangeSet` recovery action shown only when `Show History` is enabled and the selected ChangeSet is Finalized;
 - exact current Repository Target + current ChangeSet context after work selection;
 - passive package/action context separated visually from Apply authority;
@@ -45,28 +44,20 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - `VR-RPKG-MAIN-06` — repository work state and External Interaction state are visually distinct; browser delivery never looks like Finalize authority.
 - `VR-RPKG-MAIN-07` — Repository Not Ready/source-changed/source-unverifiable are actionable product results, not raw Git exception text.
 
-## `SCR-RPKG-GLOBAL-WORK` — Existing Work
+## ChangeSet Selector Scope — part of `SCR-RPKG-MAIN`
 
-**Scenario:** find and open existing repository work.
-
-Target list behavior:
+There is no separate `Existing work` button/dialog. `Repository` and `ChangeSet` are linked current-context selectors on the main screen.
 
 ```text
-default:
-- Active
-- Publication Pending
-
-Show History:
-+ all Finalized
-
-unfinished ordering:
-1. error-marked unfinished first
-2. then most recently active
+ChangeSet [ <work> ▼ ]  [ ] All repositories  [ ] Show history
 ```
 
-Each row makes work label, concrete repository name/target and lifecycle distinguishable. Active/Publication Pending rows may also show the latest failure marker/reason. Finalized history rows do not carry a persistent error marker. Selecting a row selects the exact Repository Target + ChangeSet. An unavailable target stays visible and is not silently replaced by another clone.
-
-When `Show History` is enabled and the selected row is Finalized, show an explicit `Reopen ChangeSet` action near the ChangeSet controls. The button is absent/disabled for Active or Publication Pending work and when Finalized history is not selected. Clicking it starts a separate guarded recovery operation; merely selecting the row never changes lifecycle.
+- default: unfinished ChangeSets for the selected Repository Target;
+- `All repositories`: same selector expands to unfinished ChangeSets across registered targets and rows include repository name;
+- `Show history`: adds Finalized within the current scope;
+- selecting a global row switches `Repository` only to that row's exact registered target;
+- unavailable target is shown truthfully in the projection and never substituted by a same-origin clone;
+- selection alone performs no lifecycle/Git/browser operation.
 
 ## `SCR-RPKG-REPOSITORY-MANAGEMENT` — Registered Repository Context
 

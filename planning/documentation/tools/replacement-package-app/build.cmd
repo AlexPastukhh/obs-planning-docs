@@ -11,6 +11,7 @@ call javac --release 21 -d build\classes ^
   src\main\java\obs\rpkg\Json.java ^
   src\main\java\obs\rpkg\Main.java ^
   src\main\java\obs\rpkg\MainWindow.java ^
+  src\main\java\obs\rpkg\WindowsNotifier.java ^
   src\main\java\obs\rpkg\RepositorySnapshotExporter.java ^
   src\main\java\obs\rpkg\StateStore.java ^
   src\main\java\obs\rpkg\WindowsLauncherInstaller.java || exit /b 1
