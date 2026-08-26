@@ -19,17 +19,17 @@ globalThis.OBSChatGPTAdapter = (() => {
   }
   function userMessages() { return [...document.querySelectorAll('[data-message-author-role="user"]')]; }
   function userMessageCount() { return userMessages().length; }
-  function nodeMentionsFile(node, fileName) {
-    if (!node || !fileName) return false;
-    const own = [node.innerText, node.textContent, node.getAttribute?.("title"), node.getAttribute?.("aria-label")].filter(Boolean).join("\n");
-    if (own.includes(fileName)) return true;
-    const descendants = node.querySelectorAll ? [...node.querySelectorAll('[title],[aria-label],[data-testid*="file" i],[class*="file" i]')] : [];
-    return descendants.some(n => {
-      const value = [n.innerText, n.textContent, n.getAttribute("title"), n.getAttribute("aria-label")].filter(Boolean).join("\n");
-      return value.includes(fileName);
-    });
+  function reviewDiffAttachmentCandidates(message) {
+    if (!message?.querySelectorAll) return [];
+    return [...message.querySelectorAll('[data-testid*="attachment" i],[data-testid*="file" i],[class*="attachment" i],[class*="file" i],[title*=".diff" i],[aria-label*=".diff" i],[href*=".diff" i],[download*=".diff" i]')];
   }
-  function exactReviewTurnPresent(prepared) { return userMessages().slice(prepared.beforeUserMessages).some(message => nodeMentionsFile(message, prepared.fileName)); }
+  function nodeShowsDiffFile(node) {
+    const value = [node?.innerText, node?.textContent, node?.getAttribute?.("title"), node?.getAttribute?.("aria-label"), node?.getAttribute?.("href"), node?.getAttribute?.("download")].filter(Boolean).join("\n").toLowerCase();
+    return value.includes(".diff");
+  }
+  function reviewDiffAttachmentTurnPresent(prepared) {
+    return userMessages().slice(prepared.beforeUserMessages).some(message => reviewDiffAttachmentCandidates(message).some(nodeShowsDiffFile));
+  }
   function busy(root) { return !!root?.querySelector('[role="progressbar"],[aria-busy="true"],[data-state="loading"],[data-testid*="progress" i],[class*="upload" i][class*="progress" i]'); }
   function sendButton(root) { for (const selector of ['button[data-testid="send-button"]','button[data-testid*="send" i]','button[aria-label="Send prompt"]','button[aria-label^="Send" i]','button[aria-label^="Отправ" i]']) { const b = root?.querySelector(selector) || document.querySelector(selector); if (b) return b; } return null; }
   function readySendButton(root) { const b = sendButton(root); return b && b.isConnected && !b.disabled && b.getAttribute("aria-disabled") !== "true" && !busy(rootFor(composer()) || root) ? b : null; }
@@ -77,10 +77,11 @@ globalThis.OBSChatGPTAdapter = (() => {
 
   function reviewSendState(prepared, expectedConversation) {
     assertConversation(expectedConversation);
-    if (exactReviewTurnPresent(prepared)) return {state: "sent", ready: false};
+    const diffTurnPresent = reviewDiffAttachmentTurnPresent(prepared);
     const liveEditor = composer();
-    if (!liveEditor) return {state: "missing", ready: false};
+    if (!liveEditor) return {state: diffTurnPresent ? "sent" : "missing", ready: false};
     const liveRoot = rootFor(liveEditor), present = attachmentPresent(liveRoot, prepared.fileName);
+    if (diffTurnPresent && !present) return {state: "sent", ready: false};
     if (editorText(liveEditor)) return {state: "contaminated", ready: false};
     if (!present) return {state: "missing", ready: false};
     return {state: "prepared", ready: !!readySendButton(liveRoot)};

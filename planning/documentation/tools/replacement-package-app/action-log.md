@@ -385,3 +385,22 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **APPLIED relation:** if package `a24f3bd7-458d-427e-ad25-10d4343107fe` applies successfully, this SL-RPKG-06 correction becomes the coherent current state in the new ChangeSet without undoing the already-applied SL-RPKG-01 corrections.
 
 **Rationale:** correct the two active exact-delivery defects and the pre-click truth boundary while preserving independently applied SL-RPKG-01 work. The earlier rebased package was not applied because its historical SL-RPKG-06 ChangeSet was already Finalized; this package therefore starts a new ChangeSet for the same still-unapplied target correction. The separately deferred in-flight runtime-generation problem remains out of scope.
+
+### LOG-RPKG-026 — Use `.diff` attachment surface for post-Send proof; defer second-attachment hardening
+
+**Type:** REVIEWDIFF CORRECTION / USER DECISION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-024..025`  
+**ChangeSet:** `f3fdbbf8-7ef2-4af4-90da-daa964af4ade`  
+**Package:** `7ef754e7-984c-4a54-967e-0c7a6b23c45b`
+
+**Review finding / user decision:**
+- review found that post-Send confirmation searched the whole new user-message `innerText`/`textContent` for the full task-specific filename. That mixes ordinary message text with file evidence and may also fail if ChatGPT truncates the browser-visible filename;
+- selected correction does **not** inject ReviewDiff text or markers into the composer. It keeps exact task-specific filename identity for preparation/pre-click checks, but after the prepared attachment leaves the composer it confirms `Sent` only from a post-baseline user turn whose file/attachment-like DOM surface exposes `.diff`; ordinary user-message text is not proof;
+- full untruncated task-specific filename matching after Send is intentionally deferred until live Edge/ChatGPT DOM inspection shows which file-card metadata (`textContent`, `title`, `aria-label`, link/download metadata or another stable surface) actually survives truncation;
+- the separately identified case where a user adds a **second unrelated attachment** after ReviewDiff upload-ready but before automatic click is explicitly accepted/deferred for now. Current guards still reject later unrelated text and require the intended ReviewDiff attachment, but do not claim single-attachment ownership through click;
+- extension patch version advances to `0.2.7`; bridge protocol remains `2` because no wire contract changes.
+
+**Target-State Result:** post-Send proof is narrower than generic message-text matching and deliberately aligned to what can be verified in the live ChatGPT file-card DOM. Live acceptance must record whether `.diff` and/or the full task-specific filename is actually exposed after Send before strengthening the proof further. Existing possible-Send, `PreparedUnsent` / `UnknownAfterSend`, Snapshot attach-only and deferred runtime-generation semantics remain unchanged.
+
+**APPLIED relation:** if package `7ef754e7-984c-4a54-967e-0c7a6b23c45b` applies successfully, this becomes the coherent current SL-RPKG-06 ReviewDiff confirmation state for the active ChangeSet.
+
