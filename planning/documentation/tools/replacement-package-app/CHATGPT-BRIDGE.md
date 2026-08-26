@@ -72,7 +72,7 @@ current ReviewDiff persisted
      recheck composer text + attachment immediately before click
      click when enabled
      after the first actual possible-Send click, persist technical SendClicked / semantic Sending
-     confirm only a new outgoing user turn after this task's baseline whose file/attachment DOM surface exposes `.diff` after the prepared attachment leaves the composer
+     confirm only a new outgoing user turn after this task's baseline whose complete turn container exposes a file/attachment DOM surface with `.diff` after the prepared attachment leaves the composer
 → Sent
 ```
 
@@ -82,7 +82,7 @@ The send-control retry interval is an application setting, default `6` seconds w
 
 Live attachment testing exposed a runtime-contract defect after this design landed: the `.diff` attached successfully, then the extension reported `UnknownAfterSend · Invalid ReviewDiff send retry interval.` This is deterministic local incompatibility, not external send uncertainty. Protocol version `2` therefore makes the Java/extension boundary explicit. `/v1/health` and claimed tasks advertise the version, while inventory/claim requests advertise the extension version; the extension rejects mismatched/malformed claim contracts before payload/composer mutation, records a safely claimed task as `FailedBeforeSend`, and tells the user to restart/update the application and reload the extension. The retry interval is validated in that preflight and again by the content script **before** external preparation; no interval validation remains after `SendClicked`.
 
-Repeated UI click attempts are permitted only while the exact task-specific prepared `.diff` attachment remains in the exact intended composer and no unrelated composer text has appeared. `Sent` is not inferred from generic user-message-count growth or from ordinary message text. After the prepared attachment leaves the composer, the adapter requires a new outgoing user turn after the delivery baseline with a file/attachment-like DOM surface that exposes `.diff`. This is intentionally a provisional live-DOM proof: full task-specific filename matching after Send is deferred until real Edge/ChatGPT inspection establishes which untruncated file metadata survives in the sent-turn DOM. If the prepared attachment disappears **before** any automatic possible-Send click, the result is `PreparedUnsent`; if it disappears **after** a possible-Send click but no post-baseline `.diff` attachment surface can be confirmed, delivery becomes `UnknownAfterSend` and automatic click retry stops. This is distinct from retrying a terminal/uncertain External Interaction.
+Repeated UI click attempts are permitted only while the exact task-specific prepared `.diff` attachment remains in the exact intended composer and no unrelated composer text has appeared. `Sent` is not inferred from generic user-message-count growth or from ordinary message text. After the prepared attachment leaves the composer, the adapter requires a new outgoing user turn after the delivery baseline and searches the complete turn container—not only the `[data-message-author-role="user"]` message node—for a file/attachment-like DOM surface that exposes `.diff`. When no explicit conversation-turn/article container is available, fallback expansion is bounded to ancestors that still contain exactly this one authored message node and stops before any ancestor containing another authored message, so a neighboring turn’s `.diff` cannot confirm this task. Live acceptance with task `44181531` proved that Send can succeed while the narrower message-node search misses the delivered file card. Full task-specific filename matching after Send remains deferred until DOM inspection establishes which untruncated file metadata is stable. If the prepared attachment disappears **before** any automatic possible-Send click, the result is `PreparedUnsent`; if it disappears **after** a possible-Send click but no post-baseline `.diff` attachment surface can be confirmed, delivery becomes `UnknownAfterSend` and automatic click retry stops. This is distinct from retrying a terminal/uncertain External Interaction.
 
 If the composer already contains user text or an attachment, automatic ReviewDiff delivery fails before mutation rather than mixing with an existing draft. The same no-unrelated-text invariant is checked again after upload readiness and inside the MAIN-world click guard immediately before each click, so text typed after preparation stops automation without sending the mixed composer. Failure before confirmed attachment preparation is `FailedBeforeSend`; only after the expected `.diff` is confirmed upload-ready may a later pre-Send interruption become terminal `PreparedUnsent`. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are immutable terminal results. A newer automatic ReviewDiff supersedes older `Pending`/`Claimed` automatic tasks, but an already `Preparing`/`Sending` delivery is allowed to complete and the newer review waits behind it. Rebind/unbind cancels only safely cancellable `Pending`/`Claimed` review tasks and is blocked during `Preparing` or technical `SendClicked`. Expired in-flight state is normalized before binding changes and delivery-status reads so stale send attempts cannot block the user forever.
 
@@ -215,7 +215,7 @@ exact verified ReviewDiff bytes
 → actual click establishes the possible-Send boundary
 → persist technical SendClicked / semantic Sending after that click
 → keep trying only while the same attachment remains prepared
-→ confirm only a post-baseline outgoing user turn with a file/attachment DOM surface exposing `.diff` after the prepared attachment leaves the composer
+→ confirm only a post-baseline outgoing user turn whose complete turn container exposes a file/attachment DOM surface with `.diff` after the prepared attachment leaves the composer
 ```
 
 The application owns the mutable retry setting (`reviewDiffSendRetrySeconds`, default `6`, range `1..60`). A new ReviewDiff task snapshots that setting so changing Settings later does not alter an in-flight interaction.
@@ -239,7 +239,7 @@ Send attempt phase active
 + composer has no unrelated text
 → remain Sending and retry at configured interval
 
-post-baseline outgoing user turn exposes `.diff` through a file/attachment-like DOM surface after the prepared attachment leaves the composer
+post-baseline outgoing user turn exposes `.diff` through a file/attachment-like DOM surface in its complete turn container after the prepared attachment leaves the composer
 → Sent
 
 prepared attachment disappears after a possible-Send click

@@ -121,7 +121,7 @@ The strategy must preserve explicit proof that:
 - browser failure never rolls back/authorizes repository work;
 - ReviewDiff Send-control retries occur only while the same task-specific attachment remains prepared and the composer contains no unrelated text;
 - unrelated composer text added after upload-ready must stop before a Send click and remain pre-Send truth (`PreparedUnsent`), not `UnknownAfterSend`;
-- after the prepared attachment leaves the composer, `Sent` requires a post-baseline outgoing user turn with a file/attachment-like DOM surface exposing `.diff`; ordinary message text is not proof; exact full-filename post-Send matching waits for live DOM evidence;
+- after the prepared attachment leaves the composer, `Sent` requires a post-baseline outgoing user turn whose complete turn container contains a file/attachment-like DOM surface exposing `.diff`; ordinary message text is not proof; the lookup must not be restricted to the message-author node, but fallback expansion must remain bounded to the current authored turn and stop before any neighboring authored message; exact full-filename post-Send matching waits for live DOM evidence;
 - technical `SendClicked` is not persisted before an actual possible-Send click; if a real click occurs before that persistence completes, uncertainty may be preserved rather than downgraded to pre-Send truth;
 - attachment disappearance after a possible-Send click without post-baseline `.diff` attachment-surface confirmation becomes uncertainty and stops automation;
 - snapshot attachment never sends even though it reuses the same low-level attachment primitive;
@@ -161,7 +161,8 @@ Automated `failed=0` is necessary for implemented automated responsibilities but
 - restart persistence of compact latest ChangeSet operation outcome and safety-critical interaction state;
 - Settings persistence/default/range for ReviewDiff send retry interval and per-task freezing of that interval.
 - bridge protocol/version advertisement in health + claim responses; claimed-task contract preflight before content delivery/external preparation; deterministic compatibility/interval failure remains `FailedBeforeSend` and cannot cross the possible-Send boundary.
-- task-specific ReviewDiff preparation identity; post-upload composer guard in content + MAIN world; actual click before `SendClicked`; post-baseline `.diff` file/attachment-surface confirmation rather than generic user-message-count growth or ordinary message text.
+- task-specific ReviewDiff preparation identity; post-upload composer guard in content + MAIN world; actual click before `SendClicked`; post-baseline `.diff` file/attachment-surface confirmation from the complete user-turn container rather than generic user-message-count growth, message-author-node-only lookup, cross-turn fallback capture or ordinary message text.
+- Node DOM regression loads the real `chatgpt-adapter.js` with a minimal fake DOM and proves: same-turn sibling `.diff` file-card → confirmation; broad generic `article` spanning neighboring authored turns → no cross-turn confirmation; ordinary `.diff` message text → no attachment proof. `run-tests.cmd` executes this regression as part of the standard suite.
 - already claimed/in-flight runtime-generation continuity across extension/service-worker restart or mid-task version replacement remains an explicitly deferred risk, not current automated proof.
 - a second unrelated attachment added after ReviewDiff upload-ready remains an explicitly accepted/deferred composer-integrity risk; current automated proof does not claim single-attachment ownership through click.
 

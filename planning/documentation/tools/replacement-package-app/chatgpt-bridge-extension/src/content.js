@@ -126,8 +126,8 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
           possibleSend = true;
           await stageTask(task, "SendClicked");
         });
-        if (confirmed) await result(task, "Sent", "ReviewDiff .diff attachment sent and confirmed by its task-specific attachment identity.");
-        else if (possibleSend) await result(task, "UnknownAfterSend", "A Send click was attempted, but the task-specific ReviewDiff outgoing turn could not be confirmed.");
+        if (confirmed) await result(task, "Sent", "ReviewDiff .diff attachment sent and confirmed from the post-baseline user-turn attachment surface.");
+        else if (possibleSend) await result(task, "UnknownAfterSend", "A Send click was attempted, but no post-baseline ReviewDiff .diff attachment surface could be confirmed.");
         else await result(task, "PreparedUnsent", "The prepared ReviewDiff attachment disappeared before any automatic Send click was attempted.");
       } else if (task.kind === "snapshot") {
         if (task.autoSend) throw new Error("Snapshot task unexpectedly requested auto-send."); const blob = new Blob([bytes], {type: "application/zip"});

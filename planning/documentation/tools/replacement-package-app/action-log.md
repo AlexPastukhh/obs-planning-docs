@@ -404,3 +404,76 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **APPLIED relation:** if package `7ef754e7-984c-4a54-967e-0c7a6b23c45b` applies successfully, this becomes the coherent current SL-RPKG-06 ReviewDiff confirmation state for the active ChangeSet.
 
+### LOG-RPKG-027 — Fix no-task claim NPE found during live bridge acceptance
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / REVIEWDIFF CORRECTION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-026`  
+**ChangeSet:** `f3fdbbf8-7ef2-4af4-90da-daa964af4ade`  
+**Package:** `7abed6c0-4460-48c0-b620-058af9c21bfd`
+
+**Live finding / selected correction:**
+- live Edge/extension readiness polling exposed `Tab ... readiness/claim: java.lang.NullPointerException` before ReviewDiff delivery;
+- root cause is the Java `/v1/tasks/claim` HTTP handler's normal no-work branch: `service.claim(...)` correctly returns an empty map, but the handler attempted `Map.of("task", null)`. Java `Map.of` rejects null values, so the intended `200 {"task":null}` response became HTTP 500;
+- replace that response construction with a nullable `LinkedHashMap` payload so no pending task is a successful, explicit `task: null` poll result;
+- add loopback HTTP regression coverage that registers a valid conversation, claims with no pending task and requires HTTP 200 plus a present `task` field whose value is null;
+- bridge protocol remains `2` and extension version remains `0.2.7`; this is a Java server implementation correction, not a wire-contract change. Existing `.diff` attachment-surface confirmation and accepted/deferred risks from `LOG-RPKG-026` remain unchanged.
+
+**Target-State Result:** normal extension readiness/claim polling no longer produces an internal Java exception when there is no task to deliver. A no-work claim is represented by the already-expected nullable task response, while real protocol mismatch remains a separate fail-fast condition.
+
+**APPLIED relation:** if package `7abed6c0-4460-48c0-b620-058af9c21bfd` applies successfully, this no-task claim correction becomes part of the current SL-RPKG-06 ChangeSet without altering the ReviewDiff Send proof or its accepted/deferred risks.
+
+### LOG-RPKG-028 — Expand post-Send proof from message node to complete user turn after live false uncertainty
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / REVIEWDIFF CORRECTION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-026..027`  
+**ChangeSet:** `f3fdbbf8-7ef2-4af4-90da-daa964af4ade`  
+**Package:** `1954b615-b13a-4dbc-b1a9-539c2744b42c`
+
+**Live finding / selected correction:**
+- after rebuilding and running the current Java app plus reloading the extension, live ReviewDiff delivery task `44181531` uploaded and sent the intended `.diff` into the bound ChatGPT conversation, but the application still terminated that External Interaction as `UnknownAfterSend` because the outgoing-turn proof did not find the delivered file surface;
+- the current adapter scopes attachment lookup to descendants of `[data-message-author-role="user"]`. Live delivery demonstrates that this boundary is too narrow for the real ChatGPT sent-turn structure: the user turn can contain a delivered file card that is not found by the message-node-only search;
+- preserve the existing post-baseline and attachment-surface rules, including the decision that ordinary message text containing `.diff` is not proof. Resolve each post-baseline user message to its nearest complete ChatGPT conversation-turn container (with a bounded ancestor fallback) and inspect file/attachment-like descendants there for `.diff`;
+- keep the exact task-specific filename for prepared/composer identity checks. Full exact filename matching after Send remains deferred until a stable untruncated file-card metadata surface is directly established;
+- align `Sent` / `UnknownAfterSend` diagnostics with the implemented `.diff` turn-surface proof and advance the extension patch version to `0.2.8`; bridge protocol remains `2` because no Java/extension wire field changes;
+- the separately accepted/deferred second-attachment and already-in-flight runtime-generation risks remain unchanged and are not part of this correction.
+
+**Target-State Result:** a successfully sent ReviewDiff can be confirmed from the file card anywhere in the complete post-baseline user turn instead of only below the message-author node, while ordinary user text remains excluded from delivery proof. A real click with no qualifying post-baseline `.diff` attachment surface still terminates as `UnknownAfterSend` and automatic resend remains stopped.
+
+**APPLIED relation:** if package `1954b615-b13a-4dbc-b1a9-539c2744b42c` applies successfully, this complete-user-turn confirmation correction becomes the current SL-RPKG-06 post-Send proof for the active ChangeSet.
+
+### LOG-RPKG-029 — Bound post-Send fallback to the current authored turn
+
+**Type:** REVIEWDIFF CORRECTION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-028`  
+**ChangeSet:** `f3fdbbf8-7ef2-4af4-90da-daa964af4ade`  
+**Package:** `0240dc48-db44-47f9-93c1-78f00638c23d`
+
+**Review finding / selected correction:**
+- Review of the complete-turn correction found that its six-level fallback returned the first ancestor containing any `.diff` attachment candidate. If the explicit ChatGPT turn selector were unavailable, that ancestor could grow wide enough to include a neighboring turn and incorrectly convert another turn’s `.diff` into this task’s `Sent` proof;
+- preserve the positive live requirement from task `44181531`: a file card may be a sibling of `[data-message-author-role="user"]` and still belong to the same outgoing user turn;
+- make the fallback turn-bounded: climb only while the candidate ancestor contains exactly the current `[data-message-author-role]` node and stop before an ancestor that contains any additional authored message. Attachment candidates are evaluated only inside that resulting surface;
+- acceptance/proof now covers both directions explicitly: a same-turn sibling `.diff` file card is eligible, while a `.diff` in a neighboring authored turn is not;
+- extension patch version advances to `0.2.9`; bridge protocol remains `2`. Exact filename preparation/pre-click identity, possible-Send boundary, no-task claim NPE correction, Snapshot attach-only behavior and the accepted/deferred second-attachment/runtime-generation risks remain unchanged.
+
+**Target-State Result:** post-Send confirmation may expand beyond the message-author node enough to see a same-turn sibling file card, but it cannot use the fallback to cross an authored-turn boundary. A neighboring turn’s `.diff` therefore cannot create false `Sent`.
+
+**APPLIED relation:** if package `0240dc48-db44-47f9-93c1-78f00638c23d` applies successfully, this turn-bounded fallback becomes the current SL-RPKG-06 post-Send proof for the active ChangeSet.
+
+### LOG-RPKG-030 — Guard preferred turn containers and materialize DOM regression
+
+**Type:** REVIEWDIFF CORRECTION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-029`  
+**ChangeSet:** `f3fdbbf8-7ef2-4af4-90da-daa964af4ade`  
+**Package:** `ccc14d75-3ae1-4049-9909-13e1b66a6f4b`
+
+**Review finding / selected correction:**
+- review of the turn-bounded fallback found that the preferred `conversation-turn-*` / generic `article` branch returned its closest container without applying the same authored-turn ownership guard, so a broad `article` could still span neighboring authored turns and bypass the fallback protection;
+- require every preferred container candidate, including generic `article`, to contain exactly the current authored message node before it is eligible. If that check fails, continue through the already bounded ancestor fallback rather than accepting the wide container;
+- replace the prior proof gap with an executable Node DOM regression that loads the real `chatgpt-adapter.js` against a minimal fake DOM and proves three behaviors: a same-turn sibling `.diff` file card confirms, a broad `article` containing a neighboring authored turn's `.diff` does not confirm the current task, and ordinary message text containing `.diff` is not attachment proof;
+- wire that DOM regression into `run-tests.cmd` so the standard application test run executes it, while retaining the Java source-contract checks as complementary guardrails;
+- expose only the two confirmation helpers under a frozen adapter `__test` hook for regression access; production delivery semantics are unchanged;
+- extension patch version advances to `0.2.10`; bridge protocol remains `2`. Exact prepared/composer identity, possible-Send boundary, no-task claim correction, Snapshot attach-only behavior and the accepted/deferred second-attachment/runtime-generation risks remain unchanged.
+
+**Target-State Result:** both preferred and fallback turn-surface resolution enforce the same authored-turn boundary, and the standard test suite now executes behavioral DOM proof for the positive same-turn sibling case and the negative neighboring-turn / ordinary-text cases.
+
+**APPLIED relation:** if package `ccc14d75-3ae1-4049-9909-13e1b66a6f4b` applies successfully, this guarded-container + executable DOM regression correction becomes the current SL-RPKG-06 post-Send proof for the active ChangeSet.

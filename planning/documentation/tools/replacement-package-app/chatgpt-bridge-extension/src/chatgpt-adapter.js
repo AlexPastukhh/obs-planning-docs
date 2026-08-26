@@ -27,8 +27,29 @@ globalThis.OBSChatGPTAdapter = (() => {
     const value = [node?.innerText, node?.textContent, node?.getAttribute?.("title"), node?.getAttribute?.("aria-label"), node?.getAttribute?.("href"), node?.getAttribute?.("download")].filter(Boolean).join("\n").toLowerCase();
     return value.includes(".diff");
   }
+  function ownsOnlyAuthoredMessage(surface, message) {
+    const authored = [...(surface?.querySelectorAll?.("[data-message-author-role]") || [])];
+    return authored.length === 1 && authored[0] === message;
+  }
+  function userTurnSurface(message) {
+    if (!message) return null;
+    for (const selector of ['[data-testid^="conversation-turn-"]','[data-testid*="conversation-turn" i]','article']) {
+      const turn = message.closest?.(selector);
+      if (turn && ownsOnlyAuthoredMessage(turn, message)) return turn;
+    }
+    let node = message;
+    for (let depth = 0; depth < 6 && node?.parentElement; depth++) {
+      const parent = node.parentElement;
+      if (parent.matches?.("main,body") || !ownsOnlyAuthoredMessage(parent, message)) break;
+      node = parent;
+    }
+    return node;
+  }
   function reviewDiffAttachmentTurnPresent(prepared) {
-    return userMessages().slice(prepared.beforeUserMessages).some(message => reviewDiffAttachmentCandidates(message).some(nodeShowsDiffFile));
+    return userMessages().slice(prepared.beforeUserMessages).some(message => {
+      const turn = userTurnSurface(message);
+      return reviewDiffAttachmentCandidates(turn).some(nodeShowsDiffFile);
+    });
   }
   function busy(root) { return !!root?.querySelector('[role="progressbar"],[aria-busy="true"],[data-state="loading"],[data-testid*="progress" i],[class*="upload" i][class*="progress" i]'); }
   function sendButton(root) { for (const selector of ['button[data-testid="send-button"]','button[data-testid*="send" i]','button[aria-label="Send prompt"]','button[aria-label^="Send" i]','button[aria-label^="Отправ" i]']) { const b = root?.querySelector(selector) || document.querySelector(selector); if (b) return b; } return null; }
@@ -104,5 +125,5 @@ globalThis.OBSChatGPTAdapter = (() => {
     await prepareAttachment(blob, fileName, "application/zip", expectedConversation, guard);
   }
 
-  return {conversationKey, assertConversation, requireEmptyReviewComposer, prepareReviewDiffAttachment, reviewSendState, waitForReviewSendReady, attachSnapshot};
+  return {conversationKey, assertConversation, requireEmptyReviewComposer, prepareReviewDiffAttachment, reviewSendState, waitForReviewSendReady, attachSnapshot, __test: Object.freeze({userTurnSurface, reviewDiffAttachmentTurnPresent})};
 })();
