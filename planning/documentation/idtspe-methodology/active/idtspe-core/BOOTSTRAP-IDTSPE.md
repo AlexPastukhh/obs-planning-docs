@@ -23,9 +23,9 @@ Load the **whole generic IDTSPE methodology architecture** before selecting a co
 ↓
 IDTSPE Core mechanics + governance
 ↓
-Target Module system
+Target Module system + Target Module Knowledge Basis
 ↓
-Lens system + Core Lens Pack + Lens Applicability Scan / Knowledge Basis boundary
+Lens system + Core Lens Pack + Lens Applicability Scan + shared Knowledge Basis boundary
 ↓
 Documentation / Representation policy
 ↓
@@ -40,7 +40,7 @@ installed profile/family manifests
 ready to enable IDTSPE work mode, select SDS or another profile
 ```
 
-The bootstrap orients the assistant to installed Target/Lens registries, the `TF-06A` Lens Applicability Scan, Lens Knowledge Basis modes, peer concerns, Theoretical Module registries and package boundaries, but does not mechanically reread every specific Target Module, profile-specific Lens or raw theoretical body. Registry summaries/gates support selection; specific module/lens/referenced-knowledge bodies are loaded when a concrete need requires them.
+The bootstrap orients the assistant to installed Target/Lens registries, the `TF-06A` Lens Applicability Scan, the shared Target Module/Lens Knowledge Basis modes, peer concerns, Theoretical Module registries and package boundaries, but does not mechanically reread every specific Target Module, profile-specific Lens or referenced/raw theoretical body. Registry summaries/gates support selection; specific module/lens/referenced-knowledge bodies are loaded when a concrete need requires them.
 
 ## Required Read Set
 
@@ -53,18 +53,19 @@ A full core bootstrap reads, in this order:
 5. [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md)
 6. [`shared/target-type-instance-source-and-relation-model.md`](shared/target-type-instance-source-and-relation-model.md)
 7. [`shared/target-module-model.md`](shared/target-module-model.md)
-8. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md)
-9. [`lenses/README.md`](lenses/README.md)
-10. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy; do not infer one-file-per-Target.
-11. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md)
-12. [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md)
-13. [`shared/decision-revalidation-helper-model.md`](shared/decision-revalidation-helper-model.md)
-14. [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md)
-15. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/Lens-operation navigation and host-target policies.
-16. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md)
-17. [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points concern.
-18. [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — theoretical package registry only; do not automatically read raw bodies.
-19. [`../profiles/README.md`](../profiles/README.md)
+8. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis sub-contract for Target Modules and Lenses.
+9. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md)
+10. [`lenses/README.md`](lenses/README.md)
+11. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy; do not infer one-file-per-Target.
+12. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md)
+13. [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md)
+14. [`shared/decision-revalidation-helper-model.md`](shared/decision-revalidation-helper-model.md)
+15. [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md)
+16. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/Lens-operation navigation and host-target policies.
+17. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md)
+18. [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points concern.
+19. [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — theoretical package registry only; do not automatically read raw bodies.
+20. [`../profiles/README.md`](../profiles/README.md)
 
 Read specific profile/module/lens bodies only after the next concrete route is known.
 
@@ -110,8 +111,10 @@ Generic Lens registry:
   generic `подбери линзы` / `примени линзу` operations available
   Linked Notes usage Lens available when cross-owner navigation/query is proposed
 
-Lens Knowledge Basis:
+Knowledge Basis contract:
+  Target Modules + Lenses
   INLINE / REFERENCED / HYBRID boundary loaded
+  referenced bodies remain lazy-loaded by owner-specific load policy
 
 Installed profiles:
   SDS

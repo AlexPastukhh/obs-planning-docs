@@ -24,10 +24,11 @@ IDTSPE Core must remain usable when another profile/family is added later. It th
 4. [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md) — optional default operating mode for material AI planning.
 5. [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/interaction rules.
 6. [`target-modules/README.md`](target-modules/README.md) — Target Module framework and installed-family boundary.
-7. [`lenses/README.md`](lenses/README.md) — generic Lens registry plus installed profile Lens references.
-8. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/navigation surface and host-target policies.
-9. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy and worked materialization topologies.
-10. [`../profiles/README.md`](../profiles/README.md) — installed planning profiles/families.
+7. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis contract used by Target Modules and Lenses.
+8. [`lenses/README.md`](lenses/README.md) — generic Lens registry plus installed profile Lens references.
+9. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/navigation surface and host-target policies.
+10. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy and worked materialization topologies.
+11. [`../profiles/README.md`](../profiles/README.md) — installed planning profiles/families.
 
 ## Generic Core Owners
 
@@ -37,6 +38,7 @@ IDTSPE Core must remain usable when another profile/family is added later. It th
 Target Formation / Resolution Slots
 Target / Source / Relation model
 Target Module model + maintenance UC
+shared Target Module/Lens Knowledge Basis contract
 Lens model + maintenance UC
 Planning Branches
 Decision intake / persistence / revalidation

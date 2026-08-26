@@ -54,7 +54,7 @@ A theoretical package may be opened when:
 - the user explicitly asks to reason from that theory;
 - methodology maintenance is deciding whether part of the theory should become a normal Target Module/Lens/Core rule.
 
-A Lens may reference a theoretical package from its explicit `Knowledge Basis` using `REFERENCED` or `HYBRID` mode. That reference defines a **knowledge dependency/load policy**, not a Target Source relation and not automatic authority for the raw theory. The Lens remains owner of applicability/evaluation/findings; the theoretical package remains owner of the referenced raw/detail knowledge.
+A Target Module or Lens may reference a theoretical package from its explicit `Knowledge Basis` using `REFERENCED` or `HYBRID` mode. Both use the shared Core Knowledge Basis contract. That reference defines a **knowledge dependency/load policy**, not a Target Source/current Target-input relation and not automatic authority for the raw theory. The operational Target Module/Lens remains owner of its Target/evaluation contract; the theoretical package remains owner of the referenced raw/detail knowledge.
 
 Unclear timing is allowed. That is one reason the material remains theoretical.
 
@@ -63,7 +63,7 @@ Unclear timing is allowed. That is one reason the material remains theoretical.
 ```text
 IMPORTED_RAW
 → UNDER_REVIEW
-→ selected knowledge promoted into Core / Target Module / Lens / other stable owner
+→ selected knowledge promoted into Core / Target Module Knowledge Basis / Lens Knowledge Basis / other stable owner
 → source theoretical module marked PARTIALLY_PROMOTED or SUPERSEDED
 → eventually RETIRED when no unique useful knowledge remains
 ```

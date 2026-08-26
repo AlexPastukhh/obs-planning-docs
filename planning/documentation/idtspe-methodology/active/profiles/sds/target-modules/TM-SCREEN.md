@@ -149,6 +149,30 @@ design-system/accessibility constraints
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Screen owns canonical spatial/UI meaning only when spatial responsibility is independently useful.
+- Screen is not a substitute for Scenario behavior, Domain meaning or implementation structure.
+- UI elements/actions/feedback must remain traceable to the semantic behavior they realize.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable UI/spatial evaluation knowledge remains in the UI Lens.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Lens Profile
 
 Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):

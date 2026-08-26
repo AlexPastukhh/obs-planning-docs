@@ -1,6 +1,6 @@
 {
-  "workspace_version": "idtspe-lens-applicability-knowledge-basis-41",
-  "repo_snapshot_base": "46ee341cef4b6c581dc1e461f21cd1e11755abb7",
+  "workspace_version": "idtspe-shared-target-lens-knowledge-basis-42",
+  "repo_snapshot_base": "36dfbf878d4ff9e616de70d7535135c5c0c9966e",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
   "sds_profile_bootstrap": "sdscmd.bootstrap",
@@ -29,10 +29,10 @@
   "current_repository_integration_ledger": "integration/CURRENT-REPOSITORY-INTEGRATION.md",
   "repository_fresh_audit_completed": true,
   "repository_update_planned": true,
-  "mechanical_consistency": "PASS_RECHECKED_AFTER_LENS_APPLICABILITY_KNOWLEDGE_BASIS_AND_GUIDANCE_OWNERSHIP",
+  "mechanical_consistency": "PASS_RECHECKED_AFTER_SHARED_TARGET_LENS_KNOWLEDGE_BASIS_CONTRACT",
   "core_sds_separation_audit": "PASS",
-  "markdown_integrity": "PASS_RECHECKED_AFTER_LENS_APPLICABILITY_KNOWLEDGE_BASIS_AND_GUIDANCE_OWNERSHIP",
-  "repository_audit_evidence": "obs-planning-docs supplied snapshot base 46ee341cef4b6c581dc1e461f21cd1e11755abb7; exact current base for Lens applicability / Knowledge Basis / artifact-guidance ownership update; raw testing theory retains ca768b61 provenance in its own theoretical package",
+  "markdown_integrity": "PASS_RECHECKED_AFTER_SHARED_TARGET_LENS_KNOWLEDGE_BASIS_CONTRACT",
+  "repository_audit_evidence": "obs-planning-docs supplied snapshot base 36dfbf878d4ff9e616de70d7535135c5c0c9966e; exact current methodology base for shared Target Module/Lens Knowledge Basis contract update; unrelated replacement-package-app working-tree changes remain outside this scope",
   "repository_preupdate_ledger": "integration/CURRENT-REPOSITORY-INTEGRATION.md",
   "repository_old_collect_ideas_commands": 6,
   "repository_merge_blockers": 1,
@@ -91,10 +91,10 @@
   "artifact_materialization_projection_source_id_parity": "58/58 exact; missing 0; extra 0",
   "documentation_representation_materialization_audit": "active/DOCUMENTATION-REPRESENTATION-MATERIALIZATION-CONSISTENCY-AUDIT.md",
   "documentation_representation_recheck": "PASS; adaptive code/section/coordinator/dedicated/companion/generated/none model; physical topology not a scaffold",
-  "current_markdown_links_checked": 649,
+  "current_markdown_links_checked": 680,
   "current_markdown_links_broken": 0,
-  "lens_knowledge_basis": "18/18 active reusable Lenses declare Knowledge Basis mode INLINE | REFERENCED | HYBRID",
-  "lens_applicability_scan": "TF-06A LENS_SET scans required Core + active Target Module profile + applicable Core/profile registries + explicit user/agent selection; full Lens/Knowledge bodies are loaded proportionally",
+  "lens_knowledge_basis": "18/18 active reusable Lenses declare Knowledge Basis mode INLINE | REFERENCED | HYBRID through the shared Core Knowledge Basis contract",
+  "lens_applicability_scan": "TF-06A LENS_SET scans required Core + active Target Module profile + applicable Core/profile registries + explicit user/agent selection; selected Target Module/Lens referenced Knowledge Basis bodies are loaded proportionally by their own load policies",
   "local_target_contract": "FIRST_CLASS: material IDTSPE may use a reusable Target Module or a one-off Local Target Contract when no module fits well enough",
   "artifact_guidance_ownership": "Target Module AP owns Target-result representation; Lens AG owns/routs Lens-produced findings/supporting artifacts; L5/WEUC owns target-local evolution-companion guidance",
   "generic_lens_operation_surfaces": [
@@ -104,5 +104,7 @@
   "core_command_surface_contract": "active/idtspe-core/shared/idtspe-command-surface-contract.md",
   "sds_command_surface_extension": "active/profiles/sds/shared/idtspe-command-surface-contract.md",
   "generic_lens_select_host_target_policy": "CREATE_OR_REUSE_TARGET",
-  "generic_lens_apply_host_target_policy": "RESOLVE_OR_REUSE_TARGET"
+  "generic_lens_apply_host_target_policy": "RESOLVE_OR_REUSE_TARGET",
+  "target_module_knowledge_basis": "17/17 active SDS Target Modules declare exactly one Knowledge Basis mode INLINE | REFERENCED | HYBRID, distinct from Upstream Sources",
+  "knowledge_basis_contract": "active/idtspe-core/shared/knowledge-basis-contract.md; shared by Target Modules and Lenses"
 }

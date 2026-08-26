@@ -117,6 +117,30 @@ test-layer/environment/tool constraints
 ### Source Discovery Rule
 This is the expected source archetype, not a closed whitelist. `TF-04 SOURCE_SET` may add another real authoritative/evidentiary/constraining Source when the current Target actually depends on it.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `HYBRID`
+
+**Embedded Principles / Rules / Theory:**
+
+- Test Design maps selected semantic behavior/properties to credible proof responsibilities before or alongside implementation.
+- Proof layer is selected by what can actually prove the property, not by a mandatory taxonomy.
+- Test design remains downstream of semantic truth and does not redefine Scenario/Domain/Slice meaning.
+
+**Referenced Knowledge Owners:**
+
+- [`testing/README.md`](../../../theoretical-modules/testing/README.md)
+
+**Reference Load Policy:**
+
+Read raw Testing theory only when processed Test Module/Lens guidance is insufficient for a materially detailed test-design question. Do not read it mechanically.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Lens Profile
 
 Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):
@@ -295,9 +319,6 @@ Actual executed Evidence is not the same artifact as planned proof design and ma
 
 `P-14` must state where each planned proof and later Evidence reference belongs.
 
-## Theoretical Testing Reference — Conditional
-
-When the processed Test Module/Lens does not yet answer a materially detailed testing question, the raw snapshot package [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md) may be consulted as theory/reference. It does not override this Target Module and is not read mechanically on every invocation.
 
 ## Guard
 Planned evidence ≠ executed evidence; test names do not prove coverage.

@@ -149,6 +149,30 @@ delivery/migration constraints
 ### Source Discovery Rule
 The actual impacted owner set is resolved through the current Target scope/source decisions.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- A Cross-Cutting Concern Target owns one genuinely shared non-vertical implementation responsibility rather than duplicating it inside multiple Slices.
+- Shared ownership is justified by independent reuse/change/revalidation pressure, not merely by repeated vocabulary.
+- Current Scenario/Domain/Slice semantics remain upstream truth; the concern must not redefine them for implementation convenience.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only. Current `TF-06 QUESTION_SET` may add/remove/split/merge questions.

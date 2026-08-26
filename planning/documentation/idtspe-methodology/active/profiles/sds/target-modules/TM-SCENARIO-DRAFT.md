@@ -141,6 +141,30 @@ upstream accepted tradeoffs / residual planning concerns
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Scenario Draft owns one selected application behavior/result path; Scenario DATA and Behavior Items are internal addressable contracts, not separate Target Modules.
+- Behavior describes observable semantic progression rather than UI clicks or implementation calls.
+- Supporting Screen/Requirement Targets are justified only when independent semantic ownership exists.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable Scenario evaluation knowledge remains in the Scenario Lens.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Internal Object Contract — Scenario DATA
 
 Scenario DATA is semantic information the actor/user must see, enter, select, receive, compare, understand or otherwise use during the Scenario, plus external/derived information required for that behavior.

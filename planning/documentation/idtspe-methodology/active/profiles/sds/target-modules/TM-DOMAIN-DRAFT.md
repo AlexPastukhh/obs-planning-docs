@@ -116,6 +116,30 @@ external consistency/integration constraints
 
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Domain Draft represents selected Domain/no-Domain meaning and its invariants/ownership boundaries after discovery evidence is sufficient.
+- Domain semantics must remain independent from realization convenience and implementation layering.
+- Target-local future evolution is evaluated by WEUC/L5; this Target may consume that result but does not own companion-proposal mechanics.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable DDD/evolution evaluation knowledge remains in the relevant Lenses.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Lens Profile
 
 Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):

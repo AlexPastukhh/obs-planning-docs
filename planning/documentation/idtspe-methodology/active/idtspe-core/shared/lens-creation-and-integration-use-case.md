@@ -41,7 +41,7 @@ real repeated planning cases
      LOCAL_ONLY
 5. define applicability gate
 6. define Target Inputs / Evidence
-7. define Knowledge Basis mode: INLINE / REFERENCED / HYBRID
+7. define Knowledge Basis through [`knowledge-basis-contract.md`](knowledge-basis-contract.md): INLINE / REFERENCED / HYBRID
 8. define embedded principles/rules and/or referenced knowledge owners + load policy
 9. define prompts/sublenses/evaluation workflow
 10. define findings produced

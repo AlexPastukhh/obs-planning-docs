@@ -126,6 +126,30 @@ upstream accepted tradeoffs / residual planning concerns
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Scenario Discovery identifies independently useful real application behavior/result paths before detailed Scenario drafting.
+- Scenario candidates are bounded by actor/context/result responsibility rather than screen flow or implementation decomposition.
+- Discovery output remains candidate inventory until individual Scenario Targets are selected/drafted.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable Scenario-boundary evaluation knowledge remains in the Scenario Lens.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Scope Archetype
 A Scenario candidate normally has:
 ```text

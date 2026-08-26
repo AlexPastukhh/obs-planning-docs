@@ -72,7 +72,7 @@ This command does not mean “select Full physical profile” and does not creat
 13. [`../../theoretical-modules/README.md`](../../theoretical-modules/README.md) — discover temporary theory packages; do not read all raw bodies by default.
 14. [`../../theoretical-modules/testing/README.md`](../../theoretical-modules/testing/README.md) — know the detailed Testing theory package exists; read its exact source bodies only when testing detail is materially needed and processed Test guidance is insufficient.
 
-Specific `TM-*.md` and Lens bodies are read when the active Target/Lens set is resolved. A full bootstrap knows the complete catalogs/boundaries; it need not reread all 17 module bodies or all Lens Knowledge Basis references on every invocation. `TF-06A` may discover an applicable SDS Lens even for a Local Target Contract or when that Lens is not pre-attached by the current module.
+Specific `TM-*.md` and Lens bodies are read when the active Target/Lens set is resolved. A full bootstrap knows the complete catalogs/boundaries and Target Module/Lens Knowledge Basis summaries; it need not reread all 17 module bodies or their referenced Knowledge Basis owners, nor all Lens Knowledge Basis references, on every invocation. `TF-06A` may discover an applicable SDS Lens even for a Local Target Contract or when that Lens is not pre-attached by the current module.
 
 ## Profile Bootstrap Output
 

@@ -120,6 +120,30 @@ Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
 Domain candidates must trace back to Scenario/DATA/Behavior/must-hold meaning rather than nouns/tables/files.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Domain Discovery gathers domain-boundary/model evidence and candidate interpretations without forcing a Domain result.
+- A no-Domain outcome remains valid when domain ownership adds no useful semantic boundary.
+- Discovery candidates/evidence do not become accepted Domain meaning until selected through normal IDTSPE Decisions.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable DDD evaluation knowledge remains in the Domain/DDD Lens.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Lens Profile
 
 Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):

@@ -41,6 +41,6 @@ SDS is not the definition of IDTSPE itself. Non-SDS Target Module families may c
 
 ## Core Dependency
 
-SDS consumes the generic package at [`../../idtspe-core/README.md`](../../idtspe-core/README.md). Generic Shell/Target/Lens/Artifact rules are not redefined here.
+SDS consumes the generic package at [`../../idtspe-core/README.md`](../../idtspe-core/README.md). Generic Shell/Target/Lens/Artifact rules and the shared Target Module/Lens Knowledge Basis contract are not redefined here. All 17 SDS Target Modules declare their module-specific Knowledge Basis through that Core contract.
 
 Lens selection is not limited to Target Module attachment: `TF-06A` scans this profile's Lens registry proportionally, and generic Core `подбери линзы` / `примени линзу` operations can select/apply any registered applicable SDS Lens inside the natural Target/Local Target context.

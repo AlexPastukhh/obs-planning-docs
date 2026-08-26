@@ -137,6 +137,30 @@ real-vs-simulated boundary
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Prototype is an evidence-producing Target for material uncertainty, not an early declaration of final product truth.
+- Prototype fidelity/method should be only as strong as needed to answer the current Evidence question.
+- Prototype Evidence preserves what was real/stubbed/mocked/manual and remains distinct from later implemented Evidence.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Target-Module Knowledge Basis body is required by default; reusable practical-evidence mechanics are attached through the Practical Evidence Lens.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only.

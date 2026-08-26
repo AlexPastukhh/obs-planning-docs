@@ -140,6 +140,31 @@ accepted architecture Answer Decisions when reviewing an existing application
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `HYBRID`
+
+**Embedded Principles / Rules / Theory:**
+
+- Application Definition distinguishes the selected real-world contribution from detailed Scenario/Screen/Domain/implementation meaning.
+- Existing-solution/reference research informs build/buy/adapt/integrate positioning without turning competitor features into Requirements.
+- Core vs secondary real-life scenario classification and refined real-life route are Target-family planning knowledge.
+
+**Referenced Knowledge Owners:**
+
+- [`application-definition-existing-solutions-market-reference-research.md`](../shared/application-definition-existing-solutions-market-reference-research.md)
+- [`application-definition-refined-core-real-life-scenario.md`](../shared/application-definition-refined-core-real-life-scenario.md)
+
+**Reference Load Policy:**
+
+Read the market/reference guide when comparative/market research depth is material. Read the refined core-real-life-scenario guide only when the selected core route needs the stronger application-aware refinement.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only. Current `TF-06 QUESTION_SET` may add/remove/split/merge questions.
@@ -204,7 +229,6 @@ Generic IDTSPE Scope/Question Set/Ideas/QRP/Branches/Answer Decisions/Revalidati
 
 **Build / Buy / Adapt / Integrate Position** — why custom Application planning continues, or explicit Step-02 reopen when another route is sufficient.
 
-Deep guide: `../shared/application-definition-existing-solutions-market-reference-research.md`.
 
 ### Core Real-Life Scenario Inventory
 
@@ -255,7 +279,6 @@ otherwise
 → Step-02 selected solution result remains the direct real-life Source
 ```
 
-Deep guide: `../shared/application-definition-refined-core-real-life-scenario.md`.
 
 ### Application Concept
 

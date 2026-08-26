@@ -109,6 +109,30 @@ current review scope / changed Decision/owner
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `HYBRID`
+
+**Embedded Principles / Rules / Theory:**
+
+- Test Coverage reviews actual current Evidence against selected semantic properties and distinguishes strong/partial/missing/stale/duplicated/wrong-layer proof.
+- Coverage findings route to the narrowest real owner; test presence does not redefine semantic truth.
+- Actual Evidence provenance/freshness/assertion strength must remain inspectable.
+
+**Referenced Knowledge Owners:**
+
+- [`testing/README.md`](../../../theoretical-modules/testing/README.md)
+
+**Reference Load Policy:**
+
+Read raw Testing theory only when processed Test Module/Lens guidance is insufficient for a materially detailed coverage/proof question. Do not read it mechanically.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only. Current `TF-06 QUESTION_SET` may add/remove/split/merge questions.
@@ -198,9 +222,6 @@ Actual test files/logs remain Evidence Sources; the coverage artifact references
 
 `P-14` must show coverage owner and any unresolved Evidence/file references.
 
-## Theoretical Testing Reference — Conditional
-
-When the processed Test Module/Lens does not yet answer a materially detailed testing question, the raw snapshot package [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md) may be consulted as theory/reference. It does not override this Target Module and is not read mechanically on every invocation.
 
 ## Guard
 

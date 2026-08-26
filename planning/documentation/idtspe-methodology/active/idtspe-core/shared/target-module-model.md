@@ -15,6 +15,7 @@ It may provide:
 Target form / Target-Type candidate
 Scope archetype + boundary prompts
 Source Contract candidates
+Knowledge Basis (`INLINE | REFERENCED | HYBRID`)
 Resolution Questions / Question-set preset
 Idea / Variant discovery prompts
 Lens Profile / reusable Lens references / local pattern aids
@@ -79,6 +80,10 @@ TM-IP-02 SCOPE
 
 TM-IP-03 SOURCES
   Source Contract archetype for TF-04 SOURCE_SET
+
+TM-IP-03A KNOWLEDGE_BASIS
+  reusable principles/rules/theory/pattern knowledge for this recurring Target family
+  using the shared [`Knowledge Basis Contract`](knowledge-basis-contract.md)
 
 TM-IP-04 RELATIONS
   expected Target relations / owner relations for TF-05
@@ -172,6 +177,13 @@ Target Formation Contribution
   scope archetype
   Source Contract archetype
   expected relations
+
+Knowledge Basis
+  Mode: INLINE | REFERENCED | HYBRID
+  Embedded Principles / Rules / Theory
+  Referenced Knowledge Owners
+  Reference Load Policy
+  Operationalization Notes
 
 Resolution Questions
   default candidates
@@ -279,7 +291,38 @@ Command identity never becomes module authority. See `idtspe-command-surface-con
 
 ---
 
-# 7. Questions Inside A Target Module
+# 7. Knowledge Basis
+
+Every reusable Target Module contains exactly one explicit `## Knowledge Basis` conforming to the shared [`Knowledge Basis Contract`](knowledge-basis-contract.md).
+
+The distinction from `TM-IP-03 SOURCES` is fundamental:
+
+```text
+Source Contract
+→ archetype for current Target-instance inputs/evidence/constraints
+
+Knowledge Basis
+→ reusable principles/rules/theory/pattern knowledge
+  used by this recurring Target methodology
+```
+
+A Target Module may use `INLINE`, `REFERENCED` or `HYBRID` knowledge exactly like a Lens. Referenced owners are loaded lazily according to the module's `Reference Load Policy`.
+
+Symmetry does not move reusable evaluation knowledge out of Lenses:
+
+```text
+Target-result formation/resolution/representation knowledge
+→ Target Module Knowledge Basis
+
+reusable evaluation perspective across Targets
+→ Lens + Lens Knowledge Basis
+```
+
+A referenced Theoretical Module/deep guide remains a knowledge owner, not Target Source or project authority.
+
+---
+
+# 8. Questions Inside A Target Module
 
 A module may contain reusable question candidates.
 
@@ -306,7 +349,7 @@ Normal intake and User Question Policy still apply.
 
 ---
 
-# 8. Ready-Made Candidate Answers / Patterns
+# 9. Ready-Made Candidate Answers / Patterns
 
 A module may provide candidate answer families.
 
@@ -342,7 +385,7 @@ The module must include applicability prompts/anti-patterns so pattern libraries
 
 ---
 
-# 9. Lens Profile And Reusable Lens Library
+# 10. Lens Profile And Reusable Lens Library
 
 Reusable Lens knowledge is not owned by a Target Module merely because the module first used it.
 
@@ -395,7 +438,7 @@ Lens finding ≠ new Target automatically
 
 A material independent problem exposed by a Lens may be escalated through generic Target Formation.
 
-# 10. Output Schema Is A Target Projection Contract
+# 11. Output Schema Is A Target Projection Contract
 
 A Target Module can contain a semantic output template.
 
@@ -422,7 +465,7 @@ Only supported/material meaning is projected.
 
 ---
 
-# 11. Internal Object Contracts And Supporting Modules
+# 12. Internal Object Contracts And Supporting Modules
 
 A Target Module may contain **internal object contracts** for addressable meaning that belongs inside the module's planning responsibility.
 
@@ -464,7 +507,7 @@ A genuinely separate semantic owner such as Requirement or Screen may still have
 
 ---
 
-# 12. Branch / Variant Integration
+# 13. Branch / Variant Integration
 
 A module may say when integrated alternatives should be explored through generic Planning Branches.
 
@@ -484,7 +527,7 @@ Do not maintain two competing branching ontologies.
 
 ---
 
-# 13. Module Readiness Validator
+# 14. Module Readiness Validator
 
 A Target Module is ready for integration only if:
 
@@ -493,6 +536,9 @@ one stable entry point exists
 purpose/output are explicit
 scope/authority boundary is explicit
 Source Contract is not a closed universal whitelist
+exactly one Knowledge Basis exists and uses INLINE / REFERENCED / HYBRID
+Knowledge Basis is distinct from current Target Sources and does not duplicate reusable Lens knowledge
+REFERENCED/HYBRID knowledge owners + load policy are explicit
 RQ candidates are distinguishable from user questions
 Idea/pattern prompts do not auto-select answers
 specialized Lenses have applicability gates
@@ -505,7 +551,7 @@ repo provenance/reuse candidates are known
 
 ---
 
-# 14. Key Formula
+# 15. Key Formula
 
 ```text
 Target Module

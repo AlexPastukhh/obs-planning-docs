@@ -421,6 +421,7 @@ This directory contains **canonical generic contracts that are too specific to b
 | [`dynamic-target-formation-and-discovery-checks.md`](active/idtspe-core/shared/dynamic-target-formation-and-discovery-checks.md) | Narrative/how-to guide for dynamic Target formation and discovery checks. |
 | [`target-type-instance-source-and-relation-model.md`](active/idtspe-core/shared/target-type-instance-source-and-relation-model.md) | Target type/instance, Source and Target Relation semantics. |
 | [`target-module-model.md`](active/idtspe-core/shared/target-module-model.md) | Canonical reusable Target Module model. |
+| [`knowledge-basis-contract.md`](active/idtspe-core/shared/knowledge-basis-contract.md) | Shared `INLINE / REFERENCED / HYBRID` Knowledge Basis contract used symmetrically by Target Modules and Lenses. |
 | [`target-module-creation-and-integration-use-case.md`](active/idtspe-core/shared/target-module-creation-and-integration-use-case.md) | Maintenance workflow for creating/reviewing/integrating a Target Module. |
 | [`target-module-output-template-and-question-set-rule.md`](active/idtspe-core/shared/target-module-output-template-and-question-set-rule.md) | Required Target Module output shape and Question Set rules. |
 | [`lens-creation-and-integration-use-case.md`](active/idtspe-core/shared/lens-creation-and-integration-use-case.md) | Maintenance workflow for creating/reviewing/integrating a Lens. |
@@ -642,7 +643,7 @@ Registry:
 
 SDS uses both generic Core Lenses and these profile-specific Lenses.
 
-Each reusable Lens separates an **Operational Evaluation Contract** from its explicit `Knowledge Basis` (`INLINE`, `REFERENCED`, or `HYBRID`). `TF-06A` performs a proportional Lens Applicability Scan: required/module-attached perspectives are combined with registered Core/profile gates and explicit selection. The active Target Module is one attachment source, not the whole Lens universe.
+Each reusable Target Module and Lens contains one explicit `Knowledge Basis` using the same shared `INLINE / REFERENCED / HYBRID` contract. A Target Module pairs it with an Operational Target Contract; a Lens pairs it with an Operational Evaluation Contract. `TF-06A` performs a proportional Lens Applicability Scan: required/module-attached perspectives are combined with registered Core/profile gates and explicit selection. The active Target Module is one attachment source, not the whole Lens universe.
 
 | Lens | Responsibility |
 |---|---|
@@ -909,10 +910,11 @@ Typical read pattern:
 ```text
 existing canonical target/source artifacts
 + selected TM-*.md OR Local Target Contract
++ referenced Target Module Knowledge Basis only according to module load policy
 + required Core Lenses
 + TF-06A Lens Applicability Scan over module attachment + Core/profile registries
 + selected Lens Operational Contract(s)
-+ referenced Knowledge Basis only according to Lens load policy
++ referenced Lens Knowledge Basis only according to Lens load policy
 + narrow shared contracts referenced by them
 ↓
 IDTSPE invocation

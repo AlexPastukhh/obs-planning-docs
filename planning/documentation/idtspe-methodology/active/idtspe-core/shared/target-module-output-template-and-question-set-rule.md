@@ -26,6 +26,7 @@ Target Module files should contain:
 ```text
 purpose
 upstream source contract
+Knowledge Basis (`INLINE | REFERENCED | HYBRID`)
 question-set examples
 Lens Profile / reusable Lens refs / local pattern aids
 target-specific output template
@@ -33,6 +34,23 @@ field explanations
 explicit Artifact / File Contract
 module-specific validators / handoffs
 ```
+
+## Knowledge Basis Is Required In Every Target Module
+
+Every reusable Target Module contains exactly one `## Knowledge Basis` using the shared [`Knowledge Basis Contract`](knowledge-basis-contract.md).
+
+```text
+Upstream Source Contract
+= current Target-instance input/evidence/constraint archetype
+
+Knowledge Basis
+= reusable principles/rules/theory/pattern knowledge
+  used to plan this recurring Target family
+```
+
+The Knowledge Basis may be `INLINE`, `REFERENCED` or `HYBRID`. Referenced bodies are loaded only according to the module's explicit `Reference Load Policy`.
+
+Do not duplicate reusable Lens evaluation knowledge inside a Target Module merely because the module uses that Lens.
 
 ## Question Set Examples Are Non-Exhaustive
 

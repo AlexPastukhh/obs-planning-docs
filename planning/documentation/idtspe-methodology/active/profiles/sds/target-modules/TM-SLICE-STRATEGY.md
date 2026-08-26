@@ -124,6 +124,30 @@ delivery/dependency constraints
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Slice Strategy is a Target only when vertical decomposition/order itself is a material choice.
+- Slices are shaped around Useful Vertical Results rather than horizontal layers.
+- Strategy coordinates portfolio/order/dependencies without pre-solving each Slice implementation.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable Slice verticality/evolution evaluation knowledge remains in Lenses.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only.

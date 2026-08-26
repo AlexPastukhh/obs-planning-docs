@@ -130,42 +130,32 @@ Provenance
 
 ## 5. Knowledge Basis
 
-Every reusable Lens contains an explicit `## Knowledge Basis` with one mode:
+Every reusable Lens contains exactly one explicit `## Knowledge Basis` conforming to the shared [`Knowledge Basis Contract`](../shared/knowledge-basis-contract.md). Target Modules use the same literal sub-contract and modes:
 
 ```text
-INLINE
-  the Lens itself contains the material principles/rules/theory needed to apply it
+INLINE | REFERENCED | HYBRID
 
-REFERENCED
-  the Lens stays operationally thin and points to separate knowledge owner(s)
-
-HYBRID
-  a small stable operational core stays inline while deeper/detail knowledge
-  is read conditionally from referenced owners
+Embedded Principles / Rules / Theory
+Referenced Knowledge Owners
+Reference Load Policy
+Operationalization Notes
 ```
 
-Recommended shape:
+Lens-specific specialization:
 
 ```text
-Mode: INLINE | REFERENCED | HYBRID
+Target Inputs / Evidence
+→ current Target material consumed by this evaluation
 
-Embedded Principles / Rules / Theory:
-  <small operationalized knowledge actually owned here>
-
-Referenced Knowledge Owners:
-  <canonical principle/theory/reference owners or NONE>
-
-Reference Load Policy:
-  <when those bodies should be read>
-
-Operationalization Notes:
-  <how raw/reference knowledge is constrained by this Lens>
+Lens Knowledge Basis
+→ reusable principles/rules/theory/pattern knowledge
+  used to perform this evaluation
 ```
 
 Important boundaries:
 
 ```text
-Knowledge Basis reference ≠ Target Source
+Knowledge Basis reference ≠ Target Source / current Target input
 raw theory ≠ operational Lens authority
 referenced theory/principle owner ≠ permission to copy its full body into every Lens
 

@@ -47,8 +47,10 @@ Total:                                18
 - Application/Scenario/Domain/UI/Slice/WEUC lenses are explicitly SDS-profile contributions: **PASS**
 - post-separation SDS Simplicity / Implementation Economy Lens is profile-specific and evolution-aware: **PASS**
 - every active Target Module still has one `## Lens Profile`: **PASS**
+- every active Target Module declares exactly one explicit `## Knowledge Basis` using the shared Core contract: **PASS**
 - every reusable Lens still has one `## Artifact / File Implications`: **PASS**
 - every reusable Lens declares exactly one explicit `## Knowledge Basis` with `INLINE`, `REFERENCED` or `HYBRID` mode: **PASS**
+- Target Module/Lens Knowledge Basis uses one shared contract while Source Contract / Target Inputs remain distinct current-instance inputs: **PASS**
 - `TF-06A LENS_SET` performs proportional Lens Applicability Scan across required Core, active Target Module profile, applicable registries and explicit selection: **PASS**
 - Local Target Contract remains a first-class IDTSPE path when no recurring Target Module fits: **PASS**
 - generic Core command-surface authority is owned under `idtspe-core/shared/`; the SDS command-surface file is a profile extension and does not own Core command semantics/host-target policies: **PASS**

@@ -173,6 +173,30 @@ platform/browser/window constraints
 ### Source Discovery Rule
 Expected archetype only. Resolve actual Sources in `TF-04 SOURCE_SET`.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Frontend Slice plans frontend realization for one useful vertical result without turning UI architecture patterns into mandatory presets.
+- UI/spatial state, user action, feedback and integration remain traced to upstream Scenario/Slice meaning.
+- A frontend-specific Target is justified only when its realization has independent useful/revalidatable choice surface.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable UI/spatial/evolution evaluation knowledge remains in Lenses.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only. Current `TF-06 QUESTION_SET` may add/remove/split/merge questions.

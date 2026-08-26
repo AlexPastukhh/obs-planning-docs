@@ -361,6 +361,7 @@ A Target Module can plug into shell ports through its integration points:
 TARGET_FORM
 SCOPE
 SOURCES
+KNOWLEDGE_BASIS
 RELATIONS
 QUESTIONS
 IDEAS
@@ -383,6 +384,10 @@ Target
 
 Source
   = accepted truth / evidence / constraint used to plan it
+
+Knowledge Basis
+  = reusable principles / rules / theory / pattern knowledge used by a Target Module or Lens
+  = not current Target Source / evidence / project truth
 
 Lens
   = reusable perspective used to inspect choices

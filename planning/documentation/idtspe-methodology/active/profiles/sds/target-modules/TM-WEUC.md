@@ -301,6 +301,30 @@ This list is an archetype only; current `TF-04 SOURCE_SET` remains authority.
 
 Loose Ideas can inspire questions, but do not become planned evolution merely by appearing in the map.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- TM-WEUC owns the canonical Workspace Evolution Map and Current Global Architecture Position when those global results are material.
+- Local architecture/evolution findings normally remain inside the current Target through WEUC/L5; only project-global meaning promotes back to TM-WEUC.
+- Target-local evolution companion proposal remains Lens/Documentation/P-14 responsibility rather than Target Module authority.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable architecture/evolution evaluation knowledge remains in WEUC/L5.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 ```text

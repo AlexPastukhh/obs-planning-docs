@@ -50,10 +50,10 @@ IDTSPE Core
 = generic planning mechanics
 
 Target Module
-= reusable concrete Target-family contract installed by a profile/family
+= reusable concrete Target-family Operational Target Contract + explicit INLINE/REFERENCED/HYBRID Knowledge Basis, installed by a profile/family
 
 Lens
-= processed reusable evaluation perspective with an Operational Evaluation Contract + explicit INLINE/REFERENCED/HYBRID Knowledge Basis
+= processed reusable evaluation perspective with an Operational Evaluation Contract + the same shared INLINE/REFERENCED/HYBRID Knowledge Basis sub-contract
 
 Theoretical Module
 = useful raw/not-yet-operationalized knowledge whose stable timing/Target/Lens placement is not yet known
@@ -76,8 +76,8 @@ Do not use `SDS` as a synonym for the entire IDTSPE methodology.
 ```text
 бутстреп idtspe
 → Shell / governance
-→ Target Module system
-→ Lens system + Core Pack + TF-06A Lens Applicability Scan + Knowledge Basis modes
+→ Target Module system + Target Module Knowledge Basis
+→ Lens system + Core Pack + TF-06A Lens Applicability Scan + shared Knowledge Basis modes
 → Decisions / Artifact Placement / Revalidation
 → Q/R/P priority/groups/Decision trace
 → AI Reviewability peer concern + Theoretical Module registry
@@ -101,7 +101,7 @@ This is separate from specific Target Module/Lens bodies and from raw Theoretica
 → SDS command surface
 ```
 
-Specific Target/Lens commands then read only their relevant owners. Generic `подбери линзы` scans registries/gates and `примени линзу` dispatches to one selected Lens; neither creates a Lens-owned Target. Raw Theoretical Modules / referenced knowledge owners are consulted conditionally according to the selected Lens Knowledge Basis or when processed guidance is insufficient.
+Specific Target/Lens commands then read only their relevant owners. Generic `подбери линзы` scans registries/gates and `примени линзу` dispatches to one selected Lens; neither creates a Lens-owned Target. Raw Theoretical Modules / referenced knowledge owners are consulted conditionally according to the selected Target Module/Lens Knowledge Basis load policy or when processed guidance is insufficient.
 
 ### Default Core work mode
 

@@ -152,6 +152,30 @@ delivery/dependency constraints
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- An Implementation Slice plans one Useful Vertical Result end to end rather than a horizontal technical layer.
+- Runtime path, integrated implementation plan and part detail remain subordinate to the selected Slice semantic result.
+- Future evolution pressure is evaluated through WEUC/L5; the Target Module does not propose evolution companions itself.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; reusable Slice verticality/evolution/simplicity evaluation knowledge remains in Lenses.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only.

@@ -242,6 +242,30 @@ environment/data/isolation/harness constraints
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `HYBRID`
+
+**Embedded Principles / Rules / Theory:**
+
+- Test Strategy allocates shared proof responsibilities/layers across the planned semantic and Slice portfolio only when strategy itself is material.
+- Proof-layer defaults are overridable by the cheapest layer that can credibly prove the property.
+- A Test Realization/Topology Registry may represent cross-owner proof realization without duplicating test implementation authority.
+
+**Referenced Knowledge Owners:**
+
+- [`testing/README.md`](../../../theoretical-modules/testing/README.md)
+
+**Reference Load Policy:**
+
+Read raw Testing theory only when processed Test Module/Lens guidance is insufficient for a materially detailed strategy/layering question. Do not read it mechanically.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Question Set Examples — Non-Exhaustive
 
 Examples only. Current `TF-06 QUESTION_SET` may add/remove/split/merge questions.
@@ -348,9 +372,6 @@ If no shared strategy Target is needed, do not create a strategy or registry fil
 
 `P-14` must distinguish shared strategy content, optional realization-registry representation, local Test Design content and unresolved supporting-artifact needs.
 
-## Theoretical Testing Reference — Conditional
-
-When the processed Test Module/Lens does not yet answer a materially detailed testing question, the raw snapshot package [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md) may be consulted as theory/reference. It does not override this Target Module and is not read mechanically on every invocation.
 
 ## Guard
 

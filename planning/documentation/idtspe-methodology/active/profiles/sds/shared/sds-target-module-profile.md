@@ -12,6 +12,9 @@ SDS Phase
 Target Formation Resolution Set
 → verifies actual Target applicability / scope / Sources / output
 
+Target Module Knowledge Basis
+→ supplies reusable target-family knowledge lazily according to module load policy
+
 Lens Registry
 → supplies required/frequent/target-profile evaluation perspectives
 ```
@@ -62,7 +65,7 @@ LENS-QUALITY-RISK-MATERIALITY
 
 For substantial Workspace/codebase/repository planning, L4–L6 are the default conditional Workspace Pack.
 
-Target-profile reusable Lens packs are selected by each module's `## Lens Profile`.
+Each module also carries one shared-contract `## Knowledge Basis`; Target-profile reusable Lens packs are selected separately by each module's `## Lens Profile`.
 
 ## Scenario Composite Rule
 

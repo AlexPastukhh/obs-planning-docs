@@ -2,12 +2,12 @@
 
 Status: **staged installation target built against the current supplied repository snapshot; canonical IDTSPE/SDS authority + command/helper surface prepared, destructive legacy-family cleanup still gated by MB-06**  
 Methodology baseline: `idtspe-methodology-workspace-core-sds-separated.zip` (`ffb6bfff5bb4da2478811443c5f0168ab4baa173b389439d0991afb27ca7d30b`)  
-Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, current package base `46ee341cef4b6c581dc1e461f21cd1e11755abb7`; earlier ca768b61 snapshot remains original methodology-import provenance  
+Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, current package base `36dfbf878d4ff9e616de70d7535135c5c0c9966e`; earlier ca768b61 snapshot remains original methodology-import provenance  
 Audit intent: define the **pre-update migration plan**, including obsolete SDS/Idea runtimes, merge-before-delete knowledge, command/helper impact, and deletion gates.
 
 ## Current Staged Installation Status — 2026-08-26
 
-The current replacement-package target uses repository identity `github:AlexPastukhh/obs-planning-docs` and the user-selected current snapshot at base commit `46ee341cef4b6c581dc1e461f21cd1e11755abb7`. The older snapshot references below remain audit provenance; they are not a claim that the package was built from stale bytes.
+The current replacement-package target uses repository identity `github:AlexPastukhh/obs-planning-docs` and the user-selected current snapshot at base commit `36dfbf878d4ff9e616de70d7535135c5c0c9966e`. The older snapshot references below remain audit provenance; they are not a claim that the package was built from stale bytes.
 
 This staged target performs the safe first installation layer:
 
@@ -31,6 +31,26 @@ The six older `collect-ideas*` command files are retained only as hidden legacy 
 
 Planning Helper verification for the staged target passes `122 / 122` automated tests plus generated userscript/catalog build consistency. All 41 methodology surfaces carry stable `methodologyBinding`; mutable IDTSPE/SDS tab placement comes from separate helper presentation metadata.
 
+
+## Current Shared Target/Lens Knowledge-Basis Update — 2026-08-27
+
+Against current repository snapshot base `36dfbf878d4ff9e616de70d7535135c5c0c9966e`, IDTSPE now makes Knowledge Basis a shared Core sub-contract for both reusable Target Modules and reusable Lenses:
+
+```text
+Target Module
+= Operational Target Contract
++ Knowledge Basis
+
+Lens
+= Operational Evaluation Contract
++ Knowledge Basis
+```
+
+Both use `INLINE | REFERENCED | HYBRID` with embedded knowledge, referenced knowledge owners, load policy and operationalization notes. The symmetry is deliberately limited to knowledge dependency: Target Module Source Contract remains current Target-instance input/evidence/constraint archetype; Lens Target Inputs/Evidence remain current evaluation input; neither is a Knowledge Basis. Reusable Lens evaluation knowledge still belongs to Lens owners rather than being copied into Target Modules.
+
+All **17 / 17** active SDS Target Modules now carry one `## Knowledge Basis`. `TM-APPLICATION-DEFINITION` moves its two deep guides into a formal `HYBRID` Knowledge Basis. `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, `TM-PRACTICAL-TEST` and `TM-TEST-COVERAGE` move the raw Testing theoretical package into their `HYBRID` Knowledge Basis and remove the former ad-hoc `Theoretical Testing Reference` sections. The existing **18 / 18** Lens Knowledge Basis sections retain the same literal shape through the shared contract. Bootstrap remains lazy: module/Lens bodies are selected first, referenced knowledge bodies load only according to the selected owner's policy.
+
+---
 
 ## Current Lens Composition / Knowledge-Basis Update — 2026-08-26
 

@@ -56,6 +56,7 @@ Answer Decisions:
   entry point
   integration roles
   Source Contract
+  Knowledge Basis mode / knowledge-owner links
   RQ pack
   Lens Profile / reusable Lens refs / local pattern aids
   output schema
@@ -77,19 +78,21 @@ Material alternatives may use Planning Branches.
 5. map module to IDTSPE integration points
 6. define Target Formation contributions
 7. define Source Contract archetype
-8. define RQ/question-generation pack
-9. define Idea/pattern discovery aids
-10. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
-11. define Q/R/P prompts
-12. define Decision surfaces
-13. define semantic Output Schema
-14. define supporting/submodule composition
-15. define validators
-16. define downstream Source handoff
-17. define revalidation prompts
-18. map current repository UCs/workflows/templates/commands
-19. create at least one worked acceptance example
-20. run module consistency/readiness review
+8. define Knowledge Basis mode: INLINE / REFERENCED / HYBRID
+9. define embedded principles/rules and/or referenced knowledge owners + load policy
+10. define RQ/question-generation pack
+11. define Idea/pattern discovery aids
+12. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
+13. define Q/R/P prompts
+14. define Decision surfaces
+15. define semantic Output Schema
+16. define supporting/submodule composition
+17. define validators
+18. define downstream Source handoff
+19. define revalidation prompts
+20. map current repository UCs/workflows/templates/commands
+21. create at least one worked acceptance example
+22. run module consistency/readiness review
 ```
 
 ---
@@ -125,6 +128,7 @@ rename every existing Use Case mechanically
 create a module for every template section
 turn patterns into mandatory architecture
 create a new Target Module because a reusable Lens is missing — create/promote a Lens instead
+confuse Target Module Knowledge Basis with current Target Sources or copy reusable Lens evaluation knowledge into it
 force a one-off useful Target into a reusable module — keep a Local Target Contract until repetition justifies promotion
 treat module output template as semantic authority
 create one user command for every internal submodule
@@ -141,6 +145,7 @@ A module may enter at different points:
 TF-02 Target Form candidate
 TF-03 Scope aid
 TF-04 Source Contract aid
+Target Module Knowledge Basis via shared Knowledge Basis Contract
 TF-06 Question Set
 TF-06A Lens Set contribution / Lens Profile
 TF-07 Idea Space

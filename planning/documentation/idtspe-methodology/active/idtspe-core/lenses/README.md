@@ -87,7 +87,7 @@ A Lens finding feeds Questions/Ideas/Evidence/Q-R-P/Answer Decisions. It does no
 
 ## 6. Knowledge Basis And Artifact / File Implications
 
-Every reusable Lens contains exactly one `## Knowledge Basis` and one `## Artifact / File Implications` section.
+Every reusable Lens contains exactly one `## Knowledge Basis` conforming to the shared [`Knowledge Basis Contract`](../shared/knowledge-basis-contract.md) and one `## Artifact / File Implications` section. Target Modules use the same Knowledge Basis sub-contract while retaining a different operational role.
 
 ```text
 Knowledge Basis Mode:

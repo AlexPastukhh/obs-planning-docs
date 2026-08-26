@@ -118,6 +118,30 @@ external-system constraints
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
+## Knowledge Basis
+
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- A Requirement is a must-hold condition/constraint and normally remains with its natural semantic owner.
+- Standalone Requirement Target ownership is exceptional and requires independent cross-owner/revalidation value.
+- Requirement persistence must not become a catch-all duplicate of Scenario/Domain/Slice meaning.
+
+**Referenced Knowledge Owners:**
+
+`NONE`
+
+**Reference Load Policy:**
+
+No additional Knowledge Basis body is required by default; the module's linked requirement-ownership rule remains operational supporting guidance.
+
+**Operationalization Notes:**
+
+This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
+
 ## Standalone-Target Gate
 
 Before creating this Target ask:

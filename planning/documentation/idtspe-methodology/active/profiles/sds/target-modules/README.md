@@ -37,6 +37,20 @@ are internal addressable object contracts of `TM-SCENARIO-DRAFT`.
 
 Consistency review remains `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module.
 
+## Knowledge Basis
+
+Every active SDS Target Module contains exactly one `## Knowledge Basis` conforming to the shared Core [`Knowledge Basis Contract`](../../../idtspe-core/shared/knowledge-basis-contract.md).
+
+```text
+Upstream Source Contract
+→ current Target-instance Source archetype
+
+Knowledge Basis
+→ reusable target-family principles/rules/theory/pattern knowledge
+```
+
+Knowledge Basis uses `INLINE | REFERENCED | HYBRID`; referenced owners are loaded only according to the module-specific load policy. Target Modules do not absorb reusable Lens evaluation knowledge.
+
 ## Lens Relation
 
 Every Target Module contains a concise `## Lens Profile`. Reusable Lens prompts/knowledge are owned by the canonical SDS/Core Lens packages and should not be duplicated here.
@@ -64,6 +78,6 @@ Canonical cross-module direction, testing interleave, repeated invocation modes 
 
 Every material IDTSPE response should expose the recommended next methodology Target/action after applying the current module's Exit Gate/Handoff.
 
-## Theoretical Testing Reference
+## Theoretical Testing Knowledge
 
-The processed Test Target Modules/Lenses remain operational authority. Raw detailed repository testing theory is preserved separately at [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md). Consult it conditionally when detailed testing mechanics are materially unresolved; do not treat it as an automatic workflow stage or another Test Target.
+The processed Test Target Modules/Lenses remain operational authority. The four Test Target Modules that need deeper raw testing theory reference [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md) through their `HYBRID` `Knowledge Basis` and explicit load policy. This is no longer a separate ad-hoc theoretical-reference mechanism.

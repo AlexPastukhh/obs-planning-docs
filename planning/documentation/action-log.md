@@ -1161,3 +1161,67 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - this ChangeSet remains open until its ReviewDiff is accepted as `APPROVABLE`; once accepted, the existing finalization rule requires every later archive to start a new ChangeSet.
 
 **Rationale:** finish the last prose-level ownership inconsistency so Target Modules uniformly own current Target results while L5/WEUC alone proposes target-local future-evolution companions.
+
+
+### LOG-DOC-065 — Review shared Target/Lens Knowledge Basis contract and Target Module symmetry
+
+**Type:** LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW  
+**Source:** user clarification that Target Modules should expose the same formal Knowledge Basis shape as Lenses + current user-selected repository snapshot `36dfbf878d4ff9e616de70d7535135c5c0c9966e`
+
+**Material Findings / Selected Changes:**
+- make `Knowledge Basis` a shared Core sub-contract used by both reusable Target Modules and reusable Lenses: `INLINE | REFERENCED | HYBRID`, embedded knowledge, referenced knowledge owners, lazy load policy and operationalization notes;
+- preserve the role boundary: Target Module pairs Knowledge Basis with an **Operational Target Contract**; Lens pairs the same Knowledge Basis shape with an **Operational Evaluation Contract**. Symmetry of knowledge dependency does not merge Target/Lens authority;
+- make Source/knowledge separation explicit: Target Module `Upstream Source Contract` describes current Target-instance inputs/evidence/constraints; Lens `Target Inputs / Evidence` describes current evaluation inputs; Knowledge Basis contains reusable theory/rules/pattern knowledge and is not project truth/Decision/Evidence;
+- bootstrap/navigation should know Target Module + Lens registries and Knowledge Basis summaries, but selected module/Lens referenced knowledge bodies remain lazy-loaded according to the owning contract's load policy;
+- migrate all **17 / 17** current SDS Target Modules to exactly one `## Knowledge Basis`. Most use `INLINE` because their target-specific knowledge is already processed in the module body while reusable evaluation knowledge remains in Lenses;
+- migrate `TM-APPLICATION-DEFINITION` to `HYBRID` and treat its existing market/reference-research and refined-core-real-life-scenario deep guides as formal referenced Knowledge Owners rather than ad-hoc output-section links;
+- migrate `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, `TM-PRACTICAL-TEST` and `TM-TEST-COVERAGE` to `HYBRID` Knowledge Basis referencing the preserved raw Testing theoretical package, removing the separate `Theoretical Testing Reference — Conditional` mechanism;
+- keep Theoretical Modules as staging/reference owners: either Target Module or Lens may reference them through the shared Knowledge Basis contract without granting raw theory operational authority.
+
+**Boundary:** no Target/Lens inventory count, command surface, Lens applicability semantics, AP/AG artifact-guidance ownership, SDS workflow, P-14 behavior, raw Testing theory bytes or MB-06 legacy cleanup changes are intended.
+
+### LOG-DOC-066 — Apply shared Target/Lens Knowledge Basis contract across IDTSPE Core and SDS
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-065`  
+**ChangeSet:** `d70e9881-c187-4742-b7f3-0278353539b7`  
+**Package:** `14bfb562-aadf-4c13-b3cc-110736f7bc5b`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `active/idtspe-core/shared/knowledge-basis-contract.md` is the canonical shared Knowledge Basis owner for reusable Target Modules and Lenses; both use `INLINE | REFERENCED | HYBRID` with the same embedded/referenced/load-policy/operationalization shape;
+- Target Module Core contracts expose `TM-IP-03A KNOWLEDGE_BASIS`, require exactly one Knowledge Basis, validate its separation from current Target Sources and keep reusable evaluation knowledge in Lens owners; Target Module maintenance now resolves Knowledge Basis mode/owners/load policy explicitly;
+- Lens Model/maintenance use the same shared contract while retaining Lens-specific Operational Evaluation Contract + Target Inputs/Evidence boundaries;
+- Core bootstrap/maps/Shell/default work mode know that selected Target Module and Lens referenced Knowledge Basis bodies are loaded lazily according to their own load policies; Theoretical Modules may be referenced by either operational owner;
+- all **17 / 17** active SDS Target Modules contain exactly one `## Knowledge Basis`; `TM-APPLICATION-DEFINITION` formalizes its two existing deep guides as `HYBRID` referenced knowledge, while four Test Target Modules formalize the preserved Testing theoretical package as `HYBRID` knowledge and remove the old ad-hoc theoretical-reference section;
+- all **18 / 18** reusable Lenses retain exactly one Knowledge Basis through the same shared Core contract; Target Modules do not absorb reusable Lens evaluation knowledge;
+- Target/Lens inventories remain **17 Target Modules / 18 reusable Lenses**, command surface remains **41**, artifact guidance remains **34 AP + 24 AG = 58**, and no helper/generated command artifacts are changed by this package;
+- raw Testing theory and `planning/documentation/idtspe-methodology/sources-readonly/**` remain unchanged; MB-06/destructive legacy cleanup remains out of scope.
+
+**Rationale:** remove the remaining Target/Lens knowledge-dependency asymmetry so reusable Target planning and reusable evaluation can both use one lazy, referenceable Knowledge Basis contract without confusing knowledge with current Target Sources or creating a second theory-loading mechanism.
+
+### LOG-DOC-067 — Correct stale current-base metadata found in shared Knowledge Basis ReviewDiff
+
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
+**Source:** post-Apply cumulative ReviewDiff after `LOG-DOC-066`; ReviewDiff was not accepted as `APPROVABLE`, so ChangeSet `d70e9881-c187-4742-b7f3-0278353539b7` remains open for this correction
+
+**Material Findings / Selected Corrections:**
+- `planning/documentation/idtspe-methodology/MANIFEST.json` updated its workspace/audit evidence to snapshot `36dfbf878d4ff9e616de70d7535135c5c0c9966e` but left `repo_snapshot_base` at stale `46ee341cef4b6c581dc1e461f21cd1e11755abb7`; align the current-base field with the actual user-selected snapshot used by this ChangeSet;
+- `planning/documentation/idtspe-methodology/integration/CURRENT-REPOSITORY-INTEGRATION.md` likewise left two top-level **current** metadata statements pointing to `46ee341c...` even though the new shared-Knowledge-Basis section correctly identifies `36dfbf87...`; update only those current-state statements;
+- retain later/historical `46ee341c...` transition references because they describe earlier integration provenance rather than the current package base.
+
+**Boundary:** no Knowledge Basis semantics, Target/Lens inventory, command surface, Lens applicability, SDS Target Module bodies, artifact guidance, Testing theory, MB-06 boundary or historical transition provenance changes.
+
+### LOG-DOC-068 — Apply shared Knowledge Basis current-base metadata correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-067`  
+**ChangeSet:** `d70e9881-c187-4742-b7f3-0278353539b7`  
+**Package:** `9aac30b8-a319-448c-acaf-2cb60a9c31ae`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `MANIFEST.json` current `repo_snapshot_base` is `36dfbf878d4ff9e616de70d7535135c5c0c9966e`, matching the already-recorded repository audit evidence for the shared Target/Lens Knowledge Basis ChangeSet;
+- `integration/CURRENT-REPOSITORY-INTEGRATION.md` top-level current package base and user-selected current snapshot both identify `36dfbf878d4ff9e616de70d7535135c5c0c9966e`;
+- historical `46ee341c...` transition/provenance references remain unchanged;
+- all shared Knowledge Basis semantics and the previously applied 17/17 Target Module + 18/18 Lens state remain unchanged.
+
+**Rationale:** make current-state repository-base metadata internally consistent without rewriting historical integration provenance or changing the accepted semantic scope of the open shared-Knowledge-Basis ChangeSet.
