@@ -13,7 +13,7 @@
     'schemaVersion', 'id', 'file', 'command', 'englishName', 'commandFamily',
     'description', 'meaning', 'activeContextBehavior', 'traversalReadMode',
     'ownerFiles', 'expectedOutput', 'permissionMode', 'keyReminders',
-    'userTarget', 'palette', 'refinements', 'directionIds'
+    'userTarget', 'palette', 'refinements', 'directionIds', 'helperPresentation', 'methodologyBinding'
   ]);
 
   function assert(condition, message) {
@@ -79,6 +79,63 @@
     };
   }
 
+  function normalizeHelperNavigation(raw, field) {
+    assert(raw && typeof raw === 'object' && !Array.isArray(raw), `${field} must be an object.`);
+    const known = new Set(['viewId','viewLabel','viewOrder','sectionId','sectionLabel','sectionOrder','itemOrder','kindLabel','badges','parentId','related']);
+    for (const key of Object.keys(raw)) assert(known.has(key), `Unknown ${field} field: ${key}`);
+    const integer=(value,name)=>{const n=Number(value);assert(Number.isInteger(n)&&n>=0,`${name} must be a non-negative integer.`);return n;};
+    const result={
+      viewId: singleLine(raw.viewId, `${field}.viewId`),
+      viewLabel: singleLine(raw.viewLabel, `${field}.viewLabel`),
+      viewOrder: integer(raw.viewOrder??0, `${field}.viewOrder`),
+      sectionId: singleLine(raw.sectionId, `${field}.sectionId`),
+      sectionLabel: singleLine(raw.sectionLabel, `${field}.sectionLabel`),
+      sectionOrder: integer(raw.sectionOrder, `${field}.sectionOrder`),
+      itemOrder: integer(raw.itemOrder, `${field}.itemOrder`),
+      kindLabel: singleLine(raw.kindLabel, `${field}.kindLabel`),
+      badges: raw.badges==null?[]:stringArray(raw.badges, `${field}.badges`)
+    };
+    if(raw.parentId!=null)result.parentId=validateId(raw.parentId,`${field}.parentId`);
+    if(raw.related!=null){assert(typeof raw.related==='boolean',`${field}.related must be boolean.`);result.related=raw.related;}
+    return result;
+  }
+
+  function normalizeMethodologyBinding(raw) {
+    if(raw==null)return null;
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),'methodologyBinding must be an object.');
+    const known=new Set(['methodologyRuntime','profile','surfaceKind','targetModuleId','lensId','parentSurface','hostTargetPolicy']);
+    for(const key of Object.keys(raw))assert(known.has(key),`Unknown methodologyBinding field: ${key}`);
+    const runtime=singleLine(raw.methodologyRuntime,'methodologyBinding.methodologyRuntime');
+    assert(runtime==='IDTSPE','methodologyBinding.methodologyRuntime must be IDTSPE.');
+    const kinds=new Set(['BOOTSTRAP','WORK_MODE','TARGET_MODULE','TARGET_MODULE_FOCUSED','LENS','ORCHESTRATION','VALIDATOR']);
+    const policies=new Set(['CREATE_OR_REUSE_TARGET','RESOLVE_OR_REUSE_TARGET','NONE']);
+    const surfaceKind=singleLine(raw.surfaceKind,'methodologyBinding.surfaceKind');assert(kinds.has(surfaceKind),'methodologyBinding.surfaceKind is invalid.');
+    const hostTargetPolicy=singleLine(raw.hostTargetPolicy,'methodologyBinding.hostTargetPolicy');assert(policies.has(hostTargetPolicy),'methodologyBinding.hostTargetPolicy is invalid.');
+    const profile=raw.profile==null?null:singleLine(raw.profile,'methodologyBinding.profile');
+    const targetModuleId=raw.targetModuleId==null?null:singleLine(raw.targetModuleId,'methodologyBinding.targetModuleId');
+    if(targetModuleId!=null)assert(/^TM-[A-Z0-9-]+$/.test(targetModuleId),'methodologyBinding.targetModuleId must be TM-*.');
+    const lensId=raw.lensId==null?null:singleLine(raw.lensId,'methodologyBinding.lensId');
+    if(lensId!=null)assert(/^LENS-[A-Z0-9-]+$/.test(lensId),'methodologyBinding.lensId must be LENS-*.');
+    const parentSurface=raw.parentSurface==null?null:validateId(raw.parentSurface,'methodologyBinding.parentSurface');
+    if(surfaceKind==='TARGET_MODULE'||surfaceKind==='TARGET_MODULE_FOCUSED')assert(targetModuleId,'Target Module surfaces require methodologyBinding.targetModuleId.');
+    if(surfaceKind==='LENS')assert(lensId,'Lens surfaces require methodologyBinding.lensId.');
+    return{methodologyRuntime:runtime,profile,surfaceKind,targetModuleId,lensId,parentSurface,hostTargetPolicy};
+  }
+
+  function normalizeHelperPresentation(raw) {
+    if (raw == null) return null;
+    assert(raw && typeof raw === 'object' && !Array.isArray(raw), 'helperPresentation must be an object.');
+    const known = new Set(['whenToUse', 'whatYouGet', 'navigation', 'relatedNavigation']);
+    for (const key of Object.keys(raw)) assert(known.has(key), `Unknown helperPresentation field: ${key}`);
+    const result={
+      whenToUse: singleLine(raw.whenToUse, 'helperPresentation.whenToUse'),
+      whatYouGet: singleLine(raw.whatYouGet, 'helperPresentation.whatYouGet')
+    };
+    if(raw.navigation!=null)result.navigation=normalizeHelperNavigation(raw.navigation,'helperPresentation.navigation');
+    if(raw.relatedNavigation!=null){assert(Array.isArray(raw.relatedNavigation),'helperPresentation.relatedNavigation must be an array.');result.relatedNavigation=raw.relatedNavigation.map((item,index)=>normalizeHelperNavigation(item,`helperPresentation.relatedNavigation[${index}]`));}
+    return result;
+  }
+
   function normalizeCommandDefinition(raw, options = {}) {
     assert(raw && typeof raw === 'object' && !Array.isArray(raw), 'Command definition must be a JSON object.');
     for (const key of Object.keys(raw)) assert(allowedKeys.has(key), `Unknown command definition field: ${key}`);
@@ -111,6 +168,8 @@
       keyReminders: stringArray(raw.keyReminders, 'keyReminders', { nonEmpty: true }),
       userTarget: singleLine(raw.userTarget, 'userTarget'),
       palette: raw.palette,
+      helperPresentation: normalizeHelperPresentation(raw.helperPresentation),
+      methodologyBinding: normalizeMethodologyBinding(raw.methodologyBinding),
       directionIds: raw.directionIds == null ? [] : stringArray(raw.directionIds, 'directionIds').map((id,index)=>{const value=singleLine(id,`directionIds[${index}]`);assert(/^DIR-[A-Z0-9-]+$/.test(value),`directionIds[${index}] must be a DIR-* id.`);return value;}),
       refinements
     };
@@ -185,6 +244,8 @@
       keyReminders: normalized.keyReminders,
       userTarget: normalized.userTarget,
       palette: normalized.palette,
+      ...(normalized.helperPresentation ? { helperPresentation: normalized.helperPresentation } : {}),
+      ...(normalized.methodologyBinding ? { methodologyBinding: normalized.methodologyBinding } : {}),
       ...(normalized.directionIds.length ? { directionIds: normalized.directionIds } : {}),
       refinements: normalized.refinements
     };

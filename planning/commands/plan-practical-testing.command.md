@@ -1,4 +1,4 @@
-# Plan Practical Testing
+# Plan Practical Test
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -8,34 +8,61 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "practical_testing.plan",
   "file": "plan-practical-testing.command.md",
-  "command": "план практического тестирования",
-  "englishName": "plan practical testing",
+  "command": "спланируй практический тест",
+  "englishName": "plan practical test",
   "commandFamily": [
-    "план практического тестирования",
-    "план тестирования",
-    "plan practical testing",
-    "practical testing plan"
+    "спланируй практический тест",
+    "план практического тестирования"
   ],
-  "description": "plan operated practical acceptance",
-  "meaning": "Invoke UC-PLAN-TEST-PLAN to compose real human/AI/E2E operated acceptance actions, observable evidence and pass/fail without claiming execution.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+  "description": "practical test",
+  "meaning": "Run TM-PRACTICAL-TEST through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/testing-planning/use-case-registry.md",
-    "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Practical Testing Plan / acceptance cards or campaign.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Practical Test protocol, environment/task/observation plan and Evidence/exit gate; conditional on practical proof value.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "Planned evidence is not executed evidence; actual coverage/evidence review remains UC-PLAN-TEST-COVERAGE.",
-    "No repository mutation, archive, commit or push is implied.",
-    "In Application SDS this is pre-implementation proof planning; Step 4 later executes the selected proof and Coverage reviews actual evidence."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Selected application/change result>",
+  "userTarget": "<one practical Evidence target>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-TESTING",
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when proof requires an operated/manual/live environment or integration acceptance plan.",
+    "whatYouGet": "Practical Test protocol, environment/task/observation plan and Evidence/exit gate; conditional on practical proof value.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "08",
+      "sectionLabel": "08 Evidence & Coverage",
+      "sectionOrder": 8,
+      "itemOrder": 0,
+      "kindLabel": "IDTSPE TARGET",
+      "badges": [
+        "CONDITIONAL",
+        "OPERATED-EVIDENCE DRIVEN"
+      ],
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-PRACTICAL-TEST",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

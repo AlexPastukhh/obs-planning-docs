@@ -1,4 +1,4 @@
-# Discover Domain Candidates
+# Discover Domain
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -8,33 +8,59 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "application_domain.discover",
   "file": "discover-domain.command.md",
-  "command": "исследуй домен приложения",
-  "englishName": "discover application domain candidates",
+  "command": "исследуй домен",
+  "englishName": "discover domain",
   "commandFamily": [
-    "исследуй домен приложения",
-    "собери домен приложения",
-    "discover application domain candidates",
-    "discover domain"
+    "исследуй домен",
+    "исследуй домен приложения"
   ],
-  "description": "discover evidence-backed Domain candidates",
-  "meaning": "Invoke UC-PLAN-DOMAIN-DISCOVERY to discover concepts, identity/lifecycle/rule/invariant/policy/consistency candidates and, when evidence justifies it, Value Object and Aggregate/Root/ownership boundaries before selecting Domain authority.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+  "description": "domain discovery",
+  "meaning": "Run TM-DOMAIN-DISCOVERY through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/domain-discovery-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Domain evidence + candidates + invariant/policy findings + Value Object/Aggregate/Root/owned-vs-outside/external-reference/coordination candidates when justified + variants when material.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Domain discovery map/candidates, material rules/invariants, Decisions/Q/R/P and promotion targets; may remain code-native/coordinator-based.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied.",
-    "When invariants/lifecycle/consistency span several concepts, explicitly test Aggregate/Root/ownership candidates; read/query/ORM/database/module shape alone is not ownership evidence, and no explicit Aggregate is a valid result."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Application Scenario/DATA/Behavior/Requirements target>",
+  "userTarget": "<Domain candidate space>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when Scenario/DATA/Behavior evidence should be interpreted into domain concepts, responsibilities, rules or candidate boundaries.",
+    "whatYouGet": "Domain discovery map/candidates, material rules/invariants, Decisions/Q/R/P and promotion targets; may remain code-native/coordinator-based.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "04",
+      "sectionLabel": "04 Domain",
+      "sectionOrder": 4,
+      "itemOrder": 0,
+      "kindLabel": "IDTSPE TARGET",
+      "badges": [
+        "PRIMARY OPTIONAL"
+      ],
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-DOMAIN-DISCOVERY",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

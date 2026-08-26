@@ -21,6 +21,30 @@ If you do not know which file to read, select the intent through Directions and 
 
 For AI/chat work, read [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) before material planning, development or documentation changes.
 
+
+## Current IDTSPE / SDS Planning Authority
+
+Material planning now uses the installed [`IDTSPE methodology workspace`](documentation/idtspe-methodology/README.md) as the canonical generic planning runtime. SDS is an IDTSPE profile, not a second runtime.
+
+```text
+material planning
+→ IDTSPE Core / IDTSPE Shell
+→ installed profile when applicable
+→ SDS Target Module for Application/Scenario/Domain/Slice/Test planning
+→ required/applicable Lenses
+→ Documentation / Representation
+→ P-14 concrete placement only when persistence is material
+```
+
+Primary entry points:
+
+- [`documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md`](documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md)
+- [`documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md)
+- [`documentation/idtspe-methodology/active/profiles/sds/BOOTSTRAP-SDS.md`](documentation/idtspe-methodology/active/profiles/sds/BOOTSTRAP-SDS.md)
+- [`documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md`](documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md)
+
+The older `application-planning/`, `architecture-planning/`, `testing-planning/` and collect-ideas material remains readable compatibility/provenance during staged migration, but it is not a co-equal authority over current IDTSPE/SDS semantics. Do not recreate the old Idea runtime or mandatory Contextual-WEUC-instance model from those files.
+
 ## Authority Split
 
 ```text
@@ -92,23 +116,22 @@ See [`documentation/workspace-planning/direction-registry.md`](documentation/wor
 
 ## Application Planning Orientation
 
+Current canonical route:
+
 ```text
-Problem / Question / Idea
-→ Need / Desired Result
-→ whole-solution / Application Concept work when useful
-→ selected Application responsibility
-→ Prototype when material
-→ Scenario discovery
-→ Scenario Drafts / Screens
+Need / reality / whole-solution choice
+→ TM-APPLICATION-DEFINITION when an Application responsibility is justified
+→ Prototype when evidence is materially useful
+→ Scenario Discovery / Scenario Draft
+→ Screen / standalone Requirement only when justified
 → optional Domain Discovery / Domain
-→ optional Application Realization
-→ optional Slice Strategy / Implementation Slice
-→ Verification / Testing planning when useful
+→ optional Slice Strategy
+→ Implementation Slice / promoted Frontend / Cross-Cutting responsibility as needed
+→ Test Design / Test Strategy / Practical Test / Coverage proportionally
+→ Decision revalidation / consistency review
 ```
 
-Application behavior is owned by **Scenarios**. There is no reusable Application-Use-Case semantic layer between Application responsibility and Scenario discovery. A rough walkthrough/representation may help discovery without becoming a named planning entity.
-
-Testing Planning is a sibling reusable Direction under `planning/documentation/testing-planning/`; it plans proof/evidence without taking semantic authority from Scenario, Requirement, Domain or Slice owners.
+See [`documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md`](documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md). Scenario remains Application behavioral authority. Domain and Slice are planning Targets, not mandatory file families; the Documentation / Representation Lens may keep material in code/tests, an existing discovery/strategy owner, one dedicated artifact, or no durable representation when nothing material needs persistence.
 
 ## Parallel Work / Scope Logs
 

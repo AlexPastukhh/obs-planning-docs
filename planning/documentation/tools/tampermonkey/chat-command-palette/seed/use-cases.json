@@ -347,6 +347,21 @@
       "result": "reconciled current planning meaning plus a concrete reviewable repository realization/handoff surface to the selected depth; an ordered File Update Plan is included only when that separate capability is selected/useful, otherwise an explicit unresolved/deferred state is allowed."
     },
     {
+      "id": "UC-IDTSPE-REVIEW-CONSISTENCY",
+      "label": "Review IDTSPE Plan Consistency",
+      "description": "validate current Target/Source/Decision/QRP/representation/methodology-direction consistency",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-IDTSPE-REVIEW-CONSISTENCY in the current canonical registry and follow its current owner route (documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Review IDTSPE Plan Consistency target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "material plan/evidence/coverage changed or the user explicitly requests consistency review",
+      "result": "contradictions/stale Decisions/coverage or ownership gaps + reopen/revalidation routes",
+      "commandId": "idtspe.review_consistency"
+    },
+    {
       "id": "UC-PLAN-APP-CONCEPT",
       "label": "Plan / Review Application Concept",
       "description": "evaluate whether/how own application behavior would simplify the real-world workflow before detailed application planning",
@@ -916,12 +931,13 @@
       "sources": [
         "planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-REPO-REFINE-CURRENT-PLAN in the current canonical registry and follow its current owner route (documentation/progressive-plan-refinement-workflow.md + documentation/planning-concerns-and-decisions-model.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-REPO-REFINE-CURRENT-PLAN in the current canonical registry and follow its current owner route (documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md + documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Refine The Current Plan target>",
       "directionId": "DIR-REPOSITORY",
       "manualInvocation": true,
       "trigger": "current planning meaning needs refinement, deeper review or directed continuation",
-      "result": "updated current semantic owner(s) + truthful reviewed/partial/unchecked state + current Area Concern Register/active-residual Q/R/P/retained decision trace when material"
+      "result": "updated current Target/owner + current Q/R/P/Decision trace + Artifact Placement/Methodology Direction when material",
+      "commandId": "idtspe.work"
     },
     {
       "id": "UC-REPO-REVIEW-PLANNING-FINDINGS",

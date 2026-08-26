@@ -7,9 +7,26 @@ Scope: AI/chat sessions that plan, develop or materially change repository docum
 
 Before material work, resolve the applicable Direction and semantic entry (Workspace/methodology Use Case or Application Scenario) and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
 
-For material planning/development answers also follow `documentation/ai-reviewability-and-directed-planning-principles.md`.
+For material planning/development answers also follow the installed peer [`documentation/idtspe-methodology/active/ai-reviewability/README.md`](documentation/idtspe-methodology/active/ai-reviewability/README.md).
 
 For material Planning Concerns also follow `documentation/planning-concerns-and-decisions-model.md`. AI should provide a useful `AI Comment` when material, but must not silently invent user-owned Needs/preferences/feelings/business priority/risk tolerance in order to close a concern. `Recommendation` is optional and evidence-bound; `Decision` exists only after the choice is actually selected.
+
+
+## Current IDTSPE Working Rule
+
+For material planning, use [`documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md) unless a narrower current owner route explicitly supersedes it.
+
+```text
+AI proposal → Idea by default
+material Q/R/P → current Target owner, with P0..P3 impact priority when useful
+Decision → only after selection
+SDS work → IDTSPE Shell + one SDS Target Module + applicable Lenses
+material persistence → Documentation / Representation Lens before P-14
+```
+
+Do not infer one-file-per-Target. Code/types/tests/schema/config or an existing discovery/strategy/owner section may be the correct durable representation.
+
+The legacy shared Concern/Idea/Application/Architecture/Testing documents remain migration/provenance inputs only where still referenced; they do not override the installed IDTSPE/SDS owners.
 
 ## Hard Planning Root Invariant
 

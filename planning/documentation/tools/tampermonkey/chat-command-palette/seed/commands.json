@@ -7,50 +7,118 @@
       "schemaVersion": 1,
       "id": "application_sds.bootstrap",
       "file": "bootstrap-application-sds-planning.command.md",
-      "command": "бутстреп сдс",
-      "englishName": "bootstrap application SDS planning",
+      "command": "бутстреп sds",
+      "englishName": "bootstrap SDS planning",
       "commandFamily": [
+        "бутстреп sds",
         "бутстреп сдс",
-        "бутстреп планирования приложения",
-        "режим сдс",
-        "режим планирования приложения",
-        "прочитай принципы сдс",
-        "прочти принципы сдс",
-        "bootstrap application SDS planning",
-        "bootstrap SDS planning",
-        "SDS planning bootstrap",
-        "read SDS planning principles"
+        "bootstrap SDS planning"
       ],
-      "description": "load complete Solution/Application SDS planning governance",
-      "meaning": "Establish or refresh the complete reusable Solution/Application SDS planning governance: Step 0–4 planning, semantic ownership, Mini/Modular/Full profile invariants, Architecture/Testing handoffs and applicable current Application/project owners. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
-      "activeContextBehavior": "If an Application/project target is already clear, resolve its current Scenario/Domain/Slice/etc owners after loading governance. If no target is active, load governance and stop ready for the next Solution/Application planning task without inventing a target. Reuse a current reliable prior pass; refresh proportionally when only part may be stale.",
-      "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh when relevant owners/routes may be stale; full bootstrap only when no reliable sufficient pass exists or governance boundaries are materially uncertain.",
+      "description": "Load the SDS profile over IDTSPE Core.",
+      "meaning": "Run the SDS governance bootstrap over IDTSPE Core: establish or refresh the 17 Target Modules, SDS Lens pack, directed workflow and representation/materialization policy. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
+      "activeContextBehavior": "Load or refresh SDS profile governance over IDTSPE Core only. If a current Target/context already exists, report or reuse it for orientation without changing it. If no Target exists, stop ready for later SDS planning. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module.",
+      "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/AI-WORKING-CONTRACT.md",
-        "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
-        "planning/documentation/application-planning/direction-registry.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/profiles/sds-planning-profiles.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/BOOTSTRAP-SDS.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Compact SDS governance assimilation: bootstrap state, Step 0–4/profile/Architecture/Testing boundaries loaded, active target/current owners when any, permission boundary and material unresolved ownership/questions; no task-specific planning execution or repository mutation.",
+      "expectedOutput": "Compact SDS profile assimilation with current/next owner context when any; no task-specific Target is invented.",
       "permissionMode": "read-only",
       "keyReminders": [
-        "This command bootstraps SDS governance; it does not select the Full SDS physical profile.",
-        "Do not reread the complete SDS governance route when a sufficient current pass is confidently remembered.",
-        "Use targeted refresh when only relevant registries/workflows/profiles/current owners may be stale or newly relevant.",
-        "Use full bootstrap only when no reliable sufficient pass exists, ownership cannot be reconstructed confidently, or governance architecture changed materially.",
-        "A new snapshot, commit, branch or repository state alone does not invalidate governance; refresh only when it can materially affect relevant routes, owners, rules or permissions.",
-        "Preserve the complete Step 0–4 model: Why/Solution Discovery → Scenario + DATA/Behavior → Domain → Slices/Architecture/Verification Planning → Practical Realization Feedback.",
-        "Mini, Modular/Medium and Full SDS have the same semantic quality; profile choice changes organization/addressability only.",
-        "Scenario owns Application behavior; Screen owns spatial meaning; Domain owns explicit conceptual rules/invariants when justified; Slice owns implementation decomposition.",
-        "Architecture Planning and Testing Planning are sibling Directions consumed when material and never replace Application behavior authority.",
-        "If no active target exists, load governance and stop ready for the next Application planning task.",
-        "This route is read-only: do not edit files, create packages, implement/test, commit or push."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "Bootstrap is governance orientation only: no Target Formation, invocation-mode selection or Target Module execution.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Solution/Application planning work in this session or none yet>",
+      "userTarget": "<SDS profile governance / no Target required>",
       "palette": true,
+      "helperPresentation": {
+        "whenToUse": "When SDS profile governance is not current or you want explicit orientation before Application/Scenario/Domain/Slice planning.",
+        "whatYouGet": "Compact SDS profile assimilation with current/next owner context when any; no task-specific Target is invented.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "00",
+          "sectionLabel": "00 Bootstrap",
+          "sectionOrder": 0,
+          "itemOrder": 0,
+          "kindLabel": "BOOTSTRAP",
+          "badges": [
+            "SDS PROFILE"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "BOOTSTRAP",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
       "directionIds": [
         "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.bootstrap",
+      "file": "bootstrap-idtspe.command.md",
+      "command": "бутстреп idtspe",
+      "englishName": "bootstrap IDTSPE",
+      "commandFamily": [
+        "бутстреп idtspe",
+        "bootstrap idtspe"
+      ],
+      "description": "Load generic IDTSPE Core orientation.",
+      "meaning": "Establish or refresh generic IDTSPE Core governance and installed profile indexes without selecting a concrete Target.",
+      "activeContextBehavior": "Load or refresh IDTSPE governance only. If a current Target/context already exists, report or reuse it for orientation without changing it. If no Target exists, stop ready for later planning. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute Target work.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Compact IDTSPE governance assimilation, installed profiles, permission boundary and current Target context when any.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "Bootstrap is governance orientation only: no Target Formation, invocation-mode selection or Target execution.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<IDTSPE governance / no Target required>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "When IDTSPE governance is not current or you want explicit orientation before planning.",
+        "whatYouGet": "Compact IDTSPE governance assimilation, installed profiles, permission boundary and current Target context when any.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 0,
+          "kindLabel": "BOOTSTRAP",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "BOOTSTRAP",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
       ],
       "refinements": []
     },
@@ -85,6 +153,8 @@
       ],
       "userTarget": "<what archive/package and review diff should include>",
       "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -125,7 +195,236 @@
       ],
       "userTarget": "<what replacement package should include>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "lenscmd.documentation.representation.check",
+      "file": "check-documentation-representation.command.md",
+      "command": "проверь как лучше зафиксировать",
+      "englishName": "check best representation",
+      "commandFamily": [
+        "проверь как лучше зафиксировать"
+      ],
+      "description": "direct IDTSPE Lens check",
+      "meaning": "Resolve/reuse the natural host Target and apply LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY without creating a Lens-owned Target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
+        "A direct Lens command never creates a Lens-owned Target or a parallel runtime.",
+        "Return findings to the natural semantic owner and use P-14 only after representation/placement is actually needed.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
+      ],
+      "userTarget": "<target/result>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when you want an explicit decision whether material meaning should persist and in what representation.",
+        "whatYouGet": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 5,
+          "kindLabel": "IDTSPE LENS",
+          "badges": [
+            "REQUIRED CORE · EXPLICIT CHECK"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "LENS",
+        "targetModuleId": null,
+        "lensId": "LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+        "parentSurface": null,
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "lenscmd.weuc.check",
+      "file": "check-evolution-architecture.command.md",
+      "command": "проверь эволюцию и архитектуру",
+      "englishName": "check evolution and architecture",
+      "commandFamily": [
+        "проверь эволюцию и архитектуру"
+      ],
+      "description": "direct IDTSPE Lens check",
+      "meaning": "Resolve/reuse the natural host Target and apply LENS-WORKSPACE-EVOLUTION-ARCHITECTURE without creating a Lens-owned Target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Lens findings routed into the natural Target owner; global changes may promote to TM-WEUC.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
+        "A direct Lens command never creates a Lens-owned Target or a parallel runtime.",
+        "Return findings to the natural semantic owner and use P-14 only after representation/placement is actually needed.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
+      ],
+      "userTarget": "<target/result>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when a selected Target or whole Workspace needs an explicit evolvability/architecture fitness review.",
+        "whatYouGet": "Lens findings routed into the natural Target owner; global changes may promote to TM-WEUC.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "lens",
+          "sectionLabel": "IDTSPE Lens Checks — SDS",
+          "sectionOrder": 9,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE LENS",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "LENS",
+        "targetModuleId": null,
+        "lensId": "LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
+        "parentSurface": null,
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-ARCHITECTURE",
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "lenscmd.linked-notes.justify",
+      "file": "check-linked-notes-justification.command.md",
+      "command": "проверь оправданы ли linked notes",
+      "englishName": "check linked notes justification",
+      "commandFamily": [
+        "проверь оправданы ли linked notes"
+      ],
+      "description": "direct IDTSPE Lens check",
+      "meaning": "Resolve/reuse the natural host Target and apply LENS-LINKED-NOTES-USAGE-JUSTIFICATION without creating a Lens-owned Target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "JUSTIFIED / NOT_JUSTIFIED / route-to-reference-object with the concrete navigation job; no notes storage tree.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
+        "A direct Lens command never creates a Lens-owned Target or a parallel runtime.",
+        "Return findings to the natural semantic owner and use P-14 only after representation/placement is actually needed.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
+      ],
+      "userTarget": "<target/result>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when several existing owners may benefit from backlinks/query/traversal and you want to prove that Linked Notes is worth it.",
+        "whatYouGet": "JUSTIFIED / NOT_JUSTIFIED / route-to-reference-object with the concrete navigation job; no notes storage tree.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 6,
+          "kindLabel": "IDTSPE LENS",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "LENS",
+        "targetModuleId": null,
+        "lensId": "LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
+        "parentSurface": null,
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "lenscmd.simplicity.check",
+      "file": "check-simplicity.command.md",
+      "command": "проверь можно ли упростить",
+      "englishName": "check whether it can be simplified",
+      "commandFamily": [
+        "проверь можно ли упростить"
+      ],
+      "description": "direct IDTSPE Lens check",
+      "meaning": "Resolve/reuse the natural host Target and apply LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY without creating a Lens-owned Target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "REMOVE/MERGE/INLINE/REUSE/DEFER/MOVE candidates and retained-complexity rationale in the natural owner.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
+        "A direct Lens command never creates a Lens-owned Target or a parallel runtime.",
+        "Return findings to the natural semantic owner and use P-14 only after representation/placement is actually needed.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
+      ],
+      "userTarget": "<target/result>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when a Target/solution may contain unnecessary abstractions, hops, files, test layers or work.",
+        "whatYouGet": "REMOVE/MERGE/INLINE/REUSE/DEFER/MOVE candidates and retained-complexity rationale in the natural owner.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "lens",
+          "sectionLabel": "IDTSPE Lens Checks — SDS",
+          "sectionOrder": 9,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE LENS",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "LENS",
+        "targetModuleId": null,
+        "lensId": "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
+        "parentSurface": null,
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -139,38 +438,27 @@
         "application ideas",
         "собери план приложения"
       ],
-      "description": "accumulate whole-Application Ideas into one SDS Current Plan",
-      "meaning": "Run the shared collect-ideas shell with the integration target fixed to the whole accumulating Application Current Plan. Know the complete SDS Step 0–4 lifecycle, but automatically traverse only the semantic depth justified by the source/current plan and stop before explicit Pre-Update and practical realization/evidence.",
-      "activeContextBehavior": "Use the selected Application/current plan. Start from unresolved upstream meaning when needed and move through Reality/Solution/Application Concept/Scenario/Domain/Slices only as justified; preserve later-layer insights as carry-forward rather than forcing every lifecycle phase.",
-      "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh by selected owner/current-plan uncertainty/source-justified planning depth; full SDS governance preflight only when no reliable sufficient pass exists.",
+      "description": "legacy compatibility alias; Application ideas alias routed into current IDTSPE/SDS planning",
+      "meaning": "Legacy alias for working through current IDTSPE/SDS against the selected Application planning context. Resolve the narrowest applicable SDS Target Module (Application Definition, Scenario, Domain, Slice, Testing or another real owner) and continue that Target; never accumulate a separate whole-Application Current Plan runtime.",
+      "activeContextBehavior": "Reuse the selected Application and its current semantic owners. Route each material item to the narrowest natural current Target/module; preserve cross-layer findings as ordinary handoffs/Ideas rather than traversing every SDS layer automatically.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the affected Application/module owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
-        "planning/documentation/planning-concerns-and-decisions-model.md",
-        "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
-        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
-        "planning/documentation/application-planning/detailed-planning/README.md",
-        "planning/documentation/profiles/sds-planning-profiles.md",
-        "planning/documentation/architecture-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "One integrated Application Current Plan at source-justified SDS depth, with reviewed Ideas, current/preliminary integration, Q/R/P/Decisions and downstream handoffs; no automatic Pre-Update or Step 4 execution.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Current IDTSPE/SDS owner updates/findings for the selected Application context, with material Q/R/P/Decisions and downstream handoffs; no legacy Application Current Plan accumulator.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This result-producing command explicitly depends on complete SDS governance: reuse a reliable prior pass, refresh only affected governance when material, and perform the full SDS preflight internally only when no reliable sufficient pass exists; do not ask the user to invoke `бутстреп сдс` separately.",
-        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-        "`собери идеи приложения` already represents the full semantic Application SDS lifecycle; do not invent a separate `full application ideas` command. Mini/Modular/Full are physical/addressability profiles, not quality levels.",
-        "Preserve Step 0 Need/Solution, Step 1 Scenario+DATA+Behavior, Step 2 Domain and Step 3 Slice/WEUC/Architecture/Testing meaning when material; Step 4 actual realization/evidence remains explicit downstream work.",
-        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-        "Do not edit repository files, create an archive, commit or push."
+        "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+        "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
-      "palette": true,
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -186,34 +474,27 @@
         "собери идеи домена",
         "domain ideas"
       ],
-      "description": "accumulate Ideas around evidence-backed Domain meaning",
-      "meaning": "Run the shared collect-ideas shell with the integration target fixed to Domain meaning. Use Domain Discovery when candidate exploration is useful, then integrate selected/current concepts, identity/lifecycle, rules/invariants/policies and VO/Aggregate/Root/ownership boundaries only when evidence justifies them.",
-      "activeContextBehavior": "Use current Scenario/DATA/Behavior/Requirements and existing Domain meaning as evidence. Discovery is proportional; no explicit Aggregate is a valid result. Stop before Slice planning unless scope is expanded.",
-      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "description": "legacy compatibility alias; Domain ideas alias routed into current Domain Target Modules",
+      "meaning": "Legacy alias for current Domain planning. Use TM-DOMAIN-DISCOVERY for candidate/evidence exploration or TM-DOMAIN-DRAFT for a selected Domain owner, preserving the valid no-separate-Domain result. Supplied ideas become normal IDTSPE material; no collect-ideas runtime is started.",
+      "activeContextBehavior": "Use accepted Scenario/DATA/Behavior/Requirement Sources and existing Domain representation. Resolve discovery vs draft from current state and stop before Slice planning unless the user expands the Target.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Domain owner/module route when uncertain.",
       "ownerFiles": [
-        "planning/documentation/planning-concerns-and-decisions-model.md",
-        "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
-        "planning/documentation/application-planning/domain-discovery-workflow.md",
-        "planning/documentation/application-planning/domain-planning-workflow.md",
-        "planning/documentation/application-planning/templates/DOMAIN-DRAFT-TEMPLATE.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Reviewed Domain Ideas + evidence/candidates when useful + current/preliminary selected Domain meaning + Q/R/P/Decisions + realization handoffs.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Current Domain Discovery/Draft result with evidence, selected/rejected candidates, Q/R/P/Decisions and handoffs; no legacy Domain-Ideas accumulator.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-        "Do not infer Domain entities/ownership from nouns, tables, ORM or database shape alone.",
-        "Select/split/merge/reject candidates from behavior/state/rule evidence; `no explicit Aggregate needed` remains valid.",
-        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-        "Do not edit repository files, create an archive, commit or push."
+        "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+        "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
-      "palette": true,
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -229,60 +510,30 @@
         "собери идеи",
         "collect ideas"
       ],
-      "description": "collect/review Ideas with contextual semantic integration",
-      "meaning": "Use the generic Idea/Concern working shell: extract coherent Ideas and provenance, preserve material non-Idea meaning, review Ideas, determine the real contextual semantic integration target when useful, and show current/preliminary integration without inventing a planning unit. Q/R/P follows the shared Concern/Decision model. The command stops before explicit Pre-Update/file realization and before practical realization/evidence.",
-      "activeContextBehavior": "Use the explicitly selected or clearly active source and one current plan when one exists. Infer the useful integration target from context (for example Workspace UC, Application Scenario, Domain, Slice or another real owner); if no grounded integration surface exists, pure Idea + Concern work is valid. Traverse UCDS/Application SDS only to the semantic depth justified by the source/current plan. Full lifecycle awareness does not authorize automatic Pre-Update or Step 4 execution.",
-      "traversalReadMode": "Targeted/full by source size, current-plan/current-owner uncertainty, affected useful results and selected planning depth.",
+      "description": "legacy compatibility alias routed into current IDTSPE work mode",
+      "meaning": "Legacy alias of current IDTSPE material planning. Resolve or reuse the natural current IDTSPE Target/context, ingest the supplied material as Sources/Ideas/Q/R/P as appropriate, and continue through `idtspe.work`; when an SDS Target Module is clearly applicable, invoke that module through the same IDTSPE Shell. This alias never starts the former collect-ideas/Current-Plan runtime.",
+      "activeContextBehavior": "Resolve/reuse the natural current Target and current semantic owner. If no grounded Target exists, perform ordinary Target Formation before planning; do not manufacture an Idea-owned or collect-ideas-owned planning unit.",
+      "traversalReadMode": "Reuse current reliable IDTSPE governance; refresh the selected owner/module route only when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/planning-concerns-and-decisions-model.md",
-        "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-        "planning/documentation/ai-reviewability-and-directed-planning-principles.md",
-        "planning/documentation/direction-and-use-case-registry-workflow.md",
-        "planning/documentation/workspace-planning/use-case-registry.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/architecture-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/use-case-registry.md",
-        "planning/documentation/profiles/sds-planning-profiles.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Source/Baseline/Real-Life Basis + Key Points/Review Priority + reviewed Ideas/provenance + contextual Current/Preliminary Integration when useful + Area Concern Register/active-residual Concern state when material + Current Overall Conclusions + explicit downstream handoff. Exact file Pre-Update and practical realization/evidence are not executed unless separately requested.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Normal IDTSPE result for the resolved Target: Key Points + Questions/Ideas/Q/R/P/Decisions as material + natural owner/materialization handoff + next methodology action. No legacy Current Plan or collect-ideas ledger.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Use the explicitly selected or clearly active current source; do not silently select an earlier archive, ledger or message.",
-        "When a current integrated plan is clearly active, update that plan as baseline; do not create an append-only command-result ledger or a second competing current plan.",
-        "Ordinary chat text controls requested scope/depth/lens. Do not create a persistent Focus/H0-H1-H2 state or a command for each modifier.",
-        "The automatic collect-ideas lifecycle is Phase 1 Idea/Concern Review + Phase 2 Semantic Integration when grounded. Phase 3 Pre-Update (exact owners/files/actions/checks) and Phase 4 Realization/Evidence/Review are explicit continuations only.",
-        "When several Ideas combine around one meaningful unit, propose a contextual preliminary integration/draft view so their combined effect can be reviewed. Mark it current-selected, preliminary, candidate/draft or explanatory; never silently promote provisional meaning to canonical truth.",
-        "Do not manufacture a Scenario/UC/Domain/Slice merely because Ideas exist. Pure Idea/Q/R/P work is a valid result when no useful integration target is grounded.",
-        "Not every source statement is an Idea; preserve relevant Existing Reality, constraints, decisions, corrections and questions with their proper meaning.",
-        "Perform every mandatory Idea review check, but do not manufacture objections, risks or refinements merely to populate fields.",
-        "Actively test whether each Idea deserves implementation and whether a genuinely simpler or better route exists.",
-        "Idea remains the generic Idea entity; do not create Scenario Idea, Workspace-UC Idea, File-Update Idea or other context-specific Idea types.",
-        "For material selected change, resolve affected existing/new Workspace UCs or Application Scenarios using current semantic owners and normal independent-usefulness/Scenario-boundary rules.",
-        "Several Ideas affecting one UC/Scenario converge into one integrated target for that unit; one cross-cutting Idea is reviewed once and referenced from affected units with local impact only.",
-        "For Workspace/documentation planning, use current Workspace UCs proportionally for semantic integration. Do not enter exact file realization merely because UCDS has a Step 3; exact files/actions belong to explicit Pre-Update for this command family.",
-        "For Application planning, know the full SDS lifecycle: Step 0 Why/Solution → Step 1 Scenario + DATA/Behavior → Step 2 Domain → Step 3 Slices plus material WEUC/architecture/testing planning → Step 4 implementation/executed proof/actual evidence. Traverse only the source-justified semantic depth automatically; Step 4 is downstream, not automatic collect-ideas scope.",
-        "Mini, Modular/Medium and Full SDS have the same semantic quality. Mini keeps the complete plan in one file; Modular reorganizes without losing reviewed DATA/Behavior or other selected meaning; Full increases stable addressability.",
-        "For Step 3 architecture judgment, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths over generic future flexibility; derive Change Pressure/Architecture Decisions only when evidence supports them.",
-        "Use planning dependency direction upstream → downstream. Preserve early later-step insight as provisional context, but do not let downstream convenience normally define upstream meaning.",
-        "For Workspace/documentation planning, Step 1 + Step 2 remains a normal semantic depth once the UC boundary is grounded. Carry high-level realization implications forward when useful, but require explicit Pre-Update before choosing concrete repository files/actions.",
-        "Plan from Need/situation → UC/Scenario → Current→Target. Derive Q/R/P only after a concrete owner/current planned state exists; do not walk a FIND queue.",
-        "Execution order is the selected route through planned work; represent genuine parallelism/dependencies rather than forcing a total order. Application execution order may group Slices by versions/releases.",
-        "Current State normally uses a high-level summary + direct current-owner links. Target changed/new semantic meaning must be complete enough that implementation does not invent missing decisions; keep Current→Target Transition separate.",
-        "When several UCs/Slices are affected, review their combined architecture effect, including material WEUC/change-path evidence, and challenge unnecessary shared coordination owners.",
-        "The command is read-only orchestration, not semantic authority. Read affected current Solution/Scenario/Domain/Slice/Architecture/Testing owners instead of copying their contracts into the command.",
-        "Potential Simplifications / Better Routes contains only not-yet-selected candidate changes to Current Plan and is removed once a candidate is selected.",
-        "Apply Key Points / Review Priority and built-in recheck before returning material output; `крит` remains an optional separate adversarial review.",
-        "When scope logging is already active, treat the material review result as a loggable source for the next approved mutation/package; this read-only command itself does not edit logs.",
-        "Do not edit repository files, create an archive, commit or push.",
-        "Use the shared Planning Concern/Decision owner for Q/R/P semantics: group related concerns by one resolution surface; keep member Priority/Concern Category/Status; one logical Concern/Group has one detailed storage location plus Area Concern Register routing when material.",
-        "For material active concerns, provide a useful AI Comment that separates plan/evidence implications from user-owned Needs/preferences/feelings/business priority/risk tolerance. Recommendation is optional and Decision exists only after actual selection.",
-        "Answered/resolved/eliminated items leave active Q/R/P; retain material answer/rationale/Decision trace when useful and keep residual Risk/Problem active."
+        "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+        "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<source/discussion to collect Ideas from>",
-      "palette": true,
-      "directionIds": [],
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -297,39 +548,28 @@
         "собери модульные идеи приложения",
         "modular application ideas"
       ],
-      "description": "coordinate Scenario → Domain → Slice Idea accumulators in a Modular Application plan",
-      "meaning": "Coordinate the existing collect-ideas Scenario, Domain and Slice semantic routes as one high-level Modular Application planning pass. Preserve one Application Current Plan while making Scenario/Domain/Slice work areas independently addressable; Ideas, concerns and Decisions may be split by area when useful without forcing one file per entity.",
-      "activeContextBehavior": "Use the selected Application and Modular/Medium SDS profile as the physical/addressability preference. Run focused Scenario → Domain → Slice passes only where each area is material, then integrate cross-area conclusions. Exact filenames remain contextual and are selected only in explicit Pre-Update.",
-      "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh by selected owner/current-plan uncertainty/source-justified planning depth; full SDS governance preflight only when no reliable sufficient pass exists.",
+      "description": "legacy compatibility alias; modular-Application alias routed into current IDTSPE/SDS planning",
+      "meaning": "Legacy alias for current IDTSPE/SDS planning across independently addressable Application Targets. Resolve Scenario/Domain/Slice/etc Targets normally and use Documentation / Representation for physical separation; there is no Modular SDS runtime, mandatory modular Current Plan or fixed file-count profile.",
+      "activeContextBehavior": "Reuse the selected Application and resolve only the material Target Modules needed by the supplied source/current state. Independent addressability is a representation decision, not a separate planning runtime.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of affected Target owners when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
-        "planning/documentation/planning-concerns-and-decisions-model.md",
-        "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/detailed-planning/README.md",
-        "planning/documentation/application-planning/domain-discovery-workflow.md",
-        "planning/documentation/application-planning/domain-planning-workflow.md",
-        "planning/documentation/application-planning/slice-planning-workflow.md",
-        "planning/documentation/profiles/sds-planning-profiles.md",
-        "planning/documentation/architecture-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "One Modular Application Current Plan with coordinated Scenario/Domain/Slice Idea work areas, per-area semantic integration/Q/R/P/Decision trace and cross-area conclusions; no fixed file count and no automatic Pre-Update.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Normal current IDTSPE/SDS results for the material Application Targets plus representation/placement decisions when useful; no Modular Current Plan accumulator.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This result-producing command explicitly depends on complete SDS governance: reuse a reliable prior pass, refresh only affected governance when material, and perform the full SDS preflight internally only when no reliable sufficient pass exists; do not ask the user to invoke `бутстреп сдс` separately.",
-        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-        "This command is an orchestration/profile shortcut over existing semantic UCs; do not create a Modular-Application semantic UC for it.",
-        "Prefer separately addressable Scenario/Domain/Slice Idea/Concern/Decision work areas when reviewability benefits, but do not mandate `ideas.md`, `concerns.md` and `decisions.md` everywhere.",
-        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-        "Do not edit repository files, create an archive, commit or push."
+        "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+        "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
-      "palette": true,
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -345,33 +585,27 @@
         "собери идеи сценария",
         "scenario ideas"
       ],
-      "description": "accumulate Ideas around Application Scenario meaning",
-      "meaning": "Run the shared collect-ideas shell with the integration target fixed to an Application Scenario. Integrate Ideas into observable actor/user goal/result behavior, Scenario DATA and Behavior Items, adding Requirements/Screens when material; preserve Domain/Slice findings as downstream handoffs.",
-      "activeContextBehavior": "Use the clearly selected/current Scenario, or identify the candidate Scenario when the source makes it clear. Do not broaden into Domain/Slice planning merely because downstream implications are visible.",
-      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "description": "legacy compatibility alias; Scenario ideas alias routed into current Scenario Target Modules",
+      "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context, use TM-SCENARIO-DISCOVERY when inventory/boundaries are unresolved or TM-SCENARIO-DRAFT for one selected Scenario, and treat supplied ideas as normal IDTSPE material. Do not run the former collect-ideas shell.",
+      "activeContextBehavior": "Use the selected/current Scenario when clear; otherwise resolve discovery vs draft through Target Formation. Keep Domain/Slice implications as downstream handoffs unless the user expands the Target.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Scenario owner/module route when uncertain.",
       "ownerFiles": [
-        "planning/documentation/planning-concerns-and-decisions-model.md",
-        "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
-        "planning/documentation/application-planning/detailed-planning/README.md",
-        "planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DISCOVERY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DRAFT.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Reviewed Scenario Ideas + current/preliminary Scenario integration + DATA/Behavior + material Requirements/Screens + Q/R/P/Decisions + downstream handoffs.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Current Scenario Discovery/Draft result with material DATA/Behavior/Q/R/P/Decisions and downstream handoffs; no legacy Scenario-Ideas accumulator.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-        "Scenario identity is a user/actor Need/goal/desired result reached through observable useful behavior; internal implementation operations are not Scenarios by themselves.",
-        "Stop before Domain planning unless the user intentionally expands scope.",
-        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-        "Do not edit repository files, create an archive, commit or push."
+        "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+        "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
-      "palette": true,
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -387,35 +621,27 @@
         "собери идеи слайса",
         "slice ideas"
       ],
-      "description": "accumulate Ideas around Slice Strategy or one implementation Slice",
-      "meaning": "Run the shared collect-ideas shell with the integration target fixed to Slice Strategy when decomposition is unresolved, otherwise to one selected Slice. Integrate vertical useful-result boundaries, dependencies, technical sequence, proof obligations and material Architecture/Testing evidence through their current UCs.",
-      "activeContextBehavior": "Use selected Scenario/Behavior/Requirements and Domain meaning when material. Route architecture/testing questions to their current registries; do not copy those methodologies into the command or let technical sequencing redefine product priority.",
-      "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+      "description": "legacy compatibility alias; Slice ideas alias routed into current Slice Target Modules",
+      "meaning": "Legacy alias for current Slice planning. Use TM-SLICE-STRATEGY when decomposition/portfolio/order is materially unresolved, otherwise reuse/plan the selected TM-IMPLEMENTATION-SLICE. Supplied ideas become normal IDTSPE material and architecture/testing implications route to current Lenses/Test Target Modules.",
+      "activeContextBehavior": "Use accepted Scenario/Behavior/Requirement and Domain Sources. Resolve strategy vs individual Slice from current state; do not let implementation convenience redefine upstream semantics.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Slice owner/module route when uncertain.",
       "ownerFiles": [
-        "planning/documentation/planning-concerns-and-decisions-model.md",
-        "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/slice-planning-workflow.md",
-        "planning/documentation/application-planning/templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md",
-        "planning/documentation/application-planning/templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md",
-        "planning/documentation/architecture-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-STRATEGY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Reviewed Slice Ideas + selected/current Slice Strategy or Slice integration + dependencies/technical sequence/proof obligations + Q/R/P/Decisions + material Architecture/Testing handoffs.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Current Slice Strategy or Implementation Slice result with vertical-result/dependency/proof handoffs and material Q/R/P/Decisions; no legacy Slice-Ideas accumulator.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-        "Product/Scenario priority is upstream input and is distinct from recommended technical implementation sequence.",
-        "Testing Strategy/Test Design/Practical Test Plan may be Step-3 planning evidence when material; actual coverage/executed evidence remains downstream.",
-        "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-        "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-        "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-        "Do not edit repository files, create an archive, commit or push."
+        "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+        "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
-      "palette": true,
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -454,6 +680,8 @@
       ],
       "userTarget": "<what should be critically reviewed>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -487,7 +715,122 @@
       ],
       "userTarget": "<state target>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.application.definition",
+      "file": "define-application.command.md",
+      "command": "определи приложение",
+      "englishName": "define application",
+      "commandFamily": [
+        "определи приложение"
+      ],
+      "description": "application definition",
+      "meaning": "Run TM-APPLICATION-DEFINITION through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Application Definition with need/value/scope, selected responsibility, material alternatives, Q/R/P and Decisions.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<one Application Definition>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when the product/application need, concept, responsibility or boundary should be established or revalidated.",
+        "whatYouGet": "Application Definition with need/value/scope, selected responsibility, material alternatives, Q/R/P and Decisions.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "01",
+          "sectionLabel": "01 Application",
+          "sectionOrder": 1,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-APPLICATION-DEFINITION",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.slice.implementation.detail",
+      "file": "detail-slice-implementation.command.md",
+      "command": "детализируй реализацию слайса",
+      "englishName": "detail slice implementation",
+      "commandFamily": [
+        "детализируй реализацию слайса"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-IMPLEMENTATION-SLICE intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Refined Integrated Implementation Plan for the same Slice Target; no new Target identity.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<existing Slice>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when the Slice semantic contract exists and implementation sequencing/runtime path needs deeper concrete detail.",
+        "whatYouGet": "Refined Integrated Implementation Plan for the same Slice Target; no new Target identity.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "07",
+          "sectionLabel": "07 Slice Realization",
+          "sectionOrder": 7,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "application_slice.plan"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-IMPLEMENTATION-SLICE",
+        "lensId": null,
+        "parentSurface": "application_slice.plan",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -524,6 +867,8 @@
       ],
       "userTarget": "<application/development work in this session>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -534,104 +879,174 @@
       "command": "собери сценарии приложения",
       "englishName": "discover application scenarios",
       "commandFamily": [
-        "собери сценарии приложения",
-        "найди сценарии приложения",
-        "discover application scenarios"
+        "собери сценарии приложения"
       ],
-      "description": "discover meaningful Application Scenario boundaries",
-      "meaning": "Invoke UC-PLAN-SCENARIO-DISCOVERY to identify independently meaningful user-visible Need/result Scenario boundaries for the selected Application responsibility.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "description": "scenario discovery",
+      "meaning": "Run TM-SCENARIO-DISCOVERY through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DISCOVERY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Current Scenario inventory/boundaries + material future Scenario/change evidence.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Scenario inventory/catalog, candidate boundaries, priorities/relations and next Scenario Draft targets.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied.",
-        "Application Scenario identity is a user/actor goal/Need or desired result reached through observable useful behavior; internal implementation operations remain downstream unless they participate in an independently meaningful user/actor-visible outcome."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Selected Application responsibility>",
+      "userTarget": "<Scenario inventory / catalog>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when the application behavior space or Scenario inventory is incomplete, stale or needs consolidation.",
+        "whatYouGet": "Scenario inventory/catalog, candidate boundaries, priorities/relations and next Scenario Draft targets.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "02",
+          "sectionLabel": "02 Scenarios & Interaction",
+          "sectionOrder": 2,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-SCENARIO-DISCOVERY",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "application_domain.discover",
       "file": "discover-domain.command.md",
-      "command": "исследуй домен приложения",
-      "englishName": "discover application domain candidates",
+      "command": "исследуй домен",
+      "englishName": "discover domain",
       "commandFamily": [
-        "исследуй домен приложения",
-        "собери домен приложения",
-        "discover application domain candidates",
-        "discover domain"
+        "исследуй домен",
+        "исследуй домен приложения"
       ],
-      "description": "discover evidence-backed Domain candidates",
-      "meaning": "Invoke UC-PLAN-DOMAIN-DISCOVERY to discover concepts, identity/lifecycle/rule/invariant/policy/consistency candidates and, when evidence justifies it, Value Object and Aggregate/Root/ownership boundaries before selecting Domain authority.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "domain discovery",
+      "meaning": "Run TM-DOMAIN-DISCOVERY through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/domain-discovery-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Domain evidence + candidates + invariant/policy findings + Value Object/Aggregate/Root/owned-vs-outside/external-reference/coordination candidates when justified + variants when material.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Domain discovery map/candidates, material rules/invariants, Decisions/Q/R/P and promotion targets; may remain code-native/coordinator-based.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied.",
-        "When invariants/lifecycle/consistency span several concepts, explicitly test Aggregate/Root/ownership candidates; read/query/ORM/database/module shape alone is not ownership evidence, and no explicit Aggregate is a valid result."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Application Scenario/DATA/Behavior/Requirements target>",
+      "userTarget": "<Domain candidate space>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when Scenario/DATA/Behavior evidence should be interpreted into domain concepts, responsibilities, rules or candidate boundaries.",
+        "whatYouGet": "Domain discovery map/candidates, material rules/invariants, Decisions/Q/R/P and promotion targets; may remain code-native/coordinator-based.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "04",
+          "sectionLabel": "04 Domain",
+          "sectionOrder": 4,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "PRIMARY OPTIONAL"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-DOMAIN-DISCOVERY",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "architecture_weuc.discover",
       "file": "discover-weuc.command.md",
-      "command": "собери WEUC",
-      "englishName": "discover contextual WEUCs",
+      "command": "спланируй эволюцию воркспейса",
+      "englishName": "plan workspace evolution",
       "commandFamily": [
-        "собери WEUC",
-        "найди WEUC",
-        "discover WEUC",
-        "discover contextual WEUCs",
-        "эволюционные юзкейсы",
-        "исследуй WEUC-инстансы",
-        "изучи инстансы эволюции",
-        "discover WEUC instances"
+        "спланируй эволюцию воркспейса",
+        "собери WEUC"
       ],
-      "description": "discover contextual Workspace Evolution Use-Case instances",
-      "meaning": "Invoke UC-PLAN-ARCH-DISCOVER-WEUC to discover concrete contextual WEUC Instances (optionally grouped by reusable WEUC Type), assess likelihood/horizon/value/confidence, current-work overlap, preparation-now vs deferred cost, expected Workspace Change Paths and applicable work-cost/friction/risk evidence.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "weuc",
+      "meaning": "Run TM-WEUC through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/architecture-planning/use-case-registry.md",
-        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
-        "planning/documentation/architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Contextual WEUC Instances + optional WEUC Type grouping + likelihood/horizon/value/confidence + current-work overlap/preparation-vs-deferred cost + expected Workspace Change Paths + work-cost/friction/risk + architecture handoff.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Workspace Evolution result, projected paths/global architecture decisions and revalidation triggers; optional/cross-cutting/repeatable.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "Prefer contextual instances over generic flexibility. Use stable IDs/register only when cross-plan tracking is materially useful.",
-        "No repository mutation, archive, commit or push is implied.",
-        "A future instance is architecture evidence only to the degree likelihood/horizon/value/current-work overlap and preparation-now vs deferred cost justify paying Architectural Tax now."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Concrete target code/workspace area>",
+      "userTarget": "<Workspace Evolution Map / architecture position>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when Workspace evolution, global architecture position or projected change paths need planning/reconciliation.",
+        "whatYouGet": "Workspace Evolution result, projected paths/global architecture decisions and revalidation triggers; optional/cross-cutting/repeatable.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "03",
+          "sectionLabel": "03 Workspace Evolution & Architecture",
+          "sectionOrder": 3,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "PRIMARY OPTIONAL",
+            "CROSS-CUTTING",
+            "REPEATABLE"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-WEUC",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION",
+        "DIR-PLAN-ARCHITECTURE"
+      ],
       "refinements": []
     },
     {
@@ -666,6 +1081,8 @@
       ],
       "userTarget": "<workspace/application realization area whose internal useful-result picture matters>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -704,6 +1121,8 @@
       ],
       "userTarget": "<final D/F/Points or active end-session target>",
       "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -714,29 +1133,222 @@
       "command": "определи ответственность приложения",
       "englishName": "establish application responsibility",
       "commandFamily": [
-        "определи ответственность приложения",
-        "границы приложения",
-        "establish application responsibility"
+        "определи ответственность приложения"
       ],
-      "description": "establish exact application responsibility boundary",
-      "meaning": "Invoke UC-PLAN-APPLICATION to establish what the selected own Application is responsible for and what stays outside it.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Explicit selected Application responsibility/boundary.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Responsibility-boundary refinement of the same Application Definition Target.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Selected solution / Application candidate>",
+      "userTarget": "<Application responsibility boundary>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when the immediate question is what the Application itself should own versus external/manual/system responsibilities.",
+        "whatYouGet": "Responsibility-boundary refinement of the same Application Definition Target.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "01",
+          "sectionLabel": "01 Application",
+          "sectionOrder": 1,
+          "itemOrder": 2,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "tmcmd.application.definition"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-APPLICATION-DEFINITION",
+        "lensId": null,
+        "parentSurface": "tmcmd.application.definition",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.continue",
+      "file": "idtspe-continue.command.md",
+      "command": "продолжи по методологии",
+      "englishName": "continue by methodology",
+      "commandFamily": [
+        "продолжи по методологии"
+      ],
+      "description": "Resolve the current recommended next Target and invoke it through normal IDTSPE.",
+      "meaning": "Resolve the current recommended next Target and invoke it through normal IDTSPE.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "The next Target is invoked through IDTSPE with normal gates/permissions; no fake Target is created.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "This is an IDTSPE orchestration/validator surface, not a Target Module.",
+        "Preserve the current Target/owner graph and normal permission boundaries.",
+        "Do not mutate repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<current planning state>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when the current Methodology Direction is clear and you want to execute the recommended next Target.",
+        "whatYouGet": "The next Target is invoked through IDTSPE with normal gates/permissions; no fake Target is created.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 3,
+          "kindLabel": "ORCHESTRATION",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.next",
+      "file": "idtspe-next.command.md",
+      "command": "что дальше по методологии",
+      "englishName": "show methodology next step",
+      "commandFamily": [
+        "что дальше по методологии"
+      ],
+      "description": "Show Methodology Direction without executing it.",
+      "meaning": "Show Methodology Direction without executing it.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Methodology Direction View: Current Target / Exit Gate / recommended next / why / alternatives / reopen triggers.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "This is an IDTSPE orchestration/validator surface, not a Target Module.",
+        "Preserve the current Target/owner graph and normal permission boundaries.",
+        "Do not mutate repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<current planning state>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when you want to know the recommended next methodological Target/action without starting it.",
+        "whatYouGet": "Methodology Direction View: Current Target / Exit Gate / recommended next / why / alternatives / reopen triggers.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 2,
+          "kindLabel": "ORCHESTRATION",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.weuc.interpret",
+      "file": "interpret-workspace-evolution.command.md",
+      "command": "интерпретируй план с точки зрения эволюции воркспейса",
+      "englishName": "interpret plan through workspace evolution",
+      "commandFamily": [
+        "интерпретируй план с точки зрения эволюции воркспейса"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "EARLY_INTERPRETATION result with material evolution/architecture implications and routed owner updates.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<current plan/workspace>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use for early Workspace-evolution interpretation before a full projected path is needed.",
+        "whatYouGet": "EARLY_INTERPRETATION result with material evolution/architecture implications and routed owner updates.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "03",
+          "sectionLabel": "03 Workspace Evolution & Architecture",
+          "sectionOrder": 3,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "architecture_weuc.discover"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-WEUC",
+        "lensId": null,
+        "parentSurface": "architecture_weuc.discover",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION",
+        "DIR-PLAN-ARCHITECTURE"
+      ],
       "refinements": []
     },
     {
@@ -766,6 +1378,8 @@
       ],
       "userTarget": "<UC id + concrete target>",
       "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -776,99 +1390,168 @@
       "command": "план концепции приложения",
       "englishName": "plan application concept",
       "commandFamily": [
-        "план концепции приложения",
-        "план концепции",
-        "application concept",
-        "plan application concept"
+        "план концепции приложения"
       ],
-      "description": "plan/review Application Concept",
-      "meaning": "Invoke UC-PLAN-APP-CONCEPT to assess custom-application value, feasibility, rough effort/maintenance and alternatives before detailed behavior.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
-        "planning/documentation/application-planning/templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Reviewed Application Concept + worth-it conclusion.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Concept-focused Application Definition refinement with selected concept, alternatives and material Q/R/P.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Application Concept candidate>",
+      "userTarget": "<Application concept focus>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when Application Definition exists/needed and the immediate stable intent is concept/solution shape rather than the full umbrella.",
+        "whatYouGet": "Concept-focused Application Definition refinement with selected concept, alternatives and material Q/R/P.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "01",
+          "sectionLabel": "01 Application",
+          "sectionOrder": 1,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "tmcmd.application.definition"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-APPLICATION-DEFINITION",
+        "lensId": null,
+        "parentSurface": "tmcmd.application.definition",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "application_scenario.plan",
       "file": "plan-application-scenario.command.md",
-      "command": "план сценария приложения",
+      "command": "спланируй сценарий",
       "englishName": "plan application scenario",
       "commandFamily": [
-        "план сценария приложения",
-        "план сценария",
-        "plan application scenario",
-        "plan scenario"
+        "спланируй сценарий",
+        "план сценария приложения"
       ],
-      "description": "plan/review detailed Application Scenario",
-      "meaning": "Invoke UC-PLAN-SCENARIO and preserve Scenario DATA + Behavior Items + material Requirements/Screens as first-class Scenario planning meaning.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "scenario draft",
+      "meaning": "Run TM-SCENARIO-DRAFT through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/detailed-planning/README.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DRAFT.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Reviewed Scenario meaning/workspace with DATA/Behavior preserved.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Scenario behavior authority with DATA, Behavior Items, rules/invariants, Decisions/Q/R/P and downstream Screen/Domain/Slice/Test handoffs.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied.",
-        "Application Scenario identity is a user/actor goal/Need or desired result reached through observable useful behavior; internal implementation operations remain downstream unless they participate in an independently meaningful user/actor-visible outcome."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Application Scenario>",
+      "userTarget": "<one Scenario>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when one concrete actor-visible Scenario needs full behavioral planning.",
+        "whatYouGet": "Scenario behavior authority with DATA, Behavior Items, rules/invariants, Decisions/Q/R/P and downstream Screen/Domain/Slice/Test handoffs.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "02",
+          "sectionLabel": "02 Scenarios & Interaction",
+          "sectionOrder": 2,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-SCENARIO-DRAFT",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "application_slice.plan",
       "file": "plan-application-slice.command.md",
-      "command": "план слайса приложения",
-      "englishName": "plan application slice",
+      "command": "спланируй слайс",
+      "englishName": "plan implementation slice",
       "commandFamily": [
-        "план слайса приложения",
-        "план слайса",
-        "plan application slice",
-        "plan slice"
+        "спланируй слайс",
+        "план слайса приложения"
       ],
-      "description": "plan one implementation Slice",
-      "meaning": "Invoke UC-PLAN-SLICE to plan one integrated vertical increment with explicit implemented/delegated/later/outside behavior boundaries; split frontend/server/verification implementation-part plans only when useful.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "implementation slice",
+      "meaning": "Run TM-IMPLEMENTATION-SLICE through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/slice-planning-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Integrated Slice plan + behavior/delegation boundary + positive/negative proof obligations + optional frontend/server/verification implementation-part plans.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied.",
-        "Cross-cutting applicability does not transfer ownership; provisional file/class/method names may change without semantic drift, while behavior/responsibility/invariant/negative-guarantee changes require review."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Selected Slice>",
+      "userTarget": "<one implementation Slice>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when one Useful Vertical Result needs integrated realization planning.",
+        "whatYouGet": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "07",
+          "sectionLabel": "07 Slice Realization",
+          "sectionOrder": 7,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-IMPLEMENTATION-SLICE",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -902,6 +1585,8 @@
       ],
       "userTarget": "<Material architecture pressure/problem/choice>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -938,41 +1623,184 @@
       ],
       "userTarget": "<what command route should be planned>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.crosscut",
+      "file": "plan-cross-cutting-responsibility.command.md",
+      "command": "спланируй сквозную ответственность",
+      "englishName": "plan cross-cutting responsibility",
+      "commandFamily": [
+        "спланируй сквозную ответственность"
+      ],
+      "description": "cross cutting concern",
+      "meaning": "Run TM-CROSS-CUTTING-CONCERN through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CROSS-CUTTING-CONCERN.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Cross-Cutting owner/consumer obligations when justified, otherwise a local/reuse route; distinct from Q/R/P Concern groups.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<one shared non-vertical responsibility>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when a genuine shared implementation responsibility spans consumers and should not be duplicated locally.",
+        "whatYouGet": "Cross-Cutting owner/consumer obligations when justified, otherwise a local/reuse route; distinct from Q/R/P Concern groups.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "07",
+          "sectionLabel": "07 Slice Realization",
+          "sectionOrder": 7,
+          "itemOrder": 4,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "CONDITIONAL"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-CROSS-CUTTING-CONCERN",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.test.design.domain",
+      "file": "plan-domain-tests.command.md",
+      "command": "спланируй тесты домена",
+      "englishName": "plan domain tests",
+      "commandFamily": [
+        "спланируй тесты домена"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-TEST-DESIGN intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-DESIGN.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Domain-focused Test Design, normally unit-test-oriented for isolated complex rules.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<Domain owner>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when a Domain owner needs focused unit/domain-rule proof design.",
+        "whatYouGet": "Domain-focused Test Design, normally unit-test-oriented for isolated complex rules.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "05",
+          "sectionLabel": "05 Proof Design",
+          "sectionOrder": 5,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "test_design.plan"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-TEST-DESIGN",
+        "lensId": null,
+        "parentSurface": "test_design.plan",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-TESTING",
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "application_domain.plan",
       "file": "plan-domain.command.md",
-      "command": "план домена приложения",
-      "englishName": "plan application domain",
+      "command": "спланируй домен",
+      "englishName": "plan domain",
       "commandFamily": [
-        "план домена приложения",
-        "план домена",
-        "plan application domain",
-        "plan domain"
+        "спланируй домен",
+        "план домена приложения"
       ],
-      "description": "plan/review Application Domain",
-      "meaning": "Invoke UC-PLAN-DOMAIN to select the simplest explicit concepts/state/lifecycle/rules/invariants/policies/value/ownership boundaries that support current Scenario meaning and justified evolution.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "domain draft",
+      "meaning": "Run TM-DOMAIN-DRAFT through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/domain-planning-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Selected Domain Draft/meaning + coverage/variation + selected/split/merged/rejected Aggregate boundaries when material + verification decisions.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Current Domain semantics/rules/invariants and implementation/testing/evolution handoffs; dedicated file is not automatic.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied.",
-        "Select/split/merge/reject Aggregate boundaries only from concrete invariant/lifecycle/consistency ownership evidence; keep outside/external references explicit and accept no explicit Aggregate when simpler and correct."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Application Domain target>",
+      "userTarget": "<one Domain owner>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when one Domain owner is materially justified and needs deeper planning/revalidation.",
+        "whatYouGet": "Current Domain semantics/rules/invariants and implementation/testing/evolution handoffs; dedicated file is not automatic.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "04",
+          "sectionLabel": "04 Domain",
+          "sectionOrder": 4,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "PRIMARY OPTIONAL"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-DOMAIN-DRAFT",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -1026,7 +1854,67 @@
       ],
       "userTarget": "<what update/archive should be planned>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.slice.frontend",
+      "file": "plan-frontend-slice.command.md",
+      "command": "спланируй frontend",
+      "englishName": "plan frontend slice",
+      "commandFamily": [
+        "спланируй frontend"
+      ],
+      "description": "frontend slice",
+      "meaning": "Run TM-FRONTEND-SLICE through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FRONTEND-SLICE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Frontend Target plan when justified, otherwise a route to keep frontend realization in the parent Slice.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<one promoted frontend target>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when frontend realization is independently material enough to promote from a parent Slice Part Plan.",
+        "whatYouGet": "Frontend Target plan when justified, otherwise a route to keep frontend realization in the parent Slice.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "07",
+          "sectionLabel": "07 Slice Realization",
+          "sectionOrder": 7,
+          "itemOrder": 3,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "CONDITIONAL"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-FRONTEND-SLICE",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -1055,6 +1943,8 @@
       ],
       "userTarget": "<what should be planned>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1062,68 +1952,352 @@
       "schemaVersion": 1,
       "id": "practical_testing.plan",
       "file": "plan-practical-testing.command.md",
-      "command": "план практического тестирования",
-      "englishName": "plan practical testing",
+      "command": "спланируй практический тест",
+      "englishName": "plan practical test",
       "commandFamily": [
-        "план практического тестирования",
-        "план тестирования",
-        "plan practical testing",
-        "practical testing plan"
+        "спланируй практический тест",
+        "план практического тестирования"
       ],
-      "description": "plan operated practical acceptance",
-      "meaning": "Invoke UC-PLAN-TEST-PLAN to compose real human/AI/E2E operated acceptance actions, observable evidence and pass/fail without claiming execution.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "practical test",
+      "meaning": "Run TM-PRACTICAL-TEST through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/testing-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Practical Testing Plan / acceptance cards or campaign.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Practical Test protocol, environment/task/observation plan and Evidence/exit gate; conditional on practical proof value.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "Planned evidence is not executed evidence; actual coverage/evidence review remains UC-PLAN-TEST-COVERAGE.",
-        "No repository mutation, archive, commit or push is implied.",
-        "In Application SDS this is pre-implementation proof planning; Step 4 later executes the selected proof and Coverage reviews actual evidence."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Selected application/change result>",
+      "userTarget": "<one practical Evidence target>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when proof requires an operated/manual/live environment or integration acceptance plan.",
+        "whatYouGet": "Practical Test protocol, environment/task/observation plan and Evidence/exit gate; conditional on practical proof value.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "08",
+          "sectionLabel": "08 Evidence & Coverage",
+          "sectionOrder": 8,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "CONDITIONAL",
+            "OPERATED-EVIDENCE DRIVEN"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-PRACTICAL-TEST",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-TESTING",
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.screen",
+      "file": "plan-screens.command.md",
+      "command": "спланируй экраны",
+      "englishName": "plan screens",
+      "commandFamily": [
+        "спланируй экраны"
+      ],
+      "description": "screen",
+      "meaning": "Run TM-SCREEN through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Screen map, Scenario×Screen mapping, availability/routes/responsibilities; may validly conclude Screen Target is not justified.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<Screen map / screen-system scope>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when Scenario behavior requires explicit screen/window/spatial planning.",
+        "whatYouGet": "Screen map, Scenario×Screen mapping, availability/routes/responsibilities; may validly conclude Screen Target is not justified.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "02",
+          "sectionLabel": "02 Scenarios & Interaction",
+          "sectionOrder": 2,
+          "itemOrder": 2,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "CONDITIONAL"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-SCREEN",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.requirement",
+      "file": "plan-shared-requirement.command.md",
+      "command": "спланируй общее требование",
+      "englishName": "plan shared requirement",
+      "commandFamily": [
+        "спланируй общее требование"
+      ],
+      "description": "requirement",
+      "meaning": "Run TM-REQUIREMENT through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-REQUIREMENT.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Standalone Requirement only when justified; otherwise a routed result back to the natural owner.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<one exceptional shared must-hold candidate>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when a must-hold rule genuinely crosses natural Scenario/Domain/Slice owners and may need a standalone shared owner.",
+        "whatYouGet": "Standalone Requirement only when justified; otherwise a routed result back to the natural owner.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "02",
+          "sectionLabel": "02 Scenarios & Interaction",
+          "sectionOrder": 2,
+          "itemOrder": 4,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "CONDITIONAL",
+            "EXCEPTIONAL"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-REQUIREMENT",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.screen.single",
+      "file": "plan-single-screen.command.md",
+      "command": "спланируй экран",
+      "englishName": "plan one screen",
+      "commandFamily": [
+        "спланируй экран"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-SCREEN intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "One Screen Draft scope within the same Screen Target family.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<one selected Screen>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when one independently addressable Screen needs focused spatial/responsibility planning.",
+        "whatYouGet": "One Screen Draft scope within the same Screen Target family.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "02",
+          "sectionLabel": "02 Scenarios & Interaction",
+          "sectionOrder": 2,
+          "itemOrder": 3,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "tmcmd.screen"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-SCREEN",
+        "lensId": null,
+        "parentSurface": "tmcmd.screen",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "application_slice_strategy.plan",
       "file": "plan-slice-strategy.command.md",
-      "command": "план стратегии слайсов",
+      "command": "спланируй стратегию слайсов",
       "englishName": "plan slice strategy",
       "commandFamily": [
-        "план стратегии слайсов",
-        "стратегия слайсов",
-        "plan slice strategy"
+        "спланируй стратегию слайсов",
+        "план стратегии слайсов"
       ],
-      "description": "plan/review Slice Strategy",
-      "meaning": "Invoke UC-PLAN-SLICE-STRATEGY to choose vertical decomposition/order, including a technical implementation-sequence recommendation when architecture/WEUC evidence materially differs from product priority, without redefining upstream meaning.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "slice strategy",
+      "meaning": "Run TM-SLICE-STRATEGY through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/slice-planning-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-STRATEGY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Selected Slice decomposition/order + dependencies/rationale + product-priority/implementation-sequence distinction when material.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Slice portfolio, useful vertical results, ordering/dependencies and per-Slice planning entry points; may validly conclude no separate strategy artifact is needed.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied.",
-        "Product/Scenario priority is input; recommend technical implementation sequence separately. Pull only the minimum justified prerequisite/seam ahead of lower-priority feature work unless stronger evidence warrants more."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Application delivery scope>",
+      "userTarget": "<Slice portfolio/decomposition>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when decomposition/order/dependencies across several vertical results are material rather than obvious.",
+        "whatYouGet": "Slice portfolio, useful vertical results, ordering/dependencies and per-Slice planning entry points; may validly conclude no separate strategy artifact is needed.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "06",
+          "sectionLabel": "06 Slice Portfolio",
+          "sectionOrder": 6,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "OPTIONAL WHEN DECOMPOSITION IS OBVIOUS"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-SLICE-STRATEGY",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.test.design.slice",
+      "file": "plan-slice-tests.command.md",
+      "command": "спланируй тесты слайса",
+      "englishName": "plan slice tests",
+      "commandFamily": [
+        "спланируй тесты слайса"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-TEST-DESIGN intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-DESIGN.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Slice-focused Test Design, normally integration-oriented for collaboration/runtime flow.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<Slice owner>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when a Slice needs focused orchestration/integration proof design.",
+        "whatYouGet": "Slice-focused Test Design, normally integration-oriented for collaboration/runtime flow.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "07",
+          "sectionLabel": "07 Slice Realization",
+          "sectionOrder": 7,
+          "itemOrder": 2,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "application_slice.plan"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-TEST-DESIGN",
+        "lensId": null,
+        "parentSurface": "test_design.plan",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-TESTING",
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -1155,6 +2329,8 @@
       ],
       "userTarget": "<Real-Life Need / desired result>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1162,96 +2338,295 @@
       "schemaVersion": 1,
       "id": "test_design.plan",
       "file": "plan-test-design.command.md",
-      "command": "спланируй проверку поведения",
-      "englishName": "plan behavior verification",
+      "command": "спланируй тесты",
+      "englishName": "plan test design",
       "commandFamily": [
-        "спланируй проверку поведения",
-        "дизайн тестов",
-        "plan behavior verification"
+        "спланируй тесты",
+        "спланируй проверку поведения"
       ],
-      "description": "design convincing proof for selected behavior",
-      "meaning": "Invoke UC-PLAN-TEST-DESIGN to map selected Scenario/Requirement/Domain/Slice behavior to concrete assertions and appropriate proof layers.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "description": "test design",
+      "meaning": "Run TM-TEST-DESIGN through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/testing-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/test-design-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-DESIGN.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Behavior-to-Test Trace + selected proof layers/assertions/boundary decisions.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Selected behavior to verify>",
+      "userTarget": "<one Domain/Slice/etc proof target>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when a semantic owner needs executable/procedural proof design before or during realization.",
+        "whatYouGet": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "05",
+          "sectionLabel": "05 Proof Design",
+          "sectionOrder": 5,
+          "itemOrder": 0,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-TEST-DESIGN",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-TESTING",
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "testing_strategy.plan",
       "file": "plan-testing-strategy.command.md",
-      "command": "стратегия тестирования",
+      "command": "спланируй стратегию тестирования",
       "englishName": "plan testing strategy",
       "commandFamily": [
-        "стратегия тестирования",
-        "план стратегии тестирования",
-        "plan testing strategy"
+        "спланируй стратегию тестирования",
+        "стратегия тестирования"
       ],
-      "description": "plan/review shared testing strategy",
-      "meaning": "Invoke UC-PLAN-TEST-STRATEGY when proof responsibility spans several Slices/layers or shared harness/data/isolation/E2E policy matters.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "description": "test strategy",
+      "meaning": "Run TM-TEST-STRATEGY through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/testing-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/testing-strategy-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Current testing strategy + layer/shared proof responsibilities.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Testing Strategy or a valid no-Strategy result routing proof design locally; when useful, include a compact Test Realization / Topology Registry mapping Slice/Domain proof owners to concrete test suites/classes/setups/fixtures/harnesses/helpers, with optional promoted supporting map only under independent pressure.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "When shared test realization mapping is useful, reference concrete test classes/setups/helpers from the Strategy; do not copy test bodies or make test code semantic authority.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Testing responsibility / application change>",
+      "userTarget": "<one shared testing strategy>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when proof concerns genuinely need a shared cross-owner strategy/environment/layer policy or when the cross-Slice test-realization topology is hard to understand from code alone.",
+        "whatYouGet": "Testing Strategy or a valid no-Strategy result; when useful, a compact registry-like map of Slice/Domain proof → test suite/class → setup/fixture/harness/helper without duplicating test bodies.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "06",
+          "sectionLabel": "06 Slice Portfolio",
+          "sectionOrder": 6,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "CONDITIONAL"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-TEST-STRATEGY",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-TESTING",
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.weuc.architecture-position",
+      "file": "plan-workspace-architecture-position.command.md",
+      "command": "продумай архитектурную позицию воркспейса",
+      "englishName": "plan workspace architecture position",
+      "commandFamily": [
+        "продумай архитектурную позицию воркспейса"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "WORKSPACE_ARCHITECTURE_POSITION with global Decisions and evolution rationale.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<whole Workspace architecture>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when project-global architecture principles/defaults/conventions need explicit selection/revalidation.",
+        "whatYouGet": "WORKSPACE_ARCHITECTURE_POSITION with global Decisions and evolution rationale.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "03",
+          "sectionLabel": "03 Workspace Evolution & Architecture",
+          "sectionOrder": 3,
+          "itemOrder": 4,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "architecture_weuc.discover"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-WEUC",
+        "lensId": null,
+        "parentSurface": "architecture_weuc.discover",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION",
+        "DIR-PLAN-ARCHITECTURE"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.weuc.paths",
+      "file": "plan-workspace-evolution-paths.command.md",
+      "command": "распиши пути эволюции воркспейса",
+      "englishName": "plan workspace evolution paths",
+      "commandFamily": [
+        "распиши пути эволюции воркспейса"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "PROJECTED_WORKSPACE_EVOLUTION paths, dependencies, extension points and revalidation triggers.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<workspace evolution target>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when projected Workspace change paths/extension points need explicit planning.",
+        "whatYouGet": "PROJECTED_WORKSPACE_EVOLUTION paths, dependencies, extension points and revalidation triggers.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "03",
+          "sectionLabel": "03 Workspace Evolution & Architecture",
+          "sectionOrder": 3,
+          "itemOrder": 2,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "architecture_weuc.discover"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-WEUC",
+        "lensId": null,
+        "parentSurface": "architecture_weuc.discover",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION",
+        "DIR-PLAN-ARCHITECTURE"
+      ],
       "refinements": []
     },
     {
       "schemaVersion": 1,
       "id": "application_prototype.plan",
       "file": "prototype-application.command.md",
-      "command": "прототип приложения",
-      "englishName": "prototype application",
+      "command": "спланируй прототип",
+      "englishName": "plan prototype",
       "commandFamily": [
-        "прототип приложения",
-        "prototype application",
-        "plan application prototype"
+        "спланируй прототип",
+        "прототип приложения"
       ],
-      "description": "prototype application experience/workflow",
-      "meaning": "Invoke UC-PLAN-PROTOTYPE to test provisional interaction/workflow, Prototype Scenarios/Screens and candidate DATA/Behavior/Requirements.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+      "description": "prototype",
+      "meaning": "Run TM-PROTOTYPE through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/application-planning/prototype-planning-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Reviewed Prototype Plan/Result + candidate Scenario/DATA/Behavior/Requirement evidence.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Prototype/Evidence plan, uncertainty to close, method, exit gate and Evidence handoff; may validly conclude no prototype is justified.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Application prototype target>",
+      "userTarget": "<one bounded uncertainty / prototype subject>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use only when material uncertainty is best reduced through a prototype, experiment, mock or stub.",
+        "whatYouGet": "Prototype/Evidence plan, uncertainty to close, method, exit gate and Evidence handoff; may validly conclude no prototype is justified.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "01",
+          "sectionLabel": "01 Application",
+          "sectionOrder": 1,
+          "itemOrder": 3,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": [
+            "CONDITIONAL",
+            "EVIDENCE-DRIVEN"
+          ]
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-PROTOTYPE",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -1298,6 +2673,8 @@
       ],
       "userTarget": "<documentation work in this session or none yet>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1329,7 +2706,67 @@
       ],
       "userTarget": "<legacy explicit recheck target>",
       "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.weuc.refresh",
+      "file": "refresh-workspace-evolution-map.command.md",
+      "command": "обнови карту эволюции воркспейса",
+      "englishName": "refresh workspace evolution map",
+      "commandFamily": [
+        "обнови карту эволюции воркспейса"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "EXTEND/REFRESH/RECONCILE of the same Workspace Evolution Target.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<existing Workspace Evolution owner>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when the existing Workspace Evolution owner is stale after new Decisions/Evidence.",
+        "whatYouGet": "EXTEND/REFRESH/RECONCILE of the same Workspace Evolution Target.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "03",
+          "sectionLabel": "03 Workspace Evolution & Architecture",
+          "sectionOrder": 3,
+          "itemOrder": 3,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "architecture_weuc.discover"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-WEUC",
+        "lensId": null,
+        "parentSurface": "architecture_weuc.discover",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION",
+        "DIR-PLAN-ARCHITECTURE"
+      ],
       "refinements": []
     },
     {
@@ -1360,6 +2797,8 @@
       ],
       "userTarget": "<Need / solution-choice evidence gap>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1392,6 +2831,8 @@
       ],
       "userTarget": "<Application / Domain candidate realization target>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1425,6 +2866,8 @@
       ],
       "userTarget": "<Architecture / change-pressure target>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1461,6 +2904,8 @@
       ],
       "userTarget": "<review target / prior review / claim to recheck>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1493,7 +2938,195 @@
       ],
       "userTarget": "<Real-Life Situation / Need>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.review_consistency",
+      "file": "review-idtspe-consistency.command.md",
+      "command": "проверь консистентность плана",
+      "englishName": "review plan consistency",
+      "commandFamily": [
+        "проверь консистентность плана"
+      ],
+      "description": "Run the IDTSPE Consistency Review Use Case/validator, not a Target Module.",
+      "meaning": "Run the IDTSPE Consistency Review Use Case/validator, not a Target Module.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Consistency findings, contradictions/stale Decisions/coverage gaps and concrete reopen/revalidation routes.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "This is an IDTSPE orchestration/validator surface, not a Target Module.",
+        "Preserve the current Target/owner graph and normal permission boundaries.",
+        "Do not mutate repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<current plan/scope>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use after material planning/evidence/coverage or when owner/Decision/QRP/placement consistency is in doubt.",
+        "whatYouGet": "Consistency findings, contradictions/stale Decisions/coverage gaps and concrete reopen/revalidation routes.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 4,
+          "kindLabel": "VALIDATOR",
+          "badges": []
+        },
+        "relatedNavigation": [
+          {
+            "viewId": "SDS",
+            "viewLabel": "SDS — IDTSPE Profile",
+            "viewOrder": 1,
+            "sectionId": "08",
+            "sectionLabel": "08 Evidence & Coverage",
+            "sectionOrder": 8,
+            "itemOrder": 1000,
+            "kindLabel": "RELATED · IDTSPE VALIDATOR",
+            "badges": [
+              "RELATED"
+            ],
+            "related": true
+          }
+        ]
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "VALIDATOR",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.test.practical.review",
+      "file": "review-practical-test-results.command.md",
+      "command": "разбери результаты практического теста",
+      "englishName": "review practical test results",
+      "commandFamily": [
+        "разбери результаты практического теста"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-PRACTICAL-TEST intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Evidence interpretation, pass/fail/unknown, residual risk and upstream revalidation for the same Practical Test Target.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<practical test with actual Evidence>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use after practical/live proof produced actual observations/Evidence.",
+        "whatYouGet": "Evidence interpretation, pass/fail/unknown, residual risk and upstream revalidation for the same Practical Test Target.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "08",
+          "sectionLabel": "08 Evidence & Coverage",
+          "sectionOrder": 8,
+          "itemOrder": 1,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "practical_testing.plan"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-PRACTICAL-TEST",
+        "lensId": null,
+        "parentSurface": "practical_testing.plan",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-TESTING",
+        "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.prototype.review",
+      "file": "review-prototype-results.command.md",
+      "command": "разбери результаты прототипа",
+      "englishName": "review prototype results",
+      "commandFamily": [
+        "разбери результаты прототипа"
+      ],
+      "description": "focused SDS target",
+      "meaning": "Run focused TM-PROTOTYPE intent without creating a new Target type.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Evidence interpretation, closed/residual uncertainty, Decisions and downstream revalidation.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<prototype subject with actual Evidence>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use after a prototype/experiment produced actual Evidence that should update the same Prototype Target.",
+        "whatYouGet": "Evidence interpretation, closed/residual uncertainty, Decisions and downstream revalidation.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "01",
+          "sectionLabel": "01 Application",
+          "sectionOrder": 1,
+          "itemOrder": 4,
+          "kindLabel": "IDTSPE TARGET · FOCUSED",
+          "badges": [],
+          "parentId": "application_prototype.plan"
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-PROTOTYPE",
+        "lensId": null,
+        "parentSurface": "application_prototype.plan",
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -1503,29 +3136,54 @@
       "command": "проверь тестовое покрытие",
       "englishName": "review test coverage",
       "commandFamily": [
-        "проверь тестовое покрытие",
-        "проверь тесты",
-        "review test coverage"
+        "проверь тестовое покрытие"
       ],
-      "description": "review actual current test evidence",
-      "meaning": "Invoke UC-PLAN-TEST-COVERAGE to inspect whether actual current tests/evidence prove selected current meaning.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+      "description": "test coverage",
+      "meaning": "Run TM-TEST-COVERAGE through the IDTSPE Shell for the selected target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/testing-planning/use-case-registry.md",
-        "planning/documentation/testing-planning/test-coverage-review-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-COVERAGE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Behavior→actual-evidence map + missing/weak/stale/duplicated/wrong-layer findings.",
-      "permissionMode": "read-only",
+      "expectedOutput": "Coverage review, uncovered/overstated proof, Evidence gaps and upstream correction/revalidation routes.",
+      "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-        "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-        "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-        "No repository mutation, archive, commit or push is implied."
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Current behavior / test evidence target>",
+      "userTarget": "<selected semantic/Evidence coverage scope>",
       "palette": true,
-      "directionIds": [],
+      "helperPresentation": {
+        "whenToUse": "Use when implemented/planned proof coverage should be reconciled against semantic obligations and Evidence.",
+        "whatYouGet": "Coverage review, uncovered/overstated proof, Evidence gaps and upstream correction/revalidation routes.",
+        "navigation": {
+          "viewId": "SDS",
+          "viewLabel": "SDS — IDTSPE Profile",
+          "viewOrder": 1,
+          "sectionId": "08",
+          "sectionLabel": "08 Evidence & Coverage",
+          "sectionOrder": 8,
+          "itemOrder": 2,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-TEST-COVERAGE",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-PLAN-TESTING",
+        "DIR-PLAN-SOLUTION"
+      ],
       "refinements": []
     },
     {
@@ -1557,6 +3215,8 @@
       ],
       "userTarget": "<returned files and clarification to revise>",
       "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1589,6 +3249,8 @@
       ],
       "userTarget": "<parallel workstream target>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1623,6 +3285,8 @@
       ],
       "userTarget": "<Workspace UC / contextual WEUC instance / Application Scenario path>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1654,6 +3318,8 @@
       ],
       "userTarget": "<what should be checked from archive>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [],
       "refinements": []
     },
@@ -1698,6 +3364,8 @@
       ],
       "userTarget": "<Application to plan in Full SDS>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -1742,6 +3410,8 @@
       ],
       "userTarget": "<Application / bounded change to plan in Mini SDS>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -1789,8 +3459,67 @@
       ],
       "userTarget": "<Application / bounded change to plan in Modular/Medium SDS>",
       "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.work",
+      "file": "work-through-idtspe.command.md",
+      "command": "работай через idtspe",
+      "englishName": "work through IDTSPE",
+      "commandFamily": [
+        "работай через idtspe",
+        "режим idtspe"
+      ],
+      "description": "Use IDTSPE as the default material-planning operating mode.",
+      "meaning": "Resolve scope/Target and continue material planning through the IDTSPE Shell; AI proposals remain Ideas until selected.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Current Target/scope resolution and an IDTSPE planning result with Q/R/P, Decisions, Artifact Placement and Methodology Direction when material.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<current planning work>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "When you want subsequent material planning to run through IDTSPE without choosing an SDS module manually.",
+        "whatYouGet": "Current Target/scope resolution and an IDTSPE planning result with Q/R/P, Decisions, Artifact Placement and Methodology Direction when material.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 1,
+          "kindLabel": "WORK MODE",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "WORK_MODE",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
       ],
       "refinements": []
     }

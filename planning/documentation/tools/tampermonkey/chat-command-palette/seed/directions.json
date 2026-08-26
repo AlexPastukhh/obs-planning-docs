@@ -18,8 +18,8 @@
       "description": "Current semantic Direction · Plan A Solution / Workflow / Application",
       "sources": [
         "planning/direction-registry.md",
-        "planning/documentation/application-planning/direction-registry.md",
-        "planning/documentation/application-planning/use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md"
       ]
     },
     {
@@ -38,8 +38,9 @@
       "description": "Current semantic Direction · Plan / Review Workspace Architecture",
       "sources": [
         "planning/direction-registry.md",
-        "planning/documentation/architecture-planning/direction-registry.md",
-        "planning/documentation/architecture-planning/use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md"
       ]
     },
     {
@@ -48,8 +49,8 @@
       "description": "Current semantic Direction · Plan / Review Verification And Testing",
       "sources": [
         "planning/direction-registry.md",
-        "planning/documentation/testing-planning/direction-registry.md",
-        "planning/documentation/testing-planning/use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md"
       ]
     },
     {

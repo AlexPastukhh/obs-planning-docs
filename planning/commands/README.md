@@ -54,6 +54,10 @@ Every command file contains exactly one marker block:
   "keyReminders": ["..."],
   "userTarget": "<placeholder>",
   "palette": true,
+  "helperPresentation": {
+    "whenToUse": "...",
+    "whatYouGet": "..."
+  },
   "directionIds": ["DIR-..."],
   "refinements": []
 }
@@ -72,9 +76,16 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - `ownerFiles` and `keyReminders` are arrays of strings.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
 - optional `directionIds` contains current Direction IDs for standalone palette/orchestration placement when the command is not a semantic UC's direct command; every listed Direction must exist.
+- optional `helperPresentation` carries `When To Use` / `What You Get` copy for Helper details; new IDTSPE canonical/focused surfaces provide it, while older commands remain valid without it.
 - one high-level command may orchestrate several existing UCs/Scenario owners when that gives a useful stable invocation surface. This never creates a semantic UC or lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.
 - result-producing commands may depend on reusable governance through `ownerFiles` / their semantic owner route; the shared command router reuses current governance, refreshes affected owners proportionally, and performs a full internal preflight only when no reliable sufficient governance context exists. A source snapshot/commit/branch change alone does not force a full reread.
+
+## Current IDTSPE/SDS Projection
+
+Current methodology surface ownership: [`planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md). Repository IDs/aliases may reuse existing commands; methodology identity is not inferred from filenames.
+
+The six retired `collect-ideas*` command IDs remain hidden compatibility aliases only. They must route their supplied material into the current IDTSPE/SDS Target/owner model and must not retain the old collect-Ideas shell, Current Plan runtime, Idea Review owners or old SDS physical-profile owners. Hiding an old command from the palette is not enough if its owner route still revives obsolete semantics.
 
 ## Creating Or Updating A Command
 

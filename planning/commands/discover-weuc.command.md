@@ -1,4 +1,4 @@
-# Discover Contextual Weucs
+# Plan Workspace Evolution
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -8,39 +8,62 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "architecture_weuc.discover",
   "file": "discover-weuc.command.md",
-  "command": "собери WEUC",
-  "englishName": "discover contextual WEUCs",
+  "command": "спланируй эволюцию воркспейса",
+  "englishName": "plan workspace evolution",
   "commandFamily": [
-    "собери WEUC",
-    "найди WEUC",
-    "discover WEUC",
-    "discover contextual WEUCs",
-    "эволюционные юзкейсы",
-    "исследуй WEUC-инстансы",
-    "изучи инстансы эволюции",
-    "discover WEUC instances"
+    "спланируй эволюцию воркспейса",
+    "собери WEUC"
   ],
-  "description": "discover contextual Workspace Evolution Use-Case instances",
-  "meaning": "Invoke UC-PLAN-ARCH-DISCOVER-WEUC to discover concrete contextual WEUC Instances (optionally grouped by reusable WEUC Type), assess likelihood/horizon/value/confidence, current-work overlap, preparation-now vs deferred cost, expected Workspace Change Paths and applicable work-cost/friction/risk evidence.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+  "description": "weuc",
+  "meaning": "Run TM-WEUC through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/architecture-planning/use-case-registry.md",
-    "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
-    "planning/documentation/architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Contextual WEUC Instances + optional WEUC Type grouping + likelihood/horizon/value/confidence + current-work overlap/preparation-vs-deferred cost + expected Workspace Change Paths + work-cost/friction/risk + architecture handoff.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Workspace Evolution result, projected paths/global architecture decisions and revalidation triggers; optional/cross-cutting/repeatable.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "Prefer contextual instances over generic flexibility. Use stable IDs/register only when cross-plan tracking is materially useful.",
-    "No repository mutation, archive, commit or push is implied.",
-    "A future instance is architecture evidence only to the degree likelihood/horizon/value/current-work overlap and preparation-now vs deferred cost justify paying Architectural Tax now."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Concrete target code/workspace area>",
+  "userTarget": "<Workspace Evolution Map / architecture position>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-SOLUTION",
+    "DIR-PLAN-ARCHITECTURE"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when Workspace evolution, global architecture position or projected change paths need planning/reconciliation.",
+    "whatYouGet": "Workspace Evolution result, projected paths/global architecture decisions and revalidation triggers; optional/cross-cutting/repeatable.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "03",
+      "sectionLabel": "03 Workspace Evolution & Architecture",
+      "sectionOrder": 3,
+      "itemOrder": 0,
+      "kindLabel": "IDTSPE TARGET",
+      "badges": [
+        "PRIMARY OPTIONAL",
+        "CROSS-CUTTING",
+        "REPEATABLE"
+      ],
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-WEUC",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

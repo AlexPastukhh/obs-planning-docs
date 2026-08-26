@@ -1,4 +1,4 @@
-# Plan Behavior Verification
+# Plan Test Design
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -8,31 +8,57 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "test_design.plan",
   "file": "plan-test-design.command.md",
-  "command": "спланируй проверку поведения",
-  "englishName": "plan behavior verification",
+  "command": "спланируй тесты",
+  "englishName": "plan test design",
   "commandFamily": [
-    "спланируй проверку поведения",
-    "дизайн тестов",
-    "plan behavior verification"
+    "спланируй тесты",
+    "спланируй проверку поведения"
   ],
-  "description": "design convincing proof for selected behavior",
-  "meaning": "Invoke UC-PLAN-TEST-DESIGN to map selected Scenario/Requirement/Domain/Slice behavior to concrete assertions and appropriate proof layers.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+  "description": "test design",
+  "meaning": "Run TM-TEST-DESIGN through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/testing-planning/use-case-registry.md",
-    "planning/documentation/testing-planning/test-design-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-DESIGN.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Behavior-to-Test Trace + selected proof layers/assertions/boundary decisions.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Selected behavior to verify>",
+  "userTarget": "<one Domain/Slice/etc proof target>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-TESTING",
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when a semantic owner needs executable/procedural proof design before or during realization.",
+    "whatYouGet": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "05",
+      "sectionLabel": "05 Proof Design",
+      "sectionOrder": 5,
+      "itemOrder": 0,
+      "kindLabel": "IDTSPE TARGET",
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-TEST-DESIGN",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

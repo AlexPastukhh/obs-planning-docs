@@ -1,6 +1,6 @@
 # Collect Slice Ideas
 
-Status: active project command definition
+Status: legacy compatibility command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
 
 [PLANNING_COMMAND_DEFINITION]
@@ -14,38 +14,30 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери идеи слайса",
     "slice ideas"
   ],
-  "description": "accumulate Ideas around Slice Strategy or one implementation Slice",
-  "meaning": "Run the shared collect-ideas shell with the integration target fixed to Slice Strategy when decomposition is unresolved, otherwise to one selected Slice. Integrate vertical useful-result boundaries, dependencies, technical sequence, proof obligations and material Architecture/Testing evidence through their current UCs.",
-  "activeContextBehavior": "Use selected Scenario/Behavior/Requirements and Domain meaning when material. Route architecture/testing questions to their current registries; do not copy those methodologies into the command or let technical sequencing redefine product priority.",
-  "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+  "description": "legacy compatibility alias; Slice ideas alias routed into current Slice Target Modules",
+  "meaning": "Legacy alias for current Slice planning. Use TM-SLICE-STRATEGY when decomposition/portfolio/order is materially unresolved, otherwise reuse/plan the selected TM-IMPLEMENTATION-SLICE. Supplied ideas become normal IDTSPE material and architecture/testing implications route to current Lenses/Test Target Modules.",
+  "activeContextBehavior": "Use accepted Scenario/Behavior/Requirement and Domain Sources. Resolve strategy vs individual Slice from current state; do not let implementation convenience redefine upstream semantics.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Slice owner/module route when uncertain.",
   "ownerFiles": [
-    "planning/documentation/planning-concerns-and-decisions-model.md",
-    "planning/documentation/idea-planning-principles-and-terminology.md",
-    "planning/documentation/idea-review-and-planning-workflow.md",
-    "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/slice-planning-workflow.md",
-    "planning/documentation/application-planning/templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md",
-    "planning/documentation/application-planning/templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md",
-    "planning/documentation/architecture-planning/use-case-registry.md",
-    "planning/documentation/testing-planning/use-case-registry.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-STRATEGY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Reviewed Slice Ideas + selected/current Slice Strategy or Slice integration + dependencies/technical sequence/proof obligations + Q/R/P/Decisions + material Architecture/Testing handoffs.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Current Slice Strategy or Implementation Slice result with vertical-result/dependency/proof handoffs and material Q/R/P/Decisions; no legacy Slice-Ideas accumulator.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-    "Product/Scenario priority is upstream input and is distinct from recommended technical implementation sequence.",
-    "Testing Strategy/Test Design/Practical Test Plan may be Step-3 planning evidence when material; actual coverage/executed evidence remains downstream.",
-    "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-    "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-    "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-    "Do not edit repository files, create an archive, commit or push."
+    "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+    "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<selected source/current planning target>",
-  "palette": true,
+  "palette": false,
   "refinements": [],
   "directionIds": [
     "DIR-PLAN-SOLUTION"
-  ]
+  ],
+  "helperPresentation": null,
+  "methodologyBinding": null
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -330,3 +330,25 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-052`
 **Reason:** Planning Helper README, durable catalog order and generated command seed project the new GitHub-backed collect-ideas orchestrator commands without changing runtime/source/test behavior or adding custom tabs; full semantic rationale and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-019 — Implement metadata-driven IDTSPE/SDS Helper navigation
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-054`  
+**Reason:** Planning Helper `0.32.0` codec/UI/navigation source/tests/catalog order/generated seeds/userscript implement the 7-IDTSPE + 32-SDS projection using stable `methodologyBinding` plus separate helper navigation metadata rather than hard-coded runtime identities; full review and APPLIED target state are owned by the reusable-documentation canonical log.
+
+
+### XREF-020 — Rebuild Helper projections for IDTSPE routing/legacy-alias and Test Strategy correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-056`  
+**Reason:** Planning Helper generated Direction/Command seeds and semantic-navigation regression tests are rebuilt from the corrected current repository owners; full routing/Test Strategy clarification and APPLIED target state remain in the reusable-documentation canonical log.
+
+### XREF-021 — Make methodology views fully metadata-driven and enforce bootstrap no-Target behavior
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-058`  
+**Reason:** Planning Helper `0.32.1` removes the remaining hard-coded IDTSPE/SDS view controls, derives view IDs/labels/order from command metadata, rebuilds generated projections and adds regression tests; full cross-scope ReviewDiff rationale and APPLIED state remain in the reusable-documentation canonical log.

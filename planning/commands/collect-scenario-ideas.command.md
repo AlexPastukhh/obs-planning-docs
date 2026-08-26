@@ -1,6 +1,6 @@
 # Collect Scenario Ideas
 
-Status: active project command definition
+Status: legacy compatibility command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
 
 [PLANNING_COMMAND_DEFINITION]
@@ -14,36 +14,30 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери идеи сценария",
     "scenario ideas"
   ],
-  "description": "accumulate Ideas around Application Scenario meaning",
-  "meaning": "Run the shared collect-ideas shell with the integration target fixed to an Application Scenario. Integrate Ideas into observable actor/user goal/result behavior, Scenario DATA and Behavior Items, adding Requirements/Screens when material; preserve Domain/Slice findings as downstream handoffs.",
-  "activeContextBehavior": "Use the clearly selected/current Scenario, or identify the candidate Scenario when the source makes it clear. Do not broaden into Domain/Slice planning merely because downstream implications are visible.",
-  "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+  "description": "legacy compatibility alias; Scenario ideas alias routed into current Scenario Target Modules",
+  "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context, use TM-SCENARIO-DISCOVERY when inventory/boundaries are unresolved or TM-SCENARIO-DRAFT for one selected Scenario, and treat supplied ideas as normal IDTSPE material. Do not run the former collect-ideas shell.",
+  "activeContextBehavior": "Use the selected/current Scenario when clear; otherwise resolve discovery vs draft through Target Formation. Keep Domain/Slice implications as downstream handoffs unless the user expands the Target.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Scenario owner/module route when uncertain.",
   "ownerFiles": [
-    "planning/documentation/planning-concerns-and-decisions-model.md",
-    "planning/documentation/idea-planning-principles-and-terminology.md",
-    "planning/documentation/idea-review-and-planning-workflow.md",
-    "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
-    "planning/documentation/application-planning/detailed-planning/README.md",
-    "planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DISCOVERY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DRAFT.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Reviewed Scenario Ideas + current/preliminary Scenario integration + DATA/Behavior + material Requirements/Screens + Q/R/P/Decisions + downstream handoffs.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Current Scenario Discovery/Draft result with material DATA/Behavior/Q/R/P/Decisions and downstream handoffs; no legacy Scenario-Ideas accumulator.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-    "Scenario identity is a user/actor Need/goal/desired result reached through observable useful behavior; internal implementation operations are not Scenarios by themselves.",
-    "Stop before Domain planning unless the user intentionally expands scope.",
-    "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-    "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-    "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-    "Do not edit repository files, create an archive, commit or push."
+    "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+    "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<selected source/current planning target>",
-  "palette": true,
+  "palette": false,
   "refinements": [],
   "directionIds": [
     "DIR-PLAN-SOLUTION"
-  ]
+  ],
+  "helperPresentation": null,
+  "methodologyBinding": null
 }
 [/PLANNING_COMMAND_DEFINITION]

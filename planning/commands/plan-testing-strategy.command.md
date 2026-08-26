@@ -8,31 +8,61 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "testing_strategy.plan",
   "file": "plan-testing-strategy.command.md",
-  "command": "стратегия тестирования",
+  "command": "спланируй стратегию тестирования",
   "englishName": "plan testing strategy",
   "commandFamily": [
-    "стратегия тестирования",
-    "план стратегии тестирования",
-    "plan testing strategy"
+    "спланируй стратегию тестирования",
+    "стратегия тестирования"
   ],
-  "description": "plan/review shared testing strategy",
-  "meaning": "Invoke UC-PLAN-TEST-STRATEGY when proof responsibility spans several Slices/layers or shared harness/data/isolation/E2E policy matters.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+  "description": "test strategy",
+  "meaning": "Run TM-TEST-STRATEGY through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/testing-planning/use-case-registry.md",
-    "planning/documentation/testing-planning/testing-strategy-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Current testing strategy + layer/shared proof responsibilities.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Testing Strategy or a valid no-Strategy result routing proof design locally; when useful, include a compact Test Realization / Topology Registry mapping Slice/Domain proof owners to concrete test suites/classes/setups/fixtures/harnesses/helpers, with optional promoted supporting map only under independent pressure.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "When shared test realization mapping is useful, reference concrete test classes/setups/helpers from the Strategy; do not copy test bodies or make test code semantic authority.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Testing responsibility / application change>",
+  "userTarget": "<one shared testing strategy>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-TESTING",
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when proof concerns genuinely need a shared cross-owner strategy/environment/layer policy or when the cross-Slice test-realization topology is hard to understand from code alone.",
+    "whatYouGet": "Testing Strategy or a valid no-Strategy result; when useful, a compact registry-like map of Slice/Domain proof → test suite/class → setup/fixture/harness/helper without duplicating test bodies.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "06",
+      "sectionLabel": "06 Slice Portfolio",
+      "sectionOrder": 6,
+      "itemOrder": 1,
+      "kindLabel": "IDTSPE TARGET",
+      "badges": [
+        "CONDITIONAL"
+      ],
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-TEST-STRATEGY",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

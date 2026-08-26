@@ -1,4 +1,4 @@
-# Plan Application Slice
+# Plan Implementation Slice
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -8,33 +8,56 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "application_slice.plan",
   "file": "plan-application-slice.command.md",
-  "command": "план слайса приложения",
-  "englishName": "plan application slice",
+  "command": "спланируй слайс",
+  "englishName": "plan implementation slice",
   "commandFamily": [
-    "план слайса приложения",
-    "план слайса",
-    "plan application slice",
-    "plan slice"
+    "спланируй слайс",
+    "план слайса приложения"
   ],
-  "description": "plan one implementation Slice",
-  "meaning": "Invoke UC-PLAN-SLICE to plan one integrated vertical increment with explicit implemented/delegated/later/outside behavior boundaries; split frontend/server/verification implementation-part plans only when useful.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+  "description": "implementation slice",
+  "meaning": "Run TM-IMPLEMENTATION-SLICE through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/slice-planning-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Integrated Slice plan + behavior/delegation boundary + positive/negative proof obligations + optional frontend/server/verification implementation-part plans.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied.",
-    "Cross-cutting applicability does not transfer ownership; provisional file/class/method names may change without semantic drift, while behavior/responsibility/invariant/negative-guarantee changes require review."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Selected Slice>",
+  "userTarget": "<one implementation Slice>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when one Useful Vertical Result needs integrated realization planning.",
+    "whatYouGet": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "07",
+      "sectionLabel": "07 Slice Realization",
+      "sectionOrder": 7,
+      "itemOrder": 0,
+      "kindLabel": "IDTSPE TARGET",
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-IMPLEMENTATION-SLICE",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

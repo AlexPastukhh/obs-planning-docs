@@ -946,3 +946,111 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - custom Helper tabs remain deferred to the next separate Helper change.
 
 **Rationale:** provide stable high-level collect-ideas accumulators for the Helper while preserving one semantic owner graph, keeping concrete file planning and actual evidence explicitly downstream, and avoiding unnecessary methodology/runtime churn.
+
+### LOG-DOC-053 — Review corrected IDTSPE/SDS command surface and staged repository installation boundary
+
+**Type:** IDEA REVIEW / LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW  
+**Source:** accepted corrected IDTSPE methodology workspace + current replacement-package request against the user-selected `ca768b61...` repository snapshot
+
+**Current Conclusions:**
+- install the current IDTSPE/SDS methodology as the canonical material-planning authority under `planning/documentation/idtspe-methodology/`, preserving its Core/SDS separation, 17 Target Modules, 18 Lenses and adaptive Documentation/Representation model;
+- expose the accepted **39** methodology command surfaces: 7 IDTSPE primary surfaces + 32 SDS primary surfaces, including the direct Core Documentation/Representation check and the corrected user-facing cross-cutting command `спланируй сквозную ответственность <target>`;
+- keep SDS as an IDTSPE profile rather than a parallel runtime; focused commands remain views of their existing Target Module owners and direct Lens commands do not create Targets;
+- project conditional/optional Target nature in Helper metadata and show the existing consistency validator as a related Evidence/Coverage action without creating a 40th surface;
+- store Helper navigation metadata in repository command definitions/seed projection and keep the userscript runtime generic. Hard-coding the 39 current command IDs into runtime would create a second catalog authority and is rejected;
+- retire the six older `collect-ideas*` surfaces from the primary palette by retaining their command files only as hidden legacy compatibility (`palette:false`); do not delete them or the older Application/Architecture/Testing methodology families in this package;
+- defer destructive legacy-family cleanup because MB-06 exact Reference Object semantics are still intentionally open. This package must not guess merge-before-delete meaning merely to make the repository look fully migrated;
+- root Planning README/AI working contract/command routing/Direction+Use-Case projections should route current material planning toward the installed IDTSPE/SDS authority while preserving older families as readable compatibility until their separate cleanup gate is satisfied.
+
+**Verification Evidence:** Planning Helper build/verification on the staged target passes **111 / 111** automated tests; generated userscript and GitHub-backed Direction/Command/Use-Case catalogs match current sources; generated runtime contains no maintained current methodology command identities.
+
+**Questions / Risks / Problems:** MB-06 remains intentionally open; therefore this transition is an authority/command/helper installation, not final destructive removal of all superseded planning families.
+
+### LOG-DOC-054 — Apply IDTSPE/SDS authority, 39-command surface and metadata-driven Helper navigation
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-053`  
+**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`  
+**Package:** `46052a68-afd1-4913-8e75-0dd21a23e412`  
+
+**Target-State Result:** after successful Apply of this package:
+- the corrected methodology workspace is installed at `planning/documentation/idtspe-methodology/` and root planning governance identifies IDTSPE + SDS as the current material-planning authority;
+- the repository command catalog exposes **39** accepted methodology primary surfaces: **7 IDTSPE + 32 SDS**; the six older collect-ideas command files remain hidden legacy compatibility rather than competing palette surfaces;
+- `бутстреп sds` remains a read-only SDS **governance bootstrap**, distinct from selecting the Full SDS physical profile and compatible with the repository's proportional governance-preflight contract;
+- all 39 methodology command definitions carry stable `methodologyBinding` (`IDTSPE` runtime/profile/surface kind/TM-or-Lens/semantic parent/host-target policy) plus separate helper-owned `helperPresentation` navigation metadata (`view/section/order/kind/badges/parent/related`) and `When To Use / What You Get`; the Helper codec validates and serializes both layers;
+- Planning Helper `0.32.0` renders IDTSPE, SDS — IDTSPE Profile and All Commands views; focused commands are nested, conditional/optional badges are visible, Documentation/Representation is a Core Lens surface, WEUC+Simplicity remain the direct SDS Lens checks, and Evidence/Coverage links the existing consistency validator as a related action;
+- Helper navigation runtime is generic and contains no maintained current command IDs; current navigation identities come from GitHub-backed command definitions/seed projection, preserving one command authority;
+- generated command/direction/use-case seeds and userscript are rebuilt from the target state; Helper verification passes **111 / 111** automated tests and generated-source consistency;
+- no `planning/documentation/tools/replacement-package-app/` file is changed by this package; the unrelated current snapshot work in that registered child scope is left untouched;
+- old Application/Architecture/Testing families remain readable legacy compatibility until a separate MB-06-aware cleanup package can preserve/delete them safely.
+
+**Rationale:** install the accepted IDTSPE/SDS runtime/profile and command/helper surface now without manufacturing file/runtime authorities or performing destructive cleanup whose Reference Object preservation gate is still unresolved.
+
+
+### LOG-DOC-055 — Review post-Apply IDTSPE routing, legacy-alias retirement and Test Strategy realization registry
+
+**Type:** REVIEW DIFF / LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW  
+**Source:** post-Apply ReviewDiff of the IDTSPE/SDS installation package + user clarification that shared Test Strategy may need a registry-like file for cross-Slice test realization topology
+
+**Material Findings / Selected Corrections:**
+- root `DIR-PLAN-ARCHITECTURE` and `DIR-PLAN-TESTING` still pointed to the old Architecture/Testing registries even though current material-planning authority is installed under IDTSPE/SDS; repoint those root Directions to the current SDS map and current WEUC/Test Target owners without deleting the legacy families yet;
+- all six `collect-ideas*` commands were hidden with `palette:false`, but several still retained the old collect-Ideas/Current-Plan meaning and legacy Idea/Application/Architecture/Testing owner files. Hiding is not semantic retirement: keep the old IDs/aliases only as compatibility entrypoints and route them into current IDTSPE/SDS Target ownership with no old collect-Ideas runtime;
+- preserve the general command-routing rule that a legacy alias may keep its trigger but must not keep obsolete semantic owners/runtimes alive;
+- extend `TM-TEST-STRATEGY` so a material shared strategy may keep a compact **Test Realization / Topology Registry** mapping Slice/Domain proof responsibility to concrete test suite/class, setup/fixture/harness and helper responsibility, including shared consumers when useful;
+- the realization registry exists because the important cross-owner relation is often poorly discoverable from distributed code alone. Test code remains authority for class bodies/signatures/assertions; Strategy references those implementation owners rather than duplicating them;
+- keep the registry as a section of `TEST-STRATEGY.md` by default. Promote it to an independently addressable supporting map such as `TEST-REALIZATION-MAP.md` only when size/review/reuse/read-path pressure justifies the split through Documentation / Representation + P-14;
+- do not add a new Target Module or AP/AG identity for this clarification: extend `AP-TSTRAT-01` representation semantics and the existing materialization projection, keeping **38 AP + 38 AG = 76** source records;
+- add regression checks for current root Direction authority, true collect-Ideas alias retirement and Test Strategy registry semantics, then rebuild Helper Direction/Command seeds from repository source.
+
+**Boundary:** old Application/Architecture/Testing source families remain physically present as legacy/provenance/compatibility material pending their already-planned cleanup gates; this correction changes current routing/authority and does not perform the destructive migration.
+
+### LOG-DOC-056 — Apply IDTSPE routing/legacy-alias correction and Test Strategy realization registry
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-055`  
+**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`  
+**Package:** `3fcc3e13-11df-4a27-a109-8c096fac8685`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- root Architecture planning resolves through current SDS/IDTSPE architecture ownership: `SDS-FULL-MAP` + `TM-WEUC` for project-global architecture/evolution + WEUC Lens for target-local fitness; the root Direction no longer advertises the legacy Architecture registry as current authority;
+- root Testing planning resolves through current SDS/IDTSPE Test Target Module catalog; the root Direction no longer advertises the legacy Testing registry as current authority;
+- all six `collect-ideas*` commands remain registered but hidden compatibility aliases and now route only to current IDTSPE/SDS owners. Their command meaning/ownerFiles no longer revive the old Idea Review/Current Plan/old SDS profile runtime;
+- shared command-routing documentation explicitly states that `palette:false` alone is not semantic retirement;
+- `TM-TEST-STRATEGY` can persist a compact Test Realization / Topology Registry showing how selected Slice/Domain proof is realized by test suites/classes/setups/fixtures/harnesses/helpers and which infrastructure is intentionally shared;
+- the Test Strategy registry references code instead of shadowing test bodies, stays inside the Strategy first, and may split to a supporting `TEST-REALIZATION-MAP.md` only under independent representation pressure;
+- Test Strategy command/help text, SDS full/physical/materialization maps, Documentation / Representation Lens, testing workflow notes and current audits agree on the same registry-like representation rule;
+- AP/AG totals remain **38 + 38 = 76** and the existing materialization projection remains source-ID complete;
+- Planning Helper regenerated Direction/Command seeds from the corrected repository sources and passes **114 / 114** automated tests; the accepted primary methodology surface remains **39 = 7 IDTSPE + 32 SDS**;
+- no old Application/Architecture/Testing directory is deleted by this correction package and no commit/push is implied.
+
+**Rationale:** finish the same IDTSPE/SDS installation ChangeSet by removing residual current-authority leaks and make shared testing topology discoverable in the one place where code alone is structurally weak: cross-Slice/Domain mapping of proof responsibility to concrete test infrastructure.
+
+### LOG-DOC-057 — Review residual bootstrap semantics and Helper methodology-view authority
+
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
+**Source:** post-Apply ReviewDiff after `LOG-DOC-056` + explicit user approval to correct the remaining findings
+
+**Material Findings / Selected Corrections:**
+- `idtspe.bootstrap` and `application_sds.bootstrap` were correctly bound as `BOOTSTRAP` with `hostTargetPolicy=NONE`, but their copied `activeContextBehavior` still told the runtime to resolve a Target and infer `CREATE/REFINE/EXTEND/REVALIDATE/REPAIR`. Bootstrap must load/refresh governance only: it may report an already-current Target for orientation, but it does not perform Target Formation, select a Target, infer an invocation mode or execute Target/Target-Module work;
+- Helper already had generic `methodologyViewDefinitions(entries)` derived from `helperPresentation.navigation`, but `planning-helper-ui.js` still hard-coded the `IDTSPE` / `SDS — IDTSPE Profile` buttons and default view. Remove that second view-list authority: generate methodology view controls, labels and ordering from current command metadata and keep only generic `All commands` as Helper-owned fallback;
+- the retired generic `collect-ideas.command.md` had current IDTSPE semantics but its file-level `Scope:` sentence still claimed reusable Idea/SDS-UCDS behavior. Correct the header so the old file is explicitly a compatibility trigger whose behavior is owned by current IDTSPE/SDS owners;
+- add regression evidence for bootstrap no-Target behavior and metadata-derived Helper view controls, and bump Planning Helper to `0.32.1` because this correction changes UI runtime behavior.
+
+**Boundary:** this correction does not change the accepted 39 methodology surfaces, Target/Lens counts, Architecture/Testing routing, Test Strategy realization-registry semantics, AP/AG identities or legacy-family cleanup gates established by `LOG-DOC-054` / `LOG-DOC-056`.
+
+### LOG-DOC-058 — Apply bootstrap/view-authority cleanup
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-057`  
+**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`  
+**Package:** `b580c0bc-95fa-475b-a59d-450a3e2ca9f9`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `idtspe.bootstrap` and `application_sds.bootstrap` are governance-orientation surfaces only; both preserve `hostTargetPolicy=NONE`, may report/reuse an already-current Target only for orientation, and explicitly forbid Target Formation, Target selection, invocation-mode inference and Target/Target-Module execution;
+- the Planning Helper `0.32.1` methodology view bar is generated from `methodologyViewDefinitions(commandEntries)` / command `helperPresentation.navigation` metadata. Runtime UI no longer owns a hard-coded `IDTSPE`/`SDS` view list or labels; `All commands` remains the generic Helper fallback;
+- generic `collect-ideas.command.md` is consistently described at file scope as a legacy compatibility alias routed to current IDTSPE/SDS owners;
+- generated command seed and userscript are rebuilt from the corrected sources; the accepted primary methodology surface remains **39 = 7 IDTSPE + 32 SDS**;
+- Planning Helper verification passes **116 / 116** automated tests, including new bootstrap no-Target and metadata-derived-view regressions;
+- the existing Architecture/Testing routing, true collect-Ideas semantic retirement, Test Strategy Realization / Topology Registry, **38 AP + 38 AG = 76** materialization source records and open MB-06 boundary remain unchanged.
+
+**Rationale:** remove the last duplicated/contradictory runtime semantics from the staged IDTSPE/SDS installation so bootstrap cannot accidentally become Target execution and Helper navigation has one GitHub-backed metadata source for methodology views.

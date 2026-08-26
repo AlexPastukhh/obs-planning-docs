@@ -11,29 +11,52 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "command": "собери сценарии приложения",
   "englishName": "discover application scenarios",
   "commandFamily": [
-    "собери сценарии приложения",
-    "найди сценарии приложения",
-    "discover application scenarios"
+    "собери сценарии приложения"
   ],
-  "description": "discover meaningful Application Scenario boundaries",
-  "meaning": "Invoke UC-PLAN-SCENARIO-DISCOVERY to identify independently meaningful user-visible Need/result Scenario boundaries for the selected Application responsibility.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+  "description": "scenario discovery",
+  "meaning": "Run TM-SCENARIO-DISCOVERY through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DISCOVERY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Current Scenario inventory/boundaries + material future Scenario/change evidence.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Scenario inventory/catalog, candidate boundaries, priorities/relations and next Scenario Draft targets.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied.",
-    "Application Scenario identity is a user/actor goal/Need or desired result reached through observable useful behavior; internal implementation operations remain downstream unless they participate in an independently meaningful user/actor-visible outcome."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Selected Application responsibility>",
+  "userTarget": "<Scenario inventory / catalog>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when the application behavior space or Scenario inventory is incomplete, stale or needs consolidation.",
+    "whatYouGet": "Scenario inventory/catalog, candidate boundaries, priorities/relations and next Scenario Draft targets.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "02",
+      "sectionLabel": "02 Scenarios & Interaction",
+      "sectionOrder": 2,
+      "itemOrder": 0,
+      "kindLabel": "IDTSPE TARGET",
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-SCENARIO-DISCOVERY",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

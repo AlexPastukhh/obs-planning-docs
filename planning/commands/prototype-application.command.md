@@ -1,4 +1,4 @@
-# Prototype Application
+# Plan Prototype
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -8,31 +8,60 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "application_prototype.plan",
   "file": "prototype-application.command.md",
-  "command": "прототип приложения",
-  "englishName": "prototype application",
+  "command": "спланируй прототип",
+  "englishName": "plan prototype",
   "commandFamily": [
-    "прототип приложения",
-    "prototype application",
-    "plan application prototype"
+    "спланируй прототип",
+    "прототип приложения"
   ],
-  "description": "prototype application experience/workflow",
-  "meaning": "Invoke UC-PLAN-PROTOTYPE to test provisional interaction/workflow, Prototype Scenarios/Screens and candidate DATA/Behavior/Requirements.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+  "description": "prototype",
+  "meaning": "Run TM-PROTOTYPE through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/prototype-planning-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Reviewed Prototype Plan/Result + candidate Scenario/DATA/Behavior/Requirement evidence.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Prototype/Evidence plan, uncertainty to close, method, exit gate and Evidence handoff; may validly conclude no prototype is justified.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Application prototype target>",
+  "userTarget": "<one bounded uncertainty / prototype subject>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use only when material uncertainty is best reduced through a prototype, experiment, mock or stub.",
+    "whatYouGet": "Prototype/Evidence plan, uncertainty to close, method, exit gate and Evidence handoff; may validly conclude no prototype is justified.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "01",
+      "sectionLabel": "01 Application",
+      "sectionOrder": 1,
+      "itemOrder": 3,
+      "kindLabel": "IDTSPE TARGET",
+      "badges": [
+        "CONDITIONAL",
+        "EVIDENCE-DRIVEN"
+      ],
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-PROTOTYPE",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

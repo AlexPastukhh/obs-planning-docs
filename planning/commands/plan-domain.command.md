@@ -1,4 +1,4 @@
-# Plan Application Domain
+# Plan Domain
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -8,33 +8,59 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "application_domain.plan",
   "file": "plan-domain.command.md",
-  "command": "план домена приложения",
-  "englishName": "plan application domain",
+  "command": "спланируй домен",
+  "englishName": "plan domain",
   "commandFamily": [
-    "план домена приложения",
-    "план домена",
-    "plan application domain",
-    "plan domain"
+    "спланируй домен",
+    "план домена приложения"
   ],
-  "description": "plan/review Application Domain",
-  "meaning": "Invoke UC-PLAN-DOMAIN to select the simplest explicit concepts/state/lifecycle/rules/invariants/policies/value/ownership boundaries that support current Scenario meaning and justified evolution.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner/profile and current-plan uncertainty.",
+  "description": "domain draft",
+  "meaning": "Run TM-DOMAIN-DRAFT through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/domain-planning-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Selected Domain Draft/meaning + coverage/variation + selected/split/merged/rejected Aggregate boundaries when material + verification decisions.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Current Domain semantics/rules/invariants and implementation/testing/evolution handoffs; dedicated file is not automatic.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied.",
-    "Select/split/merge/reject Aggregate boundaries only from concrete invariant/lifecycle/consistency ownership evidence; keep outside/external references explicit and accept no explicit Aggregate when simpler and correct."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Application Domain target>",
+  "userTarget": "<one Domain owner>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when one Domain owner is materially justified and needs deeper planning/revalidation.",
+    "whatYouGet": "Current Domain semantics/rules/invariants and implementation/testing/evolution handoffs; dedicated file is not automatic.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "04",
+      "sectionLabel": "04 Domain",
+      "sectionOrder": 4,
+      "itemOrder": 1,
+      "kindLabel": "IDTSPE TARGET",
+      "badges": [
+        "PRIMARY OPTIONAL"
+      ],
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-DOMAIN-DRAFT",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

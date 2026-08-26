@@ -90,3 +90,14 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Confirm Domain discovery/planning can identify Value Object/Aggregate candidates from evidence, records Root/owned/outside/external/coordination boundaries, and permits select/split/merge/reject/no explicit Aggregate.
 - Confirm Slice planning distinguishes product priority from technical implementation sequence, cross-cutting applicability from ownership, semantic drift from harmless names/paths, and hands negative/no-mutation guarantees to testing.
 - Confirm `изучи внутренние юзкейсы` invokes `UC-PLAN-ARCH-WORKSPACE-USES`; `собери WEUC` / `исследуй WEUC-инстансы` invokes `UC-PLAN-ARCH-DISCOVER-WEUC`; `перепроверь` invokes `UC-REPO-AUDIT-REVIEW`.
+
+## IDTSPE / SDS Methodology Navigation
+
+- [ ] Methodology view buttons/labels/order are derived from current command metadata; the UI source does not maintain a separate hard-coded IDTSPE/SDS view list.
+- [ ] Commands → `IDTSPE` shows exactly 7 primary methodology rows.
+- [ ] Commands → `SDS — IDTSPE Profile` shows exactly 32 primary methodology rows; the related Consistency validator is visibly marked RELATED and does not count as a new primary surface.
+- [ ] Focused SDS rows are visually nested under their canonical Target Module row where configured.
+- [ ] Prototype/Screen/WEUC/Domain/Slice Strategy/Test Strategy/Requirement/Frontend/Cross-Cutting/Practical Test badges expose their conditional/optional/cross-cutting status without hiding commands.
+- [ ] `проверь как лучше зафиксировать` lives in IDTSPE, not SDS-only.
+- [ ] `проверь эволюцию и архитектуру` and `проверь можно ли упростить` live in the SDS Lens section.
+- [ ] Clicking `Info` shows When To Use / What You Get and does not insert or send the command.

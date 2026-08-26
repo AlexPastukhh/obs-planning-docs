@@ -11,28 +11,53 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "command": "проверь тестовое покрытие",
   "englishName": "review test coverage",
   "commandFamily": [
-    "проверь тестовое покрытие",
-    "проверь тесты",
-    "review test coverage"
+    "проверь тестовое покрытие"
   ],
-  "description": "review actual current test evidence",
-  "meaning": "Invoke UC-PLAN-TEST-COVERAGE to inspect whether actual current tests/evidence prove selected current meaning.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+  "description": "test coverage",
+  "meaning": "Run TM-TEST-COVERAGE through the IDTSPE Shell for the selected target.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/testing-planning/use-case-registry.md",
-    "planning/documentation/testing-planning/test-coverage-review-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-COVERAGE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Behavior→actual-evidence map + missing/weak/stale/duplicated/wrong-layer findings.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Coverage review, uncovered/overstated proof, Evidence gaps and upstream correction/revalidation routes.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Current behavior / test evidence target>",
+  "userTarget": "<selected semantic/Evidence coverage scope>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-TESTING",
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when implemented/planned proof coverage should be reconciled against semantic obligations and Evidence.",
+    "whatYouGet": "Coverage review, uncovered/overstated proof, Evidence gaps and upstream correction/revalidation routes.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "08",
+      "sectionLabel": "08 Evidence & Coverage",
+      "sectionOrder": 8,
+      "itemOrder": 2,
+      "kindLabel": "IDTSPE TARGET",
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE",
+    "targetModuleId": "TM-TEST-COVERAGE",
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

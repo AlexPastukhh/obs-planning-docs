@@ -11,28 +11,53 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "command": "определи ответственность приложения",
   "englishName": "establish application responsibility",
   "commandFamily": [
-    "определи ответственность приложения",
-    "границы приложения",
-    "establish application responsibility"
+    "определи ответственность приложения"
   ],
-  "description": "establish exact application responsibility boundary",
-  "meaning": "Invoke UC-PLAN-APPLICATION to establish what the selected own Application is responsible for and what stays outside it.",
-  "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-  "traversalReadMode": "Targeted/full by selected owner and current-plan uncertainty.",
+  "description": "focused SDS target",
+  "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type.",
+  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Explicit selected Application responsibility/boundary.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Responsibility-boundary refinement of the same Application Definition Target.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
-    "Preserve Real-Life Need → selected solution/responsibility → Scenario/UC dependency direction and Current→Target meaning.",
-    "Do not let downstream implementation convenience redefine upstream behavior/Domain truth.",
-    "No repository mutation, archive, commit or push is implied."
+    "SDS is an IDTSPE profile, not a second runtime.",
+    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Selected solution / Application candidate>",
+  "userTarget": "<Application responsibility boundary>",
   "palette": true,
-  "refinements": []
+  "directionIds": [
+    "DIR-PLAN-SOLUTION"
+  ],
+  "helperPresentation": {
+    "whenToUse": "Use when the immediate question is what the Application itself should own versus external/manual/system responsibilities.",
+    "whatYouGet": "Responsibility-boundary refinement of the same Application Definition Target.",
+    "navigation": {
+      "viewId": "SDS",
+      "viewLabel": "SDS — IDTSPE Profile",
+      "sectionId": "01",
+      "sectionLabel": "01 Application",
+      "sectionOrder": 1,
+      "itemOrder": 2,
+      "kindLabel": "IDTSPE TARGET · FOCUSED",
+      "parentId": "tmcmd.application.definition",
+      "viewOrder": 1
+    }
+  },
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": "SDS",
+    "surfaceKind": "TARGET_MODULE_FOCUSED",
+    "targetModuleId": "TM-APPLICATION-DEFINITION",
+    "lensId": null,
+    "parentSurface": "tmcmd.application.definition",
+    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+  }
 }
 [/PLANNING_COMMAND_DEFINITION]

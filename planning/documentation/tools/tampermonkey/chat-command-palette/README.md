@@ -166,6 +166,31 @@ The same entity may appear in `★ Favorites` and its normal Direction group. Fa
 - generated seeds/userscript never become canonical semantic authority;
 - no Helper action implies repository commit/push.
 
+
+## IDTSPE / SDS Methodology Views
+
+Current methodology commands carry two GitHub-backed metadata layers: `methodologyBinding` is the stable IDTSPE runtime/profile/Target-Module-or-Lens binding, while `helperPresentation.navigation` owns mutable view/tab/section/order/badge/related rendering. The userscript runtime is generic and does not maintain current command IDs **or a hard-coded list of methodology views**. `methodologyViewDefinitions(entries)` derives the visible methodology view IDs, labels and order from current command metadata; `All commands` is the only generic Helper-owned fallback view.
+
+
+The Commands surface now has helper-owned navigation views in addition to the ordinary Direction-grouped `All commands` view:
+
+```text
+IDTSPE
+  7 primary methodology surfaces
+
+SDS — IDTSPE Profile
+  32 primary methodology surfaces
+  grouped by directed SDS Target Module flow
+  focused commands nested under canonical Targets
+  WEUC marked cross-cutting/repeatable
+  conditional/optional badges visible
+  Evidence/Coverage shows Consistency Review as a RELATED action without duplicating command identity
+```
+
+Projection source: `src/methodology-navigation.js`. Command semantics remain in `planning/commands/*.command.md` and the installed IDTSPE/SDS methodology owners; the Helper view does not become a semantic authority.
+
+New IDTSPE command definitions may expose optional `helperPresentation.whenToUse` / `helperPresentation.whatYouGet`. The `Info` action shows this material without inserting/invoking the command. Older commands without the metadata remain valid.
+
 ## Build / Verify
 
 ```bash

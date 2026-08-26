@@ -64,6 +64,21 @@ When bootstrap/preflight is internal to another command, do not require the user
 
 Canonical reusable algorithm: `planning/documentation/command-routing-workflow.md`; family-specific bootstrap owners may refine the read set without weakening this rule.
 
+
+## Current IDTSPE Command Family
+
+The current material-planning command surface is defined by [`planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md`](documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md).
+
+```text
+IDTSPE Core surfaces
++ SDS Target Module/focused surfaces
++ explicit Lens surfaces
++ orchestration/validator surfaces
+= invocation projection only
+```
+
+SDS commands still run the IDTSPE Shell. A Lens command resolves/reuses a host Target and never creates a Lens-owned Target. The Planning Helper methodology views are navigation projections only.
+
 ## Explicit-Meaning Rule
 
 For planning commands:
@@ -92,7 +107,8 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 - `commandFamily` includes the canonical trigger exactly;
 - command files own output, active-context behavior, reads and permissions;
 - reusable workflows own algorithms instead of being copied into command bodies;
-- commands are optional shortcuts: repository semantic discovery must remain possible through Directions and the applicable current Use-Case Registry or Scenario Catalog.
+- commands are optional shortcuts: repository semantic discovery must remain possible through Directions and the applicable current Use-Case Registry or Scenario Catalog;
+- a retired/legacy compatibility command may preserve an old ID/alias for callers, but its `meaning`, `ownerFiles`, active-context behavior and expected output must route to current semantic/methodology authority. `palette:false` alone is not semantic retirement and must never keep an obsolete runtime alive.
 
 ## Permission Boundary
 

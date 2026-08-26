@@ -1,6 +1,6 @@
 # Collect Modular Application Plan
 
-Status: active project command definition
+Status: legacy compatibility command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
 
 [PLANNING_COMMAND_DEFINITION]
@@ -16,42 +16,31 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери модульные идеи приложения",
     "modular application ideas"
   ],
-  "description": "coordinate Scenario → Domain → Slice Idea accumulators in a Modular Application plan",
-  "meaning": "Coordinate the existing collect-ideas Scenario, Domain and Slice semantic routes as one high-level Modular Application planning pass. Preserve one Application Current Plan while making Scenario/Domain/Slice work areas independently addressable; Ideas, concerns and Decisions may be split by area when useful without forcing one file per entity.",
-  "activeContextBehavior": "Use the selected Application and Modular/Medium SDS profile as the physical/addressability preference. Run focused Scenario → Domain → Slice passes only where each area is material, then integrate cross-area conclusions. Exact filenames remain contextual and are selected only in explicit Pre-Update.",
-  "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh by selected owner/current-plan uncertainty/source-justified planning depth; full SDS governance preflight only when no reliable sufficient pass exists.",
+  "description": "legacy compatibility alias; modular-Application alias routed into current IDTSPE/SDS planning",
+  "meaning": "Legacy alias for current IDTSPE/SDS planning across independently addressable Application Targets. Resolve Scenario/Domain/Slice/etc Targets normally and use Documentation / Representation for physical separation; there is no Modular SDS runtime, mandatory modular Current Plan or fixed file-count profile.",
+  "activeContextBehavior": "Reuse the selected Application and resolve only the material Target Modules needed by the supplied source/current state. Independent addressability is a representation decision, not a separate planning runtime.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of affected Target owners when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
-    "planning/documentation/planning-concerns-and-decisions-model.md",
-    "planning/documentation/idea-planning-principles-and-terminology.md",
-    "planning/documentation/idea-review-and-planning-workflow.md",
-    "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/detailed-planning/README.md",
-    "planning/documentation/application-planning/domain-discovery-workflow.md",
-    "planning/documentation/application-planning/domain-planning-workflow.md",
-    "planning/documentation/application-planning/slice-planning-workflow.md",
-    "planning/documentation/profiles/sds-planning-profiles.md",
-    "planning/documentation/architecture-planning/use-case-registry.md",
-    "planning/documentation/testing-planning/use-case-registry.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "One Modular Application Current Plan with coordinated Scenario/Domain/Slice Idea work areas, per-area semantic integration/Q/R/P/Decision trace and cross-area conclusions; no fixed file count and no automatic Pre-Update.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Normal current IDTSPE/SDS results for the material Application Targets plus representation/placement decisions when useful; no Modular Current Plan accumulator.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This result-producing command explicitly depends on complete SDS governance: reuse a reliable prior pass, refresh only affected governance when material, and perform the full SDS preflight internally only when no reliable sufficient pass exists; do not ask the user to invoke `бутстреп сдс` separately.",
-    "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-    "This command is an orchestration/profile shortcut over existing semantic UCs; do not create a Modular-Application semantic UC for it.",
-    "Prefer separately addressable Scenario/Domain/Slice Idea/Concern/Decision work areas when reviewability benefits, but do not mandate `ideas.md`, `concerns.md` and `decisions.md` everywhere.",
-    "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-    "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-    "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-    "Do not edit repository files, create an archive, commit or push."
+    "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+    "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<selected source/current planning target>",
-  "palette": true,
+  "palette": false,
   "refinements": [],
   "directionIds": [
     "DIR-PLAN-SOLUTION"
-  ]
+  ],
+  "helperPresentation": null,
+  "methodologyBinding": null
 }
 [/PLANNING_COMMAND_DEFINITION]

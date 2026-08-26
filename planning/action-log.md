@@ -163,3 +163,25 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-052`
 **Reason:** Planning Root adds the high-level collect-ideas command family, updates the generic collect-ideas/file-update command boundaries, synchronizes command-registry guidance and the legacy compact insertion; full clarification and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-023 — Install IDTSPE/SDS authority and current methodology command surface
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-054`  
+**Reason:** Planning Root README/AI contract/command routing/root Direction+Use-Case projections and repository command definitions participate in the same IDTSPE/SDS authority + 39-surface transition; full reviewed meaning and APPLIED target state are owned by the reusable-documentation canonical log.
+
+
+### XREF-024 — Correct IDTSPE routing/legacy aliases and Test Strategy realization registry
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-056`  
+**Reason:** Planning Root direction registry, command-routing contract and direct command definitions participate in the same correction that removes residual legacy Architecture/Testing authority and turns `collect-ideas*` into true IDTSPE/SDS compatibility aliases; full ReviewDiff/clarification rationale and APPLIED target state are owned by the reusable-documentation log.
+
+### XREF-025 — Correct IDTSPE/SDS bootstrap semantics and retire stale collect-Ideas scope wording
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-058`  
+**Reason:** Planning Root bootstrap command definitions and the generic retired `collect-ideas` alias participate in the same correction that removes Target-formation behavior from bootstrap and finishes compatibility wording cleanup; full ReviewDiff rationale and APPLIED target state are owned by the reusable-documentation log.

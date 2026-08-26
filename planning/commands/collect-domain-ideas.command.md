@@ -1,6 +1,6 @@
 # Collect Domain Ideas
 
-Status: active project command definition
+Status: legacy compatibility command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
 
 [PLANNING_COMMAND_DEFINITION]
@@ -14,37 +14,30 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери идеи домена",
     "domain ideas"
   ],
-  "description": "accumulate Ideas around evidence-backed Domain meaning",
-  "meaning": "Run the shared collect-ideas shell with the integration target fixed to Domain meaning. Use Domain Discovery when candidate exploration is useful, then integrate selected/current concepts, identity/lifecycle, rules/invariants/policies and VO/Aggregate/Root/ownership boundaries only when evidence justifies them.",
-  "activeContextBehavior": "Use current Scenario/DATA/Behavior/Requirements and existing Domain meaning as evidence. Discovery is proportional; no explicit Aggregate is a valid result. Stop before Slice planning unless scope is expanded.",
-  "traversalReadMode": "Targeted/full by selected owner, current-plan uncertainty and source-justified planning depth.",
+  "description": "legacy compatibility alias; Domain ideas alias routed into current Domain Target Modules",
+  "meaning": "Legacy alias for current Domain planning. Use TM-DOMAIN-DISCOVERY for candidate/evidence exploration or TM-DOMAIN-DRAFT for a selected Domain owner, preserving the valid no-separate-Domain result. Supplied ideas become normal IDTSPE material; no collect-ideas runtime is started.",
+  "activeContextBehavior": "Use accepted Scenario/DATA/Behavior/Requirement Sources and existing Domain representation. Resolve discovery vs draft from current state and stop before Slice planning unless the user expands the Target.",
+  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Domain owner/module route when uncertain.",
   "ownerFiles": [
-    "planning/documentation/planning-concerns-and-decisions-model.md",
-    "planning/documentation/idea-planning-principles-and-terminology.md",
-    "planning/documentation/idea-review-and-planning-workflow.md",
-    "planning/documentation/IDEA-REVIEW-TEMPLATE.md",
-    "planning/documentation/application-planning/use-case-registry.md",
-    "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
-    "planning/documentation/application-planning/domain-discovery-workflow.md",
-    "planning/documentation/application-planning/domain-planning-workflow.md",
-    "planning/documentation/application-planning/templates/DOMAIN-DRAFT-TEMPLATE.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Reviewed Domain Ideas + evidence/candidates when useful + current/preliminary selected Domain meaning + Q/R/P/Decisions + realization handoffs.",
-  "permissionMode": "read-only",
+  "expectedOutput": "Current Domain Discovery/Draft result with evidence, selected/rejected candidates, Q/R/P/Decisions and handoffs; no legacy Domain-Ideas accumulator.",
+  "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is a high-level accumulator/orchestration command, not a new semantic Use Case. Follow the current canonical UC/Scenario owners linked by ownerFiles.",
-    "Do not infer Domain entities/ownership from nouns, tables, ORM or database shape alone.",
-    "Select/split/merge/reject candidates from behavior/state/rule evidence; `no explicit Aggregate needed` remains valid.",
-    "Use one accumulating Current Plan for the selected target; do not create an append-only command-result ledger.",
-    "Use the shared Planning Concern/Decision model for Q/R/P, grouping, Priority/Category/Status, AI Comment, Decision and retained/residual trace.",
-    "Automatic scope stops after the selected/source-justified semantic integration. Exact repository files/actions require explicit Pre-Update; implementation/executed proof/ReviewDiff evidence is downstream and explicit.",
-    "Do not edit repository files, create an archive, commit or push."
+    "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
+    "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
+    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<selected source/current planning target>",
-  "palette": true,
+  "palette": false,
   "refinements": [],
   "directionIds": [
     "DIR-PLAN-SOLUTION"
-  ]
+  ],
+  "helperPresentation": null,
+  "methodologyBinding": null
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -1,0 +1,38 @@
+# Linked Notes Usage / Justification Consistency Audit
+
+Status: PASS
+
+## Decision
+
+```text
+Linked Notes
+= optional linking/backlink/query/navigation capability
+  over existing canonical owners/addressable objects
+
+NOT
+= notes storage tree
+= semantic owner
+= Target Module
+= default durable artifact
+```
+
+## Checks
+
+- generic Core Lens `LENS-LINKED-NOTES-USAGE-JUSTIFICATION` exists: **PASS**
+- default outcome is `NOT_JUSTIFIED` without concrete navigation/query value: **PASS**
+- ordinary links are preferred when sufficient: **PASS**
+- Linked Notes cannot hide unresolved semantic ownership: **PASS**
+- Linked Notes cannot copy canonical semantic bodies: **PASS**
+- exact equality/stale-copy obligations route to Reference Object responsibility: **PASS**
+- no `notes/` or `linked-notes/` directory was added to SDS physical topology: **PASS**
+- SDS Planning Context routes Linked Notes proposals through the Core Lens: **PASS**
+- Artifact/File Pack no longer treats a generated Linked Notes portfolio as a separate semantic/supporting artifact family: **PASS**
+- `AG-LINKNOTE-01` persists only a material usage/representation decision in the current owner; it creates no notes artifact: **PASS**
+
+## Current Counts
+
+```text
+17 SDS Target Modules
+18 reusable Lenses = 11 Core + 7 SDS-specific
+38 AP + 38 AG = 76 Artifact Placement source records
+```
