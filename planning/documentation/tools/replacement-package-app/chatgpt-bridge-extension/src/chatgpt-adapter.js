@@ -17,7 +17,19 @@ globalThis.OBSChatGPTAdapter = (() => {
     if (text.includes(fileName)) return true;
     return attachmentCandidates(root).some(n => ((n.innerText || n.textContent || "").includes(fileName)));
   }
-  function userMessageCount() { return document.querySelectorAll('[data-message-author-role="user"]').length; }
+  function userMessages() { return [...document.querySelectorAll('[data-message-author-role="user"]')]; }
+  function userMessageCount() { return userMessages().length; }
+  function nodeMentionsFile(node, fileName) {
+    if (!node || !fileName) return false;
+    const own = [node.innerText, node.textContent, node.getAttribute?.("title"), node.getAttribute?.("aria-label")].filter(Boolean).join("\n");
+    if (own.includes(fileName)) return true;
+    const descendants = node.querySelectorAll ? [...node.querySelectorAll('[title],[aria-label],[data-testid*="file" i],[class*="file" i]')] : [];
+    return descendants.some(n => {
+      const value = [n.innerText, n.textContent, n.getAttribute("title"), n.getAttribute("aria-label")].filter(Boolean).join("\n");
+      return value.includes(fileName);
+    });
+  }
+  function exactReviewTurnPresent(prepared) { return userMessages().slice(prepared.beforeUserMessages).some(message => nodeMentionsFile(message, prepared.fileName)); }
   function busy(root) { return !!root?.querySelector('[role="progressbar"],[aria-busy="true"],[data-state="loading"],[data-testid*="progress" i],[class*="upload" i][class*="progress" i]'); }
   function sendButton(root) { for (const selector of ['button[data-testid="send-button"]','button[data-testid*="send" i]','button[aria-label="Send prompt"]','button[aria-label^="Send" i]','button[aria-label^="Отправ" i]']) { const b = root?.querySelector(selector) || document.querySelector(selector); if (b) return b; } return null; }
   function readySendButton(root) { const b = sendButton(root); return b && b.isConnected && !b.disabled && b.getAttribute("aria-disabled") !== "true" && !busy(rootFor(composer()) || root) ? b : null; }
@@ -65,17 +77,26 @@ globalThis.OBSChatGPTAdapter = (() => {
 
   function reviewSendState(prepared, expectedConversation) {
     assertConversation(expectedConversation);
-    const messageAdvanced = userMessageCount() > prepared.beforeUserMessages;
+    if (exactReviewTurnPresent(prepared)) return {state: "sent", ready: false};
     const liveEditor = composer();
-    if (!liveEditor) return {state: messageAdvanced ? "sent" : "missing", ready: false};
+    if (!liveEditor) return {state: "missing", ready: false};
     const liveRoot = rootFor(liveEditor), present = attachmentPresent(liveRoot, prepared.fileName);
-    if (messageAdvanced && !present) return {state: "sent", ready: false};
+    if (editorText(liveEditor)) return {state: "contaminated", ready: false};
     if (!present) return {state: "missing", ready: false};
     return {state: "prepared", ready: !!readySendButton(liveRoot)};
   }
 
   async function waitForReviewSendReady(prepared, expectedConversation) {
-    await waitFor(() => { const state = reviewSendState(prepared, expectedConversation); return state.state === "prepared" && state.ready; }, 120000, 250);
+    const deadline = Date.now() + 120000;
+    while (Date.now() < deadline) {
+      const state = reviewSendState(prepared, expectedConversation);
+      if (state.state === "contaminated") throw new Error("ChatGPT composer changed after ReviewDiff preparation; automatic Send was stopped before clicking Send.");
+      if (state.state === "sent") return;
+      if (state.state === "missing") throw new Error("Prepared ReviewDiff attachment disappeared before automatic Send could begin.");
+      if (state.ready) return;
+      await sleep(Math.min(250, Math.max(1, deadline - Date.now())));
+    }
+    throw new Error("Timed out waiting for the prepared ReviewDiff attachment to become send-ready.");
   }
 
   async function attachSnapshot(blob, fileName, expectedConversation, guard) {

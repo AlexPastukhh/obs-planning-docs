@@ -53,6 +53,8 @@ function clickPreparedReviewSendMain(expectedConversation, fileName) {
   const editor = document.querySelector("#prompt-textarea") || document.querySelector('div[contenteditable="true"][data-lexical-editor="true"]') || document.querySelector('div.ProseMirror[contenteditable="true"]') || document.querySelector('textarea[name="prompt-textarea"]');
   if (!editor) return {status: "composer-missing"};
   const root = editor.closest("form") || editor.parentElement?.parentElement?.parentElement || document.body;
+  const editorValue = ("value" in editor && typeof editor.value === "string") ? editor.value : (editor.innerText ?? editor.textContent ?? "");
+  if (String(editorValue).trim()) return {status: "composer-dirty"};
   const candidates = [...root.querySelectorAll('[data-testid*="attachment" i],[data-testid*="file-preview" i],[class*="attachment" i],[class*="file-preview" i],[aria-busy="true"][data-testid*="file" i]')].filter(n => !["INPUT","BUTTON"].includes(n.tagName) && n.getAttribute("role") !== "button");
   const rootText = root.innerText || root.textContent || "";
   const hasAttachment = rootText.includes(fileName) || candidates.some(n => ((n.innerText || n.textContent || "").includes(fileName)));

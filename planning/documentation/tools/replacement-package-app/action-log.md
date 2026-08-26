@@ -344,3 +344,44 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - regression proof checks the explicit ApplyResult diagnostic plus retained attempt trace; live Swing acceptance remains the practical proof for presentation/readability.
 
 **APPLIED relation:** if package `0353f444-3a7a-466c-ad65-4a5b0bd3fe95` applies successfully, these source/docs/tests become the coherent current SL-RPKG-01 state for this follow-up review correction.
+
+### LOG-RPKG-024 — ReviewDiff exact-Send integrity finding + deferred in-flight restart risk
+
+**Type:** REVIEWDIFF FINDING / USER DECISION / IMPLEMENTATION CORRECTION  
+**Updates:** `LOG-RPKG-020..021`  
+**Source:** review of the supplied Local Repository Snapshot at commit `46ee341cef4b6c581dc1e461f21cd1e11755abb7`, rechecked against the current cumulative SL-RPKG-01 ReviewDiff after packages `91183492-4723-4d0b-a368-c6330d8e157c` and `0353f444-3a7a-466c-ad65-4a5b0bd3fe95`, followed by explicit user scope decision
+
+**Material Finding / selected correction:**
+- current browser confirmation can treat any increase in ChatGPT user-message count plus prepared-attachment disappearance as `Sent`; an unrelated user turn can therefore falsely confirm this ReviewDiff;
+- composer emptiness is proven before ReviewDiff preparation but not held as an invariant through the final page-world Send click; text entered after upload-ready can otherwise be mixed into the automatic outgoing turn;
+- technical `SendClicked` is currently staged before a real click, so a deterministic pre-click failure can cross the possible-Send truth boundary and be mislabeled `UnknownAfterSend`;
+- selected correction gives each ReviewDiff delivery a browser-visible task-specific `.diff` filename, rechecks composer text and exact attachment presence immediately before MAIN-world click, establishes the possible-Send boundary only when an actual click occurs, and confirms `Sent` only from a post-baseline outgoing user turn carrying that task-specific filename;
+- attachment loss or composer contamination before any actual click remains pre-Send truth (`PreparedUnsent` after preparation); attachment loss after a possible click without task-specific outgoing confirmation remains `UnknownAfterSend`;
+- the previously identified runtime-generation gap for an **already claimed/in-flight** task across extension/service-worker restart, tab close or mid-task version replacement remains a known accepted/deferred risk by explicit user decision. Do not expand this correction into runtime-epoch/lifecycle hardening;
+- Snapshot handoff remains attach-only. No direct-text ReviewDiff path is reintroduced.
+
+**Resulting Meaning:** exact ReviewDiff delivery now requires exact payload + exact destination + task-specific attachment identity + composer-clean pre-click state + task-specific outgoing confirmation. Protocol-v2 preflight for new claims remains unchanged; already in-flight runtime-generation continuity is retained as an explicit residual risk rather than presented as solved.
+
+### LOG-RPKG-025 — Apply task-specific ReviewDiff Send-integrity correction in a new post-finalize ChangeSet
+
+**Type:** APPLIED TARGET  
+**Applied From:** `LOG-RPKG-024`  
+**ChangeSet:** `389f1130-dc28-4432-82fe-19d2b2dc8884`  
+**Package:** `a24f3bd7-458d-427e-ad25-10d4343107fe`
+
+**Target-State Result:** after successful Apply of this exact package:
+- extension version is `0.2.6`; bridge protocol remains `2` because no new wire field is required;
+- each queued ReviewDiff delivery uses a `.diff` filename containing the delivery task short ID while preserving the exact canonical ReviewDiff bytes/fingerprint;
+- content-side send readiness and the MAIN-world click guard stop automatic Send if unrelated composer text appears after attachment preparation;
+- the first actual click establishes the possible-Send boundary; technical `SendClicked` is persisted after that click rather than before it, with a narrow `Preparing → UnknownAfterSend` fallback available only to preserve truth if click happened before `SendClicked` persistence completed;
+- `Sent` requires a post-baseline outgoing user turn that carries this task-specific filename; unrelated user turns cannot confirm the task;
+- disappearance before any actual automatic click is `PreparedUnsent`; disappearance after a possible click without task-specific confirmation is `UnknownAfterSend` and stops further automation;
+- the already-applied SL-RPKG-01 ChangeSet-label continuity and visible-diagnostic state is preserved in every overlapping documentation file; this package is rebased over that current state rather than restoring the older bases from package `87b3e810-1e47-4d92-887f-ce21f504536c`;
+- automated source/state proof passes: `CoreTests` 55/0, `ChatBridgeTests` 38/0, `WindowsLauncherInstallerTests` 5/0; JavaScript syntax checks pass for adapter/content/background. Live Edge/ChatGPT acceptance is still required for DOM/runtime behavior;
+- the accepted/deferred already-in-flight restart/version-transition risk remains explicitly documented and is not implemented by this package;
+- Snapshot semantics remain attach-only; no repository Apply, ReviewDiff finalization, commit or push is performed by package production;
+- exact package bases come from the current checked local state represented by snapshot `46ee341cef4b6c581dc1e461f21cd1e11755abb7` plus the supplied current cumulative SL-RPKG-01 ReviewDiff.
+
+**APPLIED relation:** if package `a24f3bd7-458d-427e-ad25-10d4343107fe` applies successfully, this SL-RPKG-06 correction becomes the coherent current state in the new ChangeSet without undoing the already-applied SL-RPKG-01 corrections.
+
+**Rationale:** correct the two active exact-delivery defects and the pre-click truth boundary while preserving independently applied SL-RPKG-01 work. The earlier rebased package was not applied because its historical SL-RPKG-06 ChangeSet was already Finalized; this package therefore starts a new ChangeSet for the same still-unapplied target correction. The separately deferred in-flight runtime-generation problem remains out of scope.

@@ -1,6 +1,6 @@
 # ChatGPT Bridge Integration
 
-Status: active V1 integration contract; SL-06 attachment/send-retry + runtime-contract preflight correction implemented in current source, live Edge/Swing acceptance pending
+Status: active V1 integration contract; SL-06 exact attachment/send integrity + runtime-contract preflight corrections implemented in current source, live Edge/Swing acceptance pending
 Scope: local Java ↔ Chromium extension handoff for ordinary ChatGPT conversations. It does not change the replacement-package producer protocol, ReviewDiff authority, snapshot format or Finalize authority.
 
 ## 1. Historical Capability Mapping
@@ -54,22 +54,25 @@ Current delivery flow:
 current ReviewDiff persisted
 → bound conversation exists?
 → queue Pending task with exact artifact fingerprint + captured send-retry interval
+→ assign one browser-visible .diff filename containing this delivery task identity
 → any open tab of that exact conversation may claim it
 → exactly one tab gets the claim
 → require bridge protocol v2 + complete task contract
 → require empty intended ChatGPT composer
 → construct a browser File from the exact ReviewDiff bytes
 → drive the shared ChatGPT attachment primitive
-→ wait until the exact .diff attachment is visible and upload-ready
+→ wait until the task-specific .diff attachment is visible and upload-ready
 → stage semantic Preparing
 → wait for an enabled Send control
-→ stage technical SendClicked / semantic Sending
 → at the task's configured interval:
      revalidate exact conversation
-     require the same prepared .diff attachment still in the composer
+     require the composer to still contain no unrelated text
+     require the same task-specific .diff attachment still in the composer
      reacquire the current Send control in ChatGPT MAIN world
+     recheck composer text + attachment immediately before click
      click when enabled
-     observe whether the attachment leaves the composer and a new user turn appears
+     after the first actual possible-Send click, persist technical SendClicked / semantic Sending
+     confirm only a new outgoing user turn after this task's baseline that contains this task-specific filename
 → Sent
 ```
 
@@ -79,9 +82,9 @@ The send-control retry interval is an application setting, default `6` seconds w
 
 Live attachment testing exposed a runtime-contract defect after this design landed: the `.diff` attached successfully, then the extension reported `UnknownAfterSend · Invalid ReviewDiff send retry interval.` This is deterministic local incompatibility, not external send uncertainty. Protocol version `2` therefore makes the Java/extension boundary explicit. `/v1/health` and claimed tasks advertise the version, while inventory/claim requests advertise the extension version; the extension rejects mismatched/malformed claim contracts before payload/composer mutation, records a safely claimed task as `FailedBeforeSend`, and tells the user to restart/update the application and reload the extension. The retry interval is validated in that preflight and again by the content script **before** external preparation; no interval validation remains after `SendClicked`.
 
-Repeated UI click attempts are permitted only while the exact prepared `.diff` attachment remains in the exact intended composer. A successful ChatGPT Send removes that prepared attachment, so later polling has nothing eligible to click. If the attachment disappears but a new outgoing user turn cannot be confirmed, delivery becomes `UnknownAfterSend` and automatic click retry stops. This is distinct from retrying a terminal/uncertain External Interaction.
+Repeated UI click attempts are permitted only while the exact task-specific prepared `.diff` attachment remains in the exact intended composer and no unrelated composer text has appeared. `Sent` is not inferred from any generic increase in user-message count: the adapter requires a new outgoing user turn after the delivery baseline that contains the current task-specific attachment filename. An unrelated user turn therefore cannot confirm this ReviewDiff. If the prepared attachment disappears **before** any automatic possible-Send click, the result is `PreparedUnsent`; if it disappears **after** a possible-Send click but the task-specific outgoing turn cannot be confirmed, delivery becomes `UnknownAfterSend` and automatic click retry stops. This is distinct from retrying a terminal/uncertain External Interaction.
 
-If the composer already contains user text or an attachment, automatic ReviewDiff delivery fails before mutation rather than mixing with an existing draft. Failure before confirmed attachment preparation is `FailedBeforeSend`; only after the expected `.diff` is confirmed upload-ready may a later pre-Send interruption become terminal `PreparedUnsent`. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are immutable terminal results. A newer automatic ReviewDiff supersedes older `Pending`/`Claimed` automatic tasks, but an already `Preparing`/`Sending` delivery is allowed to complete and the newer review waits behind it. Rebind/unbind cancels only safely cancellable `Pending`/`Claimed` review tasks and is blocked during `Preparing` or technical `SendClicked`. Expired in-flight state is normalized before binding changes and delivery-status reads so stale send attempts cannot block the user forever.
+If the composer already contains user text or an attachment, automatic ReviewDiff delivery fails before mutation rather than mixing with an existing draft. The same no-unrelated-text invariant is checked again after upload readiness and inside the MAIN-world click guard immediately before each click, so text typed after preparation stops automation without sending the mixed composer. Failure before confirmed attachment preparation is `FailedBeforeSend`; only after the expected `.diff` is confirmed upload-ready may a later pre-Send interruption become terminal `PreparedUnsent`. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are immutable terminal results. A newer automatic ReviewDiff supersedes older `Pending`/`Claimed` automatic tasks, but an already `Preparing`/`Sending` delivery is allowed to complete and the newer review waits behind it. Rebind/unbind cancels only safely cancellable `Pending`/`Claimed` review tasks and is blocked during `Preparing` or technical `SendClicked`. Expired in-flight state is normalized before binding changes and delivery-status reads so stale send attempts cannot block the user forever.
 
 ## 5. Snapshot Attach-Only
 
@@ -114,6 +117,8 @@ V1 does not expose a generic arbitrary-file attachment operation. The Java side 
 
 `/v1/health` returns the fixed local `bridgeProtocolVersion`; the current required value is `2`. Inventory/claim requests must advertise the same extension version, and each claim response repeats the server version so a newly loaded extension cannot partially execute a task from an older Java process. Protocol/version mismatch is a deterministic pre-send compatibility failure, not an `UnknownAfterSend` result.
 
+Known accepted residual risk: protocol `2` protects new inventory/claim/task execution contracts but does not yet bind an already claimed/in-flight delivery to a persisted runtime generation across extension/service-worker restart, browser-tab close or mid-task version replacement. That lifecycle-hardening work is explicitly deferred; it is not part of the current correction. Normal operation should not intentionally reload/update/close the active delivery runtime while a task is in flight. Genuine ambiguity after a possible external Send remains `UnknownAfterSend`.
+
 The Java UI starts an HTTP bridge on:
 
 ```text
@@ -144,11 +149,13 @@ The payload GET permits the ChatGPT origin through narrow CORS headers and never
 
 ```text
 ReviewDiff:
-Pending → Claimed → Preparing → SendClicked → Sent | UnknownAfterSend
-                                     ↳ repeated guarded Send-control attempts while same .diff attachment remains prepared
+Pending → Claimed → Preparing
+Preparing → PreparedUnsent
+Preparing → actual possible-Send click → SendClicked → Sent | UnknownAfterSend
+                                              ↳ repeated guarded Send-control attempts while same task-specific .diff remains prepared
+Preparing → UnknownAfterSend  (narrow truth-preserving fallback if a real click occurred before SendClicked persistence completed)
 Pending → Cancelled
 Claimed → FailedBeforeSend | PreparedUnsent | Cancelled
-Preparing → PreparedUnsent
 empty diff → NoChanges
 claim loss while Claimed → Pending
 claim loss while Preparing → PreparedUnsent
@@ -196,16 +203,17 @@ Current SL-06 source uses attachment preparation for every non-empty ReviewDiff:
 ```text
 exact verified ReviewDiff bytes
 → validate bridge protocol v2 + complete claimed task contract
-→ preserve bytes as text/x-diff Blob/File
+→ preserve bytes as text/x-diff Blob/File under a task-specific delivery filename
 → verify exact intended conversation + empty composer
 → reuse shared browser attachment primitive
 → verify the task-specific .diff attachment is present and upload-ready
 → only then mark semantic Preparing
-→ wait for Send readiness
-→ stage technical SendClicked / semantic Sending
-→ MAIN-world guarded Send attempts at task.sendRetryIntervalMs
+→ wait for Send readiness while composer remains free of unrelated text
+→ MAIN-world guard rechecks composer text + task-specific attachment immediately before click
+→ actual click establishes the possible-Send boundary
+→ persist technical SendClicked / semantic Sending after that click
 → keep trying only while the same attachment remains prepared
-→ confirm outgoing user turn
+→ confirm only a post-baseline outgoing user turn carrying that task-specific filename
 ```
 
 The application owns the mutable retry setting (`reviewDiffSendRetrySeconds`, default `6`, range `1..60`). A new ReviewDiff task snapshots that setting so changing Settings later does not alter an in-flight interaction.
@@ -218,19 +226,22 @@ no confirmed attachment preparation
 → FailedBeforeSend
 
 expected .diff confirmed upload-ready
-+ failure before possible Send
++ composer contamination / attachment loss / other failure before actual possible-Send click
 → PreparedUnsent
 
+actual possible-Send click occurred
+→ SendClicked / Sending
+
 Send attempt phase active
-+ same .diff still present
++ same task-specific .diff still present
++ composer has no unrelated text
 → remain Sending and retry at configured interval
 
-prepared attachment disappears
-+ outgoing user turn confirmed
+post-baseline outgoing user turn contains this task-specific filename
 → Sent
 
-prepared attachment disappears
-+ delivery cannot be confirmed
+prepared attachment disappears after a possible-Send click
++ task-specific outgoing turn cannot be confirmed
 → UnknownAfterSend
 → no further automatic Send attempt
 ```

@@ -66,12 +66,14 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
     while (Date.now() < deadline) {
       const state = OBSChatGPTAdapter.reviewSendState(prepared, task.conversationKey);
       if (state.state === "sent") return "sent";
+      if (state.state === "contaminated") return "contaminated";
       if (state.state === "missing") {
         const grace = Date.now() + 2000;
         while (Date.now() < grace) {
           await sleep(200);
           const after = OBSChatGPTAdapter.reviewSendState(prepared, task.conversationKey);
           if (after.state === "sent") return "sent";
+          if (after.state === "contaminated") return "contaminated";
           if (after.state === "prepared") return "prepared";
         }
         return "missing";
@@ -81,22 +83,33 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
     return OBSChatGPTAdapter.reviewSendState(prepared, task.conversationKey).state;
   }
 
-  async function sendPreparedReviewWithRetry(task, prepared, retryMs) {
+  async function sendPreparedReviewWithRetry(task, prepared, retryMs, onPossibleSend) {
+    let possibleSendRecorded = false;
+    const markPossibleSend = async () => {
+      if (possibleSendRecorded) return;
+      possibleSendRecorded = true;
+      await onPossibleSend();
+    };
     while (true) {
       await guard(task);
       const state = OBSChatGPTAdapter.reviewSendState(prepared, task.conversationKey);
-      if (state.state === "sent") return true;
+      if (state.state === "sent") { await markPossibleSend(); return true; }
+      if (state.state === "contaminated") throw new Error("ChatGPT composer changed after ReviewDiff preparation; automatic Send was stopped before clicking Send.");
       if (state.state === "missing") return false;
       const attempt = await runtime({type: "OBS_REVIEW_SEND_ATTEMPT", taskId: task.taskId, conversationKey: task.conversationKey, fileName: prepared.fileName});
       if (attempt.status === "wrong-conversation") throw new Error("ChatGPT tab left the selected conversation.");
+      if (attempt.status === "composer-dirty") throw new Error("ChatGPT composer changed after ReviewDiff preparation; automatic Send was stopped before clicking Send.");
+      if (attempt.status === "attachment-missing") return false;
+      if (attempt.status === "clicked") await markPossibleSend();
       const observed = await observeReviewTransition(task, prepared, retryMs);
-      if (observed === "sent") return true;
+      if (observed === "sent") { await markPossibleSend(); return true; }
+      if (observed === "contaminated") throw new Error("ChatGPT composer changed after ReviewDiff preparation; automatic Send was stopped before clicking Send.");
       if (observed === "missing") return false;
     }
   }
 
   async function executeTask(task) {
-    if (currentTask) return; currentTask = task; abortReason = null; let preparedConfirmed = false, preparingStaged = false, sendStaged = false;
+    if (currentTask) return; currentTask = task; abortReason = null; let preparedConfirmed = false, preparingStaged = false, possibleSend = false;
     try {
       const reviewRetryMs = validateTaskContract(task);
       OBSChatGPTAdapter.assertConversation(task.conversationKey); const bytes = await verifiedPayload(task); await guard(task);
@@ -108,16 +121,21 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
         preparedConfirmed = true;
         await stageTask(task, "Preparing"); preparingStaged = true; await guard(task);
         await OBSChatGPTAdapter.waitForReviewSendReady(prepared, task.conversationKey); await guard(task);
-        await stageTask(task, "SendClicked"); sendStaged = true;
-        const confirmed = await sendPreparedReviewWithRetry(task, prepared, reviewRetryMs);
-        if (confirmed) await result(task, "Sent", "ReviewDiff .diff attachment sent."); else await result(task, "UnknownAfterSend", "The prepared ReviewDiff attachment left the composer, but the outgoing message could not be confirmed.");
+        const confirmed = await sendPreparedReviewWithRetry(task, prepared, reviewRetryMs, async () => {
+          if (possibleSend) return;
+          possibleSend = true;
+          await stageTask(task, "SendClicked");
+        });
+        if (confirmed) await result(task, "Sent", "ReviewDiff .diff attachment sent and confirmed by its task-specific attachment identity.");
+        else if (possibleSend) await result(task, "UnknownAfterSend", "A Send click was attempted, but the task-specific ReviewDiff outgoing turn could not be confirmed.");
+        else await result(task, "PreparedUnsent", "The prepared ReviewDiff attachment disappeared before any automatic Send click was attempted.");
       } else if (task.kind === "snapshot") {
         if (task.autoSend) throw new Error("Snapshot task unexpectedly requested auto-send."); const blob = new Blob([bytes], {type: "application/zip"});
         await stageTask(task, "Preparing"); preparingStaged = true;
         await OBSChatGPTAdapter.attachSnapshot(blob, task.fileName, task.conversationKey, async () => guard(task)); await result(task, "Attached", "Snapshot ZIP attached; Send was intentionally not clicked.");
       } else throw new Error(`Unsupported task kind: ${task.kind}`);
     } catch (error) {
-      const status = sendStaged ? "UnknownAfterSend" : (preparingStaged || preparedConfirmed) ? "PreparedUnsent" : "FailedBeforeSend"; try { await result(task, status, error?.message || String(error)); } catch {}
+      const status = possibleSend ? "UnknownAfterSend" : (preparingStaged || preparedConfirmed) ? "PreparedUnsent" : "FailedBeforeSend"; try { await result(task, status, error?.message || String(error)); } catch {}
     } finally { currentTask = null; abortReason = null; }
   }
 
