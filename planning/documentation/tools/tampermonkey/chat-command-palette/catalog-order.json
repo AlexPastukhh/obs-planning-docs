@@ -20,6 +20,8 @@
     "idtspe.next",
     "idtspe.continue",
     "idtspe.review_consistency",
+    "idtspe.lenses.select",
+    "idtspe.lens.apply",
     "lenscmd.documentation.representation.check",
     "lenscmd.linked-notes.justify",
     "application_sds.bootstrap",

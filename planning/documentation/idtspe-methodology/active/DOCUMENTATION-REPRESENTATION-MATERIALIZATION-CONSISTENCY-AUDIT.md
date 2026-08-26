@@ -45,6 +45,23 @@ Checks:
 - Test Design / Evolution / Frontend / Part artifacts are companions only after independent pressure: **PASS**
 - Scenario behavioral authority has stronger durable human-readable persistence pressure and is not replaced by code/tests: **PASS**
 
+## 3A. Guidance Ownership Boundary
+
+```text
+Target Module AP-*
+→ representation/routing of the Target-specific result
+
+Lens AG-*
+→ representation/routing of a Lens-produced finding or supporting perspective artifact
+```
+
+Checks:
+
+- target-profile Lens files may legitimately contain zero `AG-*` records when findings return to the current Target owner: **PASS**
+- Domain/Slice/Frontend current result representation is owned by their Target Modules, not duplicated by Domain/Slice/UI Lens AG records: **PASS**
+- L5/WEUC `AG-L5-02` is the canonical proposer for optional target-local evolution sections/`<owner>.evolution.md`: **PASS**
+- `TEST-REALIZATION-MAP.md` remains a Test Strategy representation because it captures the Test Strategy result rather than a Lens finding: **PASS**
+
 ## 4. Worked Physical Topologies
 
 The fundamental Lens contains **6** explained topologies:
@@ -80,18 +97,18 @@ Lenses         → AG-*
 Current counts:
 
 ```text
-AP  38 unique
-AG  38 unique
-TOTAL 76 unique
+AP  34 unique
+AG  24 unique
+TOTAL 58 unique
 ```
 
-Schema check: every record contains the normalized source fields including `PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE`: **76 / 76 PASS**.
+Schema check: every record contains the normalized source fields including `PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE`: **58 / 58 PASS**.
 
 Materialization projection check:
 
 ```text
-source AP/AG IDs                  76
-IDs represented in materialization projection 76
+source AP/AG IDs                  58
+IDs represented in materialization projection 58
 missing                            0
 extra                              0
 ```
@@ -131,8 +148,8 @@ Result: **4 / 4 PASS**.
 - current reusable Lens count: **18**
 - required Core Lens count: **4**
 - AP/AG source-record uniqueness/schema: **PASS**
-- materialization projection exact source-ID parity: **76 / 76 PASS**
-- active/root/integration Markdown links: **640 / 640 resolved — PASS**
+- materialization projection exact source-ID parity: **58 / 58 PASS**
+- active/root/integration Markdown links: **649 / 649 resolved — PASS**
 - active/root/integration Markdown fenced blocks: **PASS**
 - current relative path literals checked by the maintenance pass: **PASS**
 

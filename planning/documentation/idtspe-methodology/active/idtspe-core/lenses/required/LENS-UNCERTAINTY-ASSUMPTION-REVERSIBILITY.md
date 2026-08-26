@@ -14,7 +14,7 @@ This is prospective planning, not revalidation.
 
 Check every material choice. If no material unknown can change the answer, resolve `no material uncertainty` and do no extra work.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 candidate Target / RQ / Idea / Branch
@@ -174,6 +174,27 @@ revalidation signal
 Required L3 does not mean every Target needs research.
 
 If no uncertainty can materially change the choice, the Lens can close with “no material uncertainty”.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Material uncertainty should be made explicit rather than smuggled into accepted Decisions.
+- Evidence effort and reversibility should be proportional to cost-of-being-wrong and decision lock-in.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Specific research/testing evidence is Target input; the uncertainty/reversibility reasoning rules are owned by this Lens.
 
 ## Provenance
 

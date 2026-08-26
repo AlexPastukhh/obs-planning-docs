@@ -47,7 +47,7 @@ Also activate when a reviewer/agent has the concrete question:
 “Can we remove a layer without making the next known change worse?”
 ```
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 current Target + accepted semantic owners
@@ -471,6 +471,27 @@ DEFER additional source abstraction machinery until a concrete trigger requires 
 The Lens did not choose “fewest classes”. It chose **minimum sufficient current structure that still keeps the already-planned PDF extension local**.
 
 That is the intended meaning of implementation economy.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Prefer the minimum sufficient current structure after accounting for semantic obligations and already-justified evolution seams.
+- Abstractions/owners/hops/test layers must pay for themselves in current value, risk reduction or credible evolution isolation.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Current implementation/evolution plans are Target Inputs; simplicity/economy principles are owned here.
 
 ## Provenance
 

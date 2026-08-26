@@ -10,7 +10,7 @@ Lens
   applied to a Target / Scope candidate / RQ / Idea / Branch / Decision / Evidence set
 ```
 
-A Lens may produce findings, Evidence requests, Idea refinements, Q/R/P, comparison dimensions, Decision inputs and revalidation signals.
+A Lens may produce findings, Evidence requests, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance.
 
 ```text
 Lens ≠ Target Module
@@ -21,14 +21,35 @@ Lens ≠ Guard
 Lens ≠ selected Decision
 ```
 
+A reusable Lens has two deliberately separate parts:
+
+```text
+Lens
+=
+Operational Evaluation Contract
++
+Knowledge Basis
+```
+
+The Operational Evaluation Contract owns **how and when to look**. The Knowledge Basis explains **which principles/rules/theory/pattern knowledge make that evaluation credible**.
+
+This separation prevents a Lens from becoming an unstructured dump of theory while still allowing a thin Lens to keep a small self-contained body of principles inline.
+
 ## 2. Ownership Rule
 
 ```text
-reusable generic Lens knowledge → active/idtspe-core/lenses/
-profile-specific Lens knowledge → active/profiles/<profile>/lenses/
-Target Module → Lens Profile
+reusable generic Lens operational knowledge → active/idtspe-core/lenses/
+profile-specific Lens operational knowledge → active/profiles/<profile>/lenses/
+Target Module → Lens Profile / attachment policy
 local-only Lens → module only while genuinely non-reusable
+
+Knowledge Basis
+→ may be embedded in the Lens
+→ or referenced from separate principle/theory/reference owners
+→ or combine both
 ```
+
+A Target Module may say **that** a Lens is required/conditional for its Target family. The Lens owns **what applying that perspective means**.
 
 If a local Lens becomes useful in a second Target family, review it for extraction.
 
@@ -55,7 +76,7 @@ L3 Uncertainty / Assumption / Reversibility
 Documentation / Representation / Artifact Boundary
 ```
 
-L3 is a required **check** and may close immediately as `no material uncertainty`. Documentation / Representation is also a required **check** but activates at materialization time and may close as `NO_PERSISTENCE_NEEDED` or `IMPLEMENTATION_NATIVE`; it does not force file creation.
+L3 may close as `no material uncertainty`. Documentation / Representation may close as `NO_PERSISTENCE_NEEDED` or `IMPLEMENTATION_NATIVE`; it does not force file creation.
 
 ### FREQUENT_CONDITIONAL
 
@@ -76,56 +97,172 @@ L5 WEUC / Target Evolution / Architecture Fitness + Workspace work-cost
 Simplicity / Implementation Economy / Evolution-Safe Simplification
 ```
 
-These profile-contributed Lenses are checked when their applicability gates are met; they are not universal rituals for every real-world decision.
-
 ### TARGET_PROFILE_REUSABLE
 
-Reusable Lens Pack associated with one or several Target families. Target Modules reference it but do not own its prompts.
+Reusable Lens Pack associated with one or several Target families. Target Modules reference it but do not own its prompts or Knowledge Basis.
 
 ### LOCAL_ONLY
 
-May stay inside one module while genuinely unique. It must still be registered. Reuse is a promotion signal.
+May stay inside one module while genuinely unique. Reuse is a promotion signal.
 
-## 4. Reusable Lens Contract
+## 4. Operational Evaluation Contract
 
-Every reusable Lens file should explain proportionally:
+Every reusable Lens file explains proportionally:
 
 ```text
 Lens ID / Name
 Activation
-Purpose
+Purpose / Evaluation Objective
 Applicability Gate
-Typical Sources / Evidence
-Prompts / Sublenses
+Target Inputs / Evidence
+Prompts / Sublenses / Evaluation Workflow
 Findings / Outputs
 Typical Consumers
 Guards / Anti-patterns
 Composition
 Escalation / Revalidation
 Artifact / File Implications
+Knowledge Basis
 Provenance
 ```
 
-## 5. Lens Profile In A Target Module
+`Target Inputs / Evidence` means current planning/implementation material consumed by the Lens. It is intentionally distinct from the Lens's own `Knowledge Basis`.
 
-A Target Module contains one concise `Lens Profile` with direct relative links to reusable Lens files. It does not duplicate full reusable prompts.
+## 5. Knowledge Basis
 
-Shell attachment:
+Every reusable Lens contains an explicit `## Knowledge Basis` with one mode:
+
+```text
+INLINE
+  the Lens itself contains the material principles/rules/theory needed to apply it
+
+REFERENCED
+  the Lens stays operationally thin and points to separate knowledge owner(s)
+
+HYBRID
+  a small stable operational core stays inline while deeper/detail knowledge
+  is read conditionally from referenced owners
+```
+
+Recommended shape:
+
+```text
+Mode: INLINE | REFERENCED | HYBRID
+
+Embedded Principles / Rules / Theory:
+  <small operationalized knowledge actually owned here>
+
+Referenced Knowledge Owners:
+  <canonical principle/theory/reference owners or NONE>
+
+Reference Load Policy:
+  <when those bodies should be read>
+
+Operationalization Notes:
+  <how raw/reference knowledge is constrained by this Lens>
+```
+
+Important boundaries:
+
+```text
+Knowledge Basis reference ≠ Target Source
+raw theory ≠ operational Lens authority
+referenced theory/principle owner ≠ permission to copy its full body into every Lens
+
+Lens → owns applicability + evaluation + findings
+Knowledge owner → owns referenced principle/rule/theory meaning
+```
+
+A thin Lens may use `INLINE`. A detail-heavy Lens may use `HYBRID` or `REFERENCED`. If material cannot yet be reduced to a stable evaluation objective + applicability gate + findings contract, keep it as a Theoretical Module/reference package instead of pretending it is already a Lens.
+
+## 6. Lens Applicability Scan / TF-06A LENS_SET
+
+IDTSPE does **not** select Lenses only through a Target Module.
+
+`TF-06A LENS_SET` owns one proportional **Lens Applicability Scan**:
+
+```text
+Current Target / Target candidate / Local Target Contract
+↓
+1. include/check REQUIRED_CORE Lenses
+↓
+2. apply active Target Module Lens Profile when a module is used
+   REQUIRED_BY_TARGET_PROFILE
+   + module-declared conditional Lens gates
+↓
+3. scan registered Core Lens Library by applicability summary/gate
+↓
+4. scan active-profile Lens registries by applicability summary/gate
+↓
+5. include explicitly requested Lens perspectives
+↓
+6. read full Lens body / referenced Knowledge Basis only for
+   selected or plausibly applicable candidates
+↓
+7. resolve TF-06A LENS_SET
+```
+
+Useful applicability outcomes:
+
+```text
+REQUIRED_CORE
+REQUIRED_BY_TARGET_PROFILE
+APPLICABLE
+NOT_MATERIAL
+NOT_APPLICABLE
+EXPLICITLY_REQUESTED
+DEFERRED
+```
+
+The scan is evaluative, not a ritual to run every Lens body.
+
+```text
+registered Lens exists ≠ apply it
+Lens considered ≠ full Lens body must be read
+Lens applicable ≠ Lens finding must be manufactured
+```
+
+Lens selection itself may become a material Resolution Question for high-impact/ambiguous Targets. Simple cases inherit required/module-attached Lenses mechanically and only scan plausible conditional candidates.
+
+## 7. Lens Profile In A Target Module
+
+A Target Module contains one concise `Lens Profile` with direct relative links to reusable Lens files. It does not duplicate full reusable prompts or Knowledge Basis.
 
 ```text
 P-06 Lens Port
 → TF-06A LENS_SET
+→ Lens Applicability Scan
 → required Core Pack
     L1/L2/L3 across material choice surfaces
     + Documentation / Representation at materialization
-  + Target Module Lens Profile
-  + applicable frequent conditional Lenses
-  + local-only Lens when genuinely needed
+  + Target Module Lens Profile when a reusable module is active
+  + applicable frequent/reusable Core Lenses
+  + applicable profile-specific Lenses
+  + explicitly requested Lens
+  + exceptional local-only Lens when genuinely needed
 ```
 
 `TF-06A LENS_SET` is recomputed when material Target Scope / Sources / Questions change. The resulting Lens Set is contextual, not a fixed ritual.
 
-## 6. Generic Choice Lifecycle
+## 8. Target Module / Local Target Contract Relation
+
+A reusable Target Module is helpful but not mandatory for material IDTSPE work.
+
+```text
+recurring Target family with useful reusable contract
+→ Target Module
+
+one-off / unusual bounded planning result
+→ Local Target Contract
+
+both
+→ full IDTSPE lifecycle
+→ TF-06A Lens Applicability Scan
+```
+
+A Local Target Contract may select any registered Core/profile Lens whose applicability gate is satisfied. It does not need a fake Target Module merely to gain access to reusable Lenses.
+
+## 9. Generic Choice Lifecycle
 
 ```text
 Need grounding
@@ -143,16 +280,16 @@ Typical use:
 
 ```text
 L1–L3 → core checks across Target/Scope, RQ and Idea choice
-Documentation / Representation → required check when material output may persist; choose code/existing owner/catalog/strategy/dedicated artifact/generated view/none before P-14
+Documentation / Representation → required check when material output may persist
 L4 → structured dependency/change impact is material
-L5 → Workspace evolution/WEUC/architecture pressure/work-cost is material; it may be invoked against a concrete Target or the whole Workspace architecture through `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION`
-Simplicity → candidate structure may contain avoidable abstractions/steps/entities and a simpler evolution-safe solution should be searched
-Linked Notes Usage → a material cross-owner navigation/backlink/query need is proposed; no notes storage is implied
+L5 → Workspace evolution/WEUC/architecture pressure/work-cost is material
+Simplicity → candidate structure may contain avoidable abstractions/steps/entities
+Linked Notes Usage → material cross-owner navigation/backlink/query need is proposed
 L6 → proof/observation/diagnosis/operation is material
-Target-profile Lens Packs → selected Target family
+Target-profile Lens Packs → selected Target family or independently applicable context
 ```
 
-## 7. Finding → Decision / Escalation
+## 10. Finding → Decision / Escalation
 
 ```text
 Lens finding
@@ -162,143 +299,62 @@ Lens finding
 
 Open a bounded child/local Target only when the exposed problem has independent useful output, meaningfully distinct Sources/owner boundary, material choice space and separate revalidation value.
 
-## 8. WEUC / Architecture Boundary
-
-Selected model:
-
 ```text
-Workspace Evolution / WEUC Evidence
-+ change-path pressure
-+ prepare-now vs defer
-+ architecture alternatives / tax
-+ Understanding / Change / Verification-Operation / Runtime path cost
-= one L5 Lens Pack
+Lens activation ≠ new Target Instance
+Lens finding ≠ new Target automatically
 ```
 
-Current-structure simplification remains a separate perspective:
+## 11. Artifact / File Ownership Boundary
+
+A separate file does not determine whether a Target Module or Lens should propose it. The **meaning being persisted** determines guidance ownership.
+
+### Target Module AP-* owns representation of Target output
+
+A Target Module may propose:
 
 ```text
-L5 constraints/findings
-+ current candidate complexity
-→ Simplicity / Implementation Economy Lens
-→ simpler candidate without losing evolution fitness
+canonical Target result owner
+target-result registry/coordinator
+supporting representation intrinsic to the Target result
 ```
 
-L4 stays separate because dependency/blast radius may matter without recurring WEUC evidence.
-
-L6 stays separate because proof/diagnosis/operation may matter independently from evolution.
-
-
-## 8.1 Linked Notes Boundary
-
-Linked Notes are evaluated as a **usage/navigation capability**, not as a file family.
+Example:
 
 ```text
-existing canonical owners / stable IDs / relations
-+ material cross-owner navigation/query need
-→ LENS-LINKED-NOTES-USAGE-JUSTIFICATION
-→ JUSTIFIED_LINKED_NOTES | NOT_JUSTIFIED | route elsewhere
+TM-TEST-STRATEGY
+→ TEST-STRATEGY.md
+→ optional TEST-REALIZATION-MAP.md
+
+because proof allocation / test class / setup / fixture / harness / helper topology
+is part of the Test Strategy result itself.
 ```
 
-The Lens must not create `notes/` or `linked-notes/` trees. If exact materialized synchronization/equality is required, route to the separate Reference Object responsibility rather than treating it as Linked Notes.
+### Lens AG-* owns representation/routing of Lens findings
 
-## 9. Revalidation Is Not A Peer Lens
-
-Revalidation is a Decision lifecycle mechanism. L3 may generate revalidation signals, but Uncertainty/Reversibility ≠ Revalidation.
-
-## 10. User Questions
+A Lens may propose:
 
 ```text
-Lens Prompt ≠ RQ ≠ Q/R/P Question ≠ User Question
+supporting artifact for a finding produced by that perspective
+route to an existing/global semantic owner
+evidence/supporting map that remains non-authoritative
 ```
 
+It must **not** duplicate the Target Module's AP merely to say “put the accepted Target result back into its Target owner”.
 
-## 11. High-Level Composition Example
+A reusable Lens must contain exactly one `## Artifact / File Implications` section, but it may contain **zero or more** structured `ARTIFACT_GUIDANCE` records.
 
-Suppose a Scenario Target is being planned.
+Valid no-record case:
 
 ```text
-Target Module:
-  TM-SCENARIO-DRAFT
+Artifact / File Implications:
+  NONE / RETURN_TO_TARGET_OWNER
+
+Reason:
+  Lens findings feed the current Target;
+  the Target Module/local contract owns representation of accepted Target meaning.
 ```
 
-Shell automatically checks:
-
-```text
-L1:
-  is this really one useful Need/result?
-
-L2:
-  which upstream owner already defines the meaning?
-
-L3:
-  what material assumptions remain?
-```
-
-Scenario Lens then inspects:
-
-```text
-Behavior completeness
-Scenario DATA meaning
-failure/no-mutation
-acceptance
-```
-
-If Screen placement is material:
-
-```text
-add UI/Spatial Lens
-```
-
-If no structured workspace/architecture issue exists:
-
-```text
-L4/L5/L6 may remain inactive
-```
-
-The Target still runs complete IDTSPE without applying every known Lens.
-
-## 7. TM-WEUC And The WEUC Lens
-
-The methodology deliberately separates **map ownership** from **cross-cutting evaluation**.
-
-```text
-TM-WEUC
-→ owns/updates SDS-WORKSPACE-EVOLUTION.md
-
-LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
-→ consumes the current map
-→ evaluates another Target/Idea/Decision against it
-→ plans target-local evolution
-→ may emit map-update candidate back to TM-WEUC
-```
-
-Architecture Decisions remain ordinary Answer Decisions inside the current Target unless generic escalation creates an independently material architecture child Target.
-
-Optional `<owner>.evolution.md` companions are Artifact projections, not Targets/Lenses/current semantic owners.
-
-
-## 12. Artifact / File Implications
-
-Every reusable Lens file must explicitly say whether its findings normally:
-
-```text
-remain embedded in the current Target
-require/prefer an existing global owner/register
-prefer a target-local companion/supporting evidence artifact
-may justify a new canonical artifact after Artifact Boundary review
-have no independent artifact implication
-```
-
-This section is mandatory even when the value is effectively `NONE`.
-
-A Lens does not create a semantic owner by itself. It emits a finding; `P-14 / TF-10` maps material findings to artifact placement.
-
-## Artifact / File Guidance Records
-
-Every reusable Lens exposes structured `ARTIFACT_GUIDANCE` records under `## Artifact / File Implications`.
-
-Required source fields:
+When structured guidance exists, source fields remain:
 
 ```text
 ID
@@ -315,4 +371,107 @@ GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
 
-`PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE` are the canonical machine-readable policy fields; `GUIDANCE` is only a descriptive qualifier. `FILE_OR_ARTIFACT` states what file/artifact/register/owner pattern the Lens proposes. `CONTENT` states what the Lens proposes to place there. A Lens can recommend/reroute persistence but cannot create semantic ownership. The active profile's artifact/materialization projection groups these source records by possible representation/destination. The former SDS flattened registry is compatibility-only; current SDS uses `ARTIFACT-PLACEMENT-MAP.md` as the annotated materialization tree.
+A Lens cannot create semantic authority; P-14/TF-10 resolves actual persistence/placement after the Documentation / Representation check.
+
+## 12. Literal Example — Domain Evolution Companion Is Lens Guidance
+
+```text
+Current Target:
+  CaptureItem Domain owner
+
+TM-DOMAIN-DRAFT owns:
+  what CaptureItem means now
+  invariants / state / consistency / relationships
+  representation of that current Domain result
+
+L5 / WEUC Lens finds:
+  a material future offline-synchronization path
+  + change-isolation requirement
+  + transition trigger
+```
+
+Representation may start as `CaptureItem` owner → `Evolution` section and, under independent future-plan addressability/review/lifecycle pressure, become `CaptureItem.evolution.md`.
+
+```text
+CaptureItem.evolution.md
+= supporting future-evolution artifact proposed by L5 / WEUC Lens
+≠ Domain Target output
+≠ another Domain semantic owner
+≠ AP requirement of TM-DOMAIN-DRAFT
+```
+
+## 13. Literal Example — Slice Evolution Companion Is Lens Guidance
+
+```text
+SL-CAP-01
+= current Slice owner
+
+L5 discovers:
+  credible future PDF/offline extension paths
+  + prepared seams
+  + revalidation triggers
+
+→ optional Evolution section
+→ or promoted SL-CAP-01.evolution.md
+```
+
+The evolution companion is proposed by L5, not by `TM-IMPLEMENTATION-SLICE` or the Slice Verticality Lens. The Slice Target Module continues to own the current Useful Vertical Result / Runtime / Integrated Plan.
+
+## 14. WEUC / Architecture Boundary
+
+```text
+TM-WEUC
+→ owns/updates SDS-WORKSPACE-EVOLUTION.md
+
+LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
+→ consumes the current map
+→ evaluates another Target/Idea/Decision against it
+→ plans target-local evolution
+→ may emit map-update candidate back to TM-WEUC
+→ may propose one local <owner>.evolution.md supporting companion
+```
+
+Architecture Decisions remain ordinary Answer Decisions inside the current Target unless generic escalation creates an independently material architecture child Target.
+
+## 15. Linked Notes Boundary
+
+Linked Notes are evaluated as a **usage/navigation capability**, not as a file family.
+
+```text
+existing canonical owners / stable IDs / relations
++ material cross-owner navigation/query need
+→ LENS-LINKED-NOTES-USAGE-JUSTIFICATION
+→ JUSTIFIED_LINKED_NOTES | NOT_JUSTIFIED | route elsewhere
+```
+
+The Lens must not create `notes/` or `linked-notes/` trees.
+
+## 16. Revalidation Is Not A Peer Lens
+
+Revalidation is a Decision lifecycle mechanism. L3 may generate revalidation signals, but Uncertainty/Reversibility ≠ Revalidation.
+
+## 17. User Questions
+
+```text
+Lens Prompt ≠ RQ ≠ Q/R/P Question ≠ User Question
+```
+
+## 18. High-Level Composition Example
+
+Suppose a Scenario Target uses `TM-SCENARIO-DRAFT`. Required Core Lenses are checked; the module attaches Scenario Boundary / Behavior. The Lens Applicability Scan may additionally select UI/Spatial, L4, L5, L6, Quality/Risk or another registered Lens when Scope/Sources/Evidence make it material. If no Workspace evolution issue exists, L5 remains `NOT_MATERIAL`.
+
+## 19. Maintenance
+
+Creation/review/promotion of a reusable Lens is owned by [`../shared/lens-creation-and-integration-use-case.md`](../shared/lens-creation-and-integration-use-case.md).
+
+Mechanical checks should verify:
+
+```text
+every reusable Lens has one Knowledge Basis
+Knowledge Basis Mode ∈ INLINE | REFERENCED | HYBRID
+every reusable Lens has one Artifact / File Implications section
+zero or more AG-* records are allowed
+every AG-* describes Lens-produced supporting/routing meaning rather than duplicating Target-result AP
+Target Module Lens Profiles resolve to registered Lens owners
+TF-06A can discover applicable registered Lenses even without a Target Module
+```

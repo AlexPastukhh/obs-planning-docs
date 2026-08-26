@@ -14,7 +14,7 @@ Broader than Test Design.
 
 Activate when correctness/failure/state must be demonstrably checked or safely operated, especially for Slices, integrations, runtime workflows, critical automation, shared mechanisms and failure-prone architecture.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 selected behavior/result/invariants
@@ -173,6 +173,27 @@ L6 may find that candidate B has substantially better verification/diagnosis/ope
 L6 does not prescribe a monitoring stack.
 
 It exposes proof/observation/operation consequences that may matter to the decision.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- A selected result should be provable/observable/diagnosable/operable at the boundary where correctness and failure matter.
+- Testability is broader than Test Design and may require seams, telemetry or operational mechanisms.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Concrete test/telemetry/runtime facts are Target Inputs/Evidence; this Lens owns the cross-cutting proof/operation perspective.
 
 ## Provenance
 

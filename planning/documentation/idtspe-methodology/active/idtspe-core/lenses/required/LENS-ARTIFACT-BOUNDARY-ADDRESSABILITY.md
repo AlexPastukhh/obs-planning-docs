@@ -88,6 +88,19 @@ no material result to preserve
 
 Do not manufacture a documentation task merely because this Lens is required.
 
+## Target Inputs / Evidence
+
+```text
+current Target/result and semantic owner(s)
+accepted Decisions / Q-R-P / Evidence that may need durable representation
+current implementation/code/types/tests/schema/config/comments when available
+existing planning/documentation owners, registries and generated views
+current workspace/profile placement conventions
+material consumers / review / handoff / revalidation needs
+```
+
+These are current-instance inputs. They are distinct from the Lens `Knowledge Basis`, which owns/references the principles and realization rules used to evaluate representation.
+
 ## Part 1 — Persistence Necessity
 
 First ask whether any result deserves durable representation at all.
@@ -897,6 +910,29 @@ IDTSPE invocation count
 ```
 
 The correct topology is the one that preserves useful meaning with the lowest credible duplication, navigation and synchronization cost.
+
+## Knowledge Basis
+
+Mode: `HYBRID`
+
+**Embedded Principles / Rules / Theory:**
+
+- Planning completion does not imply persistence, and persistence does not imply a Markdown file.
+- Prefer the minimum representation that preserves meaning, ownership, addressability and reviewability without duplicate truth.
+
+**Referenced Knowledge Owners:**
+
+- [`artifact-boundary-and-file-realization-pack.md`](../../shared/artifact-boundary-and-file-realization-pack.md)
+- [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md)
+- [`target-evolution-companion-artifact.md`](../../shared/target-evolution-companion-artifact.md)
+
+**Reference Load Policy:**
+
+Read the deeper artifact/file pack only when embed/split/reuse/generated/topology choice is materially non-trivial; use the placement contract for final P-14 resolution.
+
+**Operationalization Notes:**
+
+This Lens owns the representation decision; referenced packs own deeper realization mechanics and reusable companion semantics.
 
 ## Provenance
 

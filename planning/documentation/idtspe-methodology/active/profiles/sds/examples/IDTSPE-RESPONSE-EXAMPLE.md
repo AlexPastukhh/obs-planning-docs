@@ -125,8 +125,8 @@ Behavior:
 
 | Content | Placement status | Semantic owner | Persistence | Representation / destination | Action | Guidance source(s) | Why / unresolved |
 |---|---|---|---|---|---|---|---|
-| Scenario contract + DATA + Behavior | RESOLVED | `SCN-CAPTURE` | REQUIRED | `EMBED_CURRENT_OWNER` → `<SCN-CAPTURE canonical artifact>` | UPDATE | `AP-SCN-01`, `AP-SCN-02`, `AG-SCN-01`, `AG-SCN-02` | DATA/Behavior are internal Scenario objects |
-| Floating mini-window Idea | RESOLVED | none selected | PREFERRED | `REGISTER_ENTRY` → `SDS-PLANNING-STATE/ideas/scenario/IDEAS.md` | UPDATE | `AP-SCN-03`, `AG-SCN-03` | preserve Idea without creating Screen authority |
+| Scenario contract + DATA + Behavior | RESOLVED | `SCN-CAPTURE` | REQUIRED | `EMBED_CURRENT_OWNER` → `<SCN-CAPTURE canonical artifact>` | UPDATE | `AP-SCN-01`, `AP-SCN-02` | DATA/Behavior are internal Scenario objects |
+| Floating mini-window Idea | RESOLVED | none selected | PREFERRED | `REGISTER_ENTRY` → `SDS-PLANNING-STATE/ideas/scenario/IDEAS.md` | UPDATE | `AP-SCN-03` | preserve Idea without creating Screen authority |
 | Short Thought current-vs-later status | UNRESOLVED_PLACEMENT | `SCN-CAPTURE` if selected; otherwise future planning state | REQUIRED | Destination UNRESOLVED until Answer Decision | UNRESOLVED | `AP-SCN-01`; final meaning/placement depends on current Answer Decision | placement depends on current-vs-deferred Decision |
 | Prototype raw timing scratch | UNRESOLVED_PERSISTENCE | Prototype Evidence context | UNRESOLVED | UNRESOLVED | NONE | `AG-L3-01`; no applicable persistence proposal yet | persist only if it materially supports the Decision |
 

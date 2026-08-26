@@ -102,8 +102,12 @@ individual Slice owner file
 Test Strategy
 → when shared coordination is material, may naturally act as a registry-like cross-Slice map of proof owner → test class/suite/setup/fixture/harness/helper; keep as a Strategy section first, split to TEST-REALIZATION-MAP only under independent pressure
 
-Test Design / evolution companion / frontend companion
-→ consolidate into current owner first; split only after independent pressure
+Test Design / frontend Part Plan
+→ consolidate into current Target owner first; split only after independent pressure
+
+Target-local evolution companion
+→ supporting WEUC/L5 Lens output, not intrinsic Domain/Slice/Frontend Target output
+→ keep an Evolution section first; split to <owner>.evolution.md only after independent pressure
 
 Workspace/global evolution and responsibility maps
 → stronger persistence pressure because implementation cannot represent future/cross-owner topology well

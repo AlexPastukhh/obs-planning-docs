@@ -176,7 +176,8 @@ The Commands surface now has helper-owned navigation views in addition to the or
 
 ```text
 IDTSPE
-  7 primary methodology surfaces
+  9 primary methodology surfaces
+  Core + Lens Operations (`подбери линзы`, `примени линзу`, specialized Core shortcuts)
 
 SDS — IDTSPE Profile
   32 primary methodology surfaces

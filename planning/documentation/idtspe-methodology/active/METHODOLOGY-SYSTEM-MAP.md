@@ -53,7 +53,7 @@ Target Module
 = reusable concrete Target-family contract installed by a profile/family
 
 Lens
-= processed reusable evaluation perspective with known applicability/output behavior
+= processed reusable evaluation perspective with an Operational Evaluation Contract + explicit INLINE/REFERENCED/HYBRID Knowledge Basis
 
 Theoretical Module
 = useful raw/not-yet-operationalized knowledge whose stable timing/Target/Lens placement is not yet known
@@ -77,7 +77,7 @@ Do not use `SDS` as a synonym for the entire IDTSPE methodology.
 бутстреп idtspe
 → Shell / governance
 → Target Module system
-→ Lens system + Core Pack
+→ Lens system + Core Pack + TF-06A Lens Applicability Scan + Knowledge Basis modes
 → Decisions / Artifact Placement / Revalidation
 → Q/R/P priority/groups/Decision trace
 → AI Reviewability peer concern + Theoretical Module registry
@@ -101,7 +101,7 @@ This is separate from specific Target Module/Lens bodies and from raw Theoretica
 → SDS command surface
 ```
 
-Specific Target/Lens commands then read only their relevant owners. Raw Theoretical Modules are consulted conditionally when processed guidance is insufficient or methodology maintenance is promoting their knowledge.
+Specific Target/Lens commands then read only their relevant owners. Generic `подбери линзы` scans registries/gates and `примени линзу` dispatches to one selected Lens; neither creates a Lens-owned Target. Raw Theoretical Modules / referenced knowledge owners are consulted conditionally according to the selected Lens Knowledge Basis or when processed guidance is insufficient.
 
 ### Default Core work mode
 
@@ -237,7 +237,11 @@ Generic helper-presentation extension:
 
 [`idtspe-core/shared/command-helper-usage-metadata-extension.md`](idtspe-core/shared/command-helper-usage-metadata-extension.md)
 
-Current SDS command surface:
+Generic Core command surface:
+
+[`idtspe-core/shared/idtspe-command-surface-contract.md`](idtspe-core/shared/idtspe-command-surface-contract.md)
+
+Current SDS command-surface extension:
 
 [`profiles/sds/shared/idtspe-command-surface-contract.md`](profiles/sds/shared/idtspe-command-surface-contract.md)
 

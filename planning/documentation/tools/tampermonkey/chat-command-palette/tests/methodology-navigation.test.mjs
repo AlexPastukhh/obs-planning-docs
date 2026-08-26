@@ -9,9 +9,9 @@ const seed=JSON.parse(fs.readFileSync(path.join(import.meta.dirname,'..','seed',
 const entries=seed.items;
 
 test('methodology navigation exposes accepted primary counts from repository command metadata',()=>{
-  assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').length,7);
+  assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').length,9);
   assert.equal(nav.methodologyPrimaryIds(entries,'SDS').length,32);
-  assert.equal(new Set([...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')]).size,39);
+  assert.equal(new Set([...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')]).size,41);
 });
 
 test('SDS related consistency link reuses Core command identity without increasing primary count',()=>{
@@ -48,10 +48,10 @@ test('Helper methodology view controls are derived from repository navigation me
   assert.doesNotMatch(ui,/METHODOLOGY_VIEW_IDS\?\.IDTSPE/);
 });
 
-test('all 39 methodology surfaces carry stable IDTSPE binding separate from helper navigation',()=>{
+test('all 41 methodology surfaces carry stable IDTSPE binding separate from helper navigation',()=>{
   const primary=[...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')];
   const byId=new Map(entries.map((entry)=>[entry.id,entry]));
-  assert.equal(primary.length,39);
+  assert.equal(primary.length,41);
   for(const id of primary){const binding=byId.get(id)?.methodologyBinding;assert.ok(binding,`${id}: missing methodologyBinding`);assert.equal(binding.methodologyRuntime,'IDTSPE',id);}
   const canonical=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE');
   assert.equal(canonical.length,17);
@@ -62,4 +62,20 @@ test('all 39 methodology surfaces carry stable IDTSPE binding separate from help
   const lenses=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='LENS');
   assert.equal(lenses.length,4);
   assert.ok(lenses.every((entry)=>entry.methodologyBinding.lensId&&entry.methodologyBinding.hostTargetPolicy==='RESOLVE_OR_REUSE_TARGET'));
+});
+
+
+test('generic Lens operations are Core orchestration surfaces and do not pretend to own a fixed Lens',()=>{
+  const byId=new Map(entries.map((entry)=>[entry.id,entry]));
+  for(const id of ['idtspe.lenses.select','idtspe.lens.apply']){
+    const entry=byId.get(id);assert.ok(entry,id);
+    assert.equal(entry.methodologyBinding?.surfaceKind,'ORCHESTRATION',id);
+    assert.equal(entry.methodologyBinding?.lensId,null,id);
+    assert.equal(entry.helperPresentation?.navigation?.sectionId,'lens-operations',id);
+  }
+  assert.equal(byId.get('idtspe.lenses.select').methodologyBinding?.hostTargetPolicy,'CREATE_OR_REUSE_TARGET');
+  assert.equal(byId.get('idtspe.lens.apply').methodologyBinding?.hostTargetPolicy,'RESOLVE_OR_REUSE_TARGET');
+  assert.deepEqual(nav.methodologyPrimaryIds(entries,'IDTSPE').slice(5),[
+    'idtspe.lenses.select','idtspe.lens.apply','lenscmd.documentation.representation.check','lenscmd.linked-notes.justify'
+  ]);
 });

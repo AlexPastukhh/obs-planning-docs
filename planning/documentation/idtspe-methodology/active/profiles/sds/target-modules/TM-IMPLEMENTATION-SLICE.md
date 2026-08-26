@@ -413,16 +413,18 @@ selected state ownership
 migration constraints
 ```
 
-### Slice Evolution Companion — Conditional
+### Slice Evolution Companion — L5/WEUC Handoff
 
-When material planned/probable future evolution surrounds this Slice, persist an optional companion:
+When material planned/probable future evolution surrounds this Slice, route the future-path question through the WEUC/L5 Lens. This Target Module does **not** propose or require a Slice evolution companion.
+
+If `AG-L5-02` justifies durable target-local evolution, Documentation / Representation decides whether it should persist and P-14 resolves an embedded Evolution section versus a separate companion. Example after L5/P-14 placement:
 
 ```text
 slices/SL-CAP-01.md
 slices/SL-CAP-01.evolution.md
 ```
 
-The companion may contain literal approximate future paths:
+The L5-produced companion may contain literal approximate future paths:
 
 ```text
 EV-17 PDF Capture
@@ -478,30 +480,15 @@ GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
-```text
-ARTIFACT_PROPOSAL
-ID: AP-SLICE-03
-CONTENT_KIND: SLICE_EVOLUTION_COMPANION
-WHEN: material future extension/change path should be remembered
-GUIDANCE: PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Slice owner as current truth; companion is supporting future plan
-REPRESENTATION: EMBED_CURRENT_OWNER_OR_COMPANION_ARTIFACT
-FILE_OR_ARTIFACT: <slice-strategy-owner>#<slice>/Evolution or <slice-owner>#Evolution or <slice-owner>.evolution.md
-CONTENT: future [NEW]/[EXTEND]/[REUSE]/[NEW?] code/test paths; prepared seams; transition triggers
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
-```
 
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
 **REQUIRED meaning, not REQUIRED dedicated file** — an accepted Slice used for realization/testing must preserve its Useful Vertical Result and material Decisions/QRP/implementation obligations somewhere durable enough for the current project. The preferred starting point is the existing `SLICE-STRATEGY.md` Slice section plus implementation-native names/types/tests/code where sufficient. A dedicated `SL-<id>.md` is promoted only when independent planning/review/addressability is useful.
 
-**CONSOLIDATE by default** — testing/evolution/frontend/Part details remain sections of the current Slice representation or strategy coordinator unless independent size/reuse/review/lifecycle pressure justifies separation.
+**CONSOLIDATE by default** — testing/frontend/Part details remain sections of the current Slice representation or strategy coordinator unless independent size/reuse/review/lifecycle pressure justifies separation. Future evolution is not a Slice AP responsibility: the WEUC/L5 Lens (`AG-L5-02`) may propose an Evolution section or companion when material.
 
-**PREFERRED companion only after pressure** — small future paths stay in the current Slice/strategy Evolution section. `<slice-owner>.evolution.md` appears when future paths, prepared seams or revalidation triggers become independently useful.
+**Evolution companion ownership** — `<slice-owner>.evolution.md` is supporting L5/WEUC Lens output, not an intrinsic `TM-IMPLEMENTATION-SLICE` result. The Slice module owns the current Useful Vertical Result / Runtime / Integrated Plan; L5 proposes future-path representation and P-14 resolves embed vs companion.
 
 **Separate Frontend Target artifact** only after `TM-FRONTEND-SLICE` promotion; a `frontend.md` file by itself is not proof of a new Target.
 

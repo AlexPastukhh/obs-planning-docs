@@ -11,7 +11,7 @@ Use one practical Evidence discipline before and after implementation while pres
 
 Primary for Prototype/Practical Test; supporting when Test Design selects operated acceptance.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 Material uncertainty/property, affected Decision/Target, real-life/Application Scenario, Prototype/implemented subject, actor/environment/data constraints and prior Evidence.
 
@@ -181,6 +181,27 @@ interpretation
 ### Boundary / Lesson
 
 Similar observation method does not make Prototype and final Practical Test equivalent Evidence.
+
+## Knowledge Basis
+
+Mode: `HYBRID`
+
+**Embedded Principles / Rules / Theory:**
+
+- A practical test is an evidence-producing operation aimed at one material uncertainty/question.
+- Observed Evidence remains evidence and does not become semantic authority by itself.
+
+**Referenced Knowledge Owners:**
+
+- [`practical-evidence-method.md`](../../shared/practical-evidence-method.md)
+
+**Reference Load Policy:**
+
+Read the practical-evidence method when experiment design/execution shape is non-trivial.
+
+**Operationalization Notes:**
+
+This Lens owns the evaluation perspective; the shared method owns reusable experiment mechanics.
 
 ## Provenance
 

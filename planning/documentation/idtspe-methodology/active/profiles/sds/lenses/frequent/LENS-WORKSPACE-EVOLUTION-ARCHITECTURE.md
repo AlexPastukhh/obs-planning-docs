@@ -148,7 +148,7 @@ Target: WORKSPACE_ARCHITECTURE
 
 This is how the same Lens can be used to **think about major architecture principles** without introducing a mandatory `TM-ARCH`.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 current Target + Sources
@@ -733,6 +733,27 @@ The accepted items are written by `TM-WEUC` into `Current Global Architecture Po
 ### Boundary / Lesson
 
 `vertical slices`, `DDD` or a folder pattern are not copied in as universal slogans. The global position records **what they mean in this project, how strong the rule is, why current evolution supports it, and when an exception/revalidation is allowed**.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Architecture is evaluated against credible change paths, isolation, prepared seams and work/runtime cost rather than speculative flexibility.
+- Target-local future evolution is supporting planning state; project-global architecture/evolution updates route to TM-WEUC.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use; current `SDS-WORKSPACE-EVOLUTION.md` is Target input/state, not Lens theory.
+
+**Operationalization Notes:**
+
+The Lens itself owns the reusable evolution/architecture-fitness rules; workspace maps and local companions are planning inputs/outputs, not Knowledge Basis owners.
 
 ## Provenance
 

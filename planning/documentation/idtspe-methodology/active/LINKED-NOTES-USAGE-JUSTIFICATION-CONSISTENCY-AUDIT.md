@@ -34,5 +34,5 @@ NOT
 ```text
 17 SDS Target Modules
 18 reusable Lenses = 11 Core + 7 SDS-specific
-38 AP + 38 AG = 76 Artifact Placement source records
+34 AP + 24 AG = 58 Artifact Placement source records
 ```

@@ -1,10 +1,10 @@
-# SDS / IDTSPE Command Surface Contract
+# SDS Profile Command Surface Extension
 
-Status: active SDS profile command-surface owner; repository implementation is a separate later concern
+Status: active SDS profile command-surface extension; generic IDTSPE Core surfaces are owned separately
 
 ## Purpose
 
-Define the **user-level invocation surface** required by the current IDTSPE methodology without making command files, palette UI or helper code a second methodology authority.
+Define the **SDS-specific extension** to the generic IDTSPE command surface without making command files, palette UI or helper code a second methodology authority. Generic Core command semantics and host-target policies are owned by [`../../../idtspe-core/shared/idtspe-command-surface-contract.md`](../../../idtspe-core/shared/idtspe-command-surface-contract.md).
 
 ```text
 Target Module / Use Case / Lens owners
@@ -17,12 +17,12 @@ Repository command definition / Tampermonkey helper
 = implementation of that projection
 ```
 
-This file defines what invocation intents must exist. It does **not** choose exact repository filenames, migration steps or implementation diffs.
+This file defines SDS bootstrap, Target Module/focused surfaces and SDS-specific Lens shortcuts, plus the current Core+SDS aggregate projection. It does **not** redefine generic Core surfaces and does **not** choose exact repository filenames, migration steps or implementation diffs.
 
 
-## 0. Bootstrap Surfaces
+## 0. Core + SDS Composition
 
-Bootstrap is layered and is not a Target Module.
+Generic Core surfaces are inherited from the Core command-surface contract. SDS adds one profile bootstrap, its Target Module/focused surfaces and SDS-specific Lens shortcuts. Bootstrap remains layered and is not a Target Module.
 
 ```text
 idtspe.bootstrap
@@ -56,14 +56,14 @@ The current accepted methodology-level inventory is:
 3 framework/bootstrap/work surfaces
 17 canonical SDS Target Module surfaces
 12 additional focused Target-Module shortcuts
-4 reusable direct Lens surfaces
-3 orchestration/validator surfaces
-= 39 accepted methodology invocation surfaces
+4 reusable direct Lens shortcut surfaces
+5 orchestration/validator surfaces
+= 41 accepted methodology invocation surfaces
 ```
 
-This is a **methodology surface count**, not a requirement for 39 repository command files. Existing command definitions/aliases may implement several surfaces where semantics remain clear.
+This is a **methodology surface count**, not a requirement for 41 repository command files. Existing command definitions/aliases may implement several surfaces where semantics remain clear.
 
-The four reusable direct Lens surfaces are currently exactly:
+The four fixed/specialized direct Lens shortcut surfaces are currently exactly:
 
 ```text
 lenscmd.weuc.check
@@ -71,6 +71,20 @@ lenscmd.simplicity.check
 lenscmd.documentation.representation.check
 lenscmd.linked-notes.justify
 ```
+
+All registered Lenses are also reachable without receiving one command file each through two **inherited generic Core operations**:
+
+```text
+idtspe.lenses.select
+→ подбери линзы <target/context>
+→ run the proportional TF-06A Lens Applicability Scan
+
+idtspe.lens.apply
+→ примени линзу <lens> к <target/context>
+→ dispatch to one selected registered Lens inside/reusing the natural IDTSPE Target
+```
+
+These two surfaces are `ORCHESTRATION`, not fixed `LENS` identities: the selected Lens file remains semantic authority and may come from Core or an active profile.
 
 ## 0.1 SDS Command Runtime Invariant
 
@@ -362,9 +376,29 @@ otherwise
 → no Strategy Target; recommend local Test Design / Slice Strategy next
 ```
 
-## 7. Reusable Lens Command Surfaces
+## 7. Generic Lens Operations And Specialized Shortcuts
 
-Not every Lens needs a palette command. A Lens gets a direct command only when it represents a **stable recurring user intent** that is useful independently of remembering a parent Target Module command.
+### 7.0 Lens Applicability / Apply Operations
+
+```text
+Surface Key: idtspe.lenses.select
+Canonical intent: подбери линзы <target/context>
+Owner: TF-06A LENS_SET + IDTSPE Lens Registry / Lens Model
+
+Surface Key: idtspe.lens.apply
+Canonical intent: примени линзу <lens> к <target/context>
+Owner: generic dispatcher; selected Lens owner supplies semantics
+```
+
+`idtspe.lenses.select` scans required Core, the active Target Module Lens Profile when any, registered Core/profile applicability gates and explicit user/agent choices. It may use a Local Target Contract; it does not require a reusable Target Module. Registry summaries are checked before full Lens/Knowledge-Basis bodies are loaded.
+
+`idtspe.lens.apply` resolves one named registered Lens, reads its Operational Evaluation Contract and `Knowledge Basis` according to its load policy, and applies it inside the natural Target context. It does not manufacture a Lens-owned Target or make the dispatcher command a Lens authority.
+
+Both are generic Core orchestration surfaces and therefore belong in the IDTSPE helper view under `Lens Operations`.
+
+### 7.1 Specialized Direct Lens Shortcuts
+
+Not every Lens needs a specialized palette command. A fixed Lens gets a shortcut only when it represents a **stable recurring user intent** useful enough to deserve dedicated wording in addition to the generic operations.
 
 Current accepted reusable Lens command surfaces:
 
@@ -377,7 +411,7 @@ Current accepted reusable Lens command surfaces:
 
 These surfaces **activate/evaluate through IDTSPE and existing Target ownership**. They do not create new Target Modules or a parallel Lens runtime.
 
-### 7.1 WEUC / Architecture / Evolution Check
+### 7.2 WEUC / Architecture / Evolution Check
 
 ```text
 Surface Key: lenscmd.weuc.check
@@ -413,7 +447,7 @@ What You Get:
   or an updated Current Global Architecture Position.
 ```
 
-### 7.2 Simplicity / Implementation Economy Check
+### 7.3 Simplicity / Implementation Economy Check
 
 ```text
 Surface Key: lenscmd.simplicity.check
@@ -447,7 +481,7 @@ What You Get:
   inputs for the current Target.
 ```
 
-### 7.3 Documentation / Representation Check
+### 7.4 Documentation / Representation Check
 
 ```text
 Surface Key: lenscmd.documentation.representation.check
@@ -480,7 +514,7 @@ What You Get:
 
 This direct surface is useful even though the Lens is required at materialization time: the explicit command lets the user revisit representation/file pressure as a bounded question without rerunning unrelated planning.
 
-### 7.4 Linked Notes Usage / Justification Check
+### 7.5 Linked Notes Usage / Justification Check
 
 ```text
 Surface Key: lenscmd.linked-notes.justify
@@ -516,7 +550,17 @@ What You Get:
 
 ## 8. Orchestration Commands Outside Target Modules
 
-These are methodology-navigation commands and must not pretend to be Target Modules.
+These are methodology-navigation/composition commands and must not pretend to be Target Modules or fixed Lens owners.
+
+```text
+idtspe.lenses.select
+idtspe.lens.apply
+idtspe.next
+idtspe.continue
+idtspe.review_consistency
+```
+
+The first two own Lens selection/dispatch orchestration only; `idtspe.next` / `idtspe.continue` own methodology direction/continuation behavior; Consistency Review remains a validator/Use Case.
 
 ### `idtspe.next`
 

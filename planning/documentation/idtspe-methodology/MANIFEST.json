@@ -1,6 +1,6 @@
 {
-  "workspace_version": "idtspe-command-surface-corrections-39",
-  "repo_snapshot_base": "ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7",
+  "workspace_version": "idtspe-lens-applicability-knowledge-basis-41",
+  "repo_snapshot_base": "46ee341cef4b6c581dc1e461f21cd1e11755abb7",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
   "sds_profile_bootstrap": "sdscmd.bootstrap",
@@ -12,9 +12,9 @@
   "generic_core_lenses": 11,
   "sds_specific_lenses": 7,
   "required_core_lenses": 4,
-  "artifact_guidance_source_records": 76,
-  "artifact_proposals_ap": 38,
-  "artifact_guidance_ag": 38,
+  "artifact_guidance_source_records": 58,
+  "artifact_proposals_ap": 34,
+  "artifact_guidance_ag": 24,
   "artifact_guidance_registry": "REPLACED_BY_ANNOTATED_MATERIALIZATION_TREE; COMPATIBILITY_POINTER_RETAINED",
   "artifact_guidance_semantics_preserved": "PASS",
   "idtspe_shell_ports": 15,
@@ -29,10 +29,10 @@
   "current_repository_integration_ledger": "integration/CURRENT-REPOSITORY-INTEGRATION.md",
   "repository_fresh_audit_completed": true,
   "repository_update_planned": true,
-  "mechanical_consistency": "PASS_RECHECKED_AFTER_COMMAND_SURFACE_CORRECTIONS",
+  "mechanical_consistency": "PASS_RECHECKED_AFTER_LENS_APPLICABILITY_KNOWLEDGE_BASIS_AND_GUIDANCE_OWNERSHIP",
   "core_sds_separation_audit": "PASS",
-  "markdown_integrity": "PASS_RECHECKED_AFTER_DOCUMENTATION_REPRESENTATION",
-  "repository_audit_evidence": "obs-planning-docs local snapshot base ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7; planning governance clean committed baseline for audited zones",
+  "markdown_integrity": "PASS_RECHECKED_AFTER_LENS_APPLICABILITY_KNOWLEDGE_BASIS_AND_GUIDANCE_OWNERSHIP",
+  "repository_audit_evidence": "obs-planning-docs supplied snapshot base 46ee341cef4b6c581dc1e461f21cd1e11755abb7; exact current base for Lens applicability / Knowledge Basis / artifact-guidance ownership update; raw testing theory retains ca768b61 provenance in its own theoretical package",
   "repository_preupdate_ledger": "integration/CURRENT-REPOSITORY-INTEGRATION.md",
   "repository_old_collect_ideas_commands": 6,
   "repository_merge_blockers": 1,
@@ -55,21 +55,21 @@
     "lenscmd.linked-notes.justify"
   ],
   "reusable_lens_command_count": 4,
-  "command_surface_recheck": "PASS: 39 surfaces = 7 IDTSPE + 32 SDS; Documentation/Representation direct Lens added; conditional/optional SDS presentation aligned; cross-cutting command wording clarified; consistency review cross-linked contextually",
+  "command_surface_recheck": "PASS: 41 surfaces = 9 IDTSPE + 32 SDS; generic Lens Applicability Scan/select + registry-dispatched apply added without creating per-Lens commands; four specialized direct Lens shortcuts retained",
   "methodology_command_surface_counts": {
     "framework_bootstrap_work": 3,
     "canonical_sds_target_module": 17,
     "focused_target_shortcuts": 12,
-    "direct_reusable_lens": 4,
-    "orchestration_validator": 3,
-    "total": 39
+    "direct_reusable_lens_shortcuts": 4,
+    "orchestration_validator": 5,
+    "total": 41
   },
   "helper_navigation_plan": "integration/COMMAND-AND-HELPER-NAVIGATION-PLAN.md",
-  "helper_navigation_status": "PLANNED_NOT_IMPLEMENTED_IN_REPOSITORY",
+  "helper_navigation_status": "IMPLEMENTED_METADATA_DRIVEN",
   "helper_methodology_tabs": {
-    "IDTSPE": 7,
+    "IDTSPE": 9,
     "SDS — IDTSPE Profile": 32,
-    "total_primary_methodology_surfaces": 39
+    "total_primary_methodology_surfaces": 41
   },
   "sds_command_runtime_invariant": "SDS Target Module commands are IDTSPE Target invocations; SDS Lens commands activate Lenses inside/reusing IDTSPE Target contexts",
   "sds_helper_primary_groups": [
@@ -88,9 +88,21 @@
   "documentation_representation_lens": "active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
   "documentation_representation_policy": "REQUIRED_CORE_MATERIALIZATION_CHECK; IDTSPE_TARGET_DOES_NOT_IMPLY_FILE; code/existing-owner/catalog-strategy/dedicated/companion/generated/none are valid",
   "worked_representation_topologies": 6,
-  "artifact_materialization_projection_source_id_parity": "76/76 exact; missing 0; extra 0",
+  "artifact_materialization_projection_source_id_parity": "58/58 exact; missing 0; extra 0",
   "documentation_representation_materialization_audit": "active/DOCUMENTATION-REPRESENTATION-MATERIALIZATION-CONSISTENCY-AUDIT.md",
   "documentation_representation_recheck": "PASS; adaptive code/section/coordinator/dedicated/companion/generated/none model; physical topology not a scaffold",
-  "current_markdown_links_checked": 640,
-  "current_markdown_links_broken": 0
+  "current_markdown_links_checked": 649,
+  "current_markdown_links_broken": 0,
+  "lens_knowledge_basis": "18/18 active reusable Lenses declare Knowledge Basis mode INLINE | REFERENCED | HYBRID",
+  "lens_applicability_scan": "TF-06A LENS_SET scans required Core + active Target Module profile + applicable Core/profile registries + explicit user/agent selection; full Lens/Knowledge bodies are loaded proportionally",
+  "local_target_contract": "FIRST_CLASS: material IDTSPE may use a reusable Target Module or a one-off Local Target Contract when no module fits well enough",
+  "artifact_guidance_ownership": "Target Module AP owns Target-result representation; Lens AG owns/routs Lens-produced findings/supporting artifacts; L5/WEUC owns target-local evolution-companion guidance",
+  "generic_lens_operation_surfaces": [
+    "idtspe.lenses.select",
+    "idtspe.lens.apply"
+  ],
+  "core_command_surface_contract": "active/idtspe-core/shared/idtspe-command-surface-contract.md",
+  "sds_command_surface_extension": "active/profiles/sds/shared/idtspe-command-surface-contract.md",
+  "generic_lens_select_host_target_policy": "CREATE_OR_REUSE_TARGET",
+  "generic_lens_apply_host_target_policy": "RESOLVE_OR_REUSE_TARGET"
 }

@@ -25,8 +25,9 @@ IDTSPE Core must remain usable when another profile/family is added later. It th
 5. [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/interaction rules.
 6. [`target-modules/README.md`](target-modules/README.md) — Target Module framework and installed-family boundary.
 7. [`lenses/README.md`](lenses/README.md) — generic Lens registry plus installed profile Lens references.
-8. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy and worked materialization topologies.
-9. [`../profiles/README.md`](../profiles/README.md) — installed planning profiles/families.
+8. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/navigation surface and host-target policies.
+9. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy and worked materialization topologies.
+10. [`../profiles/README.md`](../profiles/README.md) — installed planning profiles/families.
 
 ## Generic Core Owners
 

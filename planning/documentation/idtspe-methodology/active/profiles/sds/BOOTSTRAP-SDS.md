@@ -72,7 +72,7 @@ This command does not mean “select Full physical profile” and does not creat
 13. [`../../theoretical-modules/README.md`](../../theoretical-modules/README.md) — discover temporary theory packages; do not read all raw bodies by default.
 14. [`../../theoretical-modules/testing/README.md`](../../theoretical-modules/testing/README.md) — know the detailed Testing theory package exists; read its exact source bodies only when testing detail is materially needed and processed Test guidance is insufficient.
 
-Specific `TM-*.md` and Lens bodies are read when the active Target/Lens set is resolved. A full bootstrap knows the complete catalogs/boundaries; it need not reread all 17 module bodies on every invocation.
+Specific `TM-*.md` and Lens bodies are read when the active Target/Lens set is resolved. A full bootstrap knows the complete catalogs/boundaries; it need not reread all 17 module bodies or all Lens Knowledge Basis references on every invocation. `TF-06A` may discover an applicable SDS Lens even for a Local Target Contract or when that Lens is not pre-attached by the current module.
 
 ## Profile Bootstrap Output
 
@@ -91,6 +91,12 @@ Core Lens Pack:
   + Documentation / Representation materialization check
 
 SDS Lens pack:
+  registry loaded; full bodies read proportionally
+
+Lens Applicability Scan:
+  TF-06A combines module attachment + registry applicability + explicit selection
+  generic Core select/apply Lens operations available
+
   loaded/indexed
 
 Directed workflow / representation/materialization topology:

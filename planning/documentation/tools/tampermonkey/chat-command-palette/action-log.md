@@ -352,3 +352,24 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-058`  
 **Reason:** Planning Helper `0.32.1` removes the remaining hard-coded IDTSPE/SDS view controls, derives view IDs/labels/order from command metadata, rebuilds generated projections and adds regression tests; full cross-scope ReviewDiff rationale and APPLIED state remain in the reusable-documentation canonical log.
+
+### XREF-022 — Project Lens Applicability Scan and generic Lens dispatcher
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-060`  
+**Reason:** Planning Helper command metadata/catalog order/generated seed, manual acceptance and regression tests project `41 = 9 IDTSPE + 32 SDS`, including metadata-driven Lens Operations (`подбери линзы` / `примени линзу`) while preserving four specialized Lens shortcuts; full semantic rationale and APPLIED target state remain in the reusable-documentation canonical log.
+
+### XREF-023 — Rebuild generic Core command ownership and Lens-operation host policy
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-062`  
+**Reason:** Planning Helper command seed/tests are rebuilt from the corrected nine-surface Core command authority and distinct `CREATE_OR_REUSE_TARGET` vs `RESOLVE_OR_REUSE_TARGET` Lens-operation policies; verification reaches 122/122 while the 41-surface navigation/count remains unchanged.
+
+### XREF-024 — Extend evolution-companion ownership regression across Domain and Slice
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-064`  
+**Reason:** Planning Helper semantic-navigation tests extend the existing artifact-guidance ownership regression to Domain Draft, Domain Discovery and Implementation Slice without changing runtime, command metadata, generated seed, methodology navigation or the 122-test total; full correction rationale/APPLIED state remain in the reusable-documentation canonical log.

@@ -22,6 +22,23 @@ This is an artifact projection, not automatically a new Target or semantic owner
 Fundamental representation rule: [`../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md). Separate evolution files are one later materialization option, not the default representation.
 
 
+
+## Guidance Ownership
+
+In the current SDS profile, target-local future evolution is a **Lens-produced supporting perspective**, not intrinsic output of Domain/Slice/Frontend/WEUC Target Modules.
+
+```text
+LENS-WORKSPACE-EVOLUTION-ARCHITECTURE / AG-L5-02
+→ discovers target-local future evolution
+→ proposes an Evolution section first
+→ may propose promoted <owner>.evolution.md under independent pressure
+
+Target Module AP-*
+→ continues to own representation of the current Target result itself
+```
+
+The same pattern is reusable for future profiles: the methodology element that owns the future-evolution evaluation owns the supporting-artifact guidance; P-14 still resolves the actual representation.
+
 ## When To Promote A Separate Companion
 
 Do not create a companion merely because future evolution was discussed. Keep small material future notes in the current owner/discovery/strategy Evolution section first. Promote a separate companion when material future planning also gains independent addressability/review/lifecycle value, for example:

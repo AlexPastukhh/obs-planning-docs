@@ -26,6 +26,8 @@ For AI/chat work, read [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) before
 
 Material planning now uses the installed [`IDTSPE methodology workspace`](documentation/idtspe-methodology/README.md) as the canonical generic planning runtime. SDS is an IDTSPE profile, not a second runtime.
 
+IDTSPE Targets may use a reusable Target Module or a first-class Local Target Contract when no reusable module fits. Lens selection is resolved through `TF-06A`: required/module-attached perspectives are combined with a proportional scan of registered Core/profile Lenses. Use `подбери линзы` to review applicability or `примени линзу` to explicitly apply one registered Lens; these do not create Lens-owned Targets.
+
 ```text
 material planning
 → IDTSPE Core / IDTSPE Shell

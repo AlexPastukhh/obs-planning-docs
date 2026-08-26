@@ -443,21 +443,6 @@ GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
-```text
-ARTIFACT_PROPOSAL
-ID: AP-FE-03
-CONTENT_KIND: FRONTEND_EVOLUTION_COMPANION
-WHEN: material future frontend path/prepared seam needs persistence
-GUIDANCE: PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: frontend owner or parent Slice owner according to selected current ownership
-REPRESENTATION: COMPANION_ARTIFACT
-FILE_OR_ARTIFACT: <frontend-owner>.evolution.md or <slice-owner>.evolution.md
-CONTENT: future frontend extension/change paths; prepared seams; transition conditions
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
-```
 
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
@@ -466,7 +451,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **Otherwise** frontend planning stays inside the parent Slice artifact as a Part Plan.
 
-**PREFERRED companion when material** — `<frontend-owner>.evolution.md` or the parent Slice evolution companion for future frontend extension paths/prepared seams. Choose one canonical location and reference it; do not duplicate future plans.
+**Evolution companion handoff** — this Target Module does not propose an evolution companion. When L5/WEUC finds material future-path pressure, `AG-L5-02` may propose an Evolution section, `<frontend-owner>.evolution.md`, or the parent Slice evolution companion; this Frontend Target may consume/reference that result. Documentation / Representation + P-14 choose embed vs split and prevent duplicate future plans.
 
 Current Screen semantics remain in Screen owners; frontend artifacts reference rather than redefine them.
 

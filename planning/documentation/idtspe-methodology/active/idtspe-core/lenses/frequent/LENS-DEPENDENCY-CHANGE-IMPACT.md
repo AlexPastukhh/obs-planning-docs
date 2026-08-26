@@ -22,7 +22,7 @@ integration graph
 generated projections
 ```
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 current owner/dependency graph
@@ -206,6 +206,27 @@ blast-radius risk
 L4 says what depends on what.
 
 It does not decide the semantic meaning of the response; that remains with the proper owner.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Dependencies matter when they create real consumer/change/blast-radius consequences, not merely because references exist.
+- A dependency relation does not automatically establish Source or semantic-owner authority.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Workspace dependency facts are Target Inputs/Evidence; the impact evaluation is owned here.
 
 ## Provenance
 

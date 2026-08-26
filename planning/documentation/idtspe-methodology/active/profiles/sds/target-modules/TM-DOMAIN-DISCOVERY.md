@@ -225,7 +225,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 Rejected/uncertain future Domain ideas may route to `SDS-PLANNING-STATE/ideas/domain/IDEAS.md`.
 
-When Workspace evolution is material, Domain-evolution implications may be proposed for a later `<domain-owner>.evolution.md`, but discovery does not create a current Domain semantic owner merely to host speculation.
+When Workspace evolution is material, Domain Discovery hands future-path implications to the WEUC/L5 Lens. This Target Module does not propose `<domain-owner>.evolution.md`; `AG-L5-02` may later propose an Evolution section or companion, with Documentation / Representation + P-14 resolving persistence and embed-vs-split. Discovery does not create a current Domain semantic owner merely to host speculation.
 
 `P-14` must show what discovery Evidence survives and what remains ephemeral.
 

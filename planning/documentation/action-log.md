@@ -1054,3 +1054,110 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - the existing Architecture/Testing routing, true collect-Ideas semantic retirement, Test Strategy Realization / Topology Registry, **38 AP + 38 AG = 76** materialization source records and open MB-06 boundary remain unchanged.
 
 **Rationale:** remove the last duplicated/contradictory runtime semantics from the staged IDTSPE/SDS installation so bootstrap cannot accidentally become Target execution and Helper navigation has one GitHub-backed metadata source for methodology views.
+
+### LOG-DOC-059 — Review IDTSPE Target/Lens composition, Knowledge Basis and artifact-guidance ownership
+
+**Type:** REVIEW DIFF / USER-SELECTED PRE-UPDATE  
+**Source:** current user-selected repository snapshot `46ee341cef4b6c581dc1e461f21cd1e11755abb7` + explicit clarification of Target Module/Lens usage and pre-update omission review
+
+**Material Findings / Selected Corrections:**
+- a material IDTSPE Target must not require a pre-existing reusable Target Module. Preserve the existing first-class `Local Target Contract` path when no recurring module fits well enough; a Target Module remains a reusable planning contract for a recurring useful result;
+- make `TF-06A LENS_SET` an explicit proportional **Lens Applicability Scan**: required Core Lenses are always checked proportionally, the active Target Module Lens Profile contributes required/conditional attachments when a module exists, Core/profile registries are scanned by applicability gate, and explicit user/agent Lens choice is allowed without manufacturing a new Target;
+- separate every reusable Lens into its **Operational Evaluation Contract** and explicit **Knowledge Basis**. Knowledge Basis mode is an independent axis (`INLINE`, `REFERENCED`, `HYBRID`) and may embed small principles/rules/theory or reference separate knowledge owners with a load policy. Rename Lens-side `Typical Sources / Evidence` to `Target Inputs / Evidence` so Target Sources are not confused with theory/principle sources;
+- expose two generic Core orchestration intents: `idtspe.lenses.select / подбери линзы <target/context>` and `idtspe.lens.apply / примени линзу <lens> к <target/context>`. They dispatch registry-owned Lens semantics and do not create fixed Lens identities. Keep the four existing direct Lens commands as stable specialized shortcuts rather than creating one command per Lens;
+- normalize artifact-guidance ownership: Target Module `AP-*` records describe representation/routing of the Target result; Lens `AG-*` records describe/reroute Lens-produced findings/supporting perspective artifacts. A Lens may have zero AG records when its findings return to the current Target owner;
+- remove duplicated evolution companion proposals from `TM-DOMAIN-DRAFT`, `TM-IMPLEMENTATION-SLICE`, `TM-FRONTEND-SLICE`, `TM-WEUC` and duplicated Target-result/evolution AG records from Application/Scenario/Domain/Slice/UI profile Lenses. L5/WEUC `AG-L5-02` becomes the canonical proposer for target-local Evolution sections / `<owner>.evolution.md`;
+- preserve the literal boundary examples: `TM-DOMAIN-DRAFT` owns current Domain meaning while L5 may propose `CaptureItem.evolution.md`; `TM-IMPLEMENTATION-SLICE` owns the current Useful Vertical Result/runtime/integrated plan while L5 may propose a Slice evolution companion;
+- preserve the counterexample: `TEST-REALIZATION-MAP.md` remains a `TM-TEST-STRATEGY` result/supporting representation because proof allocation and test suite/class/setup/fixture/harness/helper topology are part of Test Strategy, not a Lens finding;
+- do not preserve old AP/AG totals for numerical continuity. The coherent target inventory is **34 AP + 24 AG = 58**, with annotated materialization projection updated to exact **58/58** parity; historical checkpoints and `sources-readonly/**` retain their historical counts unchanged;
+- update bootstrap/system maps/command and Helper navigation so the Lens registry and scan are discoverable without loading every Lens body at bootstrap. Full Lens bodies and referenced Knowledge Basis owners remain proportional/target-driven.
+
+**Pre-Update Omission Review:**
+- current command/helper projections must move from `39 = 7 IDTSPE + 32 SDS` to **41 = 9 IDTSPE + 32 SDS** while fixed direct Lens shortcuts remain four;
+- all **18 / 18** active Lens bodies must carry the new Knowledge Basis contract, otherwise the rule would remain descriptive rather than enforceable;
+- current audits, manifest, materialization projection, readiness/integration docs, Helper seed/tests/manual acceptance and affected scope logs must transition coherently in the same package;
+- raw Testing theory remains byte-identical to its `ca768b61...` source provenance and is referenced conditionally from the Test Proof Lens rather than rewritten;
+- Reference Object / MB-06 and destructive legacy-family cleanup remain outside this package.
+
+### LOG-DOC-060 — Apply Lens applicability / Knowledge Basis / guidance-ownership integration
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-059`  
+**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`  
+**Package:** `f73b494c-e01e-4bfc-b39f-61144726259f`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- generic IDTSPE explicitly supports either a reusable Target Module or a one-off Local Target Contract; Target Module and Target Instance remain distinct;
+- `TF-06A LENS_SET` owns the proportional Lens Applicability Scan across required Core, Target Module attachment policy, applicable Core/profile registries and explicit selection;
+- all **18 / 18** reusable Lens files expose one `Knowledge Basis` (`INLINE | REFERENCED | HYBRID`) separate from Target Inputs / Evidence and from the operational evaluation contract;
+- Core command/navigation exposes `idtspe.lenses.select` and `idtspe.lens.apply`; accepted methodology surface becomes **41 = 9 IDTSPE + 32 SDS** while four specialized direct Lens shortcuts remain stable convenience routes;
+- Planning Helper remains metadata-driven and passes **120 / 120** automated tests, including Lens Knowledge Basis, AP/AG ownership and generic Lens-dispatch regressions;
+- Artifact Placement source inventory is **34 AP + 24 AG = 58**, and `ARTIFACT-PLACEMENT-MAP.md` projects the exact **58 / 58** current source IDs with missing `0`, extra `0`;
+- Target Module AP owns Target-result representation; Lens AG owns/routs Lens-produced findings/supporting material. L5/WEUC `AG-L5-02` owns target-local future evolution companion guidance; Domain/Slice/Frontend current results stay with their Target Modules;
+- `TEST-REALIZATION-MAP.md` remains Test Strategy output/supporting representation; no Lens-owned shadow Test Strategy artifact is introduced;
+- Markdown link/fence checks pass, raw Testing theory remains **4 / 4 byte-identical** to its preserved source, and `planning/documentation/idtspe-methodology/sources-readonly/**` is unchanged;
+- MB-06 and destructive legacy methodology cleanup remain intentionally open/out of scope.
+
+**Rationale:** make IDTSPE composition explicit enough to support recurring modules, dynamic one-off Targets, proportional Lens discovery and theory-backed evaluation without conflating Target result ownership, Lens findings, knowledge sources or physical supporting artifacts.
+
+### LOG-DOC-061 — Review residual Core/SDS command authority, Lens host policy, evolution handoff and ChangeSet finalization
+
+**Type:** REVIEW DIFF / LATER CLARIFICATION / USER-SELECTED CORRECTION  
+**Source:** post-Apply ReviewDiff after `LOG-DOC-060` + user clarification that accepted `APPROVABLE` ReviewDiff finalizes a ChangeSet for future replacement-package continuity
+
+**Material Findings / Selected Corrections:**
+- the two new generic Lens operations exposed a broader authority leak: all nine generic IDTSPE helper surfaces still referenced the SDS-profile `idtspe-command-surface-contract.md` as a command owner. Create a generic Core command-surface contract under `idtspe-core/shared/`, route all nine Core command definitions to it, and make the SDS command-surface file an explicit profile extension rather than owner of Core semantics/host-target policies;
+- `idtspe.lenses.select / подбери линзы` participates in Target Formation and must work for a bounded Target candidate / first-class Local Target Contract, so its host policy is `CREATE_OR_REUSE_TARGET`. `idtspe.lens.apply / примени линзу` remains `RESOLVE_OR_REUSE_TARGET` because explicit Lens execution needs a natural resolved/reused host Target context;
+- finish evolution-companion prose ownership after the AP/AG cleanup: Target Modules may consume/reference local evolution companions already justified by L5/WEUC, but they must not sound like companion proposers. `AG-L5-02` + Documentation / Representation + P-14 remain the creation/embed-vs-split authority;
+- clarify replacement-package lifecycle: correction/continuation may reuse a ChangeSet only while it is open. Once a ReviewDiff for that ChangeSet is accepted as `APPROVABLE`, the ChangeSet is finalized/closed for producer continuity; every later replacement archive must start a new `changeSetId`, stable new `changeSetLabel` and new `packageId`, even for conceptually related work or overlapping files. No closing ZIP is required merely to finalize an APPROVABLE ChangeSet.
+
+**Boundary:** this correction does not change the accepted **41 = 9 IDTSPE + 32 SDS** methodology surfaces, **18** Lens inventory, **34 AP + 24 AG = 58** materialization source records, Test Strategy realization-map ownership, raw Testing theory or MB-06 cleanup boundary.
+
+### LOG-DOC-062 — Apply Core command authority / host-policy / evolution-handoff / ChangeSet-finalization correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-061`  
+**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`  
+**Package:** `d5699ab9-ba22-44b5-83fe-59fb94984536`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `active/idtspe-core/shared/idtspe-command-surface-contract.md` is the canonical generic Core command-surface owner. All **9 / 9** IDTSPE Core command definitions reference it rather than the SDS profile command owner; the SDS command-surface file is explicitly a profile extension that contributes SDS bootstrap/Target/focused/Lens-shortcut surfaces and the current Core+SDS aggregate projection;
+- Core bootstrap/navigation reads the generic command-surface contract and the methodology/system/helper maps distinguish generic Core command authority from the SDS extension;
+- `idtspe.lenses.select` uses `CREATE_OR_REUSE_TARGET`, so the TF-06A Applicability Scan can operate during Target Formation / Local Target Contract formation; `idtspe.lens.apply` keeps `RESOLVE_OR_REUSE_TARGET`;
+- Frontend and TM-WEUC prose no longer present target-local evolution companions as Target-Module proposals. They consume/reference L5/WEUC results; `AG-L5-02` plus Documentation / Representation / P-14 owns optional Evolution-section / `<owner>.evolution.md` proposal and embed-vs-split resolution; existing Domain/Slice wording remains aligned with the same boundary;
+- `replacement_archive.create / давай архив` and its canonical producer workflow now make ChangeSet continuity state explicit: an accepted `APPROVABLE` ReviewDiff finalizes the ChangeSet, and any later package starts a new ChangeSet; same-logical-work reuse applies only while the prior ChangeSet is open;
+- methodology counts remain **41 surfaces**, **18 Lenses**, **34 AP + 24 AG = 58** source records with **58 / 58** materialization parity;
+- Planning Helper generated command seed/userscript are rebuilt and verification passes **122 / 122** automated tests, including Core-vs-SDS command authority, select/apply host-policy and APPROVABLE-finalization regressions;
+- raw Testing theory and `planning/documentation/idtspe-methodology/sources-readonly/**` remain unchanged; MB-06/destructive legacy cleanup remains out of scope.
+
+**Rationale:** complete the post-Apply authority cleanup so generic IDTSPE can remain profile-independent, Lens selection participates correctly in Target Formation, evolution companions have one proposer boundary, and replacement-package ChangeSets cannot be silently reused after an accepted final ReviewDiff.
+
+### LOG-DOC-063 — Review residual Domain/Slice evolution-companion proposer wording
+
+**Type:** REVIEW DIFF / LATER CLARIFICATION / USER-SELECTED CORRECTION  
+**Source:** post-Apply ReviewDiff after `LOG-DOC-062`
+
+**Material Findings / Selected Corrections:**
+- the AP/AG ownership model and Frontend/WEUC prose were already corrected, but `TM-DOMAIN-DRAFT` still said `create/update an optional companion`, `TM-IMPLEMENTATION-SLICE` still said `persist an optional companion`, and `TM-DOMAIN-DISCOVERY` still allowed a later `<domain-owner>.evolution.md` to be “proposed” without explicitly routing proposal authority through L5;
+- normalize all three remaining Domain/Slice passages to the same handoff boundary: Target Modules may identify future-path pressure and consume/reference the resulting evolution representation, but they do not propose or require the companion;
+- `AG-L5-02` remains the canonical Lens guidance that may propose an Evolution section / `<owner>.evolution.md`; Documentation / Representation decides whether persistence is justified and P-14 resolves embed-vs-split;
+- expand the existing artifact-guidance ownership regression to cover Domain Draft, Domain Discovery and Implementation Slice literal wording so this prose-level ownership conflict cannot recur unnoticed.
+
+**Boundary:** no command surface, Lens inventory, AP/AG inventory, materialization projection, Helper navigation, Knowledge Basis contract, Test Strategy realization ownership, ChangeSet-finalization rule or MB-06 boundary changes in this correction.
+
+### LOG-DOC-064 — Apply final Domain/Slice evolution-companion handoff wording correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-063`  
+**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`  
+**Package:** `d886c59f-9b57-4cf0-9de6-661fa338fc21`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `TM-DOMAIN-DRAFT` routes material future Domain evolution to WEUC/L5, explicitly states that the Target Module does not propose or require an evolution companion, and treats `CaptureItem.evolution.md` only as an example after `AG-L5-02` + Documentation / Representation + P-14 placement;
+- `TM-DOMAIN-DISCOVERY` hands future-path implications to WEUC/L5 and explicitly states that it does not propose `<domain-owner>.evolution.md`;
+- `TM-IMPLEMENTATION-SLICE` routes Slice future-path pressure to WEUC/L5, explicitly states that the Target Module does not propose or require a Slice evolution companion, and treats `.evolution.md` as L5-produced supporting output after placement resolution;
+- the existing artifact-guidance ownership regression now covers Domain Draft, Domain Discovery, Implementation Slice, Frontend and WEUC proposer wording; Planning Helper verification remains **122 / 122** PASS;
+- methodology counts remain **41 surfaces**, **18 Lenses**, **34 AP + 24 AG = 58** source records with **58 / 58** materialization parity; no command/helper runtime or generated seed change is required;
+- this ChangeSet remains open until its ReviewDiff is accepted as `APPROVABLE`; once accepted, the existing finalization rule requires every later archive to start a new ChangeSet.
+
+**Rationale:** finish the last prose-level ownership inconsistency so Target Modules uniformly own current Target results while L5/WEUC alone proposes target-local future-evolution companions.

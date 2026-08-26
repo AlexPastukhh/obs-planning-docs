@@ -12,7 +12,7 @@ Keep planning tied to a real Need/useful result and choose the right bounded Tar
 
 Always check for a material IDTSPE choice. Trusted upstream Need/scope may satisfy it without reopening.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 Trigger
@@ -171,6 +171,27 @@ reframe around durable capture result
 L1 does not ban repositories.
 
 It prevents an implementation proposal from becoming the Need merely because someone mentioned it first.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- A Target exists to resolve a useful bounded outcome, not merely to create an artifact or follow a phase label.
+- Scope should be the smallest boundary that preserves the material Need/result and ownership clarity.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+These principles are already operationalized by this Lens; outside product/domain knowledge enters as Target Inputs/Evidence, not as Lens authority.
 
 ## Provenance
 

@@ -143,4 +143,4 @@ SDS tab
 → presentation badges must expose material conditional/optional Target gates without hiding commands
 ```
 
-The accepted 39 methodology surfaces should project as `7 IDTSPE + 32 SDS` primary helper surfaces; contextual cross-links must not create duplicate command identities.
+The accepted 41 methodology surfaces should project as `9 IDTSPE + 32 SDS` primary helper surfaces. The two additional Core surfaces are generic Lens operations (`idtspe.lenses.select` and `idtspe.lens.apply`), not new fixed Lens identities; contextual cross-links must not create duplicate command identities.

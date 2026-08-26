@@ -78,7 +78,7 @@ Documentation / Representation / Artifact Boundary
   required when material output may persist
 ```
 
-Additional generic and profile-specific Lenses are selected by applicability and Target profile. A Lens produces findings/questions/ideas/evidence implications; it does not become a semantic owner.
+Additional generic and profile-specific Lenses are selected by the `TF-06A` Lens Applicability Scan from required Core, active Target Module attachment policy, Core/profile registries and explicit user/agent selection. A Local Target Contract can use the same registry without a reusable Target Module. Each Lens separates its Operational Evaluation Contract from its inline/referenced/hybrid Knowledge Basis. A Lens produces findings/questions/ideas/evidence implications; it does not become a semantic owner.
 
 The generic reusable set includes [`LENS-LINKED-NOTES-USAGE-JUSTIFICATION`](lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md), which justifies or rejects Linked Notes/backlink/query behavior. Linked Notes are not a Core storage tree or semantic owner.
 

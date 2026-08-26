@@ -36,7 +36,12 @@ Target Module
 
 Target Instance
 = concrete current planning owner
+
+Local Target Contract
+= one-off Target methodology contract formed dynamically when no reusable module fits
 ```
+
+A material IDTSPE Target does **not** require a pre-existing Target Module. Reusable modules are preferred when a recurring contract genuinely fits; otherwise Target Formation creates a bounded Local Target Contract and the same Shell/Lens lifecycle continues.
 
 ---
 
@@ -346,13 +351,15 @@ Canonical owner:
 active/idtspe-core/lenses/ + active/profiles/<profile>/lenses/
 ```
 
-A Target Module declares a concise `Lens Profile`:
+A Target Module declares a concise `Lens Profile` / attachment policy:
 ```text
 required generic Lens inheritance
 primary TARGET_PROFILE_REUSABLE Lens Pack(s)
 frequent conditional Lens refs + gates
 local-only Lens prompts — only when truly non-reusable
 ```
+
+The module owns **that/when** those Lenses attach to this recurring Target family. The reusable Lens owner controls the evaluation workflow, findings and Knowledge Basis. `TF-06A` may additionally discover applicable registered Lenses that the module did not pre-list.
 
 Selected rule:
 ```text
@@ -550,4 +557,6 @@ GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
-`PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE` are the canonical machine-readable policy fields; `GUIDANCE` is only a descriptive qualifier. `FILE_OR_ARTIFACT` states which canonical/supporting/register/companion file or logical artifact pattern the module proposes. `CONTENT` says which part of the Target output belongs there. These are profile-level defaults/requirements; the active-profile materialization tree groups these source records by possible representation/destination without becoming semantic authority.
+`PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE` are the canonical machine-readable policy fields; `GUIDANCE` is only a descriptive qualifier. `FILE_OR_ARTIFACT` states which canonical/supporting/register file or logical artifact pattern the module proposes. `CONTENT` says which part of the **Target result itself** belongs there. These are profile-level defaults/requirements; the active-profile materialization tree groups these source records by possible representation/destination without becoming semantic authority.
+
+Target Module AP guidance must not duplicate a separate Lens finding merely because that finding may be persisted next to the Target. Example: `TM-TEST-STRATEGY` may propose `TEST-REALIZATION-MAP.md` because test realization topology is part of Test Strategy output; `TM-DOMAIN-DRAFT` must not propose `<Domain>.evolution.md` merely because L5 found a future path. Target-local evolution companions are L5/WEUC Lens guidance.

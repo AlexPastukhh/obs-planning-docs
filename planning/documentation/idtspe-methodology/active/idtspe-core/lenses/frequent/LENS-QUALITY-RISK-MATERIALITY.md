@@ -24,7 +24,7 @@ business/economic cost
 
 Operability/observability as a realization property is primarily L6.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 Need/Scenario/Requirement, external constraints, incidents/performance data, target environment/scale, user/accessibility and economic evidence.
 
@@ -169,6 +169,27 @@ The Lens produces only material quality/risk findings, Evidence needs, owner/han
 “Security is important” is not enough to create a framework or Target.
 
 The dimension must be material to the current decision.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Quality/risk dimensions activate only when capable of changing the current answer, owner, evidence need or proof burden.
+- A generic NFR checklist is not a substitute for materiality/evidence.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Domain/regulatory/security standards may be Target Inputs or separately referenced by future specialized Lenses; this Lens owns generic materiality selection.
 
 ## Provenance
 

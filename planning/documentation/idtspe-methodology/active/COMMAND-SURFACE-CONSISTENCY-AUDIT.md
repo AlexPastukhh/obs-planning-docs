@@ -1,12 +1,13 @@
 # Command Surface Consistency Audit
 
-Status: PASS — refreshed after Documentation / Representation command-surface correction
+Status: PASS — refreshed after Lens Applicability / generic Lens-operation integration
 
 ## Authority
 
-Canonical methodology command owner:
+Canonical command-surface owners:
 
-[`profiles/sds/shared/idtspe-command-surface-contract.md`](profiles/sds/shared/idtspe-command-surface-contract.md)
+- generic Core: [`idtspe-core/shared/idtspe-command-surface-contract.md`](idtspe-core/shared/idtspe-command-surface-contract.md)
+- SDS extension: [`profiles/sds/shared/idtspe-command-surface-contract.md`](profiles/sds/shared/idtspe-command-surface-contract.md)
 
 Repository mapping remains a migration projection under `integration/`; it is not command-surface authority.
 
@@ -16,12 +17,12 @@ Repository mapping remains a migration projection under `integration/`; it is no
 3 framework/bootstrap/work surfaces
 17 canonical SDS Target Module surfaces
 12 focused Target-Module shortcuts
-4 reusable direct Lens surfaces
-3 orchestration/validator surfaces
-= 39 methodology invocation surfaces
+4 specialized direct Lens shortcut surfaces
+5 orchestration/validator surfaces
+= 41 methodology invocation surfaces
 ```
 
-Direct reusable Lens surfaces:
+Specialized direct Lens shortcut surfaces:
 
 ```text
 lenscmd.weuc.check
@@ -45,12 +46,16 @@ lenscmd.linked-notes.justify
 - Simplicity direct Lens command is present in owner + command contract: **PASS**
 - Documentation / Representation direct Lens command is present in owner + command contract: **PASS**
 - Linked Notes direct Lens command is present in owner + command contract: **PASS**
-- direct Lens commands do not create new Target Modules: **PASS**
-- `idtspe.next`, `idtspe.continue`, `idtspe.review_consistency` remain orchestration/validator surfaces: **PASS**
+- specialized direct Lens shortcuts do not create new Target Modules: **PASS**
+- generic Core command definitions point to the Core command-surface owner rather than the SDS extension: **PASS**
+- `idtspe.lenses.select` exposes the TF-06A Lens Applicability Scan with `CREATE_OR_REUSE_TARGET`, so it can participate in Local Target Formation without becoming a Target/Lens authority: **PASS**
+- `idtspe.lens.apply` keeps `RESOLVE_OR_REUSE_TARGET` and can dispatch any registered applicable Lens without assigning a fixed `lensId`: **PASS**
+- all registered Lenses remain reachable through generic apply even when they have no specialized command: **PASS**
+- `idtspe.next`, `idtspe.continue`, `idtspe.review_consistency`, `idtspe.lenses.select`, `idtspe.lens.apply` are the five orchestration/validator surfaces: **PASS**
 - Theoretical Modules do not receive automatic command surfaces: **PASS**
 - AI Reviewability / Key Points does not receive an automatic methodology command: **PASS**
 - repository command IDs remain separate migration decisions: **PASS**
 
 ## Boundary
 
-A new Lens does not automatically imply a command. A direct Lens command is added only when the Lens exposes a stable recurring user intent that is useful to invoke explicitly.
+A new Lens does not automatically imply a specialized command. Every registered Lens is generically reachable through `idtspe.lens.apply`; a dedicated shortcut is added only when the Lens exposes a stable recurring user intent. Lens selection itself is generically exposed through `idtspe.lenses.select`.

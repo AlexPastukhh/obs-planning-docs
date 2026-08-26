@@ -11,7 +11,7 @@ Evaluate whether an own Application is justified, which real-world contribution 
 
 Primary for `TM-APPLICATION-DEFINITION`.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 Fundamental Need
@@ -121,68 +121,11 @@ Application Definition; accepted outputs feed Prototype/Scenario/Screen.
 
 ## Artifact / File Implications
 
-### Structured Artifact / File Guidance
+`NONE_DIRECT / RETURN_TO_TARGET_OWNER`.
 
-These records describe conditional placement guidance produced by this Lens. They never create semantic ownership by themselves.
+This Lens evaluates Application boundary/feasibility but does not independently prescribe the representation of the Application Definition result or its target-intrinsic supporting research/route material. Accepted findings return to `TM-APPLICATION-DEFINITION`, whose `AP-APP-*` proposals own current Application/result representation.
 
-```text
-ARTIFACT_GUIDANCE
-ID: AG-APP-01
-CONTENT_KIND: APPLICATION_FINDING
-WHEN: Lens selects/refines application boundary/concept/feasibility
-GUIDANCE: PROFILE_DEFAULT
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Application Definition Target
-REPRESENTATION: EMBED_CURRENT_OWNER
-FILE_OR_ARTIFACT: <application-definition-owner>
-CONTENT: selected application concept/boundary/feasibility/refined route findings
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-APP-02
-CONTENT_KIND: REFERENCE_RESEARCH
-WHEN: market/reference evidence is substantial
-GUIDANCE: ADVISORY_PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Application Definition as consumer; Evidence remains Evidence
-REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT
-FILE_OR_ARTIFACT: <application-reference-research-artifact>
-CONTENT: research evidence/findings
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-APP-03
-CONTENT_KIND: REFINED_REAL_LIFE_ROUTE
-WHEN: refined core real-life route is independently reused/reviewed
-GUIDANCE: ADVISORY_OPTIONAL
-PERSISTENCE_GUIDANCE: OPTIONAL
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Application Definition
-REPRESENTATION: SEPARATE_ADDRESSABLE_ARTIFACT
-FILE_OR_ARTIFACT: <refined-real-life-scenario-artifact>
-CONTENT: refined route while preserving Application Definition authority
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
-
-Primary findings normally project into the canonical Application Definition artifact.
-
-**PREFERRED supporting research artifact** for substantial market/reference evidence.
-
-**OPTIONAL separate addressability** for Refined Core Real-Life Scenario when independently reused/reviewed.
-
-Do not create separate files for each sublens finding; `P-14` preserves one Application semantic owner.
+If this Lens exposes a genuinely independent Evidence or planning problem outside that Target result, route it through normal Target Formation / Evidence handling rather than creating a second Application artifact authority.
 
 ## Guards
 
@@ -258,6 +201,27 @@ feasibility findings
 The Lens does not design final Screens, Scenarios or architecture.
 
 Existing products provide Evidence/Ideas, not authority over our product semantics.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Build/use/adapt/buy/integrate alternatives should be compared against the real-life Need before custom software responsibility is accepted.
+- Feasibility evidence may constrain Application boundary but must not replace product/Need authority.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Market/reference/implementation facts are Target Inputs/Evidence; the Application boundary/feasibility evaluation is owned here.
 
 ## Provenance
 

@@ -231,6 +231,8 @@ or Target = whole Workspace architecture
 
 Local architecture decisions remain local unless they should constrain several independent future Targets. Then L5 emits a promotion/update candidate and `TM-WEUC` resolves the project-global architecture position.
 
+Target-local future evolution remains a **Lens perspective**: L5 may suggest an Evolution section or promoted `<owner>.evolution.md` companion (`AG-L5-02`). Domain/Slice/Frontend Target Modules own current Target result representation and do not independently propose those future-evolution companions.
+
 L5 also owns the reusable Architecture/Workspace work-cost check: Understanding/Discoverability, Change, Verification/Diagnosis/Operation and Runtime path cost, plus accidental/speculative/legacy complexity classification. No second architecture/work-cost Lens is introduced.
 
 The SDS Simplicity Lens consumes those L5 constraints and searches for a smaller current Domain/Slice/Test/Frontend structure — fewer unpaid abstractions, owners, hops or test layers — without destroying planned evolution paths or justified prepared extension points.

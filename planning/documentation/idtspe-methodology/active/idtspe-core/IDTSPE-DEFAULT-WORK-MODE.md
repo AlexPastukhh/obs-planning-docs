@@ -49,7 +49,9 @@ resolve scope / Target Formation
 ↓
 identify current semantic owner(s) and typed Sources
 ↓
-select applicable Lenses / theoretical references only when useful
+select a reusable Target Module when one fits, otherwise form a Local Target Contract
+select applicable Lenses through TF-06A Lens Applicability Scan
+load referenced Lens Knowledge Basis / theoretical bodies only when useful
 ↓
 Questions / Ideas / optional Branches / Q-R-P
 ↓

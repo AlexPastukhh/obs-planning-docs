@@ -11,7 +11,7 @@ Keep a Slice as one bounded useful/checkable vertical result and preserve upstre
 
 Primary for Slice Strategy/Implementation Slice; supporting for Frontend/Cross-Cutting integration.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 Primary Scenario, Scenario DATA, Behavior Items, must-hold conditions, Screen when UI, Domain meaning and current implementation/workspace.
 
@@ -81,68 +81,9 @@ Slice Strategy, Implementation Slice, Frontend Slice, Cross-Cutting integration.
 
 ## Artifact / File Implications
 
-### Structured Artifact / File Guidance
+`NONE_DIRECT / RETURN_TO_TARGET_OWNER`, except that future-evolution findings are handed to L5/WEUC when that perspective is active.
 
-These records describe conditional placement guidance produced by this Lens. They never create semantic ownership by themselves.
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-SLICE-01
-CONTENT_KIND: CURRENT_SLICE_PLAN
-WHEN: Slice result/runtime/integrated plan is selected
-GUIDANCE: PROFILE_DEFAULT
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Implementation Slice Target
-REPRESENTATION: EMBED_CURRENT_OWNER
-FILE_OR_ARTIFACT: <slice-owner>
-CONTENT: Useful Vertical Result; obligations; Runtime Path; Integrated Plan
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-SLICE-02
-CONTENT_KIND: LIGHTWEIGHT_PART_PLAN
-WHEN: one selected local call/responsibility needs detail
-GUIDANCE: PROFILE_DEFAULT
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: parent Slice Target
-REPRESENTATION: EMBED_CURRENT_OWNER
-FILE_OR_ARTIFACT: <slice-owner>
-CONTENT: Part Plan section/child unless independent Target is needed
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-SLICE-03
-CONTENT_KIND: SLICE_EVOLUTION
-WHEN: material future path applies to Slice/implementation area
-GUIDANCE: ADVISORY_PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: base Slice owner remains current truth
-REPRESENTATION: COMPANION_ARTIFACT
-FILE_OR_ARTIFACT: <slice-owner>.evolution.md
-CONTENT: future extension/change path; prepared seams; tests; triggers
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
-
-Selected current Slice result/Runtime/Integrated Plan belongs in the canonical Slice owner.
-
-Lightweight Part Plans **embed by default**.
-
-**PREFERRED `<slice-owner>.evolution.md` companion** for material planned/probable future change paths.
-
-Promoted child/Frontend Targets receive their own canonical owners only after Target Formation selects them.
+The selected Useful Vertical Result, Runtime Path, Integrated Plan and lightweight Part Plan are represented through `TM-IMPLEMENTATION-SLICE / AP-SLICE-01..02`. This Lens evaluates verticality/integration but does not duplicate Slice-result persistence. A material future Slice path is represented only through `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE / AG-L5-02` after Documentation / Representation decides whether an Evolution section or `<slice-owner>.evolution.md` companion is justified.
 
 ## Guards
 
@@ -208,6 +149,27 @@ The Lens produces verticality/integration findings and exposes missing obligatio
 ### Boundary / Lesson
 
 A technical prerequisite may occasionally be a legitimate Target, but it must be justified explicitly rather than mislabeled as a normal user-facing vertical Slice.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- A Slice is justified by one useful vertical result and must keep semantic obligations connected through runtime/integration planning.
+- Part plans and implementation details do not become separate Targets unless they gain independent planning value.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Current code/domain/scenario facts are Target Inputs; verticality/integration evaluation is owned here.
 
 ## Provenance
 

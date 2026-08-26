@@ -40,28 +40,33 @@ real repeated planning cases
      TARGET_PROFILE_REUSABLE
      LOCAL_ONLY
 5. define applicability gate
-6. define typical Sources/Evidence
-7. define prompts/sublenses
-8. define findings produced
-9. define Target/profile consumers
-10. define composition with other Lenses
-11. define guards/anti-patterns
-12. define finding→Decision/Target escalation
-13. migrate duplicate embedded knowledge
-14. update Lens Registry
-15. update Target Module Lens Profiles
-16. update phase/command/projection routes when needed
-17. run mechanical Lens consistency audit
+6. define Target Inputs / Evidence
+7. define Knowledge Basis mode: INLINE / REFERENCED / HYBRID
+8. define embedded principles/rules and/or referenced knowledge owners + load policy
+9. define prompts/sublenses/evaluation workflow
+10. define findings produced
+11. define Target/profile consumers
+12. define composition with other Lenses
+13. define guards/anti-patterns
+14. define finding→Decision/Target escalation
+15. define Artifact/File Implications; add AG only for Lens-produced supporting/routing meaning
+16. migrate duplicate embedded knowledge / duplicate Target-result artifact guidance
+17. update Lens Registry + applicability summary
+18. update Target Module Lens Profiles when attachment policy changes
+19. update phase/command/projection routes when needed
+20. run mechanical Lens consistency audit
 ```
 
 ## Result
 
 ```text
 one canonical Lens/Lens Pack owner
-+ registry entry
++ registry entry / applicability summary
 + activation class/gate
++ Operational Evaluation Contract
++ Knowledge Basis mode / knowledge-owner links
 + consumer/profile mapping
-+ migrated duplicate knowledge
++ migrated duplicate knowledge/guidance
 + consistency checks
 ```
 

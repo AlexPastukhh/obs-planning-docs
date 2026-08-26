@@ -57,6 +57,71 @@ test('root Architecture and Testing Directions route to installed IDTSPE/SDS aut
 
 test('Test Strategy can persist a registry-like realization map without duplicating test code',()=>{const owner=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md');assert.match(owner,/Test Realization \/ Topology Registry/);assert.match(owner,/test suite\/class.*setup\/fixture\/harness\/helper/s);assert.match(owner,/do not duplicate test bodies, assertions, method inventories or obvious class structure/i);assert.match(owner,/TEST-REALIZATION-MAP\.md/);const command=codec.parseCommandDefinitionDocument(read('planning/commands/plan-testing-strategy.command.md'));assert.match(command.expectedOutput,/Test Realization \/ Topology Registry/);assert.match(command.helperPresentation.whatYouGet,/test suite\/class.*setup\/fixture\/harness\/helper/)});
 
+
+
+test('generic IDTSPE command surfaces depend on Core command-surface authority rather than SDS profile authority',()=>{
+  const coreOwner='planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md';
+  const sdsOwner='planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md';
+  const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-idtspe-consistency.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md','check-linked-notes-justification.command.md'];
+  for(const file of files){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.ok(command.ownerFiles.includes(coreOwner),`${command.id}: missing Core command-surface owner`);assert.ok(!command.ownerFiles.includes(sdsOwner),`${command.id}: generic Core surface depends on SDS command owner`);}
+  const core=read(coreOwner);assert.match(core,/Generic Core Surface Inventory — 9/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
+  const sds=read(sdsOwner);assert.match(sds,/SDS Profile Command Surface Extension/);assert.match(sds,/generic IDTSPE Core surfaces are owned separately/i);
+});
+
+test('replacement archive producer finalizes ChangeSet continuity when APPROVABLE ReviewDiff is accepted',()=>{
+  const command=codec.parseCommandDefinitionDocument(read('planning/commands/build-replacement-archive.command.md'));
+  assert.match(command.meaning,/APPROVABLE.*finalized/i);
+  assert.match(command.keyReminders.join(' '),/every later replacement archive starts a new changeSetId/i);
+  const workflow=read('planning/documentation/build-replacement-archive-workflow.md');
+  assert.match(workflow,/ReviewDiff accepted as APPROVABLE[\s\S]*ChangeSet FINALIZED \/ CLOSED/);
+  assert.match(workflow,/next replacement archive[\s\S]*MUST start a new ChangeSet/i);
+  assert.match(workflow,/Same logical work.*only while the ChangeSet is open/i);
+});
+
 test('SDS profiles keep same quality and explicit Step 0–4 with pre-implementation test planning',()=>{const text=read('planning/documentation/profiles/sds-planning-profiles.md');assert.match(text,/same planning-quality contract/i);assert.match(text,/STEP 0 — WHY \/ SOLUTION DISCOVERY/);assert.match(text,/Scenario DATA/);assert.match(text,/Behavior Items/);assert.match(text,/application-plan\.md/);assert.match(text,/domain-draft\.md/);assert.match(text,/slices\.md/);assert.match(text,/contextual WEUC Instances/);assert.match(text,/Test Design/);assert.match(text,/Practical Test Plan/);assert.match(text,/STEP 4 — PRACTICAL REALIZATION FEEDBACK/);assert.match(text,/actual evidence/i);assert.doesNotMatch(text,/Goal Map/i)});
 
 test('semantic runtime source contains no maintained current Direction/UC catalog identities',()=>{const source=fs.readFileSync(path.join(moduleRoot,'src/semantic-projections.js'),'utf8');for(const identity of ['UC-PLAN-DOMAIN','UC-REPO-CURRENT-STATE','DIR-PLAN-SOLUTION','application_domain.plan'])assert.doesNotMatch(source,new RegExp(identity.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));assert.match(source,/normalizeDirectionDefinitions/);assert.match(source,/normalizeUseCaseDefinitions/)});
+
+
+test('all reusable Lenses separate Target Inputs from explicit Knowledge Basis',()=>{
+  const roots=[
+    'planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required',
+    'planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent',
+    'planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable',
+    'planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent',
+    'planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable'
+  ];
+  const files=roots.flatMap((rel)=>fs.readdirSync(path.join(repoRoot,rel)).filter((name)=>/^LENS-.*\.md$/.test(name)).map((name)=>`${rel}/${name}`));
+  assert.equal(files.length,18);
+  for(const rel of files){const text=read(rel);assert.equal((text.match(/^## Knowledge Basis$/gm)||[]).length,1,rel);assert.match(text,/Mode: `(INLINE|REFERENCED|HYBRID)`/,rel);assert.match(text,/\*\*Referenced Knowledge Owners:\*\*/,rel);assert.match(text,/\*\*Reference Load Policy:\*\*/,rel);assert.match(text,/\*\*Operationalization Notes:\*\*/,rel);assert.match(text,/^## Artifact \/ File Implications$/m,rel);}
+  const proof=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md');
+  assert.match(proof,/Mode: `HYBRID`/);assert.match(proof,/theoretical-modules\/testing\/README\.md/);
+});
+
+test('artifact guidance ownership keeps Target-result AP separate from Lens-produced supporting guidance',()=>{
+  const tmDir=path.join(repoRoot,'planning/documentation/idtspe-methodology/active/profiles/sds/target-modules');
+  const lensRoots=[path.join(repoRoot,'planning/documentation/idtspe-methodology/active/idtspe-core/lenses'),path.join(repoRoot,'planning/documentation/idtspe-methodology/active/profiles/sds/lenses')];
+  const markdown=(dir)=>{const out=[];for(const e of fs.readdirSync(dir,{withFileTypes:true})){const q=path.join(dir,e.name);if(e.isDirectory())out.push(...markdown(q));else if(e.isFile()&&e.name.endsWith('.md'))out.push(q)}return out};
+  const ap=fs.readdirSync(tmDir).filter((n)=>/^TM-.*\.md$/.test(n)).flatMap((n)=>[...fs.readFileSync(path.join(tmDir,n),'utf8').matchAll(/^ID: (AP-[A-Z0-9-]+)$/gm)].map((m)=>m[1]));
+  const ag=lensRoots.flatMap(markdown).flatMap((f)=>[...fs.readFileSync(f,'utf8').matchAll(/^ID: (AG-[A-Z0-9-]+)$/gm)].map((m)=>m[1]));
+  assert.equal(ap.length,34);assert.equal(new Set(ap).size,34);assert.equal(ag.length,24);assert.equal(new Set(ag).size,24);
+  for(const retired of ['AP-DOM-02','AP-SLICE-03','AP-FE-03','AP-WEUC-02','AG-APP-01','AG-APP-02','AG-APP-03','AG-SCN-01','AG-SCN-02','AG-SCN-03','AG-DOM-01','AG-DOM-02','AG-SLICE-01','AG-SLICE-02','AG-SLICE-03','AG-UI-01','AG-UI-02','AG-UI-03'])assert.ok(!ap.includes(retired)&&!ag.includes(retired),retired);
+  const l5=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md');assert.match(l5,/ID: AG-L5-02/);assert.match(l5,/<owner>\.evolution\.md/);
+  const model=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md');assert.match(model,/TEST-REALIZATION-MAP\.md/);assert.match(model,/CaptureItem\.evolution\.md/);
+  const frontend=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FRONTEND-SLICE.md');assert.match(frontend,/this Target Module does not propose an evolution companion/i);assert.match(frontend,/AG-L5-02/);
+  const domainDraft=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md');assert.match(domainDraft,/this Target Module does \*\*not\*\* propose or require an evolution companion/i);assert.match(domainDraft,/AG-L5-02/);assert.doesNotMatch(domainDraft,/create\/update an optional companion/i);
+  const domainDiscovery=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md');assert.match(domainDiscovery,/hands future-path implications to the WEUC\/L5 Lens/i);assert.match(domainDiscovery,/does not propose `<domain-owner>\.evolution\.md`/i);assert.match(domainDiscovery,/AG-L5-02/);
+  const slice=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md');assert.match(slice,/this Target Module does \*\*not\*\* propose or require a Slice evolution companion/i);assert.match(slice,/AG-L5-02/);assert.doesNotMatch(slice,/persist an optional companion/i);
+  const weuc=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md');assert.match(weuc,/this Target Module does not propose target-local evolution companions/i);assert.match(weuc,/AG-L5-02/);assert.doesNotMatch(weuc,/\*\*PREFERRED local companions\*\*/);
+});
+
+test('generic Lens commands expose applicability scan and selected-Lens dispatch without fixed Lens ownership',()=>{
+  const select=codec.parseCommandDefinitionDocument(read('planning/commands/select-idtspe-lenses.command.md'));
+  const apply=codec.parseCommandDefinitionDocument(read('planning/commands/apply-idtspe-lens.command.md'));
+  assert.equal(select.id,'idtspe.lenses.select');assert.equal(apply.id,'idtspe.lens.apply');
+  for(const command of [select,apply]){assert.equal(command.methodologyBinding?.surfaceKind,'ORCHESTRATION');assert.equal(command.methodologyBinding?.lensId,null);}
+  assert.equal(select.methodologyBinding?.hostTargetPolicy,'CREATE_OR_REUSE_TARGET');
+  assert.equal(apply.methodologyBinding?.hostTargetPolicy,'RESOLVE_OR_REUSE_TARGET');
+  assert.match(select.meaning,/TF-06A LENS_SET/);assert.match(select.keyReminders.join(' '),/Local Target Contract/);
+  assert.match(apply.meaning,/Knowledge Basis/);assert.match(apply.keyReminders.join(' '),/does not create a Lens-owned Target/);
+});

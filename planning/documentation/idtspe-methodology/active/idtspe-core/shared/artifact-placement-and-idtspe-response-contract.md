@@ -191,7 +191,6 @@ Content:
   future CaptureItem synchronization plan
 
 Guidance Sources:
-  AP-DOM-02 — TM-DOMAIN-DRAFT
   AG-L5-02 — LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
 
 Resolved Placement:
@@ -376,9 +375,9 @@ Recommended compact table:
 
 | Content | Placement status | Semantic owner | Persistence | Representation / destination | Action | Guidance source(s) | Why / unresolved |
 |---|---|---|---|---|---|---|---|
-| Scenario DATA + Behavior | RESOLVED | `SCN-CAPTURE` | REQUIRED | embed in `<scenario-owner-artifact>` | UPDATE | `AP-SCN-02`, `AG-SCN-02` | Scenario owns them internally |
-| Screen/window Idea | RESOLVED | none selected yet | PREFERRED | `SDS-PLANNING-STATE/ideas/scenario/IDEAS.md` | UPDATE | `AP-SCN-03`, `AG-SCN-03` | unselected Idea, not Screen truth |
-| Offline Slice evolution path | RESOLVED | `SL-CAP-01` supporting evolution state | PREFERRED | `<slice-owner>.evolution.md` | UNRESOLVED | `AP-SLICE-03`, `AG-L5-02`, `AG-SLICE-03` | create only if future path is material |
+| Scenario DATA + Behavior | RESOLVED | `SCN-CAPTURE` | REQUIRED | embed in `<scenario-owner-artifact>` | UPDATE | `AP-SCN-02` | Scenario owns them internally |
+| Screen/window Idea | RESOLVED | none selected yet | PREFERRED | `SDS-PLANNING-STATE/ideas/scenario/IDEAS.md` | UPDATE | `AP-SCN-03` | unselected Idea, not Screen truth |
+| Offline Slice evolution path | RESOLVED | `SL-CAP-01` supporting evolution state | PREFERRED | `<slice-owner>.evolution.md` | UNRESOLVED | `AG-L5-02` | create only if future path is material |
 | Benchmark scratch numbers | UNRESOLVED_PERSISTENCE | unresolved | UNRESOLVED | UNRESOLVED | NONE | `AG-L3-01` may flag Evidence value; no placement proposal yet | decide whether they become Decision Evidence |
 
 For larger plans, use one `ArtifactPlacementItem` block per unit.

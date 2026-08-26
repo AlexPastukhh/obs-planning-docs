@@ -113,27 +113,28 @@ Question examples are non-exhaustive and are not automatic user questions.
 
 ### P-06 Lens Port
 
-Connects reusable evaluation knowledge:
+Resolves reusable evaluation perspectives through the proportional **Lens Applicability Scan**:
+
 ```text
-Required Core Pack:
-  L1 Need / Value / Scope
-  L2 Authority / Source-of-Truth / Reuse
-  L3 Uncertainty / Assumption / Reversibility
-  Documentation / Representation / Artifact Boundary
-    required at output/materialization; may resolve NO_PERSISTENCE_NEEDED
-
-Target-profile Lens Pack(s)
-
-Frequent conditional Lenses:
-  L4 Dependency & Change Impact
-  L5 WEUC / Target Evolution / Architecture Fitness
-  L6 Verifiability / Observability / Operability
-  Quality / Risk Materiality
-
-Local-only Lens — exceptional
+Required Core Pack
++ active Target Module Lens Profile when a reusable module is used
++ registered Core/profile Lens candidates whose applicability gates are plausible
++ explicitly requested Lens
++ exceptional local-only Lens
+↓
+TF-06A LENS_SET
 ```
 
-Resolved through `TF-06A LENS_SET`.
+Required Core Pack:
+
+```text
+L1 Need / Value / Scope
+L2 Authority / Source-of-Truth / Reuse
+L3 Uncertainty / Assumption / Reversibility
+Documentation / Representation / Artifact Boundary at materialization
+```
+
+A Local Target Contract uses the same Lens Port without inventing a Target Module. Registry summaries/gates are enough for the scan; read full Lens bodies and referenced Knowledge Basis only for selected/plausibly applicable candidates.
 
 Lens findings feed normal Evidence / Ideas / Q/R/P / Answer Decisions. A Lens does not become semantic authority.
 

@@ -48,14 +48,19 @@ Total:                                18
 - post-separation SDS Simplicity / Implementation Economy Lens is profile-specific and evolution-aware: **PASS**
 - every active Target Module still has one `## Lens Profile`: **PASS**
 - every reusable Lens still has one `## Artifact / File Implications`: **PASS**
+- every reusable Lens declares exactly one explicit `## Knowledge Basis` with `INLINE`, `REFERENCED` or `HYBRID` mode: **PASS**
+- `TF-06A LENS_SET` performs proportional Lens Applicability Scan across required Core, active Target Module profile, applicable registries and explicit selection: **PASS**
+- Local Target Contract remains a first-class IDTSPE path when no recurring Target Module fits: **PASS**
+- generic Core command-surface authority is owned under `idtspe-core/shared/`; the SDS command-surface file is a profile extension and does not own Core command semantics/host-target policies: **PASS**
 
 ## Artifact Placement Regression
 
-- source AP records: **38**
-- source AG records: **38**
-- unique source records: **76**
-- current source guidance remains balanced at 38 AP + 38 AG; the Documentation / Representation pass expands existing `AG-ART-*` semantics without adding a new Lens ID or guidance record: **PASS**
-- annotated SDS materialization projection accounts for **76 / 76** AP/AG source IDs exactly: tree nodes for materialization candidates + explicit non-tree embed/route guidance; the old flattened registry path is compatibility-only: **PASS**
+- source AP records: **34**
+- source AG records: **24**
+- unique source records: **58**
+- Target Module AP records own Target-result persistence/representation; Lens AG records are reserved for Lens-produced findings/supporting material and may be absent when findings simply return to the Target owner: **PASS**
+- duplicated Domain/Slice/Frontend/WEUC evolution proposals were removed from Target Modules/profile lenses; L5/WEUC `AG-L5-02` is the canonical target-local evolution-companion proposer: **PASS**
+- annotated SDS materialization projection accounts for **58 / 58** AP/AG source IDs exactly: tree nodes for materialization candidates + explicit non-tree embed/route guidance; the old flattened registry path is compatibility-only: **PASS**
 - AP/AG source-record identity remains owned by Target Module/Lens bodies: **PASS**
 - unresolved persistence/placement semantics preserved: **PASS**
 

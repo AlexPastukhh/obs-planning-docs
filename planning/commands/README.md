@@ -83,7 +83,9 @@ The JSON is intentionally strict so repository writes, build-time validation and
 
 ## Current IDTSPE/SDS Projection
 
-Current methodology surface ownership: [`planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md). Repository IDs/aliases may reuse existing commands; methodology identity is not inferred from filenames.
+Current methodology command-surface ownership is layered: generic Core surfaces are owned by [`idtspe-core/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md), while SDS-specific surfaces extend them through [`profiles/sds/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md). Repository IDs/aliases may reuse existing commands; methodology identity is not inferred from filenames.
+
+Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They are orchestration/dispatch surfaces over `TF-06A` + the registered Lens owners, not new Lens semantic authorities and not one-command-per-Lens expansion.
 
 The six retired `collect-ideas*` command IDs remain hidden compatibility aliases only. They must route their supplied material into the current IDTSPE/SDS Target/owner model and must not retain the old collect-Ideas shell, Current Plan runtime, Idea Review owners or old SDS physical-profile owners. Hiding an old command from the palette is not enough if its owner route still revives obsolete semantics.
 

@@ -94,10 +94,13 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## IDTSPE / SDS Methodology Navigation
 
 - [ ] Methodology view buttons/labels/order are derived from current command metadata; the UI source does not maintain a separate hard-coded IDTSPE/SDS view list.
-- [ ] Commands → `IDTSPE` shows exactly 7 primary methodology rows.
+- [ ] Commands → `IDTSPE` shows exactly 9 primary methodology rows.
 - [ ] Commands → `SDS — IDTSPE Profile` shows exactly 32 primary methodology rows; the related Consistency validator is visibly marked RELATED and does not count as a new primary surface.
 - [ ] Focused SDS rows are visually nested under their canonical Target Module row where configured.
 - [ ] Prototype/Screen/WEUC/Domain/Slice Strategy/Test Strategy/Requirement/Frontend/Cross-Cutting/Practical Test badges expose their conditional/optional/cross-cutting status without hiding commands.
+- [ ] IDTSPE contains a separate metadata-driven `Lens Operations` section with `подбери линзы`, `примени линзу`, Documentation / Representation and Linked Notes rows.
+- [ ] `подбери линзы` returns an applicability/disposition view without pretending to run all Lens bodies.
+- [ ] `примени линзу` can dispatch to any registered applicable Core/SDS Lens while preserving the natural host Target.
 - [ ] `проверь как лучше зафиксировать` lives in IDTSPE, not SDS-only.
 - [ ] `проверь эволюцию и архитектуру` and `проверь можно ли упростить` live in the SDS Lens section.
 - [ ] Clicking `Info` shows When To Use / What You Get and does not insert or send the command.

@@ -324,19 +324,24 @@ Prompt:
   к material choice surfaces этого Target?
 
 Value:
-  required Core Pack result:
-    L1 Need / Value / Scope
-    L2 Authority / Source-of-Truth / Reuse
-    L3 Uncertainty / Assumption / Reversibility
-    Documentation / Representation / Artifact Boundary
-      required at materialization; may resolve NO_PERSISTENCE_NEEDED
-  + Target Module Lens Profile
-  + activated frequent conditional Lens refs
-  + local-only Lens refs when genuinely needed
-  + NOT_APPLICABLE / no-material-finding disposition where useful
+  Lens Applicability Scan result:
+    REQUIRED_CORE
+      L1 Need / Value / Scope
+      L2 Authority / Source-of-Truth / Reuse
+      L3 Uncertainty / Assumption / Reversibility
+      Documentation / Representation / Artifact Boundary
+        required at materialization; may resolve NO_PERSISTENCE_NEEDED
+    + REQUIRED_BY_TARGET_PROFILE from active Target Module Lens Profile when a module is used
+    + applicable registered Core Lens refs
+    + applicable active-profile Lens refs
+    + explicitly requested Lens refs
+    + local-only Lens refs when genuinely needed
+    + NOT_MATERIAL / NOT_APPLICABLE / DEFERRED disposition where useful
 
 Rule:
   Lens Set may be recomputed when Target Scope / Sources / Question Set changes.
+  A Local Target Contract participates without inventing a Target Module.
+  Scan registry summaries/gates first; read full Lens / referenced Knowledge Basis only for selected or plausible candidates.
   Lens Prompt is not automatically a user question.
 
 
@@ -583,9 +588,10 @@ Lens file
 
 TF-06A LENS_SET
 = composition slot selecting applicable Lens perspectives
+= proportional Lens Applicability Scan over required/module-attached/registered/explicit candidates
 ```
 
-Lens findings remain normal Evidence / Ideas / Q/R/P / Decision inputs.
+The active Target Module is one selection source, not the whole Lens universe. Local Target Contracts scan the same Core/profile registries. Lens findings remain normal Evidence / Ideas / Q/R/P / Decision inputs.
 
 # 14. Relation To Validators
 
@@ -722,4 +728,4 @@ Lens finding is Evidence / Idea / Q/R/P / Decision input
 Lens file is reusable methodology owner
 ```
 
-Required Lenses may resolve with no material finding. Frequent Lenses activate only through applicability gates.
+Required Lenses may resolve with no material finding. Frequent/reusable/profile Lenses activate only through applicability gates or explicit selection. Registry discovery does not require loading every Lens body or Knowledge Basis.

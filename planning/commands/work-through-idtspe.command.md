@@ -20,7 +20,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
   "expectedOutput": "Current Target/scope resolution and an IDTSPE planning result with Q/R/P, Decisions, Artifact Placement and Methodology Direction when material.",
   "permissionMode": "read-only-planning",

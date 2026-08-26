@@ -17,7 +17,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "replacement package"
   ],
   "description": "output replacement package",
-  "meaning": "Produce a replacement ZIP plus a short OBS-ACTION handoff. This is package-producer mode, not local apply/review/finalization mode and not archive read-source mode.",
+  "meaning": "Produce a replacement ZIP plus a short OBS-ACTION handoff. This is package-producer mode, not local apply/review/finalization mode and not archive read-source mode. Reuse an existing ChangeSet only while it is still open; once its ReviewDiff is accepted as APPROVABLE, that ChangeSet is finalized for producer continuity and every later archive must start a new ChangeSet.",
   "activeContextBehavior": "Use the active approved scope and exact checked source state. An earlier-message archive is not current automatically. A source archive/snapshot may be selected for the active invocation when it is explicitly provided or selected for that invocation and, after inspection, matches the intended repository/target and completely covers the touched source. Otherwise use fully readable current repository files. Never guess touched base content.",
   "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
   "ownerFiles": [
@@ -34,6 +34,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Never guess expected base content for replace/delete operations.",
     "Resolve the project Scope Registry when present; every affected scope log/reference required for coherent post-Apply state is part of the package transition.",
     "When logging is active, include material Idea Review/later clarification/prior ReviewDiff correction meaning and the APPLIED target-state relation; do not defer log correctness to a later package.",
+    "Before reusing a changeSetId, verify that the ChangeSet is still open. Acceptance of its ReviewDiff as APPROVABLE finalizes/closes it for future package production.",
+    "After an APPROVABLE ReviewDiff is accepted, every later replacement archive starts a new changeSetId + stable new changeSetLabel + new packageId, even when the later work is conceptually related or touches the same files.",
     "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
     "Return one short OBS-ACTION whose packageId matches PACKAGE.json.",
     "Do not include clipboard/review-diff settings in OBS-ACTION.",

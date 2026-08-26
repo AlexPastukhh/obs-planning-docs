@@ -48,12 +48,27 @@ A readable repository source does not prove the user's local working tree is ide
 ## 3. Package / ChangeSet Identity
 
 ```text
-new independent logical work → new changeSetId
-correction/continuation of same logical work → same changeSetId
-any newly produced ZIP → new packageId
+new independent logical work
+→ new changeSetId
+
+correction/continuation of same logical work
+AND current ChangeSet is still OPEN
+→ same changeSetId
+
+ReviewDiff accepted as APPROVABLE
+→ current ChangeSet FINALIZED / CLOSED for producer continuity
+
+any package requested after that boundary
+→ new changeSetId
+→ new stable changeSetLabel
+
+any newly produced ZIP
+→ new packageId
 ```
 
-`changeSetLabel` stays stable for one ChangeSet. `OBS-ACTION name` may be attempt-specific.
+`changeSetLabel` stays stable for one open ChangeSet. `OBS-ACTION name` may be attempt-specific.
+
+Before reusing a prior `changeSetId`, verify that no accepted `APPROVABLE` ReviewDiff has finalized it. “Same logical work” is a reuse rule only while the ChangeSet is open. Conceptual continuity, overlapping files, or a later correction do **not** reopen a finalized ChangeSet.
 
 ## 4. Shared Producer / Consumer Protocol
 
@@ -169,4 +184,4 @@ When logging is active, the package target-state log must account for material `
 
 A producer must treat the current package as potentially final: do not intentionally leave logs stale for a hypothetical later package. Existing logs use exact base bytes + complete replacement bytes; new logs use ordinary `add` operations. The V0.1 package schema itself does not change.
 
-A plain `APPROVABLE` ReviewDiff with no new material meaning does not require a log entry or a closing package.
+A plain `APPROVABLE` ReviewDiff with no new material meaning does not require a log entry or a closing package. **However, once that APPROVABLE ReviewDiff is accepted, the current ChangeSet is finalized/closed for replacement-package continuity. The next replacement archive, if any, MUST start a new ChangeSet.**

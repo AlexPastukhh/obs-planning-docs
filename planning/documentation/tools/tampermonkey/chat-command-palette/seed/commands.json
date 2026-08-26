@@ -5,6 +5,66 @@
   "items": [
     {
       "schemaVersion": 1,
+      "id": "idtspe.lens.apply",
+      "file": "apply-idtspe-lens.command.md",
+      "command": "примени линзу",
+      "englishName": "apply registered IDTSPE lens",
+      "commandFamily": [
+        "примени линзу",
+        "используй линзу"
+      ],
+      "description": "Apply one named registered Lens to a resolved/reused IDTSPE Target/context.",
+      "meaning": "Resolve/reuse the natural host Target, resolve the named Lens from the Core/active-profile registry, read its Operational Evaluation Contract and Knowledge Basis according to its load policy, and apply that perspective inside the current IDTSPE lifecycle. The command itself is a generic dispatcher and does not own the selected Lens semantics.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; a Local Target Contract is valid when no reusable Target Module fits. Explicit user selection may activate a registered Lens, but Lens findings still return to the natural Target owner and do not create a Lens-owned Target.",
+      "traversalReadMode": "Resolve the requested Lens through current Core/profile registries, then read that Lens body and only the referenced Knowledge Basis owners required by its Reference Load Policy. Refresh Target/profile governance proportionally when uncertain.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Selected Lens applicability/disposition plus its material findings, Evidence/Idea/Q-R-P/Decision inputs, revalidation signals and Lens-owned supporting-artifact guidance routed back to the natural Target owner.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "This is a dispatcher to the selected registered Lens; command text never becomes Lens authority.",
+        "A Lens may be explicitly applied even when no Target Module pre-attached it, subject to the natural host Target/context.",
+        "Knowledge Basis references are read according to the Lens load policy and remain separate knowledge owners.",
+        "Lens activation does not create a Lens-owned Target; independent problems escalate only through generic Target Formation when justified.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
+      ],
+      "userTarget": "<lens> к <target/context>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when you already know which registered Lens perspective you want to apply, including a Lens normally reached through another Target Module.",
+        "whatYouGet": "Material findings from that Lens inside the natural IDTSPE Target context, with its Knowledge Basis loaded proportionally and findings routed to the real owner.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "lens-operations",
+          "sectionLabel": "Lens Operations",
+          "sectionOrder": 1,
+          "itemOrder": 1,
+          "kindLabel": "LENS OPERATION",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "application_sds.bootstrap",
       "file": "bootstrap-application-sds-planning.command.md",
       "command": "бутстреп sds",
@@ -80,7 +140,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "Compact IDTSPE governance assimilation, installed profiles, permission boundary and current Target context when any.",
       "permissionMode": "read-only-planning",
@@ -171,7 +231,7 @@
         "replacement package"
       ],
       "description": "output replacement package",
-      "meaning": "Produce a replacement ZIP plus a short OBS-ACTION handoff. This is package-producer mode, not local apply/review/finalization mode and not archive read-source mode.",
+      "meaning": "Produce a replacement ZIP plus a short OBS-ACTION handoff. This is package-producer mode, not local apply/review/finalization mode and not archive read-source mode. Reuse an existing ChangeSet only while it is still open; once its ReviewDiff is accepted as APPROVABLE, that ChangeSet is finalized for producer continuity and every later archive must start a new ChangeSet.",
       "activeContextBehavior": "Use the active approved scope and exact checked source state. An earlier-message archive is not current automatically. A source archive/snapshot may be selected for the active invocation when it is explicitly provided or selected for that invocation and, after inspection, matches the intended repository/target and completely covers the touched source. Otherwise use fully readable current repository files. Never guess touched base content.",
       "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
       "ownerFiles": [
@@ -188,6 +248,8 @@
         "Never guess expected base content for replace/delete operations.",
         "Resolve the project Scope Registry when present; every affected scope log/reference required for coherent post-Apply state is part of the package transition.",
         "When logging is active, include material Idea Review/later clarification/prior ReviewDiff correction meaning and the APPLIED target-state relation; do not defer log correctness to a later package.",
+        "Before reusing a changeSetId, verify that the ChangeSet is still open. Acceptance of its ReviewDiff as APPROVABLE finalizes/closes it for future package production.",
+        "After an APPROVABLE ReviewDiff is accepted, every later replacement archive starts a new changeSetId + stable new changeSetLabel + new packageId, even when the later work is conceptually related or touches the same files.",
         "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
         "Return one short OBS-ACTION whose packageId matches PACKAGE.json.",
         "Do not include clipboard/review-diff settings in OBS-ACTION.",
@@ -215,7 +277,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",
       "permissionMode": "read-only-planning",
@@ -234,10 +296,10 @@
           "viewId": "IDTSPE",
           "viewLabel": "IDTSPE",
           "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 5,
+          "sectionId": "lens-operations",
+          "sectionLabel": "Lens Operations",
+          "sectionOrder": 1,
+          "itemOrder": 2,
           "kindLabel": "IDTSPE LENS",
           "badges": [
             "REQUIRED CORE · EXPLICIT CHECK"
@@ -330,7 +392,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "JUSTIFIED / NOT_JUSTIFIED / route-to-reference-object with the concrete navigation job; no notes storage tree.",
       "permissionMode": "read-only-planning",
@@ -349,10 +411,10 @@
           "viewId": "IDTSPE",
           "viewLabel": "IDTSPE",
           "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 6,
+          "sectionId": "lens-operations",
+          "sectionLabel": "Lens Operations",
+          "sectionOrder": 1,
+          "itemOrder": 3,
           "kindLabel": "IDTSPE LENS",
           "badges": []
         }
@@ -1198,7 +1260,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "The next Target is invoked through IDTSPE with normal gates/permissions; no fake Target is created.",
       "permissionMode": "read-only-planning",
@@ -1253,7 +1315,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "Methodology Direction View: Current Target / Exit Gate / recommended next / why / alternatives / reopen triggers.",
       "permissionMode": "read-only-planning",
@@ -2958,7 +3020,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "Consistency findings, contradictions/stale Decisions/coverage gaps and concrete reopen/revalidation routes.",
       "permissionMode": "read-only-planning",
@@ -3218,6 +3280,67 @@
       "helperPresentation": null,
       "methodologyBinding": null,
       "directionIds": [],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.lenses.select",
+      "file": "select-idtspe-lenses.command.md",
+      "command": "подбери линзы",
+      "englishName": "select applicable IDTSPE lenses",
+      "commandFamily": [
+        "подбери линзы",
+        "проверь какими линзами посмотреть",
+        "выбери линзы"
+      ],
+      "description": "Run the proportional IDTSPE Lens Applicability Scan for a Target/context.",
+      "meaning": "Resolve/reuse the natural IDTSPE Target or bounded Target candidate and resolve TF-06A LENS_SET by scanning required Core, active Target Module attachment policy when any, registered Core/profile Lens gates and explicit user/agent Lens choices. Do not execute every Lens body merely because it exists.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context. If no reusable Target Module fits, use the current Local Target Contract/Target Formation rather than inventing a module. Recompute TF-06A when material Scope/Sources/Questions changed.",
+      "traversalReadMode": "Read current Core/profile Lens registries and applicability summaries first; read full Lens bodies and referenced Knowledge Basis only for selected or plausibly applicable candidates. Reuse current reliable IDTSPE/profile governance; targeted refresh when uncertain.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "Lens Applicability View with REQUIRED_CORE / REQUIRED_BY_TARGET_PROFILE / APPLICABLE / NOT_MATERIAL / NOT_APPLICABLE / EXPLICITLY_REQUESTED / DEFERRED dispositions and the resolved TF-06A Lens Set; no fake Lens findings.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "The active Target Module is one Lens-selection source, not the whole Lens universe.",
+        "A Local Target Contract may use any registered applicable Core/profile Lens.",
+        "Registry discovery does not mean loading or applying every Lens body.",
+        "Knowledge Basis references are Lens knowledge dependencies, not Target Sources.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
+      ],
+      "userTarget": "<target/context>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when you want to review which registered perspectives are actually worth applying to the current Target/context, including Lenses normally attached by other modules.",
+        "whatYouGet": "A proportional Lens Applicability View and resolved TF-06A Lens Set without running every Lens as a ritual.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "lens-operations",
+          "sectionLabel": "Lens Operations",
+          "sectionOrder": 1,
+          "itemOrder": 0,
+          "kindLabel": "LENS OPERATION",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
+      ],
       "refinements": []
     },
     {
@@ -3482,7 +3605,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "Current Target/scope resolution and an IDTSPE planning result with Q/R/P, Decisions, Artifact Placement and Methodology Direction when material.",
       "permissionMode": "read-only-planning",

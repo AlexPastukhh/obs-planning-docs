@@ -245,7 +245,7 @@ Literal references are encouraged when known:
 [NEW] likely new owner/call
 [NEW?] possible new owner/call; not selected yet
 [REMOVE] likely retirement
-[LOCAL PLAN] detailed future path lives in <owner>.evolution.md
+[LOCAL PLAN] detailed future path is represented through the target-local L5/WEUC result when separately justified
 ```
 
 These are planning projections, not implementation commitments unless independently accepted.
@@ -318,8 +318,8 @@ Which of those are REQUIRED vs PREFERRED vs merely CURRENT_DEFAULT?
 What project-specific meaning does a principle such as DDD, vertical slicing or feature-oriented folders have here?
 Which folder/package/dependency/ownership conventions materially affect expected change paths?
 Which local architecture Decision should be promoted into the global architecture position, and why?
-Which details belong in local <owner>.evolution.md companions rather than the global map?
-What new local evolution plans should be created or refreshed?
+Which details belong in a target-local L5/WEUC result rather than the global map?
+Which already-justified local Evolution section/companion should be referenced or refreshed through L5/AG-L5-02?
 What actual implementation evidence invalidates an old projected path?
 ```
 
@@ -483,21 +483,6 @@ GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
-```text
-ARTIFACT_PROPOSAL
-ID: AP-WEUC-02
-CONTENT_KIND: LOCAL_TARGET_EVOLUTION_PLAN
-WHEN: future path is specific/detailed to one Domain/Slice/Frontend/etc owner
-GUIDANCE: PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: base Target owner remains current semantic owner; companion stores supporting evolution plan
-REPRESENTATION: COMPANION_ARTIFACT
-FILE_OR_ARTIFACT: <owner>.evolution.md
-CONTENT: local literal [NEW]/[EXTEND]/[REUSE]/[NEW?] path; change isolation; tests; trigger; referenced from global map
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
-```
 
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
@@ -506,11 +491,11 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 `SDS-EVOLUTION-MAP.md` remains the product/system plan; Workspace Evolution is its architectural/change-path interpretation and must not replace it.
 
-**PREFERRED local companions** — Domain/Slice/Frontend/etc. future paths that are too local/detailed for the global map may live in `<owner>.evolution.md` and be referenced from the global map.
+**Local companion references** — this Target Module does not propose target-local evolution companions. When L5/WEUC `AG-L5-02` has independently justified an Evolution section / `<owner>.evolution.md` for a Domain/Slice/Frontend/etc. Target, the global Workspace Evolution owner may reference that local detail instead of duplicating it.
 
 **Do not duplicate** the same future path as equal canonical content in global and local files: choose the detail owner and link/reference it.
 
-`P-14` must identify global-map updates, local companion updates and any proposed evolution content whose owner is still unresolved.
+`P-14` must identify global-map updates, references to already-justified L5 local companions, and any evolution content whose owner is still unresolved. Local companion creation/splitting remains L5 + Documentation / Representation responsibility.
 
 ## Validators
 
@@ -535,7 +520,9 @@ SDS-WORKSPACE-EVOLUTION.md
 → Domain / Slice / Frontend / Cross-Cutting planning through that Lens
 
 material local future path
-→ optional <owner>.evolution.md companion
+→ L5/WEUC Lens evaluation
+→ optional Evolution section / <owner>.evolution.md only if AG-L5-02 + P-14 justify it
+→ TM-WEUC may reference the result
 
 new/changed local architecture
 → refresh Workspace Evolution Map when it changes projected paths

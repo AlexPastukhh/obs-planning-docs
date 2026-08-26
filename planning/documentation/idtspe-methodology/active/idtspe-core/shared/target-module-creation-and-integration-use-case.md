@@ -125,6 +125,7 @@ rename every existing Use Case mechanically
 create a module for every template section
 turn patterns into mandatory architecture
 create a new Target Module because a reusable Lens is missing — create/promote a Lens instead
+force a one-off useful Target into a reusable module — keep a Local Target Contract until repetition justifies promotion
 treat module output template as semantic authority
 create one user command for every internal submodule
 force supporting modules into separate Target Instances

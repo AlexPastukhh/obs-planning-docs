@@ -19,7 +19,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
   "expectedOutput": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",
   "permissionMode": "read-only-planning",
@@ -40,10 +40,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "navigation": {
       "viewId": "IDTSPE",
       "viewLabel": "IDTSPE",
-      "sectionId": "core",
-      "sectionLabel": "IDTSPE Core",
-      "sectionOrder": 0,
-      "itemOrder": 5,
+      "sectionId": "lens-operations",
+      "sectionLabel": "Lens Operations",
+      "sectionOrder": 1,
+      "itemOrder": 2,
       "kindLabel": "IDTSPE LENS",
       "badges": [
         "REQUIRED CORE · EXPLICIT CHECK"

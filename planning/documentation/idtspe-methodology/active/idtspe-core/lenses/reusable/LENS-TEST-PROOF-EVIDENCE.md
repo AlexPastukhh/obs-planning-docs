@@ -11,7 +11,7 @@ Specialize L6 into concrete testing strategy/design/coverage: choose credible pr
 
 Primary for Test Strategy/Design/Coverage; supporting for Slice test handoff.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 Useful Vertical Result Definition, Scenario Acceptance, Behavior Items, Scenario DATA, must-hold/negative guarantees, Domain Verification Meaning and actual tests/Evidence.
 
@@ -187,6 +187,27 @@ duplication/wrong-layer findings
 More tests are not automatically better proof.
 
 A test can pass while the real property is broken if it observes the wrong thing.
+
+## Knowledge Basis
+
+Mode: `HYBRID`
+
+**Embedded Principles / Rules / Theory:**
+
+- Proof should target selected behavior/invariants at the cheapest credible layer.
+- Different proof layers are justified by distinct evidence value, not by blanket duplication.
+
+**Referenced Knowledge Owners:**
+
+- [`README.md`](../../../theoretical-modules/testing/README.md)
+
+**Reference Load Policy:**
+
+Read the testing theoretical package only when detailed API/integration/E2E/test-object mechanics are materially unresolved or explicitly requested.
+
+**Operationalization Notes:**
+
+This Lens remains processed operational authority for proof/evidence evaluation; referenced testing theory supplies deeper/raw detail and cannot silently override the Lens/Target Modules.
 
 ## Provenance
 

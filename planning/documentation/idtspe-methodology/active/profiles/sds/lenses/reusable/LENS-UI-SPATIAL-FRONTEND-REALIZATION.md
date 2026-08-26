@@ -11,7 +11,7 @@ Evaluate spatial/UI/frontend realization while preserving Scenario/DATA/Behavior
 
 Primary for Screen and Frontend; selected semantic/spatial sublenses may apply to Scenario/UI Slice.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 Scenario/Behavior, Scenario DATA, Screen Map/Drafts, must-hold conditions, Prototype/usability Evidence, current frontend and platform/design-system constraints.
 
@@ -80,66 +80,9 @@ Screen, Frontend Slice, UI/full-stack Slice, Scenario handoff and Practical Evid
 
 ## Artifact / File Implications
 
-### Structured Artifact / File Guidance
+`NONE_DIRECT / RETURN_TO_TARGET_OWNER`, except that future-evolution findings are handed to L5/WEUC when that perspective is active.
 
-These records describe conditional placement guidance produced by this Lens. They never create semantic ownership by themselves.
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-UI-01
-CONTENT_KIND: SCREEN_SPATIAL_MEANING
-WHEN: spatial/window placement is selected
-GUIDANCE: PROFILE_DEFAULT
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Screen Target
-REPRESENTATION: EMBED_CURRENT_OWNER
-FILE_OR_ARTIFACT: <screen-map-owner> or <screen-draft-owner>
-CONTENT: Screen Map/spatial/visibility/navigation meaning
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-UI-02
-CONTENT_KIND: FRONTEND_REALIZATION
-WHEN: frontend realization remains part of current Slice
-GUIDANCE: PROFILE_DEFAULT
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: parent Slice Target
-REPRESENTATION: EMBED_CURRENT_OWNER
-FILE_OR_ARTIFACT: <slice-owner>
-CONTENT: frontend state/data-flow/navigation/server-integration realization
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-UI-03
-CONTENT_KIND: FRONTEND_EVOLUTION
-WHEN: material future frontend change/prepared seam should persist
-GUIDANCE: ADVISORY_PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: frontend or parent Slice base owner remains current truth
-REPRESENTATION: COMPANION_ARTIFACT
-FILE_OR_ARTIFACT: <frontend-owner>.evolution.md or <slice-owner>.evolution.md
-CONTENT: future frontend evolution path
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
-
-Screen spatial meaning persists in Screen owners; frontend realization persists in parent Slice or promoted Frontend Target owner.
-
-**PREFERRED evolution companion** for material future frontend change paths/prepared seams, normally colocated with the owning Slice/Frontend artifact.
-
-Do not duplicate Scenario behavior/DATA definitions in UI/frontend artifacts as equal authority.
+Selected Screen spatial meaning is represented through `TM-SCREEN`; selected frontend realization is represented through the parent Slice or promoted `TM-FRONTEND-SLICE` Target. This Lens owns UI/spatial/frontend evaluation, not a duplicate artifact contract. Material future frontend evolution is canonical L5/WEUC Lens guidance (`AG-L5-02`), which may later justify an Evolution section or promoted companion.
 
 ## Guards
 
@@ -233,6 +176,27 @@ server integration boundary
 Moving capture to another Screen should not change Scenario behavior identity.
 
 Enman-like feature/API/gateway patterns are options, not required architecture.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- UI spatial/window/component choices realize selected Scenario behavior and DATA; they do not redefine it.
+- State/data-flow/navigation boundaries should remain understandable, reversible and aligned with the parent useful result.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Design-system/platform facts are Target Inputs; this Lens owns the reusable UI/spatial/frontend realization perspective.
 
 ## Provenance
 

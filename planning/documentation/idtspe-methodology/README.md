@@ -435,6 +435,7 @@ This directory contains **canonical generic contracts that are too specific to b
 | [`target-evolution-companion-artifact.md`](active/idtspe-core/shared/target-evolution-companion-artifact.md) | Generic optional `<owner>.evolution.md`-style companion concept when target-local future evolution deserves durable separation. |
 | [`practical-evidence-method.md`](active/idtspe-core/shared/practical-evidence-method.md) | Generic practical Evidence method used by prototype/post-implementation testing. |
 | [`command-helper-usage-metadata-extension.md`](active/idtspe-core/shared/command-helper-usage-metadata-extension.md) | Backward-compatible helper presentation metadata (`whenToUse` / `whatYouGet`) and UI behavior contract. |
+| [`idtspe-command-surface-contract.md`](active/idtspe-core/shared/idtspe-command-surface-contract.md) | **Generic Core command-surface authority:** 9 profile-independent Core surfaces, generic Lens operations and host-target policies. |
 | [`idtspe-methodology-use-case-registry.md`](active/idtspe-core/shared/idtspe-methodology-use-case-registry.md) | Registry/navigation for methodology-maintenance/use cases. |
 | [`active-methodology-mechanical-consistency-check.md`](active/idtspe-core/shared/active-methodology-mechanical-consistency-check.md) | Mechanical consistency-check procedure; evidence/checking mechanism, not semantic owner. |
 
@@ -597,7 +598,7 @@ Catalog:
 
 [`README.md`](active/profiles/sds/target-modules/README.md)
 
-Each `TM-*.md` is a **canonical target-specific methodology owner**. A Target Module defines what one kind of planning Target means, its Sources, Questions/Lenses, decisions/output, validations, handoff and artifact proposals.
+Each `TM-*.md` is a **canonical reusable target-family methodology owner**. A Target Module defines a recurring planning contract: Target form, Sources, Questions/Lens attachment, decisions/output, validations, handoff and artifact proposals for the Target result. A material IDTSPE Target may instead use a first-class Local Target Contract when no reusable module fits; it still receives the same Shell/Lens lifecycle.
 
 | Target Module | Responsibility |
 |---|---|
@@ -640,6 +641,8 @@ Registry:
 [`README.md`](active/profiles/sds/lenses/README.md)
 
 SDS uses both generic Core Lenses and these profile-specific Lenses.
+
+Each reusable Lens separates an **Operational Evaluation Contract** from its explicit `Knowledge Basis` (`INLINE`, `REFERENCED`, or `HYBRID`). `TF-06A` performs a proportional Lens Applicability Scan: required/module-attached perspectives are combined with registered Core/profile gates and explicit selection. The active Target Module is one attachment source, not the whole Lens universe.
 
 | Lens | Responsibility |
 |---|---|
@@ -688,7 +691,7 @@ Use this directory when a rule is **specific to SDS but intentionally shared by 
 | File | Responsibility |
 |---|---|
 | [`directed-methodology-workflow-and-next-step-resolution.md`](active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md) | **Canonical SDS directed graph / readiness / next-step resolver.** Numeric workflow phases are navigation; this file owns the actual partial-order/next-step rules. |
-| [`idtspe-command-surface-contract.md`](active/profiles/sds/shared/idtspe-command-surface-contract.md) | Desired SDS + IDTSPE command surface, focused shortcuts, Lens command surfaces and command-gate rules; distinct from current repo mapping. |
+| [`idtspe-command-surface-contract.md`](active/profiles/sds/shared/idtspe-command-surface-contract.md) | **SDS command-surface extension:** SDS bootstrap, Target Module/focused surfaces, SDS Lens shortcuts and current Core+SDS aggregate projection; generic Core surfaces remain owned by the Core contract. |
 | [`sds-target-module-profile.md`](active/profiles/sds/shared/sds-target-module-profile.md) | SDS Target/Lens profile composition and application rules. |
 | [`target-module-upstream-source-lineage-contract.md`](active/profiles/sds/shared/target-module-upstream-source-lineage-contract.md) | Rules for preserving upstream Source lineage when moving between SDS Targets. |
 | [`target-module-upstream-source-map.md`](active/profiles/sds/shared/target-module-upstream-source-map.md) | Projection/map of upstream Sources by Target Module. |
@@ -885,7 +888,9 @@ Read/activate:
 1. `BOOTSTRAP-IDTSPE.md` when governance is not already current.
 2. `IDTSPE-SHELL.md` / resolved Core owners.
 3. `IDTSPE-DEFAULT-WORK-MODE.md` if using `idtspe.work`.
-4. Target-specific profile only after the Target/family is known.
+4. Resolve a reusable Target Module when one fits, otherwise a Local Target Contract.
+5. Use `TF-06A` / Lens registries to select applicable perspectives; full Lens/Knowledge-Basis bodies are read only for selected/plausible candidates.
+6. Target-specific profile only after the Target/family is known or its Lens registry is intentionally selected.
 
 ## C. Work in SDS generally
 
@@ -903,11 +908,12 @@ Typical read pattern:
 
 ```text
 existing canonical target/source artifacts
-+ selected TM-*.md
++ selected TM-*.md OR Local Target Contract
 + required Core Lenses
-+ relevant conditional/profile Lenses
++ TF-06A Lens Applicability Scan over module attachment + Core/profile registries
++ selected Lens Operational Contract(s)
++ referenced Knowledge Basis only according to Lens load policy
 + narrow shared contracts referenced by them
-+ theoretical module only if processed guidance is insufficient
 ↓
 IDTSPE invocation
 ```
@@ -1075,9 +1081,9 @@ Reusable Lenses: 18 total
   SDS-specific: 7
 
 Artifact placement source records:
-  AP: 38
-  AG: 38
-  total: 76
+  AP: 34
+  AG: 24
+  total: 58
 
 Installed profiles:
   SDS
@@ -1114,6 +1120,7 @@ If only a small set of files can be kept open, use these:
 12. **SDS physical-topology coordinator** — [`active/profiles/sds/SDS-PHYSICAL-PLANNING-TREE.md`](active/profiles/sds/SDS-PHYSICAL-PLANNING-TREE.md)
 13. **SDS Target Module catalog** — [`active/profiles/sds/target-modules/README.md`](active/profiles/sds/target-modules/README.md)
 14. **Lens registries** — [`active/idtspe-core/lenses/README.md`](active/idtspe-core/lenses/README.md) + [`active/profiles/sds/lenses/README.md`](active/profiles/sds/lenses/README.md)
+    - generic Lens operations: `подбери линзы <target/context>` / `примени линзу <lens> к <target/context>`
 15. **Theoretical Modules** — [`active/theoretical-modules/README.md`](active/theoretical-modules/README.md)
 16. **AI Reviewability** — [`active/ai-reviewability/README.md`](active/ai-reviewability/README.md)
 17. **Repository migration plan** — [`integration/CURRENT-REPOSITORY-INTEGRATION.md`](integration/CURRENT-REPOSITORY-INTEGRATION.md)

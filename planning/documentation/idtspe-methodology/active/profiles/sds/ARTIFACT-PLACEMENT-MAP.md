@@ -28,6 +28,8 @@ SPLIT:    separate file normally appears only after representation pressure just
 
 `FIRST`/`SPLIT` are summarized here only for navigation. Their semantic owner is the Documentation / Representation Lens, which contains the detailed rules and worked trees.
 
+`TM` annotations represent `AP-*` guidance for the Target result itself. `LENS` annotations represent `AG-*` guidance for supporting/routing meaning produced by that perspective. A Lens that simply returns accepted findings to the Target owner may correctly have no `AG-*` at all. In particular, target-local evolution companions are proposed only by WEUC/L5 (`AG-L5-02`), not by Domain/Slice/Frontend Target Modules or their target-profile Lenses.
+
 ## Materialization Tree
 
 ```text
@@ -70,8 +72,7 @@ SPLIT:    separate file normally appears only after representation pressure just
     │       │   TM: TM-PROTOTYPE / AP-PROT-03 may route here
     │       │
     │       ├── scenario/IDEAS.md
-    │       │   TM:   TM-SCENARIO-DRAFT / AP-SCN-03
-    │       │   LENS: Scenario Boundary / AG-SCN-03
+    │       │   TM: TM-SCENARIO-DRAFT / AP-SCN-03
     │       │
     │       ├── domain/IDEAS.md
     │       │   TM: TM-DOMAIN-DISCOVERY / AP-DOMDISC-02
@@ -87,17 +88,14 @@ SPLIT:    separate file normally appears only after representation pressure just
     │
     ├── application/
     │   ├── APPLICATION-DEFINITION.md
-    │   │   TM:   TM-APPLICATION-DEFINITION / AP-APP-01
-    │   │   LENS: Application Boundary / AG-APP-01
+    │   │   TM: TM-APPLICATION-DEFINITION / AP-APP-01
     │   │
     │   ├── reference-research.md
-    │   │   TM:   TM-APPLICATION-DEFINITION / AP-APP-02
-    │   │   LENS: Application Boundary / AG-APP-02
+    │   │   TM: TM-APPLICATION-DEFINITION / AP-APP-02
     │   │   FIRST: Application Definition section when evidence is small
     │   │
     │   ├── <refined-real-life-scenario-artifact>
-    │   │   TM:   TM-APPLICATION-DEFINITION / AP-APP-03
-    │   │   LENS: Application Boundary / AG-APP-03
+    │   │   TM: TM-APPLICATION-DEFINITION / AP-APP-03
     │   │   FIRST: refined route section inside APPLICATION-DEFINITION.md
     │   │   SPLIT: only when the application-aware real-life route is repeatedly reused/reviewed independently
     │   │
@@ -114,18 +112,15 @@ SPLIT:    separate file normally appears only after representation pressure just
     │   │
     │   └── SCN-<id>.md
     │       TM:   TM-SCENARIO-DISCOVERY / AP-SCNDISC-02
-    │       TM:   TM-SCENARIO-DRAFT / AP-SCN-01 + AP-SCN-02
-    │       LENS: Scenario Boundary / AG-SCN-01 + AG-SCN-02
+    │       TM: TM-SCENARIO-DRAFT / AP-SCN-01 + AP-SCN-02
     │       FIRST: small Scenario may remain in a consolidated Scenario owner/catalog only if behavioral authority stays reviewable
     │
     ├── screens/
     │   ├── SCREEN-MAP.md
-    │   │   TM:   TM-SCREEN / AP-SCREEN-01
-    │   │   LENS: UI/Spatial / AG-UI-01
+    │   │   TM: TM-SCREEN / AP-SCREEN-01
     │   │
     │   └── <screen>.md
-    │       TM:   TM-SCREEN / AP-SCREEN-02
-    │       LENS: UI/Spatial / AG-UI-01
+    │       TM: TM-SCREEN / AP-SCREEN-02
     │       FIRST: SCREEN-MAP section when individual Screen addressability is unnecessary
     │
     ├── requirements/
@@ -140,14 +135,12 @@ SPLIT:    separate file normally appears only after representation pressure just
     │   │   ROLE: Domain map/discovery coordinator; may retain responsibility summaries, Decisions and residual QRP for several logical Domain owners
     │   │
     │   ├── <DomainOwner>.md
-    │   │   TM:   TM-DOMAIN-DRAFT / AP-DOM-01
-    │   │   LENS: Domain Modeling / AG-DOM-01
+    │   │   TM: TM-DOMAIN-DRAFT / AP-DOM-01
     │   │   FIRST: implementation-native representation + DOMAIN-DISCOVERY.md#<DomainOwner>
     │   │   SPLIT: promote only when independent owner-level human-readable planning is useful
     │   │
     │   └── <DomainOwner>.evolution.md
-    │       TM:   TM-DOMAIN-DRAFT / AP-DOM-02; TM-WEUC / AP-WEUC-02
-    │       LENS: Domain Modeling / AG-DOM-02; WEUC / AG-L5-02
+    │       LENS: WEUC / AG-L5-02
     │       FIRST: Evolution section in <DomainOwner>.md or DOMAIN-DISCOVERY.md
     │       SPLIT: material independent future paths/revalidation lifecycle
     │
@@ -157,14 +150,12 @@ SPLIT:    separate file normally appears only after representation pressure just
     │   │   ROLE: Slice inventory/discovery/portfolio/order coordinator; can hold small per-Slice Decisions/QRP directly
     │   │
     │   ├── SL-<id>.md
-    │   │   TM:   TM-SLICE-STRATEGY / AP-SSTRAT-02; TM-IMPLEMENTATION-SLICE / AP-SLICE-01
-    │   │   LENS: Slice Verticality / AG-SLICE-01 + AG-SLICE-02; UI/Spatial / AG-UI-02 may keep frontend-local realization in parent Slice
+    │   │   TM: TM-SLICE-STRATEGY / AP-SSTRAT-02; TM-IMPLEMENTATION-SLICE / AP-SLICE-01 + AP-SLICE-02
     │   │   FIRST: SLICE-STRATEGY.md#SL-<id> + implementation-native representation
     │   │   SPLIT: promote when Slice planning/review/addressability becomes independently valuable
     │   │
     │   ├── SL-<id>.evolution.md
-    │   │   TM:   TM-IMPLEMENTATION-SLICE / AP-SLICE-03; TM-WEUC / AP-WEUC-02
-    │   │   LENS: Slice Verticality / AG-SLICE-03; WEUC / AG-L5-02
+    │   │   LENS: WEUC / AG-L5-02
     │   │   FIRST: Evolution section in SL-<id>.md or SLICE-STRATEGY.md
     │   │   SPLIT: separate future/revalidation lifecycle
     │   │
@@ -177,12 +168,11 @@ SPLIT:    separate file normally appears only after representation pressure just
     ├── frontend/
     │   ├── <frontend-owner>.md
     │   │   TM: TM-FRONTEND-SLICE / AP-FE-02
-    │   │   FIRST: parent Slice owner / AP-FE-01 + UI/Spatial AG-UI-02
+    │   │   FIRST: parent Slice owner / AP-FE-01
     │   │   SPLIT: only after frontend responsibility is independently promoted
     │   │
     │   └── <frontend-owner>.evolution.md
-    │       TM:   TM-FRONTEND-SLICE / AP-FE-03; TM-WEUC / AP-WEUC-02
-    │       LENS: UI/Spatial / AG-UI-03; WEUC / AG-L5-02
+    │       LENS: WEUC / AG-L5-02
     │       FIRST: parent Frontend/Slice Evolution section
     │
     ├── cross-cutting/
@@ -244,7 +234,7 @@ SPLIT:    separate file normally appears only after representation pressure just
 
 ## Non-tree Representation / Routing Guidance
 
-Some source records intentionally describe **embedding, routing or ownership resolution**, not another physical tree node. They are part of the same 76-record projection and are listed explicitly here so the materialization map covers every source record without inventing files.
+Some source records intentionally describe **embedding, routing or ownership resolution**, not another physical tree node. They are part of the same 58-record projection and are listed explicitly here so the materialization map covers every source record without inventing files.
 
 ### Embed into the current/natural owner
 

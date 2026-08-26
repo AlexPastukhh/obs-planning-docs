@@ -185,3 +185,24 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-058`  
 **Reason:** Planning Root bootstrap command definitions and the generic retired `collect-ideas` alias participate in the same correction that removes Target-formation behavior from bootstrap and finishes compatibility wording cleanup; full ReviewDiff rationale and APPLIED target state are owned by the reusable-documentation log.
+
+### XREF-026 — Integrate generic Lens selection/apply and Local Target composition
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-060`  
+**Reason:** Planning Root command routing, README/command catalog and the two new generic Lens orchestration definitions participate in the same 41-surface IDTSPE transition; full Target/Lens/Knowledge-Basis/artifact-guidance clarification and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### XREF-027 — Correct Core command authority, Lens host policy and replacement ChangeSet continuity
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-062`  
+**Reason:** Planning Root command definitions/routing and replacement-archive command contract participate in the same correction that separates generic Core command authority from SDS, fixes `подбери линзы` Target-formation policy and makes accepted APPROVABLE ReviewDiff a hard ChangeSet-finalization boundary; full rationale/APPLIED target state are owned by the reusable-documentation log.
+
+### XREF-028 — Finish Domain/Slice evolution-companion handoff wording
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-064`  
+**Reason:** Planning Root participates only through the shared open ChangeSet history; the material correction is owned by reusable documentation and removes the last Target-Module prose that could sound like an evolution-companion proposer.

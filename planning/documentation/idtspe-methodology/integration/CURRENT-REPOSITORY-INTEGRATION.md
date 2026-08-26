@@ -2,12 +2,12 @@
 
 Status: **staged installation target built against the current supplied repository snapshot; canonical IDTSPE/SDS authority + command/helper surface prepared, destructive legacy-family cleanup still gated by MB-06**  
 Methodology baseline: `idtspe-methodology-workspace-core-sds-separated.zip` (`ffb6bfff5bb4da2478811443c5f0168ab4baa173b389439d0991afb27ca7d30b`)  
-Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, base `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7`, snapshot created `2026-08-25T17:12:39.686316500Z`  
+Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, current package base `46ee341cef4b6c581dc1e461f21cd1e11755abb7`; earlier ca768b61 snapshot remains original methodology-import provenance  
 Audit intent: define the **pre-update migration plan**, including obsolete SDS/Idea runtimes, merge-before-delete knowledge, command/helper impact, and deletion gates.
 
 ## Current Staged Installation Status — 2026-08-26
 
-The current replacement-package target uses repository identity `github:AlexPastukhh/obs-planning-docs` and the user-selected snapshot created `2026-08-26T09:10:42.039940300Z` at base commit `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7`. The older snapshot references below remain audit provenance; they are not a claim that the package was built from stale bytes.
+The current replacement-package target uses repository identity `github:AlexPastukhh/obs-planning-docs` and the user-selected current snapshot at base commit `46ee341cef4b6c581dc1e461f21cd1e11755abb7`. The older snapshot references below remain audit provenance; they are not a claim that the package was built from stale bytes.
 
 This staged target performs the safe first installation layer:
 
@@ -19,17 +19,43 @@ planning root governance / command routing
   → points current material planning to IDTSPE + SDS
 
 planning/commands/
-  → 39 accepted methodology surfaces
+  → 41 accepted methodology surfaces
 
 Planning Helper
-  → IDTSPE 7 + SDS 32 primary navigation
+  → IDTSPE 9 + SDS 32 primary navigation
   → navigation metadata comes from repository command definitions/seed projection
   → runtime remains generic and does not hard-code current command identities
 ```
 
 The six older `collect-ideas*` command files are retained only as hidden legacy compatibility (`palette:false`). Existing Application/Architecture/Testing methodology families are not destructively deleted in this package because MB-06 Reference Object semantics remain intentionally open and because a replacement package must not guess unresolved merge-before-delete content. Their remaining cleanup is a separate gated migration, not part of the APPLIED state described by this staged installation.
 
-Planning Helper verification for the staged target passes `111 / 111` automated tests plus generated userscript/catalog build consistency. All 39 methodology surfaces carry stable `methodologyBinding`; mutable IDTSPE/SDS tab placement comes from separate helper presentation metadata.
+Planning Helper verification for the staged target passes `122 / 122` automated tests plus generated userscript/catalog build consistency. All 41 methodology surfaces carry stable `methodologyBinding`; mutable IDTSPE/SDS tab placement comes from separate helper presentation metadata.
+
+
+## Current Lens Composition / Knowledge-Basis Update — 2026-08-26
+
+The current `46ee341c...` transition additionally makes the generic IDTSPE composition boundary explicit:
+
+```text
+material IDTSPE Target
+→ reusable Target Module when a recurring contract fits
+OR
+→ Local Target Contract when no reusable module fits well enough
+
+TF-06A LENS_SET
+→ required Core
++ active Target Module Lens Profile when present
++ applicable registered Core/profile Lenses
++ explicit user/agent Lens choice
+
+Lens
+= Operational Evaluation Contract
++ Knowledge Basis (INLINE | REFERENCED | HYBRID)
+```
+
+Two generic Core orchestration surfaces expose that mechanism without manufacturing one command per Lens: `idtspe.lenses.select` performs the applicability scan and may create/reuse the natural Target/Local Target Contract (`CREATE_OR_REUSE_TARGET`); `idtspe.lens.apply` dispatches one registered Lens against a resolved/reused Target context (`RESOLVE_OR_REUSE_TARGET`). Their generic command semantics are owned by the Core command-surface contract; the SDS command-surface file is a profile extension only. Four stable specialized Lens shortcuts remain convenience surfaces.
+
+Artifact guidance is normalized with the same ownership rule: Target Module `AP-*` records describe representation of the Target result; Lens `AG-*` records describe/reroute Lens-produced findings or supporting artifacts. Target-local future evolution companions are therefore owned by L5/WEUC `AG-L5-02`, while current Domain/Slice/Frontend results remain Target-Module responsibilities. `TEST-REALIZATION-MAP.md` remains a Test Strategy representation because it is part of the Test Strategy result, not a Lens finding.
 
 ---
 
@@ -93,10 +119,10 @@ Current separated methodology passes its current mechanical/core-SDS audit:
 18 reusable Lenses
   11 IDTSPE Core/generic
   7 SDS-specific
-38 AP records
-38 AG records
-76 Artifact Placement source guidance records
-76/76 source-record integrity; human-facing projection replaced by annotated Artifact Materialization Tree
+34 AP records
+24 AG records
+58 Artifact Placement source guidance records
+58/58 source-record integrity; Target Module AP owns Target-result representation while Lens AG is reserved for Lens-produced findings/supporting material; human-facing projection remains the annotated Artifact Materialization Tree
 Core / SDS physical split
 IDTSPE bootstrap + SDS bootstrap
 Directed SDS workflow

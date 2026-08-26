@@ -11,7 +11,7 @@ Determine whether a responsibility is genuinely shared and how consumers integra
 
 Primary for Cross-Cutting Concern; useful whenever the same implementation responsibility appears across several Slices/Scenarios.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 Shared policies/must-hold conditions, affected Scenarios/Slices, current duplicated/shared implementation, incidents/operational Evidence and evolution context.
 
@@ -177,6 +177,27 @@ exceptions
 “Cross-cutting” does not mean “anything used in several files”.
 
 Shared ownership must reduce ambiguity/duplication without stealing local responsibility.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Repeated code alone does not prove one shared responsibility.
+- Shared ownership is justified by one stable shared guarantee/mechanism with explicit consumer applicability and local integration boundaries.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Cross-cutting implementation facts are Target Inputs; the sharedness/ownership test is owned here.
 
 ## Provenance
 

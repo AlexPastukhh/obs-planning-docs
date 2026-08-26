@@ -12,7 +12,7 @@ Use canonical truth, preserve one-directional planning, avoid duplicate semantic
 
 Always check for a material IDTSPE choice.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 Source Contract
@@ -194,6 +194,27 @@ duplicate-truth/conflict finding if present
 Same names across files do not imply equal authority.
 
 Current implementation can be valuable Evidence without becoming semantic truth.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- One material meaning should have one canonical semantic owner.
+- Reuse/reference existing authority before creating duplicate truth; topology/linkage does not transfer semantic authority.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Repository/domain sources may establish current authority facts, but the ownership/reuse evaluation rules are owned here.
 
 ## Provenance
 

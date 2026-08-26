@@ -35,7 +35,7 @@ review traversal across several current owners
 
 Do not activate merely because two Markdown files can link to each other.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 ```text
 current semantic owners
@@ -273,6 +273,27 @@ RESOLVER: P-14 / TF-10
 ```
 
 If the result is `NOT_JUSTIFIED` and no material Decision/revalidation value exists, no durable output is required.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Linked Notes are justified by concrete traversal/query/backlink value over existing canonical owners, not by a desire for another storage tree.
+- Navigation projections must not copy canonical semantic bodies or become a hidden second owner.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Linked Notes implementation details are not needed unless the usage decision is already justified.
 
 ## High-Level Example — Decision/QRP Navigation
 

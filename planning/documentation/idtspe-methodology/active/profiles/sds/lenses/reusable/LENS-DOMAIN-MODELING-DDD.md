@@ -11,7 +11,7 @@ Use DDD concepts as evidence-driven discovery/evaluation perspectives, never as 
 
 Primary when Domain Discovery/Draft is active.
 
-## Typical Sources / Evidence
+## Target Inputs / Evidence
 
 Scenario, Scenario DATA, Behavior Items, must-hold conditions, Prototype/current implementation Evidence.
 
@@ -76,50 +76,9 @@ Domain Discovery/Draft; selected findings inform Slice/Test/L5 architecture reas
 
 ## Artifact / File Implications
 
-### Structured Artifact / File Guidance
+`NONE_DIRECT / RETURN_TO_TARGET_OWNER`, except that future-evolution findings are handed to L5/WEUC when that perspective is active.
 
-These records describe conditional placement guidance produced by this Lens. They never create semantic ownership by themselves.
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-DOM-01
-CONTENT_KIND: SELECTED_DOMAIN_MEANING
-WHEN: DDD Lens finding is accepted by Domain Draft
-GUIDANCE: PROFILE_DEFAULT
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: selected Domain owner
-REPRESENTATION: EMBED_CURRENT_OWNER
-FILE_OR_ARTIFACT: <domain-owner>
-CONTENT: accepted current concept/invariant/consistency meaning
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-```text
-ARTIFACT_GUIDANCE
-ID: AG-DOM-02
-CONTENT_KIND: DOMAIN_EVOLUTION
-WHEN: WEUC/L5 shows material future Domain change path
-GUIDANCE: ADVISORY_PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: base Domain owner remains current truth
-REPRESENTATION: COMPANION_ARTIFACT
-FILE_OR_ARTIFACT: <domain-owner>.evolution.md
-CONTENT: future Domain path/change isolation/transition plan
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
-
-Selected current Domain meaning projects into canonical Domain owner artifact(s) only after Domain Draft accepts it.
-
-**PREFERRED evolution companion** `<domain-owner>.evolution.md` when future Domain extension/change paths are material under the WEUC Lens.
-
-Do not create one file per DDD pattern candidate during discovery; physical boundaries follow semantic/addressability evidence.
+Current accepted Domain meaning is represented through `TM-DOMAIN-DRAFT / AP-DOM-01`. This DDD Lens must not duplicate that Target-result representation. If a material future Domain path is discovered, `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE / AG-L5-02` is the canonical proposer for an Evolution section or promoted `<domain-owner>.evolution.md` companion.
 
 ## Guards
 
@@ -188,6 +147,27 @@ The Lens produces evidence-backed concept/pattern findings for Domain Discovery/
 A noun is not automatically an Entity.
 
 A database relationship is not automatically an Aggregate boundary.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- Domain concepts/identity/invariants/consistency boundaries follow behavioral evidence and change meaning, not pattern names.
+- DDD patterns are candidate modeling aids; implementation convenience cannot become Domain authority.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+The operational DDD principles needed by this methodology are embedded here; future deeper domain theory may be referenced without changing this Lens ownership.
 
 ## Provenance
 

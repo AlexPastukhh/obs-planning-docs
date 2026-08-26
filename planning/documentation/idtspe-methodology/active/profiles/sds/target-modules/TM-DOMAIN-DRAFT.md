@@ -211,21 +211,6 @@ GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
-```text
-ARTIFACT_PROPOSAL
-ID: AP-DOM-02
-CONTENT_KIND: DOMAIN_EVOLUTION_COMPANION
-WHEN: material planned/probable future Domain change is useful to remember
-GUIDANCE: PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Domain owner as base truth; companion owns supporting future plan only
-REPRESENTATION: EMBED_CURRENT_OWNER_OR_COMPANION_ARTIFACT
-FILE_OR_ARTIFACT: <domain-owner or domain-discovery-owner>#Evolution or <domain-owner>.evolution.md
-CONTENT: future [NEW]/[EXTEND]/[REUSE]/[NEW?] paths; change-isolation expectations; transition triggers; tests to add/change
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
-```
 
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
@@ -234,7 +219,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **PREFERRED only under pressure** — promote one dedicated artifact per independently addressable Domain owner/concept cluster when human-readable owner-level planning is independently useful; never one file per class/name automatically.
 
-**PREFERRED companion only after split pressure** — keep small future notes in the current Domain/discovery owner first. Create `<domain-owner>.evolution.md` only when future paths/revalidation have an independent lifecycle or reuse/addressability need.
+**Evolution companion ownership** — this Target Module owns current Domain meaning only. Future-path evaluation and any Evolution section / `<domain-owner>.evolution.md` companion are proposed by the WEUC/L5 Lens (`AG-L5-02`) when its applicability gate is met; Documentation / Representation + P-14 decide embed vs split.
 
 **Do not place** speculative future state in the current Domain semantic artifact as if already accepted.
 
@@ -265,11 +250,13 @@ TM-TEST-DESIGN
 
 L4/L5/L6 findings remain normal Lens findings/Decisions. Open a bounded architecture child Target only when independently material.
 
-### Evolution Companion — Conditional
+### Evolution Companion — L5/WEUC Handoff
 
-When the WEUC Lens finds material future Domain evolution, create/update an optional companion using `../../../idtspe-core/shared/target-evolution-companion-artifact.md`.
+When material future Domain evolution is discovered, route the future-path question through the WEUC/L5 Lens. This Target Module does **not** propose or require an evolution companion.
 
-Example:
+If `AG-L5-02` justifies durable target-local evolution, Documentation / Representation decides whether the finding should persist and P-14 resolves an embedded Evolution section versus a separate companion using `../../../idtspe-core/shared/target-evolution-companion-artifact.md`. The Domain Target may consume/reference that L5 result.
+
+Example after L5/P-14 placement:
 
 ```text
 domain/CaptureItem.md
