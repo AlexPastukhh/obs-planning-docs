@@ -98,7 +98,7 @@ createdAt
 updatedAt
 ```
 
-`changeSetId` remains a stable UUID required by the package protocol. `changeSetLabel` is the normal human-readable presentation identity; Swing may additionally show a short UUID suffix to disambiguate duplicate labels.
+`changeSetId` remains the stable logical identity required by the package protocol. `changeSetLabel` is human-readable presentation metadata, not continuation authorization. For a new ChangeSet the package label initializes the persisted label. For an existing exact `changeSetId`, the persisted label remains authoritative; a different package label is retained only as an Apply diagnostic and does not overwrite the stored label or block an otherwise valid continuation. Swing may additionally show a short UUID suffix to disambiguate duplicate labels.
 
 `ownedPaths[]` is the union of paths intentionally claimed by successful/continuing overlays until ownership is released.
 

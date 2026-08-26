@@ -55,10 +55,11 @@ Historical ad-hoc runs are not silently imported as current acceptance evidence 
 
 1. Apply a valid add/replace/delete package and verify exact result bytes.
 2. Confirm ApplicationAttempt + ChangeSet appear in local state and the ChangeSet selector automatically selects the applied item.
-3. Apply base mismatch and wrong-repository packages; verify no target mutation.
-4. Apply against a dirty unowned path; verify `STATE_DIVERGED` names the exact path + Repository Target + applying ChangeSet and says `Ownership: Unowned — no unfinished ChangeSet owns this path`. Then create a same-target ownership conflict and require owner ChangeSet label/status/ID instead of `Unowned`.
-5. Exercise a filesystem failure during mutation; require exact rollback or explicit `STATE_DIVERGED`.
-6. Create a repository path through a Windows junction/symlink to a directory outside the repository and target a file below it; require `STATE_DIVERGED` and verify outside bytes are untouched.
+3. Apply a continuation package with the exact existing `changeSetId`, same Repository Target/repository identity and a deliberately different `changeSetLabel`; require Apply success, unchanged persisted ChangeSet label and a visible diagnostic rather than `STATE_DIVERGED`.
+4. Apply base mismatch and wrong-repository packages; verify no target mutation.
+5. Apply against a dirty unowned path; verify `STATE_DIVERGED` names the exact path + Repository Target + applying ChangeSet and says `Ownership: Unowned — no unfinished ChangeSet owns this path`. Then create a same-target ownership conflict and require owner ChangeSet label/status/ID instead of `Unowned`.
+6. Exercise a filesystem failure during mutation; require exact rollback or explicit `STATE_DIVERGED`.
+7. Create a repository path through a Windows junction/symlink to a directory outside the repository and target a file below it; require `STATE_DIVERGED` and verify outside bytes are untouched.
 
 ### Action / archive resolution checks
 

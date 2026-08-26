@@ -69,7 +69,7 @@ Supplying/pasting/selecting a package or OBS-ACTION is passive. Repository resol
 
 ### `BI-RPKG-APPLY-TARGET-RESOLUTION`
 At Apply time:
-- `PACKAGE.json.changeSetId` is the exact logical-work identity. If that exact ChangeSet exists and is Active, only that ChangeSet may be continued; current UI selection, label, recency or another Active ChangeSet in the repository cannot substitute for it. If the exact ID is Finalized, Apply blocks and explicit Reopen is required before a later continuation package;
+- `PACKAGE.json.changeSetId` is the exact logical-work identity. If that exact ChangeSet exists and is Active, only that ChangeSet may be continued; current UI selection, label, recency or another Active ChangeSet in the repository cannot substitute for it. The existing persisted `changeSetLabel` remains presentation authority: a different package label is diagnostic-only, does not rename the ChangeSet and does not block an otherwise valid continuation. If the exact ID is Finalized, Apply blocks and explicit Reopen is required before a later continuation package;
 - continuation of an existing ChangeSet uses that ChangeSet's stored concrete Repository Target as authority;
 - for new work, a matching current target is kept, exactly one other matching registered target may be selected automatically, several matching clones require concrete user selection, and no match blocks before mutation;
 - automatic context switch remains selected even if later preflight fails;

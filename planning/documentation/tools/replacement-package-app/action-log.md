@@ -309,3 +309,38 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - package bases come from the supplied Local Repository Snapshot at commit `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7`; no local Apply, commit or push is performed by package production.
 
 **Rationale:** integrate the material live failure and Slice-idea review into one coherent post-Apply state while keeping real post-Send uncertainty distinct from deterministic local runtime incompatibility.
+
+### LOG-RPKG-022 — SL-RPKG-01 ChangeSet label continuity correction
+
+**Type:** APPLIED TARGET-STATE / IMPLEMENTATION CORRECTION  
+**ChangeSet:** `ecb7f86b-6875-48b1-ac98-1b0deeebf71a`  
+**Package:** `91183492-4723-4d0b-a368-c6330d8e157c`
+
+**Material finding:** live Apply of a valid continuation package exposed that `Core.applyInternal` treated a differing `PACKAGE.json.changeSetLabel` as `STATE_DIVERGED` even when the exact existing `changeSetId`, persisted Repository Target and repository identity matched. This made presentation metadata an accidental second continuation credential and rejected safe work before base preflight/mutation.
+
+**Selected correction / SL-RPKG-01 target state:**
+- exact `changeSetId` remains the logical continuation identity; existing persisted Repository Target + repository identity remain hard Apply guards;
+- producer packages should keep `changeSetLabel` stable, but an existing ChangeSet's persisted label is presentation authority; a differing package label is diagnostic-only, never overwrites the stored label and does not by itself block Apply;
+- successful label-mismatch continuation records a readable Apply diagnostic;
+- regression and manual proof cover exact-ID continuation with stale/different package label while preserving all repository/source/ownership preflight guarantees;
+- Scenario/Domain meaning is unchanged because current owners already define exact `changeSetId` as continuation authority and UI label as non-authoritative; this correction fixes downstream SL-RPKG-01 Apply/state realization only; the shared producer package rule that labels stay stable remains unchanged.
+
+**APPLIED relation:** if package `91183492-4723-4d0b-a368-c6330d8e157c` applies successfully, these source/docs/tests become the coherent current SL-RPKG-01 state for this correction.
+
+### LOG-RPKG-023 — Surface ChangeSet label diagnostic and reconcile SL-RPKG-01 current state
+
+**Type:** APPLIED TARGET-STATE / REVIEW CORRECTION  
+**ChangeSet:** `ecb7f86b-6875-48b1-ac98-1b0deeebf71a`  
+**Package:** `0353f444-3a7a-466c-ad65-4a5b0bd3fe95`
+
+**Review findings addressed:**
+- the label-mismatch continuation diagnostic was persisted in `ApplicationAttempt.message` but the normal Swing Apply success path did not surface it, so manual acceptance promised a visible diagnostic that implementation did not provide;
+- `slices.md` still listed label mismatch as a Current divergence in the same target state that already corrected it.
+
+**Selected correction / SL-RPKG-01 target state:**
+- `ApplyResult` exposes the non-blocking continuation diagnostic explicitly while the persisted ApplicationAttempt keeps the same diagnostic trace;
+- Swing Apply prints that diagnostic as a warning after successful Apply, without changing success/failure semantics or weakening repository/target/source/ownership guards;
+- the label-mismatch item leaves `Current divergences`; SL-RPKG-01 verification explicitly requires the successful Swing result to surface the diagnostic;
+- regression proof checks the explicit ApplyResult diagnostic plus retained attempt trace; live Swing acceptance remains the practical proof for presentation/readability.
+
+**APPLIED relation:** if package `0353f444-3a7a-466c-ad65-4a5b0bd3fe95` applies successfully, these source/docs/tests become the coherent current SL-RPKG-01 state for this follow-up review correction.

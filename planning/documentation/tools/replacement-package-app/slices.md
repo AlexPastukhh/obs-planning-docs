@@ -67,7 +67,7 @@ package/action supplied
 user presses Apply
 → parse/validate package
 → resolve exact Repository Target
-   existing ChangeSet: stored target wins
+   existing ChangeSet: stored target wins; persisted label remains presentation authority
    new work: current match / unique match / explicit choice among clones / no-match stop
 → retain auto-selected repository context even if later preflight fails
 → revalidate exact target
@@ -83,7 +83,7 @@ user presses Apply
 
 Target Git-equivalence implementation direction: binary-safe canonical IDs for expected/actual content using Git path semantics (selected design equivalent to `git hash-object --stdin --path=<path>`); exact engineering proof is required before acceptance.
 
-**Verification target:** add/replace/delete; passive input; target resolver/multiple-clone behavior; Repository Not Ready; same-target ownership conflict/different-target same path allowed; ownership/adoptability failures name exact path + Repository Target + applying ChangeSet and either explicit `Unowned` or concrete owner label/status/ID; raw and Git-equivalent source match accepted; true/manual source divergence and verification failure rejected; no mutation until all preflight passes; result bytes/rollback/current ReviewDiff correct.
+**Verification target:** add/replace/delete; continuation with a differing package `changeSetLabel` succeeds under the exact existing ChangeSet while retaining its persisted label and surfacing a diagnostic in the Swing Apply result; passive input; target resolver/multiple-clone behavior; Repository Not Ready; same-target ownership conflict/different-target same path allowed; ownership/adoptability failures name exact path + Repository Target + applying ChangeSet and either explicit `Unowned` or concrete owner label/status/ID; raw and Git-equivalent source match accepted; true/manual source divergence and verification failure rejected; no mutation until all preflight passes; result bytes/rollback/current ReviewDiff correct.
 
 **Accepted low-frequency risk:** current realization can resolve package/target context from one ZIP read and read the package again for actual Apply (including after explicit clone/target choice). External replacement of the ZIP during that short interval could make the applied bytes differ from the resolved input. Do not block this revision; future hardening is one captured immutable/prepared Apply context or exact package fingerprint revalidation before mutation.
 

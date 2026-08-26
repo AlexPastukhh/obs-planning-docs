@@ -89,7 +89,7 @@ For repository-scope tests include:
 
 | Slice | Automated responsibility | Manual practical responsibility |
 |---|---|---|
-| `SL-RPKG-01` Apply Replacement Work | passive input, target resolver, readiness, ownership + owner/unowned diagnostic detail, source-state Git equivalence, rollback/result | real Swing target switch/preflight/result/reason readability including exact owner/unowned truth |
+| `SL-RPKG-01` Apply Replacement Work | passive input, exact-ID continuation with persisted-label authority, label-mismatch diagnostic-only behavior, target resolver, readiness, ownership + owner/unowned diagnostic detail, source-state Git equivalence, rollback/result | real Swing target switch/preflight/result/reason readability including label-mismatch continuation and exact owner/unowned truth |
 | `SL-RPKG-02` Inspect Current Change | cumulative ReviewDiff, persistence, corruption/stale detection, real-index isolation | Refresh/Copy/Open/restart/current-state presentation |
 | `SL-RPKG-03` Finalize And Publish Work | owned-only commit, lifecycle, publication pending, safe recovery, guarded Finalized→Active Reopen, failed-Reopen no-marker rule | real Finalize/Retry/Reopen/remote-ahead UX/truthful state + notification on failed Reopen |
 | `SL-RPKG-04` Export Repository Snapshot | exact/stable ZIP, readiness, index/output safety | export dialog, Repository Not Ready, destination/clipboard/open-folder |
