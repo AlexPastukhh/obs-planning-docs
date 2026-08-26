@@ -56,7 +56,7 @@ Raw equality may short-circuit Git comparison. Git command/filter failure is fai
 
 Use actual application/environment for:
 - Swing context/navigation/state presentation;
-- local/global ChangeSet selector scope UX and exact-target switching;
+- local/global ChangeSet selector scope UX, repository-first row identity, below-selector filters and exact-target switching;
 - explicit repository location change;
 - Windows launcher/clipboard/notifications;
 - notification-click repository routing;
@@ -64,7 +64,7 @@ Use actual application/environment for:
 - Microsoft Edge extension pairing/reload;
 - ordinary ChatGPT conversation discovery;
 - real current-change small/large `.diff` attachment preparation, configurable Send retry behavior, intentional app/extension protocol skew rejection and snapshot attachment readiness;
-- External Interaction list + prepared-content-retained Cancel behavior;
+- External Interaction full-width selector + below-selector actions, equivalent actionable dedupe and prepared-content-retained Cancel behavior;
 - duplicate tabs/composer protection, snapshot no-auto-send, and no blind retry after ReviewDiff attachment disappearance/uncertainty.
 
 [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) is the operated proof surface, not an automated E2E suite.
@@ -162,6 +162,8 @@ Automated `failed=0` is necessary for implemented automated responsibilities but
 - Settings persistence/default/range for ReviewDiff send retry interval and per-task freezing of that interval.
 - bridge protocol/version advertisement in health + claim responses; claimed-task contract preflight before content delivery/external preparation; deterministic compatibility/interval failure remains `FailedBeforeSend` and cannot cross the possible-Send boundary.
 - task-specific ReviewDiff preparation identity; post-upload composer guard in content + MAIN world; actual click before `SendClicked`; post-baseline `.diff` file/attachment-surface confirmation from the complete user-turn container rather than generic user-message-count growth, message-author-node-only lookup, cross-turn fallback capture or ordinary message text.
+- equivalent actionable ChatGPT handoff requests do not create duplicate Pending interaction identities: same ReviewDiff attempt/source + ChangeSet + destination and same snapshot artifact + destination reuse the current task; terminal retry gets a new identity and materially different source remains independent.
+- Swing source-level layout/display proof keeps repository context at the beginning of every ChangeSet row, puts ChangeSet filters below that selector, and puts External Interaction actions below their selector so long list content cannot consume action space.
 - Node DOM regression loads the real `chatgpt-adapter.js` with a minimal fake DOM and proves: same-turn sibling `.diff` file-card → confirmation; broad generic `article` spanning neighboring authored turns → no cross-turn confirmation; ordinary `.diff` message text → no attachment proof. `run-tests.cmd` executes this regression as part of the standard suite.
 - already claimed/in-flight runtime-generation continuity across extension/service-worker restart or mid-task version replacement remains an explicitly deferred risk, not current automated proof.
 - a second unrelated attachment added after ReviewDiff upload-ready remains an explicitly accepted/deferred composer-integrity risk; current automated proof does not claim single-attachment ownership through click.

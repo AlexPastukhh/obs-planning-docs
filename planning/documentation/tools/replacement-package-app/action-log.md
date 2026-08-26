@@ -477,3 +477,37 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** both preferred and fallback turn-surface resolution enforce the same authored-turn boundary, and the standard test suite now executes behavioral DOM proof for the positive same-turn sibling case and the negative neighboring-turn / ordinary-text cases.
 
 **APPLIED relation:** if package `ccc14d75-3ae1-4049-9909-13e1b66a6f4b` applies successfully, this guarded-container + executable DOM regression correction becomes the current SL-RPKG-06 post-Send proof for the active ChangeSet.
+
+### LOG-RPKG-031 — Improve work/interactions layout and suppress equivalent actionable handoffs
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / UI CORRECTION / INTERACTION CORRECTION / APPLIED TARGET  
+**ChangeSet:** `5d882d10-056b-483b-84a9-411829d0f4d5`  
+**Package:** `537c80cf-7526-42ae-995d-5f5c39a9f208`
+
+**Practical feedback / selected correction:**
+- live Swing use showed that ChangeSet rows make repository context too easy to miss: in global scope the repository name appears after work/status and in local scope it is omitted entirely. Every row now begins with the Repository Target display name so the user identifies repository before work/status/ID;
+- `All repositories` / `Show history` currently consume the far-right side of the ChangeSet row. Move those filters to a compact row directly below the full-width ChangeSet selector;
+- `Refresh interactions` / `Cancel interaction` currently sit to the right of a long External Interaction selector and can be clipped outside the useful visible area. Give the selector the full row and place both actions directly below it;
+- repeated queue requests for the same still-actionable handoff should not create indistinguishable Pending rows. Reuse one task/External Interaction while kind + exact source identity/artifact + destination and applicable ChangeSet/ReviewDiff identity match and the task remains Pending/Claimed/Preparing/SendClicked. Materially different payloads remain independent; after a terminal result, an explicit retry gets a new interaction identity;
+- the previous SL-RPKG-06 ReviewDiff review also exposed a documentation-only setup gap: `run-tests.cmd` now executes the Node DOM regression, so README must state `node` on PATH as a test prerequisite instead of claiming only JDK/Git are required.
+
+**Target-State Result:** the two long selectors keep the horizontal space for their content, their related filters/actions remain reachable immediately below them, repository context is the first ChangeSet-row information, and equivalent active ChatGPT handoffs project as one semantic interaction instead of duplicate Pending entries. Terminal retry/new payload semantics remain distinct.
+
+**APPLIED relation:** if package `537c80cf-7526-42ae-995d-5f5c39a9f208` applies successfully, these selector-layout, repository-prefix, interaction-deduplication and Node-prerequisite corrections become the current implementation state of ChangeSet `5d882d10-056b-483b-84a9-411829d0f4d5`.
+
+### LOG-RPKG-032 — Align actionable-interaction authority and make layout proof line-ending-neutral
+
+**Type:** REVIEWDIFF CORRECTION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-031`  
+**ChangeSet:** `5d882d10-056b-483b-84a9-411829d0f4d5`  
+**Package:** `2094ca09-4c76-404b-8fff-deb9632b450b`
+
+**Review finding / selected correction:**
+- ReviewDiff of the first UX package confirmed the repository-first selector layout and actionable handoff deduplication implementation, but found a semantic-owner mismatch: `application-plan.md` still said a later user retry always creates a new External Interaction even though the selected implementation intentionally reuses an equivalent still-actionable interaction;
+- clarify the canonical `BI-RPKG-EXTERNAL-INTERACTION` / `REQ-RPKG-20` boundary: repeating the same exact source/payload → destination intent while the current interaction remains actionable reuses that interaction identity; materially different source/payload or destination remains independent; only a retry after terminal outcome creates a new identity;
+- keep the existing Java dedupe implementation unchanged;
+- make the Swing source-layout regression independent of Windows CRLF versus LF checkout representation by normalizing line endings before the multiline source assertions. Production Swing layout is unchanged.
+
+**Target-State Result:** canonical Application behavior, Slice/manual/test meaning and implemented handoff deduplication now express the same interaction-identity rule, and the layout regression remains valid on Windows CRLF or LF working trees without weakening the asserted below-selector arrangement.
+
+**APPLIED relation:** if package `2094ca09-4c76-404b-8fff-deb9632b450b` applies successfully, this authority/proof correction becomes the current SL-RPKG-UX-01 state for ChangeSet `5d882d10-056b-483b-84a9-411829d0f4d5`.

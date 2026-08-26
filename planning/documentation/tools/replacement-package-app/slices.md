@@ -161,16 +161,18 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 
 **Selection behavior:**
 - default → Active + Publication Pending for current Repository Target;
-- `All repositories` → Active + Publication Pending across targets, with repository shown per row;
+- every ChangeSet row begins with its Repository Target display name;
+- `All repositories` → Active + Publication Pending across targets;
+- `All repositories` / `Show history` controls sit directly below the selector rather than to its far right;
 - `Show history` adds Finalized in current scope;
 - global row selection switches to the exact registered Repository Target + ChangeSet;
 - same-origin clones are never substituted;
 - unavailable target does not crash the projection and cannot authorize an operation;
 - selection itself performs no Apply/Reopen/Finalize/Send.
 
-**Implementation correction:** replace the first-pass `Existing work` modal/dialog with the shared selector scopes above. Core exposes a nullable query lookup for unavailable target projection while strict operation lookup continues to fail closed.
+**Implementation correction:** replace the first-pass `Existing work` modal/dialog with the shared selector scopes above. The Swing selector row starts with repository context for every item and keeps filtering controls on a separate row below the selector. Core exposes a nullable query lookup for unavailable target projection while strict operation lookup continues to fail closed.
 
-**Verification:** several repos and same-origin clones; local/global selector scopes; Active/Pending/Finalized filtering; unfinished error ordering; exact target switch; unavailable-target row/query does not abort list; history-only Reopen visibility; zero repository mutation from selection.
+**Verification:** several repos and same-origin clones; repository prefix is first in every local/global row; filter controls remain below the full-width selector; Active/Pending/Finalized filtering; unfinished error ordering; exact target switch; unavailable-target row/query does not abort list; history-only Reopen visibility; zero repository mutation from selection.
 
 ## `SL-RPKG-08` — Manage External Interactions
 
@@ -187,9 +189,9 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 - prepared unsent text/attachment → Cancelled + prepared content retained, no automatic deletion/send;
 - Send may have occurred → preserve Sent/uncertain truth, not false Cancelled.
 
-**List projection / retention:** show active/actionable interactions plus `UnknownAfterSend` (or equivalent attention-requiring uncertainty). Once an interaction reaches ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` or `PreparedUnsent`, surface its outcome through Output/SL-09 notification and remove it from the user-facing interaction list. Internal terminal/tombstone data may remain only for recovery, uncertainty, idempotency or duplicate-prevention truth. A later user attempt always creates a new External Interaction; cancelled work is never restored/reused.
+**List projection / retention:** show active/actionable interactions plus `UnknownAfterSend` (or equivalent attention-requiring uncertainty). The selector occupies the full row and Refresh/Cancel actions live on the row below it. Repeated queue requests reuse an equivalent still-actionable interaction when kind, exact source identity/artifact, destination conversation and applicable ChangeSet/ReviewDiff identity match; this prevents duplicate indistinguishable Pending rows without collapsing materially different payloads. Once an interaction reaches ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` or `PreparedUnsent`, surface its outcome through Output/SL-09 notification and remove it from the user-facing interaction list. Internal terminal/tombstone data may remain only for recovery, uncertainty, idempotency or duplicate-prevention truth. A later user attempt after terminal outcome creates a new External Interaction; cancelled work is never restored/reused.
 
-**Verification:** both interaction kinds; stable identity/source/destination; cancel phases; terminal ordinary rows disappear; `UnknownAfterSend` remains actionable/visible; retry after Cancel creates a new interaction identity; no cleanup of prepared content; no false cancellation after uncertainty; independent interactions; reload/reconnect no duplication; semantic state does not leak lease/tab names.
+**Verification:** both interaction kinds; stable identity/source/destination; equivalent actionable current-change and snapshot requests reuse one interaction/list row; materially different source remains independent; interaction selector actions remain below the list; cancel phases; terminal ordinary rows disappear; `UnknownAfterSend` remains actionable/visible; retry after Cancel creates a new interaction identity; no cleanup of prepared content; no false cancellation after uncertainty; independent interactions; reload/reconnect no duplication; semantic state does not leak lease/tab names.
 
 ## `SL-RPKG-09` — Notify Operation Outcomes
 

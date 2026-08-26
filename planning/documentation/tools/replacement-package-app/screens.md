@@ -49,11 +49,14 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 There is no separate `Existing work` button/dialog. `Repository` and `ChangeSet` are linked current-context selectors on the main screen.
 
 ```text
-ChangeSet [ <work> ▼ ]  [ ] All repositories  [ ] Show history
+ChangeSet [ <Repository> · <work> ▼ ]
+          [ ] All repositories  [ ] Show history
 ```
 
+- every row begins with its Repository Target display name, including repository-scoped and global views;
 - default: unfinished ChangeSets for the selected Repository Target;
-- `All repositories`: same selector expands to unfinished ChangeSets across registered targets and rows include repository name;
+- `All repositories`: same selector expands to unfinished ChangeSets across registered targets;
+- `All repositories` and `Show history` controls are placed directly below the selector so the selector keeps the full available row width;
 - `Show history`: adds Finalized within the current scope;
 - selecting a global row switches `Repository` only to that row's exact registered target;
 - unavailable target is shown truthfully in the projection and never substituted by a same-origin clone;
@@ -94,7 +97,9 @@ One target list contains only user-significant payload-to-conversation attempts:
 
 It excludes pairing/heartbeat/poll/claim/lease/tab mechanics.
 
-Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. The list is a current/actionable projection: active/cancellable work, active `Sending`, plus `UnknownAfterSend` (or equivalent uncertainty requiring attention). `Sending` may include repeated internal Send-control attempts for the same exact prepared ReviewDiff attachment; these are not separate interaction rows. Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` rows disappear after their result is surfaced through Output/notification. For prepared-unsent content, Cancel may report `Cancelled — prepared content retained` before the row leaves the list; no UI promise of automatic cleanup is made. A later retry after terminal outcome appears as a new interaction rather than restoring the old row.
+The selector gets the full available row width. `Refresh interactions` and `Cancel interaction` are placed on the row directly below it so long interaction text cannot push the actions off-screen.
+
+Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. The list is a current/actionable projection: active/cancellable work, active `Sending`, plus `UnknownAfterSend` (or equivalent uncertainty requiring attention). One equivalent still-actionable payload-to-conversation request is represented by one interaction identity: repeating the same current ReviewDiff request or the same snapshot artifact for the same destination while it is `Pending`/claimed/preparing/sending reuses the existing interaction rather than adding an indistinguishable Pending row. A materially different source remains independent. `Sending` may include repeated internal Send-control attempts for the same exact prepared ReviewDiff attachment; these are not separate interaction rows. Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` rows disappear after their result is surfaced through Output/notification. For prepared-unsent content, Cancel may report `Cancelled — prepared content retained` before the row leaves the list; no UI promise of automatic cleanup is made. A later retry after terminal outcome appears as a new interaction rather than restoring the old row.
 
 ## `SCR-RPKG-DIAGNOSTICS` — Technical Diagnostics
 

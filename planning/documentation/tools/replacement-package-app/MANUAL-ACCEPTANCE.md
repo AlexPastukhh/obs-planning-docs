@@ -241,9 +241,9 @@ Manual pass requires real `.diff` attachment delivery for both small and large R
 1. Register several repositories; include two clones sharing the same Repository Identity.
 2. Create Active, Publication Pending and Finalized ChangeSets across targets plus at least one unfinished failed-latest marker.
 3. With `All repositories` off and `Show history` off, require the ChangeSet dropdown to show only Active + Publication Pending for the currently selected Repository Target.
-4. Enable `All repositories`; require the **same dropdown** to show unfinished ChangeSets across registered targets with repository identity/name visible per row. There must be no separate `Existing work` button/dialog.
+4. Require every visible ChangeSet row, including repository-scoped rows, to begin with its Repository Target display name before the work label/status. Enable `All repositories`; require the **same dropdown** to show unfinished ChangeSets across registered targets. There must be no separate `Existing work` button/dialog.
 5. Select a ChangeSet from another target; require the Repository selector to switch to that exact target and the ChangeSet to become current. Repeat with same-origin clones and require no clone substitution.
-6. Toggle `Show history`; require Finalized rows to be added within the current local/global scope. Selecting Finalized history alone must not Reopen; the explicit Reopen control remains history-only.
+6. Require `All repositories` and `Show history` to sit directly below the ChangeSet dropdown rather than on its right edge. Toggle `Show history`; require Finalized rows to be added within the current local/global scope. Selecting Finalized history alone must not Reopen; the explicit Reopen control remains history-only.
 7. Persist an orphan/unavailable Repository Target reference. Require the global projection to continue loading without `[REPOSITORY_MISMATCH]` aborting the whole selector and without substituting another target. The unavailable row must not authorize repository operations.
 8. Verify unfinished error-marker ordering/reason and that Finalized rows remain marker-free.
 9. Toggle back to repository scope and require only that Repository Target's applicable rows.
@@ -254,14 +254,14 @@ Manual pass requires real `.diff` attachment delivery for both small and large R
 **Target property:** current-change and snapshot handoffs that are still active/actionable or uncertain appear as user-semantic External Interactions with exact source/destination and truthful Cancel behavior; ordinary terminal attempts do not accumulate as list history.  
 **Execution state:** `implementation present / manual practical evidence pending`
 
-1. Create one current-change delivery and one snapshot-attachment interaction; require both to appear in one list with distinguishable kind/source/destination/status.
+1. Create one current-change delivery and one snapshot-attachment interaction; require both to appear in one list with distinguishable kind/source/destination/status. Require the interaction selector to use the full row and `Refresh interactions` / `Cancel interaction` to remain visible directly below it even when the selected interaction text is long.
 2. Verify pairing, heartbeat/polling, claim/lease/tab reconnect mechanics do **not** appear as independent user interactions.
 3. Cancel a queued interaction before external preparation; require `Cancelled`, no browser/composer mutation/further automation, and require the terminal row to disappear from the External Interactions list after its result is surfaced.
 4. Prepare extension-owned ReviewDiff text without Send, then Cancel; require `Cancelled — prepared content retained`, text to remain in ChatGPT, no cleanup/Send/further automation, and then removal of the terminal row from the list.
 5. Prepare a snapshot attachment, then Cancel; require attachment to remain prepared, `Cancelled — prepared content retained`, Send untouched, and removal of the terminal row from the list.
 6. Complete ordinary `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` examples; require each terminal outcome to be available through Output/notification but not accumulate in the External Interactions list.
 7. Force possible-Send uncertainty after `SendClicked`; require `UnknownAfterSend` truth to remain visible/actionable and no ability to rewrite it to Cancelled or auto-resend.
-8. After Cancel/ordinary terminal completion, explicitly retry the same user intent; require a **new External Interaction identity**, never restoration/reuse of the terminal one.
+8. While a current-change interaction is still actionable, request the same current ReviewDiff for the same conversation again; require reuse of the existing interaction identity and exactly one Pending/actionable list row. Repeat with the same snapshot artifact + destination. A materially different source must remain independent. After Cancel/ordinary terminal completion, explicitly retry the same user intent; require a **new External Interaction identity**, never restoration/reuse of the terminal one.
 9. Cancel one interaction while another exists; require no cross-interaction cancellation/state corruption.
 10. Restart/reload; require only safety/recovery/uncertainty/idempotency-critical technical state to persist and no duplicate semantic interaction/delivery; ordinary terminal rows remain absent from the user list.
 11. Confirm user-semantic status/reason does not expose `Claimed`, lease duration or tab ID as interaction identity.
