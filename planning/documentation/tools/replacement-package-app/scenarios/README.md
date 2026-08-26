@@ -23,7 +23,7 @@ Current source realization after this package:
 SL-RPKG-01..SL-RPKG-09
 
 Practical correction in this package:
-SL-RPKG-06 direct composer preparation/state boundary
+SL-RPKG-06 exact ReviewDiff attachment + configurable Send-retry realization
 SL-RPKG-07 unified ChangeSet selector + unavailable-target query behavior
 SL-RPKG-08 current/actionable interaction projection
 SL-RPKG-01 ownership/adoptability diagnostic detail

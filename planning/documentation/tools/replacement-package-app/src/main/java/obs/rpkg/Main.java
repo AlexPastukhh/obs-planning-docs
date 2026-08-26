@@ -35,9 +35,11 @@ public final class Main {
                     if(r.commitSha()==null)System.out.println("SUCCESS no net changes; ChangeSet finalized without commit/push.");else System.out.println("SUCCESS commit="+r.commitSha()+" branch="+r.branch());
                 }
                 case "settings" -> {
-                    String handling=a.getOrDefault("review-diff",core.getSettings().reviewDiffHandling());
-                    core.setReviewDiffHandling(handling);
-                    if(a.containsKey("repo")){Core.RepositoryConfig r=core.registerRepository(a.get("name"),path(a,"repo"));core.selectRepository(r.id());System.out.println("SUCCESS repository="+r.name()+" identity="+r.repositoryIdentity()+" path="+r.path()+" reviewDiffHandling="+handling);}else System.out.println("SUCCESS reviewDiffHandling="+handling);
+                    Core.Settings current=core.getSettings();
+                    String handling=a.getOrDefault("review-diff",current.reviewDiffHandling());
+                    int sendRetry=a.containsKey("review-send-retry-seconds")?Integer.parseInt(req(a,"review-send-retry-seconds")):current.reviewDiffSendRetrySeconds();
+                    core.setReviewDiffHandling(handling);core.setReviewDiffSendRetrySeconds(sendRetry);
+                    if(a.containsKey("repo")){Core.RepositoryConfig r=core.registerRepository(a.get("name"),path(a,"repo"));core.selectRepository(r.id());System.out.println("SUCCESS repository="+r.name()+" identity="+r.repositoryIdentity()+" path="+r.path()+" reviewDiffHandling="+handling+" reviewDiffSendRetrySeconds="+sendRetry);}else System.out.println("SUCCESS reviewDiffHandling="+handling+" reviewDiffSendRetrySeconds="+sendRetry);
                 }
                 case "list-repos" -> {for(Core.RepositoryConfig r:core.getRepositories())System.out.println(r.id()+"\t"+r.name()+"\t"+r.repositoryIdentity()+"\t"+r.path());}
                 case "list-changesets" -> {for(Core.ChangeSet cs:core.getChangeSets(req(a,"repo-id"),Boolean.parseBoolean(a.getOrDefault("history","false"))))System.out.println(cs.changeSetId+"\t"+cs.status+"\t"+cs.changeSetLabel);}

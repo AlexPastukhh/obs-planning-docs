@@ -17,7 +17,7 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - Apply;
 - linked Repository + ChangeSet selectors with local/global (`All repositories`) and history scope + status/ID;
 - Review state + Refresh/Copy/Open;
-- Review chat binding/delivery;
+- Review chat binding/delivery + `Review send retry [n] seconds` setting (1–60, default 6);
 - commit message + Finalize/Retry Push;
 - Output + Copy output;
 - bridge/launcher status/actions.
@@ -94,7 +94,7 @@ One target list contains only user-significant payload-to-conversation attempts:
 
 It excludes pairing/heartbeat/poll/claim/lease/tab mechanics.
 
-Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. The list is a current/actionable projection: active/cancellable work plus `UnknownAfterSend` (or equivalent uncertainty requiring attention). Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` rows disappear after their result is surfaced through Output/notification. For prepared-unsent content, Cancel may report `Cancelled — prepared content retained` before the row leaves the list; no UI promise of automatic cleanup is made. A retry appears as a new interaction rather than restoring the cancelled row.
+Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. The list is a current/actionable projection: active/cancellable work, active `Sending`, plus `UnknownAfterSend` (or equivalent uncertainty requiring attention). `Sending` may include repeated internal Send-control attempts for the same exact prepared ReviewDiff attachment; these are not separate interaction rows. Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` rows disappear after their result is surfaced through Output/notification. For prepared-unsent content, Cancel may report `Cancelled — prepared content retained` before the row leaves the list; no UI promise of automatic cleanup is made. A later retry after terminal outcome appears as a new interaction rather than restoring the old row.
 
 ## `SCR-RPKG-DIAGNOSTICS` — Technical Diagnostics
 
@@ -128,4 +128,5 @@ The ordinary ChatGPT composer is external. Observable requirements remain:
 - no mixing with unrelated existing composer content;
 - snapshot attach-only never clicks Send;
 - Cancel after prepared content does not delete it automatically and prevents further automation while cancellation is still truthful;
-- possible-send uncertainty is not rewritten or blindly retried.
+- ReviewDiff may repeat guarded Send-control attempts only while the same exact prepared attachment remains in the same conversation; once the attachment disappears without confirmation, uncertainty is not rewritten or blindly retried;
+- ReviewDiff uses `.diff` attachment preparation for all sizes; snapshot may reuse the same technical attachment primitive but remains attach-only/no Send.

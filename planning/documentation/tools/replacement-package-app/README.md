@@ -76,7 +76,7 @@ Current work-context navigation uses the existing `ChangeSet` selector rather th
 - `Show history`: adds Finalized within the selected local/global scope;
 - selecting a global ChangeSet selects its exact registered Repository Target + ChangeSet; an unavailable stored target is truthful query state and is never silently substituted.
 
-Current ReviewDiff delivery prepares exact text through direct ChatGPT composer/editor insertion without requiring Clipboard API write permission or foreground document focus. `Preparing` is reached only after the expected ReviewDiff is confirmed prepared; before that, failure is `FailedBeforeSend`. Ordinary terminal External Interactions leave the user list after Output/notification; `UnknownAfterSend` remains attention-requiring state and retries create new interaction identities. Ownership/adoptability failures identify exact target/path/applying work and explicitly distinguish unowned local changes from another ChangeSet owner.
+Current ReviewDiff delivery prepares every non-empty current change as one exact `.diff` attachment through the same low-level attachment primitive used by snapshot handoff. Before any payload/composer mutation, both Java and extension require bridge protocol `2`, and the complete claimed task contract is validated; a stale/incompatible Java bridge or invalid send interval is `FailedBeforeSend` with restart/update guidance, never false `UnknownAfterSend`. `Preparing` is reached only after the exact ReviewDiff attachment is visible/upload-ready. During semantic `Sending`, guarded MAIN-world Send-control attempts may repeat while the same exact attachment remains prepared, using a per-task interval captured from the persisted `Review send retry` application setting (default 6 seconds, valid 1–60). Attachment disappearance without confirmed outgoing turn becomes `UnknownAfterSend` and stops automation. Snapshot remains attach-only in this correction. Ordinary terminal External Interactions leave the user list after Output/notification; uncertainty remains attention-requiring state and later terminal retries create new interaction identities. Ownership/adoptability failures identify exact target/path/applying work and explicitly distinguish unowned local changes from another ChangeSet owner.
 
 The accepted low-frequency SL-01 package re-read/Apply TOCTOU risk remains documented for later hardening. See [`application-plan.md`](application-plan.md), [`slices.md`](slices.md) and [`ARCHITECTURE.md`](ARCHITECTURE.md) for exact semantics and proof status.
 
@@ -131,7 +131,7 @@ Optional Edge/Chromium companion remains in `chatgpt-bridge-extension/`. Java/br
 ## 8. CLI Fallback — Current Implementation
 
 ```cmd
-java -jar build\replacement-package-app.jar settings --repo C:\repo --name "My Repo" --review-diff Clipboard
+java -jar build\replacement-package-app.jar settings --repo C:\repo --name "My Repo" --review-diff Clipboard --review-send-retry-seconds 6
 java -jar build\replacement-package-app.jar list-repos
 java -jar build\replacement-package-app.jar apply --repo C:\repo --archive C:\Downloads\package.zip
 java -jar build\replacement-package-app.jar review --changeset <uuid>

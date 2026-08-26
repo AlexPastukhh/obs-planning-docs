@@ -1,4 +1,5 @@
 const token = document.getElementById("token"), status = document.getElementById("status");
+const BRIDGE_PROTOCOL_VERSION = 2;
 
 function diagnosticSuffix(value) {
   const d = value?.lastBridgeDiagnostic;
@@ -6,7 +7,8 @@ function diagnosticSuffix(value) {
 }
 async function testAndSync() {
   const health = await OBSBridgeClient.request("/v1/health");
-  status.textContent = `Connected to Replacement Package App bridge on port ${health.port}.`;
+  if (Number(health.bridgeProtocolVersion) !== BRIDGE_PROTOCOL_VERSION) throw new Error(`ChatGPT Bridge version mismatch. Replacement Package App protocol ${BRIDGE_PROTOCOL_VERSION} is required; restart/update the app and reload the extension.`);
+  status.textContent = `Connected to Replacement Package App bridge on port ${health.port} (protocol ${health.bridgeProtocolVersion}).`;
   await chrome.runtime.sendMessage({type: "OBS_SYNC_NOW"});
 }
 async function load() {

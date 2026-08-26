@@ -124,15 +124,16 @@ Cancel semantics:
 The user-facing interaction list is a current/actionable projection, not a terminal-attempt history. Show interactions that can still progress/cancel plus `UnknownAfterSend` (or equivalent uncertainty that still requires attention). Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` results leave this list after their result is surfaced through Output/notification. Technical terminal/tombstone state may persist only where recovery, uncertainty, idempotency or duplicate prevention requires it. A later user retry is a new External Interaction; a cancelled interaction is never restored/reused.
 
 ### `BI-RPKG-CURRENT-CHANGE-DELIVERY-PREPARATION`
-Current-change delivery must be able to prepare the intended ChatGPT composer without requiring the ChatGPT document/tab to be foreground-focused and without depending on browser Clipboard API write permission. The selected realization direction is direct composer/editor insertion through the ChatGPT DOM adapter for ReviewDiff text of any size, followed by verification that the expected content is actually prepared.
+Current-change delivery must prepare the intended ChatGPT composer without requiring foreground document focus, browser Clipboard API write permission or large rich-text editor insertion. Live practical evidence supersedes the earlier direct-text realization: every non-empty ReviewDiff is now prepared as an exact `.diff` attachment through the reusable browser attachment primitive, followed by verification that the exact file is visible and upload-ready.
 
 Delivery state follows externally meaningful evidence:
-- before confirmed composer mutation, failure is `FailedBeforeSend`;
-- only after the expected ReviewDiff is confirmed prepared may the interaction enter `Preparing`;
-- failure after confirmed preparation but before possible Send is `PreparedUnsent`;
-- after `SendClicked`, unconfirmed delivery remains `UnknownAfterSend`.
+- before confirmed `.diff` attachment preparation, failure is `FailedBeforeSend`;
+- only after the exact attachment is visible/upload-ready may the interaction enter `Preparing`;
+- failure after confirmed preparation but before the possible-Send phase is `PreparedUnsent`;
+- technical `SendClicked` is projected as semantic `Sending`; while the same attachment remains prepared in the same exact conversation, guarded Send-control attempts may repeat at the interval captured for that interaction;
+- confirmed outgoing user turn is `Sent`; if the attachment disappears without confirmation, result is `UnknownAfterSend` and automation stops.
 
-No size-threshold/native-large-paste attachment branch is selected up front. If practical evidence later establishes a real ChatGPT composer size limit, an explicit fallback may be designed separately.
+There is no small/large ReviewDiff threshold: attachment delivery is the single path. The interval comes from persisted application Settings (default 6 seconds, valid 1–60) and is frozen per newly queued interaction/task rather than hardcoded in the extension. The browser bridge exchange is a versioned runtime contract: protocol/version plus all deterministic send prerequisites are validated before payload/composer mutation. A stale app/extension pair or invalid retry field is `FailedBeforeSend`, not post-Send uncertainty. Snapshot handoff may reuse the same technical attachment primitive, but its attach-only product semantics are intentionally unchanged in this correction.
 
 ### `BI-RPKG-OPERATION-NOTIFICATION`
 Track meaningful nontrivial user operations, including Apply, Finalize, Retry Push, explicit Reopen ChangeSet, Repository Snapshot export, ChatGPT handoff interactions and Change Repository Location. Terminal success always produces a simple Windows notification; failure/action-required always produces a notification with concise reason. Passive navigation and trivial Copy/Open actions are excluded.
@@ -152,7 +153,7 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 - `REQ-RPKG-06` — successful local commit followed by publication failure preserves one recoverable Publication Pending logical work item.
 - `REQ-RPKG-07` — repository snapshot export is read-only relative to repository work and does not become ledger/mutation authority.
 - `REQ-RPKG-08` — snapshot attachment never auto-sends the ChatGPT message.
-- `REQ-RPKG-09` — current-change delivery must not blindly duplicate send after post-Send uncertainty.
+- `REQ-RPKG-09` — current-change delivery may repeat guarded Send-control attempts only while the same exact prepared attachment remains in the same interaction; after attachment disappearance/post-Send uncertainty it must stop and must not blindly resend.
 - `REQ-RPKG-10` — real Swing/Windows/Edge/ChatGPT behavior requires manual practical evidence; automated bridge/component tests alone do not establish live-browser success.
 - `REQ-RPKG-11` — Git-controlled representation differences must not cause false source-state mismatch, while true source change or unverifiable equivalence blocks before mutation.
 - `REQ-RPKG-12` — Repository Target identity survives explicit repository-location change; all associated ChangeSets remain attached to that target.
@@ -162,9 +163,11 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 - `REQ-RPKG-16` — a compact latest ChangeSet-linked operation outcome survives restart for error-marker/reason presentation without requiring a generic persistent operation-history list.
 - `REQ-RPKG-17` — baseline/ref-dependent operations report actionable Repository Not Ready when no first commit exists.
 - `REQ-RPKG-18` — explicit Reopen may transition a selected Finalized ChangeSet back to Active without changing its identity/history, but only after exact-target revalidation and safe path-ownership/unowned-work checks; no implicit reopen is allowed.
-- `REQ-RPKG-19` — current-change preparation must not require foreground/document focus or successful Clipboard API write; `Preparing` is reached only after the intended ReviewDiff has actually been prepared in the composer.
+- `REQ-RPKG-19` — current-change preparation must not require foreground/document focus, successful Clipboard API write or direct rich-text insertion; `Preparing` is reached only after the intended ReviewDiff `.diff` attachment is actually visible and upload-ready in the composer.
 - `REQ-RPKG-20` — External Interactions terminal ordinary results do not accumulate in the user-facing list; a retry creates a new interaction identity, while uncertainty requiring attention remains visible.
 - `REQ-RPKG-21` — ownership/adoptability failures identify exact path + Repository Target + applying ChangeSet and explicitly distinguish `Unowned` from a concrete owning unfinished ChangeSet.
+- `REQ-RPKG-22` — ReviewDiff automatic Send retry interval is persisted application configuration (default 6 seconds, valid 1–60), captured per newly queued interaction/task and supplied to the extension; it is not a browser-extension timing constant.
+- `REQ-RPKG-23` — Java ↔ extension task delivery uses an explicit compatible bridge protocol and validates all deterministic claimed-task/send prerequisites before external preparation; version/contract mismatch is `FailedBeforeSend` and must never be mislabeled `UnknownAfterSend`.
 
 ## Current Implementation Divergences / Target Work
 
@@ -177,7 +180,8 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 | `P-RPKG-UNBORN-LOW-LEVEL-ERROR` | Missing first commit can surface low-level HEAD/Git failure. | Repository Not Ready with initial-commit guidance when baseline/ref is required. | P1 / SL-01,04 |
 | `P-RPKG-SPLIT-EXISTING-WORK-UI` | First implementation added a separate `Existing work` dialog; practical use showed this duplicates the existing ChangeSet selector and one unavailable target can abort the dialog. | One ChangeSet selector + `All repositories` + `Show history`; exact-target switch on selection; unavailable target is query state, not projection failure. | P0 practical correction / SL-07 |
 | `P-RPKG-NO-REPOSITORY-LOCATION-EDIT` | Registered target path cannot be explicitly changed while preserving target identity/work. | Dedicated Change Repository Location action. | P1 behavior |
-| `P-RPKG-BROWSER-UNFOCUSED-PREPARATION` | Live Edge evidence shows Clipboard API ReviewDiff preparation can fail with `Document is not focused`, and current staging can then overstate `PreparedUnsent` before composer mutation. | Direct composer/editor insertion independent of foreground focus; confirm preparation before `Preparing`. | P0 practical correction / SL-06 |
+| `P-RPKG-BROWSER-UNFOCUSED-PREPARATION` | Clipboard preparation previously failed with `Document is not focused`; later direct-text practical tests showed small content could prepare while Send remained unreliable and large direct insertion could freeze the whole ChatGPT tab. | One exact `.diff` attachment path for all ReviewDiff sizes through the shared attachment primitive; confirm upload-ready before `Preparing`; configurable guarded MAIN-world Send attempts while the same attachment remains. | P0 practical correction / SL-06 |
+| `P-RPKG-BRIDGE-VERSION-SKEW` | Live attachment test prepared the exact `.diff` but then surfaced `UnknownAfterSend · Invalid ReviewDiff send retry interval`, showing a deterministic Java↔extension contract mismatch can be discovered after the possible-Send boundary. | Explicit bridge protocol v2 + complete claimed-task preflight before payload/composer mutation; actionable mismatch is `FailedBeforeSend`; retry interval is carried prevalidated across `SendClicked`. | P0 practical correction / SL-06 |
 | `P-RPKG-NO-UNIFIED-EXTENSION-INTERACTION-LIST` | Bridge tasks are implementation mechanics, not one user-facing interaction surface; terminal cancelled attempts can accumulate as useless list history. | Semantic current/actionable External Interaction list + truthful Cancel; ordinary terminal results leave the list and retries create new interactions. | P1 / SL-08 |
 | `P-RPKG-NO-OPERATION-NOTIFICATIONS` | No Windows terminal-result notification layer. | Notify tracked operations on every terminal success/failure. | P1 / SL-09 |
 | `P-RPKG-NO-DEDICATED-DIAGNOSTIC-SURFACE` | Existing Output/Copy is not the selected clean technical diagnostic surface. | Cross-Slice session diagnostic surface. | P1 behavior |
@@ -199,5 +203,5 @@ Source-state equivalence implementation is selected to use Git's own path semant
 
 - Three user-world Scenarios define current target application meaning. The retired Find Existing Work draft is now shared navigation behavior, while explicit Finalized→Active Reopen remains a recovery branch inside Complete Repository Work rather than a separate Scenario.
 - `Repository Work` remains the strong core aggregate candidate; `External Interaction` is a second strong integration aggregate candidate; `User Operation` remains Application process/outcome state.
-- After this package, source/tests realize the corrected SL-06/07/08 behavior and the prior SL-09 implementation; live practical evidence remains required before operational acceptance.
+- After this package, source/tests realize the corrected SL-06 attachment/configurable-send-retry behavior plus prior SL-07/08/09 work; live Edge practical evidence remains required before operational acceptance.
 - Testing remains automated component/integration proof plus Manual Practical Testing; no full Swing/Edge browser E2E layer is selected.

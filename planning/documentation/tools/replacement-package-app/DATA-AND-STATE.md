@@ -45,11 +45,11 @@ No ledger/state file is intentionally stored inside the target repository.
 
 ## 3. Settings / Repository Registry
 
-`settings.json` schema 2 is consumer-only local configuration:
+`settings.json` schema 3 is consumer-only local configuration:
 
 ```json
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "repositories": [
     {
       "id": "<local repository-record UUID>",
@@ -60,7 +60,8 @@ No ledger/state file is intentionally stored inside the target repository.
   ],
   "selectedRepositoryId": "<repository-record UUID or null>",
   "selectedChangeSetId": "<changeSet UUID or null>",
-  "reviewDiffHandling": "Clipboard"
+  "reviewDiffHandling": "Clipboard",
+  "reviewDiffSendRetrySeconds": 6
 }
 ```
 
@@ -72,7 +73,8 @@ Rules:
 - removing a repository with Active/`CommittedPendingPush` ChangeSets is blocked;
 - `selectedRepositoryId` and `selectedChangeSetId` are navigation state, not mutation authority;
 - `reviewDiffHandling` remains `Clipboard | RepoDiffFile | Both`;
-- legacy schema-1 `repositoryRoot` is migrated to one repository record when that path can be verified; package/OBS-ACTION data never supplies repository registration.
+- `reviewDiffSendRetrySeconds` is an application setting for ReviewDiff automatic Send-control attempts; default `6`, valid range `1..60` seconds. A queued ReviewDiff task captures the current value, so later Settings edits affect new tasks only;
+- older settings schemas are read compatibly: legacy schema-1 `repositoryRoot` is migrated to one repository record when that path can be verified, and schema-2 state receives the default retry interval; package/OBS-ACTION data never supplies repository registration.
 
 A registered path that is temporarily unavailable remains configuration; use-time verification blocks mutation rather than silently authorizing another path.
 
@@ -178,7 +180,7 @@ Browser integration is consumer-only local delivery state and does not enter `PA
 
 `chat-bridge.json` stores the random loopback pairing token and fixed V1 port. `chat-bindings/<changeSetId>.json` stores one optional ChangeSet → ordinary ChatGPT conversation binding (`conversationKey`, last-known title/URL, bound timestamp). This binding survives continuation/correction packages because they keep the same `changeSetId`.
 
-`chat-handoffs/<taskId>.json` records ReviewDiff/snapshot delivery tasks. Every deliverable task records the exact artifact path, byte length and SHA-256 captured at enqueue; payload delivery requires those bytes still to match. ReviewDiff tasks also reference the canonical `reviewAttemptId`; automatic creation is idempotent for one `changeSetId + reviewAttemptId`. Snapshot handoff records may reference an already-created snapshot ZIP, but this is delivery state rather than repository-snapshot export history and does not change the snapshot contract.
+`chat-handoffs/<taskId>.json` records ReviewDiff/snapshot delivery tasks. Every deliverable task records the exact artifact path, byte length and SHA-256 captured at enqueue; payload delivery requires those bytes still to match. ReviewDiff tasks also reference the canonical `reviewAttemptId` and capture `sendRetryIntervalSeconds` from Settings at enqueue; automatic creation is idempotent for one `changeSetId + reviewAttemptId`. Snapshot handoff records may reference an already-created snapshot ZIP, but this is delivery state rather than repository-snapshot export history and does not change the snapshot contract.
 
 Task lifecycle is independent from ChangeSet lifecycle:
 
@@ -199,7 +201,7 @@ Preparing → PreparedUnsent
 
 All terminal states (`Sent`, `Attached`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges`, `Cancelled`) are immutable. `UnknownAfterSend` is never automatically retried. Chat delivery status never authorizes Finalize and a missing/failed bridge never converts a successful Apply/Refresh Review/export into failure.
 
-Open-tab inventory is runtime memory only and is refreshed by the extension; it is not persisted as authoritative state. A claim is valid only while the recorded tab remains in the recorded conversation, and at most one task per conversation may be in `Claimed`/`Preparing`/`SendClicked` at a time. For ReviewDiff delivery the extension stages semantic `Preparing` only after the expected content has been inserted and verified in the intended composer; failure before confirmed mutation remains `FailedBeforeSend`. Rebind/unbind cancels only `Pending`/`Claimed` ReviewDiff tasks and refuses to move a binding while a task is `Preparing` or `SendClicked`; expired in-flight leases are normalized first. Older automatic `Pending`/`Claimed` ReviewDiff tasks are superseded when a newer current ReviewDiff is queued, while an already `Preparing` task is allowed to finish to avoid leaving an unowned composer draft.
+Open-tab inventory is runtime memory only and is refreshed by the extension; it is not persisted as authoritative state. A claim is valid only while the recorded tab remains in the recorded conversation, and at most one task per conversation may be in `Claimed`/`Preparing`/`SendClicked` at a time. For ReviewDiff delivery the extension stages `Preparing` only after the exact `.diff` attachment is visible and upload-ready in the intended composer; failure before confirmed attachment preparation remains `FailedBeforeSend`. Technical `SendClicked` is projected semantically as `Sending`. While the exact prepared attachment remains in the same composer, the same interaction may make repeated guarded Send-control attempts at its frozen interval. This does not create/reuse a terminal interaction. If the attachment disappears without a confirmed outgoing user turn, the task becomes `UnknownAfterSend` and automatic attempts stop. Rebind/unbind cancels only `Pending`/`Claimed` ReviewDiff tasks and refuses to move a binding while a task is `Preparing` or `SendClicked`; expired in-flight leases are normalized first. Older automatic `Pending`/`Claimed` ReviewDiff tasks are superseded when a newer current ReviewDiff is queued, while an already `Preparing` task is allowed to finish to avoid leaving an unowned composer attachment.
 
 ## 11. Repo Review Artifact
 
@@ -318,19 +320,21 @@ The user-facing interaction projection shows active/actionable interactions plus
 For current-change delivery, selected target semantic state follows external evidence rather than attempt timing:
 
 ```text
-before confirmed composer mutation
+before exact ReviewDiff attachment is confirmed upload-ready
 → not Prepared
 → failure = FailedBeforeSend
 
-expected ReviewDiff confirmed in intended composer
+exact ReviewDiff `.diff` attachment confirmed in intended composer
 → Preparing / externally prepared
 
-possible Send boundary crossed
-→ SendClicked
-→ unconfirmed result = UnknownAfterSend
+possible-Send phase
+→ technical SendClicked / semantic Sending
+→ repeated guarded Send-control attempts only while the same attachment remains prepared
+→ confirmed outgoing user turn = Sent
+→ attachment disappears without confirmation = UnknownAfterSend; stop automatic attempts
 ```
 
-Direct composer/editor insertion is selected so preparation does not depend on foreground document focus or Clipboard API write permission. No separate large-review attachment state is selected until practical evidence requires a fallback.
+ReviewDiff preparation uses the shared browser attachment primitive for every non-empty diff, so it does not depend on foreground document focus, Clipboard API write permission or rich-text insertion size. The retry interval is local application configuration captured per task, not extension-local hardcoded timing. Snapshot preparation may reuse the same technical primitive, but snapshot remains attach-only in this correction.
 
 ### Source-State Applicability Result
 

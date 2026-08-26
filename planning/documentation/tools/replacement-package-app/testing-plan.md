@@ -63,9 +63,9 @@ Use actual application/environment for:
 - dedicated technical diagnostics copy surface;
 - Microsoft Edge extension pairing/reload;
 - ordinary ChatGPT conversation discovery;
-- real current-change small/native-large-paste and snapshot attachment readiness;
+- real current-change small/large `.diff` attachment preparation, configurable Send retry behavior, intentional app/extension protocol skew rejection and snapshot attachment readiness;
 - External Interaction list + prepared-content-retained Cancel behavior;
-- duplicate tabs/composer protection/no-auto-send/no-blind-retry.
+- duplicate tabs/composer protection, snapshot no-auto-send, and no blind retry after ReviewDiff attachment disappearance/uncertainty.
 
 [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) is the operated proof surface, not an automated E2E suite.
 
@@ -94,7 +94,7 @@ For repository-scope tests include:
 | `SL-RPKG-03` Finalize And Publish Work | owned-only commit, lifecycle, publication pending, safe recovery, guarded Finalized→Active Reopen, failed-Reopen no-marker rule | real Finalize/Retry/Reopen/remote-ahead UX/truthful state + notification on failed Reopen |
 | `SL-RPKG-04` Export Repository Snapshot | exact/stable ZIP, readiness, index/output safety | export dialog, Repository Not Ready, destination/clipboard/open-folder |
 | `SL-RPKG-05` Attach Snapshot | exact artifact/task integration | real Edge/ChatGPT attachment ready + Send untouched |
-| `SL-RPKG-06` Deliver Current Change | exact delivery integration/dedupe/uncertainty + evidence-based preparation state boundary | real direct composer insertion for small/large ReviewDiff with ChatGPT foreground and non-foreground; prepared-content verification; post-staging fresh connected Send-control click; duplicate tabs; send outcome |
+| `SL-RPKG-06` Deliver Current Change | exact delivery integration/dedupe/uncertainty + attachment preparation boundary + per-task retry interval | real small/large `.diff` attachment delivery with ChatGPT foreground and non-foreground; upload-ready verification; configured guarded MAIN-world Send retries while the same attachment remains; duplicate tabs; send/uncertainty outcome |
 | `SL-RPKG-07` Select Existing Work Context | local/global ChangeSet projection, history filter/order, unfinished latest outcome, nullable unavailable-target query, exact target/set selection, history-only Reopen entry | real `All repositories` + `Show history` selector behavior, unavailable target, exact repo+set navigation, Reopen control |
 | `SL-RPKG-08` Manage External Interactions | semantic identity/state/cancel/current-actionable projection/persistence boundary | real list/select/cancel; ordinary terminal rows disappear; retry creates new interaction; prepared content retained; uncertainty truth |
 | `SL-RPKG-09` Notify Operation Outcomes | User Operation result→one notification request; unfinished latest-outcome persistence; failed-Reopen notification without Finalized marker | real Windows success/failure notifications and click repository routing |
@@ -117,9 +117,10 @@ The strategy must preserve explicit proof that:
 - snapshot export does not mutate repository/index;
 - External Interaction Cancel never auto-deletes prepared ChatGPT content and possible-send uncertainty is not rewritten;
 - ordinary terminal External Interactions do not accumulate as user-facing history and retries never reuse terminal/cancelled interaction identity;
-- current-change preparation does not require foreground/document focus or Clipboard API write success, and `PreparedUnsent` is impossible before confirmed composer mutation;
+- current-change preparation does not require foreground/document focus, Clipboard API write success or direct rich-text insertion, and `PreparedUnsent` is impossible before the exact `.diff` attachment is confirmed upload-ready;
 - browser failure never rolls back/authorizes repository work;
-- snapshot attachment never sends;
+- ReviewDiff Send-control retries occur only while the same exact attachment remains prepared; attachment disappearance without confirmed outgoing turn becomes uncertainty and stops automation;
+- snapshot attachment never sends even though it reuses the same low-level attachment primitive;
 - notification delivery never repeats/executes the operation.
 
 ## Manual Practical Campaign Shape
@@ -153,6 +154,8 @@ Automated `failed=0` is necessary for implemented automated responsibilities but
 - real Windows notification delivery/click for SL-09;
 - repository-location change against same folder moved and explicit different matching-origin clone;
 - Finalized ChangeSet Reopen with clean/safe historical paths, sibling-owner conflict, unrelated dirty/unowned conflict and restart/history UI entry conditions;
-- restart persistence of compact latest ChangeSet operation outcome and safety-critical interaction state.
+- restart persistence of compact latest ChangeSet operation outcome and safety-critical interaction state;
+- Settings persistence/default/range for ReviewDiff send retry interval and per-task freezing of that interval.
+- bridge protocol/version advertisement in health + claim responses; claimed-task contract preflight before content delivery/external preparation; deterministic compatibility/interval failure remains `FailedBeforeSend` and cannot cross `SendClicked`.
 
 Revisit automated E2E only if repeated practical proof becomes materially expensive/unreliable and a real automation route can prove the same outcomes without excessive brittleness.

@@ -175,9 +175,11 @@ MainWindow/Core
 
 Open ChatGPT tabs are grouped by stable conversation key, not title. Task claims are serialized per conversation so duplicate tabs cannot run two queued deliveries concurrently. A ChangeSet may persist one conversation binding and therefore reuse the same chat through continuation/correction packages with the same `changeSetId`. Automatic ReviewDiff queueing occurs only after the canonical current ReviewDiff is persisted. Browser delivery failure is warning/downstream state and never rolls back Apply/Refresh Review or changes Finalize authority.
 
-ReviewDiff content is delivered as exact text through direct ChatGPT composer/editor insertion. Each task records artifact size/SHA-256, Java rechecks the queued file before streaming it, and the extension rechecks the received bytes before preparation. The extension requires an empty intended composer, inserts without browser Clipboard API/native-paste dependence, verifies that the expected ReviewDiff is actually present, and only then stages semantic `Preparing`. A failure before confirmed composer mutation is `FailedBeforeSend`; after confirmed preparation but before possible Send it is terminal `PreparedUnsent`. The extension records `SendClicked` immediately before possible Send and requires a new user-message turn plus cleared composer state before reporting `Sent`; post-Send uncertainty is `UnknownAfterSend`. The same direct-text path is used for small/large ReviewDiff until practical evidence demonstrates a real composer limit.
+ReviewDiff content is delivered as one exact `.diff` attachment for every non-empty ReviewDiff. Each task records artifact size/SHA-256 and a frozen `sendRetryIntervalSeconds`; Java rechecks the queued file before streaming it, and the extension rechecks the received bytes before preparation. The extension requires the intended composer to be empty, reuses the shared browser attachment primitive to create/upload the exact ReviewDiff file, and reaches semantic `Preparing` only after that exact attachment is visible and upload-ready. A failure before confirmed attachment preparation is `FailedBeforeSend`; after confirmed preparation but before the possible-Send phase it is terminal `PreparedUnsent`. During technical `SendClicked`, the semantic interaction is `Sending`: the service worker may issue repeated guarded MAIN-world Send-control attempts at the task's configured interval only while the same exact attachment remains prepared in the same conversation. Confirmed outgoing user turn becomes `Sent`; if the attachment disappears without confirmation, state becomes `UnknownAfterSend` and automatic attempts stop. This attachment path replaces direct editor insertion for both small and large ReviewDiff content.
 
-Snapshot tasks are user-triggered and attach-only. The Java side validates a Repository Snapshot ZIP and queues `autoSend=false`; the extension may drive ChatGPT's file input but must never click Send.
+The Java ↔ extension claim payload is an explicit local runtime contract. Protocol version `2` is advertised by `/v1/health` and every claimed task; inventory/claim requests must also advertise extension protocol `2`. The extension validates protocol compatibility plus deterministic task fields (kind, destination, artifact metadata, payload URL, auto-send semantics and ReviewDiff retry interval) **before payload fetch or composer mutation**. Missing/invalid compatibility data is a pre-send contract failure and is recorded as `FailedBeforeSend` with restart/update guidance; it must not become `UnknownAfterSend`. The content script repeats the same deterministic validation before execution and carries the already-validated retry interval across the later `SendClicked` boundary rather than discovering an invalid interval after possible Send.
+
+Snapshot tasks are user-triggered and attach-only. ReviewDiff and snapshot preparation reuse the same low-level browser attachment primitive, but their product semantics remain separate: the Java side validates a Repository Snapshot ZIP and queues `autoSend=false`, and the extension must never click Send for snapshot tasks. This correction does not redesign snapshot handoff behavior.
 
 The extension content script never receives the long-lived pairing token; extension storage access for that token is restricted to trusted extension contexts. A claimed task carries a short-lived ticket scoped to one exact persisted ReviewDiff or validated snapshot ZIP plus its expected fingerprint. Claims are bound to both conversation key and tab id; navigation/tab loss while merely `Claimed` releases the task to `Pending`, while loss after composer preparation begins becomes `PreparedUnsent` and loss after `SendClicked` becomes `UnknownAfterSend`. There is no arbitrary filesystem-path, Git or command endpoint.
 
@@ -185,7 +187,7 @@ The extension content script never receives the long-lived pairing token; extens
 
 `StateStore` uses local JSON files and one exclusive `FileChannel` lock around mutating Apply/Finalize/Retry operations. JSON writes use temporary-file replacement. Repository mutation assumes one foreground Core operation at a time.
 
-`settings.json` schema 2 owns repository allowlist records, selected repository, selected ChangeSet and ReviewDiff handling. ChangeSet JSON continues to own path ownership/current review/lifecycle. No application ledger file is written inside a target repository.
+`settings.json` schema 3 owns repository allowlist records, selected repository, selected ChangeSet, ReviewDiff handling and `reviewDiffSendRetrySeconds`. The retry interval defaults to 6 seconds, is user-editable in the application, is validated to 1–60 seconds and is frozen into each newly queued ReviewDiff task so an in-flight interaction is not retimed by a later settings change. ChangeSet JSON continues to own path ownership/current review/lifecycle. No application ledger file is written inside a target repository.
 
 ## 11. Safety Boundaries
 
@@ -302,19 +304,25 @@ The normal `ChangeSet` selector owns existing-work navigation. Default scope is 
 
 ### Current-Change Browser Preparation Target
 
-SL-06 keeps exact ReviewDiff bytes and intended conversation as authority, but selected browser preparation no longer depends on Clipboard API/native paste or foreground document focus.
+SL-06 keeps exact ReviewDiff bytes and intended conversation as authority. Live Edge evidence supersedes the earlier direct-text target: small direct insertion could prepare content while automatic Send remained unreliable, and a large direct insertion could block the whole ChatGPT tab. The selected realization therefore uses the already-working attachment mechanics for every non-empty ReviewDiff rather than introducing a size threshold.
 
 ```text
-verified exact ReviewDiff text
+verified exact ReviewDiff bytes
+→ protocol-v2 + complete claimed-task contract preflight
 → intended conversation + empty composer guard
-→ direct DOM/editor insertion through ChatGPT adapter
-→ verify expected content is actually prepared
+→ create exact review-<attempt>.diff browser File
+→ shared attachment primitive
+→ verify exact attachment visible + upload-ready
 → Preparing
-→ SendClicked immediately before possible Send
-→ Sent | UnknownAfterSend
+→ technical SendClicked / semantic Sending
+→ every configured retry interval, while the same attachment remains prepared:
+     verify exact conversation + fresh Send control
+     attempt Send in MAIN world
+→ confirmed outgoing user turn = Sent
+→ attachment disappears without confirmation = UnknownAfterSend; stop
 ```
 
-Before confirmed composer mutation, preparation failure is `FailedBeforeSend`; only after expected content is confirmed prepared may a pre-Send failure become `PreparedUnsent`. Use the same direct text path for small/large ReviewDiff initially; introduce an attachment fallback only if practical evidence establishes a real composer limit.
+Before confirmed attachment preparation, failure is `FailedBeforeSend`; only after the exact `.diff` is confirmed prepared may a pre-Send failure become `PreparedUnsent`. Protocol/task-shape/retry-interval validation is deterministic preflight and therefore occurs before attachment preparation and before `SendClicked`. Repeated Send-control clicks while the same exact prepared attachment remains in the same interaction are readiness/dispatch attempts, not a retry of terminal interaction identity. Once external state becomes ambiguous, automatic sending stops. The interval is an application setting (default 6 seconds, valid 1–60) captured into each newly queued ReviewDiff task. Snapshot handoff reuses the same technical attachment primitive but remains attach-only in this correction.
 
 ### External Interaction Semantic Layer
 

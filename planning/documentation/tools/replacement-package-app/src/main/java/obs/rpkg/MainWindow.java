@@ -24,6 +24,7 @@ final class MainWindow extends JFrame {
     private final JComboBox<RepositoryItem> repositories=new JComboBox<>();
     private final JComboBox<ChangeSetItem> changeSets=new JComboBox<>();
     private final JComboBox<String> handling=new JComboBox<>(new String[]{"Clipboard","RepoDiffFile","Both"});
+    private final JSpinner reviewSendRetrySeconds=new JSpinner(new SpinnerNumberModel(Core.DEFAULT_REVIEW_SEND_RETRY_SECONDS,Core.MIN_REVIEW_SEND_RETRY_SECONDS,Core.MAX_REVIEW_SEND_RETRY_SECONDS,1));
     private final JComboBox<ChatItem> reviewChats=new JComboBox<>();
     private final JComboBox<InteractionItem> interactions=new JComboBox<>();
     private final JCheckBox allRepositories=new JCheckBox("All repositories"),showHistory=new JCheckBox("Show history");
@@ -42,6 +43,7 @@ final class MainWindow extends JFrame {
         root.add(row("Repository",repositories,button("Add repository",this::addRepository),button("Remove",this::removeRepository),button("Change location",this::changeRepositoryLocation),button("Export repository ZIP",this::exportRepositorySnapshot)));
         root.add(row("Repository identity",repositoryIdentity));
         root.add(row("ReviewDiff",handling));
+        root.add(row("Review send retry",reviewSendRetrySeconds,new JLabel("seconds")));
         root.add(row("Chat bridge",bridgeState,button("Copy pairing token",this::copyBridgeToken)));
         root.add(row("Windows launcher",launcherState,button("Install / update",this::installWindowsLauncher),button("Open folder",this::openWindowsLauncherFolder),button("Copy path",this::copyWindowsLauncherPath)));
         root.add(row("Archive ZIP",archive,button("Browse",()->chooseFile(archive))));
@@ -63,6 +65,7 @@ final class MainWindow extends JFrame {
         allRepositories.addActionListener(e->{if(!loading)reloadChangeSets(selectedChangeSet==null?null:selectedChangeSet.changeSetId,!allRepositories.isSelected());});
         showHistory.addActionListener(e->{if(!loading)reloadChangeSets(selectedChangeSet==null?null:selectedChangeSet.changeSetId,!allRepositories.isSelected());});
         handling.addActionListener(e->{if(!loading)saveHandling();});
+        reviewSendRetrySeconds.addChangeListener(e->{if(!loading)saveReviewSendRetryInterval();});
     }
 
     private void startBridge(){try{bridgeServer=ChatBridgeServer.start(core.chatBridgeService());bridgeState.setText("Listening on 127.0.0.1:"+ChatBridgeService.PORT);append("SUCCESS ChatGPT bridge listening on 127.0.0.1:"+ChatBridgeService.PORT+".");}catch(IOException e){bridgeState.setText("Unavailable — "+message(e));append(withTechnicalDetails("WARNING ChatGPT bridge unavailable: "+message(e),e));}}
@@ -125,7 +128,7 @@ final class MainWindow extends JFrame {
     private void chooseFile(JTextField f){JFileChooser c=new JFileChooser();if(c.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)f.setText(c.getSelectedFile().getAbsolutePath());}
     private void chooseDirectory(JTextField f){JFileChooser c=new JFileChooser(f.getText().isBlank()?null:new java.io.File(f.getText()));c.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);if(c.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)f.setText(c.getSelectedFile().getAbsolutePath());}
 
-    private void loadState(){try{Core.Settings s=core.getSettings();loading=true;handling.setSelectedItem(s.reviewDiffHandling());loading=false;reloadRepositories(s.selectedRepositoryId(),s.selectedChangeSetId());}catch(Exception e){loading=false;append(withTechnicalDetails("Settings warning: "+message(e),e));}}
+    private void loadState(){try{Core.Settings s=core.getSettings();loading=true;handling.setSelectedItem(s.reviewDiffHandling());reviewSendRetrySeconds.setValue(s.reviewDiffSendRetrySeconds());loading=false;reloadRepositories(s.selectedRepositoryId(),s.selectedChangeSetId());}catch(Exception e){loading=false;append(withTechnicalDetails("Settings warning: "+message(e),e));}}
     private void reloadRepositories(String selectRepoId,String selectChangeSetId){loading=true;repositories.removeAllItems();for(Core.RepositoryConfig r:core.getRepositories())repositories.addItem(new RepositoryItem(r));int index=findRepositoryIndex(selectRepoId);if(index>=0)repositories.setSelectedIndex(index);else if(repositories.getItemCount()>0)repositories.setSelectedIndex(0);loading=false;repositoryChanged(selectChangeSetId);}
     private int findRepositoryIndex(String id){if(id!=null)for(int i=0;i<repositories.getItemCount();i++)if(repositories.getItemAt(i).value.id().equals(id))return i;return -1;}
     private void repositoryChanged(){repositoryChanged(null);}
@@ -144,6 +147,7 @@ final class MainWindow extends JFrame {
     private void removeRepository(){if(selectedRepository==null)return;int result=JOptionPane.showConfirmDialog(this,"Remove '"+selectedRepository.name()+"' from the allowed repository list?","Remove repository",JOptionPane.OK_CANCEL_OPTION);if(result!=JOptionPane.OK_OPTION)return;String id=selectedRepository.id();Core.Settings s=core.removeRepository(id);append("SUCCESS Repository removed from allowlist.");reloadRepositories(s.selectedRepositoryId(),s.selectedChangeSetId());}
     private void changeRepositoryLocation(){if(selectedRepository==null)throw new Core.ObsException(Core.REPOSITORY_MISMATCH,"Select a Repository Target first.");String repoId=selectedRepository.id(),csId=selectedChangeSet==null?null:selectedChangeSet.changeSetId;JFileChooser c=new JFileChooser(selectedRepository.path());c.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);if(c.showOpenDialog(this)!=JFileChooser.APPROVE_OPTION)return;try{Core.RepositoryConfig updated=core.changeRepositoryLocation(repoId,c.getSelectedFile().toPath());append("SUCCESS Repository location changed: "+updated.path());reloadRepositories(updated.id(),csId);notifyOperation("Repository location changed",updated.name(),updated.id(),false);}catch(Throwable e){trackedFailure("Change Repository Location",e,repoId,null);}}
     private void saveHandling(){core.setReviewDiffHandling(String.valueOf(handling.getSelectedItem()));append("Settings saved.");}
+    private void saveReviewSendRetryInterval(){core.setReviewDiffSendRetrySeconds(((Number)reviewSendRetrySeconds.getValue()).intValue());append("Settings saved.");}
     private void copyBridgeToken(){Core.Handoff h=core.copyTextToClipboardVerified(core.chatBridgePairingToken());append(h.warning()!=null&&!h.warning().isBlank()?"ERROR "+h.warning():"SUCCESS Chat bridge pairing token copied. Paste it once in the OBS ChatGPT Bridge extension options.");}
 
     private void refreshChatList(){

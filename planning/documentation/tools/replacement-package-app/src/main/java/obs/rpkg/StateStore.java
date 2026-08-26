@@ -22,25 +22,27 @@ final class StateStore {
 
     @SuppressWarnings("unchecked") Core.Settings getSettings(){
         Path p=root.resolve("settings.json");
-        if(!Files.exists(p)){Core.Settings s=new Core.Settings(List.of(),null,null,"Clipboard");saveSettings(s);return s;}
+        if(!Files.exists(p)){Core.Settings s=new Core.Settings(List.of(),null,null,"Clipboard",Core.DEFAULT_REVIEW_SEND_RETRY_SECONDS);saveSettings(s);return s;}
         Map<String,Object> m=readObject(p);String handling=Core.str(m.get("reviewDiffHandling"));
         if(handling==null||!List.of("Clipboard","RepoDiffFile","Both").contains(handling))throw new Core.ObsException(Core.STATE_DIVERGED,"Invalid settings.json reviewDiffHandling.");
+        Object retryRaw=m.get("reviewDiffSendRetrySeconds");int retry=retryRaw instanceof Number n?n.intValue():Core.DEFAULT_REVIEW_SEND_RETRY_SECONDS;
+        if(retry<Core.MIN_REVIEW_SEND_RETRY_SECONDS||retry>Core.MAX_REVIEW_SEND_RETRY_SECONDS)throw new Core.ObsException(Core.STATE_DIVERGED,"Invalid settings.json reviewDiffSendRetrySeconds.");
         Object schema=m.get("schemaVersion");int version=schema instanceof Number n?n.intValue():1;
         if(version>=2){
             List<Core.RepositoryConfig> repos=new ArrayList<>();Object rs=m.get("repositories");
             if(rs instanceof List<?> list)for(Object x:list){if(!(x instanceof Map<?,?> raw))throw new Core.ObsException(Core.STATE_DIVERGED,"Invalid repository entry in settings.json.");Map<String,Object> r=(Map<String,Object>)raw;String id=Core.str(r.get("id")),name=Core.str(r.get("name")),path=Core.str(r.get("path")),identity=Core.str(r.get("repositoryIdentity"));if(id==null||id.isBlank()||path==null||path.isBlank())throw new Core.ObsException(Core.STATE_DIVERGED,"Invalid repository entry in settings.json.");repos.add(new Core.RepositoryConfig(id,name==null||name.isBlank()?displayName(path):name,path,identity==null?"":identity));}
-            return new Core.Settings(List.copyOf(repos),blankToNull(Core.str(m.get("selectedRepositoryId"))),blankToNull(Core.str(m.get("selectedChangeSetId"))),handling);
+            return new Core.Settings(List.copyOf(repos),blankToNull(Core.str(m.get("selectedRepositoryId"))),blankToNull(Core.str(m.get("selectedChangeSetId"))),handling,retry);
         }
         String legacy=Core.str(m.get("repositoryRoot"));
-        if(legacy==null||legacy.isBlank())return new Core.Settings(List.of(),null,null,handling);
+        if(legacy==null||legacy.isBlank())return new Core.Settings(List.of(),null,null,handling,retry);
         String id=UUID.nameUUIDFromBytes(("repository:"+Path.of(legacy).toAbsolutePath().normalize()).getBytes(StandardCharsets.UTF_8)).toString();
-        return new Core.Settings(List.of(new Core.RepositoryConfig(id,displayName(legacy),legacy,"")),id,null,handling);
+        return new Core.Settings(List.of(new Core.RepositoryConfig(id,displayName(legacy),legacy,"")),id,null,handling,retry);
     }
 
     void saveSettings(Core.Settings s){
-        Map<String,Object>m=new LinkedHashMap<>();m.put("schemaVersion",2);List<Object> repos=new ArrayList<>();
+        Map<String,Object>m=new LinkedHashMap<>();m.put("schemaVersion",3);List<Object> repos=new ArrayList<>();
         for(Core.RepositoryConfig r:s.repositories()){Map<String,Object>x=new LinkedHashMap<>();x.put("id",r.id());x.put("name",r.name());x.put("path",r.path());x.put("repositoryIdentity",r.repositoryIdentity());repos.add(x);}
-        m.put("repositories",repos);m.put("selectedRepositoryId",s.selectedRepositoryId());m.put("selectedChangeSetId",s.selectedChangeSetId());m.put("reviewDiffHandling",s.reviewDiffHandling());writeJson(root.resolve("settings.json"),m);
+        m.put("repositories",repos);m.put("selectedRepositoryId",s.selectedRepositoryId());m.put("selectedChangeSetId",s.selectedChangeSetId());m.put("reviewDiffHandling",s.reviewDiffHandling());m.put("reviewDiffSendRetrySeconds",s.reviewDiffSendRetrySeconds());writeJson(root.resolve("settings.json"),m);
     }
 
     Core.ChangeSet getChangeSet(String id){if(id==null||id.isBlank())return null;Path p=changeSetPath(id);return Files.exists(p)?Core.ChangeSet.from(readObject(p)):null;}

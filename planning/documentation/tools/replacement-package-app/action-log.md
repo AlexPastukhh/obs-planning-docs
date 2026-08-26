@@ -236,3 +236,76 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **Rationale:** correct the concrete live Send-path defect without changing already-selected delivery semantics or prematurely redesigning large-diff handling.
 
+
+### LOG-RPKG-018 — Live direct-text retest selects ReviewDiff attachment + configurable Send retry
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / IMPLEMENTATION CORRECTION  
+**Updates:** `LOG-RPKG-016..017`  
+**Source:** live Replacement Package App / Microsoft Edge testing after extension reload and the fresh-Send-control correction
+
+**Material Finding / selected correction:**
+- the small ReviewDiff direct-text path can prepare content in the intended composer, but automatic Send remained unreliable even after the stale-control correction; manually executing a page-world Send click in DevTools sent the prepared content;
+- the large ReviewDiff direct-text path can block/freeze the whole ChatGPT tab while the rich-text editor processes the inserted diff. This is now sufficient practical evidence to supersede the prior no-threshold direct-text target;
+- the existing browser file-input attachment mechanics already work in practice. All non-empty ReviewDiffs therefore use one exact `.diff` attachment path through a reusable low-level attachment primitive; no small-text/large-attachment threshold is selected;
+- ReviewDiff and Repository Snapshot may share that technical attachment primitive, but Snapshot remains attach-only/no-Send in this correction. Snapshot product/cancel/retry semantics are intentionally deferred for separate review rather than changed implicitly here;
+- after the exact ReviewDiff attachment is visible and upload-ready, technical `SendClicked` is projected to the user as `Sending`. The extension may repeat guarded Send-control attempts only while the same exact attachment remains prepared in the same exact conversation;
+- Send attempts execute in the ChatGPT page MAIN world because live DevTools/page-world `.click()` succeeded while prior content-script automation did not reliably send;
+- repeated clicks while the same attachment remains prepared are dispatch attempts inside one nonterminal External Interaction, not retries of terminal interaction identity. Confirmed outgoing user turn becomes `Sent`; attachment disappearance without confirmation becomes `UnknownAfterSend` and stops automation;
+- Send retry timing is not hardcoded in the extension. `reviewDiffSendRetrySeconds` is persisted application Settings, default `6`, valid range `1..60`; a new ReviewDiff task captures the current value so changing Settings does not retime an in-flight interaction.
+
+**Resulting Meaning:** Scenario identity is unchanged. SL-06 realization changes from direct rich-text insertion to exact attachment delivery plus configurable guarded Send attempts, while SL-08 terminal-attempt identity rules remain intact and Snapshot semantics remain explicitly unchanged except for technical primitive reuse.
+
+### LOG-RPKG-019 — Apply ReviewDiff attachment + configurable send-retry correction
+
+**Type:** APPLIED TARGET  
+**Applied From:** `LOG-RPKG-018`  
+**ChangeSet:** `3aad2fc7-bba0-4a2e-94b1-15d0eb72667d`  
+**Package:** `e3ca82f7-23c8-4977-ba0e-6e0c232167e8`
+
+**Target-State Result:** after successful Apply of this exact package:
+- extension version is `0.2.4` and every non-empty ReviewDiff is prepared as one exact `.diff` attachment rather than inserted into the ChatGPT rich-text editor;
+- ReviewDiff and snapshot use one reusable low-level browser attachment primitive, while snapshot remains attach-only/no-Send and its broader product semantics are not redesigned by this package;
+- exact attachment visibility/upload readiness is required before `Preparing`; pre-preparation failure is `FailedBeforeSend`, later pre-Send failure is `PreparedUnsent`;
+- technical `SendClicked` is projected semantically as `Sending`; guarded MAIN-world Send-control attempts may repeat at the task's configured interval only while the same exact attachment remains prepared in the same conversation;
+- confirmed outgoing user turn becomes `Sent`; attachment disappearance without confirmation becomes `UnknownAfterSend` and ends automatic sending rather than triggering blind resend;
+- `settings.json` advances to schema 3 with `reviewDiffSendRetrySeconds` (default 6, valid 1–60), editable in Swing/CLI and captured per newly queued ReviewDiff task;
+- automated proof covers Settings persistence/range/default, per-task interval freezing, attachment-only ReviewDiff source behavior, MAIN-world send-attempt routing and semantic `Sending`; live Edge practical acceptance remains required;
+- package bases come from the supplied Local Repository Snapshot at commit `5157a90db48138b0530d7a7128aa82569c2c0ef1`; no local Apply, commit or push is performed by package production.
+
+**Rationale:** incorporate concrete live-browser evidence into one coherent documentation + implementation correction without conflating ReviewDiff delivery with the separately deferred Snapshot interaction redesign.
+
+### LOG-RPKG-020 — Live attachment success exposes late retry-contract validation / runtime compatibility gap
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / SLICE IDEA INTEGRATION / IMPLEMENTATION CORRECTION  
+**Updates:** `LOG-RPKG-018..019`  
+**Source:** live Replacement Package App / Microsoft Edge test after the ReviewDiff attachment + configurable send-retry package, followed by `собери идеи слайса` for `SL-RPKG-06`
+
+**Material Finding / selected correction:**
+- the new ReviewDiff attachment path worked in the real ChatGPT composer: the `.diff` was attached without the prior large-rich-text freeze;
+- immediately after preparation the application reported `UnknownAfterSend · Invalid ReviewDiff send retry interval.` The implementation validates `task.sendRetryIntervalMs` only inside the send loop, after technical `SendClicked` has already been staged, so a deterministic local contract/configuration error can be mislabeled as external send uncertainty;
+- a stale/older Java process is a strong practical explanation because current Java source supplies a frozen retry interval, but the exact running-process version was not independently proven. Do not encode that hypothesis as fact; instead remove the whole ambiguity class with an explicit Java ↔ extension runtime contract;
+- `SL-RPKG-06` remains the same Slice/Scenario realization. The claimed task becomes bridge protocol `2`: `/v1/health` and every claim advertise the protocol, and extension `0.2.5` requires it;
+- before payload fetch or composer mutation, the extension validates protocol compatibility plus deterministic task prerequisites (kind, exact destination, artifact metadata/payload URL, auto-send semantics and ReviewDiff retry interval). A safely claimed incompatible/malformed task becomes actionable `FailedBeforeSend` with restart/update + extension-reload guidance;
+- content execution independently repeats deterministic task validation before attachment preparation. The validated retry interval is then carried across the later `SendClicked` boundary; invalid interval discovery is removed from the post-`SendClicked` send loop;
+- `UnknownAfterSend` is therefore reserved for actual external ambiguity after the possible-Send boundary, not for version/configuration/task-shape failures;
+- a generic single-instance/stale-process subsystem remains deferred unless further practical evidence shows fixed-port process collision is a recurring problem after explicit protocol negotiation is present.
+
+**Resulting Meaning:** product/Scenario priority is unchanged: reliably deliver the exact current change. Technical sequence is fail-fast runtime compatibility → exact attachment preparation → guarded Sending. Snapshot continues to reuse the low-level attachment primitive and remains attach-only; this correction does not redesign snapshot product semantics.
+
+### LOG-RPKG-021 — Apply bridge protocol preflight / truthful pre-Send failure correction
+
+**Type:** APPLIED TARGET  
+**Applied From:** `LOG-RPKG-020`  
+**ChangeSet:** `3aad2fc7-bba0-4a2e-94b1-15d0eb72667d`  
+**Package:** `b53b563a-383e-4c38-8b29-9970c03aea33`
+
+**Target-State Result:** after successful Apply of this exact package:
+- extension version is `0.2.5`; Java health and claimed-task responses advertise bridge protocol `2`;
+- extension Options checks protocol compatibility and reports actionable app-restart/update + extension-reload guidance when the running Java bridge is incompatible;
+- every claimed task is validated before content delivery/external preparation; a version/task/send-contract mismatch is recorded as `FailedBeforeSend` when the task can be safely identified, rather than released into repeated partial execution or mislabeled `UnknownAfterSend`;
+- ReviewDiff content execution validates the deterministic task contract before payload fetch/attachment mutation and computes the retry interval before `Preparing`/`SendClicked`; the send loop receives that already-validated interval and performs no late retry-interval validation;
+- exact `.diff` attachment delivery, configurable per-task Send interval, MAIN-world guarded attempts, current/actionable External Interaction projection and snapshot attach-only semantics remain otherwise unchanged;
+- automated bridge/source-contract proof covers protocol advertisement, claim/content preflight ordering, pre-Send failure classification and absence of the old late `Invalid ReviewDiff send retry interval` path; live Edge acceptance still must retest current-current delivery and intentional version skew;
+- package bases come from the supplied Local Repository Snapshot at commit `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7`; no local Apply, commit or push is performed by package production.
+
+**Rationale:** integrate the material live failure and Slice-idea review into one coherent post-Apply state while keeping real post-Send uncertainty distinct from deterministic local runtime incompatibility.

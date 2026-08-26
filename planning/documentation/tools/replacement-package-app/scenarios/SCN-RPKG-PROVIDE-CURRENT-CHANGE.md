@@ -15,12 +15,12 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 
 ## Entry / Main Flow
 
-1. User selects logical work directly or through the global Existing Work Scenario.
+1. User establishes the logical work context through the normal ChangeSet selector/navigation.
 2. Application establishes the exact current-change artifact for that ChangeSet.
 3. User selects/binds the intended ordinary ChatGPT conversation and initiates delivery when required.
 4. One semantic External Interaction is created for that exact source artifact + destination.
-5. Bridge/extension prepares the exact payload only in the intended conversation and respects existing composer content.
-6. Current-change delivery sends only after preparation is ready; native ChatGPT large-paste behavior may convert the paste to an attachment.
+5. Browser handoff prepares the exact current-change payload only in the intended conversation and respects existing composer content.
+6. Current-change delivery attempts Send only while that exact prepared payload remains associated with the same interaction/destination; external uncertainty stops further automatic sending.
 7. Application records the observable External Interaction result without changing repository-work authority.
 8. The interaction is visible/selectable through common External Interaction management.
 
@@ -32,10 +32,10 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 - duplicate tabs/claims remain implementation mechanics and must not duplicate one semantic interaction;
 - claim loss before external preparation may retry safely;
 - user Cancel before preparation → `Cancelled`, no further automation;
-- user Cancel after text/attachment was prepared but before Send certainty → `Cancelled — prepared content retained`; no automatic cleanup and no further Send/automation;
+- user Cancel after external content was prepared but before Send certainty → `Cancelled — prepared content retained`; no automatic cleanup and no further Send/automation;
 - if Send may already have occurred → preserve `Sent`/uncertain truth; cancellation cannot rewrite it;
 - browser unavailable/failure leaves Apply/Current Change/Finalize authority unchanged;
-- interaction history shows active/actionable + terminal items for current app session; only safety/recovery/idempotency-critical state persists across restart.
+- user-facing interaction projection shows active/actionable work plus uncertainty requiring attention rather than accumulated terminal history; only safety/recovery/idempotency-critical state persists across restart.
 
 ## Scenario DATA
 
@@ -52,12 +52,12 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 - implementation claim/lease/tab states do not become semantic interaction identity;
 - exact current change, not stale/older artifact, is sent;
 - cancellation stops future automation without deleting already-prepared external content;
-- uncertain post-Send outcome is not rewritten/retried blindly;
+- repeated Send-control attempts are allowed only while the same exact prepared payload remains in the same nonterminal interaction; uncertain post-Send outcome is not rewritten/retried blindly;
 - downstream interaction result never changes repository-work lifecycle/Finalize authority.
 
 ## Requirements
 
-Related shared requirements: `REQ-RPKG-04`, `REQ-RPKG-09`, `REQ-RPKG-10`, `REQ-RPKG-14`, `REQ-RPKG-15`.
+Related shared requirements: `REQ-RPKG-04`, `REQ-RPKG-09`, `REQ-RPKG-10`, `REQ-RPKG-14`, `REQ-RPKG-15`, `REQ-RPKG-19`, `REQ-RPKG-20`, `REQ-RPKG-22`.
 
 ## Visual / Screen References
 
@@ -69,7 +69,7 @@ Related shared requirements: `REQ-RPKG-04`, `REQ-RPKG-09`, `REQ-RPKG-10`, `REQ-R
 ## Acceptance
 
 Automated state-machine tests alone are insufficient. Manual practical acceptance must establish:
-- exact destination/payload and real small/native-large-paste behavior;
+- exact destination/payload for both small and large current changes, with no large-content browser freeze;
 - duplicate-tab/composer protection;
 - interaction visible/selectable with user-semantic state;
 - Cancel before preparation stops cleanly;
