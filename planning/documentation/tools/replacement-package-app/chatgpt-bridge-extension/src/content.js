@@ -1,9 +1,41 @@
-if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
-  globalThis.__OBS_CHAT_BRIDGE_CONTENT__ = true;
-  let currentTask = null, abortReason = null;
+(() => {
+  const priorAgent = globalThis.__OBS_CHAT_BRIDGE_AGENT__;
+  if (priorAgent?.dispose) priorAgent.dispose("Replaced by a fresh ChatGPT bridge agent.");
+  const agentInstanceId = crypto.randomUUID();
+  let runtimeGeneration = null, currentTask = null, abortReason = null, heartbeatTimer = null, active = true, messageListener = null;
   const TERMINAL = ["Cancelled","NoChanges","FailedBeforeSend","PreparedUnsent","Sent","Attached","UnknownAfterSend"];
   const BRIDGE_PROTOCOL_VERSION = 2;
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  function contextInvalid(error) {
+    const text = String(error?.message || error || "");
+    return /Extension context invalidated|Cannot read properties of undefined \(reading ['"](?:onMessage|sendMessage|connect)['"]\)/i.test(text);
+  }
+  function staleAgent(error) { return /Stale ChatGPT bridge (?:runtime generation|agent instance)/i.test(String(error?.message || error || "")); }
+  function shouldDispose(error) { return contextInvalid(error) || staleAgent(error); }
+  function dispose(reason = "ChatGPT bridge agent stopped.") {
+    if (!active) return;
+    active = false; abortReason = reason;
+    if (heartbeatTimer !== null) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
+    if (messageListener) {
+      try { globalThis.chrome?.runtime?.onMessage?.removeListener(messageListener); } catch {}
+      messageListener = null;
+    }
+  }
+  function runtimeApi() {
+    const api = globalThis.chrome?.runtime;
+    if (!api?.sendMessage) { const error = new Error("Extension context invalidated."); dispose(error.message); throw error; }
+    return api;
+  }
+  async function registerAgent() {
+    try {
+      const response = await runtimeApi().sendMessage({type: "OBS_AGENT_REGISTER", agentInstanceId, conversationKey: currentConversation() || ""});
+      if (!response?.ok || typeof response.runtimeGeneration !== "string" || !response.runtimeGeneration) throw new Error(response?.error || "ChatGPT bridge agent registration failed.");
+      runtimeGeneration = response.runtimeGeneration;
+      return response;
+    } catch (error) { if (shouldDispose(error)) dispose(error?.message || "ChatGPT bridge agent is stale."); throw error; }
+  }
+  globalThis.__OBS_CHAT_BRIDGE_AGENT__ = {agentInstanceId, dispose};
 
   function validateTaskContract(task) {
     if (!task || typeof task !== "object") throw new Error("Invalid ChatGPT Bridge task contract.");
@@ -28,10 +60,12 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
   function base64ToBytes(value) { const binary = atob(value); const bytes = new Uint8Array(binary.length); for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i); return bytes; }
   async function verifiedPayload(task) {
     const bytes = await new Promise((resolve, reject) => {
-      const port = chrome.runtime.connect({name: "OBS_PAYLOAD_STREAM"});
+      let port;
+      try { port = runtimeApi().connect({name: "OBS_PAYLOAD_STREAM"}); }
+      catch (error) { if (shouldDispose(error)) dispose(error?.message || "ChatGPT bridge agent is stale."); throw error; }
       let expectedSize = null, received = 0, output = null, settled = false;
       const finishError = error => { if (settled) return; settled = true; try { port.disconnect(); } catch {} reject(error instanceof Error ? error : new Error(String(error))); };
-      port.onDisconnect.addListener(() => { if (!settled) finishError(new Error(chrome.runtime.lastError?.message || "Payload stream disconnected before completion.")); });
+      port.onDisconnect.addListener(() => { if (!settled) finishError(new Error(globalThis.chrome?.runtime?.lastError?.message || "Payload stream disconnected before completion.")); });
       port.onMessage.addListener(message => {
         try {
           if (message?.type === "ERROR") { finishError(new Error(message.error || "Artifact fetch failed.")); return; }
@@ -50,12 +84,20 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
           }
         } catch (error) { finishError(error); }
       });
-      port.postMessage({type: "START", task});
+      port.postMessage({type: "START", task, runtimeGeneration, agentInstanceId});
     });
     const sha = await sha256Hex(bytes); if (sha.toLowerCase() !== String(task.artifactSha256 || "").toLowerCase()) throw new Error("Artifact changed during delivery."); return bytes;
   }
   function currentConversation() { return OBSChatGPTAdapter.conversationKey(); }
-  async function runtime(message) { const r = await chrome.runtime.sendMessage(message); if (!r?.ok) throw new Error(r?.error || "Bridge request failed."); return r; }
+  async function runtime(message) {
+    if (!active) throw new Error(abortReason || "ChatGPT bridge agent is inactive.");
+    if (!runtimeGeneration) throw new Error("ChatGPT bridge agent is not registered yet.");
+    try {
+      const r = await runtimeApi().sendMessage({...message, runtimeGeneration, agentInstanceId});
+      if (!r?.ok) throw new Error(r?.error || "Bridge request failed.");
+      return r;
+    } catch (error) { if (shouldDispose(error)) dispose(error?.message || "ChatGPT bridge agent is stale."); throw error; }
+  }
   async function result(task, status, message) { return runtime({type: "OBS_TASK_RESULT", taskId: task.taskId, status, message: message || ""}); }
   async function stageTask(task, stage) { return runtime({type: "OBS_TASK_STAGE", taskId: task.taskId, stage}); }
   async function heartbeatTask(task) { const r = await runtime({type: "OBS_TASK_HEARTBEAT", taskId: task.taskId}); if (TERMINAL.includes(r.status)) { abortReason = `Task became ${r.status}.`; throw new Error(abortReason); } return r.status; }
@@ -139,23 +181,42 @@ if (!globalThis.__OBS_CHAT_BRIDGE_CONTENT__) {
     } finally { currentTask = null; abortReason = null; }
   }
 
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message?.type === "OBS_PING") { sendResponse({ok: true}); return false; }
-    if (message?.type === "OBS_TASK" && message.task) {
-      if (currentTask) {
-        const same = currentTask.taskId === message.task.taskId;
-        sendResponse({ok: same, alreadyRunning: same, error: same ? "" : "Another ChatGPT bridge task is already running in this tab."});
+  function heartbeatTick() {
+    if (!active) return;
+    const key = currentConversation();
+    if (key) runtime({type: "OBS_HEARTBEAT", conversationKey: key}).catch(error => { if (shouldDispose(error)) dispose(error?.message || "ChatGPT bridge agent is stale."); });
+    if (currentTask) runtime({type: "OBS_TASK_HEARTBEAT", taskId: currentTask.taskId})
+      .then(r => { if (r?.status && TERMINAL.includes(r.status)) abortReason = `Task became ${r.status}.`; })
+      .catch(error => { if (shouldDispose(error)) dispose(error?.message || "ChatGPT bridge agent is stale."); else abortReason = error?.message || "Task heartbeat failed."; });
+  }
+
+  async function startAgent() {
+    await registerAgent();
+    if (!active) return;
+    messageListener = (message, sender, sendResponse) => {
+      if (message?.type === "OBS_PING") {
+        const sameGeneration = message.runtimeGeneration === runtimeGeneration;
+        sendResponse({ok: sameGeneration, runtimeGeneration, agentInstanceId, stale: !sameGeneration});
         return false;
       }
-      try { validateTaskContract(message.task); } catch (error) { sendResponse({ok: false, error: error?.message || String(error)}); return false; }
-      executeTask(message.task); sendResponse({ok: true}); return false;
-    }
+      if (message?.type === "OBS_TASK" && message.task) {
+        if (message.runtimeGeneration !== runtimeGeneration) { sendResponse({ok: false, error: "Stale ChatGPT bridge runtime generation."}); return false; }
+        if (currentTask) {
+          const same = currentTask.taskId === message.task.taskId;
+          sendResponse({ok: same, alreadyRunning: same, error: same ? "" : "Another ChatGPT bridge task is already running in this tab."});
+          return false;
+        }
+        try { validateTaskContract(message.task); } catch (error) { sendResponse({ok: false, error: error?.message || String(error)}); return false; }
+        executeTask(message.task); sendResponse({ok: true}); return false;
+      }
+    };
+    runtimeApi().onMessage.addListener(messageListener);
+    heartbeatTimer = setInterval(heartbeatTick, 2000);
+    heartbeatTick();
+  }
+
+  startAgent().catch(error => {
+    if (shouldDispose(error)) dispose(error?.message || "ChatGPT bridge agent is stale.");
+    else { console.warn(`[OBS ChatGPT Bridge] Agent startup failed: ${error?.message || String(error)}`, error); dispose(error?.message || "ChatGPT bridge agent startup failed."); }
   });
-
-  setInterval(() => {
-    const key = currentConversation(); if (key) chrome.runtime.sendMessage({type: "OBS_HEARTBEAT", conversationKey: key}).catch(() => {});
-    if (currentTask) chrome.runtime.sendMessage({type: "OBS_TASK_HEARTBEAT", taskId: currentTask.taskId}).then(r => { if (r?.status && TERMINAL.includes(r.status)) abortReason = `Task became ${r.status}.`; }).catch(e => { abortReason = e?.message || "Task heartbeat failed."; });
-  }, 2000);
-
-  const initialKey = currentConversation(); if (initialKey) chrome.runtime.sendMessage({type: "OBS_HEARTBEAT", conversationKey: initialKey}).catch(() => {});
-}
+})();

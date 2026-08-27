@@ -102,7 +102,9 @@ final class ChatBridgeService {
         expireClaims();
         Core.ChatBinding b=binding(changeSetId);if(b==null)return "Not connected";
         Task latest=null;for(Task t:listTasks())if("reviewDiff".equals(t.kind)&&Objects.equals(t.changeSetId,changeSetId)&&(currentReviewAttemptId==null||Objects.equals(t.reviewAttemptId,currentReviewAttemptId)))if(latest==null||safe(t.createdAt).compareTo(safe(latest.createdAt))>0)latest=t;
-        if(latest==null)return "Bound · "+b.title();return latest.status+" · "+b.title();
+        if(latest==null)return "Bound · "+b.title();
+        String state=switch(latest.status){case "Pending"->"Waiting for ChatGPT tab";case "Claimed"->"Delivering";case "Preparing"->"Preparing in ChatGPT";case "SendClicked"->"Sending";default->latest.status;};
+        return state+" · "+b.title();
     }
 
     synchronized Map<String,Object> claim(String conversationKey,int tabId){

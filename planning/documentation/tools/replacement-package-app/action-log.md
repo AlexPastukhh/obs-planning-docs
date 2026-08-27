@@ -634,3 +634,57 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply of this exact package, visible Output has exactly one ownership axis: concrete `changeSetId`. There is no generic Output history. Operations without ChangeSet authority report transiently, while every ChangeSet-owned asynchronous result returns to its captured work buffer. Background Refresh updates only the captured ChangeSet's persisted Review state and cannot silently change the user's current ChangeSet selection; Review actions read the latest persisted Review on demand.
 
 **APPLIED relation:** if package `e1991eee-6ac0-48b4-9954-8e16882c2997` applies successfully, this Refresh/UI-ownership and no-general-Output correction becomes the current state of still-open ChangeSet `11b02ff6-b591-4e3b-81a7-dd68b6572680`.
+
+### LOG-RPKG-038 — Simplify ChatGPT tab-agent lifecycle to one injector and generation fence
+
+**Type:** USER-OBSERVED DEFECT / LATER CLARIFICATION / BROWSER-LIFECYCLE CORRECTION / DELIVERY-STATUS CORRECTION / APPLIED TARGET  
+**ChangeSet:** `c822293f-093f-44bb-b06e-e1eeccb202c6`  
+**Package:** `9b6cadcd-9a40-43bc-8195-c2f70bdb6d2e`
+
+**Observed defect / selected scope:**
+- live use showed intermittent ReviewDiff delivery after extension/tab reload: Java successfully persisted a ReviewDiff task and reported it queued, while the bound ChatGPT page could remain unable to claim/execute it; extension diagnostics repeatedly showed `Extension context invalidated` from the old `content.js` timer and could also show runtime listener access against an invalidated context;
+- the existing browser side had two content-agent creation paths at once: manifest `content_scripts` auto-injection plus background `ensureContentScript(...)` fallback injection. The user selected the minimal simplification discussed in review rather than a full new agent-poll protocol: one injection owner, explicit current-agent fencing, deterministic shutdown of invalidated agents and truthful Pending presentation;
+- keep Java `ChatBridgeService` as task-state authority and keep the existing protocol-2 inventory/claim/task/attachment/send state machine. Do **not** merge the bridge into Planning Helper, redesign Review-chat binding, change Send proof, change Snapshot attach-only semantics or introduce the larger single `/agent/poll` protocol in this ChangeSet.
+
+**Implementation / invariants:**
+- remove ChatGPT `content_scripts` from the extension manifest. The Manifest V3 service worker/background becomes the sole injector of `chatgpt-adapter.js` + `content.js`; bootstrap plus tab create/update/inventory reconciliation covers already-open and newly navigated ordinary `/c/...` tabs;
+- add one extension-session `runtimeGeneration` in `chrome.storage.session`. It survives ordinary MV3 service-worker suspension/restart but rotates on extension reload/update/browser-session replacement. Every injected tab agent has an `agentInstanceId`; background pings, task dispatch, task-control messages and payload-stream start are fenced by the current generation/agent instance so stale agents cannot control current delivery;
+- make a tab agent replaceable instead of guarded forever by `__OBS_CHAT_BRIDGE_CONTENT__`. A fresh same-context injection disposes the prior agent/listener/timer; extension-context invalidation deactivates the old agent and clears its 2-second heartbeat timer instead of producing an endless error loop;
+- preserve task truth across the boundary: no transparent resume is claimed once an external interaction is already `Preparing`/possible-Send. Existing `PreparedUnsent` / `UnknownAfterSend` boundaries remain authoritative for interrupted in-flight work;
+- queue persistence is no longer presented as delivery success. `Pending` projects as `Waiting for ChatGPT tab`, `Claimed` as `Delivering`, and manual `Send current ReviewDiff` records a `WAITING ... waiting for the bound ChatGPT tab to claim it` line instead of `SUCCESS ReviewDiff queued...`.
+
+**Proof / acceptance:**
+- automated source-level bridge regression requires no manifest `content_scripts`, background-only injection, session generation, per-tab instance fencing, replaceable-agent disposal, heartbeat timer cleanup on invalidation and removal of the old one-shot content guard;
+- behavioral bridge proof requires `Pending → Waiting for ChatGPT tab` and `Claimed → Delivering`, plus absence of the old false-success Swing queue message;
+- standard suite after the correction: Core `63/0`, ChatBridge `46/0`, Windows launcher `5/0`, Node ChatGPT DOM turn-boundary regression PASS; Java 21 compile and extension JavaScript syntax checks pass;
+- manual SL-RPKG-06 acceptance is strengthened with an explicit migration boundary: when moving from a pre-`0.2.11` tab agent, refresh that ChatGPT tab once because already-invalidated legacy code cannot retroactively learn disposal; after the current replaceable agent is present, leave a ReviewDiff Pending and reload the unpacked extension without another page refresh, require a fresh agent to be injected/accepted, the stale current-version agent to stop erroring, and the Pending task to become claimable. Ordinary MV3 service-worker restart must keep the same session generation. Already-prepared in-flight runtime replacement remains outside transparent-resume acceptance.
+
+**Target-State Result:** after successful Apply, the ChatGPT bridge has one browser tab-agent lifecycle owner and one explicit current-agent fence. Extension reload/update no longer depends on whichever of two injection paths wins, stale same-page agents cannot keep driving current work, current-version invalidated agents stop their heartbeat loop, and a durable but unclaimed ReviewDiff is visibly waiting rather than falsely reported as successful delivery. A one-time refresh is documented when upgrading a tab from pre-`0.2.11` code.
+
+**APPLIED relation:** if package `9b6cadcd-9a40-43bc-8195-c2f70bdb6d2e` applies successfully, this minimal bridge lifecycle simplification becomes the current state of new ChangeSet `c822293f-093f-44bb-b06e-e1eeccb202c6` (`SL-RPKG-06 — single-owner ChatGPT tab agent lifecycle`).
+
+### LOG-RPKG-039 — Close ReviewDiff races in agent readiness and repeated-send acknowledgement
+
+**Type:** REVIEWDIFF CORRECTION / BROWSER-LIFECYCLE RACE CORRECTION / DELIVERY-STATUS CORRECTION / APPLIED TARGET  
+**ChangeSet:** `c822293f-093f-44bb-b06e-e1eeccb202c6`  
+**Package:** `b4067e99-f944-45c4-801c-1c5c3f0fbbe2`
+
+**ReviewDiff findings / selected correction:**
+- review of package `9b6cadcd-9a40-43bc-8195-c2f70bdb6d2e` found that `ensureContentScript(...)` still injected inside its readiness loop. Because injected `content.js` registers asynchronously before installing its ping listener, a registration round trip longer than the 150 ms poll interval could cause the next iteration to inject a replacement agent, dispose the still-registering prior agent and repeat; this preserved a timing-dependent lifecycle failure inside the simplification intended to remove such races;
+- the same review found that manual `Send current ReviewDiff` always emitted a `WAITING ... waiting ... to claim it` acknowledgement even when `enqueueReview(...)` correctly reused the same already-actionable interaction in `Claimed`, `Preparing` or `SendClicked`;
+- keep the same ChangeSet and target architecture. This is a correction of the still-open ChangeSet, not a new delivery model.
+
+**Implementation / invariants:**
+- one `ensureContentScript(tabId)` reconciliation now performs at most one `chrome.scripting.executeScript(...)` injection. After that injection it only polls the generation-aware ping until readiness timeout; it cannot reinject merely because asynchronous agent registration has not completed within one poll interval;
+- later independent reconciliation may inject again only after the previous readiness attempt has ended and no current agent answers, preserving background as the sole lifecycle owner without an inject/dispose livelock;
+- manual ReviewDiff acknowledgement is derived from the actual `ChatTaskInfo.status()` returned by the authoritative enqueue/reuse operation: `Pending → WAITING`, `Claimed → DELIVERING`, `Preparing → DELIVERING / preparing in ChatGPT`, `SendClicked → SENDING`. Reusing an existing actionable interaction therefore cannot be mislabeled as still waiting for claim;
+- no Java task-state transition, bridge protocol version, attachment/send proof, binding semantics, Snapshot behavior or larger `/agent/poll` redesign changes here.
+
+**Proof / acceptance:**
+- source regression isolates `ensureContentScript(...)`, requires exactly one injection call inside that function and requires the readiness loop to occur after that single injection rather than containing it;
+- behavioral regression reuses one exact manual ReviewDiff interaction through `Pending → Claimed → Preparing → SendClicked` and checks the Swing acknowledgement projection for each state;
+- the prior ChangeSet acceptance requirements remain cumulative, including one-time refresh only when migrating a tab from pre-`0.2.11` code and no claim of transparent resume after external preparation.
+
+**Target-State Result:** after successful Apply, the minimal single-owner bridge no longer contains a readiness-loop reinjection race, and manual repeat-send acknowledgement cannot contradict the authoritative actionable task state.
+
+**APPLIED relation:** if package `b4067e99-f944-45c4-801c-1c5c3f0fbbe2` applies successfully, these ReviewDiff corrections become the current state of still-open ChangeSet `c822293f-093f-44bb-b06e-e1eeccb202c6` (`SL-RPKG-06 — single-owner ChatGPT tab agent lifecycle`).

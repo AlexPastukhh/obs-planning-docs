@@ -4,6 +4,32 @@ const CONTENT_READY_TIMEOUT_MS = 8000;
 const CONTENT_READY_POLL_MS = 150;
 const PAYLOAD_CHUNK_BYTES = 512 * 1024;
 const BRIDGE_PROTOCOL_VERSION = 2;
+const RUNTIME_GENERATION_KEY = "obsBridgeRuntimeGeneration";
+const agentInstances = new Map();
+let runtimeGenerationPromise = null;
+
+async function runtimeGeneration() {
+  if (!runtimeGenerationPromise) runtimeGenerationPromise = (async () => {
+    const current = await chrome.storage.session.get([RUNTIME_GENERATION_KEY]);
+    let value = String(current[RUNTIME_GENERATION_KEY] || "");
+    if (!/^[0-9a-f-]{36}$/i.test(value)) { value = crypto.randomUUID(); await chrome.storage.session.set({[RUNTIME_GENERATION_KEY]: value}); }
+    return value;
+  })();
+  return runtimeGenerationPromise;
+}
+function validAgentInstanceId(value) { return typeof value === "string" && /^[0-9a-f-]{36}$/i.test(value); }
+function acceptAgentInstance(tabId, agentInstanceId, replace = false) {
+  if (!validAgentInstanceId(agentInstanceId)) return false;
+  const current = agentInstances.get(tabId);
+  if (replace || !current) { agentInstances.set(tabId, agentInstanceId); return true; }
+  return current === agentInstanceId;
+}
+async function validateAgentEnvelope(message, tabId) {
+  const generation = await runtimeGeneration();
+  if (message?.runtimeGeneration !== generation) throw new Error("Stale ChatGPT bridge runtime generation.");
+  if (!acceptAgentInstance(tabId, message?.agentInstanceId)) throw new Error("Stale ChatGPT bridge agent instance.");
+  return generation;
+}
 
 function ordinaryConversation(urlString) {
   try {
@@ -84,24 +110,28 @@ async function buildInventory(tabs) {
   return [...grouped.values()];
 }
 async function pingContentScript(tabId) {
-  try { const r = await chrome.tabs.sendMessage(tabId, {type: "OBS_PING"}); return r?.ok === true; }
-  catch { return false; }
+  try {
+    const generation = await runtimeGeneration();
+    const r = await chrome.tabs.sendMessage(tabId, {type: "OBS_PING", runtimeGeneration: generation});
+    if (r?.ok !== true || r.runtimeGeneration !== generation || !validAgentInstanceId(r.agentInstanceId)) return false;
+    acceptAgentInstance(tabId, r.agentInstanceId, true);
+    return true;
+  } catch { return false; }
 }
 async function ensureContentScript(tabId) {
   const deadline = Date.now() + CONTENT_READY_TIMEOUT_MS;
-  let lastInjectionError = null;
+  if (await pingContentScript(tabId)) return true;
+  let injectionError = null;
+  try {
+    await chrome.scripting.executeScript({target: {tabId}, files: ["src/chatgpt-adapter.js", "src/content.js"]});
+  } catch (error) {
+    injectionError = error;
+  }
   while (Date.now() < deadline) {
-    if (await pingContentScript(tabId)) return true;
-    try {
-      await chrome.scripting.executeScript({target: {tabId}, files: ["src/chatgpt-adapter.js", "src/content.js"]});
-      lastInjectionError = null;
-    } catch (error) {
-      lastInjectionError = error;
-    }
     if (await pingContentScript(tabId)) return true;
     await sleep(Math.min(CONTENT_READY_POLL_MS, Math.max(0, deadline - Date.now())));
   }
-  const suffix = lastInjectionError ? ` Last injection error: ${errorMessage(lastInjectionError)}` : "";
+  const suffix = injectionError ? ` Injection error: ${errorMessage(injectionError)}` : "";
   throw new Error(`Content script did not become ready for tab ${tabId}.${suffix}`);
 }
 async function taskRequest(taskId, action, tabId, conversationKey, extra = {}) {
@@ -118,7 +148,8 @@ async function claimForTab(tabId, conversationKey) {
     throw error;
   }
   try {
-    const response = await chrome.tabs.sendMessage(tabId, {type: "OBS_TASK", task: result.task});
+    const generation = await runtimeGeneration();
+    const response = await chrome.tabs.sendMessage(tabId, {type: "OBS_TASK", runtimeGeneration: generation, task: result.task});
     if (response?.ok !== true) throw new Error(response?.error || "Content script rejected the claimed task.");
     return true;
   } catch (error) {
@@ -186,42 +217,53 @@ chrome.runtime.onConnect.addListener(port => {
   port.onMessage.addListener(message => {
     if (started || message?.type !== "START") return;
     started = true;
-    streamVerifiedPayload(port, message.task).catch(async error => {
+    (async () => {
+      const tabId = port.sender?.tab?.id;
+      if (typeof tabId !== "number") throw new Error("Payload stream has no ChatGPT tab identity.");
+      await validateAgentEnvelope(message, tabId);
+      await streamVerifiedPayload(port, message.task);
+    })().catch(async error => {
       await recordDiagnostic(`Payload stream ${message?.task?.taskId || "unknown"}`, error);
       try { port.postMessage({type: "ERROR", error: errorMessage(error)}); } catch {}
     });
   });
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+async function handleRuntimeMessage(message, sender) {
   const tabId = sender.tab?.id, c = ordinaryConversation(sender.tab?.url || "");
-  if (message?.type === "OBS_HEARTBEAT" && typeof tabId === "number" && c && c.conversationKey === message.conversationKey) {
-    syncInventory().then(() => sendResponse({ok: true})).catch(e => sendResponse({ok: false, error: errorMessage(e)})); return true;
+  if (message?.type === "OBS_SYNC_NOW") { await syncInventory(true); return {ok: true}; }
+  if (message?.type === "OBS_AGENT_REGISTER") {
+    if (typeof tabId !== "number" || !c) throw new Error("ChatGPT bridge agent registration requires an ordinary ChatGPT conversation tab.");
+    if (message.conversationKey && c.conversationKey !== message.conversationKey) throw new Error("ChatGPT bridge agent registered from a different conversation.");
+    if (!acceptAgentInstance(tabId, message.agentInstanceId, true)) throw new Error("Invalid ChatGPT bridge agent instance id.");
+    return {ok: true, runtimeGeneration: await runtimeGeneration()};
   }
-  if (message?.type === "OBS_TASK_HEARTBEAT" && typeof tabId === "number" && c) {
-    taskRequest(message.taskId, "heartbeat", tabId, c.conversationKey).then(r => sendResponse({ok: true, status: r.status})).catch(e => sendResponse({ok: false, error: errorMessage(e)})); return true;
-  }
-  if (message?.type === "OBS_TASK_STAGE" && typeof tabId === "number" && c) {
-    taskRequest(message.taskId, "stage", tabId, c.conversationKey, {stage: message.stage}).then(() => sendResponse({ok: true})).catch(e => sendResponse({ok: false, error: errorMessage(e)})); return true;
-  }
-  if (message?.type === "OBS_TASK_RESULT" && typeof tabId === "number" && c) {
-    taskRequest(message.taskId, "result", tabId, c.conversationKey, {status: message.status, message: message.message || ""}).then(() => sendResponse({ok: true})).catch(e => sendResponse({ok: false, error: errorMessage(e)})); return true;
-  }
-  if (message?.type === "OBS_TASK_RELEASE" && typeof tabId === "number") {
+  if (typeof tabId !== "number") throw new Error("ChatGPT bridge message has no browser tab identity.");
+  await validateAgentEnvelope(message, tabId);
+  if (message?.type === "OBS_HEARTBEAT" && c && c.conversationKey === message.conversationKey) { await syncInventory(); return {ok: true}; }
+  if (message?.type === "OBS_TASK_HEARTBEAT" && c) { const r = await taskRequest(message.taskId, "heartbeat", tabId, c.conversationKey); return {ok: true, status: r.status}; }
+  if (message?.type === "OBS_TASK_STAGE" && c) { await taskRequest(message.taskId, "stage", tabId, c.conversationKey, {stage: message.stage}); return {ok: true}; }
+  if (message?.type === "OBS_TASK_RESULT" && c) { await taskRequest(message.taskId, "result", tabId, c.conversationKey, {status: message.status, message: message.message || ""}); return {ok: true}; }
+  if (message?.type === "OBS_TASK_RELEASE") {
     const key = c?.conversationKey || message.conversationKey || "";
-    taskRequest(message.taskId, "release", tabId, key, {message: message.message || ""}).then(r => sendResponse({ok: true, status: r.status})).catch(e => sendResponse({ok: false, error: errorMessage(e)})); return true;
+    const r = await taskRequest(message.taskId, "release", tabId, key, {message: message.message || ""});
+    return {ok: true, status: r.status};
   }
-  if (message?.type === "OBS_REVIEW_SEND_ATTEMPT" && typeof tabId === "number" && c) {
-    if (c.conversationKey !== message.conversationKey) { sendResponse({ok: false, error: "ChatGPT tab left the selected conversation."}); return false; }
-    chrome.scripting.executeScript({target: {tabId}, world: "MAIN", func: clickPreparedReviewSendMain, args: [message.conversationKey, message.fileName]})
-      .then(results => { const r=results?.[0]?.result; sendResponse({ok: true, status: r?.status || "not-ready"}); })
-      .catch(e => sendResponse({ok: false, error: errorMessage(e)}));
-    return true;
+  if (message?.type === "OBS_REVIEW_SEND_ATTEMPT" && c) {
+    if (c.conversationKey !== message.conversationKey) throw new Error("ChatGPT tab left the selected conversation.");
+    const results = await chrome.scripting.executeScript({target: {tabId}, world: "MAIN", func: clickPreparedReviewSendMain, args: [message.conversationKey, message.fileName]});
+    const r = results?.[0]?.result; return {ok: true, status: r?.status || "not-ready"};
   }
-  if (message?.type === "OBS_SYNC_NOW") { syncInventory(true).then(() => sendResponse({ok: true})).catch(e => sendResponse({ok: false, error: errorMessage(e)})); return true; }
+  throw new Error("Unsupported ChatGPT bridge runtime message.");
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  handleRuntimeMessage(message, sender).then(sendResponse).catch(error => sendResponse({ok: false, error: errorMessage(error)}));
+  return true;
 });
 
 chrome.tabs.onRemoved.addListener(tabId => {
+  agentInstances.delete(tabId);
   OBSBridgeClient.request("/v1/tabs/release", {method: "POST", body: JSON.stringify({tabId, message: "Claimed ChatGPT tab was closed."})}).catch(error => recordDiagnostic(`Release closed tab ${tabId}`, error));
   void syncInventory(true).catch(() => {});
 });
@@ -235,4 +277,4 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());
 OBSBridgeClient.restrictStorage().catch(error => recordDiagnostic("Restrict storage during service worker bootstrap", error));
-void syncInventory(true).catch(() => {});
+void runtimeGeneration().then(() => syncInventory(true)).catch(error => recordDiagnostic("Bridge runtime bootstrap", error));

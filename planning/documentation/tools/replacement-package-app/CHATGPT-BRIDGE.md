@@ -28,6 +28,8 @@ are eligible. Projects, custom GPT surfaces, new-chat pages without a stable `/c
 
 The extension reports open tabs grouped by `conversationKey`. Several browser tabs for the same conversation appear as one application choice with a tab count. Titles are presentation only; title equality never merges different conversation keys. Delivery is serialized per conversation: while any task for that conversation is `Claimed`, `Preparing` or `SendClicked`, another tab cannot claim a second queued task.
 
+Tab-agent lifecycle has one owner: the extension service worker. `manifest.json` does not auto-inject the bridge content script. Background inventory/reconciliation injects `chatgpt-adapter.js` + `content.js` into an ordinary ChatGPT tab only when no current generation-matching agent answers. The extension keeps one runtime generation in `chrome.storage.session`, so normal Manifest V3 service-worker suspension/restart retains the generation while extension reload/update creates a new generation. Each injected tab agent has its own instance id; background rejects stale generation/instance traffic, and a fresh same-generation injection disposes the previous agent/timer. An invalidated current-version extension context stops its heartbeat instead of continuing to emit repeated runtime errors. One upgrade caveat is intentional: a tab that still runs the pre-`0.2.11` content script cannot be taught this shutdown behavior after that old extension context is invalidated, so refresh such a tab once after upgrading; subsequent extension reloads are handled by the replaceable-agent lifecycle without a page refresh.
+
 ## 3. ChangeSet Review Binding
 
 One ChangeSet may persist one review-chat binding:
@@ -46,7 +48,8 @@ A chat binding is delivery state only. It does not change owned paths, Applicati
 
 ## 4. ReviewDiff Delivery
 
-The Java app remains the authority for exact canonical ReviewDiff bytes. A queued review task is keyed to one `changeSetId` + `reviewAttemptId`. Automatic queue creation is idempotent for that identity. At enqueue time the task records artifact byte length and SHA-256; payload delivery rechecks both, and the extension independently verifies the received bytes before preparation. An empty canonical ReviewDiff becomes terminal `NoChanges` and does not create a ChatGPT message.
+The Java app remains the authority for exact canonical ReviewDiff bytes. A queued review task is keyed to one `changeSetId` + `reviewAttemptId`. Automatic queue creation is idempotent for that identity. At enqueue time the task records artifact byte length and SHA-256; payload delivery rechecks both, and the extension independently verifies the received bytes before preparation. An empty canonical ReviewDiff becomes terminal `NoChanges` and does not create a ChatGPT message. While a non-empty task is still `Pending`, Swing presents it as **Waiting for ChatGPT tab** rather than reporting queue creation as delivery success; `Claimed` is projected as **Delivering**. Queue persistence and external delivery are therefore visibly distinct.
+
 
 Current delivery flow:
 
@@ -117,7 +120,7 @@ V1 does not expose a generic arbitrary-file attachment operation. The Java side 
 
 `/v1/health` returns the fixed local `bridgeProtocolVersion`; the current required value is `2`. Inventory/claim requests must advertise the same extension version, and each claim response repeats the server version so a newly loaded extension cannot partially execute a task from an older Java process. Protocol/version mismatch is a deterministic pre-send compatibility failure, not an `UnknownAfterSend` result.
 
-Known accepted residual risk: protocol `2` protects new inventory/claim/task execution contracts but does not yet bind an already claimed/in-flight delivery to a persisted runtime generation across extension/service-worker restart, browser-tab close or mid-task version replacement. That lifecycle-hardening work is explicitly deferred; it is not part of the current correction. Normal operation should not intentionally reload/update/close the active delivery runtime while a task is in flight. Genuine ambiguity after a possible external Send remains `UnknownAfterSend`.
+Runtime-generation correction: protocol `2` remains the Java/extension task contract, while tab-agent generation is an extension-internal lifecycle fence. Background is the sole injector, session generation survives ordinary service-worker restarts, extension reload/update rotates generation, and stale agent traffic is rejected before it can control a current task. Once a tab has loaded the current replaceable agent, Pending delivery can therefore be picked up by a freshly injected agent after later extension reloads without relying on a manually refreshed ChatGPT page. The one-time pre-`0.2.11` upgrade refresh caveat above still applies. This does **not** make an already externally prepared interaction transparently resumable across runtime/tab loss: interruption after preparation still follows the existing truthful `PreparedUnsent` boundary, and ambiguity after a possible Send remains `UnknownAfterSend`.
 
 Known accepted/deferred composer-integrity risk: after the intended ReviewDiff attachment is upload-ready, the current guard rechecks unrelated **text** plus presence of the intended attachment, but it does not yet reject a second unrelated attachment added before the automatic click. This is explicitly accepted for the current campaign and is not a blocker; do not present it as solved.
 
