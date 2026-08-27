@@ -1,6 +1,6 @@
 # ChatGPT Bridge Integration
 
-Status: active V1 integration contract; SL-06 exact attachment/send integrity + runtime-contract preflight corrections implemented in current source, live Edge/Swing acceptance pending
+Status: active V1 integration contract; SL-06 exact attachment/send integrity + runtime-contract preflight and SL-04/05 destination-first Snapshot timeout corrections implemented in current source, live Edge/Swing acceptance pending
 Scope: local Java ↔ Chromium extension handoff for ordinary ChatGPT conversations. It does not change the replacement-package producer protocol, ReviewDiff authority, snapshot format or Finalize authority.
 
 ## 1. Historical Capability Mapping
@@ -93,22 +93,25 @@ If the composer already contains user text or an attachment, automatic ReviewDif
 
 ## 5. Snapshot Attach-Only
 
-Snapshot attachment is separate from ChangeSet binding. After the app creates a Repository Snapshot ZIP, the user explicitly chooses one currently open ordinary ChatGPT conversation and requests `Attach to ChatGPT`.
+Snapshot attachment is separate from ChangeSet binding. The Swing Repository Snapshot dialog exposes `Export only` and destination-first `Export + Attach`. For the combined action the user selects one currently open ordinary ChatGPT conversation **before** export; the host freezes that exact `conversationKey` as operation input and never derives Snapshot destination from the later Review-chat selection or another current tab.
 
 Flow:
 
 ```text
-validated app Repository Snapshot ZIP
-→ user chooses open conversation
-→ queue snapshot task with autoSend=false
-→ one tab claims it
+user selects exact conversationKey
+→ freeze Snapshot inputs + destination
+→ create and validate Repository Snapshot ZIP
+→ queue snapshot task for that frozen key only, autoSend=false
+→ one tab may claim it
 → fetch ZIP through a short-lived artifact ticket
 → verify exact queued size/SHA-256 in Java and again in the extension
 → construct browser File + drive ChatGPT file input
-→ wait until attachment is ready
+→ wait for attachment confirmation
 → Attached
 → STOP
 ```
+
+There is no special fresh-inventory handshake whose purpose is to prove that a tab stayed open throughout export. Existing inventory validation still rejects a destination already known unavailable at enqueue. If stale inventory permits a task and browser attachment never confirms, the task is bounded by one absolute 10-minute confirmation deadline from task creation; claim/heartbeat renewal does not extend it. Expiry while `Pending` or `Claimed` is terminal `Cancelled`. Expiry after the task reached `Preparing` is terminal `PreparedUnsent`, because a prepared attachment may remain in the composer. These timeout results stop future automation without changing the already-successful Snapshot export.
 
 Hard invariant:
 
@@ -116,7 +119,7 @@ Hard invariant:
 snapshot task → extension MUST NOT click Send
 ```
 
-V1 does not expose a generic arbitrary-file attachment operation. The Java side accepts only ZIPs with the Repository Snapshot root contract and rejects `PACKAGE.json` replacement packages as snapshot attachments. ReviewDiff and snapshot handoffs now reuse the same **technical browser attachment primitive** (`File` + ChatGPT file input + readiness observation), but their product semantics stay separate: ReviewDiff may auto-send, Snapshot remains attach-only. Snapshot handoff semantics are intentionally not redesigned by the SL-06 correction and remain a later review topic.
+V1 does not expose a generic arbitrary-file attachment operation. The Java side accepts only ZIPs with the Repository Snapshot root contract and rejects `PACKAGE.json` replacement packages as snapshot attachments. ReviewDiff and snapshot handoffs reuse the same **technical browser attachment primitive** (`File` + ChatGPT file input + readiness observation), but their product semantics stay separate: ReviewDiff may auto-send, Snapshot remains attach-only.
 
 ## 6. Loopback Protocol / Security
 
@@ -171,6 +174,8 @@ claim loss after SendClicked → UnknownAfterSend
 Snapshot:
 Pending → Claimed → Preparing → Attached
 Claimed → FailedBeforeSend
+Pending | Claimed + 10-minute absolute confirmation timeout → Cancelled
+Preparing + 10-minute absolute confirmation timeout → PreparedUnsent
 Preparing → PreparedUnsent
 ```
 

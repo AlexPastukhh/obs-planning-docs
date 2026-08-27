@@ -165,10 +165,10 @@ Target implementation replaces raw-only base equality with expected source-state
 
 ## `PA-SL04` — Export Repository Snapshot
 
-**Target property:** Local/Committed repository context is exported as the documented stable ZIP without mutating repository work/index; artifact success survives downstream clipboard problems.  
+**Target property:** Local/Committed repository context is exported as the documented stable ZIP without mutating repository work/index; the same dialog makes `Export only` vs destination-first `Export + Attach` explicit, and artifact success survives downstream clipboard/browser problems.  
 **Execution state:** `planned`
 
-1. Select a registered repository and click `Export repository ZIP`.
+1. Select a registered repository and click `Export repository ZIP`. Require one Repository Snapshot dialog with Mode, destination, a ChatGPT conversation selector, and `Export only` / `Export + Attach` / Cancel. There is no separate attach toggle and no post-export chat-selection dialog.
 2. Local mode: create a modified tracked file, a tracked deletion, an untracked non-ignored file and an ignored untracked file. Export and inspect the ZIP:
    - root contains `SNAPSHOT.json`, `BASE-COMMIT.txt`, `WORKING-TREE.diff`, `snapshot/`;
    - `snapshot/` contains the current tracked/untracked non-ignored files;
@@ -190,17 +190,20 @@ Target implementation replaces raw-only base equality with expected source-state
 14. Click `Open folder` and require the parent directory of the created ZIP to open.
 15. For a committed tree containing a symlink/submodule, require V1 export to reject rather than silently flatten the entry.
 16. Target readiness: with a registered Git repository that has no first commit, attempt Local and Committed V1 snapshot modes; require Repository Not Ready with initial-commit guidance and no snapshot/temp publication.
+17. With no ChatGPT conversation currently visible, require `Export only` to remain usable. Choosing `Export + Attach` must not start export without a selected conversation; open the intended conversation and reopen the Snapshot dialog instead of creating an ambiguous/no-destination interaction.
 
 ## `PA-SL05` — Attach Repository Snapshot To ChatGPT
 
 **Target property:** the exact validated Repository Snapshot becomes ready in the explicitly selected ordinary ChatGPT conversation and remains unsent.  
 **Execution state:** `planned`
 
-1. Create a Repository Snapshot ZIP and choose `Attach to ChatGPT`; select one open ordinary conversation.
-2. Require the exact ZIP filename to become a ready ChatGPT attachment.
-3. Require the extension to **never press Send** for the snapshot task; the user remains responsible for sending the prepared composer.
-4. Attempt to queue a generic ZIP or replacement-package ZIP through the Java bridge mechanics and require `CHAT_BRIDGE_FAILED`; V1 accepts only Repository Snapshot ZIPs.
-5. Verify snapshot attachment failure does not delete/reclassify the already-successful snapshot ZIP and does not create/change a ChangeSet.
+1. Open the Repository Snapshot dialog while at least two ordinary ChatGPT conversations are visible. Select Chat A **before** export and choose `Export + Attach`; do not accept any second destination prompt after export.
+2. While background export is running, change the main-window Review chat selection to Chat B (and, where practical, navigate/select other app context). Require the Snapshot operation to keep frozen Chat A and never derive destination from that later mutable UI state. Review-chat binding must remain unchanged by Snapshot selection.
+3. After successful export, require the exact ZIP filename to become a ready attachment in Chat A only. Require one Snapshot External Interaction whose destination is Chat A's exact conversation identity.
+4. Repeat but make Chat A unavailable during/after export. Require the ZIP export to remain successful and no fallback/substitution to Chat B. If current inventory already knows Chat A is unavailable when enqueue is attempted, require attachment to be reported as **not started**. If a Snapshot interaction was queued from stale inventory, require it not to remain actionable indefinitely: after the fixed 10-minute confirmation deadline it must be `Cancelled` when external preparation was never confirmed, or `PreparedUnsent` when preparation had begun (the attachment may remain in the composer). Reopen Chat A and explicitly repeat `Export + Attach` if attachment is still wanted.
+5. Require the extension to **never press Send** for the snapshot task; the user remains responsible for sending the prepared composer.
+6. Attempt to queue a generic ZIP or replacement-package ZIP through the Java bridge mechanics and require `CHAT_BRIDGE_FAILED`; V1 accepts only Repository Snapshot ZIPs.
+7. Verify snapshot attachment failure does not delete/reclassify the already-successful snapshot ZIP and does not create/change a ChangeSet.
 
 Manual pass requires observing the real Edge/ChatGPT composer; Java/bridge task-state tests alone are insufficient evidence for this Slice result.
 

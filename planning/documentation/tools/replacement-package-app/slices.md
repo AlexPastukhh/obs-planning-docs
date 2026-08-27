@@ -119,21 +119,21 @@ Target Git-equivalence implementation direction: binary-safe canonical IDs for e
 
 **Current implementation path:** `MainWindow/Core.exportRepositorySnapshot`, `RepositorySnapshotExporter`, GitClient, snapshot contract, CoreTests.
 
-**Selected target update:** both current V1 snapshot modes require commit/ref baseline semantics; repository without first commit yields actionable Repository Not Ready and no snapshot. Successful/failed export is a tracked User Operation for SL-09. Local Snapshot remains the intentional producer-source route for current manual/local state.
+**Selected target update:** both current V1 snapshot modes require commit/ref baseline semantics; repository without first commit yields actionable Repository Not Ready and no snapshot. The Swing entry now makes operation intent explicit with `Export only` / `Export + Attach`; for the combined path the user selects one ordinary ChatGPT conversation before export starts and the operation freezes its `conversationKey`. Successful/failed export is a tracked User Operation for SL-09. Local Snapshot remains the intentional producer-source route for current manual/local state.
 
-**Verification:** stable Local capture, exact Committed blobs, no real-index mutation, no mixed ZIP, output outside repository, clipboard warning-only, Repository Not Ready for missing first commit.
+**Verification:** stable Local capture, exact Committed blobs, no real-index mutation, no mixed ZIP, output outside repository, clipboard warning-only, Repository Not Ready for missing first commit; Export-only remains independent from browser availability, and combined Export + Attach freezes its destination before background export.
 
 ## `SL-RPKG-05` — Attach Repository Snapshot To ChatGPT
 
-**Deliverable:** an already-created valid Repository Snapshot becomes a ready attachment in explicitly selected ordinary ChatGPT conversation and the extension never presses Send.
+**Deliverable:** after the user has explicitly selected an ordinary ChatGPT conversation before starting `Export + Attach`, the successfully created exact Repository Snapshot becomes a ready attachment in that frozen conversation and the extension never presses Send.
 
 **Scenario coverage:** Provide Repository Context For Further Work.
 
-**Current core implementation path:** `MainWindow.attachSnapshotToChat`, ChatBridgeService/Server, extension, ChatBridgeTests.
+**Current core implementation path:** `MainWindow.exportRepositorySnapshot` destination-first combined flow, `Core.attachSnapshotToChat`, ChatBridgeService/Server, extension, ChatBridgeTests.
 
-**Target boundary:** exact attachment result remains here; user-facing interaction inventory/cancel/history is owned by SL-08. One attach attempt creates one External Interaction. SL-09 receives terminal operation result notification.
+**Target boundary:** exact attachment result remains here; user-facing interaction inventory/cancel/history is owned by SL-08. Destination selection occurs before SL-04 export begins, but SL-05 External Interaction creation occurs only after SL-04 has produced a successful exact ZIP. The frozen `conversationKey` is the only destination authority; no post-export re-selection/substitution and no Review-chat binding mutation are allowed. Existing inventory may reject a destination already known unavailable, but SL-05 does not add a close-tab freshness handshake. Once queued, one absolute 10-minute Snapshot confirmation deadline bounds the interaction: `Pending`/`Claimed` expiry is `Cancelled`; `Preparing` expiry is `PreparedUnsent`. SL-09 receives terminal operation result notification.
 
-**Manual verification:** real conversation/destination/artifact; Send untouched; failure leaves successful snapshot/repository state unchanged; browser evidence required.
+**Manual verification:** preselected real conversation/destination/artifact; change visible chat selection while export runs and require the frozen destination to remain authoritative; make the frozen destination unavailable and require no substitution/export failure, with immediate not-started when already known absent or bounded `Cancelled`/`PreparedUnsent` terminal truth for an unconfirmed queued task; Send untouched; attachment failure leaves successful snapshot/repository state unchanged; browser evidence required.
 
 ## `SL-RPKG-06` — Deliver Current Change To ChatGPT
 

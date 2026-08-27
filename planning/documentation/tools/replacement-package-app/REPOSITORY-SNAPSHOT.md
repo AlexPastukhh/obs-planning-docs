@@ -167,7 +167,11 @@ SNAPSHOT_EXPORT_FAILED
 
 ## 8. ChatGPT Attachment Is Downstream
 
-The optional `UC-RPKG-ATTACH-SNAPSHOT` browser bridge may attach an already-successful Repository Snapshot ZIP to a user-selected ordinary ChatGPT conversation. This does not change this ZIP contract, does not create a ChangeSet and does not alter export success. Snapshot bridge tasks are attach-only: the extension must not click Send. See [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).
+The Swing Repository Snapshot dialog exposes two explicit outcomes: `Export only` and `Export + Attach`. There is no separate attach toggle. For `Export + Attach`, the user selects one currently open ordinary ChatGPT conversation **before** export starts and the host freezes its `conversationKey` together with the snapshot operation inputs; the selected title is presentation only and snapshot selection never changes the ChangeSet Review-chat binding.
+
+Snapshot ZIP creation remains independently authoritative and completes first. Only after a successful ZIP exists may `UC-RPKG-ATTACH-SNAPSHOT` create an External Interaction for that exact ZIP and the frozen conversation identity. The host must not reopen destination selection, read a later mutable chat selection, or substitute another conversation. No additional fresh-inventory handshake is introduced merely to detect whether the tab closed during export. If the ordinary inventory already knows the frozen destination is unavailable, enqueue is rejected and the snapshot still remains successful. If stale inventory permits the task to be queued but attachment is never confirmed, the Snapshot interaction has a fixed 10-minute confirmation deadline: `Pending`/`Claimed` terminates as `Cancelled`, while `Preparing` terminates as `PreparedUnsent` because an attachment may already remain in the composer.
+
+This does not change the ZIP contract, does not create a ChangeSet and does not alter export success. Snapshot bridge tasks remain attach-only: the extension must not click Send. See [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).
 
 ## 9. Selected Target Readiness / Planning Delta — Not Yet Implemented
 
@@ -185,4 +189,4 @@ This is readiness policy, not a new snapshot format or ChangeSet lifecycle state
 
 A successful **Local** Snapshot is also the selected ordinary producer-source route when intentional local/manual working-tree content must be given to ChatGPT for a later replacement package. That role does not make snapshot export Apply authority: the later package still carries expected base content and Apply still proves source freshness because the repository may change after the snapshot was created.
 
-Optional ChatGPT attachment remains downstream and will be represented as one External Interaction in the selected target interaction list; cancellation of an already-prepared attachment stops future automation but does not automatically remove the prepared attachment from ChatGPT.
+Optional ChatGPT attachment remains downstream and is represented as one External Interaction only after successful export for the destination frozen before that export began. The bounded confirmation lifecycle prevents an unconfirmed Snapshot handoff from remaining actionable indefinitely without turning browser availability into export authority. Cancellation or timeout after attachment preparation stops future automation but does not automatically remove a prepared attachment from ChatGPT.

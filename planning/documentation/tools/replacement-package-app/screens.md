@@ -89,8 +89,12 @@ Must make visible:
 - Local vs Committed mode;
 - commit/ref only when relevant;
 - destination directory;
+- one currently open ordinary ChatGPT conversation selector used only by the combined handoff path;
+- two explicit actions: `Export only` and `Export + Attach` (plus Cancel), with no separate attach toggle;
 - Repository Not Ready reason when no required commit baseline exists;
-- result artifact path/outcome.
+- result artifact path/outcome plus a distinct downstream attachment result when `Export + Attach` was requested.
+
+For `Export + Attach`, the selected conversation is chosen before export begins and its exact `conversationKey` is frozen for this operation. The later export completion must not reopen chat selection, read another current chat, substitute a different conversation or alter the ChangeSet Review-chat binding. The snapshot is created first. If enqueue immediately knows the frozen conversation is unavailable, show successful snapshot creation plus attachment-not-started status. If a task was queued but never confirms `Attached`, its 10-minute confirmation window ends as `Cancelled` before confirmed preparation or `PreparedUnsent` after preparation began; the working list must not retain it indefinitely. `Export only` remains usable without any open ChatGPT conversation.
 
 `Local` and `Committed` semantics are not presentation-only choices; labels must remain consistent with `REPOSITORY-SNAPSHOT.md`.
 

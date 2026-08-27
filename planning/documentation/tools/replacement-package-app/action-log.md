@@ -734,3 +734,106 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply, the implemented SL-RPKG-06/08 behavior and its application/screen/integration owners are coherent: successful delivery still uses the selected post-baseline user-turn fallback, terminal uncertainty can be dismissed without rewriting truth, and the remaining cross-tab/cross-turn weak-fallback edge is explicitly documented as accepted rather than silently presented as solved.
 
 **APPLIED relation:** if package `85c077e0-f938-459d-9bc9-be38fcacc212` applies successfully, this owner-document correction and known-risk acceptance become the current state of still-open ChangeSet `5b0bd778-4064-4adf-bf36-85421abac5fe` (`SL-RPKG-06/08 — sent confirmation fallback and uncertainty dismissal`).
+
+### LOG-RPKG-042 — Select Snapshot ChatGPT destination before export and freeze it per operation
+
+**Type:** PRACTICAL UX CORRECTION / SL-RPKG-04 EXPORT FLOW / SL-RPKG-05 SNAPSHOT HANDOFF / APPLIED TARGET  
+**ChangeSet:** `3859732c-bd93-415f-b016-2d8b7290b761`  
+**Package:** `a2a981dd-1fd2-4ef9-bb35-74d741944219`
+
+**Observed usability issue / selected behavior:**
+- current Swing Snapshot flow exports first and only then offers `Attach to ChatGPT`, opening a second dialog that asks for the destination conversation after the artifact already exists. In practice this makes destination a late mutable choice and makes it easier to attach repository context to the wrong chat;
+- selected correction is destination-first without adding a toggle/state machine: one Repository Snapshot dialog exposes `Export only` and `Export + Attach`. For the combined path the user sees/selects the ordinary ChatGPT conversation before export begins;
+- avoid unnecessary persistence and coupling: Snapshot chat choice is per operation, not a new setting and not the ChangeSet Review-chat binding. Title is presentation only; exact `conversationKey` is frozen before background export.
+
+**Implementation / invariants:**
+- `MainWindow.exportRepositorySnapshot()` captures the exact Repository Target/path plus Snapshot mode/ref/output and, for `Export + Attach`, the selected `conversationKey` before `runBackground(...)` starts;
+- Snapshot ZIP creation still completes first and remains independently successful. Only after successful export does the same background operation call the existing `Core.attachSnapshotToChat(...)` / `ChatBridgeService.enqueueSnapshot(...)` path with the frozen key and exact created ZIP, keeping snapshot ZIP inspection/fingerprinting off the Swing EDT;
+- the legacy post-export `Attach to ChatGPT` destination dialog is removed. Export completion never re-reads the main Review-chat selection and never substitutes another conversation;
+- if the frozen conversation is no longer open at enqueue time, existing bridge validation rejects enqueue before task creation. The app reports `Snapshot exported, but ChatGPT attachment was not started`, preserves the ZIP, creates no orphan interaction and leaves Review-chat binding unchanged;
+- Snapshot remains attach-only/never Send. Existing bridge task identity, exact artifact validation, External Interaction dedupe/cancel semantics and browser attachment implementation are unchanged.
+
+**Proof / acceptance:**
+- bridge regression requires missing frozen destination to fail without creating an External Interaction, then proves an available exact key is retained and `autoSend=false`;
+- Swing source regression requires the two explicit actions, chat selector, key capture before background export, use of the frozen key for enqueue and absence of the old post-export destination chooser;
+- manual acceptance covers two open chats, changing Review-chat selection during export, closing the frozen destination before enqueue, Export-only with no visible chats and real attach-only Edge/ChatGPT behavior.
+
+**Target-State Result:** after successful Apply, Repository Snapshot handoff has one explicit destination choice before work starts: `Export only` remains browser-independent, while `Export + Attach` freezes the user's chosen conversation before export and can attach the resulting ZIP only there without changing Review binding or weakening independent snapshot success.
+
+**APPLIED relation:** if package `a2a981dd-1fd2-4ef9-bb35-74d741944219` applies successfully, this destination-first Snapshot export/handoff behavior becomes the current state of new ChangeSet `3859732c-bd93-415f-b016-2d8b7290b761` (`SL-RPKG-04/05 — preselected snapshot ChatGPT destination`).
+
+
+### LOG-RPKG-043 — Bound Snapshot attachment confirmation instead of close-tab freshness handshake
+
+**Type:** REVIEWDIFF CORRECTION / USER CLARIFICATION / SL-RPKG-05 TASK LIFECYCLE / APPLIED TARGET  
+**ChangeSet:** `3859732c-bd93-415f-b016-2d8b7290b761`  
+**Package:** `b4ae74c3-8fc7-4ce5-9a91-0028f65ab947`
+
+**ReviewDiff finding / later clarification:**
+- Review of package `a2a981dd-1fd2-4ef9-bb35-74d741944219` found that the documented promise “close frozen Chat A before enqueue → no Pending task” was stronger than the implementation: Java inventory can be stale, so `enqueueSnapshot(...)` may still create a Pending task after the physical tab has already closed;
+- rather than add a special post-export fresh-inventory handshake or treat tab closure as a separate business event, the selected correction keeps the simpler frozen-destination flow and bounds the attachment interaction itself;
+- exact destination authority is unchanged: `Export + Attach` freezes one `conversationKey` before export, never substitutes another chat and never mutates Review-chat binding.
+
+**Implementation / truth boundary:**
+- `ChatBridgeService` adds one fixed 10-minute absolute Snapshot confirmation deadline from task creation. The deadline is independent of claim/heartbeat lease renewal, so stale inventory or a live-but-stuck agent cannot keep a Snapshot interaction actionable forever;
+- expiry in `Pending` or `Claimed` becomes terminal `Cancelled` because external preparation was never confirmed;
+- expiry in `Preparing` becomes terminal `PreparedUnsent`, preserving that an attachment may already remain in the composer; Snapshot remains attach-only and Send is never attempted;
+- ordinary inventory validation still rejects a destination already known unavailable at enqueue, but no additional fresh-inventory/close-tab handshake is required. Successful ZIP export remains successful for every downstream browser outcome.
+
+**Proof / correction coverage:**
+- bridge regression ages a queued frozen-destination Snapshot beyond the absolute deadline while inventory still contains that conversation and requires it to become `Cancelled` and unclaimable, covering the stale-inventory case that the prior test missed;
+- a second regression ages a `Preparing` Snapshot and requires `PreparedUnsent`, proving timeout does not falsely claim clean cancellation after external preparation;
+- Scenario/Application/Screen/Slice/testing/manual/integration owners now describe bounded confirmation rather than the superseded “closed chat always means no task” promise.
+
+**Target-State Result:** after successful Apply, destination-first Snapshot handoff remains simple and exact: choose Chat A before export, use only Chat A, create the ZIP first, then either confirm `Attached` or reach bounded truthful terminal state without a fresh tab-closure handshake or indefinite Pending/Claimed/Preparing accumulation.
+
+**APPLIED relation:** if package `b4ae74c3-8fc7-4ce5-9a91-0028f65ab947` applies successfully, this timeout correction becomes the current state of still-open ChangeSet `3859732c-bd93-415f-b016-2d8b7290b761` (`SL-RPKG-04/05 — preselected snapshot ChatGPT destination`) and supersedes only the stronger no-task-on-close wording from `LOG-RPKG-042`; the destination-first selection itself remains unchanged.
+
+### LOG-RPKG-044 — Make the Snapshot confirmation deadline an actual Java-owned wake-up
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-05 TASK LIFECYCLE / APPLIED TARGET  
+**ChangeSet:** `3859732c-bd93-415f-b016-2d8b7290b761`  
+**Package:** `fcf08940-57b1-4ad1-9ffa-e37f03c5256c`
+
+**ReviewDiff finding / correction decision:**
+- ReviewDiff of package `b4ae74c3-8fc7-4ce5-9a91-0028f65ab947` found that the selected 10-minute Snapshot confirmation budget was only checked lazily inside `expireClaims()`. If no bridge/UI/service call occurred after the deadline, a persisted `Pending`/`Claimed`/`Preparing` Snapshot interaction could therefore remain nonterminal past ten minutes despite the owner documents promising a fixed bounded lifecycle;
+- keep the selected simple product model: do not add a fresh-inventory/close-tab handshake and do not make tab closure a separate business event. Instead Java task authority owns one real scheduled deadline from task creation; claim/heartbeat activity cannot extend it;
+- the same review noted wording drift in the `Preparing` timeout message: it said “10 minutes after preparation began” even though the deadline is measured from task creation. The correction uses task-confirmation-window wording and keeps the existing truth boundary.
+
+**Implementation / truth boundary:**
+- `ChatBridgeService` now arms a daemon single-thread scheduled wake-up for every active Snapshot task at `createdAt + 10 minutes`. The callback reloads current persisted task state under the same synchronized service authority and is idempotent with the existing lazy normalization backstop;
+- at deadline, `Pending` or `Claimed` becomes terminal `Cancelled`; `Preparing` becomes terminal `PreparedUnsent`, because the attachment may already remain in the composer. Any already-terminal task is left unchanged and its scheduled future is cancelled/removed;
+- service construction restores active Snapshot deadlines after restart: already-overdue records are normalized immediately, while still-active records are re-armed for their remaining absolute time. A claim lease reset or heartbeat never moves the Snapshot confirmation deadline;
+- exact frozen `conversationKey`, no destination substitution, independent successful ZIP export, attach-only/never-Send behavior and Review-chat binding independence remain unchanged.
+
+**Proof / correction coverage:**
+- bridge regression uses a short test-only deadline and waits on persisted task state without invoking an expiration-bearing inventory/enqueue/interaction call, proving the scheduled wake-up itself turns unprepared work into `Cancelled`;
+- a second scheduled test reaches `Preparing` before the deadline and proves automatic `PreparedUnsent` plus corrected task-window wording;
+- restart regression proves both re-arming of a still-live persisted deadline and immediate normalization of an already-overdue Snapshot task; testing-plan ownership now explicitly requires scheduled wake-up behavior independent of later requests and restart recovery.
+
+**Target-State Result:** after successful Apply, a destination-first Snapshot interaction cannot remain actionable past its selected confirmation budget merely because browser/UI traffic stopped. Java owns the absolute ten-minute deadline and restores it across app restart while preserving truthful `Cancelled` vs `PreparedUnsent` semantics and avoiding any fresh tab-closure handshake.
+
+**APPLIED relation:** if package `fcf08940-57b1-4ad1-9ffa-e37f03c5256c` applies successfully, this scheduler correction becomes the current state of still-open ChangeSet `3859732c-bd93-415f-b016-2d8b7290b761` (`SL-RPKG-04/05 — preselected snapshot ChatGPT destination`) and supersedes only the lazy-expiration implementation from `LOG-RPKG-043`; its destination-first and bounded-truth decisions remain unchanged.
+
+### LOG-RPKG-045 — Preserve restart-normalized Snapshot terminal events until UI sink registration
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-05 EVENT SURFACING / RESTART LIFECYCLE / APPLIED TARGET  
+**ChangeSet:** `3859732c-bd93-415f-b016-2d8b7290b761`  
+**Package:** `14a882bf-51f3-4b66-98a3-28cc20cfd3a0`
+
+**ReviewDiff finding / correction decision:**
+- ReviewDiff of package `fcf08940-57b1-4ad1-9ffa-e37f03c5256c` confirmed that the Java-owned Snapshot deadline now fires autonomously and restores across restart, but found one startup ordering hole: `ChatBridgeService` normalized overdue persisted work in its constructor while `eventSink` was still the default no-op. A task could therefore become terminal and disappear from the actionable External Interactions projection before Swing registered its listener, with the terminal event never reaching Output/notification;
+- keep the selected scheduler, absolute task-creation deadline, frozen destination and truth boundary unchanged. The correction is event-surfacing lifecycle only: terminal truth may be established during service construction, but its event must survive until the first real UI sink is installed.
+
+**Implementation / invariants:**
+- `ChatBridgeService` now keeps a FIFO of `ChatEvent` values emitted before `setEventSink(...)` installs a concrete sink. Startup normalization still occurs in the constructor under Java task authority; only notification delivery is deferred;
+- registering the sink flushes those deferred events exactly once and then ordinary events are delivered directly. Replacing the sink later does not replay already-surfaced startup events; explicitly setting a null sink retains the prior no-op/discard meaning rather than accumulating unbounded history;
+- task status, persisted message, scheduler deadline, `Cancelled` vs `PreparedUnsent`, External Interaction projection and Snapshot attach-only behavior are unchanged. No browser freshness handshake or new task state is introduced.
+
+**Proof / correction coverage:**
+- restart regression persists an overdue Snapshot, constructs a new service that normalizes it before any sink exists, then registers a sink and requires exactly one event for the same task with terminal `Cancelled` truth; a second sink registration must receive no replay and the terminal task must already be absent from the actionable interaction list;
+- testing-plan ownership now explicitly requires restart-normalized terminal events to survive constructor/sink ordering and be surfaced exactly once, in addition to the existing autonomous wake-up and restart re-arm checks.
+
+**Target-State Result:** after successful Apply, an overdue Snapshot restored at application startup can no longer vanish silently between task normalization and Swing listener registration. Java still owns the fixed deadline and terminal truth, while Output/notification receives the corresponding startup terminal event exactly once after the UI sink becomes available.
+
+**APPLIED relation:** if package `14a882bf-51f3-4b66-98a3-28cc20cfd3a0` applies successfully, this event-surfacing correction becomes the current state of still-open ChangeSet `3859732c-bd93-415f-b016-2d8b7290b761` (`SL-RPKG-04/05 — preselected snapshot ChatGPT destination`) and supersedes only the startup no-op event-loss edge in `LOG-RPKG-044`; its destination-first and scheduled-deadline decisions remain unchanged.

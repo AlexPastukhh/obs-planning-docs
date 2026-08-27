@@ -163,37 +163,54 @@ final class MainWindow extends JFrame {
     private void dismissInteraction(){InteractionItem item=(InteractionItem)interactions.getSelectedItem();if(item==null)return;if(item.value.cancellable())throw new Core.ObsException(Core.CHAT_BRIDGE_FAILED,"Active interaction must be cancelled, not dismissed.");if(!"UnknownAfterSend".equals(item.value.state()))throw new Core.ObsException(Core.CHAT_BRIDGE_FAILED,"Selected interaction does not require acknowledgement/dismissal in state "+item.value.state()+".");Core.ExternalInteraction result=core.dismissExternalInteraction(item.value.interactionId());append("ACKNOWLEDGED "+result.state()+" · interaction hidden from the working list; terminal truth retained.");refreshInteractions();}
 
     private void exportRepositorySnapshot(){
-        Path repository=repoPath();
+        Path repository=repoPath();Core.RepositoryConfig repositoryTarget=selectedRepository;
         JComboBox<String> mode=new JComboBox<>(new String[]{"Local working tree + diff","Committed snapshot"});
         JTextField commit=new JTextField("HEAD",32);
         JTextField destination=new JTextField(RepositorySnapshotExporter.defaultOutputDirectory().toString(),32);
         JButton browse=new JButton("Browse");browse.addActionListener(e->chooseDirectory(destination));
         JPanel destinationRow=new JPanel(new BorderLayout(6,0));destinationRow.add(destination,BorderLayout.CENTER);destinationRow.add(browse,BorderLayout.EAST);
+        JComboBox<ChatItem> snapshotChat=new JComboBox<>();for(Core.ChatConversation c:core.getOpenChatConversations())snapshotChat.addItem(new ChatItem(c));
         JPanel panel=new JPanel();panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        panel.add(new JLabel("Repository: "+selectedRepository.name()+"  ["+selectedRepository.repositoryIdentity()+"]"));
+        panel.add(new JLabel("Repository: "+repositoryTarget.name()+"  ["+repositoryTarget.repositoryIdentity()+"]"));
         panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Mode"));panel.add(mode);
         panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Commit / ref (Committed mode)"));panel.add(commit);
         panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Destination directory"));panel.add(destinationRow);
+        panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("ChatGPT conversation (used only by Export + Attach)"));panel.add(snapshotChat);
+        panel.add(new JLabel(snapshotChat.getItemCount()==0?"No open ordinary ChatGPT conversations are currently visible; Export only is still available.":"Choose the destination before export. This does not change the ChangeSet Review chat binding."));
         Runnable updateCommit=()->commit.setEnabled(mode.getSelectedIndex()==1);mode.addActionListener(e->updateCommit.run());updateCommit.run();
-        int choice=JOptionPane.showConfirmDialog(this,panel,"Export Repository ZIP",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
-        if(choice!=JOptionPane.OK_OPTION)return;
+        Object[] options={"Export only","Export + Attach","Cancel"};
+        int choice=JOptionPane.showOptionDialog(this,panel,"Repository Snapshot",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
+        if(choice<0||choice==2)return;boolean attachAfterExport=choice==1;ChatItem chosenChat=attachAfterExport?(ChatItem)snapshotChat.getSelectedItem():null;
+        if(attachAfterExport&&chosenChat==null){JOptionPane.showMessageDialog(this,"No open ordinary ChatGPT conversation is available. Open the intended chat, then reopen Repository Snapshot.","Export + Attach",JOptionPane.WARNING_MESSAGE);return;}
+        String snapshotConversationKey=chosenChat==null?null:chosenChat.value.conversationKey();String snapshotConversationTitle=chosenChat==null?null:chosenChat.value.title();
         String selectedMode=mode.getSelectedIndex()==0?"local":"committed";
         String commitRef=selectedMode.equals("committed")?commit.getText().trim():null;
         Path out=destination.getText().isBlank()?RepositorySnapshotExporter.defaultOutputDirectory():Path.of(destination.getText().trim());
-        String repositoryId=selectedRepository.id();append("INFO Exporting Repository Snapshot…");
-        runBackground("Repository Snapshot",()->core.exportRepositorySnapshot(repository,selectedMode,commitRef,out),r->{Core.Handoff clip=core.copyPathToClipboard(r.zipPath());append("SUCCESS Repository snapshot created: "+r.zipPath().toAbsolutePath().normalize());if(clip.warning()!=null&&!clip.warning().isBlank())append("WARNING Snapshot created, but path was not copied to clipboard: "+clip.warning());else append("SUCCESS Snapshot path copied to clipboard.");notifyOperation("Repository snapshot created",r.zipPath().getFileName().toString(),repositoryId,false);showSnapshotResult(r,clip);},e->trackedFailure("Export Repository Snapshot",e,repositoryId,null));
+        String repositoryId=repositoryTarget.id();append("INFO Exporting Repository Snapshot"+(snapshotConversationKey==null?"…":" for ChatGPT conversation "+snapshotConversationTitle+"…"));
+        runBackground("Repository Snapshot",()->{
+            Core.SnapshotExportResult export=core.exportRepositorySnapshot(repository,selectedMode,commitRef,out);
+            if(snapshotConversationKey==null)return new SnapshotOperationResult(export,null,null);
+            try{return new SnapshotOperationResult(export,core.attachSnapshotToChat(export.zipPath(),snapshotConversationKey),null);}
+            catch(Throwable attachmentError){return new SnapshotOperationResult(export,null,attachmentError);}
+        },operation->{Core.SnapshotExportResult r=operation.export();Core.Handoff clip=core.copyPathToClipboard(r.zipPath());append("SUCCESS Repository snapshot created: "+r.zipPath().toAbsolutePath().normalize());if(clip.warning()!=null&&!clip.warning().isBlank())append("WARNING Snapshot created, but path was not copied to clipboard: "+clip.warning());else append("SUCCESS Snapshot path copied to clipboard.");notifyOperation("Repository snapshot created",r.zipPath().getFileName().toString(),repositoryId,false);String handoffState=snapshotHandoffState(operation,snapshotConversationTitle,repositoryId);showSnapshotResult(r,clip,handoffState);},e->trackedFailure("Export Repository Snapshot",e,repositoryId,null));
     }
 
-    private void showSnapshotResult(Core.SnapshotExportResult r,Core.Handoff clipboard){
+    private record SnapshotOperationResult(Core.SnapshotExportResult export,Core.ChatTaskInfo attachment,Throwable attachmentError){}
+
+    private String snapshotHandoffState(SnapshotOperationResult operation,String selectedTitle,String repositoryId){
+        if(operation.attachment()==null&&operation.attachmentError()==null)return "ChatGPT attachment: not requested.";
+        if(operation.attachment()!=null){String state="ChatGPT attachment queued for "+operation.attachment().conversationTitle()+". The extension will attach it but will not send the message.";append("SUCCESS "+state);refreshInteractions();return state;}
+        Throwable e=operation.attachmentError();String summary=semanticMessage(message(e)),state="Snapshot exported, but ChatGPT attachment was not started for "+selectedTitle+": "+summary;append("WARNING "+state);appendDiagnostic("Attach Repository Snapshot",e);notifyOperation("ChatGPT snapshot handoff not started",summary,repositoryId,true);return state;
+    }
+
+    private void showSnapshotResult(Core.SnapshotExportResult r,Core.Handoff clipboard,String handoffState){
         String path=r.zipPath().toAbsolutePath().normalize().toString();
         String copyState=clipboard.warning()!=null&&!clipboard.warning().isBlank()?"Clipboard warning: "+clipboard.warning():"Path copied to clipboard.";
-        Object[] options={"Attach to ChatGPT","Copy path","Open folder","Close"};
-        int selected=JOptionPane.showOptionDialog(this,"Snapshot created:\n"+path+"\n\n"+copyState+"\n\nChatGPT attachment is attach-only; the extension never presses Send for snapshot ZIPs.","Repository Snapshot",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[3]);
-        if(selected==0)attachSnapshotToChat(r.zipPath());
-        if(selected==1){Core.Handoff h=core.copyPathToClipboard(r.zipPath());append(h.warning()!=null&&!h.warning().isBlank()?"ERROR "+h.warning():"SUCCESS Snapshot path copied to clipboard.");}
-        if(selected==2){Path folder=r.zipPath().toAbsolutePath().normalize().getParent();if(folder==null){append("ERROR Snapshot output folder is unavailable.");return;}if(!Desktop.isDesktopSupported()||!Desktop.getDesktop().isSupported(Desktop.Action.OPEN)){append("ERROR Desktop Open is not supported on this system.");return;}try{Desktop.getDesktop().open(folder.toFile());append("SUCCESS Snapshot folder opened: "+folder);}catch(IOException e){append(withTechnicalDetails("ERROR Cannot open snapshot folder: "+message(e),e));}}
+        Object[] options={"Copy path","Open folder","Close"};
+        int selected=JOptionPane.showOptionDialog(this,"Snapshot created:\n"+path+"\n\n"+copyState+"\n\n"+handoffState,"Repository Snapshot",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[2]);
+        if(selected==0){Core.Handoff h=core.copyPathToClipboard(r.zipPath());append(h.warning()!=null&&!h.warning().isBlank()?"ERROR "+h.warning():"SUCCESS Snapshot path copied to clipboard.");}
+        if(selected==1){Path folder=r.zipPath().toAbsolutePath().normalize().getParent();if(folder==null){append("ERROR Snapshot output folder is unavailable.");return;}if(!Desktop.isDesktopSupported()||!Desktop.getDesktop().isSupported(Desktop.Action.OPEN)){append("ERROR Desktop Open is not supported on this system.");return;}try{Desktop.getDesktop().open(folder.toFile());append("SUCCESS Snapshot folder opened: "+folder);}catch(IOException e){append(withTechnicalDetails("ERROR Cannot open snapshot folder: "+message(e),e));}}
     }
-    private void attachSnapshotToChat(Path zip){List<Core.ChatConversation> chats=core.getOpenChatConversations();if(chats.isEmpty())throw new Core.ObsException(Core.CHAT_BRIDGE_FAILED,"No open ordinary ChatGPT conversations are visible to the extension.");JComboBox<ChatItem> box=new JComboBox<>();for(Core.ChatConversation c:chats)box.addItem(new ChatItem(c));int choice=JOptionPane.showConfirmDialog(this,box,"Attach snapshot ZIP to ChatGPT",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);if(choice!=JOptionPane.OK_OPTION)return;ChatItem item=(ChatItem)box.getSelectedItem();try{Core.ChatTaskInfo t=core.attachSnapshotToChat(zip,item.value.conversationKey());append("SUCCESS Snapshot attachment queued for "+t.conversationTitle()+". The extension will attach it but will not send the message.");refreshInteractions();}catch(Throwable e){trackedFailure("Attach Repository Snapshot",e,selectedRepository==null?null:selectedRepository.id(),null);}}
 
     private Path repoPath(){if(selectedRepository==null)throw new Core.ObsException(Core.REPOSITORY_MISMATCH,"Select or add an allowed repository first.");return Path.of(selectedRepository.path());}
     private void apply(){
