@@ -38,7 +38,16 @@ ZIPs are opened with `java.util.zip.ZipFile`; package paths are validated before
 ## 3. Apply Transaction
 
 ```text
-validate complete ZIP + manifest + payload set
+Swing background PREPARE
+→ parse OBS-ACTION once + open/validate complete ZIP
+→ freeze PackageData + Repository Target candidates
+→ resolve current ChangeSet/binding state
+→ resolve optional chatTabTitle through persisted title-matching policy
+→ publish prepare warnings to Output
+→ EDT obtains only required Repository Target / keep-vs-rebind user decisions
+→ AuthorizedApply freezes those decisions + prepared conversationKey
+→ Swing background EXECUTE
+→ revalidate prepared ChangeSet/binding/target assumptions before mutation
 → require selected/requested local repository to be registered
 → revalidate repository root + origin identity
 → validate package repository identity
@@ -48,10 +57,18 @@ validate complete ZIP + manifest + payload set
 → mutate declared files
 → verify result bytes
 → generate/persist current ReviewDiff + ChangeSet + successful ApplicationAttempt
-→ only then perform non-critical clipboard/repo-file handoff
-→ on failure before required persistence completes, rollback targets + prior ChangeSet state
+→ after successful Apply only, execute authorized bind/rebind using prepared conversationKey
+→ enqueue through existing SL-RPKG-06 binding/delivery path
+→ only then perform non-critical handoff reporting
+→ on failure before required repository persistence completes, rollback targets + prior ChangeSet state
 → verify rollback; otherwise STATE_DIVERGED
 ```
+
+The prepare result is an immutable operation context, not a second package format. Post-Apply code does not parse/rematch `chatTabTitle` again. If prepared ChangeSet/binding assumptions change while the user is deciding, Execute fails stale before repository mutation and requires a fresh Prepare/confirmation.
+
+Known accepted risks for this revision:
+- the stale-binding guard is checked before repository mutation, but manual Review-chat Bind/Unbind remains available while background Execute is already running. If the user manually rebinds during that interval after authorizing a prepared A→B rebind, the post-success prepared bind to B may overwrite that later manual choice. This concurrency window is accepted for now; do not manually change Review-chat binding while Apply Execute is active;
+- CLI `apply --action-file` is a non-interactive compatibility path. When a prepared action destination differs from an existing binding, CLI cannot present Swing keep/rebind/cancel confirmation and currently keeps the existing binding without action-driven rebind. This is an accepted CLI divergence, not proof of interactive rebind authorization outside Swing.
 
 V0.1 does not claim filesystem multi-file atomicity. It uses validate-before-mutation plus bounded verified rollback.
 
@@ -82,7 +99,7 @@ create temporary directory and non-existing GIT_INDEX_FILE
 
 `ProcessBuilder.environment()` scopes `GIT_INDEX_FILE` to those Git child processes only.
 
-A user-triggered `Refresh Review` also updates the ChangeSet's persisted `currentReview` identity. On Swing restart/ChangeSet selection, Core reconstructs the last persisted ReviewDiff and verifies that the canonical file still exists and still hashes to the recorded SHA before exposing it as current.
+A user-triggered `Refresh Review` updates the persisted `currentReview` identity of the ChangeSet captured when Refresh starts. The background completion does not write `selectedChangeSet`, `Review` presentation fields or chat-delivery presentation, so switching X → Y while Refresh X is running cannot make the callback silently select X again. Review-consuming actions resolve the latest persisted ChangeSet/currentReview state when invoked rather than relying on a callback-mutated UI cache. On Swing restart/ChangeSet selection, Core reconstructs the last persisted ReviewDiff and verifies that the canonical file still exists and still hashes to the recorded SHA before exposing it as current.
 
 ## 6. Review Diff Handling And Finalize Baseline
 
@@ -173,7 +190,9 @@ MainWindow/Core
 → one selected ordinary ChatGPT /c/<conversation-key> tab
 ```
 
-Open ChatGPT tabs are grouped by stable conversation key, not title. Task claims are serialized per conversation so duplicate tabs cannot run two queued deliveries concurrently. A ChangeSet may persist one conversation binding and therefore reuse the same chat through continuation/correction packages with the same `changeSetId`. Automatic ReviewDiff queueing occurs only after the canonical current ReviewDiff is persisted. Browser delivery failure is warning/downstream state and never rolls back Apply/Refresh Review or changes Finalize authority.
+Open ChatGPT tabs are grouped by stable conversation key, not title. Task claims are serialized per conversation so duplicate tabs cannot run two queued deliveries concurrently. A ChangeSet may persist one conversation binding and therefore reuse the same chat through continuation/correction packages with the same `changeSetId`. Manual binding and action-assisted binding still converge on `ChatBridgeService.bind(...)`.
+
+For `OBS-ACTION.chatTabTitle`, Core's Prepare phase applies `ReviewChatTitleMatcher` using the persisted ignored-character set, freezes a unique current `conversationKey` when one exists and records no/ambiguous conditions as Output warnings. When that unique destination differs from an existing binding, the Swing host asks before mutation whether to keep the current binding, rebind after successful Apply, or cancel. `ChatBridgeService.assertRebindSafe(...)` reuses the same unsafe-in-flight rule as actual bind without changing the binding; actual bind/rebind still occurs only after repository Apply succeeds. Automatic ReviewDiff queueing occurs only after the canonical current ReviewDiff is persisted. Browser delivery failure is warning/downstream state and never rolls back Apply/Refresh Review or changes Finalize authority.
 
 ReviewDiff content is delivered as one exact `.diff` attachment for every non-empty ReviewDiff. Each task records artifact size/SHA-256 and a frozen `sendRetryIntervalSeconds`; Java rechecks the queued file before streaming it, and the extension rechecks the received bytes before preparation. The extension requires the intended composer to be empty, reuses the shared browser attachment primitive to create/upload the exact ReviewDiff file, and reaches semantic `Preparing` only after that exact attachment is visible and upload-ready. A failure before confirmed attachment preparation is `FailedBeforeSend`; after confirmed preparation but before the possible-Send phase it is terminal `PreparedUnsent`. During technical `SendClicked`, the semantic interaction is `Sending`: the service worker may issue repeated guarded MAIN-world Send-control attempts at the task's configured interval only while the same exact attachment remains prepared in the same conversation. Confirmed outgoing user turn becomes `Sent`; if the attachment disappears without confirmation, state becomes `UnknownAfterSend` and automatic attempts stop. This attachment path replaces direct editor insertion for both small and large ReviewDiff content.
 
@@ -187,7 +206,11 @@ The extension content script never receives the long-lived pairing token; extens
 
 `StateStore` uses local JSON files and one exclusive `FileChannel` lock around mutating Apply/Finalize/Retry operations. JSON writes use temporary-file replacement. Repository mutation assumes one foreground Core operation at a time.
 
-`settings.json` schema 3 owns repository allowlist records, selected repository, selected ChangeSet, ReviewDiff handling and `reviewDiffSendRetrySeconds`. The retry interval defaults to 6 seconds, is user-editable in the application, is validated to 1–60 seconds and is frozen into each newly queued ReviewDiff task so an in-flight interaction is not retimed by a later settings change. ChangeSet JSON continues to own path ownership/current review/lifecycle. No application ledger file is written inside a target repository.
+The Swing host has one background-operation runner (`SwingWorker`) for heavyweight Git/ZIP/hash/filesystem work. Apply Prepare/Execute, Refresh Review, Finalize/Retry Push and Repository Snapshot export run off the Event Dispatch Thread; Swing component reads/writes, Output rendering and confirmation dialogs remain on EDT. Apply click performs no ZIP/package/filesystem read before `Prepare Apply` is dispatched. A second heavyweight operation is refused while one is running, so responsiveness does not create parallel repository mutation.
+
+Visible Output is session UI state keyed only by `changeSetId`, not by archive path, archive filename, `packageId`, ReviewDiff attempt identity or a generic fallback owner. Selecting a ChangeSet switches the text surface to that ChangeSet's in-memory Output buffer; continuation/correction packages for the same ChangeSet append further Apply attempts to the same buffer, while another ChangeSet has an independent buffer. There is no general/unresolved Output buffer. Before background Prepare has successfully parsed `PACKAGE.json`, `Preparing Apply…` and failures without authoritative ChangeSet identity use the separate transient `Operation` status surface plus notifications/Technical Diagnostics as applicable; they are not stored in any ChangeSet Output. Once Prepare returns `PreparedApply`, Swing switches to `prepared.packageData().manifest().changeSetId`; the physical filename and `packageId` are retained only in the Apply-attempt header for traceability. Chat bridge events route directly by `ChatEvent.changeSetId`, so a late event for one ChangeSet is buffered there and cannot bleed into the currently visible Output of another. ChangeSet Output buffers are not persisted ledger state; Technical Diagnostics remains the separate complete session diagnostic surface.
+
+`settings.json` schema 4 owns repository allowlist records, selected repository, selected ChangeSet, ReviewDiff handling, `reviewDiffSendRetrySeconds` and `reviewChatTitleIgnoredCharacters`. The retry interval defaults to 6 seconds, is validated to 1–60 and is frozen into each newly queued ReviewDiff task. The ignored-character setting defaults to empty, stores at most 128 literal Unicode characters/code points with no line breaks, and affects only action-assisted Review-chat title normalization; it is not regex/fuzzy/case-folding configuration and never enters `OBS-ACTION`. ChangeSet JSON continues to own path ownership/current review/lifecycle. No application ledger file is written inside a target repository.
 
 ## 11. Safety Boundaries
 

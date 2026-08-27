@@ -57,14 +57,18 @@ final class ChatBridgeService {
         Map<String,Object> m=state.readObject(p);return new Core.ChatBinding(changeSetId,Core.str(m.get("conversationKey")),Core.str(m.get("title")),Core.str(m.get("url")),Core.str(m.get("boundAt")));
     }
 
-    synchronized Core.ChatBinding bind(String changeSetId,String conversationKey){
+    synchronized void assertRebindSafe(String changeSetId,String conversationKey){
         expireClaims();
-        Core.ChatConversation c=conversations.get(conversationKey);if(c==null)throw fail("Selected ChatGPT conversation is not currently open.");
+        if(!conversations.containsKey(conversationKey))throw fail("Requested ChatGPT conversation is not currently open.");
         Core.ChatBinding prior=binding(changeSetId);
-        if(prior==null||!Objects.equals(prior.conversationKey(),conversationKey)){
-            requireNoUnsafeInFlight(changeSetId,"Cannot change Review chat while ChatGPT composer preparation or Send is in progress.");
-            cancelSafelyCancellableReviewTasks(changeSetId,"Cancelled because Review chat was changed.");
-        }
+        if(prior==null||!Objects.equals(prior.conversationKey(),conversationKey))requireNoUnsafeInFlight(changeSetId,"Cannot change Review chat while ChatGPT composer preparation or Send is in progress.");
+    }
+
+    synchronized Core.ChatBinding bind(String changeSetId,String conversationKey){
+        assertRebindSafe(changeSetId,conversationKey);
+        Core.ChatConversation c=conversations.get(conversationKey);
+        Core.ChatBinding prior=binding(changeSetId);
+        if(prior==null||!Objects.equals(prior.conversationKey(),conversationKey))cancelSafelyCancellableReviewTasks(changeSetId,"Cancelled because Review chat was changed.");
         String now=Instant.now().toString();Map<String,Object> m=new LinkedHashMap<>();m.put("schemaVersion",1);m.put("changeSetId",changeSetId);m.put("conversationKey",c.conversationKey());m.put("title",c.title());m.put("url",c.url());m.put("boundAt",now);state.writeJson(bindingPath(changeSetId),m);return new Core.ChatBinding(changeSetId,c.conversationKey(),c.title(),c.url(),now);
     }
 

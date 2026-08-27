@@ -17,7 +17,7 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 
 1. User establishes the logical work context through the normal ChangeSet selector/navigation.
 2. Application establishes the exact current-change artifact for that ChangeSet.
-3. Application establishes the intended ordinary ChatGPT conversation through the persisted Review-chat binding. The user may bind it manually, or a successful Apply may establish a previously missing binding from an optional exact `OBS-ACTION.chatTabTitle` hint when exactly one current conversation title matches.
+3. Application establishes the intended ordinary ChatGPT conversation through the persisted Review-chat binding. The user may bind it manually, or Apply Prepare may resolve an optional `OBS-ACTION.chatTabTitle` to one current conversation using the local ignored-character policy. A unique unbound destination is bound after successful Apply; a unique different existing binding requires explicit keep/rebind/cancel authority before mutation.
 4. One semantic External Interaction is created for that exact source artifact + destination.
 5. Browser handoff prepares the exact current-change payload only in the intended conversation and respects existing composer content.
 6. Current-change delivery attempts Send only while that exact prepared payload remains associated with the same interaction/destination; external uncertainty stops further automatic sending.
@@ -27,8 +27,8 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 ## Branches / Extensions
 
 - binding existing work manually does not implicitly send its already-current change;
-- an existing persisted Review-chat binding is never replaced by an `OBS-ACTION` title hint;
-- missing/ambiguous action-title match never guesses a destination and never rewrites successful Apply truth; manual binding remains available;
+- an existing persisted Review-chat binding is never replaced silently by an `OBS-ACTION` title hint; a unique different destination requires explicit pre-Apply rebind authorization;
+- missing/ambiguous normalized action-title match never guesses a destination; Prepare reports it in Output and manual binding remains available;
 - one conversation open in duplicate browser tabs remains one conversation binding and existing duplicate-tab claim serialization decides which tab performs delivery;
 - empty current change → no message / no-content result;
 - existing unrelated composer content → fail before mixing/sending;
@@ -51,7 +51,7 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 ## Behavior Items
 
 - destination binding persists with ChangeSet continuation;
-- manual binding and action-assisted unique-title binding converge on the same persisted binding service and downstream delivery path;
+- manual binding and action-assisted prepared-title binding/rebinding converge on the same persisted binding service and downstream delivery path;
 - source artifact and destination are exact/stable for one interaction;
 - implementation claim/lease/tab states do not become semantic interaction identity;
 - exact current change, not stale/older artifact, is sent;
@@ -61,7 +61,7 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 
 ## Requirements
 
-Related shared requirements: `REQ-RPKG-04`, `REQ-RPKG-09`, `REQ-RPKG-10`, `REQ-RPKG-14`, `REQ-RPKG-15`, `REQ-RPKG-19`, `REQ-RPKG-20`, `REQ-RPKG-22`, `REQ-RPKG-24`.
+Related shared requirements: `REQ-RPKG-04`, `REQ-RPKG-09`, `REQ-RPKG-10`, `REQ-RPKG-14`, `REQ-RPKG-15`, `REQ-RPKG-19`, `REQ-RPKG-20`, `REQ-RPKG-22`, `REQ-RPKG-24`, `REQ-RPKG-25`, `REQ-RPKG-26`.
 
 ## Visual / Screen References
 
@@ -74,7 +74,7 @@ Related shared requirements: `REQ-RPKG-04`, `REQ-RPKG-09`, `REQ-RPKG-10`, `REQ-R
 
 Automated state-machine tests alone are insufficient. Manual practical acceptance must establish:
 - exact destination/payload for both small and large current changes, with no large-content browser freeze;
-- manual Review-chat binding remains valid; unique exact action-title hint can establish a missing binding through the same path, while zero/duplicate-title matches require manual choice and existing binding cannot be overwritten by the hint;
+- manual Review-chat binding remains valid; empty matcher setting preserves literal behavior; configured ignored characters affect only action-assisted matching; unique action-title hint can establish a missing binding through the same path; zero/duplicate normalized matches require manual fallback; unique different existing binding requires pre-Apply keep/rebind/cancel confirmation and prepared-state staleness blocks before mutation;
 - duplicate-tab/composer protection;
 - interaction visible/selectable with user-semantic state;
 - Cancel before preparation stops cleanly;

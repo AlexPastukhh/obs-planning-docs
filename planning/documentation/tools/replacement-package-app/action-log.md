@@ -536,3 +536,101 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** `SL-RPKG-06` has one persisted Review-chat binding and one downstream delivery implementation, with two ways to establish a missing destination: explicit manual selection or an optional exact action title hint. Repository Apply remains independent of browser-title availability/ambiguity, and existing binding/delivery safety semantics remain unchanged.
 
 **APPLIED relation:** if package `e5620ae7-454f-4253-9854-eac2441c0599` applies successfully, this action-assisted binding/protocol extension becomes the current implementation state of new ChangeSet `513ddd04-b455-4870-a1d8-abfb4ba7de63`.
+
+### LOG-RPKG-034 — Prepare Apply before mutation, make Review-chat title matching configurable, and require explicit rebind approval
+
+**Type:** LATER CLARIFICATION / SLICE EXTENSION / APPLY-LIFECYCLE CORRECTION / UI-RESPONSIVENESS CORRECTION / SHARED-PROTOCOL CORRECTION / APPLIED TARGET  
+**ChangeSet:** `11b02ff6-b591-4e3b-81a7-dd68b6572680`  
+**Package:** `6a896ea7-34da-4d64-907d-a597cd105ce5`
+
+**User clarification / selected integration path:**
+- keep the action-assisted Review-chat destination inside existing `SL-RPKG-06`; manual and action-assisted binding still converge on the existing persisted `ChatBridgeService.bind(...)` + `enqueueReviewIfBound(...)` delivery path rather than creating a parallel automatic subsystem;
+- add local application setting `Review title ignores`: a user-editable literal set of Unicode characters removed from both the action-supplied title and current inventory title before comparison. Default is empty, preserving current literal behavior; matching remains case-sensitive and non-fuzzy, with no regex or hidden punctuation/case rules;
+- parse/resolve `OBS-ACTION`, package, Repository Target, current ChangeSet, current Review-chat binding and title-hint candidates before repository mutation into one prepared operation context. The prepared unique conversation key is reused after successful Apply instead of reparsing/rematching the title after Apply;
+- treat no-match / ambiguous-title and related preparation warnings as ordinary operation Output, not confirmation dialogs. Blocking action/package errors still stop preparation; confirmation UI is reserved for choices that require user authority;
+- when an existing binding differs from the uniquely prepared action destination, ask before mutation whether to **Apply without rebind**, **Apply and rebind**, or **Cancel**. If current ChatGPT delivery state makes rebind unsafe, the rebind choice is unavailable while keep/cancel remain;
+- an authorized rebind is performed only after successful repository Apply and current ReviewDiff persistence, through the existing binding service. Failed repository Apply leaves binding unchanged. Before mutation, frozen ChangeSet/binding assumptions needed by the selected plan are revalidated; stale prepared state blocks with no repository mutation and requires preparation again;
+- keep title-normalization configuration consumer-local: it does not enter `OBS-ACTION`, package identity, ZIP schema, browser-extension protocol or loopback bridge protocol;
+- remove heavy Core/Git/ZIP/filesystem work from the Swing Event Dispatch Thread. Apply now has background Prepare and Execute phases with dialogs/rendering on EDT; Refresh Review, Finalize, Retry Push and Repository Snapshot export use the same background-worker boundary so the application remains repaintable/responsive during long work.
+
+**Proof / acceptance:**
+- Core tests cover settings-schema migration/default, code-point-aware ignored-character normalization, case sensitivity, unique prepared destination, keep/rebind decisions, post-Apply use of the prepared conversation key, and stale binding rejection before repository mutation;
+- ChatBridge tests cover non-mutating rebind-safety assessment relative to the persisted binding and refusal while unsafe composer preparation/Send work is in flight;
+- Swing source-level regression requires `SwingWorker` background dispatch for Prepare Apply, Execute Apply, Refresh Review, Finalize and Repository Snapshot export; manual acceptance requires the window to stay responsive while these operations run and keeps warnings in Output while rebind authority remains an explicit modal choice;
+- the canonical `OBS-ACTION/1` protocol definition and the producer-workflow materialized use are synchronized. `.linked-notes/reference-objects.json` keeps the same definition/use route; the reusable-documentation scope records only a cross-scope reference to this canonical entry.
+
+**Target-State Result:** after successful Apply of this exact package, action-driven Review-chat selection is prepared once before mutation using persisted user-configurable title normalization, conflicts with an existing binding require explicit pre-Apply user authorization, and successful post-Apply binding/rebinding uses the already prepared conversation identity through the existing SL-RPKG-06 services. Preparation warnings remain visible in Output without unnecessary dialogs, stale prepared authority fails closed before mutation, and the major Git/ZIP/Review operations no longer block Swing EDT responsiveness.
+
+**APPLIED relation:** if package `6a896ea7-34da-4d64-907d-a597cd105ce5` applies successfully, this prepared-Apply/title-matching/rebind-approval/EDT correction becomes the current state of ChangeSet `11b02ff6-b591-4e3b-81a7-dd68b6572680`.
+
+
+### LOG-RPKG-035 — ReviewDiff correction: remove pre-Prepare ZIP read from EDT and record accepted rebind/CLI limits
+
+**Type:** REVIEWDIFF CORRECTION / ACCEPTED-RISK RECORD / UI-RESPONSIVENESS CORRECTION / SHARED-PROTOCOL CORRECTION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-034`  
+**ChangeSet:** `11b02ff6-b591-4e3b-81a7-dd68b6572680`  
+**Package:** `fa609eea-034c-4975-894d-e82b86e4801e`
+
+**ReviewDiff findings / user decisions:**
+- the first prepared-Apply package moved Core Prepare/Execute to `SwingWorker`, but `MainWindow.beginArchiveOutputSession()` still called `core.readPackage(...)` synchronously before `runBackground("Prepare Apply", ...)`. A large selected ZIP could therefore still block the Swing Event Dispatch Thread before the new progress stage appeared. Correct this real P1 by making archive Output-session setup passive UI bookkeeping only: no ZIP/package/filesystem read is allowed there; authoritative package parsing remains exclusively in background Prepare;
+- Review identified a separate race after the existing pre-mutation stale check: if the user authorizes prepared rebind A→B, then manually binds/unbinds while background Execute is already running, the successful post-Apply prepared bind to B can overwrite that later manual choice. The user explicitly accepts this as a known risk for the current revision; do not add mid-Execute binding serialization/compare-and-swap in this ChangeSet. Operational boundary: do not manually change Review-chat binding while Apply Execute is active;
+- Review also identified that non-interactive CLI `apply --action-file` cannot present Swing keep/rebind/cancel confirmation. Current compatibility behavior defaults an existing-binding conflict to keep-existing/no action-driven rebind. The user explicitly accepts this as a known CLI divergence for now; do not add CLI rebind options or interactive prompting in this ChangeSet;
+- synchronize the shared `OBS-ACTION/1` definition/use so explicit rebind authorization is stated as interactive Swing behavior, while the accepted non-interactive CLI divergence and mid-Execute manual-rebind race are not falsely presented as solved guarantees.
+
+**Proof / acceptance:**
+- strengthen the existing Swing source-level regression so the `beginArchiveOutputSession()` method body must contain neither `core.readPackage(...)` nor `Files.*`; the same test still requires Prepare/Execute, Refresh Review, Finalize and Repository Snapshot export to dispatch through the shared `SwingWorker` runner;
+- manual acceptance now starts the responsiveness check with a deliberately large ZIP and requires Output/progress to appear without pre-Prepare ZIP validation on EDT;
+- existing Core compatibility behavior for CLI keep-existing and existing pre-Execute stale-binding proof remain intentionally unchanged; the newly recorded accepted risks are not promoted into false automated guarantees.
+
+**Target-State Result:** after successful Apply of this exact correction package, clicking Apply performs only passive/string-level archive Output-session setup on EDT and dispatches all ZIP opening/validation to background Prepare before heavy package work. Interactive Swing rebind confirmation semantics remain as selected, while two explicit accepted boundaries are documented truthfully: a manual binding change during already-running Execute may be overwritten by the prepared post-success rebind, and non-interactive CLI action Apply keeps an existing binding rather than obtaining rebind authorization.
+
+**APPLIED relation:** if package `fa609eea-034c-4975-894d-e82b86e4801e` applies successfully, this ReviewDiff correction and accepted-risk clarification become the current state of open ChangeSet `11b02ff6-b591-4e3b-81a7-dd68b6572680`.
+
+### LOG-RPKG-036 — Route visible Output by ChangeSet instead of package/archive identity
+
+**Type:** REVIEWDIFF CORRECTION / LATER CLARIFICATION / OUTPUT-MODEL CORRECTION / TRACEABILITY CLARIFICATION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-035`  
+**ChangeSet:** `11b02ff6-b591-4e3b-81a7-dd68b6572680`  
+**Package:** `0d6ba173-95c2-497a-a9fd-c18fd40d2fbd`
+
+**ReviewDiff finding / user clarification:**
+- the previous EDT correction removed synchronous ZIP reads from `beginArchiveOutputSession()`, but its remaining archive/package-oriented Output key could no longer distinguish two ZIP-only packages that reuse one filesystem path. Review initially classified that as a package-identity Output-routing P2;
+- the user rejected package/archive identity as the correct Output axis and selected the logical ChangeSet instead: the Output currently shown in Swing belongs to `changeSetId`. Initial/retry/correction packages for one open ChangeSet accumulate in that work's session Output; a different ChangeSet has independent Output even when the physical filename/path is reused; selecting another ChangeSet switches the visible buffer;
+- preserve `packageId`, but narrow its role: it remains exact concrete-package correlation/traceability and the `OBS-ACTION.packageId == PACKAGE.json.packageId` verification guard. It does not own visible Output. Archive filename/path remains a physical display/location hint. An action cannot silently authorize a different package merely because the filename is similar or receives a browser `(1)` suffix;
+- before background Prepare has successfully produced a valid package/ChangeSet identity, immediate progress or failure is general/unresolved Output. Once `PreparedApply` exists, the UI uses its manifest `changeSetId` before prepare notices, user decisions and Execute.
+
+**Implementation / proof:**
+- replace `outputArchiveKey`, `outputChangeSetId`, ReviewDiff-attempt membership and pending-chat-event routing with session-only `changeSetId -> StringBuilder` Output buffers plus one general/unresolved buffer;
+- keep a per-ChangeSet Apply-attempt counter and print exact `packageId` plus physical ZIP filename in each Apply attempt header for traceability without making either value a routing key;
+- ChangeSet selection renders that ChangeSet buffer. Apply/Refresh/Finalize/Retry callbacks append by the captured ChangeSet identity so a later selector change cannot redirect asynchronous output; Chat bridge events append directly by `ChatEvent.changeSetId`;
+- source-level regression requires ChangeSet Output buffers, selector switching, PreparedApply manifest routing and direct chat-event routing, and requires the removed archive/review-attempt/pending-event routing fields to stay absent;
+- standard automated suite remains green: Core `63/0`, ChatBridge `43/0`, Windows launcher `5/0`, Node DOM turn-boundary regression PASS. The two accepted risks from `LOG-RPKG-035` (manual rebind during already-running Execute and non-interactive CLI keep-existing behavior) remain unchanged.
+
+**Target-State Result:** after successful Apply of this exact package, visible Swing Output is organized around the same logical work axis as Review/binding/lifecycle: one session buffer per ChangeSet, with continuation/correction package attempts and late ChangeSet/Chat events returning to that buffer. `packageId` remains package/action verification plus traceability only, and reused filenames/paths cannot define or merge Output ownership.
+
+**APPLIED relation:** if package `0d6ba173-95c2-497a-a9fd-c18fd40d2fbd` applies successfully, this ChangeSet-scoped Output correction becomes the current state of still-open ChangeSet `11b02ff6-b591-4e3b-81a7-dd68b6572680`.
+
+
+### LOG-RPKG-037 — Keep background Refresh scoped to its ChangeSet and remove general Output history
+
+**Type:** REVIEWDIFF CORRECTION / LATER CLARIFICATION / UI-STATE OWNERSHIP CORRECTION / OUTPUT-MODEL CORRECTION / APPLIED TARGET  
+**Updates:** `LOG-RPKG-036`  
+**ChangeSet:** `11b02ff6-b591-4e3b-81a7-dd68b6572680`  
+**Package:** `e1991eee-6ac0-48b4-9954-8e16882c2997`
+
+**ReviewDiff findings / user clarification:**
+- Review of the first ChangeSet-scoped Output revision found that background `Refresh Review` captured ChangeSet X correctly in Core but its Swing success callback still assigned `selectedChangeSet`, `currentReview`, `reviewState` and chat-delivery presentation. If the user navigated X → Y while Refresh X was running, completion could therefore make internal selection state X while the visible selector remained Y, creating unsafe UI/state divergence before a later action such as Finalize;
+- the user selected the simpler ownership rule: Refresh completion changes persisted Review state for the ChangeSet captured when Refresh started and records its result against that ChangeSet, but it does not own current Swing navigation/presentation. User selection remains selector-owned;
+- Review also found that the newly introduced `generalOutput` made non-ChangeSet operations and pre-Prepare failures a second Output history and could still blur the selected ChangeSet boundary. The user explicitly selected no general Output: only concrete `changeSetId` values own Output buffers. Pre-Prepare, repository/settings/launcher/snapshot and other non-ChangeSet progress/errors use a separate transient `Operation` status plus existing notification/Technical Diagnostics paths rather than becoming Output history.
+
+**Implementation / proof:**
+- remove `generalOutput`; `outputByChangeSet` contains only non-null ChangeSet keys. With no ChangeSet selected the Output text surface is empty. `Preparing Apply…` is displayed through the transient `Operation` field until `PreparedApply` yields the manifest `changeSetId`, after which notices/decisions/Execute use that ChangeSet Output;
+- route generic non-ChangeSet messages through `Operation`; keep Review-chat bind/unbind, Review Copy/Open, Apply/Refresh/Finalize and Chat bridge results explicitly routed to their known ChangeSet Output;
+- `refreshReview()` captures ChangeSet/repository identity, runs `core.refreshReview(cs)` in the worker and on completion only appends success/failure to Output `cs`; it no longer assigns `selectedChangeSet`, `Review` fields or chat-delivery presentation from the callback;
+- remove the mutable `currentReview` UI cache. Review Copy/Open/Send gating resolves the latest persisted ChangeSet/currentReview when invoked, so a completed background Refresh is immediately authoritative without requiring the callback to rewrite navigation state;
+- source-level regressions require no `generalOutput`/`appendToOutput(null,...)`, require transient `Operation` pre-Prepare status, and isolate `refreshReview()` to prove no selection/Review/chat-presentation assignment while still routing completion by captured ChangeSet;
+- standard automated suite remains green: Core `63/0`, ChatBridge `44/0`, Windows launcher `5/0`, Node DOM turn-boundary regression PASS. Accepted manual-rebind-during-Execute and non-interactive CLI keep-existing boundaries from `LOG-RPKG-035` remain unchanged.
+
+**Target-State Result:** after successful Apply of this exact package, visible Output has exactly one ownership axis: concrete `changeSetId`. There is no generic Output history. Operations without ChangeSet authority report transiently, while every ChangeSet-owned asynchronous result returns to its captured work buffer. Background Refresh updates only the captured ChangeSet's persisted Review state and cannot silently change the user's current ChangeSet selection; Review actions read the latest persisted Review on demand.
+
+**APPLIED relation:** if package `e1991eee-6ac0-48b4-9954-8e16882c2997` applies successfully, this Refresh/UI-ownership and no-general-Output correction becomes the current state of still-open ChangeSet `11b02ff6-b591-4e3b-81a7-dd68b6572680`.

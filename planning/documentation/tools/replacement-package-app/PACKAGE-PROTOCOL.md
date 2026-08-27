@@ -75,9 +75,11 @@ Action rules:
 - `archive` is a filename/hint, not an absolute path or repository-operation authority;
 - the consumer resolves/selects a concrete ZIP and requires its manifest `packageId` to exactly match the action `packageId`;
 - `name` is presentation/history text and may vary between attempts;
-- `chatTabTitle` is optional and may be omitted. When present, it is a destination-binding hint only: it never identifies the package, Repository Target or ChangeSet and never grants repository-operation authority;
-- after a successful Apply, and only when that ChangeSet has no existing Review-chat binding, the consumer compares `chatTabTitle` by exact title equality against the current ordinary ChatGPT conversation inventory. Exactly one matching conversation is bound through the same persisted binding service used by manual selection; zero or multiple matches do not guess, do not fail the successful Apply and leave manual binding available with an actionable warning;
-- an existing persisted Review-chat binding always wins over an action hint. The hint does not rebind existing work; duplicate browser tabs of one conversation remain governed by the existing conversation-key / duplicate-tab claim serialization rather than by the title hint;
+- `chatTabTitle` is optional and may be omitted. When present, it is a destination-binding hint only: it never identifies the package, Repository Target or ChangeSet and never grants repository-operation authority. Consumer title-matching configuration is local application state and is never carried in `OBS-ACTION`;
+- before any repository mutation, the consumer parses the action once and builds one prepared Apply context. `chatTabTitle` is normalized together with current inventory titles by deleting only the Unicode characters configured in the persisted `reviewChatTitleIgnoredCharacters` setting, then compared by exact case-sensitive equality. The default ignored-character set is empty, preserving literal matching. Zero or multiple matches never guess a destination; they are warnings in operation Output and Apply may continue with manual binding available;
+- in the interactive Swing consumer, when exactly one prepared destination differs from an existing persisted Review-chat binding, repository mutation requires an explicit user decision made before Apply: keep the existing binding, Apply and rebind to the prepared destination, or cancel. Rebind authorization is refused while existing bridge safety rules make rebinding unsafe. If the ChangeSet/binding state used by the prepared decision changes before execution, the prepared Apply is stale and must be prepared/confirmed again before mutation. The current non-interactive CLI `apply --action-file` compatibility path cannot obtain this confirmation and, as a known accepted divergence, keeps the existing binding/no action-driven rebind;
+- actual bind/rebind occurs only after successful repository Apply and uses the already prepared `conversationKey` through the same persisted binding service used by manual selection; the title is not reparsed/rematched after Apply. Failed repository Apply leaves the binding unchanged. Duplicate browser tabs of one conversation remain governed by existing conversation-key / duplicate-tab claim serialization rather than by the title hint;
+- known accepted concurrency risk: the prepared binding/state assumptions are revalidated before repository mutation, but manual Bind/Unbind is not serialized against an already-running background Execute. A manual binding change made during Execute may therefore be overwritten by the previously authorized prepared rebind after successful Apply; this revision does not claim that concurrency window is hardened;
 - repository operations never appear in `OBS-ACTION`;
 - clipboard/repo-file ReviewDiff handling never appears in `OBS-ACTION`; it is application configuration;
 - V0.1 Finalize is not a second `OBS-ACTION`: the consumer uses the selected ChangeSet's persisted current ReviewDiff as the implicit Finalize baseline plus a local commit message; the ReviewDiff SHA-256 remains internal application state and is not user input.
@@ -89,17 +91,24 @@ The V0.1 application has a configured repository root and optional selected arch
 
 Resolution result must be unique after opening candidate `PACKAGE.json` files and comparing `packageId`. Zero matches produce `PACKAGE_NOT_FOUND`; ambiguous/malformed candidates do not authorize mutation.
 
-Optional `chatTabTitle` resolution is deliberately later and non-authoritative. It runs only after repository Apply has succeeded and the current ReviewDiff/ChangeSet state exists. Existing Review-chat binding is retained. With no binding, one exact currently-open conversation-title match may establish the normal persisted binding and normal SL-RPKG-06 queue; zero/ambiguous matches produce a handoff warning/manual fallback without rolling back or relabeling the successful repository Apply. A title hint identifies a conversation inventory choice, not a physical duplicate browser tab.
+Optional `chatTabTitle` resolution is non-authoritative but deliberately **pre-Apply**. One prepared operation captures the parsed action, validated package, Repository Target candidates, current ChangeSet/binding state, configured title-normalization policy and the resolved conversation candidate when unique. Confirmation UI is used only for a real existing-binding → different prepared-destination decision; no-match/ambiguous diagnostics belong in Output. Execute revalidates the frozen ChangeSet/binding assumptions before mutation. A title hint identifies a conversation inventory choice, not a physical duplicate browser tab.
 
 ## 3. Consumer Validation Order
 
 ```text
-parse action/package input
+parse OBS-ACTION once + resolve/select concrete ZIP
 → open ZIP without unsafe extraction
 → validate archive entry paths/collisions
 → parse PACKAGE.json
 → validate schema/IDs/repositoryIdentity/operations
 → validate declared payload set
+→ resolve Repository Target candidates + exact ChangeSet state
+→ resolve optional `chatTabTitle` through current local title-matching policy
+→ emit non-blocking prepare warnings to Output
+→ in interactive Swing, when unique requested destination conflicts with existing binding, obtain explicit keep/rebind/cancel decision
+→ in non-interactive CLI compatibility flow, keep existing binding/no action-driven rebind on that conflict
+→ freeze Prepared/Authorized Apply context
+→ immediately before mutation revalidate selected Repository Target + prepared ChangeSet/binding assumptions + requested conversation/rebind safety when relevant
 → verify configured Git repository identity
 → resolve/create/continue ChangeSet
 → verify path ownership / dirty-unowned boundary
@@ -108,11 +117,11 @@ parse action/package input
 → mutate
 → verify resulting bytes
 → record attempt + cumulative ReviewDiff
-→ if action supplied `chatTabTitle` and no Review-chat binding exists, resolve it against current ChatGPT inventory without changing Apply truth
-→ if a Review-chat binding exists/was uniquely resolved, use the normal SL-RPKG-06 queue
+→ after successful Apply only, execute the authorized bind/rebind from prepared `conversationKey`
+→ queue through the normal SL-RPKG-06 path for the resulting persisted binding
 ```
 
-No target file is changed before the complete package and all touched-path preconditions pass.
+No target file is changed before the complete package and all touched-path preconditions pass. The current stale-binding check protects the pre-mutation decision boundary only; it does not serialize a later manual Review-chat binding change made after background Execute has begun, which remains an accepted risk.
 
 ## 4. Error Codes
 

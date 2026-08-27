@@ -23,7 +23,7 @@ Current source realization after this package:
 SL-RPKG-01..SL-RPKG-09
 
 Practical correction in this package:
-SL-RPKG-06 exact ReviewDiff attachment + configurable Send-retry realization + action-assisted Review-chat binding hint
+SL-RPKG-06 exact ReviewDiff attachment + configurable Send-retry realization + prepared/configurable action-assisted Review-chat binding and explicit rebind authorization
 SL-RPKG-07 unified ChangeSet selector + unavailable-target query behavior
 SL-RPKG-08 current/actionable interaction projection
 SL-RPKG-01 ownership/adoptability diagnostic detail
@@ -35,12 +35,14 @@ Implementation existence and operational acceptance remain separate: source/test
 
 | Producer action | Consumer expectation |
 |---|---|
-| legacy `OBS-ACTION/1` with `action/name/archive/packageId` only | unchanged Apply + existing manual/persisted Review-chat binding behavior |
-| action additionally carries exact `chatTabTitle` and ChangeSet is unbound | after successful Apply, exactly one current ordinary ChatGPT conversation with that exact title is bound through the same persisted binding service; the current ReviewDiff then follows normal SL-RPKG-06 queueing |
-| `chatTabTitle` has zero or multiple conversation matches | successful repository Apply remains successful; no destination is guessed; handoff warning directs the user to the existing manual binding controls |
-| ChangeSet already has a Review-chat binding | persisted binding wins; action hint cannot rebind or redirect current work |
+| legacy `OBS-ACTION/1` with `action/name/archive/packageId` only | unchanged package semantics; Apply is prepared/executed through the same staged pipeline and existing manual/persisted Review-chat binding behavior remains |
+| action carries `chatTabTitle`; one normalized current conversation matches and ChangeSet is unbound | Prepare freezes that conversation key using the current local ignored-character policy; successful Apply then binds through the normal persisted service and queues the current ReviewDiff |
+| `chatTabTitle` has zero or multiple normalized conversation matches | Prepare writes a warning to Output; no destination is guessed and Apply may continue with manual binding available |
+| one unique requested destination equals existing binding | no rebind confirmation; existing binding remains and normal queueing continues |
+| one unique requested destination differs from existing binding | before repository mutation the user chooses Apply without rebind, Apply and rebind, or Cancel; authorized rebind occurs only after successful Apply and uses the prepared conversation key |
+| prepared ChangeSet/binding state changes before Execute | stale prepared Apply blocks before repository mutation and must be prepared/confirmed again |
 
-`chatTabTitle` is a binding hint, not a package/repository/ChangeSet identity and not a physical duplicate-tab selector. Producer must omit it when no exact intended title was explicitly supplied for the active invocation.
+`chatTabTitle` is a binding hint, not a package/repository/ChangeSet identity and not a physical duplicate-tab selector. Producer must omit it when no exact intended title was explicitly supplied for the active invocation. Consumer matching configuration (`reviewChatTitleIgnoredCharacters`) is local-only and never appears in the action.
 
 ## Supporting Meaning
 

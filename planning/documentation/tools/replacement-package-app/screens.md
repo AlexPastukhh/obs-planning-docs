@@ -14,12 +14,13 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - Repository selector + Add/Remove/Export;
 - repository identity;
 - Archive ZIP + OBS-ACTION input;
-- Apply;
+- Apply with asynchronous Prepare → optional decision → Execute stages; heavy Git/ZIP/filesystem work stays off EDT;
 - linked Repository + ChangeSet selectors with local/global (`All repositories`) and history scope + status/ID;
 - Review state + Refresh/Copy/Open;
-- Review chat binding/delivery + `Review send retry [n] seconds` setting (1–60, default 6);
+- Review chat binding/delivery + `Review send retry [n] seconds` (1–60, default 6) + `Review title ignores [characters]` (empty default, literal Unicode character set) settings;
 - commit message + Finalize/Retry Push;
-- Output + Copy output;
+- transient `Operation` status for work that has no authoritative ChangeSet yet (or is repository/settings/launcher scoped);
+- ChangeSet-scoped session Output + Copy output;
 - bridge/launcher status/actions.
 
 ### Selected target additions
@@ -29,6 +30,9 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - exact current Repository Target + current ChangeSet context after work selection;
 - passive package/action context separated visually from Apply authority;
 - small context message when Apply resolves/auto-selects another repository, e.g. `✓ Repository selected: <name>`; it means context changed, not Apply succeeded;
+- prepare diagnostics such as no/ambiguous `chatTabTitle` match appear in Output rather than forcing a modal; confirmation dialog appears only when a unique action destination conflicts with an existing Review-chat binding and requires `Apply without rebind` / `Apply and rebind` / `Cancel`;
+- Output follows the selected ChangeSet: changing the ChangeSet selector restores that work's session Output; packages for the same ChangeSet append attempts there, and output for another ChangeSet never replaces/mixes it merely because archive filename/path/package changes. There is no general Output history; unresolved/non-ChangeSet progress is shown in the transient `Operation` field;
+- a completed background Refresh remains owned by the ChangeSet captured when Refresh started and never silently changes the current ChangeSet selector or selected Review/chat presentation after the user navigates elsewhere;
 - compact latest operation error marker + concise reason for unfinished (Active/Publication Pending) work; Finalized history carries no persistent error marker;
 - common External Interactions list/entry;
 - separate technical diagnostics surface;
@@ -43,6 +47,10 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - `VR-RPKG-MAIN-05` — failures expose separate complete technical diagnostics; raw Output is not the only semantic result surface.
 - `VR-RPKG-MAIN-06` — repository work state and External Interaction state are visually distinct; browser delivery never looks like Finalize authority.
 - `VR-RPKG-MAIN-07` — Repository Not Ready/source-changed/source-unverifiable are actionable product results, not raw Git exception text.
+- `VR-RPKG-MAIN-08` — heavyweight Apply/Refresh/Finalize/Snapshot work never freezes the Swing Event Dispatch Thread; progress/result Output can repaint while background work runs.
+- `VR-RPKG-MAIN-09` — Review-chat title matching policy is editable as a normal application setting, and a rebind confirmation identifies both current and requested conversations before any repository mutation.
+- `VR-RPKG-MAIN-10` — the visible Output surface is labeled/contextualized by the selected ChangeSet semantics: selection switches session buffers, same-ChangeSet Apply attempts accumulate, and late asynchronous events from another ChangeSet remain outside the current text surface; no generic Output buffer is shown.
+- `VR-RPKG-MAIN-11` — transient non-ChangeSet progress/errors use `Operation`, and background Refresh completion cannot change the user's current ChangeSet selection or selected Review/chat presentation.
 
 ## ChangeSet Selector Scope — part of `SCR-RPKG-MAIN`
 

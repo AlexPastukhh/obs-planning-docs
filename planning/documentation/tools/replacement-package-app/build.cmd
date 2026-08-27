@@ -5,6 +5,7 @@ if exist build rmdir /s /q build
 mkdir build\classes build\test-classes
 call javac --release 21 -d build\classes ^
   src\main\java\obs\rpkg\Core.java ^
+  src\main\java\obs\rpkg\ReviewChatTitleMatcher.java ^
   src\main\java\obs\rpkg\ChatBridgeService.java ^
   src\main\java\obs\rpkg\ChatBridgeServer.java ^
   src\main\java\obs\rpkg\GitClient.java ^

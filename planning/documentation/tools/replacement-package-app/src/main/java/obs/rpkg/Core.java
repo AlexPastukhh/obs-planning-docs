@@ -39,7 +39,13 @@ public final class Core {
     public record Handoff(String servicePath,String warning) {}
     public record RepositoryConfig(String id,String name,String path,String repositoryIdentity) {}
     public static final int DEFAULT_REVIEW_SEND_RETRY_SECONDS=6, MIN_REVIEW_SEND_RETRY_SECONDS=1, MAX_REVIEW_SEND_RETRY_SECONDS=60;
-    public record Settings(List<RepositoryConfig> repositories,String selectedRepositoryId,String selectedChangeSetId,String reviewDiffHandling,int reviewDiffSendRetrySeconds) {}
+    public record Settings(List<RepositoryConfig> repositories,String selectedRepositoryId,String selectedChangeSetId,String reviewDiffHandling,int reviewDiffSendRetrySeconds,String reviewChatTitleIgnoredCharacters) {}
+    public enum ReviewChatPlanKind { NO_HINT, UNBOUND_UNIQUE, NO_MATCH, AMBIGUOUS, SAME_AS_EXISTING, REBIND_REQUIRED }
+    public enum ReviewChatBindingDecision { NONE, KEEP_EXISTING, USE_HINT }
+    public record OperationNotice(String level,String code,String message) {}
+    public record ReviewChatBindingPlan(ReviewChatPlanKind kind,String requestedTitle,String normalizedRequestedTitle,ChatBinding existingBinding,ChatConversation requestedConversation,int matchCount,boolean rebindSafe,String rebindBlockReason) {}
+    public record PreparedApply(ObsAction action,PackageData packageData,ApplyTargetResolution targetResolution,ReviewChatBindingPlan reviewChatPlan,List<OperationNotice> notices,String changeSetStateToken,String bindingConversationKey) {}
+    public record AuthorizedApply(PreparedApply prepared,String repositoryTargetId,ReviewChatBindingDecision reviewChatDecision) {}
     public record ApplyResult(String code,ApplicationAttempt attempt,ChangeSet changeSet,ReviewDiff review,String diagnostic) {}
     public record FinalizeResult(String code,String commitSha,String branch,ChangeSet changeSet) {}
     public record SnapshotExportResult(Path zipPath,String snapshotType,String repositoryIdentity,String commitSha,String branch) {}
@@ -99,23 +105,24 @@ public final class Core {
         if(repositoryRoot!=null&&!repositoryRoot.isBlank()){RepositoryConfig r=registerRepository(null,Path.of(repositoryRoot));selectRepository(r.id());}
         return ensureSettings();
     }
-    public Settings setReviewDiffHandling(String handling){if(!List.of("Clipboard","RepoDiffFile","Both").contains(handling))throw new ObsException(PACKAGE_INVALID,"Unknown ReviewDiff handling: "+handling);Settings s=ensureSettings();Settings n=new Settings(s.repositories,s.selectedRepositoryId,s.selectedChangeSetId,handling,s.reviewDiffSendRetrySeconds);state.saveSettings(n);return n;}
-    public Settings setReviewDiffSendRetrySeconds(int seconds){if(seconds<MIN_REVIEW_SEND_RETRY_SECONDS||seconds>MAX_REVIEW_SEND_RETRY_SECONDS)throw new ObsException(PACKAGE_INVALID,"ReviewDiff send retry interval must be between "+MIN_REVIEW_SEND_RETRY_SECONDS+" and "+MAX_REVIEW_SEND_RETRY_SECONDS+" seconds.");Settings s=ensureSettings();Settings n=new Settings(s.repositories,s.selectedRepositoryId,s.selectedChangeSetId,s.reviewDiffHandling,seconds);state.saveSettings(n);return n;}
+    public Settings setReviewDiffHandling(String handling){if(!List.of("Clipboard","RepoDiffFile","Both").contains(handling))throw new ObsException(PACKAGE_INVALID,"Unknown ReviewDiff handling: "+handling);Settings s=ensureSettings();Settings n=new Settings(s.repositories,s.selectedRepositoryId,s.selectedChangeSetId,handling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters);state.saveSettings(n);return n;}
+    public Settings setReviewDiffSendRetrySeconds(int seconds){if(seconds<MIN_REVIEW_SEND_RETRY_SECONDS||seconds>MAX_REVIEW_SEND_RETRY_SECONDS)throw new ObsException(PACKAGE_INVALID,"ReviewDiff send retry interval must be between "+MIN_REVIEW_SEND_RETRY_SECONDS+" and "+MAX_REVIEW_SEND_RETRY_SECONDS+" seconds.");Settings s=ensureSettings();Settings n=new Settings(s.repositories,s.selectedRepositoryId,s.selectedChangeSetId,s.reviewDiffHandling,seconds,s.reviewChatTitleIgnoredCharacters);state.saveSettings(n);return n;}
+    public Settings setReviewChatTitleIgnoredCharacters(String ignored){if(ignored==null)ignored="";if(ignored.codePointCount(0,ignored.length())>128||ignored.indexOf('\n')>=0||ignored.indexOf('\r')>=0)throw new ObsException(PACKAGE_INVALID,"Review chat title ignored characters must contain at most 128 characters and no line breaks.");Settings s=ensureSettings();Settings n=new Settings(s.repositories,s.selectedRepositoryId,s.selectedChangeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,ignored);state.saveSettings(n);return n;}
     public RepositoryConfig registerRepository(String name,Path requested){
         Path repo=repoRoot(requested);String identity=repositoryIdentity(repo);Settings s=ensureSettings();List<RepositoryConfig> repos=new ArrayList<>(s.repositories);
-        for(int i=0;i<repos.size();i++){RepositoryConfig r=repos.get(i);if(samePath(Path.of(r.path),repo)){RepositoryConfig n=new RepositoryConfig(r.id,displayRepositoryName(name,repo),repo.toString(),identity);repos.set(i,n);state.saveSettings(new Settings(List.copyOf(repos),n.id,s.selectedChangeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds));return n;}}
-        RepositoryConfig n=new RepositoryConfig(UUID.randomUUID().toString(),displayRepositoryName(name,repo),repo.toString(),identity);repos.add(n);state.saveSettings(new Settings(List.copyOf(repos),n.id,s.selectedChangeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds));return n;
+        for(int i=0;i<repos.size();i++){RepositoryConfig r=repos.get(i);if(samePath(Path.of(r.path),repo)){RepositoryConfig n=new RepositoryConfig(r.id,displayRepositoryName(name,repo),repo.toString(),identity);repos.set(i,n);state.saveSettings(new Settings(List.copyOf(repos),n.id,s.selectedChangeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters));return n;}}
+        RepositoryConfig n=new RepositoryConfig(UUID.randomUUID().toString(),displayRepositoryName(name,repo),repo.toString(),identity);repos.add(n);state.saveSettings(new Settings(List.copyOf(repos),n.id,s.selectedChangeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters));return n;
     }
-    public Settings removeRepository(String repositoryId){Settings s=ensureSettings();RepositoryConfig r=findRepository(s,repositoryId);for(ChangeSet cs:state.activeChangeSets())if(belongsTo(cs,r))throw new ObsException(STATE_DIVERGED,"Repository has active or pending ChangeSets and cannot be removed.");List<RepositoryConfig> repos=new ArrayList<>(s.repositories);repos.removeIf(x->x.id.equals(repositoryId));String selected=Objects.equals(s.selectedRepositoryId,repositoryId)?(repos.isEmpty()?null:repos.get(0).id):s.selectedRepositoryId;String cs=Objects.equals(s.selectedRepositoryId,repositoryId)?null:s.selectedChangeSetId;Settings n=new Settings(List.copyOf(repos),selected,cs,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds);state.saveSettings(n);return n;}
+    public Settings removeRepository(String repositoryId){Settings s=ensureSettings();RepositoryConfig r=findRepository(s,repositoryId);for(ChangeSet cs:state.activeChangeSets())if(belongsTo(cs,r))throw new ObsException(STATE_DIVERGED,"Repository has active or pending ChangeSets and cannot be removed.");List<RepositoryConfig> repos=new ArrayList<>(s.repositories);repos.removeIf(x->x.id.equals(repositoryId));String selected=Objects.equals(s.selectedRepositoryId,repositoryId)?(repos.isEmpty()?null:repos.get(0).id):s.selectedRepositoryId;String cs=Objects.equals(s.selectedRepositoryId,repositoryId)?null:s.selectedChangeSetId;Settings n=new Settings(List.copyOf(repos),selected,cs,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters);state.saveSettings(n);return n;}
     public RepositoryConfig changeRepositoryLocation(String repositoryId,Path requested){
         try(StateStore.Lock ignored=state.lock()){
             Settings s=ensureSettings();RepositoryConfig current=findRepository(s,repositoryId);Path repo=repoRoot(requested);String identity=repositoryIdentity(repo);if(!same(identity,current.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Selected repository origin is "+identity+"; target expects "+current.repositoryIdentity+".");for(RepositoryConfig r:s.repositories)if(!r.id.equals(current.id)&&samePath(Path.of(r.path),repo))throw new ObsException(STATE_DIVERGED,"Selected location is already registered as another Repository Target: "+r.name+".");
             for(ChangeSet cs:state.getChangeSets())if((cs.repositoryTargetId==null||cs.repositoryTargetId.isBlank())&&same(cs.repositoryIdentity,current.repositoryIdentity)&&cs.repositoryRoot!=null&&samePath(Path.of(cs.repositoryRoot),Path.of(current.path))){cs.repositoryTargetId=current.id;state.saveChangeSet(cs);}
-            List<RepositoryConfig> repos=new ArrayList<>(s.repositories);RepositoryConfig updated=new RepositoryConfig(current.id,current.name,repo.toString(),current.repositoryIdentity);for(int i=0;i<repos.size();i++)if(repos.get(i).id.equals(repositoryId)){repos.set(i,updated);break;}state.saveSettings(new Settings(List.copyOf(repos),s.selectedRepositoryId,s.selectedChangeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds));return updated;
+            List<RepositoryConfig> repos=new ArrayList<>(s.repositories);RepositoryConfig updated=new RepositoryConfig(current.id,current.name,repo.toString(),current.repositoryIdentity);for(int i=0;i<repos.size();i++)if(repos.get(i).id.equals(repositoryId)){repos.set(i,updated);break;}state.saveSettings(new Settings(List.copyOf(repos),s.selectedRepositoryId,s.selectedChangeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters));return updated;
         }
     }
-    public Settings selectRepository(String repositoryId){Settings s=ensureSettings();findRepository(s,repositoryId);String cs=s.selectedChangeSetId;ChangeSet selected=state.getChangeSet(cs);RepositoryConfig r=findRepository(s,repositoryId);if(selected==null||!belongsTo(selected,r))cs=null;Settings n=new Settings(s.repositories,repositoryId,cs,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds);state.saveSettings(n);return n;}
-    public Settings selectChangeSet(String changeSetId){Settings s=ensureSettings();if(changeSetId==null||changeSetId.isBlank()){Settings n=new Settings(s.repositories,s.selectedRepositoryId,null,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds);state.saveSettings(n);return n;}ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+changeSetId);if(s.selectedRepositoryId==null)throw new ObsException(REPOSITORY_MISMATCH,"Select a registered repository first.");RepositoryConfig r=findRepository(s,s.selectedRepositoryId);if(!belongsTo(cs,r))throw new ObsException(REPOSITORY_MISMATCH,"ChangeSet belongs to a different repository.");Settings n=new Settings(s.repositories,s.selectedRepositoryId,changeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds);state.saveSettings(n);return n;}
+    public Settings selectRepository(String repositoryId){Settings s=ensureSettings();findRepository(s,repositoryId);String cs=s.selectedChangeSetId;ChangeSet selected=state.getChangeSet(cs);RepositoryConfig r=findRepository(s,repositoryId);if(selected==null||!belongsTo(selected,r))cs=null;Settings n=new Settings(s.repositories,repositoryId,cs,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters);state.saveSettings(n);return n;}
+    public Settings selectChangeSet(String changeSetId){Settings s=ensureSettings();if(changeSetId==null||changeSetId.isBlank()){Settings n=new Settings(s.repositories,s.selectedRepositoryId,null,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters);state.saveSettings(n);return n;}ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+changeSetId);if(s.selectedRepositoryId==null)throw new ObsException(REPOSITORY_MISMATCH,"Select a registered repository first.");RepositoryConfig r=findRepository(s,s.selectedRepositoryId);if(!belongsTo(cs,r))throw new ObsException(REPOSITORY_MISMATCH,"ChangeSet belongs to a different repository.");Settings n=new Settings(s.repositories,s.selectedRepositoryId,changeSetId,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters);state.saveSettings(n);return n;}
     public List<RepositoryConfig> getRepositories(){return ensureSettings().repositories;}
     public List<ChangeSet> getChangeSets(String repositoryId,boolean includeFinalized){Settings s=ensureSettings();RepositoryConfig r=findRepository(s,repositoryId);List<ChangeSet> out=new ArrayList<>();for(ChangeSet cs:state.getChangeSets())if(belongsTo(cs,r)&&(includeFinalized||isUnfinished(cs)))out.add(cs);out.sort(workComparator());return out;}
     public List<ChangeSet> getGlobalChangeSets(boolean includeFinalized){List<ChangeSet> out=new ArrayList<>();for(ChangeSet cs:state.getChangeSets())if(includeFinalized||isUnfinished(cs))out.add(cs);out.sort(workComparator());return out;}
@@ -146,7 +153,7 @@ public final class Core {
         Settings s=state.getSettings();boolean changed=false;List<RepositoryConfig> repos=new ArrayList<>();
         for(RepositoryConfig r:s.repositories){if(r.repositoryIdentity==null||r.repositoryIdentity.isBlank()){try{Path repo=repoRoot(Path.of(r.path));String identity=repositoryIdentity(repo);String name=r.name==null||r.name.isBlank()?displayRepositoryName(null,repo):r.name;repos.add(new RepositoryConfig(r.id,name,repo.toString(),identity));changed=true;}catch(ObsException e){repos.add(r);}}else repos.add(r);}
         String selected=s.selectedRepositoryId;boolean selectedExists=false;for(RepositoryConfig r:repos)if(Objects.equals(r.id,selected)){selectedExists=true;break;}if(selected!=null&&!selectedExists){selected=repos.isEmpty()?null:repos.get(0).id;changed=true;}if(selected==null&&!repos.isEmpty()){selected=repos.get(0).id;changed=true;}String selectedCs=s.selectedChangeSetId;if(selectedCs!=null){ChangeSet cs=state.getChangeSet(selectedCs);RepositoryConfig rr=null;for(RepositoryConfig r:repos)if(Objects.equals(r.id,selected)){rr=r;break;}if(cs==null||rr==null||!belongsTo(cs,rr)){selectedCs=null;changed=true;}}
-        Settings n=new Settings(List.copyOf(repos),selected,selectedCs,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds);if(changed)state.saveSettings(n);return n;
+        Settings n=new Settings(List.copyOf(repos),selected,selectedCs,s.reviewDiffHandling,s.reviewDiffSendRetrySeconds,s.reviewChatTitleIgnoredCharacters);if(changed)state.saveSettings(n);return n;
     }
     private RepositoryConfig requireAllowedRepository(Path requested){Settings s=ensureSettings();Path repo=repoRoot(requested);for(RepositoryConfig r:s.repositories)if(samePath(Path.of(r.path),repo)){String identity=repositoryIdentity(repo);if(!same(identity,r.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Registered repository origin changed from "+r.repositoryIdentity+" to "+identity+".");return r;}throw new ObsException(REPOSITORY_MISMATCH,"Repository is not registered in Replacement Package App: "+repo);}
     private static RepositoryConfig findRepository(Settings s,String id){if(id==null||id.isBlank())throw new ObsException(REPOSITORY_MISMATCH,"No registered repository is selected.");for(RepositoryConfig r:s.repositories)if(r.id.equals(id))return r;throw new ObsException(REPOSITORY_MISMATCH,"Unknown registered repository: "+id);}
@@ -198,6 +205,10 @@ public final class Core {
 
     public ApplyTargetResolution resolveApplyTarget(String actionText,Path archive,String currentRepositoryId){
         ObsAction action=actionText==null||actionText.isBlank()?null:parseAction(actionText);Path p=action==null?archive:resolveArchiveForAction(action,archive);PackageData pkg=readPackage(p);if(action!=null&&!pkg.manifest.packageId.equals(action.packageId()))throw new ObsException(ACTION_PACKAGE_MISMATCH,"OBS-ACTION packageId does not match PACKAGE.json.");
+        return resolveApplyTarget(pkg,currentRepositoryId);
+    }
+
+    private ApplyTargetResolution resolveApplyTarget(PackageData pkg,String currentRepositoryId){
         Settings settings=ensureSettings();ChangeSet existing=state.getChangeSet(pkg.manifest.changeSetId);
         if(existing!=null){RepositoryConfig target=repositoryForChangeSet(existing,false);if(!same(existing.repositoryIdentity,pkg.manifest.repositoryIdentity))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet repository identity differs from package.");return new ApplyTargetResolution(target,List.of(target),!Objects.equals(currentRepositoryId,target.id),"Existing ChangeSet target");}
         RepositoryConfig current=null;if(currentRepositoryId!=null)for(RepositoryConfig r:settings.repositories)if(r.id.equals(currentRepositoryId)){current=r;break;}
@@ -208,10 +219,83 @@ public final class Core {
         return new ApplyTargetResolution(null,List.copyOf(matches),false,"Multiple matching Repository Targets require explicit selection");
     }
 
-    public ApplyResult applyAction(String actionText,Path archive,Path repositoryRoot){ObsAction a=parseAction(actionText);Path p=resolveArchiveForAction(a,archive);PackageData pkg=readPackage(p);if(!pkg.manifest.packageId.equals(a.packageId()))throw new ObsException(ACTION_PACKAGE_MISMATCH,"OBS-ACTION packageId does not match PACKAGE.json.");return applyInternal(pkg,repositoryRoot,a);}
-    public ApplyResult applyPackage(Path archive,Path repositoryRoot){return applyInternal(readPackage(archive),repositoryRoot,null);}
+    public PreparedApply prepareApply(String actionText,Path archive,String currentRepositoryId){
+        ObsAction action=actionText==null||actionText.isBlank()?null:parseAction(actionText);
+        Path selected=action==null?archive:resolveArchiveForAction(action,archive);
+        PackageData pkg=readPackage(selected);
+        if(action!=null&&!pkg.manifest.packageId.equals(action.packageId()))throw new ObsException(ACTION_PACKAGE_MISMATCH,"OBS-ACTION packageId does not match PACKAGE.json.");
+        ApplyTargetResolution target=resolveApplyTarget(pkg,currentRepositoryId);
+        ChangeSet existing=state.getChangeSet(pkg.manifest.changeSetId);
+        String token=changeSetStateToken(existing);
+        ChatBinding binding=chatBridge.binding(pkg.manifest.changeSetId);
+        ReviewChatBindingPlan chatPlan=resolveReviewChatBindingPlan(action,pkg.manifest.changeSetId,binding);
+        List<OperationNotice> notices=new ArrayList<>();
+        if(chatPlan.kind()==ReviewChatPlanKind.NO_MATCH)notices.add(new OperationNotice("WARNING","CHAT_TITLE_NO_MATCH","OBS-ACTION chatTabTitle '"+chatPlan.requestedTitle()+"' did not match any currently open ordinary ChatGPT conversation after configured title normalization; Apply may continue and manual binding remains available."));
+        if(chatPlan.kind()==ReviewChatPlanKind.AMBIGUOUS)notices.add(new OperationNotice("WARNING","CHAT_TITLE_AMBIGUOUS","OBS-ACTION chatTabTitle '"+chatPlan.requestedTitle()+"' matched "+chatPlan.matchCount()+" open ChatGPT conversations after configured title normalization; no destination was selected and manual binding remains available."));
+        if(chatPlan.kind()==ReviewChatPlanKind.REBIND_REQUIRED&&!chatPlan.rebindSafe())notices.add(new OperationNotice("WARNING","CHAT_REBIND_BLOCKED",chatPlan.rebindBlockReason()));
+        return new PreparedApply(action,pkg,target,chatPlan,List.copyOf(notices),token,binding==null?null:binding.conversationKey());
+    }
 
-    private ApplyResult applyInternal(PackageData pkg,Path repositoryRoot,ObsAction action){
+    public AuthorizedApply authorizeApply(PreparedApply prepared,String repositoryTargetId,ReviewChatBindingDecision decision){
+        if(prepared==null)throw new ObsException(STATE_DIVERGED,"Prepared Apply is required.");
+        ApplyTargetResolution resolution=prepared.targetResolution();RepositoryConfig target=resolution.target();
+        String targetId=repositoryTargetId;
+        if(target!=null){if(targetId==null||targetId.isBlank())targetId=target.id();if(!Objects.equals(target.id(),targetId))throw new ObsException(REPOSITORY_MISMATCH,"Prepared Apply target changed; prepare the operation again.");}
+        else{boolean found=false;for(RepositoryConfig c:resolution.candidates())if(Objects.equals(c.id(),targetId)){found=true;break;}if(!found)throw new ObsException(REPOSITORY_SELECTION_REQUIRED,"Select one of the prepared Repository Targets before Apply.");}
+        ReviewChatBindingPlan plan=prepared.reviewChatPlan();ReviewChatBindingDecision resolved=decision==null?ReviewChatBindingDecision.NONE:decision;
+        if(plan.kind()==ReviewChatPlanKind.REBIND_REQUIRED){
+            if(resolved!=ReviewChatBindingDecision.KEEP_EXISTING&&resolved!=ReviewChatBindingDecision.USE_HINT)throw new ObsException(CHAT_BRIDGE_FAILED,"Choose whether Apply keeps the existing Review chat or rebinds to the OBS-ACTION destination.");
+            if(resolved==ReviewChatBindingDecision.USE_HINT&&!plan.rebindSafe())throw new ObsException(CHAT_BRIDGE_FAILED,plan.rebindBlockReason());
+        }else if(plan.kind()==ReviewChatPlanKind.UNBOUND_UNIQUE)resolved=ReviewChatBindingDecision.USE_HINT;
+        else if(plan.kind()==ReviewChatPlanKind.SAME_AS_EXISTING)resolved=ReviewChatBindingDecision.KEEP_EXISTING;
+        else resolved=ReviewChatBindingDecision.NONE;
+        return new AuthorizedApply(prepared,targetId,resolved);
+    }
+
+    public ApplyResult executeApply(AuthorizedApply authorized){
+        if(authorized==null||authorized.prepared()==null)throw new ObsException(STATE_DIVERGED,"Authorized Apply is required.");
+        PreparedApply prepared=authorized.prepared();revalidatePreparedApply(authorized);
+        RepositoryConfig target=null;for(RepositoryConfig r:ensureSettings().repositories)if(Objects.equals(r.id(),authorized.repositoryTargetId())){target=r;break;}
+        if(target==null)throw new ObsException(REPOSITORY_MISMATCH,"Prepared Repository Target is no longer registered; prepare the operation again.");
+        return applyInternal(prepared.packageData(),Path.of(target.path()),prepared.action(),authorized.reviewChatDecision(),prepared.reviewChatPlan());
+    }
+
+    private void revalidatePreparedApply(AuthorizedApply authorized){
+        PreparedApply prepared=authorized.prepared();String csId=prepared.packageData().manifest.changeSetId;
+        if(!Objects.equals(prepared.changeSetStateToken(),changeSetStateToken(state.getChangeSet(csId))))throw new ObsException(STATE_DIVERGED,"Prepared Apply is stale because ChangeSet state changed; prepare the operation again.");
+        ReviewChatPlanKind kind=prepared.reviewChatPlan().kind();
+        if(Set.of(ReviewChatPlanKind.UNBOUND_UNIQUE,ReviewChatPlanKind.SAME_AS_EXISTING,ReviewChatPlanKind.REBIND_REQUIRED).contains(kind)){
+            ChatBinding current=chatBridge.binding(csId);String currentKey=current==null?null:current.conversationKey();
+            if(!Objects.equals(prepared.bindingConversationKey(),currentKey))throw new ObsException(STATE_DIVERGED,"Prepared Apply is stale because Review-chat binding changed; prepare the operation again.");
+        }
+        if(authorized.reviewChatDecision()==ReviewChatBindingDecision.USE_HINT){
+            ChatConversation requested=prepared.reviewChatPlan().requestedConversation();if(requested==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Prepared Review-chat destination is unavailable.");
+            chatBridge.assertRebindSafe(csId,requested.conversationKey());
+        }
+    }
+
+    private static String changeSetStateToken(ChangeSet cs){return cs==null?"<absent>":Json.stringify(cs.json());}
+
+    private ReviewChatBindingPlan resolveReviewChatBindingPlan(ObsAction action,String changeSetId,ChatBinding existing){
+        if(action==null||action.chatTabTitle()==null)return new ReviewChatBindingPlan(ReviewChatPlanKind.NO_HINT,null,null,existing,null,0,true,null);
+        String requested=action.chatTabTitle(),ignored=ensureSettings().reviewChatTitleIgnoredCharacters;
+        String normalized=ReviewChatTitleMatcher.normalize(requested,ignored);
+        List<ChatConversation> matches=new ArrayList<>();
+        if(!normalized.isBlank())for(ChatConversation c:chatBridge.openConversations())if(ReviewChatTitleMatcher.matches(requested,c.title(),ignored))matches.add(c);
+        if(matches.isEmpty())return new ReviewChatBindingPlan(ReviewChatPlanKind.NO_MATCH,requested,normalized,existing,null,0,true,null);
+        if(matches.size()>1)return new ReviewChatBindingPlan(ReviewChatPlanKind.AMBIGUOUS,requested,normalized,existing,null,matches.size(),true,null);
+        ChatConversation requestedConversation=matches.get(0);
+        if(existing==null)return new ReviewChatBindingPlan(ReviewChatPlanKind.UNBOUND_UNIQUE,requested,normalized,null,requestedConversation,1,true,null);
+        if(Objects.equals(existing.conversationKey(),requestedConversation.conversationKey()))return new ReviewChatBindingPlan(ReviewChatPlanKind.SAME_AS_EXISTING,requested,normalized,existing,requestedConversation,1,true,null);
+        boolean safe=true;String block=null;try{chatBridge.assertRebindSafe(changeSetId,requestedConversation.conversationKey());}catch(ObsException e){safe=false;block=e.getMessage();}
+        return new ReviewChatBindingPlan(ReviewChatPlanKind.REBIND_REQUIRED,requested,normalized,existing,requestedConversation,1,safe,block);
+    }
+
+    public ApplyResult applyAction(String actionText,Path archive,Path repositoryRoot){RepositoryConfig target=repositoryByPath(repositoryRoot);PreparedApply prepared=prepareApply(actionText,archive,target.id());ReviewChatBindingDecision decision=defaultReviewChatDecision(prepared.reviewChatPlan());return executeApply(authorizeApply(prepared,target.id(),decision));}
+    public ApplyResult applyPackage(Path archive,Path repositoryRoot){RepositoryConfig target=repositoryByPath(repositoryRoot);PreparedApply prepared=prepareApply(null,archive,target.id());return executeApply(authorizeApply(prepared,target.id(),ReviewChatBindingDecision.NONE));}
+    private static ReviewChatBindingDecision defaultReviewChatDecision(ReviewChatBindingPlan plan){if(plan==null)return ReviewChatBindingDecision.NONE;return switch(plan.kind()){case UNBOUND_UNIQUE->ReviewChatBindingDecision.USE_HINT;case SAME_AS_EXISTING,REBIND_REQUIRED->ReviewChatBindingDecision.KEEP_EXISTING;default->ReviewChatBindingDecision.NONE;};}
+
+    private ApplyResult applyInternal(PackageData pkg,Path repositoryRoot,ObsAction action,ReviewChatBindingDecision reviewChatDecision,ReviewChatBindingPlan reviewChatPlan){
         String attemptId=UUID.randomUUID().toString(),now=Instant.now().toString();Path repo=null;ChangeSet cs=null;ReviewDiff review=null;ApplicationAttempt success=null;String labelDiagnostic="";StateStore.Lock stateLock=state.lock();try{
             RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);repo=Path.of(allowed.path);String repoIdentity=allowed.repositoryIdentity;if(!same(repoIdentity,pkg.manifest.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Configured origin is "+repoIdentity+"; package targets "+pkg.manifest.repositoryIdentity+".");requireRepositoryReady(repo);
             ChangeSet prior=state.getChangeSet(pkg.manifest.changeSetId);boolean priorExists=prior!=null;byte[] priorState=priorExists?readBytes(state.changeSetPath(pkg.manifest.changeSetId)):null;cs=priorExists?prior:new ChangeSet();if(priorExists){if(!"Active".equals(cs.status))throw new ObsException(STATE_DIVERGED,"ChangeSet is not Active: "+cs.status);RepositoryConfig owner=repositoryForChangeSet(cs,false);if(!Objects.equals(owner.id,allowed.id)||!same(cs.repositoryIdentity,repoIdentity))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet repository identity/target differs from package/apply target.");if(!Objects.equals(cs.changeSetLabel,pkg.manifest.changeSetLabel))labelDiagnostic="Package changeSetLabel '"+pkg.manifest.changeSetLabel+"' differs from persisted label '"+cs.changeSetLabel+"'; persisted label retained.";}else{cs.changeSetId=pkg.manifest.changeSetId;cs.changeSetLabel=pkg.manifest.changeSetLabel;cs.repositoryIdentity=repoIdentity;cs.repositoryTargetId=allowed.id;cs.repositoryRoot=repo.toString();cs.createdAt=now;cs.updatedAt=now;}
@@ -228,19 +312,10 @@ public final class Core {
                 try{if(priorExists)Files.write(state.changeSetPath(pkg.manifest.changeSetId),priorState,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);else Files.deleteIfExists(state.changeSetPath(pkg.manifest.changeSetId));Files.deleteIfExists(successAttemptPath);if(review!=null)Files.deleteIfExists(review.diffPath);}catch(Throwable x){ok=false;}if(!ok)throw new ObsException(STATE_DIVERGED,"Apply failed and target/ledger rollback could not be verified.",t);throw asObs(t,RESULT_MISMATCH);
             }
             Handoff h;try{h=publishReviewDiff(cs,review);}catch(Throwable t){h=new Handoff(null,"ReviewDiff handoff failed: "+t.getMessage());}success.serviceReviewDiffPath=h.servicePath;success.handoffWarning=h.warning;
-            try{String warning=bindReviewChatFromActionHintIfMissing(action,cs);if(warning!=null&&!warning.isBlank())success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" "+warning).trim();}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT title-binding warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
+            if(reviewChatDecision==ReviewChatBindingDecision.USE_HINT&&reviewChatPlan!=null&&reviewChatPlan.requestedConversation()!=null)try{chatBridge.bind(cs.changeSetId,reviewChatPlan.requestedConversation().conversationKey());}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT rebind warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
             try{chatBridge.enqueueReviewIfBound(cs,review);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT delivery queue warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
             try{state.saveAttempt(success);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" Attempt handoff metadata update failed.").trim();}return new ApplyResult(SUCCESS,success,cs,review,labelDiagnostic);
         }catch(ObsException e){if(pkg!=null){try{ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",e.code,e.getMessage(),null);state.saveAttempt(failed);recordOperationOutcomeUnlocked(pkg.manifest.changeSetId,"FAILED",e.code,semanticSummary(e.getMessage()));}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,STATE_DIVERGED);if(pkg!=null){try{state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",oe.code,oe.getMessage(),null));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
-    }
-
-    private String bindReviewChatFromActionHintIfMissing(ObsAction action,ChangeSet cs){
-        if(action==null||action.chatTabTitle()==null)return null;
-        if(chatBridge.binding(cs.changeSetId)!=null)return null;
-        String title=action.chatTabTitle();List<ChatConversation> matches=new ArrayList<>();for(ChatConversation c:chatBridge.openConversations())if(title.equals(c.title()))matches.add(c);
-        if(matches.size()==1){chatBridge.bind(cs.changeSetId,matches.get(0).conversationKey());return null;}
-        if(matches.isEmpty())return "OBS-ACTION chatTabTitle '"+title+"' did not match any currently open ordinary ChatGPT conversation; bind Review chat manually.";
-        return "OBS-ACTION chatTabTitle '"+title+"' matched multiple open ChatGPT conversations; bind Review chat manually.";
     }
 
     private ApplicationAttempt attempt(String id,String now,String name,String repoId,Path repo,PackageData pkg,String result,String code,String msg,ReviewDiff review){ApplicationAttempt a=new ApplicationAttempt();a.attemptId=id;a.timestamp=now;a.name=name;a.repositoryIdentity=repoId;a.repositoryRoot=repo==null?null:repo.toString();a.archivePath=pkg.archivePath.toString();a.archiveSha256=pkg.archiveSha256;a.packageId=pkg.manifest.packageId;a.changeSetId=pkg.manifest.changeSetId;a.result=result;a.code=code;a.message=msg;if(review!=null){a.reviewDiffPath=review.diffPath.toString();a.reviewDiffSha256=review.sha256;}a.handoffWarning="";return a;}

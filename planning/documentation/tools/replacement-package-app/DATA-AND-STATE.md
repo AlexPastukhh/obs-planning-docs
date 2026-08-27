@@ -45,11 +45,11 @@ No ledger/state file is intentionally stored inside the target repository.
 
 ## 3. Settings / Repository Registry
 
-`settings.json` schema 3 is consumer-only local configuration:
+`settings.json` schema 4 is consumer-only local configuration:
 
 ```json
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "repositories": [
     {
       "id": "<local repository-record UUID>",
@@ -61,7 +61,8 @@ No ledger/state file is intentionally stored inside the target repository.
   "selectedRepositoryId": "<repository-record UUID or null>",
   "selectedChangeSetId": "<changeSet UUID or null>",
   "reviewDiffHandling": "Clipboard",
-  "reviewDiffSendRetrySeconds": 6
+  "reviewDiffSendRetrySeconds": 6,
+  "reviewChatTitleIgnoredCharacters": ""
 }
 ```
 
@@ -74,7 +75,8 @@ Rules:
 - `selectedRepositoryId` and `selectedChangeSetId` are navigation state, not mutation authority;
 - `reviewDiffHandling` remains `Clipboard | RepoDiffFile | Both`;
 - `reviewDiffSendRetrySeconds` is an application setting for ReviewDiff automatic Send-control attempts; default `6`, valid range `1..60` seconds. A queued ReviewDiff task captures the current value, so later Settings edits affect new tasks only;
-- older settings schemas are read compatibly: legacy schema-1 `repositoryRoot` is migrated to one repository record when that path can be verified, and schema-2 state receives the default retry interval; package/OBS-ACTION data never supplies repository registration.
+- `reviewChatTitleIgnoredCharacters` is a local matching-policy setting for action-assisted Review-chat destination resolution. It defaults to empty and stores at most 128 literal Unicode characters/code points (no line breaks). Matching removes those configured characters from both the requested `chatTabTitle` and inventory titles, trims outer whitespace, then performs exact case-sensitive equality. It is not regex/fuzzy/case-folding configuration and is never supplied by `PACKAGE.json` or `OBS-ACTION`;
+- older settings schemas are read compatibly: legacy schema-1 `repositoryRoot` is migrated to one repository record when that path can be verified, and schema-2/3 state receives missing defaults for newer application settings; package/OBS-ACTION data never supplies repository registration.
 
 A registered path that is temporarily unavailable remains configuration; use-time verification blocks mutation rather than silently authorizing another path.
 
@@ -126,13 +128,13 @@ Failed attempts are retained when enough identity/state is known to write a mean
 
 ## 6. ReviewDiff Identity And Implicit Finalize Baseline
 
-Each successful apply creates a new **cumulative** review record from current `HEAD` to current working tree for all owned paths. Explicit `Refresh Review` also replaces and persists the ChangeSet's `currentReview`. Older review records remain history but are stale/non-current after a later overlay/refresh.
+Each successful apply creates a new **cumulative** review record from current `HEAD` to current working tree for all owned paths. Explicit `Refresh Review` also replaces and persists the captured ChangeSet's `currentReview`. Refresh completion is ChangeSet state, not navigation authority: a background Refresh for X does not mutate Swing's current selector/presentation if the user has moved to Y. Older review records remain history but are stale/non-current after a later overlay/refresh.
 
 On restart or ChangeSet selection, a persisted current review may be reconstructed only when its canonical diff file exists and exact SHA-256 still matches the recorded value.
 
 The persisted `currentReview.sha256` binds the current ReviewDiff to exact canonical bytes and is the implicit Finalize baseline. It is internal application state, not user approval input. Normal Swing/CLI workflows do not require the user to view, copy or enter a SHA.
 
-`Copy ReviewDiff` / `Open ReviewDiff` are optional inspection conveniences and are never prerequisites for Finalize. Apply or Refresh Review replaces the persisted baseline.
+`Copy ReviewDiff` / `Open ReviewDiff` are optional inspection conveniences and are never prerequisites for Finalize. Apply or Refresh Review replaces the persisted baseline. Swing Review actions resolve the latest persisted ChangeSet/currentReview state when invoked, so they do not depend on a background Refresh callback rewriting the selected-work UI cache.
 
 Finalize integrity-checks the persisted canonical ReviewDiff, regenerates the cumulative diff and compares the internal fingerprints. A mismatch is `REVIEW_STALE`; the user refreshes ReviewDiff before retrying Finalize.
 
@@ -179,6 +181,10 @@ Creating a snapshot does not claim paths, change ChangeSet lifecycle or become a
 Browser integration is consumer-only local delivery state and does not enter `PACKAGE.json` or `OBS-ACTION`.
 
 `chat-bridge.json` stores the random loopback pairing token and fixed V1 port. `chat-bindings/<changeSetId>.json` stores one optional ChangeSet → ordinary ChatGPT conversation binding (`conversationKey`, last-known title/URL, bound timestamp). This binding survives continuation/correction packages because they keep the same `changeSetId`.
+
+`PreparedApply` / `AuthorizedApply` are transient in-memory operation records, not persistent ledger files. Prepare freezes parsed `OBS-ACTION`, validated `PackageData`, Repository Target candidates, the ChangeSet state token, the current binding key and any unique title-resolved destination `conversationKey`. The user decision to keep/rebind is also transient. Execute revalidates the frozen ChangeSet/binding assumptions before repository mutation; actual binding persistence is written only after successful Apply when rebind/use-hint was authorized.
+
+Swing ChangeSet Output buffers are transient session state. The main work surface keeps one in-memory text buffer per `changeSetId` and no general/unresolved Output buffer. Package filename and `packageId` may be recorded inside an Apply-attempt line for traceability, but neither is an Output-state key. ChangeSet selection changes which buffer is rendered; ChatGPT delivery events append to the buffer named by their `changeSetId`. Progress/errors without an authoritative ChangeSet identity use the separate transient `Operation` field plus normal notification/Technical Diagnostics paths instead of becoming Output history. No Output buffer is written to the repository or consumer ledger and no Output text becomes mutation/finalization authority.
 
 `chat-handoffs/<taskId>.json` records ReviewDiff/snapshot delivery tasks. Every deliverable task records the exact artifact path, byte length and SHA-256 captured at enqueue; payload delivery requires those bytes still to match. ReviewDiff tasks also reference the canonical `reviewAttemptId` and capture `sendRetryIntervalSeconds` from Settings at enqueue; automatic creation is idempotent for one `changeSetId + reviewAttemptId`. Snapshot handoff records may reference an already-created snapshot ZIP, but this is delivery state rather than repository-snapshot export history and does not change the snapshot contract.
 

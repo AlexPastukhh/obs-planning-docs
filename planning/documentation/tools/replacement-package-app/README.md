@@ -125,7 +125,13 @@ register/select local repository
 
 Copy/Open ReviewDiff remain optional inspection conveniences and never a Finalize approval gate. ReviewDiff fingerprints remain internal integrity state; normal user flow does not require SHA input.
 
-`OBS-ACTION/1` may carry optional `chatTabTitle: <exact title>`. It is only a Review-chat binding hint: after successful Apply, an unbound ChangeSet is auto-bound only when exactly one currently open ordinary ChatGPT conversation has that exact title. Existing binding is never overwritten; zero/duplicate matches keep Apply successful and leave the normal manual `Refresh chats` / `Bind Review chat` path available. Manual and action-assisted binding use the same persisted binding and the same SL-RPKG-06 delivery queue.
+The Swing host runs package Prepare/Apply, Refresh Review, Finalize/Retry Push and Repository Snapshot export on background workers. Dialogs, Output rendering and user decisions stay on the Event Dispatch Thread; Git/ZIP/hash/filesystem work does not. Apply click does not open/read the selected ZIP before background Prepare begins. Prepare warnings are appended to Output, while confirmation dialogs are reserved for decisions that actually require user authority.
+
+`Refresh Review` captures one ChangeSet ID when invoked and only refreshes that ChangeSet's persisted Review state/Output. A background completion never reassigns the current ChangeSet selector or Review/chat presentation after the user has navigated elsewhere. Copy/Open resolve the latest persisted Review for the currently selected ChangeSet when invoked, rather than relying on a background callback to maintain a global Review cache.
+
+Visible Output follows the logical work, not the downloaded archive: each `changeSetId` has one session-only Output buffer and selecting a ChangeSet restores that buffer. Multiple initial/correction packages for the same open ChangeSet append separate Apply-attempt headers to the same Output; another ChangeSet has separate Output even if its ZIP reuses the same filename or filesystem path. There is no general Output history. Before Prepare has parsed a valid package, progress/errors use the separate transient `Operation` field (plus notification/Technical Diagnostics where relevant) and are not attributed to whichever ChangeSet happens to be selected. After Prepare succeeds the UI switches to the package manifest's `changeSetId`. The attempt header keeps the physical filename plus `packageId` for traceability, but neither value owns Output routing. ChatGPT bridge results are routed directly by their `changeSetId`. `packageId` still has its independent protocol role: an `OBS-ACTION` must resolve/select a ZIP whose `PACKAGE.json.packageId` exactly matches the action, while `archive` remains only a filename/location hint.
+
+`OBS-ACTION/1` may carry optional `chatTabTitle: <exact title>`. Apply now parses/resolves the action **before mutation** into one prepared operation. The local `Review title ignores` setting contains literal Unicode characters to delete from both the requested title and current inventory titles before case-sensitive exact comparison; its default is empty, so current literal matching is preserved. A unique unbound destination uses the normal persisted binding after successful Apply. If a unique requested destination differs from an existing binding, the app asks **before repository mutation** whether to Apply without rebind, Apply and rebind, or cancel; unsafe rebind is not offered. Zero/duplicate matches are warnings in Output, not modal errors, and manual `Refresh chats` / `Bind Review chat` remains available. Actual bind/rebind and ReviewDiff queueing still use the same SL-RPKG-06 services, and post-Apply code reuses the prepared `conversationKey` rather than rematching the title.
 
 ## 7. Repository Context / ChatGPT Handoff — Current Implementation
 
@@ -145,6 +151,10 @@ java -jar build\replacement-package-app.jar retry-push --repo C:\repo --changese
 java -jar build\replacement-package-app.jar export-snapshot --repo C:\repo --mode local --output-dir C:\Users\me\Downloads
 java -jar build\replacement-package-app.jar export-snapshot --repo C:\repo --mode committed --commit HEAD --output-dir C:\Users\me\Downloads
 ```
+
+Known accepted CLI limitation: `apply --action-file` is non-interactive. If its uniquely prepared `chatTabTitle` destination differs from an existing Review-chat binding, the compatibility path keeps the existing binding and does not perform action-driven rebind because no keep/rebind/cancel confirmation can be obtained. Use Swing Apply when explicit rebind authorization is required.
+
+A separate accepted concurrency risk remains in Swing: after the pre-mutation stale check, a manual Bind/Unbind performed while background Execute is already running may later be overwritten by the previously authorized prepared rebind. Do not manually change Review-chat binding during active Apply Execute in this revision.
 
 ## 9. Authority Boundary
 

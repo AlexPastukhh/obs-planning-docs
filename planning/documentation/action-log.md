@@ -1232,3 +1232,18 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 **Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
 **Entry:** `LOG-RPKG-033`  
 **Reason:** the canonical shared `OBS-ACTION/1` protocol is synchronized into `planning/documentation/build-replacement-archive-workflow.md` in the reusable-documentation scope, while the Replacement Package App scope owns the SL-RPKG-06 behavior, implementation, tests and full APPLIED rationale.
+
+### XREF-DOC-013 — Replacement Package App prepared Apply and Review-chat rebind protocol
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-034`  
+**Reason:** the Replacement Package App scope owns prepared action resolution, configurable Review-chat title matching, explicit rebind authorization and Swing background execution, while this transition also synchronizes the canonical `OBS-ACTION/1` definition/use through `planning/documentation/build-replacement-archive-workflow.md` in the reusable-documentation scope.
+
+
+### XREF-DOC-014 — Replacement Package App prepared Apply ReviewDiff correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-035`  
+**Reason:** the Replacement Package App scope owns the EDT pre-Prepare correction plus the accepted manual-rebind-during-Execute and non-interactive CLI limitations, while this correction also updates the materialized shared `OBS-ACTION/1` protocol in `planning/documentation/build-replacement-archive-workflow.md` so producer/consumer wording remains truthful.
