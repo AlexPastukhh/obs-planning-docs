@@ -7,10 +7,11 @@ Status: active generic methodology owner
 ```text
 Lens
 = reusable evaluation/discovery perspective
-  applied to a Target / Scope candidate / RQ / Idea / Branch / Decision / Evidence set
+  applied inside IDTSPE to material IDTSPE State Units
+  and/or Target Step Result Units
 ```
 
-A Lens may produce findings, Evidence requests, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance.
+A Lens may discover findings, Evidence needs, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. The runtime routes that content into **Core-defined State Unit kinds**; the Lens does not define Unit kinds itself.
 
 ```text
 Lens ≠ Target Module
@@ -127,6 +128,166 @@ Provenance
 ```
 
 `Target Inputs / Evidence` means current planning/implementation material consumed by the Lens. It is intentionally distinct from the Lens's own `Knowledge Basis`.
+
+
+## 4A. Unit Interaction / Routing Contract
+
+The operational contract must make it clear **what the Lens reads/analyzes and where its findings can go**.
+
+Canonical Unit model: [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md).
+
+Use the following proportional structure for new or materially revised reusable Lenses.
+
+### Context Reads
+
+Supporting context the Lens may consult.
+
+Examples:
+
+```text
+Sources
+Decisions
+Q/R/P
+Evidence
+adjacent Result Units
+current implementation/workspace state
+```
+
+Context availability does not mean the Lens should audit all of it.
+
+### Focused Reads / Analysis Focus
+
+The Units/fields that are the deliberate subject of analysis.
+
+A target/profile-specific Lens should name known Result Units/fields when possible.
+
+A generic Core Lens should use semantic selectors when it cannot know profile-specific schemas.
+
+Example:
+
+```text
+Slice Integration Lens focus:
+  Slice Outcome Definition.obligations
+  Runtime Path.failureBranches
+  Codebase Integration Path.hops
+  Codebase Integration Path.failurePropagation
+```
+
+### State-Unit Routing
+
+Declare which **Core-defined State Unit kinds** may receive the Lens's findings/proposals:
+
+```text
+Question
+Idea
+Risk
+Problem
+Evidence Need
+Decision input
+Revalidation Signal
+validation finding
+Target Formation candidate
+```
+
+Correct authority:
+
+```text
+Core
+→ defines State Unit kinds
+
+Lens
+→ supplies finding/proposal/evaluation content
+
+IDTSPE runtime
+→ opens/fills/refines the applicable State Unit
+```
+
+Do not describe this as the Lens defining or owning a `Risk Unit`, `Question Unit`, etc.
+
+### Fill / Refine
+
+The Lens may add missing material information or make existing State Unit/Result Unit information more precise.
+
+### Challenge / Reopen
+
+The Lens may expose a reason an existing value/Decision/closure is wrong or stale.
+
+```text
+challenge finding
+≠ silent replacement of accepted Decision
+
+material challenge
+→ normal lifecycle may reopen the affected state/Decision/Target
+```
+
+### Check / Validate
+
+The Lens may check correctness/consistency during resolution and may reuse the same checks during readiness validation.
+
+These are contextual forms of one evaluation family, not separate Lens types.
+
+### Affect / Update After Resolution
+
+A Lens may declare which **already-defined** Result Units/fields can change because of its findings.
+
+Example:
+
+```text
+Codebase Integration Path
+  .hops
+  .ownerAssignment
+  .failurePropagation
+```
+
+Normal path:
+
+```text
+Lens finding
+→ State Unit / Decision input
+→ ordinary authority/resolution
+→ selected update
+→ existing Result Unit changes
+```
+
+### External Routing
+
+State where a finding belongs when the current Target does not own that meaning.
+
+### No-New-Result-Unit Guard
+
+```text
+Lens application
+≠ permission to silently invent
+  a new Target Step Result Unit
+  a new target-result field
+  a Lens-owned canonical result section
+```
+
+If repeated findings reveal missing target-result meaning:
+
+```text
+revise the Target Module/Local Contract
+OR
+route to another Target/owner
+OR
+keep it as generic State Unit meaning
+```
+
+### Compact Interaction Vocabulary
+
+Use:
+
+```text
+READ / ANALYZE
+FILL / REFINE
+CHALLENGE / REOPEN
+CHECK / VALIDATE
+AFFECT / UPDATE AFTER RESOLUTION
+ROUTE
+```
+
+Slash-separated terms are contextual shades of one operation family, not distinct runtime mechanisms.
+
 
 ## 5. Knowledge Basis
 
@@ -283,8 +444,10 @@ Target-profile Lens Packs → selected Target family or independently applicable
 
 ```text
 Lens finding
-→ Evidence / Idea / Q/R/P
-→ Answer Decision in current Target authority
+→ Core-defined State Unit(s):
+  Evidence / Idea / Q/R/P / Question / Decision input / revalidation signal
+→ Answer Decision or other normal resolution when material
+→ existing Result Unit update only where the Target contract owns that meaning
 ```
 
 Open a bounded child/local Target only when the exposed problem has independent useful output, meaningfully distinct Sources/owner boundary, material choice space and separate revalidation value.
@@ -450,6 +613,32 @@ Lens Prompt ≠ RQ ≠ Q/R/P Question ≠ User Question
 
 Suppose a Scenario Target uses `TM-SCENARIO-DRAFT`. Required Core Lenses are checked; the module attaches Scenario Boundary / Behavior. The Lens Applicability Scan may additionally select UI/Spatial, L4, L5, L6, Quality/Risk or another registered Lens when Scope/Sources/Evidence make it material. If no Workspace evolution issue exists, L5 remains `NOT_MATERIAL`.
 
+
+## Migration Compatibility
+
+This contract is being introduced before every installed Core/profile Lens has a literal `Unit Interaction / Routing` section.
+
+Until the conformance pass updates each Lens:
+
+```text
+Target Inputs / Evidence
+→ interpret as Context Reads + current analysis subject
+
+Prompts / Evaluation Workflow
+→ infer Focused Reads from the Lens purpose
+
+Findings / Outputs
+→ route through Core-defined State Units
+
+accepted finding that changes current Target meaning
+→ map to existing target-output/Result Unit meaning
+
+Artifact / File Implications
+→ remains current P-14 / TF-10 guidance
+```
+
+New or materially revised Lens files should make Unit Interaction / Routing explicit.
+
 ## 19. Maintenance
 
 Creation/review/promotion of a reusable Lens is owned by [`../shared/lens-creation-and-integration-use-case.md`](../shared/lens-creation-and-integration-use-case.md).
@@ -460,6 +649,8 @@ Mechanical checks should verify:
 every reusable Lens has one Knowledge Basis
 Knowledge Basis Mode ∈ INLINE | REFERENCED | HYBRID
 every reusable Lens has one Artifact / File Implications section
+new/materially revised Lens declares Unit Interaction / Routing explicitly
+Lens does not define State Unit kinds or Target Result Unit kinds
 zero or more AG-* records are allowed
 every AG-* describes Lens-produced supporting/routing meaning rather than duplicating Target-result AP
 Target Module Lens Profiles resolve to registered Lens owners

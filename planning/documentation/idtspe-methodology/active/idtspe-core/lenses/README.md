@@ -83,7 +83,7 @@ P-06 Lens Port
 + exceptional local-only lens
 ```
 
-A Lens finding feeds Questions/Ideas/Evidence/Q-R-P/Answer Decisions. It does not become semantic authority and does not define a Target output schema.
+A Lens reads/analyzes IDTSPE Units and routes findings through Core-defined Questions/Ideas/Evidence/Q-R-P/Decision inputs. It may affect already-declared Result Units after normal resolution, but it does not define State Unit kinds, Target Result Unit kinds, target output schema or semantic authority.
 
 ## 6. Knowledge Basis And Artifact / File Implications
 
@@ -99,6 +99,27 @@ Knowledge Basis Mode:
 A Lens may contribute **zero or more** `AG-*` records. No AG record is required when findings simply return to the current Target and the Target Module/local contract already owns representation of accepted Target meaning. AG records are reserved for Lens-produced supporting/routing meaning; they must not duplicate a Target Module AP for the same Target result.
 
 The Documentation / Representation Lens is required before final P-14 placement whenever material output may persist. The Lens never creates semantic authority by itself; `P-14 / TF-10` resolves physical placement.
+
+
+## 6A. Unit Interaction / Routing
+
+Canonical rule: [`LENS-MODEL.md`](LENS-MODEL.md) + [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md).
+
+New or materially revised Lenses should make explicit:
+
+```text
+Context Reads
+Focused Reads / Analysis Focus
+State-Unit routing kinds — Core-owned
+Fill / Refine
+Challenge / Reopen
+Check / Validate
+Affect / Update After Resolution
+External Routing
+No-New-Result-Unit Guard
+```
+
+Current installed Lens bodies remain migration-compatible until a later Core/profile conformance pass makes this section literal in each file.
 
 ## 7. Maintenance
 

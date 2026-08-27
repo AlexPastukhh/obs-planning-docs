@@ -6,14 +6,35 @@ Canonical state model: `resolution-slot-and-target-formation-resolution-set.md`
 
 ## Purpose
 
-Explain how IDTSPE forms a Target when no existing Target Module already determines the exact planning object.
+Explain how IDTSPE forms a Target and how the current `TF-*` compatibility set continues into later work-orchestration choices without making the whole IDTSPE lifecycle conceptually equal to Target Formation.
 
 This file does not define a second numbered mechanism.
 
 ```text
-Canonical mechanism
+Canonical compatibility mechanism
 = TARGET_FORMATION_RESOLUTION_SET
 ```
+
+The current `TF-01..TF-10` IDs remain canonical/stable in this transition. Conceptually, however, read them in two groups:
+
+```text
+FORMATION CORE
+  TF-01 PURPOSE_OUTPUT
+  TF-02 TARGET_TYPE_FORM
+  TF-03 TARGET_SCOPE
+  TF-04 SOURCE_SET
+  TF-05 TARGET_RELATIONS
+
+LATER WORK-ORCHESTRATION / RESOLUTION COMPATIBILITY SLOTS
+  TF-06 QUESTION_SET
+  TF-06A LENS_SET
+  TF-07 IDEA_SPACE
+  TF-08 BRANCH_POLICY
+  TF-09 HANDOFF
+  TF-10 PERSISTENCE_ADDRESSABILITY
+```
+
+This grouping is explanatory only: it does not renumber/remove the current slots. It prevents the reader from inferring that Questions, Lens work, Idea discovery, handoff and persistence are all part of *forming the Target identity*.
 
 ## Formation Outcomes
 
@@ -30,12 +51,12 @@ no new Target is needed
 
 A local Target Contract does not automatically become methodology-global.
 
-## Canonical Resolution Flow
+## Current Canonical Resolution Set
 
 ### TF-01 PURPOSE_OUTPUT
 
 ```text
-What independently useful planning result should exist?
+What useful `Target Step Result` should this bounded work step produce or refine?
 ```
 
 Bad:
@@ -56,7 +77,7 @@ decide whether an own Application is justified
 ### TF-02 TARGET_TYPE_FORM
 
 ```text
-Which Target Module/local form should own that result?
+Which Target Module / Local Target Contract should own that Step-Result family?
 ```
 
 ### TF-03 TARGET_SCOPE
@@ -85,13 +106,19 @@ CONTRIBUTES_TO
 
 Topology never silently creates Source authority.
 
+### Formation Core Exit
+
+After `TF-01..TF-05` are sufficiently resolved, the Target identity/form/scope/source/topology is formed enough to begin material resolution/production work.
+
+The remaining current `TF-*` slots stay in the same canonical resolution set for compatibility, but they coordinate **work over the formed Target** rather than define a second Target identity.
+
 ### TF-06 QUESTION_SET
 
-Choose only questions that materially help resolve the Target.
+Choose only Questions that materially help resolve/produce the current Target Step Result. Concrete Questions are Core State Units.
 
 ### TF-06A LENS_SET
 
-Compose:
+Select/apply Lenses inside the current IDTSPE work. Compose:
 
 ```text
 L1-L3 required Core Pack
@@ -110,11 +137,11 @@ Use shallow comparison by default; create Planning Branches only when alternativ
 
 ### TF-09 HANDOFF
 
-Define what accepted output becomes a downstream Source and for whom.
+Define which accepted Target Step Result / Result Unit meaning becomes a downstream Source and for whom.
 
 ### TF-10 PERSISTENCE_ADDRESSABILITY
 
-Decide what needs stable addressability and how it should be represented physically.
+For material Result Units and material State Units that should survive, decide stable addressability and physical representation through the current P-14 / Artifact Placement mechanism.
 
 ## High-Level Example — Local Architecture Problem Inside A Slice
 

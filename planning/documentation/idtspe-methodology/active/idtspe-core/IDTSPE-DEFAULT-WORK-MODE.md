@@ -54,11 +54,13 @@ load referenced Target Module Knowledge Basis only according to its load policy
 select applicable Lenses through TF-06A Lens Applicability Scan
 load referenced Lens Knowledge Basis / theoretical bodies only according to selected Lens load policies
 ↓
-Questions / Ideas / optional Branches / Q-R-P
+iterative IDTSPE work
+  Core State Units:
+    Questions / Ideas / optional Branches / Q-R-P / Decisions / Evidence
+  ↕ applicable Lenses
+  ↕ target-specific Result Units
 ↓
-Decisions when actually selected
-↓
-Target-specific output
+Target Step Result
 ↓
 Artifact Placement when persistence matters
 ↓
@@ -85,7 +87,7 @@ Existing canonical owner artifacts are Sources for repeated planning. The mode s
 
 ## Proportionality
 
-The mode does not force a visible 15-port form into every reply. Trivial factual/non-planning work remains lightweight. The Shell governs material planning reasoning and ownership even when the visible response is compact.
+The mode does not force a visible 15-port form or every State Unit into every reply. The visible answer should center the requested Target Step Result and only material planning state. Trivial factual/non-planning work remains lightweight. The Shell governs material planning reasoning and ownership even when the visible response is compact.
 
 ## Profile Boundary
 

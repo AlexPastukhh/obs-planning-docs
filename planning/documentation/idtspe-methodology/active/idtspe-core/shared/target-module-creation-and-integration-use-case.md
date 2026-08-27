@@ -56,10 +56,13 @@ Answer Decisions:
   entry point
   integration roles
   Source Contract
+  Target Step Result family
+  Result Units / important fields
+  Resolution / Production Method
   Knowledge Basis mode / knowledge-owner links
   RQ pack
   Lens Profile / reusable Lens refs / local pattern aids
-  output schema
+  output/projection schema when useful
   validators
   handoffs
 ```
@@ -71,28 +74,33 @@ Material alternatives may use Planning Branches.
 # 4. Algorithm
 
 ```text
-1. establish recurring useful result
+1. establish the recurring useful Target Step Result
 2. inspect existing semantic owners / reuse candidates
 3. decide module boundary
 4. define single Entry Point
-5. map module to IDTSPE integration points
-6. define Target Formation contributions
-7. define Source Contract archetype
-8. define Knowledge Basis mode: INLINE / REFERENCED / HYBRID
-9. define embedded principles/rules and/or referenced knowledge owners + load policy
-10. define RQ/question-generation pack
-11. define Idea/pattern discovery aids
-12. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
-13. define Q/R/P prompts
-14. define Decision surfaces
-15. define semantic Output Schema
-16. define supporting/submodule composition
-17. define validators
-18. define downstream Source handoff
-19. define revalidation prompts
-20. map current repository UCs/workflows/templates/commands
-21. create at least one worked acceptance example
-22. run module consistency/readiness review
+5. define Result Units only where independent processing/addressability is useful
+6. explain each important/non-obvious Unit and its fields
+7. define the reusable Resolution / Production Method
+8. map the module to current IDTSPE integration points
+9. define Target Formation contributions
+10. define Source Contract archetype
+11. define Knowledge Basis mode: INLINE / REFERENCED / HYBRID
+12. define embedded principles/rules and/or referenced knowledge owners + load policy
+13. define RQ/question-generation pack
+14. define Idea/pattern discovery aids
+15. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
+16. define recurring Q/R/P discovery hints only when target-specific
+17. define Decision surfaces
+18. define semantic output/projection schema when useful
+19. define Internal Object Contracts / supporting module composition
+20. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise use a Result Unit / Internal Object Contract / shared Result-Unit method
+21. define validators against Result Units/boundaries
+22. define downstream Unit/output → Source handoff
+23. define revalidation prompts
+24. define representation guidance / current Artifact contract
+25. map current repository UCs/workflows/templates/commands
+26. create at least one worked acceptance example showing Result + State Units
+27. run module consistency/readiness review
 ```
 
 ---
@@ -104,7 +112,9 @@ one Target Module owner
 + catalog entry
 + stable Entry Point
 + integration map
-+ output schema
++ Target Step-Result Contract / Result Units
++ Resolution / Production Method
++ output schema/projection when useful
 + validators
 + provenance mapping
 + command/Tampermonkey readiness route

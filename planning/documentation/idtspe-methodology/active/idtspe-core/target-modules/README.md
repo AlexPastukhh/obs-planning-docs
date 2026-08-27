@@ -2,8 +2,9 @@
 
 Status: active generic IDTSPE Core index
 
-A Target Module is a reusable contract for one recurring Target/output family. The generic model is owned by:
+A Target Module is a reusable contract for one recurring Target/**Target Step Result** family. The generic model is owned by:
 
+- [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md)
 - [`../shared/target-module-model.md`](../shared/target-module-model.md)
 - [`../shared/knowledge-basis-contract.md`](../shared/knowledge-basis-contract.md) — shared Target Module/Lens Knowledge Basis contract
 - [`../shared/target-module-creation-and-integration-use-case.md`](../shared/target-module-creation-and-integration-use-case.md)
@@ -14,20 +15,29 @@ A Target Module is a reusable contract for one recurring Target/output family. T
 Each concrete Target Module supplies, proportionally:
 
 ```text
-Purpose
+Purpose / recurring Target family
 Target form / scope
 Upstream Source Contract
+Target Step-Result Contract
+  Result Units / fields as material
+Resolution / Production Method
+  question candidates / Idea aids / branch triggers / internal object contracts
 Knowledge Basis (`INLINE | REFERENCED | HYBRID`)
-Question examples
 Lens Profile
-Target-specific output
-Artifact / File Contract
 Validators / Guards
 Handoff / revalidation
+Artifact / File Contract / representation guidance
 canonical user-level command surface
 ```
 
 Every reusable Target Module contains exactly one `## Knowledge Basis` using the same shared contract as reusable Lenses. The module does not copy generic Shell state or reusable Lens algorithms/Knowledge Basis merely because a Lens is attached.
+
+
+## Staged Compatibility
+
+Current installed profile modules may still express their result through `Target-specific output`, `Output Schema` or ordinary output headings. Until the profile conformance pass makes Unit boundaries literal, interpret those headings by meaning as one or more Result Units/fields.
+
+New or materially revised modules should make the Step Result and independently processable Result Units explicit.
 
 ## Installed Target Module Families
 

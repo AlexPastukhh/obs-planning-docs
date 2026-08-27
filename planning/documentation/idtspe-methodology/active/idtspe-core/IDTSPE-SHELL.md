@@ -1,29 +1,37 @@
 # IDTSPE Shell — Generic Planning Runtime / Composition Contract
 
 Status: active generic methodology owner  
-Purpose: define IDTSPE as a reusable shell that composes one concrete Target with typed Sources, reusable Lenses, Questions, Ideas, Decisions, output projection and revalidation without hard-coding any domain/application module.
+Purpose: define the generic IDTSPE runtime/composition contract that coordinates one concrete Target, typed Sources, Core State Units, reusable Lenses, Target Step Result projection, validation, persistence and revalidation without hard-coding any domain/application module.
 
 ## Core Formula
 
 ```text
-IDTSPE Shell
-+ Trigger / Invocation
+Trigger / Invocation
 + Target Formation Resolution Set
 + Target Module or Local Target Contract
-+ typed Source Set
-+ Lens Set
-+ Question Set
-+ Idea / Variant Space
-+ optional Planning Branches
-+ Q/R/P
-+ three Decision types
-+ Target-specific Output Projection
-+ Artifact Placement View
++ typed Sources
++ IDTSPE State Units
++ selected/applicable Lenses
++ Target Step Result Units
 + Validators / Guards
++ current Artifact Placement
 + Handoff
 + Evidence / Revalidation lifecycle
-= one bounded planning instance
+= one bounded IDTSPE work step
 ```
+
+Canonical content model:
+
+```text
+IDTSPE Unit
+├─ Target Step Result Unit
+│  defined by Target Module / Local Target Contract
+└─ IDTSPE State Unit
+   Core-defined generic planning kind:
+   Source / Question / Idea / Q-R-P / Decision / Evidence / ...
+```
+
+The current `P-01..P-15` labels remain stable **technical runtime navigation**. They are not a second semantic ontology above the Unit/Target models.
 
 The shell owns **planning mechanics**. It does not own current product/domain/application semantics.
 
@@ -103,7 +111,7 @@ Connects:
 ```text
 Target Module Question examples
 Source-derived questions
-Lens-generated questions/findings
+Lens findings routed to Core-defined Question State Units
 current unresolved Q/R/P
 ```
 
@@ -136,7 +144,7 @@ Documentation / Representation / Artifact Boundary at materialization
 
 A Local Target Contract uses the same Lens Port without inventing a Target Module. Registry summaries/gates are enough for the scan; read full Lens bodies and referenced Knowledge Basis only for selected/plausibly applicable candidates.
 
-Lens findings feed normal Evidence / Ideas / Q/R/P / Answer Decisions. A Lens does not become semantic authority.
+Lenses run inside IDTSPE work. Their findings are routed into Core-defined State Units such as Questions / Ideas / Q-R-P / Evidence needs / Decision inputs. A Lens may affect an already-declared Target Result Unit after normal authority/resolution, but it does not define Unit kinds or become semantic authority.
 
 ### P-07 Idea / Alternative Port
 
@@ -193,28 +201,35 @@ Exposes:   <newly revealed/created Q/R/P IDs>
 
 The trace is explanatory/revalidation metadata, not a new Decision type.
 
-### P-11 Output Projection Port
+### P-11 Target Step Result Projection Port
 
-Projects accepted answers into the `Target-Specific Output Template` supplied by the active Target Module/local contract.
+Projects selected/current target-specific meaning into the **Target Step Result** supplied by the active Target Module/local contract.
 
 ```text
-Target-specific output
-≠ generic IDTSPE state
+Target Step Result
+→ one or more Target Step Result Units
+→ each Unit contains only supported/material target-specific meaning
+
+Target Step Result
+≠ generic IDTSPE State Units
 ```
 
-Generic Scope/Questions/Ideas/QRP/Branches/Decisions/Revalidation are not duplicated in module templates.
+Generic Questions/Ideas/QRP/Branches/Decisions/Evidence/Revalidation remain Core State Units and are not duplicated merely as module result fields.
+
+Existing `Target-specific output`, `Output Schema` and `Target-specific Output Template` wording is migration-compatible technical projection vocabulary; the canonical semantic model is the Step Result / Result Unit contract.
 
 ### P-12 Validation Port
 
-Runs:
+Runs proportionally:
 ```text
-Target Module validators
-Lens guards
-core authority/user guards
-cross-owner consistency checks when invoked
+Target Module validators over the declared Result Units
+applicable Lens checks over their declared/implicit analysis focus
+Core authority/user guards
+cross-Unit / cross-owner consistency checks when invoked
+Evidence sufficiency where material
 ```
 
-Validator findings route to the real owner; they do not become a substitute Target.
+Validation may surface findings that the runtime routes into normal State Units such as Problem / Risk / Question / Evidence Need / Revalidation Signal. Validator/Lens findings do not define new Result Units or become substitute semantic owners.
 
 ### P-13 Handoff / Methodology Direction Port
 
@@ -247,7 +262,7 @@ Handoff/topology relation and Source authority remain distinct.
 Resolves `TF-10 PERSISTENCE_ADDRESSABILITY` through the lightweight [`Artifact Placement And IDTSPE Response Contract`](shared/artifact-placement-and-idtspe-response-contract.md):
 
 ```text
-for each material content unit:
+for each material IDTSPE Unit/content item that may need to survive:
   semantic owner?
   applicable AP-* Target Module proposal(s)?
   applicable AG-* Lens guidance?
@@ -390,10 +405,12 @@ Knowledge Basis
   = not current Target Source / evidence / project truth
 
 Lens
-  = reusable perspective used to inspect choices
+  = reusable perspective used to read/analyze/check Units and route/refine findings
+  = does not define Unit kinds
 
 Target Module
-  = reusable methodology contract for a recurring Target family
+  = reusable methodology contract for a recurring Target/Step-Result family
+  = defines target-specific Result Units
 
 Decision
   = accepted material choice inside one Target
@@ -445,7 +462,8 @@ Lens Set resolved and material findings handled
 Idea/Branch space sufficient
 blocking Q/R/P resolved/deferred explicitly
 material Decisions accepted under correct authority
-Target-specific output projected
+Target Step Result projected proportionally into declared Result Units
+material State Units visible/resolved/deferred as needed
 validators pass or findings routed
 handoff/persistence/revalidation contract sufficient
 ```

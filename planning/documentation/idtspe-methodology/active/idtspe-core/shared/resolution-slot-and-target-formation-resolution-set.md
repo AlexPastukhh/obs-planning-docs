@@ -1,18 +1,21 @@
 # Resolution Slot And Target Formation Resolution Set
 
 Status: active generic IDTSPE model  
-Purpose: reuse one structure for both:
-1. a question / missing planning requirement;
-2. the resolved value / accepted planning choice that fills that requirement.
+Purpose: provide reusable resolution-status/coordination metadata for planning subjects, especially the current Target Formation `TF-*` set, without competing with the canonical IDTSPE Unit/content model.
 
-This replaces the need to model Target Formation as:
-`separate discovery checks + separate decision/questions`.
+Canonical content model: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
+
+A Resolution Slot may carry:
+1. the prompt/subject that needs resolution;
+2. current status/value/provenance for that subject.
+
+A material Question, Risk, Decision, Evidence item or Target Result Unit remains an IDTSPE Unit; it is not replaced by a Slot merely because resolution metadata exists.
 
 ---
 
 # 1. Core Concept — Resolution Slot
 
-A `Resolution Slot` represents one planning subject that must be sufficiently resolved.
+A `Resolution Slot` is a reusable **resolution-state/coordination view** for one planning subject that must be sufficiently resolved.
 
 While unresolved:
 
@@ -29,15 +32,17 @@ Resolution Slot
 → may reference a durable IDTSPE Decision when material
 ```
 
-Therefore:
+Therefore a Slot may render a prompt while unresolved and hold/reference the resolved value later.
+
+This does **not** mean the methodology has no addressable Question State Unit. Use a Question Unit when the question itself needs independent processing, routing, trace, persistence or Lens interaction.
 
 ```text
-question
-and
-resolved planning value
-```
+Resolution Slot
+= resolution metadata/coordination
 
-are two states of the **same slot**.
+Question State Unit
+= addressable planning content when useful
+```
 
 ---
 
@@ -150,7 +155,7 @@ Formal Decision Ref:
   Target-Scope Decision
 ```
 
-No separate “question entity” and “decision requirement entity” are needed.
+No extra duplicate *slot-specific* question/decision-requirement entity is needed. Material Questions/Decisions still use the normal Core State Unit/Decision models.
 
 ---
 
@@ -183,6 +188,41 @@ Resolution Slot Prompt
 ```
 
 It follows the existing User Question Policy.
+
+
+## Relation To IDTSPE Units
+
+```text
+Resolution Slot
+≠ IDTSPE State Unit
+≠ Target Step Result Unit
+```
+
+A Slot may reference or help resolve Units, but do not create one Slot per Unit/field mechanically.
+
+Example:
+
+```text
+Question State Unit:
+  Which service owns orchestration?
+
+Idea State Units:
+  reuse ApplicationService
+  add CaptureFacade
+
+Decision:
+  reuse ApplicationService
+
+Result Unit:
+  Codebase Integration Path
+  → ApplicationService.capture(...)
+
+Target-formation Slot:
+  TARGET_SCOPE / ACCEPTED
+```
+
+The current `TF-01..TF-10` set remains canonical compatibility/runtime coordination. A later Core simplification may revise its grouping, but this transition does not renumber or remove the slots.
+
 
 ---
 
@@ -704,7 +744,9 @@ one Slot
 + one resolution prompt
 + one current value/status
 
-question and decision requirement are not separate duplicated structures
+slot prompt and slot decision-requirement metadata are not separate duplicated slot structures
+
+addressable Question/Decision State Units may still exist when useful
 
 slot prompt is not automatically user-facing
 

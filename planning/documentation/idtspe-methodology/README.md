@@ -351,7 +351,7 @@ Responsibility: generic **Target Module framework boundary and navigation**, not
 
 Concrete Target Modules belong to a profile/family such as `active/profiles/sds/target-modules/`.
 
-A Target Module is used when a recurring Target type has a stable enough:
+A Target Module is used when a recurring Target/Step-Result family has a stable enough:
 
 ```text
 purpose / output family
@@ -417,7 +417,8 @@ This directory contains **canonical generic contracts that are too specific to b
 
 | File | Responsibility |
 |---|---|
-| [`resolution-slot-and-target-formation-resolution-set.md`](active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md) | Canonical Target Formation Resolution Set (`TF-*`) and resolution slots. |
+| [`idtspe-unit-and-target-step-result-model.md`](active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md) | Canonical Target Step Result + IDTSPE Unit model: Result Units vs Core State Units, Lens Unit interaction and one-Target/multi-representation boundary. |
+| [`resolution-slot-and-target-formation-resolution-set.md`](active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md) | Canonical Target Formation Resolution Set (`TF-*`) and resolution-status slots; Slots are coordination metadata, not Result/State Unit kinds. |
 | [`dynamic-target-formation-and-discovery-checks.md`](active/idtspe-core/shared/dynamic-target-formation-and-discovery-checks.md) | Narrative/how-to guide for dynamic Target formation and discovery checks. |
 | [`target-type-instance-source-and-relation-model.md`](active/idtspe-core/shared/target-type-instance-source-and-relation-model.md) | Target type/instance, Source and Target Relation semantics. |
 | [`target-module-model.md`](active/idtspe-core/shared/target-module-model.md) | Canonical reusable Target Module model. |
@@ -599,7 +600,7 @@ Catalog:
 
 [`README.md`](active/profiles/sds/target-modules/README.md)
 
-Each `TM-*.md` is a **canonical reusable target-family methodology owner**. A Target Module defines a recurring planning contract: Target form, Sources, Questions/Lens attachment, decisions/output, validations, handoff and artifact proposals for the Target result. A material IDTSPE Target may instead use a first-class Local Target Contract when no reusable module fits; it still receives the same Shell/Lens lifecycle.
+Each `TM-*.md` is a **canonical reusable target-family methodology owner**. A Target Module defines a recurring planning contract: Target form/Sources, a Target Step-Result Contract with one or more Result Units, reusable Resolution/Production aids, Lens attachment, validations, handoff and artifact proposals. Generic Questions/Ideas/QRP/Decisions/Evidence remain Core State Units rather than target-result fields by default. A material IDTSPE Target may instead use a first-class Local Target Contract when no reusable module fits; it still receives the same Shell/Lens lifecycle.
 
 | Target Module | Responsibility |
 |---|---|

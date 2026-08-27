@@ -1,6 +1,6 @@
 {
-  "workspace_version": "idtspe-shared-target-lens-knowledge-basis-42",
-  "repo_snapshot_base": "36dfbf878d4ff9e616de70d7535135c5c0c9966e",
+  "workspace_version": "idtspe-target-step-result-unit-foundation-reviewdiff-correction-48",
+  "repo_snapshot_base": "3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
   "sds_profile_bootstrap": "sdscmd.bootstrap",
@@ -29,10 +29,10 @@
   "current_repository_integration_ledger": "integration/CURRENT-REPOSITORY-INTEGRATION.md",
   "repository_fresh_audit_completed": true,
   "repository_update_planned": true,
-  "mechanical_consistency": "PASS_RECHECKED_AFTER_SHARED_TARGET_LENS_KNOWLEDGE_BASIS_CONTRACT",
+  "mechanical_consistency": "TARGETED_PACKAGE_CHECKS_PASS; FULL_METHODOLOGY_CONSISTENCY_AUDIT_NOT_RUN_FOR_THIS_CHANGESET",
   "core_sds_separation_audit": "PASS",
-  "markdown_integrity": "PASS_RECHECKED_AFTER_SHARED_TARGET_LENS_KNOWLEDGE_BASIS_CONTRACT",
-  "repository_audit_evidence": "obs-planning-docs supplied snapshot base 36dfbf878d4ff9e616de70d7535135c5c0c9966e; exact current methodology base for shared Target Module/Lens Knowledge Basis contract update; unrelated replacement-package-app working-tree changes remain outside this scope",
+  "markdown_integrity": "TOUCHED_PACKAGE_MARKDOWN_RELATIVE_LINKS_PASS; FULL_REPOSITORY_MARKDOWN_AUDIT_NOT_RUN_FOR_THIS_CHANGESET",
+  "repository_audit_evidence": "selected local snapshot obs-planning-docs-local-base-3d1ce07c-20260827-145642(1).zip; repositoryIdentity github:AlexPastukhh/obs-planning-docs; baseCommitSha 3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f; all 21 foundation-v5 operation paths match the v5 replacement payloads exactly, proving the foundation package target state is already present in the selected local source; this package touches only action-log, methodology MANIFEST and current integration ledger",
   "repository_preupdate_ledger": "integration/CURRENT-REPOSITORY-INTEGRATION.md",
   "repository_old_collect_ideas_commands": 6,
   "repository_merge_blockers": 1,
@@ -106,5 +106,65 @@
   "generic_lens_select_host_target_policy": "CREATE_OR_REUSE_TARGET",
   "generic_lens_apply_host_target_policy": "RESOLVE_OR_REUSE_TARGET",
   "target_module_knowledge_basis": "17/17 active SDS Target Modules declare exactly one Knowledge Basis mode INLINE | REFERENCED | HYBRID, distinct from Upstream Sources",
-  "knowledge_basis_contract": "active/idtspe-core/shared/knowledge-basis-contract.md; shared by Target Modules and Lenses"
+  "knowledge_basis_contract": "active/idtspe-core/shared/knowledge-basis-contract.md; shared by Target Modules and Lenses",
+  "target_step_result_model": "active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
+  "idtspe_unit_model": "Target Step Result Unit + Core-defined IDTSPE State Unit",
+  "target_module_result_contract": "Target Step-Result Contract + Resolution/Production Method + Knowledge Basis + Lens Profile + Validators/Handoff/Representation",
+  "lens_unit_interaction_contract": "Context Reads + Focused Reads + State routing + Fill/Refine + Challenge/Reopen + Check/Validate + Affect/Update after resolution + Route; Lens defines no Unit kinds",
+  "target_step_result_proportionality": "module possible surface; concrete Step Result sparse/material projection",
+  "unit_file_boundary": "one Target != one Result Unit != one file",
+  "core_transition_mode": "FOUNDATIONAL_CONTRACT_WITH_PROFILE_MIGRATION_COMPATIBILITY",
+  "sds_unit_conformance": "FOLLOW_UP_CHANGESET_REQUIRED; current installed modules/lenses remain migration-compatible by implicit mapping",
+  "resolution_slot_unit_boundary": "Slot = resolution coordination metadata; State/Result Units = content/addressability",
+  "artifact_placement_unit_granularity": "P-14/TF-10 current mechanism retained; material Result/State Units are placement subjects",
+  "package_validation_scope": {
+    "selected_snapshot_identity": "PASS",
+    "prior_v5_target_state_match": "21/21 PASS",
+    "correction_base_payload_match": "PASS",
+    "package_payload_contract": "PASS",
+    "touched_markdown_relative_links": "PASS",
+    "full_repository_markdown_audit": "NOT_RUN",
+    "full_methodology_consistency_audit": "NOT_RUN"
+  },
+  "supporting_target_module_boundary": "SUPPORTING is a role of a reusable Target Module that can also be a coherent standalone recurring Target family; internal-only result parts use Result Unit / Internal Object Contract / shared Result-Unit method",
+  "target_formation_compatibility_grouping": "TF-01..TF-10 IDs retained; TF-01..05 conceptual formation core, TF-06..10 later work-orchestration/resolution compatibility slots",
+  "scope_action_log_transition": "preserve factual LOG-DOC-072 APPLIED v5; append ReviewDiff correction and exact correction-package APPLIED",
+  "pre_update_rebase": {
+    "previous_declared_base": "d72cfc4c1682f40ec21ecaed4742213636980bad",
+    "selected_snapshot": "obs-planning-docs-local-base-3d1ce07c-20260827-143346.zip",
+    "selected_snapshot_sha256": "cdd8cd6334bc4cd9f4398adf42fe4b0c1dba664773619267d923b643a395ba61",
+    "snapshot_type": "local",
+    "snapshot_base_commit": "3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f",
+    "repository_identity": "github:AlexPastukhh/obs-planning-docs",
+    "complete_touched_source_coverage": true,
+    "replace_paths_changed_vs_v4_base": [
+      "planning/documentation/action-log.md"
+    ],
+    "working_tree_overlap_with_package_operations": []
+  },
+  "foundation_application_state": {
+    "applied_package_id": "16223524-1499-4614-a472-8f4bab0ae919",
+    "all_v5_operation_paths_match_current_snapshot": true,
+    "matched_operation_count": 21,
+    "correction_scope": [
+      "planning/documentation/action-log.md",
+      "planning/documentation/idtspe-methodology/MANIFEST.json",
+      "planning/documentation/idtspe-methodology/integration/CURRENT-REPOSITORY-INTEGRATION.md"
+    ]
+  },
+  "package_preparation_chronology": [
+    {
+      "state": "5439c9da38db610759f90e32eb67331bac2c3cde",
+      "meaning": "initial foundation package-preparation base"
+    },
+    {
+      "state": "d72cfc4c1682f40ec21ecaed4742213636980bad",
+      "meaning": "one-commit advance; 22 changed files; only action-log overlap"
+    },
+    {
+      "state": "3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f",
+      "meaning": "later local snapshot base; v5 foundation subsequently applied and now present"
+    }
+  ],
+  "reviewdiff_correction": "current selected source already contains exact v5 foundation result; correct remaining integration-ledger chronology/provenance only"
 }

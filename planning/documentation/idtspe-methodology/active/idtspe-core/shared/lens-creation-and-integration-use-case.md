@@ -40,21 +40,26 @@ real repeated planning cases
      TARGET_PROFILE_REUSABLE
      LOCAL_ONLY
 5. define applicability gate
-6. define Target Inputs / Evidence
-7. define Knowledge Basis through [`knowledge-basis-contract.md`](knowledge-basis-contract.md): INLINE / REFERENCED / HYBRID
-8. define embedded principles/rules and/or referenced knowledge owners + load policy
-9. define prompts/sublenses/evaluation workflow
-10. define findings produced
-11. define Target/profile consumers
-12. define composition with other Lenses
-13. define guards/anti-patterns
-14. define finding→Decision/Target escalation
-15. define Artifact/File Implications; add AG only for Lens-produced supporting/routing meaning
-16. migrate duplicate embedded knowledge / duplicate Target-result artifact guidance
-17. update Lens Registry + applicability summary
-18. update Target Module Lens Profiles when attachment policy changes
-19. update phase/command/projection routes when needed
-20. run mechanical Lens consistency audit
+6. define Context Reads
+7. define Focused Reads / Analysis Focus
+8. define which Core-owned State Unit kinds may receive findings
+9. define Fill / Refine and Challenge / Reopen effects
+10. define which already-declared Result Units/fields may be affected after normal resolution
+11. define External Routing + No-New-Result-Unit Guard
+12. define Knowledge Basis through [`knowledge-basis-contract.md`](knowledge-basis-contract.md): INLINE / REFERENCED / HYBRID
+13. define embedded principles/rules and/or referenced knowledge owners + load policy
+14. define prompts/sublenses/evaluation workflow
+15. define findings produced
+16. define Target/profile consumers
+17. define composition with other Lenses
+18. define guards/anti-patterns
+19. define finding→Decision/Target escalation
+20. define Artifact/File Implications; add AG only for Lens-produced supporting/routing meaning
+21. migrate duplicate embedded knowledge / duplicate Target-result artifact guidance
+22. update Lens Registry + applicability summary
+23. update Target Module Lens Profiles when attachment policy changes
+24. update phase/command/projection routes when needed
+25. run mechanical Lens consistency audit
 ```
 
 ## Result
@@ -64,6 +69,7 @@ one canonical Lens/Lens Pack owner
 + registry entry / applicability summary
 + activation class/gate
 + Operational Evaluation Contract
++ explicit Unit Interaction / Routing
 + Knowledge Basis mode / knowledge-owner links
 + consumer/profile mapping
 + migrated duplicate knowledge/guidance
@@ -76,6 +82,7 @@ Do not:
 ```text
 create a Lens for every RQ or checklist item
 turn a Lens into semantic authority
+let a Lens define Core State Unit kinds or Target Result Unit kinds
 create a Target Instance merely because a Lens activated
 turn Lens prompts into automatic user questions
 split tightly coupled sublenses only to create more files

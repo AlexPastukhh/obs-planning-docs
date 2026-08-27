@@ -2,12 +2,12 @@
 
 Status: **staged installation target built against the current supplied repository snapshot; canonical IDTSPE/SDS authority + command/helper surface prepared, destructive legacy-family cleanup still gated by MB-06**  
 Methodology baseline: `idtspe-methodology-workspace-core-sds-separated.zip` (`ffb6bfff5bb4da2478811443c5f0168ab4baa173b389439d0991afb27ca7d30b`)  
-Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, current package base `36dfbf878d4ff9e616de70d7535135c5c0c9966e`; earlier ca768b61 snapshot remains original methodology-import provenance  
+Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, current package base `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`; `36dfbf878d4ff9e616de70d7535135c5c0c9966e` remains the earlier shared-Knowledge-Basis transition base and ca768b61 remains original methodology-import provenance  
 Audit intent: define the **pre-update migration plan**, including obsolete SDS/Idea runtimes, merge-before-delete knowledge, command/helper impact, and deletion gates.
 
-## Current Staged Installation Status — 2026-08-26
+## Current Staged Installation Status — 2026-08-27
 
-The current replacement-package target uses repository identity `github:AlexPastukhh/obs-planning-docs` and the user-selected current snapshot at base commit `36dfbf878d4ff9e616de70d7535135c5c0c9966e`. The older snapshot references below remain audit provenance; they are not a claim that the package was built from stale bytes.
+The current replacement-package target uses repository identity `github:AlexPastukhh/obs-planning-docs` and exact current base commit `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`. The earlier `36dfbf...` and `ca768b61...` references below remain transition/audit provenance; they are not the base claim for this package.
 
 This staged target performs the safe first installation layer:
 
@@ -1539,3 +1539,145 @@ MERGED IN PART 1
 Current conclusion after Parts 1–2: the fresh `ca768b61...` snapshot remains the repository baseline; bootstrap/preflight is confirmed and adaptable. The migration strategy is now narrower: Q/R/P trace mechanics are selectively merged, detailed testing knowledge is preserved raw as a Theoretical Module, Key Points is preserved as a peer AI Reviewability concern, Workspace-UC/Workspace-Work is classified as legacy WEUC, and only MB-06 Reference Object remains an intentionally open semantic preservation decision from this audit set.
 
 This ledger now records both the historical migration analysis and the current staged installation boundary. It still does **not** authorize destructive legacy-family cleanup or resolve MB-06 by itself.
+
+---
+
+## Target Step Result / IDTSPE Unit Foundational Transition — planned against `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`
+
+Status: **staged Core contract transition; SDS literal Unit conformance remains a follow-up ChangeSet**
+
+This transition introduces one generic content/result model without pretending that every existing profile file has already been mechanically rewritten.
+
+### New Core owner
+
+```text
+active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md
+```
+
+It establishes:
+
+```text
+Target Step Result
+IDTSPE Unit
+├─ Target Step Result Unit
+└─ IDTSPE State Unit
+
+Core
+→ owns generic State Unit kinds
+
+Target Module / Local Target Contract
+→ owns target-specific Result Units/fields
+
+Lens
+→ reads/analyzes/fills/refines/challenges/checks/routes
+→ may affect existing Result Units after normal resolution
+→ does not define Unit kinds
+```
+
+### Target Module contract
+
+The reusable Module model now makes explicit:
+
+```text
+Target Step-Result Contract
++ Resolution / Production Method
++ Knowledge Basis
++ Lens Profile
++ Validators
++ Handoff / Revalidation
++ Representation Guidance
+```
+
+Existing `Output Schema` / target-specific output headings remain migration-compatible projection vocabulary.
+
+### Lens contract
+
+New/materially revised Lenses should expose Unit Interaction / Routing:
+
+```text
+Context Reads
+Focused Reads / Analysis Focus
+State-Unit routing — Core-owned kinds
+Fill / Refine
+Challenge / Reopen
+Check / Validate
+Affect / Update After Resolution
+External Routing
+No-New-Result-Unit Guard
+```
+
+Existing installed Lens bodies remain readable through their current Inputs/Findings sections until conformance migration.
+
+### Compatibility retained intentionally
+
+This transition does **not** remove or renumber:
+
+```text
+P-01..P-15
+TF-01..TF-10
+three current durable Decision types
+required Documentation / Representation Lens
+P-14 / TF-10 Artifact Placement resolver
+AP-* / AG-* source guidance
+```
+
+Resolution Slots are clarified as resolution-state/coordination metadata rather than a competing content ontology.
+
+Target Formation keeps the existing `TF-01..TF-10` IDs for compatibility, while the narrative guide now distinguishes:
+- `TF-01..TF-05` as the conceptual Target-formation core;
+- `TF-06..TF-10` as later work-orchestration/resolution compatibility slots over the formed Target.
+
+Supporting Target Modules are also narrowed explicitly:
+- a Supporting Target Module must remain a real reusable Target Module that can make sense as its own recurring Target family;
+- using it in a supporting role does not automatically instantiate a child Target;
+- if a methodology/result can only exist as an internal part of one parent Target, it is represented as a Result Unit, Internal Object Contract or shared Result-Unit method instead.
+
+
+### Package preparation / pre-update chronology
+
+The foundation package lineage was:
+
+```text
+5439c9da38db610759f90e32eb67331bac2c3cde
+↓ repository advanced by one commit before the foundation package was applied
+d72cfc4c1682f40ec21ecaed4742213636980bad
+  - intervening commit changed 22 files
+  - only planning/documentation/action-log.md overlapped that package
+
+↓ later fresh local-snapshot rebase
+3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f
+  - complete touched-source coverage was verified
+  - compared with the v4 package bases, only planning/documentation/action-log.md changed among replace paths
+  - the add path remained absent at that time
+  - snapshot working-tree changes had zero overlap with the foundation package operations
+```
+
+The foundation package v5 was then applied locally. The current local snapshot used for this correction already matches **all 21 v5 replacement payloads exactly**, including the newly added Unit-model owner.
+
+Therefore:
+
+```text
+v5 foundation semantics
+= already present in current local source
+
+this correction package
+= only fixes remaining ReviewDiff/provenance state
+```
+
+`5439c9da38db610759f90e32eb67331bac2c3cde` and `d72cfc4c1682f40ec21ecaed4742213636980bad` are package-preparation provenance only. `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f` is the Git base commit of the selected local snapshot; current exact replace preconditions for this correction are the snapshot bytes carried in this package.
+
+### Next profile transition
+
+SDS should be migrated after this Core contract is accepted, beginning with:
+
+```text
+TM-IMPLEMENTATION-SLICE
++
+LENS-SLICE-VERTICALITY-INTEGRATION
++
+one response example
+```
+
+Then migrate remaining SDS Target Modules/Lenses and resolve any current Lens/Target-result responsibility overlap.
+
+The predecessor local design archive remains external comparison evidence and is not repository authority.

@@ -1,4 +1,4 @@
-# Target Module — Reusable IDTSPE Target Methodology Unit
+# Target Module — Reusable IDTSPE Target Methodology Contract
 
 Status: active generic methodology model  
 Purpose: define a reusable module that can shape one IDTSPE Target or contribute a bounded part of its formation/evaluation/output without becoming project semantic authority.
@@ -43,6 +43,74 @@ Local Target Contract
 ```
 
 A material IDTSPE Target does **not** require a pre-existing Target Module. Reusable modules are preferred when a recurring contract genuinely fits; otherwise Target Formation creates a bounded Local Target Contract and the same Shell/Lens lifecycle continues.
+
+
+## Target Step Result Contract
+
+A Target Module exists because a recurring Target family benefits from a reusable way to produce one coherent **Target Step Result family**.
+
+Conceptually:
+
+```text
+Target Module
+=
+Target Step-Result Contract
++ Target Resolution / Production Method
++ Knowledge Basis
++ Lens Profile
++ Validators
++ Handoff / Revalidation
++ Representation Guidance
+```
+
+### Step-Result Contract
+
+Defines proportionally:
+
+```text
+what useful Step Result this Target family aims to produce
+which Target Step Result Units may compose it
+what each Result Unit means / why it exists
+possible fields/substructure
+relations among Result Units
+validation/completeness meaning
+typical consumers/handoff
+representation guidance
+```
+
+"One result family" does not mean:
+
+```text
+one Result Unit
+one field
+one semantic entity
+one file
+one uniformly populated template
+```
+
+A concrete Target Step Result is a sparse/material projection of the possible Module surface.
+
+### Resolution / Production Method
+
+The Module may supply reusable ways to produce/refine that result:
+
+```text
+Source archetype
+Question candidates
+Idea / Variant discovery aids
+branch triggers
+candidate answer shapes/pattern aids
+Internal Object Contracts
+shared Result-Unit methods
+Decision surfaces
+validators
+handoff/revalidation prompts
+```
+
+Concrete Questions/Ideas/Q/R/P/Decisions/Evidence remain generic IDTSPE State Units. The Module provides reusable prompts/methods; it does not duplicate the Core lifecycle inside its result schema.
+
+Canonical Unit/result semantics: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
+
 
 ---
 
@@ -131,7 +199,9 @@ PRIMARY TARGET MODULE
   primary reusable form for one Target Instance
 
 SUPPORTING TARGET MODULE
-  contributes a bounded semantic owner/subtarget inside another Target
+  a reusable Target Module whose Target / Step-Result family is independently coherent
+  enough to be used as a PRIMARY Target Module in some invocation;
+  in another Target it may contribute that same reusable methodology in a supporting role
 
 EVIDENCE TARGET MODULE
   plans an evidence-producing operation; evidence does not become semantic authority
@@ -146,6 +216,53 @@ COMPOSITION TARGET MODULE
 ```
 
 These are integration roles, not new Decision types.
+
+## Supporting Target Module Independence Rule
+
+`SUPPORTING` is an **integration role of a real reusable Target Module**, not a way to promote every internal part of another Target into a module.
+
+A Supporting Target Module must pass the normal Target-Module independence test:
+
+```text
+the recurring methodology/result can also make sense
+as its own bounded Target family
+with an independently useful Target Step Result
+```
+
+It may therefore be:
+
+```text
+PRIMARY in one invocation
+SUPPORTING in another invocation
+```
+
+Using a Supporting Target Module inside a parent Target does **not** by itself prove that a second Target Instance exists. Form a separate child Target only when the work has an independently useful planning responsibility/result and normal Target Formation justifies it.
+
+If the candidate can **only ever exist as an internal part of one parent Target result**, do not model it as a Supporting Target Module.
+
+Prefer:
+
+```text
+Result Unit
+→ concrete independently processable part of the parent Step Result
+
+Internal Object Contract
+→ reusable schema/questions/validation for addressable objects inside the parent Module
+
+shared Result-Unit method
+→ reusable construction/evaluation guidance used by Result Units in one or more Modules
+```
+
+Boundary:
+
+```text
+can stand as its own recurring Target family
+AND may also assist another Target
+→ Target Module with SUPPORTING role
+
+only exists as part of another Target result
+→ Result Unit / Internal Object Contract / shared Result-Unit method
+```
 
 ---
 
@@ -197,6 +314,7 @@ Idea / Variant Discovery
 
 Lens Profile / Patterns
   required/frequent reusable Lens refs
+  which target-specific Result Units/fields are normal analysis subjects when useful
   target-profile reusable Lens refs
   local-only evaluation prompts when genuinely local
   known target-specific patterns / anti-patterns
@@ -212,15 +330,23 @@ Decision Surfaces
     Question-Set Decision
     Answer Decision
 
-Output Schema
-  semantic fields / addressable subowners
-  mapping from answers/Decisions into current output
+Target Step-Result Contract
+  Step Result family
+  Result Units + their purpose/boundary
+  possible semantic fields / addressable substructure
+  mapping from selected answers/Decisions into current Result Units
+
+Output Schema / Template — compatibility/technical projection
+  optional concrete projection shape for the Step-Result Contract
+  never a mandatory questionnaire
 
 Internal Object Contracts
   addressable object schemas/questions/lenses owned inside this module
 
 Supporting Modules / Composition
-  other Target Modules normally activated
+  other independently valid Target Modules that may be reused in a supporting role
+  each supporting module must also be coherent as its own recurring Target family
+  supporting-role use does not automatically instantiate a separate Target
 
 Validators
   readiness/completeness/boundary/authority checks
@@ -438,9 +564,9 @@ Lens finding ≠ new Target automatically
 
 A material independent problem exposed by a Lens may be escalated through generic Target Formation.
 
-# 11. Output Schema Is A Target Projection Contract
+# 11. Step-Result Contract / Output Schema Projection
 
-A Target Module can contain a semantic output template.
+A Target Module defines a Target Step-Result Contract and may additionally contain a semantic output template/schema as its concrete projection shape.
 
 Example:
 
@@ -450,9 +576,9 @@ TM-SCENARIO-DRAFT
     Behavior Item schema
 ```
 
-The schema is where accepted answers/Decisions are integrated while Scenario planning retains methodology ownership.
+The schema is where accepted answers/Decisions are integrated into declared Result Units while Scenario planning retains methodology ownership.
 
-It is not a questionnaire that forces unsupported fields.
+The Module contract is a **maximum/possible semantic surface**, not a questionnaire that forces unsupported Units/fields.
 
 Rule:
 
@@ -569,9 +695,10 @@ full IDTSPE
   Decisions
   Revalidation
 ↓
-module output schema
+Target Step Result
+  → material Result Units
 ↓
-accepted downstream Sources
+accepted Result Units / outputs become downstream Sources only where explicitly declared
 ```
 
 ## Lens Boundary Invariant
@@ -581,6 +708,24 @@ reusable Lens knowledge ≠ Target Module ownership
 Lens activation ≠ new Target Instance
 Architecture Decision subject ≠ dedicated Architecture Target Module automatically
 ```
+
+
+## Migration Compatibility For Installed Modules
+
+Existing installed Modules remain valid during the staged conformance migration.
+
+Interpret current:
+
+```text
+Purpose / Output
+Target-specific output headings
+Output Schema
+Artifact / File Contract
+```
+
+as the implicit Step-Result Contract + Result Unit/field projection by meaning.
+
+New or materially revised Modules should make independently processable Result Units explicit. A later profile conformance pass may make this literal without requiring a new Core entity for every Unit.
 
 ## Artifact / File Proposal Integration Point
 

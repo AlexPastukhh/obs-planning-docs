@@ -1247,3 +1247,107 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 **Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
 **Entry:** `LOG-RPKG-035`  
 **Reason:** the Replacement Package App scope owns the EDT pre-Prepare correction plus the accepted manual-rebind-during-Execute and non-interactive CLI limitations, while this correction also updates the materialized shared `OBS-ACTION/1` protocol in `planning/documentation/build-replacement-archive-workflow.md` so producer/consumer wording remains truthful.
+
+### LOG-DOC-069 — Review Target Step Result / Unit foundation replacement before Apply
+
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `d4d655ff-6701-468a-b250-541764d0e85c`  
+**Source:** current planning discussion comparing the preliminary replacement package with the preserved design-v6 model and explicit user clarification of Supporting Target Module semantics  
+
+**Material Findings / Selected Corrections:**
+- the preliminary package omitted the active `SCOPE-REUSABLE-DOCUMENTATION` canonical `planning/documentation/action-log.md`; replacement target state must include its own cumulative review/correction meaning plus `APPLIED` relation rather than defer logging to a later package;
+- `integration/CURRENT-REPOSITORY-INTEGRATION.md` still described `36dfbf...` as the current package base even though this ChangeSet is built against `5439c9da38db610759f90e32eb67331bac2c3cde`; preserve older bases as provenance but make the current package-base claim exact;
+- `dynamic-target-formation-and-discovery-checks.md` still let readers infer that all `TF-01..TF-10` semantics are conceptually Target Formation. Keep the stable IDs, but distinguish `TF-01..TF-05` as the formation core and `TF-06..TF-10` as later work-orchestration/resolution compatibility slots;
+- `SUPPORTING TARGET MODULE` is valid only for a reusable Target Module whose recurring Target/Step-Result family can also make sense on its own. If the candidate can only exist as an internal part of another Target result, use a Result Unit, Internal Object Contract or shared Result-Unit method instead. Supporting-role reuse does not automatically instantiate a child Target;
+- package metadata must not claim a full methodology/link audit when only exact-base, package-structure, touched-link and targeted structural checks were performed.
+
+**Resulting Current Meaning:** the foundational Core Target Step Result / Unit model remains selected. The corrected package is cumulative in the same still-open ChangeSet, keeps current port/TF/Decision/representation compatibility, and makes package/log/current-base/supporting-module boundaries exact before any Apply.
+
+### LOG-DOC-070 — Pre-update rebase correction for Target Step Result / Unit foundation
+
+**Type:** REVIEW DIFF / PRE-UPDATE CHECK  
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `67d76acb-81c1-4d22-947f-25c01308448d`  
+**Current Repository:** `github:AlexPastukhh/obs-planning-docs@d72cfc4c1682f40ec21ecaed4742213636980bad`  
+
+**Material Finding / Selected Correction:**
+- the preliminary replacement declared `5439c9da38db610759f90e32eb67331bac2c3cde` as current package base, but `main` advanced by one commit to `d72cfc4c1682f40ec21ecaed4742213636980bad` before Apply;
+- the intervening commit changed 22 files and overlaps this ChangeSet only at `planning/documentation/action-log.md`;
+- the packaged base bytes for that overlapping file already match the new current repository blob, while the other package-touched paths were unchanged by the intervening commit;
+- therefore the selected Target Step Result / Unit semantics and replacement payload remain valid, but current-base provenance and the proposed cumulative scope-log target state must be rebased;
+- the un-applied preliminary v3 `APPLIED` proposal must not survive as if v3 had actually applied. The cumulative target state records one `APPLIED` relation only for the exact replacement package that is ultimately applied.
+
+**Resulting Current Meaning:** keep the same open ChangeSet and stable label, issue a new package ID for the corrected bytes, update current-base metadata to `d72cfc4c1682f40ec21ecaed4742213636980bad`, and preserve prior preliminary packages only as review/provenance artifacts.
+
+### LOG-DOC-071 — Rebase Target Step Result / Unit package to selected local snapshot
+
+**Type:** REVIEW DIFF / PRE-UPDATE SOURCE CORRECTION  
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `e836cc54-9285-4ad6-8d3a-854451919681`  
+**Selected Source:** `obs-planning-docs-local-base-3d1ce07c-20260827-143346.zip`  
+**Snapshot SHA-256:** `cdd8cd6334bc4cd9f4398adf42fe4b0c1dba664773619267d923b643a395ba61`  
+**Repository:** `github:AlexPastukhh/obs-planning-docs`  
+**Snapshot Base Commit:** `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`  
+
+**Material Finding / Selected Correction:**
+- source state changed again before Apply, and the user explicitly supplied a fresh local repository snapshot for package rebasing;
+- the selected snapshot completely covers all package-touched source paths and matches the intended repository identity;
+- compared with v4 `base-files`, only `planning/documentation/action-log.md` changed among the 20 replace paths; the one add path is still absent;
+- the snapshot also contains local working-tree changes, but none overlap any operation path in this ChangeSet;
+- rebuild every replace `base-files` payload from exact selected snapshot bytes anyway, so package preconditions are bound to the selected current source rather than inferred from the older package;
+- preserve prior review/correction meaning (`LOG-DOC-069`, `LOG-DOC-070`) but do not preserve any proposed `APPLIED` record for an archive that was never applied.
+
+**Resulting Current Meaning:** continue the same still-open ChangeSet with a new package ID, bind current package provenance to the selected local snapshot based at `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`, and record one `APPLIED` target-state relation only for the exact newly produced package.
+
+### LOG-DOC-072 — Apply Target Step Result / Unit Core foundation
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-069`, `LOG-DOC-070`, `LOG-DOC-071`  
+**ChangeSet:** `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`  
+**Package:** `16223524-1499-4614-a472-8f4bab0ae919`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- IDTSPE Core has one canonical Target Step Result / IDTSPE Unit model: Target Module or Local Target Contract owns target-specific Result Units, while Core owns generic State Unit kinds such as Question / Idea / Q-R-P / Decision / Evidence;
+- State Units may themselves be material output of one IDTSPE work step; one Target does not imply one Result Unit or one file;
+- reusable Lenses operate inside IDTSPE through `READ / ANALYZE`, `FILL / REFINE`, `CHALLENGE / REOPEN`, `CHECK / VALIDATE`, `AFFECT / UPDATE AFTER RESOLUTION` and `ROUTE`, but do not define State Unit kinds, Result Unit kinds or semantic authority;
+- Target Module contract is expressed as Step-Result Contract + Resolution / Production Method + Knowledge Basis + Lens Profile + validators/handoff/representation guidance, with sparse/proportional concrete projection;
+- Supporting Target Module is only a role of a real reusable module that can also be a coherent standalone recurring Target family; internal-only parts remain Result Units / Internal Object Contracts / shared Result-Unit methods, and supporting-role use alone does not create a child Target;
+- Resolution Slot remains resolution/coordination metadata rather than a competing content ontology;
+- current `TF-01..TF-10` IDs remain stable, while guidance distinguishes the `TF-01..TF-05` formation core from later `TF-06..TF-10` work-orchestration/resolution compatibility;
+- current `P-01..P-15`, three durable Decision types, Documentation / Representation Lens, P-14/TF-10 and AP/AG compatibility remain intentionally in place for later Core/SDS ChangeSets;
+- package base payloads are bound to the exact selected local snapshot based at `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`; its unrelated local working-tree changes remain outside this package;
+- package validation claims remain limited to checks actually performed rather than implying a full repository/methodology audit;
+- the reusable-documentation scope log is coherent with this exact package target state.
+
+**Rationale:** land the Core semantic/result foundation against the user's exact current local source state while preserving independent unrelated local work and fail-closed package preconditions.
+
+### LOG-DOC-073 — Correct foundation package chronology after applied-v5 source verification
+
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, applied foundation package `16223524-1499-4614-a472-8f4bab0ae919`  
+**Selected Source:** `obs-planning-docs-local-base-3d1ce07c-20260827-145642(1).zip`  
+**Repository:** `github:AlexPastukhh/obs-planning-docs`  
+**Snapshot Base Commit:** `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`  
+
+**Material Finding / Selected Correction:**
+- the fresh local snapshot matches all 21 replacement payloads of foundation package v5 exactly, so v5 is no longer a hypothetical/proposed Apply: its target state is already present in the local source and `LOG-DOC-072 APPLIED` is factual history;
+- the later cumulative package incorrectly tried to reapply the whole foundation and also compressed the preparation chronology;
+- the exact preparation sequence is `5439c9da38db610759f90e32eb67331bac2c3cde` → one-commit advance to `d72cfc4c1682f40ec21ecaed4742213636980bad` → later local-snapshot rebase to `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f` → successful local application of foundation v5;
+- the one-commit / 22-file / one-overlap finding belongs only to `5439c9da38db610759f90e32eb67331bac2c3cde` → `d72cfc4c1682f40ec21ecaed4742213636980bad`;
+- no foundation semantic file needs to be replaced again; the remaining ReviewDiff correction concerns only the reusable-documentation action log, methodology manifest and current integration ledger.
+
+**Resulting Current Meaning:** preserve the already-applied v5 Core semantic/result foundation, correct chronology/provenance in place, and use a small same-ChangeSet correction package rather than reapplying the 21-operation foundation package.
+
+### LOG-DOC-074 — Apply Target Step Result / Unit ReviewDiff correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-073`  
+**ChangeSet:** `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`  
+**Package:** `9ff30167-9271-4977-8962-12ccc0ec91da`  
+
+**Target-State Result:** after successful Apply of this exact correction package:
+- the Target Step Result / IDTSPE Unit foundation already applied by package `16223524-1499-4614-a472-8f4bab0ae919` remains unchanged;
+- `CURRENT-REPOSITORY-INTEGRATION.md` records the exact package-preparation chronology `5439c9da38db610759f90e32eb67331bac2c3cde` → `d72cfc4c1682f40ec21ecaed4742213636980bad` → `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f` and explicitly distinguishes that chronology from the later successful v5 Apply;
+- `MANIFEST.json` records that all 21 foundation-v5 operation paths match the selected current local snapshot and that this package is ReviewDiff/provenance correction only;
+- `planning/documentation/action-log.md` preserves factual `LOG-DOC-072 APPLIED` for v5 and adds this correction as a subsequent applied transition in the same still-open ChangeSet;
+- no SDS migration, runtime-port simplification, Decision-type simplification or representation-subsystem redesign is introduced by this correction.
+
+**Rationale:** correct the remaining ReviewDiff blocker without overwriting or needlessly replaying the already-applied Core foundation.

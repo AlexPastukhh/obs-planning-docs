@@ -1,39 +1,104 @@
-# Target Module Output Template And Question-Set Rule
+# Target Module Step-Result Contract And Question-Set Rule
 
 Status: active generic Target Module rule
 
-## Generic IDTSPE Envelope vs Target-Specific Template
+## Generic IDTSPE State vs Target Step Result
 
-Every concrete Target already has generic IDTSPE state:
+Every concrete Target may have generic Core State Units:
 
 ```text
-Target Formation Resolution Set
-Target-Scope Decision
-Question-Set Decision
+Sources
+Questions
 Ideas
 Q/R/P
-Planning Branches
-Answer Decisions
-Residual Q/R/P
-Decision Revalidation Helpers
-Sources / Relations / Handoff
+Planning Branch state
+Decisions
+Evidence / Evidence Needs
+Revalidation Signals
+Relations / Handoff state
 ```
 
-A Target Module must not duplicate those fields inside its own target-specific template.
+A Target Module must not duplicate those generic units merely as target-specific result fields.
 
-Target Module files should contain:
+The target-specific result is:
 
 ```text
-purpose
-upstream source contract
-Knowledge Basis (`INLINE | REFERENCED | HYBRID`)
-question-set examples
-Lens Profile / reusable Lens refs / local pattern aids
-target-specific output template
-field explanations
-explicit Artifact / File Contract
-module-specific validators / handoffs
+Target Step Result
+→ one or more Target Step Result Units
+→ target-specific fields/substructure
 ```
+
+Canonical model: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
+
+## Target Module Result Contract
+
+A reusable Target Module should explain proportionally:
+
+```text
+Purpose / recurring Target family
+
+Target Step-Result Contract
+  useful Step Result family
+  Result Units
+  Unit purpose/boundary
+  possible fields/substructure
+  Unit relations
+  validation/completeness meaning
+  handoff/consumers
+  representation guidance
+
+Resolution / Production Method
+  Source archetype
+  Question candidates
+  Idea/pattern aids
+  branch/escalation triggers
+  Internal Object Contracts/shared methods when useful
+
+Knowledge Basis
+Lens Profile
+Validators
+Handoff / revalidation
+Artifact / File Contract
+```
+
+"One result family" does not mean one field, one Unit, one entity or one file.
+
+## Proportional / Sparse Projection Rule
+
+```text
+Target Module Step-Result Contract
+= possible/addressable semantic surface
+
+Concrete Target Step Result
+= only supported/applicable/material projection
+```
+
+A declared Unit/field does not imply:
+
+```text
+it must be asked
+it must be answered
+it must persist
+it must be equally detailed
+its absence is automatically an unresolved Decision
+```
+
+Therefore:
+
+```text
+blank optional field
+≠ unresolved Decision
+```
+
+Only supported/material meaning is projected.
+
+## Output Schema / Template Compatibility
+
+`Output Schema` and `Target-specific Output Template` remain valid technical/compatibility terms for one projection shape of the Step-Result Contract.
+
+They are not the primary semantic definition of the Target result.
+
+During staged profile migration, existing module output headings are interpreted as Result Units/fields by meaning even when the file does not yet use explicit `Result Unit` labels.
 
 ## Knowledge Basis Is Required In Every Target Module
 
@@ -63,22 +128,26 @@ examples / preset candidates
 ≠ fixed sequence
 ```
 
-The current Target may add, remove, split, merge or reopen questions through normal `TF-06 QUESTION_SET`.
+The current Target may add, remove, split, merge or reopen Questions through normal Core question-set resolution.
 
-## Field Explanation Rule
+Concrete Questions are Core State Units. The Target Module supplies reusable candidates/generation rules.
 
-Every target-specific output field must be explained either:
+## Result Unit / Field Explanation Rule
+
+Every non-obvious Result Unit and important target-specific field must be explained.
+
+Compact form:
 
 ```text
-Field — short meaning / what belongs here
+Result Unit / Field — short meaning / what belongs here
 ```
 
-or, preferably for important fields:
+Preferred for important/ambiguous meaning:
 
 ```text
-## Field Name
+## Unit / Field Name
 
-Meaning:
+Purpose / Meaning:
 ...
 
 Write here:
@@ -91,35 +160,33 @@ Examples:
 ...
 ```
 
+Examples are particularly important when domain wording contains terms such as `Result` that could be confused with `Target Step Result`.
+
 Unexplained label-only schemas are not enough for a reusable Target Module.
 
 ## Lenses
 
-Reusable Lens knowledge belongs in `../lenses/`, not inside whichever Target Module happened to use it first.
+Reusable Lens knowledge belongs in the canonical Core/profile Lens owners, not inside whichever Target Module happened to use it first.
 
 A module stores only:
+
 ```text
 Lens Profile
   reusable Lens IDs
-  applicability gates specific to this Target profile
+  target-specific applicability gates
+  known Result Units/fields that are natural analysis subjects when useful
   local-only Lens prompts when genuinely non-reusable
 ```
 
-Lens findings feed normal generic:
-```text
-Idea Q/R/P
-Evidence
-Branch comparison
-Answer Decisions
-```
+A Lens does not define target-specific Result Units/fields. Findings route through Core-defined State Units and may affect already-declared Result Units after normal authority/resolution.
 
-The Lens itself is not an output-template field. If a local Lens becomes useful across multiple Target families, promote it into the Lens Library.
+If a local Lens becomes useful across multiple Target families, promote it into the Lens Library.
 
-## Artifact / File Contract Is Required In Every Target Module
+## Artifact / File Contract Remains Required During Current Migration
 
-Every active Target Module declares representation expectations for its own target-specific content.
+Every active Target Module declares representation expectations for its own target-specific meaning.
 
-At minimum it must state:
+At minimum it states:
 
 ```text
 REQUIRED persistence/output owners
@@ -129,5 +196,6 @@ what must be routed to another owner
 when placement may remain UNRESOLVED
 ```
 
-This is profile guidance consumed by `TF-10` / `P-14`; it does not itself mutate files.
+This remains profile guidance consumed by current `TF-10 / P-14`; it does not itself mutate files and does not imply one-file-per-Target.
 
+Ordinary representation guidance may later be expressed more directly at Result Unit granularity, but the current AP/P-14 compatibility contract remains active until separately changed.

@@ -82,7 +82,7 @@ existing representation
 
 ## 3. Artifact Placement Item
 
-For every material content unit produced/discovered in the current IDTSPE instance, render proportionally:
+For every material IDTSPE Unit/content item produced, refined or discovered in the current IDTSPE instance that may need to survive, render proportionally:
 
 ```text
 ArtifactPlacementItem
@@ -163,6 +163,41 @@ Do not invent an exact repository path when the current workspace/profile does n
 <implementation-symbol-or-test>
 SDS-PLANNING-STATE/SDS-WORKSPACE-EVOLUTION.md
 ```
+
+
+### Unit Granularity
+
+Canonical Unit model: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
+
+Placement may be resolved independently for:
+
+```text
+Target Step Result Unit
+→ target-specific result meaning
+
+IDTSPE State Unit
+→ Question / Idea / Q/R/P / Decision / Evidence / Revalidation state
+  when that planning state materially needs to survive
+```
+
+Examples:
+
+```text
+Result Unit: Integration Path
+→ embed in current Slice owner
+
+Decision: selected orchestration owner
+→ persist only when rationale/revalidation value is material
+
+rejected Idea
+→ EPHEMERAL
+
+Evidence record supporting an accepted Decision
+→ persist/rout according to Evidence ownership
+```
+
+One Target Step Result may therefore use several destinations. Unit identity still does not imply a separate file.
+
 
 ## 3A. Placement Guidance Provenance
 
@@ -361,10 +396,11 @@ A material IDTSPE answer should expose, proportionally:
 2. Resolved Questions / current answers
 3. Unresolved material Questions / Decisions needing user authority
 4. Lens findings / material Q/R/P / Ideas when relevant
-5. Target-specific output preview/update
-6. Artifact Placement View
-7. Handoff / next Sources
-8. Residual Q/R/P / revalidation signals
+5. Target Step Result preview/update — material Result Units
+6. material IDTSPE State Units when useful
+7. Artifact Placement View
+8. Handoff / next Sources
+9. Residual Q/R/P / revalidation signals
 ```
 
 The exact prose format can vary. The **Artifact Placement View must not disappear** merely because no files are being mutated in the current turn.

@@ -29,6 +29,8 @@ It may later be promoted into a Target Module only if repetition justifies reuse
 
 One concrete bounded planning owner.
 
+A Target Instance is the semantic/planning responsibility, not a file. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result`, which may contain several addressable Result Units.
+
 Examples:
 
 ```text
@@ -50,7 +52,31 @@ Target Relation
 ≠ Source relation
 ```
 
-## 2. Working Target Relation Vocabulary
+
+## 2. Target Step Result / Unit Relation
+
+```text
+Target Instance
+↓ one bounded work step
+Target Step Result
+├─ Result Unit A
+├─ Result Unit B
+└─ Result Unit C
+```
+
+Important:
+
+```text
+one Target
+≠ one Result Unit
+≠ one file
+```
+
+Target Module/Local Target Contract defines the target-specific Result Unit kinds. Generic Questions/Ideas/Q/R/P/Decisions/Evidence around the Target are Core State Units, not extra Target result fields by default.
+
+A Result Unit may be the precise downstream Source when another Target depends only on that accepted meaning. Source authority remains explicit.
+
+## 3. Working Target Relation Vocabulary
 
 ```text
 PART_OF
@@ -106,7 +132,7 @@ Targets/forms represent mutually alternative routes/scopes.
 
 A Target contributes to a broader result/composition without implying that a dedicated composition Target must exist.
 
-## 3. Source Relation Remains Separate
+## 4. Source Relation Remains Separate
 
 Conceptual Source entry:
 
@@ -134,7 +160,7 @@ TargetRelation
 
 Do not overload one structure to mean both.
 
-## 4. Another Target's Output Becomes A Source Only Explicitly
+## 5. Another Target's Output Becomes A Source Only Explicitly
 
 Example:
 
@@ -161,7 +187,7 @@ SCN-CAPTURE FLOW_TO SCN-REVIEW
 
 The first is semantic Source authority. The second is topology.
 
-## 5. Step-02 Is Not A Fixed Target Type
+## 6. Step-02 Is Not A Fixed Target Type
 
 Real-life solution planning may dynamically form one or more Targets.
 
@@ -177,7 +203,7 @@ no extra Target when accepted Sources already resolve the issue
 
 Names such as `RLS-01` are example instance labels, not a mandatory global Target Type.
 
-## 6. Composition Boundary
+## 7. Composition Boundary
 
 Several Targets may all `CONTRIBUTE_TO` one downstream source package without creating another Target.
 
@@ -199,7 +225,7 @@ accepted Target outputs
 
 with no new semantic owner.
 
-## 7. High-Level Example — Research Capture
+## 8. High-Level Example — Research Capture
 
 ```text
 NEED-01
@@ -241,7 +267,7 @@ If the two accepted routes combine mechanically, no composition Target is create
 
 If there are two materially different whole-solution combinations, a normal dynamically formed composition Target may compare them.
 
-## 8. Why This Separation Matters
+## 9. Why This Separation Matters
 
 It preserves:
 
