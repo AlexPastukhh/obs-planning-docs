@@ -1225,3 +1225,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - all shared Knowledge Basis semantics and the previously applied 17/17 Target Module + 18/18 Lens state remain unchanged.
 
 **Rationale:** make current-state repository-base metadata internally consistent without rewriting historical integration provenance or changing the accepted semantic scope of the open shared-Knowledge-Basis ChangeSet.
+
+### XREF-DOC-012 — Replacement Package App action-assisted Review-chat binding protocol
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-033`  
+**Reason:** the canonical shared `OBS-ACTION/1` protocol is synchronized into `planning/documentation/build-replacement-archive-workflow.md` in the reusable-documentation scope, while the Replacement Package App scope owns the SL-RPKG-06 behavior, implementation, tests and full APPLIED rationale.

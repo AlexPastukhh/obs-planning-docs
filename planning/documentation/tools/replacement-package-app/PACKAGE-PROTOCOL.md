@@ -67,6 +67,7 @@ action: apply-package
 name: <human-readable ApplicationAttempt label>
 archive: <downloaded archive filename hint>
 packageId: <same packageId as PACKAGE.json>
+chatTabTitle: <optional exact intended ChatGPT conversation/tab title hint>
 ```
 
 Action rules:
@@ -74,6 +75,9 @@ Action rules:
 - `archive` is a filename/hint, not an absolute path or repository-operation authority;
 - the consumer resolves/selects a concrete ZIP and requires its manifest `packageId` to exactly match the action `packageId`;
 - `name` is presentation/history text and may vary between attempts;
+- `chatTabTitle` is optional and may be omitted. When present, it is a destination-binding hint only: it never identifies the package, Repository Target or ChangeSet and never grants repository-operation authority;
+- after a successful Apply, and only when that ChangeSet has no existing Review-chat binding, the consumer compares `chatTabTitle` by exact title equality against the current ordinary ChatGPT conversation inventory. Exactly one matching conversation is bound through the same persisted binding service used by manual selection; zero or multiple matches do not guess, do not fail the successful Apply and leave manual binding available with an actionable warning;
+- an existing persisted Review-chat binding always wins over an action hint. The hint does not rebind existing work; duplicate browser tabs of one conversation remain governed by the existing conversation-key / duplicate-tab claim serialization rather than by the title hint;
 - repository operations never appear in `OBS-ACTION`;
 - clipboard/repo-file ReviewDiff handling never appears in `OBS-ACTION`; it is application configuration;
 - V0.1 Finalize is not a second `OBS-ACTION`: the consumer uses the selected ChangeSet's persisted current ReviewDiff as the implicit Finalize baseline plus a local commit message; the ReviewDiff SHA-256 remains internal application state and is not user input.
@@ -84,6 +88,8 @@ Action rules:
 The V0.1 application has a configured repository root and optional selected archive path. When only an `OBS-ACTION` is supplied, archive resolution is bounded to explicit candidates such as the configured Downloads directory/current selection. A filename is only a hint; `packageId` is the package identity.
 
 Resolution result must be unique after opening candidate `PACKAGE.json` files and comparing `packageId`. Zero matches produce `PACKAGE_NOT_FOUND`; ambiguous/malformed candidates do not authorize mutation.
+
+Optional `chatTabTitle` resolution is deliberately later and non-authoritative. It runs only after repository Apply has succeeded and the current ReviewDiff/ChangeSet state exists. Existing Review-chat binding is retained. With no binding, one exact currently-open conversation-title match may establish the normal persisted binding and normal SL-RPKG-06 queue; zero/ambiguous matches produce a handoff warning/manual fallback without rolling back or relabeling the successful repository Apply. A title hint identifies a conversation inventory choice, not a physical duplicate browser tab.
 
 ## 3. Consumer Validation Order
 
@@ -102,6 +108,8 @@ parse action/package input
 → mutate
 → verify resulting bytes
 → record attempt + cumulative ReviewDiff
+→ if action supplied `chatTabTitle` and no Review-chat binding exists, resolve it against current ChatGPT inventory without changing Apply truth
+→ if a Review-chat binding exists/was uniquely resolved, use the normal SL-RPKG-06 queue
 ```
 
 No target file is changed before the complete package and all touched-path preconditions pass.

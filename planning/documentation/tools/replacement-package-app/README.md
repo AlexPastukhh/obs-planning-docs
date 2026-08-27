@@ -116,6 +116,7 @@ The app image includes its Java runtime. After source changes, use the newly bui
 ```text
 register/select local repository
 → supply OBS-ACTION and/or replacement ZIP
+→ optionally include `chatTabTitle` in OBS-ACTION when an exact intended open ChatGPT title is known
 → Apply
 → inspect/refresh Current Change when useful
 → Finalize
@@ -123,6 +124,8 @@ register/select local repository
 ```
 
 Copy/Open ReviewDiff remain optional inspection conveniences and never a Finalize approval gate. ReviewDiff fingerprints remain internal integrity state; normal user flow does not require SHA input.
+
+`OBS-ACTION/1` may carry optional `chatTabTitle: <exact title>`. It is only a Review-chat binding hint: after successful Apply, an unbound ChangeSet is auto-bound only when exactly one currently open ordinary ChatGPT conversation has that exact title. Existing binding is never overwritten; zero/duplicate matches keep Apply successful and leave the normal manual `Refresh chats` / `Bind Review chat` path available. Manual and action-assisted binding use the same persisted binding and the same SL-RPKG-06 delivery queue.
 
 ## 7. Repository Context / ChatGPT Handoff — Current Implementation
 

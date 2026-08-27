@@ -128,6 +128,7 @@ action: apply-package
 name: <human-readable ApplicationAttempt label>
 archive: <downloaded archive filename hint>
 packageId: <same packageId as PACKAGE.json>
+chatTabTitle: <optional exact intended ChatGPT conversation/tab title hint>
 ```
 
 Action rules:
@@ -135,10 +136,15 @@ Action rules:
 - `archive` is a filename/hint, not an absolute path or repository-operation authority;
 - the consumer resolves/selects a concrete ZIP and requires its manifest `packageId` to exactly match the action `packageId`;
 - `name` is presentation/history text and may vary between attempts;
+- `chatTabTitle` is optional and may be omitted. When present, it is a destination-binding hint only: it never identifies the package, Repository Target or ChangeSet and never grants repository-operation authority;
+- after a successful Apply, and only when that ChangeSet has no existing Review-chat binding, the consumer compares `chatTabTitle` by exact title equality against the current ordinary ChatGPT conversation inventory. Exactly one matching conversation is bound through the same persisted binding service used by manual selection; zero or multiple matches do not guess, do not fail the successful Apply and leave manual binding available with an actionable warning;
+- an existing persisted Review-chat binding always wins over an action hint. The hint does not rebind existing work; duplicate browser tabs of one conversation remain governed by the existing conversation-key / duplicate-tab claim serialization rather than by the title hint;
 - repository operations never appear in `OBS-ACTION`;
 - clipboard/repo-file ReviewDiff handling never appears in `OBS-ACTION`; it is application configuration;
 - V0.1 Finalize is not a second `OBS-ACTION`: the consumer uses the selected ChangeSet's persisted current ReviewDiff as the implicit Finalize baseline plus a local commit message; the ReviewDiff SHA-256 remains internal application state and is not user input.
 <!-- /obs-ref:use -->
+
+Producer-specific `chatTabTitle` rule: emit this optional field only when the exact intended ChatGPT title has been explicitly supplied/selected for the active invocation. Do not infer a browser title from the discussion topic, ChangeSet label or conversation prose. If no exact title is known, omit the field and preserve the existing manual Review-chat binding flow.
 
 ## 5. Producer Validation
 
@@ -150,7 +156,8 @@ Before returning the ZIP, verify at minimum:
 - `repositoryIdentity` came from checked source context, not guessing;
 - operation paths and archive entries satisfy shared path/collision rules;
 - every operation has exactly the required base/replacement payloads and no undeclared payload file exists;
-- replacement bytes are complete intended files, not snippets or patches.
+- replacement bytes are complete intended files, not snippets or patches;
+- when `chatTabTitle` is emitted, it is the exact explicitly supplied intended title for this invocation rather than a guessed title.
 
 If exact current base content for replace/delete is unavailable, stop and request the minimum exact source needed.
 

@@ -123,6 +123,11 @@ Cancel semantics:
 
 The user-facing interaction list is a current/actionable projection, not a terminal-attempt history. Show interactions that can still progress/cancel plus `UnknownAfterSend` (or equivalent uncertainty that still requires attention). Repeating the same user intent while an equivalent interaction is still actionable reuses that existing External Interaction identity rather than creating an indistinguishable duplicate: equivalence requires the same interaction kind, exact source/payload identity, destination conversation and applicable ChangeSet/ReviewDiff identity. A materially different source/payload or destination remains independent. Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` results leave this list after their result is surfaced through Output/notification. Technical terminal/tombstone state may persist only where recovery, uncertainty, idempotency or duplicate prevention requires it. After a terminal outcome, a later retry is a new External Interaction; a cancelled interaction is never restored/reused.
 
+### `BI-RPKG-REVIEW-CHAT-BINDING`
+Manual Review-chat selection remains the explicit binding method and persists with the ChangeSet. `OBS-ACTION/1` may additionally carry an optional exact `chatTabTitle` hint so the producer can request the same binding path without creating a parallel delivery mechanism.
+
+The hint is resolved only after Apply succeeds. If the ChangeSet already has a persisted Review-chat binding, that binding remains authoritative and the action hint cannot rebind it. If no binding exists, exactly one current ordinary ChatGPT conversation whose inventory title exactly equals the hint is bound through the same `ChatBridgeService.bind(...)` path used by manual selection; zero or multiple matches are never guessed, do not change successful Apply truth and leave manual binding available with an actionable handoff warning. The hint identifies a conversation inventory entry, not a physical duplicate browser tab; existing conversation-key / duplicate-tab claim serialization remains the delivery authority after binding.
+
 ### `BI-RPKG-CURRENT-CHANGE-DELIVERY-PREPARATION`
 Current-change delivery must prepare the intended ChatGPT composer without requiring foreground document focus, browser Clipboard API write permission or large rich-text editor insertion. Live practical evidence supersedes the earlier direct-text realization: every non-empty ReviewDiff is now prepared as an exact `.diff` attachment through the reusable browser attachment primitive, followed by verification that the exact file is visible and upload-ready.
 
@@ -168,6 +173,7 @@ Semantic result is concise and authoritative. Complete useful non-secret technic
 - `REQ-RPKG-21` — ownership/adoptability failures identify exact path + Repository Target + applying ChangeSet and explicitly distinguish `Unowned` from a concrete owning unfinished ChangeSet.
 - `REQ-RPKG-22` — ReviewDiff automatic Send retry interval is persisted application configuration (default 6 seconds, valid 1–60), captured per newly queued interaction/task and supplied to the extension; it is not a browser-extension timing constant.
 - `REQ-RPKG-23` — Java ↔ extension task delivery uses an explicit compatible bridge protocol and validates all deterministic claimed-task/send prerequisites before external preparation; version/contract mismatch is `FailedBeforeSend` and must never be mislabeled `UnknownAfterSend`.
+- `REQ-RPKG-24` — optional `OBS-ACTION.chatTabTitle` may establish a missing Review-chat binding only by one exact current conversation-title match through the same persisted binding service as manual selection; existing binding wins, zero/ambiguous matches never guess or fail repository Apply, and manual binding remains available.
 
 ## Current Implementation Divergences / Target Work
 

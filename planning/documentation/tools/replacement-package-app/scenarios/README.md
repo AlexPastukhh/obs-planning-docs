@@ -23,13 +23,24 @@ Current source realization after this package:
 SL-RPKG-01..SL-RPKG-09
 
 Practical correction in this package:
-SL-RPKG-06 exact ReviewDiff attachment + configurable Send-retry realization
+SL-RPKG-06 exact ReviewDiff attachment + configurable Send-retry realization + action-assisted Review-chat binding hint
 SL-RPKG-07 unified ChangeSet selector + unavailable-target query behavior
 SL-RPKG-08 current/actionable interaction projection
 SL-RPKG-01 ownership/adoptability diagnostic detail
 ```
 
 Implementation existence and operational acceptance remain separate: source/tests may realize a Scenario/Slice while its Windows/Swing/Edge practical card is still pending.
+
+## Command ↔ App Compatibility
+
+| Producer action | Consumer expectation |
+|---|---|
+| legacy `OBS-ACTION/1` with `action/name/archive/packageId` only | unchanged Apply + existing manual/persisted Review-chat binding behavior |
+| action additionally carries exact `chatTabTitle` and ChangeSet is unbound | after successful Apply, exactly one current ordinary ChatGPT conversation with that exact title is bound through the same persisted binding service; the current ReviewDiff then follows normal SL-RPKG-06 queueing |
+| `chatTabTitle` has zero or multiple conversation matches | successful repository Apply remains successful; no destination is guessed; handoff warning directs the user to the existing manual binding controls |
+| ChangeSet already has a Review-chat binding | persisted binding wins; action hint cannot rebind or redirect current work |
+
+`chatTabTitle` is a binding hint, not a package/repository/ChangeSet identity and not a physical duplicate-tab selector. Producer must omit it when no exact intended title was explicitly supplied for the active invocation.
 
 ## Supporting Meaning
 

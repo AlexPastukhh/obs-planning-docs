@@ -511,3 +511,28 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** canonical Application behavior, Slice/manual/test meaning and implemented handoff deduplication now express the same interaction-identity rule, and the layout regression remains valid on Windows CRLF or LF working trees without weakening the asserted below-selector arrangement.
 
 **APPLIED relation:** if package `2094ca09-4c76-404b-8fff-deb9632b450b` applies successfully, this authority/proof correction becomes the current SL-RPKG-UX-01 state for ChangeSet `5d882d10-056b-483b-84a9-411829d0f4d5`.
+
+### LOG-RPKG-033 — Add action-assisted Review-chat binding hint to existing SL-RPKG-06
+
+**Type:** LATER CLARIFICATION / SLICE EXTENSION / SHARED-PROTOCOL CORRECTION / APPLIED TARGET  
+**ChangeSet:** `513ddd04-b455-4870-a1d8-abfb4ba7de63`  
+**Package:** `e5620ae7-454f-4253-9854-eac2441c0599`
+
+**User clarification / selected integration path:**
+- keep this work inside existing `SL-RPKG-06 — Deliver Current Change To ChatGPT`; it is not a new Slice. The new behavior only adds a second entry path for establishing the already-existing Review-chat destination binding;
+- preserve the manual `Refresh chats` / `Bind Review chat` method. Add optional `OBS-ACTION/1` field `chatTabTitle` so a producer that has been explicitly given the exact intended ChatGPT title can carry that hint with the package handoff;
+- manual and action-assisted paths must converge on the same existing services: current ChatGPT conversation inventory → persisted `ChatBridgeService.bind(...)` → existing `enqueueReviewIfBound(...)` → the existing SL-RPKG-06 queue/attachment/send/confirmation path. Do not create a parallel automatic delivery/binding subsystem;
+- resolve the title hint only after repository Apply succeeds and the ChangeSet/current ReviewDiff exist. If a persisted Review-chat binding already exists, keep it authoritative and ignore the hint for rebinding;
+- if no binding exists, require exactly one current ordinary ChatGPT conversation whose inventory title exactly equals `chatTabTitle`. One match uses the normal persisted binding service; zero or multiple matches never guess a destination, never roll back/relabel successful Apply and surface an actionable manual-binding warning;
+- `chatTabTitle` is a binding hint rather than package/Repository/ChangeSet identity and does not select a physical duplicate browser tab. A conversation opened in several duplicate tabs remains one conversation binding and existing conversation-key claim serialization decides which tab performs delivery;
+- old `OBS-ACTION/1` envelopes without `chatTabTitle` remain valid and keep existing behavior. The ChatGPT-side producer must omit the optional field unless the exact intended title was explicitly supplied/selected for that archive invocation; it must not infer a browser title from topic/ChangeSet prose;
+- synchronize the canonical shared protocol definition and its producer-workflow materialized use in the same package. No ZIP schema, package identity, repository-operation authority, ReviewDiff handling setting, extension protocol or browser delivery primitive changes are selected.
+
+**Proof / acceptance:**
+- automated Core proof covers legacy action compatibility, unique exact-title auto-binding + normal ReviewDiff queueing, existing-binding priority, zero-match fallback and ambiguous-title fallback;
+- manual acceptance keeps the existing binding/delivery campaign and adds unique-title action binding, missing/duplicate-title no-guess behavior and existing manual-binding priority;
+- `.linked-notes/reference-objects.json` remains the unchanged single definition/use route for `ro_replacement_package_shared_protocol`.
+
+**Target-State Result:** `SL-RPKG-06` has one persisted Review-chat binding and one downstream delivery implementation, with two ways to establish a missing destination: explicit manual selection or an optional exact action title hint. Repository Apply remains independent of browser-title availability/ambiguity, and existing binding/delivery safety semantics remain unchanged.
+
+**APPLIED relation:** if package `e5620ae7-454f-4253-9854-eac2441c0599` applies successfully, this action-assisted binding/protocol extension becomes the current implementation state of new ChangeSet `513ddd04-b455-4870-a1d8-abfb4ba7de63`.
