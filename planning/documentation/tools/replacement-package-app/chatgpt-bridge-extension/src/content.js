@@ -110,7 +110,7 @@
       if (state.state === "sent") return "sent";
       if (state.state === "contaminated") return "contaminated";
       if (state.state === "missing") {
-        const grace = Date.now() + 2000;
+        const grace = Date.now() + Math.max(2000, Math.min(milliseconds, 10000));
         while (Date.now() < grace) {
           await sleep(200);
           const after = OBSChatGPTAdapter.reviewSendState(prepared, task.conversationKey);
@@ -168,8 +168,8 @@
           possibleSend = true;
           await stageTask(task, "SendClicked");
         });
-        if (confirmed) await result(task, "Sent", "ReviewDiff .diff attachment sent and confirmed from the post-baseline user-turn attachment surface.");
-        else if (possibleSend) await result(task, "UnknownAfterSend", "A Send click was attempted, but no post-baseline ReviewDiff .diff attachment surface could be confirmed.");
+        if (confirmed) await result(task, "Sent", "ReviewDiff send confirmed after the prepared attachment left the composer and a post-baseline user turn appeared; .diff attachment-surface proof is used when available.");
+        else if (possibleSend) await result(task, "UnknownAfterSend", "A Send click was attempted, but no post-baseline user turn could be confirmed after the prepared ReviewDiff attachment left the composer.");
         else await result(task, "PreparedUnsent", "The prepared ReviewDiff attachment disappeared before any automatic Send click was attempted.");
       } else if (task.kind === "snapshot") {
         if (task.autoSend) throw new Error("Snapshot task unexpectedly requested auto-send."); const blob = new Blob([bytes], {type: "application/zip"});

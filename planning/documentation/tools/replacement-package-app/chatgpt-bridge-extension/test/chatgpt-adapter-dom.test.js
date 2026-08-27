@@ -66,6 +66,7 @@ global.document = {
 const adapterPath = path.resolve(__dirname, "../src/chatgpt-adapter.js");
 vm.runInThisContext(fs.readFileSync(adapterPath, "utf8"), {filename: adapterPath});
 const proof = global.OBSChatGPTAdapter.__test.reviewDiffAttachmentTurnPresent;
+const reviewSendState = global.OBSChatGPTAdapter.reviewSendState;
 
 // Positive: the sent file card is a sibling of the message-author node inside one user turn.
 {
@@ -100,6 +101,22 @@ const proof = global.OBSChatGPTAdapter.__test.reviewDiffAttachmentTurnPresent;
   main.append(turn.append(message));
   currentUserMessages = [message];
   assert(proof({beforeUserMessages: 0}) === false, "ordinary .diff message text was treated as attachment proof");
+}
+
+// Fallback confirmation: after the prepared attachment has left the composer, a new post-baseline user turn is sufficient even when ChatGPT exposes no stable .diff file-card metadata.
+{
+  const message = new FakeNode("div", {"data-message-author-role": "user"}, "");
+  currentUserMessages = [message];
+  const state = reviewSendState({beforeUserMessages: 0, fileName: "review-fallback.diff"}, "test12345678");
+  assert(state.state === "sent", "post-baseline user-turn fallback did not confirm Send after composer attachment departure");
+  assert(state.proof === "post-baseline-user-turn", "fallback confirmation did not report its weaker proof mode");
+}
+
+// No post-baseline turn means attachment disappearance remains unknown/missing rather than Sent.
+{
+  currentUserMessages = [];
+  const state = reviewSendState({beforeUserMessages: 0, fileName: "review-missing.diff"}, "test12345678");
+  assert(state.state === "missing", "missing attachment without a post-baseline user turn was falsely confirmed as Sent");
 }
 
 console.log("PASS chatgpt-adapter DOM turn-boundary regression");

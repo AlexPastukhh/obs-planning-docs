@@ -688,3 +688,49 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply, the minimal single-owner bridge no longer contains a readiness-loop reinjection race, and manual repeat-send acknowledgement cannot contradict the authoritative actionable task state.
 
 **APPLIED relation:** if package `b4067e99-f944-45c4-801c-1c5c3f0fbbe2` applies successfully, these ReviewDiff corrections become the current state of still-open ChangeSet `c822293f-093f-44bb-b06e-e1eeccb202c6` (`SL-RPKG-06 — single-owner ChatGPT tab agent lifecycle`).
+
+### LOG-RPKG-040 — Confirm observed Send without requiring unstable attachment-card DOM and allow uncertainty acknowledgement
+
+**Type:** PRACTICAL REALIZATION FEEDBACK / SL-RPKG-06 SEND-CONFIRMATION CORRECTION / SL-RPKG-08 INTERACTION-USABILITY CORRECTION / APPLIED TARGET  
+**ChangeSet:** `5b0bd778-4064-4adf-bf36-85421abac5fe`  
+**Package:** `cf10d575-b5ab-40a4-b516-f3432b333bff`
+
+**Observed defect / selected correction:**
+- live use again showed the intended ReviewDiff visibly arriving in ChatGPT while the persisted External Interaction became `UnknownAfterSend`. The current proof still required a post-baseline turn-local `.diff` attachment/file-card surface after the prepared attachment had already left the composer; ChatGPT can complete the Send without exposing stable attachment metadata that matches those selectors, so the stronger DOM proof remains useful evidence but is too strict as the mandatory success gate;
+- the same live session showed that intentionally retained `UnknownAfterSend` rows accumulate in the External Interactions selector. They cannot truthfully be cancelled because a Send may already have happened, but there was no separate acknowledgement/removal operation, so resolved-by-human uncertainty permanently polluted the working list;
+- keep the existing task-state authority, protocol `2`, exact pre-Send attachment preparation, MAIN-world clean-composer guard, possible-Send boundary, lifecycle generation fencing and immutable terminal truth. This is not a retry/state-machine redesign.
+
+**Implementation / invariants:**
+- after the exact prepared ReviewDiff attachment leaves the composer, a new user turn after the captured pre-send baseline is sufficient to confirm `Sent`. The adapter still performs its bounded current-authored-turn `.diff` file/attachment-surface lookup and reports that as stronger proof when available, but absence of stable attachment-card metadata no longer converts an otherwise observed Send into false `UnknownAfterSend`; the missing-attachment observation grace follows the current retry interval with a 10-second cap instead of hard-stopping after 2 seconds;
+- `UnknownAfterSend` remains reserved for the narrower real ambiguity: a possible Send occurred / the prepared attachment disappeared, but no post-baseline user turn could be confirmed. Attachment disappearance before any possible Send remains `PreparedUnsent`;
+- add a persisted optional `dismissedAt` acknowledgement to terminal handoff task state. `Dismiss interaction` is allowed only for terminal `UnknownAfterSend`; it never changes `status`, message, source, destination or task identity, and it does not delete the task record. The External Interactions projection omits acknowledged uncertainty across restart;
+- keep `Cancel interaction` limited to truthfully cancellable nonterminal states. Active work cannot be dismissed, and possible-Send uncertainty cannot be rewritten to `Cancelled`.
+
+**Proof / acceptance:**
+- extension regression keeps the bounded `.diff` turn proof tests and adds the practical fallback: with the prepared attachment gone, a new post-baseline user turn confirms `Sent` even without a recognized `.diff` surface; without that new turn the state remains missing/uncertain;
+- bridge regression requires `UnknownAfterSend` to survive restart before acknowledgement, rejects Dismiss on active work, then persists Dismiss, removes the row across restart and proves the underlying task still reads `UnknownAfterSend`;
+- Swing exposes `Dismiss interaction` beside Refresh/Cancel, and extension patch version advances to `0.2.12`; live acceptance must repeat a real ReviewDiff Send where ChatGPT does not expose stable attachment-card metadata and verify `Sent`, then create an intentional uncertainty and verify Dismiss removes only its attention row.
+
+**Target-State Result:** after successful Apply, successful ReviewDiff delivery is no longer downgraded solely because ChatGPT omitted unstable post-Send `.diff` card metadata, while genuine post-click ambiguity still remains `UnknownAfterSend`. Terminal uncertainty remains preserved in the ledger but becomes user-acknowledgeable, so External Interactions stays a working/attention list instead of permanent uncertainty history.
+
+**APPLIED relation:** if package `cf10d575-b5ab-40a4-b516-f3432b333bff` applies successfully, this practical SL-RPKG-06/08 correction becomes the current state of new ChangeSet `5b0bd778-4064-4adf-bf36-85421abac5fe` (`SL-RPKG-06/08 — sent confirmation fallback and uncertainty dismissal`).
+
+### LOG-RPKG-041 — Accept click-baseline fallback risk and restore application/screen owner coherence
+
+**Type:** REVIEWDIFF CORRECTION / KNOWN-RISK ACCEPTANCE / OWNER-DOCUMENT COHERENCE / APPLIED TARGET  
+**ChangeSet:** `5b0bd778-4064-4adf-bf36-85421abac5fe`  
+**Package:** `85c077e0-f938-459d-9bc9-be38fcacc212`
+
+**ReviewDiff findings / user decision:**
+- ReviewDiff of package `cf10d575-b5ab-40a4-b516-f3432b333bff` found that the weak `Sent` fallback counts user turns from the attachment-preparation baseline. An unrelated same-conversation user turn created after preparation but before this task's actual possible-Send click could therefore already satisfy the count increase and, if the prepared attachment later disappears after an ineffective/ambiguous click, could falsely satisfy the weak fallback;
+- the user explicitly accepts that click-baseline concurrency window as a **known risk** for this revision rather than selecting implementation hardening now. No source/runtime/test behavior changes for that finding are made in this correction; future hardening remains a per-click user-turn baseline captured immediately before the actual MAIN-world Send click;
+- the same ReviewDiff found owner-document drift: `application-plan.md` still described External Interactions as Cancel-only/current-actionable state and retained the older generic send-confirmation wording, while `screens.md` still described only Refresh/Cancel controls and untreated `UnknownAfterSend` attention rows despite the implemented `Dismiss interaction` behavior. This correction updates those owners to the already-selected/implemented semantics.
+
+**Owner/document correction:**
+- `application-plan.md` now owns the selected External Interaction behavior as active/actionable/unacknowledged-attention state with truth-preserving `Dismiss interaction` for terminal `UnknownAfterSend`, updates the delivery-preparation wording to the current prepared-attachment-departure + post-baseline user-turn fallback, updates `REQ-RPKG-20`, and records `R-RPKG-SL06-POST-BASELINE-FOREIGN-TURN` under Accepted Low-Frequency Implementation Risks;
+- `screens.md` now owns the actual three-button interaction row (`Refresh interactions` / `Cancel interaction` / `Dismiss interaction`), unacknowledged `UnknownAfterSend` working-list semantics, and the current visible send-confirmation boundary;
+- `CHATGPT-BRIDGE.md` records the accepted preparation-baseline vs click-baseline concurrency risk next to the active send-confirmation contract, without changing protocol `2`, extension `0.2.12`, task states or browser implementation.
+
+**Target-State Result:** after successful Apply, the implemented SL-RPKG-06/08 behavior and its application/screen/integration owners are coherent: successful delivery still uses the selected post-baseline user-turn fallback, terminal uncertainty can be dismissed without rewriting truth, and the remaining cross-tab/cross-turn weak-fallback edge is explicitly documented as accepted rather than silently presented as solved.
+
+**APPLIED relation:** if package `85c077e0-f938-459d-9bc9-be38fcacc212` applies successfully, this owner-document correction and known-risk acceptance become the current state of still-open ChangeSet `5b0bd778-4064-4adf-bf36-85421abac5fe` (`SL-RPKG-06/08 — sent confirmation fallback and uncertainty dismissal`).

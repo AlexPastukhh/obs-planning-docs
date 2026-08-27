@@ -148,6 +148,7 @@ public final class Core {
     public ChatTaskInfo attachSnapshotToChat(Path snapshotZip,String conversationKey){return chatBridge.enqueueSnapshot(snapshotZip,conversationKey);}
     public List<ExternalInteraction> getExternalInteractions(){return chatBridge.externalInteractions();}
     public ExternalInteraction cancelExternalInteraction(String interactionId){return chatBridge.cancelExternalInteraction(interactionId);}
+    public ExternalInteraction dismissExternalInteraction(String interactionId){return chatBridge.dismissExternalInteraction(interactionId);}
 
     private Settings ensureSettings(){
         Settings s=state.getSettings();boolean changed=false;List<RepositoryConfig> repos=new ArrayList<>();

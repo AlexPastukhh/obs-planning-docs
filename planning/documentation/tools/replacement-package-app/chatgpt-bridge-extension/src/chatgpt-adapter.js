@@ -51,6 +51,9 @@ globalThis.OBSChatGPTAdapter = (() => {
       return reviewDiffAttachmentCandidates(turn).some(nodeShowsDiffFile);
     });
   }
+  function postBaselineUserTurnPresent(prepared) {
+    return userMessageCount() > Number(prepared?.beforeUserMessages || 0);
+  }
   function busy(root) { return !!root?.querySelector('[role="progressbar"],[aria-busy="true"],[data-state="loading"],[data-testid*="progress" i],[class*="upload" i][class*="progress" i]'); }
   function sendButton(root) { for (const selector of ['button[data-testid="send-button"]','button[data-testid*="send" i]','button[aria-label="Send prompt"]','button[aria-label^="Send" i]','button[aria-label^="Отправ" i]']) { const b = root?.querySelector(selector) || document.querySelector(selector); if (b) return b; } return null; }
   function readySendButton(root) { const b = sendButton(root); return b && b.isConnected && !b.disabled && b.getAttribute("aria-disabled") !== "true" && !busy(rootFor(composer()) || root) ? b : null; }
@@ -99,13 +102,14 @@ globalThis.OBSChatGPTAdapter = (() => {
   function reviewSendState(prepared, expectedConversation) {
     assertConversation(expectedConversation);
     const diffTurnPresent = reviewDiffAttachmentTurnPresent(prepared);
+    const postBaselineTurnPresent = postBaselineUserTurnPresent(prepared);
     const liveEditor = composer();
-    if (!liveEditor) return {state: diffTurnPresent ? "sent" : "missing", ready: false};
+    if (!liveEditor) return {state: postBaselineTurnPresent ? "sent" : "missing", ready: false, proof: diffTurnPresent ? "diff-attachment-surface" : postBaselineTurnPresent ? "post-baseline-user-turn" : null};
     const liveRoot = rootFor(liveEditor), present = attachmentPresent(liveRoot, prepared.fileName);
-    if (diffTurnPresent && !present) return {state: "sent", ready: false};
+    if (!present && postBaselineTurnPresent) return {state: "sent", ready: false, proof: diffTurnPresent ? "diff-attachment-surface" : "post-baseline-user-turn"};
     if (editorText(liveEditor)) return {state: "contaminated", ready: false};
     if (!present) return {state: "missing", ready: false};
-    return {state: "prepared", ready: !!readySendButton(liveRoot)};
+    return {state: "prepared", ready: !!readySendButton(liveRoot), proof: null};
   }
 
   async function waitForReviewSendReady(prepared, expectedConversation) {
@@ -125,5 +129,5 @@ globalThis.OBSChatGPTAdapter = (() => {
     await prepareAttachment(blob, fileName, "application/zip", expectedConversation, guard);
   }
 
-  return {conversationKey, assertConversation, requireEmptyReviewComposer, prepareReviewDiffAttachment, reviewSendState, waitForReviewSendReady, attachSnapshot, __test: Object.freeze({userTurnSurface, reviewDiffAttachmentTurnPresent})};
+  return {conversationKey, assertConversation, requireEmptyReviewComposer, prepareReviewDiffAttachment, reviewSendState, waitForReviewSendReady, attachSnapshot, __test: Object.freeze({userTurnSurface, reviewDiffAttachmentTurnPresent, postBaselineUserTurnPresent})};
 })();
