@@ -373,3 +373,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-064`  
 **Reason:** Planning Helper semantic-navigation tests extend the existing artifact-guidance ownership regression to Domain Draft, Domain Discovery and Implementation Slice without changing runtime, command metadata, generated seed, methodology navigation or the 122-test total; full correction rationale/APPLIED state remain in the reusable-documentation canonical log.
+
+### XREF-025 — Regenerate Helper command seed for explicit replacement OBS-ACTION fields
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/action-log.md`  
+**Entry:** `LOG-PLAN-002`  
+**Reason:** Planning Helper participates only through the generated `seed/commands.json` projection required by its build invariant; the canonical `давай архив` command semantics, ReviewDiff finding, correction rationale and APPLIED target-state relation remain owned by the Planning Root log.

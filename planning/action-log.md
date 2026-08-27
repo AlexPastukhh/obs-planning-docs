@@ -206,3 +206,38 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `LOG-DOC-064`  
 **Reason:** Planning Root participates only through the shared open ChangeSet history; the material correction is owned by reusable documentation and removes the last Target-Module prose that could sound like an evolution-companion proposer.
+
+### LOG-PLAN-001 — Make replacement-archive OBS-ACTION fields explicit for Helper-refetched command
+
+**Type:** LATER CLARIFICATION / COMMAND CONTRACT CORRECTION / APPLIED TARGET  
+**ChangeSet:** `b26c0aaf-6968-49ce-9154-a415e1da7e05`  
+**Package:** `d694de70-e45a-4c03-a170-0ef5c684e2f5`
+
+**User clarification / selected correction:**
+- the reusable replacement-archive owner already defines the handoff envelope with required `action`, `name`, `archive` and `packageId`, but the compact `давай архив` command reminder exposed only the packageId match and therefore could make `name` look incidental when the command was inserted from Planning Helper;
+- make the canonical Planning Command itself explicit: every produced `OBS-ACTION/1` contains `action`, human-readable attempt `name`, archive filename hint and matching `packageId`;
+- keep Review-chat binding conditional rather than guessed: emit `chatTabTitle` only when the exact intended ChatGPT conversation/tab title is explicitly supplied or selected for that invocation.
+
+**Implementation / projection boundary:**
+- update `planning/commands/build-replacement-archive.command.md`, which is the canonical command source read by Planning Helper `Reload` and by complete `Hard Reload GitHub`; no Tampermonkey runtime/source behavior change is needed for this user-triggered refetch path;
+- keep the linked producer workflow as semantic owner; this package does not redefine package/action protocol, it makes the compact command faithfully surface the already-owned required handoff fields and optional exact-title rule;
+- no replacement-package consumer behavior, clipboard/review settings, Apply/review/finalization behavior, commit or push semantics are changed.
+
+**Target-State Result:** after successful Apply of this exact package, a Planning Helper refetch of `давай архив` carries the required OBS-ACTION field reminder directly in the inserted command body, so subsequent package producers are told to emit `action + name + archive + packageId` and only add `chatTabTitle` from an exact explicitly selected title.
+
+**APPLIED relation:** if package `d694de70-e45a-4c03-a170-0ef5c684e2f5` applies successfully, this command-contract clarification becomes the current state of new ChangeSet `b26c0aaf-6968-49ce-9154-a415e1da7e05` (`Replacement archive command — explicit OBS-ACTION handoff fields`).
+
+### LOG-PLAN-002 — Correct stale Planning Helper command seed after OBS-ACTION contract clarification
+
+**Type:** REVIEW DIFF / CORRECTION / APPLIED TARGET  
+**Reviewed:** ChangeSet `b26c0aaf-6968-49ce-9154-a415e1da7e05`, applied package `d694de70-e45a-4c03-a170-0ef5c684e2f5`  
+**Correction Package:** `9b1e2e19-2f88-412a-a443-32475159c178`
+
+**Material Finding / selected correction:**
+- the canonical `planning/commands/build-replacement-archive.command.md` change was correct, but the first package did not regenerate the build-verified Planning Helper projection `planning/documentation/tools/tampermonkey/chat-command-palette/seed/commands.json`;
+- because Helper `build:check` compares the generated command seed against current `planning/commands/*.command.md`, that omission left the post-Apply repository in a stale-projection state even though user-triggered `Reload` could still read the canonical command directly;
+- regenerate only the command seed from the already-applied canonical command and add the affected Helper-scope cross-reference; Tampermonkey runtime/source, userscript, Direction seed and Use-Case seed remain unchanged.
+
+**Target-State Result:** after successful Apply of correction package `9b1e2e19-2f88-412a-a443-32475159c178`, the canonical `давай архив` command and Planning Helper `seed/commands.json` agree on required `action + name + archive + packageId` handoff fields plus conditional exact-title `chatTabTitle`; Helper generated-catalog verification is current again, with no runtime behavior change.
+
+**APPLIED relation:** this is a correction inside the still-open ChangeSet `b26c0aaf-6968-49ce-9154-a415e1da7e05` (`Replacement archive command — explicit OBS-ACTION handoff fields`); it completes the projection/log coherence omitted by package `d694de70-e45a-4c03-a170-0ef5c684e2f5` without reopening the already-correct command semantics.
