@@ -863,3 +863,75 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **APPLIED relation:** if package `b2b60d56-1d23-4179-8136-694b793f98db` applies successfully, this separate bounded wait-for-ZIP convenience becomes the current state of new ChangeSet `42f661ae-ab2f-4fdc-854f-bf95e3407c2f` (`SL-RPKG-01 — bounded wait-for-ZIP Apply wrapper`).
 
+
+### LOG-RPKG-047 — Reuse one generic attachment/optional-Send engine for Snapshot and ReviewDiff
+
+**Type:** USER CLARIFICATION / SL-RPKG-04/05/06 / GENERIC ATTACHMENT DELIVERY / APPLIED TARGET  
+**ChangeSet:** `bb052e95-56aa-4cce-b25d-82aabb19a248`  
+**Package:** `5e407a72-1ca1-4c03-ad06-c53868d3f0b3`
+
+**Selected behavior:**
+- Repository Snapshot keeps one destination-first dialog but now exposes three explicit outcomes: `Export only`, `Export + Attach`, and `Export + Attach + Send`. Either automatic handoff freezes the selected ordinary ChatGPT `conversationKey` plus send intent before background export; the exact ZIP must still succeed before any browser interaction is queued;
+- `Export only` keeps the existing post-export result dialog with exact path / Copy path / Open folder. If either ChatGPT handoff was selected up front, that second modal is suppressed: export success and downstream handoff state are surfaced through Operation, External Interactions and notifications instead of asking again what to do with the path;
+- Snapshot destination remains per-operation only: no later/current chat substitution, no Review-chat binding mutation and no special close-tab freshness handshake. Successful ZIP creation remains successful independently of downstream browser availability.
+
+**Generic delivery implementation / truth boundary:**
+- ReviewDiff and Repository Snapshot now consume one generic browser attachment/optional-Send engine rather than parallel kind-specific implementations. The shared attachment primitive verifies the exact queued bytes/fingerprint, constructs the exact `fileName`, drives the ChatGPT file input and waits for upload readiness. The shared auto-send tail requires a clean composer, performs guarded MAIN-world Send attempts for that exact attachment, records `SendClicked` only after a possible click and resolves `Sent` / `UnknownAfterSend` from prepared-attachment departure plus the existing post-baseline user-turn fallback; a turn-local file/attachment surface exposing the exact queued filename is stronger optional proof for either `.diff` or `.zip`;
+- ReviewDiff remains `text/x-diff` with `autoSend=true`. Snapshot remains a validated Repository Snapshot ZIP and freezes either `autoSend=false` (terminal `Attached`) or `autoSend=true` (the same guarded Send lifecycle). Attach-only and attach+Send for the same Snapshot/destination are distinct interaction intents; exact same artifact/destination/mode still dedupes while actionable;
+- Java and extension task-contract validation move to bridge protocol `3`; extension version moves to `0.3.0`. `sendRetryIntervalMs` is supplied for every auto-send task, using the existing persisted Review send retry setting rather than introducing a second retry control. Java `SendClicked`/result transitions are generic for authorized auto-send tasks instead of being ReviewDiff-only;
+- the existing Java-owned fixed Snapshot confirmation deadline still owns `Pending` / `Claimed` / `Preparing`: expiry is `Cancelled` before preparation or `PreparedUnsent` after preparation begins. When an auto-send Snapshot reaches `SendClicked`, its Snapshot deadline is cancelled and ordinary possible-Send uncertainty takes over, so later timeout normalization cannot rewrite possible-Send truth;
+- the previously accepted post-baseline foreign-turn confirmation risk is inherited by Snapshot auto-send because both kinds now deliberately share the same confirmation module. No new claim is made that the fallback is click-baseline hardened.
+
+**Proof / acceptance:**
+- Java regression covers attach-only backward compatibility, Snapshot auto-send retry-contract capture, `Preparing → SendClicked → Sent`, mode-sensitive actionable dedupe, and preservation of `SendClicked` beyond the Snapshot confirmation deadline; source-level Swing regression requires all three dialog outcomes, frozen send mode and suppression of the second result modal only for automatic handoff;
+- extension source regression requires one generic attachment module plus one generic optional-Send module, removes ReviewDiff-only Send runtime identifiers and validates protocol `3`; DOM regression proves exact-filename same-turn stronger proof for both `.diff` and `.zip`, no cross-turn proof borrowing, ordinary filename text is not attachment proof, and the existing post-baseline fallback remains available;
+- manual owners require `Export + Attach` to stop at a ready unsent ZIP and `Export + Attach + Send` to traverse the same guarded attachment+Send engine as ReviewDiff in the frozen selected conversation, with export-only retaining manual path controls.
+
+**Target-State Result:** after successful Apply, Snapshot export no longer asks a second modal question after an automatic ChatGPT handoff was already selected. Attach-only Snapshot and auto-send Snapshot both reuse the same attachment machinery as current-change delivery; auto-send additionally reuses the same guarded Send/confirmation machinery, while Snapshot-specific destination, ZIP validation and fixed pre-confirmation deadline semantics remain intact.
+
+**APPLIED relation:** if package `5e407a72-1ca1-4c03-ad06-c53868d3f0b3` applies successfully, this generic attachment/optional-Send realization becomes the current state of new ChangeSet `bb052e95-56aa-4cce-b25d-82aabb19a248` (`SL-RPKG-04/05/06 — generic attachment and optional Send delivery`). Historical LOG-RPKG-042..045 attach-only wording remains history of the earlier selected state and is superseded for current Snapshot behavior by this entry.
+
+
+### LOG-RPKG-048 — Authorize guarded Send before browser click to close the Snapshot deadline race
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-05/06 SEND AUTHORIZATION / POSSIBLE-SEND TRUTH / APPLIED TARGET  
+**ChangeSet:** `bb052e95-56aa-4cce-b25d-82aabb19a248`  
+**Package:** `7ec80a95-a379-4efb-a553-eec2cb5dfa83`
+
+**ReviewDiff finding / correction:**
+- the first generic attachment+Send package still let the browser perform the MAIN-world Send click before Java persisted `SendClicked`. For Snapshot auto-send, the independent Java-owned 10-minute confirmation scheduler could therefore win the narrow interval after a real click but before `stageSendClicked(...)`, terminalize `Preparing → PreparedUnsent`, and make later click/result persistence fail. That could falsely report unsent truth after a message may already have left the composer;
+- the correction keeps the generic attachment/send engine and introduces one generic pre-click authorization state, `SendArmed`, for every `autoSend=true` task. Before each MAIN-world click attempt the content agent asks Java to enter `SendArmed`. Java synchronously normalizes expiry, requires the task to still be `Preparing`, requires auto-send, and for Snapshot thereby proves the original absolute confirmation deadline is still live before atomically cancelling its scheduled wake-up and returning authorization;
+- only after `SendArmed` succeeds may the extension request the guarded MAIN-world click. A browser `clicked` result advances `SendArmed → SendClicked`; if the click outcome/transport becomes uncertain while armed, task/tab/lease loss resolves as `UnknownAfterSend` because a click may already have happened. Cancellation is refused in both `SendArmed` and `SendClicked`;
+- a definitive MAIN-world no-click result uses `SendNotClicked` to disarm. ReviewDiff returns to `Preparing`; Snapshot returns to `Preparing` only while its original task-creation deadline is still live and re-arms that same absolute deadline. If the deadline elapsed during the guarded no-click attempt, the result is `PreparedUnsent`; authorization therefore closes the click race without extending the Snapshot confirmation budget;
+- bridge protocol advances to `4` and extension version to `0.3.1` so a pre-correction protocol-3 extension cannot continue using the click-before-Java-authority ordering against the corrected app.
+
+**Proof / acceptance:**
+- Java regression proves a Snapshot can enter `SendArmed` before its deadline, remain protected from the Snapshot scheduler while the browser-click window crosses that deadline, then advance to `SendClicked`/possible-Send truth;
+- a second regression proves a definitive no-click after the same crossing becomes `PreparedUnsent` instead of silently extending the original deadline;
+- generic extension source proof requires `onSendArmed()` before `OBS_ATTACHMENT_SEND_ATTEMPT`, explicit `SendNotClicked` handling for every non-click response, and `SendClicked` only after `clicked`; full Java tests, Core tests, launcher tests and DOM regression remain green.
+
+**Target-State Result:** after successful Apply, the generic ReviewDiff/Snapshot attachment+Send module has a Java-owned authorization boundary before browser Send. Snapshot's fixed deadline can no longer race a real application-controlled click into false `PreparedUnsent`, while a confirmed no-click still respects the original task-creation deadline.
+
+**APPLIED relation:** if package `7ec80a95-a379-4efb-a553-eec2cb5dfa83` applies successfully, this correction supersedes only the click-before-Java-authority race in `LOG-RPKG-047`; the generic attachment/optional-Send design, three-way Snapshot UI, frozen destination/send intent and post-baseline confirmation policy remain unchanged.
+
+
+### LOG-RPKG-049 — Keep guarded retries inside SendClicked after the first possible click
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-05/06 GUARDED SEND RETRY / PROTOCOL DOC CONSISTENCY / APPLIED TARGET  
+**ChangeSet:** `bb052e95-56aa-4cce-b25d-82aabb19a248`  
+**Package:** `ad4a5817-b604-4cc7-81b7-9b42da140b1b`
+
+**ReviewDiff finding / correction:**
+- the `SendArmed` race correction correctly moved Java authority before the first application-controlled browser click, but the generic content retry loop then tried to enter `SendArmed` again before every later guarded attempt. After the first real `clicked` result Java is already in `SendClicked`, so a still-prepared attachment could not reach its configured later retry: the second `SendArmed` request was rejected because only `Preparing → SendArmed` is legal;
+- the corrected loop uses `SendArmed` only while no possible Send has yet been recorded. A definitive no-click before that boundary still calls `SendNotClicked` and returns to `Preparing`; once a real possible click establishes `SendClicked`, later guarded attempts for the same exact prepared attachment remain in that existing possible-Send lifecycle and do not re-arm or disarm;
+- this preserves both selected truths at once: Snapshot's fixed confirmation deadline cannot race the first application-controlled click, and the already-existing configurable guarded retry behavior continues after an ineffective first possible click;
+- current owner documentation is synchronized to bridge protocol `4` and to the one-time pre-click authorization boundary. Historical action-log entries that accurately describe earlier protocol-3 packages remain historical rather than being rewritten; extension patch version advances to `0.3.2` with no wire-contract change.
+
+**Proof / acceptance:**
+- source regression requires `if (!possibleSendRecorded) await onSendArmed()` and the matching conditional `SendNotClicked`, while retaining the single generic `OBS_ATTACHMENT_SEND_ATTEMPT` path;
+- manual/testing owners require an ineffective first possible click with the exact attachment still prepared to produce a later guarded attempt from `SendClicked` without a second `SendArmed`;
+- `ARCHITECTURE.md` and `CHATGPT-BRIDGE.md` no longer advertise current protocol `3`; current contract is protocol `4`.
+
+**Target-State Result:** after successful Apply, Java authorization protects the first possible-Send boundary, then `SendClicked` remains the stable possible-Send state for repeated guarded attempts until `Sent`, `UnknownAfterSend`, attachment loss or another terminal condition. No retry tries to transition `SendClicked → SendArmed`.
+
+**APPLIED relation:** if this correction package applies successfully, it supersedes the retry-loop/doc inconsistency found in the cumulative ReviewDiff for package `7ec80a95-a379-4efb-a553-eec2cb5dfa83` while keeping ChangeSet `bb052e95-56aa-4cce-b25d-82aabb19a248` open for review.

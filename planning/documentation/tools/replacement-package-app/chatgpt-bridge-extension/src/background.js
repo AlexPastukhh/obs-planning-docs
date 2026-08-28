@@ -3,7 +3,7 @@ let inventoryPromise = null, lastInventoryAt = 0;
 const CONTENT_READY_TIMEOUT_MS = 8000;
 const CONTENT_READY_POLL_MS = 150;
 const PAYLOAD_CHUNK_BYTES = 512 * 1024;
-const BRIDGE_PROTOCOL_VERSION = 2;
+const BRIDGE_PROTOCOL_VERSION = 4;
 const RUNTIME_GENERATION_KEY = "obsBridgeRuntimeGeneration";
 const agentInstances = new Map();
 let runtimeGenerationPromise = null;
@@ -67,13 +67,15 @@ function validateClaimTask(task, conversationKey) {
   if (!Number.isSafeInteger(size) || size < 0) throw new Error("Invalid ChatGPT Bridge artifact size.");
   if (!/^[0-9a-f]{64}$/i.test(String(task.artifactSha256 || ""))) throw new Error("Invalid ChatGPT Bridge artifact fingerprint.");
   if (!validPayloadUrl(task.payloadUrl, task.taskId)) throw new Error("Invalid loopback payload URL.");
-  if (task.kind === "reviewDiff") {
+  if (typeof task.autoSend !== "boolean") throw new Error("Invalid attachment auto-send contract from Replacement Package App.");
+  if (task.kind === "reviewDiff" && task.autoSend !== true) throw new Error("ReviewDiff task must request automatic Send.");
+  if (task.autoSend) {
     const retryMs = Number(task.sendRetryIntervalMs);
-    if (task.autoSend !== true || !Number.isSafeInteger(retryMs) || retryMs < 1000 || retryMs > 60000) throw new Error("Invalid ReviewDiff send contract from Replacement Package App. Restart/update the app and reload the extension.");
-  } else if (task.autoSend !== false) throw new Error("Snapshot task unexpectedly requested auto-send.");
+    if (!Number.isSafeInteger(retryMs) || retryMs < 1000 || retryMs > 60000) throw new Error("Invalid attachment Send contract from Replacement Package App. Restart/update the app and reload the extension.");
+  }
   return task;
 }
-function clickPreparedReviewSendMain(expectedConversation, fileName) {
+function clickPreparedAttachmentSendMain(expectedConversation, fileName) {
   const match = location.pathname.match(/^\/c\/([A-Za-z0-9_-]{8,})\/?$/);
   if (!match || match[1] !== expectedConversation) return {status: "wrong-conversation"};
   const editor = document.querySelector("#prompt-textarea") || document.querySelector('div[contenteditable="true"][data-lexical-editor="true"]') || document.querySelector('div.ProseMirror[contenteditable="true"]') || document.querySelector('textarea[name="prompt-textarea"]');
@@ -249,9 +251,9 @@ async function handleRuntimeMessage(message, sender) {
     const r = await taskRequest(message.taskId, "release", tabId, key, {message: message.message || ""});
     return {ok: true, status: r.status};
   }
-  if (message?.type === "OBS_REVIEW_SEND_ATTEMPT" && c) {
+  if (message?.type === "OBS_ATTACHMENT_SEND_ATTEMPT" && c) {
     if (c.conversationKey !== message.conversationKey) throw new Error("ChatGPT tab left the selected conversation.");
-    const results = await chrome.scripting.executeScript({target: {tabId}, world: "MAIN", func: clickPreparedReviewSendMain, args: [message.conversationKey, message.fileName]});
+    const results = await chrome.scripting.executeScript({target: {tabId}, world: "MAIN", func: clickPreparedAttachmentSendMain, args: [message.conversationKey, message.fileName]});
     const r = results?.[0]?.result; return {ok: true, status: r?.status || "not-ready"};
   }
   throw new Error("Unsupported ChatGPT bridge runtime message.");

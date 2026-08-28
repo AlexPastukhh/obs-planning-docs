@@ -91,12 +91,12 @@ Must make visible:
 - Local vs Committed mode;
 - commit/ref only when relevant;
 - destination directory;
-- one currently open ordinary ChatGPT conversation selector used only by the combined handoff path;
-- two explicit actions: `Export only` and `Export + Attach` (plus Cancel), with no separate attach toggle;
+- one currently open ordinary ChatGPT conversation selector used by either automatic ChatGPT handoff path;
+- three explicit actions: `Export only`, `Export + Attach`, and `Export + Attach + Send` (plus Cancel), with no separate attach toggle;
 - Repository Not Ready reason when no required commit baseline exists;
-- result artifact path/outcome plus a distinct downstream attachment result when `Export + Attach` was requested.
+- for `Export only`, a post-export result dialog with artifact path / Copy path / Open folder; for either automatic ChatGPT handoff, no second result modal and downstream state is reported through Operation / External Interactions / notification.
 
-For `Export + Attach`, the selected conversation is chosen before export begins and its exact `conversationKey` is frozen for this operation. The later export completion must not reopen chat selection, read another current chat, substitute a different conversation or alter the ChangeSet Review-chat binding. The snapshot is created first. If enqueue immediately knows the frozen conversation is unavailable, show successful snapshot creation plus attachment-not-started status. If a task was queued but never confirms `Attached`, its 10-minute confirmation window ends as `Cancelled` before confirmed preparation or `PreparedUnsent` after preparation began; the working list must not retain it indefinitely. `Export only` remains usable without any open ChatGPT conversation.
+For either `Export + Attach` or `Export + Attach + Send`, the selected conversation is chosen before export begins and its exact `conversationKey` plus send intent are frozen for this operation. The later export completion must not reopen chat selection, read another current chat, substitute a different conversation or alter the ChangeSet Review-chat binding. The snapshot is created first. If enqueue immediately knows the frozen conversation is unavailable, report successful snapshot creation plus handoff-not-started status without showing the export-only path modal. If a task was queued but never reaches its selected terminal handoff result, its 10-minute Snapshot confirmation window bounds `Pending`/`Claimed`/`Preparing` as `Cancelled` before confirmed preparation or `PreparedUnsent` after preparation began. Once auto-send crosses the possible-Send boundary into `SendClicked`, the Snapshot deadline no longer governs and ordinary `Sent` / `UnknownAfterSend` truth applies. `Export only` remains usable without any open ChatGPT conversation and retains the path/copy/open-folder result dialog.
 
 `Local` and `Committed` semantics are not presentation-only choices; labels must remain consistent with `REPOSITORY-SNAPSHOT.md`.
 
@@ -106,14 +106,14 @@ For `Export + Attach`, the selected conversation is chosen before export begins 
 
 One target list contains only user-significant payload-to-conversation attempts:
 - Deliver Current Change;
-- Attach Repository Snapshot;
+- Attach Repository Snapshot / Send Repository Snapshot;
 - future equivalent explicit payload handoffs.
 
 It excludes pairing/heartbeat/poll/claim/lease/tab mechanics.
 
 The selector gets the full available row width. `Refresh interactions`, `Cancel interaction` and `Dismiss interaction` are placed on the row directly below it so long interaction text cannot push the actions off-screen.
 
-Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. The list is a current/actionable/attention projection: active/cancellable work, active `Sending`, plus unacknowledged `UnknownAfterSend` (or equivalent uncertainty requiring attention). One equivalent still-actionable payload-to-conversation request is represented by one interaction identity: repeating the same current ReviewDiff request or the same snapshot artifact for the same destination while it is `Pending`/claimed/preparing/sending reuses the existing interaction rather than adding an indistinguishable Pending row. A materially different source remains independent. `Sending` may include repeated internal Send-control attempts for the same exact prepared ReviewDiff attachment; these are not separate interaction rows. Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` rows disappear after their result is surfaced through Output/notification. `UnknownAfterSend` cannot be cancelled or rewritten, but `Dismiss interaction` acknowledges that terminal attention item and removes only its working-list row while persisted truth remains. For prepared-unsent content, Cancel may report `Cancelled — prepared content retained` before the row leaves the list; no UI promise of automatic cleanup is made. A later retry after terminal outcome appears as a new interaction rather than restoring the old row.
+Each row exposes kind, source/work context, destination conversation, semantic state/result and Cancel only when truthful. The list is a current/actionable/attention projection: active/cancellable work, active `Sending`, plus unacknowledged `UnknownAfterSend` (or equivalent uncertainty requiring attention). One equivalent still-actionable payload-to-conversation request is represented by one interaction identity: repeating the same current ReviewDiff request or the same snapshot artifact + destination + frozen attach-only/auto-send intent while it is `Pending`/claimed/preparing/sending reuses the existing interaction rather than adding an indistinguishable Pending row. Attach-only and attach+Send for the same Snapshot are different intents and therefore different interactions. A materially different source remains independent. `Sending` may include repeated internal Send-control attempts for the same exact prepared auto-send attachment; these are not separate interaction rows. Ordinary terminal `Cancelled`, `Sent`, `Attached`, `NoChanges`, `FailedBeforeSend` and `PreparedUnsent` rows disappear after their result is surfaced through Output/notification. `UnknownAfterSend` cannot be cancelled or rewritten, but `Dismiss interaction` acknowledges that terminal attention item and removes only its working-list row while persisted truth remains. For prepared-unsent content, Cancel may report `Cancelled — prepared content retained` before the row leaves the list; no UI promise of automatic cleanup is made. A later retry after terminal outcome appears as a new interaction rather than restoring the old row.
 
 ## `SCR-RPKG-DIAGNOSTICS` — Technical Diagnostics
 
@@ -145,7 +145,7 @@ open/foreground application
 The ordinary ChatGPT composer is external. Observable requirements remain:
 - exact intended payload/destination;
 - no mixing with unrelated existing composer content;
-- snapshot attach-only never clicks Send;
+- Snapshot `Export + Attach` stops at `Attached`; `Export + Attach + Send` uses the same guarded Send engine as ReviewDiff;
 - Cancel after prepared content does not delete it automatically and prevents further automation while cancellation is still truthful;
 - ReviewDiff may repeat guarded Send-control attempts only while the same exact prepared attachment remains in the same conversation; after a possible Send, prepared-attachment departure plus a new post-baseline user turn confirms `Sent`, while absence of such a turn preserves `UnknownAfterSend` and stops blind retry;
-- ReviewDiff uses `.diff` attachment preparation for all sizes; snapshot may reuse the same technical attachment primitive but remains attach-only/no Send.
+- ReviewDiff and Snapshot reuse one generic exact-attachment module; auto-send tasks additionally reuse one generic guarded Send/confirmation module with exact-filename proof;

@@ -44,12 +44,12 @@ class FakeNode {
     const nodes = this.descendants();
     if (selector === "[data-message-author-role]") return nodes.filter(n => n.getAttribute("data-message-author-role") !== null);
     if (selector === '[data-message-author-role="user"]') return nodes.filter(n => n.getAttribute("data-message-author-role") === "user");
-    if (selector.includes("attachment") || selector.includes("file") || selector.includes(".diff")) {
+    if (selector.includes("attachment") || selector.includes("file") || selector.includes("[title]") || selector.includes("[aria-label]") || selector.includes("[href]") || selector.includes("[download]")) {
       return nodes.filter(n => {
         const testid = String(n.getAttribute("data-testid") || "").toLowerCase();
         const klass = String(n.getAttribute("class") || "").toLowerCase();
         const metadata = ["title","aria-label","href","download"].map(k => String(n.getAttribute(k) || "").toLowerCase());
-        return testid.includes("attachment") || testid.includes("file") || klass.includes("attachment") || klass.includes("file") || metadata.some(v => v.includes(".diff"));
+        return testid.includes("attachment") || testid.includes("file") || klass.includes("attachment") || klass.includes("file") || metadata.some(v => v.length > 0);
       });
     }
     return [];
@@ -65,8 +65,8 @@ global.document = {
 
 const adapterPath = path.resolve(__dirname, "../src/chatgpt-adapter.js");
 vm.runInThisContext(fs.readFileSync(adapterPath, "utf8"), {filename: adapterPath});
-const proof = global.OBSChatGPTAdapter.__test.reviewDiffAttachmentTurnPresent;
-const reviewSendState = global.OBSChatGPTAdapter.reviewSendState;
+const proof = global.OBSChatGPTAdapter.__test.attachmentTurnPresent;
+const attachmentSendState = global.OBSChatGPTAdapter.attachmentSendState;
 
 // Positive: the sent file card is a sibling of the message-author node inside one user turn.
 {
@@ -76,7 +76,7 @@ const reviewSendState = global.OBSChatGPTAdapter.reviewSendState;
   const fileCard = new FakeNode("div", {"data-testid": "file-card", title: "review-positive.diff"}, "review-positive.diff");
   main.append(article.append(message, fileCard));
   currentUserMessages = [message];
-  assert(proof({beforeUserMessages: 0}) === true, "same-turn sibling .diff file card was not accepted");
+  assert(proof({beforeUserMessages: 0, fileName: "review-positive.diff"}) === true, "same-turn sibling attachment file card was not accepted");
 }
 
 // Negative: a broad generic article contains two authored turns and only the neighboring turn has .diff.
@@ -90,7 +90,7 @@ const reviewSendState = global.OBSChatGPTAdapter.reviewSendState;
   const newMessage = new FakeNode("div", {"data-message-author-role": "user"}, "no attachment");
   main.append(article.append(oldTurn.append(oldMessage, oldFile), newTurn.append(newMessage)));
   currentUserMessages = [oldMessage, newMessage];
-  assert(proof({beforeUserMessages: 1}) === false, "neighboring turn .diff crossed the authored-turn boundary");
+  assert(proof({beforeUserMessages: 1, fileName: "older-neighbor.diff"}) === false, "neighboring attachment crossed the authored-turn boundary");
 }
 
 // Negative: ordinary text containing .diff is not an attachment/file-card proof.
@@ -100,14 +100,25 @@ const reviewSendState = global.OBSChatGPTAdapter.reviewSendState;
   const message = new FakeNode("div", {"data-message-author-role": "user"}, "ordinary text mentions example.diff");
   main.append(turn.append(message));
   currentUserMessages = [message];
-  assert(proof({beforeUserMessages: 0}) === false, "ordinary .diff message text was treated as attachment proof");
+  assert(proof({beforeUserMessages: 0, fileName: "example.diff"}) === false, "ordinary filename message text was treated as attachment proof");
 }
 
-// Fallback confirmation: after the prepared attachment has left the composer, a new post-baseline user turn is sufficient even when ChatGPT exposes no stable .diff file-card metadata.
+// Positive generic proof: the same module recognizes a Snapshot ZIP by its exact queued filename, not by a .diff extension.
+{
+  const main = new FakeNode("main");
+  const turn = new FakeNode("div", {"data-testid": "conversation-turn-4"});
+  const message = new FakeNode("div", {"data-message-author-role": "user"}, "");
+  const fileCard = new FakeNode("div", {"data-testid": "file-card", title: "snapshot-proof.zip"}, "snapshot-proof.zip");
+  main.append(turn.append(message, fileCard));
+  currentUserMessages = [message];
+  assert(proof({beforeUserMessages: 0, fileName: "snapshot-proof.zip"}) === true, "snapshot ZIP filename surface was not accepted");
+}
+
+// Fallback confirmation: after the prepared attachment has left the composer, a new post-baseline user turn is sufficient even when ChatGPT exposes no stable attachment-card metadata.
 {
   const message = new FakeNode("div", {"data-message-author-role": "user"}, "");
   currentUserMessages = [message];
-  const state = reviewSendState({beforeUserMessages: 0, fileName: "review-fallback.diff"}, "test12345678");
+  const state = attachmentSendState({beforeUserMessages: 0, fileName: "review-fallback.diff"}, "test12345678");
   assert(state.state === "sent", "post-baseline user-turn fallback did not confirm Send after composer attachment departure");
   assert(state.proof === "post-baseline-user-turn", "fallback confirmation did not report its weaker proof mode");
 }
@@ -115,7 +126,7 @@ const reviewSendState = global.OBSChatGPTAdapter.reviewSendState;
 // No post-baseline turn means attachment disappearance remains unknown/missing rather than Sent.
 {
   currentUserMessages = [];
-  const state = reviewSendState({beforeUserMessages: 0, fileName: "review-missing.diff"}, "test12345678");
+  const state = attachmentSendState({beforeUserMessages: 0, fileName: "review-missing.diff"}, "test12345678");
   assert(state.state === "missing", "missing attachment without a post-baseline user turn was falsely confirmed as Sent");
 }
 

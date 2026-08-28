@@ -192,22 +192,27 @@ Task lifecycle is independent from ChangeSet lifecycle:
 
 ```text
 ReviewDiff:
-Pending → Claimed → Preparing → SendClicked → Sent | UnknownAfterSend
+Pending → Claimed → Preparing → SendArmed → SendClicked → Sent | UnknownAfterSend
 Pending → Cancelled
 Claimed → FailedBeforeSend | Cancelled
 Preparing → PreparedUnsent
 empty ReviewDiff → NoChanges
 claim loss while Claimed → Pending
 
-Snapshot:
+Snapshot attach-only:
 Pending → Claimed → Preparing → Attached
+Claimed → FailedBeforeSend
+Preparing → PreparedUnsent
+
+Snapshot auto-send:
+Pending → Claimed → Preparing → SendArmed → SendClicked → Sent | UnknownAfterSend
 Claimed → FailedBeforeSend
 Preparing → PreparedUnsent
 ```
 
 All terminal states (`Sent`, `Attached`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges`, `Cancelled`) are immutable. `UnknownAfterSend` is never automatically retried. Chat delivery status never authorizes Finalize and a missing/failed bridge never converts a successful Apply/Refresh Review/export into failure.
 
-Open-tab inventory is runtime memory only and is refreshed by the extension; it is not persisted as authoritative state. A claim is valid only while the recorded tab remains in the recorded conversation, and at most one task per conversation may be in `Claimed`/`Preparing`/`SendClicked` at a time. For ReviewDiff delivery the extension stages `Preparing` only after the exact `.diff` attachment is visible and upload-ready in the intended composer; failure before confirmed attachment preparation remains `FailedBeforeSend`. Technical `SendClicked` is projected semantically as `Sending`. While the exact prepared attachment remains in the same composer, the same interaction may make repeated guarded Send-control attempts at its frozen interval. This does not create/reuse a terminal interaction. After the prepared attachment leaves the composer, a new post-baseline user turn confirms `Sent`; a turn-local `.diff` surface is stronger optional proof, not a mandatory gate. If no post-baseline user turn can be confirmed after a possible Send, the task becomes `UnknownAfterSend` and automatic attempts stop. Rebind/unbind cancels only `Pending`/`Claimed` ReviewDiff tasks and refuses to move a binding while a task is `Preparing` or `SendClicked`; expired in-flight leases are normalized first. Older automatic `Pending`/`Claimed` ReviewDiff tasks are superseded when a newer current ReviewDiff is queued, while an already `Preparing` task is allowed to finish to avoid leaving an unowned composer attachment.
+Open-tab inventory is runtime memory only and is refreshed by the extension; it is not persisted as authoritative state. A claim is valid only while the recorded tab remains in the recorded conversation, and at most one task per conversation may be in `Claimed`/`Preparing`/`SendArmed`/`SendClicked` at a time. ReviewDiff and Snapshot use the same generic exact-attachment preparation engine; ReviewDiff stages `Preparing` only after the exact `.diff` is visible/upload-ready, while Snapshot stages `Preparing` before attachment mutation so its fixed confirmation deadline remains truthful. Failure before the kind-specific preparation boundary remains `FailedBeforeSend`. Technical `SendArmed` and `SendClicked` are both projected semantically as `Sending`; `SendArmed` means Java has authorized the first application-controlled possible-Send attempt before the browser click. Once an actual possible click establishes `SendClicked`, later guarded retries for the same exact prepared attachment stay in that state rather than trying to re-arm. For any auto-send task, while the exact prepared attachment remains in the same composer, the same interaction may make repeated guarded Send-control attempts at its frozen interval. This does not create/reuse a terminal interaction. After the prepared attachment leaves the composer, a new post-baseline user turn confirms `Sent`; a turn-local file/attachment surface exposing the exact queued `fileName` is stronger optional proof, not a mandatory gate. If no post-baseline user turn can be confirmed after a possible Send, the task becomes `UnknownAfterSend` and automatic attempts stop. The Snapshot confirmation deadline governs `Pending`/`Claimed`/`Preparing`; before the first application-controlled browser click Java atomically checks it and moves to `SendArmed`, cancelling the scheduled deadline. A definitive no-click returns to `Preparing` and reuses the original absolute deadline (or becomes `PreparedUnsent` if it already elapsed). Rebind/unbind cancels only `Pending`/`Claimed` ReviewDiff tasks and refuses to move a Review-chat binding while a ReviewDiff task is `Preparing`, `SendArmed` or `SendClicked`; expired in-flight leases are normalized first. Older automatic `Pending`/`Claimed` ReviewDiff tasks are superseded when a newer current ReviewDiff is queued, while an already `Preparing` task is allowed to finish to avoid leaving an unowned composer attachment.
 
 Extension tab-agent identity is transient browser state, not application ledger state. `runtimeGeneration` lives in `chrome.storage.session`: it survives service-worker suspension/restart but is replaced by extension reload/update/browser-session replacement. `agentInstanceId` is per injected ChatGPT document agent; the background keeps only the currently accepted id per tab in service-worker memory and relearns it from a generation-matching ping after worker restart. Neither value is persisted in ChangeSet/task JSON or used as package/Review identity. `Pending` means the Java task is durable but no browser tab has yet claimed it; Swing projects this as `Waiting for ChatGPT tab`. `Claimed` is projected as `Delivering`.
 
@@ -336,14 +341,15 @@ exact ReviewDiff `.diff` attachment confirmed in intended composer
 → Preparing / externally prepared
 
 possible-Send phase
-→ technical SendClicked / semantic Sending
+→ Java SendArmed authorization / semantic Sending
+→ actual possible click → technical SendClicked / semantic Sending
 → repeated guarded Send-control attempts only while the same attachment remains prepared
 → prepared attachment leaves composer + post-baseline user turn appears = Sent
-→ turn-local `.diff` surface, if exposed, strengthens proof only
+→ turn-local exact queued-filename attachment surface, if exposed, strengthens proof only
 → attachment disappears after possible Send with no post-baseline user turn = UnknownAfterSend; stop automatic attempts
 ```
 
-ReviewDiff preparation uses the shared browser attachment primitive for every non-empty diff, so it does not depend on foreground document focus, Clipboard API write permission or rich-text insertion size. The retry interval is local application configuration captured per task, not extension-local hardcoded timing. Snapshot preparation may reuse the same technical primitive, but snapshot remains attach-only in this correction.
+ReviewDiff and Snapshot now use one generic browser attachment preparation module. ReviewDiff is always auto-send; Snapshot freezes attach-only or attach+Send. `autoSend=true` tasks capture the existing configured retry interval and transition through `SendArmed`, then `SendClicked` after an actual possible click, to `Sent`/`UnknownAfterSend`; attach-only Snapshot terminates `Attached`. Snapshot still has its absolute pre-confirmation deadline while `Pending`/`Claimed`/`Preparing`, and that deadline is atomically removed at `SendArmed` before a browser click can race it; a definitive no-click restores the same absolute deadline.
 
 ### Source-State Applicability Result
 

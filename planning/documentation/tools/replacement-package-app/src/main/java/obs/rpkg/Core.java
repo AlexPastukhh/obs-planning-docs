@@ -145,7 +145,8 @@ public final class Core {
     public void unbindReviewChat(String changeSetId){if(state.getChangeSet(changeSetId)==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Unknown ChangeSet: "+changeSetId);chatBridge.unbind(changeSetId);}
     public ChatTaskInfo sendCurrentReviewToChat(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Unknown ChangeSet: "+changeSetId);ChatBinding b=chatBridge.binding(changeSetId);if(b==null)throw new ObsException(CHAT_BRIDGE_FAILED,"Select and bind an open ChatGPT conversation first.");ReviewDiff r=currentReview(cs);if(r==null)throw new ObsException(CHAT_BRIDGE_FAILED,"No current ReviewDiff is available.");return chatBridge.enqueueReview(cs,r,b,true);}
     public String chatDeliveryStatus(String changeSetId){ChangeSet cs=state.getChangeSet(changeSetId);return cs==null?"Not connected":chatBridge.deliveryStatus(changeSetId,cs.currentReviewAttemptId);}
-    public ChatTaskInfo attachSnapshotToChat(Path snapshotZip,String conversationKey){return chatBridge.enqueueSnapshot(snapshotZip,conversationKey);}
+    public ChatTaskInfo attachSnapshotToChat(Path snapshotZip,String conversationKey){return attachSnapshotToChat(snapshotZip,conversationKey,false);}
+    public ChatTaskInfo attachSnapshotToChat(Path snapshotZip,String conversationKey,boolean autoSend){return chatBridge.enqueueSnapshot(snapshotZip,conversationKey,autoSend);}
     public List<ExternalInteraction> getExternalInteractions(){return chatBridge.externalInteractions();}
     public ExternalInteraction cancelExternalInteraction(String interactionId){return chatBridge.cancelExternalInteraction(interactionId);}
     public ExternalInteraction dismissExternalInteraction(String interactionId){return chatBridge.dismissExternalInteraction(interactionId);}

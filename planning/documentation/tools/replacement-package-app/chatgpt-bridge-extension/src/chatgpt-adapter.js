@@ -19,13 +19,14 @@ globalThis.OBSChatGPTAdapter = (() => {
   }
   function userMessages() { return [...document.querySelectorAll('[data-message-author-role="user"]')]; }
   function userMessageCount() { return userMessages().length; }
-  function reviewDiffAttachmentCandidates(message) {
+  function attachmentTurnCandidates(message) {
     if (!message?.querySelectorAll) return [];
-    return [...message.querySelectorAll('[data-testid*="attachment" i],[data-testid*="file" i],[class*="attachment" i],[class*="file" i],[title*=".diff" i],[aria-label*=".diff" i],[href*=".diff" i],[download*=".diff" i]')];
+    return [...message.querySelectorAll('[data-testid*="attachment" i],[data-testid*="file" i],[class*="attachment" i],[class*="file" i],[title],[aria-label],[href],[download]')];
   }
-  function nodeShowsDiffFile(node) {
-    const value = [node?.innerText, node?.textContent, node?.getAttribute?.("title"), node?.getAttribute?.("aria-label"), node?.getAttribute?.("href"), node?.getAttribute?.("download")].filter(Boolean).join("\n").toLowerCase();
-    return value.includes(".diff");
+  function nodeShowsFileName(node, fileName) {
+    if (!fileName) return false;
+    const value = [node?.innerText, node?.textContent, node?.getAttribute?.("title"), node?.getAttribute?.("aria-label"), node?.getAttribute?.("href"), node?.getAttribute?.("download")].filter(Boolean).join("\n");
+    return value.includes(fileName);
   }
   function ownsOnlyAuthoredMessage(surface, message) {
     const authored = [...(surface?.querySelectorAll?.("[data-message-author-role]") || [])];
@@ -45,10 +46,10 @@ globalThis.OBSChatGPTAdapter = (() => {
     }
     return node;
   }
-  function reviewDiffAttachmentTurnPresent(prepared) {
+  function attachmentTurnPresent(prepared) {
     return userMessages().slice(prepared.beforeUserMessages).some(message => {
       const turn = userTurnSurface(message);
-      return reviewDiffAttachmentCandidates(turn).some(nodeShowsDiffFile);
+      return attachmentTurnCandidates(turn).some(node => nodeShowsFileName(node, prepared.fileName));
     });
   }
   function postBaselineUserTurnPresent(prepared) {
@@ -59,11 +60,11 @@ globalThis.OBSChatGPTAdapter = (() => {
   function readySendButton(root) { const b = sendButton(root); return b && b.isConnected && !b.disabled && b.getAttribute("aria-disabled") !== "true" && !busy(rootFor(composer()) || root) ? b : null; }
   async function waitFor(fn, timeout = 30000, interval = 100) { const end = Date.now() + timeout; let lastError; while (Date.now() < end) { try { const value = fn(); if (value) return value; } catch (e) { lastError = e; } await sleep(interval); } if (lastError) throw lastError; throw new Error("Timed out waiting for ChatGPT composer state."); }
 
-  async function requireEmptyReviewComposer(expectedConversation) {
+  async function requireEmptyAttachmentComposer(expectedConversation) {
     assertConversation(expectedConversation);
     const editor = await waitFor(composer, 30000), root = rootFor(editor);
     assertConversation(expectedConversation);
-    if (editorText(editor) || attachmentCandidates(root).length > 0) throw new Error("ChatGPT composer is not empty; automatic ReviewDiff delivery will not mix with an existing draft or attachment.");
+    if (editorText(editor) || attachmentCandidates(root).length > 0) throw new Error("ChatGPT composer is not empty; automatic attachment delivery will not mix with an existing draft or attachment.");
   }
 
   async function findFileInput(expectedConversation) {
@@ -94,40 +95,31 @@ globalThis.OBSChatGPTAdapter = (() => {
     return {mode: "attachment", fileName, fileSize: blob.size, beforeUserMessages};
   }
 
-  async function prepareReviewDiffAttachment(blob, fileName, expectedConversation, guard) {
-    await requireEmptyReviewComposer(expectedConversation);
-    return prepareAttachment(blob, fileName, "text/x-diff", expectedConversation, guard);
-  }
-
-  function reviewSendState(prepared, expectedConversation) {
+  function attachmentSendState(prepared, expectedConversation) {
     assertConversation(expectedConversation);
-    const diffTurnPresent = reviewDiffAttachmentTurnPresent(prepared);
+    const exactAttachmentTurnPresent = attachmentTurnPresent(prepared);
     const postBaselineTurnPresent = postBaselineUserTurnPresent(prepared);
     const liveEditor = composer();
-    if (!liveEditor) return {state: postBaselineTurnPresent ? "sent" : "missing", ready: false, proof: diffTurnPresent ? "diff-attachment-surface" : postBaselineTurnPresent ? "post-baseline-user-turn" : null};
+    if (!liveEditor) return {state: postBaselineTurnPresent ? "sent" : "missing", ready: false, proof: exactAttachmentTurnPresent ? "attachment-filename-surface" : postBaselineTurnPresent ? "post-baseline-user-turn" : null};
     const liveRoot = rootFor(liveEditor), present = attachmentPresent(liveRoot, prepared.fileName);
-    if (!present && postBaselineTurnPresent) return {state: "sent", ready: false, proof: diffTurnPresent ? "diff-attachment-surface" : "post-baseline-user-turn"};
+    if (!present && postBaselineTurnPresent) return {state: "sent", ready: false, proof: exactAttachmentTurnPresent ? "attachment-filename-surface" : "post-baseline-user-turn"};
     if (editorText(liveEditor)) return {state: "contaminated", ready: false};
     if (!present) return {state: "missing", ready: false};
     return {state: "prepared", ready: !!readySendButton(liveRoot), proof: null};
   }
 
-  async function waitForReviewSendReady(prepared, expectedConversation) {
+  async function waitForAttachmentSendReady(prepared, expectedConversation) {
     const deadline = Date.now() + 120000;
     while (Date.now() < deadline) {
-      const state = reviewSendState(prepared, expectedConversation);
-      if (state.state === "contaminated") throw new Error("ChatGPT composer changed after ReviewDiff preparation; automatic Send was stopped before clicking Send.");
+      const state = attachmentSendState(prepared, expectedConversation);
+      if (state.state === "contaminated") throw new Error("ChatGPT composer changed after attachment preparation; automatic Send was stopped before clicking Send.");
       if (state.state === "sent") return;
-      if (state.state === "missing") throw new Error("Prepared ReviewDiff attachment disappeared before automatic Send could begin.");
+      if (state.state === "missing") throw new Error("Prepared attachment disappeared before automatic Send could begin.");
       if (state.ready) return;
       await sleep(Math.min(250, Math.max(1, deadline - Date.now())));
     }
-    throw new Error("Timed out waiting for the prepared ReviewDiff attachment to become send-ready.");
+    throw new Error("Timed out waiting for the prepared attachment to become send-ready.");
   }
 
-  async function attachSnapshot(blob, fileName, expectedConversation, guard) {
-    await prepareAttachment(blob, fileName, "application/zip", expectedConversation, guard);
-  }
-
-  return {conversationKey, assertConversation, requireEmptyReviewComposer, prepareReviewDiffAttachment, reviewSendState, waitForReviewSendReady, attachSnapshot, __test: Object.freeze({userTurnSurface, reviewDiffAttachmentTurnPresent, postBaselineUserTurnPresent})};
+  return {conversationKey, assertConversation, requireEmptyAttachmentComposer, prepareAttachment, attachmentSendState, waitForAttachmentSendReady, __test: Object.freeze({userTurnSurface, attachmentTurnPresent, postBaselineUserTurnPresent})};
 })();

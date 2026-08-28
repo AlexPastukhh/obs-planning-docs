@@ -1,6 +1,6 @@
 # ChatGPT Bridge Integration
 
-Status: active V1 integration contract; SL-06 exact attachment/send integrity + runtime-contract preflight and SL-04/05 destination-first Snapshot timeout corrections implemented in current source, live Edge/Swing acceptance pending
+Status: active V1 integration contract; generic exact-attachment/optional-Send engine implemented for ReviewDiff and Repository Snapshot, with destination-first Snapshot timeout corrections; live Edge/Swing acceptance pending
 Scope: local Java ↔ Chromium extension handoff for ordinary ChatGPT conversations. It does not change the replacement-package producer protocol, ReviewDiff authority, snapshot format or Finalize authority.
 
 ## 1. Historical Capability Mapping
@@ -26,7 +26,7 @@ https://chatgpt.com/c/<conversation-key>
 
 are eligible. Projects, custom GPT surfaces, new-chat pages without a stable `/c/<conversation-key>` and other ChatGPT surfaces are outside V1.
 
-The extension reports open tabs grouped by `conversationKey`. Several browser tabs for the same conversation appear as one application choice with a tab count. Titles are presentation only; title equality never merges different conversation keys. Delivery is serialized per conversation: while any task for that conversation is `Claimed`, `Preparing` or `SendClicked`, another tab cannot claim a second queued task.
+The extension reports open tabs grouped by `conversationKey`. Several browser tabs for the same conversation appear as one application choice with a tab count. Titles are presentation only; title equality never merges different conversation keys. Delivery is serialized per conversation: while any task for that conversation is `Claimed`, `Preparing`, `SendArmed` or `SendClicked`, another tab cannot claim a second queued task.
 
 Tab-agent lifecycle has one owner: the extension service worker. `manifest.json` does not auto-inject the bridge content script. Background inventory/reconciliation injects `chatgpt-adapter.js` + `content.js` into an ordinary ChatGPT tab only when no current generation-matching agent answers. The extension keeps one runtime generation in `chrome.storage.session`, so normal Manifest V3 service-worker suspension/restart retains the generation while extension reload/update creates a new generation. Each injected tab agent has its own instance id; background rejects stale generation/instance traffic, and a fresh same-generation injection disposes the previous agent/timer. An invalidated current-version extension context stops its heartbeat instead of continuing to emit repeated runtime errors. One upgrade caveat is intentional: a tab that still runs the pre-`0.2.11` content script cannot be taught this shutdown behavior after that old extension context is invalidated, so refresh such a tab once after upgrading; subsequent extension reloads are handled by the replaceable-agent lifecycle without a page refresh.
 
@@ -60,7 +60,7 @@ current ReviewDiff persisted
 → assign one browser-visible .diff filename containing this delivery task identity
 → any open tab of that exact conversation may claim it
 → exactly one tab gets the claim
-→ require bridge protocol v2 + complete task contract
+→ require bridge protocol v4 + complete task contract
 → require empty intended ChatGPT composer
 → construct a browser File from the exact ReviewDiff bytes
 → drive the shared ChatGPT attachment primitive
@@ -74,58 +74,57 @@ current ReviewDiff persisted
      reacquire the current Send control in ChatGPT MAIN world
      recheck composer text + attachment immediately before click
      click when enabled
-     after the first actual possible-Send click, persist technical SendClicked / semantic Sending
-     confirm only a new outgoing user turn after this task's baseline whose complete turn container exposes a file/attachment DOM surface with `.diff` after the prepared attachment leaves the composer
+     before the first application-controlled possible-Send attempt, obtain Java `SendArmed` authorization; after the first actual possible-Send click, persist technical SendClicked / semantic Sending and keep later guarded retries inside that same possible-Send lifecycle
+     after the prepared attachment leaves the composer, confirm a new outgoing user turn after this task's preparation baseline
+     when the same authored turn exposes a file/attachment surface with the exact queued filename, use that as stronger optional proof
 → Sent
 ```
 
 Live evidence superseded the prior direct-text target. A small ReviewDiff could be inserted as text, but automatic Send remained unreliable; a large ReviewDiff could block the whole ChatGPT tab while the rich-text editor processed the inserted content. The already-working file-input attachment mechanism does not put the ReviewDiff bytes through the rich-text editor, so **all non-empty ReviewDiffs now use a `.diff` attachment**, not a size threshold or text/attachment split.
 
-The send-control retry interval is an application setting, default `6` seconds with allowed range `1..60`. A ReviewDiff task captures the current value when it is created and the extension receives that frozen value with the claimed task; the extension does not keep an independent retry setting. `SendClicked` remains the technical persisted state name for compatibility, but while the exact prepared attachment is still present the user-semantic projection is `Sending` and repeated guarded click attempts belong to the **same External Interaction**, not new retries/interactions.
+The send-control retry interval is an application setting, default `6` seconds with allowed range `1..60`. Every auto-send task snapshots the current value when it is created: ReviewDiff always uses auto-send, while Snapshot uses it only for `Export + Attach + Send`. The extension does not keep an independent retry setting. `SendArmed` is the persisted pre-click authorization state and `SendClicked` remains the actual-click state; repeated guarded attempts belong to the same External Interaction.
 
-Live attachment testing exposed a runtime-contract defect after this design landed: the `.diff` attached successfully, then the extension reported `UnknownAfterSend · Invalid ReviewDiff send retry interval.` This is deterministic local incompatibility, not external send uncertainty. Protocol version `2` therefore makes the Java/extension boundary explicit. `/v1/health` and claimed tasks advertise the version, while inventory/claim requests advertise the extension version; the extension rejects mismatched/malformed claim contracts before payload/composer mutation, records a safely claimed task as `FailedBeforeSend`, and tells the user to restart/update the application and reload the extension. The retry interval is validated in that preflight and again by the content script **before** external preparation; no interval validation remains after `SendClicked`.
+Live attachment testing originally exposed a deterministic Java/extension contract defect after attachment preparation. Protocol version `4` now identifies the generic attachment/optional-Send task contract: `/v1/health` and claimed tasks advertise it, inventory/claim requests advertise the extension version, and both background/content preflight validate artifact kind, destination, fingerprint, `autoSend`, payload URL and a retry interval whenever `autoSend=true` before payload/composer mutation. Version/contract failure is `FailedBeforeSend`, never `UnknownAfterSend`.
 
-Repeated UI click attempts are permitted only while the exact task-specific prepared `.diff` attachment remains in the exact intended composer and no unrelated composer text has appeared. `Sent` is never inferred from message text alone. After the prepared attachment leaves the composer, the minimum confirmation invariant is a new user turn after the delivery baseline; this matches the external transition the bridge controls even when ChatGPT no longer exposes stable attachment metadata in the rendered turn. The adapter still searches the complete turn container—not only the `[data-message-author-role="user"]` message node—for a file/attachment-like DOM surface that exposes `.diff`; that turn-local surface is stronger optional evidence, and its ancestor expansion remains bounded to exactly the current authored turn so a neighboring turn cannot strengthen the wrong interaction. Live acceptance with task `44181531` already proved that a real Send can evade a narrower attachment-card lookup, and later practical use still produced false `UnknownAfterSend` despite successful visible delivery, so `.diff` surface visibility is no longer a mandatory success gate. If the prepared attachment disappears **before** any automatic possible-Send click, the result is `PreparedUnsent`; if it disappears **after** a possible-Send click and no post-baseline user turn can be confirmed, delivery becomes `UnknownAfterSend` and automatic click retry stops. This is distinct from retrying or acknowledging a terminal/uncertain External Interaction.
+Repeated UI click attempts are permitted only while the exact task-specific prepared attachment remains in the exact intended composer and no unrelated composer text has appeared. `Sent` is never inferred from message text alone. After that attachment leaves the composer, the minimum confirmation invariant is a new user turn after the attachment-preparation baseline. The adapter additionally searches only the same authored turn for a file/attachment-like DOM surface containing the exact queued `fileName`; that is stronger optional evidence for either `.diff` or `.zip`, not a mandatory gate. Attachment loss before any automatic possible-Send click is `PreparedUnsent`; loss after a possible-Send click with no post-baseline user turn becomes `UnknownAfterSend` and automatic click retry stops.
 
-Known accepted send-confirmation risk: the weak post-baseline fallback currently uses the attachment-preparation user-turn baseline rather than a baseline captured immediately before each actual Send click. Therefore, in a rare same-conversation concurrency window, an unrelated user turn created after preparation but before this task's click could already satisfy the fallback count increase; if the prepared attachment later disappears after an ineffective/ambiguous click, that prior unrelated turn could falsely confirm `Sent`. This is accepted for the current revision. Future hardening should capture a click-specific user-turn baseline immediately before MAIN-world `button.click()` and compare only later turns against that attempt baseline; turn-local `.diff` evidence remains stronger optional proof.
+Known accepted send-confirmation risk: the weak post-baseline fallback still uses the attachment-preparation user-turn baseline rather than a baseline captured immediately before each actual Send click. In a rare same-conversation concurrency window, an unrelated turn created after preparation but before this task's click could satisfy that fallback if the prepared attachment later disappears after an ineffective/ambiguous click. Future hardening should use a click-specific baseline; exact-filename turn-local attachment evidence remains stronger optional proof.
 
-If the composer already contains user text or an attachment, automatic ReviewDiff delivery fails before mutation rather than mixing with an existing draft. The same no-unrelated-text invariant is checked again after upload readiness and inside the MAIN-world click guard immediately before each click, so text typed after preparation stops automation without sending the mixed composer. Failure before confirmed attachment preparation is `FailedBeforeSend`; only after the expected `.diff` is confirmed upload-ready may a later pre-Send interruption become terminal `PreparedUnsent`. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are immutable terminal results. A newer automatic ReviewDiff supersedes older `Pending`/`Claimed` automatic tasks, but an already `Preparing`/`Sending` delivery is allowed to complete and the newer review waits behind it. Rebind/unbind cancels only safely cancellable `Pending`/`Claimed` review tasks and is blocked during `Preparing` or technical `SendClicked`. Expired in-flight state is normalized before binding changes and delivery-status reads so stale send attempts cannot block the user forever.
+If the composer already contains user text or an attachment, any automatic attachment+Send delivery fails before mutation rather than mixing with an existing draft. The same no-unrelated-text invariant is checked again after upload readiness and inside the MAIN-world click guard before each click. ReviewDiff still reaches `Preparing` only after its exact `.diff` is upload-ready; Snapshot reaches `Preparing` before browser attachment mutation so its fixed confirmation deadline cannot falsely report clean cancellation after preparation has begun. `Sent`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `Attached`, `NoChanges` and `Cancelled` remain immutable terminal results.
 
-## 5. Snapshot Attach-Only
+## 5. Snapshot Attachment / Optional Send
 
-Snapshot attachment is separate from ChangeSet binding. The Swing Repository Snapshot dialog exposes `Export only` and destination-first `Export + Attach`. For the combined action the user selects one currently open ordinary ChatGPT conversation **before** export; the host freezes that exact `conversationKey` as operation input and never derives Snapshot destination from the later Review-chat selection or another current tab.
+Snapshot handoff remains separate from ChangeSet Review-chat binding. The Swing Repository Snapshot dialog exposes three outcomes: `Export only`, destination-first `Export + Attach`, and destination-first `Export + Attach + Send`. Either handoff option requires one currently open ordinary ChatGPT conversation before export; the host freezes that exact `conversationKey` and the `autoSend` intent and never derives Snapshot destination from a later Review-chat/current-tab selection.
 
 Flow:
 
 ```text
-user selects exact conversationKey
-→ freeze Snapshot inputs + destination
+freeze Snapshot inputs + exact conversationKey + autoSend
 → create and validate Repository Snapshot ZIP
-→ queue snapshot task for that frozen key only, autoSend=false
-→ one tab may claim it
-→ fetch ZIP through a short-lived artifact ticket
-→ verify exact queued size/SHA-256 in Java and again in the extension
-→ construct browser File + drive ChatGPT file input
-→ wait for attachment confirmation
-→ Attached
-→ STOP
+→ queue exact snapshot task only after ZIP success
+→ one tab claims it
+→ verify exact queued size/SHA-256 in Java and extension
+→ generic prepareAttachment(application/zip)
+→ if autoSend=false: Attached → STOP
+→ if autoSend=true:
+     wait send-ready
+     generic guarded MAIN-world attachment Send attempts
+     Java authorizes attempt → SendArmed
+     actual possible click → SendClicked
+     Sent | UnknownAfterSend | PreparedUnsent
 ```
 
-There is no special fresh-inventory handshake whose purpose is to prove that a tab stayed open throughout export. Existing inventory validation still rejects a destination already known unavailable at enqueue. If stale inventory permits a task and browser attachment never confirms, the task is bounded by one absolute 10-minute confirmation deadline from task creation; claim/heartbeat renewal does not extend it. Expiry while `Pending` or `Claimed` is terminal `Cancelled`. Expiry after the task reached `Preparing` is terminal `PreparedUnsent`, because a prepared attachment may remain in the composer. These timeout results stop future automation without changing the already-successful Snapshot export.
+ReviewDiff and Snapshot therefore share one browser attachment preparation module and one optional-Send module. The Java bridge still accepts only app Repository Snapshot ZIPs for snapshot tasks; it does not expose arbitrary filesystem attachment or command execution. ReviewDiff remains `autoSend=true`; Snapshot may be `false` or `true` according to the initial dialog.
 
-Hard invariant:
+There is no fresh-inventory handshake whose purpose is to prove that a tab stayed open throughout export. Known-missing destination at enqueue rejects immediately. A queued Snapshot has the existing absolute 10-minute confirmation deadline from task creation while it is `Pending`, `Claimed` or `Preparing`: expiry is `Cancelled` before preparation and `PreparedUnsent` after preparation begins. Before the first application-controlled auto-send Snapshot click, Java atomically verifies the Snapshot deadline is still live and enters `SendArmed`, cancelling that deadline before the browser is allowed to click. After an actual possible click establishes `SendClicked`, later guarded retries stay in that possible-Send lifecycle and no longer consult the Snapshot confirmation deadline; the ordinary possible-Send lease preserves `Sent`/`UnknownAfterSend` truth.
 
-```text
-snapshot task → extension MUST NOT click Send
-```
-
-V1 does not expose a generic arbitrary-file attachment operation. The Java side accepts only ZIPs with the Repository Snapshot root contract and rejects `PACKAGE.json` replacement packages as snapshot attachments. ReviewDiff and snapshot handoffs reuse the same **technical browser attachment primitive** (`File` + ChatGPT file input + readiness observation), but their product semantics stay separate: ReviewDiff may auto-send, Snapshot remains attach-only.
+For `Export only`, the host keeps the post-export result dialog with path/copy/open-folder controls. For either automatic ChatGPT handoff, that second modal is suppressed; the export result and handoff state are surfaced through Operation/External Interactions/notifications.
 
 ## 6. Loopback Protocol / Security
 
-`/v1/health` returns the fixed local `bridgeProtocolVersion`; the current required value is `2`. Inventory/claim requests must advertise the same extension version, and each claim response repeats the server version so a newly loaded extension cannot partially execute a task from an older Java process. Protocol/version mismatch is a deterministic pre-send compatibility failure, not an `UnknownAfterSend` result.
+`/v1/health` returns the fixed local `bridgeProtocolVersion`; the current required value is `4`. Inventory/claim requests must advertise the same extension version, and each claim response repeats the server version so a newly loaded extension cannot partially execute the older attach-only Snapshot contract. Protocol/version mismatch is deterministic pre-send compatibility failure, not `UnknownAfterSend`.
 
-Runtime-generation correction: protocol `2` remains the Java/extension task contract, while tab-agent generation is an extension-internal lifecycle fence. Background is the sole injector, session generation survives ordinary service-worker restarts, extension reload/update rotates generation, and stale agent traffic is rejected before it can control a current task. Once a tab has loaded the current replaceable agent, Pending delivery can therefore be picked up by a freshly injected agent after later extension reloads without relying on a manually refreshed ChatGPT page. The one-time pre-`0.2.11` upgrade refresh caveat above still applies. This does **not** make an already externally prepared interaction transparently resumable across runtime/tab loss: interruption after preparation still follows the existing truthful `PreparedUnsent` boundary, and ambiguity after a possible Send remains `UnknownAfterSend`.
+Runtime-generation correction: protocol `4` is the Java/extension task contract, while tab-agent generation remains an extension-internal lifecycle fence. Background is the sole injector, session generation survives ordinary service-worker restarts, extension reload/update rotates generation, and stale agent traffic is rejected before it can control a current task. This does not make an already externally prepared interaction transparently resumable across runtime/tab loss: interruption after preparation remains `PreparedUnsent`, and ambiguity after a possible Send remains `UnknownAfterSend`.
 
 Known accepted/deferred composer-integrity risk: after the intended ReviewDiff attachment is upload-ready, the current guard rechecks unrelated **text** plus presence of the intended attachment, but it does not yet reject a second unrelated attachment added before the automatic click. This is explicitly accepted for the current campaign and is not a blocker; do not present it as solved.
 
@@ -161,22 +160,30 @@ The payload GET permits the ChatGPT origin through narrow CORS headers and never
 ReviewDiff:
 Pending → Claimed → Preparing
 Preparing → PreparedUnsent
-Preparing → actual possible-Send click → SendClicked → Sent | UnknownAfterSend
+Preparing → SendArmed → actual possible-Send click → SendClicked → Sent | UnknownAfterSend
                                               ↳ repeated guarded Send-control attempts while same task-specific .diff remains prepared
-Preparing → UnknownAfterSend  (narrow truth-preserving fallback if a real click occurred before SendClicked persistence completed)
+SendArmed → UnknownAfterSend  (authorization succeeded but click outcome/persistence became uncertain)
 Pending → Cancelled
 Claimed → FailedBeforeSend | PreparedUnsent | Cancelled
 empty diff → NoChanges
 claim loss while Claimed → Pending
 claim loss while Preparing → PreparedUnsent
-claim loss after SendClicked → UnknownAfterSend
+claim loss after SendArmed | SendClicked → UnknownAfterSend
 
-Snapshot:
+Snapshot attach-only:
 Pending → Claimed → Preparing → Attached
 Claimed → FailedBeforeSend
 Pending | Claimed + 10-minute absolute confirmation timeout → Cancelled
 Preparing + 10-minute absolute confirmation timeout → PreparedUnsent
 Preparing → PreparedUnsent
+
+Snapshot auto-send:
+Pending → Claimed → Preparing → SendArmed → actual possible-Send click → SendClicked → Sent | UnknownAfterSend
+Claimed → FailedBeforeSend
+Pending | Claimed + 10-minute absolute confirmation timeout → Cancelled
+Preparing + 10-minute absolute confirmation timeout → PreparedUnsent
+Preparing → PreparedUnsent
+SendArmed → Snapshot confirmation deadline no longer races the browser click; ordinary send-uncertainty lease applies until definitive no-click, SendClicked, or uncertainty
 ```
 
 `Sent`, `Attached`, `UnknownAfterSend`, `PreparedUnsent`, `FailedBeforeSend`, `NoChanges` and `Cancelled` are terminal. Terminal results cannot be overwritten. Manual `Send current ReviewDiff` may create a new explicit task, but automatic task creation is deduplicated for one review identity.
@@ -214,7 +221,7 @@ Current SL-06 source uses attachment preparation for every non-empty ReviewDiff:
 
 ```text
 exact verified ReviewDiff bytes
-→ validate bridge protocol v2 + complete claimed task contract
+→ validate bridge protocol v4 + complete claimed task contract
 → preserve bytes as text/x-diff Blob/File under a task-specific delivery filename
 → verify exact intended conversation + empty composer
 → reuse shared browser attachment primitive
@@ -222,13 +229,13 @@ exact verified ReviewDiff bytes
 → only then mark semantic Preparing
 → wait for Send readiness while composer remains free of unrelated text
 → MAIN-world guard rechecks composer text + task-specific attachment immediately before click
-→ actual click establishes the possible-Send boundary
-→ persist technical SendClicked / semantic Sending after that click
+→ Java atomically authorizes the guarded attempt as SendArmed before MAIN-world click
+→ actual click establishes SendClicked / semantic Sending after that click
 → keep trying only while the same attachment remains prepared
-→ confirm only a post-baseline outgoing user turn whose complete turn container exposes a file/attachment DOM surface with `.diff` after the prepared attachment leaves the composer
+→ after the prepared attachment leaves the composer, confirm a post-baseline outgoing user turn; exact queued-filename attachment evidence in that same authored turn is stronger optional proof
 ```
 
-The application owns the mutable retry setting (`reviewDiffSendRetrySeconds`, default `6`, range `1..60`). A new ReviewDiff task snapshots that setting so changing Settings later does not alter an in-flight interaction.
+The application owns the mutable retry setting (`reviewDiffSendRetrySeconds`, default `6`, range `1..60`). Every new auto-send task snapshots that existing setting, including ReviewDiff and Snapshot `Export + Attach + Send`, so changing Settings later does not alter an in-flight interaction.
 
 State/result boundary:
 
@@ -238,11 +245,12 @@ no confirmed attachment preparation
 → FailedBeforeSend
 
 expected .diff confirmed upload-ready
-+ composer contamination / attachment loss / other failure before actual possible-Send click
++ composer contamination / attachment loss / other failure before Send authorization or after a definitive no-click
 → PreparedUnsent
 
-actual possible-Send click occurred
-→ SendClicked / Sending
+Java SendArmed authorization granted
+→ browser click outcome is potentially external
+→ actual possible-Send click → SendClicked / Sending
 
 Send attempt phase active
 + same task-specific .diff still present
@@ -252,7 +260,7 @@ Send attempt phase active
 prepared attachment leaves the composer
 + a new post-baseline user turn appears
 → Sent
-→ a turn-local `.diff` file/attachment surface, when exposed, is stronger optional proof
+→ a turn-local file/attachment surface exposing the exact queued filename, when exposed, is stronger optional proof
 
 prepared attachment disappears after a possible-Send click
 + no post-baseline user turn can be confirmed

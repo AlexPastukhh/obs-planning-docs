@@ -131,7 +131,7 @@ Candidate invariants:
 - if external content is already prepared, `Cancelled` does **not** mean deleted: prepared content remains and no automatic cleanup/send occurs;
 - once Send may have occurred, interaction cannot be rewritten to definitely Cancelled/unsent;
 - interaction outcome never changes Repository Work authority/lifecycle;
-- ordinary terminal interaction is not reusable work: a later user retry creates a new External Interaction identity; terminal/tombstone retention is technical safety evidence, not user-facing history. Repeated Send-control attempts while the same exact prepared ReviewDiff attachment remains in the same nonterminal interaction are dispatch attempts inside that interaction, not terminal retry.
+- ordinary terminal interaction is not reusable work: a later user retry creates a new External Interaction identity; terminal/tombstone retention is technical safety evidence, not user-facing history. Repeated Send-control attempts while the same exact prepared auto-send attachment remains in the same nonterminal interaction are dispatch attempts inside that interaction, not terminal retry. Snapshot attach-only and Snapshot attach+Send are distinct user intents even for the same artifact/destination.
 
 Pairing, heartbeat, polling, claim leases, tab IDs and content-script reconnect are implementation mechanics, not aggregate identity/state names.
 

@@ -136,15 +136,9 @@ The selected output directory must already exist and be a directory. Before any 
 
 The final ZIP is written through a temporary file and then published to a unique `.zip` path. Existing files are not silently overwritten.
 
-After successful export the host automatically attempts:
+For `Export only`, the host keeps the manual handoff conveniences after successful export: it attempts clipboard write + read-back verification, shows the absolute path, and exposes `Copy path` / `Open folder` / `Close`. Clipboard failure never changes successful ZIP truth.
 
-```text
-absolute ZIP path
-→ clipboard write
-→ clipboard read-back verification
-```
-
-Clipboard failure does not make the already-created ZIP a failed export. The UI shows the absolute path and exposes `Copy path` and `Open folder` conveniences.
+For `Export + Attach` or `Export + Attach + Send`, the user already selected an automatic downstream action before export. The host therefore does not show the second path/copy/open-folder modal and does not overwrite the clipboard merely to support that modal. Export success and downstream ChatGPT state are reported through Operation, External Interactions and notifications.
 
 ## 7. Boundaries
 
@@ -165,13 +159,15 @@ SNAPSHOT_EXPORT_FAILED
 ```
 
 
-## 8. ChatGPT Attachment Is Downstream
+## 8. ChatGPT Handoff Is Downstream
 
-The Swing Repository Snapshot dialog exposes two explicit outcomes: `Export only` and `Export + Attach`. There is no separate attach toggle. For `Export + Attach`, the user selects one currently open ordinary ChatGPT conversation **before** export starts and the host freezes its `conversationKey` together with the snapshot operation inputs; the selected title is presentation only and snapshot selection never changes the ChangeSet Review-chat binding.
+The Swing Repository Snapshot dialog exposes `Export only`, `Export + Attach`, and `Export + Attach + Send`. There is no late post-export destination chooser. Either ChatGPT option requires one selected currently open ordinary conversation before export and freezes its `conversationKey` plus the send intent; title remains presentation only and Snapshot selection never changes the ChangeSet Review-chat binding.
 
-Snapshot ZIP creation remains independently authoritative and completes first. Only after a successful ZIP exists may `UC-RPKG-ATTACH-SNAPSHOT` create an External Interaction for that exact ZIP and the frozen conversation identity. The host must not reopen destination selection, read a later mutable chat selection, or substitute another conversation. No additional fresh-inventory handshake is introduced merely to detect whether the tab closed during export. If the ordinary inventory already knows the frozen destination is unavailable, enqueue is rejected and the snapshot still remains successful. If stale inventory permits the task to be queued but attachment is never confirmed, the Snapshot interaction has a fixed 10-minute confirmation deadline: `Pending`/`Claimed` terminates as `Cancelled`, while `Preparing` terminates as `PreparedUnsent` because an attachment may already remain in the composer.
+Snapshot ZIP creation remains independently authoritative and completes first. Only after the exact ZIP succeeds may an External Interaction be created for that ZIP and frozen conversation. `Export + Attach` queues `autoSend=false` and stops at `Attached`. `Export + Attach + Send` queues `autoSend=true` and uses the same generic attachment/guarded-Send path used by ReviewDiff, including clean-composer protection, Java `SendArmed` authorization before MAIN-world click, actual-click `SendClicked` boundary and `Sent`/`UnknownAfterSend` truth.
 
-This does not change the ZIP contract, does not create a ChangeSet and does not alter export success. Snapshot bridge tasks remain attach-only: the extension must not click Send. See [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).
+No fresh-inventory handshake is introduced merely to detect tab closure during export. Known-missing destination rejects at enqueue without changing successful export. A queued Snapshot keeps the fixed 10-minute confirmation deadline while `Pending`/`Claimed`/`Preparing`; timeout is `Cancelled` before external preparation or `PreparedUnsent` after preparation began. Before the first application-controlled auto-send browser click, Java must atomically establish `SendArmed` while the original Snapshot deadline is still live and cancel its scheduled wake-up. A definitive no-click returns to `Preparing` under that same absolute deadline; an actual click advances to `SendClicked`, after which later guarded retries remain in the possible-Send lifecycle and possible-Send truth cannot be rewritten.
+
+This changes neither the ZIP contract nor ChangeSet lifecycle and does not expose arbitrary-file handoff. See [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).
 
 ## 9. Selected Target Readiness / Planning Delta — Not Yet Implemented
 
