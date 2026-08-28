@@ -89,7 +89,7 @@ For repository-scope tests include:
 
 | Slice | Automated responsibility | Manual practical responsibility |
 |---|---|---|
-| `SL-RPKG-01` Apply Replacement Work | passive input, prepared/authorized Apply context + stale-context revalidation, exact-ID continuation with persisted-label authority, label-mismatch diagnostic-only behavior, target resolver, readiness, ownership + owner/unowned diagnostic detail, source-state Git equivalence, rollback/result | real responsive Swing Prepare → decision → Execute flow, target switch/preflight/result/reason readability including label-mismatch continuation and exact owner/unowned truth |
+| `SL-RPKG-01` Apply Replacement Work | passive input, prepared/authorized Apply context + stale-context revalidation, exact-ID continuation with persisted-label authority, label-mismatch diagnostic-only behavior, target resolver, readiness, ownership + owner/unowned diagnostic detail, source-state Git equivalence, rollback/result; separate wait-for-ZIP wrapper freezes inputs and retries only `PACKAGE_NOT_FOUND` at 2s cadence for max 12s before reusing the same Prepare/Execute path | real responsive ordinary Apply plus `Apply (wait for ZIP)` arrival/timeout/non-retry behavior, Prepare → decision → Execute flow, target switch/preflight/result/reason readability including label-mismatch continuation and exact owner/unowned truth |
 | `SL-RPKG-02` Inspect Current Change | cumulative ReviewDiff, persistence, corruption/stale detection, real-index isolation | responsive background Refresh + Copy/Open/restart/current-state presentation |
 | `SL-RPKG-03` Finalize And Publish Work | owned-only commit, lifecycle, publication pending, safe recovery, guarded Finalized→Active Reopen, failed-Reopen no-marker rule | responsive background Finalize/Retry plus real Reopen/remote-ahead UX/truthful state + notification on failed Reopen |
 | `SL-RPKG-04` Export Repository Snapshot | exact/stable ZIP, readiness, index/output safety + source-level destination freeze before background export | responsive destination-first dialog with `Export only` / `Export + Attach`, Repository Not Ready, destination/clipboard/open-folder |
@@ -103,6 +103,7 @@ For repository-scope tests include:
 
 The strategy must preserve explicit proof that:
 - passive package input and any failed preflight cause no target mutation;
+- wait-for-ZIP Apply does not become a second Apply implementation: ordinary Apply remains immediate, the wrapper freezes click-time inputs, retries only `PACKAGE_NOT_FOUND` every 2 seconds for at most 12 seconds off EDT, and hands the first successful Prepare to the existing continuation exactly once;
 - one ChangeSet cannot capture sibling same-target ownership; another concrete repository does not conflict merely because relative paths match;
 - ownership/adoptability failures never leave the user guessing who owns a path: exact target/path/applying ChangeSet are shown, with either explicit `Unowned` or concrete owner label/status/ID;
 - real manual/out-of-band source change is not accepted merely because Git-controlled EOL/filter representations differ;

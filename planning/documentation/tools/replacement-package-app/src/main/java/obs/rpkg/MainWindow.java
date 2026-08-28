@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.List;
 
 final class MainWindow extends JFrame {
+    private static final long APPLY_ZIP_POLL_INTERVAL_MS=2000, APPLY_ZIP_POLL_MAX_MS=12000;
     private final Core core;
     private ChatBridgeServer bridgeServer;
     private Core.RepositoryConfig selectedRepository;
@@ -48,7 +49,7 @@ final class MainWindow extends JFrame {
         root.add(row("Windows launcher",launcherState,button("Install / update",this::installWindowsLauncher),button("Open folder",this::openWindowsLauncherFolder),button("Copy path",this::copyWindowsLauncherPath)));
         root.add(row("Archive ZIP",archive,button("Browse",()->chooseFile(archive))));
         root.add(new JLabel("OBS-ACTION/1 (optional when ZIP is selected explicitly):"));root.add(new JScrollPane(action));
-        root.add(row("",button("Apply",this::apply)));
+        root.add(row("",button("Apply",this::apply),button("Apply (wait for ZIP)",this::applyWithPolling)));
         root.add(row("ChangeSet",changeSets));
         root.add(row("",allRepositories,showHistory));
         root.add(row("Status",status));root.add(row("ChangeSet ID",changeSetId));
@@ -218,6 +219,25 @@ final class MainWindow extends JFrame {
         Path zip=archive.getText().isBlank()?null:Path.of(archive.getText().trim());String actionText=action.getText(),currentId=selectedRepository==null?null:selectedRepository.id();
         showOperation("INFO Preparing Apply…");
         runBackground("Prepare Apply",()->core.prepareApply(actionText,zip,currentId),prepared->continuePreparedApply(prepared,currentId),e->trackedFailure("Apply",e,currentId,null));
+    }
+
+    private void applyWithPolling(){
+        saveHandling();saveReviewChatTitleIgnoredCharacters();
+        Path zip=archive.getText().isBlank()?null:Path.of(archive.getText().trim());String actionText=action.getText(),currentId=selectedRepository==null?null:selectedRepository.id();
+        showOperation("INFO Waiting up to 12 seconds for replacement ZIP…");
+        runBackground("Prepare Apply (wait for ZIP)",()->prepareApplyWithPolling(actionText,zip,currentId),prepared->continuePreparedApply(prepared,currentId),e->trackedFailure("Apply",e,currentId,null));
+    }
+
+    private Core.PreparedApply prepareApplyWithPolling(String actionText,Path zip,String currentId)throws Exception{
+        long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(APPLY_ZIP_POLL_MAX_MS);Core.ObsException lastMissing=null;
+        while(true){
+            try{return core.prepareApply(actionText,zip,currentId);}
+            catch(Core.ObsException e){
+                if(!Core.PACKAGE_NOT_FOUND.equals(e.code))throw e;lastMissing=e;long remaining=deadline-System.nanoTime();
+                if(remaining<=0)throw new Core.ObsException(Core.PACKAGE_NOT_FOUND,"Replacement package did not become available within 12 seconds. "+semanticMessage(message(lastMissing)));
+                java.util.concurrent.TimeUnit.NANOSECONDS.sleep(Math.min(java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(APPLY_ZIP_POLL_INTERVAL_MS),remaining));
+            }
+        }
     }
 
     private void continuePreparedApply(Core.PreparedApply prepared,String initialRepositoryId){

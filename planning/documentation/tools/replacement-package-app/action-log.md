@@ -837,3 +837,29 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply, an overdue Snapshot restored at application startup can no longer vanish silently between task normalization and Swing listener registration. Java still owns the fixed deadline and terminal truth, while Output/notification receives the corresponding startup terminal event exactly once after the UI sink becomes available.
 
 **APPLIED relation:** if package `14a882bf-51f3-4b66-98a3-28cc20cfd3a0` applies successfully, this event-surfacing correction becomes the current state of still-open ChangeSet `3859732c-bd93-415f-b016-2d8b7290b761` (`SL-RPKG-04/05 — preselected snapshot ChatGPT destination`) and supersedes only the startup no-op event-loss edge in `LOG-RPKG-044`; its destination-first and scheduled-deadline decisions remain unchanged.
+
+### LOG-RPKG-046 — Add separate bounded wait-for-ZIP Apply wrapper
+
+**Type:** USER CLARIFICATION / SL-RPKG-01 APPLY UX / DOWNLOAD-ARRIVAL POLLING / APPLIED TARGET  
+**ChangeSet:** `42f661ae-ab2f-4fdc-854f-bf95e3407c2f`  
+**Package:** `b2b60d56-1d23-4179-8136-694b793f98db`
+
+**Selected behavior:**
+- ordinary `Apply` stays unchanged and continues to invoke one immediate asynchronous Prepare;
+- a new separate `Apply (wait for ZIP)` button exists for the narrow browser-download race where the action/archive reference is already present but the ZIP has not reached its final path yet;
+- this is deliberately a wrapper over the existing Apply path, not another validator/resolver/executor. It freezes the click-time Archive ZIP field, OBS-ACTION text and current Repository Target ID, calls the same `core.prepareApply(...)` immediately and retries only `PACKAGE_NOT_FOUND` every 2 seconds for at most 12 seconds;
+- any non-`PACKAGE_NOT_FOUND` Prepare result stops polling immediately. The first successful Prepare is passed once to the existing `continuePreparedApply(...)` decision/authorization/Execute path. Polling performs no repository mutation and never retries Execute.
+
+**Implementation / UX boundary:**
+- the complete polling loop runs inside the existing background-operation runner, so the Swing EDT is never slept and another heavyweight operation cannot start in parallel during the bounded wait;
+- the expected attempt points are approximately click-time, +2s, +4s, +6s, +8s, +10s and the final +12s opportunity. If the package is still absent, the wrapper returns terminal `PACKAGE_NOT_FOUND` with explicit 12-second timeout meaning;
+- editing Archive ZIP, OBS-ACTION or repository selection after the wait button was clicked cannot retarget that in-flight wait. Ordinary `Apply` remains available as the non-polling action and all existing packageId/repository/applicability/Review-chat decisions remain owned by Prepare/Execute.
+
+**Proof / acceptance:**
+- source regression requires two distinct buttons, preserves the original direct `Apply → core.prepareApply(...)` path, proves the wait action freezes inputs before background work, encodes 2000 ms / 12000 ms bounds, retries only `PACKAGE_NOT_FOUND`, calls the same Prepare and contains no `executeApply(...)`;
+- manual acceptance covers package appearance during the window, full timeout with no mutation, immediate stop on another Prepare error, and mutation only through the existing successful Prepare continuation.
+
+**Target-State Result:** after successful Apply of this package, users can explicitly choose a short bounded wait when the replacement ZIP may still be downloading without weakening normal Apply semantics or creating a second repository-operation implementation.
+
+**APPLIED relation:** if package `b2b60d56-1d23-4179-8136-694b793f98db` applies successfully, this separate bounded wait-for-ZIP convenience becomes the current state of new ChangeSet `42f661ae-ab2f-4fdc-854f-bf95e3407c2f` (`SL-RPKG-01 — bounded wait-for-ZIP Apply wrapper`).
+

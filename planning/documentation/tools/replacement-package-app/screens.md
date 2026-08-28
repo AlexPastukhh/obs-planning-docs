@@ -14,6 +14,7 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - Repository selector + Add/Remove/Export;
 - repository identity;
 - Archive ZIP + OBS-ACTION input;
+- separate `Apply` and `Apply (wait for ZIP)` actions; ordinary Apply prepares immediately, while the wait action only retries missing-package Prepare for up to 12 seconds at 2-second cadence before entering the same decision/Execute path;
 - Apply with asynchronous Prepare → optional decision → Execute stages; heavy Git/ZIP/filesystem work stays off EDT;
 - linked Repository + ChangeSet selectors with local/global (`All repositories`) and history scope + status/ID;
 - Review state + Refresh/Copy/Open;
@@ -51,6 +52,7 @@ Scenario behavior remains owned by [`scenarios/`](scenarios/). This file owns sp
 - `VR-RPKG-MAIN-09` — Review-chat title matching policy is editable as a normal application setting, and a rebind confirmation identifies both current and requested conversations before any repository mutation.
 - `VR-RPKG-MAIN-10` — the visible Output surface is labeled/contextualized by the selected ChangeSet semantics: selection switches session buffers, same-ChangeSet Apply attempts accumulate, and late asynchronous events from another ChangeSet remain outside the current text surface; no generic Output buffer is shown.
 - `VR-RPKG-MAIN-11` — transient non-ChangeSet progress/errors use `Operation`, and background Refresh completion cannot change the user's current ChangeSet selection or selected Review/chat presentation.
+- `VR-RPKG-MAIN-12` — `Apply (wait for ZIP)` is visibly a separate convenience action from ordinary `Apply`; it freezes the current package/action/repository inputs, waits only for `PACKAGE_NOT_FOUND`, and never suggests that polling weakens or replaces normal Apply validation.
 
 ## ChangeSet Selector Scope — part of `SCR-RPKG-MAIN`
 

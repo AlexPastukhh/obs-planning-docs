@@ -67,6 +67,8 @@ Historical ad-hoc runs are not silently imported as current acceptance evidence 
 2. Change action packageId; require `ACTION_PACKAGE_MISMATCH`/no mutation.
 3. Wrong repository package must produce `REPOSITORY_MISMATCH`.
 4. Filename alone must never override packageId mismatch.
+5. Confirm ordinary `Apply` remains immediate and does not poll. Then reference a valid package path/name that is not present yet, click the separate `Apply (wait for ZIP)`, and make the exact ZIP appear during the polling window. Require the current Archive ZIP field, OBS-ACTION text and Repository Target selection to be frozen from the click even if those controls are edited afterward; Prepare is retried at roughly 2-second cadence and the first successful Prepare enters the existing decision/Execute path once.
+6. Repeat with the ZIP absent for the full window; require polling to stop after the 12-second budget with `PACKAGE_NOT_FOUND` and no repository mutation. Repeat with a non-`PACKAGE_NOT_FOUND` Prepare error (for example packageId mismatch) and require immediate failure with no further polling.
 
 ### Selected target Apply-time repository resolution / readiness
 

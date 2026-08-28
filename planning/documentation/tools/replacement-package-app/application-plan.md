@@ -67,6 +67,8 @@ Repository operations capture/resolve one exact Repository Target and revalidate
 ### `BI-RPKG-PASSIVE-PACKAGE-INPUT`
 Supplying/pasting/selecting a package or OBS-ACTION is passive. Repository resolution/applicability/mutation authority starts only when the user explicitly invokes Apply.
 
+Swing exposes ordinary `Apply` plus a separate `Apply (wait for ZIP)` convenience action for the download-arrival race. The ordinary action is unchanged. The wait action freezes the current Archive ZIP field, OBS-ACTION text and current Repository Target ID at click time, then invokes the same `prepareApply(...)` logic immediately and every 2 seconds only while the result is `PACKAGE_NOT_FOUND`, for at most 12 seconds. Any other Prepare result/failure ends polling immediately. The first successful Prepare enters the existing decision/Execute path exactly once; polling never becomes package validation, target resolution or repository mutation authority of its own.
+
 ### `BI-RPKG-PREPARED-APPLY`
 Explicit Apply first builds one prepared, non-repository-mutating operation context from the parsed OBS-ACTION, validated package, Repository Target candidates, current ChangeSet/binding state, current Review-chat title-matching policy and any uniquely resolved destination conversation. Parsing/title resolution is not repeated after repository mutation.
 

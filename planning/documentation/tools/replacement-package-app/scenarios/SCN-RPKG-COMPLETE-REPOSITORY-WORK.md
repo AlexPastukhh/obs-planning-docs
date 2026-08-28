@@ -24,8 +24,8 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 ## Main Flow
 
 1. User supplies/selects package/OBS-ACTION or opens existing work. Package input alone does not select/mutate a repository.
-2. User explicitly invokes Apply when a package should be applied.
-3. Application parses/validates package identity and resolves logical work + exact Repository Target:
+2. User explicitly invokes ordinary `Apply`, or uses the separate `Apply (wait for ZIP)` convenience when the referenced download may not have arrived yet. The wait action freezes the current Archive ZIP / OBS-ACTION / Repository Target inputs and retries the same Prepare only for `PACKAGE_NOT_FOUND` every 2 seconds for at most 12 seconds; any other outcome stops waiting immediately.
+3. On the first successful Prepare, application follows the same ordinary Apply path exactly once: it parses/validates package identity and resolves logical work + exact Repository Target:
    - `PACKAGE.json.changeSetId` is authoritative for logical-work identity. If that exact ID exists Active, only it may be continued; UI-selected/label/recent/other Active work cannot substitute. If that exact ID is Finalized, Apply blocks and requires explicit Reopen rather than using another ChangeSet or auto-reopening;
    - existing ChangeSet continuation → that exact ChangeSet's stored concrete target is authoritative; contradictory Repository Identity is rejected and the work is never silently re-homed;
    - new work → current matching target is kept; exactly one other matching registered target may be auto-selected; several matching clones require concrete user selection; no matching target blocks before mutation.
@@ -46,7 +46,7 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 ## Branches / Extensions
 
 ### Package not applicable
-Wrong repository, ownership conflict, dirty/unowned/adoptability problem, changed/unverifiable expected source, Repository Not Ready or another precondition stops before mutation.
+Wrong repository, ownership conflict, dirty/unowned/adoptability problem, changed/unverifiable expected source, Repository Not Ready or another precondition stops before mutation. `Apply (wait for ZIP)` does not retry these failures; only `PACKAGE_NOT_FOUND` is pollable. If the package is still unavailable when the 12-second budget ends, waiting stops without entering repository mutation.
 
 ### Intentional manual/local changes
 If the producer must work from intentional local/manual content not already in its source context, user exports a Local Snapshot and supplies that exact context to the producer. Apply still performs freshness/source-state proof because local files may change again after the snapshot.
