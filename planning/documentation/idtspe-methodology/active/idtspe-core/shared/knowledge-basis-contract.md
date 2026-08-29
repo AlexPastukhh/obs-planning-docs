@@ -1,211 +1,129 @@
-# Knowledge Basis Contract — Shared IDTSPE Knowledge Dependency Model
+# Knowledge Basis — Theory-to-Application Bridge
 
-Status: active generic methodology contract  
-Purpose: define one reusable `Knowledge Basis` shape shared by Target Modules and Lenses while keeping reusable theory/knowledge distinct from current Target Sources, current Target inputs/evidence, project truth and Decisions.
+Status: active generic methodology guidance  
+Purpose: keep reusable theory/reference knowledge separate from current project evidence while giving Target Modules and Lenses a lightweight way to select and interpret the theory that is useful for their work.
 
-## 1. Core Definition
+## 1. Core Meaning
 
-A `Knowledge Basis` is the reusable principles/rules/theory/pattern knowledge used by an operational methodology contract.
+A `Knowledge Basis` is the bridge between reusable theory/reference knowledge and one operational methodology consumer.
 
 ```text
-Target Module
-= Operational Target Contract
-+ Knowledge Basis
-
-Lens
-= Operational Evaluation Contract
-+ Knowledge Basis
+Theory / reference knowledge
+→ selected/referenced material
+→ Knowledge Basis
+→ Target Module or Lens Evaluation
 ```
 
-The shared shape is symmetrical; the operational role is not.
+Theory itself may be organized in any useful form: files, folders, sections, books, notes, external references, broad corpora or other knowledge structures. It does not need to be organized around IDTSPE Use Cases, Target Modules, Lenses or operational goals.
+
+A Knowledge Basis may identify the relevant parts of that broader theory and, when useful, interpret them for the concrete purpose of its Target Module or Lens.
+
+Example:
+
+```text
+General visual theory
+  color/
+  composition/
+  light-and-shadow/
+
+Screen-design Knowledge Basis
+  Color
+    reference → color/ or a narrower section
+    applied interpretation → how color should support hierarchy/state for this Screen work
+
+  Composition
+    reference → composition/
+    applied interpretation → what composition guidance matters for Screen layout
+```
+
+The Knowledge Basis is therefore consumer-aware. The underlying theory does not need to know who consumes it.
+
+## 2. No Fixed Schema Or File Shape
+
+Knowledge Basis has no required serialization, mode enum or mandatory field list.
+
+It may be:
+
+- a few applied notes directly inside a Target Module or Lens;
+- a section that links to theory files or folders;
+- a separate Knowledge Basis file referenced by the consumer;
+- several files/layers when the applied knowledge is substantial;
+- a mix of broad references and narrow references.
+
+Existing `INLINE`, `REFERENCED` and `HYBRID` labels may remain as descriptive representation in existing owners, but they are not Generic conformance states and no migration is required merely to remove those labels.
+
+The useful invariant is semantic, not structural:
+
+```text
+when reusable theory materially supports the consumer
+→ keep enough reference/provenance to rediscover that theory when practical
+→ keep enough applied interpretation to explain how it informs this consumer when that is not obvious
+```
+
+A broad folder/reference is acceptable when it is the economical stable pointer. A precise section/file reference is preferable when it materially improves retrieval without creating maintenance noise.
+
+## 3. Applied Interpretation
+
+A Knowledge Basis may simply point to theory when the application is obvious. When raw/general theory is too broad, the Knowledge Basis should extract or reinterpret the useful meaning for the consumer.
+
+```text
+Theory:
+  colors have many possible relationships and perceptual effects
+
+Applied Knowledge Basis for a visual evaluation:
+  use color primarily to reinforce the hierarchy/state distinction relevant to this evaluation;
+  do not rely on hue alone when the state must remain distinguishable without color.
+```
+
+Applied interpretation can be layered in whatever way helps the consumer, for example `Color`, `Composition`, `Shadow`, `Typography`, `Aggregate Boundary Theory`, or `Failure Semantics`. Those layers are ordinary organization, not methodology ontology.
+
+## 4. Target Module And Lens Use
 
 ```text
 Target Module Knowledge Basis
-→ reusable knowledge used to form, resolve, validate and represent
-  one recurring Target/result family
+→ theory/reference knowledge selected and interpreted for producing/evaluating that recurring Target result
 
 Lens Knowledge Basis
-→ reusable knowledge used to evaluate a Target
-  from one recurring perspective
+→ theory/reference knowledge selected and interpreted for applying that recurring evaluation perspective
 ```
 
-## 2. Literal Shared Contract
+A Target Module or Lens does not need a separate Knowledge Basis when no reusable theory/reference material adds value. Short obvious guidance may simply remain in its Evaluation/Method.
 
-Every reusable Target Module and every reusable Lens contains exactly one explicit `## Knowledge Basis` section with one mode:
+When a substantial reusable theoretical base exists, separating it from the operational Method is useful because:
 
-```text
-INLINE
-  the operational owner itself contains the material reusable knowledge needed
-  for its normal use
+- the theory can remain broad and reusable;
+- the consumer can stay focused on application;
+- several consumers can interpret the same theory differently without duplicating the underlying corpus.
 
-REFERENCED
-  the operational owner stays thin and points to separate canonical knowledge owner(s)
-
-HYBRID
-  a small stable operationalized core stays inline while deeper/detail knowledge
-  is loaded conditionally from referenced owner(s)
-```
-
-Recommended shape:
-
-```text
-Mode: INLINE | REFERENCED | HYBRID
-
-Embedded Principles / Rules / Theory:
-  <small reusable knowledge actually owned here>
-
-Referenced Knowledge Owners:
-  <canonical principle/theory/reference owners or NONE>
-
-Reference Load Policy:
-  <when referenced bodies should actually be read>
-
-Operationalization Notes:
-  <how referenced/raw knowledge is constrained/applied by this owner>
-```
-
-## 3. Authority / Source Boundary
+## 5. Authority / Current-State Boundary
 
 ```text
 Knowledge Basis
-≠ Target Source
-≠ current Target input/evidence
-≠ Target result
+≠ current Target Source
+≠ current project Evidence
+≠ current Target result
 ≠ project truth
 ≠ Decision
 ```
 
-A knowledge owner may explain **how to reason about** a recurring Target family or evaluation perspective. It does not become evidence that a current project state is true.
+Knowledge Basis explains how reusable knowledge may guide evaluation. Claims about the current project still need current Sources/Evidence or accepted meaning.
 
-### Target Module example
+A theory reference is not proof that a current project satisfies or violates that theory.
 
-```text
-TM-APPLICATION-DEFINITION
+## 6. Loading / Retrieval
 
-Upstream Target Sources:
-  current Need
-  selected real-world solution direction
-  current repository/application reality
-
-Knowledge Basis:
-  reusable application-definition market/reference research guide
-
-Current research result:
-  competitor X already covers Need Y
-```
-
-Therefore:
+Do not require bootstrap or normal work to read every theoretical body. Resolve theory proportionally to the current task.
 
 ```text
-research guide
-→ Knowledge Basis
-
-competitor X + checked evidence about it
-→ current Target Source / Evidence
-
-selected build/buy/adapt conclusion
-→ Target result / Decision
+select Target Module / Lens
+→ inspect its applied guidance / Knowledge Basis when useful
+→ follow only the theory references needed for the current material question
 ```
 
-### Lens example
+No explicit `Reference Load Policy` field is required. If a consumer needs special retrieval guidance, ordinary prose is enough.
 
-```text
-LENS-DOMAIN-MODELING-DDD
+## 7. Theory Packages / Theoretical Modules
 
-Target Inputs / Evidence:
-  current Domain candidate / code / behavior
+A `Theoretical Module` is one possible repository representation for preserving a coherent body of theory. It is not required for theory to participate in a Knowledge Basis. A Knowledge Basis may reference a Theoretical Module, a normal theory file, a folder, several sources or external material.
 
-Knowledge Basis:
-  reusable DDD principles/rules/theory
-
-Finding:
-  current aggregate boundary mixes two independent invariants
-```
-
-## 4. Referenced Knowledge Owners
-
-A referenced knowledge owner may be:
-
-```text
-canonical principle/theory owner
-reusable methodology/deep guide
-Theoretical Module
-worked/reference knowledge package
-other stable reusable knowledge owner
-```
-
-A `REFERENCED` or `HYBRID` relation is a **knowledge dependency/load policy**, not a Target Source relation and not automatic authority for the referenced body.
-
-```text
-operational Target Module / Lens
-→ owns applicability/use/result or findings contract
-
-referenced knowledge owner
-→ owns the referenced reusable knowledge
-```
-
-Raw or broader theory cannot silently override the processed operational contract. A conflict is methodology-refinement input.
-
-## 5. Lazy Loading
-
-Bootstrap/navigation should know:
-
-```text
-Target Module registry + KB mode/summary
-Lens registry + KB mode/summary
-Theoretical Module / referenced-knowledge registries when any
-```
-
-It should not automatically read every referenced knowledge body.
-
-```text
-selected Target Module
-→ read module body
-→ load referenced module Knowledge Basis only according to its load policy
-
-selected/plausibly applicable Lens
-→ read Lens body
-→ load referenced Lens Knowledge Basis only according to its load policy
-```
-
-`INLINE` means no extra knowledge body is required by the Knowledge Basis itself.
-
-## 6. No Knowledge Duplication By Symmetry
-
-Symmetry of the contract does **not** mean Target Modules absorb reusable Lens knowledge.
-
-```text
-knowledge about forming/resolving/representing a recurring Target result
-→ Target Module Knowledge Basis when reusable there
-
-reusable cross-Target evaluation perspective
-→ Lens + Lens Knowledge Basis
-```
-
-If the same reusable evaluation knowledge is useful across Target families, keep/promote it in the Lens Library and let Target Modules reference the Lens through `Lens Profile` instead of copying that evaluation theory into their own Knowledge Basis.
-
-## 7. Theoretical Module Boundary
-
-A Theoretical Module remains useful when knowledge is worth preserving but its operational placement/timing is not yet stable.
-
-It may later become a referenced Knowledge Owner for:
-
-```text
-Target Module Knowledge Basis
-Lens Knowledge Basis
-or both
-```
-
-without becoming a Target, Lens or project semantic authority itself.
-
-## 8. Maintenance Invariant
-
-For every reusable Target Module and Lens:
-
-```text
-exactly one ## Knowledge Basis
-Mode ∈ INLINE | REFERENCED | HYBRID
-REFERENCED/HYBRID → explicit knowledge owner(s) + explicit load policy
-Knowledge Basis remains distinct from current Target Sources / Target Inputs / Evidence
-operationalization notes preserve the owner boundary
-```
+Theory remains theory; Knowledge Basis owns only the consumer-oriented selection/interpretation that makes that theory practical for the Target Module or Lens.

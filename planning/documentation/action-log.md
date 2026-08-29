@@ -2043,3 +2043,35 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 **Rationale:** proactively close the complete semantic family around the one remaining post-v19 residual rather than producing another single-line package that would leave equivalent compact projections for the next APPROVABLE review.
 
+
+
+### LOG-DOC-113 — Simplify Knowledge Basis into a theory-to-application bridge
+
+**Type:** IDEA REVIEW / METHODOLOGY CLARIFICATION / NEW CHANGESET  
+**ChangeSet:** `92232e26-bf87-42e1-b344-9390bb031461`  
+**ChangeSet Label:** `IDTSPE Knowledge Basis theory bridge simplification`  
+
+**Selected Meaning:**
+- Knowledge Basis is not a rigid literal sub-schema and no longer requires exactly one section, `INLINE / REFERENCED / HYBRID`, or an explicit load-policy field;
+- reusable theory/reference knowledge may be organized independently in any useful form, including files, sections, folders, broad corpora, external sources or Theoretical Modules;
+- a Target Module or Lens may select/reference the useful theoretical material and may interpret it for the consumer when the raw theory is too broad;
+- theory references should remain discoverable at an economical granularity when practical, but a broad folder/reference is valid when narrower pointers add maintenance cost without value;
+- Knowledge Basis remains distinct from current Target Sources, current Lens inputs/Evidence, project truth and Decisions;
+- existing Target Modules/Lenses do not need a mechanical migration merely because they currently use the older mode labels.
+
+**Boundary:** this ChangeSet updates Generic Knowledge Basis semantics and the foundational Core projections/audits only. It does not perform the later SDS Scenario/Slice/Screen/Cross-Cutting redesign.
+
+### LOG-DOC-114 — Apply Knowledge Basis theory-bridge simplification
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-113`  
+**ChangeSet:** `92232e26-bf87-42e1-b344-9390bb031461`  
+**Package:** `54d440b8-9234-4403-b3b6-10c12085438c`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `knowledge-basis-contract.md` becomes flexible theory-to-application guidance rather than an exact serialization contract;
+- Target Module/Lens models and creation guidance no longer require one Knowledge Basis section, a mode enum or load-policy field;
+- theory may be referenced broadly or narrowly and interpreted for the consumer when useful;
+- existing mode-labelled Knowledge Basis sections remain valid representation and are not mass-rewritten;
+- bootstrap/work-mode/maps/audits/manifest/integration ledger describe the same new boundary;
+- current Sources/Evidence/project truth remain separate from reusable theory.

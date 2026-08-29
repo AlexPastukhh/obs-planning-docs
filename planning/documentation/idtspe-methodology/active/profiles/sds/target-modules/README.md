@@ -39,7 +39,7 @@ Consistency review remains `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module.
 
 ## Knowledge Basis
 
-Every active SDS Target Module contains exactly one `## Knowledge Basis` conforming to the shared Core [`Knowledge Basis Contract`](../../../idtspe-core/shared/knowledge-basis-contract.md).
+Current SDS Target Modules retain their existing `## Knowledge Basis` sections. Generic Core now treats Knowledge Basis as flexible theory-to-application guidance rather than requiring one literal section/mode/schema; existing SDS sections remain valid representation.
 
 ```text
 Upstream Source Contract
@@ -49,7 +49,7 @@ Knowledge Basis
 → reusable target-family principles/rules/theory/pattern knowledge
 ```
 
-Knowledge Basis uses `INLINE | REFERENCED | HYBRID`; referenced owners are loaded only according to the module-specific load policy. Target Modules do not absorb reusable Lens evaluation knowledge.
+Existing SDS Knowledge Basis sections may still use `INLINE | REFERENCED | HYBRID` and load-policy prose, but those are current representation choices rather than Generic conformance requirements. Theory may be referenced at any useful granularity and interpreted for the Target Module when useful. Target Modules do not absorb reusable Lens evaluation knowledge.
 
 ## Target Step-Result Conformance
 

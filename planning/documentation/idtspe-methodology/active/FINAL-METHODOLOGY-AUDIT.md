@@ -48,10 +48,10 @@ SDS Profile
 - `бутстреп idtspe` and `бутстреп sds` are distinct: **PASS**
 - `idtspe.work / работай через idtspe` is distinct from bootstrap and makes the Core Shell the default material-planning mode: **PASS**
 - Target Module framework is generic; current 17 module bodies are SDS-profile owners, all 17 explicitly declare `Resolution / Production Method` + `Target Step-Result Contract`, while a one-off Local Target Contract is a first-class IDTSPE path when no reusable module fits: **PASS**
-- all 17 SDS Target Modules declare exactly one explicit shared-contract `Knowledge Basis` (`INLINE / REFERENCED / HYBRID`) distinct from Upstream Sources: **PASS**
+- all 17 SDS Target Modules currently retain explicit Knowledge Basis sections distinct from Upstream Sources; Generic Core now treats their mode labels/shape as optional representation rather than conformance requirements: **PASS**
 - generic reusable Lenses are physically separated from SDS-specific Lenses; all 7 SDS-specific Lens bodies explicitly declare Analysis Surface + `ANALYZE / CHECK / REFINE / CHALLENGE` + Finding Contract: **PASS**
-- all 18 reusable Lenses separate Operational Evaluation Contract from explicit `Knowledge Basis` (`INLINE / REFERENCED / HYBRID`): **PASS**
-- Target Modules and Lenses use the same canonical Knowledge Basis shape/load-policy semantics without merging their operational roles; Lens findings use generic Core Finding Disposition rather than Lens-owned routing/reopen/update mechanics: **PASS**
+- all 18 reusable Lenses currently separate Operational Evaluation Contract from reusable Knowledge Basis material; Generic Core now allows free-form/optional Knowledge Basis representation: **PASS**
+- Target Modules and Lenses use the same Knowledge Basis theory/current-state boundary without a mandatory shape/load-policy schema and without merging their operational roles; Lens findings use generic Core Finding Disposition rather than Lens-owned routing/reopen/update mechanics: **PASS**
 - `TF-06A LENS_SET` performs proportional Lens Applicability Scan across required Core, Target Module Lens Profile, registered applicable Core/profile Lenses and explicit selection: **PASS**
 - P-13 uses profile-supplied next-step/readiness rather than hard-coded SDS order: **PASS**
 - repeated Target invocation uses `CREATE / REFINE / EXTEND / REVALIDATE / REPAIR`: **PASS**

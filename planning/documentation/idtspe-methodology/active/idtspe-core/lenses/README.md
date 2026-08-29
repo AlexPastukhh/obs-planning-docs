@@ -7,7 +7,7 @@ Model: [`LENS-MODEL.md`](LENS-MODEL.md)
 
 Every material IDTSPE uses the required Core Pack proportionally. L1–L3 check material choice surfaces; the Documentation / Representation Lens is a required **materialization-stage** check when an iteration has material output. Any required check may resolve with no material finding.
 
-| Lens | Role / applicability summary | Knowledge Basis |
+| Lens | Role / applicability summary | Current KB representation |
 |---|---|---|
 | [`LENS-NEED-VALUE-SCOPE`](required/LENS-NEED-VALUE-SCOPE.md) | L1 — Need/value/right bounded Target | `INLINE` |
 | [`LENS-AUTHORITY-SOT-REUSE`](required/LENS-AUTHORITY-SOT-REUSE.md) | L2 — canonical owner/Source/reuse/no duplicate truth | `INLINE` |
@@ -16,7 +16,7 @@ Every material IDTSPE uses the required Core Pack proportionally. L1–L3 check 
 
 ## 2. Generic Frequent Conditional Lenses
 
-| Lens | Applicability summary | Knowledge Basis |
+| Lens | Applicability summary | Current KB representation |
 |---|---|---|
 | [`LENS-DEPENDENCY-CHANGE-IMPACT`](frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) | L4 — dependency/change surface/consumers/blast radius | `INLINE` |
 | [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) | L6 — proof/observation/diagnosis/operation | `INLINE` |
@@ -24,7 +24,7 @@ Every material IDTSPE uses the required Core Pack proportionally. L1–L3 check 
 
 ## 3. Generic Reusable Lenses
 
-| Lens | Typical use / applicability summary | Knowledge Basis |
+| Lens | Typical use / applicability summary | Current KB representation |
 |---|---|---|
 | [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md) | shared ownership / applicability / local integration | `INLINE` |
 | [`LENS-TEST-PROOF-EVIDENCE`](reusable/LENS-TEST-PROOF-EVIDENCE.md) | proof-layer/evidence quality | `HYBRID` → detailed testing theory on demand |
@@ -87,14 +87,9 @@ A Lens analyzes an explicit/implicit Analysis Surface through reusable operation
 
 ## 6. Knowledge Basis And Artifact / File Implications
 
-Every reusable Lens contains exactly one `## Knowledge Basis` conforming to the shared [`Knowledge Basis Contract`](../shared/knowledge-basis-contract.md) and one `## Artifact / File Implications` section. Target Modules use the same Knowledge Basis sub-contract while retaining a different operational role.
+A reusable Lens may contain or reference a Knowledge Basis when reusable theory/reference knowledge materially helps the evaluation. Target Modules use the same theory/current-state boundary while retaining a different operational role.
 
-```text
-Knowledge Basis Mode:
-  INLINE | REFERENCED | HYBRID
-```
-
-`Target Inputs / Evidence` are current planning inputs. `Knowledge Basis` is the principles/rules/theory used by the evaluation and may be inline, separately owned or hybrid.
+The `INLINE / REFERENCED / HYBRID` values in the tables above describe the current files only; they are not Generic conformance modes. `Target Inputs / Evidence` are current planning inputs. `Knowledge Basis` is reusable theory selected/interpreted for the evaluation and may be represented inline, in separate files, through broad/narrow references, or any useful combination.
 
 A Lens may contribute **zero or more** `AG-*` records. No AG record is required when Core Finding Disposition resolves the current Target as the semantic owner, the Target Module/local contract already owns representation of the accepted Target meaning, and no distinct supporting artifact is useful. AG records are reserved for Lens-produced supporting / artifact-placement meaning; semantic owner/handoff/reopen consequences remain Core Finding Disposition concerns, and AG must not duplicate a Target Module AP for the same Target result.
 

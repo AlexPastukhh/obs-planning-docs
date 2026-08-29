@@ -53,8 +53,8 @@ real repeated planning cases
 9. define Typical Findings / Finding Contract
 10. keep likely owner/materiality/lifecycle fields as hints, not authority
 11. verify that findings hand off to the generic Finding Disposition contract
-12. define Knowledge Basis through [`knowledge-basis-contract.md`](knowledge-basis-contract.md): INLINE / REFERENCED / HYBRID
-13. define embedded principles/rules and/or referenced knowledge owners + load policy
+12. identify reusable theory/reference knowledge that materially supports the Lens, when any
+13. retain useful references/provenance and interpret the relevant theory for this Lens when raw theory is too broad
 14. define Target/profile consumers
 15. define composition with other Lenses
 16. define guards/anti-patterns
@@ -75,7 +75,7 @@ one canonical Lens/Lens Pack owner
 + activation class/gate
 + Operational Evaluation Contract
 + explicit Analysis Surface / supported operations / Finding Contract
-+ Knowledge Basis mode / knowledge-owner links
++ Knowledge Basis / theory-reference links when useful
 + consumer/profile mapping
 + migrated duplicate knowledge/guidance
 + consistency checks

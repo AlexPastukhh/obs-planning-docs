@@ -22,7 +22,7 @@ Target Step-Result Contract
   Result Units / fields as material
 Resolution / Production Method
   question candidates / Idea aids / branch triggers / internal object contracts
-Knowledge Basis (`INLINE | REFERENCED | HYBRID`)
+Knowledge Basis / theory bridge [when useful]
 Lens Profile
 Validators / Guards
 Handoff / revalidation
@@ -30,7 +30,7 @@ Artifact / File Contract / representation guidance
 canonical user-level command surface
 ```
 
-Every reusable Target Module contains exactly one `## Knowledge Basis` using the same shared contract as reusable Lenses. The module does not copy generic Shell state or reusable Lens algorithms/Knowledge Basis merely because a Lens is attached.
+A reusable Target Module may keep a Knowledge Basis when theory/reference knowledge materially helps its work. The Knowledge Basis may be inline or separately represented and can reference theory at any useful granularity; no fixed mode/schema is required. The module does not copy generic Shell state or reusable Lens algorithms/Knowledge Basis merely because a Lens is attached.
 
 
 ## Staged Compatibility

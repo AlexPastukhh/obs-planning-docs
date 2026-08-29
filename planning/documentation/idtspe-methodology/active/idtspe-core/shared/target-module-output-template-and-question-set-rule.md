@@ -100,9 +100,9 @@ They are not the primary semantic definition of the Target result.
 
 During staged profile migration, existing module output headings are interpreted as Result Units/fields by meaning even when the file does not yet use explicit `Result Unit` labels.
 
-## Knowledge Basis Is Required In Every Target Module
+## Knowledge Basis When Theory Adds Value
 
-Every reusable Target Module contains exactly one `## Knowledge Basis` using the shared [`Knowledge Basis Contract`](knowledge-basis-contract.md).
+A reusable Target Module may contain or reference a Knowledge Basis when reusable theory/reference knowledge materially helps plan or evaluate that recurring Target family. The shared [`Knowledge Basis guidance`](knowledge-basis-contract.md) does not require one fixed section shape.
 
 ```text
 Upstream Source Contract
@@ -113,7 +113,7 @@ Knowledge Basis
   used to plan this recurring Target family
 ```
 
-The Knowledge Basis may be `INLINE`, `REFERENCED` or `HYBRID`. Referenced bodies are loaded only according to the module's explicit `Reference Load Policy`.
+Knowledge may be inline, referenced from files/folders/sections/external sources, separated into its own applied Knowledge Basis, or combined. Existing mode labels are optional representation only. Read deeper theory proportionally when it helps the current work.
 
 Do not duplicate reusable Lens evaluation knowledge inside a Target Module merely because the module uses that Lens.
 

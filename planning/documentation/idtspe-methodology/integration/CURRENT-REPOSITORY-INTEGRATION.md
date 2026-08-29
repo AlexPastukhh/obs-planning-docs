@@ -32,7 +32,15 @@ The six older `collect-ideas*` command files are retained only as hidden legacy 
 Planning Helper verification for the staged target passes `122 / 122` automated tests plus generated userscript/catalog build consistency. All 41 methodology surfaces carry stable `methodologyBinding`; mutable IDTSPE/SDS tab placement comes from separate helper presentation metadata.
 
 
-## Current Shared Target/Lens Knowledge-Basis Update — 2026-08-27
+## Current Knowledge-Basis Simplification — 2026-08-30
+
+Generic IDTSPE now treats Knowledge Basis as a lightweight **theory-to-application bridge**, not a literal schema that every Target Module/Lens must serialize the same way. Theory/reference knowledge may be organized independently in files, folders, sections, broad corpora, external sources or existing Theoretical Modules. A Target Module or Lens may select/reference the useful parts and, when raw theory is too broad, keep an applied interpretation for its own Evaluation.
+
+`INLINE / REFERENCED / HYBRID`, `Reference Load Policy`, and exactly-one-section rules are no longer Generic conformance requirements. Existing owners may retain those labels/sections as valid representation; this change does not require a mass rewrite of the 17 SDS Target Modules or 18 reusable Lenses. Current Target Sources / Lens Target Inputs / project Evidence remain distinct from reusable theory/Knowledge Basis.
+
+---
+
+## Historical Shared Target/Lens Knowledge-Basis Update — 2026-08-27 (representation contract superseded)
 
 Against current repository snapshot base `36dfbf878d4ff9e616de70d7535135c5c0c9966e`, IDTSPE now makes Knowledge Basis a shared Core sub-contract for both reusable Target Modules and reusable Lenses:
 
@@ -70,7 +78,7 @@ TF-06A LENS_SET
 
 Lens
 = Operational Evaluation Contract
-+ Knowledge Basis (INLINE | REFERENCED | HYBRID)
++ Knowledge Basis / reusable theory bridge
 ```
 
 Two generic Core orchestration surfaces expose that mechanism without manufacturing one command per Lens: `idtspe.lenses.select` performs the applicability scan and may create/reuse the natural Target/Local Target Contract (`CREATE_OR_REUSE_TARGET`); `idtspe.lens.apply` dispatches one registered Lens against a resolved/reused Target context (`RESOLVE_OR_REUSE_TARGET`). Their generic command semantics are owned by the Core command-surface contract; the SDS command-surface file is a profile extension only. Four stable specialized Lens shortcuts remain convenience surfaces.

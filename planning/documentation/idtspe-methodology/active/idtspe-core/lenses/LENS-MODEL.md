@@ -283,16 +283,7 @@ keep the meaning in generic State Units
 
 ## 5. Knowledge Basis
 
-Every reusable Lens contains exactly one explicit `## Knowledge Basis` conforming to the shared [`Knowledge Basis Contract`](../shared/knowledge-basis-contract.md). Target Modules use the same literal sub-contract and modes:
-
-```text
-INLINE | REFERENCED | HYBRID
-
-Embedded Principles / Rules / Theory
-Referenced Knowledge Owners
-Reference Load Policy
-Operationalization Notes
-```
+A reusable Lens may carry a `Knowledge Basis` when reusable theory/reference knowledge materially supports the evaluation. The shared [`Knowledge Basis guidance`](../shared/knowledge-basis-contract.md) keeps theory separate from current Target inputs while allowing consumer-specific selection and interpretation. There is no required mode enum or field schema.
 
 Lens-specific specialization:
 
@@ -316,7 +307,7 @@ Lens → owns applicability + evaluation + findings
 Knowledge owner → owns referenced principle/rule/theory meaning
 ```
 
-A thin Lens may use `INLINE`. A detail-heavy Lens may use `HYBRID` or `REFERENCED`. If material cannot yet be reduced to a stable evaluation objective + applicability gate + findings contract, keep it as a Theoretical Module/reference package instead of pretending it is already a Lens.
+Knowledge may stay inline, point to theory files/folders/sections, use a separate applied Knowledge Basis, or combine these forms. Existing `INLINE / REFERENCED / HYBRID` labels remain compatible representation only. If material cannot yet be reduced to a stable evaluation objective + applicability gate + findings contract, keep it as theory/reference material instead of pretending it is already a Lens.
 
 ## 6. Lens Applicability Scan / TF-06A LENS_SET
 
@@ -668,8 +659,8 @@ Creation/review/promotion of a reusable Lens is owned by [`../shared/lens-creati
 Mechanical checks should verify:
 
 ```text
-every reusable Lens has one Knowledge Basis
-Knowledge Basis Mode ∈ INLINE | REFERENCED | HYBRID
+Knowledge Basis is present when reusable theory/reference knowledge materially helps the Lens
+Knowledge Basis representation is free-form; theory references and applied interpretation are proportional to usefulness
 every reusable Lens has one Artifact / File Implications section
 new/materially revised Lens declares Analysis Surface + Supported Operations + Finding Contract explicitly
 Lens does not define State Unit kinds or Target Result Unit kinds

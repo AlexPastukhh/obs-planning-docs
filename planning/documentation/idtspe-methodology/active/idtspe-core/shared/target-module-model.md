@@ -15,7 +15,7 @@ It may provide:
 Target form / Target-Type candidate
 Scope archetype + boundary prompts
 Source Contract candidates
-Knowledge Basis (`INLINE | REFERENCED | HYBRID`)
+Knowledge Basis / theory references when useful
 Resolution Questions / Question-set preset
 Idea / Variant discovery prompts
 Lens Profile / reusable Lens references / local pattern aids
@@ -295,12 +295,9 @@ Target Formation Contribution
   Source Contract archetype
   expected relations
 
-Knowledge Basis
-  Mode: INLINE | REFERENCED | HYBRID
-  Embedded Principles / Rules / Theory
-  Referenced Knowledge Owners
-  Reference Load Policy
-  Operationalization Notes
+Knowledge Basis [when useful]
+  theory/reference links at any useful granularity
+  applied interpretation for this Target family when useful
 
 Resolution Questions
   default candidates
@@ -419,7 +416,7 @@ Command identity never becomes module authority. See `idtspe-command-surface-con
 
 # 7. Knowledge Basis
 
-Every reusable Target Module contains exactly one explicit `## Knowledge Basis` conforming to the shared [`Knowledge Basis Contract`](knowledge-basis-contract.md).
+A reusable Target Module may carry a `Knowledge Basis` when reusable theory/reference knowledge materially helps its Evaluation. The shared [`Knowledge Basis guidance`](knowledge-basis-contract.md) defines the theory/current-state boundary without imposing a fixed section schema.
 
 The distinction from `TM-IP-03 SOURCES` is fundamental:
 
@@ -432,7 +429,7 @@ Knowledge Basis
   used by this recurring Target methodology
 ```
 
-A Target Module may use `INLINE`, `REFERENCED` or `HYBRID` knowledge exactly like a Lens. Referenced owners are loaded lazily according to the module's `Reference Load Policy`.
+Knowledge may stay inline, link to separate theory/reference material, use a separate applied Knowledge Basis, or combine these forms. Existing `INLINE / REFERENCED / HYBRID` labels are compatible representation only, not required states. Follow theory references proportionally when they are useful to the current Evaluation.
 
 Symmetry does not move reusable evaluation knowledge out of Lenses:
 
@@ -444,7 +441,7 @@ reusable evaluation perspective across Targets
 → Lens + Lens Knowledge Basis
 ```
 
-A referenced Theoretical Module/deep guide remains a knowledge owner, not Target Source or project authority.
+Referenced theory/reference material remains knowledge, not a Target Source or project authority. A Theoretical Module is only one possible way to package such theory.
 
 ---
 
@@ -663,9 +660,9 @@ one stable entry point exists
 purpose/output are explicit
 scope/authority boundary is explicit
 Source Contract is not a closed universal whitelist
-exactly one Knowledge Basis exists and uses INLINE / REFERENCED / HYBRID
-Knowledge Basis is distinct from current Target Sources and does not duplicate reusable Lens knowledge
-REFERENCED/HYBRID knowledge owners + load policy are explicit
+Knowledge Basis, when useful, remains distinct from current Target Sources and does not duplicate reusable Lens knowledge
+theory/reference provenance is retained at an economical granularity when material
+applied interpretation is present when raw theory alone does not explain how it should guide this Target family
 RQ candidates are distinguishable from user questions
 Idea/pattern prompts do not auto-select answers
 specialized Lenses have applicability gates

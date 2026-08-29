@@ -59,7 +59,7 @@ Answer Decisions:
   Target Step Result family
   Result Units / important fields
   Resolution / Production Method
-  Knowledge Basis mode / knowledge-owner links
+  Knowledge Basis / theory-reference links when useful
   RQ pack
   Lens Profile / reusable Lens refs / local pattern aids
   output/projection schema when useful
@@ -84,8 +84,8 @@ Material alternatives may use Planning Branches.
 8. map the module to current IDTSPE integration points
 9. define Target Formation contributions
 10. define Source Contract archetype
-11. define Knowledge Basis mode: INLINE / REFERENCED / HYBRID
-12. define embedded principles/rules and/or referenced knowledge owners + load policy
+11. identify reusable theory/reference knowledge that materially supports this Target family, when any
+12. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
 13. define RQ/question-generation pack
 14. define Idea/pattern discovery aids
 15. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
@@ -138,7 +138,7 @@ rename every existing Use Case mechanically
 create a module for every template section
 turn patterns into mandatory architecture
 create a new Target Module because a reusable Lens is missing — create/promote a Lens instead
-confuse Target Module Knowledge Basis with current Target Sources or copy reusable Lens evaluation knowledge into it
+confuse reusable theory/Knowledge Basis with current Target Sources or copy reusable Lens evaluation knowledge into the module
 force a one-off useful Target into a reusable module — keep a Local Target Contract until repetition justifies promotion
 treat module output template as semantic authority
 create one user command for every internal submodule

@@ -42,7 +42,7 @@ installed profile/family manifests
 ready to enable IDTSPE work mode, select SDS or another profile
 ```
 
-The bootstrap orients the assistant to installed Target/Lens registries, the `TF-06A` Lens Applicability Scan, the shared Target Module/Lens Knowledge Basis modes, peer concerns, Theoretical Module registries and package boundaries, but does not mechanically reread every specific Target Module, profile-specific Lens or referenced/raw theoretical body. Registry summaries/gates support selection; specific module/lens/referenced-knowledge bodies are loaded when a concrete need requires them.
+The bootstrap orients the assistant to installed Target/Lens registries, the `TF-06A` Lens Applicability Scan, the shared Target Module/Lens Knowledge Basis boundary, peer concerns, Theoretical Module registries and package boundaries, but does not mechanically reread every specific Target Module, profile-specific Lens or referenced/raw theoretical body. Registry summaries/gates support selection; specific module/lens/referenced-knowledge bodies are loaded when a concrete need requires them.
 
 ## Required Read Set
 
@@ -120,10 +120,10 @@ Generic Lens registry:
   generic `подбери линзы` / `примени линзу` operations available
   Linked Notes usage Lens available when cross-owner navigation/query is proposed
 
-Knowledge Basis contract:
-  Target Modules + Lenses
-  INLINE / REFERENCED / HYBRID boundary loaded
-  referenced bodies remain lazy-loaded by owner-specific load policy
+Knowledge Basis guidance:
+  Target Modules + Lenses may use theory/reference knowledge when useful
+  theory may be referenced at any useful granularity and interpreted for the consumer
+  deeper theory remains proportional/lazy rather than a bootstrap read requirement
 
 Installed profiles:
   SDS

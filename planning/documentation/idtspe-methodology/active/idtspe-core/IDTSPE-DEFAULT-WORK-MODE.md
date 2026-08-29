@@ -50,9 +50,9 @@ resolve scope / Target Formation
 identify current semantic owner(s) and typed Sources
 ↓
 select a reusable Target Module when one fits, otherwise form a Local Target Contract
-load referenced Target Module Knowledge Basis only according to its load policy
+consult the Target Module Knowledge Basis / theory references proportionally when useful
 select applicable Lenses through TF-06A Lens Applicability Scan
-load referenced Lens Knowledge Basis / theoretical bodies only according to selected Lens load policies
+consult selected Lens Knowledge Basis / theory references proportionally when useful
 ↓
 iterative IDTSPE work
   Core State Units:
