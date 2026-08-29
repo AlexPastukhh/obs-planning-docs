@@ -1,5 +1,5 @@
 {
-  "workspace_version": "idtspe-knowledge-basis-theory-bridge-68",
+  "workspace_version": "idtspe-scenario-planning-target-unification-correction-70",
   "repo_snapshot_base": "94b6d74b8074dd4dda13934b29977a89ef5379a2",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
@@ -7,10 +7,10 @@
   "installed_profiles": [
     "sds"
   ],
-  "sds_target_modules": 17,
-  "reusable_lenses_total": 18,
+  "sds_target_modules": 16,
+  "reusable_lenses_total": 17,
   "generic_core_lenses": 11,
-  "sds_specific_lenses": 7,
+  "sds_specific_lenses": 6,
   "required_core_lenses": 4,
   "artifact_guidance_source_records": 58,
   "artifact_proposals_ap": 34,
@@ -105,7 +105,7 @@
   "sds_command_surface_extension": "active/profiles/sds/shared/idtspe-command-surface-contract.md",
   "generic_lens_select_host_target_policy": "CREATE_OR_REUSE_TARGET",
   "generic_lens_apply_host_target_policy": "RESOLVE_OR_REUSE_TARGET",
-  "target_module_knowledge_basis": "existing SDS Target Modules may retain current Knowledge Basis sections/mode labels; Generic Core no longer requires one mode/schema; KB selects/references and may interpret reusable theory for the Target family",
+  "target_module_knowledge_basis": "Knowledge Basis is optional/useful under Generic Core; retained SDS modules may keep existing KB sections, while TM-SCENARIO-PLANNING currently needs no separate KB",
   "knowledge_basis_contract": "active/idtspe-core/shared/knowledge-basis-contract.md; lightweight theory-to-application boundary/guidance shared by Target Modules and Lenses",
   "target_step_result_model": "active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
   "idtspe_unit_model": "Target Step Result Unit + Core-defined IDTSPE State Unit",
@@ -114,7 +114,7 @@
   "target_step_result_proportionality": "module possible surface; concrete Step Result sparse/material projection",
   "unit_file_boundary": "one Target != one Result Unit != one file",
   "core_transition_mode": "FOUNDATIONAL_CONTRACT_WITH_PROFILE_MIGRATION_COMPATIBILITY",
-  "sds_unit_conformance": "PASS: 17/17 active SDS Target Modules declare Resolution / Production Method + Target Step-Result Contract; 7/7 SDS-specific Lenses declare Analysis Surface + Supported Operations + Finding Contract",
+  "sds_unit_conformance": "PASS: 16/16 active SDS Target Modules declare Resolution / Production Method + Target Step-Result Contract; 6/6 SDS-specific Lenses declare Analysis Surface + Supported Operations + Finding Contract",
   "resolution_slot_unit_boundary": "Slot = resolution coordination metadata; State/Result Units = content/addressability",
   "artifact_placement_unit_granularity": "P-14/TF-10 current mechanism retained; material Result/State Units are placement subjects",
   "package_validation_scope": {
@@ -286,8 +286,8 @@
   ],
   "reviewdiff_correction": "post-v19 evolution-companion disposition/representation projection correction before APPROVABLE",
   "finding_disposition_contract": "active/idtspe-core/shared/finding-disposition-contract.md",
-  "sds_target_module_step_result_contracts": "17/17 PASS",
-  "sds_lens_literal_conformance": "7/7 PASS",
+  "sds_target_module_step_result_contracts": "16/16 PASS",
+  "sds_lens_literal_conformance": "6/6 PASS",
   "implementation_slice_result_units": [
     "RU-SLICE-01 Slice Outcome Definition",
     "RU-SLICE-02 Responsibility / Dependency Boundary",
@@ -674,5 +674,31 @@
     "result_unit_surface_changed": false,
     "ap_ag_counts_or_ids_changed": false,
     "artifact_route_vocabulary_changed": false
+  },
+  "scenario_planning_target_unification": {
+    "changeSetId": "405f5eb1-4748-4088-a8e9-7143b8236688",
+    "priorPackageId": "9a31f4da-cdd3-446f-9875-e7c8a27da0bc",
+    "packageId": "b0876599-8fa6-486d-9fdd-a8bc983be3a4",
+    "target_module": "TM-SCENARIO-PLANNING",
+    "entry_point": "tm.scenario.plan",
+    "replaces": [
+      "TM-SCENARIO-DISCOVERY",
+      "TM-SCENARIO-DRAFT"
+    ],
+    "absorbs_lens": "LENS-SCENARIO-BOUNDARY-BEHAVIOR",
+    "result_units": [
+      "RU-SCEN-01 Scenario Behavior / Requirements",
+      "RU-SCEN-02 Behavioral Decomposition",
+      "RU-SCEN-03 Scenario Development / Change Outlook"
+    ],
+    "scenario_ap_ids_preserved": [
+      "AP-SCNDISC-01",
+      "AP-SCNDISC-02",
+      "AP-SCN-01",
+      "AP-SCN-02",
+      "AP-SCN-03"
+    ],
+    "scope": "Scenario Target family only; no broader SDS Target-family redesign",
+    "reviewDiffCorrection": "remove residual mandatory Knowledge Basis/load-policy wording from SDS target-module profile; no Scenario Result Unit, Evaluation, Lens routing or other Target-family semantics change"
   }
 }

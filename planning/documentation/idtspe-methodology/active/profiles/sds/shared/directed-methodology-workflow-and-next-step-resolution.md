@@ -71,9 +71,7 @@ Dynamic real-life solution Targets
 TM-APPLICATION-DEFINITION
 ├─→ TM-PROTOTYPE — conditional; may feed back into Application/Scenario
 ↓
-TM-SCENARIO-DISCOVERY
-↓
-TM-SCENARIO-DRAFT — one per selected Scenario as needed
+TM-SCENARIO-PLANNING — one Target per independently meaningful Scenario; boundary discovery is part of Scenario evaluation
 ├─↔ TM-SCREEN — conditional after enough Scenario behavior/DATA exists
 ├─→ TM-REQUIREMENT — exceptional shared must-hold owner only when justified
 │
@@ -339,9 +337,9 @@ The graph orders **meaning**, not chat turns.
 Valid patterns include:
 
 ```text
-Scenario Draft
+Scenario Planning
 → Screen
-→ Scenario Draft REFINE
+→ Scenario Planning REFINE
 
 Domain Draft
 → Domain Test Design

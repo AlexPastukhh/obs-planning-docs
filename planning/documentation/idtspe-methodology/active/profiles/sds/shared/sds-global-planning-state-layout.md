@@ -48,7 +48,7 @@ Prototype
 For:
 
 ```text
-Scenario Discovery / Scenario Draft
+Scenario Planning
 preliminary Screen/window ideas
 Scenario DATA / Behavior ideas
 local Requirement ideas

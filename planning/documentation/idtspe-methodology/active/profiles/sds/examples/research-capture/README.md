@@ -80,9 +80,9 @@ Files are a **Full-profile worked projection**, not a mandate that every real pr
 2  real-life solution Targets
 3  TM-APPLICATION-DEFINITION
 4  TM-PROTOTYPE — selected uncertainty needs early Evidence
-5  TM-SCENARIO-DISCOVERY
-6  TM-SCENARIO-DRAFT / SCN-RC-CAPTURE
-7  TM-SCENARIO-DRAFT / SCN-RC-REVIEW
+5  Scenario boundary discovery / Target Formation — focused entry, no separate semantic Target
+6  TM-SCENARIO-PLANNING / SCN-RC-CAPTURE
+7  TM-SCENARIO-PLANNING / SCN-RC-REVIEW
 8  TM-SCREEN — spatial ownership is material
 9  TM-WEUC — EARLY_INTERPRETATION of current Evolution Map
 10 TM-DOMAIN-DISCOVERY

@@ -92,7 +92,7 @@ Situation:
   A user reading an article wants to save one useful fragment
   without interrupting reading.
 
-Why Scenario Draft:
+Why Scenario Planning:
   Application Definition already says the app should support
   low-friction capture, but detailed application behavior is not yet owned.
 

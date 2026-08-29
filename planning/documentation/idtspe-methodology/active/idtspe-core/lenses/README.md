@@ -53,11 +53,10 @@ The existing Documentation / Representation and Linked Notes commands remain con
 
 Profile registry: [`../../profiles/sds/lenses/README.md`](../../profiles/sds/lenses/README.md)
 
-Current SDS-specific pack (**7**):
+Current SDS-specific pack (**6**):
 
 ```text
 Application Boundary / Feasibility
-Scenario Boundary / Behavior
 Domain Modeling / DDD
 UI / Spatial / Frontend Realization
 Slice Verticality / Integration
@@ -119,7 +118,7 @@ Typical Findings / Finding Contract
 
 The Lens produces findings; Core Finding Disposition resolves their ownership/State/lifecycle destination. `REOPEN`, Result Unit update after resolution, cross-owner handoff and Target Formation are Core consequences rather than Lens operations.
 
-The 7 SDS-specific Lens bodies conform literally after the SDS migration. Existing generic Core Lens bodies remain migration-compatible until a separate literal Core-Lens conformance pass is useful.
+The 6 SDS-specific Lens bodies conform literally after the Scenario Target migration. Existing generic Core Lens bodies remain migration-compatible until a separate literal Core-Lens conformance pass is useful.
 
 ## 7. Maintenance
 

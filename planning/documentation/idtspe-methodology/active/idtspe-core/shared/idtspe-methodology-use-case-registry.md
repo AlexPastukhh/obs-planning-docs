@@ -25,8 +25,8 @@ Example future integration:
 
 ```text
 UC-PLAN-SCENARIO
-→ tm.scenario.draft
-→ TM-SCENARIO-DRAFT
+→ tm.scenario.plan
+→ TM-SCENARIO-PLANNING
 ```
 
 The command remains an optional invocation shortcut above that route.

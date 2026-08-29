@@ -36,7 +36,7 @@ Planning Helper verification for the staged target passes `122 / 122` automated 
 
 Generic IDTSPE now treats Knowledge Basis as a lightweight **theory-to-application bridge**, not a literal schema that every Target Module/Lens must serialize the same way. Theory/reference knowledge may be organized independently in files, folders, sections, broad corpora, external sources or existing Theoretical Modules. A Target Module or Lens may select/reference the useful parts and, when raw theory is too broad, keep an applied interpretation for its own Evaluation.
 
-`INLINE / REFERENCED / HYBRID`, `Reference Load Policy`, and exactly-one-section rules are no longer Generic conformance requirements. Existing owners may retain those labels/sections as valid representation; this change does not require a mass rewrite of the 17 SDS Target Modules or 18 reusable Lenses. Current Target Sources / Lens Target Inputs / project Evidence remain distinct from reusable theory/Knowledge Basis.
+`INLINE / REFERENCED / HYBRID`, `Reference Load Policy`, and exactly-one-section rules are no longer Generic conformance requirements. Existing owners may retain those labels/sections as valid representation; Knowledge Basis simplification does not require a mass rewrite of Target Modules or reusable Lenses. Current Target Sources / Lens Target Inputs / project Evidence remain distinct from reusable theory/Knowledge Basis.
 
 ---
 
@@ -143,10 +143,10 @@ Before physical repository mutation, still reread the actual checkout once for d
 Current separated methodology passes its current mechanical/core-SDS audit:
 
 ```text
-17 SDS Target Modules
-18 reusable Lenses
+16 SDS Target Modules
+17 reusable Lenses
   11 IDTSPE Core/generic
-  7 SDS-specific
+  6 SDS-specific
 34 AP records
 24 AG records
 58 Artifact Placement source guidance records
@@ -237,8 +237,7 @@ Workspace Work / Workspace UC architecture model
 | Existing/manual/process/integration/no-change/custom/hybrid alternatives | `TM-APPLICATION-DEFINITION` + existing-solution research contract | **Strong** | Old naming such as `Viable Existing Alternative` need not remain a separate ontology |
 | Application Concept / Responsibility | `TM-APPLICATION-DEFINITION` | **Strong** | Existing focused commands can be reused/adapted |
 | Prototype | `TM-PROTOTYPE` + Practical Evidence Lens | **Strong** | Replace old Prototype workflow/templates |
-| Scenario discovery/boundary | `TM-SCENARIO-DISCOVERY` + Scenario Lens | **Strong** | Replace old workflow |
-| Scenario Draft / DATA / Behavior | `TM-SCENARIO-DRAFT` | **Strong** | Replace old per-Scenario workspace topology; DATA/Behavior remain internal addressable contracts |
+| Scenario planning / behavior / decomposition / change outlook | `TM-SCENARIO-PLANNING` | **Strong** | One Scenario Target owns free-form Behavior/Requirements, processed DATA + Behavior Items, and Development/Change Outlook; boundary discovery is built into Evaluation and any catalog is navigation only |
 | Screen / spatial owner | `TM-SCREEN` + UI/Spatial Lens | **Strong** | Replace old Screen template/workspace rules |
 | Requirement ownership | `TM-REQUIREMENT` + narrow-owner exception rule | **Strong** | Replace old Requirement registry-first framing; zero standalone Requirements remains valid |
 | Domain discovery/modeling | `TM-DOMAIN-DISCOVERY`, `TM-DOMAIN-DRAFT`, Domain/DDD Lens | **Strong** | Replace old Domain workflows/templates |
@@ -925,8 +924,8 @@ Reason: they expose the obsolete Idea/Current-Plan orchestration shell.
 | Existing command ID | Current phrase | Desired route |
 |---|---|---|
 | `application_prototype.plan` | `прототип приложения` | `TM-PROTOTYPE` |
-| `application_scenarios.discover` | `собери сценарии приложения` | `TM-SCENARIO-DISCOVERY` |
-| `application_scenario.plan` | `план сценария приложения` | `TM-SCENARIO-DRAFT` |
+| `application_scenarios.discover` | `собери сценарии приложения` | focused Scenario-boundary entry → `TM-SCENARIO-PLANNING` / Target Formation |
+| `application_scenario.plan` | `план сценария приложения` | `TM-SCENARIO-PLANNING` |
 | `application_domain.discover` | `исследуй домен приложения` | `TM-DOMAIN-DISCOVERY` |
 | `application_domain.plan` | `план домена приложения` | `TM-DOMAIN-DRAFT` |
 | `application_slice_strategy.plan` | `план стратегии слайсов` | `TM-SLICE-STRATEGY` |
@@ -2267,3 +2266,26 @@ The package touches only `SCOPE-REUSABLE-DOCUMENTATION`; no cross-scope referenc
 
 This target state is associated with `LOG-DOC-112` and exact package `793ec3a1-e78a-473f-902b-8988c03f89b4`. The ChangeSet remains open until its cumulative ReviewDiff is accepted as APPROVABLE.
 
+---
+
+## Scenario Planning Target Unification — 2026-08-30
+
+Status: **current target state for ChangeSet `405f5eb1-4748-4088-a8e9-7143b8236688`**
+
+The active SDS Scenario family now uses one `TM-SCENARIO-PLANNING` Target per independently meaningful Scenario. The former separate Scenario Discovery and Scenario Draft Target Modules are retired; Scenario-boundary discovery runs as the opening Evaluation/Target-Formation work for Scenario Planning rather than producing a separate semantic catalog owner.
+
+The Scenario Target owns three Result Units:
+
+```text
+RU-SCEN-01 Scenario Behavior / Requirements
+RU-SCEN-02 Behavioral Decomposition
+RU-SCEN-03 Scenario Development / Change Outlook
+```
+
+`RU-SCEN-01` is free-form behavioral/product authority. `RU-SCEN-02` extracts semantic Scenario DATA and addressable Behavior Items as a processed downstream planning view and must neither omit material Scenario behavior nor invent new product behavior. `RU-SCEN-03` retains known additions/extensions/improvements/future capabilities and current behavioral assumptions that may require revision; concrete unresolved questions/risks remain Generic Q/R/P/Evidence/Decision State.
+
+The former Scenario Boundary / Behavior Lens is removed because its boundary/completeness/DATA/Behavior checks are now the Target Module's own Evaluation. No separate Scenario Knowledge Basis is currently required. Generic required Core Lenses remain inherited; Quality/Risk, Practical Evidence and Dependency/Change Impact remain conditional.
+
+Representation remains adaptive: one Scenario owner need not equal one file, and the retained Scenario catalog AP is now an optional navigation/index projection rather than semantic Scenario authority. The five existing Scenario AP IDs remain present, preserving overall `58 = 34 AP + 24 AG` guidance-record parity.
+
+Scenario canonical/focused commands and the generated Planning Helper command seed are reprojected to the new module. This transition intentionally does **not** redesign Slice, Screen, Domain, Cross-Cutting, Test, WEUC or other SDS Target families.

@@ -30,7 +30,7 @@ This gives narrower Sources, Decisions, residual Q/R/P and re-open boundaries.
 | 01 Need/Reality | one Need/Reality target when not already trusted |
 | 02 Solution Space | zero/one/many dynamically formed real-life route/scope Targets; composition Target only when composition itself is material |
 | 03 Application Definition | one `TM-APPLICATION-DEFINITION` Target; Prototype is optional evidence Target |
-| 04 Scenario System | one Scenario Discovery target + one target per detailed Scenario; Screen target only when material |
+| 04 Scenario System | one `TM-SCENARIO-PLANNING` Target per independently meaningful Scenario; boundary discovery is built into Scenario Evaluation; an optional catalog/index is navigation only; Screen target only when material |
 | 05 Domain | Domain Discovery plus zero/one/many Domain Draft Targets; each material Domain owner may hand off immediately to its own `TM-TEST-DESIGN` before Slice planning |
 | 06 Delivery Shaping | Slice Strategy is a separate Target only when decomposition/order itself matters; its selected Slice portfolio becomes a Source for shared Test Strategy when material |
 | 07 Workspace Evolution / Architecture | `TM-WEUC` creates/refreshes the global Workspace Evolution Map and Current Global Architecture Position; L5 checks concrete Targets or the whole Workspace architecture; local architecture stays an Answer Decision unless independently substantial work yields a Target Formation candidate and Target Formation selects a bounded local Target |

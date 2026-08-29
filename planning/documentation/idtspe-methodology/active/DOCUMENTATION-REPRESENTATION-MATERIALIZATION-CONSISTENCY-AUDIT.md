@@ -10,8 +10,8 @@ Scope: verify the current Documentation / Representation policy, SDS adaptive ar
 - existing `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY` is the canonical Documentation / Representation / Artifact Boundary Lens: **PASS**
 - Lens location is `active/idtspe-core/lenses/required/`: **PASS**
 - required Core Lens count is **4**: L1 / L2 / L3 + Documentation / Representation: **PASS**
-- total installed Lens count remains **18 = 11 Core + 7 SDS-specific**: **PASS**
-- all **17 / 17** SDS Target Modules inherit/link the Documentation / Representation Lens: **PASS**
+- total installed Lens count is **17 = 11 Core + 6 SDS-specific**: **PASS**
+- all **16 / 16** SDS Target Modules inherit/link the Documentation / Representation Lens: **PASS**
 
 ## 2. Persistence / File Boundary
 
@@ -146,8 +146,8 @@ Result: **4 / 4 PASS**.
 
 ## 9. Mechanical Recheck
 
-- current Target Module count: **17**
-- current reusable Lens count: **18**
+- current Target Module count: **16**
+- current reusable Lens count: **17**
 - required Core Lens count: **4**
 - AP/AG source-record uniqueness/schema: **PASS**
 - materialization projection exact source-ID parity: **58 / 58 PASS**

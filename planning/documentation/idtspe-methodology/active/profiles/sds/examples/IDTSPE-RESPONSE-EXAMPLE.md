@@ -4,7 +4,7 @@ Status: active explanatory example
 
 ## Situation
 
-The current Target is one Scenario Draft:
+The current Target is one Scenario Planning:
 
 ```text
 SCN-CAPTURE
@@ -28,7 +28,7 @@ Target:
   SCN-CAPTURE
 
 Module:
-  TM-SCENARIO-DRAFT
+  TM-SCENARIO-PLANNING
 
 Inside:
   capture behavior
@@ -81,7 +81,7 @@ The assistant should not hide this unresolved choice by filling the output templ
 
 ## 4. Lens Finding + Core State / Idea / Q/R/P
 
-Scenario Lens `CHECK` finding candidate:
+Built-in Scenario Evaluation finding candidate:
 
 ```text
 failed persistence must never produce success feedback
@@ -138,7 +138,7 @@ This table is present even though the current turn does **not** mutate files. `G
 
 ```text
 Current node / Target:
-  TM-SCENARIO-DRAFT / SCN-CAPTURE
+  TM-SCENARIO-PLANNING / SCN-CAPTURE
 
 Invocation mode:
   REFINE

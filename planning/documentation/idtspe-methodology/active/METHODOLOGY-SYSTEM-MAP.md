@@ -28,7 +28,7 @@ idtspe-methodology-workspace/
 │   │       ├── SDS-FULL-MAP.md
 │   │       ├── SDS-PHYSICAL-PLANNING-TREE.md
 │   │       ├── SDS-INSTANCE-MAP.md
-│   │       ├── target-modules/            ← 17 SDS TM owners
+│   │       ├── target-modules/            ← 16 SDS TM owners
 │   │       ├── lenses/                    ← SDS-specific Lens pack
 │   │       ├── workflow/                  ← SDS navigation phases
 │   │       ├── shared/                    ← SDS-specific rules/templates/graph
@@ -94,7 +94,7 @@ This is separate from specific Target Module/Lens bodies and from raw Theoretica
 бутстреп sds
 → ensure Core current
 → SDS full map
-→ 17 SDS Target Modules
+→ 16 SDS Target Modules
 → SDS Lens pack + Core Lens dependencies
 → directed workflow
 → Documentation / Representation policy → materialization tree / Ideas / Evolution
@@ -162,8 +162,8 @@ Canonical SDS map:
 Current SDS installs:
 
 ```text
-17 Target Modules
-18 reusable Lenses total available in current installed system
+16 Target Modules
+17 reusable Lenses total available in current installed system
   = generic Core/reusable lenses
   + SDS-specific lens pack
 ```

@@ -17,7 +17,7 @@ selected whole-solution Sources
 
 ---
 
-# 2. Scenario Discovery Output
+# 2. Scenario Planning Output
 
 Must establish proportionally:
 
@@ -29,13 +29,13 @@ coverage of Application Definition / Responsibility Boundary
 Future Scenario Ideas kept separate
 ```
 
-Then each material Scenario enters `TM-SCENARIO-DRAFT`.
+Each material independently meaningful Scenario is owned/planned through `TM-SCENARIO-PLANNING`; boundary discovery is part of that module evaluation rather than a separate Scenario-discovery result.
 
 ---
 
 # 3. Detailed Scenario Completeness
 
-A Scenario Draft is not complete merely because its main flow exists.
+A Scenario Planning is not complete merely because its main flow exists.
 
 Required proportional coverage:
 
@@ -235,7 +235,7 @@ Actual Evidence later → `TM-TEST-COVERAGE` / revalidation.
 # 10. Completeness Invariant
 
 ```text
-Scenario Draft ready
+Scenario Planning ready
 ≠ main flow written
 
 Domain Draft ready

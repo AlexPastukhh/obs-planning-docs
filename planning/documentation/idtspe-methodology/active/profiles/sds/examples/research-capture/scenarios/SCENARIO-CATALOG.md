@@ -1,7 +1,9 @@
 
 # Research Capture — Scenario Catalog
 
-Target Module: `TM-SCENARIO-DISCOVERY`
+Status: optional navigation/index projection; Scenario owners remain canonical
+
+Projection guidance: `TM-SCENARIO-PLANNING / AP-SCNDISC-01`
 
 | Scenario | Need / Observable Result | State |
 |---|---|---|
@@ -9,4 +11,4 @@ Target Module: `TM-SCENARIO-DISCOVERY`
 | `SCN-RC-REVIEW` | later understand/triage temporary captures | SELECTED |
 | `SCN-RC-TRANSFER` | move selected material to long-term destination | DEFERRED |
 
-Technical actions such as a button click, `POST /captures`, repository save or retry are not separate Scenarios.
+This file is not a Scenario semantic owner. Technical actions such as a button click, `POST /captures`, repository save or retry are not separate Scenarios.

@@ -1,7 +1,7 @@
 
 # SCN-RC-CAPTURE — Capture Research Material
 
-Target Module: `TM-SCENARIO-DRAFT`
+Target Module: `TM-SCENARIO-PLANNING`
 
 ## Actor / Context / Need
 
@@ -59,6 +59,20 @@ When capture is accepted
 Then the required information is durably recoverable later
 And success is not shown before that condition is true
 ```
+
+
+## Scenario Development / Change Outlook
+
+```text
+May Add / Extend:
+  capture from additional source types
+  richer optional capture context
+
+May Need Change / Rework:
+  current immediate-capture assumptions may need revision if a future source cannot provide complete context synchronously
+```
+
+Concrete unresolved questions remain Generic Q/R/P; this section keeps only durable Scenario-local change meaning useful to downstream planning.
 
 ## Handoff
 

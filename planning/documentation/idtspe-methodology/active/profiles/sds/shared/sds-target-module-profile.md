@@ -12,8 +12,8 @@ SDS Phase
 Target Formation Resolution Set
 → verifies actual Target applicability / scope / Sources / output
 
-Target Module Knowledge Basis
-→ supplies reusable target-family knowledge lazily according to module load policy
+Optional Target Module Knowledge Basis
+→ may select/reference reusable target-family theory when it materially helps the module
 
 Lens Registry
 → supplies required/frequent/target-profile evaluation perspectives
@@ -33,7 +33,7 @@ Lens activation ≠ new Target
 | 01 Need / Reality | generic Need/Reality Target when needed | `LENS-NEED-VALUE-SCOPE` + `LENS-AUTHORITY-SOT-REUSE` are core |
 | 02 Solution Space | dynamic formation + generic IDTSPE | arbitrary Targets/Branches; frequent Lenses proportional |
 | 03 Application Definition | `TM-APPLICATION-DEFINITION`; `TM-PROTOTYPE` conditional | one Application Definition Target; Prototype only for material uncertainty/Evidence |
-| 04 Scenario System | `TM-SCENARIO-DISCOVERY`, `TM-SCENARIO-DRAFT`; supporting `TM-REQUIREMENT`, `TM-SCREEN` | Scenario DATA/Behavior are internal Scenario contracts |
+| 04 Scenario System | `TM-SCENARIO-PLANNING`; supporting `TM-REQUIREMENT`, `TM-SCREEN` | one Scenario owner; DATA/Behavior Items are processed internal contracts; Development/Change Outlook stays Scenario-local |
 | 05 Domain | `TM-DOMAIN-DISCOVERY`, `TM-DOMAIN-DRAFT` | optional; no-Domain valid |
 | 06 Delivery Shaping | `TM-SLICE-STRATEGY` | only when decomposition/order itself is material |
 | 07 Workspace Evolution / Architecture | `TM-WEUC` when the global Workspace Evolution Map or Current Global Architecture Position needs create/refresh + L4/L5/L6 Workspace Pack | map/global architecture ownership is a Target; L5 evaluates concrete Targets or whole-Workspace architecture; independently substantial local architecture work → Target Formation candidate; Target Formation may form a bounded local Target |
@@ -65,12 +65,12 @@ LENS-QUALITY-RISK-MATERIALITY
 
 For substantial Workspace/codebase/repository planning, L4–L6 are the default conditional Workspace Pack.
 
-Each module also carries one shared-contract `## Knowledge Basis`; Target-profile reusable Lens packs are selected separately by each module's `## Lens Profile`.
+Target-profile reusable Lens packs are selected separately through each module's `## Lens Profile`. A Target Module may also use a Knowledge Basis when reusable theory materially helps; Generic Core does not require one fixed Knowledge Basis section, mode or load-policy shape, and `TM-SCENARIO-PLANNING` intentionally needs no separate Knowledge Basis now.
 
 ## Scenario Composite Rule
 
 ```text
-TM-SCENARIO-DRAFT
+TM-SCENARIO-PLANNING
   ↔ internal Scenario DATA contract
   ↔ internal Behavior Item contract
   ↔ TM-REQUIREMENT — supporting/exceptional

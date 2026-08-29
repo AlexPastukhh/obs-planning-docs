@@ -14,15 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй сценарий",
     "план сценария приложения"
   ],
-  "description": "scenario draft",
-  "meaning": "Run TM-SCENARIO-DRAFT through the IDTSPE Shell for the selected target.",
+  "description": "scenario planning",
+  "meaning": "Run TM-SCENARIO-PLANNING through the IDTSPE Shell for one Scenario: describe behavior/requirements, expose material uncertainty through Generic State, extract DATA/Behavior Items, and retain Development/Change Outlook.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DRAFT.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Scenario behavior authority with DATA, Behavior Items, rules/invariants, Decisions/Q/R/P and downstream Screen/Domain/Slice/Test handoffs.",
+  "expectedOutput": "One Scenario owner with Scenario Behavior/Requirements, Behavioral Decomposition (DATA + Behavior Items), Scenario Development/Change Outlook, and relevant Generic Q/R/P/Evidence/Decisions.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -37,7 +37,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "helperPresentation": {
     "whenToUse": "Use when one concrete actor-visible Scenario needs full behavioral planning.",
-    "whatYouGet": "Scenario behavior authority with DATA, Behavior Items, rules/invariants, Decisions/Q/R/P and downstream Screen/Domain/Slice/Test handoffs.",
+    "whatYouGet": "One Scenario owner with Behavior/Requirements, DATA + Behavior Items, Development/Change Outlook and relevant Generic planning state.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -54,7 +54,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
     "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-SCENARIO-DRAFT",
+    "targetModuleId": "TM-SCENARIO-PLANNING",
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"

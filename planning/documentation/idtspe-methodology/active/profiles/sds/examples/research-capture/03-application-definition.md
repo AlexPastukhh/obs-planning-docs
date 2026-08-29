@@ -43,7 +43,7 @@ Prototype supports continuing the selected application concept but leaves real i
 ## Next
 
 ```text
-TM-SCENARIO-DISCOVERY
+TM-SCENARIO-PLANNING
 ```
 
 Canonical worked owners:

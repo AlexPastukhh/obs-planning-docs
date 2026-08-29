@@ -33,7 +33,7 @@ later Scenario/Domain/Slice Evidence
 
 ### Conditional Result Units / Semantic Selectors
 
-- `TM-SCENARIO-DISCOVERY`: `RU-SDISC-01..RU-SDISC-02` when Application-boundary findings affect discovery
+- `TM-SCENARIO-PLANNING`: `RU-SCEN-01` when Application-boundary findings materially challenge one Scenario Need/result boundary or behavior
 
 ### Relevant State Units
 
@@ -107,7 +107,7 @@ Compare manual/current, existing-app, workaround, own Concept A/B and hybrid rou
 
 Core ≠ secondary convenience scenario.
 
-If accepted, Refined Core Real-Life Scenario becomes the nearest real-life Source for Prototype/Scenario Discovery; otherwise Step-02 remains fallback.
+If accepted, Refined Core Real-Life Scenario becomes the nearest real-life Source for Prototype/Scenario Planning; otherwise Step-02 remains fallback.
 
 Deep guide: `../../shared/application-definition-refined-core-real-life-scenario.md`.
 

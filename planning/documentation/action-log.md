@@ -2075,3 +2075,63 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - existing mode-labelled Knowledge Basis sections remain valid representation and are not mass-rewritten;
 - bootstrap/work-mode/maps/audits/manifest/integration ledger describe the same new boundary;
 - current Sources/Evidence/project truth remain separate from reusable theory.
+### LOG-DOC-115 — Unify SDS Scenario planning around one Scenario Target
+
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
+**ChangeSet Label:** `SDS Scenario Planning target unification`  
+**Source:** current GitHub `main` `f6652ce27eddb0cfe35d700dd479a25f11addfa4`, reconstructed exact touched bases from the previously supplied repository snapshot plus the finalized Knowledge Basis ReviewDiff and verified against current GitHub blobs/current registries  
+
+**Selected Meaning:**
+- this ChangeSet is limited to the SDS Scenario Target family and coherence projections; it does not redesign Slice, Screen, Domain, Cross-Cutting, Test, WEUC or other Target families;
+- retire separate `TM-SCENARIO-DISCOVERY` + `TM-SCENARIO-DRAFT` and replace them with one `TM-SCENARIO-PLANNING` Target Module, one Target per independently meaningful Scenario;
+- Scenario-boundary discovery is the opening part of Scenario Evaluation / Target Formation, not a separate semantic Scenario Discovery result; an optional Scenario catalog/index is navigation only;
+- use three Result Units: free-form `Scenario Behavior / Requirements`, processed `Behavioral Decomposition` containing semantic DATA + addressable Behavior Items, and `Scenario Development / Change Outlook`;
+- Behavioral Decomposition is derived from Scenario behavior for downstream implementation planning: it must cover material behavior without inventing product semantics; Behavior Items are behavioral obligations, not methods/endpoints/tasks/Slices, and DATA is semantic information, not DTO/DB/UI state;
+- `Scenario Development / Change Outlook` covers additions/extensions/improvements/future capabilities plus current behavioral assumptions that may require revision; concrete unresolved questions/risks remain Generic Q/R/P/Evidence/Decision State and may be referenced from the Scenario outlook;
+- remove `LENS-SCENARIO-BOUNDARY-BEHAVIOR`; its useful Scenario-specific boundary/completeness/DATA/Behavior checks become the Target Module's own Evaluation; no Scenario-specific Knowledge Basis is currently needed;
+- preserve five existing Scenario AP IDs and overall `58 = 34 AP + 24 AG` guidance-record parity while reclassifying the Scenario catalog as optional navigation;
+- reproject canonical/focused Scenario commands and regenerate the Planning Helper command seed.
+
+### LOG-DOC-116 — Apply SDS Scenario Planning target unification
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-115`  
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
+**Package:** `9a31f4da-cdd3-446f-9875-e7c8a27da0bc`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- active SDS has **16 Target Modules** and **6 SDS-specific / 17 total reusable Lenses**;
+- `TM-SCENARIO-PLANNING` is the only active Scenario Target Module and exposes exactly `RU-SCEN-01..03` as selected above;
+- old Scenario Discovery/Draft module files and Scenario-specific Lens file are removed from the active profile, with current registries/routing/examples updated to the new owner;
+- Scenario boundary discovery produces/reuses Scenario Targets rather than a separate semantic catalog Target; optional catalog representation remains navigation only;
+- Generic Q/R/P/Evidence/Decision State carries concrete uncertainty while Scenario Development / Change Outlook retains durable Scenario-local future/change pressure;
+- all five Scenario AP IDs remain represented and overall AP/AG counts remain unchanged;
+- Planning Root Scenario command definitions and Planning Helper command seed project the same new Target semantics;
+- no broader SDS Target-family redesign is included.
+
+### LOG-DOC-117 — Correct residual Knowledge Basis wording after Scenario ReviewDiff
+
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
+**Prior Package:** `9a31f4da-cdd3-446f-9875-e7c8a27da0bc`  
+
+**Material Finding / Selected Correction:**
+- the Scenario unification ReviewDiff preserves the selected three-Result-Unit Scenario model, but `active/profiles/sds/shared/sds-target-module-profile.md` still contains two pre-simplification Knowledge Basis shorthands: one says Target Module knowledge is loaded according to a module load policy and another says every module carries one shared-contract `## Knowledge Basis`;
+- both statements contradict the current Generic Knowledge Basis contract, where Knowledge Basis is optional/useful, has no mandatory fixed section/mode/load-policy shape, and `TM-SCENARIO-PLANNING` intentionally needs no separate Knowledge Basis now;
+- correct only those residual profile statements: keep `## Lens Profile` as the module's reusable-Lens selection surface, describe Target Module Knowledge Basis as optional theory-to-application support when useful, and remove the mandatory/load-policy implication;
+- no Scenario Result Unit, Evaluation process, DATA/Behavior Item contract, Development / Change Outlook meaning, command route, Lens removal, AP/AG count/ID, or non-Scenario Target-family semantics change in this correction.
+
+### LOG-DOC-118 — Apply Scenario Knowledge Basis wording correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-117`  
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
+**Package:** `b0876599-8fa6-486d-9fdd-a8bc983be3a4`  
+
+**Target-State Result:** after successful Apply of this exact correction package:
+- `sds-target-module-profile.md` no longer requires every Target Module to carry a Knowledge Basis and no longer depends on a per-module Knowledge Basis load-policy field;
+- Target Module Knowledge Basis is described as optional reusable theory support, while reusable Lens selection remains owned by each module's `## Lens Profile`;
+- `TM-SCENARIO-PLANNING` still intentionally has no separate Knowledge Basis and retains the already-reviewed three-Result-Unit Scenario contract unchanged;
+- the broader Scenario Target unification remains limited to the Scenario family plus coherence projections; no Slice, Screen, Domain, Cross-Cutting, Test, WEUC or other Target-family redesign is introduced here.
+

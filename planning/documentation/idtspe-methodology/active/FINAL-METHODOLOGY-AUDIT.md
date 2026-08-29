@@ -21,8 +21,8 @@ Theoretical Modules
 +
 
 SDS Profile
-  17 Target Modules with explicit Step-Result Contracts / Result Units
-  7 SDS-specific Lenses with explicit Analysis Surface / operations / Finding Contract
+  16 Target Modules with explicit Step-Result Contracts / Result Units
+  6 SDS-specific Lenses with explicit Analysis Surface / operations / Finding Contract
   directed workflow
   Documentation / Representation policy + annotated SDS materialization tree/topology coordinator
   command surface
@@ -31,13 +31,13 @@ SDS Profile
 
 ## Counts
 
-- SDS Target Modules: **17**
-- reusable Lenses in installed system: **18**
+- SDS Target Modules: **16**
+- reusable Lenses in installed system: **17**
   - generic/core: **11**
     - required Core: **4** (L1/L2/L3 + Documentation / Representation materialization check)
     - frequent conditional Core: **3**
     - reusable Core: **4**
-  - SDS-specific: **7**
+  - SDS-specific: **6**
 - Artifact Placement source records: **58 = 34 AP + 24 AG**
 - Research Capture worked-example Markdown files: **51**
 - active Theoretical Modules: **1** (`THM-TESTING-DETAIL-CA768B61`) with **4 byte-identical source bodies**
@@ -47,10 +47,10 @@ SDS Profile
 - IDTSPE Core is not synonymous with SDS: **PASS**
 - `бутстреп idtspe` and `бутстреп sds` are distinct: **PASS**
 - `idtspe.work / работай через idtspe` is distinct from bootstrap and makes the Core Shell the default material-planning mode: **PASS**
-- Target Module framework is generic; current 17 module bodies are SDS-profile owners, all 17 explicitly declare `Resolution / Production Method` + `Target Step-Result Contract`, while a one-off Local Target Contract is a first-class IDTSPE path when no reusable module fits: **PASS**
-- all 17 SDS Target Modules currently retain explicit Knowledge Basis sections distinct from Upstream Sources; Generic Core now treats their mode labels/shape as optional representation rather than conformance requirements: **PASS**
-- generic reusable Lenses are physically separated from SDS-specific Lenses; all 7 SDS-specific Lens bodies explicitly declare Analysis Surface + `ANALYZE / CHECK / REFINE / CHALLENGE` + Finding Contract: **PASS**
-- all 18 reusable Lenses currently separate Operational Evaluation Contract from reusable Knowledge Basis material; Generic Core now allows free-form/optional Knowledge Basis representation: **PASS**
+- Target Module framework is generic; current 16 module bodies are SDS-profile owners, all 16 explicitly declare `Resolution / Production Method` + `Target Step-Result Contract`, while a one-off Local Target Contract is a first-class IDTSPE path when no reusable module fits: **PASS**
+- Knowledge Basis remains optional/useful rather than mandatory: retained modules may keep existing KB sections, while `TM-SCENARIO-PLANNING` intentionally has no separate Knowledge Basis now: **PASS**
+- generic reusable Lenses are physically separated from SDS-specific Lenses; all 6 SDS-specific Lens bodies explicitly declare Analysis Surface + `ANALYZE / CHECK / REFINE / CHALLENGE` + Finding Contract: **PASS**
+- all 17 reusable Lenses keep Operational Evaluation separate from reusable Knowledge Basis material; Generic Core allows free-form/optional Knowledge Basis representation: **PASS**
 - Target Modules and Lenses use the same Knowledge Basis theory/current-state boundary without a mandatory shape/load-policy schema and without merging their operational roles; Lens findings use generic Core Finding Disposition rather than Lens-owned routing/reopen/update mechanics: **PASS**
 - `TF-06A LENS_SET` performs proportional Lens Applicability Scan across required Core, Target Module Lens Profile, registered applicable Core/profile Lenses and explicit selection: **PASS**
 - P-13 uses profile-supplied next-step/readiness rather than hard-coded SDS order: **PASS**
@@ -101,14 +101,14 @@ Prior structure-specific audit snapshots were moved to `sources-readonly/superse
 
 A fresh physical recheck of the packaged workspace found and corrected projection/path drift without changing accepted Target/Lens semantics:
 
-- Core installed-profile Lens index now includes all **7** SDS-specific Lenses, including Simplicity / Implementation Economy.
+- Core installed-profile Lens index now includes all **6** SDS-specific Lenses after Scenario-specific boundary/behavior evaluation moved into `TM-SCENARIO-PLANNING`; Simplicity / Implementation Economy remains installed.
 - `LENS-MODEL.md` WEUC/Simplicity fenced examples are structurally valid Markdown.
 - post-Core/SDS-separation path literals now point to current Core/SDS/integration owners.
 - generic Target/Lens creation UCs point to profile-supplied materialization projections rather than a universal flat registry path.
-- compact Lens/mechanical audit projections now use current **17 TM / 18 Lens / 58 AP+AG** counts and valid links.
+- compact Lens/mechanical audit projections now use current **16 TM / 17 Lens / 58 AP+AG** counts and valid links.
 - Current New-Idea Fixation audit now points to current owners and the fresh `ca768b61...` integration audit instead of the pre-audit state.
 
-The earlier Linked Notes and Documentation / Representation passes remain part of provenance. The current Lens-composition cleanup keeps 18 Lenses but removes duplicated Target-result/evolution artifact guidance, leaving 58 current AP/AG source records while preserving the same semantic owners.
+The earlier Linked Notes and Documentation / Representation passes remain part of provenance. The current installed system has 17 reusable Lenses after the Scenario-specific Lens was absorbed into the Scenario Target Module; prior Lens-composition cleanup still removes duplicated Target-result/evolution artifact guidance, leaving 58 current AP/AG source records while preserving the same semantic owners.
 
 
 
@@ -124,10 +124,10 @@ The earlier Linked Notes and Documentation / Representation passes remain part o
 
 - the existing `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY` was expanded rather than creating a duplicate Lens: **PASS**
 - it moved into `required/` and is the fourth required Core Lens, specifically at output/materialization time: **PASS**
-- total Lens count remains **18** (`11 Core + 7 SDS`): **PASS**
+- total Lens count is **17** (`11 Core + 6 SDS`): **PASS**
 - AP/AG source record count is **58 = 34 AP + 24 AG** after removing duplicate Target-result/evolution guidance: **PASS**
 - annotated materialization projection accounts for **58 / 58** source IDs exactly (`missing 0`, `extra 0`), including explicit non-tree embed/route records: **PASS**
-- all 17 SDS Target Modules inherit/link the required Documentation / Representation Lens: **PASS**
+- all 16 SDS Target Modules inherit/link the required Documentation / Representation Lens: **PASS**
 - logical Target/owner identity no longer implies one dedicated Markdown file: **PASS**
 - implementation-native representation is valid when it preserves the needed current meaning: **PASS**
 - `DOMAIN-DISCOVERY.md` / `SLICE-STRATEGY.md` may represent several small logical owners with Decisions/QRP while complex owners are promoted asymmetrically: **PASS**
@@ -398,3 +398,17 @@ This is a whole-active semantic-invariant recheck focused on the concrete post-v
 
 This remains a whole-active semantic-invariant recheck of the installed IDTSPE/SDS methodology, not a semantic audit of unrelated repository/application content outside the active methodology.
 
+## Scenario Planning Target Unification — current state
+
+- current SDS Scenario family uses one `TM-SCENARIO-PLANNING` Target Module per independently meaningful Scenario; former `TM-SCENARIO-DISCOVERY` and `TM-SCENARIO-DRAFT` are retired from the active profile: **PASS**
+- Scenario boundary discovery is the opening part of module Evaluation / Target Formation rather than a separate Scenario Discovery result/owner; optional Scenario catalog/index representation is navigation only: **PASS**
+- `TM-SCENARIO-PLANNING` exposes exactly three Result Units: `RU-SCEN-01 Scenario Behavior / Requirements`, `RU-SCEN-02 Behavioral Decomposition`, `RU-SCEN-03 Scenario Development / Change Outlook`: **PASS**
+- Scenario Behavior / Requirements remains free-form product/behavior authority; DATA + Behavior Items are a processed downstream implementation-planning projection and must cover Scenario meaning without inventing new behavior: **PASS**
+- Scenario Development / Change Outlook retains additions/extensions/improvements plus current behavioral assumptions that may require revision; concrete unresolved questions/risks remain Generic Q/R/P/Evidence/Decision State: **PASS**
+- the former Scenario Boundary / Behavior Lens is removed from the active SDS Lens pack; its Scenario-specific checks are owned directly by the Target Module Evaluation, leaving **6 SDS-specific / 17 total reusable Lenses**: **PASS**
+- no separate Knowledge Basis is currently required for Scenario Planning: **PASS**
+- Scenario AP compatibility preserves the existing five Scenario AP IDs and overall **58 = 34 AP + 24 AG** source-record parity; catalog representation is optional navigation rather than semantic ownership: **PASS**
+- canonical/focused Scenario commands route to the new module, and Planning Helper command seed is regenerated from those current command definitions: **PASS**
+- this transition changes only the Scenario Target family and coherence projections; Slice, Screen, Domain, Cross-Cutting, Test, WEUC and other Target-family semantics are not redesigned here: **PASS**
+
+Historical earlier audit sections that state the prior 17-TM / 7-SDS-Lens topology remain provenance for those earlier packages and are superseded as current topology by this section.

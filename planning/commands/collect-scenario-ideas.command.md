@@ -14,16 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери идеи сценария",
     "scenario ideas"
   ],
-  "description": "legacy compatibility alias; Scenario ideas alias routed into current Scenario Target Modules",
-  "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context, use TM-SCENARIO-DISCOVERY when inventory/boundaries are unresolved or TM-SCENARIO-DRAFT for one selected Scenario, and treat supplied ideas as normal IDTSPE material. Do not run the former collect-ideas shell.",
-  "activeContextBehavior": "Use the selected/current Scenario when clear; otherwise resolve discovery vs draft through Target Formation. Keep Domain/Slice implications as downstream handoffs unless the user expands the Target.",
+  "description": "legacy compatibility alias; Scenario ideas routed into current Scenario Planning",
+  "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context; use TM-SCENARIO-PLANNING for a selected Scenario and normal Target Formation when another Scenario boundary is discovered. Treat supplied ideas as normal IDTSPE material; do not run the former collect-ideas shell.",
+  "activeContextBehavior": "Use the selected/current Scenario when clear; otherwise resolve the Scenario boundary through Target Formation. Keep Domain/Slice implications as downstream handoffs unless the user expands the Target.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Scenario owner/module route when uncertain.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DISCOVERY.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-DRAFT.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Current Scenario Discovery/Draft result with material DATA/Behavior/Q/R/P/Decisions and downstream handoffs; no legacy Scenario-Ideas accumulator.",
+  "expectedOutput": "Current Scenario Planning result with material Behavior/Requirements, DATA/Behavior Items, Development/Change Outlook and Generic Q/R/P/Evidence/Decisions; no legacy Scenario-Ideas accumulator.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",

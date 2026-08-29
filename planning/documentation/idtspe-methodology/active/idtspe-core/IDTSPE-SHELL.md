@@ -489,7 +489,7 @@ Shell composition:
 P-02 Target:
   SCN-CAPTURE
   module:
-    TM-SCENARIO-DRAFT
+    TM-SCENARIO-PLANNING
 
 P-03 Sources:
   Application Definition

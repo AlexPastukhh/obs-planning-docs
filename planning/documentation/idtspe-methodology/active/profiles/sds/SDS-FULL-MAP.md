@@ -11,7 +11,7 @@ IDTSPE Core
   Shell / Target Formation / Decisions / Lenses / Artifact Placement / Revalidation
 ↓
 SDS Profile
-  17 Target Modules
+  16 Target Modules
   + SDS-specific Lens pack
   + directed workflow/readiness
   + Documentation / Representation policy
@@ -48,7 +48,7 @@ Directed SDS workflow
 
 ## 2. SDS Target Module Catalog
 
-Current profile installs 17 Target Modules:
+Current profile installs 16 Target Modules:
 
 ```text
 Solution/Application
@@ -56,8 +56,7 @@ Solution/Application
   TM-PROTOTYPE
 
 Scenario/Spatial
-  TM-SCENARIO-DISCOVERY
-  TM-SCENARIO-DRAFT
+  TM-SCENARIO-PLANNING
   TM-SCREEN
   TM-REQUIREMENT — exceptional shared must-hold only
 
@@ -83,7 +82,7 @@ Testing / Evidence
 
 Canonical registry: [`target-modules/README.md`](target-modules/README.md).
 
-Scenario DATA and Behavior Items are internal addressable contracts of `TM-SCENARIO-DRAFT`, not extra Target Modules.
+Scenario DATA and Behavior Items are internal addressable contracts of `TM-SCENARIO-PLANNING`, not extra Target Modules.
 
 ## 3. Lens Composition
 
@@ -101,7 +100,6 @@ SDS-specific lenses add:
 
 ```text
 Application Boundary / Feasibility
-Scenario Boundary / Behavior
 Domain Modeling / DDD
 UI / Spatial / Frontend Realization
 Slice Verticality / Integration
@@ -134,9 +132,7 @@ real-life solution Targets / route comparison
 ↓
 Application Definition
 ↓
-Scenario Discovery
-↓
-Scenario Draft(s)
+Scenario Planning — one Target per independently meaningful Scenario; boundary discovery is internal to evaluation
 ↓
 optional Screen / shared Requirement
 ↓
@@ -381,10 +377,10 @@ SDS does not own a Linked Notes file tree. When cross-owner navigation/backlink/
 ## Unit / Lens Conformance
 
 ```text
-17 SDS Target Modules
+16 SDS Target Modules
 → explicit Result Units
 
-7 SDS-specific Lenses
+6 SDS-specific Lenses
 → Analysis Surface + ANALYZE/CHECK/REFINE/CHALLENGE
 → Finding Candidates
 

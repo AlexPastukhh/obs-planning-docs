@@ -241,3 +241,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply of correction package `9b1e2e19-2f88-412a-a443-32475159c178`, the canonical `давай архив` command and Planning Helper `seed/commands.json` agree on required `action + name + archive + packageId` handoff fields plus conditional exact-title `chatTabTitle`; Helper generated-catalog verification is current again, with no runtime behavior change.
 
 **APPLIED relation:** this is a correction inside the still-open ChangeSet `b26c0aaf-6968-49ce-9154-a415e1da7e05` (`Replacement archive command — explicit OBS-ACTION handoff fields`); it completes the projection/log coherence omitted by package `d694de70-e45a-4c03-a170-0ef5c684e2f5` without reopening the already-correct command semantics.
+### LOG-PLAN-003 — Cross-scope reference: SDS Scenario Planning target unification
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-115`  
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
+**Reason:** Planning Root participates through the three Scenario command definitions that now route canonical/focused Scenario work to `TM-SCENARIO-PLANNING`; full semantic rationale and APPLIED target state are owned by the reusable-documentation canonical log.

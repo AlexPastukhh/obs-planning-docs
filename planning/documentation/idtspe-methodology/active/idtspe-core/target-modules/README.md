@@ -43,7 +43,7 @@ New or materially revised modules should make the Step Result and independently 
 
 ### SDS Profile
 
-Current SDS profile installs **17 Target Modules**:
+Current SDS profile installs **16 Target Modules**:
 
 [`../../profiles/sds/target-modules/README.md`](../../profiles/sds/target-modules/README.md)
 

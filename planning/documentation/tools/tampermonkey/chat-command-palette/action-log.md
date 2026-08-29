@@ -380,3 +380,10 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Canonical Log:** `planning/action-log.md`  
 **Entry:** `LOG-PLAN-002`  
 **Reason:** Planning Helper participates only through the generated `seed/commands.json` projection required by its build invariant; the canonical `давай архив` command semantics, ReviewDiff finding, correction rationale and APPLIED target-state relation remain owned by the Planning Root log.
+### XREF-026 — Regenerate Helper Scenario command projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-115`  
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
+**Reason:** Planning Helper participates only through regenerated `seed/commands.json` from the three current Scenario command definitions; runtime/source behavior is unchanged and the full Scenario Target migration rationale/APPLIED target state remain in the reusable-documentation canonical log.

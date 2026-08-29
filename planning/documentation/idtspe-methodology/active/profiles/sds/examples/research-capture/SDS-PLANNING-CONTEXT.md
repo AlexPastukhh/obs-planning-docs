@@ -32,7 +32,7 @@ Need / Reality
 → real-life solution Targets
 → Application Definition
 → Prototype
-→ Scenario Discovery / Draft / Screen
+→ Scenario Planning / Screen
 → TM-WEUC EARLY_INTERPRETATION
 → Domain Discovery
 → CaptureItem Domain

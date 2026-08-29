@@ -3,30 +3,25 @@
 
 Status: active worked module-driven example
 
-## Invocation A — Scenario Discovery
+## Boundary discovery / Target Formation
+
+The focused Scenario-boundary entry inspects the Application behavior space and identifies independently meaningful Need/result boundaries. It does not create a separate Scenario Discovery Target.
 
 ```text
-TM-SCENARIO-DISCOVERY
-→ CREATE scenarios/SCENARIO-CATALOG.md
+selected Scenario Targets:
+  SCN-RC-CAPTURE
+  SCN-RC-REVIEW
+
+future/deferred Scenario candidate:
+  SCN-RC-TRANSFER
 ```
 
-Selected:
+`scenarios/SCENARIO-CATALOG.md` is kept only as an optional navigation/index projection over Scenario owners and candidates.
+
+## Invocation A — Capture Scenario
 
 ```text
-SCN-RC-CAPTURE
-SCN-RC-REVIEW
-```
-
-Deferred:
-
-```text
-SCN-RC-TRANSFER
-```
-
-## Invocation B — Capture Scenario
-
-```text
-TM-SCENARIO-DRAFT / SCN-RC-CAPTURE
+TM-SCENARIO-PLANNING / SCN-RC-CAPTURE
 → CREATE scenarios/SCN-RC-CAPTURE.md
 ```
 
@@ -48,14 +43,14 @@ TM-REQUIREMENT:
 
 because no independent shared Requirement owner is justified.
 
-## Invocation C — Review Scenario
+## Invocation B — Review Scenario
 
 ```text
-TM-SCENARIO-DRAFT / SCN-RC-REVIEW
+TM-SCENARIO-PLANNING / SCN-RC-REVIEW
 → CREATE scenarios/SCN-RC-REVIEW.md
 ```
 
-## Invocation D — Screen
+## Invocation C — Screen
 
 Spatial ownership is material:
 
@@ -79,4 +74,4 @@ Then:
   TM-DOMAIN-DISCOVERY
 ```
 
-If later Screen work exposes missing behavior, surface a Scenario Finding Candidate. Core Finding Disposition may select revalidation of the same Scenario through `TM-SCENARIO-DRAFT REFINE` rather than creating duplicate Scenario truth.
+If later Screen work exposes missing behavior, surface a Scenario Finding Candidate. Core Finding Disposition may select revalidation of the same Scenario through `TM-SCENARIO-PLANNING REFINE` rather than creating duplicate Scenario truth.

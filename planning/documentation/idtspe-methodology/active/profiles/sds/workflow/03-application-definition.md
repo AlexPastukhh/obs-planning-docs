@@ -26,7 +26,7 @@ Need / Desired Outcome
 → exact own-software contribution
 → TM-APPLICATION-DEFINITION
    may produce optional Refined Core Real-Life Scenario
-→ Prototype / Scenario Discovery
+→ Prototype / Scenario Planning
 ```
 
 ## Revalidation
@@ -77,6 +77,6 @@ Fundamental Need
 
 This is still not an Application Scenario.
 
-If present, it becomes the nearest real-life Source for Prototype/Scenario Discovery.
+If present, it becomes the nearest real-life Source for Prototype/Scenario Planning.
 
 If absent, the selected Step-02 route/result remains the Source.

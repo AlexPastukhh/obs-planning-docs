@@ -609,7 +609,7 @@ Lens Prompt ≠ RQ ≠ Q/R/P Question ≠ User Question
 
 ## 18. High-Level Composition Example
 
-Suppose a Scenario Target uses `TM-SCENARIO-DRAFT`. Required Core Lenses are checked; the module attaches Scenario Boundary / Behavior. The Lens Applicability Scan may additionally select UI/Spatial, L4, L5, L6, Quality/Risk or another registered Lens when Scope/Sources/Evidence make it material. If no Workspace evolution issue exists, L5 remains `NOT_MATERIAL`.
+Suppose a Scenario Target uses `TM-SCENARIO-PLANNING`. Required Core Lenses are checked, while Scenario boundary/behavior/decomposition checks run as the Target Module's own Evaluation rather than through a Scenario-specific Lens. The Lens Applicability Scan may additionally select Quality/Risk, Practical Evidence, L4 or another registered Lens when Scope/Sources/Evidence make it material; UI/DDD/Slice/Evolution/Test Lenses are not attached merely because those concerns are downstream consumers.
 
 
 ## Migration Compatibility
@@ -619,7 +619,7 @@ The new Lens contract separates `Analysis Surface + Lens operations + Findings` 
 Current conformance state after the SDS profile migration:
 
 ```text
-all 7 SDS-specific reusable Lenses
+all 6 SDS-specific reusable Lenses
 → explicit Analysis Surface
 → explicit Supported Operations
 → explicit Finding Contract

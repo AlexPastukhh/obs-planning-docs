@@ -160,10 +160,10 @@ Focused surfaces: **3**.
 
 ```text
 [IDTSPE TARGET] Собери сценарии приложения
-  TM-SCENARIO-DISCOVERY
+  TM-SCENARIO-PLANNING
 
 [IDTSPE TARGET] Спланируй сценарий <scenario>
-  TM-SCENARIO-DRAFT
+  TM-SCENARIO-PLANNING
 
 [IDTSPE TARGET] Спланируй экраны
   TM-SCREEN

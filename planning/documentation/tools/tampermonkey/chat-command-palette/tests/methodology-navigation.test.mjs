@@ -54,10 +54,10 @@ test('all 41 methodology surfaces carry stable IDTSPE binding separate from help
   assert.equal(primary.length,41);
   for(const id of primary){const binding=byId.get(id)?.methodologyBinding;assert.ok(binding,`${id}: missing methodologyBinding`);assert.equal(binding.methodologyRuntime,'IDTSPE',id);}
   const canonical=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE');
-  assert.equal(canonical.length,17);
-  assert.equal(new Set(canonical.map((entry)=>entry.methodologyBinding.targetModuleId)).size,17);
+  assert.equal(canonical.length,16);
+  assert.equal(new Set(canonical.map((entry)=>entry.methodologyBinding.targetModuleId)).size,16);
   const focused=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE_FOCUSED');
-  assert.equal(focused.length,12);
+  assert.equal(focused.length,13);
   assert.ok(focused.every((entry)=>entry.methodologyBinding.parentSurface));
   const lenses=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='LENS');
   assert.equal(lenses.length,4);

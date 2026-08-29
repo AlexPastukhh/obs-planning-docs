@@ -3,14 +3,13 @@
 Status: active methodology registry  
 Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are indexed in `../lenses/README.md`; generic Core Lenses are owned by `../../../idtspe-core/lenses/README.md`.
 
-## Current Active Target Modules — 17
+## Current Active Target Modules — 16
 
 | Module ID | Entry Point | Role | Main output / purpose |
 |---|---|---|---|
 | `TM-APPLICATION-DEFINITION` | `tm.application.definition` | primary | selected own-application definition |
 | `TM-PROTOTYPE` | `tm.prototype` | evidence | minimum experiment + Evidence/promotion handoff |
-| `TM-SCENARIO-DISCOVERY` | `tm.scenario.discovery` | primary | Scenario inventory/boundaries |
-| `TM-SCENARIO-DRAFT` | `tm.scenario.draft` | primary/composite | canonical Scenario; internal DATA/Behavior contracts |
+| `TM-SCENARIO-PLANNING` | `tm.scenario.plan` | primary | one Scenario: Behavior/Requirements + DATA/Behavior decomposition + Development/Change Outlook |
 | `TM-REQUIREMENT` | `tm.requirement` | supporting/exceptional | must-hold condition/constraint owner |
 | `TM-SCREEN` | `tm.screen` | supporting/conditional | canonical spatial meaning |
 | `TM-DOMAIN-DISCOVERY` | `tm.domain.discovery` | primary/optional | Domain evidence/candidates |
@@ -31,7 +30,7 @@ Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are
 Scenario DATA
 Behavior Item
 ```
-are internal addressable object contracts of `TM-SCENARIO-DRAFT`.
+are internal addressable object contracts of `TM-SCENARIO-PLANNING`.
 
 `TM-WEUC` owns creation/refresh of the canonical `SDS-WORKSPACE-EVOLUTION.md`, including the current project-global architecture position. The reusable WEUC Lens consumes that map inside other Targets and may also evaluate the whole Workspace architecture through a `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION` scope. Local Architecture Decisions remain ordinary Answer Decisions; project-global implications surface Finding Candidates with `TM-WEUC` as a likely-owner hint and cross Core Finding Disposition before any accepted global update; independently material bounded architecture can still escalate through generic Target Formation.
 
@@ -39,7 +38,7 @@ Consistency review remains `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module.
 
 ## Knowledge Basis
 
-Current SDS Target Modules retain their existing `## Knowledge Basis` sections. Generic Core now treats Knowledge Basis as flexible theory-to-application guidance rather than requiring one literal section/mode/schema; existing SDS sections remain valid representation.
+Existing SDS Target Modules may retain `## Knowledge Basis` sections when useful. Generic Core treats Knowledge Basis as flexible theory-to-application guidance rather than requiring one literal section/mode/schema; `TM-SCENARIO-PLANNING` currently needs no separate Knowledge Basis.
 
 ```text
 Upstream Source Contract
@@ -53,7 +52,7 @@ Existing SDS Knowledge Basis sections may still use `INLINE | REFERENCED | HYBRI
 
 ## Target Step-Result Conformance
 
-All 17 active SDS Target Modules now declare one explicit:
+All 16 active SDS Target Modules declare one explicit:
 
 ```text
 ## Resolution / Production Method

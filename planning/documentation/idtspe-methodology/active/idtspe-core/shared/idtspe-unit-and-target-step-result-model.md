@@ -512,10 +512,10 @@ Internal Object Contract
 Example:
 
 ```text
-TM-SCENARIO-DRAFT
+TM-SCENARIO-PLANNING
 
 Result Unit:
-  Scenario Semantic Model
+  Behavioral Decomposition
 
 Internal Object Contracts:
   Scenario DATA
@@ -766,11 +766,11 @@ Core
 Installed SDS profile conformance is literal after the SDS migration:
 
 ```text
-17 / 17 SDS Target Modules
+16 / 16 SDS Target Modules
 → Resolution / Production Method
 → Target Step-Result Contract
 
-7 / 7 SDS-specific reusable Lenses
+6 / 6 SDS-specific reusable Lenses
 → Analysis Surface
 → Supported Operations
 → Typical Findings / Finding Contract

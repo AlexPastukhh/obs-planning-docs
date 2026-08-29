@@ -7,9 +7,9 @@ Status: active canonical SDS profile package
 ```text
 IDTSPE Core
 +
-17 SDS Target Modules with explicit Step-Result Contracts / Result Units
+16 SDS Target Modules with explicit Step-Result Contracts / Result Units
 +
-7 SDS-specific Lenses with explicit Analysis Surface / operations / Finding Contract
+6 SDS-specific Lenses with explicit Analysis Surface / operations / Finding Contract
 +
 directed Target/readiness workflow
 +
@@ -33,7 +33,7 @@ SDS is not the definition of IDTSPE itself. Non-SDS Target Module families may c
 5. [`SDS-PHYSICAL-PLANNING-TREE.md`](SDS-PHYSICAL-PLANNING-TREE.md) — short physical-topology coordinator; not a mandatory file tree.
 6. [`SDS-INSTANCE-MAP.md`](SDS-INSTANCE-MAP.md) — Target instance decomposition.
 7. [`shared/directed-methodology-workflow-and-next-step-resolution.md`](shared/directed-methodology-workflow-and-next-step-resolution.md) — fixed directed workflow/readiness and next-step resolver.
-8. [`target-modules/README.md`](target-modules/README.md) — 17 Target Modules.
+8. [`target-modules/README.md`](target-modules/README.md) — 16 Target Modules.
 9. [`lenses/README.md`](lenses/README.md) — SDS-specific Lens pack + required Core Lens dependencies.
 10. [`../../theoretical-modules/testing/README.md`](../../theoretical-modules/testing/README.md) — raw detailed Testing theory retained as a Theoretical Module; consult conditionally, not as workflow authority.
 11. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — SDS command surface.
@@ -42,6 +42,6 @@ SDS is not the definition of IDTSPE itself. Non-SDS Target Module families may c
 
 ## Core Dependency
 
-SDS consumes the generic package at [`../../idtspe-core/README.md`](../../idtspe-core/README.md). Generic Shell/Target/Unit/Lens/Artifact rules, Core Finding Disposition and the shared Target Module/Lens Knowledge Basis contract are not redefined here. All 17 SDS Target Modules declare their module-specific Knowledge Basis plus explicit Step-Result Contracts; all 7 SDS-specific Lenses declare Analysis Surface + supported operations + Finding Contract.
+SDS consumes the generic package at [`../../idtspe-core/README.md`](../../idtspe-core/README.md). Generic Shell/Target/Unit/Lens/Artifact rules, Core Finding Disposition and the shared Target Module/Lens Knowledge Basis contract are not redefined here. All 16 SDS Target Modules declare explicit Step-Result Contracts. Knowledge Basis is used only when useful; `TM-SCENARIO-PLANNING` currently needs no separate Knowledge Basis. All 6 SDS-specific Lenses declare Analysis Surface + supported operations + Finding Contract.
 
 Lens selection is not limited to Target Module attachment: `TF-06A` scans this profile's Lens registry proportionally, and generic Core `подбери линзы` / `примени линзу` operations can select/apply any registered applicable SDS Lens inside the natural Target/Local Target context.

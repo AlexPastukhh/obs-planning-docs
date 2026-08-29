@@ -11,7 +11,7 @@ When To Use:
   Use when entering or refreshing SDS/Application planning after IDTSPE Core is current, or when the current SDS Target/Lens/workflow/file-tree boundaries are uncertain.
 
 What You Get:
-  Current SDS profile map, 17 Target Module catalog, SDS Lens pack, directed workflow/readiness, representation/materialization policy, physical-topology coordinator and resolved current/next SDS planning owner when any.
+  Current SDS profile map, 16 Target Module catalog, SDS Lens pack, directed workflow/readiness, representation/materialization policy, physical-topology coordinator and resolved current/next SDS planning owner when any.
 ```
 
 ## Runtime Identity
@@ -40,7 +40,7 @@ ensure IDTSPE Core current
 ↓
 SDS full map
 ↓
-17 Target Module registry
+16 Target Module registry
 ↓
 SDS-specific Lens pack + Core Lens dependencies
 ↓
@@ -72,7 +72,7 @@ This command does not mean “select Full physical profile” and does not creat
 13. [`../../theoretical-modules/README.md`](../../theoretical-modules/README.md) — discover temporary theory packages; do not read all raw bodies by default.
 14. [`../../theoretical-modules/testing/README.md`](../../theoretical-modules/testing/README.md) — know the detailed Testing theory package exists; read its exact source bodies only when testing detail is materially needed and processed Test guidance is insufficient.
 
-Specific `TM-*.md` and Lens bodies are read when the active Target/Lens set is resolved. A full bootstrap knows the complete catalogs/boundaries and Target Module/Lens Knowledge Basis summaries; it need not reread all 17 module bodies or their referenced Knowledge Basis owners, nor all Lens Knowledge Basis references, on every invocation. `TF-06A` may discover an applicable SDS Lens even for a Local Target Contract or when that Lens is not pre-attached by the current module.
+Specific `TM-*.md` and Lens bodies are read when the active Target/Lens set is resolved. A full bootstrap knows the complete catalogs/boundaries and Target Module/Lens Knowledge Basis summaries; it need not reread all 16 module bodies or their referenced Knowledge Basis owners, nor all Lens Knowledge Basis references, on every invocation. `TF-06A` may discover an applicable SDS Lens even for a Local Target Contract or when that Lens is not pre-attached by the current module.
 
 ## Profile Bootstrap Output
 
@@ -84,7 +84,7 @@ IDTSPE Core:
   current
 
 SDS Target Module catalog:
-  17 loaded/indexed
+  16 loaded/indexed
 
 Core Lens Pack:
   L1 / L2 / L3
@@ -147,11 +147,11 @@ The user/current planning situation decides whether meaning should live in code/
 Current SDS profile invariant:
 
 ```text
-17 / 17 Target Modules
+16 / 16 Target Modules
 → explicit Resolution / Production Method
 → explicit Target Step-Result Contract / Result Units
 
-7 / 7 SDS-specific Lenses
+6 / 6 SDS-specific Lenses
 → explicit Analysis Surface
 → ANALYZE / CHECK / REFINE / CHALLENGE methods
 → Finding Contract

@@ -29,8 +29,8 @@ This section describes the **repository state/candidates already known from the 
 | `application_responsibility.establish` | `определи ответственность приложения` | `planning/commands/establish-application-responsibility.command.md` | `TM-APPLICATION-DEFINITION` — boundary-focused entry |
 | `application_realization.review` | `проверь реализацию приложения` | `planning/commands/review-application-realization.command.md` | revalidate `TM-APPLICATION-DEFINITION` feasibility or current Slice; not a separate Realization-Stress module by default |
 | `application_prototype.plan` | `прототип приложения` | `planning/commands/prototype-application.command.md` | `TM-PROTOTYPE` |
-| `application_scenarios.discover` | `собери сценарии приложения` | `planning/commands/discover-application-scenarios.command.md` | `TM-SCENARIO-DISCOVERY` |
-| `application_scenario.plan` | `план сценария приложения` | `planning/commands/plan-application-scenario.command.md` | `TM-SCENARIO-DRAFT` |
+| `application_scenarios.discover` | `собери сценарии приложения` | `planning/commands/discover-application-scenarios.command.md` | `TM-SCENARIO-PLANNING` |
+| `application_scenario.plan` | `план сценария приложения` | `planning/commands/plan-application-scenario.command.md` | `TM-SCENARIO-PLANNING` |
 | `application_domain.discover` | `исследуй домен приложения` | `planning/commands/discover-domain.command.md` | `TM-DOMAIN-DISCOVERY` |
 | `application_domain.plan` | `план домена приложения` | `planning/commands/plan-domain.command.md` | `TM-DOMAIN-DRAFT` |
 | `application_slice_strategy.plan` | `план стратегии слайсов` | `planning/commands/plan-slice-strategy.command.md` | `TM-SLICE-STRATEGY` |
@@ -87,7 +87,7 @@ every active Target Module
 
 Therefore `TM-REQUIREMENT`, `TM-SCREEN`, `TM-FRONTEND-SLICE` and `TM-CROSS-CUTTING-CONCERN` also require canonical invocation surfaces. Their commands must apply the module gate and may validly conclude that no Target should be created. Conditionality is not a reason to hide the module from direct invocation.
 
-Scenario DATA and Behavior Item remain internal contracts of `TM-SCENARIO-DRAFT`, not command-addressed Target Modules.
+Scenario DATA and Behavior Item remain internal contracts of `TM-SCENARIO-PLANNING`, not command-addressed Target Modules.
 
 Consistency review is `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module; its command is an orchestration/validator surface.
 

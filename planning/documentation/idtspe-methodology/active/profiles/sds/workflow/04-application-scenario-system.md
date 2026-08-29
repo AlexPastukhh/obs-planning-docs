@@ -1,60 +1,33 @@
-# Phase 04 — Application Scenario System — Generic
+# 04 — Application Scenario System
 
-Status: active module-driven SDS phase
+Status: active SDS workflow projection
 
-## Entry Sources
+## Purpose
+
+Use one `TM-SCENARIO-PLANNING` Target per independently meaningful Application Scenario. Scenario boundary discovery is part of Scenario Evaluation rather than a separate Scenario Planning Target/result.
+
 ```text
-Application Definition
-Refined Core Real-Life Scenario when present
-otherwise selected Step-02 route/result remains lineage
-Prototype Evidence/candidates when current
-known local/shared must-hold conditions
+Application Definition / real-life route
+→ identify an independently meaningful Need/result
+→ TM-SCENARIO-PLANNING / one Scenario owner
+   RU-SCEN-01 Scenario Behavior / Requirements
+   RU-SCEN-02 Behavioral Decomposition
+     Scenario DATA
+     Behavior Items
+   RU-SCEN-03 Scenario Development / Change Outlook
+→ downstream Screen / Domain / Slice / Test planning
 ```
 
-## Candidate Target Modules
-```text
-TM-SCENARIO-DISCOVERY
-TM-SCENARIO-DRAFT
-  ↔ internal Scenario DATA contract
-  ↔ internal Behavior Item contract
-  ↔ local Requirements/invariants — normally owned in Scenario/Behavior
-  ↔ TM-REQUIREMENT — exceptional shared/multi-owner only
-  ↔ TM-SCREEN — conditional spatial owner
-```
+If evaluation exposes another independently meaningful Need/result, surface another Scenario candidate through normal Finding Disposition / Target Formation. A Scenario catalog/index may exist as navigation/representation but is not a separate semantic Scenario Planning owner.
 
-## IDTSPE Topology
-```text
-Scenario Discovery Target
-↓
-Scenario A Target ─┐
-Scenario B Target ─┼─ may run in parallel
-Scenario C Target ─┘
-```
+## Boundary
 
-Scenario DATA and Behavior Item methodology is internal to `TM-SCENARIO-DRAFT`; addressability does not create separate Target Modules/Targets. Screen is a separate spatial authority when material. Requirements normally remain with their natural semantic layer; `TM-REQUIREMENT` is exceptional.
+Scenario is behavioral/product authority. It does not own Screen topology, Slice/Aggregate boundaries, API/code structure or concrete test implementation.
 
-## Critical Loop
-```text
-Scenario Scope
-↔ DATA
-↔ Behavior
-↔ Requirements/invariants
-↔ Screen relations when material
-```
+Scenario DATA and Behavior Items are processed internal Scenario contracts: addressability does not create separate Target Modules/Targets. `TM-REQUIREMENT` remains exceptional for independently shared must-hold meaning; `TM-SCREEN` owns spatial realization when material.
 
-Every material Scenario Target performs full IDTSPE with candidate/residual Q/R/P at Scope, Question-Set and Answer/Idea levels. Integrated alternatives may use generic Planning Branches.
+## Uncertainty And Development
 
-## Exit Gate
-Use `../shared/scenario-domain-slice-module-coverage-contract.md`.
+Concrete uncertainty stays in Generic Questions / Q/R/P / Evidence / Ideas / Decisions. `RU-SCEN-03` retains durable Scenario-local future/change meaning when downstream planning needs to know how the same Scenario may expand or require revision.
 
-Output Sources can include:
-```text
-Scenario Catalog
-canonical Scenario owners
-Scenario DATA
-Behavior Items
-local/shared must-hold conditions
-Screens / Screen Map
-Acceptance meaning
-residual Q/R/P / revalidation helpers
-```
+Canonical module: [`../target-modules/TM-SCENARIO-PLANNING.md`](../target-modules/TM-SCENARIO-PLANNING.md).

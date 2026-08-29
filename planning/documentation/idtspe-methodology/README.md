@@ -24,7 +24,7 @@ It does **not** replace the semantic owners linked below. When this README and a
                                           │
                          ┌────────────────▼───────────────┐
                          │          SDS Profile           │
-                         │ 17 Target Modules              │
+                         │ 16 Target Modules              │
                          │ SDS-specific Lenses            │
                          │ directed workflow              │
                          │ Ideas / Evolution / WEUC       │
@@ -334,7 +334,7 @@ idtspe.review_consistency
 → проверь консистентность плана
 ```
 
-All 17 SDS Target Modules additionally have canonical command surfaces defined in the SDS command-surface contract. A direct Lens command is added only for a stable recurring user intent; not every Lens receives a palette command.
+All 16 SDS Target Modules additionally have canonical command surfaces defined in the SDS command-surface contract. A direct Lens command is added only for a stable recurring user intent; not every Lens receives a palette command.
 
 
 Planned helper navigation is intentionally separate from command semantics: [`integration/COMMAND-AND-HELPER-NAVIGATION-PLAN.md`](integration/COMMAND-AND-HELPER-NAVIGATION-PLAN.md). It defines dedicated `IDTSPE` and `SDS — IDTSPE Profile` tabs, directed SDS Target Module ordering, focused-command nesting, and explicit `IDTSPE TARGET` / `IDTSPE LENS` presentation.
@@ -555,8 +555,8 @@ Canonical profile entry:
 SDS currently contributes:
 
 ```text
-17 Target Modules
-7 SDS-specific Lenses
+16 Target Modules
+6 SDS-specific Lenses
 + 11 generic Core Lenses available to SDS
 profile-directed workflow
 Documentation / Representation policy + SDS materialization topology
@@ -595,7 +595,7 @@ The detailed compact/promoted-Domain/promoted-Slice/mature-companion/Scenario-he
 
 ---
 
-## 9.2 `active/profiles/sds/target-modules/` — 17 SDS semantic Target owners
+## 9.2 `active/profiles/sds/target-modules/` — 16 SDS semantic Target owners
 
 Catalog:
 
@@ -607,8 +607,7 @@ Each `TM-*.md` is a **canonical reusable target-family methodology owner**. A Ta
 |---|---|
 | [`TM-APPLICATION-DEFINITION.md`](active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md) | Application concept/responsibility boundary, solution alternatives, feasibility, build/buy/adapt/integrate/hybrid and refined core real-life route. |
 | [`TM-PROTOTYPE.md`](active/profiles/sds/target-modules/TM-PROTOTYPE.md) | Bounded prototype/experiment planning and Evidence intent. |
-| [`TM-SCENARIO-DISCOVERY.md`](active/profiles/sds/target-modules/TM-SCENARIO-DISCOVERY.md) | Discover the Application Scenario set without prematurely detailing each scenario. |
-| [`TM-SCENARIO-DRAFT.md`](active/profiles/sds/target-modules/TM-SCENARIO-DRAFT.md) | Detailed one-Scenario owner including observable behavior, DATA and scenario-local guarantees. |
+| [`TM-SCENARIO-PLANNING.md`](active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md) | One Scenario owner: free-form Behavior / Requirements, processed DATA + Behavior Items, and Development / Change Outlook. Scenario-boundary discovery is part of module Evaluation rather than a separate semantic Target. |
 | [`TM-SCREEN.md`](active/profiles/sds/target-modules/TM-SCREEN.md) | Screen/spatial responsibility, routes, availability and DATA visibility/input. |
 | [`TM-REQUIREMENT.md`](active/profiles/sds/target-modules/TM-REQUIREMENT.md) | Exceptional standalone shared must-hold condition when no more natural Scenario/Domain/etc owner exists. |
 | [`TM-DOMAIN-DISCOVERY.md`](active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md) | Discover whether/where explicit Domain modeling is useful and identify candidates/evidence. |
@@ -645,14 +644,13 @@ Registry:
 
 SDS uses both generic Core Lenses and these profile-specific Lenses.
 
-Each reusable Target Module and Lens contains one explicit `Knowledge Basis` using the same shared `INLINE / REFERENCED / HYBRID` contract. A Target Module pairs it with an Operational Target Contract; a Lens pairs it with an Operational Evaluation Contract. `TF-06A` performs a proportional Lens Applicability Scan: required/module-attached perspectives are combined with registered Core/profile gates and explicit selection. The active Target Module is one attachment source, not the whole Lens universe.
+A Target Module or Lens may use a Knowledge Basis when reusable theory materially helps its work; representation is free-form and no `INLINE / REFERENCED / HYBRID` mode is required. `TM-SCENARIO-PLANNING` currently needs no separate Knowledge Basis because its Scenario-specific logic is operational Evaluation. `TF-06A` performs a proportional Lens Applicability Scan: required/module-attached perspectives are combined with registered Core/profile gates and explicit selection. The active Target Module is one attachment source, not the whole Lens universe.
 
 | Lens | Responsibility |
 |---|---|
 | [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md`](active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) | L5 WEUC / evolution / architecture fitness. Checks Target change paths against Workspace Evolution/global architecture and now also understanding/change/verification/runtime work-cost surfaces. |
 | [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md`](active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md) | Searches for evolution-safe simplification: fewer unnecessary abstractions/entities/hops/files/test layers without buying future fragility. |
 | [`LENS-APPLICATION-BOUNDARY-FEASIBILITY.md`](active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md) | Application boundary, alternatives, core real-life route and proportional feasibility. |
-| [`LENS-SCENARIO-BOUNDARY-BEHAVIOR.md`](active/profiles/sds/lenses/reusable/LENS-SCENARIO-BOUNDARY-BEHAVIOR.md) | Scenario boundary, DATA/Behavior completeness and observable-result quality. |
 | [`LENS-DOMAIN-MODELING-DDD.md`](active/profiles/sds/lenses/reusable/LENS-DOMAIN-MODELING-DDD.md) | Domain meaning and optional DDD pattern vocabulary without forcing DDD everywhere. |
 | [`LENS-SLICE-VERTICALITY-INTEGRATION.md`](active/profiles/sds/lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md) | Vertical result, Slice boundary and integration/collaboration quality. |
 | [`LENS-UI-SPATIAL-FRONTEND-REALIZATION.md`](active/profiles/sds/lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md) | Screen/UI/spatial/frontend realization checks. |
@@ -882,7 +880,7 @@ Read:
 4. [`active/idtspe-core/IDTSPE-CORE-MAP.md`](active/idtspe-core/IDTSPE-CORE-MAP.md) — generic owner map.
 5. [`active/profiles/README.md`](active/profiles/README.md) — installed profiles.
 
-Do **not** start by reading all 17 Target Modules and all raw theoretical bodies.
+Do **not** start by reading all 16 Target Modules and all raw theoretical bodies.
 
 ## B. Use IDTSPE for general planning without assuming SDS
 

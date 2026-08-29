@@ -21,7 +21,7 @@ Scope: physical and semantic restructuring that separates generic IDTSPE Core fr
 
 ## SDS Package
 
-- active SDS Target Modules: **17 / 17**
+- active SDS Target Modules: **16 / 16**
 - canonical module bodies live under `profiles/sds/target-modules/`: **PASS**
 - SDS Full Map exists and explains IDTSPE Core + SDS profile: **PASS**
 - SDS Instance Map exists inside the profile: **PASS**
@@ -30,24 +30,24 @@ Scope: physical and semantic restructuring that separates generic IDTSPE Core fr
 
 ## Lens Split
 
-Current installed reusable Lens inventory is **18**:
+Current installed reusable Lens inventory is **17**:
 
 ```text
 IDTSPE Core / generic reusable lenses: 11
   required Core:                       4
   frequent conditional Core:           3
   reusable Core:                       4
-SDS-specific lenses:                   7
-Total:                                18
+SDS-specific lenses:                   6
+Total:                                17
 ```
 
 - L1/L2/L3 + required Documentation / Representation materialization policy remain generic Core: **PASS**
 - L4/L6/Quality-Risk remain generic Core: **PASS**
 - generic Artifact/Practical/Test/Shared lenses remain reusable outside SDS: **PASS**
-- Application/Scenario/Domain/UI/Slice/WEUC lenses are explicitly SDS-profile contributions: **PASS**
+- Application/Domain/UI/Slice/WEUC lenses are explicitly SDS-profile contributions: **PASS**
 - post-separation SDS Simplicity / Implementation Economy Lens is profile-specific and evolution-aware: **PASS**
 - every active Target Module still has one `## Lens Profile`: **PASS**
-- current active Target Modules retain their existing explicit `## Knowledge Basis` sections, while Generic Core no longer requires one fixed section/mode/schema: **PASS**
+- retained Target Modules may keep their existing `## Knowledge Basis` sections; `TM-SCENARIO-PLANNING` intentionally needs no separate Knowledge Basis now, while Generic Core requires no fixed section/mode/schema: **PASS**
 - every reusable Lens still has one `## Artifact / File Implications`: **PASS**
 - current reusable Lenses retain their existing Knowledge Basis sections/mode labels as compatible representation; those labels are no longer Generic conformance states: **PASS**
 - Target Module/Lens Knowledge Basis uses one shared theory/current-state boundary while Source Contract / Target Inputs remain distinct current-instance inputs: **PASS**

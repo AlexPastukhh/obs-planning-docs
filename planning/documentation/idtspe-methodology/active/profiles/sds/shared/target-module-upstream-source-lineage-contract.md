@@ -161,14 +161,12 @@ Application Definition
   responsibility boundary
   optional Refined Core Real-Life Scenario
 ↓
-Scenario Discovery
-↓
-Scenario Draft
+Scenario Planning
   ↔ internal Scenario DATA
   ↔ internal Behavior Items
 ```
 
-For Scenario Discovery/Draft, the accepted Need and selected real-world solution result remain explicit lineage Sources.
+For Scenario Planning, the accepted Need and selected real-world solution result remain explicit lineage Sources.
 
 This prevents:
 

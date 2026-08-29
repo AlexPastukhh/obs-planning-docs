@@ -96,7 +96,7 @@ plan:
   Application Concept
   Application Responsibility
   Prototype
-  Scenario Discovery
+  Scenario Planning
   detailed Scenarios
   optional Domain
   Slice Strategy
@@ -196,7 +196,7 @@ Decision:
   this application will use the SDS planning topology
 
 Decision:
-  Prototype is inserted before Scenario Discovery
+  Prototype is inserted before Scenario Planning
   because interaction uncertainty is material
 
 Decision:

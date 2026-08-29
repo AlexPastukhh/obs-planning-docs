@@ -13,7 +13,7 @@ Scenario DATA and Behavior Items
 Current methodology:
 
 ```text
-TM-SCENARIO-DRAFT
+TM-SCENARIO-PLANNING
   ├─ internal Scenario DATA object contract
   ├─ internal Behavior Item object contract
   ├─ Requirement relations

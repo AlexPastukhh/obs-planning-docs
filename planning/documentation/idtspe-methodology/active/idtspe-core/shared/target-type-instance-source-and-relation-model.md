@@ -12,7 +12,7 @@ Reusable methodology contract for a recurring Target family.
 Examples:
 
 ```text
-TM-SCENARIO-DRAFT
+TM-SCENARIO-PLANNING
 TM-DOMAIN-DRAFT
 TM-IMPLEMENTATION-SLICE
 ```

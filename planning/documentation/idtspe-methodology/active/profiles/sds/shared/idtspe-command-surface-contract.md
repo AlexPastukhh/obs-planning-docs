@@ -35,7 +35,7 @@ idtspe.work
 
 sdscmd.bootstrap
 → бутстреп sds
-→ current SDS profile orientation / 17 TM catalog / SDS Lens pack / workflow / planning tree
+→ current SDS profile orientation / 16 TM catalog / SDS Lens pack / workflow / planning tree
 ```
 
 `бутстреп idtspe` is owned by [`../../../idtspe-core/BOOTSTRAP-IDTSPE.md`](../../../idtspe-core/BOOTSTRAP-IDTSPE.md).
@@ -54,8 +54,8 @@ The current accepted methodology-level inventory is:
 
 ```text
 3 framework/bootstrap/work surfaces
-17 canonical SDS Target Module surfaces
-12 additional focused Target-Module shortcuts
+16 canonical SDS Target Module surfaces
+13 additional focused Target-Module shortcuts
 4 reusable direct Lens shortcut surfaces
 5 orchestration/validator surfaces
 = 41 accepted methodology invocation surfaces
@@ -111,8 +111,8 @@ The planned helper grouping/order is maintained separately in [`../../../../inte
 Every active Target Module must have at least one canonical user-level command surface.
 
 ```text
-17 active Target Modules
-→ 17 canonical module command surfaces
+16 active Target Modules
+→ 16 canonical module command surfaces
 ```
 
 A conditional/exceptional Target Module still gets a command.
@@ -163,7 +163,7 @@ merely to mirror those modes.
 
 A focused command is justified only when it represents a stable user intent/substage with a distinct useful entry condition or exit gate.
 
-## 3. Canonical 17-Module Surface
+## 3. Canonical 16-Module Surface
 
 `Surface Key` is methodology identity only. A later repository-update plan decides whether an existing command ID is reused, renamed, extended through aliases, or a new definition is needed.
 
@@ -171,8 +171,7 @@ A focused command is justified only when it represents a stable user intent/subs
 |---|---|---|---|
 | `TM-APPLICATION-DEFINITION` | `tmcmd.application.definition` | `определи приложение` | one Application Definition |
 | `TM-PROTOTYPE` | `tmcmd.prototype` | `спланируй прототип <uncertainty/subject>` | one bounded prototype/experiment Target |
-| `TM-SCENARIO-DISCOVERY` | `tmcmd.scenario.discovery` | `собери сценарии приложения` | Scenario inventory/catalog |
-| `TM-SCENARIO-DRAFT` | `tmcmd.scenario.draft` | `спланируй сценарий <scenario>` | one Scenario owner |
+| `TM-SCENARIO-PLANNING` | `tmcmd.scenario.plan` | `спланируй сценарий <scenario>` | one Scenario owner |
 | `TM-SCREEN` | `tmcmd.screen` | `спланируй экраны` | Screen system/map or selected Screen scope |
 | `TM-REQUIREMENT` | `tmcmd.requirement` | `спланируй общее требование <requirement>` | one exceptional shared must-hold candidate |
 | `TM-WEUC` | `tmcmd.weuc` | `спланируй эволюцию воркспейса` | one canonical Workspace Evolution Map Target |
@@ -210,6 +209,7 @@ Current accepted focused-surface inventory:
 | `tmcmd.application.definition.concept` | `план концепции приложения` | `TM-APPLICATION-DEFINITION / concept` |
 | `tmcmd.application.definition.responsibility` | `определи ответственность приложения` | `TM-APPLICATION-DEFINITION / responsibility boundary` |
 | `tmcmd.prototype.review` | `разбери результаты прототипа <subject>` | same `TM-PROTOTYPE` Target with Evidence |
+| `tmcmd.scenario.discovery` | `собери сценарии приложения` | `TM-SCENARIO-PLANNING / boundary discovery + Target Formation; no Scenario Catalog semantic owner` |
 | `tmcmd.screen.single` | `спланируй экран <screen>` | `TM-SCREEN / selected Screen` |
 | `tmcmd.weuc.interpret` | `интерпретируй план с точки зрения эволюции воркспейса` | `TM-WEUC / EARLY_INTERPRETATION` |
 | `tmcmd.weuc.paths` | `распиши пути эволюции воркспейса` | `TM-WEUC / PROJECTED_WORKSPACE_EVOLUTION` |
@@ -220,7 +220,7 @@ Current accepted focused-surface inventory:
 | `tmcmd.slice.implementation.detail` | `детализируй реализацию слайса <slice>` | same `TM-IMPLEMENTATION-SLICE` Target / detailed implementation focus |
 | `tmcmd.test.practical.review` | `разбери результаты практического теста <target>` | same `TM-PRACTICAL-TEST` Target with actual Evidence |
 
-Exactly **12** focused Target-Module shortcuts are currently accepted. Existing repository compatibility commands such as reality/research/solution routes may be retained/adapted during migration without becoming additional canonical methodology surfaces unless we explicitly promote them later.
+Exactly **13** focused Target-Module shortcuts are currently accepted. Existing repository compatibility commands such as reality/research/solution routes may be retained/adapted during migration without becoming additional canonical methodology surfaces unless we explicitly promote them later.
 
 ### Application Definition
 
@@ -245,6 +245,18 @@ These may coexist with the canonical umbrella `определи приложен
 ```
 
 The second command is justified by the real execution/Evidence boundary.
+
+### Scenario Boundary Discovery
+
+```text
+собери сценарии приложения
+→ inspect Application behavior for independently meaningful Need/result boundaries
+→ surface Scenario candidates through normal Target Formation
+→ each selected Scenario is planned by TM-SCENARIO-PLANNING
+→ no separate Scenario Discovery Target/result or catalog semantic authority
+```
+
+This is a focused entry into the same Scenario Target family, not another Target Module.
 
 ### Screen
 

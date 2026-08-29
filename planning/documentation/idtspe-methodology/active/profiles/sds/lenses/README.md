@@ -21,14 +21,13 @@ Canonical owners live under `active/idtspe-core/lenses/required/`.
 | Lens | Activation / main SDS consumers | Current KB representation |
 |---|---|---|
 | [`LENS-APPLICATION-BOUNDARY-FEASIBILITY`](reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md) | `TARGET_PROFILE_REUSABLE` · Application Definition | `INLINE` |
-| [`LENS-SCENARIO-BOUNDARY-BEHAVIOR`](reusable/LENS-SCENARIO-BOUNDARY-BEHAVIOR.md) | `TARGET_PROFILE_REUSABLE` · Scenario Discovery / Draft | `INLINE` |
 | [`LENS-DOMAIN-MODELING-DDD`](reusable/LENS-DOMAIN-MODELING-DDD.md) | `TARGET_PROFILE_REUSABLE` · Domain Discovery / Draft | `INLINE` |
 | [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md) | `TARGET_PROFILE_REUSABLE` · Screen / Frontend / UI-heavy Slice | `INLINE` |
 | [`LENS-SLICE-VERTICALITY-INTEGRATION`](reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md) | `TARGET_PROFILE_REUSABLE` · Slice Strategy / Implementation Slice | `INLINE` |
 | [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) | `FREQUENT_CONDITIONAL` · WEUC/architecture fitness + Workspace work-cost for Domain/Slice/Frontend/whole Workspace; shortcut `lenscmd.weuc.check` | `INLINE` |
 | [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md) | `FREQUENT_CONDITIONAL` · Evolution-safe simplification for Domain/Slice/Test/Frontend/architecture candidates; shortcut `lenscmd.simplicity.check` | `INLINE` |
 
-The `INLINE` values above describe the current Lens files only. Under the Generic Knowledge Basis guidance they are not mandatory modes; SDS Lenses may keep theory inline, reference broader theory, or use separately represented applied Knowledge Basis material when useful.
+The `INLINE` values above describe the current Lens files only. Under the Generic Knowledge Basis guidance they are not mandatory modes; SDS Lenses may keep theory inline, reference broader theory, or use separately represented applied Knowledge Basis material when useful. Scenario boundary/behavior/decomposition is not a separate Lens: it is the Evaluation responsibility of `TM-SCENARIO-PLANNING`.
 
 ## Generic Reusable Lenses Commonly Used By SDS
 
@@ -48,7 +47,7 @@ SDS Target Module `## Lens Profile` sections may link to both Core and SDS-speci
 
 ## SDS Lens Conformance Contract
 
-All 7 SDS-specific reusable Lens bodies now declare:
+All 6 SDS-specific reusable Lens bodies declare:
 
 ```text
 Analysis Surface

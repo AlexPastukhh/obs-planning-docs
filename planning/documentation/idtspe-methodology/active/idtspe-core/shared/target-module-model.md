@@ -394,7 +394,7 @@ Example:
 
 ```text
 Entry Point:
-  tm.scenario.draft
+  tm.scenario.plan
 ```
 
 The entry point answers:
@@ -568,7 +568,7 @@ A Target Module defines a Target Step-Result Contract and may additionally conta
 Example:
 
 ```text
-TM-SCENARIO-DRAFT
+TM-SCENARIO-PLANNING
   Internal Object Contract:
     Behavior Item schema
 ```
@@ -595,7 +595,7 @@ A Target Module may contain **internal object contracts** for addressable meanin
 Example:
 
 ```text
-TM-SCENARIO-DRAFT
+TM-SCENARIO-PLANNING
 
 Internal Object Contracts:
   Scenario DATA
@@ -615,7 +615,7 @@ addressable object
 ≠ separate Target Instance
 ```
 
-`Scenario DATA` and `Behavior Item` are internal Scenario-planning object contracts. They may be represented by dedicated files or registries for addressability, but their discovery/questions/schema/validation are owned by `TM-SCENARIO-DRAFT`.
+`Scenario DATA` and `Behavior Item` are internal Scenario-planning object contracts. They may be represented by dedicated files or registries for addressability, but their discovery/questions/schema/validation are owned by `TM-SCENARIO-PLANNING`.
 
 If DATA/Behavior decomposition exposes a new independently meaningful Need/result:
 

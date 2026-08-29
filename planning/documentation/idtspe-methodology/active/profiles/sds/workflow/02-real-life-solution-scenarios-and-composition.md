@@ -189,7 +189,7 @@ revalidation signals
 
 This package can be a direct Source for `TM-APPLICATION-DEFINITION`.
 
-Application Definition may later produce a more refined application-aware real-life core scenario. If so, that later refined owner becomes the nearest Source for Prototype/Scenario Discovery while Step-02 remains lineage.
+Application Definition may later produce a more refined application-aware real-life core scenario. If so, that later refined owner becomes the nearest Source for Prototype/Scenario Planning while Step-02 remains lineage.
 
 ## High-Level Example A — No Composition Target
 

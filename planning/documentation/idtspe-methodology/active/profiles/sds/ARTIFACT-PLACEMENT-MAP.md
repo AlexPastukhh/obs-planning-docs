@@ -72,7 +72,7 @@ SPLIT:    separate file normally appears only after representation pressure just
     │       │   TM: TM-PROTOTYPE / AP-PROT-03 may route here
     │       │
     │       ├── scenario/IDEAS.md
-    │       │   TM: TM-SCENARIO-DRAFT / AP-SCN-03
+    │       │   TM: TM-SCENARIO-PLANNING / AP-SCN-03
     │       │
     │       ├── domain/IDEAS.md
     │       │   TM: TM-DOMAIN-DISCOVERY / AP-DOMDISC-02
@@ -107,13 +107,12 @@ SPLIT:    separate file normally appears only after representation pressure just
     │
     ├── scenarios/
     │   ├── SCENARIO-CATALOG.md
-    │   │   TM: TM-SCENARIO-DISCOVERY / AP-SCNDISC-01
-    │   │   ROLE: catalog/discovery coordinator; often valuable even before all Scenario files exist
+    │   │   TM: TM-SCENARIO-PLANNING / AP-SCNDISC-01
+    │   │   ROLE: optional navigation/index projection over Scenario owners; never behavioral authority
     │   │
     │   └── SCN-<id>.md
-    │       TM:   TM-SCENARIO-DISCOVERY / AP-SCNDISC-02
-    │       TM: TM-SCENARIO-DRAFT / AP-SCN-01 + AP-SCN-02
-    │       FIRST: small Scenario may remain in a consolidated Scenario owner/catalog only if behavioral authority stays reviewable
+    │       TM: TM-SCENARIO-PLANNING / AP-SCN-01 + AP-SCN-02
+    │       FIRST: small Scenario may remain in a consolidated Scenario owner as long as behavioral authority stays reviewable
     │
     ├── screens/
     │   ├── SCREEN-MAP.md
@@ -233,6 +232,8 @@ SPLIT:    separate file normally appears only after representation pressure just
 ```
 
 ## Non-tree Representation / Routing Guidance
+
+- `AP-SCNDISC-02` — route a newly discovered independent Need/result to Core Finding Disposition / Target Formation; no artifact is required by default and no Scenario Catalog becomes semantic authority.
 
 Some source records intentionally describe **embedding, routing or ownership resolution**, not another physical tree node. They are part of the same 58-record projection and are listed explicitly here so the materialization map covers every source record without inventing files.
 

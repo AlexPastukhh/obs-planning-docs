@@ -58,7 +58,7 @@ If this refinement is not useful or is intentionally skipped:
 ```text
 Step-02 selected solution result
 remains the direct real-life Source
-for Prototype / Scenario Discovery
+for Prototype / Scenario Planning
 ```
 
 If refinement exists:
@@ -200,7 +200,7 @@ surface a Step-02 challenge Finding Candidate; Core Finding Disposition selects 
 
 ---
 
-## Core Scenario Discovery Questions
+## Core Scenario Planning Questions
 
 Examples only:
 
@@ -227,7 +227,7 @@ When accepted, a refined core real-life scenario is a trusted Source for:
 TM-PROTOTYPE
   → what real-world path / interaction hypothesis the experiment should represent
 
-TM-SCENARIO-DISCOVERY
+TM-SCENARIO-PLANNING
   → which detailed Application Scenarios should exist inside the selected application contribution
 
 TM-SCREEN

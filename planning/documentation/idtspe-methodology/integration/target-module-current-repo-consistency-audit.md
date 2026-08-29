@@ -8,8 +8,7 @@ Purpose: identify which current UC/workflow/template families already form stron
 |---|---|---|---|
 | Application Definition | `UC-PLAN-APP-CONCEPT` + `UC-PLAN-APPLICATION` + proportional `UC-PLAN-REALIZATION` evidence | current repo splits one boundary across several families | integrated as `TM-APPLICATION-DEFINITION`; concept/responsibility/feasibility are views of one selected Application Definition |
 | Prototype | `UC-PLAN-PROTOTYPE` + workflow/templates | strong evidence module | `TM-PROTOTYPE`; provisional findings never canonical automatically |
-| Scenario Discovery | `UC-PLAN-SCENARIO-DISCOVERY` + solution workflow | strong | `TM-SCENARIO-DISCOVERY` |
-| Detailed Scenario | `UC-PLAN-SCENARIO` + detailed-planning + Scenario template | very strong composite | `TM-SCENARIO-DRAFT`; Scenario DATA/Behavior are internal object contracts; Requirement/Screen supporting when material |
+| Scenario Planning | `UC-PLAN-SCENARIO-DISCOVERY` + `UC-PLAN-SCENARIO` + detailed-planning/Scenario template | very strong composite | `TM-SCENARIO-PLANNING`; one Scenario owns free-form Behavior/Requirements, processed DATA + Behavior Items, and Development/Change Outlook; boundary discovery is built into Evaluation |
 | Requirement | `requirements-and-change-context.md` + templates | strong cross-cutting concept | `TM-REQUIREMENT`, usually zero/attached instances; independent Target only when material |
 | Screen | `SCREEN-DRAFT-TEMPLATE.md` + detailed-planning | strong supporting owner | `TM-SCREEN`, conditional spatial owner |
 | Domain Discovery | `UC-PLAN-DOMAIN-DISCOVERY` + workflow | very strong | `TM-DOMAIN-DISCOVERY` + reusable `LENS-DOMAIN-MODELING-DDD` |
@@ -46,9 +45,9 @@ Scenario ↔ DATA ↔ Behavior iterative discovery
 Missing reusable module-level guarantee was not separate modules, but explicit **internal Scenario object contracts**:
 
 ```text
-Scenario DATA object contract inside TM-SCENARIO-DRAFT
-Behavior Item object contract inside TM-SCENARIO-DRAFT
-explicit Scenario Draft readiness gate for Domain Discovery
+Scenario DATA object contract inside TM-SCENARIO-PLANNING
+Behavior Item object contract inside TM-SCENARIO-PLANNING
+explicit Scenario Planning readiness gate for downstream planning
 ```
 
 ## B. Domain → Slice readiness is strong
@@ -150,7 +149,7 @@ Recommended future repository integration:
 
 ```text
 UC-PLAN-SCENARIO
-→ invokes/uses TM-SCENARIO-DRAFT
+→ invokes/uses TM-SCENARIO-PLANNING
 
 UC-PLAN-DOMAIN
 → invokes/uses TM-DOMAIN-DRAFT

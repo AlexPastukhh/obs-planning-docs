@@ -94,7 +94,7 @@ optional Refined Core Real-Life Scenario
 material feasibility findings
 ```
 
-This becomes a Source for Prototype and Scenario Discovery.
+This becomes a Source for Prototype and Scenario Planning.
 
 ### Boundary / Lesson
 
@@ -302,7 +302,7 @@ Source precedence:
 
 ```text
 Refined Core Real-Life Scenario exists
-→ preferred nearest real-life Source for Prototype / Scenario Discovery
+→ preferred nearest real-life Source for Prototype / Scenario Planning
 
 otherwise
 → Step-02 selected solution result remains the direct real-life Source
@@ -410,7 +410,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Research observations surface Finding Candidates; Core Finding Disposition may resolve accepted material as Evidence/Ideas or another appropriate State, but never as a second application-semantic owner merely because it came from reference research.
 
-**OPTIONAL separate artifact** — a Refined Core Real-Life Scenario may be embedded in the Application Definition or receive separate addressability when it is reused/reviewed independently by Prototype/Scenario Discovery.
+**OPTIONAL separate artifact** — a Refined Core Real-Life Scenario may be embedded in the Application Definition or receive separate addressability when it is reused/reviewed independently by Prototype/Scenario Planning.
 
 **Keep embedded by default** — concept statement, responsibility boundary and feasibility conclusion belong to the Application Definition owner rather than separate files per field.
 
@@ -434,7 +434,7 @@ later Evidence may challenge the same Application Definition; Core Finding Dispo
 
 ```text
 TM-PROTOTYPE
-TM-SCENARIO-DISCOVERY
+TM-SCENARIO-PLANNING
 TM-SCREEN when application-wide journey/spatial context is useful
 TM-SLICE-STRATEGY through Scenario/Domain lineage
 ```
