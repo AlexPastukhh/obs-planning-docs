@@ -70,7 +70,7 @@ WHEN: uncertainty/assumption can change current answer
 GUIDANCE: ADVISORY_PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target
+SEMANTIC_OWNER: current Target when Core Finding Disposition resolves the accepted uncertainty/revalidation state there; otherwise resolved owner
 REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: assumption/unknown; Evidence need; reversible/defer choice; revalidation signal
@@ -86,10 +86,10 @@ WHEN: practical experiment is selected
 GUIDANCE: ROUTE
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: Prototype or Practical Test Target
+SEMANTIC_OWNER: existing Prototype/Practical Test Target when already resolved; otherwise UNRESOLVED_OWNER
 REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: <prototype-or-practical-test-owner>
-CONTENT: Evidence question/protocol routed to appropriate Evidence Target
+CONTENT: Evidence question/protocol + likely Evidence Target hint; Core Finding Disposition / Target Formation resolves actual owner before placement
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
@@ -97,7 +97,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-Normally findings stay in current Q/R/P, Decision basis and revalidation state.
+Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: the Lens surfaces a Finding Candidate; when Core Finding Disposition resolves accepted uncertainty/Q/R/P/Decision-basis/revalidation state to the current Target, that Target carries it in its ordinary planning representation.
 
 **PREFERRED supporting Evidence/Prototype artifact** when an uncertainty requires later research/experiment/revalidation and would otherwise be lost.
 
@@ -115,7 +115,7 @@ Practical Evidence may execute Evidence acquisition. L5 evaluates future Workspa
 
 ## Escalation / Revalidation
 
-An uncertainty becomes a child Target only when it itself has independent useful planning value.
+An independently substantial uncertainty may surface a Target Formation candidate. Target Formation decides whether to reuse an existing Target, hand off/reference an owner, or form a new bounded Target.
 
 ## High-Level Example — Self-Contained Walkthrough
 

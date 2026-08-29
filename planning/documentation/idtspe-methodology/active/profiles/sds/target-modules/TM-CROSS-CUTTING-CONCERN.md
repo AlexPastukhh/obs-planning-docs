@@ -215,9 +215,36 @@ Frequent conditional Lens(es):
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — runtime failure/diagnosis/operation
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — material security/privacy/reliability/compliance/etc
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+establish why one shared guarantee exists → resolve applicability and canonical owner → define shared mechanism/local integration boundary → trace runtime/failure behavior → add operability/migration only when material
+```
+
+Consumer-local behavior remains local; shared applicability never transfers semantic ownership automatically.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Cross-Cutting Concern Plan`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-XC-01` | Concern Guarantee / Identity | Concern Identity And Guarantee |
+| `RU-XC-02` | Applicability / Local Integration Contract | Applicability Matrix + Local Integration Contract + Exceptions / Bypass Rules |
+| `RU-XC-03` | Canonical Ownership / Shared Mechanism | Canonical Owner + Shared Mechanism / Responsibility |
+| `RU-XC-04` | Runtime / Operability / Migration Position | Runtime Path + Operability / Observation + Migration / Rollout |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Concern Identity And Guarantee
 

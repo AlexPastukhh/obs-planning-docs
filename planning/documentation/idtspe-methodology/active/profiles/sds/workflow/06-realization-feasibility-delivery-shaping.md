@@ -39,13 +39,16 @@ Test Strategy does not replace per-Domain or per-Slice Test Design. When shared 
 When later Evidence challenges application-level viability/boundary:
 
 ```text
-reopen / revalidate TM-APPLICATION-DEFINITION
+Finding / Revalidation Signal
+→ Core Finding Disposition
+→ TM-APPLICATION-DEFINITION revalidation/reopen when warranted
 ```
 
 When one concrete technical feasibility problem becomes independently material:
 
 ```text
-form a bounded child IDTSPE Target for that problem
+surface Target Formation candidate
+→ Target Formation decides reuse / handoff / new bounded Target
 ```
 
 Do not let feasibility Evidence become Scenario/Domain authority.

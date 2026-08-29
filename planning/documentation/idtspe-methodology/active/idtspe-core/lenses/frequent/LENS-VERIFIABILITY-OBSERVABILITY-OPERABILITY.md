@@ -80,7 +80,7 @@ WHEN: proof/diagnosis/operation consequence materially affects choice
 GUIDANCE: ADVISORY_PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target
+SEMANTIC_OWNER: current Target when Core Finding Disposition resolves the accepted proof/operation finding there; otherwise resolved owner
 REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: proof/observation/diagnosis/operation requirement/finding
@@ -96,7 +96,7 @@ WHEN: observability/operation mechanism becomes independently shared/material
 GUIDANCE: ROUTE
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: future Cross-Cutting or local child Target after Target Formation
+SEMANTIC_OWNER: owner selected by Target Formation when needed (often Cross-Cutting/shared or a bounded local Target)
 REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: UNRESOLVED
 CONTENT: form real owner first; then place its canonical artifact
@@ -107,11 +107,11 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-Normally L6 findings remain in the current Target's requirements/Decision/Test handoff.
+Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: L6 surfaces Finding Candidates; when Core Finding Disposition resolves accepted requirement/Decision/Test-handoff meaning to the current Target, that Target's ordinary representation carries it.
 
 **PREFERRED supporting operational/proof artifact** when runbooks, telemetry contracts, recovery procedures or proof plans are independently reused/reviewed across Targets.
 
-If L6 exposes a genuinely shared implementation responsibility, route to a Cross-Cutting/shared Target rather than creating an unnamed “L6 file”.
+If L6 exposes a genuinely shared implementation responsibility, surface a Finding Candidate with the Cross-Cutting/shared family as a likely owner hint. Core Finding Disposition and, when needed, Target Formation resolve the real owner before placement; do not create an unnamed “L6 file”.
 
 ## Guards
 
@@ -123,7 +123,7 @@ Test Proof/Evidence specializes concrete proof. L5 consumes L6 findings when arc
 
 ## Escalation / Revalidation
 
-A material observability/operation subsystem may become a Cross-Cutting/child Target.
+A materially independent observability/operation subsystem may surface a Target Formation candidate through Core Finding Disposition; Target Formation decides whether a Cross-Cutting/shared or bounded local Target is warranted.
 
 ## High-Level Example — Self-Contained Walkthrough
 
@@ -166,7 +166,7 @@ Can recovery happen without rerunning everything?
 
 ### Result
 
-L6 may find that candidate B has substantially better verification/diagnosis/operation characteristics and feed that into the current Decision.
+L6 may surface a Finding Candidate that candidate B has substantially better verification/diagnosis/operation characteristics. Core Finding Disposition may resolve that accepted meaning as input to the current Decision when the current Target/Decision is the actual owner.
 
 ### Boundary / Lesson
 

@@ -88,22 +88,28 @@ L4 current dependency/change surface
 ↓
 WEUC Lens / L5
   relevant future paths
-  target evolution plan
+  target evolution pressure/proposals
   change-isolation / leakage
   prepared extension-point reuse
   architecture fitness
   prepare-now vs defer
 ↓
-L6 proof/diagnosis/operation consequences when material
+L6 proof/diagnosis/operation observations when material
 ↓
-Answer Decision / local evolution companion / QRP
+Finding Candidate(s)
+↓
+Core Finding Disposition
+├→ accepted local Answer-Decision input / Q/R/P / Evidence Need / evolution meaning when the current Target is resolved as owner
+└→ `AG-L5-02` may propose a local evolution representation only over accepted local evolution meaning
+   → Documentation / Representation + P-14 / TF-10 decide actual companion materialization
 ```
 
 If L5 discovers that the global map is stale/incomplete:
 
 ```text
-map-update candidate
-→ TM-WEUC
+map/global-architecture update Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ TM-WEUC refresh/revalidation when that owner/lifecycle is selected
 ```
 
 ## Reusable Lens Command
@@ -127,14 +133,17 @@ The WEUC Lens is not confined to Phase 07. It may activate inside Application De
 architecture answer within current local Target
 → ordinary Answer Decision
 
-local Decision becomes project-global principle/default
-→ update candidate → TM-WEUC / Current Global Architecture Position
+local Decision may become project-global principle/default
+→ global-architecture update Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ TM-WEUC / Current Global Architecture Position update when selected
 
 whole Workspace architecture review
 → TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION + L5
 
 bounded architecture problem has independent useful output + material choice space
-→ generic child Target Formation
+→ Target Formation candidate
+→ Target Formation decides reuse existing Target / handoff existing owner / form new bounded architecture Target
 ```
 
 There is no mandatory Architecture Target Module.

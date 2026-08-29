@@ -216,7 +216,7 @@ CURRENT_DEFAULT
   current default shape; not a rule when another shape is clearly better
 ```
 
-A local architecture Answer Decision remains owned by its local Target. When the WEUC Lens discovers that the decision should constrain/default multiple independent Targets, it emits a **global architecture-position update candidate** to `TM-WEUC`.
+A local architecture Answer Decision remains owned by its local Target. When the WEUC Lens discovers that the decision may need to constrain/default multiple independent Targets, it surfaces a **global architecture-position update Finding Candidate** with `TM-WEUC` as a likely-owner hint. Core Finding Disposition resolves the actual global owner/handoff before `TM-WEUC` accepts or revalidates project-global meaning.
 
 ## Operating Modes
 
@@ -310,8 +310,8 @@ Mode: `INLINE`
 **Embedded Principles / Rules / Theory:**
 
 - TM-WEUC owns the canonical Workspace Evolution Map and Current Global Architecture Position when those global results are material.
-- Local architecture/evolution findings normally remain inside the current Target through WEUC/L5; only project-global meaning promotes back to TM-WEUC.
-- Target-local evolution companion proposal remains Lens/Documentation/P-14 responsibility rather than Target Module authority.
+- Local architecture/evolution Finding Candidates remain with the current Target only when Core Finding Disposition resolves that owner; project-global implications may carry `TM-WEUC` as a likely-owner hint, but actual global handoff/update is a Core disposition consequence.
+- Target-local evolution companion meaning is not Target Module output: WEUC/L5 may supply an `AG-L5-02` representation proposal only over local evolution meaning accepted/resolved through Core Finding Disposition; Documentation / Representation + P-14 / TF-10 decide the actual embed/split/materialization.
 
 **Referenced Knowledge Owners:**
 
@@ -362,9 +362,37 @@ Frequent conditional:
 
 `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` normally **consumes** the map produced by this Target; it is not required for ordinary map creation and therefore is not a mandatory self-lens. For `Target Scope: WORKSPACE_ARCHITECTURE_POSITION`, however, L5 is the primary reusable evaluation Lens used to compare candidate global architecture principles/defaults against the current map and expected evolution.
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE Scope/Question Set/Ideas/QRP/Branches/Answer Decisions/Revalidation are not duplicated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+interpret product evolution → separate current global architecture truth from future transition projections → record useful future paths → justify prepared extension points → link local evolution companions without duplicating them
+```
+
+Current Global Architecture Position is current project-global truth; future paths remain projected planning until independently selected.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Workspace Evolution / Architecture Position`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-WEUC-01` | Evolution Interpretation | Workspace Evolution Map identity + interpreted evolution source/maturity/scope + Evolution Interpretation |
+| `RU-WEUC-02` | Current Global Architecture Position | current project-global architecture decisions/principles/defaults/conventions |
+| `RU-WEUC-03` | Architecture Evolution / Transition Position | future architecture transition + trigger + preparation tax/seam |
+| `RU-WEUC-04` | Planned / Probable Evolution Paths | high-level future paths at current precision |
+| `RU-WEUC-05` | Prepared Extension / Local Evolution Reference Map | Prepared Extension Points + Local Evolution Plan References |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Workspace Evolution Map Identity
 
@@ -515,11 +543,11 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 `SDS-EVOLUTION-MAP.md` remains the product/system plan; Workspace Evolution is its architectural/change-path interpretation and must not replace it.
 
-**Local companion references** — this Target Module does not propose target-local evolution companions. When L5/WEUC `AG-L5-02` has independently justified an Evolution section / `<owner>.evolution.md` for a Domain/Slice/Frontend/etc. Target, the global Workspace Evolution owner may reference that local detail instead of duplicating it.
+**Local companion references** — this Target Module does not propose target-local evolution companions. When Core Finding Disposition has accepted/resolved target-local evolution meaning and L5/WEUC `AG-L5-02` proposes a supporting representation for it, Documentation / Representation + P-14 / TF-10 decide whether an Evolution section / `<owner>.evolution.md` is materialized. The global Workspace Evolution owner may reference that accepted local detail instead of duplicating it.
 
 **Do not duplicate** the same future path as equal canonical content in global and local files: choose the detail owner and link/reference it.
 
-`P-14` must identify global-map updates, references to already-justified L5 local companions, and any evolution content whose owner is still unresolved. Local companion creation/splitting remains L5 + Documentation / Representation responsibility.
+`P-14` must identify global-map updates, references to already-materialized local companions, and any evolution content whose representation/placement is still unresolved. L5/WEUC owns only the `AG-L5-02` supporting-representation proposal over accepted/dispositioned local evolution meaning; Documentation / Representation decides embed vs split and P-14 / TF-10 resolves the actual path/materialization.
 
 ## Validators
 
@@ -545,14 +573,21 @@ SDS-WORKSPACE-EVOLUTION.md
 
 material local future path
 → L5/WEUC Lens evaluation
-→ optional Evolution section / <owner>.evolution.md only if AG-L5-02 + P-14 justify it
-→ TM-WEUC may reference the result
+→ local evolution Finding Candidate
+→ Core Finding Disposition resolves accepted local State/owner consequence
+→ AG-L5-02 may propose an Evolution section / <owner>.evolution.md
+→ Documentation / Representation + P-14 / TF-10 decide actual materialization
+→ TM-WEUC may reference accepted local evolution meaning when useful
 
-new/changed local architecture
-→ refresh Workspace Evolution Map when it changes projected paths
+new/changed local architecture may affect projected global paths
+→ global-update Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ refresh Workspace Evolution Map only when that owner/handoff is selected
 
-local architecture Decision becomes project-global
-→ TM-WEUC / Current Global Architecture Position
+local architecture Decision may become project-global
+→ global-architecture-position Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ update TM-WEUC / Current Global Architecture Position only when that global owner/handoff is selected
 
 whole Workspace architecture review
 → TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION + L5

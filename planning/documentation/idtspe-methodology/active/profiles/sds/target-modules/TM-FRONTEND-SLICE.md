@@ -252,9 +252,37 @@ shared transport helper
 
 Select/reject these through current Scope + L4/L5/L6 + ordinary IDTSPE Decisions. Do not copy Enman structure by default.
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+anchor frontend work to one selected Slice/Scenario/Screen meaning → resolve state/navigation/composition → resolve DATA/async/shared concern boundaries → trace frontend runtime → map it into concrete/planned frontend codebase owners/calls
+```
+
+A Frontend evolution companion is only an `AG-L5-02` representation proposal over accepted local evolution meaning; it is not direct WEUC/L5 output and not an intrinsic Frontend Result Unit.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Frontend Realization Plan`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-FE-01` | Frontend Outcome / Scenario-Screen Map | Frontend Target Identity + Scenario → Screen → Behavior Map |
+| `RU-FE-02` | Frontend State / Navigation Model | Frontend State Model + Navigation / Window Plan + UI Composition Responsibilities |
+| `RU-FE-03` | Frontend DATA / Async / Shared-Concern Integration | DATA Access / Synchronization + Async/Error/Empty/Pending + Design/Accessibility/Responsive + Shared/Cross-Cutting concerns |
+| `RU-FE-04` | Frontend Runtime Path | Frontend Runtime Path |
+| `RU-FE-05` | Frontend Codebase Integration Path | Frontend Codebase Integration Path |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Frontend Target Identity
 
@@ -376,7 +404,7 @@ user interaction
 → error/recovery
 ```
 
-### Integrated Frontend Implementation Plan
+### Frontend Codebase Integration Path
 
 Frontend-specific **pre-implementation call-level codebase picture**.
 
@@ -420,14 +448,15 @@ material async/error behavior
 
 The plan maps selected Screen/Behavior/DATA semantics into the actual/planned frontend codebase without method-body pseudocode.
 
-A simple local call may get a Part Plan. A real unresolved architecture/state/algorithm choice opens a child IDTSPE Target instead.
+A simple local call may get a Part Plan. A newly surfaced material architecture/state/algorithm issue starts as a Finding Candidate; Core Finding Disposition decides whether accepted meaning creates/refines Question / Idea / Q/R/P / Decision input or another lifecycle consequence. When the problem is independently substantial, Core disposition may surface a Target Formation candidate; Target Formation decides reuse/handoff/new child Target.
 
 
-### Frontend Evolution Companion — Conditional
 
-The WEUC Lens may produce an optional `<frontend-owner>.evolution.md` when future state/navigation/data-flow/integration evolution is material.
+## Supporting Frontend Evolution Handoff — WEUC/L5
 
-Keep current frontend truth in this Target; keep approximate future `[NEW]/[EXTEND]/[REUSE]/[NEW?]` paths in the companion and reference them from the global Workspace Evolution Map when globally important.
+When future state/navigation/data-flow/integration evolution is material, WEUC/L5 surfaces a Finding Candidate; Core Finding Disposition resolves any accepted local evolution meaning/owner. Only then may `AG-L5-02` propose a local evolution representation; Documentation / Representation + P-14 / TF-10 decide whether `<frontend-owner>.evolution.md` is actually created/updated.
+
+Keep current frontend truth in this Target. When a companion representation is actually selected, keep approximate future `[NEW]/[EXTEND]/[REUSE]/[NEW?]` paths there and reference accepted project-global implications from the Workspace Evolution Map when warranted.
 
 ## Artifact / File Contract
 
@@ -475,7 +504,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **Otherwise** frontend planning stays inside the parent Slice artifact as a Part Plan.
 
-**Evolution companion handoff** — this Target Module does not propose an evolution companion. When L5/WEUC finds material future-path pressure, `AG-L5-02` may propose an Evolution section, `<frontend-owner>.evolution.md`, or the parent Slice evolution companion; this Frontend Target may consume/reference that result. Documentation / Representation + P-14 choose embed vs split and prevent duplicate future plans.
+**Evolution companion handoff** — this Target Module does not propose an evolution companion. When L5/WEUC finds material future-path pressure, it surfaces a Finding Candidate; Core Finding Disposition resolves any accepted local evolution meaning/owner. `AG-L5-02` may then propose an Evolution section, `<frontend-owner>.evolution.md`, or the parent Slice evolution companion as representation guidance. This Frontend Target may consume/reference the accepted/dispositioned local evolution meaning, while Documentation / Representation + P-14 / TF-10 choose embed vs split and prevent duplicate future plans.
 
 Current Screen semantics remain in Screen owners; frontend artifacts reference rather than redefine them.
 
@@ -499,5 +528,9 @@ frontend architecture is justified by current/change-path evidence
 integrated parent Slice / Authorized Realization
 TM-TEST-DESIGN
 Artifact/File Pack
-activate `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`; open a bounded local architecture Target only if independently material
+apply `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when material future-path pressure exists
+→ Lens may surface a Finding Candidate / likely-owner hint
+→ Core Finding Disposition resolves owner/lifecycle
+→ independently substantial architecture work may become a Target Formation candidate
+→ Target Formation decides reuse / handoff / new bounded local Target
 ```

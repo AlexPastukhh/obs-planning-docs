@@ -207,7 +207,7 @@ TM-WEUC
   including Current Global Architecture Position
 ```
 
-The SDS WEUC Lens evaluates concrete Domain/Slice/Frontend/etc Targets or whole Workspace architecture against that state. It also evaluates architecture/Workspace work-cost across Understanding, Change, Verification/Diagnosis/Operation and Runtime paths; no second architecture/work-cost Lens is needed. Local architecture remains local by default; project-global conclusions are promoted through `TM-WEUC`.
+The SDS WEUC Lens evaluates concrete Domain/Slice/Frontend/etc Targets or whole Workspace architecture against that state. It also evaluates architecture/Workspace work-cost across Understanding, Change, Verification/Diagnosis/Operation and Runtime paths; no second architecture/work-cost Lens is needed. Local architecture remains local by default; project-global implications surface Finding Candidates with `TM-WEUC` as a likely-owner hint, and Core Finding Disposition resolves the actual global owner/handoff before accepted `TM-WEUC` content changes.
 
 The SDS Simplicity / Implementation Economy Lens searches Domain/Slice/Test/etc candidates for unnecessary abstractions, owners, steps, mappings or proof machinery, while treating the global Workspace Evolution Map and target-local evolution plans as constraints so simplification does not create predictable extension/change problems.
 

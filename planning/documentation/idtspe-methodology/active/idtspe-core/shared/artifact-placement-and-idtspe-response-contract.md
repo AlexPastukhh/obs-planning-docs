@@ -21,7 +21,7 @@ This is a lightweight mandatory projection of `P-14 Persistence / Artifact Port`
 
 The deeper `Artifact / File Realization Pack` remains conditional for non-trivial layout/reorganization decisions.
 
-Before P-14 chooses a path, the required Core [`Documentation / Representation Lens`](../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) decides whether persistence is needed at all and whether the natural representation is implementation-native, an existing owner section, a registry/strategy/discovery artifact, a dedicated owner artifact, a companion, a global artifact or a generated view. `P-14` places the selected representation; it does not force Markdown.
+Before P-14 chooses a path, semantic ownership must already be resolved for material content whose owner is not inherent in an accepted Target Result/State. If representation analysis exposes owner ambiguity, the required Core [`Documentation / Representation Lens`](../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) surfaces a Finding Candidate and waits for Core Finding Disposition. With owner context resolved, the Lens decides whether persistence is needed at all and whether the representation is implementation-native, an existing owner section, a registry/strategy/discovery artifact, a dedicated owner artifact, a companion, a global artifact or a generated view. `P-14` places the selected representation; it does not force Markdown or create semantic ownership.
 
 
 ## 2. Semantic Owner vs Artifact Owner
@@ -54,7 +54,7 @@ scenario-registry.md
 
 A separate file does not automatically create a separate semantic owner.
 
-If planning discovers that content needs a **new semantic owner/Target**, do not solve that through `NEW_CANONICAL_ARTIFACT`. Reopen Target Formation/ownership first. Only after the semantic owner is resolved may P-14 create/select its artifact owner.
+If planning discovers that content may need a **new semantic owner/Target**, do not solve that through `NEW_CANONICAL_ARTIFACT`. Surface an ownership Finding Candidate; Core Finding Disposition selects ownership/Target-Formation resolution when warranted. Only after the semantic owner is resolved may P-14 create/select its artifact owner.
 
 ## 2A. Current Artifact Context
 
@@ -241,7 +241,7 @@ Use this order when guidance overlaps:
 2. methodology-global artifact owner rule
 3. Target Module REQUIRED/default Artifact Proposal
 4. applicable Lens Artifact Guidance
-5. Documentation / Representation Lens resolves persistence necessity, code-vs-prose, existing-owner-vs-new-owner and consolidate-vs-split
+5. Documentation / Representation Lens resolves persistence necessity, code-vs-prose and representation consolidation/split inside the already-resolved semantic-owner context; semantic-owner change goes through Core Finding Disposition / Target Formation first
 6. workspace/profile physical-layout preference / materialization tree
 7. P-14 / TF-10 resolves the concrete destination/action
 ```
@@ -395,7 +395,7 @@ A material IDTSPE answer should expose, proportionally:
 1. Current Target / Scope / Sources
 2. Resolved Questions / current answers
 3. Unresolved material Questions / Decisions needing user authority
-4. Lens findings / material Q/R/P / Ideas when relevant
+4. Lens Finding Candidates + dispositioned material Ideas / Q/R/P / other State when relevant
 5. Target Step Result preview/update — material Result Units
 6. material IDTSPE State Units when useful
 7. Artifact Placement View
@@ -449,19 +449,19 @@ Every reusable Lens must contain:
 A Lens may say:
 
 ```text
-NONE
+NONE / NO_DISTINCT_SUPPORTING_ARTIFACT
 ```
 
-when findings normally remain in the current Target.
+when Core Finding Disposition resolves accepted meaning to an already-existing semantic owner and no distinct supporting representation is useful.
 
 Or it may say:
 
 ```text
 REQUIRED:
-  persist one global owner when this finding establishes canonical cross-target planning state
+  preserve accepted cross-target planning meaning at its already-resolved global owner
 
 PREFERRED:
-  create/update a companion/supporting artifact when material future/review/evidence state needs independent addressability
+  propose a companion/supporting artifact when accepted future/review/evidence state needs independent addressability
 ```
 
 A Lens never silently creates a new semantic owner.
@@ -469,10 +469,10 @@ A Lens never silently creates a new semantic owner.
 Lens output first becomes:
 
 ```text
-finding / Evidence / Idea / Q/R/P / Answer Decision input
+Finding Candidate
 ```
 
-Then `P-14` decides its persistence/representation.
+Core Finding Disposition resolves materiality, State/Decision input, semantic owner and lifecycle consequence. Only accepted, already-owned meaning then reaches Documentation / Representation and `P-14 / TF-10` for persistence/representation.
 
 ## 9. Full Artifact Pack Escalation
 

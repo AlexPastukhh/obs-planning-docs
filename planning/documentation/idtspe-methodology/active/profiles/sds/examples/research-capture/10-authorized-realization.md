@@ -25,8 +25,9 @@ implement SL-RC-01 / SL-RC-02
 If implementation reveals an impossible semantic assumption, do not silently patch the test or code around it:
 
 ```text
-actual Evidence
-→ reopen narrowest Scenario/Domain/Slice/Architecture Decision
+actual Evidence / Finding Candidate
+→ Core Finding Disposition
+→ revalidate/reopen narrowest Scenario/Domain/Slice/Architecture Decision when warranted
 ```
 
 Implementation is Evidence/current state, not automatic semantic authority.

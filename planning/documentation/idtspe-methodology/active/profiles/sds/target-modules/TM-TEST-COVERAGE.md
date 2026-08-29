@@ -69,7 +69,7 @@ freshness
 assertion strength
 coverage gap
 escape/refactor risk
-reopen/fix route
+follow-up / revalidation position
 ```
 
 ### Boundary / Lesson
@@ -118,7 +118,7 @@ Mode: `HYBRID`
 **Embedded Principles / Rules / Theory:**
 
 - Test Coverage reviews actual current Evidence against selected semantic properties and distinguishes strong/partial/missing/stale/duplicated/wrong-layer proof.
-- Coverage findings route to the narrowest real owner; test presence does not redefine semantic truth.
+- Coverage findings are Finding Candidates; Core Finding Disposition resolves the narrowest real owner and lifecycle consequence. Test presence does not redefine semantic truth.
 - Actual Evidence provenance/freshness/assertion strength must remain inspectable.
 
 **Referenced Knowledge Owners:**
@@ -143,7 +143,7 @@ Where is proof strong, partial, missing, stale, duplicated or at the wrong layer
 Do assertions actually prove the selected property rather than merely execute code?
 Are negative/no-mutation guarantees covered?
 Did Scenario/DATA/Domain meaning change after the test was written?
-Which gap routes back to Test Design vs implementation vs upstream semantic owner?
+Which gap most likely concerns Test Design vs implementation vs Practical Test vs an upstream semantic owner? Core Finding Disposition resolves the actual destination.
 ```
 
 ## Lens Profile
@@ -162,16 +162,42 @@ Frequent conditional Lens(es):
 - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — repeated verification/diagnosis change-path cost
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — actual proof/observability/diagnosis quality
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+map semantic properties to actual Evidence → classify coverage state → surface material gaps/escape/refactor risks as Finding Candidates → Core Finding Disposition → accepted Question/Risk/Evidence Need/revalidation State when material → summarize correction position without rewriting Test Design or implementation
+```
+
+Material individual coverage defects remain Finding Candidates until Core disposition resolves their State/lifecycle/owner consequence. Accepted defects may become Question/Risk/Evidence Need/revalidation State; the Result Unit is the selected/current coverage assessment map.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Evidence Coverage Assessment`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-TCOV-01` | Semantic Property / Evidence Coverage Map | property→actual Evidence mapping + coverage state + summarized assertion/negative/escape/refactor gaps + correction position |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 **Semantic Property → Actual Evidence Map** — exact link from current result/Behavior/invariant to executed evidence.  
 **Coverage State** — `STRONG | PARTIAL | MISSING | STALE | DUPLICATED | WRONG_LAYER`.  
 **Required-Assertion Findings** — missing/weak assertions needed for convincing proof.  
 **Negative / No-Mutation Findings** — explicit status for guarantees that absence-of-change matters.  
 **Escape / Refactor Risk** — where tests can pass while behavior is wrong or fail on safe refactors.  
-**Correction Route** — Test Design, implementation, Practical Test, or semantic owner to reopen.
+**Correction Disposition / Likely Resolution Destinations** — likely Test Design, implementation, Practical Test or semantic-owner destinations; Core Finding Disposition decides actual owner and any revalidation/reopen consequence.
+
+Material individual gaps/escape risks are surfaced as Finding Candidates and dispositioned into Core Question/Risk/Evidence Need/revalidation state when useful; `RU-TCOV-01` keeps the selected/current coverage assessment rather than duplicating every finding.
 
 ## Artifact / File Contract
 
@@ -190,7 +216,7 @@ PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: current Test Coverage Target
 REPRESENTATION: EXISTING_OR_NEW_CANONICAL_OR_REVIEW_ARTIFACT
 FILE_OR_ARTIFACT: <test-coverage-owner>
-CONTENT: semantic property -> actual Evidence mapping; freshness; assertion strength; gaps; escape/refactor risk; reopen route
+CONTENT: semantic property -> actual Evidence mapping; freshness; assertion strength; gaps; escape/refactor risk; correction/revalidation position
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
@@ -214,11 +240,11 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-**REQUIRED when used for review/revalidation** — current coverage/freshness/gap findings must persist in a Test Coverage/review owner or stable coverage register until resolved/reconciled.
+**REQUIRED when used for review/revalidation** — the selected coverage assessment plus any material gap/freshness/revalidation State accepted through Core Finding Disposition must persist in a Test Coverage/review owner or stable coverage register until resolved/reconciled. Raw Finding Candidates are not silently promoted into durable State merely because review found them.
 
 Actual test files/logs remain Evidence Sources; the coverage artifact references them and does not become product-semantic authority.
 
-**PREFERRED** — avoid duplicating every test detail; persist the semantic property→Evidence mapping, gap, freshness/assertion finding and reopen/fix route.
+**PREFERRED** — avoid duplicating every test detail; persist the semantic property→Evidence mapping, selected freshness/coverage status, and dispositioned gap/correction/revalidation State that has continuing value.
 
 `P-14` must show coverage owner and any unresolved Evidence/file references.
 
@@ -229,4 +255,4 @@ Plan/test filename/historical statement is not actual Evidence; review findings 
 
 ## Handoff
 
-Coverage findings route to the narrowest real owner: `TM-TEST-DESIGN`, implementation Slice/realization, `TM-PRACTICAL-TEST`, or an upstream semantic owner when actual Evidence contradicts accepted meaning. Review itself does not become product authority.
+Coverage findings are Finding Candidates. Core Finding Disposition resolves the narrowest real owner — often `TM-TEST-DESIGN`, implementation Slice/realization, `TM-PRACTICAL-TEST`, or an upstream semantic owner when actual Evidence contradicts accepted meaning — and selects any revalidation/reopen consequence. Review itself does not become product authority.

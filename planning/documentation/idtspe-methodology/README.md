@@ -417,7 +417,8 @@ This directory contains **canonical generic contracts that are too specific to b
 
 | File | Responsibility |
 |---|---|
-| [`idtspe-unit-and-target-step-result-model.md`](active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md) | Canonical Target Step Result + IDTSPE Unit model: Result Units vs Core State Units, Lens Unit interaction and one-Target/multi-representation boundary. |
+| [`idtspe-unit-and-target-step-result-model.md`](active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md) | Canonical Target Step Result + IDTSPE Unit model: Result Units vs Core State Units, Lens Analysis Surface / finding and one-Target/multi-representation boundary. |
+| [`finding-disposition-contract.md`](active/idtspe-core/shared/finding-disposition-contract.md) | Core producer → Finding Candidate → ownership/State/lifecycle disposition contract; routing/reopen/result-update consequences are not Lens methods. |
 | [`resolution-slot-and-target-formation-resolution-set.md`](active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md) | Canonical Target Formation Resolution Set (`TF-*`) and resolution-status slots; Slots are coordination metadata, not Result/State Unit kinds. |
 | [`dynamic-target-formation-and-discovery-checks.md`](active/idtspe-core/shared/dynamic-target-formation-and-discovery-checks.md) | Narrative/how-to guide for dynamic Target formation and discovery checks. |
 | [`target-type-instance-source-and-relation-model.md`](active/idtspe-core/shared/target-type-instance-source-and-relation-model.md) | Target type/instance, Source and Target Relation semantics. |

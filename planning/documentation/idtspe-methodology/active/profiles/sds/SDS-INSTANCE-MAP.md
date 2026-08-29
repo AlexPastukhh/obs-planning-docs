@@ -33,11 +33,11 @@ This gives narrower Sources, Decisions, residual Q/R/P and re-open boundaries.
 | 04 Scenario System | one Scenario Discovery target + one target per detailed Scenario; Screen target only when material |
 | 05 Domain | Domain Discovery plus zero/one/many Domain Draft Targets; each material Domain owner may hand off immediately to its own `TM-TEST-DESIGN` before Slice planning |
 | 06 Delivery Shaping | Slice Strategy is a separate Target only when decomposition/order itself matters; its selected Slice portfolio becomes a Source for shared Test Strategy when material |
-| 07 Workspace Evolution / Architecture | `TM-WEUC` creates/refreshes the global Workspace Evolution Map and Current Global Architecture Position; L5 checks concrete Targets or the whole Workspace architecture; local architecture stays an Answer Decision unless promoted globally or an independent bounded child Target is justified |
-| 08 Slice | one Target per vertical Slice; each Slice has its own `TM-TEST-DESIGN` after semantic obligations stabilize, or interleaved through TDD; Frontend/Cross-Cutting child Targets only when independently material |
+| 07 Workspace Evolution / Architecture | `TM-WEUC` creates/refreshes the global Workspace Evolution Map and Current Global Architecture Position; L5 checks concrete Targets or the whole Workspace architecture; local architecture stays an Answer Decision unless independently substantial work yields a Target Formation candidate and Target Formation selects a bounded local Target |
+| 08 Slice | one Target per vertical Slice; each Slice has its own `TM-TEST-DESIGN` after semantic obligations stabilize, or interleaved through TDD; independently material Frontend/Cross-Cutting work may yield a Target Formation candidate, and Target Formation decides reuse/handoff/new bounded Target |
 | 09 Consistency/Verification | navigation family only: Domain Test Design may already have run before Slice Strategy; conditional Test Strategy normally follows Domain proof planning + Slice portfolio; per-Slice Test Design follows/interleaves each Slice |
 | 10 Realization | execution, not planning instance by default |
-| 11 Reconciliation | lifecycle; opens only the narrowest challenged target instance |
+| 11 Reconciliation | lifecycle; Core Finding Disposition selects revalidation/reopen only for the narrowest challenged target instance when warranted |
 
 ## Why
 
@@ -89,7 +89,8 @@ no composition Target
 If two materially different whole-solution combinations remain:
 
 ```text
-open one dynamic composition Target
+surface a composition Target Formation candidate
+→ Target Formation decides whether a dynamic composition Target is actually needed
 ```
 
 

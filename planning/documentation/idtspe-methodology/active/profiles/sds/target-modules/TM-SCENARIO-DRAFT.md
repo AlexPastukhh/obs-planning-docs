@@ -289,9 +289,36 @@ Accepted preliminary Screen/window ideas are stored in `SDS-PLANNING-STATE/ideas
 
 They are not selected Screen decisions.
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+stabilize independently meaningful Scenario identity → resolve selected behavior/failure/postconditions → construct addressable DATA/Behavior semantic objects → attach spatial relations without transferring Scenario behavior ownership
+```
+
+Scenario DATA and Behavior Item remain Internal Object Contracts/addressable objects, not separate Target Modules.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Scenario Draft`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-SCEN-01` | Scenario Identity | Scenario Identity |
+| `RU-SCEN-02` | Expected Application Behavior | Expected Application Behavior |
+| `RU-SCEN-03` | Scenario Semantic Model | Scenario DATA refs/owners + Behavior Item refs/owners + Requirements/Invariants; uses internal object contracts |
+| `RU-SCEN-04` | Spatial Relations | Screen / Window relations |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Scenario Identity
 **Scenario ID** — stable identity.  

@@ -192,9 +192,35 @@ Frequent conditional Lens(es):
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when the experiment/result must be observable/operable credibly
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — when testing performance/reliability/accessibility/security/etc
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+identify decision-changing uncertainty → choose minimum discriminating experiment → define practical evidence protocol → collect actual Evidence as Core State → interpret/disposition → feed decision/revalidation through Core Finding Disposition
+```
+
+Loose UI/technical/Scenario ideas remain Core Idea State and do not become canonical architecture/Screen/Scenario because the prototype happened to use them.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Prototype Evidence Result`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-PROTO-01` | Evidence Subject / Uncertainty Position | Prototype Identity/Decision Context + Uncertainty Map |
+| `RU-PROTO-02` | Experiment / Practical Evidence Protocol | Selected Experiment + Practical Evidence Protocol |
+| `RU-PROTO-03` | Interpretation / Decision Handoff | Interpretation/Disposition referencing actual Evidence State |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Prototype Identity / Decision Context
 
@@ -224,7 +250,7 @@ Evidence Timing:
   IMPLEMENT_AND_TEST_LATER
   BOTH
   NO_PRACTICAL_TEST_NEEDED
-Downstream owner/reopen route
+Likely downstream owner / revalidation implication — hint only; Core Finding Disposition decides actual consequence
 ```
 
 ### Selected Experiment
@@ -254,9 +280,9 @@ limitations/confounders
 
 For interaction-heavy checks this may include completion time, backtracking, orientation between Screens/windows, hesitation, DATA/feedback comprehension and recovery.
 
-### Observed Evidence / Interpretation
+### RU-PROTO-03 Interpretation / Decision Handoff
 
-Keep actual observations separate from interpretation.
+Actual observations/run facts are Core `Evidence` State Units or supporting Evidence records. Keep them separate from the target-specific interpretation/disposition carried here.
 
 Disposition:
 
@@ -267,7 +293,8 @@ INCONCLUSIVE
 DEFERRED_TO_IMPLEMENTED_EVIDENCE
 ```
 
-### Premature / Loose Ideas Routing
+
+## State-Unit / Idea Handling
 
 Prototype often creates early UI/technical/Scenario ideas that are not selected decisions.
 
@@ -362,7 +389,15 @@ a question requiring real integrated environment must not be "answered" by a fak
 ## Handoff
 
 ```text
-findings → Application/Scenario/Screen/other real owners
-BOTH / IMPLEMENT_AND_TEST_LATER → preserve Evidence Question for TM-PRACTICAL-TEST / TM-TEST-DESIGN
-loose ideas → SDS-PLANNING-STATE/ideas/
+Prototype observation / finding
+→ Finding Candidate
+→ Core Finding Disposition
+→ Application / Scenario / Screen / other real-owner handoff only when that semantic owner/lifecycle consequence is selected
+
+BOTH / IMPLEMENT_AND_TEST_LATER
+→ preserve the Evidence Question as Core State
+→ normal Target/command resolution may consume it through TM-PRACTICAL-TEST / TM-TEST-DESIGN when those Targets are selected/reused
+
+already-formed loose Idea State
+→ P-14 placement in SDS-PLANNING-STATE/ideas/
 ```

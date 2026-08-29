@@ -174,11 +174,11 @@ A module stores only:
 Lens Profile
   reusable Lens IDs
   target-specific applicability gates
-  known Result Units/fields that are natural analysis subjects when useful
+  known Result Units/fields that are natural Lens Analysis Surface candidates when useful
   local-only Lens prompts when genuinely non-reusable
 ```
 
-A Lens does not define target-specific Result Units/fields. Findings route through Core-defined State Units and may affect already-declared Result Units after normal authority/resolution.
+A Lens does not define target-specific Result Units/fields. It surfaces Finding Candidates; Core Finding Disposition resolves their State/lifecycle/owner destination, and normal authority/resolution may later update already-declared Result Units.
 
 If a local Lens becomes useful across multiple Target families, promote it into the Lens Library.
 

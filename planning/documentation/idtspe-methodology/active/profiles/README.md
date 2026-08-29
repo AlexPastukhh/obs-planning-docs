@@ -21,3 +21,7 @@ SDS
 ```
 
 Future non-SDS planning profiles can be added beside `sds/` without redefining the generic Shell.
+
+## Current SDS Conformance
+
+The installed SDS profile now uses explicit Target Step-Result Contracts / Result Units in all 17 Target Modules and explicit Lens Analysis Surface + `ANALYZE / CHECK / REFINE / CHALLENGE` + Finding Contracts in all 7 SDS-specific Lenses. Generic finding ownership/state/lifecycle placement is resolved by Core `Finding Disposition`.

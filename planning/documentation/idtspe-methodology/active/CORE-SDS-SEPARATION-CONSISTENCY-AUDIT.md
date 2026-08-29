@@ -60,10 +60,11 @@ Total:                                18
 - source AP records: **34**
 - source AG records: **24**
 - unique source records: **58**
-- Target Module AP records own Target-result persistence/representation; Lens AG records are reserved for Lens-produced findings/supporting material and may be absent when findings simply return to the Target owner: **PASS**
+- Target Module AP records own Target-result persistence/representation guidance; Lens AG records are reserved for Lens-produced supporting/artifact-placement material, not semantic Finding routing. Finding Candidates go through Core Finding Disposition, and AG may be absent when no distinct supporting materialization is needed: **PASS**
 - duplicated Domain/Slice/Frontend/WEUC evolution proposals were removed from Target Modules/profile lenses; L5/WEUC `AG-L5-02` is the canonical target-local evolution-companion proposer: **PASS**
 - annotated SDS materialization projection accounts for **58 / 58** AP/AG source IDs exactly: tree nodes for materialization candidates + explicit non-tree embed/route guidance; the old flattened registry path is compatibility-only: **PASS**
 - AP/AG source-record identity remains owned by Target Module/Lens bodies: **PASS**
+- Lens ownership of an `AG-*` source record does not grant semantic finding-owner/handoff/reopen authority; that remains Core Finding Disposition: **PASS**
 - unresolved persistence/placement semantics preserved: **PASS**
 
 ## SDS Physical / Materialization Topology

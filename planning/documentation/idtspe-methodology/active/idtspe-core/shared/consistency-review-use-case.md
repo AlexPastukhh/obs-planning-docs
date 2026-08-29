@@ -5,7 +5,7 @@ Repository provenance: current `UC-PLAN-CONSISTENCY`, detailed-planning integrat
 
 ## Capability
 
-Check selected semantic/planning owners after creation/change/reopen and route contradictions or stale relationships back to the **real owners**.
+Check selected semantic/planning owners after creation/change/reopen, surface contradictions or stale relationships as findings, and use generic Finding Disposition to resolve the **real owner / State / lifecycle consequence**.
 
 ```text
 Consistency Review
@@ -42,7 +42,7 @@ actual Evidence/current state when relevant
 4. Check Source meaning vs consumer meaning.
 5. Detect contradictions, stale references, missing reciprocal relations and silently weakened guarantees.
 6. Distinguish representation/file drift from semantic drift.
-7. Route every material finding to the real owner that must reopen/update.
+7. Send every material finding through Core Finding Disposition; record the real owner / State / revalidation or reopen consequence selected there.
 8. Re-run focused checks after owner updates when needed.
 9. Record review result/evidence; do not create a substitute semantic authority.
 
@@ -55,7 +55,7 @@ Slice did not weaken Requirement/Domain guarantees
 frontend realization still matches Screen/Behavior meaning
 tests prove current rather than historical meaning
 Cross-Cutting local obligations still point to canonical owner
-downstream Evidence requiring upstream reopen was routed correctly
+downstream Evidence that challenges upstream meaning was dispositioned to the correct owner/revalidation path
 ```
 
 These are examples, not an exhaustive fixed checklist.
@@ -66,7 +66,7 @@ These are examples, not an exhaustive fixed checklist.
 checked owner set / review scope
 consistency findings
 contradiction / stale / missing-relation findings
-real owner(s) to reopen/update
+affected/likely real owner(s) + disposition/revalidation consequence
 unchanged confirmations when useful
 review Evidence / completion status
 ```
@@ -77,8 +77,12 @@ The result is a review record, not a Target Instance representing new domain/app
 
 If review exposes a real unresolved design choice:
 ```text
-route/reopen the relevant existing Target
-or create the appropriate real Target through normal Target Formation
+Finding Candidate
+→ Core Finding Disposition
+→ existing owner / Question / QRP / Revalidation Signal
+→ Target Formation candidate only when independently substantial
 ```
+
+Target Formation decides reuse vs handoff vs new bounded Target; the consistency review does not open one itself.
 
 Do not turn the review itself into a Target merely because it produced findings.

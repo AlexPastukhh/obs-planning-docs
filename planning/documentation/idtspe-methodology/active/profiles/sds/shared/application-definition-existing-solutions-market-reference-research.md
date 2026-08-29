@@ -84,7 +84,8 @@ well enough?
 If yes:
 
 ```text
-reopen Step-02 own-software contribution
+surface a Step-02 own-software-contribution challenge Finding Candidate
+→ Core Finding Disposition selects Step-02 revalidation/reopen when warranted
 → consider use / buy / adapt / integrate / hybrid
 → custom Application Definition may terminate
 ```
@@ -131,7 +132,7 @@ build/buy/adapt/integrate alternatives
 Prototype questions
 Scenario/Screen Future Ideas
 new Q/R/P
-reopen conditions
+Step-02 challenge / revalidation triggers
 ```
 
 It does not automatically create accepted Features/Scenarios/Screens.

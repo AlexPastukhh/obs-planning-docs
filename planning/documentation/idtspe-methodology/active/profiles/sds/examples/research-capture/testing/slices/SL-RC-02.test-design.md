@@ -26,6 +26,6 @@ No new unit layer is invented unless optional-thought semantics acquire isolated
 
 ```text
 proof design selected
-→ reopen slices/SL-RC-02.md
+→ re-enter `slices/SL-RC-02.md` in the existing Target context
 → TM-IMPLEMENTATION-SLICE REFINE
 ```

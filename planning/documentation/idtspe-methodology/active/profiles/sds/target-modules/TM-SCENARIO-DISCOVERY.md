@@ -112,7 +112,8 @@ surrounding manual/process/external-system routes
 
 ### Evidence / Current-State Sources
 ```text
-Prototype findings/candidates
+accepted Prototype Interpretation / Decision Handoff when relevant
+referenced Prototype Evidence
 observed workflow/behavior Evidence
 ```
 
@@ -206,9 +207,34 @@ keep as action inside parent Scenario
 future/deferred Scenario Idea
 ```
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+derive Scenario identity candidates from Need/result → compare/split/merge boundaries → select current catalog/status → expose responsibility gaps → preserve deferred/future ideas as Core Idea State
+```
+
+Deferred/future Scenario ideas are not selected Scenario Result Units and stay in the existing Ideas owner.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Scenario Discovery Result`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-SDISC-01` | Scenario Discovery Catalog | Scenario Catalog: selected/current candidate identities, boundaries, relations and statuses |
+| `RU-SDISC-02` | Application Responsibility Gap Map | accepted Application responsibility not yet represented by a current Scenario |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 **Scenario Catalog** — selected/current candidate Scenario identities and statuses.
 
@@ -237,6 +263,9 @@ Key meanings:
 
 
 **Application Responsibility Gaps** — accepted Application responsibility not yet represented by a current Scenario, if any.
+
+
+## State-Unit / Idea Handling
 
 **Deferred/Future Scenario Ideas** — do not duplicate them into the Scenario Catalog as selected meaning. Store them in `SDS-PLANNING-STATE/ideas/scenario/IDEAS.md` and reference them only when useful.
 

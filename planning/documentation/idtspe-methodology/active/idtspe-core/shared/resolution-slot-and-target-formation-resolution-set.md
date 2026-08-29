@@ -597,7 +597,7 @@ Resolution Slot
 ---
 
 # 13. Relation To Lenses
-A Lens may generate Evidence/findings that help resolve ordinary slots, while `TF-06A LENS_SET` resolves **which Lens perspectives are active**.
+A Lens may surface Finding Candidates that help resolve ordinary slots, while `TF-06A LENS_SET` resolves **which Lens perspectives are active**. Core Finding Disposition determines whether a material finding becomes/refines Evidence, an Idea, Q/R/P, a Decision input, revalidation state or another owner.
 
 ```text
 L1 Need / Value / Scope
@@ -631,7 +631,7 @@ TF-06A LENS_SET
 = proportional Lens Applicability Scan over required/module-attached/registered/explicit candidates
 ```
 
-The active Target Module is one selection source, not the whole Lens universe. Local Target Contracts scan the same Core/profile registries. Lens findings remain normal Evidence / Ideas / Q/R/P / Decision inputs.
+The active Target Module is one selection source, not the whole Lens universe. Local Target Contracts scan the same Core/profile registries. Lens findings cross the producer/Core boundary as Finding Candidates; Core Finding Disposition resolves their actual State/lifecycle/owner destination.
 
 # 14. Relation To Validators
 
@@ -766,7 +766,7 @@ Target Formation uses one Resolution Set instead of duplicated check/decision me
 
 ```text
 Lens Set is a composition slot
-Lens finding is Evidence / Idea / Q/R/P / Decision input
+Lens output is a Finding Candidate; Core Finding Disposition may resolve it into Evidence / Idea / Q/R/P / Decision input / revalidation / another owner
 Lens file is reusable methodology owner
 ```
 

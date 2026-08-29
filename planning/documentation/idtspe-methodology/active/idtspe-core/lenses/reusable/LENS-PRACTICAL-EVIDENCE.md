@@ -79,7 +79,7 @@ WHEN: actual practical Evidence supports/challenges Decision/acceptance
 GUIDANCE: ADVISORY_REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Prototype or Practical Test Target
+SEMANTIC_OWNER: resolved Evidence/host Target owner; Prototype or Practical Test is a likely owner hint when that Target is selected/resolved
 REPRESENTATION: EMBED_OR_SUPPORTING_EVIDENCE_ARTIFACT
 FILE_OR_ARTIFACT: <prototype-or-practical-test-owner> and optional <evidence-artifact>
 CONTENT: Evidence question/protocol; actual observation; limitations; interpretation/disposition
@@ -95,7 +95,7 @@ WHEN: run data/logs/media/measurements need independent storage
 GUIDANCE: ADVISORY_PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Evidence artifact as supporting source
+SEMANTIC_OWNER: resolved Evidence State/owner; the supporting Evidence artifact is representation/source storage, not separate semantic authority
 REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT
 FILE_OR_ARTIFACT: <practical-evidence-artifact>
 CONTENT: raw Evidence referenced from semantic/planning owner
@@ -122,7 +122,7 @@ L3 identifies uncertainty/reversibility. L6 asks whether implemented result is o
 
 ## Escalation / Revalidation
 
-Unexpected Evidence may reopen Decision/Question Set/Scope through normal reconciliation.
+Unexpected Evidence surfaces a Finding Candidate. Core Finding Disposition may select Decision/Question-Set/Scope revalidation or reopen through normal reconciliation; the Lens does not perform that transition itself.
 
 ## High-Level Example — Self-Contained Walkthrough
 

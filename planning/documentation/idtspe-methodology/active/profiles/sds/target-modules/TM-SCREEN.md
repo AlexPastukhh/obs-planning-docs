@@ -205,9 +205,34 @@ What remains Scenario/Behavior meaning rather than Screen meaning?
 Which preliminary screen ideas remain unselected and belong in global ideas?
 ```
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+derive selected spatial owners from Scenario behavior/DATA → build Screen Map relations → deepen only material Screen Draft objects → preserve unselected spatial ideas as Core Idea State
+```
+
+A Screen Draft is an addressable internal object, not an Application Scenario or frontend component by name alone.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Screen / Window Spatial Model`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-SCREEN-01` | Screen Map | Screen inventory + Scenario×Screen + Behavior availability + DATA visibility + routes/transitions + global spatial constraints |
+| `RU-SCREEN-02` | Screen Draft Set | addressable Screen Draft objects using the module internal object shape |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Screen Map
 
@@ -242,7 +267,8 @@ visual/reference Evidence — optional
 
 A Screen Draft is an addressable spatial object inside this module family; it does not become an Application Scenario or frontend component by name alone.
 
-### Preliminary Ideas Boundary
+
+## State-Unit / Idea Handling
 
 Unselected Screen/window ideas remain in:
 

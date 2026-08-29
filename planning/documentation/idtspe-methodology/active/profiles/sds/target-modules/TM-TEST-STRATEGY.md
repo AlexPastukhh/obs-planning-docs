@@ -303,9 +303,36 @@ Frequent conditional Lens(es):
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — material quality risks drive shared proof
 - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — test dependency/fixture/environment structure has material blast radius
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+establish proof scope/goals → allocate layer responsibilities → prevent duplicated/incorrect proof boundaries → define shared data/harness/topology only when material → coordinate evidence-state representation
+```
+
+Concrete per-property proof design stays with TM-TEST-DESIGN; actual Evidence remains Core State.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Test Strategy`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-TSTRAT-01` | Strategy Scope / Proof Goals | Strategy Scope/Semantic Owners + Proof Goals |
+| `RU-TSTRAT-02` | Layer Responsibility / Non-Duplication Boundary | Layer Responsibility Matrix + Critical E2E/Practical paths + Non-Duplicated Coverage Boundary |
+| `RU-TSTRAT-03` | Shared Test Data / Harness / Topology | Shared Test DATA/Fixtures/Isolation + Harness/Helper Boundaries + Test Realization/Topology Registry when useful |
+| `RU-TSTRAT-04` | Evidence State Coordination | Evidence States and cross-owner proof coordination |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 **Strategy Scope / Semantic Owners** — exact result/owner set whose proof responsibility needs coordination.  
 **Proof Goals** — classes of correctness/evidence the strategy must cover.  

@@ -7,9 +7,9 @@ Status: active canonical SDS profile package
 ```text
 IDTSPE Core
 +
-17 SDS Target Modules
+17 SDS Target Modules with explicit Step-Result Contracts / Result Units
 +
-SDS-specific Lens pack
+7 SDS-specific Lenses with explicit Analysis Surface / operations / Finding Contract
 +
 directed Target/readiness workflow
 +
@@ -37,10 +37,11 @@ SDS is not the definition of IDTSPE itself. Non-SDS Target Module families may c
 9. [`lenses/README.md`](lenses/README.md) — SDS-specific Lens pack + required Core Lens dependencies.
 10. [`../../theoretical-modules/testing/README.md`](../../theoretical-modules/testing/README.md) — raw detailed Testing theory retained as a Theoretical Module; consult conditionally, not as workflow authority.
 11. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — SDS command surface.
-12. [`examples/research-capture/README.md`](examples/research-capture/README.md) — worked physical traversal.
+12. [`examples/IMPLEMENTATION-SLICE-UNIT-REFERENCE.md`](examples/IMPLEMENTATION-SLICE-UNIT-REFERENCE.md) — reference pair example for Result Units, Slice Lens operations and Core Finding Disposition.
+13. [`examples/research-capture/README.md`](examples/research-capture/README.md) — worked physical traversal.
 
 ## Core Dependency
 
-SDS consumes the generic package at [`../../idtspe-core/README.md`](../../idtspe-core/README.md). Generic Shell/Target/Lens/Artifact rules and the shared Target Module/Lens Knowledge Basis contract are not redefined here. All 17 SDS Target Modules declare their module-specific Knowledge Basis through that Core contract.
+SDS consumes the generic package at [`../../idtspe-core/README.md`](../../idtspe-core/README.md). Generic Shell/Target/Unit/Lens/Artifact rules, Core Finding Disposition and the shared Target Module/Lens Knowledge Basis contract are not redefined here. All 17 SDS Target Modules declare their module-specific Knowledge Basis plus explicit Step-Result Contracts; all 7 SDS-specific Lenses declare Analysis Surface + supported operations + Finding Contract.
 
 Lens selection is not limited to Target Module attachment: `TF-06A` scans this profile's Lens registry proportionally, and generic Core `подбери линзы` / `примени линзу` operations can select/apply any registered applicable SDS Lens inside the natural Target/Local Target context.

@@ -83,7 +83,7 @@ P-06 Lens Port
 + exceptional local-only lens
 ```
 
-A Lens reads/analyzes IDTSPE Units and routes findings through Core-defined Questions/Ideas/Evidence/Q-R-P/Decision inputs. It may affect already-declared Result Units after normal resolution, but it does not define State Unit kinds, Target Result Unit kinds, target output schema or semantic authority.
+A Lens analyzes an explicit/implicit Analysis Surface through reusable operations such as `ANALYZE / CHECK / REFINE / CHALLENGE` and surfaces findings. Generic Core Finding Disposition resolves those findings into the appropriate State/lifecycle/owner destination; accepted resolution may later update already-declared Result Units. A Lens does not define State Unit kinds, Target Result Unit kinds, target output schema or semantic authority.
 
 ## 6. Knowledge Basis And Artifact / File Implications
 
@@ -96,30 +96,35 @@ Knowledge Basis Mode:
 
 `Target Inputs / Evidence` are current planning inputs. `Knowledge Basis` is the principles/rules/theory used by the evaluation and may be inline, separately owned or hybrid.
 
-A Lens may contribute **zero or more** `AG-*` records. No AG record is required when findings simply return to the current Target and the Target Module/local contract already owns representation of accepted Target meaning. AG records are reserved for Lens-produced supporting/routing meaning; they must not duplicate a Target Module AP for the same Target result.
+A Lens may contribute **zero or more** `AG-*` records. No AG record is required when Core Finding Disposition resolves the current Target as the semantic owner, the Target Module/local contract already owns representation of the accepted Target meaning, and no distinct supporting artifact is useful. AG records are reserved for Lens-produced supporting / artifact-placement meaning; semantic owner/handoff/reopen consequences remain Core Finding Disposition concerns, and AG must not duplicate a Target Module AP for the same Target result.
 
 The Documentation / Representation Lens is required before final P-14 placement whenever material output may persist. The Lens never creates semantic authority by itself; `P-14 / TF-10` resolves physical placement.
 
 
-## 6A. Unit Interaction / Routing
+## 6A. Analysis Surface / Operations / Findings
 
-Canonical rule: [`LENS-MODEL.md`](LENS-MODEL.md) + [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md).
+Canonical rule: [`LENS-MODEL.md`](LENS-MODEL.md) + [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md) + [`../shared/finding-disposition-contract.md`](../shared/finding-disposition-contract.md).
 
 New or materially revised Lenses should make explicit:
 
 ```text
-Context Reads
-Focused Reads / Analysis Focus
-State-Unit routing kinds — Core-owned
-Fill / Refine
-Challenge / Reopen
-Check / Validate
-Affect / Update After Resolution
-External Routing
-No-New-Result-Unit Guard
+Analysis Surface
+  Primary / Conditional Result Units or semantic selectors
+  Relevant State Units
+  Context
+
+Supported Operations
+  ANALYZE
+  CHECK
+  REFINE
+  CHALLENGE
+
+Typical Findings / Finding Contract
 ```
 
-Current installed Lens bodies remain migration-compatible until a later Core/profile conformance pass makes this section literal in each file.
+The Lens produces findings; Core Finding Disposition resolves their ownership/State/lifecycle destination. `REOPEN`, Result Unit update after resolution, cross-owner handoff and Target Formation are Core consequences rather than Lens operations.
+
+The 7 SDS-specific Lens bodies conform literally after the SDS migration. Existing generic Core Lens bodies remain migration-compatible until a separate literal Core-Lens conformance pass is useful.
 
 ## 7. Maintenance
 

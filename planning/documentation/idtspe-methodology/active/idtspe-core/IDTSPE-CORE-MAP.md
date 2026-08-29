@@ -62,6 +62,7 @@ Generic mechanics:
 
 - [`target-modules/README.md`](target-modules/README.md)
 - [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md)
+- [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md)
 - [`shared/target-module-model.md`](shared/target-module-model.md)
 - [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared `INLINE / REFERENCED / HYBRID` knowledge dependency contract used by Target Modules and Lenses.
 - [`shared/target-module-creation-and-integration-use-case.md`](shared/target-module-creation-and-integration-use-case.md)
@@ -86,7 +87,7 @@ Documentation / Representation / Artifact Boundary
   required when material output may persist
 ```
 
-Additional generic and profile-specific Lenses are selected by the `TF-06A` Lens Applicability Scan from required Core, active Target Module attachment policy, Core/profile registries and explicit user/agent selection. A Local Target Contract can use the same registry without a reusable Target Module. Target Modules and Lenses share the same inline/referenced/hybrid Knowledge Basis sub-contract. Each Lens separates its Operational Evaluation Contract from that Knowledge Basis; each Target Module separates its operational Target contract/Source Contract from its own Knowledge Basis. A Lens operates inside the IDTSPE Unit model: it reads/analyzes Units, routes findings into Core-defined State Units, and may affect already-declared Result Units after normal resolution. It does not define Unit kinds, Target output schema or semantic authority.
+Additional generic and profile-specific Lenses are selected by the `TF-06A` Lens Applicability Scan from required Core, active Target Module attachment policy, Core/profile registries and explicit user/agent selection. A Local Target Contract can use the same registry without a reusable Target Module. Target Modules and Lenses share the same inline/referenced/hybrid Knowledge Basis sub-contract. Each Lens separates its Operational Evaluation Contract from that Knowledge Basis; each Target Module separates its operational Target contract/Source Contract from its own Knowledge Basis. A Lens operates inside the IDTSPE Unit model through an Analysis Surface and supported operations (`ANALYZE / CHECK / REFINE / CHALLENGE`). It surfaces Finding Candidates; generic Core Finding Disposition resolves ownership/State/lifecycle consequences, and normal resolution may later update already-declared Result Units. The Lens does not define Unit kinds, Target output schema or semantic authority.
 
 The generic reusable set includes [`LENS-LINKED-NOTES-USAGE-JUSTIFICATION`](lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md), which justifies or rejects Linked Notes/backlink/query behavior. Linked Notes are not a Core storage tree or semantic owner.
 

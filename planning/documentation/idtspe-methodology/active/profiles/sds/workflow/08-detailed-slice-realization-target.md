@@ -46,19 +46,19 @@ one normal vertical Slice → exactly one Primary Scenario
 one Scenario → may have several initial/extending Slices
 ```
 
-Shared work across several Scenarios/Slices goes to `TM-CROSS-CUTTING-CONCERN` or another real shared owner. Architecture normally remains an Answer Decision; use a generic child Target only when independently material.
+Shared work across several Scenarios/Slices surfaces an ownership Finding Candidate; `TM-CROSS-CUTTING-CONCERN` or another shared owner may be a likely-owner hint, while Core Finding Disposition resolves the actual owner/State consequence and Target Formation handles independently material Target ownership. Architecture normally remains an Answer Decision; when a separate architecture problem is independently material, surface a Target Formation candidate and let Target Formation decide reuse/handoff/new bounded Target.
 
-## Runtime Path vs Integrated Implementation Plan
+## Runtime Path vs Codebase Integration Path
 
 ```text
 Runtime Path
 = technical running-system execution view
 
-Integrated Implementation Plan
+Codebase Integration Path
 = pre-implementation codebase call-level view
 ```
 
-Default Integrated Plan granularity:
+Default Codebase Integration Path granularity:
 
 ```text
 one step ≈ one significant method/function/handler/repository/integration call
@@ -102,6 +102,6 @@ No separate Slice proof-target semantic entity is introduced.
 
 Frontend is a Part Plan by default; `TM-FRONTEND-SLICE` is promotion only.
 
-If a Part exposes genuine unresolved alternatives/QRP/Evidence/Decision space, form a bounded child IDTSPE Target.
+If a Part exposes genuine unresolved alternatives/QRP/Evidence/Decision space, keep that state explicit and surface a Target Formation candidate when independently substantial; Target Formation decides whether a bounded child Target is needed.
 
 Canonical direction: `../shared/directed-methodology-workflow-and-next-step-resolution.md`.

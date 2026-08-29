@@ -71,7 +71,7 @@ user submits capture
 → visible feedback
 ```
 
-Integrated Implementation Plan:
+Codebase Integration Path:
 
 ```text
 CaptureScreen.onSave()
@@ -85,11 +85,11 @@ CaptureScreen.onSave()
 
 The Runtime Path describes what the running system does.
 
-The Integrated Plan describes which significant codebase owners/calls will realize it.
+The Codebase Integration Path describes which significant codebase owners/calls will realize it.
 
 If `CaptureRepository.save()` needs a simple known mapping algorithm, a lightweight Part Plan is enough.
 
-If the team still must choose among several persistence/transaction strategies with materially different consequences, that local problem becomes a child IDTSPE Target instead.
+If the team still must choose among several persistence/transaction strategies with materially different consequences, a newly surfaced issue starts as a Finding Candidate. Core Finding Disposition decides whether accepted meaning creates/refines Question / Idea / Q/R/P / Decision input or another lifecycle consequence. When the problem is independently substantial, Core disposition may surface a Target Formation candidate; Target Formation decides reuse/handoff/new child Target.
 
 ### Result
 
@@ -101,9 +101,9 @@ Domain Elements Used
 shared/cross-cutting local obligations
 dependencies/handoffs
 Runtime Path
-call-level Integrated Implementation Plan
+call-level Codebase Integration Path
 optional focused Part Plans
-testing handoff
+RU-SLICE-01 verification / test-handoff meaning
 ```
 
 ### Boundary / Lesson
@@ -161,7 +161,7 @@ Mode: `INLINE`
 **Embedded Principles / Rules / Theory:**
 
 - An Implementation Slice plans one Useful Vertical Result end to end rather than a horizontal technical layer.
-- Runtime path, integrated implementation plan and part detail remain subordinate to the selected Slice semantic result.
+- Runtime path, Codebase Integration Path and part detail remain subordinate to the selected Slice semantic result.
 - Future evolution pressure is evaluated through WEUC/L5; the Target Module does not propose evolution companions itself.
 
 **Referenced Knowledge Owners:**
@@ -188,10 +188,10 @@ What dependencies/handoffs materially affect the result?
 Which shared/cross-cutting concerns apply locally and who owns them?
 What Runtime Path must occur?
 Which concrete codebase responsibilities/calls will realize it?
-Which local call is simple enough for a Part Plan vs complex enough for child IDTSPE?
-Does substantial frontend work justify a promoted TM-FRONTEND-SLICE?
-What L4/L5/L6 findings materially constrain implementation?
-What implementation finding would require reopening Scenario/Domain/Screen/Application?
+Which local work is simple enough for a Part Plan, and which independently substantial unresolved work should become Target Formation input?
+Does substantial frontend work warrant Target Formation consideration with `TM-FRONTEND-SLICE` as a likely module family?
+Which dispositioned L4/L5/L6-derived State / accepted Decisions materially constrain implementation?
+Which implementation Finding Candidate could, after Core Finding Disposition, warrant revalidation/reopen of Scenario/Domain/Screen/Application?
 ```
 
 ## Lens Profile
@@ -215,9 +215,37 @@ Frequent conditional Lens(es):
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — proof/observation/diagnosis/operation
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — material cross-cutting quality risks
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+stabilize Slice Outcome Definition → resolve responsibility/dependency boundary → derive Runtime Path → map it into Codebase Integration Path → add Focused Part Plans only for already-selected local responsibilities → hand RU-SLICE-01 verification meaning to Test Design
+```
+
+Proof/Test Handoff is folded into RU-SLICE-01 by default. Future Slice evolution companion is supporting L5/WEUC meaning, not a Slice Result Unit.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Implementation Slice Plan`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-SLICE-01` | Slice Outcome Definition | Slice Identity + Useful Vertical Result Definition + verification/proof-handoff meaning |
+| `RU-SLICE-02` | Responsibility / Dependency Boundary | Domain Elements Used + Shared/Cross-Cutting Obligations + Dependencies/Handoffs + implemented/delegated/later/outside meaning |
+| `RU-SLICE-03` | Runtime Path | Runtime Path |
+| `RU-SLICE-04` | Codebase Integration Path | Codebase Integration Path + Implementation Realization Notes |
+| `RU-SLICE-05` | Focused Part Plan(s) — optional | Focused Part Plans |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Slice Identity
 
@@ -312,9 +340,9 @@ observable effect
 
 `Runtime Path` is not a task/file/class plan.
 
-### Integrated Implementation Plan
+### Codebase Integration Path
 
-`Integrated Implementation Plan` is the **pre-implementation codebase call-level picture** for the whole Slice.
+`Codebase Integration Path` is the **pre-implementation codebase call-level picture** for the whole Slice.
 
 Default granularity:
 
@@ -363,7 +391,7 @@ Output / next call
 Important boundary — transaction/async/remote/persistence/cross-cutting/failure
 ```
 
-The integrated plan should traverse applicable responsibilities:
+The Codebase Integration Path should traverse applicable responsibilities:
 
 ```text
 entry/interaction
@@ -378,13 +406,13 @@ migration/config — when material
 
 It is intentionally one level before coding: concrete owners + significant calls + order + responsibility, but not method bodies/full pseudocode/exact diff.
 
-### Runtime Path vs Integrated Implementation Plan
+### Runtime Path vs Codebase Integration Path
 
 ```text
 Runtime Path
 = system execution view
 
-Integrated Implementation Plan
+Codebase Integration Path
 = codebase call-level pre-implementation view
 ```
 
@@ -411,12 +439,12 @@ If the local question is still:
 which approach/state model/algorithm/integration architecture should we choose?
 ```
 
-do not inflate the Part Plan. Open a bounded child IDTSPE Target and feed its accepted result back to the parent Slice.
+do not inflate the Part Plan. Keep the unresolved choice in normal Core State and, when independently substantial, surface a Target Formation candidate. Target Formation decides whether to reuse an existing Target, hand off to another owner, or form a bounded child Target; any accepted external result then becomes Source/input for parent Slice refinement.
 
 Default:
 
 ```text
-slice integrated plan
+Slice Codebase Integration Path
 ├─ optional frontend Part Plan
 ├─ optional server Part Plan
 └─ optional other focused Part Plan
@@ -437,9 +465,41 @@ selected state ownership
 migration constraints
 ```
 
-### Slice Evolution Companion — L5/WEUC Handoff
 
-When material planned/probable future evolution surrounds this Slice, route the future-path question through the WEUC/L5 Lens. This Target Module does **not** propose or require a Slice evolution companion.
+### RU-SLICE-01 Verification / Test Handoff Detail
+
+The verification/proof handoff is part of `RU-SLICE-01 Slice Outcome Definition`, not a separate Result Unit by default.
+
+`TM-TEST-DESIGN` consumes:
+
+```text
+Useful Vertical Result Definition
+Primary Scenario Acceptance
+Behavior Obligations
+DATA Obligations
+must-hold / negative guarantees
+Domain Verification Meaning when present
+Screen expectations when relevant
+selected implementation boundary
+```
+
+Default proof split for the Slice:
+
+```text
+Slice orchestration / collaboration among implemented owners
+→ integration-test responsibility
+
+isolated complex business/Domain rules used by the Slice
+→ focused unit-test responsibility
+```
+
+`TM-TEST-DESIGN` decides the concrete proof design and may override the default when another layer is the cheapest credible way to prove the actual property.
+
+No separate proof-target entity is introduced.
+
+## Supporting Evolution Handoff — L5/WEUC
+
+When material planned/probable future evolution surrounds this Slice, apply WEUC/L5 as supporting evaluation. That Lens may surface a future-path Finding Candidate / likely-owner hint; Core Finding Disposition resolves the actual owner/handoff. This Target Module does **not** propose or require a Slice evolution companion.
 
 If `AG-L5-02` justifies durable target-local evolution, Documentation / Representation decides whether it should persist and P-14 resolves an embedded Evolution section versus a separate companion. Example after L5/P-14 placement:
 
@@ -448,7 +508,7 @@ slices/SL-CAP-01.md
 slices/SL-CAP-01.evolution.md
 ```
 
-The L5-produced companion may contain literal approximate future paths:
+The selected/materialized evolution companion, after Core disposition + Documentation / Representation + P-14 placement, may contain literal approximate future paths:
 
 ```text
 EV-17 PDF Capture
@@ -483,7 +543,7 @@ PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: current Implementation Slice Target
 REPRESENTATION: EXISTING_STRATEGY_SECTION_OR_DEDICATED_ARTIFACT_OR_IMPLEMENTATION_NATIVE_WITH_PLANNING_RESIDUE
 FILE_OR_ARTIFACT: <slice-strategy-owner>#<slice> or <slice-owner> or implementation + planning residue
-CONTENT: Useful Vertical Result; obligations; Domain elements used; Runtime Path; call-level Integrated Implementation Plan; shared obligations; testing handoff
+CONTENT: Useful Vertical Result; obligations; RU-SLICE-01 verification/test-handoff meaning; Domain elements used; Runtime Path; call-level Codebase Integration Path; shared obligations
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
@@ -510,13 +570,13 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **REQUIRED meaning, not REQUIRED dedicated file** — an accepted Slice used for realization/testing must preserve its Useful Vertical Result and material Decisions/QRP/implementation obligations somewhere durable enough for the current project. The preferred starting point is the existing `SLICE-STRATEGY.md` Slice section plus implementation-native names/types/tests/code where sufficient. A dedicated `SL-<id>.md` is promoted only when independent planning/review/addressability is useful.
 
-**CONSOLIDATE by default** — testing/frontend/Part details remain sections of the current Slice representation or strategy coordinator unless independent size/reuse/review/lifecycle pressure justifies separation. Future evolution is not a Slice AP responsibility: the WEUC/L5 Lens (`AG-L5-02`) may propose an Evolution section or companion when material.
+**CONSOLIDATE by default** — testing/frontend/Part details remain sections of the current Slice representation or strategy coordinator unless independent size/reuse/review/lifecycle pressure justifies separation. Future evolution is not a Slice AP responsibility: WEUC/L5 first surfaces future-evolution Finding Candidate(s); after Core Finding Disposition accepts/resolves local evolution meaning, `AG-L5-02` may propose an Evolution section or companion representation.
 
-**Evolution companion ownership** — `<slice-owner>.evolution.md` is supporting L5/WEUC Lens output, not an intrinsic `TM-IMPLEMENTATION-SLICE` result. The Slice module owns the current Useful Vertical Result / Runtime / Integrated Plan; L5 proposes future-path representation and P-14 resolves embed vs companion.
+**Evolution companion ownership** — `<slice-owner>.evolution.md` is an optional representation of accepted local evolution meaning, not L5/WEUC Lens output and not an intrinsic `TM-IMPLEMENTATION-SLICE` result. The Slice module owns the current Useful Vertical Result / Runtime / Codebase Integration Path; L5 may surface a Finding Candidate, Core Finding Disposition resolves local meaning/owner, and only then may `AG-L5-02` propose a supporting representation. Documentation / Representation + P-14 / TF-10 decide embed vs companion.
 
 **Separate Frontend Target artifact** only after `TM-FRONTEND-SLICE` promotion; a `frontend.md` file by itself is not proof of a new Target.
 
-`P-14` must show Slice owner, optional Part Plan artifacts, evolution companion and any child Target output destination separately.
+`P-14` must show Slice owner, optional Part Plan artifacts, evolution companion and any accepted related-Target output destination separately.
 
 ## Validators
 
@@ -527,7 +587,7 @@ INITIAL/EXTENDING role coherent
 semantic obligations match upstream owners
 Domain Elements Used do not redefine Domain
 shared concerns preserve canonical ownership
-Runtime Path and call-level Integrated Plan realize the same result
+Runtime Path and Codebase Integration Path realize the same result
 Part Plans do not replace integrated Slice authority
 testing can derive proof directly from Useful Vertical Result Definition
 ```
@@ -559,34 +619,6 @@ TM-IMPLEMENTATION-SLICE
 
 The same logical Slice owner is updated across invocations; its physical representation may stay consolidated or later be promoted/split. A second planning pass does not create a second Slice identity or force a second file.
 
-## Testing Handoff
-
-`TM-TEST-DESIGN` consumes:
-
-```text
-Useful Vertical Result Definition
-Primary Scenario Acceptance
-Behavior Obligations
-DATA Obligations
-must-hold / negative guarantees
-Domain Verification Meaning when present
-Screen expectations when relevant
-selected implementation boundary
-```
-
-Default proof split for the Slice:
-
-```text
-Slice orchestration / collaboration among implemented owners
-→ integration-test responsibility
-
-isolated complex business/Domain rules used by the Slice
-→ focused unit-test responsibility
-```
-
-`TM-TEST-DESIGN` decides the concrete proof design and may override the default when another layer is the cheapest credible way to prove the actual property.
-
-No separate proof-target entity is introduced.
 
 ## Handoff
 

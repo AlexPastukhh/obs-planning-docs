@@ -79,4 +79,4 @@ Then:
   TM-DOMAIN-DISCOVERY
 ```
 
-If later Screen work exposes missing behavior, the same Scenario file is reopened through `TM-SCENARIO-DRAFT REFINE` rather than creating duplicate Scenario truth.
+If later Screen work exposes missing behavior, surface a Scenario Finding Candidate. Core Finding Disposition may select revalidation of the same Scenario through `TM-SCENARIO-DRAFT REFINE` rather than creating duplicate Scenario truth.

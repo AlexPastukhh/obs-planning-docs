@@ -66,7 +66,7 @@ Source role classification
 reuse decision
 authority conflict
 duplicate-truth finding
-reopen route
+owner/revalidation finding
 projection/history-only classification
 ```
 
@@ -84,11 +84,11 @@ These records describe conditional placement guidance produced by this Lens. The
 ARTIFACT_GUIDANCE
 ID: AG-L2-01
 CONTENT_KIND: AUTHORITY_SOURCE_MAPPING
-WHEN: L2 resolves canonical owner/Source/reuse relation material to the Target
+WHEN: L2 surfaces a material canonical-owner / Source / reuse Finding Candidate
 GUIDANCE: ADVISORY
 PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target planning state; semantic meaning stays with identified canonical owner
+SEMANTIC_OWNER: current Target planning state for the mapping record when resolved there; referenced semantic meaning stays with the canonical owner resolved by Core Finding Disposition
 REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: canonical owner/Source-role/reuse/conflict finding
@@ -100,14 +100,14 @@ RESOLVER: P-14 / TF-10
 ARTIFACT_GUIDANCE
 ID: AG-L2-02
 CONTENT_KIND: MISSING_SEMANTIC_OWNER
-WHEN: L2 finds no valid semantic owner exists
+WHEN: L2 surfaces that no valid semantic owner is evident
 GUIDANCE: ROUTE_NOT_PLACE
 PERSISTENCE_GUIDANCE: UNRESOLVED
 PLACEMENT_DIRECTIVE: ROUTE
 SEMANTIC_OWNER: UNRESOLVED_OWNER
 REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: UNRESOLVED
-CONTENT: reopen Target Formation; do not create a file as a hidden semantic owner
+CONTENT: semantic owner unresolved; surface a Finding Candidate. Core Finding Disposition may surface a Target Formation candidate; do not create a file as a hidden semantic owner
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
@@ -117,7 +117,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 L2 often changes **placement/reference**, not semantic content.
 
-**REQUIRED** — when L2 identifies the canonical owner, `P-14` must route persisted content to that owner and mark duplicate/generated/history artifacts as reference/projection rather than equal authority.
+**REQUIRED** — when an L2 Finding Candidate is dispositioned and the canonical semantic owner is resolved, `P-14` must place persisted content in that already-resolved owner and mark duplicate/generated/history artifacts as reference/projection rather than equal authority.
 
 **PREFERRED full Artifact Pack** when reuse/merge/retire/split of existing files is material.
 
@@ -129,11 +129,11 @@ Name/path similarity is not proof of semantic equivalence.
 
 ## Composition
 
-L4 handles structural dependency/change impact. L2 handles semantic authority/reuse.
+L4 evaluates structural dependency/change impact. L2 evaluates semantic-authority/SOT/reuse questions. Neither Lens owns the referenced project semantics; Core Finding Disposition resolves accepted owner/State/lifecycle consequences.
 
 ## Escalation / Revalidation
 
-A materially contradicted trusted Source is explicitly reopened rather than silently overridden.
+A materially contradicted trusted Source produces a Finding Candidate rather than being silently overridden. Core Finding Disposition resolves whether Source/owner revalidation or reopen is required.
 
 ## High-Level Example — Self-Contained Walkthrough
 

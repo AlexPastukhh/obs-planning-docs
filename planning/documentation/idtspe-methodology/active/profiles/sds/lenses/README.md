@@ -44,6 +44,24 @@ Linked Notes Usage / Justification (`lenscmd.linked-notes.justify` when directly
 
 SDS Target Module `## Lens Profile` sections may link to both Core and SDS-specific Lens owners.
 
+## SDS Lens Conformance Contract
+
+All 7 SDS-specific reusable Lens bodies now declare:
+
+```text
+Analysis Surface
+Supported Operations
+  ANALYZE
+  CHECK
+  REFINE
+  CHALLENGE
+Typical Findings
+Finding Contract
+Knowledge Basis
+```
+
+The Lens owns the perspective and finding semantics. Generic Core [`Finding Disposition`](../../../idtspe-core/shared/finding-disposition-contract.md) owns materiality/ownership/State/lifecycle disposition. `REOPEN`, Result Unit update after resolution and cross-owner handoff are not Lens methods.
+
 ## Lens Applicability Scan
 
 SDS bootstrap loads this registry as an applicability index, not all Lens bodies. `TF-06A` combines required Core checks, the active Target Module Lens Profile, plausible Core/SDS Lens gates and explicit selection. Any SDS Lens can be explicitly applied through generic Core `idtspe.lens.apply`; specialized WEUC/Simplicity commands remain shortcuts only.

@@ -87,7 +87,8 @@ Examples:
 
 ```text
 Prototype Evidence
-Application feasibility / Prototype findings
+accepted Prototype Interpretation / Decision Handoff when relevant
+accepted/dispositioned Application-feasibility State
 current implementation state
 Observed WEUC
 actual tests
@@ -229,8 +230,8 @@ Planning/current-state Sources:
 ```text
 Slice Strategy
 accepted architecture Answer Decisions
-contextual L4/L5/L6 / WEUC findings
-Application feasibility / current implementation findings
+dispositioned L4/L5/L6 / WEUC-derived State
+accepted/dispositioned Application feasibility / current implementation State
 existing implementation state
 ```
 
@@ -329,12 +330,17 @@ SDS-WORKSPACE-EVOLUTION.md
 ↓
 WEUC Lens inside Domain / Slice / Frontend / Cross-Cutting / etc.
 ↓
-local evolution implications / architecture Answer Decisions
+local evolution / architecture Finding Candidate(s)
 ↓
-optional <owner>.evolution.md
+Core Finding Disposition
 ↓
-map update candidate when global interpretation changes
-→ TM-WEUC
+accepted local evolution State / architecture Answer-Decision input when the local Target is resolved as owner
+↓
+AG-L5-02 may propose an Evolution section / <owner>.evolution.md; Documentation / Representation + P-14 / TF-10 decide materialization
+↓
+map/global-architecture update Finding Candidate + likely TM-WEUC owner hint when global interpretation may have changed
+→ Core Finding Disposition
+→ TM-WEUC refresh/update when that owner/handoff is selected
 ```
 
 `SDS-WORKSPACE-EVOLUTION.md` is not semantic authority over Scenario/Domain/etc. Its `Current Global Architecture Position` is project-global architecture authority/default guidance only; its future sections are planning-state Sources used to evaluate how current choices behave under accepted/plausible evolution.

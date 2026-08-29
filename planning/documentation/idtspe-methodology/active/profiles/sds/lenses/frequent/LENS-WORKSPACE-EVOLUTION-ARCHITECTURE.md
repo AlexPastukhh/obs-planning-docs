@@ -30,11 +30,14 @@ check change isolation / coupling / prepared seams
 ↓
 compare Ideas by future change cost + current simplicity
 ↓
-plan target-local evolution when useful
+surface architecture/evolution Finding Candidate(s)
 ↓
-architecture Answer Decision / QRP / Evidence
-↓
-map-update candidate → TM-WEUC when global interpretation changed
+Core Finding Disposition resolves material State / semantic owner / lifecycle consequence
+├→ accepted local Q/R/P / Answer-Decision input / Evidence Need or evolution meaning when the selected ordinary Target is resolved as owner
+│  → `AG-L5-02` may propose a distinct local evolution representation
+│  → Documentation / Representation + P-14 / TF-10 decide materialization
+└→ project-global implication may carry `TM-WEUC` as a likely-owner hint
+   → accepted TM-WEUC update/revalidation only when Core disposition resolves the global owner/handoff there
 ```
 
 ## Applicability Gate
@@ -63,7 +66,7 @@ major refactoring/revalidation
 whole-Workspace architecture review / global principle formation through TM-WEUC
 ```
 
-If no Workspace Evolution Map exists yet and future evolution is material, record the gap and route creation/refresh to `TM-WEUC` rather than inventing a disconnected local map.
+If no Workspace Evolution Map exists yet and future evolution is material, surface the gap as a Finding Candidate carrying a proposed global-update need with `TM-WEUC` as a likely-owner hint; Core Finding Disposition resolves creation/refresh ownership rather than the Lens inventing a disconnected local map.
 
 ## Reusable Command Surface
 
@@ -87,9 +90,11 @@ The command does **not** create a new Lens-owned semantic Target. It resolves th
 
 ```text
 ordinary Domain/Slice/Frontend/etc target
-→ current Target remains authority
-→ L5 findings/Answer Decisions/local evolution plan
-→ optional global update candidate → TM-WEUC
+→ L5 surfaces architecture/evolution Finding Candidate(s)
+→ add a TM-WEUC likely-owner hint only when project-global meaning is suspected
+→ Core Finding Disposition resolves actual State / semantic owner / lifecycle consequence
+→ local Q/R/P / Answer-Decision input or accepted evolution meaning only when the current Target is resolved as owner
+→ AG-L5-02 may propose a local evolution companion; Documentation / Representation + P-14 / TF-10 decide actual materialization
 
 Target = whole Workspace architecture
 → TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION scope
@@ -107,10 +112,13 @@ When To Use:
 
 What You Get:
   applicable global architecture/evolution refs; future change-path projection;
-  coupling/change-isolation findings; architecture fitness; local Answer Decision
-  inputs; optional local evolution companion; and TM-WEUC update candidates.
-  For whole-Workspace architecture, the result may select/refine global principles,
-  defaults and conventions in Current Global Architecture Position.
+  coupling/change-isolation Finding Candidates; architecture-fitness Finding
+  Candidates; optional local evolution-companion proposals; and global-update
+  Finding Candidates with `TM-WEUC` as an optional likely-owner hint.
+  Core Finding Disposition resolves any accepted local Idea/Q/R/P/Answer Decision
+  input or inferred global owner/handoff consequence. For an explicitly selected
+  whole-Workspace `TM-WEUC` Target, the result may directly select/refine global
+  principles, defaults and conventions in Current Global Architecture Position.
 ```
 
 This command surface is reusable Lens invocation, not one of the 17 Target Module commands.
@@ -128,9 +136,12 @@ Ordinary example:
 ```text
 Target: domain/CaptureItem.md
 → apply L5 locally
-→ local architecture/evolution findings
-→ optional CaptureItem.evolution.md
-→ global update candidate only when needed
+→ architecture/evolution Finding Candidate(s)
+→ Core Finding Disposition
+→ accepted local Decision/evolution meaning only when CaptureItem is the resolved owner
+→ `AG-L5-02` may propose a local evolution companion
+→ Documentation / Representation + P-14 / TF-10 decide whether CaptureItem.evolution.md is materialized
+→ project-global implication, when present, becomes a separate Finding Candidate with `TM-WEUC` as a likely-owner hint and crosses Core disposition
 ```
 
 Whole-architecture example:
@@ -162,6 +173,55 @@ L4 dependency/change findings
 L6 proof/operation findings
 observed prior changes when available
 ```
+
+
+
+## Analysis Surface
+
+### Primary Result Units / Semantic Selectors
+
+- `TM-WEUC`: `RU-WEUC-01..RU-WEUC-05` when evaluating/updating the workspace architecture/evolution Target
+
+### Conditional Result Units / Semantic Selectors
+
+- architecture/evolution-sensitive Domain/Slice/Frontend Result Units in another host Target
+
+### Relevant State Units
+
+```text
+Questions
+Ideas / Planning Branches when comparison is material
+Q/R/P
+Decisions
+Evidence / Evidence Needs
+Revalidation state
+```
+
+### Context
+
+- SDS-EVOLUTION-MAP / Workspace evolution Sources
+- Current Global Architecture Position
+- local architecture Decisions
+- current code/workspace
+- future change evidence
+
+Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+
+## Supported Operations
+
+```text
+ANALYZE
+CHECK
+REFINE
+CHALLENGE
+```
+
+- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
+- `CHECK` evaluates current meaning against this Lens's criteria/guards.
+- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
+- `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
+
+`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
 
 ## Current-Map Check
 
@@ -217,7 +277,7 @@ Current owner remains current truth; companion is future planning.
 
 ## High-Level Future Change Path
 
-The Lens may plan future evolution at approximately the same code-level granularity used by the Slice Integrated Implementation Plan when the structure is known.
+The Lens may plan future evolution at approximately the same code-level granularity used by the Slice Codebase Integration Path when the structure is known.
 
 Example:
 
@@ -292,7 +352,7 @@ Can direct/simple structure survive until the future transition is actually need
 What exact condition should trigger the transition?
 ```
 
-Architecture remains an ordinary `Answer Decision` inside the current Target by default. If that local Decision should constrain/default multiple independent Targets, emit a global-architecture-position update candidate to `TM-WEUC`. If a bounded architecture problem has an independently useful deliverable and material choice space, generic child Target Formation is still allowed. Whole-Workspace architecture review itself is hosted by `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION`, not a mandatory `TM-ARCH`.
+A local architecture observation first remains a Finding Candidate. Core Finding Disposition may resolve accepted non-global meaning as an `Answer Decision` inside the current Target when that Target is the actual owner. If that accepted local Decision may need to constrain/default multiple independent Targets, surface a global-architecture-position update Finding Candidate with `TM-WEUC` as a likely-owner hint; Core Finding Disposition resolves the actual global owner/handoff. If a bounded architecture problem has an independently useful deliverable and material choice space, surface a Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target. Whole-Workspace architecture review itself is hosted by `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION`, not a mandatory `TM-ARCH`.
 
 ## Architecture / Workspace Work-Cost Check
 
@@ -368,7 +428,7 @@ LEGACY
 
 This check feeds architecture fitness and the Simplicity Lens. It does **not** create a separate architecture/work-cost Lens or a second architecture owner.
 
-## Map Feedback / TM-WEUC Handoff
+## Map Feedback / Likely TM-WEUC Owner
 
 The Lens may discover that the global map is incomplete or stale:
 
@@ -382,11 +442,11 @@ local evolution plan exposes a global interaction
 actual change contradicts projected path
 ```
 
-The Lens records a **Workspace Evolution Map update candidate** and hands it to `TM-WEUC`.
+The Lens surfaces a **Finding Candidate carrying a proposed Workspace Evolution Map update** and may mark `TM-WEUC` as a likely-owner hint; Core Finding Disposition resolves the actual handoff/owner consequence.
 
 It does not silently become a second owner of `SDS-WORKSPACE-EVOLUTION.md`.
 
-## Findings / Outputs
+## Typical Findings
 
 ```text
 relevant evolution-map refs
@@ -401,10 +461,31 @@ prepare-now vs defer finding
 architecture Answer Decision inputs
 project-global architecture principle/default/convention findings when Target = WORKSPACE_ARCHITECTURE
 optional local <owner>.evolution.md plan
-Workspace Evolution Map / Global Architecture Position update candidate → TM-WEUC
+Workspace Evolution Map / Global Architecture Position update Finding Candidate + likely TM-WEUC owner hint
 Q/R/P
 revalidation hooks
 ```
+
+
+
+## Finding Contract
+
+The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
+
+A material finding may expose proportionally:
+
+```text
+Meaning
+Affected Unit(s) / fields — when known
+Evidence / rationale
+Materiality hint — optional
+Likely semantic owner — optional hint
+Suggested lifecycle consequence — optional hint
+```
+
+Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+
+This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
 ## Typical Consumers
 
@@ -424,10 +505,10 @@ WHEN: Lens discovers material application/workspace-level evolution path, prepar
 GUIDANCE: ROUTE_REQUIRED_CANDIDATE
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: TM-WEUC Target / Workspace Evolution Map
+SEMANTIC_OWNER: likely TM-WEUC Target / Workspace Evolution Map; Core Finding Disposition resolves actual semantic owner
 REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: SDS-PLANNING-STATE/SDS-WORKSPACE-EVOLUTION.md
-CONTENT: proposed global evolution interpretation/path/extension-point/transition update or Current Global Architecture Position update; TM-WEUC decides canonical map content
+CONTENT: proposed global evolution interpretation/path/extension-point/transition update or Current Global Architecture Position update; resolved TM-WEUC owner decides canonical map content when selected
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
@@ -440,7 +521,7 @@ WHEN: Lens discovers material future path specific to one Domain/Slice/Frontend/
 GUIDANCE: ADVISORY_PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: base Target owner remains current truth
+SEMANTIC_OWNER: base Target owner only when Core Finding Disposition resolves accepted local evolution meaning there; otherwise resolved owner
 REPRESENTATION: COMPANION_ARTIFACT
 FILE_OR_ARTIFACT: <owner>.evolution.md
 CONTENT: local future [NEW]/[EXTEND]/[REUSE]/[NEW?] path; change isolation; prepared seam; trigger
@@ -456,7 +537,7 @@ WHEN: architecture choice resolves current non-global Target realization and doe
 GUIDANCE: ADVISORY_REQUIRED_TO_PERSIST_IF_ACCEPTED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target
+SEMANTIC_OWNER: current Target only when Core Finding Disposition resolves the accepted non-global architecture Decision there; otherwise resolved owner
 REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: accepted architecture Answer Decision; rationale; tax; expected evolution effect
@@ -467,11 +548,13 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-**REQUIRED global update candidate** when the Lens discovers a material application/workspace-level evolution path, prepared extension point, architecture-transition condition **or architecture principle/default that should survive across independent Targets**: route it to `TM-WEUC` / `SDS-PLANNING-STATE/SDS-WORKSPACE-EVOLUTION.md`.
+`GUIDANCE: ROUTE_*` / `PLACEMENT_DIRECTIVE: ROUTE` below are **artifact-placement guidance**, not Lens-owned semantic Finding routing. Semantic owner/handoff is still resolved by Core Finding Disposition.
+
+**REQUIRED global update candidate** when the Lens discovers a material application/workspace-level evolution path, prepared extension point, architecture-transition condition **or architecture principle/default that should survive across independent Targets**: identify `TM-WEUC` / `SDS-PLANNING-STATE/SDS-WORKSPACE-EVOLUTION.md` as the likely semantic/representation destination; Core Finding Disposition resolves semantic handoff while P-14 / TF-10 resolves artifact placement.
 
 **PREFERRED target-local companion** when the finding is specifically about how one Domain/Slice/Frontend/etc. owner may evolve: `<owner>.evolution.md`.
 
-**Keep embedded** ordinary local architecture Answer Decisions in the current Target unless they need independent addressability. For `WORKSPACE_ARCHITECTURE` scope or any local Decision promoted to project-global guidance, use the `TM-WEUC` global-map route instead.
+**Keep embedded** ordinary local architecture Answer Decisions in the current Target unless they need independent addressability. For `WORKSPACE_ARCHITECTURE` scope or any local Decision promoted to project-global guidance, identify the `TM-WEUC` global map as the likely semantic/representation destination; disposition/placement resolve the actual transition.
 
 Do not duplicate one future path as equal canonical content in global map and local companion; choose a detail owner and reference it.
 
@@ -498,23 +581,24 @@ L4 Dependency & Change Impact
 
 WEUC Lens / L5
   → evaluates Target/Ideas against the evolution map,
-    plans local evolution,
+    surfaces local-evolution/architecture Finding Candidate(s),
     evaluates architecture fitness + Workspace work-cost
+  → Core Finding Disposition resolves any accepted local evolution constraints / owner consequence
 
 Simplicity / Implementation Economy Lens
-  → searches for a materially simpler candidate while preserving L5 constraints
+  → searches for a materially simpler candidate while preserving accepted/dispositioned evolution constraints
 
 L6 Verifiability / Observability / Operability
-  → proof/diagnosis/operation consequences
+  → evaluates proof/diagnosis/operation implications and may surface Finding Candidates; Core disposition resolves accepted consequences
 ```
 
 ## Escalation / Revalidation
 
-Open a bounded architecture/local child Target only when the exposed architecture problem has independent useful output, material choice space, distinct Sources and independent revalidation value.
+When the exposed architecture problem has independent useful output, material choice space, distinct Sources and independent revalidation value, surface a Target Formation candidate. Target Formation decides whether a bounded architecture/local child Target is actually formed.
 
 Otherwise keep architecture decisions in the current Target.
 
-When a global projected path/extension point changes, route refresh to `TM-WEUC`.
+When a global projected path/extension point changes, surface a refresh Finding Candidate carrying the proposed global update with `TM-WEUC` as a likely-owner hint; Core Finding Disposition resolves the handoff.
 
 ## High-Level Example — Self-Contained Walkthrough
 
@@ -578,11 +662,13 @@ Projected EV-17 path:
 
 B better matches the current map while remaining simple enough today.
 
-The Lens may also create:
+After Core Finding Disposition has accepted/resolved the local evolution meaning and owner, the Lens may also propose, through `AG-L5-02`, a supporting local evolution representation:
 
 ```text
 domain/CaptureItem.evolution.md
 ```
+
+Documentation / Representation + P-14 / TF-10 decide whether that proposal is actually persisted/placed.
 
 with:
 
@@ -600,7 +686,7 @@ offline capture
 
 The current Domain/Slice gets a better-informed Answer Decision plus a local evolution plan.
 
-If the analysis discovers that offline sync is now a real planned direction missing from the global map, it emits an update candidate for `TM-WEUC`.
+If the analysis discovers that offline sync is now a real planned direction missing from the global map, it surfaces a global-update Finding Candidate with `TM-WEUC` as a likely-owner hint; Core Finding Disposition resolves the actual owner/handoff before the global map changes.
 
 ### Boundary / Lesson
 
@@ -741,7 +827,7 @@ Mode: `INLINE`
 **Embedded Principles / Rules / Theory:**
 
 - Architecture is evaluated against credible change paths, isolation, prepared seams and work/runtime cost rather than speculative flexibility.
-- Target-local future evolution is supporting planning state; project-global architecture/evolution updates route to TM-WEUC.
+- Target-local future evolution is supporting planning state; project-global architecture/evolution findings identify TM-WEUC as the likely semantic owner and use Core disposition for the actual owner/handoff consequence.
 
 **Referenced Knowledge Owners:**
 

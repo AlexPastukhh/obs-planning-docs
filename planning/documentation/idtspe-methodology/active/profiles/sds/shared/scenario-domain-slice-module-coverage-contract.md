@@ -56,7 +56,7 @@ Behavior Items
   negative/no-mutation guarantees captured when material
 
 Requirements / Invariants
-  must-hold conditions routed to real owners
+  must-hold conditions dispositioned/owned by real semantic owners
 
 Screen relations
   reciprocal when spatial owner is material
@@ -76,7 +76,7 @@ Discovery loop:
 Scenario ↔ DATA ↔ Behavior ↔ Requirements
 ```
 
-may reopen Scenario scope.
+may surface a Finding Candidate; Core Finding Disposition may reopen Scenario scope when warranted.
 
 ---
 
@@ -157,7 +157,7 @@ local/shared must-hold conditions / negative guarantees
 Screens when material
 Domain / Domain Verification Meaning when selected
 current realization Evidence
-L4/L5/L6 findings / accepted architecture Decisions when material
+dispositioned L4/L5/L6-derived State / accepted architecture Decisions when material
 delivery/dependency constraints
 ```
 
@@ -179,7 +179,7 @@ Domain Obligations — when useful at Strategy depth
 Dependencies/order
 ```
 
-Shared work across several Scenarios/Slices is routed to `TM-CROSS-CUTTING-CONCERN` or another real shared owner.
+Shared work across several Scenarios/Slices surfaces an ownership finding; Core Finding Disposition may hand off to `TM-CROSS-CUTTING-CONCERN` or another real shared owner, using Target Formation when independent ownership itself must be resolved.
 
 ---
 
@@ -199,7 +199,7 @@ Domain Elements Used identified when Domain exists
 shared/cross-cutting local obligations referenced
 dependencies/handoffs explicit
 Runtime Path coherent
-call-level Integrated Implementation Plan coherent
+call-level Codebase Integration Path coherent
 Part Plans only for mostly-understood local work
 child IDTSPE used for genuine unresolved local design space
 ```

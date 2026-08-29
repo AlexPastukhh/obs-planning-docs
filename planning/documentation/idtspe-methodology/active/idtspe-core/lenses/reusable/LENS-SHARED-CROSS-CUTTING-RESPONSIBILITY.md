@@ -65,11 +65,11 @@ These records describe conditional placement guidance produced by this Lens. The
 ARTIFACT_GUIDANCE
 ID: AG-XCUT-01
 CONTENT_KIND: GENUINE_SHARED_CONCERN
-WHEN: Lens establishes shared canonical responsibility across consumers
+WHEN: Lens surfaces a Finding Candidate that shared canonical responsibility may exist across consumers
 GUIDANCE: ROUTE_REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: Cross-Cutting Target after Target Formation
+SEMANTIC_OWNER: resolved Cross-Cutting/shared Target after Core Finding Disposition / Target Formation
 REPRESENTATION: NEW_OR_EXISTING_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <shared-concern-owner>
 CONTENT: shared guarantee/mechanism/applicability; consumer artifacts keep local refs
@@ -85,7 +85,7 @@ WHEN: similar local mechanisms lack one shared guarantee
 GUIDANCE: ROUTE_LOCAL
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: local consumer owner
+SEMANTIC_OWNER: local consumer owner when Core Finding Disposition confirms local ownership
 REPRESENTATION: EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <consumer-owner>
 CONTENT: keep local; do not manufacture shared file
@@ -96,7 +96,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-When the Lens confirms genuine shared ownership, **REQUIRED** one canonical shared concern artifact/owner is preferred over duplicated consumer copies.
+When the Lens surfaces a strong sharedness finding and Core Finding Disposition / Target Formation confirms genuine shared ownership, **REQUIRED** one canonical shared concern artifact/owner is preferred over duplicated consumer copies.
 
 Consumer artifacts store only local integration obligations + references.
 
@@ -137,11 +137,13 @@ each Slice writes local debug information
 with different purpose/lifecycle
 ```
 
-Finding:
+Finding Candidate:
 
 ```text
 similar mechanism, no shared canonical guarantee
-→ keep local
+→ likely local-owner / no-shared-Target outcome hint
+→ Core Finding Disposition confirms or rejects that owner/lifecycle consequence
+→ keep local only after local ownership is accepted
 ```
 
 Case B:
@@ -156,8 +158,9 @@ Finding:
 
 ```text
 genuine shared guarantee
-→ canonical XCUT-AUDIT
-→ consumers keep only local integration obligations
+→ likely shared-owner candidate: XCUT-AUDIT
+→ Core Finding Disposition / Target Formation confirms or rejects that owner
+→ consumers keep only local integration obligations after ownership is accepted
 ```
 
 ### Result
@@ -166,7 +169,7 @@ The Lens can identify:
 
 ```text
 sharedness
-canonical owner
+likely canonical-owner hint
 applicability matrix
 local integration contract
 exceptions

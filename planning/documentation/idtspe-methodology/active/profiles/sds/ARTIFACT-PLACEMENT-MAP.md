@@ -28,7 +28,7 @@ SPLIT:    separate file normally appears only after representation pressure just
 
 `FIRST`/`SPLIT` are summarized here only for navigation. Their semantic owner is the Documentation / Representation Lens, which contains the detailed rules and worked trees.
 
-`TM` annotations represent `AP-*` guidance for the Target result itself. `LENS` annotations represent `AG-*` guidance for supporting/routing meaning produced by that perspective. A Lens that simply returns accepted findings to the Target owner may correctly have no `AG-*` at all. In particular, target-local evolution companions are proposed only by WEUC/L5 (`AG-L5-02`), not by Domain/Slice/Frontend Target Modules or their target-profile Lenses.
+`TM` annotations represent `AP-*` guidance for the Target result itself. `LENS` annotations represent `AG-*` guidance for supporting / artifact-placement meaning produced by that perspective. Semantic owner/handoff/reopen consequences remain Core Finding Disposition concerns. When Core Finding Disposition resolves the current Target as semantic owner and no distinct supporting artifact is useful, the Lens may correctly have no `AG-*` at all. In particular, target-local evolution companion representation proposals come only from WEUC/L5 `AG-L5-02` **after** Core Finding Disposition has accepted/resolved the local evolution meaning; Domain/Slice/Frontend Target Modules and their target-profile Lenses do not propose those companions, and Documentation / Representation + P-14 / TF-10 decide actual materialization.
 
 ## Materialization Tree
 
@@ -236,47 +236,47 @@ SPLIT:    separate file normally appears only after representation pressure just
 
 Some source records intentionally describe **embedding, routing or ownership resolution**, not another physical tree node. They are part of the same 58-record projection and are listed explicitly here so the materialization map covers every source record without inventing files.
 
-### Embed into the current/natural owner
+### Embed after semantic owner / State disposition
 
 ```text
 AG-L1-01
-  accepted Target-Scope correction → current Target/Target-Scope Decision
+  Target-Scope Finding Candidate → Core Finding Disposition → accepted current Target/Target-Scope Decision when resolved there
 
 AG-L2-01
-  authority/Source/reuse mapping → current Target planning state; canonical meaning stays with the identified owner
+  authority/Source/reuse Finding Candidate → Core Finding Disposition → current Target planning state when resolved there; canonical meaning stays with the resolved owner
 
 AG-L3-01
-  material uncertainty/assumption/revalidation signal → current Target
+  uncertainty/assumption/revalidation Finding Candidate → Core Finding Disposition → current Target Q/R/P/Decision-basis/revalidation state when resolved there
 
 AG-L4-01
-  dependency/change finding that affects a Decision → current Target
+  dependency/change Finding Candidate → Core Finding Disposition → current Target Decision/plan state when resolved there
 
 AG-L5-03
-  non-global architecture Answer Decision → current Target
+  accepted non-global architecture Answer Decision → current Target
 
 AG-L6-01
-  proof/observability/operability finding → current Target
+  proof/observability/operability Finding Candidate → Core Finding Disposition → current Target requirement/Decision/Test-handoff state when resolved there
 
 AG-QR-01
-  material quality/risk → natural semantic/implementation owner or current Target; no generic NFR file by default
+  material quality/risk Finding Candidate → Core Finding Disposition → resolved semantic/implementation owner or current Target; no generic NFR file by default
 
 AG-SIMP-01
   accepted simplification/retained-complexity Decision → current Target
 ```
 
-These records may ultimately resolve to code, a coordinator section, a dedicated owner artifact or another representation selected by the Documentation / Representation Lens and P-14. `FILE_OR_ARTIFACT: <current-idtspe-owner>` is therefore an owner-address, not a demand for a dedicated Markdown file.
+These records are representation projections of already accepted/dispositioned meaning; they do not assign semantic ownership to raw Lens findings. After Core Finding Disposition resolves the State/owner, Documentation / Representation + P-14 may place it in code, a coordinator section, a dedicated owner artifact or another selected representation. `FILE_OR_ARTIFACT: <current-idtspe-owner>` is therefore an owner-address after disposition, not a demand for a dedicated Markdown file.
 
 ### Resolve/reroute before placement
 
 ```text
 AG-L2-02
-  missing semantic owner → reopen Target Formation; do not create a hidden owner file
+  missing semantic owner → keep owner unresolved; Core Finding Disposition may surface a Target Formation candidate; do not create a hidden owner file
 
 AG-L6-02
-  independently shared operability concern → form/reuse a real local child or Cross-Cutting owner first
+  independently shared operability concern → Core disposition / Target Formation resolves a real Cross-Cutting/shared or bounded local owner before placement
 
 AG-QR-02
-  genuinely shared quality must-hold → form/reuse Requirement/Cross-Cutting/other natural shared owner first
+  genuinely shared quality must-hold → Core disposition / Target Formation resolves Requirement/Cross-Cutting/other natural shared owner before placement
 ```
 
 These are `ROUTE`/`UNRESOLVED` outcomes. A physical node appears only after semantic ownership and representation are resolved.

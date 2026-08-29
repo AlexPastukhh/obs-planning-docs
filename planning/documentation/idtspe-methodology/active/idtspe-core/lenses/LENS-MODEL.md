@@ -11,7 +11,7 @@ Lens
   and/or Target Step Result Units
 ```
 
-A Lens may discover findings, Evidence needs, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. The runtime routes that content into **Core-defined State Unit kinds**; the Lens does not define Unit kinds itself.
+A Lens may discover Finding Candidates concerning Evidence needs, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Generic Core Finding Disposition resolves the material ownership/State/lifecycle destination; the Lens does not define Unit kinds or own that disposition.
 
 ```text
 Lens ≠ Target Module
@@ -130,130 +130,138 @@ Provenance
 `Target Inputs / Evidence` means current planning/implementation material consumed by the Lens. It is intentionally distinct from the Lens's own `Knowledge Basis`.
 
 
-## 4A. Unit Interaction / Routing Contract
+## 4A. Analysis Surface / Operations / Finding Contract
 
-The operational contract must make it clear **what the Lens reads/analyzes and where its findings can go**.
-
-Canonical Unit model: [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md).
-
-Use the following proportional structure for new or materially revised reusable Lenses.
-
-### Context Reads
-
-Supporting context the Lens may consult.
-
-Examples:
+The operational contract must make clear:
 
 ```text
-Sources
-Decisions
-Q/R/P
-Evidence
-adjacent Result Units
-current implementation/workspace state
+1. what the Lens analyzes;
+2. which generic Lens operations it supports;
+3. what kinds of findings it can surface.
 ```
 
-Context availability does not mean the Lens should audit all of it.
+Canonical Unit model: [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md).  
+Canonical producer/Core bridge: [`../shared/finding-disposition-contract.md`](../shared/finding-disposition-contract.md).
 
-### Focused Reads / Analysis Focus
+### Analysis Surface
 
-The Units/fields that are the deliberate subject of analysis.
+Use proportionally:
 
-A target/profile-specific Lens should name known Result Units/fields when possible.
+```text
+Primary Result Units / semantic selectors
+Conditional Result Units
+Relevant State Units
+Context
+```
 
-A generic Core Lens should use semantic selectors when it cannot know profile-specific schemas.
+A target/profile-specific Lens should name known Result Units/fields when practical.
+A generic Core Lens may use semantic selectors because it cannot know every profile schema.
 
 Example:
 
 ```text
-Slice Integration Lens focus:
-  Slice Outcome Definition.obligations
-  Runtime Path.failureBranches
-  Codebase Integration Path.hops
-  Codebase Integration Path.failurePropagation
+Slice Verticality Lens
+
+Primary Result Units:
+  Slice Outcome Definition
+  Responsibility / Dependency Boundary
+  Runtime Path
+  Codebase Integration Path
+
+Conditional:
+  Focused Part Plan(s)
+
+Relevant State:
+  Questions
+  Risks / Problems
+  Decisions
+  Evidence
+  Revalidation state
+
+Context:
+  Scenario
+  Domain
+  Screen
+  current implementation/workspace
 ```
 
-### State-Unit Routing
+Context availability does not imply auditing all of it.
 
-Declare which **Core-defined State Unit kinds** may receive the Lens's findings/proposals:
+### Supported Operations
+
+Generic operation vocabulary:
 
 ```text
-Question
-Idea
-Risk
-Problem
-Evidence Need
-Decision input
-Revalidation Signal
-validation finding
-Target Formation candidate
+ANALYZE
+CHECK
+REFINE
+CHALLENGE
 ```
 
-Correct authority:
+Meanings:
 
 ```text
-Core
-→ defines State Unit kinds
+ANALYZE
+→ inspect the Analysis Surface through this perspective
 
+CHECK
+→ evaluate current meaning against Lens criteria/guards
+
+REFINE
+→ identify/propose more precise or missing meaning
+  where the semantic destination is already understood
+
+CHALLENGE
+→ seek reasons selected/accepted meaning may be wrong,
+  weak, stale or unsupported
+```
+
+A Lens need not support every operation.
+
+### Typical Findings / Finding Contract
+
+A reusable Lens should explain the recurring finding families it can surface.
+
+A finding may include proportionally:
+
+```text
+Meaning
+Affected Unit(s) / fields — when known
+Evidence / rationale
+Materiality hint — optional
+Likely semantic owner — optional hint
+Suggested lifecycle consequence — optional hint
+```
+
+Those hints do not grant authority.
+
+### Core Finding Disposition
+
+The Lens stops at the finding boundary.
+
+```text
 Lens
-→ supplies finding/proposal/evaluation content
+→ Finding Candidate
 
-IDTSPE runtime
-→ opens/fills/refines the applicable State Unit
+Core
+→ materiality / ownership / State-lifecycle disposition
+→ normal resolution
+→ existing Result Unit update when warranted
 ```
 
-Do not describe this as the Lens defining or owning a `Risk Unit`, `Question Unit`, etc.
-
-### Fill / Refine
-
-The Lens may add missing material information or make existing State Unit/Result Unit information more precise.
-
-### Challenge / Reopen
-
-The Lens may expose a reason an existing value/Decision/closure is wrong or stale.
+Therefore the following are not Lens methods:
 
 ```text
-challenge finding
-≠ silent replacement of accepted Decision
-
-material challenge
-→ normal lifecycle may reopen the affected state/Decision/Target
+State-Unit routing
+External Routing
+REOPEN
+AFFECT / UPDATE AFTER RESOLUTION
+Target Formation
 ```
 
-### Check / Validate
+A Lens may expose a finding that *leads* to those outcomes, but Core owns the disposition/lifecycle.
 
-The Lens may check correctness/consistency during resolution and may reuse the same checks during readiness validation.
-
-These are contextual forms of one evaluation family, not separate Lens types.
-
-### Affect / Update After Resolution
-
-A Lens may declare which **already-defined** Result Units/fields can change because of its findings.
-
-Example:
-
-```text
-Codebase Integration Path
-  .hops
-  .ownerAssignment
-  .failurePropagation
-```
-
-Normal path:
-
-```text
-Lens finding
-→ State Unit / Decision input
-→ ordinary authority/resolution
-→ selected update
-→ existing Result Unit changes
-```
-
-### External Routing
-
-State where a finding belongs when the current Target does not own that meaning.
-
-### No-New-Result-Unit Guard
+### Result ownership guard
 
 ```text
 Lens application
@@ -268,26 +276,10 @@ If repeated findings reveal missing target-result meaning:
 ```text
 revise the Target Module/Local Contract
 OR
-route to another Target/owner
+let Core Finding Disposition resolve another owner
 OR
-keep it as generic State Unit meaning
+keep the meaning in generic State Units
 ```
-
-### Compact Interaction Vocabulary
-
-Use:
-
-```text
-READ / ANALYZE
-FILL / REFINE
-CHALLENGE / REOPEN
-CHECK / VALIDATE
-AFFECT / UPDATE AFTER RESOLUTION
-ROUTE
-```
-
-Slash-separated terms are contextual shades of one operation family, not distinct runtime mechanisms.
-
 
 ## 5. Knowledge Basis
 
@@ -422,7 +414,9 @@ Need grounding
 → RQ / Question-Set Decision
 → Ideas / Branches
 → Lens evaluation + Evidence
-→ Answer Decisions
+→ material implications surface as Finding Candidates
+→ Core Finding Disposition
+→ accepted/refined State such as Idea / Q/R/P / Evidence / Answer Decision when warranted
 → Target projection
 → revalidation readiness
 ```
@@ -440,21 +434,23 @@ L6 → proof/observation/diagnosis/operation is material
 Target-profile Lens Packs → selected Target family or independently applicable context
 ```
 
-## 10. Finding → Decision / Escalation
+## 10. Finding → Disposition / Resolution / Target Formation
 
 ```text
-Lens finding
-→ Core-defined State Unit(s):
-  Evidence / Idea / Q/R/P / Question / Decision input / revalidation signal
-→ Answer Decision or other normal resolution when material
-→ existing Result Unit update only where the Target contract owns that meaning
+Lens operation
+→ Finding Candidate
+→ Core Finding Disposition
+   materiality / affected meaning / semantic owner / State-lifecycle consequence
+→ normal State/Decision resolution when material
+→ existing Result Unit update only where the Target contract owns that accepted meaning
 ```
 
-Open a bounded child/local Target only when the exposed problem has independent useful output, meaningfully distinct Sources/owner boundary, material choice space and separate revalidation value.
+When a finding exposes independently substantial unresolved work, disposition may surface a **Target Formation candidate**. Target Formation then decides whether to reuse an existing Target, hand off to an existing owner, or form a bounded child/local Target.
 
 ```text
 Lens activation ≠ new Target Instance
 Lens finding ≠ new Target automatically
+Target Formation candidate ≠ automatic child Target
 ```
 
 ## 11. Artifact / File Ownership Boundary
@@ -482,13 +478,13 @@ because proof allocation / test class / setup / fixture / harness / helper topol
 is part of the Test Strategy result itself.
 ```
 
-### Lens AG-* owns representation/routing of Lens findings
+### Lens AG-* owns supporting / artifact-placement guidance for Lens findings
 
 A Lens may propose:
 
 ```text
 supporting artifact for a finding produced by that perspective
-route to an existing/global semantic owner
+likely existing/global semantic-owner hint plus unresolved/route placement guidance
 evidence/supporting map that remains non-authoritative
 ```
 
@@ -500,11 +496,11 @@ Valid no-record case:
 
 ```text
 Artifact / File Implications:
-  NONE / RETURN_TO_TARGET_OWNER
+  NONE / NO_DISTINCT_SUPPORTING_ARTIFACT
 
 Reason:
-  Lens findings feed the current Target;
-  the Target Module/local contract owns representation of accepted Target meaning.
+  Core Finding Disposition resolves the semantic owner;
+  when the current Target owns accepted meaning, its Target Module/local contract already owns representation and no distinct Lens supporting artifact is needed.
 ```
 
 When structured guidance exists, source fields remain:
@@ -537,17 +533,21 @@ TM-DOMAIN-DRAFT owns:
   invariants / state / consistency / relationships
   representation of that current Domain result
 
-L5 / WEUC Lens finds:
-  a material future offline-synchronization path
-  + change-isolation requirement
-  + transition trigger
+L5 / WEUC Lens surfaces:
+  a future-evolution Finding Candidate carrying
+  + offline-synchronization path proposal
+  + change-isolation concern
+  + transition-trigger context
+→ Core Finding Disposition
+→ accepted local evolution meaning when CaptureItem/current Domain Target is resolved as owner
+→ AG-L5-02 may propose a supporting evolution representation
+→ Documentation / Representation + P-14 / TF-10 decide no persistence vs embedded Evolution section vs `CaptureItem.evolution.md`
 ```
-
-Representation may start as `CaptureItem` owner → `Evolution` section and, under independent future-plan addressability/review/lifecycle pressure, become `CaptureItem.evolution.md`.
 
 ```text
 CaptureItem.evolution.md
-= supporting future-evolution artifact proposed by L5 / WEUC Lens
+= selected/materialized supporting representation of accepted local evolution meaning
+≠ direct L5 / WEUC Lens output
 ≠ Domain Target output
 ≠ another Domain semantic owner
 ≠ AP requirement of TM-DOMAIN-DRAFT
@@ -564,11 +564,15 @@ L5 discovers:
   + prepared seams
   + revalidation triggers
 
-→ optional Evolution section
-→ or promoted SL-CAP-01.evolution.md
+→ Finding Candidate
+→ Core Finding Disposition
+→ accepted local evolution meaning when the Slice/current Target is resolved as owner
+→ `AG-L5-02` may propose a distinct supporting evolution representation
+→ Documentation / Representation + P-14 / TF-10
+→ optional embedded Evolution section OR materialized SL-CAP-01.evolution.md
 ```
 
-The evolution companion is proposed by L5, not by `TM-IMPLEMENTATION-SLICE` or the Slice Verticality Lens. The Slice Target Module continues to own the current Useful Vertical Result / Runtime / Integrated Plan.
+The evolution companion is a selected/materialized representation of accepted local evolution meaning proposed through L5 `AG-L5-02`; it is not direct L5 output and is not proposed by `TM-IMPLEMENTATION-SLICE` or the Slice Verticality Lens. The Slice Target Module continues to own the current Useful Vertical Result / Runtime / Codebase Integration Path.
 
 ## 14. WEUC / Architecture Boundary
 
@@ -579,12 +583,13 @@ TM-WEUC
 LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
 → consumes the current map
 → evaluates another Target/Idea/Decision against it
-→ plans target-local evolution
-→ may emit map-update candidate back to TM-WEUC
-→ may propose one local <owner>.evolution.md supporting companion
+→ surfaces target-local evolution Finding Candidate(s) and, when warranted, a separate map/global-architecture update Finding Candidate with TM-WEUC as a likely-owner hint
+→ Core Finding Disposition resolves accepted local evolution meaning / actual local-or-global owner / lifecycle consequence
+→ when local evolution meaning is accepted and the current Target is resolved as owner, AG-L5-02 may propose one local supporting evolution representation
+→ Documentation / Representation + P-14 / TF-10 decide persistence/placement
 ```
 
-Architecture Decisions remain ordinary Answer Decisions inside the current Target unless generic escalation creates an independently material architecture child Target.
+Architecture Decisions remain ordinary Answer Decisions inside the current Target unless Core Finding Disposition surfaces a Target Formation candidate and Target Formation decides that independently material architecture work warrants a separate bounded Target.
 
 ## 15. Linked Notes Boundary
 
@@ -594,14 +599,16 @@ Linked Notes are evaluated as a **usage/navigation capability**, not as a file f
 existing canonical owners / stable IDs / relations
 + material cross-owner navigation/query need
 → LENS-LINKED-NOTES-USAGE-JUSTIFICATION
-→ JUSTIFIED_LINKED_NOTES | NOT_JUSTIFIED | route elsewhere
+→ linked-notes-usage Finding Candidate carrying JUSTIFIED_LINKED_NOTES / NOT_JUSTIFIED / existing-mechanism / likely-owner context
+→ Core Finding Disposition resolves accepted Decision/State input + semantic owner/lifecycle consequence
+→ Documentation / Representation + P-14 / TF-10 only when durable representation/placement is useful
 ```
 
-The Lens must not create `notes/` or `linked-notes/` trees.
+The Lens must not create `notes/` or `linked-notes/` trees or route semantic ownership itself.
 
 ## 16. Revalidation Is Not A Peer Lens
 
-Revalidation is a Decision lifecycle mechanism. L3 may generate revalidation signals, but Uncertainty/Reversibility ≠ Revalidation.
+Revalidation is a Decision lifecycle mechanism. L3 may surface Finding Candidates carrying revalidation-signal meaning; Core Finding Disposition decides whether accepted revalidation State is created/refined. Uncertainty/Reversibility ≠ Revalidation.
 
 ## 17. User Questions
 
@@ -616,28 +623,43 @@ Suppose a Scenario Target uses `TM-SCENARIO-DRAFT`. Required Core Lenses are che
 
 ## Migration Compatibility
 
-This contract is being introduced before every installed Core/profile Lens has a literal `Unit Interaction / Routing` section.
+The new Lens contract separates `Analysis Surface + Lens operations + Findings` from Core Finding Disposition.
 
-Until the conformance pass updates each Lens:
+Current conformance state after the SDS profile migration:
+
+```text
+all 7 SDS-specific reusable Lenses
+→ explicit Analysis Surface
+→ explicit Supported Operations
+→ explicit Finding Contract
+
+Core generic Lens bodies
+→ remain readable through their current Target Inputs / prompts / findings
+  until a separate literal Core-Lens conformance pass is useful
+```
+
+Compatibility interpretation for any reusable Lens body not yet rewritten literally:
 
 ```text
 Target Inputs / Evidence
-→ interpret as Context Reads + current analysis subject
+→ Context + current analysis subject
 
 Prompts / Evaluation Workflow
-→ infer Focused Reads from the Lens purpose
+→ infer Analysis Surface from Lens purpose
 
 Findings / Outputs
-→ route through Core-defined State Units
+→ Finding Candidates
 
 accepted finding that changes current Target meaning
-→ map to existing target-output/Result Unit meaning
+→ Core Finding Disposition
+→ normal resolution
+→ existing Result Unit update when warranted
 
 Artifact / File Implications
 → remains current P-14 / TF-10 guidance
 ```
 
-New or materially revised Lens files should make Unit Interaction / Routing explicit.
+New or materially revised Lens files should make Analysis Surface, supported operations and Finding Contract explicit.
 
 ## 19. Maintenance
 
@@ -649,10 +671,10 @@ Mechanical checks should verify:
 every reusable Lens has one Knowledge Basis
 Knowledge Basis Mode ∈ INLINE | REFERENCED | HYBRID
 every reusable Lens has one Artifact / File Implications section
-new/materially revised Lens declares Unit Interaction / Routing explicitly
+new/materially revised Lens declares Analysis Surface + Supported Operations + Finding Contract explicitly
 Lens does not define State Unit kinds or Target Result Unit kinds
 zero or more AG-* records are allowed
-every AG-* describes Lens-produced supporting/routing meaning rather than duplicating Target-result AP
+every AG-* describes Lens-produced supporting / artifact-placement meaning rather than duplicating Target-result AP
 Target Module Lens Profiles resolve to registered Lens owners
 TF-06A can discover applicable registered Lenses even without a Target Module
 ```

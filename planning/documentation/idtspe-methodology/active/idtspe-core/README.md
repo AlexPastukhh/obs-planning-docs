@@ -21,15 +21,16 @@ IDTSPE Core must remain usable when another profile/family is added later. It th
 1. [`BOOTSTRAP-IDTSPE.md`](BOOTSTRAP-IDTSPE.md) — whole-methodology/core bootstrap contract.
 2. [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) — generic owner/dependency map.
 3. [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md) — canonical Target Step Result + IDTSPE Unit model.
-4. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md) — generic runtime/composition contract; current 15 port IDs remain stable technical navigation.
-5. [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md) — optional default operating mode for material AI planning.
-6. [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/interaction rules.
-7. [`target-modules/README.md`](target-modules/README.md) — Target Module framework and installed-family boundary.
-8. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis contract used by Target Modules and Lenses.
-9. [`lenses/README.md`](lenses/README.md) — generic Lens registry plus installed profile Lens references.
-10. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/navigation surface and host-target policies.
-11. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy and worked materialization topologies.
-12. [`../profiles/README.md`](../profiles/README.md) — installed planning profiles/families.
+4. [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md) — generic producer → finding → ownership/State/lifecycle disposition bridge.
+5. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md) — generic runtime/composition contract; current 15 port IDs remain stable technical navigation.
+6. [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md) — optional default operating mode for material AI planning.
+7. [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/interaction rules.
+8. [`target-modules/README.md`](target-modules/README.md) — Target Module framework and installed-family boundary.
+9. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis contract used by Target Modules and Lenses.
+10. [`lenses/README.md`](lenses/README.md) — generic Lens registry plus installed profile Lens references.
+11. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/navigation surface and host-target policies.
+12. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy and worked materialization topologies.
+13. [`../profiles/README.md`](../profiles/README.md) — installed planning profiles/families.
 
 ## Generic Core Owners
 
@@ -39,6 +40,7 @@ IDTSPE Core must remain usable when another profile/family is added later. It th
 Target Formation / Resolution Slots
 Target / Source / Relation model
 Target Step Result + IDTSPE Unit model
+Finding Disposition / producer → Core state-lifecycle bridge
 Target Module model + maintenance UC
 shared Target Module/Lens Knowledge Basis contract
 Lens model + maintenance UC
@@ -68,9 +70,10 @@ IDTSPE Unit
 
 State Units can themselves be useful output of a pass. One Target does not imply one Result Unit or one file.
 
-Lenses operate **inside** IDTSPE over Units. They may read/analyze, fill/refine, challenge/reopen, check/validate, affect existing Result Units after normal resolution, and route findings; they do not define Unit kinds.
+Lenses operate **inside** IDTSPE over an Analysis Surface through reusable operations `ANALYZE / CHECK / REFINE / CHALLENGE` and surface Finding Candidates. Generic Core Finding Disposition resolves material ownership / State / lifecycle consequences; normal authority/resolution may later update already-declared Result Units. Lenses do not define Unit kinds or become routing/semantic authority.
 
-Canonical owner: [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md).
+Canonical Unit owner: [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md).  
+Canonical finding-disposition owner: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
 
 ## Installed Profile Rule
 

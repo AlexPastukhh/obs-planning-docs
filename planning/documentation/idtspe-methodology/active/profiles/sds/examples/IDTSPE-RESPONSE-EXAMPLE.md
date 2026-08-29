@@ -79,13 +79,15 @@ Decision needed:
 
 The assistant should not hide this unresolved choice by filling the output template as if it had been accepted.
 
-## 4. Lens Findings / Ideas / Q/R/P
+## 4. Lens Finding + Core State / Idea / Q/R/P
 
-Scenario Lens finding:
+Scenario Lens `CHECK` finding candidate:
 
 ```text
 failed persistence must never produce success feedback
 ```
+
+Core Finding Disposition determines whether this refines an existing Question/Risk/Decision input or requires another owner; the Lens does not route/reopen by itself.
 
 UI/Spatial Idea:
 
@@ -95,7 +97,7 @@ maybe show capture in a floating mini-window
 
 The mini-window is an Idea, not selected Screen truth.
 
-## 5. Target-Specific Output Preview
+## 5. Target Step Result Preview
 
 ```text
 Scenario:

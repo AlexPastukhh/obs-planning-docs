@@ -1,4 +1,4 @@
-# Slice Extension / Runtime / Integrated / Part-Plan Recheck
+# Slice Extension / Runtime / Codebase / Part-Plan Recheck
 
 Status: PASS
 
@@ -20,8 +20,9 @@ VERTICAL_SLICE
 Runtime Path
   = descriptive running-system path
 
-Integrated Implementation Plan
-  = prescriptive whole-Slice realization plan
+Codebase Integration Path
+  = pre-implementation whole-Slice codebase call/operation path
+  (previous compatibility wording: Integrated Implementation Plan)
 
 Part Plan
   = subordinate deep plan for one responsibility

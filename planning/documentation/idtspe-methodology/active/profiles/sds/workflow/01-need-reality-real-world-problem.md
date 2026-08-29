@@ -404,14 +404,13 @@ check whether the selected Target is too broad/narrow
 identify Open Solution Slot when useful
 ```
 
-Produces:
+Surfaces for Core Finding Disposition:
 
 ```text
-scope candidates
-Need framing candidates
-current-workflow findings
-better framing
-Q/R/P when material
+scope / Need-framing Finding Candidates
+current-workflow / value / inside-outside Finding Candidates
+better-framing proposal hints
+possible Q/R/P need hints
 ```
 
 ## L2 — Authority / Source-of-Truth / Reuse — ACTIVE
@@ -426,13 +425,13 @@ which existing valid workflow should be reused as fact?
 are we reopening accepted Need without challenge?
 ```
 
-Produces:
+Surfaces for Core Finding Disposition:
 
 ```text
-trusted Source set
-reuse decision
-authority/provenance findings
-Q/R/P if current sources conflict
+trusted-Source / reuse Finding Candidates
+authority / provenance Finding Candidates
+Source-conflict Finding Candidates
+optional likely Source/owner/reuse and Q/R/P-need hints
 ```
 
 ## L3 — Uncertainty / Assumption / Reversibility — CONDITIONAL
@@ -446,15 +445,18 @@ what Evidence could resolve it?
 is it worth resolving before Whole-Solution discovery?
 ```
 
-Produces:
+Surfaces for Core Finding Disposition:
 
 ```text
-material Q
-Evidence needs
-research/prototype suggestion when justified
+uncertainty / assumption Finding Candidates
+Evidence-need hints
+research/prototype suggestions carried as Finding Candidate context when justified
+possible revalidation-signal hints when useful
 ```
 
-It does not force extra investigation for harmless unknowns.
+None of the three Lens blocks above directly creates Question/Q/R/P/Idea/Evidence/Decision State. Core Finding Disposition resolves any accepted State/owner/lifecycle consequence; independently substantial unresolved work may become Target Formation input.
+
+L3 does not force extra investigation for harmless unknowns.
 
 ---
 

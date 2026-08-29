@@ -243,8 +243,32 @@ What should explicitly NOT be tested here?
 Would Practical Acceptance prove this property better?
 ```
 
-## Target-Specific Output Template
-Generic IDTSPE state is not repeated here.
+## Resolution / Production Method
+
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+select exact semantic property → choose cheapest credible proof layer/operator → design setup/action/observation/assertions → evaluate escape/refactor risk → expose planned Evidence state
+```
+
+Actual executed Evidence remains Core Evidence State; Test Design owns the proof design, not proof truth.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Test Design`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-TDES-01` | Behavior-to-Test Trace | semantic property → credible proof design including outcome/layer/setup/action/observation/assertions/escape/refactor/evidence-state meaning |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
 
 **Behavior-to-Test Trace** — selected semantic property mapped to a credible proof design:
 ```text

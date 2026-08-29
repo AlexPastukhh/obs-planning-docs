@@ -145,7 +145,9 @@ future Idea
 → Evidence / planning Decision
 → Evolution Item / credible expected change
 → `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`
-→ Architecture/Slice decision when material
+→ architecture/evolution Finding Candidate when material
+→ Core Finding Disposition
+→ Architecture/Slice Answer-Decision input only when that State/owner consequence is selected
 ```
 
 `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` may inspect loose Ideas as low-confidence discovery input, but they do not justify preparation-now architecture by themselves.

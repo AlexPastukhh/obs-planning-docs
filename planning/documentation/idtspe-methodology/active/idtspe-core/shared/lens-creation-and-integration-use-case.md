@@ -40,27 +40,32 @@ real repeated planning cases
      TARGET_PROFILE_REUSABLE
      LOCAL_ONLY
 5. define applicability gate
-6. define Context Reads
-7. define Focused Reads / Analysis Focus
-8. define which Core-owned State Unit kinds may receive findings
-9. define Fill / Refine and Challenge / Reopen effects
-10. define which already-declared Result Units/fields may be affected after normal resolution
-11. define External Routing + No-New-Result-Unit Guard
+6. define Analysis Surface:
+     Primary / Conditional Result Units or semantic selectors
+     Relevant State Units
+     Context
+7. define supported Lens operations:
+     ANALYZE
+     CHECK
+     REFINE
+     CHALLENGE
+8. define prompts/sublenses/evaluation workflow
+9. define Typical Findings / Finding Contract
+10. keep likely owner/materiality/lifecycle fields as hints, not authority
+11. verify that findings hand off to the generic Finding Disposition contract
 12. define Knowledge Basis through [`knowledge-basis-contract.md`](knowledge-basis-contract.md): INLINE / REFERENCED / HYBRID
 13. define embedded principles/rules and/or referenced knowledge owners + load policy
-14. define prompts/sublenses/evaluation workflow
-15. define findings produced
-16. define Target/profile consumers
-17. define composition with other Lenses
-18. define guards/anti-patterns
-19. define finding→Decision/Target escalation
-20. define Artifact/File Implications; add AG only for Lens-produced supporting/routing meaning
-21. migrate duplicate embedded knowledge / duplicate Target-result artifact guidance
-22. update Lens Registry + applicability summary
-23. update Target Module Lens Profiles when attachment policy changes
-24. update phase/command/projection routes when needed
-25. run mechanical Lens consistency audit
+14. define Target/profile consumers
+15. define composition with other Lenses
+16. define guards/anti-patterns
+17. define Artifact/File Implications; add AG only for Lens-produced supporting meaning
+18. migrate duplicate embedded knowledge / duplicate Target-result artifact guidance
+19. update Lens Registry + applicability summary
+20. update Target Module Lens Profiles when attachment policy changes
+21. update phase/command/projection routes when needed
+22. run mechanical Lens consistency audit
 ```
+
 
 ## Result
 
@@ -69,7 +74,7 @@ one canonical Lens/Lens Pack owner
 + registry entry / applicability summary
 + activation class/gate
 + Operational Evaluation Contract
-+ explicit Unit Interaction / Routing
++ explicit Analysis Surface / supported operations / Finding Contract
 + Knowledge Basis mode / knowledge-owner links
 + consumer/profile mapping
 + migrated duplicate knowledge/guidance
@@ -101,13 +106,14 @@ local-only Lens
 
 ```text
 Lens finding
-→ current Target Idea/Evidence/QRP/Answer Decision
+→ Core Finding Disposition
+→ appropriate current/other-owner State/lifecycle destination
 ```
 
 Only when the problem has independent useful output + distinct Sources/revalidation boundary:
 ```text
-→ generic Target Formation
-→ bounded local Target
+→ Target Formation candidate
+→ Target Formation decides reuse existing Target / handoff existing owner / form new bounded local Target
 ```
 
 ## Artifact Placement Integration

@@ -18,7 +18,7 @@ The file contains:
 Useful Vertical Result
 semantic obligations
 Runtime Path
-call-level Integrated Implementation Plan
+call-level Codebase Integration Path
 ```
 
 ### Slice Test Design

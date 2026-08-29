@@ -98,7 +98,8 @@ SDS Target Module command
 SDS Lens command
 → resolve/reuse an IDTSPE Target context
 → Lens runs inside that IDTSPE iteration
-→ Lens findings return to the natural Target owner
+→ Lens surfaces Finding Candidate(s)
+→ Core Finding Disposition resolves the actual State / semantic owner / lifecycle consequence
 ```
 
 Therefore helper/UI presentation should explicitly identify SDS Target commands as `IDTSPE TARGET` surfaces and SDS direct Lens commands as `IDTSPE LENS` surfaces.
@@ -125,7 +126,8 @@ Target justified
 Target not justified
 → do not create a fake Target
 → explain the failed gate
-→ route to the correct current owner / methodology next step
+→ surface the failed gate as Target Formation input
+→ Target Formation resolves reuse / handoff to an existing owner or the appropriate methodology next step; the command does not route semantic ownership itself
 ```
 
 Therefore:
@@ -314,7 +316,7 @@ These are typed shortcuts over `TM-TEST-DESIGN`, not separate algorithms.
 → same TM-IMPLEMENTATION-SLICE Target / usually REFINE after semantic contract or TDD Test Design exists
 ```
 
-The focused detail command is useful because it has a stable exit gate: call-level Integrated Implementation Plan / Part Plans.
+The focused detail command is useful because it has a stable exit gate: call-level Codebase Integration Path / Part Plans.
 
 ### Practical Test
 
@@ -336,18 +338,19 @@ Command may resolve:
 
 ```text
 shared multi-owner must-hold is justified
-→ Requirement Target
+→ Target Formation resolves reuse of an existing Requirement Target or formation of a Requirement Target
 
 rule belongs naturally to Scenario / Domain / Screen / Cross-Cutting / architecture Decision
 → no Requirement Target
-→ route there
+→ use that existing semantic owner; if ownership is materially ambiguous, Core Finding Disposition / Target Formation resolves it
 ```
 
 ### `TM-FRONTEND-SLICE`
 
 ```text
 frontend has independent Scope / Questions / Ideas / Decisions / revalidation depth
-→ promoted Frontend Target
+→ Target Formation candidate for `TM-FRONTEND-SLICE`
+→ Target Formation decides reuse of an existing Frontend Target or formation/promotion of a Frontend Target
 
 otherwise
 → keep frontend as Part Plan in parent Implementation Slice
@@ -357,7 +360,7 @@ otherwise
 
 ```text
 genuine shared guarantee/responsibility across consumers
-→ Cross-Cutting Target
+→ Target Formation resolves reuse of an existing Cross-Cutting Target or formation of a Cross-Cutting Target
 
 mere duplicated/similar code
 → keep local or use ordinary reuse/refactor route
@@ -369,7 +372,7 @@ mere duplicated/similar code
 shared proof coordination materially needed
 + Domain proof planning sufficiently resolved
 + Slice portfolio known enough
-→ Test Strategy Target
+→ Target Formation resolves reuse of an existing Test Strategy Target or formation of a Test Strategy Target
 → optionally map Slice/Domain proof owners to concrete test suites/classes/setups/fixtures/harnesses/helpers when that cross-owner read path is useful
 
 otherwise
@@ -424,8 +427,11 @@ Resolution:
 ```text
 Target = Domain / Slice / Frontend / Cross-Cutting / etc.
 → run normal IDTSPE Target with L5 activated
-→ current Target keeps local Decision ownership
-→ global update candidate goes to TM-WEUC when needed
+→ L5 surfaces architecture/evolution Finding Candidate(s)
+→ Core Finding Disposition resolves local State / semantic owner / lifecycle consequence
+→ accepted local Answer-Decision input stays with the current Target only when that Target is resolved as owner
+→ if project-global meaning remains, surface a separate global-update Finding Candidate with `TM-WEUC` as the likely-owner hint
+→ Core Finding Disposition resolves the actual global owner/handoff; Target Formation handles owner-Target formation/reuse when necessary
 
 Target = whole Workspace architecture
 → resolve TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION
@@ -442,9 +448,12 @@ When To Use:
   prepared extension/change paths.
 
 What You Get:
-  architecture/evolution fit findings, projected change paths, isolation/leakage
-  findings, local Decision inputs, and when applicable a TM-WEUC update candidate
-  or an updated Current Global Architecture Position.
+  architecture/evolution fit Finding Candidates, projected change paths and
+  isolation/leakage Finding Candidates; Core Finding Disposition may resolve
+  accepted local Decision inputs and, when project-global meaning is suspected,
+  a global-update Finding Candidate with `TM-WEUC` as a likely-owner hint.
+  For an explicitly selected whole-Workspace `TM-WEUC` Target, the result may
+  instead directly refine the Current Global Architecture Position.
 ```
 
 ### 7.3 Simplicity / Implementation Economy Check
@@ -464,7 +473,9 @@ selected Domain / Slice / Test / Frontend / Cross-Cutting / architecture candida
 → inventory abstractions / owners / hops / mappings / proof machinery
 → search REMOVE / MERGE / INLINE / REUSE / DEFER / MOVE candidates
 → reject simplifications that damage required semantics or justified evolution fitness
-→ return simpler Answer-Decision input to the current Target owner
+→ surface simplification Finding Candidate / proposed refinement
+→ Core Finding Disposition resolves semantic owner / State consequence
+→ when the current Target is the resolved owner, use the accepted simplification as Answer-Decision input there
 ```
 
 Helper presentation:
@@ -639,7 +650,7 @@ When To Use:
   frontend realization appears to contain independent state/navigation/data-flow/architecture choices that may deserve promotion beyond a Slice Part Plan.
 
 What You Get:
-  either a promoted Frontend Target plan, or an explicit finding that frontend should remain embedded in the parent Slice with the correct next route.
+  either a Frontend Target plan when Target Formation resolves one, or an explicit finding that frontend should remain embedded in the parent Slice with the Target-Formation-resolved next step.
 ```
 
 ## 10. Repository Compatibility Rule

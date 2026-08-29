@@ -9,7 +9,7 @@ UC-IDTSPE-REVIEW-CONSISTENCY
 LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — refresh observed work/change-path Evidence when material
 ```
 
-Decision Revalidation Helpers drive selective reopen.
+Decision Revalidation Helpers plus Core Finding Disposition support selective revalidation/reopen.
 
 ## Boundary
 Evidence capture itself is not automatically IDTSPE.
@@ -17,12 +17,14 @@ Evidence capture itself is not automatically IDTSPE.
 ```text
 actual Evidence
 → compare with accepted Decision basis / residual Q/R/P / watch signals
-→ reaffirm
+→ Finding Candidate when accepted meaning is challenged
+→ Core Finding Disposition
+→ reaffirm when no lifecycle change is needed
 or
-→ reopen narrowest Answer / Question Set / Target Scope / upstream Target
+→ revalidate/reopen narrowest Answer / Question Set / Target Scope / upstream Target when selected
 ```
 
-When a Decision reopens, use the relevant Target Module and the full generic IDTSPE cycle again.
+When Core disposition selects Decision revalidation/reopen, use the relevant Target Module and the full generic IDTSPE cycle again.
 
 ## Outputs
 ```text
@@ -35,7 +37,7 @@ updated residual Q/R/P / helpers
 trusted Sources for the next cycle
 ```
 
-No unrelated Target is reopened without a concrete challenge.
+No unrelated Target is revalidated/reopened without a concrete challenge and Core disposition to that owner.
 
 
 ## Evolution Feedback

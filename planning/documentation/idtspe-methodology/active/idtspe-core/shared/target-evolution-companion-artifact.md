@@ -25,19 +25,21 @@ Fundamental representation rule: [`../lenses/required/LENS-ARTIFACT-BOUNDARY-ADD
 
 ## Guidance Ownership
 
-In the current SDS profile, target-local future evolution is a **Lens-produced supporting perspective**, not intrinsic output of Domain/Slice/Frontend/WEUC Target Modules.
+In the current SDS profile, target-local future evolution is a **Lens-evaluated supporting perspective**, not intrinsic output of Domain/Slice/Frontend/WEUC Target Modules.
 
 ```text
-LENS-WORKSPACE-EVOLUTION-ARCHITECTURE / AG-L5-02
-→ discovers target-local future evolution
-→ proposes an Evolution section first
-→ may propose promoted <owner>.evolution.md under independent pressure
+LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
+→ surfaces target-local future-evolution Finding Candidate(s)
+→ Core Finding Disposition resolves accepted local evolution meaning / semantic owner / lifecycle consequence
+→ AG-L5-02 may propose a supporting evolution representation over that accepted meaning
+→ Documentation / Representation decides no persistence vs embed vs split
+→ P-14 / TF-10 resolves the actual representation/path/materialization
 
 Target Module AP-*
 → continues to own representation of the current Target result itself
 ```
 
-The same pattern is reusable for future profiles: the methodology element that owns the future-evolution evaluation owns the supporting-artifact guidance; P-14 still resolves the actual representation.
+The same pattern is reusable for future profiles: the methodology element that owns future-evolution evaluation may own the supporting-artifact guidance, but semantic acceptance/ownership is resolved first by Core Finding Disposition and P-14 / TF-10 only materializes already-owned accepted meaning.
 
 ## When To Promote A Separate Companion
 

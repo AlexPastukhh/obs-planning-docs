@@ -21,6 +21,55 @@ Prototype Evidence
 existing Scenario/must-hold owners
 ```
 
+
+
+## Analysis Surface
+
+### Primary Result Units / Semantic Selectors
+
+- `TM-SCENARIO-DISCOVERY`: `RU-SDISC-01..RU-SDISC-02`
+- `TM-SCENARIO-DRAFT`: `RU-SCEN-01..RU-SCEN-04`
+
+### Conditional Result Units / Semantic Selectors
+
+- `TM-SCREEN`: `RU-SCREEN-01` only for reversible spatial relation checks
+
+### Relevant State Units
+
+```text
+Questions
+Ideas / Planning Branches when comparison is material
+Q/R/P
+Decisions
+Evidence / Evidence Needs
+Revalidation state
+```
+
+### Context
+
+- Application Definition
+- Need / real-life scenario Sources
+- Prototype Evidence
+- Screen ideas without treating them as Scenario authority
+
+Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+
+## Supported Operations
+
+```text
+ANALYZE
+CHECK
+REFINE
+CHALLENGE
+```
+
+- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
+- `CHECK` evaluates current meaning against this Lens's criteria/guards.
+- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
+- `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
+
+`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
+
 ## Independent Need / Result Boundary
 
 ```text
@@ -32,7 +81,7 @@ split/merge/inside-parent candidate?
 
 ## Scenario Scope Split / Merge
 
-If decomposition exposes another independently meaningful Need/result, reopen Scenario Scope. DATA/Behavior addressability alone does not create another Scenario.
+If decomposition exposes another independently meaningful Need/result, surface a Scenario-scope challenge/revalidation finding. Core disposition/lifecycle decides whether Scenario Scope is reopened; DATA/Behavior addressability alone does not create another Scenario.
 
 ## Behavior Completeness
 
@@ -73,7 +122,7 @@ Screen placement may realize behavior but should not define Behavior/DATA identi
 
 Expose identity/lifecycle/value/rule/consistency clues without prematurely choosing DDD patterns.
 
-## Findings / Outputs
+## Typical Findings
 
 ```text
 Scenario split/merge/boundary
@@ -86,17 +135,38 @@ Domain clues
 Q/R/P
 ```
 
+
+
+## Finding Contract
+
+The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
+
+A material finding may expose proportionally:
+
+```text
+Meaning
+Affected Unit(s) / fields — when known
+Evidence / rationale
+Materiality hint — optional
+Likely semantic owner — optional hint
+Suggested lifecycle consequence — optional hint
+```
+
+Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+
+This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
+
 ## Typical Consumers
 
 Scenario Discovery/Draft, Screen, Domain Discovery, Slice and Test Design.
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / RETURN_TO_TARGET_OWNER`.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Core Finding Disposition may resolve Scenario meaning back to the current Scenario Target; this Lens does not perform that semantic return.
 
 Scenario semantics, Scenario DATA/Behavior addressability and preliminary Screen ideas discovered while resolving the Scenario are represented through the owning Scenario Target/Target Module (`AP-SCN-*`). This Lens owns the boundary/behavior evaluation, not a parallel Scenario artifact contract.
 
-A Lens finding that becomes an independently material problem may escalate through generic Target Formation; otherwise it returns to the current Scenario owner.
+A Lens finding that becomes independently material may suggest a Target Formation candidate; Core Finding Disposition first resolves the likely owner/State consequence, and Target Formation decides reuse/handoff/new Target when needed.
 
 ## Guards
 
@@ -108,7 +178,7 @@ UI pack owns spatial reasoning; Domain pack owns DDD choices; Test pack owns pro
 
 ## Escalation / Revalidation
 
-Material new Need/result reopens Scenario scope; implementation difficulty alone does not redefine behavior.
+Material new Need/result challenges Scenario scope and may trigger Core revalidation/reopen disposition; implementation difficulty alone does not redefine behavior.
 
 ## High-Level Example — Self-Contained Walkthrough
 

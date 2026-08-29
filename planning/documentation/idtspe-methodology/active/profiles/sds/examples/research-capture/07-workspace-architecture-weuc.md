@@ -72,15 +72,20 @@ SDS-WORKSPACE-EVOLUTION
   + ARCH-G-RC-04 source-integration boundary
 → WEUC Lens
 → check that new capture-source change does not leak into CaptureItem
-→ CREATE/UPDATE domain/CaptureItem.evolution.md when local future planning is useful
+→ future-path Finding Candidate when material
+→ Core Finding Disposition resolves accepted local evolution meaning / current Domain owner
+→ AG-L5-02 local-companion representation proposal when distinct future planning is useful
+→ Documentation / Representation + P-14 / TF-10 decide CREATE/UPDATE domain/CaptureItem.evolution.md
 ```
 
-Suppose a local Domain/Slice decision introduces a source-normalization boundary and analysis shows that **every future capture source** must follow it. L5 emits:
+Suppose a local Domain/Slice decision introduces a source-normalization boundary and analysis shows that **every future capture source** may need to follow it. L5 surfaces:
 
 ```text
-global architecture-position update candidate
-→ TM-WEUC
-→ ARCH-G-RC-04 becomes/gets refined as project-global guidance
+global architecture-position update Finding Candidate
++ likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ TM-WEUC revalidation/update when that owner/lifecycle is selected
+→ ARCH-G-RC-04 becomes/gets refined as project-global guidance only after acceptance
 ```
 
 The local Target does not silently become the global owner.
@@ -99,15 +104,17 @@ planned PDF capture
 → slices/SL-RC-01.evolution.md
 ```
 
-If the Slice has a justified local exception to a `PREFERRED` global default, keep the local Answer Decision with rationale. If it contradicts a `REQUIRED` global position or demonstrates the global position is wrong, revalidate through `TM-WEUC`.
+If the Slice has a justified local exception to a `PREFERRED` global default, keep the local Answer Decision with rationale. If it contradicts a `REQUIRED` global position or demonstrates the global position is wrong, surface a challenge Finding Candidate with `TM-WEUC` as the likely owner; Core Finding Disposition may select `TM-WEUC` revalidation.
 
 ## Repeated Global Invocation
 
-If Domain/Slice/actual implementation work changes the global interpretation or architecture position:
+If Domain/Slice/actual implementation work materially challenges the global interpretation or architecture position:
 
 ```text
-TM-WEUC REFRESH / REVALIDATE
-→ UPDATE SDS-WORKSPACE-EVOLUTION.md
+global-update Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ TM-WEUC REFRESH / REVALIDATE when selected
+→ UPDATE SDS-WORKSPACE-EVOLUTION.md after accepted resolution
 ```
 
 The WEUC Lens does not become a second owner of the global map.

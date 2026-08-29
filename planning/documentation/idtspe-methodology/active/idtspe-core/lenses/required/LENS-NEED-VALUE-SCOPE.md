@@ -85,11 +85,11 @@ These records describe conditional placement guidance produced by this Lens. The
 ARTIFACT_GUIDANCE
 ID: AG-L1-01
 CONTENT_KIND: TARGET_SCOPE_DECISION
-WHEN: L1 finds Target/Scope must be reframed/split/merged/deferred
+WHEN: L1 surfaces a material Target/Scope reframe/split/merge/defer Finding Candidate
 GUIDANCE: ADVISORY_REQUIRED_TO_PERSIST_IF_ACCEPTED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target/Target-Scope Decision
+SEMANTIC_OWNER: current Target only when Core Finding Disposition resolves the accepted scope correction there; otherwise UNRESOLVED_OWNER
 REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: accepted scope/value correction and rationale; no separate Lens file
@@ -100,11 +100,11 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-Normally **NONE independently**: L1 findings stay in current Target Scope/Decision state.
+Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: an L1 Finding Candidate is not persisted as Lens output; when Core Finding Disposition resolves accepted Scope/Decision state to the current Target, that Target's normal representation carries it.
 
-**REQUIRED/PREFERRED update** only when L1 establishes/reopens a canonical Need/Scope owner that must persist beyond the current Target.
+**REQUIRED/PREFERRED update** only when an L1 Finding Candidate is dispositioned/accepted as establishing or reopening a canonical Need/Scope owner that must persist beyond the current Target.
 
-Do not create a separate “L1 findings” file. `P-14` routes material scope/need changes to the real owner.
+Do not create a separate “L1 findings” file. After Core Finding Disposition resolves/accepts the semantic owner, `P-14` places the material scope/need change in that already-resolved owner.
 
 ## Guards
 
@@ -116,7 +116,7 @@ Often paired with L2 at Target/Source boundaries and L3 when Need/scope assumpti
 
 ## Escalation / Revalidation
 
-A material contradiction can reopen Target Scope or an upstream Need owner through normal revalidation.
+A material contradiction is a Finding Candidate. Core Finding Disposition may select Target-Scope or upstream-Need revalidation/reopen when warranted; L1 itself does not perform the lifecycle transition.
 
 ## High-Level Example — Self-Contained Walkthrough
 
@@ -155,7 +155,7 @@ Repository:
   only one possible implementation Idea
 ```
 
-The Target may therefore be reframed around the useful result or routed to a later implementation decision.
+The finding may therefore, after Core disposition/normal resolution, reframe the Target around the useful result or leave the repository as a later implementation Decision concern.
 
 ### Result
 

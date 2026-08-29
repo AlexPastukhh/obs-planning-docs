@@ -1,4 +1,5 @@
-# SDS Full Map — IDTSPE Core + SDS Profile + Files + Directed Workflow
+# SDS Full Map — IDTSPE Core
+  Target Step Result / Unit + Finding Disposition + SDS Profile + Files + Directed Workflow
 
 Status: active canonical whole-picture map for the current SDS profile  
 Purpose: provide one self-contained map of how generic IDTSPE and SDS-specific planning fit together.
@@ -229,13 +230,13 @@ one Frontend/Cross-Cutting Target
 or Target = whole Workspace architecture
 ```
 
-Local architecture decisions remain local unless they should constrain several independent future Targets. Then L5 emits a promotion/update candidate and `TM-WEUC` resolves the project-global architecture position.
+Local architecture decisions remain local unless they should constrain several independent future Targets. Then L5 surfaces a promotion/update Finding Candidate with `TM-WEUC` as a likely-owner hint; Core Finding Disposition resolves the actual global owner/handoff before the project-global architecture position changes.
 
-Target-local future evolution remains a **Lens perspective**: L5 may suggest an Evolution section or promoted `<owner>.evolution.md` companion (`AG-L5-02`). Domain/Slice/Frontend Target Modules own current Target result representation and do not independently propose those future-evolution companions.
+Target-local future evolution remains a **Lens perspective**: L5 surfaces Finding Candidate(s); Core Finding Disposition resolves accepted local evolution meaning/owner, and only then `AG-L5-02` may propose an Evolution section or promoted `<owner>.evolution.md` supporting representation. Documentation / Representation + P-14 / TF-10 decide actual materialization. Domain/Slice/Frontend Target Modules own current Target result representation and do not independently propose those future-evolution companions.
 
 L5 also owns the reusable Architecture/Workspace work-cost check: Understanding/Discoverability, Change, Verification/Diagnosis/Operation and Runtime path cost, plus accidental/speculative/legacy complexity classification. No second architecture/work-cost Lens is introduced.
 
-The SDS Simplicity Lens consumes those L5 constraints and searches for a smaller current Domain/Slice/Test/Frontend structure — fewer unpaid abstractions, owners, hops or test layers — without destroying planned evolution paths or justified prepared extension points.
+The SDS Simplicity Lens consumes accepted/dispositioned evolution constraints derived from L5 evaluation plus current map/Decision owners, and searches for a smaller current Domain/Slice/Test/Frontend structure — fewer unpaid abstractions, owners, hops or test layers — without destroying planned evolution paths or justified prepared extension points.
 
 ## 7. Representation / Physical Materialization
 
@@ -278,7 +279,9 @@ accepted future direction
 → SDS-EVOLUTION-MAP.md
 
 Workspace/global architecture implication
-→ TM-WEUC
+→ Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ resolved TM-WEUC owner when warranted
 → SDS-WORKSPACE-EVOLUTION.md
 ```
 
@@ -374,3 +377,18 @@ repeated IDTSPE refinement
 ## Linked Notes Boundary
 
 SDS does not own a Linked Notes file tree. When cross-owner navigation/backlink/query behavior is proposed, use the Core `LENS-LINKED-NOTES-USAGE-JUSTIFICATION`. Canonical bodies remain in existing owners; Reference Object registry/index infrastructure is a separate technical concern.
+
+## Unit / Lens Conformance
+
+```text
+17 SDS Target Modules
+→ explicit Result Units
+
+7 SDS-specific Lenses
+→ Analysis Surface + ANALYZE/CHECK/REFINE/CHALLENGE
+→ Finding Candidates
+
+Core
+→ Finding Disposition
+→ normal State/lifecycle/owner resolution
+```

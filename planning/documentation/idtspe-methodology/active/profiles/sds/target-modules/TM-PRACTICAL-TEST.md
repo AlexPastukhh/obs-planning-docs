@@ -65,7 +65,7 @@ recovery
 
 Suppose users completed the fake prototype smoothly but the real app's modal blocks returning to the article.
 
-That is actual Evidence capable of reopening Screen/frontend decisions.
+That is actual Evidence capable of challenging Screen/frontend decisions; Core Finding Disposition may select revalidation/reopen when warranted.
 
 ### Result
 
@@ -78,7 +78,7 @@ observation protocol
 actual Evidence
 limitations/confounders
 PASS/FAIL/PARTIAL or supported/challenged/inconclusive
-follow-up/reopen route
+follow-up / revalidation position
 ```
 
 ### Boundary / Lesson
@@ -183,9 +183,35 @@ Frequent conditional Lens(es):
 - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — actual operation reveals repeatable Workspace/change pressure
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — quality properties under representative operation
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+identify exact implemented subject/property/uncertainty → design practical evidence protocol → execute/collect Evidence as Core State → interpret limits/confidence/disposition → surface follow-up/revalidation Finding Candidates → Core Finding Disposition
+```
+
+Run Records and raw observations are Evidence/supporting State, not automatically target-specific Result Units.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Practical Evidence Result`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-PTEST-01` | Evidence Subject / Acceptance Boundary | Evidence Subject + acceptance/residual-uncertainty boundary; concrete Questions remain Core State |
+| `RU-PTEST-02` | Practical Evidence Protocol | Practical Evidence Protocol |
+| `RU-PTEST-03` | Evidence Interpretation / Disposition | Evidence Interpretation; references actual Run/Evidence State |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Evidence Subject
 
@@ -218,9 +244,9 @@ Guidance:
 - **Representative variants/environments** — only variants able to change confidence.
 
 
-### Run Records
+### Evidence State / Run Records — linked supporting state
 
-For each execution:
+Actual run facts are Core `Evidence` State Units/supporting Evidence records rather than a new target-specific Result Unit. For each execution preserve:
 
 ```text
 Run ID / time/version
@@ -232,7 +258,7 @@ unexpected events
 artifacts/screens/log refs
 ```
 
-### Evidence Interpretation
+### RU-PTEST-03 Evidence Interpretation / Disposition
 
 ```text
 Observed Evidence
@@ -240,7 +266,7 @@ Limitations / confounders
 Confidence
 PASS / FAIL / PARTIAL when acceptance applies
 SUPPORTED / CHALLENGED / INCONCLUSIVE when exploratory
-reopen / follow-up route
+suggested follow-up / revalidation implication — hint only; Core Finding Disposition decides actual lifecycle consequence
 ```
 
 Keep **Observed Evidence** factual and separate from **Interpretation**. Confidence is qualitative unless real quantitative evidence supports a measure; do not invent probabilities.
@@ -309,7 +335,7 @@ measurement ≠ interpretation
 
 ```text
 TM-TEST-COVERAGE
-Decision revalidation / narrow reopen
+Finding Candidate → Core Finding Disposition → Decision revalidation / narrow reopen when warranted
 UC-IDTSPE-REVIEW-CONSISTENCY when findings imply cross-owner drift
 `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when practical operation reveals repeatable Workspace/change pressure
 ```

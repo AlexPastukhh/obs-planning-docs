@@ -195,7 +195,7 @@ select another concept
 narrow/broaden Application responsibility
 select an existing product instead
 select hybrid/integration
-reopen Step-02
+surface a Step-02 challenge Finding Candidate; Core Finding Disposition selects revalidation/reopen when warranted
 ```
 
 ---

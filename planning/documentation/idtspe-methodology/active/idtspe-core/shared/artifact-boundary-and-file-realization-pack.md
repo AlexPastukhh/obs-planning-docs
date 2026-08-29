@@ -884,8 +884,9 @@ Then the canonical route is:
 
 ```text
 local Lens finding / evolution companion
-→ map-update candidate
-→ TM-WEUC
+→ map/global-architecture update Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ resolved TM-WEUC owner when selected
 → SDS-PLANNING-STATE/SDS-WORKSPACE-EVOLUTION.md
 ```
 

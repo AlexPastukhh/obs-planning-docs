@@ -189,9 +189,33 @@ Frequent conditional Lens(es):
 - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — when credible evolution/change pressure justifies the condition
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when proof/observation/operation is part of the guarantee
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+prove standalone/shared ownership is justified → resolve exact must-hold meaning and authority → record consumers/local interpretation boundary → define revalidation trigger
+```
+
+Ordinary Scenario/Behavior-local must-hold meaning stays with its local owner; this module remains exceptional/shared when standalone ownership is justified.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Canonical Requirement Definition`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-REQ-01` | Requirement Definition | Requirement ID + Must-Hold Statement + owner rationale + Source/rationale + consumers + local interpretation boundaries + revalidation trigger |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 **Requirement ID** — stable shared identity.  
 **Must-Hold Statement** — exact condition.  

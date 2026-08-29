@@ -50,4 +50,4 @@ Screen/prototype does not become behavioral authority.
 Architecture does not weaken durable-success semantics.
 ```
 
-Contradictions reopen the real owner.
+Contradictions are Finding Candidates; Core Finding Disposition selects the real owner and any revalidation/reopen consequence.

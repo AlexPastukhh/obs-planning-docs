@@ -46,7 +46,7 @@ material quality condition/ref
 risk/failure mode
 comparison dimension
 Evidence need
-owner/handoff
+likely-owner / lifecycle hint
 Q/R/P
 revalidation signal
 ```
@@ -69,7 +69,7 @@ WHEN: quality/risk dimension can change current answer
 GUIDANCE: ADVISORY_PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: natural semantic/implementation owner or current Target
+SEMANTIC_OWNER: owner resolved by Core Finding Disposition; current Target / implementation owner may be a likely hint when the finding only refines current meaning
 REPRESENTATION: EMBED_NATURAL_OWNER_OR_CURRENT_TARGET
 FILE_OR_ARTIFACT: <natural-owner> or <current-idtspe-owner>
 CONTENT: material requirement/risk/Evidence need; do not create generic NFR file by default
@@ -85,7 +85,7 @@ WHEN: quality rule is genuinely shared/external and needs one canonical owner
 GUIDANCE: ROUTE
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: Requirement/Cross-Cutting/other natural shared owner after Target Formation
+SEMANTIC_OWNER: UNRESOLVED_OWNER until Core Finding Disposition / Target Formation selects Requirement, Cross-Cutting or another shared owner
 REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: UNRESOLVED
 CONTENT: resolve semantic owner before creating shared artifact
@@ -96,7 +96,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-Material quality/risk findings must persist with their **natural semantic owner** or an exceptional shared Requirement/Cross-Cutting owner.
+After Core Finding Disposition resolves a material quality/risk finding, persist accepted State with the **resolved semantic owner**; an exceptional shared Requirement/Cross-Cutting owner is used only when disposition/Target Formation selects it.
 
 **PREFERRED supporting evidence/risk artifact** only when evidence/history/review lifecycle is independent and useful.
 
@@ -112,7 +112,7 @@ Often combines with L3, L5, L6 and target-profile packs.
 
 ## Escalation / Revalidation
 
-A quality concern becomes a separate Target only when independently material and not naturally owned elsewhere.
+An independently material quality concern with no natural existing owner may surface a Target Formation candidate through Core Finding Disposition. Target Formation decides whether a separate Target is needed.
 
 ## High-Level Example — Self-Contained Walkthrough
 
@@ -162,7 +162,7 @@ Each activated dimension should have a real Source/risk basis.
 
 ### Result
 
-The Lens produces only material quality/risk findings, Evidence needs, owner/handoff and Q/R/P.
+The Lens produces only material quality/risk findings, Evidence-need meaning, likely-owner/lifecycle hints and Q/R/P-relevant observations; Core Finding Disposition resolves actual State/owner consequences.
 
 ### Boundary / Lesson
 
@@ -189,7 +189,7 @@ No external knowledge body is required for normal use.
 
 **Operationalization Notes:**
 
-Domain/regulatory/security standards may be Target Inputs or separately referenced by future specialized Lenses; this Lens owns generic materiality selection.
+Domain/regulatory/security standards may be Target Inputs or separately referenced by future specialized Lenses; this Lens owns the reusable generic materiality-evaluation perspective, while Core Finding Disposition decides whether a surfaced finding is materially accepted and what State/owner/lifecycle consequence follows.
 
 ## Provenance
 

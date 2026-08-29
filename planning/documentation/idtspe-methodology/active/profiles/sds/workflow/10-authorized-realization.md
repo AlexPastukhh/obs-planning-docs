@@ -19,9 +19,12 @@ If implementation exposes a real unresolved semantic/architecture/behavior choic
 
 ```text
 stop silent choice
-→ capture Evidence
-→ reopen/create the narrowest applicable IDTSPE Target
-→ use the relevant Target Module
+→ capture Evidence / Finding Candidate
+→ Core Finding Disposition
+→ reuse/revalidate the narrowest existing Target when owned there
+  OR surface a Target Formation candidate when independent ownership is needed
+→ Target Formation decides reuse / handoff / new bounded Target
+→ use the relevant Target Module / Local Target Contract
 ```
 
 ## Inputs

@@ -90,7 +90,7 @@ WHEN: proof design must survive for later implementation/execution
 GUIDANCE: PROFILE_DEFAULT
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Test Design/Strategy or parent Slice testing owner
+SEMANTIC_OWNER: resolved proof-planning owner; Test Design/Strategy or parent Slice testing owner is a likely destination when already selected/resolved
 REPRESENTATION: EMBED_OR_EXISTING_ARTIFACT
 FILE_OR_ARTIFACT: <test-design-owner> or <slice-testing-section>
 CONTENT: property-to-proof design; assertions; layer; setup/action/observation
@@ -106,7 +106,7 @@ WHEN: executed test/practical result exists
 GUIDANCE: ADVISORY_REQUIRED_REFERENCE
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: actual Evidence owner
+SEMANTIC_OWNER: resolved Evidence State/owner; the test/evidence artifact is supporting representation rather than semantic authority
 REPRESENTATION: SUPPORTING_EVIDENCE_OR_TEST_ARTIFACT
 FILE_OR_ARTIFACT: <actual-test-or-evidence-artifact>
 CONTENT: actual Evidence remains separate from semantic authority; Test Coverage references it
@@ -129,11 +129,11 @@ Tests/Evidence do not become product semantic authority.
 
 ## Composition
 
-L6 asks whether result/architecture is provable/observable/operable at all; this pack decides concrete test proof. Practical Evidence handles operated observation.
+L6 asks whether result/architecture is provable/observable/operable at all; this Lens evaluates/proposes concrete proof design as Finding Candidate material. Core Finding Disposition and the resolved Test Design/Strategy/Slice owner determine accepted proof State/result meaning. Practical Evidence handles operated observation.
 
 ## Escalation / Revalidation
 
-Coverage gaps reopen Test Design/Strategy or upstream meaning only when Evidence warrants it.
+Coverage gaps are Finding Candidates. When Evidence warrants it, Core Finding Disposition may select Test Design/Strategy or upstream-owner revalidation/reopen; the Lens does not perform that transition itself.
 
 ## High-Level Example — Self-Contained Walkthrough
 

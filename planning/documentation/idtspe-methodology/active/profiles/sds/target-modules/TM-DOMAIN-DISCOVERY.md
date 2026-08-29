@@ -174,11 +174,39 @@ Which responsibilities are cross-Aggregate/application coordination?
 Is a separate Domain owner useful at all?
 ```
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
 
-**Domain Evidence** — the Scenario/DATA/Behavior facts that justify Domain modeling.
+Default reusable production path:
+
+```text
+read domain Sources/Evidence → interpret boundary-relevant domain signals → discover candidate concepts/relations/state → stress invariants/impossible states/consistency boundaries → mark outside/coordination meaning → keep integrated alternative model sets only when discovery itself benefits from comparing them
+```
+
+Because this Target is discovery, an evidence-backed candidate inventory may itself be a Result Unit. Individual competing proposals may simultaneously use Core Idea/Branch State when choice lifecycle matters.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Domain Discovery Result`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-DDISC-01` | Domain Evidence Interpretation / Boundary | Selected Source/Evidence refs + interpreted domain signals + boundary rationale |
+| `RU-DDISC-02` | Candidate Semantic Model | Concept/Entity/Value candidates + Relationships + Lifecycle/State candidates |
+| `RU-DDISC-03` | Consistency / Invariant Candidates | Invariant/Policy findings + State/Condition Matrix + Impossible-State + Aggregate/Root/Ownership candidates |
+| `RU-DDISC-04` | External Coordination / Boundary | Explicit Outside / External Refs + Cross-Boundary Coordination |
+| `RU-DDISC-05` | Integrated Domain Variant Set — optional | Integrated Domain Branch / Variant Candidates |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
+
+**Domain Evidence Interpretation / Boundary** — selected Scenario/DATA/Behavior Source/Evidence references plus interpreted domain signals that justify the current Domain boundary. Raw Evidence remains Core State and Sources remain source-owned.
 
 **Concept / Entity / Value Candidates** — candidates with evidence/rationale, not accepted model yet.
 
@@ -211,7 +239,7 @@ These proposal records are the Target Module's local placement guidance. [`ARTIF
 ```text
 ARTIFACT_PROPOSAL
 ID: AP-DOMDISC-01
-CONTENT_KIND: DOMAIN_DISCOVERY_EVIDENCE
+CONTENT_KIND: DOMAIN_DISCOVERY_INTERPRETATION
 WHEN: candidate concepts/invariants/boundaries materially inform Domain Draft/revalidation
 GUIDANCE: PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
@@ -219,7 +247,7 @@ PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: current Domain Discovery Target
 REPRESENTATION: EXISTING_OR_NEW_SUPPORTING_PLANNING_ARTIFACT
 FILE_OR_ARTIFACT: <domain-discovery-owner>
-CONTENT: evidence-backed concept/invariant/consistency candidates; rejected weak abstractions
+CONTENT: selected Source/Evidence references + interpreted domain signals; evidence-backed concept/invariant/consistency candidates; boundary rationale; rejected weak abstractions
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
@@ -249,7 +277,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 Rejected/uncertain future Domain ideas may route to `SDS-PLANNING-STATE/ideas/domain/IDEAS.md`.
 
-When Workspace evolution is material, Domain Discovery hands future-path implications to the WEUC/L5 Lens. This Target Module does not propose `<domain-owner>.evolution.md`; `AG-L5-02` may later propose an Evolution section or companion, with Documentation / Representation + P-14 resolving persistence and embed-vs-split. Discovery does not create a current Domain semantic owner merely to host speculation.
+When Workspace evolution is material, evaluate future-path implications with WEUC/L5 as the supporting evolution perspective. Domain Discovery surfaces the resulting Finding Candidate / likely-owner context; Core Finding Disposition resolves the actual semantic owner/handoff consequence. This Target Module does not propose `<domain-owner>.evolution.md`; `AG-L5-02` may later propose an Evolution section or companion, with Documentation / Representation + P-14 resolving persistence and embed-vs-split. Discovery does not create a current Domain semantic owner merely to host speculation.
 
 `P-14` must show what discovery Evidence survives and what remains ephemeral.
 

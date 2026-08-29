@@ -26,18 +26,26 @@ Possible directions:
 
 ```text
 Evidence supports current Decisions
-→ reaffirm
+→ Finding Candidate
+→ Core Finding Disposition
+→ reaffirm only when that lifecycle consequence is selected
 
 one test exposes wrong Domain invariant
-→ TM-DOMAIN-DRAFT REVALIDATE/REPAIR
-→ TM-TEST-DESIGN REFINE for that Domain owner
+→ Finding Candidate
+→ Core Finding Disposition
+→ TM-DOMAIN-DRAFT REVALIDATE/REPAIR only when selected
+→ TM-TEST-DESIGN REFINE after the accepted Domain correction when needed
 
 integration path exposes wrong Slice orchestration assumption
-→ TM-IMPLEMENTATION-SLICE REPAIR
-→ Slice Test Design REFINE
+→ Finding Candidate
+→ Core Finding Disposition
+→ TM-IMPLEMENTATION-SLICE REPAIR only when selected
+→ Slice Test Design REFINE after the accepted Slice correction when needed
 
 actual Workspace change invalidates projected evolution path
-→ TM-WEUC REFRESH
+→ Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ TM-WEUC REFRESH only when that owner/lifecycle consequence is selected
 ```
 
 ## Methodology Direction
@@ -50,5 +58,5 @@ Current methodology path:
 
 Next:
   await new Evolution Item / implementation change / Evidence
-  and reopen only the narrowest affected Target
+  and let Core Finding Disposition revalidate/reopen only the narrowest affected Target when warranted
 ```

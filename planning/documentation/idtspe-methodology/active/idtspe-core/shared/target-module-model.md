@@ -207,7 +207,7 @@ EVIDENCE TARGET MODULE
   plans an evidence-producing operation; evidence does not become semantic authority
 
 REVIEW TARGET MODULE
-  checks selected owners; normally returns findings/reopen actions
+  checks selected owners; normally returns Finding Candidates / revalidation dispositions rather than semantic truth
 
 COMPOSITION TARGET MODULE
   optional integration role used only when composing accepted outputs
@@ -411,7 +411,7 @@ what output does it promise?
 
 Every active Target Module must be reachable through at least one canonical user-level command surface. Commands/Tampermonkey actions route to this semantic entry point; focused shortcuts may route to narrower stable scopes/modes of the same module.
 
-Conditional module activation still uses its gate: the command may conclude that no Target should be created and route to the proper owner.
+Conditional module activation still uses its gate as Target Formation input. If no Target is justified, Target Formation resolves reuse/handoff to an existing owner or the appropriate methodology next step; the command does not invent or route to a semantic owner by itself.
 
 Command identity never becomes module authority. See `idtspe-command-surface-contract.md`.
 
@@ -528,7 +528,7 @@ frequent conditional Lens refs + gates
 local-only Lens prompts — only when truly non-reusable
 ```
 
-The module owns **that/when** those Lenses attach to this recurring Target family. The reusable Lens owner controls the evaluation workflow, findings and Knowledge Basis. `TF-06A` may additionally discover applicable registered Lenses that the module did not pre-list.
+The module owns **that/when** those Lenses attach to this recurring Target family. The reusable Lens owner controls its Analysis Surface, supported operations, evaluation workflow, Typical Findings and Knowledge Basis. `TF-06A` may additionally discover applicable registered Lenses that the module did not pre-list.
 
 Selected rule:
 ```text
@@ -555,14 +555,14 @@ LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY
 LENS-QUALITY-RISK-MATERIALITY
 ```
 
-Lens findings feed normal generic Ideas / Evidence / Q/R/P / Branch comparison / Answer Decisions.
+Lens operations surface Finding Candidates. Core Finding Disposition resolves them into normal generic Ideas / Evidence / Q/R/P / Decision inputs / revalidation or another owner as appropriate.
 
 ```text
 Lens ≠ Target Module
 Lens finding ≠ new Target automatically
 ```
 
-A material independent problem exposed by a Lens may be escalated through generic Target Formation.
+A material independent problem exposed by a Lens is first a Finding Candidate. Core Finding Disposition may surface a Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target.
 
 # 11. Step-Result Contract / Output Schema Projection
 
@@ -623,8 +623,9 @@ addressable object
 If DATA/Behavior decomposition exposes a new independently meaningful Need/result:
 
 ```text
-reopen Scenario Scope
-→ split/merge Scenario Target if justified
+surface Scenario-scope Finding Candidate
+→ Core Finding Disposition may select Scenario-scope revalidation/reopen
+→ Target Formation may split/merge Scenario Target if justified
 ```
 
 Do not solve that by inventing a `DATA Target` or `Behavior Target`.
@@ -750,4 +751,4 @@ RESOLVER: P-14 / TF-10
 
 `PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE` are the canonical machine-readable policy fields; `GUIDANCE` is only a descriptive qualifier. `FILE_OR_ARTIFACT` states which canonical/supporting/register file or logical artifact pattern the module proposes. `CONTENT` says which part of the **Target result itself** belongs there. These are profile-level defaults/requirements; the active-profile materialization tree groups these source records by possible representation/destination without becoming semantic authority.
 
-Target Module AP guidance must not duplicate a separate Lens finding merely because that finding may be persisted next to the Target. Example: `TM-TEST-STRATEGY` may propose `TEST-REALIZATION-MAP.md` because test realization topology is part of Test Strategy output; `TM-DOMAIN-DRAFT` must not propose `<Domain>.evolution.md` merely because L5 found a future path. Target-local evolution companions are L5/WEUC Lens guidance.
+Target Module AP guidance must not duplicate a separate Lens finding merely because that finding may be persisted next to the Target. Example: `TM-TEST-STRATEGY` may propose `TEST-REALIZATION-MAP.md` because test realization topology is part of Test Strategy output; `TM-DOMAIN-DRAFT` must not propose `<Domain>.evolution.md` merely because L5 found a future path. Target-local evolution companion proposals are L5/WEUC `AG-L5-02` supporting-representation guidance over local evolution meaning already accepted/resolved through Core Finding Disposition; actual materialization remains Documentation / Representation + P-14 / TF-10 responsibility.

@@ -182,7 +182,7 @@ Target Module Entry Point
 
 The repository implementation may reuse/extend an existing command rather than create a new file. The invariant is user-level reachability, not one-new-file-per-module.
 
-Conditional modules still receive canonical commands; their gate may return “Target not justified” and route to the correct owner.
+Conditional modules still receive canonical commands; their gate may surface “Target not justified” as Target Formation input. Target Formation then resolves reuse/handoff to an existing owner or the appropriate methodology next step rather than letting the command route a semantic owner itself.
 
 The UI should invoke useful module/target intents, not expose every internal helper/Lens. See `idtspe-command-surface-contract.md`.
 

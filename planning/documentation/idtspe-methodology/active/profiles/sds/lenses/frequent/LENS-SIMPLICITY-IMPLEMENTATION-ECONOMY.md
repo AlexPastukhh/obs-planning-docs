@@ -17,7 +17,8 @@ WEUC Lens / L5
 
 Simplicity Lens
 = whether the current candidate can be made materially simpler now
-  while still respecting the evolution constraints established by L5 / maps
+  while still respecting accepted evolution constraints from current map/Decision owners
+  and any L5-derived meaning accepted through Core Finding Disposition
 ```
 
 The Lens is not “minimize file count” or “remove abstractions by default”. It asks whether each abstraction, owner, hop, mapping, test layer or mechanism **earns its cost**.
@@ -65,6 +66,54 @@ observed implementation friction when available
 ```
 
 The global/local evolution plans are constraints/evidence for simplification, not semantic authority over Scenario/Domain meaning.
+
+
+
+## Analysis Surface
+
+### Primary Result Units / Semantic Selectors
+
+- semantic selectors over selected Domain/Slice/Test/Frontend/architecture Result Units whose implementation cost/complexity is material
+
+### Conditional Result Units / Semantic Selectors
+
+- `RU-DDRAFT-*`, `RU-SLICE-*`, `RU-FE-*`, `RU-TDES-*`, `RU-TSTRAT-*`, `RU-WEUC-*` as applicable
+
+### Relevant State Units
+
+```text
+Questions
+Ideas / Planning Branches when comparison is material
+Q/R/P
+Decisions
+Evidence / Evidence Needs
+Revalidation state
+```
+
+### Context
+
+- current implementation/workspace
+- accepted invariants/Decisions
+- expected evolution
+- Evidence about implementation/operational cost
+
+Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+
+## Supported Operations
+
+```text
+ANALYZE
+CHECK
+REFINE
+CHALLENGE
+```
+
+- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
+- `CHECK` evaluates current meaning against this Lens's criteria/guards.
+- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
+- `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
+
+`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
 
 ## Complexity Inventory
 
@@ -199,7 +248,7 @@ Guard:
 implementation convenience cannot redefine Domain truth
 ```
 
-The Lens may suggest a simpler Domain model, but the Domain Lens / Domain Target decides semantic correctness.
+The Lens may suggest a simpler Domain model, but it does not decide Domain semantic correctness. Core Finding Disposition resolves the finding to the Domain Target/accepted Domain owner when warranted; that Target's normal Decision authority determines accepted semantic meaning.
 
 ## Slice / Implementation Use
 
@@ -262,7 +311,7 @@ What You Get:
   candidate(s) + what must remain and why + current-Target Decision/QRP inputs.
 ```
 
-## Findings / Outputs
+## Typical Findings
 
 ```text
 complexity inventory — proportional
@@ -276,6 +325,27 @@ selected simplification Answer Decision input
 Q/R/P when unresolved
 revalidation trigger when deferred complexity may become justified
 ```
+
+
+
+## Finding Contract
+
+The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
+
+A material finding may expose proportionally:
+
+```text
+Meaning
+Affected Unit(s) / fields — when known
+Evidence / rationale
+Materiality hint — optional
+Likely semantic owner — optional hint
+Suggested lifecycle consequence — optional hint
+```
+
+Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+
+This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
 ## Typical Consumers
 
@@ -302,7 +372,7 @@ WHEN: simplification analysis materially changes or constrains the current Targe
 GUIDANCE: EMBED_WITH_CURRENT_TARGET
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target
+SEMANTIC_OWNER: current Target only when Core Finding Disposition resolves the accepted simplification/retained-complexity meaning there; otherwise resolved owner
 REPRESENTATION: EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: accepted simplification/retained-complexity Decision; removed/merged/deferred structure; justification; evolution constraints that must remain; reconsider trigger when relevant
@@ -312,7 +382,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-The Lens does not create a dedicated “simplicity file” by default. Accepted conclusions belong with the Target whose plan changed. If simplification changes a project-global architecture principle or prepared extension point, route that **global** implication through the WEUC Lens / `TM-WEUC` rather than making this Lens a second architecture owner.
+The Lens does not create a dedicated “simplicity file” by default. Accepted conclusions belong with the Target whose plan changed. If simplification exposes a project-global architecture principle or prepared extension point, surface that as a Finding Candidate with WEUC / `TM-WEUC` as the likely owner; Core Finding Disposition resolves the actual global-owner handoff rather than making this Lens a second architecture owner.
 
 ## Guards
 
@@ -346,15 +416,18 @@ The lenses may be applied iteratively:
 
 ```text
 candidate
-→ L5 finds evolution constraint
-→ Simplicity removes unpaid structure while retaining justified seam
-→ L6 checks proof/operation
-→ Answer Decision
+→ L5 evaluates evolution pressure and may surface a Finding Candidate
+→ Core Finding Disposition resolves any accepted evolution constraint / Decision input
+→ Simplicity evaluates unpaid structure and may surface a simplification Finding Candidate
+→ Core Finding Disposition resolves retained/removable-complexity meaning
+→ L6 evaluates proof/operation and may surface a Finding Candidate
+→ Core Finding Disposition
+→ Answer Decision only when the relevant State/owner consequence is resolved
 ```
 
 ## Escalation / Revalidation
 
-If simplification exposes a new project-global architecture consequence, route it to `TM-WEUC` through the ordinary global-update path.
+If simplification exposes a new project-global architecture consequence, surface a global-update Finding Candidate carrying `TM-WEUC` as a likely-owner hint; Core disposition resolves the actual owner/handoff.
 
 If a deferred abstraction later reaches its documented trigger, repeat the current Target in `REFINE`/`REVALIDATE` and re-run this Lens with current evolution evidence.
 
@@ -387,7 +460,7 @@ The local Slice evolution plan expects PDF input to enter through the same appli
 
 ### Why This Lens
 
-L5 already tells us **which seam matters for future change**. The open question is whether the current implementation still contains more machinery than that evolution requires.
+Accepted/dispositioned evolution meaning derived from L5 evaluation tells us **which seam matters for future change**. The open question is whether the current implementation still contains more machinery than that accepted evolution requires.
 
 ### Walkthrough
 

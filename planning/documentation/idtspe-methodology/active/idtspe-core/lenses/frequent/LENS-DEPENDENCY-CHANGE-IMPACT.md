@@ -71,8 +71,9 @@ DRY/SRP/OCP/cohesion/coupling/DIP are risk detectors, not laws:
 
 ```text
 observe structural problem
-→ generate pattern Idea
-→ evaluate through L4
+→ surface a Finding Candidate carrying an optional structural-pattern proposal
+→ Core Finding Disposition resolves whether accepted meaning becomes/refines Idea / Q/R/P / Decision input or another State/lifecycle consequence
+→ re-evaluate the accepted candidate through L4 when needed
 → add L5 when recurring Workspace work/evolution matters
 ```
 
@@ -106,7 +107,7 @@ WHEN: dependency/change surface materially affects a Decision
 GUIDANCE: ADVISORY_PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target
+SEMANTIC_OWNER: current Target when Core Finding Disposition resolves the accepted dependency/change finding there; otherwise resolved owner
 REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: affected owners/consumers/change surface/migration obligations
@@ -122,7 +123,7 @@ WHEN: dependency graph/change map is large or independently reused
 GUIDANCE: ADVISORY_OPTIONAL
 PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Target or supporting artifact owner
+SEMANTIC_OWNER: semantic owner resolved by Core Finding Disposition (often current Target); a supporting artifact has no separate semantic authority
 REPRESENTATION: SUPPORTING_ARTIFACT
 FILE_OR_ARTIFACT: <dependency-or-change-impact-artifact>
 CONTENT: bounded dependency/change-surface evidence; referenced by current Target
@@ -133,7 +134,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-Normally dependency/change findings stay in the current Target Decision/plan.
+Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: dependency/change output is a Finding Candidate; when Core Finding Disposition resolves accepted Decision/plan meaning to the current Target, its ordinary representation carries it.
 
 **PREFERRED separate supporting map/plan** only when the dependency/change surface is large, reused by several Targets, or needs independent migration/review lifecycle.
 
@@ -147,11 +148,11 @@ Structural dependency ≠ semantic authority. Semantic relation ≠ automatic wh
 
 ## Composition
 
-L2 owns semantic authority. L5 evaluates recurring Workspace evolution/architecture pressure; `TM-WEUC` owns the global evolution map/current architecture position. L6 owns proof/operation implications.
+L2 evaluates semantic-authority/SOT/reuse questions. L5 evaluates recurring Workspace evolution/architecture pressure; `TM-WEUC` owns the global evolution map/current architecture position. L6 evaluates proof/operation implications. None of these Lenses owns the resulting project semantic authority/State; Core Finding Disposition resolves accepted meaning/owner/lifecycle consequences.
 
 ## Escalation / Revalidation
 
-Large independent migration/dependency problems may become child Targets.
+A large independently substantial migration/dependency finding may surface a Target Formation candidate through Core Finding Disposition. Target Formation decides whether a separate bounded Target is warranted.
 
 ## High-Level Example — Self-Contained Walkthrough
 

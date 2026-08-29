@@ -264,6 +264,18 @@ Now the Question-Set Decision is selected.
 
 # 6. Lens-By-Lens Work
 
+The blocks below are compact Lens-evaluation examples. Whenever a Lens surfaces new material meaning, use the installed Core bridge before that meaning becomes Question/Q/R/P/Idea/Evidence/Decision State or accepted Target-result input:
+
+```text
+Lens observation / proposal
+→ Finding Candidate
+→ Core Finding Disposition
+→ accepted State / resolved owner / lifecycle consequence
+→ current Target result refinement only when that Target owns the accepted meaning
+```
+
+Existing already-owned Target fields may still be checked/refined through normal Lens operations; the Lens does not create new Core State merely by naming an observation.
+
 ## L1 — Need / Value / Scope
 
 ### RQ1 — Desired real-world outcome
@@ -340,20 +352,27 @@ no prior accepted project Need owner
 
 But existing workflows A/B are preserved as reality Sources.
 
-Result:
+L2 surfaces this reuse/provenance Finding Candidate:
 
 ```text
 do not “replace” the parts of Workflow B that already work
 without comparing them in Phase 02.
 ```
 
+Core Finding Disposition resolves it as current Need/Reality Source-mapping / Decision input only when accepted.
+
 ---
 
 ## L3 — Uncertainty / Assumption / Reversibility
 
-Potential material unknown:
+Potential material unknown first appears through the Lens/Core boundary:
 
 ```text
+L3 observation: interruption/loss frequency may materially affect value
+→ Finding Candidate
+→ Core Finding Disposition
+→ Question State when the uncertainty is accepted as material
+
 Q-RC-NEED-01:
   is the interruption/loss frequent enough
   that improving the workflow is materially valuable?

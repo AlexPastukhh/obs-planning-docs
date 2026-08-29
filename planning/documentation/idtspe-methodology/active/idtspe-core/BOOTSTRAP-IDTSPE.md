@@ -27,7 +27,7 @@ Target Step Result + IDTSPE Unit model
 ↓
 Target Module system + Target Module Knowledge Basis
 ↓
-Lens system + Unit interaction/routing + Core Lens Pack + Lens Applicability Scan + shared Knowledge Basis boundary
+Lens system + Analysis Surface/operations + Core Finding Disposition + Core Lens Pack + Lens Applicability Scan + shared Knowledge Basis boundary
 ↓
 Documentation / Representation policy
 ↓
@@ -53,22 +53,23 @@ A full core bootstrap reads, in this order:
 3. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md)
 4. [`PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md)
 5. [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md)
-6. [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md)
-7. [`shared/target-type-instance-source-and-relation-model.md`](shared/target-type-instance-source-and-relation-model.md)
-8. [`shared/target-module-model.md`](shared/target-module-model.md)
-9. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis sub-contract for Target Modules and Lenses.
-10. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md)
-11. [`lenses/README.md`](lenses/README.md)
-12. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy; do not infer one-file-per-Target.
-13. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md)
-14. [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md)
-15. [`shared/decision-revalidation-helper-model.md`](shared/decision-revalidation-helper-model.md)
-16. [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md)
-17. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/Lens-operation navigation and host-target policies.
-18. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md)
-19. [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points concern.
-20. [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — theoretical package registry only; do not automatically read raw bodies.
-21. [`../profiles/README.md`](../profiles/README.md)
+6. [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md)
+7. [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md)
+8. [`shared/target-type-instance-source-and-relation-model.md`](shared/target-type-instance-source-and-relation-model.md)
+9. [`shared/target-module-model.md`](shared/target-module-model.md)
+10. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis sub-contract for Target Modules and Lenses.
+11. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md)
+12. [`lenses/README.md`](lenses/README.md)
+13. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy; do not infer one-file-per-Target.
+14. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md)
+15. [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md)
+16. [`shared/decision-revalidation-helper-model.md`](shared/decision-revalidation-helper-model.md)
+17. [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md)
+18. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/Lens-operation navigation and host-target policies.
+19. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md)
+20. [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points concern.
+21. [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — theoretical package registry only; do not automatically read raw bodies.
+22. [`../profiles/README.md`](../profiles/README.md)
 
 Read specific profile/module/lens bodies only after the next concrete route is known.
 

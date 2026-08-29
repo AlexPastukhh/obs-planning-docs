@@ -35,7 +35,7 @@ TM-PRACTICAL-TEST — when operated acceptance/evidence is useful
 
 ## Responsibility Boundary
 
-Consistency review normally produces findings/reopen actions rather than new semantic truth.
+Consistency review normally produces Finding Candidates / revalidation dispositions rather than new semantic truth. Core Finding Disposition selects any actual reopen consequence.
 
 Testing modules consume selected semantic owners and plan Evidence:
 

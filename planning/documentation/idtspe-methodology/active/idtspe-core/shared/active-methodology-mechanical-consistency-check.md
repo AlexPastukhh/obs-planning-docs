@@ -17,7 +17,7 @@ Current installed-system mechanical summary:
 - `lens_applicability_scan_tf06a`: **PASS**
 - `first_class_local_target_contract`: **PASS**
 - `artifact_placement_source_records_58` (`34 AP + 24 AG`): **PASS**
-- `artifact_guidance_ownership_ap_target_result_ag_lens_findings`: **PASS**
+- `artifact_guidance_ownership_ap_target_result_ag_supporting_artifact_guidance`: **PASS**
 - `methodology_surfaces_41` (`9 IDTSPE + 32 SDS`): **PASS**
 - `screen_map_semantics_present`: **PASS**
 - `no_verification_target`: **PASS**

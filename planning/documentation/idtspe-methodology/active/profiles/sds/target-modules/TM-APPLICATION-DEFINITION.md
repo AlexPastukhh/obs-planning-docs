@@ -209,9 +209,38 @@ Frequent conditional Lens(es):
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when feasibility depends on proof/diagnosis/operation
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — only material quality/risk dimensions
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE Scope/Question Set/Ideas/QRP/Branches/Answer Decisions/Revalidation are not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+stabilize selected real-world contribution → research existing solutions/references proportionally → refine core real-life scenario position → define Application Concept and responsibility boundary → test realization feasibility → resolve material alternatives through normal Idea/Branch/Decision state
+```
+
+Material alternative comparisons are Resolution/Production state until selected; they are not a separate Result Unit by default.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Application Definition`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-APP-01` | Application Identity / Selected Contribution | Application Definition Identity |
+| `RU-APP-02` | Existing-Solution / Reference Position | Existing Solutions / Market / Reference Research |
+| `RU-APP-03` | Core Real-Life Scenario Position | Core Real-Life Scenario Inventory + optional Refined Core Real-Life Scenario |
+| `RU-APP-04` | Application Concept | Application Concept |
+| `RU-APP-05` | Responsibility Boundary | Responsibility Boundary |
+| `RU-APP-06` | Realization Feasibility | Realization Feasibility |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Application Definition Identity
 
@@ -227,7 +256,7 @@ Generic IDTSPE Scope/Question Set/Ideas/QRP/Branches/Answer Decisions/Revalidati
 
 **Reference Applications / Patterns** — useful products/flows explicitly marked as Evidence/Ideas rather than requirements.
 
-**Build / Buy / Adapt / Integrate Position** — why custom Application planning continues, or explicit Step-02 reopen when another route is sufficient.
+**Build / Buy / Adapt / Integrate Position** — why custom Application planning continues, or why the current result should challenge Step-02 when another route is sufficient. Actual Step-02 revalidation/reopen is a Core Finding Disposition consequence.
 
 
 ### Core Real-Life Scenario Inventory
@@ -379,7 +408,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **REQUIRED** — an accepted Application Definition used downstream must have one canonical persistent artifact owner (existing or new). Its concept, responsibility boundary, build/buy/adapt/integrate position and current core-real-life-scenario inventory must not exist only in chat history.
 
-**PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Reference findings remain Evidence/Ideas, not a second application-semantic owner.
+**PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Research observations surface Finding Candidates; Core Finding Disposition may resolve accepted material as Evidence/Ideas or another appropriate State, but never as a second application-semantic owner merely because it came from reference research.
 
 **OPTIONAL separate artifact** — a Refined Core Real-Life Scenario may be embedded in the Application Definition or receive separate addressability when it is reused/reviewed independently by Prototype/Scenario Discovery.
 
@@ -392,13 +421,13 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 ```text
 traces to Fundamental Need + Step-02 contribution
 obvious existing solutions were proportionally checked
-custom build remains knowingly justified or Step-02 is reopened
+custom build remains knowingly justified or a material challenge is dispositioned to Step-02 revalidation/reopen
 core real-life scenarios explain why the Application exists
 secondary scenarios remain visibly secondary
 refined real-life scenario, when present, is not an Application Scenario
 concept + responsibility + feasibility form one coherent owner
 references seed Evidence/Ideas rather than requirements
-later Evidence can reopen/revalidate the same Application Definition
+later Evidence may challenge the same Application Definition; Core Finding Disposition may select revalidation/reopen
 ```
 
 ## Handoff
@@ -410,4 +439,4 @@ TM-SCREEN when application-wide journey/spatial context is useful
 TM-SLICE-STRATEGY through Scenario/Domain lineage
 ```
 
-Material architecture/change questions use L4/L5/L6 inside the current Target. Open a bounded child Target only when the problem has independently useful output and choice/revalidation depth.
+Material architecture/change questions use L4/L5/L6 inside the current Target. When the problem has independently useful output and choice/revalidation depth, surface a Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target.

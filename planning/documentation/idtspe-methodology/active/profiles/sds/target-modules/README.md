@@ -33,7 +33,7 @@ Behavior Item
 ```
 are internal addressable object contracts of `TM-SCENARIO-DRAFT`.
 
-`TM-WEUC` owns creation/refresh of the canonical `SDS-WORKSPACE-EVOLUTION.md`, including the current project-global architecture position. The reusable WEUC Lens consumes that map inside other Targets and may also evaluate the whole Workspace architecture through a `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION` scope. Local Architecture Decisions remain ordinary Answer Decisions; project-global conclusions are promoted through `TM-WEUC`; independently material bounded architecture can still escalate through generic Target Formation.
+`TM-WEUC` owns creation/refresh of the canonical `SDS-WORKSPACE-EVOLUTION.md`, including the current project-global architecture position. The reusable WEUC Lens consumes that map inside other Targets and may also evaluate the whole Workspace architecture through a `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION` scope. Local Architecture Decisions remain ordinary Answer Decisions; project-global implications surface Finding Candidates with `TM-WEUC` as a likely-owner hint and cross Core Finding Disposition before any accepted global update; independently material bounded architecture can still escalate through generic Target Formation.
 
 Consistency review remains `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module.
 
@@ -50,6 +50,27 @@ Knowledge Basis
 ```
 
 Knowledge Basis uses `INLINE | REFERENCED | HYBRID`; referenced owners are loaded only according to the module-specific load policy. Target Modules do not absorb reusable Lens evaluation knowledge.
+
+## Target Step-Result Conformance
+
+All 17 active SDS Target Modules now declare one explicit:
+
+```text
+## Resolution / Production Method
+## Target Step-Result Contract
+```
+
+Each Step-Result Contract names its target-specific Result Units. Generic Questions / Ideas / Q/R/P / Decisions / Evidence / Revalidation remain Core State Units and are not duplicated as result fields merely for template completeness.
+
+```text
+Target Module
+→ possible Result Unit surface
+
+Concrete Target step
+→ sparse/material projection
+```
+
+Lens findings are handled through the generic Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); Target Modules remain the owners of accepted target-specific Result Units.
 
 ## Lens Relation
 

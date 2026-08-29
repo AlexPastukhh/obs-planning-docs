@@ -185,10 +185,10 @@ Result Unit:
   Purpose:
     expand one already-selected non-trivial hop when useful
 
-Result Unit:
-  Proof/Test Handoff
+Field group inside Result Unit:
+  Slice Outcome Definition.verificationObligations
   Purpose:
-    state what later proof must establish
+    state what later proof must establish without creating a separate Slice Result Unit by default
 ```
 
 All of those Units may remain sections of one planning artifact. Unit identity does not force file splitting.
@@ -248,7 +248,7 @@ Existing names remain the normal prose vocabulary. Do not force labels such as `
 
 The umbrella `IDTSPE State Unit` exists for:
 - addressability;
-- Lens interaction/routing;
+- Lens interaction / Finding Disposition addressability;
 - validation;
 - persistence decisions;
 - cross-reference/revalidation.
@@ -319,8 +319,8 @@ Core
 Lens
 → supplies finding/proposal/evaluation content
 
-IDTSPE runtime
-→ routes/fills/refines the applicable Core-defined State Unit
+IDTSPE Core
+→ dispositions the finding into the applicable State/lifecycle/owner destination
 ```
 
 Likewise, a Lens may affect a Result Unit only when that Unit/field already belongs to the active Target Module/Local Target Contract.
@@ -330,7 +330,7 @@ Repeated Lens findings revealing missing target-result meaning are a signal to:
 ```text
 revise the Target Module Step-Result Contract
 OR
-route to another Target/owner
+let Core Finding Disposition resolve another Target/owner
 OR
 keep the meaning in generic State Units
 ```
@@ -339,94 +339,94 @@ not to create a Lens-owned result field silently.
 
 ---
 
-## 6. Lens Interaction Vocabulary
+## 6. Lens Analysis / Finding Boundary
 
-Use a compact family vocabulary rather than many near-synonymous pseudo-operations:
+A Lens should describe **what it meaningfully inspects** separately from **how the perspective is invoked**.
 
-```text
-READ / ANALYZE
-FILL / REFINE
-CHALLENGE / REOPEN
-CHECK / VALIDATE
-AFFECT / UPDATE AFTER RESOLUTION
-ROUTE
-```
-
-The words around `/` are contextual shades of one operation family, not separate runtime mechanisms.
-
-### READ / ANALYZE
-
-A Lens may need broad context while intentionally focusing on a smaller analysis subject.
-
-Use when useful:
+Use proportionally:
 
 ```text
-Context Reads
-Focused Reads / Analysis Focus
+Analysis Surface
+  Primary Result Units / semantic selectors
+  Conditional Result Units
+  Relevant State Units
+  Context
+
+Supported Operations
+  ANALYZE
+  CHECK
+  REFINE
+  CHALLENGE
+
+Typical Findings / Finding Contract
 ```
 
-Both are reading/analysis:
-- `Context Reads` = supporting context;
-- `Focused Reads` = deliberate primary analysis surface.
+### Analysis Surface
 
-### FILL / REFINE
-
-Add missing material information or make existing information more precise.
-
-Example:
+The Analysis Surface is a Lens property.
 
 ```text
-Risk:
-  integration may fail
+Context
+→ supporting material the Lens may consult
+
+Primary / Conditional Result Units
+→ target-specific result meaning the Lens deliberately analyzes
+
+Relevant State Units
+→ Questions / Risks / Decisions / Evidence / etc.
+   that materially affect the evaluation
 ```
 
-may be refined into:
+Context availability does not imply auditing all context.
+
+### Lens operations
 
 ```text
-Risk:
-  changing CaptureResponse removes failureCode used by
-  CaptureScreen and retry telemetry
+ANALYZE
+→ inspect the surface through the Lens perspective
+
+CHECK
+→ evaluate against Lens criteria/guards
+
+REFINE
+→ identify/propose a more precise or missing meaning
+  where the semantic destination is already understood
+
+CHALLENGE
+→ seek reasons selected/accepted meaning may be wrong,
+  weak, stale or unsupported
 ```
 
-### CHALLENGE / REOPEN
+A Lens may support only the operations that make sense for that perspective.
 
-Expose a reason an existing value/Decision/closure may be wrong or stale.
+### Finding boundary
 
-`CHALLENGE` describes the evaluation finding; `REOPEN` is the lifecycle effect when that challenge is material.
+A Lens operation may surface a `Finding Candidate`.
 
-A Lens does not silently replace an accepted Decision.
-
-### CHECK / VALIDATE
-
-Test correctness, consistency or readiness.
-
-`VALIDATE` emphasizes use of the check in readiness/exit-gate resolution; it is not a separate Lens mechanism.
-
-### AFFECT / UPDATE AFTER RESOLUTION
-
-A Lens finding may ultimately change an already-declared Result Unit/field after normal authority/resolution.
+The Lens does **not** own generic routing/lifecycle consequences such as:
 
 ```text
-Lens finding
-→ State Unit / Decision input
-→ ordinary IDTSPE resolution
-→ accepted change
-→ existing Result Unit updated
+open/refine Question or Risk
+REOPEN
+update Result Unit after resolution
+handoff to another Target
+Target Formation
 ```
 
-Trusted, low-contention source-derived correction may be integrated proportionally without manufacturing a ceremonial Decision; Lens authority still does not replace semantic-owner authority.
+Those are handled by the generic Core [`Finding Disposition Contract`](finding-disposition-contract.md).
 
-### ROUTE
+Canonical path:
 
-Send the finding/information to the correct:
-- State Unit;
-- Result Unit;
-- Target;
-- semantic owner;
-- Evidence path;
-- revalidation path.
+```text
+Lens operation
+→ Finding Candidate
+→ Core Finding Disposition
+→ State/lifecycle/ownership resolution
+→ normal authority/resolution
+→ existing Result Unit update when warranted
+```
 
----
+This replaces the earlier Lens-operation vocabulary that mixed `ROUTE`, `REOPEN` and `AFFECT / UPDATE AFTER RESOLUTION` into the Lens itself.
 
 ## 7. Target Module Step-Result Contract
 
@@ -670,40 +670,70 @@ Risk:
 Target Step Result:
 
 ```text
-RU-01 Slice Outcome Definition
-RU-02 Runtime Path
-RU-03 Codebase Integration Path
-RU-04 Focused Part Plan — only when material
-RU-05 Proof/Test Handoff
+RU-SLICE-01 Slice Outcome Definition
+  + verification/proof-handoff meaning
+RU-SLICE-02 Responsibility / Dependency Boundary
+RU-SLICE-03 Runtime Path
+RU-SLICE-04 Codebase Integration Path
+RU-SLICE-05 Focused Part Plan(s) — only when material
 ```
 
-Slice Integration Lens:
+Slice Integration Lens Analysis Surface:
 
 ```text
-Context Reads:
-  Scenario / Domain / Screen / current code / Decisions / Evidence
+Primary Result Units:
+  RU-SLICE-01
+  RU-SLICE-02
+  RU-SLICE-03
+  RU-SLICE-04
 
-Focused Reads:
-  RU-01 obligations
-  RU-02 failure branches
-  RU-03 hops + failure propagation
+Conditional:
+  RU-SLICE-05
+
+Relevant State:
+  Questions / Risks / Decisions / Evidence / Revalidation
+
+Context:
+  Scenario / Domain / Screen / current code
 ```
 
-Finding:
+Lens operation:
 
 ```text
-Risk:
-  repository failure has no truthful return path
+CHECK
 ```
 
-After ordinary resolution:
+Finding Candidate:
 
 ```text
-Decision:
+Meaning:
+  repository failure has no explicit truthful return path
+
+Affected:
+  RU-SLICE-04.failurePropagation
+
+Related accepted meaning:
+  RU-SLICE-01 forbids false success
+```
+
+Core Finding Disposition may resolve:
+
+```text
+Risk R-17:
+  persistence failure may be reported as success
+
+Question Q-18:
+  which owner maps repository failure into the semantic result?
+```
+
+After ordinary authority/resolution:
+
+```text
+Decision D-21:
   ApplicationService maps repository result
 ```
 
-RU-03 is updated:
+RU-SLICE-04 is then updated:
 
 ```text
 Repository.save(...)
@@ -712,40 +742,62 @@ Repository.save(...)
 → UI success/failure state
 ```
 
-The Lens affected an existing Result Unit. It did not define a new Unit or become semantic authority.
-
----
+The Lens surfaced a finding. Core disposition/lifecycle resolved what to do with it. The Target Module continued to own the Result Unit.
 
 ## 14. Migration Compatibility
 
-This owner introduces canonical vocabulary before every installed profile Module/Lens has been rewritten to use explicit Unit headings.
-
-During the staged migration:
+The canonical generic model is now:
 
 ```text
-existing Target Module:
-  current Target-specific output headings
-  → interpret as Result Unit(s) / fields according to meaning
+Target Module / Local Target Contract
+→ explicit/implicit Target Step-Result Contract
+→ target-specific Result Units
 
-existing Lens:
-  Target Inputs / Evidence
-  → interpret as context/focus reads
+Lens
+→ Analysis Surface
+→ supported operations: ANALYZE / CHECK / REFINE / CHALLENGE
+→ Finding Candidate
 
-  Findings / Outputs
-  → route through Core-defined State Units
-
-  accepted finding changing Target output
-  → map to existing target-output meaning
-
-  Artifact / File Implications
-  → remains current P-14/TF-10 guidance
+Core
+→ Finding Disposition
+→ State/lifecycle/ownership resolution
 ```
 
-New or materially revised Target Modules/Lenses should use the explicit Unit vocabulary.
+Installed SDS profile conformance is literal after the SDS migration:
 
-A later profile-conformance ChangeSet may make Unit boundaries/routing literal in each installed Module/Lens without changing the generic meaning introduced here.
+```text
+17 / 17 SDS Target Modules
+→ Resolution / Production Method
+→ Target Step-Result Contract
 
----
+7 / 7 SDS-specific reusable Lenses
+→ Analysis Surface
+→ Supported Operations
+→ Typical Findings / Finding Contract
+```
+
+Any reusable Lens body outside that literal SDS conformance remains readable through the generic compatibility interpretation until it is materially revised:
+
+```text
+Target Inputs / Evidence
+→ Context + current analysis subject
+
+Prompts / Evaluation Workflow
+→ infer Analysis Surface from Lens purpose
+
+Findings / Outputs
+→ Finding Candidates
+
+accepted finding that changes Target meaning
+→ Core Finding Disposition
+→ normal resolution
+→ existing Result Unit update when warranted
+
+Artifact / File Implications
+→ current P-14 / TF-10 guidance
+```
+
+Compatibility does not restore Lens-owned routing, reopen or post-resolution update methods.
 
 ## 15. Key Invariants
 
@@ -764,8 +816,9 @@ Core
 → defines generic State Unit kinds
 
 Lens
-→ reads/analyzes/fills/refines/challenges/checks/routes
-→ does not define Unit kinds
+→ declares Analysis Surface + supported ANALYZE/CHECK/REFINE/CHALLENGE operations
+→ surfaces Finding Candidates
+→ does not define Unit kinds or own Finding Disposition
 
 Lens finding
 ≠ accepted semantic meaning automatically

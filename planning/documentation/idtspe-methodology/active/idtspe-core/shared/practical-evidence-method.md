@@ -16,7 +16,11 @@ actual Evidence
 ↓
 interpretation
 ↓
-Decision support / acceptance / reopen / residual uncertainty
+Decision support / acceptance / residual uncertainty
+↓
+when accepted meaning is materially challenged: Finding Candidate
+↓
+Core Finding Disposition selects revalidation/reopen only when warranted
 ```
 
 They remain separate Target Modules because their **subject and evidentiary strength differ**.

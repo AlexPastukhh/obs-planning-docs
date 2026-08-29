@@ -228,7 +228,7 @@ WHY a local workaround remains
 
 Avoid comments that simply narrate the next line or duplicate type/signature information.
 
-A local comment is not enough for project-global architecture/evolution truth that must constrain several independent future Targets; route that meaning to the appropriate global owner instead.
+A local comment is not enough for project-global architecture/evolution truth that must constrain several independent future Targets. Surface that meaning as a Finding Candidate with any useful likely-global-owner context; Core Finding Disposition resolves the semantic owner, and Documentation / Representation + P-14 / TF-10 then resolve how accepted meaning persists.
 
 ## Part 4 — What Implementation Represents Poorly
 
@@ -283,7 +283,7 @@ WEUC Lens / SL-CAPTURE
 Simplicity Lens / SL-CAPTURE
 ```
 
-Those iterations do not imply four files. Their material findings return to the natural current owner/representation unless independent separation is justified.
+Those iterations do not imply four files. Their material findings do not choose a semantic destination themselves: Core Finding Disposition resolves the owner/lifecycle consequence. When the current owner remains appropriate, Documentation / Representation may keep the accepted meaning consolidated there unless independent separation is justified.
 
 Likewise:
 
@@ -467,7 +467,7 @@ implementation-native representation
 existing owner section
 ```
 
-If exact literal duplication across files is intentionally required and equality/staleness checking matters, route to the separate Reference Object responsibility; do not solve it by ordinary duplicated prose.
+If exact literal duplication across files is intentionally required and equality/staleness checking matters, treat it as a Reference Object concern rather than ordinary duplicated prose. When semantic ownership is material, surface a Finding Candidate; Core Finding Disposition resolves the owner while the Reference Object / representation mechanism handles equality and staleness.
 
 ## Part 12 — Handoff To Artifact Placement
 
@@ -529,7 +529,7 @@ GENERATED_OR_DERIVED_VIEW
 UNRESOLVED
 
 + what meaning is worth preserving
-+ natural semantic owner
++ resolved semantic-owner context, or likely-owner ambiguity requiring Core Finding Disposition
 + what stays in code/tests/schema/config
 + what planning residue remains textual
 + duplication/staleness risk
@@ -555,7 +555,7 @@ WHEN: material IDTSPE result may need durable representation
 GUIDANCE: REQUIRED_CHECK
 PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: ARBITRATE
-SEMANTIC_OWNER: existing natural semantic owner
+SEMANTIC_OWNER: already-resolved semantic owner; UNRESOLVED_OWNER when representation analysis exposes ownership ambiguity
 REPRESENTATION: RESOLVED_BY_DOCUMENTATION_REPRESENTATION_LENS
 FILE_OR_ARTIFACT: selected representation; may be code, existing section, registry/strategy, dedicated artifact, generated view or none
 CONTENT: persistence necessity + representation class + consolidation/split rationale + code-vs-prose boundary

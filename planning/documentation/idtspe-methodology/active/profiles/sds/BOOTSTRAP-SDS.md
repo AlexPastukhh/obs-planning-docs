@@ -142,3 +142,23 @@ The user/current planning situation decides whether meaning should live in code/
 проверь эволюцию и архитектуру CaptureItem
 = resolve/reuse that Target's IDTSPE context and activate the WEUC Lens
 ```
+## SDS Unit / Lens Conformance
+
+Current SDS profile invariant:
+
+```text
+17 / 17 Target Modules
+→ explicit Resolution / Production Method
+→ explicit Target Step-Result Contract / Result Units
+
+7 / 7 SDS-specific Lenses
+→ explicit Analysis Surface
+→ ANALYZE / CHECK / REFINE / CHALLENGE methods
+→ Finding Contract
+
+Finding / routing / reopen / result-update consequence
+→ generic Core Finding Disposition + normal lifecycle
+```
+
+Reference pair/example: [`examples/IMPLEMENTATION-SLICE-UNIT-REFERENCE.md`](examples/IMPLEMENTATION-SLICE-UNIT-REFERENCE.md).
+

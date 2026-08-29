@@ -90,7 +90,9 @@ existing/resolved natural Target context
 ↓
 apply that Lens Operational Evaluation Contract
 ↓
-return findings to natural Target owner
+surface Finding Candidate(s)
+↓
+Core Finding Disposition resolves actual semantic owner / State / lifecycle consequence
 ```
 
 This surface uses `RESOLVE_OR_REUSE_TARGET`. It is a generic dispatcher, has no fixed `lensId`, and never creates a Lens-owned Target.

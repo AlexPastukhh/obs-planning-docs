@@ -126,7 +126,7 @@ Mode: `INLINE`
 
 - Domain Draft represents selected Domain/no-Domain meaning and its invariants/ownership boundaries after discovery evidence is sufficient.
 - Domain semantics must remain independent from realization convenience and implementation layering.
-- Target-local future evolution is evaluated by WEUC/L5; this Target may consume that result but does not own companion-proposal mechanics.
+- Target-local future evolution is evaluated by WEUC/L5; this Target may consume accepted/dispositioned local evolution meaning resolved from that evaluation, but does not own companion-proposal mechanics.
 
 **Referenced Knowledge Owners:**
 
@@ -183,9 +183,37 @@ select/split/merge/reject Aggregate candidates
 
 These are candidate answer shapes, not mandatory choices.
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+select domain boundary/semantic core → resolve state/value/lifecycle structure → distinguish invariants from policy → stress against Scenarios and external coordination → expose verification/traceability meaning
+```
+
+Candidate alternatives remain Ideas/Branches until selected; the Step Result carries accepted/current domain meaning.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Domain Draft`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-DDRAFT-01` | Domain Boundary / Stable Semantic Core | Domain ID/Purpose/Boundary + Stable Semantic Core |
+| `RU-DDRAFT-02` | State / Value / Lifecycle Model | State/Condition Meaning + Value Objects + Aggregate/Root Boundaries + Lifecycles/States |
+| `RU-DDRAFT-03` | Consistency / Rules / Policy Model | Rules/Invariants + Policies/Likely Variation |
+| `RU-DDRAFT-04` | External Coordination / Scenario Fit | Outside/External Coordination + Scenario Stress Check + Rejected Premature Generalizations |
+| `RU-DDRAFT-05` | Verification / Traceability | Domain Verification Meaning + Traceability |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 **Domain ID / Purpose / Boundary** — what meaning this Domain owns and why.
 
@@ -243,7 +271,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **PREFERRED only under pressure** — promote one dedicated artifact per independently addressable Domain owner/concept cluster when human-readable owner-level planning is independently useful; never one file per class/name automatically.
 
-**Evolution companion ownership** — this Target Module owns current Domain meaning only. Future-path evaluation and any Evolution section / `<domain-owner>.evolution.md` companion are proposed by the WEUC/L5 Lens (`AG-L5-02`) when its applicability gate is met; Documentation / Representation + P-14 decide embed vs split.
+**Evolution companion ownership** — this Target Module owns current Domain meaning only. WEUC/L5 may surface future-path Finding Candidate(s); Core Finding Disposition resolves accepted local evolution meaning/owner, after which `AG-L5-02` may propose an Evolution section / `<domain-owner>.evolution.md` supporting representation. Documentation / Representation + P-14 / TF-10 decide embed vs split/materialization.
 
 **Do not place** speculative future state in the current Domain semantic artifact as if already accepted.
 
@@ -272,13 +300,13 @@ TM-IMPLEMENTATION-SLICE
 TM-TEST-DESIGN
 ```
 
-L4/L5/L6 findings remain normal Lens findings/Decisions. Open a bounded architecture child Target only when independently material.
+L4/L5/L6 surface Finding Candidates and Decision-relevant observations; they do not create Decisions or Targets directly. Core Finding Disposition resolves State/owner/lifecycle consequences, and independently substantial architecture work may become a Target Formation candidate.
 
 ### Evolution Companion — L5/WEUC Handoff
 
-When material future Domain evolution is discovered, route the future-path question through the WEUC/L5 Lens. This Target Module does **not** propose or require an evolution companion.
+When material future Domain evolution is discovered, apply WEUC/L5 as supporting evaluation. That Lens may surface a future-path Finding Candidate / likely-owner hint; Core Finding Disposition resolves the actual owner/handoff. This Target Module does **not** propose or require an evolution companion.
 
-If `AG-L5-02` justifies durable target-local evolution, Documentation / Representation decides whether the finding should persist and P-14 resolves an embedded Evolution section versus a separate companion using `../../../idtspe-core/shared/target-evolution-companion-artifact.md`. The Domain Target may consume/reference that L5 result.
+If `AG-L5-02` justifies durable target-local evolution after Core Finding Disposition has accepted/resolved the local evolution meaning, Documentation / Representation decides whether that accepted meaning needs durable/distinct representation and P-14 resolves an embedded Evolution section versus a separate companion using `../../../idtspe-core/shared/target-evolution-companion-artifact.md`. The Domain Target may consume/reference that accepted/dispositioned local evolution meaning.
 
 Example after L5/P-14 placement:
 

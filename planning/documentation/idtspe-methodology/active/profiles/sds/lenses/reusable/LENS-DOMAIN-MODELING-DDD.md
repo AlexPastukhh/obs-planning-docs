@@ -15,6 +15,55 @@ Primary when Domain Discovery/Draft is active.
 
 Scenario, Scenario DATA, Behavior Items, must-hold conditions, Prototype/current implementation Evidence.
 
+
+
+## Analysis Surface
+
+### Primary Result Units / Semantic Selectors
+
+- `TM-DOMAIN-DISCOVERY`: `RU-DDISC-01..RU-DDISC-05`
+- `TM-DOMAIN-DRAFT`: `RU-DDRAFT-01..RU-DDRAFT-05`
+
+### Conditional Result Units / Semantic Selectors
+
+- Scenario semantic objects/behavior when they are evidence for Domain meaning
+
+### Relevant State Units
+
+```text
+Questions
+Ideas / Planning Branches when comparison is material
+Q/R/P
+Decisions
+Evidence / Evidence Needs
+Revalidation state
+```
+
+### Context
+
+- Scenario DATA / Behavior
+- requirements/invariants
+- current Domain model
+- implementation Evidence when it challenges model assumptions
+
+Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+
+## Supported Operations
+
+```text
+ANALYZE
+CHECK
+REFINE
+CHALLENGE
+```
+
+- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
+- `CHECK` evaluates current meaning against this Lens's criteria/guards.
+- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
+- `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
+
+`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
+
 ## Identity / Entity Evidence
 
 ```text
@@ -66,9 +115,30 @@ Guard: UI/ORM/DB/read shape ≠ Aggregate ownership.
 
 Use L5 for evidence-backed variation/generalization pressure. Domain meaning comes first.
 
-## Findings / Outputs
+## Typical Findings
 
 concept/entity/value candidates, lifecycle/state findings, invariants/policies, aggregate boundaries, no-Domain finding and Q/R/P.
+
+
+
+## Finding Contract
+
+The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
+
+A material finding may expose proportionally:
+
+```text
+Meaning
+Affected Unit(s) / fields — when known
+Evidence / rationale
+Materiality hint — optional
+Likely semantic owner — optional hint
+Suggested lifecycle consequence — optional hint
+```
+
+Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+
+This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
 ## Typical Consumers
 
@@ -76,9 +146,9 @@ Domain Discovery/Draft; selected findings inform Slice/Test/L5 architecture reas
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / RETURN_TO_TARGET_OWNER`, except that future-evolution findings are handed to L5/WEUC when that perspective is active.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Core Finding Disposition may resolve current Domain meaning back to the Domain Target. A future-evolution Finding Candidate may call for WEUC/L5 evaluation; only suspected project-global meaning may carry `TM-WEUC` as a likely-owner hint, and Core resolves the actual handoff/owner consequence.
 
-Current accepted Domain meaning is represented through `TM-DOMAIN-DRAFT / AP-DOM-01`. This DDD Lens must not duplicate that Target-result representation. If a material future Domain path is discovered, `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE / AG-L5-02` is the canonical proposer for an Evolution section or promoted `<domain-owner>.evolution.md` companion.
+Current accepted Domain meaning is represented through `TM-DOMAIN-DRAFT / AP-DOM-01`. This DDD Lens must not duplicate that Target-result representation. If a material future Domain path is discovered, WEUC/L5 evaluation surfaces a Finding Candidate; Core Finding Disposition resolves any accepted local evolution meaning/owner, and only then may `AG-L5-02` propose an Evolution section or promoted `<domain-owner>.evolution.md` supporting representation. Documentation / Representation + P-14 / TF-10 decide materialization.
 
 ## Guards
 
@@ -90,7 +160,7 @@ L3 for weak semantic claims; L5 for change pressure; L6/Test pack for Domain Ver
 
 ## Escalation / Revalidation
 
-Later Scenario Evidence may reopen Domain; architecture convenience cannot redefine it.
+Later Scenario Evidence may challenge Domain meaning and trigger Core revalidation/reopen disposition; architecture convenience cannot redefine it.
 
 ## High-Level Example — Self-Contained Walkthrough
 

@@ -14,7 +14,7 @@ some edges are required ordering constraints
 some nodes are conditional
 some Targets repeat for several owners
 some Targets may be revisited/refined
-actual Evidence may reopen an earlier owner
+actual Evidence may challenge an earlier owner; Core Finding Disposition may select revalidation/reopen
 ```
 
 Numeric `workflow/00..11` files are navigation families. This file owns the actual cross-family direction.
@@ -50,11 +50,13 @@ Example:
 TM-DOMAIN-DRAFT / CaptureItem
   invocation 1 → create CaptureItem owner
 
-later Scenario / WEUC / implementation Evidence
+later accepted Scenario / WEUC State or implementation Evidence provides normal refinement input
   invocation 2 → REFINE the same CaptureItem owner
 
 post-code Evidence challenges one invariant
-  invocation 3 → REVALIDATE / REPAIR the same owner
+  → Finding Candidate
+  → Core Finding Disposition
+  → invocation 3 uses REVALIDATE / REPAIR on the same owner only when that lifecycle consequence is selected
 ```
 
 Conceptually IDTSPE acts like a **planning viewport over the current Target and its files**. It is not itself a methodology `Lens`; `Lens` remains the technical term for reusable evaluation perspectives in IDTSPE Core / profile Lens owners.
@@ -226,7 +228,7 @@ A Domain owner must have selected meaning/invariants/verification meaning precis
 
 ### Domain Proof → Slice Strategy
 
-Material isolated Domain proof obligations for the current Domain set should already be planned/not-applicable/deferred explicitly. Slice planning may still reveal new Domain questions and reopen the Domain owner.
+Material isolated Domain proof obligations for the current Domain set should already be planned/not-applicable/deferred explicitly. Slice planning may still reveal new Domain questions/findings; Core Finding Disposition may select Domain-owner revalidation/reopen when warranted.
 
 ### Slice Strategy → Test Strategy
 
@@ -283,7 +285,8 @@ After current Target evaluation:
    → recommend REFINE current Target.
 
 2. Did new Evidence challenge an accepted upstream semantic owner?
-   → recommend REVALIDATE/REPAIR the narrowest challenged owner.
+   → surface/disposition the Finding Candidate through Core Finding Disposition;
+   → when disposition selects revalidation, recommend REVALIDATE/REPAIR the narrowest challenged owner.
 
 3. Is the current Target complete enough to produce downstream Sources?
    → follow the canonical forward graph.
@@ -342,17 +345,20 @@ Scenario Draft
 
 Domain Draft
 → Domain Test Design
-→ Slice planning exposes missing invariant
-→ Domain Draft REPAIR
-→ Domain Test Design REFINE
+→ Slice planning exposes missing-invariant Finding Candidate
+→ Core Finding Disposition
+→ Domain Draft REPAIR only when selected
+→ Domain Test Design REFINE after accepted Domain correction when needed
 
 Slice Plan
 → Slice Test Design (TDD)
 → Slice Plan REFINE
 
 TM-WEUC early interpretation
-→ Domain/Slice decisions
-→ TM-WEUC REFRESH
+→ accepted Domain/Slice decisions
+→ global-update Finding Candidate + likely TM-WEUC owner hint when project-global interpretation may have changed
+→ Core Finding Disposition
+→ TM-WEUC REFRESH only when that owner/lifecycle consequence is selected
 ```
 
 A repeated IDTSPE invocation is not duplication when new Sources, unresolved Decisions or downstream feedback justify it.
@@ -367,5 +373,5 @@ persistent artifact ≠ Target Instance itself
 Test Strategy ≠ prerequisite for local Domain Test Design
 Test Design ≠ semantic owner
 TDD ≠ permission for tests to invent behavior
-forward graph ≠ prohibition on evidence-driven narrow reopen
+forward graph ≠ prohibition on Core-disposition-driven narrow revalidation/reopen
 ```

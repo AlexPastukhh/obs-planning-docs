@@ -49,17 +49,19 @@ Checks:
 
 ```text
 Target Module AP-*
-→ representation/routing of the Target-specific result
+→ representation / placement guidance for the Target-specific result
 
 Lens AG-*
-→ representation/routing of a Lens-produced finding or supporting perspective artifact
+→ supporting-artifact / artifact-placement guidance produced by a Lens
+→ not semantic Finding routing / owner / reopen authority
 ```
 
 Checks:
 
-- target-profile Lens files may legitimately contain zero `AG-*` records when findings return to the current Target owner: **PASS**
+- target-profile Lens files may legitimately contain zero `AG-*` records when no distinct supporting-artifact guidance is needed; Finding Candidates are dispositioned by Core and may resolve back to the current Target owner without requiring an AG record: **PASS**
 - Domain/Slice/Frontend current result representation is owned by their Target Modules, not duplicated by Domain/Slice/UI Lens AG records: **PASS**
 - L5/WEUC `AG-L5-02` is the canonical proposer for optional target-local evolution sections/`<owner>.evolution.md`: **PASS**
+- semantic finding owner/handoff/reopen is resolved by Core Finding Disposition; `AG-*` and P-14 / TF-10 govern supporting representation/placement only: **PASS**
 - `TEST-REALIZATION-MAP.md` remains a Test Strategy representation because it captures the Test Strategy result rather than a Lens finding: **PASS**
 
 ## 4. Worked Physical Topologies

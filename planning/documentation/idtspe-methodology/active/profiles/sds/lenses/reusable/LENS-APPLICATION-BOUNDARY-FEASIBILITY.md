@@ -23,6 +23,54 @@ current application/workspace
 later Scenario/Domain/Slice Evidence
 ```
 
+
+
+## Analysis Surface
+
+### Primary Result Units / Semantic Selectors
+
+- `TM-APPLICATION-DEFINITION`: `RU-APP-01..RU-APP-06`
+
+### Conditional Result Units / Semantic Selectors
+
+- `TM-SCENARIO-DISCOVERY`: `RU-SDISC-01..RU-SDISC-02` when Application-boundary findings affect discovery
+
+### Relevant State Units
+
+```text
+Questions
+Ideas / Planning Branches when comparison is material
+Q/R/P
+Decisions
+Evidence / Evidence Needs
+Revalidation state
+```
+
+### Context
+
+- Need / real-life solution Sources
+- market/reference Evidence
+- current Application/Scenario state
+- current implementation constraints when feasibility is material
+
+Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+
+## Supported Operations
+
+```text
+ANALYZE
+CHECK
+REFINE
+CHALLENGE
+```
+
+- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
+- `CHECK` evaluates current meaning against this Lens's criteria/guards.
+- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
+- `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
+
+`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
+
 ## Existing-Solution Sufficiency / Market Reference
 
 ```text
@@ -102,7 +150,7 @@ Do not turn Application Definition into detailed Domain/Architecture/Slice plann
 
 Recheck when Scenario/Domain/Slice/current implementation Evidence challenges the definition.
 
-## Findings / Outputs
+## Typical Findings
 
 ```text
 build/buy/adapt/integrate/hybrid finding
@@ -115,17 +163,38 @@ feasibility finding
 Q/R/P / revalidation signal
 ```
 
+
+
+## Finding Contract
+
+The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
+
+A material finding may expose proportionally:
+
+```text
+Meaning
+Affected Unit(s) / fields — when known
+Evidence / rationale
+Materiality hint — optional
+Likely semantic owner — optional hint
+Suggested lifecycle consequence — optional hint
+```
+
+Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+
+This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
+
 ## Typical Consumers
 
 Application Definition; accepted outputs feed Prototype/Scenario/Screen.
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / RETURN_TO_TARGET_OWNER`.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Core Finding Disposition may resolve Application meaning back to the current Application Target; this Lens does not perform that semantic return.
 
-This Lens evaluates Application boundary/feasibility but does not independently prescribe the representation of the Application Definition result or its target-intrinsic supporting research/route material. Accepted findings return to `TM-APPLICATION-DEFINITION`, whose `AP-APP-*` proposals own current Application/result representation.
+This Lens evaluates Application boundary/feasibility but does not independently prescribe the representation of the Application Definition result or its target-intrinsic supporting research/route material. Findings dispositioned as Application meaning are represented through `TM-APPLICATION-DEFINITION`, whose `AP-APP-*` proposals own current Application/result representation.
 
-If this Lens exposes a genuinely independent Evidence or planning problem outside that Target result, route it through normal Target Formation / Evidence handling rather than creating a second Application artifact authority.
+If this Lens exposes a genuinely independent Evidence or planning problem outside that Target result, surface the Finding Candidate with likely owner/evidence hints. Core Finding Disposition handles the actual Evidence path and may surface a Target Formation candidate; the Lens does not create a second Application artifact authority.
 
 ## Guards
 
@@ -137,7 +206,7 @@ L1–L3 always; L4/L5/L6 when current workspace/dependency/evolution/proof mater
 
 ## Escalation / Revalidation
 
-Independent feasibility/architecture choice spaces may become bounded child Targets.
+Independent feasibility/architecture choice spaces surface Finding Candidates; Core Finding Disposition may surface a Target Formation candidate, and Target Formation decides whether a bounded child/local Target is warranted.
 
 ## High-Level Example — Self-Contained Walkthrough
 
@@ -186,15 +255,17 @@ It also checks whether the needed browser/platform integration is realistically 
 
 ### Result
 
-Findings feed Application Definition:
+The Lens surfaces Finding Candidates about:
 
 ```text
 build/buy/adapt/integrate position
 core real-life route
 concept sufficiency
 responsibility/state boundary
-feasibility findings
+feasibility
 ```
+
+Core Finding Disposition decides whether accepted meaning becomes/refines Application Definition State/Decision input or belongs to another owner.
 
 ### Boundary / Lesson
 

@@ -101,7 +101,7 @@ TM-CROSS-CUTTING-CONCERN
 
 ## Reopen Rule
 
-Forward direction is normal, but actual Evidence may reopen the narrowest current owner:
+Forward direction is normal, but actual Evidence may challenge current meaning; Core Finding Disposition may revalidate/reopen the narrowest current owner:
 
 ```text
 Scenario

@@ -19,7 +19,7 @@ The current projection deliberately groups those source records by possible phys
 
 ```text
 which Target Module proposes a file/owner/representation
-which Lens supports/reroutes it
+which Lens supplies supporting / artifact-placement guidance
 where the meaning can remain before a separate file exists
 when a split/promotion becomes plausible
 which files are SDS profile infrastructure rather than AP/AG proposals

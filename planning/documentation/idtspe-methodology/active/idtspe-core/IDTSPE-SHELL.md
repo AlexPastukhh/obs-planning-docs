@@ -111,7 +111,7 @@ Connects:
 ```text
 Target Module Question examples
 Source-derived questions
-Lens findings routed to Core-defined Question State Units
+Questions created/refined through Core Finding Disposition when Lens findings materially require Question State
 current unresolved Q/R/P
 ```
 
@@ -144,7 +144,9 @@ Documentation / Representation / Artifact Boundary at materialization
 
 A Local Target Contract uses the same Lens Port without inventing a Target Module. Registry summaries/gates are enough for the scan; read full Lens bodies and referenced Knowledge Basis only for selected/plausibly applicable candidates.
 
-Lenses run inside IDTSPE work. Their findings are routed into Core-defined State Units such as Questions / Ideas / Q-R-P / Evidence needs / Decision inputs. A Lens may affect an already-declared Target Result Unit after normal authority/resolution, but it does not define Unit kinds or become semantic authority.
+Finding handling is generic Core behavior: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
+
+Lenses run inside IDTSPE work through an Analysis Surface and reusable operations. They surface Finding Candidates; the Core Finding Disposition contract resolves State/lifecycle/owner destinations. A Lens may lead to an already-declared Result Unit changing only after normal authority/resolution, and it never defines Unit kinds or becomes semantic authority.
 
 ### P-07 Idea / Alternative Port
 
@@ -154,11 +156,10 @@ user input
 Sources
 AI proposals
 Target Module pattern aids
-Lens findings
-research/prototype Evidence
+accepted/dispositioned Idea / alternative input derived from Lens, research or prototype observations
 ```
 
-Resolved through `TF-07 IDEA_SPACE`.
+Raw Lens findings and research/prototype Evidence observations first surface as Finding Candidates. Core Finding Disposition decides whether accepted meaning creates/refines Idea/alternative State or another lifecycle consequence; only then does `TF-07 IDEA_SPACE` resolve materially different answer candidates.
 
 AI proposal remains an unselected Idea until accepted.
 
@@ -229,7 +230,7 @@ cross-Unit / cross-owner consistency checks when invoked
 Evidence sufficiency where material
 ```
 
-Validation may surface findings that the runtime routes into normal State Units such as Problem / Risk / Question / Evidence Need / Revalidation Signal. Validator/Lens findings do not define new Result Units or become substitute semantic owners.
+Validation may surface Finding Candidates. Generic Core Finding Disposition resolves them into normal State/lifecycle/owner destinations such as Problem / Risk / Question / Evidence Need / Revalidation Signal or another owner. Validator/Lens findings do not define new Result Units or become substitute semantic owners.
 
 ### P-13 Handoff / Methodology Direction Port
 
@@ -290,11 +291,13 @@ Semantic owner ≠ artifact/file boundary.
 
 ### P-15 Evidence / Revalidation Port
 
-Connects post-choice Evidence to accepted Decisions:
+Connects post-choice Evidence to accepted Decisions without making Evidence itself lifecycle authority:
 ```text
 actual Evidence
 → compare with accepted basis / residual Q/R/P / watch signals
-→ reaffirm or reopen narrowest appropriate level
+→ Finding Candidate when accepted meaning is materially challenged
+→ Core Finding Disposition
+→ reaffirm / revalidate / reopen the narrowest appropriate level when selected
 ```
 
 Revalidation is lifecycle, not a peer Lens.
@@ -308,7 +311,7 @@ Current Target / Scope / Sources
 Invocation mode + current artifact context
 Resolved answers
 Unresolved Questions / Decisions needing authority
-Lens findings / Ideas / material Q/R/P
+Lens Finding Candidates / dispositioned Ideas / material Q/R/P
 Target-specific output preview
 Artifact Placement View
 Handoff / downstream Sources
@@ -405,8 +408,8 @@ Knowledge Basis
   = not current Target Source / evidence / project truth
 
 Lens
-  = reusable perspective used to read/analyze/check Units and route/refine findings
-  = does not define Unit kinds
+  = reusable perspective used to inspect an Analysis Surface through supported operations and surface Finding Candidates
+  = does not define Unit kinds or own semantic routing/lifecycle consequences
 
 Target Module
   = reusable methodology contract for a recurring Target/Step-Result family
@@ -424,11 +427,12 @@ When a local unresolved concern becomes independently material:
 
 ```text
 current Target
-→ Lens / Part Plan exposes new choice space
-→ generic Target Formation
-→ bounded child/local Target
-→ full IDTSPE Shell again
-→ accepted result returns as Source to parent
+→ Lens / Part Plan surfaces new choice-space Finding Candidate(s) / proposal context
+→ Core Finding Disposition decides whether accepted meaning creates/refines normal Core State, owner or lifecycle consequence
+→ when independently substantial: Target Formation candidate
+→ Target Formation decides reuse existing Target / handoff existing owner / form new bounded child-local Target
+→ any newly formed Target uses the full IDTSPE Shell again
+→ accepted external result returns as Source to parent
 ```
 
 No special planning engine is required for architecture, algorithms, frontend state strategy or other local design problems.
@@ -464,7 +468,7 @@ blocking Q/R/P resolved/deferred explicitly
 material Decisions accepted under correct authority
 Target Step Result projected proportionally into declared Result Units
 material State Units visible/resolved/deferred as needed
-validators pass or findings routed
+validators pass or material findings dispositioned
 handoff/persistence/revalidation contract sufficient
 ```
 
@@ -548,10 +552,10 @@ Lens:
 Output:
   Useful Vertical Result
   Runtime Path
-  call-level Integrated Implementation Plan
+  call-level Codebase Integration Path
 ```
 
-If L5 exposes a genuinely independent architecture problem, the shell recursively forms a child Target. It does not switch to a separate architecture planning engine.
+If L5 exposes a genuinely independent architecture problem, it surfaces a Finding Candidate. Core Finding Disposition may surface a Target Formation candidate; Target Formation then decides whether to reuse an existing owner, hand off/reference one, or form a bounded child/local Target. Any newly formed Target uses the same IDTSPE Shell; no separate architecture planning engine is introduced.
 
 ### Example 3 — Existing Answer Means Less Planning
 
@@ -573,16 +577,16 @@ L4 finds:
 changing API contract touches 8 consumers
 ```
 
-That finding can create:
+L4 surfaces that observation as a Finding Candidate. Core Finding Disposition may resolve accepted meaning by creating/refining:
 
 ```text
 Risk
 new Idea
 migration Question
-architecture Answer Decision
+architecture Answer-Decision input
 ```
 
-but L4 does not own the API semantics.
+but L4 does not create that State or own the API semantics.
 
 ### Example 5 — Loose Idea vs Evolution
 
@@ -623,11 +627,15 @@ TM-WEUC
 selected Domain/Slice/etc Target
   P-06 Lens Port activates WEUC Lens when material
 ↓
-local evolution findings / architecture Answer Decision
+local evolution / architecture Finding Candidate(s)
+  + optional TM-WEUC likely-owner hint when project-global meaning is suspected
 ↓
-optional <owner>.evolution.md
-↓
-global evolution/architecture-position update candidate → TM-WEUC
+Core Finding Disposition resolves actual State / semantic owner / lifecycle consequence
+├→ local accepted Q/R/P / Answer Decision / evolution meaning when resolved to the current Target
+│  → AG-L5-02 companion proposal when distinct local evolution materialization is useful
+│  → Documentation / Representation + P-14 / TF-10
+│  → optional <owner>.evolution.md only when that representation/placement is selected
+└→ TM-WEUC refresh/update/revalidation only when global ownership/handoff is resolved there
 
 OR
 

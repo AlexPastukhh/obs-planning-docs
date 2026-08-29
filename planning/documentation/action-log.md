@@ -1351,3 +1351,695 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - no SDS migration, runtime-port simplification, Decision-type simplification or representation-subsystem redesign is introduced by this correction.
 
 **Rationale:** correct the remaining ReviewDiff blocker without overwriting or needlessly replaying the already-applied Core foundation.
+
+### LOG-DOC-075 — Review SDS literal Unit/Lens conformance and generic Finding Disposition
+
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / PRE-APPLY TARGET  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Selected Source:** `obs-planning-docs-local-base-c824891a-20260827-170946.zip`  
+**Repository:** `github:AlexPastukhh/obs-planning-docs`  
+**Snapshot Base Commit:** `c824891af9d3b77d528a6b4f17d3fac21c47ba5e`  
+**GitHub Head Checked:** `da098a83db7ec707fb362d998eb0267b505c6b80`  
+
+**Material Discussion / Selected Meaning:**
+- migrate the existing SDS profile rather than redesign its topology: preserve all 17 Target Modules, all 7 SDS-specific Lenses, current purposes/Source contracts/commands/artifact rules and current Scenario/Domain/Slice/Test/WEUC ownership;
+- every SDS Target Module should literally expose `Resolution / Production Method` + `Target Step-Result Contract` with target-specific Result Units, while Questions/Ideas/QRP/Decisions/Evidence/Revalidation remain Core State Units;
+- the reference Implementation Slice result uses `RU-SLICE-01 Slice Outcome Definition`, `RU-SLICE-02 Responsibility / Dependency Boundary`, `RU-SLICE-03 Runtime Path`, `RU-SLICE-04 Codebase Integration Path`, and optional `RU-SLICE-05 Focused Part Plan(s)`;
+- `Codebase Integration Path` replaces `Integrated Implementation Plan` as canonical active wording; Slice proof/test handoff belongs inside `RU-SLICE-01` by default and `TM-TEST-DESIGN` continues to own concrete proof design;
+- Lens contracts should not repeat the same Units under routing/refine/challenge/check matrices. A Lens declares an `Analysis Surface`, supported methods `ANALYZE / CHECK / REFINE / CHALLENGE`, and Typical Findings / Finding Contract;
+- `REOPEN`, State-Unit creation/refinement, result update after accepted resolution and cross-owner handoff are not Lens methods. They are consequences of generic Core Finding Disposition and normal lifecycle;
+- `Finding Disposition` is producer-independent: Lens/validator/Evidence/implementation/user/etc. may surface a Finding Candidate; Core resolves materiality, affected meaning, semantic owner, State/lifecycle representation and downstream consequence;
+- disposition uses a fast/direct path when contracts make the destination obvious and explicit Question/QRP/Target resolution only when ownership/meaning/lifecycle consequence is materially ambiguous;
+- no mandatory first-class persisted `Finding` State Unit is introduced. Independently useful validation/readiness finding State remains allowed; raw transient findings may disposition directly into existing State kinds or be discarded as duplicate/non-material.
+
+**Source-State Check:** the selected snapshot's 46 local changes are all under Replacement Package App build outputs and overlap zero migration operation paths. GitHub `main` advanced from `c824891af9d3b77d528a6b4f17d3fac21c47ba5e` to `da098a83db7ec707fb362d998eb0267b505c6b80` by one commit affecting only the registered Replacement Package App child scope; it also overlaps zero migration operation paths.
+
+**Resulting Target Meaning:** perform one cumulative SDS conformance migration plus the necessary generic Core Finding-Disposition/Lens-contract refinement, without installing Game Dev or changing the retained P/TF/Decision/representation compatibility layer.
+
+### LOG-DOC-076 — Apply SDS Unit / Lens conformance migration
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-075`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `4035bdc4-bf58-4f7d-8ee9-dc21cb17c1d9`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- all 17 active SDS Target Modules literally expose a Resolution / Production Method and explicit Target Step-Result Contract / Result Units;
+- all 7 SDS-specific reusable Lenses literally expose Analysis Surface, supported `ANALYZE / CHECK / REFINE / CHALLENGE` operations, Typical Findings and Finding Contract;
+- generic Core owns `Finding Disposition` for producer-independent materiality/ownership/State/lifecycle/handoff resolution; Lens-specific State routing / External Routing / REOPEN / post-resolution update mechanics are no longer the active contract;
+- the Implementation Slice reference family uses Outcome, Responsibility/Dependency Boundary, Runtime Path, Codebase Integration Path and optional Focused Part Plan Result Units, with proof/test handoff folded into the Outcome definition by default;
+- the canonical SDS reference example demonstrates Lens `CHECK` → Finding Candidate → Core disposition → Risk/Question/Decision → accepted Codebase Integration Path update;
+- current SDS topology, command surface, Knowledge Basis contracts, AP/AG placement compatibility, Scenario/Domain/Test/WEUC authorities and generic P/TF/Decision compatibility are preserved;
+- SDS no longer depends on the foundation's implicit Unit/Lens compatibility mapping; the planned SDS conformance prerequisite is complete, while Game Dev remains a later independent profile ChangeSet.
+
+**Rationale:** make the already-selected Target Step Result / Unit foundation literal across the installed SDS profile and move finding ownership/lifecycle routing to the generic Core mechanism before adding another profile.
+
+### LOG-DOC-077 — Correct destructive Core navigation rewrites after current-source verification
+
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION / CURRENT-SOURCE REBASE  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Current selected source:** `obs-planning-docs-local-base-da098a83-20260827-191526.zip`  
+**Snapshot Base Commit:** `da098a83db7ec707fb362d998eb0267b505c6b80`  
+**Reviewed preliminary target:** package `4035bdc4-bf58-4f7d-8ee9-dc21cb17c1d9` plus rejected ReviewDiff correction package `28289fcb-46f4-4d05-911d-ae0c1eb78a8b`
+
+**Current-source finding:**
+- the selected fresh source already contains the exact v1 migration target state on all 54 original operation paths, including both added files;
+- 48 of those paths already equal the corrected v2 target because their semantic migration payload was unchanged;
+- exactly six paths remain in the v1 target state: the reusable-documentation action log, methodology manifest, final methodology audit, Core bootstrap, Core README and current repository integration ledger;
+- therefore the whole 54-operation migration must not be replayed. The correction is rebased onto these six exact current files only.
+
+**ReviewDiff correction preserved:**
+- restore `BOOTSTRAP-IDTSPE.md` sections `Reuse / Refresh`, `Bootstrap Output`, `Separation From SDS Bootstrap`, `Default Work Mode Command`;
+- restore Core `README.md` sections `Generic Core Owners`, `Target Step Result / Unit Boundary`, `Installed Profile Rule`, `Adjacent Packages`;
+- keep the selected SDS Unit/Finding-Disposition semantics unchanged;
+- preserve the existing `LOG-DOC-076 APPLIED` record as current-source history rather than rewriting it as a never-applied proposal;
+- add a new exact correction-package APPLIED relation only for the package produced from this current source.
+
+**Resulting target meaning:** the SDS Unit/Finding-Disposition migration remains current, while the accidental Core navigation/bootstrap truncations are repaired without replaying the already-present migration.
+
+### LOG-DOC-078 — Apply current-source SDS ReviewDiff preservation correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-077`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `8eba0c50-044e-4271-b4b6-92d90d5f93a6`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- the already-present 17/17 SDS Target Module and 7/7 SDS Lens conformance remains unchanged;
+- generic Finding Disposition, Codebase Integration Path, the five Implementation Slice Result Units and the canonical reference example remain unchanged;
+- `BOOTSTRAP-IDTSPE.md` again contains its full bootstrap reuse/output/profile-separation/default-work-mode contract while retaining Finding Disposition in the Core read set;
+- Core `README.md` again contains its full generic-owner/Unit-boundary/profile-rule/adjacent-package navigation while retaining the Finding Disposition owner and new Lens semantics;
+- audit, manifest and integration ledger describe the current-source correction truthfully rather than claiming the rejected v2 package was applied;
+- no Game Dev profile, Target Module/Lens merge/delete, P/TF/Decision redesign or representation-system redesign is introduced.
+
+**Rationale:** repair the two destructive Core documentation regressions against exact current bytes while preserving the migration state already present in the repository working tree.
+
+### LOG-DOC-079 — Correct SDS ReviewDiff link scope, source metadata and Domain Evidence Result boundary
+
+**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / PRE-APPLY TARGET  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Current source:** supplied cumulative ReviewDiff over local working tree at Git base `da098a83db7ec707fb362d998eb0267b505c6b80`  
+**Prior correction package:** `8eba0c50-044e-4271-b4b6-92d90d5f93a6`  
+
+**Material Findings / Selected Corrections:**
+- ReviewDiff exposed inconsistent link-audit scope: `MANIFEST.json` recorded **543/543 active methodology** while `FINAL-METHODOLOGY-AUDIT.md` called **725/725** the active-methodology count. Exact current target recheck resolves this as **543/543 active** and **730/730 methodology root + active + integration**; both scopes must be named explicitly.
+- `package_validation_scope.snapshot_working_tree_overlap = 0` and the matching GitHub-head-advance overlap were facts about the original v1 package source, not about the later current-source correction. Preserve them as historical `initial_v1_source_check` evidence instead of presenting them as current validation.
+- `TM-DOMAIN-DISCOVERY` said generic `Evidence` remains Core State but also named `RU-DDISC-01` as `Domain Evidence / Boundary | Domain Evidence`. Clarify the target-specific result as **Domain Evidence Interpretation / Boundary**: selected Source/Evidence references + interpreted domain signals + boundary rationale. Raw Evidence remains Core State and Sources remain source-owned.
+- no Target Module/Lens merge/delete, command change, P/TF/Decision redesign, representation redesign or Game Dev installation is introduced.
+
+**Resulting Target Meaning:** retain the SDS Unit/Finding-Disposition migration and its Core preservation correction, remove three remaining ReviewDiff ambiguities, and leave the ChangeSet ready for another cumulative ReviewDiff.
+
+### LOG-DOC-080 — Apply SDS ReviewDiff consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-079`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `3f0e3d51-99a3-4e26-9755-c76a82eae1a2`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- link audit metadata is internally consistent: active methodology **543/543**, methodology root + active + integration **730/730**;
+- original v1 zero-overlap facts are explicitly historical and current validation describes the exact five-file correction source/preconditions;
+- `RU-DDISC-01` is `Domain Evidence Interpretation / Boundary`, while raw Evidence remains Core State and Sources remain source-owned;
+- existing 17/17 SDS Target Module conformance, 7/7 SDS Lens conformance, Finding Disposition, five Slice Result Units, Codebase Integration Path and restored Core bootstrap/navigation sections remain unchanged.
+
+**Rationale:** close the remaining ReviewDiff consistency findings without replaying or redesigning the accepted SDS migration semantics.
+
+### LOG-DOC-081 — Review residual Lens-routing / automatic child-Target semantics after SDS conformance
+
+**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**ChangeSet Label:** `SDS Unit and Finding Disposition conformance migration`  
+**Current Git Head:** `94b6d74b8074dd4dda13934b29977a89ef5379a2` (`Finalize ChangeSet` in the unrelated Replacement Package App child scope)  
+**Current Source:** exact current working-tree bytes reconstructed from the supplied cumulative ReviewDiff; paths not changed by that diff are verified directly against Git head  
+**Continuity:** same still-open SDS ChangeSet `4ec06243-a2ef-43ca-9825-2e1289ff1465`; the unrelated Git commit does not finalize/close it  
+
+**Material Findings / Selected Corrections:**
+- the current SDS conformance target correctly establishes `Finding Candidate → Core Finding Disposition`, but residual prose still lets some SDS Lenses say they hand/route findings to WEUC, reopen upstream owners, or promote/open child Targets directly;
+- generic `LENS-MODEL` and Cross-Owner Consistency Review also retain a few pre-disposition shortcuts that route/reopen/create before the new Core bridge;
+- Lens contract stays: Analysis Surface + `ANALYZE / CHECK / REFINE / CHALLENGE` + Finding Contract. Lens output may include likely-owner/materiality/lifecycle hints, but semantic owner/State/reopen/handoff is decided by Core Finding Disposition;
+- independently substantial unresolved work becomes a **Target Formation candidate**. Target Formation decides reuse existing Target vs handoff/reference existing owner vs form new bounded child/local Target; no Lens/Target Module/Workflow automatically creates a child Target merely because choice space is material;
+- obvious known-owner disposition may still be fast/direct. This correction removes only the false ownership implication, not the ability to resolve obvious destinations cheaply;
+- L5 `GUIDANCE: ROUTE_*` / `PLACEMENT_DIRECTIVE: ROUTE` remains artifact-placement guidance under P-14 / TF-10 and is explicitly distinguished from semantic Finding routing;
+- the integration ledger status is corrected to reflect that this SDS ChangeSet is current in the working tree but still open; Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` finalized an unrelated child-scope ChangeSet only.
+
+**Resulting Target Meaning:** one producer-independent lifecycle model is used consistently across Core consistency review, SDS Lenses and affected Target/workflow guidance, while preserving the current 17-TM / 7-Lens SDS topology, Result Units, Codebase Integration Path, artifact-placement compatibility and Game Dev boundary.
+
+### LOG-DOC-082 — Apply Finding-Disposition / Target-Formation lifecycle conformance cleanup
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-081`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `bec59bee-6430-48bd-b409-4dd079723abc`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- SDS Lens findings no longer directly hand/route semantic meaning, reopen owners, or create/promote Targets; they surface Finding Candidates plus optional likely-owner/lifecycle hints, and Core Finding Disposition resolves the actual consequence;
+- Core Lens escalation and Cross-Owner Consistency Review use the same Finding Disposition bridge;
+- independently substantial unresolved Slice/Frontend/Application/architecture work produces a Target Formation candidate, and Target Formation decides reuse/handoff/new bounded Target;
+- L5 artifact `ROUTE` directives remain P-14 / TF-10 representation guidance and are explicitly not semantic routing authority;
+- the SDS conformance transition is recorded as current working-tree state of the still-open ChangeSet rather than as merely planned;
+- no SDS Target Module/Lens topology change, command change, Result-Unit redesign, P/TF/Decision redesign, representation redesign or Game Dev installation is introduced.
+
+**Rationale:** remove the remaining lifecycle-ownership ambiguity inside the same still-open Finding-Disposition migration without replaying its already-applied target state.
+
+### LOG-DOC-083 — Review final residual Core/SDS lifecycle and State-vs-Result inconsistencies
+
+**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**Source:** cumulative ReviewDiff after `LOG-DOC-082` + broad residual scan requested before final approval  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+
+**Material Findings / Selected Corrections:**
+- `BOOTSTRAP-SDS.md` contains literal `\n` escape text in the newly appended conformance section; restore real Markdown newlines;
+- generic `Finding Disposition` still shortcuts independently substantial ambiguity to `Target Formation → bounded Target`; replace this with a Target Formation **candidate**, after which Target Formation decides reuse / handoff / new bounded Target;
+- the Target-Formation Resolution Set still maps Lens findings directly into Evidence/Ideas/QRP/Decision inputs; route the producer/Core boundary through Finding Candidate → Core Finding Disposition instead;
+- residual Core Lens bodies (L1/L2/L3/L4/Quality/L6/Practical-Evidence/Shared-Cross-Cutting/Test-Proof) still contain direct reopen/route/child-Target ownership wording. Preserve their evaluation knowledge and artifact-placement guidance, but make actual State/owner/reopen/Target creation a Core Finding Disposition / Target Formation consequence;
+- keep `PLACEMENT_DIRECTIVE: ROUTE` / `GUIDANCE: ROUTE_*` as P-14/TF-10 artifact-placement vocabulary. Only semantic routing authority is removed from Lens prose;
+- `TM-DOMAIN-DRAFT`, `TM-IMPLEMENTATION-SLICE`, `TM-APPLICATION-DEFINITION`, `TM-PRACTICAL-TEST`, `TM-PROTOTYPE`, `TM-SLICE-STRATEGY` and `TM-TEST-COVERAGE` contain residual direct routing/reopen wording; align them with the same producer-independent lifecycle;
+- `RU-PTEST-01 Evidence Subject / Acceptance Question` blurs Core Question State with target Result meaning. Rename it to `Evidence Subject / Acceptance Boundary`; concrete Questions remain Core State;
+- Implementation Slice AP representation still lists a free-standing `testing handoff`; make the representation explicitly carry `RU-SLICE-01 verification/test-handoff meaning` instead;
+- directed workflow/profile/shared coverage projections and active research-capture examples should describe Evidence as challenging meaning and let Core Finding Disposition select revalidation/reopen, rather than implying that Evidence/workflow itself executes lifecycle transitions.
+- generic Target Module role guidance should describe review modules as Finding producers and route Lens-exposed independent work through Finding Disposition before Target Formation.
+
+**Resulting Target Meaning:** one lifecycle invariant is literal across the generic Core owner contracts, generic Core Lens bodies and installed SDS profile: producers surface Finding Candidates; Core Finding Disposition resolves material State/owner/lifecycle; independently substantial unresolved ownership/work becomes a Target Formation candidate; Target Formation alone decides reuse/handoff/new bounded Target. Result Units remain target-specific selected meaning and do not absorb generic Question/Evidence lifecycle state.
+
+### LOG-DOC-084 — Apply final Finding-Disposition / Target-Formation consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-083`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `f030db4e-2f56-4f6a-95e7-7312850d5b75`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- the SDS bootstrap conformance section is valid Markdown rather than literal escaped newline text;
+- generic Finding Disposition uses `Target Formation candidate → Target Formation decides reuse / handoff / new bounded Target` for independently substantial ambiguity;
+- Target-Formation/Lens interaction passes through Finding Candidate → Core Finding Disposition instead of direct Lens→State routing;
+- residual generic Core Lens direct reopen/semantic-route/automatic-child wording is removed while P-14/TF-10 artifact `ROUTE` guidance is preserved;
+- generic Target Module role guidance, directed SDS workflow/profile guidance and active research-capture examples describe revalidation/reopen as Core disposition/lifecycle consequences;
+- Practical Test uses `RU-PTEST-01 Evidence Subject / Acceptance Boundary`, with concrete Questions and actual Evidence remaining Core State;
+- Test Coverage carries a selected coverage/correction position while individual gaps remain Finding/Question/Risk/Evidence-Need/revalidation State;
+- Implementation Slice representation carries RU-SLICE-01 verification/test-handoff meaning rather than inventing a separate Slice Result Unit;
+- existing 17 SDS Target Modules, 7 SDS-specific Lenses, five Implementation Slice Result Units, Codebase Integration Path, AP/AG compatibility, command surface and Game Dev boundary remain unchanged.
+
+**Rationale:** eliminate the final residual ownership/lifecycle contradictions found by the broad ReviewDiff scan before the ChangeSet is considered for APPROVABLE acceptance.
+
+### LOG-DOC-085 — Review post-v6 whole-active residual lifecycle authority
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE RESIDUAL SCAN / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `f030db4e-2f56-4f6a-95e7-7312850d5b75`  
+**Source:** latest cumulative ReviewDiff reconstructed over verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` plus a whole-active-tree context scan  
+
+**Material Findings / Selected Corrections:**
+- v6 correctly removed the broad Core Lens/Target lifecycle contradictions, but a whole-active scan found a small residual set outside those prior hunks;
+- `IDTSPE-SHELL` P-15 still let actual Evidence directly `reaffirm or reopen`; Evidence now surfaces a Finding Candidate and Core Finding Disposition selects reaffirm/revalidation/reopen;
+- P-14 Artifact Placement still said to reopen Target Formation/ownership directly when a new semantic owner is needed; P-14 now surfaces an ownership Finding Candidate and waits for Core disposition/Target Formation before placing the resolved owner;
+- `SDS-INSTANCE-MAP` still described child/composition Target creation and reconciliation reopen as direct map consequences; it now uses Target Formation candidates and Core-disposition-selected narrow revalidation/reopen;
+- `TM-FRONTEND-SLICE` Handoff still combined L5 activation with direct local architecture Target creation; it now separates Lens evaluation, Finding Disposition and Target Formation;
+- two Application Definition shared methods still directly reopened Step-02; they now surface Step-02 challenge Finding Candidates and let Core Finding Disposition select revalidation/reopen;
+- the research-capture TDD example used `reopen` for a normal same-Target implementation refinement; it now uses ordinary re-entry / `TM-IMPLEMENTATION-SLICE REFINE`;
+- remaining `reopen`, `child Target` and `ROUTE` wording was reviewed by context rather than mechanically deleted: accepted occurrences describe Core-selected lifecycle consequences, already-formed Target relations/history, or P-14/TF-10 artifact-placement vocabulary.
+
+**Resulting Target Meaning:** runtime, topology maps, representation mechanics, shared research methods and worked examples all obey the same boundary: producer → Finding Candidate → Core Finding Disposition; independently substantial unresolved work → Target Formation candidate; only Target Formation decides reuse/handoff/new bounded Target.
+
+### LOG-DOC-086 — Apply post-v6 residual lifecycle authority correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-085`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `8b070940-6225-479c-8a63-050b6d3093dc`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- P-15 Evidence/Revalidation uses Finding Candidate → Core Finding Disposition before reaffirm/revalidation/reopen;
+- Artifact Placement does not reopen Target Formation or invent semantic owners; owner formation/resolution precedes P-14 placement;
+- SDS instance/topology guidance uses Target Formation candidates rather than direct child/composition Target creation and uses Core disposition for reconciliation reopen;
+- Frontend architecture escalation, Application Step-02 challenges and the TDD worked handoff no longer bypass the generic lifecycle bridge;
+- prior 17/17 SDS Target Module, 7/7 SDS Lens, Finding Disposition, Result-Unit, Codebase Integration Path and AP/AG compatibility results remain unchanged;
+- the final residual scan is context-sensitive: artifact `ROUTE` vocabulary and explicit Core-selected lifecycle consequences remain valid and are not treated as semantic-routing regressions.
+
+**Rationale:** close the residual lifecycle-authority gaps found only after scanning the complete active target tree rather than limiting review to changed diff hunks.
+
+### LOG-DOC-087 — Review final runtime / escalation / command-gate lifecycle residuals
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `8b070940-6225-479c-8a63-050b6d3093dc`  
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-211053).txt` after `LOG-DOC-086`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- the post-v6 correction fixed its seven declared residual owners, but final whole-active review found six remaining canonical runtime/navigation owners that still used pre-disposition shorthand;
+- `IDTSPE-SHELL` still defined Lens as routing/refining findings and its Recursive Escalation still mapped independent choice space directly to `Target Formation → bounded child/local Target`; the Shell now uses Finding Candidate → Core Finding Disposition → Target Formation candidate → Target Formation decision;
+- `practical-evidence-method.md` still let actual Evidence flow directly to `reopen`; the shared method now treats Evidence as a producer and lets Core Finding Disposition select revalidation/reopen only when accepted meaning is materially challenged;
+- `lens-creation-and-integration-use-case.md`, `sds-target-module-profile.md` and Phase-07 WEUC workflow still ended independent architecture/escalation paths with deterministic Target creation; all three now expose Target Formation candidates and leave reuse/handoff/new-Target selection to Target Formation;
+- the SDS command-surface runtime still said Lens findings return to the natural Target owner and several conditional module gates directly named a newly promoted/formed Target. The command surface now keeps the same commands while making actual finding ownership and conditional Target formation explicit Core/Target-Formation resolution;
+- no Target Module/Lens topology, command identity/alias, Result Unit surface, AP/AG compatibility, P/TF identifiers, Decision types or Game Dev installation is changed.
+
+**Resulting Target Meaning:** the generic lifecycle boundary is literal not only in Lens/Target bodies but also in the Shell role model, shared Evidence method, Lens-creation escalation, SDS architecture navigation and conditional command gates. A command may invoke/resolve a Target, but conditional Target existence is resolved through Target Formation rather than implied by module-specific shorthand.
+
+### LOG-DOC-088 — Apply final runtime / escalation / command-gate consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-087`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `edfcae2c-21c5-4d2f-8e14-7436e8a5a6ef`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `IDTSPE-SHELL` Lens role and recursive escalation use Finding Candidate / Core Finding Disposition / Target Formation candidate semantics;
+- Practical Evidence does not directly reopen accepted meaning; Core Finding Disposition decides revalidation/reopen;
+- generic Lens creation, SDS architecture profile and Phase-07 WEUC workflow no longer encode `Target Formation → Target` as an automatic two-step consequence;
+- SDS Lens commands surface findings to Core disposition, and conditional Requirement/Frontend/Cross-Cutting/Test-Strategy command gates explicitly use Target Formation while preserving their existing command surfaces;
+- previous 17/17 SDS Target Module and 7/7 SDS Lens literal conformance, Result Units, Codebase Integration Path, AP/AG placement behavior and Game Dev boundary remain unchanged.
+
+**Rationale:** remove the final runtime/navigation shorthand that contradicted the already-selected producer → Finding Disposition → Target Formation lifecycle before considering the cumulative ReviewDiff for APPROVABLE acceptance.
+
+### LOG-DOC-089 — Review final Documentation / Representation finding-ownership residuals
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `edfcae2c-21c5-4d2f-8e14-7436e8a5a6ef`  
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-213945).txt` after `LOG-DOC-088`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- the runtime/escalation/command-gate correction is coherent, but final whole-active review found one remaining Documentation / Representation cluster that still used pre-disposition ownership shorthand;
+- `idtspe-unit-and-target-step-result-model.md` still described State Units as existing for `Lens interaction/routing`; this is now Lens interaction / Finding Disposition addressability;
+- `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY` still told the Lens to route project-global meaning and said material findings return to the natural current owner/representation. The Lens now surfaces Finding Candidates / optional likely-owner context; Core Finding Disposition resolves semantic owner/lifecycle, while Documentation / Representation + P-14 / TF-10 resolve persistence/placement;
+- `DOCUMENTATION-REPRESENTATION-MATERIALIZATION-CONSISTENCY-AUDIT.md` and `CORE-SDS-SEPARATION-CONSISTENCY-AUDIT.md` still described Lens `AG-*` as finding-routing material and implied findings simply return to the current Target owner. Both audits now distinguish Lens-produced supporting/artifact-placement guidance from semantic Finding routing;
+- artifact `ROUTE` / non-tree routing vocabulary remains valid representation guidance. This correction removes only semantic owner/handoff/reopen authority from Lens/AG wording;
+- no Target Module/Lens topology, command surface, Result Unit surface, AP/AG IDs/counts, P/TF identifiers, Decision types or Game Dev installation is changed.
+
+**Resulting Target Meaning:** Documentation / Representation is fully aligned with the generic lifecycle boundary: Lens/representation checks may surface Finding Candidates and likely-owner context; Core Finding Disposition resolves semantic owner/State/lifecycle; AP/AG and P-14/TF-10 resolve representation/placement of already-owned meaning.
+
+### LOG-DOC-090 — Apply final Documentation / Representation finding-disposition consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-089`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `f6616562-fa43-436d-9bcb-4a949d2c19c8`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- the Unit model no longer names Lens routing as a State-Unit purpose;
+- the Documentation / Representation Lens does not choose a semantic owner or automatically return findings to the current owner; it surfaces Finding Candidates / likely-owner context and leaves owner/lifecycle disposition to Core;
+- both current representation/separation PASS audits define Lens `AG-*` as supporting-artifact / artifact-placement guidance rather than semantic finding routing;
+- AP/AG record counts/IDs and P-14/TF-10 artifact `ROUTE` vocabulary remain unchanged;
+- previous 17/17 SDS Target Module and 7/7 SDS Lens conformance, Result Units, Codebase Integration Path, command surface and Game Dev boundary remain unchanged.
+
+**Rationale:** remove the last Documentation / Representation ownership-language contradiction before the cumulative ChangeSet is considered for APPROVABLE acceptance.
+
+### LOG-DOC-091 — Review final host-Target / AG projection residuals
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `f6616562-fa43-436d-9bcb-4a949d2c19c8`  
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-215835).txt` after `LOG-DOC-090`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v9 correctly aligned the Documentation / Representation Lens and its two PASS audits, but one final whole-active scan found four projection/runtime phrases still implying a Lens-owned return path;
+- generic Core `idtspe-command-surface-contract.md` still ended `idtspe.lens.apply` with `return findings to natural Target owner`; the host Target is now explicitly only the Lens execution context, while findings go through Core Finding Disposition;
+- generic `lenses/README.md` still explained zero `AG-*` as findings simply returning to the current Target; zero AG now depends on Core disposition resolving the current Target as owner plus absence of a distinct supporting-artifact need;
+- SDS `ARTIFACT-PLACEMENT-MAP.md` contained the same return-to-owner shorthand despite already stating that semantic owner/handoff/reopen belongs to Core; the projection now uses the same Core-disposition boundary;
+- `active-methodology-mechanical-consistency-check.md` still named its PASS projection `ag_lens_findings`; the key now describes `ag_supporting_artifact_guidance`;
+- command identities/aliases, host-target policy, AP/AG IDs/counts, artifact `ROUTE` vocabulary, Target/Lens topology, Result Units, P/TF identifiers, Decision types and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** a resolved host Target is the context in which a Lens runs, not automatic proof that the host owns every finding. Lens output crosses Core Finding Disposition; `AG-*` exists only for supporting/artifact-placement guidance when useful.
+
+### LOG-DOC-092 — Apply final host-Target / AG projection consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-091`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `5a9cb4dd-58d7-44ae-a092-e510c8cf3f29`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- generic `idtspe.lens.apply` surfaces Finding Candidates and delegates actual semantic owner/State/lifecycle resolution to Core Finding Disposition;
+- generic Lens registry and SDS Artifact Placement Map no longer describe a Lens as returning findings to the current/natural Target owner;
+- the mechanical PASS projection names Lens AG ownership as supporting/artifact-placement guidance rather than ownership of Lens findings;
+- targeted active-tree scans contain none of the four superseded host-owner / AG-projection phrases;
+- previous 17/17 SDS Target Module and 7/7 SDS Lens conformance, Result Units, Codebase Integration Path, command surface, AP/AG counts/IDs and Game Dev boundary remain unchanged.
+
+**Rationale:** remove the final projection-level wording that could reintroduce semantic routing authority through host-Target or AG shorthand before APPROVABLE review.
+
+### LOG-DOC-093 — Review residual RETURN_TO_TARGET_OWNER / conditional owner-routing shorthand
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `5a9cb4dd-58d7-44ae-a092-e510c8cf3f29`  
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-221306).txt` after `LOG-DOC-092`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v10 correctly removed its four declared host-Target/AG projection phrases, but a broader exact active-tree scan found the equivalent `RETURN_TO_TARGET_OWNER` shorthand still present in canonical `LENS-MODEL` and five SDS Lens bodies;
+- no-AG/no-direct-artifact meaning is representation-only. Replace `RETURN_TO_TARGET_OWNER` with `NO_DISTINCT_SUPPORTING_ARTIFACT`; Core Finding Disposition resolves the semantic owner, and only then may accepted meaning use the current Target's ordinary representation;
+- the SDS Simplicity command still returned an Answer-Decision directly to the current Target owner. It now surfaces a simplification Finding Candidate/proposed refinement, lets Core Finding Disposition resolve owner/State, and uses current-Target Answer-Decision input only when that owner is actually resolved;
+- generic Target Module model/creation guidance still let a conditional command route directly to a proper/correct owner when no Target is justified. Conditional gates are now explicit Target Formation input; Target Formation resolves reuse/handoff to an existing owner or methodology next step;
+- command identities/aliases, host-target policies, AP/AG IDs/counts, artifact `ROUTE` vocabulary, Target/Lens topology, Result Units, P/TF identifiers, Decision types and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** no Lens/command/gate owns an implicit semantic “return to current Target” path. Lens output crosses Core Finding Disposition; conditional Target existence/absence crosses Target Formation; representation may remain with the current Target only after that semantic ownership is resolved.
+
+### LOG-DOC-094 — Apply final return-to-Target-owner / conditional owner-routing consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-093`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `b40f91e5-7ff8-44ec-9f00-ec8220f779e5`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- canonical `LENS-MODEL` and the five affected SDS Lenses use `NO_DISTINCT_SUPPORTING_ARTIFACT` instead of `RETURN_TO_TARGET_OWNER` for no-AG/no-direct-artifact semantics;
+- Simplicity Lens command output crosses Finding Candidate → Core Finding Disposition before any current-Target Answer-Decision use;
+- conditional Target Module gates provide Target Formation input rather than routing semantic owners directly;
+- targeted active-tree scans contain no `RETURN_TO_TARGET_OWNER`, `Lens findings feed the current Target`, direct simplification return-to-current-owner, or conditional `route to the proper/correct owner` shorthand;
+- previous 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG counts/IDs and Game Dev boundary remain unchanged.
+
+**Rationale:** remove the remaining exact-return shorthand discovered after v10 so the selected producer → Core Finding Disposition and conditional Target Formation ownership boundaries are literal in canonical models, SDS projections and command guidance.
+
+### LOG-DOC-095 — Review residual producer-to-owner / Lens-destination shortcuts after v11
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `b40f91e5-7ff8-44ec-9f00-ec8220f779e5`  
+**Source:** latest cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-c71bf10d.diff`; exact current target reconstructed and all 93/93 cumulative target blob hashes verified
+
+**Material Findings / Selected Corrections:**
+- v11 correctly removes the exact `RETURN_TO_TARGET_OWNER`/conditional proper-correct-owner phrases, but a broader context scan finds semantically equivalent producer-owned destination shortcuts that were outside its literal phrase list;
+- the generic SDS conditional command gate still says `Target not justified → route to the correct current owner / methodology next step`; make the failed gate explicit Target Formation input so the command does not select semantic ownership; the same command-surface cleanup makes L5 global-update output cross Finding Disposition before `TM-WEUC` ownership and makes the frontend helper projection name the Target-Formation-resolved outcome;
+- Slice Strategy, the shared Useful Vertical Result family and workflow-08 projection still send newly discovered shared work directly to Cross-Cutting/shared owners. Treat that material as ownership Finding Candidates; Core Finding Disposition resolves actual semantic owner/State, and Target Formation decides independent Target ownership;
+- Slice Strategy frontend specialization likewise remains a Part Plan by default; independent frontend Target depth becomes a Target Formation candidate with `TM-FRONTEND-SLICE` only as the likely module family;
+- Domain Discovery must use WEUC/L5 as an evaluation perspective rather than hand future-path implications to the Lens as a semantic destination; findings/likely-owner context cross Core Finding Disposition before any owner/handoff consequence;
+- L1/L2 may inform ownership/placement, but P-14 acts only after Core Finding Disposition has resolved/accepted the semantic owner; P-14 remains representation/placement authority, not semantic routing authority;
+- command identities/aliases, Target/Lens topology, Result Units, AP/AG IDs/counts, artifact `ROUTE` vocabulary and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** all newly surfaced semantic ownership material crosses the same bridge regardless of producer wording: producer/Lens/Target Module → Finding Candidate → Core Finding Disposition → resolved owner/State/lifecycle; independently material Target ownership → Target Formation; P-14 only places already-owned meaning.
+
+### LOG-DOC-096 — Apply final producer-to-owner / Lens-destination consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-095`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `ec30223d-434f-484a-997a-7a722705197d`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- the SDS general conditional command gate emits Target Formation input instead of routing to a current owner itself; WEUC/global-update and frontend helper projections use Finding Disposition / Target Formation rather than command-owned destination shorthand;
+- Slice/shared-work discovery surfaces ownership Finding Candidates and uses Core Finding Disposition + Target Formation before Cross-Cutting/frontend/shared Target ownership is selected;
+- Domain Discovery uses WEUC/L5 as a supporting evaluation perspective and lets Core Finding Disposition decide actual owner/handoff;
+- L1/L2 placement wording makes P-14 operate only after semantic ownership is resolved;
+- targeted active-tree scans contain none of the reviewed direct producer→owner/Lens-destination shortcut phrases;
+- prior 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG counts/IDs and Game Dev boundary remain unchanged.
+
+**Rationale:** close the residual semantic-owner shortcuts that survived literal phrase scans so the selected Finding Disposition / Target Formation / P-14 authority boundaries are expressed consistently in command, Slice, Domain and Core Lens projections.
+
+### LOG-DOC-097 — Review residual WEUC/L5 global-update destination shortcuts after v12
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `ec30223d-434f-484a-997a-7a722705197d`  
+**Source:** latest cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-b422c46e.diff`; exact post-v12 target reconstructed and all 94/94 cumulative target blob hashes verified  
+
+**Material Findings / Selected Corrections:**
+- v12 correctly removes the reviewed producer→owner/Lens-destination shortcuts, but a wider WEUC/L5 projection scan finds one residual semantic family: several Shell/map/profile/workflow/registry projections still send a global evolution/architecture update candidate directly to `TM-WEUC`;
+- normalize that family to `L5 observation → Finding Candidate + optional TM-WEUC likely-owner hint → Core Finding Disposition → accepted TM-WEUC update/revalidation when selected`; direct whole-Workspace `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION` invocation remains valid because the Target is explicitly selected rather than inferred from a Lens finding;
+- the WEUC Lens worked example still says the Lens may create `<owner>.evolution.md`; local evolution companions remain Lens `AG-L5-02` proposals, while Documentation / Representation + P-14 / TF-10 decide actual persistence/placement;
+- `AG-L5-01` may identify `TM-WEUC` as a likely semantic/representation destination, but the guidance record does not create semantic ownership; Core Finding Disposition resolves the actual owner/handoff before canonical map content changes;
+- command identities/aliases, Target/Lens topology, Result Units, AP/AG IDs/counts, artifact `ROUTE` vocabulary and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** WEUC/L5 is consistently an evaluation/finding producer outside an explicitly selected whole-Workspace WEUC Target. Project-global update meaning crosses Core Finding Disposition before `TM-WEUC` ownership/handoff is acted on, and local evolution companion files are created only through Documentation / Representation + P-14 placement resolution.
+
+### LOG-DOC-098 — Apply final WEUC/L5 global-update disposition consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-097`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `0f09ceef-8c93-4c82-8b60-837dcf8aaacd`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- Shell, generic Lens model, methodology/SDS maps, Phase-07 workflow, TM-WEUC profile/registry/source projections, shared artifact/source-lineage projections and worked example use Finding Candidate → Core Finding Disposition before inferred global `TM-WEUC` owner/handoff;
+- direct `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION` remains valid only when that Target/scope is explicitly selected;
+- WEUC Lens local evolution companions are `AG-L5-02` proposals and actual file creation/update is resolved by Documentation / Representation + P-14 / TF-10;
+- `AG-L5-01` keeps artifact `ROUTE` compatibility while expressing `TM-WEUC` as a likely/resolved destination rather than Lens-created semantic ownership;
+- targeted active-tree scans contain none of the reviewed direct WEUC/L5 candidate→TM-WEUC or Lens-creates-companion shortcuts;
+- prior 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG counts/IDs and Game Dev boundary remain unchanged.
+
+**Rationale:** close the final WEUC/L5 projection cluster that survived producer-owner correction so Lens findings, global owner resolution and representation placement have one literal authority boundary before APPROVABLE review.
+
+### LOG-DOC-099 — Review final Lens Finding → State/owner disposition residuals after v13
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `0f09ceef-8c93-4c82-8b60-837dcf8aaacd`  
+**Source:** cumulative ReviewDiff `Вставленный текст(20260828-100417).txt` after `LOG-DOC-098`; exact target reconstructed from snapshot `c824891a...` + cumulative diff and all 99/99 target blob hashes verified  
+
+**Material Findings / Selected Corrections:**
+- v13 correctly closes its WEUC/L5 direct-destination and companion-creation cluster, but invariant-class review finds residual pre-disposition wording in generic response/materialization, Resolution Slot summary and several reusable Lens Artifact Guidance bodies;
+- generic Artifact Placement still described raw Lens output as direct Evidence/Idea/Q/R/P/Decision input and allowed findings to remain/persist with an owner before Core disposition. Normalize this to `Lens → Finding Candidate → Core Finding Disposition → accepted State/resolved owner → Documentation / Representation → P-14 / TF-10`;
+- L1/L2/L3/L4/L6/Quality, Shared/Cross-Cutting and Documentation/Representation Lens guidance must not establish/resolve a semantic owner merely because a Lens finding exists. Current-Target/natural/shared owners are conditional hints/resolved destinations, not Lens authority;
+- `resolution-slot-and-target-formation-resolution-set.md` keeps its already-correct Section 13 bridge and only fixes the later compact Lens Set summary that still mapped a Lens finding directly to State/Decision input;
+- `TM-WEUC` Knowledge Basis and SDS Target Module profile remove the remaining `findings remain/promote` / current-Target-authority shorthand while preserving explicit whole-Workspace `TM-WEUC` ownership;
+- Domain/Slice/UI reusable Lenses treat WEUC/L5 strictly as an evaluation perspective. Only suspected project-global meaning may carry `TM-WEUC` as a likely-owner hint; Core Finding Disposition resolves the actual owner/handoff;
+- Frontend local evolution companions are `AG-L5-02` proposals; Documentation / Representation + P-14 / TF-10 decide actual creation/update;
+- AP/AG IDs/counts, artifact `ROUTE` vocabulary, command identities, Target/Lens topology, Result Units and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** raw Lens output is never silently upgraded into Core State, Decision input or semantic ownership. Finding Disposition is the only producer→State/owner/lifecycle bridge; Target Formation remains the independent-owner formation bridge; P-14/TF-10 act only on already-owned accepted meaning.
+
+### LOG-DOC-100 — Apply final Lens Finding → State/owner disposition consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-099`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `fd5e8bca-aceb-4e40-b595-8e10ca180ea8`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- generic Artifact Placement and Shell/Resolution-Slot projections distinguish raw Lens Finding Candidates from dispositioned Ideas/Q/R/P/Evidence/Decision inputs;
+- L1/L2/L3/L4/L6/Quality, Shared/Cross-Cutting and Documentation/Representation Lens guidance no longer assumes current/natural/shared semantic ownership before Core Finding Disposition;
+- `TM-WEUC` Knowledge Basis, SDS profile selection check and Domain/Slice/UI Lens artifact implications consistently distinguish WEUC/L5 evaluation from `TM-WEUC` semantic ownership;
+- Frontend evolution companion wording is proposal/placement guidance rather than Lens-created file output;
+- targeted active-tree invariant scans contain none of the reviewed direct `Lens finding → State`, `findings stay/remain → current Target`, Lens-establishes-owner, Lens-as-semantic-owner or Lens-produces-companion shortcuts;
+- prior 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG IDs/counts and Game Dev boundary remain unchanged.
+
+**Rationale:** remove the final generic projection/Artifact-Guidance assumptions that could bypass the already-selected Core Finding Disposition boundary before another APPROVABLE review.
+
+### LOG-DOC-101 — Review post-v14 SDS projection shorthand residuals
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `fd5e8bca-aceb-4e40-b595-8e10ca180ea8`  
+**Source:** cumulative ReviewDiff `Вставленный текст(20260828-104157).txt` after `LOG-DOC-100`; exact post-v14 target matches all 99/99 cumulative target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v14 correctly establishes the generic producer → Finding Candidate → Core Finding Disposition → accepted State/resolved owner bridge, but a final SDS projection scan finds six stale shorthand owners that still render dispositioned outcomes as if they were direct Lens/producer outputs;
+- `ARTIFACT-PLACEMENT-MAP.md` still projects several `AG-*` records directly to current/natural owners. Keep AP/AG IDs and artifact `ROUTE` semantics unchanged, but show that Finding Candidates cross Core Finding Disposition before the resolved owner is used for representation/placement;
+- the SDS Target Module profile Architecture Escalation example still renders `Lens → architecture finding / Idea / local Answer Decision`; make raw Lens output Finding Candidates and let Core disposition resolve local Idea/Q/R/P/Decision input;
+- `TM-TEST-COVERAGE` still labels material gaps directly as `Findings/State`; keep the coverage Result Unit unchanged while individual defects remain Finding Candidates until Core disposition resolves Question/Risk/Evidence Need/revalidation State;
+- `TM-APPLICATION-DEFINITION` still says reference findings remain Evidence/Ideas; research observations instead surface Finding Candidates and become Evidence/Ideas only when Core disposition selects that State;
+- SDS command-surface and WEUC Lens helper text still presents local Decision input / TM-WEUC update shorthand as direct Lens output. Present raw architecture/evolution output as Finding Candidates; allow direct Current Global Architecture Position refinement only for an explicitly selected whole-Workspace `TM-WEUC` Target;
+- no command identity/alias, Target/Lens topology, Result Unit, AP/AG ID/count, artifact `ROUTE`, P/TF compatibility or Game Dev boundary changes.
+
+**Resulting Target Meaning:** SDS projection/helper prose now mirrors the same producer-independent lifecycle as its canonical Core owners. Raw findings never skip Core Finding Disposition merely because a materialization map, Target Module production method or helper summary is compact.
+
+### LOG-DOC-102 — Apply post-v14 SDS projection shorthand consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-101`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `753428e5-c2a7-4f2f-b5b1-b98443342589`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- SDS Artifact Placement Map conditions Lens-generated owner projections on Core Finding Disposition before Documentation / Representation + P-14 placement;
+- SDS architecture helper/profile projections distinguish raw Finding Candidates from dispositioned local Idea/Q/R/P/Answer-Decision input and inferred `TM-WEUC` owner/handoff;
+- Test Coverage gaps and Application reference-research observations remain Finding Candidates until Core disposition resolves their State/lifecycle/owner consequence;
+- WEUC Lens update shorthands consistently use Finding Candidates carrying proposed global-update meaning, while explicit whole-Workspace `TM-WEUC` work may directly refine its selected Target result;
+- targeted active-tree scans contain none of the reviewed direct `Findings/State`, reference-findings→Evidence/Ideas, helper Lens→Decision-input or direct AG-finding→owner shortcuts without an explicit disposition condition;
+- prior 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG IDs/counts and Game Dev boundary remain unchanged.
+
+**Rationale:** align the final compact SDS projections with the already-selected Core Finding Disposition contract so a subsequent cumulative ReviewDiff can be judged on invariant semantics rather than phrase-specific exceptions.
+
+### LOG-DOC-103 — Review final post-v15 producer→State/Decision projection residuals
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `753428e5-c2a7-4f2f-b5b1-b98443342589`  
+**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-db9b8119.diff` after `LOG-DOC-102`; exact post-v15 target matches all 99/99 cumulative target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v15 correctly fixes its six stale SDS projections, but a multiline producer→State/Decision sweep finds a final residual family where compact examples still skip the generic Finding Disposition bridge;
+- canonical `LENS-MODEL` still rendered `Lens evaluation + Evidence → Answer Decisions`; make material Lens/Evidence implications surface Finding Candidates and let Core Finding Disposition resolve accepted/refined State before Target projection;
+- `IDTSPE-SHELL` and the WEUC Lens still rendered local L5 findings as local Answer Decisions/evolution plans/companions before disposition. Normalize local and project-global L5 consequences to one Finding Candidate → Core disposition boundary; `AG-L5-02` remains only a representation proposal and Documentation / Representation + P-14 / TF-10 decide actual companion materialization;
+- the Idea/Evolution helper still rendered WEUC evaluation directly into an Architecture/Slice Decision; add Finding Candidate → Core disposition before any Decision input;
+- Shared/Cross-Cutting Case A still let a finding itself choose `keep local`; treat local ownership as a likely outcome that Core disposition confirms/rejects;
+- Prototype Handoff still routed raw findings directly to Application/Scenario/Screen owners; route producer findings through Core disposition first while already-formed Idea State may still use normal P-14 register placement;
+- Test Coverage Artifact/File wording still required raw coverage/gap findings to persist; only selected coverage assessment and dispositioned continuing State are durable by default;
+- the Simplicity iterative Lens example also ended a Lens chain directly in an Answer Decision; normalize it in the same correction rather than leaving another equivalent shortcut;
+- command identities/aliases, Target/Lens topology, Result Units, AP/AG IDs/counts, artifact `ROUTE`, P/TF compatibility and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** across generic Lens lifecycle, WEUC/L5, Shared/Cross-Cutting, Prototype and Test Coverage projections, raw producer observations never become Decision/State/owner/placement merely through shorthand. Core Finding Disposition remains the producer→State/owner/lifecycle bridge; Target Formation remains independent-owner formation authority; P-14/TF-10 only place already-owned accepted meaning.
+
+### LOG-DOC-104 — Apply final post-v15 producer-disposition invariant consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-103`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `c3e07864-039c-40d1-b81d-5acfad2f14c7`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- generic `LENS-MODEL` no longer shortcuts Lens/Evidence evaluation directly into Answer Decisions;
+- Shell + WEUC Lens local/global evolution paths use Finding Candidate → Core Finding Disposition before local Decision/evolution meaning, `TM-WEUC` owner/handoff or `AG-L5-02` companion placement;
+- Idea/Evolution and Simplicity helper chains use the same disposition boundary before Architecture/Slice/Answer Decisions;
+- Shared/Cross-Cutting local-vs-shared worked examples make ownership a Core-disposition consequence rather than a finding-owned route;
+- Prototype findings cross Core disposition before real-owner handoff; already-formed Idea State may still be placed in the Ideas register;
+- Test Coverage persists selected coverage assessment and dispositioned continuing State, not raw Finding Candidates;
+- whole-active multiline invariant scans contain none of the reviewed direct Lens→Decision, L5 finding→local Decision/companion, Finding→keep-local/real-owner or raw coverage-finding persistence shortcuts;
+- prior 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG IDs/counts and Game Dev boundary remain unchanged.
+
+**Rationale:** close the final producer→State/Decision shorthand family discovered only after scanning multiline lifecycle arrows rather than exact phrases, while preserving all previously accepted Core/SDS architecture boundaries.
+
+### LOG-DOC-105 — Review whole-active authority/source-projection residuals after v16
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE AUTHORITY + SOURCE-PROJECTION CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `c3e07864-039c-40d1-b81d-5acfad2f14c7`  
+**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-c04945eb.diff` after `LOG-DOC-104`; exact post-v16 target matches all 100/100 cumulative target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v16 correctly removes the multiline Lens→Decision / local-L5 / raw-finding-persistence family it targeted, but an expanded whole-active authority/source sweep finds residual equivalents expressed through verbs (`feed`, `decides`, `generate`), structured Lens `SEMANTIC_OWNER` fields, Source tables and compact lifecycle examples;
+- generic L3/L6/Linked-Notes/Test-Proof/Practical-Evidence guidance must treat Lens observations as Finding Candidates and use Core Finding Disposition before accepted Decision/State/owner consequences; supporting Evidence/test artifacts are representations/sources, not semantic owners created by a Lens;
+- SDS Application/UI/Slice/Simplicity/WEUC Lens prose must not feed Decisions, mix Finding Candidate with Question/Idea/QRP State, let a Lens decide semantic correctness, or preselect current/base Target ownership before Core disposition;
+- SDS upstream Source projections must consume dispositioned Lens-derived State / accepted Decisions rather than raw L4/L5/L6/WEUC findings; local WEUC paths cross Core disposition before local Answer-Decision/evolution meaning and before any `AG-L5-02` companion proposal is materialized;
+- Implementation Slice/Frontend/physical-tree projections must describe `.evolution.md` as an optional representation of accepted local evolution meaning, never direct Lens output; Implementation Slice question examples use Finding Disposition / Target Formation / revalidation boundaries explicitly;
+- Evidence reconciliation examples and TM-WEUC/directed-workflow handoffs must surface Finding Candidates and let Core disposition select reaffirm/revalidation/repair/global refresh rather than encoding those lifecycle transitions directly;
+- direct whole-Workspace `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION`, ordinary accepted Target-to-Target handoffs, Target Formation decisions, Documentation/Representation decisions and artifact `ROUTE` remain valid;
+- command identities/aliases, Target/Lens topology, Result Units, AP/AG IDs/counts, P/TF compatibility and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** the installed active methodology now applies the producer-independent bridge not only to arrows and explicit routing prose, but also to authority verbs, structured Lens guidance, Source projections, worked reconciliation and local/global WEUC handoffs. Raw Lens/producer observations are never silently treated as accepted State/Decision/owner/persistence input.
+
+### LOG-DOC-106 — Apply whole-active authority/source-projection consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-105`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `b53d5c4e-2f7e-4ad0-83c4-df5f99339eb0`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- generic Lens model/L6/Linked Notes/Practical Evidence/Test Proof authority wording consistently uses Finding Candidate → Core Finding Disposition before accepted revalidation/Decision/owner consequences;
+- SDS Application/UI/Slice/Simplicity/WEUC Lens prose and structured `AG-*` owner projections no longer bypass Core disposition;
+- SDS Target Module upstream Source map/lineage/coverage projections consume dispositioned Lens-derived State / accepted Decisions rather than raw Lens findings;
+- Implementation Slice, Frontend Slice and SDS physical-tree evolution companions are `AG-L5-02` representation proposals over accepted local evolution meaning, with Documentation / Representation + P-14 / TF-10 deciding materialization;
+- Research Capture Evidence reconciliation, TM-WEUC Handoff and directed repetition examples use Finding Candidate → Core Finding Disposition before reaffirm/revalidate/repair/global-refresh consequences;
+- whole-active expanded authority/source/lifecycle scans contain none of the reviewed raw Lens→Decision/State, unconditioned Lens-owner, raw-Lens-finding-as-Source, direct Evidence→lifecycle or Lens-output-companion shortcuts;
+- prior 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG IDs/counts, artifact `ROUTE` vocabulary and Game Dev boundary remain unchanged.
+
+**Rationale:** close the residual semantic equivalents missed by earlier arrow/phrase scans by checking authority verbs, structured owner fields and Source/lifecycle projections across all active methodology files before the next APPROVABLE review.
+
+### LOG-DOC-107 — Review post-v17 APPROVABLE blockers / residual producer-State-source projections
+
+**Type:** REVIEW DIFF / APPROVABLE-BLOCKER CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `b53d5c4e-2f7e-4ad0-83c4-df5f99339eb0`  
+**Source:** cumulative ReviewDiff `Вставленный текст(20260828-122847).txt` after `LOG-DOC-106`; exact post-v17 target matches all 102/102 cumulative target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v17 applies correctly and closes its 23-file authority/source-projection cluster, but the post-v17 APPROVABLE review finds eleven remaining semantic projections outside that correction's exact normalized forms;
+- WEUC/L5 still has a top-level local path that reaches Answer Decision/QRP/Evidence before Core disposition plus an ordinary-target example that jumps from local findings to a companion. Normalize both to Finding Candidate → Core Finding Disposition before accepted local State/owner meaning and before any `AG-L5-02` representation proposal/materialization;
+- L4's pattern heuristic still says `observe structural problem → generate pattern Idea`; make structural pattern meaning a Finding Candidate/proposal first and let Core disposition decide whether Idea/QRP/Decision State is warranted;
+- Phase-01 L1/L2/L3 compact `Produces` blocks directly emit scope/Need framing, trusted Source/reuse decisions, Q/R/P and Evidence needs. Recast them as Finding Candidates/likely hints for Core disposition and make the active Research Capture example demonstrate the same bridge before a Question or accepted reuse/source-mapping input appears;
+- generic SDS Source-lineage and Scenario Discovery still list raw Application/Prototype findings/candidates as current Sources. Consume accepted Prototype Interpretation/Decision Handoff, referenced Prototype Evidence and accepted/dispositioned feasibility State instead;
+- Implementation Slice and Frontend Slice still conflate `Finding` with Question/Idea/QRP State. A newly surfaced issue is a Finding Candidate; Core disposition decides the accepted State/lifecycle consequence and may surface Target Formation input when independently substantial;
+- directed repetition still maps challenging post-code Evidence directly to `REVALIDATE / REPAIR`; Evidence is a producer, so challenge meaning crosses Finding Candidate → Core disposition before lifecycle action;
+- Application Definition workflow still says reference products generate Evidence/Ideas; reference/research observations surface Finding Candidates and become Evidence/Idea/other State only through Core disposition;
+- Simplicity still calls evolution constraints `established by L5 / maps`; accepted constraints come from current semantic/map/Decision owners or L5-derived meaning already accepted through Core disposition;
+- the pre-package expanded sweep also finds one equivalent in the SDS WEUC command resolution: `run ... L5 → current Target keeps local Decision ownership`. Keep the host Target as execution context, surface L5 Finding Candidates, and let Core disposition confirm local ownership before any Answer-Decision input;
+- command identities/aliases, Target/Lens topology, Result Units, AP/AG IDs/counts, artifact `ROUTE`, P/TF compatibility and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** the final active projections no longer treat Lens/research/Evidence observations as already accepted State, semantic Source, owner or lifecycle consequence. The producer-independent Finding Disposition bridge is explicit in the remaining Phase-01, WEUC/L4, Slice, Source-lineage, repetition and worked-example paths.
+
+### LOG-DOC-108 — Apply post-v17 APPROVABLE residual consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-107`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `d77f7701-ac75-44b7-9a8c-1fceb1970d5e`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- WEUC/L5 local architecture/evolution flow and ordinary-target example cross Core Finding Disposition before accepted local Decision/QRP/Evidence-Need/evolution meaning, TM-WEUC handoff or `AG-L5-02` companion materialization;
+- L4 pattern heuristics surface Finding Candidates/proposals rather than creating Idea State;
+- Phase-01 L1/L2/L3 projections and the Research Capture example explicitly use Lens observation → Finding Candidate → Core Finding Disposition before accepted Core State/current-Target result input;
+- Source-lineage and Scenario Discovery use accepted Prototype interpretation/decision handoff + referenced Evidence / dispositioned feasibility State rather than raw findings/candidates as Sources;
+- Implementation/Frontend Slice unresolved-choice wording distinguishes Finding Candidate from Question/Idea/QRP/Decision State and leaves independent Target formation to Core disposition + Target Formation;
+- challenging Evidence in directed repetition crosses Finding Disposition before REVALIDATE/REPAIR;
+- Application reference research uses Finding Candidate → Core disposition before Evidence/Idea State;
+- Simplicity consumes accepted evolution constraints from actual owners/dispositioned L5-derived State rather than treating L5 as constraint authority;
+- SDS WEUC command resolution no longer infers local Decision ownership merely from running L5 in a host Target; Core disposition confirms any local owner/State consequence first;
+- the prior v17 whole-active PASS claims are explicitly superseded as review evidence where the post-v17 APPROVABLE review found these eleven misses; the new post-v18 scan covers those forms explicitly;
+- prior 17/17 SDS Target Module and 7/7 SDS Lens conformance, five Slice Result Units, Codebase Integration Path, command identities, AP/AG IDs/counts and Game Dev boundary remain unchanged.
+
+**Rationale:** close the concrete post-v17 APPROVABLE blockers without redesigning the selected lifecycle model, and make the current audit evidence truthful about the broader post-v17 review.
+
+### LOG-DOC-109 — Review post-v18 canonical Shell/Lens/Domain residuals before APPROVABLE
+
+**Type:** REVIEW DIFF / APPROVABLE-BLOCKER CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `d77f7701-ac75-44b7-9a8c-1fceb1970d5e`  
+**Source:** supplied post-v18 cumulative ReviewDiff `Вставленный текст(20260828-140951).txt` + `post-v18-approvable-review(1).md`; exact post-v18 target matches all 104/104 cumulative target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v18 applies correctly and closes its twelve reviewed/pre-package semantic residuals, but the post-v18 APPROVABLE review finds a final compact cluster in four canonical/target owners;
+- `IDTSPE-SHELL` P-07 still lists raw Lens findings/research-prototype Evidence as direct Idea-space inputs, Recursive Escalation mixes `Finding Candidate / normal Core State` before disposition, and Example 4 says a finding itself can create Risk/Idea/Question/Answer Decision. Normalize all three to producer observation → Finding Candidate → Core Finding Disposition → accepted State/owner/lifecycle consequence;
+- canonical `LENS-MODEL` Slice evolution example reaches an Evolution section/`.evolution.md` directly from L5 discovery and its Linked Notes summary jumps straight to `JUSTIFIED / NOT_JUSTIFIED / route elsewhere`. Put Finding Disposition before accepted local evolution/usage State and put Documentation / Representation + P-14 / TF-10 before materialization/placement;
+- `TM-IMPLEMENTATION-SLICE` still calls the optional evolution companion `L5-produced` even though its own contract already says it is not Lens output. Rename it as the selected/materialized representation after disposition + representation/P-14;
+- `TM-DOMAIN-DRAFT` still says it may consume a WEUC/L5 `result` and asks Representation whether `the finding should persist`. It may consume accepted/dispositioned local evolution meaning; Representation decides durable/distinct representation only after Core disposition;
+- whole-active residual scan of the exact post-v18 tree finds no additional material semantic owner beyond these four reviewed files; context-valid references to Lens findings, Target Formation, explicit whole-Workspace TM-WEUC work, AG/ROUTE proposals and already-resolved representation remain unchanged;
+- command identities/aliases, Target/Lens topology, Result Units, AP/AG IDs/counts, artifact `ROUTE`, P/TF compatibility and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** canonical Shell/Lens examples and Domain/Slice evolution representation now express the same producer-independent boundary as the rest of the active methodology. Raw findings/Evidence/Lens results do not become Idea/Question/Risk/Decision State or durable companion representation without Core Finding Disposition and, where persistence is needed, Documentation / Representation + P-14 / TF-10.
+
+### LOG-DOC-110 — Apply post-v18 canonical residual consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-109`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `d4f18f08-9c5d-49a0-b35c-3875fbe96249`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- Shell P-07 sends raw Lens/research/prototype observations through Finding Candidate → Core Finding Disposition before Idea/alternative State enters `TF-07 IDEA_SPACE`;
+- Shell Recursive Escalation no longer treats `normal Core State` as a pre-disposition producer output, and the L4 example makes Risk/Idea/Question/Answer-Decision input a Core-disposition consequence;
+- canonical Lens Slice-evolution and Linked Notes examples cross Core Finding Disposition before accepted State/owner meaning, and materialization/placement crosses Documentation / Representation + P-14 / TF-10;
+- `TM-IMPLEMENTATION-SLICE` describes `.evolution.md` as a selected/materialized representation, not L5-produced output;
+- `TM-DOMAIN-DRAFT` consumes accepted/dispositioned local evolution meaning and sends only that accepted meaning to representation/placement decisions;
+- the previous post-v18 APPROVABLE review's four semantic blockers are corrected **4/4** and the exact residual phrase family is absent in the active tree;
+- prior 17/17 SDS Target Module + 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG IDs/counts and Game Dev boundary remain unchanged.
+
+**Rationale:** close the small canonical residual cluster found after v18 so the next cumulative ReviewDiff can be evaluated directly for APPROVABLE rather than carrying another known producer/State/representation contradiction.
+
+### LOG-DOC-111 — Review post-v19 evolution-companion disposition projections before APPROVABLE
+
+**Type:** REVIEW DIFF / WHOLE-ACTIVE PRE-PACKAGE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Prior package:** `d4f18f08-9c5d-49a0-b35c-3875fbe96249`  
+**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-883739ac.diff`; exact post-v19 target matches all 104/104 cumulative target blob hashes  
+
+**Material Findings / Selected Corrections:**
+- v19 applies correctly and closes the four post-v18 canonical blockers, but the requested pre-package whole-active recheck finds one explicit remaining TM-WEUC creation/splitting authority error plus a small family of semantically equivalent **evolution-companion projection shorthands** that could become the next review tail if only that one line were corrected;
+- `TM-WEUC` still says local companion creation/splitting is an L5 + Documentation/Representation responsibility and elsewhere compresses `AG-L5-02` justification with actual companion existence. Separate the roles literally: L5/WEUC may supply `AG-L5-02` representation guidance only over accepted/dispositioned local evolution meaning; Documentation / Representation decides no-persistence/embed/split; P-14 / TF-10 resolves actual path/materialization;
+- the canonical `target-evolution-companion-artifact.md` still rendered `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE / AG-L5-02 → discovers → proposes section/file` without Core Finding Disposition. Insert Finding Candidate → Core disposition → accepted local evolution meaning before any AG proposal;
+- Phase-07 WEUC workflow still ended `WEUC Lens / L5 → L6 → Answer Decision / local evolution companion / QRP`; make those producer observations Finding Candidates and let Core disposition select State/owner before any companion proposal;
+- the Research Capture WEUC example, SDS Full Map, canonical Lens Model Domain/WEUC examples, WEUC Lens worked/composition examples, Domain/Implementation/Frontend compact artifact rules, generic Target Module model and SDS Artifact Placement Map retain shorter forms where the accepted/dispositioned-local-meaning prerequisite is implicit. Make it literal so the next review cannot reinterpret AG guidance as semantic acceptance or file-creation authority;
+- `TM-FRONTEND-SLICE` additionally says the Target may consume/reference `that result` after an AG proposal; consume/reference the accepted/dispositioned local evolution meaning, not the raw Lens/AG result;
+- the authority-wording pass also finds `L2 owns semantic authority`, `L6 owns proof/operation implications`, Quality/Risk Lens `owns generic materiality selection`, and compact `L5 constraints` wording. Normalize these to Lens evaluation/perspective ownership plus Core Finding Disposition for accepted semantic/materiality/owner consequences;
+- profile Domain/UI/Slice Lens artifact summaries also need the same accepted-local-meaning prerequisite before `AG-L5-02` companion representation guidance;
+- the wider pre-package scan finds no additional material lifecycle/owner/source/Target-Formation cluster outside this evolution-companion projection family; context-valid explicit TM-WEUC work, Target Formation decisions, accepted handoffs and artifact `ROUTE` remain unchanged;
+- command identities/aliases, Target/Lens topology, Result Units, AP/AG IDs/counts, P/TF compatibility and Game Dev boundary remain unchanged.
+
+**Resulting Target Meaning:** the complete active evolution-companion family uses one literal order: L5/WEUC observation → Finding Candidate → Core Finding Disposition → accepted local evolution meaning/resolved owner → optional `AG-L5-02` supporting-representation proposal → Documentation / Representation → P-14 / TF-10 materialization. A Lens never creates/splits the durable companion and Targets consume accepted semantic meaning rather than raw Lens/AG output.
+
+### LOG-DOC-112 — Apply post-v19 evolution-companion disposition consistency correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-111`  
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Package:** `793ec3a1-e78a-473f-902b-8988c03f89b4`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- TM-WEUC no longer assigns local companion creation/splitting to L5; `AG-L5-02`, Documentation / Representation and P-14 / TF-10 have separate proposal/representation/materialization responsibilities;
+- the canonical Target Evolution Companion Artifact crosses Finding Candidate → Core Finding Disposition before supporting-artifact guidance;
+- Phase-07 and its Research Capture example cross Core disposition before Answer-Decision/QRP/evolution meaning and before any local companion proposal;
+- SDS Full Map, canonical Lens Model, WEUC Lens example/composition, Domain/Implementation/Frontend Target compact rules, Domain/UI/Slice Lens artifact summaries, generic Target Module model and SDS Artifact Placement Map condition `AG-L5-02` on accepted/dispositioned local evolution meaning;
+- Lens composition wording distinguishes reusable evaluation/perspective ownership from project semantic/materiality authority: L2/L4/L5/L6/Quality findings cross Core Finding Disposition before accepted owner/State consequences;
+- Frontend consumes/references accepted local evolution meaning rather than a raw AG/Lens result;
+- whole-active post-package scans find none of the reviewed direct Lens→companion creation/splitting, pre-disposition AG proposal, direct L5/L6→Decision/QRP/companion or raw AG-result-consumption shorthands;
+- prior 17/17 SDS Target Module + 7/7 SDS Lens conformance, five Implementation Slice Result Units, Codebase Integration Path, command identities, AP/AG IDs/counts, artifact `ROUTE` and Game Dev boundary remain unchanged.
+
+**Rationale:** proactively close the complete semantic family around the one remaining post-v19 residual rather than producing another single-line package that would leave equivalent compact projections for the next APPROVABLE review.
+

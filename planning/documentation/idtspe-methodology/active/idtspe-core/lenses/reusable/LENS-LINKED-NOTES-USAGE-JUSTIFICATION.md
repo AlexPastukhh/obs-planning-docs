@@ -222,7 +222,8 @@ Linked relation availability does not imply mandatory Source loading. The curren
 
 ```text
 L2 Authority / SoT / Reuse
-→ establishes canonical owners
+→ surfaces authority/owner Finding Candidate + likely-owner context when material
+→ Core Finding Disposition resolves canonical owner
 
 Artifact Boundary Lens
 → establishes addressability/representation need
@@ -231,7 +232,8 @@ L4 Dependency / Change Impact
 → may expose material cross-owner traversal/review need
 
 Linked Notes Usage Lens
-→ decides whether linked-note behavior is worth introducing
+→ surfaces a linked-notes-usage Finding Candidate
+→ Core Finding Disposition resolves accepted Decision/State input and semantic owner
 
 Reference Object gate (when exact equality matters)
 → separate responsibility
@@ -264,7 +266,7 @@ WHEN: Linked Notes usage is materially considered for a Target/artifact/owner se
 GUIDANCE: EMBED_DECISION_ONLY
 PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: current Target / current artifact-representation decision
+SEMANTIC_OWNER: current Target / artifact-representation Decision only when Core Finding Disposition resolves the accepted usage decision there; otherwise resolved owner
 REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: justified/not-justified result; concrete navigation/query job; connected owners; anti-duplication guard; Reference Object handoff if relevant; no separate notes artifact

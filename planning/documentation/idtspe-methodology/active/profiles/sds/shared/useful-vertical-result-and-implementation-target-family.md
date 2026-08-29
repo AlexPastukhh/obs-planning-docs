@@ -33,7 +33,7 @@ Scenario
 → may be realized through several Slices
 ```
 
-Shared implementation work spanning several Scenarios/Slices is not represented as a fake multi-Scenario vertical Slice. Route it to a real shared owner such as `TM-CROSS-CUTTING-CONCERN`, Architecture or shared Domain.
+Shared implementation work spanning several Scenarios/Slices is not represented as a fake multi-Scenario vertical Slice. Surface an ownership Finding Candidate with likely-owner hints such as `TM-CROSS-CUTTING-CONCERN`, architecture meaning or shared Domain; Core Finding Disposition resolves the actual semantic owner/State consequence, and Target Formation handles any independently justified Target ownership.
 
 ## Useful Vertical Result Definition
 

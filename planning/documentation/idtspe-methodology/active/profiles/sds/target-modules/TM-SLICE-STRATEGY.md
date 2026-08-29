@@ -200,9 +200,36 @@ different downstream architecture/runtime/delivery networks
 
 A Planning Branch is not mandatory just because several Slice candidates exist.
 
-## Target-Specific Output Template
+## Resolution / Production Method
 
-Generic IDTSPE state is not repeated here.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+
+Default reusable production path:
+
+```text
+establish planning area/value order → discover candidate vertical results → separate shared/specialized responsibility → compare through normal Ideas/Branches/QRP/Decisions → select decomposition/order
+```
+
+Because Strategy itself produces a candidate/decomposition space, the candidate Slice set is target-specific result meaning; individual competing alternatives may also use Core Idea/Branch State.
+
+A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Target Step-Result Contract
+
+**Target Step Result:** `Slice Strategy`
+
+The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+
+| Result Unit | Meaning | Current projection detail |
+|---|---|---|
+| `RU-SSTRAT-01` | Strategy Context | Planning Area + Product/Scenario Priority |
+| `RU-SSTRAT-02` | Candidate Slice Set | Candidate Slice Definitions |
+| `RU-SSTRAT-03` | Related Shared / Specialized Target Map — optional | Shared/Cross-Cutting Targets + promoted Frontend specialized Targets |
+| `RU-SSTRAT-04` | Selected Decomposition / Order | Selected Useful Vertical Result Definitions + real dependency/order rationale |
+
+Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+
+
 
 ### Strategy Context
 
@@ -256,11 +283,11 @@ Important fields:
 
 ### Shared / Cross-Cutting Targets
 
-List non-vertical shared responsibilities discovered during decomposition and route them to `TM-CROSS-CUTTING-CONCERN` or another real shared owner.
+List non-vertical shared responsibilities discovered during decomposition as ownership Finding Candidates. `TM-CROSS-CUTTING-CONCERN` or another shared owner may be a likely-owner hint; Core Finding Disposition resolves the actual semantic owner/State consequence, and materially independent Target ownership becomes Target Formation input.
 
 ### Frontend Specialized Targets
 
-Frontend planning remains a Part Plan by default. Record a candidate `TM-FRONTEND-SLICE` only when frontend itself has independent Target-Scope/Question/Decision/revalidation depth.
+Frontend planning remains a Part Plan by default. When frontend itself has independent Target-Scope/Question/Decision/revalidation depth, surface a Target Formation candidate with `TM-FRONTEND-SLICE` as the likely module family rather than treating the Slice Strategy as Target-creation authority.
 
 ### Selected Decomposition And Order
 
@@ -313,7 +340,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **PREFERRED** — keep the decomposition portfolio/order together while candidates are compared; each selected Slice can later receive its own implementation owner through `TM-IMPLEMENTATION-SLICE`.
 
-Shared non-vertical responsibilities route to Cross-Cutting/shared owners rather than being persisted as fake multi-Scenario Slices.
+Shared non-vertical responsibilities surface ownership Finding Candidates rather than being persisted as fake multi-Scenario Slices; Core Finding Disposition resolves the semantic owner/State consequence, and Target Formation decides reuse/handoff/new bounded Target when independent Target ownership is material.
 
 **Optional evolution references** may point from future Slice definitions to `SDS-WORKSPACE-EVOLUTION.md` or local Slice evolution companions.
 
@@ -339,4 +366,4 @@ TM-IMPLEMENTATION-SLICE per selected Slice
 
 If shared strategy is not material, selected `Useful Vertical Result Definition` goes directly to `TM-IMPLEMENTATION-SLICE` and local `TM-TEST-DESIGN`.
 
-Shared non-vertical responsibility candidates → `TM-CROSS-CUTTING-CONCERN`; promoted frontend planning candidate → `TM-FRONTEND-SLICE`.
+Shared non-vertical responsibility candidates → Core Finding Disposition → Target Formation when independent shared ownership is material; frontend specialization candidates → Target Formation when independent frontend Target depth is material. When those resolutions select/form the corresponding Target families, use `TM-CROSS-CUTTING-CONCERN` or `TM-FRONTEND-SLICE` respectively.

@@ -106,8 +106,8 @@ Test Design / frontend Part Plan
 → consolidate into current Target owner first; split only after independent pressure
 
 Target-local evolution companion
-→ supporting WEUC/L5 Lens output, not intrinsic Domain/Slice/Frontend Target output
-→ keep an Evolution section first; split to <owner>.evolution.md only after independent pressure
+→ `AG-L5-02` representation proposal over accepted/dispositioned local evolution meaning, not direct WEUC/L5 Lens output and not intrinsic Domain/Slice/Frontend Target output
+→ Documentation / Representation + P-14 / TF-10 keep an Evolution section first or split to <owner>.evolution.md only after independent pressure
 
 Workspace/global evolution and responsibility maps
 → stronger persistence pressure because implementation cannot represent future/cross-owner topology well

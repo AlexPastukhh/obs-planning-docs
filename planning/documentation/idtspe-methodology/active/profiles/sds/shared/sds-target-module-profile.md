@@ -36,11 +36,11 @@ Lens activation ≠ new Target
 | 04 Scenario System | `TM-SCENARIO-DISCOVERY`, `TM-SCENARIO-DRAFT`; supporting `TM-REQUIREMENT`, `TM-SCREEN` | Scenario DATA/Behavior are internal Scenario contracts |
 | 05 Domain | `TM-DOMAIN-DISCOVERY`, `TM-DOMAIN-DRAFT` | optional; no-Domain valid |
 | 06 Delivery Shaping | `TM-SLICE-STRATEGY` | only when decomposition/order itself is material |
-| 07 Workspace Evolution / Architecture | `TM-WEUC` when the global Workspace Evolution Map or Current Global Architecture Position needs create/refresh + L4/L5/L6 Workspace Pack | map/global architecture ownership is a Target; L5 evaluates concrete Targets or whole-Workspace architecture; bounded local architecture child Target only on generic escalation |
-| 08 Detailed Realization | `TM-IMPLEMENTATION-SLICE`; `TM-FRONTEND-SLICE` / `TM-CROSS-CUTTING-CONCERN` conditional | one vertical Slice Target; child/specialized Targets only when independently material |
+| 07 Workspace Evolution / Architecture | `TM-WEUC` when the global Workspace Evolution Map or Current Global Architecture Position needs create/refresh + L4/L5/L6 Workspace Pack | map/global architecture ownership is a Target; L5 evaluates concrete Targets or whole-Workspace architecture; independently substantial local architecture work → Target Formation candidate; Target Formation may form a bounded local Target |
+| 08 Detailed Realization | `TM-IMPLEMENTATION-SLICE`; `TM-FRONTEND-SLICE` / `TM-CROSS-CUTTING-CONCERN` conditional | one vertical Slice Target; independently material specialized work becomes a Target Formation candidate rather than an automatic child Target |
 | 09 Consistency / Verification | `UC-IDTSPE-REVIEW-CONSISTENCY`; `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, `TM-PRACTICAL-TEST` | review + proof planning; tests never become semantic authority |
 | 10 Authorized Realization | execution/Artifact/File Pack | not automatically a semantic Target |
-| 11 Evidence / Reconciliation | `TM-TEST-COVERAGE` + revalidation + frequent Lens refresh | reopen narrowest challenged owner/Decision only |
+| 11 Evidence / Reconciliation | `TM-TEST-COVERAGE` + revalidation + frequent Lens refresh | Core Finding Disposition selects revalidation/reopen of the narrowest challenged owner/Decision only when warranted |
 
 ## Required Lens Inheritance
 
@@ -84,11 +84,14 @@ Separate Target Instance only when the supporting concern has independent useful
 ```text
 current local Target
 + LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
-→ architecture finding / Idea / local Answer Decision
+→ architecture/evolution Finding Candidate(s) + optional likely-owner hints
+→ Core Finding Disposition
+→ dispositioned local Idea / Q/R/P / Answer Decision input when the current Target is the resolved owner
 
-local Decision becomes applicable across independent Targets
-→ global architecture-position update candidate
-→ TM-WEUC
+local Decision may become applicable across independent Targets
+→ global architecture-position update Finding Candidate + likely TM-WEUC owner hint
+→ Core Finding Disposition
+→ TM-WEUC global position update when that owner/handoff is selected
 ```
 
 Whole-Workspace architecture review is also valid:
@@ -102,12 +105,12 @@ TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION
 
 Only if a bounded architectural problem itself becomes independently useful/revalidatable:
 ```text
-→ generic Target Formation
-→ bounded local architecture Target
-→ same Lens Pack
+→ surface a Target Formation candidate
+→ Target Formation decides reuse existing Target / handoff existing owner / form new bounded local architecture Target
+→ any selected/formed architecture Target uses the same Lens Pack
 ```
 
-There is no dedicated `TM-ARCH-DECISION`. `TM-WEUC` owns creation/refresh of the canonical `SDS-WORKSPACE-EVOLUTION.md` and its Current Global Architecture Position; the WEUC Lens applies that owner cross-cutting.
+There is no dedicated `TM-ARCH-DECISION`. `TM-WEUC` owns creation/refresh of the canonical `SDS-WORKSPACE-EVOLUTION.md` and its Current Global Architecture Position; the WEUC Lens consumes/evaluates that global owner cross-cutting without inheriting its semantic authority.
 
 ## Correct-Module / Lens Selection Check
 
@@ -115,7 +118,7 @@ There is no dedicated `TM-ARCH-DECISION`. `TM-WEUC` owns creation/refresh of the
 What accepted output is needed now?
 Does a Target Module own that recurring output methodology?
 Which reusable Lenses are required/profiled/applicable?
-Would a Lens finding stay within current Target authority?
+Would Core Finding Disposition resolve this Lens Finding Candidate within the current Target, another existing owner, or Target Formation?
 Would a new Target create independent useful output or only ceremony?
 ```
 
@@ -133,7 +136,8 @@ LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
   plan target-local evolution
   check change isolation/prepared seams
   evaluate architecture fitness
-  emit map/global-architecture update candidate back to TM-WEUC
+  surface map/global-architecture update Finding Candidate + likely TM-WEUC owner hint
+  let Core Finding Disposition resolve actual global owner/handoff
 ```
 
 

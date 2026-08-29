@@ -31,7 +31,7 @@ Need / Desired Outcome
 
 ## Revalidation
 
-Later Scenario/Domain/current-implementation Evidence may reopen/revalidate the same Application Definition. Do not create a separate Realization-Stress Target by default.
+Later Scenario/Domain/current-implementation Evidence may challenge the same Application Definition. Core Finding Disposition may select revalidation/reopen; do not create a separate Realization-Stress Target by default.
 
 
 ## Existing Solutions / Reference Research
@@ -57,10 +57,10 @@ adapt/configure existing
 integrate existing
 buy/use existing
 hybrid
-reopen Step 02 because custom software is no longer justified
+challenge Step 02 because custom software is no longer justified → Core Finding Disposition selects Step-02 revalidation/reopen when warranted
 ```
 
-Reference products generate Evidence/Ideas. They do not automatically define our Scenarios, Screens or Features.
+Reference/research observations surface Finding Candidates. Core Finding Disposition may resolve accepted material as Evidence, Idea or another appropriate State/lifecycle input. Reference products do not automatically define our Scenarios, Screens or Features.
 
 
 ## Core Real-Life Scenario Refinement

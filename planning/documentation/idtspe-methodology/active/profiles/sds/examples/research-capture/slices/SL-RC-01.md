@@ -45,7 +45,7 @@ capture action
 → truthful UI result
 ```
 
-## Integrated Implementation Plan
+## Codebase Integration Path
 
 ```text
 CaptureScreen.onSave()
