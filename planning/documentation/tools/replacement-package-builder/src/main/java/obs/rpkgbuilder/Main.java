@@ -12,7 +12,27 @@ public final class Main {
     private Main() {}
 
     public static void main(String[] args) {
+        boolean advanceMode = args.length > 0 && args[0].equals("advance-state");
         try {
+            if (advanceMode) {
+                StateAdvancer.AdvanceRequest request = parseAdvanceRequest(
+                        java.util.Arrays.copyOfRange(args, 1, args.length));
+                if (request == null) {
+                    printUsage();
+                    return;
+                }
+                StateAdvancer.AdvanceResult result = StateAdvancer.advance(request);
+                System.out.println("ADVANCE_OK");
+                System.out.println("state=" + result.stateRoot().toAbsolutePath().normalize());
+                System.out.println("packageId=" + result.packageId());
+                System.out.println("changeSetId=" + result.changeSetId());
+                System.out.println("repositoryIdentity=" + result.repositoryIdentity());
+                System.out.println("add=" + result.addCount());
+                System.out.println("replace=" + result.replaceCount());
+                System.out.println("delete=" + result.deleteCount());
+                return;
+            }
+
             PackageBuilder.BuildRequest request = parseBuildRequest(args);
             if (request == null) {
                 printUsage();
@@ -30,11 +50,15 @@ public final class Main {
             System.out.println("replace=" + result.replaceCount());
             System.out.println("delete=" + result.deleteCount());
             System.out.println("noOp=" + result.noOpCount());
+        } catch (StateAdvancer.ValidationException e) {
+            printAdvanceValidationFailure(System.out, e);
+            System.exit(2);
         } catch (PackageBuilder.ValidationException e) {
             printValidationFailure(System.out, e);
             System.exit(2);
         } catch (Exception e) {
-            printInternalFailure(System.out, System.err, e);
+            if (advanceMode) printAdvanceInternalFailure(System.out, System.err, e);
+            else printInternalFailure(System.out, System.err, e);
             System.exit(1);
         }
     }
@@ -67,6 +91,42 @@ public final class Main {
         }
     }
 
+    static StateAdvancer.AdvanceRequest parseAdvanceRequest(String[] args) {
+        try {
+            ParsedArgs parsed = parseArgs(args);
+            Map<String, String> options = parsed.options();
+            if (!parsed.deletePaths().isEmpty()) {
+                throw new IllegalArgumentException("--delete is not valid for advance-state.");
+            }
+            if (options.containsKey("--help")) {
+                rejectAdvanceUnknown(options);
+                if (options.size() != 1) throw new IllegalArgumentException("--help cannot be combined with other options.");
+                return null;
+            }
+            rejectAdvanceUnknown(options);
+            return new StateAdvancer.AdvanceRequest(
+                    Path.of(required(options, "--state")),
+                    Path.of(required(options, "--package")),
+                    UUID.fromString(required(options, "--expected-package-id")));
+        } catch (IllegalArgumentException e) {
+            throw new StateAdvancer.ValidationException(
+                    StateAdvancer.ValidationReason.INVALID_REQUEST,
+                    e.getMessage() == null || e.getMessage().isBlank() ? "Invalid advance-state invocation." : e.getMessage(),
+                    e,
+                    Map.of());
+        }
+    }
+
+    static void printAdvanceValidationFailure(PrintStream out, StateAdvancer.ValidationException failure) {
+        out.println("ADVANCE_FAILED");
+        out.println("code=VALIDATION_FAILED");
+        out.println("reason=" + failure.reason());
+        out.println("message=" + oneLine(failure.getMessage()));
+        for (Map.Entry<String, String> fact : failure.facts().entrySet()) {
+            out.println(fact.getKey() + "=" + oneLine(fact.getValue()));
+        }
+    }
+
     static void printValidationFailure(PrintStream out, PackageBuilder.ValidationException failure) {
         out.println("BUILD_FAILED");
         out.println("code=VALIDATION_FAILED");
@@ -75,6 +135,17 @@ public final class Main {
         for (Map.Entry<String, String> fact : failure.facts().entrySet()) {
             out.println(fact.getKey() + "=" + oneLine(fact.getValue()));
         }
+    }
+
+    static void printAdvanceInternalFailure(PrintStream out, PrintStream err, Exception failure) {
+        UUID diagnosticId = UUID.randomUUID();
+        out.println("ADVANCE_FAILED");
+        out.println("code=INTERNAL_ERROR");
+        out.println("diagnosticId=" + diagnosticId);
+        out.println("message=Replacement Package Builder advance-state failed unexpectedly. Inspect stderr trace using diagnosticId.");
+
+        err.println("INTERNAL_ERROR diagnosticId=" + diagnosticId);
+        failure.printStackTrace(err);
     }
 
     static void printInternalFailure(PrintStream out, PrintStream err, Exception failure) {
@@ -135,6 +206,15 @@ public final class Main {
         }
     }
 
+    private static void rejectAdvanceUnknown(Map<String, String> options) {
+        for (String key : options.keySet()) {
+            if (!key.equals("--state") && !key.equals("--package")
+                    && !key.equals("--expected-package-id") && !key.equals("--help")) {
+                throw new IllegalArgumentException("Unknown advance-state option: " + key);
+            }
+        }
+    }
+
     private static String oneLine(String value) {
         if (value == null) return "";
         return value.replace("\\", "\\\\")
@@ -148,5 +228,9 @@ public final class Main {
         System.out.println("       --change-set-label <text> [--change-set-id <uuid>]");
         System.out.println("       [--desired <path>] [--delete <repo-relative-path>]...");
         System.out.println("  At least one of --desired or --delete is required.");
+        System.out.println();
+        System.out.println("  java -jar replacement-package-builder.jar advance-state --state <path>");
+        System.out.println("       --package <zip> --expected-package-id <uuid>");
+        System.out.println("  advance-state is intended only after that packageId was confirmed applied externally.");
     }
 }

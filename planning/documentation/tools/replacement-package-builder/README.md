@@ -1,6 +1,6 @@
 # Replacement Package Builder
 
-Status: PB-01 and PB-02 implemented
+Status: PB-01, PB-02 and PB-03 implemented
 
 `replacement-package-builder` is a small Java 21 CLI placed beside `replacement-package-app`. It implements the producer-side mechanical build step for the existing replacement-package protocol without changing that protocol.
 
@@ -42,6 +42,20 @@ For every delete path the Builder requires the current source path to exist as a
 
 One Windows-normalized repository path cannot be both desired input and delete intent, and duplicate/colliding delete intents fail validation.
 
+## PB-03 — advance exact expected state by an applied package
+
+After the same replacement package has been confirmed applied externally, Builder can advance a separate exact state workspace with that package:
+
+```text
+exact expected state S0
++ replacement package P
++ confirmed packageId for P
+→ exact expected state S1
+```
+
+`advance-state` does not require a Git worktree. It validates the ZIP/package manifest and payload correspondence, requires the archive `packageId` to equal `--expected-package-id`, verifies replace/delete bases by raw byte equality and add targets by proven absence, then delegates add/replace/delete mutation plus exact rollback to `replacement-package-common`'s shared `PackageStateApplier`.
+
+This mode is intentionally an expected-state replay tool, not evidence that the real repository was changed. The caller must invoke it only after Replacement Package App has confirmed successful application of that same `packageId`.
 
 ## Requirements
 
@@ -97,6 +111,17 @@ java -jar build\replacement-package-builder.jar ^
 
 Combined add/replace/delete uses both `--desired` and repeatable `--delete`.
 
+Advance a chat-side/local expected-state workspace only after external Apply confirmation:
+
+```bat
+java -jar build\replacement-package-builder.jar advance-state ^
+  --state C:\work\expected-state ^
+  --package C:\work\change.zip ^
+  --expected-package-id 11111111-1111-1111-1111-111111111111
+```
+
+On success it prints `ADVANCE_OK` plus the state path, package/change-set identity and operation counts.
+
 A new `packageId` is generated for every build. When `--change-set-id` is omitted, a new `changeSetId` is generated. Whether a supplied ChangeSet is actually still open is producer-workflow authority outside this local materializer.
 
 ## Failure contract
@@ -137,6 +162,8 @@ message=Replacement Package Builder failed unexpectedly. Inspect stderr trace us
 
 For `INTERNAL_ERROR`, stderr contains the same `diagnosticId` followed by the raw Java stack trace so AI or a developer can investigate without the Builder inventing a recovery strategy.
 
+`advance-state` uses the parallel `ADVANCE_FAILED` surface. Caller-correctable validation reasons are `INVALID_REQUEST`, `INVALID_STATE_ROOT`, `PACKAGE_NOT_FOUND`, `PACKAGE_INVALID`, `PACKAGE_ID_MISMATCH`, `STATE_MISMATCH`, `STATE_UNVERIFIABLE` and `UNSUPPORTED_STATE_PATH`. Mutation/result/rollback mechanics that fail after a successful preflight remain `INTERNAL_ERROR` rather than being guessed as caller mistakes.
+
 ## Safety / exactness
 
 - Desired files are copied into private staging and the desired inventory/bytes are rechecked; edits during capture/build fail as `DESIRED_CHANGED` instead of producing a mixed package.
@@ -148,7 +175,9 @@ For `INTERNAL_ERROR`, stderr contains the same `diagnosticId` followed by the ra
 - Large payload files are streamed from staged files into the ZIP rather than carried as model-visible text.
 - Existing output paths are rejected and publication uses create-new semantics, so Builder never implicitly overwrites a file even if it appears after validation.
 - The produced ZIP is reopened and manifest/payload correspondence plus exact payload bytes are checked before success is returned.
-- The Builder does not mutate the source repository, apply/finalize packages, commit, push, update action logs or generate semantic edits.
+- Build mode does not mutate the source repository, apply/finalize packages, commit, push, update action logs or generate semantic edits.
+- `advance-state` mutates only the explicitly supplied non-authoritative expected-state workspace; the package archive must be outside that workspace. It never treats this replay as proof that the real repository Apply succeeded.
+- Expected-state replay uses raw byte equality, not Git canonical equivalence, so divergence is detected rather than normalized.
 
 ## Tests
 
@@ -156,4 +185,4 @@ For `INTERNAL_ERROR`, stderr contains the same `diagnosticId` followed by the ra
 run-tests.cmd
 ```
 
-The automated suite covers add/replace/no-op behavior, delete-only and combined delete builds, exact binary base/result preservation, deterministic package bytes, missing/colliding delete validation, repeatable delete CLI parsing, Git-root validation, disjoint source/desired/output boundaries, existing-output preservation, desired-state change detection, private-staging failures staying internal, path/collision failures, unsupported source shapes, repository identity/origin validation, no-op-only rejection, CLI validation routing and validation/internal failure rendering.
+The automated suite covers all PB-01/PB-02 build behavior plus PB-03 mixed add/replace/delete replay, exact binary state advancement, package-id gating, base-mismatch no-mutation, invalid-package no-mutation and `advance-state` CLI parsing.

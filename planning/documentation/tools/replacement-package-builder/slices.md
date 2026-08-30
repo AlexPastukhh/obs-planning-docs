@@ -1,6 +1,6 @@
 # Replacement Package Builder Slices
 
-Status: PB-01 and PB-02 implemented; PB-03 preliminary
+Status: PB-01, PB-02 and PB-03 implemented
 
 ## PB-01 — Build add/replace package from desired files
 
@@ -41,8 +41,21 @@ explicit delete path
 
 `--delete` is repeatable and can be used alone or together with PB-01 desired input. Missing delete targets, desired/delete path overlap, Windows-normalized collisions, symlinks/non-regular targets and unverifiable source state fail closed. Captured delete bases use the same source-observation recheck as replacements before publication.
 
-## PB-03 — Build against derived expected state
+## PB-03 — Advance expected state by confirmed applied package
 
-Preliminary later Slice: derive an expected source from a known base plus an ordered chain of prior packages, then build the next package against that state without manual reconstruction by AI.
+User result: after Replacement Package App confirms that package `P` was successfully applied, advance the exact expected-state workspace with that same package so the next Builder invocation starts from the resulting state without transporting ReviewDiff back into chat.
+
+```text
+expected state S0
++ package P
++ externally confirmed packageId(P)
+→ validate P against S0
+→ shared PackageStateApplier
+→ expected state S1
+```
+
+`advance-state` accepts a normal directory workspace rather than a Git repository. It requires the archive package ID to equal the externally confirmed `--expected-package-id`, validates package structure/payload correspondence, requires raw exact base equality for replace/delete and proven absence for add, then uses the shared deterministic applier for mutation/result verification/rollback. Any applicability failure happens before mutation; private mutation/rollback failures remain internal errors.
+
+PB-03 does not infer that the real repository Apply succeeded, does not consume ReviewDiff, does not replay an ordered historical package chain, and does not build the next package itself. Its only responsibility is `S0 + confirmed P → S1`; ordinary PB-01/PB-02 build then uses the advanced state selected by the caller.
 
 Possible future input adapter: exact/fail-closed patch or diff input when producing a complete desired copy of a very large file is itself a demonstrated bottleneck.
