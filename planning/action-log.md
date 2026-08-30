@@ -248,3 +248,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Entry:** `LOG-DOC-115`  
 **ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
 **Reason:** Planning Root participates through the three Scenario command definitions that now route canonical/focused Scenario work to `TM-SCENARIO-PLANNING`; full semantic rationale and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### LOG-PLAN-004 — Cross-scope reference: Prototype / implemented practical Evidence command correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-121`  
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
+**Reason:** Planning Root participates through the four canonical/focused Prototype and Practical-Test command definitions. The correction aligns command outputs with the redesigned practical-Evidence Targets and clarifies that Practical-Test planning may precede realization while actual Evidence requires the real implemented subject; full rationale and APPLIED target state remain in the reusable-documentation canonical log.

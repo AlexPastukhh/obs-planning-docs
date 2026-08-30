@@ -5,84 +5,75 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
 
-Use one practical Evidence discipline before and after implementation while preserving different evidentiary strength.
+Evaluate whether practical Evidence before or after implementation is capable of answering the material question credibly, economically and with honest limits.
 
 ## Applicability Gate
 
-Primary for Prototype/Practical Test; supporting when Test Design selects operated acceptance.
+Primary for `TM-PROTOTYPE` and `TM-PRACTICAL-TEST`; supporting when another Target needs practical observation/acceptance Evidence.
 
 ## Target Inputs / Evidence
 
-Material uncertainty/property, affected Decision/Target, real-life/Application Scenario, Prototype/implemented subject, actor/environment/data constraints and prior Evidence.
+Material question/property, affected owner/Decision, subject under observation, Scenario/context, actor/environment/data constraints, existing Evidence and intended collection method.
 
-## Uncertainty / Evidence Timing
+## Evaluation
 
-```text
-PROTOTYPE_NOW
-IMPLEMENT_AND_TEST_LATER
-BOTH
-NO_PRACTICAL_TEST_NEEDED
-```
-
-Do not fake confidence when only integrated implementation can answer.
-
-## Minimum Credible Experiment
-
-Possible methods:
+Ask proportionally:
 
 ```text
-CLICKABLE_UI_FAKE
-THROWAWAY_MINI_APP
-TECHNICAL_SPIKE
-MOCKED_INTEGRATION
-CONCIERGE / MANUAL_SIMULATION
-BENCHMARK / LOAD_EXPERIMENT
-IMPLEMENTED_SCENARIO_WALKTHROUGH
-OPERATED_ACCEPTANCE
+What exactly must be learned/accepted?
+Why is practical observation useful?
+Is the chosen subject strong enough to answer that question?
+What is real vs simulated, or which real version/environment/window is observed?
+What data/observations are actually discriminating?
+Are we collecting unnecessary data?
+What limitations/confounders materially weaken interpretation?
+Are observation, interpretation and Decision kept separate?
+For post-implementation Evidence, is existing telemetry/logging merely a Source rather than being reassigned to the Evidence Target?
+If an implemented-Evidence Target is planned before realization, are collection/instrumentation needs prepared now while actual Evidence is correctly deferred until the real subject exists?
 ```
-
-## Real vs Simulated Boundary
-
-Record what is real/stubbed/mocked/manual.
-
-## Scenario Walkthrough
-
-Inspect start discoverability, completion, Screen/window orientation, hesitation/backtracking, time, DATA/feedback comprehension and failure/recovery when relevant.
-
-## Prototype-to-Practical Continuity
-
-For `BOTH` / `IMPLEMENT_AND_TEST_LATER`, preserve Evidence Question, Scenario/task, critical observations and limitations for later Practical Test.
 
 ## Acceptance vs Exploration
 
-Acceptance property → PASS/FAIL/PARTIAL. Residual uncertainty → SUPPORTED/CHALLENGED/INCONCLUSIVE.
+Acceptance may use explicit proof signals / PASS-FAIL interpretation. Exploratory learning may use supported/challenged/inconclusive language. Neither vocabulary is a required enum.
+
+## Prototype → Implemented Continuity
+
+When useful, preserve the question, Scenario/task/context, key observations and known limitations so the same concern can later be checked against the real implementation.
 
 ## Findings / Outputs
 
-Evidence Question, method/subject, observation protocol, actual Evidence, limitations, interpretation, disposition and deferred Evidence handoff.
+Typical Finding Candidates include:
+
+```text
+prototype cannot credibly answer a question requiring real integration
+collection plan does not observe the claimed property
+data is available but irrelevant to the question
+critical real/simulated or version/environment boundary is hidden
+sample/window/environment makes the conclusion too broad
+interpretation is presented as observation
+required post-implementation evidence cannot currently be observed
+```
+
+Core Finding Disposition selects any owner/revalidation consequence.
 
 ## Typical Consumers
 
-Prototype, Practical Test, Test Design and Application/Screen/Frontend evidence planning.
+Prototype, implemented practical Evidence, Test Design, and Application/Scenario/Screen/Slice evidence planning when practical observation matters.
 
 ## Artifact / File Implications
-
-### Structured Artifact / File Guidance
-
-These records describe conditional placement guidance produced by this Lens. They never create semantic ownership by themselves.
 
 ```text
 ARTIFACT_GUIDANCE
 ID: AG-PE-01
 CONTENT_KIND: DECISION_RELEVANT_PRACTICAL_EVIDENCE
-WHEN: actual practical Evidence supports/challenges Decision/acceptance
+WHEN: practical Evidence materially supports/challenges acceptance, learning or Decision revalidation
 GUIDANCE: ADVISORY_REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: resolved Evidence/host Target owner; Prototype or Practical Test is a likely owner hint when that Target is selected/resolved
+SEMANTIC_OWNER: resolved Evidence/host Target owner; Prototype or TM-PRACTICAL-TEST is a likely owner hint when that Target is selected
 REPRESENTATION: EMBED_OR_SUPPORTING_EVIDENCE_ARTIFACT
-FILE_OR_ARTIFACT: <prototype-or-practical-test-owner> and optional <evidence-artifact>
-CONTENT: Evidence question/protocol; actual observation; limitations; interpretation/disposition
+FILE_OR_ARTIFACT: <prototype-or-implemented-evidence-owner> and optional <evidence-artifact>
+CONTENT: inquiry/collection context; actual observation; limitations; interpretation/follow-up
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
@@ -91,96 +82,37 @@ RESOLVER: P-14 / TF-10
 ARTIFACT_GUIDANCE
 ID: AG-PE-02
 CONTENT_KIND: BULKY_RAW_EVIDENCE
-WHEN: run data/logs/media/measurements need independent storage
+WHEN: run data/logs/media/measurements/exports need independent storage
 GUIDANCE: ADVISORY_PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: resolved Evidence State/owner; the supporting Evidence artifact is representation/source storage, not separate semantic authority
+SEMANTIC_OWNER: resolved Evidence State/owner; supporting storage is not separate semantic authority
 REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT
 FILE_OR_ARTIFACT: <practical-evidence-artifact>
-CONTENT: raw Evidence referenced from semantic/planning owner
+CONTENT: raw Evidence referenced from semantic/planning owner with relevant provenance/limits
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
 
-
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
-
-**REQUIRED persistence** for actual Evidence that supports/challenges an accepted Decision or later acceptance/revalidation.
-
-**PREFERRED supporting Evidence artifact** when run data/logs/media/measurements are large or independently reviewed.
-
-Keep Evidence Question/protocol/disposition traceable to Prototype/Practical Test owner; do not let raw evidence files become semantic authority.
+Persist only evidence necessary for traceability/review and permitted by privacy/safety constraints. More retained data is not automatically better evidence.
 
 ## Guards
 
-Prototype success ≠ proof of final implementation.
+```text
+prototype success ≠ proof final implementation works
+planned collection ≠ actual Evidence
+measurement ≠ interpretation
+Evidence ≠ semantic authority
+TM-PRACTICAL-TEST ≠ permanent telemetry/logging owner
+```
 
 ## Composition
 
-L3 identifies uncertainty/reversibility. L6 asks whether implemented result is observable/operable. Test pack handles formal proof responsibility.
+L3 helps identify material uncertainty. L6 helps when implemented observation/diagnosis is difficult. Test Proof/Evidence Lens joins when acceptance/proof is the primary purpose.
 
 ## Escalation / Revalidation
 
-Unexpected Evidence surfaces a Finding Candidate. Core Finding Disposition may select Decision/Question-Set/Scope revalidation or reopen through normal reconciliation; the Lens does not perform that transition itself.
-
-## High-Level Example — Self-Contained Walkthrough
-
-### Situation
-
-The team wants to know whether users can complete a capture flow without losing orientation.
-
-This can be explored before implementation and checked again after implementation.
-
-### Why This Lens
-
-The Practical Evidence Lens provides one reusable observation discipline across Prototype and implemented Practical Test.
-
-### Walkthrough
-
-Before implementation:
-
-```text
-subject:
-  clickable fake
-
-task:
-  capture fragment and return to reading
-
-observe:
-  completion
-  time
-  hesitation
-  backtracking
-```
-
-After implementation:
-
-```text
-same task
-real app
-real latency/navigation/failure
-```
-
-The Evidence question stays comparable while the tested subject becomes stronger.
-
-### Result
-
-The Lens helps define:
-
-```text
-Evidence question
-minimum credible method
-task/setup
-observation protocol
-real-vs-simulated boundary
-limitations
-interpretation
-```
-
-### Boundary / Lesson
-
-Similar observation method does not make Prototype and final Practical Test equivalent Evidence.
+Unexpected Evidence or missing observability surfaces a Finding Candidate. Core Finding Disposition may select Decision/Scope/owner revalidation or implementation work; this Lens does not perform those transitions itself.
 
 ## Knowledge Basis
 
@@ -188,8 +120,9 @@ Mode: `HYBRID`
 
 **Embedded Principles / Rules / Theory:**
 
-- A practical test is an evidence-producing operation aimed at one material uncertainty/question.
-- Observed Evidence remains evidence and does not become semantic authority by itself.
+- practical Evidence quality depends on whether the chosen observation/data source can answer the actual question;
+- observation, interpretation and Decision remain separate;
+- Prototype and implemented Evidence may reuse an inquiry shape without having equal evidentiary strength.
 
 **Referenced Knowledge Owners:**
 
@@ -197,12 +130,8 @@ Mode: `HYBRID`
 
 **Reference Load Policy:**
 
-Read the practical-evidence method when experiment design/execution shape is non-trivial.
+Read the shared practical-evidence method when experiment/collection design is non-trivial. The mode/load-policy labels are retained representation, not Generic conformance requirements.
 
 **Operationalization Notes:**
 
-This Lens owns the evaluation perspective; the shared method owns reusable experiment mechanics.
-
-## Provenance
-
-Canonical deep method: `../../shared/practical-evidence-method.md`.
+This Lens owns the evaluation perspective; the shared method owns reusable observation/data-collection mechanics.

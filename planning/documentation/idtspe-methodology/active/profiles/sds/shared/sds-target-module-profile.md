@@ -32,13 +32,13 @@ Lens activation ≠ new Target
 | 00 Invocation | orchestration + required Lens setup | no semantic Target required |
 | 01 Need / Reality | generic Need/Reality Target when needed | `LENS-NEED-VALUE-SCOPE` + `LENS-AUTHORITY-SOT-REUSE` are core |
 | 02 Solution Space | dynamic formation + generic IDTSPE | arbitrary Targets/Branches; frequent Lenses proportional |
-| 03 Application Definition | `TM-APPLICATION-DEFINITION`; `TM-PROTOTYPE` conditional | one Application Definition Target; Prototype only for material uncertainty/Evidence |
+| 03 Application Definition | `TM-APPLICATION-DEFINITION`; `TM-PROTOTYPE` conditional | Prototype is a separate practical-evidence Target when material uncertainty needs a planned pre-implementation experiment/data collection |
 | 04 Scenario System | `TM-SCENARIO-PLANNING`; supporting `TM-REQUIREMENT`, `TM-SCREEN` | one Scenario owner; DATA/Behavior Items are processed internal contracts; Development/Change Outlook stays Scenario-local |
 | 05 Domain | `TM-DOMAIN-DISCOVERY`, `TM-DOMAIN-DRAFT` | optional; no-Domain valid |
 | 06 Delivery Shaping | `TM-SLICE-STRATEGY` | only when decomposition/order itself is material |
 | 07 Workspace Evolution / Architecture | `TM-WEUC` when the global Workspace Evolution Map or Current Global Architecture Position needs create/refresh + L4/L5/L6 Workspace Pack | map/global architecture ownership is a Target; L5 evaluates concrete Targets or whole-Workspace architecture; independently substantial local architecture work → Target Formation candidate; Target Formation may form a bounded local Target |
 | 08 Detailed Realization | `TM-IMPLEMENTATION-SLICE`; `TM-FRONTEND-SLICE` / `TM-CROSS-CUTTING-CONCERN` conditional | one vertical Slice Target; independently material specialized work becomes a Target Formation candidate rather than an automatic child Target |
-| 09 Consistency / Verification | `UC-IDTSPE-REVIEW-CONSISTENCY`; `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, `TM-PRACTICAL-TEST` | review + proof planning; tests never become semantic authority |
+| 09 Consistency / Verification | `UC-IDTSPE-REVIEW-CONSISTENCY`; `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, `TM-PRACTICAL-TEST` | review + proof planning + implemented practical Evidence; `TM-PRACTICAL-TEST` intent/collection planning may precede realization, while actual Evidence/results require the real implemented subject; Evidence never becomes product semantic authority |
 | 10 Authorized Realization | execution/Artifact/File Pack | not automatically a semantic Target |
 | 11 Evidence / Reconciliation | `TM-TEST-COVERAGE` + revalidation + frequent Lens refresh | Core Finding Disposition selects revalidation/reopen of the narrowest challenged owner/Decision only when warranted |
 

@@ -14,15 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй прототип",
     "прототип приложения"
   ],
-  "description": "prototype",
-  "meaning": "Run TM-PROTOTYPE through the IDTSPE Shell for the selected target.",
+  "description": "prototype practical evidence",
+  "meaning": "Run TM-PROTOTYPE through the IDTSPE Shell to plan or review one bounded pre-implementation prototype/experiment and its practical Evidence.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Prototype/Evidence plan, uncertainty to close, method, exit gate and Evidence handoff; may validly conclude no prototype is justified.",
+  "expectedOutput": "Prototype Intent / Questions, Prototype Plan, and—when run—Prototype Results / Evidence with limitations and revalidation handoff; may validly conclude no prototype is justified.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -36,8 +36,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use only when material uncertainty is best reduced through a prototype, experiment, mock or stub.",
-    "whatYouGet": "Prototype/Evidence plan, uncertainty to close, method, exit gate and Evidence handoff; may validly conclude no prototype is justified.",
+    "whenToUse": "Use when material uncertainty is best reduced before full implementation through a prototype, experiment, mock, simulation, spike or partial implementation.",
+    "whatYouGet": "Prototype Intent / Questions, Prototype Plan, and—when run—Prototype Results / Evidence with limitations and revalidation handoff.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

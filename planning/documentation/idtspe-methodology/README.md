@@ -606,7 +606,7 @@ Each `TM-*.md` is a **canonical reusable target-family methodology owner**. A Ta
 | Target Module | Responsibility |
 |---|---|
 | [`TM-APPLICATION-DEFINITION.md`](active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md) | Application concept/responsibility boundary, solution alternatives, feasibility, build/buy/adapt/integrate/hybrid and refined core real-life route. |
-| [`TM-PROTOTYPE.md`](active/profiles/sds/target-modules/TM-PROTOTYPE.md) | Bounded prototype/experiment planning and Evidence intent. |
+| [`TM-PROTOTYPE.md`](active/profiles/sds/target-modules/TM-PROTOTYPE.md) | Separate pre-implementation practical-evidence Target: inquiry, prototype/collection plan, actual Evidence and interpretation. |
 | [`TM-SCENARIO-PLANNING.md`](active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md) | One Scenario owner: free-form Behavior / Requirements, processed DATA + Behavior Items, and Development / Change Outlook. Scenario-boundary discovery is part of module Evaluation rather than a separate semantic Target. |
 | [`TM-SCREEN.md`](active/profiles/sds/target-modules/TM-SCREEN.md) | Screen/spatial responsibility, routes, availability and DATA visibility/input. |
 | [`TM-REQUIREMENT.md`](active/profiles/sds/target-modules/TM-REQUIREMENT.md) | Exceptional standalone shared must-hold condition when no more natural Scenario/Domain/etc owner exists. |
@@ -619,7 +619,7 @@ Each `TM-*.md` is a **canonical reusable target-family methodology owner**. A Ta
 | [`TM-CROSS-CUTTING-CONCERN.md`](active/profiles/sds/target-modules/TM-CROSS-CUTTING-CONCERN.md) | Shared implementation concern with canonical ownership/applicability; not the same thing as Q/R/P. |
 | [`TM-TEST-STRATEGY.md`](active/profiles/sds/target-modules/TM-TEST-STRATEGY.md) | Conditional shared proof/test strategy across known Domain/Slice portfolio. |
 | [`TM-TEST-DESIGN.md`](active/profiles/sds/target-modules/TM-TEST-DESIGN.md) | Convert semantic properties/behaviors into concrete proof/test design for a Domain/Slice/etc Target. |
-| [`TM-PRACTICAL-TEST.md`](active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md) | Plan/interpret operated practical Evidence and acceptance/run material. |
+| [`TM-PRACTICAL-TEST.md`](active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md) | Implemented practical Evidence: acceptance or learning, observation/data collection, real Evidence and interpretation. |
 | [`TM-TEST-COVERAGE.md`](active/profiles/sds/target-modules/TM-TEST-COVERAGE.md) | Audit actual current test/Evidence coverage after realization/execution. |
 
 ### Target Module ownership rule

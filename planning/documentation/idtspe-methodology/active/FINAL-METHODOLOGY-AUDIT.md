@@ -198,9 +198,10 @@ See [`COMMAND-SURFACE-CONSISTENCY-AUDIT.md`](COMMAND-SURFACE-CONSISTENCY-AUDIT.m
 - `PLACEMENT_DIRECTIVE: ROUTE` / `GUIDANCE: ROUTE_*` remains representation/artifact-placement guidance under P-14 / TF-10, not semantic Finding routing: **PASS**
 - `IDTSPE-SHELL`, generic Target Module role guidance, directed SDS workflow/profile/shared contracts and active research-capture examples express Evidence/revalidation/Target-Formation consequences through Core disposition/lifecycle: **PASS**
 - `TM-DOMAIN-DRAFT`, `TM-IMPLEMENTATION-SLICE`, `TM-APPLICATION-DEFINITION`, `TM-PRACTICAL-TEST`, `TM-PROTOTYPE`, `TM-SLICE-STRATEGY`, `TM-TEST-COVERAGE` align with the same owner/lifecycle boundary: **PASS**
-- Practical Test `RU-PTEST-01` is `Evidence Subject / Acceptance Boundary`; concrete Questions and actual run Evidence remain Core State: **PASS**
+- `TM-PROTOTYPE` uses `Intent / Questions → Prototype Plan → Results / Evidence`; actual observations remain Core Evidence and the Prototype does not become product truth: **PASS**
+- `TM-PRACTICAL-TEST` uses `Evidence Intent / Subject → Observation / Data Collection Plan → Evidence Results / Interpretation`, covering both acceptance and post-implementation learning from the real implemented subject; permanent telemetry/observability remains implementation/Cross-Cutting/code responsibility: **PASS**
 - Implementation Slice AP content carries `RU-SLICE-01 verification/test-handoff meaning`; detailed proof remains `TM-TEST-DESIGN`: **PASS**
-- existing 17/17 SDS Target Module + 7/7 SDS-specific Lens literal conformance, five Slice Result Units, Codebase Integration Path, AP/AG compatibility, commands and Game Dev boundary remain unchanged: **PASS**
+- existing 16/16 SDS Target Module + 6/6 SDS-specific Lens literal conformance, five Slice Result Units, Codebase Integration Path, AP/AG compatibility, commands and Game Dev boundary remain unchanged: **PASS**
 
 ## Post-v6 Whole-Active Residual Lifecycle Authority Recheck
 
@@ -412,3 +413,15 @@ This remains a whole-active semantic-invariant recheck of the installed IDTSPE/S
 - this transition changes only the Scenario Target family and coherence projections; Slice, Screen, Domain, Cross-Cutting, Test, WEUC and other Target-family semantics are not redesigned here: **PASS**
 
 Historical earlier audit sections that state the prior 17-TM / 7-SDS-Lens topology remain provenance for those earlier packages and are superseded as current topology by this section.
+
+
+## Prototype / Implemented Practical Evidence Target Redesign — current state
+
+- `TM-PROTOTYPE` is a separate Target because inquiry, experiment/collection planning, actual Evidence and interpretation are independently useful/revalidatable work: **PASS**
+- Prototype exposes exactly `RU-PROTO-01 Prototype Intent / Questions`, `RU-PROTO-02 Prototype Plan`, `RU-PROTO-03 Prototype Results / Evidence`: **PASS**
+- `TM-PRACTICAL-TEST` keeps its compatibility ID/entry point while broadening from acceptance-only framing to implemented practical Evidence for acceptance **and** post-implementation learning: **PASS**
+- `TM-PRACTICAL-TEST` may be formed before realization to prepare Intent / Subject and the Observation / Data Collection Plan, while actual Evidence and `RU-PTEST-03` require the real implemented subject/environment: **PASS**
+- Implemented practical Evidence exposes exactly `RU-PTEST-01 Evidence Intent / Subject`, `RU-PTEST-02 Observation / Data Collection Plan`, `RU-PTEST-03 Evidence Results / Interpretation`: **PASS**
+- practical Evidence may use manual/user/operator runs or representative telemetry/analytics/logs/performance/support/etc; permanent observability architecture stays with implementation/Cross-Cutting/code owners: **PASS**
+- observation/Evidence remains distinct from interpretation and Decision/product semantic authority: **PASS**
+- Prototype/implemented-evidence AP IDs, Target IDs/entry points, command identities and current 16-TM / 17-Lens / 58-AP+AG topology remain unchanged: **PASS**

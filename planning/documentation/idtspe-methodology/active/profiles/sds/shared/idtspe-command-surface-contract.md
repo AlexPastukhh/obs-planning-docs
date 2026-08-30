@@ -183,7 +183,7 @@ A focused command is justified only when it represents a stable user intent/subs
 | `TM-IMPLEMENTATION-SLICE` | `tmcmd.slice.implementation` | `спланируй слайс <slice>` | one Slice owner |
 | `TM-FRONTEND-SLICE` | `tmcmd.slice.frontend` | `спланируй frontend <target>` | one promoted frontend Target when justified |
 | `TM-CROSS-CUTTING-CONCERN` | `tmcmd.crosscut` | `спланируй сквозную ответственность <target>` | one genuine shared non-vertical concern |
-| `TM-PRACTICAL-TEST` | `tmcmd.test.practical` | `спланируй практический тест <target>` | one practical Evidence Target |
+| `TM-PRACTICAL-TEST` | `tmcmd.test.practical` | `спланируй практический тест <target>` | one implemented practical-Evidence Target; Intent/Collection Plan may be prepared before realization, actual Evidence/results require the real implemented subject |
 | `TM-TEST-COVERAGE` | `tmcmd.test.coverage` | `проверь тестовое покрытие <scope>` | selected semantic/Evidence coverage scope |
 
 ## 4. Focused Command Rule
@@ -218,7 +218,7 @@ Current accepted focused-surface inventory:
 | `tmcmd.test.design.domain` | `спланируй тесты домена <owner>` | `TM-TEST-DESIGN / Domain` |
 | `tmcmd.test.design.slice` | `спланируй тесты слайса <slice>` | `TM-TEST-DESIGN / Slice` |
 | `tmcmd.slice.implementation.detail` | `детализируй реализацию слайса <slice>` | same `TM-IMPLEMENTATION-SLICE` Target / detailed implementation focus |
-| `tmcmd.test.practical.review` | `разбери результаты практического теста <target>` | same `TM-PRACTICAL-TEST` Target with actual Evidence |
+| `tmcmd.test.practical.review` | `разбери результаты практического теста <target>` | same `TM-PRACTICAL-TEST` Target with actual implemented Evidence; acceptance or learning |
 
 Exactly **13** focused Target-Module shortcuts are currently accepted. Existing repository compatibility commands such as reality/research/solution routes may be retained/adapted during migration without becoming additional canonical methodology surfaces unless we explicitly promote them later.
 

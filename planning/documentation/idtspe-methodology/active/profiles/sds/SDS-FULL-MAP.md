@@ -53,7 +53,7 @@ Current profile installs 16 Target Modules:
 ```text
 Solution/Application
   TM-APPLICATION-DEFINITION
-  TM-PROTOTYPE
+  TM-PROTOTYPE — pre-implementation practical Evidence
 
 Scenario/Spatial
   TM-SCENARIO-PLANNING
@@ -76,7 +76,7 @@ Delivery
 Testing / Evidence
   TM-TEST-DESIGN
   TM-TEST-STRATEGY — conditional shared coordination
-  TM-PRACTICAL-TEST
+  TM-PRACTICAL-TEST — implemented practical Evidence / acceptance / learning
   TM-TEST-COVERAGE
 ```
 
@@ -152,7 +152,7 @@ per-Slice Test Design
 ↓
 realization / execution
 ↓
-Practical Test when operated Evidence is needed
+Implemented practical Evidence when real acceptance/learning is needed
 ↓
 Test Coverage
 ↓
@@ -188,7 +188,7 @@ per Slice:
   integration tests by default for vertical orchestration/collaboration
 ```
 
-E2E is selective for broader whole-system boundaries. Practical Test covers human/operational/environmental evidence that ordinary automated proof cannot establish credibly.
+E2E is selective for broader whole-system boundaries. `TM-PRACTICAL-TEST` covers practical Evidence from the real implemented subject: operated/human/environmental acceptance as well as post-implementation learning from representative observation, telemetry/analytics/logs or other real Evidence sources when material.
 
 ## 6. Workspace Evolution And Global Architecture
 

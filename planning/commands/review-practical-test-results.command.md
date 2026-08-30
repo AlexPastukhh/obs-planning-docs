@@ -14,14 +14,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "разбери результаты практического теста"
   ],
   "description": "focused SDS target",
-  "meaning": "Run focused TM-PRACTICAL-TEST intent without creating a new Target type.",
+  "meaning": "Run focused TM-PRACTICAL-TEST results interpretation for actual implemented Evidence without creating a new Target type.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Evidence interpretation, pass/fail/unknown, residual risk and upstream revalidation for the same Practical Test Target.",
+  "expectedOutput": "Evidence Results / Interpretation: acceptance and/or learning, limitations/confounders, residual questions and revalidation/follow-up; not restricted to pass/fail.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -36,8 +36,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use after practical/live proof produced actual observations/Evidence.",
-    "whatYouGet": "Evidence interpretation, pass/fail/unknown, residual risk and upstream revalidation for the same Practical Test Target.",
+    "whenToUse": "Use when the real implemented subject has produced actual observations/data that should update the same TM-PRACTICAL-TEST Target.",
+    "whatYouGet": "Implemented Evidence interpretation for acceptance and/or learning, limitations/confounders, residual questions and revalidation/follow-up.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

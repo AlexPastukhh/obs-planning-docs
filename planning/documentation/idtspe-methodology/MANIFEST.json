@@ -1,5 +1,5 @@
 {
-  "workspace_version": "idtspe-scenario-planning-target-unification-correction-70",
+  "workspace_version": "idtspe-prototype-implemented-practical-evidence-correction-72",
   "repo_snapshot_base": "94b6d74b8074dd4dda13934b29977a89ef5379a2",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
@@ -371,7 +371,7 @@
     "rule": "producer → Finding Candidate → Core Finding Disposition; independently substantial ambiguity → Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target",
     "core_lens_direct_lifecycle_shortcuts_removed": true,
     "artifact_route_directives_preserved_as_representation_guidance": true,
-    "practical_test_result_boundary": "RU-PTEST-01 Evidence Subject / Acceptance Boundary; concrete Questions and actual Evidence remain Core State",
+    "practical_test_result_boundary": "RU-PTEST-01 Evidence Intent / Subject; RU-PTEST-02 Observation / Data Collection Plan; RU-PTEST-03 Evidence Results / Interpretation; concrete Questions and actual Evidence remain Core State",
     "implementation_slice_proof_handoff_boundary": "RU-SLICE-01 verification/test-handoff meaning; no separate Slice proof Result Unit",
     "bootstrap_sds_literal_escape_repaired": true
   },
@@ -700,5 +700,33 @@
     ],
     "scope": "Scenario Target family only; no broader SDS Target-family redesign",
     "reviewDiffCorrection": "remove residual mandatory Knowledge Basis/load-policy wording from SDS target-module profile; no Scenario Result Unit, Evaluation, Lens routing or other Target-family semantics change"
+  },
+  "prototype_and_implemented_practical_evidence_redesign": {
+    "changeSetId": "e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab",
+    "packageId": "6a101a56-aa6a-47d7-beae-e9f1aab08776",
+    "gitHeadChecked": "8071d30a23a29a5944f9bbdf2874d78a56f26920",
+    "prototypeTarget": "TM-PROTOTYPE",
+    "implementedEvidenceTarget": "TM-PRACTICAL-TEST",
+    "compatibilityBoundary": "TM-PRACTICAL-TEST ID and tm.test.practical entry point retained; semantics broadened without topology migration",
+    "prototypeResultUnits": [
+      "RU-PROTO-01 Prototype Intent / Questions",
+      "RU-PROTO-02 Prototype Plan",
+      "RU-PROTO-03 Prototype Results / Evidence"
+    ],
+    "implementedEvidenceResultUnits": [
+      "RU-PTEST-01 Evidence Intent / Subject",
+      "RU-PTEST-02 Observation / Data Collection Plan",
+      "RU-PTEST-03 Evidence Results / Interpretation"
+    ],
+    "evidenceBoundary": "actual observations/measurements remain Core Evidence; interpretation lives in Target result; Decisions/revalidation remain Core consequences",
+    "observabilityBoundary": "permanent telemetry/logging/analytics architecture remains implementation/Cross-Cutting/code responsibility",
+    "knowledgeBasis": "no separate Target Module KB currently required for TM-PROTOTYPE or TM-PRACTICAL-TEST; shared Practical Evidence method/Lens supply reusable discipline",
+    "topologyChanged": false,
+    "targetModuleCountChanged": false,
+    "lensCountChanged": false,
+    "apAgCountsOrIdsChanged": false,
+    "priorPackageId": "188037ec-53a6-41fd-980f-d83d38336848",
+    "reviewDiffCorrection": "correct stale 16-TM/6-SDS-Lens audit counts; reproject Prototype/Practical-Test command+Helper semantics; clarify that TM-PRACTICAL-TEST Intent/Collection Plan may be prepared before realization while actual Evidence/RU-PTEST-03 require the real implemented subject",
+    "practicalTestPhaseBoundary": "Target may be formed/planned before realization; actual Evidence collection and RU-PTEST-03 require the real implemented subject/environment"
   }
 }

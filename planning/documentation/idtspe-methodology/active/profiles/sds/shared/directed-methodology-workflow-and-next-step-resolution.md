@@ -69,7 +69,7 @@ Need / Reality
 Dynamic real-life solution Targets
 ↓
 TM-APPLICATION-DEFINITION
-├─→ TM-PROTOTYPE — conditional; may feed back into Application/Scenario
+├─→ TM-PROTOTYPE — conditional pre-implementation practical Evidence; may feed back into any affected owner
 ↓
 TM-SCENARIO-PLANNING — one Target per independently meaningful Scenario; boundary discovery is part of Scenario evaluation
 ├─↔ TM-SCREEN — conditional after enough Scenario behavior/DATA exists
@@ -96,16 +96,20 @@ for each selected Slice:
   ├─→ TM-FRONTEND-SLICE — conditional promotion
   └─→ TM-CROSS-CUTTING-CONCERN — conditional shared owner
 ↓
-TM-PRACTICAL-TEST — plan when operated Evidence is material
+TM-PRACTICAL-TEST — Intent / Collection Plan may be prepared before realization when later implemented Evidence is material
 ↓
-authorized realization + automated/practical execution
+authorized realization + automated execution
+↓
+TM-PRACTICAL-TEST — collect real implemented Evidence + Results / Interpretation when material
 ↓
 TM-TEST-COVERAGE
 ↓
 Decision Revalidation / Consistency Review
 ```
 
-`TM-WEUC`, Screen, Requirements, Frontend, Cross-Cutting and Practical Test are conditional/cross-cutting nodes. Their placement in the graph expresses their **earliest meaningful activation** and normal consumers, not a rule that they run exactly once.
+`TM-WEUC`, Screen, Requirements, Frontend, Cross-Cutting and implemented Practical Evidence are conditional/cross-cutting nodes. Their placement in the graph expresses their **earliest meaningful activation** and normal consumers, not a rule that they run exactly once.
+
+For `TM-PRACTICAL-TEST`, early activation may produce only Evidence Intent / Subject and an Observation / Data Collection Plan. Actual Evidence collection and Results / Interpretation require the real implemented subject/environment; the distinction from `TM-PROTOTYPE` is the Evidence subject, not merely when the Target record was first created.
 
 ## 4. Fixed Testing Direction
 

@@ -87,7 +87,7 @@ Examples:
 
 ```text
 Prototype Evidence
-accepted Prototype Interpretation / Decision Handoff when relevant
+accepted Prototype Results / Evidence interpretation when relevant
 accepted/dispositioned Application-feasibility State
 current implementation state
 Observed WEUC

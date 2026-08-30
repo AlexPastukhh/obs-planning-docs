@@ -1,197 +1,177 @@
-# Practical Evidence Method — Prototype And Post-Implementation Practical Testing
+# Practical Evidence Method — Prototype And Implemented Practical Evidence
 
 Status: active reusable evidence method  
 Used by: `TM-PROTOTYPE`, `TM-PRACTICAL-TEST`
 
 ## 1. Purpose
 
-Prototype and post-implementation practical testing are two phases of the same evidence discipline:
+Use one observation discipline before and after implementation without pretending those Evidence sources have the same strength.
 
 ```text
-material uncertainty / property
+question / uncertainty / property
 ↓
-practical observation protocol
+plan how to observe it credibly
 ↓
-actual Evidence
+collect actual Evidence
 ↓
-interpretation
+separate observation from interpretation
 ↓
-Decision support / acceptance / residual uncertainty
+record limits
 ↓
-when accepted meaning is materially challenged: Finding Candidate
-↓
-Core Finding Disposition selects revalidation/reopen only when warranted
+Decision support / acceptance / learning / revalidation
 ```
 
-They remain separate Target Modules because their **subject and evidentiary strength differ**.
+The two Target Modules remain separate because the subject is materially different:
 
 ```text
 TM-PROTOTYPE
-  before main implementation
   partial/simulated/throwaway subject allowed
-  reduces uncertainty
-  cannot prove the final implementation merely because the prototype worked
+  practical learning before full implementation
 
 TM-PRACTICAL-TEST
-  after implementation candidate exists
-  exercises the real implementation/environment proportionally
-  can provide operated acceptance Evidence
+  Target and collection plan may be prepared before realization
+  actual Evidence comes from the real implemented subject/environment
+  practical acceptance and post-implementation learning
 ```
 
-## 2. Shared Practical Evidence Inquiry
+Target-formation time is not the evidentiary boundary: `TM-PRACTICAL-TEST` may be planned early so implementation can make later observation possible, but its actual Evidence/results phase starts only when the real implemented subject exists.
 
-A practical evidence inquiry should explain:
+## 2. Shared Inquiry Shape
+
+A practical evidence inquiry may need:
 
 ```text
-Evidence Question / Uncertainty
-Affected Decision / Target / Requirement
+Question / uncertainty / property
+Affected Target / Decision / owner
 Why practical observation is useful
-Subject Under Test
-Real vs Simulated Boundary
-Actor / Participant / Operator profile
-Real-Life / Application Scenario context
-Setup / starting state
-Task / Action
-Observation Plan
-Expected discriminating signals
-Run Record(s)
-Observed Evidence
+Subject Under Observation
+Real vs simulated boundary when relevant
+Actor / participant / operator / population
+Context / environment / version
+Task/action and/or passive data source
+Observation / data collection plan
+Discriminating or acceptance signals when useful
+Actual Evidence
 Limitations / confounders
 Interpretation
-Disposition
+Follow-up / disposition hint
 ```
 
-This is a reusable evidence record, not a new semantic Target type.
+This is guidance, not a mandatory record schema.
 
-## 3. What Can Be Observed
+## 3. Evidence Sources / Methods
 
-Choose only observations relevant to the uncertainty/property. Examples:
+Choose only sources that help answer the question. Examples:
+
+```text
+paper/clickable prototype
+manual/concierge simulation
+throwaway mini-app / technical spike
+mocked integration
+benchmark / controlled experiment
+implemented Scenario walkthrough
+observed user/operator session
+production/staging telemetry
+analytics
+logs / traces / error records
+performance measurements
+support/incident evidence
+interviews / structured feedback
+A/B or staged rollout experiment
+```
+
+Method names are not conformance enums.
+
+## 4. Plan Collection Before Interpreting
+
+Before running/observing, ask proportionally:
+
+```text
+What exactly are we trying to learn or accept?
+What data/observation could answer it?
+What should be real vs simulated?
+What context/environment must be representative?
+What signals would support/challenge the current hypothesis?
+What would count as acceptance when this is a proof question?
+Which repeats/variants/window/sample are actually useful?
+What privacy/safety/data constraints apply?
+What can this evidence source not establish?
+```
+
+Do not gather every available metric. Evidence collection follows the question.
+
+## 5. Observation Examples
+
+Depending on the inquiry:
 
 ```text
 task/scenario completion
-completion time / latency perceived by actor
-number of steps
-backtracking / repeated actions
+time / latency
+hesitation / backtracking / repeated action
 navigation/orientation mistakes
-which Screen/window the actor expects next
-whether controls/results are understood without explanation
-errors / failed attempts
-recovery behavior
-points of hesitation
-information overlooked or misunderstood
-manual intervention needed
-real vs expected system response
-performance / throughput / resource observations
-integration success/failure
-technical feasibility observations
+DATA/feedback comprehension
+errors / failed attempts / recovery
+manual intervention
+integration behavior
+performance / throughput / resource use
+feature/capability usage
+outcome distribution
+retry / abandonment patterns
+support/incident patterns
 ```
 
-Do not turn every prototype/test into a usability study or benchmark. Observation follows the Evidence Question.
+## 6. Real / Simulated Boundary
 
-## 4. Evidence Method Patterns
-
-Possible methods include:
+Prototype evidence must state material fake/stub/mock/manual boundaries. Implemented evidence should state material version/environment/window boundaries.
 
 ```text
-CLICKABLE_UI_FAKE
-  UI/window flow is interactive; backend/functionality may be stubbed
+clickable UI + mocked backend
+→ can support interaction learning
+→ cannot prove real integration reliability
 
-THROWAWAY_MINI_APP
-  minimum executable vertical behavior needed to answer the question
-
-TECHNICAL_SPIKE
-  isolate technical/integration/performance feasibility
-
-MOCKED_INTEGRATION
-  real local behavior against controlled fake external/server boundary
-
-CONCIERGE / MANUAL_SIMULATION
-  human/manual substitute used to learn workflow/value before automation
-
-BENCHMARK / LOAD_EXPERIMENT
-  controlled technical measurement
-
-IMPLEMENTED_SCENARIO_WALKTHROUGH
-  real application after implementation
-
-OPERATED_ACCEPTANCE
-  real operator/participant executes selected behavior in representative environment
+production telemetry for one provider / two weeks
+→ can support learning about that observed population/window
+→ cannot automatically establish universal future behavior
 ```
 
-Method is selected by IDTSPE Ideas/Decision; no pattern is mandatory.
-
-## 5. Scenario Walkthrough Observation Pack
-
-For interaction-heavy evidence, a reusable observation pack may include:
+## 7. Observation ≠ Interpretation ≠ Decision
 
 ```text
-Can the actor identify where to start?
-Can the actor move through the intended Scenario without coaching?
-Is the next Screen/window/action reasonably discoverable?
-Does the actor understand required DATA and resulting state?
-How many detours/backtracks occur?
-What takes unexpectedly long?
-Where does orientation break?
-Does feedback match the actor's understanding of what happened?
-Can the actor recover from representative failure/cancel/back paths?
+Observation:
+  4/5 participants retried immediately after timeout
+
+Interpretation:
+  timeout semantics may be ambiguous
+
+Decision:
+  selected later through normal owner/revalidation process
 ```
 
-The same pack may be used:
-- on a clickable/stubbed prototype before implementation;
-- on the implemented application later.
+Actual Evidence remains separate from the interpretation and from the Decision it informs.
 
-That makes pre/post Evidence comparable without pretending they have equal strength.
+## 8. Acceptance vs Learning
 
-## 6. Evidence Timing
+When the purpose is acceptance, explicit expected signals / PASS-FAIL style interpretation may be useful.
 
-For each uncertainty decide where credible Evidence can actually be obtained:
+When the purpose is learning, use the Evidence to support/challenge a hypothesis or reveal a new question without inventing artificial thresholds.
+
+Both are practical Evidence; neither gives the Evidence Target semantic authority over the product/application owner.
+
+## 9. Prototype → Implemented Evidence Continuity
+
+When a question cannot be settled credibly until the real implementation exists, preserve enough continuity to avoid rediscovery:
 
 ```text
-PROTOTYPE_NOW
-  a partial/simulated artifact can materially reduce uncertainty
-
-IMPLEMENT_AND_TEST_LATER
-  only the real integrated implementation/environment can answer credibly
-
-BOTH
-  prototype de-risks early, implemented test later confirms/accepts
-
-NO_PRACTICAL_TEST_NEEDED
-  source/reasoning/other evidence is sufficient
+question
+relevant Scenario/task/context
+important observations/measurements
+known prototype limitations
 ```
 
-A prototype must not manufacture false confidence for questions that require actual implementation.
+Later `TM-PRACTICAL-TEST` may reuse or adapt that shape against the real implementation.
 
-## 7. Result Semantics
+## 10. Operational Observability Boundary
 
-Prototype disposition:
+An implemented practical Evidence Target may consume telemetry/logs/analytics. It does not own permanent observability architecture.
 
-```text
-SUPPORTED_ENOUGH_FOR_CURRENT_DECISION
-CHALLENGED
-INCONCLUSIVE
-DEFERRED_TO_IMPLEMENTED_EVIDENCE
-```
-
-Practical-test disposition may additionally support:
-
-```text
-PASS
-FAIL
-PARTIAL / CONDITIONALLY_ACCEPTED
-```
-
-Actual Evidence stays separate from interpretation and from the Decision it informs.
-
-## 8. Reuse Rule
-
-If a Prototype Evidence Question is intentionally deferred to the final implementation, preserve the same:
-
-```text
-Evidence Question
-Scenario/task
-critical observations
-known limitations
-```
-
-and hand them to `TM-PRACTICAL-TEST` / Test Design rather than rediscovering the concern later.
+If required Evidence cannot be observed, surface a Finding Candidate. Normal disposition may select an implementation Slice/Cross-Cutting/code owner to add appropriate instrumentation.

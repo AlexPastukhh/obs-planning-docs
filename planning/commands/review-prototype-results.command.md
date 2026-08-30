@@ -14,14 +14,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "разбери результаты прототипа"
   ],
   "description": "focused SDS target",
-  "meaning": "Run focused TM-PROTOTYPE intent without creating a new Target type.",
+  "meaning": "Run focused TM-PROTOTYPE results interpretation without creating a new Target type.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Evidence interpretation, closed/residual uncertainty, Decisions and downstream revalidation.",
+  "expectedOutput": "Prototype Results / Evidence interpretation against the original questions, limitations, residual uncertainty and revalidation/follow-up; Decisions remain with natural owners.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -36,7 +36,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "helperPresentation": {
     "whenToUse": "Use after a prototype/experiment produced actual Evidence that should update the same Prototype Target.",
-    "whatYouGet": "Evidence interpretation, closed/residual uncertainty, Decisions and downstream revalidation.",
+    "whatYouGet": "Prototype Results / Evidence interpretation, limitations, residual uncertainty and revalidation/follow-up.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

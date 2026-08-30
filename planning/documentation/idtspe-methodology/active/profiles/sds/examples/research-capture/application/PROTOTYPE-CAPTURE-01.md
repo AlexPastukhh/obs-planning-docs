@@ -14,11 +14,11 @@ U-02
 Can source context be collected reliably enough by the intended platform path?
 ```
 
-## Timing
+## Evidence Position
 
 ```text
-U-01 → PROTOTYPE_NOW
-U-02 → BOTH
+U-01 → useful to prototype now
+U-02 → prototype can reduce uncertainty now, but real integration Evidence will still be needed
 ```
 
 ## Experiment Boundary

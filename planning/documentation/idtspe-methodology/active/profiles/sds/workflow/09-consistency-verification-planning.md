@@ -75,4 +75,6 @@ A material Test Strategy/Test Design/Practical Plan can be its own repeatable Ta
 
 `TM-PROTOTYPE` and `TM-PRACTICAL-TEST` reuse `../../../idtspe-core/shared/practical-evidence-method.md`.
 
-Prototype questions marked `IMPLEMENT_AND_TEST_LATER` or `BOTH` should preserve the same Evidence Question / Scenario task / critical observations into implemented practical testing when useful.
+`TM-PRACTICAL-TEST` may be formed before realization to prepare Evidence Intent and collection needs; actual Evidence collection/results require the real implemented subject. `TM-PROTOTYPE` remains the route for practical Evidence whose subject is partial/simulated/throwaway before full implementation.
+
+When a Prototype question still requires the real implementation, preserve the Evidence Question / Scenario task or context / critical observations / known prototype limits so `TM-PRACTICAL-TEST` can reuse or adapt them later.

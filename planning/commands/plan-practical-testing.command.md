@@ -14,15 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй практический тест",
     "план практического тестирования"
   ],
-  "description": "practical test",
-  "meaning": "Run TM-PRACTICAL-TEST through the IDTSPE Shell for the selected target.",
+  "description": "implemented practical evidence",
+  "meaning": "Run TM-PRACTICAL-TEST through the IDTSPE Shell to prepare or review practical Evidence for a real implemented subject. The Target/collection plan may be prepared before realization; actual Evidence/results require the real implemented subject.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Practical Test protocol, environment/task/observation plan and Evidence/exit gate; conditional on practical proof value.",
+  "expectedOutput": "Evidence Intent / Subject + Observation / Data Collection Plan; when real implementation Evidence exists, Evidence Results / Interpretation for acceptance or learning.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -37,8 +37,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use when proof requires an operated/manual/live environment or integration acceptance plan.",
-    "whatYouGet": "Practical Test protocol, environment/task/observation plan and Evidence/exit gate; conditional on practical proof value.",
+    "whenToUse": "Use to prepare collection for a future real implementation or to collect/interpret acceptance or learning from an implemented subject.",
+    "whatYouGet": "Evidence Intent / Subject, Observation / Data Collection Plan, and—when actual implemented Evidence exists—Evidence Results / Interpretation.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -49,7 +49,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "kindLabel": "IDTSPE TARGET",
       "badges": [
         "CONDITIONAL",
-        "OPERATED-EVIDENCE DRIVEN"
+        "IMPLEMENTED-EVIDENCE"
       ],
       "viewOrder": 1
     }

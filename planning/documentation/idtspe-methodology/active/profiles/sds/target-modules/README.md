@@ -8,7 +8,7 @@ Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are
 | Module ID | Entry Point | Role | Main output / purpose |
 |---|---|---|---|
 | `TM-APPLICATION-DEFINITION` | `tm.application.definition` | primary | selected own-application definition |
-| `TM-PROTOTYPE` | `tm.prototype` | evidence | minimum experiment + Evidence/promotion handoff |
+| `TM-PROTOTYPE` | `tm.prototype` | practical evidence | prototype inquiry + experiment/collection plan + pre-implementation Evidence interpretation |
 | `TM-SCENARIO-PLANNING` | `tm.scenario.plan` | primary | one Scenario: Behavior/Requirements + DATA/Behavior decomposition + Development/Change Outlook |
 | `TM-REQUIREMENT` | `tm.requirement` | supporting/exceptional | must-hold condition/constraint owner |
 | `TM-SCREEN` | `tm.screen` | supporting/conditional | canonical spatial meaning |
@@ -21,7 +21,7 @@ Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are
 | `TM-CROSS-CUTTING-CONCERN` | `tm.implementation.crosscut` | shared non-vertical/conditional | one canonical shared implementation responsibility |
 | `TM-TEST-STRATEGY` | `tm.test.strategy` | proof-strategy/conditional | shared proof responsibility/boundaries + optional test-realization registry/map |
 | `TM-TEST-DESIGN` | `tm.test.design` | primary/supporting proof | Behavior-to-Test proof design |
-| `TM-PRACTICAL-TEST` | `tm.test.practical` | evidence-plan/operated evidence | implemented practical acceptance/Evidence plan |
+| `TM-PRACTICAL-TEST` | `tm.test.practical` | implemented practical evidence | real-implementation acceptance/learning + observation/data-collection plan + Evidence interpretation |
 | `TM-TEST-COVERAGE` | `tm.test.coverage` | review | actual current Evidence coverage findings |
 
 ## Not Target Modules
@@ -100,4 +100,4 @@ Every material IDTSPE response should expose the recommended next methodology Ta
 
 ## Theoretical Testing Knowledge
 
-The processed Test Target Modules/Lenses remain operational authority. The four Test Target Modules that need deeper raw testing theory reference [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md) through their `HYBRID` `Knowledge Basis` and explicit load policy. This is no longer a separate ad-hoc theoretical-reference mechanism.
+The processed Test Target Modules/Lenses remain operational authority. Deeper raw Testing theory at [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md) may be consulted when a materially difficult proof question needs it; Target Modules do not require a fixed Knowledge Basis mode/load-policy shape. `TM-PROTOTYPE` and `TM-PRACTICAL-TEST` currently rely on their operational practical-evidence method/Lens rather than separate Target Module Knowledge Bases.

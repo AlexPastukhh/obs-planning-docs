@@ -6,7 +6,7 @@ Authority: detailed Source contracts live in each `TM-*.md`; reusable Lens Sourc
 | Target Module | Primary direct upstream Sources | Important inherited / conditional Sources |
 |---|---|---|
 | `TM-APPLICATION-DEFINITION` | Fundamental Need; selected Step-02 real-world route/result + own-software contribution; surrounding responsibilities; viable existing/manual/buy/adapt/integrate routes | market/reference Evidence; Prototype/current implementation Evidence; material constraints |
-| `TM-PROTOTYPE` | material uncertainty/affected Decision; Refined Core Real-Life Scenario when present else Step-02 result; Application Definition or candidate Scenario/interaction hypothesis | existing market/usability/technical Evidence; experiment constraints |
+| `TM-PROTOTYPE` | material uncertainty/question + affected owner/Decision; relevant Application/Scenario/Screen/Slice/etc meaning | prior research/current-state Evidence; experiment/participant/environment/data constraints |
 | `TM-SCENARIO-PLANNING` | Application Definition/responsibility; relevant Need/real-life route; known current/planned behavior; existing Scenario when refining; accepted shared constraints when any | Prototype/practical/user/current-system Evidence; Generic Q/R/P/Evidence/Decisions; downstream findings that challenge Scenario behavior |
 | `TM-REQUIREMENT` | exceptional shared condition spanning several owners, after natural-owner check | external/user/regulatory/contractual/operational Evidence/constraints |
 | `TM-SCREEN` | Scenarios; Behavior Items; Scenario DATA whose spatial presentation matters; spatial/accessibility local/shared must-hold conditions | Application Definition; Prototype/UX Evidence; platform constraints |
@@ -19,7 +19,7 @@ Authority: detailed Source contracts live in each `TM-*.md`; reusable Lens Sourc
 | `TM-CROSS-CUTTING-CONCERN` | repeated/shared Requirement/responsibility across consumers; affected Slice/implementation owners | current implementation/runtime Evidence; dispositioned architecture/WEUC-derived State / accepted Decisions; quality constraints |
 | `TM-TEST-STRATEGY` | Scenario Acceptance; Behavior; local/shared must-hold conditions; Domain verification meaning; Slice Useful Vertical Results | current test Evidence; correctness/environment constraints |
 | `TM-TEST-DESIGN` | Scenario Acceptance; Behavior Items; Scenario DATA; must-hold conditions; Domain Verification Meaning; Slice Useful Vertical Result Definition / implemented boundary | current failures/tests Evidence; Test Strategy; Practical Evidence constraints |
-| `TM-PRACTICAL-TEST` | Evidence Question; implemented Scenario/result/Behavior/DATA/must-hold/Slice subject | Prototype continuity; environment/operator state; Test Strategy |
+| `TM-PRACTICAL-TEST` | intended implemented subject/boundary + acceptance/learning question; actual version/build becomes required when Evidence is collected; relevant Scenario/Behavior/DATA/Requirement/Test Design when applicable | Prototype continuity; real users/operators/data/environment; telemetry/analytics/logs/support/performance Evidence when relevant |
 | `TM-TEST-COVERAGE` | current Scenario/DATA/Behavior/must-hold/Domain/Slice/Test owners | actual executed tests/checks/practical Evidence; freshness/runtime Evidence |
 
 ## Core SDS Lineage

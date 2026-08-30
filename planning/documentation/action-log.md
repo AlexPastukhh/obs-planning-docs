@@ -2135,3 +2135,63 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - `TM-SCENARIO-PLANNING` still intentionally has no separate Knowledge Basis and retains the already-reviewed three-Result-Unit Scenario contract unchanged;
 - the broader Scenario Target unification remains limited to the Scenario family plus coherence projections; no Slice, Screen, Domain, Cross-Cutting, Test, WEUC or other Target-family redesign is introduced here.
 
+
+### LOG-DOC-119 — Redesign Prototype and implemented practical Evidence Targets
+
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
+**ChangeSet Label:** `SDS Prototype and implemented practical evidence redesign`  
+**Source:** current finalized GitHub `main` `8071d30a23a29a5944f9bbdf2874d78a56f26920` after the accepted Scenario Planning ChangeSet  
+
+**Selected Meaning:**
+- keep `TM-PROTOTYPE` as a separate Target because practical uncertainty resolution has its own inquiry, experiment design, data/observation collection and interpretation; Prototype is not merely a Lens operation;
+- simplify Prototype to three Result Units: `RU-PROTO-01 Prototype Intent / Questions`, `RU-PROTO-02 Prototype Plan`, `RU-PROTO-03 Prototype Results / Evidence`; actual observations remain Generic Evidence and prototype shape never becomes product/UI/architecture truth by itself;
+- preserve real-vs-simulated boundaries, plan collection before running, distinguish observation from interpretation/Idea/Decision, and use the cheapest credible experiment rather than a mandatory method/timing enum;
+- broaden existing compatibility Target `TM-PRACTICAL-TEST` into implemented practical Evidence rather than pass/fail testing only, while retaining its ID/entry point to avoid an unnecessary topology/command migration;
+- use three implemented-evidence Result Units: `RU-PTEST-01 Evidence Intent / Subject`, `RU-PTEST-02 Observation / Data Collection Plan`, `RU-PTEST-03 Evidence Results / Interpretation`; the Target supports both acceptance and exploratory post-implementation learning from real users/operators/environments/telemetry/analytics/logs/measurements/etc when material;
+- permanent telemetry/logging/observability architecture remains implementation/Cross-Cutting/code responsibility; `TM-PRACTICAL-TEST` consumes those signals as Evidence Sources or surfaces missing-observability Findings;
+- `TM-PROTOTYPE` and `TM-PRACTICAL-TEST` currently need no separate Target Module Knowledge Bases; the shared Practical Evidence method and Lens carry reusable observation discipline;
+- keep existing AP/AG IDs/counts, Target Module IDs, entry points, command identities and total module/lens topology unchanged.
+
+### LOG-DOC-120 — Apply Prototype and implemented practical Evidence redesign
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-119`  
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
+**Package:** `188037ec-53a6-41fd-980f-d83d38336848`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `TM-PROTOTYPE` owns a compact `Intent / Questions → Plan → Results / Evidence` pre-implementation practical-evidence flow;
+- `TM-PRACTICAL-TEST` remains the compatibility ID but semantically owns implemented practical Evidence for acceptance and post-implementation learning through `Intent / Subject → Observation / Data Collection Plan → Results / Interpretation`;
+- Practical Evidence shared method/Lens use plain-language evidence timing/method selection rather than requiring the previous `PROTOTYPE_NOW / BOTH / IMPLEMENT_AND_TEST_LATER / NO_PRACTICAL_TEST_NEEDED` vocabulary;
+- actual observations remain Generic Evidence, Decisions/revalidation remain Core consequences, and permanent observability remains with implementation owners;
+- current Target Module/Lens counts, command identities and `58 = 34 AP + 24 AG` artifact-guidance parity remain unchanged.
+
+### LOG-DOC-121 — Correct Prototype / implemented practical Evidence ReviewDiff projections
+
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
+**ChangeSet Label:** `SDS Prototype and implemented practical evidence redesign`  
+**Prior Package:** `188037ec-53a6-41fd-980f-d83d38336848`  
+
+**Material Finding / later clarification / selected correction:**
+- preserve the reviewed three-Result-Unit contracts of `TM-PROTOTYPE` and `TM-PRACTICAL-TEST`; no new Target Module or Result Unit is introduced;
+- correct one stale current-state audit assertion from the pre-Scenario topology (`17/17` Target Modules + `7/7` SDS-specific Lenses) to the actual current `16/16` + `6/6` topology;
+- reproject the canonical/focused Prototype and Practical-Test command definitions plus Planning Helper command seed so command output matches the redesigned Target Modules rather than the old uncertainty-map / pass-fail-only framing;
+- clarify the Practical-Test phase boundary after discussion: `TM-PRACTICAL-TEST` may be formed before realization and may prepare `RU-PTEST-01 Evidence Intent / Subject` plus `RU-PTEST-02 Observation / Data Collection Plan`; actual implemented Evidence and `RU-PTEST-03 Evidence Results / Interpretation` require the real implemented subject/environment;
+- therefore the distinction from `TM-PROTOTYPE` is the Evidence subject/strength, not the timestamp at which a Target record is first created: Prototype may collect Evidence from partial/simulated/throwaway subjects before full implementation, while Practical Test ultimately collects Evidence from the real implemented subject;
+- preserve permanent telemetry/logging/analytics ownership in implementation/Cross-Cutting/code; early Practical-Test planning may expose future observability/instrumentation needs but does not itself own that implementation.
+
+### LOG-DOC-122 — Apply Prototype / implemented practical Evidence projection correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-121`  
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
+**Package:** `6a101a56-aa6a-47d7-beae-e9f1aab08776`  
+
+**Target-State Result:** after successful Apply of this exact correction package:
+- `TM-PROTOTYPE` still owns `Intent / Questions → Prototype Plan → Results / Evidence`;
+- `TM-PRACTICAL-TEST` still owns `Evidence Intent / Subject → Observation / Data Collection Plan → Evidence Results / Interpretation`, with explicit permission to prepare Intent/Collection Plan before realization and an explicit execution gate requiring the real implemented subject for actual Evidence/results;
+- canonical/focused command definitions and Planning Helper `seed/commands.json` project the same current Target semantics for Prototype planning/results and implemented practical Evidence acceptance/learning;
+- current methodology audit correctly states `16/16` active SDS Target Modules and `6/6` SDS-specific Lenses;
+- no Target/Lens/AP/AG topology, Result Unit identity, permanent observability ownership or unrelated SDS family semantics change in this correction.

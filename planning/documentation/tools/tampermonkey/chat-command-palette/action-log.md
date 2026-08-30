@@ -387,3 +387,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Entry:** `LOG-DOC-115`  
 **ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
 **Reason:** Planning Helper participates only through regenerated `seed/commands.json` from the three current Scenario command definitions; runtime/source behavior is unchanged and the full Scenario Target migration rationale/APPLIED target state remain in the reusable-documentation canonical log.
+
+### XREF-027 — Regenerate Helper Prototype / Practical-Test command projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-121`  
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
+**Reason:** Planning Helper participates only through regenerated `seed/commands.json` for the corrected Prototype and implemented-practical-Evidence command definitions; runtime/source behavior is unchanged, and full ReviewDiff clarification/APPLIED state remain in the reusable-documentation canonical log.
