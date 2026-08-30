@@ -3,7 +3,9 @@ setlocal
 cd /d "%~dp0"
 if exist build rmdir /s /q build
 mkdir build\classes build\test-classes
-call javac --release 21 -d build\classes ^
+call ..\replacement-package-common\build.cmd || exit /b 1
+xcopy /e /i /y "..\replacement-package-common\build\classes\*" "build\classes\" >nul || exit /b 1
+call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\Core.java ^
   src\main\java\obs\rpkg\ReviewChatTitleMatcher.java ^
   src\main\java\obs\rpkg\ChatBridgeService.java ^
