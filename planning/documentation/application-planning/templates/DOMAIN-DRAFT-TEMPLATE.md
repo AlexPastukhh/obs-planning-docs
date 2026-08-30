@@ -1,147 +1,24 @@
-# Domain Draft Template
+# Domain / Aggregate Modeling Supporting Template
 
-Status: active reusable recommended template
-Purpose: create/review a separate Domain owner only when conceptual language, lifecycle, rules or boundaries materially improve planning.
+Status: active supporting template; legacy filename retained for compatibility.
+Canonical semantic owner: `TM-DOMAIN-DISCOVERY` / Domain / Aggregate Modeling.
 
-Canonical workflow: [`../domain-planning-workflow.md`](../domain-planning-workflow.md)
-Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
-Generic Architecture Lens / Change Axes: [`../../architecture-planning/README.md`](../../architecture-planning/README.md)
-Detailed workspace contract: [`../detailed-planning/README.md`](../detailed-planning/README.md)
+Use only when a human-readable Domain artifact is independently useful. Code/types/tests may remain the durable Domain representation.
 
-## Workspace Shape
+## RU-DOM-01 — Selected Domain / Aggregate Model
 
-```text
-DOM-X/
-├── README.md
-├── domain.md
-├── ideas/
-└── variants/       # only when a second integrated Domain design exists
-```
-
-Domain does not require `visual/` by default.
-
-## Domain
-
-| Field | Value |
-|---|---|
-| Domain ID | <stable ID> |
-| Title / responsibility | <title> |
-| Status | preliminary / reviewed / accepted-current / needs-review |
-| Related Scenarios / Behavior | <links> |
-| Related Requirements | <links> |
-| Relevant Change Axes | <links when material> |
-
-### Purpose / Boundary
-<Why a separate conceptual owner exists, what meaning it owns and what remains outside.>
-
-### Stable Semantic Core
-<Identities/concepts/meaning that current selected behavior requires to remain coherent.>
-
-### Terms / Concepts
-<Canonical conceptual language supported by current planning.>
-
-### Relationships
-<Material conceptual relationships.>
-
-### Discovery Evidence — When Material
-
-### State / Condition Matrix
-
-| Current condition | Action / behavior | Result condition | Allowed? | Required guarantee | Failure / no-write guarantee | Evidence |
-|---|---|---|---|---|---|---|
-
-### Impossible State / Combination Review
-
-| State / data combination | Valid? | Why | Protecting invariant / consistency rule | Evidence |
-|---|---|---|---|---|
-
-### Value Objects — When Material
-<Use only where value integrity/equality/validation/operations justify a stable value concept. Do not introduce wrappers merely to avoid primitives.>
-
-### Aggregate / Ownership Boundaries — When Material
-
-Use only where current invariant/lifecycle/consistency evidence justifies an explicit Aggregate. `No explicit Aggregate needed` is valid.
-
-For each selected or still-material candidate:
-
-| Field | Meaning |
-|---|---|
-| Aggregate / status | <name + selected / split / merge / rejected / unresolved> |
-| Aggregate Root | <root candidate / selected root> |
-| Owned child entities / value-like state | <what changes through the root> |
-| Protected invariants / lifecycle | <concrete current rules justifying the boundary> |
-| Consistency expectation | <atomic/strong / coordinated / eventual / none> |
-| Explicitly outside | <what this Aggregate does not own> |
-| External Aggregate references | <identity/reference only where applicable> |
-| Cross-Aggregate coordination | <rules/workflow owned outside one Aggregate> |
-| Evidence | <Scenario/DATA/Behavior/Requirement links> |
-
-Do not infer Aggregate ownership from read/query convenience, UI shape, ORM navigation, database relations or module layout alone. One Aggregate Root does not directly own/mutate another Aggregate Root.
-
-## Lifecycles / States
-<When lifecycle meaning materially helps.>
-
-### Rules / Invariants
-<Meaning that must remain true for the current Domain to be correct.>
-
-### Policies / Likely Variation
-<Current choices that may legitimately vary, distinguished from invariants.>
-
-### Change-Axis / Variation Review
-<For each material evidence-backed Change Axis, describe expected propagation and whether a boundary/seam is justified now. Do not generalize from speculation alone.>
-
-### Rejected Premature Generalizations — When Material
-<Abstractions intentionally not introduced because current requirements/evidence do not justify them.>
-
-### Current Scenario / Requirement Stress Check
-<Confirm current selected behavior and Requirements can be represented simply without Domain inventing behavior.>
-
-### Realization Sanity Check — When Material
-<Stress representative current Scenarios against invariant enforcement, persistence/transaction shape, integration/remote boundaries, important algorithms/data volume and verification feasibility. Slightly more code is not a reason to distort correct Domain meaning; material correctness/performance/consistency/technical impossibility is valid upstream evidence.>
-
-### Domain Verification Meaning — When Material
-<Derive technology-neutral invariant examples, allowed/forbidden transitions, business-rule examples, important derived-value examples and cross-object consistency cases. This is verification meaning derived from Domain semantics, not a second Domain authority or a requirement for a separate file.>
-
-### Scenario / Behavior / Requirement Traceability
-<Link relevant owners without copying detailed flow/Requirement bodies unnecessarily.>
-
-### Relevant Implementation-Scoped Ideas
-<Link generic implementation Ideas considered. If selected, integrate current meaning here and mark the Idea promoted rather than preserving duplicate authority.>
-
-## Cross-File Dependencies / Reference Object Candidates — When Material
-
-| Source Owner | Meaning Used Here | Use Here | Usage Mode | RO Candidate | Materialized RO |
-|---|---|---|---|---|---|
-| <owner> | <canonical fragment/reference> | <Domain use> | semantic link / paraphrase / exact-literal candidate | yes / no | no / existing `ro_*` |
-
-A consumer-side candidate note does not redefine source meaning. Domain rules/invariants may themselves be source candidates when exact literal reuse across Scenario/Slice/verification owners is genuinely useful.
-
-## Current Decisions
-<Use the shared Planning Concern/Decision trace contract. Material Domain Decisions are integrated into Domain meaning; add Addresses/Introduced-Exposed Concern refs only when useful.>
-
-## Area Concern Register — When Material
-<Inline or link the current Domain-area register: Concern/Group ID, owner, Stored At, Priority, Concern Category, Status, Decision refs/residual state when material.>
-
-## Planning Concerns / Q/R/P
-<Use the shared Concern model. Group one-resolution-surface Q/R/P; keep member Priority/Concern Category/Status; include AI Comment without inventing user-owned preferences; Recommendation only when justified; Decision only when selected. Related Ideas reference the canonical Concern/Group location rather than duplicate full bodies.>
-
-If none: `No material unresolved issues identified.`
-
-## Potential Simplifications / Better Routes — When Material
-<Only unselected changes to current Domain meaning.>
-
-## Boundary Rules
+Represent proportionally:
 
 ```text
-simplest correct current model
-+ cheap justified evolution
-≠ maximum theoretical extensibility
+identity / important concepts
+material state / lifecycle / conditions
+state-condition matrix when useful
+valid / impossible combinations
+invariants / policies
+transitions
+consistency / Aggregate boundary
+Domain-owned behavior vs application/external coordination
+useful public/semantic Domain operations
 ```
 
-Domain meaning does not silently override Scenario/Screen/Requirement truth. When current owners conflict, perform explicit consistency review and update the real selected owner(s).
-
-## Realization Evidence / Attached Concerns
-
-Domain selection may consume bounded comparative evidence from `UC-PLAN-REALIZATION` when material, while Domain remains authority for conceptual truth.
-
-Attached Planning Concerns follow the shared owner/current-plan gate and may be grouped when one resolution surface spans several Q/R/P. Do not register implementation inconvenience as a Domain problem unless it is material evidence of infeasibility/correctness/cost/consistency. Residual Risk/Problem remains visible even after a related Question is answered.
+These are Resolution techniques/selected model meaning, not mandatory separate Result Units. A shallow supporting use inside Slice Strategy may remain inline and does not require this file.

@@ -115,6 +115,17 @@ RU-SLICE-04 Evolution Steps
 - Slice/Cross-Cutting owners may stay inline or promote asymmetrically: **PASS**
 - no one-file-per-Target rule: **PASS**
 
+
+## Routing / Authority Cleanup
+
+- canonical SDS semantic authority is singular under `active/profiles/sds/`: **PASS**
+- old `documentation/profiles/sds-planning-profiles.md` and `scenario-domain-slice-docs-profile.md` active authorities are removed: **PASS**
+- `application-planning/` is supporting Need/Solution/Application knowledge and compatibility navigation, not a second SDS lifecycle: **PASS**
+- legacy Mini/Modular/Full commands are hidden LIGHT/MIXED/COMPLEX representation preferences only: **PASS**
+- `idtspe` is the canonical generic work/component dispatcher and resolves exact `TM-*` / `LENS-*` IDs plus registry aliases without requiring repository command IDs: **PASS**
+- generic Lens dispatch crosses Core Finding Disposition before semantic owner/State/lifecycle consequences: **PASS**
+- command/helper regression and generated catalogs are verified from repository sources rather than manual surface duplication: **PASS**
+
 ## Mechanical Totals
 
 ```text

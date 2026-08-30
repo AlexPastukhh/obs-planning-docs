@@ -812,25 +812,25 @@ They explicitly say `Status: empty starter draft` and contain `not provided` pla
 
 Status: **REMOVE_AFTER_MIGRATION**; do not migrate as project truth.
 
-### 6.5 Old SDS Physical Profile Owners
+### 6.5 Retired SDS Physical Profile Owners — Historical Migration Checkpoint
+
+Removed legacy owners:
 
 ```text
 planning/documentation/profiles/sds-planning-profiles.md
 planning/documentation/profiles/scenario-domain-slice-docs-profile.md
 ```
 
-Status: **REMOVE_AFTER_MIGRATION**.
+Status: **RETIRED_PATHS_REMOVED**.
 
-Replacement owners:
+Current canonical replacements are active and must not be treated as migration-delete candidates:
 
 ```text
-active/profiles/sds/SDS-FULL-MAP.md
-active/profiles/sds/SDS-PHYSICAL-PLANNING-TREE.md
-active/profiles/sds/shared/sds-planning-context-template.md
-active/profiles/sds/shared/artifact placement contracts
+planning/documentation/idtspe-methodology/active/profiles/sds/README.md
+planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md
 ```
 
-Reason: old profiles contain stale per-owner Ideas topology and Contextual WEUC/WEUC Instance Register contracts.
+The old Full/Physical-Tree/Planning-Context projection layer is not replacement authority. Current cross-Target direction belongs to the directed workflow; representation examples belong to the Artifact Placement Map.
 
 ### 6.6 Architecture Planning Family
 
@@ -1256,9 +1256,11 @@ Historical `action-log.md` stays historical.
 
 ---
 
-## 11. Old WEUC References That Must Reach Zero In Active Governance
+## 11. Historical WEUC Cleanup Checkpoint
 
-After migration, active non-history repository governance must not contain mandatory references to:
+This section and Section 12 are retained only as pre-cleanup migration provenance. They are **not current SDS owner/routing instructions**. Current authority is `active/profiles/sds/README.md`, its Target/Lens registries, the directed workflow and `ARTIFACT-PLACEMENT-MAP.md`.
+
+At that historical checkpoint, active non-history repository governance was expected to eliminate mandatory references to:
 
 ```text
 Contextual WEUC Instance
@@ -1268,7 +1270,7 @@ planning/documentation/architecture-planning/templates/WEUC-INSTANCE-REGISTER-TE
 planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md
 ```
 
-Known current consumers include old Architecture workflows/registries and:
+Historical consumers included old Architecture workflows/registries and:
 
 ```text
 planning/commands/discover-weuc.command.md

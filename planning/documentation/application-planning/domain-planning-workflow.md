@@ -6,7 +6,7 @@ Scope: compare/refine/select/review an optional current Domain owner from discov
 Discovery workflow: [`domain-discovery-workflow.md`](domain-discovery-workflow.md)
 Canonical application change context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
 Generic Architecture Lens / Change Axes: [`../architecture-planning/README.md`](../architecture-planning/README.md)
-Recommended Domain shape: [`templates/DOMAIN-DRAFT-TEMPLATE.md`](templates/DOMAIN-DRAFT-TEMPLATE.md)
+Supporting prose shape when representation pressure justifies it: [`templates/DOMAIN-DRAFT-TEMPLATE.md`](templates/DOMAIN-DRAFT-TEMPLATE.md). Canonical semantic contract: [`../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md`](../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md)
 Shared draft-state contract: [`detailed-planning/README.md`](detailed-planning/README.md)
 
 ## 1. Purpose

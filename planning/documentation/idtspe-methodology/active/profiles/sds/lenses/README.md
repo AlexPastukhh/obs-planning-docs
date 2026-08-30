@@ -27,6 +27,22 @@ Documentation / Representation / Artifact Boundary
 
 No seventh evolution Lens is added. The old L5 slot is repurposed.
 
+
+## `idtspe` Aliases
+
+Canonical semantic identity remains the `LENS-*` ID. Current SDS aliases are:
+
+```text
+app-boundary      → LENS-APPLICATION-BOUNDARY-FEASIBILITY
+ddd               → LENS-DOMAIN-MODELING-DDD
+ui                → LENS-UI-SPATIAL-FRONTEND-REALIZATION
+slice-verticality → LENS-SLICE-VERTICALITY-INTEGRATION
+l5                → LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
+simplicity        → LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY
+```
+
+Examples: `idtspe lens ddd Payment`, `idtspe l5 SL-PAYMENT`. A bare alias is resolved only when unique across installed Target Module/Lens registries.
+
 ## Responsibility Split
 
 ```text

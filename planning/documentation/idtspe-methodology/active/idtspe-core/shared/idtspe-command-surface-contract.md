@@ -30,7 +30,8 @@ idtspe.bootstrap
 → бутстреп idtspe
 
 idtspe.work
-→ работай через idtspe
+→ idtspe [optional TM/LENS selector + context]
+→ aliases: работай через idtspe / режим idtspe
 
 idtspe.next
 → что дальше по методологии
@@ -68,9 +69,30 @@ These are **11 generic Core methodology surfaces**. Installed profiles contribut
 
 `idtspe.bootstrap` is governance orientation only and has `hostTargetPolicy=NONE`.
 
-`idtspe.work` enters ordinary material planning through the IDTSPE Shell and may create/reuse the natural Target according to Target Formation. It supports multi-turn Broad Discussion as the normal exploratory mode and periodic Integration Checkpoints when the user asks to see the integrated whole or a full Target invocation is used for that purpose; the checkpoint is not a new command/lifecycle/Target kind.
+`idtspe.work` is also the generic installed-component dispatcher. Bare `idtspe` enters ordinary material planning; `idtspe <TM-ID|LENS-ID|registry alias> <context>` resolves the component through current registries and then uses normal Target Formation/Lens execution. It supports multi-turn Broad Discussion as the normal exploratory mode and periodic Integration Checkpoints when the user asks to see the integrated whole or a full Target invocation is used for that purpose; the checkpoint is not a new command/lifecycle/Target kind.
 
 Bootstrap must not silently select a Target, infer a Target invocation mode or execute Target work.
+
+
+## Generic Component Dispatch
+
+```text
+idtspe
+→ ordinary work
+
+idtspe TM-* <context>
+idtspe tm <alias> <context>
+→ invoke selected Target Module through normal Target Formation
+
+idtspe LENS-* <context>
+idtspe lens <alias> <context>
+→ resolve/reuse host Target
+→ apply selected Lens
+→ material Finding Candidate
+→ Core Finding Disposition
+```
+
+Resolution order is exact semantic ID first, then explicit namespace alias, then a unique bare alias. Ambiguous/unknown selectors are not guessed. Registry aliases are navigation only; repository command IDs and historical `tmcmd.*` keys are compatibility/implementation details.
 
 ## Pre-Update Plan Surface
 

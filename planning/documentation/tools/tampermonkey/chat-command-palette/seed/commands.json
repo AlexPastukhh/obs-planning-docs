@@ -15,7 +15,7 @@
       ],
       "description": "Apply one named registered Lens to a resolved/reused IDTSPE Target/context.",
       "meaning": "Resolve/reuse the natural host Target, resolve the named Lens from the Core/active-profile registry, read its Operational Evaluation Contract and Knowledge Basis according to its load policy, and apply that perspective inside the current IDTSPE lifecycle. The command itself is a generic dispatcher and does not own the selected Lens semantics.",
-      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; a Local Target Contract is valid when no reusable Target Module fits. Explicit user selection may activate a registered Lens, but Lens findings still return to the natural Target owner and do not create a Lens-owned Target.",
+      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; a Local Target Contract is valid when no reusable Target Module fits. Explicit user selection may activate a registered Lens, but material Lens output remains a Finding Candidate until Core Finding Disposition resolves the actual State/owner/lifecycle consequence; Lens activation does not create a Lens-owned Target.",
       "traversalReadMode": "Resolve the requested Lens through current Core/profile registries, then read that Lens body and only the referenced Knowledge Basis owners required by its Reference Load Policy. Refresh Target/profile governance proportionally when uncertain.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
@@ -23,7 +23,7 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Selected Lens applicability/disposition plus its material findings, Evidence/Idea/Q-R-P/Decision inputs, revalidation signals and Lens-owned supporting-artifact guidance routed back to the natural Target owner.",
+      "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates. Core Finding Disposition resolves any Evidence/Idea/Q-R-P/Decision/owner/revalidation consequences; Lens-owned supporting-artifact guidance remains separate from semantic ownership.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a dispatcher to the selected registered Lens; command text never becomes Lens authority.",
@@ -36,7 +36,7 @@
       "palette": true,
       "helperPresentation": {
         "whenToUse": "Use when you already know which registered Lens perspective you want to apply, including a Lens normally reached through another Target Module.",
-        "whatYouGet": "Material findings from that Lens inside the natural IDTSPE Target context, with its Knowledge Basis loaded proportionally and findings routed to the real owner.",
+        "whatYouGet": "Material analysis/findings from that Lens inside the resolved IDTSPE Target context, with its Knowledge Basis loaded proportionally and material Finding Candidates crossing Core Finding Disposition before owner/State/lifecycle consequences.",
         "navigation": {
           "viewId": "IDTSPE",
           "viewLabel": "IDTSPE",
@@ -3435,42 +3435,32 @@
       "id": "application_sds.full",
       "file": "work-full-sds.command.md",
       "command": "фулл сдс",
-      "englishName": "work in full SDS",
+      "englishName": "full SDS",
       "commandFamily": [
         "фулл сдс",
         "full sds",
         "work in full sds"
       ],
-      "description": "work in rich Full Application SDS",
-      "meaning": "Continue the current Application plan in Full SDS using rich stable Scenario/DATA/Behavior/Requirement/Screen/Domain/Slice owners and durable architecture/testing evidence where justified.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh by selected owner/profile and current-plan uncertainty; full SDS governance preflight only when no reliable sufficient pass exists.",
+      "description": "legacy compatibility alias; prefer COMPLEX SDS representation",
+      "meaning": "Apply the COMPLEX owner/file representation preference from the canonical SDS Artifact Placement Map to the current IDTSPE/SDS planning state. This changes representation preference only; it does not select a different semantic profile, require a fixed file tree, or change Target authority.",
+      "activeContextBehavior": "Reuse the current semantic owners. Consolidate/promote representation only when the COMPLEX example and current representation pressure justify it; owner identity does not change when content moves inline or to a dedicated file.",
+      "traversalReadMode": "Reuse current IDTSPE/SDS governance and read the canonical Artifact Placement Map plus Documentation / Representation Lens proportionally. Do not load retired SDS profile files.",
       "ownerFiles": [
-        "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
-        "planning/documentation/application-planning/direction-registry.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/profiles/sds-planning-profiles.md",
-        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
-        "planning/documentation/testing-planning/practical-testing-plan-workflow.md",
-        "planning/documentation/profiles/scenario-domain-slice-docs-profile.md",
-        "planning/documentation/architecture-planning/templates/WEUC-INSTANCE-REGISTER-TEMPLATE.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
       ],
-      "expectedOutput": "Updated Full SDS owner topology preserving the same Step 0–4 meaning, with material contextual WEUC instances transferred to the project-local register and architecture decisions linked to driving evidence.",
+      "expectedOutput": "A representation recommendation/update for the same semantic owners using the COMPLEX topology as an example, with any promotion/demotion justified by addressability/review/lifecycle pressure.",
       "permissionMode": "read-only",
       "keyReminders": [
-        "This result-producing command assumes current SDS governance: reuse a reliable prior pass, refresh only affected governance when material, and perform the full SDS preflight internally only when no reliable sufficient pass exists; do not ask the user to invoke `бутстреп сдс` separately.",
-        "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
-        "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
-        "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
-        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Planning Concerns/Q/R/P remain a secondary owner-attached active/residual lens with shared grouping/priority/category/AI-comment/Decision-retention semantics; never the planning root.",
-        "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
-        "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
-        "Do not edit repository files, create an archive, commit or push.",
-        "Full increases addressability, not semantic quality. Transfer material durable contextual WEUC instances into the project-local WEUC Instance Register; do not leave architecture decisions justified only by abstract axes."
+        "Compatibility alias only; Mini/Modular/Full are not current SDS semantic profiles.",
+        "The Artifact Placement Map examples are guidance, not schemas or mandatory directories.",
+        "Semantic owner != Target instance != Markdown file.",
+        "Do not create Domain Draft, Frontend Slice or WEUC Target families.",
+        "Do not edit repository files, create an archive, commit or push."
       ],
-      "userTarget": "<Application to plan in Full SDS>",
-      "palette": true,
+      "userTarget": "<current SDS plan / owner set>",
+      "palette": false,
       "helperPresentation": null,
       "methodologyBinding": null,
       "directionIds": [
@@ -3483,40 +3473,32 @@
       "id": "application_sds.mini",
       "file": "work-mini-sds.command.md",
       "command": "мини сдс",
-      "englishName": "work in mini SDS",
+      "englishName": "mini SDS",
       "commandFamily": [
         "мини сдс",
         "mini sds",
         "work in mini sds"
       ],
-      "description": "work in one-file Application SDS",
-      "meaning": "Continue the current Application plan in Mini SDS: one complete accumulating application-plan file with the same semantic quality as larger profiles.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh by selected owner/profile and current-plan uncertainty; full SDS governance preflight only when no reliable sufficient pass exists.",
+      "description": "legacy compatibility alias; prefer LIGHT SDS representation",
+      "meaning": "Apply the LIGHT owner/file representation preference from the canonical SDS Artifact Placement Map to the current IDTSPE/SDS planning state. This changes representation preference only; it does not select a different semantic profile, require a fixed file tree, or change Target authority.",
+      "activeContextBehavior": "Reuse the current semantic owners. Consolidate/promote representation only when the LIGHT example and current representation pressure justify it; owner identity does not change when content moves inline or to a dedicated file.",
+      "traversalReadMode": "Reuse current IDTSPE/SDS governance and read the canonical Artifact Placement Map plus Documentation / Representation Lens proportionally. Do not load retired SDS profile files.",
       "ownerFiles": [
-        "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
-        "planning/documentation/application-planning/direction-registry.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/profiles/sds-planning-profiles.md",
-        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
-        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
       ],
-      "expectedOutput": "Updated one-file Current Application Plan containing the material Step 0–4 meaning, including Scenario DATA/Behavior and material WEUC/testing evidence.",
+      "expectedOutput": "A representation recommendation/update for the same semantic owners using the LIGHT topology as an example, with any promotion/demotion justified by addressability/review/lifecycle pressure.",
       "permissionMode": "read-only",
       "keyReminders": [
-        "This result-producing command assumes current SDS governance: reuse a reliable prior pass, refresh only affected governance when material, and perform the full SDS preflight internally only when no reliable sufficient pass exists; do not ask the user to invoke `бутстреп сдс` separately.",
-        "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
-        "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
-        "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
-        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Planning Concerns/Q/R/P remain a secondary owner-attached active/residual lens with shared grouping/priority/category/AI-comment/Decision-retention semantics; never the planning root.",
-        "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
-        "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
-        "Do not edit repository files, create an archive, commit or push.",
-        "Mini is appropriate only while the full-quality plan remains genuinely small and reviewable in one file."
+        "Compatibility alias only; Mini/Modular/Full are not current SDS semantic profiles.",
+        "The Artifact Placement Map examples are guidance, not schemas or mandatory directories.",
+        "Semantic owner != Target instance != Markdown file.",
+        "Do not create Domain Draft, Frontend Slice or WEUC Target families.",
+        "Do not edit repository files, create an archive, commit or push."
       ],
-      "userTarget": "<Application / bounded change to plan in Mini SDS>",
-      "palette": true,
+      "userTarget": "<current SDS plan / owner set>",
+      "palette": false,
       "helperPresentation": null,
       "methodologyBinding": null,
       "directionIds": [
@@ -3529,7 +3511,7 @@
       "id": "application_sds.modular",
       "file": "work-modular-sds.command.md",
       "command": "модульный сдс",
-      "englishName": "work in modular SDS",
+      "englishName": "modular SDS",
       "commandFamily": [
         "модульный сдс",
         "медиум сдс",
@@ -3538,34 +3520,26 @@
         "work in modular sds",
         "work in medium sds"
       ],
-      "description": "work in Modular/Medium Application SDS",
-      "meaning": "Continue the current Application plan in Modular/Medium SDS: same-quality planning split into a small file set that grows only as reviewability requires.",
-      "activeContextBehavior": "Use the clearly selected/current target and accumulating plan; ask only when target identity is genuinely ambiguous.",
-      "traversalReadMode": "Reuse current reliable SDS governance; targeted refresh by selected owner/profile and current-plan uncertainty; full SDS governance preflight only when no reliable sufficient pass exists.",
+      "description": "legacy compatibility alias; prefer MIXED / ASYMMETRIC SDS representation",
+      "meaning": "Apply the MIXED / ASYMMETRIC owner/file representation preference from the canonical SDS Artifact Placement Map to the current IDTSPE/SDS planning state. This changes representation preference only; it does not select a different semantic profile, require a fixed file tree, or change Target authority.",
+      "activeContextBehavior": "Reuse the current semantic owners. Consolidate/promote representation only when the MIXED / ASYMMETRIC example and current representation pressure justify it; owner identity does not change when content moves inline or to a dedicated file.",
+      "traversalReadMode": "Reuse current IDTSPE/SDS governance and read the canonical Artifact Placement Map plus Documentation / Representation Lens proportionally. Do not load retired SDS profile files.",
       "ownerFiles": [
-        "planning/documentation/application-planning/application-planning-governance-read-workflow.md",
-        "planning/documentation/application-planning/direction-registry.md",
-        "planning/documentation/application-planning/use-case-registry.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/profiles/sds-planning-profiles.md",
-        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
-        "planning/documentation/testing-planning/practical-testing-plan-workflow.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
       ],
-      "expectedOutput": "Updated Modular/Medium Current Application Plan, normally application-plan + domain-draft + slice file(s), with extra WEUC/order/testing/scenario files only when useful.",
+      "expectedOutput": "A representation recommendation/update for the same semantic owners using the MIXED / ASYMMETRIC topology as an example, with any promotion/demotion justified by addressability/review/lifecycle pressure.",
       "permissionMode": "read-only",
       "keyReminders": [
-        "This result-producing command assumes current SDS governance: reuse a reliable prior pass, refresh only affected governance when material, and perform the full SDS preflight internally only when no reliable sufficient pass exists; do not ask the user to invoke `бутстреп сдс` separately.",
-        "Work on the one clearly selected accumulating Current Application Plan; this command changes the SDS physical/profile choice, not semantic authority.",
-        "Preserve the full Step 0–4 Application planning reasoning: Why/Solution Discovery → Scenario + DATA/Behavior → Domain Draft → Slices + contextual WEUC/architecture evidence → Practical Realization Feedback.",
-        "Scenario DATA and Behavior Items have the same quality requirement in Mini, Modular/Medium and Full SDS; profile changes must not summarize away reviewed meaning.",
-        "Plan from Real-Life Need/situation into Scenario ownership before Domain/realization. Planning Concerns/Q/R/P remain a secondary owner-attached active/residual lens with shared grouping/priority/category/AI-comment/Decision-retention semantics; never the planning root.",
-        "For architecture, prefer concrete contextual WEUC instances with likelihood/value/timing and expected Workspace Change Paths; generic future flexibility alone does not justify complexity.",
-        "Do not claim implementation/testing occurred while planning. Practical execution/evidence remains downstream.",
-        "Do not edit repository files, create an archive, commit or push.",
-        "Default physical split: application-plan.md owns Step 0 + Scenario/DATA/Behavior; domain-draft.md owns Step 2; slices.md or slices/ owns Step 3. Grow further only when useful."
+        "Compatibility alias only; Mini/Modular/Full are not current SDS semantic profiles.",
+        "The Artifact Placement Map examples are guidance, not schemas or mandatory directories.",
+        "Semantic owner != Target instance != Markdown file.",
+        "Do not create Domain Draft, Frontend Slice or WEUC Target families.",
+        "Do not edit repository files, create an archive, commit or push."
       ],
-      "userTarget": "<Application / bounded change to plan in Modular/Medium SDS>",
-      "palette": true,
+      "userTarget": "<current SDS plan / owner set>",
+      "palette": false,
       "helperPresentation": null,
       "methodologyBinding": null,
       "directionIds": [
@@ -3577,35 +3551,39 @@
       "schemaVersion": 1,
       "id": "idtspe.work",
       "file": "work-through-idtspe.command.md",
-      "command": "работай через idtspe",
-      "englishName": "work through IDTSPE",
+      "command": "idtspe",
+      "englishName": "work through or invoke IDTSPE",
       "commandFamily": [
+        "idtspe",
         "работай через idtspe",
         "режим idtspe"
       ],
-      "description": "Use IDTSPE as the default material-planning operating mode.",
-      "meaning": "Resolve scope/Target and continue material planning through the IDTSPE Shell. Broad Discussion may span turns; material logical parts use Key Points proportionally, and material Ideas are explicit and Address the current Target Goal/Question/Problem without a mandatory block-owner or per-response Intake Summary. Periodic Integration Checkpoints reconcile Target Goal context + coherent Generic State + Target Result. AI proposals remain Ideas until selected.",
-      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
-      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "description": "Enter ordinary IDTSPE work or invoke one registered Target Module/Lens by semantic selector.",
+      "meaning": "Bare `idtspe` enters ordinary IDTSPE work. When text after `idtspe` names an installed Target Module or Lens, resolve that selector through the current Core/profile registries and dispatch to that semantic component without creating a second command ontology. Exact `TM-*` / `LENS-*` IDs always work; `tm <alias>` / `target <alias>` and `lens <alias>` use registry aliases; a unique bare alias may resolve directly. Ambiguous or unknown selectors are not guessed.",
+      "activeContextBehavior": "If no component selector is supplied, resolve/reuse the natural current IDTSPE Target/context and continue ordinary work. If a Target Module selector is supplied, invoke that recurring family through normal Target Formation/invocation. If a Lens selector is supplied, resolve/reuse the host Target, apply the selected Lens, and route material Finding Candidates through Core Finding Disposition. A selector never creates new semantic authority by itself.",
+      "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/broad-discussion-and-integration-checkpoint-model.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Broad Discussion with proportional Key Points for material logical parts and explicit Idea → current Target Goal/Question/Problem relations; no mandatory block-owner or per-response Intake Summary. When a whole-state view is requested/useful, an Integration Checkpoint reconciles Target Goal context, coherent Generic State, applicable Target Result Units, Lens/consistency review, Decision retention/rationale/alternative choices and physical Artifact Placement only when material.",
+      "expectedOutput": "Ordinary IDTSPE planning when no selector is supplied, or the selected Target Module/Lens result/evaluation inside the normal IDTSPE lifecycle. For Lens work, material findings remain Finding Candidates until Core Finding Disposition resolves State/owner/lifecycle consequences.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; every material Idea is explicit, carries Addresses → current Target Goal/Question/Problem and becomes a Decision only when actually selected.",
-        "Broad Discussion is not a full state dump; material logical parts use Key Points proportionally and no block-owner/per-response Intake Summary is mandatory. An Integration Checkpoint is the periodic whole-state reconciliation and does not imply completion or file persistence.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "Canonical semantic selectors are TM-* Target Module IDs and LENS-* Lens IDs; short aliases are registry navigation only.",
+        "Prefer `idtspe tm <alias>` or `idtspe lens <alias>` when a bare alias could be ambiguous; never guess between multiple matches.",
+        "Repository command IDs such as application_slice.plan and historical tmcmd.* keys are implementation/compatibility details, not user semantic ontology.",
+        "A Lens surfaces Finding Candidates; Core Finding Disposition resolves the actual State/owner/lifecycle consequence.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<current planning work>",
+      "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "When you want subsequent material planning to run through IDTSPE without choosing an SDS module manually; use normal discussion for exploration and ask for/checkpoint the integrated whole when useful.",
-        "whatYouGet": "Broad Discussion with proportional Key Points for material logical parts and explicit Idea → driver relations, plus periodic Integration Checkpoints that reconcile Target Goal context + Generic State + Target Result, preserve unresolved alternatives and separate semantic Decision retention from physical persistence.",
+        "whenToUse": "Use `idtspe` for ordinary planning, or append a Target Module/Lens ID or short alias when you already know the component you want.",
+        "whatYouGet": "One registry-driven entry to ordinary IDTSPE work and installed Target Module/Lens dispatch without memorizing repository command IDs.",
         "navigation": {
           "viewId": "IDTSPE",
           "viewLabel": "IDTSPE",
@@ -3614,7 +3592,7 @@
           "sectionLabel": "IDTSPE Core",
           "sectionOrder": 0,
           "itemOrder": 1,
-          "kindLabel": "WORK MODE",
+          "kindLabel": "WORK / DISPATCH",
           "badges": []
         }
       },
@@ -3628,7 +3606,8 @@
         "hostTargetPolicy": "NONE"
       },
       "directionIds": [
-        "DIR-REPOSITORY"
+        "DIR-REPOSITORY",
+        "DIR-PLAN-SOLUTION"
       ],
       "refinements": []
     }

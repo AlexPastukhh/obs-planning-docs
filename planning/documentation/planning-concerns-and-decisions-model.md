@@ -372,13 +372,13 @@ When a planning area has material concerns that need durable/cross-file addressa
 The register may be:
 
 ```text
-Mini SDS
+LIGHT/compact SDS representation
 → section inside application-plan.md
 
 Domain-only planning
 → section inside domain.md
 
-larger Application / Modular / Full SDS
+larger Application / promoted MIXED or COMPLEX SDS representation
 → area-root concerns.md / register.md when useful
 
 Workspace/other area

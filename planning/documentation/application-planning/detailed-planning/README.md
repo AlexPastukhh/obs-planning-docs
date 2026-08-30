@@ -83,7 +83,7 @@ When this planning area has material persistent/distributed concerns, maintain o
 small / Mini
 → section in the same owner/application-plan file
 
-Modular / Full / larger owner collection
+MIXED / COMPLEX / larger owner collection
 → area-root register/concerns file when useful
 → detailed Concern/Group bodies stay next to the real Scenario/Domain/Slice/etc owner
 ```
@@ -471,25 +471,11 @@ Recommended shape may use [`../templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md`](../t
 
 A Slice is one separately deliverable/checkable integrated increment after enough behavior/domain meaning is understood.
 
-Recommended rich shape:
+Representation is pressure-driven rather than a fixed rich tree. A small Slice may remain inline in `SLICE-STRATEGY.md`; a substantial Slice may use one dedicated owner file. Further physical splitting is allowed only when Documentation / Representation finds independent addressability/lifecycle value.
 
-```text
-SL-X/
-├── README.md
-├── slice.md
-├── ideas/
-├── visual/
-├── frontend.md       # optional implementation-part plan
-├── server.md         # optional implementation-part plan
-├── verification.md   # optional local verification plan
-└── variants/         # when a second integrated Slice design exists
-```
+The Slice remains one vertical semantic owner. SDS does not prescribe `frontend.md` / `server.md` part plans or technical-layer Slice families. UI-specific reasoning may use the UI Lens inside the same Slice; independently substantial local design may use normal Target Formation.
 
-`slice.md` owns the integrated vertical delivery boundary/result. It links covered Scenarios/Behavior, Requirements, Domain meaning and the selected Slice Strategy when present.
-
-A simple Slice may keep the implementation plan entirely in `slice.md`. A richer Slice may split implementation-part plans such as `frontend.md`, `server.md` or another real responsibility-specific file while `slice.md` remains the integrated owner. These implementation-part plans are not separate planning Use Cases by default.
-
-`visual/` is presentation/implementation-support visualization and is not the same as Screen spatial authority or frontend implementation planning.
+Presentation/implementation-support visualization is not the same as Screen spatial authority.
 
 Change Axes may influence coupling/seams but do not automatically require generalization. Implementation-scoped Ideas promoted into one Slice become selected Slice meaning; the originating Idea may retain provenance but not duplicate current implementation authority.
 

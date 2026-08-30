@@ -47,6 +47,26 @@ idtspe.lens.apply
 
 The existing Documentation / Representation and Linked Notes commands remain convenience shortcuts for stable recurring intents. The generic operations do not create Lens-owned Targets and do not turn all Lens registry entries into separate command files.
 
+## 3A. Generic `idtspe` Lens Aliases
+
+Canonical semantic identity remains the `LENS-*` ID. The dispatcher accepts exact IDs and these unique short aliases:
+
+```text
+need             → LENS-NEED-VALUE-SCOPE
+authority        → LENS-AUTHORITY-SOT-REUSE
+uncertainty      → LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY
+representation   → LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY
+dependency       → LENS-DEPENDENCY-CHANGE-IMPACT
+operability      → LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY
+quality-risk     → LENS-QUALITY-RISK-MATERIALITY
+shared-crosscut  → LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY
+test-proof       → LENS-TEST-PROOF-EVIDENCE
+practical-evidence → LENS-PRACTICAL-EVIDENCE
+linked-notes     → LENS-LINKED-NOTES-USAGE-JUSTIFICATION
+```
+
+Use `idtspe lens <alias> <target>` when explicit Lens selection is intended.
+
 ## 4. Installed Profile Lens Packs
 
 ### SDS
@@ -60,11 +80,11 @@ Application Boundary / Feasibility
 Domain Modeling / DDD
 UI / Spatial / Frontend Realization
 Slice Verticality / Integration
-Evolution/Change-Isolation / Evolution / Change Isolation Fitness + Workspace work-cost
-Simplicity / Implementation Economy / Evolution-Safe Simplification
+Evolution / Change Isolation — planned/probable future-change interaction/isolation
+Simplicity / Implementation Economy — current structural economy + understanding/discoverability/work-context cost
 ```
 
-The Evolution/Change-Isolation Lens is SDS-profile specific in the current package because it consumes the SDS Workspace Evolution / global architecture owner.
+The Evolution / Change Isolation Lens is SDS-profile specific because its current Analysis Surface and heuristics are tailored to SDS Scenario/Strategy/Slice/Cross-Cutting evolution projections. It does not consume or require a permanent SDS Workspace Evolution/global-architecture owner.
 
 ## 5. Composition / Applicability Scan Rule
 

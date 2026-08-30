@@ -110,3 +110,22 @@ Examples are guidance, not required scaffolds.
 Application-layer theories such as frontend/server/Domain/persistence structures
 may be useful Knowledge Basis/Lens material. They are not mandatory SDS Target
 ontology.
+
+## Direct IDTSPE Invocation
+
+The generic `idtspe` surface is the preferred direct component entry.
+
+```text
+idtspe
+→ ordinary IDTSPE work
+
+idtspe TM-SCENARIO-PLANNING SCN-CAPTURE
+idtspe scenario SCN-CAPTURE
+idtspe tm slice SL-PAYMENT
+
+idtspe LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY SL-PAYMENT
+idtspe lens ddd Payment
+idtspe l5 SL-PAYMENT
+```
+
+Exact `TM-*` / `LENS-*` IDs always work. Short aliases are owned by the current Target Module/Lens registries. Repository command IDs and historical `tmcmd.*` names are not required user vocabulary. Unknown or ambiguous aliases are presented as candidates instead of guessed.

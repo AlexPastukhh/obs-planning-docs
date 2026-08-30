@@ -340,7 +340,7 @@ Domain is an optional selected conceptual model/language/lifecycle/rules/boundar
 
 `Slice Strategy` is an optional decomposition/order plan used when implementation is large or uncertain enough that choosing vertical increments is itself an independently useful result. Product/Scenario priority remains upstream input; Slice/Architecture planning may recommend a different technical implementation sequence only with explicit dependency/work-cost evidence.
 
-An `Implementation Slice` is one separately deliverable/checkable integrated increment. Its integrated owner may link optional `frontend.md`, `server.md`, `verification.md` or other implementation-part plans, but those parts do not become separate planning Use Cases by default. Canonical algorithm: [`slice-planning-workflow.md`](slice-planning-workflow.md).
+An `Implementation Slice` is one separately deliverable/checkable vertical increment. Frontend/backend are not separate Slice families or prescribed part-plan files; UI/frontend reasoning remains inside the current Slice by default, with normal Local Target Formation available only when an independently substantial subproblem exists. Canonical semantic contract is the current SDS `TM-IMPLEMENTATION-SLICE`; this legacy workflow is supporting knowledge only.
 
 ```text
 Scenario / Screen / Requirement / Domain

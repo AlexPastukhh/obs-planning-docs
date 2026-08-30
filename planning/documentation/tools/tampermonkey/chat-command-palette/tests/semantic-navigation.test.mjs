@@ -33,9 +33,7 @@ test('important direct command-backed UCs resolve to their bespoke command route
 
 test('Application Realization projection is generic while its owner carries runtime/architecture handoff semantics',()=>{const realization=useCases.find((u)=>u.id==='UC-PLAN-REALIZATION');assert.ok(realization);assert.equal(realization.label,'Review / Compare High-Level Application Realization');assert.match(realization.instruction,/current canonical registry/);assert.doesNotMatch(realization.instruction,/hardcoded|pre-Domain comparative evidence/);const owner=read('planning/documentation/application-planning/application-realization-workflow.md');assert.match(owner,/Architecture Cost Handoff/);assert.match(owner,/runtime/i)});
 
-test('Application SDS bootstrap stays distinct from Full SDS and owns proportional governance preflight',()=>{const uc=useCases.find((u)=>u.id==='UC-PLAN-ORIENT');assert.ok(uc);assert.equal(uc.commandId,'application_sds.bootstrap');const bootstrap=codec.parseCommandDefinitionDocument(read('planning/commands/bootstrap-application-sds-planning.command.md'));const full=codec.parseCommandDefinitionDocument(read('planning/commands/work-full-sds.command.md'));assert.notEqual(bootstrap.id,full.id);assert.equal(bootstrap.permissionMode,'read-only');assert.match(bootstrap.meaning,/governance bootstrap/i);assert.match(bootstrap.meaning,/not selection of the Full SDS profile/i);assert.match(bootstrap.traversalReadMode,/Reuse current reliable SDS governance/i);assert.match(bootstrap.traversalReadMode,/targeted refresh/i);const owner=read('planning/documentation/application-planning/application-planning-governance-read-workflow.md');assert.match(owner,/Do \*\*not\*\* invalidate a current SDS bootstrap merely because a new snapshot, commit, branch or repository target appears/);assert.match(owner,/Do not require a separate `бутстреп сдс` invocation/)});
 
-test('legacy Full SDS commands retain their explicit preflight owner while narrow current commands do not inherit it automatically',()=>{const owner='planning/documentation/application-planning/application-planning-governance-read-workflow.md';for(const [file,id] of [['work-mini-sds.command.md','application_sds.mini'],['work-modular-sds.command.md','application_sds.modular'],['work-full-sds.command.md','application_sds.full']]){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.equal(command.id,id);assert.ok(command.ownerFiles.includes(owner),`${id}: missing complete SDS governance preflight owner`);assert.match(command.traversalReadMode,/Reuse current reliable SDS governance/i);assert.match(command.traversalReadMode,/full SDS governance preflight/i)}const narrow=codec.parseCommandDefinitionDocument(read('planning/commands/plan-solution.command.md'));assert.equal(narrow.id,'application_solution.plan');assert.ok(!narrow.ownerFiles.includes(owner),'narrow application_solution.plan must not imply complete SDS governance solely because it produces a result');const registry=read('planning/documentation/application-planning/use-case-registry.md');assert.match(registry,/commands whose current command\/semantic owner route explicitly requires complete SDS governance/);assert.match(registry,/do \*\*not\*\* trigger a full SDS bootstrap merely because they return a planning result/)});
 
 test('retired collect-ideas aliases are hidden thin routes into current IDTSPE/SDS owners, not the old Idea runtime',()=>{const files=['collect-ideas.command.md','collect-application-ideas.command.md','collect-modular-application-ideas.command.md','collect-scenario-ideas.command.md','collect-domain-ideas.command.md','collect-slice-ideas.command.md'];for(const file of files){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.equal(command.palette,false,command.id);assert.match(command.description,/legacy compatibility/i,command.id);assert.match(command.meaning,/IDTSPE|Target Module/i,command.id);assert.match(command.keyReminders.join(' '),/Do not execute or revive the former collect-ideas shell/i,command.id);for(const owner of command.ownerFiles){assert.doesNotMatch(owner,/idea-planning-principles|idea-review-and-planning-workflow|IDEA-REVIEW-TEMPLATE|profiles\/sds-planning-profiles|application-planning\/use-case-registry|architecture-planning\/use-case-registry|testing-planning\/use-case-registry/,`${command.id}: legacy owner ${owner}`)}}const generic=read('planning/commands/collect-ideas.command.md');assert.match(generic,/Scope: legacy compatibility command alias/);assert.doesNotMatch(generic,/Reusable Idea, SDS\/UCDS and reviewability behavior remains/);});
 
@@ -78,7 +76,6 @@ test('replacement archive producer finalizes ChangeSet continuity when APPROVABL
   assert.match(workflow,/Same logical work.*only while the ChangeSet is open/i);
 });
 
-test('SDS profiles keep same quality and explicit Step 0–4 with pre-implementation test planning',()=>{const text=read('planning/documentation/profiles/sds-planning-profiles.md');assert.match(text,/same planning-quality contract/i);assert.match(text,/STEP 0 — WHY \/ SOLUTION DISCOVERY/);assert.match(text,/Scenario DATA/);assert.match(text,/Behavior Items/);assert.match(text,/application-plan\.md/);assert.match(text,/domain-draft\.md/);assert.match(text,/slices\.md/);assert.match(text,/contextual WEUC Instances/);assert.match(text,/Test Design/);assert.match(text,/Practical Test Plan/);assert.match(text,/STEP 4 — PRACTICAL REALIZATION FEEDBACK/);assert.match(text,/actual evidence/i);assert.doesNotMatch(text,/Goal Map/i)});
 
 test('semantic runtime source contains no maintained current Direction/UC catalog identities',()=>{const source=fs.readFileSync(path.join(moduleRoot,'src/semantic-projections.js'),'utf8');for(const identity of ['UC-PLAN-DOMAIN','UC-REPO-CURRENT-STATE','DIR-PLAN-SOLUTION','application_domain.plan'])assert.doesNotMatch(source,new RegExp(identity.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));assert.match(source,/normalizeDirectionDefinitions/);assert.match(source,/normalizeUseCaseDefinitions/)});
 
@@ -123,4 +120,87 @@ test('generic Lens commands expose applicability scan and selected-Lens dispatch
   assert.equal(apply.methodologyBinding?.hostTargetPolicy,'RESOLVE_OR_REUSE_TARGET');
   assert.match(select.meaning,/TF-06A LENS_SET/);assert.match(select.keyReminders.join(' '),/Local Target Contract/);
   assert.match(apply.meaning,/Knowledge Basis/);assert.match(apply.keyReminders.join(' '),/does not create a Lens-owned Target/);
+});
+
+
+test('canonical SDS authority is singular and legacy Mini/Modular/Full commands are hidden representation preferences',()=>{
+  assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/profiles/sds-planning-profiles.md')),false);
+  assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/profiles/scenario-domain-slice-docs-profile.md')),false);
+  const map=read('planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md');
+  for(const label of ['LIGHT','MIXED','COMPLEX'])assert.match(map,new RegExp(label));
+  for(const file of ['work-mini-sds.command.md','work-modular-sds.command.md','work-full-sds.command.md']){
+    const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));
+    assert.equal(command.palette,false,command.id);
+    assert.match(command.description,/legacy compatibility/i,command.id);
+    assert.match(command.meaning,/representation preference/i,command.id);
+    assert.doesNotMatch(command.meaning,/Domain Draft|Frontend Slice|TM-WEUC/i,command.id);
+  }
+});
+
+test('idtspe is one registry-driven dispatcher for ordinary work, Target Modules and Lenses',()=>{
+  const command=codec.parseCommandDefinitionDocument(read('planning/commands/work-through-idtspe.command.md'));
+  assert.equal(command.id,'idtspe.work');
+  assert.equal(command.command,'idtspe');
+  assert.ok(command.commandFamily.includes('idtspe'));
+  assert.match(command.meaning,/TM-\*/);
+  assert.match(command.meaning,/LENS-\*/);
+  assert.match(command.meaning,/Ambiguous or unknown selectors are not guessed/i);
+  const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
+  const coreLens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md');
+  const sdsLens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md');
+  for(const alias of ['application','scenario','domain','slice-strategy','slice','crosscut'])assert.match(sdsTm,new RegExp('`'+alias+'`'));
+  for(const alias of ['representation','dependency','test-proof','ddd','ui','l5','simplicity'])assert.match(coreLens+sdsLens,new RegExp('\\b'+alias.replace('-','\\-')+'\\b'));
+});
+
+test('generic Lens dispatcher crosses Core Finding Disposition before semantic owner or State consequences',()=>{
+  const command=codec.parseCommandDefinitionDocument(read('planning/commands/apply-idtspe-lens.command.md'));
+  assert.match(command.activeContextBehavior,/Finding Candidate.*Core Finding Disposition/i);
+  assert.match(command.expectedOutput,/Core Finding Disposition resolves/i);
+  assert.doesNotMatch(command.activeContextBehavior,/findings still return to the natural Target owner/i);
+});
+
+
+test('all installed idtspe Target Module and Lens aliases are globally unique and resolve to one semantic ID',()=>{
+  const aliases=[];
+  const add=(alias,id,source)=>{assert.match(alias,/^[a-z0-9-]+$/,`${source}: invalid alias ${alias}`);aliases.push({alias,id,source})};
+
+  const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
+  for(const line of sdsTm.split(/\r?\n/)){
+    const m=line.match(/^\| \[`(TM-[A-Z0-9-]+)`\]\([^)]*\) \| `([a-z0-9-]+)` \|/);
+    if(m)add(m[2],m[1],'SDS Target Module registry');
+  }
+  assert.equal(aliases.filter((x)=>x.source==='SDS Target Module registry').length,12);
+
+  const coreTm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md');
+  for(const m of coreTm.matchAll(/^idtspe ([a-z0-9-]+) <scope>\n→ (TM-[A-Z0-9-]+)$/gm))add(m[1],m[2],'Core Target Module registry');
+  assert.equal(aliases.filter((x)=>x.source==='Core Target Module registry').length,2);
+
+  for(const [source,rel] of [
+    ['Core Lens registry','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md'],
+    ['SDS Lens registry','planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md']
+  ]){
+    for(const line of read(rel).split(/\r?\n/)){
+      const m=line.match(/^([a-z0-9-]+)\s+→\s+(LENS-[A-Z0-9-]+)$/);
+      if(m)add(m[1],m[2],source);
+    }
+  }
+  assert.equal(aliases.filter((x)=>x.source==='Core Lens registry').length,11);
+  assert.equal(aliases.filter((x)=>x.source==='SDS Lens registry').length,6);
+
+  const byAlias=new Map();
+  for(const item of aliases){
+    const prior=byAlias.get(item.alias);
+    assert.equal(prior,undefined,`idtspe alias collision: ${item.alias} -> ${prior?.id} / ${item.id}`);
+    byAlias.set(item.alias,item);
+  }
+  assert.equal(byAlias.size,31);
+
+  for(const [alias,id] of [
+    ['scenario','TM-SCENARIO-PLANNING'],
+    ['slice','TM-IMPLEMENTATION-SLICE'],
+    ['pre-update','TM-PRE-UPDATE-PLAN'],
+    ['ddd','LENS-DOMAIN-MODELING-DDD'],
+    ['l5','LENS-WORKSPACE-EVOLUTION-ARCHITECTURE'],
+    ['representation','LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY']
+  ])assert.equal(byAlias.get(alias)?.id,id,alias);
 });

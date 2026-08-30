@@ -72,7 +72,7 @@ The generic UC identity/contract owner remains `direction-and-use-case-registry-
 
 ## Solution / Application Planning / SDS
 
-See `application-planning/README.md`. Application change planning may use Mini/Modular/Full **SDS** representation:
+See `application-planning/README.md`. Application change planning uses the canonical IDTSPE/SDS profile:
 
 ```text
 Scenario
@@ -80,7 +80,7 @@ Scenario
 → Slice Strategy / Slices
 ```
 
-Profile family: `profiles/sds-planning-profiles.md`. Full SDS is the rich detailed planning profile. Mini/Modular can also plan a bounded application change rather than an entire app. A current SDS/UCDS plan may accumulate selected results from repeated `собери идеи`.
+Canonical SDS entry: `idtspe-methodology/active/profiles/sds/README.md`. LIGHT/MIXED/COMPLEX in its Artifact Placement Map are representation examples only; legacy Mini/Modular/Full phrases are compatibility preferences, not separate semantic profiles.
 
 ## File-Type Rule
 

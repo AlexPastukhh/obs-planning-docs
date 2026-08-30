@@ -48,11 +48,26 @@ IDTSPE Core installs two profile-independent concrete Target Modules:
 
 This does not introduce Scenario/Domain/Slice semantics into Core. Profiles may hand sufficiently determined semantic/design results to this reusable realization family instead of duplicating code-production modules.
 
+
+## Generic `idtspe` Invocation Aliases
+
+Canonical semantic identity remains the `TM-*` ID. The generic dispatcher also accepts:
+
+```text
+idtspe pre-update <scope>
+→ TM-PRE-UPDATE-PLAN
+
+idtspe exact <scope>
+→ TM-EXACT-REALIZATION
+```
+
+`pre-update` and `exact` are navigation aliases only; repository command IDs are not semantic Target Module identities.
+
 ## Installed Target Module Families
 
 ### SDS Profile
 
-Current SDS profile installs **15 Target Modules**:
+Current SDS profile installs **12 Target Modules**:
 
 [`../../profiles/sds/target-modules/README.md`](../../profiles/sds/target-modules/README.md)
 

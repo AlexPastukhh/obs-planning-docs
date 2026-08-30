@@ -77,7 +77,7 @@ IDTSPE Core surfaces
 = invocation projection only
 ```
 
-Generic Core command semantics/host-target policies are owned by the Core command-surface contract; profile contracts extend rather than redefine them. SDS commands still run the IDTSPE Shell. `idtspe.lenses.select` resolves the contextual `TF-06A LENS_SET`; `idtspe.lens.apply` dispatches to one selected registered Lens without becoming that Lens authority. Fixed Lens shortcuts still resolve/reuse a host Target and never create a Lens-owned Target. A Local Target Contract may use the same Lens registry when no reusable Target Module fits. The Planning Helper methodology views are navigation projections only.
+Generic Core command semantics/host-target policies are owned by the Core command-surface contract; profile contracts extend rather than redefine them. The canonical direct user entry is `idtspe`: bare invocation enters ordinary work, while `idtspe <TM-ID|LENS-ID|registry alias> <context>` dispatches through current registries. Repository command IDs/legacy tmcmd keys remain implementation/compatibility details. SDS commands still run the IDTSPE Shell. `idtspe.lenses.select` resolves the contextual `TF-06A LENS_SET`; `idtspe.lens.apply` dispatches to one selected registered Lens without becoming that Lens authority. Fixed Lens shortcuts still resolve/reuse a host Target and never create a Lens-owned Target. A Local Target Contract may use the same Lens registry when no reusable Target Module fits. The Planning Helper methodology views are navigation projections only.
 
 ## Explicit-Meaning Rule
 

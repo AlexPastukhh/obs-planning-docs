@@ -74,7 +74,7 @@ Implementation sequence recommendation
 Why they differ
 Minimum prerequisite work actually needed
 Lower-priority feature work intentionally NOT pulled forward
-WEUC / architecture evidence supporting the sequence
+architecture/evolution evidence supporting the sequence
 Cost of doing priority work directly now
 Cost/tax of preparing for later work now
 Revisit trigger when future work is uncertain
@@ -125,7 +125,7 @@ Relevant Domain meaning / verification contract
 Vertical boundary
 Dependencies / handoffs
 Integrated implementation plan
-frontend/server/other implementation-part plans when useful
+owner-local implementation detail when materially useful; independently substantial subproblems use normal Local Target Formation
 migration/integration concerns when material
 Change Axes considered
 implementation-scoped Ideas promoted/rejected
@@ -164,7 +164,7 @@ Risks
 
 Use the Architecture Planning path concepts where useful. The goal is to see whether the Slice is genuinely local/vertical or only named that way.
 
-`slice.md` remains integrated authority. `frontend.md`, `server.md`, `verification.md` or other focused files are implementation-part plans, not new Use Cases by default.
+The current Slice semantic owner remains integrated authority. SDS does not prescribe frontend/server part-plan files. Physical split is decided by Documentation / Representation; independently substantial unresolved local design may become a normal Local Target Contract without creating frontend/backend Slice families.
 
 ## 7. Requirement And Owner Boundary
 

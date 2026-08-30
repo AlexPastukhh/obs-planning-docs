@@ -364,31 +364,31 @@
     {
       "id": "UC-PLAN-APP-CONCEPT",
       "label": "Plan / Review Application Concept",
-      "description": "evaluate whether/how own application behavior would simplify the real-world workflow before detailed application planning",
+      "description": "explore candidate own-Application contribution before/inside Application Definition",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-APP-CONCEPT in the current canonical registry and follow its current owner route (planning principles + whole-solution workflow + Concept template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-APP-CONCEPT in the current canonical registry and follow its current owner route (TM-APPLICATION-DEFINITION Resolution support). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Application Concept target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "custom application is a material candidate, or application creation is confirmed but concept/value/feasibility is not grounded",
-      "result": "reviewed Application Concept + Concept Features + feasibility/rough effort/maintenance picture + viable-alternative comparison + current worth-it conclusion",
+      "trigger": "custom Application is a material candidate",
+      "result": "reviewed concept/feasibility input",
       "commandId": "application_concept.plan"
     },
     {
       "id": "UC-PLAN-APPLICATION",
       "label": "Establish Application Responsibility",
-      "description": "establish the exact application boundary when the selected whole solution includes own application behavior or that responsibility is already confirmed",
+      "description": "resolve selected own-Application contribution/boundary",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-APPLICATION in the current canonical registry and follow its current owner route (planning principles + whole-solution workflow). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-APPLICATION in the current canonical registry and follow its current owner route (TM-APPLICATION-DEFINITION). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Establish Application Responsibility target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "selected solution/Concept includes own application behavior, or external context already confirms it",
-      "result": "explicit application responsibility/boundary",
+      "trigger": "own software contribution is selected or explicitly trusted",
+      "result": "Application Definition result",
       "commandId": "application_responsibility.establish"
     },
     {
@@ -497,210 +497,210 @@
     {
       "id": "UC-PLAN-COLLECT-IDEAS",
       "label": "Collect And Review Ideas From Selected Source",
-      "description": "extract/review answer-seeking Ideas while preserving non-Idea context",
+      "description": "preserve/review answer-seeking Ideas and integrate them into the real current owner",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-COLLECT-IDEAS in the current canonical registry and follow its current owner route (shared Idea owners + ../planning-concerns-and-decisions-model.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-COLLECT-IDEAS in the current canonical registry and follow its current owner route (generic IDTSPE State + current owner). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Collect And Review Ideas From Selected Source target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "selected source contains answer-seeking Ideas",
-      "result": "reviewed Ideas + integrated current planning + shared Planning Concern/Concern Group state when material + conclusions",
+      "trigger": "selected source contains material Ideas",
+      "result": "reviewed Ideas + current owner integration",
       "commandId": "ideas.collect"
     },
     {
       "id": "UC-PLAN-CONSISTENCY",
-      "label": "Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency",
-      "description": "detect contradictions/change impact across current behavioral/spatial/requirement/conceptual/delivery owners",
+      "label": "Review Cross-Owner Consistency",
+      "description": "detect contradictions/change impact across current owners",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-CONSISTENCY in the current canonical registry and follow its current owner route (complete selected owners + detailed-planning contract). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review Cross-Scenario / Screen / Requirement / Domain / Slice Consistency target>",
+      "instruction": "Resolve UC-PLAN-CONSISTENCY in the current canonical registry and follow its current owner route (Core consistency review + Finding Disposition). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Review Cross-Owner Consistency target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "multiple owners may conflict or one owner changed materially",
-      "result": "explicit contradictions/corrections/review state"
+      "trigger": "multiple owners may conflict or one changed materially",
+      "result": "findings + disposition/revalidation route"
     },
     {
       "id": "UC-PLAN-DOMAIN",
-      "label": "Plan / Review Domain",
-      "description": "compare/refine/select/review the simplest explicit conceptual language/lifecycle/rules/value/ownership boundaries that supports current meaning and cheap justified evolution",
+      "label": "Plan / Review Domain / Aggregate Model",
+      "description": "deeply model one bounded material Domain/Aggregate problem",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-DOMAIN in the current canonical registry and follow its current owner route (domain-planning-workflow.md + Domain template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Plan / Review Domain target>",
+      "instruction": "Resolve UC-PLAN-DOMAIN in the current canonical registry and follow its current owner route (focused TM-DOMAIN-DISCOVERY). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Plan / Review Domain / Aggregate Model target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "Domain candidates/meaning are sufficiently understood and separate Domain ownership materially improves clarity/consistency/change cost",
-      "result": "selected Domain meaning + current Scenario/Requirement coverage + justified variation/invariant decisions + selected/split/merged/rejected Aggregate boundaries when material + verification meaning + draft-state review",
+      "trigger": "shallow discovery is insufficient",
+      "result": "selected RU-DOM-01 meaning",
       "commandId": "application_domain.plan"
     },
     {
       "id": "UC-PLAN-DOMAIN-DISCOVERY",
-      "label": "Discover Domain Evidence / Candidates",
-      "description": "discover evidence-backed concepts/identity/lifecycle/rules/invariants/policies/consistency plus Value Object and Aggregate/Root/ownership candidates when justified before selecting a current Domain model",
+      "label": "Discover Domain / Aggregate Meaning",
+      "description": "shallow/supporting or bounded Domain/Aggregate exploration",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-DOMAIN-DISCOVERY in the current canonical registry and follow its current owner route (domain-discovery-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Discover Domain Evidence / Candidates target>",
+      "instruction": "Resolve UC-PLAN-DOMAIN-DISCOVERY in the current canonical registry and follow its current owner route (TM-DOMAIN-DISCOVERY). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Discover Domain / Aggregate Meaning target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "current Scenario/DATA/Behavior/Requirements contain enough semantic complexity that explicit discovery materially helps",
-      "result": "Domain evidence + candidates + invariant/policy findings + Value Object/Aggregate/Root/owned-vs-outside/external-reference/coordination candidates when material + integrated Domain Variants when material",
+      "trigger": "explicit modeling materially helps",
+      "result": "Domain/Aggregate findings/model input",
       "commandId": "application_domain.discover"
     },
     {
       "id": "UC-PLAN-ORIENT",
       "label": "Bootstrap Solution/Application SDS Planning Governance",
-      "description": "establish the complete reusable Step 0–4 Application/SDS planning governance and owner boundaries before task-specific planning when needed",
+      "description": "load current IDTSPE Core + installed SDS registries/workflow/representation guidance",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-ORIENT in the current canonical registry and follow its current owner route (application-planning-governance-read-workflow.md + responsibility map + SDS profiles). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-ORIENT in the current canonical registry and follow its current owner route (application-planning-governance-read-workflow.md → active SDS bootstrap/registries). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Bootstrap Solution/Application SDS Planning Governance target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "SDS governance is explicitly requested, no reliable prior pass exists for a command whose current owner route explicitly requires complete SDS governance, or such a command needs an internal governance preflight",
-      "result": "current reusable SDS governance + applicable current Application/project owners when a target exists",
+      "trigger": "explicit SDS governance request or missing reliable governance context",
+      "result": "current reusable IDTSPE/SDS governance",
       "commandId": "application_sds.bootstrap"
     },
     {
       "id": "UC-PLAN-PROTOTYPE",
       "label": "Prototype Application Experience / Workflow",
-      "description": "cheaply test/refine provisional user interaction, Scenario boundaries, Screens and Requirements before canonical detailed behavior/spatial ownership",
+      "description": "obtain practical Evidence for important interaction/feasibility uncertainty",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-PROTOTYPE in the current canonical registry and follow its current owner route (prototype-planning-workflow.md + Prototype Plan/Result templates). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-PROTOTYPE in the current canonical registry and follow its current owner route (TM-PROTOTYPE). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Prototype Application Experience / Workflow target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "Application Concept/responsibility exists but important interaction/workflow/spatial uncertainty remains",
-      "result": "reviewed Prototype Plan/Result with Prototype Scenarios/Screens + evidence-backed candidate Requirements/DATA/Behavior/Change-Axis findings and handoff",
+      "trigger": "prototype is cheaper/useful evidence",
+      "result": "Prototype result/evidence",
       "commandId": "application_prototype.plan"
     },
     {
       "id": "UC-PLAN-REALITY",
       "label": "Understand Current Workflow And Reality",
-      "description": "establish checked present reality before solution selection when it matters",
+      "description": "establish checked present reality when it affects solution choice",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-REALITY in the current canonical registry and follow its current owner route (solution-and-scenario-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-REALITY in the current canonical registry and follow its current owner route (Core solution-discovery-workflow.md + supporting current-reality workflow). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Understand Current Workflow And Reality target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "current context materially affects solution choice",
+      "trigger": "current context materially affects route/application choice",
       "result": "descriptive checked Current Reality",
       "commandId": "application_reality.review"
     },
     {
       "id": "UC-PLAN-REALIZATION",
       "label": "Review / Compare High-Level Application Realization",
-      "description": "provide bounded realization evidence for representative selected meaning or serious candidate Domain variants when technical feasibility/cost/performance/consistency can materially affect selection",
+      "description": "obtain technical feasibility/cost/runtime Evidence without creating a second semantic owner",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-REALIZATION in the current canonical registry and follow its current owner route (application-realization-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-REALIZATION in the current canonical registry and follow its current owner route (current Target + applicable Lenses / Prototype / Local Target as justified). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Review / Compare High-Level Application Realization target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "current application/Domain meaning needs a high-level stress check, or grounded Domain candidates cannot be selected confidently without comparative realization evidence",
-      "result": "high-level realization picture or candidate comparison + representative Runtime/Implementation Paths + material feasibility/cost/constraint/upstream findings + architecture runtime-cost handoff when material",
+      "trigger": "realization uncertainty can change a material choice",
+      "result": "high-level realization evidence/findings",
       "commandId": "application_realization.review"
     },
     {
       "id": "UC-PLAN-RESEARCH",
       "label": "Research Existing Solutions / Alternatives",
-      "description": "reduce a material evidence gap affecting whole-solution choice",
+      "description": "reduce a material evidence gap affecting route/application choice",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-RESEARCH in the current canonical registry and follow its current owner route (selected solution/current owner + checked sources). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-RESEARCH in the current canonical registry and follow its current owner route (supporting research workflow → Solution Discovery/Application Definition Evidence). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Research Existing Solutions / Alternatives target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "material evidence gap affects solution choice",
+      "trigger": "material evidence gap exists",
       "result": "checked options/evidence/disposition",
       "commandId": "application_research.research"
     },
     {
       "id": "UC-PLAN-SCENARIO",
       "label": "Draft / Review Detailed Scenario",
-      "description": "own detailed observable behavior and iteratively refine Scenario ↔ DATA ↔ Behavior meaning for one meaningful current Scenario",
+      "description": "resolve one Scenario behavior/DATA/decomposition/change outlook",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-SCENARIO in the current canonical registry and follow its current owner route (detailed-planning/README.md + Scenario template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-SCENARIO in the current canonical registry and follow its current owner route (TM-SCENARIO-PLANNING). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Draft / Review Detailed Scenario target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "one Scenario boundary is meaningful enough for detail",
-      "result": "current Scenario workspace with behavior owner + relevant Ideas/DATA/Behavior/Visual/Requirements + iterative decomposition review + draft-state review",
+      "trigger": "one Scenario boundary is independently meaningful",
+      "result": "current Scenario result",
       "commandId": "application_scenario.plan"
     },
     {
       "id": "UC-PLAN-SCENARIO-DISCOVERY",
       "label": "Discover Application Scenarios",
-      "description": "identify independently meaningful user/actor Need/goal/desired-result behavior boundaries for the selected Application responsibility",
+      "description": "discover independently meaningful Scenario candidates",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-SCENARIO-DISCOVERY in the current canonical registry and follow its current owner route (planning workflow + prototype workflow when used). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-SCENARIO-DISCOVERY in the current canonical registry and follow its current owner route (TM-SCENARIO-PLANNING + normal Target Formation). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Discover Application Scenarios target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "selected Application responsibility or prototype findings need current behavioral boundaries",
-      "result": "current Scenario inventory/boundaries + material Future Scenario Ideas/Change Axes when discovered",
+      "trigger": "Application responsibility needs behavioral boundaries",
+      "result": "Scenario candidates/inventory + handoff",
       "commandId": "application_scenarios.discover"
     },
     {
       "id": "UC-PLAN-SLICE",
       "label": "Plan / Review One Implementation Slice",
-      "description": "plan one selected separately deliverable/checkable implementation increment with explicit behavior/delegation boundaries and proof obligations",
+      "description": "resolve one useful vertical implementation result",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-SLICE in the current canonical registry and follow its current owner route (slice-planning-workflow.md + Implementation Slice template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-SLICE in the current canonical registry and follow its current owner route (TM-IMPLEMENTATION-SLICE). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review One Implementation Slice target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "one Slice boundary is selected and behavior/domain meaning is understood enough",
-      "result": "integrated Slice plan + implemented/delegated/later/outside coverage + optional implementation-part/visual/verification plans + negative guarantees when material",
+      "trigger": "one Slice boundary is selected",
+      "result": "Slice outcome/uses/optional runtime/evolution meaning",
       "commandId": "application_slice.plan"
     },
     {
       "id": "UC-PLAN-SLICE-STRATEGY",
       "label": "Plan / Review Slice Strategy",
-      "description": "select implementation decomposition/order into useful vertical separately deliverable/checkable increments, including technical sequence when it materially differs from product priority",
+      "description": "derive vertical Slice portfolio, Slice→Domain use and owner bridge",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-SLICE-STRATEGY in the current canonical registry and follow its current owner route (slice-planning-workflow.md + Slice Strategy template). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-SLICE-STRATEGY in the current canonical registry and follow its current owner route (TM-SLICE-STRATEGY). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Slice Strategy target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "implementation is large/uncertain enough that decomposition/order materially matters",
-      "result": "selected Slice decomposition/order + dependencies + delivery/learning/risk rationale + product-priority/implementation-sequence distinction when material",
+      "trigger": "decomposition itself is material",
+      "result": "Slice Strategy result",
       "commandId": "application_slice_strategy.plan"
     },
     {
       "id": "UC-PLAN-SOLUTION",
       "label": "Plan / Review Whole Solution Or Workflow",
-      "description": "select/evaluate the best integrated whole answer before assuming custom application work",
+      "description": "compare real-life routes before assuming custom application work",
       "sources": [
         "planning/documentation/application-planning/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-PLAN-SOLUTION in the current canonical registry and follow its current owner route (solution-and-scenario-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-PLAN-SOLUTION in the current canonical registry and follow its current owner route (Core solution-discovery-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Plan / Review Whole Solution Or Workflow target>",
       "directionId": "DIR-PLAN-SOLUTION",
       "manualInvocation": true,
-      "trigger": "Need requires integrated answer",
-      "result": "current whole Solution/Workflow Variant + integration conclusion",
+      "trigger": "Need requires an integrated answer",
+      "result": "selected/reviewed real-life route or no-own-Application result",
       "commandId": "application_solution.plan"
     },
     {

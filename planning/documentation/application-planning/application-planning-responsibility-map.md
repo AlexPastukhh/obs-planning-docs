@@ -24,13 +24,13 @@ Status: active reusable nested responsibility map
 | Prototype plan/evidence recommended shapes | `templates/PROTOTYPE-PLAN-TEMPLATE.md` + `templates/PROTOTYPE-RESULT-TEMPLATE.md` |
 | Detailed Scenario shape | `templates/SCENARIO-DRAFT-TEMPLATE.md` |
 | Screen spatial/visual shape | `templates/SCREEN-DRAFT-TEMPLATE.md` |
-| Domain draft shape | `templates/DOMAIN-DRAFT-TEMPLATE.md` |
+| Optional human-readable Domain/Aggregate model shape | `templates/DOMAIN-DRAFT-TEMPLATE.md` (legacy filename; supporting only) |
 | Slice Strategy shape | `templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md` |
-| Implementation Slice draft shape | `templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md` |
+| Optional human-readable Implementation Slice shape | `templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md` (supporting; canonical TM owns semantics) |
 | Generic Planning Concern / Q/R/P / Concern Group / Decision trace semantics | parent `../planning-concerns-and-decisions-model.md` |
 | Generic Idea semantics/review | parent reusable Idea owners; Ideas reference shared Concerns rather than owning generic Q/R/P lifecycle |
-| Proportional Mini/Modular/Full SDS planning profile family | `../profiles/sds-planning-profiles.md` |
-| Rich Full SDS Scenario/DATA/Behavior/Domain/Slice project route | `../profiles/scenario-domain-slice-docs-profile.md` |
+| SDS representation examples / promotion pressure | `../idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md` |
+| Canonical SDS Target/owner route | `../idtspe-methodology/active/profiles/sds/README.md` + Target Module registry |
 | Detailed planning worked example | `examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md` |
 | Concrete solution/application Workflows / Concepts / Prototype artifacts / Requirements / Scenarios / Screens / Domains / Slices / decisions / implementation state | project/application-local owners |
 

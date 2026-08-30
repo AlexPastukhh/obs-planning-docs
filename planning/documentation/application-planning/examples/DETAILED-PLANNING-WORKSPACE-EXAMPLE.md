@@ -842,12 +842,10 @@ SL-CUSTOMER-ACCEPTANCE/
 ├── slice.md
 ├── ideas/
 ├── visual/
-├── frontend.md
-├── server.md
 └── verification.md
 ```
 
-`slice.md` owns the integrated vertical result and links the Requirements/Scenario/Domain meaning it implements. `frontend.md` and `server.md` are implementation-part plans, not separate planning Use Cases or product Slices. `visual/` does not replace canonical Screen spatial authority.
+`slice.md` owns the integrated vertical result and links the Requirements/Scenario/Domain meaning it implements. Frontend/backend reasoning stays inside the Slice by default; physical splitting requires independent representation pressure and does not create technical-layer Slice families. `visual/` does not replace canonical Screen spatial authority.
 
 ## 19. Verification
 
@@ -895,7 +893,7 @@ Tests do not become the behavior owner simply because they encode expected outco
 
 Suppose Slice implementation planning discovers that technicians often have no connectivity during a visit.
 
-Do not solve this only inside `server.md`.
+Do not solve this only inside an incidental technical-layer note; route semantic ownership through the real Slice/Domain/Cross-Cutting owner.
 
 ```text
 downstream finding

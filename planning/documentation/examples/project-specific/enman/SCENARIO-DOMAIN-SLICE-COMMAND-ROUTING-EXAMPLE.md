@@ -9,7 +9,7 @@ Owner / routing files:
 
 ```text
 planning/command-routing.md
-planning/documentation/profiles/scenario-domain-slice-docs-profile.md
+planning/documentation/idtspe-methodology/active/profiles/sds/README.md
 ```
 
 Related reusable maintenance rules:

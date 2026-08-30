@@ -4,168 +4,78 @@ Status: active SDS command/routing contract
 
 ## Purpose
 
-Define the user-facing SDS invocation surface layered on generic IDTSPE Core.
-Commands route to Target/Lens owners; command identity never becomes semantic
-authority and never creates a new Target type merely because it has a shortcut.
-Generic IDTSPE Core surfaces are owned separately by the Core command-surface contract; this file only extends that surface with SDS-specific routing.
-
-## Core + SDS Composition
-
-Canonical methodology surface inventory:
+SDS extends generic IDTSPE routing without introducing a second runtime or a second semantic naming system. Generic IDTSPE Core surfaces are owned separately by the Core command-surface contract; this file only adds profile routing/compatibility rules.
 
 ```text
-3 framework/bootstrap/work surfaces
-2 generic Core Target Module surfaces
-12 canonical SDS Target Module surfaces
-10 focused Target-Module shortcuts
-5 specialized direct Lens shortcuts
-5 orchestration/validator surfaces
-= 37 methodology invocation surfaces
+Target Module registry / Lens registry
+= semantic component identity + short `idtspe` aliases
+
+planning/commands/*.command.md
+= repository invocation/compatibility routes
+
+Helper generated catalog
+= projection only
 ```
 
-This is a methodology-semantic count, not a requirement for exactly 37 repository
-command files. Several phrases/aliases may route to one surface.
+## Preferred Direct Surface
+
+```text
+idtspe
+→ ordinary IDTSPE work
+
+idtspe <TM-ID> <context>
+idtspe tm <Target Module alias> <context>
+→ registered Target Module
+
+idtspe <LENS-ID> <context>
+idtspe lens <Lens alias> <context>
+→ registered Lens
+```
+
+A unique bare alias may resolve directly. Ambiguous/unknown selectors are never guessed.
+Canonical semantic identities are `TM-*` and `LENS-*`; short aliases live in the current registries. Repository command IDs (`application_slice.plan`, etc.) and historical `tmcmd.*`/`tm.*` names are implementation/compatibility details, not user semantic ontology.
 
 ## Runtime Invariant
 
 ```text
-user command
-→ resolve semantic surface
+user invocation
+→ resolve current semantic component
 → normal Target Formation / Target invocation / Lens applicability
-→ IDTSPE Core owns actual State/Resolution/lifecycle
+→ IDTSPE Core owns State / Resolution / Finding Disposition / lifecycle
 ```
 
-Invocation mode (`CREATE / REFINE / EXTEND / REVALIDATE / REPAIR`) is a separate
-dimension, not a new command family.
+Invocation mode (`CREATE / REFINE / EXTEND / REVALIDATE / REPAIR`) is separate from command identity.
 
-## Canonical SDS Target Module Surfaces — 12
+## Installed SDS Components
 
-| Module | Surface key | Example intent |
-|---|---|---|
-| `TM-APPLICATION-DEFINITION` | `tmcmd.application.definition` | define/review the own Application contribution |
-| `TM-PROTOTYPE` | `tmcmd.prototype` | plan a bounded prototype experiment |
-| `TM-SCENARIO-PLANNING` | `tmcmd.scenario.plan` | plan/review one Scenario |
-| `TM-REQUIREMENT` | `tmcmd.requirement` | form/review an exceptional shared must-hold owner |
-| `TM-SCREEN` | `tmcmd.screen` | plan/review spatial Screen meaning |
-| `TM-DOMAIN-DISCOVERY` | `tmcmd.domain.model` | model/review a Domain/Aggregate problem |
-| `TM-SLICE-STRATEGY` | `tmcmd.slice.strategy` | derive/review Slice portfolio + Slice→Domain map |
-| `TM-IMPLEMENTATION-SLICE` | `tmcmd.slice.plan` | plan/review one vertical Slice |
-| `TM-CROSS-CUTTING-CONCERN` | `tmcmd.crosscut` | plan/review one shared non-vertical concern |
-| `TM-TEST-STRATEGY` | `tmcmd.test.strategy` | plan shared proof policy when justified |
-| `TM-TEST-DESIGN` | `tmcmd.test.design` | design non-trivial proof for one owner/property |
-| `TM-PRACTICAL-TEST` | `tmcmd.test.practical` | plan/run practical Evidence inquiry |
+Canonical Target Modules: [`../target-modules/README.md`](../target-modules/README.md) — 12.
+Canonical SDS-specific Lenses: [`../lenses/README.md`](../lenses/README.md) — 6.
 
-Retired Target families are not canonical surfaces:
+Retired `TM-DOMAIN-DRAFT`, `TM-WEUC` and `TM-FRONTEND-SLICE` are not surfaces. Compatibility commands may preserve old phrases only by routing to current owners.
+
+## Specialized Commands
+
+Dedicated repository commands remain useful for stable recurring intents (for example Scenario planning, Slice planning, proof design, documentation representation, consistency review). They are shortcuts to registered semantic owners, not additional methodology identities.
+
+A new Target Module/Lens does not automatically require a new command. The generic `idtspe` dispatcher is the fallback route for every installed component.
+
+## Compatibility
+
+Legacy Mini/Modular/Full SDS commands are representation preferences only:
 
 ```text
-TM-DOMAIN-DRAFT
-TM-WEUC
-TM-FRONTEND-SLICE
+mini SDS    → LIGHT placement preference
+modular SDS → MIXED / ASYMMETRIC placement preference
+full SDS    → COMPLEX placement preference
 ```
 
-Compatibility aliases may still accept old user phrases, but they must route to
-current semantics:
+They do not select different semantic profiles, Domain Draft/frontend/WEUC runtimes or fixed file trees.
 
-```text
-old Domain Draft intent → unified Domain / Aggregate Modeling
-old WEUC evaluation phrase → L5 Evolution / Change Isolation or normal Target Formation
-old frontend planning phrase → current Slice / Local Target Formation as appropriate
-```
+## Counts / Mechanical Inventory
 
-## Focused Target-Module Shortcuts — 10
+Command counts are derived from repository command metadata (`methodologyBinding`, palette/compatibility state and generated helper catalog) and verified mechanically. This contract does not manually maintain a total surface arithmetic that can drift from command definitions.
 
-A focused shortcut is justified only when it represents a stable user intent with
-a useful narrower entry/exit gate while remaining the same Target family.
+## Next-Step / Representation
 
-Suggested canonical focused surfaces:
-
-| Surface | Route |
-|---|---|
-| `tmcmd.application.concept` | `TM-APPLICATION-DEFINITION` concept/contribution focus |
-| `tmcmd.application.references` | `TM-APPLICATION-DEFINITION` existing-solution/reference focus |
-| `tmcmd.prototype.feasibility` | `TM-PROTOTYPE` feasibility inquiry |
-| `tmcmd.scenario.boundary` | `TM-SCENARIO-PLANNING` boundary focus |
-| `tmcmd.scenario.change` | `TM-SCENARIO-PLANNING / RU-SCEN-03` future/change focus |
-| `tmcmd.screen.map` | `TM-SCREEN / RU-SCREEN-01` |
-| `tmcmd.screen.detail` | `TM-SCREEN / RU-SCREEN-02` |
-| `tmcmd.domain.owner` | unified `TM-DOMAIN-DISCOVERY / Domain-Aggregate Modeling` bounded deep focus |
-| `tmcmd.slice.evolution` | `TM-IMPLEMENTATION-SLICE / RU-SLICE-04` |
-| `tmcmd.test.design.property` | `TM-TEST-DESIGN` focused proof-property design |
-
-The useful historical “plan Domain owner” intent is preserved through the unified
-Domain Modeling module rather than by keeping `TM-DOMAIN-DRAFT` alive.
-
-## Generic Lens Operations
-
-Generic Core operations remain available:
-
-```text
-подбери линзы
-примени линзу <lens> к <target>
-```
-
-## Specialized Direct Lens Shortcuts — 5
-
-| Lens | Surface | Example intent |
-|---|---|---|
-| L5 Evolution / Change Isolation | `lenscmd.weuc.check` compatibility alias | check planned evolution/change isolation |
-| Simplicity / Implementation Economy | `lenscmd.simplicity.check` | simplify current implementation plan |
-| Documentation / Representation | `lenscmd.documentation.check` | check owner/file representation |
-| Linked Notes Usage / Justification | `lenscmd.linked-notes.justify` | check linked-notes use |
-| Test Proof / Evidence | `lenscmd.test.coverage` | review actual proof/evidence coverage |
-
-`lenscmd.weuc.check` may remain as a compatibility key, but its semantic Lens is
-Evolution / Change Isolation and it does not imply a WEUC Target or global map.
-
-## Conditional Module Gates
-
-### Requirement
-
-Use standalone `TM-REQUIREMENT` only when a must-hold condition is genuinely
-shared and no natural Scenario/Domain/Screen/Cross-Cutting/application owner is
-better.
-
-### Cross-Cutting
-
-Use `TM-CROSS-CUTTING-CONCERN` only when one shared non-vertical guarantee/mechanism
-has independent multi-consumer value. Repeated code is insufficient.
-
-### Test Strategy
-
-Use `TM-TEST-STRATEGY` only when cross-owner proof coordination itself is
-independently useful.
-
-### Frontend-specific work
-
-There is no installed Frontend Target family. Keep ordinary frontend reasoning in
-the Slice and UI Lens; independently substantial unresolved work goes through
-normal Target Formation / Local Target Contract.
-
-## Orchestration / Validator Surfaces — 5
-
-```text
-idtspe.next
-idtspe.continue
-idtspe.review_consistency
-sds.bootstrap
-sds.validate.current
-```
-
-They orchestrate/select/check methodology state; they do not own product semantics.
-
-## Next-Step Semantics
-
-SDS commands use the canonical directed workflow:
-[`directed-methodology-workflow-and-next-step-resolution.md`](directed-methodology-workflow-and-next-step-resolution.md).
-
-The workflow is not inferred from old numeric phases.
-
-## Repository Compatibility
-
-Repository commands/helpers may temporarily preserve legacy phrases/keys during
-migration. Compatibility must not:
-
-- recreate retired Target semantics;
-- count an alias as a new canonical methodology surface;
-- bypass Target Formation/Generic authority;
-- silently mutate upstream owners.
+Semantic direction: [`directed-methodology-workflow-and-next-step-resolution.md`](directed-methodology-workflow-and-next-step-resolution.md).
+Owner/file examples: [`../ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md).
