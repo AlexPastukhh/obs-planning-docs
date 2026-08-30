@@ -15,7 +15,7 @@ Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are
 | `TM-DOMAIN-DISCOVERY` | `tm.domain.discovery` | primary/optional | Domain evidence/candidates |
 | `TM-DOMAIN-DRAFT` | `tm.domain.draft` | primary/optional | selected Domain/no-Domain result |
 | `TM-WEUC` | `tm.weuc` | primary/optional cross-cutting planning | canonical Workspace Evolution Map + current global architecture position |
-| `TM-SLICE-STRATEGY` | `tm.slice.strategy` | primary/optional | selected useful vertical decomposition/order |
+| `TM-SLICE-STRATEGY` | `tm.slice.strategy` | primary/optional | Slice Implementation Strategy: Slice portfolio/realization + Domain/Aggregate realization map + selected Slice semantic-owner register |
 | `TM-IMPLEMENTATION-SLICE` | `tm.slice.plan` | primary | one vertical implementation Slice plan |
 | `TM-FRONTEND-SLICE` | `tm.slice.frontend` | specialized/conditional | frontend realization for a vertical Slice |
 | `TM-CROSS-CUTTING-CONCERN` | `tm.implementation.crosscut` | shared non-vertical/conditional | one canonical shared implementation responsibility |
@@ -33,6 +33,8 @@ Behavior Item
 are internal addressable object contracts of `TM-SCENARIO-PLANNING`.
 
 `TM-WEUC` owns creation/refresh of the canonical `SDS-WORKSPACE-EVOLUTION.md`, including the current project-global architecture position. The reusable WEUC Lens consumes that map inside other Targets and may also evaluate the whole Workspace architecture through a `TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION` scope. Local Architecture Decisions remain ordinary Answer Decisions; project-global implications surface Finding Candidates with `TM-WEUC` as a likely-owner hint and cross Core Finding Disposition before any accepted global update; independently material bounded architecture can still escalate through generic Target Formation.
+
+`RU-SSTRAT-03` gives selected Slices stable semantic identity/addressability only. It does not create bounded `TM-IMPLEMENTATION-SLICE` Targets; normal Target Formation remains authoritative when independently bounded Slice planning is material.
 
 Consistency review remains `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module.
 

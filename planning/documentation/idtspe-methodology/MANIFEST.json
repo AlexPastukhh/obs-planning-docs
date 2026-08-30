@@ -1,6 +1,6 @@
 {
-  "workspace_version": "idtspe-prototype-implemented-practical-evidence-correction-72",
-  "repo_snapshot_base": "94b6d74b8074dd4dda13934b29977a89ef5379a2",
+  "workspace_version": "idtspe-slice-implementation-strategy-correction-74",
+  "repo_snapshot_base": "98a98ce04fd3385a57a7a05e193ba990485479e9",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
   "sds_profile_bootstrap": "sdscmd.bootstrap",
@@ -728,5 +728,30 @@
     "priorPackageId": "188037ec-53a6-41fd-980f-d83d38336848",
     "reviewDiffCorrection": "correct stale 16-TM/6-SDS-Lens audit counts; reproject Prototype/Practical-Test command+Helper semantics; clarify that TM-PRACTICAL-TEST Intent/Collection Plan may be prepared before realization while actual Evidence/RU-PTEST-03 require the real implemented subject",
     "practicalTestPhaseBoundary": "Target may be formed/planned before realization; actual Evidence collection and RU-PTEST-03 require the real implemented subject/environment"
+  },
+  "slice_implementation_strategy_redesign": {
+    "changeSetId": "ba1a2f95-fafb-405b-892b-1295e250eeb0",
+    "packageId": "3b79ff63-c2ca-4bcc-8da9-023988123544",
+    "gitHeadChecked": "98a98ce04fd3385a57a7a05e193ba990485479e9",
+    "compatibilityTargetId": "TM-SLICE-STRATEGY",
+    "entryPoint": "tm.slice.strategy",
+    "resultUnits": [
+      "RU-SSTRAT-01 Slice Portfolio / Realization Map",
+      "RU-SSTRAT-02 Domain / Aggregate Realization Map",
+      "RU-SSTRAT-03 Selected Slice Owner Register"
+    ],
+    "sliceBoundary": "one independently useful/checkable vertical implementation increment with one Primary Scenario; Behavior Item is not Slice; no mandatory initial/extending enum",
+    "domainAggregateBoundary": "broad/shallow planning map refined toward Slice → Uses → Aggregate/domain concept; many-to-many allowed; current code is authoritative current technical/domain realization truth",
+    "ownerSlotBoundary": "RU-SSTRAT-03 registers selected Slice semantic identity/addressability only; it does not create a bounded TM-IMPLEMENTATION-SLICE Target; normal Target Formation selects/reuses/forms any independently bounded Slice Target",
+    "changeOutlookBoundary": "Scenario Development / Change Outlook may stress boundaries and populate May Change / Extend without automatically creating future Slices",
+    "domainModulesRemoved": false,
+    "targetModuleCountChanged": false,
+    "lensCountChanged": false,
+    "apIdsChanged": false,
+    "implementationSliceAlignment": "existing TM-IMPLEMENTATION-SLICE five-RU contract retained; after Target Formation selects/reuses the bounded Target it refines the same Slice semantic identity, and Domain Elements Used may challenge Strategy RU-SSTRAT-02 only through Finding Candidate → Core Finding Disposition → bounded revalidation when selected",
+    "priorPackageId": "092e1190-17c7-42b3-a7b8-13ef2907fb20",
+    "findingDispositionBoundary": "Lens/implementation observations become Finding Candidates; Core Finding Disposition selects any Question/Idea/Q/R/P/Decision/owner/Target-Formation/revalidation consequence",
+    "commandProjectionCorrected": true,
+    "reviewDiffCorrection": "restore Finding Candidate → Core Finding Disposition boundary; keep RU-SSTRAT-03 as semantic identity/addressability rather than bounded Target creation; reproject actual Slice commands + Helper seed; correct repo_snapshot_base to the checked current main head"
   }
 }

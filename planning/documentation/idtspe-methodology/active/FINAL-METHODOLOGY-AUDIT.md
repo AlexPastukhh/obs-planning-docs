@@ -425,3 +425,19 @@ Historical earlier audit sections that state the prior 17-TM / 7-SDS-Lens topolo
 - practical Evidence may use manual/user/operator runs or representative telemetry/analytics/logs/performance/support/etc; permanent observability architecture stays with implementation/Cross-Cutting/code owners: **PASS**
 - observation/Evidence remains distinct from interpretation and Decision/product semantic authority: **PASS**
 - Prototype/implemented-evidence AP IDs, Target IDs/entry points, command identities and current 16-TM / 17-Lens / 58-AP+AG topology remain unchanged: **PASS**
+
+
+## Slice Implementation Strategy Redesign — current state
+
+- compatibility identity `TM-SLICE-STRATEGY` / `tm.slice.strategy` is retained while the Target now semantically owns Slice Implementation Strategy: **PASS**
+- Strategy exposes exactly `RU-SSTRAT-01 Slice Portfolio / Realization Map`, `RU-SSTRAT-02 Domain / Aggregate Realization Map`, and `RU-SSTRAT-03 Selected Slice Owner Register`: **PASS**
+- a normal Slice is one independently useful/checkable vertical increment with one Primary Scenario; `Behavior Item ≠ Slice` and no mandatory `INITIAL_VERTICAL / EXTENDING_VERTICAL` enum remains in the Strategy contract: **PASS**
+- `RU-SSTRAT-02` supports broad/shallow identity/invariant/consistency-boundary reasoning and canonical `Slice → Uses → Aggregate/domain concept` relations; one Slice may use several Aggregates and one Aggregate may serve several Slices: **PASS**
+- current code remains authoritative current technical/domain realization truth; Strategy keeps planning-relevant boundary/use meaning rather than a stale implementation mirror: **PASS**
+- `RU-SSTRAT-03` gives selected Slices stable semantic identity/addressability without requiring one file per Slice and without creating a bounded Implementation Slice Target; normal Target Formation remains authoritative for independently bounded `TM-IMPLEMENTATION-SLICE`: **PASS**
+- when Target Formation selects/reuses `TM-IMPLEMENTATION-SLICE`, it keeps its existing five Result Units, refines the same selected Slice semantic identity and confirms/challenges Strategy `Slice → Uses → Aggregate/domain concept` relations through actual Domain Elements Used: **PASS**
+- `Scenario Development / Change Outlook` may inform `May Change / Extend` and boundary stress without automatically creating future Slices or speculative architecture: **PASS**
+- DDD Lens use at Strategy depth is intentionally broad/shallow and does not silently replace full `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT`; those modules remain registered/unchanged in this transition: **PASS**
+- Slice/DDD findings cross `Finding Candidate → Core Finding Disposition` before Q/R/P/Decision/owner/revalidation consequences; a Lens does not directly route findings into Core State: **PASS**
+- canonical/focused Slice commands and Helper command seed project the current Strategy/Implementation-Slice semantics, including Target Formation and Codebase Integration Path boundaries: **PASS**
+- Target/Lens counts, command identities and existing `AP-SSTRAT-01..02` identities remain unchanged: **PASS**

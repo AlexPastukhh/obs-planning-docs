@@ -86,13 +86,14 @@ TM-DOMAIN-DRAFT — zero/one/many Domain owners
 ↓
 TM-TEST-DESIGN — per Domain owner when isolated Domain/business proof is material
 ↓
-TM-SLICE-STRATEGY — conditional; or local Slice Definition when decomposition is obvious
+TM-SLICE-STRATEGY — Slice Implementation Strategy; may stay minimal when one obvious Slice needs no material strategy reasoning
 ↓
 TM-TEST-STRATEGY — conditional shared strategy gate
 ↓
 for each selected Slice:
-  TM-IMPLEMENTATION-SLICE
-  ↔ TM-TEST-DESIGN — Slice proof, standard or TDD route
+  Target Formation — when independently bounded Slice planning is material
+  → TM-IMPLEMENTATION-SLICE when selected/reused
+    ↔ TM-TEST-DESIGN — Slice proof, standard or TDD route
   ├─→ TM-FRONTEND-SLICE — conditional promotion
   └─→ TM-CROSS-CUTTING-CONCERN — conditional shared owner
 ↓
@@ -108,6 +109,8 @@ Decision Revalidation / Consistency Review
 ```
 
 `TM-WEUC`, Screen, Requirements, Frontend, Cross-Cutting and implemented Practical Evidence are conditional/cross-cutting nodes. Their placement in the graph expresses their **earliest meaningful activation** and normal consumers, not a rule that they run exactly once.
+
+`TM-SLICE-STRATEGY` owns the current Slice portfolio/Behavior realization map, a broad/shallow Domain/Aggregate realization map and selected Slice semantic-owner register. The register supplies identity/addressability, not bounded Target creation; Target Formation remains responsible for any independently bounded `TM-IMPLEMENTATION-SLICE` Target. Separate `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT` remain available when independently deeper Domain planning is material; their presence does not remove Strategy responsibility for `Slice → Uses → Aggregate/domain concept` planning relations. Detailed Slice work that challenges Strategy surfaces a Finding Candidate, crosses Core Finding Disposition, and revalidates the bounded owner only when selected.
 
 For `TM-PRACTICAL-TEST`, early activation may produce only Evidence Intent / Subject and an Observation / Data Collection Plan. Actual Evidence collection and Results / Interpretation require the real implemented subject/environment; the distinction from `TM-PROTOTYPE` is the Evidence subject, not merely when the Target record was first created.
 
@@ -151,9 +154,8 @@ This prevents Test Strategy from rediscovering local Domain proof responsibiliti
 Normal gate:
 
 ```text
-selected Domain owners
-+ material Domain Test Designs resolved
-+ Slice Strategy / selected Slice portfolio known
+selected deeper Domain owners / Domain proof positions resolved when applicable
++ Slice Implementation Strategy / selected Slice portfolio known
 ↓
 TM-TEST-STRATEGY — if shared coordination is material
 ```
@@ -234,7 +236,7 @@ Material isolated Domain proof obligations for the current Domain set should alr
 
 ### Slice Strategy → Test Strategy
 
-A selected Slice portfolio / Useful Vertical Result set must be known. Test Strategy should not invent Slices.
+A selected Slice portfolio / Useful Vertical Result set must be known. Test Strategy should not invent Slices or treat `RU-SSTRAT-03` as formation of bounded Implementation Slice Targets.
 
 ### Slice → Slice Test Design
 

@@ -116,15 +116,17 @@ Implementation convenience cannot silently change Scenario behavior or Domain in
 
 ### Direct Semantic Sources
 ```text
-selected Slice Definition from TM-SLICE-STRATEGY
-or locally formed Useful Vertical Result Definition when Strategy was skipped
+selected Slice semantic identity/address from `TM-SLICE-STRATEGY / RU-SSTRAT-03` when Strategy was used
+related `RU-SSTRAT-01 Slice Portfolio / Realization Map` meaning
+related `RU-SSTRAT-02 Domain / Aggregate Realization Map` meaning
+or locally established minimum Slice semantic meaning when Strategy was skipped
 
 Primary Scenario
 Scenario DATA used/produced by the result
-Behavior Items included
+Behavior Items realized
 local/shared must-hold conditions / negative guarantees
-Screen Map / Screen Drafts when UI
-selected Domain meaning when present
+Screen meaning when UI
+selected/current Domain meaning when present
 ```
 
 ### Inherited Lineage
@@ -144,6 +146,7 @@ observed runtime/work/change Evidence
 
 ### Constraint / Planning-State Sources
 ```text
+Target Formation resolution selecting/reusing this bounded `TM-IMPLEMENTATION-SLICE` Target
 accepted architecture Answer Decisions
 Cross-Cutting Concern contracts
 delivery/dependency constraints
@@ -251,15 +254,11 @@ Only applicable/material Result Units are projected for one concrete Target step
 
 **Slice ID** — stable identity.
 
-**Slice Role** — `INITIAL_VERTICAL` or `EXTENDING_VERTICAL`.
-
 **Primary Scenario** — exactly one Scenario for a normal vertical Slice.
 
-**Related Slice Strategy** — Strategy/Slice Definition ref when one exists.
+**Related Slice Strategy / Semantic Owner** — Strategy + selected owner-register reference when one exists. `RU-SSTRAT-03` did not itself create this bounded Target; normal Target Formation selected/reused it. This Target refines the same Slice semantic meaning rather than creating a duplicate Slice owner.
 
-**Extends — when EXTENDING_VERTICAL** — prior accepted Slice/result/capability baseline.
-
-**Baseline Guarantees To Preserve — when EXTENDING_VERTICAL** — accepted behavior/invariants/negative guarantees that must continue to hold.
+**Existing baseline / extension position — when useful** — prior accepted Slice/result/capability baseline and guarantees that must continue to hold. `INITIAL_VERTICAL` / `EXTENDING_VERTICAL` may be used descriptively, but are not required classification enums.
 
 ### Useful Vertical Result Definition
 
@@ -295,7 +294,9 @@ List only selected Domain meaning actually consumed:
 |---|---|---|
 | `<ref>` | Entity / Value Object / Aggregate / Policy / Invariant / Service / coordination | creates / loads / changes / checks / coordinates / preserves |
 
-This section does not redesign Domain.
+This section does not redesign Domain. When a related `RU-SSTRAT-02 Domain / Aggregate Realization Map` exists, detailed Slice planning should confirm/refine which Domain elements this Slice actually uses. A material mismatch becomes a Finding Candidate; Core Finding Disposition decides whether bounded revalidation of Strategy/Domain/another owner is warranted instead of silently drifting accepted meaning.
+
+Canonical planning relation direction is `Slice → Uses → Aggregate/domain concept`; one Slice may use several Domain owners and one Domain owner may be used by several Slices.
 
 ### Shared / Cross-Cutting Obligations
 
@@ -524,7 +525,7 @@ Use `[NEW?]` when the exact future owner/call is not yet selected.
 
 Also record prepared extension points that future work is expected to reuse and transitions that should happen only under a stated trigger.
 
-The logical Slice Target remains the semantic owner. Its current representation may be a `SLICE-STRATEGY.md` section, implementation-native code/tests plus planning residue, or a dedicated Slice artifact. A `.evolution.md` companion is future planning only and appears only after separate evolution pressure.
+The selected Slice semantic identity remains stable across representations. `RU-SSTRAT-03` may already address it as an inline slot, but that register does not form a bounded Target. After Target Formation selects/reuses this `TM-IMPLEMENTATION-SLICE` Target, this module refines the same Slice meaning. Its current representation may remain a `SLICE-STRATEGY.md` section, use implementation-native code/tests plus planning residue, or split to a dedicated Slice artifact under ordinary representation pressure. A `.evolution.md` companion is future planning only and appears only after separate evolution pressure.
 
 ## Artifact / File Contract
 
@@ -568,7 +569,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-**REQUIRED meaning, not REQUIRED dedicated file** — an accepted Slice used for realization/testing must preserve its Useful Vertical Result and material Decisions/QRP/implementation obligations somewhere durable enough for the current project. The preferred starting point is the existing `SLICE-STRATEGY.md` Slice section plus implementation-native names/types/tests/code where sufficient. A dedicated `SL-<id>.md` is promoted only when independent planning/review/addressability is useful.
+**REQUIRED meaning, not REQUIRED dedicated file** — an accepted Slice used for realization/testing must preserve its Useful Vertical Result and material Decisions/QRP/implementation obligations somewhere durable enough for the current project. When Strategy already registered stable Slice semantic identity/addressability, reuse that meaning rather than creating a duplicate owner; a bounded `TM-IMPLEMENTATION-SLICE` Target still exists only after normal Target Formation selects/reuses it. The preferred starting representation may therefore remain the existing `SLICE-STRATEGY.md#SL-<id>` slot plus implementation-native names/types/tests/code where sufficient. A dedicated `SL-<id>.md` is promoted only when independent planning/review/addressability is useful.
 
 **CONSOLIDATE by default** — testing/frontend/Part details remain sections of the current Slice representation or strategy coordinator unless independent size/reuse/review/lifecycle pressure justifies separation. Future evolution is not a Slice AP responsibility: WEUC/L5 first surfaces future-evolution Finding Candidate(s); after Core Finding Disposition accepts/resolves local evolution meaning, `AG-L5-02` may propose an Evolution section or companion representation.
 
@@ -583,7 +584,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 ```text
 one Primary Scenario
 Useful Vertical Result meaningful/checkable and normally actor/user-facing
-INITIAL/EXTENDING role coherent
+existing-baseline / extension position coherent when used
 semantic obligations match upstream owners
 Domain Elements Used do not redefine Domain
 shared concerns preserve canonical ownership

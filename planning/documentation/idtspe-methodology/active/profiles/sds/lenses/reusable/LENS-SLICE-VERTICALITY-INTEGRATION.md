@@ -5,29 +5,27 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
 
-Keep a Slice as one bounded useful/checkable vertical result and preserve upstream semantics while planning integrated realization.
+Keep Slice planning centered on one bounded useful/checkable vertical result, preserve Scenario semantics through decomposition, and keep Strategy/Slice realization relations coherent without turning technical layers into Slices.
 
 ## Applicability Gate
 
-Primary for Slice Strategy/Implementation Slice; supporting for Frontend/Cross-Cutting integration.
+Primary for `TM-SLICE-STRATEGY` and `TM-IMPLEMENTATION-SLICE`; supporting for related Cross-Cutting/frontend integration questions.
 
 ## Target Inputs / Evidence
 
-Primary Scenario, Scenario DATA, Behavior Items, must-hold conditions, Screen when UI, Domain meaning and current implementation/workspace.
-
-
+Scenario Behavior / Requirements, Behavior Items, Scenario DATA, must-hold conditions, Screen meaning when relevant, Domain/Aggregate position, current code/implementation and material dependency/change Evidence.
 
 ## Analysis Surface
 
 ### Primary Result Units / Semantic Selectors
 
-- `TM-SLICE-STRATEGY`: `RU-SSTRAT-01..RU-SSTRAT-04`
+- `TM-SLICE-STRATEGY`: `RU-SSTRAT-01..RU-SSTRAT-03`
 - `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-01..RU-SLICE-04`
 
 ### Conditional Result Units / Semantic Selectors
 
 - `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-05` when a Focused Part Plan exists
-- Frontend/Cross-Cutting result meaning when used in supporting mode
+- Cross-Cutting/frontend result meaning when this Lens is used in supporting mode
 
 ### Relevant State Units
 
@@ -40,17 +38,6 @@ Evidence / Evidence Needs
 Revalidation state
 ```
 
-### Context
-
-- Primary Scenario / Scenario DATA / Behavior
-- requirements/invariants
-- Screen meaning
-- Domain meaning
-- current implementation/workspace
-- related Decisions / QRP / Evidence
-
-Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
-
 ## Supported Operations
 
 ```text
@@ -60,53 +47,87 @@ REFINE
 CHALLENGE
 ```
 
-- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
-- `CHECK` evaluates current meaning against this Lens's criteria/guards.
-- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
-- `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
-
-`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
+`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit mutation after resolution remain Core Finding-Disposition/lifecycle consequences.
 
 ## Useful Vertical Result Integrity
 
-Normal Slice → one Primary Scenario → one bounded useful/checkable result. Reject horizontal-only decomposition unless an exceptional evidence-backed prerequisite is itself independently useful/checkable.
-
-## Initial vs Extending Vertical
+Normal Slice:
 
 ```text
-INITIAL_VERTICAL
-  first useful vertical baseline
-
-EXTENDING_VERTICAL
-  adds another useful end-to-end result
-  while preserving accepted baseline guarantees
+one Primary Scenario
++ one bounded useful/checkable result
++ one or more grounded Behavior Items
+= legitimate vertical Slice candidate
 ```
 
-## Semantic Obligation Decomposition
+Reject horizontal-only decomposition such as database/backend/frontend phases unless an exceptional prerequisite is itself independently useful/checkable and is explicitly justified as such.
+
+`Behavior Item ≠ Slice`. Several Behavior Items may be realized by one useful vertical Slice.
+
+`INITIAL_VERTICAL` / `EXTENDING_VERTICAL` may be useful descriptive language but are not required classification enums.
+
+## Behavioral Coverage
+
+Check both directions:
 
 ```text
-Behavior Obligations
-DATA Obligations
-Requirement / Invariant Obligations
-Screen Obligations — when UI
-Domain Obligations / Elements Used
+material current Behavior Item
+→ selected Slice
+  OR explicit deferred/outside position
 ```
 
-These are the exact semantics to realize, not coverage scores.
+and:
 
-## Implemented / Delegated / Later / Outside
+```text
+selected Slice behavior
+→ grounded in Scenario behavior
+```
 
-Make responsibility boundaries explicit and prevent scope creep.
+A missing Behavior Item is a decomposition gap. A Slice that invents product behavior is not a valid implementation shortcut.
 
-## Owner / Delegation
+## Slice / Aggregate Independence
 
-Shared concern applicability does not transfer canonical ownership.
+Vertical Slice boundaries and Domain/Aggregate boundaries are different axes.
+
+```text
+one Slice
+→ may use several Aggregates/domain concepts
+
+one Aggregate/domain concept
+→ may be used by several Slices
+```
+
+Reject `one Slice = one Aggregate` as an automatic rule.
+
+The canonical planning relation is `Slice → Uses → Aggregate/domain concept`. Generated inverse views need not be persisted as duplicate authority.
+
+## DATA / Screen / Cross-Cutting Relations
+
+Map only relations useful to implementation planning:
+
+- DATA used/produced/changed when material;
+- related Screen meaning without taking Screen topology ownership;
+- shared Cross-Cutting applicability without transferring canonical ownership.
+
+Frontend realization stays within the normal vertical Slice when it is feature-local.
 
 ## Dependency vs Source
 
-Technical dependency/handoff is not automatically a semantic Source.
+A technical dependency/order constraint is not automatically a semantic Source.
+
+Check that implementation sequence reflects real dependency, value/risk/learning or readiness rather than arbitrary technical layer order.
+
+## Strategy Owner Slots
+
+For `TM-SLICE-STRATEGY`, verify that each selected Slice has stable semantic owner identity/addressability.
+
+The owner may be inline, linked or separately materialized. Semantic Slice identity does not imply one file per Slice.
+
+`RU-SSTRAT-03 Selected Slice Owner Register` coordinates Slice semantic identity/addressability only. It does not create a bounded `TM-IMPLEMENTATION-SLICE` Target; normal Target Formation remains authoritative when independently bounded implementation planning is material.
 
 ## Runtime Path vs Codebase Integration Path
+
+For detailed `TM-IMPLEMENTATION-SLICE` planning:
 
 ```text
 Runtime Path
@@ -117,133 +138,91 @@ Codebase Integration Path
   concrete existing/planned owners + significant calls + order + responsibility
 ```
 
-The full call-level template belongs in `TM-IMPLEMENTATION-SLICE`; this Lens checks integrity between views.
+The full call-level template remains in `TM-IMPLEMENTATION-SLICE`.
 
 ## Part-Plan Escalation
 
-Mostly understood local call/responsibility → lightweight Part Plan. Material unresolved algorithm/state/integration/architecture choice space → Finding Candidate first; Core Finding Disposition decides whether accepted meaning becomes/refines Question / Idea / Q/R/P / Decision input. When independently substantial, Core disposition may surface a Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target.
+Mostly understood local call/responsibility may use a lightweight Part Plan.
+
+Material unresolved algorithm/state/integration/architecture choice space surfaces a Finding Candidate. Core Finding Disposition decides whether accepted meaning becomes/refines Question / Idea / Q/R/P / Decision input or another lifecycle consequence; when independently substantial, disposition may surface Target Formation input.
 
 ## Typical Findings
 
-verticality correction, initial/extending role, obligation gaps, implemented/delegated/later/outside map, runtime-vs-call-path inconsistency, Part Plan/Target-Formation-candidate finding and Q/R/P-related finding.
+Typical Finding Candidates include:
 
-
+```text
+fake horizontal Slice
+Behavior coverage gap
+Slice invents unowned product behavior
+unhelpful one-Behavior-item-per-Slice atomization
+one-Slice-one-Aggregate coupling assumption
+missing Slice owner addressability
+shared concern hidden inside a vertical Slice
+dependency mistaken for Source
+future pressure prematurely converted into architecture/Slice
+Strategy and detailed Slice realization no longer agree
+```
 
 ## Finding Contract
-
-The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
 
 A material finding may expose proportionally:
 
 ```text
 Meaning
-Affected Unit(s) / fields — when known
+Affected Unit(s) / relations — when known
 Evidence / rationale
 Materiality hint — optional
 Likely semantic owner — optional hint
 Suggested lifecycle consequence — optional hint
 ```
 
-Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves actual State/lifecycle/owner consequences.
 
-This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
+This Lens does not define new Result Units or mutate accepted owners directly.
 
 ## Typical Consumers
 
-Slice Strategy, Implementation Slice, Frontend Slice, Cross-Cutting integration.
+Slice Implementation Strategy, Implementation Slice, related Screen/Cross-Cutting/frontend realization planning.
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Core Finding Disposition may resolve current Slice meaning back to the Slice Target. A future-evolution Finding Candidate may call for WEUC/L5 evaluation; only suspected project-global meaning may carry `TM-WEUC` as a likely-owner hint, and Core resolves the actual handoff/owner consequence.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`.
 
-The selected Useful Vertical Result, Runtime Path, Codebase Integration Path and lightweight Part Plan are represented through `TM-IMPLEMENTATION-SLICE / AP-SLICE-01..02`. This Lens evaluates verticality/integration but does not duplicate Slice-result persistence. A material future Slice path first becomes a WEUC/L5 Finding Candidate; Core Finding Disposition resolves any accepted local evolution meaning/owner, after which `AG-L5-02` may propose an Evolution section or `<slice-owner>.evolution.md` supporting representation. Documentation / Representation + P-14 / TF-10 decide whether it is actually materialized.
+`TM-SLICE-STRATEGY` owns the Slice portfolio/domain relation/semantic-owner-register representation through its own Artifact Proposals. When Target Formation selects/reuses a bounded `TM-IMPLEMENTATION-SLICE` Target, that Target owns detailed Slice planning meaning. This Lens evaluates integrity and must not create or duplicate either owner.
+
+Generated inverse relation maps and code-realization mirrors should not be persisted merely for convenience when they can be derived reliably.
 
 ## Guards
 
-Slice cannot redefine Scenario/DATA/Domain/Screen truth for convenience.
+```text
+Slice cannot redefine Scenario truth for implementation convenience
+Behavior Item ≠ Slice
+Slice ≠ technical layer
+Slice ≠ Aggregate
+shared concern applicability ≠ Slice ownership
+semantic Slice owner ≠ mandatory Slice file
+planned relation map ≠ authoritative current code mirror
+```
 
 ## Composition
 
-L4 dependencies/change surface; L5 WEUC/architecture; L6 proof/operation; UI pack frontend realization.
+Dependency/change and quality/observability Lenses may join when material. DDD Lens evaluates broad/shallow Domain/Aggregate boundaries in Slice Strategy. UI Lens may join detailed Slice work when spatial/frontend realization is materially in scope.
 
 ## Escalation / Revalidation
 
-Implementation Evidence that challenges upstream meaning surfaces a challenge/revalidation finding; Core Finding Disposition/lifecycle decides whether the upstream owner is reopened.
+Detailed Slice planning or implementation Evidence may challenge Strategy decomposition or Domain/Aggregate relations.
 
-## High-Level Example — Self-Contained Walkthrough
-
-### Situation
-
-A team wants to deliver a new capture capability and proposes:
-
-```text
-Sprint/Slice 1:
-  database tables
-
-Slice 2:
-  backend API
-
-Slice 3:
-  frontend UI
-```
-
-### Why This Lens
-
-A normal implementation Slice should deliver a bounded useful/checkable vertical result, not just one technical layer.
-
-### Walkthrough
-
-Reframe:
-
-```text
-SL-01:
-  user can durably capture selected material
-
-SL-02:
-  user can additionally preserve source context
-  while SL-01 guarantees remain true
-```
-
-For SL-01, check:
-
-```text
-one Primary Scenario
-Useful Vertical Result
-Behavior/DATA obligations
-Runtime Path
-Codebase Integration Path
-implemented/delegated/later/outside
-```
-
-### Result
-
-The Lens produces verticality/integration findings and exposes missing obligations or fake horizontal slicing.
-
-### Boundary / Lesson
-
-A technical prerequisite may occasionally be a legitimate Target, but it must be justified explicitly rather than mislabeled as a normal user-facing vertical Slice.
+Surface the narrow Finding Candidate; Core Finding Disposition decides the actual State/owner/lifecycle consequence, including whether `RU-SSTRAT-01`, `RU-SSTRAT-02`, a Slice owner, Scenario owner or another semantic owner receives bounded revalidation.
 
 ## Knowledge Basis
 
-Mode: `INLINE`
+No separate external Knowledge Basis is required for normal use.
 
-**Embedded Principles / Rules / Theory:**
+Core operational principles are:
 
-- A Slice is justified by one useful vertical result and must keep semantic obligations connected through runtime/integration planning.
-- Part plans and implementation details do not become separate Targets automatically. If they gain independent planning value, surface a Target Formation candidate and let Target Formation decide whether a separate Target is warranted.
+- useful/checkable behavior shapes Slices;
+- implementation decomposition must remain grounded in Scenario meaning;
+- Slice and Aggregate boundaries are independent;
+- representation follows semantic ownership rather than one-file-per-entity convention.
 
-**Referenced Knowledge Owners:**
-
-- `NONE`
-
-**Reference Load Policy:**
-
-No external knowledge body is required for normal use.
-
-**Operationalization Notes:**
-
-Current code/domain/scenario facts are Target Inputs; verticality/integration evaluation is owned here.
-
-## Provenance
-
-Preserves pre-Lens Useful Result, obligation completeness, owner/delegation, runtime/call-path and Part Plan semantics.
+Current code/domain/scenario facts are Inputs; this Lens owns only the verticality/integration evaluation perspective.

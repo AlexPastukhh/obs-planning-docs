@@ -146,12 +146,13 @@ SPLIT:    separate file normally appears only after representation pressure just
     ├── slices/
     │   ├── SLICE-STRATEGY.md
     │   │   TM: TM-SLICE-STRATEGY / AP-SSTRAT-01
-    │   │   ROLE: Slice inventory/discovery/portfolio/order coordinator; can hold small per-Slice Decisions/QRP directly
+    │   │   ROLE: Slice Implementation Strategy coordinator: Slice portfolio/Behavior realization + broad/shallow Domain/Aggregate realization map + selected Slice owner register
+    │   │   NOTE: may contain stable semantic owner slots of small selected Slices; semantic identity/addressability does not require one file per Slice and does not itself form a bounded TM-IMPLEMENTATION-SLICE Target
     │   │
     │   ├── SL-<id>.md
-    │   │   TM: TM-SLICE-STRATEGY / AP-SSTRAT-02; TM-IMPLEMENTATION-SLICE / AP-SLICE-01 + AP-SLICE-02
-    │   │   FIRST: SLICE-STRATEGY.md#SL-<id> + implementation-native representation
-    │   │   SPLIT: promote when Slice planning/review/addressability becomes independently valuable
+    │   │   TM: TM-SLICE-STRATEGY / AP-SSTRAT-02; add TM-IMPLEMENTATION-SLICE / AP-SLICE-01 + AP-SLICE-02 only after Target Formation selects/reuses that bounded Target
+    │   │   FIRST: stable selected owner slot at SLICE-STRATEGY.md#SL-<id> + implementation-native representation
+    │   │   SPLIT: promote only when Slice planning/review/addressability becomes independently valuable
     │   │
     │   ├── SL-<id>.evolution.md
     │   │   LENS: WEUC / AG-L5-02

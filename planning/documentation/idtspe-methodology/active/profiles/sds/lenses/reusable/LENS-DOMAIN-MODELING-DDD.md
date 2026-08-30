@@ -7,26 +7,32 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 Use DDD concepts as evidence-driven discovery/evaluation perspectives, never as mandatory pattern matching.
 
+The Lens supports both deeper explicit Domain Targets and the broad/shallow Domain/Aggregate reasoning used by Slice Implementation Strategy.
+
 ## Applicability Gate
 
-Primary when Domain Discovery/Draft is active.
+Primary when `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT` is active.
+
+Also primary for `TM-SLICE-STRATEGY / RU-SSTRAT-02 Domain / Aggregate Realization Map` when broad/shallow Domain/Aggregate boundaries are material to Slice implementation planning.
+
+The depth must follow the host Target. Slice Strategy does not become a full Domain Draft merely because this Lens is selected.
 
 ## Target Inputs / Evidence
 
-Scenario, Scenario DATA, Behavior Items, must-hold conditions, Prototype/current implementation Evidence.
-
-
+Scenario Behavior / Requirements, Scenario DATA, Behavior Items, must-hold conditions, Scenario Development / Change Outlook, current code/domain realization, Prototype/implemented Evidence when relevant.
 
 ## Analysis Surface
 
 ### Primary Result Units / Semantic Selectors
 
+- `TM-SLICE-STRATEGY`: `RU-SSTRAT-02`
 - `TM-DOMAIN-DISCOVERY`: `RU-DDISC-01..RU-DDISC-05`
 - `TM-DOMAIN-DRAFT`: `RU-DDRAFT-01..RU-DDRAFT-05`
 
 ### Conditional Result Units / Semantic Selectors
 
-- Scenario semantic objects/behavior when they are evidence for Domain meaning
+- Scenario behavior/DATA when they are Evidence for Domain meaning
+- Slice → Uses → Aggregate/domain relations when evaluating implementation realization
 
 ### Relevant State Units
 
@@ -39,15 +45,6 @@ Evidence / Evidence Needs
 Revalidation state
 ```
 
-### Context
-
-- Scenario DATA / Behavior
-- requirements/invariants
-- current Domain model
-- implementation Evidence when it challenges model assumptions
-
-Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
-
 ## Supported Operations
 
 ```text
@@ -57,20 +54,45 @@ REFINE
 CHALLENGE
 ```
 
-- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
-- `CHECK` evaluates current meaning against this Lens's criteria/guards.
-- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
-- `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
+`REOPEN`, State-Unit creation/refinement, cross-owner handoff and accepted Result mutation remain Core Finding-Disposition/lifecycle consequences.
 
-`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
+## Depth Rule
+
+Use only as much Domain detail as the host Target needs.
+
+For Slice Strategy, normal depth is broad/shallow:
+
+```text
+identity/lifecycle clues
+important invariants
+consistency boundaries
+cross-boundary coordination
+Slice → Uses → Domain relations
+current code realization references when useful
+```
+
+Normally out of scope for Strategy-depth Domain reasoning:
+
+```text
+complete Entity catalog
+all Value Objects
+all fields/methods
+repository/API/persistence design
+full internal Aggregate model
+implementation-class mirror
+```
+
+Deeper reasoning may become normal Domain Target work or detailed Slice planning when independently useful.
 
 ## Identity / Entity Evidence
+
+Ask proportionally:
 
 ```text
 stable identity?
 survives behaviors/states?
 lifecycle/rules attach?
-meaningful across Scenarios?
+meaningful across Scenarios/Slices?
 ```
 
 Guard: noun/field/table ≠ Entity.
@@ -86,13 +108,15 @@ stable value semantics?
 
 Guard: primitive-wrapper ceremony ≠ Value Object.
 
+At Slice Strategy depth, identify value semantics only when they materially affect a boundary; do not enumerate Value Objects for completeness.
+
 ## State / Condition
 
 Use matrices only when combinations materially change correctness.
 
 ## Impossible State
 
-Find invalid combinations not visible from one transition row.
+Find invalid combinations when they reveal a real invariant/consistency boundary.
 
 ## Invariant / Policy
 
@@ -100,145 +124,136 @@ Separate must-always-remain-true rules from configurable/current policy, present
 
 ## Aggregate / Consistency Boundary
 
+The central question is:
+
+> Which state, identity and invariants must stay correct together?
+
+Ask:
+
 ```text
 which invariants must be protected together?
 what lifecycle changes belong together?
 what consistency is actually required?
-credible Root / owned children/state?
 what is outside / externally referenced?
 what cross-boundary coordination is required?
+does current code already realize a useful boundary?
 ```
 
 Guard: UI/ORM/DB/read shape ≠ Aggregate ownership.
 
+## Slice / Aggregate Relation
+
+Slice and Aggregate boundaries are independent.
+
+```text
+one Slice
+→ may use several Aggregates/domain concepts
+
+one Aggregate/domain concept
+→ may be used by several Slices
+```
+
+The canonical planning relation is:
+
+```text
+Slice
+→ Uses
+→ Aggregate / Domain concept
+```
+
+Do not infer one Aggregate per Slice or one Slice per Aggregate.
+
+## Existing Code
+
+For existing applications, current code is authoritative current technical/domain realization truth.
+
+Use code to determine current owners/boundaries where possible. The planning map may record the relevant boundary and relation, but should not persist a stale structural mirror of classes/methods/files that can be obtained reliably from code.
+
+A mismatch between planned semantic boundary and current code becomes Evidence / Finding Candidate input, not an excuse to redefine behavior for implementation convenience.
+
 ## Change Axis
 
-Use L5 for evidence-backed variation/generalization pressure. Domain meaning comes first.
+Use known Scenario Development / Change Outlook and other credible change pressure to test whether a proposed boundary is accidental or naturally localized.
+
+Do not introduce generalization merely because a future change is imaginable.
 
 ## Typical Findings
 
-concept/entity/value candidates, lifecycle/state findings, invariants/policies, aggregate boundaries, no-Domain finding and Q/R/P.
+Typical Finding Candidates include:
 
-
+```text
+identity/lifecycle boundary clue
+invariant/policy distinction
+Aggregate/consistency candidate
+candidate Aggregate unsupported by actual invariant
+cross-boundary coordination
+current code owner reusable
+current code boundary conflicts with required semantics
+Slice/Aggregate one-to-one assumption
+Domain detail exceeds host Target depth
+no separate Domain abstraction useful
+```
 
 ## Finding Contract
-
-The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
 
 A material finding may expose proportionally:
 
 ```text
 Meaning
-Affected Unit(s) / fields — when known
+Affected Unit(s) / relations — when known
 Evidence / rationale
 Materiality hint — optional
 Likely semantic owner — optional hint
 Suggested lifecycle consequence — optional hint
 ```
 
-Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves actual State/lifecycle/owner consequences. Uncertainty exposed by a finding may be dispositioned into Core Q/R/P or other State; Q/R/P is not the Lens finding itself.
 
-This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
+This Lens does not define Result Units or directly mutate accepted Domain/Slice meaning.
 
 ## Typical Consumers
 
-Domain Discovery/Draft; selected findings inform Slice/Test/L5 architecture reasoning.
+Slice Implementation Strategy, Domain Discovery/Draft, Implementation Slice and Test Design when Domain correctness matters.
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Core Finding Disposition may resolve current Domain meaning back to the Domain Target. A future-evolution Finding Candidate may call for WEUC/L5 evaluation; only suspected project-global meaning may carry `TM-WEUC` as a likely-owner hint, and Core resolves the actual handoff/owner consequence.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`.
 
-Current accepted Domain meaning is represented through `TM-DOMAIN-DRAFT / AP-DOM-01`. This DDD Lens must not duplicate that Target-result representation. If a material future Domain path is discovered, WEUC/L5 evaluation surfaces a Finding Candidate; Core Finding Disposition resolves any accepted local evolution meaning/owner, and only then may `AG-L5-02` propose an Evolution section or promoted `<domain-owner>.evolution.md` supporting representation. Documentation / Representation + P-14 / TF-10 decide materialization.
+When used by `TM-SLICE-STRATEGY`, the relevant planning meaning belongs in `RU-SSTRAT-02 Domain / Aggregate Realization Map`; this Lens must not create a parallel Domain artifact.
+
+When used by an explicit Domain Target, representation follows that Target contract.
+
+Generated code-realization traces should normally be obtained on demand rather than persisted as duplicate technical truth.
 
 ## Guards
 
-DDD pattern name is never sufficient Evidence.
+```text
+DDD pattern name is never sufficient Evidence
+noun/table/DTO ≠ Entity
+database relationship ≠ Aggregate boundary
+Slice ≠ Aggregate
+broad Strategy discovery ≠ full Domain Draft
+implementation convenience ≠ semantic authority
+planned map ≠ authoritative current-code mirror
+```
 
 ## Composition
 
-L3 for weak semantic claims; L5 for change pressure; L6/Test pack for Domain Verification Meaning.
+Slice Verticality Lens joins Strategy/Slice work. Dependency/change and quality lenses join when material. Test/observability perspectives may join when Domain correctness must be proven or observed.
 
 ## Escalation / Revalidation
 
-Later Scenario Evidence may challenge Domain meaning and trigger Core revalidation/reopen disposition; architecture convenience cannot redefine it.
+Later Slice planning, Scenario change or implementation Evidence may challenge a Domain/Aggregate position.
 
-## High-Level Example — Self-Contained Walkthrough
-
-### Situation
-
-Scenario planning repeatedly refers to one captured item, its source context and rules about valid accepted state.
-
-The team wonders whether DDD concepts are useful.
-
-### Why This Lens
-
-The Domain Lens tests DDD pattern candidates against evidence rather than applying patterns by naming convention.
-
-### Walkthrough
-
-Ask:
-
-```text
-CaptureItem:
-  stable identity/lifecycle?
-
-SourceContext:
-  meaningful value equality/integrity?
-
-accepted state:
-  invariant?
-
-several captured items:
-  must they be transactionally consistent together?
-```
-
-Evidence may support:
-
-```text
-CaptureItem Entity
-SourceContext Value Object
-one-item consistency boundary
-```
-
-but reject:
-
-```text
-large ResearchAggregate
-```
-
-because no invariant requires such grouping.
-
-### Result
-
-The Lens produces evidence-backed concept/pattern findings for Domain Discovery/Draft.
-
-### Boundary / Lesson
-
-A noun is not automatically an Entity.
-
-A database relationship is not automatically an Aggregate boundary.
+Surface the narrow Finding Candidate. Core lifecycle decides whether the Strategy map, explicit Domain Target, Slice owner, Scenario owner or another owner is revalidated.
 
 ## Knowledge Basis
 
-Mode: `INLINE`
+No external Knowledge Basis is required for normal use.
 
-**Embedded Principles / Rules / Theory:**
+Operational principles:
 
-- Domain concepts/identity/invariants/consistency boundaries follow behavioral evidence and change meaning, not pattern names.
-- DDD patterns are candidate modeling aids; implementation convenience cannot become Domain authority.
-
-**Referenced Knowledge Owners:**
-
-- `NONE`
-
-**Reference Load Policy:**
-
-No external knowledge body is required for normal use.
-
-**Operationalization Notes:**
-
-The operational DDD principles needed by this methodology are embedded here; future deeper domain theory may be referenced without changing this Lens ownership.
-
-## Provenance
-
-Lossless extraction of the pre-Lens DDD specialized pack.
+- Domain concepts/identity/invariants/consistency boundaries follow behavioral Evidence, not pattern names.
+- DDD patterns are modeling aids, not required architecture.
+- broad/shallow discovery should stay shallow until deeper detail is actually needed.
+- current code remains the current implementation/domain realization authority.

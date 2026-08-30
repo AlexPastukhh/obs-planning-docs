@@ -93,11 +93,11 @@ Domain Discovery
 individual Domain owner file
 → conditional; may remain DOMAIN-DISCOVERY section + code/tests
 
-Slice Strategy / slice-portfolio discovery
-→ often valuable because code poorly represents the Slice inventory/order/decomposition rationale
+Slice Implementation Strategy
+→ often valuable because code poorly represents the intended Slice portfolio/Behavior realization, cross-Slice order, broad Domain/Aggregate use position and selected owner register
 
 individual Slice owner file
-→ conditional; small Slice Decisions/QRP may stay in SLICE-STRATEGY
+→ conditional; a stable Slice semantic identity/address may stay inline in SLICE-STRATEGY until independent size/reuse/review/addressability pressure justifies splitting it; this representation choice does not itself form a bounded TM-IMPLEMENTATION-SLICE Target
 
 Test Strategy
 → when shared coordination is material, may naturally act as a registry-like cross-Slice map of proof owner → test class/suite/setup/fixture/harness/helper; keep as a Strategy section first, split to TEST-REALIZATION-MAP only under independent pressure

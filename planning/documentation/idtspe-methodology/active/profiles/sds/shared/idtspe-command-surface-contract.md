@@ -178,9 +178,9 @@ A focused command is justified only when it represents a stable user intent/subs
 | `TM-DOMAIN-DISCOVERY` | `tmcmd.domain.discovery` | `исследуй домен` | Domain candidate space |
 | `TM-DOMAIN-DRAFT` | `tmcmd.domain.draft` | `спланируй домен <owner>` | one Domain owner |
 | `TM-TEST-DESIGN` | `tmcmd.test.design` | `спланируй тесты <target>` | one Domain/Slice/etc proof Target |
-| `TM-SLICE-STRATEGY` | `tmcmd.slice.strategy` | `спланируй стратегию слайсов` | Slice portfolio/decomposition |
+| `TM-SLICE-STRATEGY` | `tmcmd.slice.strategy` | `спланируй стратегию слайсов` | one Slice implementation-strategy area: portfolio/realization + broad Domain/Aggregate map + selected Slice semantic-owner register |
 | `TM-TEST-STRATEGY` | `tmcmd.test.strategy` | `спланируй стратегию тестирования` | one shared testing-strategy Target when justified; may include a test-realization registry/map |
-| `TM-IMPLEMENTATION-SLICE` | `tmcmd.slice.implementation` | `спланируй слайс <slice>` | one Slice owner |
+| `TM-IMPLEMENTATION-SLICE` | `tmcmd.slice.implementation` | `спланируй слайс <slice>` | one independently bounded Slice Target selected/reused through normal Target Formation; may reuse RU-SSTRAT-03 semantic identity |
 | `TM-FRONTEND-SLICE` | `tmcmd.slice.frontend` | `спланируй frontend <target>` | one promoted frontend Target when justified |
 | `TM-CROSS-CUTTING-CONCERN` | `tmcmd.crosscut` | `спланируй сквозную ответственность <target>` | one genuine shared non-vertical concern |
 | `TM-PRACTICAL-TEST` | `tmcmd.test.practical` | `спланируй практический тест <target>` | one implemented practical-Evidence Target; Intent/Collection Plan may be prepared before realization, actual Evidence/results require the real implemented subject |
@@ -322,10 +322,11 @@ These are typed shortcuts over `TM-TEST-DESIGN`, not separate algorithms.
 
 ```text
 спланируй слайс <slice>
-→ full/current Slice planning
+→ normal Target Formation resolves/reuses the bounded TM-IMPLEMENTATION-SLICE Target; RU-SSTRAT-03 identity/addressability is input, not creation authority
+→ full/current Slice planning with Runtime Path + Codebase Integration Path
 
 детализируй реализацию слайса <slice>
-→ same TM-IMPLEMENTATION-SLICE Target / usually REFINE after semantic contract or TDD Test Design exists
+→ same already selected/reused TM-IMPLEMENTATION-SLICE Target / usually REFINE after semantic contract or TDD Test Design exists
 ```
 
 The focused detail command is useful because it has a stable exit gate: call-level Codebase Integration Path / Part Plans.

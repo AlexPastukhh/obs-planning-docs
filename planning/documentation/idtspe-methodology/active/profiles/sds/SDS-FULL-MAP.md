@@ -68,7 +68,7 @@ Workspace / Architecture Evolution
   TM-WEUC
 
 Delivery
-  TM-SLICE-STRATEGY
+  TM-SLICE-STRATEGY — Slice Implementation Strategy
   TM-IMPLEMENTATION-SLICE
   TM-FRONTEND-SLICE — promoted only when independently material
   TM-CROSS-CUTTING-CONCERN — genuine shared non-vertical owner only
@@ -142,11 +142,13 @@ Domain Draft per material owner
 ↓
 per-Domain Test Design when proof responsibility is material
 ↓
-Slice Strategy / selected Slice portfolio
+Slice Implementation Strategy / selected Slice portfolio + broad/shallow Domain/Aggregate realization + selected semantic owner register
 ↓
 conditional Test Strategy
 ↓
-Implementation Slice per Slice
+Target Formation per selected Slice when independently bounded implementation planning is material
+↓ when selected/reused
+Implementation Slice
 ↔
 per-Slice Test Design
 ↓
@@ -160,6 +162,8 @@ selective Revalidation / narrow reopen
 ```
 
 `TM-WEUC` and the WEUC Lens are cross-cutting. The global Workspace Evolution Map can start once enough product/evolution direction exists and is refreshed as Domain/Slice/implementation knowledge improves.
+
+`TM-SLICE-STRATEGY` maintains its own broad/shallow Domain/Aggregate realization view even when separate Domain Discovery/Draft work is skipped or already exists. The separate Domain modules remain registered conditional deeper Domain-planning options in this transition; Strategy RU-02 is the Slice-to-Domain realization map, not a second Domain source of truth. `RU-SSTRAT-03` registers selected Slice semantic identity/addressability only; Target Formation remains the authority for any independently bounded `TM-IMPLEMENTATION-SLICE` Target.
 
 Canonical sequencing/readiness owner: [`shared/directed-methodology-workflow-and-next-step-resolution.md`](shared/directed-methodology-workflow-and-next-step-resolution.md).
 

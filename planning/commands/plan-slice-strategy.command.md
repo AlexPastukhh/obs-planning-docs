@@ -22,7 +22,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-STRATEGY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Slice portfolio, useful vertical results, ordering/dependencies and per-Slice planning entry points; may validly conclude no separate strategy artifact is needed.",
+  "expectedOutput": "Slice Portfolio / Realization Map, broad/shallow Domain / Aggregate Realization Map, and Selected Slice semantic-owner register; may validly stay minimal when strategy reasoning is not material. RU-SSTRAT-03 does not create bounded Implementation Slice Targets.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -30,14 +30,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Slice portfolio/decomposition>",
+  "userTarget": "<Slice implementation-strategy scope>",
   "palette": true,
   "directionIds": [
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use when decomposition/order/dependencies across several vertical results are material rather than obvious.",
-    "whatYouGet": "Slice portfolio, useful vertical results, ordering/dependencies and per-Slice planning entry points; may validly conclude no separate strategy artifact is needed.",
+    "whenToUse": "Use when Slice decomposition/order, broad Domain/Aggregate position, or selected Slice addressability is material rather than obvious.",
+    "whatYouGet": "Slice Portfolio / Realization Map, broad/shallow Domain / Aggregate Realization Map, and Selected Slice semantic-owner register; Target Formation remains responsible for any independently bounded Implementation Slice Target.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

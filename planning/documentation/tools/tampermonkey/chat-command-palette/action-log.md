@@ -443,3 +443,12 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply of this exact correction package, Helper README/package/manual/generated-artifact version projections are consistent at the stage-1 `0.33.0` release while the already-reviewed command side-effect implementation remains unchanged.
 
 **APPLIED relation:** successful Apply of package `2e8e69f2-5ff4-44b3-877a-8a84bb748e23` corrects the known ReviewDiff P2 inside still-open ChangeSet `8bb283e5-7568-45a0-a05a-4817567ad1e2`. The ChangeSet remains open until a later cumulative ReviewDiff is accepted as APPROVABLE; this package does not start a new ChangeSet.
+
+### XREF-028 — Regenerate Helper Slice Strategy command projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-125` / `LOG-DOC-126`  
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
+**Package:** `3b79ff63-c2ca-4bcc-8da9-023988123544`  
+**Reason:** Planning Helper participates only through regenerated `seed/commands.json` from the corrected Slice Strategy / Implementation Slice command definitions; runtime/source behavior is unchanged and full ReviewDiff rationale/APPLIED state remain in the reusable-documentation canonical log.

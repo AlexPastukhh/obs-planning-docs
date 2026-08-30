@@ -15,14 +15,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "план слайса приложения"
   ],
   "description": "implementation slice",
-  "meaning": "Run TM-IMPLEMENTATION-SLICE through the IDTSPE Shell for the selected target.",
+  "meaning": "Run TM-IMPLEMENTATION-SLICE through the IDTSPE Shell; normal Target Formation decides reuse/handoff/new bounded Target formation and may reuse RU-SSTRAT-03 semantic identity/addressability when TM-IMPLEMENTATION-SLICE is selected.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+  "expectedOutput": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and testing/evolution/frontend handoffs; material Strategy/Domain mismatch surfaces a Finding Candidate for Core disposition.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -36,8 +36,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use when one Useful Vertical Result needs integrated realization planning.",
-    "whatYouGet": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+    "whenToUse": "Use when one selected Slice needs independently bounded realization planning; Target Formation must select/reuse/form that bounded Target rather than treating the Strategy owner register as creation authority.",
+    "whatYouGet": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and handoffs; accepted upstream changes occur only after Core Finding Disposition.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

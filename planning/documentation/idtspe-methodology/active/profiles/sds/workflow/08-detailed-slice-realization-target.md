@@ -20,31 +20,39 @@ TM-CROSS-CUTTING-CONCERN
   shared non-vertical implementation responsibility
 ```
 
-## Useful Vertical Result Source
+## Selected Slice Owner Source
 
-Each normal Slice starts from:
+A normal detailed Slice refines one stable selected Slice semantic identity. When `TM-SLICE-STRATEGY` was used, that identity/addressability is registered in `RU-SSTRAT-03 Selected Slice Owner Register` and may still be physically embedded inside the Strategy artifact. The register does not itself create a bounded `TM-IMPLEMENTATION-SLICE` Target; normal Target Formation must select/reuse that bounded Target when independent detailed Slice planning is material. Semantic Slice identity does not require a separate `SL-<id>.md` file.
+
+The implementation owner normally starts from planning meaning such as:
 
 ```text
 Slice ID
-Slice Role: INITIAL_VERTICAL | EXTENDING_VERTICAL
 Primary Scenario
-Extends / Baseline Guarantees — when extending
 Useful Vertical Result
-Behavior Obligations
-DATA Obligations
-Requirement / Invariant Obligations
-Screen Obligations — when UI
-Domain Obligations — when useful
+Behavior Items realized
+relevant Scenario DATA used / produced / changed
+must-hold / negative guarantees
+Domain / Aggregate elements currently expected or known to be used
+related Screen / Cross-Cutting relations when material
+real dependencies / order constraints
+May Change / Extend pressure when useful
 ```
 
-Explicit `TM-SLICE-STRATEGY` may select this definition; trivial work may form the same definition locally before detailed planning.
+`INITIAL_VERTICAL` / `EXTENDING_VERTICAL` may still be descriptive language when helpful, but it is not a required classification contract.
 
-## Verticality
+If explicit Strategy was skipped because one small Slice was obvious, establish the minimum equivalent Slice semantic meaning locally. When independently bounded implementation planning is material, Target Formation still decides whether to reuse/form `TM-IMPLEMENTATION-SLICE`; if selected, it refines that Slice meaning rather than duplicating it merely because an earlier representation contained the identity.
+
+## Verticality And Domain Use
 
 ```text
 one normal vertical Slice → exactly one Primary Scenario
-one Scenario → may have several initial/extending Slices
+one Scenario → may have several independently useful/checkable Slices
+one Slice → may use several Aggregates/domain concepts
+one Aggregate/domain concept → may be used by several Slices
 ```
+
+Detailed Slice planning may discover that Strategy decomposition or `Slice → Uses → Aggregate/domain concept` relations are incomplete/wrong. Surface a Finding Candidate, pass it through Core Finding Disposition, and perform bounded revalidation only when that lifecycle consequence is selected; do not treat Strategy as an immutable one-way handoff.
 
 Shared work across several Scenarios/Slices surfaces an ownership Finding Candidate; `TM-CROSS-CUTTING-CONCERN` or another shared owner may be a likely-owner hint, while Core Finding Disposition resolves the actual owner/State consequence and Target Formation handles independently material Target ownership. Architecture normally remains an Answer Decision; when a separate architecture problem is independently material, surface a Target Formation candidate and let Target Formation decide reuse/handoff/new bounded Target.
 

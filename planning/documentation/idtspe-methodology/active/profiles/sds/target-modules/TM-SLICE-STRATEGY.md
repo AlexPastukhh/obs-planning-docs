@@ -1,316 +1,450 @@
-# TM-SLICE-STRATEGY — Useful Vertical Result Decomposition / Order
+# TM-SLICE-STRATEGY — Slice Implementation Strategy
 
 Entry Point: `tm.slice.strategy`  
 Role: primary optional Target Module  
-Target form: implementation decomposition strategy
+Compatibility ID: `TM-SLICE-STRATEGY` is retained while the module semantics are broadened to Slice Implementation Strategy.
 
 ## Purpose
 
-Choose/review a set and order of `Useful Vertical Result Definitions` when a Scenario/application area is large or uncertain enough that decomposition itself is material.
+Translate known Scenario behavior into a coherent vertical implementation portfolio, discover enough Domain/Aggregate position to shape implementation responsibly, and form stable selected Slice semantic identities/addresses for later detailed realization planning.
 
-Explicit Strategy may be skipped when one obvious small vertical result exists.
+The Strategy may cover one Scenario or several sufficiently related Scenarios when a broader view is needed to see shared Domain/Aggregate boundaries. A normal vertical Slice still has exactly one Primary Scenario.
 
+Keep this Target proportional. When one obvious small Slice exists and no material decomposition, Domain-boundary or ordering reasoning is needed, the same meaning may be handled minimally or the explicit Strategy Target may be skipped.
 
+The key flow is:
+
+```text
+Scenario Behavior / Requirements
+↓
+Behavioral Decomposition
+  Behavior Items + DATA
+↓
+TM-SLICE-STRATEGY
+  Slice Portfolio / Realization Map
+  Domain / Aggregate Realization Map
+  Selected Slice Owner Register
+↓
+Target Formation — when independently bounded Slice planning is material
+  reuse existing Target | hand off/reference existing owner | form new TM-IMPLEMENTATION-SLICE Target
+↓ when TM-IMPLEMENTATION-SLICE is selected/reused
+TM-IMPLEMENTATION-SLICE
+```
+
+## Core Boundary
+
+A Slice is an independently useful/checkable vertical implementation increment inside one Primary Scenario.
+
+Slice boundaries are not technical layers. Normal Slice decomposition must not produce `database first`, `backend second`, `frontend third` merely because the implementation has those layers.
+
+`Behavior Item` and `Slice` are different levels:
+
+```text
+Behavior Item
+= stable addressable required behavior
+
+Slice
+= independently useful/checkable implementation increment
+  that may realize one or several Behavior Items
+```
+
+Do not create one Slice per Behavior Item mechanically.
+
+Frontend realization belongs inside the normal vertical Slice when feature-local. Shared non-vertical implementation responsibility remains a Cross-Cutting ownership question rather than a fake multi-Scenario Slice.
+
+## Upstream Source Contract
+
+### Direct Semantic Sources
+
+```text
+Scenario Behavior / Requirements
+Behavioral Decomposition
+  Behavior Items
+  Scenario DATA
+Scenario Development / Change Outlook
+local/shared must-hold conditions / negative guarantees
+Screen meaning when spatial/UI topology is relevant
+accepted Cross-Cutting contracts when already known
+```
+
+### Evidence / Current-State Sources
+
+```text
+current code / implementation
+Prototype Evidence when relevant
+implemented practical Evidence when relevant
+existing Domain/Aggregate realization when already present
+dependency/integration facts
+```
+
+Current code is authoritative current technical/domain realization truth. This Strategy may summarize planning-relevant boundaries and relations, but it must not maintain a stale parallel mirror of implementation details.
+
+### Constraint / Planning-State Sources
+
+```text
+accepted Decisions
+material Q/R/P
+delivery/dependency constraints
+quality/risk constraints when they affect Slice boundaries/order
+```
+
+### Source Discovery Rule
+
+Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
+
+## Lens Profile
+
+Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md).
+
+Primary reusable Lenses:
+
+- [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md) — useful/checkable vertical Slice boundaries, behavioral realization coverage and integration integrity.
+- [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md) — broad/shallow identity, invariant and consistency-boundary discovery when Domain/Aggregate reasoning is material.
+
+Frequent conditional Lenses:
+
+- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — when dependencies or change surface constrain decomposition/order.
+- [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — when material quality/risk changes Slice or Domain boundaries.
+- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when independently checkable/observable boundaries matter.
+
+Other Lenses are selected only when materially useful. No separate Target Module Knowledge Basis is currently required; reusable Slice/DDD knowledge is supplied through the relevant Lenses.
 
 ## High-Level Example — Self-Contained Walkthrough
 
 ### Situation
 
-One selected Scenario is too large to deliver safely in one increment:
+`SCN-PAYMENT` already describes the required payment behavior and exposes addressable Behavior Items such as choosing a method, providing payment information, attempting payment and presenting a truthful result. Its Change Outlook says additional methods are likely and asynchronous completion may become necessary later.
+
+The team now needs an implementation strategy without inventing backend/frontend phases or a speculative full Domain model.
+
+### Strategy result
+
+`RU-SSTRAT-01` may select:
 
 ```text
-SCN-CAPTURE:
-  preserve selected material,
-  source context,
-  optional thought,
-  and several convenience behaviors
+SL-PAYMENT
+Primary Scenario: SCN-PAYMENT
+Useful result:
+  user can pay a payable order with a supported method
+  and receive a truthful result
+
+Realizes:
+  B-PAY-01..B-PAY-06
+
+May Change / Extend:
+  additional payment methods
+  asynchronous completion may later be required
 ```
 
-The team needs useful delivery increments, not frontend/backend/database phases.
-
-### Why This Module
-
-`TM-SLICE-STRATEGY` is used only because **decomposition/order itself is a material decision**.
-
-If one obvious small vertical result existed, this Target could be skipped.
-
-### Walkthrough
-
-Candidate decomposition:
+`RU-SSTRAT-02` may initially contain only broad/shallow position:
 
 ```text
-SL-CAP-01 — INITIAL_VERTICAL
-  user can durably save selected material
-  and receive truthful success/failure
+Order
+  identity/state + rule about when it may become paid
 
-SL-CAP-02 — EXTENDING_VERTICAL
-  captured item also preserves source context
-  while all SL-CAP-01 guarantees remain true
+Payment
+  payment-attempt lifecycle/result consistency candidate
 
-SL-CAP-03 — EXTENDING_VERTICAL
-  user may add an optional short thought
+SL-PAYMENT
+  Uses → Order
+  Uses → Payment
 ```
 
-For every candidate, Strategy associates:
+This does not claim that one Slice equals one Aggregate or that the complete internal Domain model is already known. Later detailed Slice planning may confirm, split, merge or reject a candidate boundary; a material challenge becomes a Finding Candidate and crosses Core Finding Disposition before any bounded revalidation is selected.
+
+`RU-SSTRAT-03` may register:
 
 ```text
-one Primary Scenario
-Useful Vertical Result
-Behavior obligations
-DATA obligations
-must-hold obligations
-Screen obligations when UI
-Domain obligations when useful
-real dependencies
+SL-PAYMENT
+  semantic owner: SL-PAYMENT
+  representation: inline in this Strategy for now
+  readiness: ready for the next implementation-planning decision
 ```
 
-Alternative decomposition:
-
-```text
-database first
-backend second
-frontend third
-```
-
-is rejected because those increments are technical layers, not independently useful vertical results.
-
-### Result
-
-The selected Strategy gives one or more `Useful Vertical Result Definitions` and their justified order.
-
-The next selected definition becomes Source for `TM-IMPLEMENTATION-SLICE`.
+`RU-SSTRAT-03` does **not** create a bounded `TM-IMPLEMENTATION-SLICE` Target. When independent bounded Slice planning is useful, normal Target Formation decides whether to reuse an existing Target, hand off/reference another suitable owner, or form a new bounded `TM-IMPLEMENTATION-SLICE` Target. If that module is selected/reused, it refines the same `SL-PAYMENT` semantic Slice identity rather than creating duplicate Slice meaning. If detailed planning or code reveals that the Domain/Aggregate position differs, surface a Finding Candidate; Core Finding Disposition decides whether bounded revalidation of `RU-SSTRAT-02` or another owner is warranted. Current code remains the authority for the realized technical/domain shape.
 
 ### Boundary / Lesson
 
-One Scenario may have several Slices.
+The Strategy owns implementation decomposition, the planning-level Slice↔Domain realization map and owner addressability. It does not own Screen topology, a full Domain Draft, permanent code realization mirrors or detailed Slice implementation bodies.
 
-A normal vertical Slice does not span several unrelated Scenarios merely because implementation code is shared; shared work belongs to Cross-Cutting/shared ownership.
+## Evaluation / Production Method
 
-## Upstream Source Contract
+### 1. Establish Strategy scope
 
-### Direct Semantic Sources
-```text
-Scenario(s) being decomposed
-Scenario DATA
-Behavior Items
-local/shared must-hold conditions / negative guarantees
-Screens when UI/spatial meaning matters
-selected Domain meaning when present
-```
+Select only the implementation-planning area needed for a coherent decision:
 
-### Inherited Lineage
-```text
-Fundamental Need
-selected real-world solution
-Application Definition
-```
+- Scenario(s) currently moving toward implementation;
+- current/core Behavior Items and DATA;
+- relevant Scenario Development / Change Outlook;
+- current code/domain realization when extending an existing application.
 
-### Evidence / Current-State Sources
-```text
-Application feasibility Evidence
-Prototype Evidence when relevant
-current implementation/workspace state
-observed work/change Evidence
-SDS-WORKSPACE-EVOLUTION.md when decomposition should account for planned/probable evolution
-```
+Do not scan the whole application without reason.
 
-### Constraint / Planning-State Sources
-```text
-accepted architecture Answer Decisions
-Cross-Cutting contracts
-delivery/dependency constraints
-```
+### 2. Discover vertical Slice candidates
 
-### Source Discovery Rule
-Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
+Ask:
 
-## Knowledge Basis
+- what minimum behavior produces an independently useful/checkable result?
+- which one Primary Scenario does this Slice advance?
+- which Behavior Items does it realize?
+- which DATA is materially used/produced/changed?
+- what must remain true after delivery?
+- is this actually vertical, or only a technical layer/prerequisite?
 
-Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+A technical prerequisite may be real work, but it is not relabeled as a normal vertical Slice merely for planning convenience.
 
-Mode: `INLINE`
+`INITIAL_VERTICAL` / `EXTENDING_VERTICAL` may remain descriptive language where useful, but are not required conformance enums.
 
-**Embedded Principles / Rules / Theory:**
+### 3. Check behavioral coverage in both directions
 
-- Slice Strategy is a Target only when vertical decomposition/order itself is a material choice.
-- Slices are shaped around Useful Vertical Results rather than horizontal layers.
-- Strategy coordinates portfolio/order/dependencies without pre-solving each Slice implementation.
-
-**Referenced Knowledge Owners:**
-
-`NONE`
-
-**Reference Load Policy:**
-
-No additional Knowledge Basis body is required by default; reusable Slice verticality/evolution evaluation knowledge remains in Lenses.
-
-**Operationalization Notes:**
-
-This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
-
-## Question Set Examples — Non-Exhaustive
-
-Examples only.
+For current material Scenario behavior:
 
 ```text
-What is the earliest genuinely useful actor-visible/checkable result?
-Which one Primary Scenario does each normal Slice advance?
-Can one Scenario be split into several independently useful results?
-Is the candidate INITIAL_VERTICAL or EXTENDING_VERTICAL?
-If extending, what prior accepted result/baseline is extended?
-Which baseline guarantees must remain true?
-Which Behavior/DATA/Requirement/Screen obligations belong to each result?
-What dependencies truly constrain order?
-Which Slice buys the most useful learning/risk reduction?
-Where does product priority differ from implementation sequence?
-Which work is shared/cross-cutting rather than a fake multi-Scenario vertical Slice?
-Does frontend work deserve an independent promoted Frontend Target or only a Part Plan?
+every material Behavior Item
+→ realized by a selected Slice
+  OR explicitly deferred/outside
 ```
 
-## Lens Profile
-
-Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):
-- [`LENS-NEED-VALUE-SCOPE`](../../../idtspe-core/lenses/required/LENS-NEED-VALUE-SCOPE.md) — L1.
-- [`LENS-AUTHORITY-SOT-REUSE`](../../../idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md) — L2.
-- [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](../../../idtspe-core/lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md) — L3; required check may resolve as `no material uncertainty`.
-- [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](../../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — Documentation / Representation; required materialization-stage check that may resolve as `NO_PERSISTENCE_NEEDED` or implementation-native/existing-owner representation.
-
-Primary reusable Lens Pack(s):
-- [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md) — required for useful/checkable decomposition
-
-Frequent conditional Lens(es):
-- [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md) — when candidate structure may contain avoidable abstractions/entities/steps/test machinery; simplify only after checking global/local evolution constraints
-- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — when dependency/change surface constrains boundaries/order
-- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — when WEUC/change/architecture tax differentiates decompositions
-- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when independently provable/operable boundaries affect decomposition
-- [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — when quality risk constrains sequence
-
-## Idea / Branch Use
-
-Candidate decompositions/orders are normal IDTSPE Ideas.
+And:
 
 ```text
-shallow comparison sufficient
-→ compare Ideas in current Target
-
-materially different decompositions imply
-different downstream architecture/runtime/delivery networks
-→ optional Planning Branches
+every selected Slice / claimed behavior
+→ grounded in Scenario behavior
 ```
 
-A Planning Branch is not mandatory just because several Slice candidates exist.
+If Strategy invents new product behavior, route it through normal Idea/Scenario lifecycle instead of silently adding it to a Slice.
 
-## Resolution / Production Method
+### 4. Perform broad/shallow Domain / Aggregate discovery
 
-This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+Across the selected behavior scope, inspect only enough Domain meaning to shape implementation:
 
-Default reusable production path:
+- stable identity/lifecycle clues;
+- rules/invariants that must remain correct together;
+- consistency boundaries;
+- existing code/domain owners that can be reused;
+- cross-boundary coordination;
+- meaning that is clearly application/orchestration/presentation rather than Domain.
+
+Ask primarily:
+
+> Which state/identity/invariants must stay correct together?
+
+Do not attempt a full Domain Draft here. Do not enumerate every Entity/Value Object/field/method/repository or persistence shape.
+
+One Slice may use several Aggregates/domain concepts. One Aggregate may be used by several Slices. Vertical Slice Architecture does not imply `one Slice = one Aggregate`.
+
+Canonical relation direction is:
 
 ```text
-establish planning area/value order → discover candidate vertical results → separate shared/specialized responsibility → compare through normal Ideas/Branches/QRP/Decisions → select decomposition/order
+Slice
+→ Uses
+→ Aggregate / Domain concept
 ```
 
-Because Strategy itself produces a candidate/decomposition space, the candidate Slice set is target-specific result meaning; individual competing alternatives may also use Core Idea/Branch State.
+Inverse `Aggregate → used by Slices` is a generated/read view when useful.
 
-A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+### 5. Stress decomposition against known change
+
+Use Scenario Development / Change Outlook and other credible change pressure to ask:
+
+- which Slice is likely to change/extend?
+- which Aggregate/domain boundary would be affected?
+- is the change surface reasonably localized?
+- are we cementing an accidental limitation?
+- are we creating abstraction now for only hypothetical future value?
+
+Keep future pressure as `May Change / Extend` when it is not yet a concrete selected Slice.
+
+### 6. Decide useful implementation sequence
+
+Consider:
+
+- product/value priority;
+- real dependencies;
+- risk/learning value;
+- which Slice owners are ready;
+- whether an Aggregate/domain boundary needs deeper reasoning before a Slice is planned.
+
+Possible planning approaches include deeper upfront Domain work, Aggregate-by-Aggregate refinement, or Slice-by-Slice refinement. They are guidance/choices, not a mandatory strategy enum.
+
+### 7. Form stable Slice semantic owner identities
+
+Each selected Slice gets stable addressable semantic owner identity. Registering that identity is not itself formation of a bounded `TM-IMPLEMENTATION-SLICE` Target.
+
+The owner slot may be:
+
+- inline in the Strategy artifact;
+- a section in another suitable owner;
+- a separate Slice artifact.
+
+Semantic ownership does not imply one file per Slice.
+
+Detailed implementation meaning may later refine the same Slice semantic owner, but `RU-SSTRAT-03` only registers identity/addressability. When independently bounded implementation planning is material, Target Formation remains the authority that selects/reuses/forms that Target.
+
+### 8. Revalidate as detailed Slice planning and implementation teach us
+
+When Target Formation has selected/reused `TM-IMPLEMENTATION-SLICE`, detailed Slice planning or later implementation may reveal that a proposed Domain boundary, dependency or Slice decomposition is wrong or incomplete.
+
+That is normal:
+
+```text
+Strategy
+↓
+Slice planning / implementation Evidence
+↓
+Finding Candidate
+↓
+Core Finding Disposition
+↓
+bounded revalidation when selected
+↓
+Strategy refinement when warranted
+```
+
+Broad Domain discovery should therefore refine toward the actual domain elements used by Slices rather than becoming a one-time frozen discovery document.
 
 ## Target Step-Result Contract
 
-**Target Step Result:** `Slice Strategy`
+**Target Step Result:** `Slice Implementation Strategy`
 
-The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+| Result Unit | Meaning |
+|---|---|
+| `RU-SSTRAT-01` | Slice Portfolio / Realization Map |
+| `RU-SSTRAT-02` | Domain / Aggregate Realization Map |
+| `RU-SSTRAT-03` | Selected Slice Owner Register |
 
-| Result Unit | Meaning | Current projection detail |
-|---|---|---|
-| `RU-SSTRAT-01` | Strategy Context | Planning Area + Product/Scenario Priority |
-| `RU-SSTRAT-02` | Candidate Slice Set | Candidate Slice Definitions |
-| `RU-SSTRAT-03` | Related Shared / Specialized Target Map — optional | Shared/Cross-Cutting Targets + promoted Frontend specialized Targets |
-| `RU-SSTRAT-04` | Selected Decomposition / Order | Selected Useful Vertical Result Definitions + real dependency/order rationale |
+Result Unit identity does not imply one file or one section per item.
 
-Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+### RU-SSTRAT-01 — Slice Portfolio / Realization Map
 
+Owns which vertical Slices exist in this Strategy scope and what accepted behavior each Slice is intended to realize.
 
-
-### Strategy Context
-
-**Planning Area** — Scenario/application area being decomposed and why explicit Strategy is useful.
-
-**Product / Scenario Priority** — desired value order; not automatically implementation order.
-
-### Candidate Slice Definitions
-
-For each candidate:
+For each material Slice, record proportionally:
 
 ```text
 Slice ID / label
-
-Slice Role:
-  INITIAL_VERTICAL | EXTENDING_VERTICAL
-
 Primary Scenario
-
-Extends — when EXTENDING_VERTICAL:
-  prior accepted Slice/result/capability baseline
-
-Useful Vertical Result:
-  concise actor/user-facing observable result
-
-Baseline Guarantees To Preserve — when extending
-
-Behavior Obligations
-DATA Obligations
-Requirement / Invariant Obligations
-Screen Obligations — when UI
-Domain Obligations — when useful at strategy depth
-
+Useful Vertical Result
+Realizes:
+  Behavior Item refs
+Relevant DATA:
+  uses / produces / changes when material
+must-hold / negative guarantees when material
+Related Screen / Cross-Cutting relations when material
 Dependencies / prerequisites
-Learning / risk value
-Expected order
+Implementation order / readiness when useful
+May Change / Extend
 ```
 
-These obligation sets are the semantic decomposition of the Useful Vertical Result, not independent coverage scores.
+`May Change / Extend` records known planning-relevant pressure, not automatically a future Slice.
 
-Important fields:
+The Useful Vertical Result is actor-visible/checkable meaning, not an implementation task.
 
-- **Slice Role** — initial baseline or extension of an accepted vertical result.
-- **Primary Scenario** — exactly one for a normal vertical Slice.
-- **Useful Vertical Result** — what usefully/observably becomes true when delivered.
-- **Baseline Guarantees** — prior accepted result that an extending Slice must not break.
-- **Behavior / DATA / Requirement / Screen / Domain Obligations** — exact selected upstream meaning that this result must realize.
-- **Dependencies / prerequisites** — real ordering constraints, not semantic Sources by default.
-- **Learning / risk value** — why this Slice/order is useful beyond feature count.
+### RU-SSTRAT-02 — Domain / Aggregate Realization Map
 
+Owns the planning-level Domain/Aggregate position needed to shape current implementation.
 
-### Shared / Cross-Cutting Targets
+It begins broad/shallow and becomes more precise as selected Slices are planned/implemented:
 
-List non-vertical shared responsibilities discovered during decomposition as ownership Finding Candidates. `TM-CROSS-CUTTING-CONCERN` or another shared owner may be a likely-owner hint; Core Finding Disposition resolves the actual semantic owner/State consequence, and materially independent Target ownership becomes Target Formation input.
+```text
+Scenario behavior
+↓
+broad identity / invariant / consistency clues
+↓
+candidate Aggregate/domain boundaries
+↓
+Slice → Uses → Domain elements
+↓
+current code realization confirms/challenges the position
+```
 
-### Frontend Specialized Targets
+Record only useful meaning such as:
 
-Frontend planning remains a Part Plan by default. When frontend itself has independent Target-Scope/Question/Decision/revalidation depth, surface a Target Formation candidate with `TM-FRONTEND-SLICE` as the likely module family rather than treating the Slice Strategy as Target-creation authority.
+```text
+Aggregate/domain concept
+boundary rationale
+important identity/lifecycle/invariant clues
+cross-boundary coordination
+Slice → Uses relations
+existing code owner / realization reference when useful
+known change pressure affecting the boundary
+```
 
-### Selected Decomposition And Order
+This Result Unit is not a full Domain model and is not authoritative over current implementation details after code exists. Code remains the current technical/domain realization truth.
 
-State selected Useful Vertical Result Definitions plus real dependency/order rationale.
+Detailed Slice planning should refine its own `Domain Elements Used` against the broad Strategy position. If a candidate Aggregate proves unnecessary or the map is materially wrong, surface a Finding Candidate; Core Finding Disposition selects any resulting bounded Strategy/Domain revalidation before accepted map meaning changes.
 
-## Artifact / File Contract
+### RU-SSTRAT-03 — Selected Slice Owner Register
 
-### Structured Artifact / File Proposals
+Owns the stable set/addressability of selected Slice semantic owners formed from this Strategy.
 
-These proposal records are the Target Module's local placement guidance. [`ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md) projects them into the annotated SDS materialization tree; this Target Module remains the source.
+For each owner, record only enough coordination meaning:
+
+```text
+Slice ID
+Slice semantic owner identity
+representation/address
+inline vs linked/separate representation when known
+planning readiness/status when useful
+bounded Implementation Slice Target relation — only after Target Formation, when one exists
+```
+
+Example:
+
+```text
+SL-PAYMENT
+Semantic Owner: SL-PAYMENT
+Representation: inline owner slot below
+State: ready for the next implementation-planning decision
+Bounded Implementation Target: none yet
+```
+
+The register does **not** own the detailed implementation plan.
+
+When Target Formation later selects/reuses a bounded `TM-IMPLEMENTATION-SLICE` Target, that Target refines the same Slice semantic owner whether its representation is inline or physically split. The register itself is not Target-creation authority.
+
+## Representation / Artifact Contract
+
+Keep representation economical.
+
+```text
+one Strategy artifact
+├─ Slice Portfolio
+├─ Domain / Aggregate Realization Map
+└─ Selected Slice Owners
+   ├─ SL-PAYMENT owner slot
+   ├─ SL-CANCEL owner slot
+   └─ SL-REFUND owner slot
+```
+
+is valid.
+
+Later:
+
+```text
+Strategy artifact
+├─ Slice Portfolio
+├─ Domain / Aggregate Realization Map
+└─ Selected Slice Owner Register
+   └─ SL-PAYMENT → slices/SL-PAYMENT.md
+```
+
+is also valid.
+
+The semantic model did not change; only G3 / Documentation Representation changed.
 
 ```text
 ARTIFACT_PROPOSAL
 ID: AP-SSTRAT-01
-CONTENT_KIND: SLICE_STRATEGY
-WHEN: decomposition/order itself is material and selected
+CONTENT_KIND: SLICE_IMPLEMENTATION_STRATEGY
+WHEN: Slice portfolio/domain position/owner coordination is materially useful
 GUIDANCE: REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Slice Strategy Target
+SEMANTIC_OWNER: current TM-SLICE-STRATEGY Target
 REPRESENTATION: EXISTING_OR_NEW_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <slice-strategy-owner>
-CONTENT: candidate/selected Useful Vertical Result Definitions; Initial/Extending roles; obligations; dependencies/order rationale
+CONTENT: Slice Portfolio / Realization Map; Domain / Aggregate Realization Map; Selected Slice Owner Register
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
@@ -318,52 +452,76 @@ RESOLVER: P-14 / TF-10
 ```text
 ARTIFACT_PROPOSAL
 ID: AP-SSTRAT-02
-CONTENT_KIND: SELECTED_SLICE_DEFINITION
-WHEN: one selected result proceeds to implementation planning
+CONTENT_KIND: SELECTED_SLICE_OWNER
+WHEN: a selected Slice receives stable semantic identity/addressability
 GUIDANCE: PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: future Implementation Slice Target
-REPRESENTATION: EXISTING_STRATEGY_SECTION_OR_DEDICATED_SLICE_ARTIFACT
+SEMANTIC_OWNER: selected Slice semantic owner
+REPRESENTATION: INLINE_OWNER_SLOT_OR_DEDICATED_ARTIFACT
 FILE_OR_ARTIFACT: <slice-strategy-owner>#<slice> or <slice-owner>
-CONTENT: selected Useful Vertical Result Definition is consumed by TM-IMPLEMENTATION-SLICE rather than duplicated as equal owner
+CONTENT: stable Slice semantic identity/addressability; any independently bounded TM-IMPLEMENTATION-SLICE Target is selected/reused/formed only through Target Formation and then refines the same Slice meaning
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
+Do not create a file per Slice merely because a Slice has semantic identity.
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
+Do not persist generated inverse relation mirrors or detailed code realization copies when they can be obtained reliably from current code.
 
-`SLICE-STRATEGY.md` is the preferred durable coordinator for **which Slices exist, their useful vertical results, order/dependencies and small per-Slice Decisions/QRP**. A selected Slice becomes a logical `TM-IMPLEMENTATION-SLICE` Target without automatically receiving its own file. Promote `SL-<id>.md` only when independent planning/review/addressability is useful.
+## Guards
 
-**REQUIRED** — selected Useful Vertical Result Definitions/order used to form implementation Targets must persist in a Slice Strategy owner or stable Slice-definition register.
-
-**PREFERRED** — keep the decomposition portfolio/order together while candidates are compared; each selected Slice can later receive its own implementation owner through `TM-IMPLEMENTATION-SLICE`.
-
-Shared non-vertical responsibilities surface ownership Finding Candidates rather than being persisted as fake multi-Scenario Slices; Core Finding Disposition resolves the semantic owner/State consequence, and Target Formation decides reuse/handoff/new bounded Target when independent Target ownership is material.
-
-**Optional evolution references** may point from future Slice definitions to `SDS-WORKSPACE-EVOLUTION.md` or local Slice evolution companions.
-
-`P-14` must show which candidate definitions are canonical selected outputs vs transient Ideas/Branches.
+```text
+Behavior Item ≠ Slice
+Slice ≠ technical layer
+Slice ≠ Aggregate
+one Slice may use several Aggregates
+one Aggregate may support several Slices
+Strategy ≠ full Domain Draft
+Strategy ≠ Screen topology owner
+Strategy ≠ detailed Slice implementation owner
+Strategy owner slot ≠ mandatory separate file
+future pressure ≠ automatic future Slice
+current code realization ≠ stale documentation mirror
+```
 
 ## Exit Gate
 
-At least one next implementation Target has a selected Useful Vertical Result Definition precise enough to start detailed implementation planning without inventing product behavior during coding.
+At least one selected Slice semantic owner is ready for the next implementation-planning decision without downstream work having to invent product behavior or basic decomposition from scratch. When independently bounded detailed Slice planning is material, it is ready for normal Target Formation.
+
+For a ready Slice, the Strategy should make clear:
+
+- its useful result and Primary Scenario;
+- material Behavior Items and DATA;
+- relevant Domain/Aggregate position at sufficient depth;
+- material dependencies;
+- known `May Change / Extend` pressure;
+- stable Slice owner identity/address.
+
+Blocking uncertainty remains Generic Q/R/P rather than being hidden inside the Strategy.
 
 ## Handoff
 
-Normal directed handoff:
-
 ```text
-selected Slice portfolio
-+ material per-Domain proof designs already planned/not-applicable/deferred
+TM-SLICE-STRATEGY
+  RU-SSTRAT-01 Slice Portfolio / Realization Map
+  RU-SSTRAT-02 Domain / Aggregate Realization Map
+  RU-SSTRAT-03 Selected Slice Owner Register
 ↓
-TM-TEST-STRATEGY — when shared/cross-Slice layer coordination is material
+Target Formation — only when independently bounded Slice planning is material
+↓ when TM-IMPLEMENTATION-SLICE is selected/reused
+TM-IMPLEMENTATION-SLICE
+  refines the same selected Slice semantic identity
 ↓
-TM-IMPLEMENTATION-SLICE per selected Slice
-↔ TM-TEST-DESIGN per Slice
+implementation/code Evidence
+↓
+Finding Candidate
+↓
+Core Finding Disposition
+↓
+bounded revalidation of Strategy when selected
 ```
 
-If shared strategy is not material, selected `Useful Vertical Result Definition` goes directly to `TM-IMPLEMENTATION-SLICE` and local `TM-TEST-DESIGN`.
+`TM-TEST-DESIGN`, Screen and Cross-Cutting planning may consume the Strategy/Slice owners when their own Target gates are met.
 
-Shared non-vertical responsibility candidates → Core Finding Disposition → Target Formation when independent shared ownership is material; frontend specialization candidates → Target Formation when independent frontend Target depth is material. When those resolutions select/form the corresponding Target families, use `TM-CROSS-CUTTING-CONCERN` or `TM-FRONTEND-SLICE` respectively.
+Existing `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT` remain separate registered modules in this transition; this redesign intentionally does not delete or migrate their command topology yet. `TM-SLICE-STRATEGY` nevertheless owns its own broad/shallow Domain/Aggregate realization map so Slice planning is not forced to invent implementation boundaries blindly.

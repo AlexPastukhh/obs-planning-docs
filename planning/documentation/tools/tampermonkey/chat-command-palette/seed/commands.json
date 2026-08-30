@@ -848,14 +848,14 @@
         "детализируй реализацию слайса"
       ],
       "description": "focused SDS target",
-      "meaning": "Run focused TM-IMPLEMENTATION-SLICE intent without creating a new Target type.",
+      "meaning": "Run focused TM-IMPLEMENTATION-SLICE intent on the same already selected/reused bounded Slice Target; do not create a new Target identity.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Refined Integrated Implementation Plan for the same Slice Target; no new Target identity.",
+      "expectedOutput": "Refined Runtime Path, Codebase Integration Path, Domain Elements Used and proportional Part Plans for the same Slice Target; no new Target identity.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -866,8 +866,8 @@
       "userTarget": "<existing Slice>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when the Slice semantic contract exists and implementation sequencing/runtime path needs deeper concrete detail.",
-        "whatYouGet": "Refined Integrated Implementation Plan for the same Slice Target; no new Target identity.",
+        "whenToUse": "Use when the bounded Slice Target already exists and its implementation sequencing/runtime path needs deeper concrete detail.",
+        "whatYouGet": "Refined Runtime Path, Codebase Integration Path, Domain Elements Used and proportional Part Plans for the same already selected Slice Target; no new Target identity.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -1571,14 +1571,14 @@
         "план слайса приложения"
       ],
       "description": "implementation slice",
-      "meaning": "Run TM-IMPLEMENTATION-SLICE through the IDTSPE Shell for the selected target.",
+      "meaning": "Run TM-IMPLEMENTATION-SLICE through the IDTSPE Shell; normal Target Formation decides reuse/handoff/new bounded Target formation and may reuse RU-SSTRAT-03 semantic identity/addressability when TM-IMPLEMENTATION-SLICE is selected.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+      "expectedOutput": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and testing/evolution/frontend handoffs; material Strategy/Domain mismatch surfaces a Finding Candidate for Core disposition.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -1589,8 +1589,8 @@
       "userTarget": "<one implementation Slice>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when one Useful Vertical Result needs integrated realization planning.",
-        "whatYouGet": "Slice obligations, Runtime Path, Integrated Implementation Plan, Decisions/Q/R/P, testing/evolution/frontend handoffs.",
+        "whenToUse": "Use when one selected Slice needs independently bounded realization planning; Target Formation must select/reuse/form that bounded Target rather than treating the Strategy owner register as creation authority.",
+        "whatYouGet": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and handoffs; accepted upstream changes occur only after Core Finding Disposition.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -2264,7 +2264,7 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-STRATEGY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Slice portfolio, useful vertical results, ordering/dependencies and per-Slice planning entry points; may validly conclude no separate strategy artifact is needed.",
+      "expectedOutput": "Slice Portfolio / Realization Map, broad/shallow Domain / Aggregate Realization Map, and Selected Slice semantic-owner register; may validly stay minimal when strategy reasoning is not material. RU-SSTRAT-03 does not create bounded Implementation Slice Targets.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -2272,11 +2272,11 @@
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Slice portfolio/decomposition>",
+      "userTarget": "<Slice implementation-strategy scope>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when decomposition/order/dependencies across several vertical results are material rather than obvious.",
-        "whatYouGet": "Slice portfolio, useful vertical results, ordering/dependencies and per-Slice planning entry points; may validly conclude no separate strategy artifact is needed.",
+        "whenToUse": "Use when Slice decomposition/order, broad Domain/Aggregate position, or selected Slice addressability is material rather than obvious.",
+        "whatYouGet": "Slice Portfolio / Realization Map, broad/shallow Domain / Aggregate Realization Map, and Selected Slice semantic-owner register; Target Formation remains responsible for any independently bounded Implementation Slice Target.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",

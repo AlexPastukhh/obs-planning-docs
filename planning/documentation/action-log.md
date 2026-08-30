@@ -2204,3 +2204,70 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 **ChangeSet:** `8bb283e5-7568-45a0-a05a-4817567ad1e2`  
 **Package:** `be6a98be-c31a-44b6-8d24-4250b5c61052`  
 **Reason:** Planning Helper owns the generic invocation-time command side-effect framework, `capture-chat-context` stage-1 token behavior, runtime/tests/docs and canonical rationale. This reusable-documentation scope participates because the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact is outside the registered `chat-command-palette/` child root; the generated artifact is synchronized with the same Helper target state.
+
+### LOG-DOC-123 — Redesign Slice Strategy as Slice Implementation Strategy
+
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
+**ChangeSet Label:** `SDS Slice implementation strategy redesign`  
+**Source:** current finalized GitHub `main` `98a98ce04fd3385a57a7a05e193ba990485479e9` after the accepted Prototype / implemented practical Evidence ChangeSet  
+
+**Selected Meaning:**
+- retain compatibility Target ID `TM-SLICE-STRATEGY` and entry point `tm.slice.strategy`, while making the module semantically own Slice Implementation Strategy rather than only candidate decomposition/order;
+- use exactly three Strategy Result Units: `RU-SSTRAT-01 Slice Portfolio / Realization Map`, `RU-SSTRAT-02 Domain / Aggregate Realization Map`, and `RU-SSTRAT-03 Selected Slice Owner Register`;
+- define a normal Slice as one independently useful/checkable vertical implementation increment with exactly one Primary Scenario; one Slice may realize several Behavior Items, and `Behavior Item ≠ Slice`; do not require an `INITIAL_VERTICAL / EXTENDING_VERTICAL` enum merely to classify ordinary evolution;
+- allow one Strategy Target to inspect one or several sufficiently related Scenarios when that broader scope is needed for coherent implementation decomposition or broad Aggregate/consistency-boundary discovery;
+- make `RU-SSTRAT-02` a living planning map: begin with broad/shallow identity, invariant and consistency-boundary clues, then refine `Slice → Uses → Aggregate/domain concept` relations as detailed Slice planning/implementation reveals the actual Domain elements used; one Slice may use several Aggregates and one Aggregate may serve several Slices; current code remains authoritative current technical/domain realization truth;
+- make `RU-SSTRAT-03` a stable addressability/owner register for selected Slice semantic owners. A Slice owner may remain inline in the Strategy representation or split later; `TM-IMPLEMENTATION-SLICE` refines detailed implementation meaning in that same owner, so semantic owner identity does not imply one file per Slice;
+- align the existing `TM-IMPLEMENTATION-SLICE` downstream contract without redesigning its five Result Units: it consumes/refines the selected Strategy owner slot, records actual Domain Elements Used, and surfaces bounded revalidation when detailed planning challenges Strategy `RU-SSTRAT-02`;
+- use Scenario Development / Change Outlook to stress Slice/Aggregate boundaries and retain `May Change / Extend` pressure without automatically manufacturing future Slices or speculative architecture;
+- use Slice Verticality / Integration plus DDD as reusable evaluation perspectives. DDD at Strategy depth is intentionally broad/shallow and does not turn the Strategy into a full Domain Draft; no separate Target Module Knowledge Basis is currently needed for this Strategy redesign;
+- keep `TM-DOMAIN-DISCOVERY` and `TM-DOMAIN-DRAFT` registered and unchanged in this transition. Their later consolidation/removal is separate work rather than an implicit side effect of this package.
+- reproject the SDS Target catalog, Full Map, source map, command-surface granularity, Phase-08 handoff, physical/artifact-placement guidance, audit and manifest so the post-Apply repository describes the same three-Result-Unit Strategy contract.
+
+### LOG-DOC-124 — Apply Slice implementation strategy redesign
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-123`  
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
+**Package:** `092e1190-17c7-42b3-a7b8-13ef2907fb20`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- `TM-SLICE-STRATEGY` is the compatibility identity for Slice Implementation Strategy and exposes exactly `RU-SSTRAT-01..03` as Slice Portfolio / Realization Map, Domain / Aggregate Realization Map, and Selected Slice Owner Register;
+- the Slice Verticality / Integration Lens evaluates those three Result Units, including two-way Behavior coverage, fake-horizontal-slice detection, Slice/Aggregate many-to-many integrity and selected owner-slot addressability;
+- the DDD Lens explicitly supports `RU-SSTRAT-02` at broad/shallow Strategy depth: identity/lifecycle/invariant/consistency-boundary clues and Slice→Domain use relations are in scope, while a complete entity/value/repository/API/persistence model is not;
+- selected Slice owners may remain embedded in the Strategy representation or be split later through ordinary Documentation / Representation + P-14/G3 pressure; detailed implementation meaning remains owned by `TM-IMPLEMENTATION-SLICE`;
+- `TM-IMPLEMENTATION-SLICE` now explicitly refines the same selected owner slot and uses its `Domain Elements Used` detail to confirm/challenge Strategy `Slice → Uses → Aggregate/domain concept` relations; its existing five-Result-Unit topology remains unchanged;
+- detailed Slice planning/implementation may challenge and revalidate Strategy decomposition or Domain/Aggregate position rather than treating Strategy as an immutable one-way handoff;
+- existing `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT`, command identities, Target/Lens topology and existing AP IDs remain unchanged by this package; no unrelated SDS family redesign is introduced.
+
+### LOG-DOC-125 — Correct Slice implementation strategy ReviewDiff findings
+
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
+**ChangeSet Label:** `SDS Slice implementation strategy redesign`  
+**Prior Package:** `092e1190-17c7-42b3-a7b8-13ef2907fb20`  
+**Reviewed Result:** `NEEDS CORRECTION`  
+
+**Material Findings / selected correction:**
+- preserve the selected three-Result-Unit Slice Implementation Strategy model, Slice/Behavior distinction, broad/shallow Domain/Aggregate map, many-to-many `Slice → Uses → Aggregate/domain concept` relation, current-code authority and flexible representation; no Target/Lens/AP topology change is introduced;
+- restore the generic producer boundary everywhere this redesign touched: observation/Evidence → Finding Candidate → Core Finding Disposition → selected Question/Idea/Q/R/P/Decision/owner/Target-Formation/revalidation consequence. Lens findings do not directly become Q/R/P or directly mutate/revalidate accepted owners;
+- clarify `RU-SSTRAT-03 Selected Slice Owner Register`: it owns stable selected Slice semantic identity/addressability only. It does not itself create a bounded `TM-IMPLEMENTATION-SLICE` Target. When independently bounded detailed Slice planning is material, normal Target Formation decides reuse/existing-owner/new bounded Target; a selected/reused Implementation Slice Target then refines the same Slice semantic meaning;
+- reproject the real `спланируй стратегию слайсов`, `спланируй слайс` and `детализируй реализацию слайса` command definitions plus Planning Helper `seed/commands.json`, including current `Codebase Integration Path` wording and the Target Formation/Finding-Disposition boundary;
+- correct top-level methodology `repo_snapshot_base` from stale `94b6d74b8074dd4dda13934b29977a89ef5379a2` to the checked current GitHub `main` base `98a98ce04fd3385a57a7a05e193ba990485479e9`.
+
+### LOG-DOC-126 — Apply Slice implementation strategy ReviewDiff correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-125`  
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
+**Package:** `3b79ff63-c2ca-4bcc-8da9-023988123544`  
+
+**Target-State Result:** after successful Apply of this exact correction package:
+- `TM-SLICE-STRATEGY` still exposes exactly `RU-SSTRAT-01 Slice Portfolio / Realization Map`, `RU-SSTRAT-02 Domain / Aggregate Realization Map`, and `RU-SSTRAT-03 Selected Slice Owner Register`;
+- `RU-SSTRAT-03` registers stable selected Slice semantic identity/addressability without automatically forming a bounded Implementation Slice Target or requiring one file per Slice;
+- when independently bounded detailed Slice planning is material, Target Formation selects/reuses/forms the `TM-IMPLEMENTATION-SLICE` Target, which then refines the same Slice semantic identity and keeps its existing five Result Units;
+- Slice/DDD/implementation observations that challenge accepted meaning cross `Finding Candidate → Core Finding Disposition` before any Q/R/P/Decision/owner/revalidation consequence;
+- actual Slice Strategy / Implementation Slice command definitions and Planning Helper seed expose the same current semantics, including `Runtime Path` + `Codebase Integration Path`;
+- top-level methodology base provenance points to checked current GitHub `main` `98a98ce04fd3385a57a7a05e193ba990485479e9`;
+- existing `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT`, Target/Lens counts and AP identities remain unchanged.
