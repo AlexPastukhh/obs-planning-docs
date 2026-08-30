@@ -1,6 +1,6 @@
 # Replacement Package Builder Slices
 
-Status: PB-01 implemented; later slices preliminary
+Status: PB-01 and PB-02 implemented; PB-03 preliminary
 
 ## PB-01 — Build add/replace package from desired files
 
@@ -29,7 +29,17 @@ Not in PB-01:
 
 ## PB-02 — Explicit safe deletions
 
-Preliminary next Slice: accept explicit repository-relative delete paths, capture their exact expected bases and emit protocol-valid delete operations through the same build pipeline.
+User result: explicitly name repository-relative files to remove and produce protocol-valid `delete` operations without inferring deletion from desired-tree absence.
+
+```text
+explicit delete path
++ proven existing regular source file
+→ exact base-files/<path>
+→ action=delete
+→ no replacement-files/<path>
+```
+
+`--delete` is repeatable and can be used alone or together with PB-01 desired input. Missing delete targets, desired/delete path overlap, Windows-normalized collisions, symlinks/non-regular targets and unverifiable source state fail closed. Captured delete bases use the same source-observation recheck as replacements before publication.
 
 ## PB-03 — Build against derived expected state
 

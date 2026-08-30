@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +22,11 @@ public final class PackageBuilderTests {
         testBuildsAddReplaceAndOmitsUnchanged();
         testPreservesExactBinaryPayloads();
         testDeterministicWithExplicitIds();
+        testBuildsDeleteOnlyWithExactBase();
+        testCombinesDesiredAndDelete();
+        testRejectsMissingDeleteTarget();
+        testRejectsDeleteDesiredCollision();
+        testCliAcceptsRepeatedDeletesWithoutDesired();
         testRejectsInvalidPaths();
         testRejectsPathCollision();
         testRejectsDesiredAndOutputInsideRepository();
@@ -99,6 +105,83 @@ public final class PackageBuilderTests {
         PackageBuilder.build(request(t, second));
         check(Arrays.equals(Files.readAllBytes(first), Files.readAllBytes(second)),
                 "same staged inputs and explicit IDs must produce identical ZIP bytes");
+    }
+
+    private static void testBuildsDeleteOnlyWithExactBase() throws Exception {
+        TestRepo t = TestRepo.create();
+        byte[] base = new byte[] {0, 7, 9, (byte) 0xff, 13, 10};
+        write(t.repo.resolve("obsolete.bin"), base);
+
+        Path out = t.root.resolve("delete-only.zip");
+        PackageBuilder.BuildResult result = PackageBuilder.build(new PackageBuilder.BuildRequest(
+                t.repo, null, out, PACKAGE_ID, CHANGE_SET_ID, "Builder test", List.of("obsolete.bin")));
+
+        check(result.addCount() == 0, "delete-only add count");
+        check(result.replaceCount() == 0, "delete-only replace count");
+        check(result.deleteCount() == 1, "delete-only delete count");
+        check(result.noOpCount() == 0, "delete-only no-op count");
+
+        try (ZipFile zip = new ZipFile(out.toFile(), StandardCharsets.UTF_8)) {
+            String manifest = new String(
+                    zip.getInputStream(zip.getEntry("PACKAGE.json")).readAllBytes(), StandardCharsets.UTF_8);
+            check(manifest.contains("{\"path\":\"obsolete.bin\",\"action\":\"delete\"}"), "delete manifest");
+            check(Arrays.equals(read(zip, "base-files/obsolete.bin"), base), "delete exact base");
+            check(zip.getEntry("replacement-files/obsolete.bin") == null, "delete has no replacement");
+        }
+    }
+
+    private static void testCombinesDesiredAndDelete() throws Exception {
+        TestRepo t = TestRepo.create();
+        write(t.desired.resolve("added.txt"), "added");
+        write(t.repo.resolve("remove.txt"), "remove me");
+
+        Path out = t.root.resolve("combined.zip");
+        PackageBuilder.BuildResult result = PackageBuilder.build(new PackageBuilder.BuildRequest(
+                t.repo, t.desired, out, PACKAGE_ID, CHANGE_SET_ID, "Builder test", List.of("remove.txt")));
+
+        check(result.addCount() == 1, "combined add count");
+        check(result.replaceCount() == 0, "combined replace count");
+        check(result.deleteCount() == 1, "combined delete count");
+
+        try (ZipFile zip = new ZipFile(out.toFile(), StandardCharsets.UTF_8)) {
+            String manifest = new String(
+                    zip.getInputStream(zip.getEntry("PACKAGE.json")).readAllBytes(), StandardCharsets.UTF_8);
+            check(manifest.contains("{\"path\":\"added.txt\",\"action\":\"add\"}"), "combined add manifest");
+            check(manifest.contains("{\"path\":\"remove.txt\",\"action\":\"delete\"}"), "combined delete manifest");
+            check(zip.getEntry("base-files/remove.txt") != null, "combined delete base");
+            check(zip.getEntry("replacement-files/remove.txt") == null, "combined delete no replacement");
+        }
+    }
+
+    private static void testRejectsMissingDeleteTarget() throws Exception {
+        TestRepo t = TestRepo.create();
+        expectValidation(PackageBuilder.ValidationReason.INVALID_DELETE,
+                () -> PackageBuilder.build(new PackageBuilder.BuildRequest(
+                        t.repo, null, t.root.resolve("out.zip"), PACKAGE_ID, CHANGE_SET_ID,
+                        "Builder test", List.of("missing.txt"))),
+                "missing delete target");
+    }
+
+    private static void testRejectsDeleteDesiredCollision() throws Exception {
+        TestRepo t = TestRepo.create();
+        write(t.desired.resolve("same.txt"), "desired");
+        expectValidation(PackageBuilder.ValidationReason.PATH_COLLISION,
+                () -> PackageBuilder.build(new PackageBuilder.BuildRequest(
+                        t.repo, t.desired, t.root.resolve("out.zip"), PACKAGE_ID, CHANGE_SET_ID,
+                        "Builder test", List.of("same.txt"))),
+                "same path cannot be desired and deleted");
+    }
+
+    private static void testCliAcceptsRepeatedDeletesWithoutDesired() {
+        PackageBuilder.BuildRequest request = Main.parseBuildRequest(new String[] {
+                "--repo", "repo",
+                "--output", "out.zip",
+                "--change-set-label", "delete test",
+                "--delete", "a.txt",
+                "--delete", "dir/b.txt"
+        });
+        check(request.desiredRoot() == null, "delete-only CLI desired is optional");
+        check(request.deletePaths().equals(List.of("a.txt", "dir/b.txt")), "repeatable delete CLI paths");
     }
 
     private static void testRejectsInvalidPaths() {

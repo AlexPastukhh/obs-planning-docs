@@ -1,6 +1,6 @@
 # Replacement Package Builder
 
-Status: first executable vertical slice
+Status: PB-01 and PB-02 implemented
 
 `replacement-package-builder` is a small Java 21 CLI placed beside `replacement-package-app`. It implements the producer-side mechanical build step for the existing replacement-package protocol without changing that protocol.
 
@@ -25,13 +25,30 @@ source present + identical bytes      → no-op
 
 The Builder owns exact base capture for replacements, package manifest/payload materialization, `packageId` generation and final ZIP validation. The caller does not create `PACKAGE.json`, `base-files/`, `replacement-files/` or the ZIP manually.
 
-Absence from the desired tree means "no requested operation". Delete is intentionally not part of PB-01.
+Absence from the desired tree means "no requested operation". Delete is never inferred from desired-tree absence.
+
+## PB-02 — explicit safe deletes
+
+Delete intent is explicit and may be combined with desired add/replace input:
+
+```text
+--delete docs/obsolete.md
+--delete assets/old.bin
+```
+
+`--delete` is repeatable. A delete-only build does not require `--desired`.
+
+For every delete path the Builder requires the current source path to exist as a regular non-symlink file, captures its exact bytes into `base-files/<path>`, emits `action=delete`, and emits no `replacement-files/<path>`. The same exact source bytes are rechecked before package publication.
+
+One Windows-normalized repository path cannot be both desired input and delete intent, and duplicate/colliding delete intents fail validation.
+
 
 ## Requirements
 
 - Java 21 and Git on `PATH`.
 - `--repo` is the exact Git worktree root (not a subdirectory) and its `remote.origin.url` identifies a GitHub repository.
-- `--desired` is a separate partial directory tree containing complete desired file bytes; it and the source repository must be disjoint (neither may contain the other).
+- `--desired`, when supplied, is a separate partial directory tree containing complete desired file bytes; it and the source repository must be disjoint (neither may contain the other).
+- At least one semantic input is required: `--desired` or one or more `--delete` paths.
 - `--output` is outside both the source repository and the desired input tree and does not already exist; PB-01 never overwrites an existing output implicitly.
 
 The Builder reads repository identity from `remote.origin.url` and emits the existing package schema owned by [`../replacement-package-app/PACKAGE-PROTOCOL.md`](../replacement-package-app/PACKAGE-PROTOCOL.md).
@@ -67,6 +84,19 @@ java -jar build\replacement-package-builder.jar ^
   --change-set-id 22222222-2222-2222-2222-222222222222
 ```
 
+Delete-only package:
+
+```bat
+java -jar build\replacement-package-builder.jar ^
+  --repo C:\work\repo ^
+  --output C:\work\delete.zip ^
+  --change-set-label "Remove obsolete files" ^
+  --delete docs/obsolete.md ^
+  --delete assets/old.bin
+```
+
+Combined add/replace/delete uses both `--desired` and repeatable `--delete`.
+
 A new `packageId` is generated for every build. When `--change-set-id` is omitted, a new `changeSetId` is generated. Whether a supplied ChangeSet is actually still open is producer-workflow authority outside this local materializer.
 
 ## Failure contract
@@ -93,7 +123,8 @@ PB-01 validation reasons are intentionally limited to caller-controlled input/st
 - `SOURCE_CHANGED` — a touched source precondition changed while the package was being built;
 - `SOURCE_UNVERIFIABLE` — existence/absence of a touched source path cannot be proven safely, so ADD/REPLACE classification stops;
 - `DESIRED_CHANGED` — desired inventory or bytes changed while they were being captured/verified;
-- `NO_CHANGES` — desired input contains no resulting add/replace operation.
+- `INVALID_DELETE` — explicit delete target is absent or otherwise cannot satisfy delete intent;
+- `NO_CHANGES` — requested input contains no resulting add/replace/delete operation.
 
 Unexpected implementation, private-staging or otherwise ambiguous I/O, process, serialization or ZIP-integrity failures are not presented as caller mistakes. They use exit code `1` and a single public class:
 
@@ -110,6 +141,7 @@ For `INTERNAL_ERROR`, stderr contains the same `diagnosticId` followed by the ra
 
 - Desired files are copied into private staging and the desired inventory/bytes are rechecked; edits during capture/build fail as `DESIRED_CHANGED` instead of producing a mixed package.
 - Replace bases are copied byte-for-byte from the source repository and rechecked before publication.
+- Delete bases are copied byte-for-byte from the source repository and rechecked before publication; delete operations never carry replacement payloads.
 - Add paths use an exact existence probe: only proven absence becomes `add`; unverifiable source state fails closed as `SOURCE_UNVERIFIABLE`, and add paths are rechecked before publication.
 - Symlink/non-regular touched files fail closed; V0.1 does not model them.
 - Operation paths follow the current Windows-safe repository-relative protocol constraints and are checked for case-insensitive collisions.
@@ -124,4 +156,4 @@ For `INTERNAL_ERROR`, stderr contains the same `diagnosticId` followed by the ra
 run-tests.cmd
 ```
 
-The automated suite covers mixed add/replace/no-op behavior, exact binary payload preservation, deterministic package bytes, Git-root validation, disjoint source/desired/output boundaries, existing-output preservation, desired-state change detection, private-staging failures staying internal, path/collision failures, unsupported source shapes, repository identity/origin validation, no-op-only rejection, CLI validation routing and validation/internal failure rendering.
+The automated suite covers add/replace/no-op behavior, delete-only and combined delete builds, exact binary base/result preservation, deterministic package bytes, missing/colliding delete validation, repeatable delete CLI parsing, Git-root validation, disjoint source/desired/output boundaries, existing-output preservation, desired-state change detection, private-staging failures staying internal, path/collision failures, unsupported source shapes, repository identity/origin validation, no-op-only rejection, CLI validation routing and validation/internal failure rendering.

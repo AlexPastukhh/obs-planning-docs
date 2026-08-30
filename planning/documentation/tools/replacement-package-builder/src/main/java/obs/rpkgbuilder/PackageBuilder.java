@@ -55,6 +55,7 @@ public final class PackageBuilder {
         SOURCE_CHANGED,
         SOURCE_UNVERIFIABLE,
         DESIRED_CHANGED,
+        INVALID_DELETE,
         NO_CHANGES
     }
 
@@ -83,7 +84,22 @@ public final class PackageBuilder {
             Path output,
             UUID packageId,
             UUID changeSetId,
-            String changeSetLabel) {}
+            String changeSetLabel,
+            List<String> deletePaths) {
+        public BuildRequest {
+            if (deletePaths != null) deletePaths = List.copyOf(deletePaths);
+        }
+
+        public BuildRequest(
+                Path repositoryRoot,
+                Path desiredRoot,
+                Path output,
+                UUID packageId,
+                UUID changeSetId,
+                String changeSetLabel) {
+            this(repositoryRoot, desiredRoot, output, packageId, changeSetId, changeSetLabel, List.of());
+        }
+    }
 
     public record BuildResult(
             Path output,
@@ -92,9 +108,10 @@ public final class PackageBuilder {
             String repositoryIdentity,
             int addCount,
             int replaceCount,
+            int deleteCount,
             int noOpCount) {}
 
-    private enum Action { ADD, REPLACE }
+    private enum Action { ADD, REPLACE, DELETE }
 
     private enum SourcePresence { ABSENT, PRESENT }
 
@@ -136,7 +153,7 @@ public final class PackageBuilder {
         validateRequest(request);
 
         Path repo = resolveRepositoryRoot(request.repositoryRoot());
-        Path desired = resolveDesiredRoot(request.desiredRoot(), repo);
+        Path desired = request.desiredRoot() == null ? null : resolveDesiredRoot(request.desiredRoot(), repo);
         Path output = prepareOutput(request.output(), repo, desired);
         String repositoryIdentity = resolveRepositoryIdentity(repo);
 
@@ -148,9 +165,12 @@ public final class PackageBuilder {
             Files.createDirectories(stagedDesiredRoot);
             Files.createDirectories(stagedBaseRoot);
 
-            Map<String, Path> desiredFiles = snapshotDesired(desired, stagedDesiredRoot);
+            Map<String, Path> desiredFiles = desired == null
+                    ? Map.of()
+                    : snapshotDesired(desired, stagedDesiredRoot);
             validateCaseInsensitiveUniqueness(desiredFiles.keySet());
-            verifyDesiredStable(desired, desiredFiles);
+            List<String> deletePaths = validateDeletePaths(request.deletePaths(), desiredFiles.keySet());
+            if (desired != null) verifyDesiredStable(desired, desiredFiles);
 
             List<Operation> operations = new ArrayList<>();
             List<SourceObservation> observations = new ArrayList<>();
@@ -181,13 +201,29 @@ public final class PackageBuilder {
                 }
             }
 
+            for (String path : deletePaths) {
+                validateSourceAncestors(repo, path);
+                Path current = resolveInside(repo, path);
+                if (sourcePresence(current, path) == SourcePresence.ABSENT) {
+                    throw validation(ValidationReason.INVALID_DELETE,
+                            "Delete target does not exist in the source repository.",
+                            "path", path);
+                }
+
+                requireRegularNonSymlink(current, "Delete target", path);
+                Path stagedBase = stagedBaseRoot.resolve(path.replace('/', java.io.File.separatorChar));
+                copyExact(current, stagedBase);
+                operations.add(new Operation(path, Action.DELETE, stagedBase, null));
+                observations.add(new ExpectedBytes(path, stagedBase));
+            }
+
             operations.sort(Comparator.comparing(Operation::path));
             verifySource(observations, repo);
-            verifyDesiredStable(desired, desiredFiles);
+            if (desired != null) verifyDesiredStable(desired, desiredFiles);
 
             if (operations.isEmpty()) {
                 throw validation(ValidationReason.NO_CHANGES,
-                        "Desired input produces no add or replace operations.",
+                        "Requested input produces no add, replace or delete operations.",
                         "noOp", Integer.toString(noOpCount));
             }
 
@@ -196,14 +232,15 @@ public final class PackageBuilder {
             validateZip(tempZip, manifest, operations);
 
             verifySource(observations, repo);
-            verifyDesiredStable(desired, desiredFiles);
+            if (desired != null) verifyDesiredStable(desired, desiredFiles);
             publish(tempZip, output);
             validateZip(output, manifest, operations);
 
             int addCount = (int) operations.stream().filter(op -> op.action() == Action.ADD).count();
-            int replaceCount = operations.size() - addCount;
+            int replaceCount = (int) operations.stream().filter(op -> op.action() == Action.REPLACE).count();
+            int deleteCount = (int) operations.stream().filter(op -> op.action() == Action.DELETE).count();
             return new BuildResult(output, request.packageId(), request.changeSetId(), repositoryIdentity,
-                    addCount, replaceCount, noOpCount);
+                    addCount, replaceCount, deleteCount, noOpCount);
         } finally {
             deleteTreeBestEffort(staging);
         }
@@ -214,8 +251,12 @@ public final class PackageBuilder {
         if (request.repositoryRoot() == null) {
             throw validation(ValidationReason.INVALID_REQUEST, "Repository root is required.", "option", "--repo");
         }
-        if (request.desiredRoot() == null) {
-            throw validation(ValidationReason.INVALID_REQUEST, "Desired root is required.", "option", "--desired");
+        if (request.deletePaths() == null) {
+            throw validation(ValidationReason.INVALID_REQUEST, "deletePaths is required.", "field", "deletePaths");
+        }
+        if (request.desiredRoot() == null && request.deletePaths().isEmpty()) {
+            throw validation(ValidationReason.INVALID_REQUEST,
+                    "At least one input is required: --desired or one or more --delete paths.");
         }
         if (request.output() == null) {
             throw validation(ValidationReason.INVALID_REQUEST, "Output is required.", "option", "--output");
@@ -376,7 +417,7 @@ public final class PackageBuilder {
                     "output", output.toString(),
                     "repository", repo.toString());
         }
-        if (output.startsWith(desired)) {
+        if (desired != null && output.startsWith(desired)) {
             throw validation(ValidationReason.INVALID_OUTPUT,
                     "Output must be outside the desired input tree.",
                     "output", output.toString(),
@@ -539,6 +580,29 @@ public final class PackageBuilder {
 
     private static String sortedJoined(Set<String> values) {
         return values.stream().sorted().reduce((a, b) -> a + "," + b).orElse("");
+    }
+
+    static List<String> validateDeletePaths(List<String> deletePaths, Set<String> desiredPaths) {
+        Map<String, String> seen = new HashMap<>();
+        for (String path : desiredPaths) {
+            seen.put(path.toLowerCase(Locale.ROOT), path);
+        }
+
+        List<String> result = new ArrayList<>();
+        for (String path : deletePaths) {
+            validateOperationPath(path);
+            String key = path.toLowerCase(Locale.ROOT);
+            String prior = seen.putIfAbsent(key, path);
+            if (prior != null) {
+                throw validation(ValidationReason.PATH_COLLISION,
+                        "A repository path cannot be requested by both desired input and delete intent, or repeated/colliding delete intent.",
+                        "first", prior,
+                        "second", path);
+            }
+            result.add(path);
+        }
+        result.sort(String::compareTo);
+        return List.copyOf(result);
     }
 
     static void validateCaseInsensitiveUniqueness(Set<String> paths) {
@@ -751,7 +815,9 @@ public final class PackageBuilder {
                 if (operation.base() != null) putFile(zip, "base-files/" + operation.path(), operation.base());
             }
             for (Operation operation : operations) {
-                putFile(zip, "replacement-files/" + operation.path(), operation.replacement());
+                if (operation.replacement() != null) {
+                    putFile(zip, "replacement-files/" + operation.path(), operation.replacement());
+                }
             }
         }
     }
@@ -785,7 +851,7 @@ public final class PackageBuilder {
         expected.add("PACKAGE.json");
         for (Operation operation : operations) {
             if (operation.base() != null) expected.add("base-files/" + operation.path());
-            expected.add("replacement-files/" + operation.path());
+            if (operation.replacement() != null) expected.add("replacement-files/" + operation.path());
         }
 
         Set<String> actual = new HashSet<>();
@@ -805,7 +871,9 @@ public final class PackageBuilder {
                 if (operation.base() != null) {
                     assertZipEntryEqualsFile(zip, "base-files/" + operation.path(), operation.base());
                 }
-                assertZipEntryEqualsFile(zip, "replacement-files/" + operation.path(), operation.replacement());
+                if (operation.replacement() != null) {
+                    assertZipEntryEqualsFile(zip, "replacement-files/" + operation.path(), operation.replacement());
+                }
             }
         }
     }
