@@ -110,9 +110,12 @@ Specific Target/Lens commands then read only their relevant owners. Generic `п�
 ```text
 работай через idtspe
 → use Core Shell by default for subsequent material planning
-→ resolve scope / Target first
+→ resolve/reuse scope / Target context as needed
+→ Broad Discussion for normal exploration: material logical parts use Key Points; no mandatory block-owner/intake projection
+→ material Ideas are explicit and Address current Target Goal / Question / Problem
+→ periodic Integration Checkpoint reconciles Generic State + Target Result
 → AI proposals are Ideas until accepted
-→ use Q/R/P + Decisions + Artifact Placement proportionally
+→ physical Artifact Placement only when material/persistence-sensitive
 → do not force SDS unless SDS/profile is actually selected
 ```
 
@@ -253,7 +256,10 @@ Command layers:
 
 работай через idtspe
 → Core Shell becomes default material-planning mode
-→ scope/Target first; AI proposals are Ideas until selected
+→ Broad Discussion may span turns; material logical parts use Key Points proportionally without a mandatory block-owner/intake projection
+→ explicit material Ideas carry Addresses → current Target Goal / Question / Problem
+→ Integration Checkpoint periodically reconciles the coherent whole
+→ scope/Target context remains explicit; AI proposals are Ideas until selected
 
 бутстреп sds
 → SDS profile orientation

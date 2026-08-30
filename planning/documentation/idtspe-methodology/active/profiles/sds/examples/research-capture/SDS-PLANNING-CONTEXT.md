@@ -80,7 +80,7 @@ testing/
 SDS-PLANNING-STATE/
 ```
 
-Every material IDTSPE response should show current artifact context + Artifact Placement View + Methodology Direction.
+At Integration Checkpoints in this worked run, show current artifact context, physical Artifact Placement when material/changed/unresolved, and Methodology Direction. Ordinary Broad Discussion may stay conversational and inherit established artifact/direction context until a checkpoint or material change.
 
 ## Conditional Owners
 

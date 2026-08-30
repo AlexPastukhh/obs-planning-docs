@@ -85,7 +85,7 @@ See [`HIGH-LEVEL-EXAMPLE-GUIDE.md`](../../../idtspe-core/HIGH-LEVEL-EXAMPLE-GUID
 
 Every active `TM-*.md` contains exactly one `## Artifact / File Contract`. It states which target-specific content is required/preferred/optional to persist, what stays embedded, what may deserve a companion/register/supporting artifact, and what routes to another canonical owner.
 
-The current IDTSPE instance renders those rules through `P-14 / TF-10` as an `Artifact Placement View`.
+At an Integration Checkpoint or other persistence-sensitive structured pass, current Target artifact rules are rendered through `P-14 / TF-10` when physical placement is material; ordinary Broad Discussion may inherit established placement without a full view.
 
 
 ## Directed Workflow / Next-Step Rule
@@ -98,7 +98,7 @@ Canonical cross-module direction, testing interleave, repeated invocation modes 
 ../shared/directed-methodology-workflow-and-next-step-resolution.md
 ```
 
-Every material IDTSPE response should expose the recommended next methodology Target/action after applying the current module's Exit Gate/Handoff.
+At an Integration Checkpoint or explicit/material handoff, expose the recommended next methodology Target/action after applying the current module's Exit Gate/Handoff. During ordinary Broad Discussion, surface direction when it changes, blocks progress or the user asks rather than repeating it mechanically each turn.
 
 ## Theoretical Testing Knowledge
 

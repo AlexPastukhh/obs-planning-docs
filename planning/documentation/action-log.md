@@ -2280,3 +2280,117 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 **ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
 **Package:** `9ba85d44-3853-4452-92ba-e96495d302d4`  
 **Reason:** reusable-documentation scope participates through the synchronized replacement-package producer workflow and generated Planning Helper userscript outside the registered Helper child root; full token-binding semantics and APPLIED relation remain in the Replacement Package App canonical log.
+
+### LOG-DOC-127 — Add Broad Discussion and Integration Checkpoint work model
+
+**Type:** IDEA REVIEW / USER CLARIFICATION / CORE METHODOLOGY REFINEMENT / NEW CHANGESET  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`  
+**Source:** current finalized GitHub `main` `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b` after the finalized invocation-scoped chatContextToken binding ChangeSet  
+
+**Selected Meaning:**
+- make Broad Discussion a first-class normal IDTSPE working mode that may span many chat turns before/between checkpoints and may also coexist with structured Target responses; it is ordinary useful chat prose rather than a new Target/Unit/runtime;
+- use peer AI Reviewability `Key Points` to structure logical parts of Broad Discussion: each material discussion part may carry compact Key Points describing its key content, including alternatives/unresolved tension; Key Points are not semantic Units. A checkpoint may additionally provide one `Broad Discussion Summary`, distinct from local Key Points;
+- treat a material Idea as a candidate answer/solution that addresses a Goal/Desired Outcome, Question or Problem. Drivers may come equally from Target Module prompts, current Sources/situation, previous steps/checkpoints, Broad Discussion, user input, AI proposals or dispositioned Lens findings;
+- support lightweight Idea relations `addresses`, `competes-with`, `complements`, `requires`, `conflicts-with` and `part-of-candidate-bundle`. Candidate Bundle / Option Group is a grouping/comparison projection by default, not a new required State Unit or Planning Branch;
+- allow Broad Discussion to carry material Ideas together with contextual Q/R/P/Evidence without dumping the complete Generic State on every turn; Q/R/P/Evidence may attach to the Target, Goal/Q/P, one/several Ideas or bundle, Result Unit/field, relation/boundary or Decision;
+- introduce `Integration Checkpoint` as a periodic semantic integration pass, normally a full current Target Module/Local Contract invocation, that Collects, Relates, Integrates and Checks accumulated discussion/current State into coherent applicable Generic State + Target Result Units + relevant Lens/consistency review. It is not completion, approval, lifecycle status, Unit, Target, file/commit or mandatory separate command, and it does not end discussion;
+- preserve unresolved alternatives at checkpoints instead of forcing resolution. A checkpoint may contain explanatory Broad Discussion, but structured Ideas/Q/R/P/Evidence should not be redundantly duplicated as a second prose authority;
+- retain accepted material Decisions in integrated semantic state by default. Add optional `Rationale / Why` and optional `Selected` Idea/bundle trace; rationale explains why the choice was made and remains distinct from Evidence. When a new material Decision lacks retained rationale, ask the user whether to retain a short rationale; ask whether material rejected/superseded alternatives and rejection rationale should be retained, while trivial transient alternatives may remain conversational. Batch these optional retention questions when practical;
+- distinguish conversational working prose, integrated semantic planning state and physical persistence. A checkpoint is logical/semantic integration and does not imply one file per Unit or repository mutation; Documentation / Representation + P-14 remains the physical representation boundary;
+- allow Lenses to contribute Broad Discussion analysis and Key Points without creating any Unit/Finding. Only materially surfaced meaning needing ownership/State/lifecycle disposition becomes a Finding Candidate, then crosses Core Finding Disposition before State/owner/lifecycle consequences;
+- preserve the existing Target/Lens/Unit topology and all SDS/domain semantics. This ChangeSet does not redesign Domain Target Modules and does not add `TM-DISCUSSION`, `RU-DISCUSSION`, `CHECKPOINT_STATE` or a new checkpoint command;
+- whole-active coherence sweep also removes residual universal-response wording that would otherwise force Artifact Placement or Methodology Direction into every Broad Discussion turn, while retaining both projections at Integration Checkpoints/persistence-sensitive/handoff-sensitive work; the same sweep aligns generic Lens registry/Target Module wording so explanatory Lens analysis does not automatically manufacture Finding Candidates;
+- high-level `METHODOLOGY-SYSTEM-MAP` and `SDS-FULL-MAP` are reprojected so `idtspe.work` and repeated SDS work visibly use Broad Discussion → Integration Checkpoint rather than teaching the old every-turn full-state/placement rhythm.
+
+### LOG-DOC-128 — Apply Broad Discussion and Integration Checkpoint work model
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-127`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- Core bootstrap/map/README/Shell/default-work-mode discover and consistently explain `Broad Discussion ↔ Integration Checkpoint` as the ordinary iterative interaction rhythm;
+- Broad Discussion may span turns, uses Key Points proportionally as local content structure, and may carry material Ideas with contextual Q/R/P/Evidence without requiring a full Unit/Artifact projection each turn;
+- Integration Checkpoint reconciles the accumulated whole into coherent applicable Generic State + Target Result Units, Lens/consistency review and semantic-retention/physical-placement distinction while preserving unresolved alternatives;
+- Idea decision context and lightweight competition/composition relations are explicit without adding a new required Bundle Unit or Branch runtime;
+- accepted material Decisions are retained by default; optional `Rationale / Why` is distinct from Evidence; user controls retention of rationale and material rejected alternatives;
+- Lens explanatory analysis/Key Points remain non-Unit discussion unless material meaning requires Finding Disposition;
+- P-14/Artifact Placement is no longer falsely required as a full view in every Broad Discussion turn; checkpoints expose physical placement when material/changed/unresolved and may state established placement as unchanged/inherited; deep Artifact Pack / TF-10 wording is aligned to the same boundary;
+- canonical `idtspe.work` command and Helper seed project the same discussion/checkpoint semantics without adding a new command surface; SDS Methodology Direction is checkpoint/handoff/material-change guidance rather than a boilerplate block on every Broad Discussion turn;
+- the SDS full-response example is explicitly labeled as an Integration Checkpoint example rather than a mandatory shape for ordinary discussion; high-level Core/SDS system maps project the same rhythm;
+- Bootstrap SDS topology text is corrected to current `16` Target Modules; no Target/Lens/AP topology changes are introduced.
+
+**Producer rebase note:** prior package `c3329c06-197e-4e31-8076-1184cc776b37` was superseded before Apply because the selected source advanced to supplied snapshot `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b`. This package preserves the same open ChangeSet meaning while rebasing exact base bytes and retaining later unrelated scope-log entries.
+
+### LOG-DOC-129 — Review Broad Discussion / Integration Checkpoint post-Apply clarifications
+
+**Type:** REVIEW DIFF / USER CLARIFICATION / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`  
+**Reviewed Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`  
+**Review Result:** `NEEDS CORRECTION`  
+**Source Basis:** verified repository snapshot `github:AlexPastukhh/obs-planning-docs` at `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b` plus the supplied cumulative post-Apply ReviewDiff for package `d7ea82d4-9f38-4422-87dc-637e4f861cd3`
+
+**Material ReviewDiff findings / later clarifications / selected correction:**
+- strengthen peer AI Reviewability usage so every material logical Broad Discussion part exposes Key Points; trivial/non-material replies remain exempt, and Key Points remain review structure rather than IDTSPE State/authority;
+- make the primary existing semantic subject of each material discussion block explicit as a block owner/semantic anchor; split independent subjects when one block would make review attribution ambiguous, without creating a new owner type;
+- require a compact `Broad Discussion Intake Summary` for each material response so new/changed drivers, explicit Ideas/relations and material Q/R/P/Evidence/Decision/unresolved carry-forward meaning are not recoverable only from free prose;
+- keep `Broad Discussion Summary` as an optional checkpoint-level retrospective explanation, distinct from both local Key Points and per-response Intake Summary, and never a substitute for explicit integrated Ideas/relations/State;
+- require every material Idea to be visibly identified as an Idea and to carry `Addresses → Goal / Desired Outcome / Question / Problem`; missing driver identity stays an unresolved planning gap instead of a free-floating material Idea;
+- when a Target Module is active, treat its Goal/question/problem prompts as the ordinary starting driver set but not an exclusive gate: Sources/situation, previous work/checkpoints, Broad Discussion, user/AI input and dispositioned findings enter on equal Core semantic footing after intake. Preserve the reviewed rule that `Rationale / Why` is optional, distinct from Evidence and may be offered/requested for retention at checkpoints.
+
+No Target Module, Lens, Unit kind, Result Unit family, AP/AG identity, command ID or physical-persistence authority changes in this correction.
+
+### LOG-DOC-130 — Apply Broad Discussion material-intake clarification correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-129`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `d46c640b-8604-44a5-be31-e36b98470db9`  
+
+**Target-State Result:** after successful Apply of this exact correction package:
+- material Broad Discussion remains conversational/proportional but each material logical part has one evident existing semantic anchor + Key Points, and each material response exposes a compact Intake Summary of only new/changed carry-forward meaning;
+- material Ideas cannot remain merely implied: each is explicit and records the Goal/Question/Problem it addresses; unresolved driver identity is visible as a planning gap;
+- active Target Module Goal/question/problem prompts seed Idea discovery normally, while materially valid drivers/Ideas from other inputs are integrated with equal Core semantics after intake;
+- Integration Checkpoint still performs whole-state Collect/Relate/Integrate/Check without implying completion or persistence; optional Broad Discussion Summary remains retrospective prose and does not replace explicit Generic State/Idea relations;
+- accepted material Decisions remain retained by default, `Rationale / Why` remains optional/distinct from Evidence, and rationale/alternative-retention questions remain batched/non-blocking unless needed to resolve material ambiguity;
+- Core/SDS command/map/example/helper projections and audit/manifest now state the same corrected interaction contract with no topology or persistence-policy expansion.
+
+### LOG-DOC-131 — Correct remaining Broad Discussion / Integration Checkpoint ReviewDiff findings
+
+**Type:** REVIEW DIFF / USER CLARIFICATION / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`  
+**Prior Package:** `d46c640b-8604-44a5-be31-e36b98470db9`  
+**Reviewed Result:** `NEEDS CORRECTION`  
+**Source Basis:** exact post-Apply state of prior package reconstructed from verified `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b` snapshot + successful Broad Discussion packages, plus the supplied cumulative ReviewDiff for the prior package.
+
+**Material ReviewDiff findings / selected correction:**
+- preserve Broad Discussion ↔ Integration Checkpoint as the core interaction rhythm, explicit material Idea→driver relations, contextual Q/R/P/Evidence, Candidate Bundles, Decision retention/Rationale boundary, Lens discussion-vs-Finding boundary and semantic-vs-physical persistence boundary;
+- remove the accidental `Goal` Generic-State implication: current Goal / Desired Outcome remains Target/scope context; checkpoint Generic State continues to use existing Core kinds, and an independently useful new Goal goes through normal scope/Target Formation;
+- make reusable Target Module driver seeding formal instead of prose-only: Target Goal comes from Target context and the Module may provide both Question candidates and Problem candidates; a material Problem driver uses existing P-09 Problem semantics rather than being retyped as a Question or new Unit;
+- restore the generic peer AI Reviewability contract: Key Points remain a proportional review projection for material outputs generally, with Broad Discussion specialization that uses Key Points to structure material logical discussion parts;
+- remove mandatory per-discussion-block `block owner / semantic anchor` records and mandatory per-response `Broad Discussion Intake Summary`; ordinary conversation context plus explicit material Ideas/Q-R-P/Evidence carry exploration until a real Integration Checkpoint;
+- keep material Ideas explicit with `Addresses → current Target Goal / Question / Problem`, and show material competes/complements/requires/conflicts/bundle relations when those relations matter to the option space;
+- close the checkpoint-prose gap: if explanatory Broad Discussion inside a checkpoint itself surfaces new material Idea/Question/Problem/Evidence/Decision meaning, integrate it into the same checkpoint or mark it explicitly as post-checkpoint exploration;
+- broaden alternative-retention choice from only rejected/superseded alternatives to material non-selected/deferred/rejected/superseded alternatives while keeping accepted Decisions retained by default and `Rationale / Why` optional/distinct from Evidence.
+
+No Target Module/Lens/command ID/Result Unit/AP/AG topology change and no Domain Target redesign are introduced by this correction.
+
+### LOG-DOC-132 — Apply remaining Broad Discussion / Integration Checkpoint correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-131`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `0df594dd-0599-4630-9b4c-047b1c9e2315`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- Broad Discussion remains ordinary multi-turn chat; material logical parts use proportional Key Points, while no block-owner record or per-response Intake Summary is mandatory;
+- material Ideas are explicit and address the current Target Goal context, a Question or an existing P-09 Problem; Target Goal is not a new Generic State Unit;
+- reusable Target Modules formally expose Question and Problem decision-driver candidates while the current Target Goal comes from Target context; other materially valid drivers retain equal Core semantics once accepted;
+- Integration Checkpoints reconcile Target Goal context + existing Generic State + applicable Target Result Units and preserve material alternative relations; newly surfaced material meaning during checkpoint explanation is integrated immediately or marked post-checkpoint exploration;
+- accepted material Decisions remain retained by default, optional `Rationale / Why` remains distinct from Evidence, and material non-selected/deferred/rejected/superseded alternatives are user-controlled retention choices;
+- generic AI Reviewability keeps its material-output Key Points contract and Broad Discussion specializes it rather than replacing it;
+- command/helper/maps/example/audit/manifest project the same simplified interaction contract, with no new Unit/Target/Lens/command/persistence topology.

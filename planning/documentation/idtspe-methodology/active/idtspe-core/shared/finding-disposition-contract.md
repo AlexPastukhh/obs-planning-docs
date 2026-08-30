@@ -39,6 +39,21 @@ A Finding Candidate is a lightweight producer/Core boundary. It is **not automat
 
 ---
 
+## 1A. Analysis / Key Points Are Not Findings By Default
+
+A producer may contribute useful reasoning, explanation or Key Points without crossing this contract at all.
+
+```text
+Broad Discussion / Lens analysis / Key Points
+≠ Finding Candidate automatically
+```
+
+Use a Finding Candidate only for newly surfaced potentially material meaning that needs Core ownership/State/lifecycle disposition. This keeps ordinary exploration/review prose from proliferating State.
+
+Canonical working-conversation owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
+
+---
+
 ## 2. Core Flow
 
 ```text
@@ -160,7 +175,7 @@ producer/Lens contract
 + current Decisions / Target Relations / Evidence
 ```
 
-A Lens may identify likely affected Result Units or an owner hint, but those hints are not authority.
+A Lens may identify likely affected Result Units or an owner hint, but those hints are not authority. Explanatory Lens analysis that does not need a semantic consequence remains Broad Discussion/Key Points and does not require disposition.
 
 Example:
 

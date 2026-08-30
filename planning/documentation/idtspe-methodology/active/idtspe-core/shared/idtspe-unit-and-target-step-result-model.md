@@ -20,7 +20,7 @@ IDTSPE Step Output
 └─ material IDTSPE State Units
 ```
 
-`IDTSPE Step Output` is an explanatory umbrella for the material output of one work pass. It is **not** a new semantic owner and does not imply one persisted record.
+`IDTSPE Step Output` is an explanatory umbrella for material semantic output of one work/integration pass. It is **not** a new semantic owner and does not imply one persisted record. Ordinary Broad Discussion may surround or occur between these outputs without becoming Units; Key Points structure material discussion parts, while material Ideas remain explicit with `Addresses → Target Goal / Question / Problem`. No per-response Intake Summary or block-owner record is required. An Integration Checkpoint is the normal pass that reconciles accumulated discussion into the current Unit/Target Result state.
 
 The two Unit roles are distinct:
 
@@ -246,6 +246,22 @@ validation/readiness finding when independently useful
 
 Existing names remain the normal prose vocabulary. Do not force labels such as `Risk Unit` when `Risk` is already unambiguous.
 
+### Idea decision-context relations
+
+A material `Idea` is a candidate response/solution, not every thought in discussion. When surfaced as a material IDTSPE Idea, its driver relation is explicit. `Goal / Desired Outcome` normally means the current Target/scope goal context rather than a separate Generic State Unit:
+
+```text
+current Target Goal / Desired Outcome context
+Question
+Problem (existing P-09 Problem meaning)
+```
+
+Useful lightweight Idea relations include `addresses`, `competes-with`, `complements`, `requires`, `conflicts-with` and `part-of-candidate-bundle`. A Candidate Bundle / Option Group is a grouping/comparison projection over compatible Ideas by default, not a new mandatory State Unit. Use a Planning Branch only for a materially deep alternative downstream planning network.
+
+The driver/Idea/Q-R-P/Evidence relationships may first appear inline in Broad Discussion and are normalized in the next Integration Checkpoint when material. If Broad Discussion reveals an independently useful new Goal rather than merely refining the current Target Goal, normal scope/Target Formation resolves it.
+
+Canonical interaction owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
+
 The umbrella `IDTSPE State Unit` exists for:
 - addressability;
 - Lens interaction / Finding Disposition addressability;
@@ -291,6 +307,10 @@ Result Unit:
 Field:
   failurePropagation
 ```
+
+### Decision retained context
+
+Accepted material Decisions are retained in integrated semantic state by default. A Decision may reference the current Target Goal context / Question / Problem / Q-R-P it addresses, the selected Idea(s)/Candidate Bundle when useful, and optional `Rationale / Why`. Rationale explains selection logic and is distinct from Evidence. Retention/prompt rules are owned by [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md) and [`user-input-decision-and-answer-intake-rule.md`](user-input-decision-and-answer-intake-rule.md).
 
 ---
 
@@ -401,7 +421,7 @@ A Lens may support only the operations that make sense for that perspective.
 
 ### Finding boundary
 
-A Lens operation may surface a `Finding Candidate`.
+A Lens operation may contribute explanatory analysis/Key Points that remain Broad Discussion only. A materially newly surfaced observation crosses into a `Finding Candidate` only when ownership/State/lifecycle disposition is needed.
 
 The Lens does **not** own generic routing/lifecycle consequences such as:
 
@@ -419,7 +439,8 @@ Canonical path:
 
 ```text
 Lens operation
-→ Finding Candidate
+→ explanatory analysis / Key Points when useful
+→ Finding Candidate only for material semantic consequence needing disposition
 → Core Finding Disposition
 → State/lifecycle/ownership resolution
 → normal authority/resolution

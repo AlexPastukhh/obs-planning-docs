@@ -297,18 +297,23 @@ existing owner representations
 ↓
 IDTSPE / CREATE|REFINE|EXTEND|REVALIDATE|REPAIR
 ↓
-Target Module + Lens Set
+Broad Discussion
+  material logical parts → Key Points
+  each material Idea explicit → Addresses current Target Goal / Question / Problem
+  no mandatory block-owner / per-response Intake Summary
+↓ when a whole-state view is useful
+Integration Checkpoint
+  Target Module / Local Contract + Lens Set
+  coherent Generic State + applicable Target Result Units
 ↓
-Questions / Ideas / QRP / Decisions
+Artifact Placement when physical persistence is material
 ↓
-Artifact Placement View
+CREATE / UPDATE / REUSE natural representations only when authorized/needed
 ↓
-CREATE / UPDATE / REUSE natural representations
-↓
-Methodology Direction / likely next Target
+Methodology Direction at checkpoint/handoff/material change
 ```
 
-A later invocation reads/resolves those same owner representations and refines/revalidates the same Target when appropriate.
+A later invocation reads/resolves those same owner representations and refines/revalidates the same Target when appropriate. Broad Discussion is allowed between checkpoints; material logical parts use Core Key Points proportionally and explicit Ideas retain their driver relations without a mandatory block-owner/Intake Summary layer. A checkpoint is whole-state integration, not completion or mandatory persistence, and its optional Broad Discussion Summary does not replace explicit integrated Ideas/relations.
 
 ## 10. Q/R/P Priority, Related Groups And Decision Trace
 

@@ -4,9 +4,9 @@ Status: active generic methodology owner
 
 ## 1. Purpose
 
-Every material IDTSPE instance must make persistence/placement visible **before file mutation is considered**.
+Physical persistence/placement must be made visible when an Integration Checkpoint or persistence-sensitive IDTSPE pass establishes material meaning that should survive and its representation is relevant **before file mutation is considered**. Ordinary Broad Discussion does not require an Artifact Placement View in every turn.
 
-A planning response is incomplete when it resolves semantic Questions/Decisions but leaves the user unable to tell:
+A persistence-sensitive checkpoint is incomplete when it leaves the user unable to tell:
 
 ```text
 which accepted/proposed content should survive?
@@ -17,12 +17,30 @@ should a separate owner/file/register/companion exist?
 what content still has unresolved persistence/placement?
 ```
 
-This is a lightweight mandatory projection of `P-14 Persistence / Artifact Port` and `TF-10 PERSISTENCE_ADDRESSABILITY`.
+This is the lightweight projection of `P-14 Persistence / Artifact Port` and `TF-10 PERSISTENCE_ADDRESSABILITY` when physical persistence/representation is material. Semantic retention at an Integration Checkpoint is distinct from this physical placement decision.
 
 The deeper `Artifact / File Realization Pack` remains conditional for non-trivial layout/reorganization decisions.
 
 Before P-14 chooses a path, semantic ownership must already be resolved for material content whose owner is not inherent in an accepted Target Result/State. If representation analysis exposes owner ambiguity, the required Core [`Documentation / Representation Lens`](../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) surfaces a Finding Candidate and waits for Core Finding Disposition. With owner context resolved, the Lens decides whether persistence is needed at all and whether the representation is implementation-native, an existing owner section, a registry/strategy/discovery artifact, a dedicated owner artifact, a companion, a global artifact or a generated view. `P-14` places the selected representation; it does not force Markdown or create semantic ownership.
 
+
+## 1A. Broad Discussion / Checkpoint Boundary
+
+Canonical interaction model: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
+
+```text
+Broad Discussion turn
+→ no full P-14 / Artifact Placement rendering required by default
+→ material logical parts may use Key Points proportionally
+→ no mandatory block-owner or per-response Intake Summary
+
+Integration Checkpoint
+→ show which material semantic state/result is retained
+→ if physical persistence is material or changed, resolve/show P-14 placement
+→ if existing placement is simply inherited/unchanged, a compact unchanged/inherited statement is enough
+```
+
+Logical/semantic retention of a Decision/Idea/Result Unit does not by itself create a file. Documentation / Representation + P-14 remain the physical representation boundary.
 
 ## 2. Semantic Owner vs Artifact Owner
 
@@ -58,7 +76,7 @@ If planning discovers that content may need a **new semantic owner/Target**, do 
 
 ## 2A. Current Artifact Context
 
-Before proposing new placement, a material IDTSPE invocation should expose the current artifact state relevant to the Target:
+Before proposing new placement in a persistence-sensitive checkpoint/pass, expose the current artifact state relevant to the Target:
 
 ```text
 Existing canonical owner artifact(s)
@@ -82,7 +100,7 @@ existing representation
 
 ## 3. Artifact Placement Item
 
-For every material IDTSPE Unit/content item produced, refined or discovered in the current IDTSPE instance that may need to survive, render proportionally:
+For each material IDTSPE Unit/content item whose physical persistence/placement is being resolved in the current checkpoint/pass, render proportionally:
 
 ```text
 ArtifactPlacementItem
@@ -387,23 +405,23 @@ new addressable DATA concept
 architecture rationale
 ```
 
-## 5. Required IDTSPE Response View
+## 5. Integration Checkpoint / Persistence-Sensitive Response View
 
-A material IDTSPE answer should expose, proportionally:
+When a full Integration Checkpoint or persistence-sensitive structured pass is being rendered, expose proportionally:
 
 ```text
-1. Current Target / Scope / Sources
-2. Resolved Questions / current answers
-3. Unresolved material Questions / Decisions needing user authority
-4. Lens Finding Candidates + dispositioned material Ideas / Q/R/P / other State when relevant
-5. Target Step Result preview/update — material Result Units
-6. material IDTSPE State Units when useful
-7. Artifact Placement View
-8. Handoff / next Sources
+1. optional Broad Discussion Summary / material explanatory Key Points
+2. Current Target / Scope / Sources + current Target Goal / Desired Outcome context
+3. coherent material Generic State through existing Core kinds, including explicit Idea → Target Goal/Question/Problem `Addresses` relations and unresolved alternatives
+4. accepted Decisions + optional rationale/alternative-retention choices when material
+5. Target Step Result — applicable current Result Units
+6. relevant Lens/consistency review + material Finding Candidates/disposition consequences
+7. semantic retention + Artifact Placement View when physical persistence is material; otherwise inherited/unchanged/no-action may be stated compactly
+8. Handoff / next Sources / recommended discussion focus
 9. Residual Q/R/P / revalidation signals
 ```
 
-The exact prose format can vary. The **Artifact Placement View must not disappear** merely because no files are being mutated in the current turn.
+The exact prose format can vary. Broad Discussion turns are exempt from the full checkpoint view; material Key Points remain proportional review structure, but no block-owner or per-response Intake Summary is mandatory. A checkpoint Broad Discussion Summary is optional retrospective prose and must not substitute for structured material Ideas/relations. In a checkpoint, do not confuse semantic retention with physical placement: show an Artifact Placement View when placement is material/changed/unresolved; when existing placement is inherited and no physical change is under consideration, a compact `placement unchanged/inherited` statement is sufficient.
 
 ## 6. Artifact Placement View — Compact Rendering
 
@@ -589,7 +607,7 @@ Do not silently pick one file merely to make the response look complete.
 
 Artifact placement is paired with a methodology continuation projection owned by `directed-methodology-workflow-and-next-step-resolution.md`.
 
-Every material response should include proportionally:
+When a checkpoint/handoff-sensitive structured response needs Methodology Direction, include proportionally:
 
 ```text
 Current Target / invocation mode

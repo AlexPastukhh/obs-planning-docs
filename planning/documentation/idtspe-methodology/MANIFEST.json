@@ -1,6 +1,6 @@
 {
-  "workspace_version": "idtspe-slice-implementation-strategy-correction-74",
-  "repo_snapshot_base": "98a98ce04fd3385a57a7a05e193ba990485479e9",
+  "workspace_version": "idtspe-broad-discussion-integration-checkpoint-review-correction-77",
+  "repo_snapshot_base": "d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
   "sds_profile_bootstrap": "sdscmd.bootstrap",
@@ -753,5 +753,44 @@
     "findingDispositionBoundary": "Lens/implementation observations become Finding Candidates; Core Finding Disposition selects any Question/Idea/Q/R/P/Decision/owner/Target-Formation/revalidation consequence",
     "commandProjectionCorrected": true,
     "reviewDiffCorrection": "restore Finding Candidate → Core Finding Disposition boundary; keep RU-SSTRAT-03 as semantic identity/addressability rather than bounded Target creation; reproject actual Slice commands + Helper seed; correct repo_snapshot_base to the checked current main head"
+  },
+  "broad_discussion_integration_checkpoint_model": {
+    "changeSetId": "312f308b-762d-4b53-8868-ac887474db55",
+    "packageId": "0df594dd-0599-4630-9b4c-047b1c9e2315",
+    "changeSetLabel": "IDTSPE Broad Discussion and integration checkpoint model",
+    "gitHeadChecked": "d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b",
+    "owner": "active/idtspe-core/shared/broad-discussion-and-integration-checkpoint-model.md",
+    "broadDiscussion": "ordinary multi-turn exploratory chat around current Target/context; may carry material Ideas + contextual Q/R/P/Evidence inline and may coexist with checkpoint output",
+    "keyPoints": "generic proportional peer review projection for material outputs; in Broad Discussion, Key Points structure material logical parts without introducing block-owner records",
+    "broadDiscussionSummary": "optional checkpoint-level retrospective summary of accumulated discussion; never substitutes for explicit integrated Ideas/relations/State",
+    "integrationCheckpoint": "periodic whole-state semantic integration pass over accumulated discussion/current State using current Target Module or Local Target Contract; not lifecycle/completion/Unit/Target/file/commit/new command",
+    "ideaDecisionContext": "every material Idea is explicit and carries Addresses → current Target Goal/Desired Outcome context, Question or existing P-09 Problem; Target Goal is not a new Generic State Unit; active Target Module Target Goal + Question/Problem candidates are the ordinary starting driver set while other accepted origins enter on equal Core semantic footing",
+    "ideaRelations": [
+      "addresses",
+      "competes-with",
+      "complements",
+      "requires",
+      "conflicts-with",
+      "part-of-candidate-bundle"
+    ],
+    "candidateBundleBoundary": "lightweight grouping/comparison projection over Ideas; not a new required State Unit or Planning Branch",
+    "checkpointIntegration": [
+      "collect material meaning",
+      "relate drivers/Ideas/Q-R-P/Evidence/Decisions",
+      "integrate applicable Generic State + Target Result Units",
+      "apply relevant Lens/consistency checks",
+      "preserve unresolved alternatives"
+    ],
+    "decisionRetention": "accepted material Decisions retained semantically by default; optional Rationale/Why remains distinct from Evidence; ask user whether to retain missing rationale and material non-selected/deferred/rejected/superseded alternatives; batch optional retention questions when practical",
+    "lensDiscussionBoundary": "Lens analysis/Key Points may remain Broad Discussion without Unit/Finding; material semantic consequence needing ownership/State/lifecycle disposition becomes Finding Candidate → Core Finding Disposition",
+    "persistenceBoundary": "conversation prose vs integrated semantic planning state vs physical persistence are distinct; checkpoints do not imply files; P-14 physical placement is shown when material/changed/unresolved and may be compactly inherited/unchanged otherwise",
+    "commandSurfaceCountChanged": false,
+    "targetModuleCountChanged": false,
+    "lensCountChanged": false,
+    "domainTargetSemanticsChanged": false,
+    "coherenceSweep": "aligned TF-10/deep Artifact Pack/SDS Methodology Direction/worked-example wording so ordinary Broad Discussion does not mechanically render full placement/direction projections; aligned generic Lens registry/Target Module wording so explanatory Lens analysis need not create Finding Candidates",
+    "broadDiscussionIntakeSummary": "removed as mandatory layer; Broad Discussion relies on conversation context plus explicit Ideas/Q-R-P/Evidence, with whole-state normalization at Integration Checkpoint",
+    "reviewDiffCorrection": "second post-Apply correction: keep Goal/Desired Outcome as Target context rather than Generic State Unit; formalize Target Module Question+Problem driver candidates; integrate checkpoint-emergent material meaning immediately or mark post-checkpoint exploration; broaden alternative-retention choice to non-selected/deferred/rejected/superseded; restore generic AI Reviewability Key Points contract with Broad Discussion specialization; remove mandatory block-owner and per-response Intake Summary layers",
+    "secondReviewDiffCorrection": "Goal stays Target context; formal Question+Problem driver candidates; generic Key Points restored with Broad Discussion specialization; mandatory block-owner/Intake Summary removed; checkpoint-emergent material meaning integrated or marked post-checkpoint; retention includes non-selected/deferred/rejected/superseded alternatives"
   }
 }

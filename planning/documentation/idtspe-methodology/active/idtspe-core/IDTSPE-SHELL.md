@@ -10,6 +10,7 @@ Trigger / Invocation
 + Target Formation Resolution Set
 + Target Module or Local Target Contract
 + typed Sources
++ Broad Discussion / Key Points when working conversationally
 + IDTSPE State Units
 + selected/applicable Lenses
 + Target Step Result Units
@@ -19,6 +20,8 @@ Trigger / Invocation
 + Evidence / Revalidation lifecycle
 = one bounded IDTSPE work step
 ```
+
+Canonical working-conversation / checkpoint model: [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md).
 
 Canonical content model:
 
@@ -111,13 +114,15 @@ Connects:
 ```text
 Target Module Question examples
 Source-derived questions
-Questions created/refined through Core Finding Disposition when Lens findings materially require Question State
-current unresolved Q/R/P
+Questions surfaced in previous steps/checkpoints or Broad Discussion
+explicit user questions / questions implied by current Goal or Problem
+Questions created/refined through Core Finding Disposition when material findings require Question State
+current unresolved Q/R/P questions when relevant
 ```
 
-into one selected `Question Set` through `TF-06 QUESTION_SET`.
+into one selected `Question Set` through `TF-06 QUESTION_SET`. Goals/Desired Outcomes and Problems may drive the Idea/Decision space without being retyped as Questions merely to pass through P-05.
 
-Question examples are non-exhaustive and are not automatic user questions.
+Question examples are non-exhaustive and are not automatic user questions. A Target Module may also provide Problem driver candidates; the Target Goal / Desired Outcome comes from the Target contract/context. These are the ordinary starting driver set for Idea discovery, but current Sources/situation, previous work/checkpoints, Broad Discussion, user/AI input and dispositioned findings may add drivers on equal Core semantic footing. Problem drivers use the existing P-09 Problem meaning rather than being retyped as Questions.
 
 ### P-06 Lens Port
 
@@ -146,7 +151,7 @@ A Local Target Contract uses the same Lens Port without inventing a Target Modul
 
 Finding handling is generic Core behavior: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
 
-Lenses run inside IDTSPE work through an Analysis Surface and reusable operations. They surface Finding Candidates; the Core Finding Disposition contract resolves State/lifecycle/owner destinations. A Lens may lead to an already-declared Result Unit changing only after normal authority/resolution, and it never defines Unit kinds or becomes semantic authority.
+Lenses run inside IDTSPE work through an Analysis Surface and reusable operations. They may contribute explanatory Broad Discussion/Key Points without State mutation; only material meaning needing State/lifecycle/owner disposition surfaces as a Finding Candidate, which Core Finding Disposition resolves. A Lens may lead to an already-declared Result Unit changing only after normal authority/resolution, and it never defines Unit kinds or becomes semantic authority.
 
 ### P-07 Idea / Alternative Port
 
@@ -159,9 +164,9 @@ Target Module pattern aids
 accepted/dispositioned Idea / alternative input derived from Lens, research or prototype observations
 ```
 
-Raw Lens findings and research/prototype Evidence observations first surface as Finding Candidates. Core Finding Disposition decides whether accepted meaning creates/refines Idea/alternative State or another lifecycle consequence; only then does `TF-07 IDEA_SPACE` resolve materially different answer candidates.
+Material Lens/research/prototype observations that need semantic State/lifecycle disposition first surface as Finding Candidates. Core Finding Disposition decides whether accepted meaning creates/refines Idea/alternative State or another lifecycle consequence; only then does `TF-07 IDEA_SPACE` resolve materially different answer candidates.
 
-AI proposal remains an unselected Idea until accepted.
+AI proposal remains an unselected Idea until accepted. Every material Idea is explicitly surfaced and carries `Addresses → current Target Goal / Question / Problem`; a missing driver is an unresolved planning gap, not a free-floating material Idea. Ideas may `compete-with`, `complement`, `require`, `conflict-with` or compose through a lightweight Candidate Bundle / Option Group. Candidate bundles are grouping/comparison projections by default, not new required State Units or Planning Branches. Material Ideas/relations may first live inline in Broad Discussion; no per-response Intake Summary is required as long as their explicit identity/driver relation is clear for the next Integration Checkpoint.
 
 ### P-08 Branch Port
 
@@ -180,9 +185,9 @@ Risk
 Problem
 ```
 
-attached to the real planning subject/Decision. Q/R/P is not a parallel semantic-root model.
+attached to the real planning subject/Decision/Idea/Result relation they concern. Q/R/P may be contextual to one Idea or candidate bundle rather than only Target-wide. Q/R/P is not a parallel semantic-root model.
 
-Optional review/trace mechanics are owned by [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md): impact priority, related Q/R/P grouping, and Decision `Addresses` / `Exposes` links. These extend existing P-09; they do not create a second Concern runtime.
+Optional review/trace mechanics are owned by [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md): impact priority, related Q/R/P grouping, contextual Idea/Q-R-P relations, and Decision `Addresses` / `Selected` / optional `Rationale / Why` / `Exposes` links. These extend existing P-09; they do not create a second Concern runtime.
 
 ### P-10 Decision Port
 
@@ -193,14 +198,16 @@ AI proposal
 ≠ accepted Decision
 ```
 
-When useful, a Decision may declare:
+Accepted material Decisions are retained in integrated semantic state by default. When useful, a Decision may declare:
 
 ```text
-Addresses: <Q/R/P IDs or related group>
+Addresses: <Goal / Question / Problem / Q/R/P IDs or group>
+Selected:  <Idea(s) / Candidate Bundle>
+Rationale / Why: <optional selection reasoning>
 Exposes:   <newly revealed/created Q/R/P IDs>
 ```
 
-The trace is explanatory/revalidation metadata, not a new Decision type.
+`Rationale / Why` is optional and distinct from Evidence. At an Integration Checkpoint, ask whether a short rationale should be retained when a new material Decision has none; ask separately whether material non-selected/deferred/rejected/superseded alternatives should be retained. Batch these optional retention choices when practical. The trace is explanatory/revalidation metadata, not a new Decision type.
 
 ### P-11 Target Step Result Projection Port
 
@@ -217,7 +224,7 @@ Target Step Result
 
 Generic Questions/Ideas/QRP/Branches/Decisions/Evidence/Revalidation remain Core State Units and are not duplicated merely as module result fields.
 
-Existing `Target-specific output`, `Output Schema` and `Target-specific Output Template` wording is migration-compatible technical projection vocabulary; the canonical semantic model is the Step Result / Result Unit contract.
+Existing `Target-specific output`, `Output Schema` and `Target-specific Output Template` wording is migration-compatible technical projection vocabulary; the canonical semantic model is the Step Result / Result Unit contract. A full Target integration pass may serve as an Integration Checkpoint: it reconciles accumulated Broad Discussion/current State into the coherent applicable Generic State + Target Result without ending discussion or implying physical persistence.
 
 ### P-12 Validation Port
 
@@ -245,7 +252,7 @@ accepted Target output
 
 Current installed SDS example: [`../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md).
 
-Every material response should distinguish:
+When a checkpoint/handoff-sensitive response needs Methodology Direction, distinguish proportionally:
 
 ```text
 Recommended next Target/action
@@ -275,11 +282,11 @@ for each material IDTSPE Unit/content item that may need to survive:
   resolver / material placement Decision?
 ```
 
-Every material IDTSPE response exposes an `Artifact Placement View`, even when no file mutation is authorized.
+Broad Discussion turns do not require an `Artifact Placement View`. At an Integration Checkpoint or persistence-sensitive structured pass, distinguish semantic retention from physical placement: when placement is material/changed/unresolved expose the Artifact Placement View; when established placement is simply inherited, a compact unchanged/inherited statement is enough.
 
 ```text
-semantic planning complete
-≠ artifact placement invisible
+semantic retention
+≠ physical persistence
 
 Artifact Placement View
 ≠ file mutation
@@ -302,22 +309,23 @@ actual Evidence
 
 Revalidation is lifecycle, not a peer Lens.
 
-## Required IDTSPE Response Projection
+## Integration Checkpoint Response Projection
 
-For a material planning instance, the assistant should render proportionally:
+Ordinary Broad Discussion is allowed to remain conversational and does not reproduce this whole projection. Material logical parts use Key Points proportionally, and material Ideas remain explicit with their driver relation; no mandatory block-owner or per-response Intake Summary is required. When a full Integration Checkpoint is requested/appropriate, the assistant should render proportionally:
 
 ```text
-Current Target / Scope / Sources
-Invocation mode + current artifact context
-Resolved answers
-Unresolved Questions / Decisions needing authority
-Lens Finding Candidates / dispositioned Ideas / material Q/R/P
-Target-specific output preview
-Artifact Placement View
-Handoff / downstream Sources
-Methodology Direction / recommended next step
+optional Broad Discussion Summary / material explanatory Key Points
+Current Target / Scope / Sources + Target Goal / Desired Outcome context
+coherent material Generic State through existing Core kinds, including explicit Idea→driver relations and unresolved Idea alternatives/bundles
+accepted Decisions + retention/rationale choices when material
+Target-specific Result Units — complete applicable current projection
+Lens / consistency review + material Finding Candidates/disposition consequences
+semantic retention + Artifact Placement when physical persistence is material
+Handoff / downstream Sources / recommended discussion focus
 Residual Q/R/P / revalidation signals
 ```
+
+If explanatory Broad Discussion inside the checkpoint surfaces new material Idea/Question/Problem/Evidence/Decision meaning, integrate it into that same checkpoint or mark it explicitly as post-checkpoint exploration; do not leave it as unintegrated prose while presenting the checkpoint as the coherent whole.
 
 `Artifact Placement View` maps current-instance content to semantic owner + **guidance source IDs (AP-*/AG-*)** + persistence + physical representation/destination + resolver.
 
@@ -346,8 +354,8 @@ An IDTSPE instance is a bounded planning pass over a Target, not a one-shot file
 existing owner representations
 → become current Target/current-state Sources
 → IDTSPE CREATE/REFINE/EXTEND/REVALIDATE/REPAIR
-→ accepted updates + Artifact Placement View
-→ CREATE/UPDATE/REUSE files when authorized
+→ accepted semantic updates + Artifact Placement View when physical persistence is material
+→ CREATE/UPDATE/REUSE files only when authorized and needed
 → later IDTSPE pass reads the updated files again
 ```
 

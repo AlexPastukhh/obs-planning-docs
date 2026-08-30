@@ -60,7 +60,7 @@ These are **9 generic Core methodology surfaces**. Installed profiles contribute
 
 `idtspe.bootstrap` is governance orientation only and has `hostTargetPolicy=NONE`.
 
-`idtspe.work` enters ordinary material planning through the IDTSPE Shell and may create/reuse the natural Target according to Target Formation.
+`idtspe.work` enters ordinary material planning through the IDTSPE Shell and may create/reuse the natural Target according to Target Formation. It supports multi-turn Broad Discussion as the normal exploratory mode and periodic Integration Checkpoints when the user asks to see the integrated whole or a full Target invocation is used for that purpose; the checkpoint is not a new command/lifecycle/Target kind.
 
 Bootstrap must not silently select a Target, infer a Target invocation mode or execute Target work.
 
@@ -90,7 +90,9 @@ existing/resolved natural Target context
 ↓
 apply that Lens Operational Evaluation Contract
 ↓
-surface Finding Candidate(s)
+Broad Discussion / Key Points when explanatory analysis is useful
+↓
+material Finding Candidate(s) only when semantic disposition is needed
 ↓
 Core Finding Disposition resolves actual semantic owner / State / lifecycle consequence
 ```

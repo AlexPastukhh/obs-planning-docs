@@ -414,3 +414,57 @@ for already explicit user Decisions
 AI must not manufacture acceptance
 for unresolved AI proposals
 ```
+
+# 13. Broad Discussion Material Intake
+
+Broad Discussion may introduce material decision drivers, Ideas and related State meaning without forcing a full IDTSPE State dump or mini-checkpoint in that turn.
+
+For material Ideas, preserve the meaning explicitly in the discussion:
+
+```text
+Idea <identity/label>
+Addresses → current Target Goal / Desired Outcome | Question | Problem
+
+material Idea relations when they actually exist
+  competes-with
+  complements
+  requires
+  conflicts-with
+  part-of-candidate-bundle
+
+related Q/R/P/Evidence when material
+```
+
+The current Target Goal / Desired Outcome is Target/scope context rather than a new Generic State Unit introduced by this intake rule. A material Problem driver uses the existing P-09 Problem meaning.
+
+A material Idea is not left as an unlabeled implication in prose or in a later Broad Discussion Summary. If its Target Goal/Question/Problem driver cannot yet be identified, record that missing driver as an unresolved planning gap instead of carrying a free-floating material Idea.
+
+When an active Target Module supplies reusable Question/Problem candidates, together with its current Target Goal, those are the ordinary starting driver set. They are not an exclusive intake gate: drivers/Ideas from the user, AI, current situation/Sources, previous work/checkpoints, Broad Discussion or dispositioned findings receive the same Core semantics once accepted into the current work. AI proposals still remain unselected until actual authority selects them.
+
+No mandatory `Broad Discussion Intake Summary` or block-owner/semantic-anchor record is required after each message. Conversation context plus explicit IDTSPE Ideas/Q-R-P/Evidence carry the exploration; the next Integration Checkpoint normalizes the material whole into current Generic State + Target Result.
+
+Canonical owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
+
+# 14. Decision Retention / Rationale Intake At Checkpoints
+
+At an Integration Checkpoint:
+
+```text
+accepted material Decision
+→ retain in semantic planning state by default
+
+Rationale / Why
+→ optional
+→ distinct from Evidence
+→ ask the user whether a concise rationale should be retained when a new material Decision has none
+
+material non-selected / deferred / rejected / superseded alternatives
+→ ask whether to retain the alternatives and, when relevant, why they were not selected
+
+trivial transient alternatives
+→ may remain conversational unless the user wants the exploration history
+```
+
+Do not make an optional rationale/alternative-retention question blocking unless the missing rationale itself is needed to resolve a material ambiguity. Batch retention questions when practical rather than creating a confirmation turn for every small choice.
+
+If the user already supplied a rationale or explicitly said whether to keep alternatives, reuse that input and do not re-ask it.

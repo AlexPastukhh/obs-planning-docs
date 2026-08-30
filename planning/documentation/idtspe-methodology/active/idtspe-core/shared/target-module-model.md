@@ -96,7 +96,10 @@ The Module may supply reusable ways to produce/refine that result:
 
 ```text
 Source archetype
-Question candidates
+Decision-driver candidates
+  Question candidates
+  Problem candidates
+  Target Goal / Desired Outcome comes from the Target contract/context
 Idea / Variant discovery aids
 branch triggers
 candidate answer shapes/pattern aids
@@ -107,7 +110,7 @@ validators
 handoff/revalidation prompts
 ```
 
-Concrete Questions/Ideas/Q/R/P/Decisions/Evidence remain generic IDTSPE State Units. The Module provides reusable prompts/methods; it does not duplicate the Core lifecycle inside its result schema.
+The current Target Goal / Desired Outcome is Target/scope context, not a new Generic State Unit introduced by the Module. Concrete Questions/Ideas/Q/R/P/Decisions/Evidence remain generic IDTSPE State meaning; a material Problem driver uses the existing P-09 Problem meaning. The Module provides reusable driver candidates/prompts/methods; it does not duplicate the Core lifecycle inside its result schema. When a reusable Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Idea discovery. They are not an exclusive gate: Sources, previous work/checkpoints, Broad Discussion, user/AI input or dispositioned Lens findings may add drivers/Ideas, and those inputs have equal Core semantics once accepted into the current work. Material Ideas are explicit and carry `Addresses → Target Goal / Question / Problem`. An Integration Checkpoint reconciles all of these rather than treating Module presets as the only legitimate drivers.
 
 Canonical Unit/result semantics: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
 
@@ -461,14 +464,18 @@ RQ:
   Which state/combination must be impossible?
 ```
 
-They are:
+They are reusable decision-driver candidates/presets:
 
 ```text
-Question candidates / presets
+Question candidates
+Problem candidates
+Target Goal / Desired Outcome from the Target contract/context
+
+≠ exhaustive decision-driver set
 ≠ automatic user interview
 ```
 
-Normal intake and User Question Policy still apply.
+Current Questions/Problems may also emerge from the situation, Sources, previous steps/checkpoints and Broad Discussion; an independently useful new Goal is handled through normal scope/Target Formation rather than silently becoming a new Generic State Unit. Normal intake and User Question Policy still apply. At an Integration Checkpoint, all material drivers are integrated under the same Core authority rules. Canonical working model: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
 
 ---
 
@@ -552,7 +559,7 @@ LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY
 LENS-QUALITY-RISK-MATERIALITY
 ```
 
-Lens operations surface Finding Candidates. Core Finding Disposition resolves them into normal generic Ideas / Evidence / Q/R/P / Decision inputs / revalidation or another owner as appropriate.
+Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves it into normal generic Ideas / Evidence / Q/R/P / Decision inputs / revalidation or another owner as appropriate.
 
 ```text
 Lens ≠ Target Module

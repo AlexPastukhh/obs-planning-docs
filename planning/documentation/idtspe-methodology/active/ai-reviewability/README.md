@@ -22,26 +22,63 @@ IDTSPE/SDS may consume AI Reviewability presentation rules, but AI Reviewability
 
 ## Key Points Contract
 
-Preserved from the repository AI Reviewability principles:
+Preserved generic principle:
 
-> A material answer exposes its major conclusions as `Key Points`.
+> A material answer/output exposes its major material content as `Key Points` proportionally.
 
-A Key Point normally corresponds to a major body section and contains a short but complete statement of the selected/current conclusion.
+`Key Points` are a review/navigation projection over the body, not a second semantic owner. They should let a reader scan the material result quickly while the reasoning, evidence, examples and nuance remain in the surrounding text.
 
-A reader who scans only Key Points should understand every **material conclusion**, while supporting evidence/reasoning remains in the body.
+Key Points are not limited to final conclusions. Depending on the output, they may capture:
+
+- current conclusions;
+- alternatives and trade-offs;
+- unresolved tension or uncertainty;
+- material changes since the previous state;
+- the key content of a logical discussion part.
 
 Stable `KP-*` IDs are optional and mainly useful for long-lived review/discussion.
+
+## Broad Discussion Specialization
+
+In IDTSPE Broad Discussion, Key Points are the normal way to structure **material logical parts** of the conversational prose.
+
+```text
+logical discussion part
+  explanatory reasoning / examples / trade-offs
+  Key Points
+    concise key content of this part
+
+next logical discussion part
+  ...
+  Key Points
+    ...
+```
+
+This is a specialization of the generic Key Points contract, not a replacement for it. Broad Discussion does not need a separate `block owner`, semantic-anchor record or per-response intake object merely to make the prose reviewable. The subject of a logical part should be understandable from the normal heading/content and from any explicit IDTSPE Question/Problem/Idea/Decision/Result references it contains.
+
+An IDTSPE Integration Checkpoint may additionally include an optional **Broad Discussion Summary** describing what the accumulated discussion since the previous checkpoint materially established or changed.
+
+```text
+Key Points
+= local review structure for material logical parts
+
+Broad Discussion Summary
+= optional checkpoint-level retrospective summary of accumulated discussion
+```
+
+Neither becomes semantic planning authority or persistence by default. Canonical IDTSPE interaction semantics live in [`../idtspe-core/shared/broad-discussion-and-integration-checkpoint-model.md`](../idtspe-core/shared/broad-discussion-and-integration-checkpoint-model.md).
 
 ## Boundary
 
 ```text
 Key Points
-= conclusion-first review projection
+= proportional key-content review projection
 ≠ second semantic owner
 ≠ replacement for evidence/reasoning/body
+≠ mandatory new persistence object
 ```
 
-Do not manufacture Key Points for trivial replies. Use them proportionally when the output changes a plan, selects material meaning, closes a meaningful planning step or proposes substantial implementation.
+Do not manufacture Key Points for trivial/non-material replies. Use them proportionally for material outputs; within Broad Discussion, use them to make the material logical parts easy to scan.
 
 ## Source Provenance
 

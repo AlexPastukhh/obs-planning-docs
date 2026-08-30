@@ -1,6 +1,6 @@
-# IDTSPE Response Example — Questions, Decisions, Output And Artifact Placement
+# IDTSPE Integration Checkpoint Example — Questions, Decisions, Output And Artifact Placement
 
-Status: active explanatory example
+Status: active explanatory Integration Checkpoint example  
 
 ## Situation
 
@@ -13,6 +13,12 @@ SCN-CAPTURE
 Accepted upstream Sources already establish that the Application should let a user preserve useful research material without disrupting current reading.
 
 The current planning task is to finish Scenario behavior/semantic DATA.
+
+This file demonstrates a **full Integration Checkpoint**, not a mandatory shape for every Broad Discussion turn. Ordinary multi-turn discussion may stay conversational; material logical parts use Key Points proportionally, and every material Idea is explicit with `Addresses → current Target Goal/Question/Problem`. No mandatory block-owner or per-response Intake Summary is required before a whole-state checkpoint. A checkpoint may optionally add a retrospective Broad Discussion Summary; it does not substitute for integrated Ideas/relations. Canonical interaction model: [`../../../idtspe-core/shared/broad-discussion-and-integration-checkpoint-model.md`](../../../idtspe-core/shared/broad-discussion-and-integration-checkpoint-model.md).
+
+## Checkpoint Projection
+
+The sections below are one proportional rendering of the integrated whole. They are not required headings for ordinary Broad Discussion.
 
 ## 1. Current Target / Scope / Sources
 

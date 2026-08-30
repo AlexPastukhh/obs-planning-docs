@@ -30,6 +30,27 @@ Target Step Result
 
 Canonical model: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
 
+## Broad Discussion And Integration Checkpoint
+
+The Step-Result contract is a semantic integration contract, not a requirement to render the full schema in every conversational reply.
+
+```text
+Broad Discussion
+→ may span many messages
+→ uses Key Points to structure material logical discussion parts
+→ may carry explicit material Ideas + related Q/R/P/Evidence inline
+→ does not require a per-response Intake Summary or block-owner record
+
+Integration Checkpoint
+→ periodically reconciles accumulated discussion/current Sources
+→ renders coherent applicable Generic State
+→ renders complete applicable Target Result Units
+→ applies relevant Lens/consistency checks
+→ preserves unresolved alternatives
+```
+
+A Target Module invocation may serve as an Integration Checkpoint. It does not end discussion and does not imply physical persistence. Canonical owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
+
 ## Target Module Result Contract
 
 A reusable Target Module should explain proportionally:
@@ -49,7 +70,10 @@ Target Step-Result Contract
 
 Resolution / Production Method
   Source archetype
-  Question candidates
+  Decision-driver candidates
+    Question candidates
+    Problem candidates
+    Target Goal / Desired Outcome from Target context
   Idea/pattern aids
   branch/escalation triggers
   Internal Object Contracts/shared methods when useful
@@ -117,20 +141,23 @@ Knowledge may be inline, referenced from files/folders/sections/external sources
 
 Do not duplicate reusable Lens evaluation knowledge inside a Target Module merely because the module uses that Lens.
 
-## Question Set Examples Are Non-Exhaustive
+## Decision-Driver Examples Are Non-Exhaustive
 
-Any module question list means:
+A Module may seed reusable decision-driver candidates:
 
 ```text
-examples / preset candidates
-≠ exhaustive list
+Question candidates
+Problem candidates
+Target Goal / Desired Outcome from the Target contract/context
+
+≠ exhaustive driver set
 ≠ automatic interview
 ≠ fixed sequence
 ```
 
-The current Target may add, remove, split, merge or reopen Questions through normal Core question-set resolution.
+The current Target may add, remove, split, merge or reopen Questions through normal Core question-set resolution, and may surface/refine material Problems through existing P-09 Problem semantics. When a Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Idea discovery, but Questions/Problems discovered from Sources, previous steps/checkpoints, Broad Discussion, user/AI input or dispositioned findings are accepted on equal Core semantic footing and are not second-class simply because they were not predeclared in the Module. An independently useful new Goal goes through normal scope/Target Formation rather than becoming a Generic State Unit by implication.
 
-Concrete Questions are Core State Units. The Target Module supplies reusable candidates/generation rules.
+Concrete Questions are Core State Units; material Problems use the existing P-09 Problem meaning. Every material Idea explicitly records which Target Goal/Question/Problem it addresses.
 
 ## Result Unit / Field Explanation Rule
 
@@ -178,7 +205,7 @@ Lens Profile
   local-only Lens prompts when genuinely non-reusable
 ```
 
-A Lens does not define target-specific Result Units/fields. It surfaces Finding Candidates; Core Finding Disposition resolves their State/lifecycle/owner destination, and normal authority/resolution may later update already-declared Result Units.
+A Lens does not define target-specific Result Units/fields. It may contribute Broad Discussion analysis/Key Points without creating a Unit; material meaning requiring State/lifecycle/owner disposition surfaces as a Finding Candidate, and Core Finding Disposition resolves its destination, and normal authority/resolution may later update already-declared Result Units.
 
 If a local Lens becomes useful across multiple Target families, promote it into the Lens Library.
 

@@ -116,7 +116,7 @@ Supported Operations
 Typical Findings / Finding Contract
 ```
 
-The Lens produces findings; Core Finding Disposition resolves their ownership/State/lifecycle destination. `REOPEN`, Result Unit update after resolution, cross-owner handoff and Target Formation are Core consequences rather than Lens operations.
+A Lens may contribute explanatory Broad Discussion/Key Points with no finding. When Lens analysis surfaces material meaning that needs ownership/State/lifecycle disposition, it becomes a Finding Candidate and Core Finding Disposition resolves its destination. `REOPEN`, Result Unit update after resolution, cross-owner handoff and Target Formation are Core consequences rather than Lens operations.
 
 The 6 SDS-specific Lens bodies conform literally after the Scenario Target migration. Existing generic Core Lens bodies remain migration-compatible until a separate literal Core-Lens conformance pass is useful.
 

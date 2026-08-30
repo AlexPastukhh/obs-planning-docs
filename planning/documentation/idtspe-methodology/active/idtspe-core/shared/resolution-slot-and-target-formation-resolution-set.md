@@ -442,7 +442,9 @@ Value:
   + full Artifact/File Pack handoff when representation choice is material
 
 Rule:
-  every material IDTSPE response exposes the placement state;
+  ordinary Broad Discussion does not have to render placement state on every turn;
+  an Integration Checkpoint or persistence-sensitive structured pass exposes placement when material/changed/unresolved;
+  established inherited placement may be stated compactly as unchanged/inherited;
   file mutation remains separately authorized
 ```
 

@@ -11,7 +11,7 @@ Lens
   and/or Target Step Result Units
 ```
 
-A Lens may discover Finding Candidates concerning Evidence needs, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Generic Core Finding Disposition resolves the material ownership/State/lifecycle destination; the Lens does not define Unit kinds or own that disposition.
+A Lens may contribute explanatory Broad Discussion analysis and Key Points without creating any Unit. It may also discover materially actionable meaning concerning Evidence needs, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Only meaning that needs ownership/State/lifecycle disposition crosses the Finding Candidate boundary; Generic Core Finding Disposition resolves that destination. The Lens does not define Unit kinds or own disposition.
 
 ```text
 Lens ≠ Target Module
@@ -117,6 +117,7 @@ Purpose / Evaluation Objective
 Applicability Gate
 Target Inputs / Evidence
 Prompts / Sublenses / Evaluation Workflow
+Broad Discussion / Key Points contribution when useful
 Findings / Outputs
 Typical Consumers
 Guards / Anti-patterns
@@ -137,7 +138,8 @@ The operational contract must make clear:
 ```text
 1. what the Lens analyzes;
 2. which generic Lens operations it supports;
-3. what kinds of findings it can surface.
+3. what explanatory analysis/Key Points it may contribute;
+4. what kinds of material findings it can surface.
 ```
 
 Canonical Unit model: [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md).  
@@ -220,7 +222,7 @@ A Lens need not support every operation.
 
 ### Typical Findings / Finding Contract
 
-A reusable Lens should explain the recurring finding families it can surface.
+A reusable Lens should explain the recurring finding families it can surface. Ordinary useful analysis is not automatically a Finding Candidate; it may remain Broad Discussion/Key Points when no semantic ownership/State/lifecycle consequence is needed.
 
 A finding may include proportionally:
 
@@ -235,13 +237,29 @@ Suggested lifecycle consequence — optional hint
 
 Those hints do not grant authority.
 
+### Broad Discussion / Integration Checkpoint contribution
+
+Lens application may be useful even when no State changes:
+
+```text
+Lens analysis / trade-off explanation / examples
+→ Broad Discussion
+→ Key Points for the logical discussion part
+→ no Unit / no Finding Candidate required
+```
+
+At an Integration Checkpoint, the same Lens may help check the integrated Generic State + Target Result. Only a material newly surfaced semantic consequence needing disposition becomes a Finding Candidate. A checkpoint may therefore report `no material finding` while still including useful Lens analysis.
+
+Canonical interaction model: [`../shared/broad-discussion-and-integration-checkpoint-model.md`](../shared/broad-discussion-and-integration-checkpoint-model.md).
+
 ### Core Finding Disposition
 
 The Lens stops at the finding boundary.
 
 ```text
 Lens
-→ Finding Candidate
+→ Broad Discussion / Key Points when explanatory only
+→ Finding Candidate when material semantic disposition is needed
 
 Core
 → materiality / ownership / State-lifecycle disposition

@@ -259,9 +259,9 @@ Material proof designs needed for the selected realization path should be persis
 
 Coverage requires actual Evidence. Planned tests alone are not coverage.
 
-## 6. Methodology Direction View — Required Next-Step Projection
+## 6. Methodology Direction View — Checkpoint / Handoff Projection
 
-Every material IDTSPE response must state the likely methodology continuation.
+At an Integration Checkpoint, explicit handoff, or whenever methodology direction materially changes/blocks the current discussion, state the likely methodology continuation. Ordinary Broad Discussion does not append the full direction projection mechanically on every turn.
 
 Minimum shape:
 

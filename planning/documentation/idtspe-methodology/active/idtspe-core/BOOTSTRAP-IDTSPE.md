@@ -11,7 +11,7 @@ When To Use:
   Use when generic IDTSPE Shell/Target/Lens/Artifact ownership is not reliably current, when entering this methodology from another context, or before choosing among installed planning profiles.
 
 What You Get:
-  Current generic IDTSPE governance, Target/Lens/Q-R-P/Artifact boundaries, Core Lens Pack, peer AI Reviewability Key Points contract, Theoretical Module registry, installed profile inventory and a safe next methodology action; no task-specific Target result.
+  Current generic IDTSPE governance, Broad Discussion ↔ Integration Checkpoint work model, Target/Lens/Idea-Q-R-P-Decision/Artifact boundaries, Core Lens Pack, peer AI Reviewability Key Points contract, Theoretical Module registry, installed profile inventory and a safe next methodology action; no task-specific Target result.
 ```
 
 ## Purpose
@@ -24,6 +24,8 @@ Load the **whole generic IDTSPE methodology architecture** before selecting a co
 IDTSPE Core mechanics + governance
 ↓
 Target Step Result + IDTSPE Unit model
+↓
+Broad Discussion + Key Points + Integration Checkpoint work model
 ↓
 Target Module system + Target Module Knowledge Basis
 ↓
@@ -53,23 +55,24 @@ A full core bootstrap reads, in this order:
 3. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md)
 4. [`PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md)
 5. [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md)
-6. [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md)
-7. [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md)
-8. [`shared/target-type-instance-source-and-relation-model.md`](shared/target-type-instance-source-and-relation-model.md)
-9. [`shared/target-module-model.md`](shared/target-module-model.md)
-10. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis sub-contract for Target Modules and Lenses.
-11. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md)
-12. [`lenses/README.md`](lenses/README.md)
-13. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy; do not infer one-file-per-Target.
-14. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md)
-15. [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md)
-16. [`shared/decision-revalidation-helper-model.md`](shared/decision-revalidation-helper-model.md)
-17. [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md)
-18. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/Lens-operation navigation and host-target policies.
-19. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md)
-20. [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points concern.
-21. [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — theoretical package registry only; do not automatically read raw bodies.
-22. [`../profiles/README.md`](../profiles/README.md)
+6. [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md)
+7. [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md)
+8. [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md)
+9. [`shared/target-type-instance-source-and-relation-model.md`](shared/target-type-instance-source-and-relation-model.md)
+10. [`shared/target-module-model.md`](shared/target-module-model.md)
+11. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis sub-contract for Target Modules and Lenses.
+12. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md)
+13. [`lenses/README.md`](lenses/README.md)
+14. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy; do not infer one-file-per-Target.
+15. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md)
+16. [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md)
+17. [`shared/decision-revalidation-helper-model.md`](shared/decision-revalidation-helper-model.md)
+18. [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md)
+19. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/Lens-operation navigation and host-target policies.
+20. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md)
+21. [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points concern.
+22. [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — theoretical package registry only; do not automatically read raw bodies.
+23. [`../profiles/README.md`](../profiles/README.md)
 
 Read specific profile/module/lens bodies only after the next concrete route is known.
 
@@ -107,6 +110,12 @@ Unit model:
   Core State Unit kinds loaded
   Target Module / Local Contract owns target-specific Result Units
   Lens does not define Unit kinds
+
+Working interaction model:
+  Broad Discussion may span turns; material logical parts use Key Points proportionally
+  material Ideas are explicit and Address current Target Goal / Question / Problem; no mandatory per-response Intake Summary/block-owner record
+  Integration Checkpoint reconciles material discussion into Target Goal context + existing Generic State + Target Result
+  checkpoint is not completion/lifecycle/file persistence
 
 Core Lens Pack:
   L1 / L2 / L3
@@ -155,7 +164,7 @@ Recommended next methodology action:
 = generic methodology/framework orientation
 
 бутстреп sds
-= load the SDS profile: 17 current Target Modules,
+= load the SDS profile: 16 current Target Modules,
   SDS-specific Lens pack, workflow, planning-file topology and command surface
 ```
 
@@ -170,4 +179,4 @@ idtspe.work
 → работай через idtspe
 ```
 
-This command makes the Core Shell the default material-planning interpretation in the current working context. AI-generated design proposals are treated as Ideas until selected, scope/Target Formation happens before detailed planning, and an active profile is used only when actually resolved.
+This command makes the Core Shell the default material-planning interpretation in the current working context. Broad Discussion may continue without full state dumps; material logical parts use Key Points and material Ideas are explicit and Address the current Target Goal/Question/Problem without requiring a per-response Intake Summary. Periodic Integration Checkpoints reconcile accumulated discussion plus Q-R-P/Evidence/Decisions with the Target Goal context and Target Result. AI-generated design proposals are treated as Ideas until selected, scope/Target Formation happens before detailed planning, and an active profile is used only when actually resolved.

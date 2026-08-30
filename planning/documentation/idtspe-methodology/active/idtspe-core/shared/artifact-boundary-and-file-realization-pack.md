@@ -8,9 +8,9 @@ Repository mutation: none.
 
 The fundamental lightweight policy is owned by [`../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md). This pack is its **conditional deep realization pack**, not a competing file-creation policy.
 
-## 0. Lightweight Placement Is Mandatory; Deep Artifact Planning Is Conditional
+## 0. Lightweight Placement At Materialization; Deep Artifact Planning Is Conditional
 
-Every material IDTSPE instance performs a lightweight `Artifact Placement View` through `P-14` / `TF-10`.
+Ordinary Broad Discussion does not perform a full placement pass by default. An Integration Checkpoint or other persistence-sensitive structured pass uses lightweight `P-14` / `TF-10` placement when physical persistence is material, changed or unresolved; established inherited placement may be stated compactly.
 
 That lightweight view answers:
 
@@ -739,14 +739,14 @@ But Artifact Pack can run without Pre-Update if the user only wants to inspect/r
 
 Artifact Pack is independently composable.
 
-Every material IDTSPE first performs:
+A persistence-sensitive Integration Checkpoint/pass performs:
 
 ```text
-semantic planning
-→ lightweight Artifact Placement View
+semantic planning / integrated semantic state
+→ lightweight Artifact Placement View when physical placement is material
 ```
 
-It may then stop **without mutation** when the placement is obvious and no deeper artifact-layout choice is material.
+It may then stop **without mutation** when the placement is obvious/inherited and no deeper artifact-layout choice is material. Broad Discussion may remain conversational without this projection.
 
 Possible use 2:
 

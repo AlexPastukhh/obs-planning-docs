@@ -461,3 +461,30 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
 **Package:** `9ba85d44-3853-4452-92ba-e96495d302d4`  
 **Reason:** Planning Helper participates through explicit one-shot Bind actions, per-tab session capture, invocation-scoped OBS-ACTION echo requirements, tests/docs and regenerated userscript; full cross-scope Apply/binding/notification semantics and APPLIED relation are owned by the Replacement Package App canonical log.
+
+### XREF-030 — Regenerate Helper IDTSPE work-mode projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-127` / `LOG-DOC-128`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`  
+**Reason:** Planning Helper participates only through regenerated `seed/commands.json` for canonical `idtspe.work`; runtime/source behavior is unchanged. The reusable-documentation log owns the Broad Discussion / Integration Checkpoint semantics, Decision-retention rules and APPLIED target state.
+
+### XREF-031 — Regenerate Helper IDTSPE material-intake projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-129` / `LOG-DOC-130`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `d46c640b-8604-44a5-be31-e36b98470db9`  
+**Reason:** Planning Helper participates only through regenerated `seed/commands.json` for canonical `idtspe.work`; runtime/source behavior is unchanged. The reusable-documentation log owns the ReviewDiff correction and APPLIED Broad Discussion/Intake/Idea-driver semantics.
+
+### XREF-032 — Regenerate Helper IDTSPE simplified discussion/checkpoint projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-131` / `LOG-DOC-132`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `0df594dd-0599-4630-9b4c-047b1c9e2315`  
+**Reason:** Planning Helper participates only through regenerated `seed/commands.json` for canonical `idtspe.work`; runtime/source behavior is unchanged. The reusable-documentation log owns the remaining ReviewDiff correction and APPLIED target-state meaning.

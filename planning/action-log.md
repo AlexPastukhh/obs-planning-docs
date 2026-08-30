@@ -265,3 +265,30 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
 **Package:** `3b79ff63-c2ca-4bcc-8da9-023988123544`  
 **Reason:** Planning Root participates only through the three corrected current Slice command definitions. The reusable-documentation log owns the ReviewDiff findings, Target Formation/Finding-Disposition correction and APPLIED target-state relation.
+
+### LOG-PLAN-006 — Reference IDTSPE Broad Discussion / Integration Checkpoint projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-127` / `LOG-DOC-128`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`  
+**Reason:** Planning Root participates only through the canonical `idtspe.work` command projection. Full Broad Discussion/Integration Checkpoint, Idea/Decision-retention and response/persistence rationale remain owned by the reusable-documentation canonical log.
+
+### LOG-PLAN-007 — Reference IDTSPE Broad Discussion material-intake ReviewDiff correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-129` / `LOG-DOC-130`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `d46c640b-8604-44a5-be31-e36b98470db9`  
+**Reason:** Planning Root participates only through the corrected canonical `idtspe.work` command projection. Full ReviewDiff clarification, Key Points/block-owner rule, material Intake Summary, explicit Idea-driver relation and APPLIED target-state meaning remain owned by the reusable-documentation canonical log.
+
+### LOG-PLAN-008 — Reference remaining IDTSPE Broad Discussion ReviewDiff correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-131` / `LOG-DOC-132`  
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
+**Package:** `0df594dd-0599-4630-9b4c-047b1c9e2315`  
+**Reason:** Planning Root participates only through the corrected canonical `idtspe.work` command projection. Full Goal/driver, Key Points, checkpoint-emergent semantics and retention correction remains owned by the reusable-documentation canonical log.
