@@ -9,6 +9,7 @@ Purpose: provide one self-contained map of how generic IDTSPE and SDS-specific p
 ```text
 IDTSPE Core
   Shell / Target Formation / Decisions / Lenses / Artifact Placement / Revalidation
+  + TM-EXACT-REALIZATION — generic exact directly integrable result, code-first default
 ↓
 SDS Profile
   16 Target Modules
@@ -82,7 +83,7 @@ Testing / Evidence
 
 Canonical registry: [`target-modules/README.md`](target-modules/README.md).
 
-Scenario DATA and Behavior Items are internal addressable contracts of `TM-SCENARIO-PLANNING`, not extra Target Modules.
+Scenario DATA and Behavior Items are internal addressable contracts of `TM-SCENARIO-PLANNING`, not extra Target Modules. SDS also inherits generic Core [`TM-EXACT-REALIZATION`](../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md); it is not counted among these 16 profile modules.
 
 ## 3. Lens Composition
 
@@ -151,8 +152,9 @@ Target Formation per selected Slice when independently bounded implementation pl
 Implementation Slice
 ↔
 per-Slice Test Design
-↓
-realization / execution
+↓ when an exact implementation/artifact Target is useful
+generic Core TM-EXACT-REALIZATION
+  exact result → optional explicit integration/build/test/minor repair → current exact result
 ↓
 Implemented practical Evidence when real acceptance/learning is needed
 ↓

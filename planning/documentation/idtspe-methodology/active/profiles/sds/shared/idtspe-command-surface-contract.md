@@ -33,6 +33,10 @@ idtspe.work
 → работай через idtspe
 → use IDTSPE Core Shell as the default material-planning operating mode; resolve scope/Target and treat AI proposals as Ideas by default
 
+tmcmd.exact.realization
+→ реализуй код <scope>
+→ inherited generic Core `TM-EXACT-REALIZATION`; exact code is the default archetype and integration/verification/repair requires explicit authority
+
 sdscmd.bootstrap
 → бутстреп sds
 → current SDS profile orientation / 16 TM catalog / SDS Lens pack / workflow / planning tree
@@ -54,14 +58,15 @@ The current accepted methodology-level inventory is:
 
 ```text
 3 framework/bootstrap/work surfaces
+1 generic Core Exact Realization Target Module surface
 16 canonical SDS Target Module surfaces
 13 additional focused Target-Module shortcuts
 4 reusable direct Lens shortcut surfaces
 5 orchestration/validator surfaces
-= 41 accepted methodology invocation surfaces
+= 42 accepted methodology invocation surfaces
 ```
 
-This is a **methodology surface count**, not a requirement for 41 repository command files. Existing command definitions/aliases may implement several surfaces where semantics remain clear.
+This is a **methodology surface count**, not a requirement for 42 repository command files. Existing command definitions/aliases may implement several surfaces where semantics remain clear.
 
 The four fixed/specialized direct Lens shortcut surfaces are currently exactly:
 

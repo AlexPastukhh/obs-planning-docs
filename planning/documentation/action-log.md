@@ -2403,3 +2403,68 @@ No Target Module/Lens/command ID/Result Unit/AP/AG topology change and no Domain
 **ChangeSet:** `9baa3cc4-1d24-4613-b074-83e98496fa3e`  
 **Package:** `84a3ccd8-d9bf-4881-a228-e59c006e612f`  
 **Reason:** reusable documentation participates through the shared replacement-package `OBS-ACTION/1` workflow, where `chatContextToken` is now explicitly bind/rebind authority and token binding is separated from repository Apply truth; the Replacement Package App scope owns implementation/tests/full APPLIED rationale.
+
+
+### LOG-DOC-133 — Add generic Exact Realization Target Module
+
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**ChangeSet Label:** `IDTSPE Exact Realization generic Target Module`  
+**Source:** current GitHub `main` `a9050a6b5172495fa3522af2e26c4fac901d4f80`. The earlier handoff base `87a0ffa05aab8d369804267bc6379704629d6c64` was followed by `f6bb2072...` (unrelated Replacement Package App finalization) and then `a9050a6b...` (one added Planning Helper prompt). Neither head advance changes any intended Exact Realization replace base except the documentation action log already reconstructed at the current preceding state; all package replace preconditions use exact current touched-path bytes.
+
+**Selected Meaning:**
+- add generic Core `TM-EXACT-REALIZATION — Exact Realization / Integration` with one `RU-REAL-01 Exact Realization`; the result is the current complete directly integrable candidate rather than another implementation plan;
+- keep the module artifact-generic but make codebase realization the canonical/default archetype in Purpose, Production Method, command surface and a self-contained exact-code walkthrough; exact method bodies/files/patches and in-scope exact tests/config belong here when selected;
+- separate exact candidate production from optional practical integration: the user may stop for review first, request verify-only, authorize verify + minor repair, request a final exact-result review after repairs, or authorize integration into the intended destination; do not impose a mandatory temporary-then-final integration pair;
+- integration/build/test/runtime facts are Core Evidence around the same evolving `RU-REAL-01`; repair updates the current exact realization rather than creating mandatory verification/repair Result Units;
+- automatic repair requires explicit authority and is limited to local/minor in-scope implementation defects that do not change accepted architecture, Domain/product semantics or material upstream Decisions and do not mutate out-of-scope owners; a material semantic/architectural/out-of-scope conflict crosses Finding Disposition and, when useful, ordinary Problem + Evidence + Ideas/Q-R-P + Decision/revalidation before the exact result changes;
+- retain `TM-IMPLEMENTATION-SLICE` as call-level pre-code Slice implementation design, `TM-TEST-DESIGN` as proof design and `TM-PRACTICAL-TEST` as implemented practical Evidence; candidate build/test verification inside Exact Realization does not duplicate Practical Test;
+- allow Domain Draft, Slice/Test Design, Frontend/Cross-Cutting or a direct bounded local change to hand sufficiently determined meaning into Exact Realization; a selected Aggregate may therefore be implemented/tested before a later Slice;
+- do **not** redesign/remove `TM-DOMAIN-DISCOVERY` or `TM-DOMAIN-DRAFT` in this ChangeSet. Domain topology remains a separate later decision; only the non-conflicting Exact Realization handoff is added now;
+- expose generic Core `tmcmd.exact.realization / реализуй код`, update Core surface count from 9 to 10 and aggregate methodology surface count from 41 to 42 while SDS remains 16 profile Target Modules / 32 SDS surfaces; synchronize Helper command seed/order and count/binding regression checks.
+
+**Validation intent:** preserve AP/AG topology and existing SDS Result Units/Lens topology; validate exact command projection, current relative links/JSON, package payload completeness and current-base preconditions. Existing unrelated Helper semantic-navigation baseline failures are not reclassified as Exact Realization regressions.
+
+### LOG-DOC-134 — Apply generic Exact Realization Target Module
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-133`  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- IDTSPE Core installs `TM-EXACT-REALIZATION` with one `RU-REAL-01`, a code-first exact-result workflow and explicit review/integration/verification/minor-repair authority boundaries;
+- exact candidate changes discovered during authorized integration become Evidence-driven refinements of the same Result, while material semantic/architecture/scope conflicts use Core Finding Disposition/revalidation rather than silent repair;
+- SDS keeps its 16-module topology and existing Domain modules; Slice/Test/Practical-Evidence owners hand off to or remain distinct from Exact Realization according to their stated boundaries;
+- generic Core methodology surface is 10, aggregate current methodology surface is 42 = 10 Core + 32 SDS, with Planning Helper seed/order/tests projecting the same new command identity;
+- no package apply, commit, push, deployment or release authority is introduced by the methodology change itself.
+
+### LOG-DOC-135 — Correct Exact Realization ReviewDiff audit projection
+
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**ChangeSet Label:** `IDTSPE Exact Realization generic Target Module`  
+**Prior Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`  
+**Reviewed Result:** `NEEDS CORRECTION`  
+**Source Basis:** exact post-Apply target of prior package `8acc820d-7e9e-4de1-93b0-6d6b3f877707` plus the supplied cumulative ReviewDiff; current GitHub `main` remains `a9050a6b5172495fa3522af2e26c4fac901d4f80`, so the correction package uses the prior applied package target as the exact touched-file base rather than guessing from GitHub.  
+
+**Material ReviewDiff finding / selected correction:**
+- keep the Exact Realization semantic design unchanged; the blocker is audit/projection consistency rather than the Target Module model;
+- restore five historical `FINAL-METHODOLOGY-AUDIT.md` recheck assertions to their original **17 SDS Target Modules / 7 SDS-specific Lenses** snapshot counts instead of partially rewriting only the Target-Module side to 16 while leaving the historical Lens count at 7; current topology is already stated separately and remains **1 generic Core Target Module + 16 SDS Target Modules**, with **17 reusable Lenses = 11 Core + 6 SDS-specific**;
+- during the correction sweep, also fix the current Broad Discussion / Integration Checkpoint audit line that still said the generic Core command count remained 9; after `tmcmd.exact.realization` the current Core count is 10 and aggregate current methodology count remains 42 = 10 Core + 32 SDS;
+- preserve historical audit provenance rather than rewriting old snapshot evidence to look like current topology.
+
+No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary, Result Unit, AP/AG identity or command identity changes are introduced by this ReviewDiff correction.
+
+### LOG-DOC-136 — Apply Exact Realization ReviewDiff audit correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-135`  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**Package:** `b0a9bad8-1b8f-4a49-af1f-983dec13e780`  
+
+**Target-State Result:** after successful Apply of this exact correction package:
+- generic Core `TM-EXACT-REALIZATION` and `RU-REAL-01` retain the previously selected code-first exact-realization semantics and explicit integration/verification/minor-repair authority boundary;
+- historical Final Methodology Audit sections again preserve their original 17-TM / 7-SDS-Lens snapshot assertions as provenance, while current topology remains separately authoritative at 1 Core + 16 SDS Target Modules and 17 total reusable Lenses = 11 Core + 6 SDS-specific;
+- the current Broad Discussion / Integration Checkpoint audit projection reports 10 generic Core command surfaces, consistent with the current 42 = 10 Core + 32 SDS command surface;
+- no additional semantic topology or runtime behavior change is introduced by this correction.

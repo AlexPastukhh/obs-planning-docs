@@ -23,7 +23,7 @@ repository command definitions / helper
 
 A profile may extend this surface, but a generic Core command must not depend semantically on an SDS-specific command-surface owner merely because SDS is currently installed.
 
-## Generic Core Surface Inventory — 9
+## Generic Core Surface Inventory — 10
 
 ```text
 idtspe.bootstrap
@@ -41,6 +41,10 @@ idtspe.continue
 idtspe.review_consistency
 → проверь консистентность плана
 
+tmcmd.exact.realization
+→ реализуй код <scope>
+→ generic `TM-EXACT-REALIZATION`; code is the default archetype, while `сделай точную реализацию` remains a generic alias
+
 idtspe.lenses.select
 → подбери линзы <target/context>
 
@@ -54,7 +58,7 @@ lenscmd.linked-notes.justify
 → проверь оправданы ли linked notes <target>
 ```
 
-These are **9 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
+These are **10 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
 
 ## Bootstrap / Work Boundary
 
@@ -63,6 +67,29 @@ These are **9 generic Core methodology surfaces**. Installed profiles contribute
 `idtspe.work` enters ordinary material planning through the IDTSPE Shell and may create/reuse the natural Target according to Target Formation. It supports multi-turn Broad Discussion as the normal exploratory mode and periodic Integration Checkpoints when the user asks to see the integrated whole or a full Target invocation is used for that purpose; the checkpoint is not a new command/lifecycle/Target kind.
 
 Bootstrap must not silently select a Target, infer a Target invocation mode or execute Target work.
+
+## Exact Realization Surface
+
+`tmcmd.exact.realization` invokes the generic Core [`TM-EXACT-REALIZATION`](../target-modules/TM-EXACT-REALIZATION.md). The canonical practical phrase is code-first because code is the primary/default archetype, while the same module may realize another exact directly integrable artifact when the Target scope says so.
+
+The surface has an explicit authority boundary:
+
+```text
+produce exact candidate
+→ allowed by the Target invocation
+
+integrate / build / test / mutate selected environment
+→ only with explicit user authority for that environment
+
+automatic repair
+→ only when explicitly authorized
+→ local/minor + in-scope + no accepted architecture/Domain/product/upstream-semantic change
+
+commit / push / deploy / release
+→ never implied
+```
+
+A material semantic/architectural/out-of-scope problem crosses normal Finding Disposition/revalidation rather than being silently fixed during implementation.
 
 ## Generic Lens Operations
 

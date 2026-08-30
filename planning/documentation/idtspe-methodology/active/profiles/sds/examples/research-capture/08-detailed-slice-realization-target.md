@@ -77,5 +77,5 @@ No second Slice identity/file is created.
 
 ```text
 TM-PRACTICAL-TEST planning when operated Evidence is material
-then authorized realization / automated test execution
+then generic Core `TM-EXACT-REALIZATION` for exact code + explicitly authorized integration/automated-test execution
 ```

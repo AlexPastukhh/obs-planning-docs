@@ -108,7 +108,7 @@ Result Unit:
 
 In this Target family, literal future code may itself be the desired Result Unit rather than an example inside a planning document.
 
-Whether a profile actually installs such a realization Target Module is profile-specific. Core only permits the representation/result shape.
+Generic Core now installs [`TM-EXACT-REALIZATION`](../target-modules/TM-EXACT-REALIZATION.md) for this recurring profile-independent result family. Profiles may reuse it directly and add only genuinely profile-specific semantic/design Targets around it.
 
 ---
 

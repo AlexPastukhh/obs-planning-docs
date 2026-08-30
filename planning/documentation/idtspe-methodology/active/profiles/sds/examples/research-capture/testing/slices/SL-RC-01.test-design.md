@@ -45,6 +45,6 @@ Do not duplicate every Domain rule here; reference:
 
 ```text
 SL-RC-01 proof design ready
-→ implementation/test realization for SL-RC-01
+→ generic Core `TM-EXACT-REALIZATION` for exact SL-RC-01 production/test code
 or continue planning next Slice first
 ```

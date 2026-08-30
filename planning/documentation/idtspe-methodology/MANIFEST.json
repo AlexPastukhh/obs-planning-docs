@@ -1,5 +1,5 @@
 {
-  "workspace_version": "idtspe-broad-discussion-integration-checkpoint-review-correction-77",
+  "workspace_version": "idtspe-exact-realization-generic-target-module-review-correction-79",
   "repo_snapshot_base": "d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
@@ -7,6 +7,9 @@
   "installed_profiles": [
     "sds"
   ],
+  "generic_core_target_modules": 1,
+  "generic_core_exact_realization": "active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md; RU-REAL-01; code-first default with explicit integration/verification/repair authority",
+  "installed_target_modules_total": 17,
   "sds_target_modules": 16,
   "reusable_lenses_total": 17,
   "generic_core_lenses": 11,
@@ -55,21 +58,22 @@
     "lenscmd.linked-notes.justify"
   ],
   "reusable_lens_command_count": 4,
-  "command_surface_recheck": "PASS: 41 surfaces = 9 IDTSPE + 32 SDS; generic Lens Applicability Scan/select + registry-dispatched apply added without creating per-Lens commands; four specialized direct Lens shortcuts retained",
+  "command_surface_recheck": "PASS: 42 surfaces = 10 generic IDTSPE Core + 32 SDS; generic Core adds TM-EXACT-REALIZATION / tmcmd.exact.realization while SDS remains 16 profile Target Modules; four specialized direct Lens shortcuts retained",
   "methodology_command_surface_counts": {
     "framework_bootstrap_work": 3,
-    "canonical_sds_target_module": 17,
-    "focused_target_shortcuts": 12,
+    "generic_core_target_module": 1,
+    "canonical_sds_target_module": 16,
+    "focused_target_shortcuts": 13,
     "direct_reusable_lens_shortcuts": 4,
     "orchestration_validator": 5,
-    "total": 41
+    "total": 42
   },
   "helper_navigation_plan": "integration/COMMAND-AND-HELPER-NAVIGATION-PLAN.md",
   "helper_navigation_status": "IMPLEMENTED_METADATA_DRIVEN",
   "helper_methodology_tabs": {
-    "IDTSPE": 9,
+    "IDTSPE": 10,
     "SDS — IDTSPE Profile": 32,
-    "total_primary_methodology_surfaces": 41
+    "total_primary_methodology_surfaces": 42
   },
   "sds_command_runtime_invariant": "SDS Target Module commands are IDTSPE Target invocations; SDS Lens commands activate Lenses inside/reusing IDTSPE Target contexts",
   "sds_helper_primary_groups": [
@@ -242,7 +246,19 @@
     "ag_l5_02_accepted_local_meaning_precondition": "PASS",
     "lens_semantic_authority_wording_sweep": "PASS_AFTER_CONTEXT_CLASSIFICATION",
     "profile_lens_companion_projection_sweep": "PASS",
-    "post_package_whole_active_authority_source_lifecycle_scan": "PASS_AFTER_CONTEXT_CLASSIFICATION"
+    "post_package_whole_active_authority_source_lifecycle_scan": "PASS_AFTER_CONTEXT_CLASSIFICATION",
+    "generic_core_exact_realization_target_module": "PASS: one RU-REAL-01; generic exact directly integrable result; code-first default; explicit review/integration/verification/repair choices",
+    "exact_realization_repair_authority_boundary": "PASS: only local/minor in-scope repair without architecture/Domain/product/material-upstream semantic change; material conflicts cross Core Finding Disposition",
+    "sds_exact_realization_handoff_boundary": "PASS: Implementation Slice remains call-level pre-code planning; Test Design remains proof design; Practical Test remains real implemented Evidence; Domain topology unchanged",
+    "exact_realization_command_helper_projection": "PASS: generic Core tmcmd.exact.realization has executable authority only under explicit user permission and no commit/push implication; helper seed/order regenerated",
+    "exact_realization_current_source_identity": "PASS: GitHub main a9050a6b5172495fa3522af2e26c4fac901d4f80; f6bb2072→a9050a6b adds one unrelated helper-library prompt only, with no touched-path overlap",
+    "exact_realization_active_integration_relative_links": "PASS: 538/538 local Markdown links resolved across active + integration; 0 broken; fenced blocks balanced",
+    "exact_realization_json": "PASS: methodology/package/helper JSON touched by this ChangeSet parses; repository contains two pre-existing JSONC-style tsconfig files outside scope",
+    "exact_realization_helper_regression": "PASS_DELTA: generated seed matches current command definitions; 42 methodology bindings = 10 Core + 32 SDS; full Helper suite remains 127/129 with the same two unrelated pre-existing semantic-navigation failures as the base target",
+    "exact_realization_topology": "PASS: 1 generic Core TM added; SDS TM set remains 16; Slice RU-SLICE-01..05 unchanged; AP/AG identifier sets unchanged; Domain TM files retained",
+    "exact_realization_reviewdiff_historical_audit_provenance": "PASS: historical 17 SDS TM / 7 SDS-specific Lens recheck snapshots preserved intact; current 1 Core + 16 SDS / 17 Lens = 11 Core + 6 SDS topology remains separately authoritative",
+    "exact_realization_reviewdiff_current_core_surface_count": "PASS: current Broad Discussion / Integration Checkpoint audit projection reports 10 generic Core surfaces after tmcmd.exact.realization addition",
+    "exact_realization_reviewdiff_correction": "PASS: prior NEEDS CORRECTION audit-count inconsistency corrected without changing TM-EXACT-REALIZATION semantics, SDS topology, Result Units or AP/AG IDs"
   },
   "supporting_target_module_boundary": "SUPPORTING is a role of a reusable Target Module that can also be a coherent standalone recurring Target family; internal-only result parts use Result Unit / Internal Object Contract / shared Result-Unit method",
   "target_formation_compatibility_grouping": "TF-01..TF-10 IDs retained; TF-01..05 conceptual formation core, TF-06..10 later work-orchestration/resolution compatibility slots",

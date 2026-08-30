@@ -292,3 +292,22 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
 **Package:** `0df594dd-0599-4630-9b4c-047b1c9e2315`  
 **Reason:** Planning Root participates only through the corrected canonical `idtspe.work` command projection. Full Goal/driver, Key Points, checkpoint-emergent semantics and retention correction remains owned by the reusable-documentation canonical log.
+
+
+### LOG-PLAN-009 — Reference generic Exact Realization command projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-133` / `LOG-DOC-134`  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`  
+**Reason:** Planning Root participates through the new canonical `tmcmd.exact.realization / реализуй код` command and the corrected SDS bootstrap command projection. Full Exact Realization semantics, authority boundaries, SDS handoffs and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### LOG-PLAN-010 — Reference Exact Realization ReviewDiff audit correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-135` / `LOG-DOC-136`  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**Package:** `b0a9bad8-1b8f-4a49-af1f-983dec13e780`  
+**Reason:** Planning Root remains part of the same Exact Realization ChangeSet through its canonical command projections. The reusable-documentation log owns the ReviewDiff correction that preserves historical audit-count provenance and aligns the current generic Core surface count; command semantics themselves are unchanged from the prior Exact Realization package.

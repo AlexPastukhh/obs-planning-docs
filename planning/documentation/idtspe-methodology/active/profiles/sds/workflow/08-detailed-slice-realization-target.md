@@ -80,7 +80,7 @@ one step ≈ one significant method/function/handler/repository/integration call
 TM-IMPLEMENTATION-SLICE
 → stable Useful Vertical Result + obligations + implementation boundary
 → TM-TEST-DESIGN
-→ realization
+→ generic Core TM-EXACT-REALIZATION for exact code/test realization
 ```
 
 ### TDD
@@ -91,7 +91,7 @@ TM-IMPLEMENTATION-SLICE
 → TM-TEST-DESIGN
 → repeat TM-IMPLEMENTATION-SLICE in REFINE mode
    to finish call-level implementation planning around proof seams
-→ realization/tests
+→ generic Core TM-EXACT-REALIZATION for exact code/tests
 ```
 
 Default proof allocation:

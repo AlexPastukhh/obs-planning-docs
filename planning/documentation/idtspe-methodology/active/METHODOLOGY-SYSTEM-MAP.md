@@ -13,7 +13,7 @@ idtspe-methodology-workspace/
 │   │   ├── BOOTSTRAP-IDTSPE.md
 │   │   ├── IDTSPE-CORE-MAP.md
 │   │   ├── IDTSPE-SHELL.md
-│   │   ├── target-modules/                ← framework, not SDS module bodies
+│   │   ├── target-modules/                ← framework + generic `TM-EXACT-REALIZATION`; no SDS module bodies
 │   │   ├── lenses/                        ← generic Lens model + Core/reusable lenses
 │   │   └── shared/                        ← generic Target/Decision/Artifact models
 │   │
@@ -162,10 +162,13 @@ Canonical SDS map:
 
 [`profiles/sds/SDS-FULL-MAP.md`](profiles/sds/SDS-FULL-MAP.md)
 
-Current SDS installs:
+Current installed Target Modules:
 
 ```text
-16 Target Modules
+1 generic Core Target Module
+  TM-EXACT-REALIZATION — exact directly integrable result; code-first default
+
+16 SDS Target Modules
 17 reusable Lenses total available in current installed system
   = generic Core/reusable lenses
   + SDS-specific lens pack

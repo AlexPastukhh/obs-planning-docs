@@ -525,7 +525,7 @@ frontend architecture is justified by current/change-path evidence
 ## Handoff
 
 ```text
-integrated parent Slice / Authorized Realization
+integrated parent Slice / generic Core `TM-EXACT-REALIZATION` when exact frontend code is the next useful result
 TM-TEST-DESIGN
 Artifact/File Pack
 apply `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when material future-path pressure exists

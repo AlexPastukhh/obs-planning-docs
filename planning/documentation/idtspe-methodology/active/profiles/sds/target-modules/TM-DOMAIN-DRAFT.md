@@ -298,6 +298,7 @@ Sources for:
 TM-SLICE-STRATEGY
 TM-IMPLEMENTATION-SLICE
 TM-TEST-DESIGN
+generic Core TM-EXACT-REALIZATION when a selected Domain owner/aggregate should be implemented and verified exactly before or independently of Slice realization
 ```
 
 L4/L5/L6 surface Finding Candidates and Decision-relevant observations; they do not create Decisions or Targets directly. Core Finding Disposition resolves State/owner/lifecycle consequences, and independently substantial architecture work may become a Target Formation candidate.

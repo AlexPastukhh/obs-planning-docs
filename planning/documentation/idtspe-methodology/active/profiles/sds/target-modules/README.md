@@ -24,6 +24,12 @@ Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are
 | `TM-PRACTICAL-TEST` | `tm.test.practical` | implemented practical evidence | real-implementation acceptance/learning + observation/data-collection plan + Evidence interpretation |
 | `TM-TEST-COVERAGE` | `tm.test.coverage` | review | actual current Evidence coverage findings |
 
+### Inherited Generic Core Realization
+
+SDS also reuses Core [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md) after sufficiently determined Domain/Slice/Test/other meaning when an exact directly integrable result is independently useful. It is **not** a 17th SDS-specific module: the SDS catalog remains 16, while the installed Core+SDS system has one generic Core realization module plus these 16 profile modules.
+
+For code, Exact Realization owns literal method bodies/files/patches plus optional explicitly authorized integration/build/test/minor-repair work. `TM-IMPLEMENTATION-SLICE` remains the call-level pre-code Slice design owner.
+
 ## Not Target Modules
 
 ```text

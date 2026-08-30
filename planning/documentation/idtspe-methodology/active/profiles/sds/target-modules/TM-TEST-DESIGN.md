@@ -349,4 +349,4 @@ Planned evidence ≠ executed evidence; test names do not prove coverage.
 
 ## Handoff
 
-Concrete proof design → implementation/test realization; practical/operated proof route → `TM-PRACTICAL-TEST`; executed results later become Sources for `TM-TEST-COVERAGE` and Decision Revalidation.
+Concrete proof design → generic Core [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md) when exact production/test code is the next useful result; practical/operated proof route → `TM-PRACTICAL-TEST`; executed results later become Sources for `TM-TEST-COVERAGE` and Decision Revalidation. Exact test files may be part of the same `RU-REAL-01` as the production/config realization when they share one bounded implementation scope.

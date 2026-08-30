@@ -83,14 +83,15 @@ Generic Core/runtime surfaces only:
 | 03 | `idtspe.next` | `что дальше по методологии` | Orchestration |
 | 04 | `idtspe.continue` | `продолжи по методологии` | Orchestration |
 | 05 | `idtspe.review_consistency` | `проверь консистентность плана` | Validator |
-| 06 | `idtspe.lenses.select` | `подбери линзы <target/context>` | Lens-selection orchestration |
-| 07 | `idtspe.lens.apply` | `примени линзу <lens> к <target/context>` | Generic Lens-dispatch orchestration |
-| 08 | `lenscmd.documentation.representation.check` | `проверь как лучше зафиксировать <target/result>` | Required Core IDTSPE Lens shortcut |
-| 09 | `lenscmd.linked-notes.justify` | `проверь оправданы ли linked notes <target>` | Core IDTSPE Lens shortcut |
+| 06 | `tmcmd.exact.realization` | `реализуй код <scope>` | Generic Core Target Module; code-first exact realization |
+| 07 | `idtspe.lenses.select` | `подбери линзы <target/context>` | Lens-selection orchestration |
+| 08 | `idtspe.lens.apply` | `примени линзу <lens> к <target/context>` | Generic Lens-dispatch orchestration |
+| 09 | `lenscmd.documentation.representation.check` | `проверь как лучше зафиксировать <target/result>` | Required Core IDTSPE Lens shortcut |
+| 10 | `lenscmd.linked-notes.justify` | `проверь оправданы ли linked notes <target>` | Core IDTSPE Lens shortcut |
 
-Count: **9** methodology invocation surfaces.
+Count: **10** methodology invocation surfaces.
 
-The IDTSPE view should render rows 06–09 in a distinct metadata-driven `Lens Operations` section. `idtspe.lenses.select` / `idtspe.lens.apply` make every registered Core/profile Lens reachable without manufacturing one command per Lens. Documentation / Representation and Linked Notes remain specialized shortcuts for stable recurring intents.
+The IDTSPE view should render row 06 as the Core realization Target and rows 07–10 in a distinct metadata-driven `Lens Operations` section. `idtspe.lenses.select` / `idtspe.lens.apply` make every registered Core/profile Lens reachable without manufacturing one command per Lens. Documentation / Representation and Linked Notes remain specialized shortcuts for stable recurring intents.
 
 ### 3.2 `SDS — IDTSPE Profile`
 
@@ -100,8 +101,8 @@ The tab contains:
 
 ```text
 1 SDS bootstrap
-17 canonical SDS Target Module invocations
-12 focused SDS Target invocations
+16 canonical SDS Target Module invocations
+13 focused SDS Target invocations
 2 direct SDS Lens checks
 = 32 surfaces
 ```
@@ -109,10 +110,10 @@ The tab contains:
 Together:
 
 ```text
-IDTSPE tab  9
+IDTSPE tab 10
 SDS tab    32
 -----------
-TOTAL      41 accepted methodology invocation surfaces
+TOTAL      42 accepted methodology invocation surfaces
 ```
 
 This remains a surface count, not a required count of physical `.command.md` files.
@@ -602,10 +603,10 @@ When actual repository mutation is authorized:
 At minimum, repository helper tests should prove:
 
 ```text
-41 accepted methodology surfaces resolve
+42 accepted methodology surfaces resolve
 
 IDTSPE tab:
-  exactly 9 primary methodology surfaces
+  exactly 10 primary methodology surfaces
 
 SDS tab:
   exactly 32 primary methodology surfaces
@@ -697,8 +698,8 @@ SDS helper structure:
 
 Repository implementation:
   STAGED IN CURRENT REPLACEMENT TARGET
-  41 primary methodology surfaces
-  9 IDTSPE + 32 SDS
+  42 primary methodology surfaces
+  10 IDTSPE + 32 SDS
   helper navigation derives from repository command metadata/seed projection
   generated runtime contains no maintained current command identities
   automated Helper verification: 122 / 122 PASS

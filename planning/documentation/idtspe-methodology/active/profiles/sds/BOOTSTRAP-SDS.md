@@ -40,7 +40,8 @@ ensure IDTSPE Core current
 ↓
 SDS full map
 ↓
-16 Target Module registry
+16 SDS Target Module registry
++ inherited generic Core `TM-EXACT-REALIZATION` when exact integration-ready realization is needed
 ↓
 SDS-specific Lens pack + Core Lens dependencies
 ↓
@@ -85,6 +86,9 @@ IDTSPE Core:
 
 SDS Target Module catalog:
   16 loaded/indexed
+
+Inherited generic Core Target Module:
+  TM-EXACT-REALIZATION available/indexed; load body when exact realization is selected
 
 Core Lens Pack:
   L1 / L2 / L3

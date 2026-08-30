@@ -98,7 +98,7 @@ Files are a **Full-profile worked projection**, not a mandate that every real pr
 20 TM-TEST-DESIGN / SL-RC-02 — TDD-style early proof design
 21 TM-IMPLEMENTATION-SLICE / SL-RC-02 — REFINE same owner
 22 TM-PRACTICAL-TEST — plan operated capture evidence
-23 authorized realization / test execution
+23 generic Core TM-EXACT-REALIZATION / exact code + authorized integration/test execution
 24 TM-TEST-COVERAGE
 25 selective Revalidation / Consistency Review
 26 TM-WEUC REFRESH only if actual work changed the global evolution picture
@@ -128,7 +128,7 @@ Slice owner
 Slice semantic contract
 → Test Design
 → REFINE same Slice file
-→ realization
+→ TM-EXACT-REALIZATION
 ```
 
 ## Repeated IDTSPE Invocation

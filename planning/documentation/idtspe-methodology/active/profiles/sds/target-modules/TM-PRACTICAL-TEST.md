@@ -250,6 +250,12 @@ follow-up or revalidation hint
 
 Actual Evidence is not product semantic authority. Any changed Scenario/Screen/Slice/etc meaning is selected through normal Decision/Revalidation and reflected in the natural owner.
 
+## Relationship To Exact Realization Verification
+
+Generic Core [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md) may, with explicit authority, integrate a candidate into a selected environment and run build/compile/static/automated/runtime checks. Those run facts are Core Evidence used to validate/refine the exact candidate; they do **not** automatically create `TM-PRACTICAL-TEST`.
+
+`TM-PRACTICAL-TEST` remains the owner for acceptance/learning from a **real implemented subject/environment** when representative users/operators/data/telemetry/operation or another implemented-practical Evidence inquiry is material. A successful candidate build/test loop can be a prerequisite or Source, but it is not by itself this Target's real-use Evidence result.
+
 ## Relationship To Prototype
 
 Prototype and implemented practical Evidence may intentionally reuse the same question/task/observation shape for comparison, but their evidence strength differs:

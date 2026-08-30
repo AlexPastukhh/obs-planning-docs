@@ -27,7 +27,7 @@ IDTSPE Core must remain usable when another profile/family is added later. It th
 6. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md) — generic runtime/composition contract; current 15 port IDs remain stable technical navigation.
 7. [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md) — optional default operating mode for material AI planning.
 8. [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/interaction rules.
-9. [`target-modules/README.md`](target-modules/README.md) — Target Module framework and installed-family boundary.
+9. [`target-modules/README.md`](target-modules/README.md) — Target Module framework, generic Core `TM-EXACT-REALIZATION`, and installed-family boundary.
 10. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis contract used by Target Modules and Lenses.
 11. [`lenses/README.md`](lenses/README.md) — generic Lens registry plus installed profile Lens references.
 12. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/navigation surface and host-target policies.
@@ -57,6 +57,7 @@ Documentation / Representation + Artifact Placement / file realization
 Practical Evidence
 Consistency Review
 command-helper presentation contract
+generic `TM-EXACT-REALIZATION` for exact directly integrable results; code realization is the default archetype
 ```
 
 

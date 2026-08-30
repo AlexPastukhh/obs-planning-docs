@@ -497,3 +497,22 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `9baa3cc4-1d24-4613-b074-83e98496fa3e`  
 **Package:** `84a3ccd8-d9bf-4881-a228-e59c006e612f`  
 **Reason:** Planning Helper runtime is unchanged, but its explicit `Bind + ...` action is clarified as the user authorization that allows the consumer to bind or rebind the ChangeSet Review chat immediately when that invocation's `chatContextToken` resolves. Ordinary Insert/Full/Copy remains non-binding and token carry-forward remains forbidden; full consumer behavior/APPLIED state is canonical in `LOG-RPKG-054`.
+
+
+### XREF-034 — Project generic Exact Realization command in Planning Helper
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-133` / `LOG-DOC-134`  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`  
+**Reason:** Planning Helper participates through `catalog-order.json`, regenerated `seed/commands.json` and methodology-navigation/semantic-navigation count/authority regression checks for the new generic Core `tmcmd.exact.realization` surface. Runtime source behavior is unchanged; full module semantics and APPLIED state remain in the reusable-documentation canonical log.
+
+### XREF-035 — Reference Exact Realization ReviewDiff audit correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-135` / `LOG-DOC-136`  
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
+**Package:** `b0a9bad8-1b8f-4a49-af1f-983dec13e780`  
+**Reason:** Planning Helper remains on the same 42-surface projection introduced by the prior Exact Realization package. This correction changes only canonical audit/provenance consistency and the already-intended current Core count statement; Helper seed/order/runtime/test behavior is unchanged from the prior cumulative target.

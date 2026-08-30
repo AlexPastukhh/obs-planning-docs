@@ -32,6 +32,26 @@ The six older `collect-ideas*` command files are retained only as hidden legacy 
 Planning Helper verification for the staged target passes `122 / 122` automated tests plus generated userscript/catalog build consistency. All 41 methodology surfaces carry stable `methodologyBinding`; mutable IDTSPE/SDS tab placement comes from separate helper presentation metadata.
 
 
+## Current Exact Realization Core Integration — 2026-08-30
+
+The current methodology adds one **generic Core** Target Module, `TM-EXACT-REALIZATION`, without changing the 16-module SDS profile topology. Its one Target Result Unit, `RU-REAL-01 Exact Realization`, is the exact directly integrable current candidate; codebase realization is the canonical/default archetype.
+
+```text
+accepted Domain / Slice / Test / other sufficiently determined meaning
++ exact current destination/codebase Sources
+→ TM-EXACT-REALIZATION
+→ exact code/artifact candidate
+→ optional explicit review
+→ optional explicitly authorized integration/build/test
+→ Evidence
+→ bounded minor repair OR Finding Disposition/revalidation
+→ current exact realization
+```
+
+`TM-IMPLEMENTATION-SLICE` remains the call-level pre-code Slice design owner; `TM-TEST-DESIGN` remains proof-design authority; candidate build/test verification inside Exact Realization is Core Evidence and does not automatically become `TM-PRACTICAL-TEST`. Existing Domain Discovery/Draft topology is unchanged by this transition; Domain Draft may hand a selected Aggregate/domain owner directly to Exact Realization when Aggregate-first implementation is useful.
+
+The current user-visible methodology projection is **42 = 10 generic IDTSPE Core + 32 SDS** surfaces. `tmcmd.exact.realization / реализуй код` is the new generic Core Target surface; Planning Helper command seed/order/tests are synchronized with it. Older 41-surface statements below describe the earlier staged installation and remain provenance.
+
 ## Current Knowledge-Basis Simplification — 2026-08-30
 
 Generic IDTSPE now treats Knowledge Basis as a lightweight **theory-to-application bridge**, not a literal schema that every Target Module/Lens must serialize the same way. Theory/reference knowledge may be organized independently in files, folders, sections, broad corpora, external sources or existing Theoretical Modules. A Target Module or Lens may select/reference the useful parts and, when raw theory is too broad, keep an applied interpretation for its own Evaluation.

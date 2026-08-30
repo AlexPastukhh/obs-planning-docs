@@ -15,11 +15,12 @@ Repository mapping remains a migration projection under `integration/`; it is no
 
 ```text
 3 framework/bootstrap/work surfaces
+1 generic Core Target Module surface (`TM-EXACT-REALIZATION`)
 16 canonical SDS Target Module surfaces
 13 focused Target-Module shortcuts
 4 specialized direct Lens shortcut surfaces
 5 orchestration/validator surfaces
-= 41 methodology invocation surfaces
+= 42 methodology invocation surfaces
 ```
 
 Specialized direct Lens shortcut surfaces:
@@ -40,6 +41,7 @@ lenscmd.linked-notes.justify
 
 ## Checks
 
+- generic Core `TM-EXACT-REALIZATION` has canonical `tmcmd.exact.realization / реализуй код`: **PASS**
 - all 16 active SDS Target Modules have canonical surfaces: **PASS**
 - `idtspe.bootstrap`, `idtspe.work`, `sdscmd.bootstrap` are present and distinct: **PASS**
 - WEUC direct Lens command is present in owner + command contract: **PASS**

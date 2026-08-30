@@ -7,6 +7,7 @@ Current canonical architecture:
 ```text
 IDTSPE Core
   generic Shell / Target / Unit / Finding Disposition / Lens / Artifact / Decision mechanics
+  + 1 generic `TM-EXACT-REALIZATION` with `RU-REAL-01`; code-first exact-result/integration workflow
 
 +
 
@@ -31,7 +32,9 @@ SDS Profile
 
 ## Counts
 
+- Generic Core Target Modules: **1** (`TM-EXACT-REALIZATION`)
 - SDS Target Modules: **16**
+- Installed Target Modules total: **17**
 - reusable Lenses in installed system: **17**
   - generic/core: **11**
     - required Core: **4** (L1/L2/L3 + Documentation / Representation materialization check)
@@ -48,6 +51,10 @@ SDS Profile
 - `бутстреп idtspe` and `бутстреп sds` are distinct: **PASS**
 - `idtspe.work / работай через idtspe` is distinct from bootstrap and makes the Core Shell the default material-planning mode: **PASS**
 - Target Module framework is generic; current 16 module bodies are SDS-profile owners, all 16 explicitly declare `Resolution / Production Method` + `Target Step-Result Contract`, while a one-off Local Target Contract is a first-class IDTSPE path when no reusable module fits: **PASS**
+- Generic Core now installs `TM-EXACT-REALIZATION` as a profile-independent recurring Target family with one `RU-REAL-01 Exact Realization`; codebase realization is the primary/default archetype: **PASS**
+- Exact Realization separates exact candidate production from explicitly authorized integration/build/test/repair; automatic repair is limited to local/minor in-scope defects that preserve accepted architecture, Domain/product semantics and material upstream Decisions: **PASS**
+- `TM-IMPLEMENTATION-SLICE` remains call-level pre-code Slice design, `TM-TEST-DESIGN` remains proof design, and `TM-PRACTICAL-TEST` remains real implemented practical Evidence; candidate build/test verification belongs to Exact Realization Core Evidence and does not duplicate those owners: **PASS**
+- existing `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT` topology is intentionally unchanged by this ChangeSet; Domain Draft only gains an optional handoff for Aggregate-first exact implementation: **PASS**
 - Knowledge Basis remains optional/useful rather than mandatory: retained modules may keep existing KB sections, while `TM-SCENARIO-PLANNING` intentionally has no separate Knowledge Basis now: **PASS**
 - generic reusable Lenses are physically separated from SDS-specific Lenses; all 6 SDS-specific Lens bodies explicitly declare Analysis Surface + `ANALYZE / CHECK / REFINE / CHALLENGE` + Finding Contract: **PASS**
 - all 17 reusable Lenses keep Operational Evaluation separate from reusable Knowledge Basis material; Generic Core allows free-form/optional Knowledge Basis representation: **PASS**
@@ -69,8 +76,8 @@ SDS Profile
 - AI Reviewability Key Points is an independent peer concern, not Target/Lens authority: **PASS**
 - Workspace Work / Workspace UC is classified as legacy WEUC; no duplicate generic Core owner introduced: **PASS**
 - repository integration is a separate living mapping, not methodology authority: **PASS**
-- methodology command surface is **41 = 9 IDTSPE + 32 SDS**, including generic `idtspe.lenses.select` / `idtspe.lens.apply` plus four stable specialized Lens shortcuts: **PASS**
-- generic 9-surface command authority is owned by the Core command-surface contract; SDS owns only its profile extension/aggregate projection: **PASS**
+- methodology command surface is **42 = 10 generic IDTSPE Core + 32 SDS**, including generic `idtspe.lenses.select` / `idtspe.lens.apply` plus four stable specialized Lens shortcuts: **PASS**
+- generic 10-surface command authority is owned by the Core command-surface contract; SDS owns only its profile extension/aggregate projection: **PASS**
 - Lens selection uses `CREATE_OR_REUSE_TARGET`, while explicit Lens apply uses `RESOLVE_OR_REUSE_TARGET`: **PASS**
 
 ## Main Navigation
@@ -458,8 +465,16 @@ Historical earlier audit sections that state the prior 17-TM / 7-SDS-Lens topolo
 - at checkpoint, missing rationale for a new material Decision and retention of material non-selected/deferred/rejected/superseded alternatives are explicit user retention choices; optional questions are non-blocking unless needed to resolve material ambiguity and should be batched where practical: **PASS**
 - Lens analysis/Key Points may remain Broad Discussion without producing a Unit/Finding; only material semantic consequences needing ownership/State/lifecycle resolution cross Finding Candidate → Core Finding Disposition: **PASS**
 - conversational prose, integrated semantic state and physical persistence are distinct; P-14 / TF-10 / deep Artifact Pack do not force a full Artifact Placement View in ordinary Broad Discussion and checkpoints may inherit established placement compactly when unchanged: **PASS**
-- canonical `idtspe.work`, Core command-surface contract and Helper seed expose the same corrected discussion/checkpoint semantics; generic Core command count remains 9: **PASS**
+- canonical `idtspe.work`, Core command-surface contract and Helper seed expose the same corrected discussion/checkpoint semantics; generic Core command count is 10 after adding the generic Exact Realization surface: **PASS**
 - residual SDS universal-response wording is aligned: Methodology Direction is shown at checkpoints/handoffs/material direction changes rather than repeated mechanically in every Broad Discussion turn; the Research Capture worked context follows the same rule: **PASS**
 - generic Lens registry and Target Module Lens wording allow explanatory Lens analysis/Key Points with no Finding Candidate and retain Finding Disposition only for material semantic consequences: **PASS**
 - SDS example is explicitly a full Integration Checkpoint example rather than a universal response template; `METHODOLOGY-SYSTEM-MAP` and `SDS-FULL-MAP` project the same Broad Discussion → Integration Checkpoint rhythm; Bootstrap correctly reports current 16 SDS Target Modules: **PASS**
 - no new Target Module, Lens, Generic State Unit kind, Result Unit family, AP/AG identity, mandatory intake object or Domain Target redesign is introduced: **PASS**
+
+## Exact Realization ReviewDiff Historical-Audit Preservation Correction — current state
+
+- the Exact Realization semantic/module design remains unchanged from the prior package: `TM-EXACT-REALIZATION` still owns one `RU-REAL-01`, code remains the primary/default archetype, and integration/verification/minor repair retain explicit authority boundaries: **PASS**
+- historical pre-Scenario-unification audit snapshots keep their original **17 SDS Target Modules / 7 SDS-specific Lenses** counts as provenance instead of being partially rewritten to the current 16-module topology: **PASS**
+- current installed topology remains separately stated as **1 generic Core Target Module + 16 SDS Target Modules** and **17 reusable Lenses = 11 Core + 6 SDS-specific**: **PASS**
+- the current Broad Discussion / Integration Checkpoint projection now reports the generic Core command surface as **10**, consistent with the Exact Realization command addition and the current **42 = 10 Core + 32 SDS** surface projection: **PASS**
+- this correction changes audit/projection consistency only; it introduces no new Target/Lens/Result Unit/AP/AG/command identity beyond the already selected Exact Realization ChangeSet: **PASS**

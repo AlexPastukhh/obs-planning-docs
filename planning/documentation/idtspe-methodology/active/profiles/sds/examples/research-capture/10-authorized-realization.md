@@ -1,5 +1,5 @@
 
-# Phase 10 — Authorized Realization — Research Capture
+# Phase 10 — Exact Realization / Authorized Integration — Research Capture
 
 Status: active worked example
 
@@ -12,15 +12,20 @@ Slice owners + Slice integration Test Designs
 Practical Test plan
 ```
 
-After separate authorization:
+Use generic Core `TM-EXACT-REALIZATION` to produce the literal implementation. A normal code-first path here is:
 
 ```text
-implement SL-RC-01 / SL-RC-02
-+ implement Domain unit tests
-+ implement Slice integration tests
-+ execute automated proof
-+ execute Practical Test when environment is ready
+accepted Slice + Domain + Test Design meaning
+→ exact production/test code candidate
+→ optional human review
+→ explicit authorization for integration/build/tests
+→ integrate into selected available project environment
+→ build + automated proof
+→ minor in-scope repairs only when authorized
+→ final exact realization / optional final review
 ```
+
+The same Core module can also be used earlier for a selected Domain Aggregate when implementing/testing that exact Domain form before the full Slice is useful. Practical Test remains separate and runs when the real implemented subject/environment is ready.
 
 If implementation reveals an impossible semantic assumption, do not silently patch the test or code around it:
 
@@ -30,4 +35,4 @@ actual Evidence / Finding Candidate
 → revalidate/reopen narrowest Scenario/Domain/Slice/Architecture Decision when warranted
 ```
 
-Implementation is Evidence/current state, not automatic semantic authority.
+Exact Realization/integration Evidence is current implementation evidence, not automatic semantic authority. Candidate build/tests inside Exact Realization are not automatically `TM-PRACTICAL-TEST`.

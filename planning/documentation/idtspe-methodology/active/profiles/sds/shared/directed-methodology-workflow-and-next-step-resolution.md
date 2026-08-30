@@ -99,7 +99,7 @@ for each selected Slice:
 ↓
 TM-PRACTICAL-TEST — Intent / Collection Plan may be prepared before realization when later implemented Evidence is material
 ↓
-authorized realization + automated execution
+generic Core TM-EXACT-REALIZATION — when an exact directly integrable result is the next useful Target; code-first default, optional explicit integration/build/test/minor-repair loop
 ↓
 TM-PRACTICAL-TEST — collect real implemented Evidence + Results / Interpretation when material
 ↓
@@ -113,6 +113,8 @@ Decision Revalidation / Consistency Review
 `TM-SLICE-STRATEGY` owns the current Slice portfolio/Behavior realization map, a broad/shallow Domain/Aggregate realization map and selected Slice semantic-owner register. The register supplies identity/addressability, not bounded Target creation; Target Formation remains responsible for any independently bounded `TM-IMPLEMENTATION-SLICE` Target. Separate `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT` remain available when independently deeper Domain planning is material; their presence does not remove Strategy responsibility for `Slice → Uses → Aggregate/domain concept` planning relations. Detailed Slice work that challenges Strategy surfaces a Finding Candidate, crosses Core Finding Disposition, and revalidates the bounded owner only when selected.
 
 For `TM-PRACTICAL-TEST`, early activation may produce only Evidence Intent / Subject and an Observation / Data Collection Plan. Actual Evidence collection and Results / Interpretation require the real implemented subject/environment; the distinction from `TM-PROTOTYPE` is the Evidence subject, not merely when the Target record was first created.
+
+`TM-EXACT-REALIZATION` is a generic Core node reused by SDS rather than a 17th SDS module. It is **not mandatory after every semantic Target**. It may follow a sufficiently determined Domain owner (for example to implement/test an Aggregate before Slice work), a Slice/Test Design combination, a Cross-Cutting/Frontend result, or a direct bounded local change. A purely mechanical application of an already exact accepted payload does not require another Target. Candidate build/automated-test verification inside Exact Realization remains Core Evidence; implemented practical acceptance/learning stays `TM-PRACTICAL-TEST`.
 
 ## 4. Fixed Testing Direction
 
@@ -190,7 +192,7 @@ TM-IMPLEMENTATION-SLICE
 ↓
 TM-TEST-DESIGN / that Slice
 ↓
-implementation + test realization
+TM-EXACT-REALIZATION / exact production + test realization
 ```
 
 TDD route:
@@ -207,7 +209,7 @@ TM-TEST-DESIGN / that Slice
 repeat TM-IMPLEMENTATION-SLICE
   REFINE call-level plan around the selected proof seams
 ↓
-implementation/tests
+TM-EXACT-REALIZATION / exact production + test realization
 ```
 
 TDD therefore changes the **interleaving**, not semantic authority. Test Design still consumes the Slice's accepted semantic result and cannot invent Scenario/Domain behavior.
@@ -251,9 +253,9 @@ Domain obligations when present
 
 A detailed call-level implementation plan is optional before Test Design in TDD mode.
 
-### Test Design → Realization
+### Test Design → Exact Realization
 
-Material proof designs needed for the selected realization path should be persisted/addressable before or during implementation according to the chosen implementation/TDD mode.
+Material proof designs needed for the selected realization path should be persisted/addressable before or during implementation according to the chosen implementation/TDD mode. When literal code/config/test artifacts are the next useful result, generic Core `TM-EXACT-REALIZATION` owns that exact directly integrable result and may practically integrate/verify it only under explicit user authority.
 
 ### Execution → Test Coverage
 

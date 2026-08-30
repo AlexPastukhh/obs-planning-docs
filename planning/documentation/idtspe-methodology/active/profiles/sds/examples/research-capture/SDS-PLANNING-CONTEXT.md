@@ -47,7 +47,7 @@ Need / Reality
 → SL-RC-02 Test Design
 → SL-RC-02 REFINE
 → Practical Test plan
-→ realization / execution
+→ generic Core TM-EXACT-REALIZATION / exact realization + authorized integration
 → Test Coverage
 → selective Revalidation
 ```

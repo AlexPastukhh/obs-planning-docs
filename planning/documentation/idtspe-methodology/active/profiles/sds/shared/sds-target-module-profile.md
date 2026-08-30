@@ -39,7 +39,7 @@ Lens activation ≠ new Target
 | 07 Workspace Evolution / Architecture | `TM-WEUC` when the global Workspace Evolution Map or Current Global Architecture Position needs create/refresh + L4/L5/L6 Workspace Pack | map/global architecture ownership is a Target; L5 evaluates concrete Targets or whole-Workspace architecture; independently substantial local architecture work → Target Formation candidate; Target Formation may form a bounded local Target |
 | 08 Detailed Realization | `TM-IMPLEMENTATION-SLICE`; `TM-FRONTEND-SLICE` / `TM-CROSS-CUTTING-CONCERN` conditional | one vertical Slice Target; independently material specialized work becomes a Target Formation candidate rather than an automatic child Target |
 | 09 Consistency / Verification | `UC-IDTSPE-REVIEW-CONSISTENCY`; `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, `TM-PRACTICAL-TEST` | review + proof planning + implemented practical Evidence; `TM-PRACTICAL-TEST` intent/collection planning may precede realization, while actual Evidence/results require the real implemented subject; Evidence never becomes product semantic authority |
-| 10 Authorized Realization | execution/Artifact/File Pack | not automatically a semantic Target |
+| 10 Exact Realization / Authorized Integration | inherited Core `TM-EXACT-REALIZATION` when exact directly integrable output is independently useful; mechanical apply may remain non-Target | code-first exact result + explicitly authorized integration/verification/repair; no silent semantic drift |
 | 11 Evidence / Reconciliation | `TM-TEST-COVERAGE` + revalidation + frequent Lens refresh | Core Finding Disposition selects revalidation/reopen of the narrowest challenged owner/Decision only when warranted |
 
 ## Required Lens Inheritance

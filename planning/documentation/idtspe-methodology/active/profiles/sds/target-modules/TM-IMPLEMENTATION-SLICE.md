@@ -108,7 +108,7 @@ RU-SLICE-01 verification / test-handoff meaning
 
 ### Boundary / Lesson
 
-Exact method bodies and final diffs belong to implementation.
+Exact method bodies/files/final patches belong to generic Core [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md) when an exact realization Target is selected. This Slice Target deliberately stops at call-level/codebase realization meaning.
 
 Implementation convenience cannot silently change Scenario behavior or Domain invariants.
 
@@ -225,7 +225,7 @@ This module uses the existing `Upstream Source Contract`, `Question Set Examples
 Default reusable production path:
 
 ```text
-stabilize Slice Outcome Definition → resolve responsibility/dependency boundary → derive Runtime Path → map it into Codebase Integration Path → add Focused Part Plans only for already-selected local responsibilities → hand RU-SLICE-01 verification meaning to Test Design
+stabilize Slice Outcome Definition → resolve responsibility/dependency boundary → derive Runtime Path → map it into Codebase Integration Path → add Focused Part Plans only for already-selected local responsibilities → hand RU-SLICE-01 verification meaning to Test Design → hand sufficiently determined whole-Slice or selected implementation scope to TM-EXACT-REALIZATION when literal realization is the next useful Target
 ```
 
 Proof/Test Handoff is folded into RU-SLICE-01 by default. Future Slice evolution companion is supporting L5/WEUC meaning, not a Slice Result Unit.
@@ -603,7 +603,7 @@ Standard:
 TM-IMPLEMENTATION-SLICE CREATE/REFINE
 → detailed Slice plan
 → TM-TEST-DESIGN
-→ realization
+→ TM-EXACT-REALIZATION for exact code/test realization
 ```
 
 TDD:
@@ -615,7 +615,7 @@ TM-IMPLEMENTATION-SLICE
   design integration proof / reuse existing Domain unit proof
 → TM-IMPLEMENTATION-SLICE REFINE
   finish call-level implementation plan with proof seams visible
-→ realization/tests
+→ TM-EXACT-REALIZATION for exact code/tests
 ```
 
 The same logical Slice owner is updated across invocations; its physical representation may stay consolidated or later be promoted/split. A second planning pass does not create a second Slice identity or force a second file.
@@ -627,6 +627,6 @@ The same logical Slice owner is updated across invocations; its physical represe
 TM-TEST-DESIGN
 TM-TEST-STRATEGY when proof responsibility is shared
 TM-FRONTEND-SLICE only when promoted
+TM-EXACT-REALIZATION when exact directly integrable code/artifacts are the next useful result
 Artifact/File Pack
-Authorized Realization
 ```

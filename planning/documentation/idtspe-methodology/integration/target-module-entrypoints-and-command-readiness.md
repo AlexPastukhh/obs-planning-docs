@@ -21,7 +21,7 @@ Command/palette is invocation only. It does not create a second methodology auth
 
 ## Current Repository Command Candidates → Current Methodology
 
-This section describes the **repository state/candidates already known from the repository snapshot**. It is not the desired complete 17-module command surface.
+This section describes the **repository state/candidates already known from the repository snapshot**. It is not the complete current command surface; current authority is the Core command-surface contract plus the SDS extension, including generic Core `TM-EXACT-REALIZATION`.
 
 | Current command id | User command | Current command file | Methodology route |
 |---|---|---|---|
@@ -91,7 +91,7 @@ Scenario DATA and Behavior Item remain internal contracts of `TM-SCENARIO-PLANNI
 
 Consistency review is `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module; its command is an orchestration/validator surface.
 
-See [`idtspe-command-surface-contract.md`](../active/profiles/sds/shared/idtspe-command-surface-contract.md) for the complete 17-module + focused/orchestration command architecture.
+See [`idtspe-command-surface-contract.md`](../active/profiles/sds/shared/idtspe-command-surface-contract.md) for the complete 16-SDS-module + inherited generic Core Exact Realization + focused/orchestration command architecture.
 
 ## Helper Presentation Metadata
 
@@ -143,4 +143,4 @@ SDS tab
 → presentation badges must expose material conditional/optional Target gates without hiding commands
 ```
 
-The accepted 41 methodology surfaces should project as `9 IDTSPE + 32 SDS` primary helper surfaces. The two additional Core surfaces are generic Lens operations (`idtspe.lenses.select` and `idtspe.lens.apply`), not new fixed Lens identities; contextual cross-links must not create duplicate command identities.
+The accepted **42** methodology surfaces project as `10 IDTSPE Core + 32 SDS` primary helper surfaces. The Core view includes generic `tmcmd.exact.realization / реализуй код` plus the generic Lens operations (`idtspe.lenses.select` and `idtspe.lens.apply`); the latter are orchestration rather than fixed Lens identities. Contextual cross-links must not create duplicate command identities.

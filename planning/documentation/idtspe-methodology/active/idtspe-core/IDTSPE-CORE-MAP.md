@@ -64,6 +64,7 @@ Examples, profile workflow files and command/helper UI are projections; they are
 Generic mechanics:
 
 - [`target-modules/README.md`](target-modules/README.md)
+- [`target-modules/TM-EXACT-REALIZATION.md`](target-modules/TM-EXACT-REALIZATION.md) — generic exact directly integrable realization; code-first default workflow
 - [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md)
 - [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md)
 - [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md)
@@ -72,7 +73,7 @@ Generic mechanics:
 - [`shared/target-module-creation-and-integration-use-case.md`](shared/target-module-creation-and-integration-use-case.md)
 - [`shared/target-module-output-template-and-question-set-rule.md`](shared/target-module-output-template-and-question-set-rule.md)
 
-A Target Module defines one recurring Target/Step-Result family. It defines target-specific Result Units plus reusable ways to resolve/produce them, while generic Questions/Ideas/Q-R-P/Decisions/Evidence remain Core State Units. It separates its current Target-instance Source Contract from its reusable `Knowledge Basis`. A profile installs concrete modules. IDTSPE Core itself does not require Application/Scenario/Domain/Slice Target types.
+A Target Module defines one recurring Target/Step-Result family. It defines target-specific Result Units plus reusable ways to resolve/produce them, while generic Questions/Ideas/Q-R-P/Decisions/Evidence remain Core State Units. It separates its current Target-instance Source Contract from its reusable `Knowledge Basis`. IDTSPE Core may install a concrete module when the recurring family is genuinely profile-independent: `TM-EXACT-REALIZATION` owns exact directly integrable realization and uses codebase realization as its default archetype. Profiles install their own semantic/domain families; Core still does not require Application/Scenario/Domain/Slice Target types.
 
 ## 4. Lens System
 
