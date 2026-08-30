@@ -55,7 +55,7 @@
       if(!favorite){actions.append(button('↑','move',()=>moveEntry(entry,-1),'Move up'),button('↓','move',()=>moveEntry(entry,1),'Move down'));}
       if(entry.fullBody)actions.append(button('Full','full',()=>insertBody(entry.fullBody,`Inserted full ${entry.label||entry.id}`,entry.id)));
       if(entry.helperPresentation||entry.definition?.helperPresentation||entry.__methodologyNav)actions.append(button('Info','full',()=>openCommandInfo(entry),'When To Use / What You Get'));
-      actions.append(button('Copy','copy',async()=>showStatus(await options.onCopy(entry.adaptiveBody||entry.text)?'Copied.':'Copy failed.',4000)));
+      actions.append(button('Copy','copy',async()=>{try{showStatus(await options.onCopy(entry.adaptiveBody||entry.text,entry.id)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}));
       if(entry.entityType==='planning-command'){actions.append(button('Edit','edit-command',()=>openCommandEditor(entry)),button('Reload','reload-command',()=>reloadCommand(entry)),button('Save GitHub','repo-command',()=>saveRepository(entry)),button('Delete','delete-command',()=>deleteCommand(entry)));}
       else if(entry.entityType==='use-case-invocation-command'){actions.append(button('Delete','delete-command',()=>deleteCommand(entry)));}
       else if(activeSurface===SURFACES.USE_CASES){actions.append(button('Delete','delete-command',()=>deleteUseCase(entry)));}

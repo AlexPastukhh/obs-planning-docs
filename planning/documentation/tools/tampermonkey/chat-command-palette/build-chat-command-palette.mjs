@@ -17,7 +17,7 @@ const codec=require('./src/command-definition-codec.js');
 const catalog=require('./src/command-catalog.js');
 const semantic=require('./src/semantic-projections.js');
 const pkg=JSON.parse(fs.readFileSync(path.join(moduleRoot,'package.json'),'utf8'));
-const sourceFiles=['src/command-definition-codec.js','src/command-catalog.js','src/command-body.js','src/semantic-projections.js','src/helper-library-codec.js','src/chat-recovery.js','src/github-contents-client.js','src/repository-command-service.js','src/repository-helper-library-service.js','src/repository-catalog-service.js','src/planning-helper-state.js','src/composer-insertion.js','src/methodology-navigation.js','src/planning-helper-ui.js','src/planning-helper-runtime.js'];
+const sourceFiles=['src/command-definition-codec.js','src/command-catalog.js','src/command-body.js','src/semantic-projections.js','src/helper-library-codec.js','src/chat-recovery.js','src/github-contents-client.js','src/repository-command-service.js','src/repository-helper-library-service.js','src/repository-catalog-service.js','src/planning-helper-state.js','src/composer-insertion.js','src/methodology-navigation.js','src/command-side-effects.js','src/planning-helper-ui.js','src/planning-helper-runtime.js'];
 
 function readCommands(){
   const files=fs.readdirSync(commandsDir,{withFileTypes:true}).filter((entry)=>entry.isFile()&&/^[a-z0-9][a-z0-9._-]*\.command\.md$/.test(entry.name)).map((entry)=>entry.name).sort();

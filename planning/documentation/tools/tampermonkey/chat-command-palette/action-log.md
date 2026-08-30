@@ -395,3 +395,51 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Entry:** `LOG-DOC-121`  
 **ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
 **Reason:** Planning Helper participates only through regenerated `seed/commands.json` for the corrected Prototype and implemented-practical-Evidence command definitions; runtime/source behavior is unchanged, and full ReviewDiff clarification/APPLIED state remain in the reusable-documentation canonical log.
+### LOG-PH-014 — Add invocation-time command side-effect framework
+
+**Type:** USER CLARIFICATION / HELPER RUNTIME DESIGN / NEW CHANGESET  
+**ChangeSet:** `8bb283e5-7568-45a0-a05a-4817567ad1e2`  
+**ChangeSet Label:** `Planning Helper — command side-effect invocation framework`  
+
+**Selected Meaning:**
+- keep every canonical `[PLANNING_COMMAND] ... [/PLANNING_COMMAND]` body unchanged; runtime context is not written into the command definition or command body stored in GitHub;
+- add a generic Helper-owned command side-effect registry. Side-effect code executes only when the user actually invokes/copies a command, may perform asynchronous work, and decides the arbitrary text body it returns; Helper appends that returned body after the complete canonical command body for that invocation;
+- side-effect execution is event-driven, not periodic: rendering, Reload and Hard Reload do not execute it;
+- a configured/required side-effect failure aborts the action instead of silently sending an incomplete invocation; commands without a registered side effect remain byte-for-byte unchanged;
+- register the first side effect, `capture-chat-context`, on command ID `replacement_archive.create`. In this first stage it only generates a fresh UUID per invocation and returns a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block carrying `effect: capture-chat-context` + `chatContextToken`;
+- browser `sessionStorage`, content-agent exchange, `conversationKey`/title capture and Java persistence are explicitly deferred to the next integration stage.
+
+**Resulting Target Meaning:** establish the reusable side-effect execution/body-appending seam first, with a deterministic stage-1 chat-context token effect, before connecting it to browser-tab/bridge state.
+
+### LOG-PH-015 — Apply command side-effect framework and capture-chat-context stage 1
+
+**Type:** APPLIED  
+**Applied From:** `LOG-PH-014`  
+**ChangeSet:** `8bb283e5-7568-45a0-a05a-4817567ad1e2`  
+**Package:** `be6a98be-c31a-44b6-8d24-4250b5c61052`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- Planning Helper `0.33.0` has a generic asynchronous command side-effect registry/executor whose returned bodies are appended after, never inside, the canonical command body;
+- Insert/Full and explicit Copy resolve the invocation body exactly once per action; non-side-effect commands preserve existing bytes and behavior;
+- `replacement_archive.create` generates a fresh `chatContextToken` UUID on each invocation and appends it in a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block;
+- side-effect errors prevent insertion/copy and are surfaced in Helper status; no periodic registration, `sessionStorage`, ChatGPT agent, bridge or Java mapping is introduced yet;
+- generated userscript and acceptance/docs/tests project the same boundary.
+
+**Rationale:** make runtime command augmentation a reusable code seam and prove it with the archive-command token stub without contaminating GitHub command authority or prematurely coupling Helper to the browser bridge.
+
+**Package-base correction:** prior produced package `e72716fe-1c55-4293-abe9-c0a108d91a3a` is superseded for this invocation because its Helper action-log/generated-userscript base did not match the supplied local snapshot. Package `be6a98be-c31a-44b6-8d24-4250b5c61052` is rebased to snapshot base commit `b46e61064c1585902dfb392c80398ee09f74a7bb` while preserving the same open ChangeSet meaning.
+
+### LOG-PH-016 — Correct stale README version after stage-1 ReviewDiff
+
+**Type:** REVIEW DIFF / CORRECTION / APPLIED TARGET  
+**Reviewed ChangeSet:** `8bb283e5-7568-45a0-a05a-4817567ad1e2`  
+**Reviewed Package:** `be6a98be-c31a-44b6-8d24-4250b5c61052`  
+**Correction Package:** `2e8e69f2-5ff4-44b3-877a-8a84bb748e23`  
+
+**Material ReviewDiff Finding / selected correction:**
+- the stage-1 implementation and side-effect boundary are coherent, but the Helper README header still reports `Version: 0.31.0` while `package.json`, Manual Acceptance and the generated userscript project Helper `0.33.0`;
+- update only the README version metadata to `0.33.0`; do not change runtime behavior, side-effect registration, token semantics, canonical Planning Command bodies, generated userscript bytes or the explicitly deferred browser/sessionStorage/agent/Java integration.
+
+**Target-State Result:** after successful Apply of this exact correction package, Helper README/package/manual/generated-artifact version projections are consistent at the stage-1 `0.33.0` release while the already-reviewed command side-effect implementation remains unchanged.
+
+**APPLIED relation:** successful Apply of package `2e8e69f2-5ff4-44b3-877a-8a84bb748e23` corrects the known ReviewDiff P2 inside still-open ChangeSet `8bb283e5-7568-45a0-a05a-4817567ad1e2`. The ChangeSet remains open until a later cumulative ReviewDiff is accepted as APPROVABLE; this package does not start a new ChangeSet.

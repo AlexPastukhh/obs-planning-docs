@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution evidence remains separate from automated tests
-Version: v1.3.0 / Planning Helper `0.31.0`
+Version: v1.4.0 / Planning Helper `0.33.0`
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). Automated tests do **not** mark these browser/remote checks complete.
 
@@ -20,6 +20,9 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Insert a Planning Command, Use Case and Prompt into the live composer; verify exact intended text and clipboard fallback.
 - Confirm a Use-Case body contains stable UC ID, current registry source, owner-route resolution and semantic-only permission boundary.
 - Confirm `Full` changes read depth, not semantic owner or permissions.
+- Invoke `давай архив`; confirm the complete canonical `[PLANNING_COMMAND]` block is unchanged and a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block is appended after it with `effect: capture-chat-context` and a UUID `chatContextToken`.
+- Invoke/copy `давай архив` twice and confirm the token differs for each action. Confirm opening/rendering the Helper, Reload and Hard Reload do not generate a token.
+- Invoke/copy a command without a registered side effect and confirm its body remains byte-for-byte unchanged. A forced required side-effect failure must prevent insertion/copy and surface an error rather than sending the command without the side-effect body.
 
 <a id="scn-ph-manage-local"></a>
 ## `SCN-PH-MANAGE-LOCAL`

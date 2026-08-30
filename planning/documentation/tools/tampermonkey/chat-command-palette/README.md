@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.31.0`
+Version: `0.33.0`
 Scope: local-first Planning Helper with GitHub-backed Directions, Planning Commands and Use Cases; reusable Prompts; explicit repository recovery/publish actions; editable durable catalog order; Favorites; and wide/resizable browser UI.
 
 ## Read Order
@@ -191,6 +191,12 @@ SDS — IDTSPE Profile
 Projection source: `src/methodology-navigation.js`. Command semantics remain in `planning/commands/*.command.md` and the installed IDTSPE/SDS methodology owners; the Helper view does not become a semantic authority.
 
 New IDTSPE command definitions may expose optional `helperPresentation.whenToUse` / `helperPresentation.whatYouGet`. The `Info` action shows this material without inserting/invoking the command. Older commands without the metadata remain valid.
+
+## Command invocation side effects
+
+Planning Command bodies remain GitHub-backed canonical projections. Runtime-only behavior is separate: a command ID may be bound in `src/command-side-effects.js` to one or more asynchronous side-effect handlers. A handler runs only when the user actually invokes/copies that command, returns an arbitrary text body, and Helper appends that body after the complete unchanged command body for that one invocation. Reload, Hard Reload, rendering and catalog persistence do not execute side effects. A configured side-effect failure aborts the invocation rather than silently dropping its required runtime body.
+
+The first registered effect is `capture-chat-context` for `replacement_archive.create` (`давай архив`). In this first stage it generates a fresh UUID for every invocation and appends a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block containing `effect: capture-chat-context` and `chatContextToken`. It does not yet read/write browser `sessionStorage`, contact a ChatGPT tab agent or persist a Java bridge mapping; those are later integration stages.
 
 ## Build / Verify
 

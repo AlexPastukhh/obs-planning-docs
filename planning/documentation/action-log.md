@@ -2195,3 +2195,12 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - canonical/focused command definitions and Planning Helper `seed/commands.json` project the same current Target semantics for Prototype planning/results and implemented practical Evidence acceptance/learning;
 - current methodology audit correctly states `16/16` active SDS Target Modules and `6/6` SDS-specific Lenses;
 - no Target/Lens/AP/AG topology, Result Unit identity, permanent observability ownership or unrelated SDS family semantics change in this correction.
+
+### XREF-DOC-015 — Planning Helper command side-effect invocation framework
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
+**Entry:** `LOG-PH-014` / `LOG-PH-015`  
+**ChangeSet:** `8bb283e5-7568-45a0-a05a-4817567ad1e2`  
+**Package:** `be6a98be-c31a-44b6-8d24-4250b5c61052`  
+**Reason:** Planning Helper owns the generic invocation-time command side-effect framework, `capture-chat-context` stage-1 token behavior, runtime/tests/docs and canonical rationale. This reusable-documentation scope participates because the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact is outside the registered `chat-command-palette/` child root; the generated artifact is synchronized with the same Helper target state.

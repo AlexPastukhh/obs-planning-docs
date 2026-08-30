@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.32.1-repository-command-registry
+// @version      0.33.0-repository-command-registry
 // @description  RAM-first OBS Planning Helper with GitHub-backed Directions, Commands, Use Cases, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -1168,6 +1168,75 @@
 });
 
 (function (root, factory) {
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+
+  const SIDE_EFFECT_MARKER='PLANNING_COMMAND_SIDE_EFFECT';
+  const COMMAND_SIDE_EFFECTS=Object.freeze({
+    'replacement_archive.create':Object.freeze(['capture-chat-context'])
+  });
+
+  function defaultRandomUUID(){
+    const cryptoApi=globalThis.crypto;
+    if(!cryptoApi||typeof cryptoApi.randomUUID!=='function')throw new Error('Command side effect requires crypto.randomUUID().');
+    return cryptoApi.randomUUID();
+  }
+
+  function buildCaptureChatContextBody(chatContextToken){
+    const token=String(chatContextToken||'').trim();
+    if(!token)throw new TypeError('capture-chat-context requires a non-empty chatContextToken.');
+    return[
+      `[${SIDE_EFFECT_MARKER}]`,
+      'effect:',
+      '  capture-chat-context',
+      '',
+      'chatContextToken:',
+      `  ${token}`,
+      `[/${SIDE_EFFECT_MARKER}]`
+    ].join('\n');
+  }
+
+  async function captureChatContextSideEffect(context={}){
+    const randomUUID=typeof context.randomUUID==='function'?context.randomUUID:defaultRandomUUID;
+    const chatContextToken=String(randomUUID()).trim();
+    if(!chatContextToken)throw new Error('capture-chat-context generated an empty chatContextToken.');
+    return{body:buildCaptureChatContextBody(chatContextToken),chatContextToken};
+  }
+
+  const DEFAULT_SIDE_EFFECT_HANDLERS=Object.freeze({
+    'capture-chat-context':captureChatContextSideEffect
+  });
+
+  function normalizeEffectIds(value){
+    if(value==null)return[];
+    if(!Array.isArray(value))throw new TypeError('Command side-effect binding must be an array.');
+    return value.map((item)=>String(item||'').trim()).filter(Boolean);
+  }
+
+  async function applyCommandSideEffects(commandId,commandBody,options={}){
+    const id=String(commandId||'').trim(),base=String(commandBody==null?'':commandBody);
+    const bindings=options.bindings||COMMAND_SIDE_EFFECTS,handlers=options.handlers||DEFAULT_SIDE_EFFECT_HANDLERS;
+    const effectIds=normalizeEffectIds(bindings[id]);
+    if(!effectIds.length)return base;
+    const appended=[];
+    for(const effectId of effectIds){
+      const handler=handlers[effectId];
+      if(typeof handler!=='function')throw new Error(`Unknown command side effect: ${effectId}`);
+      const result=await handler({commandId:id,commandBody:base,randomUUID:options.randomUUID});
+      const body=typeof result==='string'?result:result?.body;
+      if(typeof body!=='string'||!body.trim())throw new Error(`Command side effect ${effectId} returned no body.`);
+      appended.push(body);
+    }
+    return[base,...appended].join('\n\n');
+  }
+
+  return{SIDE_EFFECT_MARKER,COMMAND_SIDE_EFFECTS,DEFAULT_SIDE_EFFECT_HANDLERS,buildCaptureChatContextBody,captureChatContextSideEffect,applyCommandSideEffects};
+});
+
+(function (root, factory) {
   const api=factory(root.ObsPlanningHelper||{});
   if(typeof module==='object'&&module.exports)module.exports=api;
   root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
@@ -1224,7 +1293,7 @@
       if(!favorite){actions.append(button('↑','move',()=>moveEntry(entry,-1),'Move up'),button('↓','move',()=>moveEntry(entry,1),'Move down'));}
       if(entry.fullBody)actions.append(button('Full','full',()=>insertBody(entry.fullBody,`Inserted full ${entry.label||entry.id}`,entry.id)));
       if(entry.helperPresentation||entry.definition?.helperPresentation||entry.__methodologyNav)actions.append(button('Info','full',()=>openCommandInfo(entry),'When To Use / What You Get'));
-      actions.append(button('Copy','copy',async()=>showStatus(await options.onCopy(entry.adaptiveBody||entry.text)?'Copied.':'Copy failed.',4000)));
+      actions.append(button('Copy','copy',async()=>{try{showStatus(await options.onCopy(entry.adaptiveBody||entry.text,entry.id)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}));
       if(entry.entityType==='planning-command'){actions.append(button('Edit','edit-command',()=>openCommandEditor(entry)),button('Reload','reload-command',()=>reloadCommand(entry)),button('Save GitHub','repo-command',()=>saveRepository(entry)),button('Delete','delete-command',()=>deleteCommand(entry)));}
       else if(entry.entityType==='use-case-invocation-command'){actions.append(button('Delete','delete-command',()=>deleteCommand(entry)));}
       else if(activeSurface===SURFACES.USE_CASES){actions.append(button('Delete','delete-command',()=>deleteUseCase(entry)));}
@@ -1270,7 +1339,7 @@
 });
 
 (function (root, factory) {
-  const api=factory(typeof require==='function'?Object.assign({},root.ObsPlanningHelper||{},require('./repository-catalog-service.js')):(root.ObsPlanningHelper||{}));
+  const api=factory(typeof require==='function'?Object.assign({},root.ObsPlanningHelper||{},require('./repository-catalog-service.js'),require('./command-side-effects.js')):(root.ObsPlanningHelper||{}));
   if(typeof module==='object'&&module.exports)module.exports=api;
   root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
 })(typeof globalThis!=='undefined'?globalThis:this,function(deps){
@@ -1322,6 +1391,8 @@
   function clearRepositoryEvidence(snapshot){const memory=materializeSnapshot(snapshot);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.map((record)=>deps.normalizeCommandRecord({...record,repositoryKnown:false,repositoryTracked:false,repositorySha:''})),helperItems:memory.helperRecords.map((record)=>deps.normalizeHelperRecord({...record,repositoryKnown:false,repositorySha:''})),directionCatalogSha:'',useCaseCatalogSha:'',catalogOrderSha:''});}
   async function persistVerifiedRepositoryResult(persist,next,result,settings,uiState){try{await persist(next);return{settings,...result,localSnapshotUpdated:true,localSnapshotError:'',...uiState()};}catch(error){return{settings,...result,localSnapshotUpdated:false,localSnapshotError:error?.message||String(error),...uiState()};}}
   function mergeRemoteMissing(snapshot,remoteRecords={}){const memory=materializeSnapshot(snapshot),commandMap=new Map(memory.commandRecords.map((record)=>[record.path,record])),helperMap=new Map(memory.helperRecords.map((record)=>[record.path,record])),addedCommands=[],addedHelpers=[];for(const remote of remoteRecords.commands||[]){if(commandMap.has(remote.path))continue;const record=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});commandMap.set(record.path,record);addedCommands.push(record);}deps.validateCommandCatalog([...commandMap.values()].map((record)=>record.definition));for(const remote of remoteRecords.helperItems||[]){if(helperMap.has(remote.path))continue;const record=deps.normalizeHelperRecord({item:remote.item,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositorySha:remote.sha});helperMap.set(record.path,record);addedHelpers.push(record);}const existingDirections=new Map((snapshot.directions||[]).map((entry)=>[entry.id,entry])),addedDirections=[];for(const direction of remoteRecords.directions||[]){if(existingDirections.has(direction.id))continue;existingDirections.set(direction.id,direction);addedDirections.push(direction);}const existingUseCases=new Map((snapshot.useCases||[]).map((entry)=>[entry.id,entry])),addedUseCases=[];for(const uc of remoteRecords.useCases||[]){if(existingUseCases.has(uc.id))continue;existingUseCases.set(uc.id,uc);addedUseCases.push(uc);}const restoredCommandIds=new Set(addedCommands.map((record)=>record.definition.id)),restoredUseCaseIds=new Set(addedUseCases.map((entry)=>entry.id));const next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],directions:[...existingDirections.values()],directionCatalogSha:addedDirections.length?'':snapshot.directionCatalogSha,useCases:[...existingUseCases.values()],useCaseCatalogSha:addedUseCases.length?'':snapshot.useCaseCatalogSha,hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>!restoredCommandIds.has(id)),hiddenUseCaseIds:(snapshot.hiddenUseCaseIds||[]).filter((id)=>!restoredUseCaseIds.has(id))});return{snapshot:next,addedCommands,addedHelpers,addedDirections,addedUseCases};}
+  async function prepareInvocationBody(text,id,operations=deps){const body=String(text==null?'':text);if(typeof operations.applyCommandSideEffects!=='function')return body;return operations.applyCommandSideEffects(id,body);}
+
   async function insertWithClipboard(text,success,id,operations=deps){let copied=false;try{const copyResult=operations.copyText(text);copied=copyResult&&typeof copyResult.then==='function'?Boolean(await copyResult):Boolean(copyResult);}catch(_){copied=false;}const result=operations.insertIntoComposer(text,id);if(result.ok)return copied?`${success} · clipboard ready`:`${success} · clipboard copy failed`;return copied?`Direct insertion failed (${result.reason}). The exact text is in the clipboard — paste manually.`:`Direct insertion failed (${result.reason}) and clipboard copy also failed.`;}
 
   async function startPlanningHelper(){
@@ -1344,12 +1415,12 @@
     async function saveCatalogOrderRepository(){return repositoryLock.run('Save catalog order to GitHub',async()=>{const{catalogService,settings}=await makeServices(),result=await catalogService.saveOrder(snapshot.catalogOrder),state=await persist({...snapshot,catalogOrder:result.order,catalogOrderSha:result.sha});return{settings,...result,...state};});}
     async function saveRepositoryEntity(reference){return repositoryLock.run('Save item to GitHub',async()=>{const{commandService,helperService,settings}=await makeServices(),type=String(reference?.type||'');let result,next;if(type==='planning-command'){const record=memory.commandById.get(String(reference.id||''));if(!record)throw new Error(`Local planning command not found: ${reference?.id||'<empty>'}`);result=await commandService.save(record.definition);next={...snapshot,planningCommands:memory.commandRecords.map((entry)=>entry.path===record.path?deps.normalizeCommandRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:result.sha}):entry)};}else if(type==='helper'){const key=`${reference?.kind}:${reference?.id}`,record=memory.helperByKey.get(key);if(!record)throw new Error(`Local helper item not found: ${key}`);result=await helperService.save(record.item);next={...snapshot,helperItems:memory.helperRecords.map((entry)=>entry.path===record.path?deps.normalizeHelperRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositorySha:result.sha}):entry)};}else throw new TypeError(`Unsupported repository entity type: ${type||'<empty>'}`);return persistVerifiedRepositoryResult(persist,next,result,settings,uiState);});}
     async function getRecoveryRequest(){const settings=await deps.loadRepositorySettings();return deps.buildRecoveryRequest(settings);}async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings(),candidate=deps.validateRepositorySettings(settings),sourceChanged=repositorySettingsKey(previous)!==repositorySettingsKey(candidate);if(sourceChanged)await persist(clearRepositoryEvidence(snapshot));await deps.saveGitHubToken(token);await deps.saveRepositorySettings(candidate);return{sourceChanged,...uiState()};});}
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:(text,success,id)=>insertWithClipboard(text,success,id),onCopy:deps.copyText,onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveDirection:moveDirection,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id)=>insertWithClipboard(await prepareInvocationBody(text,id),success,id),onCopy:async(text,id)=>deps.copyText(await prepareInvocationBody(text,id)),onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveDirection:moveDirection,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
     function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}globalThis[INSTANCE_DISPOSE_KEY]=dispose;
     return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getUseCases:()=>memory.useCases,getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,toggleFavoriteCommand,toggleFavoriteUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,hardReloadRepository,moveCatalogItem,moveDirection,saveCatalogOrderRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
   }
 
-  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,toggleFavoriteCommandInSnapshot,toggleFavoriteUseCaseInSnapshot,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,insertWithClipboard,sortByIds,moveId};
+  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,toggleFavoriteCommandInSnapshot,toggleFavoriteUseCaseInSnapshot,prepareLocalHelperSave,clearRepositoryEvidence,persistVerifiedRepositoryResult,prepareInvocationBody,insertWithClipboard,sortByIds,moveId};
 });
 
 (function(){
