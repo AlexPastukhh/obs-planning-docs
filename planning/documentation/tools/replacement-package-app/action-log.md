@@ -935,3 +935,91 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply, Java authorization protects the first possible-Send boundary, then `SendClicked` remains the stable possible-Send state for repeated guarded attempts until `Sent`, `UnknownAfterSend`, attachment loss or another terminal condition. No retry tries to transition `SendClicked → SendArmed`.
 
 **APPLIED relation:** if this correction package applies successfully, it supersedes the retry-loop/doc inconsistency found in the cumulative ReviewDiff for package `7ec80a95-a379-4efb-a553-eec2cb5dfa83` while keeping ChangeSet `bb052e95-56aa-4cce-b25d-82aabb19a248` open for review.
+
+### LOG-RPKG-050 — Resolve invocation-scoped chatContextToken asynchronously without blocking Apply
+
+**Type:** USER CLARIFICATION / CROSS-SCOPE SLICE EXTENSION / SHARED-PROTOCOL CHANGE / APPLIED TARGET  
+**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
+**ChangeSet Label:** `Planning Helper / RPKG — invocation-scoped chatContextToken binding`  
+**Package:** `9ba85d44-3853-4452-92ba-e96495d302d4`
+
+**Selected meaning:**
+- keep the already-finalized generic Planning Helper side-effect seam, but make `capture-chat-context` an explicit one-shot invocation option instead of automatic behavior for every `replacement_archive.create`; ordinary Insert/Full/Copy stays byte-for-byte canonical and produces no token, while explicit `Bind + Insert` / `Bind + Copy` / `Bind + Full` produces one fresh token;
+- the bind invocation captures `{chatContextToken, conversationKey, observedTitle, capturedAt}` in the current ChatGPT tab's `sessionStorage`; captures are not consumed/deleted after first lookup in this revision, repeated bind invocations produce distinct tokens, and an old token never gets reinterpreted from a later tab URL;
+- the side-effect body requires the exact token in `OBS-ACTION/1.chatContextToken` for **this invocation only** and explicitly forbids carry-forward. Later ordinary archive commands omit it; `packageId`, `changeSetId` and `chatContextToken` remain separate identities;
+- when an action carries a token, Replacement Package App starts/reuses an asynchronous token lookup during authorized Execute. Bridge protocol 5 returns pending token requests with inventory; extension background fans them out to live ChatGPT tab agents; agents answer only from their own session capture store and background returns aggregated captures. Same-conversation duplicate answers deduplicate; different conversation keys for one token conflict and never guess;
+- token presence takes precedence over legacy `chatTabTitle` matching. Legacy title behavior remains backward compatible when no token is present. A resolved token may establish a missing Review-chat binding or confirm the same existing binding, but it never silently rebinds a ChangeSet already bound to a different conversation;
+- repository Apply does not wait for token resolution. The successful Apply/current ReviewDiff point is the delivery cutoff: resolved/safe before cutoff binds and queues normally; pending/conflict/different-binding keeps Apply successful but skips automatic delivery of that Apply's ReviewDiff and emits a separate notification. Late resolution may persist a missing binding for future deliveries and emits a second binding notification, but never retroactively sends the skipped ReviewDiff;
+- this changes `SL-RPKG-01` Apply cutoff behavior, `SL-RPKG-06` destination binding/delivery entry and `SL-RPKG-09` outcome notification. Token lookup mechanics are internal destination resolution and are **not** a new `SL-RPKG-08` External Interaction. Planning Helper `SCN-PH-USE` owns the explicit invocation variant.
+
+**Implementation / proof:**
+- shared `OBS-ACTION/1` accepts optional UUID `chatContextToken`; consumer rejects carrying the same token into a different package/ChangeSet request;
+- Java persists `chat-context-lookups/<token>.json`, exposes pending lookups through `/v1/inventory`, accepts `/v1/chat-context/result`, and keeps binding/delivery truth separate from repository Apply truth;
+- extension `0.4.0` / bridge protocol `5` implements tab-agent lookup without adding a clipboard permission or a new External Interaction kind;
+- automated Core/bridge proof covers optional parsing, token precedence, pending-before-cutoff skip + late bind/no retro-send, resolved-before-cutoff queueing, duplicate-tab dedupe, token carry-forward rejection and protocol source wiring; Planning Helper proof covers ordinary side-effect-free invocation, explicit capture persistence, fresh repeated tokens and fail-closed non-chat binding.
+
+**Target-State Result:** an explicit bound `давай архив` invocation can establish the exact Review-chat destination through an opaque one-invocation token without exposing `conversationKey` to the package producer, while ordinary repeated archive commands remain non-binding and existing title/manual flows remain compatible.
+
+**APPLIED relation:** successful Apply of package `9ba85d44-3853-4452-92ba-e96495d302d4` makes this cross-scope token-binding design the current state of new ChangeSet `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`; later corrections before final APPROVABLE review keep this ChangeSet identity, while work after accepted APPROVABLE review must start a new ChangeSet.
+
+### LOG-RPKG-051 — Correct protocol marker and late chat-context conflict notification
+
+**Type:** REVIEWDIFF CORRECTION / PROTOCOL DOC CONSISTENCY / SL-RPKG-09 NOTIFICATION TRUTH / APPLIED TARGET  
+**Updates:** `LOG-RPKG-050`  
+**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
+**Package:** `c5ab203b-2494-4060-b222-c3998cf7b281`
+
+**ReviewDiff findings / selected correction:**
+- the token-binding implementation and protocol wiring are on bridge protocol `5`, but `CHATGPT-BRIDGE.md` retained one current-contract sentence saying `/v1/health` requires protocol `4`; correct that remaining current marker to `5` without rewriting historical protocol-4 entries;
+- a token conflict discovered after an earlier pending-at-cutoff skip emits the distinct `ContextBindingConflict` event, but Swing's chat-context notification classifier did not include that terminal attention status in its failure set. Include it so the Windows notification uses the failure/attention channel consistently with the UI title and conflict semantics;
+- extend the existing late-conflict regression with a source assertion that the notification classifier contains `ContextBindingConflict`.
+
+**Target-State Result:** current bridge documentation consistently identifies protocol `5`, and a late conflicting chat-context resolution remains separate from the already-emitted skipped-delivery event while surfacing as an attention/failure notification rather than a non-failure success-style notification. No token lookup, Apply cutoff, binding, delivery, or carry-forward semantics change.
+
+**APPLIED relation:** successful Apply of package `c5ab203b-2494-4060-b222-c3998cf7b281` corrects the two ReviewDiff P2 findings inside still-open ChangeSet `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`; the ChangeSet remains open for cumulative ReviewDiff review.
+
+### LOG-RPKG-052 — Make chatContextToken resolution request-driven and suspend lookup after failed Apply
+
+**Type:** REVIEWDIFF CORRECTION / REQUEST-DRIVEN BRIDGE LOOKUP / APPLY-FAILURE LIFECYCLE / APPLIED TARGET  
+**Updates:** `LOG-RPKG-050`, `LOG-RPKG-051`  
+**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
+**ChangeSet Label:** `Planning Helper / RPKG — invocation-scoped chatContextToken binding`  
+**Package:** `fc282f3d-8dfd-4b4b-97f4-f04089350512`
+
+**ReviewDiff findings / selected correction:**
+- the first token-binding package transported pending lookup work only inside the next `/v1/inventory` response, making the pre-ReviewDiff binding race depend on unrelated inventory timing. Replace that initial transport with a separate bounded `/v1/chat-context/wait` request channel: Java revisions/wakes the pending snapshot when lookup state changes and extension background immediately fans returned tokens to live tab agents. Inventory remains conversation/task reconciliation only;
+- retain unresolved tokens in extension memory only while Java reports `Pending` / `WaitingAfterCutoff`, and retry them on relevant tab lifecycle events. A service-worker restart rehydrates pending work from the Java request snapshot rather than from browser title/URL inference;
+- when repository Apply fails before the Review delivery cutoff, transition that package-scoped lookup to `ApplyFailed`, remove it from the agent-facing pending snapshot and ignore late in-flight lookup results. Retrying the exact same package/ChangeSet/token may reopen the request; if a conversation capture already resolved before the failed Apply, reuse that capture as `Resolved`, otherwise reopen as `Pending`. Token reuse by a different package/ChangeSet remains rejected;
+- bump the unpacked extension to `0.4.1` while keeping bridge protocol `5`; this is a correction inside the still-open protocol-5 ChangeSet, not a new semantic protocol generation.
+
+**Implementation / proof:**
+- `ChatBridgeServer` adds authenticated protocol-5 `POST /v1/chat-context/wait` and returns lookup result status from `/v1/chat-context/result`; `/v1/inventory` no longer carries `contextLookups`;
+- `ChatBridgeService` owns a revisioned wait/notify channel, persists `ApplyFailed`, wakes on pending-set changes and supports exact-request reopen without exposing failed work to agents;
+- the Core Apply failure path suspends a token lookup only while no successful repository Apply attempt has been persisted, without changing the repository failure result;
+- extension background holds one bounded wait loop, remembers the authoritative pending snapshot, fans out immediately on Java wake and retries unresolved remembered requests on tab create/update events;
+- automated verification after the correction: Core tests `67/67`, ChatBridge tests `59/59`, DOM regression PASS, Windows launcher tests `5/5`, and `node --check` for `background.js` PASS.
+
+**Target-State Result:** receiving a token-bearing authorized Apply creates a request-driven chat-context lookup that can resolve immediately without waiting for inventory polling. Repository Apply still never waits for lookup completion. A failed Apply cannot leave an indefinitely agent-visible Pending lookup, while an exact retry can safely resume the same invocation token.
+
+**APPLIED relation:** successful Apply of package `fc282f3d-8dfd-4b4b-97f4-f04089350512` corrects the request-trigger and failed-Apply lifecycle findings inside still-open ChangeSet `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`; the ChangeSet remains open for cumulative ReviewDiff review.
+
+### LOG-RPKG-053 — Do not re-fan chat-context agents on unchanged long-poll timeout
+
+**Type:** REVIEWDIFF CORRECTION / EVENT-DRIVEN LOOKUP RETRY / EXTENSION PATCH / APPLIED TARGET  
+**Updates:** `LOG-RPKG-050`, `LOG-RPKG-052`  
+**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
+**ChangeSet Label:** `Planning Helper / RPKG — invocation-scoped chatContextToken binding`  
+**Package:** `b1e51dbe-2380-47f4-90f8-15296f79b5f7`
+
+**ReviewDiff finding / selected correction:**
+- the request-driven `/v1/chat-context/wait` channel was bounded correctly, but extension background treated every 20-second timeout response as a fresh lookup event even when Java returned the same revision. An unresolved token could therefore re-fan to every live ChatGPT agent periodically, contradicting the selected event-driven retry semantics;
+- keep the bounded long-poll for service-worker-friendly wake-up/reconnect behavior, but compare each response revision with the previously observed revision. An unchanged revision is timeout/keepalive only: renew the wait without replacing the remembered snapshot and without agent fan-out. A changed revision still refreshes the authoritative snapshot and fans out immediately; tab create/update remains an explicit retry trigger for remembered pending tokens;
+- bump the unpacked extension to `0.4.2` while retaining bridge protocol `5`, and add source regression proof that the same-revision branch continues the wait before `resolveContextLookups` can run.
+
+**Implementation / proof:**
+- extension background stores the previous wait revision, updates the observed revision, and immediately continues the loop when the response revision is unchanged; only a revision change refreshes the authoritative pending snapshot and calls the remembered-token retry path;
+- automated verification after the correction: Core tests `67/67`, ChatBridge tests `59/59`, DOM regression PASS, Windows launcher tests `5/5`, and `node --check` for `background.js` PASS.
+
+**Target-State Result:** pending `chatContextToken` lookup is request-driven rather than periodic agent polling. Java revision changes and relevant tab lifecycle events are the retry triggers; a bounded `/v1/chat-context/wait` timeout by itself causes no `OBS_CHAT_CONTEXT_LOOKUP` fan-out. Apply/binding/delivery cutoff, `ApplyFailed`, token carry-forward, notification and External Interaction semantics are unchanged.
+
+**APPLIED relation:** successful Apply of package `b1e51dbe-2380-47f4-90f8-15296f79b5f7` corrects the remaining ReviewDiff event-driven lookup finding inside still-open ChangeSet `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`; the ChangeSet remains open for cumulative ReviewDiff review.

@@ -60,7 +60,7 @@ current ReviewDiff persisted
 → assign one browser-visible .diff filename containing this delivery task identity
 → any open tab of that exact conversation may claim it
 → exactly one tab gets the claim
-→ require bridge protocol v4 + complete task contract
+→ require bridge protocol v5 + complete task contract
 → require empty intended ChatGPT composer
 → construct a browser File from the exact ReviewDiff bytes
 → drive the shared ChatGPT attachment primitive
@@ -84,7 +84,7 @@ Live evidence superseded the prior direct-text target. A small ReviewDiff could 
 
 The send-control retry interval is an application setting, default `6` seconds with allowed range `1..60`. Every auto-send task snapshots the current value when it is created: ReviewDiff always uses auto-send, while Snapshot uses it only for `Export + Attach + Send`. The extension does not keep an independent retry setting. `SendArmed` is the persisted pre-click authorization state and `SendClicked` remains the actual-click state; repeated guarded attempts belong to the same External Interaction.
 
-Live attachment testing originally exposed a deterministic Java/extension contract defect after attachment preparation. Protocol version `4` now identifies the generic attachment/optional-Send task contract: `/v1/health` and claimed tasks advertise it, inventory/claim requests advertise the extension version, and both background/content preflight validate artifact kind, destination, fingerprint, `autoSend`, payload URL and a retry interval whenever `autoSend=true` before payload/composer mutation. Version/contract failure is `FailedBeforeSend`, never `UnknownAfterSend`.
+Live attachment testing originally exposed a deterministic Java/extension contract defect after attachment preparation. Protocol version `5` now identifies the generic attachment/optional-Send task contract: `/v1/health` and claimed tasks advertise it, inventory/claim requests advertise the extension version, and both background/content preflight validate artifact kind, destination, fingerprint, `autoSend`, payload URL and a retry interval whenever `autoSend=true` before payload/composer mutation. Version/contract failure is `FailedBeforeSend`, never `UnknownAfterSend`.
 
 Repeated UI click attempts are permitted only while the exact task-specific prepared attachment remains in the exact intended composer and no unrelated composer text has appeared. `Sent` is never inferred from message text alone. After that attachment leaves the composer, the minimum confirmation invariant is a new user turn after the attachment-preparation baseline. The adapter additionally searches only the same authored turn for a file/attachment-like DOM surface containing the exact queued `fileName`; that is stronger optional evidence for either `.diff` or `.zip`, not a mandatory gate. Attachment loss before any automatic possible-Send click is `PreparedUnsent`; loss after a possible-Send click with no post-baseline user turn becomes `UnknownAfterSend` and automatic click retry stops.
 
@@ -122,9 +122,9 @@ For `Export only`, the host keeps the post-export result dialog with path/copy/o
 
 ## 6. Loopback Protocol / Security
 
-`/v1/health` returns the fixed local `bridgeProtocolVersion`; the current required value is `4`. Inventory/claim requests must advertise the same extension version, and each claim response repeats the server version so a newly loaded extension cannot partially execute the older attach-only Snapshot contract. Protocol/version mismatch is deterministic pre-send compatibility failure, not `UnknownAfterSend`.
+`/v1/health` returns the fixed local `bridgeProtocolVersion`; the current required value is `5`. Inventory/claim requests must advertise the same extension version, and each claim response repeats the server version so a newly loaded extension cannot partially execute the older attach-only Snapshot contract. Protocol/version mismatch is deterministic pre-send compatibility failure, not `UnknownAfterSend`.
 
-Runtime-generation correction: protocol `4` is the Java/extension task contract, while tab-agent generation remains an extension-internal lifecycle fence. Background is the sole injector, session generation survives ordinary service-worker restarts, extension reload/update rotates generation, and stale agent traffic is rejected before it can control a current task. This does not make an already externally prepared interaction transparently resumable across runtime/tab loss: interruption after preparation remains `PreparedUnsent`, and ambiguity after a possible Send remains `UnknownAfterSend`.
+Runtime-generation correction: protocol `5` is the Java/extension task contract, while tab-agent generation remains an extension-internal lifecycle fence. Background is the sole injector, session generation survives ordinary service-worker restarts, extension reload/update rotates generation, and stale agent traffic is rejected before it can control a current task. This does not make an already externally prepared interaction transparently resumable across runtime/tab loss: interruption after preparation remains `PreparedUnsent`, and ambiguity after a possible Send remains `UnknownAfterSend`.
 
 Known accepted/deferred composer-integrity risk: after the intended ReviewDiff attachment is upload-ready, the current guard rechecks unrelated **text** plus presence of the intended attachment, but it does not yet reject a second unrelated attachment added before the automatic click. This is explicitly accepted for the current campaign and is not a blocker; do not present it as solved.
 
@@ -143,6 +143,8 @@ Core endpoints:
 ```text
 GET  /v1/health
 POST /v1/inventory
+POST /v1/chat-context/wait
+POST /v1/chat-context/result
 POST /v1/tasks/claim
 GET  /v1/tasks/<taskId>/payload?ticket=<short-lived-ticket>
 POST /v1/tasks/<taskId>/heartbeat
@@ -221,7 +223,7 @@ Current SL-06 source uses attachment preparation for every non-empty ReviewDiff:
 
 ```text
 exact verified ReviewDiff bytes
-→ validate bridge protocol v4 + complete claimed task contract
+→ validate bridge protocol v5 + complete claimed task contract
 → preserve bytes as text/x-diff Blob/File under a task-specific delivery filename
 → verify exact intended conversation + empty composer
 → reuse shared browser attachment primitive
@@ -320,3 +322,11 @@ Current bridge restrictions that protect exact destination/payload and duplicate
 ### Slice Boundary
 
 SL-05 and SL-06 retain artifact/delivery results. SL-08 owns common interaction inventory/select/cancel/history. Browser interaction failure remains downstream from Repository Work, and SL-09 may notify terminal results without becoming delivery authority.
+
+## Invocation-Scoped Chat Context Lookup
+
+An explicit Planning Helper bind invocation stores `{chatContextToken, conversationKey, observedTitle, capturedAt}` in that ChatGPT tab's `sessionStorage` under `obsPlanningHelper:chatContextCaptures:v1`. Ordinary command invocation does not create a capture. Records are not consumed/deleted after first lookup in this revision; each explicit bind invocation gets a fresh UUID and the tab session lifetime provides the storage boundary.
+
+When Java executes an `OBS-ACTION` carrying `chatContextToken`, it persists a pending lookup and increments the chat-context request revision. Extension background keeps one authenticated bounded long-poll on `/v1/chat-context/wait`; a new/reopened lookup wakes that request immediately, so initial token resolution no longer waits for the next inventory cycle. Background then asks all live `chatgpt.com` agents with `OBS_CHAT_CONTEXT_LOOKUP`; agents answer only from their own session store, so navigation after the capture cannot reinterpret an old token as the new current conversation. Background aggregates answers and POSTs `/v1/chat-context/result`. Duplicate answers for one conversation are equivalent; different conversation keys for one token are a conflict. Empty results remain pending in the extension's remembered request set. A bounded-wait timeout with an unchanged revision only renews the long-poll and does not re-query agents; unresolved tokens retry when Java changes the authoritative pending revision or on relevant tab lifecycle events. Inventory remains only conversation/task reconciliation and no longer carries lookup work.
+
+This lookup is internal destination resolution, not an External Interaction. Apply and lookup run asynchronously. At the successful Apply ReviewDiff cutoff Java either binds/queues from a resolved token, or records that this ReviewDiff was skipped because binding was not ready/safe. Late resolution may persist the binding for future deliveries but never queues the already-skipped ReviewDiff. If repository Apply fails before that cutoff, Java transitions the lookup to `ApplyFailed`, removes it from the request channel, and ignores any late in-flight agent result. Retrying the exact same package/ChangeSet/token reopens the lookup (`Resolved` immediately when an already captured conversation is retained, otherwise `Pending` and request-driven again); a different package/ChangeSet still cannot reuse that token.

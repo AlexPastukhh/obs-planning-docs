@@ -30,3 +30,6 @@ test('direction grouping nests entries under current Directions and preserves cr
 
 
 test('favorites project the same rows above Directions without changing original grouping',()=>{const entries=[{id:'a',directionId:'DIR-A'},{id:'b',directionId:'DIR-A'}];assert.deepEqual(favoriteEntries(entries,['b']).map((e)=>e.id),['b']);const groups=groupEntriesByDirections(entries,[{id:'DIR-A',label:'A'}]);assert.deepEqual(groups[0].entries.map((e)=>e.id),['a','b']);});
+
+
+test('UI source exposes explicit one-shot bind actions instead of making ordinary Copy/Insert binding',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/Bind \+ Insert/);assert.match(source,/Bind \+ Copy/);assert.match(source,/capture-chat-context/);assert.match(source,/onGetInvocationSideEffects/);});

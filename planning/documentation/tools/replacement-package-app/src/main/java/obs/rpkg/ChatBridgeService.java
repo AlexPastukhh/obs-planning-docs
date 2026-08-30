@@ -11,7 +11,7 @@ import java.util.zip.ZipFile;
 
 final class ChatBridgeService {
     static final int PORT=17831;
-    static final int BRIDGE_PROTOCOL_VERSION=4;
+    static final int BRIDGE_PROTOCOL_VERSION=5;
     private static final long CLAIM_SECONDS=180;
     private static final long SEND_UNKNOWN_SECONDS=600;
     private static final long SNAPSHOT_CONFIRM_SECONDS=600;
@@ -26,11 +26,14 @@ final class ChatBridgeService {
     private final ArrayDeque<ChatEvent> deferredEvents=new ArrayDeque<>();
     private Consumer<ChatEvent> eventSink;
     private boolean eventSinkConfigured;
+    private long contextLookupRevision;
 
     record ChatEvent(String taskId,String kind,String changeSetId,String reviewAttemptId,String status,String message){
-        String display(){return "ChatGPT "+shortId(taskId)+" · "+status+(message==null||message.isBlank()?"":" · "+message);}
+        String display(){String prefix="chatContext".equals(kind)?"Chat context ":"ChatGPT ";return prefix+shortId(taskId)+" · "+status+(message==null||message.isBlank()?"":" · "+message);}
     }
     record PayloadSource(Path path,long size,String sha256,String contentType,String fileName) {}
+    record ContextBindingResult(boolean bound,String status,String message) {}
+    record ContextLookupBatch(long revision,List<Map<String,Object>> lookups) {}
 
     ChatBridgeService(StateStore state){this(state,SNAPSHOT_CONFIRM_SECONDS);}
     ChatBridgeService(StateStore state,long snapshotConfirmSeconds){
@@ -40,6 +43,7 @@ final class ChatBridgeService {
         snapshotDeadlineExecutor=new ScheduledThreadPoolExecutor(1,r->{Thread t=new Thread(r,"obs-snapshot-confirmation-deadline");t.setDaemon(true);return t;});
         snapshotDeadlineExecutor.setRemoveOnCancelPolicy(true);
         restoreSnapshotDeadlines();
+        if(!pendingContextLookupRequests().isEmpty())contextLookupRevision=1;
     }
     synchronized void setEventSink(Consumer<ChatEvent> sink){
         eventSinkConfigured=true;eventSink=sink;
@@ -68,6 +72,125 @@ final class ChatBridgeService {
         }
         conversations.clear();conversations.putAll(next);expireClaimsAgainstInventory();expireClaims();
     }
+
+
+    synchronized void requestContextLookup(String token,String changeSetId,String packageId){
+        if(!isUuid(token))throw fail("Invalid chatContextToken.");
+        if(changeSetId==null||changeSetId.isBlank()||packageId==null||packageId.isBlank())throw fail("Chat context lookup requires ChangeSet and package identity.");
+        ContextLookup existing=loadContextLookup(token);
+        if(existing!=null){
+            if(!Objects.equals(existing.changeSetId,changeSetId)||!Objects.equals(existing.packageId,packageId))throw fail("chatContextToken was already used by a different package/ChangeSet; do not carry a token into later OBS-ACTION blocks.");
+            if("ApplyFailed".equals(existing.status)){
+                existing.status=existing.conversationKey==null||existing.conversationKey.isBlank()?"Pending":"Resolved";existing.reviewCutoffPassed=false;existing.reviewAttemptId=null;existing.reviewSkipNotified=false;existing.message=null;existing.updatedAt=Instant.now().toString();saveContextLookup(existing);signalContextLookupChange();
+            }
+            return;
+        }
+        ContextLookup lookup=new ContextLookup();lookup.token=token;lookup.changeSetId=changeSetId;lookup.packageId=packageId;lookup.status="Pending";lookup.requestedAt=Instant.now().toString();lookup.updatedAt=lookup.requestedAt;saveContextLookup(lookup);signalContextLookupChange();
+    }
+
+    synchronized void markContextLookupApplyFailed(String token,String changeSetId,String packageId,String message){
+        if(token==null||token.isBlank())return;
+        ContextLookup lookup=loadContextLookup(token);if(lookup==null)return;
+        if(!Objects.equals(lookup.changeSetId,changeSetId)||!Objects.equals(lookup.packageId,packageId))throw fail("chatContextToken Apply-failure lifecycle belongs to a different package/ChangeSet request.");
+        lookup.status="ApplyFailed";lookup.reviewCutoffPassed=false;lookup.reviewAttemptId=null;lookup.reviewSkipNotified=false;lookup.message="Repository Apply failed before Review delivery cutoff; chat-context lookup is suspended until this exact action is retried."+(message==null||message.isBlank()?"":" "+message);lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);signalContextLookupChange();
+    }
+
+    synchronized List<Map<String,Object>> pendingContextLookupRequests(){
+        List<Map<String,Object>> out=new ArrayList<>();
+        for(ContextLookup lookup:listContextLookups())if(Set.of("Pending","WaitingAfterCutoff").contains(lookup.status)){
+            Map<String,Object> m=new LinkedHashMap<>();m.put("chatContextToken",lookup.token);m.put("changeSetId",lookup.changeSetId);m.put("packageId",lookup.packageId);out.add(m);
+        }
+        return List.copyOf(out);
+    }
+
+    synchronized ContextLookupBatch waitForContextLookupRequests(long afterRevision,long timeoutMillis){
+        long bounded=Math.max(0,Math.min(timeoutMillis,25_000)),deadline=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(bounded);
+        while(afterRevision==contextLookupRevision&&bounded>0){
+            long remaining=deadline-System.nanoTime();if(remaining<=0)break;
+            try{TimeUnit.NANOSECONDS.timedWait(this,remaining);}catch(InterruptedException e){Thread.currentThread().interrupt();break;}
+        }
+        return new ContextLookupBatch(contextLookupRevision,pendingContextLookupRequests());
+    }
+
+    synchronized String acceptContextLookupResult(String token,List<Map<String,Object>> rawCaptures){
+        ContextLookup lookup=requireContextLookup(token);
+        if(!Set.of("Pending","WaitingAfterCutoff","Resolved").contains(lookup.status))return lookup.status;
+        LinkedHashMap<String,ContextCapture> byConversation=new LinkedHashMap<>();
+        for(Map<String,Object> raw:rawCaptures==null?List.<Map<String,Object>>of():rawCaptures){
+            String echoed=Core.str(raw.get("chatContextToken"));if(echoed!=null&&!echoed.isBlank()&&!Objects.equals(echoed,token))throw fail("Chat context lookup response echoed a different token.");
+            String key=Core.str(raw.get("conversationKey"));if(key==null||!key.matches("[A-Za-z0-9_-]{8,}"))throw fail("Chat context lookup returned an invalid conversation key.");
+            String title=Core.str(raw.get("observedTitle"));if(title==null||title.isBlank())title="Chat "+shortId(key);
+            String capturedAt=Core.str(raw.get("capturedAt"));if(capturedAt==null||capturedAt.isBlank())throw fail("Chat context lookup returned no capture timestamp.");
+            try{Instant.parse(capturedAt);}catch(Exception e){throw fail("Chat context lookup returned an invalid capture timestamp.");}
+            byConversation.putIfAbsent(key,new ContextCapture(token,key,title,capturedAt));
+        }
+        if(byConversation.isEmpty())return lookup.status;
+        if(byConversation.size()>1){
+            lookup.status="Conflict";lookup.message="The same chatContextToken was reported for more than one conversation; no Review chat was guessed or rebound.";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);
+            if(lookup.reviewCutoffPassed){String message=lookup.message+" The ReviewDiff from this Apply was not sent automatically.";if(lookup.reviewSkipNotified)emitContext(lookup,"ContextBindingConflict",message);else emitContextOnce(lookup,"ReviewSkippedBindingConflict",message);}
+            signalContextLookupChange();return lookup.status;
+        }
+        ContextCapture capture=byConversation.values().iterator().next();
+        if(lookup.conversationKey!=null&&!Objects.equals(lookup.conversationKey,capture.conversationKey())){
+            lookup.status="Conflict";lookup.message="chatContextToken resolved to a different conversation than its prior resolution; no Review chat was changed.";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);
+            if(lookup.reviewCutoffPassed){if(lookup.reviewSkipNotified)emitContext(lookup,"ContextBindingConflict",lookup.message);else emitContextOnce(lookup,"ReviewSkippedBindingConflict",lookup.message);}
+            signalContextLookupChange();return lookup.status;
+        }
+        lookup.conversationKey=capture.conversationKey();lookup.observedTitle=capture.observedTitle();lookup.capturedAt=capture.capturedAt();lookup.status="Resolved";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);
+        if(lookup.reviewCutoffPassed)finishLateContextBinding(lookup);
+        signalContextLookupChange();return lookup.status;
+    }
+
+    synchronized ContextBindingResult bindContextAtReviewCutoff(String token,Core.ChangeSet cs,Core.ReviewDiff review){
+        ContextLookup lookup=requireContextLookup(token);
+        if(!Objects.equals(lookup.changeSetId,cs.changeSetId))throw fail("chatContextToken belongs to a different ChangeSet request.");
+        lookup.reviewCutoffPassed=true;lookup.reviewAttemptId=review.attemptId();lookup.updatedAt=Instant.now().toString();
+        if(Set.of("Pending","WaitingAfterCutoff").contains(lookup.status)){
+            lookup.status="WaitingAfterCutoff";saveContextLookup(lookup);
+            String message="Package Apply succeeded before chat-context binding resolved; this Apply's ReviewDiff was not sent automatically. Binding lookup remains active for future deliveries.";
+            emitContextOnce(lookup,"ReviewSkippedBindingPending",message);return new ContextBindingResult(false,lookup.status,message);
+        }
+        if("Conflict".equals(lookup.status)){
+            saveContextLookup(lookup);String message=(lookup.message==null?"Chat-context binding is conflicted; no destination was guessed.":lookup.message)+" This Apply's ReviewDiff was not sent automatically.";emitContextOnce(lookup,"ReviewSkippedBindingConflict",message);return new ContextBindingResult(false,lookup.status,message);
+        }
+        if("DifferentBinding".equals(lookup.status))return new ContextBindingResult(false,lookup.status,lookup.message);
+        if("Resolved".equals(lookup.status)||"Bound".equals(lookup.status)){
+            Core.ChatBinding existing=binding(cs.changeSetId);
+            if(existing!=null&&!Objects.equals(existing.conversationKey(),lookup.conversationKey)){
+                lookup.status="DifferentBinding";lookup.message="chatContextToken resolved to '"+safe(lookup.observedTitle)+"', but this ChangeSet is already bound to '"+safe(existing.title())+"'. Existing binding was not silently replaced; this Apply's ReviewDiff was not sent automatically.";saveContextLookup(lookup);emitContextOnce(lookup,"ReviewSkippedDifferentBinding",lookup.message);return new ContextBindingResult(false,lookup.status,lookup.message);
+            }
+            Core.ChatBinding bound=existing==null?bindCapturedContext(cs.changeSetId,lookup):existing;lookup.status="Bound";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);return new ContextBindingResult(true,"Bound","Review chat resolved from this invocation's chatContextToken: "+bound.title()+".");
+        }
+        return new ContextBindingResult(false,lookup.status,"Chat-context binding is unavailable; this Apply's ReviewDiff was not sent automatically.");
+    }
+
+    private void finishLateContextBinding(ContextLookup lookup){
+        if(!"Resolved".equals(lookup.status)||!lookup.reviewCutoffPassed)return;
+        Core.ChatBinding existing=binding(lookup.changeSetId);
+        if(existing!=null&&!Objects.equals(existing.conversationKey(),lookup.conversationKey)){
+            lookup.status="DifferentBinding";lookup.message="chatContextToken later resolved to '"+safe(lookup.observedTitle)+"', but the ChangeSet is already bound to '"+safe(existing.title())+"'. Existing binding was kept; use explicit rebind controls if the destination should change.";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);emitContext(lookup,"ResolvedDifferentBinding",lookup.message+" The preceding Apply ReviewDiff was not sent automatically.");return;
+        }
+        Core.ChatBinding bound=existing==null?bindCapturedContext(lookup.changeSetId,lookup):existing;
+        lookup.status="Bound";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);
+        emitContext(lookup,"BoundLate","Review chat bound from chatContextToken to '"+bound.title()+"'. This binding will be used for subsequent deliveries; the preceding Apply ReviewDiff was not sent automatically.");
+    }
+
+    private Core.ChatBinding bindCapturedContext(String changeSetId,ContextLookup lookup){
+        String key=lookup.conversationKey;if(key==null||!key.matches("[A-Za-z0-9_-]{8,}"))throw fail("Resolved chat context has no valid conversation key.");
+        Core.ChatBinding prior=binding(changeSetId);if(prior!=null&&!Objects.equals(prior.conversationKey(),key))throw fail("Resolved chat context differs from the existing Review-chat binding; explicit rebind is required.");
+        String title=safe(lookup.observedTitle).isBlank()?"Chat "+shortId(key):lookup.observedTitle,now=Instant.now().toString(),url="https://chatgpt.com/c/"+key;
+        Map<String,Object> m=new LinkedHashMap<>();m.put("schemaVersion",1);m.put("changeSetId",changeSetId);m.put("conversationKey",key);m.put("title",title);m.put("url",url);m.put("boundAt",now);state.writeJson(bindingPath(changeSetId),m);return new Core.ChatBinding(changeSetId,key,title,url,now);
+    }
+
+    private void emitContextOnce(ContextLookup lookup,String status,String message){if(lookup.reviewSkipNotified)return;lookup.reviewSkipNotified=true;lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);emitContext(lookup,status,message);}
+    private void emitContext(ContextLookup lookup,String status,String message){ChatEvent event=new ChatEvent(lookup.token,"chatContext",lookup.changeSetId,lookup.reviewAttemptId,status,message);if(!eventSinkConfigured){deferredEvents.addLast(event);return;}if(eventSink==null)return;try{eventSink.accept(event);}catch(Throwable ignored){}}
+    private void signalContextLookupChange(){contextLookupRevision++;notifyAll();}
+
+    private ContextLookup requireContextLookup(String token){ContextLookup l=loadContextLookup(token);if(l==null)throw fail("Unknown chatContextToken lookup request.");return l;}
+    private ContextLookup loadContextLookup(String token){Path p=contextLookupPath(token);return Files.isRegularFile(p)?ContextLookup.from(state.readObject(p)):null;}
+    private void saveContextLookup(ContextLookup lookup){state.writeJson(contextLookupPath(lookup.token),lookup.json());}
+    private List<ContextLookup> listContextLookups(){List<ContextLookup> out=new ArrayList<>();Path dir=state.root.resolve("chat-context-lookups");if(!Files.isDirectory(dir))return out;try(DirectoryStream<Path> ds=Files.newDirectoryStream(dir,"*.json")){for(Path p:ds)out.add(ContextLookup.from(state.readObject(p)));}catch(IOException e){throw fail("Cannot read chat-context lookup state: "+e.getMessage(),e);}return out;}
+    private Path contextLookupPath(String token){if(!isUuid(token))throw fail("Invalid chatContextToken.");return state.root.resolve("chat-context-lookups").resolve(token+".json");}
 
     synchronized List<Core.ChatConversation> openConversations(){return List.copyOf(conversations.values());}
 
@@ -317,6 +440,13 @@ final class ChatBridgeService {
     private static String shortId(String id){return id==null?"????????":id.substring(0,Math.min(8,id.length()));}
     private static Core.ObsException fail(String message){return new Core.ObsException(Core.CHAT_BRIDGE_FAILED,message);}
     private static Core.ObsException fail(String message,Throwable cause){return new Core.ObsException(Core.CHAT_BRIDGE_FAILED,message,cause);}
+
+    private record ContextCapture(String chatContextToken,String conversationKey,String observedTitle,String capturedAt) {}
+    private static final class ContextLookup {
+        String token,changeSetId,packageId,status,conversationKey,observedTitle,capturedAt,requestedAt,updatedAt,reviewAttemptId,message;boolean reviewCutoffPassed,reviewSkipNotified;
+        Map<String,Object> json(){Map<String,Object> m=new LinkedHashMap<>();m.put("schemaVersion",1);m.put("chatContextToken",token);m.put("changeSetId",changeSetId);m.put("packageId",packageId);m.put("status",status);m.put("conversationKey",conversationKey);m.put("observedTitle",observedTitle);m.put("capturedAt",capturedAt);m.put("requestedAt",requestedAt);m.put("updatedAt",updatedAt);m.put("reviewAttemptId",reviewAttemptId);m.put("reviewCutoffPassed",reviewCutoffPassed);m.put("reviewSkipNotified",reviewSkipNotified);m.put("message",message);return m;}
+        static ContextLookup from(Map<String,Object> m){ContextLookup l=new ContextLookup();l.token=Core.str(m.get("chatContextToken"));l.changeSetId=Core.str(m.get("changeSetId"));l.packageId=Core.str(m.get("packageId"));l.status=Core.str(m.get("status"));l.conversationKey=Core.str(m.get("conversationKey"));l.observedTitle=Core.str(m.get("observedTitle"));l.capturedAt=Core.str(m.get("capturedAt"));l.requestedAt=Core.str(m.get("requestedAt"));l.updatedAt=Core.str(m.get("updatedAt"));l.reviewAttemptId=Core.str(m.get("reviewAttemptId"));l.reviewCutoffPassed=Boolean.TRUE.equals(m.get("reviewCutoffPassed"));l.reviewSkipNotified=Boolean.TRUE.equals(m.get("reviewSkipNotified"));l.message=Core.str(m.get("message"));return l;}
+    }
 
     private static final class Task {
         String taskId,kind,changeSetId,reviewAttemptId,conversationKey,conversationTitle,artifactPath,artifactSha256,fileName,status,message,createdAt,updatedAt,leaseUntil,payloadTicket,ticketExpiresAt,dismissedAt;long artifactSize;int sendRetryIntervalSeconds=Core.DEFAULT_REVIEW_SEND_RETRY_SECONDS;boolean autoSend,autoGenerated;Integer claimedTabId;

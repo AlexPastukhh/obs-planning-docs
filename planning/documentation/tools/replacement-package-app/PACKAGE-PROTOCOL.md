@@ -67,7 +67,8 @@ action: apply-package
 name: <human-readable ApplicationAttempt label>
 archive: <downloaded archive filename hint>
 packageId: <same packageId as PACKAGE.json>
-chatTabTitle: <optional exact intended ChatGPT conversation/tab title hint>
+chatTabTitle: <optional legacy exact intended ChatGPT conversation/tab title hint>
+chatContextToken: <optional UUID emitted by an explicit capture-chat-context invocation side effect>
 ```
 
 Action rules:
@@ -75,10 +76,13 @@ Action rules:
 - `archive` is a filename/hint, not an absolute path or repository-operation authority;
 - the consumer resolves/selects a concrete ZIP and requires its manifest `packageId` to exactly match the action `packageId`;
 - `name` is presentation/history text and may vary between attempts;
-- `chatTabTitle` is optional and may be omitted. When present, it is a destination-binding hint only: it never identifies the package, Repository Target or ChangeSet and never grants repository-operation authority. Consumer title-matching configuration is local application state and is never carried in `OBS-ACTION`;
+- `chatContextToken` is optional and is emitted only when the active command invocation explicitly carried `capture-chat-context`. It is an opaque one-invocation destination-resolution token: it never identifies the package, Repository Target or ChangeSet, never grants repository-operation authority, and MUST NOT be copied into a later `OBS-ACTION` unless that later command invocation supplies its own token. The consumer validates it as a UUID and one token may be associated with only one package/ChangeSet request;
+- `chatTabTitle` remains optional legacy fallback metadata. When `chatContextToken` is present, token resolution is authoritative for that action and title matching/rebind preparation is not performed. When no token is present, existing `chatTabTitle` behavior remains unchanged. Consumer title-matching configuration is local application state and is never carried in `OBS-ACTION`;
 - before any repository mutation, the consumer parses the action once and builds one prepared Apply context. `chatTabTitle` is normalized together with current inventory titles by deleting only the Unicode characters configured in the persisted `reviewChatTitleIgnoredCharacters` setting, then compared by exact case-sensitive equality. The default ignored-character set is empty, preserving literal matching. Zero or multiple matches never guess a destination; they are warnings in operation Output and Apply may continue with manual binding available;
 - in the interactive Swing consumer, when exactly one prepared destination differs from an existing persisted Review-chat binding, repository mutation requires an explicit user decision made before Apply: keep the existing binding, Apply and rebind to the prepared destination, or cancel. Rebind authorization is refused while existing bridge safety rules make rebinding unsafe. If the ChangeSet/binding state used by the prepared decision changes before execution, the prepared Apply is stale and must be prepared/confirmed again before mutation. The current non-interactive CLI `apply --action-file` compatibility path cannot obtain this confirmation and, as a known accepted divergence, keeps the existing binding/no action-driven rebind;
-- actual bind/rebind occurs only after successful repository Apply and uses the already prepared `conversationKey` through the same persisted binding service used by manual selection; the title is not reparsed/rematched after Apply. Failed repository Apply leaves the binding unchanged. Duplicate browser tabs of one conversation remain governed by existing conversation-key / duplicate-tab claim serialization rather than by the title hint;
+- legacy title-assisted bind/rebind occurs only after successful repository Apply and uses the already prepared `conversationKey` through the same persisted binding service used by manual selection; the title is not reparsed/rematched after Apply. Failed repository Apply leaves the binding unchanged. Duplicate browser tabs of one conversation remain governed by existing conversation-key / duplicate-tab claim serialization rather than by the title hint;
+- token-assisted resolution is asynchronous and begins when an authorized Apply executes. The Java bridge exposes the pending token to the extension; background asks all live ChatGPT tab agents, and an agent answers only from that tab's `sessionStorage` capture record `{chatContextToken, conversationKey, observedTitle, capturedAt}`. Multiple answers for the same `conversationKey` are one logical result; one token reported for different conversation keys is a conflict and never guesses/rebinds;
+- repository Apply never waits for token lookup. At the successful Apply/current-ReviewDiff cutoff, a resolved token may establish a missing binding (or confirm the same existing binding) and queue that current ReviewDiff. If lookup is still pending, conflicted, or resolves to a different existing binding, Apply remains successful but that Apply's ReviewDiff is not auto-queued. A later successful resolution may persist a missing binding for future deliveries, but MUST NOT retroactively send the already-skipped ReviewDiff; the consumer emits a separate skipped-delivery notification and, on late success, a separate binding-success notification;
 - known accepted concurrency risk: the prepared binding/state assumptions are revalidated before repository mutation, but manual Bind/Unbind is not serialized against an already-running background Execute. A manual binding change made during Execute may therefore be overwritten by the previously authorized prepared rebind after successful Apply; this revision does not claim that concurrency window is hardened;
 - repository operations never appear in `OBS-ACTION`;
 - clipboard/repo-file ReviewDiff handling never appears in `OBS-ACTION`; it is application configuration;
@@ -91,7 +95,7 @@ The V0.1 application has a configured repository root and optional selected arch
 
 Resolution result must be unique after opening candidate `PACKAGE.json` files and comparing `packageId`. Zero matches produce `PACKAGE_NOT_FOUND`; ambiguous/malformed candidates do not authorize mutation.
 
-Optional `chatTabTitle` resolution is non-authoritative but deliberately **pre-Apply**. One prepared operation captures the parsed action, validated package, Repository Target candidates, current ChangeSet/binding state, configured title-normalization policy and the resolved conversation candidate when unique. Confirmation UI is used only for a real existing-binding → different prepared-destination decision; no-match/ambiguous diagnostics belong in Output. Execute revalidates the frozen ChangeSet/binding assumptions before mutation. A title hint identifies a conversation inventory choice, not a physical duplicate browser tab.
+Optional destination resolution has two paths. Without `chatContextToken`, legacy `chatTabTitle` resolution remains deliberately **pre-Apply**: one prepared operation freezes the title-normalization result and any unique conversation candidate. With `chatContextToken`, title matching is skipped; authorized Execute starts a non-blocking token lookup against live tab agents while repository Apply proceeds. The token maps only to a capture made by the explicit originating Helper invocation and is not a physical tab identity. Apply success, binding outcome and ReviewDiff delivery outcome remain separate truths.
 
 ## 3. Consumer Validation Order
 
@@ -103,12 +107,13 @@ parse OBS-ACTION once + resolve/select concrete ZIP
 → validate schema/IDs/repositoryIdentity/operations
 → validate declared payload set
 → resolve Repository Target candidates + exact ChangeSet state
-→ resolve optional `chatTabTitle` through current local title-matching policy
+→ when no chatContextToken is present, resolve optional legacy `chatTabTitle` through current local title-matching policy
 → emit non-blocking prepare warnings to Output
 → in interactive Swing, when unique requested destination conflicts with existing binding, obtain explicit keep/rebind/cancel decision
 → in non-interactive CLI compatibility flow, keep existing binding/no action-driven rebind on that conflict
 → freeze Prepared/Authorized Apply context
 → immediately before mutation revalidate selected Repository Target + prepared ChangeSet/binding assumptions + requested conversation/rebind safety when relevant
+→ when chatContextToken is present, start/reuse its asynchronous bridge lookup without blocking Apply
 → verify configured Git repository identity
 → resolve/create/continue ChangeSet
 → verify path ownership / dirty-unowned boundary
@@ -117,8 +122,10 @@ parse OBS-ACTION once + resolve/select concrete ZIP
 → mutate
 → verify resulting bytes
 → record attempt + cumulative ReviewDiff
-→ after successful Apply only, execute the authorized bind/rebind from prepared `conversationKey`
-→ queue through the normal SL-RPKG-06 path for the resulting persisted binding
+→ after successful Apply, either execute the authorized legacy title bind/rebind OR evaluate chatContextToken at the Review delivery cutoff
+→ token resolved to missing/same binding before cutoff: persist/confirm binding + queue through normal SL-RPKG-06
+→ token pending/conflict/different binding at cutoff: keep Apply SUCCESS, skip this ReviewDiff auto-delivery, notify separately
+→ late token resolution: persist a missing binding for future deliveries + notify separately; never retro-send the skipped ReviewDiff
 ```
 
 No target file is changed before the complete package and all touched-path preconditions pass. The current stale-binding check protects the pre-mutation decision boundary only; it does not serialize a later manual Review-chat binding change made after background Execute has begun, which remains an accepted risk.

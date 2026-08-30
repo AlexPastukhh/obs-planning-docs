@@ -38,6 +38,7 @@ review-diffs/<changeSetId>/<attemptId>.diff
 chat-bridge.json
 chat-bindings/<changeSetId>.json
 chat-handoffs/<taskId>.json
+chat-context-lookups/<chatContextToken>.json
 locks/state.lock
 ```
 
@@ -181,6 +182,8 @@ Creating a snapshot does not claim paths, change ChangeSet lifecycle or become a
 Browser integration is consumer-only local delivery state and does not enter `PACKAGE.json` or `OBS-ACTION`.
 
 `chat-bridge.json` stores the random loopback pairing token and fixed V1 port. `chat-bindings/<changeSetId>.json` stores one optional ChangeSet → ordinary ChatGPT conversation binding (`conversationKey`, last-known title/URL, bound timestamp). This binding survives continuation/correction packages because they keep the same `changeSetId`.
+
+`chat-context-lookups/<chatContextToken>.json` stores the consumer-side asynchronous resolution request for one invocation-scoped token: owning `changeSetId` + `packageId`, `Pending` / `WaitingAfterCutoff` / `Resolved` / `Bound` / conflict/different-binding state plus `ApplyFailed`, captured conversation/title/timestamp when found, the ReviewDiff cutoff marker and whether the skipped-delivery notice was emitted. Reusing one token for a different package/ChangeSet is rejected. `ApplyFailed` is terminal for agent exposure: the request disappears from the `/v1/chat-context/wait` pending snapshot and late in-flight results do not revive it. Retrying the exact same package/ChangeSet/token may reopen it, reusing an already captured conversation when available. This Java record is separate from the browser capture: Helper keeps the capture itself in that tab's `sessionStorage` and does not delete it after one lookup in this revision. Late lookup success may establish a missing persisted binding but never retroactively queues the ReviewDiff whose cutoff already passed.
 
 `PreparedApply` / `AuthorizedApply` are transient in-memory operation records, not persistent ledger files. Prepare freezes parsed `OBS-ACTION`, validated `PackageData`, Repository Target candidates, the ChangeSet state token, the current binding key and any unique title-resolved destination `conversationKey`. The user decision to keep/rebind is also transient. Execute revalidates the frozen ChangeSet/binding assumptions before repository mutation; actual binding persistence is written only after successful Apply when rebind/use-hint was authorized.
 

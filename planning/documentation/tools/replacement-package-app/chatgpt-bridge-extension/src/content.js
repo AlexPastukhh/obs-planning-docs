@@ -4,8 +4,19 @@
   const agentInstanceId = crypto.randomUUID();
   let runtimeGeneration = null, currentTask = null, abortReason = null, heartbeatTimer = null, active = true, messageListener = null;
   const TERMINAL = ["Cancelled","NoChanges","FailedBeforeSend","PreparedUnsent","Sent","Attached","UnknownAfterSend"];
-  const BRIDGE_PROTOCOL_VERSION = 4;
+  const BRIDGE_PROTOCOL_VERSION = 5;
+  const CHAT_CONTEXT_STORAGE_KEY = "obsPlanningHelper:chatContextCaptures:v1";
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  function capturedChatContext(token) {
+    try {
+      const raw = sessionStorage.getItem(CHAT_CONTEXT_STORAGE_KEY); if (!raw) return null;
+      const store = JSON.parse(raw), capture = store?.schemaVersion === 1 ? store.captures?.[token] : null;
+      if (!capture || capture.chatContextToken !== token || typeof capture.conversationKey !== "string" || !/^[A-Za-z0-9_-]{8,}$/.test(capture.conversationKey)) return null;
+      if (typeof capture.observedTitle !== "string" || !capture.observedTitle.trim() || typeof capture.capturedAt !== "string" || !capture.capturedAt.trim()) return null;
+      return {chatContextToken: token, conversationKey: capture.conversationKey, observedTitle: capture.observedTitle, capturedAt: capture.capturedAt};
+    } catch { return null; }
+  }
 
   function contextInvalid(error) {
     const text = String(error?.message || error || "");
@@ -206,6 +217,11 @@
         const sameGeneration = message.runtimeGeneration === runtimeGeneration;
         sendResponse({ok: sameGeneration, runtimeGeneration, agentInstanceId, stale: !sameGeneration});
         return false;
+      }
+      if (message?.type === "OBS_CHAT_CONTEXT_LOOKUP") {
+        if (message.runtimeGeneration !== runtimeGeneration) { sendResponse({ok: false, error: "Stale ChatGPT bridge runtime generation."}); return false; }
+        const token = String(message.chatContextToken || ""), capture = capturedChatContext(token);
+        sendResponse({ok: true, found: !!capture, capture}); return false;
       }
       if (message?.type === "OBS_TASK" && message.task) {
         if (message.runtimeGeneration !== runtimeGeneration) { sendResponse({ok: false, error: "Stale ChatGPT bridge runtime generation."}); return false; }

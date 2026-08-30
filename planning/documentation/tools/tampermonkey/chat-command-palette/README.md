@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.33.0`
+Version: `0.34.0`
 Scope: local-first Planning Helper with GitHub-backed Directions, Planning Commands and Use Cases; reusable Prompts; explicit repository recovery/publish actions; editable durable catalog order; Favorites; and wide/resizable browser UI.
 
 ## Read Order
@@ -194,9 +194,9 @@ New IDTSPE command definitions may expose optional `helperPresentation.whenToUse
 
 ## Command invocation side effects
 
-Planning Command bodies remain GitHub-backed canonical projections. Runtime-only behavior is separate: a command ID may be bound in `src/command-side-effects.js` to one or more asynchronous side-effect handlers. A handler runs only when the user actually invokes/copies that command, returns an arbitrary text body, and Helper appends that body after the complete unchanged command body for that one invocation. Reload, Hard Reload, rendering and catalog persistence do not execute side effects. A configured side-effect failure aborts the invocation rather than silently dropping its required runtime body.
+Planning Command bodies remain GitHub-backed canonical projections. Runtime-only behavior is separate: a command ID may expose one or more asynchronous side effects, but ordinary Insert/Full/Copy runs with no side effect and preserves the canonical bytes. Helper renders explicit one-shot `Bind + Insert`, `Bind + Copy` and, when available, `Bind + Full` actions only for commands that support `capture-chat-context`; there is no sticky bind toggle and Reload/Hard Reload/rendering never executes an effect. A configured effect failure aborts that bind action before copy/insertion.
 
-The first registered effect is `capture-chat-context` for `replacement_archive.create` (`давай архив`). In this first stage it generates a fresh UUID for every invocation and appends a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block containing `effect: capture-chat-context` and `chatContextToken`. It does not yet read/write browser `sessionStorage`, contact a ChatGPT tab agent or persist a Java bridge mapping; those are later integration stages.
+For `replacement_archive.create` (`давай архив`), every explicit Bind action creates a fresh UUID v4, captures the current ordinary `chatgpt.com/c/<conversation>` identity/title/time into this tab's `sessionStorage` under `obsPlanningHelper:chatContextCaptures:v1`, and appends a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block after the complete unchanged command. The block requires the exact `chatContextToken` in **this invocation's** `OBS-ACTION/1`, declares `scope: this-invocation-only` and `carryForward: false`, so later ordinary archive commands omit the token. Captures remain in the tab session in this revision; repeated Bind actions create distinct tokens even when they capture the same conversation. Replacement Package App/extension resolves the token asynchronously only after the resulting action reaches Apply.
 
 ## Build / Verify
 

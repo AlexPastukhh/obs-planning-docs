@@ -3,10 +3,12 @@ let inventoryPromise = null, lastInventoryAt = 0;
 const CONTENT_READY_TIMEOUT_MS = 8000;
 const CONTENT_READY_POLL_MS = 150;
 const PAYLOAD_CHUNK_BYTES = 512 * 1024;
-const BRIDGE_PROTOCOL_VERSION = 4;
+const BRIDGE_PROTOCOL_VERSION = 5;
 const RUNTIME_GENERATION_KEY = "obsBridgeRuntimeGeneration";
 const agentInstances = new Map();
 let runtimeGenerationPromise = null;
+let contextLookupRevision = 0, contextLookupWaitPromise = null;
+const rememberedContextLookups = new Map();
 
 async function runtimeGeneration() {
   if (!runtimeGenerationPromise) runtimeGenerationPromise = (async () => {
@@ -166,6 +168,59 @@ async function readyAndClaim(tab) {
   try { await ensureContentScript(tab.id); await claimForTab(tab.id, c.conversationKey); }
   catch (error) { await recordDiagnostic(`Tab ${tab.id} readiness/claim`, error); }
 }
+function replaceRememberedContextLookups(lookups) {
+  rememberedContextLookups.clear();
+  if (!Array.isArray(lookups)) return;
+  for (const lookup of lookups) {
+    const token = String(lookup?.chatContextToken || "");
+    if (/^[0-9a-f-]{36}$/i.test(token)) rememberedContextLookups.set(token, lookup);
+  }
+}
+async function resolveContextLookups(lookups, tabs) {
+  if (!Array.isArray(lookups) || !lookups.length) return;
+  const generation = await runtimeGeneration();
+  for (const lookup of lookups) {
+    const token = String(lookup?.chatContextToken || "");
+    if (!/^[0-9a-f-]{36}$/i.test(token)) { rememberedContextLookups.delete(token); await recordDiagnostic("Context lookup contract", new Error("Invalid chatContextToken from Replacement Package App.")); continue; }
+    const captures = [];
+    for (const tab of tabs) {
+      if (typeof tab.id !== "number") continue;
+      try {
+        await ensureContentScript(tab.id);
+        const response = await chrome.tabs.sendMessage(tab.id, {type: "OBS_CHAT_CONTEXT_LOOKUP", runtimeGeneration: generation, chatContextToken: token});
+        if (response?.ok === true && response.found === true && response.capture) captures.push(response.capture);
+      } catch (error) { await recordDiagnostic(`Context lookup ${token.slice(0,8)} tab ${tab.id}`, error); }
+    }
+    const result = await OBSBridgeClient.request("/v1/chat-context/result", {method: "POST", body: JSON.stringify({bridgeProtocolVersion: BRIDGE_PROTOCOL_VERSION, chatContextToken: token, captures})});
+    const status = String(result?.status || "");
+    if (["Pending","WaitingAfterCutoff"].includes(status)) rememberedContextLookups.set(token, lookup); else rememberedContextLookups.delete(token);
+  }
+}
+async function retryRememberedContextLookups() {
+  if (!rememberedContextLookups.size) return;
+  await resolveContextLookups([...rememberedContextLookups.values()], await chatTabs());
+}
+async function contextLookupWaitLoop() {
+  for (;;) {
+    try {
+      const batch = await OBSBridgeClient.request("/v1/chat-context/wait", {method: "POST", body: JSON.stringify({bridgeProtocolVersion: BRIDGE_PROTOCOL_VERSION, afterRevision: contextLookupRevision, timeoutMs: 20000})});
+      requireBridgeProtocol(batch.bridgeProtocolVersion);
+      const revision = Number(batch.revision); if (!Number.isSafeInteger(revision) || revision < 0) throw new Error("Invalid chat-context lookup revision from Replacement Package App.");
+      const previousRevision = contextLookupRevision;
+      contextLookupRevision = revision;
+      if (revision === previousRevision) continue;
+      replaceRememberedContextLookups(batch.contextLookups || []);
+      await retryRememberedContextLookups();
+    } catch (error) {
+      await recordDiagnostic("Chat-context request channel", error);
+      await sleep(5000);
+    }
+  }
+}
+function ensureContextLookupWaitLoop() {
+  if (!contextLookupWaitPromise) contextLookupWaitPromise = contextLookupWaitLoop().finally(() => { contextLookupWaitPromise = null; });
+  return contextLookupWaitPromise;
+}
 async function syncInventory(force = false) {
   const now = Date.now(); if (!force && now - lastInventoryAt < 900) return; if (inventoryPromise) return inventoryPromise;
   inventoryPromise = (async () => {
@@ -176,6 +231,7 @@ async function syncInventory(force = false) {
   })().catch(async error => { await recordDiagnostic("Inventory sync", error); throw error; }).finally(() => { inventoryPromise = null; });
   return inventoryPromise;
 }
+async function syncInventoryAndRetryContext() { await syncInventory(true); await retryRememberedContextLookups(); }
 
 function validPayloadUrl(value, taskId) {
   try {
@@ -235,8 +291,9 @@ async function handleRuntimeMessage(message, sender) {
   const tabId = sender.tab?.id, c = ordinaryConversation(sender.tab?.url || "");
   if (message?.type === "OBS_SYNC_NOW") { await syncInventory(true); return {ok: true}; }
   if (message?.type === "OBS_AGENT_REGISTER") {
-    if (typeof tabId !== "number" || !c) throw new Error("ChatGPT bridge agent registration requires an ordinary ChatGPT conversation tab.");
-    if (message.conversationKey && c.conversationKey !== message.conversationKey) throw new Error("ChatGPT bridge agent registered from a different conversation.");
+    const senderUrl = String(sender.tab?.url || "");
+    if (typeof tabId !== "number" || !senderUrl.startsWith("https://chatgpt.com/")) throw new Error("ChatGPT bridge agent registration requires a chatgpt.com tab.");
+    if (message.conversationKey && (!c || c.conversationKey !== message.conversationKey)) throw new Error("ChatGPT bridge agent registered from a different conversation.");
     if (!acceptAgentInstance(tabId, message.agentInstanceId, true)) throw new Error("Invalid ChatGPT bridge agent instance id.");
     return {ok: true, runtimeGeneration: await runtimeGeneration()};
   }
@@ -269,8 +326,8 @@ chrome.tabs.onRemoved.addListener(tabId => {
   OBSBridgeClient.request("/v1/tabs/release", {method: "POST", body: JSON.stringify({tabId, message: "Claimed ChatGPT tab was closed."})}).catch(error => recordDiagnostic(`Release closed tab ${tabId}`, error));
   void syncInventory(true).catch(() => {});
 });
-chrome.tabs.onUpdated.addListener(() => { void syncInventory(true).catch(() => {}); });
-chrome.tabs.onCreated.addListener(() => { void syncInventory(true).catch(() => {}); });
+chrome.tabs.onUpdated.addListener(() => { void syncInventoryAndRetryContext().catch(() => {}); });
+chrome.tabs.onCreated.addListener(() => { void syncInventoryAndRetryContext().catch(() => {}); });
 chrome.runtime.onStartup.addListener(() => { OBSBridgeClient.restrictStorage().catch(error => recordDiagnostic("Restrict storage on startup", error)); void syncInventory(true).catch(() => {}); });
 chrome.runtime.onInstalled.addListener(() => {
   OBSBridgeClient.restrictStorage().catch(error => recordDiagnostic("Restrict storage after install/reload", error));
@@ -279,4 +336,4 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());
 OBSBridgeClient.restrictStorage().catch(error => recordDiagnostic("Restrict storage during service worker bootstrap", error));
-void runtimeGeneration().then(() => syncInventory(true)).catch(error => recordDiagnostic("Bridge runtime bootstrap", error));
+void runtimeGeneration().then(async () => { ensureContextLookupWaitLoop(); await syncInventory(true); }).catch(error => recordDiagnostic("Bridge runtime bootstrap", error));

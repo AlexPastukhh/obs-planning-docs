@@ -118,6 +118,12 @@ final class MainWindow extends JFrame {
     }
     private void handleChatBridgeEvent(ChatBridgeService.ChatEvent event){
         if(event==null)return;appendToOutput(event.changeSetId(),"CHAT "+event.display());
+        if("chatContext".equals(event.kind())){
+            String repoId=null;if(event.changeSetId()!=null){Core.RepositoryConfig repo=core.repositoryForChangeSet(event.changeSetId());if(repo!=null)repoId=repo.id();}
+            boolean failure=Set.of("ReviewSkippedBindingConflict","ReviewSkippedDifferentBinding","ResolvedDifferentBinding","ContextBindingConflict").contains(event.status());
+            String title="BoundLate".equals(event.status())?"Review chat bound":event.status().startsWith("ReviewSkipped")?"ReviewDiff not sent — chat binding":"Chat binding needs attention";
+            notifyOperation(title,event.message()==null?event.status():event.message(),repoId,failure);return;
+        }
         refreshInteractions();
         if(Set.of("Sent","Attached","UnknownAfterSend","FailedBeforeSend","PreparedUnsent","NoChanges","Cancelled").contains(event.status())){String repoId=null;if(event.changeSetId()!=null){Core.RepositoryConfig repo=core.repositoryForChangeSet(event.changeSetId());if(repo!=null)repoId=repo.id();if(Set.of("FailedBeforeSend","PreparedUnsent").contains(event.status()))core.recordOperationOutcome(event.changeSetId(),"FAILED",Core.CHAT_BRIDGE_FAILED,event.message());else if("UnknownAfterSend".equals(event.status()))core.recordOperationOutcome(event.changeSetId(),"UNCERTAIN",Core.CHAT_BRIDGE_FAILED,event.message());else if(Set.of("Sent","NoChanges").contains(event.status()))core.recordOperationOutcome(event.changeSetId(),"SUCCESS",Core.SUCCESS,event.message());}boolean failure=Set.of("UnknownAfterSend","FailedBeforeSend","PreparedUnsent").contains(event.status());notifyOperation("ChatGPT handoff · "+event.status(),event.message()==null?event.status():event.message(),repoId,failure);}
     }

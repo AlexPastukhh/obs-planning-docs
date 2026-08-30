@@ -5,39 +5,47 @@ const require=createRequire(import.meta.url);
 const sideEffects=require('../src/command-side-effects.js');
 
 const BASE='[PLANNING_COMMAND]\ncommand:\n  давай архив\n[/PLANNING_COMMAND]';
+function storage(){let value=null;return{getItem(){return value},setItem(_k,v){value=v},value(){return value}};}
+const LOC={origin:'https://chatgpt.com',pathname:'/c/conversation_12345678'};
 
-test('commands without a registered side effect remain byte-for-byte unchanged',async()=>{
-  assert.equal(await sideEffects.applyCommandSideEffects('other.command',BASE,{randomUUID:()=> 'unused'}),BASE);
+test('ordinary invocation stays byte-for-byte unchanged even when command supports optional side effects',async()=>{
+  assert.equal(await sideEffects.applyCommandSideEffects('replacement_archive.create',BASE),BASE);
+  assert.deepEqual(sideEffects.commandSideEffectIds('replacement_archive.create'),['capture-chat-context']);
 });
 
-test('replacement archive invocation appends a separate capture-chat-context body after the canonical body',async()=>{
-  const token='11111111-2222-4333-8444-555555555555';
-  const result=await sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{randomUUID:()=>token});
+test('bind invocation captures current conversation in sessionStorage and appends one-invocation OBS-ACTION requirement',async()=>{
+  const token='11111111-2222-4333-8444-555555555555',s=storage();
+  const result=await sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{effectIds:['capture-chat-context'],randomUUID:()=>token,storage:s,location:LOC,title:'Current work — ChatGPT',now:()=> '2026-08-30T03:00:00Z'});
   assert.ok(result.startsWith(`${BASE}\n\n[PLANNING_COMMAND_SIDE_EFFECT]\n`));
   assert.match(result,/effect:\n  capture-chat-context/);
-  assert.match(result,new RegExp(`chatContextToken:\\n  ${token}`));
-  assert.ok(result.endsWith('[/PLANNING_COMMAND_SIDE_EFFECT]'));
+  assert.match(result,/chatContextToken:\n  11111111-2222-4333-8444-555555555555/);
+  assert.match(result,/field:\n    chatContextToken/);
+  assert.match(result,/scope:\n    this-invocation-only/);
+  assert.match(result,/carryForward:\n    false/);
+  const stored=JSON.parse(s.value());
+  assert.deepEqual(stored.captures[token],{chatContextToken:token,conversationKey:'conversation_12345678',observedTitle:'Current work',capturedAt:'2026-08-30T03:00:00Z'});
   assert.equal(result.slice(0,BASE.length),BASE);
 });
 
-test('capture-chat-context generates a fresh token for every invocation',async()=>{
-  const tokens=['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'];
-  const randomUUID=()=>tokens.shift();
-  const first=await sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{randomUUID});
-  const second=await sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{randomUUID});
-  assert.match(first,/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/);
-  assert.match(second,/bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb/);
+test('every explicit bind invocation gets a fresh token while older captures remain available in the tab session',async()=>{
+  const tokens=['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'],s=storage(),randomUUID=()=>tokens.shift();
+  const first=await sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{effectIds:['capture-chat-context'],randomUUID,storage:s,location:LOC,title:'Chat A'});
+  const second=await sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{effectIds:['capture-chat-context'],randomUUID,storage:s,location:LOC,title:'Chat A'});
   assert.notEqual(first,second);
+  const captures=JSON.parse(s.value()).captures;
+  assert.deepEqual(Object.keys(captures).sort(),['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa','bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb']);
+  assert.equal(captures['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'].conversationKey,captures['bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'].conversationKey);
 });
 
-test('side-effect framework awaits arbitrary registered code and appends exactly the returned body',async()=>{
-  const calls=[];
-  const result=await sideEffects.applyCommandSideEffects('demo',BASE,{bindings:{demo:['one','two']},handlers:{one:async(ctx)=>{calls.push(ctx.commandId);return{body:'[ONE]\na: 1\n[/ONE]'};},two:async()=>({body:'[TWO]\nb: 2\n[/TWO]'})}});
-  assert.equal(result,`${BASE}\n\n[ONE]\na: 1\n[/ONE]\n\n[TWO]\nb: 2\n[/TWO]`);
-  assert.deepEqual(calls,['demo']);
+test('bind invocation fails closed outside an ordinary chat and does not write a capture',async()=>{
+  const s=storage();
+  await assert.rejects(sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{effectIds:['capture-chat-context'],randomUUID:()=> 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',storage:s,location:{origin:'https://chatgpt.com',pathname:'/'},title:'ChatGPT'}),/ordinary https:\/\/chatgpt.com\/c/);
+  assert.equal(s.value(),null);
 });
 
-test('configured unknown or bodyless side effects fail instead of silently sending an incomplete invocation',async()=>{
-  await assert.rejects(sideEffects.applyCommandSideEffects('demo',BASE,{bindings:{demo:['missing']},handlers:{}}),/Unknown command side effect/);
-  await assert.rejects(sideEffects.applyCommandSideEffects('demo',BASE,{bindings:{demo:['empty']},handlers:{empty:async()=>({body:''})}}),/returned no body/);
+test('unregistered, invalid-token, unknown and bodyless side effects fail instead of silently sending incomplete invocation',async()=>{
+  await assert.rejects(sideEffects.applyCommandSideEffects('other.command',BASE,{effectIds:['capture-chat-context']}),/not registered/);
+  await assert.rejects(sideEffects.applyCommandSideEffects('replacement_archive.create',BASE,{effectIds:['capture-chat-context'],randomUUID:()=> 'bad',storage:storage(),location:LOC}),/invalid UUID v4/);
+  await assert.rejects(sideEffects.applyCommandSideEffects('demo',BASE,{effectIds:['missing'],bindings:{demo:['missing']},handlers:{}}),/Unknown command side effect/);
+  await assert.rejects(sideEffects.applyCommandSideEffects('demo',BASE,{effectIds:['empty'],bindings:{demo:['empty']},handlers:{empty:async()=>({body:''})}}),/returned no body/);
 });

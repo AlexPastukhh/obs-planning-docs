@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.33.0-repository-command-registry
+// @version      0.34.0-repository-command-registry
 // @description  RAM-first OBS Planning Helper with GitHub-backed Directions, Commands, Use Cases, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -1175,6 +1175,8 @@
   'use strict';
 
   const SIDE_EFFECT_MARKER='PLANNING_COMMAND_SIDE_EFFECT';
+  const CHAT_CONTEXT_STORAGE_KEY='obsPlanningHelper:chatContextCaptures:v1';
+  const UUID_V4=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   const COMMAND_SIDE_EFFECTS=Object.freeze({
     'replacement_archive.create':Object.freeze(['capture-chat-context'])
   });
@@ -1185,9 +1187,45 @@
     return cryptoApi.randomUUID();
   }
 
+  function commandSideEffectIds(commandId){return [...(COMMAND_SIDE_EFFECTS[String(commandId||'').trim()]||[])];}
+
+  function ordinaryChatContext(locationLike=globalThis.location,title=(globalThis.document&&globalThis.document.title)||''){
+    const origin=String(locationLike?.origin||'');
+    const pathname=String(locationLike?.pathname||'');
+    const match=pathname.match(/^\/c\/([A-Za-z0-9_-]{8,})\/?$/);
+    if(origin!=='https://chatgpt.com'||!match)throw new Error('Bind this invocation requires an ordinary https://chatgpt.com/c/<conversation> tab.');
+    const conversationKey=match[1];
+    const observedTitle=String(title||'').replace(/\s*[|–—-]\s*ChatGPT\s*$/i,'').trim()||`Chat ${conversationKey.slice(0,8)}`;
+    return{conversationKey,observedTitle};
+  }
+
+  function readCaptureStore(storage=globalThis.sessionStorage){
+    if(!storage||typeof storage.getItem!=='function'||typeof storage.setItem!=='function')throw new Error('Bind this invocation requires sessionStorage in the current ChatGPT tab.');
+    const raw=storage.getItem(CHAT_CONTEXT_STORAGE_KEY);
+    if(!raw)return{schemaVersion:1,captures:{}};
+    try{
+      const parsed=JSON.parse(raw);
+      if(parsed&&parsed.schemaVersion===1&&parsed.captures&&typeof parsed.captures==='object'&&!Array.isArray(parsed.captures))return parsed;
+    }catch(_){}
+    throw new Error('Stored ChatGPT context capture data is invalid; clear this tab session before retrying binding.');
+  }
+
+  function persistChatContextCapture(chatContextToken,context={}){
+    const token=String(chatContextToken||'').trim();
+    if(!UUID_V4.test(token))throw new Error('capture-chat-context requires a UUID v4 chatContextToken.');
+    const storage=context.storage||globalThis.sessionStorage;
+    const chat=ordinaryChatContext(context.location||globalThis.location,context.title===undefined?(globalThis.document&&globalThis.document.title)||'':context.title);
+    const store=readCaptureStore(storage);
+    if(Object.prototype.hasOwnProperty.call(store.captures,token))throw new Error('capture-chat-context token already exists in this tab session.');
+    const capturedAt=String(typeof context.now==='function'?context.now():new Date().toISOString());
+    store.captures[token]={chatContextToken:token,conversationKey:chat.conversationKey,observedTitle:chat.observedTitle,capturedAt};
+    storage.setItem(CHAT_CONTEXT_STORAGE_KEY,JSON.stringify(store));
+    return store.captures[token];
+  }
+
   function buildCaptureChatContextBody(chatContextToken){
     const token=String(chatContextToken||'').trim();
-    if(!token)throw new TypeError('capture-chat-context requires a non-empty chatContextToken.');
+    if(!UUID_V4.test(token))throw new TypeError('capture-chat-context requires a UUID v4 chatContextToken.');
     return[
       `[${SIDE_EFFECT_MARKER}]`,
       'effect:',
@@ -1195,6 +1233,18 @@
       '',
       'chatContextToken:',
       `  ${token}`,
+      '',
+      'obsAction:',
+      '  required:',
+      '    true',
+      '  field:',
+      '    chatContextToken',
+      '  exactValue:',
+      `    ${token}`,
+      '  scope:',
+      '    this-invocation-only',
+      '  carryForward:',
+      '    false',
       `[/${SIDE_EFFECT_MARKER}]`
     ].join('\n');
   }
@@ -1202,30 +1252,30 @@
   async function captureChatContextSideEffect(context={}){
     const randomUUID=typeof context.randomUUID==='function'?context.randomUUID:defaultRandomUUID;
     const chatContextToken=String(randomUUID()).trim();
-    if(!chatContextToken)throw new Error('capture-chat-context generated an empty chatContextToken.');
-    return{body:buildCaptureChatContextBody(chatContextToken),chatContextToken};
+    if(!UUID_V4.test(chatContextToken))throw new Error('capture-chat-context generated an invalid UUID v4 chatContextToken.');
+    const capture=persistChatContextCapture(chatContextToken,context);
+    return{body:buildCaptureChatContextBody(chatContextToken),chatContextToken,capture};
   }
 
-  const DEFAULT_SIDE_EFFECT_HANDLERS=Object.freeze({
-    'capture-chat-context':captureChatContextSideEffect
-  });
+  const DEFAULT_SIDE_EFFECT_HANDLERS=Object.freeze({'capture-chat-context':captureChatContextSideEffect});
 
   function normalizeEffectIds(value){
     if(value==null)return[];
-    if(!Array.isArray(value))throw new TypeError('Command side-effect binding must be an array.');
+    if(!Array.isArray(value))throw new TypeError('Command invocation side effects must be an array.');
     return value.map((item)=>String(item||'').trim()).filter(Boolean);
   }
 
   async function applyCommandSideEffects(commandId,commandBody,options={}){
     const id=String(commandId||'').trim(),base=String(commandBody==null?'':commandBody);
-    const bindings=options.bindings||COMMAND_SIDE_EFFECTS,handlers=options.handlers||DEFAULT_SIDE_EFFECT_HANDLERS;
-    const effectIds=normalizeEffectIds(bindings[id]);
+    const allowed=normalizeEffectIds((options.bindings||COMMAND_SIDE_EFFECTS)[id]);
+    const effectIds=normalizeEffectIds(options.effectIds);
     if(!effectIds.length)return base;
-    const appended=[];
+    for(const effectId of effectIds)if(!allowed.includes(effectId))throw new Error(`Command side effect ${effectId} is not registered for ${id||'<empty>'}.`);
+    const handlers=options.handlers||DEFAULT_SIDE_EFFECT_HANDLERS,appended=[];
     for(const effectId of effectIds){
       const handler=handlers[effectId];
       if(typeof handler!=='function')throw new Error(`Unknown command side effect: ${effectId}`);
-      const result=await handler({commandId:id,commandBody:base,randomUUID:options.randomUUID});
+      const result=await handler({commandId:id,commandBody:base,randomUUID:options.randomUUID,storage:options.storage,location:options.location,title:options.title,now:options.now});
       const body=typeof result==='string'?result:result?.body;
       if(typeof body!=='string'||!body.trim())throw new Error(`Command side effect ${effectId} returned no body.`);
       appended.push(body);
@@ -1233,7 +1283,7 @@
     return[base,...appended].join('\n\n');
   }
 
-  return{SIDE_EFFECT_MARKER,COMMAND_SIDE_EFFECTS,DEFAULT_SIDE_EFFECT_HANDLERS,buildCaptureChatContextBody,captureChatContextSideEffect,applyCommandSideEffects};
+  return{SIDE_EFFECT_MARKER,CHAT_CONTEXT_STORAGE_KEY,UUID_V4,COMMAND_SIDE_EFFECTS,DEFAULT_SIDE_EFFECT_HANDLERS,commandSideEffectIds,ordinaryChatContext,readCaptureStore,persistChatContextCapture,buildCaptureChatContextBody,captureChatContextSideEffect,applyCommandSideEffects};
 });
 
 (function (root, factory) {
@@ -1284,7 +1334,8 @@
     function setBusy(){for(const button of root.querySelectorAll('.surface-tools button,.actions button,.direction-move'))button.disabled=operationBusy||insertionBusy;}
     function setOpen(value){isOpen=Boolean(value);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen)keepPanelInViewport();}
     function switchSurface(surface){activeSurface=surface;for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=surface===SURFACES.USE_CASES?'none':'inline-block';searchInput.value='';renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
-    async function insertBody(text,success,id){if(!text||insertionBusy)return;insertionBusy=true;setBusy();try{showStatus(await options.onInsert(text,success,id),7000);}catch(error){showStatus(error.message||String(error),7000);}finally{insertionBusy=false;setBusy();}}
+    async function insertBody(text,success,id,invocation={}){if(!text||insertionBusy)return;insertionBusy=true;setBusy();try{showStatus(await options.onInsert(text,success,id,invocation),7000);}catch(error){showStatus(error.message||String(error),7000);}finally{insertionBusy=false;setBusy();}}
+    async function copyBody(text,id,invocation={}){try{showStatus(await options.onCopy(text,id,invocation)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}
     function button(text,cls,handler,title=''){const b=document.createElement('button');b.type='button';b.textContent=text;b.className=cls;if(title)b.title=title;b.addEventListener('click',(event)=>{event.preventDefault();event.stopPropagation();handler(event);});return b;}
     function openCommandInfo(entry){const{overlay,modal}=makeOverlay(entry.label||entry.command||entry.id);const nav=entry.__methodologyNav||{},presentation=entry.helperPresentation||entry.definition?.helperPresentation||null,binding=entry.methodologyBinding||entry.definition?.methodologyBinding||null,pre=document.createElement('div');pre.className='preview ok';const bindingText=binding?[`Runtime: ${binding.methodologyRuntime}`,binding.profile?`Profile: ${binding.profile}`:'Profile: Core',`Surface kind: ${binding.surfaceKind}`,binding.targetModuleId?`Target Module: ${binding.targetModuleId}`:'',binding.lensId?`Lens: ${binding.lensId}`:'',binding.parentSurface?`Parent surface: ${binding.parentSurface}`:'',`Host Target: ${binding.hostTargetPolicy}`].filter(Boolean).join('\n'):'';pre.textContent=[nav.kindLabel?`Surface: ${nav.kindLabel}`:'',nav.badges?.length?`Badges: ${nav.badges.join(' · ')}`:'',bindingText,presentation?.whenToUse?`When To Use:\n${presentation.whenToUse}`:'',presentation?.whatYouGet?`What You Get:\n${presentation.whatYouGet}`:''].filter(Boolean).join('\n\n');const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Close','',()=>closeOverlay(overlay)));modal.append(pre,actions);}
     function renderMethodologyGroups(groups,needle){const activeView=currentMethodologyViews().find((view)=>view.id===activeMethodologyView);for(const group of groups){const entries=needle?group.entries.filter((entry)=>JSON.stringify([entry.id,entry.label,entry.description,entry.command,entry.__methodologyNav?.badges]).toLowerCase().includes(needle)):group.entries;if(!entries.length)continue;const details=document.createElement('details');details.className='direction-group';details.open=true;const head=document.createElement('div');head.className='direction-head';const summary=document.createElement('summary');summary.innerHTML='<span></span><small class="direction-meta"></small>';summary.querySelector('span').textContent=group.label;summary.querySelector('.direction-meta').textContent=activeView?`${activeView.label} navigation`:'Methodology navigation';head.append(summary);details.append(head);const rows=document.createElement('div');rows.className='direction-entries';for(const entry of entries)rows.append(makeEntryRow(entry));details.append(rows);body.append(details);}}
@@ -1293,7 +1344,14 @@
       if(!favorite){actions.append(button('↑','move',()=>moveEntry(entry,-1),'Move up'),button('↓','move',()=>moveEntry(entry,1),'Move down'));}
       if(entry.fullBody)actions.append(button('Full','full',()=>insertBody(entry.fullBody,`Inserted full ${entry.label||entry.id}`,entry.id)));
       if(entry.helperPresentation||entry.definition?.helperPresentation||entry.__methodologyNav)actions.append(button('Info','full',()=>openCommandInfo(entry),'When To Use / What You Get'));
-      actions.append(button('Copy','copy',async()=>{try{showStatus(await options.onCopy(entry.adaptiveBody||entry.text,entry.id)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}));
+      actions.append(button('Copy','copy',()=>copyBody(entry.adaptiveBody||entry.text,entry.id)));
+      const invocationEffects=typeof options.onGetInvocationSideEffects==='function'?options.onGetInvocationSideEffects(entry.id):[];
+      if(invocationEffects.includes('capture-chat-context')){
+        const bindInvocation={effectIds:['capture-chat-context']};
+        actions.append(button('Bind + Insert','bind-insert',()=>insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id} with chat binding`,entry.id,bindInvocation),'Create a one-invocation chatContextToken and require only this OBS-ACTION to echo it.'));
+        actions.append(button('Bind + Copy','bind-copy',()=>copyBody(entry.adaptiveBody||entry.text,entry.id,bindInvocation),'Copy this invocation with a one-invocation chat binding token.'));
+        if(entry.fullBody)actions.append(button('Bind + Full','bind-full',()=>insertBody(entry.fullBody,`Inserted full ${entry.label||entry.id} with chat binding`,entry.id,bindInvocation),'Insert the full invocation with a one-invocation chat binding token.'));
+      }
       if(entry.entityType==='planning-command'){actions.append(button('Edit','edit-command',()=>openCommandEditor(entry)),button('Reload','reload-command',()=>reloadCommand(entry)),button('Save GitHub','repo-command',()=>saveRepository(entry)),button('Delete','delete-command',()=>deleteCommand(entry)));}
       else if(entry.entityType==='use-case-invocation-command'){actions.append(button('Delete','delete-command',()=>deleteCommand(entry)));}
       else if(activeSurface===SURFACES.USE_CASES){actions.append(button('Delete','delete-command',()=>deleteUseCase(entry)));}
@@ -1391,7 +1449,7 @@
   function clearRepositoryEvidence(snapshot){const memory=materializeSnapshot(snapshot);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.map((record)=>deps.normalizeCommandRecord({...record,repositoryKnown:false,repositoryTracked:false,repositorySha:''})),helperItems:memory.helperRecords.map((record)=>deps.normalizeHelperRecord({...record,repositoryKnown:false,repositorySha:''})),directionCatalogSha:'',useCaseCatalogSha:'',catalogOrderSha:''});}
   async function persistVerifiedRepositoryResult(persist,next,result,settings,uiState){try{await persist(next);return{settings,...result,localSnapshotUpdated:true,localSnapshotError:'',...uiState()};}catch(error){return{settings,...result,localSnapshotUpdated:false,localSnapshotError:error?.message||String(error),...uiState()};}}
   function mergeRemoteMissing(snapshot,remoteRecords={}){const memory=materializeSnapshot(snapshot),commandMap=new Map(memory.commandRecords.map((record)=>[record.path,record])),helperMap=new Map(memory.helperRecords.map((record)=>[record.path,record])),addedCommands=[],addedHelpers=[];for(const remote of remoteRecords.commands||[]){if(commandMap.has(remote.path))continue;const record=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});commandMap.set(record.path,record);addedCommands.push(record);}deps.validateCommandCatalog([...commandMap.values()].map((record)=>record.definition));for(const remote of remoteRecords.helperItems||[]){if(helperMap.has(remote.path))continue;const record=deps.normalizeHelperRecord({item:remote.item,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositorySha:remote.sha});helperMap.set(record.path,record);addedHelpers.push(record);}const existingDirections=new Map((snapshot.directions||[]).map((entry)=>[entry.id,entry])),addedDirections=[];for(const direction of remoteRecords.directions||[]){if(existingDirections.has(direction.id))continue;existingDirections.set(direction.id,direction);addedDirections.push(direction);}const existingUseCases=new Map((snapshot.useCases||[]).map((entry)=>[entry.id,entry])),addedUseCases=[];for(const uc of remoteRecords.useCases||[]){if(existingUseCases.has(uc.id))continue;existingUseCases.set(uc.id,uc);addedUseCases.push(uc);}const restoredCommandIds=new Set(addedCommands.map((record)=>record.definition.id)),restoredUseCaseIds=new Set(addedUseCases.map((entry)=>entry.id));const next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],directions:[...existingDirections.values()],directionCatalogSha:addedDirections.length?'':snapshot.directionCatalogSha,useCases:[...existingUseCases.values()],useCaseCatalogSha:addedUseCases.length?'':snapshot.useCaseCatalogSha,hiddenCommandIds:(snapshot.hiddenCommandIds||[]).filter((id)=>!restoredCommandIds.has(id)),hiddenUseCaseIds:(snapshot.hiddenUseCaseIds||[]).filter((id)=>!restoredUseCaseIds.has(id))});return{snapshot:next,addedCommands,addedHelpers,addedDirections,addedUseCases};}
-  async function prepareInvocationBody(text,id,operations=deps){const body=String(text==null?'':text);if(typeof operations.applyCommandSideEffects!=='function')return body;return operations.applyCommandSideEffects(id,body);}
+  async function prepareInvocationBody(text,id,invocation={},operations=deps){const body=String(text==null?'':text);if(typeof operations.applyCommandSideEffects!=='function')return body;return operations.applyCommandSideEffects(id,body,{effectIds:invocation?.effectIds||[]});}
 
   async function insertWithClipboard(text,success,id,operations=deps){let copied=false;try{const copyResult=operations.copyText(text);copied=copyResult&&typeof copyResult.then==='function'?Boolean(await copyResult):Boolean(copyResult);}catch(_){copied=false;}const result=operations.insertIntoComposer(text,id);if(result.ok)return copied?`${success} · clipboard ready`:`${success} · clipboard copy failed`;return copied?`Direct insertion failed (${result.reason}). The exact text is in the clipboard — paste manually.`:`Direct insertion failed (${result.reason}) and clipboard copy also failed.`;}
 
@@ -1415,7 +1473,7 @@
     async function saveCatalogOrderRepository(){return repositoryLock.run('Save catalog order to GitHub',async()=>{const{catalogService,settings}=await makeServices(),result=await catalogService.saveOrder(snapshot.catalogOrder),state=await persist({...snapshot,catalogOrder:result.order,catalogOrderSha:result.sha});return{settings,...result,...state};});}
     async function saveRepositoryEntity(reference){return repositoryLock.run('Save item to GitHub',async()=>{const{commandService,helperService,settings}=await makeServices(),type=String(reference?.type||'');let result,next;if(type==='planning-command'){const record=memory.commandById.get(String(reference.id||''));if(!record)throw new Error(`Local planning command not found: ${reference?.id||'<empty>'}`);result=await commandService.save(record.definition);next={...snapshot,planningCommands:memory.commandRecords.map((entry)=>entry.path===record.path?deps.normalizeCommandRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:result.sha}):entry)};}else if(type==='helper'){const key=`${reference?.kind}:${reference?.id}`,record=memory.helperByKey.get(key);if(!record)throw new Error(`Local helper item not found: ${key}`);result=await helperService.save(record.item);next={...snapshot,helperItems:memory.helperRecords.map((entry)=>entry.path===record.path?deps.normalizeHelperRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositorySha:result.sha}):entry)};}else throw new TypeError(`Unsupported repository entity type: ${type||'<empty>'}`);return persistVerifiedRepositoryResult(persist,next,result,settings,uiState);});}
     async function getRecoveryRequest(){const settings=await deps.loadRepositorySettings();return deps.buildRecoveryRequest(settings);}async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}async function saveSettings(settings,token){return repositoryLock.run('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings(),candidate=deps.validateRepositorySettings(settings),sourceChanged=repositorySettingsKey(previous)!==repositorySettingsKey(candidate);if(sourceChanged)await persist(clearRepositoryEvidence(snapshot));await deps.saveGitHubToken(token);await deps.saveRepositorySettings(candidate);return{sourceChanged,...uiState()};});}
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id)=>insertWithClipboard(await prepareInvocationBody(text,id),success,id),onCopy:async(text,id)=>deps.copyText(await prepareInvocationBody(text,id)),onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveDirection:moveDirection,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation)),onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveDirection:moveDirection,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings});
     function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}globalThis[INSTANCE_DISPOSE_KEY]=dispose;
     return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getUseCases:()=>memory.useCases,getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,toggleFavoriteCommand,toggleFavoriteUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,hardReloadRepository,moveCatalogItem,moveDirection,saveCatalogOrderRepository,saveRepositoryEntity,getRepositoryOperation:()=>repositoryLock.active()};
   }

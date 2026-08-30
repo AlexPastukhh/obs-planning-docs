@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution evidence remains separate from automated tests
-Version: v1.4.0 / Planning Helper `0.33.0`
+Version: v1.5.0 / Planning Helper `0.34.0`
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). Automated tests do **not** mark these browser/remote checks complete.
 
@@ -20,9 +20,10 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Insert a Planning Command, Use Case and Prompt into the live composer; verify exact intended text and clipboard fallback.
 - Confirm a Use-Case body contains stable UC ID, current registry source, owner-route resolution and semantic-only permission boundary.
 - Confirm `Full` changes read depth, not semantic owner or permissions.
-- Invoke `давай архив`; confirm the complete canonical `[PLANNING_COMMAND]` block is unchanged and a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block is appended after it with `effect: capture-chat-context` and a UUID `chatContextToken`.
-- Invoke/copy `давай архив` twice and confirm the token differs for each action. Confirm opening/rendering the Helper, Reload and Hard Reload do not generate a token.
-- Invoke/copy a command without a registered side effect and confirm its body remains byte-for-byte unchanged. A forced required side-effect failure must prevent insertion/copy and surface an error rather than sending the command without the side-effect body.
+- Use ordinary Insert/Full/Copy on `давай архив`; confirm no side-effect block/token is added and the complete canonical `[PLANNING_COMMAND]` bytes remain unchanged.
+- Use `Bind + Insert` / `Bind + Copy` (and `Bind + Full` where shown); confirm a separate `[PLANNING_COMMAND_SIDE_EFFECT]` follows the canonical block, contains a fresh UUID v4 `chatContextToken`, and requires that exact token only in this invocation's `OBS-ACTION/1` with `carryForward: false`.
+- Inspect this tab's `sessionStorage` key `obsPlanningHelper:chatContextCaptures:v1`; confirm the token captures the click-time `conversationKey`, observed title and timestamp. Invoke Bind twice in the same chat and confirm two distinct retained tokens map to that same conversation. Navigate after capture and confirm the older stored record does not change.
+- Attempt Bind outside an ordinary `/c/<id>` conversation and require fail-closed with no token record/copy/insertion. Confirm opening/rendering the Helper, Reload and Hard Reload do not generate tokens.
 
 <a id="scn-ph-manage-local"></a>
 ## `SCN-PH-MANAGE-LOCAL`

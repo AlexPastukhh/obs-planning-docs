@@ -36,7 +36,7 @@ Application plan: [`../application-plan.md`](../application-plan.md)
    - `add` requires path absence/adoptability;
    - `replace/delete` require expected source match: raw exact equality, or—when raw bytes differ—Git path-semantic equivalence of expected-base and actual content; different/unverifiable source blocks.
 7. Only after the complete preflight passes, application mutates declared paths with bounded verified rollback and verifies resulting bytes.
-8. Application establishes/continues one logical ChangeSet, persists ownership/current cumulative change and records the operation result.
+8. Application establishes/continues one logical ChangeSet, persists ownership/current cumulative change and records the operation result. If this Apply action carries an invocation-scoped `chatContextToken`, destination resolution runs asynchronously through the bridge and does not delay repository mutation. At the successful-Apply/current-ReviewDiff cutoff, a resolved safe token may establish/confirm the normal persisted Review-chat binding and queue that ReviewDiff; unresolved/conflicted/different-binding resolution leaves Apply successful but skips automatic delivery for that ReviewDiff. A later successful resolution may establish a missing binding for future deliveries and is separately notified; it never retro-sends the ReviewDiff whose cutoff already passed.
 9. User may inspect/refresh/copy/open Current Change when useful; these actions are not approval gates.
 10. Later correction/continuation packages may continue the same ChangeSet using its current source state.
 11. User chooses to finish work. Application revalidates current completion state, isolates only this logical work, commits/publishes it, and releases ownership only when truly Finalized.
@@ -66,6 +66,10 @@ Before changing lifecycle/ownership the application:
 - preserves prior finalization/commit/history evidence.
 
 On success the ChangeSet identity is unchanged, status becomes Active and safe historical path ownership is re-established for continuation. A later package still runs normal repository/path/source-state applicability; Reopen itself does not apply package content. On failure the ChangeSet remains Finalized, the operation publishes its normal failure notification/result/diagnostics, and no persistent ChangeSet error marker is attached to that Finalized history row.
+
+
+### Invocation-scoped chat binding
+An `OBS-ACTION/1` without `chatContextToken` keeps ordinary Apply/binding behavior and starts no token lookup. An action carrying a token came from one explicit Planning Helper Bind invocation: that exact token is resolved against live agents' stored click-time captures, while legacy `chatTabTitle` is only a fallback when no token is present. Token resolution never guesses a destination and never silently replaces a different existing Review-chat binding. If resolution is still pending when Apply produces the current ReviewDiff, the ReviewDiff is deliberately not auto-sent for that Apply; Output/notification reports that separately from Apply success. Late resolution may persist a missing/same binding for subsequent ReviewDiff delivery and produces a second binding-result notification without retroactive Send.
 
 ### Current change became stale
 Finalize stops; user re-establishes the current change before retrying.
@@ -101,7 +105,8 @@ Logical work may finish without creating/pushing an unnecessary commit.
 - selected-work-only finalize/publication and truthful pending recovery;
 - explicit safe Finalized→Active Reopen preserving logical identity/history and preventing ownership steal/adoption;
 - concise semantic operation result + separate technical diagnostics;
-- terminal tracked operation outcomes feed notifications/latest ChangeSet result where applicable.
+- terminal tracked operation outcomes feed notifications/latest ChangeSet result where applicable;
+- invocation-scoped token binding outcomes remain separate from repository Apply truth, with skipped-current-delivery and later-binding notifications kept distinct.
 
 ## Requirements
 
@@ -128,4 +133,5 @@ The user should not need SHA/commit-graph knowledge to understand Active, Public
 - Finalized releases ownership;
 - selecting Finalized history does not mutate it; explicit Reopen is available only for selected Finalized work and succeeds only when exact target/path ownership/unowned-work checks allow safe reacquisition;
 - successful Reopen preserves the same ChangeSet identity and historical finalization evidence while returning current lifecycle to Active;
-- failed Reopen leaves the work Finalized, notifies/reports diagnostics, and creates no persistent Finalized error marker.
+- failed Reopen leaves the work Finalized, notifies/reports diagnostics, and creates no persistent Finalized error marker;
+- `chatContextToken` absence starts no lookup; token presence never blocks successful repository Apply, never guesses/silently rebinds a different destination, and a late resolution does not retro-send the ReviewDiff skipped at the Apply cutoff.

@@ -31,7 +31,7 @@ public final class Core {
         @Override public String toString(){return "["+code+"] "+getMessage();}
     }
 
-    public record ObsAction(String action,String name,String archive,String packageId,String chatTabTitle) {}
+    public record ObsAction(String action,String name,String archive,String packageId,String chatTabTitle,String chatContextToken) {}
     public record Operation(String path,String action) {}
     public record PackageManifest(int schemaVersion,String packageId,String changeSetId,String changeSetLabel,String repositoryIdentity,List<Operation> operations) {}
     public record PackageData(Path archivePath,String archiveSha256,PackageManifest manifest,Map<String,byte[]> base,Map<String,byte[]> replacement) {}
@@ -187,7 +187,8 @@ public final class Core {
         for(String k:List.of("action","name","archive","packageId"))if(m.get(k)==null||m.get(k).isBlank())throw new ObsException(PACKAGE_INVALID,"Missing OBS-ACTION field: "+k);
         if(!m.get("action").equals("apply-package"))throw new ObsException(PACKAGE_INVALID,"Unsupported OBS-ACTION action: "+m.get("action"));uuid(m.get("packageId"),"OBS-ACTION packageId");if(!Path.of(m.get("archive")).getFileName().toString().equals(m.get("archive"))||m.get("archive").contains("\\")||m.get("archive").contains("/"))throw new ObsException(PACKAGE_INVALID,"OBS-ACTION archive must be a filename hint, not a path.");
         String chatTabTitle=m.get("chatTabTitle");if(chatTabTitle!=null){chatTabTitle=chatTabTitle.trim();if(chatTabTitle.isBlank())throw new ObsException(PACKAGE_INVALID,"OBS-ACTION chatTabTitle must be omitted or non-empty.");if(chatTabTitle.length()>512)throw new ObsException(PACKAGE_INVALID,"OBS-ACTION chatTabTitle is too long.");}
-        return new ObsAction(m.get("action"),m.get("name"),m.get("archive"),m.get("packageId"),chatTabTitle);
+        String chatContextToken=m.get("chatContextToken");if(chatContextToken!=null){chatContextToken=chatContextToken.trim();uuid(chatContextToken,"OBS-ACTION chatContextToken");}
+        return new ObsAction(m.get("action"),m.get("name"),m.get("archive"),m.get("packageId"),chatTabTitle,chatContextToken);
     }
 
     public Path resolveArchiveForAction(ObsAction action,Path explicit){if(explicit!=null)return explicit.toAbsolutePath().normalize();List<Path> c=new ArrayList<>();String home=System.getProperty("user.home");for(Path d:List.of(Path.of(home,"Downloads"),Path.of(".").toAbsolutePath().normalize())){Path p=d.resolve(action.archive());if(Files.isRegularFile(p))c.add(p.toAbsolutePath().normalize());}List<Path> matches=new ArrayList<>();for(Path p:new LinkedHashSet<>(c)){try{if(readPackage(p).manifest.packageId.equals(action.packageId()))matches.add(p);}catch(RuntimeException ignored){}}if(matches.isEmpty())throw new ObsException(PACKAGE_NOT_FOUND,"No candidate archive matched packageId "+action.packageId());if(matches.size()>1)throw new ObsException(PACKAGE_INVALID,"More than one candidate archive matched packageId; select ZIP explicitly.");return matches.get(0);}
@@ -259,6 +260,8 @@ public final class Core {
         PreparedApply prepared=authorized.prepared();revalidatePreparedApply(authorized);
         RepositoryConfig target=null;for(RepositoryConfig r:ensureSettings().repositories)if(Objects.equals(r.id(),authorized.repositoryTargetId())){target=r;break;}
         if(target==null)throw new ObsException(REPOSITORY_MISMATCH,"Prepared Repository Target is no longer registered; prepare the operation again.");
+        String contextToken=prepared.action()==null?null:prepared.action().chatContextToken();String changeSetId=prepared.packageData().manifest.changeSetId,packageId=prepared.packageData().manifest.packageId;
+        if(contextToken!=null)chatBridge.requestContextLookup(contextToken,changeSetId,packageId);
         return applyInternal(prepared.packageData(),Path.of(target.path()),prepared.action(),authorized.reviewChatDecision(),prepared.reviewChatPlan());
     }
 
@@ -279,7 +282,7 @@ public final class Core {
     private static String changeSetStateToken(ChangeSet cs){return cs==null?"<absent>":Json.stringify(cs.json());}
 
     private ReviewChatBindingPlan resolveReviewChatBindingPlan(ObsAction action,String changeSetId,ChatBinding existing){
-        if(action==null||action.chatTabTitle()==null)return new ReviewChatBindingPlan(ReviewChatPlanKind.NO_HINT,null,null,existing,null,0,true,null);
+        if(action==null||action.chatContextToken()!=null||action.chatTabTitle()==null)return new ReviewChatBindingPlan(ReviewChatPlanKind.NO_HINT,null,null,existing,null,0,true,null);
         String requested=action.chatTabTitle(),ignored=ensureSettings().reviewChatTitleIgnoredCharacters;
         String normalized=ReviewChatTitleMatcher.normalize(requested,ignored);
         List<ChatConversation> matches=new ArrayList<>();
@@ -314,11 +317,20 @@ public final class Core {
                 try{if(priorExists)Files.write(state.changeSetPath(pkg.manifest.changeSetId),priorState,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);else Files.deleteIfExists(state.changeSetPath(pkg.manifest.changeSetId));Files.deleteIfExists(successAttemptPath);if(review!=null)Files.deleteIfExists(review.diffPath);}catch(Throwable x){ok=false;}if(!ok)throw new ObsException(STATE_DIVERGED,"Apply failed and target/ledger rollback could not be verified.",t);throw asObs(t,RESULT_MISMATCH);
             }
             Handoff h;try{h=publishReviewDiff(cs,review);}catch(Throwable t){h=new Handoff(null,"ReviewDiff handoff failed: "+t.getMessage());}success.serviceReviewDiffPath=h.servicePath;success.handoffWarning=h.warning;
-            if(reviewChatDecision==ReviewChatBindingDecision.USE_HINT&&reviewChatPlan!=null&&reviewChatPlan.requestedConversation()!=null)try{chatBridge.bind(cs.changeSetId,reviewChatPlan.requestedConversation().conversationKey());}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT rebind warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
-            try{chatBridge.enqueueReviewIfBound(cs,review);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT delivery queue warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
+            boolean queueReview=true;
+            if(action!=null&&action.chatContextToken()!=null){
+                ChatBridgeService.ContextBindingResult contextResult=chatBridge.bindContextAtReviewCutoff(action.chatContextToken(),cs,review);
+                queueReview=contextResult.bound();
+                if(!contextResult.bound()&&contextResult.message()!=null&&!contextResult.message().isBlank())success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" "+contextResult.message()).trim();
+            }else{
+                if(reviewChatDecision==ReviewChatBindingDecision.USE_HINT&&reviewChatPlan!=null&&reviewChatPlan.requestedConversation()!=null)try{chatBridge.bind(cs.changeSetId,reviewChatPlan.requestedConversation().conversationKey());}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT rebind warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
+            }
+            if(queueReview)try{chatBridge.enqueueReviewIfBound(cs,review);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT delivery queue warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
             try{state.saveAttempt(success);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" Attempt handoff metadata update failed.").trim();}return new ApplyResult(SUCCESS,success,cs,review,labelDiagnostic);
-        }catch(ObsException e){if(pkg!=null){try{ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",e.code,e.getMessage(),null);state.saveAttempt(failed);recordOperationOutcomeUnlocked(pkg.manifest.changeSetId,"FAILED",e.code,semanticSummary(e.getMessage()));}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,STATE_DIVERGED);if(pkg!=null){try{state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",oe.code,oe.getMessage(),null));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
+        }catch(ObsException e){if(success==null)suspendContextLookupAfterFailedApply(action,pkg,e.getMessage());if(pkg!=null){try{ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",e.code,e.getMessage(),null);state.saveAttempt(failed);recordOperationOutcomeUnlocked(pkg.manifest.changeSetId,"FAILED",e.code,semanticSummary(e.getMessage()));}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,STATE_DIVERGED);if(success==null)suspendContextLookupAfterFailedApply(action,pkg,oe.getMessage());if(pkg!=null){try{state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",oe.code,oe.getMessage(),null));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
     }
+
+    private void suspendContextLookupAfterFailedApply(ObsAction action,PackageData pkg,String message){if(action==null||action.chatContextToken()==null||pkg==null)return;try{chatBridge.markContextLookupApplyFailed(action.chatContextToken(),pkg.manifest.changeSetId,pkg.manifest.packageId,message);}catch(Throwable ignored){}}
 
     private ApplicationAttempt attempt(String id,String now,String name,String repoId,Path repo,PackageData pkg,String result,String code,String msg,ReviewDiff review){ApplicationAttempt a=new ApplicationAttempt();a.attemptId=id;a.timestamp=now;a.name=name;a.repositoryIdentity=repoId;a.repositoryRoot=repo==null?null:repo.toString();a.archivePath=pkg.archivePath.toString();a.archiveSha256=pkg.archiveSha256;a.packageId=pkg.manifest.packageId;a.changeSetId=pkg.manifest.changeSetId;a.result=result;a.code=code;a.message=msg;if(review!=null){a.reviewDiffPath=review.diffPath.toString();a.reviewDiffSha256=review.sha256;}a.handoffWarning="";return a;}
 

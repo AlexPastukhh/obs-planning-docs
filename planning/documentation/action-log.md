@@ -2271,3 +2271,12 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - actual Slice Strategy / Implementation Slice command definitions and Planning Helper seed expose the same current semantics, including `Runtime Path` + `Codebase Integration Path`;
 - top-level methodology base provenance points to checked current GitHub `main` `98a98ce04fd3385a57a7a05e193ba990485479e9`;
 - existing `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT`, Target/Lens counts and AP identities remain unchanged.
+
+### XREF-DOC-016 — Invocation-scoped chatContextToken binding handoff
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-050`  
+**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
+**Package:** `9ba85d44-3853-4452-92ba-e96495d302d4`  
+**Reason:** reusable-documentation scope participates through the synchronized replacement-package producer workflow and generated Planning Helper userscript outside the registered Helper child root; full token-binding semantics and APPLIED relation remain in the Replacement Package App canonical log.

@@ -452,3 +452,12 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
 **Package:** `3b79ff63-c2ca-4bcc-8da9-023988123544`  
 **Reason:** Planning Helper participates only through regenerated `seed/commands.json` from the corrected Slice Strategy / Implementation Slice command definitions; runtime/source behavior is unchanged and full ReviewDiff rationale/APPLIED state remain in the reusable-documentation canonical log.
+
+### XREF-029 — Invocation-scoped chatContextToken bind action
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-050`  
+**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
+**Package:** `9ba85d44-3853-4452-92ba-e96495d302d4`  
+**Reason:** Planning Helper participates through explicit one-shot Bind actions, per-tab session capture, invocation-scoped OBS-ACTION echo requirements, tests/docs and regenerated userscript; full cross-scope Apply/binding/notification semantics and APPLIED relation are owned by the Replacement Package App canonical log.

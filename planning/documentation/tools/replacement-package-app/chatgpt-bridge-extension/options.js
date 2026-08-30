@@ -1,5 +1,5 @@
 const token = document.getElementById("token"), status = document.getElementById("status");
-const BRIDGE_PROTOCOL_VERSION = 4;
+const BRIDGE_PROTOCOL_VERSION = 5;
 
 function diagnosticSuffix(value) {
   const d = value?.lastBridgeDiagnostic;
