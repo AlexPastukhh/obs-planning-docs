@@ -17,7 +17,7 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 
 1. User establishes the logical work context through the normal ChangeSet selector/navigation.
 2. Application establishes the exact current-change artifact for that ChangeSet.
-3. Application establishes the intended ordinary ChatGPT conversation through the persisted Review-chat binding. The user may bind it manually; legacy `OBS-ACTION.chatTabTitle` may still resolve during Prepare; or an explicit invocation-scoped `OBS-ACTION.chatContextToken` may resolve asynchronously during Execute by asking live tab agents for the captured per-tab session record. Token resolution never blocks repository Apply and never silently replaces a different existing binding.
+3. Application establishes the intended ordinary ChatGPT conversation through the persisted Review-chat binding. The user may bind it manually; legacy `OBS-ACTION.chatTabTitle` may still resolve during Prepare; or an explicit invocation-scoped `OBS-ACTION.chatContextToken` may resolve asynchronously during Execute by asking live tab agents for the captured per-tab session record. Token resolution never blocks repository Apply; successful unique resolution is explicit bind/rebind authority and immediately persists the captured conversation even when another binding exists.
 4. One semantic External Interaction is created for that exact source artifact + destination.
 5. Browser handoff prepares the exact current-change payload only in the intended conversation and respects existing composer content.
 6. Current-change delivery attempts Send only while that exact prepared payload remains associated with the same interaction/destination; external uncertainty stops further automatic sending.
@@ -27,8 +27,8 @@ Application plan: [`../application-plan.md`](../application-plan.md)
 ## Branches / Extensions
 
 - binding existing work manually does not implicitly send its already-current change;
-- an existing persisted Review-chat binding is never replaced silently by action metadata: legacy title keeps its explicit pre-Apply rebind authorization, while a token resolving to a different existing conversation skips automatic delivery and requires the normal explicit rebind path;
-- a token still unresolved/conflicted at successful Apply ReviewDiff cutoff does not fail Apply but prevents automatic delivery of that ReviewDiff; late successful resolution binds for future deliveries only and does not retro-send the skipped ReviewDiff;
+- legacy title metadata never replaces an existing persisted binding without its explicit pre-Apply rebind authorization; `chatContextToken` is different because the originating explicit `Bind + ...` invocation is already bind/rebind authorization, so a unique token result immediately replaces a different existing binding without a second prompt;
+- a token still unresolved/conflicted at successful Apply ReviewDiff cutoff does not fail Apply but prevents automatic delivery of that ReviewDiff; late successful resolution still binds/rebinds for future deliveries and does not retro-send the skipped ReviewDiff; repository Apply failure likewise does not cancel the token binding intent;
 - missing/ambiguous normalized action-title match never guesses a destination; Prepare reports it in Output and manual binding remains available;
 - one conversation open in duplicate browser tabs remains one conversation binding and existing duplicate-tab claim serialization decides which tab performs delivery;
 - empty current change → no message / no-content result;

@@ -36,15 +36,15 @@ Implementation existence and operational acceptance remain separate: source/test
 | Producer action | Consumer expectation |
 |---|---|
 | `OBS-ACTION/1` without destination metadata | unchanged package semantics; no token lookup; existing manual/persisted Review-chat binding behavior remains |
-| action carries `chatContextToken` from an explicit one-invocation capture | Execute starts non-blocking agent lookup; resolved-before-cutoff missing/same binding queues current ReviewDiff, while pending/conflict/different-binding keeps Apply successful and skips this Apply's automatic ReviewDiff delivery |
-| token resolves after Apply cutoff | missing binding is persisted for future deliveries, a separate binding-success notification is emitted, and the already-skipped ReviewDiff is not retroactively sent |
+| action carries `chatContextToken` from an explicit one-invocation capture | Execute starts non-blocking agent lookup; unique resolution immediately binds/rebinds the persisted Review chat regardless of repository Apply outcome; if resolved by the successful Apply cutoff, the current ReviewDiff queues there, while pending/conflict skips only this Apply's automatic ReviewDiff delivery |
+| token resolves after Apply cutoff | captured conversation is still bound/rebound for future deliveries, a separate binding-success notification is emitted, and the already-skipped ReviewDiff is not retroactively sent |
 | action carries `chatTabTitle`; one normalized current conversation matches and ChangeSet is unbound | Prepare freezes that conversation key using the current local ignored-character policy; successful Apply then binds through the normal persisted service and queues the current ReviewDiff |
 | `chatTabTitle` has zero or multiple normalized conversation matches | Prepare writes a warning to Output; no destination is guessed and Apply may continue with manual binding available |
 | one unique requested destination equals existing binding | no rebind confirmation; existing binding remains and normal queueing continues |
 | one unique requested destination differs from existing binding | before repository mutation the user chooses Apply without rebind, Apply and rebind, or Cancel; authorized rebind occurs only after successful Apply and uses the prepared conversation key |
 | prepared ChangeSet/binding state changes before Execute | stale prepared Apply blocks before repository mutation and must be prepared/confirmed again |
 
-`chatContextToken` is an opaque one-invocation context reference, not package/Repository/ChangeSet identity. It is present only when that command invocation explicitly requested binding and must not be carried into later actions. `chatTabTitle` remains legacy fallback-only; when a token is present, title matching is skipped. Neither mechanism identifies a physical duplicate tab.
+`chatContextToken` is an opaque one-invocation context reference and explicit bind/rebind authority, not package/Repository/ChangeSet identity. It is present only when that command invocation explicitly requested `Bind + ...` and must not be carried into later actions. `chatTabTitle` remains legacy fallback-only; when a token is present, title matching is skipped. Neither mechanism identifies a physical duplicate tab.
 
 ## Supporting Meaning
 

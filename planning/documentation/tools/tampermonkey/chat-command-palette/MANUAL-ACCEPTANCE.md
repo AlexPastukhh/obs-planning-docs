@@ -21,7 +21,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Confirm a Use-Case body contains stable UC ID, current registry source, owner-route resolution and semantic-only permission boundary.
 - Confirm `Full` changes read depth, not semantic owner or permissions.
 - Use ordinary Insert/Full/Copy on `давай архив`; confirm no side-effect block/token is added and the complete canonical `[PLANNING_COMMAND]` bytes remain unchanged.
-- Use `Bind + Insert` / `Bind + Copy` (and `Bind + Full` where shown); confirm a separate `[PLANNING_COMMAND_SIDE_EFFECT]` follows the canonical block, contains a fresh UUID v4 `chatContextToken`, and requires that exact token only in this invocation's `OBS-ACTION/1` with `carryForward: false`.
+- Use `Bind + Insert` / `Bind + Copy` (and `Bind + Full` where shown); confirm a separate `[PLANNING_COMMAND_SIDE_EFFECT]` follows the canonical block, contains a fresh UUID v4 `chatContextToken`, and requires that exact token only in this invocation's `OBS-ACTION/1` with `carryForward: false`. Treat this explicit Bind action as bind/rebind authority for the captured conversation; ordinary delivery remains non-binding.
 - Inspect this tab's `sessionStorage` key `obsPlanningHelper:chatContextCaptures:v1`; confirm the token captures the click-time `conversationKey`, observed title and timestamp. Invoke Bind twice in the same chat and confirm two distinct retained tokens map to that same conversation. Navigate after capture and confirm the older stored record does not change.
 - Attempt Bind outside an ordinary `/c/<id>` conversation and require fail-closed with no token record/copy/insertion. Confirm opening/rendering the Helper, Reload and Hard Reload do not generate tokens.
 

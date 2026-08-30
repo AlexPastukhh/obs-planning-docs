@@ -80,19 +80,9 @@ final class ChatBridgeService {
         ContextLookup existing=loadContextLookup(token);
         if(existing!=null){
             if(!Objects.equals(existing.changeSetId,changeSetId)||!Objects.equals(existing.packageId,packageId))throw fail("chatContextToken was already used by a different package/ChangeSet; do not carry a token into later OBS-ACTION blocks.");
-            if("ApplyFailed".equals(existing.status)){
-                existing.status=existing.conversationKey==null||existing.conversationKey.isBlank()?"Pending":"Resolved";existing.reviewCutoffPassed=false;existing.reviewAttemptId=null;existing.reviewSkipNotified=false;existing.message=null;existing.updatedAt=Instant.now().toString();saveContextLookup(existing);signalContextLookupChange();
-            }
             return;
         }
         ContextLookup lookup=new ContextLookup();lookup.token=token;lookup.changeSetId=changeSetId;lookup.packageId=packageId;lookup.status="Pending";lookup.requestedAt=Instant.now().toString();lookup.updatedAt=lookup.requestedAt;saveContextLookup(lookup);signalContextLookupChange();
-    }
-
-    synchronized void markContextLookupApplyFailed(String token,String changeSetId,String packageId,String message){
-        if(token==null||token.isBlank())return;
-        ContextLookup lookup=loadContextLookup(token);if(lookup==null)return;
-        if(!Objects.equals(lookup.changeSetId,changeSetId)||!Objects.equals(lookup.packageId,packageId))throw fail("chatContextToken Apply-failure lifecycle belongs to a different package/ChangeSet request.");
-        lookup.status="ApplyFailed";lookup.reviewCutoffPassed=false;lookup.reviewAttemptId=null;lookup.reviewSkipNotified=false;lookup.message="Repository Apply failed before Review delivery cutoff; chat-context lookup is suspended until this exact action is retried."+(message==null||message.isBlank()?"":" "+message);lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);signalContextLookupChange();
     }
 
     synchronized List<Map<String,Object>> pendingContextLookupRequests(){
@@ -136,9 +126,12 @@ final class ChatBridgeService {
             if(lookup.reviewCutoffPassed){if(lookup.reviewSkipNotified)emitContext(lookup,"ContextBindingConflict",lookup.message);else emitContextOnce(lookup,"ReviewSkippedBindingConflict",lookup.message);}
             signalContextLookupChange();return lookup.status;
         }
-        lookup.conversationKey=capture.conversationKey();lookup.observedTitle=capture.observedTitle();lookup.capturedAt=capture.capturedAt();lookup.status="Resolved";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);
-        if(lookup.reviewCutoffPassed)finishLateContextBinding(lookup);
-        signalContextLookupChange();return lookup.status;
+        lookup.conversationKey=capture.conversationKey();lookup.observedTitle=capture.observedTitle();lookup.capturedAt=capture.capturedAt();lookup.updatedAt=Instant.now().toString();
+        Core.ChatBinding prior=binding(lookup.changeSetId),bound=bindCapturedContextAuthoritatively(lookup.changeSetId,lookup);
+        boolean rebound=prior!=null&&!Objects.equals(prior.conversationKey(),bound.conversationKey());lookup.status=rebound?"Rebound":"Bound";
+        String action=rebound?"rebound":"bound",from=rebound?" from '"+safe(prior.title())+"'":"";
+        lookup.message="Review chat "+action+from+" to '"+safe(bound.title())+"' from this invocation's chatContextToken."+(lookup.reviewCutoffPassed?" The preceding Apply ReviewDiff was not sent automatically; this binding is for subsequent deliveries.":"");
+        saveContextLookup(lookup);emitContext(lookup,rebound?(lookup.reviewCutoffPassed?"ReboundLate":"ReboundFromToken"):(lookup.reviewCutoffPassed?"BoundLate":"BoundFromToken"),lookup.message);signalContextLookupChange();return lookup.status;
     }
 
     synchronized ContextBindingResult bindContextAtReviewCutoff(String token,Core.ChangeSet cs,Core.ReviewDiff review){
@@ -147,37 +140,23 @@ final class ChatBridgeService {
         lookup.reviewCutoffPassed=true;lookup.reviewAttemptId=review.attemptId();lookup.updatedAt=Instant.now().toString();
         if(Set.of("Pending","WaitingAfterCutoff").contains(lookup.status)){
             lookup.status="WaitingAfterCutoff";saveContextLookup(lookup);
-            String message="Package Apply succeeded before chat-context binding resolved; this Apply's ReviewDiff was not sent automatically. Binding lookup remains active for future deliveries.";
+            String message="Package Apply succeeded before chat-context binding resolved; this Apply's ReviewDiff was not sent automatically. Binding lookup remains active and will bind/rebind immediately when it resolves.";
             emitContextOnce(lookup,"ReviewSkippedBindingPending",message);return new ContextBindingResult(false,lookup.status,message);
         }
         if("Conflict".equals(lookup.status)){
             saveContextLookup(lookup);String message=(lookup.message==null?"Chat-context binding is conflicted; no destination was guessed.":lookup.message)+" This Apply's ReviewDiff was not sent automatically.";emitContextOnce(lookup,"ReviewSkippedBindingConflict",message);return new ContextBindingResult(false,lookup.status,message);
         }
-        if("DifferentBinding".equals(lookup.status))return new ContextBindingResult(false,lookup.status,lookup.message);
-        if("Resolved".equals(lookup.status)||"Bound".equals(lookup.status)){
-            Core.ChatBinding existing=binding(cs.changeSetId);
-            if(existing!=null&&!Objects.equals(existing.conversationKey(),lookup.conversationKey)){
-                lookup.status="DifferentBinding";lookup.message="chatContextToken resolved to '"+safe(lookup.observedTitle)+"', but this ChangeSet is already bound to '"+safe(existing.title())+"'. Existing binding was not silently replaced; this Apply's ReviewDiff was not sent automatically.";saveContextLookup(lookup);emitContextOnce(lookup,"ReviewSkippedDifferentBinding",lookup.message);return new ContextBindingResult(false,lookup.status,lookup.message);
-            }
-            Core.ChatBinding bound=existing==null?bindCapturedContext(cs.changeSetId,lookup):existing;lookup.status="Bound";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);return new ContextBindingResult(true,"Bound","Review chat resolved from this invocation's chatContextToken: "+bound.title()+".");
+        if(Set.of("Bound","Rebound").contains(lookup.status)){
+            saveContextLookup(lookup);Core.ChatBinding bound=binding(cs.changeSetId);boolean same=bound!=null&&Objects.equals(bound.conversationKey(),lookup.conversationKey);
+            if(same)return new ContextBindingResult(true,lookup.status,"Review chat already resolved from this invocation's chatContextToken: "+bound.title()+".");
+            String message="chatContextToken resolved but its persisted Review-chat binding is unavailable; this Apply's ReviewDiff was not sent automatically.";return new ContextBindingResult(false,lookup.status,message);
         }
         return new ContextBindingResult(false,lookup.status,"Chat-context binding is unavailable; this Apply's ReviewDiff was not sent automatically.");
     }
 
-    private void finishLateContextBinding(ContextLookup lookup){
-        if(!"Resolved".equals(lookup.status)||!lookup.reviewCutoffPassed)return;
-        Core.ChatBinding existing=binding(lookup.changeSetId);
-        if(existing!=null&&!Objects.equals(existing.conversationKey(),lookup.conversationKey)){
-            lookup.status="DifferentBinding";lookup.message="chatContextToken later resolved to '"+safe(lookup.observedTitle)+"', but the ChangeSet is already bound to '"+safe(existing.title())+"'. Existing binding was kept; use explicit rebind controls if the destination should change.";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);emitContext(lookup,"ResolvedDifferentBinding",lookup.message+" The preceding Apply ReviewDiff was not sent automatically.");return;
-        }
-        Core.ChatBinding bound=existing==null?bindCapturedContext(lookup.changeSetId,lookup):existing;
-        lookup.status="Bound";lookup.updatedAt=Instant.now().toString();saveContextLookup(lookup);
-        emitContext(lookup,"BoundLate","Review chat bound from chatContextToken to '"+bound.title()+"'. This binding will be used for subsequent deliveries; the preceding Apply ReviewDiff was not sent automatically.");
-    }
-
-    private Core.ChatBinding bindCapturedContext(String changeSetId,ContextLookup lookup){
+    private Core.ChatBinding bindCapturedContextAuthoritatively(String changeSetId,ContextLookup lookup){
         String key=lookup.conversationKey;if(key==null||!key.matches("[A-Za-z0-9_-]{8,}"))throw fail("Resolved chat context has no valid conversation key.");
-        Core.ChatBinding prior=binding(changeSetId);if(prior!=null&&!Objects.equals(prior.conversationKey(),key))throw fail("Resolved chat context differs from the existing Review-chat binding; explicit rebind is required.");
+        Core.ChatBinding prior=binding(changeSetId);if(prior==null||!Objects.equals(prior.conversationKey(),key))cancelSafelyCancellableReviewTasks(changeSetId,"Cancelled because an explicit chatContextToken rebound the Review chat.");
         String title=safe(lookup.observedTitle).isBlank()?"Chat "+shortId(key):lookup.observedTitle,now=Instant.now().toString(),url="https://chatgpt.com/c/"+key;
         Map<String,Object> m=new LinkedHashMap<>();m.put("schemaVersion",1);m.put("changeSetId",changeSetId);m.put("conversationKey",key);m.put("title",title);m.put("url",url);m.put("boundAt",now);state.writeJson(bindingPath(changeSetId),m);return new Core.ChatBinding(changeSetId,key,title,url,now);
     }
@@ -247,7 +226,7 @@ final class ChatBridgeService {
         Task latest=null;for(Task t:listTasks())if("reviewDiff".equals(t.kind)&&Objects.equals(t.changeSetId,changeSetId)&&(currentReviewAttemptId==null||Objects.equals(t.reviewAttemptId,currentReviewAttemptId)))if(latest==null||safe(t.createdAt).compareTo(safe(latest.createdAt))>0)latest=t;
         if(latest==null)return "Bound · "+b.title();
         String state=switch(latest.status){case "Pending"->"Waiting for ChatGPT tab";case "Claimed"->"Delivering";case "Preparing"->"Preparing in ChatGPT";case "SendArmed","SendClicked"->"Sending";default->latest.status;};
-        return state+" · "+b.title();
+        return state+" · "+safe(latest.conversationTitle);
     }
 
     synchronized Map<String,Object> claim(String conversationKey,int tabId){

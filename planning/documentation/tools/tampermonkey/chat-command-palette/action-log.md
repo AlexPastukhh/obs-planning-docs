@@ -488,3 +488,12 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
 **Package:** `0df594dd-0599-4630-9b4c-047b1c9e2315`  
 **Reason:** Planning Helper participates only through regenerated `seed/commands.json` for canonical `idtspe.work`; runtime/source behavior is unchanged. The reusable-documentation log owns the remaining ReviewDiff correction and APPLIED target-state meaning.
+
+### XREF-033 — Helper Bind action grants token bind/rebind authority
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-054`  
+**ChangeSet:** `9baa3cc4-1d24-4613-b074-83e98496fa3e`  
+**Package:** `84a3ccd8-d9bf-4881-a228-e59c006e612f`  
+**Reason:** Planning Helper runtime is unchanged, but its explicit `Bind + ...` action is clarified as the user authorization that allows the consumer to bind or rebind the ChangeSet Review chat immediately when that invocation's `chatContextToken` resolves. Ordinary Insert/Full/Copy remains non-binding and token carry-forward remains forbidden; full consumer behavior/APPLIED state is canonical in `LOG-RPKG-054`.

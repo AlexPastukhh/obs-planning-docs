@@ -2394,3 +2394,12 @@ No Target Module/Lens/command ID/Result Unit/AP/AG topology change and no Domain
 - accepted material Decisions remain retained by default, optional `Rationale / Why` remains distinct from Evidence, and material non-selected/deferred/rejected/superseded alternatives are user-controlled retention choices;
 - generic AI Reviewability keeps its material-output Key Points contract and Broad Discussion specializes it rather than replacing it;
 - command/helper/maps/example/audit/manifest project the same simplified interaction contract, with no new Unit/Target/Lens/command/persistence topology.
+
+### XREF-DOC-017 — chatContextToken direct bind/rebind authority
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-054`  
+**ChangeSet:** `9baa3cc4-1d24-4613-b074-83e98496fa3e`  
+**Package:** `84a3ccd8-d9bf-4881-a228-e59c006e612f`  
+**Reason:** reusable documentation participates through the shared replacement-package `OBS-ACTION/1` workflow, where `chatContextToken` is now explicitly bind/rebind authority and token binding is separated from repository Apply truth; the Replacement Package App scope owns implementation/tests/full APPLIED rationale.

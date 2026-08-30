@@ -120,8 +120,8 @@ final class MainWindow extends JFrame {
         if(event==null)return;appendToOutput(event.changeSetId(),"CHAT "+event.display());
         if("chatContext".equals(event.kind())){
             String repoId=null;if(event.changeSetId()!=null){Core.RepositoryConfig repo=core.repositoryForChangeSet(event.changeSetId());if(repo!=null)repoId=repo.id();}
-            boolean failure=Set.of("ReviewSkippedBindingConflict","ReviewSkippedDifferentBinding","ResolvedDifferentBinding","ContextBindingConflict").contains(event.status());
-            String title="BoundLate".equals(event.status())?"Review chat bound":event.status().startsWith("ReviewSkipped")?"ReviewDiff not sent — chat binding":"Chat binding needs attention";
+            boolean failure=Set.of("ReviewSkippedBindingConflict","ContextBindingConflict").contains(event.status());
+            String title=event.status().startsWith("Rebound")?"Review chat rebound":event.status().startsWith("Bound")?"Review chat bound":event.status().startsWith("ReviewSkipped")?"ReviewDiff not sent — chat binding":"Chat binding needs attention";
             notifyOperation(title,event.message()==null?event.status():event.message(),repoId,failure);return;
         }
         refreshInteractions();

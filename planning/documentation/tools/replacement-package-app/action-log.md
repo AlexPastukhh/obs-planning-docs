@@ -1023,3 +1023,30 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** pending `chatContextToken` lookup is request-driven rather than periodic agent polling. Java revision changes and relevant tab lifecycle events are the retry triggers; a bounded `/v1/chat-context/wait` timeout by itself causes no `OBS_CHAT_CONTEXT_LOOKUP` fan-out. Apply/binding/delivery cutoff, `ApplyFailed`, token carry-forward, notification and External Interaction semantics are unchanged.
 
 **APPLIED relation:** successful Apply of package `b1e51dbe-2380-47f4-90f8-15296f79b5f7` corrects the remaining ReviewDiff event-driven lookup finding inside still-open ChangeSet `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`; the ChangeSet remains open for cumulative ReviewDiff review.
+
+### LOG-RPKG-054 — Make chatContextToken direct bind/rebind authority on resolution
+
+**Type:** USER CLARIFICATION / BINDING AUTHORITY CORRECTION / NEW CHANGESET / APPLIED TARGET  
+**Supersedes Current Meaning From:** `LOG-RPKG-050`–`LOG-RPKG-053` only where they intentionally prevented token-driven rebind or coupled unresolved token lifetime to repository Apply failure  
+**ChangeSet:** `9baa3cc4-1d24-4613-b074-83e98496fa3e`  
+**ChangeSet Label:** `Replacement Package App — chatContextToken direct bind/rebind authority`  
+**Package:** `84a3ccd8-d9bf-4881-a228-e59c006e612f`
+
+**User clarification / selected meaning:**
+- the previously accepted invocation-token implementation treated a resolved token as safe destination discovery only: it could bind missing work or confirm the same binding, but a different existing binding became `DifferentBinding` and required some later explicit rebind path. That is not the intended meaning of the Helper action labelled `Bind`;
+- `chatContextToken` now means explicit **bind/rebind authority**. The user already grants that authority by choosing `Bind + Insert` / `Bind + Copy` / `Bind + Full`; successful unique resolution must immediately make the captured conversation the persisted Review chat for the token's ChangeSet. Missing binding binds, same binding confirms/refreshes, different binding rebinds with no second prompt;
+- token binding truth is independent of repository Apply truth. Authorized Execute still starts lookup, but repository Apply does not wait for it and repository failure does not cancel/suspend the token request or roll back a resolved bind/rebind. The successful-Apply/current-ReviewDiff point remains only a delivery cutoff: if token binding is already resolved, queue that ReviewDiff to the bound/rebound destination; if lookup is Pending/Conflict, skip only that Apply's automatic ReviewDiff delivery. Late resolution still binds/rebinds for future delivery and never retro-sends the skipped ReviewDiff;
+- legacy `chatTabTitle` and manual binding keep their existing safety/confirmation semantics. Token authority is intentionally stronger because it comes only from the explicit invocation-side-effect action, not from inferred title metadata;
+- when token rebind changes destination, safely cancellable older `Pending`/`Claimed` Review tasks are cancelled. An already `Preparing` / `SendArmed` / `SendClicked` interaction keeps its frozen original destination and is not rewritten by the new binding; delivery status therefore reports the task's frozen conversation rather than falsely projecting the new persisted binding onto old in-flight work;
+- one token reported for more than one conversation remains a capture conflict and never guesses. Token carry-forward to a different package/ChangeSet remains rejected. The existing request-driven `/v1/chat-context/wait` transport, protocol `5`, no-timeout-refan behavior and extension runtime remain unchanged.
+
+**Implementation / proof:**
+- `ChatBridgeService.acceptContextLookupResult(...)` applies the persisted bind/rebind immediately on unique resolution and emits `BoundFromToken` / `ReboundFromToken` or late equivalents; `DifferentBinding` and `ApplyFailed` token states are removed from current behavior;
+- `Core` no longer suspends token lookup when repository Apply fails; the Apply path only uses `bindContextAtReviewCutoff(...)` to decide whether this exact successful Apply ReviewDiff can be queued;
+- token rebind bypasses the legacy/manual unsafe-rebind gate because it must update the future persisted destination at resolution, while existing externally prepared interactions retain their own frozen destination. `deliveryStatus(...)` reports that task destination truthfully;
+- Swing token notifications distinguish `Review chat bound`, `Review chat rebound`, skipped-current-delivery and capture-conflict outcomes without folding them into repository Apply truth;
+- Core/bridge regression covers resolved-before-cutoff rebind A→B, failed-Apply lookup continuing to bind, immediate token rebind while an older delivery is already Preparing, frozen old-task destination, request-channel wake/conflict and no retro-send behavior. Shared protocol, RPKG Scenario/Slice/data/acceptance docs and Planning Helper Bind semantics are synchronized; verification passes Core `68/68`, ChatBridge `60/60`, DOM turn-boundary regression PASS, Windows launcher `5/5`, plus extension background/content JavaScript syntax checks.
+
+**Target-State Result:** `Bind + ...` is semantically literal. Its invocation-scoped token is one-time explicit authority to make that captured conversation the ChangeSet Review-chat destination as soon as the bridge resolves it, including replacing another persisted destination. Repository Apply success/failure is a separate axis. Review delivery for a successful Apply still obeys the resolution cutoff and never retro-sends a skipped ReviewDiff.
+
+**APPLIED relation:** successful Apply of package `84a3ccd8-d9bf-4881-a228-e59c006e612f` establishes this direct token bind/rebind contract as the current state of new ChangeSet `9baa3cc4-1d24-4613-b074-83e98496fa3e`. The earlier token-binding ChangeSet `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655` was already accepted APPROVABLE and is not reused.
