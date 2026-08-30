@@ -47,13 +47,22 @@ Compose with L6 for logs/metrics/traces/audit/diagnosis/recovery when material.
 
 Compose with Quality/Risk for security/privacy/reliability/compliance/etc.
 
+
+## Domain Interaction Guard
+
+A shared concern may reference/consume Domain identity, events or selected semantics when materially necessary, but must not silently become owner of Aggregate state, invariants, lifecycle/transitions or Domain policy. Such pressure becomes a Finding Candidate for normal Domain/owner Resolution.
+
+## Evolution Ownership
+
+When the shared concern itself must change, the Cross-Cutting semantic owner owns that Evolution Step. Consumer Slice Evolution Steps may reference the shared step and describe local impact, but do not duplicate/re-own the shared change.
+
 ## Findings / Outputs
 
 sharedness, canonical owner, applicability matrix, local integration contract, exceptions/bypass, shared mechanism Ideas and Q/R/P.
 
 ## Typical Consumers
 
-Cross-Cutting Concern, Slice, Frontend, Test Strategy and L5 architecture decisions.
+Cross-Cutting Concern, Slice, Test Strategy and architecture/evolution evaluation where shared ownership is material.
 
 ## Artifact / File Implications
 

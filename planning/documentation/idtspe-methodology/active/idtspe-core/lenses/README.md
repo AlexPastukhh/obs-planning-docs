@@ -60,11 +60,11 @@ Application Boundary / Feasibility
 Domain Modeling / DDD
 UI / Spatial / Frontend Realization
 Slice Verticality / Integration
-WEUC / Workspace Evolution / Architecture Fitness + Workspace work-cost
+Evolution/Change-Isolation / Evolution / Change Isolation Fitness + Workspace work-cost
 Simplicity / Implementation Economy / Evolution-Safe Simplification
 ```
 
-The WEUC Lens is SDS-profile specific in the current package because it consumes the SDS Workspace Evolution / global architecture owner.
+The Evolution/Change-Isolation Lens is SDS-profile specific in the current package because it consumes the SDS Workspace Evolution / global architecture owner.
 
 ## 5. Composition / Applicability Scan Rule
 
@@ -125,6 +125,5 @@ The 6 SDS-specific Lens bodies conform literally after the Scenario Target migra
 - [`LENS-MODEL.md`](LENS-MODEL.md)
 - [`../shared/lens-creation-and-integration-use-case.md`](../shared/lens-creation-and-integration-use-case.md)
 - [`LENS-AUDIT.md`](LENS-AUDIT.md)
-- [`LENS-MIGRATION-COMPLETENESS-AUDIT.md`](LENS-MIGRATION-COMPLETENESS-AUDIT.md)
 
 Example standard: [`../HIGH-LEVEL-EXAMPLE-GUIDE.md`](../HIGH-LEVEL-EXAMPLE-GUIDE.md).

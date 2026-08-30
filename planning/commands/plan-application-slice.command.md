@@ -22,7 +22,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and testing/evolution/frontend handoffs; material Strategy/Domain mismatch surfaces a Finding Candidate for Core disposition.",
+  "expectedOutput": "Slice outcome/obligations/proof intent, material Domain/Cross-Cutting/dependency use boundary, optional Runtime Path and owner-local Evolution Steps; material Strategy/Domain mismatch surfaces a Finding Candidate for Core disposition.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -37,7 +37,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "helperPresentation": {
     "whenToUse": "Use when one selected Slice needs independently bounded realization planning; Target Formation must select/reuse/form that bounded Target rather than treating the Strategy owner register as creation authority.",
-    "whatYouGet": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and handoffs; accepted upstream changes occur only after Core Finding Disposition.",
+    "whatYouGet": "Slice outcome/obligations/proof intent, material Uses/ownership boundary, optional Runtime Path and owner-local Evolution Steps; accepted upstream changes occur only after Core Finding Disposition.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

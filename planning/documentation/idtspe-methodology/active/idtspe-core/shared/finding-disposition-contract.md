@@ -217,7 +217,7 @@ Meaning:
   persistence failure translation ownership is not explicit
 
 Affected:
-  Codebase Integration Path.failurePropagation
+  Slice runtime/ownership meaning.failurePropagation
 
 Evidence:
   current call path jumps from repository save
@@ -331,7 +331,7 @@ Example — validator:
 
 ```text
 CHECK:
-  Runtime Path and Codebase Integration Path disagree
+  Runtime Path and selected ownership/dependency meaning disagree
 
 Finding
 → Core disposition

@@ -1,33 +1,39 @@
 # Active Methodology
 
+Status: active package navigation
+
+This directory is organized by **methodology zone**, not by one giant system map.
+The README answers where authoritative material lives; each package owns its own
+internal semantics.
+
 ## Generic IDTSPE Core
 
-- [`idtspe-core/README.md`](idtspe-core/README.md)
-- [`idtspe-core/BOOTSTRAP-IDTSPE.md`](idtspe-core/BOOTSTRAP-IDTSPE.md)
-- [`idtspe-core/IDTSPE-SHELL.md`](idtspe-core/IDTSPE-SHELL.md)
-- [`idtspe-core/lenses/README.md`](idtspe-core/lenses/README.md)
-- [`idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy + worked physical topologies.
-- [`idtspe-core/target-modules/README.md`](idtspe-core/target-modules/README.md)
-- [`idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md)
-
-## Independent Peer Concerns / Temporary Theory
-
-- [`ai-reviewability/README.md`](ai-reviewability/README.md) — Key Points reviewability; independent of Target/Lens semantics.
-- [`theoretical-modules/README.md`](theoretical-modules/README.md) — raw temporary knowledge packages not yet operationalized as Target Modules/Lenses.
+- [`idtspe-core/README.md`](idtspe-core/README.md) — generic planning runtime and semantic contracts.
+- [`idtspe-core/BOOTSTRAP-IDTSPE.md`](idtspe-core/BOOTSTRAP-IDTSPE.md) — Core bootstrap.
+- [`idtspe-core/IDTSPE-SHELL.md`](idtspe-core/IDTSPE-SHELL.md) — generic Target/Resolution shell.
+- [`idtspe-core/target-modules/README.md`](idtspe-core/target-modules/README.md) — generic Target Modules.
+- [`idtspe-core/lenses/README.md`](idtspe-core/lenses/README.md) — Core and installed Lens registry.
+- [`idtspe-core/shared/`](idtspe-core/shared/) — reusable generic contracts/guides.
 
 ## Installed Profiles
 
-- [`profiles/README.md`](profiles/README.md)
-- [`profiles/sds/README.md`](profiles/sds/README.md)
-- [`profiles/sds/SDS-FULL-MAP.md`](profiles/sds/SDS-FULL-MAP.md)
-- [`profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](profiles/sds/ARTIFACT-PLACEMENT-MAP.md) — annotated Artifact Materialization Tree.
-- [`profiles/sds/SDS-PHYSICAL-PLANNING-TREE.md`](profiles/sds/SDS-PHYSICAL-PLANNING-TREE.md) — topology coordinator.
-- [`profiles/sds/target-modules/README.md`](profiles/sds/target-modules/README.md)
-- [`profiles/sds/lenses/README.md`](profiles/sds/lenses/README.md)
+- [`profiles/README.md`](profiles/README.md) — installed profile registry.
+- [`profiles/sds/README.md`](profiles/sds/README.md) — SDS profile entry.
 
-## Root Navigation / Audits
+A profile may add Target Modules, Lenses, workflow direction, command surfaces,
+representation guidance and examples without redefining IDTSPE Core.
 
-- [`METHODOLOGY-SYSTEM-MAP.md`](METHODOLOGY-SYSTEM-MAP.md)
-- [`FINAL-METHODOLOGY-AUDIT.md`](FINAL-METHODOLOGY-AUDIT.md)
+## Independent Peer Concerns / Temporary Theory
 
-Legacy `active/target-modules`, `active/lenses`, `active/generic`, `active/shared`, `active/examples` now contain compatibility navigation only; new canonical owners belong in `idtspe-core/` or an explicit profile package.
+- [`ai-reviewability/README.md`](ai-reviewability/README.md) — independent AI reviewability concern.
+- [`theoretical-modules/README.md`](theoretical-modules/README.md) — reusable/raw theory not yet necessarily operationalized as a Target Module or Lens.
+
+## Audits
+
+Current active consistency audits live at this directory level. They verify the
+assembled methodology; they are not semantic owners and do not replace package
+READMEs, Target Modules, Lenses or shared contracts.
+
+Legacy `active/target-modules`, `active/lenses`, `active/generic`, `active/shared`
+and `active/examples` are compatibility navigation only. New canonical owners
+belong in `idtspe-core/` or an explicit installed profile.

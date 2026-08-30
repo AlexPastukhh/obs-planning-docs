@@ -759,7 +759,10 @@ The root Solution Decision gets better evidence.
 
 # 26. Relation To Carry-Over Ideas
 
-`SDS-PLANNING-STATE/ideas/` stores Ideas that matter later.
+A carry-over Idea is ordinary Generic Idea State retained for later use. If durable
+representation is useful, Documentation / Representation may keep it in the current natural
+owner, an existing project register/inbox, another profile-selected owner, or no separate
+artifact when ephemeral.
 
 A Planning Branch is different:
 

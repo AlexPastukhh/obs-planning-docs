@@ -1,309 +1,318 @@
-# SDS Artifact Materialization Tree — Placement Projection
+# SDS Artifact Placement Map — Owner / File Representation Guidance
 
-Status: active canonical SDS **artifact/materialization projection**  
-Purpose: show the possible physical destinations used by SDS and annotate which Target Modules / Lenses propose each destination or representation.
+Status: active canonical SDS human-facing placement guidance
 
-Semantic source records remain in:
+This file explains how SDS semantic owners may be represented physically. It is
+**not** a mandatory scaffold and does not replace each Target Module's local
+Artifact/File Contract or the Core Documentation / Representation Lens.
 
-```text
-Target Module  → ARTIFACT_PROPOSAL / AP-*
-Lens           → ARTIFACT_GUIDANCE / AG-*
-```
+Canonical representation policy:
+[`../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md).
 
-This tree is a projection of those source records plus a small number of explicit SDS profile-infrastructure artifacts. It does **not** mean every node should be created.
+Concrete placement/action resolver:
+[`../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md`](../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-Fundamental representation policy: [`../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md).  
-Concrete placement/action resolver: [`../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md`](../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).  
-Physical-topology coordinator: [`SDS-PHYSICAL-PLANNING-TREE.md`](SDS-PHYSICAL-PLANNING-TREE.md).
-
-## Legend
+## Fundamental Rule
 
 ```text
-TM:       Target Module source proposal
-LENS:     Lens source guidance
-PROFILE:  SDS profile infrastructure / coordinator artifact, not directly proposed by one AP/AG record
-FIRST:    cheaper/default representation that may be sufficient before this node exists
-SPLIT:    separate file normally appears only after representation pressure justifies it
+semantic owner
+≠ Target instance
+≠ Markdown file
 ```
 
-`FIRST`/`SPLIT` are summarized here only for navigation. Their semantic owner is the Documentation / Representation Lens, which contains the detailed rules and worked trees.
-
-`TM` annotations represent `AP-*` guidance for the Target result itself. `LENS` annotations represent `AG-*` guidance for supporting / artifact-placement meaning produced by that perspective. Semantic owner/handoff/reopen consequences remain Core Finding Disposition concerns. When Core Finding Disposition resolves the current Target as semantic owner and no distinct supporting artifact is useful, the Lens may correctly have no `AG-*` at all. In particular, target-local evolution companion representation proposals come only from WEUC/L5 `AG-L5-02` **after** Core Finding Disposition has accepted/resolved the local evolution meaning; Domain/Slice/Frontend Target Modules and their target-profile Lenses do not propose those companions, and Documentation / Representation + P-14 / TF-10 decide actual materialization.
-
-## Materialization Tree
+Therefore all are valid:
 
 ```text
-<PROJECT>/
-│
-├── <implementation workspace>/
-│   ├── source code / types / modules / packages
-│   ├── tests / executable specifications
-│   ├── schemas / configuration
-│   └── focused WHY-comments / doc-comments
-│       LENS: LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY / AG-ART-01
-│       ROLE: valid primary representation when implementation-native meaning is sufficient
-│       NOTE: not an SDS planning-file family
-│
-└── <SDS-WORKSPACE>/
-    ├── README.md
-    │   PROFILE: navigation only when useful
-    │
-    ├── SDS-PLANNING-CONTEXT.md
-    │   PROFILE: cross-Target planning context only when useful
-    │
-    ├── SDS-PLANNING-STATE/
-    │   ├── README.md
-    │   │   PROFILE: navigation only when useful
-    │   │
-    │   ├── SDS-EVOLUTION-MAP.md
-    │   │   PROFILE: accepted/planned product/system evolution owner
-    │   │   NOTE: currently not introduced by one dedicated AP/AG record
-    │   │
-    │   ├── SDS-WORKSPACE-EVOLUTION.md
-    │   │   TM:   TM-WEUC / AP-WEUC-01
-    │   │   LENS: WEUC / AG-L5-01
-    │   │
-    │   └── ideas/
-    │       ├── INBOX.md
-    │       │   TM: TM-PROTOTYPE / AP-PROT-03 may route loose ideas here when layer is unclear
-    │       │
-    │       ├── early/IDEAS.md
-    │       │   PROFILE: early Solution/Application/Prototype layer route
-    │       │   TM: TM-PROTOTYPE / AP-PROT-03 may route here
-    │       │
-    │       ├── scenario/IDEAS.md
-    │       │   TM: TM-SCENARIO-PLANNING / AP-SCN-03
-    │       │
-    │       ├── domain/IDEAS.md
-    │       │   TM: TM-DOMAIN-DISCOVERY / AP-DOMDISC-02
-    │       │
-    │       └── realization/IDEAS.md
-    │           PROFILE: WEUC/Slice/Frontend/Test/implementation layer route
-    │           TM: TM-PROTOTYPE / AP-PROT-03 may route an otherwise unowned idea to the appropriate layer
-    │
-    ├── need/
-    │   └── NEED-<id>.md
-    │       PROFILE: optional durable Need/Reality owner after Target Formation
-    │       FIRST: current Application/Scenario context when separate Need addressability is unnecessary
-    │
-    ├── application/
-    │   ├── APPLICATION-DEFINITION.md
-    │   │   TM: TM-APPLICATION-DEFINITION / AP-APP-01
-    │   │
-    │   ├── reference-research.md
-    │   │   TM: TM-APPLICATION-DEFINITION / AP-APP-02
-    │   │   FIRST: Application Definition section when evidence is small
-    │   │
-    │   ├── <refined-real-life-scenario-artifact>
-    │   │   TM: TM-APPLICATION-DEFINITION / AP-APP-03
-    │   │   FIRST: refined route section inside APPLICATION-DEFINITION.md
-    │   │   SPLIT: only when the application-aware real-life route is repeatedly reused/reviewed independently
-    │   │
-    │   └── prototypes/
-    │       └── <prototype>.md
-    │           TM: TM-PROTOTYPE / AP-PROT-01
-    │           LENS: L3 / AG-L3-02 and Practical Evidence / AG-PE-01 may reuse the Prototype/Practical owner
-    │           SPLIT: raw/reusable evidence may live separately only when AP-PROT-02 / practical Evidence pressure exists
-    │
-    ├── scenarios/
-    │   ├── SCENARIO-CATALOG.md
-    │   │   TM: TM-SCENARIO-PLANNING / AP-SCNDISC-01
-    │   │   ROLE: optional navigation/index projection over Scenario owners; never behavioral authority
-    │   │
-    │   └── SCN-<id>.md
-    │       TM: TM-SCENARIO-PLANNING / AP-SCN-01 + AP-SCN-02
-    │       FIRST: small Scenario may remain in a consolidated Scenario owner as long as behavioral authority stays reviewable
-    │
-    ├── screens/
-    │   ├── SCREEN-MAP.md
-    │   │   TM: TM-SCREEN / AP-SCREEN-01
-    │   │
-    │   └── <screen>.md
-    │       TM: TM-SCREEN / AP-SCREEN-02
-    │       FIRST: SCREEN-MAP section when individual Screen addressability is unnecessary
-    │
-    ├── requirements/
-    │   └── REQ-<id>.md
-    │       TM: TM-REQUIREMENT / AP-REQ-01
-    │       ROLE: exceptional standalone shared must-hold owner
-    │       FIRST: natural Scenario/Domain/Slice/etc owner; do not create standalone Requirement by default
-    │
-    ├── domain/
-    │   ├── DOMAIN-DISCOVERY.md
-    │   │   TM: TM-DOMAIN-DISCOVERY / AP-DOMDISC-01
-    │   │   ROLE: Domain map/discovery coordinator; may retain responsibility summaries, Decisions and residual QRP for several logical Domain owners
-    │   │
-    │   ├── <DomainOwner>.md
-    │   │   TM: TM-DOMAIN-DRAFT / AP-DOM-01
-    │   │   FIRST: implementation-native representation + DOMAIN-DISCOVERY.md#<DomainOwner>
-    │   │   SPLIT: promote only when independent owner-level human-readable planning is useful
-    │   │
-    │   └── <DomainOwner>.evolution.md
-    │       LENS: WEUC / AG-L5-02
-    │       FIRST: Evolution section in <DomainOwner>.md or DOMAIN-DISCOVERY.md
-    │       SPLIT: material independent future paths/revalidation lifecycle
-    │
-    ├── slices/
-    │   ├── SLICE-STRATEGY.md
-    │   │   TM: TM-SLICE-STRATEGY / AP-SSTRAT-01
-    │   │   ROLE: Slice Implementation Strategy coordinator: Slice portfolio/Behavior realization + broad/shallow Domain/Aggregate realization map + selected Slice owner register
-    │   │   NOTE: may contain stable semantic owner slots of small selected Slices; semantic identity/addressability does not require one file per Slice and does not itself form a bounded TM-IMPLEMENTATION-SLICE Target
-    │   │
-    │   ├── SL-<id>.md
-    │   │   TM: TM-SLICE-STRATEGY / AP-SSTRAT-02; add TM-IMPLEMENTATION-SLICE / AP-SLICE-01 + AP-SLICE-02 only after Target Formation selects/reuses that bounded Target
-    │   │   FIRST: stable selected owner slot at SLICE-STRATEGY.md#SL-<id> + implementation-native representation
-    │   │   SPLIT: promote only when Slice planning/review/addressability becomes independently valuable
-    │   │
-    │   ├── SL-<id>.evolution.md
-    │   │   LENS: WEUC / AG-L5-02
-    │   │   FIRST: Evolution section in SL-<id>.md or SLICE-STRATEGY.md
-    │   │   SPLIT: separate future/revalidation lifecycle
-    │   │
-    │   └── parts/
-    │       └── <slice-part-plan>.md
-    │           TM: TM-IMPLEMENTATION-SLICE / AP-SLICE-02
-    │           FIRST: section inside SL-<id>.md
-    │           SPLIT: exceptional independent size/reuse/review pressure
-    │
-    ├── frontend/
-    │   ├── <frontend-owner>.md
-    │   │   TM: TM-FRONTEND-SLICE / AP-FE-02
-    │   │   FIRST: parent Slice owner / AP-FE-01
-    │   │   SPLIT: only after frontend responsibility is independently promoted
-    │   │
-    │   └── <frontend-owner>.evolution.md
-    │       LENS: WEUC / AG-L5-02
-    │       FIRST: parent Frontend/Slice Evolution section
-    │
-    ├── cross-cutting/
-    │   └── <concern>.md
-    │       TM:   TM-CROSS-CUTTING-CONCERN / AP-XCUT-01
-    │       LENS: Shared/Cross-Cutting / AG-XCUT-01
-    │       FIRST: consumer-local obligation + canonical existing owner
-    │       NOTE: consumer files keep local integration only (AP-XCUT-02 / AG-XCUT-02)
-    │
-    ├── testing/
-    │   ├── TEST-STRATEGY.md
-    │   │   TM: TM-TEST-STRATEGY
-    │   │   ROLE: optional lightweight shared proof-layer/non-duplication/environment/harness strategy only when several owners genuinely need it
-    │   │   FIRST: local proof + executable tests / existing owner when no shared strategy is needed
-    │   │
-    │   ├── domain/
-    │   │   └── <DomainOwner>.test-design.md
-    │   │       TM:   TM-TEST-DESIGN [optional]
-    │   │       LENS: Test Proof / AG-TEST-01
-    │   │       FIRST: existing Domain/Scenario/Slice owner + exact executable tests
-    │   │       SPLIT: only for independently non-trivial proof design
-    │   │
-    │   ├── slices/
-    │   │   └── SL-<id>.test-design.md
-    │   │       TM:   TM-TEST-DESIGN [optional]
-    │   │       LENS: Test Proof / AG-TEST-01
-    │   │       FIRST: existing Slice/Strategy owner + exact executable tests
-    │   │       SPLIT: only for independently non-trivial proof design
-    │   │
-    │   ├── practical/
-    │   │   └── <implemented-practical-evidence>.md
-    │   │       TM: TM-PRACTICAL-TEST
-    │   │       LENS: Practical Evidence / AG-PE-01
-    │   │       ROLE: real-implemented-subject acceptance/learning; paired with Prototype through shared Practical Evidence method
-    │   │
-    │   ├── evidence/
-    │   │   └── <evidence-artifact>
-    │   │       LENS: Practical Evidence / AG-PE-01 + AG-PE-02; Test Proof / AG-TEST-02
-    │   │       FIRST: existing test/run/tool output when durable separate evidence is unnecessary
-    │   │
-    │   └── TEST-COVERAGE.md
-    │       LENS: Test Proof / AG-TEST-03
-    │       ROLE: optional durable property→actual Evidence review map; no TM-TEST-COVERAGE Target
-    │
-    └── <other profile-resolved artifact>
-        LENS: L4 / AG-L4-02 may justify a separately useful dependency/change-impact artifact
-        LENS: Linked Notes / AG-LINKNOTE-01 records justification in the current owner; it creates no `notes/` tree
-        LENS: Documentation/Representation / AG-ART-02 may escalate a material split/merge/reuse/retire/generated-view change
+one file → several small semantic owners
+one semantic owner → one dedicated file
+one semantic owner → implementation-native code/types/tests
+one semantic owner → main file + companion only under real pressure
 ```
 
-## Non-tree Representation / Routing Guidance
+Do not pre-create folders/files just because they appear in the examples below.
 
-- `AP-SCNDISC-02` — route a newly discovered independent Need/result to Core Finding Disposition / Target Formation; no artifact is required by default and no Scenario Catalog becomes semantic authority.
+## Typical SDS Placement
 
-Some source records intentionally describe **embedding, routing or ownership resolution**, not another physical tree node. They are part of the same 58-record projection and are listed explicitly here so the materialization map covers every source record without inventing files.
+### Application Definition
 
-### Embed after semantic owner / State disposition
+Normally a persistent human-readable owner when used downstream.
+
+### Scenario
+
+Scenario behavior/future-change meaning normally needs durable readable ownership.
+Several small Scenarios may be consolidated if addressability remains clear;
+separate Scenario files are common when independently reviewed.
+
+### Screen
+
+Only when UI/spatial meaning is material. A compact project may use one
+`SCREEN-MAP.md`; selected Screen Drafts may be promoted only when independent
+review/reuse pressure exists.
+
+### Slice Strategy
+
+One Strategy owner may contain:
 
 ```text
-AG-L1-01
-  Target-Scope Finding Candidate → Core Finding Disposition → accepted current Target/Target-Scope Decision when resolved there
-
-AG-L2-01
-  authority/Source/reuse Finding Candidate → Core Finding Disposition → current Target planning state when resolved there; canonical meaning stays with the resolved owner
-
-AG-L3-01
-  uncertainty/assumption/revalidation Finding Candidate → Core Finding Disposition → current Target Q/R/P/Decision-basis/revalidation state when resolved there
-
-AG-L4-01
-  dependency/change Finding Candidate → Core Finding Disposition → current Target Decision/plan state when resolved there
-
-AG-L5-03
-  accepted non-global architecture Answer Decision → current Target
-
-AG-L6-01
-  proof/observability/operability Finding Candidate → Core Finding Disposition → current Target requirement/Decision/Test-handoff state when resolved there
-
-AG-QR-01
-  material quality/risk Finding Candidate → Core Finding Disposition → resolved semantic/implementation owner or current Target; no generic NFR file by default
-
-AG-SIMP-01
-  accepted simplification/retained-complexity Decision → current Target
+Slice Portfolio
+Slice → Domain Realization Map
+Realization Owner Bridge
+inline Slice owners
+inline Cross-Cutting owners
 ```
 
-These records are representation projections of already accepted/dispositioned meaning; they do not assign semantic ownership to raw Lens findings. After Core Finding Disposition resolves the State/owner, Documentation / Representation + P-14 may place it in code, a coordinator section, a dedicated owner artifact or another selected representation. `FILE_OR_ARTIFACT: <current-idtspe-owner>` is therefore an owner-address after disposition, not a demand for a dedicated Markdown file.
+### Slice
 
-### Resolve/reroute before placement
+A selected Slice has semantic identity even when it remains an inline Strategy
+section. A dedicated Slice file appears only under independent size/review/reuse/
+lifecycle pressure.
+
+### Cross-Cutting
+
+Small shared owners may stay inline near Strategy. Dedicated Cross-Cutting files
+appear when shared ownership is independently substantial.
+
+### Domain / Aggregate
+
+Default durable realization may be code/types/tests. A separate Domain Markdown
+owner is exceptional/pressure-driven rather than normal SDS folder topology.
+
+### Evolution
+
+Evolution Steps normally stay inside the natural Slice/Cross-Cutting owner. A
+separate `<owner>.evolution.md` is only a physical split of the **same semantic
+owner** when the evolution section itself has substantial independent review/update
+pressure.
+
+### Tests
+
+Exact tests stay implementation-native. Separate Test Design prose exists only
+when proof design is independently non-trivial.
+
+---
+
+# Worked Physical Topologies
+
+These trees are examples, **not laws**.
+
+Do not infer:
 
 ```text
-AG-L2-02
-  missing semantic owner → keep owner unresolved; Core Finding Disposition may surface a Target Formation candidate; do not create a hidden owner file
-
-AG-L6-02
-  independently shared operability concern → Core disposition / Target Formation resolves a real Cross-Cutting/shared or bounded local owner before placement
-
-AG-QR-02
-  genuinely shared quality must-hold → Core disposition / Target Formation resolves Requirement/Cross-Cutting/other natural shared owner before placement
+one file per Target
+one file per Slice
+one file per Cross-Cutting concern
+one Domain prose file per Aggregate
+one evolution file per owner
 ```
 
-These are `ROUTE`/`UNRESOLVED` outcomes. A physical node appears only after semantic ownership and representation are resolved.
+Inline and asymmetric representation are normal.
 
-## Projection Completeness Rule
+## Example A — LIGHT
 
-The human-facing projection must account for **all source AP/AG IDs** either:
+Use when Scenarios/Slices are understandable and most realization planning residue
+is small.
 
 ```text
-inside a materialization-tree node
-or
-in Non-tree Representation / Routing Guidance
+planning/
+├── APPLICATION-DEFINITION.md
+├── scenarios/
+│   ├── SCN-CAPTURE.md
+│   └── SCN-REVIEW.md
+├── SCREEN-MAP.md                 # only if spatial/UI meaning is material
+└── SLICE-STRATEGY.md
+
+src/
+└── ...                           # Domain/implementation-native truth
+
+tests/
+└── ...
 ```
 
-No AP/AG record may disappear merely because it does not create a file. Conversely, the projection must not invent a file to make an embed/route record look tree-shaped.
-
-The source record count is validated from Target Module/Lens bodies directly; this tree replaces the old flattened guidance table as the human-facing file projection.
-
-## How To Read This Tree
-
-Do not start from the tree and instantiate files.
-
-Start from:
+`SLICE-STRATEGY.md` can own:
 
 ```text
-IDTSPE semantic result
-↓
-Documentation / Representation Lens
-↓
-minimum sufficient representation
-↓
-this tree as destination/proposer navigation
-↓
-P-14 / TF-10 concrete placement/action
+Slice Portfolio
+Slice → Domain Realization Map
+Realization Owner Bridge
+
+Inline realization owners:
+  SL-CAPTURE
+  SL-REVIEW
+  XC-AUDIT
 ```
 
-For the detailed rules and multiple explained physical-tree examples, read [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md).
+Example inline Slice owner:
+
+```text
+## SL-CAPTURE
+
+Outcome / obligations / proof intent
+Uses / ownership boundary
+Runtime Path — only if material
+
+Evolution Steps
+### Add another source type
+Behavioral Source: SCN-CAPTURE / Change Outlook
+Slice Change: capture accepts another source variant
+Domain Changes: SourceContext must represent the new source meaning
+Implementation Outlook:
+  preserve one local source-variation boundary;
+  do not introduce a generic plugin framework.
+```
+
+Example inline Cross-Cutting owner:
+
+```text
+## XC-AUDIT
+
+Shared guarantee
+Applicability / local consumer obligations
+Canonical shared responsibility
+Evolution Steps — when material
+```
+
+Why LIGHT is valid:
+
+```text
+3 semantic realization owners
+≠ 3 files
+```
+
+## Example B — MIXED / ASYMMETRIC
+
+Use when one Slice or shared concern becomes independently substantial while
+peers remain small.
+
+```text
+planning/
+├── APPLICATION-DEFINITION.md
+├── scenarios/
+│   ├── SCN-CAPTURE.md
+│   └── SCN-EXPORT.md
+├── SCREEN-MAP.md                 # optional
+└── slices/
+    ├── SLICE-STRATEGY.md
+    └── SL-EXPORT.md              # promoted owner only
+
+src/
+└── ...
+
+tests/
+└── ...
+```
+
+Owner placement may be:
+
+```text
+SL-CAPTURE → SLICE-STRATEGY.md#SL-CAPTURE
+SL-REVIEW  → SLICE-STRATEGY.md#SL-REVIEW
+SL-EXPORT  → slices/SL-EXPORT.md
+XC-AUDIT   → SLICE-STRATEGY.md#XC-AUDIT
+```
+
+This asymmetry is intentional. Promoting one owner does not require promoting its
+siblings.
+
+## Example C — COMPLEX / SEPARATE REALIZATION OWNERS
+
+Use when several Slice/Cross-Cutting owners have substantial independent
+review/revalidation value.
+
+```text
+planning/
+├── application/
+│   └── APPLICATION-DEFINITION.md
+├── scenarios/
+│   ├── SCN-CAPTURE.md
+│   ├── SCN-REVIEW.md
+│   └── SCN-EXPORT.md
+├── screens/
+│   └── SCREEN-MAP.md
+├── slices/
+│   ├── SLICE-STRATEGY.md
+│   ├── SL-CAPTURE.md
+│   ├── SL-REVIEW.md
+│   └── SL-EXPORT.md
+└── cross-cutting/
+    ├── XC-AUDIT.md
+    └── XC-AUTHORIZATION.md
+
+src/
+└── ...                           # exact Domain/implementation owners
+
+tests/
+└── ...
+```
+
+Strategy remains the canonical portfolio/relationship coordinator even when Slice
+owners have their own files. It references rather than duplicates their detailed
+plans.
+
+Cross-Cutting files own the shared guarantee and shared Evolution Steps; consuming
+Slices keep only local integration obligations and references.
+
+A separate Slice evolution companion is possible only under additional pressure:
+
+```text
+slices/
+├── SL-EXPORT.md
+└── SL-EXPORT.evolution.md
+```
+
+Both files still represent one `SL-EXPORT` semantic owner.
+
+## Example D — BEHAVIOR-HEAVY / CODE-NATIVE DOMAIN
+
+A project may have many rich Scenario owners and zero Domain Markdown files:
+
+```text
+planning/
+├── APPLICATION-DEFINITION.md
+├── scenarios/
+│   ├── SCN-CAPTURE.md
+│   ├── SCN-REVIEW.md
+│   ├── SCN-EXPORT.md
+│   └── SCN-RECOVER.md
+├── SCREEN-MAP.md                 # if needed
+└── SLICE-STRATEGY.md
+
+src/
+└── domain-and-feature-code/...
+
+tests/
+└── ...
+```
+
+This is valid when code/types/tests preserve the selected Domain meaning well
+enough and no independent human-readable Domain review surface is needed.
+
+## Promotion / Demotion
+
+Representation may move in either direction:
+
+```text
+inline owner → dedicated file
+```
+
+when pressure grows, and:
+
+```text
+dedicated file → consolidated section
+```
+
+when the independent lifecycle/review value disappears.
+
+The semantic owner does not change merely because the file layout changes.
+
+## Placement Questions
+
+Before adding a file ask:
+
+1. Is the meaning already represented clearly in code/tests/an existing owner?
+2. Does it need durable human-readable review/addressability?
+3. Would a section in an existing owner be enough?
+4. Does a separate file have an independently useful lifecycle/audience?
+5. Would this create a second source of truth that must be synchronized?
+
+Choose the smallest representation that preserves authority, addressability,
+reviewability, discoverability and lifecycle fit without unnecessary sync cost.

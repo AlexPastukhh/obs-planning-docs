@@ -148,7 +148,7 @@ Structural dependency ≠ semantic authority. Semantic relation ≠ automatic wh
 
 ## Composition
 
-L2 evaluates semantic-authority/SOT/reuse questions. L5 evaluates recurring Workspace evolution/architecture pressure; `TM-WEUC` owns the global evolution map/current architecture position. L6 evaluates proof/operation implications. None of these Lenses owns the resulting project semantic authority/State; Core Finding Disposition resolves accepted meaning/owner/lifecycle consequences.
+L2 evaluates semantic-authority/SOT/reuse questions. L5 evaluates planned/probable future-change interaction and change isolation. L6 evaluates proof/operation implications. None of these Lenses owns the resulting project semantic authority/State; Core Finding Disposition resolves accepted meaning/owner/lifecycle consequences.
 
 ## Escalation / Revalidation
 

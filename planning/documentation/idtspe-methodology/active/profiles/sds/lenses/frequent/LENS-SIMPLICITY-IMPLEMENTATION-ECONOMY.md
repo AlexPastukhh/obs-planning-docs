@@ -25,7 +25,7 @@ The Lens is not “minimize file count” or “remove abstractions by default�
 
 ## Applicability Gate
 
-Activate when a Domain/Slice/Test/Frontend/Cross-Cutting/architecture candidate contains material structural choice, especially when one or more of these are present:
+Activate when a Domain/Slice/Test/UI/Cross-Cutting/architecture candidate contains material structural choice, especially when one or more of these are present:
 
 ```text
 several abstraction layers / wrappers / interfaces
@@ -53,19 +53,19 @@ Also activate when a reviewer/agent has the concrete question:
 ```text
 current Target + accepted semantic owners
 candidate Ideas / implementation plan / test design
-current Workspace implementation when available
-SDS-WORKSPACE-EVOLUTION.md
-  Current Global Architecture Position
-  Planned / Probable Evolution Paths
-  Prepared Extension Points
-relevant <owner>.evolution.md local companion(s)
+current implementation/workspace when available
+accepted current architecture Decisions from natural owners
+relevant Scenario future/change meaning
+Strategy May Change / planned future Slice meaning
+Slice/Cross-Cutting Evolution Steps + resolved Implementation Outlooks
+relevant <owner>.evolution.md representation only when already justified
 L4 dependency/change surface
-WEUC Lens / L5 findings
+L5 Evolution / Change Isolation findings
 L6 proof/operation findings
 observed implementation friction when available
 ```
 
-The global/local evolution plans are constraints/evidence for simplification, not semantic authority over Scenario/Domain meaning.
+Accepted owner-local evolution meaning is constraint/evidence for simplification, not a second semantic authority over Scenario/Domain meaning.
 
 
 
@@ -73,11 +73,11 @@ The global/local evolution plans are constraints/evidence for simplification, no
 
 ### Primary Result Units / Semantic Selectors
 
-- semantic selectors over selected Domain/Slice/Test/Frontend/architecture Result Units whose implementation cost/complexity is material
+- semantic selectors over selected Domain/Slice/Test/UI/Cross-Cutting/architecture Result Units whose implementation cost/complexity is material
 
 ### Conditional Result Units / Semantic Selectors
 
-- `RU-DDRAFT-*`, `RU-SLICE-*`, `RU-FE-*`, `RU-TDES-*`, `RU-TSTRAT-*`, `RU-WEUC-*` as applicable
+- `RU-DOM-01`, `RU-SLICE-*`, `RU-XC-*`, `RU-TDES-*`, `RU-TSTRAT-*` as applicable
 
 ### Relevant State Units
 
@@ -114,6 +114,36 @@ CHALLENGE
 - `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
 
 `REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
+
+## Complexity Classification / Work Cost
+
+Classify material current structure when useful:
+
+```text
+ESSENTIAL / INTENTIONAL
+  required by accepted semantics, real boundaries, proof/operation or accepted evolution
+
+ACCIDENTAL
+  historical/structural complexity not required by current meaning
+
+SPECULATIVE
+  added for imagined future value without accepted/planned pressure
+
+LEGACY
+  retained for compatibility/migration/history and should be consciously paid for
+```
+
+Also evaluate human work cost:
+
+```text
+understanding / discoverability
+working-context switching
+mutation/change effort
+verification effort
+runtime/operation burden
+```
+
+These dimensions are evidence for simplification, not a requirement to minimize every file/class count.
 
 ## Complexity Inventory
 
@@ -350,14 +380,14 @@ This Lens does not define new Result Units or target-result fields. If repeated 
 ## Typical Consumers
 
 ```text
-TM-DOMAIN-DRAFT
+TM-DOMAIN-DISCOVERY / Domain-Aggregate Modeling
 TM-SLICE-STRATEGY
 TM-IMPLEMENTATION-SLICE
-TM-FRONTEND-SLICE
+UI-heavy TM-IMPLEMENTATION-SLICE / Local Target when independently substantial
 TM-CROSS-CUTTING-CONCERN
 TM-TEST-STRATEGY
 TM-TEST-DESIGN
-TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION when comparing global architecture candidates
+bounded architecture Local Target when independently material
 ```
 
 ## Artifact / File Implications
@@ -382,7 +412,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-The Lens does not create a dedicated “simplicity file” by default. Accepted conclusions belong with the Target whose plan changed. If simplification exposes a project-global architecture principle or prepared extension point, surface that as a Finding Candidate with WEUC / `TM-WEUC` as the likely owner; Core Finding Disposition resolves the actual global-owner handoff rather than making this Lens a second architecture owner.
+The Lens does not create a dedicated “simplicity file” by default. Accepted conclusions belong with the Target whose plan changed. If simplification exposes a genuinely cross-owner architecture question, surface a Finding Candidate. Core Finding Disposition keeps local meaning with its natural owner or routes an independently substantial workspace-wide problem through ordinary Target Formation / a Local Target Contract.
 
 ## Guards
 
@@ -427,7 +457,7 @@ candidate
 
 ## Escalation / Revalidation
 
-If simplification exposes a new project-global architecture consequence, surface a global-update Finding Candidate carrying `TM-WEUC` as a likely-owner hint; Core disposition resolves the actual owner/handoff.
+If simplification exposes a genuinely workspace-wide architecture consequence, surface a Finding Candidate; Core disposition/Target Formation resolves the natural owner or bounded Local Target when independently material.
 
 If a deferred abstraction later reaches its documented trigger, repeat the current Target in `REFINE`/`REVALIDATE` and re-run this Lens with current evolution evidence.
 
@@ -447,7 +477,7 @@ CaptureController
 → CaptureRepository
 ```
 
-There is one current capture operation. The Workspace Evolution Map says:
+There is one current capture operation. Accepted Scenario/Slice future meaning says:
 
 ```text
 PDF capture is planned.

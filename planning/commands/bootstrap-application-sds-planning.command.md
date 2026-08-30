@@ -16,7 +16,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "bootstrap SDS planning"
   ],
   "description": "Load the SDS profile over IDTSPE Core.",
-  "meaning": "Run the SDS governance bootstrap over IDTSPE Core: establish or refresh the 15 SDS Target Modules plus inherited generic Core TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, SDS Lens pack, directed workflow and representation/materialization policy. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
+  "meaning": "Run the SDS governance bootstrap over IDTSPE Core: establish or refresh the 12 SDS Target Modules plus inherited generic Core TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, SDS Lens pack, directed workflow and representation/materialization policy. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
   "activeContextBehavior": "Load or refresh SDS profile governance over IDTSPE Core only. If a current Target/context already exists, report or reuse it for orientation without changing it. If no Target exists, stop ready for later SDS planning. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module.",
   "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
   "ownerFiles": [

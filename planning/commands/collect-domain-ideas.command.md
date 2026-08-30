@@ -14,16 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери идеи домена",
     "domain ideas"
   ],
-  "description": "legacy compatibility alias; Domain ideas alias routed into current Domain Target Modules",
-  "meaning": "Legacy alias for current Domain planning. Use TM-DOMAIN-DISCOVERY for candidate/evidence exploration or TM-DOMAIN-DRAFT for a selected Domain owner, preserving the valid no-separate-Domain result. Supplied ideas become normal IDTSPE material; no collect-ideas runtime is started.",
-  "activeContextBehavior": "Use accepted Scenario/DATA/Behavior/Requirement Sources and existing Domain representation. Resolve discovery vs draft from current state and stop before Slice planning unless the user expands the Target.",
+  "description": "legacy compatibility alias; Domain ideas route into unified Domain / Aggregate Modeling",
+  "meaning": "Legacy alias for current Domain planning. Use TM-DOMAIN-DISCOVERY / Domain-Aggregate Modeling at shallow or bounded/deep depth as appropriate. Supplied ideas become normal IDTSPE material; no collect-ideas runtime is started.",
+  "activeContextBehavior": "Use accepted Scenario/DATA/Behavior/Requirement Sources and existing Domain representation. Resolve the useful shallow-vs-deep modeling depth from current state and stop before unrelated Slice planning unless the user expands the Target.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Domain owner/module route when uncertain.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Current Domain Discovery/Draft result with evidence, selected/rejected candidates, Q/R/P/Decisions and handoffs; no legacy Domain-Ideas accumulator.",
+  "expectedOutput": "Current Domain / Aggregate Modeling result with selected/rejected candidates, material State and handoffs; no legacy Domain-Ideas accumulator or Domain Draft split.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",

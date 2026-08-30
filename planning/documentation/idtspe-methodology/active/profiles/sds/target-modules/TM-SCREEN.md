@@ -17,6 +17,8 @@ individual Screen spatial composition when addressable depth is useful
 
 Screen planning does not own Scenario behavior or frontend implementation.
 
+One Screen may serve several vertical Slices, and one Slice may involve several Screens. A Screen is therefore not a container for a frontend Slice.
+
 A simple application may keep the Screen Map and Screen Drafts in one Target Instance. A large UI may split independently reviewable Screen Targets only when that gives real planning/revalidation value.
 
 
@@ -125,7 +127,7 @@ selected Scenarios
 Behavior Items whose interaction meaning is spatially presented
 Scenario DATA that must be visible/input/editable
 spatial/accessibility Requirements
-preliminary SCREEN_WINDOW_IDEA entries from `SDS-PLANNING-STATE/ideas/scenario/IDEAS.md`
+preliminary Screen/window Ideas from current Core Idea State when they are relevant
 ```
 
 ### Inherited Lineage
@@ -202,7 +204,7 @@ What are the entry/exit/navigation relations between Screens?
 Which visibility/availability states materially change what the actor can understand/do?
 Which zones/spatial hierarchy are stable requirements?
 What remains Scenario/Behavior meaning rather than Screen meaning?
-Which preliminary screen ideas remain unselected and belong in global ideas?
+Which preliminary Screen ideas remain unselected Core Idea State?
 ```
 
 ## Resolution / Production Method
@@ -270,19 +272,16 @@ A Screen Draft is an addressable spatial object inside this module family; it do
 
 ## State-Unit / Idea Handling
 
-Unselected Screen/window ideas remain in:
-
-```text
-SDS-PLANNING-STATE/ideas/scenario/IDEAS.md
-```
-
-They become Screen Map meaning only through normal IDTSPE Decisions.
+Unselected Screen/window ideas remain Generic Core Idea State under their current planning owner/context. They become Screen Map meaning only through normal IDTSPE Resolution/Decision authority.
 
 ## Guards
 ```text
 Screen ≠ Scenario
 Screen does not own DATA/Behavior
 frontend implementation ≠ Screen semantic authority
+Screen ≠ container for a frontend Slice
+one Screen ↔ many Slices is valid
+one Slice ↔ many Screens is valid
 ```
 
 ## Artifact / File Contract
@@ -332,7 +331,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **Do not move** Scenario behavior or Scenario DATA semantic definitions into Screen files as a second authority; Screen artifacts reference them and own only spatial meaning.
 
-Unselected spatial ideas remain in the Scenario-layer Ideas register until selected.
+Unselected spatial ideas remain Generic Core Idea State until selected.
 
 `P-14` must distinguish the Screen Map owner, individual Screen Draft artifacts and any generated navigation projection.
 
@@ -351,9 +350,8 @@ placement remains reversible when semantics allow
 ## Handoff
 
 ```text
-TM-FRONTEND-SLICE / frontend Part Plan
-TM-IMPLEMENTATION-SLICE when UI is material
-TM-TEST-DESIGN / TM-PRACTICAL-TEST for spatial/interaction proof
+TM-IMPLEMENTATION-SLICE when the Slice has material UI/spatial obligations
+TM-TEST-DESIGN / TM-PRACTICAL-TEST for spatial/interaction proof when independently useful
 ```
 
-Screen output is an additional Source for UI/full-stack realization; backend-only Slice normally does not require it unless directly constrained by spatial meaning.
+The UI / Spatial / Frontend Realization Lens may evaluate how a Slice realizes Screen meaning. SDS does not require a separate Frontend Target Module.

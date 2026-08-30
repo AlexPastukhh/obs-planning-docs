@@ -445,22 +445,23 @@ current Target
 
 No special planning engine is required for architecture, algorithms, frontend state strategy or other local design problems.
 
-## Physical Planning-State Attachment
+## Planning-State Representation
 
-Per project/application:
+Generic IDTSPE State does **not** require a profile-global planning-state tree.
+
+Loose/carry-over Ideas remain ordinary Generic Idea State. Their durable representation,
+when useful, is selected through Documentation / Representation + P-14 / TF-10 and may be:
 
 ```text
-SDS-PLANNING-STATE/
-├── SDS-EVOLUTION-MAP.md
-└── ideas/
-    ├── INBOX.md
-    ├── early/IDEAS.md
-    ├── scenario/IDEAS.md
-    ├── domain/IDEAS.md
-    └── realization/IDEAS.md
+current natural owner
+existing project register / inbox
+another profile-selected owner
+NONE / ephemeral conversation state
 ```
 
-Loose Ideas and accepted Evolution Items are outside the semantic Target output unless explicitly promoted/selected.
+Accepted evolution meaning remains with its natural semantic owner. A profile may expose a
+derived/navigation evolution projection only when independently useful; that projection does
+not become a second semantic authority.
 
 ## Exit Condition
 
@@ -558,9 +559,10 @@ Lens:
   L4/L5/L6 when material
 
 Output:
-  Useful Vertical Result
-  Runtime Path
-  call-level Codebase Integration Path
+  Useful Vertical Result / obligations
+  material Uses / ownership boundary
+  optional Runtime Path
+  owner-local Evolution Steps when material
 ```
 
 If L5 exposes a genuinely independent architecture problem, it surfaces a Finding Candidate. Core Finding Disposition may surface a Target Formation candidate; Target Formation then decides whether to reuse an existing owner, hand off/reference one, or form a bounded child/local Target. Any newly formed Target uses the same IDTSPE Shell; no separate architecture planning engine is introduced.
@@ -596,59 +598,32 @@ architecture Answer-Decision input
 
 but L4 does not create that State or own the API semantics.
 
-### Example 5 — Loose Idea vs Evolution
+### Example 5 — Loose Idea vs Accepted Future Meaning
 
-During Prototype:
+During any Target:
 
 ```text
 "maybe support offline capture later"
 ```
 
-goes to:
-
-```text
-SDS-PLANNING-STATE/ideas/early/IDEAS.md
-```
-
-Only after accepted future intent/Evidence does it become:
-
-```text
-SDS-EVOLUTION-MAP
-→ candidate L5 WEUC/change pressure
-```
+remains Generic Idea State until it has enough accepted basis to affect current planning. If later accepted as Scenario-local future/change meaning, it may appear in that Scenario's future/change Result Unit and project downstream into Strategy/Slice Evolution Steps.
 
 ## Example Reading Standard
 
 See [`HIGH-LEVEL-EXAMPLE-GUIDE.md`](HIGH-LEVEL-EXAMPLE-GUIDE.md) for the rule that examples must be self-contained and explanatory, not merely contextually correct.
 
 
-## Workspace Evolution Attachment Example
+## Evolution / Architecture Attachment Example
 
 ```text
-main product evolution
-  SDS-EVOLUTION-MAP
-↓
-TM-WEUC
-  create/update SDS-WORKSPACE-EVOLUTION
-  including Current Global Architecture Position when material
-↓
-selected Domain/Slice/etc Target
-  P-06 Lens Port activates WEUC Lens when material
-↓
-local evolution / architecture Finding Candidate(s)
-  + optional TM-WEUC likely-owner hint when project-global meaning is suspected
-↓
-Core Finding Disposition resolves actual State / semantic owner / lifecycle consequence
-├→ local accepted Q/R/P / Answer Decision / evolution meaning when resolved to the current Target
-│  → AG-L5-02 companion proposal when distinct local evolution materialization is useful
-│  → Documentation / Representation + P-14 / TF-10
-│  → optional <owner>.evolution.md only when that representation/placement is selected
-└→ TM-WEUC refresh/update/revalidation only when global ownership/handoff is resolved there
-
-OR
-
-Target = whole Workspace architecture
-→ TM-WEUC / WORKSPACE_ARCHITECTURE_POSITION + WEUC Lens
-→ select/revalidate global architecture principles/defaults/conventions
-→ update Current Global Architecture Position
+Scenario future/change meaning
+→ Strategy projection / owner-local Evolution Step
+→ L5 Evolution / Change Isolation when material
+→ Finding Candidate(s)
+→ Core Finding Disposition
+→ accepted local Decision/meaning or Target Formation for an independently material cross-owner architecture problem
+→ Documentation / Representation chooses persistence only when useful
 ```
+
+No permanent global evolution Target or global architecture file is required by Core.
+

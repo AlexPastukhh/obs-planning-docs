@@ -1,4 +1,4 @@
-# LENS-DOMAIN-MODELING-DDD — Domain Meaning / DDD Pattern Pack
+# LENS-DOMAIN-MODELING-DDD — Domain / Aggregate Modeling / DDD Pattern Pack
 
 Lens ID: `LENS-DOMAIN-MODELING-DDD`  
 Activation: `TARGET_PROFILE_REUSABLE`
@@ -11,11 +11,11 @@ The Lens supports both deeper explicit Domain Targets and the broad/shallow Doma
 
 ## Applicability Gate
 
-Primary when `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT` is active.
+Primary when the unified `TM-DOMAIN-DISCOVERY` / Domain-Aggregate Modeling family is active.
 
-Also primary for `TM-SLICE-STRATEGY / RU-SSTRAT-02 Domain / Aggregate Realization Map` when broad/shallow Domain/Aggregate boundaries are material to Slice implementation planning.
+Also primary for `TM-SLICE-STRATEGY / RU-SSTRAT-02 Slice → Domain Realization Map` when broad/shallow Domain/Aggregate boundaries are material to Slice implementation planning.
 
-The depth must follow the host Target. Slice Strategy does not become a full Domain Draft merely because this Lens is selected.
+The depth must follow the host Target. Slice Strategy does not become a deep standalone Domain model merely because this Lens is selected.
 
 ## Target Inputs / Evidence
 
@@ -26,8 +26,7 @@ Scenario Behavior / Requirements, Scenario DATA, Behavior Items, must-hold condi
 ### Primary Result Units / Semantic Selectors
 
 - `TM-SLICE-STRATEGY`: `RU-SSTRAT-02`
-- `TM-DOMAIN-DISCOVERY`: `RU-DDISC-01..RU-DDISC-05`
-- `TM-DOMAIN-DRAFT`: `RU-DDRAFT-01..RU-DDRAFT-05`
+- `TM-DOMAIN-DISCOVERY`: `RU-DOM-01`
 
 ### Conditional Result Units / Semantic Selectors
 
@@ -56,6 +55,27 @@ CHALLENGE
 
 `REOPEN`, State-Unit creation/refinement, cross-owner handoff and accepted Result mutation remain Core Finding-Disposition/lifecycle consequences.
 
+## Operational Evaluation Sequence
+
+Use proportionally:
+
+```text
+Behavior / DATA / must-hold Evidence
+→ candidate identity
+→ material state/condition dimensions
+→ state/condition matrix when useful
+→ valid / impossible combinations
+→ invariants vs policies
+→ transitions / lifecycle
+→ what must remain consistent together
+→ Aggregate/root boundary
+→ Aggregate-owned behavior vs application/external coordination
+→ useful public/semantic Domain operations
+→ simplicity challenge
+```
+
+At Strategy depth this may stop after candidate Aggregate + semantic behavior/rule/action needed by a Slice. Later refinement may name stable domain-facing operations/methods. Incidental internal methods are not useful Strategy mapping.
+
 ## Depth Rule
 
 Use only as much Domain detail as the host Target needs.
@@ -82,7 +102,7 @@ full internal Aggregate model
 implementation-class mirror
 ```
 
-Deeper reasoning may become normal Domain Target work or detailed Slice planning when independently useful.
+Deeper reasoning may become a bounded Domain/Aggregate Modeling Target or detailed Slice planning when independently useful.
 
 ## Identity / Entity Evidence
 
@@ -213,13 +233,13 @@ This Lens does not define Result Units or directly mutate accepted Domain/Slice 
 
 ## Typical Consumers
 
-Slice Implementation Strategy, Domain Discovery/Draft, Implementation Slice and Test Design when Domain correctness matters.
+Slice Implementation Strategy, Domain/Aggregate Modeling, Implementation Slice and Test Design when Domain correctness matters.
 
 ## Artifact / File Implications
 
 `NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`.
 
-When used by `TM-SLICE-STRATEGY`, the relevant planning meaning belongs in `RU-SSTRAT-02 Domain / Aggregate Realization Map`; this Lens must not create a parallel Domain artifact.
+When used by `TM-SLICE-STRATEGY`, the relevant planning meaning belongs in `RU-SSTRAT-02 Slice → Domain Realization Map`; this Lens must not create a parallel Domain artifact.
 
 When used by an explicit Domain Target, representation follows that Target contract.
 
@@ -232,7 +252,7 @@ DDD pattern name is never sufficient Evidence
 noun/table/DTO ≠ Entity
 database relationship ≠ Aggregate boundary
 Slice ≠ Aggregate
-broad Strategy discovery ≠ full Domain Draft
+broad Strategy discovery ≠ deep standalone Domain modeling
 implementation convenience ≠ semantic authority
 planned map ≠ authoritative current-code mirror
 ```

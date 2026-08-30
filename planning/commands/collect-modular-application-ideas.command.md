@@ -23,7 +23,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
   "expectedOutput": "Normal current IDTSPE/SDS results for the material Application Targets plus representation/placement decisions when useful; no Modular Current Plan accumulator.",

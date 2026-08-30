@@ -252,7 +252,7 @@ cross-owner Decisions/QRP requiring human review
 registries/catalogs used to find distributed owners
 ```
 
-This is why a `SLICE-STRATEGY.md`, `SCENARIO-CATALOG.md`, `DOMAIN-DISCOVERY.md`, `SDS-EVOLUTION-MAP.md`, `SDS-WORKSPACE-EVOLUTION.md` or responsibility map can be more valuable than a file for every individual Domain/Slice.
+This is why a strategy/catalog/discovery/responsibility map can be more valuable than a file for every individual semantic owner.
 
 ## Part 5 — Existing Owner Before New Owner
 
@@ -352,7 +352,7 @@ SL-CAPTURE.frontend.md
 SL-CAPTURE.parts/...
 ```
 
-just because Test Design, WEUC, Frontend or Part planning was considered.
+just because Test Design, evolution evaluation, UI realization or local part reasoning was considered.
 
 Split only when the subsection gains independent value such as:
 
@@ -377,7 +377,7 @@ DOMAIN-DISCOVERY.md
 SLICE-STRATEGY.md
 TEST-STRATEGY.md
 SDS-EVOLUTION-MAP.md
-SDS-WORKSPACE-EVOLUTION.md
+cross-owner architecture/evolution artifact only when independently justified
 responsibility maps / registries
 ```
 
@@ -593,7 +593,7 @@ create one file per IDTSPE iteration
 create one file per Lens finding
 copy code structure into prose without additional value
 force a complete template into every owner artifact
-split Test/Evolution/Frontend/Part files before independent pressure exists
+split Test/Evolution/UI/local-part files before independent pressure exists
 hide project-global planning truth only in local comments
 make code implementation authority over upstream Scenario/product behavior
 use a new file to avoid resolving semantic ownership
@@ -632,284 +632,54 @@ project-global implications emerge
 
 Physical split/merge never changes semantic ownership silently.
 
-# Worked Physical Topologies
+# Worked Physical Topologies — Generic
 
-The examples below are the primary explanation of how SDS planning material can live differently in different projects. They are **not templates to instantiate**.
+These examples demonstrate representation rules only. Installed profiles may publish more concrete trees (for SDS see its `ARTIFACT-PLACEMENT-MAP.md`).
 
-## Example A — Compact / Registry-Strategy-Heavy SDS
-
-### Situation
-
-Domain Discovery and Slice planning are valuable, but most Domain semantics are clear in implementation and individual Slices have little planning residue.
-
-### IDTSPE work that may have happened
+## Example A — Consolidated Owner
 
 ```text
-TM-DOMAIN-DISCOVERY
-TM-DOMAIN-DRAFT / CaptureItem
-TM-DOMAIN-DRAFT / SourceContext
-TM-SLICE-STRATEGY
-TM-IMPLEMENTATION-SLICE / SL-CAPTURE
-TM-IMPLEMENTATION-SLICE / SL-REVIEW
+planning.md
+  Target/Result owner A
+  Target/Result owner B
+  shared decision/context section
 ```
 
-### Physical tree
+Valid when the meanings remain addressable and have similar audience/lifecycle.
+
+## Example B — Asymmetric Promotion
 
 ```text
-planning/
-├── APPLICATION-DEFINITION.md
-├── scenarios/
-│   ├── SCENARIO-CATALOG.md
-│   ├── SCN-CAPTURE.md
-│   └── SCN-REVIEW.md
-├── DOMAIN-DISCOVERY.md
-├── SLICE-STRATEGY.md
-└── SDS-WORKSPACE-EVOLUTION.md
-
-src/
-├── capture/
-│   ├── CaptureItem.*
-│   ├── SourceContext.*
-│   └── ...
-└── review/
-    └── ...
-
-tests/
-└── ...
+planning.md
+  owner A
+  owner B → owner-b.md
+  owner C
 ```
 
-### Why this topology
+Only B is promoted because only B has independent size/review/reuse pressure. Logical peers do not require physical symmetry.
 
-`DOMAIN-DISCOVERY.md` keeps the Domain map, responsibilities, selected Decisions and residual Q/R/P that code does not communicate well. `CaptureItem` and `SourceContext` current invariants/types live naturally in code and executable tests.
-
-`SLICE-STRATEGY.md` contains the Slice inventory/vertical results and can keep small per-Slice Decision/QRP sections. There is no value yet in `SL-CAPTURE.md` or `SL-REVIEW.md`.
-
-### Promotion trigger
-
-Create a dedicated Domain/Slice owner artifact only when one owner gains enough independent planning/review/addressability pressure.
-
-## Example B — One Promoted Domain Owner
-
-### Situation
-
-Most Domain candidates remain simple/code-native, but `CaptureItem` has substantial responsibility, non-obvious invariants, Decisions and open Q/R/P.
-
-### Physical tree
+## Example C — Implementation-Native Owner
 
 ```text
-planning/
-├── APPLICATION-DEFINITION.md
-├── scenarios/
-│   ├── SCENARIO-CATALOG.md
-│   ├── SCN-CAPTURE.md
-│   └── SCN-REVIEW.md
-├── domain/
-│   ├── DOMAIN-DISCOVERY.md
-│   └── CaptureItem.md
-├── SLICE-STRATEGY.md
-└── SDS-WORKSPACE-EVOLUTION.md
+code/types/tests
+  = primary durable meaning
 
-src/
-├── capture/
-│   ├── CaptureItem.*
-│   ├── SourceContext.*
-│   └── Destination.*
-└── ...
+planning residue
+  = only rationale/relations/future meaning not adequately recoverable from implementation
 ```
 
-### Why this topology
-
-`CaptureItem.md` is promoted because human-readable owner-specific planning is independently valuable. `SourceContext` and `Destination` remain represented by sections in `DOMAIN-DISCOVERY.md` plus code/tests.
-
-The topology is intentionally asymmetric. Logical Domain owners do not need symmetric files.
-
-### What belongs in `CaptureItem.md`
-
-Only useful planning meaning, for example:
+## Example D — Same Owner, Companion Under Pressure
 
 ```text
-Responsibility
-non-obvious invariant/rationale
-important Decisions
-active Q/R/P
-material evolution note
+owner.md
+owner.evolution.md
 ```
 
-Do not copy all fields/methods from implementation.
-
-## Example C — One Promoted Slice Owner
-
-### Situation
-
-The Slice portfolio is stable in one strategy file, but `SL-CAPTURE` has enough planning detail to review independently.
-
-### Physical tree
-
-```text
-planning/
-├── scenarios/
-│   ├── SCENARIO-CATALOG.md
-│   ├── SCN-CAPTURE.md
-│   └── SCN-REVIEW.md
-├── DOMAIN-DISCOVERY.md
-├── slices/
-│   ├── SLICE-STRATEGY.md
-│   └── SL-CAPTURE.md
-└── SDS-WORKSPACE-EVOLUTION.md
-```
-
-### Where the other Slice owners live
-
-```text
-SLICE-STRATEGY.md
-├── SL-REVIEW     — complete small planning residue here
-└── SL-EXPORT     — complete small planning residue here
-
-SL-CAPTURE.md
-└── independently promoted representation
-```
-
-Several `TM-IMPLEMENTATION-SLICE` invocations therefore still produce only one dedicated Slice file.
-
-### Why no companions yet
-
-`SL-CAPTURE.md` may already contain:
-
-```text
-Useful Vertical Result
-Implementation
-Testing
-Evolution
-Q/R/P
-Decisions
-```
-
-Running `TM-TEST-DESIGN`, WEUC Lens or Simplicity Lens against `SL-CAPTURE` does not automatically create companion files.
-
-## Example D — Mature Slice With Specialized Companions
-
-### Situation
-
-`SL-CAPTURE` has matured enough that local evolution and Test Design now have separate review/update lifecycles.
-
-### Physical tree
-
-```text
-planning/
-├── slices/
-│   ├── SLICE-STRATEGY.md
-│   ├── SL-CAPTURE.md
-│   └── SL-CAPTURE.evolution.md
-└── testing/
-    └── slices/
-        └── SL-CAPTURE.test-design.md
-```
-
-### Why the split is now justified
-
-`SL-CAPTURE.evolution.md` exists because there are several future paths, prepared extension points and revalidation triggers worth maintaining separately.
-
-`SL-CAPTURE.test-design.md` exists because proof planning is substantial, independently reviewed and useful before/alongside implementation.
-
-The companions remain supporting representations. Current Slice semantic ownership does not migrate merely because files split.
-
-## Example E — Scenario-Heavy, Domain-Code-Native Product
-
-### Situation
-
-Behavioral/product semantics are rich and must be readable independently of implementation, while Domain internals remain naturally expressed in code.
-
-### Physical tree
-
-```text
-planning/
-├── APPLICATION-DEFINITION.md
-├── scenarios/
-│   ├── SCENARIO-CATALOG.md
-│   ├── SCN-CAPTURE.md
-│   ├── SCN-REVIEW.md
-│   ├── SCN-EXPORT.md
-│   └── SCN-RECOVER.md
-├── DOMAIN-DISCOVERY.md
-├── SLICE-STRATEGY.md
-└── SDS-WORKSPACE-EVOLUTION.md
-
-src/
-└── domain-and-feature-code/...
-```
-
-### Why Scenario files stay rich
-
-Scenario actor/situation/DATA/Behavior/result is upstream behavioral authority and should be reviewable without reverse-engineering code or tests. Therefore Scenario persistence pressure is normally stronger than Domain-file persistence pressure.
-
-Tests prove selected behavior; they do not replace Scenario semantic ownership.
-
-## Example F — Mixed Asymmetric Growth
-
-### Situation
-
-The project has several Domains and Slices, but only some need dedicated artifacts.
-
-### Physical tree
-
-```text
-planning/
-├── scenarios/
-│   ├── SCENARIO-CATALOG.md
-│   └── SCN-*.md
-├── domain/
-│   ├── DOMAIN-DISCOVERY.md
-│   └── CaptureItem.md
-├── slices/
-│   ├── SLICE-STRATEGY.md
-│   ├── SL-CAPTURE.md
-│   └── SL-EXPORT.md
-├── testing/
-│   └── slices/
-│       └── SL-EXPORT.test-design.md
-└── SDS-WORKSPACE-EVOLUTION.md
-```
-
-### Interpretation
-
-```text
-CaptureItem
-→ dedicated Domain artifact
-
-SourceContext / Destination
-→ DOMAIN-DISCOVERY sections + code
-
-SL-CAPTURE / SL-EXPORT
-→ dedicated Slice artifacts
-
-SL-REVIEW
-→ section in SLICE-STRATEGY
-
-SL-EXPORT Test Design
-→ companion artifact
-
-SL-CAPTURE Test Design
-→ section in SL-CAPTURE.md
-```
-
-This is not inconsistency. It is pressure-driven representation.
+This is still one semantic owner. The companion is justified only by independent representation pressure; it does not create a second Target/authority.
 
 ## Example Lesson
 
-Across all examples:
-
-```text
-planning richness
-≠ file count
-
-logical owner count
-≠ file count
-
-IDTSPE invocation count
-≠ file count
-```
-
-The correct topology is the one that preserves useful meaning with the lowest credible duplication, navigation and synchronization cost.
+Choose the smallest representation that preserves authority, addressability, reviewability, discoverability and lifecycle fit without unnecessary synchronization cost.
 
 ## Knowledge Basis
 

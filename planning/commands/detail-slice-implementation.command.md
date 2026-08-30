@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Refined Runtime Path, Codebase Integration Path, Domain Elements Used and proportional Part Plans for the same Slice Target; no new Target identity.",
+  "expectedOutput": "Refined material Uses/ownership boundary, optional Runtime Path and Evolution Steps for the same Slice Target; no new Target identity.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -36,7 +36,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "helperPresentation": {
     "whenToUse": "Use when the bounded Slice Target already exists and its implementation sequencing/runtime path needs deeper concrete detail.",
-    "whatYouGet": "Refined Runtime Path, Codebase Integration Path, Domain Elements Used and proportional Part Plans for the same already selected Slice Target; no new Target identity.",
+    "whatYouGet": "Refined material Uses/ownership boundary, optional Runtime Path and Evolution Steps for the same already selected Slice Target; no new Target identity.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

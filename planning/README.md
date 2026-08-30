@@ -121,19 +121,18 @@ See [`documentation/workspace-planning/direction-registry.md`](documentation/wor
 Current canonical route:
 
 ```text
-Need / reality / whole-solution choice
-→ TM-APPLICATION-DEFINITION when an Application responsibility is justified
-→ Prototype when evidence is materially useful
-→ Scenario Discovery / Scenario Draft
-→ Screen / standalone Requirement only when justified
-→ optional Domain Discovery / Domain
+optional Need / real-life solution discovery
+→ TM-APPLICATION-DEFINITION when an own Application contribution is justified
+→ Prototype when practical Evidence is materially useful
+→ one Scenario owner per independently meaningful Application result
+→ Screen planning when spatial meaning is material
 → optional Slice Strategy
-→ Implementation Slice / promoted Frontend / Cross-Cutting responsibility as needed
-→ Test Design / Test Strategy / Practical Test / Coverage proportionally
-→ Decision revalidation / consistency review
+→ flexible Slice / Aggregate realization loop
+→ Exact Realization + proportional Test Design / Test Strategy / Practical Evidence
+→ selective revalidation when Evidence challenges accepted meaning
 ```
 
-See [`documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md`](documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md). Scenario remains Application behavioral authority. Domain and Slice are planning Targets, not mandatory file families; the Documentation / Representation Lens may keep material in code/tests, an existing discovery/strategy owner, one dedicated artifact, or no durable representation when nothing material needs persistence.
+See [`documentation/idtspe-methodology/active/profiles/sds/README.md`](documentation/idtspe-methodology/active/profiles/sds/README.md) and the canonical [`directed workflow`](documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md). Scenario remains Application behavioral authority. A normal Slice is one useful vertical result, not a frontend/backend technical-layer split. Domain and Slice are planning owners, not mandatory file families; the Documentation / Representation Lens and SDS Artifact Placement Map may keep material inline, in code/tests, in an existing owner, or in a dedicated artifact only when justified.
 
 ## Parallel Work / Scope Logs
 

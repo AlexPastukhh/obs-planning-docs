@@ -290,7 +290,7 @@ register / index / collection artifact
 
 Examples:
 
-- canonical `SDS-WORKSPACE-EVOLUTION.md` or local `<owner>.evolution.md` when evolution paths need durable addressability;
+- natural owner evolution section or same-owner `<owner>.evolution.md` companion when accepted evolution meaning needs durable addressability;
 - Scenario Registry;
 - Decision Portfolio projection;
 - Concern Register when distributed durable concerns justify it.
@@ -450,7 +450,7 @@ Full SDS default:
   Requirements stable owner when material
   Domain separate when explicit Domain exists
   Slice stable owner
-  `SDS-WORKSPACE-EVOLUTION.md` when TM-WEUC interpretation is materially useful
+  cross-owner architecture/evolution artifact only when independently useful and naturally owned
   testing surface when durable proof planning justifies it
 ```
 
@@ -883,11 +883,10 @@ Suppose later the same evolution direction affects several owners and becomes pa
 Then the canonical route is:
 
 ```text
-local Lens finding / evolution companion
-→ map/global-architecture update Finding Candidate + likely TM-WEUC owner hint
+local Lens finding / evolution pressure
 → Core Finding Disposition
-→ resolved TM-WEUC owner when selected
-→ SDS-PLANNING-STATE/SDS-WORKSPACE-EVOLUTION.md
+→ natural owner or Target Formation for independently substantial cross-owner architecture
+→ Documentation / Representation chooses any durable artifact only when independently useful
 ```
 
 Do not create a parallel WEUC-instance register merely because several future paths exist. The global Workspace Evolution Map is the canonical aggregation owner.
@@ -1123,8 +1122,8 @@ Scenario methodology
 Slice methodology
 → defines Slice artifact forms/content
 
-TM-WEUC / Workspace Evolution methodology
-→ defines global `SDS-WORKSPACE-EVOLUTION` and optional local evolution-companion forms
+Profile Target owners + evolution Lens
+→ define accepted owner-local evolution meaning; Documentation / Representation chooses any physical companion form
 
 Q/R/P model
 → defines concern storage forms

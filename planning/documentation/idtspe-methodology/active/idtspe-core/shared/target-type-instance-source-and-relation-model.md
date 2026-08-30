@@ -13,7 +13,7 @@ Examples:
 
 ```text
 TM-SCENARIO-PLANNING
-TM-DOMAIN-DRAFT
+TM-DOMAIN-DISCOVERY / Domain-Aggregate Modeling
 TM-IMPLEMENTATION-SLICE
 ```
 

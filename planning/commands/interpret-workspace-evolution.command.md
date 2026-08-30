@@ -1,6 +1,6 @@
-# Interpret Plan Through Workspace Evolution
+# Interpret Plan Through Evolution — Compatibility Alias
 
-Status: active project command definition
+Status: legacy compatibility command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
 
 [PLANNING_COMMAND_DEFINITION]
@@ -13,52 +13,31 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "интерпретируй план с точки зрения эволюции воркспейса"
   ],
-  "description": "focused SDS target",
-  "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+  "description": "legacy compatibility alias; routes to current evolution/architecture authority",
+  "meaning": "Legacy WEUC interpretation phrase. Resolve/reuse the natural Target and apply L5 Evolution / Change Isolation; if the question is genuinely workspace-wide architecture, route it to DIR-PLAN-ARCHITECTURE.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md",
+    "planning/documentation/architecture-planning/direction-registry.md"
   ],
-  "expectedOutput": "EARLY_INTERPRETATION result with material evolution/architecture implications and routed owner updates.",
+  "expectedOutput": "Target-local planned-evolution/change-isolation findings, or an explicit handoff to Workspace Architecture Planning when the scope is independently global.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
+    "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
+    "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+    "This command is read-only planning; it does not mutate repository files, commit or push."
   ],
-  "userTarget": "<current plan/workspace>",
-  "palette": true,
+  "userTarget": "<current Target / plan / Workspace question>",
+  "palette": false,
   "directionIds": [
     "DIR-PLAN-SOLUTION",
     "DIR-PLAN-ARCHITECTURE"
   ],
-  "helperPresentation": {
-    "whenToUse": "Use for early Workspace-evolution interpretation before a full projected path is needed.",
-    "whatYouGet": "EARLY_INTERPRETATION result with material evolution/architecture implications and routed owner updates.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "03",
-      "sectionLabel": "03 Workspace Evolution & Architecture",
-      "sectionOrder": 3,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "architecture_weuc.discover",
-      "viewOrder": 1
-    }
-  },
+  "helperPresentation": null,
   "refinements": [],
-  "methodologyBinding": {
-    "methodologyRuntime": "IDTSPE",
-    "profile": "SDS",
-    "surfaceKind": "TARGET_MODULE_FOCUSED",
-    "targetModuleId": "TM-WEUC",
-    "lensId": null,
-    "parentSurface": "architecture_weuc.discover",
-    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-  }
+  "methodologyBinding": null
 }
 [/PLANNING_COMMAND_DEFINITION]

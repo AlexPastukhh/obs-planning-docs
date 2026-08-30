@@ -64,7 +64,7 @@ Target:
   SL-CAP-01
 
 Current Step intent:
-  produce a codebase-level implementation plan
+  produce a sufficiently resolved vertical Slice plan before exact realization
 
 Target Step Result:
   Implementation Slice Plan
@@ -176,14 +176,14 @@ Result Unit:
     describe the selected running-system path
 
 Result Unit:
-  Codebase Integration Path
+  Uses / Ownership Boundary
   Purpose:
-    map the running behavior to existing/planned code owners and calls
+    preserve material Domain/shared/dependency responsibility relations
 
 Result Unit:
-  Focused Part Plan
+  Evolution Steps
   Purpose:
-    expand one already-selected non-trivial hop when useful
+    preserve resolved target-specific meaning for accepted/planned changes touching the Slice
 
 Field group inside Result Unit:
   Slice Outcome Definition.verificationObligations
@@ -302,10 +302,10 @@ the selected meaning may then update:
 
 ```text
 Result Unit:
-  Codebase Integration Path
+  Uses / Ownership Boundary
 
 Field:
-  failurePropagation
+  failurePropagation responsibility
 ```
 
 ### Decision retained context
@@ -612,8 +612,8 @@ Result Unit:
 → current Slice planning owner
 
 Result Unit:
-  Codebase Integration Path
-→ same planning owner
+  Evolution Steps
+→ same Slice semantic owner
 
 Decision D-21
 → durable rationale in current owner when revalidation value is material
@@ -666,7 +666,7 @@ Module:
   TM-IMPLEMENTATION-SLICE
 
 Current Step intent:
-  produce a codebase-level implementation plan
+  produce a sufficiently resolved vertical Slice plan before exact realization
 ```
 
 Current State Units:
@@ -691,12 +691,10 @@ Risk:
 Target Step Result:
 
 ```text
-RU-SLICE-01 Slice Outcome Definition
-  + verification/proof-handoff meaning
-RU-SLICE-02 Responsibility / Dependency Boundary
-RU-SLICE-03 Runtime Path
-RU-SLICE-04 Codebase Integration Path
-RU-SLICE-05 Focused Part Plan(s) — only when material
+RU-SLICE-01 Outcome / semantic obligations / proof intent
+RU-SLICE-02 Uses / Ownership Boundary
+RU-SLICE-03 Runtime Path — optional
+RU-SLICE-04 Evolution Steps
 ```
 
 Slice Integration Lens Analysis Surface:
@@ -787,7 +785,7 @@ Core
 Installed SDS profile conformance is literal after the SDS migration:
 
 ```text
-15 / 15 SDS Target Modules
+12 / 12 SDS Target Modules
 → Resolution / Production Method
 → Target Step-Result Contract
 

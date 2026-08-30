@@ -10,8 +10,8 @@ const entries=seed.items;
 
 test('methodology navigation exposes accepted primary counts from repository command metadata',()=>{
   assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').length,11);
-  assert.equal(nav.methodologyPrimaryIds(entries,'SDS').length,32);
-  assert.equal(new Set([...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')]).size,43);
+  assert.equal(nav.methodologyPrimaryIds(entries,'SDS').length,26);
+  assert.equal(new Set([...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')]).size,37);
 });
 
 test('SDS related consistency link reuses Core command identity without increasing primary count',()=>{
@@ -48,17 +48,17 @@ test('Helper methodology view controls are derived from repository navigation me
   assert.doesNotMatch(ui,/METHODOLOGY_VIEW_IDS\?\.IDTSPE/);
 });
 
-test('all 43 methodology surfaces carry stable IDTSPE binding separate from helper navigation',()=>{
+test('all 37 methodology surfaces carry stable IDTSPE binding separate from helper navigation',()=>{
   const primary=[...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')];
   const byId=new Map(entries.map((entry)=>[entry.id,entry]));
-  assert.equal(primary.length,43);
+  assert.equal(primary.length,37);
   for(const id of primary){const binding=byId.get(id)?.methodologyBinding;assert.ok(binding,`${id}: missing methodologyBinding`);assert.equal(binding.methodologyRuntime,'IDTSPE',id);}
   const canonical=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE');
-  assert.equal(canonical.length,17);
-  assert.equal(new Set(canonical.map((entry)=>entry.methodologyBinding.targetModuleId)).size,17);
+  assert.equal(canonical.length,14);
+  assert.equal(new Set(canonical.map((entry)=>entry.methodologyBinding.targetModuleId)).size,14);
   assert.deepEqual(canonical.filter((entry)=>entry.methodologyBinding.profile===null).map((entry)=>entry.id).sort(),['tmcmd.exact.realization','tmcmd.pre.update']);
   const focused=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE_FOCUSED');
-  assert.equal(focused.length,13);
+  assert.equal(focused.length,10);
   assert.ok(focused.every((entry)=>entry.methodologyBinding.parentSurface));
   const lenses=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='LENS');
   assert.equal(lenses.length,5);

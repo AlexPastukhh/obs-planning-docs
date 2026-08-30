@@ -1,124 +1,121 @@
-# TM-DOMAIN-DISCOVERY — Domain Evidence / Candidate Discovery
+# TM-DOMAIN-DISCOVERY — Domain / Aggregate Modeling
 
+Compatibility ID: `TM-DOMAIN-DISCOVERY`  
 Entry Point: `tm.domain.discovery`  
-Role: primary optional Target Module
+Role: primary/optional **and supporting** Target Module
 
 ## Purpose
 
-Extract evidence-backed conceptual/identity/lifecycle/rule/consistency candidates from selected Scenario/DATA/Behavior/must-hold meaning before choosing a Domain model.
+Produce the smallest useful selected Domain/Aggregate model for the current
+behavioral problem without forcing a persistent Domain-planning layer or a
+Discovery→Draft waterfall.
 
-A valid result may conclude that no separate Domain owner is useful.
+This one Target family replaces the former `TM-DOMAIN-DISCOVERY` +
+`TM-DOMAIN-DRAFT` split.
 
+Normal modes:
 
+```text
+SUPPORTING / SHALLOW
+  help Slice Strategy discover candidate Aggregate/domain boundaries and useful
+  semantic operations without forming a child Target
+
+PRIMARY / BOUNDED DEEP
+  resolve one independently material Domain/Aggregate modeling problem
+```
+
+A valid result may conclude that no distinct Domain model/owner is useful.
 
 ## High-Level Example — Self-Contained Walkthrough
 
 ### Situation
 
-Scenario planning repeatedly uses concepts such as captured item, source context, accepted/rejected state and later review.
+Scenario behavior repeatedly uses captured item, source context, accepted/rejected
+state and later review. Several Slices may use the same concepts.
 
-The team suspects that some stable Domain meaning exists, but does not yet know which concepts deserve explicit ownership.
+### Shallow Strategy use
 
-### Why This Module
-
-`TM-DOMAIN-DISCOVERY` asks what conceptual identity, lifecycle, value integrity and invariants genuinely follow from Scenario evidence.
-
-It avoids prematurely declaring nouns to be Entities/Aggregates.
-
-### Walkthrough
-
-Evidence questions:
+Enough meaning may be:
 
 ```text
-CaptureItem:
-  does one captured unit have stable identity/lifecycle?
+SL-CAPTURE
+  Uses → CaptureItem
+    needs: create valid item; preserve capture invariant
+  Uses → SourceContext
+    needs: represent semantic source context
 
-SourceContext:
-  is it a meaningful value with integrity/equality?
-
-accepted capture:
-  what must always be true?
-
-temporary holding:
-  genuine Domain concept or only workflow/UI convenience?
+SL-REVIEW
+  Uses → CaptureItem
+    needs: expose reviewable state
 ```
 
-Possible findings:
+No dedicated Domain Target/file is required merely to obtain this map.
+
+### Deep bounded use
+
+When `CaptureItem` itself has material state/rule choices, Resolution may inspect:
 
 ```text
-CaptureItem
-  strong entity candidate
-
-SourceContext
-  strong Value Object candidate
-
-durable-success rule
-  may be a Domain invariant
-
-temporary holding
-  insufficient evidence for a Domain concept
+identity
+state/condition dimensions
+valid/impossible combinations
+invariants vs policies
+lifecycle/transitions
+what must remain consistent together
+Aggregate/root boundary
+Domain-owned behavior vs application/external coordination
+useful semantic/public Domain operations
 ```
 
-Another valid discovery result could be:
-
-```text
-no separate Domain owner is currently justified
-```
+A state/condition matrix is a reasoning aid, not a required artifact.
 
 ### Result
 
-The output is evidence/candidate space for Domain Draft:
+Selected meaning may be:
 
 ```text
-concept candidates
-identity/value/state clues
-invariant/policy clues
-consistency-boundary candidates
-rejected weak generalizations
+CaptureItem
+  stable identity
+  invariant: accepted item always has durable content + source context
+  lifecycle: captured → accepted/rejected
+  public semantic operations: accept(...), reject(...)
+  outside: destination transfer orchestration
 ```
 
-### Boundary / Lesson
+or simply:
 
-Domain Discovery does not select persistence tables, APIs or final DDD patterns.
-
-A noun appearing in DATA does not automatically become an Entity.
+```text
+no distinct Domain owner needed
+```
 
 ## Upstream Source Contract
 
 ### Direct Semantic Sources
-```text
-selected Scenario owners
-Scenario DATA objects
-Behavior Items
-local/shared must-hold conditions / invariants / negative guarantees
-```
 
-### Inherited Lineage
 ```text
-Fundamental Need
-selected real-world solution
-Application Definition / Responsibility
+selected Scenario behavior / Requirements
+Scenario DATA / Behavior Items
+must-hold conditions / negative guarantees
+Slice Strategy scope / Slice→Domain use needs when used supportingly
 ```
 
 ### Evidence / Current-State Sources
+
 ```text
-Prototype Evidence when still relevant
-existing Domain/current implementation Evidence when reviewing
-Application feasibility Evidence when it exposes domain pressure
+existing Domain/current implementation Evidence
+Prototype/Practical Evidence when relevant
+external contracts/constraints
 ```
 
-### Constraint / Planning-State Sources
+### Planning-State Sources
+
 ```text
-accepted external consistency/integration constraints
-accepted architecture Answer Decisions when relevant
-SDS-WORKSPACE-EVOLUTION.md when current evolution interpretation is material
+accepted Decisions
+material Q/R/P
+accepted/planned evolution pressure when it can change the model
 ```
 
-### Source Discovery Rule
-
-Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
-
-Domain candidates must trace back to Scenario/DATA/Behavior/must-hold meaning rather than nouns/tables/files.
+Source list is an archetype only; current `TF-04 SOURCE_SET` remains authority.
 
 ## Knowledge Basis
 
@@ -126,172 +123,166 @@ Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/kno
 
 Mode: `INLINE`
 
-**Embedded Principles / Rules / Theory:**
+Principles:
 
-- Domain Discovery gathers domain-boundary/model evidence and candidate interpretations without forcing a Domain result.
-- A no-Domain outcome remains valid when domain ownership adds no useful semantic boundary.
-- Discovery candidates/evidence do not become accepted Domain meaning until selected through normal IDTSPE Decisions.
+- model semantic responsibility, not nouns/tables/classes by name alone;
+- ask what identity/state/invariants must remain correct together;
+- distinguish invariants from configurable/current policy;
+- distinguish Domain-owned behavior from application/external/presentation/shared coordination;
+- DDD patterns are candidate reasoning aids, not mandatory result shapes;
+- implementation-native code/types/tests may be the best durable Domain representation.
 
-**Referenced Knowledge Owners:**
-
-`NONE`
-
-**Reference Load Policy:**
-
-No additional Knowledge Basis body is required by default; reusable DDD evaluation knowledge remains in the Domain/DDD Lens.
-
-**Operationalization Notes:**
-
-This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
-
-## Lens Profile
-
-Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):
-- [`LENS-NEED-VALUE-SCOPE`](../../../idtspe-core/lenses/required/LENS-NEED-VALUE-SCOPE.md) — L1.
-- [`LENS-AUTHORITY-SOT-REUSE`](../../../idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md) — L2.
-- [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](../../../idtspe-core/lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md) — L3; required check may resolve as `no material uncertainty`.
-- [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](../../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — Documentation / Representation; required materialization-stage check that may resolve as `NO_PERSISTENCE_NEEDED` or implementation-native/existing-owner representation.
-
-Primary reusable Lens Pack(s):
-- [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md) — required while Domain discovery is active
-
-Frequent conditional Lens(es):
-- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — when the current Workspace Evolution Map may change Domain boundary/coupling decisions; semantic meaning still comes first
-- [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — when a quality/risk property is genuinely part of domain correctness
+Reusable detailed evaluation knowledge belongs to
+[`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md).
 
 ## Question Set Examples — Non-Exhaustive
 
-Examples only.
-
 ```text
-Which semantic facts recur across Scenarios?
-Which identities/lifecycles/rules are stable enough to name?
-Which states/transitions/combinations are allowed/forbidden?
+What has stable semantic identity?
+Which state/condition dimensions matter?
+Which combinations are valid or impossible?
 Which rules are invariants vs policies?
-Which Value Object candidates have real value semantics?
-Which Aggregate/Root boundaries are justified, if any?
-Which responsibilities are cross-Aggregate/application coordination?
-Is a separate Domain owner useful at all?
+Which transitions/lifecycle changes are meaningful?
+What must remain correct/consistent together?
+Which Aggregate/root boundary is justified, if any?
+Which behavior belongs to the Domain vs application/external coordination?
+Which semantic/public Domain operations are useful?
+Which Scenarios/Slices use this meaning?
+Is a distinct Domain model/owner useful at all?
 ```
+
+## Lens Profile
+
+Required Core Pack applies.
+
+Primary:
+- [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+
+Conditional:
+- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — semantic role: Evolution / Change Isolation
+- [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
+- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+- [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
 
 ## Resolution / Production Method
 
-This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+Use only the modeling depth needed.
 
-Default reusable production path:
+Reusable production path:
 
 ```text
-read domain Sources/Evidence → interpret boundary-relevant domain signals → discover candidate concepts/relations/state → stress invariants/impossible states/consistency boundaries → mark outside/coordination meaning → keep integrated alternative model sets only when discovery itself benefits from comparing them
+behavior/DATA/must-hold Evidence
+→ candidate identity
+→ material state/condition dimensions
+→ state/condition matrix when useful
+→ valid/impossible combinations
+→ invariants/policies
+→ transitions/lifecycle
+→ what must remain consistent together
+→ Aggregate/root boundary
+→ Domain-owned vs application/external coordination
+→ useful semantic/public operations
+→ simplicity challenge
+→ selected sparse model
 ```
 
-Because this Target is discovery, an evidence-backed candidate inventory may itself be a Result Unit. Individual competing proposals may simultaneously use Core Idea/Branch State when choice lifecycle matters.
+Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State.
+Individual alternatives stay Ideas/Branches until selected.
 
-A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+Supporting use projects only enough selected modeling meaning back to the host
+Target; it does not force a separate child Target or file.
 
 ## Target Step-Result Contract
 
-**Target Step Result:** `Domain Discovery Result`
+**Target Step Result:** `Domain / Aggregate Modeling Result`
 
-The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+### RU-DOM-01 — Selected Domain / Aggregate Model
 
-| Result Unit | Meaning | Current projection detail |
-|---|---|---|
-| `RU-DDISC-01` | Domain Evidence Interpretation / Boundary | Selected Source/Evidence refs + interpreted domain signals + boundary rationale |
-| `RU-DDISC-02` | Candidate Semantic Model | Concept/Entity/Value candidates + Relationships + Lifecycle/State candidates |
-| `RU-DDISC-03` | Consistency / Invariant Candidates | Invariant/Policy findings + State/Condition Matrix + Impossible-State + Aggregate/Root/Ownership candidates |
-| `RU-DDISC-04` | External Coordination / Boundary | Explicit Outside / External Refs + Cross-Boundary Coordination |
-| `RU-DDISC-05` | Integrated Domain Variant Set — optional | Integrated Domain Branch / Variant Candidates |
+Sparse/proportional meaning may include:
 
-Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+```text
+Domain/Aggregate identity / purpose / boundary
+stable semantic concepts/relationships
+identity/lifecycle/state meaning
+state/condition matrix conclusions when material
+impossible states/combinations
+invariants/policies
+Value semantics
+Aggregate/root/consistency boundary
+Domain-owned semantic/public operations
+external/application coordination boundary
+Scenario/Slice use relations
+verification meaning when non-trivial
+rejected premature generalizations when useful
+explicit no-distinct-Domain result
+```
 
+The RU stores selected target-specific meaning. It does not reproduce the generic
+Question/Idea/Decision history used to resolve it.
 
+In supporting/shallow mode only the relevant subset is projected, for example a
+candidate Aggregate + semantic behavior/rule/action needed by a Slice.
 
-**Domain Evidence Interpretation / Boundary** — selected Scenario/DATA/Behavior Source/Evidence references plus interpreted domain signals that justify the current Domain boundary. Raw Evidence remains Core State and Sources remain source-owned.
+## Representation / Artifact Contract
 
-**Concept / Entity / Value Candidates** — candidates with evidence/rationale, not accepted model yet.
+Accepted Domain meaning must be recoverable/durable enough for downstream work,
+but that does **not** imply a Domain Markdown file.
 
-**Relationships** — semantic relations worth carrying into Domain Draft.
+Default durable representation after implementation may be:
 
-**Lifecycle / State Candidates** — only meaningful state/lifecycle evidence.
+```text
+code / types / executable invariants / tests
+```
 
-**Invariant / Policy Findings** — distinguish always-true meaning from current/configurable policy.
-
-**State / Condition Matrix — optional** — only when combinations materially change correctness.
-
-**Impossible-State Findings** — invalid combinations revealed by cross-condition reasoning.
-
-**Value Object Candidates** — only when value integrity/equality/operations justify them.
-
-**Aggregate / Root / Ownership Candidates** — consistency-boundary candidates with explicit evidence.
-
-**Explicit Outside / External Refs** — meaning that should not be owned by this Domain boundary.
-
-**Cross-Boundary Coordination** — behavior that belongs to application/orchestration or external coordination.
-
-**Integrated Domain Branch / Variant Candidates — optional** — materially alternative Domain models when needed.
-
-## Artifact / File Contract
-
-### Structured Artifact / File Proposals
-
-These proposal records are the Target Module's local placement guidance. [`ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md) projects them into the annotated SDS materialization tree; this Target Module remains the source.
+A human-readable Domain artifact is optional and justified only by independent
+review/reuse/complexity pressure.
 
 ```text
 ARTIFACT_PROPOSAL
-ID: AP-DOMDISC-01
-CONTENT_KIND: DOMAIN_DISCOVERY_INTERPRETATION
-WHEN: candidate concepts/invariants/boundaries materially inform Domain Draft/revalidation
-GUIDANCE: PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Domain Discovery Target
-REPRESENTATION: EXISTING_OR_NEW_SUPPORTING_PLANNING_ARTIFACT
-FILE_OR_ARTIFACT: <domain-discovery-owner>
-CONTENT: selected Source/Evidence references + interpreted domain signals; evidence-backed concept/invariant/consistency candidates; boundary rationale; rejected weak abstractions
+ID: AP-DOM-01
+CONTENT_KIND: DOMAIN_MODELING_RESULT
+WHEN: selected non-code Domain meaning has independent continuing review/reuse value
+GUIDANCE: OPTIONAL
+PERSISTENCE_GUIDANCE: OPTIONAL
+PLACEMENT_DIRECTIVE: PLACE_OR_NONE
+SEMANTIC_OWNER: current Domain Modeling Target / natural implementation owner
+REPRESENTATION: IMPLEMENTATION_NATIVE_OR_EXISTING_OWNER_OR_DEDICATED_ARTIFACT
+FILE_OR_ARTIFACT: implementation code/types/tests and/or <domain-model-owner>
+CONTENT: only selected semantic meaning not adequately represented implementation-natively
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
+Do not create a `.evolution.md` Domain companion by default. Future Domain pressure
+is derived from Slices using the object and their owner-local Evolution Steps.
+
+## Domain Evolution Query
+
 ```text
-ARTIFACT_PROPOSAL
-ID: AP-DOMDISC-02
-CONTENT_KIND: FUTURE_DOMAIN_IDEA
-WHEN: discovery finds speculative future Domain concept
-GUIDANCE: PREFERRED
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: UNRESOLVED until later Domain planning
-REPRESENTATION: REGISTER_ENTRY
-FILE_OR_ARTIFACT: SDS-PLANNING-STATE/ideas/domain/IDEAS.md
-CONTENT: unselected future Domain idea with evidence/provenance
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+Strategy RU-SSTRAT-02
+→ find Slices that use the affected Domain object
+→ inspect those Slice Evolution Steps
+→ apply L5 Evolution / Change Isolation for cross-Slice interaction
 ```
 
+A separate canonical Domain evolution map is not required.
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
+## Handoff
 
-**PREFERRED persistent discovery owner** when candidate concepts/invariants/boundaries materially support Domain Draft or future revalidation; very small discovery can remain in the current planning instance if all accepted findings immediately project into Domain Draft.
-
-**Do not create** one file per noun/pattern candidate during discovery.
-
-Rejected/uncertain future Domain ideas may route to `SDS-PLANNING-STATE/ideas/domain/IDEAS.md`.
-
-When Workspace evolution is material, evaluate future-path implications with WEUC/L5 as the supporting evolution perspective. Domain Discovery surfaces the resulting Finding Candidate / likely-owner context; Core Finding Disposition resolves the actual semantic owner/handoff consequence. This Target Module does not propose `<domain-owner>.evolution.md`; `AG-L5-02` may later propose an Evolution section or companion, with Documentation / Representation + P-14 resolving persistence and embed-vs-split. Discovery does not create a current Domain semantic owner merely to host speculation.
-
-`P-14` must show what discovery Evidence survives and what remains ephemeral.
+- supporting Strategy use → return only the required shallow model;
+- deep selected Domain meaning → `TM-IMPLEMENTATION-SLICE` / consumers;
+- literal code/types/tests → Core `TM-EXACT-REALIZATION`;
+- independently non-trivial proof design → optional `TM-TEST-DESIGN`.
 
 ## Validators
 
 ```text
-all material candidates trace to Scenario/DATA/Behavior/must-hold Evidence
-DDD pattern names were not used as evidence by themselves
-invariant vs policy vs workflow/presentation meaning is distinguished
-aggregate/ownership candidates include consistency evidence
-cross-boundary coordination is not forced into Domain
-no-Domain remains a valid answer
+model traces to accepted behavior/DATA/must-hold meaning
+identity/state/invariant claims have evidence/rationale
+Aggregate boundary follows consistency meaning, not naming convention
+application/external coordination is not silently absorbed into Domain
+no-Domain result remains valid
+selected result is proportional
+representation does not create a stale shadow of current code
 ```
-
-## Handoff
-
-To `TM-DOMAIN-DRAFT`; `no separate Domain owner` is a valid result.

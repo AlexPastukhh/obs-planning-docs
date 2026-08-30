@@ -1,6 +1,6 @@
-# Plan Frontend Slice
+# Plan Frontend Realization — Compatibility Alias
 
-Status: active project command definition
+Status: legacy compatibility command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
 
 [PLANNING_COMMAND_DEFINITION]
@@ -13,53 +13,30 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "спланируй frontend"
   ],
-  "description": "frontend slice",
-  "meaning": "Run TM-FRONTEND-SLICE through the IDTSPE Shell for the selected target.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "legacy compatibility alias; frontend realization stays in the vertical Slice",
+  "meaning": "Legacy frontend-planning alias. Resolve/reuse the parent TM-IMPLEMENTATION-SLICE and apply the UI / Spatial / Frontend Realization Lens proportionally; if a frontend-specific problem is independently substantial, normal Target Formation may create a Local Target Contract. Do not create a Frontend Slice Target family.",
+  "activeContextBehavior": "Resolve or reuse the natural current vertical Slice/Target. Keep frontend realization inside that Slice by default; use normal Target Formation only for independently substantial unresolved local design space.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FRONTEND-SLICE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Frontend Target plan when justified, otherwise a route to keep frontend realization in the parent Slice.",
+  "expectedOutput": "Frontend-specific realization meaning resolved inside the current vertical Slice, or a normal Local Target Formation candidate when independently substantial.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+    "Compatibility alias only; SDS has no TM-FRONTEND-SLICE Target family.",
+    "A Slice remains one useful vertical result; frontend/backend are not separate Slice identities by default.",
+    "Use the UI/Spatial/Frontend Lens as a reusable evaluation perspective when useful.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<one promoted frontend target>",
-  "palette": true,
+  "userTarget": "<current vertical Slice / frontend realization problem>",
+  "palette": false,
   "directionIds": [
     "DIR-PLAN-SOLUTION"
   ],
-  "helperPresentation": {
-    "whenToUse": "Use when frontend realization is independently material enough to promote from a parent Slice Part Plan.",
-    "whatYouGet": "Frontend Target plan when justified, otherwise a route to keep frontend realization in the parent Slice.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "07",
-      "sectionLabel": "07 Slice Realization",
-      "sectionOrder": 7,
-      "itemOrder": 3,
-      "kindLabel": "IDTSPE TARGET",
-      "badges": [
-        "CONDITIONAL"
-      ],
-      "viewOrder": 1
-    }
-  },
+  "helperPresentation": null,
   "refinements": [],
-  "methodologyBinding": {
-    "methodologyRuntime": "IDTSPE",
-    "profile": "SDS",
-    "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-FRONTEND-SLICE",
-    "lensId": null,
-    "parentSurface": null,
-    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-  }
+  "methodologyBinding": null
 }
 [/PLANNING_COMMAND_DEFINITION]

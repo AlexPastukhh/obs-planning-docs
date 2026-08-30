@@ -62,7 +62,7 @@ actor/user in a meaningful context
 + independently meaningful observable result
 ```
 
-Boundary discovery is the first part of Scenario Evaluation, not a separate Scenario-Discovery Target/result.
+Boundary discovery is the first part of Scenario Resolution / Production, not a separate Scenario-Discovery Target/result.
 
 If planning exposes another independently meaningful Need/result, surface it as a Scenario candidate through normal Finding Disposition / Target Formation. Do not turn a multi-Scenario inventory into the semantic result of the current one-Scenario Target.
 
@@ -188,7 +188,7 @@ Behavior Items / DATA
 
 If decomposition loses or invents meaning, refine the decomposition. Do not rewrite the Scenario merely to make the decomposition look tidy.
 
-### 8. Evaluate Development / Change Outlook
+### 8. Resolve Development / Change Outlook
 
 Ask what is already known about how this same Scenario may evolve:
 
@@ -238,7 +238,7 @@ Frequent/conditional generic Lenses:
 - Practical Evidence — when a Scenario assumption needs a prototype/user/technical experiment;
 - Dependency / Change Impact — when revalidating an existing Scenario/downstream relation surface.
 
-No Scenario-specific reusable Lens is required. Boundary, behavior completeness, DATA extraction, Behavior Item decomposition and Development/Change Outlook are the Evaluation responsibility of this Target Module.
+No Scenario-specific reusable Lens is required. Boundary, behavior completeness, DATA extraction, Behavior Item decomposition and Development/Change Outlook are the Resolution / Production responsibility of this Target Module; Lenses/checks may evaluate them inside that process.
 
 No separate Knowledge Basis is currently needed; reusable theory may be attached later if a real theory-to-Scenario-planning bridge becomes useful.
 
@@ -279,6 +279,8 @@ current immediate-result assumption may need revision
 ```
 
 Concrete unresolved questions/risks/evidence remain Generic State and may be referenced from this Unit. This Unit is not an implementation Evolution Step and does not prescribe architectural preparation.
+
+When expected future behavior is no longer an extension/change of the same independently meaningful Scenario result, surface a **new Scenario candidate** through normal Finding Disposition / Target Formation instead of forcing it into this Unit. `RU-SCEN-03` remains local to the same Scenario.
 
 ## Artifact / File Contract
 
@@ -357,11 +359,11 @@ CONTENT_KIND: PRELIMINARY_SCREEN_IDEA
 WHEN: Scenario planning reveals an unselected Screen/window idea
 GUIDANCE: PREFERRED
 PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: UNRESOLVED until Screen planning selects it
-REPRESENTATION: REGISTER_ENTRY
-FILE_OR_ARTIFACT: SDS-PLANNING-STATE/ideas/scenario/IDEAS.md
-CONTENT: preliminary Screen/window idea and provenance; not selected Screen authority
+PLACEMENT_DIRECTIVE: ROUTE
+SEMANTIC_OWNER: UNRESOLVED until normal Core disposition/selection establishes a natural owner
+REPRESENTATION: EXISTING_IDEA_STATE_OR_REGISTER_OR_NONE
+FILE_OR_ARTIFACT: <Generic Idea State / existing project register selected by P-14, or NONE when ephemeral>
+CONTENT: preliminary Screen/window Idea with Scenario provenance; not Scenario/Screen truth
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
@@ -397,7 +399,7 @@ Implementation inconvenience alone does not redefine Scenario behavior. If imple
 
 ## Repository Provenance
 
-This module replaces the active responsibilities of the former Scenario Discovery + Scenario Draft modules and absorbs their former Scenario-specific boundary/behavior Lens into this module's own Evaluation.
+This module replaces the active responsibilities of the former Scenario Discovery + Scenario Draft modules and absorbs their former Scenario-specific boundary/behavior work into this module's own Resolution / Production Method.
 
 The retained semantics are intentionally simpler:
 

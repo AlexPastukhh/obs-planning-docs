@@ -9,7 +9,7 @@ Keep Slice planning centered on one bounded useful/checkable vertical result, pr
 
 ## Applicability Gate
 
-Primary for `TM-SLICE-STRATEGY` and `TM-IMPLEMENTATION-SLICE`; supporting for related Cross-Cutting/frontend integration questions.
+Primary for `TM-SLICE-STRATEGY` and `TM-IMPLEMENTATION-SLICE`; supporting for related Cross-Cutting/UI realization questions.
 
 ## Target Inputs / Evidence
 
@@ -24,8 +24,7 @@ Scenario Behavior / Requirements, Behavior Items, Scenario DATA, must-hold condi
 
 ### Conditional Result Units / Semantic Selectors
 
-- `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-05` when a Focused Part Plan exists
-- Cross-Cutting/frontend result meaning when this Lens is used in supporting mode
+- Cross-Cutting/UI result meaning when this Lens is used in supporting mode
 
 ### Relevant State Units
 
@@ -123,28 +122,26 @@ For `TM-SLICE-STRATEGY`, verify that each selected Slice has stable semantic own
 
 The owner may be inline, linked or separately materialized. Semantic Slice identity does not imply one file per Slice.
 
-`RU-SSTRAT-03 Selected Slice Owner Register` coordinates Slice semantic identity/addressability only. It does not create a bounded `TM-IMPLEMENTATION-SLICE` Target; normal Target Formation remains authoritative when independently bounded implementation planning is material.
+`RU-SSTRAT-03 Realization Owner Bridge` coordinates Slice/Cross-Cutting semantic identity/addressability and representation/Target links only. It does not create a bounded `TM-IMPLEMENTATION-SLICE` Target; normal Target Formation remains authoritative when independently bounded implementation planning is material.
 
-## Runtime Path vs Codebase Integration Path
+## Runtime Path Proportionality
 
-For detailed `TM-IMPLEMENTATION-SLICE` planning:
+`RU-SLICE-03 Runtime Path` is optional. Keep it only when runtime sequence/state/failure/async/transaction/coordination meaning materially affects understanding or a decision.
 
-```text
-Runtime Path
-= descriptive running-system path
+Do not use it as a class/method inventory, and do not maintain a separate `Codebase Integration Path` Result Unit. Exact current code topology remains code/Exact Realization authority.
 
-Codebase Integration Path
-= pre-implementation codebase call-level picture:
-  concrete existing/planned owners + significant calls + order + responsibility
-```
+## Evolution Integrity
 
-The full call-level template remains in `TM-IMPLEMENTATION-SLICE`.
+For `RU-SLICE-04 Evolution Steps` check:
 
-## Part-Plan Escalation
+- named future increment is grounded in accepted Scenario/Strategy future meaning;
+- the Step belongs to this Slice rather than a shared Cross-Cutting owner;
+- Domain changes name only affected Domain objects/operations;
+- `Implementation Outlook` contains resolved target-specific consequences, not a duplicate Decision/Idea log;
+- another Step is referenced as `Depends on / After` only for a real dependency;
+- prepared seams/ports pay for accepted/planned variation rather than imagined futures.
 
-Mostly understood local call/responsibility may use a lightweight Part Plan.
-
-Material unresolved algorithm/state/integration/architecture choice space surfaces a Finding Candidate. Core Finding Disposition decides whether accepted meaning becomes/refines Question / Idea / Q/R/P / Decision input or another lifecycle consequence; when independently substantial, disposition may surface Target Formation input.
+Cross-Cutting shared change remains in the Cross-Cutting owner's own Evolution Step; a Slice stores only local impact/reference.
 
 ## Typical Findings
 
@@ -182,7 +179,7 @@ This Lens does not define new Result Units or mutate accepted owners directly.
 
 ## Typical Consumers
 
-Slice Implementation Strategy, Implementation Slice, related Screen/Cross-Cutting/frontend realization planning.
+Slice Implementation Strategy, Implementation Slice, related Screen/Cross-Cutting/UI realization planning.
 
 ## Artifact / File Implications
 
@@ -202,6 +199,8 @@ Slice ≠ Aggregate
 shared concern applicability ≠ Slice ownership
 semantic Slice owner ≠ mandatory Slice file
 planned relation map ≠ authoritative current code mirror
+Runtime Path ≠ mandatory code call map
+Slice Evolution Step ≠ Cross-Cutting evolution owner
 ```
 
 ## Composition

@@ -75,7 +75,7 @@
         "bootstrap SDS planning"
       ],
       "description": "Load the SDS profile over IDTSPE Core.",
-      "meaning": "Run the SDS governance bootstrap over IDTSPE Core: establish or refresh the 15 SDS Target Modules plus inherited generic Core TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, SDS Lens pack, directed workflow and representation/materialization policy. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
+      "meaning": "Run the SDS governance bootstrap over IDTSPE Core: establish or refresh the 12 SDS Target Modules plus inherited generic Core TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, SDS Lens pack, directed workflow and representation/materialization policy. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
       "activeContextBehavior": "Load or refresh SDS profile governance over IDTSPE Core only. If a current Target/context already exists, report or reuse it for orientation without changing it. If no Target exists, stop ready for later SDS planning. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module.",
       "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -338,7 +338,7 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Lens findings routed into the natural Target owner; global changes may promote to TM-WEUC.",
+      "expectedOutput": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Target Formation / DIR-PLAN-ARCHITECTURE.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
@@ -349,8 +349,8 @@
       "userTarget": "<target/result>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when a selected Target or whole Workspace needs an explicit evolvability/architecture fitness review.",
-        "whatYouGet": "Lens findings routed into the natural Target owner; global changes may promote to TM-WEUC.",
+        "whenToUse": "Use when a selected Target needs explicit planned/probable evolution and change-isolation review.",
+        "whatYouGet": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Target Formation / DIR-PLAN-ARCHITECTURE.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -507,7 +507,7 @@
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the affected Application/module owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "Current IDTSPE/SDS owner updates/findings for the selected Application context, with material Q/R/P/Decisions and downstream handoffs; no legacy Application Current Plan accumulator.",
@@ -537,16 +537,15 @@
         "собери идеи домена",
         "domain ideas"
       ],
-      "description": "legacy compatibility alias; Domain ideas alias routed into current Domain Target Modules",
-      "meaning": "Legacy alias for current Domain planning. Use TM-DOMAIN-DISCOVERY for candidate/evidence exploration or TM-DOMAIN-DRAFT for a selected Domain owner, preserving the valid no-separate-Domain result. Supplied ideas become normal IDTSPE material; no collect-ideas runtime is started.",
-      "activeContextBehavior": "Use accepted Scenario/DATA/Behavior/Requirement Sources and existing Domain representation. Resolve discovery vs draft from current state and stop before Slice planning unless the user expands the Target.",
+      "description": "legacy compatibility alias; Domain ideas route into unified Domain / Aggregate Modeling",
+      "meaning": "Legacy alias for current Domain planning. Use TM-DOMAIN-DISCOVERY / Domain-Aggregate Modeling at shallow or bounded/deep depth as appropriate. Supplied ideas become normal IDTSPE material; no collect-ideas runtime is started.",
+      "activeContextBehavior": "Use accepted Scenario/DATA/Behavior/Requirement Sources and existing Domain representation. Resolve the useful shallow-vs-deep modeling depth from current state and stop before unrelated Slice planning unless the user expands the Target.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Domain owner/module route when uncertain.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Current Domain Discovery/Draft result with evidence, selected/rejected candidates, Q/R/P/Decisions and handoffs; no legacy Domain-Ideas accumulator.",
+      "expectedOutput": "Current Domain / Aggregate Modeling result with selected/rejected candidates, material State and handoffs; no legacy Domain-Ideas accumulator or Domain Draft split.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
@@ -618,7 +617,7 @@
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/SDS-FULL-MAP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
       "expectedOutput": "Normal current IDTSPE/SDS results for the material Application Targets plus representation/placement decisions when useful; no Modular Current Plan accumulator.",
@@ -855,7 +854,7 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Refined Runtime Path, Codebase Integration Path, Domain Elements Used and proportional Part Plans for the same Slice Target; no new Target identity.",
+      "expectedOutput": "Refined material Uses/ownership boundary, optional Runtime Path and Evolution Steps for the same Slice Target; no new Target identity.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -867,7 +866,7 @@
       "palette": true,
       "helperPresentation": {
         "whenToUse": "Use when the bounded Slice Target already exists and its implementation sequencing/runtime path needs deeper concrete detail.",
-        "whatYouGet": "Refined Runtime Path, Codebase Integration Path, Domain Elements Used and proportional Part Plans for the same already selected Slice Target; no new Target identity.",
+        "whatYouGet": "Refined material Uses/ownership boundary, optional Runtime Path and Evolution Steps for the same already selected Slice Target; no new Target identity.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -1060,54 +1059,28 @@
         "спланируй эволюцию воркспейса",
         "собери WEUC"
       ],
-      "description": "weuc",
-      "meaning": "Run TM-WEUC through the IDTSPE Shell for the selected target.",
+      "description": "legacy compatibility alias; routes to current evolution/architecture authority",
+      "meaning": "Legacy WEUC phrase. Route to Workspace Architecture Planning contextual evolution-use discovery (UC-PLAN-ARCH-DISCOVER-WEUC); this discovers evidence-backed future change instances/paths and does not create TM-WEUC or a global evolution-map owner.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/architecture-planning/direction-registry.md",
+        "planning/documentation/architecture-planning/use-case-registry.md",
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md"
       ],
-      "expectedOutput": "Workspace Evolution result, projected paths/global architecture decisions and revalidation triggers; optional/cross-cutting/repeatable.",
+      "expectedOutput": "Contextual future-change instances, likelihood/horizon/value/confidence and expected change-path/friction evidence for Architecture Planning.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
+        "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
+        "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
       ],
-      "userTarget": "<Workspace Evolution Map / architecture position>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when Workspace evolution, global architecture position or projected change paths need planning/reconciliation.",
-        "whatYouGet": "Workspace Evolution result, projected paths/global architecture decisions and revalidation triggers; optional/cross-cutting/repeatable.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "03",
-          "sectionLabel": "03 Workspace Evolution & Architecture",
-          "sectionOrder": 3,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "PRIMARY OPTIONAL",
-            "CROSS-CUTTING",
-            "REPEATABLE"
-          ]
-        }
-      },
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE",
-        "targetModuleId": "TM-WEUC",
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-      },
+      "userTarget": "<workspace area / expected future change>",
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
-        "DIR-PLAN-SOLUTION",
         "DIR-PLAN-ARCHITECTURE"
       ],
       "refinements": []
@@ -1365,49 +1338,27 @@
       "commandFamily": [
         "интерпретируй план с точки зрения эволюции воркспейса"
       ],
-      "description": "focused SDS target",
-      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "description": "legacy compatibility alias; routes to current evolution/architecture authority",
+      "meaning": "Legacy WEUC interpretation phrase. Resolve/reuse the natural Target and apply L5 Evolution / Change Isolation; if the question is genuinely workspace-wide architecture, route it to DIR-PLAN-ARCHITECTURE.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md",
+        "planning/documentation/architecture-planning/direction-registry.md"
       ],
-      "expectedOutput": "EARLY_INTERPRETATION result with material evolution/architecture implications and routed owner updates.",
+      "expectedOutput": "Target-local planned-evolution/change-isolation findings, or an explicit handoff to Workspace Architecture Planning when the scope is independently global.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
+        "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
+        "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
       ],
-      "userTarget": "<current plan/workspace>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use for early Workspace-evolution interpretation before a full projected path is needed.",
-        "whatYouGet": "EARLY_INTERPRETATION result with material evolution/architecture implications and routed owner updates.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "03",
-          "sectionLabel": "03 Workspace Evolution & Architecture",
-          "sectionOrder": 3,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "architecture_weuc.discover"
-        }
-      },
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE_FOCUSED",
-        "targetModuleId": "TM-WEUC",
-        "lensId": null,
-        "parentSurface": "architecture_weuc.discover",
-        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-      },
+      "userTarget": "<current Target / plan / Workspace question>",
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION",
         "DIR-PLAN-ARCHITECTURE"
@@ -1578,7 +1529,7 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and testing/evolution/frontend handoffs; material Strategy/Domain mismatch surfaces a Finding Candidate for Core disposition.",
+      "expectedOutput": "Slice outcome/obligations/proof intent, material Domain/Cross-Cutting/dependency use boundary, optional Runtime Path and owner-local Evolution Steps; material Strategy/Domain mismatch surfaces a Finding Candidate for Core disposition.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -1590,7 +1541,7 @@
       "palette": true,
       "helperPresentation": {
         "whenToUse": "Use when one selected Slice needs independently bounded realization planning; Target Formation must select/reuse/form that bounded Target rather than treating the Strategy owner register as creation authority.",
-        "whatYouGet": "Slice obligations, Runtime Path, Codebase Integration Path, Domain Elements Used, proportional Part Plans and handoffs; accepted upstream changes occur only after Core Finding Disposition.",
+        "whatYouGet": "Slice outcome/obligations/proof intent, material Uses/ownership boundary, optional Runtime Path and owner-local Evolution Steps; accepted upstream changes occur only after Core Finding Disposition.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -1818,15 +1769,15 @@
         "спланируй домен",
         "план домена приложения"
       ],
-      "description": "domain draft",
-      "meaning": "Run TM-DOMAIN-DRAFT through the IDTSPE Shell for the selected target.",
+      "description": "focused Domain / Aggregate Modeling",
+      "meaning": "Run a bounded/deep Domain / Aggregate Modeling focus through TM-DOMAIN-DISCOVERY; this is the same recurring Target family as shallow/supporting Domain modeling, not a separate Domain Draft Target.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DRAFT.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Current Domain semantics/rules/invariants and implementation/testing/evolution handoffs; dedicated file is not automatic.",
+      "expectedOutput": "Selected Domain / Aggregate Model at the depth justified by the current problem; dedicated prose artifact remains optional.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -1834,11 +1785,11 @@
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<one Domain owner>",
+      "userTarget": "<one bounded Domain / Aggregate modeling problem>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when one Domain owner is materially justified and needs deeper planning/revalidation.",
-        "whatYouGet": "Current Domain semantics/rules/invariants and implementation/testing/evolution handoffs; dedicated file is not automatic.",
+        "whenToUse": "Use when one Domain/Aggregate problem needs independently deep modeling/revalidation rather than only shallow Strategy support.",
+        "whatYouGet": "Selected Domain / Aggregate Model at the depth justified by the current problem; dedicated prose artifact remains optional.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -1856,10 +1807,10 @@
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE",
-        "targetModuleId": "TM-DOMAIN-DRAFT",
+        "surfaceKind": "TARGET_MODULE_FOCUSED",
+        "targetModuleId": "TM-DOMAIN-DISCOVERY",
         "lensId": null,
-        "parentSurface": null,
+        "parentSurface": "application_domain.discover",
         "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
       },
       "directionIds": [
@@ -1932,50 +1883,27 @@
       "commandFamily": [
         "спланируй frontend"
       ],
-      "description": "frontend slice",
-      "meaning": "Run TM-FRONTEND-SLICE through the IDTSPE Shell for the selected target.",
-      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+      "description": "legacy compatibility alias; frontend realization stays in the vertical Slice",
+      "meaning": "Legacy frontend-planning alias. Resolve/reuse the parent TM-IMPLEMENTATION-SLICE and apply the UI / Spatial / Frontend Realization Lens proportionally; if a frontend-specific problem is independently substantial, normal Target Formation may create a Local Target Contract. Do not create a Frontend Slice Target family.",
+      "activeContextBehavior": "Resolve or reuse the natural current vertical Slice/Target. Keep frontend realization inside that Slice by default; use normal Target Formation only for independently substantial unresolved local design space.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FRONTEND-SLICE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Frontend Target plan when justified, otherwise a route to keep frontend realization in the parent Slice.",
+      "expectedOutput": "Frontend-specific realization meaning resolved inside the current vertical Slice, or a normal Local Target Formation candidate when independently substantial.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "Compatibility alias only; SDS has no TM-FRONTEND-SLICE Target family.",
+        "A Slice remains one useful vertical result; frontend/backend are not separate Slice identities by default.",
+        "Use the UI/Spatial/Frontend Lens as a reusable evaluation perspective when useful.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<one promoted frontend target>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when frontend realization is independently material enough to promote from a parent Slice Part Plan.",
-        "whatYouGet": "Frontend Target plan when justified, otherwise a route to keep frontend realization in the parent Slice.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "07",
-          "sectionLabel": "07 Slice Realization",
-          "sectionOrder": 7,
-          "itemOrder": 3,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL"
-          ]
-        }
-      },
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE",
-        "targetModuleId": "TM-FRONTEND-SLICE",
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-      },
+      "userTarget": "<current vertical Slice / frontend realization problem>",
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
         "DIR-PLAN-SOLUTION"
       ],
@@ -2588,51 +2516,28 @@
       "commandFamily": [
         "продумай архитектурную позицию воркспейса"
       ],
-      "description": "focused SDS target",
-      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "description": "legacy compatibility alias; routes to current evolution/architecture authority",
+      "meaning": "Legacy TM-WEUC architecture-position phrase. Route to Workspace Architecture Planning State/Decision work or normal Target Formation for one independently material architecture question.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/architecture-planning/architecture-state-review-workflow.md",
+        "planning/documentation/architecture-planning/architecture-decision-workflow.md",
+        "planning/documentation/architecture-planning/direction-registry.md"
       ],
-      "expectedOutput": "WORKSPACE_ARCHITECTURE_POSITION with global Decisions and evolution rationale.",
+      "expectedOutput": "Current Architecture State/Decision result with applicability, rationale and revalidation trigger; no permanent TM-WEUC global owner.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
+        "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
+        "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
       ],
-      "userTarget": "<whole Workspace architecture>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when project-global architecture principles/defaults/conventions need explicit selection/revalidation.",
-        "whatYouGet": "WORKSPACE_ARCHITECTURE_POSITION with global Decisions and evolution rationale.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "03",
-          "sectionLabel": "03 Workspace Evolution & Architecture",
-          "sectionOrder": 3,
-          "itemOrder": 4,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "architecture_weuc.discover"
-        }
-      },
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE_FOCUSED",
-        "targetModuleId": "TM-WEUC",
-        "lensId": null,
-        "parentSurface": "architecture_weuc.discover",
-        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-      },
+      "userTarget": "<workspace architecture question>",
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
-        "DIR-PLAN-SOLUTION",
         "DIR-PLAN-ARCHITECTURE"
       ],
       "refinements": []
@@ -2646,51 +2551,28 @@
       "commandFamily": [
         "распиши пути эволюции воркспейса"
       ],
-      "description": "focused SDS target",
-      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "description": "legacy compatibility alias; routes to current evolution/architecture authority",
+      "meaning": "Legacy TM-WEUC path phrase. Route to Workspace Architecture Planning path/evolution workflows for expected Workspace change paths; do not create a global SDS evolution-map Target.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/architecture-planning/architecture-path-analysis-workflow.md",
+        "planning/documentation/architecture-planning/architecture-evolution-workflow.md",
+        "planning/documentation/architecture-planning/direction-registry.md"
       ],
-      "expectedOutput": "PROJECTED_WORKSPACE_EVOLUTION paths, dependencies, extension points and revalidation triggers.",
+      "expectedOutput": "Evidence-backed Workspace change/path/evolution planning at the depth justified by the architecture question.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
+        "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
+        "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
       ],
-      "userTarget": "<workspace evolution target>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when projected Workspace change paths/extension points need explicit planning.",
-        "whatYouGet": "PROJECTED_WORKSPACE_EVOLUTION paths, dependencies, extension points and revalidation triggers.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "03",
-          "sectionLabel": "03 Workspace Evolution & Architecture",
-          "sectionOrder": 3,
-          "itemOrder": 2,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "architecture_weuc.discover"
-        }
-      },
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE_FOCUSED",
-        "targetModuleId": "TM-WEUC",
-        "lensId": null,
-        "parentSurface": "architecture_weuc.discover",
-        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-      },
+      "userTarget": "<Workspace architecture/evolution path problem>",
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
-        "DIR-PLAN-SOLUTION",
         "DIR-PLAN-ARCHITECTURE"
       ],
       "refinements": []
@@ -2906,51 +2788,27 @@
       "commandFamily": [
         "обнови карту эволюции воркспейса"
       ],
-      "description": "focused SDS target",
-      "meaning": "Run focused TM-WEUC intent without creating a new Target type.",
+      "description": "legacy compatibility alias; routes to current evolution/architecture authority",
+      "meaning": "Legacy map-refresh phrase. Re-run the relevant Workspace Architecture Planning evolution/change-pressure review for the affected scope; no canonical SDS Workspace Evolution Map is refreshed.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-WEUC.md",
-        "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+        "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
+        "planning/documentation/architecture-planning/architecture-change-pressure-workflow.md"
       ],
-      "expectedOutput": "EXTEND/REFRESH/RECONCILE of the same Workspace Evolution Target.",
+      "expectedOutput": "Refreshed contextual change-pressure/evolution evidence and any resulting Architecture Planning handoff; no mandatory global map.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
+        "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
+        "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+        "This command is read-only planning; it does not mutate repository files, commit or push."
       ],
-      "userTarget": "<existing Workspace Evolution owner>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when the existing Workspace Evolution owner is stale after new Decisions/Evidence.",
-        "whatYouGet": "EXTEND/REFRESH/RECONCILE of the same Workspace Evolution Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "03",
-          "sectionLabel": "03 Workspace Evolution & Architecture",
-          "sectionOrder": 3,
-          "itemOrder": 3,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "architecture_weuc.discover"
-        }
-      },
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE_FOCUSED",
-        "targetModuleId": "TM-WEUC",
-        "lensId": null,
-        "parentSurface": "architecture_weuc.discover",
-        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-      },
+      "userTarget": "<affected Workspace scope / evolution evidence>",
+      "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "directionIds": [
-        "DIR-PLAN-SOLUTION",
         "DIR-PLAN-ARCHITECTURE"
       ],
       "refinements": []

@@ -214,8 +214,8 @@ Decision:
   reuse ApplicationService
 
 Result Unit:
-  Codebase Integration Path
-  → ApplicationService.capture(...)
+  Uses / Ownership Boundary
+  → ApplicationService owns the selected orchestration responsibility
 
 Target-formation Slot:
   TARGET_SCOPE / ACCEPTED

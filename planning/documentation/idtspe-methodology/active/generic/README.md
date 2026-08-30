@@ -1,5 +1,11 @@
-# Compatibility Navigation — SDS Workflow Moved
+# Compatibility Navigation — Generic Planning Guidance
 
-The numeric SDS navigation phases are now profile-specific and live under [`../profiles/sds/workflow/`](../profiles/sds/workflow/00-invocation-planning-setup.md).
+Generic IDTSPE mechanics live under [`../idtspe-core/`](../idtspe-core/README.md).
 
-Canonical execution/readiness order is owned by [`../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md).
+Optional Need / real-life solution discovery now lives in the reusable Core guide:
+[`../idtspe-core/shared/solution-discovery-workflow.md`](../idtspe-core/shared/solution-discovery-workflow.md).
+
+SDS-specific semantic direction is owned by:
+[`../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md).
+
+The former numeric SDS workflow phase tree is retired.

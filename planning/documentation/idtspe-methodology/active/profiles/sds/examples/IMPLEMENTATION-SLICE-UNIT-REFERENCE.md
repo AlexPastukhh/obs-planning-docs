@@ -1,239 +1,102 @@
-# Implementation Slice Unit / Lens / Finding-Disposition Reference
+# Implementation Slice Result-Unit Reference
 
-Status: active SDS explanatory reference example  
-Purpose: demonstrate the literal SDS conformance shape for `TM-IMPLEMENTATION-SLICE` + `LENS-SLICE-VERTICALITY-INTEGRATION` without claiming that the illustrative Capture product exists in the current repository.
+Status: active worked reference
 
-## Situation
+## Target
 
 ```text
-Target:
-  SL-CAP-01
-
-Module:
-  TM-IMPLEMENTATION-SLICE
-
-Invocation mode:
-  REFINE
-
-Target Step Result:
-  Implementation Slice Plan
+SL-PAYMENT
+TM-IMPLEMENTATION-SLICE
+Primary Scenario: SCN-PAYMENT
 ```
 
-The example is illustrative methodology content only.
-
-## RU-SLICE-01 — Slice Outcome Definition
+## RU-SLICE-01 — Outcome / Obligations / Proof Intent
 
 ```text
-Role:
-  INITIAL_VERTICAL
-
-Primary Scenario:
-  Capture Material
-
 Useful Vertical Result:
-  user can durably save selected material
-  and receive truthful success/failure
+  user pays a payable order with a supported method and receives a truthful result
 
-Behavior Obligations:
-  accept capture
-  persist accepted item
-  report success only after durable success
-  report failure truthfully
+Behavior / DATA obligations:
+  selected method
+  payment information
+  attempt result
 
-DATA Obligations:
-  selected material
-  capture result
-
-Invariant:
-  persistence failure must not be reported as success
-
-Verification Obligations:
-  durable success → success feedback
-  persistence failure → failure feedback
-  false success is prohibited
+Proof intent:
+  success is never exposed when payment acceptance failed
 ```
 
-The proof/test handoff is part of this outcome definition by default. `TM-TEST-DESIGN` owns the detailed proof design.
-
-## RU-SLICE-02 — Responsibility / Dependency Boundary
+## RU-SLICE-02 — Uses / Ownership Boundary
 
 ```text
-Domain:
-  CaptureItem
-  → create/validate selected capture meaning
+Uses Order
+  payable/paid rule
 
-Persistence:
-  CaptureRepository
-  → durable save
+Uses Payment
+  attempt lifecycle/result
 
-UI:
-  capture action + result feedback
+Cross-Cutting:
+  XC-AUDIT local obligation: provide payment actor/context
 
-Delegated:
-  durable storage implementation remains repository responsibility
-
-Outside:
-  persistence-architecture redesign unless separately required
+External:
+  selected payment provider boundary
 ```
 
-## RU-SLICE-03 — Runtime Path
+This Unit does not manufacture interfaces/contracts merely for explicitness.
+
+## RU-SLICE-03 — Runtime Path — optional
 
 ```text
-user submits capture
-→ semantic input produced
-→ application receives command
-→ CaptureItem validation/creation
-→ persistence attempt
-→ commit or failure
-→ semantic result
-→ visible success/failure
+payment request
+→ application coordination
+→ Payment / Order semantic operations
+→ provider/persistence boundary
+→ truthful result
 ```
 
-## RU-SLICE-04 — Codebase Integration Path — initial candidate
+Keep only if the runtime sequence/failure/async semantics are material. This is
+not a class/method inventory.
+
+## RU-SLICE-04 — Evolution Steps
+
+### Add another payment method
 
 ```text
-CaptureScreen.onSave()
-→ CaptureController.capture(command)
-→ CaptureApplicationService.capture(command)
-→ CaptureItem.create(...)
-→ CaptureRepository.save(item)
-→ CaptureController.toResponse(result)
-→ CaptureScreen.applyCaptureResult(result)
+Behavioral Source:
+  SCN-PAYMENT / Change Outlook
+
+Slice Change:
+  another selected method becomes available
+
+Domain Changes:
+  Payment supports the additional semantic method variant if Domain meaning differs
+
+Implementation Outlook:
+  keep method-specific behavior behind the currently resolved payment-variation
+  boundary; do not build a general plugin platform.
 ```
 
-## Slice Lens Analysis Surface
+### Support asynchronous completion
 
 ```text
-Primary Result Units:
-  RU-SLICE-01 Slice Outcome Definition
-  RU-SLICE-02 Responsibility / Dependency Boundary
-  RU-SLICE-03 Runtime Path
-  RU-SLICE-04 Codebase Integration Path
+Behavioral Source:
+  SCN-PAYMENT / Change Outlook
 
-Conditional:
-  RU-SLICE-05 Focused Part Plan(s)
+Slice Change:
+  immediate request may return pending; final outcome arrives later
 
-Relevant State:
-  Questions
-  Q/R/P
-  Decisions
-  Evidence
-  Revalidation state
+Domain Changes:
+  payment attempt lifecycle may gain pending/finalized state meaning
 
-Context:
-  Scenario
-  Domain
-  Screen
-  current implementation/workspace
+Implementation Outlook:
+  preserve a stable attempt identity/state boundary now only if current Resolution
+  confirms the planned async Step makes that preparation worthwhile.
+
+Proof Impact:
+  pending/final reconciliation becomes material
 ```
 
-Supported Lens operations:
+## Generic State Boundary
 
-```text
-ANALYZE
-CHECK
-REFINE
-CHALLENGE
-```
-
-## Lens CHECK Finding
-
-```text
-Meaning:
-  RU-SLICE-04 does not make the owner of persistence-failure
-  translation explicit, so false success remains possible.
-
-Affected:
-  RU-SLICE-04.failurePropagation
-
-Related accepted meaning:
-  RU-SLICE-01 invariant:
-    persistence failure must not be reported as success
-```
-
-The Lens stops at the finding boundary.
-
-## Core Finding Disposition
-
-Current contracts make this disposition relatively direct:
-
-```text
-Risk R-17:
-  persistence failure may be reported as success
-
-Question Q-18:
-  which owner maps repository failure
-  into the semantic Capture result?
-```
-
-Normal resolution:
-
-```text
-Decision D-21:
-  CaptureApplicationService owns
-  persistence-result → semantic-result mapping.
-```
-
-## RU-SLICE-04 — after accepted resolution
-
-```text
-CaptureScreen.onSave()
-→ CaptureController.capture(command)
-→ CaptureApplicationService.capture(command)
-→ CaptureItem.create(...)
-→ CaptureRepository.save(item)
-→ CaptureApplicationService.mapPersistenceResult(...)
-→ CaptureController.toResponse(result)
-→ CaptureScreen.applyCaptureResult(result)
-```
-
-The Result Unit changed after normal resolution; the Lens did not directly mutate it.
-
-## RU-SLICE-05 — Focused Part Plan(s)
-
-```text
-NOT MATERIAL
-```
-
-No already-selected local algorithm/query/mapping/integration step currently deserves extra independent planning depth.
-
-## Cross-Owner Finding Example
-
-Suppose a later Lens finding is:
-
-```text
-truthful failure is required,
-but retryable-vs-terminal user behavior is undefined.
-```
-
-The Slice does not invent Scenario/Application semantics.
-
-Core Finding Disposition may resolve:
-
-```text
-current Slice owner insufficient
-→ existing Scenario/Application owner Question/handoff
-→ upstream resolution
-→ accepted upstream result becomes Source for Slice refinement
-```
-
-This is ordinary Core disposition, not a Lens-specific `External Routing` operation and not automatic child-Target creation.
-
-## Lesson
-
-```text
-Target Module
-→ defines Result Units
-
-Lens
-→ defines perspective + Analysis Surface
-→ ANALYZE / CHECK / REFINE / CHALLENGE
-→ surfaces Finding Candidates
-
-Core
-→ Finding Disposition
-→ State/lifecycle/owner resolution
-
-normal authority/resolution
-→ existing Result Units may change
-```
+Questions, candidate implementations, Decisions and Evidence used to resolve these
+Units remain Generic Core State. `Implementation Outlook` stores the selected
+Slice-specific consequence; it is not a duplicate Decision log.

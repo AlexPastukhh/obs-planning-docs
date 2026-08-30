@@ -186,7 +186,7 @@ Generic required Core Pack is inherited from the [`Lens Registry`](../../../idts
 Frequent conditional Lens(es):
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — when the shared condition is a quality/risk property
 - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — when consumers/dependency surface makes shared ownership material
-- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — when credible evolution/change pressure justifies the condition
+- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — when accepted/planned evolution can materially change the shared condition or its consumers
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when proof/observation/operation is part of the guarantee
 
 ## Resolution / Production Method

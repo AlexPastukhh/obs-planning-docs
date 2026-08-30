@@ -179,7 +179,7 @@ Do not invent an exact repository path when the current workspace/profile does n
 <slice-owner>#Evolution
 <slice-owner>.evolution.md
 <implementation-symbol-or-test>
-SDS-PLANNING-STATE/SDS-WORKSPACE-EVOLUTION.md
+<cross-owner-architecture-artifact-if-justified>
 ```
 
 
@@ -244,7 +244,7 @@ Content:
   future CaptureItem synchronization plan
 
 Guidance Sources:
-  AG-L5-02 — LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
+  natural owner evolution meaning + Documentation / Representation decision
 
 Resolved Placement:
   CaptureItem.evolution.md
@@ -430,8 +430,8 @@ Recommended compact table:
 | Content | Placement status | Semantic owner | Persistence | Representation / destination | Action | Guidance source(s) | Why / unresolved |
 |---|---|---|---|---|---|---|---|
 | Scenario DATA + Behavior | RESOLVED | `SCN-CAPTURE` | REQUIRED | embed in `<scenario-owner-artifact>` | UPDATE | `AP-SCN-02` | Scenario owns them internally |
-| Screen/window Idea | RESOLVED | none selected yet | PREFERRED | `SDS-PLANNING-STATE/ideas/scenario/IDEAS.md` | UPDATE | `AP-SCN-03` | unselected Idea, not Screen truth |
-| Offline Slice evolution path | RESOLVED | `SL-CAP-01` supporting evolution state | PREFERRED | `<slice-owner>.evolution.md` | UNRESOLVED | `AG-L5-02` | create only if future path is material |
+| Screen/window Idea | UNRESOLVED_PLACEMENT | UNRESOLVED_OWNER | PREFERRED | existing Generic Idea State/register or `NONE` when ephemeral | UNRESOLVED | `AP-SCN-03` | unselected Idea; no mandatory global idea tree |
+| Offline Slice evolution path | RESOLVED | `SL-CAP-01` owner-local evolution meaning | PREFERRED | embedded Slice owner or `<slice-owner>.evolution.md` | UNRESOLVED | Slice owner + Documentation / Representation | split only if representation pressure is material |
 | Benchmark scratch numbers | UNRESOLVED_PERSISTENCE | unresolved | UNRESOLVED | UNRESOLVED | NONE | `AG-L3-01` may flag Evidence value; no placement proposal yet | decide whether they become Decision Evidence |
 
 For larger plans, use one `ArtifactPlacementItem` block per unit.
@@ -554,33 +554,32 @@ Scenario DATA + Behavior
 
 Floating-window Idea
   Semantic Owner:
-    none selected
+    UNRESOLVED_OWNER
   Persistence:
     PREFERRED
   Representation:
-    REGISTER_ENTRY
+    UNRESOLVED
   Destination:
-    SDS-PLANNING-STATE/ideas/scenario/IDEAS.md
+    existing Generic Idea State/register or NONE when ephemeral
   Action:
-    UPDATE
+    UNRESOLVED
 ```
 
-The Idea is therefore preserved without becoming Screen authority.
+If the Idea is worth retaining, P-14 / TF-10 selects a proportionate Generic Idea representation without making it Screen authority or inventing a mandatory global register.
 
 ## 11. High-Level Example — Unknown Placement
 
-During Domain Draft an architecture concern appears:
+During Domain/Aggregate planning an evolution concern appears:
 
 ```text
 Offline capture may eventually require synchronization state.
 ```
 
-The team accepts that the concern must survive, but has not decided whether it belongs in:
+The team accepts that the concern must survive, but has not decided whether the natural owner should keep it embedded or split representation:
 
 ```text
+CaptureItem owner / Evolution section
 CaptureItem.evolution.md
-SDS-WORKSPACE-EVOLUTION.md
-or both via canonical + reference
 ```
 
 Correct rendering:

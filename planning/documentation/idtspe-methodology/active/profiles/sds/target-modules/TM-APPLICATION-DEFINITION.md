@@ -107,8 +107,9 @@ A competitor feature is Evidence/Idea material, not automatically a Requirement 
 ### Direct Semantic Sources
 ```text
 Fundamental Need / Desired Outcome
-selected Step-02 real-world solution result(s)
+selected real-world solution result(s) when generic discovery was performed
 selected own-software contribution / Solution Slot
+OR trusted explicit Application intent/contribution when generic discovery can be skipped
 surrounding human/process/external-system responsibilities
 viable manual/existing/external alternatives
 ```
@@ -121,7 +122,7 @@ current real-world workflow
 
 ### Evidence / Current-State Sources
 ```text
-Step-02 comparison/Evidence
+real-life route comparison/Evidence when available
 existing-solution / market / reference research
 actual product docs/demos/reviews when relevant
 Prototype Evidence when available
@@ -205,7 +206,7 @@ Primary reusable Lens Pack(s):
 
 Frequent conditional Lens(es):
 - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — when an existing structured application/workspace dependency surface matters
-- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — when credible Workspace evolution/architecture pressure is material
+- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — when accepted/planned evolution can materially change the Application boundary or feasibility
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when feasibility depends on proof/diagnosis/operation
 - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — only material quality/risk dimensions
 

@@ -327,37 +327,25 @@ Validators:
 
 ---
 
-# G-10 — Future / Unassigned Ideas Need A Separate Working Owner
+# G-10 — Future / Unassigned Ideas Need An Explicit Retention Decision
 
-Selected:
+Useful Ideas discovered outside the current Target scope remain ordinary Generic Idea State.
+They do **not** require one SDS-global inbox or a new semantic owner.
 
-```text
-SDS-PLANNING-STATE/ideas/INBOX.md
-```
-
-Purpose:
+When retention is useful, Documentation / Representation + P-14 / TF-10 may choose:
 
 ```text
-preserve useful Ideas discovered during one Target
-that do not belong to its current scope
-and do not yet have a selected future Target/owner
+current natural owner
+existing project register / inbox
+another profile-selected owner
+NONE / ephemeral conversation state
 ```
 
-The inbox is not:
+Any register/inbox is navigation/retention infrastructure only. It is not Current Plan, a
+Decision store, semantic authority for the future feature, or automatic backlog commitment.
 
-- Current Plan;
-- Decision store;
-- semantic owner of the future feature;
-- automatic backlog commitment.
-
-When a later Target becomes clear:
-
-```text
-Inbox Idea
-→ route/move/reference into that Target
-→ evaluate normally
-→ keep or retire inbox trace as appropriate
-```
+When a later Target becomes clear, the Idea may be referenced/moved into that Target under
+normal Core Resolution and ordinary ownership rules.
 
 ---
 
@@ -372,8 +360,8 @@ README
 PLANNING-GOVERNANCE.md
 = global planning-methodology Decisions / concerns
 
-SDS-PLANNING-STATE/ideas/INBOX.md
-= unassigned future Ideas
+Generic Idea State / optional selected register
+= unassigned future Ideas when retention is useful
 ```
 
 This avoids turning navigation into a hidden semantic authority.

@@ -1,4 +1,4 @@
-# Check Evolution And Architecture
+# Check Evolution / Change Isolation
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Lens findings routed into the natural Target owner; global changes may promote to TM-WEUC.",
+  "expectedOutput": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Target Formation / DIR-PLAN-ARCHITECTURE.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
@@ -36,8 +36,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use when a selected Target or whole Workspace needs an explicit evolvability/architecture fitness review.",
-    "whatYouGet": "Lens findings routed into the natural Target owner; global changes may promote to TM-WEUC.",
+    "whenToUse": "Use when a selected Target needs explicit planned/probable evolution and change-isolation review.",
+    "whatYouGet": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Target Formation / DIR-PLAN-ARCHITECTURE.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

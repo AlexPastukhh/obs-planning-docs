@@ -165,13 +165,10 @@ Example:
 Slice Verticality Lens
 
 Primary Result Units:
-  Slice Outcome Definition
-  Responsibility / Dependency Boundary
-  Runtime Path
-  Codebase Integration Path
-
-Conditional:
-  Focused Part Plan(s)
+  Outcome / semantic obligations / proof intent
+  Uses / Ownership Boundary
+  optional Runtime Path
+  Evolution Steps
 
 Relevant State:
   Questions
@@ -537,29 +534,29 @@ A Lens cannot create semantic authority; P-14/TF-10 resolves actual persistence/
 Current Target:
   CaptureItem Domain owner
 
-TM-DOMAIN-DRAFT owns:
+Domain / Aggregate Modeling Target owns:
   what CaptureItem means now
   invariants / state / consistency / relationships
   representation of that current Domain result
 
-L5 / WEUC Lens surfaces:
+L5 Evolution / Change Isolation Lens surfaces:
   a future-evolution Finding Candidate carrying
   + offline-synchronization path proposal
   + change-isolation concern
   + transition-trigger context
 → Core Finding Disposition
 → accepted local evolution meaning when CaptureItem/current Domain Target is resolved as owner
-→ AG-L5-02 may propose a supporting evolution representation
-→ Documentation / Representation + P-14 / TF-10 decide no persistence vs embedded Evolution section vs `CaptureItem.evolution.md`
+→ accepted target-specific evolution meaning remains with the natural owner
+→ Documentation / Representation + P-14 / TF-10 decide no persistence vs embedded section vs same-owner companion when pressure justifies it
 ```
 
 ```text
 CaptureItem.evolution.md
 = selected/materialized supporting representation of accepted local evolution meaning
-≠ direct L5 / WEUC Lens output
+≠ direct L5 output
 ≠ Domain Target output
 ≠ another Domain semantic owner
-≠ AP requirement of TM-DOMAIN-DRAFT
+≠ automatic Artifact Proposal requirement of the Domain Target
 ```
 
 ## 13. Literal Example — Slice Evolution Companion Is Lens Guidance
@@ -576,29 +573,23 @@ L5 discovers:
 → Finding Candidate
 → Core Finding Disposition
 → accepted local evolution meaning when the Slice/current Target is resolved as owner
-→ `AG-L5-02` may propose a distinct supporting evolution representation
-→ Documentation / Representation + P-14 / TF-10
-→ optional embedded Evolution section OR materialized SL-CAP-01.evolution.md
+→ accepted Slice Evolution Step remains with the Slice owner
+→ Documentation / Representation + P-14 / TF-10 decide whether same-owner split representation is useful
 ```
 
-The evolution companion is a selected/materialized representation of accepted local evolution meaning proposed through L5 `AG-L5-02`; it is not direct L5 output and is not proposed by `TM-IMPLEMENTATION-SLICE` or the Slice Verticality Lens. The Slice Target Module continues to own the current Useful Vertical Result / Runtime / Codebase Integration Path.
+An evolution companion, when used, is only a selected materialization of evolution meaning already owned by the natural Target. It is not direct Lens output. For SDS, Slice Evolution Steps are intrinsic Slice result meaning while exact code topology remains implementation authority.
 
-## 14. WEUC / Architecture Boundary
+## 14. Evolution / Architecture Boundary
 
 ```text
-TM-WEUC
-→ owns/updates SDS-WORKSPACE-EVOLUTION.md
-
-LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
-→ consumes the current map
-→ evaluates another Target/Idea/Decision against it
-→ surfaces target-local evolution Finding Candidate(s) and, when warranted, a separate map/global-architecture update Finding Candidate with TM-WEUC as a likely-owner hint
-→ Core Finding Disposition resolves accepted local evolution meaning / actual local-or-global owner / lifecycle consequence
-→ when local evolution meaning is accepted and the current Target is resolved as owner, AG-L5-02 may propose one local supporting evolution representation
-→ Documentation / Representation + P-14 / TF-10 decide persistence/placement
+L5 Evolution / Change Isolation
+→ evaluates accepted/planned future-change pressure inside a natural Target
+→ surfaces Finding Candidates
+→ Core Finding Disposition resolves local meaning/owner/lifecycle
+→ Target Formation handles an independently substantial cross-owner architecture problem
 ```
 
-Architecture Decisions remain ordinary Answer Decisions inside the current Target unless Core Finding Disposition surfaces a Target Formation candidate and Target Formation decides that independently material architecture work warrants a separate bounded Target.
+A Lens does not own a global evolution map, current global architecture position or target-local evolution artifact. Representation follows the natural owner after accepted meaning exists.
 
 ## 15. Linked Notes Boundary
 

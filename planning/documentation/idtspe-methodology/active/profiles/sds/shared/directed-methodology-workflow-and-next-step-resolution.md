@@ -1,383 +1,283 @@
+# SDS Directed Methodology Workflow / Next-Step Resolution
 
-# Directed Methodology Workflow And Next-Step Resolution
+Status: active canonical SDS cross-Target direction
 
-Status: active generic orchestration owner
+Target Modules own recurring result families. This file owns the **preferred
+semantic direction and handoff logic** between those families. It is not a fixed
+phase/waterfall taxonomy.
 
-## 1. Purpose
-
-Define the **fixed direction and readiness gates** between recurring IDTSPE Target families without pretending that methodology execution is one rigid linear list of phases.
-
-The workflow is a **directed graph / partial order**:
+## 1. Direction Invariant
 
 ```text
-some edges are required ordering constraints
-some nodes are conditional
-some Targets repeat for several owners
-some Targets may be revisited/refined
-actual Evidence may challenge an earlier owner; Core Finding Disposition may select revalidation/reopen
+upstream semantic owner
+→ accepted Source meaning flows downstream
 ```
 
-Numeric `workflow/00..11` files are navigation families. This file owns the actual cross-family direction.
-
-## 2. IDTSPE Invocation Is A Planning View Over Persistent Owners
-
-One IDTSPE invocation is a bounded planning instance, not the lifetime of a Target artifact.
+Downstream Targets may discover a problem in upstream meaning, but they do not
+silently mutate it.
 
 ```text
-existing canonical owner/artifact(s)
-+ new Sources / Evidence / planning-state
-+ Target Module
-+ applicable Lenses
-↓
-IDTSPE invocation
-  CREATE | REFINE | EXTEND | REVALIDATE | REPAIR
-↓
-Questions / Ideas / QRP / Decisions
-+ Target-specific output
-+ Artifact Placement View
-+ Methodology Direction View
-↓
-create/update/reuse canonical artifact(s)
-↓
-next invocation reads the updated artifacts again
-```
-
-So the same Target may be visited repeatedly.
-
-Example:
-
-```text
-TM-DOMAIN-DRAFT / CaptureItem
-  invocation 1 → create CaptureItem owner
-
-later accepted Scenario / WEUC State or implementation Evidence provides normal refinement input
-  invocation 2 → REFINE the same CaptureItem owner
-
-post-code Evidence challenges one invariant
-  → Finding Candidate
-  → Core Finding Disposition
-  → invocation 3 uses REVALIDATE / REPAIR on the same owner only when that lifecycle consequence is selected
-```
-
-Conceptually IDTSPE acts like a **planning viewport over the current Target and its files**. It is not itself a methodology `Lens`; `Lens` remains the technical term for reusable evaluation perspectives in IDTSPE Core / profile Lens owners.
-
-## 3. Canonical Forward Direction
-
-```text
-Need / Reality
-↓
-Dynamic real-life solution Targets
-↓
-TM-APPLICATION-DEFINITION
-├─→ TM-PROTOTYPE — conditional pre-implementation practical Evidence; may feed back into any affected owner
-↓
-TM-SCENARIO-PLANNING — one Target per independently meaningful Scenario; boundary discovery is part of Scenario evaluation
-├─↔ TM-SCREEN — conditional after enough Scenario behavior/DATA exists
-├─→ TM-REQUIREMENT — exceptional shared must-hold owner only when justified
-│
-├─→ TM-WEUC — may start EARLY once Application + core Scenario direction
-│             are sufficient to interpret planned evolution;
-│             may be refreshed later from Domain/Slice/actual work
-│
-↓
-TM-DOMAIN-DISCOVERY — conditional
-↓
-TM-DOMAIN-DRAFT — zero/one/many Domain owners
-↓
-TM-TEST-DESIGN — optional per Domain owner only when proof design itself is non-trivial
-↓
-TM-SLICE-STRATEGY — Slice Implementation Strategy; may stay minimal when one obvious Slice needs no material strategy reasoning
-↓
-TM-TEST-STRATEGY — conditional shared strategy gate
-↓
-for each selected Slice:
-  Target Formation — when independently bounded Slice planning is material
-  → TM-IMPLEMENTATION-SLICE when selected/reused
-    ↔ TM-TEST-DESIGN — optional when Slice proof design itself is non-trivial; otherwise exact tests may be realized directly
-  ├─→ TM-FRONTEND-SLICE — conditional promotion
-  └─→ TM-CROSS-CUTTING-CONCERN — conditional shared owner
-↓
-TM-PRACTICAL-TEST — Intent / Collection Plan may be prepared before realization when later implemented Evidence is material
-↓
-generic Core TM-EXACT-REALIZATION — when an exact directly integrable result is the next useful Target; code-first default, optional explicit integration/build/test/minor-repair loop
-↓
-TM-PRACTICAL-TEST — collect real implemented Evidence + Results / Interpretation when material
-↓
-LENS-TEST-PROOF-EVIDENCE coverage review when useful
-↓
-Core Finding Disposition / Decision Revalidation / Consistency Review
-```
-
-`TM-WEUC`, Screen, Requirements, Frontend, Cross-Cutting and implemented Practical Evidence are conditional/cross-cutting nodes. Their placement in the graph expresses their **earliest meaningful activation** and normal consumers, not a rule that they run exactly once.
-
-`TM-SLICE-STRATEGY` owns the current Slice portfolio/Behavior realization map, a broad/shallow Domain/Aggregate realization map and selected Slice semantic-owner register. The register supplies identity/addressability, not bounded Target creation; Target Formation remains responsible for any independently bounded `TM-IMPLEMENTATION-SLICE` Target. Separate `TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-DRAFT` remain available when independently deeper Domain planning is material; their presence does not remove Strategy responsibility for `Slice → Uses → Aggregate/domain concept` planning relations. Detailed Slice work that challenges Strategy surfaces a Finding Candidate, crosses Core Finding Disposition, and revalidates the bounded owner only when selected.
-
-For `TM-PRACTICAL-TEST`, early activation may produce only Evidence Intent / Subject and an Observation / Data Collection Plan. Actual Evidence collection and Results / Interpretation require the real implemented subject/environment; the distinction from `TM-PROTOTYPE` is the Evidence subject, not merely when the Target record was first created.
-
-`TM-PRE-UPDATE-PLAN` and `TM-EXACT-REALIZATION` are generic Core nodes reused by SDS rather than SDS modules. Pre-Update is optional review-first change planning; Exact Realization owns literal directly integrable production/test code. It is **not mandatory after every semantic Target**. It may follow a sufficiently determined Domain owner (for example to implement/test an Aggregate before Slice work), a Slice/Test Design combination, a Cross-Cutting/Frontend result, or a direct bounded local change. A purely mechanical application of an already exact accepted payload does not require another Target. Candidate build/automated-test verification inside Exact Realization remains Core Evidence; implemented practical acceptance/learning stays `TM-PRACTICAL-TEST`.
-
-## 4. Fixed Testing Direction
-
-Testing has its own explicit partial order.
-
-### 4.1 Domain Proof Comes Before Shared Test Strategy
-
-After a Domain owner is selected, its isolated proof can be planned immediately:
-
-```text
-TM-DOMAIN-DRAFT / Domain Owner A
-→ TM-TEST-DESIGN / Domain Owner A
-
-TM-DOMAIN-DRAFT / Domain Owner B
-→ TM-TEST-DESIGN / Domain Owner B
-```
-
-Typical default:
-
-```text
-isolated complex Domain/business rule
-→ unit-test design
-```
-
-Before opening `TM-TEST-STRATEGY`, all **material isolated Domain proof responsibilities in the currently selected Domain set** should be one of:
-
-```text
-PLANNED
-EXPLICITLY NOT APPLICABLE
-EXPLICITLY DEFERRED with reason
-```
-
-This prevents Test Strategy from rediscovering local Domain proof responsibilities that already have natural owners.
-
-### 4.2 Slice Portfolio Then Shared Test Strategy
-
-`TM-TEST-STRATEGY` becomes useful only after enough of the Slice portfolio is known to coordinate shared/layer proof responsibilities.
-
-Normal gate:
-
-```text
-selected deeper Domain owners / Domain proof positions resolved when applicable
-+ Slice Implementation Strategy / selected Slice portfolio known
-↓
-TM-TEST-STRATEGY — if shared coordination is material
-```
-
-It then establishes defaults such as:
-
-```text
-Domain/business isolated complexity
-→ unit proof
-
-Slice orchestration / multi-owner vertical collaboration
-→ integration proof
-
-few critical whole-system paths
-→ selective E2E
-
-human/operated/environment property
-→ Practical Test
-```
-
-If proof ownership is simple/local, `TM-TEST-STRATEGY` is skipped. If the concrete proof is also obvious, `TM-TEST-DESIGN` may be skipped too and exact production/test code may be realized directly through `TM-EXACT-REALIZATION`.
-
-### 4.3 Per-Slice Test Design
-
-Each selected Slice gets its own proof design once its semantic result is stable enough.
-
-Standard route:
-
-```text
-TM-IMPLEMENTATION-SLICE
-  Useful Vertical Result + obligations + implementation boundary
-↓
-TM-TEST-DESIGN / that Slice
-↓
-TM-EXACT-REALIZATION / exact production + test realization
-```
-
-TDD route:
-
-```text
-TM-IMPLEMENTATION-SLICE
-  stabilize Slice identity
-  + Useful Vertical Result
-  + Behavior/DATA/Requirement/Domain obligations
-↓
-TM-TEST-DESIGN / that Slice
-  design integration/unit proof before detailed implementation
-↓
-repeat TM-IMPLEMENTATION-SLICE
-  REFINE call-level plan around the selected proof seams
-↓
-TM-EXACT-REALIZATION / exact production + test realization
-```
-
-TDD therefore changes the **interleaving**, not semantic authority. Test Design still consumes the Slice's accepted semantic result and cannot invent Scenario/Domain behavior.
-
-## 5. Readiness Gates
-
-### Scenario → Domain
-
-Domain work requires enough accepted Scenario meaning to avoid inventing Domain semantics during modeling:
-
-```text
-Need/result/scope
-material Behavior
-material Scenario DATA
-must-hold / negative guarantees when present
-acceptance/failure meaning
-```
-
-### Domain → Domain Test Design
-
-A Domain owner must have selected meaning/invariants/verification meaning precise enough to name the property to prove.
-
-### Domain Proof → Slice Strategy
-
-Material isolated Domain proof obligations for the current Domain set should already be planned/not-applicable/deferred explicitly. Slice planning may still reveal new Domain questions/findings; Core Finding Disposition may select Domain-owner revalidation/reopen when warranted.
-
-### Slice Strategy → Test Strategy
-
-A selected Slice portfolio / Useful Vertical Result set must be known. Test Strategy should not invent Slices or treat `RU-SSTRAT-03` as formation of bounded Implementation Slice Targets.
-
-### Slice → Slice Test Design
-
-At minimum the Slice must have stable:
-
-```text
-Primary Scenario
-Useful Vertical Result
-Behavior/DATA/Requirement obligations
-Domain obligations when present
-```
-
-A detailed call-level implementation plan is optional before Test Design in TDD mode.
-
-### Test Design → Exact Realization
-
-Material proof designs needed for the selected realization path should be persisted/addressable before or during implementation according to the chosen implementation/TDD mode. When literal code/config/test artifacts are the next useful result, generic Core `TM-EXACT-REALIZATION` owns that exact directly integrable result and may practically integrate/verify it only under explicit user authority.
-
-### Execution / Current Evidence → Test Proof Lens Coverage Review
-
-Coverage requires actual Evidence. Planned tests alone are not coverage.
-
-## 6. Methodology Direction View — Checkpoint / Handoff Projection
-
-At an Integration Checkpoint, explicit handoff, or whenever methodology direction materially changes/blocks the current discussion, state the likely methodology continuation. Ordinary Broad Discussion does not append the full direction projection mechanically on every turn.
-
-Minimum shape:
-
-```text
-Methodology Direction
-  Current node / Target:
-  Invocation mode:
-  Exit gate:
-  Recommended next Target / action:
-  Why this is next:
-  Conditional alternatives:
-  Repeat-current trigger:
-  Backward-reopen trigger:
-```
-
-The recommendation is not permission to execute the next Target automatically.
-
-## 7. Next-Step Resolution Algorithm
-
-After current Target evaluation:
-
-```text
-1. Is the current Exit Gate unsatisfied because the same Target still has
-   material unresolved Questions/Decisions?
-   → recommend REFINE current Target.
-
-2. Did new Evidence challenge an accepted upstream semantic owner?
-   → surface/disposition the Finding Candidate through Core Finding Disposition;
-   → when disposition selects revalidation, recommend REVALIDATE/REPAIR the narrowest challenged owner.
-
-3. Is the current Target complete enough to produce downstream Sources?
-   → follow the canonical forward graph.
-
-4. Are several conditional next Targets ready?
-   → choose one recommended next step based on blocking value / dependency /
-     earliest useful downstream progress;
-   → list the other ready Targets as conditional alternatives.
-
-5. Is a downstream Target not ready because a prerequisite artifact/owner is
-   missing?
-   → recommend the missing prerequisite Target, not an invented workaround.
-
-6. Does no new Target need work?
-   → say that the methodology path is currently complete / awaiting execution
-     or Evidence.
-```
-
-## 8. Artifact Progression Rule
-
-Methodology progress should be visible through durable natural representations when material — code/tests/types, discovery/strategy sections, owner artifacts, global maps — not only as chat history.
-
-```text
-Target invocation
-↓
-P-14 Artifact Placement View
-↓
-CREATE / UPDATE / EMBED / REUSE / UNRESOLVED
-↓
-canonical owner representations accumulate
-↓
-later IDTSPE invocation reads them as current Target/Source context
-```
-
-When AP/AG guidance says a separate owner/register/companion is required/preferred, the IDTSPE response should show it even when mutation is not authorized.
-
-The absence of a file may itself be a methodology finding:
-
-```text
-Persistence REQUIRED
-Destination UNRESOLVED
-→ do not invent a path
-→ expose UNRESOLVED_PLACEMENT
-```
-
-## 9. Repetition Is Normal
-
-The graph orders **meaning**, not chat turns.
-
-Valid patterns include:
-
-```text
-Scenario Planning
-→ Screen
-→ Scenario Planning REFINE
-
-Domain Draft
-→ Domain Test Design
-→ Slice planning exposes missing-invariant Finding Candidate
+challenge / new Evidence
+→ Finding Candidate
 → Core Finding Disposition
-→ Domain Draft REPAIR only when selected
-→ Domain Test Design REFINE after accepted Domain correction when needed
-
-Slice Plan
-→ Slice Test Design (TDD)
-→ Slice Plan REFINE
-
-TM-WEUC early interpretation
-→ accepted Domain/Slice decisions
-→ global-update Finding Candidate + likely TM-WEUC owner hint when project-global interpretation may have changed
-→ Core Finding Disposition
-→ TM-WEUC REFRESH only when that owner/lifecycle consequence is selected
+→ narrow owner-specific REVALIDATE / REPAIR when selected
 ```
 
-A repeated IDTSPE invocation is not duplication when new Sources, unresolved Decisions or downstream feedback justify it.
+This is what “SDS is directed” means. It does not prohibit iterative refinement.
 
-## 10. Guards
+## 2. Optional Generic Pre-Application Work
+
+When there is no trusted clear Application intent:
 
 ```text
-numeric phase order ≠ rigid execution order
-next-step recommendation ≠ automatic execution permission
-IDTSPE planning viewport ≠ Lens technical type
-persistent artifact ≠ Target Instance itself
-Test Strategy ≠ prerequisite for local Domain Test Design
-Test Design ≠ semantic owner
-TDD ≠ permission for tests to invent behavior
-forward graph ≠ prohibition on Core-disposition-driven narrow revalidation/reopen
+Need / Reality / real-world problem
+↓
+real-life solution / route discovery
+↓
+is an own Application contribution useful?
+├─ no  → SDS Application planning stops
+└─ yes → TM-APPLICATION-DEFINITION
 ```
+
+Use the generic Core guide:
+[`../../../idtspe-core/shared/solution-discovery-workflow.md`](../../../idtspe-core/shared/solution-discovery-workflow.md).
+
+If the user/project already supplies a trusted explicit Application contribution,
+this work may be skipped.
+
+## 3. Application Definition
+
+```text
+trusted Need/route/Application intent
+→ TM-APPLICATION-DEFINITION
+```
+
+Application Definition resolves the selected own-Application contribution,
+concept, responsibility boundary, proportional reference/existing-solution
+position and feasibility.
+
+`TM-PROTOTYPE` is optional practical Evidence. A Prototype commonly appears here,
+but may also be invoked later whenever a material uncertainty benefits from a
+bounded experiment.
+
+## 4. Scenario System
+
+```text
+Application Definition
+→ one TM-SCENARIO-PLANNING invocation per independently meaningful Scenario
+```
+
+Each Scenario owns:
+
+```text
+RU-SCEN-01 current behavior / requirements
+RU-SCEN-02 DATA + Behavior Items
+RU-SCEN-03 Development / Change Outlook
+```
+
+### Future behavior
+
+Two different outcomes are possible:
+
+```text
+same independently meaningful Scenario result changes/extends
+→ keep future/change meaning in that Scenario's RU-SCEN-03
+
+new independently meaningful result is expected/planned
+→ surface a new Scenario candidate
+→ form/plan that Scenario when useful
+```
+
+Do not force every future capability into an existing Scenario.
+
+## 5. Screen Branch — Conditional
+
+When spatial/window meaning matters:
+
+```text
+Scenario behavior + DATA
+→ TM-SCREEN
+```
+
+Screen may be planned/refined after enough Scenario meaning exists. Screen and
+Slice Strategy are sibling downstream projections of Scenario meaning, not a
+mandatory chain `Screen → Frontend Slice → Backend Slice`.
+
+One Screen may serve several Slices and one Slice may involve several Screens.
+
+## 6. Scenario → Slice Strategy
+
+When decomposition/owner coordination is useful:
+
+```text
+selected current/planned Scenarios
++ DATA / Behavior Items
++ must-hold meaning
++ Screen meaning when material
+→ TM-SLICE-STRATEGY
+```
+
+Strategy resolves:
+
+```text
+RU-SSTRAT-01
+  current useful vertical Slices
+  + planned future Slices when accepted future behavior already implies a new
+    independently useful vertical result
+  + May Change / Extend projection from Scenario RU-SCEN-03
+
+RU-SSTRAT-02
+  Slice → Uses → Domain/Aggregate meaning
+  at broad/shallow depth first
+
+RU-SSTRAT-03
+  Realization Owner Bridge
+```
+
+`May Change / Extend` is a projection; Scenario remains behavioral authority.
+
+## 7. Domain / Aggregate Discovery Inside Strategy
+
+Strategy may use `TM-DOMAIN-DISCOVERY` in SUPPORTING role without creating a
+separate child Target.
+
+At this stage it is enough to discover per Slice:
+
+```text
+candidate Aggregate/domain objects
+semantic behavior/rules/actions needed
+Behavior Item relation
+```
+
+Later, stable public/domain-facing operations/methods may be named when useful.
+Incidental code call graphs are not Strategy truth.
+
+## 8. Slice / Aggregate Realization Loop
+
+After Strategy (or after locally establishing equivalent Slice meaning when an
+explicit Strategy is unnecessary), realization is intentionally **not forced into
+one ordering**.
+
+The Slice→Domain map can reveal useful working groups:
+
+```text
+Aggregate A
+  used by SL-1, SL-2, SL-3
+
+Aggregate B
+  used by SL-3, SL-4
+```
+
+Possible valid approaches:
+
+```text
+A. deepen several Aggregates first → plan their Slices
+B. plan Slice-by-Slice and deepen Domain as each Slice exposes pressure
+C. work group-by-shared-Aggregate
+D. alternate Domain/Aggregate Modeling ↔ Implementation Slice refinement
+```
+
+No approach is the universal SDS order.
+
+Invariant before exact realization of one Slice:
+
+> Domain meaning for the Aggregates/objects materially touched by that Slice is
+> resolved enough that Exact Realization does not have to invent semantic rules.
+
+This does **not** require every Aggregate in the application to be completely
+modeled before the first Slice is realized.
+
+## 9. Implementation Slice
+
+```text
+selected Slice semantic owner
+→ TM-IMPLEMENTATION-SLICE when independent planning depth is useful
+```
+
+One normal Slice has one Primary Scenario and one useful/checkable vertical
+result. SDS does not split it into frontend/backend/database Slice identities.
+
+Application-layer theory may inform Resolution through Knowledge Basis/Lenses but
+is not mandatory Target topology.
+
+## 10. Cross-Cutting
+
+A genuinely shared non-vertical implementation responsibility may surface during
+Strategy/Domain/Slice/Test work.
+
+```text
+Finding Candidate
+→ Core Finding Disposition
+→ reuse/form TM-CROSS-CUTTING-CONCERN when one shared owner is justified
+```
+
+Consumer-local obligations remain in each Slice. Shared evolution belongs to the
+Cross-Cutting owner itself.
+
+## 11. Testing / Proof
+
+Testing is not a later chronological phase.
+
+```text
+obvious local proof
+→ TM-EXACT-REALIZATION may produce exact tests directly
+
+non-trivial proof method
+→ TM-TEST-DESIGN
+→ TM-EXACT-REALIZATION
+
+genuine cross-owner proof coordination
+→ optional TM-TEST-STRATEGY
+
+real operated/environment Evidence
+→ TM-PRACTICAL-TEST
+```
+
+Domain/Slice/Test planning may interleave when proof design changes the selected
+implementation boundary, under normal revalidation rules.
+
+## 12. Evolution / Change Isolation
+
+Future/change authority is distributed naturally:
+
+```text
+Scenario RU-SCEN-03
+→ Strategy May Change / Extend / planned future Slice projection
+→ Slice Evolution Steps
+→ Cross-Cutting Evolution Steps
+```
+
+`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` is retained as a compatibility ID/path
+but semantically acts as **Evolution / Change Isolation**. It evaluates planned
+change pressure; it does not own a Workspace Evolution Map.
+
+Rare independently material workspace-wide architecture choices use ordinary Core
+Finding Disposition/Target Formation and may become a Local Target Contract. No
+permanent WEUC Target is required.
+
+## 13. Exact Realization / Evidence
+
+```text
+sufficiently resolved current Target meaning
+→ Core TM-EXACT-REALIZATION
+→ exact code/config/tests
+→ actual Evidence
+→ selective revalidation only where Evidence challenges accepted meaning
+```
+
+Current code remains authority for exact technical realization. Semantic planning
+must not maintain a stale parallel call-level code mirror.
+
+## 14. Next-Step Resolver
+
+For the current Target ask:
+
+1. Is the current Result sufficiently resolved for its consumer?
+2. Is there blocking Generic Q/R/P or Evidence need?
+3. Is the next useful work another existing natural owner?
+4. Is a supporting Target Module enough without a child Target?
+5. Does independent unresolved choice justify Target Formation?
+6. Is Exact Realization now the narrowest useful next Target?
+7. Did new Evidence challenge an upstream owner, requiring explicit revalidation?
+
+Prefer the narrowest owner/action that resolves the real remaining uncertainty.

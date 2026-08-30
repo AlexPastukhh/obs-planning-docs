@@ -5,11 +5,11 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
 
-Evaluate spatial/UI/frontend realization while preserving Scenario/DATA/Behavior authority.
+Evaluate spatial/UI/frontend realization while preserving Scenario/DATA/Behavior/Screen/Slice authority. The Lens does not require a universal frontend architecture or a dedicated Frontend Target family.
 
 ## Applicability Gate
 
-Primary for Screen and Frontend; selected semantic/spatial sublenses may apply to Scenario/UI Slice.
+Primary for Screen; supporting for UI-heavy Implementation Slice and other Targets where UI/frontend realization is material.
 
 ## Target Inputs / Evidence
 
@@ -22,11 +22,11 @@ Scenario/Behavior, Scenario DATA, Screen Map/Drafts, must-hold conditions, Proto
 ### Primary Result Units / Semantic Selectors
 
 - `TM-SCREEN`: `RU-SCREEN-01..RU-SCREEN-02`
-- `TM-FRONTEND-SLICE`: `RU-FE-01..RU-FE-05`
 
 ### Conditional Result Units / Semantic Selectors
 
-- UI-heavy `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-01`, `RU-SLICE-03`, `RU-SLICE-04`
+- UI-heavy `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-01..RU-SLICE-03`
+- `TM-IMPLEMENTATION-SLICE / RU-SLICE-04` when an Evolution Step materially changes UI/frontend realization
 
 ### Relevant State Units
 
@@ -146,13 +146,13 @@ This Lens does not define new Result Units or target-result fields. If repeated 
 
 ## Typical Consumers
 
-Screen, Frontend Slice, UI/full-stack Slice, Scenario handoff and Practical Evidence.
+Screen, UI-heavy Slice, Scenario handoff, Prototype/Practical Evidence and Local Targets where UI realization is material.
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Core Finding Disposition may resolve current UI/frontend meaning back to the current Target. A material future-evolution Finding Candidate may call for WEUC/L5 evaluation; only suspected project-global meaning may carry `TM-WEUC` as a likely-owner hint, and Core resolves the actual owner/handoff.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Selected Screen spatial meaning is represented through `TM-SCREEN`; selected UI/frontend implementation meaning belongs to the current Slice or another natural Target owner. This Lens owns reusable evaluation, not a duplicate artifact contract.
 
-Selected Screen spatial meaning is represented through `TM-SCREEN`; selected frontend realization is represented through the parent Slice or promoted `TM-FRONTEND-SLICE` Target. This Lens owns UI/spatial/frontend evaluation, not a duplicate artifact contract. Material future frontend evolution first surfaces through WEUC/L5 as a Finding Candidate; after Core Finding Disposition accepts/resolves local evolution meaning, `AG-L5-02` may propose an Evolution section or promoted companion representation, and Documentation / Representation + P-14 / TF-10 decide materialization.
+Future UI/frontend change is evaluated through the owner-local Evolution Step + L5 when material; the Lens does not own an evolution companion or global map.
 
 ## Guards
 
@@ -164,7 +164,7 @@ L4 structural impact; L5 recurring frontend evolution/architecture; L6 proof/dia
 
 ## Escalation / Revalidation
 
-Frontend Part Plan is default. When independent planning depth becomes material, surface a Target Formation candidate for a possible `TM-FRONTEND-SLICE`; Target Formation decides whether promotion/new Target is warranted.
+Frontend-specific reasoning normally stays inside the Slice. When it becomes independently substantial, surface a normal Target Formation candidate for a Local Target Contract/other suitable owner; do not manufacture a Frontend Slice merely because frontend code exists.
 
 ## High-Level Example — Self-Contained Walkthrough
 
