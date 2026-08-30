@@ -20,7 +20,7 @@ Purpose: identify which current UC/workflow/template families already form stron
 | Testing Strategy | `UC-PLAN-TEST-STRATEGY` + workflow/template | strong | `TM-TEST-STRATEGY` + reusable Test Proof/Evidence Lens Pack |
 | Test Design | `UC-PLAN-TEST-DESIGN` + workflow/template | very strong | `TM-TEST-DESIGN` |
 | Practical Testing | `UC-PLAN-TEST-PLAN` + workflow/template | strong | `TM-PRACTICAL-TEST` + reusable Practical Evidence Lens Pack |
-| Test Coverage Review | `UC-PLAN-TEST-COVERAGE` + workflow/template | strong review | `TM-TEST-COVERAGE` |
+| Test Coverage Review | `UC-PLAN-TEST-COVERAGE` + workflow/template | strong review | direct `LENS-TEST-PROOF-EVIDENCE` coverage operation; no Target family |
 | Cross-owner Consistency | `UC-PLAN-CONSISTENCY` + detailed-planning | strong review capability | `UC-IDTSPE-REVIEW-CONSISTENCY`; not a Target Module by default |
 | WEUC / Architecture | Architecture Planning WEUC/work-cost/decision workflows | strong reusable reasoning across many Targets | split into `TM-WEUC` global map/current architecture-position ownership + reusable `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`; local architecture is ordinary Answer Decision, project-global conclusions promote to TM-WEUC, whole-Workspace architecture is a TM-WEUC scope, bounded independent architecture only on generic escalation |
 ---

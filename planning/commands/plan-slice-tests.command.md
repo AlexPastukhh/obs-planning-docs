@@ -14,7 +14,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй тесты слайса"
   ],
   "description": "focused SDS target",
-  "meaning": "Run focused TM-TEST-DESIGN intent without creating a new Target type.",
+  "meaning": "Run focused optional TM-TEST-DESIGN intent without creating a new Target type.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
@@ -24,10 +24,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "expectedOutput": "Slice-focused Test Design, normally integration-oriented for collaboration/runtime flow.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Use only when proof design is independently non-trivial; obvious unit/integration test realization may go directly to Exact Realization.",
+    "LENS-TEST-PROOF-EVIDENCE owns proof-quality/risk evaluation; Test Design owns only the selected proof method.",
+    "This command is read-only planning; exact test code/execution belongs to Exact Realization."
   ],
   "userTarget": "<Slice owner>",
   "palette": true,
@@ -47,7 +46,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "itemOrder": 2,
       "kindLabel": "IDTSPE TARGET · FOCUSED",
       "parentId": "application_slice.plan",
-      "viewOrder": 1
+      "viewOrder": 1,
+      "badges": [
+        "CONDITIONAL"
+      ]
     }
   },
   "refinements": [],

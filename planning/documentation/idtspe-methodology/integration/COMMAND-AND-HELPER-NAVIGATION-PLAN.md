@@ -83,15 +83,16 @@ Generic Core/runtime surfaces only:
 | 03 | `idtspe.next` | `что дальше по методологии` | Orchestration |
 | 04 | `idtspe.continue` | `продолжи по методологии` | Orchestration |
 | 05 | `idtspe.review_consistency` | `проверь консистентность плана` | Validator |
-| 06 | `tmcmd.exact.realization` | `реализуй код <scope>` | Generic Core Target Module; code-first exact realization |
-| 07 | `idtspe.lenses.select` | `подбери линзы <target/context>` | Lens-selection orchestration |
-| 08 | `idtspe.lens.apply` | `примени линзу <lens> к <target/context>` | Generic Lens-dispatch orchestration |
-| 09 | `lenscmd.documentation.representation.check` | `проверь как лучше зафиксировать <target/result>` | Required Core IDTSPE Lens shortcut |
-| 10 | `lenscmd.linked-notes.justify` | `проверь оправданы ли linked notes <target>` | Core IDTSPE Lens shortcut |
+| 06 | `tmcmd.pre.update` | `составь предапдейт план <scope>` | Generic Core optional read-only pre-update Target |
+| 07 | `tmcmd.exact.realization` | `реализуй код <scope>` | Generic Core Target Module; code-first exact realization |
+| 08 | `idtspe.lenses.select` | `подбери линзы <target/context>` | Lens-selection orchestration |
+| 09 | `idtspe.lens.apply` | `примени линзу <lens> к <target/context>` | Generic Lens-dispatch orchestration |
+| 10 | `lenscmd.documentation.representation.check` | `проверь как лучше зафиксировать <target/result>` | Required Core IDTSPE Lens shortcut |
+| 11 | `lenscmd.linked-notes.justify` | `проверь оправданы ли linked notes <target>` | Core IDTSPE Lens shortcut |
 
-Count: **10** methodology invocation surfaces.
+Count: **11** methodology invocation surfaces.
 
-The IDTSPE view should render row 06 as the Core realization Target and rows 07–10 in a distinct metadata-driven `Lens Operations` section. `idtspe.lenses.select` / `idtspe.lens.apply` make every registered Core/profile Lens reachable without manufacturing one command per Lens. Documentation / Representation and Linked Notes remain specialized shortcuts for stable recurring intents.
+The IDTSPE view should render rows 06–07 as the Core Pre-Update/Exact Realization Targets and rows 08–11 in a distinct metadata-driven `Lens Operations` section. `idtspe.lenses.select` / `idtspe.lens.apply` make every registered Core/profile Lens reachable without manufacturing one command per Lens. Documentation / Representation and Linked Notes remain specialized shortcuts for stable recurring intents.
 
 ### 3.2 `SDS — IDTSPE Profile`
 
@@ -101,19 +102,19 @@ The tab contains:
 
 ```text
 1 SDS bootstrap
-16 canonical SDS Target Module invocations
+15 canonical SDS Target Module invocations
 13 focused SDS Target invocations
-2 direct SDS Lens checks
+3 direct SDS Lens checks
 = 32 surfaces
 ```
 
 Together:
 
 ```text
-IDTSPE tab 10
+IDTSPE tab 11
 SDS tab    32
 -----------
-TOTAL      42 accepted methodology invocation surfaces
+TOTAL      43 accepted methodology invocation surfaces
 ```
 
 This remains a surface count, not a required count of physical `.command.md` files.
@@ -269,11 +270,13 @@ Focused surfaces: **2**.
   [CONDITIONAL / OPERATED-EVIDENCE DRIVEN]
   └─ [FOCUSED] Разбери результаты практического теста <target>
 
-[IDTSPE TARGET] Проверь тестовое покрытие <scope>
-  TM-TEST-COVERAGE
+[IDTSPE LENS] Проверь тестовое покрытие <scope>
+  LENS-TEST-PROOF-EVIDENCE
+  → direct coverage/freshness/assertion/Escape/Refactor review; no Coverage Target
 ```
 
-Primary canonical surfaces: **2**.  
+Primary canonical Target surfaces: **1**.  
+Direct Lens surfaces: **1**.  
 Focused surfaces: **1**.
 
 Contextual next/review action (navigation reference only; **not** a new surface):
@@ -592,7 +595,7 @@ When actual repository mutation is authorized:
 5. Build `IDTSPE` and `SDS — IDTSPE Profile` tabs generically from current repository command metadata; do not hard-code command identities into runtime.
 6. Group focused commands under canonical Target Module cards.
 7. Order SDS Target Modules by §4 and mark WEUC cross-cutting.
-8. Render the two specialized SDS Lens shortcuts in the SDS Lens section; optional all-Lens catalog is informational/discovery metadata and routes explicit application through the generic Core `idtspe.lens.apply` operation.
+8. Render the three specialized SDS Lens shortcuts in the SDS Lens section; optional all-Lens catalog is informational/discovery metadata and routes explicit application through the generic Core `idtspe.lens.apply` operation.
 9. Keep Core Lens Operations (`подбери линзы`, `примени линзу`) plus the Documentation / Representation and Linked Notes shortcuts in the `IDTSPE` tab.
 10. Regenerate seeds/catalog projections.
 11. Update helper README/manual acceptance.
@@ -603,16 +606,16 @@ When actual repository mutation is authorized:
 At minimum, repository helper tests should prove:
 
 ```text
-42 accepted methodology surfaces resolve
+43 accepted methodology surfaces resolve
 
 IDTSPE tab:
-  exactly 10 primary methodology surfaces
+  exactly 11 primary methodology surfaces
 
 SDS tab:
   exactly 32 primary methodology surfaces
 
 SDS canonical Target Module commands:
-  17 / 17 present
+  15 / 15 present
   methodologyRuntime = IDTSPE
   profile = SDS
   correct TM-* binding
@@ -698,8 +701,8 @@ SDS helper structure:
 
 Repository implementation:
   STAGED IN CURRENT REPLACEMENT TARGET
-  42 primary methodology surfaces
-  10 IDTSPE + 32 SDS
+  43 primary methodology surfaces
+  11 IDTSPE + 32 SDS
   helper navigation derives from repository command metadata/seed projection
   generated runtime contains no maintained current command identities
   automated Helper verification: 122 / 122 PASS

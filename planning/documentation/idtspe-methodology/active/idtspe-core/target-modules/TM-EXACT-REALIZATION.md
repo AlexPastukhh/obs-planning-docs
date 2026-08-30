@@ -55,6 +55,7 @@ Depending on the active profile/subject:
 
 ```text
 accepted Target Result Units / Decisions that define what must become real
+accepted `RU-PUPDATE-01 Pre-Update Plan` when the user chose a reviewed pre-update plan first
 accepted Scenario / Domain / Slice / Screen / Requirement / architecture meaning when applicable
 selected Test Design / proof obligations when tests are in scope
 selected configuration/schema/workflow/documentation meaning for non-code realization
@@ -471,6 +472,9 @@ commit/push/deploy/release is never implied by Exact Realization
 ```text
 semantic/design Target
 → says what meaning is accepted
+
+TM-PRE-UPDATE-PLAN [optional]
+→ says what concrete changes are intended before mutation when review-first planning is useful
 
 TM-EXACT-REALIZATION
 → produces the exact directly integrable realization of sufficiently determined meaning

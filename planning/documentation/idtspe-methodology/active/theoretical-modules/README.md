@@ -63,8 +63,9 @@ Unclear timing is allowed. That is one reason the material remains theoretical.
 ```text
 IMPORTED_RAW
 → UNDER_REVIEW
-→ selected knowledge promoted into Core / Target Module Knowledge Basis / Lens Knowledge Basis / other stable owner
-→ source theoretical module marked PARTIALLY_PROMOTED or SUPERSEDED
+→ ACTIVE_KNOWLEDGE_BASIS when preserved theory/mechanics becomes a reusable selected knowledge owner
+→ selected operational meaning may also be promoted into Core / Target Module / Lens owners
+→ source package may later be marked PARTIALLY_PROMOTED or SUPERSEDED
 → eventually RETIRED when no unique useful knowledge remains
 ```
 
@@ -74,4 +75,4 @@ Promotion copies **meaning**, not necessarily old file structure or old workflow
 
 | ID | Package | State | Source | Notes |
 |---|---|---|---|---|
-| `THM-TESTING-DETAIL-CA768B61` | [`testing/`](testing/README.md) | `IMPORTED_RAW` | repository snapshot `ca768b61...` | detailed Testing principles/guidance preserved byte-for-byte until better operationalization is chosen |
+| `THM-TESTING-DETAIL-CA768B61` | [`testing/`](testing/README.md) | `ACTIVE_KNOWLEDGE_BASIS` | repository snapshot `ca768b61...` | reusable Testing proof theory/mechanics; four source bodies remain byte-preserved provenance, operationalized through the Test Proof Lens and selected current Target/Core owners |

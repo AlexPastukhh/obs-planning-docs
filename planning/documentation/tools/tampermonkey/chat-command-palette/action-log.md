@@ -516,3 +516,21 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
 **Package:** `b0a9bad8-1b8f-4a49-af1f-983dec13e780`  
 **Reason:** Planning Helper remains on the same 42-surface projection introduced by the prior Exact Realization package. This correction changes only canonical audit/provenance consistency and the already-intended current Core count statement; Helper seed/order/runtime/test behavior is unchanged from the prior cumulative target.
+
+### XREF-036 — Project Testing simplification and generic Pre-Update in Planning Helper
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-137` / `LOG-DOC-138`  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
+**Reason:** Planning Helper participates through command ordering, regenerated `seed/commands.json` and userscript, and navigation/semantic regression checks for the 43-surface projection: new generic Core Pre-Update plus direct Test Proof Lens coverage review with no Coverage Target. Helper runtime behavior is unchanged; full methodology rationale, bootstrap/example scope boundary and APPLIED target state remain in the reusable-documentation canonical log.
+
+### XREF-037 — Reference Testing Evidence persistence ReviewDiff correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-139` / `LOG-DOC-140`  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**Package:** `e78abb02-eb7a-4c4b-bccf-3340fd2f06bd`  
+**Reason:** Planning Helper remains on the same 43-surface projection introduced by package `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`. This correction changes no Helper seed/order/runtime/test behavior; it only corrects reusable Test Proof Lens Evidence-persistence semantics and records that Simple Owner Bootstrap is deferred to later work.

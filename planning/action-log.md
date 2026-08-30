@@ -311,3 +311,21 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
 **Package:** `b0a9bad8-1b8f-4a49-af1f-983dec13e780`  
 **Reason:** Planning Root remains part of the same Exact Realization ChangeSet through its canonical command projections. The reusable-documentation log owns the ReviewDiff correction that preserves historical audit-count provenance and aligns the current generic Core surface count; command semantics themselves are unchanged from the prior Exact Realization package.
+
+### LOG-PLAN-011 — Reference Testing simplification and generic Pre-Update command projection
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-137` / `LOG-DOC-138`  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
+**Reason:** Planning Root participates through the new canonical `tmcmd.pre.update / составь предапдейт план`, simplified Testing command bindings and the mechanical SDS bootstrap command count/projection. Full Testing ownership, Pre-Update semantics, bootstrap/example scope boundary and APPLIED target state are owned by the reusable-documentation canonical log.
+
+### LOG-PLAN-012 — Reference Testing Evidence persistence ReviewDiff correction
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `LOG-DOC-139` / `LOG-DOC-140`  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**Package:** `e78abb02-eb7a-4c4b-bccf-3340fd2f06bd`  
+**Reason:** Planning Root remains part of the same Testing/Pre-Update ChangeSet through the command projections introduced by the prior package. This correction changes only reusable Test Proof Lens Evidence-persistence semantics and records the explicit deferral of Simple Owner Bootstrap; command identities/counts/behavior remain unchanged.

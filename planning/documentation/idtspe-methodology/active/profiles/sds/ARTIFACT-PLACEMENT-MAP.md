@@ -184,47 +184,38 @@ SPLIT:    separate file normally appears only after representation pressure just
     │
     ├── testing/
     │   ├── TEST-STRATEGY.md
-    │   │   TM: TM-TEST-STRATEGY / AP-TSTRAT-01
-    │   │   ROLE: shared proof/layer allocation; may contain a compact Test Realization / Topology Registry mapping Slice/Domain proof → test suite/class → setup/fixture/harness/helper
-    │   │   FIRST: Domain/Slice-specific Test Design when no shared strategy is needed
-    │   │
-    │   ├── TEST-REALIZATION-MAP.md
-    │   │   TM: TM-TEST-STRATEGY / AP-TSTRAT-01 (optional promoted representation of the same Strategy meaning)
-    │   │   FIRST: Test Realization / Topology Registry section inside TEST-STRATEGY.md
-    │   │   SPLIT: only when the cross-owner test realization map is independently large/reviewed/reused; reference test code instead of duplicating bodies/assertions
-    │   │
-    │   ├── <shared-test-data-or-environment-artifact>
-    │   │   TM: TM-TEST-STRATEGY / AP-TSTRAT-02
-    │   │   FIRST: TEST-STRATEGY section/config/schema when separate reuse is unnecessary
+    │   │   TM: TM-TEST-STRATEGY
+    │   │   ROLE: optional lightweight shared proof-layer/non-duplication/environment/harness strategy only when several owners genuinely need it
+    │   │   FIRST: local proof + executable tests / existing owner when no shared strategy is needed
     │   │
     │   ├── domain/
     │   │   └── <DomainOwner>.test-design.md
-    │   │       TM:   TM-TEST-DESIGN / AP-TDES-01
+    │   │       TM:   TM-TEST-DESIGN [optional]
     │   │       LENS: Test Proof / AG-TEST-01
-    │   │       FIRST: Domain owner/discovery section + executable tests
-    │   │       SPLIT: substantial independently reviewable proof design
+    │   │       FIRST: existing Domain/Scenario/Slice owner + exact executable tests
+    │   │       SPLIT: only for independently non-trivial proof design
     │   │
     │   ├── slices/
     │   │   └── SL-<id>.test-design.md
-    │   │       TM:   TM-TEST-DESIGN / AP-TDES-01
+    │   │       TM:   TM-TEST-DESIGN [optional]
     │   │       LENS: Test Proof / AG-TEST-01
-    │   │       FIRST: Testing section in SL-<id>.md or SLICE-STRATEGY.md + executable tests
-    │   │       SPLIT: substantial independently reviewable proof design
+    │   │       FIRST: existing Slice/Strategy owner + exact executable tests
+    │   │       SPLIT: only for independently non-trivial proof design
     │   │
     │   ├── practical/
-    │   │   └── <practical-test>.md
-    │   │       TM: TM-PRACTICAL-TEST / AP-PTEST-01; TM-TEST-DESIGN / AP-TDES-02 may route human/operated proof here
-    │   │       LENS: Practical Evidence / AG-PE-01 may use the practical-test owner
+    │   │   └── <implemented-practical-evidence>.md
+    │   │       TM: TM-PRACTICAL-TEST
+    │   │       LENS: Practical Evidence / AG-PE-01
+    │   │       ROLE: real-implemented-subject acceptance/learning; paired with Prototype through shared Practical Evidence method
     │   │
     │   ├── evidence/
     │   │   └── <evidence-artifact>
-    │   │       TM:   TM-PRACTICAL-TEST / AP-PTEST-02; TM-TEST-COVERAGE / AP-TCOV-02 may reference actual evidence
     │   │       LENS: Practical Evidence / AG-PE-01 + AG-PE-02; Test Proof / AG-TEST-02
     │   │       FIRST: existing test/run/tool output when durable separate evidence is unnecessary
     │   │
     │   └── TEST-COVERAGE.md
-    │       TM: TM-TEST-COVERAGE / AP-TCOV-01
-    │       ROLE: coverage/review owner when a durable coverage review is useful
+    │       LENS: Test Proof / AG-TEST-03
+    │       ROLE: optional durable property→actual Evidence review map; no TM-TEST-COVERAGE Target
     │
     └── <other profile-resolved artifact>
         LENS: L4 / AG-L4-02 may justify a separately useful dependency/change-impact artifact

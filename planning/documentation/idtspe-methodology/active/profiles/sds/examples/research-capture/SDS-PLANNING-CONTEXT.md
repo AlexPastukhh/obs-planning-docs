@@ -48,7 +48,7 @@ Need / Reality
 → SL-RC-02 REFINE
 → Practical Test plan
 → generic Core TM-EXACT-REALIZATION / exact realization + authorized integration
-→ Test Coverage
+→ Test Proof Lens coverage review
 → selective Revalidation
 ```
 

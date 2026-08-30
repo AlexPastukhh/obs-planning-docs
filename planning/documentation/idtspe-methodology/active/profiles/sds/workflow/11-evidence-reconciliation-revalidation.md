@@ -4,7 +4,7 @@ Status: active module-driven lifecycle phase
 
 ## Candidate Modules
 ```text
-TM-TEST-COVERAGE
+LENS-TEST-PROOF-EVIDENCE — direct actual Evidence/coverage review
 UC-IDTSPE-REVIEW-CONSISTENCY
 LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — refresh observed work/change-path Evidence when material
 ```

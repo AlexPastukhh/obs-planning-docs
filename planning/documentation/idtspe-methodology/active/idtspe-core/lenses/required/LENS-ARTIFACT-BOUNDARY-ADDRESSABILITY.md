@@ -383,7 +383,7 @@ responsibility maps / registries
 
 A coordinator may contain the complete planning residue for several small logical owners.
 
-A Test Strategy is a strong example: code can clearly show that `CaptureFlowIntegrationTest`, `CaptureIntegrationSetup` and `PersistenceAssertions` exist, but it may poorly communicate the cross-owner relation **which Slice/Domain proof is owned by which test class/suite/setup/helper and which testing infrastructure is intentionally shared**. A compact registry section in `TEST-STRATEGY.md` (or a promoted `TEST-REALIZATION-MAP.md` when independently large/reused) can preserve that relation while referencing rather than duplicating code.
+A Test Strategy is a useful boundary example: code is canonical for concrete test classes/suites/setups/fixtures/helpers, while a small `TEST-STRATEGY.md` may be justified when several owners need one shared proof-layer, non-duplication, environment or harness policy that is not otherwise obvious. Do not persist a hand-maintained class/helper inventory merely to mirror code. A generated/reference topology view is acceptable only when the cross-owner relation is independently large/reused and the representation has value beyond shadowing implementation.
 
 Therefore:
 

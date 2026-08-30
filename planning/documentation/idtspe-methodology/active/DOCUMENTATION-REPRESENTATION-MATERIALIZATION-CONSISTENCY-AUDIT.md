@@ -11,7 +11,7 @@ Scope: verify the current Documentation / Representation policy, SDS adaptive ar
 - Lens location is `active/idtspe-core/lenses/required/`: **PASS**
 - required Core Lens count is **4**: L1 / L2 / L3 + Documentation / Representation: **PASS**
 - total installed Lens count is **17 = 11 Core + 6 SDS-specific**: **PASS**
-- all **16 / 16** SDS Target Modules inherit/link the Documentation / Representation Lens: **PASS**
+- all **15 / 15** SDS Target Modules and **2 / 2** generic Core Target Modules inherit/link the Documentation / Representation boundary proportionally: **PASS**
 
 ## 2. Persistence / File Boundary
 
@@ -39,7 +39,7 @@ Checks:
 - Domain current semantics may be represented by `DOMAIN-DISCOVERY` residue + implementation-native code/tests without `<DomainOwner>.md`: **PASS**
 - one complex Domain may be promoted while peer Domains remain consolidated/code-native: **PASS**
 - Slice Strategy preserves Slice inventory/useful vertical results/order/dependencies and may keep small per-Slice Decisions/QRP: **PASS**
-- Test Strategy may preserve a registry-like cross-Slice/Domain test-realization topology (proof owner → test class/suite/setup/fixture/harness/helper) when code alone makes that relation hard to discover; separate supporting map remains pressure-driven and must not duplicate test bodies: **PASS**
+- Test Strategy may preserve independently useful shared proof-layer/environment/harness coordination, but concrete test class/suite/setup/fixture/helper topology remains code authority; any generated/reference topology view is exceptional and must not become shadow implementation documentation: **PASS**
 - a logical Slice Target does not imply `SL-<id>.md`: **PASS**
 - one complex Slice may be promoted while other Slice owners remain sections in `SLICE-STRATEGY`: **PASS**
 - Test Design / Evolution / Frontend / Part artifacts are companions only after independent pressure: **PASS**
@@ -62,7 +62,7 @@ Checks:
 - Domain/Slice/Frontend current result representation is owned by their Target Modules, not duplicated by Domain/Slice/UI Lens AG records: **PASS**
 - L5/WEUC `AG-L5-02` is the canonical proposer for optional target-local evolution sections/`<owner>.evolution.md`: **PASS**
 - semantic finding owner/handoff/reopen is resolved by Core Finding Disposition; `AG-*` and P-14 / TF-10 govern supporting representation/placement only: **PASS**
-- `TEST-REALIZATION-MAP.md` remains a Test Strategy representation because it captures the Test Strategy result rather than a Lens finding: **PASS**
+- Testing representation follows the simplified boundary: shared cross-owner strategy may persist when independently useful, while concrete test class/helper topology remains code authority; no hand-maintained `TEST-REALIZATION-MAP.md` is required as intrinsic Test Strategy output: **PASS**
 
 ## 4. Worked Physical Topologies
 
@@ -99,8 +99,8 @@ Lenses         → AG-*
 Current counts:
 
 ```text
-AP  34 unique
-AG  24 unique
+AP  33 unique
+AG  25 unique
 TOTAL 58 unique
 ```
 

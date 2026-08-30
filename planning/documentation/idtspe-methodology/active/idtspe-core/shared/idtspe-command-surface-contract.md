@@ -23,7 +23,7 @@ repository command definitions / helper
 
 A profile may extend this surface, but a generic Core command must not depend semantically on an SDS-specific command-surface owner merely because SDS is currently installed.
 
-## Generic Core Surface Inventory — 10
+## Generic Core Surface Inventory — 11
 
 ```text
 idtspe.bootstrap
@@ -40,6 +40,10 @@ idtspe.continue
 
 idtspe.review_consistency
 → проверь консистентность плана
+
+tmcmd.pre.update
+→ составь предапдейт план <scope>
+→ generic `TM-PRE-UPDATE-PLAN`; concrete read-only change plan before actual mutation
 
 tmcmd.exact.realization
 → реализуй код <scope>
@@ -58,7 +62,7 @@ lenscmd.linked-notes.justify
 → проверь оправданы ли linked notes <target>
 ```
 
-These are **10 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
+These are **11 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
 
 ## Bootstrap / Work Boundary
 
@@ -67,6 +71,19 @@ These are **10 generic Core methodology surfaces**. Installed profiles contribut
 `idtspe.work` enters ordinary material planning through the IDTSPE Shell and may create/reuse the natural Target according to Target Formation. It supports multi-turn Broad Discussion as the normal exploratory mode and periodic Integration Checkpoints when the user asks to see the integrated whole or a full Target invocation is used for that purpose; the checkpoint is not a new command/lifecycle/Target kind.
 
 Bootstrap must not silently select a Target, infer a Target invocation mode or execute Target work.
+
+## Pre-Update Plan Surface
+
+`tmcmd.pre.update` invokes generic Core [`TM-PRE-UPDATE-PLAN`](../target-modules/TM-PRE-UPDATE-PLAN.md).
+
+```text
+current request + accepted prior meaning + necessary current-state facts
+→ ordinary IDTSPE Q/R/P/Evidence + Ideas/Decision only when a real choice/uncertainty exists
+→ RU-PUPDATE-01 Pre-Update Plan
+→ stop before mutation
+```
+
+The Target is optional. It is useful when the user wants to review intended changes before actual update; a tiny/obvious change may go directly to Exact Realization. The command is read-only planning and never grants mutation/test/commit/push authority.
 
 ## Exact Realization Surface
 

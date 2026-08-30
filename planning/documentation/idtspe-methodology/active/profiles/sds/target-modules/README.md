@@ -3,7 +3,7 @@
 Status: active methodology registry  
 Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are indexed in `../lenses/README.md`; generic Core Lenses are owned by `../../../idtspe-core/lenses/README.md`.
 
-## Current Active Target Modules — 16
+## Current Active Target Modules — 15
 
 | Module ID | Entry Point | Role | Main output / purpose |
 |---|---|---|---|
@@ -19,14 +19,13 @@ Purpose: SDS-profile reusable Target planning contracts. SDS-specific Lenses are
 | `TM-IMPLEMENTATION-SLICE` | `tm.slice.plan` | primary | one vertical implementation Slice plan |
 | `TM-FRONTEND-SLICE` | `tm.slice.frontend` | specialized/conditional | frontend realization for a vertical Slice |
 | `TM-CROSS-CUTTING-CONCERN` | `tm.implementation.crosscut` | shared non-vertical/conditional | one canonical shared implementation responsibility |
-| `TM-TEST-STRATEGY` | `tm.test.strategy` | proof-strategy/conditional | shared proof responsibility/boundaries + optional test-realization registry/map |
-| `TM-TEST-DESIGN` | `tm.test.design` | primary/supporting proof | Behavior-to-Test proof design |
-| `TM-PRACTICAL-TEST` | `tm.test.practical` | implemented practical evidence | real-implementation acceptance/learning + observation/data-collection plan + Evidence interpretation |
-| `TM-TEST-COVERAGE` | `tm.test.coverage` | review | actual current Evidence coverage findings |
+| `TM-TEST-STRATEGY` | `tm.test.strategy` | proof-strategy/conditional | one lightweight shared proof strategy only when several owners genuinely need coordination |
+| `TM-TEST-DESIGN` | `tm.test.design` | optional proof | independently non-trivial Behavior-to-Test proof design; straightforward proof may go directly to Exact Realization |
+| `TM-PRACTICAL-TEST` | `tm.test.practical` | implemented practical evidence | real-implementation acceptance/learning; paired with Prototype through shared Practical Evidence method/Lens |
 
-### Inherited Generic Core Realization
+### Inherited Generic Core Modules
 
-SDS also reuses Core [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md) after sufficiently determined Domain/Slice/Test/other meaning when an exact directly integrable result is independently useful. It is **not** a 17th SDS-specific module: the SDS catalog remains 16, while the installed Core+SDS system has one generic Core realization module plus these 16 profile modules.
+SDS also reuses Core [`TM-PRE-UPDATE-PLAN`](../../../idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md) when a concrete review-first update plan is useful and [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md) when an exact directly integrable result is useful. They are **not** SDS-specific modules: the SDS catalog remains 15.
 
 For code, Exact Realization owns literal method bodies/files/patches plus optional explicitly authorized integration/build/test/minor-repair work. `TM-IMPLEMENTATION-SLICE` remains the call-level pre-code Slice design owner.
 
@@ -44,6 +43,8 @@ are internal addressable object contracts of `TM-SCENARIO-PLANNING`.
 
 Consistency review remains `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module.
 
+Test Coverage review is also no longer a Target Module. `проверь тестовое покрытие` applies the reusable `LENS-TEST-PROOF-EVIDENCE` to current semantics + actual Evidence and routes material gaps through Core Finding Disposition.
+
 ## Knowledge Basis
 
 Existing SDS Target Modules may retain `## Knowledge Basis` sections when useful. Generic Core treats Knowledge Basis as flexible theory-to-application guidance rather than requiring one literal section/mode/schema; `TM-SCENARIO-PLANNING` currently needs no separate Knowledge Basis.
@@ -60,7 +61,7 @@ Existing SDS Knowledge Basis sections may still use `INLINE | REFERENCED | HYBRI
 
 ## Target Step-Result Conformance
 
-All 16 active SDS Target Modules declare one explicit:
+All 15 active SDS Target Modules declare one explicit:
 
 ```text
 ## Resolution / Production Method
@@ -108,4 +109,4 @@ At an Integration Checkpoint or explicit/material handoff, expose the recommende
 
 ## Theoretical Testing Knowledge
 
-The processed Test Target Modules/Lenses remain operational authority. Deeper raw Testing theory at [`../../../theoretical-modules/testing/README.md`](../../../theoretical-modules/testing/README.md) may be consulted when a materially difficult proof question needs it; Target Modules do not require a fixed Knowledge Basis mode/load-policy shape. `TM-PROTOTYPE` and `TM-PRACTICAL-TEST` currently rely on their operational practical-evidence method/Lens rather than separate Target Module Knowledge Bases.
+The [`Testing Knowledge Basis`](../../../theoretical-modules/testing/README.md) owns reusable proof theory/mechanics; `LENS-TEST-PROOF-EVIDENCE` owns operational evaluation; Test Strategy/Test Design own only independently useful selected planning results; Exact Realization owns literal test code/execution. `TM-PROTOTYPE` and `TM-PRACTICAL-TEST` are paired practical-Evidence Targets that share the Core Practical Evidence method/Lens rather than duplicating its mechanics.

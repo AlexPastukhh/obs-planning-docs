@@ -75,7 +75,7 @@
         "bootstrap SDS planning"
       ],
       "description": "Load the SDS profile over IDTSPE Core.",
-      "meaning": "Run the SDS governance bootstrap over IDTSPE Core: establish or refresh the 16 SDS Target Modules plus inherited generic Core TM-EXACT-REALIZATION, SDS Lens pack, directed workflow and representation/materialization policy. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
+      "meaning": "Run the SDS governance bootstrap over IDTSPE Core: establish or refresh the 15 SDS Target Modules plus inherited generic Core TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, SDS Lens pack, directed workflow and representation/materialization policy. This is governance bootstrap, not selection of the Full SDS profile and not task-specific planning execution.",
       "activeContextBehavior": "Load or refresh SDS profile governance over IDTSPE Core only. If a current Target/context already exists, report or reuse it for orientation without changing it. If no Target exists, stop ready for later SDS planning. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module.",
       "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1759,7 +1759,7 @@
         "спланируй тесты домена"
       ],
       "description": "focused SDS target",
-      "meaning": "Run focused TM-TEST-DESIGN intent without creating a new Target type.",
+      "meaning": "Run focused optional TM-TEST-DESIGN intent without creating a new Target type.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1769,10 +1769,9 @@
       "expectedOutput": "Domain-focused Test Design, normally unit-test-oriented for isolated complex rules.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Use only when proof design is independently non-trivial; obvious unit/integration test realization may go directly to Exact Realization.",
+        "LENS-TEST-PROOF-EVIDENCE owns proof-quality/risk evaluation; Test Design owns only the selected proof method.",
+        "This command is read-only planning; exact test code/execution belongs to Exact Realization."
       ],
       "userTarget": "<Domain owner>",
       "palette": true,
@@ -1788,7 +1787,9 @@
           "sectionOrder": 5,
           "itemOrder": 1,
           "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
+          "badges": [
+            "CONDITIONAL"
+          ],
           "parentId": "test_design.plan"
         }
       },
@@ -2022,14 +2023,14 @@
         "план практического тестирования"
       ],
       "description": "implemented practical evidence",
-      "meaning": "Run TM-PRACTICAL-TEST through the IDTSPE Shell to prepare or review practical Evidence for a real implemented subject. The Target/collection plan may be prepared before realization; actual Evidence/results require the real implemented subject.",
+      "meaning": "Run TM-PRACTICAL-TEST as the implemented-practical-Evidence pair to Prototype: plan the inquiry when useful, but collect actual Evidence/results only from the real implemented subject/environment.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Evidence Intent / Subject + Observation / Data Collection Plan; when real implementation Evidence exists, Evidence Results / Interpretation for acceptance or learning.",
+      "expectedOutput": "Implemented Practical Evidence Intent/Real Subject + proportional Observation Plan and, only after real implementation exists, actual Evidence Results/Interpretation for acceptance and/or learning.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -2040,8 +2041,8 @@
       "userTarget": "<one practical Evidence target>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use to prepare collection for a future real implementation or to collect/interpret acceptance or learning from an implemented subject.",
-        "whatYouGet": "Evidence Intent / Subject, Observation / Data Collection Plan, and—when actual implemented Evidence exists—Evidence Results / Interpretation.",
+        "whenToUse": "Use when the question/property genuinely requires observation of the real implemented system/environment; ordinary automated build/test Evidence inside Exact Realization is not enough or is not the inquiry.",
+        "whatYouGet": "A real-subject practical Evidence inquiry/results, explicitly distinct from Prototype Evidence and from ordinary automated test execution.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -2069,6 +2070,66 @@
       "directionIds": [
         "DIR-PLAN-TESTING",
         "DIR-PLAN-SOLUTION"
+      ],
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.pre.update",
+      "file": "plan-pre-update.command.md",
+      "command": "составь предапдейт план",
+      "englishName": "pre-update plan",
+      "commandFamily": [
+        "составь предапдейт план",
+        "предапдейт план",
+        "сначала план обновления",
+        "pre-update plan"
+      ],
+      "description": "Produce a concrete read-only plan of the intended update before actual mutation.",
+      "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Use current accepted prior meaning, current context and only the current destination facts the update actually depends on. Resolve material Questions/Risks/Problems/Ideas/Evidence/Decisions through ordinary IDTSPE state when needed, then return one concrete RU-PUPDATE-01 Pre-Update Plan. Do not reopen settled design or create a QRPE form when no real choice/uncertainty exists.",
+      "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to TM-EXACT-REALIZATION but does not authorize repository/destination mutation.",
+      "traversalReadMode": "Reuse current reliable IDTSPE governance and accepted prior context; inspect only the exact current code/files/configuration/owner state the update plan materially depends on. Surface a real missing-source Question instead of guessing current state.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
+      ],
+      "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, preserve boundary, material order/dependencies and post-update verification, with unresolved material issues only when they actually remain.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Use accepted previous meaning/current context as the basis; do not redesign it without a material new conflict.",
+        "Use ordinary Q/R/P/Evidence + Ideas/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
+        "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
+        "The plan does not mutate files, execute tests, commit or push; actual update authority belongs to the later host/Exact Realization workflow.",
+        "Skip this Target when the change is trivial and the user explicitly wants direct realization."
+      ],
+      "userTarget": "<update scope>",
+      "palette": true,
+      "helperPresentation": {
+        "whenToUse": "Use when you want to review exactly what will change before code/files/configuration are actually updated.",
+        "whatYouGet": "A concise concrete pre-update plan derived from accepted context/current state, including preserve boundaries and verification without another design pass unless a real issue requires it.",
+        "navigation": {
+          "viewId": "IDTSPE",
+          "viewLabel": "IDTSPE",
+          "viewOrder": 0,
+          "sectionId": "core",
+          "sectionLabel": "IDTSPE Core",
+          "sectionOrder": 0,
+          "itemOrder": 5,
+          "kindLabel": "IDTSPE TARGET",
+          "badges": []
+        }
+      },
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-PRE-UPDATE-PLAN",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "directionIds": [
+        "DIR-REPOSITORY"
       ],
       "refinements": []
     },
@@ -2315,7 +2376,7 @@
         "спланируй тесты слайса"
       ],
       "description": "focused SDS target",
-      "meaning": "Run focused TM-TEST-DESIGN intent without creating a new Target type.",
+      "meaning": "Run focused optional TM-TEST-DESIGN intent without creating a new Target type.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -2325,10 +2386,9 @@
       "expectedOutput": "Slice-focused Test Design, normally integration-oriented for collaboration/runtime flow.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Use only when proof design is independently non-trivial; obvious unit/integration test realization may go directly to Exact Realization.",
+        "LENS-TEST-PROOF-EVIDENCE owns proof-quality/risk evaluation; Test Design owns only the selected proof method.",
+        "This command is read-only planning; exact test code/execution belongs to Exact Realization."
       ],
       "userTarget": "<Slice owner>",
       "palette": true,
@@ -2344,7 +2404,9 @@
           "sectionOrder": 7,
           "itemOrder": 2,
           "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
+          "badges": [
+            "CONDITIONAL"
+          ],
           "parentId": "application_slice.plan"
         }
       },
@@ -2408,26 +2470,26 @@
         "спланируй проверку поведения"
       ],
       "description": "test design",
-      "meaning": "Run TM-TEST-DESIGN through the IDTSPE Shell for the selected target.",
+      "meaning": "Run optional TM-TEST-DESIGN only when how to prove the selected property is independently non-trivial. Straightforward proof should go directly from accepted semantics to TM-EXACT-REALIZATION for exact test code.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-DESIGN.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+      "expectedOutput": "RU-TDES-01: concise selected property-to-proof design (credible layer/operator + setup/action/observation + required assertions/signals) only when separate proof planning is actually useful.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Do not create a Test Design Target for an obvious local test merely because the module exists.",
+        "LENS-TEST-PROOF-EVIDENCE owns Escape Risk, Refactor Fragility, assertion strength, wrong-layer/duplication and Evidence-freshness evaluation; retain those only when material rationale/findings matter.",
+        "Test Design is not exact test code and not executed Evidence; literal tests/build execution belong to Exact Realization under explicit authority.",
+        "This command is read-only planning and does not mutate repository files."
       ],
       "userTarget": "<one Domain/Slice/etc proof target>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when a semantic owner needs executable/procedural proof design before or during realization.",
-        "whatYouGet": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+        "whenToUse": "Use when the proof method itself is non-trivial: layer choice, failure injection, concurrency/distributed behavior, no-mutation observation, special environment/harness, or automated-vs-practical boundary needs an independent decision.",
+        "whatYouGet": "A concise selected property-to-proof design; if proof is straightforward, the module may be skipped in favor of Exact Realization.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -2437,7 +2499,9 @@
           "sectionOrder": 5,
           "itemOrder": 0,
           "kindLabel": "IDTSPE TARGET",
-          "badges": []
+          "badges": [
+            "CONDITIONAL"
+          ]
         }
       },
       "methodologyBinding": {
@@ -2466,27 +2530,26 @@
         "стратегия тестирования"
       ],
       "description": "test strategy",
-      "meaning": "Run TM-TEST-STRATEGY through the IDTSPE Shell for the selected target.",
+      "meaning": "Run conditional TM-TEST-STRATEGY only when several semantic owners/Slices genuinely need one shared proof-layer/non-duplication/environment/harness strategy. Skip it when proof is local/obvious.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Testing Strategy or a valid no-Strategy result routing proof design locally; when useful, include a compact Test Realization / Topology Registry mapping Slice/Domain proof owners to concrete test suites/classes/setups/fixtures/harnesses/helpers, with optional promoted supporting map only under independent pressure.",
+      "expectedOutput": "One compact Shared Proof Strategy or a valid no-Strategy result routing proof locally; concrete test classes/helpers remain code authority and no class-level test-realization registry is required.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "When shared test realization mapping is useful, reference concrete test classes/setups/helpers from the Strategy; do not copy test bodies or make test code semantic authority.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Use this Target only for independently useful shared testing responsibility/policy across several proofs; ordinary local proof does not require Strategy.",
+        "Testing Knowledge Basis owns reusable mechanics and LENS-TEST-PROOF-EVIDENCE owns proof-quality evaluation; do not copy them into the Strategy result.",
+        "Keep concrete test classes/fixtures/helpers as code authority; reference shared infrastructure only when the cross-owner relation is materially useful.",
+        "This command is read-only planning; literal test code/execution belongs to Exact Realization under its authority boundary."
       ],
       "userTarget": "<one shared testing strategy>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when proof concerns genuinely need a shared cross-owner strategy/environment/layer policy or when the cross-Slice test-realization topology is hard to understand from code alone.",
-        "whatYouGet": "Testing Strategy or a valid no-Strategy result; when useful, a compact registry-like map of Slice/Domain proof → test suite/class → setup/fixture/harness/helper without duplicating test bodies.",
+        "whenToUse": "Use only when multiple Slices/semantic owners need a shared proof policy, shared environment/harness decision, non-duplication boundary or selected critical E2E/Practical paths.",
+        "whatYouGet": "A small shared proof strategy, or an explicit conclusion that local proof/Exact Realization is sufficient.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
@@ -2782,7 +2845,7 @@
           "sectionId": "core",
           "sectionLabel": "IDTSPE Core",
           "sectionOrder": 0,
-          "itemOrder": 5,
+          "itemOrder": 6,
           "kindLabel": "IDTSPE TARGET",
           "badges": []
         }
@@ -3261,47 +3324,49 @@
       "commandFamily": [
         "проверь тестовое покрытие"
       ],
-      "description": "test coverage",
-      "meaning": "Run TM-TEST-COVERAGE through the IDTSPE Shell for the selected target.",
+      "description": "direct Test Proof Lens coverage review",
+      "meaning": "Resolve/reuse the natural host Target/context and apply LENS-TEST-PROOF-EVIDENCE to current selected semantics + actual tests/checks/Practical Evidence. Review coverage/freshness/assertion strength/wrong-layer/Escape/Refactor issues without creating a TM-TEST-COVERAGE Target.",
       "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-COVERAGE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Coverage review, uncovered/overstated proof, Evidence gaps and upstream correction/revalidation routes.",
+      "expectedOutput": "Test Proof Lens review: property→actual Evidence mapping, material strong/partial/missing/stale/wrong-layer/weak-assertion findings and natural correction/revalidation destinations; no separate Coverage Target.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "This is a direct reusable Lens review, not a Test Coverage Target Module invocation.",
+        "Actual tests/run Evidence remain Evidence Sources; green test names do not become semantic authority.",
+        "Material gaps go through Core Finding Disposition to Exact Realization, optional Test Design, Practical Evidence or the challenged semantic owner.",
+        "This command is read-only planning; it does not implement tests or execute them."
       ],
       "userTarget": "<selected semantic/Evidence coverage scope>",
       "palette": true,
       "helperPresentation": {
-        "whenToUse": "Use when implemented/planned proof coverage should be reconciled against semantic obligations and Evidence.",
-        "whatYouGet": "Coverage review, uncovered/overstated proof, Evidence gaps and upstream correction/revalidation routes.",
+        "whenToUse": "Use when you want to check whether current actual tests/Evidence really prove current semantic obligations, including freshness, assertion strength, false-confidence Escape Risk and refactor fragility.",
+        "whatYouGet": "A Test Proof Lens coverage review and material Findings without creating a separate coverage owner/Target.",
         "navigation": {
           "viewId": "SDS",
           "viewLabel": "SDS — IDTSPE Profile",
           "viewOrder": 1,
-          "sectionId": "08",
-          "sectionLabel": "08 Evidence & Coverage",
-          "sectionOrder": 8,
+          "sectionId": "lens",
+          "sectionLabel": "IDTSPE Lens Checks — SDS",
+          "sectionOrder": 9,
           "itemOrder": 2,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": []
+          "kindLabel": "IDTSPE LENS",
+          "badges": [
+            "DIRECT LENS REVIEW"
+          ]
         }
       },
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
-        "surfaceKind": "TARGET_MODULE",
-        "targetModuleId": "TM-TEST-COVERAGE",
-        "lensId": null,
+        "surfaceKind": "LENS",
+        "targetModuleId": null,
+        "lensId": "LENS-TEST-PROOF-EVIDENCE",
         "parentSurface": null,
-        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
       },
       "directionIds": [
         "DIR-PLAN-TESTING",

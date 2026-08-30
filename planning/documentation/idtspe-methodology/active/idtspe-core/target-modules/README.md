@@ -39,10 +39,11 @@ Current installed profile modules may still express their result through `Target
 
 New or materially revised modules should make the Step Result and independently processable Result Units explicit.
 
-## Installed Generic Core Target Module
+## Installed Generic Core Target Modules
 
-IDTSPE Core installs one profile-independent concrete Target Module:
+IDTSPE Core installs two profile-independent concrete Target Modules:
 
+- [`TM-PRE-UPDATE-PLAN`](TM-PRE-UPDATE-PLAN.md) — optional concrete read-only plan of intended changes before actual mutation; one `RU-PUPDATE-01`.
 - [`TM-EXACT-REALIZATION`](TM-EXACT-REALIZATION.md) — produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional explicitly authorized integration/verification/repair.
 
 This does not introduce Scenario/Domain/Slice semantics into Core. Profiles may hand sufficiently determined semantic/design results to this reusable realization family instead of duplicating code-production modules.
@@ -51,7 +52,7 @@ This does not introduce Scenario/Domain/Slice semantics into Core. Profiles may 
 
 ### SDS Profile
 
-Current SDS profile installs **16 Target Modules**:
+Current SDS profile installs **15 Target Modules**:
 
 [`../../profiles/sds/target-modules/README.md`](../../profiles/sds/target-modules/README.md)
 

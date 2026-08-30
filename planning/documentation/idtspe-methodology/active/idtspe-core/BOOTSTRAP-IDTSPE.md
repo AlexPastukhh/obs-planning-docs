@@ -122,9 +122,10 @@ Core Lens Pack:
   + Documentation / Representation materialization check
 
 Generic Core command surface:
-  10 Core surfaces / profile-independent authority loaded
+  11 Core surfaces / profile-independent authority loaded
 
 Generic Core Target Modules:
+  TM-PRE-UPDATE-PLAN available/indexed; optional concrete read-only change plan before mutation
   TM-EXACT-REALIZATION available/indexed; code realization is its primary/default archetype and the body is loaded when exact realization is selected
 
 Generic Lens registry:
@@ -167,8 +168,8 @@ Recommended next methodology action:
 = generic methodology/framework orientation
 
 бутстреп sds
-= load the SDS profile: 16 current SDS Target Modules,
-  plus inherited generic Core TM-EXACT-REALIZATION when exact realization is selected,
+= load the SDS profile: 15 current SDS Target Modules,
+  plus inherited generic Core TM-PRE-UPDATE-PLAN / TM-EXACT-REALIZATION when selected,
   SDS-specific Lens pack, workflow, planning-file topology and command surface
 ```
 

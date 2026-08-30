@@ -1,54 +1,40 @@
 # Practical Evidence Method — Prototype And Implemented Practical Evidence
 
-Status: active reusable evidence method  
-Used by: `TM-PROTOTYPE`, `TM-PRACTICAL-TEST`
+Status: active reusable Practical Evidence Knowledge Basis / method  
+Used by: `LENS-PRACTICAL-EVIDENCE`, `TM-PROTOTYPE`, `TM-PRACTICAL-TEST`
 
-## 1. Purpose
+## 1. Purpose / Ownership Split
 
-Use one observation discipline before and after implementation without pretending those Evidence sources have the same strength.
-
-```text
-question / uncertainty / property
-↓
-plan how to observe it credibly
-↓
-collect actual Evidence
-↓
-separate observation from interpretation
-↓
-record limits
-↓
-Decision support / acceptance / learning / revalidation
-```
-
-The two Target Modules remain separate because the subject is materially different:
+Use one observation discipline before and after implementation without pretending those subjects have the same evidentiary strength.
 
 ```text
+this shared method / Knowledge Basis
+→ reusable inquiry + observation + collection + interpretation mechanics
+
+LENS-PRACTICAL-EVIDENCE
+→ evaluates whether a concrete practical-evidence approach is credible/economical
+
 TM-PROTOTYPE
-  partial/simulated/throwaway subject allowed
-  practical learning before full implementation
+→ owns one practical inquiry whose subject may be partial/simulated/throwaway
 
 TM-PRACTICAL-TEST
-  Target and collection plan may be prepared before realization
-  actual Evidence comes from the real implemented subject/environment
-  practical acceptance and post-implementation learning
+→ owns one practical inquiry whose Evidence subject is the real implemented system/environment
 ```
 
-Target-formation time is not the evidentiary boundary: `TM-PRACTICAL-TEST` may be planned early so implementation can make later observation possible, but its actual Evidence/results phase starts only when the real implemented subject exists.
+Target Modules should reference this method instead of duplicating its full mechanics.
 
 ## 2. Shared Inquiry Shape
 
-A practical evidence inquiry may need:
+A practical Evidence inquiry may proportionally need:
 
 ```text
 Question / uncertainty / property
-Affected Target / Decision / owner
+Affected owner / Decision
 Why practical observation is useful
 Subject Under Observation
-Real vs simulated boundary when relevant
+Real vs simulated boundary OR real version/environment/window
 Actor / participant / operator / population
-Context / environment / version
-Task/action and/or passive data source
+Context / task / action and/or passive data source
 Observation / data collection plan
 Discriminating or acceptance signals when useful
 Actual Evidence
@@ -59,9 +45,57 @@ Follow-up / disposition hint
 
 This is guidance, not a mandatory record schema.
 
-## 3. Evidence Sources / Methods
+## 3. Prototype vs Implemented Evidence — Paired Example
 
-Choose only sources that help answer the question. Examples:
+Question:
+
+```text
+Can a user discover and complete Archive without confusion?
+```
+
+Prototype inquiry:
+
+```text
+clickable UI
++ mocked backend
++ representative task
+→ 4/5 participants find Archive
+```
+
+This can support interaction/discoverability learning. It cannot prove that the real archive operation persists correctly or behaves well under real latency/failure.
+
+Later implemented inquiry:
+
+```text
+real implemented Archive flow on representative environment
++ actual server/persistence behavior
++ reload / real latency / failure signals
+→ only 2/5 users complete the flow because an 8-second real response looks stalled
+```
+
+The **question may continue**, but the subject and Evidence strength changed materially. That is why Prototype and Implemented Practical Evidence remain separate Target families while sharing this method/Lens.
+
+## 4. Choose Only Discriminating Evidence
+
+Before collecting, ask proportionally:
+
+```text
+What exactly are we trying to learn or accept?
+What observation/data could answer it?
+What must be real, and what may be simulated?
+What context/environment must be representative?
+What signals would support/challenge the current hypothesis?
+What would count as acceptance when this is a proof question?
+Which repeats/variants/window/sample are actually useful?
+What privacy/safety/data constraints apply?
+What can this Evidence source not establish?
+```
+
+Do not gather every available metric merely because it exists.
+
+## 5. Evidence Sources / Methods
+
+Examples only:
 
 ```text
 paper/clickable prototype
@@ -82,56 +116,20 @@ A/B or staged rollout experiment
 
 Method names are not conformance enums.
 
-## 4. Plan Collection Before Interpreting
+## 6. Real / Simulated / Version Boundary
 
-Before running/observing, ask proportionally:
+Prototype Evidence must expose material fake/stub/mock/manual boundaries.
 
-```text
-What exactly are we trying to learn or accept?
-What data/observation could answer it?
-What should be real vs simulated?
-What context/environment must be representative?
-What signals would support/challenge the current hypothesis?
-What would count as acceptance when this is a proof question?
-Which repeats/variants/window/sample are actually useful?
-What privacy/safety/data constraints apply?
-What can this evidence source not establish?
-```
-
-Do not gather every available metric. Evidence collection follows the question.
-
-## 5. Observation Examples
-
-Depending on the inquiry:
-
-```text
-task/scenario completion
-time / latency
-hesitation / backtracking / repeated action
-navigation/orientation mistakes
-DATA/feedback comprehension
-errors / failed attempts / recovery
-manual intervention
-integration behavior
-performance / throughput / resource use
-feature/capability usage
-outcome distribution
-retry / abandonment patterns
-support/incident patterns
-```
-
-## 6. Real / Simulated Boundary
-
-Prototype evidence must state material fake/stub/mock/manual boundaries. Implemented evidence should state material version/environment/window boundaries.
+Implemented Evidence must expose material real version/environment/window boundaries.
 
 ```text
 clickable UI + mocked backend
-→ can support interaction learning
-→ cannot prove real integration reliability
+→ useful for interaction learning
+→ weak/no Evidence for real integration reliability
 
 production telemetry for one provider / two weeks
-→ can support learning about that observed population/window
-→ cannot automatically establish universal future behavior
+→ Evidence for that observed population/window
+→ not universal future behavior truth
 ```
 
 ## 7. Observation ≠ Interpretation ≠ Decision
@@ -147,31 +145,52 @@ Decision:
   selected later through normal owner/revalidation process
 ```
 
-Actual Evidence remains separate from the interpretation and from the Decision it informs.
+Keep these meanings separate.
 
 ## 8. Acceptance vs Learning
 
-When the purpose is acceptance, explicit expected signals / PASS-FAIL style interpretation may be useful.
+Acceptance may use explicit expected signals/pass-fail interpretation when the property supports it.
 
-When the purpose is learning, use the Evidence to support/challenge a hypothesis or reveal a new question without inventing artificial thresholds.
+Exploratory learning may use supported/challenged/inconclusive language and reveal new questions without artificial thresholds.
 
-Both are practical Evidence; neither gives the Evidence Target semantic authority over the product/application owner.
+Both are practical Evidence. Neither gives the Evidence Target product-semantic authority.
 
-## 9. Prototype → Implemented Evidence Continuity
+## 9. Data / Limits / Confidence
 
-When a question cannot be settled credibly until the real implementation exists, preserve enough continuity to avoid rediscovery:
+Preserve only limitations/confounders that materially affect interpretation, such as:
 
 ```text
-question
+sample/population
+mocked boundary
+device/provider/environment
+observation window/version
+telemetry completeness
+missing failure conditions
+```
+
+Do not invent quantitative confidence without quantitative support.
+
+## 10. Prototype → Implemented Continuity
+
+When useful, preserve enough continuity to avoid rediscovery:
+
+```text
+question/property
 relevant Scenario/task/context
-important observations/measurements
+important prior observations
 known prototype limitations
 ```
 
-Later `TM-PRACTICAL-TEST` may reuse or adapt that shape against the real implementation.
+The implemented inquiry may reuse/adapt these against the real subject.
 
-## 10. Operational Observability Boundary
+## 11. Operational Observability Boundary
 
-An implemented practical Evidence Target may consume telemetry/logs/analytics. It does not own permanent observability architecture.
+Practical Evidence may consume telemetry/logs/analytics but does not own permanent observability architecture.
 
-If required Evidence cannot be observed, surface a Finding Candidate. Normal disposition may select an implementation Slice/Cross-Cutting/code owner to add appropriate instrumentation.
+If required Evidence cannot be observed:
+
+```text
+Finding Candidate
+→ Core Finding Disposition
+→ implementation / Cross-Cutting / Exact Realization work when warranted
+```

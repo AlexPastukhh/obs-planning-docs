@@ -17,6 +17,7 @@
   "commands": [
     "idtspe.bootstrap",
     "idtspe.work",
+    "tmcmd.pre.update",
     "tmcmd.exact.realization",
     "idtspe.next",
     "idtspe.continue",

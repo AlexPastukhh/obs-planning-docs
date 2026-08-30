@@ -9,17 +9,17 @@ Testing work is distributed through the directed methodology graph:
 
 ```text
 Domain Draft
-→ per-Domain TM-TEST-DESIGN when isolated proof is material
+→ optional per-Domain TM-TEST-DESIGN only when proof method itself is non-trivial
 
 Domain proof plans + Slice portfolio
 → TM-TEST-STRATEGY when shared coordination is material
 
 Implementation Slice
-↔ per-Slice TM-TEST-DESIGN (standard or TDD)
+↔ optional per-Slice TM-TEST-DESIGN when proof method is non-trivial; otherwise direct exact test realization
 
 implemented subject
 → TM-PRACTICAL-TEST execution / Evidence when useful
-→ TM-TEST-COVERAGE
+→ direct LENS-TEST-PROOF-EVIDENCE coverage review when useful
 ```
 
 Canonical owner: `../shared/directed-methodology-workflow-and-next-step-resolution.md`.
@@ -29,7 +29,7 @@ Canonical owner: `../shared/directed-methodology-workflow-and-next-step-resoluti
 ```text
 UC-IDTSPE-REVIEW-CONSISTENCY
 TM-TEST-STRATEGY — conditional shared coordination
-TM-TEST-DESIGN — Domain or Slice proof Targets at their readiness point
+TM-TEST-DESIGN — optional Domain/Slice proof Target only when the proof method is independently non-trivial
 TM-PRACTICAL-TEST — when operated acceptance/evidence is useful
 ```
 
@@ -69,7 +69,7 @@ human/operated/environment properties
 
 ## IDTSPE Rule
 
-A material Test Strategy/Test Design/Practical Plan can be its own repeatable Target because the proof choice is independently useful/revalidatable. Trivial proof may remain embedded according to Artifact Placement guidance. A material Test Strategy may additionally serve as a registry-like read path from Slice/Domain proof responsibilities to concrete test suites/classes/setups/fixtures/harnesses/helpers; split that registry from the Strategy only when Documentation / Representation finds independent addressability/review/reuse pressure.
+A material Test Strategy/Test Design/Practical inquiry can be its own repeatable Target only when that result is independently useful/revalidatable. Straightforward proof may go directly to Exact Realization. Test Strategy keeps shared policy/infrastructure meaning, not a shadow registry of concrete test classes/helpers. Coverage review is a Lens operation.
 
 ## Practical Evidence Continuity
 

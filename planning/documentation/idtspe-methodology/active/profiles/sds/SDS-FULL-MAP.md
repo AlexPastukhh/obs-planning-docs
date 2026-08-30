@@ -9,10 +9,11 @@ Purpose: provide one self-contained map of how generic IDTSPE and SDS-specific p
 ```text
 IDTSPE Core
   Shell / Target Formation / Decisions / Lenses / Artifact Placement / Revalidation
+  + TM-PRE-UPDATE-PLAN — optional concrete read-only change plan before mutation
   + TM-EXACT-REALIZATION — generic exact directly integrable result, code-first default
 ↓
 SDS Profile
-  16 Target Modules
+  15 Target Modules
   + SDS-specific Lens pack
   + directed workflow/readiness
   + Documentation / Representation policy
@@ -49,7 +50,7 @@ Directed SDS workflow
 
 ## 2. SDS Target Module Catalog
 
-Current profile installs 16 Target Modules:
+Current profile installs 15 Target Modules:
 
 ```text
 Solution/Application
@@ -75,15 +76,15 @@ Delivery
   TM-CROSS-CUTTING-CONCERN — genuine shared non-vertical owner only
 
 Testing / Evidence
-  TM-TEST-DESIGN
-  TM-TEST-STRATEGY — conditional shared coordination
+  TM-TEST-DESIGN — optional when proof method itself is non-trivial
+  TM-TEST-STRATEGY — conditional lightweight shared coordination
   TM-PRACTICAL-TEST — implemented practical Evidence / acceptance / learning
-  TM-TEST-COVERAGE
+  Test Coverage review → LENS-TEST-PROOF-EVIDENCE, not a Target Module
 ```
 
 Canonical registry: [`target-modules/README.md`](target-modules/README.md).
 
-Scenario DATA and Behavior Items are internal addressable contracts of `TM-SCENARIO-PLANNING`, not extra Target Modules. SDS also inherits generic Core [`TM-EXACT-REALIZATION`](../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md); it is not counted among these 16 profile modules.
+Scenario DATA and Behavior Items are internal addressable contracts of `TM-SCENARIO-PLANNING`, not extra Target Modules. SDS also inherits generic Core [`TM-PRE-UPDATE-PLAN`](../../idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md) and [`TM-EXACT-REALIZATION`](../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md); they are not counted among these 15 profile modules.
 
 ## 3. Lens Composition
 
@@ -184,17 +185,16 @@ Domain Draft / owner B
 material Domain proof responsibilities resolved
 + Slice portfolio selected
 ↓
-TM-TEST-STRATEGY — only when shared proof coordination is useful
-  → may keep a compact Test Realization / Topology Registry:
-    Slice/Domain proof → test suite/class → setup/fixture/harness/helper
-  → promote that registry to a separate supporting map only when independently large/reused
+TM-TEST-STRATEGY — only when shared proof coordination is independently useful
+  → keep only shared layer/non-duplication/environment/harness/critical-path policy
+  → concrete test classes/helpers stay code authority
 ↓
 per Slice:
   Implementation Slice ↔ Slice Test Design
   integration tests by default for vertical orchestration/collaboration
 ```
 
-E2E is selective for broader whole-system boundaries. `TM-PRACTICAL-TEST` covers practical Evidence from the real implemented subject: operated/human/environmental acceptance as well as post-implementation learning from representative observation, telemetry/analytics/logs or other real Evidence sources when material.
+E2E is selective for broader whole-system boundaries. `TM-PRACTICAL-TEST` covers practical Evidence from the real implemented subject and remains the post-implementation pair to Prototype. Actual test/Evidence coverage review is a direct `LENS-TEST-PROOF-EVIDENCE` operation; material gaps route through Finding Disposition.
 
 ## 6. Workspace Evolution And Global Architecture
 
@@ -388,7 +388,7 @@ SDS does not own a Linked Notes file tree. When cross-owner navigation/backlink/
 ## Unit / Lens Conformance
 
 ```text
-16 SDS Target Modules
+15 SDS Target Modules
 → explicit Result Units
 
 6 SDS-specific Lenses

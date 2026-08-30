@@ -58,15 +58,15 @@ The current accepted methodology-level inventory is:
 
 ```text
 3 framework/bootstrap/work surfaces
-1 generic Core Exact Realization Target Module surface
-16 canonical SDS Target Module surfaces
+2 generic Core Target Module surfaces (`TM-PRE-UPDATE-PLAN`, `TM-EXACT-REALIZATION`)
+15 canonical SDS Target Module surfaces
 13 additional focused Target-Module shortcuts
 4 reusable direct Lens shortcut surfaces
 5 orchestration/validator surfaces
-= 42 accepted methodology invocation surfaces
+= 43 accepted methodology invocation surfaces
 ```
 
-This is a **methodology surface count**, not a requirement for 42 repository command files. Existing command definitions/aliases may implement several surfaces where semantics remain clear.
+This is a **methodology surface count**, not a requirement for 43 repository command files. Existing command definitions/aliases may implement several surfaces where semantics remain clear.
 
 The four fixed/specialized direct Lens shortcut surfaces are currently exactly:
 
@@ -168,7 +168,7 @@ merely to mirror those modes.
 
 A focused command is justified only when it represents a stable user intent/substage with a distinct useful entry condition or exit gate.
 
-## 3. Canonical 16-Module Surface
+## 3. Canonical 15-Module Surface
 
 `Surface Key` is methodology identity only. A later repository-update plan decides whether an existing command ID is reused, renamed, extended through aliases, or a new definition is needed.
 
@@ -182,14 +182,13 @@ A focused command is justified only when it represents a stable user intent/subs
 | `TM-WEUC` | `tmcmd.weuc` | `спланируй эволюцию воркспейса` | one canonical Workspace Evolution Map Target |
 | `TM-DOMAIN-DISCOVERY` | `tmcmd.domain.discovery` | `исследуй домен` | Domain candidate space |
 | `TM-DOMAIN-DRAFT` | `tmcmd.domain.draft` | `спланируй домен <owner>` | one Domain owner |
-| `TM-TEST-DESIGN` | `tmcmd.test.design` | `спланируй тесты <target>` | one Domain/Slice/etc proof Target |
+| `TM-TEST-DESIGN` | `tmcmd.test.design` | `спланируй тесты <target>` | optional independently non-trivial proof-design Target; straightforward exact tests may go directly to Exact Realization |
 | `TM-SLICE-STRATEGY` | `tmcmd.slice.strategy` | `спланируй стратегию слайсов` | one Slice implementation-strategy area: portfolio/realization + broad Domain/Aggregate map + selected Slice semantic-owner register |
-| `TM-TEST-STRATEGY` | `tmcmd.test.strategy` | `спланируй стратегию тестирования` | one shared testing-strategy Target when justified; may include a test-realization registry/map |
+| `TM-TEST-STRATEGY` | `tmcmd.test.strategy` | `спланируй стратегию тестирования` | one lightweight shared testing-strategy Target only when cross-owner coordination is independently useful |
 | `TM-IMPLEMENTATION-SLICE` | `tmcmd.slice.implementation` | `спланируй слайс <slice>` | one independently bounded Slice Target selected/reused through normal Target Formation; may reuse RU-SSTRAT-03 semantic identity |
 | `TM-FRONTEND-SLICE` | `tmcmd.slice.frontend` | `спланируй frontend <target>` | one promoted frontend Target when justified |
 | `TM-CROSS-CUTTING-CONCERN` | `tmcmd.crosscut` | `спланируй сквозную ответственность <target>` | one genuine shared non-vertical concern |
-| `TM-PRACTICAL-TEST` | `tmcmd.test.practical` | `спланируй практический тест <target>` | one implemented practical-Evidence Target; Intent/Collection Plan may be prepared before realization, actual Evidence/results require the real implemented subject |
-| `TM-TEST-COVERAGE` | `tmcmd.test.coverage` | `проверь тестовое покрытие <scope>` | selected semantic/Evidence coverage scope |
+| `TM-PRACTICAL-TEST` | `tmcmd.test.practical` | `спланируй практический тест <target>` | one implemented practical-Evidence Target paired with Prototype; actual Evidence/results require the real implemented subject |
 
 ## 4. Focused Command Rule
 
@@ -391,10 +390,10 @@ shared proof coordination materially needed
 + Domain proof planning sufficiently resolved
 + Slice portfolio known enough
 → Target Formation resolves reuse of an existing Test Strategy Target or formation of a Test Strategy Target
-→ optionally map Slice/Domain proof owners to concrete test suites/classes/setups/fixtures/harnesses/helpers when that cross-owner read path is useful
+→ keep only the shared proof-layer/non-duplication/environment/harness policy that is actually reused
 
 otherwise
-→ no Strategy Target; recommend local Test Design / Slice Strategy next
+→ no Strategy Target; local obvious proof may go directly to Exact Realization; use Test Design only when proof method itself is non-trivial
 ```
 
 ## 7. Generic Lens Operations And Specialized Shortcuts
@@ -427,6 +426,7 @@ Current accepted reusable Lens command surfaces:
 |---|---|---|---|
 | `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` | `lenscmd.weuc.check` | `проверь эволюцию и архитектуру <target>` | recurring explicit architecture/evolution fitness review of a selected Target or whole Workspace architecture |
 | `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY` | `lenscmd.simplicity.check` | `проверь можно ли упростить <target>` | recurring explicit search for a materially simpler solution while preserving semantic/evolution fitness |
+| `LENS-TEST-PROOF-EVIDENCE` | `test_coverage.review` | `проверь тестовое покрытие <scope>` | recurring direct review of actual test/Evidence coverage, freshness, assertion strength, Escape/Refactor risk and wrong-layer gaps without a Coverage Target |
 | `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY` | `lenscmd.documentation.representation.check` | `проверь как лучше зафиксировать <target/result>` | recurring explicit decision whether material meaning should persist at all and, if so, whether code/native representation, an existing owner, one consolidated artifact or a justified split is the cheapest effective representation |
 | `LENS-LINKED-NOTES-USAGE-JUSTIFICATION` | `lenscmd.linked-notes.justify` | `проверь оправданы ли linked notes <target>` | recurring explicit decision whether linked-navigation/backlink/query capability is worth introducing for the selected owner set |
 

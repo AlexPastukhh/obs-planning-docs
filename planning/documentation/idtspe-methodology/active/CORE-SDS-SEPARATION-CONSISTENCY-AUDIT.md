@@ -21,7 +21,7 @@ Scope: physical and semantic restructuring that separates generic IDTSPE Core fr
 
 ## SDS Package
 
-- active SDS Target Modules: **16 / 16**
+- active SDS Target Modules: **15 / 15**; generic Core Target Modules: **2 / 2**
 - canonical module bodies live under `profiles/sds/target-modules/`: **PASS**
 - SDS Full Map exists and explains IDTSPE Core + SDS profile: **PASS**
 - SDS Instance Map exists inside the profile: **PASS**
@@ -57,8 +57,8 @@ Total:                                17
 
 ## Artifact Placement Regression
 
-- source AP records: **34**
-- source AG records: **24**
+- source AP records: **33**
+- source AG records: **25**
 - unique source records: **58**
 - Target Module AP records own Target-result persistence/representation guidance; Lens AG records are reserved for Lens-produced supporting/artifact-placement material, not semantic Finding routing. Finding Candidates go through Core Finding Disposition, and AG may be absent when no distinct supporting materialization is needed: **PASS**
 - duplicated Domain/Slice/Frontend/WEUC evolution proposals were removed from Target Modules/profile lenses; L5/WEUC `AG-L5-02` is the canonical target-local evolution-companion proposer: **PASS**
@@ -88,7 +88,7 @@ Total:                                17
 - vertical Slice / Useful Vertical Result rules preserved: **PASS**
 - Domain unit-test vs Slice integration-test policy preserved: **PASS**
 - Domain Test Design may precede Slice Strategy: **PASS**
-- Test Strategy remains conditional after Domain proof planning + Slice portfolio: **PASS**
+- Test Strategy remains conditional and is used only when shared cross-owner/layer/environment coordination is independently useful; concrete test class/helper topology stays implementation-native: **PASS**
 - Slice/Test TDD interleave preserved: **PASS**
 - `TM-WEUC` owns Workspace Evolution + Current Global Architecture Position: **PASS**
 - WEUC Lens can evaluate a concrete Target or whole Workspace architecture: **PASS**

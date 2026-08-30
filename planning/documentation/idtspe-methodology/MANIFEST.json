@@ -1,5 +1,5 @@
 {
-  "workspace_version": "idtspe-exact-realization-generic-target-module-review-correction-79",
+  "workspace_version": "idtspe-testing-simplification-pre-update-evidence-persistence-correction-81",
   "repo_snapshot_base": "d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b",
   "package_architecture": "IDTSPE_CORE_PLUS_PROFILES",
   "idtspe_core_bootstrap": "idtspe.bootstrap",
@@ -7,10 +7,10 @@
   "installed_profiles": [
     "sds"
   ],
-  "generic_core_target_modules": 1,
+  "generic_core_target_modules": 2,
   "generic_core_exact_realization": "active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md; RU-REAL-01; code-first default with explicit integration/verification/repair authority",
   "installed_target_modules_total": 17,
-  "sds_target_modules": 16,
+  "sds_target_modules": 15,
   "reusable_lenses_total": 17,
   "generic_core_lenses": 11,
   "sds_specific_lenses": 6,
@@ -57,23 +57,23 @@
     "lenscmd.documentation.representation.check",
     "lenscmd.linked-notes.justify"
   ],
-  "reusable_lens_command_count": 4,
-  "command_surface_recheck": "PASS: 42 surfaces = 10 generic IDTSPE Core + 32 SDS; generic Core adds TM-EXACT-REALIZATION / tmcmd.exact.realization while SDS remains 16 profile Target Modules; four specialized direct Lens shortcuts retained",
+  "reusable_lens_command_count": 5,
+  "command_surface_recheck": "PASS: 43 surfaces = 11 generic IDTSPE Core + 32 SDS; Core adds TM-PRE-UPDATE-PLAN, SDS retires TM-TEST-COVERAGE as a Target while preserving test_coverage.review as a direct Test Proof Lens shortcut",
   "methodology_command_surface_counts": {
     "framework_bootstrap_work": 3,
-    "generic_core_target_module": 1,
-    "canonical_sds_target_module": 16,
+    "generic_core_target_module": 2,
+    "canonical_sds_target_module": 15,
     "focused_target_shortcuts": 13,
-    "direct_reusable_lens_shortcuts": 4,
+    "direct_reusable_lens_shortcuts": 5,
     "orchestration_validator": 5,
-    "total": 42
+    "total": 43
   },
   "helper_navigation_plan": "integration/COMMAND-AND-HELPER-NAVIGATION-PLAN.md",
   "helper_navigation_status": "IMPLEMENTED_METADATA_DRIVEN",
   "helper_methodology_tabs": {
-    "IDTSPE": 10,
+    "IDTSPE": 11,
     "SDS — IDTSPE Profile": 32,
-    "total_primary_methodology_surfaces": 42
+    "total_primary_methodology_surfaces": 43
   },
   "sds_command_runtime_invariant": "SDS Target Module commands are IDTSPE Target invocations; SDS Lens commands activate Lenses inside/reusing IDTSPE Target contexts",
   "sds_helper_primary_groups": [
@@ -118,7 +118,7 @@
   "target_step_result_proportionality": "module possible surface; concrete Step Result sparse/material projection",
   "unit_file_boundary": "one Target != one Result Unit != one file",
   "core_transition_mode": "FOUNDATIONAL_CONTRACT_WITH_PROFILE_MIGRATION_COMPATIBILITY",
-  "sds_unit_conformance": "PASS: 16/16 active SDS Target Modules declare Resolution / Production Method + Target Step-Result Contract; 6/6 SDS-specific Lenses declare Analysis Surface + Supported Operations + Finding Contract",
+  "sds_unit_conformance": "PASS: 15/15 active SDS Target Modules declare Resolution / Production Method + Target Step-Result Contract; 2/2 generic Core Target Modules use the same generic unit/step-result boundary; 6/6 SDS-specific Lenses declare Analysis Surface + Supported Operations + Finding Contract",
   "resolution_slot_unit_boundary": "Slot = resolution coordination metadata; State/Result Units = content/addressability",
   "artifact_placement_unit_granularity": "P-14/TF-10 current mechanism retained; material Result/State Units are placement subjects",
   "package_validation_scope": {
@@ -256,9 +256,19 @@
     "exact_realization_json": "PASS: methodology/package/helper JSON touched by this ChangeSet parses; repository contains two pre-existing JSONC-style tsconfig files outside scope",
     "exact_realization_helper_regression": "PASS_DELTA: generated seed matches current command definitions; 42 methodology bindings = 10 Core + 32 SDS; full Helper suite remains 127/129 with the same two unrelated pre-existing semantic-navigation failures as the base target",
     "exact_realization_topology": "PASS: 1 generic Core TM added; SDS TM set remains 16; Slice RU-SLICE-01..05 unchanged; AP/AG identifier sets unchanged; Domain TM files retained",
-    "exact_realization_reviewdiff_historical_audit_provenance": "PASS: historical 17 SDS TM / 7 SDS-specific Lens recheck snapshots preserved intact; current 1 Core + 16 SDS / 17 Lens = 11 Core + 6 SDS topology remains separately authoritative",
-    "exact_realization_reviewdiff_current_core_surface_count": "PASS: current Broad Discussion / Integration Checkpoint audit projection reports 10 generic Core surfaces after tmcmd.exact.realization addition",
-    "exact_realization_reviewdiff_correction": "PASS: prior NEEDS CORRECTION audit-count inconsistency corrected without changing TM-EXACT-REALIZATION semantics, SDS topology, Result Units or AP/AG IDs"
+    "exact_realization_reviewdiff_historical_audit_provenance": "PASS: historical 17 SDS TM / 7 SDS-specific Lens recheck snapshots preserved intact; the later Exact Realization checkpoint used 1 Core + 16 SDS / 17 Lens and is itself superseded by the current Testing/Pre-Update topology",
+    "exact_realization_reviewdiff_checkpoint_core_surface_count": "PASS: the Exact Realization checkpoint projected 10 generic Core surfaces after tmcmd.exact.realization addition; current Testing/Pre-Update projection is 11 Core + 32 SDS",
+    "exact_realization_reviewdiff_correction": "PASS: prior NEEDS CORRECTION audit-count inconsistency corrected without changing TM-EXACT-REALIZATION semantics, SDS topology, Result Units or AP/AG IDs",
+    "testing_simplification_target_topology": "PASS_TARGET: TM-TEST-COVERAGE retired; SDS target modules 15; Core target modules 2; installed total remains 17",
+    "testing_knowledge_lens_target_boundary": "PASS_TARGET: Testing Knowledge Basis owns reusable mechanics; LENS-TEST-PROOF-EVIDENCE owns operational proof/coverage evaluation; Strategy/Design own only independently useful selected results; Exact Realization owns literal test code/execution",
+    "test_proof_lens_completeness": "PASS_TARGET: property alignment, proof boundary, cheapest credible layer, assertion strength, no-mutation, false-confidence Escape Risk, refactor fragility, duplication/wrong layer, representative sufficiency, paired proof, isolation, Evidence freshness, automated-vs-practical all have concrete examples",
+    "prototype_practical_pair_boundary": "PASS_TARGET: Prototype partial/simulated/throwaway subject remains separate from Implemented Practical Evidence real subject; shared mechanics delegated to Practical Evidence Method/Lens",
+    "pre_update_plan_generic_core": "PASS_TARGET: one RU-PUPDATE-01; optional/read-only; accepted prior meaning/current context + necessary current state; ordinary QRPE/Ideas/Decision only when materially useful; no mutation authority",
+    "test_coverage_lens_shortcut": "PASS_TARGET: test_coverage.review remains user shortcut but binds directly to LENS-TEST-PROOF-EVIDENCE / RESOLVE_OR_REUSE_TARGET; no Coverage Target owner",
+    "testing_preupdate_current_source_identity": "BASE: GitHub main b68b6dfac1f41fd8e79b8ea4a862ada3eddad433; reconstructed touched-source bytes must blob-match current main before packaging",
+    "testing_preupdate_reviewdiff_correction_source": "BASE: exact post-Apply target of package 52a30497-e5ab-497e-8c86-dfc4eb11e1a4 for the five touched correction files; GitHub main b68b6dfac1f41fd8e79b8ea4a862ada3eddad433 remains the pre-ChangeSet repository source",
+    "testing_evidence_persistence_reviewdiff_correction": "PASS_TARGET: AG-TEST-02 persistence is conditional/materiality-driven; existing test/run/tool output may remain the Evidence Source; durable persistence/reference is required only when continuing review/revalidation/traceability/Decision/Finding value warrants it",
+    "simple_owner_bootstrap_scope": "DEFERRED: user explicitly deferred Simple Owner Bootstrap / maximally-simple owner example to later independent work; no bootstrap semantic redesign is included in this ChangeSet correction"
   },
   "supporting_target_module_boundary": "SUPPORTING is a role of a reusable Target Module that can also be a coherent standalone recurring Target family; internal-only result parts use Result Unit / Internal Object Contract / shared Result-Unit method",
   "target_formation_compatibility_grouping": "TF-01..TF-10 IDs retained; TF-01..05 conceptual formation core, TF-06..10 later work-orchestration/resolution compatibility slots",
@@ -302,7 +312,7 @@
   ],
   "reviewdiff_correction": "post-v19 evolution-companion disposition/representation projection correction before APPROVABLE",
   "finding_disposition_contract": "active/idtspe-core/shared/finding-disposition-contract.md",
-  "sds_target_module_step_result_contracts": "16/16 PASS",
+  "sds_target_module_step_result_contracts": "15/15 PASS",
   "sds_lens_literal_conformance": "6/6 PASS",
   "implementation_slice_result_units": [
     "RU-SLICE-01 Slice Outcome Definition",
@@ -312,7 +322,7 @@
     "RU-SLICE-05 Focused Part Plan(s) — optional"
   ],
   "integrated_implementation_plan_compatibility": "canonical name is Codebase Integration Path; previous Integrated Implementation Plan wording retained only as migration/provenance where explicitly useful",
-  "slice_proof_handoff_boundary": "verification/proof handoff belongs to RU-SLICE-01 by default; TM-TEST-DESIGN owns concrete proof design",
+  "slice_proof_handoff_boundary": "proof meaning belongs to RU-SLICE-01; TM-TEST-DESIGN is optional only when proof method is independently non-trivial; straightforward exact tests may be realized directly in TM-EXACT-REALIZATION",
   "finding_disposition_modes": "FAST_DIRECT or RESOLUTION_REQUIRED; explicit disposition resolution only when ownership/meaning/lifecycle consequence is materially ambiguous",
   "finding_state_boundary": "Finding Candidate is not a mandatory persisted State Unit; material independently useful validation/readiness finding State remains allowed",
   "repository_head_checked": "94b6d74b8074dd4dda13934b29977a89ef5379a2",
@@ -808,5 +818,15 @@
     "broadDiscussionIntakeSummary": "removed as mandatory layer; Broad Discussion relies on conversation context plus explicit Ideas/Q-R-P/Evidence, with whole-state normalization at Integration Checkpoint",
     "reviewDiffCorrection": "second post-Apply correction: keep Goal/Desired Outcome as Target context rather than Generic State Unit; formalize Target Module Question+Problem driver candidates; integrate checkpoint-emergent material meaning immediately or mark post-checkpoint exploration; broaden alternative-retention choice to non-selected/deferred/rejected/superseded; restore generic AI Reviewability Key Points contract with Broad Discussion specialization; remove mandatory block-owner and per-response Intake Summary layers",
     "secondReviewDiffCorrection": "Goal stays Target context; formal Question+Problem driver candidates; generic Key Points restored with Broad Discussion specialization; mandatory block-owner/Intake Summary removed; checkpoint-emergent material meaning integrated or marked post-checkpoint; retention includes non-selected/deferred/rejected/superseded alternatives"
+  },
+  "generic_core_pre_update_plan": "active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md; RU-PUPDATE-01; optional concrete read-only pre-mutation plan using ordinary Core Q/R/P/Evidence + Ideas/Decisions only as needed",
+  "testing_current_projection": {
+    "knowledgeBasis": "active/theoretical-modules/testing/README.md",
+    "proofLens": "LENS-TEST-PROOF-EVIDENCE",
+    "sharedStrategy": "TM-TEST-STRATEGY conditional/lightweight",
+    "proofDesign": "TM-TEST-DESIGN optional/non-trivial only",
+    "literalTests": "TM-EXACT-REALIZATION",
+    "practicalPair": "TM-PROTOTYPE partial/simulated ↔ TM-PRACTICAL-TEST real implemented",
+    "coverageReview": "direct Test Proof Lens review; no TM-TEST-COVERAGE"
   }
 }

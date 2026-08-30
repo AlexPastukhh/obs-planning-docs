@@ -24,7 +24,7 @@ It does **not** replace the semantic owners linked below. When this README and a
                                           │
                          ┌────────────────▼───────────────┐
                          │          SDS Profile           │
-                         │ 16 Target Modules              │
+                         │ 15 SDS Target Modules          │
                          │ SDS-specific Lenses            │
                          │ directed workflow              │
                          │ Ideas / Evolution / WEUC       │
@@ -334,7 +334,7 @@ idtspe.review_consistency
 → проверь консистентность плана
 ```
 
-All 16 SDS Target Modules additionally have canonical command surfaces defined in the SDS command-surface contract. A direct Lens command is added only for a stable recurring user intent; not every Lens receives a palette command.
+All 15 SDS Target Modules have canonical profile command surfaces; generic Core Target Modules use the Core command-surface contract. A direct Lens command is added only for a stable recurring user intent; not every Lens receives a palette command. Current visible projection is 43 = 11 Core + 32 SDS surfaces.
 
 
 Planned helper navigation is intentionally separate from command semantics: [`integration/COMMAND-AND-HELPER-NAVIGATION-PLAN.md`](integration/COMMAND-AND-HELPER-NAVIGATION-PLAN.md). It defines dedicated `IDTSPE` and `SDS — IDTSPE Profile` tabs, directed SDS Target Module ordering, focused-command nesting, and explicit `IDTSPE TARGET` / `IDTSPE LENS` presentation.
@@ -347,9 +347,9 @@ Current file:
 
 - [`README.md`](active/idtspe-core/target-modules/README.md)
 
-Responsibility: generic **Target Module framework boundary and navigation**, not SDS Target Module bodies.
+Responsibility: generic **Target Module framework boundary and navigation**, including recurring profile-independent Core Target Modules without importing SDS semantics.
 
-Concrete Target Modules belong to a profile/family such as `active/profiles/sds/target-modules/`.
+Current generic Core Target Modules are `TM-PRE-UPDATE-PLAN` and `TM-EXACT-REALIZATION`. Profile/family-specific Target Modules live under their profile, such as `active/profiles/sds/target-modules/`.
 
 A Target Module is used when a recurring Target/Step-Result family has a stable enough:
 
@@ -504,7 +504,7 @@ Current package:
 [`README.md`](active/theoretical-modules/testing/README.md)
 
 ID: `THM-TESTING-DETAIL-CA768B61`  
-State: `IMPORTED_RAW`
+State: `ACTIVE_KNOWLEDGE_BASIS`
 
 Raw files preserved from repository snapshot `ca768b61...`:
 
@@ -515,9 +515,9 @@ Raw files preserved from repository snapshot `ca768b61...`:
 | [`e2e-testing-guidance.md`](active/theoretical-modules/testing/e2e-testing-guidance.md) | End-to-end testing details. |
 | [`test-object-patterns.md`](active/theoretical-modules/testing/test-object-patterns.md) | Page/Component/Test Object patterns and boundaries. |
 
-These raw files are **reference material**, not current Test workflow authority. Current operational Testing semantics remain in Core Test Lens + SDS `TM-TEST-*` modules.
+The package is now an active reusable **Testing Knowledge Basis**: the four source bodies remain byte-preserved detailed reference theory/mechanics, while current operational authority stays in `LENS-TEST-PROOF-EVIDENCE`, the conditional SDS Test Target Modules, Core Exact Realization and Core Evidence.
 
-Do not “clean up” old links/wording inside imported raw bodies merely to make them look current; promote selected meaning into current owners instead.
+Do not “clean up” old links/wording inside the preserved source bodies merely to make them look current. Use the Knowledge Basis selectively when deeper testing detail is material; the Lens/Target/Core owners decide current operation.
 
 ---
 
@@ -555,7 +555,8 @@ Canonical profile entry:
 SDS currently contributes:
 
 ```text
-16 Target Modules
+15 SDS Target Modules
++ 2 generic Core Target Modules available to SDS (`TM-PRE-UPDATE-PLAN`, `TM-EXACT-REALIZATION`)
 6 SDS-specific Lenses
 + 11 generic Core Lenses available to SDS
 profile-directed workflow
@@ -595,7 +596,7 @@ The detailed compact/promoted-Domain/promoted-Slice/mature-companion/Scenario-he
 
 ---
 
-## 9.2 `active/profiles/sds/target-modules/` — 16 SDS semantic Target owners
+## 9.2 `active/profiles/sds/target-modules/` — 15 SDS semantic Target owners
 
 Catalog:
 
@@ -617,10 +618,11 @@ Each `TM-*.md` is a **canonical reusable target-family methodology owner**. A Ta
 | [`TM-IMPLEMENTATION-SLICE.md`](active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md) | One bounded vertical implementation Slice selected/reused through Target Formation: useful result, obligations, Runtime Path, Codebase Integration Path and proportional Part Plans. |
 | [`TM-FRONTEND-SLICE.md`](active/profiles/sds/target-modules/TM-FRONTEND-SLICE.md) | Promoted independent frontend realization responsibility when frontend planning space is materially separate. |
 | [`TM-CROSS-CUTTING-CONCERN.md`](active/profiles/sds/target-modules/TM-CROSS-CUTTING-CONCERN.md) | Shared implementation concern with canonical ownership/applicability; not the same thing as Q/R/P. |
-| [`TM-TEST-STRATEGY.md`](active/profiles/sds/target-modules/TM-TEST-STRATEGY.md) | Conditional shared proof/test strategy across known Domain/Slice portfolio. |
-| [`TM-TEST-DESIGN.md`](active/profiles/sds/target-modules/TM-TEST-DESIGN.md) | Convert semantic properties/behaviors into concrete proof/test design for a Domain/Slice/etc Target. |
-| [`TM-PRACTICAL-TEST.md`](active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md) | Implemented practical Evidence: acceptance or learning, observation/data collection, real Evidence and interpretation. |
-| [`TM-TEST-COVERAGE.md`](active/profiles/sds/target-modules/TM-TEST-COVERAGE.md) | Audit actual current test/Evidence coverage after realization/execution. |
+| [`TM-TEST-STRATEGY.md`](active/profiles/sds/target-modules/TM-TEST-STRATEGY.md) | Optional shared proof/test strategy only when cross-owner/layer/environment coordination is independently useful. |
+| [`TM-TEST-DESIGN.md`](active/profiles/sds/target-modules/TM-TEST-DESIGN.md) | Optional proof design when the proof method is independently non-trivial; obvious tests may go directly to Exact Realization. |
+| [`TM-PRACTICAL-TEST.md`](active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md) | Real implemented-subject/environment Evidence when proving the actual thing is itself the Target. |
+
+Actual coverage review is a direct `LENS-TEST-PROOF-EVIDENCE` operation over current semantics + actual Evidence; it is not a separate SDS Target Module.
 
 ### Target Module ownership rule
 
@@ -880,7 +882,7 @@ Read:
 4. [`active/idtspe-core/IDTSPE-CORE-MAP.md`](active/idtspe-core/IDTSPE-CORE-MAP.md) — generic owner map.
 5. [`active/profiles/README.md`](active/profiles/README.md) — installed profiles.
 
-Do **not** start by reading all 16 Target Modules and all raw theoretical bodies.
+Do **not** start by reading all 15 SDS Target Modules, both generic Core Target Modules and all testing Knowledge Basis bodies.
 
 ## B. Use IDTSPE for general planning without assuming SDS
 

@@ -15,21 +15,20 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "стратегия тестирования"
   ],
   "description": "test strategy",
-  "meaning": "Run TM-TEST-STRATEGY through the IDTSPE Shell for the selected target.",
+  "meaning": "Run conditional TM-TEST-STRATEGY only when several semantic owners/Slices genuinely need one shared proof-layer/non-duplication/environment/harness strategy. Skip it when proof is local/obvious.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Testing Strategy or a valid no-Strategy result routing proof design locally; when useful, include a compact Test Realization / Topology Registry mapping Slice/Domain proof owners to concrete test suites/classes/setups/fixtures/harnesses/helpers, with optional promoted supporting map only under independent pressure.",
+  "expectedOutput": "One compact Shared Proof Strategy or a valid no-Strategy result routing proof locally; concrete test classes/helpers remain code authority and no class-level test-realization registry is required.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-    "When shared test realization mapping is useful, reference concrete test classes/setups/helpers from the Strategy; do not copy test bodies or make test code semantic authority.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Use this Target only for independently useful shared testing responsibility/policy across several proofs; ordinary local proof does not require Strategy.",
+    "Testing Knowledge Basis owns reusable mechanics and LENS-TEST-PROOF-EVIDENCE owns proof-quality evaluation; do not copy them into the Strategy result.",
+    "Keep concrete test classes/fixtures/helpers as code authority; reference shared infrastructure only when the cross-owner relation is materially useful.",
+    "This command is read-only planning; literal test code/execution belongs to Exact Realization under its authority boundary."
   ],
   "userTarget": "<one shared testing strategy>",
   "palette": true,
@@ -38,8 +37,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use when proof concerns genuinely need a shared cross-owner strategy/environment/layer policy or when the cross-Slice test-realization topology is hard to understand from code alone.",
-    "whatYouGet": "Testing Strategy or a valid no-Strategy result; when useful, a compact registry-like map of Slice/Domain proof → test suite/class → setup/fixture/harness/helper without duplicating test bodies.",
+    "whenToUse": "Use only when multiple Slices/semantic owners need a shared proof policy, shared environment/harness decision, non-duplication boundary or selected critical E2E/Practical paths.",
+    "whatYouGet": "A small shared proof strategy, or an explicit conclusion that local proof/Exact Realization is sufficient.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

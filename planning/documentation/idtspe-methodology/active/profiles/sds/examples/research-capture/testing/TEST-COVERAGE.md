@@ -1,7 +1,7 @@
 
 # Research Capture — Test Coverage / Evidence Map
 
-Target Module: `TM-TEST-COVERAGE`
+Review operation: `LENS-TEST-PROOF-EVIDENCE` over current semantics + actual Evidence; this file is optional durable review representation, not a Target owner
 
 Status: worked post-realization example
 

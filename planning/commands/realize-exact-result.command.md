@@ -47,7 +47,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "sectionId": "core",
       "sectionLabel": "IDTSPE Core",
       "sectionOrder": 0,
-      "itemOrder": 5,
+      "itemOrder": 6,
       "kindLabel": "IDTSPE TARGET",
       "viewOrder": 0
     }

@@ -34,7 +34,7 @@ TM-TEST-STRATEGY — only if shared/cross-Slice/layer coordination is material
 per-Slice TM-IMPLEMENTATION-SLICE ↔ TM-TEST-DESIGN
 ```
 
-Test Strategy does not replace per-Domain or per-Slice Test Design. When shared coordination is material, it may also persist a compact Test Realization / Topology Registry that answers where each selected Slice/Domain proof is realized (test class/suite/setup/fixture/harness/helper) and which infrastructure is shared; this registry references code and does not duplicate test bodies.
+Test Strategy does not replace per-Domain or per-Slice proof decisions. When shared coordination is material, it owns only the cross-owner proof layer, non-duplication rule, environment/harness policy and other independently useful shared constraints. Exact test-class/suite/setup/fixture/helper inventory stays implementation-native under Exact Realization/code authority; an optional generated/reference map is justified only when a large reused cross-owner relation is not adequately visible from code and does not become shadow implementation documentation.
 
 When later Evidence challenges application-level viability/boundary:
 

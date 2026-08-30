@@ -15,14 +15,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "план практического тестирования"
   ],
   "description": "implemented practical evidence",
-  "meaning": "Run TM-PRACTICAL-TEST through the IDTSPE Shell to prepare or review practical Evidence for a real implemented subject. The Target/collection plan may be prepared before realization; actual Evidence/results require the real implemented subject.",
+  "meaning": "Run TM-PRACTICAL-TEST as the implemented-practical-Evidence pair to Prototype: plan the inquiry when useful, but collect actual Evidence/results only from the real implemented subject/environment.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Evidence Intent / Subject + Observation / Data Collection Plan; when real implementation Evidence exists, Evidence Results / Interpretation for acceptance or learning.",
+  "expectedOutput": "Implemented Practical Evidence Intent/Real Subject + proportional Observation Plan and, only after real implementation exists, actual Evidence Results/Interpretation for acceptance and/or learning.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -37,8 +37,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use to prepare collection for a future real implementation or to collect/interpret acceptance or learning from an implemented subject.",
-    "whatYouGet": "Evidence Intent / Subject, Observation / Data Collection Plan, and—when actual implemented Evidence exists—Evidence Results / Interpretation.",
+    "whenToUse": "Use when the question/property genuinely requires observation of the real implemented system/environment; ordinary automated build/test Evidence inside Exact Realization is not enough or is not the inquiry.",
+    "whatYouGet": "A real-subject practical Evidence inquiry/results, explicitly distinct from Prototype Evidence and from ordinary automated test execution.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

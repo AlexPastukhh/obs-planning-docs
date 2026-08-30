@@ -480,11 +480,11 @@ Example:
 
 ```text
 TM-TEST-STRATEGY
-→ TEST-STRATEGY.md
-→ optional TEST-REALIZATION-MAP.md
+→ optional TEST-STRATEGY.md when shared cross-owner proof policy is independently useful
 
-because proof allocation / test class / setup / fixture / harness / helper topology
-is part of the Test Strategy result itself.
+Concrete test class / setup / fixture / harness / helper topology remains code authority under
+TM-EXACT-REALIZATION. A generated/reference topology view is exceptional supporting representation,
+not an intrinsic Test Strategy result and not a hand-maintained shadow of code.
 ```
 
 ### Lens AG-* owns supporting / artifact-placement guidance for Lens findings

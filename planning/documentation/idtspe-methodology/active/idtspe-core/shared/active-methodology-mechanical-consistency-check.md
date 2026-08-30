@@ -4,7 +4,7 @@ Status: **PASS**
 
 Current installed-system mechanical summary:
 
-- `installed_target_modules_17` (`1 Core + 16 SDS`): **PASS**
+- `installed_target_modules_17` (`2 Core + 15 SDS`): **PASS**
 - `reusable_lenses_total_17` (`11 Core + 6 SDS`): **PASS**
 - `required_core_lenses_4`: **PASS**
 - `frequent_conditional_lenses_5` (`3 Core + 2 SDS`): **PASS**
@@ -18,7 +18,7 @@ Current installed-system mechanical summary:
 - `first_class_local_target_contract`: **PASS**
 - `artifact_placement_source_records_58` (`34 AP + 24 AG`): **PASS**
 - `artifact_guidance_ownership_ap_target_result_ag_supporting_artifact_guidance`: **PASS**
-- `methodology_surfaces_42` (`10 IDTSPE Core + 32 SDS`): **PASS**
+- `methodology_surfaces_43` (`11 IDTSPE Core + 32 SDS`): **PASS**
 - `screen_map_semantics_present`: **PASS**
 - `no_verification_target`: **PASS**
 - `global_ideas_layout_consistent`: **PASS**

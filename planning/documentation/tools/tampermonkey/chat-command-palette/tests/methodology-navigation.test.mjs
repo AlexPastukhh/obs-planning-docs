@@ -9,9 +9,9 @@ const seed=JSON.parse(fs.readFileSync(path.join(import.meta.dirname,'..','seed',
 const entries=seed.items;
 
 test('methodology navigation exposes accepted primary counts from repository command metadata',()=>{
-  assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').length,10);
+  assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').length,11);
   assert.equal(nav.methodologyPrimaryIds(entries,'SDS').length,32);
-  assert.equal(new Set([...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')]).size,42);
+  assert.equal(new Set([...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')]).size,43);
 });
 
 test('SDS related consistency link reuses Core command identity without increasing primary count',()=>{
@@ -22,7 +22,7 @@ test('SDS related consistency link reuses Core command identity without increasi
 test('documentation representation is Core while direct SDS lens section contains WEUC and Simplicity only',()=>{
   assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').includes('lenscmd.documentation.representation.check'),true);
   const sds=nav.buildMethodologyViewGroups(entries,'SDS').find((section)=>section.id==='lens');
-  assert.deepEqual(sds.entries.filter((entry)=>!entry.__methodologyNav.related).map((entry)=>entry.id),['lenscmd.weuc.check','lenscmd.simplicity.check']);
+  assert.deepEqual(sds.entries.filter((entry)=>!entry.__methodologyNav.related).map((entry)=>entry.id),['lenscmd.weuc.check','lenscmd.simplicity.check','test_coverage.review']);
 });
 
 test('runtime navigation module is generic and contains no maintained methodology command identities',()=>{
@@ -48,20 +48,20 @@ test('Helper methodology view controls are derived from repository navigation me
   assert.doesNotMatch(ui,/METHODOLOGY_VIEW_IDS\?\.IDTSPE/);
 });
 
-test('all 42 methodology surfaces carry stable IDTSPE binding separate from helper navigation',()=>{
+test('all 43 methodology surfaces carry stable IDTSPE binding separate from helper navigation',()=>{
   const primary=[...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')];
   const byId=new Map(entries.map((entry)=>[entry.id,entry]));
-  assert.equal(primary.length,42);
+  assert.equal(primary.length,43);
   for(const id of primary){const binding=byId.get(id)?.methodologyBinding;assert.ok(binding,`${id}: missing methodologyBinding`);assert.equal(binding.methodologyRuntime,'IDTSPE',id);}
   const canonical=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE');
   assert.equal(canonical.length,17);
   assert.equal(new Set(canonical.map((entry)=>entry.methodologyBinding.targetModuleId)).size,17);
-  assert.equal(canonical.filter((entry)=>entry.methodologyBinding.profile===null).map((entry)=>entry.id).includes('tmcmd.exact.realization'),true);
+  assert.deepEqual(canonical.filter((entry)=>entry.methodologyBinding.profile===null).map((entry)=>entry.id).sort(),['tmcmd.exact.realization','tmcmd.pre.update']);
   const focused=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE_FOCUSED');
   assert.equal(focused.length,13);
   assert.ok(focused.every((entry)=>entry.methodologyBinding.parentSurface));
   const lenses=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='LENS');
-  assert.equal(lenses.length,4);
+  assert.equal(lenses.length,5);
   assert.ok(lenses.every((entry)=>entry.methodologyBinding.lensId&&entry.methodologyBinding.hostTargetPolicy==='RESOLVE_OR_REUSE_TARGET'));
 });
 
@@ -77,6 +77,6 @@ test('generic Lens operations are Core orchestration surfaces and do not pretend
   assert.equal(byId.get('idtspe.lenses.select').methodologyBinding?.hostTargetPolicy,'CREATE_OR_REUSE_TARGET');
   assert.equal(byId.get('idtspe.lens.apply').methodologyBinding?.hostTargetPolicy,'RESOLVE_OR_REUSE_TARGET');
   assert.deepEqual(nav.methodologyPrimaryIds(entries,'IDTSPE').slice(5),[
-    'tmcmd.exact.realization','idtspe.lenses.select','idtspe.lens.apply','lenscmd.documentation.representation.check','lenscmd.linked-notes.justify'
+    'tmcmd.pre.update','tmcmd.exact.realization','idtspe.lenses.select','idtspe.lens.apply','lenscmd.documentation.representation.check','lenscmd.linked-notes.justify'
   ]);
 });

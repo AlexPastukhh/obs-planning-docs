@@ -13,7 +13,7 @@ idtspe-methodology-workspace/
 │   │   ├── BOOTSTRAP-IDTSPE.md
 │   │   ├── IDTSPE-CORE-MAP.md
 │   │   ├── IDTSPE-SHELL.md
-│   │   ├── target-modules/                ← framework + generic `TM-EXACT-REALIZATION`; no SDS module bodies
+│   │   ├── target-modules/                ← framework + generic `TM-PRE-UPDATE-PLAN` / `TM-EXACT-REALIZATION`; no SDS module bodies
 │   │   ├── lenses/                        ← generic Lens model + Core/reusable lenses
 │   │   └── shared/                        ← generic Target/Decision/Artifact models
 │   │
@@ -28,7 +28,7 @@ idtspe-methodology-workspace/
 │   │       ├── SDS-FULL-MAP.md
 │   │       ├── SDS-PHYSICAL-PLANNING-TREE.md
 │   │       ├── SDS-INSTANCE-MAP.md
-│   │       ├── target-modules/            ← 16 SDS TM owners
+│   │       ├── target-modules/            ← 15 SDS TM owners
 │   │       ├── lenses/                    ← SDS-specific Lens pack
 │   │       ├── workflow/                  ← SDS navigation phases
 │   │       ├── shared/                    ← SDS-specific rules/templates/graph
@@ -94,7 +94,7 @@ This is separate from specific Target Module/Lens bodies and from raw Theoretica
 бутстреп sds
 → ensure Core current
 → SDS full map
-→ 16 SDS Target Modules
+→ 15 SDS Target Modules
 → SDS Lens pack + Core Lens dependencies
 → directed workflow
 → Documentation / Representation policy → materialization tree / Ideas / Evolution
@@ -165,10 +165,11 @@ Canonical SDS map:
 Current installed Target Modules:
 
 ```text
-1 generic Core Target Module
+2 generic Core Target Modules
+  TM-PRE-UPDATE-PLAN — optional concrete read-only update plan
   TM-EXACT-REALIZATION — exact directly integrable result; code-first default
 
-16 SDS Target Modules
+15 SDS Target Modules
 17 reusable Lenses total available in current installed system
   = generic Core/reusable lenses
   + SDS-specific lens pack

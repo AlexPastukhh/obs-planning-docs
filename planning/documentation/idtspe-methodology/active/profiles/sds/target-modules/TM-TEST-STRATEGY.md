@@ -1,367 +1,151 @@
 # TM-TEST-STRATEGY — Shared Proof Strategy
 
 Entry Point: `tm.test.strategy`  
-Role: proof-strategy Target Module; conditional
+Role: conditional shared proof-strategy Target Module
 
 ## Purpose
 
-Choose shared proof responsibilities/boundaries only when testing responsibility spans several behaviors/Slices/layers strongly enough that strategy itself is independently useful.
+Choose a **shared proof strategy** only when several semantic owners/Slices materially need one coordinated testing policy, shared proof boundary or shared testing infrastructure decision.
 
+If each behavior/Slice can choose its proof locally without coordination pressure, skip this Target.
 
+## High-Level Example — Self-Contained
 
-## High-Level Example — Self-Contained Walkthrough
-
-### Situation
-
-A system has several Slices, each with local tests, but all also rely on one shared audit pipeline and one critical end-to-end customer flow.
-
-The team needs to decide **which proof responsibilities are shared** and which remain local.
-
-### Why This Module
-
-`TM-TEST-STRATEGY` is useful only when proof responsibilities/layers across several targets need coordination.
-
-If one Slice can design its own proof directly, Strategy may be skipped.
-
-### Walkthrough
-
-A strategy might select:
+No separate Strategy needed:
 
 ```text
-isolated unit proof:
-  prove complex AuditPolicy/business-rule cases directly
-
-per-Slice integration tests:
-  prove each state-changing Slice orchestrates its real collaborators
-  and emits the required audit event correctly
-
-shared integration proof:
-  prove emitted events reach audit storage correctly
-
-one critical end-to-end path:
-  prove customer booking succeeds through UI/server/storage
-
-practical operated check:
-  prove an operator can retrieve/diagnose audit history
+3 ordinary Slices
+→ orchestration proved by local integration tests
+→ complex isolated Domain rules proved by local unit tests
+→ no shared harness/policy problem
 ```
 
-The strategy also avoids duplication:
+Strategy becomes useful:
 
 ```text
-do not repeat the same invariant
-at five expensive end-to-end layers
-when one cheaper credible layer proves it
+20 Slices
++ one shared Kafka test harness
++ one DB reset/isolation mechanism
++ expensive external sandbox
++ 3 intentionally selected critical E2E paths
 ```
 
-### Result
-
-The output defines:
+The useful result is then the common allocation/constraint, for example:
 
 ```text
-shared proof responsibilities
-test/proof layer allocation
-critical integrated paths
-practical-vs-automated responsibility
-important data/environment strategy
-optional Test Realization / Topology Registry when cross-Slice realization mapping is useful
+isolated rules → focused unit proof
+Slice orchestration → integration proof through shared harness
+external-provider contract → sandbox contract/integration proof
+3 critical actor journeys → E2E
+operator diagnosis property → Implemented Practical Evidence
+
+shared DB reset/harness is reused
+E2E does not duplicate every unit/integration branch
 ```
 
-When several Slices/Domain proof owners share concrete testing infrastructure, Strategy may also keep a compact registry-like realization map such as:
+Do not mirror every concrete test class/helper into Strategy. Code is authority for exact test implementation.
+
+## Activation / Scope Gate
+
+Use when at least one is independently material:
 
 ```text
-SL-CAPTURE
-  proof: integration
-  test owner: CaptureFlowIntegrationTest
-  setup/harness: CaptureIntegrationSetup
-  fixtures: CaptureItemFixture
-  helpers: PersistenceAssertions
-
-SL-REVIEW
-  proof: integration
-  test owner: ReviewCaptureIntegrationTest
-  setup/harness: CaptureIntegrationSetup
-  helpers: CaptureApiDriver
-
-shared testing infrastructure
-  CaptureIntegrationSetup → SL-CAPTURE, SL-REVIEW
-  PersistenceAssertions   → SL-CAPTURE, CaptureItem rule proof
+proof responsibility spans several owners/Slices
+shared test environment/data/harness policy affects several proofs
+layer allocation/non-duplication needs a cross-Slice decision
+critical E2E/Practical paths must be selected across the portfolio
 ```
 
-The point is the **cross-owner relation**: which Slice/Domain proof is realized by which test class/suite/setup/fixture/harness/helper and which infrastructure is intentionally shared. The code remains authority for the bodies/signatures/implementation of those test classes and helpers; Strategy should reference them, not mirror their methods/assertions.
-
-### Boundary / Lesson
-
-Test Strategy does not invent product behavior.
-
-It coordinates proof of already-owned semantics.
-
-
-## Methodology Entry Gate
-
-`TM-TEST-STRATEGY` is intentionally **later than local Domain proof planning**, but earlier than detailed per-Slice proof coordination when shared strategy is material.
-
-Normal entry:
-
-```text
-selected Domain owner set
-+ every material isolated Domain proof responsibility:
-    PLANNED | NOT_APPLICABLE | explicitly DEFERRED
-+ selected Slice portfolio / Useful Vertical Result Definitions
-↓
-TM-TEST-STRATEGY
-```
-
-Why:
-
-```text
-Domain Test Design owns local rule proof first;
-Slice Strategy tells us what vertical integration paths actually exist;
-Test Strategy then coordinates shared layer responsibility without inventing either.
-```
-
-If those Sources are not ready, recommend the missing Domain Test Design or Slice Strategy rather than creating a speculative Test Strategy.
-
-## Default Proof-Layer Allocation
-
-Test Strategy should establish a default proof-layer policy instead of choosing layers ad hoc for every test.
-
-### Slice Orchestration / Vertical Collaboration → Integration Tests By Default
-
-The orchestration and working collaboration of an Implementation Slice should normally be proved with **integration tests**.
-
-This includes behavior whose correctness depends on several real production responsibilities being wired together correctly, for example:
-
-```text
-request / entry owner
-→ application/service orchestration
-→ Domain collaboration
-→ repository / persistence boundary
-→ integration adapter when material
-→ returned result / state transition
-```
-
-The integration proof should include the real collaborating components/boundaries needed to prove the Slice result. It does **not** automatically mean booting the entire product, browser and every external service.
-
-Typical integration-test responsibilities:
-
-```text
-Slice orchestration and wiring
-multi-owner application flow
-persistence interaction / transaction behavior
-adapter/contract integration
-failure propagation across boundaries
-Useful Vertical Result properties that cannot be proved inside one isolated owner
-```
-
-A normal Slice should therefore have integration proof for its material vertical orchestration even when some internal rules also have unit tests.
-
-### Isolated Complex Logic / Business Rules → Unit Tests By Default
-
-Use **unit tests** for logic that is important but can be credibly proved in isolation without relying on infrastructure or cross-owner wiring.
-
-Typical unit-test responsibilities:
-
-```text
-complex Domain rules / invariants
-business policies
-calculations
-state-transition rules
-parsers / mappings / algorithms
-branch-heavy deterministic logic
-edge cases whose meaning belongs to one isolated owner
-```
-
-The purpose is fast, precise proof of the rule itself.
-
-Do not force an isolated business rule to be proved only through a broad integration test when a small unit test can establish the same rule more directly and with better failure localization.
-
-### Integration + Unit Are Complementary, Not Duplicate Layers
-
-For one Slice, a common strategy is:
-
-```text
-unit tests
-  → prove difficult isolated rules thoroughly
-
-integration tests
-  → prove those owners collaborate correctly in the Slice path
-  → prove wiring, persistence, boundary behavior and failure propagation
-```
-
-Do not repeat every unit-level rule exhaustively in integration tests. Integration tests should prove the **collaboration/result**, while unit tests prove the **isolated rule space**.
-
-### E2E / Practical Remain Selective
-
-```text
-E2E
-  → only a small number of materially important whole-system / external-boundary paths
-
-Practical Test
-  → operated/human/environment properties that automated tests cannot credibly establish alone
-```
-
-Do not use E2E as the default proof for every Slice merely because the Slice is vertical.
-
-### Override Rule
-
-These are strong defaults, not mechanical taxonomy.
-
-If a property cannot be credibly observed at the default layer, select the cheapest broader or narrower layer that can actually prove it and record why.
+Skip when the only result would be restating ordinary defaults already provided by the Test Proof Lens/Knowledge Basis.
 
 ## Upstream Source Contract
 
-### Direct Semantic Sources
 ```text
-Scenario Acceptance
-Behavior Items
-Scenario DATA
-local/shared Requirements / negative guarantees
-Domain Verification Meaning when present
-Slice Useful Vertical Result Definitions / selected Slice portfolio
+selected Scenario/Requirement/Domain/Slice properties
+selected Slice portfolio when present
+existing Test Designs when present
+current test infrastructure/Evidence when revising Strategy
+material environment/data/isolation/cost constraints
 ```
 
-### Inherited Lineage
-```text
-Fundamental Need / selected solution / Application Definition through semantic owners
-```
-
-### Evidence / Current-State Sources
-```text
-planned Domain Test Designs / Domain proof dispositions
-existing local/Slice Test Designs when revising Strategy
-existing test infrastructure / actual coverage Evidence
-known production/runtime failure Evidence
-```
-
-### Constraint / Planning-State Sources
-```text
-correctness/risk goals
-environment/data/isolation/harness constraints
-```
-
-### Source Discovery Rule
-Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
+Current `TF-04 SOURCE_SET` remains authority for the concrete Target.
 
 ## Knowledge Basis
 
-Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
+Use [`Testing Knowledge Basis`](../../../theoretical-modules/testing/README.md) only when deeper layer/integration/E2E/test-object mechanics are materially needed.
 
-Mode: `HYBRID`
-
-**Embedded Principles / Rules / Theory:**
-
-- Test Strategy allocates shared proof responsibilities/layers across the planned semantic and Slice portfolio only when strategy itself is material.
-- Proof-layer defaults are overridable by the cheapest layer that can credibly prove the property.
-- A Test Realization/Topology Registry may represent cross-owner proof realization without duplicating test implementation authority.
-
-**Referenced Knowledge Owners:**
-
-- [`testing/README.md`](../../../theoretical-modules/testing/README.md)
-
-**Reference Load Policy:**
-
-Read raw Testing theory only when processed Test Module/Lens guidance is insufficient for a materially detailed strategy/layering question. Do not read it mechanically.
-
-**Operationalization Notes:**
-
-This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
-
-## Question Set Examples — Non-Exhaustive
-
-Examples only. Current `TF-06 QUESTION_SET` may add/remove/split/merge questions.
-
-```text
-Which proof responsibilities are genuinely shared?
-Which Slice orchestration/vertical paths require integration proof?
-Which isolated complex business/Domain rules deserve focused unit proof?
-Which layer should own each remaining class of proof?
-What must not be duplicated at every layer?
-What data/fixture/reset/isolation policy matters?
-For each selected Slice/Domain proof, which concrete test suite/class is expected to own realization?
-Which setup/fixture/harness/helper responsibilities are intentionally shared across proofs?
-Can a maintainer answer “where and how is this Slice tested?” without reverse-engineering the whole tests tree?
-Would a registry-like Test Realization Map communicate the cross-owner topology better than code alone?
-Which E2E or Practical paths are genuinely critical?
-Which proof belongs to Test Design vs Practical Test?
-What evidence states/reporting are needed?
-```
+Generic theory belongs there, not in this Target Result.
 
 ## Lens Profile
 
-Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):
-- [`LENS-NEED-VALUE-SCOPE`](../../../idtspe-core/lenses/required/LENS-NEED-VALUE-SCOPE.md) — L1.
-- [`LENS-AUTHORITY-SOT-REUSE`](../../../idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md) — L2.
-- [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](../../../idtspe-core/lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md) — L3; required check may resolve as `no material uncertainty`.
-- [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](../../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — Documentation / Representation; required materialization-stage check that may resolve as `NO_PERSISTENCE_NEEDED` or implementation-native/existing-owner representation.
+Required Core Lens pack is inherited from the Core Lens Registry.
 
-Primary reusable Lens Pack(s):
-- [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md) — required
+Primary reusable Lens:
+- [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md) — required; evaluates property alignment, proof layer, assertion strength, no-mutation, Escape/Refactor Risk, duplication, representative sufficiency, cross-side proof, isolation and actual Evidence quality.
 
-Frequent conditional Lens(es):
-- [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md) — when candidate structure may contain avoidable abstractions/entities/steps/test machinery; simplify only after checking global/local evolution constraints
-- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — proof/observation/operation constraints affect strategy
-- [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — material quality risks drive shared proof
-- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — test dependency/fixture/environment structure has material blast radius
+Frequent conditional Lenses:
+- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+- [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+- SDS simplicity/economy Lens when the active profile selects it.
+
+## Question Set Examples — Non-Exhaustive
+
+```text
+Which proof responsibilities are genuinely shared rather than local?
+Which default layer allocation should several Slices follow?
+What must deliberately NOT be duplicated across layers?
+Which shared environment/data/isolation/harness constraint is material?
+Which E2E or Practical Evidence paths are genuinely critical?
+Can ordinary local Test Design / Exact Realization handle the rest without a Strategy owner?
+```
 
 ## Resolution / Production Method
 
-This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
-
-Default reusable production path:
-
 ```text
-establish proof scope/goals → allocate layer responsibilities → prevent duplicated/incorrect proof boundaries → define shared data/harness/topology only when material → coordinate evidence-state representation
+identify real cross-owner testing pressure
+→ apply Test Proof Lens / Testing Knowledge Basis proportionally
+→ compare only material strategy alternatives through ordinary Ideas/Q/R/P/Evidence
+→ select the smallest shared policy/infrastructure boundary that reduces repeated local decisions
+→ leave concrete local proof/test code to local owners / Exact Realization
 ```
 
-Concrete per-property proof design stays with TM-TEST-DESIGN; actual Evidence remains Core State.
-
-A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+Generic Questions/Ideas/Q/R/P/Decisions/Evidence remain Core State; do not duplicate them as Strategy fields.
 
 ## Target Step-Result Contract
 
-**Target Step Result:** `Test Strategy`
+**Target Step Result:** `Shared Proof Strategy`
 
-The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+| Result Unit | Meaning |
+|---|---|
+| `RU-TSTRAT-01` | Shared Proof Strategy — the selected shared proof-layer/non-duplication/environment/harness/critical-path policy that several proofs actually need |
 
-| Result Unit | Meaning | Current projection detail |
-|---|---|---|
-| `RU-TSTRAT-01` | Strategy Scope / Proof Goals | Strategy Scope/Semantic Owners + Proof Goals |
-| `RU-TSTRAT-02` | Layer Responsibility / Non-Duplication Boundary | Layer Responsibility Matrix + Critical E2E/Practical paths + Non-Duplicated Coverage Boundary |
-| `RU-TSTRAT-03` | Shared Test Data / Harness / Topology | Shared Test DATA/Fixtures/Isolation + Harness/Helper Boundaries + Test Realization/Topology Registry when useful |
-| `RU-TSTRAT-04` | Evidence State Coordination | Evidence States and cross-owner proof coordination |
+Typical proportional content:
 
-Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+```text
+scope / participating semantic owners
+shared proof goals
+layer responsibility / explicit non-duplication boundary
+critical E2E / Practical paths when selected
+shared data/isolation/environment/harness responsibility when material
+important exceptions / rationale
+```
 
-
-
-**Strategy Scope / Semantic Owners** — exact result/owner set whose proof responsibility needs coordination.  
-**Proof Goals** — classes of correctness/evidence the strategy must cover.  
-**Layer Responsibility Matrix** — where unit/domain/integration/E2E/practical proof belongs and why; by default Slice orchestration/cross-owner collaboration is integration-tested, while isolated complex business/Domain logic is unit-tested.  
-**Shared Test DATA / Fixtures / Isolation** — reusable setup/reset responsibilities when material.  
-**Critical End-To-End / Practical Paths** — only genuinely high-value paths needing broad proof.  
-**Non-Duplicated Coverage Boundary** — what each layer explicitly leaves to another; unit tests should exhaust isolated rule space while integration tests focus on orchestration/wiring/result rather than duplicating all unit cases.  
-**Harness / Helper Boundaries** — shared testing infrastructure responsibility when independently material.  
-**Test Realization / Topology Registry** — when useful, a compact cross-Slice/Domain map from semantic proof owner → test suite/class → setup/fixture/harness/helper; include PLANNED vs CURRENT/IMPLEMENTED state when material. This is a coordination/read-path artifact, not a copy of test code.  
-**Evidence States** — how planned/executed/stale/missing evidence is represented.
+Do not create mandatory separate Result Units for Evidence-state coordination or a class-level Test Realization Registry. If a cross-owner realization map is genuinely useful, keep a tiny reference section or generated/implementation-native map under normal Documentation / Representation rules; do not mirror test bodies/method inventories.
 
 ## Artifact / File Contract
-
-### Structured Artifact / File Proposals
-
-These proposal records are the Target Module's local placement guidance. [`ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md) projects them into the annotated SDS materialization tree; this Target Module remains the source.
 
 ```text
 ARTIFACT_PROPOSAL
 ID: AP-TSTRAT-01
 CONTENT_KIND: TEST_STRATEGY
-WHEN: shared proof responsibility/layer allocation is selected
+WHEN: shared proof strategy is independently useful/downstream-consumed
 GUIDANCE: REQUIRED_IF_TARGET_EXISTS
-PERSISTENCE_GUIDANCE: REQUIRED
-PLACEMENT_DIRECTIVE: PLACE
+PERSISTENCE_GUIDANCE: CONDITIONAL
+PLACEMENT_DIRECTIVE: PLACE_OR_EMBED
 SEMANTIC_OWNER: current Test Strategy Target
-REPRESENTATION: STRATEGY_ARTIFACT_WITH_OPTIONAL_REGISTRY_SECTION_OR_PROMOTED_SUPPORTING_MAP
-FILE_OR_ARTIFACT: <test-strategy-owner> and optional <test-realization-map-artifact>
-CONTENT: shared proof responsibilities; default unit-vs-integration allocation; Slice orchestration integration paths; isolated-rule unit proof; critical E2E paths; practical-vs-automated allocation; optional cross-Slice/Domain Test Realization Registry mapping proof owner to test suite/class/setup/fixture/harness/helper without duplicating code
+REPRESENTATION: EXISTING_OWNER_OR_SMALL_STRATEGY_ARTIFACT
+CONTENT: compact shared proof-layer/non-duplication/environment/harness/critical-path policy; no shadow test-code registry
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
@@ -370,42 +154,45 @@ RESOLVER: P-14 / TF-10
 ARTIFACT_PROPOSAL
 ID: AP-TSTRAT-02
 CONTENT_KIND: SHARED_TEST_ENVIRONMENT_DATA
-WHEN: environment/data/fixture plan is large/reusable across many proofs
+WHEN: shared environment/data/isolation responsibility is independently substantial
 GUIDANCE: OPTIONAL
 PERSISTENCE_GUIDANCE: OPTIONAL
-PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: Test Strategy/supporting test owner
-REPRESENTATION: SUPPORTING_ARTIFACT
-FILE_OR_ARTIFACT: <shared-test-data-or-environment-artifact>
-CONTENT: reusable environment/data/fixture setup; referenced by designs
+PLACEMENT_DIRECTIVE: PLACE_OR_REFERENCE_IMPLEMENTATION_NATIVE
+SEMANTIC_OWNER: current Test Strategy or resolved implementation owner
+REPRESENTATION: EXISTING_CONFIG_OR_SUPPORTING_ARTIFACT
+CONTENT: only the shared environment/data/isolation meaning not already obvious from code/config
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```
 
+Persist a Strategy owner only when the shared strategy itself is independently useful/downstream-consumed.
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
+A small Strategy may be one section in an existing testing/planning owner. A separate file is justified when several owners repeatedly depend on the shared decisions.
 
-**REQUIRED when shared proof strategy is material/downstream-consumed** — persist one canonical Test Strategy owner describing shared proof responsibilities/layers/critical paths.
+Concrete test classes, fixtures, helpers and harness implementations remain code authority. Reference names/paths only when that cross-owner relation is materially useful; do not create shadow code documentation.
 
-When the useful Strategy meaning includes the cross-owner realization topology, keep a **Test Realization / Topology Registry section** in that Strategy by default. It may reference concrete test suites/classes, setup/fixture/harness classes, helpers and their consumer Slices/Domain proofs. This information is often poorly represented by code alone because the important meaning is the relation across distributed test files/owners.
+## Guards
 
-Do **not** turn the registry into shadow code: reference names/paths/packages where useful, but do not duplicate test bodies, assertions, method inventories or obvious class structure.
-
-If the registry becomes independently large/reviewed/reused, Documentation / Representation + `P-14` may promote it to a supporting registry-like artifact such as `<test-realization-map-artifact>` / `TEST-REALIZATION-MAP.md`. The Test Strategy remains semantic owner of the shared proof allocation; the supporting map does not become behavior authority.
-
-If no shared strategy Target is needed, do not create a strategy or registry file merely for ceremony; local proof planning can remain in Test Design/Slice owners and code/tests.
-
-**PREFERRED supporting artifacts** for large environment/data matrices only when independently reused/reviewed; the same pressure-driven split rule applies to a large Test Realization Map.
-
-`P-14` must distinguish shared strategy content, optional realization-registry representation, local Test Design content and unresolved supporting-artifact needs.
-
-
-## Guard
-
-Testing Strategy never becomes behavior authority and should be skipped when proof ownership is simple/local. A Test Realization Registry maps proof responsibility to implementation/testing owners; it never makes test classes/helpers semantic authority over Scenario/Domain/Slice meaning.
+```text
+local obvious proof ≠ reason for shared Test Strategy
+shared defaults ≠ permission to duplicate every proof at every layer
+Strategy ≠ test implementation inventory
+Strategy ≠ Evidence state runtime
+Strategy ≠ product semantic authority
+```
 
 ## Handoff
 
-Selected proof responsibilities/layer boundaries → per-Slice `TM-IMPLEMENTATION-SLICE` + `TM-TEST-DESIGN`, `TM-PRACTICAL-TEST` when operated Evidence is required, and shared harness/Cross-Cutting planning only when independently material.
+```text
+simple local proof
+→ TM-EXACT-REALIZATION directly when exact tests are obvious
 
-A Strategy instance may be revisited when new Slices, new Domain proof responsibilities or actual Coverage Evidence materially change shared proof allocation.
+independently non-trivial proof method
+→ optional TM-TEST-DESIGN
+
+literal production/test code
+→ TM-EXACT-REALIZATION
+
+real operated acceptance/learning
+→ TM-PRACTICAL-TEST
+```

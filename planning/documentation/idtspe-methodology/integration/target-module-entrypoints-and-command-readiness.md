@@ -38,7 +38,7 @@ This section describes the **repository state/candidates already known from the 
 | `test_design.plan` | `спланируй проверку поведения` | `planning/commands/plan-test-design.command.md` | `TM-TEST-DESIGN` |
 | `testing_strategy.plan` | `стратегия тестирования` | `planning/commands/plan-testing-strategy.command.md` | `TM-TEST-STRATEGY` |
 | `practical_testing.plan` | `план практического тестирования` | `planning/commands/plan-practical-testing.command.md` | `TM-PRACTICAL-TEST` |
-| `test_coverage.review` | `проверь тестовое покрытие` | `planning/commands/review-test-coverage.command.md` | `TM-TEST-COVERAGE` |
+| `test_coverage.review` | `проверь тестовое покрытие` | `planning/commands/review-test-coverage.command.md` | direct `LENS-TEST-PROOF-EVIDENCE` coverage review; no Coverage Target |
 
 ## Existing WEUC / Architecture Commands
 
@@ -91,7 +91,7 @@ Scenario DATA and Behavior Item remain internal contracts of `TM-SCENARIO-PLANNI
 
 Consistency review is `UC-IDTSPE-REVIEW-CONSISTENCY`, not a Target Module; its command is an orchestration/validator surface.
 
-See [`idtspe-command-surface-contract.md`](../active/profiles/sds/shared/idtspe-command-surface-contract.md) for the complete 16-SDS-module + inherited generic Core Exact Realization + focused/orchestration command architecture.
+See [`idtspe-command-surface-contract.md`](../active/profiles/sds/shared/idtspe-command-surface-contract.md) for the complete 15-SDS-module + inherited generic Core Pre-Update/Exact Realization + focused/orchestration/Lens command architecture.
 
 ## Helper Presentation Metadata
 
@@ -143,4 +143,4 @@ SDS tab
 → presentation badges must expose material conditional/optional Target gates without hiding commands
 ```
 
-The accepted **42** methodology surfaces project as `10 IDTSPE Core + 32 SDS` primary helper surfaces. The Core view includes generic `tmcmd.exact.realization / реализуй код` plus the generic Lens operations (`idtspe.lenses.select` and `idtspe.lens.apply`); the latter are orchestration rather than fixed Lens identities. Contextual cross-links must not create duplicate command identities.
+The accepted **43** methodology surfaces project as `11 IDTSPE Core + 32 SDS` primary helper surfaces. The Core view includes generic `tmcmd.pre.update / составь предапдейт план`, `tmcmd.exact.realization / реализуй код` plus the generic Lens operations (`idtspe.lenses.select` and `idtspe.lens.apply`); the latter are orchestration rather than fixed Lens identities. Contextual cross-links must not create duplicate command identities.

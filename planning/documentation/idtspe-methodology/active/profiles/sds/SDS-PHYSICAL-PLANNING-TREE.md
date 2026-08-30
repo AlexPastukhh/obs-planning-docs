@@ -100,7 +100,7 @@ individual Slice owner file
 → conditional; a stable Slice semantic identity/address may stay inline in SLICE-STRATEGY until independent size/reuse/review/addressability pressure justifies splitting it; this representation choice does not itself form a bounded TM-IMPLEMENTATION-SLICE Target
 
 Test Strategy
-→ when shared coordination is material, may naturally act as a registry-like cross-Slice map of proof owner → test class/suite/setup/fixture/harness/helper; keep as a Strategy section first, split to TEST-REALIZATION-MAP only under independent pressure
+→ when shared coordination is material, may persist a small shared proof-layer / non-duplication / environment / harness policy; concrete test class/suite/setup/fixture/helper topology remains code authority, with any generated/reference topology view exceptional rather than a hand-maintained shadow registry
 
 Test Design / frontend Part Plan
 → consolidate into current Target owner first; split only after independent pressure

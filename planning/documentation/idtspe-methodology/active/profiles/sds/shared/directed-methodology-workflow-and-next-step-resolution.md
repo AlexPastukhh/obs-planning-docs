@@ -84,7 +84,7 @@ TM-DOMAIN-DISCOVERY — conditional
 ↓
 TM-DOMAIN-DRAFT — zero/one/many Domain owners
 ↓
-TM-TEST-DESIGN — per Domain owner when isolated Domain/business proof is material
+TM-TEST-DESIGN — optional per Domain owner only when proof design itself is non-trivial
 ↓
 TM-SLICE-STRATEGY — Slice Implementation Strategy; may stay minimal when one obvious Slice needs no material strategy reasoning
 ↓
@@ -93,7 +93,7 @@ TM-TEST-STRATEGY — conditional shared strategy gate
 for each selected Slice:
   Target Formation — when independently bounded Slice planning is material
   → TM-IMPLEMENTATION-SLICE when selected/reused
-    ↔ TM-TEST-DESIGN — Slice proof, standard or TDD route
+    ↔ TM-TEST-DESIGN — optional when Slice proof design itself is non-trivial; otherwise exact tests may be realized directly
   ├─→ TM-FRONTEND-SLICE — conditional promotion
   └─→ TM-CROSS-CUTTING-CONCERN — conditional shared owner
 ↓
@@ -103,9 +103,9 @@ generic Core TM-EXACT-REALIZATION — when an exact directly integrable result i
 ↓
 TM-PRACTICAL-TEST — collect real implemented Evidence + Results / Interpretation when material
 ↓
-TM-TEST-COVERAGE
+LENS-TEST-PROOF-EVIDENCE coverage review when useful
 ↓
-Decision Revalidation / Consistency Review
+Core Finding Disposition / Decision Revalidation / Consistency Review
 ```
 
 `TM-WEUC`, Screen, Requirements, Frontend, Cross-Cutting and implemented Practical Evidence are conditional/cross-cutting nodes. Their placement in the graph expresses their **earliest meaningful activation** and normal consumers, not a rule that they run exactly once.
@@ -114,7 +114,7 @@ Decision Revalidation / Consistency Review
 
 For `TM-PRACTICAL-TEST`, early activation may produce only Evidence Intent / Subject and an Observation / Data Collection Plan. Actual Evidence collection and Results / Interpretation require the real implemented subject/environment; the distinction from `TM-PROTOTYPE` is the Evidence subject, not merely when the Target record was first created.
 
-`TM-EXACT-REALIZATION` is a generic Core node reused by SDS rather than a 17th SDS module. It is **not mandatory after every semantic Target**. It may follow a sufficiently determined Domain owner (for example to implement/test an Aggregate before Slice work), a Slice/Test Design combination, a Cross-Cutting/Frontend result, or a direct bounded local change. A purely mechanical application of an already exact accepted payload does not require another Target. Candidate build/automated-test verification inside Exact Realization remains Core Evidence; implemented practical acceptance/learning stays `TM-PRACTICAL-TEST`.
+`TM-PRE-UPDATE-PLAN` and `TM-EXACT-REALIZATION` are generic Core nodes reused by SDS rather than SDS modules. Pre-Update is optional review-first change planning; Exact Realization owns literal directly integrable production/test code. It is **not mandatory after every semantic Target**. It may follow a sufficiently determined Domain owner (for example to implement/test an Aggregate before Slice work), a Slice/Test Design combination, a Cross-Cutting/Frontend result, or a direct bounded local change. A purely mechanical application of an already exact accepted payload does not require another Target. Candidate build/automated-test verification inside Exact Realization remains Core Evidence; implemented practical acceptance/learning stays `TM-PRACTICAL-TEST`.
 
 ## 4. Fixed Testing Direction
 
@@ -178,7 +178,7 @@ human/operated/environment property
 → Practical Test
 ```
 
-If proof ownership is simple/local, `TM-TEST-STRATEGY` is skipped.
+If proof ownership is simple/local, `TM-TEST-STRATEGY` is skipped. If the concrete proof is also obvious, `TM-TEST-DESIGN` may be skipped too and exact production/test code may be realized directly through `TM-EXACT-REALIZATION`.
 
 ### 4.3 Per-Slice Test Design
 
@@ -257,7 +257,7 @@ A detailed call-level implementation plan is optional before Test Design in TDD 
 
 Material proof designs needed for the selected realization path should be persisted/addressable before or during implementation according to the chosen implementation/TDD mode. When literal code/config/test artifacts are the next useful result, generic Core `TM-EXACT-REALIZATION` owns that exact directly integrable result and may practically integrate/verify it only under explicit user authority.
 
-### Execution → Test Coverage
+### Execution / Current Evidence → Test Proof Lens Coverage Review
 
 Coverage requires actual Evidence. Planned tests alone are not coverage.
 

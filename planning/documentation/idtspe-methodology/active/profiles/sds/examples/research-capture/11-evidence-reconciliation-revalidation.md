@@ -14,7 +14,7 @@ Practical capture run
 ```
 
 ```text
-TM-TEST-COVERAGE
+LENS-TEST-PROOF-EVIDENCE coverage review
 → CREATE/UPDATE testing/TEST-COVERAGE.md
 ```
 

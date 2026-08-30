@@ -222,13 +222,13 @@ Domain invariants / Domain Verification Meaning
 selected implementation boundary
 ```
 
-→ `TM-TEST-DESIGN`
+→ optional `TM-TEST-DESIGN` when the proof method itself is non-trivial; otherwise exact tests may be realized directly through Core `TM-EXACT-REALIZATION`.
 
-Shared proof responsibility → `TM-TEST-STRATEGY` when useful.
+Shared proof responsibility → `TM-TEST-STRATEGY` only when cross-owner coordination is independently useful.
 
-Operated evidence → `TM-PRACTICAL-TEST` when useful.
+Operated real-implementation evidence → `TM-PRACTICAL-TEST` when useful.
 
-Actual Evidence later → `TM-TEST-COVERAGE` / revalidation.
+Actual Evidence later → direct `LENS-TEST-PROOF-EVIDENCE` coverage review / Finding Disposition / revalidation when useful.
 
 ---
 

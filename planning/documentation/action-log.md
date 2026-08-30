@@ -2468,3 +2468,64 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 - historical Final Methodology Audit sections again preserve their original 17-TM / 7-SDS-Lens snapshot assertions as provenance, while current topology remains separately authoritative at 1 Core + 16 SDS Target Modules and 17 total reusable Lenses = 11 Core + 6 SDS-specific;
 - the current Broad Discussion / Integration Checkpoint audit projection reports 10 generic Core command surfaces, consistent with the current 42 = 10 Core + 32 SDS command surface;
 - no additional semantic topology or runtime behavior change is introduced by this correction.
+
+### LOG-DOC-137 — Simplify Testing ownership and add optional generic Pre-Update Plan
+
+**Type:** IDEA CLARIFICATION  
+**Updates:** `LOG-DOC-133` / `LOG-DOC-134` Exact Realization boundary + current Testing / Pre-Update planning  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
+
+**Clarification / resulting meaning:**
+- simplify Testing around one reusable Testing Knowledge Basis for proof theory/mechanics and `LENS-TEST-PROOF-EVIDENCE` as the operational proof-quality + actual-coverage review authority;
+- keep `TM-TEST-STRATEGY` only for independently useful shared cross-owner/layer/environment/harness coordination, and keep `TM-TEST-DESIGN` optional only when the proof method itself is independently non-trivial;
+- literal test code plus authorized build/test execution stays with generic Core `TM-EXACT-REALIZATION`; ordinary exact-realization verification remains Core Evidence and does not automatically create a Practical Test Target;
+- retire `TM-TEST-COVERAGE` from the active SDS Target catalog while preserving `проверь тестовое покрытие` as a direct Test Proof Lens shortcut; any durable coverage map is optional Lens-guided representation rather than a Target owner;
+- keep Prototype and Practical Test separate by Evidence subject: partial/simulated/throwaway vs real implemented subject/environment, while sharing practical-evidence mechanics through the Core method/Lens;
+- add optional generic Core `TM-PRE-UPDATE-PLAN / RU-PUPDATE-01` as a concrete read-only pre-mutation plan that derives from accepted prior meaning/current state and uses ordinary Q/R/P/Evidence + Ideas/Decisions only when materially useful;
+- SDS bootstrap and worked examples are **not** a new semantic design topic in this ChangeSet. Their touched lines are limited to mechanical projection required by the changed Target/command topology (15 SDS Targets + 2 inherited Core Targets, Coverage Target → direct Test Proof Lens review); broader bootstrap/example redesign remains out of scope.
+
+### LOG-DOC-138 — Apply Testing simplification and generic Pre-Update target state
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-137`  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
+
+**Target-State Result:** after successful Apply of this exact package:
+- the installed Target topology is `2 generic Core + 15 SDS = 17`: Core owns optional Pre-Update Plan and Exact Realization, while SDS no longer owns a Test Coverage Target;
+- Testing ownership is `Knowledge Basis → Test Proof Lens → conditional Strategy / optional Design → Exact Realization test code/execution → Core Evidence`, with direct coverage review through the Lens;
+- exact test-class/helper topology remains implementation/code authority instead of a required hand-maintained Test Realization map;
+- Prototype and Practical Test remain distinct Evidence-subject Targets while sharing reusable practical-evidence mechanics;
+- command/helper projection is `43 = 11 Core + 32 SDS`, including `tmcmd.pre.update` and direct `test_coverage.review`; generated Helper catalogs/userscript and automated regressions match that projection;
+- SDS bootstrap and Research Capture example changes are mechanical consistency updates only and do not claim a newly designed bootstrap/example workflow;
+- no repository mutation beyond the package operations, and no commit/push/deploy authority, is implied by this target state.
+
+### LOG-DOC-139 — Correct Testing Evidence persistence boundary
+
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**ChangeSet Label:** `IDTSPE testing simplification and generic Pre-Update Plan`  
+**Prior Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
+**Reviewed Result:** `NEEDS SMALL CORRECTION`  
+**Source Basis:** exact post-Apply target of prior package `52a30497-e5ab-497e-8c86-dfc4eb11e1a4` plus the supplied cumulative ReviewDiff; current GitHub `main` remains `b68b6dfac1f41fd8e79b8ea4a862ada3eddad433`, so this correction package uses the prior applied package target as the exact touched-file base.
+
+**Selected correction / clarification:**
+- keep the Testing simplification, Test Proof Lens completeness, Prototype ↔ implemented Practical Evidence split and generic Pre-Update Plan semantics unchanged;
+- correct `LENS-TEST-PROOF-EVIDENCE / AG-TEST-02` so executed automated/practical Evidence does **not** become mandatory durable persistence merely because it exists; existing test/run/tool output may remain the Evidence Source when no continuing durable representation is useful;
+- retain/persist/reference executed Evidence only when continuing review, revalidation, traceability, retained Decision/Finding support or another material downstream use makes that survival useful; persistence therefore becomes `CONDITIONAL` and may reuse/reference implementation-native test/run artifacts rather than manufacture a second Evidence document;
+- preserve `AG-TEST-03` as the separate optional durable property→Evidence coverage-review representation; no `TM-TEST-COVERAGE` Target is reintroduced;
+- user explicitly deferred the Simple Owner Bootstrap / maximally-simple owner example to later independent work, so this ChangeSet remains limited to Testing simplification + generic Pre-Update Plan and this ReviewDiff correction.
+
+### LOG-DOC-140 — Apply Testing Evidence persistence ReviewDiff correction
+
+**Type:** APPLIED  
+**Applied From:** `LOG-DOC-139`  
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
+**Package:** `e78abb02-eb7a-4c4b-bccf-3340fd2f06bd`  
+
+**Target-State Result:** after successful Apply of this exact correction package:
+- `AG-TEST-02` is materiality-driven: executed automated/practical Evidence may remain in existing test/run/tool output and is persisted/referenced only when continuing review/revalidation/traceability/Decision/Finding value warrants it;
+- ordinary Exact Realization build/unit/integration execution remains Core Evidence without an automatic durable Evidence artifact requirement;
+- Test Proof Lens, conditional Test Strategy, optional Test Design, Prototype/Practical-Test pairing, retired Coverage Target and generic Pre-Update semantics are unchanged from package `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`;
+- Simple Owner Bootstrap remains intentionally deferred to later independent work.

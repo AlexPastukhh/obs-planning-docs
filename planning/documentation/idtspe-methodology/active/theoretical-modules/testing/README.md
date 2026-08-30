@@ -1,38 +1,85 @@
-# THM-TESTING-DETAIL-CA768B61 — Raw Testing Theory Snapshot
+# Testing Knowledge Basis — Proof Theory And Detailed Mechanics
 
-Status: `IMPORTED_RAW` theoretical module  
-Source repository: `github:AlexPastukhh/obs-planning-docs`  
-Source base: `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7`  
-Import rule: source bodies below are preserved **byte-for-byte** from the supplied 2026-08-25 snapshot.
+Status: active reusable theoretical Knowledge Basis  
+Consumers: `LENS-TEST-PROOF-EVIDENCE`, `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, Exact Realization when deeper test mechanics are materially unresolved
 
-## Why It Is Theoretical
+## Purpose
 
-The current SDS Test Target Modules and Test Proof Lens already own the processed testing workflow and timing. The repository also contains useful detailed testing theory whose final operational placement has not been fully decided.
-
-Instead of prematurely merging/rewording it, this package preserves the source theory intact.
+Own reusable **testing theory and mechanics** so operational Lenses/Target Modules do not each restate the same rules.
 
 ```text
-TM-TEST-STRATEGY / TM-TEST-DESIGN / TM-TEST-COVERAGE
-+ LENS-TEST-PROOF-EVIDENCE
-= current processed operational methodology
+Testing Knowledge Basis
+→ reusable theory / mechanics / patterns
 
-THM-TESTING-DETAIL-CA768B61
-= raw detailed theory/reference
-= not another Testing workflow authority
+LENS-TEST-PROOF-EVIDENCE
+→ evaluates one proposed or actual proof using that knowledge
+
+Test Strategy / Test Design
+→ own only independently useful selected planning results
+
+TM-EXACT-REALIZATION
+→ owns literal test code + authorized execution/repair
+
+Core Evidence
+→ owns what actually happened
 ```
 
-## Included Source Bodies
+The Knowledge Basis is not a workflow authority and does not create Targets/Decisions/Evidence by itself.
 
-- [Testing Planning Principles And Terminology](testing-planning-principles-and-terminology.md)
-- [API / Integration Test Guidance](api-integration-test-guidance.md)
-- [E2E Testing Guidance](e2e-testing-guidance.md)
-- [Test Object Patterns](test-object-patterns.md)
+## Core Theory Surface
 
-These four files are intentionally not edited to match the new methodology vocabulary. Their old links/status wording are source evidence, not current navigation authority.
+Use the linked bodies when their detail is material:
 
-## Use
+- [Testing Planning Principles And Terminology](testing-planning-principles-and-terminology.md) — semantic-authority boundary, evidence states, layer responsibility, public-boundary proof, no-mutation proof, Escape/Refactor Risk, representative/paired proof, abstraction and isolation principles.
+- [API / Integration Test Guidance](api-integration-test-guidance.md) — public server/application proof, persistence/result-state assertions, failure/no-mutation, idempotency and boundary regression guards.
+- [E2E Testing Guidance](e2e-testing-guidance.md) — when cross-layer actor proof is worthwhile, semantic locators, environment/isolation, setup and final outcome checks.
+- [Test Object Patterns](test-object-patterns.md) — Page/Component Object abstraction boundaries and keeping the Scenario/proof story visible.
 
-Consult the package when detailed testing theory is materially useful and the processed Test Module/Lens does not yet answer the question strongly enough. Any accepted stable rule should later be promoted deliberately into the appropriate Test Target Module/Lens/Core owner.
+## Knowledge / Evaluation Boundary
+
+Examples:
+
+```text
+Knowledge:
+  behavior-preserving refactors should not normally break behavior proof;
+  internal call-order assertions often increase fragility.
+
+Lens evaluation:
+  this proposed test asserts repository.save() before audit.publish();
+  that order is not semantic → material Refactor Fragility finding.
+```
+
+```text
+Knowledge:
+  failed state-changing behavior often needs no-mutation proof.
+
+Lens evaluation:
+  this test checks only HTTP 500 and never checks persisted state
+  → weak assertion / Escape Risk finding.
+```
+
+```text
+Knowledge:
+  E2E is justified for selected critical cross-layer paths, not blanket matrices.
+
+Lens evaluation:
+  these 40 browser validation cases duplicate one isolated rule
+  → wrong-layer/duplication finding.
+```
+
+## Imported-Theory Provenance
+
+The four linked source bodies were originally imported from source base `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7` and are intentionally preserved byte-for-byte as detailed reference material. Their local historical status/link wording is source provenance rather than a second current methodology authority.
+
+Current processed operational authority is:
+
+```text
+LENS-TEST-PROOF-EVIDENCE
++ current Test Target Modules
++ Core Exact Realization / Evidence semantics
+```
+
+Do not mechanically load every theory file for ordinary test work. Read only the detail needed for the material proof question.
 
 ## Source SHA256
 

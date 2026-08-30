@@ -787,7 +787,7 @@ Core
 Installed SDS profile conformance is literal after the SDS migration:
 
 ```text
-16 / 16 SDS Target Modules
+15 / 15 SDS Target Modules
 → Resolution / Production Method
 → Target Step-Result Contract
 

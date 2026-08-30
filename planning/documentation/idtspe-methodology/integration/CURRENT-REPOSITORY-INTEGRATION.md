@@ -1,11 +1,11 @@
 # Current Repository Integration — SDS / IDTSPE Pre-Update Audit And Migration Ledger
 
-Status: **staged installation target built against the current supplied repository snapshot; canonical IDTSPE/SDS authority + command/helper surface prepared, destructive legacy-family cleanup still gated by MB-06**  
+Status: **current integration ledger; Testing simplification + generic Pre-Update target state prepared against current repository base, while older staged-installation/migration checkpoints below remain provenance; destructive legacy-family cleanup remains gated by MB-06**  
 Methodology baseline: `idtspe-methodology-workspace-core-sds-separated.zip` (`ffb6bfff5bb4da2478811443c5f0168ab4baa173b389439d0991afb27ca7d30b`)  
-Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, current package base `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`; `36dfbf878d4ff9e616de70d7535135c5c0c9966e` remains the earlier shared-Knowledge-Basis transition base and ca768b61 remains original methodology-import provenance  
-Audit intent: define the **pre-update migration plan**, including obsolete SDS/Idea runtimes, merge-before-delete knowledge, command/helper impact, and deletion gates.
+Repository evidence: `github:AlexPastukhh/obs-planning-docs`, branch `main`, current replacement-package base `b68b6dfac1f41fd8e79b8ea4a862ada3eddad433`; earlier `3d1ce07c...`, `36dfbf...` and `ca768b61...` references remain transition/import provenance  
+Audit intent: record the **current testing/pre-update integration state** plus the earlier migration ledger, including obsolete SDS/Idea runtimes, merge-before-delete knowledge, command/helper impact and deletion gates.
 
-## Current Staged Installation Status — 2026-08-27
+## Historical Staged Installation Status — 2026-08-27
 
 The current replacement-package target uses repository identity `github:AlexPastukhh/obs-planning-docs` and exact current base commit `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`. The earlier `36dfbf...` and `ca768b61...` references below remain transition/audit provenance; they are not the base claim for this package.
 
@@ -32,7 +32,33 @@ The six older `collect-ideas*` command files are retained only as hidden legacy 
 Planning Helper verification for the staged target passes `122 / 122` automated tests plus generated userscript/catalog build consistency. All 41 methodology surfaces carry stable `methodologyBinding`; mutable IDTSPE/SDS tab placement comes from separate helper presentation metadata.
 
 
-## Current Exact Realization Core Integration — 2026-08-30
+## Current Testing Simplification + Generic Pre-Update Integration — 2026-08-30
+
+Current installed state now has **2 generic Core Target Modules + 15 SDS Target Modules = 17 total**. Core adds optional `TM-PRE-UPDATE-PLAN / RU-PUPDATE-01`; SDS retires `TM-TEST-COVERAGE` as a Target family while preserving `проверь тестовое покрытие` as a direct `LENS-TEST-PROOF-EVIDENCE` review shortcut.
+
+```text
+Testing Knowledge Basis
+→ reusable proof theory/mechanics
+
+LENS-TEST-PROOF-EVIDENCE
+→ operational proof-quality + actual coverage review
+
+TM-TEST-STRATEGY [conditional]
+→ lightweight shared cross-owner strategy only
+
+TM-TEST-DESIGN [optional]
+→ independently non-trivial proof design only
+
+TM-EXACT-REALIZATION
+→ literal production/test code + authorized automated execution
+
+TM-PROTOTYPE ↔ TM-PRACTICAL-TEST
+→ shared practical-evidence method/Lens; partial/simulated vs real implemented subject remains the material boundary
+```
+
+Current command projection is **43 = 11 Core + 32 SDS**. The SDS count remains 32 because `test_coverage.review` changes from Target invocation to direct reusable Lens review while the new Pre-Update command is a Core surface. Older Exact-Realization/42-surface, `TM-TEST-COVERAGE`, hand-maintained `TEST-REALIZATION-MAP.md` and pre-installation statements below are transition provenance; they are not current topology/ownership claims.
+
+## Exact Realization Integration Checkpoint — 2026-08-30 (historical topology snapshot)
 
 The current methodology adds one **generic Core** Target Module, `TM-EXACT-REALIZATION`, without changing the 16-module SDS profile topology. Its one Target Result Unit, `RU-REAL-01 Exact Realization`, is the exact directly integrable current candidate; codebase realization is the canonical/default archetype.
 

@@ -1,6 +1,6 @@
 # Command Surface Consistency Audit
 
-Status: PASS — refreshed after Lens Applicability / generic Lens-operation integration
+Status: PASS — refreshed after Testing simplification + generic Pre-Update integration
 
 ## Authority
 
@@ -15,12 +15,12 @@ Repository mapping remains a migration projection under `integration/`; it is no
 
 ```text
 3 framework/bootstrap/work surfaces
-1 generic Core Target Module surface (`TM-EXACT-REALIZATION`)
-16 canonical SDS Target Module surfaces
+2 generic Core Target Module surfaces (`TM-PRE-UPDATE-PLAN`, `TM-EXACT-REALIZATION`)
+15 canonical SDS Target Module surfaces
 13 focused Target-Module shortcuts
-4 specialized direct Lens shortcut surfaces
+5 specialized direct Lens shortcut surfaces
 5 orchestration/validator surfaces
-= 42 methodology invocation surfaces
+= 43 methodology invocation surfaces
 ```
 
 Specialized direct Lens shortcut surfaces:
@@ -37,17 +37,22 @@ lenscmd.documentation.representation.check
 
 lenscmd.linked-notes.justify
 → проверь оправданы ли linked notes <target>
+
+test_coverage.review
+→ проверь тестовое покрытие <target/current tests/evidence>
 ```
 
 ## Checks
 
+- generic Core `TM-PRE-UPDATE-PLAN` has canonical `tmcmd.pre.update / составь предапдейт план`: **PASS**
 - generic Core `TM-EXACT-REALIZATION` has canonical `tmcmd.exact.realization / реализуй код`: **PASS**
-- all 16 active SDS Target Modules have canonical surfaces: **PASS**
+- all 15 active SDS Target Modules have canonical surfaces: **PASS**
 - `idtspe.bootstrap`, `idtspe.work`, `sdscmd.bootstrap` are present and distinct: **PASS**
 - WEUC direct Lens command is present in owner + command contract: **PASS**
 - Simplicity direct Lens command is present in owner + command contract: **PASS**
 - Documentation / Representation direct Lens command is present in owner + command contract: **PASS**
 - Linked Notes direct Lens command is present in owner + command contract: **PASS**
+- Test coverage review is a direct `LENS-TEST-PROOF-EVIDENCE` shortcut and does not create a `TM-TEST-COVERAGE` Target: **PASS**
 - specialized direct Lens shortcuts do not create new Target Modules: **PASS**
 - generic Core command definitions point to the Core command-surface owner rather than the SDS extension: **PASS**
 - `idtspe.lenses.select` exposes the TF-06A Lens Applicability Scan with `CREATE_OR_REUSE_TARGET`, so it can participate in Local Target Formation without becoming a Target/Lens authority: **PASS**

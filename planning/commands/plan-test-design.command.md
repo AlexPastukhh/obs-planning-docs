@@ -15,20 +15,20 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй проверку поведения"
   ],
   "description": "test design",
-  "meaning": "Run TM-TEST-DESIGN through the IDTSPE Shell for the selected target.",
+  "meaning": "Run optional TM-TEST-DESIGN only when how to prove the selected property is independently non-trivial. Straightforward proof should go directly from accepted semantics to TM-EXACT-REALIZATION for exact test code.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-DESIGN.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+  "expectedOutput": "RU-TDES-01: concise selected property-to-proof design (credible layer/operator + setup/action/observation + required assertions/signals) only when separate proof planning is actually useful.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Do not create a Test Design Target for an obvious local test merely because the module exists.",
+    "LENS-TEST-PROOF-EVIDENCE owns Escape Risk, Refactor Fragility, assertion strength, wrong-layer/duplication and Evidence-freshness evaluation; retain those only when material rationale/findings matter.",
+    "Test Design is not exact test code and not executed Evidence; literal tests/build execution belong to Exact Realization under explicit authority.",
+    "This command is read-only planning and does not mutate repository files."
   ],
   "userTarget": "<one Domain/Slice/etc proof target>",
   "palette": true,
@@ -37,8 +37,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "DIR-PLAN-SOLUTION"
   ],
   "helperPresentation": {
-    "whenToUse": "Use when a semantic owner needs executable/procedural proof design before or during realization.",
-    "whatYouGet": "Test Design obligations, layer choice, cases/oracles/data/environment and Evidence mapping.",
+    "whenToUse": "Use when the proof method itself is non-trivial: layer choice, failure injection, concurrency/distributed behavior, no-mutation observation, special environment/harness, or automated-vs-practical boundary needs an independent decision.",
+    "whatYouGet": "A concise selected property-to-proof design; if proof is straightforward, the module may be skipped in favor of Exact Realization.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -47,7 +47,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "sectionOrder": 5,
       "itemOrder": 0,
       "kindLabel": "IDTSPE TARGET",
-      "viewOrder": 1
+      "viewOrder": 1,
+      "badges": [
+        "CONDITIONAL"
+      ]
     }
   },
   "refinements": [],
