@@ -1,137 +1,55 @@
 # SCN-RPKG-COMPLETE-REPOSITORY-WORK — Complete Prepared Repository Work
 
-Status: selected target Scenario owner / current implementation requires listed deltas
-Application plan: [`../application-plan.md`](../application-plan.md)
+Status: active current Scenario owner
 
-## Scenario Identity
+## User goal
 
-| Field | Value |
-|---|---|
-| Actor / context | User has prepared repository work (normally a replacement package) or an existing unfinished ChangeSet and one or more registered local Git repositories. |
-| Starting situation | Intended work is not yet safely completed/published, existing work is Publication Pending, or the user explicitly needs to reopen previously Finalized logical work for safe continuation/recovery. |
-| Need / motivation | Bring prepared work into the correct repository, understand its current state, and finish it without losing/capturing unrelated work. |
-| Goal / intent | Complete one logical repository-work item safely and truthfully. |
-| Observable result | Intended work is applied and either finalized/published or remains in a clear recoverable Publication Pending state; unrelated work is preserved. |
+Safely bring prepared repository work into the correct concrete local repository, continue the exact logical work when it already exists, understand its cumulative current change, and finish/publish it without capturing unrelated work. The same Scenario covers Publication Pending recovery and explicit reopening of Finalized logical work when the user deliberately chooses to continue it.
 
-## Entry Points
+## Main flow
 
-- package ZIP and/or OBS-ACTION is available; input itself is passive;
-- existing Active ChangeSet continuation;
-- existing Publication Pending work requiring completion/recovery;
-- explicitly selected Finalized history work that the user chooses to reopen;
-- work may have been selected first through [`SCN-RPKG-FIND-EXISTING-WORK`](SCN-RPKG-FIND-EXISTING-WORK.md).
+1. The user selects/registers a concrete Repository Target and supplies a replacement ZIP and/or `OBS-ACTION/1`. Input is passive until Apply.
+2. Ordinary `Apply` prepares immediately. `Apply (wait for ZIP)` freezes click-time archive/action/target inputs and retries only `PACKAGE_NOT_FOUND` roughly every two seconds for at most twelve seconds before entering the same prepared Apply path once.
+3. The package is fully validated. `PACKAGE.json.changeSetId` is the exact continuation identity: Active continues that exact work; Finalized blocks until explicit Reopen; UI selection, label similarity and recency cannot substitute another ChangeSet.
+4. The exact Repository Target is resolved. An existing ChangeSet's persisted target is authoritative. New work may use the current matching target, a unique other matching target, or explicit user choice when several clones match. No clone is silently substituted.
+5. Before mutation the application revalidates Git work-tree root/origin, readiness, package repository identity, path ownership/adoptability and expected source state for every operation.
+6. For `replace/delete`, raw current bytes may match the package base directly. Otherwise Git path-specific clean/filter semantics are used to prove equivalence. Real difference blocks as source changed; inability to verify equivalence fails closed.
+7. Only after complete preflight passes are declared paths mutated. Result bytes are verified; bounded rollback is attempted on failure and unresolved divergence is reported truthfully.
+8. Successful Apply creates/continues one ChangeSet, maintains repository-scoped ownership, records the attempt and persists cumulative Current Change/ReviewDiff.
+9. Refresh/Copy/Open Current Change are inspection conveniences, not approval gates.
+10. Finalize revalidates current work, stages only owned paths, commits only that logical work and pushes it. Empty cumulative work may finalize without an unnecessary commit.
+11. If local commit succeeds but push fails, the same ChangeSet remains Publication Pending (`CommittedPendingPush`). Retry Push continues the same work rather than creating a second logical item.
+12. Successful completion becomes Finalized and releases live ownership.
 
-## Main Flow
+## Important branches
 
-1. User supplies/selects package/OBS-ACTION or opens existing work. Package input alone does not select/mutate a repository.
-2. User explicitly invokes ordinary `Apply`, or uses the separate `Apply (wait for ZIP)` convenience when the referenced download may not have arrived yet. The wait action freezes the current Archive ZIP / OBS-ACTION / Repository Target inputs and retries the same Prepare only for `PACKAGE_NOT_FOUND` every 2 seconds for at most 12 seconds; any other outcome stops waiting immediately.
-3. On the first successful Prepare, application follows the same ordinary Apply path exactly once: it parses/validates package identity and resolves logical work + exact Repository Target:
-   - `PACKAGE.json.changeSetId` is authoritative for logical-work identity. If that exact ID exists Active, only it may be continued; UI-selected/label/recent/other Active work cannot substitute. If that exact ID is Finalized, Apply blocks and requires explicit Reopen rather than using another ChangeSet or auto-reopening;
-   - existing ChangeSet continuation → that exact ChangeSet's stored concrete target is authoritative; contradictory Repository Identity is rejected and the work is never silently re-homed;
-   - new work → current matching target is kept; exactly one other matching registered target may be auto-selected; several matching clones require concrete user selection; no matching target blocks before mutation.
-4. If Apply changes repository context automatically, the new repository remains current even if a later applicability check fails; the UI shows a small context-change result, not false Apply success.
-5. Application revalidates the exact resolved target. When the requested operation requires committed baseline/HEAD/ref semantics and the repository has no first commit, it reports `Repository Not Ready — repository has no commits; create an initial commit and retry` without mutation.
-6. Application checks all package/path/ownership/source-state applicability before target mutation:
-   - ownership is `(concrete Repository Target, Relative Path)` scoped;
-   - `add` requires path absence/adoptability;
-   - `replace/delete` require expected source match: raw exact equality, or—when raw bytes differ—Git path-semantic equivalence of expected-base and actual content; different/unverifiable source blocks.
-7. Only after the complete preflight passes, application mutates declared paths with bounded verified rollback and verifies resulting bytes.
-8. Application establishes/continues one logical ChangeSet, persists ownership/current cumulative change and records the operation result. If this Apply action carries an invocation-scoped `chatContextToken`, destination resolution runs asynchronously through the bridge and does not delay repository mutation. The token is explicit bind/rebind authority: unique resolution immediately persists that captured conversation, including replacing a different existing Review-chat binding, regardless of repository Apply outcome. At the successful-Apply/current-ReviewDiff cutoff, an already resolved token queues that ReviewDiff to the current token-selected binding; unresolved/conflicted lookup leaves Apply successful but skips automatic delivery for that ReviewDiff. A later successful resolution still binds/rebinds for future deliveries and is separately notified; it never retro-sends the ReviewDiff whose cutoff already passed.
-9. User may inspect/refresh/copy/open Current Change when useful; these actions are not approval gates.
-10. Later correction/continuation packages may continue the same ChangeSet using its current source state.
-11. User chooses to finish work. Application revalidates current completion state, isolates only this logical work, commits/publishes it, and releases ownership only when truly Finalized.
-12. If local commit succeeds but publication cannot complete, work remains one Publication Pending ChangeSet and Retry Push/recovery continues that same logical work without duplicate commit/work.
-13. If previously Finalized work must be continued again, the user explicitly selects it from history and invokes `Reopen ChangeSet`; after exact-target and ownership/unowned-work safety checks, the same ChangeSet identity becomes Active again without erasing historical finalization evidence.
+### Explicit Reopen
 
-## Branches / Extensions
+Selecting Finalized history is read-only. `Reopen ChangeSet` revalidates the exact stored Repository Target and verifies historical paths can be reacquired without stealing sibling unfinished ownership or silently adopting unrelated dirty/unowned state. Failure leaves lifecycle/ownership unchanged. Success returns the same ChangeSet identity to Active and preserves finalization history; later Apply still runs normal guards.
 
-### Package not applicable
-Wrong repository, ownership conflict, dirty/unowned/adoptability problem, changed/unverifiable expected source, Repository Not Ready or another precondition stops before mutation. `Apply (wait for ZIP)` does not retry these failures; only `PACKAGE_NOT_FOUND` is pollable. If the package is still unavailable when the 12-second budget ends, waiting stops without entering repository mutation.
+### Repository Target location
 
-### Intentional manual/local changes
-If the producer must work from intentional local/manual content not already in its source context, user exports a Local Snapshot and supplies that exact context to the producer. Apply still performs freshness/source-state proof because local files may change again after the snapshot.
+A Repository Target is one stable registered target ID with a logical `github:owner/repo` Repository Identity and a mutable registered location. Several targets may share one repository identity. `Change repository location` explicitly updates the same target after validating a matching Git work tree and preserves all ChangeSet associations.
 
-### Repository location changed explicitly
-`Change Repository Location` is a separate repository-management operation. Valid Git work tree + matching Repository Identity updates the existing Repository Target location while preserving Target ID and all ChangeSet associations. It is not implicit Apply recovery and does not bypass later operation-specific guards.
+### Existing work navigation
 
-
-### Reopen previously Finalized work
-`Show History` exposes Finalized ChangeSets for selection. When a Finalized ChangeSet is selected, an explicit `Reopen ChangeSet` action may return that same logical work to Active. Reopen is a recovery branch, not automatic continuation and not a new Scenario.
-
-Before changing lifecycle/ownership the application:
-- revalidates the exact stored Repository Target;
-- checks the ChangeSet's historical paths against current unfinished ownership;
-- blocks if any sibling unfinished ChangeSet currently owns a path that would be reacquired;
-- blocks rather than silently adopting unrelated dirty/unowned content;
-- preserves prior finalization/commit/history evidence.
-
-On success the ChangeSet identity is unchanged, status becomes Active and safe historical path ownership is re-established for continuation. A later package still runs normal repository/path/source-state applicability; Reopen itself does not apply package content. On failure the ChangeSet remains Finalized, the operation publishes its normal failure notification/result/diagnostics, and no persistent ChangeSet error marker is attached to that Finalized history row.
-
+The main ChangeSet selector is the work-context selector: current-target unfinished work by default, `All repositories` for unfinished work across registered targets, and `Show history` to add Finalized rows. Selecting another target's work selects that exact target + ChangeSet only. An unavailable stored target remains truthful query state and is never silently replaced.
 
 ### Invocation-scoped chat binding
-An `OBS-ACTION/1` without `chatContextToken` keeps ordinary Apply/binding behavior and starts no token lookup. An action carrying a token came from one explicit Planning Helper Bind invocation: that exact token is resolved against live agents' stored click-time captures, while legacy `chatTabTitle` is only a fallback when no token is present. Unique token resolution is direct bind/rebind authority and immediately makes the captured conversation the persisted Review chat, even if another chat was already bound or repository Apply later fails. If resolution is still pending when Apply produces the current ReviewDiff, the ReviewDiff is deliberately not auto-sent for that Apply; Output/notification reports that separately from Apply success. Late resolution still binds/rebinds for subsequent ReviewDiff delivery and produces a second binding-result notification without retroactive Send.
 
-### Current change became stale
-Finalize stops; user re-establishes the current change before retrying.
+An optional `chatContextToken` resolves asynchronously while repository Apply proceeds. A unique token result is direct bind/rebind authority for the ChangeSet and is independent of Apply success/failure. If resolved by the successful-Apply ReviewDiff cutoff, that ReviewDiff may queue normally; pending/conflicted resolution skips only that automatic delivery. Late unique resolution applies to future deliveries and never retro-sends the skipped ReviewDiff. Legacy `chatTabTitle` remains fallback-only when no token is present and keeps its pre-mutation unique-match/keep-rebind-cancel behavior.
 
-### Publication remote advanced
-Safe reconciliation/retry may continue when preservation is provable. Unsafe/ambiguous overlap leaves work pending rather than force-overwriting remote/local work.
+## Data and rules
 
-### No net change
-Logical work may finish without creating/pushing an unnecessary commit.
-
-## Scenario DATA
-
-- `DATA-RPKG-REPOSITORY-TARGET`
-- `DATA-RPKG-REPOSITORY-IDENTITY`
-- `DATA-RPKG-REPOSITORY-LOCATION`
-- `DATA-RPKG-REPLACEMENT-PACKAGE`
-- `DATA-RPKG-CHANGESET`
-- `DATA-RPKG-APPLICABILITY`
-- `DATA-RPKG-CURRENT-CHANGE`
-- `DATA-RPKG-USER-OPERATION`
-- `DATA-RPKG-OPERATION-RESULT`
-
-## Behavior Items
-
-- passive package/action input and Apply-time target resolution;
-- existing ChangeSet concrete-target authority and no silent clone substitution/re-home;
-- repository revalidation and Repository Not Ready handling;
-- complete applicability before mutation;
-- repository-scoped exclusive ownership;
-- expected source-state proof without false Git-controlled representation mismatch;
-- independent/dirty-unowned work preservation;
-- current cumulative work exposed without approval gate;
-- selected-work-only finalize/publication and truthful pending recovery;
-- explicit safe Finalized→Active Reopen preserving logical identity/history and preventing ownership steal/adoption;
-- concise semantic operation result + separate technical diagnostics;
-- terminal tracked operation outcomes feed notifications/latest ChangeSet result where applicable;
-- invocation-scoped token binding outcomes remain separate from repository Apply truth, with skipped-current-delivery and later-binding notifications kept distinct.
-
-## Requirements
-
-Related shared requirements: `REQ-RPKG-01..06`, `REQ-RPKG-11`, `REQ-RPKG-12`, `REQ-RPKG-15..18` in [`../application-plan.md`](../application-plan.md).
-
-## Visual / Screen References
-
-Primary: [`SCR-RPKG-MAIN`](../screens.md#scr-rpkg-main--main-work-surface).
-
-The user should not need SHA/commit-graph knowledge to understand Active, Publication Pending, Finalized, source-changed or Repository Not Ready outcomes.
-
-## Acceptance
-
-- package/action input remains passive until Apply;
-- Apply resolves `PACKAGE.json.changeSetId` as the exact continuation identity, never substitutes UI-selected/label/recent work, and resolves/revalidates the exact target without guessing between clones;
-- auto-selected target remains selected after later preflight failure;
-- no-first-commit baseline-dependent path yields actionable Repository Not Ready rather than raw HEAD error;
-- same-repository owned path conflict blocks; same relative path in another concrete repository does not;
-- LF/CRLF/filter representation that Git considers equivalent does not false-fail expected source state;
-- real source change or unverifiable equivalence blocks before mutation;
-- current change can be inspected/restored without changing real index;
-- Finalize captures only selected work;
-- publication failure preserves logical work and retry does not create a second logical work item;
-- Finalized releases ownership;
-- selecting Finalized history does not mutate it; explicit Reopen is available only for selected Finalized work and succeeds only when exact target/path ownership/unowned-work checks allow safe reacquisition;
-- successful Reopen preserves the same ChangeSet identity and historical finalization evidence while returning current lifecycle to Active;
-- failed Reopen leaves the work Finalized, notifies/reports diagnostics, and creates no persistent Finalized error marker;
-- `chatContextToken` absence starts no lookup; token presence is explicit bind/rebind authority, never blocks repository Apply, unique resolution immediately persists the captured destination regardless of Apply outcome, and a late resolution does not retro-send the ReviewDiff skipped at the Apply cutoff.
+- Repository Target = stable target identity + repository identity + mutable location.
+- ChangeSet = stable logical work identity.
+- `(Repository Target, relative path)` has at most one unfinished ChangeSet owner.
+- Current Change = cumulative exact current work for one ChangeSet.
+- lifecycle = Active → Publication Pending → Finalized, with explicit guarded Finalized → Active Reopen.
+- package `changeSetId` cannot be retargeted by UI state.
+- source freshness and path ownership are independent protections.
+- unrelated dirty/unowned work is never silently adopted.
+- repository-without-required-commit reports Repository Not Ready.
+- stale Current Change blocks Finalize.
+- publication failure preserves successful local work.
+- an in-flight operation stays bound to its captured target/work even if UI navigation changes.

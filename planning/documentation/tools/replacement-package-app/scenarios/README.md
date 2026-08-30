@@ -1,70 +1,13 @@
 # Replacement Package App Scenario Catalog
 
-Status: selected target application Scenario navigation; practical feedback corrected Scenario boundary
-Profile: Modular / Medium SDS
-Application plan: [`../application-plan.md`](../application-plan.md)
+Status: active current Scenario navigation
 
-## Target Scenario Inventory
+The application has three user-world Scenarios. Scenario identity follows a real user need/result rather than buttons, commands or implementation components.
 
-| Scenario | Status | Real-life Need / independently meaningful result |
-|---|---|---|
-| [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) — Complete Prepared Repository Work | selected target; partly implemented | Safely bring prepared repository work into the correct local repository, understand its current state and finish/publish that logical work without capturing unrelated work. |
-| [`SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT`](SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) — Provide Repository Context For Further Work | selected target; core export/attach implemented | Produce an exact portable repository context and, when useful, make that context ready in the intended ChatGPT conversation without changing repository work. |
-| [`SCN-RPKG-PROVIDE-CURRENT-CHANGE`](SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) — Provide Current Change For Review / Continuation | selected target; core delivery implemented | Give the intended ChatGPT conversation the exact current change for one logical work item without manual large-diff handling, or preserve a truthful failed/uncertain/cancelled outcome. |
-
-Scenario boundaries are user-world Situation/Need/Desired Result boundaries. `Apply`, `Refresh Review`, `Finalize`, `Retry Push`, explicit `Reopen ChangeSet`, `Change Repository Location`, `Cancel`, notifications, selectors, `Export`, `Bind`, `Send` and `Attach` remain actions/branches/Behavior/Slices unless they independently establish a separate real-life Need/result.
-
-Slice boundaries are reviewed independently. One Scenario may require several Slices, and one Slice may support several Scenarios.
-
-## Current / Target Realization Relationship
-
-```text
-Current source realization after this package:
-SL-RPKG-01..SL-RPKG-09
-
-Practical correction in this package:
-SL-RPKG-06 exact ReviewDiff attachment + configurable Send-retry realization + prepared/configurable action-assisted Review-chat binding and explicit rebind authorization
-SL-RPKG-07 unified ChangeSet selector + unavailable-target query behavior
-SL-RPKG-08 current/actionable interaction projection
-SL-RPKG-01 ownership/adoptability diagnostic detail
-```
-
-Implementation existence and operational acceptance remain separate: source/tests may realize a Scenario/Slice while its Windows/Swing/Edge practical card is still pending.
-
-## Command ↔ App Compatibility
-
-| Producer action | Consumer expectation |
+| Scenario | User result |
 |---|---|
-| `OBS-ACTION/1` without destination metadata | unchanged package semantics; no token lookup; existing manual/persisted Review-chat binding behavior remains |
-| action carries `chatContextToken` from an explicit one-invocation capture | Execute starts non-blocking agent lookup; unique resolution immediately binds/rebinds the persisted Review chat regardless of repository Apply outcome; if resolved by the successful Apply cutoff, the current ReviewDiff queues there, while pending/conflict skips only this Apply's automatic ReviewDiff delivery |
-| token resolves after Apply cutoff | captured conversation is still bound/rebound for future deliveries, a separate binding-success notification is emitted, and the already-skipped ReviewDiff is not retroactively sent |
-| action carries `chatTabTitle`; one normalized current conversation matches and ChangeSet is unbound | Prepare freezes that conversation key using the current local ignored-character policy; successful Apply then binds through the normal persisted service and queues the current ReviewDiff |
-| `chatTabTitle` has zero or multiple normalized conversation matches | Prepare writes a warning to Output; no destination is guessed and Apply may continue with manual binding available |
-| one unique requested destination equals existing binding | no rebind confirmation; existing binding remains and normal queueing continues |
-| one unique requested destination differs from existing binding | before repository mutation the user chooses Apply without rebind, Apply and rebind, or Cancel; authorized rebind occurs only after successful Apply and uses the prepared conversation key |
-| prepared ChangeSet/binding state changes before Execute | stale prepared Apply blocks before repository mutation and must be prepared/confirmed again |
+| [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) | Prepared or existing logical repository work is safely applied/continued, understood, finalized/published or left in a truthful recoverable state. |
+| [`SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT`](SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) | An exact portable Local/Committed repository context exists and, when requested, is handed to one intended ChatGPT conversation. |
+| [`SCN-RPKG-PROVIDE-CURRENT-CHANGE`](SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) | The exact current logical change is handed to the intended ChatGPT conversation, or a truthful failed/uncertain outcome is retained. |
 
-`chatContextToken` is an opaque one-invocation context reference and explicit bind/rebind authority, not package/Repository/ChangeSet identity. It is present only when that command invocation explicitly requested `Bind + ...` and must not be carried into later actions. `chatTabTitle` remains legacy fallback-only; when a token is present, title matching is skipped. Neither mechanism identifies a physical duplicate tab.
-
-## Supporting Meaning
-
-- shared Scenario DATA + cross-cutting Behavior + Requirements: [`../application-plan.md`](../application-plan.md)
-- spatial/visual meaning: [`../screens.md`](../screens.md)
-- Domain target working model: [`../domain-draft.md`](../domain-draft.md)
-- current/target implementation Slice decomposition: [`../slices.md`](../slices.md)
-- cross-Slice proof strategy: [`../testing-plan.md`](../testing-plan.md)
-
-## Legacy Compatibility
-
-Historical operation-shaped files remain compatibility stubs because existing notes/links may reference them:
-
-- `SCN-RPKG-APPLY.md` → `SL-RPKG-01`
-- `SCN-RPKG-REVIEW.md` → `SL-RPKG-02`
-- `SCN-RPKG-FINALIZE.md` → `SL-RPKG-03`
-- `SCN-RPKG-EXPORT-REPOSITORY.md` → `SL-RPKG-04`
-- `SCN-RPKG-ATTACH-SNAPSHOT.md` → `SL-RPKG-05`
-- `SCN-RPKG-DELIVER-REVIEW.md` → `SL-RPKG-06`
-
-`SCN-RPKG-FIND-EXISTING-WORK.md` is retained only as a retired planning note. Practical feedback showed that choosing existing work is ordinary shared ChangeSet navigation inside other user goals, not an independently meaningful Scenario.
-
-Those legacy/retired files are not current Scenario semantic owners.
+Shared work-context selection, External Interaction management and operation notifications support these Scenarios and are represented in [`../slices.md`](../slices.md), not as additional user-world Scenarios.
