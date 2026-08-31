@@ -47,7 +47,7 @@ Only `status: applied` authorizes downstream expected-state advancement with tha
 
 ## Clipboard and ReviewDiff boundary
 
-Successful Apply first copies the typed receipt to the clipboard with read-back verification, then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting. With `Clipboard` (the default) or `Both`, the ReviewDiff intentionally becomes the final clipboard content so the ordinary development/review flow can paste the diff directly. With `RepoDiffFile`, the receipt remains the final clipboard content. Clipboard or diff-publication failure is a handoff warning and does not rewrite a proven Apply result.
+Successful Apply first copies the typed receipt to the clipboard with read-back verification. For a **legacy** ChangeSet, Apply then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting; with `Clipboard` (the default) or `Both`, that ReviewDiff becomes the final clipboard content, while `RepoDiffFile` leaves the receipt final. For a **Git-backed** ChangeSet in the current `Ready → AppliedUncommitted` migration stage, SL-RPKG-02 has not migrated yet, so successful Apply generates no legacy ReviewDiff and the typed receipt remains the final clipboard content. Clipboard or legacy diff-publication failure is a handoff warning and does not rewrite a proven Apply result.
 
 Terminal non-retryable Apply failures copy the typed failure/uncertain receipt to the clipboard and do not publish a ReviewDiff.
 
@@ -55,7 +55,7 @@ Terminal non-retryable Apply failures copy the typed failure/uncertain receipt t
 
 Unexpected Apply exceptions are normalized to the stable `INTERNAL_ERROR` code before they reach receipt, persisted operation outcome or Apply UI reporting.
 
-Successful typed-receipt/clipboard handoff does not suppress the existing Review-chat delivery path. At the successful-Apply ReviewDiff cutoff, token-assisted binding is reconciled and the current ReviewDiff is queued when the ChangeSet has an eligible Review-chat binding; pending/conflicted token resolution skips only that Apply's automatic delivery.
+For legacy ChangeSets, successful typed-receipt/clipboard handoff does not suppress the existing Review-chat delivery path: at the successful-Apply ReviewDiff cutoff, token-assisted binding is reconciled and the current ReviewDiff is queued when eligible. Git-backed `AppliedUncommitted` work has no current ReviewDiff yet; token/title binding may still establish future destination state, but there is no automatic ReviewDiff delivery until SL-RPKG-02 migrates.
 
 Refresh Review does not automatically republish ReviewDiff to clipboard or `RepoDiffFile`, but it does automatically queue the refreshed ReviewDiff when the ChangeSet already has a Review-chat binding. Without a binding, the refreshed ReviewDiff remains available for explicit Copy/Open/Send. ReviewDiff remains the internal canonical review/finalization artifact.
 

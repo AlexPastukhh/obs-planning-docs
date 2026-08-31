@@ -27,7 +27,11 @@ The first migrated capability is available separately from the legacy Apply flow
 
 The action is idempotent for its current `Ready` state. A repeat proves the persisted branch/worktree/HEAD instead of recreating it; a crash after journal creation may reconcile the exact journal-owned partial workspace. Existing branch/worktree material without that journal is not adopted. Movement of the target branch after successful workspace creation does not rewrite the pinned `baseCommit`.
 
-This is intentionally a migration boundary, not a hidden rewrite of the rest of the Scenario. Until `SL-RPKG-01` and `SL-RPKG-02` migrate, package Apply and legacy owned-path Review are fail-closed for these Git-backed ChangeSets; they must not fall back to the Repository Target main workspace. Commit/Publish/PR/ReviewDecision/Finalize migration is not part of this slice.
+The next migrated stage is **Apply package files** for that existing workspace. From `Ready(C0)`, Apply verifies the persisted branch/worktree at exact `publishedTip=C0`, requires a clean real index, performs expected-source proof against the worktree, durably records an Apply journal before the first file mutation, and mutates only the isolated worktree. The journal records exact actual prior existence/bytes and exact intended result bytes per package operation together with package/archive identity and `baseHead`. Successful file mutation persists `AppliedUncommitted(P1)` while branch HEAD and `publishedTip` remain `C0`; the Git-backed ChangeSet acquires no legacy Path Ownership.
+
+Retry is idempotent against that journal. If all package paths already equal the intended result, retry persists/returns `AppliedUncommitted` without reapplying. If a crash leaves only prior or a mixture of exact prior/intended package-path states, retry restores the exact recorded prior bytes and applies the package again. If a journal-owned package path contains other bytes consistent with an interrupted file write, those current bytes are preserved under app-state recovery evidence before exact prior restoration and retry. Unrelated dirty worktree paths, a changed branch/HEAD or a different package against `AppliedUncommitted` still fail closed. The durable Apply journal remains after success for later Commit/Abort migration.
+
+This remains a deliberate migration boundary. Git-backed Apply does **not** yet generate the legacy owned-path ReviewDiff, and Commit/Publish, Git-derived Current Change, PR/ReviewDecision and Finalize are still unmigrated. Legacy Review and Finalize are therefore blocked for the Git-backed ChangeSet instead of falling back to the Repository Target main workspace.
 
 ## Important branches
 
@@ -50,7 +54,7 @@ An optional `chatContextToken` resolves asynchronously while repository Apply pr
 ## Data and rules
 
 - Repository Target = stable target identity + repository identity + mutable location.
-- ChangeSet = stable logical work identity; new Git-backed workspaces also pin target branch/base/published tip and isolated branch/worktree.
+- ChangeSet = stable logical work identity; Git-backed workspaces pin target branch/base/published tip and isolated branch/worktree, then progress through explicit execution state such as Ready and AppliedUncommitted.
 - `(Repository Target, relative path)` has at most one unfinished ChangeSet owner.
 - Current Change = cumulative exact current work for one ChangeSet.
 - lifecycle = Active → Publication Pending → Finalized, with explicit guarded Finalized → Active Reopen.

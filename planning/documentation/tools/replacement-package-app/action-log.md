@@ -1163,3 +1163,64 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** SL-RPKG-11 recovery remains fail-closed on ambiguous/diverged ownership but is now idempotent across repeated crashes in the same worktree-creation boundary: every journal-owned invalid partial attempt is preserved separately while the durable journal continues to authorize exact branch/worktree reconciliation.
 
 **APPLIED relation:** successful Apply of package `d8500326-c7f9-4e07-8fd5-f665936570fb` corrects the repeated-crash recovery finding inside still-open ChangeSet `fd338fb5-2f18-48a9-a300-fdd0fbf1eb57`; the ChangeSet remains open for cumulative ReviewDiff review.
+
+### LOG-RPKG-059 — Apply package files inside Git-backed ChangeSet worktree
+
+**Type:** TARGET MIGRATION / SL-RPKG-01 APPLY REPLACEMENT WORK / GIT-BACKED APPLY FILES / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `e628a2c4-9e7a-403a-add3-847460b5d383`  
+**ChangeSet Label:** `Replacement Package App - Git-backed Apply package files`  
+**Package:** `4920173f-c62d-42e2-9788-fd39259c332c`
+
+**Selected migration step:**
+- after accepting SL-RPKG-11 as APPROVABLE, start a new ChangeSet and migrate the next narrow execution boundary instead of combining Apply/Commit/Publish/Review/Finalize at once;
+- extend `SL-RPKG-01` only through **Apply package files** for an already established Git-backed ChangeSet workspace;
+- from `Ready(C0)`, apply package operations only inside the persisted isolated worktree and persist `AppliedUncommitted(P1)` while branch HEAD and `publishedTip` remain `C0`;
+- do not acquire legacy Path Ownership and do not mutate the Repository Target main workspace.
+
+**Durable Apply / retry semantics:**
+- before first file mutation, persist an Apply journal with exact `changeSetId`, `packageId`, archive SHA-256, repository identity, branch/worktree, `baseHead` and per-operation exact actual prior existence/bytes plus exact intended result existence/bytes;
+- same-package retry in `AppliedUncommitted` proves the worktree still equals the intended journal result and returns already satisfied without a second mutation;
+- if a crash leaves state at `Ready` while all package paths already equal intended bytes, retry promotes the ChangeSet to `AppliedUncommitted` without reapplying;
+- if crash state is a mixture of exact durable prior/intended package-path states, restore exact prior bytes and apply once again; if a journal-owned package path contains other partial-write bytes, preserve those current bytes as app-state recovery evidence before exact prior restoration and retry; unrelated dirty paths still fail closed;
+- a different package cannot advance the same ChangeSet while one package is still `AppliedUncommitted`; the journal remains available for later Commit/Abort migration.
+
+**Transitional boundary:**
+- Git-backed SL-RPKG-02 Current Change is not migrated in this package, so successful Git-backed Apply has no legacy owned-path ReviewDiff yet and the typed Apply receipt remains the final clipboard handoff;
+- legacy ChangeSets keep their existing Apply → cumulative ReviewDiff behavior;
+- Git-backed legacy Refresh Review and Finalize remain fail-closed; Commit/Publish, PR, ReviewDecision and integration Finalize are later migrations;
+- package protocol and Builder remain unchanged.
+
+**Proof target:**
+- Core regression proves worktree-only add/replace mutation, unchanged Repository Target main workspace, unchanged branch HEAD/`publishedTip`, no Path Ownership, persisted Apply journal and `AppliedUncommitted`;
+- regression proves same-package idempotency, different-package blocking, fully-intended crash recovery, mixed prior/intended restore+reapply, preserved unknown partial-write recovery, unrelated-dirt refusal and legacy Review/Finalize fencing;
+- existing legacy Apply/Review/Finalize, SL-RPKG-11 workspace recovery, receipt, bridge/DOM, launcher and shared file-mutation regressions remain required.
+
+**Target-State Result:** the App now realizes the first execution transition after workspace creation: `Ready(C0) → AppliedUncommitted(P1)` for one exact replacement package inside the ChangeSet worktree, with durable exact file-state recovery and no main-workspace or Path Ownership fallback. Commit/Publish and Git-derived review remain intentionally pending.
+
+**APPLIED relation:** successful Apply of package `4920173f-c62d-42e2-9788-fd39259c332c` establishes this SL-RPKG-01 Git-backed Apply-files migration as new ChangeSet `e628a2c4-9e7a-403a-add3-847460b5d383`. Corrections selected from its ReviewDiff while still open keep this ChangeSet identity; work after accepted APPROVABLE review starts another new ChangeSet.
+
+### LOG-RPKG-060 — Preserve exact Unicode package-path identity during Git-backed Apply
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-01 APPLY REPLACEMENT WORK / GIT PATH IDENTITY / APPLIED TARGET  
+**ChangeSet:** `e628a2c4-9e7a-403a-add3-847460b5d383`  
+**ChangeSet Label:** `Replacement Package App - Git-backed Apply package files`  
+**Package:** `d00c3e94-f6b5-4af0-9107-5d65dae244ed`
+
+**ReviewDiff finding / selected correction:**
+- the first Git-backed Apply-files migration compared raw journal package paths directly with ordinary line-oriented `git diff --name-only` / `git ls-files --others` output;
+- Git's default human-readable path output may quote and octal-escape non-ASCII repository paths, so a correct Unicode package path could be misclassified as unrelated dirt after mutation and force rollback;
+- keep the same SL-RPKG-01 `Ready → AppliedUncommitted` boundary and correct only dirty-path identity acquisition. Do not widen into Commit/Publish, Git-derived Review or Finalize.
+
+**Selected correction:**
+- collect tracked and untracked dirty paths from Git using `-z` NUL-delimited byte output rather than quoted line output;
+- decode each raw Git path as strict UTF-8 and compare that exact repository-relative string with the durable journal path;
+- keep unrelated-path refusal, exact prior/intended journal recovery and all existing execution-state semantics unchanged.
+
+**Proof target:**
+- new Core regression applies one package that replaces `каталог/замена.txt` and adds `каталог/добавка.txt`, proving both Unicode paths reach `AppliedUncommitted` in the isolated worktree while the Repository Target main workspace stays unchanged;
+- existing same-package idempotency, crash recovery, partial-write evidence, unrelated-dirt fencing, SL-RPKG-11, legacy Apply/Review/Finalize, receipt, bridge/DOM, launcher and shared mutation regressions remain required;
+- candidate verification: shared `PackageStateApplierTests` PASS, `CoreTests` `80/80`, `ApplyReceiptTests` PASS, `ChatBridgeTests` `60/60`, ChatGPT adapter DOM regression PASS, Windows launcher tests `5/5`.
+
+**Target-State Result:** Git-backed Apply dirty-path verification now compares package/journal paths against exact raw Git path identities instead of presentation-quoted names, so supported Unicode repository paths participate in the same worktree-only and recovery invariants as ASCII paths.
+
+**APPLIED relation:** successful Apply of package `d00c3e94-f6b5-4af0-9107-5d65dae244ed` corrects the Unicode dirty-path identity finding inside still-open ChangeSet `e628a2c4-9e7a-403a-add3-847460b5d383`; the ChangeSet remains open for cumulative ReviewDiff review.

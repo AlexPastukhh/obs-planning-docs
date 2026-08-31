@@ -18,7 +18,7 @@ Use the smallest proof surface that can establish the behavior:
 
 | Slice | Primary automated proof responsibility |
 |---|---|
-| `SL-RPKG-01` Apply Replacement Work | `CoreTests`: package/action validation, exact `changeSetId` continuation, target resolution/readiness, repository-scoped ownership/adoptability, raw-or-Git-path-semantic expected-source proof, complete preflight, mutation/result verification and rollback, bounded wait-for-ZIP wrapper/source contracts. |
+| `SL-RPKG-01` Apply Replacement Work | `CoreTests`: legacy package/action/ownership/source behavior plus Git-backed `Ready → AppliedUncommitted` worktree-only mutation, durable Apply-journal exact prior/intended bytes, same-package idempotency, fully-intended crash recovery, mixed prior/intended restore+reapply, preserved unknown partial-write recovery, different-package blocking, NUL-delimited raw Git dirty-path identity including Unicode replace/add paths, unrelated-dirt refusal and legacy Review/Finalize fencing. |
 | `SL-RPKG-02` Inspect Current Change | `CoreTests`: cumulative canonical ReviewDiff, temporary-index isolation, persistence/integrity/staleness and background Refresh ownership rules. |
 | `SL-RPKG-03` Finalize And Publish Work | `CoreTests`: owned-only staging, review baseline equality, commit/push/publication-pending recovery, remote recovery guards and explicit safe Reopen lifecycle/ownership reacquisition. |
 | `SL-RPKG-04` Export Repository Snapshot | `CoreTests`: Local/Committed snapshot bytes/metadata, repository readiness, index safety, confinement and Local consistency/stability checks. |
@@ -36,7 +36,7 @@ Automated proof keeps the current safety boundaries explicit, especially:
 - failed package/target/ownership/source preflight causes no repository mutation;
 - Git-equivalent path representation may pass after raw mismatch, while real source change or unverifiable Git/filter semantics fail closed;
 - one unfinished legacy ChangeSet cannot capture sibling ownership and a same-origin clone is not silently substituted;
-- a new Git-backed ChangeSet workspace is pinned to one exact Repository Target/common Git repository and exact base commit, and legacy Apply/Review cannot silently fall back to the target main workspace;
+- a Git-backed ChangeSet workspace is pinned to one exact Repository Target/common Git repository and exact published tip; package-file Apply mutates only that worktree, journals exact prior/intended state before mutation, acquires no legacy Path Ownership, and legacy Review/Finalize cannot silently fall back to the target main workspace;
 - Current Change generation does not mutate the real Git index and stale current review blocks Finalize;
 - publication failure preserves successful local work and Retry Push does not create an unrelated second logical ChangeSet;
 - explicit Reopen is all-or-nothing with respect to lifecycle and reacquired ownership;

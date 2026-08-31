@@ -17,6 +17,10 @@ Give one intended ordinary ChatGPT conversation the exact current cumulative cha
 7. For automatic Send, intended conversation and clean composer are guarded, exact attachment must be upload-ready, Java authorizes `SendArmed` before the first application-controlled browser click, an actual possible click establishes `SendClicked`, and later guarded attempts may continue only while the same prepared attachment remains. Confirmed delivery becomes `Sent`; genuine post-click ambiguity becomes `UnknownAfterSend` and stops blind resend.
 8. Empty Current Change produces `NoChanges` and no ChatGPT message.
 
+## Git-backed migration boundary
+
+Git-backed ChangeSets that have reached `Ready` or `AppliedUncommitted` are not yet served by this Scenario. Their Current Change must become Git-derived in the SL-RPKG-02 migration; until then Refresh/Copy/Open/Send do not project the isolated worktree through the legacy owned-path ReviewDiff path. This is a temporary fail-closed boundary, not an assertion that the Git-backed work has no changes.
+
 ## Binding routes
 
 Manual binding persists by ChangeSet and does not implicitly send already-current content.
