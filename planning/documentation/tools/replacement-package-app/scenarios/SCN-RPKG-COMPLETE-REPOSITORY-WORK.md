@@ -21,6 +21,14 @@ Safely bring prepared repository work into the correct concrete local repository
 11. If local commit succeeds but push fails, the same ChangeSet remains Publication Pending (`CommittedPendingPush`). Retry Push continues the same work rather than creating a second logical item.
 12. Successful completion becomes Finalized and releases live ownership.
 
+## Git-backed migration branch — Start ChangeSet Workspace
+
+The first migrated capability is available separately from the legacy Apply flow. **Start workspace** takes a new exact `changeSetId`, stable label and local target branch for the selected Repository Target. It resolves that branch to exact `C0`, durably journals the workspace intent before Git mutation, creates deterministic branch `changeset/<changeSetId>` plus an isolated worktree, verifies that worktree belongs to the same Git common repository and is clean at `C0`, then persists `baseCommit=C0`, `publishedTip=C0`, lifecycle `Active`, execution `Ready`.
+
+The action is idempotent for its current `Ready` state. A repeat proves the persisted branch/worktree/HEAD instead of recreating it; a crash after journal creation may reconcile the exact journal-owned partial workspace. Existing branch/worktree material without that journal is not adopted. Movement of the target branch after successful workspace creation does not rewrite the pinned `baseCommit`.
+
+This is intentionally a migration boundary, not a hidden rewrite of the rest of the Scenario. Until `SL-RPKG-01` and `SL-RPKG-02` migrate, package Apply and legacy owned-path Review are fail-closed for these Git-backed ChangeSets; they must not fall back to the Repository Target main workspace. Commit/Publish/PR/ReviewDecision/Finalize migration is not part of this slice.
+
 ## Important branches
 
 ### Explicit Reopen
@@ -42,7 +50,7 @@ An optional `chatContextToken` resolves asynchronously while repository Apply pr
 ## Data and rules
 
 - Repository Target = stable target identity + repository identity + mutable location.
-- ChangeSet = stable logical work identity.
+- ChangeSet = stable logical work identity; new Git-backed workspaces also pin target branch/base/published tip and isolated branch/worktree.
 - `(Repository Target, relative path)` has at most one unfinished ChangeSet owner.
 - Current Change = cumulative exact current work for one ChangeSet.
 - lifecycle = Active → Publication Pending → Finalized, with explicit guarded Finalized → Active Reopen.

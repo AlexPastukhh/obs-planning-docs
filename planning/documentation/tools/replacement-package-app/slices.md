@@ -3,7 +3,7 @@
 Status: active current implementation map
 Purpose: show how the three Scenario owners are assembled from current vertical implementation slices without duplicating class/method documentation.
 
-Current source/tests realize `SL-RPKG-01..SL-RPKG-09`. Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
+Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09` plus the first Git-backed migration slice `SL-RPKG-11`. Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
 
 ## Slice map
 
@@ -73,15 +73,23 @@ Current source/tests realize `SL-RPKG-01..SL-RPKG-09`. Source is authority for e
 - **depends on:** semantic terminal results from SL-01..08.
 - **notes:** notification click foregrounds/selects exact repository context when known; never auto-executes Apply/Finalize/Retry/Reopen/Send and does not automatically select a ChangeSet.
 
+### `SL-RPKG-11 — Start ChangeSet Workspace`
+- **implements:** first App-first Git-backed migration capability: explicitly create one isolated exact Git workspace for a new ChangeSet.
+- **uses:** Repository Target, ChangeSet identity/label, target branch, `baseCommit`, `publishedTip`, branch, worktree and execution `Ready`.
+- **touches:** Swing **Start workspace**, Core, StateStore workspace journal/worktree paths and Git worktree/branch mechanics.
+- **result:** local `targetBranch @ C0` is pinned as `baseCommit=C0` / `publishedTip=C0`; deterministic branch `changeset/<changeSetId>` and deterministic isolated worktree are created and verified clean against the same Git common directory; ChangeSet persists as `Active · Ready`.
+- **idempotency/recovery:** an exact workspace journal is durably written before the first Git mutation. Retry either returns an already-proven persisted Ready workspace or reconciles only the exact journal-owned partial branch/worktree; an unjournaled deterministic branch/path collision fails closed.
+- **transitional boundary:** this slice does **not** migrate package Apply, Current Change, commit, publish, Issue/PR, ReviewDecision or Finalize. Legacy Apply and legacy owned-path Review are explicitly blocked for these Git-backed ChangeSets so they cannot silently mutate/project the Repository Target main workspace.
+
 ## Shared domain concepts
 
 No separate Domain owner is required for the current model.
 
 - **Repository Target** — stable registered local target ID; has one Repository Identity and one mutable registered location. Same-origin clones remain distinct targets.
-- **ChangeSet** — one logical repository-work identity across continuation, Review refresh, publication recovery, Reopen and target-location change.
+- **ChangeSet** — one logical repository-work identity. Legacy ChangeSets retain continuation/Review/publication/Reopen fields; new Git-backed workspaces additionally persist `targetBranch`, `branch`, `worktree`, `baseCommit`, `publishedTip` and execution state.
 - **Path Ownership** — `(Repository Target, repository-relative path)` has at most one unfinished ChangeSet owner.
 - **Current Change** — cumulative current work of one ChangeSet, represented by canonical persisted ReviewDiff/fingerprint.
-- **Lifecycle** — Active → Publication Pending → Finalized; explicit safe Reopen returns the same identity to Active.
+- **Lifecycle / execution (transitional)** — legacy work retains Active → Publication Pending → Finalized with Reopen; a new SL-11 workspace currently persists lifecycle `Active` plus execution `Ready(C0)`. Later slices will migrate the remaining lifecycle/execution model.
 - **External Interaction** — one exact handoff source/artifact + exact conversation + semantic delivery/cancellation/uncertainty truth.
 - **User Operation** — application execution/outcome context, separate from ChangeSet lifecycle.
 

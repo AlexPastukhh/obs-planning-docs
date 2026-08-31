@@ -57,25 +57,32 @@ public final class Core {
     public record ChatBinding(String changeSetId,String conversationKey,String title,String url,String boundAt) {}
     public record ChatTaskInfo(String taskId,String kind,String changeSetId,String reviewAttemptId,String conversationKey,String conversationTitle,String fileName,boolean autoSend,String status,String message,String createdAt,String updatedAt) {}
     public record ApplyTargetResolution(RepositoryConfig target,List<RepositoryConfig> candidates,boolean contextChanged,String reason) {}
+    public record WorkspaceStartResult(ChangeSet changeSet,boolean alreadySatisfied) {}
+    private record WorktreeRegistration(Path path,String head,String branch) {}
+    private record WorkspaceJournal(String changeSetId,String changeSetLabel,String repositoryTargetId,String repositoryIdentity,String targetBranch,String branch,String worktree,String baseCommit,String createdAt) {
+        Map<String,Object> json(){Map<String,Object>m=new LinkedHashMap<>();m.put("schemaVersion",1);m.put("changeSetId",changeSetId);m.put("changeSetLabel",changeSetLabel);m.put("repositoryTargetId",repositoryTargetId);m.put("repositoryIdentity",repositoryIdentity);m.put("targetBranch",targetBranch);m.put("branch",branch);m.put("worktree",worktree);m.put("baseCommit",baseCommit);m.put("createdAt",createdAt);return m;}
+        static WorkspaceJournal from(Map<String,Object>m){if(num(m.get("schemaVersion"))!=1)throw new ObsException(STATE_DIVERGED,"Unsupported ChangeSet workspace journal schema.");return new WorkspaceJournal(str(m.get("changeSetId")),str(m.get("changeSetLabel")),str(m.get("repositoryTargetId")),str(m.get("repositoryIdentity")),str(m.get("targetBranch")),str(m.get("branch")),str(m.get("worktree")),str(m.get("baseCommit")),str(m.get("createdAt")));}
+    }
     public record ExternalInteraction(String interactionId,String kind,String changeSetId,String source,String destination,String state,String message,String updatedAt,boolean cancellable) {}
 
     public static final class ChangeSet {
-        public int schemaVersion=2;
+        public int schemaVersion=3;
         public String changeSetId,changeSetLabel,repositoryIdentity,repositoryTargetId,repositoryRoot,status="Active",lastPackageId;
         public final List<String> ownedPaths=new ArrayList<>();
         public String currentReviewAttemptId,currentReviewDiffPath,currentReviewSha256,currentReviewHead;
         public String commitSha,branch,createdAt,updatedAt;
+        public String targetBranch,worktree,baseCommit,publishedTip,executionState;
         public String lastOperationStatus,lastOperationCode,lastOperationMessage,lastOperationAt;
         public final List<Map<String,Object>> finalizationHistory=new ArrayList<>();
         Map<String,Object> json(){
-            Map<String,Object> m=new LinkedHashMap<>();m.put("schemaVersion",2);m.put("changeSetId",changeSetId);m.put("changeSetLabel",changeSetLabel);m.put("repositoryIdentity",repositoryIdentity);m.put("repositoryTargetId",repositoryTargetId);m.put("repositoryRoot",repositoryRoot);m.put("ownedPaths",new ArrayList<>(ownedPaths));m.put("status",status);m.put("lastPackageId",lastPackageId);
+            Map<String,Object> m=new LinkedHashMap<>();m.put("schemaVersion",3);m.put("changeSetId",changeSetId);m.put("changeSetLabel",changeSetLabel);m.put("repositoryIdentity",repositoryIdentity);m.put("repositoryTargetId",repositoryTargetId);m.put("repositoryRoot",repositoryRoot);m.put("ownedPaths",new ArrayList<>(ownedPaths));m.put("status",status);m.put("lastPackageId",lastPackageId);
             Map<String,Object> r=new LinkedHashMap<>();r.put("attemptId",currentReviewAttemptId);r.put("diffPath",currentReviewDiffPath);r.put("sha256",currentReviewSha256);r.put("head",currentReviewHead);m.put("currentReview",r);
-            m.put("commitSha",commitSha);m.put("branch",branch);m.put("createdAt",createdAt);m.put("updatedAt",updatedAt);
+            m.put("commitSha",commitSha);m.put("branch",branch);m.put("targetBranch",targetBranch);m.put("worktree",worktree);m.put("baseCommit",baseCommit);m.put("publishedTip",publishedTip);m.put("executionState",executionState);m.put("createdAt",createdAt);m.put("updatedAt",updatedAt);
             Map<String,Object> o=new LinkedHashMap<>();o.put("status",lastOperationStatus);o.put("code",lastOperationCode);o.put("message",lastOperationMessage);o.put("timestamp",lastOperationAt);m.put("lastOperationOutcome",o);
             m.put("finalizationHistory",new ArrayList<>(finalizationHistory));return m;
         }
         @SuppressWarnings("unchecked") static ChangeSet from(Map<String,Object> m){
-            ChangeSet c=new ChangeSet();c.changeSetId=str(m.get("changeSetId"));c.changeSetLabel=str(m.get("changeSetLabel"));c.repositoryIdentity=str(m.get("repositoryIdentity"));c.repositoryTargetId=str(m.get("repositoryTargetId"));c.repositoryRoot=str(m.get("repositoryRoot"));c.status=str(m.get("status"));if(c.status==null||c.status.isBlank())c.status="Active";c.lastPackageId=str(m.get("lastPackageId"));c.commitSha=str(m.get("commitSha"));c.branch=str(m.get("branch"));c.createdAt=str(m.get("createdAt"));c.updatedAt=str(m.get("updatedAt"));
+            ChangeSet c=new ChangeSet();Object schema=m.get("schemaVersion");c.schemaVersion=schema instanceof Number n?n.intValue():2;c.changeSetId=str(m.get("changeSetId"));c.changeSetLabel=str(m.get("changeSetLabel"));c.repositoryIdentity=str(m.get("repositoryIdentity"));c.repositoryTargetId=str(m.get("repositoryTargetId"));c.repositoryRoot=str(m.get("repositoryRoot"));c.status=str(m.get("status"));if(c.status==null||c.status.isBlank())c.status="Active";c.lastPackageId=str(m.get("lastPackageId"));c.commitSha=str(m.get("commitSha"));c.branch=str(m.get("branch"));c.targetBranch=str(m.get("targetBranch"));c.worktree=str(m.get("worktree"));c.baseCommit=str(m.get("baseCommit"));c.publishedTip=str(m.get("publishedTip"));c.executionState=str(m.get("executionState"));c.createdAt=str(m.get("createdAt"));c.updatedAt=str(m.get("updatedAt"));
             Object op=m.get("ownedPaths");if(op instanceof List<?> l)for(Object x:l)c.ownedPaths.add(str(x));Object rr=m.get("currentReview");if(rr instanceof Map<?,?> rm){Map<String,Object> r=(Map<String,Object>)rm;c.currentReviewAttemptId=str(r.get("attemptId"));c.currentReviewDiffPath=str(r.get("diffPath"));c.currentReviewSha256=str(r.get("sha256"));c.currentReviewHead=str(r.get("head"));}
             Object oo=m.get("lastOperationOutcome");if(oo instanceof Map<?,?> raw){Map<String,Object> o=(Map<String,Object>)raw;c.lastOperationStatus=str(o.get("status"));c.lastOperationCode=str(o.get("code"));c.lastOperationMessage=str(o.get("message"));c.lastOperationAt=str(o.get("timestamp"));}
             Object fh=m.get("finalizationHistory");if(fh instanceof List<?> l)for(Object x:l)if(x instanceof Map<?,?> raw)c.finalizationHistory.add(new LinkedHashMap<>((Map<String,Object>)raw));return c;
@@ -135,6 +142,24 @@ public final class Core {
     public boolean hasFailedLatestOutcome(ChangeSet cs){return cs!=null&&isUnfinished(cs)&&("FAILED".equals(cs.lastOperationStatus)||"ACTION_REQUIRED".equals(cs.lastOperationStatus)||"UNCERTAIN".equals(cs.lastOperationStatus));}
     public ChangeSet getChangeSet(String id){return state.getChangeSet(id);}
     public List<ApplicationAttempt> getAttempts(){return state.getAttempts();}
+    public String currentRepositoryBranch(String repositoryTargetId){RepositoryConfig target=findRepository(ensureSettings(),repositoryTargetId);Path repo=repoRoot(Path.of(target.path));String identity=repositoryIdentity(repo);if(!same(identity,target.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Registered repository origin changed from "+target.repositoryIdentity+" to "+identity+".");requireRepositoryReady(repo);GitClient.Result branch=git.allow(repo,STATE_DIVERGED,"symbolic-ref","--quiet","--short","HEAD");return branch.exitCode()==0?branch.first():"";}
+    public WorkspaceStartResult startChangeSetWorkspace(String repositoryTargetId,String changeSetId,String changeSetLabel,String targetBranch){
+        uuid(changeSetId,"changeSetId");if(changeSetLabel==null||changeSetLabel.isBlank())throw new ObsException(STATE_DIVERGED,"ChangeSet label is required.");String label=changeSetLabel.strip(),targetName=targetBranch==null?"":targetBranch.strip();if(targetName.isBlank())throw new ObsException(STATE_DIVERGED,"Target branch is required.");
+        try(StateStore.Lock ignored=state.lock()){
+            RepositoryConfig target=findRepository(ensureSettings(),repositoryTargetId);Path repo=repoRoot(Path.of(target.path));String identity=repositoryIdentity(repo);if(!same(identity,target.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Registered repository origin changed from "+target.repositoryIdentity+" to "+identity+".");requireRepositoryReady(repo);validateBranchName(repo,targetName);
+            ChangeSet existing=state.getChangeSet(changeSetId);if(existing!=null){assertExistingWorkspaceRequest(existing,target,label,targetName);verifyReadyWorkspace(repo,existing.branch,Path.of(existing.worktree),existing.baseCommit,identity);try{Files.deleteIfExists(state.workspaceJournalPath(changeSetId));}catch(IOException ignoredDelete){}return new WorkspaceStartResult(existing,true);}
+            Path journalPath=state.workspaceJournalPath(changeSetId);WorkspaceJournal journal;
+            if(Files.exists(journalPath)){
+                journal=WorkspaceJournal.from(state.readObject(journalPath));assertWorkspaceJournalRequest(journal,target,label,targetName);
+            }else{
+                String branch="changeset/"+changeSetId,base=resolveLocalBranchTip(repo,targetName);Path worktree=state.changeSetWorktreePath(changeSetId);
+                if(gitRefExists(repo,"refs/heads/"+branch)||Files.exists(worktree,LinkOption.NOFOLLOW_LINKS))throw new ObsException(STATE_DIVERGED,"Cannot start ChangeSet workspace because its deterministic branch or worktree path already exists without a durable workspace journal: "+branch+" · "+worktree);
+                journal=new WorkspaceJournal(changeSetId,label,target.id,target.repositoryIdentity,targetName,branch,worktree.toString(),base,Instant.now().toString());state.writeJson(journalPath,journal.json());
+            }
+            reconcileWorkspace(repo,journal);verifyReadyWorkspace(repo,journal.branch,Path.of(journal.worktree),journal.baseCommit,identity);
+            ChangeSet cs=new ChangeSet();cs.changeSetId=journal.changeSetId;cs.changeSetLabel=journal.changeSetLabel;cs.repositoryIdentity=identity;cs.repositoryTargetId=target.id;cs.repositoryRoot=repo.toString();cs.status="Active";cs.targetBranch=journal.targetBranch;cs.branch=journal.branch;cs.worktree=Path.of(journal.worktree).toAbsolutePath().normalize().toString();cs.baseCommit=journal.baseCommit;cs.publishedTip=journal.baseCommit;cs.executionState="Ready";cs.createdAt=journal.createdAt;cs.updatedAt=Instant.now().toString();setOutcome(cs,"SUCCESS",SUCCESS,"ChangeSet workspace ready at "+journal.baseCommit+".");state.saveChangeSet(cs);try{Files.deleteIfExists(journalPath);}catch(IOException ignoredDelete){}return new WorkspaceStartResult(cs,false);
+        }
+    }
     public ReviewDiff currentReview(ChangeSet cs){if(cs==null)return null;if(cs.currentReviewAttemptId==null||cs.currentReviewDiffPath==null||cs.currentReviewSha256==null)return null;ReviewDiff r=new ReviewDiff(cs.currentReviewAttemptId,Path.of(cs.currentReviewDiffPath),cs.currentReviewSha256,cs.currentReviewHead);verifiedReviewDiffPath(r);return r;}
 
     public SnapshotExportResult exportRepositorySnapshot(Path repositoryRoot,String mode,String commitRef,Path outputDirectory){
@@ -154,6 +179,67 @@ public final class Core {
     public List<ExternalInteraction> getExternalInteractions(){return chatBridge.externalInteractions();}
     public ExternalInteraction cancelExternalInteraction(String interactionId){return chatBridge.cancelExternalInteraction(interactionId);}
     public ExternalInteraction dismissExternalInteraction(String interactionId){return chatBridge.dismissExternalInteraction(interactionId);}
+
+    private void assertExistingWorkspaceRequest(ChangeSet existing,RepositoryConfig target,String label,String targetBranch){
+        if(existing.worktree==null||existing.worktree.isBlank()||existing.baseCommit==null||existing.baseCommit.isBlank()||existing.publishedTip==null||existing.publishedTip.isBlank()||existing.executionState==null)throw new ObsException(STATE_DIVERGED,"ChangeSet already exists but is not a Git-backed workspace: "+existing.changeSetId);
+        if(!"Active".equals(existing.status)||!"Ready".equals(existing.executionState))throw new ObsException(STATE_DIVERGED,"ChangeSet workspace is not in Ready state: "+existing.executionState);
+        if(!Objects.equals(existing.repositoryTargetId,target.id)||!same(existing.repositoryIdentity,target.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Existing ChangeSet workspace belongs to a different Repository Target.");
+        if(!Objects.equals(existing.changeSetLabel,label))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet label differs from requested label.");
+        if(!Objects.equals(existing.targetBranch,targetBranch))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet target branch differs from requested target branch.");
+        String expectedBranch="changeset/"+existing.changeSetId;if(!Objects.equals(existing.branch,expectedBranch))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet branch differs from deterministic branch "+expectedBranch+".");
+        if(!Objects.equals(existing.baseCommit,existing.publishedTip))throw new ObsException(STATE_DIVERGED,"Ready ChangeSet baseCommit/publishedTip disagree before package migration.");
+    }
+    private void assertWorkspaceJournalRequest(WorkspaceJournal journal,RepositoryConfig target,String label,String targetBranch){
+        if(journal.changeSetId==null||journal.branch==null||journal.worktree==null||journal.baseCommit==null)throw new ObsException(STATE_DIVERGED,"ChangeSet workspace journal is incomplete.");
+        if(!Objects.equals(journal.changeSetLabel,label)||!Objects.equals(journal.repositoryTargetId,target.id)||!same(journal.repositoryIdentity,target.repositoryIdentity)||!Objects.equals(journal.targetBranch,targetBranch))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet workspace journal describes a different requested workspace.");
+        if(!Objects.equals(journal.branch,"changeset/"+journal.changeSetId))throw new ObsException(STATE_DIVERGED,"ChangeSet workspace journal branch is not deterministic.");
+        if(!samePath(Path.of(journal.worktree),state.changeSetWorktreePath(journal.changeSetId)))throw new ObsException(STATE_DIVERGED,"ChangeSet workspace journal path differs from the deterministic worktree path.");
+    }
+    private void reconcileWorkspace(Path repo,WorkspaceJournal journal){
+        Path worktree=Path.of(journal.worktree).toAbsolutePath().normalize(),recoveryRoot=state.workspaceRecoveryPath(journal.changeSetId);String branchRef="refs/heads/"+journal.branch;boolean branchExists=gitRefExists(repo,branchRef);
+        if(branchExists){String tip=git.run(repo,STATE_DIVERGED,"rev-parse","--verify",branchRef+"^{commit}").first();if(!Objects.equals(tip,journal.baseCommit))throw new ObsException(STATE_DIVERGED,"Recovered ChangeSet branch tip differs from durable baseCommit.");}
+        if(Files.exists(worktree,LinkOption.NOFOLLOW_LINKS)){
+            GitClient.Result rootProbe=git.allow(worktree,STATE_DIVERGED,"rev-parse","--show-toplevel");
+            if(rootProbe.exitCode()==0&&!rootProbe.first().isBlank()){verifyReadyWorkspace(repo,journal.branch,worktree,journal.baseCommit,journal.repositoryIdentity);return;}
+            WorktreeRegistration registration=worktreeRegistration(repo,worktree);assertJournalRegistration(registration,journal);
+            preservePartialWorktree(worktree,recoveryRoot);clearJournalRegistration(repo,worktree,registration,journal);
+        }else{
+            WorktreeRegistration registration=worktreeRegistration(repo,worktree);assertJournalRegistration(registration,journal);clearJournalRegistration(repo,worktree,registration,journal);
+        }
+        try{Files.createDirectories(worktree.getParent());}catch(IOException e){throw new ObsException(STATE_DIVERGED,"Cannot create ChangeSet worktree parent: "+e.getMessage(),e);}
+        if(branchExists){GitClient.Result add=git.allow(repo,STATE_DIVERGED,"worktree","add",worktree.toString(),journal.branch);if(add.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Cannot recover ChangeSet worktree from its durable journal.\n--- git details ---\n"+add.failureDetails());}
+        else{GitClient.Result add=git.allow(repo,STATE_DIVERGED,"worktree","add","-b",journal.branch,worktree.toString(),journal.baseCommit);if(add.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Cannot create ChangeSet branch/worktree.\n--- git details ---\n"+add.failureDetails());}
+    }
+    private WorktreeRegistration worktreeRegistration(Path repo,Path expected){
+        List<String> lines=git.run(repo,STATE_DIVERGED,"worktree","list","--porcelain").stdout();Path path=null;String head=null,branch=null;
+        for(int i=0;i<=lines.size();i++){String line=i==lines.size()?"":lines.get(i);if(line.isBlank()){if(path!=null&&samePath(path,expected))return new WorktreeRegistration(path,head,branch);path=null;head=null;branch=null;continue;}if(line.startsWith("worktree "))path=Path.of(line.substring("worktree ".length()));else if(line.startsWith("HEAD "))head=line.substring("HEAD ".length()).trim();else if(line.startsWith("branch "))branch=line.substring("branch ".length()).trim();}
+        return null;
+    }
+    private void assertJournalRegistration(WorktreeRegistration registration,WorkspaceJournal journal){
+        if(registration==null)return;String expectedBranch="refs/heads/"+journal.branch;if(!Objects.equals(registration.branch,expectedBranch)||!Objects.equals(registration.head,journal.baseCommit))throw new ObsException(STATE_DIVERGED,"Journal-owned worktree path has a Git registration that does not match the durable branch/base intent: "+registration.path);
+    }
+    private void clearJournalRegistration(Path repo,Path worktree,WorktreeRegistration registration,WorkspaceJournal journal){
+        if(registration==null)return;GitClient.Result remove=git.allow(repo,STATE_DIVERGED,"worktree","remove","--force",worktree.toString());if(remove.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Cannot clear stale journal-owned worktree registration.\n--- git details ---\n"+remove.failureDetails());if(worktreeRegistration(repo,worktree)!=null)throw new ObsException(STATE_DIVERGED,"Stale journal-owned worktree registration remains after cleanup: "+worktree);
+    }
+    private Path preservePartialWorktree(Path worktree,Path recoveryRoot){
+        try{
+            if(Files.exists(recoveryRoot,LinkOption.NOFOLLOW_LINKS)&&!Files.isDirectory(recoveryRoot,LinkOption.NOFOLLOW_LINKS))throw new IOException("Recovery root exists but is not a directory: "+recoveryRoot);
+            Files.createDirectories(recoveryRoot);Path recovery=null;
+            for(int i=1;i<=999999;i++){Path candidate=recoveryRoot.resolve(String.format(Locale.ROOT,"partial-%06d",i));if(!Files.exists(candidate,LinkOption.NOFOLLOW_LINKS)){recovery=candidate;break;}}
+            if(recovery==null)throw new IOException("No free preserved-partial slot remains under "+recoveryRoot);
+            try{Files.move(worktree,recovery,StandardCopyOption.ATOMIC_MOVE);}catch(AtomicMoveNotSupportedException e){Files.move(worktree,recovery);}
+            return recovery;
+        }catch(IOException e){throw new ObsException(STATE_DIVERGED,"Cannot preserve partial journal-owned ChangeSet worktree before recovery: "+e.getMessage(),e);}
+    }
+    private void verifyReadyWorkspace(Path repo,String branch,Path worktree,String baseCommit,String repositoryIdentity){
+        Path expected=worktree.toAbsolutePath().normalize();if(!Files.exists(expected,LinkOption.NOFOLLOW_LINKS))throw new ObsException(STATE_DIVERGED,"ChangeSet worktree is missing: "+expected);Path actual=repoRoot(expected);if(!samePath(actual,expected))throw new ObsException(STATE_DIVERGED,"ChangeSet worktree root differs from persisted path.");String identity=repositoryIdentity(actual);if(!same(identity,repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"ChangeSet worktree repository identity differs from its Repository Target.");if(!samePath(gitCommonDir(repo),gitCommonDir(actual)))throw new ObsException(STATE_DIVERGED,"ChangeSet worktree is attached to a different Git repository.");
+        GitClient.Result symbolic=git.allow(actual,STATE_DIVERGED,"symbolic-ref","--quiet","--short","HEAD");if(symbolic.exitCode()!=0||!Objects.equals(symbolic.first(),branch))throw new ObsException(STATE_DIVERGED,"ChangeSet worktree is not on expected branch "+branch+".");String head=git.run(actual,STATE_DIVERGED,"rev-parse","HEAD").first(),branchTip=git.run(repo,STATE_DIVERGED,"rev-parse","--verify","refs/heads/"+branch+"^{commit}").first();if(!Objects.equals(head,baseCommit)||!Objects.equals(branchTip,baseCommit))throw new ObsException(STATE_DIVERGED,"ChangeSet worktree/branch tip differs from durable baseCommit.");String dirty=git.run(actual,STATE_DIVERGED,"status","--porcelain","--untracked-files=all").joined();if(!dirty.isBlank())throw new ObsException(STATE_DIVERGED,"ChangeSet worktree is not clean and cannot be considered Ready.");
+    }
+    private String resolveLocalBranchTip(Path repo,String targetBranch){GitClient.Result result=git.allow(repo,REPOSITORY_NOT_READY,"rev-parse","--verify","refs/heads/"+targetBranch+"^{commit}");if(result.exitCode()!=0||result.first().isBlank())throw new ObsException(REPOSITORY_NOT_READY,"Target branch does not resolve to a local commit: "+targetBranch+".\n--- git details ---\n"+result.failureDetails());return result.first();}
+    private void validateBranchName(Path repo,String branch){GitClient.Result valid=git.allow(repo,STATE_DIVERGED,"check-ref-format","--branch",branch);if(valid.exitCode()!=0)throw new ObsException(STATE_DIVERGED,"Invalid target branch name: "+branch+".\n--- git details ---\n"+valid.failureDetails());}
+    private boolean gitRefExists(Path repo,String ref){return git.allow(repo,STATE_DIVERGED,"show-ref","--verify","--quiet",ref).exitCode()==0;}
+    private Path gitCommonDir(Path repo){String value=git.run(repo,STATE_DIVERGED,"rev-parse","--git-common-dir").first();if(value.isBlank())throw new ObsException(STATE_DIVERGED,"Git common directory is unavailable.");Path p=Path.of(value);if(!p.isAbsolute())p=repo.resolve(p);try{return p.toRealPath();}catch(IOException e){throw new ObsException(STATE_DIVERGED,"Cannot resolve Git common directory: "+e.getMessage(),e);}}
+    private static boolean isGitBackedWorkspace(ChangeSet cs){return cs!=null&&cs.worktree!=null&&!cs.worktree.isBlank()&&cs.baseCommit!=null&&!cs.baseCommit.isBlank()&&cs.executionState!=null&&!cs.executionState.isBlank();}
 
     private Settings ensureSettings(){
         Settings s=state.getSettings();boolean changed=false;List<RepositoryConfig> repos=new ArrayList<>();
@@ -318,7 +404,7 @@ public final class Core {
     private ApplyResult applyInternal(PackageData pkg,Path repositoryRoot,ObsAction action,ReviewChatBindingDecision reviewChatDecision,ReviewChatBindingPlan reviewChatPlan){
         String attemptId=UUID.randomUUID().toString(),now=Instant.now().toString();Path repo=null;ChangeSet cs=null;ReviewDiff review=null;ApplicationAttempt success=null;String labelDiagnostic="";StateStore.Lock stateLock=state.lock();try{
             RepositoryConfig allowed=requireAllowedRepository(repositoryRoot);repo=Path.of(allowed.path);String repoIdentity=allowed.repositoryIdentity;if(!same(repoIdentity,pkg.manifest.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Configured origin is "+repoIdentity+"; package targets "+pkg.manifest.repositoryIdentity+".");requireRepositoryReady(repo);
-            ChangeSet prior=state.getChangeSet(pkg.manifest.changeSetId);boolean priorExists=prior!=null;byte[] priorState=priorExists?readBytes(state.changeSetPath(pkg.manifest.changeSetId)):null;cs=priorExists?prior:new ChangeSet();if(priorExists){if(!"Active".equals(cs.status))throw new ObsException(STATE_DIVERGED,"ChangeSet is not Active: "+cs.status);RepositoryConfig owner=repositoryForChangeSet(cs,false);if(!Objects.equals(owner.id,allowed.id)||!same(cs.repositoryIdentity,repoIdentity))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet repository identity/target differs from package/apply target.");if(!Objects.equals(cs.changeSetLabel,pkg.manifest.changeSetLabel))labelDiagnostic="Package changeSetLabel '"+pkg.manifest.changeSetLabel+"' differs from persisted label '"+cs.changeSetLabel+"'; persisted label retained.";}else{cs.changeSetId=pkg.manifest.changeSetId;cs.changeSetLabel=pkg.manifest.changeSetLabel;cs.repositoryIdentity=repoIdentity;cs.repositoryTargetId=allowed.id;cs.repositoryRoot=repo.toString();cs.createdAt=now;cs.updatedAt=now;}
+            ChangeSet prior=state.getChangeSet(pkg.manifest.changeSetId);boolean priorExists=prior!=null;byte[] priorState=priorExists?readBytes(state.changeSetPath(pkg.manifest.changeSetId)):null;cs=priorExists?prior:new ChangeSet();if(priorExists){if(isGitBackedWorkspace(cs))throw new ObsException(STATE_DIVERGED,"This ChangeSet already has a Git-backed workspace. Package Apply is intentionally blocked until SL-RPKG-01 is migrated to operate inside that worktree.");if(!"Active".equals(cs.status))throw new ObsException(STATE_DIVERGED,"ChangeSet is not Active: "+cs.status);RepositoryConfig owner=repositoryForChangeSet(cs,false);if(!Objects.equals(owner.id,allowed.id)||!same(cs.repositoryIdentity,repoIdentity))throw new ObsException(STATE_DIVERGED,"Existing ChangeSet repository identity/target differs from package/apply target.");if(!Objects.equals(cs.changeSetLabel,pkg.manifest.changeSetLabel))labelDiagnostic="Package changeSetLabel '"+pkg.manifest.changeSetLabel+"' differs from persisted label '"+cs.changeSetLabel+"'; persisted label retained.";}else{cs.changeSetId=pkg.manifest.changeSetId;cs.changeSetLabel=pkg.manifest.changeSetLabel;cs.repositoryIdentity=repoIdentity;cs.repositoryTargetId=allowed.id;cs.repositoryRoot=repo.toString();cs.createdAt=now;cs.updatedAt=now;}
             cs.repositoryTargetId=allowed.id;cs.repositoryRoot=repo.toString();
             Set<String> owned=new TreeSet<>(String.CASE_INSENSITIVE_ORDER);owned.addAll(cs.ownedPaths);for(ChangeSet other:state.activeChangeSets())if(!other.changeSetId.equals(cs.changeSetId)&&belongsTo(other,allowed))for(String p:other.ownedPaths)for(Operation op:pkg.manifest.operations)if(p.equalsIgnoreCase(op.path))throw new ObsException(PATH_OWNERSHIP_CONFLICT,ownershipConflictMessage(op.path,allowed,other,cs));
             for(Operation op:pkg.manifest.operations)if(!containsIgnoreCase(owned,op.path)&&pathDirty(repo,op.path))throw new ObsException(STATE_DIVERGED,dirtyUnownedMessage(op.path,allowed,cs));
@@ -345,7 +431,7 @@ public final class Core {
 
     private ApplicationAttempt attempt(String id,String now,String name,String repoId,Path repo,PackageData pkg,String result,String code,String msg,ReviewDiff review){ApplicationAttempt a=new ApplicationAttempt();a.attemptId=id;a.timestamp=now;a.name=name;a.repositoryIdentity=repoId;a.repositoryRoot=repo==null?null:repo.toString();a.archivePath=pkg.archivePath.toString();a.archiveSha256=pkg.archiveSha256;a.packageId=pkg.manifest.packageId;a.changeSetId=pkg.manifest.changeSetId;a.result=result;a.code=code;a.message=msg;if(review!=null){a.reviewDiffPath=review.diffPath.toString();a.reviewDiffSha256=review.sha256;}a.handoffWarning="";return a;}
 
-    public ReviewDiff refreshReview(String changeSetId){try(StateStore.Lock ignored=state.lock()){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+changeSetId);ReviewDiff r=newReviewDiff(cs);cs.currentReviewAttemptId=r.attemptId;cs.currentReviewDiffPath=r.diffPath.toString();cs.currentReviewSha256=r.sha256;cs.currentReviewHead=r.head;cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);try{chatBridge.enqueueReviewIfBound(cs,r);}catch(Throwable ignoredBridge){}return r;}}
+    public ReviewDiff refreshReview(String changeSetId){try(StateStore.Lock ignored=state.lock()){ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null)throw new ObsException(STATE_DIVERGED,"Unknown ChangeSet: "+changeSetId);if(isGitBackedWorkspace(cs))throw new ObsException(STATE_DIVERGED,"Git-backed Current Change inspection is not migrated yet; do not project this workspace through the legacy owned-path ReviewDiff.");ReviewDiff r=newReviewDiff(cs);cs.currentReviewAttemptId=r.attemptId;cs.currentReviewDiffPath=r.diffPath.toString();cs.currentReviewSha256=r.sha256;cs.currentReviewHead=r.head;cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);try{chatBridge.enqueueReviewIfBound(cs,r);}catch(Throwable ignoredBridge){}return r;}}
 
     public ReviewDiff newReviewDiff(ChangeSet cs){return newReviewDiff(cs,UUID.randomUUID().toString());}
     private ReviewDiff newReviewDiff(ChangeSet cs,String reviewId){

@@ -1074,3 +1074,92 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **APPLIED relation:** successful Apply of package `72b2ade2-0273-469a-98e9-a3f03d73fe92` corrects the accidentally removed Review delivery mechanics inside still-open ChangeSet `00cafbec-f66f-4854-ad6a-8e25768de3b3`; the ChangeSet remains open for cumulative ReviewDiff review.
 
+
+### LOG-RPKG-056 — Start one Git-backed ChangeSet workspace slice
+
+**Type:** TARGET MIGRATION / SL-RPKG-11 START CHANGESET WORKSPACE / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `fd338fb5-2f18-48a9-a300-fdd0fbf1eb57`  
+**ChangeSet Label:** `Replacement Package App - Git-backed ChangeSet workspace`  
+**Package:** `94d1730a-dd1d-4f8d-bcc0-c4c2ec8c1762`
+
+**Selected migration step:**
+- after accepting the typed-Apply-receipt ChangeSet as APPROVABLE, start a new ChangeSet and migrate only one independently useful capability instead of mixing the whole Git-backed redesign into one package;
+- implement `SL-RPKG-11 Start ChangeSet Workspace` first: selected Repository Target + new exact `changeSetId` + stable label + local target branch resolve to exact `C0`, deterministic `changeset/<changeSetId>` and an isolated app-owned worktree;
+- persist the new workspace facts on ChangeSet: `targetBranch`, `branch`, `worktree`, `baseCommit`, `publishedTip`, and execution `Ready`, while retaining legacy ChangeSet fields for still-unmigrated work;
+- do not acquire Path Ownership for this workspace. Isolation is the Git worktree/branch; legacy Path Ownership remains unchanged for legacy ChangeSets until their slices migrate.
+
+**Idempotency / recovery boundary:**
+- before the first branch/worktree mutation, persist an exact workspace journal under app state with repository target/identity, target branch, deterministic branch/worktree and pinned `baseCommit`;
+- an ordinary repeat of an already persisted `Ready` workspace verifies same Git common repository, expected branch, exact HEAD/branch tip and clean worktree, then returns already satisfied;
+- if a crash leaves journal-owned partial Git state, retry may reconcile only that exact journal intent; a deterministic branch/worktree collision without the durable journal fails closed instead of being adopted;
+- movement of the target branch after successful creation does not rewrite the ChangeSet's pinned `baseCommit/publishedTip`.
+
+**Transitional safety boundary:**
+- expose **Start workspace** as a Swing action and show `Active · Ready @ <tip>` in ChangeSet state;
+- do not migrate `SL-RPKG-01` Apply, `SL-RPKG-02` Current Change, Commit/Publish, Issue/PR, ReviewDecision or Finalize in this package;
+- legacy Apply and legacy owned-path Refresh Review explicitly reject a Git-backed workspace ChangeSet, preventing accidental mutation or projection through the Repository Target main workspace before those slices migrate;
+- keep package protocol, Builder, existing legacy ChangeSets and their Apply/Finalize behavior unchanged.
+
+**Implementation / proof:**
+- `Core` owns workspace creation/reconciliation and ChangeSet schema extension; `StateStore` owns deterministic worktree/journal paths; `MainWindow` exposes the single user action; existing source contracts are updated without adding a new test runner;
+- new Core regression proves exact isolated Ready creation, repeat/idempotency after target movement, branch-only crash recovery from durable journal, refusal of unjournaled collision, and fail-closed legacy Apply/Review for the new workspace;
+- verification on the candidate: shared `PackageStateApplierTests` PASS, `CoreTests` `72/72`, `ApplyReceiptTests` PASS, `ChatBridgeTests` `60/60`, ChatGPT adapter DOM regression PASS, Windows launcher tests `5/5`.
+
+**Target-State Result:** the App now has one explicit Git-backed workspace capability: a new ChangeSet can be durably established as `Active · Ready(C0)` on `changeset/<id>` in its own exact worktree without changing the Repository Target working tree. The rest of the execution pipeline remains deliberately legacy and fenced from this workspace until the next slice migration.
+
+**APPLIED relation:** successful Apply of package `94d1730a-dd1d-4f8d-bcc0-c4c2ec8c1762` establishes this first App-first Git-backed migration slice as new ChangeSet `fd338fb5-2f18-48a9-a300-fdd0fbf1eb57`. Any correction selected from its ReviewDiff while still open keeps this ChangeSet identity; work after accepted APPROVABLE review starts another new ChangeSet.
+
+### LOG-RPKG-057 — Recover journal-owned partial worktree creation
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-11 START CHANGESET WORKSPACE / RECOVERY HARDENING / APPLIED TARGET  
+**ChangeSet:** `fd338fb5-2f18-48a9-a300-fdd0fbf1eb57`  
+**ChangeSet Label:** `Replacement Package App - Git-backed ChangeSet workspace`  
+**Package:** `175b2932-c0d0-42ff-9045-0a65ee6e8c12`
+
+**ReviewDiff finding / selected correction:**
+- the first SL-RPKG-11 package durably journaled workspace intent before Git mutation and recovered the branch-only crash state, but `reconcileWorkspace(...)` treated any existing deterministic worktree path as already complete and immediately required `verifyReadyWorkspace(...)`;
+- a crash or kill inside `git worktree add` can therefore leave the durable journal plus an invalid/partial deterministic directory or stale exact worktree registration, making retry fail permanently despite the journal still proving the intended branch/path/base;
+- harden only this recovery boundary. Do not widen the slice into Apply/Commit/Publish, Issue/PR, Current Change or Finalize migration.
+
+**Selected recovery semantics:**
+- if the deterministic path is already a valid Git worktree, keep the existing strict Ready verification: exact common repository, exact branch/base HEAD and clean state; mismatch or dirt still fails closed;
+- if the journal-owned path exists but is not a usable Git worktree, first require any Git worktree registration for that exact path to match the journal's exact branch and base commit;
+- preserve the entire invalid partial directory under deterministic app-state `workspace-recovery/<changeSetId>` instead of deleting unknown bytes, then clear only the exact matching stale worktree registration and recreate the deterministic worktree from the journal;
+- if the deterministic path and its preserved recovery path both already exist, or a registration points to another branch/head, fail closed rather than guessing ownership;
+- if the path is missing but an exact stale registration remains, clear only that matching registration and continue normal branch/worktree reconciliation.
+
+**Proof target:**
+- existing workspace regressions continue to prove exact Ready creation, target-movement idempotency, branch-only journal recovery, unjournaled collision refusal and legacy Apply/Review fencing;
+- new regression creates a non-empty invalid journal-owned worktree with a stale exact Git registration, proves its bytes are preserved in `workspace-recovery/<changeSetId>`, proves the deterministic worktree is recreated clean on the exact branch/base, and proves the journal is cleared only after persisted `Ready`;
+- candidate verification: shared `PackageStateApplierTests` PASS, `CoreTests` `73/73`, `ApplyReceiptTests` PASS, `ChatBridgeTests` `60/60`, ChatGPT adapter DOM regression PASS, Windows launcher tests `5/5`.
+
+**Target-State Result:** `SL-RPKG-11 Start ChangeSet Workspace` now has retry semantics for the material crash window inside worktree creation, not only for branch-only partial state. Recovery uses the durable journal as authority, preserves invalid partial bytes instead of deleting them, clears only exact matching stale registration, and still fails closed on ambiguous/dirty/diverged workspace state.
+
+**APPLIED relation:** successful Apply of package `175b2932-c0d0-42ff-9045-0a65ee6e8c12` corrects the partial-worktree recovery finding inside still-open ChangeSet `fd338fb5-2f18-48a9-a300-fdd0fbf1eb57`; the ChangeSet remains open for cumulative ReviewDiff review.
+
+### LOG-RPKG-058 — Preserve successive partial workspace recovery attempts
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-11 START CHANGESET WORKSPACE / IDEMPOTENT RECOVERY / APPLIED TARGET  
+**ChangeSet:** `fd338fb5-2f18-48a9-a300-fdd0fbf1eb57`  
+**ChangeSet Label:** `Replacement Package App - Git-backed ChangeSet workspace`  
+**Package:** `d8500326-c7f9-4e07-8fd5-f665936570fb`
+
+**ReviewDiff finding / selected correction:**
+- the first partial-worktree recovery correction preserved one invalid journal-owned directory at fixed `workspace-recovery/<changeSetId>`, but then failed closed whenever both that preserved path and a later invalid deterministic worktree existed;
+- a second crash inside the same retried `git worktree add` could therefore strand an otherwise still-authoritative workspace journal even when the later worktree registration again matched the exact durable branch/base intent;
+- keep the same SL-RPKG-11 boundary and make preservation multi-attempt rather than widening into Apply/Commit/Publish or other target slices.
+
+**Selected correction:**
+- treat `workspace-recovery/<changeSetId>` as an append-only recovery root and preserve each invalid journal-owned deterministic worktree in the next unused `partial-NNNNNN` child;
+- never overwrite or delete an earlier preserved partial attempt; a non-directory recovery root still fails closed;
+- before every preservation/registration cleanup, retain the existing exact registration check against the journal branch and base commit; divergent registration remains `STATE_DIVERGED`;
+- a repeated crash may therefore leave another partial deterministic worktree and the same journal, and the next retry can preserve that new partial independently and continue exact reconciliation.
+
+**Proof target:**
+- existing partial recovery regression now proves the first preserved directory is `partial-000001`;
+- new regression starts with an earlier preserved `partial-000001`, supplies another invalid deterministic worktree with exact stale registration, and proves retry preserves it as `partial-000002`, retains the first artifact unchanged, recreates a clean exact worktree and reaches persisted `Ready`;
+- candidate verification must keep the existing SL-RPKG-11, Apply receipt, bridge/DOM, launcher and shared mutation regressions green.
+
+**Target-State Result:** SL-RPKG-11 recovery remains fail-closed on ambiguous/diverged ownership but is now idempotent across repeated crashes in the same worktree-creation boundary: every journal-owned invalid partial attempt is preserved separately while the durable journal continues to authorize exact branch/worktree reconciliation.
+
+**APPLIED relation:** successful Apply of package `d8500326-c7f9-4e07-8fd5-f665936570fb` corrects the repeated-crash recovery finding inside still-open ChangeSet `fd338fb5-2f18-48a9-a300-fdd0fbf1eb57`; the ChangeSet remains open for cumulative ReviewDiff review.

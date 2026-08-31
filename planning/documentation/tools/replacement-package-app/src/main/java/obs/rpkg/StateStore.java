@@ -11,7 +11,7 @@ final class StateStore {
     StateStore(){this(resolveRoot());init();}
     StateStore(Path root){this.root=root.toAbsolutePath().normalize();init();}
     private static Path resolveRoot(){String forced=System.getenv("OBS_REPLACEMENT_PACKAGE_APP_STATE_ROOT");if(forced!=null&&!forced.isBlank())return Path.of(forced);String local=System.getenv("LOCALAPPDATA");if(local!=null&&!local.isBlank())return Path.of(local,"OBS","ReplacementPackageApp");return Path.of(System.getProperty("user.home"),".obs","ReplacementPackageApp");}
-    private void init(){try{for(String d:List.of("changesets","attempts","review-diffs","locks","chat-bindings","chat-handoffs"))Files.createDirectories(root.resolve(d));}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,"Cannot initialize state root: "+e.getMessage(),e);}}
+    private void init(){try{for(String d:List.of("changesets","attempts","review-diffs","worktrees","workspace-recovery","workspace-journals","locks","chat-bindings","chat-handoffs"))Files.createDirectories(root.resolve(d));}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,"Cannot initialize state root: "+e.getMessage(),e);}}
 
     static final class Lock implements AutoCloseable { final FileChannel channel; final FileLock lock; Lock(FileChannel c,FileLock l){channel=c;lock=l;} public void close(){try{lock.release();}catch(Exception ignored){}try{channel.close();}catch(Exception ignored){}} }
     Lock lock(){try{Path p=root.resolve("locks/state.lock");FileChannel c=FileChannel.open(p,StandardOpenOption.CREATE,StandardOpenOption.WRITE);try{FileLock l=c.tryLock();if(l==null){c.close();throw new Core.ObsException(Core.STATE_DIVERGED,"Another Replacement Package App state mutation is active.");}return new Lock(c,l);}catch(OverlappingFileLockException e){c.close();throw new Core.ObsException(Core.STATE_DIVERGED,"Another Replacement Package App state mutation is active.");}}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,"Cannot lock application state: "+e.getMessage(),e);}}
@@ -19,6 +19,9 @@ final class StateStore {
     Path changeSetPath(String id){return root.resolve("changesets").resolve(id+".json");}
     Path attemptPath(String id){return root.resolve("attempts").resolve(id+".json");}
     Path reviewDir(String id){return root.resolve("review-diffs").resolve(id);}
+    Path changeSetWorktreePath(String id){return root.resolve("worktrees").resolve(id).toAbsolutePath().normalize();}
+    Path workspaceJournalPath(String id){return root.resolve("workspace-journals").resolve(id+".json");}
+    Path workspaceRecoveryPath(String id){return root.resolve("workspace-recovery").resolve(id).toAbsolutePath().normalize();}
 
     @SuppressWarnings("unchecked") Core.Settings getSettings(){
         Path p=root.resolve("settings.json");
