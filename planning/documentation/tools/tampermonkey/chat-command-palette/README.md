@@ -111,7 +111,7 @@ It stores ordered stable IDs for Directions, Commands, Use Cases and Prompts. Th
 
 Unknown/new IDs not listed in an older order file append after configured IDs rather than disappearing.
 
-The initial repository order intentionally presents the collect-ideas orchestrator family first, then the universal planning route: whole Application / Scenario / Domain / Slice accumulators → SDS profile controls → reality/solution → Scenario → Domain → Slice → internal Workspace Uses / WEUC Instances → architecture paths/pressure/decisions → Testing → remaining repository/documentation capabilities. The orchestrators are ordinary repository-owned `planning/commands/*.command.md` records; Helper only projects them. Custom user-defined tabs are a separate future UI capability and are not introduced by this command-family change.
+The preferred repository order starts with the canonical `idtspe` work/dispatch entry, then explicit Core orientation/orchestration, current SDS Target/Lens shortcuts, and the remaining repository/documentation capabilities. Hidden legacy compatibility commands are deliberately omitted from the preferred order; they remain valid repository definitions when compatibility is needed but do not occupy primary navigation. Unknown/new IDs still append rather than disappearing.
 
 ## GitHub Actions
 
@@ -176,19 +176,41 @@ The Commands surface now has helper-owned navigation views in addition to the or
 
 ```text
 IDTSPE
-  9 primary methodology surfaces
-  Core + Lens Operations (`подбери линзы`, `примени линзу`, specialized Core shortcuts)
+  11 primary methodology surfaces
+  canonical `idtspe` work/dispatch + Core orientation/orchestration
+  2 generic Core Target Modules
+  generic Lens operations + stable Core Lens shortcuts
 
 SDS — IDTSPE Profile
-  32 primary methodology surfaces
-  grouped by directed SDS Target Module flow
-  focused commands nested under canonical Targets
-  WEUC marked cross-cutting/repeatable
-  conditional/optional badges visible
-  Evidence/Coverage shows Consistency Review as a RELATED action without duplicating command identity
+  26 primary methodology surfaces
+  1 SDS bootstrap
+  12 canonical SDS Target Module invocations
+  10 focused Target invocations
+  3 direct SDS Lens checks
+  Consistency Review may appear as a RELATED action without duplicating command identity
+
+TOTAL
+  37 primary methodology surfaces
 ```
 
 Projection source: `src/methodology-navigation.js`. Command semantics remain in `planning/commands/*.command.md` and the installed IDTSPE/SDS methodology owners; the Helper view does not become a semantic authority.
+
+### Direct `idtspe` discoverability
+
+`idtspe` is the preferred direct entry when the user already knows the semantic component:
+
+```text
+idtspe
+idtspe scenario <context>
+idtspe slice <context>
+idtspe tm domain <context>
+idtspe lens ddd <context>
+idtspe l5 <context>
+idtspe TM-* <context>
+idtspe LENS-* <context>
+```
+
+Exact semantic IDs and short aliases are owned by the current Target Module/Lens registries, not by Helper UI code. The Helper therefore does **not** manufacture 31 extra alias command rows. `Info` on the canonical `idtspe` row explains the dispatcher; registry READMEs remain the complete alias catalog. Ambiguous aliases are never guessed.
 
 New IDTSPE command definitions may expose optional `helperPresentation.whenToUse` / `helperPresentation.whatYouGet`. The `Info` action shows this material without inserting/invoking the command. Older commands without the metadata remain valid.
 

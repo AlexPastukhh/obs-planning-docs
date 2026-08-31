@@ -7,6 +7,7 @@ const require=createRequire(import.meta.url);
 const nav=require('../src/methodology-navigation.js');
 const seed=JSON.parse(fs.readFileSync(path.join(import.meta.dirname,'..','seed','commands.json'),'utf8'));
 const entries=seed.items;
+const repoRoot=path.resolve(import.meta.dirname,'../../../../../..');
 
 test('methodology navigation exposes accepted primary counts from repository command metadata',()=>{
   assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').length,11);
@@ -80,3 +81,30 @@ test('generic Lens operations are Core orchestration surfaces and do not pretend
     'tmcmd.pre.update','tmcmd.exact.realization','idtspe.lenses.select','idtspe.lens.apply','lenscmd.documentation.representation.check','lenscmd.linked-notes.justify'
   ]);
 });
+
+test('preferred All commands order starts with idtspe and omits hidden legacy compatibility routes',()=>{
+  const order=JSON.parse(fs.readFileSync(path.join(import.meta.dirname,'..','catalog-order.json'),'utf8'));
+  assert.deepEqual(order.commands.slice(0,2),['idtspe.work','idtspe.bootstrap']);
+  assert.equal(new Set(order.commands).size,order.commands.length);
+  const byId=new Map(entries.map((entry)=>[entry.id,entry]));
+  for(const id of order.commands)assert.ok(byId.has(id),`preferred order references unknown command ${id}`);
+  for(const id of [
+    'architecture_weuc.discover','tmcmd.weuc.interpret','tmcmd.weuc.paths','tmcmd.weuc.refresh','tmcmd.weuc.architecture-position',
+    'tmcmd.slice.frontend',
+    'ideas.collect','ideas.collect.application','ideas.collect.application.modular','ideas.collect.scenario','ideas.collect.domain','ideas.collect.slice',
+    'application_sds.mini','application_sds.modular','application_sds.full'
+  ]){
+    assert.equal(order.commands.includes(id),false,`${id}: hidden legacy route must not occupy preferred order`);
+    assert.equal(byId.get(id)?.palette,false,`${id}: compatibility route must stay hidden`);
+  }
+});
+
+test('integration workspace is provenance-only and contains no superseded current-navigation plans',()=>{
+  const dir=path.join(repoRoot,'planning/documentation/idtspe-methodology/integration');
+  assert.deepEqual(fs.readdirSync(dir).sort(),['README.md']);
+  const readme=fs.readFileSync(path.join(dir,'README.md'),'utf8');
+  assert.match(readme,/historical migration\/provenance index/i);
+  assert.match(readme,/Git history/);
+  assert.match(readme,/not.*current methodology/i);
+});
+

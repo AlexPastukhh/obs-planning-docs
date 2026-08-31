@@ -1,12 +1,33 @@
-# Current Repository Integration Workspace
+# Repository Integration / Migration Provenance
 
-Status: active integration-planning area; not methodology semantic authority
+Status: historical migration/provenance index; **not** current methodology, command-routing, or Planning Helper authority.
 
-Use this directory to map the verified methodology package onto the current repository without contaminating IDTSPE Core or SDS owners with repository-specific migration details.
+The IDTSPE/SDS repository migration represented here is complete. Detailed staged audits, snapshot reconciliations, command-readiness tables and pre-final Helper navigation plans were removed from the working tree after finalization because they duplicated superseded topology and produced false-positive “current” search results. Git history remains the provenance source when those intermediate details are needed.
 
-Primary ledger: [`CURRENT-REPOSITORY-INTEGRATION.md`](CURRENT-REPOSITORY-INTEGRATION.md).
+## Current Authority
 
+Use current owners directly:
 
-Command/helper navigation plan: [`COMMAND-AND-HELPER-NAVIGATION-PLAN.md`](COMMAND-AND-HELPER-NAVIGATION-PLAN.md).
+- [`../active/README.md`](../active/README.md) — active methodology navigation.
+- [`../active/idtspe-core/README.md`](../active/idtspe-core/README.md) — IDTSPE Core.
+- [`../active/profiles/sds/README.md`](../active/profiles/sds/README.md) — canonical SDS profile.
+- [`../../../command-routing.md`](../../../command-routing.md) + `planning/commands/*.command.md` — executable command routing.
+- [`../../tools/tampermonkey/chat-command-palette/README.md`](../../tools/tampermonkey/chat-command-palette/README.md) — current Planning Helper implementation/navigation contract.
+- Planning Helper generated catalogs + tests — mechanical projection/consistency evidence.
 
-It defines the planned `IDTSPE` and `SDS — IDTSPE Profile` helper tabs, directed SDS grouping/order, Target-vs-Lens presentation, and repository acceptance criteria. It is a UI/integration plan, not a semantic methodology owner.
+## Boundary
+
+This directory must not accumulate a second current methodology description.
+
+```text
+current semantic/routing question
+→ active Core/Profile/command owner
+
+current Helper/navigation question
+→ command metadata + Helper implementation/tests
+
+historical migration question
+→ Git history
+```
+
+Do not reintroduce historical SDS Target Module counts, retired `TM-WEUC` / `TM-DOMAIN-DRAFT` / `TM-FRONTEND-SLICE` topology, old `tmcmd.*` surface arithmetic, or earlier Helper tab counts as current integration documentation.
