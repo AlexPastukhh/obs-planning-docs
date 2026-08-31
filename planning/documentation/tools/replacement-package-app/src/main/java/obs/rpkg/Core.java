@@ -18,13 +18,14 @@ import java.util.zip.*;
 import obs.rpkgcommon.PackageStateApplier;
 
 public final class Core {
-    public static final String SUCCESS="SUCCESS", PACKAGE_INVALID="PACKAGE_INVALID", PACKAGE_NOT_FOUND="PACKAGE_NOT_FOUND",
+    public static final String SUCCESS="SUCCESS", INTERNAL_ERROR="INTERNAL_ERROR", PACKAGE_INVALID="PACKAGE_INVALID", PACKAGE_NOT_FOUND="PACKAGE_NOT_FOUND",
             ACTION_PACKAGE_MISMATCH="ACTION_PACKAGE_MISMATCH", REPOSITORY_MISMATCH="REPOSITORY_MISMATCH",
             PATH_OWNERSHIP_CONFLICT="PATH_OWNERSHIP_CONFLICT", BASE_MISMATCH="BASE_MISMATCH", RESULT_MISMATCH="RESULT_MISMATCH",
-            STATE_DIVERGED="STATE_DIVERGED", REVIEW_STALE="REVIEW_STALE", FINALIZE_FAILED="FINALIZE_FAILED",
+            STATE_DIVERGED="STATE_DIVERGED", APPLY_ROLLBACK_UNVERIFIED="APPLY_ROLLBACK_UNVERIFIED", REVIEW_STALE="REVIEW_STALE", FINALIZE_FAILED="FINALIZE_FAILED",
             SNAPSHOT_EXPORT_FAILED="SNAPSHOT_EXPORT_FAILED", CHAT_BRIDGE_FAILED="CHAT_BRIDGE_FAILED",
             SOURCE_STATE_CHANGED="SOURCE_STATE_CHANGED", SOURCE_STATE_UNVERIFIABLE="SOURCE_STATE_UNVERIFIABLE",
             REPOSITORY_NOT_READY="REPOSITORY_NOT_READY", REPOSITORY_SELECTION_REQUIRED="REPOSITORY_SELECTION_REQUIRED";
+    public static final Set<String> PUBLIC_ERROR_CODES=Set.of(INTERNAL_ERROR,PACKAGE_INVALID,PACKAGE_NOT_FOUND,ACTION_PACKAGE_MISMATCH,REPOSITORY_MISMATCH,PATH_OWNERSHIP_CONFLICT,BASE_MISMATCH,RESULT_MISMATCH,STATE_DIVERGED,APPLY_ROLLBACK_UNVERIFIED,REVIEW_STALE,FINALIZE_FAILED,SNAPSHOT_EXPORT_FAILED,CHAT_BRIDGE_FAILED,SOURCE_STATE_CHANGED,SOURCE_STATE_UNVERIFIABLE,REPOSITORY_NOT_READY,REPOSITORY_SELECTION_REQUIRED);
 
     public static final class ObsException extends RuntimeException {
         public final String code;
@@ -49,6 +50,7 @@ public final class Core {
     public record PreparedApply(ObsAction action,PackageData packageData,ApplyTargetResolution targetResolution,ReviewChatBindingPlan reviewChatPlan,List<OperationNotice> notices,String changeSetStateToken,String bindingConversationKey) {}
     public record AuthorizedApply(PreparedApply prepared,String repositoryTargetId,ReviewChatBindingDecision reviewChatDecision) {}
     public record ApplyResult(String code,ApplicationAttempt attempt,ChangeSet changeSet,ReviewDiff review,String diagnostic) {}
+    public record ApplyReceipt(String status,String packageId,String changeSetId,String code,String message) {}
     public record FinalizeResult(String code,String commitSha,String branch,ChangeSet changeSet) {}
     public record SnapshotExportResult(Path zipPath,String snapshotType,String repositoryIdentity,String commitSha,String branch) {}
     public record ChatConversation(String conversationKey,String title,String url,int tabCount,List<Integer> tabIds) {}
@@ -225,23 +227,27 @@ public final class Core {
     }
 
     public PreparedApply prepareApply(String actionText,Path archive,String currentRepositoryId){
-        ObsAction action=actionText==null||actionText.isBlank()?null:parseAction(actionText);
-        Path selected=action==null?archive:resolveArchiveForAction(action,archive);
-        PackageData pkg=readPackage(selected);
-        if(action!=null&&!pkg.manifest.packageId.equals(action.packageId()))throw new ObsException(ACTION_PACKAGE_MISMATCH,"OBS-ACTION packageId does not match PACKAGE.json.");
-        ApplyTargetResolution target=resolveApplyTarget(pkg,currentRepositoryId);
-        ChangeSet existing=state.getChangeSet(pkg.manifest.changeSetId);
-        String token=changeSetStateToken(existing);
-        ChatBinding binding=chatBridge.binding(pkg.manifest.changeSetId);
-        ReviewChatBindingPlan chatPlan=resolveReviewChatBindingPlan(action,pkg.manifest.changeSetId,binding);
-        List<OperationNotice> notices=new ArrayList<>();
-        if(chatPlan.kind()==ReviewChatPlanKind.NO_MATCH)notices.add(new OperationNotice("WARNING","CHAT_TITLE_NO_MATCH","OBS-ACTION chatTabTitle '"+chatPlan.requestedTitle()+"' did not match any currently open ordinary ChatGPT conversation after configured title normalization; Apply may continue and manual binding remains available."));
-        if(chatPlan.kind()==ReviewChatPlanKind.AMBIGUOUS)notices.add(new OperationNotice("WARNING","CHAT_TITLE_AMBIGUOUS","OBS-ACTION chatTabTitle '"+chatPlan.requestedTitle()+"' matched "+chatPlan.matchCount()+" open ChatGPT conversations after configured title normalization; no destination was selected and manual binding remains available."));
-        if(chatPlan.kind()==ReviewChatPlanKind.REBIND_REQUIRED&&!chatPlan.rebindSafe())notices.add(new OperationNotice("WARNING","CHAT_REBIND_BLOCKED",chatPlan.rebindBlockReason()));
-        return new PreparedApply(action,pkg,target,chatPlan,List.copyOf(notices),token,binding==null?null:binding.conversationKey());
+        PackageData pkg=null;
+        try{
+            ObsAction action=actionText==null||actionText.isBlank()?null:parseAction(actionText);
+            Path selected=action==null?archive:resolveArchiveForAction(action,archive);
+            pkg=readPackage(selected);
+            if(action!=null&&!pkg.manifest.packageId.equals(action.packageId()))throw new ObsException(ACTION_PACKAGE_MISMATCH,"OBS-ACTION packageId does not match PACKAGE.json.");
+            ApplyTargetResolution target=resolveApplyTarget(pkg,currentRepositoryId);
+            ChangeSet existing=state.getChangeSet(pkg.manifest.changeSetId);
+            String token=changeSetStateToken(existing);
+            ChatBinding binding=chatBridge.binding(pkg.manifest.changeSetId);
+            ReviewChatBindingPlan chatPlan=resolveReviewChatBindingPlan(action,pkg.manifest.changeSetId,binding);
+            List<OperationNotice> notices=new ArrayList<>();
+            if(chatPlan.kind()==ReviewChatPlanKind.NO_MATCH)notices.add(new OperationNotice("WARNING","CHAT_TITLE_NO_MATCH","OBS-ACTION chatTabTitle '"+chatPlan.requestedTitle()+"' did not match any currently open ordinary ChatGPT conversation after configured title normalization; Apply may continue and manual binding remains available."));
+            if(chatPlan.kind()==ReviewChatPlanKind.AMBIGUOUS)notices.add(new OperationNotice("WARNING","CHAT_TITLE_AMBIGUOUS","OBS-ACTION chatTabTitle '"+chatPlan.requestedTitle()+"' matched "+chatPlan.matchCount()+" open ChatGPT conversations after configured title normalization; no destination was selected and manual binding remains available."));
+            if(chatPlan.kind()==ReviewChatPlanKind.REBIND_REQUIRED&&!chatPlan.rebindSafe())notices.add(new OperationNotice("WARNING","CHAT_REBIND_BLOCKED",chatPlan.rebindBlockReason()));
+            return new PreparedApply(action,pkg,target,chatPlan,List.copyOf(notices),token,binding==null?null:binding.conversationKey());
+        }catch(Throwable t){ObsException failure=asObs(t,INTERNAL_ERROR);if(!PACKAGE_NOT_FOUND.equals(failure.code))copyApplyFailureReceiptBestEffort(pkg,failure);throw failure;}
     }
 
     public AuthorizedApply authorizeApply(PreparedApply prepared,String repositoryTargetId,ReviewChatBindingDecision decision){
+        try{
         if(prepared==null)throw new ObsException(STATE_DIVERGED,"Prepared Apply is required.");
         ApplyTargetResolution resolution=prepared.targetResolution();RepositoryConfig target=resolution.target();
         String targetId=repositoryTargetId;
@@ -255,16 +261,23 @@ public final class Core {
         else if(plan.kind()==ReviewChatPlanKind.SAME_AS_EXISTING)resolved=ReviewChatBindingDecision.KEEP_EXISTING;
         else resolved=ReviewChatBindingDecision.NONE;
         return new AuthorizedApply(prepared,targetId,resolved);
+    
+        }catch(Throwable t){ObsException failure=asObs(t,INTERNAL_ERROR);copyApplyFailureReceiptBestEffort(prepared==null?null:prepared.packageData(),failure);throw failure;}
     }
 
     public ApplyResult executeApply(AuthorizedApply authorized){
-        if(authorized==null||authorized.prepared()==null)throw new ObsException(STATE_DIVERGED,"Authorized Apply is required.");
-        PreparedApply prepared=authorized.prepared();revalidatePreparedApply(authorized);
-        RepositoryConfig target=null;for(RepositoryConfig r:ensureSettings().repositories)if(Objects.equals(r.id(),authorized.repositoryTargetId())){target=r;break;}
-        if(target==null)throw new ObsException(REPOSITORY_MISMATCH,"Prepared Repository Target is no longer registered; prepare the operation again.");
-        String contextToken=prepared.action()==null?null:prepared.action().chatContextToken();String changeSetId=prepared.packageData().manifest.changeSetId,packageId=prepared.packageData().manifest.packageId;
-        if(contextToken!=null)chatBridge.requestContextLookup(contextToken,changeSetId,packageId);
-        return applyInternal(prepared.packageData(),Path.of(target.path()),prepared.action(),authorized.reviewChatDecision(),prepared.reviewChatPlan());
+        PackageData pkg=authorized==null||authorized.prepared()==null?null:authorized.prepared().packageData();
+        try{
+            if(authorized==null||authorized.prepared()==null)throw new ObsException(STATE_DIVERGED,"Authorized Apply is required.");
+            PreparedApply prepared=authorized.prepared();revalidatePreparedApply(authorized);
+            RepositoryConfig target=null;for(RepositoryConfig r:ensureSettings().repositories)if(Objects.equals(r.id(),authorized.repositoryTargetId())){target=r;break;}
+            if(target==null)throw new ObsException(REPOSITORY_MISMATCH,"Prepared Repository Target is no longer registered; prepare the operation again.");
+            String contextToken=prepared.action()==null?null:prepared.action().chatContextToken();String changeSetId=prepared.packageData().manifest.changeSetId,packageId=prepared.packageData().manifest.packageId;
+            if(contextToken!=null)chatBridge.requestContextLookup(contextToken,changeSetId,packageId);
+            ApplyResult result=applyInternal(prepared.packageData(),Path.of(target.path()),prepared.action(),authorized.reviewChatDecision(),prepared.reviewChatPlan());
+            publishSuccessfulApplyHandoffs(result,packageId,changeSetId);
+            return result;
+        }catch(Throwable t){ObsException failure=asObs(t,INTERNAL_ERROR);copyApplyFailureReceiptBestEffort(pkg,failure);throw failure;}
     }
 
     private void revalidatePreparedApply(AuthorizedApply authorized){
@@ -314,23 +327,20 @@ public final class Core {
             Path successAttemptPath=state.attemptPath(attemptId);try{
                 try(PackageStateApplier.AppliedChange appliedFiles=preparedFiles.apply()){
                     afterMutationHook.run();for(Operation op:pkg.manifest.operations)owned.add(op.path);cs.ownedPaths.clear();cs.ownedPaths.addAll(owned);cs.lastPackageId=pkg.manifest.packageId;cs.updatedAt=Instant.now().toString();review=newReviewDiff(cs,attemptId);cs.currentReviewAttemptId=review.attemptId;cs.currentReviewDiffPath=review.diffPath.toString();cs.currentReviewSha256=review.sha256;cs.currentReviewHead=review.head;setOutcome(cs,"SUCCESS",SUCCESS,"Apply succeeded");state.saveChangeSet(cs);
-                    success=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repoIdentity,repo,pkg,SUCCESS,SUCCESS,"Package applied and cumulative ReviewDiff generated."+(labelDiagnostic.isBlank()?"":" "+labelDiagnostic),review);state.saveAttempt(success);appliedFiles.commit();
+                    success=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repoIdentity,repo,pkg,SUCCESS,SUCCESS,"Package applied; cumulative ReviewDiff generated internally."+(labelDiagnostic.isBlank()?"":" "+labelDiagnostic),review);state.saveAttempt(success);appliedFiles.commit();
                 }
             }catch(Throwable t){boolean ok=!containsPackageRollbackFailure(t);
-                try{if(priorExists)Files.write(state.changeSetPath(pkg.manifest.changeSetId),priorState,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);else Files.deleteIfExists(state.changeSetPath(pkg.manifest.changeSetId));Files.deleteIfExists(successAttemptPath);if(review!=null)Files.deleteIfExists(review.diffPath);}catch(Throwable x){ok=false;}if(!ok)throw new ObsException(STATE_DIVERGED,"Apply failed and target/ledger rollback could not be verified.",t);throw mapPackageStateFailure(t);
+                try{if(priorExists)Files.write(state.changeSetPath(pkg.manifest.changeSetId),priorState,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);else Files.deleteIfExists(state.changeSetPath(pkg.manifest.changeSetId));Files.deleteIfExists(successAttemptPath);if(review!=null)Files.deleteIfExists(review.diffPath);}catch(Throwable x){ok=false;}if(!ok)throw new ObsException(APPLY_ROLLBACK_UNVERIFIED,"Apply failed and target/ledger rollback could not be verified.",t);throw mapPackageStateFailure(t);
             }
-            Handoff h;try{h=publishReviewDiff(cs,review);}catch(Throwable t){h=new Handoff(null,"ReviewDiff handoff failed: "+t.getMessage());}success.serviceReviewDiffPath=h.servicePath;success.handoffWarning=h.warning;
             boolean queueReview=true;
             if(action!=null&&action.chatContextToken()!=null){
                 ChatBridgeService.ContextBindingResult contextResult=chatBridge.bindContextAtReviewCutoff(action.chatContextToken(),cs,review);
                 queueReview=contextResult.bound();
                 if(!contextResult.bound()&&contextResult.message()!=null&&!contextResult.message().isBlank())success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" "+contextResult.message()).trim();
-            }else{
-                if(reviewChatDecision==ReviewChatBindingDecision.USE_HINT&&reviewChatPlan!=null&&reviewChatPlan.requestedConversation()!=null)try{chatBridge.bind(cs.changeSetId,reviewChatPlan.requestedConversation().conversationKey());}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT rebind warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
-            }
+            }else if(reviewChatDecision==ReviewChatBindingDecision.USE_HINT&&reviewChatPlan!=null&&reviewChatPlan.requestedConversation()!=null)try{chatBridge.bind(cs.changeSetId,reviewChatPlan.requestedConversation().conversationKey());}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT rebind warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
             if(queueReview)try{chatBridge.enqueueReviewIfBound(cs,review);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" ChatGPT delivery queue warning: "+(t.getMessage()==null?t.toString():t.getMessage())).trim();}
-            try{state.saveAttempt(success);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" Attempt handoff metadata update failed.").trim();}return new ApplyResult(SUCCESS,success,cs,review,labelDiagnostic);
-        }catch(ObsException e){if(pkg!=null){try{ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",e.code,e.getMessage(),null);state.saveAttempt(failed);recordOperationOutcomeUnlocked(pkg.manifest.changeSetId,"FAILED",e.code,semanticSummary(e.getMessage()));}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,STATE_DIVERGED);if(pkg!=null){try{state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,"FAILED",oe.code,oe.getMessage(),null));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
+            try{state.saveAttempt(success);}catch(Throwable t){success.handoffWarning=((success.handoffWarning==null?"":success.handoffWarning)+" Attempt metadata update failed.").trim();}return new ApplyResult(SUCCESS,success,cs,review,labelDiagnostic);
+        }catch(ObsException e){if(pkg!=null){try{String outcome=APPLY_ROLLBACK_UNVERIFIED.equals(e.code)?"UNCERTAIN":"FAILED";ApplicationAttempt failed=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,outcome,e.code,e.getMessage(),null);state.saveAttempt(failed);recordOperationOutcomeUnlocked(pkg.manifest.changeSetId,outcome,e.code,semanticSummary(e.getMessage()));}catch(Throwable ignored){}}throw e;}catch(Throwable e){ObsException oe=asObs(e,INTERNAL_ERROR);if(pkg!=null){try{String outcome=APPLY_ROLLBACK_UNVERIFIED.equals(oe.code)?"UNCERTAIN":"FAILED";state.saveAttempt(attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repo==null?"":safeIdentity(repo),repo,pkg,outcome,oe.code,oe.getMessage(),null));recordOperationOutcomeUnlocked(pkg.manifest.changeSetId,outcome,oe.code,semanticSummary(oe.getMessage()));}catch(Throwable ignored){}}throw oe;}finally{stateLock.close();}
     }
 
     private ApplicationAttempt attempt(String id,String now,String name,String repoId,Path repo,PackageData pkg,String result,String code,String msg,ReviewDiff review){ApplicationAttempt a=new ApplicationAttempt();a.attemptId=id;a.timestamp=now;a.name=name;a.repositoryIdentity=repoId;a.repositoryRoot=repo==null?null:repo.toString();a.archivePath=pkg.archivePath.toString();a.archiveSha256=pkg.archiveSha256;a.packageId=pkg.manifest.packageId;a.changeSetId=pkg.manifest.changeSetId;a.result=result;a.code=code;a.message=msg;if(review!=null){a.reviewDiffPath=review.diffPath.toString();a.reviewDiffSha256=review.sha256;}a.handoffWarning="";return a;}
@@ -372,6 +382,37 @@ public final class Core {
         String actual=sha256(p);if(!actual.equalsIgnoreCase(review.sha256))throw new ObsException(STATE_DIVERGED,"Canonical ReviewDiff bytes no longer match the recorded integrity fingerprint.");
         return p;
     }
+
+    public static String formatApplyReceipt(ApplyReceipt receipt){
+        if(receipt==null)throw new IllegalArgumentException("Apply receipt is required.");
+        if(!Set.of("applied","failed","uncertain").contains(receipt.status()))throw new IllegalArgumentException("Unsupported Apply receipt status: "+receipt.status());
+        if("applied".equals(receipt.status())&&(receipt.packageId()==null||receipt.packageId().isBlank()||receipt.changeSetId()==null||receipt.changeSetId().isBlank()))throw new IllegalArgumentException("Applied receipt requires packageId and changeSetId.");
+        if(!"applied".equals(receipt.status())&&(receipt.code()==null||receipt.code().isBlank()))throw new IllegalArgumentException("Failed/uncertain receipt requires code.");
+        StringBuilder out=new StringBuilder("OBS-APPLY-RESULT/1\n");out.append("status: ").append(receiptValue(receipt.status())).append('\n');
+        if(receipt.packageId()!=null&&!receipt.packageId().isBlank())out.append("packageId: ").append(receiptValue(receipt.packageId())).append('\n');
+        if(receipt.changeSetId()!=null&&!receipt.changeSetId().isBlank())out.append("changeSetId: ").append(receiptValue(receipt.changeSetId())).append('\n');
+        if(receipt.code()!=null&&!receipt.code().isBlank())out.append("code: ").append(receiptValue(receipt.code())).append('\n');
+        if(receipt.message()!=null&&!receipt.message().isBlank())out.append("message: ").append(receiptValue(semanticSummary(receipt.message()))).append('\n');
+        return out.toString();
+    }
+    public Handoff copyApplyReceiptToClipboard(ApplyReceipt receipt){return copyTextToClipboardVerified(formatApplyReceipt(receipt));}
+    void publishSuccessfulApplyHandoffs(ApplyResult result,String packageId,String changeSetId){
+        if(result==null||result.attempt()==null||result.changeSet()==null||result.review()==null)throw new ObsException(INTERNAL_ERROR,"Successful Apply handoff requires attempt, ChangeSet and ReviewDiff.");
+        List<String>warnings=new ArrayList<>();
+        Handoff receipt=copyApplyReceiptToClipboard(new ApplyReceipt("applied",packageId,changeSetId,null,null));
+        if(receipt.warning()!=null&&!receipt.warning().isBlank())warnings.add("Apply receipt clipboard warning: "+receipt.warning());
+        Handoff review=publishReviewDiff(result.changeSet(),result.review());
+        if(review.servicePath()!=null&&!review.servicePath().isBlank())result.attempt().serviceReviewDiffPath=review.servicePath();
+        if(review.warning()!=null&&!review.warning().isBlank())warnings.add(review.warning());
+        if(!warnings.isEmpty())result.attempt().handoffWarning=((result.attempt().handoffWarning==null?"":result.attempt().handoffWarning)+" "+String.join(" ",warnings)).trim();
+        try{state.saveAttempt(result.attempt());}catch(Throwable ignored){}
+    }
+    public Handoff copyApplyFailureReceiptToClipboard(String packageId,String changeSetId,Throwable failure){
+        String code=failure instanceof ObsException oe?oe.code:INTERNAL_ERROR,status=APPLY_ROLLBACK_UNVERIFIED.equals(code)?"uncertain":"failed";String message=failure==null?"Unknown Apply failure.":semanticSummary(failure.getMessage()==null?failure.toString():failure.getMessage());
+        return copyApplyReceiptToClipboard(new ApplyReceipt(status,packageId,changeSetId,code,message));
+    }
+    private void copyApplyFailureReceiptBestEffort(PackageData pkg,Throwable failure){try{copyApplyFailureReceiptToClipboard(pkg==null?null:pkg.manifest.packageId,pkg==null?null:pkg.manifest.changeSetId,failure);}catch(Throwable ignored){}}
+    private static String receiptValue(String value){return value.replace("\\","\\\\").replace("\r","\\r").replace("\n","\\n");}
 
     public Handoff copyTextToClipboardVerified(String text){
         String expected=text==null?"":text;
@@ -593,17 +634,17 @@ public final class Core {
             case PREPARE_IO->new ObsException(STATE_DIVERGED,e.getMessage(),e);
             case MUTATION_FAILED->new ObsException(RESULT_MISMATCH,e.getMessage(),e);
             case RESULT_MISMATCH->e.getCause()==null?new ObsException(RESULT_MISMATCH,e.getMessage()):new ObsException(RESULT_MISMATCH,e.getMessage(),e);
-            case ROLLBACK_FAILED->new ObsException(STATE_DIVERGED,"Apply failed and target/ledger rollback could not be verified.",e);
+            case ROLLBACK_FAILED->new ObsException(APPLY_ROLLBACK_UNVERIFIED,"Apply failed and target/ledger rollback could not be verified.",e);
         };
-        return asObs(failure,RESULT_MISMATCH);
+        return asObs(failure,INTERNAL_ERROR);
     }
     private static boolean containsPackageRollbackFailure(Throwable failure){
         Set<Throwable> seen=Collections.newSetFromMap(new IdentityHashMap<>());ArrayDeque<Throwable> pending=new ArrayDeque<>();if(failure!=null)pending.add(failure);while(!pending.isEmpty()){Throwable t=pending.removeFirst();if(!seen.add(t))continue;if(t instanceof PackageStateApplier.ApplyException e&&e.reason()==PackageStateApplier.FailureReason.ROLLBACK_FAILED)return true;if(t.getCause()!=null)pending.addLast(t.getCause());for(Throwable x:t.getSuppressed())if(x!=null)pending.addLast(x);}return false;
     }
     private static String semanticSummary(String message){if(message==null)return"";int p=message.indexOf("\n---");return (p>=0?message.substring(0,p):message).strip();}
     private static void setOutcome(ChangeSet cs,String status,String code,String message){if(cs==null)return;cs.lastOperationStatus=status;cs.lastOperationCode=code;cs.lastOperationMessage=semanticSummary(message);cs.lastOperationAt=Instant.now().toString();}
-    private void recordFailureOutcome(String changeSetId,Throwable failure){String code=failure instanceof ObsException oe?oe.code:STATE_DIVERGED;try{recordOperationOutcome(changeSetId,"FAILED",code,semanticSummary(failure.getMessage()==null?failure.toString():failure.getMessage()));}catch(Throwable ignored){}}
-    private void recordOperationOutcomeUnlocked(String changeSetId,String status,String code,String message){if(changeSetId==null||changeSetId.isBlank())return;ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null||!isUnfinished(cs))return;setOutcome(cs,status,code,message);cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);}
+    private void recordFailureOutcome(String changeSetId,Throwable failure){String code=failure instanceof ObsException oe?oe.code:INTERNAL_ERROR;try{recordOperationOutcome(changeSetId,"FAILED",code,semanticSummary(failure.getMessage()==null?failure.toString():failure.getMessage()));}catch(Throwable ignored){}}
+    private void recordOperationOutcomeUnlocked(String changeSetId,String status,String code,String message){if(changeSetId==null||changeSetId.isBlank())return;ChangeSet cs=state.getChangeSet(changeSetId);if(cs==null||!isUnfinished(cs))return;String publicCode="UNEXPECTED".equals(code)?INTERNAL_ERROR:code;setOutcome(cs,status,publicCode,message);cs.updatedAt=Instant.now().toString();state.saveChangeSet(cs);}
     public void recordOperationOutcome(String changeSetId,String status,String code,String message){if(changeSetId==null||changeSetId.isBlank())return;try(StateStore.Lock ignored=state.lock()){recordOperationOutcomeUnlocked(changeSetId,status,code,message);}}
 
     private Path repoRoot(Path requested){Path p=requested==null?Path.of("."):requested;GitClient.Result r=git.allow(p,REPOSITORY_MISMATCH,"rev-parse","--show-toplevel");if(r.exitCode()!=0)throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p+"\n--- git details ---\n"+r.failureDetails());if(r.first().isBlank())throw new ObsException(REPOSITORY_MISMATCH,"Not a Git work tree: "+p+". git rev-parse returned no repository root.");return Path.of(r.first()).toAbsolutePath().normalize();}

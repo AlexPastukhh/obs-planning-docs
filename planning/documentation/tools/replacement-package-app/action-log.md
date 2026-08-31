@@ -1050,3 +1050,27 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** `Bind + ...` is semantically literal. Its invocation-scoped token is one-time explicit authority to make that captured conversation the ChangeSet Review-chat destination as soon as the bridge resolves it, including replacing another persisted destination. Repository Apply success/failure is a separate axis. Review delivery for a successful Apply still obeys the resolution cutoff and never retro-sends a skipped ReviewDiff.
 
 **APPLIED relation:** successful Apply of package `84a3ccd8-d9bf-4881-a228-e59c006e612f` establishes this direct token bind/rebind contract as the current state of new ChangeSet `9baa3cc4-1d24-4613-b074-83e98496fa3e`. The earlier token-binding ChangeSet `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655` was already accepted APPROVABLE and is not reused.
+
+### LOG-RPKG-055 — Restore Review delivery after typed Apply receipt handoff
+
+**Type:** REVIEWDIFF CORRECTION / TRANSITIONAL APPLY HANDOFF / SL-RPKG-01/06 / APPLIED TARGET  
+**ChangeSet:** `00cafbec-f66f-4854-ad6a-8e25768de3b3`  
+**ChangeSet Label:** `Replacement Package App - typed Apply result clipboard receipt`  
+**Package:** `72b2ade2-0273-469a-98e9-a3f03d73fe92`
+
+**ReviewDiff finding / selected correction:**
+- the typed `OBS-APPLY-RESULT/1` work intentionally changed successful Apply handoff ordering so the technical receipt is copied first and canonical ReviewDiff is published afterward; with `Clipboard`/`Both` this restores ReviewDiff as the final clipboard content, while failed/uncertain Apply keeps the typed receipt;
+- that refactor accidentally removed the existing successful-Apply Review-chat cutoff/queue mechanics: token-bearing Apply no longer called `bindContextAtReviewCutoff(...)`, and eligible bound ReviewDiff was no longer passed to `enqueueReviewIfBound(...)`;
+- it also removed the existing `Refresh Review` auto-queue for an already bound ChangeSet, contradicting current Scenario/bridge behavior and existing regression proof;
+- restore only those delivery mechanics. Keep the new receipt → ReviewDiff clipboard ordering, stable typed failure/uncertain receipts, `RepoDiffFile`/`Both` behavior, package protocol, Builder boundary and the wider Git-backed migration unchanged;
+- synchronize `APPLY-RESULT.md`: Refresh does not republish clipboard/repo-file handoff automatically, but a refreshed ReviewDiff still queues to the persisted Review chat when bound.
+
+**Proof target:**
+- existing Core regression covers token pending-at-cutoff skip/no retro-send, resolved-before-cutoff queue, token rebind-before-cutoff and ordinary bound Apply delivery;
+- existing ChatBridge regression requires `Refresh Review` to auto-queue only after the ChangeSet is bound;
+- ApplyReceipt regression continues to prove successful receipt formatting/clipboard behavior and failed/uncertain receipt semantics.
+
+**Target-State Result:** successful Apply preserves both transitional handoff needs at once: typed receipt is established first, canonical ReviewDiff remains the final clipboard content for `Clipboard`/`Both`, and eligible Review-chat delivery still occurs through the existing cutoff/binding queue. `Refresh Review` again queues the refreshed artifact for a bound Review chat without changing clipboard/repo-file handling.
+
+**APPLIED relation:** successful Apply of package `72b2ade2-0273-469a-98e9-a3f03d73fe92` corrects the accidentally removed Review delivery mechanics inside still-open ChangeSet `00cafbec-f66f-4854-ad6a-8e25768de3b3`; the ChangeSet remains open for cumulative ReviewDiff review.
+

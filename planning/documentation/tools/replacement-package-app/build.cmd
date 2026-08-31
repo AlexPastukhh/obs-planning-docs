@@ -20,6 +20,7 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\WindowsLauncherInstaller.java || exit /b 1
 call javac --release 21 -cp build\classes -d build\test-classes ^
   src\test\java\obs\rpkg\CoreTests.java ^
+  src\test\java\obs\rpkg\ApplyReceiptTests.java ^
   src\test\java\obs\rpkg\ChatBridgeTests.java ^
   src\test\java\obs\rpkg\WindowsLauncherInstallerTests.java || exit /b 1
 call jar --create --file build\replacement-package-app.jar --main-class obs.rpkg.Main -C build\classes . || exit /b 1
