@@ -11,6 +11,7 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\ChatBridgeService.java ^
   src\main\java\obs\rpkg\ChatBridgeServer.java ^
   src\main\java\obs\rpkg\GitClient.java ^
+  src\main\java\obs\rpkg\GitHubClient.java ^
   src\main\java\obs\rpkg\Json.java ^
   src\main\java\obs\rpkg\Main.java ^
   src\main\java\obs\rpkg\MainWindow.java ^

@@ -11,7 +11,7 @@ final class StateStore {
     StateStore(){this(resolveRoot());init();}
     StateStore(Path root){this.root=root.toAbsolutePath().normalize();init();}
     private static Path resolveRoot(){String forced=System.getenv("OBS_REPLACEMENT_PACKAGE_APP_STATE_ROOT");if(forced!=null&&!forced.isBlank())return Path.of(forced);String local=System.getenv("LOCALAPPDATA");if(local!=null&&!local.isBlank())return Path.of(local,"OBS","ReplacementPackageApp");return Path.of(System.getProperty("user.home"),".obs","ReplacementPackageApp");}
-    private void init(){try{for(String d:List.of("changesets","attempts","review-diffs","worktrees","workspace-recovery","workspace-journals","apply-journals","apply-recovery","locks","chat-bindings","chat-handoffs"))Files.createDirectories(root.resolve(d));}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,"Cannot initialize state root: "+e.getMessage(),e);}}
+    private void init(){try{for(String d:List.of("changesets","attempts","review-diffs","worktrees","workspace-recovery","workspace-journals","work-intents","work-intent-journals","apply-journals","apply-recovery","locks","chat-bindings","chat-handoffs"))Files.createDirectories(root.resolve(d));}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,"Cannot initialize state root: "+e.getMessage(),e);}}
 
     static final class Lock implements AutoCloseable { final FileChannel channel; final FileLock lock; Lock(FileChannel c,FileLock l){channel=c;lock=l;} public void close(){try{lock.release();}catch(Exception ignored){}try{channel.close();}catch(Exception ignored){}} }
     Lock lock(){try{Path p=root.resolve("locks/state.lock");FileChannel c=FileChannel.open(p,StandardOpenOption.CREATE,StandardOpenOption.WRITE);try{FileLock l=c.tryLock();if(l==null){c.close();throw new Core.ObsException(Core.STATE_DIVERGED,"Another Replacement Package App state mutation is active.");}return new Lock(c,l);}catch(OverlappingFileLockException e){c.close();throw new Core.ObsException(Core.STATE_DIVERGED,"Another Replacement Package App state mutation is active.");}}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,"Cannot lock application state: "+e.getMessage(),e);}}
@@ -22,6 +22,8 @@ final class StateStore {
     Path changeSetWorktreePath(String id){return root.resolve("worktrees").resolve(id).toAbsolutePath().normalize();}
     Path workspaceJournalPath(String id){return root.resolve("workspace-journals").resolve(id+".json");}
     Path workspaceRecoveryPath(String id){return root.resolve("workspace-recovery").resolve(id).toAbsolutePath().normalize();}
+    Path workIntentPath(String id){return root.resolve("work-intents").resolve(id+".json");}
+    Path workIntentJournalPath(String id){return root.resolve("work-intent-journals").resolve(id+".json");}
     Path applyJournalPath(String id){return root.resolve("apply-journals").resolve(id+".json");}
     Path applyRecoveryDir(String id){return root.resolve("apply-recovery").resolve(id).toAbsolutePath().normalize();}
 
@@ -50,6 +52,12 @@ final class StateStore {
         for(Core.RepositoryConfig r:s.repositories()){Map<String,Object>x=new LinkedHashMap<>();x.put("id",r.id());x.put("name",r.name());x.put("path",r.path());x.put("repositoryIdentity",r.repositoryIdentity());repos.add(x);}
         m.put("repositories",repos);m.put("selectedRepositoryId",s.selectedRepositoryId());m.put("selectedChangeSetId",s.selectedChangeSetId());m.put("reviewDiffHandling",s.reviewDiffHandling());m.put("reviewDiffSendRetrySeconds",s.reviewDiffSendRetrySeconds());m.put("reviewChatTitleIgnoredCharacters",s.reviewChatTitleIgnoredCharacters());writeJson(root.resolve("settings.json"),m);
     }
+
+    Core.WorkIntentState getWorkIntent(String id){if(id==null||id.isBlank())return null;Path p=workIntentPath(id);return Files.exists(p)?Core.WorkIntentState.from(readObject(p)):null;}
+    void saveWorkIntent(Core.WorkIntentState w){writeJson(workIntentPath(w.changeSetId()),w.json());}
+    Core.WorkIntentJournal getWorkIntentJournal(String id){if(id==null||id.isBlank())return null;Path p=workIntentJournalPath(id);return Files.exists(p)?Core.WorkIntentJournal.from(readObject(p)):null;}
+    void saveWorkIntentJournal(Core.WorkIntentJournal j){writeJson(workIntentJournalPath(j.changeSetId()),j.json());}
+    void clearWorkIntentJournal(String id){try{Files.deleteIfExists(workIntentJournalPath(id));}catch(IOException e){throw new Core.ObsException(Core.STATE_DIVERGED,"Cannot clear Work Intent journal: "+e.getMessage(),e);}}
 
     Core.ChangeSet getChangeSet(String id){if(id==null||id.isBlank())return null;Path p=changeSetPath(id);return Files.exists(p)?Core.ChangeSet.from(readObject(p)):null;}
     void saveChangeSet(Core.ChangeSet c){writeJson(changeSetPath(c.changeSetId),c.json());}

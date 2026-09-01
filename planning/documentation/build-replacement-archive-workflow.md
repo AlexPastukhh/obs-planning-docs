@@ -99,6 +99,15 @@ A replacement package is a ZIP with this repository-relative layout:
   "changeSetId": "<stable UUID for one logical ChangeSet>",
   "changeSetLabel": "<stable human-readable work label>",
   "repositoryIdentity": "github:<owner>/<repo>",
+  "workIntent": {
+    "schemaVersion": 1,
+    "changeSetId": "<same changeSetId>",
+    "repositoryIdentity": "github:<owner>/<repo>",
+    "title": "<durable Issue title>",
+    "goal": "<durable semantic goal>",
+    "why": "<why this work matters>",
+    "acceptance": ["<acceptance criterion>"]
+  },
   "operations": [
     {"path":"repo/relative/path","action":"add|replace|delete"}
   ]
@@ -112,6 +121,8 @@ Shared rules:
 - every concrete ZIP gets a new `packageId`;
 - a correction/continuation of the same logical reviewed work keeps the same `changeSetId`; independent work gets a new `changeSetId`;
 - `changeSetLabel` remains stable for one ChangeSet;
+- new independent target-mode packages include `workIntent` with exact `changeSetId` / `repositoryIdentity` plus explicit title, goal, why and non-empty acceptance criteria. This is semantic Issue input for SL-RPKG-10; it does not alter replacement operation authority;
+- corrections/continuations of the same target-mode ChangeSet carry the same Work Intent identity and may deliberately update its semantic content only when the active selected meaning changed;
 - `add`: `base-files/<path>` is absent, `replacement-files/<path>` is required, and the consumer requires the current target path to be absent before first ownership;
 - `replace`: both payloads are required; `base-files/<path>` carries the producer's exact readable expected-source bytes and the consumer must prove that source state is still applicable before mutation;
 - `delete`: base payload is required, replacement payload is absent, and the consumer must prove that source state is still applicable before mutation;
@@ -140,8 +151,8 @@ Action rules:
 - the consumer resolves/selects a concrete ZIP and requires its manifest `packageId` to exactly match the action `packageId`;
 - `name` is presentation/history text and may vary between attempts;
 - `targetBranch` opts the invocation into the ordinary automatic Git-backed Apply Package composition. It is explicit operation input, not package repository identity and never inferred from whichever branch happens to be checked out in the Repository Target;
-- for new independent target-mode work, the producer emits the exact intended `targetBranch` from checked invocation/source context. A continuation of an already-existing legacy ChangeSet may omit `targetBranch` so that the compatibility legacy Apply path remains available;
-- when `targetBranch` is present and the package ChangeSet does not yet exist, the consumer uses the already-resolved Repository Target plus `PACKAGE.json` `changeSetId` / `changeSetLabel` to ensure the SL-RPKG-11 workspace, then continues the same top-level operation through package-file Apply, Commit and Publish;
+- for new independent target-mode work, the producer emits the exact intended `targetBranch` from checked invocation/source context. `targetBranch` may be omitted only for an already-existing legacy ChangeSet continuation or for an explicitly documented consumer-migration bootstrap that must still be integrated through legacy ReviewDiff/Finalize because target integration Finalize is not yet available; such bootstrap use is transitional and does not redefine ordinary target-mode semantics;
+- when `targetBranch` is present, the consumer first requires/ensures `PACKAGE.json.workIntent` as the SL-RPKG-10 GitHub Issue, then uses the already-resolved Repository Target plus `PACKAGE.json` `changeSetId` / `changeSetLabel` to ensure/reuse the SL-RPKG-11 workspace and continues through package-file Apply, Commit and Publish;
 - when `targetBranch` is present and the ChangeSet already exists as Git-backed work, it must match the persisted target branch/target/label. The same command resumes from persisted execution truth (`Ready`, `AppliedUncommitted`, `CommittedUnpublished`, `PublicationUncertain`) and reaches/proves published `Ready`; it never silently restarts unrelated work;
 - when `targetBranch` is present but the ChangeSet already exists as legacy work, the consumer fails closed instead of reinterpreting that ChangeSet as a Git-backed workspace;
 - when `targetBranch` is omitted, current legacy/manual compatibility semantics remain available and the consumer does not auto-create a Git-backed workspace merely from package identity;
@@ -169,6 +180,7 @@ Before returning the ZIP, verify at minimum:
 - `PACKAGE.json` parses and satisfies schema 1;
 - IDs are valid for the current continuity decision;
 - `repositoryIdentity` came from checked source context, not guessing;
+- for new independent target-mode work, `workIntent` is present and its `changeSetId` / `repositoryIdentity` exactly match the package while title/goal/why/acceptance reflect the selected semantic work;
 - operation paths and archive entries satisfy shared path/collision rules;
 - every operation has exactly the required base/replacement payloads and no undeclared payload file exists;
 - replacement bytes are complete intended files, not snippets or patches;

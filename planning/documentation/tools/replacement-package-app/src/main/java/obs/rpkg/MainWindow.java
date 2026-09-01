@@ -49,7 +49,7 @@ final class MainWindow extends JFrame {
         root.add(row("Windows launcher",launcherState,button("Install / update",this::installWindowsLauncher),button("Open folder",this::openWindowsLauncherFolder),button("Copy path",this::copyWindowsLauncherPath)));
         root.add(row("Archive ZIP",archive,button("Browse",()->chooseFile(archive))));
         root.add(new JLabel("OBS-ACTION/1 (optional when ZIP is selected explicitly):"));root.add(new JScrollPane(action));
-        root.add(row("",button("Apply Package",this::apply),button("Apply Package (wait for ZIP)",this::applyWithPolling)));
+        root.add(row("",button("Run OBS Action",this::runObsAction),button("Apply Package",this::apply),button("Apply Package (wait for ZIP)",this::applyWithPolling)));
         root.add(row("ChangeSet",changeSets,button("Start workspace",this::startChangeSetWorkspace),button("Commit applied",this::commitAppliedPackage),button("Publish",this::publishAppliedCommit)));
         root.add(row("",allRepositories,showHistory));
         root.add(row("Status",status));root.add(row("ChangeSet ID",changeSetId));
@@ -226,6 +226,16 @@ final class MainWindow extends JFrame {
         int choice=JOptionPane.showConfirmDialog(this,panel,"Start ChangeSet Workspace",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);if(choice!=JOptionPane.OK_OPTION)return;String cs=id.getText().trim(),workLabel=label.getText().trim(),target=targetBranch.getText().trim();showOperation("INFO Starting ChangeSet workspace…");
         runBackground("Start ChangeSet Workspace",()->core.startChangeSetWorkspace(repositoryId,cs,workLabel,target),result->{Core.ChangeSet created=result.changeSet();reloadChangeSets(created.changeSetId);appendToOutput(created.changeSetId,(result.alreadySatisfied()?"SUCCESS Workspace already satisfied: ":"SUCCESS Workspace created: ")+created.branch+" @ "+shortSha(created.baseCommit)+" · "+created.worktree);notifyOperation("ChangeSet workspace ready",created.changeSetLabel,repositoryId,false);},e->trackedFailure("Start ChangeSet Workspace",e,repositoryId,cs));
     }
+    private void runObsAction(){
+        String actionText=action.getText(),repo=selectedRepository==null?null:selectedRepository.id();Core.ObsAction parsed;
+        try{parsed=core.parseAction(actionText);if(parsed==null)throw new Core.ObsException(Core.PACKAGE_INVALID,"Paste an OBS-ACTION/1 command first.");}
+        catch(Throwable e){trackedFailure("Run OBS Action",e,repo,null);return;}
+        if("apply-package".equals(parsed.action())){apply();return;}
+        if(!"create-work-intent".equals(parsed.action())){trackedFailure("Run OBS Action",new Core.ObsException(Core.PACKAGE_INVALID,"Unsupported external OBS-ACTION route: "+parsed.action()),repo,null);return;}
+        String cs=parsed.changeSetId();showOperation("INFO Ensuring GitHub Work Intent…");
+        runBackground("Create Work Intent",()->core.executeCreateWorkIntentAction(actionText),r->{showOperation("SUCCESS Work Intent Issue #"+r.issueNumber()+" ensured for ChangeSet "+r.changeSetId()+"."+(r.issueUrl()==null?"":" "+r.issueUrl()));if(core.getChangeSet(r.changeSetId())!=null)reloadChangeSets(r.changeSetId());notifyOperation("Work Intent ready","Issue #"+r.issueNumber(),repo,false);},e->trackedFailure("Create Work Intent",e,repo,cs));
+    }
+
     private void apply(){
         saveHandling();saveReviewChatTitleIgnoredCharacters();
         Path zip=archive.getText().isBlank()?null:Path.of(archive.getText().trim());String actionText=action.getText(),currentId=selectedRepository==null?null:selectedRepository.id();

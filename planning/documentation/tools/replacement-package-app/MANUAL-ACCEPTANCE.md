@@ -13,8 +13,12 @@ Use `PENDING`, `PASS`, `FAIL`, or `STALE` for each executed environment campaign
 
 - `run-tests.cmd` completes with `failed=0` before a live campaign.
 - Swing app launches from source; installed Windows launcher also opens without requiring system Java at launch.
-- Git is on PATH; Node is on PATH for DOM regression; Microsoft Edge Developer mode is available for bridge acceptance.
+- Git is on PATH; authenticated GitHub CLI (`gh`) is on PATH for SL-10 GitHub Issue acceptance; Node is on PATH for DOM regression; Microsoft Edge Developer mode is available for bridge acceptance.
 - Use disposable repositories with no valuable uncommitted work.
+
+## `PA-SL10` — Manage Repository Work Intent
+
+Verify **Run OBS Action** accepts `create-work-intent` and creates exactly one GitHub Issue from the referenced Work Intent JSON without creating a ChangeSet/worktree or changing repository files. Repeat the same command and confirm the same Issue is reused. Simulate/recover a lost create response where practical and confirm no duplicate Issue; manually create a duplicate exact `ChangeSet-Id` marker and confirm fail-closed behavior. Then run a target-mode `apply-package` carrying the same Work Intent and confirm the Issue is ensured before workspace/package mutation, the resulting ChangeSet records the Issue number/URL, and repeat Apply Package does not create another Issue. Confirm unsupported OBS-ACTION values such as Commit/Publish are rejected while their existing Swing buttons remain available as diagnostic/manual actions.
 
 ## `PA-SL01` — Apply Replacement Work
 

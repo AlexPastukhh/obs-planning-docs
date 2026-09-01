@@ -1391,3 +1391,116 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **APPLIED relation:** successful Apply of package `56fe83dc-a8bc-4d5f-9525-ff5d8e20b078` establishes one-command automatic Apply Package composition as new ChangeSet `ab56b822-4191-4ac5-8bdf-cd61fa9cd33f`. Corrections selected from its ReviewDiff while this producer ChangeSet remains open keep the same ChangeSet identity; work after accepted APPROVABLE review starts another new ChangeSet.
 
+
+### LOG-RPKG-066 — Migrate SL-RPKG-10 Git-backed Work Intent
+
+**Type:** TARGET MIGRATION / SL-RPKG-10 MANAGE REPOSITORY WORK INTENT / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `40ce50dd-c0d3-42ae-b6b7-9ea0e9b78f91`  
+**ChangeSet Label:** `Replacement Package App - Git-backed Work Intent`  
+**Package:** `8ff0a660-2678-4c4a-b4eb-62e2afe2c7a9`
+
+**Selected migration step:**
+- the automatic Apply Package composition ChangeSet `ab56b822-4191-4ac5-8bdf-cd61fa9cd33f` was accepted and finalized, so this package starts a new producer ChangeSet;
+- implement target SL-RPKG-10 before extending to PR/Review/Finalize: one durable semantic GitHub Issue exists independently of Chat context and Git workspace execution;
+- support two user entry modes over the same Work Intent ensure semantics: standalone Issue-only creation and automatic Work Intent → workspace → Apply → Commit → Publish composition.
+
+**External OBS-ACTION command boundary:**
+- make `action:` a typed external user-operation discriminator without turning every modular Core method into a command bus;
+- current external routes are exactly `create-work-intent` and `apply-package`;
+- `create-work-intent` resolves a standalone Work Intent JSON by filename + exact `changeSetId`, ensures the GitHub Issue, and stops without branch/worktree/package mutation;
+- `apply-package` continues to use archive/package identity; when explicit `targetBranch` selects target mode it now requires `PACKAGE.json.workIntent`, ensures that Issue first, then invokes the already-migrated SL-11 + SL-01 composition;
+- Start workspace, manual Apply, Commit applied, Publish, Review/Refresh, Finalize, Retry Push, Reopen and other recovery/diagnostic actions remain direct Swing/Core controls and are deliberately not OBS-ACTION values.
+
+**Work Intent authority / recovery:**
+- Work Intent schema 1 contains exact `changeSetId`, `repositoryIdentity`, Issue title, Goal, Why and non-empty Acceptance criteria;
+- the GitHub Issue contains an App-managed block with exact machine marker `ChangeSet-Id: X`;
+- persist `work-intents/<X>.json` with Issue number/URL, semantic fields and fingerprint; persist a durable create journal before the first Issue-create side effect;
+- before create, enumerate repository Issues and match the exact marker: one match is adopted/verified, more than one fails closed; if create reports failure, reconcile by exact marker before another create is allowed, and preserve `WORK_INTENT_UNCERTAIN` when the side-effect truth cannot be inspected;
+- existing managed content may be updated on the same Issue and must be read back exactly; no duplicate logical Issue is intentionally created for retry/correction;
+- ChangeSet schema advances to 4 with `issueNumber` / `issueUrl`; standalone Work Intent can later attach to an existing ChangeSet, while a newly created SL-11 workspace inherits the persisted Issue reference.
+
+**GitHub integration:**
+- add `GitHubClient` as a GitHub-specific boundary separate from GitClient/shared exact mutation core;
+- production transport is authenticated GitHub CLI `gh api`; missing CLI/authentication fails before automatic workspace or repository mutation;
+- GitHub Issue behavior is injected behind a small interface for deterministic Core tests; future SL-RPKG-12 PR support can reuse the GitHub integration boundary without moving GitHub behavior into the shared mutation core.
+
+**Protocol / producer:**
+- extend schema-1 `PACKAGE.json` compatibly with optional `workIntent`; it becomes required whenever explicit `targetBranch` selects a new automatic target-mode Apply Package, while legacy/manual packages remain readable without it;
+- future new independent target-mode replacement packages carry exact Work Intent semantic metadata plus explicit target branch;
+- this SL-RPKG-10 migration archive itself is an explicit bootstrap exception: its OBS-ACTION omits `targetBranch` so the pre-SL10 installed App can apply it through the still-available legacy ReviewDiff/Finalize integration path. Target Git-backed integration Finalize is not migrated yet, so using target mode for this consumer-changing package would strand the accepted revision on `changeset/X` instead of integrating it into `main`;
+- that bootstrap exception is transitional producer mechanics only. After this feature is installed, ordinary target-mode packages use `workIntent + targetBranch`;
+- standalone `create-work-intent` uses its own small JSON file because it can exist before any replacement ZIP exists.
+
+**Proof target:**
+- Core regressions cover the exact two-route OBS-ACTION surface, standalone create/repeat without ChangeSet creation, lost-create-response reconciliation, duplicate-marker fail-closed behavior, automatic Work Intent-before-workspace composition and Issue reference propagation;
+- all existing Git-backed workspace/Apply/Commit/Publish/recovery, legacy Apply/Review/Finalize, receipt, bridge/DOM, launcher and shared mutation regressions remain required;
+- candidate automated target: `CoreTests` 106/106, `ApplyReceiptTests` PASS, `ChatBridgeTests` 60/60, Windows launcher 5/5 plus shared mutation and DOM suites PASS.
+
+**Target-State Result:** SL-RPKG-10 is available independently and as the first stage of automatic Apply Package. The ordinary external command path can now establish durable semantic GitHub work before Git execution, while internal modular recovery actions remain buttons/Core APIs instead of proliferating OBS-ACTION command values.
+
+**APPLIED relation:** successful Apply of package `8ff0a660-2678-4c4a-b4eb-62e2afe2c7a9` establishes Git-backed SL-RPKG-10 for ChangeSet `40ce50dd-c0d3-42ae-b6b7-9ea0e9b78f91`. Corrections selected while this producer ChangeSet remains open keep the same ChangeSet identity; work after accepted APPROVABLE review starts another new ChangeSet.
+
+### LOG-RPKG-067 — Establish documentation evolution use cases and owners
+
+**Type:** DOCUMENTATION ARCHITECTURE / EVOLUTION OPERATING MODEL / SAME OPEN CHANGESET / APPLIED TARGET  
+**ChangeSet:** `40ce50dd-c0d3-42ae-b6b7-9ea0e9b78f91`  
+**ChangeSet Label:** `Replacement Package App - Git-backed Work Intent`  
+**Package:** `cd066c6f-28b2-45db-9b45-77eec0eb1dcf`
+
+**Selected documentation step:**
+- before rewriting current Scenario/Slice migration content, establish the minimal documentation form that will own that integration;
+- add one documentation-use-case owner describing the actual maintenance workflows: keep current Scenario truth plus only still-unimplemented Migration Delta, propagate one Scenario Evolution Step into affected Slice `Evolution Steps`, centralize only genuinely shared Domain Object evolution, and use that trace to make evolution-aware architecture decisions without speculative over-design;
+- keep the terminology small and local to the use-case owner rather than introducing a separate abstract methodology/terminology file.
+
+**Owner split / anti-overcomplication boundary:**
+- add `documentation-use-cases.md` as the process owner for current truth, Migration Delta, `EVO-RPKG-*` steps, Slice evolution and architecture-decision placement;
+- add `domain-evolution.md` only because shared Domain Object changes can cross several slices; it is explicitly not a general class/domain registry and remains empty of step-specific claims until the next integration pass derives them from accepted Scenario/Slice material;
+- small/local terminology, invariants and decisions remain inside the relevant use case, Scenario or Slice. A new focused owner is created only when independent/shared complexity actually justifies it.
+
+**Deferred integration boundary:**
+- do not rewrite `scenarios/*` or `slices.md` in this package;
+- a following documentation-integration step will reconcile accepted current behavior with target/migration material, assign stable Evolution Step IDs, classify remaining Scenario delta as URGENT / PLANNED / POSSIBLE, add per-Slice `Evolution Steps`, and populate shared Domain Object evolution only where multiple slices consume the same changed semantics;
+- this step changes documentation governance/navigation only and makes no runtime, package-protocol, Git/GitHub or application-state behavior claim.
+
+**Target-State Result:** Replacement Package App documentation has a minimal explicit workflow for tracing user-experience evolution into Slice changes, shared Domain Object changes and material architecture decisions, while keeping current implemented truth primary and possible future evolution visibly non-binding.
+
+**APPLIED relation:** successful Apply of package `cd066c6f-28b2-45db-9b45-77eec0eb1dcf` adds the documentation-evolution owners inside still-open ChangeSet `40ce50dd-c0d3-42ae-b6b7-9ea0e9b78f91`. The subsequent integration of actual Scenario/Slice/domain evolution remains a separate package step in the same open ChangeSet unless review closes it first.
+
+### LOG-RPKG-068 — Refine documentation requirements layers and templates
+
+**Type:** DOCUMENTATION ARCHITECTURE / BEHAVIOR-DOMAIN-SLICE REQUIREMENTS / SAME OPEN CHANGESET / APPLIED TARGET  
+**ChangeSet:** `40ce50dd-c0d3-42ae-b6b7-9ea0e9b78f91`  
+**ChangeSet Label:** `Replacement Package App - Git-backed Work Intent`  
+**Package:** `f19471a0-1e9b-4dc3-9b95-16d969bf5df8`
+
+**Selected documentation step:**
+- refine the previously established evolution form before migrating actual Scenario/Slice content;
+- make Scenario `Behavior Items` the stable business requirements layer: each BI describes implementation-independent application behavior plus the reason that behavior exists;
+- use those BI as input for Domain discovery, then let Domain owners reference the BI they directly implement and Slices reference the same BI they realize by orchestrating the provided Domain;
+- allow optional `Domain Implementation Items` and `Slice Implementation Items` only for durable architecture/implementation requirements that should survive ordinary refactoring and may be derived from BI, invariants, Evolution Steps or concrete composition/DRY pressure.
+
+**Domain / Slice ownership model:**
+- Domain boundaries are discovered from behavior and consistency/invariant boundaries rather than current Java classes;
+- prefer an Aggregate owner when several Domain Objects share one consistency boundary, while explicitly allowing separate Domain Object files when independent semantics, lifecycle, reuse or rule volume make them clearer;
+- a Domain/Slice may implement/realize BI without any extra implementation-item entries; `DI-*` / `SI-*` are not mandatory taxonomy;
+- concrete DRY/composition requirements are documented only when they protect one real semantic rule from duplicate implementations, not as generic slogans.
+
+**Code-duplication boundary:**
+- normative Scenario/Domain/Slice documentation does not manually maintain current method/service call chains, Java field inventories or adapter routing that can change under ordinary refactoring while behavior remains stable;
+- source remains exact implementation authority; a future generated implementation-trace tool may emit disposable source-revision-bound traces (calls/callers/field use/types/external boundaries) under a fixed generated path, but this package does not claim such a generator is implemented;
+- manual runtime/call-flow sections are therefore not a required default owner section.
+
+**Templates:**
+- add `documentation-templates.md` as the single recommended-template owner;
+- templates cover Scenario, Evolution Step, Aggregate Domain owner, separate Domain Object owner, Slice, Cross-cutting Capability and recommended generated-trace output;
+- templates are starting forms, not schemas: concrete owners may omit/combine/rename/reorder/add sections when that communicates the required meaning more clearly.
+
+**Evolution integration boundary:**
+- keep one `EVO-RPKG-*` identity across Scenario → Domain → Slice impact;
+- Evolution Steps may add/change/remove BI and may also create `DI-*` / `SI-*` requirements without changing BI when selected future behavior creates architecture pressure;
+- clarify `domain-evolution.md` as a cross-owner evolution map, not the primary Domain model or class registry;
+- do not rewrite `scenarios/*`, `slices.md` or runtime code in this package. Actual BI/EVO/domain/slice integration remains the next documentation step.
+
+**Target-State Result:** Replacement Package App documentation has a stable requirements hierarchy: Scenario BI own business behavior and reasons; Domain owners implement BI and optionally carry durable domain architecture requirements; Slices realize the same BI using Domain and optionally carry durable orchestration requirements; code-level mechanics stay in source or future generated traces; recommended templates guide documentation without becoming mandatory schemas.
+
+**APPLIED relation:** successful Apply of package `f19471a0-1e9b-4dc3-9b95-16d969bf5df8` refines the documentation operating model inside still-open ChangeSet `40ce50dd-c0d3-42ae-b6b7-9ea0e9b78f91`. Actual migration of Scenario BI, Domain owners, Slice BI mappings and Evolution Steps remains a separate following package unless review closes the ChangeSet first.

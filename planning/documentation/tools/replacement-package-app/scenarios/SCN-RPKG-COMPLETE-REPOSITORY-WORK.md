@@ -11,9 +11,17 @@ Safely bring prepared repository work into the correct concrete local repository
 1. The user supplies a replacement ZIP and/or `OBS-ACTION/1`; the current/registered Repository Target context remains available for exact target resolution. Input is passive until Apply Package.
 2. **Apply Package** prepares immediately. **Apply Package (wait for ZIP)** freezes click-time archive/action/target inputs and retries only `PACKAGE_NOT_FOUND` roughly every two seconds for at most twelve seconds before entering the same prepared operation once.
 3. The package is fully validated and the exact Repository Target is resolved. `PACKAGE.json.changeSetId` is the exact continuation identity; UI selection, label similarity and recency cannot substitute another ChangeSet, and same-origin clones are never silently substituted.
-4. When OBS-ACTION carries explicit `targetBranch`, the ordinary Git-backed path ensures/reuses the ChangeSet workspace and dispatches the same top-level operation through Apply → Commit → Publish until the package is proven `Ready` at its published tip. Retry resumes from persisted execution state rather than asking the user to press internal actions manually.
+4. When OBS-ACTION carries explicit `targetBranch`, the ordinary Git-backed path requires `PACKAGE.json.workIntent`, first ensures/reconciles the exact GitHub Issue by machine marker `ChangeSet-Id:X`, then ensures/reuses the ChangeSet workspace and dispatches the same top-level operation through Apply → Commit → Publish until the package is proven `Ready` at its published tip. Retry resumes from persisted Work Intent/execution truth rather than asking the user to press internal actions manually.
 5. When `targetBranch` is omitted, the compatibility legacy path remains available for already-existing legacy producer work: package/source/ownership preflight precedes mutation, successful Apply persists cumulative ReviewDiff, and legacy Finalize/Publication Pending/Reopen semantics remain unchanged.
 6. Git-backed Current Change/ReviewDecision/integration Finalize are still separate later migration work; until those slices migrate, Git-backed work remains fenced from legacy Review/Finalize.
+
+## Git-backed migration branch — Manage Repository Work Intent
+
+SL-RPKG-10 exists independently of Git execution. The external `OBS-ACTION/1` route `action: create-work-intent` resolves one standalone Work Intent JSON (`changeSetId`, repository identity, Title, Goal, Why, Acceptance), ensures one GitHub Issue carrying the exact `ChangeSet-Id:X` marker inside the App-managed block, persists the Issue reference, and stops. It does not create a ChangeSet/worktree or apply repository files.
+
+The same domain ensure is the first stage of ordinary target-mode `action: apply-package`. For that route the semantic input is `PACKAGE.json.workIntent`. The App searches exact repository Issues by the stable marker before create, adopts one exact managed Issue, fails closed on duplicates, durably journals create intent before the side effect, and reconciles a lost create response by marker before another create. Existing managed content may be updated on the same Issue and is re-read/verified. If a ChangeSet already exists, its `issueNumber`/`issueUrl` are synchronized with the persisted Work Intent; a newly created SL-11 workspace inherits that reference.
+
+Current external command routing is intentionally narrow: only `create-work-intent` and `apply-package` are `OBS-ACTION action:` values. Start workspace, manual Apply, Commit applied, Publish, Refresh/Copy/Open Current Change, Finalize, Retry Push, Reopen and other diagnostic/recovery actions remain direct Swing/Core controls rather than serialized OBS-ACTION commands.
 
 ## Git-backed migration branch — Start ChangeSet Workspace
 
@@ -37,12 +45,13 @@ If a push command fails but the post-attempt remote lookup proves the branch is 
 
 The separate Git-backed actions remain independently callable domain/recovery boundaries, but they are no longer the ordinary user sequence. When an authorized `OBS-ACTION/1` includes explicit `targetBranch`, one top-level **Apply Package** operation reuses the existing package intake and target resolution, then:
 
-1. if `changeSetId` has no persisted ChangeSet, ensures SL-RPKG-11 using the package `changeSetId` / `changeSetLabel`, the resolved Repository Target and the explicit `targetBranch`;
-2. if the Git-backed workspace already exists, proves the package target/label/target-branch identity instead of recreating it;
-3. dispatches package-file Apply from persisted state;
-4. continues/recover Commit when needed;
-5. continues/reconciles Publish when needed;
-6. returns success only after the package is proven published at `Ready(C1)` (or the same published package is already satisfied).
+1. ensures SL-RPKG-10 from `PACKAGE.json.workIntent`, creating/adopting/updating one exact GitHub Issue before Git workspace mutation;
+2. if `changeSetId` has no persisted ChangeSet, ensures SL-RPKG-11 using the package `changeSetId` / `changeSetLabel`, the resolved Repository Target and the explicit `targetBranch`;
+3. if the Git-backed workspace already exists, proves the package target/label/target-branch identity instead of recreating it;
+4. dispatches package-file Apply from persisted state;
+5. continues/recover Commit when needed;
+6. continues/reconciles Publish when needed;
+7. returns success only after the package is proven published at `Ready(C1)` (or the same published package is already satisfied).
 
 The same pasted command is therefore the retry/resume entry. `AppliedUncommitted` resumes at Commit, `CommittedUnpublished` resumes at Publish, `PublicationUncertain` reconciles Publish before any further package action, and already-published `Ready` is proof-only. A failure after an earlier successful internal action preserves that established state for the next retry.
 
