@@ -47,7 +47,7 @@ Only `status: applied` authorizes downstream expected-state advancement with tha
 
 ## Clipboard and ReviewDiff boundary
 
-Successful Apply first copies the typed receipt to the clipboard with read-back verification. For a **legacy** ChangeSet, Apply then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting; with `Clipboard` (the default) or `Both`, that ReviewDiff becomes the final clipboard content, while `RepoDiffFile` leaves the receipt final. For a **Git-backed** ChangeSet in the current modular `Ready → AppliedUncommitted → CommittedUnpublished` migration, SL-RPKG-02 has not migrated yet, so successful Apply generates no legacy ReviewDiff and the typed receipt remains the final clipboard content. The separate Commit action does not create another `OBS-APPLY-RESULT/1`; it advances the same package execution state. Clipboard or legacy diff-publication failure is a handoff warning and does not rewrite a proven Apply result.
+Successful Apply first copies the typed receipt to the clipboard with read-back verification. For a **legacy** ChangeSet, Apply then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting; with `Clipboard` (the default) or `Both`, that ReviewDiff becomes the final clipboard content, while `RepoDiffFile` leaves the receipt final. For a **Git-backed** ChangeSet in the current modular `Ready(C0) → AppliedUncommitted(P1) → CommittedUnpublished(P1,C1) → Ready(C1)` migration, SL-RPKG-02 has not migrated yet, so successful Apply generates no legacy ReviewDiff and the typed receipt remains the final clipboard content. The separate Commit and Publish actions do not create another `OBS-APPLY-RESULT/1`; they advance the same package execution state. `PublicationUncertain` is an internal recoverable Publish state and likewise does not synthesize a second Apply receipt. Clipboard or legacy diff-publication failure is a handoff warning and does not rewrite a proven Apply result.
 
 Terminal non-retryable Apply failures copy the typed failure/uncertain receipt to the clipboard and do not publish a ReviewDiff.
 
@@ -55,7 +55,7 @@ Terminal non-retryable Apply failures copy the typed failure/uncertain receipt t
 
 Unexpected Apply exceptions are normalized to the stable `INTERNAL_ERROR` code before they reach receipt, persisted operation outcome or Apply UI reporting.
 
-For legacy ChangeSets, successful typed-receipt/clipboard handoff does not suppress the existing Review-chat delivery path: at the successful-Apply ReviewDiff cutoff, token-assisted binding is reconciled and the current ReviewDiff is queued when eligible. Git-backed `AppliedUncommitted` work has no current ReviewDiff yet; token/title binding may still establish future destination state, but there is no automatic ReviewDiff delivery until SL-RPKG-02 migrates.
+For legacy ChangeSets, successful typed-receipt/clipboard handoff does not suppress the existing Review-chat delivery path: at the successful-Apply ReviewDiff cutoff, token-assisted binding is reconciled and the current ReviewDiff is queued when eligible. Git-backed work in the migrated Apply/Commit/Publish execution states has no current ReviewDiff yet; token/title binding may still establish future destination state, but there is no automatic ReviewDiff delivery until SL-RPKG-02 migrates.
 
 Refresh Review does not automatically republish ReviewDiff to clipboard or `RepoDiffFile`, but it does automatically queue the refreshed ReviewDiff when the ChangeSet already has a Review-chat binding. Without a binding, the refreshed ReviewDiff remains available for explicit Copy/Open/Send. ReviewDiff remains the internal canonical review/finalization artifact.
 
@@ -79,6 +79,9 @@ Public failures use stable codes. `message` provides human-readable context but 
 - `REVIEW_STALE` — current review baseline no longer proves the state required by Finalize.
 - `FINALIZE_FAILED` — legacy Finalize/publication operation failed.
 - `COMMIT_FAILED` — Git-backed Commit action could not establish the exact local package commit; the durable execution state remains recoverable/retryable when its invariants still hold.
+- `PUBLISH_FAILED` — Git-backed Publish did not establish the remote ChangeSet tip; when the remote is proven unchanged, the exact local commit remains `CommittedUnpublished` and Publish can be retried.
+- `PUBLICATION_UNCERTAIN` — a Publish attempt crossed the remote side-effect boundary but the exact remote tip could not be reconciled; the ChangeSet remains `PublicationUncertain` and retry must inspect remote state before another push.
+- `REMOTE_BRANCH_DIVERGED` — the exact remote ChangeSet branch is at neither the expected previous published tip nor the intended package commit, so Publish refuses to overwrite it.
 - `SNAPSHOT_EXPORT_FAILED` — repository snapshot export failed.
 - `CHAT_BRIDGE_FAILED` — optional ChatGPT bridge interaction failed.
 - `INTERNAL_ERROR` — an unexpected failure has no more specific established public type.

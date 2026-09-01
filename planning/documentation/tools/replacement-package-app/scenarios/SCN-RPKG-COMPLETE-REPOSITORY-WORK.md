@@ -35,7 +35,11 @@ The next modular extension of the same SL-RPKG-01 is **Commit applied package**.
 
 Commit retry is idempotent across its side-effect boundaries. A journal-only staged index can be restaged and committed safely. If a crash created a commit before state persistence, retry may recover that existing `HEAD=C1` only after proving it is the single-parent child of `C0`, has the exact package/ChangeSet trailers, changes no path outside the durable package paths, preserves the exact intended worktree bytes, and has a clean index/worktree. A moved head lacking that proof fails closed. Repeated Commit or same-package Apply after a proven `CommittedUnpublished` state returns already-satisfied semantics instead of creating another commit.
 
-This remains a deliberate migration boundary. Git-backed Apply/Commit do **not** yet generate the legacy owned-path ReviewDiff, and Publish, Git-derived Current Change, PR/ReviewDecision and Finalize are still unmigrated. Legacy Review and Finalize are therefore blocked for the Git-backed ChangeSet instead of falling back to the Repository Target main workspace.
+The next modular extension is **Publish applied commit**. From `CommittedUnpublished(P1,C1)`, Publish re-proves the exact local package commit and checks the exact remote `changeset/<id>` branch before any push. Remote absence or exact previous `publishedTip=C0` permits one exact `C1` ref update protected by an explicit force-with-lease; remote `C1` is already satisfied. Any other observed remote tip returns `REMOTE_BRANCH_DIVERGED` without overwrite. Success is persisted only after a post-push exact remote lookup proves `C1`, then execution returns to `Ready(C1)` and `publishedTip=C1`.
+
+If a push command fails but the post-attempt remote lookup proves the branch is still absent/at `C0`, the state remains `CommittedUnpublished(P1,C1)` and Publish is retryable. If a push was attempted but the remote cannot be inspected afterward, execution becomes `PublicationUncertain(P1,C1)`. Retry from that state first reconciles remote: exact `C1` becomes already-satisfied `Ready(C1)` without another push; absent/`C0` may retry the exact leased push; another tip fails closed. The completed Apply journal is retained as the exact latest published package boundary; when the next package P2 begins from `Ready(C1)`, that old journal must first prove the published `C1` and is then replaced by the new `baseHead=C1` journal.
+
+This remains a deliberate migration boundary. Git-backed Apply/Commit/Publish do **not** yet generate the legacy owned-path ReviewDiff, and Git-derived Current Change, PR/ReviewDecision and Finalize are still unmigrated. Legacy Review and Finalize are therefore blocked for the Git-backed ChangeSet instead of falling back to the Repository Target main workspace.
 
 ## Important branches
 
@@ -58,7 +62,7 @@ An optional `chatContextToken` resolves asynchronously while repository Apply pr
 ## Data and rules
 
 - Repository Target = stable target identity + repository identity + mutable location.
-- ChangeSet = stable logical work identity; Git-backed workspaces pin target branch/base/published tip and isolated branch/worktree, then progress through explicit execution state such as Ready and AppliedUncommitted.
+- ChangeSet = stable logical work identity; Git-backed workspaces pin target branch/base/published tip and isolated branch/worktree, then progress through explicit execution states `Ready`, `AppliedUncommitted`, `CommittedUnpublished` and recoverable `PublicationUncertain`.
 - `(Repository Target, relative path)` has at most one unfinished ChangeSet owner.
 - Current Change = cumulative exact current work for one ChangeSet.
 - lifecycle = Active → Publication Pending → Finalized, with explicit guarded Finalized → Active Reopen.

@@ -168,6 +168,9 @@ public final class ApplyReceiptTests {
         check(Core.PUBLIC_ERROR_CODES.contains(Core.SOURCE_STATE_CHANGED), "source error registered");
         check(Core.PUBLIC_ERROR_CODES.contains(Core.APPLY_ROLLBACK_UNVERIFIED), "uncertain error registered");
         check(Core.PUBLIC_ERROR_CODES.contains(Core.INTERNAL_ERROR), "internal error registered");
+        check(Core.PUBLIC_ERROR_CODES.contains(Core.PUBLISH_FAILED), "publish failure registered");
+        check(Core.PUBLIC_ERROR_CODES.contains(Core.PUBLICATION_UNCERTAIN), "publication uncertainty registered");
+        check(Core.PUBLIC_ERROR_CODES.contains(Core.REMOTE_BRANCH_DIVERGED), "remote divergence registered");
         check(!Core.PUBLIC_ERROR_CODES.contains(Core.SUCCESS), "success is not an error code");
     }
 

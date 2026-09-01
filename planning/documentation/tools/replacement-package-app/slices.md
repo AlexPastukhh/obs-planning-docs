@@ -3,21 +3,24 @@
 Status: active current implementation map
 Purpose: show how the three Scenario owners are assembled from current vertical implementation slices without duplicating class/method documentation.
 
-Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, and two modular Git-backed execution stages of `SL-RPKG-01` (`Ready → AppliedUncommitted → CommittedUnpublished`). Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
+Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, and three modular Git-backed actions of `SL-RPKG-01` (`Ready → AppliedUncommitted → CommittedUnpublished → Ready`, with `PublicationUncertain` recovery). Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
 
 ## Slice map
 
 ### `SL-RPKG-01 — Apply Replacement Work`
-- **implements:** Complete Repository Work — legacy package intake/continuation plus modular Git-backed Apply and Commit actions for an existing SL-11 workspace.
+- **implements:** Complete Repository Work — legacy package intake/continuation plus modular Git-backed Apply, Commit and Publish actions for an existing SL-11 workspace.
 - **legacy path:** retains current Repository Target main-workspace Apply, Path Ownership and cumulative ReviewDiff behavior for legacy ChangeSets.
 - **Git-backed Apply stage:** a persisted `Active · Ready(C0)` workspace accepts one exact package only inside its isolated worktree and transitions to `AppliedUncommitted(P1)`; `publishedTip` and branch HEAD remain `C0`.
 - **durable Apply journal:** before first file mutation, persist package identity/archive fingerprint, branch/worktree, `baseHead`, exact actual prior file existence/bytes and exact intended result for every operation. Retry proves the journal intent: fully intended bytes recover state without reapplying; prior/mixed state is restored to exact prior bytes and reapplied; unknown bytes on journal-owned package paths are first preserved as recovery evidence, then exact prior bytes are restored and reapplied; unrelated dirty paths still fail closed.
 - **Git-backed Commit stage:** from `AppliedUncommitted(P1)`, prove branch/worktree are still based at `publishedTip=C0`, exact intended journal bytes remain present, and any staged paths are journal-owned; stage only package paths and create one local `C1` with exact `Package-Id: P1` and `ChangeSet-Id: X` trailers. Persist `CommittedUnpublished(P1,C1)` with `commitSha=C1` while `publishedTip` remains `C0`.
 - **Commit idempotency/recovery:** repeated Commit proves the recorded local commit and returns already satisfied. Retry can continue from a journal-only staged index or recover a crash-created `HEAD=C1` only when `C1` is the single-parent child of `C0`, carries the exact trailers, changes no path outside the journal, and leaves exact intended worktree bytes with clean index/worktree. A moved head that cannot prove those facts fails closed and is never adopted.
-- **uses:** Replacement Package, Repository Target, ChangeSet, execution state, durable Apply journal, local package commit, User Operation; Path Ownership remains legacy-only.
-- **touches:** Swing Apply Prepare/Authorize/Execute and **Commit applied**, Core, StateStore Apply journal, package validation, shared exact file mutation and Git worktree/commit verification.
+- **Git-backed Publish stage:** from `CommittedUnpublished(P1,C1)`, prove the exact local package commit, inspect exact remote `changeset/<id>`, and publish only when the remote is absent or exactly at previous `publishedTip=C0`. The push uses an exact commit refspec plus explicit force-with-lease; success advances to `Ready(C1)` only after post-push remote proof and updates `publishedTip=C1`.
+- **Publish idempotency/recovery:** remote already at `C1` is already satisfied; a failed push with remote proven unchanged leaves `CommittedUnpublished`; an attempted push whose remote outcome cannot be inspected persists `PublicationUncertain`; retry reconciles remote before any further push. Any observed remote tip other than previous published tip or intended commit returns `REMOTE_BRANCH_DIVERGED` and is never overwritten.
+- **latest journal rollover:** retain the completed Apply journal after Publish as exact `previousPublishedTip → publishedTip` package evidence. A later P2 from `Ready(C1)` may replace it only after proving that journal exactly describes the published `C1`, then creates a new journal with `baseHead=C1`.
+- **uses:** Replacement Package, Repository Target, ChangeSet, execution state, durable Apply journal, local/published package commit, remote ChangeSet branch, User Operation; Path Ownership remains legacy-only.
+- **touches:** Swing Apply Prepare/Authorize/Execute, **Commit applied** and **Publish**, Core, StateStore Apply journal, package validation, shared exact file mutation and Git worktree/commit/remote verification.
 - **depends on:** registered target/origin verification, exact ChangeSet lookup and `SL-RPKG-11` workspace establishment.
-- **transitional boundary:** Git-backed Publish, Current Change/ReviewDecision and Finalize are not migrated yet. A Git-backed successful Apply/Commit has no legacy ReviewDiff; legacy Review/Finalize remain fail-closed.
+- **transitional boundary:** Git-derived Current Change/ReviewDecision and Finalize are not migrated yet. A Git-backed successful Apply/Commit/Publish has no legacy ReviewDiff; legacy Review/Finalize remain fail-closed.
 
 ### `SL-RPKG-02 — Inspect Current Change`
 - **implements:** Complete Repository Work — cumulative Current Change inspection.

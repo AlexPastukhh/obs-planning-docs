@@ -19,7 +19,7 @@ Give one intended ordinary ChatGPT conversation the exact current cumulative cha
 
 ## Git-backed migration boundary
 
-Git-backed ChangeSets that have reached `Ready` or `AppliedUncommitted` are not yet served by this Scenario. Their Current Change must become Git-derived in the SL-RPKG-02 migration; until then Refresh/Copy/Open/Send do not project the isolated worktree through the legacy owned-path ReviewDiff path. This is a temporary fail-closed boundary, not an assertion that the Git-backed work has no changes.
+Git-backed ChangeSets in `Ready`, `AppliedUncommitted`, `CommittedUnpublished` or `PublicationUncertain` are not yet served by this Scenario. Their Current Change must become Git-derived in the SL-RPKG-02 migration; until then Refresh/Copy/Open/Send do not project the isolated worktree through the legacy owned-path ReviewDiff path. This is a temporary fail-closed boundary, not an assertion that the Git-backed work has no changes.
 
 ## Binding routes
 
