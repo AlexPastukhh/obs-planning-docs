@@ -35,7 +35,7 @@ Ordinary replacement-package production remains outside this application route:
 
 ## Current implementation boundary
 
-Current source/tests realize legacy `SL-RPKG-01..09`, `SL-RPKG-11 Start ChangeSet Workspace`, and the first Git-backed execution stage of `SL-RPKG-01`: **Apply package files** inside an existing isolated ChangeSet worktree. A Git-backed ChangeSet now progresses `Ready(C0) → AppliedUncommitted(P1)` with a durable Apply journal and without Path Ownership or Repository Target main-workspace mutation. Commit/Publish and Git-derived Current Change are not migrated yet, so these ChangeSets remain intentionally fenced from legacy Review/Finalize while the existing legacy `SL-RPKG-01..09` flow otherwise remains available for legacy ChangeSets.
+Current source/tests realize legacy `SL-RPKG-01..09`, `SL-RPKG-11 Start ChangeSet Workspace`, and two modular Git-backed execution stages inside the expanded `SL-RPKG-01`: **Apply package files** and **Commit applied package**. A Git-backed ChangeSet now progresses `Ready(C0) → AppliedUncommitted(P1) → CommittedUnpublished(P1,C1)` in its isolated worktree, with the durable Apply journal retained as package intent/recovery authority, `publishedTip` still pinned to `C0` until Publish, and no Path Ownership or Repository Target main-workspace mutation. Publish and Git-derived Current Change are not migrated yet, so these ChangeSets remain intentionally fenced from legacy Review/Finalize while the existing legacy `SL-RPKG-01..09` flow otherwise remains available for legacy ChangeSets.
 
 Implementation existence is not live acceptance. Real Windows/Swing/Edge/ChatGPT behavior is established only by current practical evidence.
 

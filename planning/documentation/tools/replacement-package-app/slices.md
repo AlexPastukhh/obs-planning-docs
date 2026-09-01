@@ -3,19 +3,21 @@
 Status: active current implementation map
 Purpose: show how the three Scenario owners are assembled from current vertical implementation slices without duplicating class/method documentation.
 
-Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, and the first Git-backed execution stage of `SL-RPKG-01` (`Ready → AppliedUncommitted`). Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
+Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, and two modular Git-backed execution stages of `SL-RPKG-01` (`Ready → AppliedUncommitted → CommittedUnpublished`). Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
 
 ## Slice map
 
 ### `SL-RPKG-01 — Apply Replacement Work`
-- **implements:** Complete Repository Work — legacy package intake/continuation plus the first Git-backed execution stage for an existing SL-11 workspace.
+- **implements:** Complete Repository Work — legacy package intake/continuation plus modular Git-backed Apply and Commit actions for an existing SL-11 workspace.
 - **legacy path:** retains current Repository Target main-workspace Apply, Path Ownership and cumulative ReviewDiff behavior for legacy ChangeSets.
-- **Git-backed stage:** a persisted `Active · Ready(C0)` workspace accepts one exact package only inside its isolated worktree and transitions to `AppliedUncommitted(P1)`; `publishedTip` and branch HEAD remain `C0`.
+- **Git-backed Apply stage:** a persisted `Active · Ready(C0)` workspace accepts one exact package only inside its isolated worktree and transitions to `AppliedUncommitted(P1)`; `publishedTip` and branch HEAD remain `C0`.
 - **durable Apply journal:** before first file mutation, persist package identity/archive fingerprint, branch/worktree, `baseHead`, exact actual prior file existence/bytes and exact intended result for every operation. Retry proves the journal intent: fully intended bytes recover state without reapplying; prior/mixed state is restored to exact prior bytes and reapplied; unknown bytes on journal-owned package paths are first preserved as recovery evidence, then exact prior bytes are restored and reapplied; unrelated dirty paths still fail closed.
-- **uses:** Replacement Package, Repository Target, ChangeSet, execution state, durable Apply journal, User Operation; Path Ownership remains legacy-only.
-- **touches:** Swing Apply Prepare/Authorize/Execute, Core, StateStore Apply journal, package validation, shared exact file mutation and Git worktree verification.
+- **Git-backed Commit stage:** from `AppliedUncommitted(P1)`, prove branch/worktree are still based at `publishedTip=C0`, exact intended journal bytes remain present, and any staged paths are journal-owned; stage only package paths and create one local `C1` with exact `Package-Id: P1` and `ChangeSet-Id: X` trailers. Persist `CommittedUnpublished(P1,C1)` with `commitSha=C1` while `publishedTip` remains `C0`.
+- **Commit idempotency/recovery:** repeated Commit proves the recorded local commit and returns already satisfied. Retry can continue from a journal-only staged index or recover a crash-created `HEAD=C1` only when `C1` is the single-parent child of `C0`, carries the exact trailers, changes no path outside the journal, and leaves exact intended worktree bytes with clean index/worktree. A moved head that cannot prove those facts fails closed and is never adopted.
+- **uses:** Replacement Package, Repository Target, ChangeSet, execution state, durable Apply journal, local package commit, User Operation; Path Ownership remains legacy-only.
+- **touches:** Swing Apply Prepare/Authorize/Execute and **Commit applied**, Core, StateStore Apply journal, package validation, shared exact file mutation and Git worktree/commit verification.
 - **depends on:** registered target/origin verification, exact ChangeSet lookup and `SL-RPKG-11` workspace establishment.
-- **transitional boundary:** Git-backed Commit/Publish, Current Change/ReviewDecision and Finalize are not migrated in this stage. A Git-backed successful Apply has no legacy ReviewDiff yet; legacy Review/Finalize remain fail-closed for it.
+- **transitional boundary:** Git-backed Publish, Current Change/ReviewDecision and Finalize are not migrated yet. A Git-backed successful Apply/Commit has no legacy ReviewDiff; legacy Review/Finalize remain fail-closed.
 
 ### `SL-RPKG-02 — Inspect Current Change`
 - **implements:** Complete Repository Work — cumulative Current Change inspection.

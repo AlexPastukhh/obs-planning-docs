@@ -47,7 +47,7 @@ Only `status: applied` authorizes downstream expected-state advancement with tha
 
 ## Clipboard and ReviewDiff boundary
 
-Successful Apply first copies the typed receipt to the clipboard with read-back verification. For a **legacy** ChangeSet, Apply then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting; with `Clipboard` (the default) or `Both`, that ReviewDiff becomes the final clipboard content, while `RepoDiffFile` leaves the receipt final. For a **Git-backed** ChangeSet in the current `Ready → AppliedUncommitted` migration stage, SL-RPKG-02 has not migrated yet, so successful Apply generates no legacy ReviewDiff and the typed receipt remains the final clipboard content. Clipboard or legacy diff-publication failure is a handoff warning and does not rewrite a proven Apply result.
+Successful Apply first copies the typed receipt to the clipboard with read-back verification. For a **legacy** ChangeSet, Apply then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting; with `Clipboard` (the default) or `Both`, that ReviewDiff becomes the final clipboard content, while `RepoDiffFile` leaves the receipt final. For a **Git-backed** ChangeSet in the current modular `Ready → AppliedUncommitted → CommittedUnpublished` migration, SL-RPKG-02 has not migrated yet, so successful Apply generates no legacy ReviewDiff and the typed receipt remains the final clipboard content. The separate Commit action does not create another `OBS-APPLY-RESULT/1`; it advances the same package execution state. Clipboard or legacy diff-publication failure is a handoff warning and does not rewrite a proven Apply result.
 
 Terminal non-retryable Apply failures copy the typed failure/uncertain receipt to the clipboard and do not publish a ReviewDiff.
 
@@ -77,7 +77,8 @@ Public failures use stable codes. `message` provides human-readable context but 
 - `APPLY_ROLLBACK_UNVERIFIED` — Apply failed and prior file/ledger state could not be fully restored and verified; receipt status is `uncertain`.
 - `STATE_DIVERGED` — persisted/local application state violates another established invariant.
 - `REVIEW_STALE` — current review baseline no longer proves the state required by Finalize.
-- `FINALIZE_FAILED` — Finalize/publication operation failed.
+- `FINALIZE_FAILED` — legacy Finalize/publication operation failed.
+- `COMMIT_FAILED` — Git-backed Commit action could not establish the exact local package commit; the durable execution state remains recoverable/retryable when its invariants still hold.
 - `SNAPSHOT_EXPORT_FAILED` — repository snapshot export failed.
 - `CHAT_BRIDGE_FAILED` — optional ChatGPT bridge interaction failed.
 - `INTERNAL_ERROR` — an unexpected failure has no more specific established public type.

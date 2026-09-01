@@ -1224,3 +1224,64 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** Git-backed Apply dirty-path verification now compares package/journal paths against exact raw Git path identities instead of presentation-quoted names, so supported Unicode repository paths participate in the same worktree-only and recovery invariants as ASCII paths.
 
 **APPLIED relation:** successful Apply of package `d00c3e94-f6b5-4af0-9107-5d65dae244ed` corrects the Unicode dirty-path identity finding inside still-open ChangeSet `e628a2c4-9e7a-403a-add3-847460b5d383`; the ChangeSet remains open for cumulative ReviewDiff review.
+
+
+### LOG-RPKG-061 — Commit applied package inside Git-backed ChangeSet worktree
+
+**Type:** TARGET MIGRATION / SL-RPKG-01 APPLY REPLACEMENT WORK / GIT-BACKED COMMIT / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `a871a837-3d1a-4b61-b83a-4f1cc30816ec`  
+**ChangeSet Label:** `Replacement Package App - Git-backed Commit applied package`  
+**Package:** `efcb39f1-fff1-4584-825e-ac69a42bf02b`
+
+**Selected migration step:**
+- the prior Git-backed Apply-files ChangeSet `e628a2c4-9e7a-403a-add3-847460b5d383` was accepted APPROVABLE, so this continuation starts a new producer ChangeSet while extending the same target `SL-RPKG-01` rather than inventing a separate Commit slice;
+- add only `commit-applied-package` semantics after the already migrated `Ready(C0) → AppliedUncommitted(P1)` boundary; Publish, Git-derived Current Change, PR/ReviewDecision and integration Finalize remain later extensions;
+- represent `CommittedUnpublished(P1,C1)` with existing exact fields: `publishedTip=C0`, `lastPackageId=P1`, `commitSha=C1`, `executionState=CommittedUnpublished`, avoiding a duplicate persisted previous-tip field.
+
+**Commit semantics / recovery:**
+- from `AppliedUncommitted`, re-prove exact Repository Target/common repository, deterministic branch/worktree, `HEAD/branch=C0`, durable Apply journal identity and exact intended package bytes; staged paths outside the journal fail closed;
+- stage only durable package paths using NUL-delimited pathspec input, forcing only those explicit package paths so an intentionally packaged ignored add can still become tracked, and create one local commit with exact `Package-Id: P1` and `ChangeSet-Id: X` trailers; commit signing and repository hooks are disabled for this application-owned deterministic commit boundary;
+- leave `publishedTip=C0` after local commit and persist `CommittedUnpublished(P1,C1)` only after verifying exact branch/worktree tip, single parent `C0`, trailers, package-only changed paths, exact intended bytes and clean index/worktree;
+- retry tolerates a journal-only staged index and re-stages exact package paths; if a crash already created `C1` before ledger persistence, recover only when the same exact proofs hold. A moved/foreign head is never adopted;
+- repeated Commit and same-package Apply at proven `CommittedUnpublished` are already satisfied and do not create a second commit. The Apply journal remains available for the still-unmigrated Abort/Publish progression.
+
+**UI / transitional boundary:**
+- expose **Commit applied** next to the ChangeSet workspace action and show `CommittedUnpublished` as published-tip → local-commit state; the old free-form commit-message field is relabeled as legacy Finalize-only;
+- successful Git-backed Commit still has no legacy ReviewDiff and does not publish a remote branch; legacy Review/Finalize remain fail-closed for the Git-backed ChangeSet.
+
+**Proof target:**
+- Core regression proves package-only commit, exact parent/trailers, unchanged Repository Target main HEAD/bytes, unchanged `publishedTip`, clean worktree and no Path Ownership;
+- regressions prove an explicitly packaged ignored add is committed, journal-only staged retry, failed Git Commit leaves `AppliedUncommitted` and later retries without reapplying files, repeat Commit, same-package Apply after commit, exact crash recovery after Git commit before state persistence, and fail-closed refusal of a moved HEAD without exact package trailers;
+- existing Apply journal/recovery/Unicode, SL-RPKG-11 workspace recovery, legacy Apply/Review/Finalize, receipt, bridge/DOM, launcher and shared mutation regressions remain required.
+- candidate verification: shared `PackageStateApplierTests` PASS, `CoreTests` `87/87`, `ApplyReceiptTests` PASS, `ChatBridgeTests` `60/60`, ChatGPT adapter DOM regression PASS, Windows launcher tests `5/5`.
+
+**Target-State Result:** the expanded SL-RPKG-01 now realizes `Ready(C0) → AppliedUncommitted(P1) → CommittedUnpublished(P1,C1)` as separate idempotent actions inside one isolated ChangeSet worktree. `C1` is locally authoritative for the committed package intent but is not yet the published ChangeSet tip; Publish remains the next modular extension.
+
+**APPLIED relation:** successful Apply of package `efcb39f1-fff1-4584-825e-ac69a42bf02b` establishes this Git-backed Commit extension as new ChangeSet `a871a837-3d1a-4b61-b83a-4f1cc30816ec`. Corrections selected from its ReviewDiff while still open keep this ChangeSet identity; work after accepted APPROVABLE review starts another new ChangeSet.
+
+
+### LOG-RPKG-062 — Isolate authoritative Git trailers from ChangeSet label text
+
+**Type:** REVIEWDIFF CORRECTION / SL-RPKG-01 APPLY REPLACEMENT WORK / GIT-BACKED COMMIT / TRAILER AUTHORITY / APPLIED TARGET  
+**ChangeSet:** `a871a837-3d1a-4b61-b83a-4f1cc30816ec`  
+**ChangeSet Label:** `Replacement Package App - Git-backed Commit applied package`  
+**Package:** `ea696a49-4c17-4d1f-bcd4-a1ef64280742`
+
+**ReviewDiff finding / selected correction:**
+- the first Commit extension verified `Package-Id` / `ChangeSet-Id` by scanning every line of the complete commit message;
+- because a valid ChangeSet label becomes the commit subject and labels are not prohibited from beginning with those strings, label/body text could be mistaken for authority trailers and make the application reject its own already-created `C1` on both the initial post-commit proof and recovery retry;
+- keep the existing `AppliedUncommitted(P1) → CommittedUnpublished(P1,C1)` boundary and correct only commit-identity proof. Publish and later stages remain excluded.
+
+**Selected correction:**
+- parse only Git's canonical terminal trailer block with `git interpret-trailers --parse` and derive package/ChangeSet authority exclusively from that parsed block;
+- require exactly one canonical `Package-Id: P1` and exactly one canonical `ChangeSet-Id: X`; trailer-like subject/body text is not identity authority;
+- keep exact parent, branch/worktree tip, package-only changed paths, exact intended bytes, clean index/worktree, moved-head refusal and all existing Commit recovery semantics unchanged.
+
+**Proof target:**
+- new Core regression uses the valid ChangeSet label `Package-Id: unrelated label`, proves the label is preserved in the commit subject, proves the actual terminal authority trailers still establish `C1`, and proves repeat Commit returns the same already-satisfied commit;
+- existing Commit package-only staging/ignored-add, staged-index retry, failed-Commit retry, post-commit pre-ledger recovery, foreign moved-head refusal, Apply journal/recovery/Unicode and all legacy/bridge/launcher regressions remain required;
+- candidate verification: shared `PackageStateApplierTests` PASS, `CoreTests` `88/88`, `ApplyReceiptTests` PASS, `ChatBridgeTests` `60/60`, ChatGPT adapter DOM regression PASS, Windows launcher tests `5/5`.
+
+**Target-State Result:** Git-backed Commit identity is now proven only by Git's authoritative terminal trailer block, so arbitrary valid ChangeSet label/body text cannot poison commit verification or make an application-created exact package commit permanently unrecoverable.
+
+**APPLIED relation:** successful Apply of package `ea696a49-4c17-4d1f-bcd4-a1ef64280742` corrects trailer authority inside still-open ChangeSet `a871a837-3d1a-4b61-b83a-4f1cc30816ec`; the ChangeSet remains open for cumulative ReviewDiff review.
