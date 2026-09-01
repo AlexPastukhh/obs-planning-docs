@@ -3,12 +3,12 @@
 Status: active current implementation map
 Purpose: show how the three Scenario owners are assembled from current vertical implementation slices without duplicating class/method documentation.
 
-Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, and three modular Git-backed actions of `SL-RPKG-01` (`Ready → AppliedUncommitted → CommittedUnpublished → Ready`, with `PublicationUncertain` recovery). Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
+Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, three modular Git-backed actions of `SL-RPKG-01` (`Ready → AppliedUncommitted → CommittedUnpublished → Ready`, with `PublicationUncertain` recovery), and their ordinary top-level **Apply Package** composition. Source is authority for exact mechanics; [`testing-plan.md`](testing-plan.md) maps automated proof responsibility; automated tests prove only executed cases; live Windows/Edge behavior requires manual evidence.
 
 ## Slice map
 
 ### `SL-RPKG-01 — Apply Replacement Work`
-- **implements:** Complete Repository Work — legacy package intake/continuation plus modular Git-backed Apply, Commit and Publish actions for an existing SL-11 workspace.
+- **implements:** Complete Repository Work — legacy package intake/continuation plus modular Git-backed Apply, Commit and Publish actions, with ordinary `Apply Package` composing SL-11 + those actions automatically.
 - **legacy path:** retains current Repository Target main-workspace Apply, Path Ownership and cumulative ReviewDiff behavior for legacy ChangeSets.
 - **Git-backed Apply stage:** a persisted `Active · Ready(C0)` workspace accepts one exact package only inside its isolated worktree and transitions to `AppliedUncommitted(P1)`; `publishedTip` and branch HEAD remain `C0`.
 - **durable Apply journal:** before first file mutation, persist package identity/archive fingerprint, branch/worktree, `baseHead`, exact actual prior file existence/bytes and exact intended result for every operation. Retry proves the journal intent: fully intended bytes recover state without reapplying; prior/mixed state is restored to exact prior bytes and reapplied; unknown bytes on journal-owned package paths are first preserved as recovery evidence, then exact prior bytes are restored and reapplied; unrelated dirty paths still fail closed.
@@ -18,9 +18,10 @@ Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, and 
 - **Publish idempotency/recovery:** remote already at `C1` is already satisfied; a failed push with remote proven unchanged leaves `CommittedUnpublished`; an attempted push whose remote outcome cannot be inspected persists `PublicationUncertain`; retry reconciles remote before any further push. Any observed remote tip other than previous published tip or intended commit returns `REMOTE_BRANCH_DIVERGED` and is never overwritten.
 - **latest journal rollover:** retain the completed Apply journal after Publish as exact `previousPublishedTip → publishedTip` package evidence. A later P2 from `Ready(C1)` may replace it only after proving that journal exactly describes the published `C1`, then creates a new journal with `baseHead=C1`.
 - **uses:** Replacement Package, Repository Target, ChangeSet, execution state, durable Apply journal, local/published package commit, remote ChangeSet branch, User Operation; Path Ownership remains legacy-only.
-- **touches:** Swing Apply Prepare/Authorize/Execute, **Commit applied** and **Publish**, Core, StateStore Apply journal, package validation, shared exact file mutation and Git worktree/commit/remote verification.
-- **depends on:** registered target/origin verification, exact ChangeSet lookup and `SL-RPKG-11` workspace establishment.
-- **transitional boundary:** Git-derived Current Change/ReviewDecision and Finalize are not migrated yet. A Git-backed successful Apply/Commit/Publish has no legacy ReviewDiff; legacy Review/Finalize remain fail-closed.
+- **touches:** Swing **Apply Package** Prepare/Authorize/Execute plus diagnostic **Start workspace / Commit applied / Publish**, Core, StateStore workspace/Apply journals, action/package protocol, package validation, shared exact file mutation and Git worktree/commit/remote verification.
+- **depends on:** registered target/origin verification and SL-11 workspace semantics. With `targetBranch` in OBS-ACTION, missing workspace establishment is invoked automatically rather than required as a prior manual user step.
+- **ordinary composition / retry:** explicit `targetBranch` selects automatic Git-backed Apply Package. Missing workspace is ensured from package identity; `AppliedUncommitted` resumes Commit; `CommittedUnpublished` resumes Publish; `PublicationUncertain` reconciles Publish; same published `Ready` is proof-only. `targetBranch` omission preserves legacy/manual compatibility and an existing legacy ChangeSet is never silently converted.
+- **transitional boundary:** Git-derived Current Change/ReviewDecision and Finalize are not migrated yet. A successful automatic Git-backed Apply Package has no legacy ReviewDiff; legacy Review/Finalize remain fail-closed.
 
 ### `SL-RPKG-02 — Inspect Current Change`
 - **implements:** Complete Repository Work — cumulative Current Change inspection.
@@ -86,7 +87,8 @@ Current source/tests realize legacy `SL-RPKG-01..SL-RPKG-09`, `SL-RPKG-11`, and 
 - **touches:** Swing **Start workspace**, Core, StateStore workspace journal/worktree paths and Git worktree/branch mechanics.
 - **result:** local `targetBranch @ C0` is pinned as `baseCommit=C0` / `publishedTip=C0`; deterministic branch `changeset/<changeSetId>` and deterministic isolated worktree are created and verified clean against the same Git common directory; ChangeSet persists as `Active · Ready`.
 - **idempotency/recovery:** an exact workspace journal is durably written before the first Git mutation. Retry either returns an already-proven persisted Ready workspace or reconciles only the exact journal-owned partial branch/worktree; an unjournaled deterministic branch/path collision fails closed.
-- **transitional boundary:** package-file Apply is now migrated by the Git-backed stage of SL-RPKG-01. Current Change, commit, publish, Issue/PR, ReviewDecision and Finalize remain unmigrated; legacy owned-path Review/Finalize stay blocked for these workspaces.
+- **ordinary composition:** SL-11 remains independently callable, but an ordinary OBS-ACTION with explicit `targetBranch` automatically ensures this slice when the package ChangeSet is absent. The user does not manually enter `changeSetId`, label or target branch; package identity + resolved Repository Target + action `targetBranch` are the inputs.
+- **transitional boundary:** Apply/Commit/Publish are migrated and composed by SL-RPKG-01. Current Change, Issue/PR, ReviewDecision and integration Finalize remain unmigrated; legacy owned-path Review/Finalize stay blocked for these workspaces.
 
 ## Shared domain concepts
 
@@ -96,7 +98,7 @@ No separate Domain owner is required for the current model.
 - **ChangeSet** — one logical repository-work identity. Legacy ChangeSets retain continuation/Review/publication/Reopen fields; new Git-backed workspaces additionally persist `targetBranch`, `branch`, `worktree`, `baseCommit`, `publishedTip` and execution state.
 - **Path Ownership** — `(Repository Target, repository-relative path)` has at most one unfinished ChangeSet owner.
 - **Current Change** — legacy ChangeSets still use cumulative persisted ReviewDiff. Git-backed `AppliedUncommitted` work currently has no migrated Current Change projection until SL-RPKG-02 moves to Git-derived diffs.
-- **Lifecycle / execution (transitional)** — legacy work retains Active → Publication Pending → Finalized with Reopen; Git-backed work now realizes `Ready(C0) → AppliedUncommitted(P1)` while `publishedTip`/HEAD remain `C0`. Later stages add Commit/Publish and migrate review/finalization.
+- **Lifecycle / execution (transitional)** — legacy work retains Active → Publication Pending → Finalized with Reopen; Git-backed package revisions realize `Ready(C0) → AppliedUncommitted(P1) → CommittedUnpublished(P1,C1) → Ready(C1)` with recoverable `PublicationUncertain`. Ordinary Apply Package dispatches/resumes across those states; later slices migrate review/finalization.
 - **External Interaction** — one exact handoff source/artifact + exact conversation + semantic delivery/cancellation/uncertainty truth.
 - **User Operation** — application execution/outcome context, separate from ChangeSet lifecycle.
 

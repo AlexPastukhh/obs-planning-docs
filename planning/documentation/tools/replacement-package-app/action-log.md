@@ -1355,3 +1355,39 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 **APPLIED relation:** successful Apply of package `92b8f704-2dd5-4fa3-b400-da8f8659ad74` corrects effective remote identity proof inside still-open ChangeSet `99afb73e-00f0-411e-8c01-ceb23493267f`; the ChangeSet remains open for cumulative ReviewDiff review.
 
+### LOG-RPKG-065 — Compose one-command automatic Git-backed Apply Package
+
+**Type:** TARGET MIGRATION / SL-RPKG-01 APPLY REPLACEMENT WORK + SL-RPKG-11 WORKSPACE COMPOSITION / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `ab56b822-4191-4ac5-8bdf-cd61fa9cd33f`  
+**ChangeSet Label:** `Replacement Package App - Automatic Apply Package composition`  
+**Package:** `56fe83dc-a8bc-4d5f-9525-ff5d8e20b078`
+
+**Selected migration step:**
+- the prior Publish ChangeSet `99afb73e-00f0-411e-8c01-ceb23493267f` was accepted APPROVABLE, so this package starts a new producer ChangeSet;
+- keep SL-RPKG-11 workspace creation and SL-RPKG-01 Apply / Commit / Publish as separate idempotent domain actions, but finish the ordinary user operation that composes those already-established actions;
+- one pasted `OBS-ACTION/1` with explicit `targetBranch` is now sufficient for ordinary Git-backed package execution: existing package intake resolves the exact ZIP and Repository Target, package metadata supplies `changeSetId` / label / repository identity, missing workspace is ensured automatically, and the same call continues through Apply → Commit → Publish;
+- Git-derived Current Change, PR/ReviewDecision and integration Finalize remain later migration work and are not pulled into this package.
+
+**Automatic composition / compatibility semantics:**
+- extend OBS-ACTION with compatibility-optional `targetBranch`; its presence opts into automatic Git-backed Apply Package and it is never inferred from the Repository Target's currently checked-out branch;
+- after the existing Prepare/Authorize boundary and exact Repository Target resolution, a missing package ChangeSet invokes SL-RPKG-11 from package `changeSetId` / `changeSetLabel` plus explicit `targetBranch`; an existing Git-backed ChangeSet must prove the same target/label/target-branch identity;
+- dispatch from persisted execution truth: `Ready` applies or proves the same published package, `AppliedUncommitted` resumes Commit, `CommittedUnpublished` resumes Publish, and `PublicationUncertain` reconciles Publish before any further package action; top-level success is returned only at a proven published `Ready` tip;
+- failures after a successful internal boundary keep that established state, so repeating the same command resumes instead of restarting or requiring the user to press the next internal control;
+- an existing legacy ChangeSet is never converted in place when `targetBranch` is supplied. Actions without `targetBranch` retain the legacy/manual compatibility path, allowing already-open legacy producer ChangeSets (including this migration package if applied by the pre-composition app) to continue safely;
+- the separate Start workspace / Commit applied / Publish controls remain as diagnostic/recovery/migration surfaces, not ordinary required user steps.
+
+**Protocol / handoff boundary:**
+- update the shared producer/consumer protocol and package-producer command guidance so future **new independent target-mode** archives carry explicit `targetBranch`; a continuation of an already-existing legacy ChangeSet may omit it;
+- the success `OBS-APPLY-RESULT/1` for automatic Git-backed Apply Package is emitted only after the composed operation reaches/proves published `Ready`; Commit/Publish failure returns the failure receipt while preserving the resumable execution state;
+- fix the CLI `apply` compatibility output so Git-backed success no longer dereferences a null legacy ReviewDiff.
+
+**Proof target:**
+- Core regression proves one action automatically creates a workspace from explicit `targetBranch=main` while the Repository Target is checked out on another branch, mutates only the isolated worktree, commits/publishes exact C1 and leaves the current checkout untouched;
+- regressions prove repeated one-command satisfaction, resume from `AppliedUncommitted`, `PublicationUncertain` reconcile-before-retry, legacy action compatibility without `targetBranch`, and fail-closed refusal to reinterpret an existing legacy ChangeSet;
+- existing workspace crash recovery, Apply journal/recovery/Unicode, Commit package-only/trailer/recovery, Publish effective-remote/lease/reconciliation, legacy Apply/Review/Finalize, receipt, bridge/DOM, launcher and shared mutation regressions remain required;
+- candidate verification target: shared `PackageStateApplierTests` PASS, `CoreTests` `101/101`, `ApplyReceiptTests` PASS, `ChatBridgeTests` `60/60`, ChatGPT adapter DOM regression PASS and Windows launcher tests `5/5`.
+
+**Target-State Result:** ordinary target package execution no longer requires manual ChangeSet ID/label/branch entry or manual Start workspace → Apply → Commit → Publish sequencing. One exact command can establish/resume the same Git-backed package revision through a proven published `Ready` state while retaining the separate domain-action recovery boundaries.
+
+**APPLIED relation:** successful Apply of package `56fe83dc-a8bc-4d5f-9525-ff5d8e20b078` establishes one-command automatic Apply Package composition as new ChangeSet `ab56b822-4191-4ac5-8bdf-cd61fa9cd33f`. Corrections selected from its ReviewDiff while this producer ChangeSet remains open keep the same ChangeSet identity; work after accepted APPROVABLE review starts another new ChangeSet.
+

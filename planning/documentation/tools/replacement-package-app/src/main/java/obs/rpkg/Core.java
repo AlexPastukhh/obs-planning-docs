@@ -34,7 +34,7 @@ public final class Core {
         @Override public String toString(){return "["+code+"] "+getMessage();}
     }
 
-    public record ObsAction(String action,String name,String archive,String packageId,String chatTabTitle,String chatContextToken) {}
+    public record ObsAction(String action,String name,String archive,String packageId,String targetBranch,String chatTabTitle,String chatContextToken) {}
     public record Operation(String path,String action) {}
     public record PackageManifest(int schemaVersion,String packageId,String changeSetId,String changeSetLabel,String repositoryIdentity,List<Operation> operations) {}
     public record PackageData(Path archivePath,String archiveSha256,PackageManifest manifest,Map<String,byte[]> base,Map<String,byte[]> replacement) {}
@@ -292,9 +292,10 @@ public final class Core {
         Map<String,String> m=new LinkedHashMap<>();for(int i=1;i<lines.length;i++){String line=lines[i].trim();if(line.isEmpty())continue;int p=line.indexOf(':');if(p<1)throw new ObsException(PACKAGE_INVALID,"Invalid OBS-ACTION line: "+line);String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if(m.putIfAbsent(k,v)!=null)throw new ObsException(PACKAGE_INVALID,"Duplicate OBS-ACTION field: "+k);}
         for(String k:List.of("action","name","archive","packageId"))if(m.get(k)==null||m.get(k).isBlank())throw new ObsException(PACKAGE_INVALID,"Missing OBS-ACTION field: "+k);
         if(!m.get("action").equals("apply-package"))throw new ObsException(PACKAGE_INVALID,"Unsupported OBS-ACTION action: "+m.get("action"));uuid(m.get("packageId"),"OBS-ACTION packageId");if(!Path.of(m.get("archive")).getFileName().toString().equals(m.get("archive"))||m.get("archive").contains("\\")||m.get("archive").contains("/"))throw new ObsException(PACKAGE_INVALID,"OBS-ACTION archive must be a filename hint, not a path.");
+        String targetBranch=m.get("targetBranch");if(targetBranch!=null){targetBranch=targetBranch.trim();if(targetBranch.isBlank())throw new ObsException(PACKAGE_INVALID,"OBS-ACTION targetBranch must be omitted or non-empty.");if(targetBranch.length()>255)throw new ObsException(PACKAGE_INVALID,"OBS-ACTION targetBranch is too long.");}
         String chatTabTitle=m.get("chatTabTitle");if(chatTabTitle!=null){chatTabTitle=chatTabTitle.trim();if(chatTabTitle.isBlank())throw new ObsException(PACKAGE_INVALID,"OBS-ACTION chatTabTitle must be omitted or non-empty.");if(chatTabTitle.length()>512)throw new ObsException(PACKAGE_INVALID,"OBS-ACTION chatTabTitle is too long.");}
         String chatContextToken=m.get("chatContextToken");if(chatContextToken!=null){chatContextToken=chatContextToken.trim();uuid(chatContextToken,"OBS-ACTION chatContextToken");}
-        return new ObsAction(m.get("action"),m.get("name"),m.get("archive"),m.get("packageId"),chatTabTitle,chatContextToken);
+        return new ObsAction(m.get("action"),m.get("name"),m.get("archive"),m.get("packageId"),targetBranch,chatTabTitle,chatContextToken);
     }
 
     public Path resolveArchiveForAction(ObsAction action,Path explicit){if(explicit!=null)return explicit.toAbsolutePath().normalize();List<Path> c=new ArrayList<>();String home=System.getProperty("user.home");for(Path d:List.of(Path.of(home,"Downloads"),Path.of(".").toAbsolutePath().normalize())){Path p=d.resolve(action.archive());if(Files.isRegularFile(p))c.add(p.toAbsolutePath().normalize());}List<Path> matches=new ArrayList<>();for(Path p:new LinkedHashSet<>(c)){try{if(readPackage(p).manifest.packageId.equals(action.packageId()))matches.add(p);}catch(RuntimeException ignored){}}if(matches.isEmpty())throw new ObsException(PACKAGE_NOT_FOUND,"No candidate archive matched packageId "+action.packageId());if(matches.size()>1)throw new ObsException(PACKAGE_INVALID,"More than one candidate archive matched packageId; select ZIP explicitly.");return matches.get(0);}
@@ -374,12 +375,36 @@ public final class Core {
             PreparedApply prepared=authorized.prepared();revalidatePreparedApply(authorized);
             RepositoryConfig target=null;for(RepositoryConfig r:ensureSettings().repositories)if(Objects.equals(r.id(),authorized.repositoryTargetId())){target=r;break;}
             if(target==null)throw new ObsException(REPOSITORY_MISMATCH,"Prepared Repository Target is no longer registered; prepare the operation again.");
+            boolean composite=isAutomaticGitBackedApply(prepared.action());if(composite)ensureAutomaticWorkspace(prepared,target);
             String contextToken=prepared.action()==null?null:prepared.action().chatContextToken();String changeSetId=prepared.packageData().manifest.changeSetId,packageId=prepared.packageData().manifest.packageId;
             if(contextToken!=null)chatBridge.requestContextLookup(contextToken,changeSetId,packageId);
             ApplyResult result=applyInternal(prepared.packageData(),Path.of(target.path()),prepared.action(),authorized.reviewChatDecision(),prepared.reviewChatPlan());
+            if(composite)result=completeAutomaticGitBackedApply(result,prepared.packageData());
             publishSuccessfulApplyHandoffs(result,packageId,changeSetId);
             return result;
         }catch(Throwable t){ObsException failure=asObs(t,INTERNAL_ERROR);copyApplyFailureReceiptBestEffort(pkg,failure);throw failure;}
+    }
+
+    private static boolean isAutomaticGitBackedApply(ObsAction action){return action!=null&&action.targetBranch()!=null;}
+    private void ensureAutomaticWorkspace(PreparedApply prepared,RepositoryConfig target){
+        PackageManifest manifest=prepared.packageData().manifest;ObsAction action=prepared.action();ChangeSet existing=state.getChangeSet(manifest.changeSetId);
+        if(existing==null){startChangeSetWorkspace(target.id,manifest.changeSetId,manifest.changeSetLabel,action.targetBranch());return;}
+        if(!isGitBackedWorkspace(existing))throw new ObsException(STATE_DIVERGED,"OBS-ACTION targetBranch requests automatic Git-backed Apply Package, but ChangeSet "+manifest.changeSetId+" already exists as legacy work.");
+        if(!"Active".equals(existing.status))throw new ObsException(STATE_DIVERGED,"ChangeSet is not Active: "+existing.status);
+        if(!Objects.equals(existing.repositoryTargetId,target.id)||!same(existing.repositoryIdentity,manifest.repositoryIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Existing Git-backed ChangeSet belongs to a different Repository Target.");
+        if(!Objects.equals(existing.changeSetLabel,manifest.changeSetLabel))throw new ObsException(STATE_DIVERGED,"Existing Git-backed ChangeSet label differs from the package label.");
+        if(!Objects.equals(existing.targetBranch,action.targetBranch()))throw new ObsException(STATE_DIVERGED,"OBS-ACTION targetBranch differs from the existing Git-backed ChangeSet target branch.");
+        if(!Objects.equals(existing.branch,"changeset/"+existing.changeSetId))throw new ObsException(STATE_DIVERGED,"Existing Git-backed ChangeSet branch is not deterministic.");
+    }
+    private ApplyResult completeAutomaticGitBackedApply(ApplyResult applied,PackageData pkg){
+        String id=pkg.manifest.changeSetId;ChangeSet cs=state.getChangeSet(id);if(cs==null||!isGitBackedWorkspace(cs))throw new ObsException(STATE_DIVERGED,"Automatic Apply Package lost its Git-backed ChangeSet workspace.");
+        if("AppliedUncommitted".equals(cs.executionState)||"CommittedUnpublished".equals(cs.executionState))commitAppliedPackage(id);
+        cs=state.getChangeSet(id);if(cs==null)throw new ObsException(STATE_DIVERGED,"Automatic Apply Package lost ChangeSet state before Publish.");
+        if(Set.of("CommittedUnpublished","PublicationUncertain","Ready").contains(cs.executionState))publishAppliedCommit(id);
+        cs=state.getChangeSet(id);if(cs==null||!"Ready".equals(cs.executionState)||cs.publishedTip==null||!Objects.equals(cs.commitSha,cs.publishedTip))throw new ObsException(STATE_DIVERGED,"Automatic Apply Package did not reach a proven published Ready state.");
+        if(applied.attempt()!=null){applied.attempt().message="Apply Package completed through automatic workspace / Apply / Commit / Publish at "+cs.publishedTip+".";try{state.saveAttempt(applied.attempt());}catch(Throwable ignored){}}
+        String diagnostic=applied.diagnostic();String complete="Automatic Apply Package is published and Ready at "+cs.publishedTip+".";if(diagnostic==null||diagnostic.isBlank())diagnostic=complete;else diagnostic=diagnostic+" "+complete;
+        return new ApplyResult(applied.code(),applied.attempt(),cs,applied.review(),diagnostic);
     }
 
     private void revalidatePreparedApply(AuthorizedApply authorized){
@@ -446,9 +471,14 @@ public final class Core {
         if(!Objects.equals(cs.repositoryTargetId,allowed.id)||!same(cs.repositoryIdentity,repoIdentity))throw new ObsException(REPOSITORY_MISMATCH,"Git-backed ChangeSet belongs to a different Repository Target.");
         if(!Objects.equals(cs.branch,"changeset/"+cs.changeSetId))throw new ObsException(STATE_DIVERGED,"Git-backed ChangeSet branch is not deterministic: "+cs.branch);
         if(cs.publishedTip==null||cs.publishedTip.isBlank())throw new ObsException(STATE_DIVERGED,"Git-backed ChangeSet publishedTip is unavailable.");
-        if(!Set.of("Ready","AppliedUncommitted","CommittedUnpublished").contains(cs.executionState))throw new ObsException(STATE_DIVERGED,"Git-backed package Apply is not available from execution state: "+cs.executionState);
+        if(!Set.of("Ready","AppliedUncommitted","CommittedUnpublished","PublicationUncertain").contains(cs.executionState))throw new ObsException(STATE_DIVERGED,"Git-backed package Apply is not available from execution state: "+cs.executionState);
         Path journalPath=state.applyJournalPath(cs.changeSetId);ApplyJournal journal=Files.exists(journalPath)?ApplyJournal.from(state.readObject(journalPath)):null;
         if(journal!=null&&"Ready".equals(cs.executionState)&&!Objects.equals(journal.baseHead,cs.publishedTip)){verifyCompletedPublishedJournal(Path.of(allowed.path),cs,worktree,repoIdentity,journal);if(Objects.equals(journal.packageId,pkg.manifest.packageId)){assertCompletedApplyJournalRequest(journal,pkg,cs,repoIdentity,worktree);ApplicationAttempt already=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repoIdentity,worktree,pkg,SUCCESS,SUCCESS,"Package progression is already published at Ready tip "+cs.publishedTip+".",null);publishGitBackedBinding(action,reviewChatDecision,reviewChatPlan,cs,already);state.saveAttempt(already);return new ApplyResult(SUCCESS,already,cs,null,"Already satisfied through published Ready state.");}journal=null;}
+        if("PublicationUncertain".equals(cs.executionState)){
+            if(journal==null)throw new ObsException(STATE_DIVERGED,"PublicationUncertain ChangeSet is missing its durable Apply journal.");
+            assertApplyJournalRequest(journal,pkg,cs,repoIdentity,worktree);if(!Objects.equals(cs.lastPackageId,pkg.manifest.packageId))throw new ObsException(STATE_DIVERGED,"Another package has uncertain publication for this ChangeSet: "+cs.lastPackageId);
+            ApplicationAttempt already=attempt(attemptId,now,action==null?pkg.archivePath.getFileName().toString():action.name,repoIdentity,worktree,pkg,SUCCESS,SUCCESS,"Package files and local commit are already established with uncertain publication; automatic Apply Package will reconcile Publish.",null);publishGitBackedBinding(action,reviewChatDecision,reviewChatPlan,cs,already);state.saveAttempt(already);return new ApplyResult(SUCCESS,already,cs,null,"Already satisfied through PublicationUncertain; Publish reconciliation is required.");
+        }
         if(journal!=null)assertApplyJournalRequest(journal,pkg,cs,repoIdentity,worktree);
         if("CommittedUnpublished".equals(cs.executionState)){
             if(journal==null)throw new ObsException(STATE_DIVERGED,"CommittedUnpublished ChangeSet is missing its durable Apply journal.");

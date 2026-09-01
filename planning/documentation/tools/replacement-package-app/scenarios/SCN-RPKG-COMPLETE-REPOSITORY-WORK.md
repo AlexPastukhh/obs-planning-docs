@@ -8,18 +8,12 @@ Safely bring prepared repository work into the correct concrete local repository
 
 ## Main flow
 
-1. The user selects/registers a concrete Repository Target and supplies a replacement ZIP and/or `OBS-ACTION/1`. Input is passive until Apply.
-2. Ordinary `Apply` prepares immediately. `Apply (wait for ZIP)` freezes click-time archive/action/target inputs and retries only `PACKAGE_NOT_FOUND` roughly every two seconds for at most twelve seconds before entering the same prepared Apply path once.
-3. The package is fully validated. `PACKAGE.json.changeSetId` is the exact continuation identity: Active continues that exact work; Finalized blocks until explicit Reopen; UI selection, label similarity and recency cannot substitute another ChangeSet.
-4. The exact Repository Target is resolved. An existing ChangeSet's persisted target is authoritative. New work may use the current matching target, a unique other matching target, or explicit user choice when several clones match. No clone is silently substituted.
-5. Before mutation the application revalidates Git work-tree root/origin, readiness, package repository identity, path ownership/adoptability and expected source state for every operation.
-6. For `replace/delete`, raw current bytes may match the package base directly. Otherwise Git path-specific clean/filter semantics are used to prove equivalence. Real difference blocks as source changed; inability to verify equivalence fails closed.
-7. Only after complete preflight passes are declared paths mutated. Result bytes are verified; bounded rollback is attempted on failure and unresolved divergence is reported truthfully.
-8. Successful Apply creates/continues one ChangeSet, maintains repository-scoped ownership, records the attempt and persists cumulative Current Change/ReviewDiff.
-9. Refresh/Copy/Open Current Change are inspection conveniences, not approval gates.
-10. Finalize revalidates current work, stages only owned paths, commits only that logical work and pushes it. Empty cumulative work may finalize without an unnecessary commit.
-11. If local commit succeeds but push fails, the same ChangeSet remains Publication Pending (`CommittedPendingPush`). Retry Push continues the same work rather than creating a second logical item.
-12. Successful completion becomes Finalized and releases live ownership.
+1. The user supplies a replacement ZIP and/or `OBS-ACTION/1`; the current/registered Repository Target context remains available for exact target resolution. Input is passive until Apply Package.
+2. **Apply Package** prepares immediately. **Apply Package (wait for ZIP)** freezes click-time archive/action/target inputs and retries only `PACKAGE_NOT_FOUND` roughly every two seconds for at most twelve seconds before entering the same prepared operation once.
+3. The package is fully validated and the exact Repository Target is resolved. `PACKAGE.json.changeSetId` is the exact continuation identity; UI selection, label similarity and recency cannot substitute another ChangeSet, and same-origin clones are never silently substituted.
+4. When OBS-ACTION carries explicit `targetBranch`, the ordinary Git-backed path ensures/reuses the ChangeSet workspace and dispatches the same top-level operation through Apply → Commit → Publish until the package is proven `Ready` at its published tip. Retry resumes from persisted execution state rather than asking the user to press internal actions manually.
+5. When `targetBranch` is omitted, the compatibility legacy path remains available for already-existing legacy producer work: package/source/ownership preflight precedes mutation, successful Apply persists cumulative ReviewDiff, and legacy Finalize/Publication Pending/Reopen semantics remain unchanged.
+6. Git-backed Current Change/ReviewDecision/integration Finalize are still separate later migration work; until those slices migrate, Git-backed work remains fenced from legacy Review/Finalize.
 
 ## Git-backed migration branch — Start ChangeSet Workspace
 
@@ -38,6 +32,23 @@ Commit retry is idempotent across its side-effect boundaries. A journal-only sta
 The next modular extension is **Publish applied commit**. From `CommittedUnpublished(P1,C1)`, Publish re-proves the exact local package commit and checks the exact remote `changeset/<id>` branch before any push. Remote absence or exact previous `publishedTip=C0` permits one exact `C1` ref update protected by an explicit force-with-lease; remote `C1` is already satisfied. Any other observed remote tip returns `REMOTE_BRANCH_DIVERGED` without overwrite. Success is persisted only after a post-push exact remote lookup proves `C1`, then execution returns to `Ready(C1)` and `publishedTip=C1`.
 
 If a push command fails but the post-attempt remote lookup proves the branch is still absent/at `C0`, the state remains `CommittedUnpublished(P1,C1)` and Publish is retryable. If a push was attempted but the remote cannot be inspected afterward, execution becomes `PublicationUncertain(P1,C1)`. Retry from that state first reconciles remote: exact `C1` becomes already-satisfied `Ready(C1)` without another push; absent/`C0` may retry the exact leased push; another tip fails closed. The completed Apply journal is retained as the exact latest published package boundary; when the next package P2 begins from `Ready(C1)`, that old journal must first prove the published `C1` and is then replaced by the new `baseHead=C1` journal.
+
+### Ordinary automatic Apply Package composition
+
+The separate Git-backed actions remain independently callable domain/recovery boundaries, but they are no longer the ordinary user sequence. When an authorized `OBS-ACTION/1` includes explicit `targetBranch`, one top-level **Apply Package** operation reuses the existing package intake and target resolution, then:
+
+1. if `changeSetId` has no persisted ChangeSet, ensures SL-RPKG-11 using the package `changeSetId` / `changeSetLabel`, the resolved Repository Target and the explicit `targetBranch`;
+2. if the Git-backed workspace already exists, proves the package target/label/target-branch identity instead of recreating it;
+3. dispatches package-file Apply from persisted state;
+4. continues/recover Commit when needed;
+5. continues/reconciles Publish when needed;
+6. returns success only after the package is proven published at `Ready(C1)` (or the same published package is already satisfied).
+
+The same pasted command is therefore the retry/resume entry. `AppliedUncommitted` resumes at Commit, `CommittedUnpublished` resumes at Publish, `PublicationUncertain` reconciles Publish before any further package action, and already-published `Ready` is proof-only. A failure after an earlier successful internal action preserves that established state for the next retry.
+
+`targetBranch` is explicit operation input and is never guessed from the Repository Target's current checkout branch. If `targetBranch` is present for an already-existing legacy ChangeSet, the operation fails closed rather than converting legacy work in place. Omitting `targetBranch` retains the legacy/manual compatibility path, which is needed for already-open legacy ChangeSets created before this composition existed.
+
+The Swing **Start workspace**, **Commit applied** and **Publish** controls remain useful diagnostic/recovery/migration surfaces, but ordinary target work does not require the user to copy IDs/labels or press those internal steps manually.
 
 This remains a deliberate migration boundary. Git-backed Apply/Commit/Publish do **not** yet generate the legacy owned-path ReviewDiff, and Git-derived Current Change, PR/ReviewDecision and Finalize are still unmigrated. Legacy Review and Finalize are therefore blocked for the Git-backed ChangeSet instead of falling back to the Repository Target main workspace.
 

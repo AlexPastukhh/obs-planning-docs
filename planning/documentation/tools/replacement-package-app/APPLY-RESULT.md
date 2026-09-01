@@ -47,11 +47,15 @@ Only `status: applied` authorizes downstream expected-state advancement with tha
 
 ## Clipboard and ReviewDiff boundary
 
-Successful Apply first copies the typed receipt to the clipboard with read-back verification. For a **legacy** ChangeSet, Apply then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting; with `Clipboard` (the default) or `Both`, that ReviewDiff becomes the final clipboard content, while `RepoDiffFile` leaves the receipt final. For a **Git-backed** ChangeSet in the current modular `Ready(C0) → AppliedUncommitted(P1) → CommittedUnpublished(P1,C1) → Ready(C1)` migration, SL-RPKG-02 has not migrated yet, so successful Apply generates no legacy ReviewDiff and the typed receipt remains the final clipboard content. The separate Commit and Publish actions do not create another `OBS-APPLY-RESULT/1`; they advance the same package execution state. `PublicationUncertain` is an internal recoverable Publish state and likewise does not synthesize a second Apply receipt. Clipboard or legacy diff-publication failure is a handoff warning and does not rewrite a proven Apply result.
+For a **legacy** ChangeSet, successful Apply copies the typed receipt to the clipboard with read-back verification and then publishes the newly generated canonical ReviewDiff according to the persisted `reviewDiffHandling` setting; with `Clipboard` (the default) or `Both`, that ReviewDiff becomes the final clipboard content, while `RepoDiffFile` leaves the receipt final.
+
+For an automatic Git-backed Apply Package selected by explicit OBS-ACTION `targetBranch`, the top-level operation withholds the success receipt until the same invocation has ensured/reused the workspace and reached/proven published `Ready` through Apply → Commit → Publish. If Commit/Publish fails, the failure receipt reports that terminal invocation while the already-established Git-backed execution state remains available for retry; repeating the same command resumes from that state. A later successful retry emits the ordinary `status: applied` receipt. `PublicationUncertain` is an internal recoverable Publish state and does not synthesize a false success receipt before reconciliation.
+
+Manual diagnostic Apply / Commit / Publish actions remain available. A Git-backed manual Apply that does not opt into the automatic composition still produces no legacy ReviewDiff; SL-RPKG-02 has not migrated yet. Clipboard or legacy diff-publication failure is a handoff warning and does not rewrite a proven repository result.
 
 Terminal non-retryable Apply failures copy the typed failure/uncertain receipt to the clipboard and do not publish a ReviewDiff.
 
-`PACKAGE_NOT_FOUND` is special while **Apply (wait for ZIP)** is polling: intermediate missing-file observations are not terminal outcomes and therefore do not overwrite the clipboard. If the bounded wait expires, the UI reports the typed `PACKAGE_NOT_FOUND` failure; no false intermediate receipt is emitted.
+`PACKAGE_NOT_FOUND` is special while **Apply Package (wait for ZIP)** is polling: intermediate missing-file observations are not terminal outcomes and therefore do not overwrite the clipboard. If the bounded wait expires, the UI reports the typed `PACKAGE_NOT_FOUND` failure; no false intermediate receipt is emitted.
 
 Unexpected Apply exceptions are normalized to the stable `INTERNAL_ERROR` code before they reach receipt, persisted operation outcome or Apply UI reporting.
 

@@ -49,7 +49,7 @@ final class MainWindow extends JFrame {
         root.add(row("Windows launcher",launcherState,button("Install / update",this::installWindowsLauncher),button("Open folder",this::openWindowsLauncherFolder),button("Copy path",this::copyWindowsLauncherPath)));
         root.add(row("Archive ZIP",archive,button("Browse",()->chooseFile(archive))));
         root.add(new JLabel("OBS-ACTION/1 (optional when ZIP is selected explicitly):"));root.add(new JScrollPane(action));
-        root.add(row("",button("Apply",this::apply),button("Apply (wait for ZIP)",this::applyWithPolling)));
+        root.add(row("",button("Apply Package",this::apply),button("Apply Package (wait for ZIP)",this::applyWithPolling)));
         root.add(row("ChangeSet",changeSets,button("Start workspace",this::startChangeSetWorkspace),button("Commit applied",this::commitAppliedPackage),button("Publish",this::publishAppliedCommit)));
         root.add(row("",allRepositories,showHistory));
         root.add(row("Status",status));root.add(row("ChangeSet ID",changeSetId));
@@ -222,22 +222,22 @@ final class MainWindow extends JFrame {
     private Path repoPath(){if(selectedRepository==null)throw new Core.ObsException(Core.REPOSITORY_MISMATCH,"Select or add an allowed repository first.");return Path.of(selectedRepository.path());}
     private void startChangeSetWorkspace(){
         if(selectedRepository==null)throw new Core.ObsException(Core.REPOSITORY_MISMATCH,"Select or add an allowed repository first.");String repositoryId=selectedRepository.id();JTextField id=new JTextField(UUID.randomUUID().toString(),38),label=new JTextField(38),targetBranch=new JTextField(core.currentRepositoryBranch(repositoryId),24);
-        JPanel panel=new JPanel();panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));panel.add(new JLabel("ChangeSet ID"));panel.add(id);panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("ChangeSet label"));panel.add(label);panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Target branch"));panel.add(targetBranch);panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Creates changeset/<id> plus an isolated worktree. Existing Apply remains blocked for this workspace until SL-RPKG-01 migration."));
+        JPanel panel=new JPanel();panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));panel.add(new JLabel("ChangeSet ID"));panel.add(id);panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("ChangeSet label"));panel.add(label);panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Target branch"));panel.add(targetBranch);panel.add(Box.createVerticalStrut(8));panel.add(new JLabel("Manual/diagnostic action. Ordinary OBS-ACTION with targetBranch ensures this workspace automatically."));
         int choice=JOptionPane.showConfirmDialog(this,panel,"Start ChangeSet Workspace",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);if(choice!=JOptionPane.OK_OPTION)return;String cs=id.getText().trim(),workLabel=label.getText().trim(),target=targetBranch.getText().trim();showOperation("INFO Starting ChangeSet workspace…");
         runBackground("Start ChangeSet Workspace",()->core.startChangeSetWorkspace(repositoryId,cs,workLabel,target),result->{Core.ChangeSet created=result.changeSet();reloadChangeSets(created.changeSetId);appendToOutput(created.changeSetId,(result.alreadySatisfied()?"SUCCESS Workspace already satisfied: ":"SUCCESS Workspace created: ")+created.branch+" @ "+shortSha(created.baseCommit)+" · "+created.worktree);notifyOperation("ChangeSet workspace ready",created.changeSetLabel,repositoryId,false);},e->trackedFailure("Start ChangeSet Workspace",e,repositoryId,cs));
     }
     private void apply(){
         saveHandling();saveReviewChatTitleIgnoredCharacters();
         Path zip=archive.getText().isBlank()?null:Path.of(archive.getText().trim());String actionText=action.getText(),currentId=selectedRepository==null?null:selectedRepository.id();
-        showOperation("INFO Preparing Apply…");
-        runBackground("Prepare Apply",()->core.prepareApply(actionText,zip,currentId),prepared->continuePreparedApply(prepared,currentId),e->trackedFailure("Apply",e,currentId,null));
+        showOperation("INFO Preparing Apply Package…");
+        runBackground("Prepare Apply Package",()->core.prepareApply(actionText,zip,currentId),prepared->continuePreparedApply(prepared,currentId),e->trackedFailure("Apply Package",e,currentId,null));
     }
 
     private void applyWithPolling(){
         saveHandling();saveReviewChatTitleIgnoredCharacters();
         Path zip=archive.getText().isBlank()?null:Path.of(archive.getText().trim());String actionText=action.getText(),currentId=selectedRepository==null?null:selectedRepository.id();
         showOperation("INFO Waiting up to 12 seconds for replacement ZIP…");
-        runBackground("Prepare Apply (wait for ZIP)",()->prepareApplyWithPolling(actionText,zip,currentId),prepared->continuePreparedApply(prepared,currentId),e->trackedFailure("Apply",e,currentId,null));
+        runBackground("Prepare Apply Package (wait for ZIP)",()->prepareApplyWithPolling(actionText,zip,currentId),prepared->continuePreparedApply(prepared,currentId),e->trackedFailure("Apply Package",e,currentId,null));
     }
 
     private Core.PreparedApply prepareApplyWithPolling(String actionText,Path zip,String currentId)throws Exception{
@@ -257,14 +257,14 @@ final class MainWindow extends JFrame {
         try{
             for(Core.OperationNotice notice:prepared.notices())appendToOutput(csId,notice.level()+" "+notice.code()+" · "+notice.message());
             Core.ApplyTargetResolution resolution=prepared.targetResolution();Core.RepositoryConfig target=resolution.target();
-            if(target==null){JComboBox<RepositoryItem> choices=new JComboBox<>();for(Core.RepositoryConfig r:resolution.candidates())choices.addItem(new RepositoryItem(r));int selected=JOptionPane.showConfirmDialog(this,choices,"Select concrete Repository Target",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);if(selected!=JOptionPane.OK_OPTION){appendToOutput(csId,"INFO Apply cancelled before repository mutation.");return;}RepositoryItem item=(RepositoryItem)choices.getSelectedItem();if(item==null){appendToOutput(csId,"INFO Apply cancelled before repository mutation.");return;}target=item.value;}
+            if(target==null){JComboBox<RepositoryItem> choices=new JComboBox<>();for(Core.RepositoryConfig r:resolution.candidates())choices.addItem(new RepositoryItem(r));int selected=JOptionPane.showConfirmDialog(this,choices,"Select concrete Repository Target",JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);if(selected!=JOptionPane.OK_OPTION){appendToOutput(csId,"INFO Apply Package cancelled before repository mutation.");return;}RepositoryItem item=(RepositoryItem)choices.getSelectedItem();if(item==null){appendToOutput(csId,"INFO Apply Package cancelled before repository mutation.");return;}target=item.value;}
             if(selectedRepository==null||!Objects.equals(selectedRepository.id(),target.id())){reloadRepositories(target.id(),null);showOutputForChangeSet(csId);appendToOutput(csId,"✓ Repository selected: "+target.name());}
             Core.ReviewChatBindingDecision decision=reviewChatDecision(prepared);
-            if(decision==null){appendToOutput(csId,"INFO Apply cancelled before repository mutation.");return;}
+            if(decision==null){appendToOutput(csId,"INFO Apply Package cancelled before repository mutation.");return;}
             Core.AuthorizedApply authorized=core.authorizeApply(prepared,target.id(),decision);Core.RepositoryConfig selectedTarget=target;
-            showOutputForChangeSet(csId);appendToOutput(csId,"INFO Applying prepared package…");
-            runBackground("Apply",()->core.executeApply(authorized),r->completeApply(r,selectedTarget),e->trackedFailure("Apply",e,selectedTarget.id(),csId));
-        }catch(Throwable e){trackedFailure("Apply",e,initialRepositoryId,csId);}
+            showOutputForChangeSet(csId);appendToOutput(csId,"INFO Executing prepared Apply Package…");
+            runBackground("Apply Package",()->core.executeApply(authorized),r->completeApply(r,selectedTarget),e->trackedFailure("Apply Package",e,selectedTarget.id(),csId));
+        }catch(Throwable e){trackedFailure("Apply Package",e,initialRepositoryId,csId);}
     }
 
     private Core.ReviewChatBindingDecision reviewChatDecision(Core.PreparedApply prepared){
@@ -280,7 +280,13 @@ final class MainWindow extends JFrame {
     }
 
     private void completeApply(Core.ApplyResult r,Core.RepositoryConfig target){
-        String cs=r.changeSet().changeSetId;appendToOutput(cs,r.review()==null?("CommittedUnpublished".equals(r.changeSet().executionState)?"SUCCESS Apply package progression is already committed locally; Publish applied commit is available.":"SUCCESS Apply. Package files are AppliedUncommitted in the isolated ChangeSet worktree; Commit applied package is available."):"SUCCESS Apply. ReviewDiff is current.");if(r.diagnostic()!=null&&!r.diagnostic().isBlank())appendToOutput(cs,"WARNING "+r.diagnostic());if(r.attempt().handoffWarning!=null&&!r.attempt().handoffWarning.isBlank())appendToOutput(cs,"WARNING "+r.attempt().handoffWarning);reloadChangeSets(cs);notifyOperation("Apply succeeded",r.changeSet().changeSetLabel,target.id(),false);
+        String cs=r.changeSet().changeSetId;boolean publishedReady=r.review()==null&&r.changeSet().worktree!=null&&"Ready".equals(r.changeSet().executionState)&&r.changeSet().publishedTip!=null&&Objects.equals(r.changeSet().publishedTip,r.changeSet().commitSha);String message;
+        if(r.review()!=null)message="SUCCESS Legacy Apply complete. ReviewDiff is current.";
+        else if(publishedReady)message="SUCCESS Apply Package complete. Package is committed and published at "+shortSha(r.changeSet().publishedTip)+".";
+        else if("CommittedUnpublished".equals(r.changeSet().executionState))message="SUCCESS Package progression is committed locally; manual Publish remains available.";
+        else if("PublicationUncertain".equals(r.changeSet().executionState))message="SUCCESS Package progression reached PublicationUncertain; manual Publish can reconcile.";
+        else message="SUCCESS Package files are AppliedUncommitted; manual Commit applied remains available.";
+        appendToOutput(cs,message);if(r.diagnostic()!=null&&!r.diagnostic().isBlank())appendToOutput(cs,"INFO "+r.diagnostic());if(r.attempt().handoffWarning!=null&&!r.attempt().handoffWarning.isBlank())appendToOutput(cs,"WARNING "+r.attempt().handoffWarning);reloadChangeSets(cs);notifyOperation(publishedReady?"Apply Package succeeded":"Apply stage succeeded",r.changeSet().changeSetLabel,target.id(),false);
     }
     private void commitAppliedPackage(){if(selectedChangeSet==null)throw new Core.ObsException(Core.STATE_DIVERGED,"Select a ChangeSet first.");String cs=selectedChangeSet.changeSetId,repo=selectedRepository==null?null:selectedRepository.id(),label=selectedChangeSet.changeSetLabel;appendToOutput(cs,"INFO Committing applied package…");runBackground("Commit Applied Package",()->core.commitAppliedPackage(cs),r->{appendToOutput(cs,(r.alreadySatisfied()?"SUCCESS Package commit already satisfied/recovered: ":"SUCCESS Package committed locally: ")+r.commitSha());reloadChangeSets(cs);notifyOperation("Package commit ready",label,repo,false);},e->{trackedFailure("Commit Applied Package",e,repo,cs);reloadChangeSets(cs);});}
     private void publishAppliedCommit(){if(selectedChangeSet==null)throw new Core.ObsException(Core.STATE_DIVERGED,"Select a ChangeSet first.");String cs=selectedChangeSet.changeSetId,repo=selectedRepository==null?null:selectedRepository.id(),label=selectedChangeSet.changeSetLabel;appendToOutput(cs,"INFO Publishing applied commit…");runBackground("Publish Applied Commit",()->core.publishAppliedCommit(cs),r->{appendToOutput(cs,(r.alreadySatisfied()?"SUCCESS Package commit already published/reconciled: ":"SUCCESS Package commit published: ")+r.commitSha());reloadChangeSets(cs);notifyOperation("Package publish ready",label,repo,false);},e->{trackedFailure("Publish Applied Commit",e,repo,cs);reloadChangeSets(cs);});}

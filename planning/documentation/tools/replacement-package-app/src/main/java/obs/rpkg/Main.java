@@ -19,7 +19,7 @@ public final class Main {
                     Core.ApplyResult r;
                     if (a.containsKey("action-file")) r = core.applyAction(Files.readString(path(a,"action-file")), archive, repo);
                     else r = core.applyPackage(archive, repo);
-                    System.out.println("SUCCESS changeSetId=" + r.changeSet().changeSetId + " reviewFile=" + r.review().diffPath());
+                    System.out.println("SUCCESS changeSetId=" + r.changeSet().changeSetId + " state=" + (r.changeSet().executionState==null?"legacy":r.changeSet().executionState) + (r.changeSet().publishedTip==null?"":" publishedTip="+r.changeSet().publishedTip) + (r.review()==null?"":" reviewFile="+r.review().diffPath()));
                     if (r.attempt().handoffWarning != null && !r.attempt().handoffWarning.isBlank()) System.out.println("WARNING " + r.attempt().handoffWarning);
                 }
                 case "review" -> {

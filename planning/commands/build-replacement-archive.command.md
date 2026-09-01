@@ -23,7 +23,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "ownerFiles": [
     "planning/documentation/build-replacement-archive-workflow.md"
   ],
-  "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION containing required action, name, archive and packageId fields; packageId matches PACKAGE.json; chatTabTitle is included only when an exact intended title was explicitly supplied/selected; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
+  "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION containing action, name, archive and packageId; for new independent target-mode work also include exact targetBranch so the consumer can automatically ensure workspace → Apply → Commit → Publish. A continuation of an already-existing legacy ChangeSet may omit targetBranch for compatibility. packageId matches PACKAGE.json; chatTabTitle is included only when an exact intended title was explicitly supplied/selected; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
   "permissionMode": "package-no-commit-push",
   "keyReminders": [
     "Package-producer mode, not archive read-source mode.",
@@ -37,7 +37,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Before reusing a changeSetId, verify that the ChangeSet is still open. Acceptance of its ReviewDiff as APPROVABLE finalizes/closes it for future package production.",
     "After an APPROVABLE ReviewDiff is accepted, every later replacement archive starts a new changeSetId + stable new changeSetLabel + new packageId, even when the later work is conceptually related or touches the same files.",
     "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
-    "Return one short OBS-ACTION containing action, name, archive and packageId; packageId must match PACKAGE.json.",
+    "Return one short OBS-ACTION containing action, name, archive and packageId; for new independent target-mode work include exact targetBranch from checked source/target context. Omit targetBranch only when intentionally continuing an already-existing legacy ChangeSet; packageId must match PACKAGE.json.",
     "Include chatTabTitle only when the exact intended ChatGPT conversation/tab title was explicitly supplied or selected for the active invocation; otherwise omit it.",
     "Do not include clipboard/review-diff settings in OBS-ACTION.",
     "Do not apply locally, generate review/finalization commands, commit or push."

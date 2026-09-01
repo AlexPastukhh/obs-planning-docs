@@ -58,6 +58,7 @@ action: apply-package
 name: <human-readable ApplicationAttempt label>
 archive: <downloaded archive filename hint>
 packageId: <same packageId as PACKAGE.json>
+targetBranch: <target branch for ordinary automatic Git-backed Apply Package; compatibility-optional>
 chatTabTitle: <optional legacy exact intended ChatGPT conversation/tab title hint>
 chatContextToken: <optional UUID emitted by an explicit capture-chat-context invocation side effect>
 ```
@@ -67,6 +68,12 @@ Action rules:
 - `archive` is a filename/hint, not an absolute path or repository-operation authority;
 - the consumer resolves/selects a concrete ZIP and requires its manifest `packageId` to exactly match the action `packageId`;
 - `name` is presentation/history text and may vary between attempts;
+- `targetBranch` opts the invocation into the ordinary automatic Git-backed Apply Package composition. It is explicit operation input, not package repository identity and never inferred from whichever branch happens to be checked out in the Repository Target;
+- for new independent target-mode work, the producer emits the exact intended `targetBranch` from checked invocation/source context. A continuation of an already-existing legacy ChangeSet may omit `targetBranch` so that the compatibility legacy Apply path remains available;
+- when `targetBranch` is present and the package ChangeSet does not yet exist, the consumer uses the already-resolved Repository Target plus `PACKAGE.json` `changeSetId` / `changeSetLabel` to ensure the SL-RPKG-11 workspace, then continues the same top-level operation through package-file Apply, Commit and Publish;
+- when `targetBranch` is present and the ChangeSet already exists as Git-backed work, it must match the persisted target branch/target/label. The same command resumes from persisted execution truth (`Ready`, `AppliedUncommitted`, `CommittedUnpublished`, `PublicationUncertain`) and reaches/proves published `Ready`; it never silently restarts unrelated work;
+- when `targetBranch` is present but the ChangeSet already exists as legacy work, the consumer fails closed instead of reinterpreting that ChangeSet as a Git-backed workspace;
+- when `targetBranch` is omitted, current legacy/manual compatibility semantics remain available and the consumer does not auto-create a Git-backed workspace merely from package identity;
 - `chatContextToken` is optional and is emitted only when the active command invocation explicitly carried `capture-chat-context`. It is an opaque one-invocation bind/rebind authority: after unique resolution the captured conversation becomes the persisted Review chat even when another conversation was already bound. It never identifies the package, Repository Target or ChangeSet, never grants repository-operation authority, and MUST NOT be copied into a later `OBS-ACTION` unless that later command invocation supplies its own token. The consumer validates it as a UUID and one token may be associated with only one package/ChangeSet request;
 - `chatTabTitle` remains optional legacy fallback metadata. When `chatContextToken` is present, token resolution is authoritative for that action and title matching/rebind preparation is not performed. Token rebind does not ask again because explicit `Bind + ...` supplied rebind authority; legacy title behavior keeps its existing keep/rebind/cancel confirmation. Consumer title-matching configuration is local application state and is never carried in `OBS-ACTION`;
 - before any repository mutation, the consumer parses the action once and builds one prepared Apply context. `chatTabTitle` is normalized together with current inventory titles by deleting only the Unicode characters configured in the persisted `reviewChatTitleIgnoredCharacters` setting, then compared by exact case-sensitive equality. The default ignored-character set is empty, preserving literal matching. Zero or multiple matches never guess a destination; they are warnings in operation Output and Apply may continue with manual binding available;
