@@ -8,61 +8,76 @@ Scope: how Replacement Package App documentation designs and preserves Scenario 
 Documentation must make these layers understandable without turning any one layer into a duplicate of another:
 
 1. what accepted user/application behavior is true now;
-2. how a Scenario is behaviorally designed, including meaningful alternatives and composition trade-offs;
-3. what known application behavior may change or expand through Scenario-owned Application Evolution Steps;
-4. when selected Application Evolution Steps are planned to happen and which steps depend on or enable others;
-5. which Behavior Items express durable application/business guarantees of selected Scenario behavior;
-6. which UI Requirements intentionally constrain presentation/interaction without being confused with business behavior;
-7. which Domain owners directly implement the business rules and how those owners must change to realize selected Application Evolution Steps;
-8. which Slices realize Scenario behavior and how their implementation/composition must change to realize selected Application Evolution Steps;
-9. which durable implementation/architecture requirements matter beyond behavior itself;
-10. how to inspect current source implementation without manually maintaining code-level call traces in normative documentation;
-11. how to keep documentation readable, intuitively named and structurally clear without losing meaning;
-12. why every durable documentation owner exists and which explicit use case/process creates, maintains or consumes it.
+2. how Scenario behavior and Screen realization are explored together before either is selected;
+3. which Feature Interactions, Behavior Items and interaction/component-local UI Requirements define selected Scenario behavior;
+4. which selected Screen model owns spatial/window meaning, Scenario/FI-to-Screen relations and Screen-owned behavior requirements;
+5. what known application behavior may change or expand through Scenario-owned Evolution Steps;
+6. when selected Evolution Steps and materially independent local impacts are likely/intended to happen, and which steps depend on or enable others;
+7. which Domain owners implement business rules and which durable implementation requirements make current meaning and materially known future evolution safe to realize;
+8. which Slices and optional Shared Implementation Capabilities realize Scenario behavior through coherent composition, reuse and ports/boundaries;
+9. how local proof is planned and normally realized test-first once selected meaning and a credible executable proof boundary are known;
+10. which Test Items preserve non-obvious proof quality without turning tests into a second semantic authority;
+11. which shared testing decisions belong in Test Strategy and which reusable test machinery deserves a Shared Test Capability;
+12. how Practical Acceptance plans are distinguished from executed Evidence;
+13. how to inspect current source/test mechanics without manually maintaining code-level traces in normative documentation;
+14. how to keep documentation readable, intuitively named and structurally clear without losing meaning;
+15. why every durable documentation owner exists and which explicit use case/process creates, maintains or consumes it.
 
-The main semantic flow is:
+The target semantic/implementation/proof flow is:
 
 ```text
 Scenario Goal
 → Scenario Process Specification
 → Feature Interactions
    ├─ Behavior Items + Reasons
-   └─ UI Requirements
+   └─ FI/component-local UI Requirements
+↔ selected Screen design
+   ├─ Screen Map / Scenario×Screen / FI×Screen
+   └─ Screen Behavior Items
 → Domain discovery and Domain owners
 → optional Domain Implementation Items
-→ Slice / optional cross-cutting capability
-→ optional Slice Implementation Items
-→ code / tests
+→ Slice / optional Shared Implementation Capability
+→ optional Slice/shared Implementation Items
+→ local Tests / optional Test Items
+→ exact production + test code
+→ executed automated/practical Evidence
 ```
 
-Application evolution is deliberately split by responsibility:
+Evolution responsibility is deliberately split:
 
 ```text
 Scenario owner
-→ Application Evolution Step
+→ Evolution Step
 → WHAT application behavior changes
 
 Evolution Steps Map
-→ sequence / dependency / parallelism / planned timing
-→ WHEN and in what order selected steps are intended to happen
+→ rough horizon / likelihood / dependency / order / readiness
+→ WHEN / HOW LIKELY selected evolution and materially independent impacts are
 
-Domain / Slice / Cross-cutting owners
-→ Changes by Application Evolution Step
-→ HOW each implementation/semantic owner must change to realize that step
+Domain / Slice / Screen / Shared Implementation Capability
+→ Evolution Impact
+→ WHAT changes in this owner when that canonical step is realized
+
+Implementation Items
+→ durable HOW requirements for current correctness, implementation quality
+  and high-quality realization of materially known evolution
 ```
 
-Design exploration precedes authoritative Scenario maintenance when behavior is not yet selected:
+`Evolution Impact` is not a second implementation-requirement list. It records future owner delta. `DI-*`, `SI-*` and shared implementation items hold durable requirements that shape the owner now, including ports, composition seams, stable boundaries, identity/ownership rules or other constraints justified by materially known evolution. A known future capability may justify such a boundary now without justifying premature implementation of the future behavior itself.
+
+Design exploration precedes authoritative Scenario/Screen maintenance when behavior or spatial realization is not yet selected:
 
 ```text
 Scenario Goal
 → candidate Scenario Process Variants
-→ candidate Feature Interaction Variants
-→ compare contracts / composition / complexity
-→ select or refine behavioral design
-→ current Scenario truth OR Scenario-owned Application Evolution Step OR retained/rejected alternative
+↔ candidate Feature Interaction Variants
+↔ candidate Screen Set / Screen Variants
+→ compare contracts / composition / spatial realization / complexity
+→ select or refine design
+→ current Scenario + Screen truth OR Evolution Step OR retained/rejected alternative
 ```
 
-This owner defines the documentation work itself. It does not replace Scenario owners, the Evolution Steps Map, Domain owners, `slices.md`, focused contracts, source or tests.
+This owner defines documentation work and authority boundaries. It does not replace Scenario owners, Screen owners when they exist, the Evolution Steps Map, Domain owners, `slices.md`, `testing-plan.md`, focused contracts, source, tests or executed Evidence.
 
 ## Minimal shared terms
 
@@ -122,7 +137,7 @@ A **runtime branch** is behavior actually available in the selected/current Scen
 
 A **design alternative** is a candidate/rejected/possible way the Scenario or Feature Interaction could have been designed while choosing behavior.
 
-Do not represent a rejected alternative as a current runtime branch. Considering an alternative does not automatically create an Application Evolution Step.
+Do not represent a rejected alternative as a current runtime branch. Considering an alternative does not automatically create an Evolution Step.
 
 ### Behavior Item
 
@@ -160,21 +175,20 @@ A BI normally sits under the Feature Interaction where its behavioral need is cl
 
 An intentional requirement about how Scenario behavior is presented or controlled through UI.
 
-UI Requirements are a separate requirement class from Behavior Items:
+UI Requirements remain separate from business/application Behavior Items. Interaction/component-local UI Requirements normally stay near the Feature Interaction whose behavior gives them meaning.
+
+A rule whose canonical meaning belongs to a Screen as a spatial/window owner should instead be maintained by the selected Screen model as a **Screen Behavior Item** and referenced from Scenario/FI prose where needed. Do not keep a second authoritative copy in the Scenario merely because the Process Specification must still make observable behavior understandable.
 
 ```text
-Scenario Requirements
+Scenario/FI
 ├─ Behavior Items
-└─ UI Requirements
+└─ interaction/component-local UI Requirements
+
+Screen owner
+└─ Screen Behavior Items
 ```
 
-A UI Requirement may be:
-
-- Feature Interaction-local;
-- component-local inside a Feature Interaction;
-- screen-level when no single Feature Interaction honestly owns it.
-
-Do not turn accidental current layout into normative documentation. A current button position, pixel value or visual detail is not a durable UI Requirement merely because it exists. Record intentional presentation/interaction constraints worth preserving across implementation change.
+Do not turn accidental current layout, pixel positions or incidental visual structure into normative requirements. Record only intentional presentation/interaction/spatial constraints worth preserving across implementation change.
 
 ### Strengths, Problems, Complexity, Risks and Questions
 
@@ -190,40 +204,25 @@ Useful complexity dimensions when material include user interaction, Scenario/pr
 
 A key design question is not merely “which variant has less complexity?” but “where does this variant place complexity, and is that the right place for this Scenario?”
 
-### Application Evolution Step
+### Evolution Step
 
-An Application Evolution Step is one coherent **change in application behavior** owned canonically by a Scenario.
+An Evolution Step is one coherent **change in application behavior** owned canonically by a Scenario.
 
-It answers **what changes** for the application/user process. It may describe, for example:
+It answers **what changes** for the application/user process. It may add/remove/replace/compose/split Feature Interactions, change interaction contracts/branches/outcomes, add/change/remove Behavior Items or UI requirements, affect selected Screen realization, extend a Scenario, or link a full planned future replacement Scenario when the change is too broad to remain readable as a local delta.
 
-- adding/removing/replacing/composing/splitting Feature Interactions;
-- changing interaction contracts, branches or outcomes;
-- adding/changing/removing Behavior Items;
-- adding/changing/removing UI Requirements;
-- extending the Scenario with new behavior;
-- replacing the current Scenario with a separately documented planned future Scenario when the change is too broad to remain understandable as a local delta.
+The canonical step does **not** describe Domain/Slice/Screen/test implementation delta. Those consequences belong to `Evolution Impact` in affected lower owners.
 
-The canonical step does **not** describe how Domain or Slice implementation is changed. Those implementation/semantic consequences belong to `Changes by Application Evolution Step` in the affected lower owners.
+Each step has one canonical Scenario owner. If it affects several Scenarios, choose the Scenario where the user/application behavioral change is most naturally authoritative; other Scenario owners reference the same step rather than copying it.
 
-Each step has one canonical Scenario owner. If it affects several Scenarios, choose the Scenario where the user/application behavioral change is most naturally authoritative; other Scenario owners reference the same step instead of copying its definition.
-
-Use a stable **semantic** ID/name rather than an ordinal that pretends to define roadmap order. For example:
+Use a stable semantic ID/name rather than an ordinal that pretends to define roadmap order, for example:
 
 ```text
 EVO-RPKG-GIT-DERIVED-CURRENT-CHANGE — Derive Current Change from Git revision boundaries
 ```
 
-Avoid IDs such as `EVO-RPKG-001` when `001` has no meaning beyond current list position.
+A step may carry semantic/planning intent such as `URGENT`, `PLANNED` or `POSSIBLE` when useful. Intent does not own exact sequence, rough horizon, likelihood/confidence, dependency or readiness; those planning relationships belong to the Evolution Steps Map.
 
-A step may carry intent such as `URGENT`, `PLANNED` or `POSSIBLE` when that distinction is useful:
-
-- **URGENT** — selected change requiring near-term attention;
-- **PLANNED** — selected future change/extension;
-- **POSSIBLE** — useful plausible evolution, explicitly non-binding.
-
-Intent does not own exact sequence. The Evolution Steps Map owns sequencing and dependencies.
-
-When a step is accepted as implemented, resulting behavior becomes current Scenario truth. The step need not remain as an active future item; keep historical rationale only when it still helps explain current meaning.
+When a step is accepted as implemented, resulting behavior becomes current Scenario truth. The step need not remain as an active future item; retain historical rationale only when it still materially explains current meaning.
 
 ### Planned future Scenario
 
@@ -231,60 +230,131 @@ A future independently meaningful user-world Scenario may be documented as a ful
 
 Use the same Scenario form with a clear status such as `planned future Scenario owner`. Do not hide a complete future Scenario inside another Scenario's Evolution Step.
 
-A current Scenario's Application Evolution Step may link `Replacement Scenario` when planned change is so broad that a separate full future Scenario communicates the target meaning better than a large local delta.
+A current Scenario's Evolution Step may link `Replacement Scenario` when planned change is so broad that a separate full future Scenario communicates the target meaning better than a large local delta.
 
 ### Evolution Steps Map
 
-[`evolution-steps-map.md`](evolution-steps-map.md) is the planning owner for **when and in what dependency/order selected Application Evolution Steps should happen**.
+[`evolution-steps-map.md`](evolution-steps-map.md) is the planning owner for **when, in what dependency/order and with what rough planning likelihood/readiness selected evolution is intended to happen**.
 
 It may show:
 
-- planned sequence;
-- dependencies/prerequisites;
-- what a step enables;
+- rough horizon or relative timing;
+- likelihood/planning confidence when useful;
+- dependencies/prerequisites and what a step enables;
 - parallelizable steps;
 - conditional/optional branches;
-- planned future Scenarios reached/replaced by steps.
+- implementation readiness when material;
+- planned future Scenarios reached/replaced by steps;
+- a materially independent local `Evolution Impact` item when its timing/likelihood differs enough from the parent step to deserve explicit planning visibility.
 
-It references canonical Scenario-owned Evolution Steps and does not redefine their behavioral content.
+The map references canonical Scenario-owned Evolution Steps and lower-owner impacts; it does not redefine their behavioral or implementation delta. Step identity remains semantic and stable while map planning changes.
 
-The map owns order; Evolution Step IDs do not.
+### Evolution Impact
 
-### Changes by Application Evolution Step
+A Domain, Slice, Screen or Shared Implementation Capability does **not** own Evolution Steps.
 
-A Domain, Slice or Cross-cutting Capability does **not** own Application Evolution Steps.
+When a canonical Scenario-owned step affects that owner, `Evolution Impact` records **what changes in this owner when the step is realized**. It is future owner delta, not a duplicate list of current architecture requirements.
 
-When an application step affects that owner, use a section named `Changes by Application Evolution Step` (or an equally clear equivalent) to describe **how this owner must change to realize the Scenario-owned step**.
+Use three change kinds when they add meaning:
 
-Typical content includes:
+- **Expansion** — preferred additive change: extend capability, compose another implementation/consumer, add behavior through a stable port/boundary, or add corresponding proof;
+- **Refactoring** — behavior-preserving structural improvement for readability, cohesion, testability or easier extension;
+- **Forced Migration** — existing logic/authority/representation must be moved or substantially reworked because the current structure cannot realize the selected evolution through reasonable expansion/composition.
 
-- link/reference to the canonical Application Evolution Step;
-- Domain semantic/invariant/authority change, or Slice/cross-cutting responsibility/composition change;
-- affected `DI-*` / `SI-*` items when useful;
-- local architecture decision when material;
-- compatibility/transitional implementation rule when it genuinely matters.
+`Forced Migration` is an architecture-pressure signal, not the preferred evolution mechanism. Analysis should strive to discover avoidable forced migration early and express the needed current boundary/port/composition constraint as an Implementation Item. Do not duplicate that Implementation Item's `Requirement + Reason` inside `Evolution Impact`; reference it only when needed to make the future delta understandable.
+
+A materially independent impact may be referenced by the Evolution Steps Map when it has different timing, likelihood or dependency meaning from the parent Evolution Step.
+
+When Tests are embedded in the affected owner, material test-suite change is part of that same owner's `Evolution Impact`: adding proof is normally Expansion and behavior-preserving suite/fixture reorganization is Refactoring. Do not create a parallel test-evolution owner merely because tests change; most Evolution Steps need no separate test-suite impact note.
 
 ### Domain Implementation Item
 
-A Domain Implementation Item (`DI-*`) is an optional durable requirement about how a Domain owner must be shaped so that it can implement its Behavior Items correctly and evolve safely.
+A Domain Implementation Item (`DI-*`) is an optional durable requirement governing how a Domain owner must be shaped.
 
-It may be derived from one or more BI, a Domain invariant/consistency boundary, an Application Evolution Step, concrete architecture pressure or a specific composition/DRY requirement where duplicate domain semantics would create divergence.
+A `DI-*` may be needed for:
 
-A Domain owner may need no `DI-*` items at all. A good `DI-*` survives ordinary refactoring and does not describe Java methods, field layout, class call sequences or current helper structure.
+- correct implementation of current BI/invariants;
+- semantic consistency, authority, identity or one-owner rules;
+- implementation quality such as cohesion/testability when it is durable and non-trivial;
+- materially known `Evolution Impact` that should be realizable later through high-quality expansion/composition rather than avoidable Forced Migration.
+
+A known future Evolution Step may therefore justify a stable semantic boundary, identity or ownership rule now even when the current BI alone would not require that exact structure. It does **not** justify prematurely implementing the future behavior itself.
+
+A Domain owner may need no `DI-*` items. A good item survives ordinary implementation refactoring and does not become a method/field/call trace.
 
 ### Slice Implementation Item
 
-A Slice Implementation Item (`SI-*`) is an optional durable requirement about how a Slice realizes its Behavior Items using the available Domain and infrastructure.
+A Slice Implementation Item (`SI-*`) is an optional durable requirement governing how a Slice realizes selected behavior using Domain and infrastructure.
 
-It may cover stable orchestration/separation/recovery/composition requirements or an Application Evolution Step that requires Slice architecture to change without changing the underlying BI.
+It may cover current orchestration/separation/recovery/composition, a stable port/boundary, concrete reuse/non-duplication pressure, testability/observability or materially known `Evolution Impact` that should later be realizable through additive composition rather than avoidable Forced Migration.
 
-A good `SI-*` survives ordinary refactoring. Do not use it as a manually maintained method/service trace.
+A known future capability may justify a port or composition seam now; it does not justify implementing that future capability before its Evolution Step is selected for realization.
 
-### Cross-cutting Capability
+A good `SI-*` survives ordinary refactoring and does not describe current method/service wiring.
 
-A Cross-cutting Capability is an optional owner for one real shared implementation responsibility that spans several Slices and needs the same kind of implementation/change documentation as a Slice.
+### Shared Implementation Capability
 
-Do not create one merely because several owners share a general engineering principle.
+A Shared Implementation Capability is an optional owner for one real reusable implementation responsibility consumed by several Slices and substantial enough to need one semantic implementation owner.
+
+It may represent reuse, a cross-cutting concern, or both. `Cross-cutting` is a characteristic, not a second owner type.
+
+Do not create one merely because several Slices share a slogan, helper shape or generic engineering principle. Prefer local Slice ownership until one coherent shared responsibility/contract/consumer relationship is actually useful.
+
+A Shared Implementation Capability may own durable local Implementation Items, local Tests/Test Items and `Evolution Impact` in the same way a Slice does.
+
+### Test Item
+
+A Test Item is an optional durable **additional requirement on proof quality**. It is used when the tested BI/invariant/implementation requirement alone does not make the credible proof obligation obvious.
+
+A Test Item may require, for example:
+
+- proving no mutation in addition to an error result;
+- exercising the correct public/application boundary;
+- observing durable/persisted state rather than only a returned value;
+- avoiding mock-only false confidence or internal call-order coupling;
+- preserving isolation or deterministic failure injection;
+- keeping proof stable across behavior-preserving refactoring and planned additive evolution.
+
+A Test Item is not a new product/Domain/Slice requirement and does not create production architecture. If a stable port, compatibility rule or orchestration constraint is required, that requirement belongs to the appropriate BI/DI/SI/shared owner; the Test Item only says what additional proof quality is needed.
+
+Refactor/evolution resilience means proof should stay stable while the property it proves remains unchanged. If an Evolution Step genuinely changes that property, changing or replacing the relevant Test Item/test is legitimate rather than a proof-stability failure.
+
+### Test-first realization
+
+When selected meaning and a credible executable proof boundary are known, production realization should normally be test-first:
+
+```text
+selected meaning
+→ failing credible proof
+→ implementation
+→ green
+→ behavior-preserving refactor
+```
+
+For pure refactoring, existing relevant proof should remain green; do not manufacture a failing test only to call the work TDD.
+
+When realization/proof feasibility is genuinely unresolved, an experiment/prototype/spike may precede production realization. Use it to learn, then return to the normal test-first production path. Experimental code is not accepted merely because it works; if pragmatically retained, credible proof is still required before acceptance.
+
+When a property fundamentally requires a real implemented environment, plan the Practical Acceptance inquiry first, implement the subject, then execute and record Evidence. Planned verification, implemented test/check and executed Evidence are distinct states.
+
+### Test Strategy and Shared Test Capability
+
+`testing-plan.md` is the shared Test Strategy owner when multiple semantic owners/Slices need coordinated proof-layer policy, non-duplication, shared environment/isolation, critical E2E boundaries or Practical Acceptance boundaries.
+
+A **Shared Test Capability** is different: it owns real reusable test machinery/behavior such as a disposable Git repository fixture, deterministic failure-injection capability or bridge harness when several local suites genuinely depend on one reusable responsibility.
+
+```text
+Test Strategy
+→ shared proof policy / allocation
+
+Shared Test Capability
+→ reusable test implementation responsibility
+
+Aggregate / Slice / Shared Implementation Capability
+→ local Tests / optional Test Items
+```
+
+Do not create a Shared Test Capability merely for a common testing principle; keep policy in Test Strategy and ordinary local mechanics in the consuming test suite/source.
 
 ### Generated Implementation Trace
 
@@ -319,7 +389,7 @@ Keep semantic documentation stable, local and intentionally readable.
 - A separate Domain Object file is valid when that object has enough independent semantics, identity/lifecycle, cross-owner reuse or rules that an Aggregate file becomes less clear.
 - One Java class does not imply one Domain Object owner, and one Domain Object owner does not imply one Java class.
 - `Feature Interaction` is behavioral Scenario decomposition; `Slice` is implementation decomposition. Do not require 1:1 mapping.
-- Candidate/rejected design alternatives do not become current truth, Application Evolution Steps or architecture requirements automatically.
+- Candidate/rejected design alternatives do not become current truth, Evolution Steps or architecture requirements automatically.
 - Optimize prose for **semantic readability without semantic loss**, not for the fewest lines:
   - one connected idea may remain prose;
   - several independent facts, conditions, exceptions or consequences should be exposed as bullets/sub-bullets or another clear structure;
@@ -329,67 +399,45 @@ Keep semantic documentation stable, local and intentionally readable.
 - Give every durable documentation entity an intuitive human-readable name. A technical ID may help stable references but must not substitute for meaning.
 - Do not encode arbitrary display order in entity identity. Numeric suffixes such as `01`, `02`, `03` should not imply Scenario/Slice/FI/BI/EVO ordering unless the number has independent stable meaning. The Evolution Steps Map owns roadmap order.
 
-`domain-evolution.md` is a cross-owner view of Domain changes caused by Scenario-owned Application Evolution Steps. It is not the primary Domain model and does not own the Application Evolution Steps themselves.
+`domain-evolution.md` is a cross-owner view of Domain changes caused by Scenario-owned Evolution Steps. It is not the primary Domain model and does not own the Evolution Steps themselves.
 
 ---
 
-## DOC-UC-01 — Maintain Scenario behavioral specification and application evolution
+## DOC-UC-01 — Maintain Scenario behavioral specification and evolution
 
 ### Goal
 
-A reader can open one current Scenario and understand its user goal, complete current behavioral process, meaningful Feature Interactions, core Behavior Items, intentional UI Requirements and known Scenario-owned application evolution without needing implementation details to understand what the application does or what is expected to change.
+A reader can open one current Scenario and understand its user goal, complete current behavioral process, meaningful Feature Interactions, core Behavior Items, interaction/component-local UI requirements and known Scenario-owned Evolution Steps without implementation details.
 
 ### Process
 
 1. Verify accepted current behavior from Scenario documentation, source/tests and accepted implementation state.
-2. Maintain the Scenario `User Goal` using [Template — Scenario owner](documentation-templates.md#template-scenario-owner).
-3. Maintain a complete `Process Specification`; use its `Process Map` when useful for topology, but keep all meaningful current behavior visible in the specification rather than hiding it only in requirements.
-4. Describe each meaningful interaction using [Template — Feature Interaction entry](documentation-templates.md#template-feature-interaction-entry): Goal, Scenario Role, Context/Preconditions, Required Inputs, observable Process, Outcomes, Result, Outputs and Next Interactions.
-5. Keep runtime branches, loops, retries, correction, validation/error behavior, meaningful failures and uncertainty explicit. A failure/outcome remains inside the same Feature Interaction when the local goal has not changed.
-6. Persist core requirements as stable Behavior Items under the Feature Interaction where their need is visible. For each BI, write implementation-independent `Requirement + Reason`; use readable semantic names/IDs rather than positional numbering when creating new identities.
-7. Maintain intentional UI Requirements separately from BI using [Template — UI Requirement forms](documentation-templates.md#template-ui-requirement). Keep interaction/component-local requirements near the corresponding Feature Interaction; use the screen-level form only when no single interaction honestly owns the rule.
-8. Check completeness:
-   - every Feature Interaction has understandable Goal/Role/context/inputs/process/outcomes/result/outputs/transitions;
-   - every transition states the triggering outcome/condition and sufficient transferred context/output;
-   - every branch states condition plus next interaction/loop/termination;
-   - every BI can be traced to an interaction/outcome/transition where it becomes necessary;
-   - every UI Requirement can be traced to an interaction/outcome/component/screen state where it matters.
-9. Maintain a Scenario `Evolution Steps` section only for coherent application-behavior changes canonically owned by this Scenario. Use [Template — Application Evolution Step](documentation-templates.md#template-application-evolution-step).
-10. For each Application Evolution Step:
-    - describe **what changes** in Scenario/application behavior;
-    - identify Process/FI/contract/BI/UI changes when useful;
-    - use a semantic stable ID/name that does not encode roadmap position;
-    - mark `URGENT`, `PLANNED` or `POSSIBLE` only when that intent distinction adds meaning;
-    - do **not** describe Domain/Slice implementation changes as part of the canonical Scenario step.
-11. If the step affects another Scenario, link/reference the canonical step rather than copying its definition into another Scenario.
-12. If the change is too broad to communicate clearly as modifications to this Scenario, create a full planned future Scenario owner and link it as `Replacement Scenario` from the Evolution Step.
-13. If a genuinely new independent user-world goal appears, create a separate planned future Scenario rather than stretching the current Scenario identity.
-14. When an Application Evolution Step becomes implemented:
-    - update current Process Specification / Feature Interactions / BI / UI requirements as applicable;
-    - stop presenting the behavior only as future evolution;
-    - retain the old step/rationale only when it still materially explains current meaning.
-15. Use DOC-UC-09 while writing/restructuring dense Scenario text so information is easier to scan without semantic loss.
+2. Maintain the Scenario `User Goal` and complete `Process Specification` using [Template — Scenario owner](documentation-templates.md#template-scenario-owner) and [Template — Feature Interaction entry](documentation-templates.md#template-feature-interaction-entry).
+3. Keep context/inputs, observable process, branches, loops, retries, validation/failure/uncertainty, Results, Outputs and transitions explicit.
+4. Persist core implementation-independent Behavior Items with `Requirement + Reason` under the Feature Interaction where their need is clearest; reference one authoritative BI identity across several interactions when the rule spans their boundary.
+5. Maintain interaction/component-local UI Requirements near the owning Feature Interaction using [Template — UI / Screen requirement forms](documentation-templates.md#template-ui-requirement). When canonical meaning belongs to a Screen/spatial context, reference the selected Screen owner rather than keeping a second authoritative screen-level copy in the Scenario.
+6. Keep the Process Specification observably complete even when a detailed Screen-owned requirement lives elsewhere; Scenario prose must still explain what the user/application experiences.
+7. Maintain `Evolution Steps` only for coherent application-behavior changes canonically owned by this Scenario; use [Template — Evolution Step](documentation-templates.md#template-evolution-step).
+8. For each Evolution Step, describe WHAT changes in Scenario/FI/contracts/BI/UI behavior; reference affected Screen realization when useful but keep detailed Screen/Domain/Slice/test delta in their `Evolution Impact` sections.
+9. Use semantic stable IDs/names; `URGENT`, `PLANNED` or `POSSIBLE` may express useful step intent, while map timing/likelihood/order remains separate.
+10. Link one canonical step across affected Scenarios rather than duplicating it. Use a planned future Scenario when a complete future user-world behavior is clearer than a large local delta.
+11. When an Evolution Step is implemented, promote resulting behavior into current Scenario truth and retain historical rationale only when it still explains current meaning.
+12. Use DOC-UC-07 for design exploration and DOC-UC-09 for readable presentation.
 
 ### Principles
 
-- Scenario identity follows a user need/result, not a button, command, Slice, class or implementation action.
-- `Stage` is not a normative Scenario decomposition in this model.
-- Process Specification is complete; BI/UI sections formalize selected behavior rather than supplying a hidden second half of the Scenario.
-- Application Evolution Steps are owned by Scenarios and say **what application behavior changes**.
-- Current behavior does not need labels such as “transitional Scenario”. Current truth is described as current truth; known change lives in Evolution Steps.
-- A complete planned future Scenario is a Scenario owner, not a giant delta embedded in a current owner.
-- Behavior Items remain few, core and implementation-independent.
-- UI Requirements record intentional design constraints, not every current visual fact.
-- `Reason` preserves why a rule matters so refactoring does not accidentally erase a requirement whose implementation happened to change.
-- `POSSIBLE` stays explicitly non-binding.
+- Scenario identity follows a user need/result, not a button, Slice, class or implementation action.
+- Process Specification is complete; BI/UI/Screen references formalize visible behavior rather than hiding a second behavior source.
+- Evolution Step = WHAT application behavior changes.
+- Current truth is not called a transitional Scenario merely because future evolution is known.
+- `POSSIBLE` is non-binding and does not license speculative implementation.
 
 ### Owners used by this process
 
-- `scenarios/README.md`;
-- affected current `scenarios/SCN-*.md`;
-- planned future Scenario owners when a future independent/replacement Scenario is useful;
-- [`evolution-steps-map.md`](evolution-steps-map.md) as downstream planning consumer of Scenario-owned Application Evolution Steps;
-- affected Domain/Slice owners as downstream consumers through `Changes by Application Evolution Step`.
+- current/planned future Scenario owners;
+- selected Screen owner when Screen-owned meaning is referenced;
+- Evolution Steps Map as downstream planning consumer;
+- affected Domain/Slice/Shared Implementation Capability owners as downstream `Evolution Impact` consumers.
 
 ---
 
@@ -397,44 +445,38 @@ A reader can open one current Scenario and understand its user goal, complete cu
 
 ### Goal
 
-Derive a coherent Domain model from business/application behavior instead of starting from current classes, while keeping Domain documentation focused on semantics, invariants, durable architecture requirements and explicit implementation changes required by Scenario-owned Application Evolution Steps.
+Derive coherent Domain semantics from Behavior Items while using durable Domain Implementation Items to protect current correctness, implementation quality and high-quality realization of materially known future evolution.
 
 ### Process
 
-1. Start from the Behavior Items of the Scenario Process / Feature Interactions being implemented or evolved. Feature Interaction context explains where a BI is needed, but BI remain the primary Domain-discovery input.
-2. Identify business concepts, identities, states, relationships and invariants needed to make those BI true.
-3. Identify consistency boundaries before deciding file/class boundaries.
-4. Prefer one Aggregate owner when several Domain Objects share one consistency/invariant boundary; when creating/maintaining it use [Template — Aggregate Domain owner](documentation-templates.md#template-aggregate-domain-owner).
-5. Create a separate Domain Object owner only when independent semantics, lifecycle, reuse or rule volume make it clearer than keeping the object inside the Aggregate; use [Template — Domain Object owner](documentation-templates.md#template-domain-object-owner).
-6. In each Domain owner, list BI identities it directly **implements**. Do not copy authoritative BI wording unless a short local explanation is necessary to understand the Domain rule.
-7. Do not derive Aggregate/Object boundaries mechanically from Feature Interaction names, and do not promote UI Requirements into Domain invariants merely because they appear in the same Scenario.
-8. Describe only Domain meaning that helps understand the model: identity, semantic state/relationships, invariants and operations at business level. Do not maintain a class/field inventory.
-9. Add `DI-*` only when there is a useful durable requirement beyond the BI itself, such as one rule needing one owner, a consistency boundary preserving an invariant, selected evolution creating architecture pressure, or composition needing one semantic implementation rather than parallel logic.
-10. For useful `DI-*`, record requirement, reason and source (BI, Application Evolution Step, invariant or concrete architecture pressure) when not obvious.
-11. When a Scenario-owned Application Evolution Step changes this Domain owner, add/update `Changes by Application Evolution Step` using [Template — Changes by Application Evolution Step](documentation-templates.md#template-changes-by-application-evolution-step):
-    - reference the canonical Scenario-owned step;
-    - describe how Domain meaning/invariants/authority must change to realize it;
-    - identify DI changes/compatibility/architecture decision only when useful;
-    - do not restate the step as though the Domain owns it.
-12. Use [`domain-evolution.md`](domain-evolution.md) only when one Application Evolution Step changes shared Domain meaning across several owners and one cross-owner view materially improves understanding.
-13. When evolution is implemented, update current Domain semantics and remove obsolete transitional rules only when implementation compatibility is actually gone.
+1. Start from Scenario/FI Behavior Items; do not derive Domain ontology from current Java classes or Screen layout.
+2. Identify business concepts, identities, states, relationships, invariants and consistency boundaries.
+3. Prefer [Template — Aggregate Domain owner](documentation-templates.md#template-aggregate-domain-owner) when several concepts share one consistency/invariant boundary; use [Template — Domain Object owner](documentation-templates.md#template-domain-object-owner) separately only when independent semantics/lifecycle/reuse/rule volume makes that clearer.
+4. List BI identities the Domain owner directly implements; keep BI authority in Scenario.
+5. Add `DI-*` only for durable requirements not already obvious from BI/invariants.
+6. A `DI-*` may be derived from current correctness, concrete semantic ownership/consistency pressure, implementation quality or materially known `Evolution Impact` that should later be realizable through expansion/composition rather than avoidable Forced Migration.
+7. Do not implement future behavior prematurely merely because its known impact justifies a boundary/identity/ownership requirement now.
+8. Analyze each relevant Scenario-owned Evolution Step and maintain this owner's `Evolution Impact` using [Template — Evolution Impact](documentation-templates.md#template-evolution-impact) as future delta only: `Expansion`, useful behavior-preserving `Refactoring`, and exceptional `Forced Migration` where unavoidable/known.
+9. If Impact analysis exposes avoidable future Forced Migration, reconsider current Domain boundaries and create/update the appropriate `DI-*`; do not duplicate that requirement in `Evolution Impact`.
+10. Plan local Domain proof once semantics/invariants are selected. Aggregate tests normally prove implemented BI, material invariants and executable durable Domain requirements; use [Template — Test Item](documentation-templates.md#template-test-item) only for non-obvious proof quality.
+11. When a credible executable proof boundary is known, write failing Domain proof before production implementation. Pure refactoring keeps relevant proof green.
+12. Use `domain-evolution.md` only when one Evolution Step changes shared Domain meaning across several owners and one cross-owner view materially improves understanding.
+13. After implementation, update current Domain truth and remove obsolete transition material only when compatibility is actually gone.
 
 ### Principles
 
-- Behavior Items are inputs to Domain discovery; current Java classes are evidence, not the starting ontology.
-- Feature Interaction is behavioral context, not an automatic Domain boundary.
-- Domain owner boundaries follow semantic consistency, not source-file boundaries.
-- Aggregate owner is the default when it keeps shared invariants understandable; separate Domain Object files are explicitly allowed when clearer.
-- A Domain owner may implement BI without needing any `DI-*` item.
-- `DI-*` items are architecture requirements, not implementation traces.
-- Domain owners do not own Application Evolution Steps; they own their **changes required by** those steps.
-- A generic slogan such as "follow DRY" is not a useful `DI-*`; document the concrete duplicated semantic rule that must have one owner and why that ownership matters.
+- BI-first; Aggregate/consistency-boundary driven.
+- `DI-*` is a durable architecture requirement, not a code trace.
+- Good current implementation is checked against current BI/invariants **and** applicable DI requirements derived from materially known evolution.
+- Known evolution may justify a seam now, not the future capability itself.
+- Avoidable Forced Migration is architecture pressure to resolve rather than a preferred future plan.
 
 ### Owners used by this process
 
-- affected Scenario owners as BI and Application Evolution Step authority;
-- current/future Domain Aggregate/Object owners when discovery justifies them;
-- `domain-evolution.md` only for shared cross-owner Domain changes by one Application Evolution Step.
+- Scenario owners as BI/Evolution Step authority;
+- Aggregate/Domain Object owners;
+- local Domain tests/test source as proof realization;
+- `domain-evolution.md` only for materially useful cross-owner Domain transition views.
 
 ---
 
@@ -442,119 +484,108 @@ Derive a coherent Domain model from business/application behavior instead of sta
 
 ### Goal
 
-A developer can open one Slice and understand which Scenario behavior it realizes, which Domain it uses, which durable implementation requirements matter, and how that Slice must change to realize known Application Evolution Steps — without making the Slice look like an owner of application evolution or a manually maintained copy of current code flow.
+A developer can understand one Slice's application result, BI contribution, Domain dependencies, durable implementation requirements, local proof and future `Evolution Impact` without turning the Slice into a second Scenario or a code trace.
 
 ### Process
 
-1. Keep the Slice's current application result/responsibility accurate using [Template — Slice owner](documentation-templates.md#template-slice-owner).
-2. List BI identities the Slice **realizes**.
-3. When useful for navigation, reference Scenario Feature Interaction(s) whose behavior provides context for those BI, but do not duplicate the Feature Interaction Process Specification inside the Slice.
-4. List semantic Domain owners/capabilities the Slice uses to realize those BI.
-5. Treat Domain as the owner of business rules it directly implements. The Slice realizes the same BI by orchestrating provided Domain and required infrastructure; it must not recreate an independent copy of the same rule.
-6. Keep the distinction explicit: Feature Interaction = behavioral Scenario decomposition; Slice = independently implementable/testable application decomposition. One FI may map to one/many Slices and one Slice may support one/many FI when justified.
-7. Add `SI-*` only when a durable implementation/architecture requirement needs to survive normal refactoring, such as recovery boundaries, application composition/reuse, captured-input authority, evolution-driven ownership changes or a real cross-cutting constraint.
-8. For useful `SI-*`, record requirement, reason and source (BI, Application Evolution Step, Domain constraint or concrete architecture concern) where useful.
-9. Do not document method names, service call chains, field reads/writes or adapter-level routing as Slice truth. Inspect source or a generated implementation trace for those details.
-10. When a Scenario-owned Application Evolution Step changes this Slice, maintain `Changes by Application Evolution Step` using [Template — Changes by Application Evolution Step](documentation-templates.md#template-changes-by-application-evolution-step):
-    - reference the canonical step;
-    - describe changed Slice result/responsibility/composition or BI contribution;
-    - describe material Domain impact and SI changes when useful;
-    - record a local architecture decision only when needed;
-    - do not duplicate the Scenario-owned description of what application behavior changes.
-11. When the step is implemented, update current Slice responsibility/BI realization and fold durable implementation requirements into current truth.
+1. Maintain the Slice's current result/responsibility and list BI identities it realizes using [Template — Slice owner](documentation-templates.md#template-slice-owner) as the recommended focused form.
+2. Reference FI only when useful for behavioral context/navigation; do not require FI↔Slice 1:1 mapping.
+3. List semantic Domain owners/capabilities used by the Slice; Domain remains authority for business rules it directly implements.
+4. Add `SI-*` only for durable orchestration/composition/recovery/port/reuse/testability requirements that should survive ordinary refactoring.
+5. A `SI-*` may be derived from current BI/Domain constraints, concrete implementation quality pressure or materially known `Evolution Impact` that should later be realizable through additive composition/ports rather than avoidable Forced Migration.
+6. Do not prematurely implement the future capability itself just because a stable port/composition seam is useful now.
+7. Maintain `Evolution Impact` for each relevant Evolution Step using [Template — Evolution Impact](documentation-templates.md#template-evolution-impact) as future Slice delta only: Expansion, useful Refactoring and exceptional Forced Migration.
+8. If Impact analysis reveals avoidable Forced Migration, reconsider current Slice/shared boundaries and create/update the relevant `SI-*` or Shared Implementation Capability requirement; do not duplicate that requirement inside Impact.
+9. Plan local Slice/application proof from the realized BI and Slice responsibility. Do not repeat exhaustive Domain proof at the Slice layer; prove that Slice orchestration actually uses Domain semantics at the correct application boundary.
+10. Use [Template — Test Item](documentation-templates.md#template-test-item) only for non-obvious proof quality such as no-mutation, public-boundary, persistence observation, isolation or false-positive resistance.
+11. When a credible executable boundary is known, write failing Slice/application proof before Slice implementation; keep proof green during behavior-preserving refactoring.
+12. Keep method/service call chains, fields and adapter routing in source/generated traces rather than normative Slice docs.
+13. After implemented evolution, fold resulting responsibility/requirements into current Slice truth.
 
 ### Principles
 
-- Slice realizes Scenario behavior; Domain directly embodies the business rules it owns.
-- One BI may be referenced by Domain (`implements`) and Slice (`realizes using Domain`) without duplication of BI authority.
-- Do not create a separate Slice for every action, state transition, journal, Git command or class.
-- An existing Slice may evolve through internal modular expansion or composition without becoming several Slices merely because implementation structure grows.
-- A separate supporting Slice requires an independently meaningful capability/result or recovery/composition boundary, not merely implementation size.
-- Do not assume one Feature Interaction requires one Slice.
-- Slice owners do not own Application Evolution Steps; they own their **implementation changes required by** those steps.
-- Concrete DRY/composition requirements belong in `SI-*` only when they protect real semantic/application behavior from duplicate implementations.
+- Feature Interaction = behavioral decomposition; Slice = implementation decomposition.
+- Existing Slices may grow internally through coherent modular expansion/composition without splitting merely because implementation size increases.
+- A separate supporting Slice requires meaningful capability/result or recovery/composition ownership.
+- `SI-*` may intentionally prepare known evolution through a port/boundary without implementing the future behavior.
+- Local tests belong naturally with the Slice; a separate test owner is optional only when independent depth/reuse/review makes it clearer.
 
 ### Owners used by this process
 
-- canonical Scenario owner of each relevant Application Evolution Step;
-- `slices.md` or a future focused Slice owner when independently useful;
+- Scenario BI/Evolution Step authority;
+- Slice owner / `slices.md` portfolio strategy;
 - affected Domain owners;
-- cross-cutting capability owners when they actually exist.
+- Shared Implementation Capabilities when real reuse appears;
+- local test source/optional focused test owner.
 
 ---
 
-## DOC-UC-04 — Maintain a cross-cutting capability when shared responsibility is real
+## DOC-UC-04 — Maintain Shared Implementation Capability when shared responsibility is real
 
 ### Goal
 
-Keep one shared implementation responsibility coherent across several Slices when it is substantial enough to deserve its own owner, without turning every common engineering principle into another documentation layer or making the shared owner look like an Application Evolution Step owner.
+Keep one real reusable implementation responsibility coherent across several Slices when independent shared ownership materially improves composition/reuse, without creating owners for generic principles or similar-looking helper code.
 
 ### Process
 
-1. Detect a repeated implementation responsibility across several Slices.
-2. Ask whether there is one real shared capability/behavior owner, not merely a common principle or similar-looking helper code.
-3. If no independent shared responsibility exists, keep the requirement in affected Domain/Slice owners.
-4. If a shared capability exists, create/maintain it with [Template — Cross-cutting Capability owner](documentation-templates.md#template-cross-cutting-capability-owner): responsibility/result, BI it realizes when genuinely shared, Domain used, optional Implementation Items and consumers.
-5. When a Scenario-owned Application Evolution Step changes the shared capability, record `Changes by Application Evolution Step` using [Template — Changes by Application Evolution Step](documentation-templates.md#template-changes-by-application-evolution-step) rather than defining another copy of the step.
-6. Have consuming Slices reference that owner rather than duplicate its durable rules.
-7. Keep implementation call/field traces generated from source rather than manually copied into the owner.
+1. Use `slices.md` as the Slice portfolio/implementation strategy view and detect repeated responsibility/composition pressure across Slices.
+2. Ask whether there is one semantic reusable implementation responsibility with a meaningful contract/consumer relationship, not merely a slogan such as DRY/logging or common helper shape.
+3. If no independent shared responsibility exists, keep the requirement/mechanics local to consuming owners.
+4. If it does exist, create/maintain a Shared Implementation Capability using [Template — Shared Implementation Capability owner](documentation-templates.md#template-shared-implementation-capability-owner): responsibility, consumers, Domain used, optional durable Implementation Items, local Tests/Test Items and `Evolution Impact` when relevant.
+5. Shared Implementation Items may be justified by current correctness/quality or materially known evolution that should add consumers/implementations through stable composition rather than Forced Migration.
+6. Have consuming Slices reference the shared owner instead of duplicating its durable contract/rules.
+7. Keep exact code/test mechanics in source or derived traces.
 
 ### Principles
 
-- A Feature Interaction does not become a Cross-cutting Capability merely because several Scenarios use similar behavior.
-- “Cross-cutting Slice” may be useful informal language, but the owner is about a real shared implementation responsibility.
-- Do not create one only to host abstract principles such as DRY, logging or composition.
-- Cross-cutting Capability owners do not own Application Evolution Steps.
+- Reuse/cross-cutting is discovered from real responsibility, not from repeated names or generic engineering principles.
+- `Cross-cutting` may describe a Shared Implementation Capability but is not a second owner type.
+- `slices.md` owns portfolio/composition strategy; Shared Implementation Capability owns the actual reusable implementation responsibility.
+- Shared owners do not own Evolution Steps; they own their local Evolution Impact.
 
 ---
 
-## DOC-UC-05 — Maintain architecture through application evolution
+## DOC-UC-05 — Maintain evolution-aware implementation architecture
 
 ### Goal
 
-Use Scenario-owned application evolution and its planned sequence to make better Domain/Slice architecture decisions now without implementing speculative future systems or confusing application changes with implementation changes.
+Use materially known Scenario evolution to shape Domain/Slice/shared implementation requirements now so future Evolution Steps can preferably be realized through Expansion, composition, stable ports/boundaries and behavior-preserving Refactoring rather than avoidable Forced Migration, without implementing speculative future behavior prematurely.
 
 ### Process
 
-For the capability being changed:
+For the capability being designed or evolved:
 
-1. Read current Scenario Process, Feature Interactions and Behavior Items.
-2. Read the canonical relevant Application Evolution Steps from their Scenario owners using [Template — Application Evolution Step](documentation-templates.md#template-application-evolution-step) as the recommended focused form.
-3. Read [`evolution-steps-map.md`](evolution-steps-map.md) to understand selected order/dependencies/enablers; do not infer order from Evolution Step IDs.
-4. Treat `POSSIBLE` steps only as context when they expose pressure on the same architecture boundary; they are not permission for speculative machinery.
-5. Examine what selected application evolution changes in the Scenario Process: add/remove/compose/split/replace interactions, contract changes, new/removed user control or recovery points, stronger/weaker outputs, new BI/UI requirements.
-6. Ask where the selected behavioral design places complexity: user interaction, Scenario/process, FI behavioral, implementation, recovery, testing and/or later evolution.
-7. Follow affected BI into Domain owners; use [Template — Aggregate Domain owner](documentation-templates.md#template-aggregate-domain-owner) or [Template — Domain Object owner](documentation-templates.md#template-domain-object-owner) when an owner must be created/changed.
-8. Record Domain implementation/semantic impact as `Changes by Application Evolution Step`; identify whether DI changes are needed.
-9. Follow affected BI/FI context into Slices; use [Template — Slice owner](documentation-templates.md#template-slice-owner) for current Slice impact and [Template — Cross-cutting Capability owner](documentation-templates.md#template-cross-cutting-capability-owner) only when a real shared implementation responsibility appears.
-10. Record Slice/cross-cutting implementation impact as `Changes by Application Evolution Step`; identify whether SI/ownership/composition changes are needed.
-11. Use [`domain-evolution.md`](domain-evolution.md) only when one application step changes shared Domain meaning across several owners and one cross-owner semantic view is materially clearer than duplicated local notes.
-12. Identify concrete architecture pressure, for example stable identity reused by later behavior, one shared invariant, semantic authority moving representation, recoverable boundary becoming independently meaningful, legacy concept expected to disappear, stronger interaction outputs eliminating manual transfer, or a selected later process change that makes the current boundary a known dead end.
-13. Choose the smallest design that correctly implements selected behavior, preserves current invariants, avoids known planned dead ends and does not implement non-binding `POSSIBLE` evolution prematurely.
-14. Record decisions at the narrowest natural owner: Scenario behavior/reason → Scenario BI/UI/Application Evolution Step; Domain semantics → Domain/DI/change-by-step; Slice composition → Slice/SI/change-by-step; real shared implementation responsibility → Cross-cutting Capability; exact independent protocol → focused contract.
-15. Create a separate architecture/decision owner only when DOC-UC-10 confirms an explicit documentation use case and independent/shared complexity justify it.
+1. Read current Scenario Process/FI/BI and relevant selected Screen meaning.
+2. Read canonical relevant Evolution Steps from Scenario owners and their planning relationships from the Evolution Steps Map.
+3. Treat `POSSIBLE` steps only as non-binding architecture pressure when they materially touch the same boundary; they do not license speculative implementation.
+4. Derive `Evolution Impact` for each affected Domain/Slice/Screen/Shared Implementation Capability using [Template — Evolution Impact](documentation-templates.md#template-evolution-impact): what future Expansion/Refactoring/Forced Migration would occur in that owner if/when the step is realized.
+5. Prefer an impact shape based on Expansion, composition, ports/adapters and stable boundaries. Refactoring may be planned when it preserves behavior and improves readability/cohesion/testability/evolution quality.
+6. Treat Forced Migration as a warning that existing logic/authority/representation must be moved because the current structure cannot accept the evolution additively.
+7. Ask whether a reasonable current boundary, port, identity/ownership rule, composition seam or shared capability can remove that avoidable future Forced Migration.
+8. Express those durable current constraints as the natural owner's `DI-*`, `SI-*` or Shared Implementation Item. **Do not repeat Requirement/Reason inside Evolution Impact.**
+9. Design/assess current implementation against both current selected meaning and these applicable Implementation Items. An implementation that satisfies today's BI but knowingly violates an evolution-enabling SI/DI and creates avoidable Forced Migration is not the preferred realization.
+10. Do not implement the future behavior/capability itself before its Evolution Step is selected for realization merely because its impact influenced today's architecture.
+11. Keep `domain-evolution.md` only for one materially shared Domain semantic transition across owners; keep `slices.md` for Slice portfolio/composition strategy rather than turning either into a roadmap.
+12. When implementation later begins, expected Impact should mostly be additive Expansion plus useful Refactoring. Unexpected Forced Migration is a planning/realization finding: re-check whether Impact analysis was incomplete, a known Implementation Item was violated, or genuinely new constraints appeared.
+13. Record exact mechanics in source, not normative architecture documentation.
 
 ### Principles
 
-- Application Evolution Step = **what behavior changes**.
-- Domain/Slice/Cross-cutting `Changes by Application Evolution Step` = **how that owner changes to realize it**.
-- Evolution Steps Map = **when/order/dependency planning**.
-- Evolution-aware, not speculation-driven.
-- Rejected/candidate design alternatives do not justify architecture machinery merely because they were considered.
-- Application Evolution Steps can create `DI-*`/`SI-*` requirements even when BI do not change.
-- Complexity is neutral; architecture should consciously place it rather than merely minimize interaction count.
+- Evolution Step = WHAT application behavior changes.
+- Evolution Impact = WHAT future delta happens in a lower owner.
+- Implementation Item = HOW the current owner must be shaped for current correctness/quality and materially known evolution.
+- Evolution Steps Map = WHEN / likelihood / dependency / readiness planning.
+- Design for additive evolution; do not design speculative future systems.
+- Future Refactoring is normal when behavior-preserving and useful. Forced Migration is the exceptional pressure to minimize.
 
-The maintained semantic trace is:
+The maintained trace is:
 
 ```text
-Scenario Process / Feature Interactions
-→ Behavior Items (+ intentional UI requirements)
-→ Scenario-owned Application Evolution Step (WHAT changes)
-→ Evolution Steps Map (WHEN / dependency / order)
-→ Domain Changes by Application Evolution Step / optional DI (HOW)
-→ Slice Changes by Application Evolution Step / optional SI (HOW)
-→ architecture decision where needed
-→ code / tests
+Scenario Evolution Step
+→ lower-owner Evolution Impact analysis
+→ current DI / SI / Shared Implementation Items where pressure is durable
+→ current implementation constrained by those items
+→ later Expansion / Refactoring / exceptional Forced Migration
 ```
 
 ---
@@ -567,8 +598,8 @@ Make current implementation easy to inspect while keeping normative documentatio
 
 ### Process
 
-1. Treat source as authority for exact implementation mechanics.
-2. Do not copy method/service call chains, field usage or current class wiring into Scenario/Domain/Slice owners merely to make implementation easier to inspect.
+1. Treat production source and test source as authority for exact implementation/test mechanics.
+2. Do not copy method/service call chains, field usage, current class wiring or test-method/fixture call structure into Scenario/Domain/Slice owners merely to make implementation easier to inspect.
 3. When low-level implementation understanding is needed, inspect source directly or use the [Recommended generated implementation-trace output](documentation-templates.md#template-generated-implementation-trace) if tooling is available.
 4. A generated trace should be disposable, derived from source and tied to its source revision. Useful generated information may include root symbol, callers/callees, fields read/written, referenced types, external boundaries and branch/result information when statically derivable with confidence.
 5. Generated/source inspection may answer how current code realizes a selected Feature Interaction, BI or Slice, but it never becomes authority for Scenario behavior, UI requirements, Domain invariants or architecture intent.
@@ -581,85 +612,76 @@ No implementation-trace generator is established by this documentation model. Th
 
 ---
 
-## DOC-UC-07 — Explore and select Scenario behavioral design
+## DOC-UC-07 — Explore and select Scenario and Screen design
 
 ### Goal
 
-Explore how a Scenario **should work**, compare behavioral alternatives and composition trade-offs, understand where complexity is placed, and select/refine a design before treating it as authoritative Scenario truth or selected evolution.
+Explore how a Scenario and its spatial/UI realization **should work together**, compare meaningful behavioral and Screen alternatives, and select/refine design before treating it as authoritative Scenario/Screen truth or selected evolution.
 
 ### Process
 
-1. Start from the Scenario Goal and desired final Result.
-2. Read current Scenario behavior and its Scenario-owned Application Evolution Steps when the Scenario already exists; do not silently treat a target/candidate design as current truth.
-3. Propose one or more candidate designs using [Template — Scenario Process Variant](documentation-templates.md#template-scenario-process-variant). Define initial Context/Inputs, Feature Interaction composition, contracts between interactions, final Result and final Outputs.
-4. For each interaction needed by a variant, use [Template — Feature Interaction entry](documentation-templates.md#template-feature-interaction-entry) to make Goal, Scenario Role, Context/Preconditions, Inputs, Process, Outcomes, Result, Outputs and transitions explicit.
-5. For non-obvious local choices, compare alternatives with [Template — Feature Interaction Variant analysis](documentation-templates.md#template-feature-interaction-variant-analysis).
-6. Compare interaction contracts explicitly:
-   - number/convenience/source of inputs;
-   - whether inputs can be derived from context instead of manually supplied;
-   - opportunity for wrong/manual transfer;
-   - strength and reusability of Result/Outputs;
-   - whether stronger outputs remove future user input or an intermediate interaction.
-7. Consider whole-process composition changes:
-   - **Compose** — combine interactions when no meaningful user/application boundary needs to remain visible;
-   - **Split** — create a meaningful control/recovery/decision boundary;
-   - **Replace** — use another behavioral route, possibly with different inputs/results/outputs.
-8. Analyze boundaries between interactions, not only the nodes: control points, recovery points, intermediate outputs, manual transfer, partial-completion ambiguity and whether the next interaction really has sufficient context/input.
-9. For material variants record `Strengths`, `Problems`, `Complexity`, `Risks` and `Questions`. Ask explicitly where complexity moves rather than assuming fewer interactions means simpler design.
-10. When useful, perform a mental or visual walkthrough. This may range from a storyboard/clickable mock to an optional interactive Scenario design simulator. The tool is optional; the documentation model must remain complete without it.
-11. Select/refine the preferred behavioral design, then hand it to DOC-UC-01 for authoritative classification/maintenance.
-12. Classify the selected result correctly:
-    - already accepted/implemented → integrate into current Process Specification;
-    - selected but unimplemented coherent application change → Scenario-owned Application Evolution Step (`URGENT`/`PLANNED` when useful);
-    - plausible useful future but not committed → `POSSIBLE` Application Evolution Step only when preserving it has ongoing value;
-    - complete future user-world behavior that deserves its own owner → planned future Scenario;
-    - merely considered/rejected alternative → not current truth and not automatically an Application Evolution Step.
+1. Start from Scenario Goal and desired final Result; read current truth/Evolution Steps when the Scenario already exists.
+2. Propose candidate Scenario Process Variants with [Template — Scenario Process Variant](documentation-templates.md#template-scenario-process-variant): initial context/inputs, FI composition/contracts, final Result/Outputs.
+3. For non-obvious local behavior compare alternatives with [Template — Feature Interaction Variant analysis](documentation-templates.md#template-feature-interaction-variant-analysis); variants may legitimately change inputs, process, outcomes, Result/Outputs and neighboring interactions.
+4. In parallel, explore candidate **Screen Set Variants** (overall window/screen topology) and **individual Screen Variants** (different realization of one Screen responsibility) with [Template — Screen Set / Screen Variant analysis](documentation-templates.md#template-screen-variant-analysis).
+5. Map candidate Scenario/FI behavior to Screens: Scenario×Screen, FI×Screen, routes, visible/input/action state and material Screen-owned requirements.
+6. Treat design exploration as bidirectional. If Screen design exposes hidden manual context transfer, weak FI outputs, missing recovery/uncertainty, poor composition or misplaced complexity, revise Scenario/FI design rather than forcing the Screen to hide the problem.
+7. Compare interaction and Screen boundaries explicitly: control/recovery points, transferred context/outputs, user work, visibility/feedback, navigation/window topology, implementation/testing/evolution complexity.
+8. Record Strengths, Problems, Complexity, Risks and Questions only when they materially explain a decision; no scoring framework is required.
+9. Mental/visual/clickable/interactive walkthrough is optional design media. The documentation model must remain complete without a Scenario simulator/tool.
+10. Select/refine preferred design, then classify it correctly:
+    - accepted/implemented behavior → current Scenario/Screen truth;
+    - selected coherent unimplemented behavior → Scenario-owned Evolution Step;
+    - plausible non-binding evolution → `POSSIBLE` only when worth preserving;
+    - complete future user-world behavior → planned future Scenario;
+    - candidate/rejected alternative → not current truth/Evolution by default.
+11. Hand selected Scenario behavior to DOC-UC-01 and selected Screen realization to DOC-UC-11.
 
 ### Principles
 
-- Design exploration asks “how should this Scenario work?”, not only “are the already-written requirements correct?”.
-- Visual/interactive walkthrough can expose missing branches, hidden inputs, weak outputs, missing BI/UI requirements, poor composition or misplaced complexity, but that is secondary to its role as a design medium.
-- Candidate variants are not Application Evolution Steps or roadmap items by default.
-- Preserve alternatives only when their rationale remains useful to an active/material design decision; do not build a generic decision registry.
-- Do not require a scoring framework. Qualitative comparison is sufficient when it preserves the real reasoning.
+- Scenario behavior authority and Screen spatial authority remain distinct even while designed together.
+- Candidate Screen/Scenario variants are design alternatives, not runtime branches or roadmap entries by default.
+- A Screen is not a frontend Slice; FI/Slice/Screen mappings are many-to-many when justified.
+- Preserve alternatives only when their rationale remains material to an active decision.
 
 ---
 
 <a id="doc-uc-evolution-steps-map"></a>
-## DOC-UC-08 — Plan the Application Evolution Step sequence
+## DOC-UC-08 — Plan Evolution Steps and material impact timing
 
 ### Goal
 
-Make the intended application-evolution order/dependencies understandable without encoding roadmap position into Evolution Step identity or duplicating the behavioral definition owned by Scenario documentation.
+Make evolution sequence, dependencies, rough timing/likelihood and readiness understandable without encoding roadmap position into semantic identity or duplicating behavioral/local-impact definitions.
 
 ### Process
 
-1. Read canonical `URGENT`/`PLANNED` Application Evolution Steps from Scenario owners.
-2. Read `POSSIBLE` steps only when they are useful to show as optional/unsequenced context.
-3. Maintain [`evolution-steps-map.md`](evolution-steps-map.md) using [Template — Evolution Steps Map entry](documentation-templates.md#template-evolution-steps-map-entry).
-4. For each planned step, record only planning relationships that matter:
-   - prerequisite/dependency;
-   - intended relative order;
+1. Read canonical Scenario-owned Evolution Steps. Step `Intent` (`URGENT`/`PLANNED`/`POSSIBLE`) may remain on the step; use the map for relational planning rather than redefining intent.
+2. Maintain [`evolution-steps-map.md`](evolution-steps-map.md) using [Template — Evolution Steps Map entry](documentation-templates.md#template-evolution-steps-map-entry), with only planning information that matters:
+   - prerequisites/dependencies;
+   - intended relative order and rough horizon;
+   - rough likelihood/planning confidence when useful;
    - what the step enables;
-   - whether another step can happen in parallel;
-   - condition/decision that gates it;
-   - planned future Scenario reached/replaced when relevant.
-5. Link to the canonical Scenario-owned step for behavioral meaning instead of copying its Process/FI/BI/UI delta into the map.
-6. Reorder the map freely when planning changes; do not rename/re-ID Evolution Steps merely because their planned order changed.
-7. Remove or mark completed planning nodes when they no longer help understand remaining work; implementation truth belongs in current owners.
+   - parallelism;
+   - conditions/gates;
+   - implementation readiness when useful;
+   - planned future Scenario target.
+3. Link to canonical Scenario-owned steps for WHAT behavior changes.
+4. When one lower-owner `Evolution Impact` item has materially different timing/likelihood/dependency from its parent step, the map may reference that impact explicitly. Keep WHAT that impact changes in the lower owner.
+5. Reorder/replan freely without changing semantic IDs/names.
+6. Completed nodes need not remain active merely for history when current owners communicate resulting truth.
 
 ### Principles
 
-- The map owns **planning order**, not application behavior.
-- Evolution Step identity is semantic and stable across roadmap reordering.
-- Sequence may be linear, branching, conditional or parallel; do not force a fake single numbered backlog when dependencies say otherwise.
-- Planned future Scenarios can appear as reachable/replacement targets without becoming current truth.
+- Map = WHEN / HOW LIKELY / DEPENDS ON / READY, not WHAT behavior or implementation changes.
+- Evolution Step identity and lower-owner impact meaning remain outside the map.
+- Sequence may be linear, branching, conditional or parallel.
+- Do not turn the map into detailed implementation scheduling or a duplicate architecture backlog.
 
 ### Owners used by this process
 
-- Scenario owners as canonical Application Evolution Step authority;
-- [`evolution-steps-map.md`](evolution-steps-map.md) as the dedicated sequence/dependency owner;
-- planned future Scenario owners when the map points to them.
+- Scenario owners as canonical Evolution Step authority;
+- lower owners as canonical Evolution Impact authority;
+- `evolution-steps-map.md` as the dedicated planning map.
 
 ---
 
@@ -683,10 +705,10 @@ For any normative owner being written or revised:
    - success vs known failure vs uncertainty;
    - Result vs Outputs;
    - runtime branch vs design alternative;
-   - application Evolution Step vs lower-owner change required by that step.
+   - Evolution Step vs lower-owner change required by that step.
 5. Use Process Maps/tables only when they reveal structure better than prose; do not use formatting for decoration.
 6. Re-read the structured version against the source meaning and verify that no condition, exception, reason, authority boundary or outcome disappeared during rewriting.
-7. Give Scenario, Feature Interaction, BI, UI Requirement, Evolution Step, Slice, Aggregate/Object and other durable entities intuitive readable names.
+7. Give Scenario, Feature Interaction, BI, UI/Screen requirement, Evolution Step, Evolution Impact, Slice, Aggregate/Object, Shared Implementation Capability, Test Item and other durable entities intuitive readable names.
 8. Use technical IDs only as stable reference aids:
    - pair them with readable names;
    - prefer semantic IDs where practical;
@@ -720,7 +742,7 @@ Prevent orphan documentation files/sections whose purpose, maintenance process o
 1. Before creating or retaining a durable documentation file/owner, identify the explicit use case/process that creates, maintains or consumes it.
 2. Classify the coverage correctly:
    - **documentation-process artifact** (for example templates, terminology/principles, Evolution Steps Map, generated documentation tooling/output) → an explicit Documentation Use Case must justify it;
-   - **application semantic/contract/proof owner** (for example focused protocol, Scenario/Slice support contract, testing plan or manual acceptance evidence owner) → the application Scenario, Slice, testing or acceptance process that requires the information may justify it without inventing an artificial Documentation Use Case.
+   - **application semantic/contract/proof owner** (for example focused protocol, Scenario/Slice/Screen/shared support contract, testing plan, Shared Test Capability or manual acceptance evidence owner) → the application Scenario, Slice, testing or acceptance process that requires the information may justify it without inventing an artificial Documentation Use Case.
 3. Ask whether the information can remain inside its natural existing owner without losing clarity.
 4. Create a separate focused owner only when:
    - explicit use-case/process coverage exists;
@@ -754,6 +776,63 @@ Prevent orphan documentation files/sections whose purpose, maintenance process o
 
 ---
 
+## DOC-UC-11 — Maintain selected Screen model
+
+### Goal
+
+Maintain one canonical selected spatial/window model that explains where Scenario behavior is realized without moving Scenario behavior authority into Screens or turning Screens into frontend Slices.
+
+### Process
+
+1. Start from selected Scenario Processes/FIs and intentional UI requirements; use DOC-UC-07 when Screen topology/realization is still being explored.
+2. Maintain one `Screen Map` by default using [Template — Screen owner](documentation-templates.md#template-screen-owner), including Screen inventory, Scenario×Screen relationships, FI×Screen relationships, routes/transitions and material global Screen constraints.
+3. For each Screen record purpose, Scenario roles, participating FIs, meaningful visible/input/action states, material spatial hierarchy/constraints and routes.
+4. Maintain Screen Behavior Items using [Template — UI / Screen requirement forms](documentation-templates.md#template-ui-requirement) only for durable spatial/window/UI behavior whose canonical meaning belongs to the Screen. Keep FI/component-local UI Requirements in Scenario/FI owners and core application BI in Scenario.
+5. Reference Scenario/FI identities rather than copying their behavioral definitions. The Scenario Process must remain observably understandable even when Screen details are referenced.
+6. Keep selected Screen truth separate from candidate Screen Set/Screen variants. Preserve rejected/candidate variants only when their rationale remains material.
+7. Maintain Screen `Evolution Impact` with [Template — Evolution Impact](documentation-templates.md#template-evolution-impact) when a Scenario-owned Evolution Step adds/removes Screens, changes routes, moves realization between Screens or changes Screen-owned requirements. Do not create Screen-owned Evolution Steps.
+8. Keep one `screens.md` owner by default when a selected model actually exists. Split independent Screen files only when size/review/reuse makes separate ownership materially clearer.
+
+### Principles
+
+- Scenario = behavior meaning; Screen = spatial/window meaning; frontend Slice/code = realization mechanism.
+- Placement normally does not become BI identity.
+- One Screen may use many Slices and one Slice may realize behavior across many Screens.
+- Do not create an empty Screen owner merely because the methodology supports one.
+
+---
+
+## DOC-UC-12 — Plan and realize credible proof
+
+### Goal
+
+Derive credible proof from selected semantic/implementation meaning, make test-first realization the default when a credible executable boundary is known, and separate local proof, shared Test Strategy, reusable Shared Test Capabilities and Practical Evidence without making tests a second behavior authority.
+
+### Process
+
+1. Start from the owning semantic/implementation requirement: BI, invariant, Screen/UI requirement, DI/SI/shared item or focused contract. Tests prove selected meaning; they do not create it.
+2. Choose the cheapest credible proof layer. Keep exhaustive Domain matrices at Domain level; Slice/application tests prove orchestration/use of Domain at the correct public boundary; use critical E2E only when lower layers cannot establish the integrated property.
+3. Keep local Tests with the natural Aggregate/Slice/Shared Implementation Capability owner by default. A separate test owner/file is optional only when independent depth/reuse/review warrants it; then explicitly reference parent owner and properties proved.
+4. Add a [Template — Test Item](documentation-templates.md#template-test-item) only when proof needs non-obvious durable quality requirements such as no-mutation observation, public-boundary execution, persisted-state observation, false-positive resistance, isolation, failure injection or refactor/evolution resilience.
+5. When selected meaning and a credible executable proof boundary are known, use test-first production realization: failing proof → implementation → green → behavior-preserving refactor.
+6. Pure refactoring keeps relevant proof green; do not create artificial Red. For Forced Migration, strengthen/preserve proof of unchanged behavior and add failing proof only for genuinely new/changed meaning.
+7. If the question “how can this property be proved convincingly?” is independently non-trivial, use [Template — Optional Test Design](documentation-templates.md#template-test-design). Embed it locally by default; create a separate artifact only when independently substantial.
+8. If technical/interaction/proof feasibility is genuinely unknown, use an experiment/prototype/spike to learn, then return to normal test-first production realization. Experimental code is not accepted only because it works.
+9. Maintain `testing-plan.md` as shared Test Strategy only for real cross-owner pressure: proof-layer allocation/non-duplication, shared environment/isolation, critical E2E or Practical Acceptance boundaries. During migration it may temporarily retain current Slice→proof mapping until local owners are reconciled.
+10. Create a Shared Test Capability using [Template — Shared Test Capability](documentation-templates.md#template-shared-test-capability) only for real reusable test machinery/behavior consumed by several suites; common testing policy stays in Test Strategy.
+11. For real Windows/Swing/Edge/ChatGPT/usability/environment properties that require an implemented subject, use [Template — Practical Acceptance plan and Evidence](documentation-templates.md#template-practical-acceptance): plan Practical Acceptance before implementation when useful, then execute after realization and record Evidence. Planned verification is not executed Evidence.
+12. Keep exact test classes/methods/fixtures in test source; documentation owns only durable proof meaning/strategy/items where useful.
+
+### Principles
+
+- Test-first is default when selected meaning + credible executable boundary are known.
+- Tests prove meaning; they do not become semantic authority.
+- Test Item = proof-quality requirement, not production architecture requirement.
+- Test Strategy = shared proof policy; Shared Test Capability = reusable test implementation responsibility.
+- More tests do not automatically mean stronger proof; avoid duplication and false confidence.
+
+---
+
 ## Template use
 
 Recommended owner/entry forms are collected in [`documentation-templates.md`](documentation-templates.md).
@@ -766,31 +845,26 @@ Unlike a passive template catalog, Documentation Use Cases link directly to rele
 
 ## Integration rule for existing Replacement Package App documentation
 
-Adoption is incremental.
+Adoption is incremental. This documentation-model update defines target process/ownership before rewriting current Scenario/Screen/Domain/Slice/testing owners.
 
-This owner establishes the documentation model before rewriting every existing Scenario/Domain/Slice document.
+A following integration should:
 
-A following documentation-integration step should:
+1. reconcile accepted current Scenario truth and build complete Process Specifications;
+2. identify selected FIs, BI and FI/component-local UI Requirements;
+3. explore Scenario/FI and Screen Set/Screen variants together before freezing selected spatial realization;
+4. create a selected `screens.md` only when real Screen planning exists; maintain Scenario×Screen/FI×Screen/routes and Screen-owned requirements there;
+5. migrate known selected/plausible application changes into Scenario-owned semantically named Evolution Steps and create planned future Scenario owners where clearer;
+6. populate the Evolution Steps Map with sequence/dependencies/rough horizon/likelihood/readiness after canonical steps exist;
+7. perform Domain discovery from BI; add DI only when useful for current correctness/quality or materially known evolution pressure;
+8. analyze lower-owner Evolution Impact as future delta (`Expansion` / `Refactoring` / exceptional `Forced Migration`) without duplicating DI/SI/shared requirements there;
+9. verify current implementation plans against applicable evolution-enabling Implementation Items so known planned evolution is preferably additive/compositional;
+10. map Slices to realized BI and Domain; use `slices.md` as portfolio/composition strategy and create Shared Implementation Capability owners only when real reusable responsibility is discovered;
+11. attach local Tests/Test Items to Aggregate/Slice/shared owners as those owners are migrated; use test-first production realization when selected meaning and credible executable proof are known;
+12. retain `testing-plan.md` current Slice→proof information until local proof ownership is actually reconciled, then reduce it toward genuinely shared Test Strategy; create Shared Test Capabilities only for real reusable machinery;
+13. separate Practical Acceptance plans from executed Evidence without claiming PASS for unexecuted checks;
+14. keep `domain-evolution.md` only for materially useful cross-owner Domain semantic transitions;
+15. keep source/test mechanics out of normative docs and generated traces derived/non-authoritative;
+16. preserve semantic naming/readability/no-orphan rules and explicit use-case/process coverage;
+17. keep unaffected current documentation unchanged until its actual migration is performed.
 
-1. reconcile accepted current Scenario truth;
-2. build/maintain a complete current Process Specification for each Scenario;
-3. identify selected current Feature Interactions and their context/input/result/output contracts;
-4. persist core Scenario BI with `Requirement + Reason` under interactions where their behavioral need is visible;
-5. derive/persist intentional interaction/component/screen UI Requirements where useful;
-6. migrate known selected/plausible application changes into Scenario-owned semantically named Application Evolution Steps;
-7. create planned future Scenario owners when a future independent/replacement Scenario is already useful to understand as a whole;
-8. populate [`evolution-steps-map.md`](evolution-steps-map.md) with selected step sequence/dependencies after canonical Scenario-owned steps exist;
-9. perform Domain discovery from BI before deciding Aggregate/Object owner files;
-10. map each Domain owner to BI it implements and add `DI-*` only where useful;
-11. replace lower-owner `Evolution Steps` wording with `Changes by Application Evolution Step`, referencing rather than owning Scenario steps;
-12. map each Slice to BI it realizes and Domain it uses, adding `SI-*` only where useful;
-13. use FI-to-Slice references only as helpful context/navigation and never require 1:1 mapping;
-14. populate `domain-evolution.md` only for shared Domain changes by one Application Evolution Step that benefit from a cross-owner view;
-15. introduce a Cross-cutting Capability owner only when a real shared implementation responsibility justifies it;
-16. keep code-level traces out of normative docs and use source/generated derived traces when available;
-17. use meaningful human-readable names and remove false ordinal meaning from new/migrated documentation identities where practical without forcing churn solely for cosmetic renaming;
-18. structure dense documentation for semantic readability without dropping conditions/exceptions/rationale;
-19. verify every durable documentation owner has explicit use-case/process coverage; require a Documentation Use Case specifically for documentation-process artifacts rather than inventing DOC-UC entries for application semantic/contract/proof owners;
-20. keep unaffected documentation unchanged.
-
-This documentation-model update does **not** itself claim that existing Scenario, Slice or Domain owners have already been migrated to these forms.
+This methodology update does **not** itself claim that existing Scenario, Screen, Slice, Domain, testing or acceptance owners have already been migrated to these target forms.

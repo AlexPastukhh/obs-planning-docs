@@ -6,53 +6,66 @@ Scope: local consumer for replacement packages, repository-work review/finalizat
 
 ## Documentation model
 
-This application intentionally uses a small asymmetric documentation set whose durable owners require explicit **use-case coverage**. Documentation-process owners are justified by Documentation Use Cases; application semantic/contract/proof owners may be justified by the application Scenario, Slice, testing or acceptance process that needs them.
+This application uses a small asymmetric documentation set whose durable owners require explicit **use-case/process coverage**. The target model is integrated incrementally; this methodology package does not claim that current Scenario/Slice/testing owners already use every target form.
 
 1. [`direction-registry.md`](direction-registry.md) — application route.
-2. [`documentation-use-cases.md`](documentation-use-cases.md) — documentation-process authority: Scenario Process design/maintenance, Scenario-owned Application Evolution Steps, evolution sequencing, Domain/Slice implementation changes by those steps, semantic readability/naming, use-case-driven owner creation and generated implementation traces.
-3. [`documentation-templates.md`](documentation-templates.md) — recommended starting forms used directly by those Documentation Use Cases. Templates are guidance, not schemas.
-4. [`scenarios/README.md`](scenarios/README.md) and Scenario owners — detailed current user/application behavior. **As this documentation model is integrated**, current Scenario owners will be migrated to complete Process Specifications plus canonically owned Application Evolution Steps describing **what application behavior changes**. Planned future Scenario owners may then be added when future user-world behavior is independently meaningful or a replacement target is clearer than a large delta.
-5. [`evolution-steps-map.md`](evolution-steps-map.md) — planning map for **when/in what dependency/order** selected Scenario-owned Application Evolution Steps are intended to happen. The map references steps; it does not redefine their behavior.
-6. [`slices.md`](slices.md) — Slice Implementation Strategy/current implementation map; as the model is integrated, Slices reference BI they realize, Domain they use, optional durable `SI-*`, and `Changes by Application Evolution Step` describing **how the Slice must change** to realize Scenario-owned application evolution. Feature Interaction is behavioral decomposition and Slice is implementation decomposition; no 1:1 mapping is required.
-7. [`domain-evolution.md`](domain-evolution.md) — optional cross-owner view of Domain changes caused by one Scenario-owned Application Evolution Step when several Domain/Slice owners need one coherent semantic transition view. It is not the Application Evolution Step owner, primary Domain model or class registry.
-8. Focused contracts only where the integration is independently substantial:
-   - [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
-   - [`REPOSITORY-SNAPSHOT.md`](REPOSITORY-SNAPSHOT.md)
-   - [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md)
-9. [`testing-plan.md`](testing-plan.md) — compact automated-proof strategy and Slice-to-proof map.
-10. [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — practical Windows/Edge/ChatGPT evidence checklist.
-11. Current source and automated tests — realized mechanics and automated proof.
+2. [`documentation-use-cases.md`](documentation-use-cases.md) — documentation-process authority for Scenario+Screen design, Domain/Slice/shared implementation ownership, evolution-aware architecture, proof/TDD, readability and owner coverage.
+3. [`documentation-templates.md`](documentation-templates.md) — recommended forms, not schemas.
+4. Scenario owners — current user/application behavior. Target form: complete Process Specifications with FI/BI, FI/component-local UI Requirements and Scenario-owned **Evolution Steps** describing WHAT behavior changes.
+5. Selected Screen model — target owner is normally one `screens.md` when real Screen planning exists; it owns Screen Map, Scenario×Screen/FI×Screen, routes and Screen Behavior Items for durable spatial/window/UI meaning. This methodology update does not create an empty Screen owner.
+6. [`evolution-steps-map.md`](evolution-steps-map.md) — WHEN / rough horizon / likelihood / dependency / order / readiness for selected Evolution Steps and materially independent local impacts. It does not redefine their delta.
+7. Domain owners — BI-first Aggregate/Object semantics, optional `DI-*`, local Tests/Test Items and `Evolution Impact` as integration proceeds.
+8. [`slices.md`](slices.md) — current Slice Implementation Strategy/portfolio map. Target focused Slice owners reference BI/Domain, optional `SI-*`, local Tests/Test Items and `Evolution Impact`. Feature Interaction and Slice decompositions are not 1:1.
+9. Optional **Shared Implementation Capability** owners — one real reusable implementation responsibility consumed by several Slices; `cross-cutting` is a characteristic, not a separate owner type.
+10. [`domain-evolution.md`](domain-evolution.md) — optional cross-owner Domain Evolution Impact view only for materially shared semantic transitions.
+11. Focused contracts only where integration is independently substantial: [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md), [`REPOSITORY-SNAPSHOT.md`](REPOSITORY-SNAPSHOT.md), [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md).
+12. [`testing-plan.md`](testing-plan.md) — current automated-proof strategy and Slice→proof map; target role after local owner migration is shared **Test Strategy** (proof-layer allocation/non-duplication/shared environment/critical E2E/Practical boundaries).
+13. Optional **Shared Test Capability** owners — reusable test machinery/behavior only when several suites genuinely share one responsibility.
+14. [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — current practical checklist/evidence owner; target semantics explicitly separate Acceptance Plan from executed Evidence Campaigns.
+15. Current production/test source — exact realized mechanics and executable proof realization.
 
-Scenario owners remain the primary detailed business/application-behavior layer. **The target form as this documentation model is integrated** is:
-
-- complete Process Specifications for selected/current behavior;
-- Feature Interactions for meaningful local behavioral transformations and their contracts/outcomes;
-- stable Scenario Behavior Items consumed by Domain discovery;
-- intentional UI Requirements as a separate presentation/interaction requirement class;
-- Scenario-owned Application Evolution Steps saying **what** behavior is expected to change/expand;
-- lower implementation owners saying **how** they must change through `Changes by Application Evolution Step` rather than defining another copy of the step.
-
-The existing Scenario owners are not claimed to have already been migrated to this target form by the documentation-model package.
-
-Application evolution is therefore intentionally separated:
+The target semantic flow is:
 
 ```text
-Scenario Evolution Step = WHAT changes
-Evolution Steps Map = WHEN / order / dependency
-Domain/Slice change-by-step = HOW implementation/semantics change
+Scenario Goal
+→ Scenario Process / Feature Interactions
+   ├─ BI
+   └─ FI/component UI requirements
+↔ selected Screen model
+→ Domain
+→ Slice / Shared Implementation Capability
+→ local Tests / Test Items
+→ production + test source
+→ executed Evidence
 ```
 
-The model also supports explicit design exploration before behavior becomes authoritative: candidate Feature Interaction and full Scenario Process variants may be compared by inputs, Results/Outputs, composition, strengths, problems, neutral complexity placement, risks and questions. A candidate/rejected alternative is not current truth or an Application Evolution Step merely because it was considered. Optional visual/interactive walkthrough may help select behavior, but no simulator is required by the documentation architecture.
+Evolution responsibilities are deliberately separate:
 
-Documentation entities should be understandable by name. Technical IDs remain useful stable references, but human-readable names carry semantic meaning and arbitrary numeric suffixes do not define Scenario/Slice/Evolution order. The Evolution Steps Map owns roadmap sequence.
+```text
+Scenario Evolution Step
+→ WHAT application behavior changes
 
-Documentation presentation should optimize for semantic readability without semantic loss: expose multiple conditions/branches/consequences structurally when that improves comprehension, while keeping one coherent thought as prose when prose is clearer. Do not shorten away conditions or create list noise merely for formatting consistency.
+Evolution Steps Map
+→ WHEN / likelihood / dependency / readiness
 
-Normative documentation does not manually duplicate method/service call chains, Java field inventories, code-shape traces or accidental current UI layout. Source remains implementation authority; generated implementation traces may later provide a disposable, source-revision-bound view of code mechanics. Aggregate owners are preferred when shared consistency/invariants make one Domain boundary clearer, while separate Domain Object owners remain valid when independently useful.
+Lower-owner Evolution Impact
+→ WHAT changes in that owner
+   Expansion | Refactoring | Forced Migration
 
-No durable documentation owner should exist without explicit use-case coverage that explains why the information exists and how it is maintained/consumed. Documentation-process artifacts such as templates, terminology/principles or the Evolution Steps Map require a Documentation Use Case; application semantic/contract/proof owners may instead be justified by the application Scenario, Slice, testing or acceptance process that consumes them. Small terms/principles remain inside their natural process owner instead of becoming orphan terminology/principle files.
+DI / SI / Shared Implementation Items
+→ HOW current implementation must be shaped for current correctness/quality
+  and materially known future evolution
+```
 
-The documentation model is integrated incrementally. Existing Scenario owners, Domain boundaries and `slices.md` are not automatically reconciled merely because these process/template owners exist.
+Known evolution should influence current boundaries when that makes later changes additive/compositional: stable ports, composition seams, identities/ownership rules or shared capabilities may be justified now. Future behavior itself must not be implemented prematurely merely because it is known. `Forced Migration` is the exceptional signal that current structure forces movement/rewrite of existing logic/authority rather than reasonable expansion/composition.
+
+Local Tests normally live with Aggregate/Slice/shared implementation owners. A **Test Item** is only a durable additional requirement on proof quality (for example no-mutation, public-boundary, persisted-state, isolation, false-positive or refactor/evolution resilience); it is not a second product/architecture requirement. When selected meaning and a credible executable proof boundary are known, target development flow is test-first. Experiments/prototypes are for genuinely unresolved feasibility/design/proof questions, after which production realization returns to test-first. Real-environment properties may require planned Practical Acceptance followed by executed Evidence.
+
+Design exploration supports Scenario Process/FI variants together with Screen Set/Screen variants. Candidate/rejected alternatives remain design material, not current truth or Evolution Steps by default. Optional visual/interactive walkthrough can help design but no simulator is required by the documentation architecture.
+
+Documentation entities should carry readable semantic names; technical IDs are navigation, not meaning or roadmap order. Documentation optimizes for semantic readability without semantic loss. Source/test mechanics remain source authority; generated traces are derived/disposable.
+
+No durable owner exists merely because information seems useful. Documentation-process artifacts require explicit DOC-UC coverage; application semantic/contract/proof owners may instead be justified by the Scenario/Slice/testing/acceptance process that needs them. Existing Scenario/Domain/Slice/testing/acceptance owners remain current until separately reconciled to this target model.
 
 Ordinary replacement-package production remains outside this application route:
 
@@ -95,4 +108,4 @@ The Swing app also exposes **Windows launcher → Install / update** for the sta
 
 ## Authority boundary
 
-Scenario documentation defines current user-visible behavior. Focused contracts define exact package/snapshot/browser boundaries. `testing-plan.md` maps automated proof responsibility without redefining behavior. Source defines current implementation mechanics. Automated tests prove only executed cases. Manual acceptance records operated environment evidence.
+Scenario documentation defines current user-visible behavior. Focused contracts define exact package/snapshot/browser boundaries. `testing-plan.md` maps automated proof responsibility without redefining behavior. Source defines current implementation mechanics. Automated tests prove only executed cases. `MANUAL-ACCEPTANCE.md` is the current practical-verification owner; the target model distinguishes planned acceptance from executed Evidence.

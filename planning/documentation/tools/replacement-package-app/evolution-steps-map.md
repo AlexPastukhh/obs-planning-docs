@@ -1,77 +1,75 @@
 # Replacement Package App — Evolution Steps Map
 
-Status: active application-evolution planning owner; canonical Scenario step migration pending
-Scope: planned order, dependency, parallelism and enablement relationships between Scenario-owned Application Evolution Steps.
+Status: active evolution planning owner; canonical Scenario step migration pending
+Scope: rough horizon/likelihood, dependency, sequence, parallelism, readiness and enablement relationships between Scenario-owned Evolution Steps, plus materially independent lower-owner impacts when their planning differs from the parent step.
 
 ## Purpose
 
-This file answers:
+This file answers planning questions:
 
-> **When / in what dependency order should selected application changes happen?**
+> **When / how likely / in what dependency order should selected evolution happen, and is it ready?**
 
-It does **not** answer:
+It does **not** define:
 
-> **What application behavior changes?**
-
-That behavioral meaning remains canonical in the Scenario owner of each Application Evolution Step.
-
-It also does not answer how Domain/Slice implementation changes; those consequences belong in `Changes by Application Evolution Step` in affected implementation/semantic owners.
-
-The responsibility split is:
+- what application behavior changes — canonical in the Scenario-owned Evolution Step;
+- what a Domain/Slice/Screen/shared owner changes — canonical in that owner's `Evolution Impact`;
+- how the current implementation must be shaped — canonical in `DI-*`, `SI-*` or shared Implementation Items.
 
 ```text
 Scenario owner
-→ Application Evolution Step
-→ WHAT changes
+→ Evolution Step
+→ WHAT behavior changes
 
 Evolution Steps Map
-→ planned sequence / dependencies / enablement / parallelism
-→ WHEN / ORDER
+→ rough horizon / likelihood / dependency / order / readiness
+→ WHEN / HOW LIKELY
 
-Domain / Slice / Cross-cutting owner
-→ Changes by Application Evolution Step
-→ HOW that owner changes
+Lower owner
+→ Evolution Impact
+→ WHAT changes in that owner
+
+Implementation Items
+→ HOW current implementation is constrained for current quality + known evolution
 ```
 
-Documentation process: [`DOC-UC-08 — Plan the Application Evolution Step sequence`](documentation-use-cases.md#doc-uc-evolution-steps-map).
-Recommended entry form: [`Template — Evolution Steps Map entry`](documentation-templates.md#template-evolution-steps-map-entry).
+Documentation process: [`DOC-UC-08 — Plan Evolution Steps and material impact timing`](documentation-use-cases.md#doc-uc-evolution-steps-map).
+Recommended form: [`Template — Evolution Steps Map entry`](documentation-templates.md#template-evolution-steps-map-entry).
 
 ## Planning rules
 
-- Reference canonical Scenario-owned Application Evolution Steps; do not copy their behavioral delta here.
-- Evolution Step identity/name is semantic and stable. Do not encode current roadmap order as `001`, `002`, `003` merely because the map currently lists the steps that way.
-- Planned order may change without renaming the step.
-- The map may be:
-  - linear;
-  - branching;
-  - conditional;
-  - parallel where dependencies allow it.
-- `POSSIBLE` steps are non-binding and may remain outside the committed sequence unless showing them helps explain an option/dependency.
-- A planned future Scenario may appear as an enabled/replacement target, but its complete behavior belongs in its own Scenario owner.
-- Completed steps should not remain in the active plan merely to preserve history when current owners already communicate the resulting truth. Keep historical planning only when it still materially explains remaining dependencies.
+- Reference canonical Scenario-owned Evolution Steps; do not copy their behavioral delta.
+- Evolution Step identity/name is semantic and stable; map reorder never requires re-ID.
+- Step `Intent` may remain `URGENT`/`PLANNED`/`POSSIBLE` in the Scenario owner. The map may additionally record rough horizon, likelihood/planning confidence and readiness when useful.
+- Planning may be linear, branching, conditional or parallel.
+- `POSSIBLE` remains non-binding and should not be forced into committed sequence.
+- A materially independent lower-owner `Evolution Impact` item may appear when its timing/likelihood/dependency differs enough from the parent step to matter. Reference it; keep its Expansion/Refactoring/Forced Migration meaning in the lower owner.
+- Do not turn this map into detailed implementation scheduling, code task inventory or a duplicate architecture backlog.
+- Completed nodes need not remain active merely for history when current owners communicate resulting truth.
 
 ## Current planned sequence
 
-No authoritative sequence is populated by this documentation-model package because the existing Scenario owners have not yet been migrated to canonical semantically named Application Evolution Steps.
+No authoritative sequence is populated by this documentation-model package because existing Scenario owners have not yet been migrated to canonical semantically named Evolution Steps and lower owners have not yet been reconciled to the new `Evolution Impact` form.
 
-Populate this map during the Scenario migration by:
+Populate the map during later Scenario/implementation integration by:
 
-1. creating/canonicalizing Application Evolution Steps in Scenario owners;
-2. identifying real prerequisites and enablement relations;
-3. placing selected steps here without changing their semantic IDs/names;
-4. separating independent/parallel and non-binding possible branches instead of forcing an artificial ordinal list.
+1. canonicalizing Scenario-owned Evolution Steps;
+2. identifying real prerequisites/enablers/parallelism;
+3. recording rough horizon/likelihood/readiness only where it adds planning meaning;
+4. referencing materially independent local impacts only when their planning differs from the parent step;
+5. keeping behavior/implementation delta in their canonical owners.
 
 ## Recommended map shape
 
 ```text
 Current application state
         ↓
-<Scenario-owned Application Evolution Step A>
-        ├─────────────→ <parallel/independent Step B>
+<Evolution Step A> [near / high confidence / ready]
+        ├────────────→ <parallel Step B>
         ↓
 <Step C enabled by A>
+        └─ local impact: <Slice refactoring> [may happen before C]
         ↓
 <planned future Scenario / resulting capability>
 ```
 
-A tabular or list form is equally valid when it communicates the dependency structure more clearly.
+A table/list/graph form is equally valid when it communicates planning relationships more clearly.

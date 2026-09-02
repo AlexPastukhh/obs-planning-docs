@@ -1635,3 +1635,74 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** the documentation model now distinguishes target documentation form from current unmigrated Scenario files and enforces use-case-driven ownership without forcing artificial Documentation Use Cases onto application contracts/proof owners. Documentation-process artifacts still require explicit DOC-UC ownership, while all durable owners retain explicit use-case/process coverage.
 
 **APPLIED relation:** successful Apply of correction package `6e40b9bc-4643-454a-aacf-8b7c59d52cf5` corrects the still-open ChangeSet `ef0f38fa-aa0d-4b56-89cc-8c1fe6677fff` after ReviewDiff `NEEDS_CORRECTION`; ChangeSet identity/label and Work Intent remain unchanged.
+
+### LOG-RPKG-073 — Extend documentation model with Screen ownership, proof/TDD and evolution-aware implementation requirements
+
+**Type:** DOCUMENTATION ARCHITECTURE / SCREEN + PROOF + EVOLUTION-AWARE IMPLEMENTATION / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `a52e9adc-a72d-467b-b1d8-d3a2a5a801b6`  
+**ChangeSet Label:** `Replacement Package App - Screen, Proof and Evolution-Aware Documentation`  
+**Package:** `13b5a188-bfe9-4b78-b05e-06e70a0ce3f5`
+
+**Screen design / ownership:**
+- extend behavioral exploration so Scenario Process/FI variants and Screen Set/individual Screen variants can be designed together and feed back into each other before selection;
+- keep Scenario authority for application behavior, keep FI/component-local UI requirements near their interaction, and place canonical Screen/spatial/window meaning in a selected Screen owner only when real Screen planning exists;
+- define one `screens.md` as the default selected Screen Map/Scenario×Screen/FI×Screen/routes owner, with split Screen files only when independent depth/review/reuse justifies them; do not create an empty Screen owner in this methodology package.
+
+**Evolution responsibility refinement:**
+- simplify canonical Scenario terminology from `Application Evolution Step` to `Evolution Step` while preserving the same WHAT-behavior-change authority and optional `URGENT`/`PLANNED`/`POSSIBLE` intent;
+- rename lower-owner `Changes by Application Evolution Step` to `Evolution Impact`, whose only job is future owner delta;
+- use `Expansion`, `Refactoring` and `Forced Migration` as meaningful optional impact kinds: Expansion is preferred additive/compositional change, Refactoring is behavior-preserving structural improvement, Forced Migration signals that current structure forces movement/rewrite of existing logic/authority;
+- enrich the Evolution Steps Map with rough horizon/likelihood/readiness and allow references to materially independent local impacts when their timing/likelihood differs from the parent step, without duplicating behavioral or implementation delta.
+
+**Implementation Items as evolution-enabling requirements:**
+- strengthen `DI-*`, `SI-*` and shared implementation items so they may be derived not only from current BI/invariants but also from durable implementation-quality pressure and materially known Evolution Impact;
+- allow known evolution to justify stable ports, composition seams, identities/ownership rules or shared boundaries now when that makes later realization additive and avoids avoidable Forced Migration;
+- explicitly forbid using known future evolution as permission to implement the future capability itself prematurely;
+- keep `Evolution Impact` free of duplicated Implementation Item `Requirement + Reason`; Impact describes future delta, Implementation Items constrain current implementation.
+
+**Shared implementation ownership:**
+- replace the owner type `Cross-cutting Capability` with `Shared Implementation Capability` for one real reusable implementation responsibility consumed by several Slices; cross-cutting remains a characteristic rather than a second taxonomy;
+- keep `slices.md` as portfolio/composition strategy while a Shared Implementation Capability owns actual reusable responsibility, local requirements/tests and impact when such an owner is genuinely useful.
+
+**Proof / TDD:**
+- make local Tests part of Aggregate/Slice/Shared Implementation Capability ownership by default; separate test owners remain optional only for independent depth/reuse/review;
+- define `Test Item` only as a non-obvious durable proof-quality requirement (boundary, no-mutation, persisted observation, isolation, false-confidence, refactor/evolution resilience), never as a second semantic/production requirement;
+- make test-first production realization the default once selected meaning and a credible executable proof boundary are known; pure Refactoring keeps proof green, and experiments/prototypes remain an exception for genuinely unresolved feasibility/design/proof questions before returning to test-first production work;
+- distinguish shared `Test Strategy` policy from an optional reusable `Shared Test Capability`; preserve the current `testing-plan.md` Slice→proof map until later local-owner migration rather than pretending that migration already happened;
+- document the target distinction between Practical Acceptance Plan and executed Evidence without changing the current `MANUAL-ACCEPTANCE.md` in this methodology package.
+
+**Preserved integration boundary:**
+- actual `scenarios/*`, `slices.md`, `testing-plan.md`, `MANUAL-ACCEPTANCE.md`, focused contracts, runtime/source and executable tests are not migrated/changed by this package;
+- later integration will create selected Screen documentation only when real Screen design exists, then reconcile Domain/Slice local proof and shared strategies incrementally;
+- templates remain recommended forms, not schemas, and no-orphan/use-case-coverage/readability rules remain in force.
+
+**Target-State Result:** the documentation methodology now cleanly separates Scenario Evolution Step (WHAT behavior changes), Evolution Steps Map (WHEN/likelihood/dependency/readiness), lower-owner Evolution Impact (WHAT future delta occurs), and Implementation Items (HOW current implementation must be shaped for current correctness/quality and materially known future evolution). Screen design/ownership and proof/TDD fit the same ownership model without making Screens or tests a duplicate authority.
+
+**APPLIED relation:** successful Apply of package `13b5a188-bfe9-4b78-b05e-06e70a0ce3f5` establishes this methodology refinement in new ChangeSet `a52e9adc-a72d-467b-b1d8-d3a2a5a801b6`. Migration of actual Scenario/Screen/Domain/Slice/testing/acceptance owners remains separate later work after this documentation-model ChangeSet is reviewed.
+
+
+### LOG-RPKG-074 — Correct template linkage, Screen variant guidance and preserved package-production boundary
+
+**Type:** REVIEW DIFF / DOCUMENTATION MODEL CORRECTION / APPLIED TARGET  
+**Reviewed ChangeSet:** `a52e9adc-a72d-467b-b1d8-d3a2a5a801b6`  
+**Corrects Package:** `13b5a188-bfe9-4b78-b05e-06e70a0ce3f5`  
+**Correction Package:** `05ee98dd-3f1e-46b4-bb27-1d1515c110c8`
+
+**Review finding / selected correction:**
+- restore the README boundary that ordinary replacement-package production remains outside the Replacement Package App route and is governed by `planning/command-routing.md` → `planning/commands/build-replacement-archive.command.md` → `planning/documentation/build-replacement-archive-workflow.md`; the methodology rewrite had accidentally removed that operational routing statement;
+- restore direct DOC-UC → template links throughout Scenario, Domain, Slice, Shared Implementation, evolution planning, Screen and proof workflows so the retained rule “Documentation Use Cases use concrete recommended forms” is true rather than only asserted;
+- add a recommended Screen Set / Screen Variant analysis form so DOC-UC-07 can plan whole Screen topology and individual Screen alternatives with the same explicit design-medium support already available for Scenario Process/FI variants;
+- clarify that when Tests are embedded in an Aggregate/Slice/shared owner, material test-suite change belongs in that same owner’s `Evolution Impact` as Expansion or Refactoring when useful; do not create a parallel test-evolution owner and do not force a test-impact note when nothing material changes;
+- clarify Test Item evolution resilience: proof should remain stable while the property it proves remains unchanged, while a genuine semantic change may legitimately change/replace the corresponding Test Item/test.
+
+**Preserved architecture meaning:**
+- Scenario Evolution Step = WHAT application behavior changes;
+- Evolution Steps Map = WHEN / likelihood / dependency / readiness;
+- lower-owner Evolution Impact = WHAT future owner delta occurs through Expansion / Refactoring / exceptional Forced Migration;
+- DI/SI/shared Implementation Items = HOW current implementation is constrained for correctness/quality and materially known future evolution;
+- Test Items remain proof-quality requirements only and never become product/architecture authority;
+- actual Scenario/Screen/Domain/Slice/testing/acceptance owners remain unmigrated by this correction.
+
+**Target-State Result:** the Screen/proof/evolution methodology retains the agreed architecture while restoring the operational package-production boundary, making use-case/template linkage internally true, giving Screen variants an explicit recommended design form and making material test-suite evolution part of the natural owner rather than a duplicated evolution hierarchy.
+
+**APPLIED relation:** successful Apply of correction package `05ee98dd-3f1e-46b4-bb27-1d1515c110c8` corrects the still-open ChangeSet `a52e9adc-a72d-467b-b1d8-d3a2a5a801b6` after ReviewDiff `NEEDS_CORRECTION`; ChangeSet identity/label and Work Intent remain unchanged.
