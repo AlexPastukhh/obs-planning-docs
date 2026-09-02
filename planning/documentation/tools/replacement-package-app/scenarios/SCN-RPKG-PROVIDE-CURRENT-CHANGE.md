@@ -1,51 +1,141 @@
 # SCN-RPKG-PROVIDE-CURRENT-CHANGE — Provide Current Change For Review / Continuation
 
-Status: active current Scenario owner
+Status: legacy current Scenario owner
 
-## User goal
+## Application Benefit / Desired Result
 
-Give one intended ordinary ChatGPT conversation the exact current cumulative change of one logical ChangeSet without manual large-diff handling, while preserving truthful state when delivery fails or becomes uncertain.
+Give one intended ordinary ChatGPT conversation the exact cumulative current change of one **legacy** logical ChangeSet without manual large-diff handling, while preserving truthful delivery state when browser automation fails or becomes uncertain.
 
-## Main flow
+This Scenario remains current only for the legacy Current Change/ReviewDiff workflow. Git-backed target-mode work is intentionally fail-closed from this authority until `EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC` is realized.
 
-1. Establish one ChangeSet context using the normal Repository + ChangeSet selectors.
-2. Resolve the latest persisted canonical Current Change/ReviewDiff for that exact ChangeSet.
-3. Establish the intended Review chat through explicit manual binding, legacy unique `chatTabTitle` resolution during prepared Apply, or invocation-scoped `chatContextToken` resolution.
-4. One External Interaction represents the exact ReviewDiff source + exact conversation destination.
-5. The browser bridge validates protocol/task metadata and exact source fingerprint before composer mutation.
-6. Every non-empty ReviewDiff is prepared as an exact task-specific `.diff` attachment; large rich-text insertion is not used.
-7. For automatic Send, intended conversation and clean composer are guarded, exact attachment must be upload-ready, Java authorizes `SendArmed` before the first application-controlled browser click, an actual possible click establishes `SendClicked`, and later guarded attempts may continue only while the same prepared attachment remains. Confirmed delivery becomes `Sent`; genuine post-click ambiguity becomes `UnknownAfterSend` and stops blind resend.
-8. Empty Current Change produces `NoChanges` and no ChatGPT message.
+## Process Specification
 
-## Git-backed migration boundary
+### Scenario Process / Feature Interaction Map
 
-Git-backed ChangeSets in `Ready`, `AppliedUncommitted`, `CommittedUnpublished` or `PublicationUncertain` are not yet served by this Scenario. Their Current Change must become Git-derived in the SL-RPKG-02 migration; until then Refresh/Copy/Open/Send do not project the isolated worktree through the legacy owned-path ReviewDiff path. This is a temporary fail-closed boundary, not an assertion that the Git-backed work has no changes.
+```text
+FI-RPKG-MATERIALIZE-LEGACY-CURRENT-CHANGE
+├─ empty → NoChanges
+└─ non-empty exact ReviewDiff
+     ↓
+   FI-RPKG-DELIVER-LEGACY-CURRENT-CHANGE
+```
 
-## Binding routes
+### FI-RPKG-MATERIALIZE-LEGACY-CURRENT-CHANGE — Materialize exact cumulative legacy change
 
-Manual binding persists by ChangeSet and does not implicitly send already-current content.
+Scenario Role / Local Purpose:
+Produce the canonical cumulative ReviewDiff for one exact legacy ChangeSet without changing repository work.
 
-Legacy `chatTabTitle` is fallback metadata only. Current ignored-character policy is applied during Prepare; zero/multiple matches never guess. A unique destination different from an existing binding requires explicit interactive keep/rebind/cancel authorization before repository mutation, and title-assisted bind/rebind occurs only after successful Apply.
+Context / Preconditions:
+The selected ChangeSet is legacy-compatible and has current owned repository work.
 
-`chatContextToken` is stronger because it comes from an explicit Bind invocation. Token presence suppresses legacy title matching. A unique result immediately binds/rebinds the captured conversation for the ChangeSet independently of repository Apply success/failure. If unresolved/conflicted at a successful Apply delivery cutoff, only that current automatic ReviewDiff delivery is skipped; late success affects future delivery and never retro-sends the skipped artifact.
+Required Inputs:
+Exact Repository Target, exact ChangeSet and its current owned-path/baseline state.
 
-## External Interaction behavior
+Interaction Process:
+The application derives the cumulative canonical ReviewDiff using isolated temporary-index mechanics, persists its exact identity/freshness with the ChangeSet and exposes Refresh / Copy / Open / Send support. Git-backed work is rejected rather than projected through this legacy owner.
 
-The user-facing list is a current/actionable/attention projection rather than accumulated history.
+Outcomes:
+- exact non-empty ReviewDiff;
+- exact empty result (`NoChanges`);
+- derivation unavailable/stale/failed without changing real index/worktree truth.
 
-- Pending/claimed/preparing/sending work is visible.
-- Equivalent repeated intent while still actionable reuses the same interaction.
-- Ordinary terminal Sent/Attached/NoChanges/FailedBeforeSend/PreparedUnsent/Cancelled rows leave the working list after result reporting.
-- `UnknownAfterSend` remains immutable attention-visible until explicitly dismissed. Dismiss hides the working-list item without rewriting delivery truth.
-- Retry after terminal outcome creates a new interaction identity.
-- Cancel before possible Send stops future automation. If external content is already prepared, cancellation does not claim it was removed. Once Send may have occurred, cancellation cannot rewrite truth.
+Result:
+One exact cumulative legacy Current Change is available or a truthful no-change/failure result exists.
 
-## Important rules
+Outputs:
+Persisted ReviewDiff bytes/fingerprint and freshness state.
 
-- browser handoff never changes repository Apply/Finalize authority;
-- duplicate tabs for one conversation do not create duplicate semantic delivery;
-- exact artifact bytes/fingerprint are rechecked before handoff;
-- unrelated composer text blocks automatic mixing/sending;
-- stale/invalid extension agents are fenced by runtime generation + agent instance;
-- deterministic protocol/task mismatch is FailedBeforeSend, never post-Send uncertainty;
-- after possible Send, current confirmation uses prepared-attachment departure plus a new post-baseline user turn; an exact queued-filename attachment surface is stronger optional evidence when ChatGPT exposes it.
+Next Interactions:
+Non-empty and delivery requested → `FI-RPKG-DELIVER-LEGACY-CURRENT-CHANGE`; otherwise terminal/support repeat.
+
+Behavior Items:
+
+#### BI-RPKG-LEGACY-CURRENT-CHANGE-CUMULATIVE — Represent cumulative logical change
+Requirement:
+Legacy Current Change must represent the exact cumulative change of the selected logical ChangeSet, not only the latest package delta.
+
+Reason:
+Legacy review/finalization semantics concern the whole logical ChangeSet, not merely the most recent package.
+
+#### BI-RPKG-LEGACY-CURRENT-CHANGE-NONMUTATING — Derivation must not mutate repository truth
+Requirement:
+Generating Current Change must not modify the real Git index or repository work merely to compute a review artifact.
+
+Reason:
+A review projection must not change the repository state it is supposed to describe.
+
+#### BI-RPKG-LEGACY-CURRENT-CHANGE-EXACT-WORK — Current Change is bound to exact work
+Requirement:
+The persisted ReviewDiff used for delivery/finalization must remain bound to the exact Repository Target and ChangeSet state from which it was derived.
+
+Reason:
+Delivery and legacy Finalize are unsafe if a ReviewDiff can drift to another target or later ChangeSet state.
+
+### FI-RPKG-DELIVER-LEGACY-CURRENT-CHANGE — Deliver exact ReviewDiff
+
+Scenario Role / Local Purpose:
+Deliver the exact persisted Current Change to one intended conversation while keeping browser outcomes from authorizing repository mutation/finalization.
+
+Context / Preconditions:
+A non-empty exact persisted ReviewDiff exists for the selected legacy ChangeSet and a Review destination is resolved/bound.
+
+Required Inputs:
+Exact ReviewDiff source/fingerprint and exact conversation identity.
+
+Interaction Process:
+The bridge prepares the exact `.diff` attachment, guards destination/composer/attachment readiness, establishes `SendArmed` before the first application-controlled click, records the possible-Send boundary, and reports confirmed delivery or post-click uncertainty without blind resend. Equivalent actionable intent may dedupe; retry after terminal outcome creates a new interaction identity.
+
+Outcomes:
+- Sent;
+- FailedBeforeSend / PreparedUnsent / Cancelled;
+- `UnknownAfterSend`;
+- destination unresolved/conflicted → no guessed delivery.
+
+Result:
+Exact Current Change is delivered or delivery truth remains explicit.
+
+Outputs:
+External Interaction state.
+
+Next Interactions:
+Terminal/support action.
+
+Behavior Items:
+
+#### BI-RPKG-LEGACY-CURRENT-CHANGE-EXACT-ARTIFACT — Attach exact persisted ReviewDiff
+Requirement:
+Delivery must use the exact persisted ReviewDiff source/fingerprint for the selected ChangeSet.
+
+Reason:
+The intended review must refer to the same persisted bytes the application derived for that ChangeSet.
+
+#### BI-RPKG-LEGACY-CURRENT-CHANGE-FROZEN-DESTINATION — Delivery uses one exact intended conversation
+Requirement:
+Once a delivery task is prepared, later navigation/tab/UI changes must not silently retarget it.
+
+Reason:
+A later browser/navigation change must not redirect an already-authorized handoff to another conversation.
+
+#### BI-RPKG-LEGACY-CURRENT-CHANGE-UNCERTAINTY-TRUTHFUL — Preserve possible-Send uncertainty
+Requirement:
+After Send may have occurred, lack of confirmation must remain explicit uncertainty and must not be rewritten as clean cancellation/failure or blindly resent.
+
+Reason:
+After a possible external Send side effect, false certainty could cause duplicate delivery or misleading recovery.
+
+#### BI-RPKG-LEGACY-BROWSER-DOES-NOT-AUTHORIZE-REPOSITORY — Browser outcome is not repository authority
+Requirement:
+ChatGPT attachment/send success, failure or uncertainty must not itself authorize Apply, Finalize, Retry Push or any other repository mutation.
+
+Reason:
+External delivery state is independent from repository mutation and finalization authority.
+
+## Referenced Evolution Step
+
+This legacy Scenario is affected by the canonical [`EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC`](SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-downgrade-current-change-to-diagnostic) step owned by `SCN-RPKG-COMPLETE-REPOSITORY-WORK`.
+
+Local impact when that step is realized:
+- this standalone Scenario leaves the ordinary target workflow once no legacy ChangeSet requires its review/finalize authority;
+- retained Current Change behavior becomes optional Git-derived diagnostic/support behavior under the planned [`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).
+
+This owner references the canonical Evolution Step identity and does not redefine its `Intent`, `Change` or Scenario-level behavioral delta.

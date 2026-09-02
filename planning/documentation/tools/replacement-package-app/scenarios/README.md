@@ -1,13 +1,23 @@
 # Replacement Package App Scenario Catalog
 
-Status: active current Scenario navigation
+Status: active Scenario navigation
 
-The application has three user-world Scenarios. Scenario identity follows a real user need/result rather than buttons, commands or implementation components.
+Scenario identity follows a real application/user result rather than controls, commands or implementation components.
 
-| Scenario | User result |
-|---|---|
-| [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) | Prepared or existing logical repository work is safely applied/continued, understood, finalized/published or left in a truthful recoverable state. |
-| [`SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT`](SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) | An exact portable Local/Committed repository context exists and, when requested, is handed to one intended ChatGPT conversation. |
-| [`SCN-RPKG-PROVIDE-CURRENT-CHANGE`](SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) | The exact current logical change is handed to the intended ChatGPT conversation, or a truthful failed/uncertain outcome is retained. |
+## Current owners
 
-Shared work-context selection, External Interaction management and operation notifications support these Scenarios and are represented in [`../slices.md`](../slices.md), not as additional user-world Scenarios.
+| Status | Scenario | Application result |
+|---|---|---|
+| CURRENT | [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) | Prepared/existing logical repository work is safely realized using current mixed legacy/Git-backed semantics and reaches the currently supported published/finalized or truthful recoverable boundary. |
+| CURRENT | [`SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT`](SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) | One exact portable repository context exists and may be delivered to one exact conversation without changing repository work. |
+| LEGACY CURRENT | [`SCN-RPKG-PROVIDE-CURRENT-CHANGE`](SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) | One exact cumulative legacy ChangeSet ReviewDiff is materialized/delivered with truthful browser uncertainty. |
+
+## Planned future owner
+
+| Status | Scenario | Application result |
+|---|---|---|
+| PLANNED FUTURE | [`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md) | The exact Builder-reviewed package is realized, the actual published tree is proved equal to the reviewed predicted tree, one correct integration PR exists, and approved content is finalized without requiring a second semantic review. |
+
+The planned Scenario is a selected target design, not a second current authority. Promotion requires implementation/proof reconciliation; the current Scenario remains authority until that happens.
+
+Shared work-context selection, external interaction management, notifications and other implementation capabilities support these Scenarios and are represented by Domain/Slice/shared owners rather than invented as extra user-world Scenarios.

@@ -2,94 +2,346 @@
 
 Status: active current Scenario owner
 
-## User goal
+## Application Benefit / Desired Result
 
-Safely bring prepared repository work into the correct concrete local repository, continue the exact logical work when it already exists, understand its cumulative current change, and finish/publish it without capturing unrelated work. The same Scenario covers Publication Pending recovery and explicit reopening of Finalized logical work when the user deliberately chooses to continue it.
+Prepared or already-existing logical repository work is brought into the exact intended repository safely, progresses without losing established truth, and either reaches its currently supported published/finalized result or remains in an explicit recoverable state without capturing unrelated work.
 
-## Main flow
+This current Scenario intentionally describes the **implemented migration state**. It does not claim the planned reviewed-result confirmation / PR / target Finalize workflow is current.
 
-1. The user supplies a replacement ZIP and/or `OBS-ACTION/1`; the current/registered Repository Target context remains available for exact target resolution. Input is passive until Apply Package.
-2. **Apply Package** prepares immediately. **Apply Package (wait for ZIP)** freezes click-time archive/action/target inputs and retries only `PACKAGE_NOT_FOUND` roughly every two seconds for at most twelve seconds before entering the same prepared operation once.
-3. The package is fully validated and the exact Repository Target is resolved. `PACKAGE.json.changeSetId` is the exact continuation identity; UI selection, label similarity and recency cannot substitute another ChangeSet, and same-origin clones are never silently substituted.
-4. When OBS-ACTION carries explicit `targetBranch`, the ordinary Git-backed path requires `PACKAGE.json.workIntent`, first ensures/reconciles the exact GitHub Issue by machine marker `ChangeSet-Id:X`, then ensures/reuses the ChangeSet workspace and dispatches the same top-level operation through Apply → Commit → Publish until the package is proven `Ready` at its published tip. Retry resumes from persisted Work Intent/execution truth rather than asking the user to press internal actions manually.
-5. When `targetBranch` is omitted, the compatibility legacy path remains available for already-existing legacy producer work: package/source/ownership preflight precedes mutation, successful Apply persists cumulative ReviewDiff, and legacy Finalize/Publication Pending/Reopen semantics remain unchanged.
-6. Git-backed Current Change/ReviewDecision/integration Finalize are still separate later migration work; until those slices migrate, Git-backed work remains fenced from legacy Review/Finalize.
+## Process Specification
 
-## Git-backed migration branch — Manage Repository Work Intent
+### Scenario Process / Feature Interaction Map
 
-SL-RPKG-10 exists independently of Git execution. The external `OBS-ACTION/1` route `action: create-work-intent` resolves one standalone Work Intent JSON (`changeSetId`, repository identity, Title, Goal, Why, Acceptance), ensures one GitHub Issue carrying the exact `ChangeSet-Id:X` marker inside the App-managed block, persists the Issue reference, and stops. It does not create a ChangeSet/worktree or apply repository files.
+```text
+FI-RPKG-RESOLVE-CURRENT-REPOSITORY-WORK
+├─ target-mode package
+│    ↓
+│  FI-RPKG-ESTABLISH-CURRENT-WORK-INTENT
+│    ↓
+│  FI-RPKG-REALIZE-CURRENT-PACKAGE
+│    ↓
+│  published Ready
+│    ↓
+│  STOP at current Git-backed migration boundary
+│
+└─ legacy-compatible package/work
+     ↓
+   FI-RPKG-REALIZE-CURRENT-PACKAGE
+     ↓
+   FI-RPKG-INSPECT-LEGACY-CURRENT-CHANGE
+     ↓
+   FI-RPKG-FINALIZE-LEGACY-CURRENT-WORK
+```
 
-The same domain ensure is the first stage of ordinary target-mode `action: apply-package`. For that route the semantic input is `PACKAGE.json.workIntent`. The App searches exact repository Issues by the stable marker before create, adopts one exact managed Issue, fails closed on duplicates, durably journals create intent before the side effect, and reconciles a lost create response by marker before another create. Existing managed content may be updated on the same Issue and is re-read/verified. If a ChangeSet already exists, its `issueNumber`/`issueUrl` are synchronized with the persisted Work Intent; a newly created SL-11 workspace inherits that reference.
+The same top-level target-mode `apply-package` request resumes from persisted execution truth rather than requiring the user to drive internal Apply / Commit / Publish stages manually.
 
-Current external command routing is intentionally narrow: only `create-work-intent` and `apply-package` are `OBS-ACTION action:` values. Start workspace, manual Apply, Commit applied, Publish, Refresh/Copy/Open Current Change, Finalize, Retry Push, Reopen and other diagnostic/recovery actions remain direct Swing/Core controls rather than serialized OBS-ACTION commands.
+### FI-RPKG-RESOLVE-CURRENT-REPOSITORY-WORK — Resolve exact repository work
 
-## Git-backed migration branch — Start ChangeSet Workspace
+Scenario Role / Local Purpose:
+Bind the operation to the exact repository target, package ChangeSet identity and current supported execution route before mutation.
 
-The first migrated capability is available separately from the legacy Apply flow. **Start workspace** takes a new exact `changeSetId`, stable label and local target branch for the selected Repository Target. It resolves that branch to exact `C0`, durably journals the workspace intent before Git mutation, creates deterministic branch `changeset/<changeSetId>` plus an isolated worktree, verifies that worktree belongs to the same Git common repository and is clean at `C0`, then persists `baseCommit=C0`, `publishedTip=C0`, lifecycle `Active`, execution `Ready`.
+Context / Preconditions:
+A registered Repository Target exists and a replacement package / action has been supplied.
 
-The action is idempotent for its current `Ready` state. A repeat proves the persisted branch/worktree/HEAD instead of recreating it; a crash after journal creation may reconcile the exact journal-owned partial workspace. Existing branch/worktree material without that journal is not adopted. Movement of the target branch after successful workspace creation does not rewrite the pinned `baseCommit`.
+Required Inputs:
+Repository Target context, package manifest identity and optional explicit `targetBranch`.
 
-The next migrated stage is **Apply package files** for that existing workspace. From `Ready(C0)`, Apply verifies the persisted branch/worktree at exact `publishedTip=C0`, requires a clean real index, performs expected-source proof against the worktree, durably records an Apply journal before the first file mutation, and mutates only the isolated worktree. The journal records exact actual prior existence/bytes and exact intended result bytes per package operation together with package/archive identity and `baseHead`. Successful file mutation persists `AppliedUncommitted(P1)` while branch HEAD and `publishedTip` remain `C0`; the Git-backed ChangeSet acquires no legacy Path Ownership.
+Interaction Process:
+The application resolves and validates the concrete package, repository identity, Repository Target and `changeSetId`. Package identity is authoritative for logical continuation; UI selection, label similarity, recency and same-origin clone convenience cannot retarget the work. Explicit `targetBranch` selects the Git-backed target-mode route; absence preserves legacy/manual compatibility.
 
-Retry is idempotent against that journal. If all package paths already equal the intended result, retry persists/returns `AppliedUncommitted` without reapplying. If a crash leaves only prior or a mixture of exact prior/intended package-path states, retry restores the exact recorded prior bytes and applies the package again. If a journal-owned package path contains other bytes consistent with an interrupted file write, those current bytes are preserved under app-state recovery evidence before exact prior restoration and retry. Unrelated dirty worktree paths, a changed branch/HEAD or a different package against `AppliedUncommitted` still fail closed. The durable Apply journal remains after success.
+Outcomes:
+- exact target/work is established → continue;
+- invalid, conflicting, unverifiable or incompatible identity → fail before repository mutation.
 
-The next modular extension of the same SL-RPKG-01 is **Commit applied package**. From `AppliedUncommitted(P1)`, Commit re-proves the exact ChangeSet branch/worktree and durable intended package result at `publishedTip=C0`, refuses staged paths outside the journal, stages only package paths, and creates one local `C1` carrying exact `Package-Id: P1` and `ChangeSet-Id: X` trailers. Success persists `CommittedUnpublished(P1,C1)` with `commitSha=C1`; `publishedTip` deliberately remains `C0` because publication has not happened yet.
+Result:
+One exact current repository-work context and route is fixed for execution.
 
-Commit retry is idempotent across its side-effect boundaries. A journal-only staged index can be restaged and committed safely. If a crash created a commit before state persistence, retry may recover that existing `HEAD=C1` only after proving it is the single-parent child of `C0`, has the exact package/ChangeSet trailers, changes no path outside the durable package paths, preserves the exact intended worktree bytes, and has a clean index/worktree. A moved head lacking that proof fails closed. Repeated Commit or same-package Apply after a proven `CommittedUnpublished` state returns already-satisfied semantics instead of creating another commit.
+Outputs:
+Resolved Repository Target, ChangeSet identity, package identity and route context.
 
-The next modular extension is **Publish applied commit**. From `CommittedUnpublished(P1,C1)`, Publish re-proves the exact local package commit and checks the exact remote `changeset/<id>` branch before any push. Remote absence or exact previous `publishedTip=C0` permits one exact `C1` ref update protected by an explicit force-with-lease; remote `C1` is already satisfied. Any other observed remote tip returns `REMOTE_BRANCH_DIVERGED` without overwrite. Success is persisted only after a post-push exact remote lookup proves `C1`, then execution returns to `Ready(C1)` and `publishedTip=C1`.
+Next Interactions:
+Target-mode → `FI-RPKG-ESTABLISH-CURRENT-WORK-INTENT`; legacy → `FI-RPKG-REALIZE-CURRENT-PACKAGE`.
 
-If a push command fails but the post-attempt remote lookup proves the branch is still absent/at `C0`, the state remains `CommittedUnpublished(P1,C1)` and Publish is retryable. If a push was attempted but the remote cannot be inspected afterward, execution becomes `PublicationUncertain(P1,C1)`. Retry from that state first reconciles remote: exact `C1` becomes already-satisfied `Ready(C1)` without another push; absent/`C0` may retry the exact leased push; another tip fails closed. The completed Apply journal is retained as the exact latest published package boundary; when the next package P2 begins from `Ready(C1)`, that old journal must first prove the published `C1` and is then replaced by the new `baseHead=C1` journal.
+Behavior Items:
 
-### Ordinary automatic Apply Package composition
+#### BI-RPKG-CURRENT-EXACT-REPOSITORY-TARGET — Execute only against the exact Repository Target
+Requirement:
+Repository mutation must remain bound to the exact registered Repository Target resolved for the operation; a convenient same-origin clone or later UI selection must not substitute another target.
 
-The separate Git-backed actions remain independently callable domain/recovery boundaries, but they are no longer the ordinary user sequence. When an authorized `OBS-ACTION/1` includes explicit `targetBranch`, one top-level **Apply Package** operation reuses the existing package intake and target resolution, then:
+Reason:
+Repository identity alone does not identify one concrete local work target.
 
-1. ensures SL-RPKG-10 from `PACKAGE.json.workIntent`, creating/adopting/updating one exact GitHub Issue before Git workspace mutation;
-2. if `changeSetId` has no persisted ChangeSet, ensures SL-RPKG-11 using the package `changeSetId` / `changeSetLabel`, the resolved Repository Target and the explicit `targetBranch`;
-3. if the Git-backed workspace already exists, proves the package target/label/target-branch identity instead of recreating it;
-4. dispatches package-file Apply from persisted state;
-5. continues/recover Commit when needed;
-6. continues/reconciles Publish when needed;
-7. returns success only after the package is proven published at `Ready(C1)` (or the same published package is already satisfied).
+#### BI-RPKG-CURRENT-CHANGESET-ID-AUTHORITY — Package ChangeSet identity controls continuation
+Requirement:
+`PACKAGE.json.changeSetId` is the logical continuation identity and must not be replaced by label similarity, recency or current UI selection.
 
-The same pasted command is therefore the retry/resume entry. `AppliedUncommitted` resumes at Commit, `CommittedUnpublished` resumes at Publish, `PublicationUncertain` reconciles Publish before any further package action, and already-published `Ready` is proof-only. A failure after an earlier successful internal action preserves that established state for the next retry.
+Reason:
+Continuation must address the same logical work rather than whichever work appears most convenient.
 
-`targetBranch` is explicit operation input and is never guessed from the Repository Target's current checkout branch. If `targetBranch` is present for an already-existing legacy ChangeSet, the operation fails closed rather than converting legacy work in place. Omitting `targetBranch` retains the legacy/manual compatibility path, which is needed for already-open legacy ChangeSets created before this composition existed.
+#### BI-RPKG-CURRENT-PREFLIGHT-BEFORE-MUTATION — Fail closed before mutation
+Requirement:
+Package, repository, target, ownership/source and route applicability that can be proven before mutation must be proven before the first repository-file mutation.
 
-The Swing **Start workspace**, **Commit applied** and **Publish** controls remain useful diagnostic/recovery/migration surfaces, but ordinary target work does not require the user to copy IDs/labels or press those internal steps manually.
+Reason:
+Invalid or stale input must not create partial repository work merely to discover that it was inapplicable.
 
-This remains a deliberate migration boundary. Git-backed Apply/Commit/Publish do **not** yet generate the legacy owned-path ReviewDiff, and Git-derived Current Change, PR/ReviewDecision and Finalize are still unmigrated. Legacy Review and Finalize are therefore blocked for the Git-backed ChangeSet instead of falling back to the Repository Target main workspace.
+### FI-RPKG-ESTABLISH-CURRENT-WORK-INTENT — Establish durable semantic work intent
 
-## Important branches
+Scenario Role / Local Purpose:
+Ensure the target-mode ChangeSet has one durable semantic GitHub Issue identity before Git workspace/package mutation.
 
-### Explicit Reopen
+Context / Preconditions:
+The resolved action has explicit `targetBranch` and the package carries valid `workIntent`.
 
-Selecting Finalized history is read-only. `Reopen ChangeSet` revalidates the exact stored Repository Target and verifies historical paths can be reacquired without stealing sibling unfinished ownership or silently adopting unrelated dirty/unowned state. Failure leaves lifecycle/ownership unchanged. Success returns the same ChangeSet identity to Active and preserves finalization history; later Apply still runs normal guards.
+Required Inputs:
+Repository identity, `changeSetId`, Title, Goal, Why and Acceptance.
 
-### Repository Target location
+Interaction Process:
+The application searches for the exact `ChangeSet-Id` marker, adopts/verifies one managed Issue, fails closed on multiple exact matches, journals create intent before an external create side effect and reconciles an uncertain create result before considering another create. The Issue reference is persisted and propagated to the ChangeSet when it exists.
 
-A Repository Target is one stable registered target ID with a logical `github:owner/repo` Repository Identity and a mutable registered location. Several targets may share one repository identity. `Change repository location` explicitly updates the same target after validating a matching Git work tree and preserves all ChangeSet associations.
+Outcomes:
+- exact Issue exists and is verified → continue;
+- transport/auth failure before create → fail without workspace/package mutation;
+- duplicate marker or unresolved create truth → explicit failure/uncertainty, no blind duplicate.
 
-### Existing work navigation
+Result:
+One exact durable Work Intent exists for this ChangeSet.
 
-The main ChangeSet selector is the work-context selector: current-target unfinished work by default, `All repositories` for unfinished work across registered targets, and `Show history` to add Finalized rows. Selecting another target's work selects that exact target + ChangeSet only. An unavailable stored target remains truthful query state and is never silently replaced.
+Outputs:
+Persisted Work Intent and exact Issue reference.
 
-### Invocation-scoped chat binding
+Next Interactions:
+`FI-RPKG-REALIZE-CURRENT-PACKAGE`.
 
-An optional `chatContextToken` resolves asynchronously while repository Apply proceeds. A unique token result is direct bind/rebind authority for the ChangeSet and is independent of Apply success/failure. If resolved by the successful-Apply ReviewDiff cutoff, that ReviewDiff may queue normally; pending/conflicted resolution skips only that automatic delivery. Late unique resolution applies to future deliveries and never retro-sends the skipped ReviewDiff. Legacy `chatTabTitle` remains fallback-only when no token is present and keeps its pre-mutation unique-match/keep-rebind-cancel behavior.
+Behavior Items:
 
-## Data and rules
+#### BI-RPKG-WORK-INTENT-ONE-EXACT-ISSUE — One exact managed Issue
+Requirement:
+One ChangeSet marker must resolve to exactly one managed GitHub Issue; zero may create one, one is adopted, and multiple exact matches fail closed.
 
-- Repository Target = stable target identity + repository identity + mutable location.
-- ChangeSet = stable logical work identity; Git-backed workspaces pin target branch/base/published tip and isolated branch/worktree, then progress through explicit execution states `Ready`, `AppliedUncommitted`, `CommittedUnpublished` and recoverable `PublicationUncertain`.
-- `(Repository Target, relative path)` has at most one unfinished ChangeSet owner.
-- Current Change = cumulative exact current work for one ChangeSet.
-- lifecycle = Active → Publication Pending → Finalized, with explicit guarded Finalized → Active Reopen.
-- package `changeSetId` cannot be retargeted by UI state.
-- source freshness and path ownership are independent protections.
-- unrelated dirty/unowned work is never silently adopted.
-- repository-without-required-commit reports Repository Not Ready.
-- stale Current Change blocks Finalize.
-- publication failure preserves successful local work.
-- an in-flight operation stays bound to its captured target/work even if UI navigation changes.
+Reason:
+Semantic work identity must not fork through duplicate external records.
+
+#### BI-RPKG-WORK-INTENT-DURABLE — Work Intent survives interruption
+Requirement:
+Work Intent identity and create/reconciliation state must be persisted strongly enough that retry can recover the same external intent instead of blindly creating another one.
+
+Reason:
+External create success can outlive a lost local response.
+
+### FI-RPKG-REALIZE-CURRENT-PACKAGE — Apply, commit and publish the package using current semantics
+
+Scenario Role / Local Purpose:
+Realize one exact package while preserving exact source applicability, unrelated work and truthful recoverable execution state.
+
+Context / Preconditions:
+Exact repository work is resolved. Target-mode work has durable Work Intent; legacy work satisfies its current ownership/source guards.
+
+Required Inputs:
+Validated package operations/payloads, exact expected source, persisted ChangeSet state and route-specific repository context.
+
+Interaction Process:
+For target-mode work, the application ensures/reuses the deterministic isolated ChangeSet workspace pinned to exact published source, applies package paths using a durable prior/intended Apply journal, commits only proven package paths with package/ChangeSet identity, and publishes only the exact intended ChangeSet branch tip after remote proof. Retry resumes/proves `Ready → AppliedUncommitted → CommittedUnpublished → Ready`, reconciling `PublicationUncertain` before another push.
+
+For legacy work, package/source/ownership preflight precedes main-workspace mutation and current Path Ownership semantics remain active.
+
+Outcomes:
+- exact target-mode package published and proven `Ready`;
+- exact legacy package applied under current legacy semantics;
+- deterministic failure before/at a proven boundary;
+- recoverable partial/uncertain execution state.
+
+Result:
+The package is realized as far as current semantics safely allow, with repository truth and recovery state explicit.
+
+Outputs:
+Updated ChangeSet execution/published state; legacy path may also produce a persisted Current Change.
+
+Next Interactions:
+Target-mode published `Ready` → Scenario currently stops. Legacy successful Apply → `FI-RPKG-INSPECT-LEGACY-CURRENT-CHANGE`.
+
+Behavior Items:
+
+#### BI-RPKG-CURRENT-APPLY-EXACT-PACKAGE — Mutate only from the exact validated package
+Requirement:
+The package operations and complete payload bytes validated for this execution are the repository-file mutation authority.
+
+Reason:
+An equivalent reconstruction is not the same operation identity as the supplied package.
+
+#### BI-RPKG-CURRENT-APPLY-EXACT-SOURCE — Prove expected source before replacement/deletion
+Requirement:
+Every replace/delete operation must prove that its current target source is the exact expected source or Git-path-equivalent source permitted by the package protocol before mutation.
+
+Reason:
+A stale package must not overwrite a source state it was not built against.
+
+#### BI-RPKG-CURRENT-GIT-RETRY-RESUMES — Retry resumes proven Git-backed execution
+Requirement:
+Retry must prove already-established workspace/apply/commit/publish side effects and resume from the latest proven state instead of restarting the logical package operation.
+
+Reason:
+Blind restart can duplicate commits, overwrite remote truth or lose interruption evidence.
+
+#### BI-RPKG-CURRENT-PARTIAL-STATE-TRUTHFUL — Preserve truthful partial execution state
+Requirement:
+If an internal stage succeeds and a later stage fails, the successful established state must remain persisted rather than being reported or rolled back as if it never happened.
+
+Reason:
+Recovery depends on knowing which irreversible/local side effects are already true.
+
+#### BI-RPKG-CURRENT-PUBLICATION-UNCERTAIN-BLOCKS-NEXT — Reconcile uncertain publication first
+Requirement:
+While publication outcome is uncertain, no next package may proceed until the exact remote state is reconciled.
+
+Reason:
+The expected source for a later package is undefined until the previous publication boundary is known.
+
+#### BI-RPKG-CURRENT-LEGACY-OWNERSHIP-PROTECTS-UNRELATED-WORK — Legacy ownership protects unrelated work
+Requirement:
+Legacy Apply must not silently adopt or overwrite paths owned by sibling unfinished work or unrelated dirty/unowned content.
+
+Reason:
+Compatibility mode must preserve the repository-work isolation guarantees on which legacy Finalize depends.
+
+### FI-RPKG-INSPECT-LEGACY-CURRENT-CHANGE — Inspect cumulative legacy Current Change
+
+Scenario Role / Local Purpose:
+Materialize and inspect the exact cumulative current legacy ChangeSet without mutating the real Git index.
+
+Context / Preconditions:
+A legacy ChangeSet has current owned work and can produce its canonical persisted ReviewDiff.
+
+Required Inputs:
+Exact ChangeSet identity, owned paths and repository baseline/current state.
+
+Interaction Process:
+The application derives the cumulative canonical ReviewDiff for the selected ChangeSet through isolated Git/index mechanics, persists the exact current review identity and exposes Refresh / Copy / Open / optional ChatGPT delivery.
+
+Outcomes:
+- exact current ReviewDiff produced;
+- no changes;
+- stale/unavailable/failed derivation with no mutation of repository truth.
+
+Result:
+One exact cumulative legacy Current Change is available for current legacy review/finalization semantics.
+
+Outputs:
+Persisted ReviewDiff + identity/freshness state.
+
+Next Interactions:
+`FI-RPKG-FINALIZE-LEGACY-CURRENT-WORK` when the user chooses Finalize; otherwise inspection/support may repeat.
+
+Behavior Items:
+
+#### BI-RPKG-CURRENT-REVIEWDIFF-CUMULATIVE — Current ReviewDiff is cumulative for one legacy ChangeSet
+Requirement:
+Legacy Current Change must represent the cumulative exact logical change of the selected ChangeSet rather than only the last package delta.
+
+Reason:
+Legacy Finalize is defined over the full logical ChangeSet and therefore requires a cumulative review projection.
+
+#### BI-RPKG-CURRENT-REVIEW-NONMUTATING — Review generation does not alter repository state
+Requirement:
+Current Change generation must not mutate the real repository index or working-tree truth merely to compute a review artifact.
+
+Reason:
+Computing a review must not alter the work whose current state is being reviewed.
+
+#### BI-RPKG-CURRENT-REVIEW-BINDS-CHANGESET — Review identity belongs to the selected ChangeSet
+Requirement:
+A persisted Current Change used by legacy Finalize must be bound to the exact ChangeSet/repository state from which it was derived.
+
+Reason:
+Freshness and Finalize checks require an exact relationship between the review artifact and the work state it describes.
+
+### FI-RPKG-FINALIZE-LEGACY-CURRENT-WORK — Finalize current legacy work
+
+Scenario Role / Local Purpose:
+Close legacy work only from a fresh exact Current Change while preserving successful local work when publication cannot complete.
+
+Context / Preconditions:
+A legacy ChangeSet has a current persisted ReviewDiff and current ownership state.
+
+Required Inputs:
+Exact ChangeSet, fresh Current Change identity and local commit message.
+
+Interaction Process:
+Finalize revalidates the current review baseline and ownership, stages only owned paths, commits and publishes. Publication failure preserves successful local commit/work as Publication Pending. Explicit Reopen can later return finalized legacy identity to Active only after guarded ownership reacquisition.
+
+Outcomes:
+- Finalized;
+- Publication Pending/retryable;
+- blocked because Current Change is stale or ownership/repository state changed;
+- Reopen succeeds or fails without partial ownership/lifecycle mutation.
+
+Result:
+Legacy work is finalized/published, preserved for publication recovery, or left unchanged with a truthful blocking result.
+
+Outputs:
+Lifecycle/finalization/publication state.
+
+Next Interactions:
+Terminal current legacy result or explicit later Reopen.
+
+Behavior Items:
+
+#### BI-RPKG-CURRENT-FINALIZE-REQUIRES-FRESH-REVIEW — Legacy Finalize requires a fresh Current Change
+Requirement:
+Finalize must fail if the persisted Current Change no longer represents the exact current ChangeSet state.
+
+Reason:
+Legacy Finalize must not integrate repository state that has changed since the user-visible Current Change was derived.
+
+#### BI-RPKG-CURRENT-FINALIZE-OWNED-ONLY — Legacy Finalize stages only owned work
+Requirement:
+Finalize must not capture repository paths outside the ChangeSet's established ownership.
+
+Reason:
+Finalization must not accidentally capture unrelated or sibling unfinished repository work.
+
+#### BI-RPKG-CURRENT-PUBLICATION-FAILURE-PRESERVES-WORK — Publication failure preserves successful local work
+Requirement:
+If local finalization succeeds but publication fails, the application must preserve the local result and expose recoverable publication state instead of recreating unrelated logical work.
+
+Reason:
+A successful local commit remains real even if remote publication fails and should be recoverable without recreating the work.
+
+#### BI-RPKG-CURRENT-REOPEN-EXPLICIT — Reopen is explicit and guarded
+Requirement:
+Finalized legacy work may return to Active only through explicit Reopen that proves ownership can be reacquired without stealing sibling work or silently adopting unrelated changes.
+
+Reason:
+Reacquiring finalized ownership changes repository-work authority and therefore must not happen as a side effect of navigation or continuation.
+
+## Screen references
+
+Selected current spatial/window responsibility is documented in [`../screens.md`](../screens.md). Screen rules do not redefine this Scenario's behavioral authority.
+
+## Evolution Steps
+
+<a id="evo-rpkg-downgrade-current-change-to-diagnostic"></a>
+### EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC — Make Current Change diagnostic for target work
+Intent: PLANNED
+
+Change:
+Git-backed Current Change becomes a Git-derived optional diagnostic/support projection and no longer acts as semantic approval authority for ordinary target-mode work.
+
+Scenario Process / Feature Interaction impact:
+`FI-RPKG-INSPECT-LEGACY-CURRENT-CHANGE` remains only for legacy compatibility until legacy work is retired; target work uses diagnostic inspection separately from approval.
+
+Related / Replacement Scenario:
+[`planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).
+
+<a id="evo-rpkg-adopt-reviewed-result-workflow"></a>
+### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW — Complete work from Builder-reviewed result identity
+Intent: PLANNED
+
+Change:
+Target-mode Complete Repository Work gains consumer-side confirmation that the actual published tree equals the Builder-reviewed predicted result, then one correct integration PR and approval-preserving Finalize semantics.
+
+Scenario Process / Feature Interaction impact:
+The current target-mode stop after published `Ready` is replaced by the planned reviewed-result confirmation → PR → Finalize process.
+
+Related / Replacement Scenario:
+[`planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).

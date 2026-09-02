@@ -1,51 +1,87 @@
-# Replacement Package App — Testing Strategy
+# Replacement Package App — Test Strategy
 
-Status: active current automated-proof strategy
-Scope: proof responsibility for the current implementation. User-visible behavior remains in Scenario owners; implementation orientation remains in `slices.md`; operated Windows/Swing/Edge/ChatGPT evidence remains in `MANUAL-ACCEPTANCE.md`.
+Status: active shared Test Strategy
+Scope: proof-layer allocation, non-duplication rules, shared test environment decisions and critical cross-owner proof boundaries. Canonical behavior remains in Scenario BI; local implementation proof belongs with Domain/Slice/shared implementation owners.
 
-## Proof model
+## Proof authority rule
 
-Use the smallest proof surface that can establish the behavior:
+```text
+Scenario / Screen / Domain / Slice requirement
+→ selected property
+→ smallest credible proof boundary
+→ automated test and/or Practical Acceptance
+→ executed Evidence
+```
 
-1. **Deterministic/component proof** for parsing, state, projection, lifecycle and helper rules.
-2. **Repository/integration proof** with disposable real Git repositories, filesystems, state stores and bare remotes when Git/file/state semantics matter.
-3. **Bridge/DOM regression** for Java bridge task truth and deterministic extension/adapter behavior that can be exercised without claiming a real browser session.
-4. **Manual practical evidence** only for real Swing/Windows/Edge/ChatGPT surfaces that automated tests do not establish.
+Tests prove required meaning; they do not create application semantics.
 
-`run-tests.cmd` is the standard automated entry and currently runs `CoreTests`, `ApplyReceiptTests`, `ChatBridgeTests`, the Node `chatgpt-adapter-dom.test.js` regression, and `WindowsLauncherInstallerTests`. Documentation does not claim those tests passed unless they were actually executed for the state being reviewed.
+A failed/passing test run is Evidence only for the exact source/build/environment exercised. This file does not claim tests have passed merely because a responsibility is documented.
 
-## Slice → automated proof map
+## Test-first default
 
-| Slice | Primary automated proof responsibility |
-|---|---|
-| `SL-RPKG-01` Apply Replacement Work | `CoreTests`: legacy package/action/ownership/source behavior plus automatic OBS-ACTION `targetBranch` composition over SL-11 + Git-backed `Ready → AppliedUncommitted → CommittedUnpublished → Ready` with `PublicationUncertain`: automatic missing-workspace creation, explicit target-branch authority independent of current checkout, end-to-end Apply/Commit/Publish, same-command repeat, resume from `AppliedUncommitted`, `PublicationUncertain` reconcile-before-retry, refusal to reinterpret legacy ChangeSets, backward-compatible action-without-targetBranch behavior, worktree-only mutation, durable Apply-journal recovery, Unicode/raw path identity, package-only Commit/trailer proof, effective remote identity, exact leased Publish, remote divergence refusal and retained completed-journal rollover. |
-| `SL-RPKG-02` Inspect Current Change | `CoreTests`: cumulative canonical ReviewDiff, temporary-index isolation, persistence/integrity/staleness and background Refresh ownership rules. |
-| `SL-RPKG-03` Finalize And Publish Work | `CoreTests`: owned-only staging, review baseline equality, commit/push/publication-pending recovery, remote recovery guards and explicit safe Reopen lifecycle/ownership reacquisition. |
-| `SL-RPKG-04` Export Repository Snapshot | `CoreTests`: Local/Committed snapshot bytes/metadata, repository readiness, index safety, confinement and Local consistency/stability checks. |
-| `SL-RPKG-05` Attach Repository Snapshot To ChatGPT | `ChatBridgeTests` plus Core/Swing source contracts where applicable: exact snapshot task identity, frozen destination/mode, attach-only vs auto-send task truth, Snapshot deadline/scheduler/restart behavior and generic attachment contract. |
-| `SL-RPKG-06` Deliver Current Change To ChatGPT | `ChatBridgeTests` + Node DOM regression + source contracts: binding/title/token resolution, protocol/task preflight, exact `.diff` attachment, runtime-agent fencing, `SendArmed`/`SendClicked`, guarded retries and post-Send truth boundaries. |
-| `SL-RPKG-07` Select Existing Work Context | `CoreTests` + Swing source contracts: current/global/history projection, ordering, unavailable target, exact target/ChangeSet selection and navigation-without-mutation. |
-| `SL-RPKG-08` Manage External Interactions | `ChatBridgeTests`: semantic interaction identity, actionable dedupe, cancellation boundaries, uncertainty persistence/dismissal and terminal-retry identity. |
-| `SL-RPKG-09` Notify Operation Outcomes | deterministic outcome/source contracts plus `WindowsLauncherInstallerTests` for launcher mechanics; real Windows notification delivery/click routing remains manual evidence. |
-| `SL-RPKG-10` Manage Repository Work Intent | `CoreTests`: typed external action routing (`create-work-intent` / `apply-package` only), standalone Issue-only ensure, package Work Intent validation, exact `ChangeSet-Id` marker identity, durable state/journal, no-duplicate create reconciliation, duplicate-marker conflict, Issue reference propagation to ChangeSet, and automatic Work Intent-before-workspace composition. `GitHubClient` uses `gh api`; live authentication/network behavior remains manual evidence. |
-| `SL-RPKG-11` Start ChangeSet Workspace | `CoreTests`: exact target-branch pinning, deterministic branch/worktree creation, same-common-repository verification, persisted `Ready`, target movement stability, durable journal recovery including preservation of successive invalid partial worktree attempts with stale exact registrations, unjournaled collision fail-closed behavior and the transitional guard that prevents legacy Apply/Review from touching a Git-backed ChangeSet. `ChatBridgeTests` retains the Swing source contract around the ChangeSet selector and new Start workspace control. |
+Once selected meaning and a credible executable proof boundary are known:
+1. express/identify the authoritative BI/invariant/DI/SI/Screen requirement;
+2. add or change the smallest failing proof that can credibly observe it;
+3. implement the production change;
+4. refactor while keeping the selected property proved.
 
-## Critical automated guarantees
+Use experiments/prototypes only for genuinely unresolved feasibility/design/proof questions. Return to the test-first path after the uncertainty is resolved.
 
-Automated proof keeps the current safety boundaries explicit, especially:
+## Proof layers
 
-- failed package/target/ownership/source preflight causes no repository mutation;
-- Git-equivalent path representation may pass after raw mismatch, while real source change or unverifiable Git/filter semantics fail closed;
-- one unfinished legacy ChangeSet cannot capture sibling ownership and a same-origin clone is not silently substituted;
-- the external OBS-ACTION surface is deliberately only `create-work-intent` and `apply-package`; standalone Work Intent creates/adopts/verifies one exact GitHub Issue and no Git workspace, while an OBS-ACTION with explicit `targetBranch` first ensures that same Issue from `PACKAGE.json.workIntent`, then automatically creates/reuses the exact Git-backed workspace and dispatches the same package operation through Apply/Commit/Publish without using the Repository Target's current checkout branch as hidden authority; retries resume from persisted state, including `PublicationUncertain` reconciliation, while action-without-targetBranch preserves legacy/manual compatibility and legacy ChangeSets cannot be silently converted; the workspace remains pinned to one exact Repository Target/common Git repository and exact published tip, package-file Apply mutates only that worktree and journals exact prior/intended state, Commit stages only durable package paths and establishes an exact trailer-bound child commit, and Publish updates only the dedicated remote ChangeSet branch after effective-identity/lease/proof checks;
-- Current Change generation does not mutate the real Git index and stale current review blocks Finalize;
-- publication failure preserves successful local work and Retry Push does not create an unrelated second logical ChangeSet;
-- explicit Reopen is all-or-nothing with respect to lifecycle and reacquired ownership;
-- Snapshot export is read-only and never substitutes a later ChatGPT destination;
-- browser/bridge failure never rolls back, authorizes or finalizes repository work;
-- deterministic bridge/protocol/task incompatibility stays pre-Send failure rather than `UnknownAfterSend`;
-- once a possible Send boundary is crossed, cancellation/lease/retry handling never rewrites uncertainty into false clean cancellation or duplicate delivery.
+1. **Deterministic/component proof** — parsing, validation, pure projection/state/invariant/helper rules.
+2. **Repository/integration proof** — disposable real Git repositories, worktrees, indexes, filesystems, state stores and bare remotes when Git/file/durable-state semantics are the property.
+3. **Bridge/DOM proof** — Java bridge task truth and deterministic extension/adapter behavior that does not require claiming a live external browser session.
+4. **Practical Acceptance / Evidence** — real Swing/Windows/Edge/ChatGPT/GitHub authentication/network properties not established by deterministic automation.
 
-## Manual boundary
+`run-tests.cmd` remains the standard automated entry for the current implementation; exact test composition is source authority and may evolve.
 
-Automated success does **not** establish real Swing responsiveness/layout, Windows notification appearance/click behavior, unpacked Edge extension lifecycle, live ChatGPT conversation discovery, actual attachment readiness, actual Send behavior or current ChatGPT DOM compatibility. Those operated checks and their PASS/FAIL/stale state belong only in [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md).
+## Local proof ownership
+
+Focused owners now carry the detailed proof responsibilities:
+- Domain owners: semantic invariants/identity/consistency proof where independently useful.
+- [`slices/`](slices/) — orchestration, repository boundary, recovery, integration and local Test Items.
+- [`shared-implementation/chatgpt-handoff.md`](shared-implementation/chatgpt-handoff.md) — shared bridge/DOM proof quality.
+- [`screens.md`](screens.md) — current Screen BIs; automated source/UI contracts may support them, while real usability/layout stays practical.
+
+[`behavior-realization-map.md`](behavior-realization-map.md) is derived navigation from BI to those owners; it is not a second test specification.
+
+## Critical cross-owner guarantees
+
+Automated proof should continue to cover, at the smallest credible integration boundary:
+- invalid package/target/source/ownership/workspace preflight causes no repository mutation;
+- exact Git-backed execution is pinned to persisted Repository Target / branch / worktree / commit identities rather than mutable UI/current-checkout convenience;
+- uncertain external or remote side effects are reconciled before retry can repeat them;
+- target-mode package Apply mutates only the isolated ChangeSet workspace, Commit captures only intended package paths, and Publish cannot overwrite an unexpected remote tip;
+- legacy owned-path Finalize cannot capture unrelated repository work;
+- Current Change/Snapshot derivation does not perturb the real Git index;
+- Local Snapshot cannot publish a mixed moving-state artifact;
+- browser delivery cannot become repository authorization;
+- possible-Send uncertainty cannot be rewritten into false clean cancellation or blindly resent.
+
+## Planned reviewed-result proof
+
+The selected planned Scenario requires new proof before promotion to current:
+- Builder review identity is accepted only for the exact package/source/predicted-result tuple;
+- after consumer publication, actual Git tree identity equals the reviewed predicted result tree;
+- mismatch/uncertainty fails closed and preserves useful evidence;
+- equality proof avoids a redundant second semantic review;
+- exactly one correct/current integration PR represents the ChangeSet;
+- target movement that preserves reviewed result does not automatically stale approval;
+- content-changing reconciliation invalidates prior approval before Finalize;
+- finalized target work is closed to silent package continuation.
+
+These are proof obligations, not claims of current implementation or passing tests.
+
+## Shared environment / non-duplication rules
+
+- Prefer real disposable Git repositories/remotes when Git object/ref/index/worktree semantics are under test; mocking Git commands is not equivalent proof.
+- Do not restate every BI as a Test Item. Add a Test Item only for non-obvious proof quality such as no-mutation, durable restart, isolation, public-boundary observation or false-positive prevention.
+- Do not reproduce class/method call graphs in documentation; source/test code owns exact mechanics.
+- Do not create a Shared Test Capability merely because multiple suites use ordinary test utilities. Add one only when reusable test machinery has its own durable responsibility.
+
+## Practical boundary
+
+Real Swing responsiveness/layout, Windows notifications, installed Edge extension lifecycle, live ChatGPT conversation discovery/attachment/Send behavior, current DOM compatibility and live GitHub CLI auth/network behavior require Practical Acceptance and executed Evidence where they materially matter.
+
+Current operated checklist/evidence remains in [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) until a later acceptance-owner migration is justified.

@@ -2,37 +2,134 @@
 
 Status: active current Scenario owner
 
-## User goal
+## Application Benefit / Desired Result
 
-Create a trustworthy portable representation of one registered repository and, when useful, make that exact artifact available in one intended ordinary ChatGPT conversation without changing repository work.
+Create a trustworthy portable representation of one exact registered repository state and, when useful, make that exact artifact available in one intended ordinary ChatGPT conversation without changing repository work.
 
-## Main flow
+## Process Specification
 
-1. Select one concrete Repository Target and Local or Committed snapshot mode.
-2. In the same dialog choose `Export only`, `Export + Attach`, or `Export + Attach + Send`.
-3. Either automatic ChatGPT path requires one ordinary conversation selected before export. The application freezes exact `conversationKey` and attach/send intent with the snapshot inputs. This is per-operation state and never changes Review-chat binding.
-4. Revalidate the registered target and repository identity. Current V1 Local/Committed modes require a committed baseline/ref; a repository without a first commit reports Repository Not Ready.
-5. Create the Snapshot ZIP first. Snapshot success is independent from downstream browser success.
-6. `Export only` returns the artifact/path conveniences and creates no ChatGPT interaction.
-7. Automatic handoff creates one External Interaction only after successful exact ZIP creation and only for the frozen conversation: attach-only ends `Attached`; attach+Send uses the same generic guarded exact-attachment Send engine as ReviewDiff.
+### Scenario Process / Feature Interaction Map
 
-## Local snapshot
+```text
+FI-RPKG-MATERIALIZE-REPOSITORY-CONTEXT
+├─ Export only → terminal exact Snapshot
+└─ Attach / Attach+Send
+     ↓
+   FI-RPKG-DELIVER-REPOSITORY-CONTEXT
+```
 
-The ZIP contains current tracked files that exist plus untracked non-ignored files under `snapshot/`, frozen `BASE-COMMIT.txt`, `WORKING-TREE.diff` from that base to the exported local state and `SNAPSHOT.json`.
+### FI-RPKG-MATERIALIZE-REPOSITORY-CONTEXT — Materialize exact Repository Snapshot
 
-Current exporter deliberately verifies local consistency twice: exact inventory/file hashes, frozen HEAD and generated diff must remain identical across capture. Instability fails export and publishes no mixed final ZIP. The real Git index is not modified.
+Scenario Role / Local Purpose:
+Produce the exact portable repository-context artifact independently of any downstream browser result.
 
-## Committed snapshot
+Context / Preconditions:
+One registered Repository Target and Snapshot mode (`Local` or `Committed`) are selected.
 
-The requested ref is resolved once to an immutable commit SHA. Regular file bytes are read from Git objects independently of dirty/staged/untracked working-tree state. V1 rejects symlink/submodule entries rather than flattening them misleadingly.
+Required Inputs:
+Exact Repository Target, exact mode/source selection and output location.
 
-## Important rules
+Interaction Process:
+The application revalidates target identity/readiness, freezes the source identity, and builds the Snapshot ZIP. Local mode captures tracked-existing plus untracked non-ignored files and proves the capture is stable across two consistency observations; Committed mode resolves one immutable commit and reads regular file bytes from Git objects. The real Git index is not modified.
 
-- export is read-only: no ChangeSet/ownership/index/checkout/commit/push mutation;
-- `.git/**` is excluded;
-- output directory must already exist outside the repository and reparse/symlink escape is rejected;
-- final ZIP is published through a temporary file to a unique path;
-- clipboard/browser failure never changes successful snapshot truth;
-- automatic handoff never substitutes a later/current conversation and never changes Review-chat binding;
-- exact same artifact/destination/mode may reuse one still-actionable interaction; attach-only and attach+Send are distinct intents;
-- Snapshot has a fixed Java-owned pre-confirmation deadline while Pending/Claimed/Preparing. Timeout before preparation is Cancelled; after preparation begins it is PreparedUnsent. Before the first application-controlled auto-send click Java must establish SendArmed while that original deadline is live.
+Outcomes:
+- exact Snapshot published to a unique output path;
+- Repository Not Ready / unsupported entry / unstable source / confinement failure → no misleading final ZIP.
+
+Result:
+One exact Repository Snapshot artifact exists or export has failed without changing repository work.
+
+Outputs:
+Snapshot ZIP, path and exact source metadata.
+
+Next Interactions:
+Export-only → terminal. Attach/Attach+Send → `FI-RPKG-DELIVER-REPOSITORY-CONTEXT`.
+
+Behavior Items:
+
+#### BI-RPKG-SNAPSHOT-READ-ONLY — Snapshot export is repository-read-only
+Requirement:
+Snapshot export must not mutate ChangeSet, ownership, index, checkout, commit or publication state.
+
+Reason:
+Repository context is an observation artifact, not repository work.
+
+#### BI-RPKG-SNAPSHOT-EXACT-SOURCE — Snapshot identifies one exact source
+Requirement:
+The produced Snapshot must be derived from one exact selected Local or Committed source identity and must not silently substitute another repository/ref/state.
+
+Reason:
+A portable context is useful only if its provenance is trustworthy.
+
+#### BI-RPKG-SNAPSHOT-NO-MIXED-CAPTURE — Local Snapshot must not mix moving source states
+Requirement:
+If the Local source changes such that one stable capture cannot be proven, export must fail rather than publish a ZIP containing a mixture of different repository states.
+
+Reason:
+A self-inconsistent context artifact cannot be treated as one repository state.
+
+### FI-RPKG-DELIVER-REPOSITORY-CONTEXT — Deliver exact Snapshot to one conversation
+
+Scenario Role / Local Purpose:
+Optionally make the already-created exact Snapshot available in the conversation selected for this export while keeping browser truth separate from repository/Snapshot truth.
+
+Context / Preconditions:
+Snapshot export succeeded and Attach or Attach+Send was selected before export.
+
+Required Inputs:
+Exact Snapshot artifact, frozen `conversationKey`, frozen attach/send mode.
+
+Interaction Process:
+Only after exact ZIP creation the application creates/reuses an equivalent actionable External Interaction for the frozen artifact/destination/mode. Attach-only ends at confirmed `Attached`; Attach+Send uses the guarded exact-attachment send engine. Pre-send cancellation/failure and post-click uncertainty remain distinct. Snapshot delivery never changes the persisted Review-chat binding.
+
+Outcomes:
+- Attached / Sent / NoChanges-equivalent terminal result where applicable;
+- FailedBeforeSend / PreparedUnsent / Cancelled;
+- `UnknownAfterSend` when Send may have happened but cannot be proven.
+
+Result:
+The exact Snapshot is delivered to the frozen destination, or delivery truth remains explicit without invalidating the successful export.
+
+Outputs:
+External Interaction terminal/attention state.
+
+Next Interactions:
+Scenario terminates; retry after terminal outcome is a new interaction identity.
+
+Behavior Items:
+
+#### BI-RPKG-SNAPSHOT-HANDOFF-EXACT-ARTIFACT — Deliver the exact exported artifact
+Requirement:
+Automatic handoff must attach the exact Snapshot bytes/fingerprint produced by this operation, not a later or similarly named artifact.
+
+Reason:
+The conversation must receive the same repository context artifact whose successful export the application reported.
+
+#### BI-RPKG-SNAPSHOT-HANDOFF-FROZEN-DESTINATION — Do not retarget Snapshot handoff
+Requirement:
+Automatic Snapshot delivery must remain bound to the exact conversation and attach/send intent frozen with the export operation.
+
+Reason:
+Snapshot intent is captured with one conversation and must not follow later UI/browser movement.
+
+#### BI-RPKG-SNAPSHOT-DELIVERY-DOES-NOT-CHANGE-REVIEW-BINDING — Snapshot destination is not Review-chat binding
+Requirement:
+Snapshot delivery must not create, replace or reinterpret the ChangeSet's Review-chat binding.
+
+Reason:
+Repository-context sharing and ChangeSet review destination are separate user intents.
+
+#### BI-RPKG-SNAPSHOT-DELIVERY-FAILURE-DOES-NOT-INVALIDATE-EXPORT — Browser failure does not erase Snapshot success
+Requirement:
+Failure, cancellation or uncertainty in ChatGPT handoff must not rewrite a successfully created Snapshot as if export failed.
+
+Reason:
+The Snapshot artifact already exists independently of whether a browser interaction later succeeds.
+
+## Screen references
+
+The Snapshot dialog and handoff-related current screen rules are documented in [`../screens.md`](../screens.md).
+
+## Evolution Steps
+
+No selected application-behavior Evolution Step currently changes the core Snapshot benefit. Shared handoff implementation may evolve while these BIs remain stable.

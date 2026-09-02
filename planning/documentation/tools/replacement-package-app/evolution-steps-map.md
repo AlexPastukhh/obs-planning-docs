@@ -1,75 +1,94 @@
 # Replacement Package App — Evolution Steps Map
 
-Status: active evolution planning owner; canonical Scenario step migration pending
-Scope: rough horizon/likelihood, dependency, sequence, parallelism, readiness and enablement relationships between Scenario-owned Evolution Steps, plus materially independent lower-owner impacts when their planning differs from the parent step.
+Status: active evolution planning owner
+Scope: rough sequence, dependency, readiness and retirement relation between canonical Scenario-owned Evolution Steps. Behavioral delta remains canonical in Scenario owners; Domain/Slice/Screen impact remains canonical in lower owners.
 
-## Purpose
+## Canonical steps referenced
 
-This file answers planning questions:
+From current Complete Prepared Repository Work:
+- [`EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-downgrade-current-change-to-diagnostic)
+- [`EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
 
-> **When / how likely / in what dependency order should selected evolution happen, and is it ready?**
+The legacy Current Change Scenario references the same downgrade step identity rather than defining a competing semantic change.
 
-It does **not** define:
-
-- what application behavior changes — canonical in the Scenario-owned Evolution Step;
-- what a Domain/Slice/Screen/shared owner changes — canonical in that owner's `Evolution Impact`;
-- how the current implementation must be shaped — canonical in `DI-*`, `SI-*` or shared Implementation Items.
+## Selected evolution map
 
 ```text
-Scenario owner
-→ Evolution Step
-→ WHAT behavior changes
-
-Evolution Steps Map
-→ rough horizon / likelihood / dependency / order / readiness
-→ WHEN / HOW LIKELY
-
-Lower owner
-→ Evolution Impact
-→ WHAT changes in that owner
-
-Implementation Items
-→ HOW current implementation is constrained for current quality + known evolution
+Current mixed migration state
+  target-mode:
+    Work Intent → workspace → Apply → Commit → Publish → Ready
+  legacy:
+    Apply → Current Change/ReviewDiff → Finalize/Publication Pending/Reopen
+        │
+        ├──────────────┐
+        ↓              ↓
+EVO-RPKG-DOWNGRADE-  EVO-RPKG-ADOPT-
+CURRENT-CHANGE-TO-   REVIEWED-RESULT-
+DIAGNOSTIC           WORKFLOW
+        │              │
+        └──────┬───────┘
+               ↓
+planned SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK
+becomes eligible for promotion only after implementation + proof reconciliation
+               ↓
+legacy Current Change / legacy Finalize can retire only when no remaining
+legacy ChangeSet requires their current authority
 ```
 
-Documentation process: [`DOC-UC-08 — Plan Evolution Steps and material impact timing`](documentation-use-cases.md#doc-uc-evolution-steps-map).
-Recommended form: [`Template — Evolution Steps Map entry`](documentation-templates.md#template-evolution-steps-map-entry).
+The two selected steps may be developed partly in parallel, but promotion of the planned complete target Scenario requires both semantic results: ordinary target work must not depend on legacy approval-oriented Current Change, and reviewed-result confirmation/PR/Finalize must exist.
 
-## Planning rules
+## EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
 
-- Reference canonical Scenario-owned Evolution Steps; do not copy their behavioral delta.
-- Evolution Step identity/name is semantic and stable; map reorder never requires re-ID.
-- Step `Intent` may remain `URGENT`/`PLANNED`/`POSSIBLE` in the Scenario owner. The map may additionally record rough horizon, likelihood/planning confidence and readiness when useful.
-- Planning may be linear, branching, conditional or parallel.
-- `POSSIBLE` remains non-binding and should not be forced into committed sequence.
-- A materially independent lower-owner `Evolution Impact` item may appear when its timing/likelihood/dependency differs enough from the parent step to matter. Reference it; keep its Expansion/Refactoring/Forced Migration meaning in the lower owner.
-- Do not turn this map into detailed implementation scheduling, code task inventory or a duplicate architecture backlog.
-- Completed nodes need not remain active merely for history when current owners communicate resulting truth.
+Evolution Step:
+[`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-downgrade-current-change-to-diagnostic)
 
-## Current planned sequence
+Rough horizon / likelihood:
+Selected planned migration; required for target Scenario promotion.
 
-No authoritative sequence is populated by this documentation-model package because existing Scenario owners have not yet been migrated to canonical semantically named Evolution Steps and lower owners have not yet been reconciled to the new `Evolution Impact` form.
+Depends on:
+- exact Git-backed ChangeSet base/published boundaries already exist;
+- target diagnostic projection design/proof is implemented.
 
-Populate the map during later Scenario/implementation integration by:
+Enables:
+- Git-derived latest/cumulative Current Change for inspection/support;
+- removal of manual Current Change handoff from ordinary target approval authority;
+- eventual retirement of the standalone legacy Current Change Scenario after legacy work is gone.
 
-1. canonicalizing Scenario-owned Evolution Steps;
-2. identifying real prerequisites/enablers/parallelism;
-3. recording rough horizon/likelihood/readiness only where it adds planning meaning;
-4. referencing materially independent local impacts only when their planning differs from the parent step;
-5. keeping behavior/implementation delta in their canonical owners.
+Can run in parallel with:
+- reviewed-result identity/confirmation implementation, provided current vs planned authority stays explicit.
 
-## Recommended map shape
+Readiness / gate:
+Do not retire legacy ReviewDiff/Finalize semantics while persisted legacy ChangeSets still rely on them.
 
-```text
-Current application state
-        ↓
-<Evolution Step A> [near / high confidence / ready]
-        ├────────────→ <parallel Step B>
-        ↓
-<Step C enabled by A>
-        └─ local impact: <Slice refactoring> [may happen before C]
-        ↓
-<planned future Scenario / resulting capability>
-```
+## EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
 
-A table/list/graph form is equally valid when it communicates planning relationships more clearly.
+Evolution Step:
+[`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
+
+Rough horizon / likelihood:
+Selected planned target.
+
+Depends on:
+- Builder planned replay/review Scenario defines exact approved package/source/result identity;
+- consumer package/protocol evolution supplies enough review identity for verification;
+- ChangeSet Domain can persist/prove reviewed-result binding/currentness;
+- PR and target Finalize proof boundaries are selected and implemented.
+
+Enables:
+- consumer proof `actual published Git tree == reviewed predicted tree`;
+- no second semantic review when that identity is proven;
+- one correct/current integration PR;
+- approval-preserving Finalize/reconciliation semantics;
+- promotion of [`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).
+
+Can run in parallel with:
+- Git-derived Current Change diagnostic work, but final target promotion requires both.
+
+Readiness / gate:
+The current `PACKAGE-PROTOCOL.md` does not yet carry the planned reviewed-result identity; protocol/runtime changes are intentionally outside this documentation-only package and must be designed/implemented separately before target behavior is claimed current.
+
+## Retirement relation
+
+Legacy Current Change / legacy Finalize are current compatibility behavior, not future target architecture. Their retirement is **not** itself a reason to delete documentation early. Current owners remain until persisted/operated legacy work no longer needs them and implementation migration proves the target path.
+
+Completed evolution nodes need not stay active forever once current owners communicate the resulting truth.
